@@ -1,0 +1,16 @@
+{
+  "env": {
+    "es6": true,
+    "jest": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "prettier/react"
+  ],
+  "plugins": [
+    "react", "react-hooks", "prettier", "jest"
+  ]
+}
