@@ -1,0 +1,7 @@
+{
+  "name": "@marigold/system",
+  "version": "0.0.0",
+  "description": "System of the Reservix Design System Marigold",
+  "main": "build/index.js",
+  "license": "MIT"
+}
