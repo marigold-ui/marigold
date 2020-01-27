@@ -1,5 +1,9 @@
 {
   "name": "marigold-repo",
+  "version": "1.0.0",
+  "description": "Reservix Design System Marigold",
+  "repository": "https://github.com/reservix-ui/marigold.git/",
+  "main": "index.js",
   "private": true,
   "license": "MIT",
   "workspaces": [
