@@ -10,6 +10,23 @@
     "packages/*"
   ],
   "devDependencies": {
-    "lerna": "^3.20.2"
+    "@storybook/addon-actions": "5.3.9",
+    "@storybook/addon-docs": "5.3.9",
+    "@storybook/addon-links": "5.3.9",
+    "@storybook/preset-typescript": "1.2.0",
+    "@storybook/react": "5.3.9",
+    "@typescript-eslint/eslint-plugin": "2.3.3",
+    "@typescript-eslint/parser": "2.3.3",
+    "babel-loader": "8.0.6",
+    "babel-preset-react-app": "9.1.0",
+    "fork-ts-checker-webpack-plugin": "4.0.3",
+    "lerna": "^3.20.2",
+    "react-docgen-typescript-loader": "3.6.0",
+    "ts-loader": "6.2.1",
+    "tsconfig.json": "1.0.7",
+    "typescript": "3.7.2"
+  },
+  "scripts": {
+    "storybook": "start-storybook"
   }
 }
