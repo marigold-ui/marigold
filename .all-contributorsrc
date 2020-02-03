@@ -9,13 +9,60 @@
   "imageSize": 100,
   "commit": true,
   "commitConvention": "none",
-  "contributors": [],
-  "contributorsPerLine": 7
   "contributors": [
-    sebald,
-    ti10le,
-    viktoria-schwarz,
-    Toshibot,
-    julianthiel
-  ]
+    {
+      "login": "sebald",
+      "name": "Sebastian Sebald",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/985701?v=4",
+      "profile": "https://github.com/sebald",
+      "contributions": [
+        "code",
+        "doc",
+        "infra"
+      ]
+    },
+    {
+      "login": "viktoria-schwarz",
+      "name": "viktoria-schwarz",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/59830437?v=4",
+      "profile": "https://github.com/viktoria-schwarz",
+      "contributions": [
+        "code",
+        "doc",
+        "infra"
+      ]
+    },
+    {
+      "login": "ti10le",
+      "name": "ti10le",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/59875255?v=4",
+      "profile": "https://github.com/ti10le",
+      "contributions": [
+        "code",
+        "doc",
+        "infra"
+      ]
+    },
+    {
+      "login": "Toshibot",
+      "name": "Toshi",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6447213?v=4",
+      "profile": "http://toshibot.com",
+      "contributions": [
+        "code",
+        "doc",
+        "design"
+      ]
+    },
+    {
+      "login": "julianthiel",
+      "name": "Julian Thiel",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/59880423?v=4",
+      "profile": "https://github.com/julianthiel",
+      "contributions": [
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
 }
