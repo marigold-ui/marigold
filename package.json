@@ -9,27 +9,44 @@
   "workspaces": [
     "packages/*"
   ],
+  "engines": {
+    "node": ">=10.13.0"
+  },
   "devDependencies": {
     "@storybook/addon-actions": "5.3.9",
     "@storybook/addon-docs": "5.3.9",
     "@storybook/addon-links": "5.3.9",
     "@storybook/preset-typescript": "1.2.0",
     "@storybook/react": "5.3.9",
+    "@testing-library/jest-dom": "4.2.0",
+    "@testing-library/react": "9.4.0",
+    "@testing-library/react-hooks": "2.0.3",
+    "@types/jest": "24.0.18",
     "@typescript-eslint/eslint-plugin": "2.3.3",
     "@typescript-eslint/parser": "2.3.3",
     "all-contributors-cli": "6.13.0",
     "babel-loader": "8.0.6",
     "babel-preset-react-app": "9.1.0",
     "fork-ts-checker-webpack-plugin": "4.0.3",
+    "jest": "24.9.0",
+    "jest-watch-typeahead": "0.4.2",
     "lerna": "^3.20.2",
+    "react": "16.8.6",
     "react-docgen-typescript-loader": "3.6.0",
+    "react-dom": "16.8.6",
+    "react-testing-library": "8.0.1",
+    "ts-jest": "24.1.0",
     "ts-loader": "6.2.1",
     "tsconfig.json": "1.0.7",
-    "typescript": "3.7.2"
+    "typescript": "3.7.5"
+  },
+  "dependencies": {
+    "react-scripts": "3.3.0"
   },
   "scripts": {
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "storybook": "start-storybook"
+    "storybook": "start-storybook",
+    "test": "jest --config jest.config.js"
   }
 }
