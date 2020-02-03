@@ -1,0 +1,21 @@
+{
+  "projectName": "marigold",
+  "projectOwner": "rx",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "none",
+  "contributors": [],
+  "contributorsPerLine": 7
+  "contributors": [
+    sebald,
+    ti10le,
+    viktoria-schwarz,
+    Toshibot,
+    julianthiel
+  ]
+}

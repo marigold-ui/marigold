@@ -17,6 +17,7 @@
     "@storybook/react": "5.3.9",
     "@typescript-eslint/eslint-plugin": "2.3.3",
     "@typescript-eslint/parser": "2.3.3",
+    "all-contributors-cli": "6.13.0",
     "babel-loader": "8.0.6",
     "babel-preset-react-app": "9.1.0",
     "fork-ts-checker-webpack-plugin": "4.0.3",
@@ -27,6 +28,8 @@
     "typescript": "3.7.2"
   },
   "scripts": {
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate",
     "storybook": "start-storybook"
   }
 }
