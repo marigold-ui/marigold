@@ -10,8 +10,8 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@storybook/addon-actions": "5.3.10",
-    "@storybook/addon-docs": "5.3.9",
+    "@storybook/addon-actions": "5.3.9",
+    "@storybook/addon-docs": "5.3.10",
     "@storybook/addon-links": "5.3.9",
     "@storybook/preset-typescript": "1.2.0",
     "@storybook/react": "5.3.10",
