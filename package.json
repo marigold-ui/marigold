@@ -15,7 +15,7 @@
     "@storybook/addon-links": "5.3.9",
     "@storybook/preset-typescript": "1.2.0",
     "@storybook/react": "5.3.9",
-    "@typescript-eslint/eslint-plugin": "2.3.3",
+    "@typescript-eslint/eslint-plugin": "2.18.0",
     "@typescript-eslint/parser": "2.3.3",
     "all-contributors-cli": "6.13.0",
     "babel-loader": "8.0.6",
