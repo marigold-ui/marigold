@@ -1,5 +1,17 @@
 {
-  "compilerOptions": {
-    "jsx": "react"
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+      "baseUrl": ".",
+      "jsx": "react",
+      "paths": {
+        "@marigold/*": ["./packages/*/src"]
+      }
+    },
+    "exclude": [
+      "coverage/*",
+      "jest.config.js",
+      "**/node_modules/*",
+      "**/build/**/*"
+    ]
   }
-}
+  
