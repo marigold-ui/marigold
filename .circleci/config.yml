@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+      - run: echo "Test CI"
+      - run: yarn install
+      - run: yarn test
+workflows:
+  version: 2
+  test_job:
+    jobs:
+      - test
