@@ -13,9 +13,12 @@ module.exports = {
       workspace => `<rootDir>/${workspace.replace('/*', '')}`
       ),
     // coverage
+    collectCoverage: true,
+    coverageDirectory: 'coverage',
     collectCoverageFrom: [
       '**/*.{ts,tsx}',
       // ignore:
+      '!**/stories.tsx',
       '!**/{*.d.ts,index.ts}',
       '!**/node_modules/**',
       '!**/build/**',

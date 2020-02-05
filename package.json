@@ -27,6 +27,7 @@
     "all-contributors-cli": "6.13.0",
     "babel-loader": "8.0.6",
     "babel-preset-react-app": "9.1.0",
+    "coveralls": "3.0.9",
     "fork-ts-checker-webpack-plugin": "4.0.3",
     "jest": "24.9.0",
     "jest-watch-typeahead": "0.4.2",
@@ -47,6 +48,7 @@
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
     "storybook": "start-storybook",
-    "test": "jest --config jest.config.js"
+    "test": "jest --config jest.config.js",
+    "coverage": "jest --config jest.config.js --coverage --coverageReporters html"
   }
 }
