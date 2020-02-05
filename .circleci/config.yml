@@ -1,6 +1,4 @@
-version: 2 # .1
-# orbs:
-# coveralls: coveralls/coveralls@3.0.9
+version: 2
 on: ['push', 'pull_request']
 jobs:
   test:
@@ -13,17 +11,21 @@ jobs:
     steps:
       - checkout
       - run: yarn install
-      - run: yarn test --ci
-  coveralls:
+      - run:
+          name: Run test and create coverage artifact
+          command: yarn test --ci --coverage --coverageReporters=text-lcov
+      - store_artifacts:
+          path: coverage
+  coverage:
     docker:
       - image: circleci/node:12
     steps:
       - checkout
-      - run: yarn install
-      - run: yarn test --coverage --coverageReporters=text-lcov | coveralls
+      # - run: yarn install
+      - run: ls
 workflows:
   version: 2
   test_job:
     jobs:
       - test
-      - coveralls
+      - coverage
