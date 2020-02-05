@@ -1,15 +1,29 @@
-version: 2
+version: 2 # .1
+# orbs:
+  # coveralls: coveralls/coveralls@3.0.9
+on: ["push", "pull_request"]
 jobs:
   test:
     docker:
       - image: circleci/node:12
+        environment:
+          - COVERALLS_REPO_TOKEN: "${{ secrets.COVERALLS_REPO_TOKEN }}"
+    post:
+      - coveralls
     steps:
       - checkout
-      - run: echo "Test CI"
       - run: yarn install
-      - run: yarn test
+      - run: yarn test --coverage --ci
+  coveralls:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+      - run: yarn install
+      - run: jest --coverage --coverageReporters=text-lcov | coveralls
 workflows:
   version: 2
   test_job:
     jobs:
       - test
+      - coveralls
