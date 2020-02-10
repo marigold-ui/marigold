@@ -34,7 +34,7 @@
     "react-docgen-typescript-loader": "3.6.0",
     "react-dom": "16.8.6",
     "react-testing-library": "8.0.1",
-    "ts-jest": "24.1.0",
+    "ts-jest": "24.3.0",
     "ts-loader": "6.2.1",
     "tsconfig.json": "1.0.7",
     "tsdx": "0.12.3",
