@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Reservix Design System Marigold",
   "repository": "https://github.com/reservix-ui/marigold.git/",
-  "main": "index.js",
   "private": true,
   "license": "MIT",
   "workspaces": [
@@ -14,14 +13,14 @@
   },
   "devDependencies": {
     "@storybook/addon-actions": "5.3.9",
-    "@storybook/addon-docs": "5.3.10",
-    "@storybook/addon-links": "5.3.9",
+    "@storybook/addon-docs": "5.3.12",
+    "@storybook/addon-links": "5.3.12",
     "@storybook/preset-typescript": "1.2.0",
     "@storybook/react": "5.3.10",
-    "@testing-library/jest-dom": "4.2.0",
+    "@testing-library/jest-dom": "5.1.1",
     "@testing-library/react": "9.4.0",
     "@testing-library/react-hooks": "2.0.3",
-    "@types/jest": "24.0.18",
+    "@types/jest": "25.1.1",
     "@typescript-eslint/eslint-plugin": "2.3.3",
     "@typescript-eslint/parser": "2.18.0",
     "all-contributors-cli": "6.13.0",
@@ -36,9 +35,10 @@
     "react-docgen-typescript-loader": "3.6.0",
     "react-dom": "16.8.6",
     "react-testing-library": "8.0.1",
-    "ts-jest": "24.1.0",
+    "ts-jest": "24.3.0",
     "ts-loader": "6.2.1",
     "tsconfig.json": "1.0.7",
+    "tsdx": "0.12.3",
     "typescript": "3.7.5"
   },
   "dependencies": {
@@ -47,6 +47,7 @@
   "scripts": {
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
+    "prepare": "lerna run build --stream",
     "storybook": "start-storybook",
     "test": "jest --config jest.config.js",
     "coverage": "jest --config jest.config.js --coverage --coverageReporters html"
