@@ -2661,16 +2661,16 @@
     vue-docgen-api "^4.1.0"
     vue-docgen-loader "^1.3.0-beta.0"
 
-"@storybook/addon-links@5.3.9":
-  version "5.3.9"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-5.3.9.tgz#adee13173105cb9f2d6c682bcbc6c8b471a4ee47"
-  integrity sha512-QvAvZNIn3EqWc2YF9WS5MGf6MoisfQKLFC09iudSySLBN+L5JHCx5zCzMydPgN8nliE6sJMAr7VrOjCWdQuEJg==
+"@storybook/addon-links@5.3.12":
+  version "5.3.12"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-5.3.12.tgz#90e81883e842dd66c1ca6e9485193f578bdef922"
+  integrity sha512-8ipbr21wbbXDy+JKiVr6Maac7EbZT7sE41/RTvVZjdMFWQU+XG5sxneJBJcgSzCsFV3wWyLEjb3DEkC/rCkdaw==
   dependencies:
-    "@storybook/addons" "5.3.9"
-    "@storybook/client-logger" "5.3.9"
-    "@storybook/core-events" "5.3.9"
+    "@storybook/addons" "5.3.12"
+    "@storybook/client-logger" "5.3.12"
+    "@storybook/core-events" "5.3.12"
     "@storybook/csf" "0.0.1"
-    "@storybook/router" "5.3.9"
+    "@storybook/router" "5.3.12"
     core-js "^3.0.1"
     global "^4.3.2"
     prop-types "^15.7.2"
