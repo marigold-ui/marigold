@@ -41,7 +41,7 @@
     "typescript": "3.7.5"
   },
   "dependencies": {
-    "react-scripts": "3.3.0"
+    "react-scripts": "3.4.0"
   },
   "scripts": {
     "contributors:add": "all-contributors add",
