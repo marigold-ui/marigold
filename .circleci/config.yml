@@ -13,7 +13,7 @@ jobs:
       - run: yarn install
       - run:
           name: Run test and create coverage artifact
-          command: yarn test --ci --coverage --coverageReporters=text-lcov
+          command: yarn test --ci --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
       - store_artifacts:
           path: coverage
   coverage:
@@ -21,8 +21,8 @@ jobs:
       - image: circleci/node:12
     steps:
       - checkout
-      # - run: yarn install
-      - run: ls
+      - run: yarn install
+      - run: 
 workflows:
   version: 2
   test_job:
