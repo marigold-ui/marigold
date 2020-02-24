@@ -12,8 +12,8 @@ jobs:
       - checkout
       - run: yarn install
       - run:
-          name: Run test and create coverage artifact
-          command: yarn test --ci --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+          name: Run test 
+          command: yarn test --ci
       - store_artifacts:
           path: coverage
   coverage:
@@ -22,7 +22,7 @@ jobs:
     steps:
       - checkout
       - run: yarn install
-      - run: yarn test:coverage
+      - run: yarn test -i --coverage
       - persist_to_workspace:
           root: .
           paths:
