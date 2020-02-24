@@ -22,10 +22,34 @@ jobs:
     steps:
       - checkout
       - run: yarn install
+      - run: yarn test:coverage
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./coverage
+  upload-coveralls:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+      - run: yarn install
       - run: 
+          name: upload coveralls
+          command: |
+              if [[ -v COVERALLS_REPO_TOKEN ]]
+              then
+                  cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+                  echo "Coveralls info uploaded"
+              else
+                  echo "Warning - Coveralls info could NOT be uploaded"
+              fi
+
 workflows:
   version: 2
   test_job:
     jobs:
       - test
       - coverage
+      - upload-coveralls:
+          requires:
+            - test-coverage
