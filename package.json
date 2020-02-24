@@ -12,7 +12,7 @@
     "node": ">=10.13.0"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "5.3.9",
+    "@storybook/addon-actions": "5.3.13",
     "@storybook/addon-docs": "5.3.12",
     "@storybook/addon-links": "5.3.13",
     "@storybook/preset-typescript": "1.2.0",
