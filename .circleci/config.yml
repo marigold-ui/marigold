@@ -12,7 +12,7 @@ jobs:
       - checkout
       - run: yarn install
       - run:
-          name: Run test 
+          name: Run test
           command: yarn test --ci
       - store_artifacts:
           path: coverage
@@ -33,7 +33,7 @@ jobs:
     steps:
       - checkout
       - run: yarn install
-      - run: 
+      - run:
           name: upload coveralls
           command: |
               if [[ -v COVERALLS_REPO_TOKEN ]]
@@ -43,7 +43,6 @@ jobs:
               else
                   echo "Warning - Coveralls info could NOT be uploaded"
               fi
-
 workflows:
   version: 2
   test_job:
