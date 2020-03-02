@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@storybook/addon-actions": "5.3.13",
-    "@storybook/addon-docs": "5.3.12",
+    "@storybook/addon-docs": "5.3.14",
     "@storybook/addon-links": "5.3.13",
     "@storybook/preset-typescript": "1.2.0",
     "@storybook/react": "5.3.13",
