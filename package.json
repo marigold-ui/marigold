@@ -27,7 +27,7 @@
     "babel-loader": "8.0.6",
     "babel-preset-react-app": "9.1.1",
     "coveralls": "3.0.9",
-    "fork-ts-checker-webpack-plugin": "4.0.3",
+    "fork-ts-checker-webpack-plugin": "4.0.5",
     "jest": "25.1.0",
     "jest-watch-typeahead": "0.4.2",
     "lerna": "^3.20.2",
