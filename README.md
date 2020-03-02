@@ -1,5 +1,7 @@
 # marigold
 
+[![Coverage Status](https://coveralls.io/repos/github/reservix-ui/marigold/badge.svg)](https://coveralls.io/github/reservix-ui/marigold)
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
