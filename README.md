@@ -1,7 +1,7 @@
 <img width="494" align="center" alt="type_logo" src="https://user-images.githubusercontent.com/59875255/75779675-530ca980-5d5a-11ea-8910-7e92ded472e3.png">
 
 [![CircleCI](https://circleci.com/gh/reservix-ui/marigold.svg?style=svg)](https://circleci.com/gh/reservix-ui/marigold)
-[![Coverage Status](https://coveralls.io/repos/github/reservix-ui/marigold/badge.svg)](https://coveralls.io/github/reservix-ui/marigold)
+[![Coverage Status](https://coveralls.io/repos/github/reservix-ui/marigold/badge.svg?branch=master)](https://coveralls.io/github/reservix-ui/marigold?branch=master)
 
 ## Contributors ✨
 
