@@ -1,6 +1,6 @@
 # marigold
 
-[![Coverage Status](https://coveralls.io/repos/github/reservix-ui/marigold/badge.svg)](https://coveralls.io/github/reservix-ui/marigold)
+[![Coverage Status](https://coveralls.io/repos/github/reservix-ui/marigold/badge.svg?branch=master)](https://coveralls.io/github/reservix-ui/marigold?branch=master)
 
 ## Contributors ✨
 
