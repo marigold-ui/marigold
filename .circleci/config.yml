@@ -1,6 +1,9 @@
-version: 2
+version: 2.1
 
 on: ['push', 'pull_request']
+
+orbs:
+  slack: circleci/slack@3.4.2
 
 jobs:
   test:
@@ -87,6 +90,12 @@ jobs:
               else
                   echo "Warning - Coveralls info could NOT be uploaded"
               fi
+
+      - slack/status:
+          webhook: ${SLACK_WEBHOOK}
+          mentions: "CUG9R963C"
+          failure_message: "red_circle Pipeline has failed :( $SLACK_MENTIONS"
+          fail_only: true
 
 workflows:
   version: 2
