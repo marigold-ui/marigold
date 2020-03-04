@@ -39,7 +39,6 @@
   "scripts": {
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "prepare": "lerna run build --stream",
     "storybook": "start-storybook",
     "test": "jest --config jest.config.js",
     "coverage": "jest --config jest.config.js --coverage --coverageReporters html"

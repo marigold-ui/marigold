@@ -20,15 +20,61 @@ test('change rendered element via "as" prop', () => {
   expect(result instanceof HTMLSpanElement).toBeTruthy();
 });
 
-test('apply custom styling in box component', () => {});
+test('pass down all HTML attributes', () => {
+  const { getByText } = render(
+    <Box id="id" disabled>
+      I am Box!
+    </Box>
+  );
+  const result = getByText('I am Box!');
 
-test('apply styling based on styled-system', () => {});
+  expect(result.getAttribute('id')).toEqual('id');
+  expect(result.getAttribute('disabled')).toMatch('');
+});
 
-test('accept true and false in styling a component with a color', () => {});
+test('apply some base css styling for normalization', () => {
+  const { getByText } = render(<Box>I am Box!</Box>);
+  const element = getByText('I am Box!');
 
-test('compose multiple styles', () => {});
+  expect(element).toHaveStyle('box-sizing: border-box');
+  expect(element).toHaveStyle('margin: 0');
+  expect(element).toHaveStyle('min-width: 0');
+});
 
-test('use ref to reference to a defined html button element', () => {});
+test('forward ref', () => {
+  const ref = React.createRef<HTMLButtonElement>();
+  render(
+    <Box as="button" type="button" ref={ref}>
+      I am a button!
+    </Box>
+  );
+
+  expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
+});
+
+// TODO: better description
+test('apply base styling for custom components', () => {
+  const Button: React.FC = ({ children }) => (
+    <Box as="button" css={{ border: '1px solid black' }}>
+      {children}
+    </Box>
+  );
+
+  const { getByText } = render(<Button>I am Custom Button!</Button>);
+  const element = getByText('I am Custom Button!');
+
+  expect(element).toHaveStyle('border: 1px solid black');
+});
+
+// test('allow to apply styling via "css" prop', () => {});
+
+// test('apply custom styling in box component', () => {});
+
+// test('apply styling based on styled-system', () => {});
+
+// test('compose multiple styles', () => {});
+
+// test('accept true and false in styling a component with a color', () => {});
 
 test('render a button component with primary style from a theme via key', () => {});
 
