@@ -94,6 +94,7 @@ jobs:
       - slack/status:
           webhook: ${SLACK_WEBHOOK}
           mentions: "CUG9R963C"
+          failure_message: "red_circle Pipeline has failed :( $SLACK_MENTIONS"
           fail_only: true
 
 workflows:
