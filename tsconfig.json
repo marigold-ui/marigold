@@ -1,17 +1,15 @@
 {
-    "extends": "./tsconfig.base.json",
-    "compilerOptions": {
-      "baseUrl": ".",
-      "jsx": "react",
-      "paths": {
-        "@marigold/*": ["./packages/*/src"]
-      }
-    },
-    "exclude": [
-      "coverage/*",
-      "jest.config.js",
-      "**/node_modules/*",
-      "**/build/**/*"
-    ]
-  }
-  
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@marigold/*": ["./packages/*/src"]
+    }
+  },
+  "exclude": [
+    "coverage/*",
+    "jest.config.js",
+    "**/node_modules/*",
+    "**/build/**/*"
+  ]
+}
