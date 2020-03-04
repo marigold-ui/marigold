@@ -53,7 +53,7 @@ test('forward ref', () => {
 });
 
 // TODO: better description
-test('apply base styling for custom components', () => {
+test('apply default styling for custom components', () => {
   const Button: React.FC = ({ children }) => (
     <Box as="button" css={{ border: '1px solid black' }}>
       {children}
