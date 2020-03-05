@@ -16,6 +16,8 @@ export type BoxProps<Type extends Tags> = PropsWithChildren<
     ref?: Ref<HTMLElement | null>;
     as?: Type;
     css?: Object;
+    themeSection?: string;
+    variant?: string;
   } & SpacingProps &
     Omit<AllHTMLAttributes<HTMLElement>, 'as' | 'ref'>
 >;
@@ -54,7 +56,7 @@ const SPACE_PROPS = [
 /**
  * Props that we are processing and not passed to `jsx`.
  */
-const SKIP_PROPS = ['css', ...SPACE_PROPS];
+const SKIP_PROPS = ['css', 'variant', 'themeSection', ...SPACE_PROPS];
 
 /**
  * Parse `props` such that special props are stripped
@@ -66,8 +68,6 @@ const SKIP_PROPS = ['css', ...SPACE_PROPS];
  * this is only a helper function that is used interally.
  */
 const parseProps = (props: { [key: string]: any }) => {
-  if (!props) return {};
-
   const next: any = {};
 
   // TODO: optimize loop such that the style props are picked
@@ -82,10 +82,16 @@ const parseProps = (props: { [key: string]: any }) => {
     ...pick(props, SPACE_PROPS),
   };
 
+  const variant =
+    props.themeSection &&
+    props.variant &&
+    `${props.themeSection}.${props.variant}`;
+
   next.css = (theme: any) => {
     return [
       { boxSizing: 'border-box', margin: 0, minWidth: 0 },
       css(styles)(theme),
+      css({ variant })(theme),
     ];
   };
 

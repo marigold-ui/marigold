@@ -1,7 +1,43 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import { ThemeContext } from './emotion';
+import { SpacingProps } from './types';
+
 import { Box } from './Box';
 
+// Setup
+// ---------------
+const theme = {
+  colors: {
+    primary: 'hotpink',
+    black: '#111',
+    white: '#000',
+    blue: '#2980b9',
+  },
+  text: {
+    body: {
+      fontSize: 1,
+      color: 'black',
+    },
+    heading: {
+      fontSize: 3,
+      color: 'primary',
+    },
+  },
+  buttons: {
+    primary: {
+      color: 'white',
+      bg: 'blue',
+    },
+    secondary: {
+      color: 'black',
+      bg: 'white',
+    },
+  },
+};
+
+// Tests
+// ---------------
 test('render a <div> by default', () => {
   const { getByText } = render(<Box>I am Box!</Box>);
   const result = getByText('I am Box!');
@@ -92,18 +128,91 @@ test('support style props for spacing', () => {
   expect(element).toHaveStyle(`margin-bottom: 8px`);
 });
 
-// test('allow to apply styling via "css" prop', () => {});
+test('support variants from theme', () => {
+  const Text: React.FC<{ variant?: keyof typeof theme.text }> = ({
+    variant = 'body',
+    children,
+  }) => (
+    <Box themeSection="text" variant={variant}>
+      {children}
+    </Box>
+  );
 
-// test('apply custom styling in box component', () => {});
+  // Body Text
+  const t1 = render(
+    <ThemeContext.Provider value={theme}>
+      <Text>I am a body text!</Text>
+    </ThemeContext.Provider>
+  );
+  let element = t1.getByText('I am a body text!');
 
-// test('apply styling based on styled-system', () => {});
+  expect(element).toHaveStyle(`color: ${theme.colors.black}`);
+  expect(element).toHaveStyle(`font-size: 14px`);
 
-// test('compose multiple styles', () => {});
+  // Heading Text
+  const t2 = render(
+    <ThemeContext.Provider value={theme}>
+      <Text variant="heading">I am a heading text!</Text>
+    </ThemeContext.Provider>
+  );
+  element = t2.getByText('I am a heading text!');
 
-// test('accept true and false in styling a component with a color', () => {});
+  expect(element).toHaveStyle(`color: ${theme.colors.primary}`);
+  expect(element).toHaveStyle(`font-size: 20px`);
+});
 
-test('render a button component with primary style from a theme via key', () => {});
+test('order of application: base < theme < style props', () => {
+  const Button: React.FC<{
+    variant?: keyof typeof theme.buttons;
+  } & SpacingProps> = ({ children, variant = 'secondary', ...props }) => (
+    <Box
+      as="button"
+      {...props}
+      css={{
+        display: 'inline-block',
+        color: 'hotpink',
+        border: 0,
+        px: 2,
+        py: 1,
+      }}
+      themeSection="buttons"
+      variant={variant}
+    >
+      {children}
+    </Box>
+  );
 
-test('render a button component with secondary style from a theme via variant', () => {});
+  const t1 = render(
+    <ThemeContext.Provider value={theme}>
+      <Button>Click me!</Button>
+    </ThemeContext.Provider>
+  );
+  let element = t1.getByText('Click me!');
 
-test('render a button component with primary style from a theme and change a style element', () => {});
+  // Added via css prop
+  expect(element).toHaveStyle('display: inline-block');
+  expect(element).toHaveStyle('border: 0');
+  expect(element).toHaveStyle('padding-left: 8px');
+  expect(element).toHaveStyle('padding-right: 8px');
+  expect(element).toHaveStyle('padding-top: 4px');
+  expect(element).toHaveStyle('padding-bottom: 4px');
+
+  // Added via variant
+  expect(element).toHaveStyle(`color: ${theme.colors.black}`); // overrides "hotpink"
+  expect(element).toHaveStyle(`background-color: ${theme.colors.white}`);
+
+  t1.rerender(
+    <ThemeContext.Provider value={theme}>
+      <Button px="3" py="4">
+        Click me!
+      </Button>
+    </ThemeContext.Provider>
+  );
+  element = t1.getByText('Click me!');
+
+  expect(element).toHaveStyle('padding: 32px 16px 32px 16px');
+  expect(element).not.toHaveStyle('padding-left: 8px');
+  expect(element).not.toHaveStyle('padding-right: 8px');
+  expect(element).not.toHaveStyle('padding-top: 4px');
+  expect(element).not.toHaveStyle('padding-bottom: 4px');
+});
