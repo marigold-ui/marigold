@@ -12,9 +12,7 @@
     "node": ">=10.13.0"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "5.3.13",
     "@storybook/addon-docs": "5.3.12",
-    "@storybook/addon-links": "5.3.13",
     "@storybook/react": "5.3.13",
     "@testing-library/jest-dom": "5.1.1",
     "@testing-library/react": "9.4.0",
@@ -24,6 +22,7 @@
     "@typescript-eslint/parser": "2.21.0",
     "all-contributors-cli": "6.13.0",
     "babel-loader": "8.0.6",
+    "babel-preset-react-app": "9.1.1",
     "coveralls": "3.0.9",
     "jest": "25.1.0",
     "jest-watch-typeahead": "0.4.2",
