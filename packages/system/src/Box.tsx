@@ -1,11 +1,5 @@
-import { jsx } from '@emotion/core';
-import {
-  forwardRef,
-  AllHTMLAttributes,
-  PropsWithChildren,
-  Ref,
-  ReactElement,
-} from 'react';
+import { jsx } from './emotion';
+import { forwardRef, AllHTMLAttributes, PropsWithChildren, Ref } from 'react';
 
 type Tags = keyof JSX.IntrinsicElements;
 
@@ -20,11 +14,6 @@ export type BoxProps<Type extends Tags> = PropsWithChildren<
     css?: Object;
   } & Omit<AllHTMLAttributes<HTMLElement>, 'as' | 'ref'>
 >;
-
-// Type alias to better digest <Box> signature for humans
-type Box = <T extends Tags = 'div'>(
-  props: BoxProps<T>
-) => ReactElement<BoxProps<T>> | null;
 
 export const Box = forwardRef(
   (
@@ -46,4 +35,4 @@ export const Box = forwardRef(
       children
     );
   }
-) as Box;
+) as <T extends Tags = 'div'>(props: BoxProps<T>) => JSX.Element | null;

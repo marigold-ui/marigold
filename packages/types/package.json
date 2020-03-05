@@ -1,0 +1,10 @@
+{
+  "name": "@marigold/types",
+  "description": "",
+  "version": "0.0.0",
+  "license": "UNLICENSED",
+  "typings": "src/index.ts",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {}
+}
