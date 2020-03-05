@@ -2,10 +2,6 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { Box } from './Box';
 
-/**
- * test cases for box component
- */
-
 test('render a <div> by default', () => {
   const { getByText } = render(<Box>I am Box!</Box>);
   const result = getByText('I am Box!');
@@ -64,6 +60,36 @@ test('apply default styling for custom components', () => {
   const element = getByText('I am Custom Button!');
 
   expect(element).toHaveStyle('border: 1px solid black');
+});
+
+// TODO: better description
+test('use design tokens for certain values', () => {
+  const { getByText } = render(<Box css={{ px: 1 }}>I am Component!</Box>);
+  const element = getByText('I am Component!');
+
+  expect(element).toHaveStyle(`padding-left: 4px`);
+  expect(element).toHaveStyle(`padding-right: 4px`);
+});
+
+test('interpolate responsive values', () => {
+  const { getByText } = render(<Box css={{ px: [1, 2] }}>I am Component!</Box>);
+  const element = getByText('I am Component!');
+
+  expect(element).toHaveStyle(`padding-left: 4px`);
+  expect(element).toHaveStyle(`padding-right: 4px`);
+});
+
+test('support style props for spacing', () => {
+  const Button: React.FC = ({ children }) => (
+    <Box as="button" my="2">
+      {children}
+    </Box>
+  );
+  const { getByText } = render(<Button>I am Custom Button!</Button>);
+  const element = getByText('I am Custom Button!');
+
+  expect(element).toHaveStyle(`margin-top: 8px`);
+  expect(element).toHaveStyle(`margin-bottom: 8px`);
 });
 
 // test('allow to apply styling via "css" prop', () => {});
