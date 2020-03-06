@@ -12,8 +12,8 @@
     "node": ">=10.13.0"
   },
   "devDependencies": {
-    "@storybook/addon-docs": "5.3.12",
-    "@storybook/react": "5.3.13",
+    "@storybook/addon-docs": "5.3.14",
+    "@storybook/react": "5.3.14",
     "@testing-library/jest-dom": "5.1.1",
     "@testing-library/react": "9.4.0",
     "@testing-library/react-hooks": "3.2.1",
