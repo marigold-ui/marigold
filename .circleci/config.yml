@@ -70,11 +70,11 @@ jobs:
       - checkout
       - restore_cache:
           key: deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
-      
+
       - run:
           name: Install packages
           command: yarn install
-      
+
       - save_cache:
           key: deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
           paths:
@@ -87,7 +87,7 @@ jobs:
   lint:
     docker:
       - image: circleci/node:12
-    
+
     steps:
       - checkout
       - restore_cache:
@@ -96,7 +96,7 @@ jobs:
       - run:
           name: Install packages
           command: yarn install
-      
+
       - save_cache:
           key: deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
           paths:
@@ -105,7 +105,7 @@ jobs:
       - run:
           name: Run linter
           command: yarn lint
-      
+
   upload-coveralls:
     docker:
       - image: circleci/node:12
@@ -127,18 +127,17 @@ jobs:
       - run:
           name: Upload coveralls
           command: |
-              if [[ -v COVERALLS_REPO_TOKEN ]]
-              then
-                  node_modules/.bin/jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-                  echo "Coveralls info uploaded"
-              else
-                  echo "Warning - Coveralls info could NOT be uploaded"
-              fi
+            if [[ -v COVERALLS_REPO_TOKEN ]]
+            then
+                node_modules/.bin/jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+                echo "Coveralls info uploaded"
+            else
+                echo "Warning - Coveralls info could NOT be uploaded"
+            fi
 
       - slack/status:
           webhook: ${SLACK_WEBHOOK}
-          mentions: "CUG9R963C"
-          failure_message: "red_circle Pipeline has failed :( $SLACK_MENTIONS"
+          failure_message: ':red_circle: Pipeline has failed. $SLACK_MENTIONS'
           fail_only: true
 
 workflows:

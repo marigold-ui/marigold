@@ -27,10 +27,12 @@
     "coveralls": "3.0.9",
     "eslint-formatter-pretty": "3.0.1",
     "eslint-plugin-jest": "23.8.2",
+    "husky": "4.2.3",
     "jest": "25.1.0",
     "jest-watch-typeahead": "0.4.2",
     "lerna": "^3.20.2",
     "pretty": "2.0.0",
+    "pretty-quick": "2.0.1",
     "react": "16.13.0",
     "react-dom": "16.8.6",
     "react-testing-library": "8.0.1",
@@ -39,10 +41,14 @@
     "tsdx": "0.12.3",
     "typescript": "3.7.5"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "scripts": {
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "prepare": "lerna run build --stream",
     "storybook": "start-storybook",
     "test": "jest --config jest.config.js",
     "coverage": "jest --config jest.config.js --coverage --coverageReporters html",
