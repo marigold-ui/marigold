@@ -47,6 +47,7 @@
     "contributors:generate": "all-contributors generate",
     "storybook": "start-storybook",
     "test": "jest --config jest.config.js",
+    "typecheck": "tsc --noEmit",
     "coverage": "jest --config jest.config.js --coverage --coverageReporters html"
   }
 }
