@@ -1,4 +1,3 @@
-const path = require('path');
 const WORKSPACE_ROOT = '../packages';
 
 module.exports = {
@@ -8,11 +7,5 @@ module.exports = {
     '@storybook/addon-actions',
     '@storybook/addon-links',
     '@storybook/addon-docs',
-    {
-      name: '@storybook/preset-typescript',
-      options: {
-        include: [path.resolve(__dirname, WORKSPACE_ROOT)],
-      },
-    },
   ],
 };
