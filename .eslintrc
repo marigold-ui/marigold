@@ -6,6 +6,7 @@
   },
   "parser":  "@typescript-eslint/parser",
   "extends": [
+    "react-app",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:prettier/recommended",
@@ -15,6 +16,9 @@
   "plugins": [
     "react", "react-hooks", "prettier", "jest"
   ],
+  "rules": {
+    "react/prop-types": 0
+},
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module",
