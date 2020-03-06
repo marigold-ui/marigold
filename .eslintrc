@@ -13,5 +13,9 @@
   ],
   "plugins": [
     "react", "react-hooks", "prettier", "jest"
-  ]
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module"
+  }
 }
