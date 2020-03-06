@@ -12,10 +12,8 @@
     "node": ">=10.13.0"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "5.3.13",
-    "@storybook/addon-docs": "5.3.12",
-    "@storybook/addon-links": "5.3.13",
-    "@storybook/react": "5.3.13",
+    "@storybook/addon-docs": "5.3.14",
+    "@storybook/react": "5.3.14",
     "@testing-library/jest-dom": "5.1.1",
     "@testing-library/react": "9.4.0",
     "@testing-library/react-hooks": "3.2.1",
@@ -24,6 +22,7 @@
     "@typescript-eslint/parser": "2.22.0",
     "all-contributors-cli": "6.13.0",
     "babel-loader": "8.0.6",
+    "babel-preset-react-app": "9.1.1",
     "coveralls": "3.0.9",
     "eslint": "6.8.0",
     "eslint-formatter-pretty": "3.0.1",
@@ -32,6 +31,8 @@
     "jest-watch-typeahead": "0.4.2",
     "lerna": "^3.20.2",
     "pretty": "2.0.0",
+    "husky": "4.2.3",
+    "pretty-quick": "2.0.1",
     "react": "16.13.0",
     "react-dom": "16.8.6",
     "react-testing-library": "8.0.1",
@@ -40,10 +41,14 @@
     "tsdx": "0.12.3",
     "typescript": "3.7.5"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "scripts": {
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "prepare": "lerna run build --stream",
     "storybook": "start-storybook",
     "test": "jest --config jest.config.js",
     "coverage": "jest --config jest.config.js --coverage --coverageReporters html",
