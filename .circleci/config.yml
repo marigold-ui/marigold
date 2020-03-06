@@ -62,6 +62,28 @@ jobs:
           paths:
             - ./coverage
 
+  type_check:
+    docker:
+      - image: circleci/node:12
+
+    steps:
+      - checkout
+      - restore_cache:
+          key: deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+      
+      - run:
+          name: Install packages
+          command: yarn install
+      
+      - save_cache:
+          key: deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+
+      - run:
+          name: Check typings
+          command: yarn tsc --noEmit
+      
   upload-coveralls:
     docker:
       - image: circleci/node:12
@@ -103,6 +125,7 @@ workflows:
     jobs:
       - test
       - coverage
+      - type_check
       - upload-coveralls:
           requires:
             - coverage
