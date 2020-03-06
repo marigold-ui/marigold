@@ -49,9 +49,10 @@
   "scripts": {
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
+    "coverage": "jest --config jest.config.js --coverage --coverageReporters html",
+    "lint": "eslint . --format=pretty --ext .ts,.tsx",
     "storybook": "start-storybook",
     "test": "jest --config jest.config.js",
-    "coverage": "jest --config jest.config.js --coverage --coverageReporters html",
-    "lint": "eslint . --format=pretty --ext .ts,.tsx"
+    "typecheck": "tsc --noEmit"
   }
 }
