@@ -19,15 +19,13 @@ const {
   ThemeContext: EmotionContext,
 } = require('@emotion/core');
 
-/**
- * Re-export emotion API
- */
+// Emotion API
+// ---------------
 export const jsx = createElement as typeof React.createElement;
 export const css = cssEmotion as (
   template: TemplateStringsArray,
   ...args: any[]
 ) => object;
-
 export const ThemeContext = EmotionContext as React.Context<any>;
 export const Global = EmotionGlobal as (
   props: React.PropsWithChildren<{ styles: any }>

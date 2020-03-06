@@ -1,71 +1,41 @@
-import { forwardRef, AllHTMLAttributes, PropsWithChildren, Ref } from 'react';
 // @ts-ignore
 import { css } from '@theme-ui/css';
 import pick from 'lodash.pick';
+import { forwardRef, AllHTMLAttributes, Ref, ReactNode } from 'react';
+import { SPACE_PROPS, SpacingProps } from './categories';
 import { jsx } from './emotion';
-import { SpacingProps } from './types';
 
 type Tags = keyof JSX.IntrinsicElements;
 
-export type BoxProps<Type extends Tags> = PropsWithChildren<
-  {
-    /**
-     * Overrides `LegacyRef` which can be a `string`, but its usage is deprecated.
-     * See: https://reactjs.org/docs/refs-and-the-dom.html#legacy-api-string-refs
-     */
-    ref?: Ref<HTMLElement | null>;
-    as?: Type;
-    css?: Object;
-    themeSection?: string;
-    variant?: string;
-  } & SpacingProps &
-    Omit<AllHTMLAttributes<HTMLElement>, 'as' | 'ref'>
->;
+type BoxOwnProps<Type extends Tags> = {
+  /**
+   * Overrides `LegacyRef` which can be a `string`, but its usage is deprecated.
+   * See: https://reactjs.org/docs/refs-and-the-dom.html#legacy-api-string-refs
+   */
+  ref?: Ref<HTMLElement | null>;
+  children?: ReactNode;
+  as?: Type;
+  css?: Object;
+  themeSection?: string;
+  variant?: string;
+} & SpacingProps;
 
-const SPACE_PROPS = [
-  'm',
-  'margin',
-  'mt',
-  'marginTop',
-  'mr',
-  'marginRight',
-  'mb',
-  'marginBottom',
-  'ml',
-  'marginLeft',
-  'mx',
-  'marginX',
-  'my',
-  'marginY',
-  'p',
-  'padding',
-  'pt',
-  'paddingTop',
-  'pr',
-  'paddingRight',
-  'pb',
-  'paddingBottom',
-  'pl',
-  'paddingLeft',
-  'px',
-  'paddingX',
-  'py',
-  'paddingY',
-];
+// prettier-ignore
+export type BoxProps<Type extends Tags> = 
+  BoxOwnProps<Type> &
+  Omit<AllHTMLAttributes<HTMLElement>, keyof BoxOwnProps<any>>;
 
 /**
- * Props that we are processing and not passed to `jsx`.
+ * Props that we have to remove (because they are not valid HTML attributes)
+ * and want to process (for styling the component).
  */
 const SKIP_PROPS = ['css', 'variant', 'themeSection', ...SPACE_PROPS];
 
 /**
- * Parse `props` such that special props are stripped
- * (see `SKIP_PROPS`) and the `css` prop is decorated
- * to use `@theme-ui/css` before its handled by `emotion`.
- *
- * NOTE: Even though `props` is not an arbitrary index object,
- * we're beeing very generous with the typing here since
- * this is only a helper function that is used interally.
+ * Gather styling related props (css, variant, space props, ...) and put them in a
+ * single `css` prop for emotion. All gathered props will be passed to `@theme-ui/css`
+ * before emotion will process them. This way CSS properties will interpolated based on
+ * the given theme.
  */
 const parseProps = (props: { [key: string]: any }) => {
   const next: any = {};

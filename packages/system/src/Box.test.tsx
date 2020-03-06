@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { ThemeContext } from './emotion';
-import { SpacingProps } from './types';
+import { SpacingProps } from './categories';
 
 import { Box } from './Box';
 
@@ -84,8 +84,7 @@ test('forward ref', () => {
   expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
 });
 
-// TODO: better description
-test('apply default styling for custom components', () => {
+test('apply default styling via css prop', () => {
   const Button: React.FC = ({ children }) => (
     <Box as="button" css={{ border: '1px solid black' }}>
       {children}
@@ -98,8 +97,7 @@ test('apply default styling for custom components', () => {
   expect(element).toHaveStyle('border: 1px solid black');
 });
 
-// TODO: better description
-test('use design tokens for certain values', () => {
+test('use design tokens for scale values', () => {
   const { getByText } = render(<Box css={{ px: 1 }}>I am Component!</Box>);
   const element = getByText('I am Component!');
 
