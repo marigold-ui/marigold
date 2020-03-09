@@ -35,7 +35,7 @@
     "ts-jest": "25.2.1",
     "tsconfig.json": "1.0.7",
     "tsdx": "0.12.3",
-    "typescript": "3.7.5"
+    "typescript": "3.8.3"
   },
   "husky": {
     "hooks": {
