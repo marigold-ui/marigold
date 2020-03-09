@@ -6,6 +6,7 @@
 
 [![CircleCI](https://circleci.com/gh/reservix-ui/marigold.svg?style=svg)](https://circleci.com/gh/reservix-ui/marigold)
 [![Coverage Status](https://coveralls.io/repos/github/reservix-ui/marigold/badge.svg?branch=master)](https://coveralls.io/github/reservix-ui/marigold?branch=master)
+![github-last-commit-image](https://img.shields.io/github/last-commit/google/skia.svg)
 
 ## Contributors ✨
 
