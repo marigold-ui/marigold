@@ -21,19 +21,27 @@
     "@typescript-eslint/eslint-plugin": "2.22.0",
     "@typescript-eslint/parser": "2.22.0",
     "all-contributors-cli": "6.13.0",
+    "babel-eslint": "10.1.0",
     "babel-loader": "8.0.6",
     "babel-preset-react-app": "9.1.1",
     "coveralls": "3.0.9",
+    "eslint": "6.8.0",
+    "eslint-config-react-app": "5.2.0",
+    "eslint-formatter-pretty": "3.0.1",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-jest": "23.8.2",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-react": "7.18.3",
     "husky": "4.2.3",
     "jest": "25.1.0",
     "jest-watch-typeahead": "0.4.2",
-    "lerna": "^3.20.2",
+    "lerna": "3.20.2",
+    "pretty": "2.0.0",
     "pretty-quick": "2.0.1",
     "react": "16.13.0",
     "react-dom": "16.13.0",
     "react-testing-library": "8.0.1",
     "ts-jest": "25.2.1",
-    "tsconfig.json": "1.0.7",
     "tsdx": "0.12.3",
     "typescript": "3.8.3"
   },
@@ -45,9 +53,10 @@
   "scripts": {
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
+    "coverage": "jest --config jest.config.js --coverage --coverageReporters html",
+    "lint": "eslint . --format=pretty --ext .ts,.tsx",
     "storybook": "start-storybook",
     "test": "jest --config jest.config.js",
-    "typecheck": "tsc --noEmit",
-    "coverage": "jest --config jest.config.js --coverage --coverageReporters html"
+    "typecheck": "tsc --noEmit"
   }
 }

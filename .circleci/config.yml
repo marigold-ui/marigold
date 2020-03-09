@@ -70,11 +70,11 @@ jobs:
       - checkout
       - restore_cache:
           key: deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
-      
+
       - run:
           name: Install packages
           command: yarn install
-      
+
       - save_cache:
           key: deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
           paths:
@@ -83,7 +83,29 @@ jobs:
       - run:
           name: Check typings
           command: yarn tsc --noEmit
-      
+
+  lint:
+    docker:
+      - image: circleci/node:12
+
+    steps:
+      - checkout
+      - restore_cache:
+          key: deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Install packages
+          command: yarn install
+
+      - save_cache:
+          key: deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+
+      - run:
+          name: Run linter
+          command: yarn lint
+
   upload-coveralls:
     docker:
       - image: circleci/node:12
@@ -125,6 +147,7 @@ workflows:
       - test
       - coverage
       - type_check
+      - lint
       - upload-coveralls:
           requires:
             - coverage

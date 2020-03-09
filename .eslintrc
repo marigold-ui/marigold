@@ -1,17 +1,13 @@
 {
-  "env": {
-    "es6": true,
-    "jest": true,
-    "node": true
-  },
   "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:prettier/recommended",
-    "prettier/react",
-    "prettier/@typescript-eslint"
+    "react-app",
+    "plugin:jest/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
   ],
-  "plugins": [
-    "react", "react-hooks", "prettier", "jest"
-  ]
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
 }
