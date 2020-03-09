@@ -1,29 +1,9 @@
 {
-  "env": {
-    "es6": true,
-    "jest": true,
-    "node": true
-  },
-  "parser":  "@typescript-eslint/parser",
   "extends": [
     "react-app",
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:prettier/recommended",
+    "plugin:jest/recommended",
+    "prettier",
     "prettier/react",
     "prettier/@typescript-eslint"
-  ],
-  "plugins": [
-    "react", "react-hooks", "prettier", "jest"
-  ],
-  "rules": {
-    "react/prop-types": 0
-},
-  "parserOptions": {
-    "ecmaVersion": 2018,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  }
+  ]
 }
