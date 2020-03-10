@@ -8,6 +8,58 @@
 [![Coverage Status](https://coveralls.io/repos/github/reservix-ui/marigold/badge.svg?branch=master)](https://coveralls.io/github/reservix-ui/marigold?branch=master)
 ![github-last-commit-image](https://img.shields.io/github/last-commit/reservix-ui/marigold.svg)
 
+# Marigold
+
+React implementation of the Marigold Design System built on [Emotion](https://emotion.sh/).
+
+## Setup 🔧
+
+```sh
+# after first release:
+# with npm
+npm install marigold-ui --save
+
+# with yarn
+yarn add marigold-ui
+
+# for now:
+git clone https://github.com/reservix-ui/marigold.git
+cd marigold
+yarn install
+```
+
+## Usage 💡
+
+Use the styles for your component from a global `theme` object. To provide the theme in context, wrap your component into the `MarigoldProvider`. You can add custom styles via style props.
+
+```
+// basic usage
+import React from 'react'
+import { MarigoldProvider } from '@marigold/system'
+import { Text, theme } from '@marigold/components'
+
+<MarigoldProvider theme={theme}>
+  <Text mx="2">Lorem ipsum</Text>
+</MarigoldProvider>
+```
+
+## Documentation 📖
+
+Start your local storybook server via
+
+```
+yarn storybook
+```
+
+to access the Marigold documentation pages.
+
+## For Developers
+
+- Coverage: `yarn coverage`
+- Linting: `yarn lint`
+- Test: `yarn test` (with optional `--watch`)
+- Type checking: `yarn typecheck`
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
