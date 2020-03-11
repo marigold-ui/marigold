@@ -1,0 +1,70 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Box } from './Box';
+
+<Meta title="MDX/Box Component Doc" />
+
+# Box-Component
+
+<br />
+
+## Description
+
+`Box` is a mutli-purpose component and the most abstract component on top of which all other Marigold UI components are built.
+The `Box` allows us to apply styling via a dedicated prop (`css`) while respecting the rules and constraints of our design system.
+Instead of exposing the underlying tools that will create CSS, the `Box` component wraps them and exposes a more React-like API for applying styling to a component.
+
+<br />
+
+### Style components
+
+The style of components is defined by base, theme and style props. These three layers are structured hierarchically. A layer can overwrite the attributes of the previous layer.
+
+**base < theme < style props**
+
+- **base** <br />
+  The base style is the minimum of styles each component has. With the base style the component is displayed normalized in every browser.
+- **theme** <br />
+  Style values from a specific theme can be easily used with the box. The theme overwrites the base styles. In this way you can stay inside the boundaries of the design system.
+- **style props** <br />
+  Custom styles can be used to add and modify component styles beyond the boundaries of the design system.
+
+> Staying inside the boundaries of the design system and its contraints should be the norm. But limiting styling only to allowed values defined by the system can be very restrictive up to a point where the design system becomes an obstacle. This is why there is a an escape hatch for when it is absolutely necessary to apply styling from a third party or style it in a way that is non-compliant with the design system.
+
+### `as` - Property
+
+**Control rendered element**: <br />
+By default the `Box` component will render a `<div/>`. And while this might be fine most of the times, sometimes you would rather render a `<button/>` or an `<input/>`. To allow this, the `Box` component has a special prop called `as`, which accepts all HTML tag names as input.
+
+**Style arbitrary components**: <br />
+The `as` prop not only works with standard HTML elements. It can also be used to style arbitrary components that accept a `className`.
+
+## Import
+
+```js
+import { Box } from "@marigold/system";
+```
+## Usage
+
+<Preview>
+  <Story name="div-box">
+    <Box>I am a div box!</Box>
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="text-box">
+    <Box as="text" css={{ color: 'orange' }}>I am a text box!</Box>
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="button-box">
+    <Box as="button" css={{ border: '1px solid black' }}>I am a simple button!</Box>
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="h1-box">
+    <Box as="h1" css={{ color: 'blue', fontSize: '32px' }}>I am a blue big headline!</Box>
+  </Story>
+</Preview>
