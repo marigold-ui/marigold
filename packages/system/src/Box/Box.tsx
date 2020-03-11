@@ -2,8 +2,8 @@
 import { css } from '@theme-ui/css';
 import pick from 'lodash.pick';
 import { forwardRef, AllHTMLAttributes, Ref, ReactNode } from 'react';
-import { SPACE_PROPS, SpacingProps } from './categories';
-import { jsx } from './emotion';
+import { SPACE_PROPS, SpacingProps } from '../categories';
+import { jsx } from '../emotion';
 
 type Tags = keyof JSX.IntrinsicElements;
 
