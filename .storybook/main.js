@@ -3,7 +3,11 @@ const WORKSPACE_ROOT = '../packages';
 
 module.exports = {
   stories: [`${WORKSPACE_ROOT}/**/stories.mdx`],
-  addons: ['@storybook/react', '@storybook/addon-docs/register'],
+  addons: [
+    '@storybook/react',
+    '@storybook/addon-docs/register',
+    '@storybook/addon-a11y',
+  ],
   webpackFinal: async config => {
     config.module.rules = config.module.rules.filter(
       rule =>
