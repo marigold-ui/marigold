@@ -1,13 +1,13 @@
 type CSSObject = object;
 
 type BaseTheme = {
-  breakpoints: string[];
+  breakpoints: number[];
   space: number[];
   fonts: {
     body: string;
     heading: string;
   };
-  fontSizes: number[];
+  fontSizes: string[];
   fontWeights: {
     body: number;
     heading: number;
