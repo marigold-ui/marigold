@@ -12,8 +12,8 @@ export const ReservixB2BTheme: BaseTheme = {
     bold: 700,
   },
   lineHeights: {
-    body: 1.1,
-    heading: 1.25,
+    body: 1.5,
+    heading: 1.125,
   },
   colors: {
     text: '#4b4b4b',
