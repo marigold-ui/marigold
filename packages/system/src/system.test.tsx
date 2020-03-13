@@ -2,6 +2,9 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { system } from './system';
 
+/**
+ * Smoketest
+ */
 test('did we break React.forwardRef?', () => {
   const myRef = React.createRef<HTMLElement>();
   const Component = system((_, ref) => <div ref={ref} />);
@@ -11,12 +14,11 @@ test('did we break React.forwardRef?', () => {
 });
 
 /**
- * The following tests are not actually testing any real code,
- * rather they are used to make sure that the typings work as intented.
+ * The following tests are not actually testing anything, rather
+ * make sure that the typings work as intented.
  *
  * If we messed something up the typechecking will not work.
  */
-
 test('usage with `as` prop', () => {
   type ComponentProps = {
     extra: string;

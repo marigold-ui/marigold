@@ -12,32 +12,27 @@ import {
   WeakValidationMap,
 } from 'react';
 
-export type PropsWithAs<P, T extends ElementType> = P &
+export type SystemProps<P, T extends ElementType> = P &
   Omit<ComponentPropsWithRef<T>, 'as' | keyof P> & {
     as?: T;
   };
 
-export type PropsFromAs<P, T extends ElementType> = (PropsWithAs<P, T> & {
-  as: T;
-}) &
-  PropsWithAs<P, T>;
-
-export interface ComponentWithAs<T extends ElementType, P> {
+export interface SystemComponent<P, T extends ElementType> {
   /**
    * These types are a bit of a hack, but cover us in cases where the `as` prop
    * is not a JSX string type. Makes the compiler happy so 🤷‍♂️
    */
-  <TT extends ElementType>(props: PropsWithAs<P, TT>): ReactElement | null;
-  (props: PropsWithAs<P, T>): ReactElement | null;
+  <TT extends ElementType>(props: SystemProps<P, TT>): ReactElement | null;
+  (props: SystemProps<P, T>): ReactElement | null;
 
   displayName?: string;
-  propTypes?: WeakValidationMap<PropsWithAs<P, T>>;
+  propTypes?: WeakValidationMap<SystemProps<P, T>>;
   contextTypes?: ValidationMap<any>;
-  defaultProps?: Partial<PropsWithAs<P, T>>;
+  defaultProps?: Partial<SystemProps<P, T>>;
 }
 
 export function system<P, T extends ElementType>(
-  render: (props: PropsFromAs<P, T>, ref: Ref<any>) => ReactElement | null
+  render: (props: SystemProps<P, T>, ref: Ref<any>) => ReactElement | null
 ) {
-  return (forwardRef(render as any) as unknown) as ComponentWithAs<T, P>;
+  return (forwardRef(render as any) as unknown) as SystemComponent<P, T>;
 }
