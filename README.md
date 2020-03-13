@@ -4,9 +4,7 @@
 <br>
 <br>
 
-[![CircleCI](https://circleci.com/gh/reservix-ui/marigold.svg?style=shield)](https://circleci.com/gh/reservix-ui/marigold)
-[![Coverage Status](https://coveralls.io/repos/github/reservix-ui/marigold/badge.svg?branch=master)](https://coveralls.io/github/reservix-ui/marigold?branch=master)
-![github-last-commit-image](https://img.shields.io/github/last-commit/reservix-ui/marigold.svg)
+[![ci][ci-badge]][ci] [![coverage][coverage-badge]][coverage] [![MIT License][license-badge]][license] [![version][version-badge]][package]
 
 # Marigold
 
@@ -83,3 +81,14 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+<!-- LINKS + BADGES -->
+
+[ci]: https://circleci.com/gh/reservix-ui/marigold
+[ci-badge]: https://img.shields.io/circleci/build/gh/reservix-ui/marigold/master?style=flat-square
+[license]: https://github.com/reservix-ui/marigold/blob/master/LICENSE
+[license-badge]: https://img.shields.io/github/license/reservix-ui/marigold?style=flat-square
+[package]: https://www.npmjs.com/package/@marigold-components
+[version-badge]: https://img.shields.io/npm/v/@marigold/components?style=flat-square
+[coverage]: https://coveralls.io/github/reservix-ui/marigold?branch=master
+[coverage-badge]: https://img.shields.io/coveralls/github/reservix-ui/marigold/master?style=flat-square
