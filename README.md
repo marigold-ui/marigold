@@ -48,7 +48,7 @@ import { Text, theme } from '@marigold/components'
 Start your local storybook server via
 
 ```
-yarn storybook
+yarn start
 ```
 
 to access the Marigold documentation pages.
