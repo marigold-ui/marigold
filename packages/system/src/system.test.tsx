@@ -2,12 +2,9 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { system } from './system';
 
-/**
- * Smoketest
- */
 test('did we break React.forwardRef?', () => {
   const myRef = React.createRef<HTMLElement>();
-  const Component = system((_, ref) => <div ref={ref} />);
+  const Component = system<{}, 'div'>(props => <div {...props} />);
   render(<Component ref={myRef}>I have a ref!</Component>);
 
   expect(myRef.current instanceof HTMLDivElement).toBeTruthy();
@@ -25,9 +22,9 @@ test('usage with `as` prop', () => {
     children?: React.ReactNode | ((value?: number) => JSX.Element);
   };
   const Component = system<ComponentProps, 'button'>(
-    ({ as: Comp = 'button', extra, className, children, ...props }, ref) => {
+    ({ as: Comp = 'button', extra, className, children, ...props }) => {
       return (
-        <Comp ref={ref} {...props}>
+        <Comp {...props}>
           {typeof children === 'function' ? children(56) : children}
         </Comp>
       );

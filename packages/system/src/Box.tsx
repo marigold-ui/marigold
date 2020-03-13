@@ -55,10 +55,5 @@ const parseProps = (props: { [key: string]: any }) => {
 };
 
 export const Box = system<BoxProps, 'div'>(
-  ({ as = 'div', children, ...props }, ref) => {
-    const next = parseProps(props);
-    next.ref = ref;
-
-    return jsx(as, next, children);
-  }
+  ({ as = 'div', children, ...props }) => jsx(as, parseProps(props), children)
 );

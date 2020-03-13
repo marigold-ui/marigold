@@ -7,7 +7,6 @@ import {
   ComponentPropsWithRef,
   ElementType,
   ReactElement,
-  Ref,
   ValidationMap,
   WeakValidationMap,
 } from 'react';
@@ -32,7 +31,9 @@ export interface SystemComponent<P, T extends ElementType> {
 }
 
 export function system<P, T extends ElementType>(
-  render: (props: SystemProps<P, T>, ref: Ref<any>) => ReactElement | null
+  render: (props: SystemProps<P, T>) => ReactElement | null
 ) {
-  return (forwardRef(render as any) as unknown) as SystemComponent<P, T>;
+  return forwardRef((props: any, ref) =>
+    render({ ...props, ref })
+  ) as SystemComponent<P, T>;
 }
