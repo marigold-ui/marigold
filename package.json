@@ -22,10 +22,8 @@
     "@types/jest": "25.1.4",
     "@typescript-eslint/eslint-plugin": "2.22.0",
     "@typescript-eslint/parser": "2.22.0",
-    "all-contributors-cli": "6.13.0",
     "babel-eslint": "10.1.0",
     "babel-loader": "8.0.6",
-    "coveralls": "3.0.9",
     "eslint": "6.8.0",
     "eslint-config-react-app": "5.2.0",
     "eslint-formatter-pretty": "3.0.1",
@@ -52,8 +50,6 @@
     }
   },
   "scripts": {
-    "contributors:add": "all-contributors add",
-    "contributors:generate": "all-contributors generate",
     "coverage": "jest --config jest.config.js --coverage --coverageReporters html",
     "lint": "eslint . --format=pretty --ext .ts,.tsx",
     "start": "start-storybook",
