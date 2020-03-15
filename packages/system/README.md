@@ -1,1 +1,3 @@
-# @marigold/system
+# `@marigold/system`
+
+> Marigold system
