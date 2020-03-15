@@ -8,7 +8,6 @@ import { system } from './system';
 export type BoxProps = {
   css?: Object;
   themeSection?: string;
-  variant?: string;
 } & SpacingProps;
 
 /**

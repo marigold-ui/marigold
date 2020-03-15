@@ -31,14 +31,26 @@ test('usage with `as` prop', () => {
     }
   );
 
+  /**
+   * Prop `extra` is requierd and button attributes allowed.
+   */
   expect(() => {
     render(<Component extra="prop" type="button" />);
   }).not.toThrow();
 
+  /**
+   * Yay, the `href` attribute is allwoed because we're rendering
+   * an anchor tag!
+   */
   expect(() => {
     render(<Component as="a" extra="required" href="reservix.de" />);
   }).not.toThrow();
 
+  /**
+   * Render another component and adhere to its props. In this case
+   * the `to` prop is required by `<Link/>`. Also, the `extra` prop
+   * from our original component is still required.
+   */
   expect(() => {
     const Link: React.FC<{ to: string; optional?: boolean }> = ({
       to,
@@ -51,5 +63,22 @@ test('usage with `as` prop', () => {
     );
 
     render(<Component as={Link} extra="extra" to="adticket.de" />);
+  }).not.toThrow();
+});
+
+test('usage of the `variant` prop', () => {
+  type ComponentProps = {};
+  const Component = system<ComponentProps, 'div'>(
+    ({ as: Comp = 'div', variant = 'basic', children, ...props }) => (
+      <Comp {...props} />
+    )
+  );
+
+  expect(() => {
+    render(<Component />);
+  }).not.toThrow();
+
+  expect(() => {
+    render(<Component variant="advanced" />);
   }).not.toThrow();
 });
