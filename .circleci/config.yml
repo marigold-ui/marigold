@@ -168,9 +168,9 @@ workflows:
     jobs:
       - test
       - coverage
-      - upload-coveralls:
-          requires:
-            - coverage
       - type_check
       - lint
       - deploy_storybook
+      - upload-coveralls:
+          requires:
+            - coverage
