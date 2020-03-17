@@ -16,6 +16,7 @@
     "@storybook/addon-docs": "5.3.17",
     "@storybook/preset-typescript": "2.1.0",
     "@storybook/react": "5.3.17",
+    "@storybook/storybook-deployer": "2.8.3",
     "@testing-library/jest-dom": "5.1.1",
     "@testing-library/react": "10.0.1",
     "@testing-library/react-hooks": "3.2.1",
@@ -52,6 +53,7 @@
   },
   "scripts": {
     "coverage": "jest --config jest.config.js --coverage --coverageReporters html",
+    "deploy-storybook": "storybook-to-ghpages",
     "lint": "eslint . --format=pretty --ext .ts,.tsx",
     "start": "start-storybook",
     "test": "jest --config jest.config.js",

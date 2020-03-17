@@ -106,6 +106,28 @@ jobs:
           name: Run linter
           command: yarn lint
 
+  deploy_storybook:
+    docker:
+      - image: circleci/node:12
+
+    steps:
+      - checkout
+      - restore_cache:
+          key: deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Install packages
+          command: yarn install
+
+      - save_cache:
+          key: deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+
+      - run:
+          name: Deploy storybook on GitHub pages
+          command: yarn deploy-storybook
+
   upload-coveralls:
     docker:
       - image: circleci/node:12
@@ -148,6 +170,7 @@ workflows:
       - coverage
       - type_check
       - lint
+      - deploy_storybook
       - upload-coveralls:
           requires:
             - coverage
