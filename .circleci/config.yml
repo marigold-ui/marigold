@@ -126,7 +126,7 @@ jobs:
 
       - run:
           name: Deploy storybook on GitHub pages
-          command: yarn deploy-storybook
+          command: yarn deploy-storybook -- --ci
 
   upload-coveralls:
     docker:
