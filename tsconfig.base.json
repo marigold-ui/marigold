@@ -1,18 +1,17 @@
 {
-    "compilerOptions": {
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "target": "es2018",
-      "lib": ["es2017", "dom"],
-      "jsx": "react",
-      "downlevelIteration": true,
-      "sourceMap": true,
-      "allowSyntheticDefaultImports": true,
-      "esModuleInterop": true,
-      "strict": true,
-      "forceConsistentCasingInFileNames": true,
-      "noUnusedLocals": true,
-      "skipLibCheck": true
-    }
+  "compilerOptions": {
+    "module": "es2015",
+    "moduleResolution": "node",
+    "target": "es2018",
+    "lib": ["es2017", "dom"],
+    "jsx": "react",
+    "downlevelIteration": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true
   }
-  
+}
