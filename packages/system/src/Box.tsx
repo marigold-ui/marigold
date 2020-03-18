@@ -1,29 +1,14 @@
 // @ts-ignore
 import { css } from '@theme-ui/css';
 import pick from 'lodash.pick';
-import { forwardRef, AllHTMLAttributes, Ref, ReactNode } from 'react';
 import { SPACE_PROPS, SpacingProps } from './categories';
 import { jsx } from './emotion';
+import { system } from './system';
 
-type Tags = keyof JSX.IntrinsicElements;
-
-type BoxOwnProps<Type extends Tags> = {
-  /**
-   * Overrides `LegacyRef` which can be a `string`, but its usage is deprecated.
-   * See: https://reactjs.org/docs/refs-and-the-dom.html#legacy-api-string-refs
-   */
-  ref?: Ref<HTMLElement | null>;
-  children?: ReactNode;
-  as?: Type;
+export type BoxProps = {
   css?: Object;
   themeSection?: string;
-  variant?: string;
 } & SpacingProps;
-
-// prettier-ignore
-export type BoxProps<Type extends Tags> = 
-  BoxOwnProps<Type> &
-  Omit<AllHTMLAttributes<HTMLElement>, keyof BoxOwnProps<any>>;
 
 /**
  * Props that we have to remove (because they are not valid HTML attributes)
@@ -68,11 +53,6 @@ const parseProps = (props: { [key: string]: any }) => {
   return next;
 };
 
-export const Box = forwardRef(
-  ({ as = 'div', children, ...rest }: BoxProps<any>, ref: Ref<HTMLElement>) => {
-    const props = parseProps(rest);
-    props.ref = ref;
-
-    return jsx(as, props, children);
-  }
-) as <T extends Tags = 'div'>(props: BoxProps<T>) => JSX.Element | null;
+export const Box = system<BoxProps, 'div'>(
+  ({ as = 'div', children, ...props }) => jsx(as, parseProps(props), children)
+);
