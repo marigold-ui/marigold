@@ -51,6 +51,8 @@
     }
   },
   "scripts": {
+    "build": "lerna run build --stream",
+    "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'` coverage",
     "coverage": "jest --config jest.config.js --coverage --coverageReporters html",
     "lint": "eslint . --format=pretty --ext .ts,.tsx",
     "start": "start-storybook",
