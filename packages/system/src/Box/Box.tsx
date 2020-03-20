@@ -1,9 +1,9 @@
 // @ts-ignore
 import { css } from '@theme-ui/css';
 import pick from 'lodash.pick';
-import { SPACE_PROPS, SpacingProps } from './categories';
-import { jsx } from './emotion';
-import { system } from './system';
+import { SPACE_PROPS, SpacingProps } from '../categories';
+import { jsx } from '../emotion';
+import { system } from '../system';
 
 export type BoxProps = {
   css?: Object;
