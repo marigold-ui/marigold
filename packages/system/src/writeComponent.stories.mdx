@@ -1,0 +1,114 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+
+<Meta title="Guides/How to Write and Use Components" />
+
+# How to Write and Use Components
+
+Small guidance for creating components using the `<Box>` primitive.
+
+## API
+
+### Use the Box
+
+Use the `<Box>` primitive as a basic structure to apply styling to the element you wish to build.
+With the `as` prop you define the rendered HTML element like in the example where a `<button>` element is rendered:
+
+```tsx
+import React from 'react';
+import { Box } from '@marigold/system';
+
+<Box as="button" themeSection="buttons" variant="outlined" />;
+```
+
+### Add theme
+
+In order to add styles to your component, you have two levels to work on. The first one is using theme styles which are defined in a globally accessible theme file.
+When using the component, those styles are accessed via the `themeSection` and `variant` props.
+The theme is indicated in the `<MarigoldProvider>` in which you wrap the component when you use it. See the render method in the example below.
+In the theme, you define theme specific stylings like colors and spacings.
+
+### Add styling
+
+Add more styling to the component with style props using the `css` prop. Those styles are applied independently of your theme to all instances of the component.
+While using the component, you can override all spacing styles.
+
+### Example
+
+```tsx
+import React from 'react';
+import { Box, MarigoldProvider, system } from '@marigold/system';
+import { render } from '@testing-library/react';
+
+const theme = {
+  ...anyTheme,
+  buttons: {
+    // themeSection
+    outlined: {
+      // variant
+      border: '1px solid orange',
+      mx: 2,
+    },
+  },
+};
+// Define custom properties for your component
+type ButtonProps = {
+  kind?: 'basic' | 'other';
+  size?: 'small' | 'medium' | 'large';
+};
+
+// Specify the HTML element you want to render and merge its properties with the custom component props
+const Button = system<ButtonProps, 'button'>(
+  // Set default values for extra props
+  ({
+    as: Button = 'button',
+    kind = 'basic',
+    size = 'medium',
+    children,
+    ...props
+  }) => {
+    // Place logic here like toggle states, calculations, mappings etc.
+    return (
+      // Use theme styles and specify additional styling using the `css` prop
+      <Box
+        as={as}
+        css={{ bg: 'white' }}
+        themeSection="buttons"
+        variant="outlined"
+        {...props}
+      >
+        {children}
+      </Box>
+    );
+  }
+);
+// Use the component: don't forget the imports!
+render(
+  <MarigoldProvider theme={theme}>
+    <Button /> // Default Button component instance
+    <Button mx={3} /> // Button component instance with custom margin that overrides
+    theme and given styles
+  </MarigoldProvider>
+);
+```
+
+A default base for all browsers is applied to all components built with the `<Box>` primitive so that all instances of the component look the same in every browser.
+
+### Folder Structure
+
+Place the file with the component in a separate folder under `packages/components/src`. Create an `index.ts` file to export the component. Write tests to show your component works as intended.
+Add documentation, usage instructions and examples in a stories file (naming convention: `Component.stories.mdx`).
+
+```
+packages
+└─── system
+|
+└─── components
+      |    index.ts
+      |    theme.ts
+      └─── src
+            └─── Button
+                  |    index.ts
+                  |    Button.tsx
+                  |    Button.test.tsx
+                  |    Button.stories.mdx
+```
