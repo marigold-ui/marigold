@@ -1,0 +1,12 @@
+{
+  "name": "@marigold/reservixdevelopertheme",
+  "version": "0.0.0",
+  "description": "Reservix Developer Theme",
+  "main": "dist/index.js",
+  "module": "dist/reservixdevelopertheme.esm.js",
+  "typings": "dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsdx build"
+  }
+}
