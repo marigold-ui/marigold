@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Reservix B2B Theme",
   "main": "dist/index.js",
-  "module": "dist/components.esm.js",
+  "module": "dist/reservixb2btheme.esm.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
   "scripts": {
