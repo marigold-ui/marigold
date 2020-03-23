@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { ThemeContext } from './emotion';
-import { SpacingProps } from './categories';
+import { ThemeContext } from '../emotion';
+import { SpacingProps } from '../categories';
 
 import { Box } from './Box';
 

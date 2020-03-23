@@ -10,22 +10,6 @@
 
 React implementation of the Marigold Design System built on [Emotion](https://emotion.sh/).
 
-## Setup 🔧
-
-```sh
-# after first release:
-# with npm
-npm install marigold-ui --save
-
-# with yarn
-yarn add marigold-ui
-
-# for now:
-git clone https://github.com/reservix-ui/marigold.git
-cd marigold
-yarn install
-```
-
 ## Usage 💡
 
 Use the styles for your component from a global `theme` object. To provide the theme in context, wrap your component into the `MarigoldProvider`. You can add custom styles via style props.
@@ -50,6 +34,22 @@ yarn start
 ```
 
 to access the Marigold documentation pages.
+
+## Setup 🔧
+
+```sh
+# after first release:
+# with npm
+npm install marigold-ui --save
+
+# with yarn
+yarn add marigold-ui
+
+# for now:
+git clone https://github.com/marigold-ui/marigold.git
+cd marigold
+yarn install
+```
 
 ## For Developers
 
@@ -84,11 +84,11 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 
 <!-- LINKS + BADGES -->
 
-[ci]: https://circleci.com/gh/reservix-ui/marigold
-[ci-badge]: https://img.shields.io/circleci/build/gh/reservix-ui/marigold/master?style=flat-square
-[license]: https://github.com/reservix-ui/marigold/blob/master/LICENSE
-[license-badge]: https://img.shields.io/github/license/reservix-ui/marigold?style=flat-square
+[ci]: https://circleci.com/gh/marigold-ui/marigold
+[ci-badge]: https://img.shields.io/circleci/build/gh/marigold-ui/marigold/master?style=flat-square
+[license]: https://github.com/marigold-ui/marigold/blob/master/LICENSE
+[license-badge]: https://img.shields.io/github/license/marigold-ui/marigold?style=flat-square
 [package]: https://www.npmjs.com/package/@marigold-components
 [version-badge]: https://img.shields.io/npm/v/@marigold/components?style=flat-square
-[coverage]: https://coveralls.io/github/reservix-ui/marigold?branch=master
-[coverage-badge]: https://img.shields.io/coveralls/github/reservix-ui/marigold/master?style=flat-square
+[coverage]: https://coveralls.io/github/marigold-ui/marigold?branch=master
+[coverage-badge]: https://img.shields.io/coveralls/github/marigold-ui/marigold/master?style=flat-square

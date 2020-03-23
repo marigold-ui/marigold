@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "System of the Reservix Design System Marigold",
   "main": "dist/index.js",
-  "module": "dist/components.esm.js",
+  "module": "dist/system.esm.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
   "scripts": {
