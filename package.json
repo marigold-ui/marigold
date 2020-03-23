@@ -6,6 +6,7 @@
   "private": true,
   "license": "MIT",
   "workspaces": [
+    "config/*",
     "packages/*",
     "themes/*"
   ],
@@ -13,6 +14,7 @@
     "node": ">=10.13.0"
   },
   "devDependencies": {
+    "@marigold/tsconfig": "*",
     "@storybook/addon-a11y": "5.3.14",
     "@storybook/addon-docs": "5.3.17",
     "@storybook/preset-typescript": "2.1.0",

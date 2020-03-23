@@ -1,16 +1,16 @@
 {
-  "extends": "./tsconfig.base.json",
+  "extends": "@marigold/tsconfig",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@emotion/core": ["packages/types/src/sink.d.ts"],
-      "@marigold/*": ["./packages/*/src"]
+      "@marigold/*": ["packages/*/src"]
     }
   },
   "exclude": [
     "coverage/*",
     "jest.config.js",
     "**/node_modules/*",
-    "**/build/**/*"
+    "**/dist/**/*"
   ]
 }
