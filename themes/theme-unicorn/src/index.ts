@@ -1,4 +1,6 @@
-export const ReservixDeveloperTheme: BaseTheme = {
+import { BaseTheme } from '@marigold/components';
+
+const theme: BaseTheme = {
   breakpoints: [768, 1200],
   space: [0, 4, 8, 16, 24, 32, 40, 48, 56, 64, 88],
   fonts: {
@@ -39,3 +41,5 @@ export const ReservixDeveloperTheme: BaseTheme = {
     },
   },
 };
+
+export default theme;

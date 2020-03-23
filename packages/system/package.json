@@ -1,14 +1,11 @@
 {
   "name": "@marigold/system",
   "version": "0.0.0",
-  "description": "System of the Reservix Design System Marigold",
+  "description": "Marigold System Library",
   "main": "dist/index.js",
   "module": "dist/system.esm.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
-  "scripts": {
-    "build": "tsdx build"
-  },
   "dependencies": {
     "@emotion/core": "10.0.28",
     "@theme-ui/css": "0.3.1",
@@ -17,5 +14,8 @@
   "devDependencies": {
     "@types/lodash.pick": "4.4.6",
     "csstype": "2.6.9"
+  },
+  "scripts": {
+    "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly"
   }
 }

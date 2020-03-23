@@ -1,6 +1,6 @@
-type CSSObject = object;
+export type CSSObject = object;
 
-type BaseTheme = {
+export type BaseTheme = {
   breakpoints: number[];
   space: number[];
   fonts: {
