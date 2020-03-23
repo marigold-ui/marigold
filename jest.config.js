@@ -22,6 +22,7 @@ module.exports = {
     '!**/{*.d.ts,index.ts}',
     '!**/node_modules/**',
     '!**/build/**',
+    '!**/themes/**',
   ],
   globals: {
     'ts-jest': {
