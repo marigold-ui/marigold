@@ -6,16 +6,20 @@
   "module": "dist/system.esm.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
-  "scripts": {
-    "build": "tsdx build"
-  },
   "dependencies": {
     "@emotion/core": "10.0.28",
     "@theme-ui/css": "0.3.1",
     "lodash.pick": "4.4.0"
   },
+  "peerDependencies": {
+    "react": "^16.x",
+    "react-dom": "^16.x"
+  },
   "devDependencies": {
     "@types/lodash.pick": "4.4.6",
     "csstype": "2.6.9"
+  },
+  "scripts": {
+    "build": "tsdx build"
   }
 }
