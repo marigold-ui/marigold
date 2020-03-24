@@ -4,12 +4,13 @@
     "baseUrl": ".",
     "paths": {
       "@emotion/core": ["packages/types/src/sink.d.ts"],
-      "@marigold/*": ["packages/*/src"]
+      "@marigold/*": ["./packages/*/src", "./themes/*/src"]
     }
   },
   "exclude": [
     "coverage/*",
     "jest.config.js",
+    "jest.setup.ts",
     "**/node_modules/*",
     "**/dist/**/*"
   ]

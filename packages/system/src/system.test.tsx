@@ -43,7 +43,7 @@ test('usage with `as` prop', () => {
    * an anchor tag!
    */
   expect(() => {
-    render(<Component as="a" extra="required" href="reservix.de" />);
+    render(<Component as="a" extra="required" href="example.com" />);
   }).not.toThrow();
 
   /**

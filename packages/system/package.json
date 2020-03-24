@@ -1,7 +1,7 @@
 {
   "name": "@marigold/system",
   "version": "0.0.0",
-  "description": "System of the Reservix Design System Marigold",
+  "description": "Marigold System Library",
   "main": "dist/index.js",
   "module": "dist/system.esm.js",
   "typings": "dist/index.d.ts",
@@ -20,6 +20,6 @@
     "csstype": "2.6.9"
   },
   "scripts": {
-    "build": "tsdx build"
+    "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly"
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "@marigold/components",
   "version": "0.0.0",
-  "description": "Components of the Reservix Design System Marigold",
+  "description": "Components for the Marigold Design System",
   "main": "dist/index.js",
   "module": "dist/components.esm.js",
   "typings": "dist/index.d.ts",
@@ -11,6 +11,6 @@
     "react-dom": "^16.x"
   },
   "scripts": {
-    "build": "tsdx build"
+    "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly"
   }
 }
