@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.base.json",
+  "extends": "@marigold/tsconfig",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -12,6 +12,6 @@
     "jest.config.js",
     "jest.setup.ts",
     "**/node_modules/*",
-    "**/build/**/*"
+    "**/dist/**/*"
   ]
 }

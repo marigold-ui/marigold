@@ -154,7 +154,7 @@ jobs:
           command: |
             if [[ -v COVERALLS_REPO_TOKEN ]]
             then
-                node_modules/.bin/jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+                node_modules/.bin/jest --coverage && cat ./coverage/lcov.info | npx coveralls
                 echo "Coveralls info uploaded"
             else
                 echo "Warning - Coveralls info could NOT be uploaded"
