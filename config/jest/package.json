@@ -14,7 +14,7 @@
     "jest.setup.ts"
   ],
   "main": "index.js",
-  "devDependencies": {
+  "dDependencies": {
     "@types/jest": "25.1.4",
     "jest-watch-typeahead": "0.4.2",
     "ts-jest": "25.2.1"

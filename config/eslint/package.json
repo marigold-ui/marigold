@@ -11,7 +11,7 @@
   "files": [
     "index.js"
   ],
-  "devDependencies": {
+  "dependencies": {
     "@typescript-eslint/eslint-plugin": "2.25.0",
     "@typescript-eslint/parser": "2.25.0",
     "babel-eslint": "10.1.0",
