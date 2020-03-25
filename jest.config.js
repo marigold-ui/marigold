@@ -1,17 +1,21 @@
-const { workspaces } = require('./package.json');
-
 module.exports = {
-  preset: 'ts-jest',
+  testMatch: ['<rootDir>/**/*.test.{ts,tsx}'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-  transform: {
-    '.(ts|tsx)': require.resolve('ts-jest/dist'),
-  },
-  transformIgnorePatterns: ['/node_modules[/\\\\].+\\.(js|jsx)$'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  testMatch: ['**/*.test.ts?(x)'],
-  roots: workspaces.map(
-    workspace => `<rootDir>/${workspace.replace('/*', '')}`
-  ),
+
+  // transform
+  transform: {
+    '.(ts|tsx)$': require.resolve('ts-jest/dist'),
+    '.(js|jsx)$': require.resolve('babel-jest'), // jest's default
+  },
+  transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
+
+  // workspace aliases
+  moduleNameMapper: {
+    '^@marigold/theme-(.+)$': '<rootDir>/themes/theme-$1/src',
+    '^@marigold/(.+)$': '<rootDir>/packages/$1/src',
+  },
+
   // coverage
   collectCoverage: true,
   coverageDirectory: 'coverage',
@@ -21,16 +25,10 @@ module.exports = {
     '!**/stories.tsx',
     '!**/{*.d.ts,index.ts}',
     '!**/node_modules/**',
-    '!**/build/**',
+    '!**/dist/**',
     '!**/themes/**',
   ],
-  globals: {
-    'ts-jest': {
-      diagnostics: {
-        warnOnly: true,
-      },
-    },
-  },
+
   // plugins
   watchPlugins: [
     require.resolve('jest-watch-typeahead/filename'),

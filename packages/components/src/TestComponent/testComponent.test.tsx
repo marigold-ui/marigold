@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render } from '@testing-library/react';
 
-import Calculator from '@marigold/components/src/TestComponent/foo';
+import Calculator from './foo';
 
 const renderTest = () => {
   const { getByTestId } = render(<div data-testid="test">test</div>);
