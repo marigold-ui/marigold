@@ -13,6 +13,7 @@
     "node": ">=10.13.0"
   },
   "devDependencies": {
+    "@marigold/prettier-config": "*",
     "@marigold/tsconfig": "*",
     "@storybook/addon-a11y": "5.3.14",
     "@storybook/addon-docs": "5.3.17",
@@ -38,6 +39,7 @@
     "jest": "25.1.0",
     "jest-watch-typeahead": "0.4.2",
     "lerna": "3.20.2",
+    "prettier": "1.19.1",
     "pretty": "2.0.0",
     "pretty-quick": "2.0.1",
     "react": "16.13.0",
@@ -53,13 +55,14 @@
     }
   },
   "scripts": {
+    "start": "start-storybook",
     "build": "lerna run build --stream",
-    "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'` coverage",
+    "test": "jest --config jest.config.js",
     "coverage": "jest --config jest.config.js --coverage --coverageReporters html",
+    "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'` coverage",
     "deploy-storybook": "storybook-to-ghpages",
     "lint": "eslint . --format=pretty --ext .ts,.tsx",
-    "start": "start-storybook",
-    "test": "jest --config jest.config.js",
+    "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit"
   }
 }
