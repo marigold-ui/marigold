@@ -129,7 +129,8 @@ jobs:
 
       - run:
           name: Deploy storybook on GitHub pages
-          command: yarn deploy-storybook -- --ci
+          command: yarn deploy-storybook -- -- --ci
+          no_output_timeout: 60m
 
   upload-coveralls:
     docker:
