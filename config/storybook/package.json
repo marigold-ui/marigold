@@ -1,0 +1,22 @@
+{
+  "name": "@marigold/storybook-config",
+  "description": "Marigold's storybook configuration",
+  "version": "0.0.0",
+  "license": "MIT",
+  "keywords": [
+    "storybook",
+    "config"
+  ],
+  "files": [
+    "main.js",
+    "preview.js"
+  ],
+  "main": "main.js",
+  "dependencies": {
+    "@storybook/addon-a11y": "5.3.17",
+    "@storybook/addon-docs": "5.3.17",
+    "@storybook/preset-typescript": "2.1.0",
+    "@storybook/react": "5.3.17",
+    "ts-loader": "6.2.2"
+  }
+}
