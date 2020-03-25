@@ -10,6 +10,9 @@
     "react": "^16.x",
     "react-dom": "^16.x"
   },
+  "devDependencies": {
+    "@marigold/system": "0.0.0"
+  },
   "scripts": {
     "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly"
   }
