@@ -18,12 +18,14 @@ The style of components is defined by three different layers that are structured
 **Default styles, theme styles and style props**
 
 - **default styles**
+
   - add default styling to a component, even without a theme
   - should be used to achieve minimal level of consistency between browsers
 
   .. waiting for an example
 
 - **theme styles**
+
   - style values from a specific theme can be easily used with the box
   - the theme can overwrite the default styles
   - in this way you can stay inside the boundaries of the design system.
@@ -31,17 +33,18 @@ The style of components is defined by three different layers that are structured
   .. waiting for an example
 
 - **style props**
+
   - style props can be used to add and modify component styles beyond the boundaries of the design system
 
   .. waiting for an example
-  
+
 > Staying inside the boundaries of the design system and its contraints should be the norm. But limiting styling only to allowed values defined by the system can be very restrictive up to a point where the design system becomes an obstacle. This is why there is a an escape hatch for when it is absolutely necessary to apply styling from a third party or style it in a way that is non-compliant with the design system.
 
 ## Properties
 
 | Property       | Type                         | Default |
 | :------------- | :--------------------------- | :------ |
-| `as`           | `HTMLTag`, `ComponentType`   | `'div'` | 
+| `as`           | `HTMLTag`, `ComponentType`   | `'div'` |
 | `css`          | [`css props`](#cssProps)     |         |
 | `themeSection` | `string`                     |         |
 | `variant`      | `string`                     |         |
@@ -55,9 +58,9 @@ The HTML element used for the root node. Either a string to use a DOM element or
 
 The `css` props let you style elements inline, using values from your theme. The css prop allows all CSS properties and the below shorthands.
 
-| Category       | Prop                                                                                                                                                                                                                  |
-| ------------   | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `css`          | `fontFamily, fontSize, fontWeight, lineHeight, letterSpacing, color, backgroundColor, bg, margin, m, marginTop, mt, marginRight, mr, marginBottom, mb, marginLeft, ml, marginX, mx, marginY, my, padding, p, paddingTop, pt, paddingRight, pr, paddingBottom, pb, paddingLeft, pl, paddingX, px, paddingY, py, top, bottom, left, right, border, borderTop, borderRight, borderBottom, borderLeft, borderColor, borderWidth, borderStyle, borderRadius, boxShadow, textShadow, zIndex, width, minWidth, maxWidth, height, minHeight, maxHeight, size` |
+| Category | Prop                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `css`    | `fontFamily, fontSize, fontWeight, lineHeight, letterSpacing, color, backgroundColor, bg, margin, m, marginTop, mt, marginRight, mr, marginBottom, mb, marginLeft, ml, marginX, mx, marginY, my, padding, p, paddingTop, pt, paddingRight, pr, paddingBottom, pb, paddingLeft, pl, paddingX, px, paddingY, py, top, bottom, left, right, border, borderTop, borderRight, borderBottom, borderLeft, borderColor, borderWidth, borderStyle, borderRadius, boxShadow, textShadow, zIndex, width, minWidth, maxWidth, height, minHeight, maxHeight, size` |
 
 ### themeSection
 
@@ -72,14 +75,15 @@ The `variant` proberty is the next layer under themeSection. In a section like e
 The `SpacingProps` are part of the style props which can be used to give your component custom css style. The values are usable with shortcuts which you can see in the Prop column. For more information click the space Doc link to Theme-Ui in the following table.
 
 | Category       | Prop                                                                                                                                                                                                                  |
-| ------------   | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `SpacingProps` | `margin, m, marginTop, mt, marginRight, mr, marginBottom, mb, marginLeft, ml, marginX, mx, marginY, my, padding, p, paddingTop, pt, paddingRight, pr, paddingBottom, pb, paddingLeft, pl, paddingX, px, paddingY, py` |
 
 ## Import
 
 ```js
-import { Box } from "@marigold/system";
+import { Box } from '@marigold/system';
 ```
+
 ## Usage
 
 <Preview>
@@ -90,18 +94,24 @@ import { Box } from "@marigold/system";
 
 <Preview>
   <Story name="text-box">
-    <Box as="text" css={{ color: 'orange' }}>I am a text box!</Box>
+    <Box as="text" css={{ color: 'orange' }}>
+      I am a text box!
+    </Box>
   </Story>
 </Preview>
 
 <Preview>
   <Story name="button-box">
-    <Box as="button" css={{ border: '1px solid black' }}>I am a simple button!</Box>
+    <Box as="button" css={{ border: '1px solid black' }}>
+      I am a simple button!
+    </Box>
   </Story>
 </Preview>
 
 <Preview>
   <Story name="h1-box">
-    <Box as="h1" css={{ color: 'blue' }}>I am a blue headline!</Box>
+    <Box as="h1" css={{ color: 'blue' }}>
+      I am a blue headline!
+    </Box>
   </Story>
 </Preview>
