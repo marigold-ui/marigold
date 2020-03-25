@@ -10,7 +10,6 @@
   "exclude": [
     "coverage/*",
     "jest.config.js",
-    "jest.setup.ts",
     "**/node_modules/*",
     "**/dist/**/*"
   ]

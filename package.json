@@ -13,6 +13,7 @@
     "node": ">=10.13.0"
   },
   "devDependencies": {
+    "@marigold/jest-config": "*",
     "@marigold/tsconfig": "*",
     "@marigold/eslint-config": "*",
     "@storybook/addon-a11y": "5.3.14",
@@ -23,17 +24,14 @@
     "@testing-library/jest-dom": "5.1.1",
     "@testing-library/react": "10.0.1",
     "@testing-library/react-hooks": "3.2.1",
-    "@types/jest": "25.1.4",
     "babel-loader": "8.0.6",
     "eslint": "6.8.0",
     "husky": "4.2.3",
     "jest": "25.1.0",
-    "jest-watch-typeahead": "0.4.2",
     "lerna": "3.20.2",
     "pretty-quick": "2.0.1",
     "react": "16.13.0",
     "react-dom": "16.13.0",
-    "ts-jest": "25.2.1",
     "ts-loader": "6.2.2",
     "tsdx": "0.12.3",
     "typescript": "3.8.3"
