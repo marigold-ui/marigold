@@ -160,9 +160,11 @@ test('support variants from theme', () => {
 });
 
 test('order of application: base < theme < style props', () => {
-  const Button: React.FC<{
-    variant?: keyof typeof theme.buttons;
-  } & SpacingProps> = ({ children, variant = 'secondary', ...props }) => (
+  const Button: React.FC<
+    {
+      variant?: keyof typeof theme.buttons;
+    } & SpacingProps
+  > = ({ children, variant = 'secondary', ...props }) => (
     <Box
       as="button"
       {...props}
