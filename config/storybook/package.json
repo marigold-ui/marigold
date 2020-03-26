@@ -17,6 +17,11 @@
     "@storybook/addon-docs": "5.3.17",
     "@storybook/preset-typescript": "2.1.0",
     "@storybook/react": "5.3.17",
-    "ts-loader": "6.2.2"
+    "babel-loader": "8.1.0",
+    "find-up": "4.1.0",
+    "load-json-file": "6.2.0",
+    "resolve-ts-aliases": "1.0.1",
+    "ts-loader": "6.2.2",
+    "tsconfig-paths": "3.9.0"
   }
 }

@@ -41,7 +41,7 @@
     "coverage": "jest --config jest.config.js --coverage --coverageReporters html",
     "deploy-storybook": "storybook-to-ghpages",
     "lint": "eslint . --format=pretty --ext .ts,.tsx",
-    "start": "start-storybook -c config/storybook",
+    "start": "start-storybook -c config/storybook --smoke-test",
     "test": "jest --config jest.config.js",
     "typecheck": "tsc --noEmit"
   }
