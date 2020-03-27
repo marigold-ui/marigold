@@ -47,7 +47,7 @@
     "watch": "lerna run watch --parallel",
     "build": "lerna run build --stream",
     "test": "tsdx test --config jest.config.js",
-    "coverage": "jest --config jest.config.js --coverage --coverageReporters html",
+    "coverage": "tsdx test --config jest.config.js --coverage --coverageReporters html",
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'` coverage",
     "deploy-storybook": "storybook-to-ghpages",
     "lint": "tsdx lint packages/*/src/* packages/*/src/*/*",
