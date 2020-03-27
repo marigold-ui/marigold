@@ -26,7 +26,6 @@
     "@testing-library/react-hooks": "3.2.1",
     "babel-loader": "8.0.6",
     "babel-preset-react-app": "9.1.2",
-    "eslint": "6.8.0",
     "husky": "4.2.3",
     "jest": "25.2.1",
     "lerna": "3.20.2",
@@ -35,7 +34,7 @@
     "react": "16.13.0",
     "react-dom": "16.13.0",
     "ts-loader": "6.2.2",
-    "tsdx": "0.12.3",
+    "tsdx": "0.13.0",
     "typescript": "3.8.3"
   },
   "husky": {
@@ -51,7 +50,7 @@
     "coverage": "jest --config jest.config.js --coverage --coverageReporters html",
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'` coverage",
     "deploy-storybook": "storybook-to-ghpages",
-    "lint": "eslint . --format=pretty --ext .ts,.tsx",
+    "lint": "tsdx lint packages/*/src/* packages/*/src/*/*",
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit"
   }
