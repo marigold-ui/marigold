@@ -15,7 +15,6 @@
   "dependencies": {
     "@storybook/addon-a11y": "5.3.17",
     "@storybook/addon-docs": "5.3.17",
-    "@storybook/preset-typescript": "2.1.0",
     "@storybook/react": "5.3.17",
     "babel-loader": "8.1.0",
     "find-up": "4.1.0",
