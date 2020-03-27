@@ -19,9 +19,7 @@
     "@storybook/react": "5.3.17",
     "babel-loader": "8.1.0",
     "find-up": "4.1.0",
-    "load-json-file": "6.2.0",
-    "resolve-ts-aliases": "1.0.1",
     "ts-loader": "6.2.2",
-    "tsconfig-paths": "3.9.0"
+    "tsconfig-paths-webpack-plugin": "3.2.0"
   }
 }

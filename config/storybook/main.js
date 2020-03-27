@@ -1,14 +1,12 @@
-const findUp = require('find-up');
+const findUp = require('find-up').sync;
 const path = require('path');
+const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin');
 
-//tsconfig paths package!
-const PROJECT_ROOT = findUp.sync('package.json'); // TODO: only directory
-const TS_CONFIG_PATH = findUp.sync('tsconfig.json'); // Start from project root
-
-// resolve tsconfig path aliases
+const root = path.dirname(findUp('package.json'));
+const tsconfig = findUp('tsconfig.json', { cwd: root });
 
 module.exports = {
-  stories: [path.resolve(PROJECT_ROOT, 'packages/**/*.stories.mdx')],
+  stories: [path.resolve(root, 'packages/**/*.stories.mdx')],
   addons: [
     '@storybook/react',
     '@storybook/addon-a11y',
@@ -16,7 +14,7 @@ module.exports = {
       name: '@storybook/preset-typescript',
       options: {
         tsLoaderOptions: {
-          configFile: TS_CONFIG_PATH,
+          configFile: tsconfig,
         },
       },
     },
@@ -29,4 +27,11 @@ module.exports = {
       },
     },
   ],
+  webpackFinal: async config => {
+    config.resolve.plugins = [
+      new TsconfigPathsPlugin({ configFile: tsconfig }),
+    ];
+
+    return config;
+  },
 };

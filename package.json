@@ -42,7 +42,7 @@
     }
   },
   "scripts": {
-    "start": "start-storybook -c config/storybook --smoke-test",
+    "start": "start-storybook -c config/storybook --debug-webpack",
     "build": "lerna run build --stream",
     "test": "jest --config jest.config.js",
     "coverage": "jest --config jest.config.js --coverage --coverageReporters html",
