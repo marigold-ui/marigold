@@ -26,7 +26,7 @@ module.exports = {
     '@storybook/addon-docs',
   ],
   webpackFinal: async config => {
-    // Add support for Typescript's path mappdings
+    // Add support for TS path mapping
     config.resolve.plugins = [new TsconfigPathsPlugin({ configFile })];
     return config;
   },
