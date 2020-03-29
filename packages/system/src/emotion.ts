@@ -11,13 +11,20 @@ import React from 'react';
  * (2) Every JSX element only accepts a type that is compatible with emotion's
  *     css prop, which we don't care, since we first pass the `css` prop
  *     to styled-system.
+ *
+ * *The fix consist of two parts:*
+ *
+ * (1) using `.yarnclean` to remove the `emotion/core` typings completly.
+ * (2) having this sink file to re-apply the typings and tell TS to ignore
+ *     the untyped import.
  */
-const {
-  css: cssEmotion,
-  jsx: createElement,
-  Global: EmotionGlobal,
-  ThemeContext: EmotionContext,
-} = require('@emotion/core');
+import {
+  css as cssEmotion,
+  jsx as createElement,
+  Global as EmotionGlobal,
+  ThemeContext as EmotionContext,
+  // @ts-ignore
+} from '@emotion/core';
 
 // Emotion API
 // ---------------
