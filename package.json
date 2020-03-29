@@ -17,9 +17,6 @@
     "@marigold/jest-config": "*",
     "@marigold/prettier-config": "*",
     "@marigold/tsconfig": "*",
-    "@storybook/addon-a11y": "5.3.14",
-    "@storybook/addon-docs": "5.3.17",
-    "@storybook/react": "5.3.17",
     "@storybook/storybook-deployer": "2.8.3",
     "@testing-library/jest-dom": "5.1.1",
     "@testing-library/react": "10.0.1",
@@ -41,7 +38,7 @@
     }
   },
   "scripts": {
-    "start": "start-storybook -c config/storybook --debug-webpack",
+    "start": "start-storybook -c config/storybook -p 6006",
     "watch": "lerna run watch --parallel",
     "build": "lerna run build --stream",
     "test": "jest --config jest.config.js",

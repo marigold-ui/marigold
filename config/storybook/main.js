@@ -1,20 +1,11 @@
+const findUp = require('find-up').sync;
 const path = require('path');
-const {
-  getProjectRoot,
-  configureTypeScript,
-  configureMdxDocs,
-} = require('./utils');
+const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin');
 
-const root = getProjectRoot({ cwd: process.cwd() });
-
-// Webpack
+// Config Folders + Files
 // ---------------
-const webpackFinal = async config => {
-  // Note: We need to configure TS first, otherwise werid things happen ...
-  config = configureTypeScript({ config, cwd: root });
-  config = configureMdxDocs(config);
-  return config;
-};
+const root = path.dirname(findUp('package.json'));
+const configFile = findUp('tsconfig.json', { cwd: root });
 
 // Storybook Config
 // ---------------
@@ -22,9 +13,21 @@ module.exports = {
   stories: [path.resolve(root, 'packages/**/*.stories.mdx')],
   addons: [
     '@storybook/react',
-    //TODO: Make this work again
-    // '@storybook/addon-a11y',
+    {
+      name: '@storybook/preset-typescript',
+      options: {
+        tsLoaderOptions: {
+          configFile,
+          transpileOnly: true,
+        },
+      },
+    },
+    '@storybook/addon-a11y',
     '@storybook/addon-docs',
   ],
-  webpackFinal,
+  webpackFinal: async config => {
+    // Add support for Typescript's path mappdings
+    config.resolve.plugins = [new TsconfigPathsPlugin({ configFile })];
+    return config;
+  },
 };
