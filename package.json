@@ -21,7 +21,6 @@
     "@testing-library/jest-dom": "5.1.1",
     "@testing-library/react": "10.0.1",
     "@testing-library/react-hooks": "3.2.1",
-    "eslint": "6.8.0",
     "husky": "4.2.3",
     "jest": "25.2.1",
     "lerna": "3.20.2",
@@ -29,7 +28,7 @@
     "pretty-quick": "2.0.1",
     "react": "16.13.0",
     "react-dom": "16.13.0",
-    "tsdx": "0.12.3",
+    "tsdx": "0.13.0",
     "typescript": "3.8.3"
   },
   "husky": {
@@ -41,11 +40,11 @@
     "start": "start-storybook -c config/storybook -p 6006",
     "watch": "lerna run watch --parallel",
     "build": "lerna run build --stream",
-    "test": "jest --config jest.config.js",
-    "coverage": "jest --config jest.config.js --coverage --coverageReporters html",
+    "test": "tsdx test --config jest.config.js",
+    "coverage": "tsdx test --config jest.config.js --coverage --coverageReporters html",
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'` coverage",
     "deploy-storybook": "storybook-to-ghpages",
-    "lint": "eslint . --format=pretty --ext .ts,.tsx",
+    "lint": "tsdx lint packages/*/src/* packages/*/src/*/*",
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit"
   }
