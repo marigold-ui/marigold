@@ -5,7 +5,10 @@
   "license": "MIT",
   "keywords": [
     "storybook",
-    "config"
+    "config",
+    "typescript",
+    "react",
+    "docs"
   ],
   "files": [
     "main.js",
@@ -19,7 +22,6 @@
     "@storybook/react": "5.3.17",
     "babel-loader": "8.1.0",
     "find-up": "4.1.0",
-    "ts-loader": "6.2.2",
     "tsconfig-paths-webpack-plugin": "3.2.0"
   }
 }
