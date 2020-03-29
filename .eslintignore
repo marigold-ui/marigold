@@ -1,3 +1,5 @@
-.yarn
 node_modules
+.yarn
+
 **/*.d.ts
+**/*.mdx
