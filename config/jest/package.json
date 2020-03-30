@@ -16,7 +16,7 @@
   "main": "index.js",
   "dependencies": {
     "@types/jest": "25.1.4",
-    "babel-jest": "25.2.1",
+    "babel-jest": "25.2.4",
     "jest-watch-typeahead": "0.4.2"
   },
   "peerDependencies": {
