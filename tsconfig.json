@@ -3,7 +3,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@emotion/core": ["packages/types/src/sink.d.ts"],
       "@marigold/*": ["./packages/*/src", "./themes/*/src"]
     }
   },
