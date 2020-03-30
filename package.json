@@ -43,7 +43,7 @@
     "coverage": "tsdx test --config jest.config.js --coverage --coverageReporters html",
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'` coverage",
     "deploy-storybook": "storybook-to-ghpages",
-    "lint": "tsdx lint packages/*/src/* packages/*/src/*/*",
+    "lint": "tsdx lint . --ignore-pattern node_modules",
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit"
   }
