@@ -9,8 +9,9 @@
     "packages/*",
     "themes/*"
   ],
-  "engines": {
-    "node": ">=10.13.0"
+  "volta": {
+    "node": "12.16.1",
+    "yarn": "1.18.0"
   },
   "devDependencies": {
     "@marigold/eslint-config": "*",
