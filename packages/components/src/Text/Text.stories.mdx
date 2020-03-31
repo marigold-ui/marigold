@@ -12,7 +12,7 @@ import theme from '@marigold/theme-b2b';
 With the Text component you can easily add different text HTML elements. As default it renders a `span` element.
 By adding the `as` prop you can use more elements like `p`, `a`, `h1`, `h2`, `h3`, ... E.g. `as="h1"`.
 The element uses always the themeSection with the name: `text` in your given theme. The variant in your section can be added with the variant prop. E.g. `variant="body"`.
-Specific css style prop can also be added
+Specific css style prop can also be added.
 
 ## Properties
 
@@ -35,6 +35,16 @@ import { Text } from '@marigold/components';
     <MarigoldProvider theme={theme}>
       <Text as="p" variant="body">
         I am just Text
+      </Text>
+    </MarigoldProvider>
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="text2">
+    <MarigoldProvider theme={theme}>
+      <Text as="h1" variant="heading">
+        I am just a headline
       </Text>
     </MarigoldProvider>
   </Story>
