@@ -4,7 +4,7 @@ const theme: BaseTheme = {
   breakpoints: [768, 1200],
   space: [0, 4, 8, 16, 24, 32, 40, 48, 56, 64, 88],
   fonts: {
-    body: 'Inter Regular',
+    body: 'Inter',
     heading: 'Inter Black',
   },
   fontSizes: ['0.875rem', '1rem', '1.125rem', '1.25rem', '1.5rem', '2rem'],
@@ -23,6 +23,17 @@ const theme: BaseTheme = {
     primary: '#fa8005',
     secondary: '#4b4b4b',
     muted: '#8d8d8d',
+  },
+  form: {
+    label: {
+      fontFamily: 'body',
+      fontSize: 0,
+      fontWeight: 'body',
+      lineHeight: '1.5rem',
+      color: 'text',
+      display: 'flex',
+      alignItems: 'center',
+    },
   },
 };
 
