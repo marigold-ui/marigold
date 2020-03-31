@@ -35,6 +35,22 @@ const theme: BaseTheme = {
       alignItems: 'center',
     },
   },
+  text: {
+    body: {
+      fontFamily: 'body',
+      fontSize: 1,
+      lineHeight: 'body',
+      fontWeight: 'body',
+      color: 'text',
+    },
+    heading: {
+      fontFamily: 'heading',
+      fontSize: 5,
+      lineHeight: 'heading',
+      fontWeight: 'heading',
+      color: 'text',
+    },
+  },
 };
 
 export default theme;
