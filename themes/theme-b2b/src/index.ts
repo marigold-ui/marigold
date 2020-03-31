@@ -24,6 +24,22 @@ const theme: BaseTheme = {
     secondary: '#4b4b4b',
     muted: '#8d8d8d',
   },
+  text: {
+    body: {
+      fontFamily: 'body',
+      fontSize: 1,
+      lineHeight: 'body',
+      fontWeight: 'body',
+      color: 'text',
+    },
+    heading: {
+      fontFamily: 'heading',
+      fontSize: 5,
+      lineHeight: 'heading',
+      fontWeight: 'heading',
+      color: 'text',
+    },
+  },
 };
 
 export default theme;

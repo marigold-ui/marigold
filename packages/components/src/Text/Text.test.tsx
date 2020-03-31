@@ -4,49 +4,25 @@ import { MarigoldProvider } from '@marigold/system';
 import { Text } from './Text';
 
 const theme = {
-  breakpoints: [768, 1200],
-  space: [0, 4, 8, 16, 24, 32, 40, 48, 56, 64, 88],
-  fonts: {
-    body: 'Oswald Regular',
-    heading: 'Inter Black',
-  },
-  fontSizes: ['0.875rem', '1rem', '1.125rem', '1.25rem', '1.5rem', '2rem'],
-  fontWeights: {
-    body: 300,
-    heading: 800,
-    bold: 600,
-  },
-  lineHeights: {
-    body: 2,
-    heading: 1.5,
-  },
-  colors: {
-    text: '#ffe6f7',
-    background: '#b30077',
-    primary: '#00b300',
-    secondary: '#e6b800',
-    muted: '#99994d',
-  },
   text: {
     body: {
-      fontFamily: 'body',
-      fontSize: 1,
-      lineHeight: 'body',
-      fontWeight: 'body',
-      color: 'text',
+      fontFamily: 'Oswald Regular',
+      fontSize: '1rem',
+      lineHeight: 2,
+      fontWeight: 300,
+      color: '#ffe6f7',
     },
     heading: {
-      fontFamily: 'heading',
-      fontSize: 5,
-      lineHeight: 'heading',
-      fontWeight: 'heading',
-      color: 'text',
+      fontFamily: 'Inter Black',
+      fontSize: '2rem',
+      lineHeight: 1.5,
+      fontWeight: 800,
+      color: '#ffe6f8',
     },
   },
 };
 
-test('support variants from a theme', () => {
-  // Body Text
+test('support default themeSection and variant from a theme', () => {
   const t1 = render(
     <MarigoldProvider theme={theme}>
       <Text as="p" variant="body">
@@ -57,20 +33,21 @@ test('support variants from a theme', () => {
   let element1 = t1.getByText('I am body Text');
 
   expect(element1).toHaveStyle(`font-family: Oswald Regular`);
+  expect(element1).toHaveStyle(`line-height: 2`);
   expect(element1).toHaveStyle(`font-weight: 300`);
   expect(element1).toHaveStyle(`color: #ffe6f7`);
+});
 
-  // Headline Text
-  const t2 = render(
+test('support default as, heading variant from a theme and styling via css prop', () => {
+  const t3 = render(
     <MarigoldProvider theme={theme}>
-      <Text as="h1" variant="heading">
-        I am headline Text
+      <Text variant="heading" css={{ border: '1px solid black' }}>
+        I am headline Text with border
       </Text>
     </MarigoldProvider>
   );
-  let element2 = t2.getByText('I am headline Text');
+  let element3 = t3.getByText('I am headline Text with border');
 
-  expect(element2).toHaveStyle(`font-size: 2rem`);
-  expect(element2).toHaveStyle(`font-family: Inter Black`);
-  expect(element2).toHaveStyle(`line-height: 1.5`);
+  expect(element3).toHaveStyle(`font-family: Inter Black`);
+  expect(element3).toHaveStyle('border: 1px solid black');
 });
