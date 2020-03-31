@@ -17,7 +17,9 @@
   "dependencies": {
     "@types/jest": "25.1.4",
     "babel-jest": "25.2.4",
-    "jest-watch-typeahead": "0.4.2"
+    "find-up": "4.1.0",
+    "jest-watch-typeahead": "0.4.2",
+    "ts-jest": "25.2.1"
   },
   "peerDependencies": {
     "jest": "25.x",
