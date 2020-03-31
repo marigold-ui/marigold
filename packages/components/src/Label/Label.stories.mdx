@@ -1,0 +1,40 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { MarigoldProvider } from '@marigold/system';
+import { Label } from './Label';
+import theme from '@marigold/theme-b2b';
+
+<Meta title="Components/Label" />
+
+# Label-Component
+
+## Description
+
+With the Label component you can add a HTML `<Label>` element to your form.
+The element uses always the themeSection with the name: `form` in your given theme. The variant in your section can be added with the variant prop. The default variant is `label`.
+Specific css style prop can also be added.
+
+## Properties
+
+| Property  | Type        | Default   |
+| :-------- | :---------- | :-------- |
+| `variant` | `string`    | `'label'` |
+| `htmlFor` | `string`    |           |
+| `css`     | `css props` |           |
+
+## Import
+
+```tsx
+import { Label } from '@marigold/components';
+```
+
+## Usage
+
+<Preview>
+  <Story name="label">
+    <MarigoldProvider theme={theme}>
+      <Label variant="label" htmlFor="labelId">
+        I am a Label!
+      </Label>
+    </MarigoldProvider>
+  </Story>
+</Preview>
