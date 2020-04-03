@@ -1,7 +1,5 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
-import { MarigoldProvider } from '@marigold/system';
 import { Label } from './Label';
-import theme from '@marigold/theme-b2b';
 
 <Meta title="Components/Label" />
 
@@ -31,10 +29,8 @@ import { Label } from '@marigold/components';
 
 <Preview>
   <Story name="label">
-    <MarigoldProvider theme={theme}>
-      <Label variant="label" htmlFor="labelId">
-        I am a Label!
-      </Label>
-    </MarigoldProvider>
+    <Label variant="label" htmlFor="labelId">
+      I am a Label!
+    </Label>
   </Story>
 </Preview>

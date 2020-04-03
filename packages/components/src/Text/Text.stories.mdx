@@ -1,7 +1,5 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
-import { MarigoldProvider } from '@marigold/system';
 import { Text } from './Text';
-import theme from '@marigold/theme-b2b';
 
 <Meta title="Components/Text" />
 
@@ -32,20 +30,16 @@ import { Text } from '@marigold/components';
 
 <Preview>
   <Story name="text">
-    <MarigoldProvider theme={theme}>
-      <Text as="p" variant="body">
-        I am just Text
-      </Text>
-    </MarigoldProvider>
+    <Text as="p" variant="body">
+      I am just Text
+    </Text>
   </Story>
 </Preview>
 
 <Preview>
   <Story name="text2">
-    <MarigoldProvider theme={theme}>
-      <Text as="h1" variant="heading">
-        I am just a headline
-      </Text>
-    </MarigoldProvider>
+    <Text as="h1" variant="heading">
+      I am just a headline
+    </Text>
   </Story>
 </Preview>
