@@ -33,7 +33,7 @@ test('support default themeSection and custom variant from a theme', () => {
   expect(element1).toHaveStyle(`border: 2px`);
 });
 
-test('support default themeSection, custom variant and styling via css prop', () => {
+test('support default themeSection, variant and custom styling via css prop', () => {
   const t2 = render(
     <MarigoldProvider theme={theme}>
       <Button css={{ color: '#ffffff', border: '2px' }}>I am a Button</Button>
