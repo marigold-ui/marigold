@@ -1,14 +1,12 @@
 import React from 'react';
 import { Box, system } from '@marigold/system';
 
-type ButtonProps = {
-  themeSection?: string;
-};
+type ButtonProps = {};
 
 export const Button = system<ButtonProps, 'button'>(
-  ({ themeSection = 'button', variant = '', children, ...props }) => {
+  ({ variant = '', children, ...props }) => {
     return (
-      <Box as="button" themeSection={themeSection} variant={variant} {...props}>
+      <Box {...props} as="button" themeSection="button" variant={variant}>
         {children}
       </Box>
     );
