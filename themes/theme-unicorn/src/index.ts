@@ -18,11 +18,11 @@ const theme: BaseTheme = {
     heading: 1.5,
   },
   colors: {
-    text: '#ffe6f7',
-    background: '#b30077',
-    primary: '#00b300',
-    secondary: '#e6b800',
-    muted: '#99994d',
+    text: '#070708',
+    background: '#fdfcfd',
+    primary: '#b30077',
+    secondary: '#ffdaf3',
+    muted: '#e9e7eb',
   },
   text: {
     body: {
@@ -37,7 +37,7 @@ const theme: BaseTheme = {
       fontSize: 5,
       lineHeight: 'heading',
       fontWeight: 'heading',
-      color: 'text',
+      color: 'primary',
     },
   },
 };

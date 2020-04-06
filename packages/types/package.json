@@ -3,5 +3,5 @@
   "description": "",
   "version": "0.0.0",
   "license": "UNLICENSED",
-  "typings": "src/index.ts"
+  "main": "src/index.ts"
 }

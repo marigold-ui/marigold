@@ -9,44 +9,28 @@
     "packages/*",
     "themes/*"
   ],
-  "engines": {
-    "node": ">=10.13.0"
+  "volta": {
+    "node": "12.16.1",
+    "yarn": "1.18.0"
   },
   "devDependencies": {
     "@changesets/changelog-github": "0.2.2",
     "@changesets/cli": "2.6.1",
+    "@marigold/eslint-config": "*",
+    "@marigold/jest-config": "*",
+    "@marigold/prettier-config": "*",
     "@marigold/tsconfig": "*",
-    "@storybook/addon-a11y": "5.3.14",
-    "@storybook/addon-docs": "5.3.17",
-    "@storybook/preset-typescript": "2.1.0",
-    "@storybook/react": "5.3.17",
     "@storybook/storybook-deployer": "2.8.3",
-    "@testing-library/jest-dom": "5.1.1",
+    "@testing-library/jest-dom": "5.3.0",
     "@testing-library/react": "10.0.1",
     "@testing-library/react-hooks": "3.2.1",
-    "@types/jest": "25.1.4",
-    "@typescript-eslint/eslint-plugin": "2.24.0",
-    "@typescript-eslint/parser": "2.24.0",
-    "babel-eslint": "10.1.0",
-    "babel-loader": "8.0.6",
-    "eslint": "6.8.0",
-    "eslint-config-react-app": "5.2.1",
-    "eslint-formatter-pretty": "3.0.1",
-    "eslint-plugin-import": "2.20.1",
-    "eslint-plugin-jest": "23.8.2",
-    "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-react": "7.18.3",
     "husky": "4.2.3",
-    "jest": "25.1.0",
-    "jest-watch-typeahead": "0.4.2",
     "lerna": "3.20.2",
-    "pretty": "2.0.0",
+    "prettier": "2.0.2",
     "pretty-quick": "2.0.1",
-    "react": "16.13.0",
-    "react-dom": "16.13.0",
-    "ts-jest": "25.2.1",
-    "ts-loader": "6.2.2",
-    "tsdx": "0.12.3",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "tsdx": "0.13.1",
     "typescript": "3.8.3"
   },
   "husky": {
@@ -55,15 +39,17 @@
     }
   },
   "scripts": {
+    "start": "start-storybook -c config/storybook",
+    "watch": "lerna run watch --parallel",
     "build": "lerna run build --stream",
+    "test": "tsdx test --config jest.config.js",
+    "coverage": "tsdx test --config jest.config.js --coverage --coverageReporters html",
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'` coverage",
-    "coverage": "jest --config jest.config.js --coverage --coverageReporters html",
     "deploy-storybook": "storybook-to-ghpages",
-    "lint": "eslint . --format=pretty --ext .ts,.tsx",
-    "start": "start-storybook",
-    "test": "jest --config jest.config.js",
-    "typecheck": "tsc --noEmit",
     "changeset": "changeset",
-    "release": "changeset publish"
+    "release": "changeset publish",
+    "lint": "tsdx lint . --ignore-pattern node_modules",
+    "format": "prettier --write \"**/*\"",
+    "typecheck": "tsc --noEmit"
   }
 }

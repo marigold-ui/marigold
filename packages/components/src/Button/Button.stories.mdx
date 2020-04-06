@@ -1,0 +1,83 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Button } from './Button';
+
+<Meta title="Components/Button" />
+
+# Button-Component
+
+## Description
+
+With the Button component you can render a `button` element.
+By adding the `themeSection` prop you can change to another themeSection. `button` is the default section.
+The variant in your section can be added with the variant prop. E.g. `variant="primary.large"` or `variant="secondary.small"`.
+Specific css style prop can also be added.
+
+## Properties
+
+| Property       | Type        | Default    |
+| :------------- | :---------- | :--------- |
+| `themeSection` | `string`    | `'button'` |
+| `variant`      | `string`    |            |
+| `css`          | `css props` |            |
+
+## Import
+
+```tsx
+import { Button } from '@marigold/components';
+```
+
+## Usage
+
+### Large
+
+<Preview>
+  <Story name="primary.large">
+    <Button>Primary</Button>
+  </Story>
+  <Story name="secondary.large">
+    <Button>Secondary</Button>
+  </Story>
+  <Story name="disabled.large">
+    <Button>Disabled</Button>
+  </Story>
+  <Story name="ghost.large">
+    <Button>Ghost</Button>
+  </Story>
+  <Story name="ghostDisabled.large">
+    <Button>Ghost Disabled</Button>
+  </Story>
+</Preview>
+
+### Large Hovered
+
+<Preview>
+  <Story name="primaryHovered.large">
+    <Button>Primary</Button>
+  </Story>
+  <Story name="secondaryHovered.large">
+    <Button>Secondary</Button>
+  </Story>
+  <Story name="ghostHovered.large">
+    <Button>Ghost</Button>
+  </Story>
+</Preview>
+
+### Small
+
+<Preview>
+  <Story name="primary.small">
+    <Button>Primary</Button>
+  </Story>
+  <Story name="secondary.small">
+    <Button>Secondary</Button>
+  </Story>
+  <Story name="disabled.small">
+    <Button>Disabled</Button>
+  </Story>
+  <Story name="ghost.small">
+    <Button>Ghost</Button>
+  </Story>
+  <Story name="ghostDisabled.small">
+    <Button>Ghost Disabled</Button>
+  </Story>
+</Preview>

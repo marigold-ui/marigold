@@ -20,6 +20,7 @@
     "csstype": "2.6.9"
   },
   "scripts": {
-    "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly"
+    "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly",
+    "watch": "tsdx watch --tsconfig tsconfig.build.json --transpileOnly"
   }
 }
