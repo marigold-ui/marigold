@@ -1,5 +1,53 @@
 import { BaseTheme } from '@marigold/components';
 
+const button = {
+  root: {
+    position: 'relative',
+    fontFamily: 'body',
+    fontSize: 1,
+    fontWeight: 400,
+    borderRadius: '2px',
+  },
+  large: {
+    lineHeight: '46px',
+    paddingX: 5,
+  },
+  small: {
+    lineHeight: '30px',
+    paddingX: 3,
+  },
+  primary: {
+    color: 'background',
+    bg: 'primary',
+  },
+  secondary: {
+    color: 'background',
+    bg: 'secondary',
+  },
+  disabled: {
+    color: '#cccccc',
+    bg: '#f3f3f3',
+  },
+  ghost: {
+    color: 'secondary',
+  },
+  ghostDisabled: {
+    color: '#e3e3e3',
+  },
+  primaryHovered: {
+    color: 'background',
+    bg: '#d97fbb',
+  },
+  secondaryHovered: {
+    color: 'background',
+    bg: 'secondary',
+  },
+  ghostHovered: {
+    color: 'secondary',
+    border: '1px solid #4b4b4b',
+  },
+};
+
 const theme: BaseTheme = {
   breakpoints: [768, 1200],
   space: [0, 4, 8, 16, 24, 32, 40, 48, 56, 64, 88],
@@ -38,6 +86,89 @@ const theme: BaseTheme = {
       lineHeight: 'heading',
       fontWeight: 'heading',
       color: 'primary',
+    },
+  },
+  button: {
+    primary: {
+      small: {
+        ...button.root,
+        ...button.primary,
+        ...button.small,
+      },
+      large: {
+        ...button.root,
+        ...button.primary,
+        ...button.large,
+      },
+    },
+    secondary: {
+      small: {
+        ...button.root,
+        ...button.secondary,
+        ...button.small,
+      },
+      large: {
+        ...button.root,
+        ...button.secondary,
+        ...button.large,
+      },
+    },
+    disabled: {
+      small: {
+        ...button.root,
+        ...button.disabled,
+        ...button.small,
+      },
+      large: {
+        ...button.root,
+        ...button.disabled,
+        ...button.large,
+      },
+    },
+    ghost: {
+      small: {
+        ...button.root,
+        ...button.ghost,
+        ...button.small,
+      },
+      large: {
+        ...button.root,
+        ...button.ghost,
+        ...button.large,
+      },
+    },
+    ghostDisabled: {
+      small: {
+        ...button.root,
+        ...button.ghostDisabled,
+        ...button.small,
+      },
+      large: {
+        ...button.root,
+        ...button.ghostDisabled,
+        ...button.large,
+      },
+    },
+    primaryHovered: {
+      large: {
+        ...button.root,
+        ...button.primaryHovered,
+        ...button.large,
+      },
+    },
+    secondaryHovered: {
+      large: {
+        ...button.root,
+        ...button.secondaryHovered,
+        ...button.large,
+      },
+    },
+    ghostHovered: {
+      large: {
+        ...button.root,
+        ...button.ghostHovered,
+        ...button.large,
+      },
     },
   },
 };
