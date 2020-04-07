@@ -44,11 +44,12 @@
     "build": "lerna run build --stream",
     "test": "tsdx test --config jest.config.js",
     "coverage": "tsdx test --config jest.config.js --coverage --coverageReporters html",
-    "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'` coverage",
+    "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'`",
+    "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
     "deploy-storybook": "storybook-to-ghpages",
     "lint": "tsdx lint . --ignore-pattern node_modules",
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit",
-    "release": "yarn build && changeset publish"
+    "release": "yarn clean:build && yarn build && changeset publish"
   }
 }
