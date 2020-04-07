@@ -1,5 +1,6 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
 import { Box } from './Box';
+import { Label, Button } from '@marigold/components';
 
 <Meta title="Components/Box Component" />
 
@@ -22,7 +23,16 @@ The style of components is defined by three different layers that are structured
   - add default styling to a component, even without a theme
   - should be used to achieve minimal level of consistency between browsers
 
-  .. waiting for an example
+<Preview>
+  <Story name="label">
+    <Label variant="" htmlFor="labelId">
+      A simple Label
+    </Label>
+  </Story>
+  <Story name="button">
+    <Button>Click me!</Button>
+  </Story>
+</Preview>
 
 - **theme styles**
 
@@ -30,13 +40,34 @@ The style of components is defined by three different layers that are structured
   - the theme can overwrite the default styles
   - in this way you can stay inside the boundaries of the design system.
 
-  .. waiting for an example
+<Preview>
+  <Story name="label-theme-styled">
+    <Label htmlFor="labelId">A simple Label</Label>
+  </Story>
+  <Story name="button-theme-styled">
+    <Button variant="primary.large">Click me!</Button>
+  </Story>
+</Preview>
 
 - **style props**
 
   - style props can be used to add and modify component styles beyond the boundaries of the design system
 
-  .. waiting for an example
+<Preview>
+  <Story name="label-css-styled">
+    <Label
+      htmlFor="labelId"
+      css={{ px: 64, fontSize: '24px', letterSpacing: '8px' }}
+    >
+      A simple Label
+    </Label>
+  </Story>
+  <Story name="button-css-styled">
+    <Button variant="primary.large" css={{ px: 64, fontSize: '24px' }}>
+      Click me!
+    </Button>
+  </Story>
+</Preview>
 
 > Staying inside the boundaries of the design system and its contraints should be the norm. But limiting styling only to allowed values defined by the system can be very restrictive up to a point where the design system becomes an obstacle. This is why there is a an escape hatch for when it is absolutely necessary to apply styling from a third party or style it in a way that is non-compliant with the design system.
 
