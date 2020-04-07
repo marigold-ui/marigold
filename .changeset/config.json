@@ -1,0 +1,9 @@
+{
+  "changelog": [
+    "@changesets/cli/changelog",
+    { "repo": "marigold-ui/marigold" }
+  ],
+  "commit": false,
+  "access": "public",
+  "baseBranch": "master"
+}
