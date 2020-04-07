@@ -14,8 +14,6 @@
     "yarn": "1.18.0"
   },
   "devDependencies": {
-    "@changesets/changelog-github": "0.2.2",
-    "@changesets/cli": "2.6.1",
     "@marigold/eslint-config": "*",
     "@marigold/jest-config": "*",
     "@marigold/prettier-config": "*",
@@ -47,8 +45,6 @@
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'` coverage",
     "deploy-storybook": "storybook-to-ghpages",
     "lint": "tsdx lint . --ignore-pattern node_modules",
-    "changeset": "changeset",
-    "release": "changeset publish",
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit"
   }
