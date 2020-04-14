@@ -1,9 +1,9 @@
 {
+  "$schema": "https://unpkg.com/@changesets/config@0.2.1/schema.json",
   "changelog": [
-    "@changesets/cli/changelog",
+    "@changesets/changelog-github",
     { "repo": "marigold-ui/marigold" }
   ],
-  "commit": false,
-  "access": "public",
-  "baseBranch": "master"
+  "linked": [["@marigold/components"]],
+  "access": "public"
 }
