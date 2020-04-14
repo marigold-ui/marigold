@@ -88,7 +88,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [ci-badge]: https://img.shields.io/circleci/build/gh/marigold-ui/marigold/master?style=flat-square
 [license]: https://github.com/marigold-ui/marigold/blob/master/LICENSE
 [license-badge]: https://img.shields.io/github/license/marigold-ui/marigold?style=flat-square
-[package]: https://www.npmjs.com/package/@marigold-components
+[package]: https://www.npmjs.com/package/@marigold/components
 [version-badge]: https://img.shields.io/npm/v/@marigold/components?style=flat-square
 [coverage]: https://coveralls.io/github/marigold-ui/marigold?branch=master
 [coverage-badge]: https://img.shields.io/coveralls/github/marigold-ui/marigold/master?style=flat-square
