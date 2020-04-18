@@ -14,6 +14,8 @@
     "yarn": "1.18.0"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "0.2.3",
+    "@changesets/cli": "2.6.2",
     "@marigold/eslint-config": "*",
     "@marigold/jest-config": "*",
     "@marigold/prettier-config": "*",
@@ -42,10 +44,12 @@
     "build": "lerna run build --stream",
     "test": "tsdx test --config jest.config.js",
     "coverage": "tsdx test --config jest.config.js --coverage --coverageReporters html",
-    "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'` coverage",
+    "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'`",
+    "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
     "deploy-storybook": "storybook-to-ghpages",
     "lint": "tsdx lint . --ignore-pattern node_modules --ignore-pattern dist",
     "format": "prettier --write \"**/*\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "release": "yarn clean:build && yarn build && changeset publish"
   }
 }
