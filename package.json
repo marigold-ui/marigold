@@ -50,6 +50,6 @@
     "lint": "tsdx lint . --ignore-pattern node_modules --ignore-pattern dist",
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit",
-    "release": "yarn clean:build && yarn build && changeset publish"
+    "release": "yarn build && changeset publish"
   }
 }
