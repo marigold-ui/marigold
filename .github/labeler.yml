@@ -1,0 +1,8 @@
+enhancement:
+  - packages/*
+  - packages/**/*
+  - themes/**/src/*
+
+infrastructure:
+  - config/*
+  - config/**/*
