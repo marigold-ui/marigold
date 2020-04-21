@@ -1,5 +1,5 @@
-import React from 'react';
-import { system, Box } from '@marigold/system';
+import React, { Profiler } from 'react';
+import { system, Box, onRenderCallback } from '@marigold/system';
 
 type LabelProps = {
   htmlFor: string;
@@ -8,15 +8,17 @@ type LabelProps = {
 export const Label = system<LabelProps, 'label'>(
   ({ variant = 'label', htmlFor, children, ...props }) => {
     return (
-      <Box
-        as="label"
-        themeSection="form"
-        variant={variant}
-        htmlFor={htmlFor}
-        {...props}
-      >
-        {children}
-      </Box>
+      <Profiler id="label" onRender={onRenderCallback}>
+        <Box
+          as="label"
+          themeSection="form"
+          variant={variant}
+          htmlFor={htmlFor}
+          {...props}
+        >
+          {children}
+        </Box>
+      </Profiler>
     );
   }
 );

@@ -53,3 +53,24 @@ export function system<P, T extends ElementType>(
     render({ ...props, ref })
   ) as SystemComponent<P, T>;
 }
+
+/** For Profiler logging */
+export function onRenderCallback(
+  id: string,
+  phase: 'mount' | 'update',
+  actualDuration: number,
+  baseDuration: number,
+  startTime: number,
+  commitTime: number,
+  interactions: Set<any>
+) {
+  console.log(
+    id,
+    phase,
+    actualDuration,
+    baseDuration,
+    startTime,
+    commitTime,
+    interactions
+  );
+}
