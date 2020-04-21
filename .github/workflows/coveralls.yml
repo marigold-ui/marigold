@@ -1,4 +1,4 @@
-name: Test Coveralls
+name: Coverage
 
 on: ['push', 'pull_request']
 
@@ -23,4 +23,5 @@ jobs:
       - name: Upload coveralls
         uses: coverallsapp/github-action@master
         with:
-          github-token: ${{ secrets.GH_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
