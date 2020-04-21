@@ -6,35 +6,6 @@ orbs:
   slack: circleci/slack@3.4.2
 
 jobs:
-  test:
-    docker:
-      - image: circleci/node:12
-        environment:
-          - COVERALLS_REPO_TOKEN: '${{ secrets.COVERALLS_REPO_TOKEN }}'
-
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
-            - deps1-{{ checksum ".circleci/config.yml" }}
-
-      - run:
-          name: Install packages
-          command: yarn install
-
-      - save_cache:
-          key: deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
-
-      - run:
-          name: Run tests
-          command: yarn test --ci
-
-      - store_artifacts:
-          path: coverage
-
   coverage:
     docker:
       - image: circleci/node:12
@@ -61,50 +32,6 @@ jobs:
           root: .
           paths:
             - ./coverage
-
-  type_check:
-    docker:
-      - image: circleci/node:12
-
-    steps:
-      - checkout
-      - restore_cache:
-          key: deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
-
-      - run:
-          name: Install packages
-          command: yarn install
-
-      - save_cache:
-          key: deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
-
-      - run:
-          name: Check typings
-          command: yarn tsc --noEmit
-
-  lint:
-    docker:
-      - image: circleci/node:12
-
-    steps:
-      - checkout
-      - restore_cache:
-          key: deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
-
-      - run:
-          name: Install packages
-          command: yarn install
-
-      - save_cache:
-          key: deps1-{{ checksum ".circleci/config.yml" }}-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
-
-      - run:
-          name: Run linter
-          command: yarn lint
 
   upload-coveralls:
     docker:
@@ -144,10 +71,7 @@ workflows:
   version: 2
   test_job:
     jobs:
-      - test
       - coverage
-      - type_check
-      - lint
       - upload-coveralls:
           requires:
             - coverage
