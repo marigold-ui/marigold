@@ -1,5 +1,24 @@
 import { BaseTheme } from '@marigold/components';
 
+const text = {
+  root: {
+    fontFamily: 'body',
+    fontSize: 1,
+    lineHeight: 'body',
+    fontWeight: 'body',
+    color: 'text',
+  },
+  span: {
+    display: 'inline-block',
+  },
+  p: {
+    display: 'inline-block',
+    margin: '0 0 8px',
+    ':last-child': {
+      marginBottom: '16px',
+    },
+  },
+};
 const button = {
   root: {
     position: 'relative',
@@ -85,19 +104,13 @@ const theme: BaseTheme = {
     },
   },
   text: {
-    body: {
-      fontFamily: 'body',
-      fontSize: 1,
-      lineHeight: 'body',
-      fontWeight: 'body',
-      color: 'text',
+    span: {
+      ...text.root,
+      ...text.span,
     },
-    heading: {
-      fontFamily: 'heading',
-      fontSize: 5,
-      lineHeight: 'heading',
-      fontWeight: 'heading',
-      color: 'text',
+    p: {
+      ...text.root,
+      ...text.p,
     },
   },
   button: {

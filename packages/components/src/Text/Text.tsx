@@ -4,9 +4,9 @@ import { Box, system } from '@marigold/system';
 type TextProps = {};
 
 export const Text = system<TextProps, 'span'>(
-  ({ as = 'span', variant, children, ...props }) => {
+  ({ as = 'span', children, ...props }) => {
     return (
-      <Box as={as} themeSection="text" variant={variant} {...props}>
+      <Box {...props} as={as} themeSection="text" variant={as}>
         {children}
       </Box>
     );
