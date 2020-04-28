@@ -6,6 +6,7 @@ const button = {
     fontFamily: 'body',
     fontSize: 1,
     fontWeight: 400,
+    border: 'none',
     borderRadius: '2px',
   },
   large: {
@@ -19,33 +20,45 @@ const button = {
   primary: {
     color: 'background',
     bg: 'primary',
+    ':hover': {
+      color: 'background',
+      bg: '#f8ac67',
+      cursor: 'pointer',
+    },
+    ':disabled': {
+      color: '#cccccc',
+      bg: '#f3f3f3',
+      cursor: 'not-allowed',
+    },
   },
   secondary: {
     color: 'background',
     bg: 'secondary',
-  },
-  disabled: {
-    color: '#cccccc',
-    bg: '#f3f3f3',
+    ':hover': {
+      color: 'background',
+      bg: '#6d6d6d',
+      cursor: 'pointer',
+    },
+    ':disabled': {
+      color: '#cccccc',
+      bg: '#f3f3f3',
+      cursor: 'not-allowed',
+    },
   },
   ghost: {
     color: 'secondary',
-  },
-  ghostDisabled: {
-    color: '#e3e3e3',
-  },
-  primaryHovered: {
-    color: 'background',
-    bg: '#f8ac67',
-  },
-  secondaryHovered: {
-    color: 'background',
-    bg: '#6d6d6d',
-  },
-  ghostHovered: {
-    color: 'secondary',
-    border: '1px solid #4b4b4b',
-    bg: '#e3e3e3',
+    ':hover': {
+      color: 'secondary',
+      outline: '1px solid #4b4b4b',
+      bg: '#e3e3e3',
+      cursor: 'pointer',
+    },
+    ':disabled': {
+      color: '#cccccc',
+      bg: '#f3f3f3',
+      cursor: 'not-allowed',
+      outline: 'none',
+    },
   },
 };
 
@@ -125,18 +138,6 @@ const theme: BaseTheme = {
         ...button.large,
       },
     },
-    disabled: {
-      small: {
-        ...button.root,
-        ...button.disabled,
-        ...button.small,
-      },
-      large: {
-        ...button.root,
-        ...button.disabled,
-        ...button.large,
-      },
-    },
     ghost: {
       small: {
         ...button.root,
@@ -146,39 +147,6 @@ const theme: BaseTheme = {
       large: {
         ...button.root,
         ...button.ghost,
-        ...button.large,
-      },
-    },
-    ghostDisabled: {
-      small: {
-        ...button.root,
-        ...button.ghostDisabled,
-        ...button.small,
-      },
-      large: {
-        ...button.root,
-        ...button.ghostDisabled,
-        ...button.large,
-      },
-    },
-    primaryHovered: {
-      large: {
-        ...button.root,
-        ...button.primaryHovered,
-        ...button.large,
-      },
-    },
-    secondaryHovered: {
-      large: {
-        ...button.root,
-        ...button.secondaryHovered,
-        ...button.large,
-      },
-    },
-    ghostHovered: {
-      large: {
-        ...button.root,
-        ...button.ghostHovered,
         ...button.large,
       },
     },
