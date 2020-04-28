@@ -7,10 +7,10 @@ assignees: ''
 
 ---
 
-Short component description (Dos and Don'ts, Use cases etc.)
+Short component description (special logic used, use cases etc.)
 - [ ] create component
 - [ ] add CSS normalization
 - [ ] add theme styles
 - [ ] create story file
-- [ ] create tests
+- [ ] create test file
 - [ ] create index file
