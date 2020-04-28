@@ -3,22 +3,19 @@ import { Button } from './Button';
 
 <Meta title="Components/Button" />
 
-# Button-Component
+# Button
 
 ## Description
 
 With the Button component you can render a `button` element.
-By adding the `themeSection` prop you can change to another themeSection. `button` is the default section.
-The variant in your section can be added with the variant prop. E.g. `variant="primary.large"` or `variant="secondary.small"`.
-Specific css style prop can also be added.
+The style variant and size of the button can be added with the variant prop and is composed like `variant.size`.
+Custom CSS styles can be added with the CSS prop.
 
 ## Properties
 
-| Property       | Type        | Default    |
-| :------------- | :---------- | :--------- |
-| `themeSection` | `string`    | `'button'` |
-| `variant`      | `string`    | `''`       |
-| `css`          | `css props` |            |
+| Property             | Type                                                                                                 | Default         |
+| :------------------- | :--------------------------------------------------------------------------------------------------- | :-------------- |
+| `variant` (optional) | `primary.small`, `primary.large`, `secondary.small`, `secondary.large`, `ghost.small`, `ghost.large` | `primary.large` |
 
 ## Import
 
@@ -37,28 +34,8 @@ import { Button } from '@marigold/components';
   <Story name="secondary.large">
     <Button variant="secondary.large">Secondary</Button>
   </Story>
-  <Story name="disabled.large">
-    <Button variant="disabled.large">Disabled</Button>
-  </Story>
   <Story name="ghost.large">
     <Button variant="ghost.large">Ghost</Button>
-  </Story>
-  <Story name="ghostDisabled.large">
-    <Button variant="ghostDisabled.large">Ghost Disabled</Button>
-  </Story>
-</Preview>
-
-### Large Hovered
-
-<Preview>
-  <Story name="primaryHovered.large">
-    <Button variant="primaryHovered.large">Primary</Button>
-  </Story>
-  <Story name="secondaryHovered.large">
-    <Button variant="secondaryHovered.large">Secondary</Button>
-  </Story>
-  <Story name="ghostHovered.large">
-    <Button variant="ghostHovered.large">Ghost</Button>
   </Story>
 </Preview>
 
@@ -71,13 +48,27 @@ import { Button } from '@marigold/components';
   <Story name="secondary.small">
     <Button variant="secondary.small">Secondary</Button>
   </Story>
-  <Story name="disabled.small">
-    <Button variant="disabled.small">Disabled</Button>
-  </Story>
   <Story name="ghost.small">
     <Button variant="ghost.small">Ghost</Button>
   </Story>
-  <Story name="ghostDisabled.small">
-    <Button variant="ghostDisabled.small">Ghost Disabled</Button>
+</Preview>
+
+### Disabled
+
+<Preview>
+  <Story name="primary.large.disabled">
+    <Button variant="primary.large" disabled>
+      Primary Large Disabled
+    </Button>
+  </Story>
+  <Story name="secondary.large.disabled">
+    <Button variant="secondary.large" disabled>
+      Secondary Large Disabled
+    </Button>
+  </Story>
+  <Story name="ghost.large.disabled">
+    <Button variant="ghost.large" disabled>
+      Ghost Large Disabled
+    </Button>
   </Story>
 </Preview>
