@@ -25,6 +25,7 @@ addParameters({
     list: Object.keys(themes).map(name => ({
       name,
       color: themes[name].colors.primary,
+      default: name === 'b2b',
     })),
   },
 });
