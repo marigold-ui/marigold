@@ -1009,13 +1009,13 @@
     "@manypkg/get-packages" "^1.0.1"
     semver "^5.4.1"
 
-"@changesets/changelog-github@0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@changesets/changelog-github/-/changelog-github-0.2.3.tgz#0626479c3db43775ee9559da03984930548097ad"
-  integrity sha512-JUegOfKIvBuMq6s8gXmt7MMXp1v1YDGFeFTDxpIWj6fhe0FEWwAwGxrYQAYk7H6fAuIxGwNsfRoCO9qwGZXPKQ==
+"@changesets/changelog-github@0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@changesets/changelog-github/-/changelog-github-0.2.5.tgz#e0c3e8d55c7e2988fa9f8d23e036058aeb597fdd"
+  integrity sha512-p2jwWCVQIRXcdFE0k+JwIMuyd6bQBgECVExk1bvoUdM0ckynuUX935vu8IAYGFO4MNi4kuhJJ6zEooAAxhVCcQ==
   dependencies:
-    "@changesets/get-github-info" "^0.4.2"
-    "@changesets/types" "^1.0.1"
+    "@changesets/get-github-info" "^0.4.3"
+    "@changesets/types" "^2.0.1"
     dotenv "^8.1.0"
 
 "@changesets/cli@2.6.2":
@@ -1080,10 +1080,10 @@
     fs-extra "^7.0.1"
     semver "^5.4.1"
 
-"@changesets/get-github-info@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@changesets/get-github-info/-/get-github-info-0.4.2.tgz#e265bbafe5fbdba2555b17ff227b4acb32afb542"
-  integrity sha512-V5UCDBQaDtmVIgkrHQZ+/2JVZQzAMTo1Xtv7cPtr7cGbd81O2NAGM2nHlVUdOhWAsnIvyCzeur/r9iw2ShukWg==
+"@changesets/get-github-info@^0.4.3":
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/@changesets/get-github-info/-/get-github-info-0.4.3.tgz#ed3c3ca76dcbaf4c98aa950a20fc5438da1a2f2c"
+  integrity sha512-hMtNDn4Kp2wDUohYipBIH3qGMxONZ3wEoaGtrflXHCSu57iulBcOSQ1oHRYSCJ9pO87dYQHA2XRUfrZUnqRfKA==
   dependencies:
     dataloader "^1.4.0"
     node-fetch "^2.5.0"
@@ -1161,6 +1161,11 @@
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@changesets/types/-/types-1.0.1.tgz#9f4dfd88f3d3cf04273c161fda80f596c9735db1"
   integrity sha512-hSNiAuCGyCLY8zjob8W8Jxzj4OWrLbFxXh85HjTDWyBGKnmbpJdob9Mmu7pddYV+8gHzKExSiz+D+tYNt24MmQ==
+
+"@changesets/types@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@changesets/types/-/types-2.0.1.tgz#26db6c4b63b73b7c9aa08b203e185529d7a86a70"
+  integrity sha512-jOBXRpNvgR+V8tv3EL/RI6ugjWiBgal7Tzqkhk+BI1QACavc62tK9kiYVXldsVDv8e0lPRiYBl/OADhOS//NlA==
 
 "@changesets/write@^0.1.0":
   version "0.1.0"
