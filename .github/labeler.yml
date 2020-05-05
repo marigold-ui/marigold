@@ -1,6 +1,8 @@
 enhancement:
   - packages/*
-  - themes/**/src/*
+  - packages/**/*
+  - themes/**/src/index.ts
 
 infrastructure:
   - config/*
+  - config/**/*
