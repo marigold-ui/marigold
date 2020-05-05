@@ -30,6 +30,7 @@ module.exports = (overrides = {}) => {
       '!**/node_modules/**',
       '!**/dist/**',
       '!**/themes/**',
+      '!**/icons/**',
     ],
 
     // plugins
