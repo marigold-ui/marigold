@@ -13,7 +13,6 @@ test('support svg with default props', () => {
   expect(element1.getAttribute('fill')).toEqual('currentcolor');
   expect(element1.getAttribute('width')).toEqual('24');
   expect(element1.getAttribute('height')).toEqual('24');
-  expect(element1.getAttribute('viewBox')).toEqual('0 0 24 24');
 });
 
 test('support fill prop', () => {
@@ -25,9 +24,6 @@ test('support fill prop', () => {
   let element2 = t1.getByTitle('test2');
 
   expect(element2.getAttribute('fill')).toEqual('orange');
-  expect(element2.getAttribute('width')).toEqual('24');
-  expect(element2.getAttribute('height')).toEqual('24');
-  expect(element2.getAttribute('viewBox')).toEqual('0 0 24 24');
 });
 
 test('support size prop', () => {
@@ -38,8 +34,17 @@ test('support size prop', () => {
   );
   let element3 = t1.getByTitle('test3');
 
-  expect(element3.getAttribute('fill')).toEqual('currentcolor');
   expect(element3.getAttribute('width')).toEqual('32');
   expect(element3.getAttribute('height')).toEqual('32');
-  expect(element3.getAttribute('viewBox')).toEqual('0 0 24 24');
+});
+
+test('viewbox default value', () => {
+  const t1 = render(
+    <Svg title="test4">
+      <path d="M9.9 20.113V13.8415H14.1V20.113H19.35V11.751H22.5L12 2.34375L1.5 11.751H4.65V20.113H9.9Z" />
+    </Svg>
+  );
+  let element4 = t1.getByTitle('test4');
+
+  expect(element4.getAttribute('viewBox')).toEqual('0 0 24 24');
 });
