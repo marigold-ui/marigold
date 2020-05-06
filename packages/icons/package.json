@@ -1,0 +1,13 @@
+{
+  "name": "@marigold/icons",
+  "description": "",
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "devDependencies": {
+    "@marigold/components": "*"
+  },
+  "peerDependencies": {
+    "react": "^16.x"
+  }
+}

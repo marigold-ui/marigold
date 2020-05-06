@@ -1,0 +1,3 @@
+# `@marigold/icons`
+
+> Marigold icons
