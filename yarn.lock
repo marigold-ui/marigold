@@ -1187,11 +1187,6 @@
     fs-extra "^7.0.1"
     p-filter "^2.1.0"
 
-"@changesets/types@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@changesets/types/-/types-1.0.1.tgz#9f4dfd88f3d3cf04273c161fda80f596c9735db1"
-  integrity sha512-hSNiAuCGyCLY8zjob8W8Jxzj4OWrLbFxXh85HjTDWyBGKnmbpJdob9Mmu7pddYV+8gHzKExSiz+D+tYNt24MmQ==
-
 "@changesets/types@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@changesets/types/-/types-2.0.1.tgz#26db6c4b63b73b7c9aa08b203e185529d7a86a70"
@@ -3109,10 +3104,10 @@
     dom-accessibility-api "^0.4.3"
     pretty-format "^26.0.1"
 
-"@testing-library/jest-dom@5.5.0":
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-5.5.0.tgz#4707023e8f572021e8a84f65721303ff60828d88"
-  integrity sha512-7sWHrpxG4Yd8TmryI7Rtbx8Ff4mbs3ASye3oshQIuHvsCR+QHgr7rTR/PfeXvOmwUwR36wSTTAvrLKsPmr6VEQ==
+"@testing-library/jest-dom@5.7.0":
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-5.7.0.tgz#b2e2acb4c088a293d52ba2cd1674b526282a2f87"
+  integrity sha512-ZV0OtBXmTDEDxrIbqJXiOcXCZ6aIMpmDlmfHj0hGNsSuQ/nX0qPAs9HWmCzXvPfTrhufTiH2nJLvDJu/LgHzwQ==
   dependencies:
     "@babel/runtime" "^7.9.2"
     "@types/testing-library__jest-dom" "^5.0.2"
