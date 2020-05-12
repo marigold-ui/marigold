@@ -6,7 +6,7 @@ type ButtonProps = {};
 export const Button = system<ButtonProps, 'button'>(
   ({ variant = 'primary.large', children, ...props }) => {
     return (
-      <Box {...props} as="button" themeSection="button" variant={variant}>
+      <Box as="button" themeSection="button" variant={variant} {...props}>
         {children}
       </Box>
     );
