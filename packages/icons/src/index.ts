@@ -1,3 +1,4 @@
 export * from './social';
-export * from './user';
+export * from './ticketing';
 export * from './ui';
+export * from './user';
