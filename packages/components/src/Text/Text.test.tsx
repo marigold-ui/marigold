@@ -5,7 +5,7 @@ import { Text } from './Text';
 
 const theme = {
   text: {
-    body: {
+    span: {
       fontFamily: 'Oswald Regular',
     },
     heading: {
