@@ -1,54 +1,59 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { MarigoldProvider } from '@marigold/system';
 import { Text } from './Text';
 
 const theme = {
   text: {
-    span: {
+    body: {
       fontFamily: 'Oswald Regular',
-      fontSize: '1rem',
-      lineHeight: 2,
-      fontWeight: 300,
-      color: '#ffe6f7',
-      display: 'inline-block',
     },
-    p: {
-      fontFamily: 'Oswald Regular',
-      fontSize: '1rem',
-      lineHeight: 2,
-      fontWeight: 300,
-      color: '#ffe6f7',
-      display: 'inline-block',
-      margin: '0 0 8px',
-      ':last-child': {
-        marginBottom: '16px',
-      },
+    heading: {
+      fontFamily: 'Inter',
     },
   },
 };
 
-test('support default themeSection and variant from a theme', () => {
-  const t1 = render(
+test('supports default variant and themeSection', () => {
+  render(
     <MarigoldProvider theme={theme}>
-      <Text variant="p">I am a paragraph</Text>
+      <Text>text</Text>
     </MarigoldProvider>
   );
-  let element1 = t1.getByText('I am a paragraph');
+  const text = screen.getByText(/text/);
 
-  expect(element1).toHaveStyle(`font-family: Oswald Regular`);
-  expect(element1).toHaveStyle(`line-height: 2`);
-  expect(element1).toHaveStyle(`font-weight: 300`);
-  expect(element1).toHaveStyle(`color: #ffe6f7`);
+  expect(text).toHaveStyle(`font-family: Oswald Regular`);
 });
 
-test('support default span from a theme and styling via css prop', () => {
-  const t2 = render(
+test('accepts other variant than default', () => {
+  render(
     <MarigoldProvider theme={theme}>
-      <Text css={{ border: '1px solid black' }}>I am text with border</Text>
+      <Text variant="heading">text</Text>
     </MarigoldProvider>
   );
-  let element2 = t2.getByText('I am text with border');
+  const text = screen.getByText(/text/);
 
-  expect(element2).toHaveStyle('border: 1px solid black');
+  expect(text).toHaveStyle(`font-family: Inter`);
+});
+
+test('renders <span> element by default', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Text>text</Text>
+    </MarigoldProvider>
+  );
+  const text = screen.getByText(/text/);
+
+  expect(text instanceof HTMLSpanElement).toBeTruthy();
+});
+
+test('variant styles cannot be overridden with CSS prop', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Text css={{ fontFamily: 'Arial' }}>text</Text>
+    </MarigoldProvider>
+  );
+  const text = screen.getByText(/text/);
+
+  expect(text).not.toHaveStyle(`font-family: Arial`);
 });

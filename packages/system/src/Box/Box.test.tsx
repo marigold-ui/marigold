@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { ThemeContext } from '../emotion';
 import { SpacingProps } from '../categories';
 
@@ -10,8 +10,8 @@ import { Box } from './Box';
 const theme = {
   colors: {
     primary: 'hotpink',
-    black: '#111',
-    white: '#000',
+    black: '#000',
+    white: '#FFF',
     blue: '#2980b9',
   },
   text: {
@@ -38,46 +38,44 @@ const theme = {
 
 // Tests
 // ---------------
-test('render a <div> by default', () => {
-  const { getByText } = render(<Box>I am Box!</Box>);
-  const result = getByText('I am Box!');
+test('renders a <div> by default', () => {
+  render(<Box>box</Box>);
+  const box = screen.getByText(/box/);
 
-  expect(result instanceof HTMLDivElement).toBeTruthy();
+  expect(box instanceof HTMLDivElement).toBeTruthy();
 });
 
-test('change rendered element via "as" prop', () => {
-  const { getByText } = render(<Box as="span">I am Box!</Box>);
-  const result = getByText('I am Box!');
+test('changes rendered element via as prop', () => {
+  render(<Box as="span">box</Box>);
+  const box = screen.getByText(/box/);
 
-  expect(result instanceof HTMLSpanElement).toBeTruthy();
+  expect(box instanceof HTMLSpanElement).toBeTruthy();
 });
 
-test('pass down all HTML attributes', () => {
-  const { getByText } = render(
-    <Box id="id" disabled>
-      I am Box!
+test('passes down all HTML attributes', () => {
+  render(
+    <Box id="box-id" disabled>
+      box
     </Box>
   );
-  const result = getByText('I am Box!');
+  const box = screen.getByText(/box/);
 
-  expect(result.getAttribute('id')).toEqual('id');
-  expect(result.getAttribute('disabled')).toMatch('');
+  expect(box.getAttribute('id')).toEqual('box-id');
+  expect(box.getAttribute('disabled')).toMatch('');
 });
 
 test('apply some base css styling for normalization', () => {
-  const { getByText } = render(<Box>I am Box!</Box>);
-  const element = getByText('I am Box!');
+  render(<Box>box</Box>);
+  const box = screen.getByText(/box/);
 
-  expect(element).toHaveStyle('box-sizing: border-box');
-  expect(element).toHaveStyle('margin: 0');
-  expect(element).toHaveStyle('min-width: 0');
+  expect(box).toHaveStyle(`box-sizing: border-box`);
 });
 
 test('forward ref', () => {
   const ref = React.createRef<HTMLButtonElement>();
   render(
-    <Box as="button" type="button" ref={ref}>
-      I am a button!
+    <Box as="button" ref={ref}>
+      button
     </Box>
   );
 
@@ -90,27 +88,26 @@ test('apply default styling via css prop', () => {
       {children}
     </Box>
   );
+  render(<Button>button</Button>);
+  const button = screen.getByText(/button/);
 
-  const { getByText } = render(<Button>I am Custom Button!</Button>);
-  const element = getByText('I am Custom Button!');
-
-  expect(element).toHaveStyle('border: 1px solid black');
+  expect(button).toHaveStyle(`border: 1px solid black`);
 });
 
 test('use design tokens for scale values', () => {
-  const { getByText } = render(<Box css={{ px: 1 }}>I am Component!</Box>);
-  const element = getByText('I am Component!');
+  render(<Box css={{ px: 1 }}>box</Box>);
+  const box = screen.getByText(/box/);
 
-  expect(element).toHaveStyle(`padding-left: 4px`);
-  expect(element).toHaveStyle(`padding-right: 4px`);
+  expect(box).toHaveStyle(`padding-left: 4px`);
+  expect(box).toHaveStyle(`padding-right: 4px`);
 });
 
 test('interpolate responsive values', () => {
-  const { getByText } = render(<Box css={{ px: [1, 2] }}>I am Component!</Box>);
-  const element = getByText('I am Component!');
+  render(<Box css={{ px: [1, 2] }}>box</Box>);
+  const box = screen.getByText(/box/);
 
-  expect(element).toHaveStyle(`padding-left: 4px`);
-  expect(element).toHaveStyle(`padding-right: 4px`);
+  expect(box).toHaveStyle(`padding-left: 4px`);
+  expect(box).toHaveStyle(`padding-right: 4px`);
 });
 
 test('support style props for spacing', () => {
@@ -119,14 +116,14 @@ test('support style props for spacing', () => {
       {children}
     </Box>
   );
-  const { getByText } = render(<Button>I am Custom Button!</Button>);
-  const element = getByText('I am Custom Button!');
+  render(<Button>button</Button>);
+  const button = screen.getByText(/button/);
 
-  expect(element).toHaveStyle(`margin-top: 8px`);
-  expect(element).toHaveStyle(`margin-bottom: 8px`);
+  expect(button).toHaveStyle(`margin-top: 8px`);
+  expect(button).toHaveStyle(`margin-bottom: 8px`);
 });
 
-test('support variants from theme', () => {
+test('supports variants from theme', () => {
   const Text: React.FC<{ variant?: keyof typeof theme.text }> = ({
     variant = 'body',
     children,
@@ -137,26 +134,26 @@ test('support variants from theme', () => {
   );
 
   // Body Text
-  const t1 = render(
+  render(
     <ThemeContext.Provider value={theme}>
-      <Text>I am a body text!</Text>
+      <Text>body</Text>
     </ThemeContext.Provider>
   );
-  let element = t1.getByText('I am a body text!');
+  const body = screen.getByText(/body/);
 
-  expect(element).toHaveStyle(`color: ${theme.colors.black}`);
-  expect(element).toHaveStyle(`font-size: 14px`);
+  expect(body).toHaveStyle(`font-size: 14px`);
+  expect(body).toHaveStyle(`color: ${theme.colors.black}`);
 
   // Heading Text
-  const t2 = render(
+  render(
     <ThemeContext.Provider value={theme}>
-      <Text variant="heading">I am a heading text!</Text>
+      <Text variant="heading">heading</Text>
     </ThemeContext.Provider>
   );
-  element = t2.getByText('I am a heading text!');
+  const heading = screen.getByText(/heading/);
 
-  expect(element).toHaveStyle(`color: ${theme.colors.primary}`);
-  expect(element).toHaveStyle(`font-size: 20px`);
+  expect(heading).toHaveStyle(`font-size: 20px`);
+  expect(heading).toHaveStyle(`color: ${theme.colors.primary}`);
 });
 
 test('order of application: base < theme < style props', () => {
@@ -166,8 +163,10 @@ test('order of application: base < theme < style props', () => {
     } & SpacingProps
   > = ({ children, variant = 'secondary', ...props }) => (
     <Box
-      as="button"
       {...props}
+      as="button"
+      themeSection="buttons"
+      variant={variant}
       css={{
         display: 'inline-block',
         color: 'hotpink',
@@ -175,44 +174,42 @@ test('order of application: base < theme < style props', () => {
         px: 2,
         py: 1,
       }}
-      themeSection="buttons"
-      variant={variant}
     >
       {children}
     </Box>
   );
 
-  const t1 = render(
+  render(
     <ThemeContext.Provider value={theme}>
-      <Button>Click me!</Button>
+      <Button>button</Button>
     </ThemeContext.Provider>
   );
-  let element = t1.getByText('Click me!');
+  const button = screen.getByText(/button/);
 
   // Added via css prop
-  expect(element).toHaveStyle('display: inline-block');
-  expect(element).toHaveStyle('border: 0');
-  expect(element).toHaveStyle('padding-left: 8px');
-  expect(element).toHaveStyle('padding-right: 8px');
-  expect(element).toHaveStyle('padding-top: 4px');
-  expect(element).toHaveStyle('padding-bottom: 4px');
+  expect(button).toHaveStyle(`display: inline-block`);
+  expect(button).toHaveStyle(`border: 0`);
+  expect(button).toHaveStyle(`padding-left: 8px`);
+  expect(button).toHaveStyle(`padding-right: 8px`);
+  expect(button).toHaveStyle(`padding-top: 4px`);
+  expect(button).toHaveStyle(`padding-bottom: 4px`);
 
   // Added via variant
-  expect(element).toHaveStyle(`color: ${theme.colors.black}`); // overrides "hotpink"
-  expect(element).toHaveStyle(`background-color: ${theme.colors.white}`);
+  expect(button).toHaveStyle(`color: ${theme.colors.black}`); // overrides "hotpink"
+  expect(button).toHaveStyle(`background-color: ${theme.colors.white}`);
 
-  t1.rerender(
+  render(
     <ThemeContext.Provider value={theme}>
       <Button px="3" py="4">
-        Click me!
+        variantbutton
       </Button>
     </ThemeContext.Provider>
   );
-  element = t1.getByText('Click me!');
+  const variantbutton = screen.getByText(/variantbutton/);
 
-  expect(element).toHaveStyle('padding: 32px 16px 32px 16px');
-  expect(element).not.toHaveStyle('padding-left: 8px');
-  expect(element).not.toHaveStyle('padding-right: 8px');
-  expect(element).not.toHaveStyle('padding-top: 4px');
-  expect(element).not.toHaveStyle('padding-bottom: 4px');
+  expect(variantbutton).toHaveStyle(`padding: 32px 16px 32px 16px`);
+  expect(variantbutton).not.toHaveStyle(`padding-left: 8px`);
+  expect(variantbutton).not.toHaveStyle(`padding-right: 8px`);
+  expect(variantbutton).not.toHaveStyle(`padding-top: 4px`);
+  expect(variantbutton).not.toHaveStyle(`padding-bottom: 4px`);
 });

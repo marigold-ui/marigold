@@ -1,46 +1,63 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { MarigoldProvider } from '@marigold/system';
 import { Button } from './Button';
 
 const theme = {
   button: {
     primary: {
-      fontFamily: 'Inter',
-      fontSize: '16px',
-      heigth: '48px',
-      lineHeight: '46px',
-      border: '2px',
-      fontWeight: 400,
-      color: '#ffffff',
-      bg: '#fa8005',
-      paddingY: '32px',
+      large: {
+        fontFamily: 'Inter',
+      },
+    },
+    secondary: {
+      large: {
+        fontFamily: 'Arial',
+      },
     },
   },
 };
 
-test('support default themeSection and custom variant from a theme', () => {
-  const t1 = render(
+test('supports default variant and themeSection', () => {
+  render(
     <MarigoldProvider theme={theme}>
-      <Button variant="primary">I am a Button</Button>
+      <Button>button</Button>
     </MarigoldProvider>
   );
-  let element1 = t1.getByText('I am a Button');
+  const button = screen.getByText(/button/);
 
-  expect(element1).toHaveStyle(`font-family: Inter`);
-  expect(element1).toHaveStyle(`font-size: 16px`);
-  expect(element1).toHaveStyle(`color: #ffffff`);
-  expect(element1).toHaveStyle(`border: 2px`);
+  expect(button).toHaveStyle(`font-family: Inter`);
 });
 
-test('support default themeSection, variant and custom styling via css prop', () => {
-  const t2 = render(
+test('accepts other variant than default', () => {
+  render(
     <MarigoldProvider theme={theme}>
-      <Button css={{ color: '#ffffff', border: '2px' }}>I am a Button</Button>
+      <Button variant="secondary.large">button</Button>
     </MarigoldProvider>
   );
-  let element2 = t2.getByText('I am a Button');
+  const button = screen.getByText(/button/);
 
-  expect(element2).toHaveStyle(`color: rgb(255, 255, 255)`);
-  expect(element2).toHaveStyle(`border: 2px`);
+  expect(button).toHaveStyle(`font-family: Arial`);
+});
+
+test('renders <button> element', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Button>button</Button>
+    </MarigoldProvider>
+  );
+  const button = screen.getByText(/button/);
+
+  expect(button instanceof HTMLButtonElement).toBeTruthy();
+});
+
+test('variant styles cannot be overridden with CSS prop', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Button css={{ fontFamily: 'Arial' }}>button</Button>
+    </MarigoldProvider>
+  );
+  const button = screen.getByText(/button/);
+
+  expect(button).not.toHaveStyle('font-family: Arial');
 });

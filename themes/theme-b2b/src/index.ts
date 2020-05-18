@@ -117,11 +117,11 @@ const theme: BaseTheme = {
     },
   },
   text: {
-    span: {
+    body: {
       ...text.root,
       ...text.span,
     },
-    p: {
+    heading: {
       ...text.root,
       ...text.p,
     },

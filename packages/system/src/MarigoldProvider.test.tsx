@@ -8,7 +8,7 @@ import { MarigoldProvider } from './MarigoldProvider';
 // Mock
 // ---------------
 /**
- * We mocking emotion's `<Global/>` here even though this will make us test
+ * We're mocking emotion's `<Global/>` here even though this will make us test
  * implementation details. This is currently the only way to test CSS and
  * media queries.
  */

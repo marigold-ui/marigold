@@ -7,14 +7,14 @@ test('did we break React.forwardRef?', () => {
   const Component = system<{}, 'div'>(props => <div {...props} />);
   render(<Component ref={myRef}>I have a ref!</Component>);
 
-  expect(myRef.current instanceof HTMLDivElement).toBeTruthy();
+  expect(myRef.current).toBeInstanceOf(HTMLDivElement);
 });
 
 /**
  * The following tests are not actually testing anything, rather
- * make sure that the typings work as intented.
+ * make sure that the typings work as intended.
  *
- * If we messed something up the typechecking will not work.
+ * If we mess something up, the typechecking will not work.
  */
 test('usage with `as` prop', () => {
   type ComponentProps = {
@@ -32,14 +32,14 @@ test('usage with `as` prop', () => {
   );
 
   /**
-   * Prop `extra` is requierd and button attributes allowed.
+   * Prop `extra` is required and button attributes allowed.
    */
   expect(() => {
     render(<Component extra="prop" type="button" />);
   }).not.toThrow();
 
   /**
-   * Yay, the `href` attribute is allwoed because we're rendering
+   * Yay, the `href` attribute is allowed because we're rendering
    * an anchor tag!
    */
   expect(() => {
@@ -48,7 +48,7 @@ test('usage with `as` prop', () => {
 
   /**
    * Render another component and adhere to its props. In this case
-   * the `to` prop is required by `<Link/>`. Also, the `extra` prop
+   * the `to` prop is required by `<Link />`. Also, the `extra` prop
    * from our original component is still required.
    */
   expect(() => {
