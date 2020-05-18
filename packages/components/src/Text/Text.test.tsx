@@ -5,7 +5,7 @@ import { Text } from './Text';
 
 const theme = {
   text: {
-    span: {
+    body: {
       fontFamily: 'Oswald Regular',
     },
     heading: {
@@ -17,7 +17,7 @@ const theme = {
 test('supports default variant and themeSection', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <Text variant="body">text</Text>
+      <Text>text</Text>
     </MarigoldProvider>
   );
   const text = screen.getByText(/text/);
@@ -36,10 +36,10 @@ test('accepts other variant than default', () => {
   expect(text).toHaveStyle(`font-family: Inter`);
 });
 
-test('renders <span> element', () => {
+test('renders <span> element by default', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <Text variant="body">text</Text>
+      <Text>text</Text>
     </MarigoldProvider>
   );
   const text = screen.getByText(/text/);
@@ -50,9 +50,7 @@ test('renders <span> element', () => {
 test('variant styles cannot be overridden with CSS prop', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <Text css={{ fontFamily: 'Arial' }} variant="body">
-        text
-      </Text>
+      <Text css={{ fontFamily: 'Arial' }}>text</Text>
     </MarigoldProvider>
   );
   const text = screen.getByText(/text/);
