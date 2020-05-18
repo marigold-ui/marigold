@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MarigoldProvider } from '@marigold/system';
+import { COMP } from '@marigold/components';
 
 const theme = {};
 
