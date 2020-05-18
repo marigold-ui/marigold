@@ -35,6 +35,17 @@ test('supports size prop', () => {
   expect(svg.getAttribute('width')).toEqual('30');
 });
 
+test('supports fill prop', () => {
+  render(
+    <Svg title="svg" fill="#fafafa">
+      <path d="M9.9 20.113V13.8415H14" />
+    </Svg>
+  );
+  const svg = screen.getByTitle(/svg/);
+
+  expect(svg.getAttribute('fill')).toEqual('#fafafa');
+});
+
 test('renders <svg> element', () => {
   render(
     <Svg title="svg">
