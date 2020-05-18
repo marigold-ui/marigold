@@ -47,10 +47,10 @@
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'`",
     "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
     "deploy-storybook": "storybook-to-ghpages",
-    "lint": "tsdx lint . --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern config/template",
+    "lint": "tsdx lint . --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern scripts/template",
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit",
     "release": "yarn build && changeset publish",
-    "create:component": "$PWD/config/template/create.sh"
+    "create:component": "$PWD/scripts/template/create.sh"
   }
 }

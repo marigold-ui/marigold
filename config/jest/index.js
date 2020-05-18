@@ -31,7 +31,7 @@ module.exports = (overrides = {}) => {
       '!**/dist/**',
       '!**/themes/**',
       '!**/icons/**',
-      '!**/config/template/**',
+      '!**/scripts/template/**',
     ],
 
     // plugins

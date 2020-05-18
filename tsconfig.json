@@ -11,6 +11,6 @@
     "jest.config.js",
     "**/node_modules/*",
     "**/dist/**/*",
-    "**/config/template/*"
+    "**/scripts/template/*"
   ]
 }
