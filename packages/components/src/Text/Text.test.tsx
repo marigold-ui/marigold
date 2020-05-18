@@ -5,19 +5,25 @@ import { Text } from './Text';
 
 const theme = {
   text: {
-    body: {
+    span: {
       fontFamily: 'Oswald Regular',
       fontSize: '1rem',
       lineHeight: 2,
       fontWeight: 300,
       color: '#ffe6f7',
+      display: 'inline-block',
     },
-    heading: {
-      fontFamily: 'Inter Black',
-      fontSize: '2rem',
-      lineHeight: 1.5,
-      fontWeight: 800,
-      color: '#ffe6f8',
+    p: {
+      fontFamily: 'Oswald Regular',
+      fontSize: '1rem',
+      lineHeight: 2,
+      fontWeight: 300,
+      color: '#ffe6f7',
+      display: 'inline-block',
+      margin: '0 0 8px',
+      ':last-child': {
+        marginBottom: '16px',
+      },
     },
   },
 };
@@ -25,12 +31,10 @@ const theme = {
 test('support default themeSection and variant from a theme', () => {
   const t1 = render(
     <MarigoldProvider theme={theme}>
-      <Text as="p" variant="body">
-        I am body Text
-      </Text>
+      <Text variant="p">I am a paragraph</Text>
     </MarigoldProvider>
   );
-  let element1 = t1.getByText('I am body Text');
+  let element1 = t1.getByText('I am a paragraph');
 
   expect(element1).toHaveStyle(`font-family: Oswald Regular`);
   expect(element1).toHaveStyle(`line-height: 2`);
@@ -38,16 +42,13 @@ test('support default themeSection and variant from a theme', () => {
   expect(element1).toHaveStyle(`color: #ffe6f7`);
 });
 
-test('support default as, heading variant from a theme and styling via css prop', () => {
-  const t3 = render(
+test('support default span from a theme and styling via css prop', () => {
+  const t2 = render(
     <MarigoldProvider theme={theme}>
-      <Text variant="heading" css={{ border: '1px solid black' }}>
-        I am headline Text with border
-      </Text>
+      <Text css={{ border: '1px solid black' }}>I am text with border</Text>
     </MarigoldProvider>
   );
-  let element3 = t3.getByText('I am headline Text with border');
+  let element2 = t2.getByText('I am text with border');
 
-  expect(element3).toHaveStyle(`font-family: Inter Black`);
-  expect(element3).toHaveStyle('border: 1px solid black');
+  expect(element2).toHaveStyle('border: 1px solid black');
 });
