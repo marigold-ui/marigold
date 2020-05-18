@@ -8,10 +8,6 @@ const theme = {
     label: {
       fontFamily: 'Inter Regular',
     },
-    primary: {
-      fontFamily: 'Arial Black',
-      fontSize: '10px',
-    },
   },
 };
 
@@ -24,20 +20,6 @@ test('supports default variant and themeSection', () => {
   const label = screen.getByText(/label/);
 
   expect(label).toHaveStyle(`font-family: Inter Regular`);
-});
-
-test('accepts other variant than default', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Label variant="primary" htmlFor="labelId">
-        label
-      </Label>
-    </MarigoldProvider>
-  );
-  const label = screen.getByText(/label/);
-
-  expect(label).toHaveStyle(`font-family: Arial Black`);
-  expect(label).toHaveStyle(`font-size: 10px`);
 });
 
 test('supports htmlFor prop', () => {
