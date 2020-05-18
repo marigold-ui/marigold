@@ -31,7 +31,7 @@ const theme = {
 test('support default themeSection and variant from a theme', () => {
   const t1 = render(
     <MarigoldProvider theme={theme}>
-      <Text as="p">I am a paragraph</Text>
+      <Text variant="p">I am a paragraph</Text>
     </MarigoldProvider>
   );
   let element1 = t1.getByText('I am a paragraph');
