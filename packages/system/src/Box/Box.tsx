@@ -1,6 +1,7 @@
 // @ts-ignore
 import { css } from '@theme-ui/css';
 import pick from 'lodash.pick';
+import _ from 'lodash';
 import { SPACE_PROPS, SpacingProps } from '../categories';
 import { jsx } from '../emotion';
 import { system } from '../system';
@@ -43,11 +44,15 @@ const parseProps = (props: { [key: string]: any }) => {
     `${props.themeSection}.${props.variant}`;
 
   next.css = (theme: any) => {
-    return [
-      { boxSizing: 'border-box', margin: 0, minWidth: 0 },
-      css(styles)(theme),
-      css({ variant })(theme),
-    ];
+    if (_.has(theme, variant)) {
+      return [
+        { boxSizing: 'border-box', margin: 0, minWidth: 0 },
+        css(styles)(theme),
+        css({ variant })(theme),
+      ];
+    } else {
+      throw new Error('Variant key does not exist in theme.');
+    }
   };
 
   return next;
