@@ -3,22 +3,18 @@ import { Text } from './Text';
 
 <Meta title="Components/Text" />
 
-# Text-Component
+# Text
 
 ## Description
 
-With the Text component you can easily add different text HTML elements. As default it renders a `span` element.
-By adding the `as` prop you can use more elements like `p`, `a`, `h1`, `h2`, `h3`, ... E.g. `as="h1"`.
-The element uses always the themeSection with the name: `text` in your given theme. The variant in your section can be added with the variant prop. E.g. `variant="body"`.
-Specific css style prop can also be added.
+With the Text component you can easily add different body text HTML elements. As a default, a `span` element is rendered.
+By adding the `as` prop you can alternatively render a `p` element.
 
 ## Properties
 
-| Property  | Type                       | Default  |
-| :-------- | :------------------------- | :------- |
-| `as`      | `HTMLTag`, `ComponentType` | `'span'` |
-| `variant` | `string`                   |          |
-| `css`     | `css props`                |          |
+| Property  | Type              | Default |
+| :-------- | :---------------- | :------ |
+| `variant` | `body`, `heading` | `body`  |
 
 ## Import
 
@@ -29,17 +25,30 @@ import { Text } from '@marigold/components';
 ## Usage
 
 <Preview>
-  <Story name="text">
-    <Text as="p" variant="body">
-      I am just Text
+  <Story name="body">
+    <Text>
+      SPAN: Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+      nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed
+      diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+      Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor
+      sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+      diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+      erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
+      rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+      dolor sit amet.
     </Text>
   </Story>
-</Preview>
-
-<Preview>
-  <Story name="text2">
-    <Text as="h1" variant="heading">
-      I am just a headline
+  <Story name="heading">
+    <Text variant="heading">
+      P: Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+      nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed
+      diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+      Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor
+      sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+      diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+      erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
+      rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+      dolor sit amet.
     </Text>
   </Story>
 </Preview>
