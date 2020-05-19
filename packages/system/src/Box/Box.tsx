@@ -44,15 +44,14 @@ const parseProps = (props: { [key: string]: any }) => {
     `${props.themeSection}.${props.variant}`;
 
   next.css = (theme: any) => {
-    if (_.has(theme, variant)) {
-      return [
-        { boxSizing: 'border-box', margin: 0, minWidth: 0 },
-        css(styles)(theme),
-        css({ variant })(theme),
-      ];
-    } else {
-      throw new Error('Variant key does not exist in theme.');
+    if (variant && !_.has(theme, variant)) {
+      throw new Error('Variant does not exist in theme.');
     }
+    return [
+      { boxSizing: 'border-box', margin: 0, minWidth: 0 },
+      css(styles)(theme),
+      css({ variant })(theme),
+    ];
   };
 
   return next;
