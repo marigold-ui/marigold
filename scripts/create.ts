@@ -21,5 +21,6 @@ shell.cp(
 // replace COMP with component name
 shell.sed('-i', /COMP/, `${component}`, `${path}/index.ts`);
 shell.sed('-i', /COMP/, `${component}`, `${path}/${component}.tsx`);
+shell.sed('-i', /COMPProps/, `${component}Props`, `${path}/${component}.tsx`);
 shell.sed('-i', /COMP/, `${component}`, `${path}/${component}.test.tsx`);
 shell.sed('-i', /COMP/, `${component}`, `${path}/${component}.stories.mdx`);
