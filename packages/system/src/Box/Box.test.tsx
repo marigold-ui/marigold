@@ -213,3 +213,22 @@ test('order of application: base < theme < style props', () => {
   expect(variantbutton).not.toHaveStyle(`padding-top: 4px`);
   expect(variantbutton).not.toHaveStyle(`padding-bottom: 4px`);
 });
+
+test('throws error for non existent variant', () => {
+  const Text: React.FC<{ variant?: string }> = ({
+    variant = 'body',
+    children,
+  }) => (
+    <Box themeSection="text" variant={variant}>
+      {children}
+    </Box>
+  );
+
+  expect(() =>
+    render(
+      <ThemeContext.Provider value={theme}>
+        <Text variant="nope">body</Text>
+      </ThemeContext.Provider>
+    )
+  ).toThrowError();
+});
