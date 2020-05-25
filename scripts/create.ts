@@ -17,6 +17,9 @@ shell.cp(
   'scripts/template/Component.stories.mdx',
   `${path}/${component}.stories.mdx`
 );
+shell
+  .ShellString(`export * from './${component}';\n`)
+  .toEnd('packages/components/src/index.ts');
 
 // replace COMP with component name
 shell.sed('-i', /COMP/, `${component}`, `${path}/index.ts`);
