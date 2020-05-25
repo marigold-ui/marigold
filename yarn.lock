@@ -2564,17 +2564,17 @@
   dependencies:
     estree-walker "^1.0.1"
 
-"@storybook/addon-a11y@5.3.18":
-  version "5.3.18"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-a11y/-/addon-a11y-5.3.18.tgz#3f35b2f03a0f292c415d659b5f6f8c00a029c9f7"
-  integrity sha512-DySJg3Q+GqLhVdQNsGwdO7V0cewSzhWdK3LDkZxF0eTvP8rTWG6+SyNFPClYO/MR/i1M6zKMMOoJoT++fu866A==
+"@storybook/addon-a11y@5.3.19":
+  version "5.3.19"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-a11y/-/addon-a11y-5.3.19.tgz#6a21d200c1e67362ae3680d3beb76bfb4ff6c508"
+  integrity sha512-obh2Uy8IeXU+UPQXoqT2Q0hRdAuQdfZjYdrGJ9RGoehVEzMxZlR0x1Cml5xf3u9v6+l72hi85RvA6YEGl+jKZw==
   dependencies:
-    "@storybook/addons" "5.3.18"
-    "@storybook/api" "5.3.18"
-    "@storybook/client-logger" "5.3.18"
-    "@storybook/components" "5.3.18"
-    "@storybook/core-events" "5.3.18"
-    "@storybook/theming" "5.3.18"
+    "@storybook/addons" "5.3.19"
+    "@storybook/api" "5.3.19"
+    "@storybook/client-logger" "5.3.19"
+    "@storybook/components" "5.3.19"
+    "@storybook/core-events" "5.3.19"
+    "@storybook/theming" "5.3.19"
     axe-core "^3.3.2"
     core-js "^3.0.1"
     global "^4.3.2"
@@ -2752,14 +2752,14 @@
     ts-dedent "^1.1.0"
     util-deprecate "^1.0.2"
 
-"@storybook/client-logger@5.3.18", "@storybook/client-logger@^5.3.14":
+"@storybook/client-logger@5.3.18":
   version "5.3.18"
   resolved "https://registry.yarnpkg.com/@storybook/client-logger/-/client-logger-5.3.18.tgz#27c9d09d788965db0164be6e168bc3f03adbf88f"
   integrity sha512-RZjxw4uqZX3Yk27IirbB/pQG+wRsQSSRlKqYa8KQ5bSanm4IrcV9VA1OQbuySW9njE+CexAnakQJ/fENdmurNg==
   dependencies:
     core-js "^3.0.1"
 
-"@storybook/client-logger@5.3.19":
+"@storybook/client-logger@5.3.19", "@storybook/client-logger@^5.3.14":
   version "5.3.19"
   resolved "https://registry.yarnpkg.com/@storybook/client-logger/-/client-logger-5.3.19.tgz#fbbd186e82102eaca1d6a5cca640271cae862921"
   integrity sha512-nHftT9Ow71YgAd2/tsu79kwKk30mPuE0sGRRUHZVyCRciGFQweKNOS/6xi2Aq+WwBNNjPKNlbgxwRt1yKe1Vkg==
