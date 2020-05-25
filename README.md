@@ -57,6 +57,7 @@ yarn install
 - Linting: `yarn lint`
 - Test: `yarn test` (with optional `--watch`)
 - Type checking: `yarn typecheck`
+- Create new component: `yarn create:component <name>`
 
 ## Contributors ✨
 
