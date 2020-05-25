@@ -1007,10 +1007,10 @@
   resolved "https://registry.yarnpkg.com/@base2/pretty-print-object/-/pretty-print-object-1.0.0.tgz#860ce718b0b73f4009e153541faff2cb6b85d047"
   integrity sha512-4Th98KlMHr5+JkxfcoDT//6vY8vM+iSPrLNpHhRyLx2CFYi8e2RfqPLdpbnpo0Q5lQC5hNB79yes07zb02fvCw==
 
-"@changesets/apply-release-plan@^3.0.1":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@changesets/apply-release-plan/-/apply-release-plan-3.0.2.tgz#e8f77518f065181717cc998d60b9dcaeb7387870"
-  integrity sha512-uw0qtgAVN55fw7Jg1t/KI9y7WMP4/IWfl7yYo4Q9Xl7kT87I4bntcFd0fhAj5+97iA9Hd3wNJczmNNWj7iLd7g==
+"@changesets/apply-release-plan@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@changesets/apply-release-plan/-/apply-release-plan-3.0.3.tgz#3f63e37a8637c5db6394956fe9a70b1b33b4ce44"
+  integrity sha512-OJFFO9OzUhzMK7vuWDWuXUEI0kCpm0VclEWw2uIRecPewR7Vprvio91L6t/QrNRXKKntRshvUy0I6Z3nZXOGyQ==
   dependencies:
     "@babel/runtime" "^7.4.4"
     "@changesets/config" "^1.1.0"
@@ -1046,13 +1046,13 @@
     "@changesets/types" "^3.0.0"
     dotenv "^8.1.0"
 
-"@changesets/cli@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/@changesets/cli/-/cli-2.7.1.tgz#2fd1038e8d3f03c2000dcd720d59a8120ed2394c"
-  integrity sha512-OoN92lT1LdqJHmjwnjsth0NQz4E8s4k0GMMG7q6SdVqEUhSachxbBzHrKS9/OMykiWzqtagDvym6s1drCxAJtg==
+"@changesets/cli@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@changesets/cli/-/cli-2.7.2.tgz#b3fe8272a9d9c41e8a886099f6a81330641636c7"
+  integrity sha512-cQxFRXePxEDr8E+b/hSjUufpa0Bdil3nDRCjGpPU0/42MzQJj/hKwAeGs1ggSMJgVUc46q6MM6+C7bABGxH3zg==
   dependencies:
     "@babel/runtime" "^7.4.4"
-    "@changesets/apply-release-plan" "^3.0.1"
+    "@changesets/apply-release-plan" "^3.0.3"
     "@changesets/assemble-release-plan" "^2.0.4"
     "@changesets/config" "^1.1.0"
     "@changesets/errors" "^0.1.4"
