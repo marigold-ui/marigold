@@ -111,6 +111,20 @@ import {
 
 # Marigold Icons
 
+## Description
+
+With the Icon component you can render one of the icons below.
+By adding the `size` prop you can change to another size. `24` is the default size.
+The `fill` prop is the second attribute and per default `currentcolor`.
+Specific css style prop can also be added.
+
+## Properties
+
+| Property | Type     | Default          |
+| :------- | :------- | :--------------- |
+| `size`   | `number` | `'24'`           |
+| `fill`   | `string` | `'currentcolor'` |
+
 ## Import
 
 ```tsx
@@ -118,6 +132,18 @@ import { Google } from '@marigold/icons';
 ```
 
 ## Usage
+
+<Preview>
+  <Story name="sizeProp">
+    <DesignTicket size={40} />
+  </Story>
+  <Story name="sizeFillProp">
+    <DesignTicket size={32} fill="red" />
+  </Story>
+  <Story name="fillProp">
+    <DesignTicket fill="#E6DC16" />
+  </Story>
+</Preview>
 
 ### UI-Icons
 
