@@ -27,6 +27,7 @@ const button = {
     fontWeight: 400,
     border: 'none',
     borderRadius: '2px',
+    display: 'inline-flex',
   },
   large: {
     lineHeight: '46px',
@@ -162,6 +163,11 @@ const theme: BaseTheme = {
         ...button.ghost,
         ...button.large,
       },
+    },
+  },
+  icon: {
+    icon: {
+      marginRight: 1,
     },
   },
 };

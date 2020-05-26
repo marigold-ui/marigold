@@ -7,7 +7,9 @@ export const Button = system<ButtonProps, 'button'>(
   ({ variant = 'primary.large', children, ...props }) => {
     return (
       <Box as="button" themeSection="button" variant={variant} {...props}>
-        {children}
+        <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+          {children}
+        </span>
       </Box>
     );
   }
