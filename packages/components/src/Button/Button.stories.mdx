@@ -30,10 +30,7 @@ import { Button } from '@marigold/components';
 
 <Preview>
   <Story name="primary.large">
-    <Button variant="primary.large">
-      <Facebook fill="red" size={50} />
-      Primary
-    </Button>
+    <Button variant="primary.large">Primary</Button>
   </Story>
   <Story name="secondary.large">
     <Button variant="secondary.large">Secondary</Button>
@@ -73,6 +70,71 @@ import { Button } from '@marigold/components';
   <Story name="ghost.large.disabled">
     <Button variant="ghost.large" disabled>
       Ghost Large Disabled
+    </Button>
+  </Story>
+</Preview>
+
+### Default with icon
+
+<Preview>
+  <Story name="primary.large with default icon">
+    <Button variant="primary.large">
+      <Facebook /> Like me!
+    </Button>
+  </Story>
+  <Story name="primary.small with default icon">
+    <Button variant="primary.small">
+      <Facebook /> Like me!
+    </Button>
+  </Story>
+  <Story name="secondary.large with default icon">
+    <Button variant="secondary.large">
+      <Facebook /> Like me!
+    </Button>
+  </Story>
+  <Story name="secondary.small with default icon">
+    <Button variant="secondary.small">
+      <Facebook /> Like me!
+    </Button>
+  </Story>
+  <Story name="ghost.large with default icon">
+    <Button variant="ghost.large">
+      <Facebook /> Like me!
+    </Button>
+  </Story>
+  <Story name="ghost.small with default icon">
+    <Button variant="ghost.small">
+      <Facebook /> Like me!
+    </Button>
+  </Story>
+</Preview>
+
+### Large with large icon
+
+<Preview>
+  <Story name="primary.large with large icon">
+    <Button variant="primary.large">
+      <Facebook size={48} /> Like me!
+    </Button>
+  </Story>
+</Preview>
+
+### Small with small icon
+
+<Preview>
+  <Story name="primary.small with small icon">
+    <Button variant="primary.small">
+      <Facebook size={20} /> Like me!
+    </Button>
+  </Story>
+</Preview>
+
+### With color
+
+<Preview>
+  <Story name="with color">
+    <Button variant="primary.small">
+      <Facebook fill="black" /> Like me!
     </Button>
   </Story>
 </Preview>

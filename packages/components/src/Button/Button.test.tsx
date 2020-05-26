@@ -77,6 +77,7 @@ test('add icon in button works as expected', () => {
   const icon = screen.getByTitle(/facebook/);
 
   expect(button instanceof HTMLSpanElement).toBeTruthy();
+  expect(button).toHaveStyle('display: inline-flex');
   expect(button.firstChild instanceof SVGElement).toBeTruthy();
   expect(icon.getAttribute('fill')).toEqual('red');
   expect(icon.getAttribute('width')).toEqual('30');
