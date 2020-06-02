@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MarigoldProvider } from '@marigold/system';
 import { Button } from './Button';
+import { Facebook } from '@marigold/icons';
 
 const theme = {
   button: {
@@ -26,7 +27,7 @@ test('supports default variant and themeSection', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button).toHaveStyle(`font-family: Inter`);
+  expect(button.parentElement).toHaveStyle(`font-family: Inter`);
 });
 
 test('accepts other variant than default', () => {
@@ -37,7 +38,7 @@ test('accepts other variant than default', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button).toHaveStyle(`font-family: Arial`);
+  expect(button.parentElement).toHaveStyle(`font-family: Arial`);
 });
 
 test('renders <button> element', () => {
@@ -48,7 +49,8 @@ test('renders <button> element', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button instanceof HTMLButtonElement).toBeTruthy();
+  expect(button.parentElement instanceof HTMLButtonElement).toBeTruthy();
+  expect(button instanceof HTMLSpanElement).toBeTruthy();
 });
 
 test('variant styles cannot be overridden with CSS prop', () => {
@@ -59,5 +61,24 @@ test('variant styles cannot be overridden with CSS prop', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button).not.toHaveStyle('font-family: Arial');
+  expect(button.parentElement).not.toHaveStyle('font-family: Arial');
+});
+
+test('add icon in button works as expected', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Button>
+        <Facebook fill="red" size={30} title="facebook" />
+        iconbutton
+      </Button>
+    </MarigoldProvider>
+  );
+  const button = screen.getByText(/iconbutton/);
+  const icon = screen.getByTitle(/facebook/);
+
+  expect(button instanceof HTMLSpanElement).toBeTruthy();
+  expect(button).toHaveStyle('display: inline-flex');
+  expect(button.firstChild instanceof SVGElement).toBeTruthy();
+  expect(icon.getAttribute('fill')).toEqual('red');
+  expect(icon.getAttribute('width')).toEqual('30');
 });
