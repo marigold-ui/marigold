@@ -1,0 +1,51 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Label, RadioButton } from '@marigold/components';
+
+<Meta title="Components/RadioButton" />
+
+# Radio Button
+
+## Description
+
+With the Radio Button component you can add a HTML `<input>` element with `type="radio"` to your form.
+The element uses always the themeSection with the name: `form` in your given theme. The variant in your section can be added with the variant prop. The default variant is `radio`.
+Specific css style prop can also be added.
+
+## Properties
+
+| Property  | Type        | Default   |
+| :-------- | :---------- | :-------- |
+| `variant` | `string`    | `'radio'` |
+| `css`     | `css props` |           |
+
+## Import
+
+```tsx
+import { RadioButton } from '@marigold/components';
+```
+
+## Usage
+
+### Radio default
+
+<Preview>
+  <Story name="RadioButton">
+    <div>
+      <RadioButton id="a" name="alphabet" value="a" />
+      <RadioButton id="b" name="alphabet" value="b" />
+      <RadioButton id="c" name="alphabet" value="c" />
+    </div>
+  </Story>
+</Preview>
+
+### Radio checked and disabled
+
+<Preview>
+  <Story name="RadioButton2">
+    <div>
+      <RadioButton checked />
+      <RadioButton disabled />
+      <RadioButton checked disabled />
+    </div>
+  </Story>
+</Preview>
