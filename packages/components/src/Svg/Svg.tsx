@@ -14,6 +14,8 @@ export const Svg = system<SvgProps, 'svg'>(
         height={size}
         viewBox="0 0 24 24"
         fill={fill}
+        themeSection="icon"
+        variant="icon"
         {...props}
       >
         {children}
