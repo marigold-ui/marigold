@@ -9,9 +9,9 @@ export const RadioButton = system<RadioButtonProps, 'input'>(
       <Box
         as="input"
         type="radio"
+        {...props}
         themeSection="form"
         variant={variant}
-        {...props}
       ></Box>
     );
   }
