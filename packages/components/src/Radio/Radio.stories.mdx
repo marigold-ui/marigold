@@ -1,7 +1,7 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
-import { Label, RadioButton } from '@marigold/components';
+import { Label, Radio } from '@marigold/components';
 
-<Meta title="Components/RadioButton" />
+<Meta title="Components/Radio" />
 
 # Radio Button
 
@@ -21,19 +21,28 @@ Specific css style prop can also be added.
 ## Import
 
 ```tsx
-import { RadioButton } from '@marigold/components';
+import { Radio } from '@marigold/components';
 ```
 
 ## Usage
 
-### Radio default
+### Radio standard labeled
 
 <Preview>
-  <Story name="RadioButton">
+  <Story name="Radio">
     <div>
-      <RadioButton id="a" name="alphabet" value="a" />
-      <RadioButton id="b" name="alphabet" value="b" />
-      <RadioButton id="c" name="alphabet" value="c" />
+      <Label htmlFor="mc">
+        <Radio id="mc" name="payment" value="Mastercard" />
+        Mastercard
+      </Label>
+      <Label htmlFor="vi">
+        <Radio id="vi" name="payment" value="Visa" />
+        Visa
+      </Label>
+      <Label htmlFor="ae">
+        <Radio id="ae" name="payment" value="AmericanExpress" />
+        American Express
+      </Label>
     </div>
   </Story>
 </Preview>
@@ -41,11 +50,11 @@ import { RadioButton } from '@marigold/components';
 ### Radio checked and disabled
 
 <Preview>
-  <Story name="RadioButton2">
+  <Story name="RadioTwo">
     <div>
-      <RadioButton checked />
-      <RadioButton disabled />
-      <RadioButton checked disabled />
+      <Radio checked />
+      <Radio disabled />
+      <Radio checked disabled />
     </div>
   </Story>
 </Preview>

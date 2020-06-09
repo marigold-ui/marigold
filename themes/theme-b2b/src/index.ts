@@ -116,6 +116,10 @@ const theme: BaseTheme = {
       display: 'flex',
       alignItems: 'center',
     },
+    radio: {
+      color: 'text',
+      verticalAlign: 'middle',
+    },
   },
   text: {
     body: {
