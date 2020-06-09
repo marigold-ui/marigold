@@ -1,0 +1,84 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Guides/Concepts & Principles" />
+
+## Design Tokens
+
+The term _design tokens_ originates from the [Lightning Design System](https://www.lightningdesignsystem.com/design-tokens/). They are the "visual design atoms" of a design system. Similar to variables in CSS or Sass, design tokens are used to capture low-level values and then used to create the look and feel of your product. This helps with maintaining a consistent and scalable visual system for UI development.
+
+```css
+/* button.css */
+.button {
+  color: #1f1235;
+  background: #ff6e6c;
+  height: 24px;
+}
+```
+
+```scss
+/* colors.scss */
+$color-primary: #ff6e6c;
+$color-text: #1f1235;
+
+/* sizes.scss */
+$size-6: 24px;
+
+/* button.scss */
+.button {
+  color: $color-text;
+  background: $color-primary;
+  height: $size-6;
+}
+```
+
+_Read more:_
+
+- [Lightning Design System: Design Tokens](https://www.lightningdesignsystem.com/design-tokens/)
+- [CSS Tricks: What are Design Tokens?](https://css-tricks.com/what-are-design-tokens/)
+
+## Rhythm & Harmony
+
+Instead of choosing arbitrary numbers for our typography, we make use of a _modular scale_. "By using culturally relevant, historically pleasing ratios to create modular scales and basing the measurements in our compositions on values from those scales, we can achieve a visual harmony not found in layouts that use arbitrary, conventional, or easily divisible numbers." ([_More Meaningful Typography_](https://alistapart.com/article/more-meaningful-typography/))
+
+Applied to web typography, this means we choose a base font size and apply a ratio to it. The ratio is then squared to generate an ascending scale.
+
+```scss
+/* perfect fifth */
+$ratio: 1.5;
+
+/* browser default */
+$base: 16px;
+
+/**
+ * The formular is always "$base * $ratio ** $level", the level is a integer.
+ * The resulting value is usually rounded to avoid poor sub-pixel rendering.
+ *
+ * Note that in the below example the number is not equal to the $level in
+ * the formula.
+ */
+$fontSize-0: 10px;
+$fontSize-1: 16px;
+$fontSize-2: 24px;
+$fontSize-3: 36px;
+/* etc.  */
+```
+
+A similar concept can be applied to spacing and sizing of elements. To maintain a aesthetically pleasing rhythm between elements, we adopt the _8pt grid_. This means that multiples of 8 are used to define dimensions, paddings and margins. As a result, all of our measurements follow the same rule and we automatically get a more consistent UI.
+
+```scss
+/* 8pt grid */
+$size-0: 0px;
+$size-1: 8px;
+$size-2: 16px;
+$size-3: 32px;
+$size-4: 64px;
+$size-5: 128px;
+$size-6: 256px;
+$size-7: 512px;
+```
+
+Read more:
+
+- [A List Apart: More Meaningful Typography](https://alistapart.com/article/more-meaningful-typography/)
+- [Type Scale Calculator](https://type-scale.com/)
+- [Bryn Jackson's 8-Point Grid](https://spec.fm/specifics/8-pt-grid)

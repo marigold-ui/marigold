@@ -47,12 +47,13 @@ test('renders <label> element', () => {
 test('variant styles cannot be overridden with CSS prop', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <Label htmlFor="labelId" css={{ fontSize: '14px' }}>
+      <Label htmlFor="labelId" css={{ fontFamily: 'Oswald Regular' }}>
         label
       </Label>
     </MarigoldProvider>
   );
   const label = screen.getByText(/label/);
 
-  expect(label).not.toHaveStyle('font-size: 10px');
+  expect(label).not.toHaveStyle(`font-family: Oswald Regular`);
+  expect(label).toHaveStyle(`font-family: Inter Regular`);
 });
