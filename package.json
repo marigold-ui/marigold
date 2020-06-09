@@ -43,7 +43,7 @@
     }
   },
   "scripts": {
-    "start": "start-storybook -c config/storybook",
+    "start": "start-storybook -p 6005 -c config/storybook",
     "watch": "lerna run watch --parallel",
     "build": "lerna run build --stream",
     "test": "tsdx test --config jest.config.js --coverage --coverageReporters html",
