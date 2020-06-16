@@ -113,8 +113,6 @@ const theme: BaseTheme = {
       fontWeight: 'body',
       lineHeight: '1.5rem',
       color: 'text',
-      display: 'flex',
-      alignItems: 'center',
     },
     radio: {
       color: 'text',
