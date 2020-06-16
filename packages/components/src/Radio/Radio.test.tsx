@@ -1,26 +1,6 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { MarigoldProvider } from '@marigold/system';
-import { Radio } from '@marigold/components';
-
-const theme = {
-  form: {
-    radio: {
-      color: '#4b4b4b',
-    },
-  },
-};
-
-test('supports default variant and themeSection', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Radio title="radio" />
-    </MarigoldProvider>
-  );
-  const radio = screen.getByTitle(/radio/);
-
-  expect(radio).toHaveStyle(`color: (75, 75, 75)`);
-});
+import { render, screen, fireEvent } from '@testing-library/react';
+import { Label, Radio } from '@marigold/components';
 
 test('supports default type', () => {
   render(<Radio title="radio" />);
@@ -29,30 +9,11 @@ test('supports default type', () => {
   expect(radio.getAttribute('type')).toEqual('radio');
 });
 
-test('supports checked prop', () => {
-  render(<Radio title="radio" checked />);
-  const radio = screen.getByTitle(/radio/);
-
-  expect(radio.getAttribute('checked')).toBeDefined();
-});
-
-test('supports HTMl radio default props', () => {
-  render(<Radio title="radio" id="RadioTest" disabled />);
-  const radio = screen.getByTitle(/radio/);
-
-  expect(radio.getAttribute('id')).toEqual('RadioTest');
-  expect(radio.getAttribute('disabled')).toBeDefined();
-});
-
 test('variant styles cannot be overridden with CSS prop', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Radio title="radio" css={{ background: 'blue' }} />
-    </MarigoldProvider>
-  );
+  render(<Radio title="radio" css={{ color: 'blue' }} />);
   const radio = screen.getByTitle(/radio/);
 
-  expect(radio).not.toHaveStyle('background-color: blue');
+  expect(radio).not.toHaveStyle('color: blue');
 });
 
 test('renders <input> element', () => {
@@ -60,4 +21,36 @@ test('renders <input> element', () => {
   const radio = screen.getByTitle(/radio/);
 
   expect(radio instanceof HTMLInputElement).toBeTruthy();
+});
+
+test('renders <SVG> Circle0 element', () => {
+  render(
+    <Label htmlFor="radio">
+      <Radio id="radio" /> Test
+    </Label>
+  );
+  const radio = screen.getByText(/Test/);
+  expect(radio).toContainHTML('path d="M5.62507');
+});
+
+test('renders <SVG> Circle1 element', () => {
+  render(
+    <Label htmlFor="radio">
+      <Radio id="radio" checked /> Test
+    </Label>
+  );
+  const radio = screen.getByText(/Test/);
+  expect(radio).toContainHTML('path d="M12');
+});
+
+test('change state onClick ', () => {
+  render(
+    <Label htmlFor="radio">
+      <Radio id="radio" /> Test
+    </Label>
+  );
+  const radio = screen.getByText(/Test/);
+  expect(radio).toContainHTML('path d="M5.62507');
+  fireEvent.click(radio);
+  expect(radio).toContainHTML('path d="M12');
 });

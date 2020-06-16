@@ -9,7 +9,7 @@ export const Radio = system<RadioProps, 'input'>(
     const [isCheckedOn, setChecked] = useState(false);
     const toggleChecked = () => setChecked(!isCheckedOn);
     return (
-      <Box>
+      <Box css={{ display: 'inline-block' }}>
         <Box
           as="input"
           type="radio"
@@ -22,9 +22,7 @@ export const Radio = system<RadioProps, 'input'>(
             height: 1,
             overflow: 'hidden',
           }}
-          onChange={() => toggleChecked()}
           onClick={() => toggleChecked()}
-          checked={isCheckedOn}
         />
         <Box
           as={isCheckedOn || checked ? Circle1 : Circle0}
@@ -37,6 +35,7 @@ export const Radio = system<RadioProps, 'input'>(
             ':hover': { cursor: 'pointer' },
             'input:disabled ~ &': {
               color: 'muted',
+              cursor: 'auto',
             },
             'input:focus ~ &': {
               bg: 'highlight',
