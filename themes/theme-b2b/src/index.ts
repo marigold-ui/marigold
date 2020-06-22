@@ -114,6 +114,22 @@ const theme: BaseTheme = {
       lineHeight: '1.5rem',
       color: 'text',
     },
+    textarea: {
+      fontFamily: 'body',
+      lineHeight: '24px',
+      padding: '4px 8px',
+      color: 'text',
+      border: '1px solid #cccccc',
+      borderRadius: '2px',
+      outline: 'none',
+      ':focus': {
+        border: '2px solid #3ab3d5',
+      },
+      ':disabled': {
+        bg: '#f3f3f3',
+        color: '#cccccc',
+      },
+    },
   },
   text: {
     body: {
