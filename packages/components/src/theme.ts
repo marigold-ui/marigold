@@ -23,6 +23,7 @@ export type BaseTheme = {
     primary: string;
     secondary: string;
     muted: string;
+    [key: string]: string;
   };
   [key: string]: CSSObject;
 };
