@@ -107,6 +107,22 @@ const theme: BaseTheme = {
     muted: '#8d8d8d',
   },
   form: {
+    input: {
+      display: 'block',
+      fontFamily: 'body',
+      color: '#4b4b4b',
+      outline: '1px solid #cccccc',
+      padding: '0 8px',
+      lineHeight: '32px',
+      ':focus': {
+        outline: '2px solid #3ab3d5',
+      },
+      ':disabled': {
+        bg: '#f3f3f3',
+        color: '#cccccc',
+        cursor: 'not-allowed',
+      },
+    },
     label: {
       fontFamily: 'body',
       fontSize: 0,
