@@ -135,6 +135,24 @@ const theme: BaseTheme = {
       lineHeight: '1.5rem',
       color: 'text',
     },
+    textarea: {
+      fontFamily: 'body',
+      lineHeight: '24px',
+      padding: '4px 8px',
+      color: 'text',
+      border: '1px solid',
+      borderColor: colors.gray40,
+      borderRadius: '2px',
+      outline: 'none',
+      ':focus': {
+        border: '2px solid',
+        borderColor: colors.blue60,
+      },
+      ':disabled': {
+        bg: colors.gray20,
+        color: colors.gray40,
+      },
+    },
     radio: {
       color: 'text',
       verticalAlign: 'middle',
