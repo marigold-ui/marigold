@@ -116,6 +116,10 @@ const theme: BaseTheme = {
       lineHeight: '1.5rem',
       color: 'text',
     },
+    radio: {
+      color: 'text',
+      verticalAlign: 'middle',
+    },
   },
   text: {
     body: {
