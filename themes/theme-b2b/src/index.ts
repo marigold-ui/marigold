@@ -152,6 +152,7 @@ const theme: BaseTheme = {
         bg: colors.gray20,
         color: colors.gray40,
       },
+    },
     radio: {
       color: 'text',
       verticalAlign: 'middle',
