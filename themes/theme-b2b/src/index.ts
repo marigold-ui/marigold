@@ -70,7 +70,8 @@ const button = {
     color: 'secondary',
     ':hover': {
       color: 'secondary',
-      outline: '1px solid #4b4b4b',
+      outline: '1px solid',
+      outlineColor: colors.gray70,
       bg: colors.gray30,
       cursor: 'pointer',
     },
@@ -109,6 +110,24 @@ const theme: BaseTheme = {
     muted: colors.gray50,
   },
   form: {
+    input: {
+      display: 'block',
+      fontFamily: 'body',
+      color: colors.gray70,
+      outline: '1px solid',
+      outlineColor: colors.gray40,
+      padding: '0 8px',
+      lineHeight: '32px',
+      ':focus': {
+        outline: '2px solid',
+        outlineColor: colors.blue60,
+      },
+      ':disabled': {
+        bg: colors.gray20,
+        color: colors.gray40,
+        cursor: 'not-allowed',
+      },
+    },
     label: {
       fontFamily: 'body',
       fontSize: 0,
@@ -139,6 +158,24 @@ const theme: BaseTheme = {
         bg: colors.gray10,
         color: colors.gray30,
         cursor: 'not-allowed',
+      },
+    },
+    textarea: {
+      fontFamily: 'body',
+      lineHeight: '24px',
+      padding: '4px 8px',
+      color: 'text',
+      border: '1px solid',
+      borderColor: colors.gray40,
+      borderRadius: '2px',
+      outline: 'none',
+      ':focus': {
+        border: '2px solid',
+        borderColor: colors.blue60,
+      },
+      ':disabled': {
+        bg: colors.gray20,
+        color: colors.gray40,
       },
     },
   },
