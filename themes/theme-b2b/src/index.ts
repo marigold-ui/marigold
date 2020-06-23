@@ -116,6 +116,31 @@ const theme: BaseTheme = {
       lineHeight: '1.5rem',
       color: 'text',
     },
+    select: {
+      display: 'block',
+      width: '100%',
+      padding: 2,
+      appearance: 'none',
+      fontSize: 'inherit',
+      lineHeight: 'inherit',
+      border: '1px solid',
+      borderColor: colors.gray30,
+      borderRadius: '2px',
+      color: 'inherit',
+      bg: 'transparent',
+      ':hover': {
+        cursor: 'pointer',
+      },
+      ':focus': {
+        border: '2px solid',
+        borderColor: colors.blue60,
+      },
+      ':disabled': {
+        bg: colors.gray10,
+        color: colors.gray30,
+        cursor: 'not-allowed',
+      },
+    },
   },
   text: {
     body: {

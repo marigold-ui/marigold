@@ -1,0 +1,43 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Label, Select } from '@marigold/components';
+
+<Meta title="Components/Select" />
+
+# Select
+
+## Description
+
+Dropdown for selecting a value among different options.
+
+## Import
+
+```tsx
+import { Select } from '@marigold/components';
+```
+
+## Usage
+
+<Preview>
+  <Story name="Select">
+    <Label htmlFor="select">
+      Dropdown
+      <Select id="select">
+        <option selected>Choose here</option>
+        <option>Hi</option>
+        <option>Hey</option>
+        <option>Blubb</option>
+      </Select>
+    </Label>
+  </Story>
+  <Story name="Select disabled">
+    <Label htmlFor="select2">
+      Dropdown disabled
+      <Select disabled>
+        <option selected>Can't choose here</option>
+        <option>Hi</option>
+        <option>Hey</option>
+        <option>Blubb</option>
+      </Select>
+    </Label>
+  </Story>
+</Preview>
