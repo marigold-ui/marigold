@@ -31,14 +31,10 @@ export const Radio = system<RadioProps, 'input'>(
           variant={variant}
           css={{
             mr: 2,
-            borderRadius: 9999,
             ':hover': { cursor: 'pointer' },
             'input:disabled ~ &': {
               color: 'muted',
-              cursor: 'auto',
-            },
-            'input:focus ~ &': {
-              bg: 'highlight',
+              cursor: 'not-allowed',
             },
           }}
         />
