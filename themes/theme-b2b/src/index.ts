@@ -70,7 +70,8 @@ const button = {
     color: 'secondary',
     ':hover': {
       color: 'secondary',
-      outline: '1px solid #4b4b4b',
+      outline: '1px solid',
+      outlineColor: colors.gray70,
       bg: colors.gray30,
       cursor: 'pointer',
     },
@@ -112,16 +113,18 @@ const theme: BaseTheme = {
     input: {
       display: 'block',
       fontFamily: 'body',
-      color: '#4b4b4b',
-      outline: '1px solid #cccccc',
+      color: colors.gray70,
+      outline: '1px solid',
+      outlineColor: colors.gray40,
       padding: '0 8px',
       lineHeight: '32px',
       ':focus': {
-        outline: '2px solid #3ab3d5',
+        outline: '2px solid',
+        outlineColor: colors.blue60,
       },
       ':disabled': {
-        bg: '#f3f3f3',
-        color: '#cccccc',
+        bg: colors.gray20,
+        color: colors.gray40,
         cursor: 'not-allowed',
       },
     },
