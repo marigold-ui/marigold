@@ -1,0 +1,47 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Link, Text } from '@marigold/components';
+
+<Meta title="Components/Link" />
+
+# Link
+
+## Description
+
+Element to style links. `nav` variant is for links in navigation context.
+
+## Properties
+
+| Property             | Type                    | Default  |
+| :------------------- | :---------------------- | :------- |
+| `href`               | string                  |          |
+| `variant` (optional) | `normal`, `bold`, `nav` | `normal` |
+
+## Import
+
+```tsx
+import { Link } from '@marigold/components';
+```
+
+## Usage
+
+<Preview>
+  <Story name="Link">
+    <Text>
+      Link something nice like{' '}
+      <Link href="#!" target="_blank">
+        Marigold
+      </Link>{' '}
+      in text.
+    </Text>
+  </Story>
+  <Story name="Link bold">
+    <Link href="#!" target="_blank" variant="bold">
+      Marigold
+    </Link>
+  </Story>
+  <Story name="Link nav">
+    <Link href="#!" target="_blank" variant="nav">
+      Marigold
+    </Link>
+  </Story>
+</Preview>

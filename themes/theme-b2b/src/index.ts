@@ -232,6 +232,25 @@ const theme: BaseTheme = {
       marginRight: 1,
     },
   },
+  link: {
+    normal: {
+      color: colors.blue60,
+      ':hover': {
+        textDecoration: 'none',
+      },
+    },
+    bold: {
+      color: colors.blue60,
+      fontWeight: 700,
+      ':hover': {
+        textDecoration: 'none',
+      },
+    },
+    nav: {
+      color: 'inherit',
+      textDecoration: 'none',
+    },
+  },
 };
 
 export default theme;
