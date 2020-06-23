@@ -1,4 +1,5 @@
 import { BaseTheme } from '@marigold/components';
+import { colors } from './colors';
 
 const text = {
   root: {
@@ -42,12 +43,12 @@ const button = {
     bg: 'primary',
     ':hover': {
       color: 'background',
-      bg: '#f8ac67',
+      bg: colors.orange40,
       cursor: 'pointer',
     },
     ':disabled': {
-      color: '#cccccc',
-      bg: '#f3f3f3',
+      color: colors.gray40,
+      bg: colors.gray20,
       cursor: 'not-allowed',
     },
   },
@@ -56,12 +57,12 @@ const button = {
     bg: 'secondary',
     ':hover': {
       color: 'background',
-      bg: '#6d6d6d',
+      bg: colors.gray60,
       cursor: 'pointer',
     },
     ':disabled': {
-      color: '#cccccc',
-      bg: '#f3f3f3',
+      color: colors.gray40,
+      bg: colors.gray20,
       cursor: 'not-allowed',
     },
   },
@@ -70,12 +71,12 @@ const button = {
     ':hover': {
       color: 'secondary',
       outline: '1px solid #4b4b4b',
-      bg: '#e3e3e3',
+      bg: colors.gray30,
       cursor: 'pointer',
     },
     ':disabled': {
-      color: '#cccccc',
-      bg: '#f3f3f3',
+      color: colors.gray40,
+      bg: colors.gray20,
       cursor: 'not-allowed',
       outline: 'none',
     },
@@ -100,11 +101,12 @@ const theme: BaseTheme = {
     heading: 1.125,
   },
   colors: {
-    text: '#4b4b4b',
-    background: '#fafafa',
-    primary: '#fa8005',
-    secondary: '#4b4b4b',
-    muted: '#8d8d8d',
+    ...colors,
+    text: colors.gray70,
+    background: colors.gray10,
+    primary: colors.orange60,
+    secondary: colors.gray70,
+    muted: colors.gray50,
   },
   form: {
     input: {
