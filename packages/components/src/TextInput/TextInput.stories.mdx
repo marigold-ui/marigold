@@ -1,0 +1,37 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { TextInput, Label } from '@marigold/components';
+
+<Meta title="Components/TextInput" />
+
+# TextInput
+
+## Description
+
+Form input field for different types of text.
+
+## Import
+
+```tsx
+import { TextInput } from '@marigold/components';
+```
+
+## Usage
+
+<Preview>
+  <Story name="TextInput">
+    <div>
+      <Label htmlFor="input">
+        Label
+        <TextInput id="input" placeholder="Placeholder" />
+      </Label>
+      <Label htmlFor="input2">
+        Label
+        <TextInput id="input2" placeholder="Disabled" disabled />
+      </Label>
+      <Label htmlFor="input3">
+        Label
+        <TextInput id="input2" placeholder="0" type="number" />
+      </Label>
+    </div>
+  </Story>
+</Preview>
