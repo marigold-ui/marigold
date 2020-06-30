@@ -23,7 +23,7 @@ test('renders <input> element', () => {
   expect(radio instanceof HTMLInputElement).toBeTruthy();
 });
 
-test('renders <SVG> Circle0 element', () => {
+test('renders <SVG> CircleUnchecked element', () => {
   render(
     <Label htmlFor="radio">
       <Radio id="radio" /> Test
@@ -33,7 +33,7 @@ test('renders <SVG> Circle0 element', () => {
   expect(radio).toContainHTML('path d="M5.62507');
 });
 
-test('renders <SVG> Circle1 element', () => {
+test('renders <SVG> CircleChecked element', () => {
   render(
     <Label htmlFor="radio">
       <Radio id="radio" checked /> Test
