@@ -1,5 +1,6 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
 import { Label, Radio } from '@marigold/components';
+import { useState } from 'react';
 
 <Meta title="Components/Radio" />
 
@@ -57,6 +58,37 @@ import { Radio } from '@marigold/components';
       <Radio checked />
       <Radio disabled />
       <Radio checked disabled />
+    </div>
+  </Story>
+</Preview>
+
+export const [state, setState] = React.useState('one');
+export const onChange = ev => {
+  setState(ev.currentTarget.value);
+};
+
+<Preview>
+  <Story name="RadioThree">
+    <div>
+      <Radio
+        name="label"
+        onChange={onChange}
+        checked={state === 'one'}
+        value="one"
+        onClick={() => alert('asfasd')}
+      />
+      <Radio
+        name="label"
+        onChange={onChange}
+        checked={state === 'two'}
+        value="two"
+      />
+      <Radio
+        name="label"
+        onChange={onChange}
+        checked={state === 'three'}
+        value="three"
+      />
     </div>
   </Story>
 </Preview>
