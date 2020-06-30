@@ -10,7 +10,7 @@ export * from './ArrowUpA';
 export * from './BurgerMenu';
 export * from './Check';
 export * from './CircleUnchecked';
-export * from './CircleCkecked';
+export * from './CircleChecked';
 export * from './Close';
 export * from './Delete';
 export * from './ExternalLink';

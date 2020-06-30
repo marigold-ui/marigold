@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, system } from '@marigold/system';
-import { CircleUnchecked, CircleCkecked } from '@marigold/icons';
+import { CircleUnchecked, CircleChecked } from '@marigold/icons';
 
 type RadioProps = {};
 
@@ -25,7 +25,7 @@ export const Radio = system<RadioProps, 'input'>(
           onClick={() => toggleChecked()}
         />
         <Box
-          as={isCheckedOn || checked ? CircleCkecked : CircleUnchecked}
+          as={isCheckedOn || checked ? CircleChecked : CircleUnchecked}
           aria-hidden="true"
           themeSection="form"
           variant={variant}

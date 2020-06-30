@@ -33,7 +33,7 @@ test('renders <SVG> CircleUnchecked element', () => {
   expect(radio).toContainHTML('path d="M5.62507');
 });
 
-test('renders <SVG> CircleCkecked element', () => {
+test('renders <SVG> CircleChecked element', () => {
   render(
     <Label htmlFor="radio">
       <Radio id="radio" checked /> Test

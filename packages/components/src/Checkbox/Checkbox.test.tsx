@@ -33,7 +33,7 @@ test('renders <SVG> CircleUnchecked element', () => {
   expect(checkbox).toContainHTML('path d="M19.2917');
 });
 
-test('renders <SVG> CircleCkecked element', () => {
+test('renders <SVG> CircleChecked element', () => {
   render(
     <Label htmlFor="checkbox">
       <Checkbox id="checkbox" checked /> Test
