@@ -8,7 +8,7 @@ export const Link = system<LinkProps, 'a'>(
   ({ variant = 'link', children, ...props }) => {
     return (
       <Text>
-        <Box as="a" variant={variant} {...props} themeSection="link">
+        <Box as="a" variant={variant} themeSection="link" {...props}>
           {children}
         </Box>
       </Text>

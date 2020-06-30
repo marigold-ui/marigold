@@ -5,7 +5,7 @@ import { Link } from '@marigold/components';
 
 const theme = {
   link: {
-    normal: {
+    link: {
       fontFamily: 'Inter',
     },
     second: {
