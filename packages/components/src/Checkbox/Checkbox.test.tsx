@@ -23,7 +23,7 @@ test('renders <input> element', () => {
   expect(checkbox instanceof HTMLInputElement).toBeTruthy();
 });
 
-test('renders <SVG> Circle0 element', () => {
+test('renders <SVG> CircleUnchecked element', () => {
   render(
     <Label htmlFor="checkbox">
       <Checkbox id="checkbox" /> Test
@@ -33,7 +33,7 @@ test('renders <SVG> Circle0 element', () => {
   expect(checkbox).toContainHTML('path d="M19.2917');
 });
 
-test('renders <SVG> Circle1 element', () => {
+test('renders <SVG> CircleCkecked element', () => {
   render(
     <Label htmlFor="checkbox">
       <Checkbox id="checkbox" checked /> Test

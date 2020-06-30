@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, system } from '@marigold/system';
-import { SquareO, SquareOChecked } from '@marigold/icons';
+import { SquareUnchecked, SquareChecked } from '@marigold/icons';
 
 type CheckboxProps = {};
 
@@ -25,7 +25,7 @@ export const Checkbox = system<CheckboxProps, 'input'>(
           onClick={() => toggleChecked()}
         />
         <Box
-          as={isCheckedOn || checked ? SquareOChecked : SquareO}
+          as={isCheckedOn || checked ? SquareChecked : SquareUnchecked}
           aria-hidden="true"
           themeSection="form"
           variant={variant}
