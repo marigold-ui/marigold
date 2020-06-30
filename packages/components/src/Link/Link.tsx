@@ -5,10 +5,10 @@ import { Text } from '@marigold/components';
 type LinkProps = {};
 
 export const Link = system<LinkProps, 'a'>(
-  ({ variant = 'normal', children, ...props }) => {
+  ({ variant = 'link', children, ...props }) => {
     return (
       <Text>
-        <Box as="a" themeSection="link" variant={variant} {...props}>
+        <Box as="a" variant={variant} {...props} themeSection="link">
           {children}
         </Box>
       </Text>

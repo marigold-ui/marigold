@@ -239,17 +239,6 @@ const theme: BaseTheme = {
         textDecoration: 'none',
       },
     },
-    bold: {
-      color: colors.blue60,
-      fontWeight: 700,
-      ':hover': {
-        textDecoration: 'none',
-      },
-    },
-    nav: {
-      color: 'inherit',
-      textDecoration: 'none',
-    },
   },
 };
 
