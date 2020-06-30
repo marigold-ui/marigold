@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Box, system } from '@marigold/system';
-import { Circle0, Circle1 } from '@marigold/icons';
+import { SquareO, SquareOChecked } from '@marigold/icons';
 
-type RadioProps = {};
+type CheckboxProps = {};
 
-export const Radio = system<RadioProps, 'input'>(
-  ({ variant = 'radio', checked, ...props }) => {
+export const Checkbox = system<CheckboxProps, 'input'>(
+  ({ variant = 'checkbox', checked, ...props }) => {
     const [isCheckedOn, setChecked] = useState(false);
     const toggleChecked = () => setChecked(!isCheckedOn);
     return (
       <Box css={{ display: 'inline-block' }}>
         <Box
           as="input"
-          type="radio"
+          type="checkbox"
           {...props}
           css={{
             position: 'absolute',
@@ -25,7 +25,7 @@ export const Radio = system<RadioProps, 'input'>(
           onClick={() => toggleChecked()}
         />
         <Box
-          as={isCheckedOn || checked ? Circle1 : Circle0}
+          as={isCheckedOn || checked ? SquareOChecked : SquareO}
           aria-hidden="true"
           themeSection="form"
           variant={variant}

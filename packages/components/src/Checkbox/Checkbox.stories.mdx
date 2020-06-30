@@ -1,0 +1,67 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Label, Checkbox } from '@marigold/components';
+
+<Meta title="Components/Checkbox" />
+
+# Checkbox
+
+## Description
+
+With the Checkbox component you can add a HTML `<input>` element with `type="checkbox"` to your form.
+The element uses always the themeSection with the name: `form` in your given theme. The variant in your section can be added with the variant prop. The default variant is `checkbox`.
+Specific css style prop can also be added.
+
+## Properties
+
+| Property  | Type        | Default      |
+| :-------- | :---------- | :----------- |
+| `variant` | `string`    | `'checkbox'` |
+| `css`     | `css props` |              |
+
+## Import
+
+```tsx
+import { Checkbox } from '@marigold/components';
+```
+
+## Usage
+
+### Checkbox standard labeled
+
+<Preview>
+  <Story name="Checkbox">
+    <div>
+      <Label htmlFor="bi">
+        <Checkbox id="bi" name="vehicle" value="Bike" />
+        Bike
+      </Label>
+      <br />
+      <Label htmlFor="ca">
+        <Checkbox id="ca" name="vehicle" value="Car" />
+        Car
+      </Label>
+      <br />
+      <Label htmlFor="bo">
+        <Checkbox id="bo" name="vehicle" value="Boat" />
+        Boat
+      </Label>
+      <br />
+      <Label htmlFor="bo">
+        <Checkbox id="je" name="vehicle" value="Jet" />
+        Jet
+      </Label>
+    </div>
+  </Story>
+</Preview>
+
+### Checkbox checked and disabled
+
+<Preview>
+  <Story name="CheckboxTwo">
+    <div>
+      <Checkbox checked />
+      <Checkbox disabled />
+      <Checkbox checked disabled />
+    </div>
+  </Story>
+</Preview>
