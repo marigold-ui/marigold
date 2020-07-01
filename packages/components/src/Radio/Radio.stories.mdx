@@ -32,7 +32,7 @@ import { Radio } from '@marigold/components';
 <Preview>
   <Story name="RadioOne">
     {() => {
-      const [state, setState] = React.useState('one');
+      const [state, setState] = React.useState('Mastercard');
       const onChange = changeEvent => {
         setState(changeEvent.currentTarget.value);
       };
@@ -43,7 +43,7 @@ import { Radio } from '@marigold/components';
               id="mc"
               name="payment"
               onChange={onChange}
-              checked={state === 'one'}
+              checked={state === 'Mastercard'}
               value="Mastercard"
             />
             Mastercard
@@ -54,7 +54,7 @@ import { Radio } from '@marigold/components';
               id="vi"
               name="payment"
               onChange={onChange}
-              checked={state === 'two'}
+              checked={state === 'Visa'}
               value="Visa"
             />
             Visa
@@ -65,7 +65,7 @@ import { Radio } from '@marigold/components';
               id="ae"
               name="payment"
               onChange={onChange}
-              checked={state === 'three'}
+              checked={state === 'AmericanExpress'}
               value="AmericanExpress"
             />
             American Express
