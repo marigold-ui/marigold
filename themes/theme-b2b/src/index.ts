@@ -135,6 +135,9 @@ const theme: BaseTheme = {
       lineHeight: '1.5rem',
       color: 'text',
     },
+    slider: {
+      verticalAlign: 'middle',
+    },
     select: {
       display: 'block',
       width: '100%',
