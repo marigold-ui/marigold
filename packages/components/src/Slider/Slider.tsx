@@ -12,6 +12,9 @@ export const Slider = system<SliderProps, 'input'>(
         themeSection="form"
         variant={variant}
         {...props}
+        css={{
+          verticalAlign: 'middle',
+        }}
       />
     );
   }
