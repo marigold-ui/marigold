@@ -10,4 +10,5 @@ export * from './Select';
 export * from './Text';
 export * from './Textarea';
 export * from './TextInput';
+export * from './Slider';
 export * from './Heading';
