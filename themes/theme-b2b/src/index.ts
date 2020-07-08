@@ -110,6 +110,9 @@ const theme: BaseTheme = {
     muted: colors.gray50,
   },
   form: {
+    checkbox: {
+      color: colors.gray70,
+    },
     input: {
       display: 'block',
       fontFamily: 'body',
