@@ -1,5 +1,6 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
 import { Label, Checkbox } from '@marigold/components';
+import { useState } from 'react';
 
 <Meta title="Components/Form/Checkbox" />
 
@@ -29,28 +30,68 @@ import { Checkbox } from '@marigold/components';
 ### Checkbox standard labeled
 
 <Preview>
-  <Story name="Checkbox">
-    <div>
-      <Label htmlFor="bi">
-        <Checkbox id="bi" name="vehicle" value="Bike" />
-        Bike
-      </Label>
-      <br />
-      <Label htmlFor="ca">
-        <Checkbox id="ca" name="vehicle" value="Car" />
-        Car
-      </Label>
-      <br />
-      <Label htmlFor="bo">
-        <Checkbox id="bo" name="vehicle" value="Boat" />
-        Boat
-      </Label>
-      <br />
-      <Label htmlFor="bo">
-        <Checkbox id="je" name="vehicle" value="Jet" />
-        Jet
-      </Label>
-    </div>
+  <Story name="CheckboxOne">
+    {() => {
+      const [state, setState] = React.useState({
+        bi: false,
+        ca: false,
+        bo: false,
+        je: false,
+      });
+      const onChange = changeEvent => {
+        setState({
+          ...state,
+          [changeEvent.target.name]: changeEvent.target.checked,
+        });
+      };
+      return (
+        <div>
+          <Label htmlFor="bi">
+            <Checkbox
+              id="bi"
+              name="bi"
+              onChange={onChange}
+              checked={state.bi}
+              value="Bike"
+            />
+            Bike
+          </Label>
+          <br />
+          <Label htmlFor="ca">
+            <Checkbox
+              id="ca"
+              name="ca"
+              onChange={onChange}
+              checked={state.ca}
+              value="Car"
+            />
+            Car
+          </Label>
+          <br />
+          <Label htmlFor="bo">
+            <Checkbox
+              id="bo"
+              name="bo"
+              onChange={onChange}
+              checked={state.bo}
+              value="Boat"
+            />
+            Boat
+          </Label>
+          <br />
+          <Label htmlFor="je">
+            <Checkbox
+              id="je"
+              name="je"
+              onChange={onChange}
+              checked={state.je}
+              value="Jet"
+            />
+            Jet
+          </Label>
+        </div>
+      );
+    }}
   </Story>
 </Preview>
 
