@@ -24,7 +24,7 @@
     "@testing-library/jest-dom": "5.11.0",
     "@testing-library/react": "10.4.5",
     "@testing-library/react-hooks": "3.3.0",
-    "@types/node": "14.0.14",
+    "@types/node": "14.0.22",
     "eslint-config-react-app": "5.2.1",
     "husky": "4.2.5",
     "lerna": "3.22.1",
