@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Label, Radio } from '@marigold/components';
 
 test('supports default type', () => {
@@ -40,17 +40,5 @@ test('renders <SVG> CircleChecked element', () => {
     </Label>
   );
   const radio = screen.getByText(/Test/);
-  expect(radio).toContainHTML('path d="M12');
-});
-
-test('change state onClick ', () => {
-  render(
-    <Label htmlFor="radio">
-      <Radio id="radio" /> Test
-    </Label>
-  );
-  const radio = screen.getByText(/Test/);
-  expect(radio).toContainHTML('path d="M5.62507');
-  fireEvent.click(radio);
   expect(radio).toContainHTML('path d="M12');
 });

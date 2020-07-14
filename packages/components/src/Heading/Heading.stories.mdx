@@ -1,0 +1,79 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Heading, Text } from '@marigold/components';
+
+<Meta title="Components/Typography/Heading" />
+
+# Heading
+
+## Description
+
+Use the Heading component for headings of texts.
+
+## Properties
+
+| Property       | Type                               | Default |
+| :------------- | :--------------------------------- | :------ |
+| `headingStyle` | `h1`, `h2`, `h3`, `h4`, `h5`, `h6` | `h2`    |
+
+## Import
+
+```tsx
+import { Heading } from '@marigold/components';
+```
+
+## Usage
+
+<Preview>
+  <Story name="Headings">
+    <div>
+      <Heading headingStyle="h1">H1 amazing heading</Heading>
+      <Text as="p" variant="heading">
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+        voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+        amet.
+      </Text>
+      <Heading>H2 amazing heading</Heading>
+      <Text as="p" variant="heading">
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+        voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+        amet.
+      </Text>
+      <Heading headingStyle="h3">H3 amazing heading</Heading>
+      <Text as="p" variant="heading">
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+        voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+        amet.
+      </Text>
+      <Heading headingStyle="h4">H4 amazing heading</Heading>
+      <Text as="p" variant="heading">
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+        voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+        amet.
+      </Text>
+      <Heading headingStyle="h5">H5 amazing heading</Heading>
+      <Text as="p" variant="heading">
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+        voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+        amet.
+      </Text>
+      <Heading headingStyle="h6">H6 amazing heading</Heading>
+      <Text as="p" variant="heading">
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+        voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+        amet.
+      </Text>
+    </div>
+  </Story>
+</Preview>
