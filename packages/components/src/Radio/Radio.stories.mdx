@@ -1,7 +1,8 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
 import { Label, Radio } from '@marigold/components';
+import { useState } from 'react';
 
-<Meta title="Components/Radio" />
+<Meta title="Components/Form/Radio" />
 
 # Radio Button
 
@@ -29,23 +30,49 @@ import { Radio } from '@marigold/components';
 ### Radio standard labeled
 
 <Preview>
-  <Story name="Radio">
-    <div>
-      <Label htmlFor="mc">
-        <Radio id="mc" name="payment" value="Mastercard" />
-        Mastercard
-      </Label>
-      <br />
-      <Label htmlFor="vi">
-        <Radio id="vi" name="payment" value="Visa" />
-        Visa
-      </Label>
-      <br />
-      <Label htmlFor="ae">
-        <Radio id="ae" name="payment" value="AmericanExpress" />
-        American Express
-      </Label>
-    </div>
+  <Story name="RadioOne">
+    {() => {
+      const [state, setState] = React.useState('Mastercard');
+      const onChange = changeEvent => {
+        setState(changeEvent.currentTarget.value);
+      };
+      return (
+        <div>
+          <Label htmlFor="mc">
+            <Radio
+              id="mc"
+              name="payment"
+              onChange={onChange}
+              checked={state === 'Mastercard'}
+              value="Mastercard"
+            />
+            Mastercard
+          </Label>
+          <br />
+          <Label htmlFor="vi">
+            <Radio
+              id="vi"
+              name="payment"
+              onChange={onChange}
+              checked={state === 'Visa'}
+              value="Visa"
+            />
+            Visa
+          </Label>
+          <br />
+          <Label htmlFor="ae">
+            <Radio
+              id="ae"
+              name="payment"
+              onChange={onChange}
+              checked={state === 'AmericanExpress'}
+              value="AmericanExpress"
+            />
+            American Express
+          </Label>
+        </div>
+      );
+    }}
   </Story>
 </Preview>
 

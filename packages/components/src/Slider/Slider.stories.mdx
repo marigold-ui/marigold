@@ -1,0 +1,59 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Label, Slider } from '@marigold/components';
+
+<Meta title="Components/Form/Slider" />
+
+# Slider
+
+## Description
+
+With the Slider component you can add a HTML `<input>` element with `type="range"` to your form.
+The element uses always the themeSection with the name: `form` in your given theme. The variant in your section can be added with the variant prop. The default variant is `slider`.
+Specific css style prop can also be added.
+
+## Properties
+
+| Property  | Type        | Default    |
+| :-------- | :---------- | :--------- |
+| `variant` | `string`    | `'slider'` |
+| `css`     | `css props` |            |
+
+## Import
+
+```tsx
+import { Slider } from '@marigold/components';
+```
+
+## Usage
+
+### Slider with default range and fix value
+
+<Preview>
+  <Story name="SliderOne">
+    <div>
+      <Label htmlFor="vol">
+        Volume:
+        <br />
+        <Slider id="vol" name="vol" min="0" max="50" />
+        <br />
+        <Slider id="vol" name="vol" min="0" max="50" value="25" />
+      </Label>
+    </div>
+  </Story>
+</Preview>
+
+### Slider with steps
+
+<Preview>
+  <Story name="SliderTwo">
+    <div>
+      <Label htmlFor="vol">
+        Volume:
+        <br />
+        <Slider id="vol" name="vol" min="0" max="100" step="10"></Slider>
+        <br />
+        <Slider id="vol" name="vol" min="20" max="80" step="5"></Slider>
+      </Label>
+    </div>
+  </Story>
+</Preview>

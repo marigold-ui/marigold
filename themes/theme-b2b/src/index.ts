@@ -110,6 +110,9 @@ const theme: BaseTheme = {
     muted: colors.gray50,
   },
   form: {
+    checkbox: {
+      color: colors.gray70,
+    },
     input: {
       display: 'block',
       fontFamily: 'body',
@@ -187,6 +190,41 @@ const theme: BaseTheme = {
     heading: {
       ...text.root,
       ...text.p,
+    },
+    h1: {
+      ...text.root,
+      fontWeight: 900,
+      fontSize: 5,
+      marginBottom: '24px',
+    },
+    h2: {
+      ...text.root,
+      fontWeight: 900,
+      fontSize: 4,
+      marginTop: '32px',
+      marginBottom: '8px',
+    },
+    h3: {
+      ...text.root,
+      fontWeight: 900,
+      fontSize: 3,
+      marginTop: '16px',
+      marginBottom: '8px',
+    },
+    h4: {
+      ...text.root,
+      fontWeight: 900,
+      fontSize: 2,
+    },
+    h5: {
+      ...text.root,
+      fontWeight: 900,
+      fontSize: 1,
+    },
+    h6: {
+      ...text.root,
+      fontSize: 1,
+      textTransform: 'uppercase',
     },
   },
   button: {
