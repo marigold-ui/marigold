@@ -3,12 +3,13 @@ export * from './theme';
 
 export * from './Button';
 export * from './Checkbox';
+export * from './Heading';
 export * from './Label';
+export * from './Link';
 export * from './Radio';
-export * from './Svg';
+export * from './Slider';
 export * from './Select';
+export * from './Svg';
 export * from './Text';
 export * from './Textarea';
 export * from './TextInput';
-export * from './Radio';
-export * from './Link';
