@@ -7,7 +7,6 @@ const text = {
     fontSize: 1,
     lineHeight: 'body',
     fontWeight: 'body',
-    color: 'text',
   },
   span: {
     display: 'inline-block',
@@ -276,6 +275,20 @@ const theme: BaseTheme = {
       ':hover': {
         textDecoration: 'none',
       },
+    },
+  },
+  alerts: {
+    info: {
+      bg: colors.blue70,
+    },
+    danger: {
+      bg: colors.red60,
+    },
+    warning: {
+      bg: colors.orange60,
+    },
+    success: {
+      bg: colors.green60,
     },
   },
 };
