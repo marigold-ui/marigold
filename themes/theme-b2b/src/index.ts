@@ -277,6 +277,20 @@ const theme: BaseTheme = {
       },
     },
   },
+  alerts: {
+    info: {
+      bg: colors.blue70,
+    },
+    danger: {
+      bg: colors.red60,
+    },
+    warning: {
+      bg: colors.orange60,
+    },
+    success: {
+      bg: colors.green60,
+    },
+  },
 };
 
 export default theme;
