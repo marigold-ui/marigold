@@ -270,6 +270,14 @@ const theme: BaseTheme = {
       marginRight: 1,
     },
   },
+  link: {
+    normal: {
+      color: colors.blue60,
+      ':hover': {
+        textDecoration: 'none',
+      },
+    },
+  },
   alerts: {
     info: {
       bg: colors.blue70,
