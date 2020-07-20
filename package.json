@@ -1,6 +1,6 @@
 {
   "name": "marigold-repo",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "repository": "github:marigold-ui/marigold",
   "private": true,
   "license": "MIT",
