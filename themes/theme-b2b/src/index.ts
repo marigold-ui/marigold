@@ -7,7 +7,6 @@ const text = {
     fontSize: 1,
     lineHeight: 'body',
     fontWeight: 'body',
-    color: 'text',
   },
   span: {
     display: 'inline-block',
