@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, system } from '@marigold/system';
 
 type AlertProps = {};
-// danger, info, warning, success
 
 export const Alert = system<AlertProps, 'div'>(
   ({ variant = 'info', ref, children, ...props }) => {
