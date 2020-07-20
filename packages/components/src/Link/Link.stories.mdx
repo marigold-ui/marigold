@@ -1,0 +1,36 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Link, Text } from '@marigold/components';
+
+<Meta title="Components/Link" />
+
+# Link
+
+## Description
+
+Element to style links.
+
+## Properties
+
+| Property             | Type                    | Default  |
+| :------------------- | :---------------------- | :------- |
+| `href`               | string                  |          |
+
+## Import
+
+```tsx
+import { Link } from '@marigold/components';
+```
+
+## Usage
+
+<Preview>
+  <Story name="Link">
+    <Text>
+      Link something nice like{' '}
+      <Link href="#!" target="_blank">
+        Marigold
+      </Link>{' '}
+      in text.
+    </Text>
+  </Story>
+</Preview>
