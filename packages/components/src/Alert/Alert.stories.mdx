@@ -1,0 +1,47 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Alert, Text } from '@marigold/components';
+
+<Meta title="Components/Alert" />
+
+# Alert
+
+## Description
+
+Simple colored element to display an alert message as a reaction to an event.
+
+## Properties
+
+| Property  | Type                                   | Default |
+| :-------- | :------------------------------------- | :------ |
+| `variant` | `info`, `danger`, `warning`, `success` | `info`  |
+
+## Import
+
+```tsx
+import { Alert } from '@marigold/components';
+```
+
+## Usage
+
+<Preview>
+  <Story name="Info">
+    <Alert>
+      <Text css={{ color: '#fff' }}>hey, info!</Text>
+    </Alert>
+  </Story>
+  <Story name="Success">
+    <Alert variant="success">
+      <Text>hey, success!</Text>
+    </Alert>
+  </Story>
+  <Story name="Danger">
+    <Alert variant="danger">
+      <Text css={{ color: '#fff' }}>hey, danger!</Text>
+    </Alert>
+  </Story>
+  <Story name="Warning">
+    <Alert variant="warning">
+      <Text css={{ color: '#fff' }}>hey, warning!</Text>
+    </Alert>
+  </Story>
+</Preview>

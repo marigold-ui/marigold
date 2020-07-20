@@ -12,3 +12,4 @@ export * from './Textarea';
 export * from './TextInput';
 export * from './Slider';
 export * from './Heading';
+export * from './Alert';
