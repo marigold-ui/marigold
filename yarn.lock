@@ -2333,6 +2333,20 @@
     globby "^11.0.0"
     read-yaml-file "^1.1.0"
 
+"@marigold/components@0.0.0":
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/@marigold/components/-/components-0.0.0.tgz#d07a732c34ead8c30a5c5f83365e05e8f77376b5"
+  integrity sha512-hqOL5G6oPhVG9/LIQvOsDyV2gIZ1LSMev9YQinelGdrGj1AuDGdl8en/3Mtm/kmM4FwlUq9SSmJjwortucCHsQ==
+
+"@marigold/system@0.0.0":
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/@marigold/system/-/system-0.0.0.tgz#96a8f2edc74be1bc17d5409a770b83a62b93a4ba"
+  integrity sha512-BPjRvXVPpxETcMEBz4H5MRaj0eyi8n5lHLo0ulCaPHszMh1XpzEJxYSx0iayussnby5PfVAQA6p0lhKg8pI3vQ==
+  dependencies:
+    "@emotion/core" "10.0.28"
+    "@theme-ui/css" "0.3.1"
+    lodash.pick "4.4.0"
+
 "@mdx-js/loader@^1.5.1":
   version "1.5.8"
   resolved "https://registry.yarnpkg.com/@mdx-js/loader/-/loader-1.5.8.tgz#3d1c4031b934c03309cabbbfe01628f3960e3221"
@@ -3258,10 +3272,10 @@
     "@types/istanbul-lib-coverage" "*"
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@*", "@types/jest@26.0.5":
-  version "26.0.5"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.5.tgz#23a8eecf4764a770ea8d3a0d1ea16b96c822035d"
-  integrity sha512-heU+7w8snfwfjtcj2H458aTx3m5unIToOJhx75ebHilBiiQ39OIdA18WkG4LP08YKeAoWAGvWg8s+22w/PeJ6w==
+"@types/jest@*", "@types/jest@26.0.7":
+  version "26.0.7"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.7.tgz#495cb1d1818c1699dbc3b8b046baf1c86ef5e324"
+  integrity sha512-+x0077/LoN6MjqBcVOe1y9dpryWnfDZ+Xfo3EqGeBcfPRJlQp3Lw62RvNlWxuGv7kOEwlHriAa54updi3Jvvwg==
   dependencies:
     jest-diff "^25.2.1"
     pretty-format "^25.2.1"
