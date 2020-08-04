@@ -291,6 +291,13 @@ const theme: BaseTheme = {
       bg: colors.green60,
     },
   },
+  layout: {
+    container: {
+      boxSizing: 'border-box',
+      minWidth: 0,
+      margin: 'auto',
+    },
+  },
 };
 
 export default theme;

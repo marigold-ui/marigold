@@ -14,3 +14,4 @@ export * from './Text';
 export * from './Textarea';
 export * from './TextInput';
 export * from './Alert';
+export * from './Container';
