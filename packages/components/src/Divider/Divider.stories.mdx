@@ -1,0 +1,41 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Divider, Button, Heading, Text } from '@marigold/components';
+
+<Meta title="Components/Layout/Divider" />
+
+# Divider
+
+## Description
+
+A divider is a layout or list element to group content or separate elements.
+
+## Properties
+
+| Property            | Type              | Default   |
+| :------------------ | :---------------- | :-------- |
+| `weight` (optional) | `regular`, `bold` | `regular` |
+
+## Import
+
+```tsx
+import { Divider } from '@marigold/components';
+```
+
+## Usage
+
+<Preview>
+  <Story name="Divider/regular">
+    <div>
+      <Text>Some text</Text>
+      <Divider />
+      <Text>Some other text to show regular divider</Text>
+    </div>
+  </Story>
+  <Story name="Divider/bold">
+    <div>
+      <Text>Some text</Text>
+      <Divider weight="bold" />
+      <Text>Some other text to show strong divider</Text>
+    </div>
+  </Story>
+</Preview>

@@ -297,6 +297,20 @@ const theme: BaseTheme = {
       minWidth: 0,
       margin: 'auto',
     },
+  }
+  divider: {
+    regular: {
+      m: 0,
+      my: 2,
+      border: 0,
+      borderBottom: '1px solid',
+    },
+    bold: {
+      m: 0,
+      my: 2,
+      border: 0,
+      borderBottom: '2px solid',
+    },
   },
 };
 
