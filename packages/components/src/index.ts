@@ -15,3 +15,4 @@ export * from './Svg';
 export * from './Text';
 export * from './Textarea';
 export * from './TextInput';
+export * from './Container';
