@@ -291,6 +291,20 @@ const theme: BaseTheme = {
       bg: colors.green60,
     },
   },
+  divider: {
+    regular: {
+      m: 0,
+      my: 2,
+      border: 0,
+      borderBottom: '1px solid',
+    },
+    bold: {
+      m: 0,
+      my: 2,
+      border: 0,
+      borderBottom: '2px solid',
+    },
+  },
 };
 
 export default theme;
