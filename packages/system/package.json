@@ -1,6 +1,6 @@
 {
   "name": "@marigold/system",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Marigold System Library",
   "main": "dist/index.js",
   "module": "dist/system.esm.js",
@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@types/lodash.pick": "4.4.6",
-    "csstype": "2.6.11"
+    "csstype": "3.0.2"
   },
   "scripts": {
     "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly",
