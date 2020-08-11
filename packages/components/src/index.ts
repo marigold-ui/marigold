@@ -6,6 +6,7 @@ export * from './Button';
 export * from './Checkbox';
 export * from './Divider';
 export * from './Heading';
+export * from './Image';
 export * from './Label';
 export * from './Link';
 export * from './Radio';
