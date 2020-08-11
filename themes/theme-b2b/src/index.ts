@@ -325,6 +325,12 @@ const theme: BaseTheme = {
       borderBottom: '2px solid',
     },
   },
+  content: {
+    images: {
+      maxWidth: '100%',
+      height: 'auto',
+    },
+  },
 };
 
 export default theme;
