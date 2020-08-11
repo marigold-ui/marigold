@@ -57,3 +57,14 @@ test('variant styles cannot be overridden with CSS prop', () => {
 
   expect(text).not.toHaveStyle(`font-family: Arial`);
 });
+
+test('accepts custom prop', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Text textColor="#0ee">text</Text>
+    </MarigoldProvider>
+  );
+  const text = screen.getByText(/text/);
+
+  expect(text).toHaveStyle(`color: rgb(0, 238, 238);`);
+});
