@@ -2,6 +2,7 @@ export { Box, BoxProps, MarigoldProvider } from '@marigold/system';
 export * from './theme';
 
 export * from './Alert';
+export * from './Badge';
 export * from './Button';
 export * from './Checkbox';
 export * from './Divider';
