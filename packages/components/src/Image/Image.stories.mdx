@@ -1,0 +1,40 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Image } from '@marigold/components';
+import image1 from '../../../images/src/type_logo.png';
+import image2 from '../../../images/src/Marigold_Logo_Hotelstyle.png';
+
+<Meta title="Components/Content/Image" />
+
+# Image
+
+## Description
+
+With the Image component you can render a `img` element.
+The themeSection ist `content` and variant can be added with the variant prop which is `images` per default.
+Custom CSS styles can be added with the CSS prop.
+
+## Properties
+
+| Property             | Type     | Default  |
+| :------------------- | :------- | :------- |
+| `variant` (optional) | `string` | `images` |
+
+## Import
+
+```tsx
+import { Image } from '@marigold/components';
+```
+
+## Usage
+
+<Preview>
+  <Story name="firstImage">
+    <Image src={image1} alt="marigold_logo" />
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="secondImage">
+    <Image src={image2} width="500" height="300" />
+  </Story>
+</Preview>
