@@ -312,6 +312,17 @@ const theme: BaseTheme = {
       borderBottom: '2px solid',
     },
   },
+  content: {
+    messages: {
+      fontFamily: 'body',
+      fontSize: 1,
+      padding: 3,
+      borderLeftStyle: 'solid',
+      borderLeftColor: 'primary',
+      borderRadius: 4,
+      bg: colors.gray10,
+    },
+  },
 };
 
 export default theme;

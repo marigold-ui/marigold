@@ -1,0 +1,30 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Message } from '@marigold/components';
+
+<Meta title="Components/Content/Message" />
+
+# Message
+
+## Description
+
+Simple component to display a message based on a `div`element and styled with a theme.
+
+## Properties
+
+| Property  | Type     | Default    |
+| :-------- | :------- | :--------- |
+| `variant` | `string` | `messages` |
+
+## Import
+
+```tsx
+import { Message } from '@marigold/components';
+```
+
+## Usage
+
+<Preview>
+  <Story name="Message">
+    <Message>Hello, I am a simple message.</Message>
+  </Story>
+</Preview>
