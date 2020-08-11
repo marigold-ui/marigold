@@ -12,9 +12,10 @@ By adding the `as` prop you can alternatively render a `p` element.
 
 ## Properties
 
-| Property  | Type              | Default |
-| :-------- | :---------------- | :------ |
-| `variant` | `body`, `heading` | `body`  |
+| Property               | Type              | Default   |
+| :--------------------- | :---------------- | :-------- |
+| `variant`              | `body`, `heading` | `body`    |
+| `textColor` (optional) | string            | `inherit` |
 
 ## Import
 
@@ -50,5 +51,8 @@ import { Text } from '@marigold/components';
       rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
       dolor sit amet.
     </Text>
+  </Story>
+  <Story name="with textColor">
+    <Text textColor="hotpink">Hello pinkie ;)</Text>
   </Story>
 </Preview>
