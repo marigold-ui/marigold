@@ -298,6 +298,19 @@ const theme: BaseTheme = {
       margin: 'auto',
     },
   },
+  content: {
+    badge: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      fontFamily: 'body',
+      fontSize: 1,
+      fontWeight: 'body',
+      borderRadius: '8px',
+      whiteSpace: 'nowrap',
+      padding: '0.25rem 0.75rem',
+      mx: '0.5rem',
+    },
+  },
   divider: {
     regular: {
       m: 0,
