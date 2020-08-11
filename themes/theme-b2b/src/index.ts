@@ -321,6 +321,23 @@ const theme: BaseTheme = {
       borderBottom: '2px solid',
     },
   },
+  content: {
+    images: {
+      maxWidth: '100%',
+      height: 'auto',
+    },
+    badge: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      fontFamily: 'body',
+      fontSize: 1,
+      fontWeight: 'body',
+      borderRadius: '8px',
+      whiteSpace: 'nowrap',
+      padding: '0.25rem 0.75rem',
+      mx: '0.5rem',
+    },
+  },
 };
 
 export default theme;

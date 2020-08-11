@@ -1,0 +1,40 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Badge } from '@marigold/components';
+import { Check } from '@marigold/icons';
+
+<Meta title="Components/Content/Badge" />
+
+# Badge
+
+## Description
+
+A badge tags an element with a short note and color. The content of the badge can be anything but preferably a string and/or icon.
+
+## Properties
+
+| Property                     | Type   | Default   |
+| :--------------------------- | :----- | :-------- |
+| `borderColor` (optional)     | string | `inherit` |
+| `backgroundColor` (optional) | string | `inherit` |
+
+## Import
+
+```tsx
+import { Badge } from '@marigold/components';
+```
+
+## Usage
+
+<Preview>
+  <Story name="Colored Background">
+    <Badge borderColor="border" backgroundColor="orange">
+      <Text>New</Text>
+    </Badge>
+  </Story>
+  <Story name="Outlined">
+    <Badge borderColor="orange">
+      <Check size={18} />
+      cool
+    </Badge>
+  </Story>
+</Preview>
