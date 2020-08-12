@@ -2,11 +2,11 @@ import React from 'react';
 import { Box, system } from '@marigold/system';
 
 type HiddenProps = {
-  show?: false;
+  show?: false | true;
 };
 
 export const Hidden = system<HiddenProps, 'div'>(
-  ({ variant = 'hidden', show, children, ...props }) => {
+  ({ variant = 'hidden', show = false, children, ...props }) => {
     return (
       <Box
         as="div"

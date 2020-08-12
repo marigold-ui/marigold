@@ -38,6 +38,30 @@ test('accepts other variant than default', () => {
   expect(hidden).toHaveStyle(`align-items: right`);
 });
 
+test('text is not visible, show prop = false', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Hidden title="hidden">Hidden</Hidden>
+    </MarigoldProvider>
+  );
+  const hidden = screen.getByTitle(/hidden/);
+
+  expect(hidden).not.toBeVisible();
+});
+
+test('support show prop = true', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Hidden title="hidden" show={true}>
+        Default
+      </Hidden>
+    </MarigoldProvider>
+  );
+  const hidden = screen.getByTitle(/hidden/);
+
+  expect(hidden).toBeVisible();
+});
+
 test('renders correct HTML element', () => {
   render(
     <MarigoldProvider theme={theme}>
@@ -61,15 +85,4 @@ test('variant styles cannot be overridden with CSS prop', () => {
 
   expect(hidden).toHaveStyle(`align-items: center`);
   expect(hidden).not.toHaveStyle(`align-items: left`);
-});
-
-test('text is not visible', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Hidden title="hidden">Hidden</Hidden>
-    </MarigoldProvider>
-  );
-  const hidden = screen.getByTitle(/hidden/);
-
-  expect(hidden).not.toBeVisible();
 });
