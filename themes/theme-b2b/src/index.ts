@@ -195,6 +195,9 @@ const theme: BaseTheme = {
       fontWeight: 900,
       fontSize: 5,
       marginBottom: '24px',
+      '&:first-child': {
+        marginTop: 0,
+      },
     },
     h2: {
       ...text.root,
@@ -202,6 +205,9 @@ const theme: BaseTheme = {
       fontSize: 4,
       marginTop: '32px',
       marginBottom: '8px',
+      '&:first-child': {
+        marginTop: 0,
+      },
     },
     h3: {
       ...text.root,
@@ -209,6 +215,9 @@ const theme: BaseTheme = {
       fontSize: 3,
       marginTop: '16px',
       marginBottom: '8px',
+      '&:first-child': {
+        marginTop: 0,
+      },
     },
     h4: {
       ...text.root,
@@ -321,6 +330,21 @@ const theme: BaseTheme = {
       borderLeftColor: 'primary',
       borderRadius: 4,
       bg: colors.gray10,
+    },
+    images: {
+      maxWidth: '100%',
+      height: 'auto',
+    },
+    badge: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      fontFamily: 'body',
+      fontSize: 1,
+      fontWeight: 'body',
+      borderRadius: '8px',
+      whiteSpace: 'nowrap',
+      padding: '0.25rem 0.75rem',
+      mx: '0.5rem',
     },
   },
 };
