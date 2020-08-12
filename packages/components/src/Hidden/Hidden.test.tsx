@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MarigoldProvider } from '@marigold/system';
-import { Hidden, Text } from '@marigold/components';
+import { Hidden } from '@marigold/components';
 
 const theme = {
   layout: {
