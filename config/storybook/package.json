@@ -16,12 +16,12 @@
   ],
   "main": "main.js",
   "dependencies": {
-    "@storybook/addon-a11y": "5.3.19",
+    "@storybook/addon-a11y": "6.0.10",
     "@storybook/addon-docs": "5.3.19",
     "@storybook/preset-typescript": "3.0.0",
     "@storybook/react": "5.3.19",
     "babel-loader": "8.1.0",
-    "find-up": "4.1.0",
+    "find-up": "5.0.0",
     "storybook-addon-themes": "5.4.1",
     "tsconfig-paths-webpack-plugin": "3.3.0"
   }
