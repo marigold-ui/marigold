@@ -3285,10 +3285,10 @@
     "@types/istanbul-lib-coverage" "*"
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@*", "@types/jest@26.0.9":
-  version "26.0.9"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.9.tgz#0543b57da5f0cd949c5f423a00c56c492289c989"
-  integrity sha512-k4qFfJ5AUKrWok5KYXp2EPm89b0P/KZpl7Vg4XuOTVVQEhLDBDBU3iBFrjjdgd8fLw96aAtmnwhXHl63bWeBQQ==
+"@types/jest@*", "@types/jest@26.0.10":
+  version "26.0.10"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.10.tgz#8faf7e9756c033c39014ae76a7329efea00ea607"
+  integrity sha512-i2m0oyh8w/Lum7wWK/YOZJakYF8Mx08UaKA1CtbmFeDquVhAEdA7znacsVSf2hJ1OQ/OfVMGN90pw/AtzF8s/Q==
   dependencies:
     jest-diff "^25.2.1"
     pretty-format "^25.2.1"
@@ -6996,10 +6996,10 @@ eslint-plugin-react-hooks@^2.2.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-2.5.1.tgz#4ef5930592588ce171abeb26f400c7fbcbc23cd0"
   integrity sha512-Y2c4b55R+6ZzwtTppKwSmK/Kar8AdLiC2f9NADCuxbcTgPPg41Gyqa6b9GppgXSvCtkRw43ZE86CT5sejKC6/g==
 
-eslint-plugin-react@7.20.5, eslint-plugin-react@^7.14.3:
-  version "7.20.5"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.20.5.tgz#29480f3071f64a04b2c3d99d9b460ce0f76fb857"
-  integrity sha512-ajbJfHuFnpVNJjhyrfq+pH1C0gLc2y94OiCbAXT5O0J0YCKaFEHDV8+3+mDOr+w8WguRX+vSs1bM2BDG0VLvCw==
+eslint-plugin-react@7.20.6, eslint-plugin-react@^7.14.3:
+  version "7.20.6"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.20.6.tgz#4d7845311a93c463493ccfa0a19c9c5d0fd69f60"
+  integrity sha512-kidMTE5HAEBSLu23CUDvj8dc3LdBU0ri1scwHBZjI41oDv4tjsWZKU7MQccFzH1QYPYhsnTF2ovh7JlcIcmxgg==
   dependencies:
     array-includes "^3.1.1"
     array.prototype.flatmap "^1.2.3"
@@ -7567,12 +7567,12 @@ find-up@3.0.0, find-up@^3.0.0:
   dependencies:
     locate-path "^3.0.0"
 
-find-up@4.1.0, find-up@^4.0.0, find-up@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/find-up/-/find-up-4.1.0.tgz#97afe7d6cdc0bc5928584b7c8d7b16e8a9aa5d19"
-  integrity sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw==
+find-up@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/find-up/-/find-up-5.0.0.tgz#4c92819ecb7083561e4f4a240a86be5198f536fc"
+  integrity sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng==
   dependencies:
-    locate-path "^5.0.0"
+    locate-path "^6.0.0"
     path-exists "^4.0.0"
 
 find-up@^1.0.0:
@@ -7589,6 +7589,14 @@ find-up@^2.0.0, find-up@^2.1.0:
   integrity sha1-RdG35QbHF93UgndaK3eSCjwMV6c=
   dependencies:
     locate-path "^2.0.0"
+
+find-up@^4.0.0, find-up@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/find-up/-/find-up-4.1.0.tgz#97afe7d6cdc0bc5928584b7c8d7b16e8a9aa5d19"
+  integrity sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw==
+  dependencies:
+    locate-path "^5.0.0"
+    path-exists "^4.0.0"
 
 find-versions@^3.2.0:
   version "3.2.0"
@@ -10190,6 +10198,13 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
+locate-path@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-6.0.0.tgz#55321eb309febbc59c4801d931a72452a681d286"
+  integrity sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==
+  dependencies:
+    p-locate "^5.0.0"
+
 lodash._reinterpolate@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
@@ -11485,6 +11500,13 @@ p-limit@^2.0.0, p-limit@^2.2.0, p-limit@^2.2.2:
   dependencies:
     p-try "^2.0.0"
 
+p-limit@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-3.0.2.tgz#1664e010af3cadc681baafd3e2a437be7b0fb5fe"
+  integrity sha512-iwqZSOoWIW+Ew4kAGUlN16J4M7OB3ysMLSZtnhmqx7njIHFPlxWBX8xo3lVTyFVq6mI/lL9qt2IsN1sHwaxJkg==
+  dependencies:
+    p-try "^2.0.0"
+
 p-locate@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/p-locate/-/p-locate-2.0.0.tgz#20a0103b222a70c8fd39cc2e580680f3dde5ec43"
@@ -11505,6 +11527,13 @@ p-locate@^4.1.0:
   integrity sha512-R79ZZ/0wAxKGu3oYMlz8jy/kbhsNrS7SKZ7PxEHBgJ5+F2mtFW2fK2cOtBh1cHYkQsbzFV7I+EoRKe6Yt0oK7A==
   dependencies:
     p-limit "^2.2.0"
+
+p-locate@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/p-locate/-/p-locate-5.0.0.tgz#83c8315c6785005e3bd021839411c9e110e6d834"
+  integrity sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==
+  dependencies:
+    p-limit "^3.0.2"
 
 p-map-series@^1.0.0:
   version "1.0.0"
