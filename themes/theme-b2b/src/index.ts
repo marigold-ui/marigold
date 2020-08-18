@@ -300,6 +300,13 @@ const theme: BaseTheme = {
       bg: colors.green60,
     },
   },
+  validation: {
+    negative: {
+      ...text.root,
+      fontSize: 0,
+      color: colors.red60,
+    },
+  },
   layout: {
     container: {
       boxSizing: 'border-box',
