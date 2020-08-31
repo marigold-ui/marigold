@@ -10,6 +10,7 @@ export * from './Heading';
 export * from './Image';
 export * from './Label';
 export * from './Link';
+export * from './Message';
 export * from './Radio';
 export * from './Slider';
 export * from './Select';

@@ -1,4 +1,5 @@
 import { BaseTheme } from '@marigold/components';
+import { colors } from './colors';
 
 const button = {
   root: {
@@ -169,6 +170,17 @@ const theme: BaseTheme = {
         ...button.ghostHovered,
         ...button.large,
       },
+    },
+  },
+  content: {
+    messages: {
+      fontFamily: 'body',
+      fontSize: 1,
+      padding: 3,
+      borderLeftStyle: 'solid',
+      borderLeftColor: 'primary',
+      borderRadius: 4,
+      bg: colors.gray10,
     },
   },
 };
