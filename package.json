@@ -28,7 +28,7 @@
     "eslint-config-react-app": "5.2.1",
     "husky": "4.2.5",
     "lerna": "3.22.1",
-    "prettier": "2.0.5",
+    "prettier": "2.1.1",
     "pretty-quick": "3.0.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
