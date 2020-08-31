@@ -1,0 +1,30 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { ValidationMessage } from '@marigold/components';
+import { Exclamation } from '@marigold/icons';
+
+<Meta title="Components/Content/ValidationMessage" />
+
+# ValidationMessage
+
+## Description
+
+Simple colored element to display a validation message as a reaction to an event.
+
+## Import
+
+```tsx
+import { ValidationMessage } from '@marigold/components';
+```
+
+## Usage
+
+<Preview>
+  <Story name="ValidationMessage">
+    <div>
+      <ValidationMessage>
+        <Exclamation css={{ height: '16px', width: '16px', margin: '4px' }} />
+        Validation message
+      </ValidationMessage>
+    </div>
+  </Story>
+</Preview>
