@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@types/lodash.pick": "4.4.6",
-    "csstype": "3.0.2"
+    "csstype": "3.0.3"
   },
   "scripts": {
     "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly",
