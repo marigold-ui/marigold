@@ -329,6 +329,15 @@ const theme: BaseTheme = {
     },
   },
   content: {
+    messages: {
+      fontFamily: 'body',
+      fontSize: 1,
+      padding: 3,
+      borderLeftStyle: 'solid',
+      borderLeftColor: 'primary',
+      borderRadius: 4,
+      bg: colors.gray10,
+    },
     images: {
       maxWidth: '100%',
       height: 'auto',
