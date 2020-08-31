@@ -16,7 +16,7 @@ export type ValueOf<T extends any[] | Readonly<any[]>> = Mutable<T>[number];
 export type Flat<A, D extends number> = {
   '1': A;
   // prettier-ignore
-  '0': A extends ReadonlyArray<infer T>
+  '0': A extends readonly [infer T]
       ? Flat<T, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][D]>
       : A;
 }[D extends -1 ? '1' : '0'];
