@@ -306,6 +306,7 @@ const theme: BaseTheme = {
       minWidth: 0,
       margin: 'auto',
     },
+    hidden: {},
   },
   divider: {
     regular: {

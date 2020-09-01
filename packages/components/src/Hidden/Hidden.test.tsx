@@ -8,7 +8,7 @@ const theme = {
     hidden: {
       alignItems: 'center',
     },
-    unvisible: {
+    invisible: {
       alignItems: 'right',
     },
   },
@@ -28,12 +28,12 @@ test('supports default variant and themeSection', () => {
 test('accepts other variant than default', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <Hidden title="unvisible" variant="unvisible">
-        Unvisible
+      <Hidden title="invisible" variant="invisible">
+        Invisible
       </Hidden>
     </MarigoldProvider>
   );
-  const hidden = screen.getByTitle(/unvisible/);
+  const hidden = screen.getByTitle(/invisible/);
 
   expect(hidden).toHaveStyle(`align-items: right`);
 });
