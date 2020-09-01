@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MarigoldProvider } from '@marigold/system';
-import { TextInput } from '@marigold/components';
+import { Input } from '@marigold/components';
 
 const theme = {
   form: {
@@ -17,7 +17,7 @@ const theme = {
 test('supports default variant and themeSection', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <TextInput title="input" />
+      <Input title="input" />
     </MarigoldProvider>
   );
   const input = screen.getByTitle('input');
@@ -28,7 +28,7 @@ test('supports default variant and themeSection', () => {
 test('accepts other variant than default', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <TextInput title="input" variant="input2" />
+      <Input title="input" variant="input2" />
     </MarigoldProvider>
   );
   const input = screen.getByTitle('input');
@@ -39,7 +39,7 @@ test('accepts other variant than default', () => {
 test('renders correct HTML element', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <TextInput title="input" />
+      <Input title="input" />
     </MarigoldProvider>
   );
   const input = screen.getByTitle('input');
@@ -50,7 +50,7 @@ test('renders correct HTML element', () => {
 test('supports custom prop', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <TextInput title="input" placeholder="placeholder" />
+      <Input title="input" placeholder="placeholder" />
     </MarigoldProvider>
   );
   const input = screen.getByTitle('input');
@@ -61,7 +61,7 @@ test('supports custom prop', () => {
 test('variant styles cannot be overridden with CSS prop', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <TextInput title="input" css={{ fontFamily: 'Oswald Regular' }} />
+      <Input title="input" css={{ fontFamily: 'Oswald Regular' }} />
     </MarigoldProvider>
   );
   const input = screen.getByTitle('input');
