@@ -70,7 +70,7 @@ test('renders correct HTML element', () => {
   );
   const hidden = screen.getByTitle(/hidden/);
 
-  expect(hidden instanceof HTMLDivElement).toBeTruthy();
+  expect(hidden instanceof HTMLSpanElement).toBeTruthy();
 });
 
 test('variant styles cannot be overridden with CSS prop', () => {
