@@ -300,6 +300,13 @@ const theme: BaseTheme = {
       bg: colors.green60,
     },
   },
+  validation: {
+    negative: {
+      ...text.root,
+      fontSize: 0,
+      color: colors.red60,
+    },
+  },
   layout: {
     container: {
       boxSizing: 'border-box',
@@ -323,6 +330,15 @@ const theme: BaseTheme = {
     },
   },
   content: {
+    messages: {
+      fontFamily: 'body',
+      fontSize: 1,
+      padding: 3,
+      borderLeftStyle: 'solid',
+      borderLeftColor: 'primary',
+      borderRadius: 4,
+      bg: colors.gray10,
+    },
     images: {
       maxWidth: '100%',
       height: 'auto',
