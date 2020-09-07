@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, system } from '@marigold/system';
 
-type TextInputProps = {};
+type InputProps = {};
 
-export const TextInput = system<TextInputProps, 'input'>(
+export const Input = system<InputProps, 'input'>(
   ({ variant = 'input', type = 'text', children, ...props }) => {
     return (
       <Box

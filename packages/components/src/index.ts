@@ -18,6 +18,6 @@ export * from './Select';
 export * from './Svg';
 export * from './Text';
 export * from './Textarea';
-export * from './TextInput';
+export * from './Input';
 export * from './Container';
 export * from './ValidationMessage';
