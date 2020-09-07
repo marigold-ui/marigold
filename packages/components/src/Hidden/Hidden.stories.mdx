@@ -1,0 +1,64 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Button, Hidden, Text } from '@marigold/components';
+import { useState } from 'react';
+
+<Meta title="Components/Layout/Hidden" />
+
+# Hidden
+
+## Description
+
+With the Hidden component you can hide elements or components. E.g. to hide some text in specific cases, for groups or platforms.
+The element uses always the themeSection with the name: `layout` in your given theme. The variant in your section can be added with the variant prop. The default variant is `hidden`.
+Specific css style prop can also be added.
+
+## Properties
+
+| Property | Type      | Default |
+| :------- | :-------- | :------ |
+| `show`   | `boolean` | `false` |
+
+## Import
+
+```tsx
+import { Hidden } from '@marigold/components';
+```
+
+## Usage
+
+<Preview>
+  <Story name="HiddenText">
+    <div>
+      <Text>Hello, I am visible</Text>
+      <Hidden>
+        <Text>Hello, I am invisible</Text>
+      </Hidden>
+    </div>
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="HiddenButton">
+    {() => {
+      const [state, setState] = React.useState({
+        showButton: false,
+      });
+      const handleToggleClick = () => {
+        setState(prevState => ({
+          showButton: !prevState.showButton,
+        }));
+      };
+      return (
+        <div>
+          <Button variant="primary.small" onClick={handleToggleClick}>
+            {state.showButton ? 'Hide Text' : 'Show Text'}
+          </Button>
+          <Hidden show={state.showButton}>
+            <br />
+            <Text>Hello, now I am visible</Text>
+          </Hidden>
+        </div>
+      );
+    }}
+  </Story>
+</Preview>
