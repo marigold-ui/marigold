@@ -15,7 +15,7 @@
   ],
   "main": "index.js",
   "dependencies": {
-    "@types/jest": "26.0.13",
+    "@types/jest": "26.0.14",
     "babel-jest": "26.3.0",
     "find-up": "5.0.0",
     "jest-watch-typeahead": "0.6.1",
