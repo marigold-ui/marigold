@@ -19,7 +19,7 @@
     "@storybook/addon-a11y": "6.0.21",
     "@storybook/addon-docs": "6.0.22",
     "@storybook/preset-typescript": "3.0.0",
-    "@storybook/react": "6.0.21",
+    "@storybook/react": "6.0.22",
     "babel-loader": "8.1.0",
     "find-up": "5.0.0",
     "storybook-addon-themes": "6.0.0",
