@@ -17,7 +17,7 @@
   "main": "main.js",
   "dependencies": {
     "@storybook/addon-a11y": "6.0.26",
-    "@storybook/addon-docs": "6.0.22",
+    "@storybook/addon-docs": "6.0.26",
     "@storybook/preset-typescript": "3.0.0",
     "@storybook/react": "6.0.25",
     "babel-loader": "8.1.0",
