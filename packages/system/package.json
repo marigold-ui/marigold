@@ -7,7 +7,7 @@
   "typings": "dist/index.d.ts",
   "license": "MIT",
   "dependencies": {
-    "@emotion/core": "10.0.35",
+    "@emotion/core": "10.1.0",
     "@theme-ui/css": "0.3.1",
     "lodash.pick": "4.4.0"
   },
