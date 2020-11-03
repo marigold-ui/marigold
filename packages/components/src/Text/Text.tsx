@@ -1,28 +1,23 @@
+import { createStyles } from '@marigold/system';
 import React from 'react';
-import { Box, system } from '@marigold/system';
 
-type TextProps = {
+type TextProps = React.PropsWithChildren<{
+  variant?: 'body' | 'heading';
   textColor?: string;
-};
+}>;
 
-export const Text = system<TextProps, 'span'>(
-  ({
-    as = 'span',
-    variant = 'body',
-    textColor = 'inherit',
-    children,
-    ...props
-  }) => {
-    return (
-      <Box
-        {...props}
-        as={as}
-        themeSection="text"
-        variant={variant}
-        css={{ color: textColor }}
-      >
-        {children}
-      </Box>
-    );
-  }
-);
+const useStyles = createStyles('text');
+
+export const Text: React.FC<TextProps> = ({
+  variant = 'body',
+  textColor = 'inherit',
+  children,
+  ...props
+}: TextProps) => {
+  const classNames = useStyles({ variant, color: textColor });
+  return (
+    <p className={classNames} {...props}>
+      {children}
+    </p>
+  );
+};
