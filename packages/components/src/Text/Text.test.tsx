@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MarigoldProvider } from '@marigold/system';
 import { Text } from './Text';
+import { ThemeProvider } from '@marigold/system';
 
 const theme = {
   text: {
@@ -14,11 +14,44 @@ const theme = {
   },
 };
 
-test('supports default variant and themeSection', () => {
+test('accepts default variant', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Text>text</Text>
-    </MarigoldProvider>
+    </ThemeProvider>
+  );
+  const text = screen.getByText(/text/);
+
+  expect(text).toHaveStyle(`font-family: Oswald Regular`);
+});
+
+test('accepts default <span>', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Text>text</Text>
+    </ThemeProvider>
+  );
+  const text = screen.getByText(/text/);
+
+  expect(text instanceof HTMLSpanElement).toBeTruthy();
+});
+
+test('accepts as <p>', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Text as="p">text</Text>
+    </ThemeProvider>
+  );
+  const text = screen.getByText(/text/);
+
+  expect(text instanceof HTMLParagraphElement).toBeTruthy();
+});
+
+test('variant works', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Text variant="body">text</Text>
+    </ThemeProvider>
   );
   const text = screen.getByText(/text/);
 
@@ -27,44 +60,14 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Text variant="heading">text</Text>
-    </MarigoldProvider>
+    <ThemeProvider theme={theme}>
+      <Text variant="heading" textColor="#000">
+        text
+      </Text>
+    </ThemeProvider>
   );
   const text = screen.getByText(/text/);
 
-  expect(text).toHaveStyle(`font-family: Inter`);
-});
-
-test('renders <span> element by default', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Text>text</Text>
-    </MarigoldProvider>
-  );
-  const text = screen.getByText(/text/);
-
-  expect(text instanceof HTMLSpanElement).toBeTruthy();
-});
-
-test('variant styles cannot be overridden with CSS prop', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Text css={{ fontFamily: 'Arial' }}>text</Text>
-    </MarigoldProvider>
-  );
-  const text = screen.getByText(/text/);
-
-  expect(text).not.toHaveStyle(`font-family: Arial`);
-});
-
-test('accepts custom prop', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Text textColor="#0ee">text</Text>
-    </MarigoldProvider>
-  );
-  const text = screen.getByText(/text/);
-
-  expect(text).toHaveStyle(`color: rgb(0, 238, 238);`);
+  expect(text).toHaveStyle(`color: rgb(0,0,0)`);
+  expect(text).toHaveStyle(`font-family: Inter`); // ?
 });

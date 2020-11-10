@@ -7,8 +7,8 @@
   "typings": "dist/index.d.ts",
   "license": "MIT",
   "dependencies": {
+    "@theme-ui/css": "0.4.0-rc.5",
     "@emotion/core": "10.1.1",
-    "@theme-ui/css": "0.3.3",
     "lodash.pick": "4.4.0"
   },
   "peerDependencies": {
@@ -17,7 +17,8 @@
   },
   "devDependencies": {
     "@types/lodash.pick": "4.4.6",
-    "csstype": "3.0.4"
+    "csstype": "3.0.4",
+    "emotion": "10.0.27"
   },
   "scripts": {
     "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly",
