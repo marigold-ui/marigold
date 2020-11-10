@@ -1,9 +1,13 @@
+import { createStyles, system } from '@marigold/system';
 import React from 'react';
-import { Box, system } from '@marigold/system';
 
 type TextProps = {
+  as?: 'p' | 'span';
+  variant?: 'body' | 'heading';
   textColor?: string;
 };
+
+const useStyles = createStyles('text');
 
 export const Text = system<TextProps, 'span'>(
   ({
@@ -13,16 +17,13 @@ export const Text = system<TextProps, 'span'>(
     children,
     ...props
   }) => {
+    const classNames = useStyles({ variant, color: textColor });
+    const Cmp = as;
+
     return (
-      <Box
-        {...props}
-        as={as}
-        themeSection="text"
-        variant={variant}
-        css={{ color: textColor }}
-      >
+      <Cmp className={classNames} {...props}>
         {children}
-      </Box>
+      </Cmp>
     );
   }
 );

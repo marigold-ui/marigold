@@ -14,7 +14,8 @@ By adding the `as` prop you can alternatively render a `p` element.
 
 | Property               | Type              | Default   |
 | :--------------------- | :---------------- | :-------- |
-| `variant`              | `body`, `heading` | `body`    |
+| `as` (optional)        | `span`, `p`       | `span`    |
+| `variant` (optional)   | `body`, `heading` | `body`    |
 | `textColor` (optional) | string            | `inherit` |
 
 ## Import
@@ -27,7 +28,7 @@ import { Text } from '@marigold/components';
 
 <Preview>
   <Story name="body">
-    <Text css={{ color: 'text' }}>
+    <Text>
       SPAN: Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
       nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed
       diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
@@ -40,7 +41,7 @@ import { Text } from '@marigold/components';
     </Text>
   </Story>
   <Story name="heading">
-    <Text variant="heading" css={{ color: 'text' }}>
+    <Text as="p" variant="heading">
       P: Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
       nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed
       diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
