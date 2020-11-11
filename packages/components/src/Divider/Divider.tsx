@@ -1,12 +1,18 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 
 type DividerProps = {
-  weight?: 'regular' | 'bold';
+  as?: 'hr';
+  variant?: string;
 };
 
+const useStyles = createStyles('divider');
+
 export const Divider = system<DividerProps, 'hr'>(
-  ({ variant = 'divider', weight = 'regular', ...props }) => {
-    return <Box as="hr" themeSection="divider" variant={weight} {...props} />;
+  ({ as = 'hr', variant = 'regular', ...props }) => {
+    const classNames = useStyles({ variant });
+    const Cmp = as;
+
+    return <Cmp className={classNames} {...props} />;
   }
 );
