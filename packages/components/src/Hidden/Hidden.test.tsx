@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MarigoldProvider } from '@marigold/system';
+import { ThemeProvider } from '@marigold/system';
 import { Hidden } from '@marigold/components';
 
 const theme = {
@@ -16,9 +16,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Hidden title="hidden">Default</Hidden>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const hidden = screen.getByTitle(/hidden/);
 
@@ -27,11 +27,11 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Hidden title="invisible" variant="invisible">
         Invisible
       </Hidden>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const hidden = screen.getByTitle(/invisible/);
 
@@ -40,9 +40,9 @@ test('accepts other variant than default', () => {
 
 test('text is not visible, show prop = false', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Hidden title="hidden">Hidden</Hidden>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const hidden = screen.getByTitle(/hidden/);
 
@@ -51,11 +51,11 @@ test('text is not visible, show prop = false', () => {
 
 test('support show prop = true', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Hidden title="hidden" show={true}>
         Default
       </Hidden>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const hidden = screen.getByTitle(/hidden/);
 
@@ -64,9 +64,9 @@ test('support show prop = true', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Hidden title="hidden">Default</Hidden>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const hidden = screen.getByTitle(/hidden/);
 
@@ -75,11 +75,11 @@ test('renders correct HTML element', () => {
 
 test('variant styles cannot be overridden with CSS prop', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Hidden title="hidden" css={{ alignItems: 'left' }}>
         Hidden
       </Hidden>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const hidden = screen.getByTitle(/hidden/);
 

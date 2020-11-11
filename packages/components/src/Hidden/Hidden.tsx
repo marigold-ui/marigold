@@ -1,22 +1,26 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 
 type HiddenProps = {
+  as?: 'span';
+  variant?: string;
   show?: boolean;
 };
 
+const useStyles = createStyles('layout');
+
 export const Hidden = system<HiddenProps, 'span'>(
-  ({ variant = 'hidden', show = false, children, ...props }) => {
+  ({ as = 'span', variant = 'hidden', show = false, children, ...props }) => {
+    const classNames = useStyles({
+      variant,
+      display: show ? 'display' : 'none',
+    });
+    const Cmp = as;
+
     return (
-      <Box
-        as="span"
-        css={show ? { display: 'display' } : { display: 'none' }}
-        themeSection="layout"
-        variant={variant}
-        {...props}
-      >
+      <Cmp className={classNames} {...props}>
         {children}
-      </Box>
+      </Cmp>
     );
   }
 );
