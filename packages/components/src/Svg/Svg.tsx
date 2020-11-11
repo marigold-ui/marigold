@@ -1,25 +1,30 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 
 type SvgProps = {
+  as?: 'svg';
+  variant?: string;
   size?: number;
 };
 
+const useStyles = createStyles('icon');
+
 export const Svg = system<SvgProps, 'svg'>(
-  ({ size = 24, fill = 'currentcolor', children, ...props }) => {
+  ({ as = 'svg', variant = 'icon', size = 24, children, ...props }) => {
+    const classNames = useStyles({ variant });
+    const Cmp = as;
+
     return (
-      <Box
-        as="svg"
+      <Cmp
+        className={classNames}
         width={size}
         height={size}
         viewBox="0 0 24 24"
-        fill={fill}
-        themeSection="icon"
-        variant="icon"
+        fill="currentcolor"
         {...props}
       >
         {children}
-      </Box>
+      </Cmp>
     );
   }
 );
