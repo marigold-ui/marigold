@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MarigoldProvider } from '@marigold/system';
+import { ThemeProvider } from '@marigold/system';
 import { Message } from '@marigold/components';
 
 const theme = {
@@ -16,9 +16,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Message title="messages">Default</Message>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const alert = screen.getByTitle(/messages/);
 
@@ -27,11 +27,11 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Message title="info" variant="info">
         Danger
       </Message>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const alert = screen.getByTitle(/info/);
 
@@ -40,9 +40,9 @@ test('accepts other variant than default', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Message title="messages">Default</Message>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const alert = screen.getByTitle(/messages/);
 
@@ -51,11 +51,11 @@ test('renders correct HTML element', () => {
 
 test('variant styles cannot be overridden with CSS prop', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Message title="messages" css={{ alignItems: 'left' }}>
         Default
       </Message>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const alert = screen.getByTitle(/messages/);
 

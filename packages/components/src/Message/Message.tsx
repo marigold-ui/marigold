@@ -1,14 +1,18 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 
-type MessageProps = {};
+type MessageProps = {
+  as?: 'div';
+  variant?: string;
+};
+
+const useStyles = createStyles('content');
 
 export const Message = system<MessageProps, 'div'>(
-  ({ variant = 'messages', children, ...props }) => {
-    return (
-      <Box as="div" themeSection="content" variant={variant} {...props}>
-        {children}
-      </Box>
-    );
+  ({ as = 'div', variant = 'messages', ...props }) => {
+    const classNames = useStyles({ variant });
+    const Cmp = as;
+
+    return <Cmp className={classNames} {...props} />;
   }
 );
