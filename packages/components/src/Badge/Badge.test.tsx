@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MarigoldProvider } from '@marigold/system';
+import { ThemeProvider } from '@marigold/system';
 import { Badge } from '@marigold/components';
 
 const theme = {
@@ -13,9 +13,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Badge title="badge" />
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const badge = screen.getByTitle(/badge/);
 
@@ -24,9 +24,9 @@ test('supports default variant and themeSection', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Badge title="badge" />
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const badge = screen.getByTitle(/badge/);
 
@@ -35,9 +35,9 @@ test('renders correct HTML element', () => {
 
 test('supports custom borderColor prop', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Badge title="badge" borderColor="#000" />
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const badge = screen.getByTitle(/badge/);
 
@@ -46,9 +46,9 @@ test('supports custom borderColor prop', () => {
 
 test('supports custom backgroundColor prop', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Badge title="badge" backgroundColor="#1ee" />
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const badge = screen.getByTitle(/badge/);
 
@@ -57,9 +57,9 @@ test('supports custom backgroundColor prop', () => {
 
 test('variant styles cannot be overridden with CSS prop', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Badge title="badge" css={{ borderRadius: 0 }}></Badge>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const badge = screen.getByTitle(/badge/);
 

@@ -1,29 +1,35 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 
 type BadgeProps = {
+  as?: 'div';
+  variant?: string;
   borderColor?: string;
   backgroundColor?: string;
 };
 
+const useStyles = createStyles('content');
+
 export const Badge = system<BadgeProps, 'div'>(
   ({
+    as = 'div',
     variant = 'badge',
     borderColor = 'inherit',
     backgroundColor = 'inherit',
     children,
     ...props
   }) => {
+    const classNames = useStyles({
+      variant,
+      border: '1px solid ' + borderColor,
+      bg: backgroundColor,
+    });
+    const Cmp = as;
+
     return (
-      <Box
-        as="div"
-        themeSection="content"
-        variant={variant}
-        {...props}
-        css={{ border: '1px solid ' + borderColor, bg: backgroundColor }}
-      >
+      <Cmp className={classNames} {...props}>
         {children}
-      </Box>
+      </Cmp>
     );
   }
 );
