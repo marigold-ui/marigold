@@ -3740,10 +3740,10 @@
     "@babel/runtime" "^7.12.1"
     "@testing-library/dom" "^7.26.6"
 
-"@theme-ui/css@0.4.0-rc.5":
-  version "0.4.0-rc.5"
-  resolved "https://registry.yarnpkg.com/@theme-ui/css/-/css-0.4.0-rc.5.tgz#0fa254f90eecf6d8df28b1e3b4677d7fc3338d82"
-  integrity sha512-KJly9bIbfcMFwHiDB6WZ5bTMgjJSQssBFkyqETA1GpfK/M7AwpupPeyLzc65K8tYatMFXlUQmYo9JNPtLYawwg==
+"@theme-ui/css@0.4.0-rc.7":
+  version "0.4.0-rc.7"
+  resolved "https://registry.yarnpkg.com/@theme-ui/css/-/css-0.4.0-rc.7.tgz#7cc8e998726128db05ea1179ee599523da74e55d"
+  integrity sha512-JWZOOSWYRlZivrptOzp4hrtarZJ5rsmUfqAGT2iex5zks8Sv31PRr4eMOTFow9hvqicpnc8WaJQqO3ltk6fCKA==
   dependencies:
     csstype "^2.5.7"
 
