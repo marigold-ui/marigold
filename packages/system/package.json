@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@types/lodash.pick": "4.4.6",
-    "csstype": "3.0.4",
+    "csstype": "3.0.5",
     "emotion": "10.0.27"
   },
   "scripts": {
