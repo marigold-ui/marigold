@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MarigoldProvider } from '@marigold/system';
+import { ThemeProvider } from '@marigold/system';
 import { Input } from '@marigold/components';
 
 const theme = {
@@ -16,9 +16,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Input title="input" />
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const input = screen.getByTitle('input');
 
@@ -27,9 +27,9 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Input title="input" variant="input2" />
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const input = screen.getByTitle('input');
 
@@ -38,9 +38,9 @@ test('accepts other variant than default', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Input title="input" />
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const input = screen.getByTitle('input');
 
@@ -49,23 +49,11 @@ test('renders correct HTML element', () => {
 
 test('supports custom prop', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Input title="input" placeholder="placeholder" />
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const input = screen.getByTitle('input');
 
   expect(input).toHaveAttribute('placeholder');
-});
-
-test('variant styles cannot be overridden with CSS prop', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Input title="input" css={{ fontFamily: 'Oswald Regular' }} />
-    </MarigoldProvider>
-  );
-  const input = screen.getByTitle('input');
-
-  expect(input).not.toHaveStyle(`font-family: Oswald Regular`);
-  expect(input).toHaveStyle(`font-family: Inter`);
 });
