@@ -46,15 +46,3 @@ test('renders correct HTML element', () => {
 
   expect(img instanceof HTMLImageElement).toBeTruthy();
 });
-
-test('variant styles cannot be overridden with CSS prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Image title="images" css={{ alignItems: 'left' }} />
-    </ThemeProvider>
-  );
-  const img = screen.getByTitle(/images/);
-
-  expect(img).toHaveStyle(`align-items: center`);
-  expect(img).not.toHaveStyle(`align-items: left`);
-});

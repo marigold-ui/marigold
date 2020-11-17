@@ -50,15 +50,3 @@ test('renders correct HTML element', () => {
 
   expect(divider instanceof HTMLHRElement).toBeTruthy();
 });
-
-test('variant styles cannot be overridden with CSS prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Divider title="divider" css={{ margin: 0 }} />
-    </ThemeProvider>
-  );
-  const divider = screen.getByTitle(/divider/);
-
-  expect(divider).not.toHaveStyle(`margin: 0`);
-  expect(divider).toHaveStyle(`margin: 2px`);
-});

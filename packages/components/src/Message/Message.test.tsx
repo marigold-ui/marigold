@@ -48,17 +48,3 @@ test('renders correct HTML element', () => {
 
   expect(alert instanceof HTMLDivElement).toBeTruthy();
 });
-
-test('variant styles cannot be overridden with CSS prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Message title="messages" css={{ alignItems: 'left' }}>
-        Default
-      </Message>
-    </ThemeProvider>
-  );
-  const alert = screen.getByTitle(/messages/);
-
-  expect(alert).toHaveStyle(`align-items: center`);
-  expect(alert).not.toHaveStyle(`align-items: left`);
-});

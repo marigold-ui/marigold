@@ -72,17 +72,3 @@ test('renders correct HTML element', () => {
 
   expect(hidden instanceof HTMLSpanElement).toBeTruthy();
 });
-
-test('variant styles cannot be overridden with CSS prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Hidden title="hidden" css={{ alignItems: 'left' }}>
-        Hidden
-      </Hidden>
-    </ThemeProvider>
-  );
-  const hidden = screen.getByTitle(/hidden/);
-
-  expect(hidden).toHaveStyle(`align-items: center`);
-  expect(hidden).not.toHaveStyle(`align-items: left`);
-});

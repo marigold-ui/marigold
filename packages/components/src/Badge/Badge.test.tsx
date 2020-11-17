@@ -54,15 +54,3 @@ test('supports custom backgroundColor prop', () => {
 
   expect(badge).toHaveStyle(`background: #1ee`);
 });
-
-test('variant styles cannot be overridden with CSS prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Badge title="badge" css={{ borderRadius: 0 }}></Badge>
-    </ThemeProvider>
-  );
-  const badge = screen.getByTitle(/badge/);
-
-  expect(badge).toHaveStyle(`border-radius: 8px`);
-  expect(badge).not.toHaveStyle(`border-radius: 0`);
-});
