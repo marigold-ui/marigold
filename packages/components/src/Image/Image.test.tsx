@@ -46,3 +46,14 @@ test('renders correct HTML element', () => {
 
   expect(img instanceof HTMLImageElement).toBeTruthy();
 });
+
+test('accept alt', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Image alt="altText" title="default" />
+    </ThemeProvider>
+  );
+  const img = screen.getByTitle(/default/);
+
+  expect(img.getAttribute('alt')).toEqual('altText');
+});

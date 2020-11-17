@@ -8,6 +8,9 @@ const theme = {
     badge: {
       borderRadius: '8px',
     },
+    fatBadge: {
+      borderRadius: '12px',
+    },
   },
 };
 
@@ -53,4 +56,15 @@ test('supports custom backgroundColor prop', () => {
   const badge = screen.getByTitle(/badge/);
 
   expect(badge).toHaveStyle(`background: #1ee`);
+});
+
+test('supports other variant than default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Badge variant="fatBadge" title="badge" />
+    </ThemeProvider>
+  );
+  const badge = screen.getByTitle(/badge/);
+
+  expect(badge).toHaveStyle(`border-radius: 12px;`);
 });
