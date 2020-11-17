@@ -8,13 +8,9 @@ type SliderProps = {
 const useStyles = createStyles('form');
 
 export const Slider = system<SliderProps, 'input'>(
-  ({ variant = 'slider', children, ...props }) => {
+  ({ variant = 'slider', ...props }) => {
     const classNames = useStyles({ variant, verticalAlign: 'middle' });
 
-    return (
-      <input type="range" className={classNames} {...props}>
-        {children}
-      </input>
-    );
+    return <input type="range" className={classNames} {...props} />;
   }
 );
