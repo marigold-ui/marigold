@@ -2,7 +2,6 @@ import React from 'react';
 import { createStyles, system } from '@marigold/system';
 
 type SvgProps = {
-  as?: 'svg';
   variant?: string;
   size?: number;
 };
@@ -10,12 +9,11 @@ type SvgProps = {
 const useStyles = createStyles('icon');
 
 export const Svg = system<SvgProps, 'svg'>(
-  ({ as = 'svg', variant = 'icon', size = 24, children, ...props }) => {
+  ({ variant = 'icon', size = 24, children, ...props }) => {
     const classNames = useStyles({ variant });
-    const Cmp = as;
 
     return (
-      <Cmp
+      <svg
         className={classNames}
         width={size}
         height={size}
@@ -24,7 +22,7 @@ export const Svg = system<SvgProps, 'svg'>(
         {...props}
       >
         {children}
-      </Cmp>
+      </svg>
     );
   }
 );
