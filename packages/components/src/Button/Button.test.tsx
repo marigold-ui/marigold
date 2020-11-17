@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MarigoldProvider } from '@marigold/system';
+import { ThemeProvider } from '@marigold/system';
 import { Button } from './Button';
 import { Facebook } from '@marigold/icons';
 
@@ -21,9 +21,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Button>button</Button>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const button = screen.getByText(/button/);
 
@@ -32,9 +32,9 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Button variant="secondary.large">button</Button>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const button = screen.getByText(/button/);
 
@@ -43,9 +43,9 @@ test('accepts other variant than default', () => {
 
 test('renders <button> element', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Button>button</Button>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const button = screen.getByText(/button/);
 
@@ -53,25 +53,14 @@ test('renders <button> element', () => {
   expect(button instanceof HTMLSpanElement).toBeTruthy();
 });
 
-test('variant styles cannot be overridden with CSS prop', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Button css={{ fontFamily: 'Arial' }}>button</Button>
-    </MarigoldProvider>
-  );
-  const button = screen.getByText(/button/);
-
-  expect(button.parentElement).not.toHaveStyle('font-family: Arial');
-});
-
 test('add icon in button works as expected', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Button>
         <Facebook fill="red" size={30} title="facebook" />
         iconbutton
       </Button>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const button = screen.getByText(/iconbutton/);
   const icon = screen.getByTitle(/facebook/);

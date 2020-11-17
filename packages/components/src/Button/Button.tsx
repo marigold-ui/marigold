@@ -1,16 +1,24 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 
-type ButtonProps = {};
+type ButtonProps = {
+  variant?: string;
+};
+
+const useStyles = createStyles('button');
 
 export const Button = system<ButtonProps, 'button'>(
   ({ variant = 'primary.large', children, ...props }) => {
+    const classNames = useStyles({ variant });
+    const spanStyle = useStyles({
+      display: 'inline-flex',
+      alignItems: 'center',
+    });
+
     return (
-      <Box as="button" themeSection="button" variant={variant} {...props}>
-        <Box as="span" css={{ display: 'inline-flex', alignItems: 'center' }}>
-          {children}
-        </Box>
-      </Box>
+      <button className={classNames} {...props}>
+        <span className={spanStyle}>{children}</span>
+      </button>
     );
   }
 );
