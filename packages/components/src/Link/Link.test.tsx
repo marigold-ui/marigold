@@ -5,7 +5,7 @@ import { Link } from '@marigold/components';
 
 const theme = {
   link: {
-    link: {
+    normal: {
       fontFamily: 'Inter',
     },
     second: {
@@ -50,5 +50,5 @@ test('renders correct HTML element', () => {
   );
   const link = screen.getByTitle(/link/);
 
-  expect(link).toContainHTML('<a ');
+  expect(link instanceof HTMLAnchorElement).toBeTruthy();
 });

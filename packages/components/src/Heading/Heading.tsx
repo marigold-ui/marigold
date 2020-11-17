@@ -2,7 +2,7 @@ import React from 'react';
 import { createStyles, system } from '@marigold/system';
 
 type HeadingProps = {
-  variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  variant?: string;
 };
 
 const useStyles = createStyles('text');

@@ -8,7 +8,7 @@ type LinkProps = {
 const useStyles = createStyles('link');
 
 export const Link = system<LinkProps, 'a'>(
-  ({ variant = 'link', children, ...props }) => {
+  ({ variant = 'normal', children, ...props }) => {
     const classNames = useStyles({ variant });
 
     return (
