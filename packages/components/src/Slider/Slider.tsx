@@ -1,21 +1,20 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 
-type SliderProps = {};
+type SliderProps = {
+  variant?: string;
+};
+
+const useStyles = createStyles('form');
 
 export const Slider = system<SliderProps, 'input'>(
-  ({ variant = 'slider', ...props }) => {
+  ({ variant = 'slider', children, ...props }) => {
+    const classNames = useStyles({ variant, verticalAlign: 'middle' });
+
     return (
-      <Box
-        as="input"
-        type="range"
-        themeSection="form"
-        variant={variant}
-        {...props}
-        css={{
-          verticalAlign: 'middle',
-        }}
-      />
+      <input type="range" className={classNames} {...props}>
+        {children}
+      </input>
     );
   }
 );
