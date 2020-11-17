@@ -183,6 +183,14 @@ const theme: BaseTheme = {
       bg: colors.gray10,
     },
   },
+  layout: {
+    container: {
+      boxSizing: 'border-box',
+      minWidth: 0,
+      margin: 'auto',
+      bg: 'secondary',
+    },
+  },
 };
 
 export default theme;
