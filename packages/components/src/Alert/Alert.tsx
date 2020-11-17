@@ -1,27 +1,27 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 
-type AlertProps = {};
+type AlertProps = {
+  variant?: 'info' | 'danger' | 'warning' | 'success';
+};
+
+const useStyles = createStyles('alerts');
 
 export const Alert = system<AlertProps, 'div'>(
   ({ variant = 'info', ref, children, ...props }) => {
+    const classNames = useStyles({
+      variant,
+      display: 'flex',
+      alignItems: 'center',
+      px: 3,
+      py: 2,
+      borderRadius: 4,
+    });
+
     return (
-      <Box
-        as="div"
-        ref={ref}
-        themeSection="alerts"
-        variant={variant}
-        {...props}
-        css={{
-          display: 'flex',
-          alignItems: 'center',
-          px: 3,
-          py: 2,
-          borderRadius: 4,
-        }}
-      >
+      <div className={classNames} ref={ref} {...props}>
         {children}
-      </Box>
+      </div>
     );
   }
 );
