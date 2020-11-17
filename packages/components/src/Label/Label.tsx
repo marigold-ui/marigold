@@ -2,8 +2,8 @@ import React from 'react';
 import { system, createStyles } from '@marigold/system';
 
 type TextProps = {
-  variant?: string;
   htmlFor: string;
+  variant?: string;
 };
 
 const useStyles = createStyles('form');

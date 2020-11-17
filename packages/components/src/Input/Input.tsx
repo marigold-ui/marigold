@@ -8,13 +8,9 @@ type InputProps = {
 const useStyles = createStyles('form');
 
 export const Input = system<InputProps, 'input'>(
-  ({ variant = 'input', type = 'text', children, ...props }) => {
+  ({ variant = 'input', type = 'text', ...props }) => {
     const classNames = useStyles({ variant, border: 0 });
 
-    return (
-      <input type={type} className={classNames} {...props}>
-        {children}
-      </input>
-    );
+    return <input type={type} className={classNames} {...props} />;
   }
 );
