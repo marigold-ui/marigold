@@ -1,18 +1,20 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 
-type TextareaProps = {};
+type TextareaProps = {
+  variant?: string;
+};
+
+const useStyles = createStyles('form');
 
 export const Textarea = system<TextareaProps, 'textarea'>(
-  ({ variant = 'textarea', ref, ...props }) => {
+  ({ variant = 'textarea', ref, children, ...props }) => {
+    const classNames = useStyles({ variant });
+
     return (
-      <Box
-        as="textarea"
-        themeSection="form"
-        variant={variant}
-        ref={ref}
-        {...props}
-      />
+      <textarea className={classNames} ref={ref} {...props}>
+        {children}
+      </textarea>
     );
   }
 );
