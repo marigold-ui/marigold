@@ -2,13 +2,13 @@ import React from 'react';
 import { createStyles, system } from '@marigold/system';
 
 type AlertProps = {
-  variant?: 'info' | 'danger' | 'warning' | 'success';
+  variant?: string;
 };
 
 const useStyles = createStyles('alerts');
 
 export const Alert = system<AlertProps, 'div'>(
-  ({ variant = 'info', ref, children, ...props }) => {
+  ({ variant = 'info', children, ...props }) => {
     const classNames = useStyles({
       variant,
       display: 'flex',
@@ -19,7 +19,7 @@ export const Alert = system<AlertProps, 'div'>(
     });
 
     return (
-      <div className={classNames} ref={ref} {...props}>
+      <div className={classNames} {...props}>
         {children}
       </div>
     );
