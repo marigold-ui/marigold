@@ -8,11 +8,11 @@ type TextareaProps = {
 const useStyles = createStyles('form');
 
 export const Textarea = system<TextareaProps, 'textarea'>(
-  ({ variant = 'textarea', ref, children, ...props }) => {
+  ({ variant = 'textarea', children, ...props }) => {
     const classNames = useStyles({ variant });
 
     return (
-      <textarea className={classNames} ref={ref} {...props}>
+      <textarea className={classNames} {...props}>
         {children}
       </textarea>
     );
