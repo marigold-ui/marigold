@@ -2,7 +2,6 @@ import React from 'react';
 import { createStyles, system } from '@marigold/system';
 
 type HiddenProps = {
-  as?: 'span';
   variant?: string;
   show?: boolean;
 };
