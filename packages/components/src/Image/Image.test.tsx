@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MarigoldProvider } from '@marigold/system';
+import { ThemeProvider } from '@marigold/system';
 import { Image } from '@marigold/components';
 
 const theme = {
@@ -16,9 +16,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Image title="images" />
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const img = screen.getByTitle(/images/);
 
@@ -27,9 +27,9 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Image title="logos" variant="logos" />
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const img = screen.getByTitle(/logos/);
 
@@ -38,23 +38,22 @@ test('accepts other variant than default', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Image title="default" />
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const img = screen.getByTitle(/default/);
 
   expect(img instanceof HTMLImageElement).toBeTruthy();
 });
 
-test('variant styles cannot be overridden with CSS prop', () => {
+test('accept alt', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Image title="images" css={{ alignItems: 'left' }} />
-    </MarigoldProvider>
+    <ThemeProvider theme={theme}>
+      <Image alt="altText" title="default" />
+    </ThemeProvider>
   );
-  const img = screen.getByTitle(/images/);
+  const img = screen.getByTitle(/default/);
 
-  expect(img).toHaveStyle(`align-items: center`);
-  expect(img).not.toHaveStyle(`align-items: left`);
+  expect(img.getAttribute('alt')).toEqual('altText');
 });

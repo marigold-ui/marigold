@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MarigoldProvider } from '@marigold/system';
+import { ThemeProvider } from '@marigold/system';
 import { Badge } from '@marigold/components';
 
 const theme = {
@@ -8,14 +8,17 @@ const theme = {
     badge: {
       borderRadius: '8px',
     },
+    fatBadge: {
+      borderRadius: '12px',
+    },
   },
 };
 
 test('supports default variant and themeSection', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Badge title="badge" />
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const badge = screen.getByTitle(/badge/);
 
@@ -24,9 +27,9 @@ test('supports default variant and themeSection', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Badge title="badge" />
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const badge = screen.getByTitle(/badge/);
 
@@ -35,9 +38,9 @@ test('renders correct HTML element', () => {
 
 test('supports custom borderColor prop', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Badge title="badge" borderColor="#000" />
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const badge = screen.getByTitle(/badge/);
 
@@ -46,23 +49,22 @@ test('supports custom borderColor prop', () => {
 
 test('supports custom backgroundColor prop', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Badge title="badge" backgroundColor="#1ee" />
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const badge = screen.getByTitle(/badge/);
 
   expect(badge).toHaveStyle(`background: #1ee`);
 });
 
-test('variant styles cannot be overridden with CSS prop', () => {
+test('supports other variant than default', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Badge title="badge" css={{ borderRadius: 0 }}></Badge>
-    </MarigoldProvider>
+    <ThemeProvider theme={theme}>
+      <Badge variant="fatBadge" title="badge" />
+    </ThemeProvider>
   );
   const badge = screen.getByTitle(/badge/);
 
-  expect(badge).toHaveStyle(`border-radius: 8px`);
-  expect(badge).not.toHaveStyle(`border-radius: 0`);
+  expect(badge).toHaveStyle(`border-radius: 12px;`);
 });
