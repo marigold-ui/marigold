@@ -8,6 +8,7 @@ import { Container, Text } from '@marigold/components';
 ## Description
 
 Primitive layout component to embed other elements.
+The element uses always the themeSection with the name: `layout` in your given theme. The variant in your section can be added with the variant prop. The default variant is `container`.
 
 ## Import
 
@@ -19,13 +20,8 @@ import { Container } from '@marigold/components';
 
 <Preview>
   <Story name="Example 1">
-    <Container p={20} css={{ bg: '#867899', color: '#fff', width: '30%' }}>
-      <Text>Example #1: Add padding, background color and text color.</Text>
-    </Container>
-  </Story>
-  <Story name="Example 2">
-    <Container m={40} p={10} css={{ bg: '#d6d6d6' }}>
-      <Text>Example #2: Add margin, padding and background color.</Text>
+    <Container>
+      <Text>Example #1</Text>
     </Container>
   </Story>
 </Preview>
