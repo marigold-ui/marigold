@@ -311,7 +311,9 @@ const theme: BaseTheme = {
     container: {
       boxSizing: 'border-box',
       minWidth: 0,
-      margin: 'auto',
+      m: 'auto',
+      bg: colors.gray40,
+      p: 1,
     },
     hidden: {},
   },

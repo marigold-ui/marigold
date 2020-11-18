@@ -1,20 +1,20 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 
-type ContainerProps = {};
+type ContainerProps = {
+  variant?: string;
+};
+
+const useStyles = createStyles('layout');
 
 export const Container = system<ContainerProps, 'div'>(
   ({ variant = 'container', children, ...props }) => {
+    const classNames = useStyles({ variant, width: '100%' });
+
     return (
-      <Box
-        as="div"
-        themeSection="layout"
-        variant={variant}
-        css={{ width: '100%' }}
-        {...props}
-      >
+      <div className={classNames} {...props}>
         {children}
-      </Box>
+      </div>
     );
   }
 );
