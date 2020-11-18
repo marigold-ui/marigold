@@ -1,21 +1,16 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 
-type InputProps = {};
+type InputProps = {
+  variant?: string;
+};
+
+const useStyles = createStyles('form');
 
 export const Input = system<InputProps, 'input'>(
-  ({ variant = 'input', type = 'text', children, ...props }) => {
-    return (
-      <Box
-        as="input"
-        type={type}
-        themeSection="form"
-        variant={variant}
-        {...props}
-        css={{
-          border: 0,
-        }}
-      />
-    );
+  ({ variant = 'input', type = 'text', ...props }) => {
+    const classNames = useStyles({ variant, border: 0 });
+
+    return <input type={type} className={classNames} {...props} />;
   }
 );

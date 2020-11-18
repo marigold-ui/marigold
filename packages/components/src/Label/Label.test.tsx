@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MarigoldProvider } from '@marigold/system';
+import { ThemeProvider } from '@marigold/system';
 import { Label } from './Label';
 
 const theme = {
@@ -8,25 +8,41 @@ const theme = {
     label: {
       fontFamily: 'Inter Regular',
     },
+    myLabel: {
+      fontFamily: 'Oswald Regular',
+    },
   },
 };
 
 test('supports default variant and themeSection', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Label htmlFor="labelId">label</Label>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const label = screen.getByText(/label/);
 
   expect(label).toHaveStyle(`font-family: Inter Regular`);
 });
 
+test('supports other variant than default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Label htmlFor="labelId" variant="myLabel">
+        label
+      </Label>
+    </ThemeProvider>
+  );
+  const label = screen.getByText(/label/);
+
+  expect(label).toHaveStyle(`font-family: Oswald Regular`);
+});
+
 test('supports htmlFor prop', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Label htmlFor="labelId">label</Label>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const label = screen.getByText(/label/);
 
@@ -35,25 +51,11 @@ test('supports htmlFor prop', () => {
 
 test('renders <label> element', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Label htmlFor="labelId">label</Label>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const label = screen.getByText(/label/);
 
   expect(label instanceof HTMLLabelElement).toBeTruthy();
-});
-
-test('variant styles cannot be overridden with CSS prop', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Label htmlFor="labelId" css={{ fontFamily: 'Oswald Regular' }}>
-        label
-      </Label>
-    </MarigoldProvider>
-  );
-  const label = screen.getByText(/label/);
-
-  expect(label).not.toHaveStyle(`font-family: Oswald Regular`);
-  expect(label).toHaveStyle(`font-family: Inter Regular`);
 });

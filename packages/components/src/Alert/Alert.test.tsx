@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MarigoldProvider } from '@marigold/system';
+import { ThemeProvider } from '@marigold/system';
 import { Alert } from '@marigold/components';
 
 const theme = {
@@ -16,9 +16,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Alert title="default">Default</Alert>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const alert = screen.getByTitle(/default/);
 
@@ -27,11 +27,11 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Alert title="danger" variant="danger">
         Danger
       </Alert>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const alert = screen.getByTitle(/danger/);
 
@@ -40,25 +40,11 @@ test('accepts other variant than default', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Alert title="default">Default</Alert>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const alert = screen.getByTitle(/default/);
 
   expect(alert instanceof HTMLDivElement).toBeTruthy();
-});
-
-test('variant styles cannot be overridden with CSS prop', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Alert title="default" css={{ alignItems: 'left' }}>
-        Default
-      </Alert>
-    </MarigoldProvider>
-  );
-  const alert = screen.getByTitle(/default/);
-
-  expect(alert).toHaveStyle(`align-items: center`);
-  expect(alert).not.toHaveStyle(`align-items: left`);
 });

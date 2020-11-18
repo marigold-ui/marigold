@@ -1,10 +1,17 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 
-type ImageProps = {};
+type ImageProps = {
+  variant?: string;
+  alt?: string;
+};
+
+const useStyles = createStyles('content');
 
 export const Image = system<ImageProps, 'img'>(
-  ({ variant = 'images', children, ...props }) => {
-    return <Box as="img" themeSection="content" variant={variant} {...props} />;
+  ({ variant = 'images', alt = '', ...props }) => {
+    const classNames = useStyles({ variant });
+
+    return <img className={classNames} alt={alt} {...props} />;
   }
 );
