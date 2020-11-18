@@ -14,10 +14,13 @@ export const Text = system<TextProps, 'span'>(
     as = 'span',
     variant = 'body',
     textColor = 'inherit',
+    className = '',
     children,
     ...props
   }) => {
-    const classNames = useStyles({ variant, color: textColor });
+    const classNames = useStyles({ variant, color: textColor }).concat(
+      className
+    );
     const Cmp = as;
 
     return (

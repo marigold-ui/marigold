@@ -1,5 +1,6 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
 import { Text } from './Text';
+import { createStyles } from '@marigold/system';
 
 <Meta title="Components/Typography/Text" />
 
@@ -28,17 +29,23 @@ import { Text } from '@marigold/components';
 
 <Preview>
   <Story name="body">
-    <Text>
-      SPAN: Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-      nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed
-      diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-      Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor
-      sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-      diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-      erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-      rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
-      dolor sit amet.
-    </Text>
+    {() => {
+      const useStyles = createStyles('text');
+      const classNames = useStyles({ bg: '#f3f3f3' });
+      return (
+        <Text className={classNames}>
+          SPAN: Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+          diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+          erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+          et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+          Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
+          sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
+          et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
+          takimata sanctus est Lorem ipsum dolor sit amet.
+        </Text>
+      );
+    }}
   </Story>
   <Story name="heading">
     <Text as="p" variant="heading">
