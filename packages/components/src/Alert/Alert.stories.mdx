@@ -8,12 +8,13 @@ import { Alert, Text } from '@marigold/components';
 ## Description
 
 Simple colored element to display an alert message as a reaction to an event.
+Predefined variants are info, success, danger and warning.
 
 ## Properties
 
-| Property  | Type                                   | Default |
-| :-------- | :------------------------------------- | :------ |
-| `variant` | `info`, `danger`, `warning`, `success` | `info`  |
+| Property             | Type     | Default |
+| :------------------- | :------- | :------ |
+| `variant` (optional) | `string` | `info`  |
 
 ## Import
 
@@ -26,7 +27,7 @@ import { Alert } from '@marigold/components';
 <Preview>
   <Story name="Info">
     <Alert>
-      <Text css={{ color: '#fff' }}>hey, info!</Text>
+      <Text>hey, info!</Text>
     </Alert>
   </Story>
   <Story name="Success">
@@ -36,12 +37,12 @@ import { Alert } from '@marigold/components';
   </Story>
   <Story name="Danger">
     <Alert variant="danger">
-      <Text css={{ color: '#fff' }}>hey, danger!</Text>
+      <Text>hey, danger!</Text>
     </Alert>
   </Story>
   <Story name="Warning">
     <Alert variant="warning">
-      <Text css={{ color: '#fff' }}>hey, warning!</Text>
+      <Text>hey, warning!</Text>
     </Alert>
   </Story>
 </Preview>
