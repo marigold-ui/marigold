@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MarigoldProvider } from '@marigold/system';
+import { ThemeProvider } from '@marigold/system';
 import { ValidationMessage } from '@marigold/components';
 
 const theme = {
@@ -16,9 +16,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <ValidationMessage title="negative">negative</ValidationMessage>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const validation = screen.getByTitle(/negative/);
 
@@ -27,11 +27,11 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <ValidationMessage title="danger" variant="danger">
         Danger
       </ValidationMessage>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const validation = screen.getByTitle(/danger/);
 
@@ -40,25 +40,11 @@ test('accepts other variant than default', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <MarigoldProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <ValidationMessage title="negative">negative</ValidationMessage>
-    </MarigoldProvider>
+    </ThemeProvider>
   );
   const validation = screen.getByTitle(/negative/);
 
   expect(validation instanceof HTMLSpanElement).toBeTruthy();
-});
-
-test('variant styles cannot be overridden with CSS prop', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <ValidationMessage title="negative" css={{ alignItems: 'left' }}>
-        negative
-      </ValidationMessage>
-    </MarigoldProvider>
-  );
-  const validation = screen.getByTitle(/negative/);
-
-  expect(validation).toHaveStyle(`align-items: center`);
-  expect(validation).not.toHaveStyle(`align-items: left`);
 });
