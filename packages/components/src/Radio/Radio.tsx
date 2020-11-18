@@ -1,42 +1,44 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 import { CircleUnchecked, CircleChecked } from '@marigold/icons';
 
-type RadioProps = {};
+type RadioProps = {
+  variant?: string;
+};
+
+const useStyles = createStyles('form');
 
 export const Radio = system<RadioProps, 'input'>(
   ({ variant = 'radio', ...props }) => {
+    const radioStyle = useStyles({
+      position: 'absolute',
+      opacity: 0,
+      zIndex: -1,
+      width: 1,
+      height: 1,
+      overflow: 'hidden',
+    });
+    const radioIconStyle = useStyles({
+      variant,
+      ariaHidden: 'true',
+      mr: 2,
+      verticalAlign: 'middle',
+      ':hover': { cursor: 'pointer' },
+      'input:disabled ~ &': {
+        color: 'muted',
+        cursor: 'not-allowed',
+      },
+    });
+
     return (
-      <Box css={{ display: 'inline-block' }}>
-        <Box
-          as="input"
-          type="radio"
-          {...props}
-          css={{
-            position: 'absolute',
-            opacity: 0,
-            zIndex: -1,
-            width: 1,
-            height: 1,
-            overflow: 'hidden',
-          }}
-        />
-        <Box
-          as={props.checked ? CircleChecked : CircleUnchecked}
-          aria-hidden="true"
-          themeSection="form"
-          variant={variant}
-          css={{
-            mr: 2,
-            verticalAlign: 'middle',
-            ':hover': { cursor: 'pointer' },
-            'input:disabled ~ &': {
-              color: 'muted',
-              cursor: 'not-allowed',
-            },
-          }}
-        />
-      </Box>
+      <div className={useStyles({ display: 'inline-block' })}>
+        <input type="radio" className={radioStyle} {...props} />
+        {props.checked ? (
+          <CircleChecked className={radioIconStyle} />
+        ) : (
+          <CircleUnchecked className={radioIconStyle} />
+        )}
+      </div>
     );
   }
 );
