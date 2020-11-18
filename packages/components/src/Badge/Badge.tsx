@@ -1,10 +1,13 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 
 type BadgeProps = {
+  variant?: string;
   borderColor?: string;
   backgroundColor?: string;
 };
+
+const useStyles = createStyles('content');
 
 export const Badge = system<BadgeProps, 'div'>(
   ({
@@ -14,16 +17,16 @@ export const Badge = system<BadgeProps, 'div'>(
     children,
     ...props
   }) => {
+    const classNames = useStyles({
+      variant,
+      border: '1px solid ' + borderColor,
+      bg: backgroundColor,
+    });
+
     return (
-      <Box
-        as="div"
-        themeSection="content"
-        variant={variant}
-        {...props}
-        css={{ border: '1px solid ' + borderColor, bg: backgroundColor }}
-      >
+      <div className={classNames} {...props}>
         {children}
-      </Box>
+      </div>
     );
   }
 );

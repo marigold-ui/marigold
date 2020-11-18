@@ -1,25 +1,28 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 
 type SvgProps = {
+  variant?: string;
   size?: number;
 };
 
+const useStyles = createStyles('icon');
+
 export const Svg = system<SvgProps, 'svg'>(
-  ({ size = 24, fill = 'currentcolor', children, ...props }) => {
+  ({ variant = 'icon', size = 24, children, ...props }) => {
+    const classNames = useStyles({ variant });
+
     return (
-      <Box
-        as="svg"
+      <svg
+        className={classNames}
         width={size}
         height={size}
         viewBox="0 0 24 24"
-        fill={fill}
-        themeSection="icon"
-        variant="icon"
+        fill="currentcolor"
         {...props}
       >
         {children}
-      </Box>
+      </svg>
     );
   }
 );
