@@ -1,16 +1,20 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 
 type HeadingProps = {
-  headingStyle?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  variant?: string;
 };
 
+const useStyles = createStyles('text');
+
 export const Heading = system<HeadingProps, 'h2'>(
-  ({ headingStyle = 'h2', children, ...props }) => {
+  ({ variant = 'h2', children, ...props }) => {
+    const classNames = useStyles({ variant });
+
     return (
-      <Box as="h2" themeSection="text" variant={headingStyle} {...props}>
+      <h2 className={classNames} {...props}>
         {children}
-      </Box>
+      </h2>
     );
   }
 );

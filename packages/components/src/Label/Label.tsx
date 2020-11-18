@@ -1,22 +1,21 @@
 import React from 'react';
-import { system, Box } from '@marigold/system';
+import { system, createStyles } from '@marigold/system';
 
-type LabelProps = {
+type TextProps = {
   htmlFor: string;
+  variant?: string;
 };
 
-export const Label = system<LabelProps, 'label'>(
+const useStyles = createStyles('form');
+
+export const Label = system<TextProps, 'label'>(
   ({ variant = 'label', htmlFor, children, ...props }) => {
+    const classNames = useStyles({ variant });
+
     return (
-      <Box
-        as="label"
-        themeSection="form"
-        variant={variant}
-        htmlFor={htmlFor}
-        {...props}
-      >
+      <label htmlFor={htmlFor} className={classNames} {...props}>
         {children}
-      </Box>
+      </label>
     );
   }
 );

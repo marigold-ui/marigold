@@ -1,14 +1,20 @@
 import React from 'react';
-import { Box, system } from '@marigold/system';
+import { createStyles, system } from '@marigold/system';
 
-type LinkProps = {};
+type LinkProps = {
+  variant?: string;
+};
+
+const useStyles = createStyles('link');
 
 export const Link = system<LinkProps, 'a'>(
-  ({ variant = 'link', children, ...props }) => {
+  ({ variant = 'normal', children, ...props }) => {
+    const classNames = useStyles({ variant });
+
     return (
-      <Box as="a" variant={variant} themeSection="link" {...props}>
+      <a className={classNames} {...props}>
         {children}
-      </Box>
+      </a>
     );
   }
 );
