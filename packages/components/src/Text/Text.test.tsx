@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Text } from './Text';
-import { ThemeProvider } from '@marigold/system';
+import { ThemeProvider, useStyles } from '@marigold/system';
 
 const theme = {
   text: {
@@ -69,5 +69,17 @@ test('accepts other variant than default', () => {
   const text = screen.getByText(/text/);
 
   expect(text).toHaveStyle(`color: rgb(0,0,0)`);
-  expect(text).toHaveStyle(`font-family: Inter`); // ?
+  expect(text).toHaveStyle(`font-family: Inter`);
+});
+
+test('accepts custom styles prop className', () => {
+  const className = useStyles({ fontSize: '8px' });
+  render(
+    <ThemeProvider theme={theme}>
+      <Text className={className}>text</Text>
+    </ThemeProvider>
+  );
+  const text = screen.getByText(/text/);
+
+  expect(text).toHaveStyle(`font-size: 8px`);
 });

@@ -1,4 +1,4 @@
-import { createStyles, system } from '@marigold/system';
+import { useStyles, system } from '@marigold/system';
 import React from 'react';
 
 type TextProps = {
@@ -7,17 +7,19 @@ type TextProps = {
   textColor?: string;
 };
 
-const useStyles = createStyles('text');
-
 export const Text = system<TextProps, 'span'>(
   ({
     as = 'span',
     variant = 'body',
     textColor = 'inherit',
+    className = '',
     children,
     ...props
   }) => {
-    const classNames = useStyles({ variant, color: textColor });
+    const classNames = useStyles({
+      variant: `text.${variant}`,
+      color: textColor,
+    }).concat(' ', className);
     const Cmp = as;
 
     return (
