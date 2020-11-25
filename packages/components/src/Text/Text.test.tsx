@@ -73,13 +73,22 @@ test('accepts other variant than default', () => {
 });
 
 test('accepts custom styles prop className', () => {
-  const className = useStyles({ fontSize: '8px' });
-  render(
+  const TestTextComponent: React.FC = ({ children, ...props }) => {
+    const classNames = useStyles({ fontSize: '8px' });
+    return (
+      <Text className={classNames} {...props}>
+        {children}
+      </Text>
+    );
+  };
+
+  const { getByText } = render(
     <ThemeProvider theme={theme}>
-      <Text className={className}>text</Text>
+      <TestTextComponent>text</TestTextComponent>
     </ThemeProvider>
   );
-  const text = screen.getByText(/text/);
+  const testelem = getByText('text');
+  const text = getComputedStyle(testelem);
 
-  expect(text).toHaveStyle(`font-size: 8px`);
+  expect(text.fontSize).toEqual('8px');
 });
