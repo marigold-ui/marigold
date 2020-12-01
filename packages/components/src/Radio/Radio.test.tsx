@@ -36,7 +36,7 @@ test('renders <SVG> CircleUnchecked element', () => {
 test('renders <SVG> CircleChecked element', () => {
   render(
     <Label htmlFor="radio">
-      <Radio id="radio" checked /> Test
+      <Radio id="radio" defaultChecked /> Test
     </Label>
   );
   const radio = screen.getByText(/Test/);
