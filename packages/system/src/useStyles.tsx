@@ -22,9 +22,10 @@ export const useStyles = ({ variant, ...styles }: StylesProps) => {
   /**
    * Variants are retrieved from the theme.
    */
-  const basedOnVariants = [variant]
-    .map(v => useClassname({ variant: `${v}` }))
-    .join(' ');
+  const variants = Array.isArray(variant)
+    ? variant.map(v => ({ variant: v }))
+    : [{ variant }];
+  const basedOnVariants = useClassname(...variants);
 
   /**
    * Custom styles are applied "on runtime". They are usually controlled via component
