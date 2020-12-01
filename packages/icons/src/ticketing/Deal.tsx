@@ -1,8 +1,8 @@
 import React from 'react';
 import { Svg } from '@marigold/components';
 
-export const Deal = ({ ...props }) => (
-  <Svg {...props}>
+export const Deal = ({ className = '', ...props }) => (
+  <Svg className={className} {...props}>
     <mask
       id="mask0"
       mask-type="alpha"
