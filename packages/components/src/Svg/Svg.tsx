@@ -9,8 +9,10 @@ type SvgProps = {
 const useStyles = createStyles('icon');
 
 export const Svg = system<SvgProps, 'svg'>(
-  ({ variant = 'icon', size = 24, children, ...props }) => {
-    const classNames = useStyles({ variant });
+  ({ variant = 'icon', size = 24, className = '', children, ...props }) => {
+    const classNames = useStyles({
+      variant: `text.${variant}`,
+    }).concat(' ', className);
 
     return (
       <svg
