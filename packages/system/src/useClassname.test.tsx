@@ -10,6 +10,7 @@ const theme = {
     primary: 'hotpink',
     black: '#000',
   },
+  sizes: [0, 1, 2],
   text: {
     body: {
       fontSize: 1,
@@ -30,6 +31,16 @@ test('create a string classname', () => {
   const { result } = renderHook(() => useClassname({ color: 'primary' }), {
     wrapper,
   });
+  expect(result.current).toEqual(expect.any(String));
+});
+
+test('create classnames from multiple intpus', () => {
+  const { result } = renderHook(
+    () => useClassname({ color: 'primary' }, { p: 2 }),
+    {
+      wrapper,
+    }
+  );
   expect(result.current).toEqual(expect.any(String));
 });
 
