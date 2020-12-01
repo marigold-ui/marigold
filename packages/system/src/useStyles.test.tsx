@@ -17,6 +17,9 @@ const theme = {
       fontSize: 3,
       color: 'primary',
     },
+    padding: {
+      paddingTop: '2px',
+    },
   },
 };
 
@@ -80,6 +83,36 @@ test('variant styles second', () => {
   expect(style.marginTop).not.toEqual('0px'); // 0px come from base
   expect(style.marginBottom).toEqual('0px'); // 0px still come from base
   expect(style.marginTop).toEqual('2px'); // 2px come from variant
+});
+
+test('array of variant styles', () => {
+  const TestComponent: React.FC<{ variant?: 'body' }> = ({
+    variant = 'body',
+    children,
+    ...props
+  }) => {
+    const classNames = useStyles({
+      variant: [`text.${variant}`, `text.padding`],
+    });
+    return (
+      <p className={classNames} {...props}>
+        {children}
+      </p>
+    );
+  };
+
+  const { getByText } = render(
+    <ThemeProvider theme={theme}>
+      <TestComponent>Text</TestComponent>
+    </ThemeProvider>
+  );
+  const testelem = getByText('Text');
+  const style = getComputedStyle(testelem);
+
+  expect(style.marginTop).not.toEqual('0px'); // 0px come from base
+  expect(style.marginBottom).toEqual('0px'); // 0px still come from base
+  expect(style.marginTop).toEqual('2px'); // 2px marginTop come from variant
+  expect(style.paddingTop).toEqual('2px'); // 2px paddingTop come from variant
 });
 
 test('custom styles third', () => {

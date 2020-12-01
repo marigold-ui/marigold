@@ -36,7 +36,7 @@ test('renders <SVG> CircleUnchecked element', () => {
 test('renders <SVG> CircleChecked element', () => {
   render(
     <Label htmlFor="checkbox">
-      <Checkbox id="checkbox" defaultChecked /> Test
+      <Checkbox id="checkbox" checked onChange={() => {}} /> Test
     </Label>
   );
   const checkbox = screen.getByText(/Test/);
