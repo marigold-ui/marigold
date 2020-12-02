@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStyles, system } from '@marigold/system';
+import { useStyles, system } from '@marigold/system';
 
 type BadgeProps = {
   variant?: string;
@@ -7,21 +7,20 @@ type BadgeProps = {
   backgroundColor?: string;
 };
 
-const useStyles = createStyles('content');
-
 export const Badge = system<BadgeProps, 'div'>(
   ({
     variant = 'badge',
     borderColor = 'inherit',
     backgroundColor = 'inherit',
+    className = '',
     children,
     ...props
   }) => {
     const classNames = useStyles({
-      variant,
+      variant: `content.${variant}`,
       border: '1px solid ' + borderColor,
       bg: backgroundColor,
-    });
+    }).concat(' ', className);
 
     return (
       <div className={classNames} {...props}>
