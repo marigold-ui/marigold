@@ -6,6 +6,7 @@ export * from './Badge';
 export * from './Button';
 export * from './Checkbox';
 export * from './Divider';
+export * from './Field';
 export * from './Heading';
 export * from './Hidden';
 export * from './Image';
