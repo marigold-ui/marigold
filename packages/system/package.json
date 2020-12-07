@@ -8,7 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "@theme-ui/css": "0.4.0-rc.13",
-    "@emotion/core": "10.1.1",
+    "@emotion/core": "11.0.0",
     "lodash.pick": "4.4.0"
   },
   "peerDependencies": {
