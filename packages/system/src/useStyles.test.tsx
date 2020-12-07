@@ -144,3 +144,37 @@ test('custom styles third', () => {
   expect(style.marginTop).not.toEqual('2px'); // do not apply 2px from variant
   expect(style.marginTop).toEqual('4px'); // apply 4px from custom styles
 });
+
+test('customClassName styles fourth', () => {
+  const TestComponent: React.FC<{ variant?: 'body' }> = ({
+    variant = 'body',
+    children,
+    ...props
+  }) => {
+    const classNames = useStyles(
+      {
+        variant: `text.${variant}`,
+        marginTop: '4px',
+      },
+      useStyles({ marginTop: '8px' })
+    );
+    return (
+      <p className={classNames} {...props}>
+        {children}
+      </p>
+    );
+  };
+
+  const { getByText } = render(
+    <ThemeProvider theme={theme}>
+      <TestComponent>Text</TestComponent>
+    </ThemeProvider>
+  );
+  const testelem = getByText('Text');
+  const style = getComputedStyle(testelem);
+
+  expect(style.marginTop).not.toEqual('0px'); // do not apply 0px from base
+  expect(style.marginTop).not.toEqual('2px'); // do not apply 2px from variant
+  expect(style.marginTop).not.toEqual('4px'); // do not apply 4px from custom styles
+  expect(style.marginTop).toEqual('8px'); // apply 8px from customClassNames styles
+});
