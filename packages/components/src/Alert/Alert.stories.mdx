@@ -1,5 +1,6 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
 import { Alert, Text } from '@marigold/components';
+import { useStyles } from '@marigold/system';
 
 <Meta title="Components/Content/Alert" />
 
@@ -26,7 +27,7 @@ import { Alert } from '@marigold/components';
 
 <Preview>
   <Story name="Info">
-    <Alert>
+    <Alert className={useStyles({ color: '#f3f3f3' })}>
       <Text>hey, info!</Text>
     </Alert>
   </Story>
