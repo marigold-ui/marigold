@@ -18,7 +18,7 @@
   "devDependencies": {
     "@types/lodash.pick": "4.4.6",
     "csstype": "3.0.5",
-    "emotion": "10.0.27"
+    "emotion": "11.0.0"
   },
   "scripts": {
     "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly",
