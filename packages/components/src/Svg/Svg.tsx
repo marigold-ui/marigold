@@ -1,16 +1,19 @@
 import React from 'react';
-import { createStyles, system } from '@marigold/system';
+import { useStyles, system } from '@marigold/system';
 
 type SvgProps = {
   variant?: string;
   size?: number;
 };
 
-const useStyles = createStyles('icon');
-
 export const Svg = system<SvgProps, 'svg'>(
-  ({ variant = 'icon', size = 24, children, ...props }) => {
-    const classNames = useStyles({ variant });
+  ({ variant = 'icon', size = 24, className = '', children, ...props }) => {
+    const classNames = useStyles(
+      {
+        variant: `icon.${variant}`,
+      },
+      className
+    );
 
     return (
       <svg
