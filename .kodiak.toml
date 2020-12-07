@@ -1,0 +1,6 @@
+# .kodiak.toml
+# Minimal config. version is the only required field.
+version = 1
+
+[approve]
+auto_approve_usernames = ["dependabot"]
