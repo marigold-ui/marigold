@@ -8,7 +8,10 @@ export type StylesProps = {
 /**
  * hook function that can add base styles, variant and custom styles
  */
-export const useStyles = ({ variant, ...styles }: StylesProps) => {
+export const useStyles = (
+  { variant, ...styles }: StylesProps,
+  classNames?: string
+) => {
   /**
    * Base styles are always applied. They are used to normalize the appearance for a
    * component between browsers.
@@ -34,5 +37,5 @@ export const useStyles = ({ variant, ...styles }: StylesProps) => {
    */
   const custom = useClassname(styles);
 
-  return [base, basedOnVariants, custom].join(' ');
+  return [base, basedOnVariants, custom, classNames].join(' ');
 };
