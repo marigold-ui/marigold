@@ -12,15 +12,18 @@ export const Badge = system<BadgeProps, 'div'>(
     variant = 'badge',
     borderColor = 'inherit',
     backgroundColor = 'inherit',
-    className = '',
+    className,
     children,
     ...props
   }) => {
-    const classNames = useStyles({
-      variant: `content.${variant}`,
-      border: '1px solid ' + borderColor,
-      bg: backgroundColor,
-    }).concat(' ', className);
+    const classNames = useStyles(
+      {
+        variant: `content.${variant}`,
+        border: '1px solid ' + borderColor,
+        bg: backgroundColor,
+      },
+      className
+    );
 
     return (
       <div className={classNames} {...props}>
