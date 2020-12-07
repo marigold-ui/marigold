@@ -12,14 +12,17 @@ export const Text = system<TextProps, 'span'>(
     as = 'span',
     variant = 'body',
     textColor = 'inherit',
-    className = '',
+    className,
     children,
     ...props
   }) => {
-    const classNames = useStyles({
-      variant: `text.${variant}`,
-      color: textColor,
-    }).concat(' ', className);
+    const classNames = useStyles(
+      {
+        variant: `text.${variant}`,
+        color: textColor,
+      },
+      className
+    );
     const Cmp = as;
 
     return (
