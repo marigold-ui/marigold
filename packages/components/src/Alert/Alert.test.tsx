@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { useStyles, ThemeProvider } from '@marigold/system';
 import { Alert } from '@marigold/components';
 
 const theme = {
@@ -47,4 +47,25 @@ test('renders correct HTML element', () => {
   const alert = screen.getByTitle(/default/);
 
   expect(alert instanceof HTMLDivElement).toBeTruthy();
+});
+
+test('accepts custom styles prop className', () => {
+  const TestComponent: React.FC = ({ children, ...props }) => {
+    const classNames = useStyles({ fontSize: '8px' });
+    return (
+      <Alert className={classNames} {...props}>
+        {children}
+      </Alert>
+    );
+  };
+
+  const { getByText } = render(
+    <ThemeProvider theme={theme}>
+      <TestComponent>text</TestComponent>
+    </ThemeProvider>
+  );
+  const testelem = getByText('text');
+  const text = getComputedStyle(testelem);
+
+  expect(text.fontSize).toEqual('8px');
 });
