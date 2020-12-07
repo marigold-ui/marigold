@@ -115,7 +115,8 @@ const theme: BaseTheme = {
     input: {
       display: 'block',
       fontFamily: 'body',
-      color: colors.gray70,
+      color: 'text',
+      border: 0,
       outline: '1px solid',
       outlineColor: colors.gray40,
       padding: '0 8px',
@@ -129,6 +130,13 @@ const theme: BaseTheme = {
         color: colors.gray40,
         cursor: 'not-allowed',
       },
+    },
+    field: {
+      fontFamily: 'body',
+      fontSize: 0,
+      color: 'text',
+      fontWeight: 'body',
+      lineHeight: '1.5rem',
     },
     label: {
       fontFamily: 'body',
