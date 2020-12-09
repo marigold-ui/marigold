@@ -59,3 +59,16 @@ test('renders <label> element', () => {
 
   expect(label instanceof HTMLLabelElement).toBeTruthy();
 });
+
+test('accepts custom styles prop className', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Label htmlFor="labelId" className="custom-class-name" title="label">
+        label
+      </Label>
+    </ThemeProvider>
+  );
+  const label = screen.getByTitle(/label/);
+
+  expect(label.className).toMatch('custom-class-name');
+});
