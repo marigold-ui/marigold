@@ -1,19 +1,20 @@
 import React from 'react';
-import { createStyles, system } from '@marigold/system';
+import { useStyles, system } from '@marigold/system';
 
 type ValidationMessageProps = {
   variant?: string;
 };
 
-const useStyles = createStyles('validation');
-
 export const ValidationMessage = system<ValidationMessageProps, 'span'>(
-  ({ variant = 'negative', children, ...props }) => {
-    const classNames = useStyles({
-      variant,
-      display: 'flex',
-      alignItems: 'center',
-    });
+  ({ variant = 'negative', children, className, ...props }) => {
+    const classNames = useStyles(
+      {
+        variant: `validation.${variant}`,
+        display: 'flex',
+        alignItems: 'center',
+      },
+      className
+    );
 
     return (
       <span className={classNames} {...props}>
