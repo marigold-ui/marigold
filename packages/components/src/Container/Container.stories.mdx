@@ -1,5 +1,6 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
 import { Container, Text } from '@marigold/components';
+import { useStyles } from '@marigold/system';
 
 <Meta title="Components/Layout/Container" />
 
@@ -9,6 +10,12 @@ import { Container, Text } from '@marigold/components';
 
 Primitive layout component to embed other elements.
 The element uses always the themeSection with the name: `layout` in your given theme. The variant in your section can be added with the variant prop. The default variant is `container`.
+
+## Properties
+
+| Property             | Type     | Default     |
+| :------------------- | :------- | :---------- |
+| `variant` (optional) | `string` | `container` |
 
 ## Import
 
@@ -22,6 +29,14 @@ import { Container } from '@marigold/components';
   <Story name="Example 1">
     <Container>
       <Text>Example #1</Text>
+    </Container>
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="Example 2">
+    <Container className={useStyles({ bg: 'green' })}>
+      <Text>Example #2</Text>
     </Container>
   </Story>
 </Preview>
