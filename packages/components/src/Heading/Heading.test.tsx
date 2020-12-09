@@ -48,3 +48,16 @@ test('renders correct HTML element', () => {
 
   expect(heading instanceof HTMLHeadingElement).toBeTruthy();
 });
+
+test('accepts custom styles prop className', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Heading className="custom-class-name" title="heading">
+        Default
+      </Heading>
+    </ThemeProvider>
+  );
+  const heading = screen.getByTitle(/heading/);
+
+  expect(heading.className).toMatch('custom-class-name');
+});
