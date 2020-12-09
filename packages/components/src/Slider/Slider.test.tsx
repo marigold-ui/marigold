@@ -46,3 +46,14 @@ test('renders <input> element by default', () => {
 
   expect(slider instanceof HTMLInputElement).toBeTruthy();
 });
+
+test('accepts custom styles prop className', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Slider className="custom-class-name" title="slider" />
+    </ThemeProvider>
+  );
+  const slider = screen.getByTitle(/slider/);
+
+  expect(slider.className).toMatch('custom-class-name');
+});
