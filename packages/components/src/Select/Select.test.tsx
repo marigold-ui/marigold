@@ -66,3 +66,16 @@ test('variant styles cannot be overridden with CSS prop', () => {
   expect(select).not.toHaveStyle(`font-family: Oswald Regular`);
   expect(select).toHaveStyle(`font-family: Inter`);
 });
+
+test('accepts custom styles prop className', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Select className="custom-class-name" title="select">
+        <option>1</option>
+      </Select>
+    </ThemeProvider>
+  );
+  const select = screen.getByTitle(/select/);
+
+  expect(select.className).toMatch('custom-class-name');
+});
