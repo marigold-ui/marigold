@@ -1,16 +1,18 @@
 import React from 'react';
-import { createStyles, system } from '@marigold/system';
+import { useStyles, system } from '@marigold/system';
 
 type DividerProps = {
   variant?: string;
 };
 
-const useStyles = createStyles('divider');
-
 export const Divider = system<DividerProps, 'hr'>(
-  ({ variant = 'regular', ...props }) => {
-    const classNames = useStyles({ variant });
-
+  ({ variant = 'regular', className, ...props }) => {
+    const classNames = useStyles(
+      {
+        variant: `divider.${variant}`,
+      },
+      className
+    );
     return <hr className={classNames} {...props} />;
   }
 );
