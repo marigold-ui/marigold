@@ -1,6 +1,7 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
 import { Label, Checkbox } from '@marigold/components';
 import { useState } from 'react';
+import { useStyles } from '@marigold/system';
 
 <Meta title="Components/Form/Checkbox" />
 
@@ -10,6 +11,12 @@ import { useState } from 'react';
 
 With the Checkbox component you can add a HTML `<input>` element with `type="checkbox"` to your form.
 The element uses always the themeSection with the name: `form` in your given theme. The variant in your section can be added with the variant prop. The default variant is `checkbox`.
+
+## Properties
+
+| Property             | Type     | Default    |
+| :------------------- | :------- | :--------- |
+| `variant` (optional) | `string` | `checkbox` |
 
 ## Import
 
@@ -87,12 +94,13 @@ import { Checkbox } from '@marigold/components';
   </Story>
 </Preview>
 
-### Checkbox checked and disabled
+### Checkbox checked, disabled and custom styled
 
 <Preview>
   <Story name="CheckboxTwo">
     <div>
       <Checkbox checked />
+      <Checkbox checked className={useStyles({ bg: 'red' })} />
       <Checkbox disabled />
       <Checkbox checked disabled />
     </div>
