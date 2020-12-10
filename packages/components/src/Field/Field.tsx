@@ -31,7 +31,7 @@ export const Field = system<FieldProps, 'input'>(
           {label}
           {error ? <Required size={16} fill={b2bTheme.colors.red60} /> : ''}
         </Label>
-        <Input type={type} htmlFor={htmlFor} />
+        <Input type={type} for={htmlFor} />
         {error ? (
           <ValidationMessage>
             <Exclamation size={16} />
