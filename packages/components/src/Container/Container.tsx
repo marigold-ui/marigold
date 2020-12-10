@@ -1,15 +1,19 @@
 import React from 'react';
-import { createStyles, system } from '@marigold/system';
+import { useStyles, system } from '@marigold/system';
 
 type ContainerProps = {
   variant?: string;
 };
 
-const useStyles = createStyles('layout');
-
 export const Container = system<ContainerProps, 'div'>(
-  ({ variant = 'container', children, ...props }) => {
-    const classNames = useStyles({ variant, width: '100%' });
+  ({ variant = 'container', className, children, ...props }) => {
+    const classNames = useStyles(
+      {
+        variant: `layout.${variant}`,
+        width: '100%',
+      },
+      className
+    );
 
     return (
       <div className={classNames} {...props}>

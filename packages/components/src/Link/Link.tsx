@@ -1,16 +1,18 @@
 import React from 'react';
-import { createStyles, system } from '@marigold/system';
+import { useStyles, system } from '@marigold/system';
 
 type LinkProps = {
   variant?: string;
 };
 
-const useStyles = createStyles('link');
-
 export const Link = system<LinkProps, 'a'>(
-  ({ variant = 'normal', children, ...props }) => {
-    const classNames = useStyles({ variant });
-
+  ({ variant = 'normal', children, className, ...props }) => {
+    const classNames = useStyles(
+      {
+        variant: `link.${variant}`,
+      },
+      className
+    );
     return (
       <a className={classNames} {...props}>
         {children}

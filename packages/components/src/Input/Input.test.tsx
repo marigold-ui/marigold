@@ -57,3 +57,14 @@ test('supports custom prop', () => {
 
   expect(input).toHaveAttribute('placeholder');
 });
+
+test('accepts custom styles prop className', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Input className="custom-class-name" title="input" />
+    </ThemeProvider>
+  );
+  const input = screen.getByTitle(/input/);
+
+  expect(input.className).toMatch('custom-class-name');
+});

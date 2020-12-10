@@ -1,15 +1,19 @@
 import React from 'react';
-import { createStyles, system } from '@marigold/system';
+import { useStyles, system } from '@marigold/system';
 
 type InputProps = {
   variant?: string;
 };
 
-const useStyles = createStyles('form');
-
 export const Input = system<InputProps, 'input'>(
-  ({ variant = 'input', type = 'text', ...props }) => {
-    const classNames = useStyles({ variant, border: 0 });
+  ({ variant = 'input', type = 'text', className, ...props }) => {
+    const classNames = useStyles(
+      {
+        variant: `form.${variant}`,
+        border: 0,
+      },
+      className
+    );
 
     return <input type={type} className={classNames} {...props} />;
   }

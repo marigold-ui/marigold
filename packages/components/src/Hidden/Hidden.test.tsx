@@ -72,3 +72,16 @@ test('renders correct HTML element', () => {
 
   expect(hidden instanceof HTMLSpanElement).toBeTruthy();
 });
+
+test('accepts custom styles prop className', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Hidden className="custom-class-name" title="hidden">
+        text
+      </Hidden>
+    </ThemeProvider>
+  );
+  const hidden = screen.getByTitle(/hidden/);
+
+  expect(hidden.className).toMatch('custom-class-name');
+});
