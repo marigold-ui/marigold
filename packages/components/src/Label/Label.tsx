@@ -1,17 +1,19 @@
 import React from 'react';
-import { system, createStyles } from '@marigold/system';
+import { system, useStyles } from '@marigold/system';
 
 type TextProps = {
   htmlFor: string;
   variant?: string;
 };
 
-const useStyles = createStyles('form');
-
 export const Label = system<TextProps, 'label'>(
-  ({ variant = 'label', htmlFor, children, ...props }) => {
-    const classNames = useStyles({ variant });
-
+  ({ variant = 'label', htmlFor, children, className, ...props }) => {
+    const classNames = useStyles(
+      {
+        variant: `form.${variant}`,
+      },
+      className
+    );
     return (
       <label htmlFor={htmlFor} className={classNames} {...props}>
         {children}

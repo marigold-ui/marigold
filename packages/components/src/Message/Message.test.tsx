@@ -20,9 +20,9 @@ test('supports default variant and themeSection', () => {
       <Message title="messages">Default</Message>
     </ThemeProvider>
   );
-  const alert = screen.getByTitle(/messages/);
+  const message = screen.getByTitle(/messages/);
 
-  expect(alert).toHaveStyle(`align-items: center`);
+  expect(message).toHaveStyle(`align-items: center`);
 });
 
 test('accepts other variant than default', () => {
@@ -33,9 +33,9 @@ test('accepts other variant than default', () => {
       </Message>
     </ThemeProvider>
   );
-  const alert = screen.getByTitle(/info/);
+  const message = screen.getByTitle(/info/);
 
-  expect(alert).toHaveStyle(`align-items: right`);
+  expect(message).toHaveStyle(`align-items: right`);
 });
 
 test('renders correct HTML element', () => {
@@ -44,7 +44,20 @@ test('renders correct HTML element', () => {
       <Message title="messages">Default</Message>
     </ThemeProvider>
   );
-  const alert = screen.getByTitle(/messages/);
+  const message = screen.getByTitle(/messages/);
 
-  expect(alert instanceof HTMLDivElement).toBeTruthy();
+  expect(message instanceof HTMLDivElement).toBeTruthy();
+});
+
+test('accepts custom styles prop className', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Message className="custom-class-name" title="message">
+        message
+      </Message>
+    </ThemeProvider>
+  );
+  const message = screen.getByTitle(/message/);
+
+  expect(message.className).toMatch('custom-class-name');
 });

@@ -48,3 +48,16 @@ test('renders correct HTML element', () => {
 
   expect(validation instanceof HTMLSpanElement).toBeTruthy();
 });
+
+test('accepts custom styles prop className', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <ValidationMessage className="custom-class-name" title="validation">
+        validation
+      </ValidationMessage>
+    </ThemeProvider>
+  );
+  const validation = screen.getByTitle(/validation/);
+
+  expect(validation.className).toMatch('custom-class-name');
+});

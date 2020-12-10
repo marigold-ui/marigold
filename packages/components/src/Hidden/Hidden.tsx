@@ -1,19 +1,20 @@
 import React from 'react';
-import { createStyles, system } from '@marigold/system';
+import { useStyles, system } from '@marigold/system';
 
 type HiddenProps = {
   variant?: string;
   show?: boolean;
 };
 
-const useStyles = createStyles('layout');
-
 export const Hidden = system<HiddenProps, 'span'>(
-  ({ variant = 'hidden', show = false, children, ...props }) => {
-    const classNames = useStyles({
-      variant,
-      display: show ? 'display' : 'none',
-    });
+  ({ variant = 'hidden', show = false, className, children, ...props }) => {
+    const classNames = useStyles(
+      {
+        variant: `layout.${variant}`,
+        display: show ? 'display' : 'none',
+      },
+      className
+    );
 
     return (
       <span className={classNames} {...props}>

@@ -1,16 +1,18 @@
 import React from 'react';
-import { createStyles, system } from '@marigold/system';
+import { useStyles, system } from '@marigold/system';
 
 type TextareaProps = {
   variant?: string;
 };
 
-const useStyles = createStyles('form');
-
 export const Textarea = system<TextareaProps, 'textarea'>(
-  ({ variant = 'textarea', children, ...props }) => {
-    const classNames = useStyles({ variant });
-
+  ({ variant = 'textarea', children, className, ...props }) => {
+    const classNames = useStyles(
+      {
+        variant: `form.${variant}`,
+      },
+      className
+    );
     return (
       <textarea className={classNames} {...props}>
         {children}

@@ -50,3 +50,14 @@ test('renders correct HTML element', () => {
 
   expect(divider instanceof HTMLHRElement).toBeTruthy();
 });
+
+test('accepts custom styles prop className', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Divider className="custom-class-name" title="divider" />
+    </ThemeProvider>
+  );
+  const divider = screen.getByTitle(/divider/);
+
+  expect(divider.className).toMatch('custom-class-name');
+});

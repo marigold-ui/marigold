@@ -46,3 +46,14 @@ test('renders correct HTML element', () => {
 
   expect(textarea instanceof HTMLTextAreaElement).toBeTruthy();
 });
+
+test('accepts custom styles prop className', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Textarea className="custom-class-name" title="textarea" />
+    </ThemeProvider>
+  );
+  const textarea = screen.getByTitle(/textarea/);
+
+  expect(textarea.className).toMatch('custom-class-name');
+});

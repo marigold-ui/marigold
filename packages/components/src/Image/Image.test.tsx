@@ -57,3 +57,14 @@ test('accept alt', () => {
 
   expect(img.getAttribute('alt')).toEqual('altText');
 });
+
+test('accepts custom styles prop className', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Image className="custom-class-name" title="image" />
+    </ThemeProvider>
+  );
+  const image = screen.getByTitle(/image/);
+
+  expect(image.className).toMatch('custom-class-name');
+});

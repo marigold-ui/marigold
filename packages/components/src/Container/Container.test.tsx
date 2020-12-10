@@ -52,3 +52,16 @@ test('renders correct HTML element', () => {
 
   expect(container instanceof HTMLDivElement).toBeTruthy();
 });
+
+test('accepts custom styles prop className', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Container className="custom-class-name" title="container">
+        <Text>text</Text>
+      </Container>
+    </ThemeProvider>
+  );
+  const container = screen.getByTitle(/container/);
+
+  expect(container.className).toMatch('custom-class-name');
+});

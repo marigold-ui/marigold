@@ -9,13 +9,6 @@ test('supports default type', () => {
   expect(radio.getAttribute('type')).toEqual('radio');
 });
 
-test('variant styles cannot be overridden with CSS prop', () => {
-  render(<Radio title="radio" css={{ color: 'blue' }} />);
-  const radio = screen.getByTitle(/radio/);
-
-  expect(radio).not.toHaveStyle('color: blue');
-});
-
 test('renders <input> element', () => {
   render(<Radio title="radio" />);
   const radio = screen.getByTitle(/radio/);

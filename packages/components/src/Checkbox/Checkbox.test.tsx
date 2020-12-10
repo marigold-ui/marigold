@@ -9,13 +9,6 @@ test('supports default type', () => {
   expect(checkbox.getAttribute('type')).toEqual('checkbox');
 });
 
-test('variant styles cannot be overridden with CSS prop', () => {
-  render(<Checkbox title="checkbox" css={{ color: 'blue' }} />);
-  const checkbox = screen.getByTitle(/checkbox/);
-
-  expect(checkbox).not.toHaveStyle('color: blue');
-});
-
 test('renders <input> element', () => {
   render(<Checkbox title="checkbox" />);
   const checkbox = screen.getByTitle(/checkbox/);
