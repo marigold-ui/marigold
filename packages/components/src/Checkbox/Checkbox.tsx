@@ -1,16 +1,14 @@
 import React from 'react';
-import { createStyles, system } from '@marigold/system';
+import { useStyles, system } from '@marigold/system';
 import { SquareUnchecked, SquareChecked } from '@marigold/icons';
 
 type CheckboxProps = {
   variant?: string;
 };
 
-const useStyles = createStyles('form');
-
 export const Checkbox = system<CheckboxProps, 'input'>(
-  ({ variant = 'checkbox', ...props }) => {
-    const checkboxStyle = useStyles({
+  ({ variant = 'checkbox', className, ...props }) => {
+    const checkboxStyles = useStyles({
       position: 'absolute',
       opacity: 0,
       zIndex: -1,
@@ -18,25 +16,28 @@ export const Checkbox = system<CheckboxProps, 'input'>(
       height: 1,
       overflow: 'hidden',
     });
-    const checkboxIconStyle = useStyles({
-      variant,
-      ariaHidden: 'true',
-      mr: 2,
-      verticalAlign: 'middle',
-      ':hover': { cursor: 'pointer' },
-      'input:disabled ~ &': {
-        color: 'muted',
-        cursor: 'not-allowed',
+    const checkboxIconStyles = useStyles(
+      {
+        variant: `form.${variant}`,
+        ariaHidden: 'true',
+        mr: 2,
+        verticalAlign: 'middle',
+        ':hover': { cursor: 'pointer' },
+        'input:disabled ~ &': {
+          color: 'muted',
+          cursor: 'not-allowed',
+        },
       },
-    });
+      className
+    );
 
     return (
       <div className={useStyles({ display: 'inline-block' })}>
-        <input type="checkbox" className={checkboxStyle} {...props} />
+        <input type="checkbox" className={checkboxStyles} {...props} />
         {props.checked ? (
-          <SquareChecked className={checkboxIconStyle} />
+          <SquareChecked className={checkboxIconStyles} />
         ) : (
-          <SquareUnchecked className={checkboxIconStyle} />
+          <SquareUnchecked className={checkboxIconStyles} />
         )}
       </div>
     );

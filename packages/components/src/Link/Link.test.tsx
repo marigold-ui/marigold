@@ -52,3 +52,16 @@ test('renders correct HTML element', () => {
 
   expect(link instanceof HTMLAnchorElement).toBeTruthy();
 });
+
+test('accepts custom styles prop className', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Link href="#!" className="custom-class-name" title="link">
+        link
+      </Link>
+    </ThemeProvider>
+  );
+  const link = screen.getByTitle(/link/);
+
+  expect(link.className).toMatch('custom-class-name');
+});
