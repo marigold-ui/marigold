@@ -28,7 +28,7 @@
     "@types/node": "14.14.12",
     "emotion": "10.0.27",
     "eslint-config-react-app": "5.2.1",
-    "husky": "4.3.5",
+    "husky": "4.3.6",
     "lerna": "3.22.1",
     "prettier": "2.2.1",
     "pretty-quick": "3.1.0",
