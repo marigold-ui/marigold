@@ -1,26 +1,38 @@
 import { useClassname } from './useClassname';
 
+import * as resetStyleRefs from './normalize';
+import { ThemeUIStyleObject } from '@theme-ui/css';
+
 export type StylesProps = {
+  element: string[];
   variant?: string | string[];
   [key: string]: any;
 };
 
 /**
- * hook function that can add base styles, variant and custom styles
+ * hook function that can add base styles, normalization, variant and custom styles
  */
 export const useStyles = (
-  { variant, ...styles }: StylesProps,
+  { element, variant, ...styles }: StylesProps,
   classNames?: string
 ) => {
   /**
-   * Base styles are always applied. They are used to normalize the appearance for a
-   * component between browsers.
+   * Normalization styles looked up by html tag name(s). Base normalization
+   * is always applied.
    */
-  const base = useClassname({
-    boxSizing: 'border-box',
-    margin: 0,
-    minWidth: 0,
-  });
+  // get style object with all normalization styles
+  const resetStyles = resetStyleRefs.el;
+  // add base to each element
+  element.push('base');
+  // get reset styles for each of the elements
+  const elements = element.map(
+    styleObject => resetStyles[styleObject as keyof typeof resetStyleRefs.el]
+  );
+
+  // console.log('elements: ', elements); // in array
+  // console.log('...elements: ', ...elements); // just object(s)
+
+  const basedOnNormalize = useClassname(elements);
 
   /**
    * Variants are retrieved from the theme.
@@ -28,6 +40,10 @@ export const useStyles = (
   const variants = Array.isArray(variant)
     ? variant.map(v => ({ variant: v }))
     : [{ variant }];
+
+  // console.log('...variants: ', ...variants);
+  // console.log('...elements: ', ...elements);
+  // console.log('styles: ', styles);
   const basedOnVariants = useClassname(...variants);
 
   /**
@@ -37,5 +53,5 @@ export const useStyles = (
    */
   const custom = useClassname(styles);
 
-  return [base, basedOnVariants, custom, classNames].join(' ');
+  return [basedOnNormalize, basedOnVariants, custom, classNames].join(' ');
 };
