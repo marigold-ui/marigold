@@ -71,3 +71,16 @@ test('add icon in button works as expected', () => {
   expect(icon.getAttribute('fill')).toEqual('red');
   expect(icon.getAttribute('width')).toEqual('30');
 });
+
+test('accepts custom styles prop className', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Button className="custom-class-name" title="button">
+        click
+      </Button>
+    </ThemeProvider>
+  );
+  const button = screen.getByTitle(/button/);
+
+  expect(button.className).toMatch('custom-class-name');
+});

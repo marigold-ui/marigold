@@ -1,16 +1,18 @@
 import React from 'react';
-import { createStyles, system } from '@marigold/system';
+import { useStyles, system } from '@marigold/system';
 
 type ButtonProps = {
   variant?: string;
 };
 
-const useStyles = createStyles('button');
-
 export const Button = system<ButtonProps, 'button'>(
-  ({ variant = 'primary.large', children, ...props }) => {
-    const classNames = useStyles({ variant });
-
+  ({ variant = 'primary.large', className, children, ...props }) => {
+    const classNames = useStyles(
+      {
+        variant: `button.${variant}`,
+      },
+      className
+    );
     return (
       <button className={classNames} {...props}>
         <span
