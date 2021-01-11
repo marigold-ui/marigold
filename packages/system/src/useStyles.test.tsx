@@ -196,7 +196,7 @@ test('normalize base', () => {
     ...props
   }) => {
     const classNames = useStyles({
-      element: ['a'],
+      element: [],
       variant: `link.${variant}`,
     });
     return (
@@ -217,7 +217,36 @@ test('normalize base', () => {
   expect(style.boxSizing).toEqual('border-box');
 });
 
-test('normalize link (single) tag name <a>', () => {
+test('normalize tag name <button>', () => {
+  const TestComponent: React.FC<{ variant?: 'normal' }> = ({
+    variant = 'normal',
+    children,
+    ...props
+  }) => {
+    const classNames = useStyles({
+      element: ['button'],
+      variant: `link.${variant}`,
+    });
+    return (
+      <button className={classNames} {...props}>
+        {children}
+      </button>
+    );
+  };
+
+  const { getByText } = render(
+    <ThemeProvider theme={theme}>
+      <TestComponent>Button</TestComponent>
+    </ThemeProvider>
+  );
+  const testelem = getByText('Button');
+  const style = getComputedStyle(testelem);
+
+  expect(style.boxSizing).toEqual('border-box'); // from base
+  expect(style.background).toEqual('none'); // from button
+});
+
+test('normalize tag name <a>', () => {
   const TestComponent: React.FC<{ variant?: 'normal' }> = ({
     variant = 'normal',
     children,
@@ -244,10 +273,9 @@ test('normalize link (single) tag name <a>', () => {
 
   expect(style.boxSizing).toEqual('border-box'); // from base
   expect(style.textDecoration).toEqual('none'); // from a
-  expect(style.color).toEqual('inherit'); // from a
 });
 
-test('normalize link (list) tag names <a> and <p>', () => {
+test('normalize tag names <a> and <p>', () => {
   const TestComponent: React.FC<{ variant?: 'normal' }> = ({
     variant = 'normal',
     children,
@@ -276,6 +304,5 @@ test('normalize link (list) tag names <a> and <p>', () => {
 
   expect(style.boxSizing).toEqual('border-box'); // from base
   expect(style.textDecoration).toEqual('none'); // from a
-  expect(style.color).toEqual('inherit'); // from a
-  // something from p missing
+  expect(style.listStyle).toEqual('none'); // from p
 });

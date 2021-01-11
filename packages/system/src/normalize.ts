@@ -77,7 +77,6 @@ const button = {
 
 const a = {
   textDecoration: 'none',
-  color: 'inherit',
 };
 
 export const el = {

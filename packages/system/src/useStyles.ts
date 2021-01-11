@@ -1,16 +1,16 @@
 import { useClassname } from './useClassname';
 
 import * as resetStyleRefs from './normalize';
-import { ThemeUIStyleObject } from '@theme-ui/css';
+import { ElementType } from 'react';
 
 export type StylesProps = {
-  element: string[];
+  element: ElementType[];
   variant?: string | string[];
   [key: string]: any;
 };
 
 /**
- * hook function that can add base styles, normalization, variant and custom styles
+ * Hook function that can add base styles, normalization, variant and custom styles
  */
 export const useStyles = (
   { element, variant, ...styles }: StylesProps,
@@ -20,20 +20,15 @@ export const useStyles = (
    * Normalization styles looked up by html tag name(s). Base normalization
    * is always applied.
    */
-  // get style object with all normalization styles
   const resetStyles = resetStyleRefs.el;
-  // add base to each element
-  element.push('base');
-  // get reset styles for each of the elements
-  const elements = element.map(
+  element.push('base'); // always apply base styles
+  const elements: { [key: string]: any }[] = element.map(
     styleObject => resetStyles[styleObject as keyof typeof resetStyleRefs.el]
   );
 
-  // console.log('elements: ', elements); // in array
-  // console.log('...elements: ', ...elements); // just object(s)
+  const elementObject = Object.assign({}, ...elements);
 
-  const basedOnNormalize = useClassname(elements);
-
+  const basedOnNormalize = useClassname(elementObject);
   /**
    * Variants are retrieved from the theme.
    */
@@ -41,9 +36,6 @@ export const useStyles = (
     ? variant.map(v => ({ variant: v }))
     : [{ variant }];
 
-  // console.log('...variants: ', ...variants);
-  // console.log('...elements: ', ...elements);
-  // console.log('styles: ', styles);
   const basedOnVariants = useClassname(...variants);
 
   /**
