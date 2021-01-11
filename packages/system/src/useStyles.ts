@@ -4,7 +4,7 @@ import * as resetStyleRefs from './normalize';
 import { ElementType } from 'react';
 
 export type StylesProps = {
-  element: ElementType[];
+  element?: ElementType[];
   variant?: string | string[];
   [key: string]: any;
 };
@@ -20,9 +20,16 @@ export const useStyles = (
    * Normalization styles looked up by html tag name(s). Base normalization
    * is always applied.
    */
+
+  var elementArray: ElementType[] = [];
+  if (element) {
+    element.push('base'); // always apply base styles
+    elementArray = element;
+  } else {
+    elementArray = ['base'];
+  }
   const resetStyles = resetStyleRefs.el;
-  element.push('base'); // always apply base styles
-  const elements: { [key: string]: any }[] = element.map(
+  const elements: { [key: string]: any }[] = elementArray.map(
     styleObject => resetStyles[styleObject as keyof typeof resetStyleRefs.el]
   );
 

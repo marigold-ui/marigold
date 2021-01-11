@@ -1,3 +1,5 @@
+import { CSSObject } from '@marigold/components/src';
+
 const base = {
   boxSizing: 'border-box',
   margin: 0,
@@ -79,7 +81,7 @@ const a = {
   textDecoration: 'none',
 };
 
-export const el = {
+export const el: BaseNormalization = {
   article: block,
   aside: block,
   details: block,
@@ -105,4 +107,8 @@ export const el = {
   button,
   textarea: field,
   input,
+};
+
+type BaseNormalization = {
+  [key: string]: CSSObject;
 };
