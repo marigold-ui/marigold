@@ -4,47 +4,52 @@ import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
 
 # How to Write and Use Components
 
-Small guidance for creating components using the `<Box>` primitive.
+Small guidance for creating components in Marigold.
 
 ## API
 
-### Use the Box
+### Use the base HTML element
 
-Use the `<Box>` primitive as a basic structure to apply styling to the element you wish to build.
-With the `as` prop you define the rendered HTML element like in the example where a `<button>` element is rendered:
+Create your basic component by using the HTML tagname with its own props. Specify the HTML element you want to render.
+The `system` helper infers a forwardRef (and will soon be abolished).
 
 ```tsx
-import React from 'react';
-import { Box } from '@marigold/system';
-
-<Box as="button" themeSection="buttons" variant="outlined" />;
+export const Button = system<ButtonProps, 'button'>(({ ...props }) => {
+  return <button {...props}>{children}</button>;
+});
 ```
 
-### Add theme
+### Add Styling via Classnames
 
-In order to add styles to your component, you have two levels to work on. The first one is using theme styles which are defined in a globally accessible theme file.
-When using the component, those styles are accessed via the `themeSection` and `variant` props.
-The theme is indicated in the `<MarigoldProvider>` in which you wrap the component when you use it. See the render method in the example below.
-In the theme, you define theme specific stylings like colors and spacings.
+In order to add styles to your component, you can work with classNames. ClassNames are generated via the `useStyles` hook.
+There are three levels of styles to be applied: `useStyles` takes the HTML element type(s) used in the component to normalize the styles according to those HTML elements.
+A base normalization is automatically added to this list and always applies in order to have the same defaults cross-browser.
+Next, `useStyles` takes a `variant` which is retrieved from the theme (which is given in the `<ThemeProvider>`). Additionally, you can insert custom styles
+which are applied on runtime and override normalization and theme styles. Lastly, you can use custom classnames and pass them to your component in the `useStyles` hook.
 
-### Add styling
+```tsx
+const classNames = useStyles(
+  {
+    element: ['button'],
+    variant: `button.${variant}`,
+  },
+  className
+);
+```
 
-Add more styling to the component with style props using the `css` prop. Those styles are applied independently of your theme to all instances of the component.
-While using the component, you can override all spacing styles.
+### Put it together
 
-### Example
+Don't forget imports, defaults and (optional) logic needed for your component as seen in the following example.
 
 ```tsx
 import React from 'react';
-import { Box, MarigoldProvider, system } from '@marigold/system';
+import { ThemeProvider, system } from '@marigold/system';
 import { render } from '@testing-library/react';
 
 const theme = {
   ...anyTheme,
   buttons: {
-    // themeSection
-    outlined: {
-      // variant
+    outlined: { // variant
       border: '1px solid orange',
       mx: 2,
     },
@@ -60,43 +65,50 @@ type ButtonProps = {
 const Button = system<ButtonProps, 'button'>(
   // Set default values for extra props
   ({
-    as: Button = 'button',
     kind = 'basic',
     size = 'medium',
+    className
     children,
     ...props
   }) => {
+    const classNames = useStyles(
+      // add normalization and variant
+      {
+        element: ['button', 'span'],
+        variant: `button.${variant}`,
+      },
+      className
+    )
     // Place logic here like toggle states, calculations, mappings etc.
     return (
-      // Use theme styles and specify additional styling using the `css` prop
-      <Box
-        as={as}
-        css={{ bg: 'white' }}
-        themeSection="buttons"
-        variant="outlined"
+      <button
+        className={classNames}
         {...props}
       >
-        {children}
-      </Box>
+        <span
+          className={useStyles({ // use custom styles only
+            display: 'inline-flex',
+            alignItems: 'center',
+          })}
+        >
+          {children}
+        </span>
+      </button>
     );
   }
 );
 // Use the component: don't forget the imports!
 render(
-  <MarigoldProvider theme={theme}>
+  <ThemeProvider theme={theme}>
     <Button /> // Default Button component instance
-    <Button mx={3} /> // Button component instance with custom margin that overrides
-    theme and given styles
-  </MarigoldProvider>
+  </ThemeProvider>
 );
 ```
 
-A default base for all browsers is applied to all components built with the `<Box>` primitive so that all instances of the component look the same in every browser.
-
 ### Folder Structure
 
-Place the file with the component in a separate folder under `packages/components/src`. Create an `index.ts` file to export the component. Write tests to show your component works as intended.
-Add documentation, usage instructions and examples in a stories file (naming convention: `Component.stories.mdx`).
+As we want to keep an organized file structure, we use a script to create new component templates. Navigate to the root folder and use it with `yarn create:component COMPONENTNAME`. The new component
+is generated with all files needed and already added to the component exports.
 
 ```
 packages
