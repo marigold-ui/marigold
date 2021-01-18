@@ -21,7 +21,7 @@ export const Button = system<ButtonProps, 'button'>(({ ...props }) => {
 
 ### Add Styling via Classnames
 
-In order to add styles to your component, you can work with classNames. ClassNames are generated via the `useStyles` hook.
+In order to add styles to your component, you can work with classNames. ClassNames are automatically generated via the `useStyles` hook.
 There are three levels of styles to be applied: `useStyles` takes the HTML element type(s) used in the component to normalize the styles according to those HTML elements.
 A base normalization is automatically added to this list and always applies in order to have the same defaults cross-browser.
 Next, `useStyles` takes a `variant` which is retrieved from the theme (which is given in the `<ThemeProvider>`). Additionally, you can insert custom styles
@@ -48,7 +48,7 @@ import { render } from '@testing-library/react';
 
 const theme = {
   ...anyTheme,
-  buttons: {
+  button: {
     outlined: { // variant
       border: '1px solid orange',
       mx: 2,
@@ -97,7 +97,7 @@ const Button = system<ButtonProps, 'button'>(
     );
   }
 );
-// Use the component: don't forget the imports!
+// Use the component; don't forget the imports
 render(
   <ThemeProvider theme={theme}>
     <Button /> // Default Button component instance
