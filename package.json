@@ -14,7 +14,7 @@
     "yarn": "1.18.0"
   },
   "devDependencies": {
-    "@changesets/changelog-github": "0.2.7",
+    "@changesets/changelog-github": "0.2.8",
     "@changesets/cli": "2.13.0",
     "@marigold/eslint-config": "*",
     "@marigold/jest-config": "*",
