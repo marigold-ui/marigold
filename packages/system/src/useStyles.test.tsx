@@ -189,7 +189,37 @@ test('customClassName styles fourth', () => {
   expect(style.marginTop).toEqual('8px'); // apply 8px from customClassNames styles
 });
 
-test('normalize base', () => {
+test('normalize base without element prop', () => {
+  const TestComponent: React.FC<{ variant?: 'normal' }> = ({
+    variant = 'normal',
+    children,
+    ...props
+  }) => {
+    const classNames = useStyles({
+      // element: [],
+      variant: `link.${variant}`,
+    });
+    return (
+      <a className={classNames} {...props}>
+        {children}
+      </a>
+    );
+  };
+
+  const { getByText } = render(
+    <ThemeProvider theme={theme}>
+      <TestComponent>Link</TestComponent>
+    </ThemeProvider>
+  );
+  const testelem = getByText('Link');
+  const style = getComputedStyle(testelem);
+
+  expect(style.boxSizing).toEqual('border-box');
+  expect(style.margin).toEqual('0px');
+  expect(style.padding).toEqual('0px');
+  expect(style.minWidth).toEqual('0');
+});
+test('normalize base with empty element prop', () => {
   const TestComponent: React.FC<{ variant?: 'normal' }> = ({
     variant = 'normal',
     children,
@@ -215,6 +245,9 @@ test('normalize base', () => {
   const style = getComputedStyle(testelem);
 
   expect(style.boxSizing).toEqual('border-box');
+  expect(style.margin).toEqual('0px');
+  expect(style.padding).toEqual('0px');
+  expect(style.minWidth).toEqual('0');
 });
 
 test('normalize tag name <button>', () => {
