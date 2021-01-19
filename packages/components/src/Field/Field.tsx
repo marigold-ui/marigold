@@ -21,9 +21,12 @@ export const Field = system<FieldProps, 'input'>(
     className = '',
     ...props
   }) => {
-    const classNames = useStyles({
-      variant: `form.${variant}`,
-    }).concat(' ', className);
+    const classNames = useStyles(
+      {
+        variant: `form.${variant}`,
+      },
+      className
+    );
 
     return (
       <div>

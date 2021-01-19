@@ -11,6 +11,8 @@ export * from './Hidden';
 export * from './Image';
 export * from './Label';
 export * from './Link';
+export * from './Menu';
+export * from './MenuItem';
 export * from './Message';
 export * from './Radio';
 export * from './Slider';

@@ -81,6 +81,20 @@ const button = {
       outline: 'none',
     },
   },
+  menu: {
+    color: 'secondary',
+    bg: 'background',
+    ':hover': {
+      color: 'background',
+      bg: colors.gray60,
+      cursor: 'pointer',
+    },
+    ':disabled': {
+      color: colors.gray40,
+      bg: colors.gray20,
+      cursor: 'not-allowed',
+    },
+  },
 };
 
 const theme: BaseTheme = {
@@ -280,6 +294,11 @@ const theme: BaseTheme = {
         ...button.large,
       },
     },
+    menu: {
+      ...button.root,
+      ...button.menu,
+      ...button.small,
+    },
   },
   icon: {
     icon: {
@@ -292,6 +311,10 @@ const theme: BaseTheme = {
       ':hover': {
         textDecoration: 'none',
       },
+    },
+    menu: {
+      color: 'text',
+      textDecoration: 'none',
     },
   },
   alerts: {
@@ -363,6 +386,19 @@ const theme: BaseTheme = {
       whiteSpace: 'nowrap',
       padding: '0.25rem 0.75rem',
       mx: '0.5rem',
+    },
+    menuItem: {
+      display: 'block',
+      fontFamily: 'body',
+      fontSize: 0,
+      fontWeight: 'body',
+      padding: 2,
+      bg: colors.gray10,
+      color: 'text',
+      ':hover': {
+        bg: colors.gray30,
+        cursor: 'pointer',
+      },
     },
   },
 };
