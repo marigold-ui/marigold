@@ -1,13 +1,17 @@
 import React from 'react';
 import { useStyles, system } from '@marigold/system';
-import { CircleUnchecked, CircleChecked } from '@marigold/icons';
+import { CircleUnchecked, CircleChecked, Required } from '@marigold/icons';
+import { Label } from '@marigold/components';
 
 type RadioProps = {
+  id: string;
   variant?: string;
+  label?: string;
+  required?: boolean;
 };
 
 export const Radio = system<RadioProps, 'input'>(
-  ({ variant = 'radio', className, ...props }) => {
+  ({ id, variant = 'radio', label, required, className, ...props }) => {
     const radioStyle = useStyles({
       position: 'absolute',
       opacity: 0,
@@ -16,6 +20,7 @@ export const Radio = system<RadioProps, 'input'>(
       height: 1,
       overflow: 'hidden',
     });
+
     const radioIconStyle = useStyles(
       {
         variant: `form.${variant}`,
@@ -31,15 +36,29 @@ export const Radio = system<RadioProps, 'input'>(
       className
     );
 
-    return (
+    const radio = (
       <div className={useStyles({ display: 'inline-block' })}>
-        <input type="radio" className={radioStyle} {...props} />
+        <input type="radio" id={id} className={radioStyle} {...props} />
         {props.checked ? (
           <CircleChecked className={radioIconStyle} />
         ) : (
           <CircleUnchecked className={radioIconStyle} />
         )}
       </div>
+    );
+
+    return (
+      <>
+        {label ? (
+          <Label htmlFor={id}>
+            {radio}
+            {label}
+            {required ? <Required size={16} /> : ''}
+          </Label>
+        ) : (
+          <>{radio}</>
+        )}
+      </>
     );
   }
 );
