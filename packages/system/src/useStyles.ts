@@ -20,7 +20,6 @@ export const useStyles = (
    * Normalization styles looked up by html tag name(s). Base normalization
    * is always applied.
    */
-
   var elementArray: ElementType[] = [];
   if (element) {
     element.push('base'); // always apply base styles
@@ -36,6 +35,7 @@ export const useStyles = (
   const elementObject = Object.assign({}, ...elements);
 
   const basedOnNormalize = useClassname(elementObject);
+
   /**
    * Variants are retrieved from the theme.
    */

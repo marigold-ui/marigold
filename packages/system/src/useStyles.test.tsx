@@ -190,14 +190,14 @@ test('customClassName styles fourth', () => {
 });
 
 test('normalize base without element prop', () => {
-  const TestComponent: React.FC<{ variant?: 'normal' }> = ({
+  const TestComponent: React.FC<{ variant?: 'body' }> = ({
     variant = 'normal',
     children,
     ...props
   }) => {
     const classNames = useStyles({
       // element: [],
-      variant: `link.${variant}`,
+      variant: `text.${variant}`,
     });
     return (
       <a className={classNames} {...props}>
@@ -219,15 +219,16 @@ test('normalize base without element prop', () => {
   expect(style.padding).toEqual('0px');
   expect(style.minWidth).toEqual('0');
 });
+
 test('normalize base with empty element prop', () => {
-  const TestComponent: React.FC<{ variant?: 'normal' }> = ({
-    variant = 'normal',
+  const TestComponent: React.FC<{ variant?: 'body' }> = ({
+    variant = 'body',
     children,
     ...props
   }) => {
     const classNames = useStyles({
       element: [],
-      variant: `link.${variant}`,
+      variant: `text.${variant}`,
     });
     return (
       <a className={classNames} {...props}>
@@ -250,44 +251,15 @@ test('normalize base with empty element prop', () => {
   expect(style.minWidth).toEqual('0');
 });
 
-test('normalize tag name <button>', () => {
-  const TestComponent: React.FC<{ variant?: 'normal' }> = ({
-    variant = 'normal',
-    children,
-    ...props
-  }) => {
-    const classNames = useStyles({
-      element: ['button'],
-      variant: `link.${variant}`,
-    });
-    return (
-      <button className={classNames} {...props}>
-        {children}
-      </button>
-    );
-  };
-
-  const { getByText } = render(
-    <ThemeProvider theme={theme}>
-      <TestComponent>Button</TestComponent>
-    </ThemeProvider>
-  );
-  const testelem = getByText('Button');
-  const style = getComputedStyle(testelem);
-
-  expect(style.boxSizing).toEqual('border-box'); // from base
-  expect(style.background).toEqual('none'); // from button
-});
-
 test('normalize tag name <a>', () => {
-  const TestComponent: React.FC<{ variant?: 'normal' }> = ({
-    variant = 'normal',
+  const TestComponent: React.FC<{ variant?: 'body' }> = ({
+    variant = 'body',
     children,
     ...props
   }) => {
     const classNames = useStyles({
       element: ['a'],
-      variant: `link.${variant}`,
+      variant: `text.${variant}`,
     });
     return (
       <a className={classNames} {...props}>
@@ -309,14 +281,14 @@ test('normalize tag name <a>', () => {
 });
 
 test('normalize tag names <a> and <p>', () => {
-  const TestComponent: React.FC<{ variant?: 'normal' }> = ({
-    variant = 'normal',
+  const TestComponent: React.FC<{ variant?: 'body' }> = ({
+    variant = 'body',
     children,
     ...props
   }) => {
     const classNames = useStyles({
       element: ['a', 'p'],
-      variant: `link.${variant}`,
+      variant: `text.${variant}`,
     });
     return (
       <p>
