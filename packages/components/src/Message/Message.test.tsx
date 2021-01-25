@@ -11,6 +11,9 @@ const theme = {
     warning: {
       alignItems: 'right',
     },
+    error: {
+      alignItems: 'left',
+    },
   },
 };
 
@@ -38,6 +41,19 @@ test('accepts other variant than default', () => {
   const message = screen.getByTestId(/messages/);
 
   expect(message).toHaveStyle(`align-items: right`);
+});
+
+test('accepts other third variant than default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Message data-testid="messages" title="error" variant="error">
+        error
+      </Message>
+    </ThemeProvider>
+  );
+  const message = screen.getByTestId(/messages/);
+
+  expect(message).toHaveStyle(`align-items: left`);
 });
 
 test('renders correct HTML element', () => {
