@@ -1,26 +1,40 @@
 import { useClassname } from './useClassname';
 
+import * as resetStyleRefs from './normalize';
+import { ElementType } from 'react';
+
 export type StylesProps = {
+  element?: ElementType[];
   variant?: string | string[];
   [key: string]: any;
 };
 
 /**
- * hook function that can add base styles, variant and custom styles
+ * Hook function that can add base styles, normalization, variant and custom styles
  */
 export const useStyles = (
-  { variant, ...styles }: StylesProps,
+  { element, variant, ...styles }: StylesProps,
   classNames?: string
 ) => {
   /**
-   * Base styles are always applied. They are used to normalize the appearance for a
-   * component between browsers.
+   * Normalization styles looked up by html tag name(s). Base normalization
+   * is always applied.
    */
-  const base = useClassname({
-    boxSizing: 'border-box',
-    margin: 0,
-    minWidth: 0,
-  });
+  var elementArray: ElementType[] = [];
+  if (element) {
+    element.push('base'); // always apply base styles
+    elementArray = element;
+  } else {
+    elementArray = ['base'];
+  }
+  const resetStyles = resetStyleRefs.el;
+  const elements: { [key: string]: any }[] = elementArray.map(
+    styleObject => resetStyles[styleObject as keyof typeof resetStyleRefs.el]
+  );
+
+  const elementObject = Object.assign({}, ...elements);
+
+  const basedOnNormalize = useClassname(elementObject);
 
   /**
    * Variants are retrieved from the theme.
@@ -28,6 +42,7 @@ export const useStyles = (
   const variants = Array.isArray(variant)
     ? variant.map(v => ({ variant: v }))
     : [{ variant }];
+
   const basedOnVariants = useClassname(...variants);
 
   /**
@@ -37,5 +52,5 @@ export const useStyles = (
    */
   const custom = useClassname(styles);
 
-  return [base, basedOnVariants, custom, classNames].join(' ');
+  return [basedOnNormalize, basedOnVariants, custom, classNames].join(' ');
 };
