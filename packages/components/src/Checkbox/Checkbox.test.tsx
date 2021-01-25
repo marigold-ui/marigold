@@ -1,47 +1,49 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Label, Checkbox } from '@marigold/components';
+import { Checkbox } from '@marigold/components';
+
+test('supports label prop', () => {
+  render(<Checkbox label="Test" id="test" title="checkbox" />);
+  const checkbox = screen.getByText(/Test/);
+
+  expect(checkbox).toBeDefined();
+});
+
+test('supports required prop an renders required icon', () => {
+  render(<Checkbox label="Test" id="test" required title="checkbox" />);
+  const checkbox = screen.getByText(/Test/);
+
+  expect(checkbox).toContainHTML('path d="M10.8');
+});
 
 test('supports default type', () => {
-  render(<Checkbox title="checkbox" />);
+  render(<Checkbox id="test" title="checkbox" />);
   const checkbox = screen.getByTitle(/checkbox/);
 
   expect(checkbox.getAttribute('type')).toEqual('checkbox');
 });
 
 test('renders <input> element', () => {
-  render(<Checkbox title="checkbox" />);
+  render(<Checkbox id="test" title="checkbox" />);
   const checkbox = screen.getByTitle(/checkbox/);
 
   expect(checkbox instanceof HTMLInputElement).toBeTruthy();
 });
 
 test('renders <SVG> CircleUnchecked element', () => {
-  render(
-    <Label htmlFor="checkbox">
-      <Checkbox id="checkbox" /> Test
-    </Label>
-  );
+  render(<Checkbox id="checkbox" label="Test" />);
   const checkbox = screen.getByText(/Test/);
   expect(checkbox).toContainHTML('path d="M19.2917');
 });
 
 test('renders <SVG> CircleChecked element', () => {
-  render(
-    <Label htmlFor="checkbox">
-      <Checkbox id="checkbox" checked onChange={() => {}} /> Test
-    </Label>
-  );
+  render(<Checkbox id="checkbox" label="Test" checked onChange={() => {}} />);
   const checkbox = screen.getByText(/Test/);
   expect(checkbox).toContainHTML('path d="M19.2917');
 });
 
 test('change state onClick', () => {
-  render(
-    <Label htmlFor="checkbox">
-      <Checkbox id="checkbox" /> Test
-    </Label>
-  );
+  render(<Checkbox id="checkbox" label="Test" />);
   const checkbox = screen.getByText(/Test/);
   expect(checkbox).toContainHTML('path d="M19.2917');
   fireEvent.click(checkbox);

@@ -1,5 +1,5 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
-import { Label, Checkbox } from '@marigold/components';
+import { Checkbox } from '@marigold/components';
 import { useState } from 'react';
 import { useStyles } from '@marigold/system';
 
@@ -14,9 +14,12 @@ The element uses always the themeSection with the name: `form` in your given the
 
 ## Properties
 
-| Property             | Type     | Default    |
-| :------------------- | :------- | :--------- |
-| `variant` (optional) | `string` | `checkbox` |
+| Property              | Type      | Default    |
+| :-------------------- | :-------- | :--------- |
+| `id`                  | `string`  |            |
+| `variant` (optional)  | `string`  | `checkbox` |
+| `label` (optional)    | `string`  |            |
+| `required` (optional) | `boolean` |            |
 
 ## Import
 
@@ -45,49 +48,41 @@ import { Checkbox } from '@marigold/components';
       };
       return (
         <div>
-          <Label htmlFor="bi">
-            <Checkbox
-              id="bi"
-              name="bi"
-              onChange={onChange}
-              checked={state.bi}
-              value="Bike"
-            />
-            Bike
-          </Label>
+          <Checkbox
+            id="bi"
+            name="bi"
+            onChange={onChange}
+            checked={state.bi}
+            value="Bike"
+            label="Bike"
+          />
           <br />
-          <Label htmlFor="ca">
-            <Checkbox
-              id="ca"
-              name="ca"
-              onChange={onChange}
-              checked={state.ca}
-              value="Car"
-            />
-            Car
-          </Label>
+          <Checkbox
+            id="ca"
+            name="ca"
+            onChange={onChange}
+            checked={state.ca}
+            value="Car"
+            label="Car"
+          />
           <br />
-          <Label htmlFor="bo">
-            <Checkbox
-              id="bo"
-              name="bo"
-              onChange={onChange}
-              checked={state.bo}
-              value="Boat"
-            />
-            Boat
-          </Label>
+          <Checkbox
+            id="bo"
+            name="bo"
+            onChange={onChange}
+            checked={state.bo}
+            value="Boat"
+            label="Boat"
+          />
           <br />
-          <Label htmlFor="je">
-            <Checkbox
-              id="je"
-              name="je"
-              onChange={onChange}
-              checked={state.je}
-              value="Jet"
-            />
-            Jet
-          </Label>
+          <Checkbox
+            id="je"
+            name="je"
+            onChange={onChange}
+            checked={state.je}
+            value="Jet"
+            label="Jet"
+          />
         </div>
       );
     }}
@@ -99,10 +94,26 @@ import { Checkbox } from '@marigold/components';
 <Preview>
   <Story name="CheckboxTwo">
     <div>
-      <Checkbox checked />
-      <Checkbox checked className={useStyles({ bg: 'red' })} />
-      <Checkbox disabled />
-      <Checkbox checked disabled />
+      <Checkbox id="checkbox" checked />
+      <Checkbox id="checkbox" checked className={useStyles({ bg: 'red' })} />
+      <Checkbox id="checkbox" disabled />
+      <Checkbox id="checkbox" checked disabled />
+    </div>
+  </Story>
+</Preview>
+
+### Checkbox with required label
+
+<Preview>
+  <Story name="CheckboxThree">
+    <div>
+      <Checkbox
+        checked
+        id="required"
+        value="required"
+        required
+        label="This label is required"
+      />
     </div>
   </Story>
 </Preview>
