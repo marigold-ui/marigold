@@ -52,7 +52,7 @@ test('renders correct HTML element', () => {
 test('accepts custom styles prop className', () => {
   const TestComponent: React.FC = ({ children, ...props }) => {
     useStyles({ marginTop: '8px' });
-    const classNames = useStyles({ element: [], fontSize: '8px' });
+    const classNames = useStyles({ fontSize: '8px' });
     return (
       <Alert className={classNames} {...props}>
         {children}
