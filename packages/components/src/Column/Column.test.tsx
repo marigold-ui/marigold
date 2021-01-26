@@ -28,12 +28,12 @@ test('supports default variant and themeSection', () => {
 test('accepts other variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Column title="invisible" variant="grid">
+      <Column title="column" variant="grid">
         Grid
       </Column>
     </ThemeProvider>
   );
-  const column = screen.getByTitle(/invisible/);
+  const column = screen.getByTitle(/column/);
 
   expect(column).toHaveStyle(`align-items: right`);
 });
