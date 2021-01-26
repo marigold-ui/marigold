@@ -19,27 +19,12 @@ export const Message = system<MessageProps, 'div'>(
       className
     );
 
-    var titleColor = '#1d67b6'; // colors.blue70;
-    var icon = (
-      <Info fill="#1d67b6" className={useStyles({ verticalAlign: '-5px' })} />
-    );
+    var icon = <Info className={useStyles({ verticalAlign: '-5px' })} />;
 
     if (variant === 'warning') {
-      titleColor = '#fa8005'; // colors.orange60;
-      icon = (
-        <Notification
-          fill="#fa8005"
-          className={useStyles({ verticalAlign: '-5px ' })}
-        />
-      );
+      icon = <Notification className={useStyles({ verticalAlign: '-5px ' })} />;
     } else if (variant === 'error') {
-      titleColor = '#dd4142'; // colors.red60;
-      icon = (
-        <Exclamation
-          fill="#dd4142"
-          className={useStyles({ verticalAlign: '-5px ' })}
-        />
-      );
+      icon = <Exclamation className={useStyles({ verticalAlign: '-5px ' })} />;
     }
 
     return (

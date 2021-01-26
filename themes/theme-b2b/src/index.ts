@@ -369,6 +369,7 @@ const theme: BaseTheme = {
       borderWidth: '2px 2px 2px 16px',
       bg: colors.gray00,
       padding: '8px 16px 16px',
+      color: colors.orange60,
     },
     error: {
       borderStyle: 'solid',
@@ -376,6 +377,7 @@ const theme: BaseTheme = {
       borderWidth: '2px 2px 2px 16px',
       bg: colors.gray00,
       padding: '8px 16px 16px',
+      color: colors.red60,
     },
     info: {
       borderStyle: 'solid',
@@ -383,6 +385,7 @@ const theme: BaseTheme = {
       borderWidth: '2px 2px 2px 16px',
       bg: colors.gray00,
       padding: '8px 16px 16px',
+      color: colors.blue70,
     },
   },
   content: {
