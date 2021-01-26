@@ -20,7 +20,7 @@ const theme = {
 test('supports default variant and themeSection', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Message data-testid="messages" title="Default">
+      <Message data-testid="messages" messageTitle="Default">
         Default
       </Message>
     </ThemeProvider>
@@ -33,7 +33,7 @@ test('supports default variant and themeSection', () => {
 test('accepts other variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Message data-testid="messages" title="info" variant="warning">
+      <Message data-testid="messages" messageTitle="info" variant="warning">
         Danger
       </Message>
     </ThemeProvider>
@@ -46,7 +46,7 @@ test('accepts other variant than default', () => {
 test('accepts other third variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Message data-testid="messages" title="error" variant="error">
+      <Message data-testid="messages" messageTitle="error" variant="error">
         error
       </Message>
     </ThemeProvider>
@@ -59,7 +59,7 @@ test('accepts other third variant than default', () => {
 test('renders correct HTML element', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Message data-testid="messages" title="messages">
+      <Message data-testid="messages" messageTitle="messages">
         Default
       </Message>
     </ThemeProvider>
@@ -75,7 +75,7 @@ test('accepts custom styles prop className', () => {
       <Message
         className="custom-class-name"
         data-testid="message"
-        title="message"
+        messageTitle="message"
       >
         message
       </Message>
