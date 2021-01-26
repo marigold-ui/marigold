@@ -1,15 +1,15 @@
 import React from 'react';
 import { useStyles, system } from '@marigold/system';
-import { Text } from '@marigold/components';
+import { Heading } from '@marigold/components';
 import { Exclamation, Info, Notification } from '@marigold/icons';
 
 type MessageProps = {
-  title: string;
+  messageTitle: string;
   variant?: string;
 };
 
 export const Message = system<MessageProps, 'div'>(
-  ({ title, variant = 'info', className, children, ...props }) => {
+  ({ messageTitle, variant = 'info', className, children, ...props }) => {
     const classNames = useStyles(
       {
         element: ['p'],
@@ -46,20 +46,16 @@ export const Message = system<MessageProps, 'div'>(
       <div className={classNames} {...props}>
         <div className={useStyles({ marginBottom: '8px', marginRight: '4px' })}>
           {icon}
-          <Text
-            as="p"
+          <Heading
+            variant="h4"
             className={useStyles({
-              color: titleColor,
-              fontWeight: 700,
-              fontSize: 2,
-              lineHeight: '24px',
-              font: 'Inter',
+              display: 'inline',
             })}
           >
-            {title}
-          </Text>
+            {messageTitle}
+          </Heading>
         </div>
-        {children}
+        <div className={useStyles({ color: 'black' })}>{children}</div>
       </div>
     );
   }
