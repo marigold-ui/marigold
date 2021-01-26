@@ -4,6 +4,7 @@ export * from './Alert';
 export * from './Badge';
 export * from './Button';
 export * from './Checkbox';
+export * from './Column';
 export * from './Divider';
 export * from './Field';
 export * from './Heading';
