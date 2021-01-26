@@ -30,7 +30,7 @@ export const colors = {
   red10: '#fff8f8',
   red20: '#fec8c9',
   red40: '#f38a8a',
-  red60: '#dd4142',
-  red70: '#8b0027',
-  red80: '#4d0419',
+  red60: '#f38a8a',
+  red70: '#dd4142',
+  red80: '#dd4142',
 };

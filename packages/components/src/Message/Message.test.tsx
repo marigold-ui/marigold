@@ -4,12 +4,15 @@ import { ThemeProvider } from '@marigold/system';
 import { Message } from '@marigold/components';
 
 const theme = {
-  content: {
-    messages: {
+  messages: {
+    info: {
       alignItems: 'center',
     },
-    info: {
+    warning: {
       alignItems: 'right',
+    },
+    error: {
+      alignItems: 'left',
     },
   },
 };
@@ -17,10 +20,12 @@ const theme = {
 test('supports default variant and themeSection', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Message title="messages">Default</Message>
+      <Message data-testid="messages" messageTitle="Default">
+        Default
+      </Message>
     </ThemeProvider>
   );
-  const message = screen.getByTitle(/messages/);
+  const message = screen.getByTestId(/messages/);
 
   expect(message).toHaveStyle(`align-items: center`);
 });
@@ -28,23 +33,38 @@ test('supports default variant and themeSection', () => {
 test('accepts other variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Message title="info" variant="info">
+      <Message data-testid="messages" messageTitle="info" variant="warning">
         Danger
       </Message>
     </ThemeProvider>
   );
-  const message = screen.getByTitle(/info/);
+  const message = screen.getByTestId(/messages/);
 
   expect(message).toHaveStyle(`align-items: right`);
+});
+
+test('accepts other third variant than default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Message data-testid="messages" messageTitle="error" variant="error">
+        error
+      </Message>
+    </ThemeProvider>
+  );
+  const message = screen.getByTestId(/messages/);
+
+  expect(message).toHaveStyle(`align-items: left`);
 });
 
 test('renders correct HTML element', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Message title="messages">Default</Message>
+      <Message data-testid="messages" messageTitle="messages">
+        Default
+      </Message>
     </ThemeProvider>
   );
-  const message = screen.getByTitle(/messages/);
+  const message = screen.getByTestId(/messages/);
 
   expect(message instanceof HTMLDivElement).toBeTruthy();
 });
@@ -52,12 +72,16 @@ test('renders correct HTML element', () => {
 test('accepts custom styles prop className', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Message className="custom-class-name" title="message">
+      <Message
+        className="custom-class-name"
+        data-testid="message"
+        messageTitle="message"
+      >
         message
       </Message>
     </ThemeProvider>
   );
-  const message = screen.getByTitle(/message/);
+  const message = screen.getByTestId(/message/);
 
   expect(message.className).toMatch('custom-class-name');
 });

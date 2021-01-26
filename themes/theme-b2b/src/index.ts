@@ -362,16 +362,33 @@ const theme: BaseTheme = {
       borderBottom: '2px solid',
     },
   },
-  content: {
-    messages: {
-      fontFamily: 'body',
-      fontSize: 1,
-      padding: 3,
-      borderLeftStyle: 'solid',
-      borderLeftColor: 'primary',
-      borderRadius: 4,
-      bg: colors.gray10,
+  messages: {
+    warning: {
+      borderStyle: 'solid',
+      borderColor: colors.orange60,
+      borderWidth: '2px 2px 2px 16px',
+      bg: colors.gray00,
+      padding: '8px 16px 16px',
+      color: colors.orange60,
     },
+    error: {
+      borderStyle: 'solid',
+      borderColor: colors.red60,
+      borderWidth: '2px 2px 2px 16px',
+      bg: colors.gray00,
+      padding: '8px 16px 16px',
+      color: colors.red60,
+    },
+    info: {
+      borderStyle: 'solid',
+      borderColor: colors.blue70,
+      borderWidth: '2px 2px 2px 16px',
+      bg: colors.gray00,
+      padding: '8px 16px 16px',
+      color: colors.blue70,
+    },
+  },
+  content: {
     images: {
       maxWidth: '100%',
       height: 'auto',
