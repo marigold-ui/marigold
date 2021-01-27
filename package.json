@@ -20,7 +20,7 @@
     "@marigold/jest-config": "*",
     "@marigold/prettier-config": "*",
     "@marigold/tsconfig": "*",
-    "@reach/dialog": "0.12.1",
+    "@reach/dialog": "0.13.0",
     "@storybook/storybook-deployer": "2.8.7",
     "@testing-library/jest-dom": "5.11.9",
     "@testing-library/react": "11.2.3",
