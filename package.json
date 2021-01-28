@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@changesets/changelog-github": "0.2.8",
-    "@changesets/cli": "2.13.1",
+    "@changesets/cli": "2.14.0",
     "@marigold/eslint-config": "*",
     "@marigold/jest-config": "*",
     "@marigold/prettier-config": "*",
