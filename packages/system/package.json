@@ -7,18 +7,15 @@
   "typings": "dist/index.d.ts",
   "license": "MIT",
   "dependencies": {
-    "@theme-ui/css": "0.4.0-rc.13",
-    "@emotion/core": "10.1.1",
-    "lodash.pick": "4.4.0"
+    "emotion": "10.0.27",
+    "@theme-ui/css": "0.4.0-rc.13"
   },
   "peerDependencies": {
     "react": "^16.x",
     "react-dom": "^16.x"
   },
   "devDependencies": {
-    "@types/lodash.pick": "4.4.6",
-    "csstype": "3.0.5",
-    "emotion": "10.0.27"
+    "csstype": "3.0.6"
   },
   "scripts": {
     "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly",

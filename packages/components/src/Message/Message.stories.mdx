@@ -1,5 +1,5 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
-import { Message } from '@marigold/components';
+import { Message, Text } from '@marigold/components';
 
 <Meta title="Components/Content/Message" />
 
@@ -7,13 +7,14 @@ import { Message } from '@marigold/components';
 
 ## Description
 
-Simple component to display a message based on a `div` element and styled with a theme.
+Simple component to display a message with a title and icon based on a `div` element and styled with a theme.
 
 ## Properties
 
-| Property             | Type     | Default    |
-| :------------------- | :------- | :--------- |
-| `variant` (optional) | `string` | `messages` |
+| Property             | Type     | Default |
+| :------------------- | :------- | :------ |
+| `messageTitle`       | `string` |         |
+| `variant` (optional) | `string` | `info`  |
 
 ## Import
 
@@ -25,6 +26,18 @@ import { Message } from '@marigold/components';
 
 <Preview>
   <Story name="Message">
-    <Message>Hello, I am a simple message.</Message>
+    <Message variant="warning" messageTitle="Danger Zone!">
+      <Text>Hello, I am a simple warning message.</Text>
+    </Message>
+    <br />
+    <br />
+    <Message variant="error" messageTitle="Wrong here.">
+      <Text>Hello, I am a simple error message.</Text>
+    </Message>
+    <br />
+    <br />
+    <Message messageTitle="There is an update available.">
+      <Text>Hello, I am a simple info message.</Text>
+    </Message>
   </Story>
 </Preview>

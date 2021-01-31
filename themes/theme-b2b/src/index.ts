@@ -81,6 +81,20 @@ const button = {
       outline: 'none',
     },
   },
+  menu: {
+    color: 'secondary',
+    bg: 'background',
+    ':hover': {
+      color: 'background',
+      bg: colors.gray60,
+      cursor: 'pointer',
+    },
+    ':disabled': {
+      color: colors.gray40,
+      bg: colors.gray20,
+      cursor: 'not-allowed',
+    },
+  },
 };
 
 const theme: BaseTheme = {
@@ -280,6 +294,11 @@ const theme: BaseTheme = {
         ...button.large,
       },
     },
+    menu: {
+      ...button.root,
+      ...button.menu,
+      ...button.small,
+    },
   },
   icon: {
     icon: {
@@ -292,6 +311,10 @@ const theme: BaseTheme = {
       ':hover': {
         textDecoration: 'none',
       },
+    },
+    menu: {
+      color: 'text',
+      textDecoration: 'none',
     },
   },
   alerts: {
@@ -339,16 +362,33 @@ const theme: BaseTheme = {
       borderBottom: '2px solid',
     },
   },
-  content: {
-    messages: {
-      fontFamily: 'body',
-      fontSize: 1,
-      padding: 3,
-      borderLeftStyle: 'solid',
-      borderLeftColor: 'primary',
-      borderRadius: 4,
-      bg: colors.gray10,
+  messages: {
+    warning: {
+      borderStyle: 'solid',
+      borderColor: colors.orange60,
+      borderWidth: '2px 2px 2px 16px',
+      bg: colors.gray00,
+      padding: '8px 16px 16px',
+      color: colors.orange60,
     },
+    error: {
+      borderStyle: 'solid',
+      borderColor: colors.red60,
+      borderWidth: '2px 2px 2px 16px',
+      bg: colors.gray00,
+      padding: '8px 16px 16px',
+      color: colors.red60,
+    },
+    info: {
+      borderStyle: 'solid',
+      borderColor: colors.blue70,
+      borderWidth: '2px 2px 2px 16px',
+      bg: colors.gray00,
+      padding: '8px 16px 16px',
+      color: colors.blue70,
+    },
+  },
+  content: {
     images: {
       maxWidth: '100%',
       height: 'auto',
@@ -363,6 +403,19 @@ const theme: BaseTheme = {
       whiteSpace: 'nowrap',
       padding: '0.25rem 0.75rem',
       mx: '0.5rem',
+    },
+    menuItem: {
+      display: 'block',
+      fontFamily: 'body',
+      fontSize: 0,
+      fontWeight: 'body',
+      padding: 2,
+      bg: colors.gray10,
+      color: 'text',
+      ':hover': {
+        bg: colors.gray30,
+        cursor: 'pointer',
+      },
     },
   },
 };

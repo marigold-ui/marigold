@@ -1,6 +1,24 @@
 import { BaseTheme } from '@marigold/components';
 import { colors } from './colors';
 
+const text = {
+  root: {
+    fontFamily: 'body',
+    fontSize: 1,
+    lineHeight: 'body',
+    fontWeight: 'body',
+  },
+  span: {
+    display: 'inline-block',
+  },
+  p: {
+    display: 'inline-block',
+    margin: '0 0 8px',
+    ':last-child': {
+      marginBottom: '16px',
+    },
+  },
+};
 const button = {
   root: {
     position: 'relative',
@@ -53,7 +71,7 @@ const theme: BaseTheme = {
   breakpoints: [768, 1200],
   space: [0, 4, 8, 16, 24, 32, 40, 48, 56, 64, 88],
   fonts: {
-    body: 'Oswald Regular',
+    body: 'Arial',
     heading: 'Inter Black',
   },
   fontSizes: ['0.875rem', '1rem', '1.125rem', '1.25rem', '1.5rem', '2rem'],
@@ -67,6 +85,7 @@ const theme: BaseTheme = {
     heading: 1.5,
   },
   colors: {
+    ...colors,
     text: '#070708',
     background: '#fdfcfd',
     primary: '#b30077',
@@ -75,18 +94,17 @@ const theme: BaseTheme = {
   },
   text: {
     body: {
-      fontFamily: 'body',
-      fontSize: 1,
-      lineHeight: 'body',
-      fontWeight: 'body',
-      color: 'text',
+      ...text.root,
+      ...text.span,
     },
     heading: {
-      fontFamily: 'heading',
-      fontSize: 5,
-      lineHeight: 'heading',
-      fontWeight: 'heading',
-      color: 'primary',
+      ...text.root,
+      ...text.p,
+    },
+    h4: {
+      ...text.root,
+      fontWeight: 900,
+      fontSize: 2,
     },
   },
   button: {
@@ -172,23 +190,40 @@ const theme: BaseTheme = {
       },
     },
   },
-  content: {
-    messages: {
-      fontFamily: 'body',
-      fontSize: 1,
-      padding: 3,
-      borderLeftStyle: 'solid',
-      borderLeftColor: 'primary',
-      borderRadius: 4,
-      bg: colors.gray10,
+  messages: {
+    info: {
+      borderStyle: 'solid',
+      borderColor: colors.blue70,
+      borderWidth: '2px 2px 2px 16px',
+      bg: colors.gray00,
+      padding: '8px 16px 16px',
+      color: colors.blue70,
+    },
+    error: {
+      borderStyle: 'solid',
+      borderColor: colors.red60,
+      borderWidth: '2px 2px 2px 16px',
+      bg: colors.gray00,
+      padding: '8px 16px 16px',
+      color: colors.red60,
+    },
+    warning: {
+      borderStyle: 'solid',
+      borderColor: colors.orange60,
+      borderWidth: '2px 2px 2px 16px',
+      bg: colors.gray00,
+      padding: '8px 16px 16px',
+      color: colors.orange60,
     },
   },
-  layout: {
-    container: {
-      boxSizing: 'border-box',
-      minWidth: 0,
-      margin: 'auto',
-      bg: 'secondary',
+  content: {
+    layout: {
+      container: {
+        boxSizing: 'border-box',
+        minWidth: 0,
+        margin: 'auto',
+        bg: 'secondary',
+      },
     },
   },
 };

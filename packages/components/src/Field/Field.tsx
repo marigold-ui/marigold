@@ -21,9 +21,12 @@ export const Field = system<FieldProps, 'input'>(
     className = '',
     ...props
   }) => {
-    const classNames = useStyles({
-      variant: `form.${variant}`,
-    }).concat(' ', className);
+    const classNames = useStyles(
+      {
+        variant: `form.${variant}`,
+      },
+      className
+    );
 
     return (
       <div>
@@ -31,7 +34,7 @@ export const Field = system<FieldProps, 'input'>(
           {label}
           {error ? <Required size={16} fill={b2bTheme.colors.red60} /> : ''}
         </Label>
-        <Input type={type} for={htmlFor} />
+        <Input type={type} id={htmlFor} />
         {error ? (
           <ValidationMessage>
             <Exclamation size={16} />

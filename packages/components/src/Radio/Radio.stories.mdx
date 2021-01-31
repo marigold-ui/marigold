@@ -1,5 +1,5 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
-import { Label, Radio } from '@marigold/components';
+import { Radio } from '@marigold/components';
 import { useState } from 'react';
 
 <Meta title="Components/Form/Radio" />
@@ -13,9 +13,12 @@ The element uses always the themeSection with the name: `form` in your given the
 
 ## Properties
 
-| Property             | Type     | Default |
-| :------------------- | :------- | :------ |
-| `variant` (optional) | `string` | `radio` |
+| Property              | Type      | Default |
+| :-------------------- | :-------- | :------ |
+| `id`                  | `string`  |         |
+| `variant` (optional)  | `string`  | `radio` |
+| `label` (optional)    | `string`  |         |
+| `required` (optional) | `boolean` |         |
 
 ## Import
 
@@ -36,38 +39,32 @@ import { Radio } from '@marigold/components';
       };
       return (
         <div>
-          <Label htmlFor="mc">
-            <Radio
-              id="mc"
-              name="payment"
-              onChange={onChange}
-              checked={state === 'Mastercard'}
-              value="Mastercard"
-            />
-            Mastercard
-          </Label>
+          <Radio
+            id="mc"
+            name="payment"
+            onChange={onChange}
+            checked={state === 'Mastercard'}
+            value="Mastercard"
+            label="Mastercard"
+          />
           <br />
-          <Label htmlFor="vi">
-            <Radio
-              id="vi"
-              name="payment"
-              onChange={onChange}
-              checked={state === 'Visa'}
-              value="Visa"
-            />
-            Visa
-          </Label>
+          <Radio
+            id="vi"
+            name="payment"
+            onChange={onChange}
+            checked={state === 'Visa'}
+            value="Visa"
+            label="Visa"
+          />
           <br />
-          <Label htmlFor="ae">
-            <Radio
-              id="ae"
-              name="payment"
-              onChange={onChange}
-              checked={state === 'AmericanExpress'}
-              value="AmericanExpress"
-            />
-            American Express
-          </Label>
+          <Radio
+            id="ae"
+            name="payment"
+            onChange={onChange}
+            checked={state === 'AmericanExpress'}
+            value="AmericanExpress"
+            label="AmericanExpress"
+          />
         </div>
       );
     }}
@@ -79,9 +76,25 @@ import { Radio } from '@marigold/components';
 <Preview>
   <Story name="RadioTwo">
     <div>
-      <Radio checked />
-      <Radio disabled />
-      <Radio checked disabled />
+      <Radio id="radio" checked />
+      <Radio id="radio" disabled />
+      <Radio id="radio" checked disabled />
+    </div>
+  </Story>
+</Preview>
+
+### Radio with required label
+
+<Preview>
+  <Story name="RadioThree">
+    <div>
+      <Radio
+        checked
+        id="required"
+        value="required"
+        required
+        label="This label is required"
+      />
     </div>
   </Story>
 </Preview>

@@ -1,6 +1,7 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
 import { Facebook } from '@marigold/icons';
 import { Button } from '@marigold/components';
+import { useStyles } from '@marigold/system';
 
 <Meta title="Components/Form/Button" />
 
@@ -134,6 +135,21 @@ import { Button } from '@marigold/components';
   <Story name="with color">
     <Button variant="primary.small">
       <Facebook fill="black" /> Like me!
+    </Button>
+  </Story>
+</Preview>
+
+### Custom styled
+
+<Preview>
+  <Story name="custom">
+    <Button
+      variant="primary.small"
+      className={useStyles({
+        bg: '#3b5998',
+      })}
+    >
+      <Facebook /> Like me!
     </Button>
   </Story>
 </Preview>
