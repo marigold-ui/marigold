@@ -1,7 +1,13 @@
 {
   "name": "@marigold/types",
-  "description": "",
+  "description": "Marigold System Helper Types",
   "version": "0.0.1",
-  "license": "UNLICENSED",
-  "main": "src/index.ts"
+  "license": "MIT",
+  "main": "src/index.ts",
+  "peerDependencies": {
+    "@types/react": "^17.x"
+  },
+  "devDependencies": {
+    "@types/react": "17.0.0"
+  }
 }
