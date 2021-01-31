@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import { Global } from './emotion';
-import { Box } from './Box';
+import { Box } from '../../layout/src/Box/old';
 import { MarigoldProvider } from './MarigoldProvider';
 
 // Mock
