@@ -1,4 +1,4 @@
-import { css as emotion } from 'emotion';
+import { css as emotion } from '@emotion/css';
 import { css, ThemeUIStyleObject } from '@theme-ui/css';
 import { useTheme } from './useTheme';
 
