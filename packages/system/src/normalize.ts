@@ -1,5 +1,3 @@
-import { CssObject } from '@marigold/system';
-
 const base = {
   boxSizing: 'border-box',
   margin: 0,
