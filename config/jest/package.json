@@ -20,7 +20,7 @@
     "find-up": "5.0.0",
     "jest-watch-typeahead": "0.6.1",
     "react-test-renderer": "17.0.1",
-    "ts-jest": "26.4.4"
+    "ts-jest": "26.5.0"
   },
   "peerDependencies": {
     "jest": "25.x",
