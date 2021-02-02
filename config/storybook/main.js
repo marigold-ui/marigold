@@ -13,15 +13,6 @@ module.exports = {
   stories: [path.resolve(root, 'packages/**/*.stories.mdx')],
   addons: [
     '@storybook/react',
-    {
-      name: '@storybook/preset-typescript',
-      options: {
-        tsLoaderOptions: {
-          configFile,
-          transpileOnly: true,
-        },
-      },
-    },
     '@storybook/addon-a11y',
     '@storybook/addon-docs',
     'storybook-addon-themes',
