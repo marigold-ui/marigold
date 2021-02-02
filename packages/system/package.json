@@ -7,8 +7,8 @@
   "typings": "dist/index.d.ts",
   "license": "MIT",
   "dependencies": {
-    "emotion": "10.0.27",
-    "@theme-ui/css": "0.4.0-rc.13"
+    "@theme-ui/css": "0.4.0-rc.13",
+    "emotion": "11.0.0"
   },
   "peerDependencies": {
     "react": "^16.x",
