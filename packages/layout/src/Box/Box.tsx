@@ -17,7 +17,7 @@ export type BoxProps = {
   bottom?: ResponsiveStyleValue<number | string>;
   right?: ResponsiveStyleValue<number | string>;
   left?: ResponsiveStyleValue<number | string>;
-  zIndex?: ResponsiveStyleValue<string>;
+  zIndex?: ResponsiveStyleValue<number | string>;
 
   p?: ResponsiveStyleValue<number | string>;
   px?: ResponsiveStyleValue<number | string>;
@@ -43,7 +43,6 @@ export type BoxProps = {
   justifyContent?: ResponsiveStyleValue<string>;
 
   bg?: ResponsiveStyleValue<number | string>;
-  textAlign?: ResponsiveStyleValue<string>;
   border?: ResponsiveStyleValue<number | string>;
   borderRadius?: ResponsiveStyleValue<number | string>;
   boxShadow?: ResponsiveStyleValue<number | string>;
@@ -92,7 +91,6 @@ export const Box: ComponentWithAs<BoxProps, 'div'> = forwardRef(
       alignItems,
       justifyContent,
       bg,
-      textAlign,
       border,
       borderRadius,
       boxShadow,
@@ -104,7 +102,51 @@ export const Box: ComponentWithAs<BoxProps, 'div'> = forwardRef(
     },
     ref
   ) => {
-    const cn = useStyles({ element: [as] }, className);
+    const cn = useStyles(
+      {
+        element: [as],
+        display,
+        height,
+        width,
+        minWidth,
+        maxWidth,
+        position,
+        top,
+        bottom,
+        right,
+        left,
+        zIndex,
+        p,
+        px,
+        py,
+        pt,
+        pb,
+        pl,
+        pr,
+        m,
+        mx,
+        my,
+        mt,
+        mb,
+        ml,
+        mr,
+        flexDirection,
+        flexWrap,
+        flexShrink,
+        flexGrow,
+        alignItems,
+        justifyContent,
+        bg,
+        border,
+        borderRadius,
+        boxShadow,
+        opacity,
+        overflow,
+        transition,
+        transform,
+      },
+      className
+    );
     return createElement(as, { ...props, ref, className: cn }, children);
   }
 );
