@@ -49,6 +49,7 @@ export type BoxProps = {
   boxShadow?: ResponsiveStyleValue<number | string>;
   opacity?: ResponsiveStyleValue<number | string>;
   overflow?: ResponsiveStyleValue<string>;
+
   transition?: ResponsiveStyleValue<number | string>;
   transform?: ResponsiveStyleValue<number | string>;
 };
@@ -103,7 +104,7 @@ export const Box: ComponentWithAs<BoxProps, 'div'> = forwardRef(
     },
     ref
   ) => {
-    const cn = useStyles({ element: [as], classNames: className });
+    const cn = useStyles({ element: [as] }, className);
     return createElement(as, { ...props, ref, className: cn }, children);
   }
 );
