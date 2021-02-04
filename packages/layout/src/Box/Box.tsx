@@ -37,8 +37,8 @@ export type BoxProps = {
 
   flexDirection?: ResponsiveStyleValue<string>;
   flexWrap?: ResponsiveStyleValue<string>;
-  flexShrink?: ResponsiveStyleValue<string>;
-  flexGrow?: ResponsiveStyleValue<string>;
+  flexShrink?: ResponsiveStyleValue<number | string>;
+  flexGrow?: ResponsiveStyleValue<number | string>;
   alignItems?: ResponsiveStyleValue<string>;
   justifyContent?: ResponsiveStyleValue<string>;
 
@@ -50,7 +50,6 @@ export type BoxProps = {
   overflow?: ResponsiveStyleValue<string>;
 
   transition?: ResponsiveStyleValue<number | string>;
-  transform?: ResponsiveStyleValue<number | string>;
 };
 
 export const Box: ComponentWithAs<BoxProps, 'div'> = forwardRef(
@@ -97,7 +96,6 @@ export const Box: ComponentWithAs<BoxProps, 'div'> = forwardRef(
       opacity,
       overflow,
       transition,
-      transform,
       ...props
     },
     ref
@@ -143,7 +141,6 @@ export const Box: ComponentWithAs<BoxProps, 'div'> = forwardRef(
         opacity,
         overflow,
         transition,
-        transform,
       },
       className
     );
