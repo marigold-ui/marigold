@@ -1,0 +1,27 @@
+{
+  "name": "@marigold/docs",
+  "description": "Marigold Docs",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "start": "npm run develop",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  },
+  "dependencies": {
+    "@marigold/components": "0.0.2",
+    "@marigold/icons": "0.0.2",
+    "@marigold/system": "0.0.2",
+    "@marigold/theme-b2b": "0.0.2",
+    "@marigold/types": "0.0.2",
+    "gatsby": "^2.26.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "prettier": "2.2.1"
+  }
+}
