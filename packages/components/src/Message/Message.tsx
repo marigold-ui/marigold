@@ -12,7 +12,7 @@ export const Message = system<MessageProps, 'div'>(
   ({ messageTitle, variant = 'info', className, children, ...props }) => {
     const classNames = useStyles(
       {
-        element: ['p'],
+        element: 'p',
         variant: `messages.${variant}`,
         display: 'inline-block',
       },

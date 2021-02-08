@@ -29,7 +29,7 @@ const wrapper: React.FC = ({ children }) => (
 
 test('create a string classname', () => {
   const { result } = renderHook(
-    () => useStyles({ element: ['a'], color: 'primary' }),
+    () => useStyles({ element: 'a', color: 'primary' }),
     {
       wrapper,
     }
@@ -42,7 +42,7 @@ test('create a string classname', () => {
 
 test('base styles first', () => {
   const TestComponent: React.FC<{}> = ({ children, ...props }) => {
-    const classNames = useStyles({ element: ['p'] });
+    const classNames = useStyles({ element: 'p' });
     return (
       <p className={classNames} {...props}>
         {children}
@@ -68,7 +68,7 @@ test('variant styles second', () => {
     ...props
   }) => {
     const classNames = useStyles({
-      element: ['p'],
+      element: 'p',
       variant: `text.${variant}`,
     });
     return (
@@ -98,7 +98,7 @@ test('array of variant styles', () => {
     ...props
   }) => {
     const classNames = useStyles({
-      element: ['p'],
+      element: 'p',
       variant: [`text.${variant}`, `text.padding`],
       components: 'body',
     });
@@ -130,7 +130,7 @@ test('custom styles third', () => {
     ...props
   }) => {
     const classNames = useStyles({
-      element: ['p'],
+      element: 'p',
       variant: `text.${variant}`,
       marginTop: '4px',
     });
@@ -162,11 +162,11 @@ test('customClassName styles fourth', () => {
   }) => {
     const classNames = useStyles(
       {
-        element: ['p'],
+        element: 'p',
         variant: `text.${variant}`,
         marginTop: '4px',
       },
-      useStyles({ element: ['p'], marginTop: '8px' })
+      useStyles({ element: 'p', marginTop: '8px' })
     );
     return (
       <p className={classNames} {...props}>
@@ -196,38 +196,6 @@ test('normalize base without element prop', () => {
     ...props
   }) => {
     const classNames = useStyles({
-      // element: [],
-      variant: `text.${variant}`,
-    });
-    return (
-      <a className={classNames} {...props}>
-        {children}
-      </a>
-    );
-  };
-
-  const { getByText } = render(
-    <ThemeProvider theme={theme}>
-      <TestComponent>Link</TestComponent>
-    </ThemeProvider>
-  );
-  const testelem = getByText('Link');
-  const style = getComputedStyle(testelem);
-
-  expect(style.boxSizing).toEqual('border-box');
-  expect(style.margin).toEqual('0px');
-  expect(style.padding).toEqual('0px');
-  expect(style.minWidth).toEqual('0');
-});
-
-test('normalize base with empty element prop', () => {
-  const TestComponent: React.FC<{ variant?: 'body' }> = ({
-    variant = 'body',
-    children,
-    ...props
-  }) => {
-    const classNames = useStyles({
-      element: [],
       variant: `text.${variant}`,
     });
     return (
@@ -258,7 +226,7 @@ test('normalize tag name <a>', () => {
     ...props
   }) => {
     const classNames = useStyles({
-      element: ['a'],
+      element: 'a',
       variant: `text.${variant}`,
     });
     return (
@@ -278,36 +246,4 @@ test('normalize tag name <a>', () => {
 
   expect(style.boxSizing).toEqual('border-box'); // from base
   expect(style.textDecoration).toEqual('none'); // from a
-});
-
-test('normalize tag names <a> and <p>', () => {
-  const TestComponent: React.FC<{ variant?: 'body' }> = ({
-    variant = 'body',
-    children,
-    ...props
-  }) => {
-    const classNames = useStyles({
-      element: ['a', 'p'],
-      variant: `text.${variant}`,
-    });
-    return (
-      <p>
-        <a className={classNames} {...props}>
-          {children}
-        </a>
-      </p>
-    );
-  };
-
-  const { getByText } = render(
-    <ThemeProvider theme={theme}>
-      <TestComponent>Link</TestComponent>
-    </ThemeProvider>
-  );
-  const testelem = getByText('Link');
-  const style = getComputedStyle(testelem);
-
-  expect(style.boxSizing).toEqual('border-box'); // from base
-  expect(style.textDecoration).toEqual('none'); // from a
-  expect(style.listStyle).toEqual('none'); // from p
 });
