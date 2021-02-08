@@ -56,6 +56,6 @@
     "lint": "tsdx lint . --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern scripts/template --ignore-pattern packages/types/src/index.ts",
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit",
-    "release": "yarn build && changeset publish",
+    "release": "yarn build && changeset publish"
   }
 }
