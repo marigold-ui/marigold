@@ -338,16 +338,6 @@ const theme: BaseTheme = {
       color: colors.red60,
     },
   },
-  layout: {
-    container: {
-      boxSizing: 'border-box',
-      minWidth: 0,
-      m: 'auto',
-      bg: colors.gray40,
-      p: 1,
-    },
-    hidden: {},
-  },
   divider: {
     regular: {
       m: 0,
