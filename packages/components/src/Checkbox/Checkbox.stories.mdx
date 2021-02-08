@@ -1,4 +1,4 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
 import { Checkbox } from '@marigold/components';
 import { useState } from 'react';
 import { useStyles } from '@marigold/system';
@@ -31,7 +31,7 @@ import { Checkbox } from '@marigold/components';
 
 ### Checkbox standard labeled
 
-<Preview>
+<Canvas>
   <Story name="CheckboxOne">
     {() => {
       const [state, setState] = React.useState({
@@ -87,11 +87,11 @@ import { Checkbox } from '@marigold/components';
       );
     }}
   </Story>
-</Preview>
+</Canvas>
 
 ### Checkbox checked, disabled and custom styled
 
-<Preview>
+<Canvas>
   <Story name="CheckboxTwo">
     <div>
       <Checkbox id="checkbox" checked />
@@ -100,11 +100,11 @@ import { Checkbox } from '@marigold/components';
       <Checkbox id="checkbox" checked disabled />
     </div>
   </Story>
-</Preview>
+</Canvas>
 
 ### Checkbox with required label
 
-<Preview>
+<Canvas>
   <Story name="CheckboxThree">
     <div>
       <Checkbox
@@ -116,4 +116,4 @@ import { Checkbox } from '@marigold/components';
       />
     </div>
   </Story>
-</Preview>
+</Canvas>

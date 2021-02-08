@@ -1,4 +1,4 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
 import { Field } from '@marigold/components';
 import { useStyles } from '@marigold/system';
 
@@ -30,7 +30,7 @@ import { Field } from '@marigold/components';
 
 ## Usage
 
-<Preview>
+<Canvas>
   <Story name="Field1">
     <div>
       <Field label="Firstname" htmlFor="myId" />
@@ -38,9 +38,9 @@ import { Field } from '@marigold/components';
       <Field label="Name" htmlFor="myId" error="Validation message" />
     </div>
   </Story>
-</Preview>
+</Canvas>
 
-<Preview>
+<Canvas>
   <Story name="Field2">
     <div>
       <Field
@@ -54,4 +54,4 @@ import { Field } from '@marigold/components';
       <Field label="Choose the week" type="week" htmlFor="myId" />
     </div>
   </Story>
-</Preview>
+</Canvas>
