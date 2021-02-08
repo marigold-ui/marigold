@@ -216,16 +216,7 @@ const theme: BaseTheme = {
       color: colors.orange60,
     },
   },
-  content: {
-    layout: {
-      container: {
-        boxSizing: 'border-box',
-        minWidth: 0,
-        margin: 'auto',
-        bg: 'secondary',
-      },
-    },
-  },
+  content: {},
 };
 
 export default theme;

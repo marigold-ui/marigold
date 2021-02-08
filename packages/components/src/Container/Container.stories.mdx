@@ -9,13 +9,6 @@ import { useStyles } from '@marigold/system';
 ## Description
 
 Primitive layout component to embed other elements.
-The element uses always the themeSection with the name: `layout` in your given theme. The variant in your section can be added with the variant prop. The default variant is `container`.
-
-## Properties
-
-| Property             | Type     | Default     |
-| :------------------- | :------- | :---------- |
-| `variant` (optional) | `string` | `container` |
 
 ## Import
 
@@ -27,7 +20,7 @@ import { Container } from '@marigold/components';
 
 <Canvas>
   <Story name="Example 1">
-    <Container>
+    <Container className={useStyles({ bg: 'gray' })}>
       <Text>Example #1</Text>
     </Container>
   </Story>
@@ -35,7 +28,7 @@ import { Container } from '@marigold/components';
 
 <Canvas>
   <Story name="Example 2">
-    <Container className={useStyles({ bg: 'green' })}>
+    <Container className={useStyles({ bg: 'green', padding: 4, margin: 1 })}>
       <Text>Example #2</Text>
     </Container>
   </Story>
