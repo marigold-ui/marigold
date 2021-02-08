@@ -1,14 +1,10 @@
 import { addDecorator, addParameters } from '@storybook/react';
-import { withA11y } from '@storybook/addon-a11y';
 import { withThemes } from 'storybook-addon-themes/react';
 
 import React from 'react';
 import { ThemeProvider } from '@marigold/system';
 import b2bTheme from '@marigold/theme-b2b';
 import unicornTheme from '@marigold/theme-unicorn';
-
-// A11y
-addDecorator(withA11y);
 
 // Theme Switch
 const themes = {
@@ -18,6 +14,11 @@ const themes = {
 
 addDecorator(withThemes);
 addParameters({
+  a11y: {
+    element: '#root',
+    config: {},
+    options: {},
+  },
   themes: {
     Decorator: ({ themeName, children }) => (
       <ThemeProvider theme={themes[themeName]}>{children}</ThemeProvider>
