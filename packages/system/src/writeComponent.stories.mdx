@@ -22,7 +22,7 @@ export const Button = system<ButtonProps, 'button'>(({ ...props }) => {
 ### Add Styling via Classnames
 
 In order to add styles to your component, you can work with classNames. ClassNames are automatically generated via the `useStyles` hook.
-There are three levels of styles to be applied: `useStyles` takes the HTML element type(s) used in the component to normalize the styles according to those HTML elements.
+There are three levels of styles to be applied: `useStyles` takes the HTML element type used in the component to normalize the styles according to those HTML elements.
 A base normalization is automatically added to this list and always applies in order to have the same defaults cross-browser.
 Next, `useStyles` takes a `variant` which is retrieved from the theme (which is given in the `<ThemeProvider>`). Additionally, you can insert custom styles
 which are applied on runtime and override normalization and theme styles. Lastly, you can use custom classnames and pass them to your component in the `useStyles` hook.
@@ -30,7 +30,7 @@ which are applied on runtime and override normalization and theme styles. Lastly
 ```tsx
 const classNames = useStyles(
   {
-    element: ['button'],
+    element: 'button',
     variant: `button.${variant}`,
   },
   className
@@ -74,7 +74,7 @@ const Button = system<ButtonProps, 'button'>(
     const classNames = useStyles(
       // add normalization and variant
       {
-        element: ['button', 'span'],
+        element: 'button',
         variant: `button.${variant}`,
       },
       className

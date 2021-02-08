@@ -102,7 +102,7 @@ export const Box: ComponentWithAs<BoxProps, 'div'> = forwardRef(
   ) => {
     const cn = useStyles(
       {
-        element: [as],
+        element: as,
         display,
         height,
         width,
