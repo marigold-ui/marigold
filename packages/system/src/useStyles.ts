@@ -4,7 +4,7 @@ import * as resetStyleRefs from './normalize';
 import { ElementType } from 'react';
 
 export type StylesProps = {
-  element?: ElementType[];
+  element?: ElementType;
   variant?: string | string[];
   [key: string]: any;
 };
@@ -17,22 +17,20 @@ export const useStyles = (
   classNames?: string
 ) => {
   /**
-   * Normalization styles looked up by html tag name(s). Base normalization
+   * Normalization styles looked up by html tag name. Base normalization
    * is always applied.
    */
-  var elementArray: ElementType[] = [];
-  if (element) {
-    element.push('base'); // always apply base styles
-    elementArray = element;
-  } else {
-    elementArray = ['base'];
-  }
-  const resetStyles = resetStyleRefs.el;
-  const elements: { [key: string]: any }[] = elementArray.map(
-    styleObject => resetStyles[styleObject as keyof typeof resetStyleRefs.el]
-  );
 
-  const elementObject = Object.assign({}, ...elements);
+  const resetStyles = resetStyleRefs.el;
+
+  // always apply base normalization styles
+  const base: { [key: string]: any } =
+    resetStyles['base' as keyof typeof resetStyleRefs.el];
+  const normalizeBase = useClassname(base);
+
+  // apply element normalization styles
+  const elementObject: { [key: string]: any } =
+    resetStyles[element as keyof typeof resetStyleRefs.el];
 
   const basedOnNormalize = useClassname(elementObject);
 
@@ -52,5 +50,11 @@ export const useStyles = (
    */
   const custom = useClassname(styles);
 
-  return [basedOnNormalize, basedOnVariants, custom, classNames].join(' ');
+  return [
+    normalizeBase,
+    basedOnNormalize,
+    basedOnVariants,
+    custom,
+    classNames,
+  ].join(' ');
 };
