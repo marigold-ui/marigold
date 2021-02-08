@@ -1,4 +1,4 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
 import { Text } from './Text';
 import { useStyles } from '@marigold/system';
 
@@ -27,7 +27,7 @@ import { Text } from '@marigold/components';
 
 ## Usage
 
-<Preview>
+<Canvas>
   <Story name="body">
     <Text className={useStyles({ bg: '#f3f3f3' })}>
       SPAN: Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
@@ -57,4 +57,4 @@ import { Text } from '@marigold/components';
   <Story name="with textColor">
     <Text textColor="hotpink">Hello pinkie ;)</Text>
   </Story>
-</Preview>
+</Canvas>

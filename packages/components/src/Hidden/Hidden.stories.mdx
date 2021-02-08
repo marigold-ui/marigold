@@ -1,4 +1,4 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
 import { Button, Hidden, Text } from '@marigold/components';
 import { useState } from 'react';
 
@@ -26,7 +26,7 @@ import { Hidden } from '@marigold/components';
 
 ## Usage
 
-<Preview>
+<Canvas>
   <Story name="HiddenText">
     <div>
       <Text>Hello, I am visible</Text>
@@ -35,9 +35,9 @@ import { Hidden } from '@marigold/components';
       </Hidden>
     </div>
   </Story>
-</Preview>
+</Canvas>
 
-<Preview>
+<Canvas>
   <Story name="HiddenButton">
     {() => {
       const [state, setState] = React.useState({
@@ -61,4 +61,4 @@ import { Hidden } from '@marigold/components';
       );
     }}
   </Story>
-</Preview>
+</Canvas>

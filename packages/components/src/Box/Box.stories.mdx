@@ -1,4 +1,4 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
 import { Box } from './Box';
 import { Label, Button } from '@marigold/components';
 
@@ -14,24 +14,24 @@ import { Box } from '@marigold/components';
 
 ## Usage
 
-<Preview>
+<Canvas>
   <Story name="div-box">
     <Box>I am basic box!</Box>
   </Story>
-</Preview>
+</Canvas>
 
-<Preview>
+<Canvas>
   <Story name="button-box">
     <Box as="button" bg="primary">
       I am a button box!
     </Box>
   </Story>
-</Preview>
+</Canvas>
 
-<Preview>
+<Canvas>
   <Story name="h1-box">
     <Box as="h1" p="3">
       I am a blue headline!
     </Box>
   </Story>
-</Preview>
+</Canvas>

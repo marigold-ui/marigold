@@ -1,4 +1,4 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
 import { Container, Text } from '@marigold/components';
 import { useStyles } from '@marigold/system';
 
@@ -25,18 +25,18 @@ import { Container } from '@marigold/components';
 
 ## Usage
 
-<Preview>
+<Canvas>
   <Story name="Example 1">
     <Container>
       <Text>Example #1</Text>
     </Container>
   </Story>
-</Preview>
+</Canvas>
 
-<Preview>
+<Canvas>
   <Story name="Example 2">
     <Container className={useStyles({ bg: 'green' })}>
       <Text>Example #2</Text>
     </Container>
   </Story>
-</Preview>
+</Canvas>

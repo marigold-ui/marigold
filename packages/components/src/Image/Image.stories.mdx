@@ -1,4 +1,4 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
 import { Image } from '@marigold/components';
 import image1 from '../../../images/src/type_logo.png';
 import image2 from '../../../images/src/Marigold_Logo_Hotelstyle.png';
@@ -27,14 +27,14 @@ import { Image } from '@marigold/components';
 
 ## Usage
 
-<Preview>
+<Canvas>
   <Story name="firstImage">
     <Image src={image1} alt="marigold_logo" />
   </Story>
-</Preview>
+</Canvas>
 
-<Preview>
+<Canvas>
   <Story name="secondImage">
     <Image src={image2} width="500" height="300" />
   </Story>
-</Preview>
+</Canvas>

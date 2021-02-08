@@ -1,4 +1,4 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
 import { Facebook } from '@marigold/icons';
 import { Button } from '@marigold/components';
 import { useStyles } from '@marigold/system';
@@ -28,7 +28,7 @@ import { Button } from '@marigold/components';
 
 ### Large
 
-<Preview>
+<Canvas>
   <Story name="primary.large">
     <Button variant="primary.large">Primary</Button>
   </Story>
@@ -38,11 +38,11 @@ import { Button } from '@marigold/components';
   <Story name="ghost.large">
     <Button variant="ghost.large">Ghost</Button>
   </Story>
-</Preview>
+</Canvas>
 
 ### Small
 
-<Preview>
+<Canvas>
   <Story name="primary.small">
     <Button variant="primary.small">Primary</Button>
   </Story>
@@ -52,11 +52,11 @@ import { Button } from '@marigold/components';
   <Story name="ghost.small">
     <Button variant="ghost.small">Ghost</Button>
   </Story>
-</Preview>
+</Canvas>
 
 ### Disabled
 
-<Preview>
+<Canvas>
   <Story name="primary.large.disabled">
     <Button variant="primary.large" disabled>
       Primary Large Disabled
@@ -72,11 +72,11 @@ import { Button } from '@marigold/components';
       Ghost Large Disabled
     </Button>
   </Story>
-</Preview>
+</Canvas>
 
 ### Default with icon
 
-<Preview>
+<Canvas>
   <Story name="primary.large with default icon">
     <Button variant="primary.large">
       <Facebook /> Like me!
@@ -107,41 +107,41 @@ import { Button } from '@marigold/components';
       <Facebook /> Like me!
     </Button>
   </Story>
-</Preview>
+</Canvas>
 
 ### Large with large icon
 
-<Preview>
+<Canvas>
   <Story name="primary.large with large icon">
     <Button variant="primary.large">
       <Facebook size={48} /> Like me!
     </Button>
   </Story>
-</Preview>
+</Canvas>
 
 ### Small with small icon
 
-<Preview>
+<Canvas>
   <Story name="primary.small with small icon">
     <Button variant="primary.small">
       <Facebook size={20} /> Like me!
     </Button>
   </Story>
-</Preview>
+</Canvas>
 
 ### With color
 
-<Preview>
+<Canvas>
   <Story name="with color">
     <Button variant="primary.small">
       <Facebook fill="black" /> Like me!
     </Button>
   </Story>
-</Preview>
+</Canvas>
 
 ### Custom styled
 
-<Preview>
+<Canvas>
   <Story name="custom">
     <Button
       variant="primary.small"
@@ -152,4 +152,4 @@ import { Button } from '@marigold/components';
       <Facebook /> Like me!
     </Button>
   </Story>
-</Preview>
+</Canvas>

@@ -1,4 +1,4 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
 import { Menu, MenuItem, Divider } from '@marigold/components';
 import { BurgerMenu } from '@marigold/icons';
 
@@ -28,7 +28,7 @@ import { Menu } from '@marigold/components';
 
 ## Usage
 
-<Preview>
+<Canvas>
   <Story name="menu">
     {() => {
       const [showMenu, setShowMenu] = React.useState(false);
@@ -44,4 +44,4 @@ import { Menu } from '@marigold/components';
       );
     }}
   </Story>
-</Preview>
+</Canvas>

@@ -1,4 +1,4 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
 import { Alert, Text } from '@marigold/components';
 import { useStyles } from '@marigold/system';
 
@@ -25,7 +25,7 @@ import { Alert } from '@marigold/components';
 
 ## Usage
 
-<Preview>
+<Canvas>
   <Story name="Info">
     <Alert className={useStyles({ color: '#f3f3f3' })}>
       <Text>hey, info!</Text>
@@ -46,4 +46,4 @@ import { Alert } from '@marigold/components';
       <Text>hey, warning!</Text>
     </Alert>
   </Story>
-</Preview>
+</Canvas>

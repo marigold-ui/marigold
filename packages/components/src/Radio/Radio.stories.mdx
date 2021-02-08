@@ -1,4 +1,4 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
 import { Radio } from '@marigold/components';
 import { useState } from 'react';
 
@@ -30,7 +30,7 @@ import { Radio } from '@marigold/components';
 
 ### Radio standard labeled
 
-<Preview>
+<Canvas>
   <Story name="RadioOne">
     {() => {
       const [state, setState] = React.useState('Mastercard');
@@ -69,11 +69,11 @@ import { Radio } from '@marigold/components';
       );
     }}
   </Story>
-</Preview>
+</Canvas>
 
 ### Radio checked and disabled
 
-<Preview>
+<Canvas>
   <Story name="RadioTwo">
     <div>
       <Radio id="radio" checked />
@@ -81,11 +81,11 @@ import { Radio } from '@marigold/components';
       <Radio id="radio" checked disabled />
     </div>
   </Story>
-</Preview>
+</Canvas>
 
 ### Radio with required label
 
-<Preview>
+<Canvas>
   <Story name="RadioThree">
     <div>
       <Radio
@@ -97,4 +97,4 @@ import { Radio } from '@marigold/components';
       />
     </div>
   </Story>
-</Preview>
+</Canvas>
