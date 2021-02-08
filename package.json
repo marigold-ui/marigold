@@ -57,6 +57,5 @@
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit",
     "release": "yarn build && changeset publish",
-    "create:component": "ts-node $PWD/scripts/create.ts"
   }
 }
