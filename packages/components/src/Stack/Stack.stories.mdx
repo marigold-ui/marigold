@@ -1,0 +1,102 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { Button, Heading, Stack, Text } from '@marigold/components';
+import { Box } from '../Box';
+import { useStyles } from '@marigold/system';
+
+<Meta title="Components/Layout/Stack" />
+
+# Stack
+
+## Description
+
+Layout component to stack elements.
+
+## Properties
+
+| Property | Type                                      | Default |
+| :------- | :---------------------------------------- | :------ |
+| `space`  | `0, 4, 8, 16, 24, 32, 40, 48, 56, 64, 88` | `0`     |
+| `align`  | `left, right, center`                     | `left`  |
+
+## Import
+
+```tsx
+import { Stack } from '@marigold/components';
+```
+
+## Usage
+
+### Spacing
+
+<Canvas>
+  <Story name="Example 1">
+    <Stack space={24} className={useStyles({ bg: '#f3f3f3' })}>
+      <Heading>Header</Heading>
+      <Text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+        dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
+        massa nec ultricies efficitur, lectus ante consequat magna, a porttitor
+        massa ex ut quam.
+      </Text>
+      <Text>
+        Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
+        Vestibulum malesuada ante eu velit malesuada, nec ultricies sapien
+        finibus. Aenean rutrum in sem a ullamcorper. Integer ut euismod urna.
+        Interdum et malesuada fames ac ante ipsum primis in faucibus.
+      </Text>
+    </Stack>
+  </Story>
+</Canvas>
+
+### Alignment
+
+<Canvas>
+  <Story name="Example 2">
+    <Stack space={4}>
+      <Text
+        className={useStyles({ width: '100px', border: '1px solid', p: 2 })}
+      >
+        Left
+      </Text>
+    </Stack>
+    <Stack space={4} align="center">
+      <Text
+        className={useStyles({ width: '100px', border: '1px solid', p: 2 })}
+      >
+        Center
+      </Text>
+    </Stack>
+    <Stack space={4} align="right">
+      <Text
+        className={useStyles({ width: '100px', border: '1px solid', p: 2 })}
+      >
+        Right
+      </Text>
+    </Stack>
+  </Story>
+</Canvas>
+
+### Nested
+
+<Canvas>
+  <Story name="Example 3">
+    <Stack space={8}>
+      <Stack>
+        <Heading>Stack Content #1</Heading>
+        <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
+        <Text>
+          Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel
+          metus.
+        </Text>
+      </Stack>
+      <Stack>
+        <Heading>Stack Content #2</Heading>
+        <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
+        <Text>
+          Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel
+          metus.
+        </Text>
+      </Stack>
+    </Stack>
+  </Story>
+</Canvas>
