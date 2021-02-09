@@ -24,39 +24,6 @@ test('supports custom space prop', () => {
   expect(stack).toHaveStyle(`padding: 32px`);
 });
 
-test('supports default align prop', () => {
-  render(
-    <Stack title="stack">
-      <Text title="stackContent">stack</Text>
-    </Stack>
-  );
-  const stack = screen.getByText(/stack/);
-
-  stack.hasAttribute(`align-items: flex-start`);
-});
-
-test('supports center align prop', () => {
-  render(
-    <Stack align="center" title="stack">
-      <Text title="stackContent">stack</Text>
-    </Stack>
-  );
-  const stack = screen.getByText(/stack/);
-
-  stack.hasAttribute(`align-items: center`);
-});
-
-test('supports right align prop', () => {
-  render(
-    <Stack align="right" title="stack">
-      <Text title="stackContent">stack</Text>
-    </Stack>
-  );
-  const stack = screen.getByText(/stack/);
-
-  stack.hasAttribute(`align-items: flex-end`);
-});
-
 test('supports two children', () => {
   render(
     <Stack align="right" title="stack">
@@ -67,8 +34,8 @@ test('supports two children', () => {
   const stack = screen.getByText(/stack/);
   const secondStack = screen.getByText(/secondStack/);
 
-  expect(stack).toBeDefined;
-  expect(secondStack).toBeDefined;
+  expect(stack).toBeDefined();
+  expect(secondStack).toBeDefined();
 });
 
 test('renders correct HTML element', () => {
