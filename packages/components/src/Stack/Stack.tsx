@@ -34,6 +34,7 @@ export const Stack = system<StackProps, 'div'>(
         {stackItems.map((child, index) => {
           return (
             <Box
+              key={index.toString()}
               display={display}
               flexDirection={flexDirection}
               alignItems={alignItems}
