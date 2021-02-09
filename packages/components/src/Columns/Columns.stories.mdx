@@ -1,0 +1,74 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { Column } from '@marigold/components';
+import { useState } from 'react';
+import { useStyles } from '@marigold/system';
+
+<Meta title="Components/Layout/Columns" />
+
+# Columns
+
+## Description
+
+With the Columns component you can add a column with a width in percent of the full content.
+
+## Properties
+
+| Property           | Type                                    | Default |
+| :----------------- | :-------------------------------------- | :------ |
+| `width` (optional) | `1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12` | `12`    |
+
+## Import
+
+```tsx
+import { Columns } from '@marigold/components';
+```
+
+## Usage
+
+<Canvas>
+  <Story name="Column">
+    <Column
+      className={useStyles({
+        textAlign: 'center',
+        border: '1px solid',
+        padding: 2,
+        margin: 2,
+      })}
+    >
+      width=12
+    </Column>
+    <Column
+      width={6}
+      className={useStyles({
+        textAlign: 'center',
+        border: '1px solid',
+        padding: 2,
+        margin: 2,
+      })}
+    >
+      width=6
+    </Column>
+    <Column
+      width={3}
+      className={useStyles({
+        textAlign: 'center',
+        border: '1px solid',
+        padding: 2,
+        margin: 2,
+      })}
+    >
+      width=3
+    </Column>
+    <Column
+      width={2}
+      className={useStyles({
+        textAlign: 'center',
+        border: '1px solid',
+        padding: 2,
+        margin: 2,
+      })}
+    >
+      width=2
+    </Column>
+  </Story>
+</Canvas>
