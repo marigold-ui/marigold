@@ -1,28 +1,36 @@
 import React from 'react';
-import { useStyles, system } from '@marigold/system';
+import { useStyles } from '@marigold/system';
+import { Box } from '../Box';
 
 type AlertProps = {
+  className?: string;
   variant?: string;
 };
 
-export const Alert = system<AlertProps, 'div'>(
-  ({ variant = 'info', className, children, ...props }) => {
-    const classNames = useStyles(
-      {
-        variant: `alerts.${variant}`,
-        display: 'flex',
-        alignItems: 'center',
-        px: 3,
-        py: 2,
-        borderRadius: 4,
-      },
-      className
-    );
+export const Alert: React.FC<AlertProps> = ({
+  variant = 'info',
+  className,
+  children,
+  ...props
+}) => {
+  const classNames = useStyles(
+    {
+      variant: `alerts.${variant}`,
+    },
+    className
+  );
 
-    return (
-      <div className={classNames} {...props}>
-        {children}
-      </div>
-    );
-  }
-);
+  return (
+    <Box
+      {...props}
+      className={classNames}
+      display="flex"
+      alignItems="center"
+      px={3}
+      py={2}
+      borderRadius={4}
+    >
+      {children}
+    </Box>
+  );
+};
