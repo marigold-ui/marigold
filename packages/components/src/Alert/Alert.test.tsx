@@ -17,10 +17,10 @@ const theme = {
 test('supports default variant and themeSection', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Alert title="default">Default</Alert>
+      <Alert>Default</Alert>
     </ThemeProvider>
   );
-  const alert = screen.getByTitle(/default/);
+  const alert = screen.getByText('Default');
 
   expect(alert).toHaveStyle(`align-items: center`);
 });
@@ -28,12 +28,10 @@ test('supports default variant and themeSection', () => {
 test('accepts other variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Alert title="danger" variant="danger">
-        Danger
-      </Alert>
+      <Alert variant="danger">Danger</Alert>
     </ThemeProvider>
   );
-  const alert = screen.getByTitle(/danger/);
+  const alert = screen.getByText('Danger');
 
   expect(alert).toHaveStyle(`align-items: right`);
 });
@@ -41,10 +39,10 @@ test('accepts other variant than default', () => {
 test('renders correct HTML element', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Alert title="default">Default</Alert>
+      <Alert>Default</Alert>
     </ThemeProvider>
   );
-  const alert = screen.getByTitle(/default/);
+  const alert = screen.getByText('Default');
 
   expect(alert instanceof HTMLDivElement).toBeTruthy();
 });
