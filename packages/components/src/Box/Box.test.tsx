@@ -20,6 +20,10 @@ const theme = {
   opacities: [0, 0.5, 1],
   transitions: ['none', '1s opacity'],
   shadows: ['none', '3px 3px 5px 6px #ccc', 'inset 0 0 10px #000000'],
+  variant: {
+    color: 'primary',
+    p: 2,
+  },
 };
 
 // Tests
@@ -114,4 +118,16 @@ test.each([
   args.forEach((style: any) => {
     expect(box).toHaveStyle(style);
   });
+});
+
+test('support variants', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Box variant="variant">What's in the box!</Box>
+    </ThemeProvider>
+  );
+
+  const box = screen.getByText(`What's in the box!`);
+  expect(box).toHaveStyle('color: hotpink');
+  expect(box).toHaveStyle('padding: 4px');
 });

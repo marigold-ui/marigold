@@ -4,6 +4,7 @@ import { ComponentWithAs } from '@marigold/types';
 
 export type BoxProps = {
   className?: string;
+  variant?: string | string[];
 
   display?: ResponsiveStyleValue<string>;
 
@@ -56,6 +57,7 @@ export const Box: ComponentWithAs<BoxProps, 'div'> = forwardRef(
   (
     {
       as = 'div',
+      variant,
       children,
       className,
       display,
@@ -103,6 +105,7 @@ export const Box: ComponentWithAs<BoxProps, 'div'> = forwardRef(
     const cn = useStyles(
       {
         element: as,
+        variant,
         display,
         height,
         width,
