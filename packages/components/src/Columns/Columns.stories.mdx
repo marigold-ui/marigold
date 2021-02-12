@@ -1,6 +1,5 @@
 import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { Column } from '@marigold/components';
-import { useState } from 'react';
+import { Column, Columns, Text } from '@marigold/components';
 import { useStyles } from '@marigold/system';
 
 <Meta title="Components/Layout/Columns" />
@@ -26,49 +25,32 @@ import { Columns } from '@marigold/components';
 ## Usage
 
 <Canvas>
-  <Story name="Column">
-    <Column
-      className={useStyles({
-        textAlign: 'center',
-        border: '1px solid',
-        padding: 2,
-        margin: 2,
-      })}
-    >
-      width=12
-    </Column>
-    <Column
-      width={6}
-      className={useStyles({
-        textAlign: 'center',
-        border: '1px solid',
-        padding: 2,
-        margin: 2,
-      })}
-    >
-      width=6
-    </Column>
-    <Column
-      width={3}
-      className={useStyles({
-        textAlign: 'center',
-        border: '1px solid',
-        padding: 2,
-        margin: 2,
-      })}
-    >
-      width=3
-    </Column>
-    <Column
-      width={2}
-      className={useStyles({
-        textAlign: 'center',
-        border: '1px solid',
-        padding: 2,
-        margin: 2,
-      })}
-    >
-      width=2
-    </Column>
+  <Story name="Example 1">
+    <Columns space={4} className={useStyles({ bg: '#f3f3f3' })}>
+      <Column width={4}>
+        <Text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+          dignissim dapibus elit, vel egestas felis pharetra non. Cras
+          malesuada, massa nec ultricies efficitur, lectus ante consequat magna,
+          a porttitor massa ex ut quam.
+        </Text>
+      </Column>
+      <Column width={4}>
+        <Text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+          dignissim dapibus elit, vel egestas felis pharetra non. Cras
+          malesuada, massa nec ultricies efficitur, lectus ante consequat magna,
+          a porttitor massa ex ut quam.
+        </Text>
+      </Column>
+      <Column width={12}>
+        <Text>
+          Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel
+          metus. Vestibulum malesuada ante eu velit malesuada, nec ultricies
+          sapien finibus. Aenean rutrum in sem a ullamcorper. Integer ut euismod
+          urna. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+        </Text>
+      </Column>
+    </Columns>
   </Story>
 </Canvas>
