@@ -3,7 +3,6 @@ import { HTMLProps } from '@marigold/types';
 import { Box } from '../Box';
 
 type AlertProps = {
-  className?: string;
   variant?: string;
 } & HTMLProps<'div'>;
 
