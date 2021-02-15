@@ -36,28 +36,6 @@ test('renders correct HTML element', () => {
   expect(badge instanceof HTMLDivElement).toBeTruthy();
 });
 
-test('supports custom borderColor prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Badge title="badge" borderColor="#000" />
-    </ThemeProvider>
-  );
-  const badge = screen.getByTitle(/badge/);
-
-  expect(badge).toHaveStyle(`border: 1px solid #000`);
-});
-
-test('supports custom backgroundColor prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Badge title="badge" backgroundColor="#1ee" />
-    </ThemeProvider>
-  );
-  const badge = screen.getByTitle(/badge/);
-
-  expect(badge).toHaveStyle(`background: #1ee`);
-});
-
 test('supports other variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
