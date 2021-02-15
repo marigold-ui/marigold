@@ -1,6 +1,6 @@
 {
   "name": "@marigold/components",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Components for the Marigold Design System",
   "main": "dist/index.js",
   "module": "dist/components.esm.js",
@@ -11,7 +11,7 @@
     "react-dom": "^16.x"
   },
   "devDependencies": {
-    "@marigold/system": "0.0.1"
+    "@marigold/system": "0.0.2"
   },
   "scripts": {
     "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly",
