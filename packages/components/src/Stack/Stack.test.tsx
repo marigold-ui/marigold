@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Stack, Text } from '@marigold/components';
+import flattenChildren from 'react-flatten-children';
 
 test('supports default space prop', () => {
   render(
@@ -58,4 +59,17 @@ test('accepts custom styles prop className', () => {
   const stack = screen.getByTitle(/stack/);
 
   expect(stack.className).toMatch('custom-class-name');
+});
+
+test('flatten children works', () => {
+  const children = [<>test1</>, <>test2</>];
+
+  flattenChildren(children).map(child => {
+    render(<div>{child}</div>);
+  });
+
+  const stack = screen.getByText(/test1/);
+  const stack2 = screen.getByText(/test2/);
+  expect(stack).toBeDefined();
+  expect(stack2).toBeDefined();
 });

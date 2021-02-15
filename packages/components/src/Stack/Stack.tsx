@@ -1,7 +1,11 @@
 import React from 'react';
-import { useStyles, system } from '@marigold/system';
+import { useTheme, system } from '@marigold/system';
 import { Box } from '../Box';
 import flattenChildren from 'react-flatten-children';
+
+// const theme = useTheme();
+// console.log(theme.space);
+// console.log(`${theme.space}`);
 
 type StackProps = {
   space?: 0 | 4 | 8 | 16 | 24 | 32 | 40 | 48 | 56 | 64 | 88;
@@ -10,7 +14,6 @@ type StackProps = {
 
 export const Stack = system<StackProps, 'div'>(
   ({ space = 0, align = 'left', className, children, ...props }) => {
-    const classNames = useStyles({}, className);
     const stackItems = flattenChildren(children);
 
     let display = 'flex';
@@ -28,21 +31,22 @@ export const Stack = system<StackProps, 'div'>(
         p={space}
         display={display}
         flexDirection={flexDirection}
-        className={classNames}
+        className={className}
         {...props}
       >
         {stackItems.map((child, index) => {
           return (
-            <Box
-              key={index.toString()}
-              display={display}
-              flexDirection={flexDirection}
-              alignItems={alignItems}
-              pt={space}
-              mt={index === 0 ? -space : 0}
-            >
-              {child}
-            </Box>
+            <React.Fragment key={index}>
+              <Box
+                display={display}
+                flexDirection={flexDirection}
+                alignItems={alignItems}
+                pt={space}
+                mt={index === 0 ? -space : 0}
+              >
+                {child}
+              </Box>
+            </React.Fragment>
           );
         })}
       </Box>
