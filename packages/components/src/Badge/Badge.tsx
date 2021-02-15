@@ -1,27 +1,17 @@
 import React from 'react';
-import { useStyles } from '@marigold/system';
+import { HTMLProps } from '@marigold/types';
+import { Box } from '../Box';
 
 type BadgeProps = {
-  className?: string;
   variant?: string;
-};
+} & HTMLProps<'div'>;
 
 export const Badge: React.FC<BadgeProps> = ({
   variant = 'badge',
-  className,
   children,
   ...props
-}) => {
-  const classNames = useStyles(
-    {
-      variant: `content.${variant}`,
-    },
-    className
-  );
-
-  return (
-    <div className={classNames} {...props}>
-      {children}
-    </div>
-  );
-};
+}) => (
+  <Box {...props} variant={`content.${variant}`}>
+    {children}
+  </Box>
+);
