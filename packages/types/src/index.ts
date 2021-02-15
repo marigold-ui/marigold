@@ -14,9 +14,10 @@ export type ValueOf<T> = T[keyof T];
 /**
  * Get HTML props for a certain element.
  */
-export type HTMLProps<
-  Tag extends keyof JSX.IntrinsicElements
-> = JSX.IntrinsicElements[Tag];
+export type HTMLProps<Tag extends keyof JSX.IntrinsicElements> = Omit<
+  JSX.IntrinsicElements[Tag],
+  'style'
+>;
 
 /**
  * Typings are based on [Reach UI](https://github.com/reach/reach-ui/blob/4cb497f530b0f83f80c6f6f2da46ab55b1160cb6/packages/utils/src/types.tsx).
