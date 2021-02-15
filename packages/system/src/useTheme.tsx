@@ -1,6 +1,7 @@
 import React, { createContext, useContext } from 'react';
+import { Theme } from '@marigold/system';
 
-const Context = createContext({});
+const Context = createContext<Theme>({});
 
 export const useTheme = () => useContext(Context);
 
