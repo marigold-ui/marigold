@@ -1,13 +1,13 @@
 {
   "name": "@marigold/theme-unicorn",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Marigold's Developer Theme",
   "main": "dist/index.js",
   "module": "dist/theme-unicorn.esm.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
   "dependencies": {
-    "@marigold/components": "0.0.1"
+    "@marigold/components": "0.0.2"
   },
   "scripts": {
     "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly",
