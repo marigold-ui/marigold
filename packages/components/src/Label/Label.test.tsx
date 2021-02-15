@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { MarigoldProvider } from '@marigold/system';
 import { Label } from './Label';
 
 const theme = {
@@ -16,9 +16,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Label htmlFor="labelId">label</Label>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const label = screen.getByText(/label/);
 
@@ -27,11 +27,11 @@ test('supports default variant and themeSection', () => {
 
 test('supports other variant than default', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Label htmlFor="labelId" variant="myLabel">
         label
       </Label>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const label = screen.getByText(/label/);
 
@@ -40,9 +40,9 @@ test('supports other variant than default', () => {
 
 test('supports htmlFor prop', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Label htmlFor="labelId">label</Label>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const label = screen.getByText(/label/);
 
@@ -51,9 +51,9 @@ test('supports htmlFor prop', () => {
 
 test('renders <label> element', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Label htmlFor="labelId">label</Label>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const label = screen.getByText(/label/);
 
@@ -62,11 +62,11 @@ test('renders <label> element', () => {
 
 test('accepts custom styles prop className', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Label htmlFor="labelId" className="custom-class-name" title="label">
         label
       </Label>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const label = screen.getByTitle(/label/);
 

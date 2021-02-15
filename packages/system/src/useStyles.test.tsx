@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useStyles } from './useStyles';
-import { ThemeProvider } from './useTheme';
+import { MarigoldProvider } from './useTheme';
 import { render } from '@testing-library/react';
 
 // Setup
@@ -24,7 +24,7 @@ const theme = {
 };
 
 const wrapper: React.FC = ({ children }) => (
-  <ThemeProvider theme={theme}>{children}</ThemeProvider>
+  <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
 );
 
 test('create a string classname', () => {
@@ -51,9 +51,9 @@ test('base styles first', () => {
   };
 
   const { getByText } = render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <TestComponent>Text</TestComponent>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const testelem = getByText('Text');
   const style = getComputedStyle(testelem);
@@ -79,9 +79,9 @@ test('variant styles second', () => {
   };
 
   const { getByText } = render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <TestComponent>Text</TestComponent>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const testelem = getByText('Text');
   const style = getComputedStyle(testelem);
@@ -110,9 +110,9 @@ test('array of variant styles', () => {
   };
 
   const { getByText } = render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <TestComponent>Text</TestComponent>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const testelem = getByText('Text');
   const style = getComputedStyle(testelem);
@@ -142,9 +142,9 @@ test('custom styles third', () => {
   };
 
   const { getByText } = render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <TestComponent>Text</TestComponent>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const testelem = getByText('Text');
   const style = getComputedStyle(testelem);
@@ -176,9 +176,9 @@ test('customClassName styles fourth', () => {
   };
 
   const { getByText } = render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <TestComponent>Text</TestComponent>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const testelem = getByText('Text');
   const style = getComputedStyle(testelem);
@@ -206,9 +206,9 @@ test('normalize base without element prop', () => {
   };
 
   const { getByText } = render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <TestComponent>Link</TestComponent>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const testelem = getByText('Link');
   const style = getComputedStyle(testelem);
@@ -237,9 +237,9 @@ test('normalize tag name <a>', () => {
   };
 
   const { getByText } = render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <TestComponent>Link</TestComponent>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const testelem = getByText('Link');
   const style = getComputedStyle(testelem);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { MarigoldProvider } from '@marigold/system';
 import { Link } from '@marigold/components';
 
 const theme = {
@@ -16,11 +16,11 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Link href="#!" title="link">
         Link
       </Link>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const link = screen.getByTitle(/link/);
 
@@ -29,11 +29,11 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Link href="#!" title="link" variant="second">
         Link
       </Link>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const link = screen.getByTitle(/link/);
 
@@ -42,11 +42,11 @@ test('accepts other variant than default', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Link href="#!" title="link">
         Link
       </Link>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const link = screen.getByTitle(/link/);
 
@@ -55,11 +55,11 @@ test('renders correct HTML element', () => {
 
 test('accepts custom styles prop className', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Link href="#!" className="custom-class-name" title="link">
         link
       </Link>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const link = screen.getByTitle(/link/);
 

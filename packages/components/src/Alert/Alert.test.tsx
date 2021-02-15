@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useStyles, ThemeProvider } from '@marigold/system';
+import { useStyles, MarigoldProvider } from '@marigold/system';
 import { Alert } from '@marigold/components';
 
 const theme = {
@@ -16,9 +16,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Alert title="default">Default</Alert>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const alert = screen.getByTitle(/default/);
 
@@ -27,11 +27,11 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Alert title="danger" variant="danger">
         Danger
       </Alert>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const alert = screen.getByTitle(/danger/);
 
@@ -40,9 +40,9 @@ test('accepts other variant than default', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Alert title="default">Default</Alert>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const alert = screen.getByTitle(/default/);
 
@@ -60,9 +60,9 @@ test('accepts custom styles prop className', () => {
   };
 
   const { getByText } = render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <TestComponent>text</TestComponent>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const testelem = getByText('text');
   const text = getComputedStyle(testelem);

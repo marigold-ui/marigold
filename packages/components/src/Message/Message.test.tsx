@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { MarigoldProvider } from '@marigold/system';
 import { Message } from '@marigold/components';
 
 const theme = {
@@ -19,11 +19,11 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Message data-testid="messages" messageTitle="Default">
         Default
       </Message>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const message = screen.getByTestId(/messages/);
 
@@ -32,11 +32,11 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Message data-testid="messages" messageTitle="info" variant="warning">
         Danger
       </Message>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const message = screen.getByTestId(/messages/);
 
@@ -45,11 +45,11 @@ test('accepts other variant than default', () => {
 
 test('accepts other third variant than default', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Message data-testid="messages" messageTitle="error" variant="error">
         error
       </Message>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const message = screen.getByTestId(/messages/);
 
@@ -58,11 +58,11 @@ test('accepts other third variant than default', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Message data-testid="messages" messageTitle="messages">
         Default
       </Message>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const message = screen.getByTestId(/messages/);
 
@@ -71,7 +71,7 @@ test('renders correct HTML element', () => {
 
 test('accepts custom styles prop className', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Message
         className="custom-class-name"
         data-testid="message"
@@ -79,7 +79,7 @@ test('accepts custom styles prop className', () => {
       >
         message
       </Message>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const message = screen.getByTestId(/message/);
 

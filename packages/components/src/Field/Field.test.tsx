@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { MarigoldProvider } from '@marigold/system';
 import { Field } from '@marigold/components';
 import { useStyles } from '@marigold/system';
 
@@ -17,9 +17,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Field htmlFor="myId" label="label" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const field = screen.getByText(/label/);
 
@@ -28,9 +28,9 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Field htmlFor="myId" label="inputField" variant="inputField" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const inputField = screen.getByText(/inputField/);
 
@@ -39,9 +39,9 @@ test('accepts other variant than default', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Field htmlFor="myId" label="label" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const field = screen.getByText(/label/);
 
@@ -78,9 +78,9 @@ test('accepts custom styles prop className', () => {
   };
 
   const { getByText } = render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <TestComponent />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const testelem = getByText('label');
   const field = getComputedStyle(testelem);

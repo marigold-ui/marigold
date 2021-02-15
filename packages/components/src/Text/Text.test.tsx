@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Text } from './Text';
-import { ThemeProvider, useStyles } from '@marigold/system';
+import { MarigoldProvider, useStyles } from '@marigold/system';
 
 const theme = {
   text: {
@@ -16,9 +16,9 @@ const theme = {
 
 test('accepts default variant', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Text>text</Text>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const text = screen.getByText(/text/);
 
@@ -27,9 +27,9 @@ test('accepts default variant', () => {
 
 test('accepts default <span>', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Text>text</Text>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const text = screen.getByText(/text/);
 
@@ -38,9 +38,9 @@ test('accepts default <span>', () => {
 
 test('accepts as <p>', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Text as="p">text</Text>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const text = screen.getByText(/text/);
 
@@ -49,9 +49,9 @@ test('accepts as <p>', () => {
 
 test('variant works', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Text variant="body">text</Text>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const text = screen.getByText(/text/);
 
@@ -60,11 +60,11 @@ test('variant works', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Text variant="heading" textColor="#000">
         text
       </Text>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const text = screen.getByText(/text/);
 
@@ -83,9 +83,9 @@ test('accepts custom styles prop className', () => {
   };
 
   const { getByText } = render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <TestTextComponent>text</TestTextComponent>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const testelem = getByText('text');
   const text = getComputedStyle(testelem);

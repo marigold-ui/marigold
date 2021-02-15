@@ -24,7 +24,7 @@ export const Button = system<ButtonProps, 'button'>(({ ...props }) => {
 In order to add styles to your component, you can work with classNames. ClassNames are automatically generated via the `useStyles` hook.
 There are three levels of styles to be applied: `useStyles` takes the HTML element type used in the component to normalize the styles according to those HTML elements.
 A base normalization is automatically added to this list and always applies in order to have the same defaults cross-browser.
-Next, `useStyles` takes a `variant` which is retrieved from the theme (which is given in the `<ThemeProvider>`). Additionally, you can insert custom styles
+Next, `useStyles` takes a `variant` which is retrieved from the theme (which is given in the `<MarigoldProvider>`). Additionally, you can insert custom styles
 which are applied on runtime and override normalization and theme styles. Lastly, you can use custom classnames and pass them to your component in the `useStyles` hook.
 
 ```tsx
@@ -43,7 +43,7 @@ Don't forget imports, defaults and (optional) logic needed for your component as
 
 ```tsx
 import React from 'react';
-import { ThemeProvider, system } from '@marigold/system';
+import { MarigoldProvider, system } from '@marigold/system';
 import { render } from '@testing-library/react';
 
 const theme = {
@@ -99,9 +99,9 @@ const Button = system<ButtonProps, 'button'>(
 );
 // Use the component; don't forget the imports
 render(
-  <ThemeProvider theme={theme}>
+  <MarigoldProvider theme={theme}>
     <Button /> // Default Button component instance
-  </ThemeProvider>
+  </MarigoldProvider>
 );
 ```
 

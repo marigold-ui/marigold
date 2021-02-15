@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { MarigoldProvider } from '@marigold/system';
 import { MenuItem } from '@marigold/components';
 
 const theme = {
@@ -16,9 +16,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <MenuItem title="menuItem" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const menuItem = screen.getByTitle(/menuItem/);
 
@@ -27,9 +27,9 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <MenuItem title="menuItem" variant="item" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const menuItem = screen.getByTitle(/menuItem/);
 
@@ -38,9 +38,9 @@ test('accepts other variant than default', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <MenuItem title="menuItem" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const menuItem = screen.getByTitle(/menuItem/);
 
@@ -49,9 +49,9 @@ test('renders correct HTML element', () => {
 
 test('accepts custom styles prop className', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <MenuItem className="custom-class-name" title="menuItem" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const menuItem = screen.getByTitle(/menuItem/);
 

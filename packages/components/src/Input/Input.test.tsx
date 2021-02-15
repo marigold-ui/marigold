@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { MarigoldProvider } from '@marigold/system';
 import { Input } from '@marigold/components';
 
 const theme = {
@@ -16,9 +16,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Input title="input" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const input = screen.getByTitle('input');
 
@@ -27,9 +27,9 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Input title="input" variant="input2" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const input = screen.getByTitle('input');
 
@@ -38,9 +38,9 @@ test('accepts other variant than default', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Input title="input" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const input = screen.getByTitle('input');
 
@@ -49,9 +49,9 @@ test('renders correct HTML element', () => {
 
 test('supports custom prop', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Input title="input" placeholder="placeholder" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const input = screen.getByTitle('input');
 
@@ -60,9 +60,9 @@ test('supports custom prop', () => {
 
 test('accepts custom styles prop className', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Input className="custom-class-name" title="input" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const input = screen.getByTitle(/input/);
 

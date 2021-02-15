@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { MarigoldProvider } from '@marigold/system';
 import { Button } from './Button';
 import { Facebook } from '@marigold/icons';
 
@@ -21,9 +21,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Button>button</Button>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const button = screen.getByText(/button/);
 
@@ -32,9 +32,9 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Button variant="secondary.large">button</Button>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const button = screen.getByText(/button/);
 
@@ -43,9 +43,9 @@ test('accepts other variant than default', () => {
 
 test('renders <button> element', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Button>button</Button>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const button = screen.getByText(/button/);
 
@@ -55,12 +55,12 @@ test('renders <button> element', () => {
 
 test('add icon in button works as expected', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Button>
         <Facebook fill="red" size={30} title="facebook" />
         iconbutton
       </Button>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const button = screen.getByText(/iconbutton/);
   const icon = screen.getByTitle(/facebook/);
@@ -74,11 +74,11 @@ test('add icon in button works as expected', () => {
 
 test('accepts custom styles prop className', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Button className="custom-class-name" title="button">
         click
       </Button>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const button = screen.getByTitle(/button/);
 

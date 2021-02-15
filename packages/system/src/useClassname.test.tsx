@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useClassname } from './useClassname';
-import { ThemeProvider } from './useTheme';
+import { MarigoldProvider } from './useTheme';
 
 // Setup
 // ---------------
@@ -24,7 +24,7 @@ const theme = {
 };
 
 const wrapper: React.FC = ({ children }) => (
-  <ThemeProvider theme={theme}>{children}</ThemeProvider>
+  <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
 );
 
 test('create a string classname', () => {

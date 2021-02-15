@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useStyles, ThemeProvider } from '@marigold/system';
+import { useStyles, MarigoldProvider } from '@marigold/system';
 import { Badge } from '@marigold/components';
 
 const theme = {
@@ -16,9 +16,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Badge title="badge" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const badge = screen.getByTitle(/badge/);
 
@@ -27,9 +27,9 @@ test('supports default variant and themeSection', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Badge title="badge" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const badge = screen.getByTitle(/badge/);
 
@@ -38,9 +38,9 @@ test('renders correct HTML element', () => {
 
 test('supports custom borderColor prop', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Badge title="badge" borderColor="#000" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const badge = screen.getByTitle(/badge/);
 
@@ -49,9 +49,9 @@ test('supports custom borderColor prop', () => {
 
 test('supports custom backgroundColor prop', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Badge title="badge" backgroundColor="#1ee" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const badge = screen.getByTitle(/badge/);
 
@@ -60,9 +60,9 @@ test('supports custom backgroundColor prop', () => {
 
 test('supports other variant than default', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Badge variant="fatBadge" title="badge" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const badge = screen.getByTitle(/badge/);
 
@@ -80,9 +80,9 @@ test('accepts custom styles prop className', () => {
   };
 
   const { getByText } = render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <TestComponent>text</TestComponent>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const testelem = getByText('text');
   const text = getComputedStyle(testelem);

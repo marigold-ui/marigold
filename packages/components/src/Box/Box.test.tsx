@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { ThemeProvider } from '@marigold/system';
+import { MarigoldProvider } from '@marigold/system';
 import { Box } from './Box';
 
 // Setup
@@ -109,9 +109,9 @@ test.each([
   const props = args.shift();
 
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Box {...props}>What's in the box!</Box>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
 
   const box = screen.getByText(`What's in the box!`);
@@ -122,9 +122,9 @@ test.each([
 
 test('support variants', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Box variant="variant">What's in the box!</Box>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
 
   const box = screen.getByText(`What's in the box!`);

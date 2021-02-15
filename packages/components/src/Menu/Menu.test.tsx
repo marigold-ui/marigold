@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { MarigoldProvider } from '@marigold/system';
 import { Menu, MenuItem } from '@marigold/components';
 
 const theme = {
@@ -16,11 +16,11 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Menu title="menu" onClick={() => {}}>
         <MenuItem href="#">Home</MenuItem>
       </Menu>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const menu = screen.getByTitle(/menu/);
 
@@ -29,11 +29,11 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Menu variant="options" title="menu" onClick={() => {}}>
         <MenuItem href="#">Home</MenuItem>
       </Menu>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const menu = screen.getByTitle(/menu/);
 
@@ -42,11 +42,11 @@ test('accepts other variant than default', () => {
 
 test('supports show prop', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Menu show={true} title="menu" onClick={() => {}}>
         <MenuItem href="#">Home</MenuItem>
       </Menu>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const menu = screen.getByTitle(/menu/);
 
@@ -55,11 +55,11 @@ test('supports show prop', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Menu title="menu" onClick={() => {}}>
         <MenuItem href="#">Home</MenuItem>
       </Menu>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const menu = screen.getByTitle(/menu/);
 

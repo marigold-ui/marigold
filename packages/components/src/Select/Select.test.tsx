@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { MarigoldProvider } from '@marigold/system';
 import { Select } from '@marigold/components';
 
 const theme = {
@@ -16,11 +16,11 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Select title="select">
         <option>1</option>
       </Select>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const select = screen.getByTitle(/select/);
 
@@ -29,11 +29,11 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Select title="select" variant="other">
         <option>1</option>
       </Select>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const select = screen.getByTitle(/select/);
 
@@ -42,11 +42,11 @@ test('accepts other variant than default', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Select title="select">
         <option>1</option>
       </Select>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const select = screen.getByTitle(/select/);
 
@@ -55,11 +55,11 @@ test('renders correct HTML element', () => {
 
 test('variant styles cannot be overridden with CSS prop', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Select title="select" css={{ fontFamily: 'Oswald Regular' }}>
         <option>1</option>
       </Select>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const select = screen.getByTitle(/select/);
 
@@ -69,11 +69,11 @@ test('variant styles cannot be overridden with CSS prop', () => {
 
 test('accepts custom styles prop className', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Select className="custom-class-name" title="select">
         <option>1</option>
       </Select>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const select = screen.getByTitle(/select/);
 

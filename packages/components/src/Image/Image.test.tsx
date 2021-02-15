@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { MarigoldProvider } from '@marigold/system';
 import { Image } from '@marigold/components';
 
 const theme = {
@@ -16,9 +16,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Image title="images" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const img = screen.getByTitle(/images/);
 
@@ -27,9 +27,9 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Image title="logos" variant="logos" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const img = screen.getByTitle(/logos/);
 
@@ -38,9 +38,9 @@ test('accepts other variant than default', () => {
 
 test('renders correct HTML element', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Image title="default" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const img = screen.getByTitle(/default/);
 
@@ -49,9 +49,9 @@ test('renders correct HTML element', () => {
 
 test('accept alt', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Image alt="altText" title="default" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const img = screen.getByTitle(/default/);
 
@@ -60,9 +60,9 @@ test('accept alt', () => {
 
 test('accepts custom styles prop className', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Image className="custom-class-name" title="image" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const image = screen.getByTitle(/image/);
 

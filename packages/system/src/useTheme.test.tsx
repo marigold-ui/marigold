@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { ThemeProvider, useTheme } from './useTheme';
+import { MarigoldProvider, useTheme } from './useTheme';
 
 // Setup
 // ---------------
@@ -22,7 +22,7 @@ const theme = {
 };
 
 const wrapper: React.FC = ({ children }) => (
-  <ThemeProvider theme={theme}>{children}</ThemeProvider>
+  <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
 );
 
 test('return theme', () => {

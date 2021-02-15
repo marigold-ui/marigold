@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { MarigoldProvider } from '@marigold/system';
 import { Slider } from '@marigold/components';
 
 const theme = {
@@ -16,9 +16,9 @@ const theme = {
 
 test('supports default variant and themeSection', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Slider title="slider" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const slider = screen.getByTitle(/slider/);
 
@@ -27,9 +27,9 @@ test('supports default variant and themeSection', () => {
 
 test('accepts other variant than default', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Slider variant="range" title="slider" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const slider = screen.getByTitle(/slider/);
 
@@ -38,9 +38,9 @@ test('accepts other variant than default', () => {
 
 test('renders <input> element by default', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Slider title="slider" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const slider = screen.getByTitle(/slider/);
 
@@ -49,9 +49,9 @@ test('renders <input> element by default', () => {
 
 test('accepts custom styles prop className', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Slider className="custom-class-name" title="slider" />
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const slider = screen.getByTitle(/slider/);
 

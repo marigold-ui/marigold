@@ -4,8 +4,8 @@ const Context = createContext({});
 
 export const useTheme = () => useContext(Context);
 
-export type ThemeProviderProps = { theme: any };
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({
+export type MarigoldProviderProps = { theme: any };
+export const MarigoldProvider: React.FC<MarigoldProviderProps> = ({
   theme,
   children,
 }) => <Context.Provider value={theme}>{children}</Context.Provider>;
