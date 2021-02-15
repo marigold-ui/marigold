@@ -2,6 +2,12 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Stack, Text } from '@marigold/components';
 import flattenChildren from 'react-flatten-children';
+import { ThemeProvider } from '@marigold/system';
+import b2bTheme from '@marigold/theme-b2b';
+
+const theme = {
+  space: [0, 4, 8, 16, 24, 32, 40, 48, 56, 64, 88],
+};
 
 test('supports default space prop', () => {
   render(
@@ -16,9 +22,11 @@ test('supports default space prop', () => {
 
 test('supports custom space prop', () => {
   render(
-    <Stack space={4} title="stack">
-      <Text>stack</Text>
-    </Stack>
+    <ThemeProvider theme={theme}>
+      <Stack space={4} title="stack">
+        <Text>stack</Text>
+      </Stack>
+    </ThemeProvider>
   );
   const stack = screen.getByTitle(/stack/);
 
