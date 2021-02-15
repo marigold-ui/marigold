@@ -1,29 +1,22 @@
 import React from 'react';
-import { useStyles } from '@marigold/system';
+import { HTMLProps } from '@marigold/types';
 import { Box } from '../Box';
 
 type ButtonProps = {
-  className?: string;
   variant?: string;
-};
+} & HTMLProps<'button'>;
 
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary.large',
-  className,
   children,
+  ref,
   ...props
 }) => {
-  const classNames = useStyles(
-    {
-      variant: `button.${variant}`,
-    },
-    className
-  );
   return (
-    <button className={classNames} {...props}>
+    <Box as="button" {...props} variant={`button.${variant}`}>
       <Box as="span" display="inline-flex" alignItems="center">
         {children}
       </Box>
-    </button>
+    </Box>
   );
 };
