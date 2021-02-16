@@ -1,10 +1,10 @@
 import React from 'react';
-import { HTMLProps } from '@marigold/types';
+import { ComponentProps } from '@marigold/types';
 import { Box } from '../Box';
 
 type AlertProps = {
   variant?: string;
-} & HTMLProps<'div'>;
+} & ComponentProps<'div'>;
 
 export const Alert: React.FC<AlertProps> = ({
   variant = 'info',
