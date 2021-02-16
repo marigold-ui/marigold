@@ -49,10 +49,12 @@ export type AsProps<P, T extends React.ElementType> = P &
 
 /**
  * Component that supports the `as` prop. Meaning, the component allows to change
- * the element that renders. This is convenient to create components like `<Text>`
- * that can render as different text elements like `h1`, `h2`, `p` and so on.
+ * the element that is bening renders.
  *
- * **Note that you should use React's `forwardRef` with this type.**
+ * This is convenient to create components like `<Text>` that can render as different
+ * text elements like `h1`, `h2`, `p` and so on.
+ *
+ * **Note: you should use React's `forwardRef` with this type.**
  *
  * @example
  * const Component: ComponentWithAs<{ foo?: string; }, 'div'>
