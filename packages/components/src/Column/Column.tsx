@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStyles, system } from '@marigold/system';
+import { system } from '@marigold/system';
 import { Box } from '../Box';
 
 export type ColumnProps = {
@@ -8,15 +8,8 @@ export type ColumnProps = {
 
 export const Column = system<ColumnProps, 'div'>(
   ({ width = 12, className, children, ...props }) => {
-    let percent = `${(width / 12) * 100}%`;
-    const classNames = useStyles({ flexBasis: percent }, className);
-
     return (
-      <Box
-        // width={`${(width / 12) * 100}%`}
-        className={classNames}
-        {...props}
-      >
+      <Box width={`${(width / 12) * 100}%`} className={className} {...props}>
         {children}
       </Box>
     );
