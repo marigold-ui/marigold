@@ -13,10 +13,10 @@ Layout component to stack elements. This component uses the spaces from the give
 
 ## Properties
 
-| Property | Type                  | Default |
-| :------- | :-------------------- | :------ |
-| `space`  | `Theme['space']`      | `0`     |
-| `align`  | `left, right, center` | `left`  |
+| Property | Type                                           | Default |
+| :------- | :--------------------------------------------- | :------ |
+| `space`  | `ResponsiveStyleValue<number `&#124;` string>` | `0`     |
+| `align`  | `left, right, center`                          | `left`  |
 
 ## Import
 
@@ -59,14 +59,14 @@ import { Stack } from '@marigold/components';
         Left
       </Text>
     </Stack>
-    <Stack space={4} align="center">
+    <Stack space={2} align="center">
       <Text
         className={useStyles({ width: '100px', border: '1px solid', p: 2 })}
       >
         Center
       </Text>
     </Stack>
-    <Stack space={4} align="right">
+    <Stack space={2} align="right">
       <Text
         className={useStyles({ width: '100px', border: '1px solid', p: 2 })}
       >
@@ -80,7 +80,7 @@ import { Stack } from '@marigold/components';
 
 <Canvas>
   <Story name="Example 3">
-    <Stack space={8}>
+    <Stack space={6}>
       <Stack>
         <Heading>Stack Content #1</Heading>
         <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
