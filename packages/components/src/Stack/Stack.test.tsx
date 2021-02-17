@@ -15,27 +15,75 @@ test('supports default space prop', () => {
 
 test('supports custom space prop', () => {
   render(
-    <Stack space={4} title="stack">
+    <Stack space={2} title="stack">
       <Text>stack</Text>
     </Stack>
   );
   const stack = screen.getByTitle(/stack/);
 
-  expect(stack).toHaveStyle(`padding: 32px`);
+  expect(stack).toHaveStyle(`padding: 8px`);
+});
+
+test('supports default prop align: left', () => {
+  render(<Stack title="stack">stack</Stack>);
+  const stack = screen.getByText(/stack/);
+
+  expect(stack).toHaveStyle(`align-items: flex-start`);
+});
+
+test('supports custom prop align: center', () => {
+  render(
+    <Stack align="center" title="stack">
+      stack
+    </Stack>
+  );
+  const stack = screen.getByText(/stack/);
+
+  expect(stack).toHaveStyle(`align-items: center`);
+});
+
+test('supports custom prop align: right', () => {
+  render(
+    <Stack align="right" title="stack">
+      stack
+    </Stack>
+  );
+  const stack = screen.getByText(/stack/);
+
+  expect(stack).toHaveStyle(`align-items: flex-end`);
 });
 
 test('supports two children', () => {
   render(
-    <Stack align="right" title="stack">
-      <Text title="stackContent">stack</Text>
-      <Text title="stackContent2">secondStack</Text>
+    <Stack title="stack">
+      <Text>stackText</Text>
+      <Text>secondStackText</Text>
     </Stack>
   );
-  const stack = screen.getByText(/stack/);
-  const secondStack = screen.getByText(/secondStack/);
+  const stack = screen.getByTitle(/stack/);
+  const stackText = screen.getByText(/stackText/);
+  const secondStackText = screen.getByText(/secondStackText/);
 
   expect(stack).toBeDefined();
-  expect(secondStack).toBeDefined();
+  expect(stackText).toBeDefined();
+  expect(secondStackText).toBeDefined();
+});
+
+test('supports nested children', () => {
+  render(
+    <Stack title="stack">
+      <Stack title="nested">
+        <Text>text</Text>
+      </Stack>
+    </Stack>
+  );
+  const stack = screen.getByTitle(/stack/);
+  const nested = screen.getByTitle(/nested/);
+  const text = screen.getByText(/text/);
+
+  expect(stack).toBeDefined();
+  expect(nested).toBeDefined();
+  expect(text).toBeDefined();
 });
 
 test('renders correct HTML element', () => {
