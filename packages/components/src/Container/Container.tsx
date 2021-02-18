@@ -1,21 +1,12 @@
 import React from 'react';
-import { useStyles, system } from '@marigold/system';
+import { Box } from '../Box';
 
-type ContainerProps = {};
+type ContainerProps = {
+  className?: string;
+};
 
-export const Container = system<ContainerProps, 'div'>(
-  ({ className, children, ...props }) => {
-    const classNames = useStyles(
-      {
-        width: '100%',
-      },
-      className
-    );
-
-    return (
-      <div className={classNames} {...props}>
-        {children}
-      </div>
-    );
-  }
+export const Container: React.FC<ContainerProps> = ({ children, ...props }) => (
+  <Box {...props} width="100%">
+    {children}
+  </Box>
 );
