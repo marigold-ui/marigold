@@ -17,7 +17,7 @@ test('renders correct HTML element', () => {
 });
 
 test('accepts custom styles prop className', () => {
-  render(<Column className="custom-class-name">text</Column>);
+  render(<Column className="custom-class-name">column</Column>);
   const column = screen.getByText('column');
 
   expect(column.className).toMatch('custom-class-name');
