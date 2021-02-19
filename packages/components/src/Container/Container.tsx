@@ -3,6 +3,7 @@ import { Box } from '../Box';
 
 type ContainerProps = {
   className?: string;
+  title?: string; // Used for testing.
 };
 
 export const Container: React.FC<ContainerProps> = ({ children, ...props }) => (
