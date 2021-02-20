@@ -3,5 +3,8 @@
   "description": "",
   "version": "0.0.2",
   "license": "UNLICENSED",
-  "main": "src/index.ts"
+  "scripts": {
+    "build": "echo nope",
+    "watch": "echo nope"
+  }
 }

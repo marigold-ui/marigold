@@ -28,13 +28,13 @@
     "@types/node": "14.14.28",
     "eslint-config-react-app": "6.0.0",
     "husky": "5.0.9",
-    "lerna": "3.22.1",
     "prettier": "2.2.1",
     "pretty-quick": "3.1.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "tsdx": "0.14.1",
-    "typescript": "4.1.5"
+    "typescript": "4.1.5",
+    "workspaces-run": "1.0.1"
   },
   "husky": {
     "hooks": {
@@ -43,8 +43,8 @@
   },
   "scripts": {
     "start": "start-storybook -p 6005 -c config/storybook",
-    "watch": "lerna run watch --parallel",
-    "build": "lerna run build --stream",
+    "watch": "workspaces-run --only-fs=\"packages/**\" --order-by-deps -- yarn watch",
+    "build": "workspaces-run --only-fs=\"packages/**\" --order-by-deps -- yarn build",
     "test": "tsdx test --config jest.config.js --coverage --coverageReporters html",
     "coverage": "tsdx test --config jest.config.js --coverage",
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'`",
