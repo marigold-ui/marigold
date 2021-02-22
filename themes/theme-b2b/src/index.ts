@@ -69,16 +69,16 @@ const button = {
     color: 'secondary',
     border: '1px solid',
     outlineColor: colors.gray70,
-      ':hover': {
-        color: 'secondary',
-        bg: colors.gray30,
-        cursor: 'pointer',
-      },
-      ':disabled': {
-        color: colors.gray30,
-        bg: colors.gray00,
-        outlineColor: colors.gray30,
-        cursor: 'not-allowed',
+    ':hover': {
+      color: 'secondary',
+      bg: colors.gray30,
+      cursor: 'pointer',
+    },
+    ':disabled': {
+      color: colors.gray30,
+      bg: colors.gray00,
+      outlineColor: colors.gray30,
+      cursor: 'not-allowed',
     },
   },
   text: {
