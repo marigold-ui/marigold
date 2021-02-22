@@ -30,7 +30,7 @@ export const Field: React.FC<FieldProps> = ({
     },
     className
   );
-  const errorClassName = useStyles({ color: 'colors.red60' });
+  const errorClassName = useStyles({ color: 'color.red60' });
 
   return (
     <div>
