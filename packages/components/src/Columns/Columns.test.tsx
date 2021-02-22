@@ -15,13 +15,13 @@ test('supports default space prop', () => {
 
 test('supports custom space prop', () => {
   render(
-    <Columns space={12} title="column">
+    <Columns space={24} title="column">
       <Column>column</Column>
     </Columns>
   );
   const column = screen.getByTitle(/column/);
 
-  expect(column).toHaveStyle(`margin: -6px`);
+  expect(column).toHaveStyle(`margin: -12px`);
 });
 
 test('supports default horizontalAlign prop: left', () => {
@@ -99,15 +99,4 @@ test('renders correct HTML element', () => {
   const column = screen.getByTitle(/column/);
 
   expect(column instanceof HTMLDivElement).toBeTruthy();
-});
-
-test('accepts custom styles prop className', () => {
-  render(
-    <Column className="custom-class-name" title="column">
-      column
-    </Column>
-  );
-  const column = screen.getByTitle(/column/);
-
-  expect(column.className).toMatch('custom-class-name');
 });

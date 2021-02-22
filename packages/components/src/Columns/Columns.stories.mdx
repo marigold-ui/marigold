@@ -14,7 +14,7 @@ With the Columns component you can add a bundle of column components by adding p
 
 | Property                     | Type                  | Default |
 | :--------------------------- | :-------------------- | :------ |
-| `space` (optional)           | `Theme['space']`      | `0`     |
+| `space` (optional)           | `number`              | `0`     |
 | `horizontalAlign` (optional) | `left, right, center` | `left`  |
 | `verticalAlign` (optional)   | `top, bottom, center` | `top`   |
 
@@ -93,6 +93,36 @@ import { Columns } from '@marigold/components';
         })}
       >
         <Text>width=6</Text>
+      </Column>
+      <Column
+        width={4}
+        className={useStyles({
+          border: '1px solid',
+          borderRadius: '4px',
+          padding: '4px',
+        })}
+      >
+        <Text>width=4</Text>
+      </Column>
+      <Column
+        width={4}
+        className={useStyles({
+          border: '1px solid',
+          borderRadius: '4px',
+          padding: '4px',
+        })}
+      >
+        <Text>width=4</Text>
+      </Column>
+      <Column
+        width={4}
+        className={useStyles({
+          border: '1px solid',
+          borderRadius: '4px',
+          padding: '4px',
+        })}
+      >
+        <Text>width=4</Text>
       </Column>
       <Column
         width={3}
