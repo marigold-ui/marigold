@@ -1,18 +1,13 @@
 import React from 'react';
-import { useStyles, system } from '@marigold/system';
+import { Box } from '../Box';
 
 type DividerProps = {
+  className?: string;
   variant?: string;
+  title?: string; // Should only be used for testing.
 };
 
-export const Divider = system<DividerProps, 'hr'>(
-  ({ variant = 'regular', className, ...props }) => {
-    const classNames = useStyles(
-      {
-        variant: `divider.${variant}`,
-      },
-      className
-    );
-    return <hr className={classNames} {...props} />;
-  }
-);
+export const Divider: React.FC<DividerProps> = ({
+  variant = 'regular',
+  ...props
+}) => <Box {...props} as="hr" variant={`divider.${variant}`} />;
