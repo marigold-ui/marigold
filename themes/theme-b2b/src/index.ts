@@ -67,16 +67,31 @@ const button = {
   },
   ghost: {
     color: 'secondary',
+    border: '1px solid',
+    outlineColor: colors.gray70,
+      ':hover': {
+        color: 'secondary',
+        bg: colors.gray30,
+        cursor: 'pointer',
+      },
+      ':disabled': {
+        color: colors.gray30,
+        bg: colors.gray00,
+        outlineColor: colors.gray30,
+        cursor: 'not-allowed',
+    },
+  },
+  text: {
+    color: 'secondary',
     ':hover': {
       color: 'secondary',
-      outline: '1px solid',
       outlineColor: colors.gray70,
       bg: colors.gray30,
       cursor: 'pointer',
     },
     ':disabled': {
-      color: colors.gray40,
-      bg: colors.gray20,
+      color: colors.gray30,
+      bg: colors.gray00,
       cursor: 'not-allowed',
       outline: 'none',
     },
@@ -291,6 +306,18 @@ const theme: BaseTheme = {
       large: {
         ...button.root,
         ...button.ghost,
+        ...button.large,
+      },
+    },
+    text: {
+      small: {
+        ...button.root,
+        ...button.text,
+        ...button.small,
+      },
+      large: {
+        ...button.root,
+        ...button.text,
         ...button.large,
       },
     },
