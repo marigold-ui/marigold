@@ -24,11 +24,37 @@ import { Textarea } from '@marigold/components';
 
 ## Usage
 
+### basic & disabled
+
 <Canvas>
   <Story name="Textarea">
     <Textarea placeholder="Placeholder" />
   </Story>
   <Story name="Textarea disabled">
     <Textarea placeholder="Placeholder disabled" disabled />
+  </Story>
+</Canvas>
+
+### labeled & required
+
+<Canvas>
+  <Story name="Textarea label">
+    <Textarea label="Labeled" htmlfor="label" />
+  </Story>
+  <Story name="Textarea required">
+    <Textarea label="Required" htmlfor="required" required />
+  </Story>
+</Canvas>
+
+### with error
+
+<Canvas>
+  <Story name="Textarea error">
+    <Textarea
+      label="Required with error"
+      htmlfor="error"
+      required
+      error="Oh no, we have an error!"
+    />
   </Story>
 </Canvas>
