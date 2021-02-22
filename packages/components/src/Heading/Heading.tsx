@@ -1,22 +1,17 @@
 import React from 'react';
-import { useStyles, system } from '@marigold/system';
+import { ComponentProps } from '@marigold/types';
+import { Box } from '../Box';
 
 type HeadingProps = {
   variant?: string;
-};
+} & ComponentProps<'h1'>;
 
-export const Heading = system<HeadingProps, 'h2'>(
-  ({ variant = 'h2', children, className, ...props }) => {
-    const classNames = useStyles(
-      {
-        variant: `text.${variant}`,
-      },
-      className
-    );
-    return (
-      <h2 className={classNames} {...props}>
-        {children}
-      </h2>
-    );
-  }
+export const Heading: React.FC<HeadingProps> = ({
+  variant = 'h2',
+  children,
+  ...props
+}) => (
+  <Box {...props} as="h2" variant={`text.${variant}`}>
+    {children}
+  </Box>
 );
