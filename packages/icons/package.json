@@ -3,11 +3,17 @@
   "description": "",
   "version": "0.0.2",
   "license": "MIT",
-  "main": "src/index.ts",
-  "devDependencies": {
-    "@marigold/components": "*"
+  "main": "dist/index.js",
+  "module": "dist/components.esm.js",
+  "typings": "dist/index.d.ts",
+  "dependencies": {
+    "@marigold/components": "0.0.2"
   },
   "peerDependencies": {
     "react": "^16.x"
+  },
+  "scripts": {
+    "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly",
+    "watch": "tsdx watch --tsconfig tsconfig.build.json --transpileOnly"
   }
 }
