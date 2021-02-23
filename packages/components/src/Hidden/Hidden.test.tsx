@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Hidden } from '@marigold/components';
+import { Hidden } from './Hidden';
 
 test('text is not visible, show prop = false', () => {
   render(<Hidden>Default</Hidden>);

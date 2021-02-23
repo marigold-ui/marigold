@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
-import { Textarea } from '@marigold/components';
+import { Textarea } from '../Textarea';
 
 const theme = {
   form: {

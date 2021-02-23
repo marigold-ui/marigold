@@ -1,8 +1,8 @@
 import React from 'react';
 import { useStyles, system } from '@marigold/system';
-import { Link } from '@marigold/components';
+import { Link } from '../Link';
 
-type MenuItemProps = {
+export type MenuItemProps = {
   variant?: string;
 };
 

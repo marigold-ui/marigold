@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Container, Text } from '@marigold/components';
+import { Container } from './Container';
+import { Text } from '../Text';
 
 test('renders correct HTML element', () => {
   render(

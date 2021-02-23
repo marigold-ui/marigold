@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '../Box';
 
-type HiddenProps = {
+export type HiddenProps = {
   show?: boolean;
 };
 

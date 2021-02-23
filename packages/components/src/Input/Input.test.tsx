@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
-import { Input } from '@marigold/components';
+import { Input } from './Input';
 
 const theme = {
   form: {

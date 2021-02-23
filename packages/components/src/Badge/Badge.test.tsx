@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useStyles, ThemeProvider } from '@marigold/system';
-import { Badge } from '@marigold/components';
+import { Badge } from './Badge';
 
 const theme = {
   content: {

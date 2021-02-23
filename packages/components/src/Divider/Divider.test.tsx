@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
-import { Divider } from '@marigold/components';
+import { Divider } from './Divider';
 
 const theme = {
   divider: {

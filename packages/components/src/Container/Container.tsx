@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '../Box';
 
-type ContainerProps = {
+export type ContainerProps = {
   className?: string;
   title?: string; // Used for testing.
 };

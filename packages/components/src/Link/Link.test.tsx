@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
-import { Link } from '@marigold/components';
+import { Link } from './Link';
 
 const theme = {
   link: {

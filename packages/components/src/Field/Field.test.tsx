@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
-import { Field } from '@marigold/components';
+import { Field } from './Field';
 import { useStyles } from '@marigold/system';
 
 const theme = {
