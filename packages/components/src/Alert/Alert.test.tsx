@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useStyles, ThemeProvider } from '@marigold/system';
-import { Alert } from '@marigold/components';
+import { Alert } from './Alert';
 
 const theme = {
   alerts: {
