@@ -1,7 +1,7 @@
 import React from 'react';
 import { system, useStyles } from '@marigold/system';
 
-type TextProps = {
+export type TextProps = {
   htmlFor: string;
   variant?: string;
 };

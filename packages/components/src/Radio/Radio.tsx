@@ -1,9 +1,9 @@
 import React from 'react';
 import { useStyles, system } from '@marigold/system';
 import { CircleUnchecked, CircleChecked, Required } from '@marigold/icons';
-import { Label } from '@marigold/components';
+import { Label } from '../Label';
 
-type RadioProps = {
+export type RadioProps = {
   id: string;
   variant?: string;
   label?: string;
