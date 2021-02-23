@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Stack, Text } from '@marigold/components';
+import { Stack } from './Stack';
+import { Text } from '../Text';
 
 test('supports default space prop', () => {
   render(

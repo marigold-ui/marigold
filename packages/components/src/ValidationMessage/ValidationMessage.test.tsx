@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
-import { ValidationMessage } from '@marigold/components';
+import { ValidationMessage } from './ValidationMessage';
 
 const theme = {
   validation: {

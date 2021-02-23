@@ -1,5 +1,6 @@
 import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { Heading, Text } from '@marigold/components';
+import { Heading } from './Heading';
+import { Text } from '../Text';
 
 <Meta title="Components/Typography/Heading" />
 
@@ -11,9 +12,10 @@ Use the Heading component for headings of texts. Predefined variants are `h1`, `
 
 ## Properties
 
-| Property  | Type     | Default |
-| :-------- | :------- | :------ |
-| `variant` | `string` | `h2`    |
+| Property  | Type                               | Default |
+| :-------- | :--------------------------------- | :------ |
+| `as`      | `h1`, `h2`, `h3`, `h4`, `h5`, `h6` | `h2`    |
+| `variant` | `string`                           | `h2`    |
 
 ## Import
 
@@ -26,7 +28,9 @@ import { Heading } from '@marigold/components';
 <Canvas>
   <Story name="Headings">
     <div>
-      <Heading variant="h1">H1 amazing heading</Heading>
+      <Heading as="h2" variant="h1">
+        H1 amazing heading
+      </Heading>
       <Text as="p" variant="heading">
         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
         eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
@@ -42,7 +46,9 @@ import { Heading } from '@marigold/components';
         clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
         amet.
       </Text>
-      <Heading variant="h3">H3 amazing heading</Heading>
+      <Heading as="h3" variant="h3">
+        H3 amazing heading
+      </Heading>
       <Text as="p" variant="heading">
         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
         eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
@@ -50,7 +56,9 @@ import { Heading } from '@marigold/components';
         clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
         amet.
       </Text>
-      <Heading variant="h4">H4 amazing heading</Heading>
+      <Heading as="h4" variant="h4">
+        H4 amazing heading
+      </Heading>
       <Text as="p" variant="heading">
         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
         eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
@@ -58,7 +66,9 @@ import { Heading } from '@marigold/components';
         clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
         amet.
       </Text>
-      <Heading variant="h5">H5 amazing heading</Heading>
+      <Heading as="h5" variant="h5">
+        H5 amazing heading
+      </Heading>
       <Text as="p" variant="heading">
         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
         eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
@@ -66,7 +76,9 @@ import { Heading } from '@marigold/components';
         clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
         amet.
       </Text>
-      <Heading variant="h6">H6 amazing heading</Heading>
+      <Heading as="h6" variant="h6">
+        H6 amazing heading
+      </Heading>
       <Text as="p" variant="heading">
         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
         eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam

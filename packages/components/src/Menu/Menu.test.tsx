@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
-import { Menu, MenuItem } from '@marigold/components';
+import { Menu } from './Menu';
+import { MenuItem } from '../MenuItem';
 
 const theme = {
   content: {

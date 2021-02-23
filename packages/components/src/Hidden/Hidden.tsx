@@ -1,23 +1,16 @@
 import React from 'react';
-import { useStyles, system } from '@marigold/system';
+import { Box } from '../Box';
 
-type HiddenProps = {
+export type HiddenProps = {
   show?: boolean;
 };
 
-export const Hidden = system<HiddenProps, 'span'>(
-  ({ show = false, className, children, ...props }) => {
-    const classNames = useStyles(
-      {
-        display: show ? 'display' : 'none',
-      },
-      className
-    );
-
-    return (
-      <span className={classNames} {...props}>
-        {children}
-      </span>
-    );
-  }
+export const Hidden: React.FC<HiddenProps> = ({
+  show = false,
+  children,
+  ...props
+}) => (
+  <Box {...props} as="span" display={show ? 'display' : 'none'}>
+    {children}
+  </Box>
 );

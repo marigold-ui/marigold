@@ -3,7 +3,7 @@ import { ResponsiveStyleValue, system } from '@marigold/system';
 import { Box } from '../Box';
 import flattenChildren from 'react-keyed-flatten-children';
 
-type StackProps = {
+export type StackProps = {
   space?: ResponsiveStyleValue<number | string>;
   align?: 'left' | 'right' | 'center';
 };

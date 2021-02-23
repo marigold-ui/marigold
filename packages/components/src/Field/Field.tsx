@@ -1,7 +1,6 @@
 import React from 'react';
-
-import { Exclamation, Required } from '@marigold/icons';
 import { useStyles } from '@marigold/system';
+import { Exclamation, Required } from '@marigold/icons';
 import { ComponentProps } from '@marigold/types';
 
 import { Input } from '../Input';

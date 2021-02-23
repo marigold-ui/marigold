@@ -2,7 +2,7 @@ import React from 'react';
 import { system, useStyles } from '@marigold/system';
 import { ArrowDown } from '@marigold/icons';
 
-type SelectProps = {};
+export type SelectProps = {};
 
 export const Select = system<SelectProps, 'select'>(
   ({ variant = 'select', className, ref, ...props }) => {

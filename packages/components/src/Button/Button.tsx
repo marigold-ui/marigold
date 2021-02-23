@@ -1,29 +1,21 @@
 import React from 'react';
-import { useStyles, system } from '@marigold/system';
+import { ComponentPropsWithRef } from '@marigold/types';
+import { Box } from '../Box';
 
-type ButtonProps = {
+export type ButtonProps = {
   variant?: string;
-};
+} & ComponentPropsWithRef<'button'>;
 
-export const Button = system<ButtonProps, 'button'>(
-  ({ variant = 'primary.large', className, children, ...props }) => {
-    const classNames = useStyles(
-      {
-        variant: `button.${variant}`,
-      },
-      className
-    );
-    return (
-      <button className={classNames} {...props}>
-        <span
-          className={useStyles({
-            display: 'inline-flex',
-            alignItems: 'center',
-          })}
-        >
-          {children}
-        </span>
-      </button>
-    );
-  }
-);
+export const Button: React.FC<ButtonProps> = ({
+  variant = 'primary.large',
+  children,
+  ...props
+}) => {
+  return (
+    <Box as="button" {...props} variant={`button.${variant}`}>
+      <Box as="span" display="inline-flex" alignItems="center">
+        {children}
+      </Box>
+    </Box>
+  );
+};
