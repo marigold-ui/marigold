@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
-import { Heading } from '@marigold/components';
+import { Heading } from './Heading';
 
 const theme = {
   text: {

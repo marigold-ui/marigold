@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Checkbox } from '@marigold/components';
+import { Checkbox } from './Checkbox';
 
 test('supports label prop', () => {
   render(<Checkbox label="Test" id="test" title="checkbox" />);
