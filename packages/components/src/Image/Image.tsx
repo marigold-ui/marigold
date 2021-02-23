@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentProps } from '@marigold/types';
 import { Box } from '../Box';
 
-type ImageProps = {
+export type ImageProps = {
   variant?: string;
   children?: never;
 } & ComponentProps<'img'>;

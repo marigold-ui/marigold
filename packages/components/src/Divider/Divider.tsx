@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '../Box';
 
-type DividerProps = {
+export type DividerProps = {
   className?: string;
   variant?: string;
   title?: string; // Should only be used for testing.

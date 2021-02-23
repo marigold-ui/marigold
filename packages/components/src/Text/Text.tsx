@@ -1,7 +1,7 @@
-import { useStyles, system } from '@marigold/system';
 import React from 'react';
+import { useStyles, system } from '@marigold/system';
 
-type TextProps = {
+export type TextProps = {
   as?: 'p' | 'span';
   variant?: 'body' | 'heading';
   textColor?: string;
