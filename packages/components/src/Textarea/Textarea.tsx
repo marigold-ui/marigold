@@ -7,15 +7,26 @@ import { ValidationMessage } from '../ValidationMessage';
 import { Label } from '../Label';
 import { Box } from '../Box';
 
-type TextareaProps = {
-  // how to check if theres a label and then htmlFor is required
+export type TextareaProps = {
   variant?: string;
-  label?: string;
-  htmlFor?: string;
-  error?: string;
-  required?: boolean;
 } & ComponentProps<'textarea'>;
 
+type withLabelProps = TextareaProps & {
+  label: string;
+  htmlFor: string;
+  error?: string;
+  required?: boolean;
+};
+
+type noLabelProps = TextareaProps & {
+  label?: never;
+  htmlFor?: never;
+  error?: never;
+  required?: never;
+};
+
+const Textarea = (props: withLabelProps) => {};
+const Textarea = (props: noLabelProps) => {};
 export const Textarea: React.FC<TextareaProps> = ({
   variant = 'textarea',
   htmlFor = 'textarea',
