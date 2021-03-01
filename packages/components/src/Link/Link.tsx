@@ -1,22 +1,17 @@
 import React from 'react';
-import { useStyles, system } from '@marigold/system';
+import { ComponentProps } from '@marigold/types';
+import { Box } from '../Box';
 
 export type LinkProps = {
   variant?: string;
-};
+} & ComponentProps<'a'>;
 
-export const Link = system<LinkProps, 'a'>(
-  ({ variant = 'normal', children, className, ...props }) => {
-    const classNames = useStyles(
-      {
-        variant: `link.${variant}`,
-      },
-      className
-    );
-    return (
-      <a className={classNames} {...props}>
-        {children}
-      </a>
-    );
-  }
+export const Link: React.FC<LinkProps> = ({
+  variant = 'normal',
+  children,
+  ...props
+}) => (
+  <Box {...props} as="a" variant={`link.${variant}`}>
+    {children}
+  </Box>
 );
