@@ -9,12 +9,17 @@ import { Textarea } from '../Textarea';
 
 With the Textarea component you can add a HTML `<textarea>` element for larger text input to your form.
 The element uses always the themeSection with the name: `form` in your given theme. The variant in your section can be added with the variant prop. The default variant is `textarea`.
+If you use the label prop you have to add htmlFor. Optionally you can pass an errorMessage or the required prop.
 
 ## Properties
 
-| Property             | Type     | Default    |
-| :------------------- | :------- | :--------- |
-| `variant` (optional) | `string` | `textarea` |
+| Property                  | Type      | Default    |
+| :------------------------ | :-------- | :--------- |
+| `variant` (optional)      | `string`  | `textarea` |
+| `label` (optional)        | `string`  |            |
+| `htmlFor` (optional)      | `string`  | `textarea` |
+| `errorMessage` (optional) | `string`  |            |
+| `required` (optional)     | `boolean` |            |
 
 ## Import
 
@@ -54,7 +59,7 @@ import { Textarea } from '@marigold/components';
       label="Required with error"
       htmlfor="error"
       required
-      error="Oh no, we have an error!"
+      errorMessage="Oh no, we have an error!"
     />
   </Story>
 </Canvas>

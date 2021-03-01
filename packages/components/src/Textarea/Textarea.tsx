@@ -9,29 +9,17 @@ import { Box } from '../Box';
 
 export type TextareaProps = {
   variant?: string;
+  label?: string;
+  htmlFor?: string;
+  errorMessage?: string;
+  required?: boolean;
 } & ComponentProps<'textarea'>;
 
-type withLabelProps = TextareaProps & {
-  label: string;
-  htmlFor: string;
-  error?: string;
-  required?: boolean;
-};
-
-type noLabelProps = TextareaProps & {
-  label?: never;
-  htmlFor?: never;
-  error?: never;
-  required?: never;
-};
-
-const Textarea = (props: withLabelProps) => {};
-const Textarea = (props: noLabelProps) => {};
 export const Textarea: React.FC<TextareaProps> = ({
   variant = 'textarea',
   htmlFor = 'textarea',
   label,
-  error,
+  errorMessage,
   required = false,
   children,
   ...props
@@ -42,26 +30,24 @@ export const Textarea: React.FC<TextareaProps> = ({
   return (
     <Box display="block">
       {label && (
-        <Label {...props} htmlFor={htmlFor}>
+        <Label htmlFor={htmlFor}>
           {label}
-          {(error || required) && (
+          {(errorMessage || required) && (
             <Required size={16} className={errorClassName} />
           )}
         </Label>
       )}
       <Box
         as="textarea"
-        display="block"
-        border={error && `1px solid ${errorColor}`}
-        variant={`form.${variant}`}
         {...props}
-      >
-        {children}
-      </Box>
-      {error && (
+        display="block"
+        variant={`form.${variant}`}
+        className={errorMessage && useStyles({ outlineColor: errorColor })}
+      />
+      {errorMessage && (
         <ValidationMessage>
           <Exclamation size={16} />
-          {error}
+          {errorMessage}
         </ValidationMessage>
       )}
     </Box>
