@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Radio } from '@marigold/components';
+import { Radio } from './Radio';
 
 test('supports label prop', () => {
   render(<Radio label="Test" id="test" title="radio" />);

@@ -6,7 +6,7 @@ import { ComponentProps } from '@marigold/types';
 import { Box } from '../Box';
 import { Label } from '../Label';
 
-type CheckboxProps = {
+export type CheckboxProps = {
   id: string;
   variant?: string;
   label?: string;

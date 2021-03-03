@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentPropsWithRef } from '@marigold/types';
 import { Box } from '../Box';
 
-type ButtonProps = {
+export type ButtonProps = {
   variant?: string;
 } & ComponentPropsWithRef<'button'>;
 

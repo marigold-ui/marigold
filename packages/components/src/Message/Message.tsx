@@ -1,9 +1,9 @@
 import React from 'react';
 import { useStyles, system } from '@marigold/system';
-import { Heading } from '@marigold/components';
 import { Exclamation, Info, Notification } from '@marigold/icons';
+import { Heading } from '../Heading';
 
-type MessageProps = {
+export type MessageProps = {
   messageTitle: string;
   variant?: string;
 };

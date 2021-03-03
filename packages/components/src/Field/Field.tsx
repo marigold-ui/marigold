@@ -1,10 +1,12 @@
 import React from 'react';
-import { Input, Label, ValidationMessage } from '@marigold/components';
+import { Input } from '../Input';
+import { Label } from '../Label';
+import { ValidationMessage } from '../ValidationMessage';
 import { useStyles, system } from '@marigold/system';
 import { Exclamation, Required } from '@marigold/icons';
 import b2bTheme from '@marigold/theme-b2b';
 
-type FieldProps = {
+export type FieldProps = {
   variant?: string;
   htmlFor: string;
   label: string;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Column } from '@marigold/components';
+import { Column } from './Column';
 
 test('supports width prop', () => {
   render(<Column width={6}>column</Column>);
