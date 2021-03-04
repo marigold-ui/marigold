@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: "The Code takes care of itself",
+    title: "Docs for Marigold Design System",
   },
   plugins: [
     "gatsby-plugin-sharp",
