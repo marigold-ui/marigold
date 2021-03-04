@@ -1,19 +1,13 @@
 import React from 'react';
-import { useStyles, system } from '@marigold/system';
+import { ComponentProps } from '@marigold/types';
+import { Box } from '../Box';
 
-type ImageProps = {
+export type ImageProps = {
   variant?: string;
-  alt?: string;
-};
+  children?: never;
+} & ComponentProps<'img'>;
 
-export const Image = system<ImageProps, 'img'>(
-  ({ variant = 'images', alt = '', className, ...props }) => {
-    const classNames = useStyles(
-      {
-        variant: `content.${variant}`,
-      },
-      className
-    );
-    return <img className={classNames} alt={alt} {...props} />;
-  }
-);
+export const Image: React.FC<ImageProps> = ({
+  variant = 'images',
+  ...props
+}) => <Box {...props} as="img" variant={`content.${variant}`} />;

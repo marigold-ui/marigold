@@ -1,6 +1,7 @@
 import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { Alert, Text } from '@marigold/components';
 import { useStyles } from '@marigold/system';
+import { Alert } from './Alert';
+import { Text } from '../Text/';
 
 <Meta title="Components/Content/Alert" />
 
@@ -13,9 +14,9 @@ Predefined variants are info, success, danger and warning.
 
 ## Properties
 
-| Property             | Type     | Default |
-| :------------------- | :------- | :------ |
-| `variant` (optional) | `string` | `info`  |
+| Property             | Type                      | Default  |
+| :------------------- | :------------------------ | :------- |
+| `variant` (optional) | `success, error, warning` | `succes` |
 
 ## Import
 
@@ -26,24 +27,19 @@ import { Alert } from '@marigold/components';
 ## Usage
 
 <Canvas>
-  <Story name="Info">
-    <Alert className={useStyles({ color: '#f3f3f3' })}>
-      <Text>hey, info!</Text>
-    </Alert>
-  </Story>
   <Story name="Success">
-    <Alert variant="success">
-      <Text>hey, success!</Text>
+    <Alert>
+      <Text>Success message</Text>
     </Alert>
   </Story>
-  <Story name="Danger">
-    <Alert variant="danger">
-      <Text>hey, danger!</Text>
+  <Story name="Error">
+    <Alert variant="error">
+      <Text>Error message</Text>
     </Alert>
   </Story>
   <Story name="Warning">
     <Alert variant="warning">
-      <Text>hey, warning!</Text>
+      <Text>Warning message</Text>
     </Alert>
   </Story>
 </Canvas>

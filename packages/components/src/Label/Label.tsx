@@ -1,12 +1,12 @@
 import React from 'react';
 import { system, useStyles } from '@marigold/system';
 
-type TextProps = {
+export type LabelTextProps = {
   htmlFor: string;
   variant?: string;
 };
 
-export const Label = system<TextProps, 'label'>(
+export const Label = system<LabelTextProps, 'label'>(
   ({ variant = 'label', htmlFor, children, className, ...props }) => {
     const classNames = useStyles(
       {
