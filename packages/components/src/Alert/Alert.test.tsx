@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useStyles, ThemeProvider } from '@marigold/system';
+import { ThemeProvider } from '@marigold/system';
 import { Alert } from './Alert';
 
 const theme = {
@@ -8,8 +8,11 @@ const theme = {
     info: {
       alignItems: 'center',
     },
-    danger: {
+    error: {
       alignItems: 'right',
+    },
+    warning: {
+      alignItems: 'left',
     },
   },
 };
@@ -25,17 +28,30 @@ test('supports default variant and themeSection', () => {
   expect(alert).toHaveStyle(`align-items: center`);
 });
 
-test('accepts other variant than default', () => {
+test('accepts error variant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Alert title="danger" variant="danger">
-        Danger
+      <Alert title="error" variant="error">
+        Error
       </Alert>
     </ThemeProvider>
   );
-  const alert = screen.getByTitle(/danger/);
+  const alert = screen.getByTitle(/error/);
 
   expect(alert).toHaveStyle(`align-items: right`);
+});
+
+test('accepts warning variant', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Alert title="warning" variant="warning">
+        warning
+      </Alert>
+    </ThemeProvider>
+  );
+  const alert = screen.getByTitle(/warning/);
+
+  expect(alert).toHaveStyle(`align-items: left`);
 });
 
 test('renders correct HTML element', () => {
@@ -50,22 +66,14 @@ test('renders correct HTML element', () => {
 });
 
 test('accepts custom styles prop className', () => {
-  const TestComponent: React.FC = ({ children, ...props }) => {
-    const classNames = useStyles({ fontSize: '8px' });
-    return (
-      <Alert className={classNames} {...props}>
-        {children}
-      </Alert>
-    );
-  };
-
-  const { getByText } = render(
+  render(
     <ThemeProvider theme={theme}>
-      <TestComponent>text</TestComponent>
+      <Alert className="custom-class-name" title="alert">
+        alert
+      </Alert>
     </ThemeProvider>
   );
-  const testelem = getByText('text');
-  const text = getComputedStyle(testelem);
+  const alert = screen.getByTitle(/alert/);
 
-  expect(text.fontSize).toEqual('8px');
+  expect(alert.className).toMatch('custom-class-name');
 });
