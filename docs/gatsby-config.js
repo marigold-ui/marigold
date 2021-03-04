@@ -1,12 +1,14 @@
 module.exports = {
+  pathPrefix: "/marigold/",
   siteMetadata: {
     title: "Docs for Marigold Design System",
+    siteUrl: "https://marigold-ui.github.io/marigold/",
   },
   plugins: [
     "gatsby-plugin-sharp",
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-sitemap",
-    "gatsby-plugin-offline",
+    "gatsby-plugin-remove-serviceworker",
     {
       resolve: "gatsby-plugin-manifest",
       options: {
