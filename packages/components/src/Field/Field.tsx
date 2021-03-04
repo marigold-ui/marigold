@@ -32,11 +32,11 @@ export const Field = system<FieldProps, 'input'>(
 
     return (
       <div>
-        <Label htmlFor={htmlFor} className={classNames} {...props}>
+        <Label htmlFor={htmlFor} className={classNames}>
           {label}
           {error ? <Required size={16} fill={b2bTheme.colors.red60} /> : ''}
         </Label>
-        <Input type={type} id={htmlFor} />
+        <Input type={type} id={htmlFor} {...props} />
         {error ? (
           <ValidationMessage>
             <Exclamation size={16} />
