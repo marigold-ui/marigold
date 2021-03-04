@@ -6,6 +6,7 @@
   "license": "MIT",
   "workspaces": [
     "config/*",
+    "docs/*",
     "packages/*",
     "themes/*"
   ],
