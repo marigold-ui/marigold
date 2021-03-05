@@ -1,45 +1,41 @@
 import React from 'react';
-import { useStyles, system } from '@marigold/system';
+import { useStyles } from '@marigold/system';
+import { ComponentProps } from '@marigold/types';
+
 import { Button } from '../Button';
+import { Box } from '../Box';
 
 export type MenuProps = {
   variant?: string;
   label?: string;
-  onClick: () => void;
+  onClick: ComponentProps<typeof Button>['onClick'];
   show?: boolean;
+  className?: string;
+  title?: string; // For testing
 };
 
-export const Menu = system<MenuProps, 'div'>(
-  ({
-    variant = 'menu',
-    label = 'Menu',
-    onClick,
-    show = false,
-    className,
-    children,
-    ...props
-  }) => {
-    const classNames = useStyles(
-      {
-        variant: `content.${variant}`,
-      },
-      className
-    );
-    const itemStyles = useStyles({
-      position: 'absolute',
-      minWidth: '120px',
-      display: 'block',
-      textAlign: 'left',
-      borderRadius: '2px',
-    });
+export const Menu: React.FC<MenuProps> = ({
+  variant = 'menu',
+  label = 'Menu',
+  onClick,
+  show = false,
+  children,
+  ...props
+}) => {
+  const itemStyles = useStyles({
+    position: 'absolute',
+    minWidth: '120px',
+    display: 'block',
+    textAlign: 'left',
+    borderRadius: '2px',
+  });
 
-    return (
-      <div className={classNames} {...props}>
-        <Button onClick={onClick} variant="menu">
-          {label}
-        </Button>
-        {show ? <div className={itemStyles}>{children}</div> : null}
-      </div>
-    );
-  }
-);
+  return (
+    <Box variant={`content.${variant}`} {...props}>
+      <Button onClick={onClick} variant="menu">
+        {label}
+      </Button>
+      {show ? <div className={itemStyles}>{children}</div> : null}
+    </Box>
+  );
+};
