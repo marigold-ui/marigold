@@ -33,11 +33,11 @@ export const Field: React.FC<FieldProps> = ({
 
   return (
     <div>
-      <Label htmlFor={htmlFor} className={classNames}>
+      <Label className={labelClassName} htmlFor={htmlFor}>
         {label}
-        {error ? <Required size={16} fill={b2bTheme.colors.red60} /> : ''}
+        {error ? <Required size={16} className={errorClassName} /> : ''}
       </Label>
-      <Input type={type} id={htmlFor} {...props} />
+      <Input {...props} type={type} id={htmlFor} />
       {error ? (
         <ValidationMessage>
           <Exclamation size={16} />
