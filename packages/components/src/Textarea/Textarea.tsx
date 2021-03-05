@@ -28,7 +28,7 @@ export const Textarea: React.FC<TextareaProps> = ({
   const errorClassName = useStyles({ color: errorColor });
 
   return (
-    <Box display="block">
+    <Box>
       {label && (
         <Label htmlFor={htmlFor}>
           {label}
