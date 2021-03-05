@@ -1,34 +1,35 @@
 import React from 'react';
+import { useStyles } from '@marigold/system';
+import { Exclamation, Required } from '@marigold/icons';
+import { ComponentProps } from '@marigold/types';
+
 import { Input } from '../Input';
 import { Label } from '../Label';
 import { ValidationMessage } from '../ValidationMessage';
-import { useStyles, system } from '@marigold/system';
-import { Exclamation, Required } from '@marigold/icons';
-import b2bTheme from '@marigold/theme-b2b';
 
 export type FieldProps = {
   variant?: string;
   htmlFor: string;
   label: string;
   error?: string;
-};
+} & ComponentProps<'input'>;
 
-export const Field = system<FieldProps, 'input'>(
-  ({
-    variant = 'field',
-    type = 'text',
-    htmlFor,
-    label,
-    error,
-    className = '',
-    ...props
-  }) => {
-    const classNames = useStyles(
-      {
-        variant: `form.${variant}`,
-      },
-      className
-    );
+export const Field: React.FC<FieldProps> = ({
+  variant = 'field',
+  type = 'text',
+  className = '',
+  htmlFor,
+  label,
+  error,
+  ...props
+}) => {
+  const labelClassName = useStyles(
+    {
+      variant: `form.${variant}`,
+    },
+    className
+  );
+  const errorClassName = useStyles({ color: 'color.red60' });
 
     return (
       <div>
