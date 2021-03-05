@@ -344,17 +344,26 @@ const theme: BaseTheme = {
     },
   },
   alerts: {
-    info: {
-      bg: colors.blue70,
-    },
-    danger: {
-      bg: colors.red60,
+    error: {
+      borderStyle: 'solid',
+      borderColor: colors.red60,
+      borderWidth: '2px 2px 2px 0px',
+      bg: colors.gray00,
+      color: colors.gray70,
     },
     warning: {
-      bg: colors.orange60,
+      borderStyle: 'solid',
+      borderColor: colors.orange60,
+      borderWidth: '2px 2px 2px 0px',
+      bg: colors.gray00,
+      color: colors.gray70,
     },
     success: {
-      bg: colors.green60,
+      borderStyle: 'solid',
+      borderColor: colors.green70,
+      borderWidth: '2px 2px 2px 0px',
+      bg: colors.gray00,
+      color: colors.gray70,
     },
   },
   validation: {

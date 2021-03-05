@@ -1,0 +1,247 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { Column, Columns, Divider, Text } from '@marigold/components';
+import { useStyles } from '@marigold/system';
+
+<Meta title="Components/Layout/Columns" />
+
+# Columns
+
+## Description
+
+With the Columns component you can add a bundle of column components by adding props to create a layout.
+
+## Properties
+
+| Property                     | Type                  | Default |
+| :--------------------------- | :-------------------- | :------ |
+| `space` (optional)           | `number`              | `0`     |
+| `horizontalAlign` (optional) | `left, right, center` | `left`  |
+| `verticalAlign` (optional)   | `top, bottom, center` | `top`   |
+
+## Import
+
+```tsx
+import { Columns } from '@marigold/components';
+```
+
+## Usage
+
+### Spacing
+
+<Canvas>
+  <Story name="Spacing">
+    <Columns space={24} className={useStyles({ bg: '#f3f3f3' })}>
+      <Column width={4}>
+        <Text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+          dignissim dapibus elit, vel egestas felis pharetra non. Cras
+          malesuada, massa nec ultricies efficitur, lectus ante consequat magna,
+          a porttitor massa ex ut quam.
+        </Text>
+      </Column>
+      <Column width={4}>
+        <Text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+          dignissim dapibus elit, vel egestas felis pharetra non. Cras
+          malesuada, massa nec ultricies efficitur, lectus ante consequat magna,
+          a porttitor massa ex ut quam.
+        </Text>
+      </Column>
+      <Column width={4}>
+        <Text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+          dignissim dapibus elit, vel egestas felis pharetra non. Cras
+          malesuada, massa nec ultricies efficitur, lectus ante consequat magna,
+          a porttitor massa ex ut quam.
+        </Text>
+      </Column>
+    </Columns>
+  </Story>
+</Canvas>
+
+### Width
+
+<Canvas>
+  <Story name="Width">
+    <Columns space={24} className={useStyles({ bg: '#f3f3f3' })}>
+      <Column
+        width={12}
+        className={useStyles({
+          border: '1px solid',
+          borderRadius: '4px',
+          padding: '4px',
+        })}
+      >
+        <Text>width=12</Text>
+      </Column>
+      <Column
+        width={6}
+        className={useStyles({
+          border: '1px solid',
+          borderRadius: '4px',
+          padding: '4px',
+        })}
+      >
+        <Text>width=6</Text>
+      </Column>
+      <Column
+        width={6}
+        className={useStyles({
+          border: '1px solid',
+          borderRadius: '4px',
+          padding: '4px',
+        })}
+      >
+        <Text>width=6</Text>
+      </Column>
+      <Column
+        width={4}
+        className={useStyles({
+          border: '1px solid',
+          borderRadius: '4px',
+          padding: '4px',
+        })}
+      >
+        <Text>width=4</Text>
+      </Column>
+      <Column
+        width={4}
+        className={useStyles({
+          border: '1px solid',
+          borderRadius: '4px',
+          padding: '4px',
+        })}
+      >
+        <Text>width=4</Text>
+      </Column>
+      <Column
+        width={4}
+        className={useStyles({
+          border: '1px solid',
+          borderRadius: '4px',
+          padding: '4px',
+        })}
+      >
+        <Text>width=4</Text>
+      </Column>
+      <Column
+        width={3}
+        className={useStyles({
+          border: '1px solid',
+          borderRadius: '4px',
+          padding: '4px',
+        })}
+      >
+        <Text>width=3</Text>
+      </Column>
+      <Column
+        width={3}
+        className={useStyles({
+          border: '1px solid',
+          borderRadius: '4px',
+          padding: '4px',
+        })}
+      >
+        <Text>width=3</Text>
+      </Column>
+      <Column
+        width={3}
+        className={useStyles({
+          border: '1px solid',
+          borderRadius: '4px',
+          padding: '4px',
+        })}
+      >
+        <Text>width=3</Text>
+      </Column>
+      <Column
+        width={3}
+        className={useStyles({
+          border: '1px solid',
+          borderRadius: '4px',
+          padding: '4px',
+        })}
+      >
+        <Text>width=3</Text>
+      </Column>
+    </Columns>
+  </Story>
+</Canvas>
+
+### Horizontal Alignment
+
+<Canvas>
+  <Story name="horizantalAlign">
+    <Columns
+      space={24}
+      horizontalAlign="left"
+      className={useStyles({ bg: '#f3f3f3' })}
+    >
+      <Column width={1}>
+        <Text>left</Text>
+      </Column>
+    </Columns>
+    <Divider />
+    <Columns
+      space={24}
+      horizontalAlign="center"
+      className={useStyles({ bg: '#f3f3f3' })}
+    >
+      <Column width={1}>
+        <Text>center</Text>
+      </Column>
+    </Columns>
+    <Divider />
+    <Columns
+      space={24}
+      horizontalAlign="right"
+      className={useStyles({ bg: '#f3f3f3' })}
+    >
+      <Column width={1}>
+        <Text>right</Text>
+      </Column>
+    </Columns>
+  </Story>
+</Canvas>
+
+### Vertical Alignment
+
+<Canvas>
+  <Story name="verticalAlign">
+    <Columns
+      verticalAlign="top"
+      className={useStyles({
+        bg: '#f3f3f3',
+        height: '80px',
+      })}
+    >
+      <Column width={1}>
+        <Text>top</Text>
+      </Column>
+    </Columns>
+    <Divider />
+    <Columns
+      verticalAlign="center"
+      className={useStyles({
+        bg: '#f3f3f3',
+        height: '80px',
+      })}
+    >
+      <Column width={1}>
+        <Text>center</Text>
+      </Column>
+    </Columns>
+    <Divider />
+    <Columns
+      verticalAlign="bottom"
+      className={useStyles({
+        bg: '#f3f3f3',
+        height: '80px',
+      })}
+    >
+      <Column width={1}>
+        <Text>bottom</Text>
+      </Column>
+    </Columns>
+  </Story>
+</Canvas>
