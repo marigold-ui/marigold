@@ -2,8 +2,11 @@ import React from 'react';
 import { CircleUnchecked, CircleChecked, Required } from '@marigold/icons';
 import { useStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
+import { Box } from '../Box';
 import { Label } from '../Label';
 
+// Radio Icon
+// ---------------
 type RadioIconProps = {
   className?: string;
   variant?: string;
@@ -11,8 +14,6 @@ type RadioIconProps = {
   children?: never;
 };
 
-// Radio Icon
-// ---------------
 const RadioIcon: React.FC<RadioIconProps> = ({
   className,
   variant,
@@ -39,21 +40,15 @@ const RadioIcon: React.FC<RadioIconProps> = ({
   return <CircleUnchecked className={radioIconStyle} />;
 };
 
-// Radio
+// Radio Input
 // ---------------
-export type RadioProps = {
-  id: string;
+type RadioInputProps = {
   variant?: string;
-  label?: string;
-  required?: boolean;
 } & ComponentProps<'input'>;
 
-export const Radio: React.FC<RadioProps> = ({
-  id,
-  variant = 'radio',
-  label,
-  required,
+const RadioInput: React.FC<RadioInputProps> = ({
   className,
+  variant = 'radio',
   ...props
 }) => {
   const radioStyle = useStyles({
@@ -65,26 +60,36 @@ export const Radio: React.FC<RadioProps> = ({
     overflow: 'hidden',
   });
 
-  const radio = (
-    <div className={useStyles({ display: 'inline-block' })}>
-      <input type="radio" id={id} className={radioStyle} {...props} />
+  return (
+    <Box display="inline-block">
+      <input type="radio" className={radioStyle} {...props} />
       <RadioIcon
         checked={props.checked}
         className={className}
         variant={variant}
       />
-    </div>
+    </Box>
   );
+};
 
+// Radio
+// ---------------
+export type RadioProps = {
+  id: string;
+  label?: string;
+  required?: boolean;
+} & RadioInputProps;
+
+export const Radio: React.FC<RadioProps> = ({ label, required, ...props }) => {
   if (label) {
     return (
-      <Label htmlFor={id}>
-        {radio}
+      <Label htmlFor={props.id}>
+        <RadioInput {...props} />
         {label}
         {required && <Required size={16} />}
       </Label>
     );
   }
 
-  return <>{radio}</>;
+  return <RadioInput {...props} />;
 };
