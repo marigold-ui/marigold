@@ -54,17 +54,15 @@ export const Radio: React.FC<RadioProps> = ({
     </div>
   );
 
-  return (
-    <>
-      {label ? (
-        <Label htmlFor={id}>
-          {radio}
-          {label}
-          {required && <Required size={16} />}
-        </Label>
-      ) : (
-        <>{radio}</>
-      )}
-    </>
-  );
+  if (label) {
+    return (
+      <Label htmlFor={id}>
+        {radio}
+        {label}
+        {required && <Required size={16} />}
+      </Label>
+    );
+  }
+
+  return <>{radio}</>;
 };
