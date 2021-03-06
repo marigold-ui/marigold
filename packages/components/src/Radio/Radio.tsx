@@ -60,7 +60,7 @@ export const Radio: React.FC<RadioProps> = ({
         <Label htmlFor={id}>
           {radio}
           {label}
-          {required ? <Required size={16} /> : ''}
+          {required && <Required size={16} />}
         </Label>
       ) : (
         <>{radio}</>
