@@ -4,6 +4,43 @@ import { useStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 import { Label } from '../Label';
 
+type RadioIconProps = {
+  className?: string;
+  variant?: string;
+  checked?: boolean;
+  children?: never;
+};
+
+// Radio Icon
+// ---------------
+const RadioIcon: React.FC<RadioIconProps> = ({
+  className,
+  variant,
+  checked,
+}) => {
+  const radioIconStyle = useStyles(
+    {
+      variant: `form.${variant}`,
+      ariaHidden: 'true',
+      mr: 2,
+      verticalAlign: 'middle',
+      ':hover': { cursor: 'pointer' },
+      'input:disabled ~ &': {
+        color: 'muted',
+        cursor: 'not-allowed',
+      },
+    },
+    className
+  );
+
+  if (checked) {
+    return <CircleChecked className={radioIconStyle} />;
+  }
+  return <CircleUnchecked className={radioIconStyle} />;
+};
+
+// Radio
+// ---------------
 export type RadioProps = {
   id: string;
   variant?: string;
@@ -28,29 +65,14 @@ export const Radio: React.FC<RadioProps> = ({
     overflow: 'hidden',
   });
 
-  const radioIconStyle = useStyles(
-    {
-      variant: `form.${variant}`,
-      ariaHidden: 'true',
-      mr: 2,
-      verticalAlign: 'middle',
-      ':hover': { cursor: 'pointer' },
-      'input:disabled ~ &': {
-        color: 'muted',
-        cursor: 'not-allowed',
-      },
-    },
-    className
-  );
-
   const radio = (
     <div className={useStyles({ display: 'inline-block' })}>
       <input type="radio" id={id} className={radioStyle} {...props} />
-      {props.checked ? (
-        <CircleChecked className={radioIconStyle} />
-      ) : (
-        <CircleUnchecked className={radioIconStyle} />
-      )}
+      <RadioIcon
+        checked={props.checked}
+        className={className}
+        variant={variant}
+      />
     </div>
   );
 
