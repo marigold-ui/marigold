@@ -1,28 +1,28 @@
 import React from 'react';
-import { system, useStyles } from '@marigold/system';
 import { ArrowDown } from '@marigold/icons';
+import { useStyles } from '@marigold/system';
+import { ComponentProps } from '@marigold/types';
+import { Box } from '../Box';
 
-export type SelectProps = {};
+export type SelectProps = { variant?: string } & ComponentProps<'select'>;
 
-export const Select = system<SelectProps, 'select'>(
-  ({ variant = 'select', className, ref, ...props }) => {
-    const selectStyles = useStyles(
-      {
-        variant: `form.${variant}`,
-      },
-      className
-    );
-    const iconStyles = useStyles({
-      alignSelf: 'center',
-      pointerEvents: 'none',
-      ml: '-28px',
-    });
+export const Select: React.FC<SelectProps> = ({
+  variant = 'select',
+  children,
+  ...props
+}) => {
+  const iconStyles = useStyles({
+    alignSelf: 'center',
+    pointerEvents: 'none',
+    ml: '-28px',
+  });
 
-    return (
-      <div className={useStyles({ display: 'flex' })}>
-        <select ref={ref} {...props} className={selectStyles} />
-        <ArrowDown className={iconStyles} />
-      </div>
-    );
-  }
-);
+  return (
+    <Box display="flex">
+      <Box as="select" variant={`form.${variant}`} {...props}>
+        {children}
+      </Box>
+      <ArrowDown className={iconStyles} />
+    </Box>
+  );
+};
