@@ -21,11 +21,14 @@ export const Textarea: React.FC<TextareaProps> = ({
   label,
   errorMessage,
   required = false,
+  className = '',
   children,
   ...props
 }) => {
-  let errorColor = '#dd4142';
-  const errorClassName = useStyles({ color: errorColor });
+  const errorClassName = useStyles({ color: 'color.red60' });
+  const textareaClassNames = errorMessage
+    ? useStyles({ outlineColor: 'color.red60' }, className)
+    : className;
 
   return (
     <Box>
@@ -42,7 +45,7 @@ export const Textarea: React.FC<TextareaProps> = ({
         {...props}
         display="block"
         variant={`form.${variant}`}
-        className={errorMessage && useStyles({ outlineColor: errorColor })}
+        className={textareaClassNames}
       />
       {errorMessage && (
         <ValidationMessage>

@@ -47,6 +47,39 @@ test('renders correct HTML element', () => {
   expect(textarea instanceof HTMLTextAreaElement).toBeTruthy();
 });
 
+test('supports label prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Textarea label="test" htmlFor="myId" title="textarea" />
+    </ThemeProvider>
+  );
+  const textarea = screen.getByText(/test/);
+
+  expect(textarea instanceof HTMLLabelElement).toBeTruthy();
+});
+
+test('supports errorMessage prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Textarea errorMessage="error" title="textarea" />
+    </ThemeProvider>
+  );
+  const textarea = screen.getByText(/error/);
+
+  expect(textarea).toBeDefined();
+});
+
+test('supports required prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Textarea label="test" htmlFor="myId" required title="textarea" />
+    </ThemeProvider>
+  );
+  const textarea = screen.getByText(/test/).lastChild;
+
+  expect(textarea instanceof SVGElement).toBeTruthy();
+});
+
 test('accepts custom styles prop className', () => {
   render(
     <ThemeProvider theme={theme}>
