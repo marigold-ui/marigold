@@ -53,20 +53,6 @@ test('renders correct HTML element', () => {
   expect(select instanceof HTMLSelectElement).toBeTruthy();
 });
 
-test('variant styles cannot be overridden with CSS prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Select title="select" css={{ fontFamily: 'Oswald Regular' }}>
-        <option>1</option>
-      </Select>
-    </ThemeProvider>
-  );
-  const select = screen.getByTitle(/select/);
-
-  expect(select).not.toHaveStyle(`font-family: Oswald Regular`);
-  expect(select).toHaveStyle(`font-family: Inter`);
-});
-
 test('accepts custom styles prop className', () => {
   render(
     <ThemeProvider theme={theme}>
