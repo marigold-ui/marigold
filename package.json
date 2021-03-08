@@ -6,6 +6,7 @@
   "license": "MIT",
   "workspaces": [
     "config/*",
+    "docs",
     "packages/*",
     "themes/*"
   ],
@@ -53,7 +54,7 @@
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'`",
     "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
     "deploy-storybook": "storybook-to-ghpages",
-    "lint": "tsdx lint . --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern scripts/template --ignore-pattern packages/types/src/index.ts",
+    "lint": "tsdx lint . --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern packages/types/src/index.ts --ignore-pattern docs",
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit",
     "release": "yarn build && changeset publish"
