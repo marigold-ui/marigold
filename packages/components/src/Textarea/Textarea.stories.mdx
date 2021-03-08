@@ -9,12 +9,17 @@ import { Textarea } from '../Textarea';
 
 With the Textarea component you can add a HTML `<textarea>` element for larger text input to your form.
 The element uses always the themeSection with the name: `form` in your given theme. The variant in your section can be added with the variant prop. The default variant is `textarea`.
+If you use the label prop you have to add htmlFor. Optionally you can pass an errorMessage or the required prop.
 
 ## Properties
 
-| Property             | Type     | Default    |
-| :------------------- | :------- | :--------- |
-| `variant` (optional) | `string` | `textarea` |
+| Property                  | Type      | Default    |
+| :------------------------ | :-------- | :--------- |
+| `variant` (optional)      | `string`  | `textarea` |
+| `label` (optional)        | `string`  |            |
+| `htmlFor` (optional)      | `string`  | `textarea` |
+| `errorMessage` (optional) | `string`  |            |
+| `required` (optional)     | `boolean` |            |
 
 ## Import
 
@@ -24,11 +29,37 @@ import { Textarea } from '@marigold/components';
 
 ## Usage
 
+### basic & disabled
+
 <Canvas>
   <Story name="Textarea">
     <Textarea placeholder="Placeholder" />
   </Story>
   <Story name="Textarea disabled">
     <Textarea placeholder="Placeholder disabled" disabled />
+  </Story>
+</Canvas>
+
+### labeled & required
+
+<Canvas>
+  <Story name="Textarea label">
+    <Textarea label="Labeled" htmlFor="label" />
+  </Story>
+  <Story name="Textarea required">
+    <Textarea label="Required" htmlFor="required" required />
+  </Story>
+</Canvas>
+
+### with error
+
+<Canvas>
+  <Story name="Textarea error">
+    <Textarea
+      label="Required with error"
+      htmlFor="error"
+      required
+      errorMessage="Oh no, we have an error!"
+    />
   </Story>
 </Canvas>
