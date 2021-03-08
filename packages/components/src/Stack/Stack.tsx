@@ -4,8 +4,10 @@ import { Box } from '../Box';
 import flattenChildren from 'react-keyed-flatten-children';
 
 export type StackProps = {
+  className?: string;
   space?: ResponsiveStyleValue<number | string>;
   align?: 'left' | 'right' | 'center';
+  title?: string; // For Testing
 };
 
 export const Stack: React.FC<StackProps> = ({
