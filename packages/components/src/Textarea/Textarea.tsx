@@ -25,9 +25,9 @@ export const Textarea: React.FC<TextareaProps> = ({
   children,
   ...props
 }) => {
-  const errorClassName = useStyles({ color: 'color.red60' });
+  const errorClassName = useStyles({ color: 'red60' });
   const textareaClassNames = useStyles(
-    { outlineColor: errorMessage && 'color.red60' },
+    { outlineColor: errorMessage && 'red60' },
     className
   );
 
