@@ -1,24 +1,28 @@
 import React from 'react';
-import { useStyles, system } from '@marigold/system';
+import { useStyles } from '@marigold/system';
+import { ComponentProps } from '@marigold/types';
 import { Link } from '../Link';
 
 export type MenuItemProps = {
   variant?: string;
+} & ComponentProps<typeof Link>;
+
+export const MenuItem: React.FC<MenuItemProps> = ({
+  variant = 'menuItem',
+  className,
+  children,
+  ...props
+}) => {
+  const classNames = useStyles(
+    {
+      variant: `content.${variant}`,
+    },
+    className
+  );
+
+  return (
+    <Link {...props} variant="menu" className={classNames}>
+      {children}
+    </Link>
+  );
 };
-
-export const MenuItem = system<MenuItemProps, 'a'>(
-  ({ variant = 'menuItem', className, children, ...props }) => {
-    const classNames = useStyles(
-      {
-        variant: `content.${variant}`,
-      },
-      className
-    );
-
-    return (
-      <Link variant="menu" className={classNames} {...props}>
-        {children}
-      </Link>
-    );
-  }
-);
