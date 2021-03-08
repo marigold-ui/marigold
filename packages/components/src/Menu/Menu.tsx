@@ -1,8 +1,8 @@
 import React from 'react';
 import { useStyles, system } from '@marigold/system';
-import { Button } from '@marigold/components';
+import { Button } from '../Button';
 
-type MenuProps = {
+export type MenuProps = {
   variant?: string;
   label?: string;
   onClick: () => void;

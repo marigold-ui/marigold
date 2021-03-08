@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStyles, system } from '@marigold/system';
 
-type SvgProps = {
+export type SvgProps = {
   variant?: string;
   size?: number;
 };

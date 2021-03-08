@@ -1,23 +1,17 @@
 import React from 'react';
-import { useStyles, system } from '@marigold/system';
+import { Box } from '../Box';
 
-type ColumnProps = {
+export type ColumnProps = {
+  className?: string;
   width?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 };
 
-export const Column = system<ColumnProps, 'div'>(
-  ({ width = 12, className, children, ...props }) => {
-    const classNames = useStyles(
-      {
-        width: `${(width / 12) * 100}%`,
-      },
-      className
-    );
-
-    return (
-      <div className={classNames} {...props}>
-        {children}
-      </div>
-    );
-  }
+export const Column: React.FC<ColumnProps> = ({
+  width = 12,
+  children,
+  ...props
+}) => (
+  <Box {...props} width={`${(width / 12) * 100}%`}>
+    {children}
+  </Box>
 );
