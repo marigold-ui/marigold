@@ -3352,12 +3352,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@marigold/components@0.0.2, @marigold/components@workspace:packages/components":
+"@marigold/components@workspace:*, @marigold/components@workspace:packages/components":
   version: 0.0.0-use.local
   resolution: "@marigold/components@workspace:packages/components"
   dependencies:
-    "@marigold/system": 0.0.2
-    "@marigold/types": 0.0.2
+    "@marigold/system": "workspace:*"
+    "@marigold/types": "workspace:*"
     react-keyed-flatten-children: 1.3.0
   peerDependencies:
     react: ^16.x
@@ -3384,11 +3384,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marigold/icons@0.0.2, @marigold/icons@workspace:packages/icons":
+"@marigold/icons@workspace:*, @marigold/icons@workspace:packages/icons":
   version: 0.0.0-use.local
   resolution: "@marigold/icons@workspace:packages/icons"
   dependencies:
-    "@marigold/components": 0.0.2
+    "@marigold/components": "workspace:*"
   peerDependencies:
     react: ^16.x
   languageName: unknown
@@ -3439,7 +3439,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marigold/system@0.0.2, @marigold/system@workspace:packages/system":
+"@marigold/system@workspace:*, @marigold/system@workspace:packages/system":
   version: 0.0.0-use.local
   resolution: "@marigold/system@workspace:packages/system"
   dependencies:
@@ -3452,11 +3452,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marigold/theme-b2b@0.0.2, @marigold/theme-b2b@workspace:themes/theme-b2b":
+"@marigold/theme-b2b@workspace:*, @marigold/theme-b2b@workspace:themes/theme-b2b":
   version: 0.0.0-use.local
   resolution: "@marigold/theme-b2b@workspace:themes/theme-b2b"
   dependencies:
-    "@marigold/components": 0.0.2
+    "@marigold/components": "workspace:*"
   languageName: unknown
   linkType: soft
 
@@ -3464,7 +3464,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@marigold/theme-unicorn@workspace:themes/theme-unicorn"
   dependencies:
-    "@marigold/components": 0.0.2
+    "@marigold/components": "workspace:*"
   languageName: unknown
   linkType: soft
 
@@ -3474,7 +3474,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marigold/types@0.0.2, @marigold/types@workspace:packages/types":
+"@marigold/types@workspace:*, @marigold/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@marigold/types@workspace:packages/types"
   dependencies:
@@ -10389,11 +10389,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "docs@workspace:docs"
   dependencies:
-    "@marigold/components": 0.0.2
-    "@marigold/icons": 0.0.2
-    "@marigold/system": 0.0.2
-    "@marigold/theme-b2b": 0.0.2
-    "@marigold/types": 0.0.2
+    "@marigold/components": "workspace:*"
+    "@marigold/icons": "workspace:*"
+    "@marigold/system": "workspace:*"
+    "@marigold/theme-b2b": "workspace:*"
+    "@marigold/types": "workspace:*"
     "@mdx-js/mdx": ^1.6.22
     "@mdx-js/react": ^1.6.22
     gatsby: ^3.0.1
