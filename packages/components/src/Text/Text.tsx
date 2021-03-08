@@ -1,14 +1,15 @@
 import React from 'react';
 import { useStyles } from '@marigold/system';
 import { ComponentPropsWithRef } from '@marigold/types';
-import { Box } from '../Box';
+import { Box, BoxProps } from '../Box';
 
 export type TextProps = {
   className?: string;
   as?: 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   variant?: string;
   textColor?: string;
-} & ComponentPropsWithRef<'span'>;
+} & ComponentPropsWithRef<'span'> &
+  BoxProps;
 
 export const Text: React.FC<TextProps> = ({
   as = 'span',
