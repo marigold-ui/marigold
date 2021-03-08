@@ -5,6 +5,7 @@ import { ComponentProps } from '@marigold/types';
 export type SvgProps = {
   variant?: string;
   size?: number;
+  title?: string; // For Testing
 } & ComponentProps<'svg'>;
 
 export const Svg: React.FC<SvgProps> = ({
