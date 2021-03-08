@@ -3,3 +3,5 @@ node_modules
 coverage
 dist
 yarn-error.log
+docs/.cache
+docs/public
