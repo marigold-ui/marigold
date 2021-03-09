@@ -2,13 +2,13 @@ import React from 'react';
 import { useStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-export type SvgProps = {
+export type SVGProps = {
   variant?: string;
   size?: number;
   title?: string; // For Testing
 } & ComponentProps<'svg'>;
 
-export const Svg: React.FC<SvgProps> = ({
+export const SVG: React.FC<SVGProps> = ({
   variant = 'icon',
   size = 24,
   className,

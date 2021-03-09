@@ -20,7 +20,6 @@ export * from './Radio';
 export * from './Slider';
 export * from './Select';
 export * from './Stack';
-export * from './Svg';
 export * from './Text';
 export * from './Textarea';
 export * from './Input';
