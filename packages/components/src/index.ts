@@ -6,6 +6,7 @@ export * from './Button';
 export * from './Checkbox';
 export * from './Column';
 export * from './Columns';
+export * from './Dialog';
 export * from './Divider';
 export * from './Field';
 export * from './Heading';

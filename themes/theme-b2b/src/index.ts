@@ -309,6 +309,10 @@ const theme: BaseTheme = {
       },
     },
     text: {
+      root: {
+        ...button.root,
+        ...button.text,
+      },
       small: {
         ...button.root,
         ...button.text,
@@ -324,11 +328,6 @@ const theme: BaseTheme = {
       ...button.root,
       ...button.menu,
       ...button.small,
-    },
-  },
-  icon: {
-    icon: {
-      marginRight: 1,
     },
   },
   link: {
