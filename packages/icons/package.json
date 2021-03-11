@@ -7,7 +7,7 @@
   "module": "dist/components.esm.js",
   "typings": "dist/index.d.ts",
   "dependencies": {
-    "@marigold/components": "0.0.2"
+    "@marigold/components": "workspace:*"
   },
   "peerDependencies": {
     "react": "^16.x"
