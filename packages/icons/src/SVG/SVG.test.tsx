@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Svg } from './Svg';
+import { SVG } from './SVG';
 import { useStyles } from '@marigold/system';
 
 test('supports default fill color', () => {
   render(
-    <Svg title="svg">
+    <SVG title="svg">
       <path d="M9.9 20.113V13.8415H14" />
-    </Svg>
+    </SVG>
   );
   const svg = screen.getByTitle(/svg/);
 
@@ -16,9 +16,9 @@ test('supports default fill color', () => {
 
 test('supports default size', () => {
   render(
-    <Svg title="svg">
+    <SVG title="svg">
       <path d="M9.9 20.113V13.8415H14" />
-    </Svg>
+    </SVG>
   );
   const svg = screen.getByTitle(/svg/);
 
@@ -27,9 +27,9 @@ test('supports default size', () => {
 
 test('supports size prop', () => {
   render(
-    <Svg title="svg" size={30}>
+    <SVG title="svg" size={30}>
       <path d="M9.9 20.113V13.8415H14" />
-    </Svg>
+    </SVG>
   );
   const svg = screen.getByTitle(/svg/);
 
@@ -38,9 +38,9 @@ test('supports size prop', () => {
 
 test('supports fill prop', () => {
   render(
-    <Svg title="svg" fill="#fafafa">
+    <SVG title="svg" fill="#fafafa">
       <path d="M9.9 20.113V13.8415H14" />
-    </Svg>
+    </SVG>
   );
   const svg = screen.getByTitle(/svg/);
 
@@ -51,9 +51,9 @@ test('accepts custom styles prop className', () => {
   const TestComponent: React.FC = ({ children, ...props }) => {
     const classNames = useStyles({ margin: '8px' });
     return (
-      <Svg title="svg" className={classNames} {...props}>
+      <SVG title="svg" className={classNames} {...props}>
         <path d="M9.9 20.113V13.8415H14" />
-      </Svg>
+      </SVG>
     );
   };
 
@@ -66,9 +66,9 @@ test('accepts custom styles prop className', () => {
 
 test('renders <svg> element', () => {
   render(
-    <Svg title="svg">
+    <SVG title="svg">
       <path d="M9.9 20.113V13.8415H14" />
-    </Svg>
+    </SVG>
   );
   const svg = screen.getByTitle(/svg/);
 
