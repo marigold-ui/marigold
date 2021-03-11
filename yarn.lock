@@ -4253,7 +4253,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/react@npm:6.1.21":
+"@storybook/react@npm:6.1.21, @storybook/react@npm:^6.1.21":
   version: 6.1.21
   resolution: "@storybook/react@npm:6.1.21"
   dependencies:
@@ -17873,6 +17873,7 @@ fsevents@^1.2.7:
     "@marigold/jest-config": "*"
     "@marigold/prettier-config": "*"
     "@marigold/tsconfig": "*"
+    "@storybook/react": ^6.1.21
     "@storybook/storybook-deployer": 2.8.7
     "@testing-library/jest-dom": 5.11.9
     "@testing-library/react": 11.2.5
