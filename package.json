@@ -40,8 +40,8 @@
   },
   "scripts": {
     "start": "./node_modules/.bin/start-storybook -p 6005 -c config/storybook",
-    "watch": "workspaces-run --only-fs=\"packages/**\" --order-by-deps -- yarn watch",
-    "build": "workspaces-run --only-fs=\"packages/**\" --order-by-deps -- yarn build",
+    "watch": "workspaces-run --only-fs=\"packages/**\" --only-fs=\"themes/**\" --order-by-deps -- yarn watch",
+    "build": "workspaces-run --only-fs=\"packages/**\" --only-fs=\"themes/**\" --order-by-deps -- yarn build",
     "test": "tsdx test --config jest.config.js --coverage --coverageReporters html",
     "coverage": "tsdx test --config jest.config.js --coverage",
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'`",
