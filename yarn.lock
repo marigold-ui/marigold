@@ -4341,22 +4341,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/storybook-deployer@npm:2.8.7":
-  version: 2.8.7
-  resolution: "@storybook/storybook-deployer@npm:2.8.7"
-  dependencies:
-    git-url-parse: ^11.1.2
-    glob: ^7.1.3
-    parse-repo: ^1.0.4
-    shelljs: ^0.8.1
-    yargs: ^15.0.0
-  bin:
-    storybook-to-aws-s3: bin/storybook_to_aws_s3
-    storybook-to-ghpages: bin/storybook_to_ghpages
-  checksum: f173efe23403cf18a2c97bcad0a9e4cfd3de9c8d5538b612f03a05f8416ab74f19021103e81612102610281e2cd5c32c7bf31ca7525706f193881c06bbf20234
-  languageName: node
-  linkType: hard
-
 "@storybook/theming@npm:6.1.21, @storybook/theming@npm:^6.0.0":
   version: 6.1.21
   resolution: "@storybook/theming@npm:6.1.21"
@@ -13695,22 +13679,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"git-up@npm:^4.0.0, git-up@npm:^4.0.2":
+"git-up@npm:^4.0.2":
   version: 4.0.2
   resolution: "git-up@npm:4.0.2"
   dependencies:
     is-ssh: ^1.3.0
     parse-url: ^5.0.0
   checksum: 1ccbc336df7c0c6cc9937f9bf90739f6546a23d89bbb81b276c664ef95d0c2d3310896744107fc18b289d35950a2b15f8f695d1212a4bd402604b049d6518713
-  languageName: node
-  linkType: hard
-
-"git-url-parse@npm:^11.1.2":
-  version: 11.4.4
-  resolution: "git-url-parse@npm:11.4.4"
-  dependencies:
-    git-up: ^4.0.0
-  checksum: adf64775c530c2add666d0a93eeb1d2ebeb678588564f9c4d07f8880f1e089efc878a5c5701f31b3b105f38db1b86d6201bbcd4417c0d8eba368db1b4ac661e4
   languageName: node
   linkType: hard
 
@@ -17874,7 +17849,6 @@ fsevents@^1.2.7:
     "@marigold/prettier-config": "*"
     "@marigold/tsconfig": "*"
     "@storybook/react": ^6.1.21
-    "@storybook/storybook-deployer": 2.8.7
     "@testing-library/jest-dom": 5.11.9
     "@testing-library/react": 11.2.5
     "@testing-library/react-hooks": 5.1.0
@@ -19931,13 +19905,6 @@ fsevents@^1.2.7:
     qs: ^6.9.4
     query-string: ^6.13.8
   checksum: efc641ae5bf4794c2ae856dcce17886b95a1dc5f0447a5762d44a0a10785b53ba964c0b6fde745ecd32da36f992a8dc4a76624be9c9ff67f1f345fd396fdb4ae
-  languageName: node
-  linkType: hard
-
-"parse-repo@npm:^1.0.4":
-  version: 1.0.4
-  resolution: "parse-repo@npm:1.0.4"
-  checksum: e270c8d7930e5ffd7c98c51fd9ec128128f21aa2668eec8b0e7f5af442ddae91dba600ec76eb21780859e68b4ea1e763d4771ded83c96d202e883249630b55aa
   languageName: node
   linkType: hard
 
@@ -23365,7 +23332,7 @@ resolve@1.17.0:
   languageName: node
   linkType: hard
 
-"shelljs@npm:^0.8.1, shelljs@npm:^0.8.3, shelljs@npm:^0.8.4":
+"shelljs@npm:^0.8.3, shelljs@npm:^0.8.4":
   version: 0.8.4
   resolution: "shelljs@npm:0.8.4"
   dependencies:
@@ -27372,7 +27339,7 @@ typescript@^3.7.3:
   languageName: node
   linkType: hard
 
-"yargs@npm:^15.0.0, yargs@npm:^15.1.0, yargs@npm:^15.3.1, yargs@npm:^15.4.1":
+"yargs@npm:^15.1.0, yargs@npm:^15.3.1, yargs@npm:^15.4.1":
   version: 15.4.1
   resolution: "yargs@npm:15.4.1"
   dependencies:
