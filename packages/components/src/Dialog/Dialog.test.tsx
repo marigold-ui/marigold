@@ -5,7 +5,7 @@ import { Dialog } from './Dialog';
 
 const theme = {
   dialog: {
-    basic: {
+    wrapper: {
       alignItems: 'center',
     },
     special: {
