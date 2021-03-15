@@ -10394,6 +10394,7 @@ __metadata:
     react: ^17.0.1
     react-dom: ^17.0.1
     react-helmet: 6.1.0
+    tsconfig-paths-webpack-plugin: ^3.3.0
   languageName: unknown
   linkType: soft
 
@@ -25326,7 +25327,7 @@ resolve@1.17.0:
   languageName: node
   linkType: hard
 
-"tsconfig-paths-webpack-plugin@npm:3.3.0":
+"tsconfig-paths-webpack-plugin@npm:3.3.0, tsconfig-paths-webpack-plugin@npm:^3.3.0":
   version: 3.3.0
   resolution: "tsconfig-paths-webpack-plugin@npm:3.3.0"
   dependencies:
