@@ -8,13 +8,10 @@ const theme = {
     wrapper: {
       alignItems: 'center',
     },
-    special: {
-      alignItems: 'left',
-    },
   },
 };
 
-test('supports default variant and themeSection', () => {
+test('supports default variant', () => {
   render(
     <ThemeProvider theme={theme}>
       <Dialog title="default">Default</Dialog>
@@ -23,19 +20,6 @@ test('supports default variant and themeSection', () => {
   const dialog = screen.getByTitle(/default/);
 
   expect(dialog).toHaveStyle(`align-items: center`);
-});
-
-test('accepts other variant than default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Dialog title="dialog" variant="special">
-        special
-      </Dialog>
-    </ThemeProvider>
-  );
-  const dialog = screen.getByTitle(/dialog/);
-
-  expect(dialog).toHaveStyle(`align-items: left`);
 });
 
 test('renders correct HTML element', () => {
