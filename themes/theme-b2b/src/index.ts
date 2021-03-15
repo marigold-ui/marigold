@@ -365,6 +365,17 @@ const theme: BaseTheme = {
       color: colors.gray70,
     },
   },
+  dialog: {
+    wrapper: { display: 'block', borderRadius: '2px', pl: '32px', pb: '32px' },
+    body: { pt: '32px' },
+    onClose: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'start',
+      pt: '8px',
+      px: '8px',
+    },
+  },
   validation: {
     negative: {
       ...text.root,
