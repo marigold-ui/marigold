@@ -189,6 +189,24 @@ test('customClassName styles fourth', () => {
   expect(style.marginTop).toEqual('8px'); // apply 8px from customClassNames styles
 });
 
+test("don't apply the same reset multiple times", () => {
+  const Button = ({ className }: { className?: string }) => {
+    const classNames = useStyles({ element: 'button' }, className);
+    return (
+      <button title="button" className={classNames}>
+        Click me!
+      </button>
+    );
+  };
+  const Wrapper = () => <Button className={useStyles({ element: 'button' })} />;
+
+  const { getByTitle } = render(<Wrapper />);
+  const button = getByTitle('button');
+  const classNames = button.className.split(' ').filter(i => i.length);
+
+  expect(classNames.length).toEqual([...new Set(classNames)].length);
+});
+
 test('normalize base without element prop', () => {
   const TestComponent: React.FC<{ variant?: 'body' }> = ({
     variant = 'normal',
