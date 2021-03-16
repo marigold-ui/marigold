@@ -1,6 +1,6 @@
 import { useClassname } from './useClassname';
 
-import * as resetStyleRefs from './normalize';
+import { reset } from './reset';
 import { ElementType } from 'react';
 
 export type StylesProps = {
@@ -20,19 +20,14 @@ export const useStyles = (
    * Normalization styles looked up by html tag name. Base normalization
    * is always applied.
    */
-
-  const resetStyles = resetStyleRefs.el;
-
   // always apply base normalization styles
-  const base: { [key: string]: any } =
-    resetStyles['base' as keyof typeof resetStyleRefs.el];
-  const normalizeBase = useClassname(base);
+  const normalizeBase = reset.base;
 
   // apply element normalization styles
-  const elementObject: { [key: string]: any } =
-    resetStyles[element as keyof typeof resetStyleRefs.el];
-
-  const basedOnNormalize = useClassname(elementObject);
+  const basedOnNormalize =
+    typeof element === 'string'
+      ? (reset as { [key: string]: string })[element]
+      : undefined;
 
   /**
    * Variants are retrieved from the theme.
