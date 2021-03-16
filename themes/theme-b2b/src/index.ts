@@ -412,6 +412,13 @@ const theme: BaseTheme = {
       padding: '8px 16px 16px',
       color: colors.blue70,
     },
+    title: {
+      mb: '8px',
+      mr: '4px',
+    },
+    icon: {
+      verticalAlign: '-5px',
+    },
   },
   content: {
     images: {

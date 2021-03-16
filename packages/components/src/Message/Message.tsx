@@ -17,15 +17,7 @@ export const Message: React.FC<MessageProps> = ({
   children,
   ...props
 }) => {
-  const classNames = useStyles(
-    {
-      element: 'p',
-      variant: `messages.${variant}`,
-      display: 'inline-block',
-    },
-    className
-  );
-  const iconClassName = useStyles({ verticalAlign: '-5px' });
+  const iconClassName = useStyles({ variant: `messages.icon` });
 
   var icon = <Info className={iconClassName} />;
 
@@ -37,8 +29,13 @@ export const Message: React.FC<MessageProps> = ({
   }
 
   return (
-    <div className={classNames} {...props}>
-      <Box mb="8px" mr="4px">
+    <Box
+      display="inline-block"
+      variant={`messages.${variant}`}
+      className={className}
+      {...props}
+    >
+      <Box variant="messages.title">
         {icon}
         <Heading
           variant="h4"
@@ -49,7 +46,7 @@ export const Message: React.FC<MessageProps> = ({
           {messageTitle}
         </Heading>
       </Box>
-      <div className={useStyles({ color: 'black' })}>{children}</div>
-    </div>
+      <Box className={useStyles({ color: 'black' })}>{children}</Box>
+    </Box>
   );
 };
