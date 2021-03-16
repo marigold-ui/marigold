@@ -59,3 +59,12 @@ test('create a unique classnames', () => {
   );
   expect(first.current).not.toEqual(second.current);
 });
+
+test('handle empty styles', () => {
+  /**
+   * emotion will add a lot of `css-0` classes especially
+   * when a "variant" is not present in the theme.
+   */
+  const { result } = renderHook(() => useClassname({}));
+  expect(result.current).toMatchInlineSnapshot(`""`);
+});
