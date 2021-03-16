@@ -1,7 +1,7 @@
-import React from "react"
-import { Text, Heading } from "@marigold/components"
-import { ThemeProvider } from "@marigold/system"
-import b2bTheme from "@marigold/theme-b2b"
+import React from 'react';
+import { Text, Heading } from '@marigold/components';
+import { ThemeProvider } from '@marigold/system';
+import b2bTheme from '@marigold/theme-b2b';
 
 export default function NotFoundPage() {
   return (
@@ -9,5 +9,5 @@ export default function NotFoundPage() {
       <Heading variant="h1">404</Heading>
       <Text>oooops</Text>
     </ThemeProvider>
-  )
+  );
 }

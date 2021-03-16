@@ -1,37 +1,37 @@
 module.exports = {
-  pathPrefix: "/marigold/",
+  pathPrefix: '/marigold/',
   siteMetadata: {
-    title: "Docs for Marigold Design System",
-    siteUrl: "https://marigold-ui.github.io/marigold/",
+    title: 'Docs for Marigold Design System',
+    siteUrl: 'https://marigold-ui.github.io/marigold/',
   },
   plugins: [
-    "gatsby-plugin-sharp",
-    "gatsby-plugin-react-helmet",
-    "gatsby-plugin-sitemap",
-    "gatsby-plugin-remove-serviceworker",
+    'gatsby-plugin-sharp',
+    'gatsby-plugin-react-helmet',
+    'gatsby-plugin-sitemap',
+    'gatsby-plugin-remove-serviceworker',
     {
-      resolve: "gatsby-plugin-manifest",
+      resolve: 'gatsby-plugin-manifest',
       options: {
-        icon: "src/images/icon.png",
+        icon: 'src/images/icon.png',
       },
     },
-    "gatsby-plugin-mdx",
-    "gatsby-transformer-sharp",
+    'gatsby-plugin-mdx',
+    'gatsby-transformer-sharp',
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: 'gatsby-source-filesystem',
       options: {
-        name: "images",
-        path: "src/images/",
+        name: 'images',
+        path: 'src/images/',
       },
-      __key: "images",
+      __key: 'images',
     },
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: 'gatsby-source-filesystem',
       options: {
-        name: "pages",
-        path: "src/pages/",
+        name: 'pages',
+        path: 'src/pages/',
       },
-      __key: "pages",
+      __key: 'pages',
     },
   ],
-}
+};
