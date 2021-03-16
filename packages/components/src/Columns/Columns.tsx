@@ -39,7 +39,7 @@ export const Columns: React.FC<ColumnsProps> = ({
   }
 
   return (
-    <Box p={space} display="flex" className={className}>
+    <Box p={`${space}px`} display="flex" className={className}>
       <Box
         width={`calc(100% + ${space}px)`}
         m={`${-space / 2}px`}
