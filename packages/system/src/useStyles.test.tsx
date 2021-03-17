@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { ElementType } from 'react';
 import { renderHook } from '@testing-library/react-hooks';
+import { render, screen } from '@testing-library/react';
 import { useStyles } from './useStyles';
 import { ThemeProvider } from './useTheme';
-import { render } from '@testing-library/react';
 
 // Setup
 // ---------------
@@ -100,7 +100,6 @@ test('array of variant styles', () => {
     const classNames = useStyles({
       element: 'p',
       variant: [`text.${variant}`, `text.padding`],
-      components: 'body',
     });
     return (
       <p className={classNames} {...props}>
@@ -200,11 +199,28 @@ test("don't apply the same reset multiple times", () => {
   };
   const Wrapper = () => <Button className={useStyles({ element: 'button' })} />;
 
-  const { getByTitle } = render(<Wrapper />);
-  const button = getByTitle('button');
+  render(<Wrapper />);
+  const button = screen.getByTitle('button');
   const classNames = button.className.split(' ').filter(i => i.length);
 
+  // Test if applied classnames are unique
   expect(classNames.length).toEqual([...new Set(classNames)].length);
+});
+
+test('element resets are applied dynamically', () => {
+  const Component = ({ element }: { element?: ElementType }) => (
+    <div title="element" className={useStyles({ element })}>
+      div
+    </div>
+  );
+
+  const { rerender } = render(<Component element="input" />);
+  const inputClassName = screen.getByTitle('element').className;
+
+  rerender(<Component element="table" />);
+  const tableClassName = screen.getByTitle('element').className;
+
+  expect(inputClassName).not.toEqual(tableClassName);
 });
 
 test('normalize base without element prop', () => {
