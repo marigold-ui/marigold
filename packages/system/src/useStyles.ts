@@ -1,13 +1,12 @@
 import { ElementType } from 'react';
-
 import { reset } from './reset';
-import { CSSObject } from './types';
 import { useClassname } from './useClassname';
 
 export type StylesProps = {
   element?: ElementType;
   variant?: string | string[];
-} & Omit<CSSObject, 'element' | 'variant'>;
+  [key: string]: any;
+};
 
 /**
  * Hook that can adds base styles, reset for certain elements, variants and custom styles
@@ -41,8 +40,7 @@ export const useStyles = (
 
   /**
    * Custom styles are applied "on runtime". They are usually controlled via component
-   * props and can change between component instances. They are more or less the `css`
-   * prop of `emotion`.
+   * props and can change between component instances.
    */
   const customClassName = useClassname(styles);
 
