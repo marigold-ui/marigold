@@ -1,0 +1,64 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { useStyles } from '@marigold/system';
+import { Dialog } from './Dialog';
+import { Heading } from '../Heading/';
+import { Text } from '../Text/';
+import { Button } from '../Button/';
+
+<Meta title="Components/Content/Dialog" />
+
+# Dialog
+
+## Description
+
+Element to display a Dialog as a reaction to an event. The user style or fill the body of the dialog with content.
+
+## Properties
+
+| Property  | Type       | Default |
+| :-------- | :--------- | :------ |
+| `onClick` | `function` |         |
+
+## Import
+
+```tsx
+import { Dialog } from '@marigold/components';
+```
+
+## Usage
+
+<Canvas>
+  <Story name="basic">
+    <Dialog
+      title="Title"
+      className={useStyles({
+        background: '#f3f3f3',
+      })}
+    >
+      <Heading as="h4" variant="h4">
+        Dialog Title
+      </Heading>
+      <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
+      <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
+      <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
+    </Dialog>
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story name="button">
+    <Dialog
+      title="Title"
+      className={useStyles({
+        border: '1px solid',
+      })}
+    >
+      <Heading as="h4" variant="h4">
+        Marigold
+      </Heading>
+      <Text>Do you love the marigold design system?</Text>
+      <br />
+      <Button variant="secondary.small">Agree</Button>
+    </Dialog>
+  </Story>
+</Canvas>

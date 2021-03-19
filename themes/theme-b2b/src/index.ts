@@ -309,6 +309,10 @@ const theme: BaseTheme = {
       },
     },
     text: {
+      root: {
+        ...button.root,
+        ...button.text,
+      },
       small: {
         ...button.root,
         ...button.text,
@@ -324,11 +328,6 @@ const theme: BaseTheme = {
       ...button.root,
       ...button.menu,
       ...button.small,
-    },
-  },
-  icon: {
-    icon: {
-      marginRight: 1,
     },
   },
   link: {
@@ -364,6 +363,17 @@ const theme: BaseTheme = {
       borderWidth: '2px 2px 2px 0px',
       bg: colors.gray00,
       color: colors.gray70,
+    },
+  },
+  dialog: {
+    wrapper: { display: 'block', borderRadius: '2px', pl: '32px', pb: '32px' },
+    body: { pt: '32px' },
+    onClose: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'start',
+      pt: '8px',
+      px: '8px',
     },
   },
   validation: {
