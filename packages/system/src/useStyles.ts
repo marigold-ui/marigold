@@ -19,7 +19,7 @@ export const useStyles = (
    * Get reset styles. Base is always applied. An additional reset maybe applied
    * based on the passed element.
    *
-   * We chack the passed className if it already includes the reset styles so no
+   * We check the passed className if it already includes the reset styles so no
    * duplicates are applied.
    */
   const baseClassName = classNames.includes(reset.base) ? '' : reset.base;
