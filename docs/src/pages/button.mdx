@@ -1,0 +1,32 @@
+import { Button } from '@marigold/components';
+import Home from './index';
+
+# Button
+
+## Description
+
+With the Button component you can render a `button` element.
+The style variant and size of the button can be added with the variant prop and is composed like `variant.size`.
+
+## Properties
+
+| Property             | Type                                                                                                 | Default         |
+| :------------------- | :--------------------------------------------------------------------------------------------------- | :-------------- |
+| `variant` (optional) | `primary.small`, `primary.large`, `secondary.small`, `secondary.large`, `ghost.small`, `ghost.large` | `primary.large` |
+
+## Import
+
+```tsx
+import { Button } from '@marigold/components';
+```
+
+## Usage
+
+### Large
+
+<Button variant="primary.large">Primary</Button>
+<Button variant="secondary.large">Secondary</Button>
+<Button variant="ghost.large">Ghost</Button>
+<Button variant="text.large">Text Only</Button>
+
+export default Home;

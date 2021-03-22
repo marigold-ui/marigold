@@ -1,13 +1,19 @@
-import React from "react"
-import { Text, Heading } from "@marigold/components"
-import { ThemeProvider } from "@marigold/system"
-import b2bTheme from "@marigold/theme-b2b"
+import React from 'react';
+import { Column, Columns } from '@marigold/components';
+import { ThemeProvider } from '@marigold/system';
+import b2bTheme from '@marigold/theme-b2b';
 
-export default function Home() {
+import Navigation from '../components/Navigation';
+
+export default function Home({ children }) {
   return (
     <ThemeProvider theme={b2bTheme}>
-      <Heading variant="h1">Marigold Docs</Heading>
-      <Text>This the Marigold Docs Startpage</Text>
+      <Columns space={4}>
+        <Column width={2}>
+          <Navigation />
+        </Column>
+        <Column width={10}>{children}</Column>
+      </Columns>
     </ThemeProvider>
-  )
+  );
 }
