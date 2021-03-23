@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'gatsby-link';
 import { Text } from '@marigold/components';
 
-export default function Navigation() {
+export const Navigation: React.FC = () => {
   return (
     <div>
       <Link to="/start">
@@ -19,7 +19,9 @@ export default function Navigation() {
           <Text>Form</Text>
           <ul>
             <li>
-              <Link to="/button">Button</Link>
+              <Text>
+                <Link to="/components/button">Button</Link>
+              </Text>
             </li>
           </ul>
         </li>
@@ -32,4 +34,4 @@ export default function Navigation() {
       </ul>
     </div>
   );
-}
+};
