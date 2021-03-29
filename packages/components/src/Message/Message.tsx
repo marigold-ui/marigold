@@ -17,15 +17,12 @@ export const Message: React.FC<MessageProps> = ({
   children,
   ...props
 }) => {
-  const iconClassName = useStyles({ variant: `messages.icon` });
-
-  var icon = <Info className={iconClassName} />;
-
+  var icon = <Info />;
   if (variant === 'warning') {
-    icon = <Notification className={iconClassName} />;
+    icon = <Notification />;
   }
   if (variant === 'error') {
-    icon = <Exclamation className={iconClassName} />;
+    icon = <Exclamation />;
   }
 
   return (
@@ -35,7 +32,7 @@ export const Message: React.FC<MessageProps> = ({
       className={className}
       {...props}
     >
-      <Box variant="messages.title">
+      <Box display="flex" alignItems="center" variant="messages.title">
         {icon}
         <Heading
           variant="h4"

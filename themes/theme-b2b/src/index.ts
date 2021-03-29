@@ -426,9 +426,6 @@ const theme: BaseTheme = {
       mb: '8px',
       mr: '4px',
     },
-    icon: {
-      verticalAlign: '-5px',
-    },
   },
   content: {
     images: {
