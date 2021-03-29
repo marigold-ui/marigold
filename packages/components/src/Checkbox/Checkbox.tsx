@@ -32,7 +32,6 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   const checkboxIconStyles = useStyles(
     {
       variant: `form.${variant}`,
-      ariaHidden: 'true',
       mr: 2,
       verticalAlign: 'middle',
       ':hover': { cursor: 'pointer' },
@@ -48,9 +47,9 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     <Box display="inline-block">
       <input type="checkbox" className={checkboxStyles} {...props} />
       {props.checked ? (
-        <SquareChecked className={checkboxIconStyles} />
+        <SquareChecked aria-hidden="true" className={checkboxIconStyles} />
       ) : (
-        <SquareUnchecked className={checkboxIconStyles} />
+        <SquareUnchecked aria-hidden="true" className={checkboxIconStyles} />
       )}
     </Box>
   );
