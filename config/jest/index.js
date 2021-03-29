@@ -32,6 +32,7 @@ module.exports = (overrides = {}) => {
       '!**/themes/**',
       '!**/icons/**',
       '!**/scripts/**',
+      '!**/docs/**',
     ],
 
     // plugins
