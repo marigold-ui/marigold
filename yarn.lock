@@ -2101,7 +2101,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/babel-preset-css-prop@npm:^11.0.0":
+"@emotion/babel-preset-css-prop@npm:^11.2.0":
   version: 11.2.0
   resolution: "@emotion/babel-preset-css-prop@npm:11.2.0"
   dependencies:
@@ -3404,7 +3404,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@marigold/jest-config@workspace:config/jest"
   dependencies:
-    "@types/jest": 26.0.20
+    "@types/jest": 26.0.22
     babel-jest: 26.6.3
     find-up: 5.0.0
     jest-watch-typeahead: 0.6.1
@@ -4815,13 +4815,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:*, @types/jest@npm:26.0.20":
+"@types/jest@npm:*":
   version: 26.0.20
   resolution: "@types/jest@npm:26.0.20"
   dependencies:
     jest-diff: ^26.0.0
     pretty-format: ^26.0.0
   checksum: 221e39c7c9ce8d71ae4b2ba6abeef1a5b04f1cd96419b9fbbb65534bef4c4215b650561183073dcf47584ff1888d1f4fa7d2af2a38492b7feb9a3bfdcd24c44f
+  languageName: node
+  linkType: hard
+
+"@types/jest@npm:26.0.22":
+  version: 26.0.22
+  resolution: "@types/jest@npm:26.0.22"
+  dependencies:
+    jest-diff: ^26.0.0
+    pretty-format: ^26.0.0
+  checksum: 4c98ed058522f6cc74bcb47b8b7b104b77b2d4e42e087171f3d2d3ae5338c21f43ec26f2a186bc229c1bd72c3f776ad07faba837f0ec27f22cf94e154516c0b3
   languageName: node
   linkType: hard
 
@@ -10540,13 +10550,13 @@ __metadata:
     "@mdx-js/mdx": ^1.6.22
     "@mdx-js/react": ^1.6.22
     gatsby: ^3.0.4
-    gatsby-plugin-emotion: ^6.0.0
+    gatsby-plugin-emotion: ^6.1.0
     gatsby-plugin-manifest: ^3.0.0
-    gatsby-plugin-mdx: ^2.0.0
+    gatsby-plugin-mdx: ^2.1.0
     gatsby-plugin-react-helmet: ^4.0.0
     gatsby-plugin-remove-serviceworker: ^1.0.0
     gatsby-plugin-sharp: ^3.0.1
-    gatsby-plugin-sitemap: ^3.0.0
+    gatsby-plugin-sitemap: ^3.1.0
     gatsby-source-filesystem: ^3.1.0
     gatsby-transformer-sharp: ^3.0.0
     gh-pages: ^3.1.0
@@ -13209,17 +13219,17 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"gatsby-plugin-emotion@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "gatsby-plugin-emotion@npm:6.0.0"
+"gatsby-plugin-emotion@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "gatsby-plugin-emotion@npm:6.1.0"
   dependencies:
     "@babel/runtime": ^7.11.2
-    "@emotion/babel-preset-css-prop": ^11.0.0
+    "@emotion/babel-preset-css-prop": ^11.2.0
   peerDependencies:
     "@babel/core": ^7.11.6
     "@emotion/react": ^11.0.0
     gatsby: ^3.0.0-next.0
-  checksum: 7cd7fc52683a7b40765e8fc51cadf17897ce5c2a0816ffb9c93a089935909118bbd8f7db9e62550789dc0a0494256a21c748096c2a7c85a46940d2f2f8efc0b6
+  checksum: a280a3ea71307be405f8a336fe4cd087b8239e802081628ffd28ca4fb3d5f6aa93c33b341d4edf6a3d49539813b9670a70e2dc8fae735f14c8179a9e854abf8d
   languageName: node
   linkType: hard
 
@@ -13238,9 +13248,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"gatsby-plugin-mdx@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "gatsby-plugin-mdx@npm:2.0.0"
+"gatsby-plugin-mdx@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "gatsby-plugin-mdx@npm:2.1.0"
   dependencies:
     "@babel/core": ^7.12.3
     "@babel/generator": ^7.12.5
@@ -13257,11 +13267,11 @@ fsevents@^1.2.7:
     escape-string-regexp: ^1.0.5
     eval: ^0.1.4
     fs-extra: ^8.1.0
-    gatsby-core-utils: ^2.0.0
+    gatsby-core-utils: ^2.1.0
     gray-matter: ^4.0.2
     json5: ^2.1.3
     loader-utils: ^1.4.0
-    lodash: ^4.17.20
+    lodash: ^4.17.21
     mdast-util-to-string: ^1.1.0
     mdast-util-toc: ^3.1.0
     mime: ^2.4.6
@@ -13283,7 +13293,7 @@ fsevents@^1.2.7:
     "@mdx-js/react": ^1.0.0
     react: ^16.9.0 || ^17.0.0
     react-dom: ^16.9.0 || ^17.0.0
-  checksum: e8d14c948861a0f07f5235705f7dbe65277108067e5ca17857640c99110bcde1c22baddea290c33d46c49e9118ecd8f7161a5342238aa036df177559e6143b6c
+  checksum: c7aec9d24e521a05d8ae1bba0e9b0b1b7901e79bed9564df4d1c2a7eb11095e547545b7f4c5e1452e0d6e31bee9cc9c8959d6934e61c0ca6af66eeacac456db1
   languageName: node
   linkType: hard
 
@@ -13354,9 +13364,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"gatsby-plugin-sitemap@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "gatsby-plugin-sitemap@npm:3.0.0"
+"gatsby-plugin-sitemap@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "gatsby-plugin-sitemap@npm:3.1.0"
   dependencies:
     "@babel/runtime": ^7.12.5
     common-tags: ^1.8.0
@@ -13367,7 +13377,7 @@ fsevents@^1.2.7:
     gatsby: ^3.0.0-next.0
     react: ^16.9.0 || ^17.0.0
     react-dom: ^16.9.0 || ^17.0.0
-  checksum: 180e34cee4fe7e6714037eec39b5bc7826201d88ecd4494792d0e85995b81ffa6c377f655a72b1468ed1b7f592599bb607bf96d39bac117f1439f88b249f2b9e
+  checksum: b421bdbd5c9770deca64331d455c897bcd22dd647766c4d1e67504947feaabcc55f0f910c0fb1fa53d7a3ae0f6ba8823dd7ee25343af86bf455d005c8580565b
   languageName: node
   linkType: hard
 
@@ -17743,7 +17753,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.10, lodash@npm:^4.17.4":
+"lodash@npm:^4.17.10, lodash@npm:^4.17.21, lodash@npm:^4.17.4":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: 4983720b9abca930a4a46f18db163d7dad8dd00dbed6db0cc7b499b33b717cce69f80928b27bbb1ff2cbd3b19d251ee90669a8b5ea466072ca81c2ebe91e7468
