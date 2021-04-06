@@ -185,6 +185,33 @@ const theme: BaseTheme = {
       color: 'text',
     },
   },
+  select: {
+    default: {
+      display: 'block',
+      width: '100%',
+      padding: 3,
+      appearance: 'none',
+      fontSize: 'inherit',
+      lineHeight: 'inherit',
+      border: '2px solid',
+      borderColor: colors.gray30,
+      borderRadius: '8px',
+      color: 'inherit',
+      bg: 'transparent',
+      ':hover': {
+        cursor: 'pointer',
+      },
+      ':focus': {
+        border: '4px solid',
+        borderColor: 'primary',
+      },
+      ':disabled': {
+        bg: colors.gray10,
+        color: 'disabled',
+        cursor: 'not-allowed',
+      },
+    },
+  },
   text: {
     body: {
       ...text.root,

@@ -7,7 +7,7 @@ import { Box } from '../Box';
 export type SelectProps = { variant?: string } & ComponentProps<'select'>;
 
 export const Select: React.FC<SelectProps> = ({
-  variant = 'select',
+  variant = 'default',
   children,
   ...props
 }) => {
@@ -19,7 +19,7 @@ export const Select: React.FC<SelectProps> = ({
 
   return (
     <Box display="flex">
-      <Box as="select" variant={`form.${variant}`} {...props}>
+      <Box as="select" variant={`select.${variant}`} {...props}>
         {children}
       </Box>
       <ArrowDown className={iconStyles} />

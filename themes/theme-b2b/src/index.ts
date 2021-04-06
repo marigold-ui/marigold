@@ -185,8 +185,8 @@ const theme: BaseTheme = {
       color: 'text',
     },
   },
-  form: {
-    select: {
+  select: {
+    default: {
       display: 'block',
       width: '100%',
       padding: 2,
@@ -211,6 +211,8 @@ const theme: BaseTheme = {
         cursor: 'not-allowed',
       },
     },
+  },
+  form: {
     textarea: {
       fontFamily: 'body',
       lineHeight: '24px',

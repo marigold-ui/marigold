@@ -4,8 +4,8 @@ import { ThemeProvider } from '@marigold/system';
 import { Select } from './Select';
 
 const theme = {
-  form: {
-    select: {
+  select: {
+    default: {
       fontFamily: 'Inter',
     },
     other: {
