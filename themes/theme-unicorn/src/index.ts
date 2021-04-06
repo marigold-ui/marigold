@@ -5,7 +5,7 @@ const button = {
   root: {
     position: 'relative',
     fontFamily: 'body',
-    fontSize: 1,
+    fontSize: 'xsmall',
     fontWeight: 'body',
     border: 'none',
     borderRadius: '8px',
@@ -13,11 +13,11 @@ const button = {
   },
   large: {
     lineHeight: '46px',
-    paddingX: 5,
+    paddingX: 'xlarge',
   },
   small: {
     lineHeight: '30px',
-    paddingX: 3,
+    paddingX: 'medium',
   },
   primary: {
     color: 'background',
@@ -96,7 +96,7 @@ const button = {
 const text = {
   root: {
     fontFamily: 'body',
-    fontSize: 1,
+    fontSize: 'xsmall',
     lineHeight: 'body',
     fontWeight: 'body',
   },
@@ -107,7 +107,7 @@ const text = {
     display: 'inline-block',
     margin: '0 0 8px',
     ':last-child': {
-      marginBottom: '16px',
+      marginBottom: 'small',
     },
   },
 };
@@ -179,7 +179,7 @@ const theme: BaseTheme = {
       display: 'inline-flex',
       alignItems: 'center',
       fontFamily: 'body',
-      fontSize: 1,
+      fontSize: 'xsmall',
       fontWeight: 'body',
       borderRadius: '10px',
       border: '2px solid transparent',
@@ -253,26 +253,33 @@ const theme: BaseTheme = {
     },
   },
   dialog: {
-    wrapper: { display: 'block', borderRadius: '2px', pl: '32px', pb: '32px' },
-    body: { pt: '16px' },
+    wrapper: {
+      display: 'block',
+      borderRadius: '2px',
+      paddingLeft: 'large',
+      paddingBottom: 'large'
+    },
+    body: {
+      paddingTop: 'small'
+    },
     onClose: {
       display: 'flex',
       justifyContent: 'flex-end',
       alignItems: 'start',
-      pt: '8px',
-      px: '8px',
+      paddingTop: 'xsmall',
+      paddingX: 'xsmall',
     },
   },
   divider: {
     regular: {
-      m: 0,
-      my: 3,
+      m: 'none',
+      my: 'small',
       border: 0,
       borderBottom: '1px solid',
     },
     bold: {
-      m: 0,
-      my: 3,
+      m: 'none',
+      my: 'small',
       border: 0,
       borderBottom: '3px solid',
     },
@@ -280,7 +287,7 @@ const theme: BaseTheme = {
   field: {
     default: {
       fontFamily: 'body',
-      fontSize: 1,
+      fontSize: 'xsmall',
       color: 'text',
       fontWeight: 'body',
       lineHeight: '2rem',
@@ -316,7 +323,7 @@ const theme: BaseTheme = {
   label: {
     default: {
       fontFamily: 'body',
-      fontSize: 1,
+      fontSize: 'xsmall',
       fontWeight: 'body',
       lineHeight: '2rem',
       color: 'text',
@@ -338,9 +345,9 @@ const theme: BaseTheme = {
     menuItem: {
       display: 'block',
       fontFamily: 'body',
-      fontSize: 1,
+      fontSize: 'xsmall',
       fontWeight: 'body',
-      padding: 2,
+      padding: 'xsmall',
       bg: 'primary',
       color: 'text',
       ':hover': {
@@ -372,14 +379,14 @@ const theme: BaseTheme = {
       color: 'info',
     },
     title: {
-      mb: '16px',
+      mb: 'small',
     },
   },
   select: {
     default: {
       display: 'block',
       width: '100%',
-      padding: 3,
+      padding: 'small',
       appearance: 'none',
       fontSize: 'inherit',
       lineHeight: 'inherit',
@@ -414,45 +421,45 @@ const theme: BaseTheme = {
     h1: {
       ...text.root,
       fontWeight: 'heading',
-      fontSize: 5,
-      marginBottom: '24px',
+      fontSize: 'xlarge',
+      marginBottom: 'medium',
       '&:first-child': {
-        marginTop: 0,
+        marginTop: 'none',
       },
     },
     h2: {
       ...text.root,
       fontWeight: 'heading',
-      fontSize: 4,
-      marginTop: '32px',
-      marginBottom: '8px',
+      fontSize: 'large',
+      marginTop: 'medium',
+      marginBottom: 'xsmall',
       '&:first-child': {
-        marginTop: 0,
+        marginTop: 'none',
       },
     },
     h3: {
       ...text.root,
       fontWeight: 'heading',
-      fontSize: 3,
-      marginTop: '16px',
-      marginBottom: '8px',
+      fontSize: 'medium',
+      marginTop: 'small',
+      marginBottom: 'small',
       '&:first-child': {
-        marginTop: 0,
+        marginTop: 'none',
       },
     },
     h4: {
       ...text.root,
       fontWeight: 'heading',
-      fontSize: 2,
+      fontSize: 'small',
     },
     h5: {
       ...text.root,
       fontWeight: 'heading',
-      fontSize: 1,
+      fontSize: 'xsmall',
     },
     h6: {
       ...text.root,
-      fontSize: 1,
+      fontSize: 'xsmall',
       textTransform: 'uppoercase',
     },
   },
@@ -478,7 +485,7 @@ const theme: BaseTheme = {
   validation: {
     error: {
       ...text.root,
-      fontSize: 1,
+      fontSize: 'xsmall',
       textTransform: 'uppercase',
       color: 'error',
     },
