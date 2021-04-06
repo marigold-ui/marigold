@@ -6,12 +6,10 @@ import { Button } from '../Button';
 import { Box } from '../Box';
 
 export type DialogProps = {
-  variant?: string;
   onClose?: ComponentProps<typeof Button>['onClick'];
 } & ComponentProps<'div'>;
 
 export const Dialog: React.FC<DialogProps> = ({
-  variant = 'wrapper',
   onClose,
   children,
   className,
@@ -19,11 +17,9 @@ export const Dialog: React.FC<DialogProps> = ({
 }) => {
   return (
     <Box display="flex" width="100%">
-      <Box {...props} variant={`dialog.${variant}`} className={className}>
+      <Box {...props} variant="dialog.wrapper" className={className}>
         <Box display="flex">
-          <Box variant="dialog.body">
-            <Box>{children}</Box>
-          </Box>
+          <Box variant="dialog.body">{children}</Box>
           <Box variant="dialog.onClose">
             <Button variant="text.root" onClick={onClose}>
               <Close size={16} />
