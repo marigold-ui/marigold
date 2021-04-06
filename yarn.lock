@@ -3989,10 +3989,10 @@ __metadata:
     "@types/jest": 26.0.22
     babel-jest: 26.6.3
     find-up: 5.0.0
-    jest-watch-typeahead: 0.6.1
+    jest-watch-typeahead: 0.6.2
     merge-deep: ^3.0.3
-    react-test-renderer: 17.0.1
-    ts-jest: 26.5.3
+    react-test-renderer: 17.0.2
+    ts-jest: 26.5.4
   peerDependencies:
     jest: 25.x
     typescript: 3.8.x
@@ -5359,9 +5359,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-dom@npm:5.11.9":
-  version: 5.11.9
-  resolution: "@testing-library/jest-dom@npm:5.11.9"
+"@testing-library/jest-dom@npm:5.11.10":
+  version: 5.11.10
+  resolution: "@testing-library/jest-dom@npm:5.11.10"
   dependencies:
     "@babel/runtime": ^7.9.2
     "@types/testing-library__jest-dom": ^5.9.1
@@ -5371,13 +5371,13 @@ __metadata:
     css.escape: ^1.5.1
     lodash: ^4.17.15
     redent: ^3.0.0
-  checksum: c285c044edf42b9c4daffbeddd5489564af1c9d625f0ef3781e2e9864688239ccc2521badec9147fea66685c60b736c922e35ea69011aa577eabc156c0e1f5b6
+  checksum: 25bf4cd9f6d49c87afe758ebc43ddcf9fb2a974bbf5f6e2979ed2056162ecc0547c396e4a47b6abf9bb646de4aedfb7b6da539cbae2c4a949d903ea396defaf3
   languageName: node
   linkType: hard
 
-"@testing-library/react-hooks@npm:5.1.0":
-  version: 5.1.0
-  resolution: "@testing-library/react-hooks@npm:5.1.0"
+"@testing-library/react-hooks@npm:5.1.1":
+  version: 5.1.1
+  resolution: "@testing-library/react-hooks@npm:5.1.1"
   dependencies:
     "@babel/runtime": ^7.12.5
     "@types/react": ">=16.9.0"
@@ -5394,20 +5394,20 @@ __metadata:
       optional: true
     react-test-renderer:
       optional: true
-  checksum: 9c03fa569c52597f833fc7a8e63774fec54ac0b8ce62bf5b02c1178add36189f7ada0c923c6cd696a04184468b71a62a0b217c42498fc19764e10cc0e49df57d
+  checksum: cae917a90b8cbb8d4e738b1df0d404a0af344dc8debf1afd5b7d6b6919287373994ace87d0d82544adc86927d783a6785a6d414b2818cb69545d6f6ce5672486
   languageName: node
   linkType: hard
 
-"@testing-library/react@npm:11.2.5":
-  version: 11.2.5
-  resolution: "@testing-library/react@npm:11.2.5"
+"@testing-library/react@npm:11.2.6":
+  version: 11.2.6
+  resolution: "@testing-library/react@npm:11.2.6"
   dependencies:
     "@babel/runtime": ^7.12.5
     "@testing-library/dom": ^7.28.1
   peerDependencies:
     react: "*"
     react-dom: "*"
-  checksum: 1389b4eb110ad32ac328634846fd92570979c0cb739a3ee99eeb2278860a1910a81126612457379fc306dbd6417b4b5ff1ddd88ede3d8ebb1da3972e70877e83
+  checksum: 3ad25d7b88650b83d54990665fabac4f75ff8229773ae877c18ec7a431c17773832d4c3279cecc229815660ffc8be2c86f39de9930777b4dbc1519fb7bca63a5
   languageName: node
   linkType: hard
 
@@ -17637,9 +17637,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"jest-watch-typeahead@npm:0.6.1":
-  version: 0.6.1
-  resolution: "jest-watch-typeahead@npm:0.6.1"
+"jest-watch-typeahead@npm:0.6.2":
+  version: 0.6.2
+  resolution: "jest-watch-typeahead@npm:0.6.2"
   dependencies:
     ansi-escapes: ^4.3.1
     chalk: ^4.0.0
@@ -17650,7 +17650,7 @@ fsevents@^1.2.7:
     strip-ansi: ^6.0.0
   peerDependencies:
     jest: ^26.0.0
-  checksum: f5fc6ee9672e660f735207bfa83351aa0cdae1a167f3cf6a02737493c49e72d44263e86b9cc2dfba5047e17aea0f3c9434b292df7352db712cd16bd3923d96ea
+  checksum: 649227de8fb7fc72a0de1dca44f97a698b0818354c0c7090ca02a88a2e4fafe4364215878ea85fdf2d5b1f523cbd6bf00c6c9e2cca913c9f4549e40a8c178d3d
   languageName: node
   linkType: hard
 
@@ -18870,10 +18870,10 @@ fsevents@^1.2.7:
     "@marigold/jest-config": "*"
     "@marigold/prettier-config": "*"
     "@marigold/tsconfig": "*"
+    "@testing-library/jest-dom": 5.11.10
+    "@testing-library/react": 11.2.6
+    "@testing-library/react-hooks": 5.1.1
     "@storybook/react": ^6.2.3
-    "@testing-library/jest-dom": 5.11.9
-    "@testing-library/react": 11.2.5
-    "@testing-library/react-hooks": 5.1.0
     "@types/node": 14.14.32
     husky: 5.1.3
     prettier: 2.2.1
@@ -22888,17 +22888,17 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-test-renderer@npm:17.0.1":
-  version: 17.0.1
-  resolution: "react-test-renderer@npm:17.0.1"
+"react-test-renderer@npm:17.0.2":
+  version: 17.0.2
+  resolution: "react-test-renderer@npm:17.0.2"
   dependencies:
     object-assign: ^4.1.1
-    react-is: ^17.0.1
+    react-is: ^17.0.2
     react-shallow-renderer: ^16.13.1
-    scheduler: ^0.20.1
+    scheduler: ^0.20.2
   peerDependencies:
-    react: 17.0.1
-  checksum: 6ec269430beea4356180d90868a9959399781a03ae8de6a29f2edc29d6ca41432653d4103991467ebcc47be5bd2d9197789411e913da66369c2aa2f13311105f
+    react: 17.0.2
+  checksum: 9e79031ad20f9c20941aec1eda32d39eb558e9130740013e5a7b53367cf0eb8f7505c8034fec7da47cdcd80b254f20f1311c250bb586323bec7fbf7d97a90a1e
   languageName: node
   linkType: hard
 
@@ -24098,14 +24098,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"schema-utils@npm:2.7.0":
-  version: 2.7.0
-  resolution: "schema-utils@npm:2.7.0"
+"scheduler@npm:^0.20.2":
+  version: 0.20.2
+  resolution: "scheduler@npm:0.20.2"
   dependencies:
-    "@types/json-schema": ^7.0.4
-    ajv: ^6.12.2
-    ajv-keywords: ^3.4.1
-  checksum: 5d3e7c9e532712bbe0b7ba2f0bdbebc88ca3066c00ceb89877667c3c7b7ea5ee65e0ff7ffbf5164ebda43b0726166d4d39b382e91e9554b7ad2f6b06e77f947d
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+  checksum: 2ba121e53e8a438394598612ec9a8f465b39157042f912d2dd5956af643e0d45ec6937ae4eeb0a807d1945b209515263aed12fc3bca95c7a027ec2a54e76b399
   languageName: node
   linkType: hard
 
@@ -26425,9 +26424,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:26.5.3":
-  version: 26.5.3
-  resolution: "ts-jest@npm:26.5.3"
+"ts-jest@npm:26.5.4":
+  version: 26.5.4
+  resolution: "ts-jest@npm:26.5.4"
   dependencies:
     bs-logger: 0.x
     buffer-from: 1.x
@@ -26444,7 +26443,7 @@ resolve@^2.0.0-next.3:
     typescript: ">=3.8 <5.0"
   bin:
     ts-jest: cli.js
-  checksum: 6f429720812687c60b58464e40452687f8dfd958c7cbaf80c36b5af67d5c90b7a313bad05aa385a7f703b0607163f2e879ed719ea12334868d849175414111e7
+  checksum: 8e5856b7cb990ff4cbc9577e4ec2a1135da9747e41dbf128e03ffa631dd0fdce402780a87318d28114174faa80ccdd0875b2c312b86c07a4537531c517f79101
   languageName: node
   linkType: hard
 
