@@ -75,9 +75,9 @@ const button = {
       cursor: 'pointer',
     },
     ':disabled': {
-      color: colors.gray30,
+      color: 'disabled',
       bg: colors.gray00,
-      outlineColor: colors.gray30,
+      outlineColor: 'disabled',
       cursor: 'not-allowed',
     },
   },
@@ -90,7 +90,7 @@ const button = {
       cursor: 'pointer',
     },
     ':disabled': {
-      color: colors.gray30,
+      color: 'disabled',
       bg: colors.gray00,
       cursor: 'not-allowed',
       outline: 'none',
@@ -135,7 +135,11 @@ const theme: BaseTheme = {
     background: colors.gray10,
     primary: colors.orange60,
     secondary: colors.gray70,
-    muted: colors.gray50,
+    disabled: colors.gray30,
+    error: colors.red60,
+    warning: colors.orange60,
+    info: colors.blue70,
+    success: colors.green70,
   },
   form: {
     checkbox: {
@@ -195,7 +199,7 @@ const theme: BaseTheme = {
       },
       ':disabled': {
         bg: colors.gray10,
-        color: colors.gray30,
+        color: 'disabled',
         cursor: 'not-allowed',
       },
     },
@@ -345,24 +349,18 @@ const theme: BaseTheme = {
   alerts: {
     error: {
       borderStyle: 'solid',
-      borderColor: colors.red60,
+      borderColor: 'error',
       borderWidth: '2px 2px 2px 0px',
-      bg: colors.gray00,
-      color: colors.gray70,
     },
     warning: {
       borderStyle: 'solid',
-      borderColor: colors.orange60,
+      borderColor: 'warning',
       borderWidth: '2px 2px 2px 0px',
-      bg: colors.gray00,
-      color: colors.gray70,
     },
     success: {
       borderStyle: 'solid',
-      borderColor: colors.green70,
+      borderColor: 'success',
       borderWidth: '2px 2px 2px 0px',
-      bg: colors.gray00,
-      color: colors.gray70,
     },
   },
   dialog: {
@@ -377,7 +375,7 @@ const theme: BaseTheme = {
     },
   },
   validation: {
-    negative: {
+    error: {
       ...text.root,
       fontSize: 0,
       color: colors.red60,
@@ -400,27 +398,24 @@ const theme: BaseTheme = {
   messages: {
     warning: {
       borderStyle: 'solid',
-      borderColor: colors.orange60,
+      borderColor: 'warning',
       borderWidth: '2px 2px 2px 16px',
-      bg: colors.gray00,
       padding: '8px 16px 16px',
-      color: colors.orange60,
+      color: 'warning',
     },
     error: {
       borderStyle: 'solid',
-      borderColor: colors.red60,
+      borderColor: 'error',
       borderWidth: '2px 2px 2px 16px',
-      bg: colors.gray00,
       padding: '8px 16px 16px',
-      color: colors.red60,
+      color: 'error',
     },
     info: {
       borderStyle: 'solid',
-      borderColor: colors.blue70,
+      borderColor: 'info',
       borderWidth: '2px 2px 2px 16px',
-      bg: colors.gray00,
       padding: '8px 16px 16px',
-      color: colors.blue70,
+      color: 'info',
     },
     title: {
       mb: '8px',

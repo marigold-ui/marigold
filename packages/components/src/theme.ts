@@ -22,7 +22,11 @@ export type BaseTheme = {
     background: string;
     primary: string;
     secondary: string;
-    muted: string;
+    disabled: string;
+    error: string;
+    warning: string;
+    info: string;
+    success: string;
     [key: string]: string;
   };
   [key: string]: CSSObject;

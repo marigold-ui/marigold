@@ -88,9 +88,13 @@ const theme: BaseTheme = {
     ...colors,
     text: '#070708',
     background: '#fdfcfd',
-    primary: '#b30077',
-    secondary: '#ffdaf3',
-    muted: '#e9e7eb',
+    primary: '#c9b1ff',
+    secondary: '#ffcaf2',
+    disabled: '#e9e7eb',
+    error: '#ffb2b1',
+    warning: '#fff3ad',
+    info: '#a2edff',
+    success: '#bcffbc',
   },
   text: {
     body: {
