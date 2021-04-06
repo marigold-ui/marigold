@@ -114,12 +114,28 @@ const text = {
 
 const theme: BaseTheme = {
   breakpoints: [768, 1200],
-  space: [0, 4, 8, 16, 24, 32, 40, 48, 56, 64, 88],
+  space: {
+    none: 0,
+    xxsmall: 3,
+    xsmall: 12,
+    small: 18,
+    medium: 24,
+    large: 34,
+    xlarge: 42,
+    xxlarge: 64,
+  },
   fonts: {
     body: 'Arial',
     heading: 'Roboto',
   },
-  fontSizes: ['0.66rem', '1rem', '1.33rem', '1.66rem', '2rem', '2.33rem'],
+  fontSizes: {
+    xxsmall: '0.66rem',
+    xsmall: '1rem',
+    small: '1.33rem',
+    medium: '1.66rem',
+    large: '2rem',
+    xlarge: '2.33rem',
+  },
   fontWeights: {
     body: 300,
     heading: 800,

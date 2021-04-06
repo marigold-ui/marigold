@@ -114,12 +114,28 @@ const text = {
 
 const theme: BaseTheme = {
   breakpoints: [768, 1200],
-  space: [0, 4, 8, 16, 24, 32, 40, 48, 56, 64, 88],
+  space: {
+    none: 0,
+    xxsmall: 4,
+    xsmall: 8,
+    small: 16,
+    medium: 24,
+    large: 32,
+    xlarge: 40,
+    xxlarge: 48
+  },
   fonts: {
     body: 'Inter',
     heading: 'Inter Black',
   },
-  fontSizes: ['0.875rem', '1rem', '1.125rem', '1.25rem', '1.5rem', '2rem'],
+  fontSizes: {
+    xxsmall: '0.875rem',
+    xsmall: '1rem',
+    small: '1.125rem',
+    medium: '1.25rem',
+    large: '1.5rem',
+    xlarge: '2rem',
+  },
   fontWeights: {
     body: 400,
     heading: 900,
