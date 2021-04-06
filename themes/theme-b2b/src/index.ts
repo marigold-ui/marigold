@@ -419,7 +419,6 @@ const theme: BaseTheme = {
     },
     title: {
       mb: '8px',
-      mr: '4px',
     },
   },
   content: {
