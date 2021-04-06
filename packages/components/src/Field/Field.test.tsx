@@ -5,8 +5,8 @@ import { Field } from './Field';
 import { useStyles } from '@marigold/system';
 
 const theme = {
-  form: {
-    field: {
+  field: {
+    default: {
       padding: '4px',
     },
     inputField: {

@@ -167,14 +167,16 @@ const theme: BaseTheme = {
       },
     },
   },
-  form: {
-    field: {
+  field: {
+    default: {
       fontFamily: 'body',
       fontSize: 0,
       color: 'text',
       fontWeight: 'body',
       lineHeight: '1.5rem',
     },
+  },
+  form: {
     label: {
       fontFamily: 'body',
       fontSize: 0,

@@ -167,6 +167,15 @@ const theme: BaseTheme = {
       },
     },
   },
+  field: {
+    default: {
+      fontFamily: 'body',
+      fontSize: 1,
+      color: 'text',
+      fontWeight: 'body',
+      lineHeight: '2rem',
+    },
+  },
   text: {
     body: {
       ...text.root,
