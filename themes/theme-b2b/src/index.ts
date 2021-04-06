@@ -24,7 +24,7 @@ const button = {
     position: 'relative',
     fontFamily: 'body',
     fontSize: 1,
-    fontWeight: 400,
+    fontWeight: 'body',
     border: 'none',
     borderRadius: '2px',
     display: 'inline-flex',
@@ -232,7 +232,7 @@ const theme: BaseTheme = {
     },
     h1: {
       ...text.root,
-      fontWeight: 900,
+      fontWeight: 'heading',
       fontSize: 5,
       marginBottom: '24px',
       '&:first-child': {
@@ -241,7 +241,7 @@ const theme: BaseTheme = {
     },
     h2: {
       ...text.root,
-      fontWeight: 900,
+      fontWeight: 'heading',
       fontSize: 4,
       marginTop: '32px',
       marginBottom: '8px',
@@ -251,7 +251,7 @@ const theme: BaseTheme = {
     },
     h3: {
       ...text.root,
-      fontWeight: 900,
+      fontWeight: 'heading',
       fontSize: 3,
       marginTop: '16px',
       marginBottom: '8px',
@@ -261,12 +261,12 @@ const theme: BaseTheme = {
     },
     h4: {
       ...text.root,
-      fontWeight: 900,
+      fontWeight: 'heading',
       fontSize: 2,
     },
     h5: {
       ...text.root,
-      fontWeight: 900,
+      fontWeight: 'heading',
       fontSize: 1,
     },
     h6: {
