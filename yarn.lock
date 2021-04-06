@@ -2215,6 +2215,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emotion/react@npm:^11.1.1":
+  version: 11.1.5
+  resolution: "@emotion/react@npm:11.1.5"
+  dependencies:
+    "@babel/runtime": ^7.7.2
+    "@emotion/cache": ^11.1.3
+    "@emotion/serialize": ^1.0.0
+    "@emotion/sheet": ^1.0.1
+    "@emotion/utils": ^1.0.0
+    "@emotion/weak-memoize": ^0.2.5
+    hoist-non-react-statics: ^3.3.1
+  peerDependencies:
+    "@babel/core": ^7.0.0
+    react: ">=16.8.0"
+  peerDependenciesMeta:
+    "@babel/core":
+      optional: true
+    "@types/react":
+      optional: true
+  checksum: 4e78f694dfffb83e9c2b14458b4a963c5befa0e7533b2d56b549b53a793adf0c617efcea2161079046b023b73cd8769e836906b1e2e0af33d4d5e6ce7af3d565
+  languageName: node
+  linkType: hard
+
 "@emotion/serialize@npm:^0.11.15, @emotion/serialize@npm:^0.11.16":
   version: 0.11.16
   resolution: "@emotion/serialize@npm:0.11.16"
@@ -2248,7 +2271,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/sheet@npm:^1.0.0":
+"@emotion/sheet@npm:^1.0.0, @emotion/sheet@npm:^1.0.1":
   version: 1.0.1
   resolution: "@emotion/sheet@npm:1.0.1"
   checksum: 59a52b6d546d92db2f44a1e46659fa8b7e11545c20270cdf61bc9ddd24a774d148e873dc355f85025cd11912df4945794ca9a266799fdaf0c4c815ac83cda456
@@ -3445,7 +3468,7 @@ __metadata:
   resolution: "@marigold/system@workspace:packages/system"
   dependencies:
     "@emotion/css": 11.1.3
-    "@theme-ui/css": 0.4.0-rc.13
+    "@theme-ui/css": 0.6.2
     csstype: 3.0.7
   peerDependencies:
     react: ^16.x
@@ -4492,12 +4515,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@theme-ui/css@npm:0.4.0-rc.13":
-  version: 0.4.0-rc.13
-  resolution: "@theme-ui/css@npm:0.4.0-rc.13"
+"@theme-ui/css@npm:0.6.2":
+  version: 0.6.2
+  resolution: "@theme-ui/css@npm:0.6.2"
   dependencies:
-    csstype: ^2.5.7
-  checksum: 6d6f4b11e995303e7263a39a7bdfc84bf461cd64add56f2bd469763a74684a9cb20fea8253ab4c7d47bf637c830d1022b62b544178fecef41e84e3369f4ce458
+    "@emotion/react": ^11.1.1
+    csstype: ^3.0.5
+  checksum: 5341739184da13acd3e65edf40d9a81a6c7171e456466f167477490282788687c5aa2163aa075186d07b1fa78d7087ec80032586c8a8efaf0113d7f2ebee9d7f
   languageName: node
   linkType: hard
 
@@ -9870,7 +9894,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csstype@npm:3.0.7, csstype@npm:^3.0.2":
+"csstype@npm:3.0.7, csstype@npm:^3.0.2, csstype@npm:^3.0.5":
   version: 3.0.7
   resolution: "csstype@npm:3.0.7"
   checksum: 76d542d719cd6bca7c491e6425a28873f76b0f4cf602b626a9fee105806446be4fab2191c5d18a045aea412bb3d5dcb5cab9414328080c672671433b786746f5
@@ -14742,7 +14766,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.3.0":
+"hoist-non-react-statics@npm:^3.3.0, hoist-non-react-statics@npm:^3.3.1":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
   dependencies:

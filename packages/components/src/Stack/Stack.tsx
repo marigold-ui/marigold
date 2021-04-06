@@ -34,7 +34,7 @@ export const Stack: React.FC<StackProps> = ({
           flexDirection={flexDirection}
           alignItems={alignItems}
           pt={space}
-          mt={index === 0 ? -space : 0}
+          mt={index === 0 ? -space! : 0}
         >
           {child}
         </Box>
