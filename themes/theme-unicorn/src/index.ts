@@ -176,6 +176,15 @@ const theme: BaseTheme = {
       lineHeight: '2rem',
     },
   },
+  label: {
+    default: {
+      fontFamily: 'body',
+      fontSize: 1,
+      fontWeight: 'body',
+      lineHeight: '2rem',
+      color: 'text',
+    },
+  },
   text: {
     body: {
       ...text.root,

@@ -176,14 +176,16 @@ const theme: BaseTheme = {
       lineHeight: '1.5rem',
     },
   },
-  form: {
-    label: {
+  label: {
+    default: {
       fontFamily: 'body',
       fontSize: 0,
       fontWeight: 'body',
       lineHeight: '1.5rem',
       color: 'text',
     },
+  },
+  form: {
     select: {
       display: 'block',
       width: '100%',
