@@ -212,8 +212,8 @@ const theme: BaseTheme = {
       },
     },
   },
-  form: {
-    textarea: {
+  textarea: {
+    default: {
       fontFamily: 'body',
       lineHeight: '24px',
       padding: '4px 8px',

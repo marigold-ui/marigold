@@ -212,6 +212,25 @@ const theme: BaseTheme = {
       },
     },
   },
+  textarea: {
+    default: {
+      fontFamily: 'body',
+      lineHeight: '24px',
+      padding: '4px 8px',
+      color: 'text',
+      border: 0,
+      borderRadius: '8px',
+      outline: '2px solid',
+      ':focus': {
+        outline: '4px solid',
+        outlineColor: 'primary',
+      },
+      ':disabled': {
+        bg: colors.gray20,
+        color: colors.gray40,
+      },
+    },
+  },
   text: {
     body: {
       ...text.root,
