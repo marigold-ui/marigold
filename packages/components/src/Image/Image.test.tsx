@@ -4,8 +4,8 @@ import { ThemeProvider } from '@marigold/system';
 import { Image } from './Image';
 
 const theme = {
-  content: {
-    images: {
+  images: {
+    fullWidth: {
       alignItems: 'center',
     },
     logos: {

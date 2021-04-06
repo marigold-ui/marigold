@@ -421,11 +421,13 @@ const theme: BaseTheme = {
       mb: '8px',
     },
   },
-  content: {
-    images: {
+  images: {
+    fullWidth: {
       maxWidth: '100%',
       height: 'auto',
     },
+  },
+  content: {
     badge: {
       display: 'inline-flex',
       alignItems: 'center',

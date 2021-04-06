@@ -8,6 +8,6 @@ export type ImageProps = {
 } & ComponentProps<'img'>;
 
 export const Image: React.FC<ImageProps> = ({
-  variant = 'images',
+  variant = 'fullWidth',
   ...props
-}) => <Box {...props} as="img" variant={`content.${variant}`} />;
+}) => <Box {...props} as="img" variant={`images.${variant}`} />;
