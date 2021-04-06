@@ -146,6 +146,27 @@ const theme: BaseTheme = {
       color: 'primary',
     },
   },
+  input: {
+    default: {
+      display: 'block',
+      fontFamily: 'body',
+      color: 'text',
+      border: 0,
+      outline: '1px solid',
+      outlineColor: colors.gray40,
+      padding: '0 12px',
+      lineHeight: '32px',
+      ':focus': {
+        outline: '2px solid',
+        outlineColor: 'primary',
+      },
+      ':disabled': {
+        bg: colors.gray20,
+        color: colors.gray40,
+        cursor: 'not-allowed',
+      },
+    },
+  },
   text: {
     body: {
       ...text.root,

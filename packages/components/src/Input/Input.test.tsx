@@ -4,8 +4,8 @@ import { ThemeProvider } from '@marigold/system';
 import { Input } from './Input';
 
 const theme = {
-  form: {
-    input: {
+  input: {
+    default: {
       fontFamily: 'Inter',
     },
     input2: {

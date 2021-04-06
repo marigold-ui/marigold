@@ -146,8 +146,8 @@ const theme: BaseTheme = {
       color: colors.gray70,
     },
   },
-  form: {
-    input: {
+  input: {
+    default: {
       display: 'block',
       fontFamily: 'body',
       color: 'text',
@@ -166,6 +166,8 @@ const theme: BaseTheme = {
         cursor: 'not-allowed',
       },
     },
+  },
+  form: {
     field: {
       fontFamily: 'body',
       fontSize: 0,
