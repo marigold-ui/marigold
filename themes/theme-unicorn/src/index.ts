@@ -24,8 +24,10 @@ const button = {
     position: 'relative',
     fontFamily: 'body',
     fontSize: 1,
-    fontWeight: 400,
-    borderRadius: '2px',
+    fontWeight: 'body',
+    border: 'none',
+    borderRadius: '8px',
+    display: 'inline-flex',
   },
   large: {
     lineHeight: '46px',
@@ -38,32 +40,75 @@ const button = {
   primary: {
     color: 'background',
     bg: 'primary',
+    ':hover': {
+      color: 'background',
+      bg: colors.orange40,
+      cursor: 'pointer',
+    },
+    ':disabled': {
+      color: colors.gray40,
+      bg: colors.gray20,
+      cursor: 'not-allowed',
+    },
   },
   secondary: {
     color: 'background',
     bg: 'secondary',
-  },
-  disabled: {
-    color: '#cccccc',
-    bg: '#f3f3f3',
+    ':hover': {
+      color: 'background',
+      bg: colors.gray60,
+      cursor: 'pointer',
+    },
+    ':disabled': {
+      color: colors.gray40,
+      bg: colors.gray20,
+      cursor: 'not-allowed',
+    },
   },
   ghost: {
     color: 'secondary',
+    border: '1px solid',
+    outlineColor: colors.gray70,
+    ':hover': {
+      color: 'secondary',
+      bg: colors.gray30,
+      cursor: 'pointer',
+    },
+    ':disabled': {
+      color: 'disabled',
+      bg: colors.gray00,
+      outlineColor: 'disabled',
+      cursor: 'not-allowed',
+    },
   },
-  ghostDisabled: {
-    color: '#e3e3e3',
-  },
-  primaryHovered: {
-    color: 'background',
-    bg: '#d97fbb',
-  },
-  secondaryHovered: {
-    color: 'background',
-    bg: 'secondary',
-  },
-  ghostHovered: {
+  text: {
     color: 'secondary',
-    border: '1px solid #4b4b4b',
+    ':hover': {
+      color: 'secondary',
+      outlineColor: colors.gray70,
+      bg: colors.gray30,
+      cursor: 'pointer',
+    },
+    ':disabled': {
+      color: 'disabled',
+      bg: colors.gray00,
+      cursor: 'not-allowed',
+      outline: 'none',
+    },
+  },
+  menu: {
+    color: 'secondary',
+    bg: 'background',
+    ':hover': {
+      color: 'background',
+      bg: colors.gray60,
+      cursor: 'pointer',
+    },
+    ':disabled': {
+      color: colors.gray40,
+      bg: colors.gray20,
+      cursor: 'not-allowed',
+    },
   },
 };
 
@@ -72,9 +117,9 @@ const theme: BaseTheme = {
   space: [0, 4, 8, 16, 24, 32, 40, 48, 56, 64, 88],
   fonts: {
     body: 'Arial',
-    heading: 'Inter Black',
+    heading: 'Roboto',
   },
-  fontSizes: ['0.875rem', '1rem', '1.125rem', '1.25rem', '1.5rem', '2rem'],
+  fontSizes: ['0.66rem', '1rem', '1.33rem', '1.66rem', '2rem', '2.33rem'],
   fontWeights: {
     body: 300,
     heading: 800,
@@ -105,10 +150,49 @@ const theme: BaseTheme = {
       ...text.root,
       ...text.p,
     },
+    h1: {
+      ...text.root,
+      fontWeight: 'heading',
+      fontSize: 5,
+      marginBottom: '24px',
+      '&:first-child': {
+        marginTop: 0,
+      },
+    },
+    h2: {
+      ...text.root,
+      fontWeight: 'heading',
+      fontSize: 4,
+      marginTop: '32px',
+      marginBottom: '8px',
+      '&:first-child': {
+        marginTop: 0,
+      },
+    },
+    h3: {
+      ...text.root,
+      fontWeight: 'heading',
+      fontSize: 3,
+      marginTop: '16px',
+      marginBottom: '8px',
+      '&:first-child': {
+        marginTop: 0,
+      },
+    },
     h4: {
       ...text.root,
-      fontWeight: 900,
+      fontWeight: 'heading',
       fontSize: 2,
+    },
+    h5: {
+      ...text.root,
+      fontWeight: 'heading',
+      fontSize: 1,
+    },
+    h6: {
+      ...text.root,
+      fontSize: 1,
+      textTransform: 'uppoercase',
     },
   },
   button: {
@@ -136,18 +220,6 @@ const theme: BaseTheme = {
         ...button.large,
       },
     },
-    disabled: {
-      small: {
-        ...button.root,
-        ...button.disabled,
-        ...button.small,
-      },
-      large: {
-        ...button.root,
-        ...button.disabled,
-        ...button.large,
-      },
-    },
     ghost: {
       small: {
         ...button.root,
@@ -160,67 +232,147 @@ const theme: BaseTheme = {
         ...button.large,
       },
     },
-    ghostDisabled: {
+    text: {
+      root: {
+        ...button.root,
+        ...button.text,
+      },
       small: {
         ...button.root,
-        ...button.ghostDisabled,
+        ...button.text,
         ...button.small,
       },
       large: {
         ...button.root,
-        ...button.ghostDisabled,
+        ...button.text,
         ...button.large,
       },
     },
-    primaryHovered: {
-      large: {
-        ...button.root,
-        ...button.primaryHovered,
-        ...button.large,
-      },
-    },
-    secondaryHovered: {
-      large: {
-        ...button.root,
-        ...button.secondaryHovered,
-        ...button.large,
-      },
-    },
-    ghostHovered: {
-      large: {
-        ...button.root,
-        ...button.ghostHovered,
-        ...button.large,
-      },
+    menu: {
+      ...button.root,
+      ...button.menu,
+      ...button.small,
     },
   },
-  messages: {
-    info: {
-      borderStyle: 'solid',
-      borderColor: colors.blue70,
-      borderWidth: '2px 2px 2px 16px',
-      bg: colors.gray00,
-      padding: '8px 16px 16px',
-      color: colors.blue70,
+  link: {
+    normal: {
+      color: 'primary',
+      ':hover': {
+        textDecoration: 'none',
+      },
     },
+    menu: {
+      color: 'text',
+      textDecoration: 'none',
+    },
+  },
+  alerts: {
     error: {
       borderStyle: 'solid',
-      borderColor: colors.red60,
-      borderWidth: '2px 2px 2px 16px',
-      bg: colors.gray00,
-      padding: '8px 16px 16px',
-      color: colors.red60,
+      borderColor: 'error',
+      borderWidth: '3px 3px 3px 0px',
     },
     warning: {
       borderStyle: 'solid',
-      borderColor: colors.orange60,
-      borderWidth: '2px 2px 2px 16px',
-      bg: colors.gray00,
-      padding: '8px 16px 16px',
-      color: colors.orange60,
+      borderColor: 'warning',
+      borderWidth: '3px 3px 3px 0px',
+    },
+    success: {
+      borderStyle: 'solid',
+      borderColor: 'success',
+      borderWidth: '3px 3px 3px 0px',
     },
   },
-  content: {},
+  dialog: {
+    wrapper: { display: 'block', borderRadius: '2px', pl: '32px', pb: '32px' },
+    body: { pt: '16px' },
+    onClose: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'start',
+      pt: '8px',
+      px: '8px',
+    },
+  },
+  validation: {
+    error: {
+      ...text.root,
+      fontSize: 1,
+      textTransform: 'uppercase',
+      color: 'error',
+    },
+  },
+  divider: {
+    regular: {
+      m: 0,
+      my: 3,
+      border: 0,
+      borderBottom: '1px solid',
+    },
+    bold: {
+      m: 0,
+      my: 3,
+      border: 0,
+      borderBottom: '3px solid',
+    },
+  },
+  messages: {
+    warning: {
+      borderStyle: 'solid',
+      borderColor: 'warning',
+      borderWidth: '2px 2px 2px 16px',
+      padding: '8px 16px 16px',
+      color: 'warning',
+    },
+    error: {
+      borderStyle: 'solid',
+      borderColor: 'error',
+      borderWidth: '2px 2px 2px 16px',
+      padding: '8px 16px 16px',
+      color: 'error',
+    },
+    info: {
+      borderStyle: 'solid',
+      borderColor: 'info',
+      borderWidth: '2px 2px 2px 16px',
+      padding: '8px 16px 16px',
+      color: 'info',
+    },
+    title: {
+      mb: '16px',
+    },
+  },
+  content: {
+    images: {
+      maxWidth: '100%',
+      height: 'auto',
+    },
+    badge: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      fontFamily: 'body',
+      fontSize: 1,
+      fontWeight: 'body',
+      borderRadius: '10px',
+      border: '2px solid transparent',
+      whiteSpace: 'nowrap',
+      padding: '0.25rem 0.75rem',
+      mx: '0.5rem',
+    },
+    menuItem: {
+      display: 'block',
+      fontFamily: 'body',
+      fontSize: 1,
+      fontWeight: 'body',
+      padding: 2,
+      bg: 'primary',
+      color: 'text',
+      ':hover': {
+        bg: 'secondary',
+        cursor: 'pointer',
+      },
+    },
+  },
 };
 
 export default theme;

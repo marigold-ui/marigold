@@ -378,7 +378,7 @@ const theme: BaseTheme = {
     error: {
       ...text.root,
       fontSize: 0,
-      color: colors.red60,
+      color: 'error',
     },
   },
   divider: {
