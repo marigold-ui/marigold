@@ -362,7 +362,7 @@ const theme: BaseTheme = {
       mx: '0.5rem',
     },
   },
-  content: {
+  menu: {
     menuItem: {
       display: 'block',
       fontFamily: 'body',
