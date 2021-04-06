@@ -141,10 +141,12 @@ const theme: BaseTheme = {
     info: colors.blue70,
     success: colors.green70,
   },
-  form: {
-    checkbox: {
+  checkbox: {
+    default: {
       color: colors.gray70,
     },
+  },
+  form: {
     input: {
       display: 'block',
       fontFamily: 'body',

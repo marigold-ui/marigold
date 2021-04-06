@@ -141,6 +141,11 @@ const theme: BaseTheme = {
     info: '#a2edff',
     success: '#bcffbc',
   },
+  checkbox: {
+    default: {
+      color: 'primary',
+    },
+  },
   text: {
     body: {
       ...text.root,
