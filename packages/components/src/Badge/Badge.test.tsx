@@ -4,8 +4,8 @@ import { useStyles, ThemeProvider } from '@marigold/system';
 import { Badge } from './Badge';
 
 const theme = {
-  content: {
-    badge: {
+  badge: {
+    default: {
       borderRadius: '8px',
     },
     fatBadge: {

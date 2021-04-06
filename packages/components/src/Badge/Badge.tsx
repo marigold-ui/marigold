@@ -10,7 +10,7 @@ export type BadgeProps = {
 } & ComponentProps<'div'>;
 
 export const Badge: React.FC<BadgeProps> = ({
-  variant = 'badge',
+  variant = 'default',
   bgColor = 'inherit',
   borderColor = 'transparent',
   children,
@@ -19,7 +19,7 @@ export const Badge: React.FC<BadgeProps> = ({
   <Box
     {...props}
     className={useStyles({ bg: bgColor, borderColor: borderColor })}
-    variant={`content.${variant}`}
+    variant={`badge.${variant}`}
   >
     {children}
   </Box>
