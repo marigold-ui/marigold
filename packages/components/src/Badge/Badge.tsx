@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentProps } from '@marigold/types';
 import { Box } from '../Box';
-import { useStyles } from 'packages/system/src/useStyles';
+import { useStyles } from '@marigold/system';
 
 export type BadgeProps = {
   variant?: string;
@@ -17,9 +17,9 @@ export const Badge: React.FC<BadgeProps> = ({
   ...props
 }) => (
   <Box
-    {...props}
     className={useStyles({ bg: bgColor, borderColor: borderColor })}
     variant={`badge.${variant}`}
+    {...props}
   >
     {children}
   </Box>
