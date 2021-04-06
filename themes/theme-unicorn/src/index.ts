@@ -1,24 +1,6 @@
 import { BaseTheme } from '@marigold/components';
 import { colors } from './colors';
 
-const text = {
-  root: {
-    fontFamily: 'body',
-    fontSize: 1,
-    lineHeight: 'body',
-    fontWeight: 'body',
-  },
-  span: {
-    display: 'inline-block',
-  },
-  p: {
-    display: 'inline-block',
-    margin: '0 0 8px',
-    ':last-child': {
-      marginBottom: '16px',
-    },
-  },
-};
 const button = {
   root: {
     position: 'relative',
@@ -111,6 +93,24 @@ const button = {
     },
   },
 };
+const text = {
+  root: {
+    fontFamily: 'body',
+    fontSize: 1,
+    lineHeight: 'body',
+    fontWeight: 'body',
+  },
+  span: {
+    display: 'inline-block',
+  },
+  p: {
+    display: 'inline-block',
+    margin: '0 0 8px',
+    ':last-child': {
+      marginBottom: '16px',
+    },
+  },
+};
 
 const theme: BaseTheme = {
   breakpoints: [768, 1200],
@@ -141,148 +141,35 @@ const theme: BaseTheme = {
     info: '#a2edff',
     success: '#bcffbc',
   },
-  checkbox: {
-    default: {
-      color: 'primary',
+  alerts: {
+    error: {
+      borderStyle: 'solid',
+      borderColor: 'error',
+      borderWidth: '3px 3px 3px 0px',
+    },
+    warning: {
+      borderStyle: 'solid',
+      borderColor: 'warning',
+      borderWidth: '3px 3px 3px 0px',
+    },
+    success: {
+      borderStyle: 'solid',
+      borderColor: 'success',
+      borderWidth: '3px 3px 3px 0px',
     },
   },
-  input: {
+  badge: {
     default: {
-      display: 'block',
-      fontFamily: 'body',
-      color: 'text',
-      border: 0,
-      outline: '1px solid',
-      outlineColor: colors.gray40,
-      padding: '0 12px',
-      lineHeight: '32px',
-      ':focus': {
-        outline: '2px solid',
-        outlineColor: 'primary',
-      },
-      ':disabled': {
-        bg: colors.gray20,
-        color: colors.gray40,
-        cursor: 'not-allowed',
-      },
-    },
-  },
-  field: {
-    default: {
-      fontFamily: 'body',
-      fontSize: 1,
-      color: 'text',
-      fontWeight: 'body',
-      lineHeight: '2rem',
-    },
-  },
-  label: {
-    default: {
+      display: 'inline-flex',
+      alignItems: 'center',
       fontFamily: 'body',
       fontSize: 1,
       fontWeight: 'body',
-      lineHeight: '2rem',
-      color: 'text',
-    },
-  },
-  select: {
-    default: {
-      display: 'block',
-      width: '100%',
-      padding: 3,
-      appearance: 'none',
-      fontSize: 'inherit',
-      lineHeight: 'inherit',
-      border: '2px solid',
-      borderColor: colors.gray30,
-      borderRadius: '8px',
-      color: 'inherit',
-      bg: 'transparent',
-      ':hover': {
-        cursor: 'pointer',
-      },
-      ':focus': {
-        border: '4px solid',
-        borderColor: 'primary',
-      },
-      ':disabled': {
-        bg: colors.gray10,
-        color: 'disabled',
-        cursor: 'not-allowed',
-      },
-    },
-  },
-  textarea: {
-    default: {
-      fontFamily: 'body',
-      lineHeight: '24px',
-      padding: '4px 8px',
-      color: 'text',
-      border: 0,
-      borderRadius: '8px',
-      outline: '2px solid',
-      ':focus': {
-        outline: '4px solid',
-        outlineColor: 'primary',
-      },
-      ':disabled': {
-        bg: colors.gray20,
-        color: colors.gray40,
-      },
-    },
-  },
-  text: {
-    body: {
-      ...text.root,
-      ...text.span,
-    },
-    heading: {
-      ...text.root,
-      ...text.p,
-    },
-    h1: {
-      ...text.root,
-      fontWeight: 'heading',
-      fontSize: 5,
-      marginBottom: '24px',
-      '&:first-child': {
-        marginTop: 0,
-      },
-    },
-    h2: {
-      ...text.root,
-      fontWeight: 'heading',
-      fontSize: 4,
-      marginTop: '32px',
-      marginBottom: '8px',
-      '&:first-child': {
-        marginTop: 0,
-      },
-    },
-    h3: {
-      ...text.root,
-      fontWeight: 'heading',
-      fontSize: 3,
-      marginTop: '16px',
-      marginBottom: '8px',
-      '&:first-child': {
-        marginTop: 0,
-      },
-    },
-    h4: {
-      ...text.root,
-      fontWeight: 'heading',
-      fontSize: 2,
-    },
-    h5: {
-      ...text.root,
-      fontWeight: 'heading',
-      fontSize: 1,
-    },
-    h6: {
-      ...text.root,
-      fontSize: 1,
-      textTransform: 'uppoercase',
+      borderRadius: '10px',
+      border: '2px solid transparent',
+      whiteSpace: 'nowrap',
+      padding: '0.25rem 0.75rem',
+      mx: '0.5rem',
     },
   },
   button: {
@@ -344,33 +231,9 @@ const theme: BaseTheme = {
       ...button.small,
     },
   },
-  link: {
-    normal: {
+  checkbox: {
+    default: {
       color: 'primary',
-      ':hover': {
-        textDecoration: 'none',
-      },
-    },
-    menu: {
-      color: 'text',
-      textDecoration: 'none',
-    },
-  },
-  alerts: {
-    error: {
-      borderStyle: 'solid',
-      borderColor: 'error',
-      borderWidth: '3px 3px 3px 0px',
-    },
-    warning: {
-      borderStyle: 'solid',
-      borderColor: 'warning',
-      borderWidth: '3px 3px 3px 0px',
-    },
-    success: {
-      borderStyle: 'solid',
-      borderColor: 'success',
-      borderWidth: '3px 3px 3px 0px',
     },
   },
   dialog: {
@@ -382,14 +245,6 @@ const theme: BaseTheme = {
       alignItems: 'start',
       pt: '8px',
       px: '8px',
-    },
-  },
-  validation: {
-    error: {
-      ...text.root,
-      fontSize: 1,
-      textTransform: 'uppercase',
-      color: 'error',
     },
   },
   divider: {
@@ -404,6 +259,78 @@ const theme: BaseTheme = {
       my: 3,
       border: 0,
       borderBottom: '3px solid',
+    },
+  },
+  field: {
+    default: {
+      fontFamily: 'body',
+      fontSize: 1,
+      color: 'text',
+      fontWeight: 'body',
+      lineHeight: '2rem',
+    },
+  },
+  images: {
+    fullWidth: {
+      maxWidth: '100%',
+      height: 'auto',
+    },
+  },
+  input: {
+    default: {
+      display: 'block',
+      fontFamily: 'body',
+      color: 'text',
+      border: 0,
+      outline: '1px solid',
+      outlineColor: colors.gray40,
+      padding: '0 12px',
+      lineHeight: '32px',
+      ':focus': {
+        outline: '2px solid',
+        outlineColor: 'primary',
+      },
+      ':disabled': {
+        bg: colors.gray20,
+        color: colors.gray40,
+        cursor: 'not-allowed',
+      },
+    },
+  },
+  label: {
+    default: {
+      fontFamily: 'body',
+      fontSize: 1,
+      fontWeight: 'body',
+      lineHeight: '2rem',
+      color: 'text',
+    },
+  },
+  link: {
+    normal: {
+      color: 'primary',
+      ':hover': {
+        textDecoration: 'none',
+      },
+    },
+    menu: {
+      color: 'text',
+      textDecoration: 'none',
+    },
+  },
+  menu: {
+    menuItem: {
+      display: 'block',
+      fontFamily: 'body',
+      fontSize: 1,
+      fontWeight: 'body',
+      padding: 2,
+      bg: 'primary',
+      color: 'text',
+      ':hover': {
+        bg: 'secondary',
+        cursor: 'pointer',
+      },
     },
   },
   messages: {
@@ -432,39 +359,112 @@ const theme: BaseTheme = {
       mb: '16px',
     },
   },
-  images: {
-    fullWidth: {
-      maxWidth: '100%',
-      height: 'auto',
-    },
-  },
-  badge: {
+  select: {
     default: {
-      display: 'inline-flex',
-      alignItems: 'center',
-      fontFamily: 'body',
-      fontSize: 1,
-      fontWeight: 'body',
-      borderRadius: '10px',
-      border: '2px solid transparent',
-      whiteSpace: 'nowrap',
-      padding: '0.25rem 0.75rem',
-      mx: '0.5rem',
-    },
-  },
-  menu: {
-    menuItem: {
       display: 'block',
-      fontFamily: 'body',
-      fontSize: 1,
-      fontWeight: 'body',
-      padding: 2,
-      bg: 'primary',
-      color: 'text',
+      width: '100%',
+      padding: 3,
+      appearance: 'none',
+      fontSize: 'inherit',
+      lineHeight: 'inherit',
+      border: '2px solid',
+      borderColor: colors.gray30,
+      borderRadius: '8px',
+      color: 'inherit',
+      bg: 'transparent',
       ':hover': {
-        bg: 'secondary',
         cursor: 'pointer',
       },
+      ':focus': {
+        border: '4px solid',
+        borderColor: 'primary',
+      },
+      ':disabled': {
+        bg: colors.gray10,
+        color: 'disabled',
+        cursor: 'not-allowed',
+      },
+    },
+  },
+  text: {
+    body: {
+      ...text.root,
+      ...text.span,
+    },
+    heading: {
+      ...text.root,
+      ...text.p,
+    },
+    h1: {
+      ...text.root,
+      fontWeight: 'heading',
+      fontSize: 5,
+      marginBottom: '24px',
+      '&:first-child': {
+        marginTop: 0,
+      },
+    },
+    h2: {
+      ...text.root,
+      fontWeight: 'heading',
+      fontSize: 4,
+      marginTop: '32px',
+      marginBottom: '8px',
+      '&:first-child': {
+        marginTop: 0,
+      },
+    },
+    h3: {
+      ...text.root,
+      fontWeight: 'heading',
+      fontSize: 3,
+      marginTop: '16px',
+      marginBottom: '8px',
+      '&:first-child': {
+        marginTop: 0,
+      },
+    },
+    h4: {
+      ...text.root,
+      fontWeight: 'heading',
+      fontSize: 2,
+    },
+    h5: {
+      ...text.root,
+      fontWeight: 'heading',
+      fontSize: 1,
+    },
+    h6: {
+      ...text.root,
+      fontSize: 1,
+      textTransform: 'uppoercase',
+    },
+  },
+  textarea: {
+    default: {
+      fontFamily: 'body',
+      lineHeight: '24px',
+      padding: '4px 8px',
+      color: 'text',
+      border: 0,
+      borderRadius: '8px',
+      outline: '2px solid',
+      ':focus': {
+        outline: '4px solid',
+        outlineColor: 'primary',
+      },
+      ':disabled': {
+        bg: colors.gray20,
+        color: colors.gray40,
+      },
+    },
+  },
+  validation: {
+    error: {
+      ...text.root,
+      fontSize: 1,
+      textTransform: 'uppercase',
+      color: 'error',
     },
   },
 };
