@@ -41,8 +41,36 @@ const base = {
     'ts-jest': {
       diagnostics: false,
     },
-  },
-};
+    transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
+
+    // coverage
+    collectCoverage: true,
+    coverageDirectory: 'coverage',
+    collectCoverageFrom: [
+      '**/*.{ts,tsx}',
+      // ignore:
+      '!**/stories.tsx',
+      '!**/{*.d.ts,index.ts}',
+      '!**/node_modules/**',
+      '!**/dist/**',
+      '!**/themes/**',
+      '!**/icons/**',
+      '!**/scripts/**',
+      '!**/docs/**',
+    ],
+
+    // plugins
+    watchPlugins: [
+      require.resolve('jest-watch-typeahead/filename'),
+      require.resolve('jest-watch-typeahead/testname'),
+    ],
+
+    globals: {
+      'ts-jest': {
+        diagnostics: false,
+      },
+    },
+  };
 
 /**
  * Create jest configuration wit optional overrides.
