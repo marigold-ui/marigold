@@ -16,7 +16,7 @@ const theme = {
   space: [0, 2, 4, 8],
   sizes: [0, 8, 16, 32],
   borders: ['none', '1px solid black'],
-  borderRadius: [0, 2, 4],
+  radii: [0, 2, 4],
   opacities: [0, 0.5, 1],
   transitions: ['none', '1s opacity'],
   shadows: ['none', '3px 3px 5px 6px #ccc', 'inset 0 0 10px #000000'],
