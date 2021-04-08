@@ -11,7 +11,7 @@ export type BadgeProps = {
 
 export const Badge: React.FC<BadgeProps> = ({
   variant = 'default',
-  bgColor = 'inherit',
+  bgColor = 'transparent',
   borderColor = 'transparent',
   children,
   ...props
