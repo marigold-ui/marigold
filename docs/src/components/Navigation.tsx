@@ -28,7 +28,7 @@ export const Navigation: React.FC = () => {
           <ul>
             <li>
               <Text>
-                <Link to="/colours">Colours</Link>
+                <Link to="/designTokens/colours">Colours</Link>
               </Text>
             </li>
             <li>
@@ -39,7 +39,7 @@ export const Navigation: React.FC = () => {
             </li>
             <li>
               <Text>
-                <Link to="/icons/icons">Icons</Link>
+                <Link to="/designTokens/icons">Icons</Link>
               </Text>
             </li>
           </ul>
