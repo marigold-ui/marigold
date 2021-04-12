@@ -2415,7 +2415,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/assemble-release-plan@npm:^4.0.0, @changesets/assemble-release-plan@npm:^4.1.0":
+"@changesets/assemble-release-plan@npm:^4.0.0":
   version: 4.1.0
   resolution: "@changesets/assemble-release-plan@npm:4.1.0"
   dependencies:
@@ -2429,24 +2429,38 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/changelog-github@npm:0.2.8":
-  version: 0.2.8
-  resolution: "@changesets/changelog-github@npm:0.2.8"
+"@changesets/assemble-release-plan@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "@changesets/assemble-release-plan@npm:4.1.1"
   dependencies:
-    "@changesets/get-github-info": ^0.4.5
-    "@changesets/types": ^3.0.0
-    dotenv: ^8.1.0
-  checksum: 7ab004bc4c4a15abde4e6f59a6cd428667ec63ab00c104ba5549aa3bd9bf74fa32b9db58f09288796af717ffd2a0bea3b66d685931e455e78cf3678b1424255c
+    "@babel/runtime": ^7.10.4
+    "@changesets/errors": ^0.1.4
+    "@changesets/get-dependents-graph": ^1.2.0
+    "@changesets/types": ^3.3.0
+    "@manypkg/get-packages": ^1.0.1
+    semver: ^5.4.1
+  checksum: 1edd6a017b0daf076abbf9aef6bd2225a5e5b00ae8c3f191d15f2f0a2cdf44eb6576fe9b12f1bab82e6d4336a3d5b3fa77f7b4c5f3309c3dce4195f777726099
   languageName: node
   linkType: hard
 
-"@changesets/cli@npm:2.14.1":
-  version: 2.14.1
-  resolution: "@changesets/cli@npm:2.14.1"
+"@changesets/changelog-github@npm:0.3.0":
+  version: 0.3.0
+  resolution: "@changesets/changelog-github@npm:0.3.0"
+  dependencies:
+    "@changesets/get-github-info": ^0.5.0
+    "@changesets/types": ^3.0.0
+    dotenv: ^8.1.0
+  checksum: b68d242b0e0259adb6cd55730c795094fada17d467b55db424eb2e5534a0ec50468cb8b69ff2eea03e423c4f78eb9da00a20e3ea3675154df485fe5ab9536513
+  languageName: node
+  linkType: hard
+
+"@changesets/cli@npm:2.15.0":
+  version: 2.15.0
+  resolution: "@changesets/cli@npm:2.15.0"
   dependencies:
     "@babel/runtime": ^7.10.4
     "@changesets/apply-release-plan": ^4.2.0
-    "@changesets/assemble-release-plan": ^4.1.0
+    "@changesets/assemble-release-plan": ^4.1.1
     "@changesets/config": ^1.5.0
     "@changesets/errors": ^0.1.4
     "@changesets/get-dependents-graph": ^1.2.0
@@ -2476,7 +2490,7 @@ __metadata:
     tty-table: ^2.8.10
   bin:
     changeset: bin.js
-  checksum: 319f1f6532ed58ea3b6464418e1f0334539c6e843c8cb69ffc08126775edd82abd0c8e6b5e1bdae8d6560f3cfff7b9591ebb035adf5178eacf3ed9f3ac1c2917
+  checksum: 2c6a095348d8a8d78e01244daa6e28b0c0374019894ce48c4dc659ea3b3151f2b24e29223746a5c95ee575339d642577c2f4056790745aa75db7316f0676d17d
   languageName: node
   linkType: hard
 
@@ -2517,13 +2531,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/get-github-info@npm:^0.4.5":
-  version: 0.4.5
-  resolution: "@changesets/get-github-info@npm:0.4.5"
+"@changesets/get-github-info@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "@changesets/get-github-info@npm:0.5.0"
   dependencies:
     dataloader: ^1.4.0
     node-fetch: ^2.5.0
-  checksum: 126f660cb1f3bb1eaa9f9326815ed732516f2b9fc62ee2251bc1576d6e2192f05de189492156103db537afcc58a7b89dc9323f41a697362874d6b0fbf24414d3
+  checksum: e2a35d463f64adfbe2c87356fa37c7a89cf50dbef1d7d130988232f3cddbce1138ea5805f4f4c4d7bde8b19b5b56001ad982f635a4ef0125c2fa5de5ab7196f5
   languageName: node
   linkType: hard
 
@@ -5904,10 +5918,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:14.14.32, @types/node@npm:^14.14.10":
+"@types/node@npm:*, @types/node@npm:^14.14.10":
   version: 14.14.32
   resolution: "@types/node@npm:14.14.32"
   checksum: ae73f3b668242da660b4f4f2047114fc047f5a6a92b8f9f4ab2f8ca1325c914c08cf13b6f90e6e88016fafb7a662d1963b075a6220d2208651a98a1cb3407221
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:14.14.37, @types/node@npm:^14.0.10":
+  version: 14.14.37
+  resolution: "@types/node@npm:14.14.37"
+  checksum: 5e2d9baf7594ebacaf016716515f30de0765169412787f981481c2fb8b468923149bb9e2e3219ee672399811672ceddc339a7372a61cf15bc656836a5494d991
   languageName: node
   linkType: hard
 
@@ -5915,13 +5936,6 @@ __metadata:
   version: 12.20.1
   resolution: "@types/node@npm:12.20.1"
   checksum: b812bc6ab5e676ad2c860019f1e983d23d208158f10983026da345643cc6fe59f289ff306d9f838ca46e2520d82fbd068b31ccc235f43b2090bf77f1402816f3
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^14.0.10":
-  version: 14.14.37
-  resolution: "@types/node@npm:14.14.37"
-  checksum: 5e2d9baf7594ebacaf016716515f30de0765169412787f981481c2fb8b468923149bb9e2e3219ee672399811672ceddc339a7372a61cf15bc656836a5494d991
   languageName: node
   linkType: hard
 
@@ -15895,12 +15909,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"husky@npm:5.1.3":
-  version: 5.1.3
-  resolution: "husky@npm:5.1.3"
+"husky@npm:6.0.0":
+  version: 6.0.0
+  resolution: "husky@npm:6.0.0"
   bin:
     husky: lib/bin.js
-  checksum: 99baafebe710d3d9008d7e8523a2bba28b73acb71d92c22dfb05cd0fb38160c7d47594b5178ad1979032e1c7334afbc96f6137c3879a5c6c24ee339c74dd972b
+  checksum: 61e1f7f53f3c969d361c2a1d4ed8018b9447406ea6cd644a2526d18b76877d135001d8cbd48a1d201fc1614d96995e691ecd2b82a8d8513a6b4a313da1188ccd
   languageName: node
   linkType: hard
 
@@ -18888,8 +18902,8 @@ fsevents@^1.2.7:
   version: 0.0.0-use.local
   resolution: "marigold-repo@workspace:."
   dependencies:
-    "@changesets/changelog-github": 0.2.8
-    "@changesets/cli": 2.14.1
+    "@changesets/changelog-github": 0.3.0
+    "@changesets/cli": 2.15.0
     "@marigold/eslint-config": "*"
     "@marigold/jest-config": "*"
     "@marigold/prettier-config": "*"
@@ -18898,8 +18912,8 @@ fsevents@^1.2.7:
     "@testing-library/jest-dom": 5.11.10
     "@testing-library/react": 11.2.6
     "@testing-library/react-hooks": 5.1.1
-    "@types/node": 14.14.32
-    husky: 5.1.3
+    "@types/node": 14.14.37
+    husky: 6.0.0
     prettier: 2.2.1
     pretty-quick: 3.1.0
     react: 17.0.1
