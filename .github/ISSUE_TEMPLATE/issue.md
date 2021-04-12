@@ -1,5 +1,5 @@
 ---
-name: Issue
+name: "\U0001F4C4   Issue"
 about: Create a new issue for a feature or propose a change.
 title: ''
 labels: ''
