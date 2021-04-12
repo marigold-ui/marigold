@@ -1,0 +1,24 @@
+---
+name: Issue
+about: Create a new issue for a feature or propose a change.
+title: ''
+labels: ''
+assignees: ''
+
+---
+
+## Description
+
+<!-- Describe the problem statement, e.g., in free form using two to three sentences. You may want to articulate the problem in form of a question.] -->
+
+## Context
+
+<!-- What is the issue that we're seeing that is motivating this decision or change? -->
+
+## Use Cases <!-- optional -->
+
+<!-- When talking about code/API some usage scenarios may help to better understand the change. -->
+
+## Consequences
+
+<!-- What becomes easier or more difficult to do because of this change? -->
