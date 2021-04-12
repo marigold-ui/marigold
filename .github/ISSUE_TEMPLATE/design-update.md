@@ -1,11 +1,11 @@
 ---
-name: Design update
+name: "\U0001F3A8   Design Update"
 about: Issue template for existing components that need an update in design/minor
   changes.
-title: Design update - name of component
+title: ''
 labels: design
 assignees: ''
 
 ---
 
-Description of before/after
+Link to Figma:
