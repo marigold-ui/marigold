@@ -122,7 +122,7 @@ const theme: BaseTheme = {
     medium: 24,
     large: 32,
     xlarge: 40,
-    xxlarge: 48
+    xxlarge: 48,
   },
   fonts: {
     body: 'Inter',
@@ -257,10 +257,10 @@ const theme: BaseTheme = {
       display: 'block',
       borderRadius: '2px',
       paddingLeft: 'large',
-      paddingBottom: 'large'
+      paddingBottom: 'large',
     },
     body: {
-      paddingTop: 'small'
+      paddingTop: 'small',
     },
     onClose: {
       display: 'flex',

@@ -11,7 +11,7 @@ export type BaseTheme = {
     large: number;
     xlarge: number;
     xxlarge: number;
-  },
+  };
   fonts: {
     body: string;
     heading: string;
@@ -23,7 +23,7 @@ export type BaseTheme = {
     medium: string;
     large: string;
     xlarge: string;
-  },
+  };
   fontWeights: {
     body: number;
     heading: number;
