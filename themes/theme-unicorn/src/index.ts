@@ -257,10 +257,10 @@ const theme: BaseTheme = {
       display: 'block',
       borderRadius: '2px',
       paddingLeft: 'large',
-      paddingBottom: 'large'
+      paddingBottom: 'large',
     },
     body: {
-      paddingTop: 'small'
+      paddingTop: 'small',
     },
     onClose: {
       display: 'flex',
