@@ -23,11 +23,11 @@ export const Alert: React.FC<AlertProps> = ({
     className
   );
 
-  var bgColor = '#44a112';
+  var bgColor = 'success';
   if (variant === 'warning') {
-    bgColor = '#fa8005';
+    bgColor = 'warning';
   } else if (variant === 'error') {
-    bgColor = '#dd4142';
+    bgColor = 'error';
   }
   const iconClassName = useStyles({ bg: bgColor, m: '10px' });
 

@@ -4,8 +4,8 @@ import { ThemeProvider } from '@marigold/system';
 import { Textarea } from '../Textarea';
 
 const theme = {
-  form: {
-    textarea: {
+  textarea: {
+    default: {
       fontFamily: 'Inter Regular',
     },
     textarea2: {

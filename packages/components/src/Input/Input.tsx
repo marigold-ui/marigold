@@ -7,7 +7,7 @@ export type InputProps = {
 } & ComponentProps<'input'>;
 
 export const Input: React.FC<InputProps> = ({
-  variant = 'input',
+  variant = 'default',
   type = 'text',
   ...props
-}) => <Box {...props} as="input" type={type} variant={`form.${variant}`} />;
+}) => <Box {...props} as="input" type={type} variant={`input.${variant}`} />;

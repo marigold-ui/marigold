@@ -7,7 +7,7 @@ export type ValidationMessageProps = {
 } & ComponentProps<'span'>;
 
 export const ValidationMessage: React.FC<ValidationMessageProps> = ({
-  variant = 'negative',
+  variant = 'error',
   children,
   className,
   ...props

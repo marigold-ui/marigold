@@ -5,10 +5,10 @@ import { ValidationMessage } from './ValidationMessage';
 
 const theme = {
   validation: {
-    negative: {
+    error: {
       alignItems: 'center',
     },
-    danger: {
+    warning: {
       alignItems: 'right',
     },
   },
@@ -17,10 +17,10 @@ const theme = {
 test('supports default variant and themeSection', () => {
   render(
     <ThemeProvider theme={theme}>
-      <ValidationMessage title="negative">negative</ValidationMessage>
+      <ValidationMessage title="error">error</ValidationMessage>
     </ThemeProvider>
   );
-  const validation = screen.getByTitle(/negative/);
+  const validation = screen.getByTitle(/error/);
 
   expect(validation).toHaveStyle(`align-items: center`);
 });
@@ -28,12 +28,12 @@ test('supports default variant and themeSection', () => {
 test('accepts other variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <ValidationMessage title="danger" variant="danger">
-        Danger
+      <ValidationMessage title="warning" variant="warning">
+        warning
       </ValidationMessage>
     </ThemeProvider>
   );
-  const validation = screen.getByTitle(/danger/);
+  const validation = screen.getByTitle(/warning/);
 
   expect(validation).toHaveStyle(`align-items: right`);
 });
@@ -41,10 +41,10 @@ test('accepts other variant than default', () => {
 test('renders correct HTML element', () => {
   render(
     <ThemeProvider theme={theme}>
-      <ValidationMessage title="negative">negative</ValidationMessage>
+      <ValidationMessage title="error">error</ValidationMessage>
     </ThemeProvider>
   );
-  const validation = screen.getByTitle(/negative/);
+  const validation = screen.getByTitle(/error/);
 
   expect(validation instanceof HTMLSpanElement).toBeTruthy();
 });

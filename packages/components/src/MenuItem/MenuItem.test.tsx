@@ -4,7 +4,7 @@ import { ThemeProvider } from '@marigold/system';
 import { MenuItem } from './MenuItem';
 
 const theme = {
-  content: {
+  menu: {
     menuItem: {
       padding: '4px',
     },

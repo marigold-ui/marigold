@@ -2,12 +2,28 @@ export type CSSObject = object;
 
 export type BaseTheme = {
   breakpoints: number[];
-  space: number[];
+  space: {
+    none: number;
+    xxsmall: number;
+    xsmall: number;
+    small: number;
+    medium: number;
+    large: number;
+    xlarge: number;
+    xxlarge: number;
+  },
   fonts: {
     body: string;
     heading: string;
   };
-  fontSizes: string[];
+  fontSizes: {
+    xxsmall: string;
+    xsmall: string;
+    small: string;
+    medium: string;
+    large: string;
+    xlarge: string;
+  },
   fontWeights: {
     body: number;
     heading: number;
@@ -22,7 +38,11 @@ export type BaseTheme = {
     background: string;
     primary: string;
     secondary: string;
-    muted: string;
+    disabled: string;
+    error: string;
+    warning: string;
+    info: string;
+    success: string;
     [key: string]: string;
   };
   [key: string]: CSSObject;
