@@ -15,7 +15,7 @@ export type FieldProps = {
 } & ComponentProps<'input'>;
 
 export const Field: React.FC<FieldProps> = ({
-  variant = 'field',
+  variant = 'default',
   type = 'text',
   className = '',
   htmlFor,
@@ -25,7 +25,7 @@ export const Field: React.FC<FieldProps> = ({
 }) => {
   const labelClassName = useStyles(
     {
-      variant: `form.${variant}`,
+      variant: `field.${variant}`,
     },
     className
   );

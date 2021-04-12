@@ -2,6 +2,7 @@ import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
 import { Badge } from './Badge';
 import { Text } from '../Text';
 import { Check } from '@marigold/icons';
+import { useStyles } from '@marigold/system';
 
 <Meta title="Components/Badge" />
 
@@ -13,11 +14,11 @@ A badge tags an element with a short note and color. The content of the badge ca
 
 ## Properties
 
-| Property                     | Type     | Default   |
-| :--------------------------- | :------- | :-------- |
-| `variant` (optional)         | `string` | `badge`   |
-| `borderColor` (optional)     | string   | `inherit` |
-| `backgroundColor` (optional) | string   | `inherit` |
+| Property                     | Type     | Default       |
+| :--------------------------- | :------- | :------------ |
+| `variant` (optional)         | `string` | `default`     |
+| `borderColor` (optional)     | `string` | `transparent` |
+| `bgColor` (optional)         | `string` | `inherit`     |
 
 ## Import
 
@@ -29,12 +30,12 @@ import { Badge } from '@marigold/components';
 
 <Canvas>
   <Story name="Colored Background">
-    <Badge borderColor="border" backgroundColor="orange">
+    <Badge borderColor="black" bgColor="orange">
       <Text>New</Text>
     </Badge>
   </Story>
   <Story name="Outlined">
-    <Badge borderColor="orange">
+    <Badge borderColor="orange" className={useStyles({ display: 'flex' })}>
       <Check size={18} />
       cool
     </Badge>

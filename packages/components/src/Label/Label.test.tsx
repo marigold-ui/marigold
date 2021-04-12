@@ -4,8 +4,8 @@ import { ThemeProvider } from '@marigold/system';
 import { Label } from './Label';
 
 const theme = {
-  form: {
-    label: {
+  label: {
+    default: {
       fontFamily: 'Inter Regular',
     },
     myLabel: {

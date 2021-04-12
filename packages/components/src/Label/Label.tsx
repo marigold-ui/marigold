@@ -8,11 +8,11 @@ export type LabelProps = {
 } & ComponentProps<'label'>;
 
 export const Label: React.FC<LabelProps> = ({
-  variant = 'label',
+  variant = 'default',
   children,
   ...props
 }) => (
-  <Box {...props} as="label" variant={`form.${variant}`}>
+  <Box {...props} as="label" variant={`label.${variant}`}>
     {children}
   </Box>
 );

@@ -14,7 +14,7 @@ export type CheckboxProps = {
 
 export const Checkbox: React.FC<CheckboxProps> = ({
   id,
-  variant = 'checkbox',
+  variant = 'default',
   label,
   required,
   className,
@@ -31,7 +31,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 
   const checkboxIconStyles = useStyles(
     {
-      variant: `form.${variant}`,
+      variant: `checkbox.${variant}`,
       mr: 2,
       verticalAlign: 'middle',
       ':hover': { cursor: 'pointer' },

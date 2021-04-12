@@ -15,7 +15,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
 }) => {
   const classNames = useStyles(
     {
-      variant: `content.${variant}`,
+      variant: `menu.${variant}`,
     },
     className
   );
