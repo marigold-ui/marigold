@@ -16,7 +16,7 @@
   ],
   "main": "main.js",
   "dependencies": {
-    "@storybook/addon-a11y": "6.2.3",
+    "@storybook/addon-a11y": "6.2.7",
     "@storybook/addon-docs": "6.2.3",
     "@storybook/preset-typescript": "3.0.0",
     "@storybook/react": "6.2.3",
