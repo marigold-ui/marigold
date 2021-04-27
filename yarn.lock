@@ -4000,7 +4000,7 @@ __metadata:
     babel-eslint: 10.1.0
     eslint-config-react-app: 6.0.0
     eslint-plugin-import: 2.22.1
-    eslint-plugin-jest: 24.3.1
+    eslint-plugin-jest: 24.3.6
     eslint-plugin-jsx-a11y: 6.4.1
     eslint-plugin-prettier: 3.3.1
     eslint-plugin-react: 7.23.1
@@ -12377,9 +12377,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jest@npm:24.3.1":
-  version: 24.3.1
-  resolution: "eslint-plugin-jest@npm:24.3.1"
+"eslint-plugin-jest@npm:24.3.6":
+  version: 24.3.6
+  resolution: "eslint-plugin-jest@npm:24.3.6"
   dependencies:
     "@typescript-eslint/experimental-utils": ^4.0.1
   peerDependencies:
@@ -12388,7 +12388,7 @@ __metadata:
   peerDependenciesMeta:
     "@typescript-eslint/eslint-plugin":
       optional: true
-  checksum: e73f5e4eff8cd8ecc3bc0e75452ad871c386ca6844d4a0cc0237c4ac53cef0ab6ef347d0a66c2f4899a647f6e669d6c114ee657139c754278dcf9fcc82ae99d4
+  checksum: 13f4522cd838a6a356a080f76424579a58aa2f9b4f4b3fdd3713278718496c62ba3d8f53c0fb6ad6fd96ca6cfd6ee728f7dd51893b91eccfb4396b832f757afb
   languageName: node
   linkType: hard
 
