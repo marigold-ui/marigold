@@ -10,7 +10,7 @@ As we want to avoid working through huge piles of tasks with no end in sight and
 Each cycle starts with planning and discussing. We look through our issues and discuss our topics, so that we can finish this phase with a meeting to set the topics of our next development cycle.
 
 #### Development in 6-week phases
-After our 6-week planning cycle, we come to the development phase. We want to use our full focus on one task and not rush through a jungle of issues without knowing when the project ends.
+After the planning, we come to the development phase. We want to use our full focus on one task and not rush through a jungle of issues without knowing when the project ends.
 This is why we invest six full weeks into a few tasks each. Like this, we can spend our time individually and really look into a topic for a good amount of time.
 
 ## Do you have a feature request? Did you find a bug? 🐛
