@@ -4072,7 +4072,7 @@ __metadata:
   dependencies:
     "@emotion/css": 11.1.3
     "@theme-ui/css": 0.6.2
-    csstype: 3.0.7
+    csstype: 3.0.8
   peerDependencies:
     react: ^16.x
     react-dom: ^16.x
@@ -10728,10 +10728,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csstype@npm:3.0.7, csstype@npm:^3.0.2, csstype@npm:^3.0.5":
-  version: 3.0.7
-  resolution: "csstype@npm:3.0.7"
-  checksum: 76d542d719cd6bca7c491e6425a28873f76b0f4cf602b626a9fee105806446be4fab2191c5d18a045aea412bb3d5dcb5cab9414328080c672671433b786746f5
+"csstype@npm:3.0.8":
+  version: 3.0.8
+  resolution: "csstype@npm:3.0.8"
+  checksum: e15233592a2c580fd72c4346a5c921044b8f4f29bcb81628a81199c4d6a91eb8f8e4875f440ef9c990e85f179a3370f3b842fe55e4743119ad0ce712519e7123
   languageName: node
   linkType: hard
 
@@ -10739,6 +10739,13 @@ __metadata:
   version: 2.6.15
   resolution: "csstype@npm:2.6.15"
   checksum: 85db83a247cff53618293e5f6971e09f6c35f05871b860eeeee38b23930e08202b254b5364a4b893b00b79dd62b9cb21f7d9078feceb1962695fcbddaa0c097b
+  languageName: node
+  linkType: hard
+
+"csstype@npm:^3.0.2, csstype@npm:^3.0.5":
+  version: 3.0.7
+  resolution: "csstype@npm:3.0.7"
+  checksum: 76d542d719cd6bca7c491e6425a28873f76b0f4cf602b626a9fee105806446be4fab2191c5d18a045aea412bb3d5dcb5cab9414328080c672671433b786746f5
   languageName: node
   linkType: hard
 

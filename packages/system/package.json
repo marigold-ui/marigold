@@ -15,7 +15,7 @@
     "react-dom": "^16.x"
   },
   "devDependencies": {
-    "csstype": "3.0.7"
+    "csstype": "3.0.8"
   },
   "scripts": {
     "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly",
