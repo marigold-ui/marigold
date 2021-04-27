@@ -4,5 +4,8 @@
   ],
   "labels": [ "automerge" ],
   "automerge": true,
-  "timezone": "Europe/Berlin"
+  "timezone": "Europe/Berlin",
+  "schedule": [
+    "every weekend"
+  ]
 }
