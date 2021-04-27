@@ -5932,10 +5932,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:14.14.37, @types/node@npm:^14.0.10":
-  version: 14.14.37
-  resolution: "@types/node@npm:14.14.37"
-  checksum: 5e2d9baf7594ebacaf016716515f30de0765169412787f981481c2fb8b468923149bb9e2e3219ee672399811672ceddc339a7372a61cf15bc656836a5494d991
+"@types/node@npm:14.14.42":
+  version: 14.14.42
+  resolution: "@types/node@npm:14.14.42"
+  checksum: a9803d904badfd32fd2efe6efc40e5838a44dc0cb8b415762f890308581167a74f5d8f3e4074720d81490aad6a86ad130661cd9ecb79591aad9b5ee41fca7ad2
   languageName: node
   linkType: hard
 
@@ -5943,6 +5943,13 @@ __metadata:
   version: 12.20.1
   resolution: "@types/node@npm:12.20.1"
   checksum: b812bc6ab5e676ad2c860019f1e983d23d208158f10983026da345643cc6fe59f289ff306d9f838ca46e2520d82fbd068b31ccc235f43b2090bf77f1402816f3
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^14.0.10":
+  version: 14.14.37
+  resolution: "@types/node@npm:14.14.37"
+  checksum: 5e2d9baf7594ebacaf016716515f30de0765169412787f981481c2fb8b468923149bb9e2e3219ee672399811672ceddc339a7372a61cf15bc656836a5494d991
   languageName: node
   linkType: hard
 
@@ -18919,7 +18926,7 @@ fsevents@^1.2.7:
     "@testing-library/jest-dom": 5.12.0
     "@testing-library/react": 11.2.6
     "@testing-library/react-hooks": 5.1.2
-    "@types/node": 14.14.37
+    "@types/node": 14.14.42
     husky: 6.0.0
     prettier: 2.2.1
     pretty-quick: 3.1.0
