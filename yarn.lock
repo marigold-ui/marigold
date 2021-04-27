@@ -4039,7 +4039,7 @@ __metadata:
     ts-jest: 26.5.4
   peerDependencies:
     jest: 25.x
-    typescript: 3.8.x
+    typescript: 3.8.x || 3.9.x
   languageName: unknown
   linkType: soft
 
