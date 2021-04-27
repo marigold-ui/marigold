@@ -5403,9 +5403,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-dom@npm:5.11.10":
-  version: 5.11.10
-  resolution: "@testing-library/jest-dom@npm:5.11.10"
+"@testing-library/jest-dom@npm:5.12.0":
+  version: 5.12.0
+  resolution: "@testing-library/jest-dom@npm:5.12.0"
   dependencies:
     "@babel/runtime": ^7.9.2
     "@types/testing-library__jest-dom": ^5.9.1
@@ -5415,7 +5415,7 @@ __metadata:
     css.escape: ^1.5.1
     lodash: ^4.17.15
     redent: ^3.0.0
-  checksum: 25bf4cd9f6d49c87afe758ebc43ddcf9fb2a974bbf5f6e2979ed2056162ecc0547c396e4a47b6abf9bb646de4aedfb7b6da539cbae2c4a949d903ea396defaf3
+  checksum: 8bffa1c4113fbcdeb2aad1be48054ab46ee73da3b9b8a588e7e635e96f06ffe221689dfa494d2ac06520350ab7aa1fa2e2565aa30b02dd34c8d086072ba9ed57
   languageName: node
   linkType: hard
 
@@ -18916,7 +18916,7 @@ fsevents@^1.2.7:
     "@marigold/prettier-config": "*"
     "@marigold/tsconfig": "*"
     "@storybook/react": 6.2.3
-    "@testing-library/jest-dom": 5.11.10
+    "@testing-library/jest-dom": 5.12.0
     "@testing-library/react": 11.2.6
     "@testing-library/react-hooks": 5.1.1
     "@types/node": 14.14.37
