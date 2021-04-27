@@ -2443,14 +2443,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/changelog-github@npm:0.3.0":
-  version: 0.3.0
-  resolution: "@changesets/changelog-github@npm:0.3.0"
+"@changesets/changelog-github@npm:0.4.0":
+  version: 0.4.0
+  resolution: "@changesets/changelog-github@npm:0.4.0"
   dependencies:
     "@changesets/get-github-info": ^0.5.0
-    "@changesets/types": ^3.0.0
+    "@changesets/types": ^4.0.0
     dotenv: ^8.1.0
-  checksum: b68d242b0e0259adb6cd55730c795094fada17d467b55db424eb2e5534a0ec50468cb8b69ff2eea03e423c4f78eb9da00a20e3ea3675154df485fe5ab9536513
+  checksum: 2c5dbdbcb07b753dd083d3d34edd167729650d28c3cd5c041fc496d6dbbd77400efa8442cc304299903b9420dbf3a716151aad15ebf102050abe09a219731c7d
   languageName: node
   linkType: hard
 
@@ -2636,6 +2636,13 @@ __metadata:
   version: 3.3.0
   resolution: "@changesets/types@npm:3.3.0"
   checksum: 54dd2e12d6bfa0d73fe979acac5f7391348d2beae6c6ef4967082fdbfae284768ff371acea1911a1627f580f22e9f288dc77c394159b1c1a3920dd6f4b6d1333
+  languageName: node
+  linkType: hard
+
+"@changesets/types@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@changesets/types@npm:4.0.0"
+  checksum: 7597a8520e6e8bfb324ac6d490d8849b8fe8b064f4cb6a4207044cb56a7db8ad1c8a79f2f07e5056782d53f9a4b0e33553c4e84e2b417a61739d83ddd5e6314f
   languageName: node
   linkType: hard
 
@@ -18902,7 +18909,7 @@ fsevents@^1.2.7:
   version: 0.0.0-use.local
   resolution: "marigold-repo@workspace:."
   dependencies:
-    "@changesets/changelog-github": 0.3.0
+    "@changesets/changelog-github": 0.4.0
     "@changesets/cli": 2.15.0
     "@marigold/eslint-config": "*"
     "@marigold/jest-config": "*"
