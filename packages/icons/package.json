@@ -10,7 +10,7 @@
     "@marigold/components": "workspace:*"
   },
   "peerDependencies": {
-    "react": "^16.x"
+    "react": "^16.x || ^17.0.0"
   },
   "scripts": {
     "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly",

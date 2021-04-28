@@ -11,8 +11,8 @@
     "@theme-ui/css": "0.7.4"
   },
   "peerDependencies": {
-    "react": "^16.x",
-    "react-dom": "^16.x"
+    "react": "^16.x || ^17.0.0",
+    "react-dom": "^16.x || ^17.0.0"
   },
   "devDependencies": {
     "csstype": "3.0.8"
