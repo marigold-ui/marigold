@@ -29,6 +29,18 @@ const CodeBlock = props => {
 }
 
 const components = {
+  table: props => {
+    return <table style={{width: '100%'}} {...props}></table>
+  },
+  th: props => {
+    return <th style={{backgroundColor:'#e3e3e3', padding: '8px'}} {...props}></th>
+  },
+  tr: props => {
+    return <tr style={{padding: '8px'}} {...props}></tr>
+  },
+  td: props => {
+    return <td style={{padding: '8px'}} {...props}></td>
+  },
   pre: props => {
     return <CodeBlock {...props}/>
   }
