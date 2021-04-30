@@ -38,6 +38,6 @@
     "react-helmet": "^6.1.0"
   },
   "devDependencies": {
-    "tsconfig-paths-webpack-plugin": "^3.5.1"
+    "tsconfig-paths-webpack-plugin": "3.5.1"
   }
 }

@@ -3,4 +3,4 @@
 version = 1
 
 [approve]
-auto_approve_usernames = ["dependabot"]
+auto_approve_usernames = ["renovate"]

@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "labels": [ "automerge" ],
+  "automerge": true,
+  "timezone": "Europe/Berlin",
+  "schedule": [
+    "every weekend"
+  ]
+}

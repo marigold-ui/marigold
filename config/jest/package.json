@@ -15,16 +15,16 @@
   ],
   "main": "index.js",
   "dependencies": {
-    "@types/jest": "26.0.22",
+    "@types/jest": "26.0.23",
     "babel-jest": "26.6.3",
     "find-up": "5.0.0",
-    "jest-watch-typeahead": "0.6.2",
+    "jest-watch-typeahead": "0.6.3",
     "merge-deep": "^3.0.3",
     "react-test-renderer": "17.0.2",
-    "ts-jest": "26.5.4"
+    "ts-jest": "26.5.5"
   },
   "peerDependencies": {
-    "jest": "25.x",
-    "typescript": "3.8.x"
+    "jest": "25.x || 26.x",
+    "typescript": "3.8.x || 3.9.x || 4.2.x"
   }
 }
