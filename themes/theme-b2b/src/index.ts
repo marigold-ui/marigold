@@ -113,7 +113,7 @@ const text = {
 };
 
 const theme: BaseTheme = {
-  breakpoints: [768, 1200],
+  breakpoints: ['768', '1200'],
   space: {
     none: 0,
     xxsmall: 4,
