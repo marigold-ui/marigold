@@ -11353,6 +11353,7 @@ __metadata:
     "@marigold/types": "workspace:*"
     "@mdx-js/mdx": 1.6.22
     "@mdx-js/react": 1.6.22
+    babel-preset-gatsby: ^1.4.0
     gatsby: 3.4.0
     gatsby-plugin-emotion: 6.4.0
     gatsby-plugin-manifest: 3.4.0
@@ -11364,6 +11365,8 @@ __metadata:
     gatsby-source-filesystem: 3.4.0
     gatsby-transformer-sharp: 3.4.0
     gh-pages: 3.1.0
+    prism-react-renderer: ^1.2.0
+    prismjs: ^1.23.0
     react: 17.0.2
     react-dom: 17.0.2
     react-helmet: 6.1.0
@@ -22180,7 +22183,16 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prismjs@npm:^1.21.0, prismjs@npm:~1.23.0":
+"prism-react-renderer@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "prism-react-renderer@npm:1.2.0"
+  peerDependencies:
+    react: ">=0.14.9"
+  checksum: 794de7917da61f185c82e16766dfd0bdfbf78d36bc30136a7a94c3e05ce6994790508a09858a6065bad615641c5a8f32b0f4e546a6179538fe7dafb5c2a6e5d0
+  languageName: node
+  linkType: hard
+
+"prismjs@npm:^1.21.0, prismjs@npm:^1.23.0, prismjs@npm:~1.23.0":
   version: 1.23.0
   resolution: "prismjs@npm:1.23.0"
   dependencies:
