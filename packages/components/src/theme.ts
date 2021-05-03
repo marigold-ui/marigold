@@ -1,7 +1,7 @@
 export type CSSObject = object;
 
 export type BaseTheme = {
-  breakpoints: number[];
+  breakpoints: string[];
   space: {
     none: number;
     xxsmall: number;
