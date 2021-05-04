@@ -4,72 +4,69 @@ import { Text } from '@marigold/components';
 
 export const Navigation: React.FC = () => {
   return (
-    <div>
+    <Text>
       <Link to="/start">
-        <Text>Home</Text>
+        Home
       </Link>
       <ul>
         <li>
-          <Text>Design Language</Text>
+          <b>Guides</b>
           <ul>
             <li>
-              <Text>Brand</Text>
+              Installation
             </li>
             <li>
-              <Text>Logos</Text>
-            </li>
-            <li>
-              <Text>Guidelines</Text>
+              Theme & Variants
             </li>
           </ul>
         </li>
         <li>
-          <Text>Design Tokens</Text>
+          <b>Foundation</b>
           <ul>
             <li>
-              <Text>
+                <Link to="/designTokens/theme">Theming</Link>
+            </li>
+            <li>
+             Layout
+            </li>
+            <li>
+              Box Primitive
+            </li>
+            <li>
+                <Link to="/designTokens/icons">Iconography</Link>
+            </li>
+            {/* <li>
                 <Link to="/designTokens/colours">Colours</Link>
-              </Text>
-            </li>
-            <li>
-              <Text>Layout</Text>
-            </li>
-            <li>
-              <Text>Typography</Text>
-            </li>
-            <li>
-              <Text>
-                <Link to="/designTokens/icons">Icons</Link>
-              </Text>
-            </li>
+            </li> */}
           </ul>
         </li>
         <li>
-          <Text>Components</Text>
+          <b>Components</b>
           <ul>
             <li>
-              <Text>
+                Alert
+            </li>
+            <li>
+                Badge
+            </li>
+            <li>
                 <Link to="/components/button">Button</Link>
-              </Text>
             </li>
             <li>
-              <Text>
                 <Link to="/components/checkbox">Checkbox</Link>
-              </Text>
             </li>
             <li>
-              <Text>
+                Column
+            </li>
+            <li>
                 <Link to="/components/field">Field</Link>
-              </Text>
             </li>
             <li>
-              <Text>
                 <Link to="/components/input">Input</Link>
-              </Text>
             </li>
           </ul>
         </li>
       </ul>
-    </div>
+    </Text>
   );
 };

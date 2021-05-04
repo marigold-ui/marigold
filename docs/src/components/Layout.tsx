@@ -9,10 +9,10 @@ export const Layout: React.FC = ({ children }) => {
   return (
     <ThemeProvider theme={b2bTheme}>
       <Columns space={4}>
-        <Column width={2}>
+        <Column width={4}>
           <Navigation />
         </Column>
-        <Column width={10}>
+        <Column width={8}>
           <Text>{children}</Text>
         </Column>
       </Columns>
