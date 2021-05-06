@@ -1,6 +1,5 @@
 import { Button } from '@marigold/components';
-import { Facebook } from '@marigold/icons';
-import { useStyles } from '@marigold/system';
+import * as Icons from '@marigold/icons';
 
 import { Layout } from '../../components/Layout';
 
@@ -19,74 +18,75 @@ The style variant and size of the button can be added with the variant prop and 
 
 ## Import
 
-```tsx
+```tsx code-only
 import { Button } from '@marigold/components';
 ```
 
 ## Usage
 
+### Live-Code Example
+
+```tsx live-code
+<Button variant="primary.large">Primary</Button>
+```
+
 ### Large
-
-<Button variant="primary.large">Primary</Button>{' '}
-
-<Button variant="secondary.large">Secondary</Button>{' '}
-
-<Button variant="ghost.large">Ghost</Button>{' '}
-
-<Button variant="text.large">Text Only</Button>
 
 ```tsx
 <Button variant="primary.large">Primary</Button>
+```
+
+```tsx
 <Button variant="secondary.large">Secondary</Button>
+```
+
+```tsx
 <Button variant="ghost.large">Ghost</Button>
+```
+
+```tsx
 <Button variant="text.large">Text Only</Button>
 ```
 
 ### Small
 
-<Button variant="primary.small">Primary</Button>{' '}
-
-<Button variant="secondary.small">Secondary</Button>{' '}
-
-<Button variant="ghost.small">Ghost</Button>{' '}
-
-<Button variant="text.small">Text Only</Button>
-
 ```tsx
 <Button variant="primary.small">Primary</Button>
+```
+
+```tsx
 <Button variant="secondary.small">Secondary</Button>
+```
+
+```tsx
 <Button variant="ghost.small">Ghost</Button>
+```
+
+```tsx
 <Button variant="text.small">Text Only</Button>
 ```
 
 ### Disabled
 
-<Button variant="primary.large" disabled>
-  Primary Large Disabled
-</Button>{' '}
-
-<Button variant="secondary.large" disabled>
-  Secondary Large Disabled
-</Button>{' '}
-
-<Button variant="ghost.large" disabled>
-  Ghost Large Disabled
-</Button>{' '}
-
-<Button variant="text.large" disabled>
-  Text Only Large Disabled
-</Button>
-
 ```tsx
 <Button variant="primary.large" disabled>
   Primary Large Disabled
 </Button>
+```
+
+```tsx
 <Button variant="secondary.large" disabled>
   Secondary Large Disabled
 </Button>
+```
+
+```tsx
 <Button variant="ghost.large" disabled>
   Ghost Large Disabled
 </Button>
+```
+
+```tsx
 <Button variant="text.large" disabled>
   Text Only Large Disabled
 </Button>
@@ -94,120 +94,75 @@ import { Button } from '@marigold/components';
 
 ### Default with icon
 
-<Button variant="primary.large">
-  <Facebook /> Like me!
-</Button>{' '}
-
-<Button variant="primary.small">
-  <Facebook /> Like me!
-</Button>{' '}
-
-<Button variant="secondary.large">
-  <Facebook /> Like me!
-</Button>{' '}
-
-<Button variant="secondary.small">
-  <Facebook /> Like me!
-</Button>{' '}
-
-<Button variant="ghost.large">
-  <Facebook /> Like me!
-</Button>{' '}
-
-<Button variant="ghost.small">
-  <Facebook /> Like me!
-</Button>{' '}
-
-<Button variant="text.large">
-  <Facebook /> Like me!
-</Button>{' '}
-
-<Button variant="text.small">
-  <Facebook /> Like me!
-</Button>
-
 ```tsx
 <Button variant="primary.large">
-  <Facebook /> Like me!
+  <Icons.Facebook /> Like me!
 </Button>
+```
+
+```tsx
 <Button variant="primary.small">
-  <Facebook /> Like me!
+  <Icons.Facebook /> Like me!
 </Button>
+```
+
+```tsx
 <Button variant="secondary.large">
-  <Facebook /> Like me!
+  <Icons.Facebook /> Like me!
 </Button>
+```
+
+```tsx
 <Button variant="secondary.small">
-  <Facebook /> Like me!
+  <Icons.Facebook /> Like me!
 </Button>
+```
+
+```tsx
 <Button variant="ghost.large">
-  <Facebook /> Like me!
+  <Icons.Facebook /> Like me!
 </Button>
+```
+
+```tsx
 <Button variant="ghost.small">
-  <Facebook /> Like me!
+  <Icons.Facebook /> Like me!
 </Button>
+```
+
+```tsx
 <Button variant="text.large">
-  <Facebook /> Like me!
+  <Icons.Facebook /> Like me!
 </Button>
+```
+
+```tsx
 <Button variant="text.small">
-  <Facebook /> Like me!
+  <Icons.Facebook /> Like me!
 </Button>
 ```
 
 ### Large with large icon
 
-<Button variant="primary.large">
-  <Facebook size={48} /> Like me!
-</Button>
-
 ```tsx
 <Button variant="primary.large">
-  <Facebook size={48} /> Like me!
+  <Icons.Facebook size={48} /> Like me!
 </Button>
 ```
 
 ### Small with small icon
 
-<Button variant="primary.small">
-  <Facebook size={20} /> Like me!
-</Button>
-
 ```tsx
 <Button variant="primary.small">
-  <Facebook size={20} /> Like me!
+  <Icons.Facebook size={20} /> Like me!
 </Button>
 ```
 
 ### With color
 
-<Button variant="primary.small">
-  <Facebook fill="black" /> Like me!
-</Button>
-
 ```tsx
 <Button variant="primary.small">
-  <Facebook fill="black" /> Like me!
-</Button>
-```
-
-### Custom styled
-
-<Button
-  variant="primary.small"
-  className={useStyles({
-    bg: '#3b5998',
-  })}
->
-  <Facebook /> Like me!
-</Button>
-
-```tsx
-<Button
-  variant="primary.small"
-  className={useStyles({
-    bg: '#3b5998',
-  })}
->
-  <Facebook /> Like me!
+  <Icons.Facebook fill="black" /> Like me!
 </Button>
 ```
 

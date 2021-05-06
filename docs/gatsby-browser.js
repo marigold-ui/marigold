@@ -1,99 +1,55 @@
 import React from 'react';
 import { MDXProvider } from '@mdx-js/react';
-import Highlight, { defaultProps } from 'prism-react-renderer';
-import theme from 'prism-react-renderer/themes/github';
-import { Button } from '@marigold/components';
-
-const CodeBlock = props => {
-  const [isCopied, setIsCopied] = React.useState(false);
-  const className = props.children.props.className || '';
-  const matches = className.match(/language-(?<lang>.*)/);
-  const code = props.children.props.children.trim();
-  return (
-    <Highlight
-      {...defaultProps}
-      code={code}
-      language={
-        matches && matches.groups && matches.groups.lang
-          ? matches.groups.lang
-          : ''
-      }
-      theme={theme}
-    >
-      {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre
-          className={className}
-          style={{ ...style, padding: '20px', position: 'relative' }}
-        >
-          <Button
-            onClick={() => {
-              copyToClipboard(code);
-              setIsCopied(true);
-              setTimeout(() => setIsCopied(false), 3000);
-            }}
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              margin: '8px',
-              padding: '8px 12px',
-              background: '#cccccc',
-              color: 'white',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontSize: '14px',
-              fontFamily: 'Inter',
-              lineHeight: '1',
-            }}
-          >
-            {isCopied ? 'Copied 🎉' : 'Copy'}
-          </Button>
-          {tokens.map((line, i) => (
-            <div key={i} {...getLineProps({ line, key: i })}>
-              {line.map((token, key) => (
-                <span key={key} {...getTokenProps({ token, key })} />
-              ))}
-            </div>
-          ))}
-        </pre>
-      )}
-    </Highlight>
-  );
-};
+import { preToCodeBlock } from 'mdx-utils';
+import b2bTheme from '@marigold/theme-b2b';
+import { CodeBlock } from './src/components/CodeBlock';
 
 const components = {
+  inlineCode: props => {
+    return (
+      <code
+        style={{
+          lineHeight: b2bTheme.lineHeights.heading,
+          margin: '0 2px',
+          padding: b2bTheme.space.xxsmall,
+          whiteSpace: 'nowrap',
+          borderRadius: b2bTheme.space.xxsmall,
+          fontSize: b2bTheme.fontSizes.xxsmall,
+          color: b2bTheme.colors.gray70,
+          backgroundColor: b2bTheme.colors.gray10,
+        }}
+        {...props}
+      ></code>
+    );
+  },
   table: props => {
     return <table style={{ width: '100%' }} {...props}></table>;
   },
   th: props => {
     return (
       <th
-        style={{ backgroundColor: '#e3e3e3', padding: '8px' }}
+        style={{
+          backgroundColor: b2bTheme.colors.gray30,
+          padding: b2bTheme.space.xsmall,
+        }}
         {...props}
       ></th>
     );
   },
   tr: props => {
-    return <tr style={{ padding: '8px' }} {...props}></tr>;
+    return <tr style={{ padding: b2bTheme.space.xsmall }} {...props}></tr>;
   },
   td: props => {
-    return <td style={{ padding: '8px' }} {...props}></td>;
+    return <td style={{ padding: b2bTheme.space.xsmall }} {...props}></td>;
   },
-  pre: props => {
-    return <CodeBlock {...props} />;
+  pre: preProps => {
+    const props = preToCodeBlock(preProps);
+    if (props) {
+      return <CodeBlock {...props} />;
+    } else {
+      return <pre {...preProps} />;
+    }
   },
-};
-
-const copyToClipboard = props => {
-  const element = document.createElement('textarea');
-  element.value = props;
-  element.setAttribute('readonly', '');
-  element.style.position = 'absolute';
-  element.style.left = '-9999px';
-  document.body.appendChild(element);
-  element.select();
-  document.execCommand('copy');
-  document.body.removeChild(element);
 };
 
 export const wrapRootElement = ({ element }) => {
