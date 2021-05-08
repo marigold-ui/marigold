@@ -4004,7 +4004,7 @@ __metadata:
     eslint-plugin-jsx-a11y: 6.4.1
     eslint-plugin-prettier: 3.4.0
     eslint-plugin-react: 7.23.2
-    eslint-plugin-testing-library: 4.1.2
+    eslint-plugin-testing-library: 4.2.0
   peerDependencies:
     eslint: 7.26
   languageName: unknown
@@ -12543,14 +12543,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-testing-library@npm:4.1.2":
-  version: 4.1.2
-  resolution: "eslint-plugin-testing-library@npm:4.1.2"
+"eslint-plugin-testing-library@npm:4.2.0":
+  version: 4.2.0
+  resolution: "eslint-plugin-testing-library@npm:4.2.0"
   dependencies:
     "@typescript-eslint/experimental-utils": ^4.21.0
   peerDependencies:
     eslint: ^7.5.0
-  checksum: cacec6d3efb4ed55397493cd59b52055fd9b5cb079709785b3c73363a11337e0d854a587772b99fdf0ac4f095bfdfee212338761e284319fc826b68d44323da4
+  checksum: a744d72580657ac21cee8d2872ea46363406488220d50d508dfd35bf59c2c54f74625559f92a35142408ac3efb1c6739f124a27b3fad3e177b13781261bd9af2
   languageName: node
   linkType: hard
 
