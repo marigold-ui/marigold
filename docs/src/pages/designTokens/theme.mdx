@@ -83,21 +83,66 @@ const theme: BaseTheme = {
     font: 'body', // theme variable
     fontSize: 'xlarge', // theme variable
   }
-}
+};
 ```
 
 These values can also be accessed as in
 
 ```tsx
-const styles = useStyles({
+const classNames = useStyles({
   fontSize: b2bTheme.fontSize.small,
-})
+});
 ```
 
 ### Create a Theme
 
-BaseTheme type
+Example base theme:
 
-// example
-
+```tsx
+const theme: BaseTheme = {
+  breakpoints: ['768', '1200'],
+  space: {
+    none: 0,
+    xxsmall: 4,
+    xsmall: 8,
+    small: 16,
+    medium: 24,
+    large: 32,
+    xlarge: 40,
+    xxlarge: 48,
+  },
+  fonts: {
+    body: 'Inter',
+    heading: 'Inter Black',
+  },
+  fontSizes: {
+    xxsmall: '0.875rem',
+    xsmall: '1rem',
+    small: '1.125rem',
+    medium: '1.25rem',
+    large: '1.5rem',
+    xlarge: '2rem',
+  },
+  fontWeights: {
+    body: 400,
+    heading: 900,
+    bold: 700,
+  },
+  lineHeights: {
+    body: 1.5,
+    heading: 1.125,
+  },
+  colors: {
+    text: '#4b4b4b',
+    background: '#fafafa',
+    primary: '#fa8005',
+    secondary: '#4b4b4b',
+    disabled: '#e3e3e3',
+    error: '#dd4142',
+    warning: '#fa8005',
+    info: '#1d67b6',
+    success: '#44a112',
+  }
+};
+```
 export default Layout;
