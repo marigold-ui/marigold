@@ -1,0 +1,94 @@
+import { Layout } from '../../components/Layout';
+
+# Theming
+
+## Theme Object
+
+Theming is based on a `theme object` that builds on the [System UI Theme Specification](https://system-ui.com/theme/).
+The theme object defines your application's spacings, colors, fonts and component styles.
+
+### Spacings
+
+Using semantic values for spacings makes it easier to apply the variables within the theme more consistently. Use CSS length units in a string.
+
+- `none`
+- `xxsmall`
+- `xsmall`
+- `small`
+- `medium`
+- `large`
+- `xlarge`
+- `xxlarge`
+
+### Colors
+
+Add the following color keys to your theme in order to provide a base set of colors. These are re-used in the components.
+
+- `primary` (brand color for links, buttons, etc.)
+- `secondary` (alternative styling for brand color)
+- `text`
+- `background`
+- `disabled`
+- `error`
+- `warning`
+- `info`
+- `success`
+
+### Typography
+
+Store the core typographic values in the following theme keys:
+
+- `fonts` (font family)
+- `fontSizes`
+- `fontWeights`
+- `lineHeights`
+
+## API
+
+### ThemeProvider
+
+The `ThemeProvider` component is a wrapper around the component tree on the root level and applies the theme to the components.
+
+```tsx
+import { ThemeProvider } from '@marigold/system';
+import b2bTheme from '@marigold/theme-b2b';
+
+export const ThemeProvider: React.FC = ({ children }) => {
+  return <ThemeProvider theme={b2bTheme}>{children}</ThemeProvider>;
+};
+```
+
+### Access Theme Variables
+
+Theme variables are styles that are stored in key value pairs and defined as described above.
+If using a different theme, the value for a certain variable can change because a different style is stored in the new theme.
+Reuse theme variables within the theme while defining variants of a component. Like this, you create a unique theme that is recognized in all the components:
+
+```tsx
+const theme: BaseTheme = {
+  fonts: {
+    body: 'Inter',
+    heading: 'Inter Black',
+  },
+  fontSizes: {
+    xxsmall: '0.875rem',
+    xsmall: '1rem',
+    small: '1.125rem',
+    medium: '1.25rem',
+    large: '1.5rem',
+    xlarge: '2rem',
+  },
+  ...,
+  h1: {
+    font: 'body', // theme variable
+    fontSize: 'xlarge', // theme variable
+  }
+}
+```
+
+### Create a Theme
+
+BaseTheme type
+// example
+
+export default Layout;
