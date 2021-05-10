@@ -49,5 +49,8 @@
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit",
     "release": "yarn build && changeset publish"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.4.0"
   }
 }
