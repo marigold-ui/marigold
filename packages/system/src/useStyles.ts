@@ -11,7 +11,7 @@ export type StylesProps = {
 
 export type UseStyleInput = {
 	element?: ElementType;
-	styles?: Omit<CSSObject, 'variant' | 'element'>;
+	styles?: Omit<CSSObject, 'variant' | 'element'> & { variant?: never; element?: never };
 	variant?: string | string[];
 	className?: string;
 }
