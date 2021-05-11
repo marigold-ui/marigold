@@ -6114,6 +6114,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react@npm:^17.0.5":
+  version: 17.0.5
+  resolution: "@types/react@npm:17.0.5"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: f9793e8113f14122d6ed20643b4fe27d30e10d7c80571a1d238c13f8171864f2a7b337194bf41310724498586ed4560fffd081a2d21e488afbb1aca33534189b
+  languageName: node
+  linkType: hard
+
 "@types/reactcss@npm:*":
   version: 1.2.3
   resolution: "@types/reactcss@npm:1.2.3"
@@ -11390,6 +11401,7 @@ __metadata:
     "@marigold/types": "workspace:*"
     "@mdx-js/mdx": 1.6.22
     "@mdx-js/react": 1.6.22
+    "@types/react": ^17.0.5
     babel-preset-gatsby: ^1.4.0
     gatsby: 3.4.0
     gatsby-plugin-emotion: 6.4.0

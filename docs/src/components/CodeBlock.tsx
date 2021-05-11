@@ -16,7 +16,17 @@ const previewBoxStyles = {
   position: 'relative',
 };
 
-export const CodeBlock = ({ codeString, language, ...props }) => {
+type CodeBlockProps = {
+  codeString?: string;
+  language?: string;
+  props?: ???;
+};
+
+export const CodeBlock: React.FC<CodeBlockProps> = ({
+  codeString,
+  language,
+  ...props
+}) => {
   const [hide, setHide] = React.useState(!props['code-only']);
 
   if (props['live-code']) {
