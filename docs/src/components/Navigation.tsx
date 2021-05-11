@@ -18,15 +18,15 @@ export const Navigation: React.FC = () => {
           <b>Foundation</b>
           <ul>
             <li>
-              <Link to="/designTokens/theme">Theming</Link>
+              <Link to="/foundation/theming">Theming</Link>
             </li>
             <li>Layout</li>
             <li>Box Primitive</li>
             <li>
-              <Link to="/designTokens/icons">Iconography</Link>
+              <Link to="/foundation/icons">Iconography</Link>
             </li>
             {/* <li>
-                <Link to="/designTokens/colours">Colours</Link>
+                <Link to="/foundation/colours">Colours</Link>
             </li> */}
           </ul>
         </li>
@@ -48,6 +48,14 @@ export const Navigation: React.FC = () => {
             <li>
               <Link to="/components/input">Input</Link>
             </li>
+          </ul>
+        </li>
+        <li>
+          <b>Themes</b>
+          <ul>
+            <li><Link to="/themes/b2b">B2B</Link></li>
+            <li><Link to="/themes/unicorn">Unicorn</Link></li>
+            <li>Marigold Docs</li>
           </ul>
         </li>
       </ul>
