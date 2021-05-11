@@ -2682,7 +2682,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/babel-plugin@npm:^11.0.0, @emotion/babel-plugin@npm:^11.2.0":
+"@emotion/babel-plugin@npm:^11.0.0":
+  version: 11.3.0
+  resolution: "@emotion/babel-plugin@npm:11.3.0"
+  dependencies:
+    "@babel/helper-module-imports": ^7.12.13
+    "@babel/plugin-syntax-jsx": ^7.12.13
+    "@babel/runtime": ^7.13.10
+    "@emotion/hash": ^0.8.0
+    "@emotion/memoize": ^0.7.5
+    "@emotion/serialize": ^1.0.2
+    babel-plugin-macros: ^2.6.1
+    convert-source-map: ^1.5.0
+    escape-string-regexp: ^4.0.0
+    find-root: ^1.1.0
+    source-map: ^0.5.7
+    stylis: ^4.0.3
+  peerDependencies:
+    "@babel/core": ^7.0.0
+  checksum: 4c238862d08233b016e00ebc5e4421d085d66736f090e98bcee93cff39dd4a19a39e1f8913600919ccaf0879ad74a7c11098aa9214f667c072bd129b7820d598
+  languageName: node
+  linkType: hard
+
+"@emotion/babel-plugin@npm:^11.2.0":
   version: 11.2.0
   resolution: "@emotion/babel-plugin@npm:11.2.0"
   dependencies:
@@ -2740,6 +2762,19 @@ __metadata:
     "@emotion/weak-memoize": ^0.2.5
     stylis: ^4.0.3
   checksum: 1d206ecfe280146a4bafb3d3cc0a4e1fdc2040cf1d1961631d1136dcbf2499a5ec531892e47335f3f6bc097b17afd0587cbbf0a7f486ce875f08e86625b96837
+  languageName: node
+  linkType: hard
+
+"@emotion/cache@npm:^11.4.0":
+  version: 11.4.0
+  resolution: "@emotion/cache@npm:11.4.0"
+  dependencies:
+    "@emotion/memoize": ^0.7.4
+    "@emotion/sheet": ^1.0.0
+    "@emotion/utils": ^1.0.0
+    "@emotion/weak-memoize": ^0.2.5
+    stylis: ^4.0.3
+  checksum: 5a7715ae716d401208a096d14522fb7373412b8ef0cdce1e63a8eaae26aaa1f077921b1fc926bfb345ab0e1e4722fe6887d685ae6ebd7daab5ab5ab7295e1d12
   languageName: node
   linkType: hard
 
@@ -2841,6 +2876,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emotion/react@npm:^11.4.0":
+  version: 11.4.0
+  resolution: "@emotion/react@npm:11.4.0"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@emotion/cache": ^11.4.0
+    "@emotion/serialize": ^1.0.2
+    "@emotion/sheet": ^1.0.1
+    "@emotion/utils": ^1.0.0
+    "@emotion/weak-memoize": ^0.2.5
+    hoist-non-react-statics: ^3.3.1
+  peerDependencies:
+    "@babel/core": ^7.0.0
+    react: ">=16.8.0"
+  peerDependenciesMeta:
+    "@babel/core":
+      optional: true
+    "@types/react":
+      optional: true
+  checksum: 4058dc4de5a7470f0e7e4543d5051570b2ff60bda47c51b77bb3f09b644a9244a1b77d27b42aebf6ed48eb4273a2e6d2564348064ac59cf81a3ac2192e6826fa
+  languageName: node
+  linkType: hard
+
 "@emotion/serialize@npm:^0.11.15, @emotion/serialize@npm:^0.11.16":
   version: 0.11.16
   resolution: "@emotion/serialize@npm:0.11.16"
@@ -2864,6 +2922,36 @@ __metadata:
     "@emotion/utils": ^1.0.0
     csstype: ^3.0.2
   checksum: 21b6c15728597a74987c1bb96813e597c4f4d295f7f8aa442def6ca237f8925a790900d9d0c9d49d66347f24e4a38e5ec92e66ed1ff83d7cc237faa5583f0b15
+  languageName: node
+  linkType: hard
+
+"@emotion/serialize@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@emotion/serialize@npm:1.0.2"
+  dependencies:
+    "@emotion/hash": ^0.8.0
+    "@emotion/memoize": ^0.7.4
+    "@emotion/unitless": ^0.7.5
+    "@emotion/utils": ^1.0.0
+    csstype: ^3.0.2
+  checksum: 7dd9ea85105dcc04703b61c629e2ac21dcac2c057197cd7bcf83860e6441d07eeb0b64ab56b13a5a02e947e9c3e313353e3422bd119324fb56ffa93ba1e0ea9a
+  languageName: node
+  linkType: hard
+
+"@emotion/server@npm:^11.4.0":
+  version: 11.4.0
+  resolution: "@emotion/server@npm:11.4.0"
+  dependencies:
+    "@emotion/utils": ^1.0.0
+    html-tokenize: ^2.0.0
+    multipipe: ^1.0.2
+    through: ^2.3.8
+  peerDependencies:
+    "@emotion/css": ^11.0.0-rc.0
+  peerDependenciesMeta:
+    "@emotion/css":
+      optional: true
+  checksum: 240b96e7f3e719f98694b03dd662aea6e2cf15d3647914e3d9097f551fbd8ccdf746b504fc5a78b0ac30a585d41eb47032d9bf75b82ef12569493e1f3ac1a14e
   languageName: node
   linkType: hard
 
@@ -4048,6 +4136,19 @@ __metadata:
   resolution: "@marigold/prettier-config@workspace:config/prettier"
   peerDependencies:
     prettier: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@marigold/server@workspace:packages/server":
+  version: 0.0.0-use.local
+  resolution: "@marigold/server@workspace:packages/server"
+  dependencies:
+    "@emotion/server": ^11.4.0
+    "@marigold/system": "workspace:*"
+  peerDependencies:
+    "@marigold/system": "*"
+    react: ^16.x || ^17.0.0
+    react-dom: ^16.x || ^17.0.0
   languageName: unknown
   linkType: soft
 
@@ -8856,6 +8957,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"buffer-from@npm:~0.1.1":
+  version: 0.1.2
+  resolution: "buffer-from@npm:0.1.2"
+  checksum: 89e3c7125e8734d8b604cc2ec41876b5e3d3047d4ab76b3c16d435b374e2878095627d70074965f55dbcf27669eb600c2e89f7879de8aeebbaaa54e8ab2329fb
+  languageName: node
+  linkType: hard
+
 "buffer-indexof@npm:^1.0.0":
   version: 1.1.1
   resolution: "buffer-indexof@npm:1.1.1"
@@ -11688,6 +11796,15 @@ __metadata:
   peerDependencies:
     react: ">=16.12.0"
   checksum: 945c025765d93cbdf1ef94e131c5eb8243f014e429d810eecc80fb171356ac8ca9bfbc7991972e03562713a10f8b401208b20d250df96eb65c195bfcd0b9ca2a
+  languageName: node
+  linkType: hard
+
+"duplexer2@npm:^0.1.2":
+  version: 0.1.4
+  resolution: "duplexer2@npm:0.1.4"
+  dependencies:
+    readable-stream: ^2.0.2
+  checksum: 8edf412d8a5bd80a83e938ec034778f8a8caea368f993e76ccbf2233e421fa5e2f6ef6a69aa10b95bc36a819ff27bca9cb321771fb509c552c68e61818206071
   languageName: node
   linkType: hard
 
@@ -15821,6 +15938,21 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"html-tokenize@npm:^2.0.0":
+  version: 2.0.1
+  resolution: "html-tokenize@npm:2.0.1"
+  dependencies:
+    buffer-from: ~0.1.1
+    inherits: ~2.0.1
+    minimist: ~1.2.5
+    readable-stream: ~1.0.27-1
+    through2: ~0.4.1
+  bin:
+    html-tokenize: bin/cmd.js
+  checksum: 19930c593264688b66afa5ca8a565dd8518bfcfc237948b32e01d356fdbdefc19802986dd928413f31f1408d0e929a83088ae6197b5c07334c017636813e0eb0
+  languageName: node
+  linkType: hard
+
 "html-void-elements@npm:^1.0.0":
   version: 1.0.5
   resolution: "html-void-elements@npm:1.0.5"
@@ -19007,6 +19139,7 @@ fsevents@^1.2.7:
   dependencies:
     "@changesets/changelog-github": 0.4.0
     "@changesets/cli": 2.15.0
+    "@emotion/react": ^11.4.0
     "@marigold/eslint-config": "*"
     "@marigold/jest-config": "*"
     "@marigold/prettier-config": "*"
@@ -19554,7 +19687,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"minimist@npm:^1.1.0, minimist@npm:^1.1.1, minimist@npm:^1.1.3, minimist@npm:^1.2.0, minimist@npm:^1.2.3, minimist@npm:^1.2.5":
+"minimist@npm:^1.1.0, minimist@npm:^1.1.1, minimist@npm:^1.1.3, minimist@npm:^1.2.0, minimist@npm:^1.2.3, minimist@npm:^1.2.5, minimist@npm:~1.2.5":
   version: 1.2.5
   resolution: "minimist@npm:1.2.5"
   checksum: b77b8590147a4e217ff34266236bc39de23b52e6e33054076991ff674c7397a1380a7bde11111916f16f003a94aaa7e4f3d92595a32189644ff607fabc65a5b6
@@ -19800,6 +19933,16 @@ fsevents@^1.2.7:
     arrify: ^2.0.1
     minimatch: ^3.0.4
   checksum: c1ba3c9b68e7840cdb4d5d2998eeb68a88ef14a09ce03bd392738529665147a6ec6970d8bf9e7fbac618bb58c2a615f190c048f97c290e36fb4890a3ef78991e
+  languageName: node
+  linkType: hard
+
+"multipipe@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "multipipe@npm:1.0.2"
+  dependencies:
+    duplexer2: ^0.1.2
+    object-assign: ^4.1.0
+  checksum: 5d244bfd03ad39d5f70a66a5c922bc90b19c1cf8fcee4a961b86f3881155a1cb68eedffc2bb6a0904efbcb2fdd831c4f558057c185de93bc71b5120b4dd3c2b7
   languageName: node
   linkType: hard
 
@@ -23220,7 +23363,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:~1.0.17, readable-stream@npm:~1.0.31":
+"readable-stream@npm:~1.0.17, readable-stream@npm:~1.0.27-1, readable-stream@npm:~1.0.31":
   version: 1.0.34
   resolution: "readable-stream@npm:1.0.34"
   dependencies:
