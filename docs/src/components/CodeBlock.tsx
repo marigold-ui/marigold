@@ -17,19 +17,27 @@ const previewBoxStyles = {
 };
 
 type CodeBlockProps = {
+  className?: string;
   codeString?: string;
   language?: string;
-  props?: ???;
+  'code-only'?: boolean;
+  'live-code'?: boolean;
+  mdxType: string;
+  metastring: string;
+  originalType: string;
+  parentName: string;
 };
 
 export const CodeBlock: React.FC<CodeBlockProps> = ({
   codeString,
   language,
+  'code-only': codeOnly,
+  'live-code': liveCode,
   ...props
 }) => {
-  const [hide, setHide] = React.useState(!props['code-only']);
+  const [hide, setHide] = React.useState(!codeOnly);
 
-  if (props['live-code']) {
+  if (liveCode) {
     return (
       <LiveProvider
         code={codeString}
@@ -51,7 +59,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
       >
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
           <>
-            {!props['code-only'] && (
+            {!codeOnly && (
               <div style={previewBoxStyles}>
                 <LiveProvider
                   code={codeString}
