@@ -17,7 +17,7 @@ export const Badge: React.FC<BadgeProps> = ({
   ...props
 }) => (
   <Box
-    className={useStyles({ bg: bgColor, borderColor: borderColor })}
+    className={useStyles({ css: { bg: bgColor, borderColor: borderColor } })}
     variant={`badge.${variant}`}
     {...props}
   >

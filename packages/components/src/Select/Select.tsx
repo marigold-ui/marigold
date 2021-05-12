@@ -12,9 +12,11 @@ export const Select: React.FC<SelectProps> = ({
   ...props
 }) => {
   const iconStyles = useStyles({
-    alignSelf: 'center',
-    pointerEvents: 'none',
-    ml: '-28px',
+    css: {
+      alignSelf: 'center',
+      pointerEvents: 'none',
+      ml: '-28px',
+    },
   });
 
   return (

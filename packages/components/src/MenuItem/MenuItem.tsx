@@ -13,12 +13,10 @@ export const MenuItem: React.FC<MenuItemProps> = ({
   children,
   ...props
 }) => {
-  const classNames = useStyles(
-    {
-      variant: `menu.${variant}`,
-    },
-    className
-  );
+  const classNames = useStyles({
+    variant: `menu.${variant}`,
+    className,
+  });
 
   return (
     <Link {...props} variant="menu" className={classNames}>

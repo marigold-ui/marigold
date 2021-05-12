@@ -25,11 +25,11 @@ export const Textarea: React.FC<TextareaProps> = ({
   children,
   ...props
 }) => {
-  const errorClassName = useStyles({ color: 'error' });
-  const textareaClassNames = useStyles(
-    { outlineColor: errorMessage && 'error' },
-    className
-  );
+  const errorClassName = useStyles({ css: { color: 'error' } });
+  const textareaClassNames = useStyles({
+    css: { outlineColor: errorMessage && 'error' },
+    className,
+  });
 
   return (
     <Box>

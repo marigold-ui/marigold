@@ -56,8 +56,8 @@ export type BoxProps = {
 export const Box: ComponentWithAs<BoxProps, 'div'> = forwardRef(
   (
     {
-      as = 'div',
       variant,
+      as = 'div',
       children,
       className,
       display,
@@ -102,10 +102,11 @@ export const Box: ComponentWithAs<BoxProps, 'div'> = forwardRef(
     },
     ref
   ) => {
-    const cn = useStyles(
-      {
-        element: as,
-        variant,
+    const cn = useStyles({
+      element: as,
+      variant,
+      className,
+      css: {
         display,
         height,
         width,
@@ -145,8 +146,7 @@ export const Box: ComponentWithAs<BoxProps, 'div'> = forwardRef(
         overflow,
         transition,
       },
-      className
-    );
+    });
     return createElement(as, { ...props, ref, className: cn }, children);
   }
 );

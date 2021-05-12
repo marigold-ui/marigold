@@ -11,13 +11,13 @@ export const Slider: React.FC<SliderProps> = ({
   className,
   ...props
 }) => {
-  const classNames = useStyles(
-    {
-      variant: `form.${variant}`,
+  const classNames = useStyles({
+    variant: `form.${variant}`,
+    css: {
       verticalAlign: 'middle',
     },
-    className
-  );
+    className,
+  });
 
   return <input type="range" className={classNames} {...props} />;
 };

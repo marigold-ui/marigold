@@ -3,15 +3,9 @@ import { reset } from './reset';
 import { CSSObject } from './types';
 import { useClassname } from './useClassname';
 
-export type StylesProps = {
-  element?: ElementType;
-  variant?: string | string[];
-  [key: string]: any;
-};
-
 export type UseStyleInput = {
 	element?: ElementType;
-	styles?: Omit<CSSObject, 'variant' | 'element'> & { variant?: never; element?: never };
+	css?: Omit<CSSObject, 'variant' | 'element'> & { variant?: never; element?: never };
 	variant?: string | string[];
 	className?: string;
 }
@@ -19,7 +13,7 @@ export type UseStyleInput = {
 /**
  * Hook that can adds base styles, reset for certain elements, variants and custom styles
  */
-export const useStyles = ({ element, styles = {}, variant, className = '' }: UseStyleInput) => {
+export const useStyles = ({ element, css: styles = {}, variant, className = '' }: UseStyleInput) => {
   /**
    * Get reset styles. Base is always applied. An additional reset maybe applied
    * based on the passed element.

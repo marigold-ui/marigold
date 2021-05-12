@@ -20,7 +20,7 @@ export const Columns: React.FC<ColumnsProps> = ({
   ...props
 }) => {
   let columnItems = flattenChildren(children);
-  let childClassNames = useStyles({ p: `${space / 2}px` });
+  let childClassNames = useStyles({ css: { p: `${space / 2}px` } });
 
   // horizontal Alignment
   let justify = 'flex-start';

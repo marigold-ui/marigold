@@ -29,7 +29,7 @@ const wrapper: React.FC = ({ children }) => (
 
 test('create a string classname', () => {
   const { result } = renderHook(
-    () => useStyles({ element: 'a', styles: { color: 'primary' } }),
+    () => useStyles({ element: 'a', css: { color: 'primary' } }),
     {
       wrapper,
     }
@@ -131,7 +131,7 @@ test('custom styles third', () => {
     const classNames = useStyles({
       element: 'p',
       variant: `text.${variant}`,
-      styles: {
+      css: {
         marginTop: '4px',
       },
     });
@@ -161,11 +161,11 @@ test('customClassName styles fourth', () => {
     children,
     ...props
   }) => {
-    const custom = useStyles({ element: 'p', styles: { marginTop: '8px' } });
+    const custom = useStyles({ element: 'p', css: { marginTop: '8px' } });
     const classNames = useStyles({
       element: 'p',
       variant: `text.${variant}`,
-      styles: {
+      css: {
         marginTop: '4px',
       },
       className: custom,
