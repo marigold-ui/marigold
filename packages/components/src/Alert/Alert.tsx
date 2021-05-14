@@ -14,14 +14,14 @@ export const Alert: React.FC<AlertProps> = ({
   className,
   ...props
 }) => {
-  const classNames = useStyles(
-    {
-      variant: `alerts.${variant}`,
+  const classNames = useStyles({
+    css: {
       display: 'flex',
       alignItems: 'center',
     },
-    className
-  );
+    variant: `alerts.${variant}`,
+    className,
+  });
 
   var bgColor = 'success';
   if (variant === 'warning') {
@@ -29,7 +29,7 @@ export const Alert: React.FC<AlertProps> = ({
   } else if (variant === 'error') {
     bgColor = 'error';
   }
-  const iconClassName = useStyles({ bg: bgColor, m: '10px' });
+  const iconClassName = useStyles({ css: { bg: bgColor, m: '10px' } });
 
   var icon = <Check size={12} color="#ffffff" className={iconClassName} />;
   if (variant === 'warning') {
@@ -46,7 +46,9 @@ export const Alert: React.FC<AlertProps> = ({
         width="32px"
         height="32px"
         className={useStyles({
-          bg: bgColor,
+          css: {
+            bg: bgColor,
+          },
         })}
       >
         {icon}

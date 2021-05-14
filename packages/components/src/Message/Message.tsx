@@ -37,13 +37,15 @@ export const Message: React.FC<MessageProps> = ({
         <Heading
           variant="h4"
           className={useStyles({
-            display: 'inline',
+            css: {
+              display: 'inline',
+            },
           })}
         >
           {messageTitle}
         </Heading>
       </Box>
-      <Box className={useStyles({ color: 'black' })}>{children}</Box>
+      <Box className={useStyles({ css: { color: 'black' } })}>{children}</Box>
     </Box>
   );
 };

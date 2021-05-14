@@ -11,7 +11,7 @@ import { renderStatic } from './renderStatic';
 // Setup
 // ---------------
 const Box: React.FC<{ css: any }> = ({ css, children }) => {
-  const className = useStyles(css);
+  const className = useStyles({ css });
   return <div className={className}>{children}</div>;
 };
 

@@ -23,11 +23,13 @@ export const Menu: React.FC<MenuProps> = ({
   ...props
 }) => {
   const itemStyles = useStyles({
-    position: 'absolute',
-    minWidth: '120px',
-    display: 'block',
-    textAlign: 'left',
-    borderRadius: '2px',
+    css: {
+      position: 'absolute',
+      minWidth: '120px',
+      display: 'block',
+      textAlign: 'left',
+      borderRadius: '2px',
+    },
   });
 
   return (

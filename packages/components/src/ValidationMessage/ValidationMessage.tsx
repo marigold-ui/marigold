@@ -12,14 +12,14 @@ export const ValidationMessage: React.FC<ValidationMessageProps> = ({
   className,
   ...props
 }) => {
-  const classNames = useStyles(
-    {
-      variant: `validation.${variant}`,
+  const classNames = useStyles({
+    variant: `validation.${variant}`,
+    css: {
       display: 'flex',
       alignItems: 'center',
     },
-    className
-  );
+    className,
+  });
 
   return (
     <span className={classNames} {...props}>
