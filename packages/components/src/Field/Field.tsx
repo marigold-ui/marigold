@@ -23,13 +23,11 @@ export const Field: React.FC<FieldProps> = ({
   error,
   ...props
 }) => {
-  const labelClassName = useStyles(
-    {
-      variant: `field.${variant}`,
-    },
-    className
-  );
-  const errorClassName = useStyles({ color: 'red60' });
+  const labelClassName = useStyles({
+    variant: `field.${variant}`,
+    className,
+  });
+  const errorClassName = useStyles({ css: { color: 'red60' } });
 
   return (
     <div>

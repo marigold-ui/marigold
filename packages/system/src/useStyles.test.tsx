@@ -29,7 +29,7 @@ const wrapper: React.FC = ({ children }) => (
 
 test('create a string classname', () => {
   const { result } = renderHook(
-    () => useStyles({ element: 'a', color: 'primary' }),
+    () => useStyles({ element: 'a', css: { color: 'primary' } }),
     {
       wrapper,
     }
@@ -131,7 +131,9 @@ test('custom styles third', () => {
     const classNames = useStyles({
       element: 'p',
       variant: `text.${variant}`,
-      marginTop: '4px',
+      css: {
+        marginTop: '4px',
+      },
     });
     return (
       <p className={classNames} {...props}>
@@ -159,14 +161,15 @@ test('customClassName styles fourth', () => {
     children,
     ...props
   }) => {
-    const classNames = useStyles(
-      {
-        element: 'p',
-        variant: `text.${variant}`,
+    const custom = useStyles({ element: 'p', css: { marginTop: '8px' } });
+    const classNames = useStyles({
+      element: 'p',
+      variant: `text.${variant}`,
+      css: {
         marginTop: '4px',
       },
-      useStyles({ element: 'p', marginTop: '8px' })
-    );
+      className: custom,
+    });
     return (
       <p className={classNames} {...props}>
         {children}
@@ -190,7 +193,7 @@ test('customClassName styles fourth', () => {
 
 test("don't apply the same reset multiple times", () => {
   const Button = ({ className }: { className?: string }) => {
-    const classNames = useStyles({ element: 'button' }, className);
+    const classNames = useStyles({ element: 'button', className });
     return (
       <button title="button" className={classNames}>
         Click me!

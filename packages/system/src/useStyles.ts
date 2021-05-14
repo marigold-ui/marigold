@@ -1,20 +1,19 @@
 import { ElementType } from 'react';
 import { reset } from './reset';
+import { CSSObject } from './types';
 import { useClassname } from './useClassname';
 
-export type StylesProps = {
-  element?: ElementType;
-  variant?: string | string[];
-  [key: string]: any;
-};
+export type UseStyleInput = {
+	element?: ElementType;
+	css?: Omit<CSSObject, 'variant' | 'element'> & { variant?: never; element?: never };
+	variant?: string | string[];
+	className?: string;
+}
 
 /**
  * Hook that can adds base styles, reset for certain elements, variants and custom styles
  */
-export const useStyles = (
-  { element, variant, ...styles }: StylesProps,
-  classNames: string = ''
-) => {
+export const useStyles = ({ element, css: styles = {}, variant, className = '' }: UseStyleInput) => {
   /**
    * Get reset styles. Base is always applied. An additional reset maybe applied
    * based on the passed element.
@@ -22,10 +21,10 @@ export const useStyles = (
    * We check the passed className if it already includes the reset styles so no
    * duplicates are applied.
    */
-  const baseClassName = classNames.includes(reset.base) ? '' : reset.base;
+  const baseClassName = className.includes(reset.base) ? '' : reset.base;
   const resetClassName =
     typeof element === 'string'
-      ? classNames.includes((reset as { [key: string]: string })[element])
+      ? className.includes((reset as { [key: string]: string })[element])
         ? ''
         : (reset as { [key: string]: string })[element]
       : '';
@@ -49,7 +48,7 @@ export const useStyles = (
     resetClassName,
     variantsClassName,
     customClassName,
-    classNames,
+    className,
   ]
     .filter(Boolean)
     .join(' ');

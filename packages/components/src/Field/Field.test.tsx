@@ -71,7 +71,7 @@ test('supports error prop', () => {
 
 test('accepts custom styles prop className', () => {
   const TestComponent: React.FC = ({ children, ...props }) => {
-    const classNames = useStyles({ fontSize: '8px' });
+    const classNames = useStyles({ css: { fontSize: '8px' } });
     return (
       <Field htmlFor="myId" label="label" className={classNames} {...props} />
     );
