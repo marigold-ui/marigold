@@ -3,6 +3,8 @@ import Link from 'gatsby-link';
 
 # Theming
 
+Marigold uses a theme for its base styles.
+
 ## Theme Object
 
 Theming is based on a `theme object` that builds on the [System UI Theme Specification](https://system-ui.com/theme/).
@@ -10,7 +12,7 @@ The theme object defines your application's spacings, colors, fonts and componen
 
 ### Spacings
 
-Using semantic values for spacings makes it easier to apply the variables within the theme more consistently. Use CSS length units in a string.
+Using semantic values for spacings makes it easier to apply the variables within the theme consistently. Use CSS length units in a string to define the following keys.
 
 - `none`
 - `xxsmall`
@@ -46,10 +48,10 @@ Store the core typographic values in the following theme keys:
 
 ### Variants
 
-Marigold components extract styles from the theme induced by the ThemeProvider. You can define theme styles in scopes of variants for the components
+Marigold components extract styles from the theme induced by a ThemeProvider. You can define theme styles in scopes of variants for the components
 you intend to use. By creating variant objects on the same level with the component prefix on the top level, you can access its values by using the
-variant name in the component. If you want the same base styles applied to all the variants, make use of a root object which you define outside the
-theme. The following shows this behavior with the Alert component as an example.
+variant name in the component. If you want the same base styles applied to all the variants of one component, use a root object which you define outside the
+theme. See an example:
 
 ```tsx code-only
 // Root styles
@@ -85,7 +87,7 @@ const theme: BaseTheme = {
 
 ### ThemeProvider
 
-The `ThemeProvider` component is a wrapper around the component tree on the root level and applies the theme to the components.
+The `ThemeProvider` is a wrapper around the component tree on the root level and applies the theme to the components.
 
 ```tsx code-only
 import { ThemeProvider } from '@marigold/system';
@@ -98,9 +100,9 @@ export const ThemeProvider: React.FC = ({ children }) => {
 
 ### Access Theme Variables
 
-Theme variables are styles that are stored in key value pairs and defined as described above.
-If using a different theme, the value for a certain variable can change because a different style is stored in the new theme.
-Reuse theme variables within the theme while defining variants of a component. Like this, you create a unique theme that is recognized in all the components:
+Theme variables are styles that are stored in key-value-pairs and defined as described above.
+If you change the theme, the value for a certain variable can change because a different style is stored in the new theme.
+Reuse theme variables within the theme while defining variants of a component. Like this, you create a unique theme that is applied in all the components:
 
 ```tsx code-only
 const theme: BaseTheme = {
@@ -128,7 +130,9 @@ These values can also be accessed as in
 
 ```tsx code-only
 const classNames = useStyles({
-  fontSize: b2bTheme.fontSize.small,
+  css: {
+    fontSize: b2bTheme.fontSize.small,
+  },
 });
 ```
 
@@ -136,7 +140,7 @@ const classNames = useStyles({
 
 Create a file, e.g. `index.ts` in your theme folder and define your theme object.
 Import and use the theme in the `<ThemeProvider>`.
-Example base theme:
+See a working example base theme here:
 
 ```tsx code-only
 const theme: BaseTheme = {
@@ -188,16 +192,22 @@ const theme: BaseTheme = {
 
 ### Key Reference
 
-Theme object keys and the corresponding CSS properties:
+Different theme keys can be used as different CSS properties.
+See the theme object keys and the corresponding CSS properties in the following table.
 
-| Theme Key   | CSS Properties                                                                                                                                                           |
-| :---------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| space       | margin, margin-top, margin-right, margin-bottom, margin-left, padding, padding-top, padding-right, padding-bottom, padding-left, grid-gap, grid-column-gap, grid-row-gap |
-| breakpoints | min-width (media query)                                                                                                                                                  |
-| fonts       | font-family                                                                                                                                                              |
-| fontSizes   | font-size                                                                                                                                                                |
-| fontWeights | font-weight                                                                                                                                                              |
-| lineHeights | line-height                                                                                                                                                              |
-| colors      | color, background-color, border-color                                                                                                                                    |
+| Theme Key     | CSS Properties                                                                                                                                                                                     |
+| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `space`       | `margin`, `margin-top`, `margin-right`, `margin-bottom`, `margin-left`, `padding`, `padding-top`, `padding-right`, `padding-bottom`, `padding-left`, `grid-gap`, `grid-column-gap`, `grid-row-gap` |
+| `breakpoints` | `min-width` (media query)                                                                                                                                                                          |
+| `fonts`       | `font-family `                                                                                                                                                                                     |
+| `fontSizes`   | `font-size`                                                                                                                                                                                        |
+| `fontWeights` | `font-weight`                                                                                                                                                                                      |
+| `lineHeights` | `line-height`                                                                                                                                                                                      |
+| `colors`      | `color`, `background-color`, `border-color`                                                                                                                                                        |
+
+
+### Examples
+
+See example themes under <Link to="/themes/b2b">Themes/B2B</Link> and <Link to="/themes/unicorn">Themes/Unicorn</Link>.
 
 export default Layout;
