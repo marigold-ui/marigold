@@ -1,31 +1,21 @@
 import React from 'react';
 import b2bTheme from '@marigold/theme-b2b';
 import * as Components from '@marigold/components';
+import { useStyles } from '@marigold/system';
 import * as Icons from '@marigold/icons';
-import Highlight, { defaultProps } from 'prism-react-renderer';
+import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/github';
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
 
 import { CopyButton } from './CopyButton';
 import { ShowHideButton } from './ShowHideButton';
 
-const previewBoxStyles = {
-  border: '1px solid #e3e3e3',
-  borderRadius: b2bTheme.space.xxsmall,
-  padding: b2bTheme.space.small,
-  position: 'relative',
-};
-
 type CodeBlockProps = {
   className?: string;
-  codeString?: string;
-  language?: string;
+  codeString: string;
+  language: Language;
   'code-only'?: boolean;
   'live-code'?: boolean;
-  mdxType: string;
-  metastring: string;
-  originalType: string;
-  parentName: string;
 };
 
 export const CodeBlock: React.FC<CodeBlockProps> = ({
@@ -33,9 +23,16 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
   language,
   'code-only': codeOnly,
   'live-code': liveCode,
-  ...props
 }) => {
   const [hide, setHide] = React.useState(!codeOnly);
+  const previewBoxStyles = useStyles({
+    css: {
+      border: '1px solid #e3e3e3',
+      borderRadius: b2bTheme.space.xxsmall,
+      padding: b2bTheme.space.small,
+      position: 'relative',
+    },
+  });
 
   if (liveCode) {
     return (
@@ -60,7 +57,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
           <>
             {!codeOnly && (
-              <div style={previewBoxStyles}>
+              <div className={previewBoxStyles}>
                 <LiveProvider
                   code={codeString}
                   scope={{ ...Components, ...Icons }}
@@ -71,25 +68,26 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
               </div>
             )}
             {!hide && (
-              <pre
-                className={className}
-                style={{
-                  ...style,
-                  margin: b2bTheme.space.none,
-                  padding: b2bTheme.space.medium,
-                  position: 'relative',
-                }}
-                scope={{ ...Components, ...Icons }}
-              >
-                <CopyButton codeString={codeString} />
-                {tokens.map((line, i) => (
-                  <div key={i} {...getLineProps({ line, key: i })}>
-                    {line.map((token, key) => (
-                      <span key={key} {...getTokenProps({ token, key })} />
-                    ))}
-                  </div>
-                ))}
-              </pre>
+              <LiveProvider scope={{ ...Components, ...Icons }}>
+                <pre
+                  className={className}
+                  style={{
+                    ...style,
+                    margin: b2bTheme.space.none,
+                    padding: b2bTheme.space.medium,
+                    position: 'relative',
+                  }}
+                >
+                  {tokens.map((line, i) => (
+                    <div key={i} {...getLineProps({ line, key: i })}>
+                      {line.map((token, key) => (
+                        <span key={key} {...getTokenProps({ token, key })} />
+                      ))}
+                    </div>
+                  ))}
+                  <CopyButton codeString={codeString} />
+                </pre>
+              </LiveProvider>
             )}
             <br />
           </>
