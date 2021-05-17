@@ -74,7 +74,7 @@ test('accepts other variant than default', () => {
 
 test('accepts custom styles prop className', () => {
   const TestTextComponent: React.FC = ({ children, ...props }) => {
-    const classNames = useStyles({ fontSize: '8px' });
+    const classNames = useStyles({ css: { fontSize: '8px' } });
     return (
       <Text className={classNames} {...props}>
         {children}

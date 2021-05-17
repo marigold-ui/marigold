@@ -49,7 +49,7 @@ test('supports other variant than default', () => {
 
 test('accepts custom styles prop className', () => {
   const TestComponent: React.FC = ({ children, ...props }) => {
-    const classNames = useStyles({ fontSize: '8px' });
+    const classNames = useStyles({ css: { fontSize: '8px' } });
     return (
       <Badge className={classNames} {...props}>
         {children}

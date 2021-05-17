@@ -15,12 +15,10 @@ export const SVG: React.FC<SVGProps> = ({
   children,
   ...props
 }) => {
-  const classNames = useStyles(
-    {
-      variant: `icon.${variant}`,
-    },
-    className
-  );
+  const classNames = useStyles({
+    variant: `icon.${variant}`,
+    className,
+  });
 
   return (
     <svg

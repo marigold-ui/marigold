@@ -19,9 +19,9 @@ const RadioIcon: React.FC<RadioIconProps> = ({
   variant,
   checked,
 }) => {
-  const radioIconStyle = useStyles(
-    {
-      variant: `form.${variant}`,
+  const radioIconStyle = useStyles({
+    variant: `form.${variant}`,
+    css: {
       ariaHidden: 'true',
       mr: 2,
       verticalAlign: 'middle',
@@ -31,8 +31,8 @@ const RadioIcon: React.FC<RadioIconProps> = ({
         cursor: 'not-allowed',
       },
     },
-    className
-  );
+    className,
+  });
 
   if (checked) {
     return <CircleChecked className={radioIconStyle} />;
@@ -52,12 +52,14 @@ const RadioInput: React.FC<RadioInputProps> = ({
   ...props
 }) => {
   const radioStyle = useStyles({
-    position: 'absolute',
-    opacity: 0,
-    zIndex: -1,
-    width: 1,
-    height: 1,
-    overflow: 'hidden',
+    css: {
+      position: 'absolute',
+      opacity: 0,
+      zIndex: -1,
+      width: 1,
+      height: 1,
+      overflow: 'hidden',
+    },
   });
 
   return (

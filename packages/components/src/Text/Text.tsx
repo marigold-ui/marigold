@@ -19,13 +19,13 @@ export const Text: React.FC<TextProps> = ({
   children,
   ...props
 }) => {
-  const classNames = useStyles(
-    {
-      variant: `text.${variant}`,
+  const classNames = useStyles({
+    variant: `text.${variant}`,
+    css: {
       color: textColor,
     },
-    className
-  );
+    className,
+  });
 
   return (
     <Box as={as} className={classNames} {...props}>

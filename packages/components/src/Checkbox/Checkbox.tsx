@@ -21,17 +21,19 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   ...props
 }) => {
   const checkboxStyles = useStyles({
-    position: 'absolute',
-    opacity: 0,
-    zIndex: -1,
-    width: 1,
-    height: 1,
-    overflow: 'hidden',
+    css: {
+      position: 'absolute',
+      opacity: 0,
+      zIndex: -1,
+      width: 1,
+      height: 1,
+      overflow: 'hidden',
+    },
   });
 
-  const checkboxIconStyles = useStyles(
-    {
-      variant: `checkbox.${variant}`,
+  const checkboxIconStyles = useStyles({
+    variant: `checkbox.${variant}`,
+    css: {
       mr: 2,
       verticalAlign: 'middle',
       ':hover': { cursor: 'pointer' },
@@ -40,8 +42,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         cursor: 'not-allowed',
       },
     },
-    className
-  );
+    className,
+  });
 
   const checkbox = (
     <Box display="inline-block">

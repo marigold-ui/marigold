@@ -49,7 +49,7 @@ test('supports fill prop', () => {
 
 test('accepts custom styles prop className', () => {
   const TestComponent: React.FC = ({ children, ...props }) => {
-    const classNames = useStyles({ margin: '8px' });
+    const classNames = useStyles({ css: { margin: '8px' } });
     return (
       <SVG title="svg" className={classNames} {...props}>
         <path d="M9.9 20.113V13.8415H14" />
