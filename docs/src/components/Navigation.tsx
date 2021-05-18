@@ -1,13 +1,11 @@
 import React from 'react';
 import Link from 'gatsby-link';
-import { Image, Text } from '@marigold/components';
-import image from '../images/icon.png';
-import { useStyles } from '@marigold/system';
+import {  Text } from '@marigold/components';
 
 export const Navigation: React.FC = () => {
   return (
     <Text>
-      <Link to="/start"><Image width="48px" src={image} className={useStyles({ css: { marginRight: '8px', verticalAlign: 'middle' } })} />Marigold</Link>
+      <Link to="/start">Marigold</Link>
       <ul>
         <li>
           <b>Guides</b>
