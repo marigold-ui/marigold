@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Column, Columns, Text } from '@marigold/components';
+import { Column, Columns } from '@marigold/components';
 import { ThemeProvider } from '@marigold/system';
 import b2bTheme from '@marigold/theme-b2b';
 
