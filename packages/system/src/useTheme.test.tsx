@@ -1,5 +1,7 @@
 import React from 'react';
+import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
+
 import { ThemeProvider, useTheme } from './useTheme';
 
 // Setup
@@ -44,5 +46,53 @@ test('return theme', () => {
         },
       },
     }
+  `);
+});
+
+test('themes can be cascaded', () => {
+  const outerTheme = {
+    colors: {
+      primary: 'coral',
+    },
+  };
+
+  const innerTheme = {
+    colors: {
+      primary: 'gainsboro',
+    },
+  };
+
+  const Theme = ({ testId }: { testId: string }) => {
+    const theme = useTheme();
+    return <div data-testid={testId}>{JSON.stringify(theme, null, 2)}</div>;
+  };
+
+  render(
+    <ThemeProvider theme={outerTheme}>
+      <>
+        <Theme testId="outer" />
+        <ThemeProvider theme={innerTheme}>
+          <Theme testId="inner" />
+        </ThemeProvider>
+      </>
+    </ThemeProvider>
+  );
+
+  const outer = screen.getByTestId('outer');
+  const inner = screen.getByTestId('inner');
+
+  expect(outer.innerHTML).toMatchInlineSnapshot(`
+    "{
+      \\"colors\\": {
+        \\"primary\\": \\"coral\\"
+      }
+    }"
+  `);
+  expect(inner.innerHTML).toMatchInlineSnapshot(`
+    "{
+      \\"colors\\": {
+        \\"primary\\": \\"gainsboro\\"
+      }
+    }"
   `);
 });
