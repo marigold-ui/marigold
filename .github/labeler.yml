@@ -1,8 +1,12 @@
-enhancement:
+'type:feature':
   - packages/*
   - packages/**/*
   - themes/**/src/index.ts
 
-infrastructure:
+'type:infrastructure':
   - config/*
   - config/**/*
+
+'type:docs':
+  - docs/*
+  - docs/**/*
