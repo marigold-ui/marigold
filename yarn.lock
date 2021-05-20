@@ -4139,7 +4139,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marigold/server@workspace:packages/server":
+"@marigold/server@workspace:*, @marigold/server@workspace:packages/server":
   version: 0.0.0-use.local
   resolution: "@marigold/server@workspace:packages/server"
   dependencies:
@@ -11591,6 +11591,7 @@ __metadata:
   dependencies:
     "@marigold/components": "workspace:*"
     "@marigold/icons": "workspace:*"
+    "@marigold/server": "workspace:*"
     "@marigold/system": "workspace:*"
     "@marigold/theme-b2b": "workspace:*"
     "@marigold/types": "workspace:*"
