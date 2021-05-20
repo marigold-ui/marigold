@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'gatsby-link';
-import {  Text } from '@marigold/components';
+import { Text } from '@marigold/components';
 
 export const Navigation: React.FC = () => {
   return (
@@ -53,8 +53,12 @@ export const Navigation: React.FC = () => {
         <li>
           <b>Themes</b>
           <ul>
-            <li><Link to="/themes/b2b">B2B</Link></li>
-            <li><Link to="/themes/unicorn">Unicorn</Link></li>
+            <li>
+              <Link to="/themes/b2b">B2B</Link>
+            </li>
+            <li>
+              <Link to="/themes/unicorn">Unicorn</Link>
+            </li>
             <li>Marigold Docs</li>
           </ul>
         </li>
