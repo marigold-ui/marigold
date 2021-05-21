@@ -6180,7 +6180,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-helmet@npm:^6.1.1":
+"@types/react-helmet@npm:6.1.1":
   version: 6.1.1
   resolution: "@types/react-helmet@npm:6.1.1"
   dependencies:
@@ -6227,7 +6227,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:17.0.5, @types/react@npm:^17.0.5":
+"@types/react@npm:17.0.5":
   version: 17.0.5
   resolution: "@types/react@npm:17.0.5"
   dependencies:
@@ -8329,7 +8329,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-gatsby@npm:^1.4.0, babel-preset-gatsby@npm:^1.5.0":
+"babel-preset-gatsby@npm:1.5.0, babel-preset-gatsby@npm:^1.5.0":
   version: 1.5.0
   resolution: "babel-preset-gatsby@npm:1.5.0"
   dependencies:
@@ -11597,9 +11597,9 @@ __metadata:
     "@marigold/types": "workspace:*"
     "@mdx-js/mdx": 1.6.22
     "@mdx-js/react": 1.6.22
-    "@types/react": ^17.0.5
-    "@types/react-helmet": ^6.1.1
-    babel-preset-gatsby: ^1.4.0
+    "@types/react": 17.0.5
+    "@types/react-helmet": 6.1.1
+    babel-preset-gatsby: 1.5.0
     gatsby: 3.5.0
     gatsby-plugin-emotion: 6.5.0
     gatsby-plugin-manifest: 3.5.0
@@ -11611,13 +11611,13 @@ __metadata:
     gatsby-source-filesystem: 3.5.0
     gatsby-transformer-sharp: 3.5.0
     gh-pages: 3.1.0
-    mdx-utils: ^0.2.0
-    prism-react-renderer: ^1.2.0
-    prismjs: ^1.23.0
+    mdx-utils: 0.2.0
+    prism-react-renderer: 1.2.0
+    prismjs: 1.23.0
     react: 17.0.2
     react-dom: 17.0.2
     react-helmet: 6.1.0
-    react-live: ^2.2.3
+    react-live: 2.2.3
     tsconfig-paths-webpack-plugin: 3.5.1
   languageName: unknown
   linkType: soft
@@ -19481,7 +19481,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"mdx-utils@npm:^0.2.0":
+"mdx-utils@npm:0.2.0":
   version: 0.2.0
   resolution: "mdx-utils@npm:0.2.0"
   checksum: 7f8f36ac28d145184c62cb984c52a653ab8836becef81c2a772724ad6992b72d7c6a4d6d7c28a250a9a4a15dadc22fbee9d6c6151195686ad4e0113b0d6abe76
@@ -22614,7 +22614,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prism-react-renderer@npm:^1.0.1, prism-react-renderer@npm:^1.2.0":
+"prism-react-renderer@npm:1.2.0, prism-react-renderer@npm:^1.0.1":
   version: 1.2.0
   resolution: "prism-react-renderer@npm:1.2.0"
   peerDependencies:
@@ -22623,7 +22623,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prismjs@npm:^1.21.0, prismjs@npm:^1.23.0, prismjs@npm:~1.23.0":
+"prismjs@npm:1.23.0, prismjs@npm:^1.21.0, prismjs@npm:~1.23.0":
   version: 1.23.0
   resolution: "prismjs@npm:1.23.0"
   dependencies:
@@ -23320,7 +23320,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-live@npm:^2.2.3":
+"react-live@npm:2.2.3":
   version: 2.2.3
   resolution: "react-live@npm:2.2.3"
   dependencies:
