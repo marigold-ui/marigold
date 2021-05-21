@@ -45,7 +45,9 @@ const components = {
     );
   },
   table: props => {
-    return <table style={{ width: '100%' }} {...props}></table>;
+    return (
+      <table style={{ width: '100%', fontFamily: 'Inter' }} {...props}></table>
+    );
   },
   th: props => {
     return (
