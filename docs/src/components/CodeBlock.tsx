@@ -10,21 +10,76 @@ import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
 import { CopyButton } from './CopyButton';
 import { ShowHideButton } from './ShowHideButton';
 
+enum ActionType {
+  Preview = 'preview',
+  Live = 'live',
+  Code = 'code',
+}
+
 type CodeBlockProps = {
   className?: string;
   codeString: string;
+  type: ActionType;
   language: Language;
-  'code-only'?: boolean;
-  'live-code'?: boolean;
 };
+
+// type State = {
+//   value: number;
+// }
+
+// type Action = {
+//   type: ActionType,
+// }
+
+// function codeBlockTypeReducer(state: State, action: Action): State {
+//   switch (action.type) {
+//     case ActionType.Preview: {
+//       return {
+//         ...state,
+//       };
+//     }
+//     case ActionType.Live: {
+//       return {
+//         ...state,
+//       };
+//     }
+//     case ActionType.Code: {
+//       return {
+//         ...state,
+//       };
+//     }
+//     default: {
+//       throw new Error(`Unhandled action type: ${action.type}`);
+//     }
+//   }
+// }
+
+// function useCodeBlockType() {
+//   const [state, dispatch] = React.useReducer(codeBlockTypeReducer, {})
+
+//   React.useEffect(() => {
+//     if (!navigator.geolocation) {
+//       dispatch({
+//         type: 'error',
+//         error: new Error('Geolocation is not supported'),
+//       })
+//       return
+//     }
+//     const geoWatch = navigator.geolocation.watchPosition(
+//       position => dispatch({type: 'success', position}),
+//       error => dispatch({type: 'error', error}),
+//     )
+//     return () => navigator.geolocation.clearWatch(geoWatch)
+//   }, [])
+//   return state
+// }
 
 export const CodeBlock: React.FC<CodeBlockProps> = ({
   codeString,
+  type = 'preview',
   language,
-  'code-only': codeOnly,
-  'live-code': liveCode,
 }) => {
-  const [hide, setHide] = React.useState(!codeOnly);
+  const [hide, setHide] = React.useState(type === 'preview');
   const previewBoxStyles = useStyles({
     css: {
       border: '1px solid #e3e3e3',
@@ -34,29 +89,17 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
     },
   });
 
-  if (liveCode) {
-    return (
-      <LiveProvider
-        code={codeString}
-        scope={{ ...Components, ...Icons }}
-        theme={theme}
-      >
-        <LivePreview className={previewBoxStyles} />
-        <LiveEditor />
-        <LiveError />
-      </LiveProvider>
-    );
-  } else {
-    return (
-      <Highlight
-        {...defaultProps}
-        code={codeString}
-        language={language}
-        theme={theme}
-      >
-        {({ className, style, tokens, getLineProps, getTokenProps }) => (
-          <>
-            {!codeOnly && (
+  switch (type) {
+    case ActionType.Preview: {
+      return (
+        <Highlight
+          {...defaultProps}
+          code={codeString}
+          language={language}
+          theme={theme}
+        >
+          {({ className, style, tokens, getLineProps, getTokenProps }) => (
+            <>
               <div className={previewBoxStyles}>
                 <LiveProvider
                   code={codeString}
@@ -66,8 +109,57 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                 </LiveProvider>
                 <ShowHideButton hide={hide} onHideChange={setHide} />
               </div>
-            )}
-            {!hide && (
+              {!hide && (
+                <LiveProvider scope={{ ...Components, ...Icons }}>
+                  <pre
+                    className={className}
+                    style={{
+                      ...style,
+                      margin: b2bTheme.space.none,
+                      padding: b2bTheme.space.medium,
+                      position: 'relative',
+                    }}
+                  >
+                    {tokens.map((line, i) => (
+                      <div key={i} {...getLineProps({ line, key: i })}>
+                        {line.map((token, key) => (
+                          <span key={key} {...getTokenProps({ token, key })} />
+                        ))}
+                      </div>
+                    ))}
+                    <CopyButton codeString={codeString} />
+                  </pre>
+                </LiveProvider>
+              )}
+              <br />
+            </>
+          )}
+        </Highlight>
+      );
+    }
+    case ActionType.Live: {
+      return (
+        <LiveProvider
+          code={codeString}
+          scope={{ ...Components, ...Icons }}
+          theme={theme}
+        >
+          <LivePreview className={previewBoxStyles} />
+          <LiveEditor />
+          <LiveError />
+        </LiveProvider>
+      );
+    }
+    case ActionType.Code: {
+      return (
+        <Highlight
+          {...defaultProps}
+          code={codeString}
+          language={language}
+          theme={theme}
+        >
+          {({ className, style, tokens, getLineProps, getTokenProps }) => (
+            <>
               <LiveProvider scope={{ ...Components, ...Icons }}>
                 <pre
                   className={className}
@@ -88,11 +180,14 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                   <CopyButton codeString={codeString} />
                 </pre>
               </LiveProvider>
-            )}
-            <br />
-          </>
-        )}
-      </Highlight>
-    );
+              <br />
+            </>
+          )}
+        </Highlight>
+      );
+    }
+    default: {
+      throw new Error(`Unhandled action type: ${type}`);
+    }
   }
 };

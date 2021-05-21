@@ -45,7 +45,7 @@ const components = {
   pre: preProps => {
     const props = preToCodeBlock(preProps);
     if (props) {
-      return <CodeBlock {...props} />;
+      return <CodeBlock type={props.metastring} {...props} />;
     } else {
       return <pre {...preProps} />;
     }
