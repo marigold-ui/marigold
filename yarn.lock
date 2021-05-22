@@ -4094,7 +4094,7 @@ __metadata:
     eslint-plugin-react: 7.23.2
     eslint-plugin-testing-library: 4.4.0
   peerDependencies:
-    eslint: 7.26
+    eslint: 7.26 || 7.27
   languageName: unknown
   linkType: soft
 
