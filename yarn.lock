@@ -5520,9 +5520,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react-hooks@npm:5.1.3":
-  version: 5.1.3
-  resolution: "@testing-library/react-hooks@npm:5.1.3"
+"@testing-library/react-hooks@npm:6.0.0":
+  version: 6.0.0
+  resolution: "@testing-library/react-hooks@npm:6.0.0"
   dependencies:
     "@babel/runtime": ^7.12.5
     "@types/react": ">=16.9.0"
@@ -5539,7 +5539,7 @@ __metadata:
       optional: true
     react-test-renderer:
       optional: true
-  checksum: 839d868fc0d5fddcd62953cef5addbf3f200069daad889c142414f71aebf10544bbeb6c526654dd19983d04546f353f8bc717d2f5e3d83c1abb4b08261a34e9a
+  checksum: 9c7fd8be188219413e6bc6d4abfd52e827c86c460d51b6031e98d65baf566c615448b11d83b75366b360297a2b37ab14e1e32868f8e7f64e05059cf5d4e667c1
   languageName: node
   linkType: hard
 
@@ -19282,7 +19282,7 @@ fsevents@^1.2.7:
     "@storybook/react": 6.2.9
     "@testing-library/jest-dom": 5.12.0
     "@testing-library/react": 11.2.7
-    "@testing-library/react-hooks": 5.1.3
+    "@testing-library/react-hooks": 6.0.0
     "@types/node": 14.17.0
     husky: 6.0.0
     prettier: 2.3.0
