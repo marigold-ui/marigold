@@ -11602,7 +11602,7 @@ __metadata:
     gatsby-transformer-sharp: 3.5.0
     gh-pages: 3.1.0
     mdx-utils: 0.2.0
-    prism-react-renderer: 1.2.0
+    prism-react-renderer: 1.2.1
     prismjs: 1.23.0
     react: 17.0.2
     react-dom: 17.0.2
@@ -22594,7 +22594,16 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prism-react-renderer@npm:1.2.0, prism-react-renderer@npm:^1.0.1":
+"prism-react-renderer@npm:1.2.1":
+  version: 1.2.1
+  resolution: "prism-react-renderer@npm:1.2.1"
+  peerDependencies:
+    react: ">=0.14.9"
+  checksum: b27670bd96e4320075f9a2932d440b3025f9ce1ff64ddd8d8e71867701aabd6c9d2914d5deecb7bef7e92ed59baaef538a31559ca71c76efee3711a064f3e8ff
+  languageName: node
+  linkType: hard
+
+"prism-react-renderer@npm:^1.0.1":
   version: 1.2.0
   resolution: "prism-react-renderer@npm:1.2.0"
   peerDependencies:
