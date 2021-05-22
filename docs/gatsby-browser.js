@@ -1,8 +1,11 @@
 import React from 'react';
 import { MDXProvider } from '@mdx-js/react';
 import { preToCodeBlock } from 'mdx-utils';
+
 import b2bTheme from '@marigold/theme-b2b';
+
 import { CodeBlock } from './src/components/CodeBlock';
+import { Layout } from './src/components/Layout';
 
 const components = {
   inlineCode: props => {
@@ -55,3 +58,7 @@ const components = {
 export const wrapRootElement = ({ element }) => {
   return <MDXProvider components={components}>{element}</MDXProvider>;
 };
+
+export const wrapPageElement = ({ element, props }) => (
+  <Layout {...props}>{element}</Layout>
+);
