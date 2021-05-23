@@ -42,7 +42,13 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
         theme={theme}
       >
         <LivePreview className={previewBoxStyles} />
-        <LiveEditor />
+        <LiveEditor
+          className={useStyles({
+            css: {
+              fontSize: '1rem',
+            },
+          })}
+        />
         <LiveError />
       </LiveProvider>
     );
@@ -73,6 +79,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                   className={className}
                   style={{
                     ...style,
+                    fontSize: '1rem',
                     margin: b2bTheme.space.none,
                     padding: b2bTheme.space.medium,
                     position: 'relative',
