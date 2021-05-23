@@ -6,7 +6,7 @@ import { Layout } from './src/components/Layout';
 
 export const replaceRenderer = ({ bodyComponent, setHeadComponents }) => {
   const Style = createStyleTag(renderToString(bodyComponent));
-  setHeadComponents([<Style />]);
+  setHeadComponents([<Style key="ssr-styles" />]);
 };
 
 export const wrapPageElement = ({ element, props }) => (

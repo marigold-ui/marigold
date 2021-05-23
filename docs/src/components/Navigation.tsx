@@ -5,7 +5,7 @@ import { Text } from '@marigold/components';
 export const Navigation: React.FC = () => {
   return (
     <div>
-      <Link to="/start">
+      <Link to="/">
         <Text>Home</Text>
       </Link>
       <ul>
