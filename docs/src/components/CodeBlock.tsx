@@ -28,7 +28,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
   type = 'preview',
   language,
 }) => {
-  const [hide, setHide] = React.useState(ActionType.Preview);
+  const [hide, setHide] = React.useState(type === ActionType.Preview);
   const previewBoxStyles = useStyles({
     css: {
       border: '1px solid #e3e3e3',
