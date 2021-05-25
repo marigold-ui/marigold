@@ -23,57 +23,6 @@ type CodeBlockProps = {
   language: Language;
 };
 
-// type State = {
-//   value: number;
-// }
-
-// type Action = {
-//   type: ActionType,
-// }
-
-// function codeBlockTypeReducer(state: State, action: Action): State {
-//   switch (action.type) {
-//     case ActionType.Preview: {
-//       return {
-//         ...state,
-//       };
-//     }
-//     case ActionType.Live: {
-//       return {
-//         ...state,
-//       };
-//     }
-//     case ActionType.Code: {
-//       return {
-//         ...state,
-//       };
-//     }
-//     default: {
-//       throw new Error(`Unhandled action type: ${action.type}`);
-//     }
-//   }
-// }
-
-// function useCodeBlockType() {
-//   const [state, dispatch] = React.useReducer(codeBlockTypeReducer, {})
-
-//   React.useEffect(() => {
-//     if (!navigator.geolocation) {
-//       dispatch({
-//         type: 'error',
-//         error: new Error('Geolocation is not supported'),
-//       })
-//       return
-//     }
-//     const geoWatch = navigator.geolocation.watchPosition(
-//       position => dispatch({type: 'success', position}),
-//       error => dispatch({type: 'error', error}),
-//     )
-//     return () => navigator.geolocation.clearWatch(geoWatch)
-//   }, [])
-//   return state
-// }
-
 export const CodeBlock: React.FC<CodeBlockProps> = ({
   codeString,
   type = 'preview',
