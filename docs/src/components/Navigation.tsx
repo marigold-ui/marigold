@@ -5,7 +5,7 @@ import { Text } from '@marigold/components';
 export const Navigation: React.FC = () => {
   return (
     <div>
-      <Link to="/start">
+      <Link to="/">
         <Text>Home</Text>
       </Link>
       <ul>
@@ -28,7 +28,7 @@ export const Navigation: React.FC = () => {
           <ul>
             <li>
               <Text>
-                <Link to="/designTokens/colours">Colours</Link>
+                <Link to="/design-tokens/colors">Colors</Link>
               </Text>
             </li>
             <li>
@@ -39,7 +39,7 @@ export const Navigation: React.FC = () => {
             </li>
             <li>
               <Text>
-                <Link to="/designTokens/icons">Icons</Link>
+                <Link to="/design-tokens/icons">Icons</Link>
               </Text>
             </li>
           </ul>

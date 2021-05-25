@@ -6,6 +6,7 @@ module.exports = {
   },
   plugins: [
     'gatsby-plugin-sharp',
+    'gatsby-transformer-sharp',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-sitemap',
     'gatsby-plugin-remove-serviceworker',
@@ -15,23 +16,25 @@ module.exports = {
         icon: 'src/images/icon.png',
       },
     },
-    'gatsby-plugin-mdx',
-    'gatsby-transformer-sharp',
     {
-      resolve: 'gatsby-source-filesystem',
+      resolve: `gatsby-plugin-mdx`,
       options: {
-        name: 'images',
-        path: 'src/images/',
+        extensions: [`.mdx`, `.md`],
       },
-      __key: 'images',
     },
     {
       resolve: 'gatsby-source-filesystem',
       options: {
-        name: 'pages',
-        path: 'src/pages/',
+        name: 'images',
+        path: `${__dirname}/src/images`,
       },
-      __key: 'pages',
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'content',
+        path: `${__dirname}/content`,
+      },
     },
   ],
 };
