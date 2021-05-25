@@ -1,6 +1,5 @@
 import React from 'react';
-import { Layout } from '../components/Layout';
 
-export default function Home() {
-  return <Layout />;
-}
+const Index = () => <h1>Marigold Design System</h1>;
+
+export default Index;

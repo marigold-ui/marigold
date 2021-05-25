@@ -165,6 +165,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                   className={className}
                   style={{
                     ...style,
+                    fontSize: '1rem',
                     margin: b2bTheme.space.none,
                     padding: b2bTheme.space.medium,
                     position: 'relative',
