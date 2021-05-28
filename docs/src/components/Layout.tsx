@@ -20,7 +20,7 @@ export const Layout: React.FC = ({ children }) => {
       </Helmet>
       <ThemeProvider theme={b2bTheme}>
         <Columns space={4}>
-          <Column width={2}>
+          <Column width={4}>
             <Navigation />
           </Column>
           <Column width={10}>{children}</Column>
