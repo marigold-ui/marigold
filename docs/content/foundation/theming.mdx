@@ -1,4 +1,7 @@
-import { Layout } from '../../components/Layout';
+---
+title: Theming
+---
+
 import Link from 'gatsby-link';
 
 # Theming
@@ -53,7 +56,7 @@ you intend to use. By creating variant objects on the same level with the compon
 variant name in the component. If you want the same base styles applied to all the variants of one component, use a root object which you define outside the
 theme. See an example:
 
-```tsx code-only
+```tsx code
 // Root styles
 const alerts = {
   root: {
@@ -89,7 +92,7 @@ const theme: BaseTheme = {
 
 The `ThemeProvider` is a wrapper around the component tree on the root level and applies the theme to the components.
 
-```tsx code-only
+```tsx code
 import { ThemeProvider } from '@marigold/system';
 import b2bTheme from '@marigold/theme-b2b';
 
@@ -104,7 +107,7 @@ Theme variables are styles that are stored in key-value-pairs and defined as des
 If you change the theme, the value for a certain variable can change because a different style is stored in the new theme.
 Reuse theme variables within the theme while defining variants of a component. Like this, you create a unique theme that is applied in all the components:
 
-```tsx code-only
+```tsx code
 const theme: BaseTheme = {
   fonts: {
     body: 'Inter',
@@ -128,7 +131,7 @@ const theme: BaseTheme = {
 
 These values can also be accessed as in
 
-```tsx code-only
+```tsx code
 const classNames = useStyles({
   css: {
     fontSize: b2bTheme.fontSize.small,
@@ -142,7 +145,7 @@ Create a file, e.g. `index.ts` in your theme folder and define your theme object
 Import and use the theme in the `<ThemeProvider>`.
 See a working example base theme here:
 
-```tsx code-only
+```tsx code
 const theme: BaseTheme = {
   breakpoints: ['768', '1200'],
   space: {
@@ -209,5 +212,3 @@ See the theme object keys and the corresponding CSS properties in the following 
 ### Examples
 
 See example themes under <Link to="/themes/b2b">Themes/B2B</Link> and <Link to="/themes/unicorn">Themes/Unicorn</Link>.
-
-export default Layout;
