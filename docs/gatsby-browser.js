@@ -9,9 +9,6 @@ import { CodeBlock } from './src/components/CodeBlock';
 import { Layout } from './src/components/Layout';
 
 const components = {
-  p: props => {
-    return <Text as="p" variant="body" {...props}></Text>;
-  },
   h1: props => {
     return <Heading as="h1" variant="h1" {...props}></Heading>;
   },
@@ -47,10 +44,33 @@ const components = {
       ></code>
     );
   },
+  ul: props => {
+    return <ul style={{ fontFamily: 'Inter' }} {...props}></ul>;
+  },
+  ol: props => {
+    return <ol style={{ fontFamily: 'Inter' }} {...props}></ol>;
+  },
+  li: props => {
+    return <li style={{ fontFamily: 'Inter' }} {...props}></li>;
+  },
+  p: props => {
+    return <Text as="p" variant="body" {...props}></Text>;
+  },
+  pre: preProps => {
+    const props = preToCodeBlock(preProps);
+    if (props) {
+      return <CodeBlock type={props.metastring} {...props} />;
+    } else {
+      return <pre {...preProps} />;
+    }
+  },
   table: props => {
     return (
       <table style={{ width: '100%', fontFamily: 'Inter' }} {...props}></table>
     );
+  },
+  td: props => {
+    return <td style={{ padding: b2bTheme.space.xsmall }} {...props}></td>;
   },
   th: props => {
     return (
@@ -65,17 +85,6 @@ const components = {
   },
   tr: props => {
     return <tr style={{ padding: b2bTheme.space.xsmall }} {...props}></tr>;
-  },
-  td: props => {
-    return <td style={{ padding: b2bTheme.space.xsmall }} {...props}></td>;
-  },
-  pre: preProps => {
-    const props = preToCodeBlock(preProps);
-    if (props) {
-      return <CodeBlock type={props.metastring} {...props} />;
-    } else {
-      return <pre {...preProps} />;
-    }
   },
 };
 
