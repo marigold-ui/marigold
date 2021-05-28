@@ -1,11 +1,11 @@
 import React from 'react';
 import Link from 'gatsby-link';
-import {  Text } from '@marigold/components';
+import { Text } from '@marigold/components';
 
 export const Navigation: React.FC = () => {
   return (
     <Text>
-      <Link to="/start">Marigold</Link>
+      <Link to="/">Marigold</Link>
       <ul>
         <li>
           <b>Guides</b>
@@ -25,9 +25,6 @@ export const Navigation: React.FC = () => {
             <li>
               <Link to="/foundation/icons">Iconography</Link>
             </li>
-            {/* <li>
-                <Link to="/foundation/colours">Colours</Link>
-            </li> */}
           </ul>
         </li>
         <li>
@@ -53,8 +50,12 @@ export const Navigation: React.FC = () => {
         <li>
           <b>Themes</b>
           <ul>
-            <li><Link to="/themes/b2b">B2B</Link></li>
-            <li><Link to="/themes/unicorn">Unicorn</Link></li>
+            <li>
+              <Link to="/themes/b2b">B2B</Link>
+            </li>
+            <li>
+              <Link to="/themes/unicorn">Unicorn</Link>
+            </li>
             <li>Marigold Docs</li>
           </ul>
         </li>
