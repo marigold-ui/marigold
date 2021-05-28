@@ -1,0 +1,131 @@
+---
+title: Unicorn Theme
+---
+
+import {
+  Column,
+  Columns,
+  Container,
+  Heading,
+  Stack,
+  Text,
+} from '@marigold/components';
+import { useStyles } from '@marigold/system';
+
+# Unicorn Theme
+
+This theme is used for testing and as a playground.
+
+## Breakpoints
+
+Standard breakpoints for shifting of menu and large-scale elements. We use two breakpoints at 768px and 1200px width:
+
+- small: <= 767px (mobile)
+- medium: between 768px and 1200px (tablet, laptop)
+- large: >= 1201px (desktop)
+
+## Space
+
+- none: 0
+- xxsmall: 3px
+- xsmall: 12px
+- small: 18px
+- medium: 24px
+- large: 34px
+- xlarge: 42px
+- xxlarge: 64px
+
+## Typography
+
+Roboto for headings (font-weight: 800),
+Arial for body text.
+
+<Stack space={24}>
+  <Heading as="h1" variant="h1">
+    Heading H1
+  </Heading>
+  <Heading as="h2" variant="h2">
+    Heading H2
+  </Heading>
+  <Heading as="h3" variant="h3">
+    Heading H3
+  </Heading>
+  <Heading as="h4" variant="h4">
+    Heading H4
+  </Heading>
+  <Heading as="h5" variant="h5">
+    Heading H5
+  </Heading>
+  <Heading as="h6" variant="h6">
+    Heading H6
+  </Heading>
+</Stack>
+
+## Colors
+
+<div>
+  <Columns>
+    <Column width={2}>
+      <Stack space={4}>
+        <Container
+          className={useStyles({
+            css: { bg: '#c9b1ff', width: '96px', height: '24px' },
+          })}
+        />
+        <Container
+          className={useStyles({
+            css: { bg: '#ffcaf2', width: '96px', height: '24px' },
+          })}
+        />
+        <Container
+          className={useStyles({
+            css: { bg: '#070708', width: '96px', height: '24px' },
+          })}
+        />
+        <Container
+          className={useStyles({
+            css: { bg: '#fdfcfd', width: '96px', height: '24px' },
+          })}
+        />
+        <Container
+          className={useStyles({
+            css: { bg: '#e9e7eb', width: '96px', height: '24px' },
+          })}
+        />
+        <Container
+          className={useStyles({
+            css: { bg: '#ffb2b1', width: '96px', height: '24px' },
+          })}
+        />
+        <Container
+          className={useStyles({
+            css: { bg: '#fff3ad', width: '96px', height: '24px' },
+          })}
+        />
+        <Container
+          className={useStyles({
+            css: { bg: '#a2edff', width: '96px', height: '24px' },
+          })}
+        />
+        <Container
+          className={useStyles({
+            css: { bg: '#bcffbc', width: '96px', height: '24px' },
+          })}
+        />
+      </Stack>
+    </Column>
+    <Column width={6}>
+      <Stack space={4}>
+        <Text>Primary</Text>
+        <Text>Secondary</Text>
+        <Text>Text</Text>
+        <Text>Background</Text>
+        <Text>Disabled</Text>
+        <Text>Error</Text>
+        <Text>Warning</Text>
+        <Text>Info</Text>
+        <Text>Success</Text>
+      </Stack>
+    </Column>
+  </Columns>
+</div>

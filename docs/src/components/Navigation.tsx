@@ -4,72 +4,62 @@ import { Text } from '@marigold/components';
 
 export const Navigation: React.FC = () => {
   return (
-    <div>
-      <Link to="/">
-        <Text>Home</Text>
-      </Link>
+    <Text>
+      <Link to="/">Marigold</Link>
       <ul>
         <li>
-          <Text>Design Language</Text>
+          <b>Guides</b>
+          <ul>
+            <li>Installation</li>
+            <li>Theme & Variants</li>
+          </ul>
+        </li>
+        <li>
+          <b>Foundation</b>
           <ul>
             <li>
-              <Text>Brand</Text>
+              <Link to="/foundation/theming">Theming</Link>
             </li>
+            <li>Layout</li>
+            <li>Box Primitive</li>
             <li>
-              <Text>Logos</Text>
-            </li>
-            <li>
-              <Text>Guidelines</Text>
+              <Link to="/foundation/icons">Iconography</Link>
             </li>
           </ul>
         </li>
         <li>
-          <Text>Design Tokens</Text>
+          <b>Components</b>
           <ul>
+            <li>Alert</li>
+            <li>Badge</li>
             <li>
-              <Text>
-                <Link to="/design-tokens/colors">Colors</Link>
-              </Text>
+              <Link to="/components/button">Button</Link>
             </li>
             <li>
-              <Text>Layout</Text>
+              <Link to="/components/checkbox">Checkbox</Link>
+            </li>
+            <li>Column</li>
+            <li>
+              <Link to="/components/field">Field</Link>
             </li>
             <li>
-              <Text>Typography</Text>
-            </li>
-            <li>
-              <Text>
-                <Link to="/design-tokens/icons">Icons</Link>
-              </Text>
+              <Link to="/components/input">Input</Link>
             </li>
           </ul>
         </li>
         <li>
-          <Text>Components</Text>
+          <b>Themes</b>
           <ul>
             <li>
-              <Text>
-                <Link to="/components/button">Button</Link>
-              </Text>
+              <Link to="/themes/b2b">B2B</Link>
             </li>
             <li>
-              <Text>
-                <Link to="/components/checkbox">Checkbox</Link>
-              </Text>
+              <Link to="/themes/unicorn">Unicorn</Link>
             </li>
-            <li>
-              <Text>
-                <Link to="/components/field">Field</Link>
-              </Text>
-            </li>
-            <li>
-              <Text>
-                <Link to="/components/input">Input</Link>
-              </Text>
-            </li>
+            <li>Marigold Docs</li>
           </ul>
         </li>
       </ul>
-    </div>
+    </Text>
   );
 };
