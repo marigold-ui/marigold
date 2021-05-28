@@ -1,5 +1,4 @@
 import React from 'react';
-import b2bTheme from '@marigold/theme-b2b';
 import * as Components from '@marigold/components';
 import { useStyles } from '@marigold/system';
 import * as Icons from '@marigold/icons';
@@ -32,8 +31,17 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
   const previewBoxStyles = useStyles({
     css: {
       border: '1px solid #e3e3e3',
-      borderRadius: b2bTheme.space.xxsmall,
-      padding: b2bTheme.space.small,
+      borderRadius: '4px',
+      padding: '10px',
+      position: 'relative',
+    },
+  });
+
+  const codeBoxStyles = useStyles({
+    css: {
+      fontSize: '1rem',
+      margin: 0,
+      padding: '10px',
       position: 'relative',
     },
   });
@@ -61,12 +69,9 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
               {!hide && (
                 <LiveProvider scope={{ ...Components, ...Icons }}>
                   <pre
-                    className={className}
+                    className={className + codeBoxStyles}
                     style={{
                       ...style,
-                      margin: b2bTheme.space.none,
-                      padding: b2bTheme.space.medium,
-                      position: 'relative',
                     }}
                   >
                     {tokens.map((line, i) => (
@@ -94,7 +99,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
           theme={theme}
         >
           <LivePreview className={previewBoxStyles} />
-          <LiveEditor />
+          <LiveEditor className={codeBoxStyles} />
           <LiveError />
         </LiveProvider>
       );
@@ -111,13 +116,9 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
             <>
               <LiveProvider scope={{ ...Components, ...Icons }}>
                 <pre
-                  className={className}
+                  className={className + codeBoxStyles}
                   style={{
                     ...style,
-                    fontSize: '1rem',
-                    margin: b2bTheme.space.none,
-                    padding: b2bTheme.space.medium,
-                    position: 'relative',
                   }}
                 >
                   {tokens.map((line, i) => (
