@@ -30,20 +30,59 @@ export const Navigation: React.FC = () => {
         <li>
           <b>Components</b>
           <ul>
-            <li>Alert</li>
-            <li>Badge</li>
+            <li>
+              <Link to="/components/alert">Alert</Link>
+            </li>
+            <li>
+              <Link to="/components/badge">Badge</Link>
+            </li>
+            <li>
+              <Link to="/components/box">Box</Link>
+            </li>
             <li>
               <Link to="/components/button">Button</Link>
             </li>
             <li>
-              <Link to="/components/checkbox">Checkbox</Link>
+              <Link to="/components/divider">Divider</Link>
             </li>
-            <li>Column</li>
             <li>
-              <Link to="/components/field">Field</Link>
+              <Link to="/components/heading">Heading</Link>
+            </li>
+            <li>
+              <Link to="/components/image">Image</Link>
             </li>
             <li>
               <Link to="/components/input">Input</Link>
+            </li>
+            <li>
+              <Link to="/components/label">Label</Link>
+            </li>
+            <li>
+              <Link to="/components/link">Link</Link>
+            </li>
+            <li>
+              <Link to="/components/menu">Menu</Link>
+            </li>
+            <li>
+              <Link to="/components/menu-item">MenuItem</Link>
+            </li>
+            <li>
+              <Link to="/components/message">Message</Link>
+            </li>
+            <li>
+              <Link to="/components/select">Select</Link>
+            </li>
+            <li>
+              <Link to="/components/slider">Slider</Link>
+            </li>
+            <li>
+              <Link to="/components/text">Text</Link>
+            </li>
+            <li>
+              <Link to="/components/textarea">Textarea</Link>
+            </li>
+            <li>
+              <Link to="/components/validation-message">ValidationMessage</Link>
             </li>
           </ul>
         </li>

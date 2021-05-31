@@ -1,0 +1,50 @@
+---
+title: Alert
+---
+
+# Alert
+
+## Description
+
+Simple colored element to display an alert message as a reaction to an event.
+Predefined variants are info, success, danger and warning.
+
+## Properties
+
+| Property             | Type                      | Default   |
+| :------------------- | :------------------------ | :-------- |
+| `variant` (optional) | `success, error, warning` | `success` |
+
+## Import
+
+```tsx code
+import { Alert } from '@marigold/components';
+```
+
+## Live-Code Example
+
+```tsx live
+<Alert variant="success">
+  <Text>Tests passed</Text>
+</Alert>
+```
+
+## Usage
+
+```tsx
+<Alert>
+  <Text>Success message</Text>
+</Alert>
+```
+
+```tsx
+<Alert variant="error">
+  <Text>Error message</Text>
+</Alert>
+```
+
+```tsx
+<Alert variant="warning">
+  <Text>Warning message</Text>
+</Alert>
+```

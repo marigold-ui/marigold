@@ -1,0 +1,54 @@
+---
+title: Select
+---
+
+# Select
+
+## Description
+
+Dropdown for selecting a value among different options.
+
+## Import
+
+```tsx code
+import { Select } from '@marigold/components';
+```
+
+## Live-Code Example
+
+```tsx live
+<Label htmlFor="select">
+  Choose one option
+  <Select id="select">
+    <option selected>...</option>
+    <option>Option One</option>
+    <option>Option Two</option>
+  </Select>
+</Label>
+```
+
+## Usage
+
+```tsx
+<Label htmlFor="select">
+  Dropdown
+  <Select id="select">
+    <option selected>Choose here</option>
+    <option>Hi</option>
+    <option>Hey</option>
+    <option>Blubb</option>
+  </Select>
+</Label>
+```
+
+```tsx
+<Label htmlFor="select2">
+  Dropdown disabled
+  <Select disabled>
+    <option selected>Can't choose here</option>
+    <option>Hi</option>
+    <option>Hey</option>
+    <option>Blubb</option>
+  </Select>
+</Label>
+```

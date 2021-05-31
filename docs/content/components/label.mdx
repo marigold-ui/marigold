@@ -1,0 +1,39 @@
+---
+title: Label
+---
+
+# Label-Component
+
+## Description
+
+With the Label component you can add a HTML `<Label>` element to your form.
+The variant can be added with the variant prop. The default variant is `default`.
+
+## Properties
+
+| Property             | Type     | Default   |
+| :------------------- | :------- | :-------- |
+| `variant` (optional) | `string` | `default` |
+| `htmlFor`            | `string` |           |
+
+## Import
+
+```tsx code
+import { Label } from '@marigold/components';
+```
+
+## Live-Code Example
+
+```tsx live
+<Label variant="label" htmlFor="labelId">
+  Just a boring label
+</Label>
+```
+
+## Usage
+
+```tsx
+<Label variant="label" htmlFor="labelId">
+  I am a Label!
+</Label>
+```
