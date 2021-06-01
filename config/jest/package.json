@@ -25,6 +25,6 @@
   },
   "peerDependencies": {
     "jest": "25.x || 26.x",
-    "typescript": "3.8.x || 3.9.x || 4.2.x || 4.3.x"
+    "typescript": "3.8.x || 3.9.x || 4.2.x"
   }
 }
