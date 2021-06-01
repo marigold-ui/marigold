@@ -1,0 +1,13 @@
+{
+  "groupName": "all",
+  "extends": ["config:base"],
+  "automerge": true,
+  "timezone": "Europe/Berlin",
+  "schedule": ["every weekend"],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    }
+  ]
+}
