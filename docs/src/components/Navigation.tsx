@@ -49,9 +49,6 @@ export const Navigation: React.FC = () => {
               <Link to="/components/heading">Heading</Link>
             </li>
             <li>
-              <Link to="/components/image">Image</Link>
-            </li>
-            <li>
               <Link to="/components/input">Input</Link>
             </li>
             <li>
@@ -59,9 +56,6 @@ export const Navigation: React.FC = () => {
             </li>
             <li>
               <Link to="/components/link">Link</Link>
-            </li>
-            <li>
-              <Link to="/components/menu">Menu</Link>
             </li>
             <li>
               <Link to="/components/menu-item">MenuItem</Link>
