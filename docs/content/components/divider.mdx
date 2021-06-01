@@ -1,0 +1,50 @@
+---
+title: Divider
+---
+
+# Divider
+
+## Description
+
+A divider is a layout or list element to group content or separate elements.
+The variant can be added with the variant prop which is `regular` per default.
+
+## Properties
+
+| Property             | Type     | Default   |
+| :------------------- | :------- | :-------- |
+| `variant` (optional) | `string` | `regular` |
+
+## Import
+
+```tsx code
+import { Divider } from '@marigold/components';
+```
+
+## Live-Code Example
+
+```tsx live
+<>
+  <Text>Brightside</Text>
+  <Divider />
+  <Text>Darkside</Text>
+</>
+```
+
+## Usage
+
+```tsx
+<>
+  <Text>Some text</Text>
+  <Divider />
+  <Text>Some other text to show regular divider</Text>
+</>
+```
+
+```tsx
+<>
+  <Text>Some text</Text>
+  <Divider variant="bold" />
+  <Text>Some other text to show strong divider</Text>
+</>
+```

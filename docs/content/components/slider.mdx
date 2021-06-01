@@ -1,0 +1,54 @@
+---
+title: Slider
+---
+
+# Slider
+
+## Description
+
+With the Slider component you can add a HTML `<input>` element with `type="range"` to your form.
+The variant can be added with the variant prop. The default variant is `slider`.
+
+## Properties
+
+| Property             | Type     | Default  |
+| :------------------- | :------- | :------- |
+| `variant` (optional) | `string` | `slider` |
+
+## Import
+
+```tsx code
+import { Slider } from '@marigold/components';
+```
+
+## Live-Code Example
+
+```tsx live
+<Slider id="vol" name="vol" min="0" max="50" />
+```
+
+## Usage
+
+### Slider with default range and fix value
+
+```tsx
+<Label htmlFor="vol">
+  Volume:
+  <br />
+  <Slider id="vol" name="vol" min="0" max="50" />
+  <br />
+  <Slider id="vol" name="vol" min="0" max="50" value="25" />
+</Label>
+```
+
+### Slider with steps
+
+```tsx
+<Label htmlFor="vol">
+  Volume:
+  <br />
+  <Slider id="vol" name="vol" min="0" max="100" step="10"></Slider>
+  <br />
+  <Slider id="vol" name="vol" min="20" max="80" step="5"></Slider>
+</Label>
+```

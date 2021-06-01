@@ -1,0 +1,37 @@
+---
+title: ValidationMessage
+---
+
+# ValidationMessage
+
+## Description
+
+Simple colored element to display a validation message as a reaction to an event.
+
+## Properties
+
+| Property             | Type     | Default |
+| :------------------- | :------- | :------ |
+| `variant` (optional) | `string` | `error` |
+
+## Import
+
+```tsx code
+import { ValidationMessage } from '@marigold/components';
+```
+
+```tsx live
+<ValidationMessage>
+  <SmilieDissatisfied />
+  Error!
+</ValidationMessage>
+```
+
+## Usage
+
+```tsx
+<ValidationMessage>
+  <Exclamation />
+  Validation message
+</ValidationMessage>
+```

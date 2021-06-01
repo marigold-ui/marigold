@@ -1,0 +1,46 @@
+---
+title: Badge
+---
+
+# Badge
+
+## Description
+
+A badge tags an element with a short note and color. The content of the badge can be anything but preferably a string and/or icon.
+
+## Properties
+
+| Property                 | Type     | Default       |
+| :----------------------- | :------- | :------------ |
+| `variant` (optional)     | `string` | `default`     |
+| `borderColor` (optional) | `string` | `transparent` |
+| `bgColor` (optional)     | `string` | `inherit`     |
+
+## Import
+
+```tsx code
+import { Badge } from '@marigold/components';
+```
+
+## Live-Code Example
+
+```tsx live
+<Badge bgColor="error">
+  <Text textColor="white">Error Badge</Text>
+</Badge>
+```
+
+## Usage
+
+```tsx
+<Badge borderColor="secondary" bgColor="primary">
+  <Text>New</Text>
+</Badge>
+```
+
+```tsx
+<Badge borderColor="primary">
+  <Check size={18} />
+  cool
+</Badge>
+```

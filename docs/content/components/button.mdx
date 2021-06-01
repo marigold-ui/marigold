@@ -2,9 +2,6 @@
 title: Button
 ---
 
-import { Button } from '@marigold/components';
-import { Facebook } from '@marigold/icons';
-
 # Button
 
 ## Description
@@ -24,13 +21,20 @@ The style variant and size of the button can be added with the variant prop and 
 import { Button } from '@marigold/components';
 ```
 
-## Usage
-
-### Live-Code Example
+## Live-Code Example
 
 ```tsx live
-<Button variant="primary.large">Primary</Button>
+<Button
+  variant="secondary.small"
+  onClick={() => {
+    alert('Searching..');
+  }}
+>
+  Search on <Google /> oogle
+</Button>
 ```
+
+## Usage
 
 ### Large
 
