@@ -16,7 +16,7 @@
   "main": "index.js",
   "dependencies": {
     "@types/jest": "26.0.23",
-    "babel-jest": "27.0.2",
+    "babel-jest": "27.0.1",
     "find-up": "5.0.0",
     "jest-watch-typeahead": "0.6.4",
     "merge-deep": "^3.0.3",
