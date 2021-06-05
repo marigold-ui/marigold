@@ -41,7 +41,7 @@
     "react-live": "2.2.3"
   },
   "devDependencies": {
-    "@types/react": "17.0.8",
+    "@types/react": "17.0.9",
     "@types/react-helmet": "6.1.1",
     "tsconfig-paths-webpack-plugin": "3.5.1"
   }
