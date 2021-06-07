@@ -1,0 +1,35 @@
+---
+title: Column
+---
+
+import { useStyles } from '@marigold/system';
+export const classNames = useStyles({
+  textAlign: 'center',
+  border: '1px solid',
+  padding: 2,
+  margin: 2,
+});
+
+# Column
+
+## Description
+
+With the Column component you can add a column with a width in percent of the full content.
+
+## Properties
+
+| Property           | Type                                    | Default |
+| :----------------- | :-------------------------------------- | :------ |
+| `width` (optional) | `1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12` | `12`    |
+
+## Import
+
+```tsx code
+import { Column } from '@marigold/components';
+```
+
+## Usage
+
+```tsx
+<Column className={classNames}>width=12</Column>
+```
