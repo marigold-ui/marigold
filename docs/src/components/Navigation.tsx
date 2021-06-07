@@ -43,6 +43,9 @@ export const Navigation: React.FC = () => {
               <Link to="/components/button">Button</Link>
             </li>
             <li>
+              <Link to="/components/column">Column</Link>
+            </li>
+            <li>
               <Link to="/components/divider">Divider</Link>
             </li>
             <li>
