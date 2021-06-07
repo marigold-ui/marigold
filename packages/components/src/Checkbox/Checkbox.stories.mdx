@@ -34,56 +34,17 @@ import { Checkbox } from '@marigold/components';
 <Canvas>
   <Story name="CheckboxOne">
     {() => {
-      const [state, setState] = React.useState({
-        bi: false,
-        ca: false,
-        bo: false,
-        je: false,
-      });
-      const onChange = changeEvent => {
-        setState({
-          ...state,
-          [changeEvent.target.name]: changeEvent.target.checked,
-        });
-      };
+      const [isChecked, setIsChecked] = React.useState(false);
+      const onCheckboxChange = () => setIsChecked(!isChecked);
       return (
-        <div>
-          <Checkbox
-            id="bi"
-            name="bi"
-            onChange={onChange}
-            checked={state.bi}
-            value="Bike"
-            label="Bike"
-          />
-          <br />
-          <Checkbox
-            id="ca"
-            name="ca"
-            onChange={onChange}
-            checked={state.ca}
-            value="Car"
-            label="Car"
-          />
-          <br />
-          <Checkbox
-            id="bo"
-            name="bo"
-            onChange={onChange}
-            checked={state.bo}
-            value="Boat"
-            label="Boat"
-          />
-          <br />
-          <Checkbox
-            id="je"
-            name="je"
-            onChange={onChange}
-            checked={state.je}
-            value="Jet"
-            label="Jet"
-          />
-        </div>
+        <Checkbox
+          id="checkbox"
+          name="checkbox"
+          onClick={onCheckboxChange}
+          checked={isChecked}
+          value="Checkbox"
+          label="Checkbox"
+        />
       );
     }}
   </Story>
