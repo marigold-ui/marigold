@@ -16,7 +16,7 @@
   "main": "index.js",
   "dependencies": {
     "@types/jest": "26.0.23",
-    "babel-jest": "26.6.3",
+    "babel-jest": "27.0.2",
     "find-up": "5.0.0",
     "jest-watch-typeahead": "0.6.4",
     "merge-deep": "^3.0.3",
@@ -24,7 +24,7 @@
     "ts-jest": "26.5.6"
   },
   "peerDependencies": {
-    "jest": "25.x || 26.x",
+    "jest": "25.x || 26.x || 27.x",
     "typescript": "3.8.x || 3.9.x || 4.2.x || 4.3.x"
   }
 }
