@@ -1,0 +1,52 @@
+---
+title: Dialog
+---
+
+# Dialog
+
+## Description
+
+Element to display a Dialog as a reaction to an event. The user style or fill the body of the dialog with content.
+
+## Properties
+
+| Property  | Type       | Default |
+| :-------- | :--------- | :------ |
+| `onClose` | `function` |         |
+
+## Import
+
+```tsx code
+import { Dialog } from '@marigold/components';
+```
+
+## Live-Code Example
+
+```tsx live
+<Dialog>
+  <Heading as="h4" variant="h4">
+    Dialog Livecode example
+  </Heading>
+  <Text>This is your dialog text.</Text>
+</Dialog>
+```
+
+## Usage
+
+```tsx
+<Dialog>
+  <Heading as="h4" variant="h4">
+    Dialog Title
+  </Heading>
+  <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
+  <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
+</Dialog>
+```
+
+```tsx
+<Dialog>
+  <Text>Do you love the marigold design system?</Text>
+  <br />
+  <Button variant="secondary.small">Agree</Button>
+</Dialog>
+```
