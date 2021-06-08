@@ -28,26 +28,21 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
   language,
 }) => {
   const [hide, setHide] = React.useState(type === ActionType.Preview);
-  const outerPreviewBoxStyles = useStyles({
+  const previewBoxStyles = useStyles({
     css: {
       border: '1px solid #e3e3e3',
       borderRadius: '4px',
-    },
-  });
-  const innerPreviewBoxStyles = useStyles({
-    css: {
-      padding: '32px 16px',
+      padding: '10px',
       position: 'relative',
-      overflow: 'auto',
     },
   });
+
   const codeBoxStyles = useStyles({
     css: {
       fontSize: '1rem',
       margin: 0,
-      padding: '32px 16px',
+      padding: '10px',
       position: 'relative',
-      overflow: 'auto',
     },
   });
 
@@ -62,15 +57,13 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
         >
           {({ className, style, tokens, getLineProps, getTokenProps }) => (
             <>
-              <div className={outerPreviewBoxStyles}>
-                <div className={innerPreviewBoxStyles}>
-                  <LiveProvider
-                    code={codeString}
-                    scope={{ ...Components, ...Icons }}
-                  >
-                    <LivePreview />
-                  </LiveProvider>
-                </div>
+              <div className={previewBoxStyles}>
+                <LiveProvider
+                  code={codeString}
+                  scope={{ ...Components, ...Icons }}
+                >
+                  <LivePreview />
+                </LiveProvider>
                 <ShowHideButton hide={hide} onHideChange={setHide} />
               </div>
               {!hide && (
@@ -105,9 +98,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
           scope={{ ...Components, ...Icons }}
           theme={theme}
         >
-          <div className={outerPreviewBoxStyles}>
-            <LivePreview className={innerPreviewBoxStyles} />
-          </div>
+          <LivePreview className={previewBoxStyles} />
           <LiveEditor className={codeBoxStyles} />
           <LiveError />
         </LiveProvider>

@@ -14,7 +14,7 @@ export const ShowHideButton: React.FC<ShowHideButtonProps> = ({
     <>
       <br />
       <Button
-        variant="text.small"
+        variant="ghost.small"
         onClick={() => {
           onHideChange(!hide);
         }}
