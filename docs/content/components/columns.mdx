@@ -1,0 +1,154 @@
+---
+title: Columns
+---
+
+# Columns
+
+## Description
+
+With the Columns component you can add a bundle of column components by adding props to create a layout.
+
+## Properties
+
+| Property                     | Type                  | Default |
+| :--------------------------- | :-------------------- | :------ |
+| `space` (optional)           | `number`              | `0`     |
+| `horizontalAlign` (optional) | `left, right, center` | `left`  |
+| `verticalAlign` (optional)   | `top, bottom, center` | `top`   |
+
+## Import
+
+```tsx code
+import { Columns } from '@marigold/components';
+```
+
+## Live-Code Example
+
+```tsx live
+<Columns verticalAlign="top" horizontalAlign="left">
+  <Column width={6}>
+    <Text>Here's your text</Text>
+  </Column>
+  <Column width={6}>
+    <Text>Here's antoher text</Text>
+  </Column>
+</Columns>
+```
+
+## Usage
+
+### Spacing
+
+```tsx
+<Columns space={24}>
+  <Column width={4}>
+    <Text>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+      dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
+      massa nec ultricies efficitur, lectus ante consequat magna, a porttitor
+      massa ex ut quam.
+    </Text>
+  </Column>
+  <Column width={4}>
+    <Text>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+      dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
+      massa nec ultricies efficitur, lectus ante consequat magna, a porttitor
+      massa ex ut quam.
+    </Text>
+  </Column>
+  <Column width={4}>
+    <Text>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+      dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
+      massa nec ultricies efficitur, lectus ante consequat magna, a porttitor
+      massa ex ut quam.
+    </Text>
+  </Column>
+</Columns>
+```
+
+### Width
+
+```tsx
+<Columns space={24}>
+  <Column width={12}>
+    <Text>width=12</Text>
+  </Column>
+  <Column width={6}>
+    <Text>width=6</Text>
+  </Column>
+  <Column width={6}>
+    <Text>width=6</Text>
+  </Column>
+  <Column width={4}>
+    <Text>width=4</Text>
+  </Column>
+  <Column width={4}>
+    <Text>width=4</Text>
+  </Column>
+  <Column width={4}>
+    <Text>width=4</Text>
+  </Column>
+  <Column width={3}>
+    <Text>width=3</Text>
+  </Column>
+  <Column width={3}>
+    <Text>width=3</Text>
+  </Column>
+  <Column width={3}>
+    <Text>width=3</Text>
+  </Column>
+  <Column width={3}>
+    <Text>width=3</Text>
+  </Column>
+</Columns>
+```
+
+### Horizontal Alignment
+
+```tsx
+<>
+  <Columns space={24} horizontalAlign="left">
+    <Column width={1}>
+      <Text>left</Text>
+    </Column>
+  </Columns>
+  <Divider />
+  <Columns space={24} horizontalAlign="center">
+    <Column width={1}>
+      <Text>center</Text>
+    </Column>
+  </Columns>
+  <Divider />
+  <Columns space={24} horizontalAlign="right">
+    <Column width={1}>
+      <Text>right</Text>
+    </Column>
+  </Columns>
+</>
+```
+
+### Vertical Alignment
+
+```tsx
+<>
+  <Columns verticalAlign="top">
+    <Column width={1}>
+      <Text>top</Text>
+    </Column>
+  </Columns>
+  <Divider />
+  <Columns verticalAlign="center">
+    <Column width={1}>
+      <Text>center</Text>
+    </Column>
+  </Columns>
+  <Divider />
+  <Columns verticalAlign="bottom">
+    <Column width={1}>
+      <Text>bottom</Text>
+    </Column>
+  </Columns>
+</>
+```
