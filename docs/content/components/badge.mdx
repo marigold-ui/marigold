@@ -22,6 +22,22 @@ A badge tags an element with a short note and color. The content of the badge ca
 import { Badge } from '@marigold/components';
 ```
 
+```tsx
+() => {
+  const [showMenu, setShowMenu] = React.useState(false);
+  const toggle = () => {
+    setShowMenu(!showMenu);
+  };
+  return (
+    <Menu onClick={toggle} show={showMenu} label={<BurgerMenu />}>
+      <MenuItem href="#">Home</MenuItem>
+      <MenuItem href="#">Tickets</MenuItem>
+      <MenuItem href="#">Kundenkonto</MenuItem>
+    </Menu>
+  );
+};
+```
+
 ## Live-Code Example
 
 ```tsx live

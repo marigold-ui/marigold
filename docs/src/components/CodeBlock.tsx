@@ -28,21 +28,26 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
   language,
 }) => {
   const [hide, setHide] = React.useState(type === ActionType.Preview);
-  const previewBoxStyles = useStyles({
+  const outerPreviewBoxStyles = useStyles({
     css: {
       border: '1px solid #e3e3e3',
       borderRadius: '4px',
-      padding: '10px',
-      position: 'relative',
     },
   });
-
+  const innerPreviewBoxStyles = useStyles({
+    css: {
+      padding: '32px 16px',
+      position: 'relative',
+      overflow: 'auto',
+    },
+  });
   const codeBoxStyles = useStyles({
     css: {
       fontSize: '1rem',
       margin: 0,
-      padding: '10px',
+      padding: '32px 16px',
       position: 'relative',
+      overflow: 'auto',
     },
   });
 
@@ -57,13 +62,15 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
         >
           {({ className, style, tokens, getLineProps, getTokenProps }) => (
             <>
-              <div className={previewBoxStyles}>
-                <LiveProvider
-                  code={codeString}
-                  scope={{ ...Components, ...Icons }}
-                >
-                  <LivePreview />
-                </LiveProvider>
+              <div className={outerPreviewBoxStyles}>
+                <div className={innerPreviewBoxStyles}>
+                  <LiveProvider
+                    code={codeString}
+                    scope={{ ...Components, ...Icons }}
+                  >
+                    <LivePreview />
+                  </LiveProvider>
+                </div>
                 <ShowHideButton hide={hide} onHideChange={setHide} />
               </div>
               {!hide && (
@@ -98,7 +105,9 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
           scope={{ ...Components, ...Icons }}
           theme={theme}
         >
-          <LivePreview className={previewBoxStyles} />
+          <div className={outerPreviewBoxStyles}>
+            <LivePreview className={innerPreviewBoxStyles} />
+          </div>
           <LiveEditor className={codeBoxStyles} />
           <LiveError />
         </LiveProvider>
