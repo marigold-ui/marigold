@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-unicorn",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Marigold's Developer Theme",
   "main": "dist/index.js",
   "module": "dist/theme-unicorn.esm.js",
