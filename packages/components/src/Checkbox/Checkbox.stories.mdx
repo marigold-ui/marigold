@@ -34,56 +34,19 @@ import { Checkbox } from '@marigold/components';
 <Canvas>
   <Story name="CheckboxOne">
     {() => {
-      const [state, setState] = React.useState({
-        bi: false,
-        ca: false,
-        bo: false,
-        je: false,
-      });
-      const onChange = changeEvent => {
-        setState({
-          ...state,
-          [changeEvent.target.name]: changeEvent.target.checked,
-        });
+      const [isChecked, setChecked] = React.useState(false);
+      const onChange = () => {
+        setChecked(!isChecked);
       };
       return (
-        <div>
-          <Checkbox
-            id="bi"
-            name="bi"
-            onChange={onChange}
-            checked={state.bi}
-            value="Bike"
-            label="Bike"
-          />
-          <br />
-          <Checkbox
-            id="ca"
-            name="ca"
-            onChange={onChange}
-            checked={state.ca}
-            value="Car"
-            label="Car"
-          />
-          <br />
-          <Checkbox
-            id="bo"
-            name="bo"
-            onChange={onChange}
-            checked={state.bo}
-            value="Boat"
-            label="Boat"
-          />
-          <br />
-          <Checkbox
-            id="je"
-            name="je"
-            onChange={onChange}
-            checked={state.je}
-            value="Jet"
-            label="Jet"
-          />
-        </div>
+        <Checkbox
+          id="myCheckbox"
+          name="myCheckbox"
+          onChange={onChange}
+          checked={isChecked}
+          value="Checkbox"
+          label="check if you like Marigold"
+        />
       );
     }}
   </Story>
@@ -93,12 +56,11 @@ import { Checkbox } from '@marigold/components';
 
 <Canvas>
   <Story name="CheckboxTwo">
-    <div>
-      <Checkbox id="checkbox" checked />
-      <Checkbox id="checkbox" checked className={useStyles({ bg: 'red' })} />
-      <Checkbox id="checkbox" disabled />
-      <Checkbox id="checkbox" checked disabled />
-    </div>
+    <>
+      <Checkbox id="checkboxOne" checked />
+      <Checkbox id="checkboxTwo" disabled />
+      <Checkbox id="checkboxThree" checked disabled />
+    </>
   </Story>
 </Canvas>
 

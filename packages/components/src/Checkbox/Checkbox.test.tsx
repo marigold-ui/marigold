@@ -30,16 +30,16 @@ test('renders <input> element', () => {
   expect(checkbox instanceof HTMLInputElement).toBeTruthy();
 });
 
-test('renders <SVG> CircleUnchecked element', () => {
+test('renders <SVG> SquareUnchecked element', () => {
   render(<Checkbox id="checkbox" label="Test" />);
   const checkbox = screen.getByText(/Test/);
   expect(checkbox).toContainHTML('path d="M19.2917');
 });
 
-test('renders <SVG> CircleChecked element', () => {
+test('renders <SVG> SquareChecked element', () => {
   render(<Checkbox id="checkbox" label="Test" checked onChange={() => {}} />);
   const checkbox = screen.getByText(/Test/);
-  expect(checkbox).toContainHTML('path d="M19.2917');
+  expect(checkbox).toContainHTML('path d="M19.2917 2.62');
 });
 
 test('change state onClick', () => {

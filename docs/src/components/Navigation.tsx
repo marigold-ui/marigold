@@ -49,6 +49,9 @@ export const Navigation: React.FC = () => {
               <Link to="/components/columns">Columns</Link>
             </li>
             <li>
+              <Link to="/components/checkbox">Checkbox</Link>
+            </li>
+            <li>
               <Link to="/components/container">Container</Link>
             </li>
             <li>

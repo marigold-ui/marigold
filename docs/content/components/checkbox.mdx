@@ -1,0 +1,91 @@
+---
+title: Checkbox
+---
+
+# Checkbox
+
+## Description
+
+With the Checkbox component you can add a HTML `<input>` element with `type="checkbox"` to your form.
+The variant can be added with the variant prop. The default variant is `default`.
+
+## Properties
+
+| Property              | Type      | Default   |
+| :-------------------- | :-------- | :-------- |
+| `id`                  | `string`  |           |
+| `variant` (optional)  | `string`  | `default` |
+| `label` (optional)    | `string`  |           |
+| `required` (optional) | `boolean` |           |
+
+## Import
+
+```tsx code
+import { Checkbox } from '@marigold/components';
+```
+
+## Live-Code Example
+
+```tsx live
+() => {
+  const [isChecked, setChecked] = React.useState(false);
+  const onChange = () => {
+    setChecked(!isChecked);
+  };
+  return (
+    <Checkbox
+      id="checkboxLive"
+      name="checkboxLive"
+      onChange={onChange}
+      checked={isChecked}
+      value="Checkbox"
+      label="Checkbox to play with"
+    />
+  );
+};
+```
+
+## Usage
+
+### Checkbox standard labeled
+
+```tsx
+() => {
+  const [isChecked, setChecked] = React.useState(false);
+  const onChange = () => {
+    setChecked(!isChecked);
+  };
+  return (
+    <Checkbox
+      id="myCheckbox"
+      name="myCheckbox"
+      onChange={onChange}
+      checked={isChecked}
+      value="Checkbox"
+      label="check if you like Marigold"
+    />
+  );
+};
+```
+
+### Checkbox checked and disabled
+
+```tsx
+<>
+  <Checkbox id="checkboxOne" checked />
+  <Checkbox id="checkboxTwo" disabled />
+  <Checkbox id="checkboxThree" checked disabled />
+</>
+```
+
+### Checkbox with required label
+
+```tsx
+<Checkbox
+  checked
+  id="required"
+  value="required"
+  required
+  label="This label is required"
+/>
+```
