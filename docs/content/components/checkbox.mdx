@@ -36,18 +36,18 @@ import { Checkbox } from '@marigold/components';
 
 ```tsx
 () => {
-  const [isChecked, setIsChecked] = React.useState(false);
-  const onCheckboxChange = () => {
-    setIsChecked(!isChecked);
+  const [isChecked, setChecked] = React.useState(false);
+  const onChange = () => {
+    setChecked(!isChecked);
   };
   return (
     <Checkbox
-      id="checkbox"
-      name="checkbox"
-      onChange={onCheckboxChange}
+      id="myCheckbox"
+      name="myCheckbox"
+      onChange={onChange}
       checked={isChecked}
       value="Checkbox"
-      label="Checkbox"
+      label="check if you like Marigold"
     />
   );
 };
@@ -56,11 +56,11 @@ import { Checkbox } from '@marigold/components';
 ### Checkbox checked and disabled
 
 ```tsx
-<div>
+<>
   <Checkbox id="checkbox" checked />
   <Checkbox id="checkbox" disabled />
   <Checkbox id="checkbox" checked disabled />
-</div>
+</>
 ```
 
 ### Checkbox with required label
