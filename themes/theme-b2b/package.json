@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-b2b",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Marigold B2B Theme",
   "main": "dist/index.js",
   "module": "dist/theme-b2b.esm.js",
