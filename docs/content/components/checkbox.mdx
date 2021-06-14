@@ -27,7 +27,22 @@ import { Checkbox } from '@marigold/components';
 ## Live-Code Example
 
 ```tsx live
-<Checkbox checked id="live" value="live" label="Checkbox label" />
+() => {
+  const [isChecked, setChecked] = React.useState(false);
+  const onChange = () => {
+    setChecked(!isChecked);
+  };
+  return (
+    <Checkbox
+      id="myCheckbox"
+      name="myCheckbox"
+      onChange={onChange}
+      checked={isChecked}
+      value="Checkbox"
+      label="Checkbox to play with"
+    />
+  );
+};
 ```
 
 ## Usage
