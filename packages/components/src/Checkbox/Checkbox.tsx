@@ -28,7 +28,7 @@ const CheckboxIcon: React.FC<CheckboxIconProps> = ({
       verticalAlign: 'middle',
       ':hover': { cursor: 'pointer' },
       'input:disabled ~ &': {
-        color: 'muted',
+        color: 'disabled',
         cursor: 'not-allowed',
       },
     },
