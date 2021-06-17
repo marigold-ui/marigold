@@ -3,7 +3,7 @@ import { GatsbyBrowser } from 'gatsby';
 import { MDXProvider } from '@mdx-js/react';
 
 import { Layout } from './components/Layout';
-import { mdxComponents } from './components/MdxComponents';
+import * as mdxComponents from './mdx';
 
 export const WrapPageElement: GatsbyBrowser['wrapPageElement'] = ({
   element,
