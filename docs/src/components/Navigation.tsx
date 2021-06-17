@@ -1,8 +1,24 @@
 import React from 'react';
+import { graphql, useStaticQuery } from 'gatsby';
 import Link from 'gatsby-link';
 import { Text } from '@marigold/components';
 
+const useNavigation = () => {
+  const data = useStaticQuery(graphql`
+    query NavigationQuery {
+      allMdx {
+        nodes {
+          id
+          slug
+        }
+      }
+    }
+  `);
+};
+
 export const Navigation: React.FC = () => {
+  const data = useNavigation();
+
   return (
     <Text>
       <Link to="/start">Marigold</Link>
