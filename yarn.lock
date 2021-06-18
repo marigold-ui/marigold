@@ -7195,7 +7195,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mdx-js__react@npm:^1.5.3":
+"@types/mdx-js__react@npm:1.5.3":
   version: 1.5.3
   resolution: "@types/mdx-js__react@npm:1.5.3"
   dependencies:
@@ -12884,7 +12884,7 @@ __metadata:
     "@marigold/types": "workspace:*"
     "@mdx-js/mdx": 1.6.22
     "@mdx-js/react": 1.6.22
-    "@types/mdx-js__react": ^1.5.3
+    "@types/mdx-js__react": 1.5.3
     "@types/react": 17.0.8
     "@types/react-helmet": 6.1.1
     babel-preset-gatsby: 1.7.1
