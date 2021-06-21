@@ -50,7 +50,7 @@ export const Columns: React.FC<ColumnsProps> = ({
         {...props}
       >
         {Children.map(
-          (columnItems as unknown) as React.ReactElement,
+          columnItems as unknown as React.ReactElement,
           (child: React.ReactElement) => {
             return React.cloneElement(
               child,
