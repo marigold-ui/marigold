@@ -32,7 +32,7 @@ test('uses `text.body` as default variant', () => {
   expect(text).toHaveStyle(`font-family: Oswald Regular`);
 });
 
-test('allows variants via `variant` prop', () => {
+test('allows to change variants via `variant` prop (with "text" prefix)', () => {
   render(
     <ThemeProvider theme={theme}>
       <Text variant="heading">text</Text>

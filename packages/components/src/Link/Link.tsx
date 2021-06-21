@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentProps } from '@marigold/types';
-import { Box } from '../Box';
+import { Text } from '../Text';
 
 export type LinkProps = {
   variant?: string;
@@ -11,7 +11,7 @@ export const Link: React.FC<LinkProps> = ({
   children,
   ...props
 }) => (
-  <Box {...props} as="a" variant={`text.${variant}`}>
+  <Text {...props} as="a" variant={variant}>
     {children}
-  </Box>
+  </Text>
 );

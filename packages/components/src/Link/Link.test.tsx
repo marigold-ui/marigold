@@ -4,8 +4,8 @@ import { ThemeProvider } from '@marigold/system';
 import { Link } from './Link';
 
 const theme = {
-  link: {
-    normal: {
+  text: {
+    link: {
       fontFamily: 'Inter',
     },
     second: {
@@ -14,7 +14,7 @@ const theme = {
   },
 };
 
-test('supports default variant and themeSection', () => {
+test('uses `text.link` as default variant', () => {
   render(
     <ThemeProvider theme={theme}>
       <Link href="#!" title="link">
@@ -22,12 +22,12 @@ test('supports default variant and themeSection', () => {
       </Link>
     </ThemeProvider>
   );
-  const link = screen.getByTitle(/link/);
+  const link = screen.getByText(/Link/);
 
   expect(link).toHaveStyle(`font-family: Inter`);
 });
 
-test('accepts other variant than default', () => {
+test('allows to change variants via `variant` prop (with "text" prefix)', () => {
   render(
     <ThemeProvider theme={theme}>
       <Link href="#!" title="link" variant="second">
@@ -35,12 +35,12 @@ test('accepts other variant than default', () => {
       </Link>
     </ThemeProvider>
   );
-  const link = screen.getByTitle(/link/);
+  const link = screen.getByText(/Link/);
 
   expect(link).toHaveStyle(`font-family: Oswald`);
 });
 
-test('renders correct HTML element', () => {
+test('renders a <a> element by default', () => {
   render(
     <ThemeProvider theme={theme}>
       <Link href="#!" title="link">
@@ -48,7 +48,7 @@ test('renders correct HTML element', () => {
       </Link>
     </ThemeProvider>
   );
-  const link = screen.getByTitle(/link/);
+  const link = screen.getByText(/Link/);
 
   expect(link instanceof HTMLAnchorElement).toBeTruthy();
 });
@@ -57,11 +57,11 @@ test('accepts custom styles prop className', () => {
   render(
     <ThemeProvider theme={theme}>
       <Link href="#!" className="custom-class-name" title="link">
-        link
+        Link
       </Link>
     </ThemeProvider>
   );
-  const link = screen.getByTitle(/link/);
+  const link = screen.getByText(/Link/);
 
   expect(link.className).toMatch('custom-class-name');
 });
