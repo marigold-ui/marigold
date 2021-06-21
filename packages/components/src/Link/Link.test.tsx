@@ -65,3 +65,10 @@ test('accepts custom styles prop className', () => {
 
   expect(link.className).toMatch('custom-class-name');
 });
+
+test('forwards ref', () => {
+  const ref = React.createRef<HTMLAnchorElement>();
+  render(<Link ref={ref}>button</Link>);
+
+  expect(ref.current instanceof HTMLAnchorElement).toBeTruthy();
+});

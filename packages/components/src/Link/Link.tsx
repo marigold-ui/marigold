@@ -1,17 +1,15 @@
-import React from 'react';
-import { ComponentProps } from '@marigold/types';
-import { Text } from '../Text';
+import React, { forwardRef } from 'react';
+import { ComponentWithAs } from '@marigold/types';
+import { Text, TextProps } from '../Text';
 
-export type LinkProps = {
-  variant?: string;
-} & ComponentProps<'a'>;
+export type LinkProps = TextProps;
 
-export const Link: React.FC<LinkProps> = ({
-  variant = 'link',
-  children,
-  ...props
-}) => (
-  <Text {...props} as="a" variant={variant}>
-    {children}
-  </Text>
+export const Link: ComponentWithAs<LinkProps, 'a'> = forwardRef(
+  ({ variant = 'link', children, ...props }, ref) => {
+    return (
+      <Text as="a" variant={variant} ref={ref} {...props}>
+        {children}
+      </Text>
+    );
+  }
 );
