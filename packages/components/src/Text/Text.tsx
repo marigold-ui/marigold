@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { ResponsiveStyleValue, useStyles } from '@marigold/system';
-import { ComponentWithAs } from '@marigold/types';
+import { PolymorphicComponentWithRef } from '@marigold/types';
 import { Box, BoxProps } from '../Box';
 
 export type TextProps = {
@@ -11,7 +11,7 @@ export type TextProps = {
   userSelect?: ResponsiveStyleValue<string>;
 } & BoxProps;
 
-export const Text: ComponentWithAs<TextProps, 'span'> = forwardRef(
+export const Text: PolymorphicComponentWithRef<TextProps, 'span'> = forwardRef(
   (
     {
       children,
