@@ -7,11 +7,11 @@ export type LinkProps = {
 } & ComponentProps<'a'>;
 
 export const Link: React.FC<LinkProps> = ({
-  variant = 'normal',
+  variant = 'link',
   children,
   ...props
 }) => (
-  <Box {...props} as="a" variant={`link.${variant}`}>
+  <Box {...props} as="a" variant={`text.${variant}`}>
     {children}
   </Box>
 );

@@ -1,35 +1,42 @@
-import React from 'react';
-import { useStyles } from '@marigold/system';
-import { ComponentPropsWithRef } from '@marigold/types';
+import React, { forwardRef } from 'react';
+import { ResponsiveStyleValue, useStyles } from '@marigold/system';
+import { ComponentWithAs } from '@marigold/types';
 import { Box, BoxProps } from '../Box';
 
 export type TextProps = {
-  className?: string;
-  as?: 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-  variant?: string;
-  textColor?: string;
-} & ComponentPropsWithRef<'span'> &
-  BoxProps;
+  align?: ResponsiveStyleValue<string>;
+  color?: ResponsiveStyleValue<string>;
+  cursor?: ResponsiveStyleValue<string>;
+  outline?: ResponsiveStyleValue<string>;
+  userSelect?: ResponsiveStyleValue<string>;
+} & BoxProps;
 
-export const Text: React.FC<TextProps> = ({
-  as = 'span',
-  variant = 'body',
-  textColor = 'inherit',
-  className,
-  children,
-  ...props
-}) => {
-  const classNames = useStyles({
-    variant: `text.${variant}`,
-    css: {
-      color: textColor,
+export const Text: ComponentWithAs<TextProps, 'span'> = forwardRef(
+  (
+    {
+      children,
+      className,
+      as = 'span',
+      variant = 'body',
+      align,
+      color,
+      cursor,
+      outline,
+      userSelect,
+      ...props
     },
-    className,
-  });
+    ref
+  ) => {
+    const cn = useStyles({
+      className,
+      variant: `text.${variant}`,
+      css: { textAlign: align, color, cursor, outline, userSelect },
+    });
 
-  return (
-    <Box as={as} className={classNames} {...props}>
-      {children}
-    </Box>
-  );
-};
+    return (
+      <Box as={as} className={cn} ref={ref} {...props}>
+        {children}
+      </Box>
+    );
+  }
+);
