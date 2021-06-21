@@ -34,7 +34,7 @@ export const Text: ComponentWithAs<TextProps, 'span'> = forwardRef(
     });
 
     return (
-      <Box as={as} className={cn} ref={ref} {...props}>
+      <Box {...props} as={as} className={cn} ref={ref}>
         {children}
       </Box>
     );

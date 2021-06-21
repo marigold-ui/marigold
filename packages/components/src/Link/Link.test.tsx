@@ -17,9 +17,7 @@ const theme = {
 test('uses `text.link` as default variant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Link href="#!" title="link">
-        Link
-      </Link>
+      <Link href="#!">Link</Link>
     </ThemeProvider>
   );
   const link = screen.getByText(/Link/);
@@ -30,7 +28,7 @@ test('uses `text.link` as default variant', () => {
 test('allows to change variants via `variant` prop (with "text" prefix)', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Link href="#!" title="link" variant="second">
+      <Link href="#!" variant="second">
         Link
       </Link>
     </ThemeProvider>
@@ -43,9 +41,7 @@ test('allows to change variants via `variant` prop (with "text" prefix)', () => 
 test('renders a <a> element by default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Link href="#!" title="link">
-        Link
-      </Link>
+      <Link href="#!">Link</Link>
     </ThemeProvider>
   );
   const link = screen.getByText(/Link/);
@@ -53,10 +49,10 @@ test('renders a <a> element by default', () => {
   expect(link instanceof HTMLAnchorElement).toBeTruthy();
 });
 
-test('accepts custom styles prop className', () => {
+test('accepts custom className', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Link href="#!" className="custom-class-name" title="link">
+      <Link href="#!" className="custom-class-name">
         Link
       </Link>
     </ThemeProvider>
@@ -66,9 +62,32 @@ test('accepts custom styles prop className', () => {
   expect(link.className).toMatch('custom-class-name');
 });
 
-test('forwards ref', () => {
-  const ref = React.createRef<HTMLAnchorElement>();
-  render(<Link ref={ref}>button</Link>);
+test('accepts other routing components', () => {
+  const RouterLink = React.forwardRef<
+    HTMLSpanElement,
+    { to: string; children?: React.ReactNode }
+  >(() => <span>I am a Router Link!</span>);
 
-  expect(ref.current instanceof HTMLAnchorElement).toBeTruthy();
+  render(
+    <ThemeProvider theme={theme}>
+      <Link as={RouterLink} to="/Home">
+        Link
+      </Link>
+    </ThemeProvider>
+  );
+
+  const link = screen.getByText('I am a Router Link!');
+  expect(link).toBeTruthy();
+});
+
+test('a link can be disabled via aria attributes', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Link href="#!" disabled={true}>
+        Link
+      </Link>
+    </ThemeProvider>
+  );
+  const link = screen.getByText(/Link/);
+  expect(link.getAttribute('aria-disabled')).toEqual('true');
 });

@@ -47,6 +47,20 @@ export type AsProps<P, T extends React.ElementType> = P &
     as?: T;
   };
 
+export type PolymorpicProps<P, T extends React.ElementType> = P &
+  Omit<ComponentProps<T>, 'as' | keyof P> & {
+    as?: T; 
+  };
+
+export interface PolymorphicComponent<P, T extends React.ElementType> extends React.Component<any> {
+  (
+    props: P & React.ComponentProps<T> & { as?: never }
+  ): React.ReactElement<P> | null;
+  <As extends React.ElementType>(
+    props: AsProps<P, As>
+  ): React.ReactElement<P> | null;
+}
+
 /**
  * Component that supports the `as` prop. Meaning, the component allows to change
  * the element that is bening renders.
@@ -58,7 +72,7 @@ export type AsProps<P, T extends React.ElementType> = P &
  *
  * @example
  * const Component: ComponentWithAs<{ foo?: string; }, 'div'>
- *   = forwardRef((props, ref) => <div>p{rops.children}</div>);
+ *   = forwardRef((props, ref) => <div>{props.children}</div>);
  */
 export interface ComponentWithAs<P, T extends React.ElementType>
   extends ForwardRefComponent<any> {
