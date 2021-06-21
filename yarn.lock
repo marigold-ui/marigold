@@ -5366,7 +5366,7 @@ __metadata:
   resolution: "@marigold/system@workspace:packages/system"
   dependencies:
     "@emotion/css": 11.1.3
-    "@theme-ui/css": 0.9.1
+    "@theme-ui/css": 0.10.1
     csstype: 3.0.8
   peerDependencies:
     react: ^16.x || ^17.0.0
@@ -6750,13 +6750,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@theme-ui/css@npm:0.9.1":
-  version: 0.9.1
-  resolution: "@theme-ui/css@npm:0.9.1"
+"@theme-ui/css@npm:0.10.1":
+  version: 0.10.1
+  resolution: "@theme-ui/css@npm:0.10.1"
   dependencies:
     "@emotion/react": ^11.1.1
     csstype: ^3.0.5
-  checksum: 89864c7e61d54202ac90845390d4cbf621b8b752ef61cb2f708ccefdadc8a01eccfb3e12319c75c84f9446b8297c95d73e10ff606cbe2b916fc0f6beff1a1778
+  checksum: 7662b4c8e48cfe8e77ac197eeb34e8dba21db3fcd00337942bc735095d9d39e8966b5c66f5500ebada8c037417ecc5142a1b8dcbee1c1e75c83bd302a15bf063
   languageName: node
   linkType: hard
 
