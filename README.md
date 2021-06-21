@@ -41,11 +41,11 @@ import { Text, theme } from '@marigold/components'
 </MarigoldProvider>
 ```
 
-## For Developers 
+## For Developers
 
 ### Setup & Usage
 
-Open a terminal and navigate to a folder of your choice. Clone the project `git clone https://github.com/marigold-ui/marigold.git` and navigate to the new folder `cd marigold`. Install the yarn packages using `yarn` command in the root and use `yarn start` to start storybook. Open [localhost:6005](http://localhost:6005) to see the components in storybook. 
+Open a terminal and navigate to a folder of your choice. Clone the project `git clone https://github.com/marigold-ui/marigold.git` and navigate to the new folder `cd marigold`. Install the yarn packages using `yarn` command in the root and use `yarn start` to start storybook. Open [localhost:6005](http://localhost:6005) to see the components in storybook.
 Navigate to the documentation `cd docs` and start the development server `gatsby develop`, which opens the documentation site on [localhost:8000](http://localhost:8000).
 When working on the components, use the following commands for development.
 
@@ -53,7 +53,6 @@ When working on the components, use the following commands for development.
 - Linting: `yarn lint`
 - Test: `yarn test` (with optional `--watch`)
 - Type checking: `yarn typecheck`
-
 
 ## Contributors ✨
 
