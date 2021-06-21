@@ -1,6 +1,6 @@
 {
   "name": "@marigold/components",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Components for the Marigold Design System",
   "main": "dist/index.js",
   "module": "dist/components.esm.js",

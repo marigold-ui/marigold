@@ -6,21 +6,53 @@ import { ComponentProps } from '@marigold/types';
 import { Box } from '../Box';
 import { Label } from '../Label';
 
-export type CheckboxProps = {
-  id: string;
+// Checkbox Icon
+// ---------------
+type CheckboxIconProps = {
+  className?: string;
   variant?: string;
-  label?: string;
-} & Omit<ComponentProps<'input'>, 'type' | 'id'>;
+  checked?: boolean;
+  children?: never;
+};
 
-export const Checkbox: React.FC<CheckboxProps> = ({
-  id,
-  variant = 'default',
-  label,
-  required,
+const CheckboxIcon: React.FC<CheckboxIconProps> = ({
   className,
+  variant,
+  checked,
+}) => {
+  const checkboxIconStyle = useStyles({
+    variant: variant,
+    css: {
+      ariaHidden: 'true',
+      mr: 2,
+      verticalAlign: 'middle',
+      ':hover': { cursor: 'pointer' },
+      'input:disabled ~ &': {
+        color: 'disabled',
+        cursor: 'not-allowed',
+      },
+    },
+    className,
+  });
+
+  if (checked) {
+    return <SquareChecked className={checkboxIconStyle} />;
+  }
+  return <SquareUnchecked className={checkboxIconStyle} />;
+};
+
+// Checkbox Input
+// ---------------
+type CheckboxInputProps = {
+  variant?: string;
+} & ComponentProps<'input'>;
+
+const CheckboxInput: React.FC<CheckboxInputProps> = ({
+  className,
+  variant = 'default',
   ...props
 }) => {
-  const checkboxStyles = useStyles({
+  const checkboxStyle = useStyles({
     css: {
       position: 'absolute',
       opacity: 0,
@@ -31,42 +63,40 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     },
   });
 
-  const checkboxIconStyles = useStyles({
-    variant: `checkbox.${variant}`,
-    css: {
-      mr: 2,
-      verticalAlign: 'middle',
-      ':hover': { cursor: 'pointer' },
-      'input:disabled ~ &': {
-        color: 'muted',
-        cursor: 'not-allowed',
-      },
-    },
-    className,
-  });
-
-  const checkbox = (
+  return (
     <Box display="inline-block">
-      <input type="checkbox" className={checkboxStyles} {...props} />
-      {props.checked ? (
-        <SquareChecked aria-hidden="true" className={checkboxIconStyles} />
-      ) : (
-        <SquareUnchecked aria-hidden="true" className={checkboxIconStyles} />
-      )}
+      <input type="checkbox" className={checkboxStyle} {...props} />
+      <CheckboxIcon
+        checked={props.checked}
+        className={className}
+        variant={variant}
+      />
     </Box>
   );
+};
 
-  return (
-    <>
-      {label ? (
-        <Label htmlFor={id}>
-          {checkbox}
-          {label}
-          {required ? <Required size={16} /> : ''}
-        </Label>
-      ) : (
-        <>{checkbox}</>
-      )}
-    </>
-  );
+// Checkbox
+// ---------------
+export type CheckboxProps = {
+  id: string;
+  label?: string;
+  required?: boolean;
+} & CheckboxInputProps;
+
+export const Checkbox: React.FC<CheckboxProps> = ({
+  label,
+  required,
+  ...props
+}) => {
+  if (label) {
+    return (
+      <Label htmlFor={props.id}>
+        <CheckboxInput {...props} />
+        {label}
+        {required && <Required size={16} />}
+      </Label>
+    );
+  }
+
+  return <CheckboxInput {...props} />;
 };

@@ -43,10 +43,31 @@ export const Navigation: React.FC = () => {
               <Link to="/components/button">Button</Link>
             </li>
             <li>
+              <Link to="/components/column">Column</Link>
+            </li>
+            <li>
+              <Link to="/components/columns">Columns</Link>
+            </li>
+            <li>
+              <Link to="/components/checkbox">Checkbox</Link>
+            </li>
+            <li>
+              <Link to="/components/container">Container</Link>
+            </li>
+            <li>
+              <Link to="/components/dialog">Dialog</Link>
+            </li>
+            <li>
               <Link to="/components/divider">Divider</Link>
             </li>
             <li>
+              <Link to="/components/field">Field</Link>
+            </li>
+            <li>
               <Link to="/components/heading">Heading</Link>
+            </li>
+            <li>
+              <Link to="/components/hidden">Hidden</Link>
             </li>
             <li>
               <Link to="/components/input">Input</Link>
@@ -58,16 +79,25 @@ export const Navigation: React.FC = () => {
               <Link to="/components/link">Link</Link>
             </li>
             <li>
+              <Link to="/components/menu">Menu</Link>
+            </li>
+            <li>
               <Link to="/components/menu-item">MenuItem</Link>
             </li>
             <li>
               <Link to="/components/message">Message</Link>
             </li>
             <li>
+              <Link to="/components/radio">Radio</Link>
+            </li>
+            <li>
               <Link to="/components/select">Select</Link>
             </li>
             <li>
               <Link to="/components/slider">Slider</Link>
+            </li>
+            <li>
+              <Link to="/components/stack">Stack</Link>
             </li>
             <li>
               <Link to="/components/text">Text</Link>

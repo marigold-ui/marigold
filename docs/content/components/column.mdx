@@ -2,14 +2,6 @@
 title: Column
 ---
 
-import { useStyles } from '@marigold/system';
-export const classNames = useStyles({
-  textAlign: 'center',
-  border: '1px solid',
-  padding: 2,
-  margin: 2,
-});
-
 # Column
 
 ## Description
@@ -28,8 +20,28 @@ With the Column component you can add a column with a width in percent of the fu
 import { Column } from '@marigold/components';
 ```
 
+## Live-Code Example
+
+```tsx live
+<Column>width=12</Column>
+```
+
 ## Usage
 
+import { useStyles } from '@marigold/system';
+
 ```tsx
-<Column className={classNames}>width=12</Column>
+<Column>width=12</Column>
+```
+
+```tsx
+<Column width={6}>width=6</Column>
+```
+
+```tsx
+<Column width={3}>width=3</Column>
+```
+
+```tsx
+<Column width={2}>width=2</Column>
 ```
