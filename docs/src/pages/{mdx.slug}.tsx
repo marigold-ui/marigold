@@ -24,7 +24,7 @@ const Page = ({ data: { mdx } }: PageProps) => {
 };
 
 export const query = graphql`
-  query($id: String) {
+  query ($id: String) {
     mdx(id: { eq: $id }) {
       body
       frontmatter {
