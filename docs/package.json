@@ -3,14 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "description": "docs",
-  "scripts": {
-    "develop": "gatsby develop",
-    "start": "gatsby develop",
-    "build": "gatsby build",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean",
-    "deploy": "gatsby build --prefix-paths && gh-pages -d public"
-  },
   "dependencies": {
     "@marigold/components": "workspace:*",
     "@marigold/icons": "workspace:*",
@@ -45,5 +37,13 @@
     "@types/react": "17.0.11",
     "@types/react-helmet": "6.1.1",
     "tsconfig-paths-webpack-plugin": "3.5.1"
+  },
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "deploy": "gatsby build --prefix-paths && gh-pages -d public"
   }
 }

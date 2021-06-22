@@ -3,7 +3,7 @@ import { GatsbyBrowser } from 'gatsby';
 import { MDXProvider } from '@mdx-js/react';
 
 import { ThemeProvider } from '@marigold/system';
-import b2bTheme from '@marigold/theme-b2b';
+import { theme } from './theme';
 
 import { Layout } from './components/Layout';
 import * as mdxComponents from './mdx';
@@ -16,7 +16,7 @@ export const WrapPageElement: GatsbyBrowser['wrapPageElement'] = ({
 export const WrapRootElement: GatsbyBrowser['wrapRootElement'] = ({
   element,
 }) => (
-  <ThemeProvider theme={b2bTheme}>
+  <ThemeProvider theme={theme}>
     <MDXProvider components={mdxComponents}>{element}</MDXProvider>;
   </ThemeProvider>
 );
