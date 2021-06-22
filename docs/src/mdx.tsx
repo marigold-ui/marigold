@@ -70,7 +70,9 @@ export const inlineCode: React.FC<ComponentProps<'code'>> = ({
       backgroundColor: b2bTheme.colors.gray10,
     }}
     {...props}
-  ></code>
+  >
+    {children}
+  </code>
 );
 
 export const pre: React.FC<ComponentProps<'pre'>> = preProps => {
