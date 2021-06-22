@@ -3,7 +3,7 @@
 "@marigold/types": patch
 ---
 
-feat(compoents): Make `<Text>` and `<Link> polymorphic
+feat(compoents): Make `<Text>` and `<Link>` polymorphic
 
 **`<Text>`**
 - the `as` prop supports arbitrary inputs
