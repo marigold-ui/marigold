@@ -51,6 +51,7 @@ export const components = {
       ...button.large,
       color: 'black',
       bg: 'transparent',
+      border: 'grey',
     },
     toggle: {
       ...button.primary,

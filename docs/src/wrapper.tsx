@@ -20,3 +20,13 @@ export const WrapRootElement: GatsbyBrowser['wrapRootElement'] = ({
     <MDXProvider components={mdxComponents}>{element}</MDXProvider>;
   </ThemeProvider>
 );
+
+/**
+ * Enforce reloading to update styles.
+ */
+if (module.hot) {
+  module.hot.accept('./theme', () => {
+    console.log('🏵  UPDATE THEME!');
+    window.location.reload();
+  });
+}
