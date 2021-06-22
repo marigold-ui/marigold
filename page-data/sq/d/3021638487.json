@@ -1,0 +1,15 @@
+{
+  "data": {
+    "file": {
+      "childImageSharp": {
+        "fluid": {
+          "base64": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFIklEQVQ4y01VWUxUVxj+7jn3NtrQxKdGX5r0xVejiW3qvjAbgsygotY2agrFCSKVYYaCgyKMSmyMrZq+iC20FRUXUMqiVhtXkEUt26gMOgvLgArMeodh8DTnSq03Ocmdyfm//P//LRcTe0VM7BMxUSRiYq9I/TmUPlMB/i8RN5RNEd0nzolYxecRq9j6plSa6V2Fmb5NiHOsBnxZRIwWiUSpnz7vwKL7JUyVShjLIHAnIsmdjFCvDkflfFouf0+ZnE9Z0EyPORJwzaPH4HM1PvFlEcQOSEptdP97gPyPiSJpRsQqbpssEvWeVBzp1mCyNwX3ZAsNBE30TchEWdhMR+xJaO3RIjqwWciIlYhrI1Zxa7RY+iBaLCmNgbc8dUiCbBU3R/aILMy7yaMDr4zk4kgGyZZN1B7YRVggmzA5l94e2E52vjKSOjmPDvPOI1aRH8PUQaVLouxhbAfBlE1cwcFCuTQY3E1YaDdp9uhR3peMqkAmOT36LSlzrEH94AacCOUQV3A3ZSEzDXHQmE1cPG4k8O0iIvo0gCsRn7vXI1+2UCcHC2YT9jpNKO/QYKxdA9akJo3NaqHtoRasU4sn/kxSw+8Ec5Rpet0pOOBJwqIXCQBGN2KWOxnBbg3YcDqpCueQR+MZpMKxAYfuxMN3I56wPxeB1S0BuxlP2L14DDk3C7bRdFIRzqHt3jRyzq4F8+jR3fQFgG6AOBJQ2ZuCO9508p1Hj5MdGozciYe/bjnYH/MRaS9QV9xKn1dbuQCscQXY3Xj4ujQYHViHo950sueZHg96tShwbxEUUmbL+fQ32UJDsom2O5JwmY92fSXYZdWHPbWpnx5nPec7J5pOtlVpZp2qWSl5b6wCe6QFc63HL3IuHZQt9KVcIB6L7hM/AhctX2zQRBUmfUbya5OG3r/yGQKva4qPs6fVwcnmsqnJB6cYc9Y7u2z6srpFYC06ciaYRep5DZeUwnih2MoBW/mP0P+AFU0q3GpYDnZJFXcl2lx2N9Zyik21lbPxqz80Vi2jD66uBGtR47rPSM4pgLlvhR8pFBvADkszQxZ6JGymXjmXtvUloZqP89dqgZ1diMes53wD+6eyj9kvuAI3f7paOQ8v/lYR9lgL9iIZlXIu7QybqTtopsXgTwWbDYcOp+1JaO/fLmQOrMPPnVp47sYj2LgcI/aStafrDbPrbnw991JH/qqaxqXw31dhuFuLruFNOOzZJljsiejoS0Dl7a8IwI3u0WO0Rwv2cgepDeeQJz4jOeveIlg56LXFYA3LwBqWgl1fAnZfBd/QVqHAn0nqwyY6OJJBap/owPr1eMjYDMChBlxrsLA/FQVyHu3nDuCiHd9BznRpMfhYJ7AWjVDdohEu8/duLVw+I7nwnrDd/Rux3anFnOdqQLHLmJEgViKqFXLMNMwvhk20a3A9jjgN+D2wk1QHMkmN04AKbyoOhk3UodwxU5mTMXVAWubPJvBz63FDvylVwsHAjc5Bwxb6dOgbUjWURgrkXNrHmZwOh17XVsHiTSPVch59qjDLa6xiQsw2HQ5KFhZLiNokKu8RVaxUmu8ywMJ3+syAJtlCX3NJcWmEzdRpT0QX35k7BdmsVFogW8XVsUMSmSyZjq//ACdtEniM8dTwJGGeRw+HQ4fjcj49wTvhJ5RHCx06/MgJ8CRiri+TIHZQwiQP2XeAe6fjv+jt+DzOnAkAyxKoK43vVorjDogUivWMfYzedUDzUsCpm/4EFIskymuL3ib2v6v3A602AXLCAAAAAElFTkSuQmCC",
+          "aspectRatio": 1,
+          "src": "/static/464bc19986024b09ab1ec15fd13df698/bc59e/icon.png",
+          "srcSet": "/static/464bc19986024b09ab1ec15fd13df698/69585/icon.png 200w,\n/static/464bc19986024b09ab1ec15fd13df698/497c6/icon.png 400w,\n/static/464bc19986024b09ab1ec15fd13df698/bc59e/icon.png 512w",
+          "sizes": "(max-width: 512px) 100vw, 512px"
+        }
+      }
+    }
+  }
+}

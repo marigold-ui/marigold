@@ -1,3 +1,0 @@
-# `@marigold/components`
-
-> Marigold components
