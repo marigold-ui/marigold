@@ -17,6 +17,9 @@ module.exports = {
     '@storybook/addon-docs',
     'storybook-addon-themes',
   ],
+  typescript: {
+    reactDocgen: 'none',
+  },
   webpackFinal: async config => {
     // Add support for TS path mapping
     config.resolve.plugins = [new TsconfigPathsPlugin({ configFile })];

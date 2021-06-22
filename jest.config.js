@@ -5,6 +5,7 @@ module.exports = createConfig({
     '!**/docs/**',
     '!**/icons/**',
     '!**/themes/**',
+    '!**/packages/types/**',
     '!**/stories.tsx',
   ],
   moduleNameMapper: {

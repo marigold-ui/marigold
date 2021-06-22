@@ -4,11 +4,15 @@
   "version": "0.0.3",
   "license": "MIT",
   "main": "src/index.ts",
+  "files": [
+    "src/index.ts"
+  ],
+  "types": "src/index.ts",
   "peerDependencies": {
     "@types/react": "^17.x"
   },
   "devDependencies": {
-    "@types/react": "17.0.8"
+    "@types/react": "17.0.11"
   },
   "scripts": {
     "build": "echo types only",

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Column, Columns } from '@marigold/components';
-import { ThemeProvider } from '@marigold/system';
-import b2bTheme from '@marigold/theme-b2b';
 
 import { Navigation } from './Navigation';
 
@@ -17,14 +15,12 @@ export const Layout: React.FC = ({ children }) => {
         />
         <title>Marigold Design System</title>
       </Helmet>
-      <ThemeProvider theme={b2bTheme}>
-        <Columns space={4}>
-          <Column width={2}>
-            <Navigation />
-          </Column>
-          <Column width={10}>{children}</Column>
-        </Columns>
-      </ThemeProvider>
+      <Columns space={4}>
+        <Column width={2}>
+          <Navigation />
+        </Column>
+        <Column width={10}>{children}</Column>
+      </Columns>
     </>
   );
 };

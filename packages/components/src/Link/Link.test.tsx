@@ -4,8 +4,8 @@ import { ThemeProvider } from '@marigold/system';
 import { Link } from './Link';
 
 const theme = {
-  link: {
-    normal: {
+  text: {
+    link: {
       fontFamily: 'Inter',
     },
     second: {
@@ -14,54 +14,80 @@ const theme = {
   },
 };
 
-test('supports default variant and themeSection', () => {
+test('uses `text.link` as default variant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Link href="#!" title="link">
-        Link
-      </Link>
+      <Link href="#!">Link</Link>
     </ThemeProvider>
   );
-  const link = screen.getByTitle(/link/);
+  const link = screen.getByText(/Link/);
 
   expect(link).toHaveStyle(`font-family: Inter`);
 });
 
-test('accepts other variant than default', () => {
+test('allows to change variants via `variant` prop (with "text" prefix)', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Link href="#!" title="link" variant="second">
+      <Link href="#!" variant="second">
         Link
       </Link>
     </ThemeProvider>
   );
-  const link = screen.getByTitle(/link/);
+  const link = screen.getByText(/Link/);
 
   expect(link).toHaveStyle(`font-family: Oswald`);
 });
 
-test('renders correct HTML element', () => {
+test('renders a <a> element by default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Link href="#!" title="link">
-        Link
-      </Link>
+      <Link href="#!">Link</Link>
     </ThemeProvider>
   );
-  const link = screen.getByTitle(/link/);
+  const link = screen.getByText(/Link/);
 
   expect(link instanceof HTMLAnchorElement).toBeTruthy();
 });
 
-test('accepts custom styles prop className', () => {
+test('accepts custom className', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Link href="#!" className="custom-class-name" title="link">
-        link
+      <Link href="#!" className="custom-class-name">
+        Link
       </Link>
     </ThemeProvider>
   );
-  const link = screen.getByTitle(/link/);
+  const link = screen.getByText(/Link/);
 
   expect(link.className).toMatch('custom-class-name');
+});
+
+test('accepts other routing components', () => {
+  const RouterLink = React.forwardRef<
+    HTMLSpanElement,
+    { to: string; children?: React.ReactNode }
+  >(() => <span>I am a Router Link!</span>);
+
+  render(
+    <ThemeProvider theme={theme}>
+      <Link as={RouterLink} to="/Home">
+        Link
+      </Link>
+    </ThemeProvider>
+  );
+
+  const link = screen.getByText('I am a Router Link!');
+  expect(link).toBeTruthy();
+});
+
+test('a link can be disabled via aria attributes', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Link href="#!" disabled={true}>
+        Link
+      </Link>
+    </ThemeProvider>
+  );
+  const link = screen.getByText(/Link/);
+  expect(link.getAttribute('aria-disabled')).toEqual('true');
 });

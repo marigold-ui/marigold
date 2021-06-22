@@ -1,35 +1,49 @@
-import React from 'react';
-import { useStyles } from '@marigold/system';
-import { ComponentPropsWithRef } from '@marigold/types';
-import { Box, BoxProps } from '../Box';
+import React, { forwardRef } from 'react';
+import { ResponsiveStyleValue, useStyles } from '@marigold/system';
+import {
+  PolymorphicComponentWithRef,
+  PolymorphicPropsWithRef,
+} from '@marigold/types';
 
-export type TextProps = {
-  className?: string;
-  as?: 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-  variant?: string;
-  textColor?: string;
-} & ComponentPropsWithRef<'span'> &
-  BoxProps;
+import { Box, BoxOwnProps } from '../Box';
 
-export const Text: React.FC<TextProps> = ({
-  as = 'span',
-  variant = 'body',
-  textColor = 'inherit',
-  className,
-  children,
-  ...props
-}) => {
-  const classNames = useStyles({
-    variant: `text.${variant}`,
-    css: {
-      color: textColor,
-    },
-    className,
-  });
+export type TextOwnProps = {
+  align?: ResponsiveStyleValue<string>;
+  color?: ResponsiveStyleValue<string>;
+  cursor?: ResponsiveStyleValue<string>;
+  outline?: ResponsiveStyleValue<string>;
+  userSelect?: ResponsiveStyleValue<string>;
+} & BoxOwnProps;
 
-  return (
-    <Box as={as} className={classNames} {...props}>
-      {children}
-    </Box>
+export type TextProps = PolymorphicPropsWithRef<TextOwnProps, 'span'>;
+
+export const Text: PolymorphicComponentWithRef<TextOwnProps, 'span'> =
+  forwardRef(
+    (
+      {
+        as = 'span',
+        variant = 'body',
+        children,
+        className,
+        align,
+        color,
+        cursor,
+        outline,
+        userSelect,
+        ...props
+      },
+      ref
+    ) => {
+      const cn = useStyles({
+        className,
+        variant: `text.${variant}`,
+        css: { textAlign: align, color, cursor, outline, userSelect },
+      });
+
+      return (
+        <Box {...props} as={as} className={cn} ref={ref}>
+          {children}
+        </Box>
+      );
+    }
   );
-};

@@ -1,8 +1,11 @@
 import { createElement, forwardRef } from 'react';
 import { ResponsiveStyleValue, useStyles } from '@marigold/system';
-import { ComponentWithAs } from '@marigold/types';
+import {
+  PolymorphicPropsWithRef,
+  PolymorphicComponentWithRef,
+} from '@marigold/types';
 
-export type BoxProps = {
+export type BoxOwnProps = {
   className?: string;
   variant?: string | string[];
 
@@ -53,7 +56,9 @@ export type BoxProps = {
   transition?: ResponsiveStyleValue<number | string>;
 };
 
-export const Box: ComponentWithAs<BoxProps, 'div'> = forwardRef(
+export type BoxProps = PolymorphicPropsWithRef<BoxOwnProps, 'div'>;
+
+export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef(
   (
     {
       variant,
