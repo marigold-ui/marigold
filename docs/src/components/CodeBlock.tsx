@@ -1,10 +1,11 @@
 import React from 'react';
+import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
+import Highlight, { defaultProps, Language } from 'prism-react-renderer';
+import theme from 'prism-react-renderer/themes/github';
+
 import * as Components from '@marigold/components';
 import { useStyles } from '@marigold/system';
 import * as Icons from '@marigold/icons';
-import Highlight, { defaultProps, Language } from 'prism-react-renderer';
-import theme from 'prism-react-renderer/themes/github';
-import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
 
 import { CopyButton } from './CopyButton';
 import { ShowHideButton } from './ShowHideButton';

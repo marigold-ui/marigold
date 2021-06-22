@@ -11,7 +11,6 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
-  console.log(variant);
   return (
     <Box as="button" {...props} variant={`button.${variant}`}>
       <Box as="span" display="inline-flex" alignItems="center">

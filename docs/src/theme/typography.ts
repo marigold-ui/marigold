@@ -11,6 +11,7 @@ export const typography = {
   fonts: {
     body: 'Inter',
     heading: 'Inter Black',
+    code: 'monospace',
   },
   fontSizes: {
     body: '1rem',
@@ -27,6 +28,7 @@ export const typography = {
     bold: 700,
   },
   lineHeights: {
+    cap: 1,
     body: 1.5,
     heading: 1.125,
   },
