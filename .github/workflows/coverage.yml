@@ -33,7 +33,7 @@ jobs:
 
       - name: Install Dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn install
+        run: yarn --prefer-offline
 
       - name: Run coverage (with lcov file as output)
         run: yarn coverage -i
