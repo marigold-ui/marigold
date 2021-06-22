@@ -5,4 +5,8 @@ import { Link as MarigoldLink } from '@marigold/components';
 export const Link: React.FC<GatsbyLinkProps<unknown>> = ({
   children,
   ...props
-}) => <MarigoldLink as={GatsbyLink}>{children}</MarigoldLink>;
+}) => (
+  <MarigoldLink {...props} as={GatsbyLink}>
+    {children}
+  </MarigoldLink>
+);

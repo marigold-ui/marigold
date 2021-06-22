@@ -2,6 +2,8 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Column, Columns } from '@marigold/components';
 
+import { Link } from './Link';
+import { Logo } from './Logo';
 import { Navigation } from './Navigation';
 
 export const Layout: React.FC = ({ children }) => {
@@ -15,9 +17,14 @@ export const Layout: React.FC = ({ children }) => {
         />
         <title>Marigold Design System</title>
       </Helmet>
-      <Columns space={4}>
+      <Columns space={16}>
         <Column width={2}>
-          <Navigation />
+          <>
+            <Link to="/">
+              <Logo />
+            </Link>
+            <Navigation />
+          </>
         </Column>
         <Column width={10}>{children}</Column>
       </Columns>

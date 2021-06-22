@@ -11,7 +11,6 @@ export const Navigation: React.FC = () => {
 
   return (
     <Text>
-      <Link to="/">Marigold</Link>
       <ul>
         <li>
           <b>Guides</b>

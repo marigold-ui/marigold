@@ -5,6 +5,7 @@ module.exports = {
     siteUrl: 'https://marigold-ui.github.io/marigold/',
   },
   plugins: [
+    'gatsby-plugin-image',
     'gatsby-plugin-sharp',
     'gatsby-transformer-sharp',
     'gatsby-plugin-react-helmet',
