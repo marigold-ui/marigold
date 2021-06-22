@@ -11,7 +11,7 @@ export const CopyButton: React.FC<CopyProps> = ({ codeString }) => {
     <>
       <br />
       <Button
-        variant="ghost.small"
+        variant="copy"
         onClick={() => {
           copyToClipboard(codeString);
           setIsCopied(true);

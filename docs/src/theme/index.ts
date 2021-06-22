@@ -26,7 +26,15 @@ export const theme = {
     info: colors.blue,
     success: colors.green,
   },
-  radii: [0, 2, 4],
+  radii: {
+    none: 0,
+    small: 2,
+    medium: 4,
+  },
+  borders: {
+    none: 0,
+    grey: `1px solid ${colors.gray[60]}`,
+  },
   ...typography,
   ...components,
 };

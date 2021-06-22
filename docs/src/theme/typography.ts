@@ -1,7 +1,7 @@
 const text = {
   root: {
     fontFamily: 'body',
-    fontSize: 'xsmall',
+    fontSize: 'body',
     lineHeight: 'body',
     fontWeight: 'body',
   },
@@ -13,6 +13,7 @@ export const typography = {
     heading: 'Inter Black',
   },
   fontSizes: {
+    body: '1rem',
     xxsmall: '0.875rem',
     xsmall: '1rem',
     small: '1.125rem',
