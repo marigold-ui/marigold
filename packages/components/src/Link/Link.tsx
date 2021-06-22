@@ -2,9 +2,9 @@ import React, { useRef } from 'react';
 import { useLink } from '@react-aria/link';
 import { PolymorphicComponent, PolymorphicProps } from '@marigold/types';
 
-import { Text, TextProps } from '../Text';
+import { Text, TextOwnProps } from '../Text';
 
-export type LinkOwnProps = { disabled?: boolean } & TextProps;
+export type LinkOwnProps = { disabled?: boolean } & TextOwnProps;
 export type LinkProps = PolymorphicProps<LinkOwnProps, 'a'>;
 
 export const Link = (({
