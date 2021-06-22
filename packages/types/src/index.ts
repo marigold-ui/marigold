@@ -6,6 +6,11 @@ import React from 'react';
 export type ValueOf<T> = T[keyof T];
 
 /**
+ * Merge to types. Second one overrides the first one.
+ */
+type Merge<T, U> = Omit<T, keyof U> & U;
+
+/**
  * Get props without supporting `ref` and strip the `style` prop.
  *
  * @example <caption>Will contain all HTML attributes of a regular button element, minus "style"</caption>
@@ -29,7 +34,7 @@ export type ComponentPropsWithRef<T extends React.ElementType> = Omit<
 
 /**********************************************/
 /*                                            */
-/*     COMPONENT SUPPORTING THE "AS" PROP     */
+/*            POLYMORPIC COMPONENT            */
 /*                                            */
 /**********************************************/
 
@@ -40,32 +45,64 @@ type ForwardRefComponent<P> = Pick<
 >;
 
 /**
- * Props containing the generic `as` prop and supporting `ref`.
+ * Props for the polymorphic `as` prop.
  */
-export type AsProps<P, T extends React.ElementType> = P &
-  Omit<ComponentPropsWithRef<T>, 'as' | keyof P> & {
-    as?: T;
-  };
+export type PropsWithAs<P, T extends React.ElementType> = P & { as?: T };
 
 /**
- * Component that supports the `as` prop. Meaning, the component allows to change
- * the element that is bening renders.
+ * Helper type to create props including the polymorphic `as` prop, but no `ref`.
+ */
+export type PolymorphicProps<P, T extends React.ElementType> = Merge<
+  ComponentProps<T>,
+  PropsWithAs<P, T>
+>;
+
+/**
+ * Helper type to create props including the polymorphic `as` prop and forwarding `ref`.
+ */
+export type PolymorphicPropsWithRef<P, T extends React.ElementType> = Merge<
+  ComponentPropsWithRef<T>,
+  PropsWithAs<P, T>
+>;
+
+/**
+ * Create a polymorphpic component with the `as` prop.
+ * 
+ * This type can be used to create a component that allows to change the rendered 
+ * element via its `as` prop.
  *
- * This is convenient to create components like `<Text>` that can render as different
- * text elements like `h1`, `h2`, `p` and so on.
+ * @example
+ * const Component: = ((props:ComponentProps) => <div>{props.children}</div>))
+ *  as PolymorphicComponent<ComponentProps, 'div'>;
+ */
+export interface PolymorphicComponent<P, T extends React.ElementType>
+  extends React.Component<any> {
+  (
+    props: P & React.ComponentProps<T> & { as?: never }
+  ): React.ReactElement<P> | null;
+  <As extends React.ElementType>(
+    props: PolymorphicProps<P, As>
+  ): React.ReactElement<P> | null;
+}
+
+/**
+ * Create a polymorphpic component with the `as` prop that also support passing a `ref`.
+ * 
+ * This type can be used to create a component that allows to change the rendered 
+ * element via its `as` prop and forwarding a `ref` to it.
  *
  * **Note: you should use React's `forwardRef` with this type.**
  *
  * @example
- * const Component: ComponentWithAs<{ foo?: string; }, 'div'>
- *   = forwardRef((props, ref) => <div>p{rops.children}</div>);
+ * const Component: PolymorphicComponentWithRef<ComponentProps, 'div'>
+ *   = forwardRef((props, ref) => <div>{props.children}</div>);
  */
-export interface ComponentWithAs<P, T extends React.ElementType>
+export interface PolymorphicComponentWithRef<P, T extends React.ElementType>
   extends ForwardRefComponent<any> {
   (
     props: P & React.ComponentPropsWithRef<T> & { as?: never }
   ): React.ReactElement<P> | null;
   <As extends React.ElementType>(
-    props: AsProps<P, As>
+    props: PolymorphicPropsWithRef<P, As>
   ): React.ReactElement<P> | null;
 }
