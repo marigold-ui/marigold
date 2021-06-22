@@ -3364,6 +3364,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.6.2":
+  version: 7.14.6
+  resolution: "@babel/runtime@npm:7.14.6"
+  dependencies:
+    regenerator-runtime: ^0.13.4
+  checksum: 927ffed7871f2ed29f967a8dad7a72aa10662f93b6735a89d664a161fa4dc2074b8947ca159a8a0a49cec9a71c8de473d7c2b22d3de0ee4d7dd06d24a7f98018
+  languageName: node
+  linkType: hard
+
 "@babel/standalone@npm:^7.14.0":
   version: 7.14.5
   resolution: "@babel/standalone@npm:7.14.5"
@@ -5243,6 +5252,7 @@ __metadata:
   dependencies:
     "@marigold/system": "workspace:*"
     "@marigold/types": "workspace:*"
+    "@react-aria/link": ^3.1.3
     react-keyed-flatten-children: 1.3.0
   peerDependencies:
     react: ^16.x || ^17.0.0
@@ -5569,6 +5579,92 @@ __metadata:
     react: 15.x || 16.x || 16.4.0-alpha.0911da3
     react-dom: 15.x || 16.x || 16.4.0-alpha.0911da3
   checksum: f64372497e0464a9fdfd79283fec3f4fd01ee093f1599d8a8035e0a41fbce22113bfa46dcea63aa8b7b4e0796e916f134aa8e3fccd3974be397e7c19468de3c4
+  languageName: node
+  linkType: hard
+
+"@react-aria/interactions@npm:^3.4.0":
+  version: 3.5.0
+  resolution: "@react-aria/interactions@npm:3.5.0"
+  dependencies:
+    "@babel/runtime": ^7.6.2
+    "@react-aria/utils": ^3.8.1
+    "@react-types/shared": ^3.7.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1
+  checksum: 1e6652c2e5cbaf8c71b5da59c069e4ca07f21682601e720700acaceb3393f69f9f9b5adb0bb1c34eeb8a4d574a3e02cdd809bd80a1229c6739a2a3f3e0759521
+  languageName: node
+  linkType: hard
+
+"@react-aria/link@npm:^3.1.3":
+  version: 3.1.3
+  resolution: "@react-aria/link@npm:3.1.3"
+  dependencies:
+    "@babel/runtime": ^7.6.2
+    "@react-aria/interactions": ^3.4.0
+    "@react-aria/utils": ^3.8.0
+    "@react-types/link": ^3.1.2
+    "@react-types/shared": ^3.6.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1
+  checksum: 48e6528db4d74c84fbfd7e4dbb241b82e759c3e40fe4a92cdebb6ccd60b63ecb130c65b286319acc8ad87c84e95849a6af3d35f3c5815e8fd91004bc07b59744
+  languageName: node
+  linkType: hard
+
+"@react-aria/ssr@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "@react-aria/ssr@npm:3.0.2"
+  dependencies:
+    "@babel/runtime": ^7.6.2
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1
+  checksum: ef3d2c52d794fd0dbc471cff639139d42a8e707d4b0fd16f831bd7d1ebb2385e6aa472b8a67f3661e93fb5b0f0445037ac3ce3f79424d97e506c0e8a15cbe538
+  languageName: node
+  linkType: hard
+
+"@react-aria/utils@npm:^3.8.0, @react-aria/utils@npm:^3.8.1":
+  version: 3.8.1
+  resolution: "@react-aria/utils@npm:3.8.1"
+  dependencies:
+    "@babel/runtime": ^7.6.2
+    "@react-aria/ssr": ^3.0.2
+    "@react-stately/utils": ^3.2.1
+    "@react-types/shared": ^3.7.0
+    clsx: ^1.1.1
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1
+  checksum: 4b7aa7e545c9fa2283c61510107f8e0bc705d9fa1b579fbc076df2052712b1452968aefaa57f2e3f3a90d9590011a245bbe554feaa33effe193c7a4d6741ac57
+  languageName: node
+  linkType: hard
+
+"@react-stately/utils@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "@react-stately/utils@npm:3.2.1"
+  dependencies:
+    "@babel/runtime": ^7.6.2
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1
+  checksum: 349011c2746aa59e4ec352e2a684cea1621bc16e6d21c795df19d32199fc06c15737630cafec93eecfe878ee1cb6e39912972e118b94c820f19e0a6e193e09bf
+  languageName: node
+  linkType: hard
+
+"@react-types/link@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "@react-types/link@npm:3.1.2"
+  dependencies:
+    "@react-aria/interactions": ^3.4.0
+    "@react-types/shared": ^3.6.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1
+  checksum: c961f09c845ba011dd55b4488a9f91fe9197edd42fc49b648a77eee95351bd67def64bd809caf18394b9fcc2516c358219ea5b434bb3f7eca79e522e5e90a6b5
+  languageName: node
+  linkType: hard
+
+"@react-types/shared@npm:^3.6.0, @react-types/shared@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "@react-types/shared@npm:3.7.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1
+  checksum: b404ea22b11da7212026036134af8b314fc8a58de4bd08d2b5fcc1055d16be4d5cd627cfa3a5afc83f48a68b38c07a0f8041d9fd739c4e5a082c5e32b8bec045
   languageName: node
   linkType: hard
 
@@ -11095,6 +11191,13 @@ __metadata:
   version: 1.0.4
   resolution: "clone@npm:1.0.4"
   checksum: d06418b7335897209e77bdd430d04f882189582e67bd1f75a04565f3f07f5b3f119a9d670c943b6697d0afb100f03b866b3b8a1f91d4d02d72c4ecf2bb64b5dd
+  languageName: node
+  linkType: hard
+
+"clsx@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "clsx@npm:1.1.1"
+  checksum: ff052650329773b9b245177305fc4c4dc3129f7b2be84af4f58dc5defa99538c61d4207be7419405a5f8f3d92007c954f4daba5a7b74e563d5de71c28c830063
   languageName: node
   linkType: hard
 
