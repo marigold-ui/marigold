@@ -1,10 +1,10 @@
-name: Test
+name: Coverage
 
 on: ['push', 'pull_request']
 
 jobs:
   test:
-    name: Cpverage
+    name: Coverage
     runs-on: ubuntu-latest
     env:
       CI: true
@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: 12.x
       
-     - name: Get yarn cache directory path
+      - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
