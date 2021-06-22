@@ -4,7 +4,7 @@ on: ['push', 'pull_request']
 
 jobs:
   test:
-    name: Test
+    name: Cpverage
     runs-on: ubuntu-latest
     env:
       CI: true
@@ -27,11 +27,6 @@ jobs:
       - name: Install Dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn
-
-      - name: Test
-        run: yarn test --ci
-        env:
-          COVERALLS_REPO_TOKEN: '${{ secrets.COVERALLS_REPO_TOKEN }}'
 
       - name: Run coverage (with lcov file as output)
         run: yarn coverage -i

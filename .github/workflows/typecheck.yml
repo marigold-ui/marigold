@@ -3,7 +3,7 @@ name: Typecheck
 on: 'push'
 
 jobs:
-  test:
+  typecheck:
     name: Typecheck
     runs-on: ubuntu-latest
     env:

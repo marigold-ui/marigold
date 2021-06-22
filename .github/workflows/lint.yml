@@ -1,10 +1,10 @@
-name: Format
+name: Lint
 
 on: 'push'
 
 jobs:
-  test:
-    name: Test
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     env:
       CI: true
@@ -30,6 +30,3 @@ jobs:
 
       - name: Lint
         run: yarn lint
-
-      - name: Format
-        run: yarn format
