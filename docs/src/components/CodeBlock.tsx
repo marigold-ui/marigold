@@ -1,7 +1,8 @@
 import React from 'react';
 import * as Components from '@marigold/components';
-import { useStyles } from '@marigold/system';
+import { ThemeProvider, useStyles } from '@marigold/system';
 import * as Icons from '@marigold/icons';
+import b2bTheme from '@marigold/theme-b2b';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/github';
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
@@ -71,7 +72,9 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                     <LivePreview />
                   </LiveProvider>
                 </div>
-                <ShowHideButton hide={hide} onHideChange={setHide} />
+                <ThemeProvider theme={b2bTheme}>
+                  <ShowHideButton hide={hide} onHideChange={setHide} />
+                </ThemeProvider>
               </div>
               {!hide && (
                 <LiveProvider scope={{ ...Components, ...Icons }}>
@@ -88,7 +91,9 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                         ))}
                       </div>
                     ))}
-                    <CopyButton codeString={codeString} />
+                    <ThemeProvider theme={b2bTheme}>
+                      <CopyButton codeString={codeString} />
+                    </ThemeProvider>
                   </pre>
                 </LiveProvider>
               )}
@@ -137,7 +142,9 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                       ))}
                     </div>
                   ))}
-                  <CopyButton codeString={codeString} />
+                  <ThemeProvider theme={b2bTheme}>
+                    <CopyButton codeString={codeString} />
+                  </ThemeProvider>{' '}
                 </pre>
               </LiveProvider>
               <br />
