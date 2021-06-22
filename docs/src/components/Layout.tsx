@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { Column, Columns } from '@marigold/components';
 
 import { MarigoldThemeSwitch } from './ThemeSwitch';
-import { themes, ThemeSelect } from './ThemeSelect';
+import { marigoldThemes, ThemeSelect } from './ThemeSelect';
 import { Navigation } from './Navigation';
 
 export const Layout: React.FC = ({ children }) => {
@@ -23,7 +23,7 @@ export const Layout: React.FC = ({ children }) => {
           <Navigation />
         </Column>
         <Column width={10}>
-          <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
+          <MarigoldThemeSwitch themes={marigoldThemes} initial="b2bTheme">
             <ThemeSelect />
             {children}
           </MarigoldThemeSwitch>

@@ -4,23 +4,22 @@ import { useStyles } from '@marigold/system';
 import unicornTheme from '@marigold/theme-unicorn';
 import b2bTheme from '@marigold/theme-b2b';
 
-export const themes = {
+export const marigoldThemes = {
   b2bTheme,
   unicornTheme,
 };
 
 const themeSelectStyles = {
   position: 'absolute',
-  right: b2bTheme.space.none,
+  right: 0,
   padding: '8px',
   marginTop: '4px',
   marginRight: '12px',
   background: '#f6f8fa',
-  color: b2bTheme.colors.gray60,
+  color: '#6d6d6d',
   border: 'none',
   cursor: 'pointer',
-  fontSize: b2bTheme.fontSizes.xxsmall,
-  fontFamily: b2bTheme.fonts.body,
+  fontFamily: 'Inter',
 };
 
 export const ThemeSelect: React.FC = () => {
