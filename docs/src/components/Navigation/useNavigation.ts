@@ -58,11 +58,33 @@ const createNavigation = (
   });
 };
 
+const sortNavigation = (tree: NavigationTree, order: string[]) =>
+  tree.sort((a, b) => {
+    // Get value to compare to
+    const left = 'slug' in a ? a.slug : a.name;
+    const leftIndex = order.indexOf(left);
+
+    const right = 'slug' in b ? b.slug : b.name;
+    const rightIndex = order.indexOf(right);
+    /**
+     * Fallback: If none is present in the order array
+     * -> sort alphabetically (localized to ignore case and such)
+     */
+    if (leftIndex === -1 && rightIndex === -1) {
+      return left.localeCompare(right);
+    }
+
+    // Use array index to sort.
+    return leftIndex - rightIndex;
+  });
+
 // Hook
 // ---------------
 export const useNavigation = () => {
+  // Get all MDX pages
   const {
     allMdx: { nodes },
+    site,
   } = useStaticQuery(graphql`
     query NavigationQuery {
       allMdx(sort: { order: ASC, fields: slug }) {
@@ -76,8 +98,16 @@ export const useNavigation = () => {
           }
         }
       }
+      site {
+        siteMetadata {
+          navigation
+        }
+      }
     }
-  `) as { allMdx: { nodes: NavigationNode[] } };
+  `) as {
+    allMdx: { nodes: NavigationNode[] };
+    site: { siteMetadata: { navigation: string[] } };
+  };
 
   // Create tree structure from nodes
   const tree: NavigationTree = [];
@@ -85,5 +115,5 @@ export const useNavigation = () => {
     .map(n => ({ path: n.slug.split('/'), ...n }))
     .forEach(d => createNavigation(tree, d));
 
-  return tree;
+  return sortNavigation(tree, site.siteMetadata.navigation);
 };
