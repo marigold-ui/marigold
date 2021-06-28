@@ -7339,10 +7339,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:14.17.3":
-  version: 14.17.3
-  resolution: "@types/node@npm:14.17.3"
-  checksum: c24c1f222b83a4cba584ae1bce2ab262d48d9d502346d82dd261236d29ce11ad63c5a5b1bfc74e50eaae032384893d443297d4da758e1eb540d9bf2495d7814e
+"@types/node@npm:14.17.4":
+  version: 14.17.4
+  resolution: "@types/node@npm:14.17.4"
+  checksum: a0bbe143273f9bf39c1d4f9955b6efeabfa5ddb436692ca8fe1a835ceaacfb2536cad122df54a29daaf6139dcc79a480502c39477cf5fe28b9af2709a41312e7
   languageName: node
   linkType: hard
 
@@ -12981,10 +12981,10 @@ __metadata:
     gatsby-plugin-sitemap: 4.3.1
     gatsby-source-filesystem: 3.7.1
     gatsby-transformer-sharp: 3.7.1
-    gh-pages: 3.2.2
+    gh-pages: 3.2.3
     mdx-utils: 0.2.0
     prism-react-renderer: 1.2.1
-    prismjs: 1.23.0
+    prismjs: 1.24.0
     react: 17.0.2
     react-dom: 17.0.2
     react-helmet: 6.1.0
@@ -15199,38 +15199,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"filename-reserved-regex@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "filename-reserved-regex@npm:1.0.0"
-  checksum: 699691af94c9ce84f9490b89a7290458e5bbd4e1ed06f82c292f2a62a7f4658f2a3d3b59b1c4249eb50ec116b1e4b53f90b2e238eb92f366c5b18a2507d08f6d
-  languageName: node
-  linkType: hard
-
 "filename-reserved-regex@npm:^2.0.0":
   version: 2.0.0
   resolution: "filename-reserved-regex@npm:2.0.0"
   checksum: 323a0020fd7f243238ffccab9d728cbc5f3a13c84b2c10e01efb09b8324561d7a51776be76f36603c734d4f69145c39a5d12492bf6142a28b50d7f90bd6190bc
-  languageName: node
-  linkType: hard
-
-"filenamify-url@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "filenamify-url@npm:1.0.0"
-  dependencies:
-    filenamify: ^1.0.0
-    humanize-url: ^1.0.0
-  checksum: 8b0a5040557e294a554c61f4bc3f603321118545131464910f8251bea9f98be1f40a2e328d3ffb63b9299f4dc928f9a6754094c02ea520f32882b48c395da599
-  languageName: node
-  linkType: hard
-
-"filenamify@npm:^1.0.0":
-  version: 1.2.1
-  resolution: "filenamify@npm:1.2.1"
-  dependencies:
-    filename-reserved-regex: ^1.0.0
-    strip-outer: ^1.0.0
-    trim-repeated: ^1.0.0
-  checksum: 778ffbecc878af98052e287ff9cfc5de931589465c395881d70610b05bde4fa942342b415e9974cba0404711229a3e6a899d7d61b652c962cc60e25b1d92bf1b
   languageName: node
   linkType: hard
 
@@ -15253,6 +15225,17 @@ __metadata:
     strip-outer: ^1.0.1
     trim-repeated: ^1.0.0
   checksum: fa805945bbd79af6c5695d1a89dd2da6d567b17aff4815446ec181c3fd7d722ab1223c04dfaca0af3fc60e3c915520e268d00b51123b3a766c82d0388bbc6a0f
+  languageName: node
+  linkType: hard
+
+"filenamify@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "filenamify@npm:4.3.0"
+  dependencies:
+    filename-reserved-regex: ^2.0.0
+    strip-outer: ^1.0.1
+    trim-repeated: ^1.0.0
+  checksum: 5b71a7ff8e958c8621957e6fbf7872024126d3b5da50f59b1634af3343ba1a69d4cc15cfe4ca4bbfa7c959ad4d98614ee51e6f1d9fa7326eef8ceda2da8cd74e
   languageName: node
   linkType: hard
 
@@ -16558,21 +16541,21 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"gh-pages@npm:3.2.2":
-  version: 3.2.2
-  resolution: "gh-pages@npm:3.2.2"
+"gh-pages@npm:3.2.3":
+  version: 3.2.3
+  resolution: "gh-pages@npm:3.2.3"
   dependencies:
     async: ^2.6.1
     commander: ^2.18.0
     email-addresses: ^3.0.1
-    filenamify-url: ^1.0.0
+    filenamify: ^4.3.0
     find-cache-dir: ^3.3.1
     fs-extra: ^8.1.0
     globby: ^6.1.0
   bin:
     gh-pages: bin/gh-pages.js
     gh-pages-clean: bin/gh-pages-clean.js
-  checksum: 5f854e335f8950859a33a5485bde2f03e9388ac42b4608a4c54e60abd0c0f11d2b04e8552c5b2c27d79135d79a8b0b4b67efd41ae45fa5f806fc7f64befa36f9
+  checksum: 0a6e92180ce8fac6f244403d1c8af6d004615b96c7bafdc25da0022eab34f84470895587c618d440ae77b4b4ce1c1b85442ddf3184f53a522f87974da5a41760
   languageName: node
   linkType: hard
 
@@ -17773,16 +17756,6 @@ fsevents@^1.2.7:
   version: 3.25.1
   resolution: "humanize-duration@npm:3.25.1"
   checksum: 9d2603bfe7ed2a8f405e6b9c82ce00037f27647afa2d637ac83c2a15d3306ec2cbd71816d7130f4cb24be8da9212d412346dc7abe7971d5a3c29c42b04010536
-  languageName: node
-  linkType: hard
-
-"humanize-url@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "humanize-url@npm:1.0.1"
-  dependencies:
-    normalize-url: ^1.0.0
-    strip-url-auth: ^1.0.0
-  checksum: 6f55799000088dcc3000947a289147c396a4f10a578830e0868a17c5e75094adc4169ff4bb720c151e2bdfeee154490f4979dca85f433558e8850921a698250f
   languageName: node
   linkType: hard
 
@@ -20892,10 +20865,10 @@ fsevents@^1.2.7:
     "@testing-library/jest-dom": 5.14.1
     "@testing-library/react": 11.2.7
     "@testing-library/react-hooks": 6.0.0
-    "@types/node": 14.17.3
+    "@types/node": 14.17.4
     eslint: 7.29.0
     husky: 6.0.0
-    prettier: 2.3.1
+    prettier: 2.3.2
     pretty-quick: 3.1.1
     react: 17.0.2
     react-dom: 17.0.2
@@ -22090,18 +22063,6 @@ fsevents@^1.2.7:
     query-string: ^5.0.1
     sort-keys: ^2.0.0
   checksum: 30e337ee03fc7f360c7d2b966438657fabd2628925cc58bffc893982fe4d2c59b397ae664fa2c319cd83565af73eee88906e80bc5eec91bc32b601920e770d75
-  languageName: node
-  linkType: hard
-
-"normalize-url@npm:^1.0.0":
-  version: 1.9.1
-  resolution: "normalize-url@npm:1.9.1"
-  dependencies:
-    object-assign: ^4.0.1
-    prepend-http: ^1.0.0
-    query-string: ^4.1.0
-    sort-keys: ^1.0.0
-  checksum: 4b03c22bebbb822874ce3b9204367ad1f27c314ae09b13aa201de730b3cf95f00dadf378277a56062322968c95c06e5764d01474d26af8b43d20bc4c8c491f84
   languageName: node
   linkType: hard
 
@@ -24134,7 +24095,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prepend-http@npm:^1.0.0, prepend-http@npm:^1.0.1":
+"prepend-http@npm:^1.0.1":
   version: 1.0.4
   resolution: "prepend-http@npm:1.0.4"
   checksum: 01e7baf4ad38af02257b99098543469332fc42ae50df33d97a124bf8172295907352fa6138c9b1610c10c6dd0847ca736e53fda736387cc5cf8fcffe96b47f29
@@ -24157,12 +24118,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prettier@npm:2.3.1":
-  version: 2.3.1
-  resolution: "prettier@npm:2.3.1"
+"prettier@npm:2.3.2":
+  version: 2.3.2
+  resolution: "prettier@npm:2.3.2"
   bin:
     prettier: bin-prettier.js
-  checksum: 3b37731ff7150feecf19736c77c790e7e276b404ac9af81cbaf87cfecefc48ef9a864f34c2a5caf5955378b8f2525984b8611703a0d9c1f052b4cfa6eb35899f
+  checksum: 17ce5784ac67621c292df58e2da60b2ee150c2d6aebea22a6ad9e52fcd6a5e66c349d0a8436ea3bd8ff9d778920a5f68000d7625b74f43558718a49755aa5259
   languageName: node
   linkType: hard
 
@@ -24280,7 +24241,14 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prismjs@npm:1.23.0, prismjs@npm:^1.21.0, prismjs@npm:~1.23.0":
+"prismjs@npm:1.24.0":
+  version: 1.24.0
+  resolution: "prismjs@npm:1.24.0"
+  checksum: 8456d08274c78bb4ce48ab9b3cbc5a82837fd683afe2bda7554526d9234f8ac48c9922c92a39bd3230e0bc8b0bf2cce18c9b563678b1c08f88f5f2a78a5fd174
+  languageName: node
+  linkType: hard
+
+"prismjs@npm:^1.21.0, prismjs@npm:~1.23.0":
   version: 1.23.0
   resolution: "prismjs@npm:1.23.0"
   dependencies:
@@ -24573,16 +24541,6 @@ fsevents@^1.2.7:
   version: 6.5.2
   resolution: "qs@npm:6.5.2"
   checksum: 24af7b9928ba2141233fba2912876ff100403dba1b08b20c3b490da9ea6c636760445ea2211a079e7dfa882a5cf8f738337b3748c8bdd0f93358fa8881d2db8f
-  languageName: node
-  linkType: hard
-
-"query-string@npm:^4.1.0":
-  version: 4.3.4
-  resolution: "query-string@npm:4.3.4"
-  dependencies:
-    object-assign: ^4.1.0
-    strict-uri-encode: ^1.0.0
-  checksum: 3b2bae6a8454cf0edf11cf1aa4d1f920398bbdabc1c39222b9bb92147e746fcd97faf00e56f494728fb66b2961b495ba0fde699d5d3bd06b11472d664b36c6cf
   languageName: node
   linkType: hard
 
@@ -27886,13 +27844,6 @@ resolve@^2.0.0-next.3:
   dependencies:
     escape-string-regexp: ^1.0.2
   checksum: f8d65d33ca2b49aabc66bb41d689dda7b8b9959d320e3a40a2ef4d7079ff2f67ffb72db43f179f48dbf9495c2e33742863feab7a584d180fa62505439162c191
-  languageName: node
-  linkType: hard
-
-"strip-url-auth@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "strip-url-auth@npm:1.0.1"
-  checksum: c7f529d2c027ebdbe9a521cd2e6b4dbae9d5431fe6f6ca6fc62683b7b4c17bb543dc2abe5c58cd5f8933917c8b0ae896b2f215bc2e5410dfbfa1a81933b3ea6a
   languageName: node
   linkType: hard
 
