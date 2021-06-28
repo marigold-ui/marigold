@@ -1,10 +1,10 @@
-name: Validate
+name: Lint
 
-on: push
+on: 'push'
 
 jobs:
-  test:
-    name: Lint, typecheck & test
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     env:
       CI: true
@@ -18,17 +18,15 @@ jobs:
         uses: actions/setup-node@master
         with:
           node-version: 12.x
+          
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn
 
       - name: Lint
         run: yarn lint
-
-      - name: Typecheck
-        run: yarn tsc --noEmit
-
-      - name: Test
-        run: yarn test --ci
-        env:
-          COVERALLS_REPO_TOKEN: '${{ secrets.COVERALLS_REPO_TOKEN }}'

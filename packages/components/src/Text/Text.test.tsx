@@ -1,9 +1,16 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { ThemeProvider } from '@marigold/system';
+
 import { Text } from './Text';
-import { ThemeProvider, useStyles } from '@marigold/system';
 
 const theme = {
+  colors: {
+    primary: 'hotpink',
+    black: '#000',
+    white: '#FFF',
+    blue: '#2980b9',
+  },
   text: {
     body: {
       fontFamily: 'Oswald Regular',
@@ -14,7 +21,7 @@ const theme = {
   },
 };
 
-test('accepts default variant', () => {
+test('uses `text.body` as default variant', () => {
   render(
     <ThemeProvider theme={theme}>
       <Text>text</Text>
@@ -25,7 +32,18 @@ test('accepts default variant', () => {
   expect(text).toHaveStyle(`font-family: Oswald Regular`);
 });
 
-test('accepts default <span>', () => {
+test('allows to change variants via `variant` prop (with "text" prefix)', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Text variant="heading">text</Text>
+    </ThemeProvider>
+  );
+  const text = screen.getByText(/text/);
+
+  expect(text).toHaveStyle(`font-family: Inter`);
+});
+
+test('renders a <span> element by default', () => {
   render(
     <ThemeProvider theme={theme}>
       <Text>text</Text>
@@ -36,7 +54,7 @@ test('accepts default <span>', () => {
   expect(text instanceof HTMLSpanElement).toBeTruthy();
 });
 
-test('accepts as <p>', () => {
+test('allows to control the rendered element via the `as` prop', () => {
   render(
     <ThemeProvider theme={theme}>
       <Text as="p">text</Text>
@@ -47,48 +65,35 @@ test('accepts as <p>', () => {
   expect(text instanceof HTMLParagraphElement).toBeTruthy();
 });
 
-test('variant works', () => {
+test.each([
+  [{ color: 'primary' }, 'color: hotpink'],
+  [{ color: 'blue' }, 'color: #2980b9'],
+  [{ align: 'center' }, 'text-align: center'],
+  [{ cursor: 'pointer' }, 'cursor: pointer'],
+  [{ outline: 'dashed red' }, 'outline: dashed red'],
+  [{ userSelect: 'none' }, 'user-select: none'],
+])('test style prop %o', (...args) => {
+  const props = args.shift();
+
   render(
     <ThemeProvider theme={theme}>
-      <Text variant="body">text</Text>
+      <Text {...props}>This is the Text!</Text>
     </ThemeProvider>
   );
-  const text = screen.getByText(/text/);
 
-  expect(text).toHaveStyle(`font-family: Oswald Regular`);
+  const box = screen.getByText('This is the Text!');
+  args.forEach((style: any) => {
+    expect(box).toHaveStyle(style);
+  });
 });
 
-test('accepts other variant than default', () => {
+test('forwards ref', () => {
+  const ref = React.createRef<HTMLButtonElement>();
   render(
-    <ThemeProvider theme={theme}>
-      <Text variant="heading" textColor="#000">
-        text
-      </Text>
-    </ThemeProvider>
+    <Text as="button" ref={ref}>
+      button
+    </Text>
   );
-  const text = screen.getByText(/text/);
 
-  expect(text).toHaveStyle(`color: rgb(0,0,0)`);
-  expect(text).toHaveStyle(`font-family: Inter`);
-});
-
-test('accepts custom styles prop className', () => {
-  const TestTextComponent: React.FC = ({ children, ...props }) => {
-    const classNames = useStyles({ css: { fontSize: '8px' } });
-    return (
-      <Text className={classNames} {...props}>
-        {children}
-      </Text>
-    );
-  };
-
-  const { getByText } = render(
-    <ThemeProvider theme={theme}>
-      <TestTextComponent>text</TestTextComponent>
-    </ThemeProvider>
-  );
-  const testelem = getByText('text');
-  const text = getComputedStyle(testelem);
-
-  expect(text.fontSize).toEqual('8px');
+  expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
 });

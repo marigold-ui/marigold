@@ -1,17 +1,32 @@
-import React from 'react';
-import { ComponentProps } from '@marigold/types';
-import { Box } from '../Box';
+import React, { useRef } from 'react';
+import { useLink } from '@react-aria/link';
+import { PolymorphicComponent, PolymorphicProps } from '@marigold/types';
 
-export type LinkProps = {
-  variant?: string;
-} & ComponentProps<'a'>;
+import { Text, TextOwnProps } from '../Text';
 
-export const Link: React.FC<LinkProps> = ({
-  variant = 'normal',
+export type LinkOwnProps = { disabled?: boolean } & TextOwnProps;
+export type LinkProps = PolymorphicProps<LinkOwnProps, 'a'>;
+
+export const Link = (({
+  as = 'a',
+  variant = 'link',
   children,
+  disabled,
   ...props
-}) => (
-  <Box {...props} as="a" variant={`link.${variant}`}>
-    {children}
-  </Box>
-);
+}: LinkProps) => {
+  const ref = useRef<any>();
+  const { linkProps } = useLink(
+    {
+      ...props,
+      elementType: typeof as === 'string' ? as : 'span',
+      isDisabled: disabled,
+    },
+    ref
+  );
+
+  return (
+    <Text {...props} {...linkProps} as={as} variant={variant} ref={ref}>
+      {children}
+    </Text>
+  );
+}) as PolymorphicComponent<LinkOwnProps, 'a'>;
