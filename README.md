@@ -10,32 +10,7 @@
 
 React implementation of the Marigold Design System built on [Emotion](https://emotion.sh/).
 
-## Usage 💡
-
-Use the styles for your component from a global `theme` object. To provide the theme in context, wrap your component into the `MarigoldProvider`. You can add custom styles via style props.
-
-```
-// basic usage
-import React from 'react'
-import { MarigoldProvider } from '@marigold/system'
-import { Text, theme } from '@marigold/components'
-
-<MarigoldProvider theme={theme}>
-  <Text mx="2">Lorem ipsum</Text>
-</MarigoldProvider>
-```
-
-## Documentation 📖
-
-Start your local storybook server via
-
-```
-yarn start
-```
-
-to access the Marigold documentation pages.
-
-## Setup 🔧
+## Installation 🔧
 
 ```sh
 # after first release:
@@ -51,7 +26,28 @@ cd marigold
 yarn install
 ```
 
+## Usage 💡
+
+Use the styles for your component from a global `theme` object. To provide the theme in context, wrap your component into the `MarigoldProvider`. You can add custom styles via style props.
+
+```
+// basic usage
+import React from 'react'
+import { MarigoldProvider } from '@marigold/system'
+import { Text, theme } from '@marigold/components'
+
+<MarigoldProvider theme={theme}>
+  <Text mx="2">Lorem ipsum</Text>
+</MarigoldProvider>
+```
+
 ## For Developers
+
+### Setup & Usage
+
+Open a terminal and navigate to a folder of your choice. Clone the project `git clone https://github.com/marigold-ui/marigold.git` and navigate to the new folder `cd marigold`. Install the yarn packages using `yarn` command in the root and use `yarn start` to start storybook. Open [localhost:6005](http://localhost:6005) to see the components in storybook.
+Navigate to the documentation `cd docs` and start the development server `gatsby develop`, which opens the documentation site on [localhost:8000](http://localhost:8000).
+When working on the components, use the following commands for development.
 
 - Coverage: `yarn coverage`
 - Linting: `yarn lint`

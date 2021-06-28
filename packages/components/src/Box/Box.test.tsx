@@ -105,7 +105,7 @@ test.each([
   [{ opacity: 1 }, 'opacity: 0.5'],
   [{ overflow: 'hidden' }, 'overflow: hidden'],
   [{ transition: 1 }, 'transition: 1s opacity'],
-])('test %o', (...args) => {
+])('test style prop %o', (...args) => {
   const props = args.shift();
 
   render(

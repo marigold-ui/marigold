@@ -6,9 +6,10 @@ import {
   ThemeUIStyleObject,
   ThemeUICSSObject,
   ThemeUICSSProperties,
+  ResponsiveStyleValue as RSV,
 } from '@theme-ui/css';
-export { ResponsiveStyleValue } from '@theme-ui/css';
 
+export type ResponsiveStyleValue<T> = RSV<T>;
 export type StyleObject = ThemeUIStyleObject;
 export type CSSObject = ThemeUICSSObject;
 export type CSSProperties = ThemeUICSSProperties;

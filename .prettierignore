@@ -7,9 +7,14 @@
 .env.local
 .yarn
 .yarnrc
+.yarnclean
 
 LICENSE
 yarn.lock
 
 dist
 coverage
+
+docs/.cache
+docs/public/render-page.js.map
+*.png
