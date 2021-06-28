@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { BaseTheme } from '@marigold/components';
-import { ThemeProvider } from '@marigold/system';
 
 // Context
 // ---------------
