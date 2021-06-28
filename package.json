@@ -17,7 +17,7 @@
     "@marigold/jest-config": "*",
     "@marigold/prettier-config": "*",
     "@marigold/tsconfig": "*",
-    "@storybook/react": "6.2.9",
+    "@storybook/react": "6.3.0",
     "@testing-library/jest-dom": "5.14.1",
     "@testing-library/react": "11.2.7",
     "@testing-library/react-hooks": "6.0.0",
