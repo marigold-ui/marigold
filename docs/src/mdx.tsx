@@ -2,9 +2,9 @@ import React from 'react';
 // @ts-ignore (reason: package has no types)
 import { preToCodeBlock } from 'mdx-utils';
 
-import { Heading, Text } from '@marigold/components';
-import b2bTheme from '@marigold/theme-b2b';
+import { Box, Heading, Text } from '@marigold/components';
 import { ComponentProps } from '@marigold/types';
+import { useStyles } from '@marigold/system';
 
 import { CodeBlock } from './components/CodeBlock';
 
@@ -57,23 +57,29 @@ export const p: React.FC<ComponentProps<'p'>> = ({ children, ...props }) => (
 export const inlineCode: React.FC<ComponentProps<'code'>> = ({
   children,
   ...props
-}) => (
-  <code
-    style={{
-      lineHeight: b2bTheme.lineHeights.heading,
-      margin: '0 2px',
-      padding: b2bTheme.space.xxsmall,
+}) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const className = useStyles({
+    css: {
+      lineHeight: 'cap',
+      my: 'none',
+      mx: 'xxsmall',
+      p: 'xxsmall',
       whiteSpace: 'nowrap',
-      borderRadius: b2bTheme.space.xxsmall,
-      fontSize: b2bTheme.fontSizes.xxsmall,
-      color: b2bTheme.colors.gray70,
-      backgroundColor: b2bTheme.colors.gray10,
-    }}
-    {...props}
-  >
-    {children}
-  </code>
-);
+      borderRadius: 'small',
+      fontSize: 'xxsmall',
+      fontFamily: 'code',
+      color: 'gray.10',
+      bg: 'gray.90',
+    },
+  });
+
+  return (
+    <code {...props} className={className}>
+      {children}
+    </code>
+  );
+};
 
 export const pre: React.FC<ComponentProps<'pre'>> = preProps => {
   const props = preToCodeBlock(preProps);
@@ -94,9 +100,7 @@ export const ol: React.FC<ComponentProps<'ol'>> = ({ children, ...props }) => (
 );
 
 export const li: React.FC<ComponentProps<'li'>> = ({ children, ...props }) => (
-  <li style={{ fontFamily: 'Inter' }} {...props}>
-    {children}
-  </li>
+  <li {...props}>{children}</li>
 );
 
 // Table
@@ -105,31 +109,25 @@ export const table: React.FC<ComponentProps<'table'>> = ({
   children,
   ...props
 }) => (
-  <table style={{ width: '100%', fontFamily: 'Inter' }} {...props}>
+  <Box as="table" width="100%" {...props}>
     {children}
-  </table>
+  </Box>
 );
 
 export const td: React.FC<ComponentProps<'td'>> = ({ children, ...props }) => (
-  <td style={{ padding: b2bTheme.space.xsmall }} {...props}>
+  <Box as="td" p="xsmall" {...props}>
     {children}
-  </td>
+  </Box>
 );
 
 export const th: React.FC<ComponentProps<'th'>> = ({ children, ...props }) => (
-  <th
-    style={{
-      backgroundColor: b2bTheme.colors.gray30,
-      padding: b2bTheme.space.xsmall,
-    }}
-    {...props}
-  >
+  <Box as="th" p="xsmall" bg="gray.80" {...props}>
     {children}
-  </th>
+  </Box>
 );
 
 export const tr: React.FC<ComponentProps<'tr'>> = ({ children, ...props }) => (
-  <tr style={{ padding: b2bTheme.space.xsmall }} {...props}>
+  <Box as="tr" p="xsmall" {...props}>
     {children}
-  </tr>
+  </Box>
 );

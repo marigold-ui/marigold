@@ -1,10 +1,11 @@
 import React from 'react';
+import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
+import Highlight, { defaultProps, Language } from 'prism-react-renderer';
+import theme from 'prism-react-renderer/themes/github';
+
 import * as Components from '@marigold/components';
 import { useStyles } from '@marigold/system';
 import * as Icons from '@marigold/icons';
-import Highlight, { defaultProps, Language } from 'prism-react-renderer';
-import theme from 'prism-react-renderer/themes/github';
-import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
 
 import { CopyButton } from './CopyButton';
 import { ShowHideButton } from './ShowHideButton';
@@ -30,23 +31,25 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
   const [hide, setHide] = React.useState(type === ActionType.Preview);
   const outerPreviewBoxStyles = useStyles({
     css: {
-      border: '1px solid #e3e3e3',
+      border: 'grey',
       borderRadius: '4px',
     },
   });
   const innerPreviewBoxStyles = useStyles({
     css: {
-      padding: '32px 16px',
       position: 'relative',
+      py: 'large',
+      px: 'small',
       overflow: 'auto',
     },
   });
   const codeBoxStyles = useStyles({
     css: {
-      fontSize: '1rem',
-      margin: 0,
-      padding: '32px 16px',
       position: 'relative',
+      fontSize: 'body',
+      margin: 0,
+      py: 'large',
+      px: 'small',
       overflow: 'auto',
     },
   });
