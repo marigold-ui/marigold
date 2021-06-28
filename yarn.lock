@@ -4723,9 +4723,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jest/transform@npm:^27.0.2":
-  version: 27.0.2
-  resolution: "@jest/transform@npm:27.0.2"
+"@jest/transform@npm:^27.0.5":
+  version: 27.0.5
+  resolution: "@jest/transform@npm:27.0.5"
   dependencies:
     "@babel/core": ^7.1.0
     "@jest/types": ^27.0.2
@@ -4734,7 +4734,7 @@ __metadata:
     convert-source-map: ^1.4.0
     fast-json-stable-stringify: ^2.0.0
     graceful-fs: ^4.2.4
-    jest-haste-map: ^27.0.2
+    jest-haste-map: ^27.0.5
     jest-regex-util: ^27.0.1
     jest-util: ^27.0.2
     micromatch: ^4.0.4
@@ -4742,7 +4742,7 @@ __metadata:
     slash: ^3.0.0
     source-map: ^0.6.1
     write-file-atomic: ^3.0.0
-  checksum: a232fcaa163d1cc718c05b64bac2ae4be9e4c54db6356fc91a278bbd36bec57800ea7a63d8be141484c8ab82746920b312c750492c827b88a4beebbe05d1449e
+  checksum: dbc547b28c55d767f88c1480b03527b521db917800debd68d5f99dd07808bc6aefa9ebb3ab9b3351d8ca518d40750d2ae08ad17af52aa2eac8455f0dc57361eb
   languageName: node
   linkType: hard
 
@@ -5302,7 +5302,7 @@ __metadata:
   resolution: "@marigold/jest-config@workspace:config/jest"
   dependencies:
     "@types/jest": 26.0.23
-    babel-jest: 27.0.2
+    babel-jest: 27.0.5
     find-up: 5.0.0
     jest-watch-typeahead: 0.6.4
     merge-deep: ^3.0.3
@@ -9306,11 +9306,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-jest@npm:27.0.2":
-  version: 27.0.2
-  resolution: "babel-jest@npm:27.0.2"
+"babel-jest@npm:27.0.5":
+  version: 27.0.5
+  resolution: "babel-jest@npm:27.0.5"
   dependencies:
-    "@jest/transform": ^27.0.2
+    "@jest/transform": ^27.0.5
     "@jest/types": ^27.0.2
     "@types/babel__core": ^7.1.14
     babel-plugin-istanbul: ^6.0.0
@@ -9320,7 +9320,7 @@ __metadata:
     slash: ^3.0.0
   peerDependencies:
     "@babel/core": ^7.8.0
-  checksum: ff2bd3c6bf4c46c7b1f735bc026230524485892a7ea1639ca646c810a691a6b91d008d39b4bb7927b4f3e6d837a3333516666c6e2430d79ab3439bd7207864a8
+  checksum: 565e2b39d651dc2cfdb873bd78edc9595a6954106683a75f5ce8f5cee8e44ee2aa8e08e8844e1c67dce036bf6a23cf95a358a7a750be2a0af7f0ec4ed4199af4
   languageName: node
   linkType: hard
 
@@ -19267,9 +19267,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"jest-haste-map@npm:^27.0.2":
-  version: 27.0.2
-  resolution: "jest-haste-map@npm:27.0.2"
+"jest-haste-map@npm:^27.0.5":
+  version: 27.0.5
+  resolution: "jest-haste-map@npm:27.0.5"
   dependencies:
     "@jest/types": ^27.0.2
     "@types/graceful-fs": ^4.1.2
@@ -19287,7 +19287,7 @@ fsevents@^1.2.7:
   dependenciesMeta:
     fsevents:
       optional: true
-  checksum: bdb251147a612f1ee3a0ad0a2738c25c8b76b1bafd86687d76fb3617b41dfbbc97658f907afbb2f9bd83df22923e5cb6d931aef8ea5facf1575fcc3eb65172cb
+  checksum: 662e757c61665372a234445bfa60c13b1d57df6f0bd64f739ec588db50a47917b710410ed3ec368ab4535b4089e6dddd4212d960d039d70063bf8fce901d8553
   languageName: node
   linkType: hard
 
