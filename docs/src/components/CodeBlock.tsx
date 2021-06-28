@@ -9,6 +9,7 @@ import * as Icons from '@marigold/icons';
 
 import { CopyButton } from './CopyButton';
 import { ShowHideButton } from './ShowHideButton';
+import { useThemeSwitch } from './ThemeSwitch';
 
 enum ActionType {
   Preview = 'preview',
@@ -28,6 +29,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
   type = 'preview',
   language,
 }) => {
+  const { current, themes } = useThemeSwitch();
   const [hide, setHide] = React.useState(type === ActionType.Preview);
   const outerPreviewBoxStyles = useStyles({
     css: {
@@ -71,12 +73,12 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                     code={codeString}
                     scope={{ ...Components, ...Icons }}
                   >
-                    <LivePreview />
+                    <ThemeProvider theme={current && themes[current]}>
+                      <LivePreview />
+                    </ThemeProvider>
                   </LiveProvider>
                 </div>
-                <ThemeProvider theme={b2bTheme}>
-                  <ShowHideButton hide={hide} onHideChange={setHide} />
-                </ThemeProvider>
+                <ShowHideButton hide={hide} onHideChange={setHide} />
               </div>
               {!hide && (
                 <LiveProvider scope={{ ...Components, ...Icons }}>
@@ -93,9 +95,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                         ))}
                       </div>
                     ))}
-                    <ThemeProvider theme={b2bTheme}>
-                      <CopyButton codeString={codeString} />
-                    </ThemeProvider>
+                    <CopyButton codeString={codeString} />
                   </pre>
                 </LiveProvider>
               )}
@@ -112,9 +112,11 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
           scope={{ ...Components, ...Icons }}
           theme={theme}
         >
-          <div className={outerPreviewBoxStyles}>
-            <LivePreview className={innerPreviewBoxStyles} />
-          </div>
+          <ThemeProvider theme={current && themes[current]}>
+            <div className={outerPreviewBoxStyles}>
+              <LivePreview className={innerPreviewBoxStyles} />
+            </div>
+          </ThemeProvider>
           <LiveEditor className={codeBoxStyles} />
           <LiveError />
         </LiveProvider>
@@ -144,9 +146,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                       ))}
                     </div>
                   ))}
-                  <ThemeProvider theme={b2bTheme}>
-                    <CopyButton codeString={codeString} />
-                  </ThemeProvider>{' '}
+                  <CopyButton codeString={codeString} />
                 </pre>
               </LiveProvider>
               <br />

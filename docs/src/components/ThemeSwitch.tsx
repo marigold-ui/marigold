@@ -34,7 +34,7 @@ export const MarigoldThemeSwitch: React.FC<MarigoldThemeSwitchProps> = ({
   const [theme, setTheme] = useState(initial);
   return (
     <Context.Provider value={{ current: theme, themes, setTheme }}>
-      <ThemeProvider theme={theme && themes[theme]}>{children}</ThemeProvider>
+      {children}
     </Context.Provider>
   );
 };
