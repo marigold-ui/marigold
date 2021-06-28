@@ -54,6 +54,8 @@ When working on the components, use the following commands for development.
 - Test: `yarn test` (with optional `--watch`)
 - Type checking: `yarn typecheck`
 
+For a release on NPM use `yarn release` and check all the packages you want to publish.
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
