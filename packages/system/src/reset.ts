@@ -30,6 +30,7 @@ const table = css({
 // ---------------
 const a = css({
   textDecoration: 'none',
+  touchAction: 'manipulation'
 });
 
 const quote = css({
@@ -48,6 +49,7 @@ const button = css({
   appearance: 'none',
   background: 'transparent',
   textAlign: 'center',
+  touchAction: 'manipulation'
 });
 
 const input = css({
