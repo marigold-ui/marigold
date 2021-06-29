@@ -13,14 +13,13 @@ React implementation of the Marigold Design System built on [Emotion](https://em
 ## Installation 🔧
 
 ```sh
-# after first release:
 # with npm
-npm install marigold-ui --save
+npm install @marigold/components --save
 
 # with yarn
-yarn add marigold-ui
+yarn add @marigold/components
 
-# for now:
+# for development:
 git clone https://github.com/marigold-ui/marigold.git
 cd marigold
 yarn install
@@ -28,17 +27,18 @@ yarn install
 
 ## Usage 💡
 
-Use the styles for your component from a global `theme` object. To provide the theme in context, wrap your component into the `MarigoldProvider`. You can add custom styles via style props.
+Use the styles for your component from a global `theme` object. To provide the theme in context, wrap your component into the `ThemeProvider`. 
 
 ```
 // basic usage
 import React from 'react'
-import { MarigoldProvider } from '@marigold/system'
-import { Text, theme } from '@marigold/components'
+import { ThemeProvider } from '@marigold/system'
+import { Text } from '@marigold/components'
+import unicornTheme from '@marigold/theme-unicorn'
 
-<MarigoldProvider theme={theme}>
-  <Text mx="2">Lorem ipsum</Text>
-</MarigoldProvider>
+<ThemeProvider theme={unicornTheme}>
+  <Text>Lorem ipsum</Text>
+</ThemeProvider>
 ```
 
 ## For Developers
@@ -54,7 +54,7 @@ When working on the components, use the following commands for development.
 - Test: `yarn test` (with optional `--watch`)
 - Type checking: `yarn typecheck`
 
-For a release on NPM use `yarn release` and check all the packages you want to publish.
+For a release on NPM, change the version numbers and use `yarn release` and check all the packages you want to publish.
 
 ## Contributors ✨
 
