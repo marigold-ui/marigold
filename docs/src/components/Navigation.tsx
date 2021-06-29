@@ -11,14 +11,14 @@ export const Navigation: React.FC = () => {
           <b>Guides</b>
           <ul>
             <li><Link to="/guides/installation">Installation</Link></li>
-            <li>Theme & Variants</li>
+            <li><Link to="/guides/usestyles">useStyles</Link></li>
           </ul>
         </li>
         <li>
           <b>Foundation</b>
           <ul>
             <li>
-              <Link to="/foundation/theming">Theming</Link>
+              <Link to="/foundation/themes-variants">Themes & Variants</Link>
             </li>
             <li>Layout</li>
             <li>Box Primitive</li>
