@@ -10,7 +10,7 @@ export const Navigation: React.FC = () => {
         <li>
           <b>Guides</b>
           <ul>
-            <li>Installation</li>
+            <li><Link to="/guides/installation">Installation</Link></li>
             <li>Theme & Variants</li>
           </ul>
         </li>
@@ -18,12 +18,12 @@ export const Navigation: React.FC = () => {
           <b>Foundation</b>
           <ul>
             <li>
-              <Link to="/foundation/design-language/theming">Theming</Link>
+              <Link to="/foundation/theming">Theming</Link>
             </li>
             <li>Layout</li>
             <li>Box Primitive</li>
             <li>
-              <Link to="/foundation/design-tokens/icons">Iconography</Link>
+              <Link to="/foundation/iconography">Iconography</Link>
             </li>
           </ul>
         </li>
