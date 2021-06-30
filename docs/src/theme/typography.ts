@@ -15,6 +15,7 @@ export const typography = {
   },
   fontSizes: {
     body: '1rem',
+    xxxsmall: '0.75rem',
     xxsmall: '0.875rem',
     xsmall: '1rem',
     small: '1.125rem',
@@ -82,9 +83,7 @@ export const typography = {
     },
     link: {
       color: 'primary',
-      ':hover': {
-        textDecoration: 'none',
-      },
+      textDecoration: 'none',
     },
   },
 };

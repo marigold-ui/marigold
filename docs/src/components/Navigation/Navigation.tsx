@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Stack } from '@marigold/components';
 
+import { Link } from '../Link';
 import { NavigationItem, NavigationTree, useNavigation } from './useNavigation';
 
 type NavigationSectionProps = {
@@ -8,8 +9,10 @@ type NavigationSectionProps = {
   children: NavigationTree;
 };
 
-const NavigationItemComponent = ({ title }: NavigationItem) => (
-  <Box variant="navigation.item">{title}</Box>
+const NavigationItemComponent = ({ title, slug }: NavigationItem) => (
+  <Box variant="navigation.item">
+    <Link to={slug}>{title}</Link>
+  </Box>
 );
 
 const NavigationSection = ({ name, children }: NavigationSectionProps) => {
@@ -17,7 +20,7 @@ const NavigationSection = ({ name, children }: NavigationSectionProps) => {
     <Stack space="small">
       {Boolean(name.length) && (
         <Stack>
-          <Box as="h5" variant="navigation.name">
+          <Box as="h5" variant="navigation.header">
             {name}
           </Box>
         </Stack>

@@ -28,9 +28,21 @@ const button = {
 const navigation = {
   wrapper: {
     overflow: 'auto',
+    fontFamily: 'body',
   },
   section: {
     my: 'xsmall',
+  },
+  header: {
+    textTransform: 'uppercase',
+    color: 'gray.70',
+    fontSize: 'xxxsmall',
+    fontWeight: 'bold',
+    letterSpacing: '0.1em',
+  },
+  item: {
+    fontSize: 'xxsmall',
+    mb: 'xsmall',
   },
 };
 
