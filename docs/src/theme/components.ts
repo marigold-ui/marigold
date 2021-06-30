@@ -1,3 +1,5 @@
+import { colors } from './colors';
+
 const button = {
   primary: {
     appearance: 'none',
@@ -57,6 +59,21 @@ export const components = {
       ...button.primary,
       color: 'black',
       bg: 'transparent',
+    },
+  },
+  select: {
+    themeSwitch: {
+      fontFamily: 'body',
+      fontSize: 'body',
+      color: colors.gray['00'],
+      background: colors.gray['90'],
+      right: 'none',
+      padding: 'xsmall',
+      marginTop: 'xxsmall',
+      marginRight: 'small',
+      border: 'none',
+      position: 'absolute',
+      cursor: 'pointer',
     },
   },
 };
