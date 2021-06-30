@@ -14,12 +14,12 @@ type NavigationData = NavigationNode & {
   path: string[];
 };
 
-type NavigationItem = { title: string; slug: string };
-type NavigationEdge = {
+export type NavigationItem = { title: string; slug: string };
+export type NavigationEdge = {
   name: string;
-  children: (NavigationEdge | NavigationItem)[];
+  children: NavigationTree;
 };
-type NavigationTree = (NavigationEdge | NavigationItem)[];
+export type NavigationTree = (NavigationEdge | NavigationItem)[];
 
 // Helper
 // ---------------

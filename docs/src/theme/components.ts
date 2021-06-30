@@ -25,6 +25,15 @@ const button = {
   },
 };
 
+const navigation = {
+  wrapper: {
+    overflow: 'auto',
+  },
+  section: {
+    my: 'xsmall',
+  },
+};
+
 export const components = {
   button: {
     primary: {
@@ -59,4 +68,5 @@ export const components = {
       bg: 'transparent',
     },
   },
+  navigation,
 };

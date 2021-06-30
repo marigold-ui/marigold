@@ -17,7 +17,7 @@ export const WrapRootElement: GatsbyBrowser['wrapRootElement'] = ({
   element,
 }) => (
   <ThemeProvider theme={theme}>
-    <MDXProvider components={mdxComponents}>{element}</MDXProvider>;
+    <MDXProvider components={mdxComponents}>{element}</MDXProvider>
   </ThemeProvider>
 );
 
