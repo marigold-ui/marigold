@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Stack } from '@marigold/components';
+import { Box } from '@marigold/components';
 
 import { Link } from '../Link';
 import { NavigationItem, NavigationTree, useNavigation } from './useNavigation';
