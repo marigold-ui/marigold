@@ -12,13 +12,13 @@ export const Layout: React.FC = ({ children }) => {
       <Helmet>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
           rel="stylesheet"
         />
         <title>Marigold Design System</title>
       </Helmet>
       <Columns space={16}>
-        <Column width={2}>
+        <Column width={3}>
           <>
             <Link to="/">
               <Logo />
@@ -26,7 +26,7 @@ export const Layout: React.FC = ({ children }) => {
             <Navigation />
           </>
         </Column>
-        <Column width={10}>{children}</Column>
+        <Column width={9}>{children}</Column>
       </Columns>
     </>
   );

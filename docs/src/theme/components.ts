@@ -41,7 +41,8 @@ const navigation = {
     letterSpacing: '0.1em',
   },
   item: {
-    fontSize: 'xxsmall',
+    fontSize: 'small',
+    fontWeight: 'medium',
     mb: 'xsmall',
   },
 };

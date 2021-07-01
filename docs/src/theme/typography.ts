@@ -26,6 +26,7 @@ export const typography = {
   fontWeights: {
     body: 400,
     heading: 900,
+    medium: 600,
     bold: 700,
   },
   lineHeights: {
@@ -84,6 +85,9 @@ export const typography = {
     link: {
       color: 'primary',
       textDecoration: 'none',
+      '&:hover': {
+        textDecoration: 'underline',
+      },
     },
   },
 };
