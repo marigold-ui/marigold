@@ -1,13 +1,6 @@
 import * as React from 'react';
 import { useThemeSwitch } from './ThemeSwitch';
 import { Box, SelectProps } from '@marigold/components';
-import unicornTheme from '@marigold/theme-unicorn';
-import b2bTheme from '@marigold/theme-b2b';
-
-export const marigoldThemes = {
-  b2bTheme,
-  unicornTheme,
-};
 
 export const ThemeSelect: React.FC<SelectProps> = () => {
   const { current, themes, setTheme } = useThemeSwitch();

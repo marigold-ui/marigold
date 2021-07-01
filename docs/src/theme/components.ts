@@ -1,5 +1,3 @@
-import { colors } from './colors';
-
 const button = {
   primary: {
     appearance: 'none',
@@ -33,12 +31,10 @@ const select = {
     fontSize: 'body',
     color: 'gray.00',
     bg: 'gray.90',
-    right: 'none',
-    padding: 'xsmall',
-    marginTop: 'xxsmall',
-    marginRight: 'small',
+    p: 'xsmall',
+    mt: 'xxsmall',
+    mr: 'small',
     border: 'none',
-    position: 'absolute',
     cursor: 'pointer',
   },
 };
