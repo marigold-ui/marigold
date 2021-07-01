@@ -4,6 +4,8 @@ import { Column, Columns } from '@marigold/components';
 
 import { Link } from './Link';
 import { Logo } from './Logo';
+import { MarigoldThemeSwitch } from './ThemeSwitch';
+import { marigoldThemes, ThemeSelect } from './ThemeSelect';
 import { Navigation } from './Navigation';
 
 export const Layout: React.FC = ({ children }) => {
@@ -26,7 +28,12 @@ export const Layout: React.FC = ({ children }) => {
             <Navigation />
           </>
         </Column>
-        <Column width={9}>{children}</Column>
+        <Column width={9}>
+          <MarigoldThemeSwitch themes={marigoldThemes} initial="b2bTheme">
+            <ThemeSelect />
+            {children}
+          </MarigoldThemeSwitch>
+        </Column>
       </Columns>
     </>
   );

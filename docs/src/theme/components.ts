@@ -1,3 +1,5 @@
+import { colors } from './colors';
+
 const button = {
   primary: {
     appearance: 'none',
@@ -22,6 +24,22 @@ const button = {
   large: {
     px: 'small',
     py: 'xsmall',
+  },
+};
+
+const select = {
+  themeSwitch: {
+    fontFamily: 'body',
+    fontSize: 'body',
+    color: 'gray.00',
+    bg: 'gray.90',
+    right: 'none',
+    padding: 'xsmall',
+    marginTop: 'xxsmall',
+    marginRight: 'small',
+    border: 'none',
+    position: 'absolute',
+    cursor: 'pointer',
   },
 };
 
@@ -82,4 +100,5 @@ export const components = {
     },
   },
   navigation,
+  select,
 };
