@@ -9,6 +9,13 @@ type NavigationSectionProps = {
   children: NavigationTree;
 };
 
+const dirToText = (dir: string) =>
+  dir
+    .split('/')[0]
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
 const NavigationItemComponent = ({ title, slug }: NavigationItem) => (
   <Box variant="navigation.item">
     <Link to={slug.startsWith('/') ? slug : `/${slug}`}>{title}</Link>
@@ -17,26 +24,22 @@ const NavigationItemComponent = ({ title, slug }: NavigationItem) => (
 
 const NavigationSection = ({ name, children }: NavigationSectionProps) => {
   return (
-    <Stack space="small">
+    <div>
       {Boolean(name.length) && (
-        <Stack>
-          <Box as="h5" variant="navigation.header">
-            {name}
-          </Box>
-        </Stack>
-      )}
-      <Stack>
-        <Box as="ul" variant="navigation.list">
-          {children.map(child =>
-            'title' in child ? (
-              <NavigationItemComponent key={child.slug} {...child} />
-            ) : (
-              <NavigationSection key={child.name} {...child} />
-            )
-          )}
+        <Box as="h2" variant="navigation.header">
+          {dirToText(name)}
         </Box>
-      </Stack>
-    </Stack>
+      )}
+      <Box as="ul" variant="navigation.list">
+        {children.map(child =>
+          'title' in child ? (
+            <NavigationItemComponent key={child.slug} {...child} />
+          ) : (
+            <NavigationSection key={child.name} {...child} />
+          )
+        )}
+      </Box>
+    </div>
   );
 };
 

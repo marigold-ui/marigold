@@ -35,29 +35,29 @@ const select = {
     mt: 'xxsmall',
     mr: 'small',
     border: 'none',
+    borderRadius: 'medium',
     cursor: 'pointer',
   },
 };
 
 const navigation = {
   wrapper: {
-    overflow: 'auto',
     fontFamily: 'body',
-  },
-  section: {
-    my: 'xsmall',
   },
   header: {
     textTransform: 'uppercase',
-    color: 'gray.70',
+    color: 'gray.80',
     fontSize: 'xxxsmall',
     fontWeight: 'bold',
     letterSpacing: '0.1em',
+    pt: 'large',
+    pb: 'small',
   },
   item: {
     fontSize: 'small',
     fontWeight: 'medium',
-    mb: 'xsmall',
+    lineHeight: 'cap',
+    pb: 'small',
   },
 };
 
