@@ -11,7 +11,7 @@ type NavigationSectionProps = {
 
 const NavigationItemComponent = ({ title, slug }: NavigationItem) => (
   <Box variant="navigation.item">
-    <Link to={slug}>{title}</Link>
+    <Link to={slug.startsWith('/') ? slug : `/${slug}`}>{title}</Link>
   </Box>
 );
 
