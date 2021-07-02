@@ -9,6 +9,8 @@ type NavigationSectionProps = {
   children: NavigationTree;
 };
 
+// Helper
+// ---------------
 const dirToText = (dir: string) =>
   dir
     .split('/')[0]
@@ -16,6 +18,8 @@ const dirToText = (dir: string) =>
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 
+// Components
+// ---------------
 const NavigationItemComponent = ({ title, slug }: NavigationItem) => (
   <Box variant="navigation.item">
     <Link to={slug.startsWith('/') ? slug : `/${slug}`}>{title}</Link>
@@ -45,6 +49,7 @@ const NavigationSection = ({ name, children }: NavigationSectionProps) => {
 
 export const Navigation: React.FC = () => {
   const tree = useNavigation();
+  console.log(tree);
 
   return (
     <Box

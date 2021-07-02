@@ -23,6 +23,11 @@ export type NavigationTree = (NavigationEdge | NavigationItem)[];
 
 // Helper
 // ---------------
+
+// Stolen from: https://gist.github.com/nblackburn/875e6ff75bc8ce171c758bf75f304707
+const camelToKebabCase = (val: string) =>
+  val.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
+
 const createNavigation = (
   tree: NavigationTree,
   data: NavigationData
@@ -33,7 +38,7 @@ const createNavigation = (
   if (!rest.length) {
     tree.push({
       title: data.frontmatter.title || data.headings[0].value,
-      slug: data.slug,
+      slug: camelToKebabCase(data.slug),
     });
     return tree;
   }
