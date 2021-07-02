@@ -13083,7 +13083,7 @@ __metadata:
     babel-preset-gatsby: 1.8.0
     gatsby: 3.8.0
     gatsby-plugin-emotion: 6.8.0
-    gatsby-plugin-image: ^1.7.1
+    gatsby-plugin-image: 1.7.1
     gatsby-plugin-manifest: 3.8.0
     gatsby-plugin-mdx: 2.8.0
     gatsby-plugin-react-helmet: 4.8.0
@@ -16042,7 +16042,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"gatsby-plugin-image@npm:^1.7.1":
+"gatsby-plugin-image@npm:1.7.1":
   version: 1.7.1
   resolution: "gatsby-plugin-image@npm:1.7.1"
   dependencies:
