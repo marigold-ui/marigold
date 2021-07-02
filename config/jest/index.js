@@ -7,6 +7,7 @@ const { pathsToModuleNameMapper } = require('ts-jest/utils');
  * Base configuration for jest
  */
 const base = {
+  testEnvironment: 'jsdom',
   testMatch: ['<rootDir>/**/*.test.{ts,tsx}'],
   setupFilesAfterEnv: [path.resolve(__dirname, 'jest.setup.ts')],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
