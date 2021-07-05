@@ -1,5 +1,3 @@
-import { colors } from './colors';
-
 const button = {
   primary: {
     appearance: 'none',
@@ -24,6 +22,42 @@ const button = {
   large: {
     px: 'small',
     py: 'xsmall',
+  },
+};
+
+const select = {
+  themeSwitch: {
+    fontFamily: 'body',
+    fontSize: 'body',
+    color: 'gray.00',
+    bg: 'gray.90',
+    p: 'xsmall',
+    mt: 'xxsmall',
+    mr: 'small',
+    border: 'none',
+    borderRadius: 'medium',
+    cursor: 'pointer',
+  },
+};
+
+const navigation = {
+  wrapper: {
+    fontFamily: 'body',
+  },
+  header: {
+    textTransform: 'uppercase',
+    color: 'gray.80',
+    fontSize: 'xxxsmall',
+    fontWeight: 'bold',
+    letterSpacing: '0.1em',
+    pt: 'large',
+    pb: 'small',
+  },
+  item: {
+    fontSize: 'small',
+    fontWeight: 'medium',
+    lineHeight: 'cap',
+    pb: 'small',
   },
 };
 
@@ -61,19 +95,6 @@ export const components = {
       bg: 'transparent',
     },
   },
-  select: {
-    themeSwitch: {
-      fontFamily: 'body',
-      fontSize: 'body',
-      color: colors.gray['00'],
-      background: colors.gray['90'],
-      right: 'none',
-      padding: 'xsmall',
-      marginTop: 'xxsmall',
-      marginRight: 'small',
-      border: 'none',
-      position: 'absolute',
-      cursor: 'pointer',
-    },
-  },
+  navigation,
+  select,
 };
