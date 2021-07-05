@@ -11,7 +11,9 @@ import Link from 'gatsby-link';
 As the basis of all our components, we use the `<Box>`. It is a versatile layout component that
 can be modified with layout props as listed in the <Link to="../../components/box">Box component</Link> description.
 Additionally, use the `variant` prop to define custom styles in your themes. With the `as` prop, you
-determine the rendered HTML element.
+determine the rendered HTML element. Instead of exposing the underlying tools that will create CSS, the `<Box>` component
+wraps them and exposes an API for applying styling to a component while respecting the rules and constraints of our design
+system.
 
 ```tsx code
 import { Box } from '@marigold/components';
@@ -23,7 +25,10 @@ import { Box } from '@marigold/components';
 </Box>
 ```
 
-## Building a new Component with the Box
+## Building a custom Component with the Box
 
-In case you want to build your own custom component, use the Box as the underlying layout component and add
+In case you want to build your own custom component, use the `Box` as the underlying layout component and add
 the styles accordingly. You can stack and nest multiple Box instances and build your complex component like this.
+By default, the `Box` component will render a `<div />`. This might be fine most of the times, but sometimes you would
+rather render a `<button>` or an `<input>` etc. To allow this, the `Box` takes the special prop called `as`, accepting
+all HTML tag names as input.
