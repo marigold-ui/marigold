@@ -49,7 +49,7 @@ const NavigationSection = ({ name, children }: NavigationSectionProps) => {
 
 export const Navigation: React.FC = () => {
   const tree = useNavigation();
-  console.log(tree);
+  // console.log(tree);
 
   return (
     <Box

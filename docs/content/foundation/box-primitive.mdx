@@ -1,0 +1,29 @@
+---
+title: Box Primitive
+---
+
+import Link from 'gatsby-link';
+
+# Box Primitive
+
+## Box as Layout Component
+
+As the basis of all our components, we use the `<Box>`. It is a versatile layout component that
+can be modified with layout props as listed in the <Link to="../../components/box">Box component</Link> description.
+Additionally, use the `variant` prop to define custom styles in your themes. With the `as` prop, you
+determine the rendered HTML element.
+
+```tsx code
+import { Box } from '@marigold/components';
+```
+
+```tsx live
+<Box as="button" bg="orange" p="8px">
+  Button box with backgroundcolor and padding!
+</Box>
+```
+
+## Building a new Component with the Box
+
+In case you want to build your own custom component, use the Box as the underlying layout component and add
+the styles accordingly. You can stack and nest multiple Box instances and build your complex component like this.
