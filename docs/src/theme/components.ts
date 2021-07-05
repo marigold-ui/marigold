@@ -25,6 +25,42 @@ const button = {
   },
 };
 
+const select = {
+  themeSwitch: {
+    fontFamily: 'body',
+    fontSize: 'body',
+    color: 'gray.00',
+    bg: 'gray.90',
+    p: 'xsmall',
+    mt: 'xxsmall',
+    mr: 'small',
+    border: 'none',
+    borderRadius: 'medium',
+    cursor: 'pointer',
+  },
+};
+
+const navigation = {
+  wrapper: {
+    fontFamily: 'body',
+  },
+  header: {
+    textTransform: 'uppercase',
+    color: 'gray.80',
+    fontSize: 'xxxsmall',
+    fontWeight: 'bold',
+    letterSpacing: '0.1em',
+    pt: 'large',
+    pb: 'small',
+  },
+  item: {
+    fontSize: 'small',
+    fontWeight: 'medium',
+    lineHeight: 'cap',
+    pb: 'small',
+  },
+};
+
 export const components = {
   button: {
     primary: {
@@ -59,4 +95,6 @@ export const components = {
       bg: 'transparent',
     },
   },
+  navigation,
+  select,
 };

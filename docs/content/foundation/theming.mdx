@@ -1,0 +1,213 @@
+---
+title: Theming
+---
+
+import Link from 'gatsby-link';
+
+# Theming
+
+Marigold uses a theme for its base styles.
+
+## Theme Object
+
+Theming is based on a `theme object` that builds on the [System UI Theme Specification](https://system-ui.com/theme/).
+The theme object defines your application's spacings, colors, fonts and component styles.
+
+### Spacings
+
+Using semantic values for spacings makes it easier to apply the variables within the theme consistently. Use CSS length units in a string to define the following keys.
+
+- `none`
+- `xxsmall`
+- `xsmall`
+- `small`
+- `medium`
+- `large`
+- `xlarge`
+- `xxlarge`
+
+### Colors
+
+Add the following color keys to your theme in order to provide a base set of colors. These are re-used in the components.
+
+- `primary` (brand color for links, buttons, etc.)
+- `secondary` (alternative styling for brand color)
+- `text`
+- `background`
+- `disabled`
+- `error`
+- `warning`
+- `info`
+- `success`
+
+### Typography
+
+Store the core typographic values in the following theme keys:
+
+- `fonts` (font family)
+- `fontSizes`
+- `fontWeights`
+- `lineHeights`
+
+### Variants
+
+Marigold components extract styles from the theme induced by a ThemeProvider. You can define theme styles in scopes of variants for the components
+you intend to use. By creating variant objects on the same level with the component prefix on the top level, you can access its values by using the
+variant name in the component. If you want the same base styles applied to all the variants of one component, use a root object which you define outside the
+theme. See an example:
+
+```tsx code
+// Root styles
+const alerts = {
+  root: {
+      borderStyle: 'solid',
+      borderWidth: '2px 2px 2px 0px',
+  },
+};
+
+const theme: BaseTheme = {
+  breakpoints: ...,
+  space: ...,
+  ...,
+  alerts: { // Component prefix
+    error: { // First variant
+      ...alerts.root,
+      borderColor: 'error',
+    },
+    warning: { // Second variant
+      ...alerts.root,
+      borderColor: 'warning',
+    },
+  },
+};
+
+// Usage
+<Alert variant="error">Error message</Alert>
+<Alert variant="warning">Warning message</Alert>
+```
+
+## API
+
+### ThemeProvider
+
+The `ThemeProvider` is a wrapper around the component tree on the root level and applies the theme to the components.
+
+```tsx code
+import { ThemeProvider } from '@marigold/system';
+import b2bTheme from '@marigold/theme-b2b';
+
+export const ThemeProvider: React.FC = ({ children }) => {
+  return <ThemeProvider theme={b2bTheme}>{children}</ThemeProvider>;
+};
+```
+
+### Access Theme Variables
+
+Theme variables are styles that are stored in key-value-pairs and defined as described above.
+If you change the theme, the value for a certain variable can change because a different style is stored in the new theme.
+Reuse theme variables within the theme while defining variants of a component. Like this, you create a unique theme that is applied in all the components:
+
+```tsx code
+const theme: BaseTheme = {
+  fonts: {
+    body: 'Inter',
+    heading: 'Inter Black',
+  },
+  fontSizes: {
+    xxsmall: '0.875rem',
+    xsmall: '1rem',
+    small: '1.125rem',
+    medium: '1.25rem',
+    large: '1.5rem',
+    xlarge: '2rem',
+  },
+  ...,
+  h1: {
+    font: 'body', // theme variable
+    fontSize: 'xlarge', // theme variable
+  }
+};
+```
+
+These values can also be accessed as in
+
+```tsx code
+const classNames = useStyles({
+  css: {
+    fontSize: b2bTheme.fontSize.small,
+  },
+});
+```
+
+### Create a Theme
+
+Create a file, e.g. `index.ts` in your theme folder and define your theme object.
+Import and use the theme in the `<ThemeProvider>`.
+See a working example base theme here:
+
+```tsx code
+const theme: BaseTheme = {
+  breakpoints: ['768', '1200'],
+  space: {
+    none: 0,
+    xxsmall: 4,
+    xsmall: 8,
+    small: 16,
+    medium: 24,
+    large: 32,
+    xlarge: 40,
+    xxlarge: 48,
+  },
+  fonts: {
+    body: 'Inter',
+    heading: 'Inter Black',
+  },
+  fontSizes: {
+    xxsmall: '0.875rem',
+    xsmall: '1rem',
+    small: '1.125rem',
+    medium: '1.25rem',
+    large: '1.5rem',
+    xlarge: '2rem',
+  },
+  fontWeights: {
+    body: 400,
+    heading: 900,
+    bold: 700,
+  },
+  lineHeights: {
+    body: 1.5,
+    heading: 1.125,
+  },
+  colors: {
+    text: '#4b4b4b',
+    background: '#fafafa',
+    primary: '#fa8005',
+    secondary: '#4b4b4b',
+    disabled: '#e3e3e3',
+    error: '#dd4142',
+    warning: '#fa8005',
+    info: '#1d67b6',
+    success: '#44a112',
+  },
+};
+```
+
+### Key Reference
+
+Different theme keys can be used as different CSS properties.
+See the theme object keys and the corresponding CSS properties in the following table.
+
+| Theme Key     | CSS Properties                                                                                                                                                                                     |
+| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `space`       | `margin`, `margin-top`, `margin-right`, `margin-bottom`, `margin-left`, `padding`, `padding-top`, `padding-right`, `padding-bottom`, `padding-left`, `grid-gap`, `grid-column-gap`, `grid-row-gap` |
+| `breakpoints` | `min-width` (media query)                                                                                                                                                                          |
+| `fonts`       | `font-family `                                                                                                                                                                                     |
+| `fontSizes`   | `font-size`                                                                                                                                                                                        |
+| `fontWeights` | `font-weight`                                                                                                                                                                                      |
+| `lineHeights` | `line-height`                                                                                                                                                                                      |
+| `colors`      | `color`, `background-color`, `border-color`                                                                                                                                                        |
+
+### Examples
+
+See example themes under <Link to="/themes/b2b">Themes/B2B</Link> and <Link to="/themes/unicorn">Themes/Unicorn</Link>.
