@@ -92,11 +92,11 @@ export const pre: React.FC<ComponentProps<'pre'>> = preProps => {
 // Lists
 // ---------------
 export const ul: React.FC<ComponentProps<'ul'>> = ({ children, ...props }) => (
-  <ul {...props}>{children}</ul>
+  <ul {...props}><Text as="p" variant="body">{children}</Text></ul>
 );
 
 export const ol: React.FC<ComponentProps<'ol'>> = ({ children, ...props }) => (
-  <ol {...props}>{children}</ol>
+  <ol {...props}><Text as="p" variant="body">{children}</Text></ol>
 );
 
 export const li: React.FC<ComponentProps<'li'>> = ({ children, ...props }) => (
@@ -116,13 +116,13 @@ export const table: React.FC<ComponentProps<'table'>> = ({
 
 export const td: React.FC<ComponentProps<'td'>> = ({ children, ...props }) => (
   <Box as="td" p="xsmall" {...props}>
-    {children}
+    <Text as="p" variant="body">{children}</Text>
   </Box>
 );
 
 export const th: React.FC<ComponentProps<'th'>> = ({ children, ...props }) => (
   <Box as="th" p="xsmall" bg="gray.80" {...props}>
-    {children}
+    <Heading as="h5" variant="h5">{children}</Heading>
   </Box>
 );
 
