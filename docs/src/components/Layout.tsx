@@ -1,10 +1,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Column, Columns } from '@marigold/components';
+import { Column, Columns, Stack } from '@marigold/components';
 
-import { MarigoldThemeSwitch } from './ThemeSwitch';
-import { marigoldThemes, ThemeSelect } from './ThemeSelect';
+import { Link } from './Link';
+import { Logo } from './Logo';
 import { Navigation } from './Navigation';
+import { ThemeSelect } from './ThemeSelect';
 
 export const Layout: React.FC = ({ children }) => {
   return (
@@ -12,22 +13,22 @@ export const Layout: React.FC = ({ children }) => {
       <Helmet>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
           rel="stylesheet"
         />
-
         <title>Marigold Design System</title>
       </Helmet>
-      <Columns space={4}>
+      <Columns space={8}>
         <Column width={2}>
-          <Navigation />
-        </Column>
-        <Column width={10}>
-          <MarigoldThemeSwitch themes={marigoldThemes} initial="b2bTheme">
+          <Stack space={16}>
+            <Link to="/">
+              <Logo />
+            </Link>
             <ThemeSelect />
-            {children}
-          </MarigoldThemeSwitch>
+            <Navigation />
+          </Stack>
         </Column>
+        <Column width={10}>{children}</Column>
       </Columns>
     </>
   );

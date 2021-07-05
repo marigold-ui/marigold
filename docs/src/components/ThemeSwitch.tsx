@@ -1,6 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { BaseTheme } from '@marigold/components';
 
+import unicornTheme from '@marigold/theme-unicorn';
+import b2bTheme from '@marigold/theme-b2b';
+
+export const themes = {
+  b2bTheme,
+  unicornTheme,
+};
+
 // Context
 // ---------------
 export type ThemeSwitchContextType = {
