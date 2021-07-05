@@ -3,6 +3,8 @@ title: Box Primitive
 ---
 
 import Link from 'gatsby-link';
+import { useStyles } from '@marigold/system';
+
 
 # Box Primitive
 
@@ -17,6 +19,7 @@ system.
 
 ```tsx code
 import { Box } from '@marigold/components';
+import { useStyles } from '@marigold/system';
 ```
 
 ```tsx live
@@ -32,3 +35,13 @@ the styles accordingly. You can stack and nest multiple Box instances and build 
 By default, the `Box` component will render a `<div />`. This might be fine most of the times, but sometimes you would
 rather render a `<button>` or an `<input>` etc. To allow this, the `Box` takes the special prop called `as`, accepting
 all HTML tag names as input.
+
+## Custom CSS
+
+Staying inside the boundaries of the design system and its contraints should be the norm. But as limiting styling only
+to allowed values defined by the system can be very restrictive, you can use the `classNames` prop and generate custom
+styles with the <Link to="../../guides/usestyles">`useStyles` hook</Link>.
+
+```tsx live
+<Box classNames={useStyles({ css: { fontSize: '11pt' } })}>small text</Box>
+```
