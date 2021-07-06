@@ -29,7 +29,7 @@ const wrapper: React.FC = ({ children }) => (
 
 test('return theme', () => {
   const { result } = renderHook(() => useTheme(), { wrapper });
-  expect(result.current).toMatchInlineSnapshot(`
+  expect(result.theme.current).toMatchInlineSnapshot(`
     Object {
       "colors": Object {
         "black": "#000",

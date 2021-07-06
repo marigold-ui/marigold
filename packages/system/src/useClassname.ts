@@ -9,7 +9,7 @@ const isEmpty = (val: any) =>
   val && Object.keys(val).length === 0 && val.constructor === Object;
 
 export const useClassname = (...styles: StyleObject[]) => {
-  const theme = useTheme();
+  const { get, theme } = useTheme();
   return styles
     .map(style => {
       /**
@@ -17,7 +17,7 @@ export const useClassname = (...styles: StyleObject[]) => {
        * passed. Since this makes debugging harder we'll do not pass empty
        * objects to emotion.
        */
-      const themedStyle = css(style)(theme);
+      const themedStyle = get(style, theme);
       return isEmpty(themedStyle) ? '' : emotion(themedStyle);
     })
     .join(' ');

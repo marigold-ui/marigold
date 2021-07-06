@@ -10,21 +10,32 @@ export type StackProps = {
   title?: string; // For Testing
 };
 
+const ALIGN_STYLES = {
+  left: {
+    display: 'block',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  center: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  right: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+  },
+};
+
 export const Stack: React.FC<StackProps> = ({
   space = 0,
   align = 'left',
   children,
   ...props
 }) => {
-  let stackItems = flattenChildren(children);
-  let display = 'flex';
-  let flexDirection = 'column';
-  let alignItems = align === 'right' ? 'flex-end' : 'center';
-  if (align === 'left') {
-    display = 'block';
-    flexDirection = 'row';
-    alignItems = 'flex-start';
-  }
+  const stackItems = flattenChildren(children);
+  const { display, flexDirection, alignItems } = ALIGN_STYLES[align];
 
   return (
     <Box p={space} display={display} flexDirection={flexDirection} {...props}>
