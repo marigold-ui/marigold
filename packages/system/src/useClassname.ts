@@ -1,5 +1,4 @@
 import { css as emotion } from '@emotion/css';
-import { css } from '@theme-ui/css';
 import { StyleObject } from './types';
 import { useTheme } from './useTheme';
 
@@ -9,7 +8,7 @@ const isEmpty = (val: any) =>
   val && Object.keys(val).length === 0 && val.constructor === Object;
 
 export const useClassname = (...styles: StyleObject[]) => {
-  const { get, theme } = useTheme();
+  const { css } = useTheme();
   return styles
     .map(style => {
       /**
@@ -17,7 +16,7 @@ export const useClassname = (...styles: StyleObject[]) => {
        * passed. Since this makes debugging harder we'll do not pass empty
        * objects to emotion.
        */
-      const themedStyle = get(style, theme);
+      const themedStyle = css(style);
       return isEmpty(themedStyle) ? '' : emotion(themedStyle);
     })
     .join(' ');
