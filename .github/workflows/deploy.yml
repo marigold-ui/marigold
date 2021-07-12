@@ -25,6 +25,9 @@ jobs:
     - name: Install Dependencies
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn
+    
+    - name: Build
+      run: cd docs && gatsby build
 
     - name: Change to docs, Build and Deploy
       uses: peaceiris/actions-gh-pages@v3
