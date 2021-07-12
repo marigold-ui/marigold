@@ -1,2 +1,0 @@
-(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[691],{86237:function(e,t,n){"use strict";n.r(t),n.d(t,{default:function(){return o}});var a=n(27378),c=n(12416),r=n(10527),u=n(23497);function o(){return a.createElement(r.f6,{theme:u.Z},a.createElement(c.Heading,{variant:"h1"},"Welcome to Marigold"),a.createElement(c.Text,null,"The design system based on Emotion and theme-ui"))}}}]);
-//# sourceMappingURL=component---src-pages-index-tsx-406bbcf9bbaf0483da45.js.map

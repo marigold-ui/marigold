@@ -1,2 +1,0 @@
-(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[691],{86237:function(e,n,t){"use strict";t.r(n),t.d(n,{default:function(){return u}});var a=t(27378),l=t(12416),c=t(2302),r=t(23497);function u(){return a.createElement(c.f6,{theme:r.Z},a.createElement(l.Heading,{variant:"h1"},"Heeelloooo"),a.createElement(l.Text,null,"Finally a landing page"))}}}]);
-//# sourceMappingURL=component---src-pages-index-tsx-49756d61fb8a1031da8a.js.map
