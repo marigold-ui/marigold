@@ -5519,7 +5519,7 @@ __metadata:
     eslint-plugin-prettier: 3.4.0
     eslint-plugin-react: 7.24.0
     eslint-plugin-react-hooks: ^4.2.0
-    eslint-plugin-testing-library: 4.7.0
+    eslint-plugin-testing-library: 4.9.0
   peerDependencies:
     eslint: 7.26 || 7.27 || 7.29 || 7.30
   languageName: unknown
@@ -5545,7 +5545,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@marigold/jest-config@workspace:config/jest"
   dependencies:
-    "@types/jest": 26.0.23
+    "@types/jest": 26.0.24
     babel-jest: 27.0.6
     find-up: 5.0.0
     jest-watch-typeahead: 0.6.4
@@ -5633,7 +5633,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@marigold/types@workspace:packages/types"
   dependencies:
-    "@types/react": 17.0.13
+    "@types/react": 17.0.14
   peerDependencies:
     "@types/react": ^17.x
   languageName: unknown
@@ -7548,13 +7548,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:26.0.23":
-  version: 26.0.23
-  resolution: "@types/jest@npm:26.0.23"
+"@types/jest@npm:26.0.24":
+  version: 26.0.24
+  resolution: "@types/jest@npm:26.0.24"
   dependencies:
     jest-diff: ^26.0.0
     pretty-format: ^26.0.0
-  checksum: 69db26061e6be34de2a440c8a470b651c53ba6ee0057614a278c4f756ff00281f46cc075b24e5bd761f399f175f49d0a5758b50dd921342a8592461548dea29a
+  checksum: ae39675412f08d884926254e9b12bfd2b5a4e4d204c94d3148cb942174a474930d0c60540133c968f22241d4712b7940c96cbc883096eb326a4d5b206fb78bd0
   languageName: node
   linkType: hard
 
@@ -7616,12 +7616,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mdx-js__react@npm:1.5.3":
-  version: 1.5.3
-  resolution: "@types/mdx-js__react@npm:1.5.3"
+"@types/mdx-js__react@npm:1.5.4":
+  version: 1.5.4
+  resolution: "@types/mdx-js__react@npm:1.5.4"
   dependencies:
     "@types/react": "*"
-  checksum: ef1095c51952de29eab99ec10d73f0f509b927dac845e877e3263a9df4ac64cdf5b4f1574f2c522b3ef37e309839364bed7c6bcb2f9501a17f6540ca7fbfd812
+  checksum: b06ec66dc91d8c0b425ee0fb7f4ff29b77d6ffe9da0a4f5f60b45ceb8773b19fc6225570b92914d2fd4df63f24d8aadafffb60207705b541e9922cd485575dbd
   languageName: node
   linkType: hard
 
@@ -7684,10 +7684,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:14.17.4":
-  version: 14.17.4
-  resolution: "@types/node@npm:14.17.4"
-  checksum: a0bbe143273f9bf39c1d4f9955b6efeabfa5ddb436692ca8fe1a835ceaacfb2536cad122df54a29daaf6139dcc79a480502c39477cf5fe28b9af2709a41312e7
+"@types/node@npm:14.17.5":
+  version: 14.17.5
+  resolution: "@types/node@npm:14.17.5"
+  checksum: 8fba22a8df7bcea75039f08e00fcff8e331f6d367739a9631d3457bc3e8e5ddfdd60e1a5d685d9420312e9ed7cf2f2146d37224ec9f7d578fe8dd32ce3821e62
   languageName: node
   linkType: hard
 
@@ -7824,12 +7824,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-helmet@npm:6.1.1":
-  version: 6.1.1
-  resolution: "@types/react-helmet@npm:6.1.1"
+"@types/react-helmet@npm:6.1.2":
+  version: 6.1.2
+  resolution: "@types/react-helmet@npm:6.1.2"
   dependencies:
     "@types/react": "*"
-  checksum: bc962f7e37e6cdd748d2da2eca5c5726041736ce9e8d04217528191edde454fc93e9be2f93985de5afc96e8a9ebf6f60c1ed6485f9f0226a6c664a04faddb928
+  checksum: ee66a7b950ba9f1013fd25de32ba6322bf5206fe5de56b9556a5151c76522b892b0cc5566cc8dfd0b54cb76fedb17ed21b6b2e6577849b791c168eaed5aad5f3
   languageName: node
   linkType: hard
 
@@ -7871,14 +7871,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:17.0.13":
-  version: 17.0.13
-  resolution: "@types/react@npm:17.0.13"
+"@types/react@npm:17.0.14":
+  version: 17.0.14
+  resolution: "@types/react@npm:17.0.14"
   dependencies:
     "@types/prop-types": "*"
     "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: 8e25aaeac17c48e1f60544dc583c3ea770cd3d3ffdea944a1da3069db6a7d3a374d3a8bdac726150404318203c1b564135ce93e3b69bd5c06d7f262463b5525d
+  checksum: ca2eca8f33ddbcba46932efeb8affdd274ea5800ea38bf8bc8de205808d09de21ea1f3d6ab156573aca393b912f0d908826cc6ad92470a3f2b6c34e70d5f75db
   languageName: node
   linkType: hard
 
@@ -13397,9 +13397,9 @@ __metadata:
     "@marigold/types": "workspace:*"
     "@mdx-js/mdx": 1.6.22
     "@mdx-js/react": 1.6.22
-    "@types/mdx-js__react": 1.5.3
-    "@types/react": 17.0.13
-    "@types/react-helmet": 6.1.1
+    "@types/mdx-js__react": 1.5.4
+    "@types/react": 17.0.14
+    "@types/react-helmet": 6.1.2
     babel-preset-gatsby: 1.8.0
     gatsby: 3.8.1
     gatsby-plugin-emotion: 6.8.0
@@ -14690,14 +14690,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-testing-library@npm:4.7.0":
-  version: 4.7.0
-  resolution: "eslint-plugin-testing-library@npm:4.7.0"
+"eslint-plugin-testing-library@npm:4.9.0":
+  version: 4.9.0
+  resolution: "eslint-plugin-testing-library@npm:4.9.0"
   dependencies:
     "@typescript-eslint/experimental-utils": ^4.24.0
   peerDependencies:
     eslint: ^7.5.0
-  checksum: 295b0b8e98b1461b483c3d936e10c07137ff7d99d5039dd62746278967ee5c8a5ff976a13c21fea23a0854a3373461ad3a005ba2fc9e94dccbd1950e5c3676df
+  checksum: 01fcd641235acf68929e68dc818b499b14ce731b72c2cc08edbf3309bc3d9c5cad1421c9a6d1c405dce0ad20a9bc3c505c0de107e69f78fc42eaf6ed3b945c9a
   languageName: node
   linkType: hard
 
@@ -18323,12 +18323,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"husky@npm:7.0.0":
-  version: 7.0.0
-  resolution: "husky@npm:7.0.0"
+"husky@npm:7.0.1":
+  version: 7.0.1
+  resolution: "husky@npm:7.0.1"
   bin:
     husky: lib/bin.js
-  checksum: 2b9848c6365ad43110e19cffbf715ef695f2bcd8c98ee263b67389b492fe6b4045cad7be2af393b89c2d5effe3b97a6ff0443f869e9407d954bb93e17dade8a0
+  checksum: b2ea1460f1126ed7161779b1b89f7ec8ae66fb6723e0e9fd47c522f454f4a2ea7e31a21d6ce2eb5d32e9837d232fb0245783425c109df0adab53668f8c8d8fc8
   languageName: node
   linkType: hard
 
@@ -21898,9 +21898,9 @@ fsevents@^1.2.7:
     "@testing-library/jest-dom": 5.14.1
     "@testing-library/react": 12.0.0
     "@testing-library/react-hooks": 7.0.1
-    "@types/node": 14.17.4
+    "@types/node": 14.17.5
     eslint: 7.30.0
-    husky: 7.0.0
+    husky: 7.0.1
     jest: 27.0.6
     prettier: 2.3.2
     pretty-quick: 3.1.1
