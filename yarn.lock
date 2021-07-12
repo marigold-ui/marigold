@@ -20676,20 +20676,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"jest@npm:^25.3.0":
-  version: 25.5.4
-  resolution: "jest@npm:25.5.4"
-  dependencies:
-    "@jest/core": ^25.5.4
-    import-local: ^3.0.2
-    jest-cli: ^25.5.4
-  bin:
-    jest: bin/jest.js
-  checksum: 0acd0ae378bc6c724fb21b795f915268251b0dbb721ae4a8bed79babb6441d871fd23ecb0a960764c3d75864fbf3896cf0e429d8389e73788fb17a12f0813fef
-  languageName: node
-  linkType: hard
-
-"jest@npm:^27.0.6":
+"jest@npm:27.0.6":
   version: 27.0.6
   resolution: "jest@npm:27.0.6"
   dependencies:
@@ -20704,6 +20691,19 @@ fsevents@^1.2.7:
   bin:
     jest: bin/jest.js
   checksum: 60de979335cf28c03f8fdf8ba7aee240d72e11d2b918e50ed31a835b08debf593bca6ad058d3c323ffb670dcd8d5c060c22e0ec9a716fdb40ffa2134db7d6aca
+  languageName: node
+  linkType: hard
+
+"jest@npm:^25.3.0":
+  version: 25.5.4
+  resolution: "jest@npm:25.5.4"
+  dependencies:
+    "@jest/core": ^25.5.4
+    import-local: ^3.0.2
+    jest-cli: ^25.5.4
+  bin:
+    jest: bin/jest.js
+  checksum: 0acd0ae378bc6c724fb21b795f915268251b0dbb721ae4a8bed79babb6441d871fd23ecb0a960764c3d75864fbf3896cf0e429d8389e73788fb17a12f0813fef
   languageName: node
   linkType: hard
 
@@ -21901,7 +21901,7 @@ fsevents@^1.2.7:
     "@types/node": 14.17.4
     eslint: 7.30.0
     husky: 7.0.0
-    jest: ^27.0.6
+    jest: 27.0.6
     prettier: 2.3.2
     pretty-quick: 3.1.1
     react: 17.0.2
