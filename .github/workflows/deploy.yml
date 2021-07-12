@@ -1,0 +1,30 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@master
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js 12.x
+      uses: actions/setup-node@master
+      with:
+        node-version: 12.x
+         
+    - uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Install Dependencies
+      if: steps.yarn-cache.outputs.cache-hit != 'true'
+      run: yarn
+
+    - name: Change to docs, Build and Deploy
+      run: cd docs && yarn deploy
