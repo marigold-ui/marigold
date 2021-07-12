@@ -6,7 +6,6 @@ import { Link } from './Link';
 import { Logo } from './Logo';
 import { Navigation } from './Navigation';
 import { ThemeSelect } from './ThemeSelect';
-import { useStyles } from 'packages/system/src/useStyles';
 
 export const Layout: React.FC = ({ children }) => {
   return (
@@ -20,12 +19,7 @@ export const Layout: React.FC = ({ children }) => {
         <title>Marigold Design System</title>
       </Helmet>
       <Columns space={8}>
-        <Column
-          width={3}
-          className={useStyles({
-            css: { position: 'fixed', top: 0, left: 0, overflowX: 'hidden', height: '100%' },
-          })}
-        >
+        <Column width={2}>
           <Stack space={16}>
             <Link to="/">
               <Logo />
@@ -34,7 +28,7 @@ export const Layout: React.FC = ({ children }) => {
             <Navigation />
           </Stack>
         </Column>
-        <Column width={9}>{children}</Column>
+        <Column width={10}>{children}</Column>
       </Columns>
     </>
   );
