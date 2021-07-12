@@ -28,7 +28,7 @@ jobs:
 
     - name: Change to docs, Build and Deploy
       uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/main'
-        with:
-          github_token: ${{ secrets.GH_TOKEN }}
-          publish_dir: ./docs/public
+      if: github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GH_TOKEN }}
+        publish_dir: ./docs/public
