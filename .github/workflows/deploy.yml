@@ -26,5 +26,9 @@ jobs:
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn
 
+    - run: |
+       git config --global user.email "viktoria.schwarz@reservix.de"
+       git config --global user.name "viktoria-schwarz"
+
     - name: Change to docs, Build and Deploy
       run: cd docs && yarn deploy
