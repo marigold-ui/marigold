@@ -27,7 +27,7 @@ jobs:
       run: yarn
     
     - name: Build
-      run: cd docs && gatsby build
+      run: cd docs && yarn build
 
     - name: Change to docs, Build and Deploy
       uses: peaceiris/actions-gh-pages@v3
