@@ -6,6 +6,8 @@
 
 [![ci][ci-badge]][ci] [![coverage][coverage-badge]][coverage] [![MIT License][license-badge]][license] [![version][version-badge]][package]
 
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/marigold-ui/marigold)
+
 # Marigold
 
 React implementation of the Marigold Design System built on [Emotion](https://emotion.sh/).
@@ -27,7 +29,7 @@ yarn install
 
 ## Usage 💡
 
-Use the styles for your component from a global `theme` object. To provide the theme in context, wrap your component into the `ThemeProvider`. 
+Use the styles for your component from a global `theme` object. To provide the theme in context, wrap your component into the `ThemeProvider`.
 
 ```
 // basic usage
