@@ -1,7 +1,7 @@
 {
   "name": "@marigold/storybook-config",
   "description": "Marigold's storybook configuration",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "keywords": [
     "storybook",
@@ -16,10 +16,10 @@
   ],
   "main": "main.js",
   "dependencies": {
-    "@storybook/addon-a11y": "6.3.2",
-    "@storybook/addon-docs": "6.3.2",
+    "@storybook/addon-a11y": "6.3.4",
+    "@storybook/addon-docs": "6.3.4",
     "@storybook/preset-typescript": "3.0.0",
-    "@storybook/react": "6.3.2",
+    "@storybook/react": "6.3.4",
     "babel-loader": "8.2.2",
     "find-up": "5.0.0",
     "storybook-addon-themes": "6.1.0",
