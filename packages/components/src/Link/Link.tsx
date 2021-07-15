@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { useLink } from '@react-aria/link';
+import { useLink } from 'react-aria';
 import { PolymorphicComponent, PolymorphicProps } from '@marigold/types';
 
 import { Text, TextOwnProps } from '../Text';
