@@ -3,7 +3,7 @@ import { ComponentProps } from '@marigold/types';
 import { Box } from '../Box';
 
 export type LabelProps = {
-  htmlFor: string;
+  htmlFor?: string;
   variant?: string;
 } & ComponentProps<'label'>;
 
