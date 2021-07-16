@@ -6,7 +6,15 @@ title: Select
 
 ## Description
 
-Dropdown for selecting a value among different options.
+Dropdown for selecting an item among different options.
+
+## Properties
+
+| Property                 | Type      | Default |
+| :----------------------- | :-------- | :------ |
+| `label` (optional)       | `string`  |         |
+| `placeholder` (optional) | `string`  |         |
+| `disabled` (optional)    | `boolean` |         |
 
 ## Import
 
@@ -14,41 +22,42 @@ Dropdown for selecting a value among different options.
 import { Select } from '@marigold/components';
 ```
 
+```tsx code
+import { Item } from '@react-stately/collections';
+```
+
 ## Live-Code Example
 
 ```tsx live
-<Label htmlFor="select">
-  Choose one option
-  <Select id="select">
-    <option selected>...</option>
-    <option>Option One</option>
-    <option>Option Two</option>
-  </Select>
-</Label>
+<Select
+  label="Favorite character"
+  htmlFor="id"
+  placeholder="Select your character"
+>
+  <Item>Mario</Item>
+  <Item>Luigi</Item>
+  <Item>Toad</Item>
+  <Item>Yoshi</Item>
+  <Item>Bowser</Item>
+  <Item>Peach</Item>
+</Select>
 ```
 
 ## Usage
 
 ```tsx
-<Label htmlFor="select">
-  Dropdown
-  <Select id="select">
-    <option selected>Choose here</option>
-    <option>Hi</option>
-    <option>Hey</option>
-    <option>Blubb</option>
-  </Select>
-</Label>
+<Select label="Favorite Color" htmlFor="id" placeholder="Choose a color">
+  <Item>Red</Item>
+  <Item>Orange</Item>
+  <Item>Yellow</Item>
+  <Item>Green</Item>
+  <Item>Blue</Item>
+  <Item>Purple</Item>
+</Select>
 ```
 
 ```tsx
-<Label htmlFor="select2">
-  Dropdown disabled
-  <Select disabled>
-    <option selected>Can't choose here</option>
-    <option>Hi</option>
-    <option>Hey</option>
-    <option>Blubb</option>
-  </Select>
-</Label>
+<Select label="Disabled Select:" disabled placeholder="disabled Select">
+  <Item>disabled Item</Item>
+</Select>
 ```

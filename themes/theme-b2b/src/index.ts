@@ -11,14 +11,6 @@ const button = {
     borderRadius: '2px',
     display: 'inline-flex',
   },
-  large: {
-    lineHeight: '46px',
-    paddingX: 'xlarge',
-  },
-  small: {
-    lineHeight: '30px',
-    paddingX: 'medium',
-  },
   primary: {
     color: 'background',
     bg: 'primary',
@@ -89,6 +81,30 @@ const button = {
     ':disabled': {
       color: colors.gray40,
       bg: colors.gray20,
+      cursor: 'not-allowed',
+    },
+  },
+  select: {
+    appearance: 'none',
+    border: '1px solid',
+    borderColor: colors.gray30,
+    lineHeight: '32px',
+    display: 'inline-flex',
+    alignItems: 'center',
+    pl: 'xsmall',
+    pr: 'xsmall',
+    color: 'inherit',
+    bg: 'transparent',
+    ':hover': {
+      cursor: 'pointer',
+    },
+    ':focus': {
+      border: '2px solid',
+      borderColor: colors.blue60,
+    },
+    ':disabled': {
+      bg: colors.gray10,
+      color: 'disabled',
       cursor: 'not-allowed',
     },
   },
@@ -189,62 +205,37 @@ const theme: BaseTheme = {
     },
   },
   button: {
+    large: {
+      lineHeight: '46px',
+      paddingX: 'xlarge',
+    },
+    small: {
+      lineHeight: '30px',
+      paddingX: 'medium',
+    },
     primary: {
-      small: {
-        ...button.root,
-        ...button.primary,
-        ...button.small,
-      },
-      large: {
-        ...button.root,
-        ...button.primary,
-        ...button.large,
-      },
+      ...button.root,
+      ...button.primary,
     },
     secondary: {
-      small: {
-        ...button.root,
-        ...button.secondary,
-        ...button.small,
-      },
-      large: {
-        ...button.root,
-        ...button.secondary,
-        ...button.large,
-      },
+      ...button.root,
+      ...button.secondary,
     },
     ghost: {
-      small: {
-        ...button.root,
-        ...button.ghost,
-        ...button.small,
-      },
-      large: {
-        ...button.root,
-        ...button.ghost,
-        ...button.large,
-      },
+      ...button.root,
+      ...button.ghost,
     },
     text: {
-      root: {
-        ...button.root,
-        ...button.text,
-      },
-      small: {
-        ...button.root,
-        ...button.text,
-        ...button.small,
-      },
-      large: {
-        ...button.root,
-        ...button.text,
-        ...button.large,
-      },
+      ...button.root,
+      ...button.text,
     },
     menu: {
       ...button.root,
       ...button.menu,
-      ...button.small,
+    },
+    select: {
+      ...button.root,
+      ...button.select,
     },
   },
   checkbox: {
@@ -328,6 +319,13 @@ const theme: BaseTheme = {
       lineHeight: '1.5rem',
       color: 'text',
     },
+    above: {
+      fontFamily: 'body',
+      fontSize: 'xxsmall',
+      fontWeight: 'body',
+      lineHeight: 'body',
+      color: 'text',
+    },
   },
   link: {
     normal: {
@@ -380,33 +378,6 @@ const theme: BaseTheme = {
     },
     title: {
       mb: '8px',
-    },
-  },
-  select: {
-    default: {
-      display: 'block',
-      width: '100%',
-      padding: 'small',
-      appearance: 'none',
-      fontSize: 'inherit',
-      lineHeight: 'inherit',
-      border: '1px solid',
-      borderColor: colors.gray30,
-      borderRadius: '2px',
-      color: 'inherit',
-      bg: 'transparent',
-      ':hover': {
-        cursor: 'pointer',
-      },
-      ':focus': {
-        border: '2px solid',
-        borderColor: colors.blue60,
-      },
-      ':disabled': {
-        bg: colors.gray10,
-        color: 'disabled',
-        cursor: 'not-allowed',
-      },
     },
   },
   text: {

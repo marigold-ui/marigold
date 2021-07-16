@@ -8,8 +8,11 @@
   "license": "MIT",
   "dependencies": {
     "@marigold/system": "workspace:*",
-    "@react-aria/link": "^3.1.3",
-    "react-keyed-flatten-children": "1.3.0"
+    "@react-types/shared": "^3.7.1",
+    "@testing-library/user-event": "^13.1.9",
+    "react-aria": "^3.8.0",
+    "react-keyed-flatten-children": "1.3.0",
+    "react-stately": "^3.7.0"
   },
   "peerDependencies": {
     "react": "^16.x || ^17.0.0",

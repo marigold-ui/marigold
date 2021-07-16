@@ -11,9 +11,11 @@ The style variant and size of the button can be added with the variant prop and 
 
 ## Properties
 
-| Property             | Type                                                                                                 | Default         |
-| :------------------- | :--------------------------------------------------------------------------------------------------- | :-------------- |
-| `variant` (optional) | `primary.small`, `primary.large`, `secondary.small`, `secondary.large`, `ghost.small`, `ghost.large` | `primary.large` |
+| Property              | Type                                    | Default   |
+| :-------------------- | :-------------------------------------- | :-------- |
+| `variant` (optional)  | `primary`, `secondary`, `ghost`, `text` | `primary` |
+| `size` (optional)     | `small`, `large`                        | `large`   |
+| `disabled` (optional) | boolean                                 |           |
 
 ## Import
 
@@ -25,7 +27,8 @@ import { Button } from '@marigold/components';
 
 ```tsx live
 <Button
-  variant="secondary.small"
+  variant="secondary"
+  size="small"
   onClick={() => {
     alert('Searching..');
   }}
@@ -39,61 +42,77 @@ import { Button } from '@marigold/components';
 ### Large
 
 ```tsx
-<Button variant="primary.large">Primary</Button>
+<Button variant="primary" size="large">
+  Primary
+</Button>
 ```
 
 ```tsx
-<Button variant="secondary.large">Secondary</Button>
+<Button variant="secondary" size="large">
+  Secondary
+</Button>
 ```
 
 ```tsx
-<Button variant="ghost.large">Ghost</Button>
+<Button variant="ghost" size="large">
+  Ghost
+</Button>
 ```
 
 ```tsx
-<Button variant="text.large">Text Only</Button>
+<Button variant="text" size="large">
+  Text Only
+</Button>
 ```
 
 ### Small
 
 ```tsx
-<Button variant="primary.small">Primary</Button>
+<Button variant="primary" size="small">
+  Primary
+</Button>
 ```
 
 ```tsx
-<Button variant="secondary.small">Secondary</Button>
+<Button variant="secondary" size="small">
+  Secondary
+</Button>
 ```
 
 ```tsx
-<Button variant="ghost.small">Ghost</Button>
+<Button variant="ghost" size="small">
+  Ghost
+</Button>
 ```
 
 ```tsx
-<Button variant="text.small">Text Only</Button>
+<Button variant="text" size="small">
+  Text Only
+</Button>
 ```
 
 ### Disabled
 
 ```tsx
-<Button variant="primary.large" disabled>
+<Button variant="primary" size="large" disabled>
   Primary Large Disabled
 </Button>
 ```
 
 ```tsx
-<Button variant="secondary.large" disabled>
+<Button variant="secondary" size="large" disabled>
   Secondary Large Disabled
 </Button>
 ```
 
 ```tsx
-<Button variant="ghost.large" disabled>
+<Button variant="ghost" size="large" disabled>
   Ghost Large Disabled
 </Button>
 ```
 
 ```tsx
-<Button variant="text.large" disabled>
+<Button variant="text" size="large" disabled>
   Text Only Large Disabled
 </Button>
 ```
@@ -101,49 +120,49 @@ import { Button } from '@marigold/components';
 ### Default with icon
 
 ```tsx
-<Button variant="primary.large">
+<Button variant="primary" size="large">
   <Facebook /> Like me!
 </Button>
 ```
 
 ```tsx
-<Button variant="primary.small">
+<Button variant="primary" size="small">
   <Facebook /> Like me!
 </Button>
 ```
 
 ```tsx
-<Button variant="secondary.large">
+<Button variant="secondary" size="large">
   <Facebook /> Like me!
 </Button>
 ```
 
 ```tsx
-<Button variant="secondary.small">
+<Button variant="secondary" size="small">
   <Facebook /> Like me!
 </Button>
 ```
 
 ```tsx
-<Button variant="ghost.large">
+<Button variant="ghost" size="large">
   <Facebook /> Like me!
 </Button>
 ```
 
 ```tsx
-<Button variant="ghost.small">
+<Button variant="ghost" size="small">
   <Facebook /> Like me!
 </Button>
 ```
 
 ```tsx
-<Button variant="text.large">
+<Button variant="text" size="large">
   <Facebook /> Like me!
 </Button>
 ```
 
 ```tsx
-<Button variant="text.small">
+<Button variant="text" size="small">
   <Facebook /> Like me!
 </Button>
 ```
@@ -151,7 +170,7 @@ import { Button } from '@marigold/components';
 ### Large with large icon
 
 ```tsx
-<Button variant="primary.large">
+<Button variant="primary" size="large">
   <Facebook size={48} /> Like me!
 </Button>
 ```
@@ -159,7 +178,7 @@ import { Button } from '@marigold/components';
 ### Small with small icon
 
 ```tsx
-<Button variant="primary.small">
+<Button variant="primary" size="small">
   <Facebook size={20} /> Like me!
 </Button>
 ```
@@ -167,7 +186,7 @@ import { Button } from '@marigold/components';
 ### With color
 
 ```tsx
-<Button variant="primary.small">
+<Button variant="primary" size="small">
   <Facebook fill="black" /> Like me!
 </Button>
 ```
