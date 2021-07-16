@@ -14,7 +14,9 @@ export const Button: PolymorphicComponentWithRef<BoxOwnProps, 'button'> =
     (
       {
         as = 'button',
-        variant = 'primary.large',
+        variant = 'primary',
+        size = 'large',
+        disabled,
         children,
         className,
         ...props
@@ -34,9 +36,10 @@ export const Button: PolymorphicComponentWithRef<BoxOwnProps, 'button'> =
           {...props}
           {...buttonProps}
           as={as}
-          variant={`button.${variant}`}
+          variant={[`button.${variant}`, `button.${size}`]}
           className={className}
           ref={ref}
+          disabled={disabled}
         >
           <Box as="span" display="inline-flex" alignItems="center">
             {children}
