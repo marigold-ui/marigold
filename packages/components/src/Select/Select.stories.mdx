@@ -1,44 +1,33 @@
 import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { Label } from '../Label';
 import { Select } from './Select';
+import { Item } from 'react-stately';
 
 <Meta title="Components/Select" />
 
-# Select
-
-## Description
-
-Dropdown for selecting a value among different options.
-
-## Import
-
-```tsx
-import { Select } from '@marigold/components';
-```
-
-## Usage
-
 <Canvas>
   <Story name="Select">
-    <Label htmlFor="select">
-      Dropdown
-      <Select id="select">
-        <option selected>Choose here</option>
-        <option>Hi</option>
-        <option>Hey</option>
-        <option>Blubb</option>
-      </Select>
-    </Label>
+    <Select label="Favorite Color" htmlFor="id">
+      <Item>Red</Item>
+      <Item>Orange</Item>
+      <Item>Yellow</Item>
+    </Select>
   </Story>
-  <Story name="Select disabled">
-    <Label htmlFor="select2">
-      Dropdown disabled
-      <Select disabled>
-        <option selected>Can't choose here</option>
-        <option>Hi</option>
-        <option>Hey</option>
-        <option>Blubb</option>
-      </Select>
-    </Label>
+</Canvas>
+
+<Canvas>
+  <Story name="placeholderSelect">
+    <Select label="Favorite Color" htmlFor="id" placeholder="MyLabel">
+      <Item>Red</Item>
+      <Item>Orange</Item>
+      <Item>Yellow</Item>
+    </Select>
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story name="disabledSelect">
+    <Select disabled placeholder="disabled Select">
+      <Item>disabled Item</Item>
+    </Select>
   </Story>
 </Canvas>

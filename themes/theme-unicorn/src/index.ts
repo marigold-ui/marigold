@@ -92,6 +92,30 @@ const button = {
       cursor: 'not-allowed',
     },
   },
+  select: {
+    appearance: 'none',
+    border: '1px solid',
+    borderColor: colors.gray30,
+    lineHeight: '32px',
+    display: 'inline-flex',
+    alignItems: 'center',
+    pl: 'xsmall',
+    pr: 'xsmall',
+    color: 'inherit',
+    bg: 'transparent',
+    ':hover': {
+      cursor: 'pointer',
+    },
+    ':focus': {
+      border: '2px solid',
+      borderColor: colors.blue60,
+    },
+    ':disabled': {
+      bg: colors.gray10,
+      color: 'disabled',
+      cursor: 'not-allowed',
+    },
+  },
 };
 const text = {
   root: {
@@ -246,6 +270,11 @@ const theme: BaseTheme = {
       ...button.menu,
       ...button.small,
     },
+    select: {
+      ...button.root,
+      ...button.large,
+      ...button.select,
+    },
   },
   checkbox: {
     default: {
@@ -328,6 +357,13 @@ const theme: BaseTheme = {
       lineHeight: '2rem',
       color: 'text',
     },
+    above: {
+      fontFamily: 'body',
+      fontSize: 'xsmall',
+      fontWeight: 'body',
+      lineHeight: 'body',
+      color: 'text',
+    },
   },
   link: {
     normal: {
@@ -380,33 +416,6 @@ const theme: BaseTheme = {
     },
     title: {
       mb: 'small',
-    },
-  },
-  select: {
-    default: {
-      display: 'block',
-      width: '100%',
-      padding: 'small',
-      appearance: 'none',
-      fontSize: 'inherit',
-      lineHeight: 'inherit',
-      border: '2px solid',
-      borderColor: colors.gray30,
-      borderRadius: '8px',
-      color: 'inherit',
-      bg: 'transparent',
-      ':hover': {
-        cursor: 'pointer',
-      },
-      ':focus': {
-        border: '4px solid',
-        borderColor: 'primary',
-      },
-      ':disabled': {
-        bg: colors.gray10,
-        color: 'disabled',
-        cursor: 'not-allowed',
-      },
     },
   },
   text: {
