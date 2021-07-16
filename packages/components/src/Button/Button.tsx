@@ -27,19 +27,19 @@ export const Button: PolymorphicComponentWithRef<BoxOwnProps, 'button'> =
         {
           ...props,
           elementType: typeof as === 'string' ? as : 'span',
+          isDisabled: disabled,
         },
         ref as RefObject<HTMLSpanElement>
       );
 
       return (
         <Box
-          {...props}
           {...buttonProps}
+          {...props}
           as={as}
           variant={[`button.${variant}`, `button.${size}`]}
           className={className}
           ref={ref}
-          disabled={disabled}
         >
           <Box as="span" display="inline-flex" alignItems="center">
             {children}
