@@ -1,0 +1,96 @@
+---
+title: Layout
+---
+
+import Link from 'gatsby-link';
+import { Badge, Box, Container, Column, Columns, Divider, Stack, Text } from '@marigold/components';
+import { useStyles } from '@marigold/system';
+
+# Layout
+
+In Marigold, each theme follows certain principles that concern the structure and the layout of an application.
+The following topics give you an overview on how to use Layout Components and the Layout Principles.
+
+## Layout Components
+
+### Box
+
+Set all layout props as you need them from your theme.
+
+```tsx live
+<Box bg="disabled" p="small">
+    <Text>This is a box (or a container?)</Text>
+</Box>
+```
+
+### Column, Columns
+
+Column widths need to add up to 12
+
+_children of Column are not below each other...it is just pretty if each Column has only one child and then it's equivalent to Stack_
+
+```tsx live
+<Columns>
+  <Column width={6}>
+    <Badge bg="disabled">This is the</Badge>
+    <Badge bg="disabled">Same as </Badge>
+    <Badge bg="disabled">Stack</Badge>
+    <Badge bg="disabled">if you want</Badge>
+  </Column>
+  <Column width={3}>
+    <Badge bg="disabled">But you can</Badge>
+    <Badge bg="disabled">determine the width!</Badge>
+    <Badge bg="disabled">here it stacks...</Badge>
+    <Badge bg="disabled">because it's too narrow</Badge>
+  </Column>
+  <Column width={3}>
+    <Badge bg="disabled">This is weird</Badge>
+  </Column>
+</Columns>
+```
+
+### Container
+
+The same as `<Box>` but with a fixed width of 100%. Use it if you need the full size of the screen.
+Use the `<Container>` to nest elements.
+
+_works better if you just use the `<Box>` for this purpose...._
+
+```tsx live
+<Box bg="secondary" p="small">
+  <Badge bg="disabled">I am in the container</Badge>
+  <Badge bg="disabled">I am in the container</Badge>
+</Box>
+```
+
+### Stack
+
+Use the `<Stack>` component to stack elements and separate them with a fix spacing. Alter the alignment inside of its parent with the `align` prop.
+
+```tsx live
+<div>
+<Stack space="small" align="left">
+  <Badge bg="disabled">Stack Me</Badge>
+  <Badge bg="disabled">If You Can</Badge>
+  <Badge bg="disabled">(left)</Badge>
+</Stack>
+<Divider />
+<Stack space="small" align="center">
+  <Badge bg="disabled">Stack Me</Badge>
+  <Badge bg="disabled">If You Can</Badge>
+  <Badge bg="disabled">(center)</Badge>
+</Stack>
+<Divider />
+<Stack space="small" align="right">
+  <Badge bg="disabled">Stack Me</Badge>
+  <Badge bg="disabled">If You Can</Badge>
+  <Badge bg="disabled">(right)</Badge>
+</Stack>
+</div>
+```
+
+## Layout Principles
+
+### Spacings
+
+### Breakpoints
