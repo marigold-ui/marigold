@@ -34,9 +34,9 @@
     "react-live": "2.2.3"
   },
   "devDependencies": {
-    "@types/mdx-js__react": "1.5.3",
-    "@types/react": "17.0.13",
-    "@types/react-helmet": "6.1.1",
+    "@types/mdx-js__react": "1.5.4",
+    "@types/react": "17.0.14",
+    "@types/react-helmet": "6.1.2",
     "tsconfig-paths-webpack-plugin": "3.5.1"
   },
   "scripts": {
