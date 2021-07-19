@@ -209,10 +209,6 @@ const theme: BaseTheme = {
       ...button.root,
       ...button.menu,
     },
-    select: {
-      ...button.root,
-      ...button.select,
-    },
   },
   checkbox: {
     default: {
