@@ -33,7 +33,7 @@ import { Stack } from '@marigold/components';
 
 <Canvas>
   <Story name="Example 1">
-    <Stack space={4} className={useStyles({ bg: '#f3f3f3' })}>
+    <Stack space="small">
       <Heading>Header</Heading>
       <Text>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
@@ -55,21 +55,21 @@ import { Stack } from '@marigold/components';
 
 <Canvas>
   <Story name="Example 2">
-    <Stack space={2}>
+    <Stack space="xsmall">
       <Text
         className={useStyles({ width: '100px', border: '1px solid', p: 2 })}
       >
         Left
       </Text>
     </Stack>
-    <Stack space={2} align="center">
+    <Stack space="xsmall" align="center">
       <Text
         className={useStyles({ width: '100px', border: '1px solid', p: 2 })}
       >
         Center
       </Text>
     </Stack>
-    <Stack space={2} align="right">
+    <Stack space="xsmall" align="right">
       <Text
         className={useStyles({ width: '100px', border: '1px solid', p: 2 })}
       >
@@ -83,8 +83,8 @@ import { Stack } from '@marigold/components';
 
 <Canvas>
   <Story name="Example 3">
-    <Stack space={6}>
-      <Stack>
+    <Stack space="medium">
+      <Stack space="small">
         <Heading>Stack Content #1</Heading>
         <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
         <Text>
@@ -92,7 +92,7 @@ import { Stack } from '@marigold/components';
           metus.
         </Text>
       </Stack>
-      <Stack>
+      <Stack space="small">
         <Heading>Stack Content #2</Heading>
         <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
         <Text>
