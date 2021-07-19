@@ -1,28 +1,45 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { ThemeProvider } from '@marigold/system';
+
 import { Stack } from './Stack';
 import { Text } from '../Text';
 
-test('supports default space prop', () => {
-  render(
-    <Stack title="stack">
-      <Text>stack</Text>
-    </Stack>
-  );
-  const stack = screen.getByTitle(/stack/);
+// Setup
+// ---------------
+const theme = {
+  space: {
+    none: 0,
+    small: 2,
+    medium: 4,
+    large: 8,
+  },
+};
 
-  expect(stack).toHaveStyle(`padding: 0px`);
+test('default space is "none"', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Stack title="stack">
+        <Text>stack</Text>
+      </Stack>
+    </ThemeProvider>
+  );
+  const stack = screen.getByText(/stack/).parentElement;
+
+  expect(stack).toHaveStyle(`padding-top: 0px`);
 });
 
-test('supports custom space prop', () => {
+test('accepts spacing from theme', () => {
   render(
-    <Stack space={2} title="stack">
-      <Text>stack</Text>
-    </Stack>
+    <ThemeProvider theme={theme}>
+      <Stack space="small">
+        <Text>stack</Text>
+      </Stack>
+    </ThemeProvider>
   );
-  const stack = screen.getByTitle(/stack/);
+  const stack = screen.getByText(/stack/).parentElement;
 
-  expect(stack).toHaveStyle(`padding: 8px`);
+  expect(stack).toHaveStyle(`padding-top: 2px`);
 });
 
 test('supports default prop align: left', () => {
