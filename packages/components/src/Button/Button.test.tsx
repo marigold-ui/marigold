@@ -6,20 +6,22 @@ import { Facebook } from '@marigold/icons';
 
 const theme = {
   button: {
+    large: {
+      p: '16px',
+    },
+    small: {
+      p: '16px',
+    },
     primary: {
-      large: {
-        fontFamily: 'Inter',
-      },
+      fontFamily: 'Inter',
     },
     secondary: {
-      large: {
-        fontFamily: 'Arial',
-      },
+      fontFamily: 'Arial',
     },
   },
 };
 
-test('supports default variant and themeSection', () => {
+test('supports default variant', () => {
   render(
     <ThemeProvider theme={theme}>
       <Button>button</Button>
@@ -30,15 +32,37 @@ test('supports default variant and themeSection', () => {
   expect(button.parentElement).toHaveStyle(`font-family: Inter`);
 });
 
+test('supports default size', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Button>button</Button>
+    </ThemeProvider>
+  );
+  const button = screen.getByText(/button/);
+
+  expect(button.parentElement).toHaveStyle(`padding: 16px`);
+});
+
 test('accepts other variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Button variant="secondary.large">button</Button>
+      <Button variant="secondary">button</Button>
     </ThemeProvider>
   );
   const button = screen.getByText(/button/);
 
   expect(button.parentElement).toHaveStyle(`font-family: Arial`);
+});
+
+test('accepts other size than default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Button size="small">button</Button>
+    </ThemeProvider>
+  );
+  const button = screen.getByText(/button/);
+
+  expect(button.parentElement).toHaveStyle(`padding: 16px`);
 });
 
 test('renders <button> element', () => {
@@ -51,6 +75,22 @@ test('renders <button> element', () => {
 
   expect(button.parentElement instanceof HTMLButtonElement).toBeTruthy();
   expect(button instanceof HTMLSpanElement).toBeTruthy();
+});
+
+test('accepts other button components', () => {
+  const CustomButton = React.forwardRef<
+    HTMLSpanElement,
+    { children?: React.ReactNode }
+  >(() => <span>I am a Button!</span>);
+
+  render(
+    <ThemeProvider theme={theme}>
+      <Button as={CustomButton}>Button</Button>
+    </ThemeProvider>
+  );
+
+  const button = screen.getByText('I am a Button!');
+  expect(button).toBeTruthy();
 });
 
 test('add icon in button works as expected', () => {
