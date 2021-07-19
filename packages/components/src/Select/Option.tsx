@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import type { ListState } from 'react-stately';
 import type { Node } from '@react-types/shared';
-import { mergeProps, useOption } from 'react-aria';
+import { useOption } from 'react-aria';
 
 import { Box } from '../Box';
 import { useStyles } from '@marigold/system';
@@ -35,12 +35,7 @@ export const Option = ({ item, state }: OptionProps) => {
   });
 
   return (
-    <Box
-      as="li"
-      {...mergeProps(optionProps)}
-      ref={ref}
-      className={selectedClassName}
-    >
+    <Box as="li" {...optionProps} ref={ref} className={selectedClassName}>
       {item.rendered}
     </Box>
   );
