@@ -2,7 +2,6 @@ import React from 'react';
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/github';
-import { Item } from '@react-stately/collections';
 
 import * as Components from '@marigold/components';
 import { ThemeProvider, useStyles } from '@marigold/system';
@@ -72,7 +71,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                 <div className={innerPreviewBoxStyles}>
                   <LiveProvider
                     code={codeString}
-                    scope={{ ...Components, ...Icons, Item }}
+                    scope={{ ...Components, ...Icons }}
                   >
                     <ThemeProvider theme={current && themes[current]}>
                       <LivePreview />
@@ -82,7 +81,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                 <ShowHideButton hide={hide} onHideChange={setHide} />
               </div>
               {!hide && (
-                <LiveProvider scope={{ ...Components, ...Icons, Item }}>
+                <LiveProvider scope={{ ...Components, ...Icons }}>
                   <pre
                     className={className + codeBoxStyles}
                     style={{
@@ -110,7 +109,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
       return (
         <LiveProvider
           code={codeString}
-          scope={{ ...Components, ...Icons, Item }}
+          scope={{ ...Components, ...Icons }}
           theme={theme}
         >
           <ThemeProvider theme={current && themes[current]}>
@@ -133,7 +132,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
         >
           {({ className, style, tokens, getLineProps, getTokenProps }) => (
             <>
-              <LiveProvider scope={{ ...Components, ...Icons, Item }}>
+              <LiveProvider scope={{ ...Components, ...Icons }}>
                 <pre
                   className={className + codeBoxStyles}
                   style={{

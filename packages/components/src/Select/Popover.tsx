@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { useOverlay, DismissButton, FocusScope } from 'react-aria';
+import { FocusScope } from '@react-aria/focus';
+import { DismissButton, useOverlay } from '@react-aria/overlays';
 
 import { Box } from '../Box';
 
 interface PopoverProps {
   popoverRef?: React.RefObject<HTMLDivElement>;
-  children: React.ReactNode;
   isOpen?: boolean;
   onClose: () => void;
 }
 
-export function Popover(props: PopoverProps) {
+export const Popover: React.FC<PopoverProps> = ({ ...props }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const { popoverRef = ref, isOpen, onClose, children } = props;
 
@@ -36,4 +36,4 @@ export function Popover(props: PopoverProps) {
       </Box>
     </FocusScope>
   );
-}
+};

@@ -135,6 +135,15 @@ const text = {
     },
   },
 };
+const selectOption = {
+  fontFamily: 'body',
+  fontSize: 'xsmall',
+  fontWeight: 'body',
+  lineHeight: '32px',
+  outline: 'none',
+  cursor: 'pointer',
+  color: 'text',
+};
 
 const theme: BaseTheme = {
   breakpoints: ['768', '1200'],
@@ -364,6 +373,13 @@ const theme: BaseTheme = {
       lineHeight: 'body',
       color: 'text',
     },
+    disabled: {
+      fontFamily: 'body',
+      fontSize: 'xxsmall',
+      fontWeight: 'body',
+      lineHeight: 'body',
+      color: colors.gray30,
+    },
   },
   link: {
     normal: {
@@ -488,6 +504,41 @@ const theme: BaseTheme = {
       ':disabled': {
         bg: colors.gray20,
         color: colors.gray40,
+      },
+    },
+  },
+  select: {
+    root: {
+      fontFamily: 'body',
+      fontSize: 'xsmall',
+      fontWeight: 400,
+      lineHeight: '32px',
+      color: 'text',
+    },
+    disabled: {
+      fontFamily: 'body',
+      fontSize: 'xsmall',
+      fontWeight: 400,
+      lineHeight: '32px',
+      color: 'disabled',
+      cursor: 'not-allowed',
+    },
+    listbox: {
+      background: 'white',
+      border: `1px solid ${colors.gray40}`,
+      borderRadius: '2px',
+    },
+    option: {
+      default: {
+        ...selectOption,
+        ':focus': {
+          bg: colors.blue20,
+        },
+      },
+      selected: {
+        ...selectOption,
+        color: colors.gray00,
+        bg: colors.blue60,
       },
     },
   },

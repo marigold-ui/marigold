@@ -1,10 +1,9 @@
 import React, { useRef } from 'react';
-import type { ListState } from 'react-stately';
+import type { ListState } from '@react-stately/list';
 import type { Node } from '@react-types/shared';
-import { useOption } from 'react-aria';
+import { useOption } from '@react-aria/listbox';
 
 import { Box } from '../Box';
-import { useStyles } from '@marigold/system';
 
 interface OptionProps {
   item: Node<unknown>;
@@ -13,29 +12,22 @@ interface OptionProps {
 
 export const Option = ({ item, state }: OptionProps) => {
   const ref = useRef<HTMLLIElement>(null);
-  const { optionProps, isSelected, isFocused } = useOption(
+  const { optionProps, isSelected } = useOption(
     {
       key: item.key,
     },
     state,
     ref
   );
-  const selectedClassName = useStyles({
-    css: {
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      fontWeight: 400,
-      lineHeight: '32px',
-      padding: '2px 5px',
-      outline: 'none',
-      cursor: 'pointer',
-      color: isSelected ? '#ffffff' : '#4b4b4b',
-      bg: isSelected ? '#3ab3d5' : isFocused ? '#c1f0fc' : 'white',
-    },
-  });
 
   return (
-    <Box as="li" {...optionProps} ref={ref} className={selectedClassName}>
+    <Box
+      as="li"
+      {...optionProps}
+      ref={ref}
+      p="2px 5px"
+      variant={isSelected ? 'select.option.selected' : 'select.option.default'}
+    >
       {item.rendered}
     </Box>
   );

@@ -1,12 +1,9 @@
 import React, { useRef } from 'react';
-import { useSelectState } from 'react-stately';
-import {
-  HiddenSelect,
-  mergeProps,
-  useSelect,
-  useButton,
-  useFocusRing,
-} from 'react-aria';
+import { useSelectState } from '@react-stately/select';
+import { useButton } from '@react-aria/button';
+import { useFocusRing } from '@react-aria/focus';
+import { mergeProps } from '@react-aria/utils';
+import { HiddenSelect, useSelect } from '@react-aria/select';
 import type { AriaSelectProps } from '@react-types/select';
 
 import { ComponentProps } from '@marigold/types';
@@ -40,22 +37,8 @@ export const Select = ({
   );
   const { buttonProps } = useButton(triggerProps, ref);
   const { focusProps } = useFocusRing();
-  const selectColor = '#4B4B4B';
-  const labelClassName = useStyles({
-    css: { color: disabled ? 'disabled' : selectColor },
-  });
   const iconClassName = useStyles({
-    css: { color: disabled ? 'disabled' : selectColor, pl: '5px' },
-  });
-  const buttonTextClassName = useStyles({
-    css: {
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      fontWeight: 400,
-      lineHeight: '32px',
-      color: disabled ? 'disabled' : selectColor,
-      cursor: disabled && 'not-allowed',
-    },
+    css: { fill: disabled ? 'disabled' : 'text' },
   });
 
   return (
@@ -65,8 +48,7 @@ export const Select = ({
           <Label
             {...labelProps}
             htmlFor={labelProps.id}
-            variant="above"
-            className={labelClassName}
+            variant={disabled ? 'disabled' : 'above'}
           >
             {props.label}
           </Label>
@@ -87,13 +69,17 @@ export const Select = ({
         disabled={disabled}
         className={className}
       >
-        <Box as="span" {...valueProps} className={buttonTextClassName}>
+        <Box
+          as="span"
+          {...valueProps}
+          variant={disabled ? 'select.disabled' : 'select.root'}
+        >
           {state.selectedItem ? state.selectedItem.rendered : placeholder}
         </Box>
         {state.isOpen && !disabled ? (
-          <ArrowUp className={iconClassName} />
+          <ArrowUp size={16} className={iconClassName} />
         ) : (
-          <ArrowDown className={iconClassName} />
+          <ArrowDown size={16} className={iconClassName} />
         )}
       </Box>
       {state.isOpen && !disabled && (
