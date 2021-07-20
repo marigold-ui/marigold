@@ -65,7 +65,9 @@ export const Select = ({
         as="button"
         {...mergeProps(buttonProps, focusProps)}
         ref={ref}
-        variant="button.select"
+        variant={
+          state.isOpen && !disabled ? 'button.select.open' : 'button.select'
+        }
         disabled={disabled}
         className={className}
       >

@@ -1,6 +1,20 @@
 import { BaseTheme } from '@marigold/components';
 import { colors } from './colors';
 
+const selectButton = {
+  appearance: 'none',
+  position: 'relative',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  overflow: 'hidden',
+  outline: 'none',
+  width: '100%',
+  lineHeight: '32px',
+  px: 'xsmall',
+  color: 'inherit',
+  bg: 'transparent',
+};
 const button = {
   root: {
     position: 'relative',
@@ -85,16 +99,9 @@ const button = {
     },
   },
   select: {
-    appearance: 'none',
+    ...selectButton,
     border: '1px solid',
-    borderColor: colors.gray30,
-    lineHeight: '32px',
-    display: 'inline-flex',
-    alignItems: 'center',
-    pl: 'xsmall',
-    pr: 'xsmall',
-    color: 'inherit',
-    bg: 'transparent',
+    borderColor: colors.gray40,
     ':hover': {
       cursor: 'pointer',
     },
@@ -103,9 +110,19 @@ const button = {
       borderColor: colors.blue60,
     },
     ':disabled': {
-      bg: colors.gray10,
+      bg: colors.gray20,
       color: 'disabled',
       cursor: 'not-allowed',
+    },
+    open: {
+      ...selectButton,
+      borderTop: '1px solid',
+      borderRight: '1px solid',
+      borderLeft: '1px solid',
+      borderBottom: 'none',
+      borderColor: colors.gray40,
+      borderTopRightRadius: '8px',
+      borderTopLeftRadius: '8px',
     },
   },
 };
@@ -135,6 +152,7 @@ const selectOption = {
   outline: 'none',
   cursor: 'pointer',
   color: 'text',
+  px: 'xsmall',
 };
 
 const theme: BaseTheme = {
@@ -470,7 +488,7 @@ const theme: BaseTheme = {
     },
   },
   select: {
-    root: {
+    __default: {
       fontFamily: 'body',
       fontSize: 'xsmall',
       fontWeight: 400,
@@ -486,12 +504,20 @@ const theme: BaseTheme = {
       cursor: 'not-allowed',
     },
     listbox: {
-      background: 'white',
-      border: `1px solid ${colors.gray40}`,
-      borderRadius: '2px',
+      __default: {
+        background: 'transparent',
+        borderTop: 'none',
+        borderRight: '1px solid',
+        borderLeft: '1px solid',
+        borderBottom: '1px solid',
+        borderBottomRightRadius: '8px',
+        borderBottomLeftRadius: '8px',
+        borderColor: colors.gray40,
+        outline: 'none',
+      },
     },
     option: {
-      default: {
+      __default: {
         ...selectOption,
         ':focus': {
           bg: colors.blue20,
