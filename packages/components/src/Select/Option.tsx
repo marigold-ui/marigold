@@ -25,8 +25,7 @@ export const Option = ({ item, state }: OptionProps) => {
       as="li"
       {...optionProps}
       ref={ref}
-      p="2px 5px"
-      variant={isSelected ? 'select.option.selected' : 'select.option.default'}
+      variant={isSelected ? 'select.option.selected' : 'select.option'}
     >
       {item.rendered}
     </Box>

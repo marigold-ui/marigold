@@ -91,8 +91,7 @@ const button = {
     lineHeight: '32px',
     display: 'inline-flex',
     alignItems: 'center',
-    pl: 'xsmall',
-    pr: 'xsmall',
+    px: 'xsmall',
     color: 'inherit',
     bg: 'transparent',
     ':hover': {
@@ -135,6 +134,7 @@ const selectOption = {
   outline: 'none',
   cursor: 'pointer',
   color: 'text',
+  px: 'xsmall',
 };
 
 const theme: BaseTheme = {
@@ -244,7 +244,6 @@ const theme: BaseTheme = {
     },
     select: {
       ...button.root,
-      ...button.large,
       ...button.select,
     },
   },
@@ -471,7 +470,7 @@ const theme: BaseTheme = {
     },
   },
   select: {
-    root: {
+    __default: {
       fontFamily: 'body',
       fontSize: 'xsmall',
       fontWeight: 400,
@@ -492,7 +491,7 @@ const theme: BaseTheme = {
       borderRadius: '2px',
     },
     option: {
-      default: {
+      __default: {
         ...selectOption,
         ':focus': {
           bg: colors.blue20,

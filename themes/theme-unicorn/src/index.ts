@@ -244,7 +244,6 @@ const theme: BaseTheme = {
     },
     select: {
       ...button.root,
-      ...button.large,
       ...button.select,
     },
   },

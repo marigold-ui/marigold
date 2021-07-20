@@ -72,7 +72,7 @@ export const Select = ({
         <Box
           as="span"
           {...valueProps}
-          variant={disabled ? 'select.disabled' : 'select.root'}
+          variant={disabled ? 'select.disabled' : 'select'}
         >
           {state.selectedItem ? state.selectedItem.rendered : placeholder}
         </Box>
