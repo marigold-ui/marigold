@@ -18,7 +18,7 @@ const block = css({
 });
 
 const list = css({
-  listStyle: 'none',
+  // empty
 });
 
 const table = css({
@@ -30,7 +30,7 @@ const table = css({
 // ---------------
 const a = css({
   textDecoration: 'none',
-  touchAction: 'manipulation'
+  touchAction: 'manipulation',
 });
 
 const quote = css({
@@ -49,7 +49,7 @@ const button = css({
   appearance: 'none',
   background: 'transparent',
   textAlign: 'center',
-  touchAction: 'manipulation'
+  touchAction: 'manipulation',
 });
 
 const input = css({
