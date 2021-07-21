@@ -5,12 +5,16 @@ import { Button } from './Button';
 import { Facebook } from '@marigold/icons';
 
 const theme = {
+  space: {
+    xxsmall: 4,
+    xsmall: 8,
+  },
   button: {
     large: {
-      p: '16px',
+      lineHeight: '16px',
     },
     small: {
-      p: '16px',
+      lineHeight: '8px',
     },
     primary: {
       fontFamily: 'Inter',
@@ -40,7 +44,7 @@ test('supports default size', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button.parentElement).toHaveStyle(`padding: 16px`);
+  expect(button.parentElement).toHaveStyle(`line-height: 16px`);
 });
 
 test('accepts other variant than default', () => {
@@ -62,7 +66,7 @@ test('accepts other size than default', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button.parentElement).toHaveStyle(`padding: 16px`);
+  expect(button.parentElement).toHaveStyle(`line-height: 8px`);
 });
 
 test('renders <button> element', () => {
@@ -93,11 +97,10 @@ test('accepts other button components', () => {
   expect(button).toBeTruthy();
 });
 
-test('add icon in button works as expected', () => {
+test('add icon prop to button works as expected', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Button>
-        <Facebook fill="red" size={30} title="facebook" />
+      <Button icon={<Facebook fill="red" size={30} title="facebook" />}>
         iconbutton
       </Button>
     </ThemeProvider>
@@ -106,10 +109,26 @@ test('add icon in button works as expected', () => {
   const icon = screen.getByTitle(/facebook/);
 
   expect(button instanceof HTMLSpanElement).toBeTruthy();
-  expect(button).toHaveStyle('display: inline-flex');
-  expect(button.firstChild instanceof SVGElement).toBeTruthy();
+  expect(button.parentElement).toHaveStyle('display: inline-flex');
+  expect(button).toHaveStyle('padding-left: 8px');
   expect(icon.getAttribute('fill')).toEqual('red');
   expect(icon.getAttribute('width')).toEqual('30');
+});
+
+test('supports space between icon and children depending on size prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Button
+        size="small"
+        icon={<Facebook fill="red" size={30} title="facebook" />}
+      >
+        iconbutton
+      </Button>
+    </ThemeProvider>
+  );
+  const button = screen.getByText(/iconbutton/);
+
+  expect(button).toHaveStyle('padding-left: 4px');
 });
 
 test('accepts custom styles prop className', () => {

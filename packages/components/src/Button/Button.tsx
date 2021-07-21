@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactElement, RefObject } from 'react';
+import React, { forwardRef, ReactSVGElement, RefObject } from 'react';
 import { useButton } from '@react-aria/button';
 import {
   PolymorphicComponentWithRef,
@@ -7,7 +7,7 @@ import {
 
 import { Box, BoxOwnProps } from '../Box';
 
-export type ButtonOwnProps = { icon?: ReactElement };
+export type ButtonOwnProps = { icon?: ReactSVGElement };
 export type ButtonProps = PolymorphicPropsWithRef<BoxOwnProps, 'button'>;
 
 export const Button: PolymorphicComponentWithRef<BoxOwnProps, 'button'> =
