@@ -35,6 +35,8 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
     css: {
       border: 'grey',
       borderRadius: '4px',
+      // display: 'flex',
+      // flexDirection: 'column',
     },
   });
   const innerPreviewBoxStyles = useStyles({
@@ -42,17 +44,16 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
       position: 'relative',
       py: 'large',
       px: 'small',
-      overflow: 'auto',
     },
   });
   const codeBoxStyles = useStyles({
     css: {
-      position: 'relative',
+      // position: 'relative',
       fontSize: 'body',
       margin: 0,
       py: 'large',
       px: 'small',
-      overflow: 'auto',
+      // overflow: 'auto',
     },
   });
 
@@ -65,43 +66,50 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
           language={language}
           theme={theme}
         >
-          {({ className, style, tokens, getLineProps, getTokenProps }) => (
-            <>
-              <div className={outerPreviewBoxStyles}>
-                <div className={innerPreviewBoxStyles}>
-                  <LiveProvider
-                    code={codeString}
-                    scope={{ ...Components, ...Icons }}
-                  >
-                    <ThemeProvider theme={current && themes[current]}>
-                      <LivePreview />
-                    </ThemeProvider>
-                  </LiveProvider>
+          {({ className, style, tokens, getLineProps, getTokenProps }) => {
+            console.log(style);
+            console.log(className);
+            return (
+              <>
+                <div className={outerPreviewBoxStyles}>
+                  <div className={innerPreviewBoxStyles}>
+                    <LiveProvider
+                      code={codeString}
+                      scope={{ ...Components, ...Icons }}
+                    >
+                      <ThemeProvider theme={current && themes[current]}>
+                        <LivePreview />
+                      </ThemeProvider>
+                    </LiveProvider>
+                  </div>
+                  <ShowHideButton hide={hide} onHideChange={setHide} />
                 </div>
-                <ShowHideButton hide={hide} onHideChange={setHide} />
-              </div>
-              {!hide && (
-                <LiveProvider scope={{ ...Components, ...Icons }}>
-                  <pre
-                    className={className + codeBoxStyles}
-                    style={{
-                      ...style,
-                    }}
-                  >
-                    {tokens.map((line, i) => (
-                      <div key={i} {...getLineProps({ line, key: i })}>
-                        {line.map((token, key) => (
-                          <span key={key} {...getTokenProps({ token, key })} />
-                        ))}
-                      </div>
-                    ))}
-                    <CopyButton codeString={codeString} />
-                  </pre>
-                </LiveProvider>
-              )}
-              <br />
-            </>
-          )}
+                {!hide && (
+                  <LiveProvider scope={{ ...Components, ...Icons }}>
+                    <pre
+                      className={className + codeBoxStyles}
+                      style={{
+                        ...style,
+                      }}
+                    >
+                      {tokens.map((line, i) => (
+                        <div key={i} {...getLineProps({ line, key: i })}>
+                          {line.map((token, key) => (
+                            <span
+                              key={key}
+                              {...getTokenProps({ token, key })}
+                            />
+                          ))}
+                        </div>
+                      ))}
+                      <CopyButton codeString={codeString} />
+                    </pre>
+                  </LiveProvider>
+                )}
+                <br />
+              </>
+            );
+          }}
         </Highlight>
       );
     }

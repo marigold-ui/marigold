@@ -505,7 +505,7 @@ const theme: BaseTheme = {
     },
     listbox: {
       __default: {
-        background: 'transparent',
+        background: colors.gray00,
         borderTop: 'none',
         borderRight: '1px solid',
         borderLeft: '1px solid',
