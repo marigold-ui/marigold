@@ -33,23 +33,25 @@ export const Button: PolymorphicComponentWithRef<BoxOwnProps, 'button'> =
         },
         ref as RefObject<HTMLSpanElement>
       );
+      const buttonSize = icon ? `button.${size}.icon` : `button.${size}`;
 
       return (
         <Box
           {...buttonProps}
           {...props}
           as={as}
-          variant={[`button.${variant}`, `button.${size}`]}
+          variant={[`button.${variant}`, buttonSize]}
           className={className}
           ref={ref}
         >
           {icon ? (
-            <>
+            <Box as="span" display="inline-flex" alignItems="center">
               {icon}
-              {children}
-            </>
+              <Box as="span" pl={size === 'large' ? 'xsmall' : 'xxsmall'}>
+                {children}
+              </Box>
+            </Box>
           ) : (
-            // children
             <Box as="span" display="inline-flex" alignItems="center">
               {children}
             </Box>

@@ -16,7 +16,7 @@ const button = {
     bg: 'primary',
     ':hover': {
       color: 'background',
-      bg: colors.orange40,
+      bg: 'secondary',
       cursor: 'pointer',
     },
     ':disabled': {
@@ -30,7 +30,7 @@ const button = {
     bg: 'secondary',
     ':hover': {
       color: 'background',
-      bg: colors.gray60,
+      bg: 'primary',
       cursor: 'pointer',
     },
     ':disabled': {
@@ -44,7 +44,7 @@ const button = {
     border: '1px solid',
     outlineColor: colors.gray70,
     ':hover': {
-      color: 'secondary',
+      color: colors.gray00,
       bg: colors.gray30,
       cursor: 'pointer',
     },
@@ -58,7 +58,7 @@ const button = {
   text: {
     color: 'secondary',
     ':hover': {
-      color: 'secondary',
+      color: colors.gray00,
       outlineColor: colors.gray70,
       bg: colors.gray30,
       cursor: 'pointer',
@@ -184,10 +184,20 @@ const theme: BaseTheme = {
     large: {
       lineHeight: '46px',
       paddingX: 'xlarge',
+      icon: {
+        lineHeight: '46px',
+        pr: 'xlarge',
+        pl: 'large',
+      },
     },
     small: {
       lineHeight: '30px',
       paddingX: 'medium',
+      icon: {
+        lineHeight: '30px',
+        pr: 'small',
+        pl: 'xsmall',
+      },
     },
     primary: {
       ...button.root,

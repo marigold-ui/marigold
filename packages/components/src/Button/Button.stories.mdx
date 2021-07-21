@@ -1,5 +1,5 @@
 import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { Facebook } from '@marigold/icons';
+import { Facebook, FormatSize, Id, Ticket } from '@marigold/icons';
 import { Button } from './Button';
 import { useStyles } from '@marigold/system';
 
@@ -84,43 +84,41 @@ import { useStyles } from '@marigold/system';
 
 <Canvas>
   <Story name="primary.large with default icon">
-    <Button variant="primary" size="large">
-      <Facebook /> Like me!
-    </Button>
+    <Button icon={<Ticket />}>Icon Primary</Button>
   </Story>
   <Story name="primary.small with default icon">
-    <Button variant="primary" size="small">
-      <Facebook /> Like me!
+    <Button size="small" icon={<Ticket size={20} />}>
+      Icon Primary
     </Button>
   </Story>
   <Story name="secondary.large with default icon">
-    <Button variant="secondary" size="large">
-      <Facebook /> Like me!
+    <Button variant="secondary" icon={<Facebook />}>
+      Like me!
     </Button>
   </Story>
   <Story name="secondary.small with default icon">
-    <Button variant="secondary" size="small">
-      <Facebook /> Like me!
+    <Button variant="secondary" size="small" icon={<Facebook size={20} />}>
+      Like me!
     </Button>
   </Story>
   <Story name="ghost.large with default icon">
-    <Button variant="ghost" size="large">
-      <Facebook /> Like me!
+    <Button variant="ghost" icon={<Id />}>
+      Ghost
     </Button>
   </Story>
   <Story name="ghost.small with default icon">
-    <Button variant="ghost" size="small">
-      <Facebook /> Like me!
+    <Button variant="ghost" size="small" icon={<Id size={20} />}>
+      Ghost
     </Button>
   </Story>
   <Story name="text.large with default icon">
-    <Button variant="text" size="large">
-      <Facebook /> Like me!
+    <Button variant="text" icon={<FormatSize />}>
+      Icon Text only
     </Button>
   </Story>
   <Story name="text.small with default icon">
-    <Button variant="text" size="small">
-      <Facebook /> Like me!
+    <Button variant="text" size="small" icon={<FormatSize size={20} />}>
+      Icon Text only
     </Button>
   </Story>
 </Canvas>
@@ -140,12 +138,12 @@ import { useStyles } from '@marigold/system';
 <Canvas>
   <Story name="primary.small with small icon">
     <Button variant="primary" size="small">
-      <Facebook size={20} /> Like me!
+      <Facebook size={16} /> Like me!
     </Button>
   </Story>
 </Canvas>
 
-### With color
+### With colored icon
 
 <Canvas>
   <Story name="with color">

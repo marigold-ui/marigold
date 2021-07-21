@@ -183,11 +183,21 @@ const theme: BaseTheme = {
   button: {
     large: {
       lineHeight: '46px',
-      paddingX: 'xlarge',
+      paddingX: 'large',
+      icon: {
+        lineHeight: '46px',
+        pr: 'large',
+        pl: 'medium',
+      },
     },
     small: {
       lineHeight: '30px',
       paddingX: 'medium',
+      icon: {
+        lineHeight: '30px',
+        pr: 'small',
+        pl: '12px',
+      },
     },
     primary: {
       ...button.root,
