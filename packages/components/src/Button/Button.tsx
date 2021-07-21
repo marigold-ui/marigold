@@ -1,4 +1,4 @@
-import React, { forwardRef, RefObject } from 'react';
+import React, { forwardRef, ReactElement, RefObject } from 'react';
 import { useButton } from '@react-aria/button';
 import {
   PolymorphicComponentWithRef,
@@ -7,6 +7,7 @@ import {
 
 import { Box, BoxOwnProps } from '../Box';
 
+export type ButtonOwnProps = { icon?: ReactElement };
 export type ButtonProps = PolymorphicPropsWithRef<BoxOwnProps, 'button'>;
 
 export const Button: PolymorphicComponentWithRef<BoxOwnProps, 'button'> =
@@ -18,6 +19,7 @@ export const Button: PolymorphicComponentWithRef<BoxOwnProps, 'button'> =
         size = 'large',
         disabled,
         children,
+        icon,
         className,
         ...props
       },
@@ -41,9 +43,17 @@ export const Button: PolymorphicComponentWithRef<BoxOwnProps, 'button'> =
           className={className}
           ref={ref}
         >
-          <Box as="span" display="inline-flex" alignItems="center">
-            {children}
-          </Box>
+          {icon ? (
+            <>
+              {icon}
+              {children}
+            </>
+          ) : (
+            // children
+            <Box as="span" display="inline-flex" alignItems="center">
+              {children}
+            </Box>
+          )}
         </Box>
       );
     }

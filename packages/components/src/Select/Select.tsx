@@ -18,6 +18,7 @@ export const Select: React.FC<SelectProps> = ({
       ml: '-28px',
     },
   });
+  console.log(<ArrowDown />);
 
   return (
     <Box display="flex">
