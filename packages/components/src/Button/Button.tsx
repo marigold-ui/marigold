@@ -44,18 +44,18 @@ export const Button: PolymorphicComponentWithRef<BoxOwnProps, 'button'> =
           className={className}
           ref={ref}
         >
-          {icon ? (
-            <Box as="span" display="inline-flex" alignItems="center">
-              {icon}
-              <Box as="span" pl={size === 'large' ? 'xsmall' : 'xxsmall'}>
-                {children}
-              </Box>
-            </Box>
-          ) : (
-            <Box as="span" display="inline-flex" alignItems="center">
-              {children}
-            </Box>
-          )}
+          <Box as="span" display="inline-flex" alignItems="center">
+            {icon ? (
+              <>
+                {icon}
+                <Box as="span" pl={size === 'large' ? 'xsmall' : 'xxsmall'}>
+                  {children}
+                </Box>
+              </>
+            ) : (
+              children
+            )}
+          </Box>
         </Box>
       );
     }
