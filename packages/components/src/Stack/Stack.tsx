@@ -4,10 +4,8 @@ import { ResponsiveStyleValue, useClassname } from '@marigold/system';
 import { Box } from '../Box';
 
 export type StackProps = {
-  className?: string;
   space?: ResponsiveStyleValue<string>;
   align?: 'left' | 'right' | 'center';
-  title?: string; // For Testing
 };
 
 const ALIGNMENT = {
