@@ -35,8 +35,6 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
     css: {
       border: 'grey',
       borderRadius: '4px',
-      // display: 'flex',
-      // flexDirection: 'column',
     },
   });
   const innerPreviewBoxStyles = useStyles({
@@ -44,16 +42,17 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
       position: 'relative',
       py: 'large',
       px: 'small',
+      overflow: 'auto',
     },
   });
   const codeBoxStyles = useStyles({
     css: {
-      // position: 'relative',
+      position: 'relative',
       fontSize: 'body',
       margin: 0,
       py: 'large',
       px: 'small',
-      // overflow: 'auto',
+      overflow: 'auto',
     },
   });
 

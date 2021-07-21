@@ -24,8 +24,6 @@ export const ListBox = (props: ListBoxProps) => {
     <Box
       as="ul"
       {...listBoxProps}
-      position="absolute"
-      width="100%"
       variant="select.listbox"
       className={listBoxClassName}
       ref={ref}
