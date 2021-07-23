@@ -2,7 +2,7 @@ import { addDecorator, addParameters } from '@storybook/react';
 import { withThemes } from 'storybook-addon-themes/react';
 
 import React from 'react';
-import { ThemeProvider } from '@marigold/system';
+import { MarigoldProvider } from '@marigold/system';
 import b2bTheme from '@marigold/theme-b2b';
 import unicornTheme from '@marigold/theme-unicorn';
 
@@ -21,7 +21,7 @@ addParameters({
   },
   themes: {
     Decorator: ({ themeName, children }) => (
-      <ThemeProvider theme={themes[themeName]}>{children}</ThemeProvider>
+      <MarigoldProvider theme={themes[themeName]}>{children}</MarigoldProvider>
     ),
     list: Object.keys(themes).map(name => ({
       name,

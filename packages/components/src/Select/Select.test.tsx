@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { ThemeProvider } from '@marigold/system';
+import { MarigoldProvider } from '@marigold/system';
 import { Item } from '@marigold/components';
 
 import { Select } from './Select';
@@ -17,11 +17,11 @@ const theme = {
 
 test('supports button select variant', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Select label="MyLabel" data-testid="selectId">
         <Item>1</Item>
       </Select>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const select = screen.getByTestId('selectId');
   expect(select).toBeDefined();
@@ -30,7 +30,7 @@ test('supports button select variant', () => {
 
 test('accepts custom styles prop className', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Select
         label="MyLabel"
         className="custom-class-name"
@@ -38,7 +38,7 @@ test('accepts custom styles prop className', () => {
       >
         <Item>1</Item>
       </Select>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const select = screen.getByTestId('selectId');
   expect(select.className).toMatch('custom-class-name');
@@ -46,11 +46,11 @@ test('accepts custom styles prop className', () => {
 
 test('supports label with htmlFor prop', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Select label="MyLabel">
         <Item>1</Item>
       </Select>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const selectLabel = screen.getAllByText(/MyLabel/);
   expect(selectLabel[0]).toHaveAttribute('for');
@@ -58,11 +58,11 @@ test('supports label with htmlFor prop', () => {
 
 test('supports disabled prop', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Select label="MyLabel" data-testid="selectId" disabled>
         <Item>1</Item>
       </Select>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const select = screen.getByTestId('selectId');
   expect(select).toHaveAttribute('disabled');
@@ -72,11 +72,11 @@ test('supports disabled prop', () => {
 
 test('supports placeholder prop', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Select label="MyLabel" placeholder="placeholder" data-testid="selectId">
         <Item>1</Item>
       </Select>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const button = screen.getByTestId('selectId');
   expect(button).toHaveTextContent(/placeholder/);
@@ -84,11 +84,11 @@ test('supports placeholder prop', () => {
 
 test('option list opens when element is clicked', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Select label="MyLabel" data-testid="selectId">
         <Item>Red</Item>
       </Select>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const button = screen.getByTestId('selectId');
   expect(button).toHaveAttribute('aria-expanded', 'false');
@@ -103,11 +103,11 @@ test('option list opens when element is clicked', () => {
 
 test('supports click and select an option', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Select label="MyLabel" data-testid="selectId">
         <Item>Red</Item>
       </Select>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const button = screen.getByTestId('selectId');
   expect(button).toHaveAttribute('aria-expanded', 'false');
@@ -130,11 +130,11 @@ test('supports click and select an option', () => {
 
 test('popup closes after an option is selected', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Select label="MyLabel" data-testid="selectId">
         <Item>Red</Item>
       </Select>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const button = screen.getByTestId('selectId');
   expect(button).toHaveAttribute('aria-expanded', 'false');
@@ -151,11 +151,11 @@ test('popup closes after an option is selected', () => {
 
 test('dismiss popup by clicking escape', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Select label="MyLabel" data-testid="selectId">
         <Item>Red</Item>
       </Select>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const selectButton = screen.getByTestId('selectId');
   fireEvent.click(selectButton);
@@ -166,11 +166,11 @@ test('dismiss popup by clicking escape', () => {
 
 test('allow users to dismiss the popup with hidden dismiss button', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <MarigoldProvider theme={theme}>
       <Select label="MyLabel" data-testid="selectId">
         <Item>Red</Item>
       </Select>
-    </ThemeProvider>
+    </MarigoldProvider>
   );
   const selectButton = screen.getByTestId('selectId');
   fireEvent.click(selectButton);

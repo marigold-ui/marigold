@@ -1,39 +1,50 @@
-import * as React from 'react';
+import React, { forwardRef, RefObject } from 'react';
 import { FocusScope } from '@react-aria/focus';
-import { DismissButton, useOverlay } from '@react-aria/overlays';
+import {
+  DismissButton,
+  OverlayContainer,
+  useModal,
+  useOverlay,
+} from '@react-aria/overlays';
+import { mergeProps } from '@react-aria/utils';
 
 import { Box } from '../Box';
 
 interface PopoverProps {
-  popoverRef?: React.RefObject<HTMLDivElement>;
   isOpen?: boolean;
   onClose: () => void;
+  ref?: React.Ref<HTMLDivElement>;
+  className: string;
 }
 
-export const Popover: React.FC<PopoverProps> = ({ ...props }) => {
-  const ref = React.useRef<HTMLDivElement>(null);
-  const { popoverRef = ref, isOpen, onClose, children } = props;
+export const Popover: React.FC<PopoverProps> = forwardRef(
+  ({ children, className, isOpen, onClose, ...otherProps }, ref) => {
+    // Handle events that should cause the popup to close,
+    const { overlayProps } = useOverlay(
+      {
+        isOpen,
+        onClose,
+        shouldCloseOnBlur: true,
+        isDismissable: true,
+      },
+      ref as RefObject<HTMLElement>
+    );
+    // Hide content outside the modal from screen readers.
+    const { modalProps } = useModal();
 
-  // Handle events that should cause the popup to close,
-  // e.g. blur, clicking outside, or pressing the escape key.
-  const { overlayProps } = useOverlay(
-    {
-      isOpen,
-      onClose,
-      shouldCloseOnBlur: true,
-      isDismissable: true,
-    },
-    popoverRef
-  );
-
-  // Add a hidden <DismissButton> component at the end of the popover
-  // to allow screen reader users to dismiss the popup easily.
-  return (
-    <FocusScope restoreFocus>
-      <Box {...overlayProps} ref={popoverRef}>
-        {children}
-        <DismissButton onDismiss={onClose} />
-      </Box>
-    </FocusScope>
-  );
-};
+    return (
+      <OverlayContainer>
+        <FocusScope restoreFocus>
+          <Box
+            {...mergeProps(overlayProps, otherProps, modalProps)}
+            className={className}
+            ref={ref}
+          >
+            {children}
+            <DismissButton onDismiss={onClose} />
+          </Box>
+        </FocusScope>
+      </OverlayContainer>
+    );
+  }
+);

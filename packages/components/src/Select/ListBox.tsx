@@ -8,7 +8,6 @@ import { Box } from '../Box';
 import { Option } from './Option';
 
 interface ListBoxProps extends AriaListBoxOptions<unknown> {
-  listBoxRef?: React.RefObject<HTMLUListElement>;
   state: ListState<unknown>;
 }
 
