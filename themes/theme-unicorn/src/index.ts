@@ -11,14 +11,6 @@ const button = {
     borderRadius: '8px',
     display: 'inline-flex',
   },
-  large: {
-    lineHeight: '46px',
-    paddingX: 'xlarge',
-  },
-  small: {
-    lineHeight: '30px',
-    paddingX: 'medium',
-  },
   primary: {
     color: 'background',
     bg: 'primary',
@@ -189,62 +181,33 @@ const theme: BaseTheme = {
     },
   },
   button: {
+    large: {
+      lineHeight: '46px',
+      paddingX: 'xlarge',
+    },
+    small: {
+      lineHeight: '30px',
+      paddingX: 'medium',
+    },
     primary: {
-      small: {
-        ...button.root,
-        ...button.primary,
-        ...button.small,
-      },
-      large: {
-        ...button.root,
-        ...button.primary,
-        ...button.large,
-      },
+      ...button.root,
+      ...button.primary,
     },
     secondary: {
-      small: {
-        ...button.root,
-        ...button.secondary,
-        ...button.small,
-      },
-      large: {
-        ...button.root,
-        ...button.secondary,
-        ...button.large,
-      },
+      ...button.root,
+      ...button.secondary,
     },
     ghost: {
-      small: {
-        ...button.root,
-        ...button.ghost,
-        ...button.small,
-      },
-      large: {
-        ...button.root,
-        ...button.ghost,
-        ...button.large,
-      },
+      ...button.root,
+      ...button.ghost,
     },
     text: {
-      root: {
-        ...button.root,
-        ...button.text,
-      },
-      small: {
-        ...button.root,
-        ...button.text,
-        ...button.small,
-      },
-      large: {
-        ...button.root,
-        ...button.text,
-        ...button.large,
-      },
+      ...button.root,
+      ...button.text,
     },
     menu: {
       ...button.root,
       ...button.menu,
-      ...button.small,
     },
   },
   checkbox: {

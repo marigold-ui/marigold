@@ -5,41 +5,28 @@ import { useStyles } from '@marigold/system';
 
 <Meta title="Components/Button" />
 
-# Button
-
-## Description
-
-With the Button component you can render a `button` element.
-The style variant and size of the button can be added with the variant prop and is composed like `variant.size`.
-
-## Properties
-
-| Property             | Type                                                                                                 | Default         |
-| :------------------- | :--------------------------------------------------------------------------------------------------- | :-------------- |
-| `variant` (optional) | `primary.small`, `primary.large`, `secondary.small`, `secondary.large`, `ghost.small`, `ghost.large` | `primary.large` |
-
-## Import
-
-```tsx
-import { Button } from '@marigold/components';
-```
-
-## Usage
-
 ### Large
 
 <Canvas>
   <Story name="primary.large">
-    <Button variant="primary.large">Primary</Button>
+    <Button variant="primary" size="large">
+      Primary
+    </Button>
   </Story>
   <Story name="secondary.large">
-    <Button variant="secondary.large">Secondary</Button>
+    <Button variant="secondary" size="large">
+      Secondary
+    </Button>
   </Story>
   <Story name="ghost.large">
-    <Button variant="ghost.large">Ghost</Button>
+    <Button variant="ghost" size="large">
+      Ghost
+    </Button>
   </Story>
   <Story name="text.large">
-    <Button variant="text.large">Text Only</Button>
+    <Button variant="text" size="large">
+      Text Only
+    </Button>
   </Story>
 </Canvas>
 
@@ -47,16 +34,24 @@ import { Button } from '@marigold/components';
 
 <Canvas>
   <Story name="primary.small">
-    <Button variant="primary.small">Primary</Button>
+    <Button variant="primary" size="small">
+      Primary
+    </Button>
   </Story>
   <Story name="secondary.small">
-    <Button variant="secondary.small">Secondary</Button>
+    <Button variant="secondary" size="small">
+      Secondary
+    </Button>
   </Story>
   <Story name="ghost.small">
-    <Button variant="ghost.small">Ghost</Button>
+    <Button variant="ghost" size="small">
+      Ghost
+    </Button>
   </Story>
   <Story name="text.small">
-    <Button variant="text.small">Text Only</Button>
+    <Button variant="text" size="small">
+      Text Only
+    </Button>
   </Story>
 </Canvas>
 
@@ -64,22 +59,22 @@ import { Button } from '@marigold/components';
 
 <Canvas>
   <Story name="primary.large.disabled">
-    <Button variant="primary.large" disabled>
+    <Button variant="primary" size="large" disabled>
       Primary Large Disabled
     </Button>
   </Story>
   <Story name="secondary.large.disabled">
-    <Button variant="secondary.large" disabled>
+    <Button variant="secondary" size="large" disabled>
       Secondary Large Disabled
     </Button>
   </Story>
   <Story name="ghost.large.disabled">
-    <Button variant="ghost.large" disabled>
+    <Button variant="ghost" size="large" disabled>
       Ghost Large Disabled
     </Button>
   </Story>
   <Story name="text.large.disabled">
-    <Button variant="text.large" disabled>
+    <Button variant="text" size="large" disabled>
       Text Only Large Disabled
     </Button>
   </Story>
@@ -89,42 +84,42 @@ import { Button } from '@marigold/components';
 
 <Canvas>
   <Story name="primary.large with default icon">
-    <Button variant="primary.large">
+    <Button variant="primary" size="large">
       <Facebook /> Like me!
     </Button>
   </Story>
   <Story name="primary.small with default icon">
-    <Button variant="primary.small">
+    <Button variant="primary" size="small">
       <Facebook /> Like me!
     </Button>
   </Story>
   <Story name="secondary.large with default icon">
-    <Button variant="secondary.large">
+    <Button variant="secondary" size="large">
       <Facebook /> Like me!
     </Button>
   </Story>
   <Story name="secondary.small with default icon">
-    <Button variant="secondary.small">
+    <Button variant="secondary" size="small">
       <Facebook /> Like me!
     </Button>
   </Story>
   <Story name="ghost.large with default icon">
-    <Button variant="ghost.large">
+    <Button variant="ghost" size="large">
       <Facebook /> Like me!
     </Button>
   </Story>
   <Story name="ghost.small with default icon">
-    <Button variant="ghost.small">
+    <Button variant="ghost" size="small">
       <Facebook /> Like me!
     </Button>
   </Story>
   <Story name="text.large with default icon">
-    <Button variant="text.large">
+    <Button variant="text" size="large">
       <Facebook /> Like me!
     </Button>
   </Story>
   <Story name="text.small with default icon">
-    <Button variant="text.small">
+    <Button variant="text" size="small">
       <Facebook /> Like me!
     </Button>
   </Story>
@@ -134,7 +129,7 @@ import { Button } from '@marigold/components';
 
 <Canvas>
   <Story name="primary.large with large icon">
-    <Button variant="primary.large">
+    <Button variant="primary" size="large">
       <Facebook size={48} /> Like me!
     </Button>
   </Story>
@@ -144,7 +139,7 @@ import { Button } from '@marigold/components';
 
 <Canvas>
   <Story name="primary.small with small icon">
-    <Button variant="primary.small">
+    <Button variant="primary" size="small">
       <Facebook size={20} /> Like me!
     </Button>
   </Story>
@@ -154,7 +149,7 @@ import { Button } from '@marigold/components';
 
 <Canvas>
   <Story name="with color">
-    <Button variant="primary.small">
+    <Button variant="primary" size="small">
       <Facebook fill="black" /> Like me!
     </Button>
   </Story>
@@ -165,9 +160,10 @@ import { Button } from '@marigold/components';
 <Canvas>
   <Story name="custom">
     <Button
-      variant="primary.small"
+      variant="secondary"
+      size="small"
       className={useStyles({
-        bg: '#3b5998',
+        css: { bg: '#3b5998' },
       })}
     >
       <Facebook /> Like me!
