@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useThemeSwitch } from './ThemeSwitch';
-import { Box, SelectProps } from '@marigold/components';
+import { Box } from '@marigold/components';
 
-export const ThemeSelect: React.FC<SelectProps> = () => {
+export const ThemeSelect = () => {
   const { current, themes, setTheme } = useThemeSwitch();
 
   return (

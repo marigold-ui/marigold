@@ -27,3 +27,5 @@ export * from './Textarea';
 export * from './Input';
 export * from './Container';
 export * from './ValidationMessage';
+
+export { Item } from '@react-stately/collections';

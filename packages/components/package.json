@@ -9,7 +9,17 @@
   "dependencies": {
     "@marigold/system": "workspace:*",
     "@react-aria/button": "^3.3.2",
+    "@react-aria/focus": "^3.4.0",
     "@react-aria/link": "^3.1.3",
+    "@react-aria/listbox": "^3.3.0",
+    "@react-aria/overlays": "^3.7.1",
+    "@react-aria/select": "^3.4.0",
+    "@react-aria/utils": "^3.8.1",
+    "@react-stately/collections": "^3.3.2",
+    "@react-stately/list": "^3.2.3",
+    "@react-stately/overlays": "^3.1.2",
+    "@react-stately/select": "^3.1.2",
+    "@react-types/shared": "^3.7.1",
     "react-keyed-flatten-children": "1.3.0"
   },
   "peerDependencies": {
@@ -17,7 +27,8 @@
     "react-dom": "^16.x || ^17.0.0"
   },
   "devDependencies": {
-    "@marigold/types": "workspace:*"
+    "@marigold/types": "workspace:*",
+    "@testing-library/user-event": "^13.2.0"
   },
   "scripts": {
     "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly",
