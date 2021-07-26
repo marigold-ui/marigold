@@ -153,6 +153,7 @@ const selectOption = {
   cursor: 'pointer',
   color: 'text',
   px: 'xsmall',
+  listStyle: 'none',
 };
 
 const theme: BaseTheme = {
