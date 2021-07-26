@@ -12,7 +12,7 @@
     "@types/react": "^17.x"
   },
   "devDependencies": {
-    "@types/react": "17.0.14"
+    "@types/react": "17.0.15"
   },
   "scripts": {
     "build": "echo types only",
