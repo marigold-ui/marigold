@@ -1,110 +1,157 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { ThemeProvider } from '@marigold/system';
+
 import { Stack } from './Stack';
 import { Text } from '../Text';
 
-test('supports default space prop', () => {
-  render(
-    <Stack title="stack">
-      <Text>stack</Text>
-    </Stack>
-  );
-  const stack = screen.getByTitle(/stack/);
+// Setup
+// ---------------
+const theme = {
+  space: {
+    none: 0,
+    small: 2,
+    medium: 4,
+    large: 8,
+  },
+};
 
-  expect(stack).toHaveStyle(`padding: 0px`);
+test('default space is "none"', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Stack>
+        <Text>first</Text>
+        <Text>second</Text>
+      </Stack>
+    </ThemeProvider>
+  );
+  const first = screen.getByText(/first/);
+  const second = screen.getByText(/second/);
+
+  expect(first).toHaveStyle(`padding-top: 0px`);
+  expect(second).toHaveStyle(`padding-top: 0px`);
 });
 
-test('supports custom space prop', () => {
+test('accepts and uses spacing from theme', () => {
   render(
-    <Stack space={2} title="stack">
-      <Text>stack</Text>
-    </Stack>
+    <ThemeProvider theme={theme}>
+      <Stack space="small">
+        <Text>first</Text>
+        <Text>second</Text>
+      </Stack>
+    </ThemeProvider>
   );
-  const stack = screen.getByTitle(/stack/);
+  const first = screen.getByText(/first/);
+  const second = screen.getByText(/second/);
 
-  expect(stack).toHaveStyle(`padding: 8px`);
+  expect(first).toHaveStyle(`padding-top: 0px`);
+  expect(second).toHaveStyle(`padding-top: 2px`);
 });
 
-test('supports default prop align: left', () => {
-  render(<Stack title="stack">stack</Stack>);
-  const stack = screen.getByText(/stack/);
+test('aligns children left by default', () => {
+  render(
+    <Stack>
+      <Text>first</Text>
+    </Stack>
+  );
+  const stack = screen.getByText(/first/).parentElement;
 
   expect(stack).toHaveStyle(`align-items: flex-start`);
 });
 
-test('supports custom prop align: center', () => {
+test('allows to aligns children to the center', () => {
   render(
-    <Stack align="center" title="stack">
-      stack
+    <Stack align="center">
+      <Text>first</Text>
     </Stack>
   );
-  const stack = screen.getByText(/stack/);
+  const stack = screen.getByText(/first/).parentElement;
 
   expect(stack).toHaveStyle(`align-items: center`);
 });
 
-test('supports custom prop align: right', () => {
+test('allows to aligns children to the right', () => {
   render(
-    <Stack align="right" title="stack">
-      stack
+    <Stack align="right">
+      <Text>first</Text>
     </Stack>
   );
-  const stack = screen.getByText(/stack/);
+  const stack = screen.getByText(/first/).parentElement;
 
   expect(stack).toHaveStyle(`align-items: flex-end`);
 });
 
-test('supports two children', () => {
+test('supports nesting', () => {
   render(
-    <Stack title="stack">
-      <Text>stackText</Text>
-      <Text>secondStackText</Text>
-    </Stack>
-  );
-  const stack = screen.getByTitle(/stack/);
-  const stackText = screen.getByText(/stackText/);
-  const secondStackText = screen.getByText(/secondStackText/);
-
-  expect(stack).toBeDefined();
-  expect(stackText).toBeDefined();
-  expect(secondStackText).toBeDefined();
-});
-
-test('supports nested children', () => {
-  render(
-    <Stack title="stack">
-      <Stack title="nested">
-        <Text>text</Text>
+    <ThemeProvider theme={theme}>
+      <Stack space="large">
+        <Stack space="small">
+          <Text>first</Text>
+          <Text>second</Text>
+        </Stack>
+        <Stack space="small">
+          <Text>third</Text>
+          <Text>fourth</Text>
+        </Stack>
       </Stack>
-    </Stack>
+    </ThemeProvider>
   );
-  const stack = screen.getByTitle(/stack/);
-  const nested = screen.getByTitle(/nested/);
-  const text = screen.getByText(/text/);
+  const first = screen.getByText(/first/);
+  const second = screen.getByText(/second/);
+  const upperStack = first.parentElement;
 
-  expect(stack).toBeDefined();
-  expect(nested).toBeDefined();
-  expect(text).toBeDefined();
+  const third = screen.getByText(/third/);
+  const fourth = screen.getByText(/fourth/);
+  const lowerStack = third.parentElement;
+
+  expect(upperStack).toHaveStyle(`padding-top: 0px`);
+  expect(lowerStack).toHaveStyle(`padding-top: 8px`);
+
+  expect(first).toHaveStyle(`padding-top: 0px`);
+  expect(second).toHaveStyle(`padding-top: 2px`);
+
+  expect(third).toHaveStyle(`padding-top: 0px`);
+  expect(fourth).toHaveStyle(`padding-top: 2px`);
 });
 
-test('renders correct HTML element', () => {
+test('renders as div per default', () => {
   render(
-    <Stack title="stack">
-      <Text>sdf</Text>
-    </Stack>
+    <ThemeProvider theme={theme}>
+      <Stack>
+        <Text>first</Text>
+        <Text>second</Text>
+      </Stack>
+    </ThemeProvider>
   );
-  const stack = screen.getByTitle(/stack/);
 
+  const stack = screen.getByText(/first/).parentElement;
   expect(stack instanceof HTMLDivElement).toBeTruthy();
 });
 
-test('accepts custom styles prop className', () => {
+test('can render as <ul>', () => {
   render(
-    <Stack className="custom-class-name" title="stack">
-      <Text>text</Text>
-    </Stack>
+    <ThemeProvider theme={theme}>
+      <Stack as="ul">
+        <li>first</li>
+        <li>second</li>
+      </Stack>
+    </ThemeProvider>
   );
-  const stack = screen.getByTitle(/stack/);
 
-  expect(stack.className).toMatch('custom-class-name');
+  const stack = screen.getByText(/first/).parentElement;
+  expect(stack instanceof HTMLUListElement).toBeTruthy();
+});
+
+test('can render as <ol>', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Stack as="ol">
+        <li>first</li>
+        <li>second</li>
+      </Stack>
+    </ThemeProvider>
+  );
+
+  const stack = screen.getByText(/first/).parentElement;
+  expect(stack instanceof HTMLOListElement).toBeTruthy();
 });

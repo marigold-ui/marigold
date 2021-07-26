@@ -20,7 +20,7 @@ export const Layout: React.FC = ({ children }) => {
       </Helmet>
       <Columns space={8}>
         <Column width={2}>
-          <Stack space={16}>
+          <Stack space="small">
             <Link to="/">
               <Logo />
             </Link>
