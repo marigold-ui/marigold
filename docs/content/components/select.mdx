@@ -41,6 +41,8 @@ import { Item } from '@marigold/components';
 
 ## Usage
 
+### Standard Select
+
 ```tsx
 <Select label="Favorite Color" placeholder="Choose a color">
   <Item>Red</Item>
@@ -52,8 +54,28 @@ import { Item } from '@marigold/components';
 </Select>
 ```
 
+### Disabeld Select
+
 ```tsx
 <Select label="Disabled Select:" disabled placeholder="disabled Select">
   <Item>disabled Item</Item>
+</Select>
+```
+
+### Required label Select
+
+```tsx
+<Select required label="required Select">
+  <Item>Option 1</Item>
+  <Item>Option 2</Item>
+</Select>
+```
+
+### Error Select
+
+```tsx
+<Select error="Please choose one option!" label="error Select">
+  <Item>Option 1</Item>
+  <Item>Option 2</Item>
 </Select>
 ```
