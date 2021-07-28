@@ -1,6 +1,20 @@
 import { BaseTheme } from '@marigold/components';
 import { colors } from './colors';
 
+const selectButton = {
+  appearance: 'none',
+  position: 'relative',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  overflow: 'hidden',
+  outline: 'none',
+  width: '100%',
+  lineHeight: '32px',
+  px: 'xsmall',
+  color: 'inherit',
+  bg: 'transparent',
+};
 const button = {
   root: {
     position: 'relative',
@@ -84,6 +98,33 @@ const button = {
       cursor: 'not-allowed',
     },
   },
+  select: {
+    ...selectButton,
+    border: '1px solid',
+    borderColor: colors.gray40,
+    ':hover': {
+      cursor: 'pointer',
+    },
+    ':focus': {
+      border: '2px solid',
+      borderColor: colors.blue60,
+    },
+    ':disabled': {
+      bg: colors.gray20,
+      color: 'disabled',
+      cursor: 'not-allowed',
+    },
+    open: {
+      ...selectButton,
+      borderTop: '1px solid',
+      borderRight: '1px solid',
+      borderLeft: '1px solid',
+      borderBottom: 'none',
+      borderColor: colors.gray40,
+      borderTopRightRadius: '2px',
+      borderTopLeftRadius: '2px',
+    },
+  },
 };
 const text = {
   root: {
@@ -102,6 +143,17 @@ const text = {
       marginBottom: 'small',
     },
   },
+};
+const selectOption = {
+  fontFamily: 'body',
+  fontSize: 'xsmall',
+  fontWeight: 'body',
+  lineHeight: '32px',
+  outline: 'none',
+  cursor: 'pointer',
+  color: 'text',
+  px: 'xsmall',
+  listStyle: 'none',
 };
 
 const theme: BaseTheme = {
@@ -143,7 +195,7 @@ const theme: BaseTheme = {
     background: colors.gray10,
     primary: colors.orange60,
     secondary: colors.gray70,
-    disabled: colors.gray30,
+    disabled: colors.gray40,
     error: colors.red60,
     warning: colors.orange60,
     info: colors.blue70,
@@ -208,6 +260,10 @@ const theme: BaseTheme = {
     menu: {
       ...button.root,
       ...button.menu,
+    },
+    select: {
+      ...button.root,
+      ...button.select,
     },
   },
   checkbox: {
@@ -291,6 +347,20 @@ const theme: BaseTheme = {
       lineHeight: '1.5rem',
       color: 'text',
     },
+    above: {
+      fontFamily: 'body',
+      fontSize: 'xxsmall',
+      fontWeight: 'body',
+      lineHeight: 'body',
+      color: 'text',
+    },
+    disabled: {
+      fontFamily: 'body',
+      fontSize: 'xxsmall',
+      fontWeight: 'body',
+      lineHeight: 'body',
+      color: colors.gray30,
+    },
   },
   link: {
     normal: {
@@ -343,33 +413,6 @@ const theme: BaseTheme = {
     },
     title: {
       mb: '8px',
-    },
-  },
-  select: {
-    default: {
-      display: 'block',
-      width: '100%',
-      padding: 'small',
-      appearance: 'none',
-      fontSize: 'inherit',
-      lineHeight: 'inherit',
-      border: '1px solid',
-      borderColor: colors.gray30,
-      borderRadius: '2px',
-      color: 'inherit',
-      bg: 'transparent',
-      ':hover': {
-        cursor: 'pointer',
-      },
-      ':focus': {
-        border: '2px solid',
-        borderColor: colors.blue60,
-      },
-      ':disabled': {
-        bg: colors.gray10,
-        color: 'disabled',
-        cursor: 'not-allowed',
-      },
     },
   },
   text: {
@@ -434,6 +477,49 @@ const theme: BaseTheme = {
       ':disabled': {
         bg: colors.gray20,
         color: colors.gray40,
+      },
+    },
+  },
+  select: {
+    __default: {
+      fontFamily: 'body',
+      fontSize: 'xsmall',
+      fontWeight: 400,
+      lineHeight: '32px',
+      color: 'text',
+    },
+    disabled: {
+      fontFamily: 'body',
+      fontSize: 'xsmall',
+      fontWeight: 400,
+      lineHeight: '32px',
+      color: 'disabled',
+      cursor: 'not-allowed',
+    },
+    listbox: {
+      __default: {
+        background: colors.gray00,
+        borderTop: 'none',
+        borderRight: '1px solid',
+        borderLeft: '1px solid',
+        borderBottom: '1px solid',
+        borderBottomRightRadius: '2px',
+        borderBottomLeftRadius: '2px',
+        borderColor: colors.gray40,
+        outline: 'none',
+      },
+    },
+    option: {
+      __default: {
+        ...selectOption,
+        ':focus': {
+          bg: colors.blue20,
+        },
+      },
+      selected: {
+        ...selectOption,
+        color: colors.gray00,
+        bg: colors.blue60,
       },
     },
   },

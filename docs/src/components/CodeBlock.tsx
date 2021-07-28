@@ -42,7 +42,6 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
       position: 'relative',
       py: 'large',
       px: 'small',
-      overflow: 'auto',
     },
   });
   const codeBoxStyles = useStyles({
@@ -52,7 +51,6 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
       margin: 0,
       py: 'large',
       px: 'small',
-      overflow: 'auto',
     },
   });
 
