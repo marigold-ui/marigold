@@ -12,9 +12,9 @@ import { Box } from '../Box';
 
 interface PopoverProps {
   isOpen?: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   ref?: React.Ref<HTMLDivElement>;
-  className: string;
+  className?: string;
 }
 
 export const Popover: React.FC<PopoverProps> = forwardRef(
