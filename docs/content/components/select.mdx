@@ -10,11 +10,13 @@ Dropdown for selecting an item among different options.
 
 ## Properties
 
-| Property                 | Type      | Default |
-| :----------------------- | :-------- | :------ |
-| `label` (optional)       | `string`  |         |
-| `placeholder` (optional) | `string`  |         |
-| `disabled` (optional)    | `boolean` |         |
+| Property                  | Type              | Default |
+| :------------------------ | :---------------- | :------ |
+| `label` (optional)        | `string`          |         |
+| `placeholder` (optional)  | `string`          |         |
+| `disabled` (optional)     | `boolean`         |         |
+| `selectedItem` (optional) | `string`          |         |
+| `disabledKeys` (optional) | `array['string']` |         |
 
 ## Import
 
@@ -52,8 +54,34 @@ import { Item } from '@marigold/components';
 </Select>
 ```
 
+### Default selectedItem
+
+```tsx
+<Select label="Favorite Color" htmlFor="id" selectedItem="Red">
+  <Item key="Red">Red</Item>
+  <Item key="Orange">Orange</Item>
+  <Item key="Yellow">Yellow</Item>
+  <Item key="Green">Green</Item>
+  <Item key="Blue">Blue</Item>
+  <Item key="Purple">Purple</Item>
+</Select>
+```
+
 ```tsx
 <Select label="Disabled Select:" disabled placeholder="disabled Select">
   <Item>disabled Item</Item>
+</Select>
+```
+
+### Disabled Item
+
+```tsx
+<Select label="Favorite Color" htmlFor="id" disabledKeys={['Orange', 'Yellow']}>
+  <Item key="Red">Red</Item>
+  <Item key="Orange">Orange</Item>
+  <Item key="Yellow">Yellow</Item>
+  <Item key="Green">Green</Item>
+  <Item key="Blue">Blue</Item>
+  <Item key="Purple">Purple</Item>
 </Select>
 ```

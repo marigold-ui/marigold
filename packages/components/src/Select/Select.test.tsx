@@ -181,3 +181,35 @@ test('allow users to dismiss the popup with hidden dismiss button', () => {
   fireEvent.click(dismissButton);
   expect(selectButton).toHaveAttribute('aria-expanded', 'false');
 });
+
+test('supports default selectedItem prop', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Select label="MyLabel" data-testid="selectId" selectedItem="Red">
+        <Item key="Red">Red</Item>
+        <Item key="Orange">Orange</Item>
+      </Select>
+    </MarigoldProvider>
+  );
+  const button = screen.getByTestId('selectId');
+  expect(button).toHaveTextContent('Red');
+});
+
+test('supports change default selectedItem', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Select label="MyLabel" data-testid="selectId" selectedItem="Red">
+        <Item key="Red">Red</Item>
+        <Item key="Orange">Orange</Item>
+      </Select>
+    </MarigoldProvider>
+  );
+  const button = screen.getByTestId('selectId');
+  expect(button).toHaveTextContent('Red');
+
+  fireEvent.click(button);
+  const items = screen.getAllByText(/Red/);
+  fireEvent.click(items[1]);
+
+  expect(button).toHaveTextContent('Red');
+});

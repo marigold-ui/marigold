@@ -521,6 +521,10 @@ const theme: BaseTheme = {
         color: colors.gray00,
         bg: colors.blue60,
       },
+      disabled: {
+        ...selectOption,
+        color: colors.gray40,
+      },
     },
   },
   validation: {

@@ -15,6 +15,31 @@ import { Item } from '@marigold/components';
 </Canvas>
 
 <Canvas>
+  <Story name="selectedItem">
+    <Select label="Favorite Color" htmlFor="id" selectedItem="Red">
+      <Item key="Red">Red</Item>
+      <Item key="Orange">Orange</Item>
+      <Item key="Yellow">Yellow</Item>
+    </Select>
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story name="disabledKeys">
+    <Select
+      label="Favorite Color"
+      htmlFor="id"
+      disabledKeys={['Orange', 'Yellow']}
+    >
+      <Item key="Red">Red</Item>
+      <Item key="Blue">Blue</Item>
+      <Item key="Orange">Orange</Item>
+      <Item key="Yellow">Yellow</Item>
+    </Select>
+  </Story>
+</Canvas>
+
+<Canvas>
   <Story name="placeholderSelect">
     <Select label="Favorite Color" htmlFor="id" placeholder="MyLabel">
       <Item>Red</Item>

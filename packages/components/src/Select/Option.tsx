@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { ListState } from '@react-stately/list';
 import type { Node } from '@react-types/shared';
 import { useOption } from '@react-aria/listbox';
@@ -12,6 +12,7 @@ interface OptionProps {
 
 export const Option = ({ item, state }: OptionProps) => {
   const ref = useRef<HTMLLIElement>(null);
+  const [disabled, setDisabled] = useState(false);
   const { optionProps, isSelected } = useOption(
     {
       key: item.key,
@@ -20,12 +21,26 @@ export const Option = ({ item, state }: OptionProps) => {
     ref
   );
 
+  useEffect(() => {
+    for (const key of state.disabledKeys.values()) {
+      if (key === item.key) {
+        setDisabled(true);
+      }
+    }
+  }, [state.disabledKeys, item.key]);
+
   return (
     <Box
       as="li"
       {...optionProps}
       ref={ref}
-      variant={isSelected ? 'select.option.selected' : 'select.option'}
+      variant={
+        isSelected
+          ? 'select.option.selected'
+          : disabled
+          ? 'select.option.disabled'
+          : 'select.option'
+      }
     >
       {item.rendered}
     </Box>
