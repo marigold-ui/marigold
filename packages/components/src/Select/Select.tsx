@@ -96,7 +96,7 @@ export const Select = ({
         triggerRef={triggerRef}
         label={props.label}
         name={props.name}
-        isDisabled={true}
+        isDisabled={disabled}
       />
       <Box
         as="button"

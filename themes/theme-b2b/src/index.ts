@@ -443,45 +443,37 @@ const theme: BaseTheme = {
       ...text.root,
       fontWeight: 'heading',
       fontSize: 'xlarge',
-      marginBottom: 'medium',
-      '&:first-child': {
-        marginTop: 'none',
-      },
+      m: 'none',
     },
     h2: {
       ...text.root,
       fontWeight: 'heading',
       fontSize: 'large',
-      marginTop: 'large',
-      marginBottom: 'xsmall',
-      '&:first-child': {
-        marginTop: 'none',
-      },
+      m: 'none',
     },
     h3: {
       ...text.root,
       fontWeight: 'heading',
       fontSize: 'medium',
-      marginTop: 'small',
-      marginBottom: 'xsmall',
-      '&:first-child': {
-        marginTop: 'none',
-      },
+      m: 'none',
     },
     h4: {
       ...text.root,
       fontWeight: 'heading',
       fontSize: 'small',
+      m: 'none',
     },
     h5: {
       ...text.root,
       fontWeight: 'heading',
       fontSize: 'xsmall',
+      m: 'none',
     },
     h6: {
       ...text.root,
       fontSize: 'xsmall',
       textTransform: 'uppercase',
+      m: 'none',
     },
   },
   textarea: {
