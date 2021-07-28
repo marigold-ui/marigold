@@ -29,7 +29,7 @@ export type SelectProps = {
 export const Select = ({
   placeholder = 'Select an option',
   disabled,
-  required = false,
+  required,
   error,
   className,
   ...props
