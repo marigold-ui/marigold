@@ -2,7 +2,7 @@ import React from 'react';
 import { GatsbyBrowser } from 'gatsby';
 import { MDXProvider } from '@mdx-js/react';
 
-import { MarigoldProvider } from '@marigold/system';
+import { MarigoldProvider } from '@marigold/components';
 import { theme } from './theme';
 
 import { Layout } from './components/Layout';
