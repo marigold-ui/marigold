@@ -2,9 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { MarigoldProvider } from '@marigold/system';
-import { Item } from '@marigold/components';
-
+import { Item, MarigoldProvider } from '..';
 import { Select } from './Select';
 
 const theme = {
