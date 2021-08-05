@@ -30,7 +30,7 @@ jobs:
       run: cd docs && yarn clean
     
     - name: Build
-      run: yarn build --prefix-paths
+      run: cd docs && yarn build --prefix-paths; echo \"marigold-ui.io\" > public/CNAME
 
     - name: Change to docs, Build and Deploy
       uses: peaceiris/actions-gh-pages@v3
