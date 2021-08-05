@@ -1,5 +1,5 @@
 module.exports = {
-  pathPrefix: '/',
+  pathPrefix: '/marigold/',
   siteMetadata: {
     title: 'Docs for Marigold Design System',
     siteUrl: 'https://marigold-ui.github.io/marigold/',
