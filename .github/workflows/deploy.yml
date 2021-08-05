@@ -25,9 +25,12 @@ jobs:
     - name: Install Dependencies
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn
+
+    - name: Clean
+      run: cd docs && gatsby clean
     
     - name: Build
-      run: cd docs && yarn build --prefix-paths
+      run: yarn build --prefix-paths
 
     - name: Change to docs, Build and Deploy
       uses: peaceiris/actions-gh-pages@v3
