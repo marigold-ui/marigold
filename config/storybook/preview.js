@@ -2,7 +2,7 @@ import { addDecorator, addParameters } from '@storybook/react';
 import { withThemes } from 'storybook-addon-themes/react';
 
 import React from 'react';
-import { MarigoldProvider } from '@marigold/system';
+import { MarigoldProvider } from '@marigold/components';
 import b2bTheme from '@marigold/theme-b2b';
 import unicornTheme from '@marigold/theme-unicorn';
 
