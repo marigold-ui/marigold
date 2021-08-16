@@ -1,9 +1,9 @@
 import React from 'react';
+import { useTheme } from '@marigold/system';
 import { render, screen } from '@testing-library/react';
 import { useModal } from '@react-aria/overlays';
 
 import { MarigoldProvider } from './MarigoldProvider';
-import { useTheme } from './useTheme';
 
 // Setup
 // ---------------
