@@ -5624,7 +5624,7 @@ __metadata:
     eslint-config-prettier: ^8.3.0
     eslint-config-react-app: 6.0.0
     eslint-plugin-flowtype: ^5.7.2
-    eslint-plugin-import: 2.23.4
+    eslint-plugin-import: 2.24.0
     eslint-plugin-jest: 24.4.0
     eslint-plugin-jsx-a11y: 6.4.1
     eslint-plugin-prettier: 3.4.0
@@ -5745,7 +5745,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@marigold/types@workspace:packages/types"
   dependencies:
-    "@types/react": 17.0.15
+    "@types/react": 17.0.18
   peerDependencies:
     "@types/react": ^17.x
   languageName: unknown
@@ -7812,6 +7812,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/buble@npm:^0.20.0":
+  version: 0.20.1
+  resolution: "@types/buble@npm:0.20.1"
+  dependencies:
+    magic-string: ^0.25.0
+  checksum: 45a68bbe4d161568678da706d3db25e06f08c12dd911f9af6f685a4033e3e7cc4bb0118c2cba39226c7dc64a5336ba4e8b19134d700e82a7c88350d7f3120177
+  languageName: node
+  linkType: hard
+
 "@types/cacheable-request@npm:^6.0.1":
   version: 6.0.1
   resolution: "@types/cacheable-request@npm:6.0.1"
@@ -8208,10 +8217,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:14.17.7":
-  version: 14.17.7
-  resolution: "@types/node@npm:14.17.7"
-  checksum: e95f28361784106237380ebd4ed133bc9d6aa04694bd061bd913d9008ce88bd596b059464fa56cf534c0cb347a3a9753b8abdf7c85d24a77126bf0ad24c6fdf9
+"@types/node@npm:14.17.9":
+  version: 14.17.9
+  resolution: "@types/node@npm:14.17.9"
+  checksum: e59b92e4346ed0db61e042d439f9658d1d3e8ad1d14825b714804cafae8ce22220ff6c8d907c4e4c6384aac748de07283fa321ef13cb8bdeb460eb789d634244
   languageName: node
   linkType: hard
 
@@ -8395,14 +8404,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:17.0.15":
-  version: 17.0.15
-  resolution: "@types/react@npm:17.0.15"
+"@types/react@npm:17.0.18":
+  version: 17.0.18
+  resolution: "@types/react@npm:17.0.18"
   dependencies:
     "@types/prop-types": "*"
     "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: 4ee41e0c8d0e938f501f80ac75a5ee70b5e8cd5968a1f764960bf7b2694fd0d8ca01345f00325617130643b4af6e072bb3ade023dbc2bd2db7e73504b355b8d9
+  checksum: 0b3d5fe0466b57c5539169671e29c4bdad2e2cf5b3eea25d443845d0153b2ddfbe0ef6d017f2f0a7ae49732d6fd14db189f9578ba0629790b896abe3a3ee44f3
   languageName: node
   linkType: hard
 
@@ -12647,17 +12656,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^2.4.1":
-  version: 2.6.12
-  resolution: "core-js@npm:2.6.12"
-  checksum: 44fa9934a85f8c78d61e0c8b7b22436330471ffe59ec5076fe7f324d6e8cf7f824b14b1c81ca73608b13bdb0fef035bd820989bf059767ad6fa13123bb8bd016
-  languageName: node
-  linkType: hard
-
 "core-js@npm:^3.0.1, core-js@npm:^3.0.4, core-js@npm:^3.6.4, core-js@npm:^3.6.5":
   version: 3.8.3
   resolution: "core-js@npm:3.8.3"
   checksum: 6b5225d81658e7e555fd14a749f2b8e0a817a9eb1c25ef1b46b28bbb9956d0ea4b8cd34f8752161e131fc8fa02d26cf6afb9fb73a41591e40261482b4ffc6f03
+  languageName: node
+  linkType: hard
+
+"core-js@npm:^3.14.0":
+  version: 3.16.1
+  resolution: "core-js@npm:3.16.1"
+  checksum: 7924fa2a7f00e3a33bbe92fe42ba59fbbe7e01557a59824d000976300be3ba224cca20161f61654b3861ea80d244d6adfee6ed3ae6d6d9931210a37510fb7c9b
   languageName: node
   linkType: hard
 
@@ -13922,7 +13931,7 @@ __metadata:
     "@mdx-js/mdx": 1.6.22
     "@mdx-js/react": 1.6.22
     "@types/mdx-js__react": 1.5.4
-    "@types/react": 17.0.15
+    "@types/react": 17.0.18
     "@types/react-helmet": 6.1.2
     babel-preset-gatsby: 1.9.0
     gatsby: 3.9.1
@@ -13943,7 +13952,7 @@ __metadata:
     react: 17.0.2
     react-dom: 17.0.2
     react-helmet: 6.1.0
-    react-live: 2.2.3
+    react-live: 2.3.0
     tsconfig-paths-webpack-plugin: 3.5.1
   languageName: unknown
   linkType: soft
@@ -14957,6 +14966,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-import-resolver-node@npm:^0.3.5":
+  version: 0.3.5
+  resolution: "eslint-import-resolver-node@npm:0.3.5"
+  dependencies:
+    debug: ^3.2.7
+    resolve: ^1.20.0
+  checksum: 93a8176205f18c40d2c11c444fab89aa3990c5a5eed226ef03a893b5779e7cd4d1f5f52b2bbbbbe4b13fb2a75ef629278be0b52099480cbe6e7024888d9982dd
+  languageName: node
+  linkType: hard
+
 "eslint-module-utils@npm:^2.6.0":
   version: 2.6.0
   resolution: "eslint-module-utils@npm:2.6.0"
@@ -14967,13 +14986,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-module-utils@npm:^2.6.1":
-  version: 2.6.1
-  resolution: "eslint-module-utils@npm:2.6.1"
+"eslint-module-utils@npm:^2.6.2":
+  version: 2.6.2
+  resolution: "eslint-module-utils@npm:2.6.2"
   dependencies:
     debug: ^3.2.7
     pkg-dir: ^2.0.0
-  checksum: 3cc43a36a0075d300db6a3946203ec92249b6da1539694ef205a43b4ccfbc2eaf4961475d4b89c24b12c187d6bfd882c7c7d0b2ce02adb40c2dedb7fd022a7e2
+  checksum: 814591f494e4f4b04c1af0fde2a679e7a7664a5feb51175e02ba96d671e34ec60cb1835d174508eb81c07a6c92c243f84c6349f4169b3bec1a8dbdd36a0934f3
   languageName: node
   linkType: hard
 
@@ -15026,16 +15045,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import@npm:2.23.4":
-  version: 2.23.4
-  resolution: "eslint-plugin-import@npm:2.23.4"
+"eslint-plugin-import@npm:2.24.0":
+  version: 2.24.0
+  resolution: "eslint-plugin-import@npm:2.24.0"
   dependencies:
     array-includes: ^3.1.3
     array.prototype.flat: ^1.2.4
     debug: ^2.6.9
     doctrine: ^2.1.0
-    eslint-import-resolver-node: ^0.3.4
-    eslint-module-utils: ^2.6.1
+    eslint-import-resolver-node: ^0.3.5
+    eslint-module-utils: ^2.6.2
     find-up: ^2.0.0
     has: ^1.0.3
     is-core-module: ^2.4.0
@@ -15047,7 +15066,7 @@ __metadata:
     tsconfig-paths: ^3.9.0
   peerDependencies:
     eslint: ^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0
-  checksum: 8c64bb96fa35607de3da1ddf5d127a5913aebde5677bc276c55fecb3e539a7287569dc697af4f5c523bd2b08bff8f5b525448df5aa7d6256c86436b615be5abc
+  checksum: 79fb1094197cd1dc720725bd29e5c5fe7d123fd9dd31eb182849993a81a8c18e2bfbc4d267a2caabe02bd4d21aafb1eca1da2f55aca7e5df99fd8ba908e7b869
   languageName: node
   linkType: hard
 
@@ -22339,7 +22358,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^0.25.1, magic-string@npm:^0.25.2, magic-string@npm:^0.25.7":
+"magic-string@npm:^0.25.0, magic-string@npm:^0.25.1, magic-string@npm:^0.25.2, magic-string@npm:^0.25.7":
   version: 0.25.7
   resolution: "magic-string@npm:0.25.7"
   dependencies:
@@ -22452,7 +22471,7 @@ fsevents@^1.2.7:
     "@testing-library/jest-dom": 5.14.1
     "@testing-library/react": 12.0.0
     "@testing-library/react-hooks": 7.0.1
-    "@types/node": 14.17.7
+    "@types/node": 14.17.9
     eslint: 7.32.0
     husky: 7.0.1
     jest: 27.0.6
@@ -25841,21 +25860,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prism-react-renderer@npm:1.2.1":
+"prism-react-renderer@npm:1.2.1, prism-react-renderer@npm:^1.2.1":
   version: 1.2.1
   resolution: "prism-react-renderer@npm:1.2.1"
   peerDependencies:
     react: ">=0.14.9"
   checksum: 66cab3d9f9f18ff5db222df74e1f326262ad093202f855ef2bd9e8001fef21b92f2242a2292caa77c36a517a7f379620417b421eaa320405deb6ecb27c18ee5e
-  languageName: node
-  linkType: hard
-
-"prism-react-renderer@npm:^1.0.1":
-  version: 1.2.0
-  resolution: "prism-react-renderer@npm:1.2.0"
-  peerDependencies:
-    react: ">=0.14.9"
-  checksum: 2b15bd04f774c23053eb47b89ba4340ce5fcd75e3fd701a9c03afd91b2f8d4974eb32b7bd164487fc431281e2ef104690d178361ebb489500ed45d8666a2ad6b
   languageName: node
   linkType: hard
 
@@ -25974,7 +25984,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.5.10, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+"prop-types@npm:^15.5.10, prop-types@npm:^15.6.0, prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
   version: 15.7.2
   resolution: "prop-types@npm:15.7.2"
   dependencies:
@@ -26538,18 +26548,19 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-live@npm:2.2.3":
-  version: 2.2.3
-  resolution: "react-live@npm:2.2.3"
+"react-live@npm:2.3.0":
+  version: 2.3.0
+  resolution: "react-live@npm:2.3.0"
   dependencies:
+    "@types/buble": ^0.20.0
     buble: 0.19.6
-    core-js: ^2.4.1
+    core-js: ^3.14.0
     dom-iterator: ^1.0.0
-    prism-react-renderer: ^1.0.1
-    prop-types: ^15.5.8
-    react-simple-code-editor: ^0.10.0
+    prism-react-renderer: ^1.2.1
+    prop-types: ^15.7.2
+    react-simple-code-editor: ^0.11.0
     unescape: ^1.0.1
-  checksum: 2fbba62ac0647e18be7664a8e483d7bfede8c206e173e36042ff5dadbfd0359ae7d54d479dc1c25631cf531f99c03932749311ee6fd2a9d417ec18e5d63e6ec9
+  checksum: c390df78312e5264692b0ac8f745c64294d433546a60eb5992f19fdc517ac6f726a91b7f726e71a79c24db6d16d8ee8a1e927064bec57b52dae488fe6741a93f
   languageName: node
   linkType: hard
 
@@ -26615,13 +26626,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-simple-code-editor@npm:^0.10.0":
-  version: 0.10.0
-  resolution: "react-simple-code-editor@npm:0.10.0"
+"react-simple-code-editor@npm:^0.11.0":
+  version: 0.11.0
+  resolution: "react-simple-code-editor@npm:0.11.0"
   peerDependencies:
     react: ^16.0.0
     react-dom: ^16.0.0
-  checksum: d9f448c5d1ba1b630ad6d9d775b5fa651ad1144eb5850fed3831b97d9da6da1daced37301c09946ff3a586f1f0f488f314cc81b744a1b60a343f30517c0767e9
+  checksum: 20d9381c77c7a7ef256e2d871e1b0ab95cc0b025b3933467840f6608ce37835f98785d50b6709df7e4daf75889f3c95a0d80b1809f8399b2361ec282a063196b
   languageName: node
   linkType: hard
 
