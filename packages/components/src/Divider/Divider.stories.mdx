@@ -1,43 +1,37 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { ArgsTable, Canvas, Meta, Story, Props } from '@storybook/addon-docs';
 import { Divider } from './Divider';
 import { Text } from '../Text';
 
-<Meta title="Components/Divider" />
+<Meta
+  title="Components/Divider"
+  argTypes={{
+    variant: {
+      control: {
+        type: 'select',
+        options: ['regular', 'bold'],
+      },
+      defaultValue: 'regular',
+      description: 'Thick or thin line',
+      table: {
+        defaultValue: {
+          summary: 'regular',
+        },
+      },
+    },
+  }}
+/>
 
 # Divider
 
-## Description
-
-A divider is a layout or list element to group content or separate elements.
-The themeSection is `divider` and the variant can be added with the variant prop which is `regular` per default.
-
-## Properties
-
-| Property             | Type     | Default   |
-| :------------------- | :------- | :-------- |
-| `variant` (optional) | `string` | `regular` |
-
-## Import
-
-```tsx
-import { Divider } from '@marigold/components';
-```
-
-## Usage
+export const Template = args => (
+  <div>
+    <Text>Above</Text>
+      <Divider {...args} />
+    <Text>Below</Text>
+  </div>
+);
 
 <Canvas>
-  <Story name="Divider/regular">
-    <div>
-      <Text>Some text</Text>
-      <Divider />
-      <Text>Some other text to show regular divider</Text>
-    </div>
-  </Story>
-  <Story name="Divider/bold">
-    <div>
-      <Text>Some text</Text>
-      <Divider variant="bold" />
-      <Text>Some other text to show strong divider</Text>
-    </div>
-  </Story>
+  <Story name="Regular">{Template.bind({})}</Story>
+  <ArgsTable story="Regular" />
 </Canvas>
