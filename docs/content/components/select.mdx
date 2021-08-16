@@ -17,6 +17,8 @@ Dropdown for selecting an item among different options.
 | `disabled` (optional)     | `boolean`         |         |
 | `selectedItem` (optional) | `string`          |         |
 | `disabledKeys` (optional) | `array['string']` |         |
+| `required` (optional)     | `boolean`         |         |
+| `error` (optional)        | `string`          |         |
 
 ## Import
 
@@ -43,6 +45,8 @@ import { Item } from '@marigold/components';
 
 ## Usage
 
+### Standard Select
+
 ```tsx
 <Select label="Favorite Color" placeholder="Choose a color">
   <Item>Red</Item>
@@ -67,6 +71,8 @@ import { Item } from '@marigold/components';
 </Select>
 ```
 
+### Disabeld Select
+
 ```tsx
 <Select label="Disabled Select:" disabled placeholder="disabled Select">
   <Item>disabled Item</Item>
@@ -83,5 +89,22 @@ import { Item } from '@marigold/components';
   <Item key="Green">Green</Item>
   <Item key="Blue">Blue</Item>
   <Item key="Purple">Purple</Item>
+```
+
+### Required label Select
+
+```tsx
+<Select required label="required Select">
+  <Item>Option 1</Item>
+  <Item>Option 2</Item>
+</Select>
+```
+
+### Error Select
+
+```tsx
+<Select error="Please choose one option!" label="error Select">
+  <Item>Option 1</Item>
+  <Item>Option 2</Item>
 </Select>
 ```

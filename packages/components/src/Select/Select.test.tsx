@@ -2,15 +2,16 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { MarigoldProvider } from '@marigold/system';
-import { Item } from '@marigold/components';
-
+import { Item, MarigoldProvider } from '..';
 import { Select } from './Select';
 
 const theme = {
   button: {
     select: {
       fontFamily: 'Inter',
+      errorOpened: {
+        color: 'red',
+      },
     },
   },
 };
@@ -82,6 +83,32 @@ test('supports placeholder prop', () => {
   expect(button).toHaveTextContent(/placeholder/);
 });
 
+test('supports required prop', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Select label="MyLabel" required data-testid="selectId">
+        <Item>1</Item>
+      </Select>
+    </MarigoldProvider>
+  );
+  const selectLabel = screen.getAllByText(/MyLabel/);
+  expect(selectLabel[0]).toContainHTML('path d="M10.8 3.84003');
+});
+
+test('supports error prop', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Select label="MyLabel" error="error" data-testid="selectId">
+        <Item>1</Item>
+      </Select>
+    </MarigoldProvider>
+  );
+  const selectLabel = screen.getAllByText(/MyLabel/);
+  expect(selectLabel[0]).toContainHTML('path d="M10.8 3.84003');
+  const validationMessage = screen.getAllByText(/error/);
+  expect(validationMessage).toBeDefined();
+});
+
 test('option list opens when element is clicked', () => {
   render(
     <MarigoldProvider theme={theme}>
@@ -99,6 +126,25 @@ test('option list opens when element is clicked', () => {
   const items = screen.getByRole('listbox');
   expect(items).toBeVisible();
   expect(button).toHaveAttribute('aria-expanded', 'true');
+});
+
+test('option list opens when element is clicked and theres an error', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Select label="MyLabel" error="error" data-testid="selectId">
+        <Item>Red</Item>
+      </Select>
+    </MarigoldProvider>
+  );
+  const button = screen.getByTestId('selectId');
+  expect(button).toHaveAttribute('aria-expanded', 'false');
+
+  fireEvent.click(button);
+
+  const items = screen.getByRole('listbox');
+  expect(items).toBeVisible();
+  expect(button).toHaveAttribute('aria-expanded', 'true');
+  expect(button).toHaveStyle(`color: red`);
 });
 
 test('supports click and select an option', () => {

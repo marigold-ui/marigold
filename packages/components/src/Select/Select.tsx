@@ -9,11 +9,12 @@ import { useOverlayTriggerState } from '@react-stately/overlays';
 import { useOverlayTrigger, useOverlayPosition } from '@react-aria/overlays';
 
 import { ComponentProps } from '@marigold/types';
-import { ArrowDown, ArrowUp } from '@marigold/icons';
+import { ArrowDown, ArrowUp, Exclamation, Required } from '@marigold/icons';
 import { useStyles } from '@marigold/system';
 
 import { Box } from '../Box';
 import { Label } from '../Label';
+import { ValidationMessage } from '../ValidationMessage';
 import { ListBox } from './ListBox';
 import { Popover } from './Popover';
 
@@ -21,6 +22,8 @@ export type SelectProps = {
   placeholder?: string;
   disabled?: boolean;
   selectedItem?: string;
+  required?: boolean;
+  error?: string;
 } & ComponentProps<'select'> &
   AriaSelectProps<object>;
 
@@ -28,6 +31,8 @@ export const Select = ({
   placeholder = 'Select an option',
   disabled,
   selectedItem,
+  required,
+  error,
   className,
   ...props
 }: SelectProps) => {
@@ -41,6 +46,7 @@ export const Select = ({
   const popoverClassName = useStyles({
     css: { width: triggerRef.current && triggerRef.current.offsetWidth + 'px' },
   });
+  const errorClassName = useStyles({ css: { color: 'error' } });
 
   // check if one item ist per default selected
   useEffect(() => {
@@ -88,7 +94,14 @@ export const Select = ({
             htmlFor={labelProps.id}
             variant={disabled ? 'disabled' : 'above'}
           >
-            {props.label}
+            {required || error ? (
+              <Box as="span" display="inline-flex" alignItems="center">
+                {props.label}
+                <Required size={16} className={errorClassName} />
+              </Box>
+            ) : (
+              props.label
+            )}
           </Label>
         </Box>
       )}
@@ -104,7 +117,13 @@ export const Select = ({
         {...mergeProps(buttonProps, focusProps)}
         ref={triggerRef as RefObject<HTMLButtonElement>}
         variant={
-          state.isOpen && !disabled ? 'button.select.open' : 'button.select'
+          error && state.isOpen && !disabled
+            ? 'button.select.errorOpened'
+            : error
+            ? 'button.select.error'
+            : state.isOpen && !disabled
+            ? 'button.select.open'
+            : 'button.select'
         }
         disabled={disabled}
         className={className}
@@ -131,8 +150,14 @@ export const Select = ({
           isOpen={state.isOpen}
           onClose={state.close}
         >
-          <ListBox {...menuProps} state={state} />
+          <ListBox error={error} {...menuProps} state={state} />
         </Popover>
+      )}
+      {error && (
+        <Box as="span" display="inline-flex" alignItems="center">
+          <Exclamation size={16} className={errorClassName} />
+          <ValidationMessage>{error}</ValidationMessage>
+        </Box>
       )}
     </Box>
   );

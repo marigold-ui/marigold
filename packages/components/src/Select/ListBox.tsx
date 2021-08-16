@@ -9,11 +9,12 @@ import { Option } from './Option';
 
 interface ListBoxProps extends AriaListBoxOptions<unknown> {
   state: ListState<unknown>;
+  error?: string;
 }
 
 export const ListBox = (props: ListBoxProps) => {
   const ref = useRef<HTMLUListElement>(null);
-  const { state } = props;
+  const { state, error } = props;
   const { listBoxProps } = useListBox(props, state, ref);
   const listBoxClassName = useStyles({
     element: 'ul',
@@ -23,7 +24,7 @@ export const ListBox = (props: ListBoxProps) => {
     <Box
       as="ul"
       {...listBoxProps}
-      variant="select.listbox"
+      variant={error ? 'select.listbox.error' : 'select.listbox'}
       className={listBoxClassName}
       ref={ref}
     >
