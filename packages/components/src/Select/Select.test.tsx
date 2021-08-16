@@ -259,3 +259,23 @@ test('supports change default selectedItem', () => {
 
   expect(button).toHaveTextContent('Red');
 });
+
+test('supports disabled item prop', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Select label="MyLabel" data-testid="selectId" disabledKeys={['Red']}>
+        <Item key="Red">Red</Item>
+        <Item key="Orange">Orange</Item>
+      </Select>
+    </MarigoldProvider>
+  );
+  const button = screen.getByTestId('selectId');
+  fireEvent.click(button);
+  const redItem = screen.getAllByText(/Red/);
+  fireEvent.click(redItem[1]);
+  expect(button).toHaveTextContent('Select an option');
+
+  const orangeItem = screen.getAllByText(/Orange/);
+  fireEvent.click(orangeItem[1]);
+  expect(button).toHaveTextContent('Orange');
+});
