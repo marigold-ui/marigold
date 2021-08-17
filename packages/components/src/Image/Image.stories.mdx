@@ -1,40 +1,36 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Image } from './Image';
 import image1 from '../../../images/src/type_logo.png';
-import image2 from '../../../images/src/Marigold_Logo_Hotelstyle.png';
 
-<Meta title="Components/Image" />
+<Meta
+  title="Components/Image"
+  argTypes={{
+    variant: {
+      control: {
+        type: 'text',
+      },
+      description: 'there is only one variant',
+      table: {
+        defaultValue: {
+          summary: 'fullWidth',
+        },
+      },
+    },
+    alt: {
+      control: {
+        type: 'text',
+      },
+      description: 'Description text for screenreaders'
+    },
+  }}
+/>
 
 # Image
 
-## Description
-
-With the Image component you can render an `img` element.
-The themeSection is `images` and the variant can be added with the variant prop which is `fullWidth` per default.
-
-## Properties
-
-| Property             | Type     | Default     |
-| :------------------- | :------- | :---------- |
-| `variant` (optional) | `string` | `fullWidth` |
-| `alt` (optional)     | `string` | ``          |
-
-## Import
-
-```tsx
-import { Image } from '@marigold/components';
-```
-
-## Usage
+export const Template = args => <Image src={image1} alt="marigold_logo" />;
 
 <Canvas>
-  <Story name="firstImage">
-    <Image src={image1} alt="marigold_logo" />
-  </Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
 
-<Canvas>
-  <Story name="secondImage">
-    <Image src={image2} width="500" height="300" />
-  </Story>
-</Canvas>
+<ArgsTable story="Default" />
