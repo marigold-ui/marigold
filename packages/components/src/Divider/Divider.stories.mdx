@@ -1,4 +1,4 @@
-import { ArgsTable, Canvas, Meta, Story, Props } from '@storybook/addon-docs';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Divider } from './Divider';
 import { Text } from '../Text';
 
@@ -8,9 +8,8 @@ import { Text } from '../Text';
     variant: {
       control: {
         type: 'select',
-        options: ['regular', 'bold'],
       },
-      defaultValue: 'regular',
+      options: ['regular', 'bold'],
       description: 'Thick or thin line',
       table: {
         defaultValue: {
@@ -26,12 +25,13 @@ import { Text } from '../Text';
 export const Template = args => (
   <div>
     <Text>Above</Text>
-      <Divider {...args} />
+    <Divider {...args} />
     <Text>Below</Text>
   </div>
 );
 
 <Canvas>
-  <Story name="Regular">{Template.bind({})}</Story>
-  <ArgsTable story="Regular" />
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
+
+<ArgsTable story="Default" />

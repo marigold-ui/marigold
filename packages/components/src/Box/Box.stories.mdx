@@ -325,11 +325,7 @@ import { Label } from '../Label';
 
 ## For custom components
 
-export const Template = args => (
-  <Box {...args}>
-    Style me!
-  </Box>
-);
+export const Template = args => <Box {...args}>Style me!</Box>;
 
 <Canvas>
   <Story name="Default">{Template.bind({})}</Story>

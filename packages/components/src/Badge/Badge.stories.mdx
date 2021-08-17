@@ -8,9 +8,8 @@ import { Check } from '@marigold/icons';
     variant: {
       control: {
         type: 'select',
-        options: ['default'],
       },
-      defaultValue: 'default',
+      options: ['default'],
       description: 'Badge style',
       table: {
         defaultValue: {
@@ -22,7 +21,6 @@ import { Check } from '@marigold/icons';
       control: {
         type: 'text',
       },
-      defaultValue: 'inherit',
       description: 'background',
       table: {
         defaultValue: {
@@ -34,7 +32,6 @@ import { Check } from '@marigold/icons';
       control: {
         type: 'text',
       },
-      defaultValue: 'transparent',
       description: 'Outline color',
       table: {
         defaultValue: {
@@ -47,7 +44,11 @@ import { Check } from '@marigold/icons';
 
 # Badge
 
-export const Template = args => <Badge {...args}><Check /> Check</Badge>;
+export const Template = args => (
+  <Badge {...args}>
+    <Check /> Check
+  </Badge>
+);
 
 <Canvas>
   <Story name="Default">{Template.bind({})}</Story>
