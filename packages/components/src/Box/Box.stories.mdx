@@ -27,7 +27,7 @@ import { Label } from '../Label';
         type: 'text',
       },
       table: {
-        category: 'Outer position',
+        category: 'Width',
       },
     },
     width: {
@@ -35,7 +35,7 @@ import { Label } from '../Label';
         type: 'text',
       },
       table: {
-        category: 'Outer position',
+        category: 'Width',
       },
     },
     minWidth: {
@@ -43,7 +43,7 @@ import { Label } from '../Label';
         type: 'text',
       },
       table: {
-        category: 'Outer position',
+        category: 'Width',
       },
     },
     maxWidth: {
@@ -51,7 +51,271 @@ import { Label } from '../Label';
         type: 'text',
       },
       table: {
-        category: 'Outer position',
+        category: 'Width',
+      },
+    },
+    position: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Position',
+      },
+    },
+    top: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Position',
+      },
+    },
+    bottom: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Position',
+      },
+    },
+    right: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Position',
+      },
+    },
+    left: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Position',
+      },
+    },
+    zIndex: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Position',
+      },
+    },
+    p: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Padding',
+      },
+    },
+    px: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Padding',
+      },
+    },
+    py: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Padding',
+      },
+    },
+    pt: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Padding',
+      },
+    },
+    pb: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Padding',
+      },
+    },
+    pl: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Padding',
+      },
+    },
+    pr: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Padding',
+      },
+    },
+    m: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Margin',
+      },
+    },
+    mx: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Margin',
+      },
+    },
+    my: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Margin',
+      },
+    },
+    mt: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Margin',
+      },
+    },
+    mb: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Margin',
+      },
+    },
+    ml: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Margin',
+      },
+    },
+    mr: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Margin',
+      },
+    },
+    flexDirection: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Flex',
+      },
+    },
+    flexWrap: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Flex',
+      },
+    },
+    flexShrink: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Flex',
+      },
+    },
+    flexGrow: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Flex',
+      },
+    },
+    alignItems: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Flex',
+      },
+    },
+    justifyContent: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Flex',
+      },
+    },
+    bg: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Other',
+      },
+    },
+    border: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Other',
+      },
+    },
+    borderRadius: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Other',
+      },
+    },
+    boxShadow: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Other',
+      },
+    },
+    opacity: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Other',
+      },
+    },
+    overflow: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Other',
+      },
+    },
+    transition: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        category: 'Other',
       },
     },
   }}
@@ -63,11 +327,12 @@ import { Label } from '../Label';
 
 export const Template = args => (
   <Box {...args}>
-    sdfsdf
+    Style me!
   </Box>
 );
 
 <Canvas>
   <Story name="Default">{Template.bind({})}</Story>
-  <ArgsTable story="Default" />
 </Canvas>
+
+<ArgsTable story="Default" />

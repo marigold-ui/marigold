@@ -1,74 +1,50 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Column } from './Column';
-import { useState } from 'react';
+import { Text } from '../Text';
 import { useStyles } from '@marigold/system';
 
-<Meta title="Components/Column" />
+<Meta
+  title="Components/Column"
+  argTypes={{
+    width: {
+      control: {
+        type: 'range',
+        min: 0,
+        max: 12,
+        step: 1,
+      },
+      defaultValue: 12,
+      description: 'Absolute width in 12 grid',
+      table: {
+        defaultValue: {
+          summary: 12,
+        },
+      },
+    },
+  }}
+/>
 
 # Column
 
-## Description
-
-With the Column component you can add a column with a width in percent of the full content.
-
-## Properties
-
-| Property           | Type                                    | Default |
-| :----------------- | :-------------------------------------- | :------ |
-| `width` (optional) | `1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12` | `12`    |
-
-## Import
-
-```tsx
-import { Column } from '@marigold/components';
-```
-
-## Usage
+export const Template = args => (
+  <Column
+    className={useStyles({
+      css: {
+        textAlign: 'center',
+        border: '1px solid red',
+        padding: 2,
+        margin: 2,
+      },
+    })}
+    width={12}
+    {...args}
+  >
+    <Text>full width</Text>
+  </Column>
+);
 
 <Canvas>
-  <Story name="Column">
-    <Column
-      className={useStyles({
-        textAlign: 'center',
-        border: '1px solid',
-        padding: 2,
-        margin: 2,
-      })}
-    >
-      width=12
-    </Column>
-    <Column
-      width={6}
-      className={useStyles({
-        textAlign: 'center',
-        border: '1px solid',
-        padding: 2,
-        margin: 2,
-      })}
-    >
-      width=6
-    </Column>
-    <Column
-      width={3}
-      className={useStyles({
-        textAlign: 'center',
-        border: '1px solid',
-        padding: 2,
-        margin: 2,
-      })}
-    >
-      width=3
-    </Column>
-    <Column
-      width={2}
-      className={useStyles({
-        textAlign: 'center',
-        border: '1px solid',
-        padding: 2,
-        margin: 2,
-      })}
-    >
-      width=2
-    </Column>
-  </Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
+
+<ArgsTable story="Default" />

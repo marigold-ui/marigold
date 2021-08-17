@@ -45,17 +45,12 @@ import { Check } from '@marigold/icons';
   }}
 />
 
-| Property                 | Type     | Default       |
-| :----------------------- | :------- | :------------ |
-| `variant` (optional)     | `string` | `default`     |
-| `borderColor` (optional) | `string` | `transparent` |
-| `bgColor` (optional)     | `string` | `inherit`     |
-
 # Badge
 
 export const Template = args => <Badge {...args}><Check /> Check</Badge>;
 
 <Canvas>
   <Story name="Default">{Template.bind({})}</Story>
-  <ArgsTable story="Default" />
 </Canvas>
+
+<ArgsTable story="Default" />
