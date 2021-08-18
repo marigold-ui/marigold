@@ -10,7 +10,7 @@ const configFile = findUp('tsconfig.json', { cwd: root });
 // Storybook Config
 // ---------------
 module.exports = {
-  stories: [path.resolve(root, 'packages/**/*.stories.mdx')],
+  stories: ['*.stories.mdx', path.resolve(root, 'packages/**/*.stories.mdx')],
   addons: [
     '@storybook/react',
     '@storybook/addon-a11y',

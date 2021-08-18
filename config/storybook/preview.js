@@ -19,6 +19,7 @@ addParameters({
     config: {},
     options: {},
   },
+  controls: { expanded: true },
   themes: {
     Decorator: ({ themeName, children }) => (
       <MarigoldProvider theme={themes[themeName]}>{children}</MarigoldProvider>
@@ -29,4 +30,10 @@ addParameters({
       default: name === 'b2b',
     })),
   },
+  options: {
+    storySort: {
+      order: ['Welcome', 'Tokens', 'Components', 'Hooks'],
+    },
+  },
+  viewMode: 'docs',
 });
