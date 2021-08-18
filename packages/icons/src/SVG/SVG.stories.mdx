@@ -2,7 +2,7 @@ import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { SVG } from './SVG';
 
 <Meta
-  title="Components/Iconography/SVG"
+  title="Components/SVG"
   argTypes={{
     variant: {
       control: {
@@ -49,7 +49,7 @@ export const Template = args => (
 );
 
 <Canvas>
-  <Story name="SVG">{Template.bind({})}</Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
 
-<ArgsTable story="SVG" />
+<ArgsTable story="Default" />
