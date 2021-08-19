@@ -550,6 +550,7 @@ const theme: BaseTheme = {
       },
       disabled: {
         ...selectOption,
+        cursor: 'not-allowed',
         color: colors.gray40,
       },
     },
