@@ -21,7 +21,14 @@ export const colors = {
     '90': '#dddde2',
   },
   green: '#59894f',
-  blue: '#5885b4',
+  blue: {
+    '10': '#e8f4fa',
+    '20': '#c1f0fc',
+    '40': '#67dfff',
+    '60': '#3ab3d5',
+    '70': '#1d67b6',
+    '80': '#0c3a6b',
+  },
   yellow: '#ffde70',
   red: '#b05152',
 };

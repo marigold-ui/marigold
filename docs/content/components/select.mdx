@@ -61,7 +61,7 @@ import { Item } from '@marigold/components';
 ### Default selectedItem
 
 ```tsx
-<Select label="Favorite Color" htmlFor="id" selectedItem="Red">
+<Select label="Favorite Color" selectedItem="Red">
   <Item key="Red">Red</Item>
   <Item key="Orange">Orange</Item>
   <Item key="Yellow">Yellow</Item>
@@ -82,7 +82,7 @@ import { Item } from '@marigold/components';
 ### Disabled Items
 
 ```tsx
-<Select label="Favorite Color" htmlFor="id" disabledKeys={['Orange', 'Yellow']}>
+<Select label="Favorite Color" disabledKeys={['Orange', 'Yellow']}>
   <Item key="Red">Red</Item>
   <Item key="Orange">Orange</Item>
   <Item key="Yellow">Yellow</Item>

@@ -1,3 +1,30 @@
+const selectButton = {
+  appearance: 'none',
+  position: 'relative',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  overflow: 'hidden',
+  outline: 'none',
+  width: '100%',
+  lineHeight: '32px',
+  px: 'xsmall',
+  color: 'inherit',
+  bg: 'transparent',
+};
+
+const selectOption = {
+  fontFamily: 'body',
+  fontSize: 'xsmall',
+  fontWeight: 'body',
+  lineHeight: '32px',
+  outline: 'none',
+  cursor: 'pointer',
+  color: 'text',
+  px: 'xsmall',
+  listStyle: 'none',
+};
+
 const button = {
   primary: {
     appearance: 'none',
@@ -23,20 +50,48 @@ const button = {
     px: 'small',
     py: 'xsmall',
   },
-};
-
-const select = {
-  themeSwitch: {
-    fontFamily: 'body',
-    fontSize: 'body',
-    color: 'gray.00',
-    bg: 'gray.90',
-    p: 'xsmall',
-    mt: 'xxsmall',
-    mr: 'small',
-    border: 'none',
-    borderRadius: 'medium',
-    cursor: 'pointer',
+  select: {
+    ...selectButton,
+    border: '1px solid',
+    borderColor: 'gray.80',
+    ':hover': {
+      cursor: 'pointer',
+    },
+    ':focus': {
+      border: '2px solid',
+      borderColor: 'blue.60',
+    },
+    ':disabled': {
+      bg: 'gray.20',
+      color: 'disabled',
+      cursor: 'not-allowed',
+    },
+    error: {
+      ...selectButton,
+      border: '1px solid',
+      borderRadius: '2px',
+      borderColor: 'error',
+    },
+    open: {
+      ...selectButton,
+      borderTop: '1px solid',
+      borderRight: '1px solid',
+      borderLeft: '1px solid',
+      borderBottom: 'none',
+      borderColor: 'gray.80',
+      borderTopRightRadius: '2px',
+      borderTopLeftRadius: '2px',
+    },
+    errorOpened: {
+      ...selectButton,
+      borderTop: '1px solid',
+      borderRight: '1px solid',
+      borderLeft: '1px solid',
+      borderBottom: 'none',
+      borderColor: 'error',
+      borderTopRightRadius: '2px',
+      borderTopLeftRadius: '2px',
+    },
   },
 };
 
@@ -58,6 +113,65 @@ const navigation = {
     fontWeight: 'medium',
     lineHeight: 'cap',
     pb: 'small',
+  },
+};
+
+const select = {
+  __default: {
+    fontFamily: 'body',
+    fontSize: 'xsmall',
+    fontWeight: 400,
+    lineHeight: '32px',
+    color: 'text',
+  },
+  disabled: {
+    fontFamily: 'body',
+    fontSize: 'xsmall',
+    fontWeight: 400,
+    lineHeight: '32px',
+    color: 'disabled',
+    cursor: 'not-allowed',
+  },
+  listbox: {
+    __default: {
+      background: 'white',
+      borderTop: 'none',
+      borderRight: '1px solid',
+      borderLeft: '1px solid',
+      borderBottom: '1px solid',
+      borderBottomRightRadius: '2px',
+      borderBottomLeftRadius: '2px',
+      borderColor: 'gray.80',
+      outline: 'none',
+    },
+    error: {
+      background: 'white',
+      borderTop: 'none',
+      borderRight: '1px solid',
+      borderLeft: '1px solid',
+      borderBottom: '1px solid',
+      borderBottomRightRadius: '2px',
+      borderBottomLeftRadius: '2px',
+      borderColor: 'error',
+      outline: 'none',
+    },
+  },
+  option: {
+    __default: {
+      ...selectOption,
+      ':focus': {
+        bg: 'blue.20',
+      },
+    },
+    selected: {
+      ...selectOption,
+      color: 'white',
+      bg: 'blue.60',
+    },
+    disabled: {
+      ...selectOption,
+      color: 'gray.80',
+    },
   },
 };
 
@@ -93,6 +207,10 @@ export const components = {
       ...button.primary,
       color: 'black',
       bg: 'transparent',
+    },
+    select: {
+      ...button.primary,
+      ...button.select,
     },
   },
   navigation,
