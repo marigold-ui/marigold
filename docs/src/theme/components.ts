@@ -59,8 +59,9 @@ const button = {
       cursor: 'pointer',
     },
     ':focus': {
-      border: '2px solid',
-      borderColor: 'blue.60',
+      boxShadow: '0 0 0 2px #3ab3d5',
+      border: 'none',
+      margin: '1px',
     },
     ':disabled': {
       bg: 'gray.20',
@@ -79,6 +80,7 @@ const button = {
       borderRight: '1px solid',
       borderLeft: '1px solid',
       borderBottom: 'none',
+      marginBottom: '1px',
       borderColor: 'gray.80',
       borderTopRightRadius: 'medium',
       borderTopLeftRadius: 'medium',
@@ -89,6 +91,7 @@ const button = {
       borderRight: '1px solid',
       borderLeft: '1px solid',
       borderBottom: 'none',
+      marginBottom: '1px',
       borderColor: 'error',
       borderTopRightRadius: 'medium',
       borderTopLeftRadius: 'medium',
