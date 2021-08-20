@@ -1,43 +1,57 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Badge } from './Badge';
-import { Text } from '../Text';
 import { Check } from '@marigold/icons';
-import { useStyles } from '@marigold/system';
 
-<Meta title="Components/Badge" />
+<Meta
+  title="Components/Badge"
+  argTypes={{
+    variant: {
+      control: {
+        type: 'select',
+      },
+      options: ['default'],
+      description: 'Badge style',
+      table: {
+        defaultValue: {
+          summary: 'default',
+        },
+      },
+    },
+    bgColor: {
+      control: {
+        type: 'text',
+      },
+      description: 'background',
+      table: {
+        defaultValue: {
+          summary: 'inherit',
+        },
+      },
+    },
+    borderColor: {
+      control: {
+        type: 'text',
+      },
+      description: 'Outline color',
+      table: {
+        defaultValue: {
+          summary: 'transparent',
+        },
+      },
+    },
+  }}
+/>
 
 # Badge
 
-## Description
-
-A badge tags an element with a short note and color. The content of the badge can be anything but preferably a string and/or icon.
-
-## Properties
-
-| Property                 | Type     | Default       |
-| :----------------------- | :------- | :------------ |
-| `variant` (optional)     | `string` | `default`     |
-| `borderColor` (optional) | `string` | `transparent` |
-| `bgColor` (optional)     | `string` | `inherit`     |
-
-## Import
-
-```tsx
-import { Badge } from '@marigold/components';
-```
-
-## Usage
+export const Template = args => (
+  <Badge {...args}>
+    <Check /> Check
+  </Badge>
+);
 
 <Canvas>
-  <Story name="Colored Background">
-    <Badge borderColor="black" bgColor="orange">
-      <Text>New</Text>
-    </Badge>
-  </Story>
-  <Story name="Outlined">
-    <Badge borderColor="orange" className={useStyles({ display: 'flex' })}>
-      <Check size={18} />
-      cool
-    </Badge>
-  </Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
+
+<ArgsTable story="Default" />
