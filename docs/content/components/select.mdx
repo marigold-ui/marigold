@@ -10,13 +10,17 @@ Dropdown for selecting an item among different options.
 
 ## Properties
 
-| Property                 | Type      | Default |
-| :----------------------- | :-------- | :------ |
-| `label` (optional)       | `string`  |         |
-| `placeholder` (optional) | `string`  |         |
-| `disabled` (optional)    | `boolean` |         |
-| `required` (optional)    | `boolean` |         |
-| `error` (optional)       | `string`  |         |
+| Property                        | Type                                                                                                     | Default |
+| :------------------------------ | :------------------------------------------------------------------------------------------------------- | :------ |
+| `label` (optional)              | `string`                                                                                                 |         |
+| `placeholder` (optional)        | `string`                                                                                                 |         |
+| `disabled` (optional)           | `boolean`                                                                                                |         |
+| `selectedKey` (optional)        | [Key](https://reactjs.org/docs/lists-and-keys.html)                                                      |         |
+| `defaultSelectedKey` (optional) | [Key](https://reactjs.org/docs/lists-and-keys.html)                                                      |         |
+| `disabledKeys` (optional)       | [Iterable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)`<Key>` |         |
+| `required` (optional)           | `boolean`                                                                                                |         |
+| `error` (optional)              | `string`                                                                                                 |         |
+| `onSelectionChange` (optional)  | `(key: Key) => any`                                                                                      |         |
 
 ## Import
 
@@ -56,11 +60,64 @@ import { Item } from '@marigold/components';
 </Select>
 ```
 
-### Disabeld Select
+### Default selected Key (uncontrolled)
+
+```tsx
+<Select
+  label="Choose Color (uncontrolled)"
+  htmlFor="id"
+  defaultSelectedKey="Red"
+>
+  <Item key="Red">Red</Item>
+  <Item key="Orange">Orange</Item>
+  <Item key="Yellow">Yellow</Item>
+  <Item key="Green">Green</Item>
+  <Item key="Blue">Blue</Item>
+  <Item key="Purple">Purple</Item>
+</Select>
+```
+
+### Selected Key (controlled)
+
+```tsx
+() => {
+  const [color, setColor] = React.useState('Red');
+  return (
+    <Select
+      label="Choose Color (controlled)"
+      htmlFor="id"
+      selectedKey={color}
+      onSelectionChange={selected => setColor(selected)}
+    >
+      <Item key="Red">Red</Item>
+      <Item key="Orange">Orange</Item>
+      <Item key="Yellow">Yellow</Item>
+      <Item key="Green">Green</Item>
+      <Item key="Blue">Blue</Item>
+      <Item key="Purple">Purple</Item>
+    </Select>
+  );
+};
+```
+
+### Disabled Select
 
 ```tsx
 <Select label="Disabled Select:" disabled placeholder="disabled Select">
   <Item>disabled Item</Item>
+</Select>
+```
+
+### Disabled Keys
+
+```tsx
+<Select label="Favorite Color" htmlFor="id" disabledKeys={['Orange', 'Yellow']}>
+  <Item key="Red">Red</Item>
+  <Item key="Orange">Orange</Item>
+  <Item key="Yellow">Yellow</Item>
+  <Item key="Green">Green</Item>
+  <Item key="Blue">Blue</Item>
+  <Item key="Purple">Purple</Item>
 </Select>
 ```
 
