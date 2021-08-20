@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useThemeSwitch } from './ThemeSwitch';
 import { Item, Select } from '@marigold/components';
-import { useStyles } from '@marigold/system';
 
 export const ThemeSelect = () => {
   const { current, themes, setTheme } = useThemeSwitch();
@@ -12,7 +11,7 @@ export const ThemeSelect = () => {
       selectedKey={current}
       value={current}
       onSelectionChange={current => setTheme(current)}
-      className={useStyles({ css: { width: '100%' } })}
+      menuWidth="160px"
     >
       {Object.keys(themes).map(name => (
         <Item key={name}>{name}</Item>

@@ -109,6 +109,19 @@ test('supports error prop', () => {
   expect(validationMessage).toBeDefined();
 });
 
+test('supports menuWidth prop', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Select label="MyLabel" menuWidth="120px" data-testid="selectId">
+        <Item>1</Item>
+      </Select>
+    </MarigoldProvider>
+  );
+  const select = screen.getByTestId('selectId');
+
+  expect(select.parentElement).toHaveStyle(`width: 120px`);
+});
+
 test('option list opens when element is clicked', () => {
   render(
     <MarigoldProvider theme={theme}>
