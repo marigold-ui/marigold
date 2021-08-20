@@ -15,12 +15,42 @@ import { Item } from '@marigold/components';
 </Canvas>
 
 <Canvas>
-  <Story name="selectedItem">
-    <Select label="Favorite Color" htmlFor="id" selectedItem="Red">
+  <Story name="defaultSelectedKey">
+    <Select
+      label="Choose Color (uncontrolled)"
+      htmlFor="id"
+      defaultSelectedKey="Red"
+    >
       <Item key="Red">Red</Item>
       <Item key="Orange">Orange</Item>
       <Item key="Yellow">Yellow</Item>
+      <Item key="Green">Green</Item>
+      <Item key="Blue">Blue</Item>
+      <Item key="Purple">Purple</Item>
     </Select>
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story name="selectedKey">
+    {() => {
+      const [color, setColor] = React.useState('Red');
+      return (
+        <Select
+          label="Choose Color (controlled)"
+          htmlFor="id"
+          selectedKey={color}
+          onSelectionChange={selected => setColor(selected)}
+        >
+          <Item key="Red">Red</Item>
+          <Item key="Orange">Orange</Item>
+          <Item key="Yellow">Yellow</Item>
+          <Item key="Green">Green</Item>
+          <Item key="Blue">Blue</Item>
+          <Item key="Purple">Purple</Item>
+        </Select>
+      );
+    }}
   </Story>
 </Canvas>
 

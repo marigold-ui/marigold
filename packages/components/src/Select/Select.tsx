@@ -1,4 +1,4 @@
-import React, { Ref, RefObject, useEffect, useRef } from 'react';
+import React, { Ref, RefObject, useRef } from 'react';
 import { useSelectState } from '@react-stately/select';
 import { useButton } from '@react-aria/button';
 import { mergeProps } from '@react-aria/utils';
@@ -7,6 +7,7 @@ import { HiddenSelect, useSelect } from '@react-aria/select';
 import type { AriaSelectProps } from '@react-types/select';
 import { useOverlayTriggerState } from '@react-stately/overlays';
 import { useOverlayTrigger, useOverlayPosition } from '@react-aria/overlays';
+import { SingleSelection } from '@react-types/shared';
 
 import { ComponentProps } from '@marigold/types';
 import { ArrowDown, ArrowUp, Exclamation, Required } from '@marigold/icons';
@@ -21,16 +22,15 @@ import { Popover } from './Popover';
 export type SelectProps = {
   placeholder?: string;
   disabled?: boolean;
-  selectedItem?: string;
   required?: boolean;
   error?: string;
 } & ComponentProps<'select'> &
-  AriaSelectProps<object>;
+  AriaSelectProps<object> &
+  SingleSelection;
 
 export const Select = ({
   placeholder = 'Select an option',
   disabled,
-  selectedItem,
   required,
   error,
   className,
@@ -47,18 +47,6 @@ export const Select = ({
     css: { width: triggerRef.current && triggerRef.current.offsetWidth + 'px' },
   });
   const errorClassName = useStyles({ css: { color: 'error' } });
-
-  // check if one item ist per default selected
-  useEffect(() => {
-    if (selectedItem) {
-      [...state.collection].forEach(item => {
-        if (selectedItem === item.key) {
-          return state.setSelectedKey(selectedItem);
-        }
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedItem]);
 
   // Get props for the overlay
   const { overlayProps } = useOverlayTrigger(

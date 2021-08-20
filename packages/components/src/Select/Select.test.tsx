@@ -228,10 +228,10 @@ test('allow users to dismiss the popup with hidden dismiss button', () => {
   expect(selectButton).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('supports default selectedItem prop', () => {
+test('supports default selectedKey prop', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" data-testid="selectId" selectedItem="Red">
+      <Select label="MyLabel" data-testid="selectId" defaultSelectedKey="Red">
         <Item key="Red">Red</Item>
         <Item key="Orange">Orange</Item>
       </Select>
@@ -241,10 +241,10 @@ test('supports default selectedItem prop', () => {
   expect(button).toHaveTextContent('Red');
 });
 
-test('supports change default selectedItem', () => {
+test('supports change default selectedKey', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" data-testid="selectId" selectedItem="Red">
+      <Select label="MyLabel" data-testid="selectId" defaultSelectedKey="Red">
         <Item key="Red">Red</Item>
         <Item key="Orange">Orange</Item>
       </Select>
