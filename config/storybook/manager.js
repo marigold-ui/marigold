@@ -5,7 +5,6 @@ export const docsTheme = create({
   base: 'light',
   brandTitle: 'Marigold Design System ',
   brandUrl: 'https://marigold-ui.io',
-  brandImage: '/config/storybook/assets/icon.png',
 });
 
 addons.setConfig({
