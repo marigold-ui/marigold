@@ -138,6 +138,7 @@ const button = {
       borderRight: '1px solid',
       borderLeft: '1px solid',
       borderBottom: 'none',
+      marginBottom: '1px',
       borderColor: 'error',
       borderTopRightRadius: '2px',
       borderTopLeftRadius: '2px',
