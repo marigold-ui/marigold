@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useThemeSwitch } from './ThemeSwitch';
-import { Box, Item, Select } from '@marigold/components';
+import { Item, Select } from '@marigold/components';
+import { useStyles } from '@marigold/system';
 
 export const ThemeSelect = () => {
   const { current, themes, setTheme } = useThemeSwitch();
@@ -8,28 +9,14 @@ export const ThemeSelect = () => {
   return (
     <Select
       id="theme-select"
-      selectedItem={current}
+      selectedKey={current}
       value={current}
-      // onChange={() => alert('Hello')}
       onSelectionChange={current => setTheme(current)}
-      // onSelectionChange={(e: { target: { value: any } }) => setTheme(e.target.value)}
+      className={useStyles({ css: { width: '100%' } })}
     >
       {Object.keys(themes).map(name => (
         <Item key={name}>{name}</Item>
       ))}
     </Select>
-    // <Box
-    //   as="select"
-    //   variant="select.themeSwitch"
-    //   id="theme-select"
-    //   value={current}
-    //   onChange={(e: { target: { value: any } }) => setTheme(e.target.value)}
-    // >
-    //   {Object.keys(themes).map(name => (
-    //     <option key={name} value={name}>
-    //       {name}
-    //     </option>
-    //   ))}
-    // </Box>
   );
 };
