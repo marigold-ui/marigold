@@ -1,57 +1,78 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Field } from './Field';
-import { useStyles } from '@marigold/system';
 
-<Meta title="Components/Field" />
+<Meta
+  title="Components/Field"
+  argTypes={{
+    variant: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        defaultValue: {
+          summary: 'default',
+        },
+      },
+    },
+    htmlFor: {
+      control: {
+        type: 'text',
+      },
+      type: { required: true },
+    },
+    label: {
+      control: {
+        type: 'text',
+      },
+      type: { required: true },
+    },
+    error: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        defaultValue: {
+          summary: '',
+        },
+      },
+    },
+    type: {
+      control: {
+        type: 'select',
+      },
+      options: [
+        'date',
+        'datetime-local',
+        'email',
+        'month',
+        'number',
+        'password',
+        'search',
+        'tel',
+        'text',
+        'time',
+        'time',
+        'url',
+        'week',
+      ],
+      type: { required: true },
+      table: {
+        defaultValue: {
+          summary: 'text',
+        },
+      },
+    },
+  }}
+/>
 
 # Field
 
-## Description
-
-With the Field component you can add a HTML `<label>` and `<input>` element to your form.
-The element uses always the themeSection with the name: `field` in your given theme. The variant in your section can be added with the variant prop.
-The default variant is `default`.
-
-## Properties
-
-| Property             | Type                                                                                       | Default   |
-| :------------------- | :----------------------------------------------------------------------------------------- | :-------- |
-| `variant` (optional) | `string`                                                                                   | `default` |
-| `htmlFor`            | `string`                                                                                   |           |
-| `label`              | `string`                                                                                   |           |
-| `error` (optional)   | `string`                                                                                   |           |
-| `type`               | `date, datetime-local, email, month, number, password, search, tel, text, time, url, week` | `text`    |
-
-## Import
-
-```tsx
-import { Field } from '@marigold/components';
-```
-
-## Usage
+export const Template = args => (
+  <Field htmlFor="id" label="A label" type="text" />
+);
 
 <Canvas>
-  <Story name="Field1">
-    <div>
-      <Field label="Firstname" htmlFor="myId" />
-      <br />
-      <Field label="Name" htmlFor="myId" error="Validation message" />
-    </div>
-  </Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
 
-<Canvas>
-  <Story name="Field2">
-    <div>
-      <Field
-        label="Pick your date"
-        type="date"
-        htmlFor="myId"
-        error="ERROR!"
-        className={useStyles({ color: '#dd4142' })}
-      />
-      <br />
-      <Field label="Choose the week" type="week" htmlFor="myId" />
-    </div>
-  </Story>
-</Canvas>
+<ArgsTable story="Default" />

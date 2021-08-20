@@ -1,106 +1,68 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Select } from './Select';
 import { Item } from '@marigold/components';
 
-<Meta title="Components/Select" />
+<Meta
+  title="Components/Select"
+  argTypes={{
+    placeholder: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        defaultValue: {
+          summary: 'Select an option',
+        },
+      },
+    },
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+      options: [true, false],
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+    required: {
+      control: {
+        type: 'boolean',
+      },
+      options: [true, false],
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+    error: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        defaultValue: {
+          summary: 'Error',
+        },
+      },
+    },
+  }}
+/>
 
-<Canvas>
-  <Story name="Select">
-    <Select label="Favorite Color" htmlFor="id">
+# Select
+
+export const Template = args => (
+  <Select label="Favorite Color" htmlFor="id" {...args}>
+    {/* Storybook crashes with imported <Item> component
       <Item>Red</Item>
       <Item>Orange</Item>
-      <Item>Yellow</Item>
-    </Select>
-  </Story>
-</Canvas>
+      <Item>Yellow</Item> */}
+  </Select>
+);
 
 <Canvas>
-  <Story name="defaultSelectedKey">
-    <Select
-      label="Choose Color (uncontrolled)"
-      htmlFor="id"
-      defaultSelectedKey="Red"
-    >
-      <Item key="Red">Red</Item>
-      <Item key="Orange">Orange</Item>
-      <Item key="Yellow">Yellow</Item>
-      <Item key="Green">Green</Item>
-      <Item key="Blue">Blue</Item>
-      <Item key="Purple">Purple</Item>
-    </Select>
-  </Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
 
-<Canvas>
-  <Story name="selectedKey">
-    {() => {
-      const [color, setColor] = React.useState('Red');
-      return (
-        <Select
-          label="Choose Color (controlled)"
-          htmlFor="id"
-          selectedKey={color}
-          onSelectionChange={selected => setColor(selected)}
-        >
-          <Item key="Red">Red</Item>
-          <Item key="Orange">Orange</Item>
-          <Item key="Yellow">Yellow</Item>
-          <Item key="Green">Green</Item>
-          <Item key="Blue">Blue</Item>
-          <Item key="Purple">Purple</Item>
-        </Select>
-      );
-    }}
-  </Story>
-</Canvas>
-
-<Canvas>
-  <Story name="disabledKeys">
-    <Select
-      label="Favorite Color"
-      htmlFor="id"
-      disabledKeys={['Orange', 'Yellow']}
-    >
-      <Item key="Red">Red</Item>
-      <Item key="Blue">Blue</Item>
-      <Item key="Orange">Orange</Item>
-      <Item key="Yellow">Yellow</Item>
-    </Select>
-  </Story>
-</Canvas>
-
-<Canvas>
-  <Story name="placeholderSelect">
-    <Select label="Favorite Color" htmlFor="id" placeholder="MyLabel">
-      <Item>Red</Item>
-      <Item>Orange</Item>
-      <Item>Yellow</Item>
-    </Select>
-  </Story>
-</Canvas>
-
-<Canvas>
-  <Story name="disabledSelect">
-    <Select disabled placeholder="disabled Select">
-      <Item>disabled Item</Item>
-    </Select>
-  </Story>
-</Canvas>
-
-<Canvas>
-  <Story name="requiredSelect">
-    <Select required label="required Select">
-      <Item>Option 1</Item>
-      <Item>Option 2</Item>
-    </Select>
-  </Story>
-</Canvas>
-
-<Canvas>
-  <Story name="errorSelect">
-    <Select error="Please choose one option!" label="error Select">
-      <Item>Option 1</Item>
-      <Item>Option 2</Item>
-    </Select>
-  </Story>
-</Canvas>
+<ArgsTable story="Default" />

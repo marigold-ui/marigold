@@ -59,6 +59,7 @@ export const Select = ({
     targetRef: triggerRef,
     overlayRef: overlayRef as RefObject<HTMLElement>,
     placement: 'bottom',
+    shouldFlip: false,
     isOpen: state.isOpen,
     onClose: state.close,
   });

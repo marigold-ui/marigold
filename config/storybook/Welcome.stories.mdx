@@ -1,0 +1,55 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import { Box, Heading, Image, Link, Stack, Text } from '@marigold/components';
+import { ExternalLink } from '@marigold/icons';
+import logo from './assets/type_logo.png';
+import { useStyles } from '@marigold/system';
+
+<Meta
+  title="Welcome/Welcome"
+  parameters={{ fullPage: true, previewTabs: { canvas: { hidden: true } } }}
+/>
+
+# Welcome to Marigold
+
+<Canvas>
+  <Story name="Marigold">
+    <Box p={64}>
+      <Stack space={64}>
+        <Image
+          src={logo}
+          alt="logo"
+          width={312}
+          className={useStyles({ css: { marginBottom: '48px' } })}
+        />
+      </Stack>
+      <Heading className={useStyles({ css: { marginBottom: '32px' } })}>
+        Welcome to Marigold Storybook
+      </Heading>
+      <Stack space={16}>
+        <Text>
+          Browse the stories in the sidebar menu to know the different React
+          compnents.
+        </Text>
+        <Text>
+          Use the search bar to find a specific component or you press '/' and
+          start typing.
+        </Text>
+        <Text>
+          Marigold comes with built-in support for a B2B theme and a Unicorn
+          theme. Use the theme selector in the toolbar above to switch between
+          the themes.
+        </Text>
+        <Text className={useStyles({ css: { marginBottom: '32px' } })}>
+          You can play around with each component using the 'Controls' tab by
+          entering new values.
+        </Text>
+        <Link href="https://marigold-ui.io/" target="_blank">
+          <Text>Marigold Documentation <ExternalLink /></Text>
+        </Link>
+        <Link href="https://github.com/marigold-ui/marigold/" target="_blank">
+          <Text>GitHub Development Documentation <ExternalLink /></Text>
+        </Link>
+      </Stack>
+    </Box>
+  </Story>
+</Canvas>
