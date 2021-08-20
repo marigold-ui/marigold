@@ -7,6 +7,7 @@ import { HiddenSelect, useSelect } from '@react-aria/select';
 import type { AriaSelectProps } from '@react-types/select';
 import { useOverlayTriggerState } from '@react-stately/overlays';
 import { useOverlayTrigger, useOverlayPosition } from '@react-aria/overlays';
+import { SingleSelection } from '@react-types/shared';
 
 import { ComponentProps } from '@marigold/types';
 import { ArrowDown, ArrowUp, Exclamation, Required } from '@marigold/icons';
@@ -24,7 +25,8 @@ export type SelectProps = {
   required?: boolean;
   error?: string;
 } & ComponentProps<'select'> &
-  AriaSelectProps<object>;
+  AriaSelectProps<object> &
+  SingleSelection;
 
 export const Select = ({
   placeholder = 'Select an option',
@@ -57,6 +59,7 @@ export const Select = ({
     targetRef: triggerRef,
     overlayRef: overlayRef as RefObject<HTMLElement>,
     placement: 'bottom',
+    shouldFlip: false,
     isOpen: state.isOpen,
     onClose: state.close,
   });

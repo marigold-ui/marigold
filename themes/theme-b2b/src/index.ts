@@ -548,6 +548,11 @@ const theme: BaseTheme = {
         color: colors.gray00,
         bg: colors.blue60,
       },
+      disabled: {
+        ...selectOption,
+        cursor: 'not-allowed',
+        color: colors.gray40,
+      },
     },
   },
   validation: {

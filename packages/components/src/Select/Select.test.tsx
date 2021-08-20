@@ -227,3 +227,55 @@ test('allow users to dismiss the popup with hidden dismiss button', () => {
   fireEvent.click(dismissButton);
   expect(selectButton).toHaveAttribute('aria-expanded', 'false');
 });
+
+test('supports default selectedKey prop', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Select label="MyLabel" data-testid="selectId" defaultSelectedKey="Red">
+        <Item key="Red">Red</Item>
+        <Item key="Orange">Orange</Item>
+      </Select>
+    </MarigoldProvider>
+  );
+  const button = screen.getByTestId('selectId');
+  expect(button).toHaveTextContent('Red');
+});
+
+test('supports change default selectedKey', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Select label="MyLabel" data-testid="selectId" defaultSelectedKey="Red">
+        <Item key="Red">Red</Item>
+        <Item key="Orange">Orange</Item>
+      </Select>
+    </MarigoldProvider>
+  );
+  const button = screen.getByTestId('selectId');
+  expect(button).toHaveTextContent('Red');
+
+  fireEvent.click(button);
+  const items = screen.getAllByText(/Red/);
+  fireEvent.click(items[1]);
+
+  expect(button).toHaveTextContent('Red');
+});
+
+test('supports disabled item prop', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Select label="MyLabel" data-testid="selectId" disabledKeys={['Red']}>
+        <Item key="Red">Red</Item>
+        <Item key="Orange">Orange</Item>
+      </Select>
+    </MarigoldProvider>
+  );
+  const button = screen.getByTestId('selectId');
+  fireEvent.click(button);
+  const redItem = screen.getAllByText(/Red/);
+  fireEvent.click(redItem[1]);
+  expect(button).toHaveTextContent('Select an option');
+
+  const orangeItem = screen.getAllByText(/Orange/);
+  fireEvent.click(orangeItem[1]);
+  expect(button).toHaveTextContent('Orange');
+});

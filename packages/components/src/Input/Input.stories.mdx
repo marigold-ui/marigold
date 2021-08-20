@@ -1,45 +1,35 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Input } from './Input';
 import { Label } from '../Label';
 
-<Meta title="Components/Input" />
+<Meta
+  title="Components/Input"
+  argTypes={{
+    variant: {
+      control: {
+        type: 'text',
+      },
+      description: '?',
+      table: {
+        defaultValue: {
+          summary: 'default',
+        },
+      },
+    },
+  }}
+/>
 
 # Input
 
-## Description
-
-With the Input component you can add a HTML `<input>` field for different types of text to your form.
-The element uses always the themeSection with the name: `input` in your given theme. The variant in your section can be added with the variant prop. The default variant is `default`.
-
-## Properties
-
-| Property             | Type     | Default   |
-| :------------------- | :------- | :-------- |
-| `variant` (optional) | `string` | `default` |
-
-## Import
-
-```tsx
-import { Input } from '@marigold/components';
-```
-
-## Usage
+export const Template = args => (
+  <Label htmlFor="input">
+    Label
+    <Input id="input" placeholder="Placeholder..." {...args} />
+  </Label>
+);
 
 <Canvas>
-  <Story name="Input">
-    <div>
-      <Label htmlFor="input">
-        Label
-        <Input id="input" placeholder="Placeholder" />
-      </Label>
-      <Label htmlFor="input2">
-        Label
-        <Input id="input2" placeholder="Disabled" disabled />
-      </Label>
-      <Label htmlFor="input3">
-        Label
-        <Input id="input2" type="submit" />
-      </Label>
-    </div>
-  </Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
+
+<ArgsTable story="Default" />
