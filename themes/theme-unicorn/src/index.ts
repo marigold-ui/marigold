@@ -106,8 +106,9 @@ const button = {
       cursor: 'pointer',
     },
     ':focus': {
-      border: '2px solid',
-      borderColor: colors.blue60,
+      boxShadow: '0 0 0 2px ' + colors.blue60,
+      border: 'none',
+      margin: '1px',
     },
     ':disabled': {
       bg: colors.gray20,
@@ -126,6 +127,7 @@ const button = {
       borderRight: '1px solid',
       borderLeft: '1px solid',
       borderBottom: 'none',
+      marginBottom: '1px',
       borderColor: colors.gray40,
       borderTopRightRadius: '8px',
       borderTopLeftRadius: '8px',
