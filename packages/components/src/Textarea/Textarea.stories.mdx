@@ -1,65 +1,63 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Textarea } from '../Textarea';
 
-<Meta title="Components/Textarea" />
+<Meta
+  title="Components/Textarea"
+  argTypes={{
+    variant: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        defaultValue: {
+          summary: 'default',
+        },
+      },
+    },
+    label: {
+      control: {
+        type: 'text',
+      },
+      description: 'Text above',
+    },
+    htmlFor: {
+      control: {
+        type: 'text',
+      },
+      description: 'Bind to label',
+      table: {
+        defaultValue: {
+          summary: 'textarea',
+        },
+      },
+    },
+    errorMessage: {
+      control: {
+        type: 'text',
+      },
+      description: 'Error if errorMessage is given',
+    },
+    required: {
+      control: {
+        type: 'boolean',
+      },
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+  }}
+/>
 
 # Textarea
 
-## Description
-
-With the Textarea component you can add a HTML `<textarea>` element for larger text input to your form.
-The element uses always the themeSection with the name: `textarea` in your given theme. The variant in your section can be added with the variant prop. The default variant is `default`.
-If you use the label prop you have to add htmlFor. Optionally you can pass an errorMessage or the required prop.
-
-## Properties
-
-| Property                  | Type      | Default    |
-| :------------------------ | :-------- | :--------- |
-| `variant` (optional)      | `string`  | `default`  |
-| `label` (optional)        | `string`  |            |
-| `htmlFor` (optional)      | `string`  | `textarea` |
-| `errorMessage` (optional) | `string`  |            |
-| `required` (optional)     | `boolean` |            |
-
-## Import
-
-```tsx
-import { Textarea } from '@marigold/components';
-```
-
-## Usage
-
-### basic & disabled
+export const Template = args => (
+  <Textarea placeholder="Placeholder..." {...args} />
+);
 
 <Canvas>
-  <Story name="Textarea">
-    <Textarea placeholder="Placeholder" />
-  </Story>
-  <Story name="Textarea disabled">
-    <Textarea placeholder="Placeholder disabled" disabled />
-  </Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
 
-### labeled & required
-
-<Canvas>
-  <Story name="Textarea label">
-    <Textarea label="Labeled" htmlFor="label" />
-  </Story>
-  <Story name="Textarea required">
-    <Textarea label="Required" htmlFor="required" required />
-  </Story>
-</Canvas>
-
-### with error
-
-<Canvas>
-  <Story name="Textarea error">
-    <Textarea
-      label="Required with error"
-      htmlFor="error"
-      required
-      errorMessage="Oh no, we have an error!"
-    />
-  </Story>
-</Canvas>
+<ArgsTable story="Default" />

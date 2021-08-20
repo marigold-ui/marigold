@@ -1,36 +1,19 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Container } from './Container';
 import { Text } from '../Text';
-import { useStyles } from '@marigold/system';
 
 <Meta title="Components/Container" />
 
 # Container
 
-## Description
-
-Primitive layout component to embed other elements.
-
-## Import
-
-```tsx
-import { Container } from '@marigold/components';
-```
-
-## Usage
+export const Template = args => (
+  <Container {...args}>
+    <Text>Container with width=100%</Text>
+  </Container>
+);
 
 <Canvas>
-  <Story name="Example 1">
-    <Container className={useStyles({ bg: 'gray' })}>
-      <Text>Example #1</Text>
-    </Container>
-  </Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
 
-<Canvas>
-  <Story name="Example 2">
-    <Container className={useStyles({ bg: 'green', padding: 4, margin: 1 })}>
-      <Text>Example #2</Text>
-    </Container>
-  </Story>
-</Canvas>
+<ArgsTable story="Default" />
