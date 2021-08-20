@@ -11,7 +11,8 @@ export const ThemeSelect = () => {
       selectedItem={current}
       value={current}
       // onChange={() => alert('Hello')}
-      onChange={(e: { target: { value: any } }) => setTheme(e.target.value)}
+      onSelectionChange={current => setTheme(current)}
+      // onSelectionChange={(e: { target: { value: any } }) => setTheme(e.target.value)}
     >
       {Object.keys(themes).map(name => (
         <Item key={name}>{name}</Item>
