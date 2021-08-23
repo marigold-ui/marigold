@@ -126,7 +126,6 @@ const button = {
       borderTopColor: colors.gray40,
       borderLeftColor: colors.gray40,
       borderRightColor: colors.gray40,
-      borderBottomColor: 'transparent',
       borderTopRightRadius: '2px',
       borderTopLeftRadius: '2px',
     },
