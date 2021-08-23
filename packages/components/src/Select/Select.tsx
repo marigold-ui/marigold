@@ -11,7 +11,7 @@ import { SingleSelection } from '@react-types/shared';
 
 import { ComponentProps } from '@marigold/types';
 import { ArrowDown, ArrowUp, Exclamation, Required } from '@marigold/icons';
-import { useStyles } from '@marigold/system';
+import { ResponsiveStyleValue, useStyles } from '@marigold/system';
 
 import { Box } from '../Box';
 import { Label } from '../Label';
@@ -24,7 +24,7 @@ export type SelectProps = {
   disabled?: boolean;
   required?: boolean;
   error?: string;
-  width?: string;
+  width?: ResponsiveStyleValue<number | string>;
 } & ComponentProps<'select'> &
   AriaSelectProps<object> &
   SingleSelection;

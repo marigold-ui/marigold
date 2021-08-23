@@ -11,7 +11,7 @@ export const ThemeSelect = () => {
       selectedKey={current}
       value={current}
       onSelectionChange={current => setTheme(current)}
-      width="160px"
+      width={160}
     >
       {Object.keys(themes).map(name => (
         <Item key={name}>{name}</Item>
