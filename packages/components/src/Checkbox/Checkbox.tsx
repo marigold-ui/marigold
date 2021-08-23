@@ -1,5 +1,5 @@
 import React from 'react';
-import { Required, SquareUnchecked, SquareChecked } from '@marigold/icons';
+import { SquareUnchecked, SquareChecked } from '@marigold/icons';
 import { useStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
@@ -90,10 +90,9 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 }) => {
   if (label) {
     return (
-      <Label htmlFor={props.id}>
+      <Label htmlFor={props.id} required={required}>
         <CheckboxInput {...props} />
         {label}
-        {required && <Required size={16} />}
       </Label>
     );
   }

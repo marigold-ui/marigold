@@ -1,5 +1,5 @@
 import React from 'react';
-import { CircleUnchecked, CircleChecked, Required } from '@marigold/icons';
+import { CircleUnchecked, CircleChecked } from '@marigold/icons';
 import { useStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 import { Box } from '../Box';
@@ -85,10 +85,9 @@ export type RadioProps = {
 export const Radio: React.FC<RadioProps> = ({ label, required, ...props }) => {
   if (label) {
     return (
-      <Label htmlFor={props.id}>
+      <Label htmlFor={props.id} required={required}>
         <RadioInput {...props} />
         {label}
-        {required && <Required size={16} />}
       </Label>
     );
   }
