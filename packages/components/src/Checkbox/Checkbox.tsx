@@ -90,7 +90,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 }) => {
   if (label) {
     return (
-      <Label htmlFor={props.id} required={required}>
+      <Label htmlFor={props.id} required={required} variant="inline">
         <CheckboxInput {...props} />
         {label}
       </Label>

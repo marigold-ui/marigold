@@ -85,7 +85,7 @@ export type RadioProps = {
 export const Radio: React.FC<RadioProps> = ({ label, required, ...props }) => {
   if (label) {
     return (
-      <Label htmlFor={props.id} required={required}>
+      <Label htmlFor={props.id} required={required} variant="inline">
         <RadioInput {...props} />
         {label}
       </Label>

@@ -356,18 +356,18 @@ const theme: BaseTheme = {
     },
   },
   label: {
-    default: {
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      fontWeight: 'body',
-      lineHeight: '2rem',
-      color: 'text',
-    },
     above: {
       fontFamily: 'body',
       fontSize: 'xsmall',
       fontWeight: 'body',
       lineHeight: 'body',
+      color: 'text',
+    },
+    inline: {
+      fontFamily: 'body',
+      fontSize: 'xsmall',
+      fontWeight: 'body',
+      lineHeight: '2rem',
       color: 'text',
     },
     disabled: {

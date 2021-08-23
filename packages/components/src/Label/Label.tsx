@@ -12,7 +12,7 @@ export type LabelProps = {
 } & ComponentProps<'label'>;
 
 export const Label: React.FC<LabelProps> = ({
-  variant = 'default',
+  variant = 'above',
   required,
   children,
   ...props

@@ -5,7 +5,7 @@ import { Label } from './Label';
 
 const theme = {
   label: {
-    default: {
+    above: {
       fontFamily: 'Inter Regular',
     },
     myLabel: {
