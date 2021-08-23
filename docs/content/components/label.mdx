@@ -49,7 +49,7 @@ import { Label } from '@marigold/components';
 
 ```tsx
 <Label variant="inline" htmlFor="labelId">
-  I am a required Label!
+  I am a Label!
 </Label>
 ```
 
@@ -58,5 +58,68 @@ import { Label } from '@marigold/components';
 ```tsx
 <Label variant="disabled" htmlFor="labelId">
   I am a disabled Label!
+</Label>
+```
+
+### Collective Label
+
+```tsx
+<Label htmlFor="labelId">
+  Collective Label
+  <Box display="flex" justifyContent="space-between" width="25%">
+    <Radio id="one" name="collective" value="RadioOne" label="Radio One" />
+    <Radio id="two" name="collective" value="RadioTwo" label="Radio Two" />
+  </Box>
+</Label>
+```
+
+### Section Label
+
+```tsx
+<Label htmlFor="labelId" variant="section">
+  Section Label
+  <Divider variant="section" />
+</Label>
+```
+
+### Examples
+
+```tsx
+<Label htmlFor="labelId" variant="section">
+  Radios
+  <Divider variant="section" />
+  <Label htmlFor="labelId">
+    Radio Group
+    <Box display="flex" justifyContent="space-between" width="50%">
+      <Radio id="one" name="collective" value="RadioOne" label="Radio One" />
+      <Radio id="two" name="collective" value="RadioTwo" label="Radio Two" />
+      <Radio
+        id="three"
+        name="collective"
+        value="RadioThree"
+        label="Radio Three"
+      />
+    </Box>
+  </Label>
+</Label>
+```
+
+```tsx
+<Label htmlFor="labelId" variant="section">
+  Dropdowns
+  <Divider variant="section" />
+  <Label htmlFor="labelId">
+    Dropdown Group
+    <Box display="flex" justifyContent="space-between" width="50%">
+      <Select placeholder="Select Primary Color" htmlFor="id">
+        <Item key="Red">Red</Item>
+        <Item key="Orange">Orange</Item>
+      </Select>
+      <Select placeholder="Select Secondary Color" htmlFor="id2">
+        <Item key="Red">Red</Item>
+        <Item key="Orange">Orange</Item>
+      </Select>
+    </Box>
+  </Label>
 </Label>
 ```
