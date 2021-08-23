@@ -20,7 +20,7 @@ Dropdown for selecting an item among different options.
 | `disabledKeys` (optional)       | [Iterable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)`<Key>` |         |
 | `required` (optional)           | `boolean`                                                                                                |         |
 | `error` (optional)              | `string`                                                                                                 |         |
-| `menuWidth` (optional)          | `string`                                                                                                 |         |
+| `width` (optional)              | `string`                                                                                                 |         |
 | `onSelectionChange` (optional)  | `(key: Key) => any`                                                                                      |         |
 
 ## Import
@@ -143,7 +143,7 @@ import { Item } from '@marigold/components';
 ### Custom width Select
 
 ```tsx
-<Select label="Width Select" menuWidth="500px">
+<Select label="Width Select" width="500px">
   <Item>Option 1</Item>
   <Item>Option 2</Item>
 </Select>

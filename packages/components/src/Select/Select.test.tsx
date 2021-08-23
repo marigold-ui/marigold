@@ -109,10 +109,10 @@ test('supports error prop', () => {
   expect(validationMessage).toBeDefined();
 });
 
-test('supports menuWidth prop', () => {
+test('supports width prop', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" menuWidth="120px" data-testid="selectId">
+      <Select label="MyLabel" width="120px" data-testid="selectId">
         <Item>1</Item>
       </Select>
     </MarigoldProvider>

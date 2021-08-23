@@ -24,7 +24,7 @@ export type SelectProps = {
   disabled?: boolean;
   required?: boolean;
   error?: string;
-  menuWidth?: string;
+  width?: string;
 } & ComponentProps<'select'> &
   AriaSelectProps<object> &
   SingleSelection;
@@ -34,7 +34,7 @@ export const Select = ({
   disabled,
   required,
   error,
-  menuWidth,
+  width,
   className,
   ...props
 }: SelectProps) => {
@@ -47,8 +47,8 @@ export const Select = ({
   });
   const popoverClassName = useStyles({
     css: {
-      width: menuWidth
-        ? menuWidth
+      width: width
+        ? width
         : triggerRef.current && triggerRef.current.offsetWidth + 'px',
     },
   });
@@ -81,11 +81,7 @@ export const Select = ({
   const { focusProps } = useFocusRing();
 
   return (
-    <Box
-      position="relative"
-      display="inline-block"
-      width={menuWidth && menuWidth}
-    >
+    <Box position="relative" display="inline-block" width={width && width}>
       {props.label && (
         <Box>
           <Label
