@@ -173,12 +173,10 @@ const selectOption = {
 };
 
 const theme: BaseTheme = {
-  styles: {
-    root: {
-      margin: 0,
-      padding: 0,
-      fontFamily: 'body',
-    }
+  root: {
+    margin: 0,
+    padding: 0,
+    fontFamily: 'body',
   },
   breakpoints: ['768', '1200'],
   space: {

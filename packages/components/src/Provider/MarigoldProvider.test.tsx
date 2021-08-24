@@ -80,3 +80,35 @@ test('OverlayProvider is present and supports useModal hook', () => {
   const childComp = screen.getByText('Test');
   expect(childComp).toBeDefined();
 });
+
+test('renders global styles', () => {
+  const root = render(
+    <MarigoldProvider
+      theme={{
+        fonts: {
+          body: 'Georgia,serif',
+        },
+        lineHeights: {
+          body: 1.5,
+        },
+        fontWeights: {
+          body: 500,
+        },
+        root: {
+          fontFamily: 'body',
+          lineHeight: 'body',
+          fontWeight: 'body',
+        },
+      }}
+    >
+      <h1>Hello</h1>
+    </MarigoldProvider>
+  );
+
+  const body = window.getComputedStyle(root.baseElement); // body
+  const style = window.getComputedStyle(root.baseElement.parentElement!); // html
+  expect(body.margin).toBe('0px');
+  expect(style.fontFamily).toBe('Georgia,serif');
+  expect(style.fontWeight).toBe('500');
+  expect(style.lineHeight).toBe('1.5');
+});
