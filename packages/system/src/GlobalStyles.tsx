@@ -1,14 +1,6 @@
 import React from 'react';
-import { Global } from '@emotion/react';
-import { useTheme } from './useTheme';
+import { Box } from '@marigold/components';
 
-export const GlobalStyles = () => {
-  const theme = useTheme();
-  const styles = theme.theme.styles ? theme.theme.styles.root : 'null'
-  
-  return (
-    <Global
-      styles={styles}
-    />
-  )
+export const GlobalStyles: React.FC = ({children}) => {
+  return <Box variant="styles.root">{children}</Box>
 }

@@ -14,8 +14,9 @@ export const MarigoldProvider: React.FC<ThemeProviderProps> = ({
   return (
     <ThemeProvider theme={theme}>
       <OverlayProvider>
-        <GlobalStyles />
+        <GlobalStyles>
         {children}
+        </GlobalStyles>
       </OverlayProvider>
     </ThemeProvider>
   );
