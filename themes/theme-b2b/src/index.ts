@@ -326,15 +326,6 @@ const theme: BaseTheme = {
       borderColor: colors.gray50,
     },
   },
-  field: {
-    default: {
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      color: 'text',
-      fontWeight: 'body',
-      lineHeight: '1.5rem',
-    },
-  },
   images: {
     fullWidth: {
       maxWidth: '100%',
@@ -343,23 +334,32 @@ const theme: BaseTheme = {
   },
   input: {
     default: {
-      display: 'block',
       fontFamily: 'body',
       color: 'text',
-      border: 0,
-      outline: '1px solid',
-      outlineColor: colors.gray40,
+      border: 'none',
+      borderRadius: '2px',
+      boxShadow: '0 0 0 1px ' + colors.gray40,
+      outline: 'none',
       padding: '0 8px',
       lineHeight: '32px',
       ':focus': {
-        outline: '2px solid',
-        outlineColor: colors.blue60,
+        boxShadow: '0 0 0 2px ' + colors.blue60,
       },
       ':disabled': {
         bg: colors.gray20,
         color: colors.gray40,
         cursor: 'not-allowed',
       },
+    },
+    error: {
+      fontFamily: 'body',
+      color: 'text',
+      border: 'none',
+      borderRadius: '2px',
+      boxShadow: '0 0 0 1px ' + colors.red60,
+      outline: 'none',
+      padding: '0 8px',
+      lineHeight: '32px',
     },
   },
   label: {

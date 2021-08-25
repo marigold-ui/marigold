@@ -47,6 +47,17 @@ import { Field } from './Field';
         },
       },
     },
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+      options: [true, false],
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
     type: {
       control: {
         type: 'select',

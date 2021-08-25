@@ -15,28 +15,6 @@ const theme = {
   },
 };
 
-test('supports default variant and themeSection', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Field htmlFor="myId" label="label" />
-    </ThemeProvider>
-  );
-  const field = screen.getByText(/label/);
-
-  expect(field).toHaveStyle(`padding: 4px`);
-});
-
-test('accepts other variant than default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Field htmlFor="myId" label="inputField" variant="inputField" />
-    </ThemeProvider>
-  );
-  const inputField = screen.getByText(/inputField/);
-
-  expect(inputField).toHaveStyle(`padding: 8px`);
-});
-
 test('renders correct HTML element', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -77,6 +55,12 @@ test('supports error prop', () => {
   expect(field).toBeDefined();
 });
 
+test('supports disabled prop', () => {
+  render(<Field htmlFor="myId" label="label" disabled />);
+  const fieldLabel = screen.getByText(/label/);
+  expect(fieldLabel.nextSibling).toHaveAttribute('disabled');
+});
+
 test('accepts custom styles prop className', () => {
   const TestComponent: React.FC = ({ children, ...props }) => {
     const classNames = useStyles({ css: { fontSize: '8px' } });
@@ -90,8 +74,6 @@ test('accepts custom styles prop className', () => {
       <TestComponent />
     </ThemeProvider>
   );
-  const testelem = getByText('label');
-  const field = getComputedStyle(testelem);
-
-  expect(field.fontSize).toEqual('8px');
+  const fieldLabel = getByText('label');
+  expect(fieldLabel.nextSibling).toHaveStyle(`fontSize: 8px`);
 });
