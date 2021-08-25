@@ -1,0 +1,49 @@
+---
+title: ActionGroup
+---
+
+# ActionGroup
+
+## Description
+
+The ActionGroup component adds two or more components together to form a common group.
+
+## Properties
+
+| Property                 | Type     | Default       |
+| :----------------------- | :------- | :------------ |
+| `variant` (optional)     | `string` | `default`     |
+| `borderColor` (optional) | `string` | `transparent` |
+| `bgColor` (optional)     | `string` | `inherit`     |
+
+## Import
+
+```tsx code
+import { ActionGroup } from '@marigold/components';
+```
+
+## Live-Code Example
+
+```tsx live
+<ActionGroup>
+  <Button variant="text" size="small">
+    Cancel
+  </Button>
+  <Button variant="primary" size="small">
+    Confirm
+  </Button>
+</ActionGroup>
+```
+
+## Usage
+
+```tsx
+<ActionGroup>
+  <Button variant="text" size="small">
+    Cancel
+  </Button>
+  <Button variant="primary" size="small">
+    Delete <Delete />
+  </Button>
+</ActionGroup>
+```
