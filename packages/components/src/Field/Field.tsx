@@ -11,6 +11,7 @@ export type FieldProps = {
   variant?: string;
   htmlFor: string;
   label: string;
+  required?: boolean;
   error?: string;
 } & ComponentProps<'input'>;
 
@@ -20,6 +21,7 @@ export const Field: React.FC<FieldProps> = ({
   className = '',
   htmlFor,
   label,
+  required,
   error,
   ...props
 }) => {
@@ -29,11 +31,11 @@ export const Field: React.FC<FieldProps> = ({
   });
 
   return (
-    <div>
+    <>
       <Label
         className={labelClassName}
         htmlFor={htmlFor}
-        required={error ? true : false}
+        required={required || error ? true : false}
       >
         {label}
       </Label>
@@ -44,6 +46,6 @@ export const Field: React.FC<FieldProps> = ({
           {error}
         </ValidationMessage>
       )}
-    </div>
+    </>
   );
 };

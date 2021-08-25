@@ -62,6 +62,14 @@ test('supports htmlFor prop', () => {
   expect(field).toHaveAttribute('for');
 });
 
+test('supports required prop', () => {
+  render(<Field htmlFor="myId" label="label" required />);
+  const fieldLabel = screen.getByText(/label/);
+
+  expect(fieldLabel.nextSibling).toBeDefined();
+  expect(fieldLabel.nextSibling instanceof SVGElement).toBeTruthy();
+});
+
 test('supports error prop', () => {
   render(<Field htmlFor="myId" label="label" error="Validation error" />);
   const field = screen.getByText(/Validation/);

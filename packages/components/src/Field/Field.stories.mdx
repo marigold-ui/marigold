@@ -36,6 +36,17 @@ import { Field } from './Field';
         },
       },
     },
+    required: {
+      control: {
+        type: 'boolean',
+      },
+      options: [true, false],
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
     type: {
       control: {
         type: 'select',
@@ -68,7 +79,7 @@ import { Field } from './Field';
 # Field
 
 export const Template = args => (
-  <Field htmlFor="id" label="A label" type="text" />
+  <Field htmlFor="id" label="A label" type="text" {...args} />
 );
 
 <Canvas>
