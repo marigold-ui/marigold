@@ -173,11 +173,6 @@ const selectOption = {
 };
 
 const theme: BaseTheme = {
-  root: {
-    margin: 0,
-    padding: 0,
-    fontFamily: 'body',
-  },
   breakpoints: ['768', '1200'],
   space: {
     none: 0,
@@ -221,6 +216,13 @@ const theme: BaseTheme = {
     warning: colors.orange60,
     info: colors.blue70,
     success: colors.green70,
+  },
+  root: {
+    body: {
+      margin: 0,
+      padding: 0,
+      fontFamily: 'body',
+    },
   },
   alerts: {
     error: {

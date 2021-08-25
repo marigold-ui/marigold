@@ -1,38 +1,23 @@
 import React from 'react';
 import { OverlayProvider } from '@react-aria/overlays';
-import {
-  ThemeProvider,
-  ThemeProviderProps,
-} from '@marigold/system';
-import { Global, jsx } from '@emotion/react';
-import { css, Theme } from '@theme-ui/css';
+import { ThemeProvider, ThemeProviderProps, useTheme } from '@marigold/system';
+import { Global } from '@emotion/react';
+import { css } from '@theme-ui/css';
 
-const GlobalStyles = () =>
-  jsx(Global, {
-    styles: emotionTheme => {
-      const theme = emotionTheme as Theme;
-      const { useRootStyles } = theme.config || theme;
+const GlobalStyles = () => {
+  const theme = useTheme();
+  const styles = css({
+    body: { variant: 'root.body' },
+    html: { variant: 'root.html' },
+  })(theme);
 
-      if (useRootStyles === false || (theme.styles && !theme.styles.root)) {
-        return null;
-      }
-
-      return css({
-        html: {
-          variant: 'root',
-        },
-        body: {
-          margin: 0,
-        },
-      })(theme);
-    },
-  });
-
+  return <Global styles={styles} />;
+};
 // a merge of the ThemeProvider and the react-aria OverlayProvider
 export const MarigoldProvider: React.FC<ThemeProviderProps> = ({
   theme,
   children,
-}) => {
+}) => { 
   return (
     <ThemeProvider theme={theme}>
       <OverlayProvider>

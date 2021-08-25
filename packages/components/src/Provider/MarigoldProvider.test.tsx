@@ -81,34 +81,46 @@ test('OverlayProvider is present and supports useModal hook', () => {
   expect(childComp).toBeDefined();
 });
 
-test('renders global styles', () => {
+test('renders global styles for body and html based on root in theme', () => {
   const root = render(
     <MarigoldProvider
       theme={{
         fonts: {
-          body: 'Georgia,serif',
+          body: 'Inter',
+          html: 'Roboto',
         },
         lineHeights: {
           body: 1.5,
+          html: 1,
         },
         fontWeights: {
           body: 500,
+          html: 700,
         },
         root: {
-          fontFamily: 'body',
-          lineHeight: 'body',
-          fontWeight: 'body',
+          body: {
+            fontFamily: 'body',
+            lineHeight: 'body',
+            fontWeight: 'body',
+          },
+          html: {
+            fontFamily: 'html',
+            lineHeight: 'html',
+            fontWeight: 'html',
+          }
         },
       }}
     >
-      <h1>Hello</h1>
+      <h1 title="h1">Hello</h1>
     </MarigoldProvider>
   );
 
-  const body = window.getComputedStyle(root.baseElement); // body
-  const style = window.getComputedStyle(root.baseElement.parentElement!); // html
-  expect(body.margin).toBe('0px');
-  expect(style.fontFamily).toBe('Georgia,serif');
-  expect(style.fontWeight).toBe('500');
-  expect(style.lineHeight).toBe('1.5');
+  const html = window.getComputedStyle(root.baseElement.parentElement!);
+  expect(html.fontFamily).toBe('Roboto');
+  expect(html.fontWeight).toBe('700');
+  expect(html.lineHeight).toBe('1');
+  const body = window.getComputedStyle(root.baseElement); 
+  expect(body.fontFamily).toBe('Inter');
+  expect(body.fontWeight).toBe('500');
+  expect(body.lineHeight).toBe('1.5');
 });
