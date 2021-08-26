@@ -20,11 +20,9 @@ export const ActionGroup: React.FC<ActionGroupProps> = ({
   className,
   ...props
 }) => {
-  const childClassName = useStyles(
-    verticalAlignment
-      ? { css: { marginBottom: space } }
-      : { css: { marginRight: space } }
-  );
+  const childClassName = useStyles({
+    css: verticalAlignment ? { marginBottom: space } : { marginRight: space },
+  });
   return (
     <Box variant={`actionGroup.${variant}`} className={className} {...props}>
       {Children.map(
