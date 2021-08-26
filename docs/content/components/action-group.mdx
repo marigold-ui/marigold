@@ -10,11 +10,11 @@ The ActionGroup component adds two or more components together to form a common 
 
 ## Properties
 
-| Property                 | Type     | Default       |
-| :----------------------- | :------- | :------------ |
-| `variant` (optional)     | `string` | `default`     |
-| `borderColor` (optional) | `string` | `transparent` |
-| `bgColor` (optional)     | `string` | `inherit`     |
+| Property                       | Type                                  | Default   |
+| :----------------------------- | :------------------------------------ | :-------- |
+| `variant` (optional)           | `string`                              | `default` |
+| `space` (optional)             | `ResponsiveStyleValue<number⎮string>` | `none`    |
+| `verticalAlignment` (optional) | `boolean`                             | `false`   |
 
 ## Import
 
@@ -25,7 +25,7 @@ import { ActionGroup } from '@marigold/components';
 ## Live-Code Example
 
 ```tsx live
-<ActionGroup>
+<ActionGroup space="8px">
   <Button variant="text" size="small">
     Cancel
   </Button>
@@ -42,8 +42,40 @@ import { ActionGroup } from '@marigold/components';
   <Button variant="text" size="small">
     Cancel
   </Button>
-  <Button variant="primary" size="small">
+  <Button variant="secondary" size="small">
     Delete <Delete />
+  </Button>
+</ActionGroup>
+```
+
+### With space
+
+```tsx
+<ActionGroup space={8}>
+  <Button variant="secondary" size="small">
+    <Play />
+  </Button>
+  <Button variant="secondary" size="small">
+    <Pause />
+  </Button>
+  <Button variant="secondary" size="small">
+    <Stop />
+  </Button>
+</ActionGroup>
+```
+
+### With vertical alignment
+
+```tsx
+<ActionGroup space={8} verticalAlignment>
+  <Button variant="secondary" size="small">
+    <Play />
+  </Button>
+  <Button variant="secondary" size="small">
+    <Pause />
+  </Button>
+  <Button variant="secondary" size="small">
+    <Stop />
   </Button>
 </ActionGroup>
 ```

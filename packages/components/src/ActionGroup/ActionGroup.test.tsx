@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useStyles, ThemeProvider } from '@marigold/system';
 import { ActionGroup } from './ActionGroup';
+import { Button } from '../Button';
 
 const theme = {
   actionGroup: {
@@ -36,6 +37,40 @@ test('supports other variant than default', () => {
   expect(actionGroup).toHaveStyle(`padding: 12px;`);
 });
 
+test('supports space prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <ActionGroup title="actionGroup" space="8px">
+        <Button title="Button1">Button1</Button>
+        <Button title="Button2">Button2</Button>
+      </ActionGroup>
+    </ThemeProvider>
+  );
+  const button1 = screen.getByTitle(/Button1/);
+  const button2 = screen.getByTitle(/Button2/);
+
+  expect(button1.parentElement instanceof HTMLSpanElement).toBeTruthy();
+  expect(button1.parentElement).toHaveStyle(`margin-right: 8px;`);
+  expect(button2.parentElement).not.toHaveStyle(`margin-right: 8px;`);
+});
+
+test('supports verticalAlignment prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <ActionGroup title="actionGroup" space="8px" verticalAlignment>
+        <Button title="Button1">Button1</Button>
+        <Button title="Button2">Button2</Button>
+      </ActionGroup>
+    </ThemeProvider>
+  );
+  const button1 = screen.getByTitle(/Button1/);
+  const button2 = screen.getByTitle(/Button2/);
+
+  expect(button1.parentElement instanceof HTMLDivElement).toBeTruthy();
+  expect(button1.parentElement).toHaveStyle(`margin-bottom: 8px;`);
+  expect(button2.parentElement).not.toHaveStyle(`margin-bottom: 8px;`);
+});
+
 test('renders correct HTML element', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -49,21 +84,20 @@ test('renders correct HTML element', () => {
 
 test('accepts custom styles prop className', () => {
   const TestComponent: React.FC = ({ children, ...props }) => {
-    const classNames = useStyles({ css: { fontSize: '8px' } });
+    const classNames = useStyles({ css: { padding: '8px' } });
     return (
-      <ActionGroup className={classNames} {...props}>
-        {children}
+      <ActionGroup title="actionGroup" className={classNames} {...props}>
+        <Button title="Button1">Button1</Button>
+        <Button title="Button2">Button2</Button>
       </ActionGroup>
     );
   };
 
-  const { getByText } = render(
+  const { getByTitle } = render(
     <ThemeProvider theme={theme}>
       <TestComponent>text</TestComponent>
     </ThemeProvider>
   );
-  const testelem = getByText('text');
-  const text = getComputedStyle(testelem);
-
-  expect(text.fontSize).toEqual('8px');
+  const actionGroup = getByTitle('actionGroup');
+  expect(actionGroup).toHaveStyle(`padding: 8px;`);
 });
