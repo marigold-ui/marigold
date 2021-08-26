@@ -10,11 +10,13 @@ import * as Icons from '@marigold/icons';
 import { CopyButton } from './CopyButton';
 import { ShowHideButton } from './ShowHideButton';
 import { useThemeSwitch } from './ThemeSwitch';
+import { Logo } from './Logo/Logo';
 
 enum ActionType {
   Preview = 'preview',
   Live = 'live',
   Code = 'code',
+  NoCode = 'noCode',
 }
 
 type CodeBlockProps = {
@@ -147,6 +149,34 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                   <CopyButton codeString={codeString} />
                 </pre>
               </LiveProvider>
+              <br />
+            </>
+          )}
+        </Highlight>
+      );
+    }
+    case ActionType.NoCode: {
+      return (
+        <Highlight
+          {...defaultProps}
+          code={codeString}
+          language={language}
+          theme={theme}
+        >
+          {() => (
+            <>
+              <div className={outerPreviewBoxStyles}>
+                <div className={innerPreviewBoxStyles}>
+                  <LiveProvider
+                    code={codeString}
+                    scope={{ ...Components, ...Icons, Logo }}
+                  >
+                    <ThemeProvider theme={current && themes[current]}>
+                      <LivePreview />
+                    </ThemeProvider>
+                  </LiveProvider>
+                </div>
+              </div>
               <br />
             </>
           )}
