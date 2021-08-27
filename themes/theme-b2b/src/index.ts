@@ -555,6 +555,21 @@ const theme: BaseTheme = {
       },
     },
   },
+  slider: {
+    default: {
+      width: '100%',
+      background: 'transparent',
+      WebkitAppearance: 'none',
+      '::webkit-slider-thumb': {
+        boxSizing: 'border-box',
+        border: '4px solid ' + colors.gray70,
+        width: '16px',
+        height: '16px',
+        background: colors.gray00,
+        borderRadius: '8px',
+      },
+    },
+  },
   validation: {
     error: {
       ...text.root,
