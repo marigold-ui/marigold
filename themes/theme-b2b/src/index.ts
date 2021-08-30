@@ -557,16 +557,70 @@ const theme: BaseTheme = {
   },
   slider: {
     default: {
-      width: '100%',
-      background: 'transparent',
       WebkitAppearance: 'none',
-      '::webkit-slider-thumb': {
+      ':focus': {
+        outline: 'none',
+      },
+      '&::-webkit-slider-thumb': {
+        WebkitAppearance: 'none',
         boxSizing: 'border-box',
         border: '4px solid ' + colors.gray70,
         width: '16px',
         height: '16px',
         background: colors.gray00,
         borderRadius: '8px',
+        cursor: 'pointer',
+      },
+      '&::-webkit-slider-runnable-track': {
+        width: '100%',
+        height: '8px',
+        background: colors.gray30,
+        borderRadius: '8px',
+      },
+      '&::-moz-range-track': {
+        width: '100%',
+        height: '8px',
+        background: colors.gray30,
+        borderRadius: '8px',
+      },
+      '&::-moz-range-thumb': {
+        WebkitAppearance: 'none',
+        boxSizing: 'border-box',
+        border: '4px solid ' + colors.gray70,
+        width: '16px',
+        height: '16px',
+        background: colors.gray00,
+        borderRadius: '8px',
+        cursor: 'pointer',
+      },
+      '&::-ms-track': {
+        width: '100%',
+        background: colors.gray70,
+        borderRadius: '8px',
+      },
+      '&::-ms-thumb': {
+        WebkitAppearance: 'none',
+        boxSizing: 'border-box',
+        border: '4px solid ' + colors.gray70,
+        width: '16px',
+        height: '16px',
+        background: colors.gray00,
+        borderRadius: '8px',
+        cursor: 'pointer',
+      },
+      '&::-ms-fill-lower': {
+        background: colors.gray70,
+        borderRadius: '8px',
+      },
+      '&:focus::-ms-fill-lower': {
+        background: colors.blue60,
+      },
+      '&::-ms-fill-upper': {
+        background: colors.gray30,
+        borderRadius: '8px',
+      },
+      '&:focus::-ms-fill-upper': {
+        background: colors.blue60,
       },
     },
   },
