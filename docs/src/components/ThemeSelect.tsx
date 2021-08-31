@@ -1,23 +1,21 @@
 import * as React from 'react';
 import { useThemeSwitch } from './ThemeSwitch';
-import { Box, SelectProps } from '@marigold/components';
+import { Item, Select } from '@marigold/components';
 
-export const ThemeSelect: React.FC<SelectProps> = () => {
+export const ThemeSelect = () => {
   const { current, themes, setTheme } = useThemeSwitch();
 
   return (
-    <Box
-      as="select"
-      variant="select.themeSwitch"
+    <Select
       id="theme-select"
+      selectedKey={current}
       value={current}
-      onChange={(e: { target: { value: any } }) => setTheme(e.target.value)}
+      onSelectionChange={current => setTheme(current)}
+      width={160}
     >
       {Object.keys(themes).map(name => (
-        <option key={name} value={name}>
-          {name}
-        </option>
+        <Item key={name}>{name}</Item>
       ))}
-    </Box>
+    </Select>
   );
 };

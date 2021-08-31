@@ -1,44 +1,44 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Message } from './Message';
 import { Text } from '../Text';
 
-<Meta title="Components/Message" />
+<Meta
+  title="Components/Message"
+  argTypes={{
+    variant: {
+      control: {
+        type: 'select',
+      },
+      options: ['warning', 'error', 'info'],
+      description: 'Messaging in different colors and icons',
+      table: {
+        defaultValue: {
+          summary: 'info',
+        },
+      },
+    },
+    messageTitle: {
+      control: {
+        type: 'text',
+      },
+      description: 'Content',
+      type: {
+        required: true,
+      },
+    },
+  }}
+/>
 
 # Message
 
-## Description
-
-Simple component to display a message with a title and icon based on a `div` element and styled with a theme.
-
-## Properties
-
-| Property             | Type     | Default |
-| :------------------- | :------- | :------ |
-| `messageTitle`       | `string` |         |
-| `variant` (optional) | `string` | `info`  |
-
-## Import
-
-```tsx
-import { Message } from '@marigold/components';
-```
-
-## Usage
+export const Template = args => (
+  <Message messageTitle="Danger Zone!" {...args}>
+    <Text>Hello, I am a simple message.</Text>
+  </Message>
+);
 
 <Canvas>
-  <Story name="Message">
-    <Message variant="warning" messageTitle="Danger Zone!">
-      <Text>Hello, I am a simple warning message.</Text>
-    </Message>
-    <br />
-    <br />
-    <Message variant="error" messageTitle="Wrong here.">
-      <Text>Hello, I am a simple error message.</Text>
-    </Message>
-    <br />
-    <br />
-    <Message messageTitle="There is an update available.">
-      <Text>Hello, I am a simple info message.</Text>
-    </Message>
-  </Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
+
+<ArgsTable story="Default" />

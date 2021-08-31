@@ -6,7 +6,22 @@ title: Select
 
 ## Description
 
-Dropdown for selecting a value among different options.
+Dropdown for selecting an item among different options.
+
+## Properties
+
+| Property                        | Type                                                                                                     | Default |
+| :------------------------------ | :------------------------------------------------------------------------------------------------------- | :------ |
+| `label` (optional)              | `string`                                                                                                 |         |
+| `placeholder` (optional)        | `string`                                                                                                 |         |
+| `disabled` (optional)           | `boolean`                                                                                                |         |
+| `selectedKey` (optional)        | [Key](https://reactjs.org/docs/lists-and-keys.html)                                                      |         |
+| `defaultSelectedKey` (optional) | [Key](https://reactjs.org/docs/lists-and-keys.html)                                                      |         |
+| `disabledKeys` (optional)       | [Iterable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)`<Key>` |         |
+| `required` (optional)           | `boolean`                                                                                                |         |
+| `error` (optional)              | `string`                                                                                                 |         |
+| `width` (optional)              | `ResponsiveStyleValue<number⎮string>`                                                                    |         |
+| `onSelectionChange` (optional)  | `(key: Key) => any`                                                                                      |         |
 
 ## Import
 
@@ -14,41 +29,122 @@ Dropdown for selecting a value among different options.
 import { Select } from '@marigold/components';
 ```
 
+```tsx code
+import { Item } from '@marigold/components';
+```
+
 ## Live-Code Example
 
 ```tsx live
-<Label htmlFor="select">
-  Choose one option
-  <Select id="select">
-    <option selected>...</option>
-    <option>Option One</option>
-    <option>Option Two</option>
-  </Select>
-</Label>
+<Select label="Favorite character" placeholder="Select your character">
+  <Item>Mario</Item>
+  <Item>Luigi</Item>
+  <Item>Toad</Item>
+  <Item>Yoshi</Item>
+  <Item>Bowser</Item>
+  <Item>Peach</Item>
+</Select>
 ```
 
 ## Usage
 
-```tsx
-<Label htmlFor="select">
-  Dropdown
-  <Select id="select">
-    <option selected>Choose here</option>
-    <option>Hi</option>
-    <option>Hey</option>
-    <option>Blubb</option>
-  </Select>
-</Label>
-```
+### Standard Select
 
 ```tsx
-<Label htmlFor="select2">
-  Dropdown disabled
-  <Select disabled>
-    <option selected>Can't choose here</option>
-    <option>Hi</option>
-    <option>Hey</option>
-    <option>Blubb</option>
-  </Select>
-</Label>
+<Select label="Favorite Color" placeholder="Choose a color">
+  <Item>Red</Item>
+  <Item>Orange</Item>
+  <Item>Yellow</Item>
+  <Item>Green</Item>
+  <Item>Blue</Item>
+  <Item>Purple</Item>
+</Select>
+```
+
+### Default selected Key (uncontrolled)
+
+```tsx
+<Select
+  label="Choose Color (uncontrolled)"
+  htmlFor="id"
+  defaultSelectedKey="Red"
+>
+  <Item key="Red">Red</Item>
+  <Item key="Orange">Orange</Item>
+  <Item key="Yellow">Yellow</Item>
+  <Item key="Green">Green</Item>
+  <Item key="Blue">Blue</Item>
+  <Item key="Purple">Purple</Item>
+</Select>
+```
+
+### Selected Key (controlled)
+
+```tsx
+() => {
+  const [color, setColor] = React.useState('Red');
+  return (
+    <Select
+      label="Choose Color (controlled)"
+      htmlFor="id"
+      selectedKey={color}
+      onSelectionChange={selected => setColor(selected)}
+    >
+      <Item key="Red">Red</Item>
+      <Item key="Orange">Orange</Item>
+      <Item key="Yellow">Yellow</Item>
+      <Item key="Green">Green</Item>
+      <Item key="Blue">Blue</Item>
+      <Item key="Purple">Purple</Item>
+    </Select>
+  );
+};
+```
+
+### Disabled Select
+
+```tsx
+<Select label="Disabled Select:" disabled placeholder="disabled Select">
+  <Item>disabled Item</Item>
+</Select>
+```
+
+### Disabled Keys
+
+```tsx
+<Select label="Favorite Color" disabledKeys={['Orange', 'Yellow']}>
+  <Item key="Red">Red</Item>
+  <Item key="Orange">Orange</Item>
+  <Item key="Yellow">Yellow</Item>
+  <Item key="Green">Green</Item>
+  <Item key="Blue">Blue</Item>
+  <Item key="Purple">Purple</Item>
+</Select>
+```
+
+### Required label Select
+
+```tsx
+<Select required label="required Select">
+  <Item>Option 1</Item>
+  <Item>Option 2</Item>
+</Select>
+```
+
+### Error Select
+
+```tsx
+<Select error="Please choose one option!" label="error Select">
+  <Item>Option 1</Item>
+  <Item>Option 2</Item>
+</Select>
+```
+
+### Custom width Select
+
+```tsx
+<Select label="Width Select" width={300}>
+  <Item>Option 1</Item>
+  <Item>Option 2</Item>
+</Select>
 ```

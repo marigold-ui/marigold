@@ -1,36 +1,36 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { ValidationMessage } from './ValidationMessage';
 import { Exclamation } from '@marigold/icons';
 
-<Meta title="Components/ValidationMessage" />
+<Meta
+  title="Components/ValidationMessage"
+  argTypes={{
+    variant: {
+      control: {
+        type: 'text',
+      },
+      description: '?',
+      table: {
+        defaultValue: {
+          summary: 'error',
+        },
+      },
+    },
+  }}
+/>
 
 # ValidationMessage
 
-## Description
 
-Simple colored element to display a validation message as a reaction to an event.
-
-## Properties
-
-| Property             | Type     | Default |
-| :------------------- | :------- | :------ |
-| `variant` (optional) | `string` | `error` |
-
-## Import
-
-```tsx
-import { ValidationMessage } from '@marigold/components';
-```
-
-## Usage
+export const Template = args => (
+  <ValidationMessage {...args}>
+    <Exclamation />
+    Validation message
+  </ValidationMessage>
+);
 
 <Canvas>
-  <Story name="ValidationMessage">
-    <div>
-      <ValidationMessage>
-        <Exclamation />
-        Validation message
-      </ValidationMessage>
-    </div>
-  </Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
+
+<ArgsTable story="Default" />

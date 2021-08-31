@@ -18,6 +18,7 @@ export * from './Link';
 export * from './Menu';
 export * from './MenuItem';
 export * from './Message';
+export * from './Provider';
 export * from './Radio';
 export * from './Slider';
 export * from './Select';
@@ -27,3 +28,5 @@ export * from './Textarea';
 export * from './Input';
 export * from './Container';
 export * from './ValidationMessage';
+
+export { Item } from '@react-stately/collections';

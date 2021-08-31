@@ -1,44 +1,71 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { Label } from '../Label';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Select } from './Select';
+import { Item } from '@marigold/components';
 
-<Meta title="Components/Select" />
+<Meta
+  title="Components/Select"
+  argTypes={{
+    placeholder: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        defaultValue: {
+          summary: 'Select an option',
+        },
+      },
+    },
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+      options: [true, false],
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+    required: {
+      control: {
+        type: 'boolean',
+      },
+      options: [true, false],
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+    error: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        defaultValue: {
+          summary: 'Error',
+        },
+      },
+    },
+    width: {
+      control: 'number',
+    },
+  }}
+/>
 
 # Select
 
-## Description
-
-Dropdown for selecting a value among different options.
-
-## Import
-
-```tsx
-import { Select } from '@marigold/components';
-```
-
-## Usage
+export const Template = args => (
+  <Select label="Favorite Color" htmlFor="id" {...args}>
+    {/* Storybook crashes with imported <Item> component
+      <Item>Red</Item>
+      <Item>Orange</Item>
+      <Item>Yellow</Item> */}
+  </Select>
+);
 
 <Canvas>
-  <Story name="Select">
-    <Label htmlFor="select">
-      Dropdown
-      <Select id="select">
-        <option selected>Choose here</option>
-        <option>Hi</option>
-        <option>Hey</option>
-        <option>Blubb</option>
-      </Select>
-    </Label>
-  </Story>
-  <Story name="Select disabled">
-    <Label htmlFor="select2">
-      Dropdown disabled
-      <Select disabled>
-        <option selected>Can't choose here</option>
-        <option>Hi</option>
-        <option>Hey</option>
-        <option>Blubb</option>
-      </Select>
-    </Label>
-  </Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
+
+<ArgsTable story="Default" />
