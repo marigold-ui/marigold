@@ -1,6 +1,20 @@
 import { BaseTheme } from '@marigold/components';
 import { colors } from './colors';
 
+const selectButton = {
+  appearance: 'none',
+  position: 'relative',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  overflow: 'hidden',
+  outline: 'none',
+  width: '100%',
+  lineHeight: '32px',
+  px: 'xsmall',
+  color: 'inherit',
+  bg: 'transparent',
+};
 const button = {
   root: {
     position: 'relative',
@@ -10,14 +24,6 @@ const button = {
     border: 'none',
     borderRadius: '2px',
     display: 'inline-flex',
-  },
-  large: {
-    lineHeight: '46px',
-    paddingX: 'xlarge',
-  },
-  small: {
-    lineHeight: '30px',
-    paddingX: 'medium',
   },
   primary: {
     color: 'background',
@@ -92,6 +98,49 @@ const button = {
       cursor: 'not-allowed',
     },
   },
+  select: {
+    ...selectButton,
+    border: '1px solid',
+    borderColor: colors.gray40,
+    ':hover': {
+      cursor: 'pointer',
+    },
+    ':focus': {
+      border: '2px solid',
+      borderColor: colors.blue60,
+    },
+    ':disabled': {
+      bg: colors.gray20,
+      color: 'disabled',
+      cursor: 'not-allowed',
+    },
+    error: {
+      ...selectButton,
+      border: '1px solid',
+      borderRadius: '2px',
+      borderColor: 'error',
+    },
+    open: {
+      ...selectButton,
+      borderTop: '1px solid',
+      borderRight: '1px solid',
+      borderLeft: '1px solid',
+      borderBottom: 'none',
+      borderColor: colors.gray40,
+      borderTopRightRadius: '2px',
+      borderTopLeftRadius: '2px',
+    },
+    errorOpened: {
+      ...selectButton,
+      borderTop: '1px solid',
+      borderRight: '1px solid',
+      borderLeft: '1px solid',
+      borderBottom: 'none',
+      borderColor: 'error',
+      borderTopRightRadius: '2px',
+      borderTopLeftRadius: '2px',
+    },
+  },
 };
 const text = {
   root: {
@@ -110,6 +159,17 @@ const text = {
       marginBottom: 'small',
     },
   },
+};
+const selectOption = {
+  fontFamily: 'body',
+  fontSize: 'xsmall',
+  fontWeight: 'body',
+  lineHeight: '32px',
+  outline: 'none',
+  cursor: 'pointer',
+  color: 'text',
+  px: 'xsmall',
+  listStyle: 'none',
 };
 
 const theme: BaseTheme = {
@@ -151,7 +211,7 @@ const theme: BaseTheme = {
     background: colors.gray10,
     primary: colors.orange60,
     secondary: colors.gray70,
-    disabled: colors.gray30,
+    disabled: colors.gray40,
     error: colors.red60,
     warning: colors.orange60,
     info: colors.blue70,
@@ -189,62 +249,37 @@ const theme: BaseTheme = {
     },
   },
   button: {
+    large: {
+      lineHeight: '46px',
+      paddingX: 'xlarge',
+    },
+    small: {
+      lineHeight: '30px',
+      paddingX: 'medium',
+    },
     primary: {
-      small: {
-        ...button.root,
-        ...button.primary,
-        ...button.small,
-      },
-      large: {
-        ...button.root,
-        ...button.primary,
-        ...button.large,
-      },
+      ...button.root,
+      ...button.primary,
     },
     secondary: {
-      small: {
-        ...button.root,
-        ...button.secondary,
-        ...button.small,
-      },
-      large: {
-        ...button.root,
-        ...button.secondary,
-        ...button.large,
-      },
+      ...button.root,
+      ...button.secondary,
     },
     ghost: {
-      small: {
-        ...button.root,
-        ...button.ghost,
-        ...button.small,
-      },
-      large: {
-        ...button.root,
-        ...button.ghost,
-        ...button.large,
-      },
+      ...button.root,
+      ...button.ghost,
     },
     text: {
-      root: {
-        ...button.root,
-        ...button.text,
-      },
-      small: {
-        ...button.root,
-        ...button.text,
-        ...button.small,
-      },
-      large: {
-        ...button.root,
-        ...button.text,
-        ...button.large,
-      },
+      ...button.root,
+      ...button.text,
     },
     menu: {
       ...button.root,
       ...button.menu,
-      ...button.small,
+    },
+    select: {
+      ...button.root,
+      ...button.select,
     },
   },
   checkbox: {
@@ -328,6 +363,20 @@ const theme: BaseTheme = {
       lineHeight: '1.5rem',
       color: 'text',
     },
+    above: {
+      fontFamily: 'body',
+      fontSize: 'xxsmall',
+      fontWeight: 'body',
+      lineHeight: 'body',
+      color: 'text',
+    },
+    disabled: {
+      fontFamily: 'body',
+      fontSize: 'xxsmall',
+      fontWeight: 'body',
+      lineHeight: 'body',
+      color: colors.gray30,
+    },
   },
   link: {
     normal: {
@@ -382,33 +431,6 @@ const theme: BaseTheme = {
       mb: '8px',
     },
   },
-  select: {
-    default: {
-      display: 'block',
-      width: '100%',
-      padding: 'small',
-      appearance: 'none',
-      fontSize: 'inherit',
-      lineHeight: 'inherit',
-      border: '1px solid',
-      borderColor: colors.gray30,
-      borderRadius: '2px',
-      color: 'inherit',
-      bg: 'transparent',
-      ':hover': {
-        cursor: 'pointer',
-      },
-      ':focus': {
-        border: '2px solid',
-        borderColor: colors.blue60,
-      },
-      ':disabled': {
-        bg: colors.gray10,
-        color: 'disabled',
-        cursor: 'not-allowed',
-      },
-    },
-  },
   text: {
     body: {
       ...text.root,
@@ -422,45 +444,37 @@ const theme: BaseTheme = {
       ...text.root,
       fontWeight: 'heading',
       fontSize: 'xlarge',
-      marginBottom: 'medium',
-      '&:first-child': {
-        marginTop: 'none',
-      },
+      m: 'none',
     },
     h2: {
       ...text.root,
       fontWeight: 'heading',
       fontSize: 'large',
-      marginTop: 'large',
-      marginBottom: 'xsmall',
-      '&:first-child': {
-        marginTop: 'none',
-      },
+      m: 'none',
     },
     h3: {
       ...text.root,
       fontWeight: 'heading',
       fontSize: 'medium',
-      marginTop: 'small',
-      marginBottom: 'xsmall',
-      '&:first-child': {
-        marginTop: 'none',
-      },
+      m: 'none',
     },
     h4: {
       ...text.root,
       fontWeight: 'heading',
       fontSize: 'small',
+      m: 'none',
     },
     h5: {
       ...text.root,
       fontWeight: 'heading',
       fontSize: 'xsmall',
+      m: 'none',
     },
     h6: {
       ...text.root,
       fontSize: 'xsmall',
       textTransform: 'uppercase',
+      m: 'none',
     },
   },
   textarea: {
@@ -478,6 +492,65 @@ const theme: BaseTheme = {
       },
       ':disabled': {
         bg: colors.gray20,
+        color: colors.gray40,
+      },
+    },
+  },
+  select: {
+    __default: {
+      fontFamily: 'body',
+      fontSize: 'xsmall',
+      fontWeight: 400,
+      lineHeight: '32px',
+      color: 'text',
+    },
+    disabled: {
+      fontFamily: 'body',
+      fontSize: 'xsmall',
+      fontWeight: 400,
+      lineHeight: '32px',
+      color: 'disabled',
+      cursor: 'not-allowed',
+    },
+    listbox: {
+      __default: {
+        background: colors.gray00,
+        borderTop: 'none',
+        borderRight: '1px solid',
+        borderLeft: '1px solid',
+        borderBottom: '1px solid',
+        borderBottomRightRadius: '2px',
+        borderBottomLeftRadius: '2px',
+        borderColor: colors.gray40,
+        outline: 'none',
+      },
+      error: {
+        background: colors.gray00,
+        borderTop: 'none',
+        borderRight: '1px solid',
+        borderLeft: '1px solid',
+        borderBottom: '1px solid',
+        borderBottomRightRadius: '2px',
+        borderBottomLeftRadius: '2px',
+        borderColor: 'error',
+        outline: 'none',
+      },
+    },
+    option: {
+      __default: {
+        ...selectOption,
+        ':focus': {
+          bg: colors.blue20,
+        },
+      },
+      selected: {
+        ...selectOption,
+        color: colors.gray00,
+        bg: colors.blue60,
+      },
+      disabled: {
+        ...selectOption,
+        cursor: 'not-allowed',
         color: colors.gray40,
       },
     },

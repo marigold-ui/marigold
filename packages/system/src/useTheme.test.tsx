@@ -11,6 +11,12 @@ const theme = {
     primary: 'hotpink',
     black: '#000',
   },
+  space: {
+    none: 0,
+    small: 16,
+    medium: 24,
+    large: 32,
+  },
   text: {
     body: {
       fontSize: 1,
@@ -27,26 +33,37 @@ const wrapper: React.FC = ({ children }) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>
 );
 
-test('return theme', () => {
+test('returns the theme', () => {
   const { result } = renderHook(() => useTheme(), { wrapper });
-  expect(result.current).toMatchInlineSnapshot(`
-    Object {
-      "colors": Object {
-        "black": "#000",
-        "primary": "hotpink",
-      },
-      "text": Object {
-        "body": Object {
-          "color": "black",
-          "fontSize": 1,
-        },
-        "heading": Object {
-          "color": "primary",
-          "fontSize": 3,
-        },
-      },
-    }
-  `);
+  expect(result.current.theme).toEqual(theme);
+});
+
+test('returns a "css" function', () => {
+  const { result } = renderHook(() => useTheme(), { wrapper });
+  expect(result.current.css).toEqual(expect.any(Function));
+});
+
+test('transpile style object to css object', () => {
+  const { result } = renderHook(() => useTheme(), { wrapper });
+  const css = result.current.css;
+
+  expect(css({ p: 'small' })).toMatchInlineSnapshot(`
+Object {
+  "padding": 16,
+}
+`);
+  expect(css({ color: 'primary', p: 'large' })).toMatchInlineSnapshot(`
+Object {
+  "color": "hotpink",
+  "padding": 32,
+}
+`);
+  expect(css({ variant: 'text.body' })).toMatchInlineSnapshot(`
+Object {
+  "color": "#000",
+  "fontSize": 14,
+}
+`);
 });
 
 test('themes can be cascaded', () => {
@@ -63,7 +80,7 @@ test('themes can be cascaded', () => {
   };
 
   const Theme = ({ testId }: { testId: string }) => {
-    const theme = useTheme();
+    const { theme } = useTheme();
     return <div data-testid={testId}>{JSON.stringify(theme, null, 2)}</div>;
   };
 

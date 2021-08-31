@@ -1,0 +1,50 @@
+---
+title: Getting Started
+---
+
+import Link from 'gatsby-link';
+
+# Getting Started
+
+## Installation
+
+Marigold is open source and available on npm. To install the components, run the following in your terminal:
+
+```bash code
+# with npm
+npm install @marigold/components --save
+
+# with yarn
+yarn add @marigold/components
+```
+
+Add the package `@marigold/icons` if you want to use icons in Marigold.
+
+## Usage
+
+Marigold components don't come with a theme by default. In order to add a theme to your application, use the `ThemeProvider`
+component and thereby provide a theme in context. You can use one of the following themes: <Link to="../../themes/b2b">B2B theme</Link> or <Link to="../../themes/unicorn">Unicorn theme</Link>.
+
+```bash code
+# with npm
+npm install @marigold/theme-unicorn --save
+
+# with yarn
+yarn add @marigold/theme-unicorn
+```
+
+Wrap your application and all components with the `ThemeProvider` component.
+
+```tsx code
+import React from 'react';
+import { ThemeProvider } from '@marigold/system';
+import unicornTheme from '@marigold/theme-unicorn';
+
+export const App = () => {
+  return (
+    <ThemeProvider theme={unicornTheme}>
+      <Button variant="primary.small">Hello World</Button>
+    </ThemeProvider>
+  );
+};
+```

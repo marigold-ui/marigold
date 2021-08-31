@@ -1,64 +1,39 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { Button } from '../Button';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Hidden } from './Hidden';
 import { Text } from '../Text';
-import { useState } from 'react';
 
-<Meta title="Components/Hidden" />
+<Meta
+  title="Components/Hidden"
+  argTypes={{
+    show: {
+      control: {
+        type: 'boolean',
+      },
+      options: [true, false],
+      description: 'Show or hide',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+  }}
+/>
 
 # Hidden
 
-## Description
-
-With the Hidden component you can hide elements or components. E.g. to hide some text in specific cases, for groups or platforms.
-
-## Properties
-
-| Property          | Type      | Default |
-| :---------------- | :-------- | :------ |
-| `show` (optional) | `boolean` | `false` |
-
-## Import
-
-```tsx
-import { Hidden } from '@marigold/components';
-```
-
-## Usage
+export const Template = args => (
+  <div>
+    <Text>Change the "show" switch to "true"</Text>
+    <Hidden {...args}>
+      <br />
+      <Text>Hello here I am!</Text>
+    </Hidden>
+  </div>
+);
 
 <Canvas>
-  <Story name="HiddenText">
-    <div>
-      <Text>Hello, I am visible</Text>
-      <Hidden>
-        <Text>Hello, I am invisible</Text>
-      </Hidden>
-    </div>
-  </Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
 
-<Canvas>
-  <Story name="HiddenButton">
-    {() => {
-      const [state, setState] = React.useState({
-        showButton: false,
-      });
-      const handleToggleClick = () => {
-        setState(prevState => ({
-          showButton: !prevState.showButton,
-        }));
-      };
-      return (
-        <div>
-          <Button variant="primary.small" onClick={handleToggleClick}>
-            {state.showButton ? 'Hide Text' : 'Show Text'}
-          </Button>
-          <Hidden show={state.showButton}>
-            <br />
-            <Text>Hello, now I am visible</Text>
-          </Hidden>
-        </div>
-      );
-    }}
-  </Story>
-</Canvas>
+<ArgsTable story="Default" />

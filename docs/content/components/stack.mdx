@@ -10,10 +10,10 @@ Layout component to stack elements. This component uses the spaces from the give
 
 ## Properties
 
-| Property | Type                                           | Default |
-| :------- | :--------------------------------------------- | :------ |
-| `space`  | `ResponsiveStyleValue<number `&#124;` string>` | `0`     |
-| `align`  | `left, right, center`                          | `left`  |
+| Property | Type                                  | Default |
+| :------- | :------------------------------------ | :------ |
+| `space`  | `ResponsiveStyleValue<number⎮string>` | `0`     |
+| `align`  | `left, right, center`                 | `left`  |
 
 ## Import
 
@@ -26,7 +26,7 @@ import { Stack } from '@marigold/components';
 ### Spacing
 
 ```tsx
-<Stack>
+<Stack space="large">
   <Heading>Header</Heading>
   <Text>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
@@ -47,13 +47,13 @@ import { Stack } from '@marigold/components';
 
 ```tsx
 <>
-  <Stack space={2}>
+  <Stack space="medium">
     <Text>Left</Text>
   </Stack>
-  <Stack space={2} align="center">
+  <Stack space="medium" align="center">
     <Text>Center</Text>
   </Stack>
-  <Stack space={2} align="right">
+  <Stack space="medium" align="right">
     <Text>Right</Text>
   </Stack>
 </>
@@ -62,20 +62,30 @@ import { Stack } from '@marigold/components';
 ### Nested
 
 ```tsx
-<Stack space={6}>
-  <Stack>
+<Stack space="large">
+  <Stack space="medium">
     <Heading>Stack Content #1</Heading>
     <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
     <Text>
       Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
     </Text>
   </Stack>
-  <Stack>
+  <Stack space="medium">
     <Heading>Stack Content #2</Heading>
     <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
     <Text>
       Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
     </Text>
   </Stack>
+</Stack>
+```
+
+### Usage for Lists
+
+```tsx
+<Stack space="medium" as="ol">
+  <li>Milk</li>
+  <li>Apples</li>
+  <li>Cookies</li>
 </Stack>
 ```

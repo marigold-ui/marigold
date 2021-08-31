@@ -1,81 +1,68 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Checkbox } from './Checkbox';
 import { useState } from 'react';
-import { useStyles } from '@marigold/system';
 
-<Meta title="Components/Checkbox" />
+<Meta
+  title="Components/Checkbox"
+  parameters={{
+    actions: {
+      handles: ['click'],
+    },
+  }}
+  argTypes={{
+    id: {
+      control: {
+        type: 'text',
+      },
+      type: { required: true },
+      description: 'Unique ID',
+    },
+    variant: {
+      control: {
+        type: 'text',
+      },
+      description: 'Checkbox variant',
+      table: {
+        defaultValue: {
+          summary: 'default',
+        },
+      },
+    },
+    label: {
+      control: {
+        type: 'text',
+      },
+      description: 'Label',
+    },
+    required: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Require',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+  }}
+/>
 
 # Checkbox
 
-## Description
-
-With the Checkbox component you can add a HTML `<input>` element with `type="checkbox"` to your form.
-The element uses always the themeSection with the name: `checkbox` in your given theme. The variant in your section can be added with the variant prop. The default variant is `default`.
-
-## Properties
-
-| Property              | Type      | Default   |
-| :-------------------- | :-------- | :-------- |
-| `id`                  | `string`  |           |
-| `variant` (optional)  | `string`  | `default` |
-| `label` (optional)    | `string`  |           |
-| `required` (optional) | `boolean` |           |
-
-## Import
-
-```tsx
-import { Checkbox } from '@marigold/components';
-```
-
-## Usage
-
-### Checkbox standard labeled
+export const Template = ({ onChange, checked, ...args }) => {
+  const [isChecked, setChecked] = React.useState(false);
+  return (
+    <Checkbox
+      onChange={() => setChecked(!isChecked)}
+      checked={isChecked}
+      {...args}
+    />
+  );
+};
 
 <Canvas>
-  <Story name="CheckboxOne">
-    {() => {
-      const [isChecked, setChecked] = React.useState(false);
-      const onChange = () => {
-        setChecked(!isChecked);
-      };
-      return (
-        <Checkbox
-          id="myCheckbox"
-          name="myCheckbox"
-          onChange={onChange}
-          checked={isChecked}
-          value="Checkbox"
-          label="check if you like Marigold"
-        />
-      );
-    }}
-  </Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
 
-### Checkbox checked, disabled and custom styled
-
-<Canvas>
-  <Story name="CheckboxTwo">
-    <>
-      <Checkbox id="checkboxOne" checked />
-      <Checkbox id="checkboxTwo" disabled />
-      <Checkbox id="checkboxThree" checked disabled />
-    </>
-  </Story>
-</Canvas>
-
-### Checkbox with required label
-
-<Canvas>
-  <Story name="CheckboxThree">
-    <div>
-      <Checkbox
-        checked
-        id="required"
-        value="required"
-        required
-        label="This label is required"
-      />
-    </div>
-  </Story>
-</Canvas>
+<ArgsTable story="Default" />

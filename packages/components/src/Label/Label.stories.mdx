@@ -1,34 +1,37 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Label } from './Label';
 
-<Meta title="Components/Label" />
+<Meta
+  title="Components/Label"
+  argTypes={{
+    variant: {
+      control: {
+        type: 'text',
+      },
+      description: '?',
+      table: {
+        defaultValue: {
+          summary: 'default',
+        },
+      },
+    },
+    htmlFor: {
+      control: {
+        type: 'text',
+      },
+      type: {
+        required: true,
+      },
+    },
+  }}
+/>
 
-# Label-Component
+# Label
 
-## Description
-
-With the Label component you can add a HTML `<Label>` element to your form.
-The element uses always the themeSection with the name: `label` in your given theme. The variant in your section can be added with the variant prop. The default variant is `default`.
-
-## Properties
-
-| Property             | Type     | Default   |
-| :------------------- | :------- | :-------- |
-| `variant` (optional) | `string` | `default` |
-| `htmlFor`            | `string` |           |
-
-## Import
-
-```tsx
-import { Label } from '@marigold/components';
-```
-
-## Usage
+export const Template = args => <Label htmlFor="input">Label</Label>;
 
 <Canvas>
-  <Story name="label">
-    <Label variant="label" htmlFor="labelId">
-      I am a Label!
-    </Label>
-  </Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
+
+<ArgsTable story="Default" />

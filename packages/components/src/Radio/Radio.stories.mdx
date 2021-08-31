@@ -1,100 +1,68 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { useState } from 'react';
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Radio } from './Radio';
+import { useState } from 'react';
 
-<Meta title="Components/Radio" />
+<Meta
+  title="Components/Radio"
+  parameters={{
+    actions: {
+      handles: ['click'],
+    },
+  }}
+  argTypes={{
+    id: {
+      control: {
+        type: 'text',
+      },
+      type: { required: true },
+      description: 'Unique ID',
+    },
+    variant: {
+      control: {
+        type: 'text',
+      },
+      description: 'Radio variant',
+      table: {
+        defaultValue: {
+          summary: 'radio',
+        },
+      },
+    },
+    label: {
+      control: {
+        type: 'text',
+      },
+      description: 'Label',
+    },
+    required: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Require',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+  }}
+/>
 
-# Radio Button
+# Radio
 
-## Description
-
-With the Radio Button component you can add a HTML `<input>` element with `type="radio"` to your form.
-The element uses always the themeSection with the name: `form` in your given theme. The variant in your section can be added with the variant prop. The default variant is `radio`.
-
-## Properties
-
-| Property              | Type      | Default |
-| :-------------------- | :-------- | :------ |
-| `id`                  | `string`  |         |
-| `variant` (optional)  | `string`  | `radio` |
-| `label` (optional)    | `string`  |         |
-| `required` (optional) | `boolean` |         |
-
-## Import
-
-```tsx
-import { Radio } from '@marigold/components';
-```
-
-## Usage
-
-### Radio standard labeled
-
-<Canvas>
-  <Story name="RadioOne">
-    {() => {
-      const [state, setState] = React.useState('Mastercard');
-      const onChange = changeEvent => {
-        setState(changeEvent.currentTarget.value);
-      };
-      return (
-        <div>
-          <Radio
-            id="mc"
-            name="payment"
-            onChange={onChange}
-            checked={state === 'Mastercard'}
-            value="Mastercard"
-            label="Mastercard"
-          />
-          <br />
-          <Radio
-            id="vi"
-            name="payment"
-            onChange={onChange}
-            checked={state === 'Visa'}
-            value="Visa"
-            label="Visa"
-          />
-          <br />
-          <Radio
-            id="ae"
-            name="payment"
-            onChange={onChange}
-            checked={state === 'AmericanExpress'}
-            value="AmericanExpress"
-            label="AmericanExpress"
-          />
-        </div>
-      );
-    }}
-  </Story>
-</Canvas>
-
-### Radio checked and disabled
+export const Template = ({ onChange, checked, ...args }) => {
+  const [isChecked, setChecked] = React.useState(false);
+  return (
+    <Radio
+      onChange={() => setChecked(!isChecked)}
+      checked={isChecked}
+      {...args}
+    />
+  );
+};
 
 <Canvas>
-  <Story name="RadioTwo">
-    <div>
-      <Radio id="radio" checked />
-      <Radio id="radio" disabled />
-      <Radio id="radio" checked disabled />
-    </div>
-  </Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Canvas>
 
-### Radio with required label
-
-<Canvas>
-  <Story name="RadioThree">
-    <div>
-      <Radio
-        checked
-        id="required"
-        value="required"
-        required
-        label="This label is required"
-      />
-    </div>
-  </Story>
-</Canvas>
+<ArgsTable story="Default" />

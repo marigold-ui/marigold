@@ -1,13 +1,15 @@
 import React from 'react';
-import * as Components from '@marigold/components';
-import { useStyles } from '@marigold/system';
-import * as Icons from '@marigold/icons';
+import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/github';
-import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
+
+import * as Components from '@marigold/components';
+import { ThemeProvider, useStyles } from '@marigold/system';
+import * as Icons from '@marigold/icons';
 
 import { CopyButton } from './CopyButton';
 import { ShowHideButton } from './ShowHideButton';
+import { useThemeSwitch } from './ThemeSwitch';
 
 enum ActionType {
   Preview = 'preview',
@@ -27,27 +29,28 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
   type = 'preview',
   language,
 }) => {
+  const { current, themes } = useThemeSwitch();
   const [hide, setHide] = React.useState(type === ActionType.Preview);
   const outerPreviewBoxStyles = useStyles({
     css: {
-      border: '1px solid #e3e3e3',
+      border: 'grey',
       borderRadius: '4px',
     },
   });
   const innerPreviewBoxStyles = useStyles({
     css: {
-      padding: '32px 16px',
       position: 'relative',
-      overflow: 'auto',
+      py: 'large',
+      px: 'small',
     },
   });
   const codeBoxStyles = useStyles({
     css: {
-      fontSize: '1rem',
-      margin: 0,
-      padding: '32px 16px',
       position: 'relative',
-      overflow: 'auto',
+      fontSize: 'body',
+      margin: 0,
+      py: 'large',
+      px: 'small',
     },
   });
 
@@ -68,7 +71,9 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                     code={codeString}
                     scope={{ ...Components, ...Icons }}
                   >
-                    <LivePreview />
+                    <ThemeProvider theme={current && themes[current]}>
+                      <LivePreview />
+                    </ThemeProvider>
                   </LiveProvider>
                 </div>
                 <ShowHideButton hide={hide} onHideChange={setHide} />
@@ -105,9 +110,11 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
           scope={{ ...Components, ...Icons }}
           theme={theme}
         >
-          <div className={outerPreviewBoxStyles}>
-            <LivePreview className={innerPreviewBoxStyles} />
-          </div>
+          <ThemeProvider theme={current && themes[current]}>
+            <div className={outerPreviewBoxStyles}>
+              <LivePreview className={innerPreviewBoxStyles} />
+            </div>
+          </ThemeProvider>
           <LiveEditor className={codeBoxStyles} />
           <LiveError />
         </LiveProvider>
