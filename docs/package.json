@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@types/mdx-js__react": "1.5.4",
-    "@types/react": "17.0.19",
+    "@types/react": "17.0.20",
     "@types/react-helmet": "6.1.2",
     "tsconfig-paths-webpack-plugin": "3.5.1"
   },
