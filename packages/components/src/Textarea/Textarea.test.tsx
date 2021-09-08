@@ -75,9 +75,9 @@ test('supports required prop', () => {
       <Textarea label="test" htmlFor="myId" required title="textarea" />
     </ThemeProvider>
   );
-  const textarea = screen.getByText(/test/).lastChild;
+  const label = screen.getByText(/test/);
 
-  expect(textarea instanceof SVGElement).toBeTruthy();
+  expect(label.nextSibling instanceof SVGElement).toBeTruthy();
 });
 
 test('accepts custom styles prop className', () => {

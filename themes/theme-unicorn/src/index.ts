@@ -325,6 +325,13 @@ const theme: BaseTheme = {
       border: 0,
       borderBottom: '3px solid',
     },
+    section: {
+      m: 'none',
+      mb: 'small',
+      border: 0,
+      borderBottom: '1px solid',
+      borderColor: colors.gray50,
+    },
   },
   field: {
     default: {
@@ -363,18 +370,18 @@ const theme: BaseTheme = {
     },
   },
   label: {
-    default: {
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      fontWeight: 'body',
-      lineHeight: '2rem',
-      color: 'text',
-    },
     above: {
       fontFamily: 'body',
       fontSize: 'xsmall',
       fontWeight: 'body',
       lineHeight: 'body',
+      color: 'text',
+    },
+    inline: {
+      fontFamily: 'body',
+      fontSize: 'xsmall',
+      fontWeight: 'body',
+      lineHeight: '2rem',
       color: 'text',
     },
     disabled: {
@@ -383,6 +390,13 @@ const theme: BaseTheme = {
       fontWeight: 'body',
       lineHeight: 'body',
       color: colors.gray30,
+    },
+    section: {
+      fontFamily: 'body',
+      fontSize: 'small',
+      fontWeight: 'body',
+      lineHeight: '32px',
+      color: colors.gray50,
     },
   },
   link: {

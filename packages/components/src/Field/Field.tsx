@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStyles } from '@marigold/system';
-import { Exclamation, Required } from '@marigold/icons';
+import { Exclamation } from '@marigold/icons';
 import { ComponentProps } from '@marigold/types';
 
 import { Input } from '../Input';
@@ -27,22 +27,22 @@ export const Field: React.FC<FieldProps> = ({
     variant: `field.${variant}`,
     className,
   });
-  const errorClassName = useStyles({ css: { color: 'red60' } });
 
   return (
     <div>
-      <Label className={labelClassName} htmlFor={htmlFor}>
+      <Label
+        className={labelClassName}
+        htmlFor={htmlFor}
+        required={error ? true : false}
+      >
         {label}
-        {error ? <Required size={16} className={errorClassName} /> : ''}
       </Label>
       <Input {...props} type={type} id={htmlFor} />
-      {error ? (
+      {error && (
         <ValidationMessage>
           <Exclamation size={16} />
           {error}
         </ValidationMessage>
-      ) : (
-        ''
       )}
     </div>
   );
