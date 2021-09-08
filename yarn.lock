@@ -5868,6 +5868,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@marigold/theme-core@workspace:themes/theme-core":
+  version: 0.0.0-use.local
+  resolution: "@marigold/theme-core@workspace:themes/theme-core"
+  dependencies:
+    "@marigold/components": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
 "@marigold/theme-unicorn@workspace:themes/theme-unicorn":
   version: 0.0.0-use.local
   resolution: "@marigold/theme-unicorn@workspace:themes/theme-unicorn"
@@ -9347,7 +9355,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/experimental-utils@npm:4.31.0":
+"@typescript-eslint/experimental-utils@npm:4.31.0, @typescript-eslint/experimental-utils@npm:^4.30.0":
   version: 4.31.0
   resolution: "@typescript-eslint/experimental-utils@npm:4.31.0"
   dependencies:
@@ -9376,22 +9384,6 @@ __metadata:
   peerDependencies:
     eslint: "*"
   checksum: e5957bc3b0a2f0ba22637d81b162423fb56ad63be3acff37d01e2b1abba110f304ff2a57a4ff103bb3b11db0dda2a5cbec4bf07197087dc15ded58345ccf8c77
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/experimental-utils@npm:^4.30.0":
-  version: 4.31.0
-  resolution: "@typescript-eslint/experimental-utils@npm:4.31.0"
-  dependencies:
-    "@types/json-schema": ^7.0.7
-    "@typescript-eslint/scope-manager": 4.31.0
-    "@typescript-eslint/types": 4.31.0
-    "@typescript-eslint/typescript-estree": 4.31.0
-    eslint-scope: ^5.1.1
-    eslint-utils: ^3.0.0
-  peerDependencies:
-    eslint: "*"
-  checksum: 24581932c50ae561aa7712ae5966ad962096d7b86efd3c0620080b32ba014fc082394e8475b8e1b5ad5ab19b11383f00dd9469b6b1305913e1eb73182febea6c
   languageName: node
   linkType: hard
 
@@ -9548,24 +9540,6 @@ __metadata:
     typescript:
       optional: true
   checksum: e35410e33b5afc010f8bde683f4fd4f9fbe3ad821e916eb5ff1ed23943e6202a817a4cb21eb8e697a55f01182ceecaca1731cb98791d767f7fe67b11f84f3d67
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/typescript-estree@npm:4.31.0":
-  version: 4.31.0
-  resolution: "@typescript-eslint/typescript-estree@npm:4.31.0"
-  dependencies:
-    "@typescript-eslint/types": 4.31.0
-    "@typescript-eslint/visitor-keys": 4.31.0
-    debug: ^4.3.1
-    globby: ^11.0.3
-    is-glob: ^4.0.1
-    semver: ^7.3.5
-    tsutils: ^3.21.0
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 80d226ab93e133acb19061ee140aaeddd4291a4425638c4f451d43474c3d0b23b39ce1cb6302f0b5c74f585a0cd645ca2240f831093d0a160545c8bb25abb0b9
   languageName: node
   linkType: hard
 

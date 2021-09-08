@@ -3,9 +3,11 @@ import { BaseTheme } from '@marigold/components';
 
 import unicornTheme from '@marigold/theme-unicorn';
 import b2bTheme from '@marigold/theme-b2b';
+import coreTheme from '@marigold/theme-core';
 
 export const themes = {
   b2bTheme,
+  coreTheme,
   unicornTheme,
 };
 
