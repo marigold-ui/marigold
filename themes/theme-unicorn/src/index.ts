@@ -173,13 +173,6 @@ const selectOption = {
 };
 
 const theme: BaseTheme = {
-  styles: {
-    root: {
-      margin: 0,
-      padding: 0,
-      fontFamily: 'body',
-    }
-  },
   breakpoints: ['768', '1200'],
   space: {
     none: 0,
@@ -223,6 +216,13 @@ const theme: BaseTheme = {
     warning: '#fff3ad',
     info: '#a2edff',
     success: '#bcffbc',
+  },
+  root: {
+    body: {
+      margin: 0,
+      padding: 0,
+      fontFamily: 'body',
+    },
   },
   alerts: {
     error: {
