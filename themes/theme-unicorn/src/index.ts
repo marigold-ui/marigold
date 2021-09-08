@@ -217,6 +217,13 @@ const theme: BaseTheme = {
     info: '#a2edff',
     success: '#bcffbc',
   },
+  root: {
+    body: {
+      margin: 0,
+      padding: 0,
+      fontFamily: 'body',
+    },
+  },
   alerts: {
     error: {
       borderStyle: 'solid',
