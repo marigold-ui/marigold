@@ -217,6 +217,13 @@ const theme: BaseTheme = {
     info: colors.blue70,
     success: colors.green70,
   },
+  root: {
+    body: {
+      margin: 0,
+      padding: 0,
+      fontFamily: 'body',
+    },
+  },
   alerts: {
     error: {
       borderStyle: 'solid',
