@@ -139,6 +139,13 @@ const button = {
       borderTopLeftRadius: '2px',
     },
   },
+  close: {
+    color: 'text',
+    bg: 'transparent',
+    ':hover': {
+      cursor: 'pointer',
+    },
+  },
 };
 const text = {
   root: {
@@ -262,6 +269,9 @@ const theme: BaseTheme = {
       lineHeight: '30px',
       paddingX: 'medium',
     },
+    xsmall: {
+      lineHeight: '16px',
+    },
     primary: {
       ...button.root,
       ...button.primary,
@@ -286,6 +296,10 @@ const theme: BaseTheme = {
       ...button.root,
       ...button.select,
     },
+    close: {
+      ...button.root,
+      ...button.close,
+    },
   },
   checkbox: {
     default: {
@@ -300,7 +314,7 @@ const theme: BaseTheme = {
       paddingBottom: 'large',
     },
     body: {
-      paddingTop: 'small',
+      paddingTop: 'medium',
     },
     onClose: {
       display: 'flex',
