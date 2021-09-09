@@ -5,7 +5,7 @@ import { Label } from './Label';
 
 const theme = {
   label: {
-    default: {
+    above: {
       fontFamily: 'Inter Regular',
     },
     myLabel: {
@@ -47,6 +47,20 @@ test('supports htmlFor prop', () => {
   const label = screen.getByText(/label/);
 
   expect(label).toHaveAttribute('for');
+});
+
+test('supports required prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Label htmlFor="labelId" required>
+        label
+      </Label>
+    </ThemeProvider>
+  );
+  const label = screen.getByText(/label/);
+  const parent = label.parentElement;
+
+  expect(parent instanceof HTMLSpanElement).toBeTruthy();
 });
 
 test('renders <label> element', () => {
