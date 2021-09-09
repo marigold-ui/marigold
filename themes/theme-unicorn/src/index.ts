@@ -397,20 +397,8 @@ const theme: BaseTheme = {
       color: colors.gray50,
     },
   },
-  link: {
-    normal: {
-      color: 'primary',
-      ':hover': {
-        textDecoration: 'none',
-      },
-    },
-    menu: {
-      color: 'text',
-      textDecoration: 'none',
-    },
-  },
-  menu: {
-    menuItem: {
+  menuItem: {
+    default: {
       display: 'block',
       fontFamily: 'body',
       fontSize: 'xsmall',
@@ -502,6 +490,16 @@ const theme: BaseTheme = {
       ...text.root,
       fontSize: 'xsmall',
       textTransform: 'uppoercase',
+    },
+    link: {
+      color: 'primary',
+      ':hover': {
+        textDecoration: 'none',
+      },
+    },
+    menuItemLink: {
+      color: 'text',
+      textDecoration: 'none',
     },
   },
   textarea: {

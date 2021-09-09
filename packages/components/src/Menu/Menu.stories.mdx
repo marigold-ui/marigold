@@ -4,7 +4,6 @@ import { MenuItem } from '../MenuItem';
 import { BurgerMenu } from '@marigold/icons';
 import { useState } from 'react';
 
-
 <Meta
   title="Components/Menu"
   parameters={{
@@ -20,7 +19,7 @@ import { useState } from 'react';
       description: '?',
       table: {
         defaultValue: {
-          summary: 'menu',
+          summary: 'default',
         },
       },
     },
@@ -62,7 +61,12 @@ import { useState } from 'react';
 export const Template = ({ onClick, ...args }) => {
   const [showMenu, setShowMenu] = React.useState(false);
   return (
-    <Menu onClick={() => setShowMenu(!showMenu)} show={showMenu} label={<BurgerMenu />} {...args}>
+    <Menu
+      onClick={() => setShowMenu(!showMenu)}
+      show={showMenu}
+      label={<BurgerMenu />}
+      {...args}
+    >
       <MenuItem href="#">Home</MenuItem>
       <MenuItem href="#">Tickets</MenuItem>
       <MenuItem href="#">Logout</MenuItem>
