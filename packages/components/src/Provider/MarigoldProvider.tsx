@@ -17,7 +17,7 @@ import { ThemeProvider, ThemeProviderProps } from '@marigold/system';
 export const MarigoldProvider: React.FC<ThemeProviderProps> = ({
   theme,
   children,
-}) => { 
+}) => {
   return (
     <ThemeProvider theme={theme}>
       <OverlayProvider>

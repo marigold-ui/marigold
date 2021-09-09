@@ -24,31 +24,27 @@ import { Hidden } from '@marigold/components';
 
 ```tsx
 <>
-  <Text>Hello, I am visible</Text>
+  <Text>I am visible</Text>
   <Hidden>
-    <Text>Hello, I am invisible</Text>
+    <Text>I am invisible</Text>
   </Hidden>
 </>
 ```
 
 ```tsx
 () => {
-  const [state, setState] = React.useState({
-    showButton: false,
-  });
+  const [toggleState, setToggleState] = React.useState(false);
   const handleToggleClick = () => {
-    setState(prevState => ({
-      showButton: !prevState.showButton,
-    }));
+    setToggleState(!toggleState);
   };
   return (
     <div>
-      <Button variant="primary.small" onClick={handleToggleClick}>
-        {state.showButton ? 'Hide Text' : 'Show Text'}
+      <Button variant="secondary" size="small" onClick={handleToggleClick}>
+        {toggleState ? 'Hide Text' : 'Show Text'}
       </Button>
-      <Hidden show={state.showButton}>
+      <Hidden show={toggleState}>
         <br />
-        <Text>Hello, now I am visible</Text>
+        <Text>I am visible</Text>
       </Hidden>
     </div>
   );
