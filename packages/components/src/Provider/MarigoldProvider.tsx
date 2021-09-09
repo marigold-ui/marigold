@@ -7,6 +7,7 @@ import {
   useTheme,
 } from '@marigold/system';
 import { Global } from '@emotion/react';
+import { css } from '@theme-ui/css';
 
 interface ThemeContextValue {
   theme: Theme;
@@ -24,11 +25,11 @@ const __MarigoldContext = React.createContext(defaultThemeValue);
 const useMarigoldTheme = () => React.useContext(__MarigoldContext);
 
 const GlobalStyles = () => {
-  const { css } = useTheme();
+  const theme = useTheme();
   const styles = css({
     body: { variant: 'root.body' },
     html: { variant: 'root.html' },
-  });
+  })(theme);
 
   return <Global styles={styles} />;
 };
