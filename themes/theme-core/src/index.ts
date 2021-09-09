@@ -10,7 +10,7 @@ const selectButton = {
   overflow: 'hidden',
   outline: 'none',
   width: '100%',
-  lineHeight: '24px',
+  lineHeight: 'heading',
   px: 'xxsmall',
   color: 'text',
   bg: colors.gray00,
@@ -166,7 +166,7 @@ const selectOption = {
   fontFamily: 'body',
   fontSize: 'xxsmall',
   fontWeight: 'body',
-  lineHeight: '24px',
+  lineHeight: 'heading',
   outline: 'none',
   cursor: 'pointer',
   color: 'text',
@@ -205,8 +205,8 @@ const theme: BaseTheme = {
     bold: 700,
   },
   lineHeights: {
-    body: 1.5,
-    heading: 1.125,
+    body: 1.125,
+    heading: 1.5,
   },
   colors: {
     ...colors,
@@ -338,7 +338,7 @@ const theme: BaseTheme = {
       fontSize: 'xsmall',
       color: 'text',
       fontWeight: 'body',
-      lineHeight: '1.5rem',
+      lineHeight: 'heading',
     },
   },
   images: {
@@ -370,32 +370,39 @@ const theme: BaseTheme = {
     },
   },
   label: {
-    default: {
+    above: {
       fontFamily: 'body',
-      fontSize: '0.813rem',
+      fontSize: 'xxsmall',
       fontWeight: 'body',
       lineHeight: 'body',
       color: 'text',
     },
-    above: {
+    inline: {
       fontFamily: 'body',
-      fontSize: '0.813rem',
+      fontSize: 'xxsmall',
       fontWeight: 'body',
       lineHeight: 'body',
       color: 'text',
     },
     disabled: {
       fontFamily: 'body',
-      fontSize: '0.813rem',
+      fontSize: 'xxsmall',
       fontWeight: 'body',
       lineHeight: 'body',
       color: colors.gray30,
     },
+    section: {
+      fontFamily: 'body',
+      fontSize: 'xsmall',
+      fontWeight: 'body',
+      lineHeight: '32px',
+      color: 'text',
+    },
   },
   link: {
     normal: {
-      color: colors.blue60,
-      ':hover': {
+      color: '#900',
+      ':hover, :visited': {
         textDecoration: 'none',
       },
     },
@@ -404,8 +411,8 @@ const theme: BaseTheme = {
       textDecoration: 'none',
     },
   },
-  menu: {
-    menuItem: {
+  menuItem: {
+    default: {
       display: 'block',
       fontFamily: 'body',
       fontSize: 'xsmall',
@@ -493,11 +500,21 @@ const theme: BaseTheme = {
       textTransform: 'uppercase',
       m: 'none',
     },
+    link: {
+      color: '#900',
+      ':hover': {
+        textDecoration: 'underline',
+      },
+    },
+    menuItemLink: {
+      color: 'text',
+      textDecoration: 'none',
+    },
   },
   textarea: {
     default: {
       fontFamily: 'body',
-      lineHeight: '24px',
+      lineHeight: 'heading',
       padding: '4px 8px',
       color: 'text',
       background: colors.gray00,
@@ -519,14 +536,14 @@ const theme: BaseTheme = {
       fontFamily: 'body',
       fontSize: 'xxsmall',
       fontWeight: 400,
-      lineHeight: '24px',
+      lineHeight: 'heading',
       color: 'text',
     },
     disabled: {
       fontFamily: 'body',
       fontSize: 'xxsmall',
       fontWeight: 400,
-      lineHeight: '24px',
+      lineHeight: 'heading',
       color: 'disabled',
       cursor: 'not-allowed',
     },
