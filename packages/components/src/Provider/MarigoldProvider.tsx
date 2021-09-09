@@ -4,29 +4,36 @@ import {
   Theme,
   ThemeProvider,
   ThemeProviderProps,
-  useTheme,
 } from '@marigold/system';
 
-export interface ThemeContextValue {
+
+interface ThemeContextValue {
   theme: Theme;
 }
 
-export const defaultThemeValue: ThemeContextValue = {
+const defaultThemeValue: ThemeContextValue = {
   theme: {},
 };
+
+/**
+ * @internal
+ */
+const __MarigoldContext = React.createContext(
+  defaultThemeValue
+)
+
+const useMarigoldTheme = () => React.useContext(__MarigoldContext)
 
 // a merge of the ThemeProvider and the react-aria OverlayProvider
 export const MarigoldProvider: React.FC<ThemeProviderProps> = ({
   theme,
   children,
 }) => {
-  const outerTheme = useTheme();
-  const outerThemeJson = JSON.stringify(outerTheme, null, 2);
-  const defaultThemeValueJson = JSON.stringify(defaultThemeValue, null, 2);
-  const isTopLevel = outerThemeJson === defaultThemeValueJson;
+  const outerTheme = useMarigoldTheme();
+  const isTopLevel = outerTheme === defaultThemeValue
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}> 
       {isTopLevel ? <OverlayProvider>{children}</OverlayProvider> : children}
     </ThemeProvider>
   );
