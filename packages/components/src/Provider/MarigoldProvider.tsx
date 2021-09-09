@@ -7,21 +7,29 @@ import {
   useTheme,
 } from '@marigold/system';
 import { Global } from '@emotion/react';
+import { css } from '@theme-ui/css';
 
-export interface ThemeContextValue {
+interface ThemeContextValue {
   theme: Theme;
 }
 
-export const defaultThemeValue: ThemeContextValue = {
+const defaultThemeValue: ThemeContextValue = {
   theme: {},
 };
 
+/**
+ * @internal
+ */
+const __MarigoldContext = React.createContext(defaultThemeValue);
+
+const useMarigoldTheme = () => React.useContext(__MarigoldContext);
+
 const GlobalStyles = () => {
-  const { css } = useTheme();
+  const theme = useTheme();
   const styles = css({
     body: { variant: 'root.body' },
     html: { variant: 'root.html' },
-  });
+  })(theme);
 
   return <Global styles={styles} />;
 };
@@ -30,18 +38,18 @@ export const MarigoldProvider: React.FC<ThemeProviderProps> = ({
   theme,
   children,
 }) => {
-  const outerTheme = useTheme();
-  const outerThemeJson = JSON.stringify(outerTheme, null, 2);
-  const defaultThemeValueJson = JSON.stringify(defaultThemeValue, null, 2);
-  const isTopLevel = outerThemeJson === defaultThemeValueJson;
+  const outerTheme = useMarigoldTheme();
+  const isTopLevel = outerTheme === defaultThemeValue;
 
   return (
     <ThemeProvider theme={theme}>
-      {isTopLevel ? <OverlayProvider>{children}</OverlayProvider> : children}
-      <OverlayProvider>
-        <GlobalStyles />
-        {children}
-      </OverlayProvider>
+      {isTopLevel ? (
+        <OverlayProvider>
+          <GlobalStyles /> {children}
+        </OverlayProvider>
+      ) : (
+        children
+      )}
     </ThemeProvider>
   );
 };
