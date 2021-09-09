@@ -4,6 +4,9 @@
   "automerge": true,
   "timezone": "Europe/Berlin",
   "schedule": ["every weekend"],
+  "lockFileMaintenance": {
+    "enabled": true
+  },
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
