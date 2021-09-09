@@ -8,7 +8,6 @@ import {
 } from '@marigold/system';
 import { Global } from '@emotion/react';
 
-
 interface ThemeContextValue {
   theme: Theme;
 }
@@ -20,11 +19,9 @@ const defaultThemeValue: ThemeContextValue = {
 /**
  * @internal
  */
-const __MarigoldContext = React.createContext(
-  defaultThemeValue
-)
+const __MarigoldContext = React.createContext(defaultThemeValue);
 
-const useMarigoldTheme = () => React.useContext(__MarigoldContext)
+const useMarigoldTheme = () => React.useContext(__MarigoldContext);
 
 const GlobalStyles = () => {
   const { css } = useTheme();
@@ -41,12 +38,17 @@ export const MarigoldProvider: React.FC<ThemeProviderProps> = ({
   children,
 }) => {
   const outerTheme = useMarigoldTheme();
-  const isTopLevel = outerTheme === defaultThemeValue
+  const isTopLevel = outerTheme === defaultThemeValue;
 
   return (
     <ThemeProvider theme={theme}>
-      {isTopLevel && <GlobalStyles />}
-      <OverlayProvider>{children}</OverlayProvider>
+      {isTopLevel ? (
+        <OverlayProvider>
+          <GlobalStyles /> {children}
+        </OverlayProvider>
+      ) : (
+        children
+      )}
     </ThemeProvider>
   );
 };
