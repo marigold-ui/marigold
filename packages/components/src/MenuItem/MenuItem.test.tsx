@@ -4,8 +4,8 @@ import { ThemeProvider } from '@marigold/system';
 import { MenuItem } from './MenuItem';
 
 const theme = {
-  menu: {
-    menuItem: {
+  menuItem: {
+    default: {
       padding: '4px',
     },
     item: {
@@ -14,7 +14,7 @@ const theme = {
   },
 };
 
-test('supports default variant and themeSection', () => {
+test('supports default variant', () => {
   render(
     <ThemeProvider theme={theme}>
       <MenuItem title="menuItem" />
@@ -44,7 +44,7 @@ test('renders correct HTML element', () => {
   );
   const menuItem = screen.getByTitle(/menuItem/);
 
-  expect(menuItem instanceof HTMLAnchorElement).toBeTruthy();
+  expect(menuItem.firstChild instanceof HTMLAnchorElement).toBeTruthy();
 });
 
 test('accepts custom styles prop className', () => {

@@ -15,7 +15,7 @@ export type MenuProps = {
 };
 
 export const Menu: React.FC<MenuProps> = ({
-  variant = 'menu',
+  variant = 'default',
   label = 'Menu',
   onClick,
   show = false,
@@ -33,7 +33,7 @@ export const Menu: React.FC<MenuProps> = ({
   });
 
   return (
-    <Box variant={`content.${variant}`} {...props}>
+    <Box variant={`menu.${variant}`} {...props}>
       <Button onClick={onClick} variant="menu">
         {label}
       </Button>

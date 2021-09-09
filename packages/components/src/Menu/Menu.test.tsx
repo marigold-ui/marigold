@@ -5,11 +5,11 @@ import { Menu } from './Menu';
 import { MenuItem } from '../MenuItem';
 
 const theme = {
-  content: {
-    menu: {
+  menu: {
+    default: {
       padding: '4px',
     },
-    options: {
+    custom: {
       padding: '8px',
     },
   },
@@ -31,7 +31,7 @@ test('supports default variant and themeSection', () => {
 test('accepts other variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Menu variant="options" title="menu" onClick={() => {}}>
+      <Menu variant="custom" title="menu" onClick={() => {}}>
         <MenuItem href="#">Home</MenuItem>
       </Menu>
     </ThemeProvider>
