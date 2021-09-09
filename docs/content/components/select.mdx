@@ -20,6 +20,7 @@ Dropdown for selecting an item among different options.
 | `disabledKeys` (optional)       | [Iterable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)`<Key>` |         |
 | `required` (optional)           | `boolean`                                                                                                |         |
 | `error` (optional)              | `string`                                                                                                 |         |
+| `width` (optional)              | `ResponsiveStyleValue<number⎮string>`                                                                    |         |
 | `onSelectionChange` (optional)  | `(key: Key) => any`                                                                                      |         |
 
 ## Import
@@ -111,7 +112,7 @@ import { Item } from '@marigold/components';
 ### Disabled Keys
 
 ```tsx
-<Select label="Favorite Color" htmlFor="id" disabledKeys={['Orange', 'Yellow']}>
+<Select label="Favorite Color" disabledKeys={['Orange', 'Yellow']}>
   <Item key="Red">Red</Item>
   <Item key="Orange">Orange</Item>
   <Item key="Yellow">Yellow</Item>
@@ -134,6 +135,15 @@ import { Item } from '@marigold/components';
 
 ```tsx
 <Select error="Please choose one option!" label="error Select">
+  <Item>Option 1</Item>
+  <Item>Option 2</Item>
+</Select>
+```
+
+### Custom width Select
+
+```tsx
+<Select label="Width Select" width={300}>
   <Item>Option 1</Item>
   <Item>Option 2</Item>
 </Select>

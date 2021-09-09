@@ -11,9 +11,9 @@ test('supports label prop', () => {
 
 test('supports required prop an renders required icon', () => {
   render(<Radio label="Test" id="test" required title="radio" />);
-  const radio = screen.getByText(/Test/);
+  const label = screen.getByText(/Test/);
 
-  expect(radio).toContainHTML('path d="M10.8');
+  expect(label.nextSibling).toContainHTML('path d="M10.8');
 });
 
 test('supports default type', () => {

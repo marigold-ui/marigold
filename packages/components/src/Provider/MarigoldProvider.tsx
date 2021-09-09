@@ -4,7 +4,9 @@ import {
   Theme,
   ThemeProvider,
   ThemeProviderProps,
+  useTheme,
 } from '@marigold/system';
+import { Global } from '@emotion/react';
 
 
 interface ThemeContextValue {
@@ -24,6 +26,15 @@ const __MarigoldContext = React.createContext(
 
 const useMarigoldTheme = () => React.useContext(__MarigoldContext)
 
+const GlobalStyles = () => {
+  const { css } = useTheme();
+  const styles = css({
+    body: { variant: 'root.body' },
+    html: { variant: 'root.html' },
+  });
+
+  return <Global styles={styles} />;
+};
 // a merge of the ThemeProvider and the react-aria OverlayProvider
 export const MarigoldProvider: React.FC<ThemeProviderProps> = ({
   theme,
@@ -33,8 +44,9 @@ export const MarigoldProvider: React.FC<ThemeProviderProps> = ({
   const isTopLevel = outerTheme === defaultThemeValue
 
   return (
-    <ThemeProvider theme={theme}> 
-      {isTopLevel ? <OverlayProvider>{children}</OverlayProvider> : children}
+    <ThemeProvider theme={theme}>
+      {isTopLevel && <GlobalStyles />}
+      <OverlayProvider>{children}</OverlayProvider>
     </ThemeProvider>
   );
 };

@@ -11,7 +11,7 @@ Marigold uses a theme for its base styles.
 ## Theme Object
 
 Theming is based on a `theme object` that builds on the [System UI Theme Specification](https://system-ui.com/theme/).
-The theme object defines your application's spacings, colors, fonts and component styles.
+The theme object defines your application's spacings, colors, fonts and component styles. In the theme, you can define root styles that are applied globally.
 
 ### Spacings
 
@@ -142,11 +142,19 @@ const classNames = useStyles({
 ### Create a Theme
 
 Create a file, e.g. `index.ts` in your theme folder and define your theme object.
+Define the overall applied root styles in the theme aswell.
 Import and use the theme in the `<ThemeProvider>`.
 See a working example base theme here:
 
 ```tsx code
 const theme: BaseTheme = {
+  styles: {
+    root: {
+      fontFamily: 'body',
+      margin: 0,
+      padding: 0,
+    },
+  },
   breakpoints: ['768', '1200'],
   space: {
     none: 0,
@@ -200,6 +208,7 @@ See the theme object keys and the corresponding CSS properties in the following 
 
 | Theme Key     | CSS Properties                                                                                                                                                                                     |
 | :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `styles.root` | CSSObject                                                                                                                                                                                          |
 | `space`       | `margin`, `margin-top`, `margin-right`, `margin-bottom`, `margin-left`, `padding`, `padding-top`, `padding-right`, `padding-bottom`, `padding-left`, `grid-gap`, `grid-column-gap`, `grid-row-gap` |
 | `breakpoints` | `min-width` (media query)                                                                                                                                                                          |
 | `fonts`       | `font-family `                                                                                                                                                                                     |
