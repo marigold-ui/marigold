@@ -11,7 +11,7 @@ import { Label } from './Label';
       description: '?',
       table: {
         defaultValue: {
-          summary: 'default',
+          summary: 'above',
         },
       },
     },
@@ -23,12 +23,27 @@ import { Label } from './Label';
         required: true,
       },
     },
+    required: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Adds required Icon to label',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
   }}
 />
 
 # Label
 
-export const Template = args => <Label htmlFor="input">Label</Label>;
+export const Template = args => (
+  <Label htmlFor="input" {...args}>
+    Label
+  </Label>
+);
 
 <Canvas>
   <Story name="Default">{Template.bind({})}</Story>

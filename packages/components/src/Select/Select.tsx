@@ -11,7 +11,7 @@ import { SingleSelection } from '@react-types/shared';
 
 import { ComponentProps } from '@marigold/types';
 import { ArrowDown, ArrowUp, Exclamation, Required } from '@marigold/icons';
-import { useStyles } from '@marigold/system';
+import { ResponsiveStyleValue, useStyles } from '@marigold/system';
 
 import { Box } from '../Box';
 import { Label } from '../Label';
@@ -24,6 +24,7 @@ export type SelectProps = {
   disabled?: boolean;
   required?: boolean;
   error?: string;
+  width?: ResponsiveStyleValue<number | string>;
 } & ComponentProps<'select'> &
   AriaSelectProps<object> &
   SingleSelection;
@@ -33,6 +34,7 @@ export const Select = ({
   disabled,
   required,
   error,
+  width,
   className,
   ...props
 }: SelectProps) => {
@@ -44,7 +46,11 @@ export const Select = ({
     css: { fill: disabled ? 'disabled' : 'text' },
   });
   const popoverClassName = useStyles({
-    css: { width: triggerRef.current && triggerRef.current.offsetWidth + 'px' },
+    css: {
+      width: width
+        ? width
+        : triggerRef.current && triggerRef.current.offsetWidth + 'px',
+    },
   });
   const errorClassName = useStyles({ css: { color: 'error' } });
 
@@ -75,7 +81,7 @@ export const Select = ({
   const { focusProps } = useFocusRing();
 
   return (
-    <Box position="relative" display="inline-block">
+    <Box position="relative" display="inline-block" width={width && width}>
       {props.label && (
         <Box>
           <Label
