@@ -17,43 +17,47 @@ const theme = {
 test('supports default variant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <MenuItem title="menuItem" />
+      <MenuItem title="menuItem">Item</MenuItem>
     </ThemeProvider>
   );
   const menuItem = screen.getByTitle(/menuItem/);
 
-  expect(menuItem).toHaveStyle(`padding: 4px`);
+  expect(menuItem.parentElement).toHaveStyle(`padding: 4px`);
 });
 
 test('accepts other variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <MenuItem title="menuItem" variant="item" />
+      <MenuItem title="menuItem" variant="item">
+        Item
+      </MenuItem>
     </ThemeProvider>
   );
   const menuItem = screen.getByTitle(/menuItem/);
 
-  expect(menuItem).toHaveStyle(`padding: 8px`);
+  expect(menuItem.parentElement).toHaveStyle(`padding: 8px`);
 });
 
 test('renders correct HTML element', () => {
   render(
     <ThemeProvider theme={theme}>
-      <MenuItem title="menuItem" />
+      <MenuItem title="menuItem">Item</MenuItem>
     </ThemeProvider>
   );
   const menuItem = screen.getByTitle(/menuItem/);
 
-  expect(menuItem.firstChild instanceof HTMLAnchorElement).toBeTruthy();
+  expect(menuItem instanceof HTMLAnchorElement).toBeTruthy();
 });
 
 test('accepts custom styles prop className', () => {
   render(
     <ThemeProvider theme={theme}>
-      <MenuItem className="custom-class-name" title="menuItem" />
+      <MenuItem title="menuItem" className="custom-class-name">
+        Item
+      </MenuItem>
     </ThemeProvider>
   );
-  const menuItem = screen.getByTitle(/menuItem/);
+  const menuItem = screen.getByText(/Item/).parentElement;
 
-  expect(menuItem.className).toMatch('custom-class-name');
+  expect(menuItem).toHaveClass('custom-class-name');
 });
