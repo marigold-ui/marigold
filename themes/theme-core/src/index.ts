@@ -335,10 +335,10 @@ const theme: BaseTheme = {
   field: {
     default: {
       fontFamily: 'body',
-      fontSize: 'xsmall',
-      color: 'text',
+      fontSize: 'xxsmall',
       fontWeight: 'body',
-      lineHeight: 'heading',
+      lineHeight: 'body',
+      color: 'text',
     },
   },
   images: {
@@ -396,7 +396,7 @@ const theme: BaseTheme = {
       fontSize: 'xsmall',
       fontWeight: 'body',
       lineHeight: '32px',
-      color: 'text',
+      color: colors.gray50,
     },
   },
   link: {
