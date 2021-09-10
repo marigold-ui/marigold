@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { Item, MarigoldProvider, Section } from '..';
+import { Item, MarigoldProvider } from '..';
 import { Select } from './Select';
 
 const theme = {
@@ -291,24 +291,4 @@ test('supports disabled item prop', () => {
   const orangeItem = screen.getAllByText(/Orange/);
   fireEvent.click(orangeItem[1]);
   expect(button).toHaveTextContent('Orange');
-});
-
-test('supports section with items', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Select label="Section" data-testid="selectId">
-        <Section title="Color">
-          <Item>Red</Item>
-        </Section>
-      </Select>
-    </MarigoldProvider>
-  );
-  const button = screen.getByTestId('selectId');
-  fireEvent.click(button);
-
-  const items = screen.getAllByText(/Red/);
-  expect(items[1]).toBeVisible();
-  const sections = screen.getAllByText(/Color/);
-  console.log(sections);
-  expect(sections[0]).toBeVisible();
 });

@@ -6,7 +6,6 @@ import { useStyles } from '@marigold/system';
 
 import { Box } from '../Box';
 import { Option } from './Option';
-import { ListBoxSection } from './ListBoxSection';
 
 interface ListBoxProps extends AriaListBoxOptions<unknown> {
   state: ListState<unknown>;
@@ -29,13 +28,9 @@ export const ListBox = (props: ListBoxProps) => {
       className={listBoxClassName}
       ref={ref}
     >
-      {[...state.collection].map(item =>
-        item.type === 'section' ? (
-          <ListBoxSection key={item.key} section={item} state={state} />
-        ) : (
-          <Option key={item.key} item={item} state={state} />
-        )
-      )}
+      {[...state.collection].map(item => (
+        <Option key={item.key} item={item} state={state} />
+      ))}
     </Box>
   );
 };

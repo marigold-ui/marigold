@@ -29,4 +29,4 @@ export * from './Input';
 export * from './Container';
 export * from './ValidationMessage';
 
-export { Item, Section } from '@react-stately/collections';
+export { Item } from '@react-stately/collections';
