@@ -565,6 +565,14 @@ const theme: BaseTheme = {
         borderBottomRightRadius: '2px',
       },
     },
+    section: {
+      fontFamily: 'body',
+      fontSize: 'xsmall',
+      fontWeight: 'body',
+      lineHeight: '32px',
+      px: 'xxsmall',
+      color: colors.gray50,
+    },
     option: {
       __default: {
         ...selectOption,
