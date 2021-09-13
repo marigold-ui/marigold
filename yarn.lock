@@ -3658,7 +3658,7 @@ __metadata:
   dependencies:
     "@types/jest": 27.0.1
     babel-jest: 27.2.0
-    find-up: 5.0.0
+    find-up: 6.0.0
     jest-watch-typeahead: 0.6.4
     merge-deep: ^3.0.3
     react-test-renderer: 17.0.2
@@ -11098,7 +11098,7 @@ __metadata:
     react: 17.0.2
     react-dom: 17.0.2
     react-helmet: 6.1.0
-    react-live: 2.4.0
+    react-live: 2.3.0
     tsconfig-paths-webpack-plugin: 3.5.1
   languageName: unknown
   linkType: soft
@@ -13112,16 +13112,6 @@ __metadata:
     locate-path: ^5.0.0
     path-exists: ^4.0.0
   checksum: 4c172680e8f8c1f78839486e14a43ef82e9decd0e74145f40707cc42e7420506d5ec92d9a11c22bd2c48fb0c384ea05dd30e10dd152fefeec6f2f75282a8b844
-  languageName: node
-  linkType: hard
-
-"find-up@npm:6.0.0":
-  version: 6.0.0
-  resolution: "find-up@npm:6.0.0"
-  dependencies:
-    locate-path: ^7.0.0
-    path-exists: ^5.0.0
-  checksum: ee2c0bd8ce86d4141cf6c0237c7256f60da6b0fd1d6b22e0dfadc8e5b38a27f98810b6dffe4f0a96a3c0fef12e9dea460929be44a40c477ea3b60bbe062019d9
   languageName: node
   linkType: hard
 
@@ -22603,9 +22593,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-live@npm:2.4.0":
-  version: 2.4.0
-  resolution: "react-live@npm:2.4.0"
+"react-live@npm:2.3.0":
+  version: 2.3.0
+  resolution: "react-live@npm:2.3.0"
   dependencies:
     "@types/buble": ^0.20.0
     buble: 0.19.6
@@ -22615,7 +22605,7 @@ fsevents@^1.2.7:
     prop-types: ^15.7.2
     react-simple-code-editor: ^0.11.0
     unescape: ^1.0.1
-  checksum: f85fe4df12ee89aa3f6cb664507faed53b31825376b6ce4f299cb7c0e977962078e13d181ae5639eee87b70b1d1c9e1c4e4b822a32cd0b8b08982a6fdc37e53a
+  checksum: c390df78312e5264692b0ac8f745c64294d433546a60eb5992f19fdc517ac6f726a91b7f726e71a79c24db6d16d8ee8a1e927064bec57b52dae488fe6741a93f
   languageName: node
   linkType: hard
 
