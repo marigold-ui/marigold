@@ -2,9 +2,6 @@
   "groupName": "all",
   "extends": ["config:base"],
   "timezone": "Europe/Berlin",
-  "lockFileMaintenance": {
-    "enabled": true
-  },
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
