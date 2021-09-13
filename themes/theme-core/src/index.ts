@@ -143,6 +143,13 @@ const button = {
       backgroundImage: 'linear-gradient(#eee 20%, #fff 80%)',
     },
   },
+  close: {
+    color: 'text',
+    bg: 'transparent',
+    ':hover': {
+      cursor: 'pointer',
+    },
+  },
 };
 const text = {
   root: {
@@ -293,6 +300,10 @@ const theme: BaseTheme = {
     select: {
       ...button.root,
       ...button.select,
+    },
+    close: {
+      ...button.root,
+      ...button.close,
     },
   },
   checkbox: {
@@ -514,8 +525,8 @@ const theme: BaseTheme = {
   textarea: {
     default: {
       fontFamily: 'body',
-      lineHeight: 'heading',
-      padding: '4px 8px',
+      fontSize: 'xxsmall',
+      padding: '2px',
       color: 'text',
       background: colors.gray00,
       border: 0,
