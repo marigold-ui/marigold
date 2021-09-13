@@ -1,12 +1,3 @@
 {
-  "extends": ["config:base"],
-  "groupName": "all",
-  "lockFileMaintenance": { "enabled": true },
-  "packageRules": [
-    {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true
-    }
-  ],
-  "timezone": "Europe/Berlin"
+  "extends": ["config:base"]
 }
