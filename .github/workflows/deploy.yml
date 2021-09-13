@@ -27,7 +27,7 @@ jobs:
       run: yarn
     
     - name: Build
-      run: cd docs && yarn build; echo \"marigold-ui.io\" > public/CNAME
+      run: cd docs && yarn build && echo 'marigold-ui.io' > public/CNAME
 
     - name: Change to docs, Build and Deploy
       uses: peaceiris/actions-gh-pages@v3
