@@ -1,16 +1,3 @@
 {
-  "groupName": "all",
-  "extends": ["config:base"],
-  "automerge": true,
-  "timezone": "Europe/Berlin",
-  "schedule": ["every weekend"],
-  "lockFileMaintenance": {
-    "enabled": true
-  },
-  "packageRules": [
-    {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true
-    }
-  ]
+  "extends": ["config:base"]
 }
