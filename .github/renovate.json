@@ -1,4 +1,7 @@
 {
+  "compatibility": {
+    "yarn": "2.x"
+  },
   "extends": ["config:base"],
   "lockFileMaintenance": { "enabled": true, "schedule": null },
   "packageRules": [
