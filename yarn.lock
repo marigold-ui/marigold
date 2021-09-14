@@ -9854,20 +9854,20 @@ __metadata:
   linkType: hard
 
 "contentful-management@npm:^7.5.1":
-  version: 7.38.2
-  resolution: "contentful-management@npm:7.38.2"
+  version: 7.39.0
+  resolution: "contentful-management@npm:7.39.0"
   dependencies:
     "@types/json-patch": 0.0.30
     axios: ^0.21.4
-    contentful-sdk-core: ^6.8.0
+    contentful-sdk-core: ^6.9.0
     fast-copy: ^2.1.0
     lodash.isplainobject: ^4.0.6
     type-fest: ^0.21.3
-  checksum: 3e2a3e2b7b0c326457d6a98b2ac1a3e9e96a3bb4c8d8bfc4bf1aa26ede341da754491cc74d964b8964d4cdbb751a2d5b454f54f462640cab6e63817b0db07dc4
+  checksum: cbcf7c5beb1ea589c6819bc296e7b4c95979f890d9f8de62a78b000abdd5a75fe314950797c84f24506b3b1c63974beefbf51fdf32c65047ab102a21b2ee9df5
   languageName: node
   linkType: hard
 
-"contentful-sdk-core@npm:^6.8.0":
+"contentful-sdk-core@npm:^6.9.0":
   version: 6.9.0
   resolution: "contentful-sdk-core@npm:6.9.0"
   dependencies:
