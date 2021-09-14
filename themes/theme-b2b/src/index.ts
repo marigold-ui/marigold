@@ -345,15 +345,6 @@ const theme: BaseTheme = {
       borderColor: colors.gray50,
     },
   },
-  field: {
-    default: {
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      color: 'text',
-      fontWeight: 'body',
-      lineHeight: '1.5rem',
-    },
-  },
   images: {
     fullWidth: {
       maxWidth: '100%',
@@ -379,6 +370,15 @@ const theme: BaseTheme = {
         cursor: 'not-allowed',
       },
     },
+    error: {
+      color: 'text',
+      border: 'none',
+      borderRadius: '2px',
+      boxShadow: '0 0 0 1px ' + colors.red60,
+      outline: 'none',
+      padding: '0 8px',
+      lineHeight: '32px',
+    },
   },
   label: {
     above: {
@@ -387,11 +387,6 @@ const theme: BaseTheme = {
       fontWeight: 'body',
       lineHeight: 'body',
       color: 'text',
-      border: 'none',
-      borderRadius: '2px',
-      boxShadow: '0 0 0 1px ' + colors.red60,
-      outline: 'none',
-      padding: '0 8px',
     },
     inline: {
       fontFamily: 'body',
