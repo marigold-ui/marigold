@@ -100,14 +100,14 @@ const button = {
   },
   select: {
     ...selectButton,
-    border: '1px solid',
+    border: '1px solid transparent',
     borderColor: colors.gray40,
     ':hover': {
       cursor: 'pointer',
     },
     ':focus': {
-      border: '2px solid',
-      borderColor: colors.blue60,
+      boxShadow: '0 0 0 2px ' + colors.blue60,
+      border: '1px solid transparent',
     },
     ':disabled': {
       bg: colors.gray20,
@@ -122,23 +122,28 @@ const button = {
     },
     open: {
       ...selectButton,
-      borderTop: '1px solid',
-      borderRight: '1px solid',
-      borderLeft: '1px solid',
-      borderBottom: 'none',
-      borderColor: colors.gray40,
+      border: '1px solid transparent',
+      borderTopColor: colors.gray40,
+      borderLeftColor: colors.gray40,
+      borderRightColor: colors.gray40,
       borderTopRightRadius: '2px',
       borderTopLeftRadius: '2px',
     },
     errorOpened: {
       ...selectButton,
-      borderTop: '1px solid',
-      borderRight: '1px solid',
-      borderLeft: '1px solid',
-      borderBottom: 'none',
-      borderColor: 'error',
+      border: '1px solid transparent',
+      borderTopColor: 'error',
+      borderLeftColor: 'error',
+      borderRightColor: 'error',
       borderTopRightRadius: '2px',
       borderTopLeftRadius: '2px',
+    },
+  },
+  close: {
+    color: 'text',
+    bg: 'transparent',
+    ':hover': {
+      cursor: 'pointer',
     },
   },
 };
@@ -217,6 +222,13 @@ const theme: BaseTheme = {
     info: colors.blue70,
     success: colors.green70,
   },
+  root: {
+    body: {
+      margin: 0,
+      padding: 0,
+      fontFamily: 'body',
+    },
+  },
   alerts: {
     error: {
       borderStyle: 'solid',
@@ -257,6 +269,9 @@ const theme: BaseTheme = {
       lineHeight: '30px',
       paddingX: 'medium',
     },
+    xsmall: {
+      lineHeight: '16px',
+    },
     primary: {
       ...button.root,
       ...button.primary,
@@ -281,6 +296,10 @@ const theme: BaseTheme = {
       ...button.root,
       ...button.select,
     },
+    close: {
+      ...button.root,
+      ...button.close,
+    },
   },
   checkbox: {
     default: {
@@ -295,7 +314,7 @@ const theme: BaseTheme = {
       paddingBottom: 'large',
     },
     body: {
-      paddingTop: 'small',
+      paddingTop: 'medium',
     },
     onClose: {
       display: 'flex',
@@ -317,6 +336,13 @@ const theme: BaseTheme = {
       my: 'small',
       border: 0,
       borderBottom: '2px solid',
+    },
+    section: {
+      m: 'none',
+      mb: 'small',
+      border: 0,
+      borderBottom: '1px solid',
+      borderColor: colors.gray50,
     },
   },
   field: {
@@ -356,18 +382,18 @@ const theme: BaseTheme = {
     },
   },
   label: {
-    default: {
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      fontWeight: 'body',
-      lineHeight: '1.5rem',
-      color: 'text',
-    },
     above: {
       fontFamily: 'body',
       fontSize: 'xxsmall',
       fontWeight: 'body',
       lineHeight: 'body',
+      color: 'text',
+    },
+    inline: {
+      fontFamily: 'body',
+      fontSize: 'xsmall',
+      fontWeight: 'body',
+      lineHeight: '1.5rem',
       color: 'text',
     },
     disabled: {
@@ -377,21 +403,16 @@ const theme: BaseTheme = {
       lineHeight: 'body',
       color: colors.gray30,
     },
-  },
-  link: {
-    normal: {
-      color: colors.blue60,
-      ':hover': {
-        textDecoration: 'none',
-      },
-    },
-    menu: {
-      color: 'text',
-      textDecoration: 'none',
+    section: {
+      fontFamily: 'body',
+      fontSize: 'small',
+      fontWeight: 'body',
+      lineHeight: '32px',
+      color: colors.gray50,
     },
   },
-  menu: {
-    menuItem: {
+  menuItem: {
+    default: {
       display: 'block',
       fontFamily: 'body',
       fontSize: 'xsmall',
@@ -476,6 +497,16 @@ const theme: BaseTheme = {
       textTransform: 'uppercase',
       m: 'none',
     },
+    link: {
+      color: colors.blue60,
+      ':hover': {
+        textDecoration: 'none',
+      },
+    },
+    menuItemLink: {
+      color: 'text',
+      textDecoration: 'none',
+    },
   },
   textarea: {
     default: {
@@ -515,25 +546,21 @@ const theme: BaseTheme = {
     listbox: {
       __default: {
         background: colors.gray00,
-        borderTop: 'none',
-        borderRight: '1px solid',
-        borderLeft: '1px solid',
-        borderBottom: '1px solid',
+        border: '1px solid transparent',
+        borderLeftColor: colors.gray40,
+        borderRightColor: colors.gray40,
+        borderBottomColor: colors.gray40,
         borderBottomRightRadius: '2px',
         borderBottomLeftRadius: '2px',
-        borderColor: colors.gray40,
-        outline: 'none',
       },
       error: {
         background: colors.gray00,
-        borderTop: 'none',
-        borderRight: '1px solid',
-        borderLeft: '1px solid',
-        borderBottom: '1px solid',
-        borderBottomRightRadius: '2px',
+        border: '1px solid transparent',
+        borderLeftColor: 'error',
+        borderRightColor: 'error',
+        borderBottomColor: 'error',
         borderBottomLeftRadius: '2px',
-        borderColor: 'error',
-        outline: 'none',
+        borderBottomRightRadius: '2px',
       },
     },
     option: {
