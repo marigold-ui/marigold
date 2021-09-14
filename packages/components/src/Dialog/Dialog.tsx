@@ -21,7 +21,7 @@ export const Dialog: React.FC<DialogProps> = ({
         <Box display="flex">
           <Box variant="dialog.body">{children}</Box>
           <Box variant="dialog.onClose">
-            <Button variant="text" onClick={onClose}>
+            <Button variant="close" size="xsmall" onClick={onClose}>
               <Close size={16} />
             </Button>
           </Box>

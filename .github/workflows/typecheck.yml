@@ -26,7 +26,7 @@ jobs:
 
       - name: Install Dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn
+        run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn
 
       - name: Typecheck
         run: yarn tsc --noEmit
