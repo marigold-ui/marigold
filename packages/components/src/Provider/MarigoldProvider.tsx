@@ -1,6 +1,5 @@
 import React from 'react';
 import { OverlayProvider } from '@react-aria/overlays';
-
 import { ThemeProvider, ThemeProviderProps } from '@marigold/system';
 // import { Global } from '@emotion/react';
 // import { css } from '@theme-ui/css';
