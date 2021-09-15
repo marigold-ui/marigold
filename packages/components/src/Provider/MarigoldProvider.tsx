@@ -1,6 +1,5 @@
 import React from 'react';
 import { OverlayProvider } from '@react-aria/overlays';
-import { SSRProvider } from '@react-aria/ssr';
 
 import { ThemeProvider, ThemeProviderProps } from '@marigold/system';
 // import { Global } from '@emotion/react';
@@ -21,13 +20,11 @@ export const MarigoldProvider: React.FC<ThemeProviderProps> = ({
   children,
 }) => {
   return (
-    <SSRProvider>
-      <ThemeProvider theme={theme}>
-        <OverlayProvider>
-          {/* <GlobalStyles /> */}
-          {children}
-        </OverlayProvider>
-      </ThemeProvider>
-    </SSRProvider>
+    <ThemeProvider theme={theme}>
+      <OverlayProvider>
+        {/* <GlobalStyles /> */}
+        {children}
+      </OverlayProvider>
+    </ThemeProvider>
   );
 };

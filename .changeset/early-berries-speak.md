@@ -1,6 +1,7 @@
 ---
-"docs": patch
-"@marigold/components": patch
+'docs': patch
+'@marigold/components': patch
 ---
 
-remove all warnings in gatsby build
+aria-label for all usages of select component
+use SSR Provider which is exported from package components/Provider in Gatsby wrapper
