@@ -29,7 +29,11 @@ export const useStyles = ({
    * We check the passed className if it already includes the reset styles so no
    * duplicates are applied.
    */
-  const baseClassName = className.includes(reset.base) ? '' : reset.base;
+  const resetBaseClassName = useClassname(reset.base);
+  const baseClassName = className.includes(reset.base)
+    ? ''
+    : resetBaseClassName;
+
   const resetClassName =
     typeof element === 'string'
       ? className.includes((reset as { [key: string]: string })[element])

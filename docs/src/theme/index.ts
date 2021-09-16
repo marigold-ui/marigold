@@ -26,6 +26,13 @@ export const theme = {
     info: colors.blue,
     success: colors.green,
   },
+  root: {
+    body: {
+      margin: 0,
+      padding: 0,
+      fontFamily: 'body',
+    },
+  },
   radii: {
     none: 0,
     small: 2,
