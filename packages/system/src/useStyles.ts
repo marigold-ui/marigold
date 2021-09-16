@@ -30,7 +30,7 @@ export const useStyles = ({
    * duplicates are applied.
    */
   const resetBaseClassName = useClassname(reset.base);
-  const baseClassName = className.includes(reset.base)
+  const baseClassName = className.includes(resetBaseClassName)
     ? ''
     : resetBaseClassName;
 

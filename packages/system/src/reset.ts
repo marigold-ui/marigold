@@ -7,29 +7,29 @@ const base = {
   font: 'inherit',
   verticalAlign: 'baseline',
   WebkitTapHighlightColor: 'transparent',
-};
+} as const;
 
 // Content
 // ---------------
 const block = {
   display: 'block',
-};
+} as const;
 
 const list = {
   // empty
-};
+} as const;
 
 const table = {
   borderCollapse: 'collapse',
   borderSpacing: 0,
-};
+} as const;
 
 // Typography
 // ---------------
 const a = {
   textDecoration: 'none',
   touchAction: 'manipulation',
-};
+} as const;
 
 const quote = {
   quotes: 'none',
@@ -38,7 +38,7 @@ const quote = {
       content: "''",
     },
   },
-};
+} as const;
 
 // Form Elements
 // ---------------
@@ -48,7 +48,7 @@ const button = {
   background: 'transparent',
   textAlign: 'center',
   touchAction: 'manipulation',
-};
+} as const;
 
 const input = {
   display: 'block',
@@ -61,7 +61,7 @@ const input = {
       WebkitAppearance: 'none',
     },
   },
-};
+} as const;
 
 const select = {
   display: 'block',
@@ -71,12 +71,12 @@ const select = {
       display: 'none',
     },
   },
-};
+} as const;
 
 const textarea = {
   display: 'block',
   appearance: 'none',
-};
+} as const;
 
 // Reset
 // ---------------
@@ -103,4 +103,4 @@ export const reset = {
   button,
   textarea,
   input,
-} as any;
+} as const;
