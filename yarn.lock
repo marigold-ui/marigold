@@ -3704,6 +3704,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@marigold/theme-core@workspace:themes/theme-core":
+  version: 0.0.0-use.local
+  resolution: "@marigold/theme-core@workspace:themes/theme-core"
+  dependencies:
+    "@marigold/components": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
 "@marigold/theme-unicorn@workspace:themes/theme-unicorn":
   version: 0.0.0-use.local
   resolution: "@marigold/theme-unicorn@workspace:themes/theme-unicorn"
