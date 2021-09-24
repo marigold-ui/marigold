@@ -3688,7 +3688,7 @@ __metadata:
   dependencies:
     "@emotion/css": 11.1.3
     "@emotion/react": 11.4.1
-    "@theme-ui/css": 0.11.2
+    "@theme-ui/css": 0.11.3
     csstype: 3.0.9
   peerDependencies:
     react: ^16.x || ^17.0.0
@@ -5694,13 +5694,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@theme-ui/css@npm:0.11.2":
-  version: 0.11.2
-  resolution: "@theme-ui/css@npm:0.11.2"
+"@theme-ui/css@npm:0.11.3":
+  version: 0.11.3
+  resolution: "@theme-ui/css@npm:0.11.3"
   dependencies:
     "@emotion/react": ^11.1.1
     csstype: ^3.0.5
-  checksum: 482beae10e3fa6a23f859b20da407cd6210ccd987852fffa3a7d5332078d574a6381499405748b6a49c51a3289251f16f288e49cd98e2d85f3f8b1221a8fbaec
+  checksum: a7858988f8df91573d2420423c7adfd43e4683d203102c9084650590004a7d4974e05f6b08ebd05be5b96b4800fa6a9580f9c06457263776181dcc829e4e920b
   languageName: node
   linkType: hard
 
