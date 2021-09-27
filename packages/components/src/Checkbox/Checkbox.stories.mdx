@@ -45,13 +45,19 @@ import { useState } from 'react';
         },
       },
     },
+    error: {
+      control: {
+        type: 'text',
+      },
+      description: 'Error Message',
+    },
   }}
 />
 
 # Checkbox
 
 export const Template = ({ onChange, checked, ...args }) => {
-  const [isChecked, setChecked] = React.useState(false);
+  const [isChecked, setChecked] = useState(false);
   return (
     <Checkbox
       onChange={() => setChecked(!isChecked)}

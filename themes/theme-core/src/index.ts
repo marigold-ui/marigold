@@ -308,7 +308,62 @@ const theme: BaseTheme = {
   },
   checkbox: {
     default: {
-      color: colors.gray70,
+      ariaHidden: 'true',
+      mr: 2,
+      verticalAlign: 'middle',
+      ':hover': { cursor: 'pointer' },
+      'input:disabled ~ &': {
+        cursor: 'not-allowed',
+      },
+    },
+    squareChecked: {
+      __default: {
+        x: '0.5',
+        y: '8.5',
+        width: '15px',
+        height: '15px',
+        rx: '1.5',
+        fill: colors.blue60,
+        stroke: colors.blue70,
+      },
+      disabled: {
+        x: '0.5',
+        y: '8.5',
+        width: '15px',
+        height: '15px',
+        rx: '1.5',
+        fill: colors.gray30,
+        stroke: colors.gray30,
+      },
+    },
+    squareUnchecked: {
+      __default: {
+        x: '0.5',
+        y: '8.5',
+        width: '15px',
+        height: '15px',
+        rx: '1.5',
+        fill: colors.gray00,
+        stroke: colors.gray40,
+      },
+      disabled: {
+        x: '0.5',
+        y: '8.5',
+        width: '15px',
+        height: '15px',
+        rx: '1.5',
+        fill: colors.gray00,
+        stroke: colors.gray30,
+      },
+      error: {
+        x: '0.5',
+        y: '8.5',
+        width: '15px',
+        height: '15px',
+        rx: '1.5',
+        fill: colors.gray00,
+        stroke: 'error',
+      },
     },
   },
   dialog: {

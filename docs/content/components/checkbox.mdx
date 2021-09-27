@@ -16,7 +16,9 @@ The variant can be added with the variant prop. The default variant is `default`
 | `id`                  | `string`  |           |
 | `variant` (optional)  | `string`  | `default` |
 | `label` (optional)    | `string`  |           |
-| `required` (optional) | `boolean` |           |
+| `required` (optional) | `boolean` | `false`   |
+| `disabled` (optional) | `boolean` | `false`   |
+| `error` (optional)    | `string`  |           |
 
 ## Import
 
@@ -87,5 +89,16 @@ import { Checkbox } from '@marigold/components';
   value="required"
   required
   label="This label is required"
+/>
+```
+
+### Checkbox with error
+
+```tsx
+<Checkbox
+  id="error"
+  value="error"
+  label="This checkbox has an error"
+  error="Error in checkbox"
 />
 ```
