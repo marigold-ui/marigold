@@ -311,6 +311,57 @@ const theme: BaseTheme = {
       color: colors.gray70,
     },
   },
+  radio: {
+    default: {
+      ariaHidden: 'true',
+      mr: 2,
+      verticalAlign: 'middle',
+      ':hover': { cursor: 'pointer' },
+      'input:disabled ~ &': {
+        color: 'muted',
+        cursor: 'not-allowed',
+      },
+    },
+    circleChecked: {
+      __default: {
+        cx: 8,
+        cy: 16,
+        r: 7.5,
+        fill: colors.blue60,
+        stroke: colors.blue70,
+      },
+      disabled: {
+        cx: 8,
+        cy: 16,
+        r: 7.5,
+        fill: colors.gray30,
+        stroke: colors.gray30,
+      },
+    },
+    circleUnchecked: {
+      __default: {
+        cx: 8,
+        cy: 16,
+        r: 7.5,
+        fill: colors.gray00,
+        stroke: colors.gray40,
+      },
+      disabled: {
+        cx: 8,
+        cy: 16,
+        r: 7.5,
+        fill: colors.gray00,
+        stroke: colors.gray30,
+      },
+      error: {
+        cx: 8,
+        cy: 16,
+        r: 7.5,
+        fill: colors.gray00,
+        stroke: 'error',
+      },
+    },
+  },
   dialog: {
     wrapper: {
       display: 'block',
@@ -394,6 +445,8 @@ const theme: BaseTheme = {
       fontWeight: 'body',
       lineHeight: 'body',
       color: 'text',
+      display: 'inline-flex',
+      alignItems: 'center',
     },
     disabled: {
       fontFamily: 'body',
