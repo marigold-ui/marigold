@@ -21,7 +21,12 @@ export const RadioChecked: React.FC<RadioIconProps> = ({
       fill="none"
       className={className}
     >
-      <Box as="circle" cx="8" cy="16" r="7.5" fill="#3AB3D5" stroke="#1D67B6" />
+      <Box
+        as="circle"
+        variant={
+          disabled ? 'radio.circleChecked.disabled' : 'radio.circleChecked'
+        }
+      />
       <Box as="circle" cx="8" cy="16" r="3" fill="white" />
     </SVG>
   );
@@ -39,6 +44,15 @@ export const RadioUnchecked: React.FC<RadioIconProps> = ({
     fill="none"
     className={className}
   >
-    <Box as="circle" cx="8" cy="16" r="7.5" fill="white" stroke="#CCCCCC" />
+    <Box
+      as="circle"
+      variant={
+        disabled
+          ? 'radio.circleUnchecked.disabled'
+          : error
+          ? 'radio.circleUnchecked.error'
+          : 'radio.circleUnchecked'
+      }
+    />
   </SVG>
 );

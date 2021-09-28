@@ -45,13 +45,19 @@ import { useState } from 'react';
         },
       },
     },
+    error: {
+      control: {
+        type: 'text',
+      },
+      description: 'Error Message',
+    },
   }}
 />
 
 # Radio
 
 export const Template = ({ onChange, checked, ...args }) => {
-  const [isChecked, setChecked] = React.useState(false);
+  const [isChecked, setChecked] = useState(false);
   return (
     <Radio
       onChange={() => setChecked(!isChecked)}

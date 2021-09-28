@@ -7,16 +7,18 @@ title: Radio
 ## Description
 
 With the Radio Button component you can add a HTML `<input>` element with `type="radio"` to your form.
-The variant can be added with the variant prop. The default variant is `radio`.
+The variant can be added with the variant prop. The default variant is `default`.
 
 ## Properties
 
-| Property              | Type      | Default |
-| :-------------------- | :-------- | :------ |
-| `id`                  | `string`  |         |
-| `variant` (optional)  | `string`  | `radio` |
-| `label` (optional)    | `string`  |         |
-| `required` (optional) | `boolean` |         |
+| Property              | Type      | Default   |
+| :-------------------- | :-------- | :-------- |
+| `id`                  | `string`  |           |
+| `variant` (optional)  | `string`  | `default` |
+| `label` (optional)    | `string`  |           |
+| `required` (optional) | `boolean` | `false`   |
+| `disabled` (optional) | `boolean` | `false`   |
+| `error` (optional)    | `string`  |           |
 
 ## Import
 
@@ -73,13 +75,13 @@ import { Radio } from '@marigold/components';
 };
 ```
 
-### Radio checked and disabled
+### Radio disabled
 
 ```tsx
 <>
-  <Radio id="radio" checked />
-  <Radio id="radio" disabled />
-  <Radio id="radio" checked disabled />
+  <Radio label="Disabled" id="disabled" disabled />
+  <br />
+  <Radio label="Checked and disabled" id="checkedDisabled" checked disabled />
 </>
 ```
 
@@ -95,4 +97,15 @@ import { Radio } from '@marigold/components';
     label="This label is required"
   />
 </>
+```
+
+### Radio with error
+
+```tsx
+<Radio
+  id="error"
+  value="error"
+  label="This radio has an error"
+  error="radio error"
+/>
 ```
