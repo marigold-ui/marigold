@@ -28,6 +28,14 @@ const theme = {
       },
     },
   },
+  label: {
+    inline: {
+      p: '4px',
+    },
+    disabled: {
+      p: '8px',
+    },
+  },
 };
 
 test('supports label prop', () => {
@@ -61,26 +69,29 @@ test('renders <input> element', () => {
 test('supports disabled prop with unchecked checkbox', () => {
   const { rerender } = render(
     <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" />
+      <Checkbox id="test" title="checkbox" label="label" />
     </ThemeProvider>
   );
 
   const checkbox = screen.getByTitle(/checkbox/);
+  const label = screen.getByText(/label/);
   const svgElement = checkbox.nextSibling;
   expect(svgElement?.firstChild).toHaveStyle(`padding: 4px`);
+  expect(label).toHaveStyle(`padding: 4px`);
 
   rerender(
     <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" disabled />
+      <Checkbox id="test" title="checkbox" label="label" disabled />
     </ThemeProvider>
   );
   expect(svgElement?.firstChild).toHaveStyle(`padding: 8px`);
+  expect(label).toHaveStyle(`padding: 8px`);
 });
 
 test('supports disabled prop with checked checkbox', () => {
   const { rerender } = render(
     <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" checked />
+      <Checkbox id="test" title="checkbox" onChange={() => {}} checked />
     </ThemeProvider>
   );
 
@@ -90,7 +101,13 @@ test('supports disabled prop with checked checkbox', () => {
 
   rerender(
     <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" checked disabled />
+      <Checkbox
+        id="test"
+        title="checkbox"
+        onChange={() => {}}
+        checked
+        disabled
+      />
     </ThemeProvider>
   );
   expect(svgElement?.firstChild).toHaveStyle(`padding: 2px`);

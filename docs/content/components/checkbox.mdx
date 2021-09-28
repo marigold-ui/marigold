@@ -70,13 +70,18 @@ import { Checkbox } from '@marigold/components';
 };
 ```
 
-### Checkbox checked and disabled
+### Checkbox disabled
 
 ```tsx
 <>
-  <Checkbox id="checkboxOne" checked />
-  <Checkbox id="checkboxTwo" disabled />
-  <Checkbox id="checkboxThree" checked disabled />
+  <Checkbox label="Disabled" id="disabled" disabled />
+  <br />
+  <Checkbox
+    label="Checked and disabled"
+    id="checkedDisabled"
+    checked
+    disabled
+  />
 </>
 ```
 
