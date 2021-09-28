@@ -306,6 +306,18 @@ const theme: BaseTheme = {
       color: colors.gray70,
     },
   },
+  radio: {
+    default: {
+      ariaHidden: 'true',
+      mr: 2,
+      verticalAlign: 'middle',
+      ':hover': { cursor: 'pointer' },
+      'input:disabled ~ &': {
+        color: 'muted',
+        cursor: 'not-allowed',
+      },
+    },
+  },
   dialog: {
     wrapper: {
       display: 'block',
@@ -395,6 +407,8 @@ const theme: BaseTheme = {
       fontWeight: 'body',
       lineHeight: '1.5rem',
       color: 'text',
+      display: 'inline-flex',
+      alignItems: 'center',
     },
     disabled: {
       fontFamily: 'body',

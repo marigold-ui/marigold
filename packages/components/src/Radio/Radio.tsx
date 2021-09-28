@@ -1,9 +1,10 @@
 import React from 'react';
-import { CircleUnchecked, CircleChecked } from '@marigold/icons';
 import { useStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 import { Box } from '../Box';
 import { Label } from '../Label';
+
+import { RadioChecked, RadioUnchecked } from './RadioIcons';
 
 // Radio Icon
 // ---------------
@@ -11,6 +12,7 @@ type RadioIconProps = {
   className?: string;
   variant?: string;
   checked?: boolean;
+  disabled?: boolean;
   children?: never;
 };
 
@@ -18,26 +20,17 @@ const RadioIcon: React.FC<RadioIconProps> = ({
   className,
   variant,
   checked,
+  disabled,
 }) => {
   const radioIconStyle = useStyles({
-    variant: `form.${variant}`,
-    css: {
-      ariaHidden: 'true',
-      mr: 2,
-      verticalAlign: 'middle',
-      ':hover': { cursor: 'pointer' },
-      'input:disabled ~ &': {
-        color: 'muted',
-        cursor: 'not-allowed',
-      },
-    },
+    variant: `radio.${variant}`,
     className,
   });
 
   if (checked) {
-    return <CircleChecked className={radioIconStyle} />;
+    return <RadioChecked className={radioIconStyle} disabled={disabled} />;
   }
-  return <CircleUnchecked className={radioIconStyle} />;
+  return <RadioUnchecked className={radioIconStyle} disabled={disabled} />;
 };
 
 // Radio Input
@@ -48,7 +41,7 @@ type RadioInputProps = {
 
 const RadioInput: React.FC<RadioInputProps> = ({
   className,
-  variant = 'radio',
+  variant = 'default',
   ...props
 }) => {
   const radioStyle = useStyles({
@@ -63,13 +56,9 @@ const RadioInput: React.FC<RadioInputProps> = ({
   });
 
   return (
-    <Box display="inline-block">
+    <Box display="inline-block" className={className}>
       <input type="radio" className={radioStyle} {...props} />
-      <RadioIcon
-        checked={props.checked}
-        className={className}
-        variant={variant}
-      />
+      <RadioIcon checked={props.checked} variant={variant} />
     </Box>
   );
 };
@@ -83,10 +72,16 @@ export type RadioProps = {
 } & RadioInputProps;
 
 export const Radio: React.FC<RadioProps> = ({ label, required, ...props }) => {
+  const labeledRadioStyle = useStyles({
+    css: {
+      pr: '8px',
+    },
+  });
+
   if (label) {
     return (
       <Label htmlFor={props.id} required={required} variant="inline">
-        <RadioInput {...props} />
+        <RadioInput className={labeledRadioStyle} {...props} />
         {label}
       </Label>
     );
