@@ -450,6 +450,8 @@ const theme: BaseTheme = {
       fontWeight: 'body',
       lineHeight: '2rem',
       color: 'text',
+      display: 'inline-flex',
+      alignItems: 'center',
     },
     disabled: {
       fontFamily: 'body',

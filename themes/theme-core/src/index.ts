@@ -449,6 +449,8 @@ const theme: BaseTheme = {
       fontWeight: 'body',
       lineHeight: 'body',
       color: 'text',
+      display: 'inline-flex',
+      alignItems: 'center',
     },
     disabled: {
       fontFamily: 'body',
