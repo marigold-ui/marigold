@@ -3673,7 +3673,7 @@ __metadata:
     "@types/jest": 27.0.2
     babel-jest: 27.2.3
     find-up: 5.0.0
-    jest-watch-typeahead: 0.6.4
+    jest-watch-typeahead: 0.6.5
     merge-deep: ^3.0.3
     react-test-renderer: 17.0.2
     ts-jest: 27.0.5
@@ -17601,9 +17601,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"jest-watch-typeahead@npm:0.6.4":
-  version: 0.6.4
-  resolution: "jest-watch-typeahead@npm:0.6.4"
+"jest-watch-typeahead@npm:0.6.5":
+  version: 0.6.5
+  resolution: "jest-watch-typeahead@npm:0.6.5"
   dependencies:
     ansi-escapes: ^4.3.1
     chalk: ^4.0.0
@@ -17614,7 +17614,7 @@ fsevents@^1.2.7:
     strip-ansi: ^6.0.0
   peerDependencies:
     jest: ^26.0.0 || ^27.0.0
-  checksum: 15a42b0593ed7cbc0273712ed6c4186467fd8d3c6a0d11795b650fb7639e073f1cee6c27ac38fd2ef3a6c27ea43d34daea48f1a1d6202d378b82d8f19daa1f95
+  checksum: 01f5113e51cb49365661986144bfc6520d9e8d74d8a5d7527d5edb8e2bc8f128f6cf7baa512bb6bb35fdbb86fa92f0b26a4a7a4db66ac4dc3f7ea603ba48ca81
   languageName: node
   linkType: hard
 
