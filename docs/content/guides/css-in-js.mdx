@@ -1,0 +1,54 @@
+---
+title: CSS in JS
+---
+
+# CSS in Javascript
+
+## What's CSS in JS?
+
+CSS in JS follows the principle that you pack your CSS styles directly into your components instead of Stylesheets.
+Marigold uses the CSS-in-JS-Library called [Emotion](https://emotion.sh/docs/introduction).
+CSS-in-JS is in fact a JavaScript library that bundles each JavaScript component with all its belonging CSS rules and dependencies.
+
+Most libraries are designed to:
+
+- Let you author CSS in JavaScript syntax
+- Colocate styles with components
+- Take advantage of native JS syntax features
+- Take advantage of anything from the JS ecosystem
+
+## Why CSS in JS?
+
+### Scoped CSS
+
+All CSS in JS libs are creating automatically unique names for css classes. The styles are only applied to the respective component.
+Styling outside the component remains completely unaffected by them.
+This prevents the collision of css classnames and reduces the struggle in finding a suitable classname.
+
+### No inline styles
+
+With css in js, no styles are assigned within the HTML. We are using **no style props** like `<div style={{ padding: '8px' }}>`
+This gives us the following advantages: Responsive designs which are not possible using inline styles can be used with css in js.
+Furthermore, pseudo-classes, pseudo-elements and media queries can be used.
+In addition, inline styles are generally considered to be less performant than classnames.
+
+### Server-Side-Rendering
+
+The Marigold Design-System is generated with [Gatsby](https://www.gatsbyjs.com/) and supports SSR.
+During SSR, only the styles necessary to render the initial view are added to the HTML document. Dynamic styles are removed to reduce the amount of code.
+This has a positive effect on performance, because there is no separate CSS file that has to be retrieved from the server to block the rendering process.
+
+### The className property
+
+Theme styles are applied with a classname. Emotion outputs the classnames as a string that can then be assigned to HTML elements like this:
+`<button class='css-ase7ea css-1nt0tt7'>`.
+The principle is to define styles first and then apply it to the component which should be styled.
+
+## Whats CSS in JS not?
+
+CSS-in-JS does not get rid of the need to understand the following:
+
+- How styles are applied to the DOM
+- How inheritance works
+- How CSS properties work
+- How CSS layout works
