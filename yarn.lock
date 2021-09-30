@@ -3636,7 +3636,7 @@ __metadata:
     babel-eslint: 10.1.0
     eslint-config-prettier: ^8.3.0
     eslint-config-react-app: 6.0.0
-    eslint-plugin-flowtype: ^5.9.2
+    eslint-plugin-flowtype: ^6.0.0
     eslint-plugin-import: 2.24.2
     eslint-plugin-jest: 24.5.0
     eslint-plugin-jsx-a11y: 6.4.1
@@ -12186,6 +12186,18 @@ __metadata:
   peerDependencies:
     eslint: ^7.1.0
   checksum: cee01ed54a1c0fec2e03e02e6993147c8d0cf794b39a6698fdfe55399470ab17743bce39e43d93779483ef2be25878a00af70dd7faeaecf2e218b465f2575032
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-flowtype@npm:^6.0.0":
+  version: 6.1.0
+  resolution: "eslint-plugin-flowtype@npm:6.1.0"
+  dependencies:
+    lodash: ^4.17.21
+    string-natural-compare: ^3.0.1
+  peerDependencies:
+    eslint: ^7.32.0
+  checksum: a3c865273150d6d37243ec4c70e350bf52027df3c11c22af387b78ad3a45ede32eeeaa2b07d5545a7fab6f1e75321282be0337f9561000f25dc089587508abe4
   languageName: node
   linkType: hard
 
