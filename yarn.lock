@@ -11245,7 +11245,7 @@ __metadata:
     "@types/react": 17.0.25
     "@types/react-helmet": 6.1.2
     babel-preset-gatsby: 1.14.0
-    gatsby: 3.14.0
+    gatsby: 3.14.1
     gatsby-plugin-emotion: 6.14.0
     gatsby-plugin-image: 1.14.0
     gatsby-plugin-manifest: 3.14.0
@@ -14301,9 +14301,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"gatsby@npm:3.14.0":
-  version: 3.14.0
-  resolution: "gatsby@npm:3.14.0"
+"gatsby@npm:3.14.1":
+  version: 3.14.1
+  resolution: "gatsby@npm:3.14.1"
   dependencies:
     "@babel/code-frame": ^7.14.0
     "@babel/core": ^7.15.5
@@ -14458,7 +14458,7 @@ fsevents@^1.2.7:
     react-dom: ^16.9.0 || ^17.0.0
   bin:
     gatsby: ./cli.js
-  checksum: 9769f1ecaaef1805bd36c6c4e2905ecb5ec40c8406f3328536659a7dd9f9ccbe2f60ead0089104237edb6b9b7462711067961658d9f004f6489a32edccd50b6a
+  checksum: 3b78e2be2423db2736cb9ef4a3d2aa83fa9e1e3401ca67973f0b2f4b9c648dfce9145c91ce8c027926882a538bc258b2bae80eb17735dab302034b0ea4419568
   languageName: node
   linkType: hard
 
