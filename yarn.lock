@@ -5903,16 +5903,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react@npm:12.1.1":
-  version: 12.1.1
-  resolution: "@testing-library/react@npm:12.1.1"
+"@testing-library/react@npm:12.1.2":
+  version: 12.1.2
+  resolution: "@testing-library/react@npm:12.1.2"
   dependencies:
     "@babel/runtime": ^7.12.5
     "@testing-library/dom": ^8.0.0
   peerDependencies:
     react: "*"
     react-dom: "*"
-  checksum: 1882161426854801a9e5b00c6e50e76b813c22158c8a45c36b87d0aeab4d6ce0920387f8f738562bb693ec217a5885641ef82f0a135cddcde870edda097f2ebb
+  checksum: 70b0f7f27c83fe1a33e7df01b1e64850fbab4050c403848d611d852cadaa25ccde58518773002ae569a1350b2282c2ccbcbe5eb6af8b29ab377ab2a8ab573b3b
   languageName: node
   linkType: hard
 
@@ -18967,7 +18967,7 @@ fsevents@^1.2.7:
     "@marigold/tsconfig": "*"
     "@storybook/react": 6.3.9
     "@testing-library/jest-dom": 5.14.1
-    "@testing-library/react": 12.1.1
+    "@testing-library/react": 12.1.2
     "@testing-library/react-hooks": 7.0.2
     "@types/node": 14.17.20
     eslint: 7.32.0
