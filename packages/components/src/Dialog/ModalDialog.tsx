@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import {
   useOverlay,
   usePreventScroll,
@@ -8,10 +8,9 @@ import {
 import { useDialog } from '@react-aria/dialog';
 import { FocusScope } from '@react-aria/focus';
 import { AriaDialogProps } from '@react-types/dialog';
+import { useStyles } from '@marigold/system';
 
 import { Box } from '../Box';
-import { RefObject } from 'react-helmet/node_modules/@types/react';
-import { useStyles } from 'packages/system/src/useStyles';
 
 export type ModalDialogProps = OverlayProps & AriaDialogProps;
 
@@ -27,11 +26,9 @@ export const ModalDialog: React.FC<ModalDialogProps> = ({
   // Prevent scrolling while the modal is open, and hide content
   // outside the modal from screen readers.
   usePreventScroll();
+
   const { modalProps } = useModal();
-
-  // Get props for the dialog
   const { dialogProps } = useDialog(props, ref);
-
   const modalWrapperClassname = useStyles({
     css: {
       position: 'fixed',

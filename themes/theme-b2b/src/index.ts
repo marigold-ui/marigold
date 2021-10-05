@@ -308,7 +308,8 @@ const theme: BaseTheme = {
   },
   dialog: {
     wrapper: {
-      display: 'block',
+      display: 'flex',
+      justifyContent: 'space-between',
       borderRadius: '2px',
       paddingLeft: 'large',
       paddingBottom: 'large',

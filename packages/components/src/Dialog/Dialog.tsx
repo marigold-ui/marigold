@@ -1,31 +1,28 @@
-import React from 'react';
+import React, { LegacyRef, RefObject } from 'react';
 import { ComponentProps } from '@marigold/types';
-import {
-  OverlayTriggerState,
-  useOverlayTriggerState,
-} from '@react-stately/overlays';
+import { useOverlayTriggerState } from '@react-stately/overlays';
 import { OverlayContainer } from '@react-aria/overlays';
 import { useButton } from '@react-aria/button';
-import { LegacyRef, RefObject } from 'react-helmet/node_modules/@types/react';
 import { Close } from '@marigold/icons';
 
 import { Box } from '../Box';
 import { Button } from '../Button';
-import { Text } from '../Text';
+import { Heading } from '../Heading';
 
 import { ModalDialog } from './ModalDialog';
 
 export type DialogProps = {
-  onClose?: ComponentProps<typeof Button>['onClick'];
+  isOpen: boolean;
+  close: ComponentProps<typeof Button>['onClick'];
   title?: string;
-} & OverlayTriggerState &
-  ComponentProps<'div'>;
+} & ComponentProps<'div'>;
 
 export const Dialog: React.FC<DialogProps> = ({
-  onClose,
   children,
   title,
   className,
+  isOpen = false,
+  close,
   ...props
 }) => {
   const closeButtonRef = React.useRef<HTMLElement>() as RefObject<HTMLElement>;
@@ -35,32 +32,32 @@ export const Dialog: React.FC<DialogProps> = ({
   // dialog closes.
   const { buttonProps: closeButtonProps } = useButton(
     {
-      onPress: () => props.close(),
+      onPress: () => close(),
     },
     closeButtonRef
   );
 
   return (
     <OverlayContainer>
-      <ModalDialog isOpen onClose={props.close} isDismissable>
+      <ModalDialog isOpen={isOpen} onClose={close} isDismissable>
         <Box variant="dialog.wrapper" className={className} {...props}>
-          <Box display="flex" justifyContent="space-between">
-            <Box variant="dialog.body">
-              <Box pb="xsmall">
-                <Text>{title}</Text>
-              </Box>
-              {children}
-            </Box>
-            <Box variant="dialog.onClose">
-              <Button
-                variant="close"
-                size="xsmall"
-                {...closeButtonProps}
-                ref={closeButtonRef as LegacyRef<HTMLButtonElement>}
-              >
-                <Close size={16} />
-              </Button>
-            </Box>
+          <Box variant="dialog.body">
+            {title && (
+              <Heading as="h4" variant="h4">
+                {title}
+              </Heading>
+            )}
+            {children}
+          </Box>
+          <Box variant="dialog.onClose">
+            <Button
+              variant="close"
+              size="xsmall"
+              {...closeButtonProps}
+              ref={closeButtonRef as LegacyRef<HTMLButtonElement>}
+            >
+              <Close size={16} />
+            </Button>
           </Box>
         </Box>
       </ModalDialog>
@@ -68,7 +65,7 @@ export const Dialog: React.FC<DialogProps> = ({
   );
 };
 
-// use this hook to get the overlayTriggerState and Button props for using the dialog component9i
+// use this hook to get the overlayTriggerState and openButton props for using the dialog component
 export const useDialogButtonProps = () => {
   const state = useOverlayTriggerState({});
   const openButtonRef = React.useRef<HTMLElement>() as RefObject<HTMLElement>;
@@ -79,5 +76,9 @@ export const useDialogButtonProps = () => {
     openButtonRef
   );
 
-  return { state, openButtonProps, openButtonRef };
+  return {
+    state,
+    openButtonProps,
+    openButtonRef,
+  };
 };

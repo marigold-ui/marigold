@@ -6,14 +6,16 @@ title: Dialog
 
 ## Description
 
-Element to display a Dialog as a reaction to an event. The user style or fill the body of the dialog with content.
+Component to display a Dialog as a reaction to an event. The Dialog could be styled via theme and should be filled with content.
+You can also add a title via title prop.
 
 ## Properties
 
-| Property           | Type       | Default |
-| :----------------- | :--------- | :------ |
-| `onClose`          | `function` |         |
-| `title (optional)` | `string`   |         |
+| Property           | Type                                       | Default |
+| :----------------- | :----------------------------------------- | :------ |
+| `isOpen `          | `boolean`                                  | `false` |
+| `close`            | `ComponentProps<typeof Button>['onClick']` |         |
+| `title (optional)` | `string`                                   |         |
 
 ## Import
 
@@ -37,7 +39,11 @@ import { Dialog } from '@marigold/components';
         Open Dialog
       </Button>
       {state.isOpen && (
-        <Dialog title="Dialog Livecode example" {...state}>
+        <Dialog
+          title="Dialog Livecode example"
+          isOpen={state.isOpen}
+          close={state.close}
+        >
           <Text>
             This is your dialog text. You can read some interesting information.
           </Text>
@@ -64,9 +70,11 @@ import { Dialog } from '@marigold/components';
         Open Dialog
       </Button>
       {state.isOpen && (
-        <Dialog title="Dialog Title" {...state}>
-          <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
-          <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
+        <Dialog title="Dialog Title" isOpen={state.isOpen} close={state.close}>
+          <Text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum
+            dolor sit amet, consectetur adipiscing elit.
+          </Text>
         </Dialog>
       )}
     </>
