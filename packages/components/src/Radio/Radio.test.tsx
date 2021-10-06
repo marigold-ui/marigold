@@ -9,14 +9,6 @@ const theme = {
       m: '2px',
     },
   },
-  label: {
-    inline: {
-      p: '4px',
-    },
-    disabled: {
-      p: '8px',
-    },
-  },
 };
 
 test('supports label prop', () => {
