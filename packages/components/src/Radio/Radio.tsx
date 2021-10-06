@@ -12,7 +12,6 @@ import { RadioChecked, RadioUnchecked } from './RadioIcons';
 // Radio Icon
 // ---------------
 type RadioIconProps = {
-  className?: string;
   variant?: string;
   checked?: boolean;
   disabled?: boolean;
@@ -21,7 +20,6 @@ type RadioIconProps = {
 };
 
 const RadioIcon: React.FC<RadioIconProps> = ({
-  className,
   variant,
   checked,
   disabled,
@@ -29,7 +27,6 @@ const RadioIcon: React.FC<RadioIconProps> = ({
 }) => {
   const radioIconStyle = useStyles({
     variant: `radio.${variant}`,
-    className,
   });
 
   if (checked) {
