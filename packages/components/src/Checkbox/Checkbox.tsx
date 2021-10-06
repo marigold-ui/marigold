@@ -12,7 +12,6 @@ import { ValidationMessage } from '../ValidationMessage';
 // Checkbox Icon
 // ---------------
 type CheckboxIconProps = {
-  className?: string;
   variant?: string;
   checked?: boolean;
   disabled?: boolean;
@@ -21,7 +20,6 @@ type CheckboxIconProps = {
 };
 
 const CheckboxIcon: React.FC<CheckboxIconProps> = ({
-  className,
   variant,
   checked,
   disabled,
@@ -29,7 +27,6 @@ const CheckboxIcon: React.FC<CheckboxIconProps> = ({
 }) => {
   const checkboxIconStyle = useStyles({
     variant: `checkbox.${variant}`,
-    className,
   });
 
   if (checked) {
