@@ -317,16 +317,6 @@ const theme: BaseTheme = {
         cursor: 'not-allowed',
       },
     },
-    second: {
-      ariaHidden: 'true',
-      mr: 2,
-      verticalAlign: 'middle',
-      ':hover': { cursor: 'pointer' },
-      'input:disabled ~ &': {
-        color: 'muted',
-        cursor: 'not-allowed',
-      },
-    },
   },
   dialog: {
     wrapper: {
