@@ -13,28 +13,29 @@ const theme = {
 
 test('supports label prop', () => {
   render(<Radio label="Test" id="test" title="radio" />);
-  const radioLabel = screen.getByText(/Test/);
 
+  const radioLabel = screen.getByText(/Test/);
   expect(radioLabel).toBeDefined();
 });
 
 test('supports required prop and renders required icon', () => {
   render(<Radio label="Test" id="test" required title="radio" />);
+
   const label = screen.getByText(/Test/);
   expect(label.nextSibling).toContainHTML('path d="M10.8');
 });
 
 test('supports default type', () => {
   render(<Radio id="radio" title="radio" />);
-  const radio = screen.getByTitle(/radio/);
 
+  const radio = screen.getByTitle(/radio/);
   expect(radio.getAttribute('type')).toEqual('radio');
 });
 
 test('renders <input> element', () => {
   render(<Radio id="radio" title="radio" />);
-  const radio = screen.getByTitle(/radio/);
 
+  const radio = screen.getByTitle(/radio/);
   expect(radio instanceof HTMLInputElement).toBeTruthy();
 });
 
@@ -55,6 +56,7 @@ test('supports error prop', () => {
       <Radio id="test" title="radio" label="test" error="error" />
     </ThemeProvider>
   );
+
   const errorMessage = screen.getByText(/error/);
   expect(errorMessage).toBeDefined();
 });
