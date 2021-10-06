@@ -1,4 +1,4 @@
-import React, { LegacyRef, RefObject } from 'react';
+import React, { RefObject } from 'react';
 import { ComponentProps } from '@marigold/types';
 import { useOverlayTriggerState } from '@react-stately/overlays';
 import { OverlayContainer } from '@react-aria/overlays';
@@ -21,7 +21,7 @@ export const Dialog: React.FC<DialogProps> = ({
   children,
   title,
   className,
-  isOpen = false,
+  isOpen,
   close,
   ...props
 }) => {
@@ -54,7 +54,7 @@ export const Dialog: React.FC<DialogProps> = ({
               variant="close"
               size="xsmall"
               {...closeButtonProps}
-              ref={closeButtonRef as LegacyRef<HTMLButtonElement>}
+              ref={closeButtonRef}
             >
               <Close size={16} />
             </Button>
