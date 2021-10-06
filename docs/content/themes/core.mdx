@@ -65,10 +65,11 @@ Arial, Helvetica, sans-serif for headings and for body text (font-weight: 900 & 
 As a rule of thumb, any text displayed over colours with a classname number of 50 or above should be white.
 Anything below 50 should have black text (gray-70 | #4b4b4b).
 
+<br />
 <div>
   <Columns>
     <Column width={2}>
-      <Stack space={4}>
+      <Stack>
         <Container
           className={useStyles({
             css: { bg: '#fa8005', width: '96px', height: '24px' },
@@ -117,7 +118,7 @@ Anything below 50 should have black text (gray-70 | #4b4b4b).
       </Stack>
     </Column>
     <Column width={6}>
-      <Stack space={4}>
+      <Stack>
         <Text>Primary</Text>
         <Text>Secondary</Text>
         <Text>Text</Text>
