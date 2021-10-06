@@ -2,7 +2,7 @@ import React from 'react';
 import { GatsbyBrowser } from 'gatsby';
 import { MDXProvider } from '@mdx-js/react';
 
-import { MarigoldProvider } from '@marigold/components';
+import { MarigoldProvider, SSRProvider } from '@marigold/components';
 import { theme } from './theme';
 
 import { Layout } from './components/Layout';
@@ -17,11 +17,13 @@ export const WrapPageElement: GatsbyBrowser['wrapPageElement'] = ({
 export const WrapRootElement: GatsbyBrowser['wrapRootElement'] = ({
   element,
 }) => (
-  <MarigoldProvider theme={theme}>
-    <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
-      <MDXProvider components={mdxComponents}>{element}</MDXProvider>
-    </MarigoldThemeSwitch>
-  </MarigoldProvider>
+  <SSRProvider>
+    <MarigoldProvider theme={theme}>
+      <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
+        <MDXProvider components={mdxComponents}>{element}</MDXProvider>
+      </MarigoldThemeSwitch>
+    </MarigoldProvider>
+  </SSRProvider>
 );
 
 /**
