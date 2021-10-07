@@ -23,7 +23,7 @@ export const CheckboxChecked = ({ disabled = false, ...props }) => (
 
 export const CheckboxUnchecked = ({
   disabled = false,
-  error = '',
+  error = false,
   ...props
 }) => (
   <SVG width="16" height="32" viewBox="0 0 16 32" fill="none" {...props}>

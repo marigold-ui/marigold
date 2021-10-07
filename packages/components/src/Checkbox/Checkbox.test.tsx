@@ -53,10 +53,30 @@ test('supports disabled prop', () => {
 test('supports error prop', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" label="test" error="error" />
+      <Checkbox id="test" title="checkbox" label="test" error />
     </ThemeProvider>
   );
 
+  const label = screen.getByText(/test/);
+  // check if the Required icon is there which comes with the error prop
+  expect(label.nextSibling instanceof SVGElement).toBeTruthy();
+});
+
+test('supports error and errorMessage prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox
+        id="test"
+        title="checkbox"
+        label="test"
+        error
+        errorMessage="error"
+      />
+    </ThemeProvider>
+  );
+
+  const label = screen.getByText(/test/);
+  expect(label.nextSibling instanceof SVGElement).toBeTruthy();
   const errorMessage = screen.getByText(/error/);
   expect(errorMessage).toBeDefined();
 });

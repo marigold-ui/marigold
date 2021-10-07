@@ -11,14 +11,15 @@ The variant can be added with the variant prop. The default variant is `default`
 
 ## Properties
 
-| Property              | Type      | Default   |
-| :-------------------- | :-------- | :-------- |
-| `id`                  | `string`  |           |
-| `variant` (optional)  | `string`  | `default` |
-| `label` (optional)    | `string`  |           |
-| `required` (optional) | `boolean` | `false`   |
-| `disabled` (optional) | `boolean` | `false`   |
-| `error` (optional)    | `string`  |           |
+| Property                  | Type      | Default   |
+| :------------------------ | :-------- | :-------- |
+| `id`                      | `string`  |           |
+| `variant` (optional)      | `string`  | `default` |
+| `label` (optional)        | `string`  |           |
+| `required` (optional)     | `boolean` | `false`   |
+| `disabled` (optional)     | `boolean` | `false`   |
+| `error` (optional)        | `boolean` | `false`   |
+| `errorMessage` (optional) | `string`  |           |
 
 ## Import
 
@@ -97,13 +98,16 @@ import { Checkbox } from '@marigold/components';
 />
 ```
 
-### Checkbox with error
+### Checkbox with error and errorMessage
+
+Only use the error and errorMesssage prop together
 
 ```tsx
 <Checkbox
   id="error"
   value="error"
   label="This checkbox has an error"
-  error="Error in checkbox"
+  error
+  errorMessage="checkbox error"
 />
 ```

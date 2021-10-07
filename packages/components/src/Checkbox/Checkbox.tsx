@@ -16,7 +16,7 @@ type CheckboxIconProps = {
   checked?: boolean;
   disabled?: boolean;
   children?: never;
-  error?: string;
+  error?: boolean;
 };
 
 const CheckboxIcon: React.FC<CheckboxIconProps> = ({
@@ -47,7 +47,7 @@ const CheckboxIcon: React.FC<CheckboxIconProps> = ({
 // ---------------
 type CheckboxInputProps = {
   variant?: string;
-  error?: string;
+  error?: boolean;
 } & ComponentProps<'input'>;
 
 const CheckboxInput: React.FC<CheckboxInputProps> = ({
@@ -82,17 +82,22 @@ const CheckboxInput: React.FC<CheckboxInputProps> = ({
 
 // Checkbox
 // ---------------
+export type ErrorProps =
+  | { error?: false; errorMessage?: never }
+  | { error: true; errorMessage?: string };
+
 export type CheckboxProps = {
   id: string;
   label?: string;
   required?: boolean;
-  error?: string;
-} & CheckboxInputProps;
+} & ErrorProps &
+  CheckboxInputProps;
 
 export const Checkbox: React.FC<CheckboxProps> = ({
   label,
   required,
   error,
+  errorMessage,
   ...props
 }) => {
   const labeledCheckboxStyle = useStyles({
@@ -116,10 +121,10 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           />
           {label}
         </Label>
-        {error && (
+        {error && errorMessage && (
           <ValidationMessage>
             <Exclamation size={16} />
-            {error}
+            {errorMessage}
           </ValidationMessage>
         )}
       </>
