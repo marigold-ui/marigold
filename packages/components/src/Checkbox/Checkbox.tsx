@@ -111,7 +111,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       <>
         <Label
           htmlFor={props.id}
-          required={(error && true) || required}
+          required={error || required}
           variant={props.disabled ? 'disabled' : 'inline'}
         >
           <CheckboxInput
