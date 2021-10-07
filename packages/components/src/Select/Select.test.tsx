@@ -98,7 +98,19 @@ test('supports required prop', () => {
 test('supports error prop', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" error="error" data-testid="selectId">
+      <Select label="MyLabel" error data-testid="selectId">
+        <Item>1</Item>
+      </Select>
+    </MarigoldProvider>
+  );
+  const selectLabel = screen.getAllByText(/MyLabel/);
+  expect(selectLabel[0]).toContainHTML('path d="M10.8 3.84003');
+});
+
+test('supports error and errorMessage prop', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Select label="MyLabel" error errorMessage="error" data-testid="selectId">
         <Item>1</Item>
       </Select>
     </MarigoldProvider>
@@ -144,7 +156,7 @@ test('option list opens when element is clicked', () => {
 test('option list opens when element is clicked and theres an error', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" error="error" data-testid="selectId">
+      <Select label="MyLabel" error errorMessage="error" data-testid="selectId">
         <Item>Red</Item>
       </Select>
     </MarigoldProvider>

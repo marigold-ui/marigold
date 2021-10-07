@@ -19,13 +19,17 @@ import { ValidationMessage } from '../ValidationMessage';
 import { ListBox } from './ListBox';
 import { Popover } from './Popover';
 
+export type ErrorProps =
+  | { error?: false; errorMessage?: never }
+  | { error: true; errorMessage?: string };
+
 export type SelectProps = {
   placeholder?: string;
   disabled?: boolean;
   required?: boolean;
-  error?: string;
   width?: ResponsiveStyleValue<number | string>;
-} & ComponentProps<'select'> &
+} & ErrorProps &
+  ComponentProps<'select'> &
   AriaSelectProps<object> &
   SingleSelection;
 
@@ -34,6 +38,7 @@ export const Select = ({
   disabled,
   required,
   error,
+  errorMessage,
   width,
   className,
   ...props
@@ -148,10 +153,10 @@ export const Select = ({
           <ListBox error={error} {...menuProps} state={state} />
         </Popover>
       )}
-      {error && (
+      {error && errorMessage && (
         <Box as="span" display="inline-flex" alignItems="center">
           <Exclamation size={16} className={errorClassName} />
-          <ValidationMessage>{error}</ValidationMessage>
+          <ValidationMessage>{errorMessage}</ValidationMessage>
         </Box>
       )}
     </Box>
