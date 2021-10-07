@@ -109,7 +109,7 @@ export const Radio: React.FC<RadioProps> = ({
       <>
         <Label
           htmlFor={props.id}
-          required={(error && true) || required}
+          required={error || required}
           variant={props.disabled ? 'disabled' : 'inline'}
         >
           <RadioInput className={labeledRadioStyle} error={error} {...props} />
