@@ -6,13 +6,17 @@ import { Input } from '../Input';
 import { Label } from '../Label';
 import { ValidationMessage } from '../ValidationMessage';
 
+export type ErrorProps =
+  | { error?: false; errorMessage?: never }
+  | { error: true; errorMessage?: string };
+
 export type FieldProps = {
   htmlFor: string;
   label: string;
   required?: boolean;
-  error?: string;
   disabled?: boolean;
-} & ComponentProps<'input'>;
+} & ErrorProps &
+  ComponentProps<'input'>;
 
 export const Field: React.FC<FieldProps> = ({
   type = 'text',
@@ -21,6 +25,7 @@ export const Field: React.FC<FieldProps> = ({
   label,
   required,
   error,
+  errorMessage,
   disabled,
   ...props
 }) => {
@@ -41,10 +46,10 @@ export const Field: React.FC<FieldProps> = ({
         variant={error ? 'error' : 'default'}
         className={className}
       />
-      {error && (
+      {error && errorMessage && (
         <ValidationMessage>
           <Exclamation size={16} />
-          {error}
+          {errorMessage}
         </ValidationMessage>
       )}
     </>

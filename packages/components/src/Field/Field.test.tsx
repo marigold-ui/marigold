@@ -34,7 +34,7 @@ test('supports label prop', () => {
 });
 
 test('supports htmlFor prop', () => {
-  render(<Field htmlFor="myId" label="Name" error="Validation error" />);
+  render(<Field htmlFor="myId" label="Name" />);
   const field = screen.getByText(/Name/);
 
   expect(field).toHaveAttribute('for');
@@ -49,10 +49,22 @@ test('supports required prop', () => {
 });
 
 test('supports error prop', () => {
-  render(<Field htmlFor="myId" label="label" error="Validation error" />);
-  const field = screen.getByText(/Validation/);
+  render(<Field htmlFor="myId" label="label" error />);
 
-  expect(field).toBeDefined();
+  const label = screen.getByText(/label/);
+  // check if the Required icon is there which comes with the error prop
+  expect(label.nextSibling instanceof SVGElement).toBeTruthy();
+});
+
+test('supports error and errorMessage prop', () => {
+  render(
+    <Field htmlFor="myId" label="label" error errorMessage="Validation error" />
+  );
+
+  const label = screen.getByText(/label/);
+  expect(label.nextSibling instanceof SVGElement).toBeTruthy();
+  const errorMessage = screen.getByText(/Validation/);
+  expect(errorMessage).toBeDefined();
 });
 
 test('supports disabled prop', () => {

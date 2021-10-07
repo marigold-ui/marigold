@@ -10,14 +10,15 @@ With the Field component you can add a HTML `<label>` and `<input>` element to y
 
 ## Properties
 
-| Property              | Type                                                                                       | Default |
-| :-------------------- | :----------------------------------------------------------------------------------------- | :------ |
-| `htmlFor`             | `string`                                                                                   |         |
-| `label`               | `string`                                                                                   |         |
-| `required` (optional) | `boolean`                                                                                  |         |
-| `error` (optional)    | `string`                                                                                   |         |
-| `disabled` (optional) | `boolean`                                                                                  |         |
-| `type`                | `date, datetime-local, email, month, number, password, search, tel, text, time, url, week` | `text`  |
+| Property                  | Type                                                                                       | Default |
+| :------------------------ | :----------------------------------------------------------------------------------------- | :------ |
+| `htmlFor`                 | `string`                                                                                   |         |
+| `label`                   | `string`                                                                                   |         |
+| `required` (optional)     | `boolean`                                                                                  |         |
+| `error` (optional)        | `boolean`                                                                                  |         |
+| `errorMessage` (optional) | `string`                                                                                   |         |
+| `disabled` (optional)     | `boolean`                                                                                  |         |
+| `type`                    | `date, datetime-local, email, month, number, password, search, tel, text, time, url, week` | `text`  |
 
 ## Import
 
@@ -48,7 +49,7 @@ import { Field } from '@marigold/components';
 ### Input type text with error
 
 ```tsx
-<Field label="Name" htmlFor="myId3" error="Validation message" />
+<Field label="Name" htmlFor="myId3" error errorMessage="Validation message" />
 ```
 
 ### Another input type
@@ -60,7 +61,13 @@ import { Field } from '@marigold/components';
 ### Another input type with error
 
 ```tsx
-<Field label="Pick your date" type="date" htmlFor="myId5" error="ERROR!" />
+<Field
+  label="Pick your date"
+  type="date"
+  htmlFor="myId5"
+  error
+  errorMessage="ERROR!"
+/>
 ```
 
 ### Field disabled
