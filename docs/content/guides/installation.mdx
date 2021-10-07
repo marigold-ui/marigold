@@ -2,8 +2,6 @@
 title: Getting Started
 ---
 
-import Link from 'gatsby-link';
-
 # Getting Started
 
 ## Installation
@@ -23,7 +21,7 @@ Add the package `@marigold/icons` if you want to use icons in Marigold.
 ## Usage
 
 Marigold components don't come with a theme by default. In order to add a theme to your application, use the `ThemeProvider`
-component and thereby provide a theme in context. You can use one of the following themes: <Link to="../../themes/b2b">B2B theme</Link> or <Link to="../../themes/unicorn">Unicorn theme</Link>.
+component and thereby provide a theme in context. You can use one of the following themes: [B2B theme](../../themes/b2b), [Core theme](../../themes/core) or [Unicorn theme](../../themes/unicorn).
 
 ```bash code
 # with npm
@@ -43,7 +41,9 @@ import unicornTheme from '@marigold/theme-unicorn';
 export const App = () => {
   return (
     <ThemeProvider theme={unicornTheme}>
-      <Button variant="primary.small">Hello World</Button>
+      <Button variant="primary" size="small">
+        Hello World
+      </Button>
     </ThemeProvider>
   );
 };
