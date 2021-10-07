@@ -33,38 +33,36 @@ import { Field } from '@marigold/components';
 
 ## Usage
 
-### Input type text
+### Standard Field
 
 ```tsx
 <Field label="Firstname" htmlFor="myId1" />
 ```
 
-### Input type text required
+### Disabled Field
+
+```tsx
+<Field label="Field disabled" htmlFor="myId6" disabled />
+```
+
+### Required Field
 
 ```tsx
 <Field label="Name" htmlFor="myId2" required />
 ```
 
-### Input type text with error
+### Error Field
 
 ```tsx
 <Field label="Name" htmlFor="myId3" error="Validation message" />
 ```
 
-### Another input type
+### Field Examples
 
 ```tsx
 <Field label="Choose the week" type="week" htmlFor="myId4" />
 ```
 
-### Another input type with error
-
 ```tsx
 <Field label="Pick your date" type="date" htmlFor="myId5" error="ERROR!" />
-```
-
-### Field disabled
-
-```tsx
-<Field label="Field disabled" htmlFor="myId6" disabled />
 ```
