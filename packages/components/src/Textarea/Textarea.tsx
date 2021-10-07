@@ -7,33 +7,38 @@ import { ValidationMessage } from '../ValidationMessage';
 import { Label } from '../Label';
 import { Box } from '../Box';
 
+export type ErrorProps =
+  | { error?: false; errorMessage?: never }
+  | { error: true; errorMessage?: string };
+
 export type TextareaProps = {
   variant?: string;
   label?: string;
   htmlFor?: string;
-  errorMessage?: string;
   required?: boolean;
-} & ComponentProps<'textarea'>;
+} & ErrorProps &
+  ComponentProps<'textarea'>;
 
 export const Textarea: React.FC<TextareaProps> = ({
   variant = 'default',
   htmlFor = 'textarea',
   label,
+  error,
   errorMessage,
-  required = false,
+  required,
   className = '',
   children,
   ...props
 }) => {
   const textareaClassNames = useStyles({
-    css: { outlineColor: errorMessage && 'error' },
+    css: { outlineColor: error && 'error' },
     className,
   });
 
   return (
     <Box>
       {label && (
-        <Label htmlFor={htmlFor} required={required}>
+        <Label htmlFor={htmlFor} required={error || required}>
           {label}
         </Label>
       )}
@@ -44,7 +49,7 @@ export const Textarea: React.FC<TextareaProps> = ({
         variant={`textarea.${variant}`}
         className={textareaClassNames}
       />
-      {errorMessage && (
+      {error && errorMessage && (
         <ValidationMessage>
           <Exclamation size={16} />
           {errorMessage}

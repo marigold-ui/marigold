@@ -58,14 +58,26 @@ test('supports label prop', () => {
   expect(textarea instanceof HTMLLabelElement).toBeTruthy();
 });
 
+test('supports error prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Textarea error label="label" title="textarea" />
+    </ThemeProvider>
+  );
+  const label = screen.getByText(/label/);
+  // check if the Required icon is there which comes with the error prop
+  expect(label.nextSibling instanceof SVGElement).toBeTruthy();
+});
+
 test('supports errorMessage prop', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Textarea errorMessage="error" title="textarea" />
+      <Textarea error errorMessage="error" label="label" title="textarea" />
     </ThemeProvider>
   );
+  const label = screen.getByText(/label/);
+  expect(label.nextSibling instanceof SVGElement).toBeTruthy();
   const textarea = screen.getByText(/error/);
-
   expect(textarea).toBeDefined();
 });
 
