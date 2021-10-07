@@ -11,14 +11,15 @@ The variant can be added with the variant prop. The default variant is `default`
 
 ## Properties
 
-| Property              | Type      | Default   |
-| :-------------------- | :-------- | :-------- |
-| `id`                  | `string`  |           |
-| `variant` (optional)  | `string`  | `default` |
-| `label` (optional)    | `string`  |           |
-| `required` (optional) | `boolean` | `false`   |
-| `disabled` (optional) | `boolean` | `false`   |
-| `error` (optional)    | `string`  |           |
+| Property                  | Type      | Default   |
+| :------------------------ | :-------- | :-------- |
+| `id`                      | `string`  |           |
+| `variant` (optional)      | `string`  | `default` |
+| `label` (optional)        | `string`  |           |
+| `required` (optional)     | `boolean` | `false`   |
+| `disabled` (optional)     | `boolean` | `false`   |
+| `error` (optional)        | `boolean` | `false`   |
+| `errorMessage` (optional) | `string`  |           |
 
 ## Import
 
@@ -99,13 +100,16 @@ import { Radio } from '@marigold/components';
 </>
 ```
 
-### Radio with error
+### Radio with error and errorMessage
+
+Only use the error and errorMesssage prop together
 
 ```tsx
 <Radio
   id="error"
   value="error"
   label="This radio has an error"
-  error="radio error"
+  error
+  errorMessage="radio error"
 />
 ```

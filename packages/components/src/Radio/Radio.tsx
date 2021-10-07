@@ -15,7 +15,7 @@ type RadioIconProps = {
   variant?: string;
   checked?: boolean;
   disabled?: boolean;
-  error?: string;
+  error?: boolean;
   children?: never;
 };
 
@@ -45,7 +45,7 @@ const RadioIcon: React.FC<RadioIconProps> = ({
 // ---------------
 type RadioInputProps = {
   variant?: string;
-  error?: string;
+  error?: boolean;
 } & ComponentProps<'input'>;
 
 const RadioInput: React.FC<RadioInputProps> = ({
@@ -80,17 +80,22 @@ const RadioInput: React.FC<RadioInputProps> = ({
 
 // Radio
 // ---------------
+export type ErrorProps =
+  | { error?: false; errorMessage?: never }
+  | { error: true; errorMessage?: string };
+
 export type RadioProps = {
   id: string;
   label?: string;
   required?: boolean;
-  error?: string;
-} & RadioInputProps;
+} & ErrorProps &
+  RadioInputProps;
 
 export const Radio: React.FC<RadioProps> = ({
   label,
   required,
   error,
+  errorMessage,
   ...props
 }) => {
   const labeledRadioStyle = useStyles({
@@ -110,10 +115,10 @@ export const Radio: React.FC<RadioProps> = ({
           <RadioInput className={labeledRadioStyle} error={error} {...props} />
           {label}
         </Label>
-        {error && (
+        {error && errorMessage && (
           <ValidationMessage>
             <Exclamation size={16} />
-            {error}
+            {errorMessage}
           </ValidationMessage>
         )}
       </>

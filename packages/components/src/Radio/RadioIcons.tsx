@@ -14,7 +14,11 @@ export const RadioChecked = ({ disabled = false, ...props }) => (
   </SVG>
 );
 
-export const RadioUnchecked = ({ disabled = false, error = '', ...props }) => (
+export const RadioUnchecked = ({
+  disabled = false,
+  error = false,
+  ...props
+}) => (
   <SVG width="16" height="32" viewBox="0 0 16 32" fill="none" {...props}>
     <circle
       cx="8"

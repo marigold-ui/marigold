@@ -47,6 +47,17 @@ import { useState } from 'react';
     },
     error: {
       control: {
+        type: 'boolean',
+      },
+      description: 'Error',
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+    errorMessage: {
+      control: {
         type: 'text',
       },
       description: 'Error Message',
@@ -62,6 +73,7 @@ export const Template = ({ onChange, checked, ...args }) => {
     <Radio
       onChange={() => setChecked(!isChecked)}
       checked={isChecked}
+      label="Radio Label"
       {...args}
     />
   );
