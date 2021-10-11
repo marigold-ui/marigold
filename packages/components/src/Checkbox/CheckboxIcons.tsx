@@ -13,8 +13,8 @@ export const CheckboxChecked = ({ disabled = false, ...props }) => (
       stroke={disabled ? '#e3e3e3' : '#1D67B6'}
     />
     <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       d="M13.9571 12.8338L12.4085 11.2852L6.08699 17.6007L3.59887 15.1126L2.04163 16.6588L6.08682 20.704L13.9571 12.8338Z"
       fill="#ffffff"
     />

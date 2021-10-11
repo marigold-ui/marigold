@@ -82,16 +82,13 @@ const CheckboxInput: React.FC<CheckboxInputProps> = ({
 
 // Checkbox
 // ---------------
-export type ErrorProps =
-  | { error?: false; errorMessage?: never }
-  | { error: true; errorMessage?: string };
-
 export type CheckboxProps = {
   id: string;
   label?: string;
   required?: boolean;
-} & ErrorProps &
-  CheckboxInputProps;
+  error?: boolean;
+  errorMessage?: string;
+} & CheckboxInputProps;
 
 export const Checkbox: React.FC<CheckboxProps> = ({
   label,
