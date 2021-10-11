@@ -6,17 +6,14 @@ import { Input } from '../Input';
 import { Label } from '../Label';
 import { ValidationMessage } from '../ValidationMessage';
 
-export type ErrorProps =
-  | { error?: false; errorMessage?: never }
-  | { error: true; errorMessage?: string };
-
 export type FieldProps = {
   htmlFor: string;
   label: string;
   required?: boolean;
+  error?: boolean;
+  errorMessage?: string;
   disabled?: boolean;
-} & ErrorProps &
-  ComponentProps<'input'>;
+} & ComponentProps<'input'>;
 
 export const Field: React.FC<FieldProps> = ({
   type = 'text',
