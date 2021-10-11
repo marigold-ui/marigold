@@ -11,22 +11,24 @@ export type TextareaProps = {
   variant?: string;
   label?: string;
   htmlFor?: string;
-  errorMessage?: string;
   required?: boolean;
+  error?: boolean;
+  errorMessage?: string;
 } & ComponentProps<'textarea'>;
 
 export const Textarea: React.FC<TextareaProps> = ({
   variant = 'default',
   htmlFor = 'textarea',
   label,
+  error,
   errorMessage,
-  required = false,
+  required,
   className = '',
   children,
   ...props
 }) => {
   const textareaClassNames = useStyles({
-    css: { outlineColor: errorMessage && 'error' },
+    css: { outlineColor: error && 'error' },
     className,
   });
 
@@ -44,7 +46,7 @@ export const Textarea: React.FC<TextareaProps> = ({
         variant={`textarea.${variant}`}
         className={textareaClassNames}
       />
-      {errorMessage && (
+      {error && errorMessage && (
         <ValidationMessage>
           <Exclamation size={16} />
           {errorMessage}
