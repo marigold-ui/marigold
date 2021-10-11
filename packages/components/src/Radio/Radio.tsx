@@ -80,16 +80,13 @@ const RadioInput: React.FC<RadioInputProps> = ({
 
 // Radio
 // ---------------
-export type ErrorProps =
-  | { error?: false; errorMessage?: never }
-  | { error: true; errorMessage?: string };
-
 export type RadioProps = {
   id: string;
   label?: string;
   required?: boolean;
-} & ErrorProps &
-  RadioInputProps;
+  error?: boolean;
+  errorMessage?: string;
+} & RadioInputProps;
 
 export const Radio: React.FC<RadioProps> = ({
   label,
