@@ -313,13 +313,14 @@ const theme: BaseTheme = {
   },
   dialog: {
     wrapper: {
-      display: 'block',
+      display: 'flex',
+      justifyContent: 'space-between',
       borderRadius: '2px',
       paddingLeft: 'large',
       paddingBottom: 'large',
     },
     body: {
-      paddingTop: 'small',
+      paddingTop: 'medium',
     },
     onClose: {
       display: 'flex',
@@ -327,6 +328,23 @@ const theme: BaseTheme = {
       alignItems: 'start',
       paddingTop: 'xsmall',
       paddingX: 'xsmall',
+    },
+    modalWrapper: {
+      position: 'fixed',
+      zIndex: 100,
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      background: 'rgba(0, 0, 0, 0.5)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    modalBody: {
+      background: '#ffffff',
+      minWidth: '510px',
+      minHeight: '240px',
     },
   },
   divider: {
