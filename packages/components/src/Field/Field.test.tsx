@@ -48,21 +48,11 @@ test('supports required prop', () => {
   expect(fieldLabel.nextSibling instanceof SVGElement).toBeTruthy();
 });
 
-test('supports error prop', () => {
-  render(<Field htmlFor="myId" label="label" error />);
-
-  const label = screen.getByText(/label/);
-  // check if the Required icon is there which comes with the error prop
-  expect(label.nextSibling instanceof SVGElement).toBeTruthy();
-});
-
 test('supports error and errorMessage prop', () => {
   render(
     <Field htmlFor="myId" label="label" error errorMessage="Validation error" />
   );
 
-  const label = screen.getByText(/label/);
-  expect(label.nextSibling instanceof SVGElement).toBeTruthy();
   const errorMessage = screen.getByText(/Validation/);
   expect(errorMessage).toBeDefined();
 });
