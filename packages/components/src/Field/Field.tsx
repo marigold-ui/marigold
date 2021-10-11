@@ -31,7 +31,7 @@ export const Field: React.FC<FieldProps> = ({
       <Label
         variant={disabled ? 'disabled' : 'above'}
         htmlFor={htmlFor}
-        required={error || required}
+        required={required}
       >
         {label}
       </Label>
