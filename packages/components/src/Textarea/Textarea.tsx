@@ -35,7 +35,7 @@ export const Textarea: React.FC<TextareaProps> = ({
   return (
     <Box>
       {label && (
-        <Label htmlFor={htmlFor} required={error || required}>
+        <Label htmlFor={htmlFor} required={required}>
           {label}
         </Label>
       )}
