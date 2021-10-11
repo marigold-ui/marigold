@@ -7,17 +7,14 @@ import { ValidationMessage } from '../ValidationMessage';
 import { Label } from '../Label';
 import { Box } from '../Box';
 
-export type ErrorProps =
-  | { error?: false; errorMessage?: never }
-  | { error: true; errorMessage?: string };
-
 export type TextareaProps = {
   variant?: string;
   label?: string;
   htmlFor?: string;
   required?: boolean;
-} & ErrorProps &
-  ComponentProps<'textarea'>;
+  error?: boolean;
+  errorMessage?: string;
+} & ComponentProps<'textarea'>;
 
 export const Textarea: React.FC<TextareaProps> = ({
   variant = 'default',
