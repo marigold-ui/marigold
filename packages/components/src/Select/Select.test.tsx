@@ -95,18 +95,6 @@ test('supports required prop', () => {
   expect(selectLabel[0]).toContainHTML('path d="M10.8 3.84003');
 });
 
-test('supports error prop', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" error data-testid="selectId">
-        <Item>1</Item>
-      </Select>
-    </MarigoldProvider>
-  );
-  const selectLabel = screen.getAllByText(/MyLabel/);
-  expect(selectLabel[0]).toContainHTML('path d="M10.8 3.84003');
-});
-
 test('supports error and errorMessage prop', () => {
   render(
     <MarigoldProvider theme={theme}>
@@ -115,8 +103,6 @@ test('supports error and errorMessage prop', () => {
       </Select>
     </MarigoldProvider>
   );
-  const selectLabel = screen.getAllByText(/MyLabel/);
-  expect(selectLabel[0]).toContainHTML('path d="M10.8 3.84003');
   const validationMessage = screen.getAllByText(/error/);
   expect(validationMessage).toBeDefined();
 });
