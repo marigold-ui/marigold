@@ -19,17 +19,14 @@ import { ValidationMessage } from '../ValidationMessage';
 import { ListBox } from './ListBox';
 import { Popover } from './Popover';
 
-export type ErrorProps =
-  | { error?: false; errorMessage?: never }
-  | { error: true; errorMessage?: string };
-
 export type SelectProps = {
   placeholder?: string;
   disabled?: boolean;
   required?: boolean;
   width?: ResponsiveStyleValue<number | string>;
-} & ErrorProps &
-  ComponentProps<'select'> &
+  error?: boolean;
+  errorMessage?: string;
+} & ComponentProps<'select'> &
   AriaSelectProps<object> &
   SingleSelection;
 
