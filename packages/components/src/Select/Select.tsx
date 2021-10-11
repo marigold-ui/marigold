@@ -91,7 +91,7 @@ export const Select = ({
             htmlFor={labelProps.id}
             variant={disabled ? 'disabled' : 'above'}
           >
-            {required || error ? (
+            {required ? (
               <Box as="span" display="inline-flex" alignItems="center">
                 {props.label}
                 <Required size={16} className={errorClassName} />
