@@ -3640,7 +3640,7 @@ __metadata:
     eslint-config-prettier: ^8.3.0
     eslint-config-react-app: 6.0.0
     eslint-plugin-flowtype: ^6.0.0
-    eslint-plugin-import: 2.24.2
+    eslint-plugin-import: 2.25.1
     eslint-plugin-jest: 24.7.0
     eslint-plugin-jsx-a11y: 6.4.1
     eslint-plugin-prettier: 4.0.0
@@ -7990,6 +7990,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"array-includes@npm:^3.1.4":
+  version: 3.1.4
+  resolution: "array-includes@npm:3.1.4"
+  dependencies:
+    call-bind: ^1.0.2
+    define-properties: ^1.1.3
+    es-abstract: ^1.19.1
+    get-intrinsic: ^1.1.1
+    is-string: ^1.0.7
+  checksum: 69967c38c52698f84b50a7aed5554aadc89c6ac6399b6d92ad061a5952f8423b4bba054c51d40963f791dfa294d7247cdd7988b6b1f2c5861477031c6386e1c0
+  languageName: node
+  linkType: hard
+
 "array-iterate@npm:^1.0.0":
   version: 1.1.4
   resolution: "array-iterate@npm:1.1.4"
@@ -8027,7 +8040,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"array.prototype.flat@npm:^1.2.1, array.prototype.flat@npm:^1.2.4":
+"array.prototype.flat@npm:^1.2.1, array.prototype.flat@npm:^1.2.4, array.prototype.flat@npm:^1.2.5":
   version: 1.2.5
   resolution: "array.prototype.flat@npm:1.2.5"
   dependencies:
@@ -12450,7 +12463,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import@npm:2.24.2, eslint-plugin-import@npm:^2.18.2, eslint-plugin-import@npm:^2.24.2":
+"eslint-plugin-import@npm:2.25.1":
+  version: 2.25.1
+  resolution: "eslint-plugin-import@npm:2.25.1"
+  dependencies:
+    array-includes: ^3.1.4
+    array.prototype.flat: ^1.2.5
+    debug: ^2.6.9
+    doctrine: ^2.1.0
+    eslint-import-resolver-node: ^0.3.6
+    eslint-module-utils: ^2.6.2
+    has: ^1.0.3
+    is-core-module: ^2.7.0
+    is-glob: ^4.0.3
+    minimatch: ^3.0.4
+    object.values: ^1.1.5
+    resolve: ^1.20.0
+    tsconfig-paths: ^3.11.0
+  peerDependencies:
+    eslint: ^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0 || ^8
+  checksum: afc3982575a6d25d1ce313d88ffbdebd39e95481988fa930d24b5729b428554d7f273fd83b00e6fbb28715ffc88c5631a36d8855ffa55e0ffc39a32cb4dee6c9
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-import@npm:^2.18.2, eslint-plugin-import@npm:^2.24.2":
   version: 2.24.2
   resolution: "eslint-plugin-import@npm:2.24.2"
   dependencies:
@@ -16296,7 +16332,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"is-core-module@npm:^2.2.0, is-core-module@npm:^2.6.0":
+"is-core-module@npm:^2.2.0, is-core-module@npm:^2.6.0, is-core-module@npm:^2.7.0":
   version: 2.7.0
   resolution: "is-core-module@npm:2.7.0"
   dependencies:
@@ -16474,7 +16510,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"is-glob@npm:^4.0.0, is-glob@npm:^4.0.1, is-glob@npm:~4.0.1":
+"is-glob@npm:^4.0.0, is-glob@npm:^4.0.1, is-glob@npm:^4.0.3, is-glob@npm:~4.0.1":
   version: 4.0.3
   resolution: "is-glob@npm:4.0.3"
   dependencies:
@@ -20717,7 +20753,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"object.values@npm:^1.1.0, object.values@npm:^1.1.4":
+"object.values@npm:^1.1.0, object.values@npm:^1.1.4, object.values@npm:^1.1.5":
   version: 1.1.5
   resolution: "object.values@npm:1.1.5"
   dependencies:
