@@ -8,7 +8,7 @@ title: Textarea
 
 With the Textarea component you can add a HTML `<textarea>` element for larger text input to your form.
 The variant can be added with the variant prop. The default variant is `default`.
-If you use the label prop you have to add htmlFor. Optionally you can pass an errorMessage or the required prop.
+If you use the label prop you have to add htmlFor. Optionally you can pass an error with errorMessage or the required prop.
 
 ## Properties
 
@@ -17,6 +17,7 @@ If you use the label prop you have to add htmlFor. Optionally you can pass an er
 | `variant` (optional)      | `string`  | `default`  |
 | `label` (optional)        | `string`  |            |
 | `htmlFor` (optional)      | `string`  | `textarea` |
+| `error` (optional)        | `boolean` |            |
 | `errorMessage` (optional) | `string`  |            |
 | `required` (optional)     | `boolean` |            |
 
@@ -34,33 +35,38 @@ import { Textarea } from '@marigold/components';
 
 ## Usage
 
-### basic & disabled
+### Basic Textarea
 
 ```tsx
 <Textarea placeholder="Placeholder" />
 ```
 
+### Disabled Textarea
+
 ```tsx
 <Textarea placeholder="Placeholder disabled" disabled />
 ```
 
-### labeled & required
+### Labeled Textarea
 
 ```tsx
 <Textarea label="Labeled" htmlFor="label" />
 ```
 
+### Required Textarea
+
 ```tsx
 <Textarea label="Required" htmlFor="required" required />
 ```
 
-### with error
+### Error Textarea
 
 ```tsx
 <Textarea
   label="Required with error"
   htmlFor="error"
   required
+  error
   errorMessage="Oh no, we have an error!"
 />
 ```

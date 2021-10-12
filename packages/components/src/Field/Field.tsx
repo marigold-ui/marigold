@@ -1,5 +1,4 @@
 import React from 'react';
-import { useStyles } from '@marigold/system';
 import { Exclamation } from '@marigold/icons';
 import { ComponentProps } from '@marigold/types';
 
@@ -8,42 +7,48 @@ import { Label } from '../Label';
 import { ValidationMessage } from '../ValidationMessage';
 
 export type FieldProps = {
-  variant?: string;
   htmlFor: string;
   label: string;
-  error?: string;
+  required?: boolean;
+  error?: boolean;
+  errorMessage?: string;
+  disabled?: boolean;
 } & ComponentProps<'input'>;
 
 export const Field: React.FC<FieldProps> = ({
-  variant = 'default',
   type = 'text',
-  className = '',
+  className,
   htmlFor,
   label,
+  required,
   error,
+  errorMessage,
+  disabled,
   ...props
 }) => {
-  const labelClassName = useStyles({
-    variant: `field.${variant}`,
-    className,
-  });
-
   return (
-    <div>
+    <>
       <Label
-        className={labelClassName}
+        variant={disabled ? 'disabled' : 'above'}
         htmlFor={htmlFor}
-        required={error ? true : false}
+        required={required}
       >
         {label}
       </Label>
-      <Input {...props} type={type} id={htmlFor} />
-      {error && (
+      <Input
+        {...props}
+        type={type}
+        id={htmlFor}
+        disabled={disabled}
+        variant={error ? 'error' : 'default'}
+        className={className}
+      />
+      {error && errorMessage && (
         <ValidationMessage>
           <Exclamation size={16} />
-          {error}
+          {errorMessage}
         </ValidationMessage>
       )}
-    </div>
+    </>
   );
 };

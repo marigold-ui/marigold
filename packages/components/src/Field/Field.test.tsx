@@ -15,28 +15,6 @@ const theme = {
   },
 };
 
-test('supports default variant and themeSection', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Field htmlFor="myId" label="label" />
-    </ThemeProvider>
-  );
-  const field = screen.getByText(/label/);
-
-  expect(field).toHaveStyle(`padding: 4px`);
-});
-
-test('accepts other variant than default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Field htmlFor="myId" label="inputField" variant="inputField" />
-    </ThemeProvider>
-  );
-  const inputField = screen.getByText(/inputField/);
-
-  expect(inputField).toHaveStyle(`padding: 8px`);
-});
-
 test('renders correct HTML element', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -56,17 +34,33 @@ test('supports label prop', () => {
 });
 
 test('supports htmlFor prop', () => {
-  render(<Field htmlFor="myId" label="Name" error="Validation error" />);
+  render(<Field htmlFor="myId" label="Name" />);
   const field = screen.getByText(/Name/);
 
   expect(field).toHaveAttribute('for');
 });
 
-test('supports error prop', () => {
-  render(<Field htmlFor="myId" label="label" error="Validation error" />);
-  const field = screen.getByText(/Validation/);
+test('supports required prop', () => {
+  render(<Field htmlFor="myId" label="label" required />);
+  const fieldLabel = screen.getByText(/label/);
 
-  expect(field).toBeDefined();
+  expect(fieldLabel.nextSibling).toBeDefined();
+  expect(fieldLabel.nextSibling instanceof SVGElement).toBeTruthy();
+});
+
+test('supports error and errorMessage prop', () => {
+  render(
+    <Field htmlFor="myId" label="label" error errorMessage="Validation error" />
+  );
+
+  const errorMessage = screen.getByText(/Validation/);
+  expect(errorMessage).toBeDefined();
+});
+
+test('supports disabled prop', () => {
+  render(<Field htmlFor="myId" label="label" disabled />);
+  const fieldLabel = screen.getByText(/label/);
+  expect(fieldLabel.nextSibling).toHaveAttribute('disabled');
 });
 
 test('accepts custom styles prop className', () => {
@@ -82,8 +76,6 @@ test('accepts custom styles prop className', () => {
       <TestComponent />
     </ThemeProvider>
   );
-  const testelem = getByText('label');
-  const field = getComputedStyle(testelem);
-
-  expect(field.fontSize).toEqual('8px');
+  const fieldLabel = getByText('label');
+  expect(fieldLabel.nextSibling).toHaveStyle(`fontSize: 8px`);
 });
