@@ -1,5 +1,5 @@
-import { createElement, forwardRef } from 'react';
-import { ResponsiveStyleValue, useStyles } from '@marigold/system';
+import React, { createElement, forwardRef } from 'react';
+import { Element, ResponsiveStyleValue, useStyles } from '@marigold/system';
 import {
   PolymorphicPropsWithRef,
   PolymorphicComponentWithRef,
@@ -152,6 +152,18 @@ export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef(
         transition,
       },
     });
-    return createElement(as, { ...props, ref, className: cn }, children);
+    return (
+      <Element
+        as={as}
+        ref={ref}
+        className={cn}
+        variant={variant}
+        css={{ margin: '4px' }}
+        {...props}
+      >
+        {children}
+      </Element>
+    );
+    // return createElement(as, { ...props, ref, className: cn }, children);
   }
 );
