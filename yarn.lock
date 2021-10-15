@@ -11514,7 +11514,7 @@ __metadata:
     "@types/react": 17.0.30
     "@types/react-helmet": 6.1.4
     babel-preset-gatsby: 1.14.0
-    gatsby: 3.14.2
+    gatsby: 3.14.3
     gatsby-plugin-emotion: 6.14.0
     gatsby-plugin-image: 1.14.1
     gatsby-plugin-manifest: 3.14.0
@@ -14049,9 +14049,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"gatsby-cli@npm:^3.14.1":
-  version: 3.14.1
-  resolution: "gatsby-cli@npm:3.14.1"
+"gatsby-cli@npm:^3.14.2":
+  version: 3.14.2
+  resolution: "gatsby-cli@npm:3.14.2"
   dependencies:
     "@babel/code-frame": ^7.14.0
     "@babel/runtime": ^7.15.4
@@ -14094,7 +14094,7 @@ fsevents@^1.2.7:
     yurnalist: ^2.1.0
   bin:
     gatsby: cli.js
-  checksum: 42050e68fff76603b1c0219a3a6d4000420f5ee084e3ed4e741df4df2e29791d18e9676ddc9fe962801b4619975a79b073d323d723256c8e9c0935f8c99cd26f
+  checksum: 3816618bb3205d4816382d83393f6d0ec552c3723f6f47e82df056212cb6ea26fcb4d870630a8e03666b51629c7ca859b2c8918e5e5171530b7c185984ace94f
   languageName: node
   linkType: hard
 
@@ -14540,9 +14540,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"gatsby@npm:3.14.2":
-  version: 3.14.2
-  resolution: "gatsby@npm:3.14.2"
+"gatsby@npm:3.14.3":
+  version: 3.14.3
+  resolution: "gatsby@npm:3.14.3"
   dependencies:
     "@babel/code-frame": ^7.14.0
     "@babel/core": ^7.15.5
@@ -14611,7 +14611,7 @@ fsevents@^1.2.7:
     find-cache-dir: ^3.3.1
     fs-exists-cached: 1.0.0
     fs-extra: ^10.0.0
-    gatsby-cli: ^3.14.1
+    gatsby-cli: ^3.14.2
     gatsby-core-utils: ^2.14.0
     gatsby-graphiql-explorer: ^1.14.0
     gatsby-legacy-polyfills: ^1.14.0
@@ -14650,7 +14650,6 @@ fsevents@^1.2.7:
     opentracing: ^0.14.4
     p-defer: ^3.0.0
     parseurl: ^1.3.3
-    path-to-regexp: 0.1.7
     physical-cpu-count: ^2.0.0
     platform: ^1.3.6
     postcss: ^8.3.5
@@ -14697,7 +14696,7 @@ fsevents@^1.2.7:
     react-dom: ^16.9.0 || ^17.0.0
   bin:
     gatsby: ./cli.js
-  checksum: d93a242655c4a9b209045fd15abf7be93bcc20f3f6f860bed2652d59236a1642fcf36bade1e579176fa93e367fa098c66ae77a9c96bd49fbf1bf4aa0d0fa7353
+  checksum: 7a9b20ffbcece63bc3bac71e4aa88c2ba17650fe338d3f63d943abb9b54603127544ee2e1312bcef1ffa00adb8052cf93f7018c67c7234a7c80945ff232e9e5a
   languageName: node
   linkType: hard
 
