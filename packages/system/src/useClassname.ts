@@ -1,5 +1,4 @@
 import { css as emotion } from '@emotion/css';
-import { css as emotionReact } from '@emotion/react';
 import { StyleObject } from './types';
 import { useTheme } from './useTheme';
 
@@ -10,16 +9,15 @@ const isEmpty = (val: any) =>
 
 export const useClassname = (...styles: StyleObject[]) => {
   const { css } = useTheme();
-  return styles.map(style => {
-    /**
-     * emotion will create a `css-0` class whenever an empty object is
-     * passed. Since this makes debugging harder we'll do not pass empty
-     * objects to emotion.
-     */
-    const themedStyle = css(style);
-    // console.log(themedStyle);
-    // console.log(emotionReact(themedStyle);
-    return isEmpty(themedStyle) ? '' : emotionReact(themedStyle);
-  });
-  // .join(' ');
+  return styles
+    .map(style => {
+      /**
+       * emotion will create a `css-0` class whenever an empty object is
+       * passed. Since this makes debugging harder we'll do not pass empty
+       * objects to emotion.
+       */
+      const themedStyle = css(style);
+      return isEmpty(themedStyle) ? '' : emotion(themedStyle);
+    })
+    .join(' ');
 };

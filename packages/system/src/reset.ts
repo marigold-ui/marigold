@@ -1,6 +1,4 @@
-import { css } from '@emotion/css';
-
-const base = css({
+const base = {
   boxSizing: 'border-box',
   margin: 0,
   padding: 0,
@@ -9,50 +7,50 @@ const base = css({
   font: 'inherit',
   verticalAlign: 'baseline',
   WebkitTapHighlightColor: 'transparent',
-});
+};
 
 // Content
 // ---------------
-const block = css({
+const block = {
   display: 'block',
-});
+};
 
-const list = css({
+const list = {
   // empty
-});
+};
 
-const table = css({
+const table = {
   borderCollapse: 'collapse',
   borderSpacing: 0,
-});
+};
 
 // Typography
 // ---------------
-const a = css({
+const a = {
   textDecoration: 'none',
   touchAction: 'manipulation',
-});
+};
 
-const quote = css({
+const quote = {
   quotes: 'none',
   selectors: {
     '&:before, &:after': {
       content: "''",
     },
   },
-});
+};
 
 // Form Elements
 // ---------------
-const button = css({
+const button = {
   display: 'block',
   appearance: 'none',
   background: 'transparent',
   textAlign: 'center',
   touchAction: 'manipulation',
-});
+};
 
-const input = css({
+const input = {
   display: 'block',
   appearance: 'none',
   selectors: {
@@ -63,9 +61,9 @@ const input = css({
       WebkitAppearance: 'none',
     },
   },
-});
+};
 
-const select = css({
+const select = {
   display: 'block',
   appearance: 'none',
   selectors: {
@@ -73,12 +71,12 @@ const select = css({
       display: 'none',
     },
   },
-});
+};
 
-const textarea = css({
+const textarea = {
   display: 'block',
   appearance: 'none',
-});
+};
 
 // Reset
 // ---------------

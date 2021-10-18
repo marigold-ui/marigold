@@ -29,13 +29,13 @@ export const useStyles = ({
    * We check the passed className if it already includes the reset styles so no
    * duplicates are applied.
    */
-  const baseClassName = className.includes(reset.base) ? '' : reset.base;
-  const resetClassName =
-    typeof element === 'string'
-      ? className.includes((reset as { [key: string]: string })[element])
-        ? ''
-        : (reset as { [key: string]: string })[element]
-      : '';
+  // const baseClassName = className.includes(reset.base) ? '' : reset.base;
+  // const resetClassName =
+  //   typeof element === 'string'
+  //     ? className.includes((reset as { [key: string]: string })[element])
+  //       ? ''
+  //       : (reset as { [key: string]: string })[element]
+  //     : '';
 
   /**
    * Get variant styles (from theme).
@@ -43,6 +43,7 @@ export const useStyles = ({
   const variants = Array.isArray(variant)
     ? variant.map(v => ({ variant: v }))
     : [{ variant }];
+  console.log(variants);
   const variantsClassName = useClassname(...variants);
 
   /**
@@ -52,8 +53,8 @@ export const useStyles = ({
   const customClassName = useClassname(styles);
 
   return [
-    baseClassName,
-    resetClassName,
+    // baseClassName,
+    // resetClassName,
     variantsClassName,
     customClassName,
     className,

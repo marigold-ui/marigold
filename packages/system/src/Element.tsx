@@ -1,13 +1,13 @@
-/** @jsx jsx */
 import { ElementType, forwardRef } from 'react';
-import { css, jsx } from '@emotion/react';
-import { useClassname } from './useClassname';
+import { jsx } from '@emotion/react';
 import {
   PolymorphicPropsWithRef,
   PolymorphicComponentWithRef,
 } from '@marigold/types';
 
+import { reset } from './reset';
 import { CSSObject } from './types';
+import { useTheme } from './useTheme';
 
 export type ElementOwnProps = {
   element?: ElementType;
@@ -35,21 +35,34 @@ export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
       },
       ref
     ) => {
+      const { css } = useTheme();
+
+      const baseStyles = reset.base;
+      const resetStyles =
+        typeof element === 'string' &&
+        (reset as unknown as { [key: string]: string })[element];
+
       /**
        * Get variant styles (from theme).
        */
       const variants = Array.isArray(variant)
         ? variant.map(v => ({ variant: v }))
         : [{ variant }];
-      const variantStyles = css(...variants);
-      const variantCn = useClassname(...variants);
 
-      console.log(...variants);
-      console.log(variantStyles);
-      console.log(variantCn);
+      // const variantStyles = css(variants);
+
       // const cn = useStyles({
       //   element: as,
       // });
-      return jsx(as, { ...props, ref, className: className }, children);
+      return jsx(
+        as,
+        {
+          ...props,
+          css: { ...baseStyles, resetStyles, ...styles },
+          ref,
+          className: className,
+        },
+        children
+      );
     }
   );
