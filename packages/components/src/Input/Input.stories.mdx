@@ -16,6 +16,32 @@ import { Label } from '../Label';
         },
       },
     },
+    type: {
+      control: {
+        type: 'select',
+      },
+      options: [
+        'date',
+        'datetime-local',
+        'email',
+        'month',
+        'number',
+        'password',
+        'search',
+        'tel',
+        'text',
+        'time',
+        'time',
+        'url',
+        'week',
+      ],
+      type: { required: true },
+      table: {
+        defaultValue: {
+          summary: 'text',
+        },
+      },
+    },
   }}
 />
 

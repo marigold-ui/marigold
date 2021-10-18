@@ -1,11 +1,15 @@
 {
   "extends": ["config:base"],
-  "lockFileMaintenance": { "enabled": true, "schedule": null },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 5am on Sunday"]
+  },
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "automerge": true
     }
   ],
+  "schedule": ["before 3am on Saturday"],
   "timezone": "Europe/Berlin"
 }
