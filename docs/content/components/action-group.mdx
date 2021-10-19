@@ -52,15 +52,8 @@ import { ActionGroup } from '@marigold/components';
 
 ```tsx
 <ActionGroup space={8}>
-  <Button variant="secondary" size="small">
-    <Play />
-  </Button>
-  <Button variant="secondary" size="small">
-    <Pause />
-  </Button>
-  <Button variant="secondary" size="small">
-    <Stop />
-  </Button>
+  <Button variant="ghost">Back</Button>
+  <Button variant="secondary">Next</Button>
 </ActionGroup>
 ```
 
@@ -68,14 +61,11 @@ import { ActionGroup } from '@marigold/components';
 
 ```tsx
 <ActionGroup space={8} verticalAlignment>
-  <Button variant="secondary" size="small">
-    <Play />
+  <Button variant="ghost" size="small">
+    Sort <SortUp />
   </Button>
   <Button variant="secondary" size="small">
-    <Pause />
-  </Button>
-  <Button variant="secondary" size="small">
-    <Stop />
+    Sort <SortDown />
   </Button>
 </ActionGroup>
 ```
