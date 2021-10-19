@@ -37,10 +37,20 @@ export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
     ) => {
       const { css } = useTheme();
 
+      /**
+       * Get reset styles. Base is always applied. An additional reset maybe applied
+       * based on the passed element.
+       */
       const baseStyles = reset.base;
       const resetStyles =
-        typeof element === 'string' &&
-        (reset as unknown as { [key: string]: string })[element];
+        typeof element === 'string'
+          ? (reset as object as { [key: string]: string })[element]
+          : {};
+
+      // 🤫 https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
+      // lodash.isEmpty is too much KBs!
+      const isEmpty = (val: any) =>
+        val && Object.keys(val).length === 0 && val.constructor === Object;
 
       /**
        * Get variant styles (from theme).
@@ -48,17 +58,21 @@ export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
       const variants = Array.isArray(variant)
         ? variant.map(v => ({ variant: v }))
         : [{ variant }];
+      const variantStyles = variants.map(variant => {
+        return isEmpty(css(variant)) ? {} : css(variant);
+      });
+      const variantStyleObject = Object.assign({}, ...variantStyles);
 
-      // const variantStyles = css(variants);
-
-      // const cn = useStyles({
-      //   element: as,
-      // });
       return jsx(
         as,
         {
           ...props,
-          css: { ...baseStyles, resetStyles, ...styles },
+          css: {
+            ...baseStyles,
+            ...resetStyles,
+            ...variantStyleObject,
+            ...css(styles),
+          },
           ref,
           className: className,
         },

@@ -43,7 +43,6 @@ export const useStyles = ({
   const variants = Array.isArray(variant)
     ? variant.map(v => ({ variant: v }))
     : [{ variant }];
-  console.log(variants);
   const variantsClassName = useClassname(...variants);
 
   /**
