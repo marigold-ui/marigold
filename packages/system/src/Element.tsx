@@ -1,5 +1,5 @@
-import { ElementType, forwardRef } from 'react';
 import { jsx } from '@emotion/react';
+import { forwardRef } from 'react';
 import {
   PolymorphicPropsWithRef,
   PolymorphicComponentWithRef,
@@ -10,13 +10,8 @@ import { CSSObject } from './types';
 import { useTheme } from './useTheme';
 
 export type ElementOwnProps = {
-  element?: ElementType;
-  css?: Omit<CSSObject, 'variant' | 'element'> & {
-    variant?: never;
-    element?: never;
-  };
+  css?: CSSObject;
   variant?: string | string[];
-  className?: string;
 };
 
 export type ElementProps = PolymorphicPropsWithRef<ElementOwnProps, 'div'>;
@@ -27,25 +22,13 @@ const isNotEmpty = (val: any) =>
 const baseStyles = getResetStyles('base');
 
 /**
- * Props that we have to remove (because they are not valid HTML attributes)
- * and want to process (for styling the component).
+ * Props that we have to remove and want to process to styling the component.
  */
 const SKIP_PROPS = ['css', 'variant'];
 
 export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
   forwardRef(
-    (
-      {
-        as = 'div',
-        element = as,
-        css: styles = {},
-        variant,
-        children,
-        className,
-        ...props
-      },
-      ref
-    ) => {
+    ({ as = 'div', css: styles = {}, variant, children, ...props }, ref) => {
       const { css } = useTheme();
 
       // Die parseProps function habe ich noch nicht ganz verstanden.
@@ -69,7 +52,7 @@ export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
         }
 
         /**
-         * Get variant styles (from theme).
+         * Transform variant input for `@theme-ui/css`
          */
         const variants = Array.isArray(variant)
           ? variant.map(v => ({ variant: v }))
@@ -78,7 +61,7 @@ export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
         next.css = () => {
           return [
             baseStyles,
-            getResetStyles(element),
+            getResetStyles(as),
             ...variants.map(v => css(v)),
             css(styles),
           ].filter(isNotEmpty);
@@ -87,10 +70,6 @@ export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
         return next;
       };
 
-      return jsx(
-        as,
-        { ...parseProps(props), ref, className: className, ...props },
-        children
-      );
+      return jsx(as, { ...props, ...parseProps(props), ref }, children);
     }
   );
