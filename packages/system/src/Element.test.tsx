@@ -21,20 +21,53 @@ const theme = {
   },
 };
 
-test('base styles first', () => {
-  const TestComponent: React.FC<{}> = ({ children, ...props }) => {
-    return (
-      <Element as="p" {...props}>
-        {children}
-      </Element>
-    );
-  };
+test('renders a <div> by default', () => {
+  render(<Element>Text</Element>);
+  const testelem = screen.getByText('Text');
 
-  const { getByText } = render(
-    <ThemeProvider theme={theme}>
-      <TestComponent>Text</TestComponent>
-    </ThemeProvider>
+  expect(testelem instanceof HTMLDivElement).toBeTruthy();
+});
+
+test('supports as prop', () => {
+  render(<Element as="p">Text</Element>);
+  const testelem = screen.getByText('Text');
+
+  expect(testelem instanceof HTMLParagraphElement).toBeTruthy();
+});
+
+test('supports HTML className attribute', () => {
+  render(<Element className="my-custom-class">Text</Element>);
+  const element = screen.getByText('Text');
+
+  expect(element.getAttribute('class')).toMatch('my-custom-class');
+});
+
+test('passes down HTML attributes', () => {
+  render(
+    <Element className="my-custom-class" id="element-id" disabled>
+      Text
+    </Element>
   );
+  const element = screen.getByText('Text');
+
+  expect(element.getAttribute('id')).toEqual('element-id');
+  expect(element.getAttribute('disabled')).toMatch('');
+  expect(element.getAttribute('class')).toMatch('my-custom-class');
+});
+
+test('forwards ref', () => {
+  const ref = React.createRef<HTMLButtonElement>();
+  render(
+    <Element as="button" ref={ref}>
+      button
+    </Element>
+  );
+
+  expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
+});
+
+test('base styles first', () => {
+  const { getByText } = render(<Element as="p">Text</Element>);
   const testelem = getByText('Text');
   const style = getComputedStyle(testelem);
 
