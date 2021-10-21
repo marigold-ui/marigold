@@ -1,4 +1,5 @@
 import { ElementType } from 'react';
+import { reset } from './reset';
 import { CSSObject } from './types';
 import { useClassname } from './useClassname';
 
@@ -22,6 +23,21 @@ export const useStyles = ({
   className = '',
 }: UseStyleInput) => {
   /**
+   * Get reset styles. Base is always applied. An additional reset maybe applied
+   * based on the passed element.
+   *
+   * We check the passed className if it already includes the reset styles so no
+   * duplicates are applied.
+   */
+  const baseClassName = className.includes(reset.base) ? '' : reset.base;
+  const resetClassName =
+    typeof element === 'string'
+      ? className.includes((reset as { [key: string]: string })[element])
+        ? ''
+        : (reset as { [key: string]: string })[element]
+      : '';
+
+  /**
    * Get variant styles (from theme).
    */
   const variants = Array.isArray(variant)
@@ -36,8 +52,8 @@ export const useStyles = ({
   const customClassName = useClassname(styles);
 
   return [
-    // baseClassName,
-    // resetClassName,
+    baseClassName,
+    resetClassName,
     variantsClassName,
     customClassName,
     className,

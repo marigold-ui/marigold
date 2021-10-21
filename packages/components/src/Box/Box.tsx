@@ -1,5 +1,5 @@
-import React, { forwardRef } from 'react';
-import { Element, ResponsiveStyleValue } from '@marigold/system';
+import { createElement, forwardRef } from 'react';
+import { ResponsiveStyleValue, useStyles } from '@marigold/system';
 import {
   PolymorphicPropsWithRef,
   PolymorphicComponentWithRef,
@@ -107,58 +107,51 @@ export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef(
     },
     ref
   ) => {
-    // How to make css prop and ResponsiveStyles work
-    // const cssPropStyles = props.css;
-    return (
-      <Element
-        as={as}
-        ref={ref}
-        variant={variant}
-        css={{
-          // ...cssPropStyles,
-          display,
-          height,
-          width,
-          minWidth,
-          maxWidth,
-          position,
-          top,
-          bottom,
-          right,
-          left,
-          zIndex,
-          p,
-          px,
-          py,
-          pt,
-          pb,
-          pl,
-          pr,
-          m,
-          mx,
-          my,
-          mt,
-          mb,
-          ml,
-          mr,
-          flexDirection,
-          flexWrap,
-          flexShrink,
-          flexGrow,
-          alignItems,
-          justifyContent,
-          bg,
-          border,
-          borderRadius,
-          boxShadow,
-          opacity,
-          overflow,
-          transition,
-        }}
-        {...props}
-      >
-        {children}
-      </Element>
-    );
+    const cn = useStyles({
+      element: as,
+      variant,
+      className,
+      css: {
+        display,
+        height,
+        width,
+        minWidth,
+        maxWidth,
+        position,
+        top,
+        bottom,
+        right,
+        left,
+        zIndex,
+        p,
+        px,
+        py,
+        pt,
+        pb,
+        pl,
+        pr,
+        m,
+        mx,
+        my,
+        mt,
+        mb,
+        ml,
+        mr,
+        flexDirection,
+        flexWrap,
+        flexShrink,
+        flexGrow,
+        alignItems,
+        justifyContent,
+        bg,
+        border,
+        borderRadius,
+        boxShadow,
+        opacity,
+        overflow,
+        transition,
+      },
+    });
+    return createElement(as, { ...props, ref, className: cn }, children);
   }
 );

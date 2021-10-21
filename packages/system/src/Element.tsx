@@ -5,7 +5,7 @@ import {
   PolymorphicComponentWithRef,
 } from '@marigold/types';
 
-import { getResetStyles } from './reset';
+import { getNormalizedStyles } from './normalize';
 import { CSSObject } from './types';
 import { useTheme } from './useTheme';
 
@@ -19,7 +19,7 @@ export type ElementProps = PolymorphicPropsWithRef<ElementOwnProps, 'div'>;
 const isNotEmpty = (val: any) =>
   !(val && Object.keys(val).length === 0 && val.constructor === Object);
 
-const baseStyles = getResetStyles('base');
+const baseStyles = getNormalizedStyles('base');
 
 /**
  * Props that we have to remove and want to process to styling the component.
@@ -61,7 +61,7 @@ export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
         next.css = () => {
           return [
             baseStyles,
-            getResetStyles(as),
+            getNormalizedStyles(as),
             ...variants.map(v => css(v)),
             css(styles),
           ].filter(isNotEmpty);

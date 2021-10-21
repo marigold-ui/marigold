@@ -1,58 +1,58 @@
-import { css } from '@emotion/css';
+import { ElementType } from 'react';
 
-const base = css({
+const base = {
   boxSizing: 'border-box',
   margin: 0,
   padding: 0,
   minWidth: 0,
   fontSize: '100%',
-  font: 'inherit',
+  fontFamily: 'inherit',
   verticalAlign: 'baseline',
   WebkitTapHighlightColor: 'transparent',
-});
+} as const;
 
 // Content
 // ---------------
-const block = css({
+const block = {
   display: 'block',
-});
+} as const;
 
-const list = css({
+const list = {
   // empty
-});
+} as const;
 
-const table = css({
+const table = {
   borderCollapse: 'collapse',
   borderSpacing: 0,
-});
+} as const;
 
 // Typography
 // ---------------
-const a = css({
+const a = {
   textDecoration: 'none',
   touchAction: 'manipulation',
-});
+} as const;
 
-const quote = css({
+const quote = {
   quotes: 'none',
   selectors: {
     '&:before, &:after': {
       content: "''",
     },
   },
-});
+} as const;
 
 // Form Elements
 // ---------------
-const button = css({
+const button = {
   display: 'block',
   appearance: 'none',
   background: 'transparent',
   textAlign: 'center',
   touchAction: 'manipulation',
-});
+} as const;
 
-const input = css({
+const input = {
   display: 'block',
   appearance: 'none',
   selectors: {
@@ -63,9 +63,9 @@ const input = css({
       WebkitAppearance: 'none',
     },
   },
-});
+} as const;
 
-const select = css({
+const select = {
   display: 'block',
   appearance: 'none',
   selectors: {
@@ -73,16 +73,16 @@ const select = css({
       display: 'none',
     },
   },
-});
+} as const;
 
-const textarea = css({
+const textarea = {
   display: 'block',
   appearance: 'none',
-});
+} as const;
 
 // Reset
 // ---------------
-export const reset = {
+const reset = {
   article: block,
   aside: block,
   details: block,
@@ -106,3 +106,26 @@ export const reset = {
   textarea,
   input,
 } as const;
+
+export type NormalizedElement = keyof typeof reset;
+const isKnownElement = (input: string): input is NormalizedElement =>
+  input in reset;
+
+/**
+ * Helper to conveniently get reset styles.
+ */
+export const getNormalizedStyles = (input?: ElementType): object => {
+  /**
+   * If a React component is given, we don't apply any reset styles
+   * and return the base reset.
+   */
+  if (typeof input !== 'string') {
+    return reset.base;
+  }
+
+  /**
+   * Try to find the reset style for a HTML element. If the element
+   * is not included return empty styles.
+   */
+  return isKnownElement(input) ? reset[input] : {};
+};

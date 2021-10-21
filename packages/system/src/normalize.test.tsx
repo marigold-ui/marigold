@@ -1,7 +1,7 @@
-import { getResetStyles } from './reset';
+import { getNormalizedStyles } from './normalize';
 
 test('get base styles', () => {
-  const baseStyles = getResetStyles('base');
+  const baseStyles = getNormalizedStyles('base');
   expect(baseStyles).toEqual({
     boxSizing: 'border-box',
     margin: 0,
@@ -15,15 +15,15 @@ test('get base styles', () => {
 });
 
 test('get reset style by element', () => {
-  const baseStyles = getResetStyles('a');
+  const baseStyles = getNormalizedStyles('a');
   expect(baseStyles).toEqual({
     textDecoration: 'none',
     touchAction: 'manipulation',
   });
 });
 
-test('getResetStyles returns base if input is not a string', () => {
-  const baseStyles = getResetStyles(undefined);
+test('getNormalizedStyles returns base if input is not a string', () => {
+  const baseStyles = getNormalizedStyles(undefined);
   expect(baseStyles).toEqual({
     boxSizing: 'border-box',
     margin: 0,
@@ -36,7 +36,7 @@ test('getResetStyles returns base if input is not a string', () => {
   });
 });
 
-test('getResetStyles returns empty object if input is unknown', () => {
-  const baseStyles = getResetStyles('p');
+test('getNormalizedStyles returns empty object if input is unknown', () => {
+  const baseStyles = getNormalizedStyles('p');
   expect(baseStyles).toEqual({});
 });
