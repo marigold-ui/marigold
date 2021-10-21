@@ -5,7 +5,7 @@ import {
   PolymorphicComponentWithRef,
 } from '@marigold/types';
 
-import { reset } from './reset';
+import { getResetStyles } from './reset';
 import { CSSObject } from './types';
 import { useTheme } from './useTheme';
 
@@ -20,6 +20,17 @@ export type ElementOwnProps = {
 };
 
 export type ElementProps = PolymorphicPropsWithRef<ElementOwnProps, 'div'>;
+
+const isNotEmpty = (val: any) =>
+  !(val && Object.keys(val).length === 0 && val.constructor === Object);
+
+const baseStyles = getResetStyles('base');
+
+/**
+ * Props that we have to remove (because they are not valid HTML attributes)
+ * and want to process (for styling the component).
+ */
+const SKIP_PROPS = ['css', 'variant'];
 
 export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
   forwardRef(
@@ -37,45 +48,48 @@ export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
     ) => {
       const { css } = useTheme();
 
-      /**
-       * Get reset styles. Base is always applied. An additional reset maybe applied
-       * based on the passed element.
-       */
-      const baseStyles = reset.base;
-      const resetStyles =
-        typeof element === 'string'
-          ? (reset as object as { [key: string]: string })[element]
-          : {};
-
-      // 🤫 https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
-      // lodash.isEmpty is too much KBs!
-      const isEmpty = (val: any) =>
-        val && Object.keys(val).length === 0 && val.constructor === Object;
+      // Die parseProps function habe ich noch nicht ganz verstanden.
+      // Ich habe sie jetzt nämlich so gebaut, dass das Gleiche wie zuvor rauskommt.
+      // so passiert ja aktuell nicht mehr als den return direkt in jsx() zu geben
 
       /**
-       * Get variant styles (from theme).
+       * Gather styling related props (css, variant, space props, ...) and put them in a
+       * single `css` prop for emotion. All gathered props will be passed to `@theme-ui/css`
+       * before emotion will process them. This way CSS properties will interpolated based on
+       * the given theme.
        */
-      const variants = Array.isArray(variant)
-        ? variant.map(v => ({ variant: v }))
-        : [{ variant }];
-      const variantStyles = variants.map(variant => {
-        return isEmpty(css(variant)) ? {} : css(variant);
-      });
-      const variantStyleObject = Object.assign({}, ...variantStyles);
+      const parseProps = (props: { [key: string]: any }) => {
+        const next: any = {};
+
+        // TODO: optimize loop such that the style props are picked
+        // within the loop (and remove lodash.pick!)
+        for (let key in props) {
+          if (SKIP_PROPS.includes(key)) continue;
+          next[key] = props[key];
+        }
+
+        /**
+         * Get variant styles (from theme).
+         */
+        const variants = Array.isArray(variant)
+          ? variant.map(v => ({ variant: v }))
+          : [{ variant }];
+
+        next.css = () => {
+          return [
+            baseStyles,
+            getResetStyles(element),
+            ...variants.map(v => css(v)),
+            css(styles),
+          ].filter(isNotEmpty);
+        };
+
+        return next;
+      };
 
       return jsx(
         as,
-        {
-          ...props,
-          css: {
-            ...baseStyles,
-            ...resetStyles,
-            ...variantStyleObject,
-            ...css(styles),
-          },
-          ref,
-          className: className,
-        },
+        { ...parseProps(props), ref, className: className, ...props },
         children
       );
     }

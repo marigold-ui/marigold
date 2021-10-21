@@ -1,8 +1,8 @@
 import React from 'react';
 import { ComponentProps } from '@marigold/types';
 import { Exclamation, Check, Notification } from '@marigold/icons';
-import { useStyles } from '@marigold/system';
 import { Box } from '../Box';
+import { Element } from '@marigold/system';
 
 export type AlertProps = {
   variant?: string;
@@ -14,42 +14,41 @@ export const Alert: React.FC<AlertProps> = ({
   className,
   ...props
 }) => {
-  const classNames = useStyles({
-    css: {
-      display: 'flex',
-      alignItems: 'center',
-    },
-    variant: `alerts.${variant}`,
-    className,
-  });
-
   var bgColor = 'success';
   if (variant === 'warning') {
     bgColor = 'warning';
   } else if (variant === 'error') {
     bgColor = 'error';
   }
-  const iconClassName = useStyles({ css: { bg: bgColor, m: '10px' } });
+  const iconStyles = { bg: bgColor, m: '10px' };
 
-  var icon = <Check size={12} color="#ffffff" className={iconClassName} />;
+  var icon = <Element as={Check} size={12} color="#ffffff" css={iconStyles} />;
   if (variant === 'warning') {
-    icon = <Notification size={12} color="#ffffff" className={iconClassName} />;
+    icon = (
+      <Element as={Notification} size={12} color="#ffffff" css={iconStyles} />
+    );
   } else if (variant === 'error') {
-    icon = <Exclamation size={12} color="#ffffff" className={iconClassName} />;
+    icon = (
+      <Element as={Exclamation} size={12} color="#ffffff" css={iconStyles} />
+    );
   }
 
   return (
-    <Box {...props} className={classNames}>
+    <Box
+      {...props}
+      css={{ display: 'flex', alignItems: 'center' }}
+      variant={`alerts.${variant}`}
+      className={className}
+    >
       <Box
+        // can't handle css prop & box ResponsiveStyles (Siehe auch Box.tsx Zeile 110)
         display="inline-block"
         alignItems="center"
         width="32px"
         height="32px"
-        className={useStyles({
-          css: {
-            bg: bgColor,
-          },
-        })}
+        css={{
+          bg: bgColor,
+        }}
       >
         {icon}
       </Box>

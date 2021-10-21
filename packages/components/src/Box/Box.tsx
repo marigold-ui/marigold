@@ -107,12 +107,15 @@ export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef(
     },
     ref
   ) => {
+    // How to make css prop and ResponsiveStyles work
+    // const cssPropStyles = props.css;
     return (
       <Element
         as={as}
         ref={ref}
         variant={variant}
         css={{
+          // ...cssPropStyles,
           display,
           height,
           width,

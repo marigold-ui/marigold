@@ -1,15 +1,24 @@
-import React from 'react';
-import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
+import React, { Component } from 'react';
+import {
+  LiveProvider,
+  LiveEditor,
+  LiveError,
+  LivePreview,
+  EditorProps,
+  DivProps,
+} from 'react-live';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/github';
 
 import * as Components from '@marigold/components';
-import { ThemeProvider, useStyles } from '@marigold/system';
+import { Box } from '@marigold/components';
+import { Element, ThemeProvider } from '@marigold/system';
 import * as Icons from '@marigold/icons';
 
 import { CopyButton } from './CopyButton';
 import { ShowHideButton } from './ShowHideButton';
 import { useThemeSwitch } from './ThemeSwitch';
+import { RefObject } from 'markdown-to-jsx/node_modules/@types/react';
 
 enum ActionType {
   Preview = 'preview',
@@ -31,29 +40,27 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
 }) => {
   const { current, themes } = useThemeSwitch();
   const [hide, setHide] = React.useState(type === ActionType.Preview);
-  const outerPreviewBoxStyles = useStyles({
-    css: {
-      border: 'grey',
-      borderRadius: '4px',
-    },
-  });
-  const innerPreviewBoxStyles = useStyles({
-    css: {
-      position: 'relative',
-      py: 'large',
-      px: 'small',
-    },
-  });
-  const codeBoxStyles = useStyles({
-    css: {
-      position: 'relative',
-      fontSize: 'body',
-      margin: 0,
-      py: 'large',
-      px: 'small',
-    },
-  });
+  const outerPreviewBoxStyles = {
+    border: 'grey',
+    borderRadius: '4px',
+  };
+  const innerPreviewBoxStyles = {
+    position: 'relative',
+    py: 'large',
+    px: 'small',
+  };
+  const codeBoxStyles = {
+    position: 'relative',
+    fontFamily: 'monospace',
+    fontSize: 'body',
+    py: 'large',
+    px: 'small',
+  };
+  const liveEditorRef = React.createRef<EditorProps>();
+  const livePreviewRef = React.createRef<DivProps>();
 
+  // Wann verwenden wir dann Box und wann Element? (Bsp. Zeile 75/76 und 90-103)
+  // Was passiert mit den ResponsiveStyleValues falls wir nur noch Element haben?
   switch (type) {
     case ActionType.Preview: {
       return (
@@ -65,8 +72,8 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
         >
           {({ className, style, tokens, getLineProps, getTokenProps }) => (
             <>
-              <div className={outerPreviewBoxStyles}>
-                <div className={innerPreviewBoxStyles}>
+              <Box css={outerPreviewBoxStyles}>
+                <Box css={innerPreviewBoxStyles}>
                   <LiveProvider
                     code={codeString}
                     scope={{ ...Components, ...Icons }}
@@ -75,26 +82,25 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                       <LivePreview />
                     </ThemeProvider>
                   </LiveProvider>
-                </div>
+                </Box>
                 <ShowHideButton hide={hide} onHideChange={setHide} />
-              </div>
+              </Box>
               {!hide && (
                 <LiveProvider scope={{ ...Components, ...Icons }}>
-                  <pre
-                    className={className + codeBoxStyles}
-                    style={{
-                      ...style,
-                    }}
+                  <Element
+                    as="pre"
+                    css={{ ...codeBoxStyles, ...style }}
+                    className={className}
                   >
                     {tokens.map((line, i) => (
-                      <div key={i} {...getLineProps({ line, key: i })}>
+                      <Box key={i} {...getLineProps({ line, key: i })}>
                         {line.map((token, key) => (
                           <span key={key} {...getTokenProps({ token, key })} />
                         ))}
-                      </div>
+                      </Box>
                     ))}
                     <CopyButton codeString={codeString} />
-                  </pre>
+                  </Element>
                 </LiveProvider>
               )}
               <br />
@@ -111,11 +117,19 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
           theme={theme}
         >
           <ThemeProvider theme={current && themes[current]}>
-            <div className={outerPreviewBoxStyles}>
-              <LivePreview className={innerPreviewBoxStyles} />
-            </div>
+            <Element css={outerPreviewBoxStyles}>
+              <Element
+                as={LivePreview}
+                ref={livePreviewRef as RefObject<Component<DivProps>>}
+                css={innerPreviewBoxStyles}
+              />
+            </Element>
           </ThemeProvider>
-          <LiveEditor className={codeBoxStyles} />
+          <Element
+            as={LiveEditor}
+            ref={liveEditorRef as RefObject<Component<EditorProps>>}
+            css={codeBoxStyles}
+          />
           <LiveError />
         </LiveProvider>
       );
@@ -131,21 +145,20 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
           {({ className, style, tokens, getLineProps, getTokenProps }) => (
             <>
               <LiveProvider scope={{ ...Components, ...Icons }}>
-                <pre
-                  className={className + codeBoxStyles}
-                  style={{
-                    ...style,
-                  }}
+                <Element
+                  as="pre"
+                  css={{ ...style, ...codeBoxStyles }}
+                  className={className}
                 >
                   {tokens.map((line, i) => (
-                    <div key={i} {...getLineProps({ line, key: i })}>
+                    <Box key={i} {...getLineProps({ line, key: i })}>
                       {line.map((token, key) => (
                         <span key={key} {...getTokenProps({ token, key })} />
                       ))}
-                    </div>
+                    </Box>
                   ))}
                   <CopyButton codeString={codeString} />
-                </pre>
+                </Element>
               </LiveProvider>
               <br />
             </>

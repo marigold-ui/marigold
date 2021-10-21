@@ -1,7 +1,6 @@
 import React from 'react';
 import { ComponentProps } from '@marigold/types';
 import { Required } from '@marigold/icons';
-import { useStyles } from '@marigold/system';
 
 import { Box } from '../Box';
 
@@ -17,14 +16,18 @@ export const Label: React.FC<LabelProps> = ({
   children,
   ...props
 }) => {
-  const requiredClassName = useStyles({ css: { color: 'red60' } });
-
   return required ? (
     <Box as="span" display="inline-flex" alignItems="center">
       <Box {...props} as="label" variant={`label.${variant}`}>
         {children}
       </Box>
-      {required && <Required size={16} className={requiredClassName} />}
+      {required && (
+        <Required
+          size={16}
+          // can't handle color prop "error" here which is defined in theme
+          css={{ color: 'error' }}
+        />
+      )}
     </Box>
   ) : (
     <Box {...props} as="label" variant={`label.${variant}`}>

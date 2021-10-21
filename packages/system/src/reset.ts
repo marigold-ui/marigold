@@ -1,35 +1,37 @@
+import { ElementType } from 'react';
+
 const base = {
   boxSizing: 'border-box',
   margin: 0,
   padding: 0,
   minWidth: 0,
   fontSize: '100%',
-  font: 'inherit',
+  fontFamily: 'inherit',
   verticalAlign: 'baseline',
   WebkitTapHighlightColor: 'transparent',
-};
+} as const;
 
 // Content
 // ---------------
 const block = {
   display: 'block',
-};
+} as const;
 
 const list = {
   // empty
-};
+} as const;
 
 const table = {
   borderCollapse: 'collapse',
   borderSpacing: 0,
-};
+} as const;
 
 // Typography
 // ---------------
 const a = {
   textDecoration: 'none',
   touchAction: 'manipulation',
-};
+} as const;
 
 const quote = {
   quotes: 'none',
@@ -38,7 +40,7 @@ const quote = {
       content: "''",
     },
   },
-};
+} as const;
 
 // Form Elements
 // ---------------
@@ -48,7 +50,7 @@ const button = {
   background: 'transparent',
   textAlign: 'center',
   touchAction: 'manipulation',
-};
+} as const;
 
 const input = {
   display: 'block',
@@ -61,7 +63,7 @@ const input = {
       WebkitAppearance: 'none',
     },
   },
-};
+} as const;
 
 const select = {
   display: 'block',
@@ -71,16 +73,16 @@ const select = {
       display: 'none',
     },
   },
-};
+} as const;
 
 const textarea = {
   display: 'block',
   appearance: 'none',
-};
+} as const;
 
 // Reset
 // ---------------
-export const reset = {
+const reset = {
   article: block,
   aside: block,
   details: block,
@@ -104,3 +106,25 @@ export const reset = {
   textarea,
   input,
 } as const;
+
+export type ResetElement = keyof typeof reset;
+const isKnownElement = (input: string): input is ResetElement => input in reset;
+
+/**
+ * Helper to conveniently get reset styles.
+ */
+export const getResetStyles = (input?: ElementType): object => {
+  /**
+   * If a React component is given, we don't apply any reset styles
+   * and return the base reset.
+   */
+  if (typeof input !== 'string') {
+    return reset.base;
+  }
+
+  /**
+   * Try to find the reset style for a HTML element. If the element
+   * is not included return empty styles.
+   */
+  return isKnownElement(input) ? reset[input] : {};
+};
