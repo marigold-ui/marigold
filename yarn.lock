@@ -6513,10 +6513,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:14.17.27":
-  version: 14.17.27
-  resolution: "@types/node@npm:14.17.27"
-  checksum: 4f7eeaa329f4b2b9ff4bb0bb4582ad92e328a4e66f62d5b96ac4e3b51210ed092bb56726c30643beb860f6df633a29e08ed94adad2d573c85b4794d0bf0bbc06
+"@types/node@npm:14.17.29":
+  version: 14.17.29
+  resolution: "@types/node@npm:14.17.29"
+  checksum: 5441e505a6287c7d36f083be95b39ef93238bb4bdb6e2c934304cc9b0f5ac33e7d552c8047824cbd274fcb6f5554703a102c039c8a5306d2acf4ebc3c3f7298b
   languageName: node
   linkType: hard
 
@@ -19341,7 +19341,7 @@ fsevents@^1.2.7:
     "@testing-library/jest-dom": 5.14.1
     "@testing-library/react": 12.1.2
     "@testing-library/react-hooks": 7.0.2
-    "@types/node": 14.17.27
+    "@types/node": 14.17.29
     eslint: 7.32.0
     husky: 7.0.4
     jest: 27.3.1
