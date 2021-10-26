@@ -322,6 +322,27 @@ const theme: BaseTheme = {
         cursor: 'not-allowed',
       },
     },
+    checked: {
+      fill: colors.blue60,
+      stroke: colors.blue70,
+      disabled: {
+        fill: colors.gray30,
+        stroke: colors.gray30,
+      },
+      circle: {
+        fill: colors.gray00,
+      },
+    },
+    unchecked: {
+      fill: colors.gray00,
+      stroke: colors.gray40,
+      disabled: {
+        stroke: colors.gray30,
+      },
+      error: {
+        stroke: 'error',
+      },
+    },
   },
   dialog: {
     wrapper: {

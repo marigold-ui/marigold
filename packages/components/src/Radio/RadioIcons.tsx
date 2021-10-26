@@ -1,16 +1,18 @@
 import React from 'react';
 import { SVG } from '@marigold/icons';
 
+import { Box } from '../Box';
+
 export const RadioChecked = ({ disabled = false, ...props }) => (
   <SVG width="16" height="32" viewBox="0 0 16 32" fill="none" {...props}>
-    <circle
+    <Box
+      as="circle"
       cx="8"
       cy="16"
       r="7.5"
-      fill={disabled ? '#e3e3e3' : '#3AB3D5'}
-      stroke={disabled ? '#e3e3e3' : '#1D67B6'}
+      variant={disabled ? 'radio.checked.disabled' : 'radio.checked'}
     />
-    <circle cx="8" cy="16" r="3" fill="#ffffff" />
+    <Box as="circle" cx="8" cy="16" r="3" variant="radio.checked.circle" />
   </SVG>
 );
 
@@ -20,12 +22,18 @@ export const RadioUnchecked = ({
   ...props
 }) => (
   <SVG width="16" height="32" viewBox="0 0 16 32" fill="none" {...props}>
-    <circle
+    <Box
+      as="circle"
       cx="8"
       cy="16"
       r="7.5"
-      fill="#ffffff"
-      stroke={disabled ? '#e3e3e3' : error ? '#dd4142' : '#cccccc'}
+      variant={
+        disabled
+          ? 'radio.unchecked.disabled'
+          : error
+          ? 'radio.unchecked.error'
+          : 'radio.unchecked'
+      }
     />
   </SVG>
 );
