@@ -16,13 +16,13 @@
   ],
   "main": "main.js",
   "dependencies": {
-    "@storybook/addon-a11y": "6.3.10",
+    "@storybook/addon-a11y": "6.3.12",
     "@storybook/addon-controls": "^6.3.8",
-    "@storybook/addon-docs": "6.3.10",
-    "@storybook/addon-essentials": "6.3.10",
+    "@storybook/addon-docs": "6.3.12",
+    "@storybook/addon-essentials": "6.3.12",
     "@storybook/preset-typescript": "3.0.0",
-    "@storybook/react": "6.3.10",
-    "babel-loader": "8.2.2",
+    "@storybook/react": "6.3.12",
+    "babel-loader": "8.2.3",
     "find-up": "6.0.0",
     "storybook-addon-themes": "6.1.0",
     "tsconfig-paths-webpack-plugin": "3.5.1"

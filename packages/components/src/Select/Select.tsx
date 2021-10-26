@@ -23,8 +23,9 @@ export type SelectProps = {
   placeholder?: string;
   disabled?: boolean;
   required?: boolean;
-  error?: string;
   width?: ResponsiveStyleValue<number | string>;
+  error?: boolean;
+  errorMessage?: string;
 } & ComponentProps<'select'> &
   AriaSelectProps<object> &
   SingleSelection;
@@ -34,6 +35,7 @@ export const Select = ({
   disabled,
   required,
   error,
+  errorMessage,
   width,
   className,
   ...props
@@ -89,7 +91,7 @@ export const Select = ({
             htmlFor={labelProps.id}
             variant={disabled ? 'disabled' : 'above'}
           >
-            {required || error ? (
+            {required ? (
               <Box as="span" display="inline-flex" alignItems="center">
                 {props.label}
                 <Required size={16} className={errorClassName} />
@@ -148,10 +150,10 @@ export const Select = ({
           <ListBox error={error} {...menuProps} state={state} />
         </Popover>
       )}
-      {error && (
+      {error && errorMessage && (
         <Box as="span" display="inline-flex" alignItems="center">
           <Exclamation size={16} className={errorClassName} />
-          <ValidationMessage>{error}</ValidationMessage>
+          <ValidationMessage>{errorMessage}</ValidationMessage>
         </Box>
       )}
     </Box>
