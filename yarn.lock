@@ -6455,12 +6455,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mdx-js__react@npm:1.5.4":
-  version: 1.5.4
-  resolution: "@types/mdx-js__react@npm:1.5.4"
+"@types/mdx-js__react@npm:1.5.5":
+  version: 1.5.5
+  resolution: "@types/mdx-js__react@npm:1.5.5"
   dependencies:
     "@types/react": "*"
-  checksum: b06ec66dc91d8c0b425ee0fb7f4ff29b77d6ffe9da0a4f5f60b45ceb8773b19fc6225570b92914d2fd4df63f24d8aadafffb60207705b541e9922cd485575dbd
+  checksum: 91229e9e4d129bed0cd457459970daf8e505de9932791915cb91ad82f033b85c921c773ad16b7de629a7fa3ba97c8301784aad3b9ab6e431c3e5fc521a16a0f2
   languageName: node
   linkType: hard
 
@@ -11568,7 +11568,7 @@ __metadata:
     "@marigold/types": "workspace:*"
     "@mdx-js/mdx": 1.6.22
     "@mdx-js/react": 1.6.22
-    "@types/mdx-js__react": 1.5.4
+    "@types/mdx-js__react": 1.5.5
     "@types/react": 17.0.33
     "@types/react-helmet": 6.1.4
     babel-preset-gatsby: 1.14.0

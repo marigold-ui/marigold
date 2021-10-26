@@ -34,7 +34,7 @@
     "react-live": "2.3.0"
   },
   "devDependencies": {
-    "@types/mdx-js__react": "1.5.4",
+    "@types/mdx-js__react": "1.5.5",
     "@types/react": "17.0.33",
     "@types/react-helmet": "6.1.4",
     "tsconfig-paths-webpack-plugin": "3.5.1"
