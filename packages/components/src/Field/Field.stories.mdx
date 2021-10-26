@@ -18,13 +18,20 @@ import { Field } from './Field';
     },
     error: {
       control: {
-        type: 'text',
+        type: 'boolean',
       },
+      description: 'Error',
       table: {
         defaultValue: {
-          summary: '',
+          summary: false,
         },
       },
+    },
+    errorMessage: {
+      control: {
+        type: 'text',
+      },
+      description: 'Error Message',
     },
     required: {
       control: {

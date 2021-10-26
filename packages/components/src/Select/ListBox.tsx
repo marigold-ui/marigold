@@ -10,7 +10,7 @@ import { ListBoxSection } from './ListBoxSection';
 
 interface ListBoxProps extends AriaListBoxOptions<unknown> {
   state: ListState<unknown>;
-  error?: string;
+  error?: boolean;
 }
 
 export const ListBox = (props: ListBoxProps) => {

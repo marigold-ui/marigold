@@ -6,13 +6,16 @@ title: Dialog
 
 ## Description
 
-Element to display a Dialog as a reaction to an event. The user style or fill the body of the dialog with content.
+Component to display a Dialog as a reaction to an event. The Dialog could be styled via theme and should be filled with content.
+You can also add a title via title prop.
 
 ## Properties
 
-| Property  | Type       | Default |
-| :-------- | :--------- | :------ |
-| `onClose` | `function` |         |
+| Property           | Type                                       | Default |
+| :----------------- | :----------------------------------------- | :------ |
+| `isOpen `          | `boolean`                                  | `false` |
+| `close`            | `ComponentProps<typeof Button>['onClick']` |         |
+| `title (optional)` | `string`                                   |         |
 
 ## Import
 
@@ -23,32 +26,58 @@ import { Dialog } from '@marigold/components';
 ## Live-Code Example
 
 ```tsx live
-<Dialog>
-  <Heading as="h4" variant="h4">
-    Dialog Livecode example
-  </Heading>
-  <Text>This is your dialog text.</Text>
-</Dialog>
+() => {
+  const { state, openButtonProps, openButtonRef } = useDialogButtonProps();
+  return (
+    <>
+      <Button
+        variant="secondary"
+        size="small"
+        {...openButtonProps}
+        ref={openButtonRef}
+      >
+        Open Dialog
+      </Button>
+      {state.isOpen && (
+        <Dialog
+          title="Dialog Livecode example"
+          isOpen={state.isOpen}
+          close={state.close}
+        >
+          <Text>
+            This is your dialog text. You can read some interesting information.
+          </Text>
+        </Dialog>
+      )}
+    </>
+  );
+};
 ```
 
 ## Usage
 
 ```tsx
-<Dialog>
-  <Heading as="h4" variant="h4">
-    Dialog Title
-  </Heading>
-  <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
-  <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
-</Dialog>
-```
-
-```tsx
-<Dialog>
-  <Text>Do you love the marigold design system?</Text>
-  <br />
-  <Button variant="secondary" size="small">
-    Agree
-  </Button>
-</Dialog>
+() => {
+  const { state, openButtonProps, openButtonRef } = useDialogButtonProps();
+  return (
+    <>
+      <Button
+        variant="secondary"
+        size="small"
+        {...openButtonProps}
+        ref={openButtonRef}
+      >
+        Open Dialog
+      </Button>
+      {state.isOpen && (
+        <Dialog title="Dialog Title" isOpen={state.isOpen} close={state.close}>
+          <Text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum
+            dolor sit amet, consectetur adipiscing elit.
+          </Text>
+        </Dialog>
+      )}
+    </>
+  );
+};
 ```
