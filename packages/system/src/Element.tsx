@@ -21,49 +21,33 @@ const isNotEmpty = (val: any) =>
 
 const baseStyles = getNormalizedStyles('base');
 
-/**
- * Props that we have to remove and want to process to styling the component.
- */
-const SKIP_PROPS = ['css', 'variant'];
-
 export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
   forwardRef(
     ({ as = 'div', css: styles = {}, variant, children, ...props }, ref) => {
       const { css } = useTheme();
 
       /**
-       * Gather styling related props (css, variant, space props, ...) and put them in a
-       * single `css` prop for emotion. All gathered props will be passed to `@theme-ui/css`
-       * before emotion will process them. This way CSS properties will interpolated based on
-       * the given theme.
+       * Transform variant input for `@theme-ui/css`
        */
-      const parseProps = (props: { [key: string]: any }) => {
-        const next: any = {};
+      const variants = Array.isArray(variant)
+        ? variant.map(v => ({ variant: v }))
+        : [{ variant }];
 
-        for (let key in props) {
-          if (SKIP_PROPS.includes(key)) continue;
-          next[key] = props[key];
-        }
-
-        /**
-         * Transform variant input for `@theme-ui/css`
-         */
-        const variants = Array.isArray(variant)
-          ? variant.map(v => ({ variant: v }))
-          : [{ variant }];
-
-        next.css = () => {
-          return [
-            baseStyles,
-            getNormalizedStyles(as),
-            ...variants.map(v => css(v)),
-            css(styles),
-          ].filter(isNotEmpty);
-        };
-
-        return next;
-      };
-
-      return jsx(as, { ...props, ...parseProps(props), ref }, children);
+      return jsx(
+        as,
+        {
+          ...props,
+          css: {
+            ...[
+              baseStyles,
+              getNormalizedStyles(as),
+              ...variants.map(v => css(v)),
+              css(styles),
+            ].filter(isNotEmpty),
+          },
+          ref,
+        },
+        children
+      );
     }
   );
