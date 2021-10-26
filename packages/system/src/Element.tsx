@@ -33,17 +33,23 @@ export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
         ? variant.map(v => ({ variant: v }))
         : [{ variant }];
 
+      console.log({
+        ...baseStyles,
+        ...getNormalizedStyles(as),
+        ...variants.map(v => css(v)),
+        ...css(styles),
+      });
       return jsx(
         as,
         {
           ...props,
           css: {
-            ...[
-              baseStyles,
-              getNormalizedStyles(as),
-              ...variants.map(v => css(v)),
-              css(styles),
-            ].filter(isNotEmpty),
+            // ...[
+            ...baseStyles,
+            ...getNormalizedStyles(as),
+            ...variants.map(v => css(v)),
+            ...css(styles),
+            // ].filter(isNotEmpty),
           },
           ref,
         },
