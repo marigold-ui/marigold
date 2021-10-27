@@ -24,14 +24,6 @@ export const CopyButton: React.FC<CopyProps> = ({ codeString }) => {
   );
 };
 
-function copyToClipboard(codeString: string) {
-  const element = document.createElement('textarea');
-  element.value = codeString;
-  element.setAttribute('readonly', '');
-  element.style.position = 'absolute';
-  element.style.left = '-9999px';
-  document.body.appendChild(element);
-  element.select();
-  document.execCommand('copy');
-  document.body.removeChild(element);
-}
+const copyToClipboard = (codeString: string) => {
+  navigator.clipboard.writeText(codeString);
+};
