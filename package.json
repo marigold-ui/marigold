@@ -10,6 +10,9 @@
     "packages/*",
     "themes/*"
   ],
+  "engines": {
+    "node": ">=0.16"
+  },
   "devDependencies": {
     "@changesets/changelog-github": "0.4.1",
     "@changesets/cli": "2.17.0",
