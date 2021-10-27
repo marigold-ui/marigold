@@ -333,6 +333,39 @@ const theme: BaseTheme = {
       },
     },
   },
+  radio: {
+    default: {
+      ariaHidden: 'true',
+      mr: 2,
+      verticalAlign: 'middle',
+      ':hover': { cursor: 'pointer' },
+      'input:disabled ~ &': {
+        color: 'muted',
+        cursor: 'not-allowed',
+      },
+    },
+    checked: {
+      fill: 'primary',
+      stroke: 'primary',
+      disabled: {
+        fill: colors.gray30,
+        stroke: colors.gray30,
+      },
+      circle: {
+        fill: colors.gray00,
+      },
+    },
+    unchecked: {
+      fill: colors.gray00,
+      stroke: colors.gray40,
+      disabled: {
+        stroke: colors.gray30,
+      },
+      error: {
+        stroke: 'error',
+      },
+    },
+  },
   dialog: {
     wrapper: {
       display: 'flex',
