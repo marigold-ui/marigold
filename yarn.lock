@@ -11662,7 +11662,7 @@ __metadata:
     gatsby-plugin-mdx: 3.0.0
     gatsby-plugin-react-helmet: 5.0.0
     gatsby-plugin-remove-serviceworker: 1.0.0
-    gatsby-plugin-sharp: 4.0.0
+    gatsby-plugin-sharp: 4.0.1
     gatsby-plugin-sitemap: 5.0.0
     gatsby-source-filesystem: 4.0.0
     gatsby-transformer-sharp: 4.0.0
@@ -14463,9 +14463,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"gatsby-plugin-sharp@npm:4.0.0":
-  version: 4.0.0
-  resolution: "gatsby-plugin-sharp@npm:4.0.0"
+"gatsby-plugin-sharp@npm:4.0.1":
+  version: 4.0.1
+  resolution: "gatsby-plugin-sharp@npm:4.0.1"
   dependencies:
     "@babel/runtime": ^7.15.4
     async: ^3.2.1
@@ -14487,7 +14487,7 @@ fsevents@^1.2.7:
     uuid: 3.4.0
   peerDependencies:
     gatsby: ^4.0.0-next
-  checksum: 8420144908de21fa84f78e88cebf8d723349dee3e4a59445997f648f12e36c35db29b00bfc392dfb9bed3561b4303fc878da151b6658e89303e1b98c354ea1a2
+  checksum: 7d18440e4e8c067b714e92becdd2d6e05b776c351a9f26f35859b6dcf10a2e20359e6efea0a0bef2f3f1a8ac8c22f6650261cd6927ddc060a9b77fd72b26391e
   languageName: node
   linkType: hard
 
