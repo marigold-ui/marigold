@@ -11,7 +11,7 @@
     "themes/*"
   ],
   "engines": {
-    "node": ">=0.16"
+    "node": ">=16.x"
   },
   "devDependencies": {
     "@changesets/changelog-github": "0.4.1",
