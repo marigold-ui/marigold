@@ -1,3 +1,4 @@
+export * from './Element';
 export * from './cache';
 export * from './types';
 export * from './useClassname';
