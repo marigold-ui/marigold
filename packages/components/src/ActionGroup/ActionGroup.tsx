@@ -1,7 +1,7 @@
 import React, { Children } from 'react';
 import flattenChildren from 'react-keyed-flatten-children';
 
-import { ResponsiveStyleValue, useStyles } from '@marigold/system';
+import { ResponsiveStyleValue } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 import { Box } from '../Box';
@@ -20,9 +20,9 @@ export const ActionGroup: React.FC<ActionGroupProps> = ({
   className,
   ...props
 }) => {
-  const childClassName = useStyles({
-    css: verticalAlignment ? { marginBottom: space } : { marginRight: space },
-  });
+  const childStyle = verticalAlignment
+    ? { marginBottom: space }
+    : { marginRight: space };
   return (
     <Box variant={`actionGroup.${variant}`} className={className} {...props}>
       {Children.map(
@@ -32,9 +32,7 @@ export const ActionGroup: React.FC<ActionGroupProps> = ({
           child !== undefined && (
             <Box
               as={verticalAlignment ? 'div' : 'span'}
-              className={
-                i < Children.count(children) - 1 ? childClassName : undefined
-              }
+              css={i < Children.count(children) - 1 ? childStyle : undefined}
             >
               {child}
             </Box>
