@@ -1987,19 +1987,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/cache@npm:^11.4.0":
-  version: 11.4.0
-  resolution: "@emotion/cache@npm:11.4.0"
-  dependencies:
-    "@emotion/memoize": ^0.7.4
-    "@emotion/sheet": ^1.0.0
-    "@emotion/utils": ^1.0.0
-    "@emotion/weak-memoize": ^0.2.5
-    stylis: ^4.0.3
-  checksum: bdef4c0ccc9bb87e99e4d48ff4855afe684035e9233a54bb339eb6aeafef35bd34fbed8ddb0d5ee440abd42c598043a87ebb0a324f2a1d732edf9c6b1709f9ed
-  languageName: node
-  linkType: hard
-
 "@emotion/cache@npm:^11.5.0":
   version: 11.5.0
   resolution: "@emotion/cache@npm:11.5.0"
@@ -2088,7 +2075,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/react@npm:11.5.0":
+"@emotion/react@npm:11.5.0, @emotion/react@npm:^11.4.1":
   version: 11.5.0
   resolution: "@emotion/react@npm:11.5.0"
   dependencies:
@@ -2108,29 +2095,6 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 4188b664cc5b7142cf58323d78911cfdeef106d7b26987f8e4aceb51074e99a48a16cf6c3d1aa124462d2135a7b0d2b5d1bc2bbb6ac6167010f69607d822d51a
-  languageName: node
-  linkType: hard
-
-"@emotion/react@npm:^11.1.1":
-  version: 11.4.1
-  resolution: "@emotion/react@npm:11.4.1"
-  dependencies:
-    "@babel/runtime": ^7.13.10
-    "@emotion/cache": ^11.4.0
-    "@emotion/serialize": ^1.0.2
-    "@emotion/sheet": ^1.0.2
-    "@emotion/utils": ^1.0.0
-    "@emotion/weak-memoize": ^0.2.5
-    hoist-non-react-statics: ^3.3.1
-  peerDependencies:
-    "@babel/core": ^7.0.0
-    react: ">=16.8.0"
-  peerDependenciesMeta:
-    "@babel/core":
-      optional: true
-    "@types/react":
-      optional: true
-  checksum: de3c2150785567e68572ba42ab2fb28808c8522c7888eb54a22e19f3d981b59170d9e2e3db9445f25074d8d5e29c21da477450c7d5bbf9f2d168d759129aae8b
   languageName: node
   linkType: hard
 
@@ -2181,13 +2145,6 @@ __metadata:
   version: 0.9.4
   resolution: "@emotion/sheet@npm:0.9.4"
   checksum: 53bb833b4bb69ea2af04e1ecad164f78fb2614834d2820f584c909686a8e047c44e96a6e824798c5c558e6d95e10772454a9e5c473c5dbe0d198e50deb2815bc
-  languageName: node
-  linkType: hard
-
-"@emotion/sheet@npm:^1.0.0, @emotion/sheet@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "@emotion/sheet@npm:1.0.2"
-  checksum: 836b413c6657cd6a3de93c53eebd80ea9a6656123f1b78f539b2eaba145fb8566e3aa005b301f807632964f29f7c3cd85322dafb5634abdc1760794e0c7f76dd
   languageName: node
   linkType: hard
 
@@ -3772,7 +3729,7 @@ __metadata:
   dependencies:
     "@emotion/css": 11.5.0
     "@emotion/react": 11.5.0
-    "@theme-ui/css": 0.11.3
+    "@theme-ui/css": 0.12.0
     csstype: 3.0.9
   peerDependencies:
     react: ^16.x || ^17.0.0
@@ -6039,13 +5996,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@theme-ui/css@npm:0.11.3":
-  version: 0.11.3
-  resolution: "@theme-ui/css@npm:0.11.3"
+"@theme-ui/css@npm:0.12.0":
+  version: 0.12.0
+  resolution: "@theme-ui/css@npm:0.12.0"
   dependencies:
-    "@emotion/react": ^11.1.1
-    csstype: ^3.0.5
-  checksum: a7858988f8df91573d2420423c7adfd43e4683d203102c9084650590004a7d4974e05f6b08ebd05be5b96b4800fa6a9580f9c06457263776181dcc829e4e920b
+    "@emotion/react": ^11.4.1
+    csstype: ^3.0.9
+  checksum: 93cf3d8b6bcd14f03ee70da6fdadaab0f5d6c4cc7397bce80595525818078a2dba1db5755594f60397cf514934f7217ac26025817bbdfcf6c7ae25daf2d5230e
   languageName: node
   linkType: hard
 
@@ -11112,7 +11069,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csstype@npm:3.0.9, csstype@npm:^3.0.2, csstype@npm:^3.0.5":
+"csstype@npm:3.0.9, csstype@npm:^3.0.2, csstype@npm:^3.0.9":
   version: 3.0.9
   resolution: "csstype@npm:3.0.9"
   checksum: 199f9af7e673f9f188525c3102a329d637ff46c52f6385a4427ff5cb17adcb736189150170a7af7c5701d18d7704bdad130273f4aa7e44c6c4f9967e6115dc93
@@ -11655,7 +11612,7 @@ __metadata:
     "@types/react": 17.0.33
     "@types/react-helmet": 6.1.4
     babel-preset-gatsby: 2.0.0
-    gatsby: 4.0.1
+    gatsby: 4.0.2
     gatsby-plugin-emotion: 7.0.0
     gatsby-plugin-image: 2.0.0
     gatsby-plugin-manifest: 4.0.0
@@ -14689,9 +14646,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"gatsby@npm:4.0.1":
-  version: 4.0.1
-  resolution: "gatsby@npm:4.0.1"
+"gatsby@npm:4.0.2":
+  version: 4.0.2
+  resolution: "gatsby@npm:4.0.2"
   dependencies:
     "@babel/code-frame": ^7.14.0
     "@babel/core": ^7.15.5
@@ -14847,7 +14804,7 @@ fsevents@^1.2.7:
     react-dom: ^16.9.0 || ^17.0.0
   bin:
     gatsby: ./cli.js
-  checksum: 3e6bafaaa9178357b1ee700e554d4b95293b1e4a158618460b958628a8f92def422aa4aff5c0c536b2b5bddc8364e6f92f0c3b7e5501e7d3c31e6051fff67866
+  checksum: af5dd624866898df7774dc0b8a9f7e8d22150440c6a9c2afad7e7886f7a390798bed7053133c7f8ca9e1ac80ac9d324ae135060243345a19afcf818bfde48559
   languageName: node
   linkType: hard
 
