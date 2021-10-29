@@ -177,33 +177,6 @@ test("don't apply the same reset multiple times", () => {
   expect(classNames.length).toEqual([...new Set(classNames)].length);
 });
 
-test('normalize base without element prop', () => {
-  const TestComponent: React.FC<{ variant?: 'body' }> = ({
-    variant = 'normal',
-    children,
-    ...props
-  }) => {
-    return (
-      <Element as="a" variant={`text.${variant}`} {...props}>
-        {children}
-      </Element>
-    );
-  };
-
-  const { getByText } = render(
-    <ThemeProvider theme={theme}>
-      <TestComponent>Link</TestComponent>
-    </ThemeProvider>
-  );
-  const testelem = getByText('Link');
-  const style = getComputedStyle(testelem);
-
-  expect(style.boxSizing).toEqual('border-box');
-  expect(style.margin).toEqual('0px');
-  expect(style.padding).toEqual('0px');
-  expect(style.minWidth).toEqual('0');
-});
-
 test('normalize tag name <a>', () => {
   const TestComponent: React.FC<{ variant?: 'body' }> = ({
     variant = 'body',
