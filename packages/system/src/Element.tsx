@@ -17,7 +17,7 @@ export type ElementOwnProps = {
 export type ElementProps = PolymorphicPropsWithRef<ElementOwnProps, 'div'>;
 
 /**
- * Const to check if there is any falsy value or empty object
+ * Function expression to check if there is any falsy value or empty object
  */
 const isNotEmpty = (val: any) =>
   !(val && Object.keys(val).length === 0 && val.constructor === Object);
