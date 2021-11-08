@@ -301,6 +301,16 @@ const theme: BaseTheme = {
       ...button.close,
     },
   },
+  card: {
+    default: {
+      minWidth: '500px',
+      maxWidth: '500px',
+      background: colors.gray00,
+      p: 'small',
+      boxShadow: '8px 8px 4px rgba(201, 177, 255, 0.5)',
+      borderRadius: '8px',
+    },
+  },
   checkbox: {
     default: {
       ariaHidden: 'true',

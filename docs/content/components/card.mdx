@@ -1,0 +1,70 @@
+---
+title: Card
+---
+
+# Card
+
+## Description
+
+The card component can be used for organizing information inside the UI, as well it provides a better readability and helps the user to find information in an easier way.
+The variant can be added with the variant prop. The default variant is `default`.
+
+## Properties
+
+| Property  | Type                           | Default   |
+| :-------- | :----------------------------- | :-------- |
+| `variant` | `string`                       | `default` |
+| `width`   | `ResponsiveStyleValue<string>` |           |
+| `title`   | `string`                       |           |
+
+## Import
+
+```tsx code
+import { Card } from '@marigold/components';
+```
+
+## Usage
+
+### Standard
+
+```tsx
+<Card title="Title">
+  <Text>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+    dignissim dapibus elit, vel.
+  </Text>
+  <Link href="#">
+    <Text>Read more...</Text>
+  </Link>
+</Card>
+```
+
+### Custom Width
+
+```tsx
+<Card title="Title" width="320px">
+  <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
+</Card>
+```
+
+### Examples
+
+```tsx
+<Card title="Name">
+  <Field label="Firstname" htmlFor="myId1" />
+  <Field label="Lastname" htmlFor="myId2" />
+</Card>
+```
+
+```tsx
+<Card title="Choose Color">
+  <Select label="Favorite Color" placeholder="Choose a color" width={450}>
+    <Item>Red</Item>
+    <Item>Orange</Item>
+    <Item>Yellow</Item>
+    <Item>Green</Item>
+    <Item>Blue</Item>
+    <Item>Purple</Item>
+  </Select>
+</Card>
+```
