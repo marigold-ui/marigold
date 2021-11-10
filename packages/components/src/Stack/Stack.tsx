@@ -1,5 +1,5 @@
 import React from 'react';
-import { ResponsiveStyleValue, useClassname } from '@marigold/system';
+import { ResponsiveStyleValue } from '@marigold/system';
 
 import { Box } from '../Box';
 
@@ -22,7 +22,6 @@ export const Stack: React.FC<StackProps> = ({
   children,
   ...props
 }) => {
-  const className = useClassname({ '> * + *': { pt: space } });
   return (
     <Box
       {...props}
@@ -30,7 +29,7 @@ export const Stack: React.FC<StackProps> = ({
       display="flex"
       flexDirection="column"
       alignItems={ALIGNMENT[align]}
-      className={className}
+      css={{ '> * + *': { pt: space } }}
     >
       {children}
     </Box>

@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { ResponsiveStyleValue, useStyles } from '@marigold/system';
+import { ResponsiveStyleValue } from '@marigold/system';
 import {
   PolymorphicComponentWithRef,
   PolymorphicPropsWithRef,
@@ -33,17 +33,16 @@ export const Text: PolymorphicComponentWithRef<TextOwnProps, 'span'> =
         ...props
       },
       ref
-    ) => {
-      const cn = useStyles({
-        className,
-        variant: `text.${variant}`,
-        css: { textAlign: align, color, cursor, outline, userSelect },
-      });
-
-      return (
-        <Box {...props} as={as} className={cn} ref={ref}>
-          {children}
-        </Box>
-      );
-    }
+    ) => (
+      <Box
+        {...props}
+        as={as}
+        variant={`text.${variant}`}
+        css={{ textAlign: align, color, cursor, outline, userSelect }}
+        className={className}
+        ref={ref}
+      >
+        {children}
+      </Box>
+    )
   );

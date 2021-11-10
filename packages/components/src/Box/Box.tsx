@@ -1,5 +1,5 @@
-import { createElement, forwardRef } from 'react';
-import { ResponsiveStyleValue, useStyles } from '@marigold/system';
+import React, { forwardRef } from 'react';
+import { CSSObject, Element, ResponsiveStyleValue } from '@marigold/system';
 import {
   PolymorphicPropsWithRef,
   PolymorphicComponentWithRef,
@@ -8,6 +8,7 @@ import {
 export type BoxOwnProps = {
   className?: string;
   variant?: string | string[];
+  css?: CSSObject;
 
   display?: ResponsiveStyleValue<string>;
 
@@ -63,6 +64,7 @@ export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef(
     {
       variant,
       as = 'div',
+      css,
       children,
       className,
       display,
@@ -106,52 +108,58 @@ export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef(
       ...props
     },
     ref
-  ) => {
-    const cn = useStyles({
-      element: as,
-      variant,
-      className,
-      css: {
-        display,
-        height,
-        width,
-        minWidth,
-        maxWidth,
-        position,
-        top,
-        bottom,
-        right,
-        left,
-        zIndex,
-        p,
-        px,
-        py,
-        pt,
-        pb,
-        pl,
-        pr,
-        m,
-        mx,
-        my,
-        mt,
-        mb,
-        ml,
-        mr,
-        flexDirection,
-        flexWrap,
-        flexShrink,
-        flexGrow,
-        alignItems,
-        justifyContent,
-        bg,
-        border,
-        borderRadius,
-        boxShadow,
-        opacity,
-        overflow,
-        transition,
-      },
-    });
-    return createElement(as, { ...props, ref, className: cn }, children);
-  }
+  ) => (
+    <Element
+      as={as}
+      ref={ref}
+      variant={variant}
+      css={{
+        ...{
+          display,
+          height,
+          width,
+          minWidth,
+          maxWidth,
+          position,
+          top,
+          bottom,
+          right,
+          left,
+          zIndex,
+          p,
+          px,
+          py,
+          pt,
+          pb,
+          pl,
+          pr,
+          m,
+          mx,
+          my,
+          mt,
+          mb,
+          ml,
+          mr,
+          flexDirection,
+          flexWrap,
+          flexShrink,
+          flexGrow,
+          alignItems,
+          justifyContent,
+          bg,
+          border,
+          borderRadius,
+          boxShadow,
+          opacity,
+          overflow,
+          transition,
+        },
+        ...css,
+      }}
+      className={className}
+      {...props}
+    >
+      {children}
+    </Element>
+  )
 );
