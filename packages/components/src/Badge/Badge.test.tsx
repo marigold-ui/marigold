@@ -46,3 +46,16 @@ test('supports other variant than default', () => {
 
   expect(badge).toHaveStyle(`border-radius: 12px;`);
 });
+
+test('accepts custom styles prop className', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Badge className="custom-class-name" title="badge">
+        badge
+      </Badge>
+    </ThemeProvider>
+  );
+  const badge = screen.getByTitle(/badge/);
+
+  expect(badge.className).toMatch('custom-class-name');
+});
