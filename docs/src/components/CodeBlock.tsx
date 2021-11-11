@@ -1,10 +1,19 @@
-import React from 'react';
-import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
+import React, { Component } from 'react';
+import {
+  LiveProvider,
+  LiveEditor,
+  LiveError,
+  LivePreview,
+  EditorProps,
+  DivProps,
+} from 'react-live';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/github';
+import { RefObject } from 'markdown-to-jsx/node_modules/@types/react';
 
 import * as Components from '@marigold/components';
-import { ThemeProvider, useStyles } from '@marigold/system';
+import { Box } from '@marigold/components';
+import { CSSObject, ThemeProvider } from '@marigold/system';
 import * as Icons from '@marigold/icons';
 
 import { CopyButton } from './CopyButton';
@@ -31,28 +40,26 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
 }) => {
   const { current, themes } = useThemeSwitch();
   const [hide, setHide] = React.useState(type === ActionType.Preview);
-  const outerPreviewBoxStyles = useStyles({
-    css: {
-      border: 'grey',
-      borderRadius: '4px',
-    },
-  });
-  const innerPreviewBoxStyles = useStyles({
-    css: {
-      position: 'relative',
-      py: 'large',
-      px: 'small',
-    },
-  });
-  const codeBoxStyles = useStyles({
-    css: {
-      position: 'relative',
-      fontSize: 'body',
-      margin: 0,
-      py: 'large',
-      px: 'small',
-    },
-  });
+
+  const outerPreviewBoxStyles = {
+    border: 'grey',
+    borderRadius: '4px',
+  } as CSSObject;
+  const innerPreviewBoxStyles = {
+    position: 'relative',
+    py: 'large',
+    px: 'small',
+  } as CSSObject;
+  const codeBoxStyles = {
+    position: 'relative',
+    fontFamily: 'monospace',
+    fontSize: 'body',
+    py: 'large',
+    px: 'small',
+  } as CSSObject;
+
+  const liveEditorRef = React.createRef<EditorProps>();
+  const livePreviewRef = React.createRef<DivProps>();
 
   switch (type) {
     case ActionType.Preview: {
@@ -65,8 +72,8 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
         >
           {({ className, style, tokens, getLineProps, getTokenProps }) => (
             <>
-              <div className={outerPreviewBoxStyles}>
-                <div className={innerPreviewBoxStyles}>
+              <Box css={outerPreviewBoxStyles}>
+                <Box css={innerPreviewBoxStyles}>
                   <LiveProvider
                     code={codeString}
                     scope={{ ...Components, ...Icons }}
@@ -75,26 +82,25 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                       <LivePreview />
                     </ThemeProvider>
                   </LiveProvider>
-                </div>
+                </Box>
                 <ShowHideButton hide={hide} onHideChange={setHide} />
-              </div>
+              </Box>
               {!hide && (
                 <LiveProvider scope={{ ...Components, ...Icons }}>
-                  <pre
-                    className={className + codeBoxStyles}
-                    style={{
-                      ...style,
-                    }}
+                  <Box
+                    as="pre"
+                    css={{ ...codeBoxStyles, ...style }}
+                    className={className}
                   >
                     {tokens.map((line, i) => (
-                      <div key={i} {...getLineProps({ line, key: i })}>
+                      <Box key={i} {...getLineProps({ line, key: i })}>
                         {line.map((token, key) => (
                           <span key={key} {...getTokenProps({ token, key })} />
                         ))}
-                      </div>
+                      </Box>
                     ))}
                     <CopyButton codeString={codeString} />
-                  </pre>
+                  </Box>
                 </LiveProvider>
               )}
               <br />
@@ -110,12 +116,20 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
           scope={{ ...Components, ...Icons }}
           theme={theme}
         >
-          <ThemeProvider theme={current && themes[current]}>
-            <div className={outerPreviewBoxStyles}>
-              <LivePreview className={innerPreviewBoxStyles} />
-            </div>
-          </ThemeProvider>
-          <LiveEditor className={codeBoxStyles} />
+          <Box css={outerPreviewBoxStyles}>
+            <ThemeProvider theme={current && themes[current]}>
+              <Box
+                as={LivePreview}
+                ref={livePreviewRef as RefObject<Component<DivProps>>}
+                css={innerPreviewBoxStyles}
+              />
+            </ThemeProvider>
+          </Box>
+          <Box
+            as={LiveEditor}
+            ref={liveEditorRef as RefObject<Component<EditorProps>>}
+            css={codeBoxStyles}
+          />
           <LiveError />
         </LiveProvider>
       );
@@ -131,21 +145,20 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
           {({ className, style, tokens, getLineProps, getTokenProps }) => (
             <>
               <LiveProvider scope={{ ...Components, ...Icons }}>
-                <pre
-                  className={className + codeBoxStyles}
-                  style={{
-                    ...style,
-                  }}
+                <Box
+                  as="pre"
+                  css={{ ...style, ...codeBoxStyles }}
+                  className={className}
                 >
                   {tokens.map((line, i) => (
-                    <div key={i} {...getLineProps({ line, key: i })}>
+                    <Box key={i} {...getLineProps({ line, key: i })}>
                       {line.map((token, key) => (
                         <span key={key} {...getTokenProps({ token, key })} />
                       ))}
-                    </div>
+                    </Box>
                   ))}
                   <CopyButton codeString={codeString} />
-                </pre>
+                </Box>
               </LiveProvider>
               <br />
             </>
