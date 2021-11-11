@@ -1,5 +1,4 @@
 import React from 'react';
-import { useStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 import { Button } from '../Button';
@@ -22,22 +21,24 @@ export const Menu: React.FC<MenuProps> = ({
   children,
   ...props
 }) => {
-  const itemStyles = useStyles({
-    css: {
-      position: 'absolute',
-      minWidth: '120px',
-      display: 'block',
-      textAlign: 'left',
-      borderRadius: '2px',
-    },
-  });
-
   return (
     <Box variant={`menu.${variant}`} {...props}>
       <Button onClick={onClick} variant="menu">
         {label}
       </Button>
-      {show ? <div className={itemStyles}>{children}</div> : null}
+      {show ? (
+        <Box
+          display="block"
+          position="absolute"
+          minWidth="120px"
+          borderRadius="2px"
+          css={{
+            textAlign: 'left',
+          }}
+        >
+          {children}
+        </Box>
+      ) : null}
     </Box>
   );
 };

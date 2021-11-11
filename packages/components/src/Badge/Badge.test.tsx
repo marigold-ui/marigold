@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useStyles, ThemeProvider } from '@marigold/system';
+import { ThemeProvider } from '@marigold/system';
 import { Badge } from './Badge';
 
 const theme = {
@@ -45,25 +45,4 @@ test('supports other variant than default', () => {
   const badge = screen.getByTitle(/badge/);
 
   expect(badge).toHaveStyle(`border-radius: 12px;`);
-});
-
-test('accepts custom styles prop className', () => {
-  const TestComponent: React.FC = ({ children, ...props }) => {
-    const classNames = useStyles({ css: { fontSize: '8px' } });
-    return (
-      <Badge className={classNames} {...props}>
-        {children}
-      </Badge>
-    );
-  };
-
-  const { getByText } = render(
-    <ThemeProvider theme={theme}>
-      <TestComponent>text</TestComponent>
-    </ThemeProvider>
-  );
-  const testelem = getByText('text');
-  const text = getComputedStyle(testelem);
-
-  expect(text.fontSize).toEqual('8px');
 });
