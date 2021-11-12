@@ -1,7 +1,6 @@
 import React from 'react';
 import { useListBoxSection } from '@react-aria/listbox';
 import type { ListState } from '@react-stately/list';
-import { useStyles } from '@marigold/system';
 import type { Node } from '@react-types/shared';
 
 import { Box } from '../Box';
@@ -17,15 +16,16 @@ export const ListBoxSection = ({ section, state }: SectionProps) => {
     heading: section.rendered,
     'aria-label': section['aria-label'],
   });
-  const listClassName = useStyles({
-    css: {
-      listStyle: 'none',
-      cursor: 'not-allowed',
-    },
-  });
 
   return (
-    <Box as="li" {...itemProps} className={listClassName}>
+    <Box
+      as="li"
+      {...itemProps}
+      css={{
+        listStyle: 'none',
+        cursor: 'not-allowed',
+      }}
+    >
       {section.rendered && (
         <Box as="span" {...headingProps} variant={'select.section'}>
           {section.rendered}
