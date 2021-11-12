@@ -44,39 +44,39 @@ test('accepts and uses spacing from theme', () => {
   const first = screen.getByText(/first/);
   const second = screen.getByText(/second/);
 
-  expect(first).toHaveStyle(`padding-top: 0px`);
-  expect(second).toHaveStyle(`padding-top: 2px`);
+  expect(first.parentElement).toHaveStyle(`padding-top: 0px`);
+  expect(second.parentElement).toHaveStyle(`padding-top: 2px`);
 });
 
 test('aligns children left by default', () => {
   render(
-    <Stack>
+    <Stack data-testid="stack">
       <Text>first</Text>
     </Stack>
   );
-  const stack = screen.getByText(/first/).parentElement;
+  const stack = screen.getByTestId('stack');
 
   expect(stack).toHaveStyle(`align-items: flex-start`);
 });
 
 test('allows to aligns children to the center', () => {
   render(
-    <Stack align="center">
+    <Stack align="center" data-testid="stack">
       <Text>first</Text>
     </Stack>
   );
-  const stack = screen.getByText(/first/).parentElement;
+  const stack = screen.getByTestId('stack');
 
   expect(stack).toHaveStyle(`align-items: center`);
 });
 
 test('allows to aligns children to the right', () => {
   render(
-    <Stack align="right">
+    <Stack align="right" data-testid="stack">
       <Text>first</Text>
     </Stack>
   );
-  const stack = screen.getByText(/first/).parentElement;
+  const stack = screen.getByTestId('stack');
 
   expect(stack).toHaveStyle(`align-items: flex-end`);
 });
@@ -85,11 +85,11 @@ test('supports nesting', () => {
   render(
     <ThemeProvider theme={theme}>
       <Stack space="large">
-        <Stack space="small">
+        <Stack space="small" data-testid="upperStack">
           <Text>first</Text>
           <Text>second</Text>
         </Stack>
-        <Stack space="small">
+        <Stack space="small" data-testid="lowerStack">
           <Text>third</Text>
           <Text>fourth</Text>
         </Stack>
@@ -98,33 +98,33 @@ test('supports nesting', () => {
   );
   const first = screen.getByText(/first/);
   const second = screen.getByText(/second/);
-  const upperStack = first.parentElement;
+  const upperStack = screen.getByTestId('upperStack');
 
   const third = screen.getByText(/third/);
   const fourth = screen.getByText(/fourth/);
-  const lowerStack = third.parentElement;
+  const lowerStack = screen.getByTestId('lowerStack');
 
-  expect(upperStack).toHaveStyle(`padding-top: 0px`);
-  expect(lowerStack).toHaveStyle(`padding-top: 8px`);
+  expect(upperStack.parentElement).toHaveStyle(`padding-top: 0px`);
+  expect(lowerStack.parentElement).toHaveStyle(`padding-top: 8px`);
 
-  expect(first).toHaveStyle(`padding-top: 0px`);
-  expect(second).toHaveStyle(`padding-top: 2px`);
+  expect(first.parentElement).toHaveStyle(`padding-top: 0px`);
+  expect(second.parentElement).toHaveStyle(`padding-top: 2px`);
 
-  expect(third).toHaveStyle(`padding-top: 0px`);
-  expect(fourth).toHaveStyle(`padding-top: 2px`);
+  expect(third.parentElement).toHaveStyle(`padding-top: 0px`);
+  expect(fourth.parentElement).toHaveStyle(`padding-top: 2px`);
 });
 
 test('renders as div per default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Stack>
+      <Stack data-testid="stack">
         <Text>first</Text>
         <Text>second</Text>
       </Stack>
     </ThemeProvider>
   );
 
-  const stack = screen.getByText(/first/).parentElement;
+  const stack = screen.getByTestId('stack');
   expect(stack instanceof HTMLDivElement).toBeTruthy();
 });
 

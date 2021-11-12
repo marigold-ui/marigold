@@ -21,6 +21,16 @@ Layout component to stack elements. This component uses the spaces from the give
 import { Stack } from '@marigold/components';
 ```
 
+## Live-Code Example
+
+```tsx live
+<Stack space="large">
+  <Heading>Header</Heading>
+  <Text>Some text.</Text>
+  <Text>Some more code.</Text>
+</Stack>
+```
+
 ## Usage
 
 ### Spacing
@@ -43,22 +53,6 @@ import { Stack } from '@marigold/components';
 </Stack>
 ```
 
-### Alignment
-
-```tsx
-<>
-  <Stack space="medium">
-    <Text>Left</Text>
-  </Stack>
-  <Stack space="medium" align="center">
-    <Text>Center</Text>
-  </Stack>
-  <Stack space="medium" align="right">
-    <Text>Right</Text>
-  </Stack>
-</>
-```
-
 ### Nested
 
 ```tsx
@@ -78,6 +72,22 @@ import { Stack } from '@marigold/components';
     </Text>
   </Stack>
 </Stack>
+```
+
+### Alignment
+
+```tsx
+<>
+  <Stack space="medium">
+    <Text>Left</Text>
+  </Stack>
+  <Stack space="medium" align="center">
+    <Text>Center</Text>
+  </Stack>
+  <Stack space="medium" align="right">
+    <Text>Right</Text>
+  </Stack>
+</>
 ```
 
 ### Usage for Lists
