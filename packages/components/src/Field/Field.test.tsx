@@ -70,12 +70,11 @@ test('accepts custom styles prop className', () => {
         label="label"
         className="custom-class-name"
         title="field"
-      >
-        field
-      </Field>
+        data-testid="field"
+      />
     </ThemeProvider>
   );
-  const field = screen.getByTitle(/field/);
+  const field = screen.getByTestId(/field/);
 
   expect(field.className).toMatch('custom-class-name');
 });
