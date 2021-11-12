@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStyles } from '@marigold/system';
+import { Element } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 export type SVGProps = {
@@ -14,22 +14,17 @@ export const SVG: React.FC<SVGProps> = ({
   className,
   children,
   ...props
-}) => {
-  const classNames = useStyles({
-    variant: `icon.${variant}`,
-    className,
-  });
-
-  return (
-    <svg
-      className={classNames}
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="currentcolor"
-      {...props}
-    >
-      {children}
-    </svg>
-  );
-};
+}) => (
+  <Element
+    as="svg"
+    variant={`icon.${variant}`}
+    width={size}
+    height={size}
+    className={className}
+    viewBox="0 0 24 24"
+    fill="currentcolor"
+    {...props}
+  >
+    {children}
+  </Element>
+);
