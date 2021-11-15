@@ -147,7 +147,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
               <LiveProvider scope={{ ...Components, ...Icons }}>
                 <Box
                   as="pre"
-                  css={{ ...style, ...codeBoxStyles }}
+                  css={{ ...codeBoxStyles, ...style }}
                   className={className}
                 >
                   {tokens.map((line, i) => (
