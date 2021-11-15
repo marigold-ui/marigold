@@ -20,6 +20,9 @@ export const ListBox = (props: ListBoxProps) => {
   return (
     <Box
       as="ul"
+      css={{
+        listStyle: 'none',
+      }}
       {...listBoxProps}
       variant={error ? 'select.listbox.error' : 'select.listbox'}
       ref={ref}

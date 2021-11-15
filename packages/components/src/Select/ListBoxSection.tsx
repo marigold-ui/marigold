@@ -22,7 +22,6 @@ export const ListBoxSection = ({ section, state }: SectionProps) => {
       as="li"
       {...itemProps}
       css={{
-        listStyle: 'none',
         cursor: 'not-allowed',
       }}
     >
