@@ -308,7 +308,6 @@ const theme: BaseTheme = {
   },
   card: {
     default: {
-      minWidth: '500px',
       maxWidth: '500px',
       background: colors.gray00,
       p: 'small',
