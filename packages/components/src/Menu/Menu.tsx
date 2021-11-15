@@ -32,9 +32,6 @@ export const Menu: React.FC<MenuProps> = ({
           position="absolute"
           minWidth="120px"
           borderRadius="2px"
-          css={{
-            textAlign: 'left',
-          }}
         >
           {children}
         </Box>
