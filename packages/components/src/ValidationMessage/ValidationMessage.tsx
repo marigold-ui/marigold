@@ -1,6 +1,7 @@
 import React from 'react';
-import { useStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
+
+import { Box } from '../Box';
 
 export type ValidationMessageProps = {
   variant?: string;
@@ -12,18 +13,16 @@ export const ValidationMessage: React.FC<ValidationMessageProps> = ({
   className,
   ...props
 }) => {
-  const classNames = useStyles({
-    variant: `validation.${variant}`,
-    css: {
-      display: 'flex',
-      alignItems: 'center',
-    },
-    className,
-  });
-
   return (
-    <span className={classNames} {...props}>
+    <Box
+      as="span"
+      display="flex"
+      alignItems="center"
+      variant={`validation.${variant}`}
+      className={className}
+      {...props}
+    >
       {children}
-    </span>
+    </Box>
   );
 };
