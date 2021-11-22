@@ -3719,7 +3719,7 @@ __metadata:
     babel-loader: 8.2.3
     find-up: 6.0.0
     storybook-addon-themes: 6.1.0
-    tsconfig-paths-webpack-plugin: 3.5.1
+    tsconfig-paths-webpack-plugin: 3.5.2
   languageName: unknown
   linkType: soft
 
@@ -11699,7 +11699,7 @@ __metadata:
     react-dom: 17.0.2
     react-helmet: 6.1.0
     react-live: 2.3.0
-    tsconfig-paths-webpack-plugin: 3.5.1
+    tsconfig-paths-webpack-plugin: 3.5.2
   languageName: unknown
   linkType: soft
 
@@ -26862,14 +26862,14 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tsconfig-paths-webpack-plugin@npm:3.5.1":
-  version: 3.5.1
-  resolution: "tsconfig-paths-webpack-plugin@npm:3.5.1"
+"tsconfig-paths-webpack-plugin@npm:3.5.2":
+  version: 3.5.2
+  resolution: "tsconfig-paths-webpack-plugin@npm:3.5.2"
   dependencies:
     chalk: ^4.1.0
     enhanced-resolve: ^5.7.0
     tsconfig-paths: ^3.9.0
-  checksum: 86a58fc9ab373ac0ce0717a1147ed83b25ca05f2fa236f11ad8ae81a2577c9a33d7d6596d742d3d8b927c02e85300ef24d685ae7c767f4f964f22f78aa642647
+  checksum: e7872f45b10684204d4a6cbc7989073d885c99e0c9eb5222de6b2b83d2e1594bccb647f52d2f8e00c53da5b9a3084e47a2de44f41c6f7a607ec2b17330a8d9e9
   languageName: node
   linkType: hard
 
