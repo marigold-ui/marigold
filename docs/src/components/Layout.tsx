@@ -19,7 +19,7 @@ export const Layout: React.FC = ({ children }) => {
         <title>Marigold Design System</title>
       </Helmet>
       <Columns space={8}>
-        <Column width={2}>
+        <Column width={[12, 2]}>
           <Stack space="small">
             <Link to="/">
               <Logo />
@@ -28,7 +28,7 @@ export const Layout: React.FC = ({ children }) => {
             <Navigation />
           </Stack>
         </Column>
-        <Column width={10}>{children}</Column>
+        <Column width={[12, 10]}>{children}</Column>
       </Columns>
     </>
   );
