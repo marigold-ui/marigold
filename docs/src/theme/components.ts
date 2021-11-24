@@ -200,17 +200,17 @@ export const components = {
         ...button.large,
       },
     },
-    copy: {
+    action: {
       ...button.primary,
-      ...button.large,
-      color: 'black',
+      pr: 'xsmall',
+      color: 'gray.40',
       bg: 'transparent',
-      border: 'grey',
-    },
-    toggle: {
-      ...button.primary,
-      color: 'black',
-      bg: 'transparent',
+      fontWeight: 'body',
+      fontFamily: 'body',
+      fontSize: 'xxsmall',
+      ':focus': {
+        outline: 'none',
+      },
     },
     select: {
       ...button.primary,
