@@ -128,6 +128,7 @@ export const Preview: React.FC<CodeBlockProps> = ({
                       ))}
                     </Box>
                   ))}
+                  <br />
                   <CopyButton codeString={codeString} />
                 </Box>
               </LiveProvider>
