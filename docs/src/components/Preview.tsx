@@ -13,12 +13,12 @@ import { RefObject } from 'markdown-to-jsx/node_modules/@types/react';
 
 import * as Components from '@marigold/components';
 import { Box } from '@marigold/components';
-import { CSSObject, ThemeProvider } from '@marigold/system';
+import { CSSObject } from '@marigold/system';
 import * as Icons from '@marigold/icons';
 
 import { CopyButton } from './CopyButton';
 import { ShowHideButton } from './ShowHideButton';
-import { useThemeSwitch } from './ThemeSwitch';
+import { MarigoldTheme } from './MarigoldTheme';
 
 /**
  * Types to show components with editable code or only code in mdx. E.g.:
@@ -141,15 +141,4 @@ export const Preview: React.FC<CodeBlockProps> = ({
       throw new Error(`Unhandled action type: ${type}`);
     }
   }
-};
-
-/**
- * Component to wrap children in the current marigold theme
- */
-export const MarigoldTheme: React.FC = ({ children }) => {
-  const { current, themes } = useThemeSwitch();
-
-  return (
-    <ThemeProvider theme={current && themes[current]}>{children}</ThemeProvider>
-  );
 };
