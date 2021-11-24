@@ -8,6 +8,7 @@ import { theme } from './theme';
 import { Layout } from './components/Layout';
 import { MarigoldThemeSwitch, themes } from './components/ThemeSwitch';
 import * as mdxComponents from './mdx';
+import { MarigoldTheme } from './components/MarigoldTheme';
 
 export const WrapPageElement: GatsbyBrowser['wrapPageElement'] = ({
   element,
@@ -20,7 +21,9 @@ export const WrapRootElement: GatsbyBrowser['wrapRootElement'] = ({
   <SSRProvider>
     <MarigoldProvider theme={theme}>
       <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
-        <MDXProvider components={mdxComponents}>{element}</MDXProvider>
+        <MDXProvider components={{ ...mdxComponents, MarigoldTheme }}>
+          {element}
+        </MDXProvider>
       </MarigoldThemeSwitch>
     </MarigoldProvider>
   </SSRProvider>
