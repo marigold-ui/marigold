@@ -5,7 +5,7 @@ import { preToCodeBlock } from 'mdx-utils';
 import { Box, Heading, Text } from '@marigold/components';
 import { ComponentProps } from '@marigold/types';
 
-import { CodeBlock } from './components/CodeBlock';
+import { Preview } from './components/Preview';
 
 // Typography
 // ---------------
@@ -80,7 +80,7 @@ export const inlineCode: React.FC<ComponentProps<'code'>> = ({
 export const pre: React.FC<ComponentProps<'pre'>> = preProps => {
   const props = preToCodeBlock(preProps);
   if (props) {
-    return <CodeBlock type={props.metastring} {...props} />;
+    return <Preview type={props.metastring} {...props} />;
   }
   return <pre {...preProps} />;
 };
