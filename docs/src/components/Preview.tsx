@@ -53,7 +53,6 @@ const LiveEdit: React.FC<CodeBlockProps> = ({
   codeString,
   type = ActionType.CollapseCode,
 }) => {
-  const { current, themes } = useThemeSwitch();
   const [hide, setHide] = React.useState(type === ActionType.CollapseCode);
 
   const liveEditorRef = React.createRef<EditorProps>();
@@ -66,7 +65,7 @@ const LiveEdit: React.FC<CodeBlockProps> = ({
       theme={theme}
     >
       <Box css={{ border: 'grey', borderRadius: '4px' }}>
-        <ThemeProvider theme={current && themes[current]}>
+        <MarigoldTheme>
           <Box
             as={LivePreview}
             ref={livePreviewRef as RefObject<Component<DivProps>>}
@@ -75,7 +74,7 @@ const LiveEdit: React.FC<CodeBlockProps> = ({
               px: 'small',
             }}
           />
-        </ThemeProvider>
+        </MarigoldTheme>
         <ShowHideButton hide={hide} onHideChange={setHide} />
       </Box>
       {!hide && (
@@ -94,7 +93,7 @@ const LiveEdit: React.FC<CodeBlockProps> = ({
   );
 };
 
-export const CodeBlock: React.FC<CodeBlockProps> = ({
+export const Preview: React.FC<CodeBlockProps> = ({
   codeString,
   type = ActionType.CollapseCode,
   language = 'tsx',
@@ -142,4 +141,15 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
       throw new Error(`Unhandled action type: ${type}`);
     }
   }
+};
+
+/**
+ * Component to wrap children in the current marigold theme
+ */
+export const MarigoldTheme: React.FC = ({ children }) => {
+  const { current, themes } = useThemeSwitch();
+
+  return (
+    <ThemeProvider theme={current && themes[current]}>{children}</ThemeProvider>
+  );
 };
