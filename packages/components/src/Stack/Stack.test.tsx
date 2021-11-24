@@ -127,31 +127,3 @@ test('renders as div per default', () => {
   const stack = screen.getByTestId('stack');
   expect(stack instanceof HTMLDivElement).toBeTruthy();
 });
-
-test('can render as <ul>', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Stack as="ul">
-        <li>first</li>
-        <li>second</li>
-      </Stack>
-    </ThemeProvider>
-  );
-
-  const stack = screen.getByText(/first/).parentElement;
-  expect(stack instanceof HTMLUListElement).toBeTruthy();
-});
-
-test('can render as <ol>', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Stack as="ol">
-        <li>first</li>
-        <li>second</li>
-      </Stack>
-    </ThemeProvider>
-  );
-
-  const stack = screen.getByText(/first/).parentElement;
-  expect(stack instanceof HTMLOListElement).toBeTruthy();
-});
