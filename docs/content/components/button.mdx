@@ -3,6 +3,7 @@ title: Button
 ---
 
 import { ActionGroup, Button } from '@marigold/components';
+import { MarigoldTheme } from '../../src/components/Preview';
 
 # Button
 
@@ -24,6 +25,17 @@ The style variant and size of the button can be added with the variant prop and 
 ```tsx onlyCode
 import { Button } from '@marigold/components';
 ```
+
+## Demo
+
+<MarigoldTheme>
+  <ActionGroup space="small">
+    <Button>Primary</Button>
+    <Button variant="secondary">Secondary</Button>
+    <Button variant="ghost">Ghost</Button>
+    <Button variant="text">Text Only</Button>
+  </ActionGroup>
+</MarigoldTheme>
 
 ## Live-Code Example
 
