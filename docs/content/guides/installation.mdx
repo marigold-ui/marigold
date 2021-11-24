@@ -8,7 +8,7 @@ title: Getting Started
 
 Marigold is open source and available on npm. To install the components, run the following in your terminal:
 
-```bash code
+```bash onlyCode
 # with npm
 npm install @marigold/components --save
 
@@ -23,7 +23,7 @@ Add the package `@marigold/icons` if you want to use icons in Marigold.
 Marigold components don't come with a theme by default. In order to add a theme to your application, use the `ThemeProvider`
 component and thereby provide a theme in context. You can use one of the following themes: [B2B theme](../../themes/b2b), [Core theme](../../themes/core) or [Unicorn theme](../../themes/unicorn).
 
-```bash code
+```bash onlyCode
 # with npm
 npm install @marigold/theme-unicorn --save
 
@@ -33,7 +33,7 @@ yarn add @marigold/theme-unicorn
 
 Wrap your application and all components with the `ThemeProvider` component.
 
-```tsx code
+```tsx onlyCode
 import React from 'react';
 import { ThemeProvider } from '@marigold/system';
 import unicornTheme from '@marigold/theme-unicorn';

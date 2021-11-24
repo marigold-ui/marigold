@@ -6,10 +6,10 @@ import { ValidationMessage } from './ValidationMessage';
 const theme = {
   validation: {
     error: {
-      alignItems: 'center',
+      p: '8px',
     },
     warning: {
-      alignItems: 'right',
+      p: '4px',
     },
   },
 };
@@ -22,7 +22,7 @@ test('supports default variant and themeSection', () => {
   );
   const validation = screen.getByTitle(/error/);
 
-  expect(validation).toHaveStyle(`align-items: center`);
+  expect(validation).toHaveStyle(`padding: 8px`);
 });
 
 test('accepts other variant than default', () => {
@@ -35,7 +35,7 @@ test('accepts other variant than default', () => {
   );
   const validation = screen.getByTitle(/warning/);
 
-  expect(validation).toHaveStyle(`align-items: right`);
+  expect(validation).toHaveStyle(`padding: 4px`);
 });
 
 test('renders correct HTML element', () => {

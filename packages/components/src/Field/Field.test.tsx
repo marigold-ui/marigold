@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 import { Field } from './Field';
-import { useStyles } from '@marigold/system';
 
 const theme = {
   field: {
@@ -64,18 +63,18 @@ test('supports disabled prop', () => {
 });
 
 test('accepts custom styles prop className', () => {
-  const TestComponent: React.FC = ({ children, ...props }) => {
-    const classNames = useStyles({ css: { fontSize: '8px' } });
-    return (
-      <Field htmlFor="myId" label="label" className={classNames} {...props} />
-    );
-  };
-
-  const { getByText } = render(
+  render(
     <ThemeProvider theme={theme}>
-      <TestComponent />
+      <Field
+        htmlFor="myId"
+        label="label"
+        className="custom-class-name"
+        title="field"
+        data-testid="field"
+      />
     </ThemeProvider>
   );
-  const fieldLabel = getByText('label');
-  expect(fieldLabel.nextSibling).toHaveStyle(`fontSize: 8px`);
+  const field = screen.getByTestId(/field/);
+
+  expect(field.className).toMatch('custom-class-name');
 });

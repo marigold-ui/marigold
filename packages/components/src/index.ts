@@ -5,6 +5,7 @@ export * from './Alert';
 export * from './Badge';
 export * from './Box';
 export * from './Button';
+export * from './Card';
 export * from './Checkbox';
 export * from './Column';
 export * from './Columns';

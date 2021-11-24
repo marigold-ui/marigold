@@ -1,5 +1,4 @@
 import React from 'react';
-import { useStyles } from '@marigold/system';
 import { Exclamation } from '@marigold/icons';
 import { ComponentProps } from '@marigold/types';
 
@@ -26,32 +25,26 @@ export const Textarea: React.FC<TextareaProps> = ({
   className = '',
   children,
   ...props
-}) => {
-  const textareaClassNames = useStyles({
-    css: { outlineColor: error && 'error' },
-    className,
-  });
-
-  return (
-    <Box>
-      {label && (
-        <Label htmlFor={htmlFor} required={required}>
-          {label}
-        </Label>
-      )}
-      <Box
-        as="textarea"
-        {...props}
-        display="block"
-        variant={`textarea.${variant}`}
-        className={textareaClassNames}
-      />
-      {error && errorMessage && (
-        <ValidationMessage>
-          <Exclamation size={16} />
-          {errorMessage}
-        </ValidationMessage>
-      )}
-    </Box>
-  );
-};
+}) => (
+  <Box>
+    {label && (
+      <Label htmlFor={htmlFor} required={required}>
+        {label}
+      </Label>
+    )}
+    <Box
+      as="textarea"
+      {...props}
+      display="block"
+      variant={`textarea.${variant}`}
+      css={{ outlineColor: error && 'error' }}
+      className={className}
+    />
+    {error && errorMessage && (
+      <ValidationMessage>
+        <Exclamation size={16} />
+        {errorMessage}
+      </ValidationMessage>
+    )}
+  </Box>
+);

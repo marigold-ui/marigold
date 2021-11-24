@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { SVG } from './SVG';
-import { useStyles } from '@marigold/system';
 
 test('supports default fill color', () => {
   render(
@@ -48,20 +47,14 @@ test('supports fill prop', () => {
 });
 
 test('accepts custom styles prop className', () => {
-  const TestComponent: React.FC = ({ children, ...props }) => {
-    const classNames = useStyles({ css: { margin: '8px' } });
-    return (
-      <SVG title="svg" className={classNames} {...props}>
-        <path d="M9.9 20.113V13.8415H14" />
-      </SVG>
-    );
-  };
+  render(
+    <SVG title="svg" className="custom-class-name">
+      <path d="M9.9 20.113V13.8415H14" />
+    </SVG>
+  );
+  const svg = screen.getByTitle(/svg/);
 
-  const { getByTitle } = render(<TestComponent>text</TestComponent>);
-  const testelem = getByTitle('svg');
-  const text = getComputedStyle(testelem);
-
-  expect(text.margin).toEqual('8px');
+  expect(svg.getAttribute('class')).toMatch(/custom-class-name/);
 });
 
 test('renders <svg> element', () => {
