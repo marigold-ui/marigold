@@ -54,7 +54,7 @@ you intend to use. By creating variant objects on the same level with the compon
 variant name in the component. If you want the same base styles applied to all the variants of one component, use a root object which you define outside the
 theme. See an example:
 
-```tsx code
+```tsx onlyCode
 // Root styles
 const alerts = {
   root: {
@@ -90,7 +90,7 @@ const theme: BaseTheme = {
 
 The `ThemeProvider` is a wrapper around the component tree on the root level and applies the theme to the components.
 
-```tsx code
+```tsx onlyCode
 import { ThemeProvider } from '@marigold/system';
 import b2bTheme from '@marigold/theme-b2b';
 
@@ -105,7 +105,7 @@ Theme variables are styles that are stored in key-value-pairs and defined as des
 If you change the theme, the value for a certain variable can change because a different style is stored in the new theme.
 Reuse theme variables within the theme while defining variants of a component. Like this, you create a unique theme that is applied in all the components:
 
-```tsx code
+```tsx onlyCode
 const theme: BaseTheme = {
   fonts: {
     body: 'Inter',
@@ -129,7 +129,7 @@ const theme: BaseTheme = {
 
 These values can also be accessed as in
 
-```tsx code
+```tsx onlyCode
 const classNames = useStyles({
   css: {
     fontSize: b2bTheme.fontSize.small,
@@ -144,7 +144,7 @@ Define the overall applied root styles in the theme aswell.
 Import and use the theme in the `<ThemeProvider>`.
 See a working example base theme here:
 
-```tsx code
+```tsx onlyCode
 const theme: BaseTheme = {
   styles: {
     root: {
