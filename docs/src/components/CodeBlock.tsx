@@ -20,121 +20,93 @@ import { CopyButton } from './CopyButton';
 import { ShowHideButton } from './ShowHideButton';
 import { useThemeSwitch } from './ThemeSwitch';
 
+/**
+ * Types to show components with editable code or only code in mdx. E.g.:
+ * ```tsx expandCode
+ *  <SomeComponent />
+ * ```
+ */
 enum ActionType {
-  Preview = 'preview',
-  Live = 'live',
-  Code = 'code',
+  CollapseCode = 'collapseCode',
+  ExpandCode = 'expandCode',
+  OnlyCode = 'onlyCode',
 }
 
 type CodeBlockProps = {
   className?: string;
   codeString: string;
   type: ActionType;
-  language: Language;
+  language?: Language;
 };
 
-export const CodeBlock: React.FC<CodeBlockProps> = ({
+const codeBoxStyles = {
+  fontFamily: 'monospace',
+  bg: '#F6F8FA',
+  fontSize: 'body',
+  p: 'small',
+} as CSSObject;
+
+/**
+ * Custom styled LiveEditor component which renders a component preview and editable code.
+ */
+const LiveEdit: React.FC<CodeBlockProps> = ({
   codeString,
-  type = 'preview',
-  language,
+  type = ActionType.CollapseCode,
 }) => {
   const { current, themes } = useThemeSwitch();
-  const [hide, setHide] = React.useState(type === ActionType.Preview);
-
-  const outerPreviewBoxStyles = {
-    border: 'grey',
-    borderRadius: '4px',
-  } as CSSObject;
-  const innerPreviewBoxStyles = {
-    position: 'relative',
-    py: 'large',
-    px: 'small',
-  } as CSSObject;
-  const codeBoxStyles = {
-    position: 'relative',
-    fontFamily: 'monospace',
-    fontSize: 'body',
-    py: 'large',
-    px: 'small',
-  } as CSSObject;
+  const [hide, setHide] = React.useState(type === ActionType.CollapseCode);
 
   const liveEditorRef = React.createRef<EditorProps>();
   const livePreviewRef = React.createRef<DivProps>();
 
-  switch (type) {
-    case ActionType.Preview: {
-      return (
-        <Highlight
-          {...defaultProps}
-          code={codeString}
-          language={language}
-          theme={theme}
-        >
-          {({ className, style, tokens, getLineProps, getTokenProps }) => (
-            <>
-              <Box css={outerPreviewBoxStyles}>
-                <Box css={innerPreviewBoxStyles}>
-                  <LiveProvider
-                    code={codeString}
-                    scope={{ ...Components, ...Icons }}
-                  >
-                    <ThemeProvider theme={current && themes[current]}>
-                      <LivePreview />
-                    </ThemeProvider>
-                  </LiveProvider>
-                </Box>
-                <ShowHideButton hide={hide} onHideChange={setHide} />
-              </Box>
-              {!hide && (
-                <LiveProvider scope={{ ...Components, ...Icons }}>
-                  <Box
-                    as="pre"
-                    css={{ ...codeBoxStyles, ...style }}
-                    className={className}
-                  >
-                    {tokens.map((line, i) => (
-                      <Box key={i} {...getLineProps({ line, key: i })}>
-                        {line.map((token, key) => (
-                          <span key={key} {...getTokenProps({ token, key })} />
-                        ))}
-                      </Box>
-                    ))}
-                    <CopyButton codeString={codeString} />
-                  </Box>
-                </LiveProvider>
-              )}
-              <br />
-            </>
-          )}
-        </Highlight>
-      );
-    }
-    case ActionType.Live: {
-      return (
-        <LiveProvider
-          code={codeString}
-          scope={{ ...Components, ...Icons }}
-          theme={theme}
-        >
-          <Box css={outerPreviewBoxStyles}>
-            <ThemeProvider theme={current && themes[current]}>
-              <Box
-                as={LivePreview}
-                ref={livePreviewRef as RefObject<Component<DivProps>>}
-                css={innerPreviewBoxStyles}
-              />
-            </ThemeProvider>
-          </Box>
+  return (
+    <LiveProvider
+      code={codeString}
+      scope={{ ...Components, ...Icons }}
+      theme={theme}
+    >
+      <Box css={{ border: 'grey', borderRadius: '4px' }}>
+        <ThemeProvider theme={current && themes[current]}>
+          <Box
+            as={LivePreview}
+            ref={livePreviewRef as RefObject<Component<DivProps>>}
+            css={{
+              py: 'large',
+              px: 'small',
+            }}
+          />
+        </ThemeProvider>
+        <ShowHideButton hide={hide} onHideChange={setHide} />
+      </Box>
+      {!hide && (
+        <Box css={codeBoxStyles}>
           <Box
             as={LiveEditor}
             ref={liveEditorRef as RefObject<Component<EditorProps>>}
             css={codeBoxStyles}
           />
           <LiveError />
-        </LiveProvider>
-      );
+          <CopyButton codeString={codeString} />
+        </Box>
+      )}
+      <br />
+    </LiveProvider>
+  );
+};
+
+export const CodeBlock: React.FC<CodeBlockProps> = ({
+  codeString,
+  type = ActionType.CollapseCode,
+  language = 'tsx',
+}) => {
+  switch (type) {
+    case ActionType.CollapseCode: {
+      return <LiveEdit codeString={codeString} type={type} />;
     }
-    case ActionType.Code: {
+    case ActionType.ExpandCode: {
+      return <LiveEdit codeString={codeString} type={type} />;
+    }
+    case ActionType.OnlyCode: {
       return (
         <Highlight
           {...defaultProps}

@@ -15,12 +15,12 @@ determine the rendered HTML element. Instead of exposing the underlying tools th
 wraps them and exposes an API for applying styling to a component while respecting the rules and constraints of our design
 system.
 
-```tsx code
+```tsx onlyCode
 import { Box } from '@marigold/components';
 import { useStyles } from '@marigold/system';
 ```
 
-```tsx live
+```tsx expandCode
 <Box as="button" bg="orange" p="8px">
   Button box with backgroundcolor and padding
 </Box>
@@ -34,7 +34,7 @@ By default, the `Box` component will render a `<div />`. This might be fine most
 rather render a `<button>` or an `<input>` etc. To allow this, the `Box` takes the special prop called `as`, accepting
 all HTML tag names as input. Don't forget to define variants in your theme.
 
-```tsx code
+```tsx onlyCode
 export type ButtonProps = {
   variant?: string;
 } & ComponentPropsWithRef<'button'>;
@@ -60,7 +60,7 @@ Staying inside the boundaries of the design system and its contraints should be 
 to allowed values defined by the system can be very restrictive, you can use the `className` prop and generate custom
 styles with the [`useStyles`](../../guides/usestyles) hook.
 
-```tsx code
+```tsx onlyCode
 ...
     <Box
       as="button"
