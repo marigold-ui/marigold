@@ -30,7 +30,7 @@ const button = {
     bg: 'primary',
     ':hover': {
       color: 'background',
-      bg: colors.orange40,
+      bg: colors.gray20,
       cursor: 'pointer',
     },
     ':disabled': {
