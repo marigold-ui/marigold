@@ -28,7 +28,7 @@ test('supports default variant and themeSection', () => {
   expect(alert).toHaveStyle(`align-items: center`);
 });
 
-test('accepts error variant', () => {
+test.only('accepts error variant', () => {
   render(
     <ThemeProvider theme={theme}>
       <Alert title="error" variant="error">
