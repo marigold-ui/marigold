@@ -231,16 +231,19 @@ const theme: BaseTheme = {
   },
   alerts: {
     error: {
+      alignItems: 'center',
       borderStyle: 'solid',
       borderColor: 'error',
       borderWidth: '2px 2px 2px 0px',
     },
     warning: {
+      alignItems: 'center',
       borderStyle: 'solid',
       borderColor: 'warning',
       borderWidth: '2px 2px 2px 0px',
     },
     success: {
+      alignItems: 'center',
       borderStyle: 'solid',
       borderColor: 'success',
       borderWidth: '2px 2px 2px 0px',
