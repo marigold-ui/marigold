@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useStyles, ThemeProvider } from '@marigold/system';
+import { ThemeProvider } from '@marigold/system';
 import { ActionGroup } from './ActionGroup';
 import { Button } from '../Button';
 
@@ -80,24 +80,4 @@ test('renders correct HTML element', () => {
   const actionGroup = screen.getByTitle(/actionGroup/);
 
   expect(actionGroup instanceof HTMLDivElement).toBeTruthy();
-});
-
-test('accepts custom styles prop className', () => {
-  const TestComponent: React.FC = ({ children, ...props }) => {
-    const classNames = useStyles({ css: { padding: '8px' } });
-    return (
-      <ActionGroup title="actionGroup" className={classNames} {...props}>
-        <Button title="Button1">Button1</Button>
-        <Button title="Button2">Button2</Button>
-      </ActionGroup>
-    );
-  };
-
-  const { getByTitle } = render(
-    <ThemeProvider theme={theme}>
-      <TestComponent>text</TestComponent>
-    </ThemeProvider>
-  );
-  const actionGroup = getByTitle('actionGroup');
-  expect(actionGroup).toHaveStyle(`padding: 8px;`);
 });
