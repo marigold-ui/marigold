@@ -29,7 +29,7 @@ export const Alert: React.FC<AlertProps> = ({
         height="32px"
         bg={variant}
       >
-        <Box as={Icon} color="#fff" bg={variant} m={10} />
+        <Box as={Icon} size={12} color="#fff" bg={variant} m={10} />
       </Box>
       <Box mx="16px">{children}</Box>
     </Box>
