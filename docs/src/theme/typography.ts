@@ -43,6 +43,10 @@ export const typography = {
       ...text.root,
       color: 'gray.40',
     },
+    muted: {
+      ...text.root,
+      color: 'gray.60',
+    },
     h1: {
       ...text.root,
       ...text.heading,

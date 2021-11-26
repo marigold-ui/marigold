@@ -27,12 +27,7 @@ export const Card: React.FC<CardProps> = ({
     css: { pb: 'small' },
   });
   return (
-    <Box
-      {...props}
-      variant={`card.${variant}`}
-      display="block"
-      className={cardClassName}
-    >
+    <Box {...props} variant={`card.${variant}`} className={cardClassName}>
       {title && (
         <Heading as="h2" variant="h2" className={titleClassName}>
           {title}

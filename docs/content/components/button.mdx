@@ -2,7 +2,8 @@
 title: Button
 ---
 
-import { ActionGroup, Button } from '@marigold/components';
+import { DoAndDont } from '../../src/components/DoAndDont';
+import { Box, ActionGroup, Button, Stack } from '@marigold/components';
 
 # Button
 
@@ -223,3 +224,100 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
   <FormatSize /> Text Only
 </Button>
 ```
+
+## Usage
+
+<Stack space="small">
+  <Box
+    display="grid"
+    css={{
+      gridGap: 'small',
+      gridTemplateColumns: 'repeat(2, 1fr)',
+    }}
+  >
+    <DoAndDont
+      preview={
+        <ActionGroup space="small">
+          <Button variant="ghost">Ghost</Button>
+          <Button>Primary</Button>
+        </ActionGroup>
+      }
+    >
+      Use a ghost button next to a Primary button.
+    </DoAndDont>
+    <DoAndDont
+      dont={true}
+      preview={
+        <ActionGroup space="small">
+          <Button>Primary</Button>
+          <Button>Primary</Button>
+        </ActionGroup>
+      }
+    >
+      Use two Primary buttons on the same page, there should be only one
+      function that calls the most attention.
+    </DoAndDont>
+  </Box>
+  <Box
+    display="grid"
+    css={{
+      gridGap: 'small',
+      gridTemplateColumns: 'repeat(2, 1fr)',
+    }}
+  >
+    <DoAndDont
+      preview={
+        <ActionGroup space="small">
+          <Button variant="text">Text</Button>
+          <Button>Primary</Button>
+        </ActionGroup>
+      }
+    >
+      Use a Text button next to a Primary button.
+    </DoAndDont>
+    <DoAndDont
+      dont={true}
+      preview={
+        <ActionGroup space="small">
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="secondary">Secondary</Button>
+        </ActionGroup>
+      }
+    >
+      Use two Secondary buttons next to each other, it loses hierarchie and is
+      confusing.
+    </DoAndDont>
+  </Box>
+  <Box
+    display="grid"
+    css={{
+      gridGap: 'small',
+      gridTemplateColumns: 'repeat(2, 1fr)',
+    }}
+  >
+    <DoAndDont
+      preview={
+        <ActionGroup space="small">
+          <Button variant="text">Text</Button>
+          <Button variant="text">Text</Button>
+        </ActionGroup>
+      }
+    >
+      Use a Text button next to another text button.
+    </DoAndDont>
+    <DoAndDont
+      dont={true}
+      preview={
+        <ActionGroup space="small">
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="secondary" size="small">
+            Secondary
+          </Button>
+        </ActionGroup>
+      }
+    >
+      Mix normal sized buttons with small buttons inmediatly next or below each
+      other.
+    </DoAndDont>
+  </Box>
+</Stack>
