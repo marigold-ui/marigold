@@ -18,7 +18,7 @@ type PageProps = {
 const Page = ({ data: { mdx } }: PageProps) => {
   const { body } = mdx;
   return (
-    <Box as="main" maxWidth="700px">
+    <Box as="main" maxWidth="700px" pt="medium">
       <MDXRenderer>{body}</MDXRenderer>
     </Box>
   );

@@ -21,7 +21,7 @@ export const Layout: React.FC = ({ children }) => {
       <Columns space={8}>
         <Column width={[12, 2]}>
           <Stack space="small">
-            <Box p="24px" pr="36px">
+            <Box p="medium">
               <Link to="/">
                 <Logo />
               </Link>
