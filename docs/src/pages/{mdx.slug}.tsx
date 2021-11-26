@@ -1,6 +1,7 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
+import { Box } from 'packages/components/src/Box';
 
 type PageProps = {
   data: {
@@ -17,9 +18,9 @@ type PageProps = {
 const Page = ({ data: { mdx } }: PageProps) => {
   const { body } = mdx;
   return (
-    <main>
+    <Box as="main" maxWidth="700px" pt="medium">
       <MDXRenderer>{body}</MDXRenderer>
-    </main>
+    </Box>
   );
 };
 
