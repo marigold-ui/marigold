@@ -7,10 +7,10 @@ const ICON_MAP = {
   success: Check,
   warning: Notification,
   error: Exclamation,
-};
+} as const;
 
 export type AlertProps = {
-  variant?: 'success' | 'warning' | 'error';
+  variant?: keyof typeof ICON_MAP;
 } & ComponentProps<'div'>;
 
 export const Alert: React.FC<AlertProps> = ({
@@ -21,12 +21,7 @@ export const Alert: React.FC<AlertProps> = ({
   const Icon = ICON_MAP[variant];
 
   return (
-    <Box
-      {...props}
-      display="flex"
-      alignItems="center"
-      variant={`alerts.${variant}`}
-    >
+    <Box {...props} display="flex" variant={`alerts.${variant}`}>
       <Box
         display="inline-block"
         alignItems="center"

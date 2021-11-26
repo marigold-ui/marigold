@@ -229,18 +229,21 @@ const theme: BaseTheme = {
   },
   alerts: {
     error: {
+      alignItems: 'center',
       borderStyle: 'solid',
       borderColor: 'error',
       color: 'error',
       borderWidth: '1px 1px 1px 0px',
     },
     warning: {
+      alignItems: 'center',
       borderStyle: 'solid',
       borderColor: 'warning',
       color: 'warning',
       borderWidth: '1px 1px 1px 0px',
     },
     success: {
+      alignItems: 'center',
       borderStyle: 'solid',
       borderColor: 'success',
       color: 'success',

@@ -5,7 +5,7 @@ import { Alert } from './Alert';
 
 const theme = {
   alerts: {
-    info: {
+    success: {
       alignItems: 'center',
     },
     error: {
@@ -28,7 +28,7 @@ test('supports default variant and themeSection', () => {
   expect(alert).toHaveStyle(`align-items: center`);
 });
 
-test.only('accepts error variant', () => {
+test('accepts error variant', () => {
   render(
     <ThemeProvider theme={theme}>
       <Alert title="error" variant="error">
