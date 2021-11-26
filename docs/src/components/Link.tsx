@@ -6,7 +6,7 @@ export const Link: React.FC<GatsbyLinkProps<unknown>> = ({
   children,
   ...props
 }) => (
-  <MarigoldLink {...props} as={GatsbyLink}>
+  <MarigoldLink activeStyle={{ color: '#1D67B6' }} {...props} as={GatsbyLink}>
     {children}
   </MarigoldLink>
 );

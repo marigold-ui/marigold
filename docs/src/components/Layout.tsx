@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Column, Columns, Stack } from '@marigold/components';
+import { Box, Column, Columns, Stack } from '@marigold/components';
 
 import { Link } from './Link';
 import { Logo } from './Logo';
@@ -21,9 +21,11 @@ export const Layout: React.FC = ({ children }) => {
       <Columns space={8}>
         <Column width={[12, 2]}>
           <Stack space="small">
-            <Link to="/">
-              <Logo />
-            </Link>
+            <Box p="24px" pr="36px">
+              <Link to="/">
+                <Logo />
+              </Link>
+            </Box>
             <ThemeSelect />
             <Navigation />
           </Stack>
