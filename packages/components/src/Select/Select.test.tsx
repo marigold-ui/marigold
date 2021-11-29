@@ -14,6 +14,9 @@ const theme = {
       },
     },
   },
+  colors: {
+    disabled: 'gray',
+  },
 };
 
 test('supports button select variant', () => {
@@ -69,6 +72,8 @@ test('supports disabled prop', () => {
   expect(select).toHaveAttribute('disabled');
   fireEvent.click(select);
   expect(select).toHaveAttribute('aria-expanded', 'false');
+  // check if ArrowDown has disabled color
+  expect(select.lastChild).toHaveStyle(`fill: gray;`);
 });
 
 test('supports placeholder prop', () => {
