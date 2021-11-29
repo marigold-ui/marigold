@@ -52,7 +52,6 @@ test('accepts width prop', () => {
     </ThemeProvider>
   );
   const card = screen.getByText(/content/);
-  expect(card).toHaveStyle(`minWidth: 320px`);
   expect(card).toHaveStyle(`maxWidth: 320px`);
 });
 
