@@ -122,11 +122,7 @@ export const Select = ({
           {state.selectedItem ? state.selectedItem.rendered : placeholder}
         </Box>
         {state.isOpen && !disabled ? (
-          <Box
-            as={ArrowUp}
-            size={16}
-            css={{ fill: disabled ? 'disabled' : 'text' }}
-          />
+          <Box as={ArrowUp} size={16} css={{ fill: 'text' }} />
         ) : (
           <Box
             as={ArrowDown}
@@ -141,9 +137,7 @@ export const Select = ({
           {...overlayProps}
           {...positionProps}
           css={{
-            width: width
-              ? width
-              : triggerRef.current && triggerRef.current.offsetWidth + 'px',
+            width: triggerRef.current && triggerRef.current.offsetWidth + 'px',
           }}
           ref={overlayRef as Ref<HTMLDivElement>}
           isOpen={state.isOpen}
