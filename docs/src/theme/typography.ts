@@ -92,10 +92,10 @@ export const typography = {
       textTransform: 'uppercase',
     },
     link: {
-      color: 'primary',
+      color: 'gray.20',
       textDecoration: 'none',
       '&:hover': {
-        textDecoration: 'underline',
+        color: 'blue.70',
       },
     },
   },

@@ -1700,14 +1700,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/changelog-github@npm:0.4.1":
-  version: 0.4.1
-  resolution: "@changesets/changelog-github@npm:0.4.1"
+"@changesets/changelog-github@npm:0.4.2":
+  version: 0.4.2
+  resolution: "@changesets/changelog-github@npm:0.4.2"
   dependencies:
     "@changesets/get-github-info": ^0.5.0
-    "@changesets/types": ^4.0.1
+    "@changesets/types": ^4.0.2
     dotenv: ^8.1.0
-  checksum: eae7151d7044038506ab4d012e092d0bee286f8096167729718c9a23f5f64c58dc2f7ef585004b11f86a3b5e628440172f20d34d2f01d0749f6265beb5b5ee9d
+  checksum: df46ec2c5de368da448f8ada4e832baa008f1b397da61e86e5563c7116b7575a1ddf14cd3bddad34b4f616a3b352be94797f0950024d55e91846f07d82802bf5
   languageName: node
   linkType: hard
 
@@ -1893,6 +1893,13 @@ __metadata:
   version: 4.0.1
   resolution: "@changesets/types@npm:4.0.1"
   checksum: 6e41afd51a672710f4858eb523cee7e4da43318db05792d7d2785ebe7fad24d019c48166893ce48f2df2750cd5586e055d8466fa19b66b56ec3cb8f89ccdfdf4
+  languageName: node
+  linkType: hard
+
+"@changesets/types@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "@changesets/types@npm:4.0.2"
+  checksum: 098ed02b44ac70dbe341ca3560acdd0ae46c54edb8a1134f743d5fa56bf983b5f4ea085b8c5187314c23ac51e51e1ca6c735aaaa3ee17d79f0395b23baf042a0
   languageName: node
   linkType: hard
 
@@ -3771,7 +3778,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@marigold/types@workspace:packages/types"
   dependencies:
-    "@types/react": 17.0.36
+    "@types/react": 17.0.37
   peerDependencies:
     "@types/react": ^17.x
   languageName: unknown
@@ -5933,9 +5940,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-dom@npm:5.15.0":
-  version: 5.15.0
-  resolution: "@testing-library/jest-dom@npm:5.15.0"
+"@testing-library/jest-dom@npm:5.15.1":
+  version: 5.15.1
+  resolution: "@testing-library/jest-dom@npm:5.15.1"
   dependencies:
     "@babel/runtime": ^7.9.2
     "@types/testing-library__jest-dom": ^5.9.1
@@ -5946,7 +5953,7 @@ __metadata:
     dom-accessibility-api: ^0.5.6
     lodash: ^4.17.15
     redent: ^3.0.0
-  checksum: fb11af2462b28bdcbbddf199f58e7f9153358358e2ec47dba311f21d88014351cc31087560e9cbacbccc78063e455361efffb31be6242edd1dbd2e21bb3f4359
+  checksum: c9fba26f9a31c17143933537e16b55fdabbf065710f96f4c4be42de682651208d89361ac55bc68247610d9973ee37736f2a9911b50431d230f480b86379c2350
   languageName: node
   linkType: hard
 
@@ -6470,10 +6477,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:16.11.9":
-  version: 16.11.9
-  resolution: "@types/node@npm:16.11.9"
-  checksum: baec2e6471ee58fd1e9874e6f47ab95a918a0f46b42424392e4c13e3e07f078f8b72b6b48073b0b14f710ed66c5f1b2e497df43f28151000f11f5f299382cfe2
+"@types/node@npm:16.11.10":
+  version: 16.11.10
+  resolution: "@types/node@npm:16.11.10"
+  checksum: 9c79419c5c3d92d5825bffa30f3668533f598d8b63a73ea7fc24e47f162bdbed92b0f8e4f4261cc3314b39cee050e303366d2aa154abc95c63a572a110b8c160
   languageName: node
   linkType: hard
 
@@ -6645,14 +6652,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:17.0.36":
-  version: 17.0.36
-  resolution: "@types/react@npm:17.0.36"
+"@types/react@npm:17.0.37":
+  version: 17.0.37
+  resolution: "@types/react@npm:17.0.37"
   dependencies:
     "@types/prop-types": "*"
     "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: feeaa484d5d7e354ba6830b06342dec6fd1a2ac87f73d21d3d4f2a3d311459de4090330a1e8af7275c8d1e7737b655a7550c8dd3dbc74ccf34ffd3fc824bbd12
+  checksum: e68b0d59aa69577fc6a6d654b25d5d8408625498f4c483f160b557fac21e840f6e8807cbde93e9f039949b6d624a019b1990d18499c1d65aecf3605c25e30242
   languageName: node
   linkType: hard
 
@@ -11677,7 +11684,7 @@ __metadata:
     "@mdx-js/mdx": 1.6.22
     "@mdx-js/react": 1.6.22
     "@types/mdx-js__react": 1.5.5
-    "@types/react": 17.0.36
+    "@types/react": 17.0.37
     "@types/react-helmet": 6.1.4
     babel-preset-gatsby: 2.1.2
     gatsby: 4.1.4
@@ -19514,17 +19521,17 @@ fsevents@^1.2.7:
   version: 0.0.0-use.local
   resolution: "marigold-repo@workspace:."
   dependencies:
-    "@changesets/changelog-github": 0.4.1
+    "@changesets/changelog-github": 0.4.2
     "@changesets/cli": 2.17.0
     "@marigold/eslint-config": "*"
     "@marigold/jest-config": "*"
     "@marigold/prettier-config": "*"
     "@marigold/tsconfig": "*"
     "@storybook/react": 6.3.12
-    "@testing-library/jest-dom": 5.15.0
+    "@testing-library/jest-dom": 5.15.1
     "@testing-library/react": 12.1.2
     "@testing-library/react-hooks": 7.0.2
-    "@types/node": 16.11.9
+    "@types/node": 16.11.10
     eslint: 7.32.0
     husky: 7.0.4
     jest: 27.3.1
@@ -19533,7 +19540,7 @@ fsevents@^1.2.7:
     react: 17.0.2
     react-dom: 17.0.2
     tsdx: 0.14.1
-    typescript: 4.4.4
+    typescript: 4.5.2
     workspaces-run: 1.0.1
   languageName: unknown
   linkType: soft
@@ -27197,13 +27204,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-typescript@4.4.4:
-  version: 4.4.4
-  resolution: "typescript@npm:4.4.4"
+typescript@4.5.2:
+  version: 4.5.2
+  resolution: "typescript@npm:4.5.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 89ecb8436bb48ef5594d49289f5f89103071716b6e4844278f4fb3362856e31203e187a9c76d205c3f0b674d221a058fd28310dbcbcf5d95e9a57229bb5203f1
+  checksum: 74f9ce65d532bdf5d0214b3f60cf37992180023388c87a11ee6f838a803067ef0b63c600fa501b0deb07f989257dce1e244c9635ed79feca40bbccf6e0aa1ebc
   languageName: node
   linkType: hard
 
@@ -27217,13 +27224,13 @@ typescript@^3.7.3:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.4.4#~builtin<compat/typescript>":
-  version: 4.4.4
-  resolution: "typescript@patch:typescript@npm%3A4.4.4#~builtin<compat/typescript>::version=4.4.4&hash=d8b4e7"
+"typescript@patch:typescript@4.5.2#~builtin<compat/typescript>":
+  version: 4.5.2
+  resolution: "typescript@patch:typescript@npm%3A4.5.2#~builtin<compat/typescript>::version=4.5.2&hash=d8b4e7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 4a639b6886be13616582ab82abdb4ffbbf5b0458069d13c10cd5d44fc1cafa33eab005e8ac8691ad8fae249fee85844bb7d523263c4568fe9a2ca31cd3c91c3d
+  checksum: 02cf0f190f0cb6d216558d8db9c3a968feeab4965c340a351e5e6e84a42a3946e5e200a9538b6e427af9d17e4f713254dd0707d5fd6f238ce93f0aee1986ab57
   languageName: node
   linkType: hard
 

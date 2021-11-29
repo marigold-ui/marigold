@@ -1,5 +1,4 @@
 import React from 'react';
-import { useStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 import { Exclamation } from '@marigold/icons';
 
@@ -25,18 +24,19 @@ const CheckboxIcon: React.FC<CheckboxIconProps> = ({
   disabled,
   error,
 }) => {
-  const checkboxIconStyle = useStyles({
-    variant: `checkbox.${variant}`,
-  });
-
   if (checked) {
     return (
-      <CheckboxChecked className={checkboxIconStyle} disabled={disabled} />
+      <Box
+        as={CheckboxChecked}
+        variant={`checkbox.${variant}`}
+        disabled={disabled}
+      />
     );
   }
   return (
-    <CheckboxUnchecked
-      className={checkboxIconStyle}
+    <Box
+      as={CheckboxUnchecked}
+      variant={`checkbox.${variant}`}
       disabled={disabled}
       error={error}
     />
@@ -55,30 +55,29 @@ const CheckboxInput: React.FC<CheckboxInputProps> = ({
   variant = 'default',
   error,
   ...props
-}) => {
-  const checkboxStyle = useStyles({
-    css: {
-      position: 'absolute',
-      opacity: 0,
-      zIndex: -1,
-      width: 1,
-      height: 1,
-      overflow: 'hidden',
-    },
-  });
-
-  return (
-    <Box display="inline-block" className={className}>
-      <input type="checkbox" className={checkboxStyle} {...props} />
-      <CheckboxIcon
-        checked={props.checked}
-        variant={variant}
-        disabled={props.disabled}
-        error={error}
-      />
-    </Box>
-  );
-};
+}) => (
+  <Box display="inline-block" className={className}>
+    <Box
+      as="input"
+      type="checkbox"
+      css={{
+        position: 'absolute',
+        opacity: 0,
+        zIndex: -1,
+        width: 1,
+        height: 1,
+        overflow: 'hidden',
+      }}
+      {...props}
+    />
+    <CheckboxIcon
+      checked={props.checked}
+      variant={variant}
+      disabled={props.disabled}
+      error={error}
+    />
+  </Box>
+);
 
 // Checkbox
 // ---------------
@@ -97,12 +96,6 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   errorMessage,
   ...props
 }) => {
-  const labeledCheckboxStyle = useStyles({
-    css: {
-      pr: '8px',
-    },
-  });
-
   if (label) {
     return (
       <>
@@ -111,11 +104,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           required={required}
           variant={props.disabled ? 'disabled' : 'inline'}
         >
-          <CheckboxInput
-            className={labeledCheckboxStyle}
-            error={error}
-            {...props}
-          />
+          <Box as={CheckboxInput} pr="8px" error={error} {...props} />
           {label}
         </Label>
         {error && errorMessage && (

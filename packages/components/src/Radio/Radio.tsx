@@ -1,5 +1,4 @@
 import React from 'react';
-import { useStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 import { Exclamation } from '@marigold/icons';
 
@@ -25,16 +24,15 @@ const RadioIcon: React.FC<RadioIconProps> = ({
   disabled,
   error,
 }) => {
-  const radioIconStyle = useStyles({
-    variant: `radio.${variant}`,
-  });
-
   if (checked) {
-    return <RadioChecked className={radioIconStyle} disabled={disabled} />;
+    return (
+      <Box as={RadioChecked} variant={`radio.${variant}`} disabled={disabled} />
+    );
   }
   return (
-    <RadioUnchecked
-      className={radioIconStyle}
+    <Box
+      as={RadioUnchecked}
+      variant={`radio.${variant}`}
       disabled={disabled}
       error={error}
     />
@@ -53,30 +51,29 @@ const RadioInput: React.FC<RadioInputProps> = ({
   variant = 'default',
   error,
   ...props
-}) => {
-  const radioStyle = useStyles({
-    css: {
-      position: 'absolute',
-      opacity: 0,
-      zIndex: -1,
-      width: 1,
-      height: 1,
-      overflow: 'hidden',
-    },
-  });
-
-  return (
-    <Box display="inline-block" className={className}>
-      <input type="radio" className={radioStyle} {...props} />
-      <RadioIcon
-        checked={props.checked}
-        variant={variant}
-        disabled={props.disabled}
-        error={error}
-      />
-    </Box>
-  );
-};
+}) => (
+  <Box display="inline-block" className={className}>
+    <Box
+      as="input"
+      type="radio"
+      css={{
+        position: 'absolute',
+        opacity: 0,
+        zIndex: -1,
+        width: 1,
+        height: 1,
+        overflow: 'hidden',
+      }}
+      {...props}
+    />
+    <RadioIcon
+      checked={props.checked}
+      variant={variant}
+      disabled={props.disabled}
+      error={error}
+    />
+  </Box>
+);
 
 // Radio
 // ---------------
@@ -95,12 +92,6 @@ export const Radio: React.FC<RadioProps> = ({
   errorMessage,
   ...props
 }) => {
-  const labeledRadioStyle = useStyles({
-    css: {
-      pr: '8px',
-    },
-  });
-
   if (label) {
     return (
       <>
@@ -109,7 +100,7 @@ export const Radio: React.FC<RadioProps> = ({
           required={required}
           variant={props.disabled ? 'disabled' : 'inline'}
         >
-          <RadioInput className={labeledRadioStyle} error={error} {...props} />
+          <Box as={RadioInput} pr="8px" error={error} {...props} />
           {label}
         </Label>
         {error && errorMessage && (
