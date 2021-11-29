@@ -3771,7 +3771,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@marigold/types@workspace:packages/types"
   dependencies:
-    "@types/react": 17.0.36
+    "@types/react": 17.0.37
   peerDependencies:
     "@types/react": ^17.x
   languageName: unknown
@@ -6645,14 +6645,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:17.0.36":
-  version: 17.0.36
-  resolution: "@types/react@npm:17.0.36"
+"@types/react@npm:17.0.37":
+  version: 17.0.37
+  resolution: "@types/react@npm:17.0.37"
   dependencies:
     "@types/prop-types": "*"
     "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: feeaa484d5d7e354ba6830b06342dec6fd1a2ac87f73d21d3d4f2a3d311459de4090330a1e8af7275c8d1e7737b655a7550c8dd3dbc74ccf34ffd3fc824bbd12
+  checksum: e68b0d59aa69577fc6a6d654b25d5d8408625498f4c483f160b557fac21e840f6e8807cbde93e9f039949b6d624a019b1990d18499c1d65aecf3605c25e30242
   languageName: node
   linkType: hard
 
@@ -11677,7 +11677,7 @@ __metadata:
     "@mdx-js/mdx": 1.6.22
     "@mdx-js/react": 1.6.22
     "@types/mdx-js__react": 1.5.5
-    "@types/react": 17.0.36
+    "@types/react": 17.0.37
     "@types/react-helmet": 6.1.4
     babel-preset-gatsby: 2.1.2
     gatsby: 4.1.4
