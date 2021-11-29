@@ -22,7 +22,6 @@ export const Card: React.FC<CardProps> = ({
     <Box
       {...props}
       variant={`card.${variant}`}
-      display="block"
       maxWidth={width}
       className={className}
     >
