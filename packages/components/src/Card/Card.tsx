@@ -1,9 +1,8 @@
 import React from 'react';
-import { ResponsiveStyleValue, useStyles } from '@marigold/system';
+import { ResponsiveStyleValue } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 import { Box } from '../Box';
-import { Heading } from '../Heading';
 
 export type CardProps = {
   title?: string;
@@ -19,24 +18,18 @@ export const Card: React.FC<CardProps> = ({
   children,
   ...props
 }) => {
-  const cardClassName = useStyles({
-    css: { minWidth: width, maxWidth: width },
-    className,
-  });
-  const titleClassName = useStyles({
-    css: { pb: 'small' },
-  });
   return (
     <Box
       {...props}
       variant={`card.${variant}`}
       display="block"
-      className={cardClassName}
+      maxWidth={width}
+      className={className}
     >
       {title && (
-        <Heading as="h2" variant="h2" className={titleClassName}>
+        <Box as="h2" variant="text.h2" pb="small">
           {title}
-        </Heading>
+        </Box>
       )}
       {children}
     </Box>
