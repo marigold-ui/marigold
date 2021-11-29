@@ -2,6 +2,9 @@
 title: Button
 ---
 
+import { DoAndDont } from '../../src/components/DoAndDont';
+import { Box, ActionGroup, Button, Stack } from '@marigold/components';
+
 # Button
 
 ## Description
@@ -19,56 +22,141 @@ The style variant and size of the button can be added with the variant prop and 
 
 ## Import
 
-```tsx code
+```tsx onlyCode
 import { Button } from '@marigold/components';
 ```
 
+## Demo
+
+<MarigoldTheme>
+  <ActionGroup space="small">
+    <Button>Primary</Button>
+    <Button variant="secondary">Secondary</Button>
+    <Button variant="ghost">Ghost</Button>
+    <Button variant="text">Text Only</Button>
+  </ActionGroup>
+</MarigoldTheme>
+
 ## Live-Code Example
 
-```tsx live
+```tsx expandCode
 <Button
   variant="secondary"
   size="small"
   onClick={() => {
-    alert('Searching..');
+    alert('Hello!');
   }}
 >
-  Search on <Google /> oogle
+  Secondary
 </Button>
 ```
 
 ## Usage
 
-### Large
+### Primary Button
+
+The primary button function is to achieve the most common or most important goal of the user, it has more visual weight than the secondary options. There should not be more than one primary button in a screen at the time.
+
+<br />
+
+#### Default
 
 ```tsx
-<Button variant="primary" size="large">
-  Primary
-</Button>
+<Button>Primary</Button>
 ```
 
+#### Disabled
+
 ```tsx
-<Button variant="secondary" size="large">
+<Button disabled>Primary</Button>
+```
+
+### Secondary Button
+
+Secondary buttons are an alternative to the user to the Primary option. They are used for actions like canceling, skipping, resetting, declining an offer etc.
+
+<br />
+
+#### Default
+
+```tsx
+<Button variant="secondary">Secondary</Button>
+```
+
+#### Disabled
+
+```tsx
+<Button variant="secondary" disabled>
   Secondary
 </Button>
 ```
 
+### Ghost Button
+
+They are used for miscellaneous actions, they are important but is not the ones where it is desired that the user focus at the moment.
+
+<br />
+
+#### Default
+
 ```tsx
-<Button variant="ghost" size="large">
+<Button variant="ghost">Ghost</Button>
+```
+
+#### Disabled
+
+```tsx
+<Button variant="ghost" disabled>
   Ghost
 </Button>
 ```
 
+### Suplementary Text Button
+
+They can be used in a similar way of a secondary button, but they are meant to be less relevant to the user.
+
+<br />
+
+#### Default
+
 ```tsx
-<Button variant="text" size="large">
+<Button variant="text">Text Only</Button>
+```
+
+#### Disabled
+
+```tsx
+<Button variant="text" disabled>
   Text Only
 </Button>
 ```
 
-### Small
+### Button with icon
+
+Icons can be added in Order to make clearer what a button does. Buttons should not be made only with icons, because every user may understand them on a different way.
 
 ```tsx
-<Button variant="primary" size="small">
+<Button>
+  <Ticket /> Icon Primary
+</Button>
+```
+
+```tsx
+<Button disabled>
+  <Ticket /> Icon Primary
+</Button>
+```
+
+### Small Buttons
+
+If there are many actions in one page, is it possible to use small buttons instead of big ones. As well if the page is required to be onpen on mobile devices.
+
+```tsx
+<Button size="small">Primary</Button>
+```
+
+```tsx
+<Button size="small" disabled>
   Primary
 </Button>
 ```
@@ -80,7 +168,19 @@ import { Button } from '@marigold/components';
 ```
 
 ```tsx
+<Button variant="secondary" size="small" disabled>
+  Secondary
+</Button>
+```
+
+```tsx
 <Button variant="ghost" size="small">
+  Ghost
+</Button>
+```
+
+```tsx
+<Button variant="ghost" size="small" disabled>
   Ghost
 </Button>
 ```
@@ -91,102 +191,133 @@ import { Button } from '@marigold/components';
 </Button>
 ```
 
-### Disabled
-
 ```tsx
-<Button variant="primary" size="large" disabled>
-  Primary Large Disabled
+<Button variant="text" size="small" disabled>
+  Text Only
 </Button>
 ```
 
-```tsx
-<Button variant="secondary" size="large" disabled>
-  Secondary Large Disabled
-</Button>
-```
+### Small Buttons with icon
+
+Icons can be added in Order to make clearer what a button does. Buttons should not be made only with icons, because every user may understand them on a different way.Icons can be added in Order to make clearer what a button does. Buttons should not be made only with icons, because every user may understand them on a different way.
 
 ```tsx
-<Button variant="ghost" size="large" disabled>
-  Ghost Large Disabled
-</Button>
-```
-
-```tsx
-<Button variant="text" size="large" disabled>
-  Text Only Large Disabled
-</Button>
-```
-
-### Default with icon
-
-```tsx
-<Button variant="primary" size="large">
-  <Facebook /> Like me!
-</Button>
-```
-
-```tsx
-<Button variant="primary" size="small">
-  <Facebook /> Like me!
-</Button>
-```
-
-```tsx
-<Button variant="secondary" size="large">
-  <Facebook /> Like me!
+<Button size="small">
+  <Ticket /> Primary
 </Button>
 ```
 
 ```tsx
 <Button variant="secondary" size="small">
-  <Facebook /> Like me!
-</Button>
-```
-
-```tsx
-<Button variant="ghost" size="large">
-  <Facebook /> Like me!
+  <Direction /> Secondary
 </Button>
 ```
 
 ```tsx
 <Button variant="ghost" size="small">
-  <Facebook /> Like me!
-</Button>
-```
-
-```tsx
-<Button variant="text" size="large">
-  <Facebook /> Like me!
+  <CircleUnchecked /> Ghost
 </Button>
 ```
 
 ```tsx
 <Button variant="text" size="small">
-  <Facebook /> Like me!
+  <FormatSize /> Text Only
 </Button>
 ```
 
-### Large with large icon
+## Usage
 
-```tsx
-<Button variant="primary" size="large">
-  <Facebook size={48} /> Like me!
-</Button>
-```
-
-### Small with small icon
-
-```tsx
-<Button variant="primary" size="small">
-  <Facebook size={20} /> Like me!
-</Button>
-```
-
-### With color
-
-```tsx
-<Button variant="primary" size="small">
-  <Facebook fill="black" /> Like me!
-</Button>
-```
+<Stack space="small">
+  <Box
+    display="grid"
+    css={{
+      gridGap: 'small',
+      gridTemplateColumns: 'repeat(2, 1fr)',
+    }}
+  >
+    <DoAndDont
+      preview={
+        <ActionGroup space="small">
+          <Button variant="ghost">Ghost</Button>
+          <Button>Primary</Button>
+        </ActionGroup>
+      }
+    >
+      Use a ghost button next to a Primary button.
+    </DoAndDont>
+    <DoAndDont
+      dont={true}
+      preview={
+        <ActionGroup space="small">
+          <Button>Primary</Button>
+          <Button>Primary</Button>
+        </ActionGroup>
+      }
+    >
+      Use two Primary buttons on the same page, there should be only one
+      function that calls the most attention.
+    </DoAndDont>
+  </Box>
+  <Box
+    display="grid"
+    css={{
+      gridGap: 'small',
+      gridTemplateColumns: 'repeat(2, 1fr)',
+    }}
+  >
+    <DoAndDont
+      preview={
+        <ActionGroup space="small">
+          <Button variant="text">Text</Button>
+          <Button>Primary</Button>
+        </ActionGroup>
+      }
+    >
+      Use a Text button next to a Primary button.
+    </DoAndDont>
+    <DoAndDont
+      dont={true}
+      preview={
+        <ActionGroup space="small">
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="secondary">Secondary</Button>
+        </ActionGroup>
+      }
+    >
+      Use two Secondary buttons next to each other, it loses hierarchie and is
+      confusing.
+    </DoAndDont>
+  </Box>
+  <Box
+    display="grid"
+    css={{
+      gridGap: 'small',
+      gridTemplateColumns: 'repeat(2, 1fr)',
+    }}
+  >
+    <DoAndDont
+      preview={
+        <ActionGroup space="small">
+          <Button variant="text">Text</Button>
+          <Button variant="text">Text</Button>
+        </ActionGroup>
+      }
+    >
+      Use a Text button next to another text button.
+    </DoAndDont>
+    <DoAndDont
+      dont={true}
+      preview={
+        <ActionGroup space="small">
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="secondary" size="small">
+            Secondary
+          </Button>
+        </ActionGroup>
+      }
+    >
+      Mix normal sized buttons with small buttons inmediatly next or below each
+      other.
+    </DoAndDont>
+  </Box>
+</Stack>

@@ -11,7 +11,7 @@ import { SingleSelection } from '@react-types/shared';
 
 import { ComponentProps } from '@marigold/types';
 import { ArrowDown, ArrowUp, Exclamation, Required } from '@marigold/icons';
-import { ResponsiveStyleValue, useStyles } from '@marigold/system';
+import { ResponsiveStyleValue } from '@marigold/system';
 
 import { Box } from '../Box';
 import { Label } from '../Label';
@@ -23,8 +23,9 @@ export type SelectProps = {
   placeholder?: string;
   disabled?: boolean;
   required?: boolean;
-  error?: string;
   width?: ResponsiveStyleValue<number | string>;
+  error?: boolean;
+  errorMessage?: string;
 } & ComponentProps<'select'> &
   AriaSelectProps<object> &
   SingleSelection;
@@ -34,6 +35,7 @@ export const Select = ({
   disabled,
   required,
   error,
+  errorMessage,
   width,
   className,
   ...props
@@ -42,17 +44,6 @@ export const Select = ({
   const overlayTriggerState = useOverlayTriggerState({});
   const triggerRef = useRef<HTMLElement>() as RefObject<HTMLElement>;
   const overlayRef = useRef<HTMLDivElement>();
-  const iconClassName = useStyles({
-    css: { fill: disabled ? 'disabled' : 'text' },
-  });
-  const popoverClassName = useStyles({
-    css: {
-      width: width
-        ? width
-        : triggerRef.current && triggerRef.current.offsetWidth + 'px',
-    },
-  });
-  const errorClassName = useStyles({ css: { color: 'error' } });
 
   // Get props for the overlay
   const { overlayProps } = useOverlayTrigger(
@@ -89,10 +80,10 @@ export const Select = ({
             htmlFor={labelProps.id}
             variant={disabled ? 'disabled' : 'above'}
           >
-            {required || error ? (
+            {required ? (
               <Box as="span" display="inline-flex" alignItems="center">
                 {props.label}
-                <Required size={16} className={errorClassName} />
+                <Box as={Required} size={16} css={{ color: 'error' }} />
               </Box>
             ) : (
               props.label
@@ -131,27 +122,40 @@ export const Select = ({
           {state.selectedItem ? state.selectedItem.rendered : placeholder}
         </Box>
         {state.isOpen && !disabled ? (
-          <ArrowUp size={16} className={iconClassName} />
+          <Box
+            as={ArrowUp}
+            size={16}
+            css={{ fill: disabled ? 'disabled' : 'text' }}
+          />
         ) : (
-          <ArrowDown size={16} className={iconClassName} />
+          <Box
+            as={ArrowDown}
+            size={16}
+            css={{ fill: disabled ? 'disabled' : 'text' }}
+          />
         )}
       </Box>
       {state.isOpen && !disabled && (
-        <Popover
+        <Box
+          as={Popover}
           {...overlayProps}
           {...positionProps}
-          className={popoverClassName}
+          css={{
+            width: width
+              ? width
+              : triggerRef.current && triggerRef.current.offsetWidth + 'px',
+          }}
           ref={overlayRef as Ref<HTMLDivElement>}
           isOpen={state.isOpen}
           onClose={state.close}
         >
           <ListBox error={error} {...menuProps} state={state} />
-        </Popover>
+        </Box>
       )}
-      {error && (
+      {error && errorMessage && (
         <Box as="span" display="inline-flex" alignItems="center">
-          <Exclamation size={16} className={errorClassName} />
-          <ValidationMessage>{error}</ValidationMessage>
+          <Box as={Exclamation} size={16} css={{ color: 'error' }} />
+          <ValidationMessage>{errorMessage}</ValidationMessage>
         </Box>
       )}
     </Box>

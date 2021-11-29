@@ -20,7 +20,7 @@ export const colors = {
     '80': '#c4c5cd',
     '90': '#dddde2',
   },
-  green: '#59894f',
+  green: '#8BBD26',
   blue: {
     '10': '#e8f4fa',
     '20': '#c1f0fc',
@@ -30,5 +30,5 @@ export const colors = {
     '80': '#0c3a6b',
   },
   yellow: '#ffde70',
-  red: '#b05152',
+  red: '#DD4142',
 };

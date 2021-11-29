@@ -14,28 +14,33 @@ Dropdown for selecting an item among different options.
 | :------------------------------ | :------------------------------------------------------------------------------------------------------- | :------ |
 | `label` (optional)              | `string`                                                                                                 |         |
 | `placeholder` (optional)        | `string`                                                                                                 |         |
-| `disabled` (optional)           | `boolean`                                                                                                |         |
+| `disabled` (optional)           | `boolean`                                                                                                | `false` |
 | `selectedKey` (optional)        | [Key](https://reactjs.org/docs/lists-and-keys.html)                                                      |         |
 | `defaultSelectedKey` (optional) | [Key](https://reactjs.org/docs/lists-and-keys.html)                                                      |         |
 | `disabledKeys` (optional)       | [Iterable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)`<Key>` |         |
-| `required` (optional)           | `boolean`                                                                                                |         |
-| `error` (optional)              | `string`                                                                                                 |         |
+| `required` (optional)           | `boolean`                                                                                                | `false` |
+| `error` (optional)              | `boolean`                                                                                                | `false` |
+| `errorMessage` (optional)       | `string`                                                                                                 |         |
 | `width` (optional)              | `ResponsiveStyleValue<number⎮string>`                                                                    |         |
 | `onSelectionChange` (optional)  | `(key: Key) => any`                                                                                      |         |
 
 ## Import
 
-```tsx code
+```tsx onlyCode
 import { Select } from '@marigold/components';
 ```
 
-```tsx code
+```tsx onlyCode
 import { Item } from '@marigold/components';
+```
+
+```tsx onlyCode
+import { Section } from '@marigold/components';
 ```
 
 ## Live-Code Example
 
-```tsx live
+```tsx expandCode
 <Select label="Favorite character" placeholder="Select your character">
   <Item>Mario</Item>
   <Item>Luigi</Item>
@@ -101,6 +106,23 @@ import { Item } from '@marigold/components';
 };
 ```
 
+### Sections
+
+```tsx
+<Select label="Two different sections:" htmlFor="section">
+  <Section key="Animals" title="Animals">
+    <Item key="Monkey">Monkey</Item>
+    <Item key="Dog">Dog</Item>
+    <Item key="Lion">Lion</Item>
+  </Section>
+  <Section key="People" title="People">
+    <Item key="Max">Max</Item>
+    <Item key="Mary">Mary</Item>
+    <Item key="John">John</Item>
+  </Section>
+</Select>
+```
+
 ### Disabled Select
 
 ```tsx
@@ -134,7 +156,7 @@ import { Item } from '@marigold/components';
 ### Error Select
 
 ```tsx
-<Select error="Please choose one option!" label="error Select">
+<Select error errorMessage="Please choose one option!" label="error Select">
   <Item>Option 1</Item>
   <Item>Option 2</Item>
 </Select>

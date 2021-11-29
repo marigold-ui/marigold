@@ -4,16 +4,6 @@ import { Field } from './Field';
 <Meta
   title="Components/Field"
   argTypes={{
-    variant: {
-      control: {
-        type: 'text',
-      },
-      table: {
-        defaultValue: {
-          summary: 'default',
-        },
-      },
-    },
     htmlFor: {
       control: {
         type: 'text',
@@ -28,11 +18,40 @@ import { Field } from './Field';
     },
     error: {
       control: {
-        type: 'text',
+        type: 'boolean',
       },
+      description: 'Error',
       table: {
         defaultValue: {
-          summary: '',
+          summary: false,
+        },
+      },
+    },
+    errorMessage: {
+      control: {
+        type: 'text',
+      },
+      description: 'Error Message',
+    },
+    required: {
+      control: {
+        type: 'boolean',
+      },
+      options: [true, false],
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+      options: [true, false],
+      table: {
+        defaultValue: {
+          summary: false,
         },
       },
     },
@@ -68,7 +87,7 @@ import { Field } from './Field';
 # Field
 
 export const Template = args => (
-  <Field htmlFor="id" label="A label" type="text" />
+  <Field htmlFor="id" label="A label" type="text" {...args} />
 );
 
 <Canvas>

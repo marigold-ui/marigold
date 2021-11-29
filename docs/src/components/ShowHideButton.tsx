@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button } from '@marigold/components';
+import { Box, Button } from '@marigold/components';
+import { ArrowDown, ArrowUp } from '@marigold/icons';
 
 type ShowHideButtonProps = {
   hide: boolean;
@@ -9,18 +10,19 @@ type ShowHideButtonProps = {
 export const ShowHideButton: React.FC<ShowHideButtonProps> = ({
   hide,
   onHideChange,
-}) => {
-  return (
-    <>
-      <br />
-      <Button
-        variant="toggle"
-        onClick={() => {
-          onHideChange(!hide);
-        }}
-      >
-        {hide ? 'Show code' : 'Hide code'}
-      </Button>
-    </>
-  );
-};
+}) => (
+  <Button
+    variant="action"
+    onClick={() => {
+      onHideChange(!hide);
+    }}
+  >
+    <Box
+      as={hide ? ArrowDown : ArrowUp}
+      size={16}
+      fill="#696b78"
+      mr="xxsmall"
+    />
+    {hide ? 'View code' : 'Hide code'}
+  </Button>
+);

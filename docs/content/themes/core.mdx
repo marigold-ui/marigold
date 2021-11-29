@@ -1,0 +1,134 @@
+---
+title: Core Theme
+---
+
+import {
+  Column,
+  Columns,
+  Container,
+  Heading,
+  Stack,
+  Text,
+} from '@marigold/components';
+import { useStyles } from '@marigold/system';
+
+# Core Theme
+
+The Core theme is also a b2b theme but should be used in all Reservix core applications that are not ready to use the new b2b-theme.
+
+## Breakpoints
+
+Standard breakpoints for shifting of menu and large-scale elements. We use two breakpoints at 768px and 1200px width:
+
+- small: <= 767px (mobile)
+- medium: between 768px and 1200px (tablet, laptop)
+- large: >= 1201px (desktop)
+
+## Space
+
+- none: 0
+- xxsmall: 4px
+- xsmall: 8px
+- small: 16px
+- medium: 24px
+- large: 32px
+- xlarge: 40px
+- xxlarge: 48px
+
+## Typography
+
+Arial, Helvetica, sans-serif for headings and for body text (font-weight: 900 & 400).
+
+<Stack space={24}>
+  <Heading as="h1" variant="h1">
+    Heading H1
+  </Heading>
+  <Heading as="h2" variant="h2">
+    Heading H2
+  </Heading>
+  <Heading as="h3" variant="h3">
+    Heading H3
+  </Heading>
+  <Heading as="h4" variant="h4">
+    Heading H4
+  </Heading>
+  <Heading as="h5" variant="h5">
+    Heading H5
+  </Heading>
+  <Heading as="h6" variant="h6">
+    Heading H6
+  </Heading>
+</Stack>
+
+## Colors
+
+As a rule of thumb, any text displayed over colours with a classname number of 50 or above should be white.
+Anything below 50 should have black text (gray-70 | #4b4b4b).
+
+<br />
+<div>
+  <Columns>
+    <Column width={2}>
+      <Stack>
+        <Container
+          className={useStyles({
+            css: { bg: '#fa8005', width: '96px', height: '24px' },
+          })}
+        />
+        <Container
+          className={useStyles({
+            css: { bg: '#4b4b4b', width: '96px', height: '24px' },
+          })}
+        />
+        <Container
+          className={useStyles({
+            css: { bg: '#511e04', width: '96px', height: '24px' },
+          })}
+        />
+        <Container
+          className={useStyles({
+            css: { bg: '#fafafa', width: '96px', height: '24px' },
+          })}
+        />
+        <Container
+          className={useStyles({
+            css: { bg: '#e3e3e3', width: '96px', height: '24px' },
+          })}
+        />
+        <Container
+          className={useStyles({
+            css: { bg: '#f33', width: '96px', height: '24px' },
+          })}
+        />
+        <Container
+          className={useStyles({
+            css: { bg: '#d80', width: '96px', height: '24px' },
+          })}
+        />
+        <Container
+          className={useStyles({
+            css: { bg: '#008', width: '96px', height: '24px' },
+          })}
+        />
+        <Container
+          className={useStyles({
+            css: { bg: '#080', width: '96px', height: '24px' },
+          })}
+        />
+      </Stack>
+    </Column>
+    <Column width={6}>
+      <Stack>
+        <Text>Primary</Text>
+        <Text>Secondary</Text>
+        <Text>Text</Text>
+        <Text>Background</Text>
+        <Text>Disabled</Text>
+        <Text>Error</Text>
+        <Text>Warning</Text>
+        <Text>Info</Text>
+        <Text>Success</Text>
+      </Stack>
+    </Column>
+  </Columns>
+</div>

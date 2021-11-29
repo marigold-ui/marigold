@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button } from '@marigold/components';
+import { Box, Button } from '@marigold/components';
+import { SVG } from '@marigold/icons';
 
 type CopyProps = {
   codeString: string;
@@ -8,30 +9,25 @@ type CopyProps = {
 export const CopyButton: React.FC<CopyProps> = ({ codeString }) => {
   const [isCopied, setIsCopied] = React.useState(false);
   return (
-    <>
-      <br />
-      <Button
-        variant="copy"
-        onClick={() => {
-          copyToClipboard(codeString);
-          setIsCopied(true);
-          setTimeout(() => setIsCopied(false), 3000);
-        }}
-      >
-        {isCopied ? 'Copied 🎉' : 'Copy'}
-      </Button>
-    </>
+    <Button
+      variant="action"
+      onClick={() => {
+        copyToClipboard(codeString);
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 3000);
+      }}
+    >
+      <Box as={SVG} size={16} viewBox="0 0 16 16" fill="#696b78" mr="xxsmall">
+        <path
+          d="M8.8421 0H1.26316C0.568421 0 0 0.568421 0 1.26316V10.1053H1.26316V1.26316H8.8421V0ZM10.7368 2.52632H3.78947C3.09474 2.52632 2.52632 3.09474 2.52632 3.78947V12.6316C2.52632 13.3263 3.09474 13.8947 3.78947 13.8947H10.7368C11.4316 13.8947 12 13.3263 12 12.6316V3.78947C12 3.09474 11.4316 2.52632 10.7368 2.52632ZM10.7368 12.6316H3.78947V3.78947H10.7368V12.6316Z"
+          fill="#696b78"
+        />
+      </Box>
+      {isCopied ? 'Copied 🎉' : 'Copy'}
+    </Button>
   );
 };
 
-function copyToClipboard(codeString: string) {
-  const element = document.createElement('textarea');
-  element.value = codeString;
-  element.setAttribute('readonly', '');
-  element.style.position = 'absolute';
-  element.style.left = '-9999px';
-  document.body.appendChild(element);
-  element.select();
-  document.execCommand('copy');
-  document.body.removeChild(element);
-}
+const copyToClipboard = (codeString: string) => {
+  navigator.clipboard.writeText(codeString);
+};

@@ -39,13 +39,20 @@ import { Item } from '@marigold/components';
     },
     error: {
       control: {
-        type: 'text',
+        type: 'boolean',
       },
+      description: 'Error',
       table: {
         defaultValue: {
-          summary: 'Error',
+          summary: false,
         },
       },
+    },
+    errorMessage: {
+      control: {
+        type: 'text',
+      },
+      description: 'Error Message',
     },
     width: {
       control: 'number',

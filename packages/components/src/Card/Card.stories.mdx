@@ -1,0 +1,49 @@
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Heading } from '../Heading';
+import { Card } from './Card';
+import { Text } from '../Text';
+
+<Meta
+  title="Components/Card"
+  argTypes={{
+    variant: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        defaultValue: {
+          summary: 'default',
+        },
+      },
+    },
+    title: {
+      control: {
+        type: 'text',
+      },
+      description: 'card title',
+    },
+    width: {
+      control: {
+        type: 'text',
+      },
+      description: 'max width of the card',
+    },
+  }}
+/>
+
+# Card
+
+export const Template = args => (
+  <Card title="Card" {...args}>
+    <Text>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+      dignissim dapibus elit.
+    </Text>
+  </Card>
+);
+
+<Canvas>
+  <Story name="Default">{Template.bind({})}</Story>
+</Canvas>
+
+<ArgsTable story="Default" />

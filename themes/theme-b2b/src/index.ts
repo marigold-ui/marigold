@@ -250,16 +250,19 @@ const theme: BaseTheme = {
   },
   alerts: {
     error: {
+      alignItems: 'center',
       borderStyle: 'solid',
       borderColor: 'error',
       borderWidth: '2px 2px 2px 0px',
     },
     warning: {
+      alignItems: 'center',
       borderStyle: 'solid',
       borderColor: 'warning',
       borderWidth: '2px 2px 2px 0px',
     },
     success: {
+      alignItems: 'center',
       borderStyle: 'solid',
       borderColor: 'success',
       borderWidth: '2px 2px 2px 0px',
@@ -320,14 +323,84 @@ const theme: BaseTheme = {
       ...button.close,
     },
   },
+  card: {
+    default: {
+      maxWidth: '500px',
+      background: colors.gray00,
+      p: 'small',
+      boxShadow: '0px 4px 4px rgba(165, 165, 165, 0.25)',
+      borderRadius: '10px',
+    },
+  },
   checkbox: {
     default: {
-      color: colors.gray70,
+      ariaHidden: 'true',
+      mr: 2,
+      verticalAlign: 'middle',
+      ':hover': { cursor: 'pointer' },
+      'input:disabled ~ &': {
+        cursor: 'not-allowed',
+      },
+    },
+    checked: {
+      fill: colors.blue60,
+      stroke: colors.blue70,
+      disabled: {
+        fill: colors.gray30,
+        stroke: colors.gray30,
+      },
+      icon: {
+        fill: colors.gray00,
+      },
+    },
+    unchecked: {
+      fill: colors.gray00,
+      stroke: colors.gray40,
+      disabled: {
+        stroke: colors.gray30,
+      },
+      error: {
+        stroke: 'error',
+      },
+    },
+  },
+  radio: {
+    default: {
+      ariaHidden: 'true',
+      mr: 2,
+      verticalAlign: 'middle',
+      ':hover': { cursor: 'pointer' },
+      'input:disabled ~ &': {
+        color: 'muted',
+        cursor: 'not-allowed',
+      },
+    },
+    checked: {
+      fill: colors.blue60,
+      stroke: colors.blue70,
+      disabled: {
+        fill: colors.gray30,
+        stroke: colors.gray30,
+      },
+      circle: {
+        fill: colors.gray00,
+      },
+    },
+    unchecked: {
+      fill: colors.gray00,
+      stroke: colors.gray40,
+      disabled: {
+        stroke: colors.gray30,
+      },
+      error: {
+        stroke: 'error',
+      },
     },
   },
   dialog: {
     wrapper: {
-      display: 'block',
+      display: 'flex',
+      justifyContent: 'space-between',
       borderRadius: '2px',
       paddingLeft: 'large',
       paddingBottom: 'large',
@@ -341,6 +414,23 @@ const theme: BaseTheme = {
       alignItems: 'start',
       paddingTop: 'xsmall',
       paddingX: 'xsmall',
+    },
+    modalWrapper: {
+      position: 'fixed',
+      zIndex: 100,
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      background: 'rgba(0, 0, 0, 0.5)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    modalBody: {
+      background: '#ffffff',
+      minWidth: '510px',
+      minHeight: '240px',
     },
   },
   divider: {
@@ -364,15 +454,6 @@ const theme: BaseTheme = {
       borderColor: colors.gray50,
     },
   },
-  field: {
-    default: {
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      color: 'text',
-      fontWeight: 'body',
-      lineHeight: '1.5rem',
-    },
-  },
   images: {
     fullWidth: {
       maxWidth: '100%',
@@ -381,23 +462,31 @@ const theme: BaseTheme = {
   },
   input: {
     default: {
-      display: 'block',
       fontFamily: 'body',
       color: 'text',
-      border: 0,
-      outline: '1px solid',
-      outlineColor: colors.gray40,
+      border: 'none',
+      borderRadius: '2px',
+      boxShadow: '0 0 0 1px ' + colors.gray40,
+      outline: 'none',
       padding: '0 8px',
       lineHeight: '32px',
       ':focus': {
-        outline: '2px solid',
-        outlineColor: colors.blue60,
+        boxShadow: '0 0 0 2px ' + colors.blue60,
       },
       ':disabled': {
         bg: colors.gray20,
         color: colors.gray40,
         cursor: 'not-allowed',
       },
+    },
+    error: {
+      color: 'text',
+      border: 'none',
+      borderRadius: '2px',
+      boxShadow: '0 0 0 1px ' + colors.red60,
+      outline: 'none',
+      padding: '0 8px',
+      lineHeight: '32px',
     },
   },
   label: {
@@ -414,6 +503,8 @@ const theme: BaseTheme = {
       fontWeight: 'body',
       lineHeight: '1.5rem',
       color: 'text',
+      display: 'inline-flex',
+      alignItems: 'center',
     },
     disabled: {
       fontFamily: 'body',
@@ -581,6 +672,14 @@ const theme: BaseTheme = {
         borderBottomLeftRadius: '2px',
         borderBottomRightRadius: '2px',
       },
+    },
+    section: {
+      fontFamily: 'body',
+      fontSize: 'xsmall',
+      fontWeight: 'body',
+      lineHeight: '32px',
+      px: 'xxsmall',
+      color: colors.gray50,
     },
     option: {
       __default: {

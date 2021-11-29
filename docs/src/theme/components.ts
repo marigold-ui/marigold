@@ -99,22 +99,70 @@ const button = {
   },
 };
 
+const card = {
+  default: {
+    maxWidth: '500px',
+    background: 'white',
+    p: 'small',
+    boxShadow: '0px 4px 4px rgba(165, 165, 165, 0.25)',
+    borderRadius: '10px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  highlight: {
+    p: 'xxlarge',
+    background: '#F3F3F3',
+    borderRadius: '10px',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+};
+
+const divider = {
+  do: {
+    m: 'none',
+    my: 'small',
+    border: 'none',
+    borderBottom: '8px solid',
+    color: 'green',
+  },
+  dont: {
+    m: 'none',
+    my: 'small',
+    border: 'none',
+    borderBottom: '8px solid',
+    color: 'red',
+  },
+};
+
+const icon = {
+  do: {
+    fontSize: 20,
+    color: 'green',
+    mr: 'xsmall',
+  },
+  dont: {
+    size: 20,
+    fill: 'red',
+    mr: 'xsmall',
+  },
+};
+
 const navigation = {
   wrapper: {
     fontFamily: 'body',
   },
   header: {
-    textTransform: 'uppercase',
-    color: 'gray.80',
-    fontSize: 'xxxsmall',
+    color: 'gray.20',
+    fontSize: 'xxsmall',
     fontWeight: 'bold',
-    letterSpacing: '0.1em',
     pt: 'large',
     pb: 'small',
   },
   item: {
-    fontSize: 'small',
-    fontWeight: 'medium',
+    fontSize: 'xxsmall',
+    fontWeight: 'body',
     lineHeight: 'cap',
     pb: 'small',
   },
@@ -200,23 +248,26 @@ export const components = {
         ...button.large,
       },
     },
-    copy: {
+    action: {
       ...button.primary,
-      ...button.large,
-      color: 'black',
+      pr: 'xsmall',
+      color: 'gray.40',
       bg: 'transparent',
-      border: 'grey',
-    },
-    toggle: {
-      ...button.primary,
-      color: 'black',
-      bg: 'transparent',
+      fontWeight: 'body',
+      fontFamily: 'body',
+      fontSize: 'xxsmall',
+      ':focus': {
+        outline: 'none',
+      },
     },
     select: {
       ...button.primary,
       ...button.select,
     },
   },
+  card,
+  divider,
+  icon,
   navigation,
   select,
 };
