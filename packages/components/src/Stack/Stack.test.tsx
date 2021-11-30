@@ -16,20 +16,26 @@ const theme = {
   },
 };
 
+const getTopPadding = (element: HTMLElement) =>
+  getComputedStyle(element).getPropertyValue('padding-top');
+
 test('default space is "none"', () => {
   render(
     <ThemeProvider theme={theme}>
       <Stack>
         <Text>first</Text>
         <Text>second</Text>
+        <Text>third</Text>
       </Stack>
     </ThemeProvider>
   );
-  const first = screen.getByText(/first/);
-  const second = screen.getByText(/second/);
+  const first = screen.getByText(/first/).parentElement!;
+  const second = screen.getByText(/second/).parentElement!;
+  const third = screen.getByText(/third/).parentElement!;
 
-  expect(first).toHaveStyle(`padding-top: 0px`);
+  expect(getTopPadding(first)).toEqual('');
   expect(second).toHaveStyle(`padding-top: 0px`);
+  expect(third).toHaveStyle(`padding-top: 0px`);
 });
 
 test('accepts and uses spacing from theme', () => {
@@ -38,14 +44,17 @@ test('accepts and uses spacing from theme', () => {
       <Stack space="small">
         <Text>first</Text>
         <Text>second</Text>
+        <Text>third</Text>
       </Stack>
     </ThemeProvider>
   );
   const first = screen.getByText(/first/);
   const second = screen.getByText(/second/);
+  const third = screen.getByText(/third/);
 
-  expect(first.parentElement).toHaveStyle(`padding-top: 0px`);
+  expect(getTopPadding(first)).toEqual('');
   expect(second.parentElement).toHaveStyle(`padding-top: 2px`);
+  expect(third.parentElement).toHaveStyle(`padding-top: 2px`);
 });
 
 test('aligns children left by default', () => {
@@ -104,13 +113,13 @@ test('supports nesting', () => {
   const fourth = screen.getByText(/fourth/);
   const lowerStack = screen.getByTestId('lowerStack');
 
-  expect(upperStack.parentElement).toHaveStyle(`padding-top: 0px`);
+  expect(getTopPadding(upperStack.parentElement!)).toEqual('');
   expect(lowerStack.parentElement).toHaveStyle(`padding-top: 8px`);
 
-  expect(first.parentElement).toHaveStyle(`padding-top: 0px`);
+  expect(getTopPadding(first.parentElement!)).toEqual('');
   expect(second.parentElement).toHaveStyle(`padding-top: 2px`);
 
-  expect(third.parentElement).toHaveStyle(`padding-top: 0px`);
+  expect(getTopPadding(third.parentElement!)).toEqual('');
   expect(fourth.parentElement).toHaveStyle(`padding-top: 2px`);
 });
 
