@@ -1,5 +1,4 @@
 import React, { Children } from 'react';
-import { useStyles } from '@marigold/system';
 import { Box } from '../Box';
 import flattenChildren from 'react-keyed-flatten-children';
 
@@ -20,7 +19,6 @@ export const Columns: React.FC<ColumnsProps> = ({
   ...props
 }) => {
   let columnItems = flattenChildren(children);
-  let childClassNames = useStyles({ css: { p: `${space / 2}px` } });
 
   // horizontal Alignment
   let justify = 'flex-start';
@@ -54,12 +52,8 @@ export const Columns: React.FC<ColumnsProps> = ({
           (child: React.ReactElement) => {
             return React.cloneElement(
               child,
-              {
-                className: childClassNames,
-              },
-              <Box className={child && child.props.className}>
-                {child.props.children}
-              </Box>
+              {},
+              <Box css={{ p: `${space / 2}px` }}>{child.props.children}</Box>
             );
           }
         )}
