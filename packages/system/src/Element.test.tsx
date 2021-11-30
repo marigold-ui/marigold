@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useStyles } from './useStyles';
 import { ThemeProvider } from './useTheme';
 import { Element } from './Element';
 
@@ -156,25 +155,6 @@ test('custom styles with css prop third', () => {
   expect(style.marginTop).not.toEqual('0px'); // do not apply 0px from base
   expect(style.marginTop).not.toEqual('2px'); // do not apply 2px from variant
   expect(style.marginTop).toEqual('4px'); // apply 4px from custom styles
-});
-
-test("don't apply the same reset multiple times", () => {
-  const Button = ({ className }: { className?: string }) => {
-    const classNames = useStyles({ element: 'button', className });
-    return (
-      <Element as="button" title="button" className={classNames}>
-        Click me!
-      </Element>
-    );
-  };
-  const Wrapper = () => <Button />;
-
-  render(<Wrapper />);
-  const button = screen.getByTitle('button');
-  const classNames = button.className.split(' ').filter(i => i.length);
-
-  // Test if applied classnames are unique
-  expect(classNames.length).toEqual([...new Set(classNames)].length);
 });
 
 test('normalize tag name <a>', () => {
