@@ -176,6 +176,25 @@ const selectOption = {
   px: 'xsmall',
   listStyle: 'none',
 };
+const sliderThumb = {
+  WebkitAppearance: 'none',
+  boxSizing: 'border-box',
+  border: '4px solid ' + colors.gray70,
+  width: '16px',
+  height: '16px',
+  background: colors.gray00,
+  borderRadius: '8px',
+  cursor: 'pointer',
+  marginTop: '-4px',
+};
+const sliderTrack = {
+  WebkitAppearance: 'none',
+  width: '100%',
+  height: '8px',
+  background: colors.gray30,
+  borderRadius: '8px',
+  border: 'none',
+};
 
 const theme: BaseTheme = {
   breakpoints: ['768', '1200'],
@@ -696,6 +715,73 @@ const theme: BaseTheme = {
       disabled: {
         ...selectOption,
         color: colors.gray40,
+      },
+    },
+  },
+  slider: {
+    default: {
+      // styles need to be applied to range inputs in all browsers to override their basic appearance.
+      WebkitAppearance: 'none',
+      background: 'transparent',
+      borderColor: 'transparent',
+      color: 'transparent',
+      ':focus': {
+        outline: 'none',
+      },
+      // chrome, safari, opera (theres actually no webkit option to style the progress bar like in firefox)
+      '&::-webkit-slider-thumb': {
+        ...sliderThumb,
+      },
+      '&:focus::-webkit-slider-thumb': {
+        ...sliderThumb,
+        border: '4px solid ' + colors.blue60,
+      },
+      '&:disabled::-webkit-slider-thumb': {
+        ...sliderThumb,
+        border: '4px solid ' + colors.gray40,
+        background: colors.gray40,
+      },
+      '&::-webkit-slider-runnable-track': {
+        ...sliderTrack,
+      },
+      '&:focus::-webkit-slider-runnable-track': {
+        ...sliderTrack,
+        background: colors.blue60,
+      },
+      '&:disabled::-webkit-slider-runnable-track': {
+        ...sliderTrack,
+        background: colors.gray40,
+      },
+      '&::-webkit-progress-value': {
+        background: colors.green60,
+      },
+      // firefox
+      '&::-moz-range-thumb': {
+        ...sliderThumb,
+      },
+      '&:focus::-moz-range-thumb': {
+        ...sliderThumb,
+        border: '4px solid ' + colors.blue60,
+      },
+      '&:disabled::-moz-range-thumb': {
+        ...sliderThumb,
+        border: '4px solid ' + colors.gray40,
+        background: colors.gray40,
+      },
+      '&::-moz-range-track': {
+        ...sliderTrack,
+      },
+      '&::-moz-range-progress': {
+        ...sliderTrack,
+        background: colors.gray70,
+      },
+      '&:focus::-moz-range-progress': {
+        ...sliderTrack,
+        background: colors.blue60,
+      },
+      '&:disabled::-moz-range-progress': {
+        ...sliderTrack,
+        background: colors.gray40,
       },
     },
   },
