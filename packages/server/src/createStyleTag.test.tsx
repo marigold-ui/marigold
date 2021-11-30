@@ -4,21 +4,18 @@
 
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { useStyles } from '@marigold/system';
+import { Element } from '@marigold/system';
 
 import { createStyleTag, createStyleTagString } from './createStyleTag';
 
 // Setup
 // ---------------
-const Box: React.FC<{ css: any }> = ({ css, children }) => {
-  const className = useStyles({ css });
-  return <div className={className}>{children}</div>;
-};
-
 const setup = () => {
   const app = (
     <div>
-      <Box css={{ color: 'blue', textDecoration: 'underline' }}>Box!</Box>
+      <Element css={{ color: 'blue', textDecoration: 'underline' }}>
+        Element!
+      </Element>
     </div>
   );
 
