@@ -27,7 +27,7 @@ test('renders a <div> by default', () => {
   expect(testelem instanceof HTMLDivElement).toBeTruthy();
 });
 
-test('supports "as" prop', () => {
+test('supports as prop', () => {
   render(<Element as="p">Text</Element>);
   const testelem = screen.getByText('Text');
 
@@ -63,10 +63,6 @@ test('forwards ref', () => {
   );
 
   expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
-});
-
-test('apply normalized styles', () => {
-  render(<Element>Text</Element>);
 });
 
 test('base styles first', () => {
