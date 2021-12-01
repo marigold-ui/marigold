@@ -20,6 +20,7 @@ export const ListBox = (props: ListBoxProps) => {
   return (
     <Box
       as="ul"
+      p="none"
       css={{
         listStyle: 'none',
       }}
