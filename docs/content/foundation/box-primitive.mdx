@@ -2,8 +2,6 @@
 title: Box Primitive
 ---
 
-import { useStyles } from '@marigold/system';
-
 # Box Primitive
 
 ## Box as Layout Component
@@ -17,7 +15,6 @@ system.
 
 ```tsx onlyCode
 import { Box } from '@marigold/components';
-import { useStyles } from '@marigold/system';
 ```
 
 ```tsx expandCode
@@ -57,16 +54,16 @@ export const Button: React.FC<ButtonProps> = ({
 ## Custom CSS
 
 Staying inside the boundaries of the design system and its contraints should be the norm. But as limiting styling only
-to allowed values defined by the system can be very restrictive, you can use the `className` prop and generate custom
-styles with the [`useStyles`](../../guides/usestyles) hook.
+to allowed values defined by the system can be very restrictive, you can use the `css` prop and generate custom
+styles.
 
 ```tsx onlyCode
 ...
     <Box
       as="button"
-      className={useStyles({ css: { fontSize: '11pt' } })}
-      {...props}
       variant={`button.${variant}`}
+      css={{ fontSize: '11pt' } }}
+      {...props}
     >
       ...
     </Box>
