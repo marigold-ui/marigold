@@ -3530,6 +3530,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@marigold/components@workspace:packages/components"
   dependencies:
+    "@marigold/icons": "workspace:*"
     "@marigold/system": "workspace:*"
     "@marigold/types": "workspace:*"
     "@react-aria/button": ^3.3.3
@@ -3580,8 +3581,6 @@ __metadata:
 "@marigold/icons@workspace:*, @marigold/icons@workspace:packages/icons":
   version: 0.0.0-use.local
   resolution: "@marigold/icons@workspace:packages/icons"
-  dependencies:
-    "@marigold/components": "workspace:*"
   peerDependencies:
     react: ^16.x || ^17.0.0
   languageName: unknown

@@ -7,6 +7,7 @@
   "typings": "dist/index.d.ts",
   "license": "MIT",
   "dependencies": {
+    "@marigold/icons": "workspace:*",
     "@marigold/system": "workspace:*",
     "@react-aria/button": "^3.3.3",
     "@react-aria/dialog": "^3.1.4",
