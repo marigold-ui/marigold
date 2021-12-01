@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTheme } from '@marigold/system';
 import { render, screen } from '@testing-library/react';
-import { useModal } from '@react-aria/overlays';
 
 import { MarigoldProvider } from './MarigoldProvider';
 
@@ -64,63 +63,68 @@ test('themes can be cascaded', () => {
   `);
 });
 
-// if theres no OverlayProvider you got an error with text: Modal is not contained within a provider
-test('OverlayProvider is present and supports useModal hook', () => {
-  const ChildComponent: React.FC = ({ children }) => {
-    const { modalProps } = useModal();
-    return <div {...modalProps}>{children}</div>;
-  };
+test('check if OverlayProvider is added', () => {
+  const { container } = render(
+    <MarigoldProvider theme={theme}>Test</MarigoldProvider>
+  );
 
-  render(
+  expect(
+    container.querySelector(`div[data-overlay-container="true"]`)
+  ).toBeDefined();
+});
+
+test('check if OverlayProvider and GlobalStyles are added once', () => {
+  const { container } = render(
     <MarigoldProvider theme={theme}>
-      <ChildComponent>Test</ChildComponent>
+      <MarigoldProvider theme={theme}>Test</MarigoldProvider>
     </MarigoldProvider>
   );
 
-  const childComp = screen.getByText('Test');
-  expect(childComp).toBeDefined();
+  expect(
+    container.querySelectorAll(`div[data-overlay-container="true"]`).length
+  ).toEqual(1);
 });
 
-// test('renders global styles for body and html based on root in theme', () => {
-//   const root = render(
-//     <MarigoldProvider
-//       theme={{
-//         fonts: {
-//           body: 'Inter',
-//           html: 'Roboto',
-//         },
-//         lineHeights: {
-//           body: 1.5,
-//           html: 1,
-//         },
-//         fontWeights: {
-//           body: 500,
-//           html: 700,
-//         },
-//         root: {
-//           body: {
-//             fontFamily: 'body',
-//             lineHeight: 'body',
-//             fontWeight: 'body',
-//           },
-//           html: {
-//             fontFamily: 'html',
-//             lineHeight: 'html',
-//             fontWeight: 'html',
-//           }
-//         },
-//       }}
-//     >
-//       <h1 title="h1">Hello</h1>
-//     </MarigoldProvider>
-//   );
+test('renders global styles for body and html based on root in theme', () => {
+  const root = render(
+    <MarigoldProvider
+      theme={{
+        fonts: {
+          body: 'Inter',
+          html: 'Roboto',
+        },
+        lineHeights: {
+          body: 1.5,
+          html: 1,
+        },
+        fontWeights: {
+          body: 500,
+          html: 700,
+        },
+        root: {
+          body: {
+            fontFamily: 'body',
+            lineHeight: 'body',
+            fontWeight: 'body',
+          },
+          html: {
+            fontFamily: 'html',
+            lineHeight: 'html',
+            fontWeight: 'html',
+          },
+        },
+      }}
+    >
+      <h1 title="h1">Hello</h1>
+    </MarigoldProvider>
+  );
 
-//   const html = window.getComputedStyle(root.baseElement.parentElement!);
-//   expect(html.fontFamily).toBe('Roboto');
-//   expect(html.fontWeight).toBe('700');
-//   expect(html.lineHeight).toBe('1');
-//   const body = window.getComputedStyle(root.baseElement); 
-//   expect(body.fontFamily).toBe('Inter');
-//   expect(body.fontWeight).toBe('500');
-//   expect(body.lineHeight).toBe('1.5');
-// });
+  const html = window.getComputedStyle(root.baseElement.parentElement!);
+  expect(html.fontFamily).toBe('Roboto');
+  expect(html.fontWeight).toBe('700');
+  expect(html.lineHeight).toBe('1');
+  const body = window.getComputedStyle(root.baseElement);
+  expect(body.fontFamily).toBe('Inter');
+  expect(body.fontWeight).toBe('500');
+  expect(body.lineHeight).toBe('1.5');
+});

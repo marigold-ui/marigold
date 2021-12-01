@@ -3,6 +3,7 @@ title: Unicorn Theme
 ---
 
 import {
+  Box,
   Column,
   Columns,
   Container,
@@ -10,7 +11,6 @@ import {
   Stack,
   Text,
 } from '@marigold/components';
-import { useStyles } from '@marigold/system';
 
 # Unicorn Theme
 
@@ -68,51 +68,15 @@ Arial for body text.
   <Columns>
     <Column width={2}>
       <Stack>
-        <Container
-          className={useStyles({
-            css: { bg: '#c9b1ff', width: '96px', height: '24px' },
-          })}
-        />
-        <Container
-          className={useStyles({
-            css: { bg: '#ffcaf2', width: '96px', height: '24px' },
-          })}
-        />
-        <Container
-          className={useStyles({
-            css: { bg: '#070708', width: '96px', height: '24px' },
-          })}
-        />
-        <Container
-          className={useStyles({
-            css: { bg: '#fdfcfd', width: '96px', height: '24px' },
-          })}
-        />
-        <Container
-          className={useStyles({
-            css: { bg: '#e9e7eb', width: '96px', height: '24px' },
-          })}
-        />
-        <Container
-          className={useStyles({
-            css: { bg: '#ffb2b1', width: '96px', height: '24px' },
-          })}
-        />
-        <Container
-          className={useStyles({
-            css: { bg: '#fff3ad', width: '96px', height: '24px' },
-          })}
-        />
-        <Container
-          className={useStyles({
-            css: { bg: '#a2edff', width: '96px', height: '24px' },
-          })}
-        />
-        <Container
-          className={useStyles({
-            css: { bg: '#bcffbc', width: '96px', height: '24px' },
-          })}
-        />
+        <Box as={Container} bg="#c9b1ff" width="96px" height="24px" />
+        <Box as={Container} bg="#ffcaf2" width="96px" height="24px" />
+        <Box as={Container} bg="#070708" width="96px" height="24px" />
+        <Box as={Container} bg="#fdfcfd" width="96px" height="24px" />
+        <Box as={Container} bg="#e9e7eb" width="96px" height="24px" />
+        <Box as={Container} bg="#ffb2b1" width="96px" height="24px" />
+        <Box as={Container} bg="#fff3ad" width="96px" height="24px" />
+        <Box as={Container} bg="#a2edff" width="96px" height="24px" />
+        <Box as={Container} bg="#bcffbc" width="96px" height="24px" />
       </Stack>
     </Column>
     <Column width={6}>
