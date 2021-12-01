@@ -1,5 +1,5 @@
 /**
- * Normalize stylinf of certain elements between browsers.
+ * Normalize styling of certain elements between browsers.
  * Based on https://www.joshwcomeau.com/css/custom-css-reset/
  */
 import { ElementType } from 'react';
