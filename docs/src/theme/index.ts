@@ -1,9 +1,11 @@
+import { root } from './root';
 import { colors } from './colors';
 import { components } from './components';
 import { typography } from './typography';
 
 export const theme = {
   // TODO: breakpoints: ['768', '1200'],
+  root,
   space: {
     none: 0,
     xxsmall: 4,
