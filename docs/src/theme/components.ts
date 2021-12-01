@@ -153,6 +153,9 @@ const navigation = {
   wrapper: {
     fontFamily: 'body',
   },
+  list: {
+    p: 'none',
+  },
   header: {
     color: 'gray.20',
     fontSize: 'xxsmall',

@@ -20,6 +20,12 @@ const text = {
   overflowWrap: 'break-word',
 } as const;
 
+const media = {
+  ...base,
+  display: 'block',
+  maxWidth: '100%',
+};
+
 const button = {
   ...base,
   display: 'block',
@@ -71,6 +77,11 @@ export const normalize = {
   h4: text,
   h5: text,
   h6: text,
+  img: media,
+  picture: media,
+  video: media,
+  canvas: media,
+  svg: media,
   select,
   button,
   textarea,
