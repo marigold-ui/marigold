@@ -1,5 +1,5 @@
 /**
- * Normalize stylinf of certain elements between browsers.
+ * Normalize styling of certain elements between browsers.
  * Based on https://www.joshwcomeau.com/css/custom-css-reset/
  */
 import { ElementType } from 'react';
@@ -18,6 +18,12 @@ const a = {
 const text = {
   ...base,
   overflowWrap: 'break-word',
+} as const;
+
+const media = {
+  ...base,
+  display: 'block',
+  maxWidth: '100%',
 } as const;
 
 const button = {
@@ -71,6 +77,11 @@ export const normalize = {
   h4: text,
   h5: text,
   h6: text,
+  img: media,
+  picture: media,
+  video: media,
+  canvas: media,
+  svg: media,
   select,
   button,
   textarea,

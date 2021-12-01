@@ -1,7 +1,7 @@
 import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Column } from './Column';
+import { Box } from '../Box';
 import { Text } from '../Text';
-import { useStyles } from '@marigold/system';
 
 <Meta
   title="Components/Column"
@@ -26,18 +26,7 @@ import { useStyles } from '@marigold/system';
 # Column
 
 export const Template = args => (
-  <Column
-    className={useStyles({
-      css: {
-        textAlign: 'center',
-        border: '1px solid red',
-        padding: 2,
-        margin: 2,
-      },
-    })}
-    width={12}
-    {...args}
-  >
+  <Column width={12} {...args}>
     <Text>full width</Text>
   </Column>
 );
