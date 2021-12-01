@@ -1,42 +1,15 @@
-import { getNormalizedStyles } from './normalize';
+import { normalize, getNormalizedStyles } from './normalize';
 
-test('get base styles', () => {
-  const baseStyles = getNormalizedStyles('base');
-  expect(baseStyles).toEqual({
-    boxSizing: 'border-box',
-    margin: 0,
-    padding: 0,
-    minWidth: 0,
-    fontSize: '100%',
-    fontFamily: 'inherit',
-    verticalAlign: 'baseline',
-    WebkitTapHighlightColor: 'transparent',
-  });
+test.each(Object.entries(normalize))('base is included in %p', (_, value) => {
+  expect(value).toMatchObject(normalize.base);
 });
 
-test('get reset style by element', () => {
-  const baseStyles = getNormalizedStyles('a');
-  expect(baseStyles).toEqual({
-    textDecoration: 'none',
-    touchAction: 'manipulation',
-  });
+test('get normalized styles', () => {
+  expect(getNormalizedStyles('a')).toMatchObject(normalize.a);
+  expect(getNormalizedStyles('p')).toMatchObject(normalize.p);
 });
 
-test('getNormalizedStyles returns base if input is not a string', () => {
-  const baseStyles = getNormalizedStyles(undefined);
-  expect(baseStyles).toEqual({
-    boxSizing: 'border-box',
-    margin: 0,
-    padding: 0,
-    minWidth: 0,
-    fontSize: '100%',
-    fontFamily: 'inherit',
-    verticalAlign: 'baseline',
-    WebkitTapHighlightColor: 'transparent',
-  });
-});
-
-test('getNormalizedStyles returns empty object if input is unknown', () => {
-  const baseStyles = getNormalizedStyles('p');
-  expect(baseStyles).toEqual({});
+test('return base normalzation for arbitrary components', () => {
+  const Component = () => null;
+  expect(getNormalizedStyles(Component)).toMatchObject(normalize.base);
 });

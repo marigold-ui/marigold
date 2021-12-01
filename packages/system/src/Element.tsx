@@ -17,15 +17,10 @@ export type ElementOwnProps = {
 export type ElementProps = PolymorphicPropsWithRef<ElementOwnProps, 'div'>;
 
 /**
- * Function expression to check if there is any falsy value or empty object
+ * Check if there is any falsy value or empty object
  */
 const isNotEmpty = (val: any) =>
   !(val && Object.keys(val).length === 0 && val.constructor === Object);
-
-/**
- * Get the normalized base styles
- */
-const baseStyles = getNormalizedStyles('base');
 
 export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
   forwardRef(
@@ -45,7 +40,6 @@ export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
           ...props,
           ...{
             css: [
-              baseStyles,
               getNormalizedStyles(as),
               ...variants.map(v => css(v)),
               css(styles),

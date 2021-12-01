@@ -1,131 +1,100 @@
+/**
+ * Normalize styling of certain elements between browsers.
+ * Based on https://www.joshwcomeau.com/css/custom-css-reset/
+ */
 import { ElementType } from 'react';
 
 const base = {
   boxSizing: 'border-box',
   margin: 0,
-  padding: 0,
   minWidth: 0,
-  fontSize: '100%',
-  fontFamily: 'inherit',
-  verticalAlign: 'baseline',
-  WebkitTapHighlightColor: 'transparent',
 } as const;
 
-// Content
-// ---------------
-const block = {
-  display: 'block',
-} as const;
-
-const list = {
-  // empty
-} as const;
-
-const table = {
-  borderCollapse: 'collapse',
-  borderSpacing: 0,
-} as const;
-
-// Typography
-// ---------------
 const a = {
+  ...base,
   textDecoration: 'none',
-  touchAction: 'manipulation',
 } as const;
 
-const quote = {
-  quotes: 'none',
-  selectors: {
-    '&:before, &:after': {
-      content: "''",
-    },
-  },
+const text = {
+  ...base,
+  overflowWrap: 'break-word',
 } as const;
 
-// Form Elements
-// ---------------
+const media = {
+  ...base,
+  display: 'block',
+  maxWidth: '100%',
+};
+
 const button = {
+  ...base,
   display: 'block',
   appearance: 'none',
+  font: 'inherit',
   background: 'transparent',
   textAlign: 'center',
-  touchAction: 'manipulation',
 } as const;
 
 const input = {
+  ...base,
   display: 'block',
   appearance: 'none',
-  selectors: {
-    '&::-ms-clear': {
-      display: 'none',
-    },
-    '&::-webkit-search-cancel-button': {
-      WebkitAppearance: 'none',
-    },
+  font: 'inherit',
+  '&::-ms-clear': {
+    display: 'none',
+  },
+  '&::-webkit-search-cancel-button': {
+    WebkitAppearance: 'none',
   },
 } as const;
 
 const select = {
+  ...base,
   display: 'block',
   appearance: 'none',
-  selectors: {
-    '&::-ms-expand': {
-      display: 'none',
-    },
+  font: 'inherit',
+  '&::-ms-expand': {
+    display: 'none',
   },
 } as const;
 
 const textarea = {
+  ...base,
   display: 'block',
   appearance: 'none',
+  font: 'inherit',
 } as const;
 
-// Reset
+// Normalize
 // ---------------
-const reset = {
-  article: block,
-  aside: block,
-  details: block,
-  figcaption: block,
-  figure: block,
-  footer: block,
-  header: block,
-  hgroup: block,
-  menu: block,
-  nav: block,
-  section: block,
-  ul: list,
-  ol: list,
-  blockquote: quote,
-  q: quote,
-  a,
+export const normalize = {
   base,
-  table,
+  a,
+  p: text,
+  h1: text,
+  h2: text,
+  h3: text,
+  h4: text,
+  h5: text,
+  h6: text,
+  img: media,
+  picture: media,
+  video: media,
+  canvas: media,
+  svg: media,
   select,
   button,
   textarea,
   input,
 } as const;
 
-export type NormalizedElement = keyof typeof reset;
-const isKnownElement = (input: string): input is NormalizedElement =>
-  input in reset;
+export type NormalizedElement = keyof typeof normalize;
 
 /**
- * Helper to conveniently get reset styles.
+ * Type-safe helper to get normalization. If no normalization is found,
+ * returns the *base* normalization.
  */
-export const getNormalizedStyles = (input?: ElementType): object => {
-  /**
-   * If a React component is given, we don't apply any reset styles
-   * and return the base reset.
-   */
-  if (typeof input !== 'string') {
-    return reset.base;
-  }
-
-  /**
-   * Try to find the reset style for a HTML element. If the element
-   * is not included return empty styles.
-   */
-  return isKnownElement(input) ? reset[input] : {};
-};
+export const getNormalizedStyles = (val?: ElementType) =>
+  typeof val === 'string' && val in normalize
+    ? normalize[val as NormalizedElement] // Typescript doesn't infer this correctly
+    : normalize.base;
