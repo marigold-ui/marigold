@@ -9,7 +9,7 @@ const theme = {
     primary: 'black',
     secondary: 'hotpink',
   },
-  fontsizes: {
+  fontSizes: {
     body: 16,
     small: 12,
     large: 24,
@@ -28,6 +28,9 @@ const theme = {
     heading: {
       fontSize: 'large',
       color: 'secondary',
+    },
+    whitespace: {
+      p: 'medium',
     },
   },
   override: {
@@ -100,9 +103,25 @@ test('variants are applied correctly', () => {
     </ThemeProvider>
   );
   const element = screen.getByText('Test');
+  console.log(getComputedStyle(element));
 
-  expect(element).toHaveStyle(`font-size: ${theme.fontsizes.body}`);
+  expect(element).toHaveStyle(`font-size: ${theme.fontSizes.body}px`);
   expect(element).toHaveStyle(`color: ${theme.colors.primary}`);
+});
+
+test('accept an array of variants', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Element as="p" variant={['text.heading', 'text.whitespace']}>
+        Test
+      </Element>
+    </ThemeProvider>
+  );
+  const element = screen.getByText('Test');
+
+  expect(element).toHaveStyle(`font-size: ${theme.fontSizes.large}px`);
+  expect(element).toHaveStyle(`color: ${theme.colors.secondary}`);
+  expect(element).toHaveStyle(`padding: ${theme.space.medium}px`);
 });
 
 test('variants override normalization', () => {
@@ -117,32 +136,6 @@ test('variants override normalization', () => {
 });
 
 // ======================================================
-
-test.skip('variant styles second', () => {
-  const TestComponent: React.FC<{ variant?: 'body' }> = ({
-    variant = 'body',
-    children,
-    ...props
-  }) => {
-    return (
-      <Element as="p" variant={`text.${variant}`} {...props}>
-        {children}
-      </Element>
-    );
-  };
-
-  const { getByText } = render(
-    <ThemeProvider theme={theme}>
-      <TestComponent>Text</TestComponent>
-    </ThemeProvider>
-  );
-  const testelem = getByText('Text');
-  const style = getComputedStyle(testelem);
-
-  expect(style.marginTop).not.toEqual('0px'); // 0px come from base
-  expect(style.marginBottom).toEqual('0px'); // 0px still come from base
-  expect(style.marginTop).toEqual('2px'); // 2px come from variant
-});
 
 test.skip('array of variant styles', () => {
   const TestComponent: React.FC<{ variant?: 'body' }> = ({
