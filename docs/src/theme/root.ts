@@ -1,6 +1,6 @@
 export const root = {
   body: {
-    margin: 0,
+    margin: 8,
     padding: 0,
     fontFamily: 'body',
   },
