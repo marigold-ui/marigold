@@ -1,12 +1,21 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Column, Columns } from '@marigold/components';
+import { Column, Columns, MarigoldProvider } from '@marigold/components';
+
+const theme = {
+  space: {
+    none: 0,
+    large: 24,
+  },
+};
 
 test('supports default space prop', () => {
   render(
-    <Columns data-testid="column">
-      <Column>column</Column>
-    </Columns>
+    <MarigoldProvider theme={theme}>
+      <Columns data-testid="column">
+        <Column>column</Column>
+      </Columns>
+    </MarigoldProvider>
   );
   const column = screen.getByTestId(/column/);
 
@@ -15,9 +24,11 @@ test('supports default space prop', () => {
 
 test('supports custom space prop', () => {
   render(
-    <Columns space={24} data-testid="column">
-      <Column>column</Column>
-    </Columns>
+    <MarigoldProvider theme={theme}>
+      <Columns space="large" data-testid="column">
+        <Column>column</Column>
+      </Columns>
+    </MarigoldProvider>
   );
   const column = screen.getByTestId(/column/);
 

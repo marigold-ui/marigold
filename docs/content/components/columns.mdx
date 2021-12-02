@@ -10,11 +10,11 @@ With the Columns component you can add a bundle of column components by adding p
 
 ## Properties
 
-| Property                     | Type                  | Default |
-| :--------------------------- | :-------------------- | :------ |
-| `space` (optional)           | `number`              | `0`     |
-| `horizontalAlign` (optional) | `left, right, center` | `left`  |
-| `verticalAlign` (optional)   | `top, bottom, center` | `top`   |
+| Property                     | Type                           | Default |
+| :--------------------------- | :----------------------------- | :------ |
+| `space` (optional)           | `ResponsiveStyleValue<string>` | `none`  |
+| `horizontalAlign` (optional) | `left, right, center`          | `left`  |
+| `verticalAlign` (optional)   | `top, bottom, center`          | `top`   |
 
 ## Import
 
@@ -25,7 +25,7 @@ import { Columns } from '@marigold/components';
 ## Live-Code Example
 
 ```tsx expandCode
-<Columns space={8} verticalAlign="top" horizontalAlign="left">
+<Columns space="xsmall" verticalAlign="top" horizontalAlign="left">
   <Column width={6}>
     <Text>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
@@ -46,7 +46,7 @@ import { Columns } from '@marigold/components';
 ### Spacing
 
 ```tsx
-<Columns space={24}>
+<Columns space="medium">
   <Column width={4}>
     <Text>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
@@ -77,7 +77,7 @@ import { Columns } from '@marigold/components';
 ### Width
 
 ```tsx
-<Columns space={6}>
+<Columns space="xsmall">
   <Column width={12}>
     <Box p="xsmall" bg="#dddde2" borderRadius="4px" mb="xxsmall">
       width=12
@@ -135,7 +135,7 @@ import { Columns } from '@marigold/components';
 
 ```tsx
 <>
-  <Columns space={24} horizontalAlign="left">
+  <Columns space="medium" horizontalAlign="left">
     <Column width={2}>
       <Box p="small" bg="#dddde2" borderRadius="4px">
         left
@@ -143,7 +143,7 @@ import { Columns } from '@marigold/components';
     </Column>
   </Columns>
   <Divider />
-  <Columns space={24} horizontalAlign="center">
+  <Columns space="medium" horizontalAlign="center">
     <Column width={2}>
       <Box p="small" bg="#dddde2" borderRadius="4px">
         center
@@ -151,7 +151,7 @@ import { Columns } from '@marigold/components';
     </Column>
   </Columns>
   <Divider />
-  <Columns space={24} horizontalAlign="right">
+  <Columns space="medium" horizontalAlign="right">
     <Column width={2}>
       <Box p="small" bg="#dddde2" borderRadius="4px">
         right
@@ -164,7 +164,7 @@ import { Columns } from '@marigold/components';
 ### Vertical Alignment
 
 ```tsx
-<Columns space={4} verticalAlign="top">
+<Columns space="xxsmall" verticalAlign="top">
   <Column width={3}>
     <Box
       display="flex"
@@ -187,7 +187,7 @@ import { Columns } from '@marigold/components';
 ```
 
 ```tsx
-<Columns space={4} verticalAlign="center">
+<Columns space="xxsmall" verticalAlign="center">
   <Column width={3}>
     <Box
       display="flex"
@@ -210,7 +210,7 @@ import { Columns } from '@marigold/components';
 ```
 
 ```tsx
-<Columns space={4} verticalAlign="bottom">
+<Columns space="xxsmall" verticalAlign="bottom">
   <Column width={3}>
     <Box
       display="flex"
