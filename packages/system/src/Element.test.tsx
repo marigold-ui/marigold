@@ -135,87 +135,30 @@ test('variants override normalization', () => {
   expect(element).toHaveStyle(`margin: ${theme.space.large}px`);
 });
 
-// ======================================================
-
-test.skip('array of variant styles', () => {
-  const TestComponent: React.FC<{ variant?: 'body' }> = ({
-    variant = 'body',
-    children,
-    ...props
-  }) => {
-    return (
-      <Element as="p" variant={[`text.${variant}`, `text.padding`]} {...props}>
-        {children}
-      </Element>
-    );
-  };
-
-  const { getByText } = render(
+test('apply custom styling via css prop', () => {
+  render(
     <ThemeProvider theme={theme}>
-      <TestComponent>Text</TestComponent>
+      <Element css={{ color: 'secondary', padding: '1rem' }}>Test</Element>
     </ThemeProvider>
   );
-  const testelem = getByText('Text');
-  const style = getComputedStyle(testelem);
+  const element = screen.getByText('Test');
 
-  expect(style.marginTop).not.toEqual('0px'); // 0px come from base
-  expect(style.marginBottom).toEqual('0px'); // 0px still come from base
-  expect(style.marginTop).toEqual('2px'); // 2px marginTop come from variant
-  expect(style.paddingTop).toEqual('2px'); // 2px paddingTop come from variant
+  expect(element).toHaveStyle(`padding: 1rem`);
+  expect(element).toHaveStyle(`color: ${theme.colors.secondary}`);
 });
 
-test.skip('custom styles with css prop third', () => {
-  const TestComponent: React.FC<{ variant?: 'body' }> = ({
-    variant = 'body',
-    children,
-    ...props
-  }) => {
-    return (
-      <Element
-        as="p"
-        variant={`text.${variant}`}
-        css={{ marginTop: '4px' }}
-        {...props}
-      >
-        {children}
-      </Element>
-    );
-  };
-
-  const { getByText } = render(
+test('custom styling overrides variant and normalization', () => {
+  render(
     <ThemeProvider theme={theme}>
-      <TestComponent>Text</TestComponent>
+      <Element variant="text.body" css={{ fontSize: 'large', margin: 'small' }}>
+        Test
+      </Element>
     </ThemeProvider>
   );
-  const testelem = getByText('Text');
-  const style = getComputedStyle(testelem);
+  const element = screen.getByText('Test');
 
-  expect(style.marginTop).not.toEqual('0px'); // do not apply 0px from base
-  expect(style.marginTop).not.toEqual('2px'); // do not apply 2px from variant
-  expect(style.marginTop).toEqual('4px'); // apply 4px from custom styles
-});
+  expect(element).toHaveStyle(`font-size: ${theme.fontSizes.large}px`); // overrides variant
+  expect(element).toHaveStyle(`margin: ${theme.space.small}px`); // overrides normalization
 
-test.skip('normalize tag name <a>', () => {
-  const TestComponent: React.FC<{ variant?: 'body' }> = ({
-    variant = 'body',
-    children,
-    ...props
-  }) => {
-    return (
-      <Element as="a" variant={`text.${variant}`} {...props}>
-        {children}
-      </Element>
-    );
-  };
-
-  const { getByText } = render(
-    <ThemeProvider theme={theme}>
-      <TestComponent>Link</TestComponent>
-    </ThemeProvider>
-  );
-  const testelem = getByText('Link');
-  const style = getComputedStyle(testelem);
-
-  expect(style.boxSizing).toEqual('border-box'); // from base
-  expect(style.textDecoration).toEqual('none'); // from a
+  expect(element).not.toHaveStyle(`color: ${theme.colors.primary}px`); // variant part that is not overriden
 });
