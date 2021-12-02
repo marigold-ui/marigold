@@ -24,7 +24,7 @@ const media = {
   ...base,
   display: 'block',
   maxWidth: '100%',
-};
+} as const;
 
 const button = {
   ...base,

@@ -12,6 +12,11 @@ import { useTheme } from './useTheme';
 export type ElementOwnProps = {
   css?: CSSObject;
   variant?: string | string[];
+  /**
+   * Use to set base styles for the component
+   * @private - **use with caution ... please!**
+   */
+  __baseCSS?: CSSObject;
 };
 
 export type ElementProps = PolymorphicPropsWithRef<ElementOwnProps, 'div'>;
@@ -24,7 +29,10 @@ const isNotEmpty = (val: any) =>
 
 export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
   forwardRef(
-    ({ as = 'div', css: styles = {}, variant, children, ...props }, ref) => {
+    (
+      { as = 'div', __baseCSS, css: styles = {}, variant, children, ...props },
+      ref
+    ) => {
       const { css } = useTheme();
 
       /**
@@ -41,6 +49,7 @@ export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
           ...{
             css: [
               getNormalizedStyles(as),
+              css(__baseCSS),
               ...variants.map(v => css(v)),
               css(styles),
             ].filter(isNotEmpty),

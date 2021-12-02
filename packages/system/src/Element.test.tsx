@@ -2,41 +2,62 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from './useTheme';
 import { Element } from './Element';
+import { normalize } from './normalize';
 
 const theme = {
+  colors: {
+    primary: 'black',
+    secondary: 'hotpink',
+  },
+  fontSizes: {
+    body: 16,
+    small: 12,
+    large: 24,
+  },
+  space: {
+    none: 0,
+    small: 4,
+    medium: 8,
+    large: 16,
+  },
   text: {
     body: {
-      fontSize: 1,
-      color: 'black',
-      marginTop: '2px',
-    },
-    heading: {
-      fontSize: 3,
+      fontSize: 'body',
       color: 'primary',
     },
-    padding: {
-      paddingTop: '2px',
+    heading: {
+      fontSize: 'large',
+      color: 'secondary',
+    },
+    whitespace: {
+      p: 'medium',
+    },
+  },
+  variant: {
+    spacing: {
+      m: 'large',
+      p: 'large',
     },
   },
 };
 
 test('renders a <div> by default', () => {
-  render(<Element>Text</Element>);
-  const testelem = screen.getByText('Text');
+  render(<Element>Test</Element>);
+  const testelem = screen.getByText('Test');
 
   expect(testelem instanceof HTMLDivElement).toBeTruthy();
 });
 
-test('supports as prop', () => {
-  render(<Element as="p">Text</Element>);
-  const testelem = screen.getByText('Text');
+test('supports "as" prop', () => {
+  render(<Element as="p">Test</Element>);
+  const testelem = screen.getByText('Test');
 
   expect(testelem instanceof HTMLParagraphElement).toBeTruthy();
 });
 
 test('supports HTML className attribute', () => {
-  render(<Element className="my-custom-class">Text</Element>);
-  const element = screen.getByText('Text');
+  render(<Element className="my-custom-class">Test</Element>);
+  const element = screen.getByText('Test');
 
   expect(element.getAttribute('class')).toMatch('my-custom-class');
 });
@@ -44,10 +65,10 @@ test('supports HTML className attribute', () => {
 test('passes down HTML attributes', () => {
   render(
     <Element className="my-custom-class" id="element-id" disabled>
-      Text
+      Test
     </Element>
   );
-  const element = screen.getByText('Text');
+  const element = screen.getByText('Test');
 
   expect(element.getAttribute('id')).toEqual('element-id');
   expect(element.getAttribute('disabled')).toMatch('');
@@ -65,119 +86,123 @@ test('forwards ref', () => {
   expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
 });
 
-test('base styles first', () => {
-  const { getByText } = render(<Element as="p">Text</Element>);
-  const testelem = getByText('Text');
-  const style = getComputedStyle(testelem);
+test('apply normalized styles', () => {
+  render(<Element>Test</Element>);
+  const element = screen.getByText('Test');
+  const { base } = normalize;
 
-  expect(style.marginTop).toEqual('0px'); // 0px come from base
+  // Smoketest
+  expect(element).toHaveStyle(`box-sizing: ${base.boxSizing}`);
+  expect(element).toHaveStyle(`margin: ${base.margin}px`);
+  expect(element).toHaveStyle(`min-width: ${base.minWidth}`);
 });
 
-test('variant styles second', () => {
-  const TestComponent: React.FC<{ variant?: 'body' }> = ({
-    variant = 'body',
-    children,
-    ...props
-  }) => {
-    return (
-      <Element as="p" variant={`text.${variant}`} {...props}>
-        {children}
-      </Element>
-    );
-  };
+test('base normalization is always applied', () => {
+  render(<Element as="button">Test</Element>);
+  const element = screen.getByText('Test');
+  const { base } = normalize;
 
-  const { getByText } = render(
+  expect(element).toHaveStyle(`box-sizing: ${base.boxSizing}`);
+  expect(element).toHaveStyle(`margin: ${base.margin}px`);
+  expect(element).toHaveStyle(`min-width: ${base.minWidth}`);
+});
+
+test('apply normalized styles based on element', () => {
+  render(<Element as="h1">Test</Element>);
+  const element = screen.getByText('Test');
+  const { h1 } = normalize;
+
+  expect(element).toHaveStyle(`overflow-wrap: ${h1.overflowWrap}`);
+});
+
+test('accepts default styling via "__baseCSS" prop', () => {
+  render(<Element __baseCSS={{ color: 'hotpink' }}>Test</Element>);
+  const element = screen.getByText('Test');
+
+  expect(element).toHaveStyle('color: hotpink');
+});
+
+test('default styling overrides normalization', () => {
+  render(
     <ThemeProvider theme={theme}>
-      <TestComponent>Text</TestComponent>
+      <Element __baseCSS={{ m: 'medium' }}>Test</Element>
     </ThemeProvider>
   );
-  const testelem = getByText('Text');
-  const style = getComputedStyle(testelem);
+  const element = screen.getByText('Test');
 
-  expect(style.marginTop).not.toEqual('0px'); // 0px come from base
-  expect(style.marginBottom).toEqual('0px'); // 0px still come from base
-  expect(style.marginTop).toEqual('2px'); // 2px come from variant
+  expect(element).toHaveStyle(`margin: ${theme.space.medium}px`);
 });
 
-test('array of variant styles', () => {
-  const TestComponent: React.FC<{ variant?: 'body' }> = ({
-    variant = 'body',
-    children,
-    ...props
-  }) => {
-    return (
-      <Element as="p" variant={[`text.${variant}`, `text.padding`]} {...props}>
-        {children}
-      </Element>
-    );
-  };
-
-  const { getByText } = render(
+test('variants are applied correctly', () => {
+  render(
     <ThemeProvider theme={theme}>
-      <TestComponent>Text</TestComponent>
+      <Element variant="text.body">Test</Element>
     </ThemeProvider>
   );
-  const testelem = getByText('Text');
-  const style = getComputedStyle(testelem);
+  const element = screen.getByText('Test');
 
-  expect(style.marginTop).not.toEqual('0px'); // 0px come from base
-  expect(style.marginBottom).toEqual('0px'); // 0px still come from base
-  expect(style.marginTop).toEqual('2px'); // 2px marginTop come from variant
-  expect(style.paddingTop).toEqual('2px'); // 2px paddingTop come from variant
+  expect(element).toHaveStyle(`font-size: ${theme.fontSizes.body}px`);
+  expect(element).toHaveStyle(`color: ${theme.colors.primary}`);
 });
 
-test('custom styles with css prop third', () => {
-  const TestComponent: React.FC<{ variant?: 'body' }> = ({
-    variant = 'body',
-    children,
-    ...props
-  }) => {
-    return (
+test('accept an array of variants', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Element as="p" variant={['text.heading', 'text.whitespace']}>
+        Test
+      </Element>
+    </ThemeProvider>
+  );
+  const element = screen.getByText('Test');
+
+  expect(element).toHaveStyle(`font-size: ${theme.fontSizes.large}px`);
+  expect(element).toHaveStyle(`color: ${theme.colors.secondary}`);
+  expect(element).toHaveStyle(`padding: ${theme.space.medium}px`);
+});
+
+test('variants override normalization and default styles', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Element __baseCSS={{ p: 'small' }} variant="variant.spacing">
+        Test
+      </Element>
+    </ThemeProvider>
+  );
+  const element = screen.getByText('Test');
+
+  expect(element).toHaveStyle(`margin: ${theme.space.large}px`);
+  expect(element).toHaveStyle(`padding: ${theme.space.large}px`);
+});
+
+test('apply custom styling via css prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Element css={{ color: 'secondary', padding: '1rem' }}>Test</Element>
+    </ThemeProvider>
+  );
+  const element = screen.getByText('Test');
+
+  expect(element).toHaveStyle(`padding: 1rem`);
+  expect(element).toHaveStyle(`color: ${theme.colors.secondary}`);
+});
+
+test('custom styling overrides normalization, defaults and variants', () => {
+  render(
+    <ThemeProvider theme={theme}>
       <Element
-        as="p"
-        variant={`text.${variant}`}
-        css={{ marginTop: '4px' }}
-        {...props}
+        __baseCSS={{ p: 'small' }}
+        variant="text.body"
+        css={{ fontSize: 'large', m: 'small', p: 'large' }}
       >
-        {children}
+        Test
       </Element>
-    );
-  };
-
-  const { getByText } = render(
-    <ThemeProvider theme={theme}>
-      <TestComponent>Text</TestComponent>
     </ThemeProvider>
   );
-  const testelem = getByText('Text');
-  const style = getComputedStyle(testelem);
+  const element = screen.getByText('Test');
 
-  expect(style.marginTop).not.toEqual('0px'); // do not apply 0px from base
-  expect(style.marginTop).not.toEqual('2px'); // do not apply 2px from variant
-  expect(style.marginTop).toEqual('4px'); // apply 4px from custom styles
-});
+  expect(element).toHaveStyle(`margin: ${theme.space.small}px`); // overrides normalization
+  expect(element).toHaveStyle(`padding: ${theme.space.large}px`); // overrides default
+  expect(element).toHaveStyle(`font-size: ${theme.fontSizes.large}px`); // overrides variant
 
-test('normalize tag name <a>', () => {
-  const TestComponent: React.FC<{ variant?: 'body' }> = ({
-    variant = 'body',
-    children,
-    ...props
-  }) => {
-    return (
-      <Element as="a" variant={`text.${variant}`} {...props}>
-        {children}
-      </Element>
-    );
-  };
-
-  const { getByText } = render(
-    <ThemeProvider theme={theme}>
-      <TestComponent>Link</TestComponent>
-    </ThemeProvider>
-  );
-  const testelem = getByText('Link');
-  const style = getComputedStyle(testelem);
-
-  expect(style.boxSizing).toEqual('border-box'); // from base
-  expect(style.textDecoration).toEqual('none'); // from a
+  expect(element).not.toHaveStyle(`color: ${theme.colors.primary}px`); // variant part that is not overriden
 });
