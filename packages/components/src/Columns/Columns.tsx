@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React, { Children, useEffect, useState } from 'react';
 import { Box } from '../Box';
 import flattenChildren from 'react-keyed-flatten-children';
 
@@ -7,7 +7,25 @@ type ColumnsProps = {
   space?: number;
   horizontalAlign?: 'left' | 'right' | 'center';
   verticalAlign?: 'top' | 'bottom' | 'center';
-  title?: string; // Should only be used for testing.
+};
+
+const useAlignment = (direction: string) => {
+  const [alignment, setAlignment] = useState('flex-start');
+  useEffect(() => {
+    switch (direction) {
+      case 'right':
+        setAlignment('flex-end');
+        break;
+      case 'bottom':
+        setAlignment('flex-end');
+        break;
+      case 'center':
+        setAlignment('center');
+        break;
+    }
+  }, [direction]);
+
+  return alignment;
 };
 
 export const Columns: React.FC<ColumnsProps> = ({
@@ -18,37 +36,22 @@ export const Columns: React.FC<ColumnsProps> = ({
   children,
   ...props
 }) => {
-  let columnItems = flattenChildren(children);
-
-  // horizontal Alignment
-  let justify = 'flex-start';
-  if (horizontalAlign === 'right') {
-    justify = 'flex-end';
-  } else if (horizontalAlign === 'center') {
-    justify = 'center';
-  }
-
-  // vertical Alignment
-  let alignItems = 'flex-start';
-  if (verticalAlign === 'bottom') {
-    alignItems = 'flex-end';
-  } else if (verticalAlign === 'center') {
-    alignItems = 'center';
-  }
+  const justifyContent = useAlignment(horizontalAlign);
+  const alignItems = useAlignment(verticalAlign);
 
   return (
-    <Box p={`${space}px`} display="flex" className={className}>
+    <Box p={space} display="flex" className={className}>
       <Box
         width={`calc(100% + ${space}px)`}
         m={`${-space / 2}px`}
         display="flex"
         flexWrap="wrap"
         alignItems={alignItems}
-        justifyContent={justify}
+        justifyContent={justifyContent}
         {...props}
       >
         {Children.map(
-          columnItems as unknown as React.ReactElement,
+          flattenChildren(children) as unknown as React.ReactElement,
           (child: React.ReactElement) => {
             return React.cloneElement(
               child,
