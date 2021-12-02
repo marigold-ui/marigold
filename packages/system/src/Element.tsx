@@ -49,7 +49,7 @@ export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
           ...{
             css: [
               getNormalizedStyles(as),
-              __baseCSS,
+              css(__baseCSS),
               ...variants.map(v => css(v)),
               css(styles),
             ].filter(isNotEmpty),

@@ -33,9 +33,10 @@ const theme = {
       p: 'medium',
     },
   },
-  override: {
-    normalize: {
+  variant: {
+    spacing: {
       m: 'large',
+      p: 'large',
     },
   },
 };
@@ -96,6 +97,42 @@ test('apply normalized styles', () => {
   expect(element).toHaveStyle(`min-width: ${base.minWidth}`);
 });
 
+test('base normalization is always applied', () => {
+  render(<Element as="button">Test</Element>);
+  const element = screen.getByText('Test');
+  const { base } = normalize;
+
+  expect(element).toHaveStyle(`box-sizing: ${base.boxSizing}`);
+  expect(element).toHaveStyle(`margin: ${base.margin}px`);
+  expect(element).toHaveStyle(`min-width: ${base.minWidth}`);
+});
+
+test('apply normalized styles based on element', () => {
+  render(<Element as="h1">Test</Element>);
+  const element = screen.getByText('Test');
+  const { h1 } = normalize;
+
+  expect(element).toHaveStyle(`overflow-wrap: ${h1.overflowWrap}`);
+});
+
+test('accepts default styling via "__baseCSS" prop', () => {
+  render(<Element __baseCSS={{ color: 'hotpink' }}>Test</Element>);
+  const element = screen.getByText('Test');
+
+  expect(element).toHaveStyle('color: hotpink');
+});
+
+test('default styling overrides normalization', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Element __baseCSS={{ m: 'medium' }}>Test</Element>
+    </ThemeProvider>
+  );
+  const element = screen.getByText('Test');
+
+  expect(element).toHaveStyle(`margin: ${theme.space.medium}px`);
+});
+
 test('variants are applied correctly', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -103,7 +140,6 @@ test('variants are applied correctly', () => {
     </ThemeProvider>
   );
   const element = screen.getByText('Test');
-  console.log(getComputedStyle(element));
 
   expect(element).toHaveStyle(`font-size: ${theme.fontSizes.body}px`);
   expect(element).toHaveStyle(`color: ${theme.colors.primary}`);
@@ -124,15 +160,18 @@ test('accept an array of variants', () => {
   expect(element).toHaveStyle(`padding: ${theme.space.medium}px`);
 });
 
-test('variants override normalization', () => {
+test('variants override normalization and default styles', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Element variant="override.normalize">Test</Element>
+      <Element __baseCSS={{ p: 'small' }} variant="variant.spacing">
+        Test
+      </Element>
     </ThemeProvider>
   );
   const element = screen.getByText('Test');
 
   expect(element).toHaveStyle(`margin: ${theme.space.large}px`);
+  expect(element).toHaveStyle(`padding: ${theme.space.large}px`);
 });
 
 test('apply custom styling via css prop', () => {
@@ -147,18 +186,23 @@ test('apply custom styling via css prop', () => {
   expect(element).toHaveStyle(`color: ${theme.colors.secondary}`);
 });
 
-test('custom styling overrides variant and normalization', () => {
+test('custom styling overrides normalization, defaults and variants', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Element variant="text.body" css={{ fontSize: 'large', margin: 'small' }}>
+      <Element
+        __baseCSS={{ p: 'small' }}
+        variant="text.body"
+        css={{ fontSize: 'large', m: 'small', p: 'large' }}
+      >
         Test
       </Element>
     </ThemeProvider>
   );
   const element = screen.getByText('Test');
 
-  expect(element).toHaveStyle(`font-size: ${theme.fontSizes.large}px`); // overrides variant
   expect(element).toHaveStyle(`margin: ${theme.space.small}px`); // overrides normalization
+  expect(element).toHaveStyle(`padding: ${theme.space.large}px`); // overrides default
+  expect(element).toHaveStyle(`font-size: ${theme.fontSizes.large}px`); // overrides variant
 
   expect(element).not.toHaveStyle(`color: ${theme.colors.primary}px`); // variant part that is not overriden
 });
