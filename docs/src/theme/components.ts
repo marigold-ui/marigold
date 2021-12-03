@@ -101,14 +101,10 @@ const button = {
 
 const card = {
   default: {
-    maxWidth: '500px',
     background: 'white',
     p: 'small',
     boxShadow: '0px 4px 4px rgba(165, 165, 165, 0.25)',
     borderRadius: '10px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
   },
   highlight: {
     p: 'xxlarge',
@@ -133,19 +129,6 @@ const divider = {
     border: 'none',
     borderBottom: '8px solid',
     color: 'red',
-  },
-};
-
-const icon = {
-  do: {
-    fontSize: 20,
-    color: 'green',
-    mr: 'xsmall',
-  },
-  dont: {
-    size: 20,
-    fill: 'red',
-    mr: 'xsmall',
   },
 };
 
@@ -270,7 +253,6 @@ export const components = {
   },
   card,
   divider,
-  icon,
   navigation,
   select,
 };

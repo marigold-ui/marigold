@@ -232,7 +232,7 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
     display="grid"
     css={{
       gridGap: 'small',
-      gridTemplateColumns: 'repeat(2, 1fr)',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(min(500px, 100%), 1fr))',
     }}
   >
     <DoAndDont
@@ -246,26 +246,6 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
       Use a ghost button next to a Primary button.
     </DoAndDont>
     <DoAndDont
-      dont={true}
-      preview={
-        <ActionGroup space="small">
-          <Button>Primary</Button>
-          <Button>Primary</Button>
-        </ActionGroup>
-      }
-    >
-      Use two Primary buttons on the same page, there should be only one
-      function that calls the most attention.
-    </DoAndDont>
-  </Box>
-  <Box
-    display="grid"
-    css={{
-      gridGap: 'small',
-      gridTemplateColumns: 'repeat(2, 1fr)',
-    }}
-  >
-    <DoAndDont
       preview={
         <ActionGroup space="small">
           <Button variant="text">Text</Button>
@@ -275,26 +255,6 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
     >
       Use a Text button next to a Primary button.
     </DoAndDont>
-    <DoAndDont
-      dont={true}
-      preview={
-        <ActionGroup space="small">
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="secondary">Secondary</Button>
-        </ActionGroup>
-      }
-    >
-      Use two Secondary buttons next to each other, it loses hierarchie and is
-      confusing.
-    </DoAndDont>
-  </Box>
-  <Box
-    display="grid"
-    css={{
-      gridGap: 'small',
-      gridTemplateColumns: 'repeat(2, 1fr)',
-    }}
-  >
     <DoAndDont
       preview={
         <ActionGroup space="small">
@@ -306,7 +266,31 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
       Use a Text button next to another text button.
     </DoAndDont>
     <DoAndDont
-      dont={true}
+      dont
+      preview={
+        <ActionGroup space="small">
+          <Button>Primary</Button>
+          <Button>Primary</Button>
+        </ActionGroup>
+      }
+    >
+      Use two Primary buttons on the same page, there should be only one
+      function that calls the most attention.
+    </DoAndDont>
+    <DoAndDont
+      dont
+      preview={
+        <ActionGroup space="small">
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="secondary">Secondary</Button>
+        </ActionGroup>
+      }
+    >
+      Use two Secondary buttons next to each other, it loses hierarchie and is
+      confusing.
+    </DoAndDont>
+    <DoAndDont
+      dont
       preview={
         <ActionGroup space="small">
           <Button variant="secondary">Secondary</Button>
