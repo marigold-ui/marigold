@@ -85,7 +85,7 @@ test('check if OverlayProvider and GlobalStyles are added once', () => {
   ).toEqual(1);
 });
 
-test('renders global styles for body and html based on root in theme', () => {
+test('applies global styles for body and html based on `theme.root`', () => {
   const root = render(
     <MarigoldProvider
       theme={{
@@ -94,8 +94,7 @@ test('renders global styles for body and html based on root in theme', () => {
           html: 'Roboto',
         },
         lineHeights: {
-          body: 1.5,
-          html: 1,
+          body: 2.5,
         },
         fontWeights: {
           body: 500,
@@ -109,22 +108,34 @@ test('renders global styles for body and html based on root in theme', () => {
           },
           html: {
             fontFamily: 'html',
-            lineHeight: 'html',
             fontWeight: 'html',
           },
         },
       }}
     >
-      <h1 title="h1">Hello</h1>
+      <h1>Hello</h1>
     </MarigoldProvider>
   );
 
   const html = window.getComputedStyle(root.baseElement.parentElement!);
   expect(html.fontFamily).toBe('Roboto');
   expect(html.fontWeight).toBe('700');
-  expect(html.lineHeight).toBe('1');
   const body = window.getComputedStyle(root.baseElement);
   expect(body.fontFamily).toBe('Inter');
   expect(body.fontWeight).toBe('500');
+  expect(body.lineHeight).toBe('2.5');
+});
+
+test('applies normlaization to html and body', () => {
+  const root = render(
+    <MarigoldProvider theme={{}}>
+      <h1>Hello</h1>
+    </MarigoldProvider>
+  );
+
+  const html = window.getComputedStyle(root.baseElement.parentElement!);
+  expect(html.height).toBe('100%');
+  const body = window.getComputedStyle(root.baseElement);
+  expect(body.height).toBe('100%');
   expect(body.lineHeight).toBe('1.5');
 });

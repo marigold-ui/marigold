@@ -19,8 +19,16 @@ const reduceMotionStyles = {
 export const GlobalStyles = () => {
   const { css } = useTheme();
   const styles = css({
-    body: { variant: 'root.body' },
-    html: { variant: 'root.html' },
+    html: {
+      height: '100%',
+      variant: 'root.html',
+    },
+    body: {
+      height: '100%',
+      lineHeight: 1.5,
+      WebkitFontSmoothing: 'antialiased',
+      variant: 'root.body',
+    },
   });
 
   return <Global styles={{ reduceMotionStyles, ...styles }} />;
