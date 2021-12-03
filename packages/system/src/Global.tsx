@@ -17,7 +17,7 @@ const reduceMotionStyles = {
 };
 
 export const Global = () => {
-  const { css, theme } = useTheme();
+  const { css } = useTheme();
   const styles = css({
     html: {
       height: '100%',
@@ -30,6 +30,5 @@ export const Global = () => {
       variant: 'root.body',
     },
   });
-  console.log(styles, theme);
   return <EmotionGlobal styles={{ reduceMotionStyles, ...styles }} />;
 };

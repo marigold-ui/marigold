@@ -118,12 +118,12 @@ test('applies global styles for body and html based on `theme.root`', () => {
     </MarigoldProvider>
   );
 
-  const html = window.getComputedStyle(root.baseElement.parentElement!);
-  expect(html.fontFamily).toEqual('Roboto');
-  expect(html.fontWeight).toEqual('700');
+  const html = root.baseElement.parentElement;
+  expect(html).toHaveStyle(`font-family: ${theme.fonts.html}`);
+  expect(html).toHaveStyle(`font-weight: ${theme.fontWeights.html}`);
 
-  const body = window.getComputedStyle(root.baseElement);
-  expect(body.fontFamily).toEqual('Inter');
-  expect(body.fontWeight).toEqual('500');
-  expect(body.lineHeight).toEqual('2.5');
+  const body = root.baseElement;
+  expect(body).toHaveStyle(`font-family: ${theme.fonts.body}`);
+  expect(body).toHaveStyle(`font-weight: ${theme.fontWeights.body}`);
+  expect(body).toHaveStyle(`line-height: ${theme.lineHeights.body}`);
 });

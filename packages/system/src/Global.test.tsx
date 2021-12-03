@@ -43,15 +43,15 @@ test('applies global styles for body and html based on `theme.root`', () => {
 
   const root = render(
     <ThemeProvider theme={theme}>
-      <h1>Hello</h1>
+      <Global />
     </ThemeProvider>
   );
 
-  const html = window.getComputedStyle(root.baseElement.parentElement!);
-  expect(html.background).toBe(theme.colors.background);
+  const html = root.baseElement.parentElement;
+  expect(html).toHaveStyle(`background: ${theme.colors.background}`);
 
-  const body = window.getComputedStyle(root.baseElement);
-  expect(body.fontFamily).toBe(theme.fonts.body);
-  expect(body.fontWeight).toBe(theme.fontWeights.body);
-  expect(body.lineHeight).toBe(theme.lineHeights.body);
+  const body = root.baseElement;
+  expect(body).toHaveStyle(`font-family: ${theme.fonts.body}`);
+  expect(body).toHaveStyle(`line-height: ${theme.lineHeights.body}`);
+  expect(body).toHaveStyle(`font-weight: ${theme.fontWeights.body}`);
 });
