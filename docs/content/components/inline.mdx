@@ -1,0 +1,90 @@
+---
+title: Inline
+---
+
+# Inline
+
+## Description
+
+Layout component to inline elements with space. This component uses the spaces from the given theme.
+
+## Properties
+
+| Property | Type                           | Default |
+| :------- | :----------------------------- | :------ | ----- |
+| `as`     | `div                           | span`   | `div` |
+| `space`  | `ResponsiveStyleValue<string>` | `none`  |
+
+## Import
+
+```tsx onlyCode
+import { Inline } from '@marigold/components';
+```
+
+## Live-Code Example
+
+```tsx expandCode
+<Inline space="small">
+  <Check />
+  <Text>Check</Text>
+</Inline>
+```
+
+## Usage
+
+### Spacing
+
+```tsx
+<Inline space="large">
+  <Text>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+    dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
+    massa nec ultricies efficitur, lectus ante consequat magna, a porttitor
+    massa ex ut quam.
+  </Text>
+  <Text>
+    Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
+    Vestibulum malesuada ante eu velit malesuada, nec ultricies sapien finibus.
+    Aenean rutrum in sem a ullamcorper. Integer ut euismod urna. Interdum et
+    malesuada fames ac ante ipsum primis in faucibus.
+  </Text>
+</Inline>
+```
+
+### Nested
+
+```tsx
+<Inline space="large">
+  <Inline space="xsmall">
+    <Heading>Block #1</Heading>
+    <Text>Lorem ipsum dolor sit amet.</Text>
+  </Inline>
+  <Inline space="xsmall">
+    <Heading>Bock #2</Heading>
+    <Text>Lorem ipsum dolor sit amet.</Text>
+  </Inline>
+</Inline>
+```
+
+### Alignment
+
+```tsx
+<Inline space="medium">
+  <Heading>Top</Heading>
+  <Text>Lorem ipsum dolor sit amet.</Text>
+</Inline>
+```
+
+```tsx
+<Inline space="medium" align="center">
+  <Heading>Center</Heading>
+  <Text>Lorem ipsum dolor sit amet.</Text>
+</Inline>
+```
+
+```tsx
+<Inline space="medium" align="bottom">
+  <Heading>Bottom</Heading>
+  <Text>Lorem ipsum dolor sit amet.</Text>
+</Inline>
+```
