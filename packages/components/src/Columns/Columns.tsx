@@ -1,59 +1,65 @@
 import React, { Children } from 'react';
 import { Box } from '../Box';
 import flattenChildren from 'react-keyed-flatten-children';
+import { ResponsiveStyleValue, useTheme } from '@marigold/system';
 
 type ColumnsProps = {
   className?: string;
-  space?: number;
+  space?: ResponsiveStyleValue<string>;
   horizontalAlign?: 'left' | 'right' | 'center';
   verticalAlign?: 'top' | 'bottom' | 'center';
-  title?: string; // Should only be used for testing.
+};
+
+const useAlignment = (direction: string) => {
+  switch (direction) {
+    case 'right':
+      return 'flex-end';
+    case 'bottom':
+      return 'flex-end';
+    case 'center':
+      return 'center';
+  }
+  return 'flex-start';
 };
 
 export const Columns: React.FC<ColumnsProps> = ({
-  space = 0,
+  space = 'none',
   horizontalAlign = 'left',
   verticalAlign = 'top',
   className,
   children,
   ...props
 }) => {
-  let columnItems = flattenChildren(children);
+  const justifyContent = useAlignment(horizontalAlign);
+  const alignItems = useAlignment(verticalAlign);
 
-  // horizontal Alignment
-  let justify = 'flex-start';
-  if (horizontalAlign === 'right') {
-    justify = 'flex-end';
-  } else if (horizontalAlign === 'center') {
-    justify = 'center';
-  }
-
-  // vertical Alignment
-  let alignItems = 'flex-start';
-  if (verticalAlign === 'bottom') {
-    alignItems = 'flex-end';
-  } else if (verticalAlign === 'center') {
-    alignItems = 'center';
-  }
+  /**
+   * transform space string to space value from theme
+   */
+  const { css } = useTheme();
+  const spaceObject = css({ space }) as Object;
+  const spaceValue = Object.values(spaceObject)[0];
 
   return (
-    <Box p={`${space}px`} display="flex" className={className}>
+    <Box p={space} display="flex" className={className}>
       <Box
-        width={`calc(100% + ${space}px)`}
-        m={`${-space / 2}px`}
+        width={`calc(100% + ${spaceValue}px)`}
+        m={`${-spaceValue / 2}px`}
         display="flex"
         flexWrap="wrap"
         alignItems={alignItems}
-        justifyContent={justify}
+        justifyContent={justifyContent}
         {...props}
       >
         {Children.map(
-          columnItems as unknown as React.ReactElement,
+          flattenChildren(children) as unknown as React.ReactElement,
           (child: React.ReactElement) => {
             return React.cloneElement(
               child,
               {},
-              <Box css={{ p: `${space / 2}px` }}>{child.props.children}</Box>
+              <Box css={{ p: `${spaceValue / 2}px` }}>
+                {child.props.children}
+              </Box>
             );
           }
         )}
