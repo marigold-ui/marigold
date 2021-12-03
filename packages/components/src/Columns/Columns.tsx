@@ -1,4 +1,4 @@
-import React, { Children, useEffect, useState } from 'react';
+import React, { Children } from 'react';
 import { Box } from '../Box';
 import flattenChildren from 'react-keyed-flatten-children';
 import { ResponsiveStyleValue, useTheme } from '@marigold/system';
@@ -11,22 +11,15 @@ type ColumnsProps = {
 };
 
 const useAlignment = (direction: string) => {
-  const [alignment, setAlignment] = useState('flex-start');
-  useEffect(() => {
-    switch (direction) {
-      case 'right':
-        setAlignment('flex-end');
-        break;
-      case 'bottom':
-        setAlignment('flex-end');
-        break;
-      case 'center':
-        setAlignment('center');
-        break;
-    }
-  }, [direction]);
-
-  return alignment;
+  switch (direction) {
+    case 'right':
+      return 'flex-end';
+    case 'bottom':
+      return 'flex-end';
+    case 'center':
+      return 'center';
+  }
+  return 'flex-start';
 };
 
 export const Columns: React.FC<ColumnsProps> = ({
