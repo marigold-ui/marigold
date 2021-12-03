@@ -63,7 +63,7 @@ test('themes can be cascaded', () => {
   `);
 });
 
-test('check if OverlayProvider is added', () => {
+test('OverlayProvider is added', () => {
   const { container } = render(
     <MarigoldProvider theme={theme}>Test</MarigoldProvider>
   );
@@ -73,10 +73,11 @@ test('check if OverlayProvider is added', () => {
   ).toBeDefined();
 });
 
-test('check if OverlayProvider and GlobalStyles are added once', () => {
+test('OverlayProvider is added only once', () => {
+  const innerTheme = { colors: { primary: 'red' } };
   const { container } = render(
     <MarigoldProvider theme={theme}>
-      <MarigoldProvider theme={theme}>Test</MarigoldProvider>
+      <MarigoldProvider theme={innerTheme}>Test</MarigoldProvider>
     </MarigoldProvider>
   );
 
