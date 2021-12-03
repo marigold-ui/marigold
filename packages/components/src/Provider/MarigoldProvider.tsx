@@ -20,7 +20,6 @@ export const MarigoldProvider: React.FC<ThemeProviderProps> = ({
       {isTopLevel ? (
         <>
           <Global />
-          <Global />
           <OverlayProvider>{children}</OverlayProvider>
         </>
       ) : (
