@@ -5,25 +5,24 @@ import {
   ThemeProvider,
   ThemeProviderProps,
   useTheme,
+  __defaultTheme,
 } from '@marigold/system';
 
 export const MarigoldProvider: React.FC<ThemeProviderProps> = ({
   theme,
   children,
 }) => {
-  /**
-   * Check if isTopLevel to add OverlayProvider just once
-   */
-  const outerTheme = useTheme();
-  const isTopLevel = outerTheme.theme !== theme;
+  const outer = useTheme();
+  const isTopLevel = outer.theme === __defaultTheme;
 
   return (
     <ThemeProvider theme={theme}>
       {isTopLevel ? (
-        <OverlayProvider>
+        <>
           <Global />
-          {children}
-        </OverlayProvider>
+          <Global />
+          <OverlayProvider>{children}</OverlayProvider>
+        </>
       ) : (
         children
       )}

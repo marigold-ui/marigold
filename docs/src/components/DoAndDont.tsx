@@ -26,11 +26,20 @@ export const DoAndDont: React.FC<DoAndDontProps> = ({
         <Card variant="highlight">
           <MarigoldTheme>{preview}</MarigoldTheme>
         </Card>
-        <Box display="flex" alignItems="center" py="xsmall">
+        <Box
+          display="flex"
+          alignItems="center"
+          py="xsmall"
+          css={{ color: dont ? 'red' : 'green' }}
+        >
           {dont ? (
-            <Box as={Banned} variant="icon.dont" />
+            <Box as="span" mr="xsmall">
+              <Banned size={20} />
+            </Box>
           ) : (
-            <Box as={Check} variant="icon.do" />
+            <Box as="span" mr="xsmall">
+              <Check size={20} />
+            </Box>
           )}
           <Heading as="h4" variant="h4">
             {dont ? "Don't" : `Do`}
