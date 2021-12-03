@@ -14,7 +14,7 @@ export type ElementOwnProps = {
   variant?: string | string[];
   /**
    * Use to set base styles for the component
-   * @private - **use with caution ... please!**
+   * @internal Used to set default styles for Marigold components
    */
   __baseCSS?: CSSObject;
 };
