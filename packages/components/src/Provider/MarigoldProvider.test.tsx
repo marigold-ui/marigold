@@ -86,56 +86,43 @@ test('check if OverlayProvider and GlobalStyles are added once', () => {
 });
 
 test('applies global styles for body and html based on `theme.root`', () => {
+  const theme = {
+    fonts: {
+      body: 'Inter',
+      html: 'Roboto',
+    },
+    lineHeights: {
+      body: 2.5,
+    },
+    fontWeights: {
+      body: 500,
+      html: 700,
+    },
+    root: {
+      body: {
+        fontFamily: 'body',
+        lineHeight: 'body',
+        fontWeight: 'body',
+      },
+      html: {
+        fontFamily: 'html',
+        fontWeight: 'html',
+      },
+    },
+  };
+
   const root = render(
-    <MarigoldProvider
-      theme={{
-        fonts: {
-          body: 'Inter',
-          html: 'Roboto',
-        },
-        lineHeights: {
-          body: 2.5,
-        },
-        fontWeights: {
-          body: 500,
-          html: 700,
-        },
-        root: {
-          body: {
-            fontFamily: 'body',
-            lineHeight: 'body',
-            fontWeight: 'body',
-          },
-          html: {
-            fontFamily: 'html',
-            fontWeight: 'html',
-          },
-        },
-      }}
-    >
+    <MarigoldProvider theme={theme}>
       <h1>Hello</h1>
     </MarigoldProvider>
   );
 
   const html = window.getComputedStyle(root.baseElement.parentElement!);
-  expect(html.fontFamily).toBe('Roboto');
-  expect(html.fontWeight).toBe('700');
-  const body = window.getComputedStyle(root.baseElement);
-  expect(body.fontFamily).toBe('Inter');
-  expect(body.fontWeight).toBe('500');
-  expect(body.lineHeight).toBe('2.5');
-});
+  expect(html.fontFamily).toEqual('Roboto');
+  expect(html.fontWeight).toEqual('700');
 
-test('applies normlaization to html and body', () => {
-  const root = render(
-    <MarigoldProvider theme={{}}>
-      <h1>Hello</h1>
-    </MarigoldProvider>
-  );
-
-  const html = window.getComputedStyle(root.baseElement.parentElement!);
-  expect(html.height).toBe('100%');
   const body = window.getComputedStyle(root.baseElement);
-  expect(body.height).toBe('100%');
-  expect(body.lineHeight).toBe('1.5');
+  expect(body.fontFamily).toEqual('Inter');
+  expect(body.fontWeight).toEqual('500');
+  expect(body.lineHeight).toEqual('2.5');
 });
