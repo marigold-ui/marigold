@@ -49,7 +49,6 @@ test('applies global styles for body and html based on `theme.root`', () => {
 
   const html = window.getComputedStyle(root.baseElement.parentElement!);
   expect(html.background).toBe(theme.colors.background);
-  console.log(root.baseElement);
 
   const body = window.getComputedStyle(root.baseElement);
   expect(body.fontFamily).toBe(theme.fonts.body);
