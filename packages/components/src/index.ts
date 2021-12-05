@@ -15,6 +15,7 @@ export * from './Field';
 export * from './Heading';
 export * from './Hidden';
 export * from './Image';
+export * from './Inline';
 export * from './Label';
 export * from './Link';
 export * from './Menu';
