@@ -3605,7 +3605,7 @@ __metadata:
     ts-jest: 27.0.7
   peerDependencies:
     jest: 25.x || 26.x || 27.x
-    typescript: 3.8.x || 3.9.x || 4.2.x || 4.3.x || 4.4.x
+    typescript: 3.8.x || 3.9.x || 4.2.x || 4.3.x || 4.4.x || 4.5.x
   languageName: unknown
   linkType: soft
 
