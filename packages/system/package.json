@@ -7,7 +7,7 @@
   "typings": "dist/index.d.ts",
   "license": "MIT",
   "dependencies": {
-    "@emotion/react": "11.5.0",
+    "@emotion/react": "11.7.0",
     "@theme-ui/css": "0.12.1",
     "csstype": "3.0.9"
   },
