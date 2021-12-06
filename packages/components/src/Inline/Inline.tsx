@@ -20,7 +20,7 @@ const ALIGNMENT = {
 export const Inline: React.FC<InlineProps> = ({
   as = 'div',
   space = 'none',
-  align = 'top',
+  align = 'center',
   children,
   ...props
 }) => (

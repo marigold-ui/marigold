@@ -10,10 +10,11 @@ Layout component to inline elements with space. This component uses the spaces f
 
 ## Properties
 
-| Property | Type                           | Default |
-| :------- | :----------------------------- | :------ |
-| `as`     | `div⎮span`                     | `div`   |
-| `space`  | `ResponsiveStyleValue<string>` | `none`  |
+| Property | Type                           | Default  |
+| :------- | :----------------------------- | :------- |
+| `as`     | `div⎮span`                     | `div`    |
+| `space`  | `ResponsiveStyleValue<string>` | `none`   |
+| `align`  | `left, right, center`          | `center` |
 
 ## Import
 
@@ -69,14 +70,14 @@ import { Inline } from '@marigold/components';
 ### Alignment
 
 ```tsx
-<Inline space="medium">
+<Inline space="medium" align="top">
   <Heading>Top</Heading>
   <Text>Lorem ipsum dolor sit amet.</Text>
 </Inline>
 ```
 
 ```tsx
-<Inline space="medium" align="center">
+<Inline space="medium">
   <Heading>Center</Heading>
   <Text>Lorem ipsum dolor sit amet.</Text>
 </Inline>
