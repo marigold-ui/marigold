@@ -86,46 +86,44 @@ test('OverlayProvider is added only once', () => {
   ).toEqual(1);
 });
 
-test('renders global styles for body and html based on root in theme', () => {
+test('applies global styles for body and html based on `theme.root`', () => {
+  const theme = {
+    fonts: {
+      body: 'Inter',
+      html: 'Roboto',
+    },
+    lineHeights: {
+      body: 2.5,
+    },
+    fontWeights: {
+      body: 500,
+      html: 700,
+    },
+    root: {
+      body: {
+        fontFamily: 'body',
+        lineHeight: 'body',
+        fontWeight: 'body',
+      },
+      html: {
+        fontFamily: 'html',
+        fontWeight: 'html',
+      },
+    },
+  };
+
   const root = render(
-    <MarigoldProvider
-      theme={{
-        fonts: {
-          body: 'Inter',
-          html: 'Roboto',
-        },
-        lineHeights: {
-          body: 1.5,
-          html: 1,
-        },
-        fontWeights: {
-          body: 500,
-          html: 700,
-        },
-        root: {
-          body: {
-            fontFamily: 'body',
-            lineHeight: 'body',
-            fontWeight: 'body',
-          },
-          html: {
-            fontFamily: 'html',
-            lineHeight: 'html',
-            fontWeight: 'html',
-          },
-        },
-      }}
-    >
-      <h1 title="h1">Hello</h1>
+    <MarigoldProvider theme={theme}>
+      <h1>Hello</h1>
     </MarigoldProvider>
   );
 
-  const html = window.getComputedStyle(root.baseElement.parentElement!);
-  expect(html.fontFamily).toBe('Roboto');
-  expect(html.fontWeight).toBe('700');
-  expect(html.lineHeight).toBe('1');
-  const body = window.getComputedStyle(root.baseElement);
-  expect(body.fontFamily).toBe('Inter');
-  expect(body.fontWeight).toBe('500');
-  expect(body.lineHeight).toBe('1.5');
+  const html = root.baseElement.parentElement;
+  expect(html).toHaveStyle(`font-family: ${theme.fonts.html}`);
+  expect(html).toHaveStyle(`font-weight: ${theme.fontWeights.html}`);
+
+  const body = root.baseElement;
+  expect(body).toHaveStyle(`font-family: ${theme.fonts.body}`);
+  expect(body).toHaveStyle(`font-weight: ${theme.fontWeights.body}`);
+  expect(body).toHaveStyle(`line-height: ${theme.lineHeights.body}`);
 });

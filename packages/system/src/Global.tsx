@@ -1,6 +1,6 @@
 import React from 'react';
-import { Global } from '@emotion/react';
-import { useTheme } from '@marigold/system';
+import { Global as EmotionGlobal } from '@emotion/react';
+import { useTheme } from './useTheme';
 
 /**
  * CSS snippet and idea from:
@@ -16,12 +16,19 @@ const reduceMotionStyles = {
   },
 };
 
-export const GlobalStyles = () => {
+export const Global = () => {
   const { css } = useTheme();
   const styles = css({
-    body: { variant: 'root.body' },
-    html: { variant: 'root.html' },
+    html: {
+      height: '100%',
+      variant: 'root.html',
+    },
+    body: {
+      height: '100%',
+      lineHeight: 1.5,
+      WebkitFontSmoothing: 'antialiased',
+      variant: 'root.body',
+    },
   });
-
-  return <Global styles={{ reduceMotionStyles, ...styles }} />;
+  return <EmotionGlobal styles={{ reduceMotionStyles, ...styles }} />;
 };
