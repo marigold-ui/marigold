@@ -5,23 +5,21 @@ import { Button } from '../Button';
 <Meta
   title="Components/ActionGroup"
   argTypes={{
-    variant: {
+    space: {
       control: {
         type: 'select',
       },
-      options: ['default'],
-      description: 'ActionGroup style',
-      table: {
-        defaultValue: {
-          summary: 'default',
-        },
-      },
-    },
-    space: {
-      control: {
-        type: 'text',
-      },
-      description: 'space between the children',
+      options: [
+        'none',
+        'xxsmall',
+        'xsmall',
+        'small',
+        'medium',
+        'large',
+        'xlarge',
+        'xxlarge',
+      ],
+      description: 'Responsive Style Value',
       table: {
         defaultValue: {
           summary: 'none',

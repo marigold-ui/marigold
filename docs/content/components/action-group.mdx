@@ -10,11 +10,10 @@ The ActionGroup component adds two or more components together to form a common 
 
 ## Properties
 
-| Property                       | Type                                  | Default   |
-| :----------------------------- | :------------------------------------ | :-------- |
-| `variant` (optional)           | `string`                              | `default` |
-| `space` (optional)             | `ResponsiveStyleValue<number⎮string>` | `none`    |
-| `verticalAlignment` (optional) | `boolean`                             | `false`   |
+| Property                       | Type                           | Default |
+| :----------------------------- | :----------------------------- | :------ |
+| `space` (optional)             | `ResponsiveStyleValue<string>` | `none`  |
+| `verticalAlignment` (optional) | `boolean`                      | `false` |
 
 ## Import
 
@@ -25,7 +24,7 @@ import { ActionGroup } from '@marigold/components';
 ## Live-Code Example
 
 ```tsx expandCode
-<ActionGroup space="8px">
+<ActionGroup space="xsmall">
   <Button variant="text" size="small">
     Cancel
   </Button>
@@ -51,7 +50,7 @@ import { ActionGroup } from '@marigold/components';
 ### With space
 
 ```tsx
-<ActionGroup space={8}>
+<ActionGroup space="small">
   <Button variant="ghost">Back</Button>
   <Button variant="secondary">Next</Button>
 </ActionGroup>
@@ -60,7 +59,7 @@ import { ActionGroup } from '@marigold/components';
 ### With vertical alignment
 
 ```tsx
-<ActionGroup space={8} verticalAlignment>
+<ActionGroup space="small" verticalAlignment>
   <Button variant="ghost" size="small">
     Sort <SortUp />
   </Button>
