@@ -47,7 +47,7 @@ export const DoAndDont: React.FC<DoAndDontProps> = ({
               </Heading>
             </Inline>
           ) : (
-            <Inline as="span" space="xsmall">
+            <Inline space="xsmall">
               <Check size={20} />
               <Heading as="h4" variant="h4">
                 Do
