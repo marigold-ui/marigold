@@ -35,8 +35,6 @@ const button = {
     fontSize: 'body',
     fontFamily: 'body',
     textDecoration: 'none',
-    px: 'xsmall',
-    py: 'xxsmall',
     color: 'white',
     bg: 'primary',
     border: 'none',
@@ -50,6 +48,10 @@ const button = {
   large: {
     px: 'small',
     py: 'xsmall',
+  },
+  small: {
+    px: 'xsmall',
+    py: 'xxsmall',
   },
   select: {
     ...selectButton,
@@ -215,24 +217,17 @@ const select = {
 
 export const components = {
   button: {
+    large: {
+      ...button.large,
+    },
+    small: {
+      ...button.small,
+    },
     primary: {
-      small: {
-        ...button.primary,
-      },
-      large: {
-        ...button.large,
-      },
+      ...button.primary,
     },
     secondary: {
-      small: {
-        ...button.primary,
-        ...button.secondary,
-      },
-      large: {
-        ...button.primary,
-        ...button.secondary,
-        ...button.large,
-      },
+      ...button.secondary,
     },
     action: {
       ...button.primary,
