@@ -1,4 +1,5 @@
 import { addDecorator, addParameters } from '@storybook/react';
+import { withPerformance } from 'storybook-addon-performance';
 import { withThemes } from 'storybook-addon-themes/react';
 
 import React from 'react';
@@ -14,6 +15,7 @@ const themes = {
   unicorn: unicornTheme,
 };
 
+addDecorator(withPerformance);
 addDecorator(withThemes);
 addParameters({
   a11y: {
