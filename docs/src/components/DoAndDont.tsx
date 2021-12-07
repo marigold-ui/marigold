@@ -40,14 +40,14 @@ export const DoAndDont: React.FC<DoAndDontProps> = ({
           css={{ color: dont ? 'red' : 'green' }}
         >
           {dont ? (
-            <Inline as="span" space="xsmall" align="center">
+            <Inline space="xsmall">
               <Banned size={20} />
               <Heading as="h4" variant="h4">
                 Don't
               </Heading>
             </Inline>
           ) : (
-            <Inline as="span" space="xsmall" align="center">
+            <Inline as="span" space="xsmall">
               <Check size={20} />
               <Heading as="h4" variant="h4">
                 Do
