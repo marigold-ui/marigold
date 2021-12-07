@@ -84,7 +84,7 @@ test('supports nesting', () => {
   expect(fourth.parentElement).toHaveStyle(`padding-left: 2px`);
 });
 
-test('renders as div per default', () => {
+test('renders div per default', () => {
   render(
     <ThemeProvider theme={theme}>
       <Inline data-testid="inline">

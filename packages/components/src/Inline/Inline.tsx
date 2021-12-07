@@ -6,7 +6,6 @@ import { ResponsiveStyleValue } from '@marigold/system';
 import { Box } from '../Box';
 
 export type InlineProps = {
-  as?: 'div' | 'span';
   space?: ResponsiveStyleValue<string>;
   align?: 'top' | 'center' | 'bottom';
 };
@@ -18,14 +17,12 @@ const ALIGNMENT = {
 };
 
 export const Inline: React.FC<InlineProps> = ({
-  as = 'div',
   space = 'none',
   align = 'center',
   children,
   ...props
 }) => (
   <Box
-    as={as}
     display="inline-flex"
     css={{ '> * + *': { pl: space } }}
     alignItems={ALIGNMENT[align]}
