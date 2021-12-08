@@ -1,51 +1,97 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Checkbox } from './Checkbox';
+import { ThemeProvider } from '@marigold/system';
+
+const theme = {
+  checkbox: {
+    default: {
+      m: '2px',
+    },
+  },
+};
 
 test('supports label prop', () => {
   render(<Checkbox label="Test" id="test" title="checkbox" />);
-  const checkbox = screen.getByText(/Test/);
 
-  expect(checkbox).toBeDefined();
+  const checkboxLabel = screen.getByText(/Test/);
+  expect(checkboxLabel).toBeDefined();
 });
 
-test('supports required prop an renders required icon', () => {
+test('supports required prop and renders required icon', () => {
   render(<Checkbox label="Test" id="test" required title="checkbox" />);
-  const checkbox = screen.getByText(/Test/);
 
-  expect(checkbox).toContainHTML('path d="M10.8');
+  const label = screen.getByText(/Test/);
+  expect(label.nextSibling).toContainHTML('path d="M10.8');
 });
 
 test('supports default type', () => {
-  render(<Checkbox id="test" title="checkbox" />);
-  const checkbox = screen.getByTitle(/checkbox/);
+  render(<Checkbox id="checkbox" title="checkbox" />);
 
+  const checkbox = screen.getByTitle(/checkbox/);
   expect(checkbox.getAttribute('type')).toEqual('checkbox');
 });
 
 test('renders <input> element', () => {
-  render(<Checkbox id="test" title="checkbox" />);
-  const checkbox = screen.getByTitle(/checkbox/);
+  render(<Checkbox id="checkbox" title="checkbox" />);
 
+  const checkbox = screen.getByTitle(/checkbox/);
   expect(checkbox instanceof HTMLInputElement).toBeTruthy();
 });
 
-test('renders <SVG> SquareUnchecked element', () => {
-  render(<Checkbox id="checkbox" label="Test" />);
-  const checkbox = screen.getByText(/Test/);
-  expect(checkbox).toContainHTML('path d="M19.2917');
+test('supports disabled prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox id="test" title="checkbox" label="label" disabled />
+    </ThemeProvider>
+  );
+
+  const checkbox = screen.getByTitle(/checkbox/);
+  expect(checkbox).toHaveAttribute('disabled');
 });
 
-test('renders <SVG> SquareChecked element', () => {
-  render(<Checkbox id="checkbox" label="Test" checked onChange={() => {}} />);
-  const checkbox = screen.getByText(/Test/);
-  expect(checkbox).toContainHTML('path d="M19.2917 2.62');
+test('supports error and errorMessage prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox
+        id="test"
+        title="checkbox"
+        label="test"
+        error
+        errorMessage="error"
+      />
+    </ThemeProvider>
+  );
+
+  const errorMessage = screen.getByText(/error/);
+  expect(errorMessage).toBeDefined();
 });
 
-test('change state onClick', () => {
-  render(<Checkbox id="checkbox" label="Test" />);
-  const checkbox = screen.getByText(/Test/);
-  expect(checkbox).toContainHTML('path d="M19.2917');
-  fireEvent.click(checkbox);
-  expect(checkbox).toContainHTML('path d="M19.2917');
+test('supports checked checkbox', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox id="test" title="checkbox" onChange={() => {}} checked />
+    </ThemeProvider>
+  );
+
+  const checkbox = screen.getByTitle(/checkbox/);
+  expect(checkbox).toBeDefined();
+});
+
+test('supports checked and disabled checkbox', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox
+        id="test"
+        title="checkbox"
+        onChange={() => {}}
+        checked
+        disabled
+      />
+    </ThemeProvider>
+  );
+
+  const checkbox = screen.getByTitle(/checkbox/);
+  expect(checkbox).toBeDefined();
+  expect(checkbox).toHaveAttribute('disabled');
 });

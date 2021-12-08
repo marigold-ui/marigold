@@ -4,11 +4,11 @@ import { ThemeProvider } from '@marigold/system';
 import { Slider } from './Slider';
 
 const theme = {
-  form: {
-    slider: {
+  slider: {
+    default: {
       fontFamily: 'Oswald Regular',
     },
-    range: {
+    special: {
       fontFamily: 'Inter',
     },
   },
@@ -28,7 +28,7 @@ test('supports default variant and themeSection', () => {
 test('accepts other variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Slider variant="range" title="slider" />
+      <Slider variant="special" title="slider" />
     </ThemeProvider>
   );
   const slider = screen.getByTitle(/slider/);

@@ -10,27 +10,33 @@ With the Columns component you can add a bundle of column components by adding p
 
 ## Properties
 
-| Property                     | Type                  | Default |
-| :--------------------------- | :-------------------- | :------ |
-| `space` (optional)           | `number`              | `0`     |
-| `horizontalAlign` (optional) | `left, right, center` | `left`  |
-| `verticalAlign` (optional)   | `top, bottom, center` | `top`   |
+| Property                     | Type                           | Default |
+| :--------------------------- | :----------------------------- | :------ |
+| `space` (optional)           | `ResponsiveStyleValue<string>` | `none`  |
+| `horizontalAlign` (optional) | `left, right, center`          | `left`  |
+| `verticalAlign` (optional)   | `top, bottom, center`          | `top`   |
 
 ## Import
 
-```tsx code
+```tsx onlyCode
 import { Columns } from '@marigold/components';
 ```
 
 ## Live-Code Example
 
-```tsx live
-<Columns verticalAlign="top" horizontalAlign="left">
+```tsx expandCode
+<Columns space="xsmall" verticalAlign="top" horizontalAlign="left">
   <Column width={6}>
-    <Text>Here's your text</Text>
+    <Text>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+      dignissim.
+    </Text>
   </Column>
   <Column width={6}>
-    <Text>Here's antoher text</Text>
+    <Text>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+      dignissim.
+    </Text>
   </Column>
 </Columns>
 ```
@@ -40,7 +46,7 @@ import { Columns } from '@marigold/components';
 ### Spacing
 
 ```tsx
-<Columns space={24}>
+<Columns space="medium">
   <Column width={4}>
     <Text>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
@@ -71,36 +77,56 @@ import { Columns } from '@marigold/components';
 ### Width
 
 ```tsx
-<Columns space={24}>
+<Columns space="xsmall">
   <Column width={12}>
-    <Text>width=12</Text>
+    <Box p="xsmall" bg="#dddde2" borderRadius="4px" mb="xxsmall">
+      width=12
+    </Box>
   </Column>
   <Column width={6}>
-    <Text>width=6</Text>
+    <Box p="xsmall" bg="#dddde2" borderRadius="4px" mb="xxsmall">
+      width=6
+    </Box>
   </Column>
   <Column width={6}>
-    <Text>width=6</Text>
+    <Box p="xsmall" bg="#dddde2" borderRadius="4px" mb="xxsmall">
+      width=6
+    </Box>
   </Column>
   <Column width={4}>
-    <Text>width=4</Text>
+    <Box p="xsmall" bg="#dddde2" borderRadius="4px" mb="xxsmall">
+      width=4
+    </Box>
   </Column>
   <Column width={4}>
-    <Text>width=4</Text>
+    <Box p="xsmall" bg="#dddde2" borderRadius="4px" mb="xxsmall">
+      width=4
+    </Box>
   </Column>
   <Column width={4}>
-    <Text>width=4</Text>
+    <Box p="xsmall" bg="#dddde2" borderRadius="4px" mb="xxsmall">
+      width=4
+    </Box>
   </Column>
   <Column width={3}>
-    <Text>width=3</Text>
+    <Box p="xsmall" bg="#dddde2" borderRadius="4px" mb="xxsmall">
+      width=3
+    </Box>
   </Column>
   <Column width={3}>
-    <Text>width=3</Text>
+    <Box p="xsmall" bg="#dddde2" borderRadius="4px" mb="xxsmall">
+      width=3
+    </Box>
   </Column>
   <Column width={3}>
-    <Text>width=3</Text>
+    <Box p="xsmall" bg="#dddde2" borderRadius="4px" mb="xxsmall">
+      width=3
+    </Box>
   </Column>
   <Column width={3}>
-    <Text>width=3</Text>
+    <Box p="xsmall" bg="#dddde2" borderRadius="4px" mb="xxsmall">
+      width=3
+    </Box>
   </Column>
 </Columns>
 ```
@@ -109,21 +135,27 @@ import { Columns } from '@marigold/components';
 
 ```tsx
 <>
-  <Columns space={24} horizontalAlign="left">
-    <Column width={1}>
-      <Text>left</Text>
+  <Columns space="medium" horizontalAlign="left">
+    <Column width={2}>
+      <Box p="small" bg="#dddde2" borderRadius="4px">
+        left
+      </Box>
     </Column>
   </Columns>
   <Divider />
-  <Columns space={24} horizontalAlign="center">
-    <Column width={1}>
-      <Text>center</Text>
+  <Columns space="medium" horizontalAlign="center">
+    <Column width={2}>
+      <Box p="small" bg="#dddde2" borderRadius="4px">
+        center
+      </Box>
     </Column>
   </Columns>
   <Divider />
-  <Columns space={24} horizontalAlign="right">
-    <Column width={1}>
-      <Text>right</Text>
+  <Columns space="medium" horizontalAlign="right">
+    <Column width={2}>
+      <Box p="small" bg="#dddde2" borderRadius="4px">
+        right
+      </Box>
     </Column>
   </Columns>
 </>
@@ -132,23 +164,70 @@ import { Columns } from '@marigold/components';
 ### Vertical Alignment
 
 ```tsx
-<>
-  <Columns verticalAlign="top">
-    <Column width={1}>
-      <Text>top</Text>
-    </Column>
-  </Columns>
-  <Divider />
-  <Columns verticalAlign="center">
-    <Column width={1}>
-      <Text>center</Text>
-    </Column>
-  </Columns>
-  <Divider />
-  <Columns verticalAlign="bottom">
-    <Column width={1}>
-      <Text>bottom</Text>
-    </Column>
-  </Columns>
-</>
+<Columns space="xxsmall" verticalAlign="top">
+  <Column width={3}>
+    <Box
+      display="flex"
+      alignItems="flex-start"
+      justifyContent="center"
+      height="80px"
+      bg="#dddde2"
+      borderRadius="4px"
+      p="xxsmall"
+    >
+      top
+    </Box>
+  </Column>
+  <Column width={9}>
+    <Box p="xsmall" height="40px" bg="#dddde2" borderRadius="4px">
+      <ArrowUp />
+    </Box>
+  </Column>
+</Columns>
+```
+
+```tsx
+<Columns space="xxsmall" verticalAlign="center">
+  <Column width={3}>
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      height="80px"
+      bg="#dddde2"
+      borderRadius="4px"
+      p="xxsmall"
+    >
+      center
+    </Box>
+  </Column>
+  <Column width={9}>
+    <Box p="xsmall" height="40px" bg="#dddde2" borderRadius="4px">
+      <ArrowLeft />
+    </Box>
+  </Column>
+</Columns>
+```
+
+```tsx
+<Columns space="xxsmall" verticalAlign="bottom">
+  <Column width={3}>
+    <Box
+      display="flex"
+      alignItems="flex-end"
+      justifyContent="center"
+      height="80px"
+      bg="#dddde2"
+      borderRadius="4px"
+      p="xxsmall"
+    >
+      bottom
+    </Box>
+  </Column>
+  <Column width={9}>
+    <Box p="xsmall" height="40px" bg="#dddde2" borderRadius="4px">
+      <ArrowDown />
+    </Box>
+  </Column>
+</Columns>
 ```

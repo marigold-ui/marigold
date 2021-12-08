@@ -100,14 +100,14 @@ const button = {
   },
   select: {
     ...selectButton,
-    border: '1px solid',
+    border: '1px solid transparent',
     borderColor: colors.gray40,
     ':hover': {
       cursor: 'pointer',
     },
     ':focus': {
-      border: '2px solid',
-      borderColor: colors.blue60,
+      boxShadow: '0 0 0 2px ' + colors.blue60,
+      border: '1px solid transparent',
     },
     ':disabled': {
       bg: colors.gray20,
@@ -122,23 +122,28 @@ const button = {
     },
     open: {
       ...selectButton,
-      borderTop: '1px solid',
-      borderRight: '1px solid',
-      borderLeft: '1px solid',
-      borderBottom: 'none',
-      borderColor: colors.gray40,
+      border: '1px solid transparent',
+      borderTopColor: colors.gray40,
+      borderLeftColor: colors.gray40,
+      borderRightColor: colors.gray40,
       borderTopRightRadius: '2px',
       borderTopLeftRadius: '2px',
     },
     errorOpened: {
       ...selectButton,
-      borderTop: '1px solid',
-      borderRight: '1px solid',
-      borderLeft: '1px solid',
-      borderBottom: 'none',
-      borderColor: 'error',
+      border: '1px solid transparent',
+      borderTopColor: 'error',
+      borderLeftColor: 'error',
+      borderRightColor: 'error',
       borderTopRightRadius: '2px',
       borderTopLeftRadius: '2px',
+    },
+  },
+  close: {
+    color: 'text',
+    bg: 'transparent',
+    ':hover': {
+      cursor: 'pointer',
     },
   },
 };
@@ -170,6 +175,25 @@ const selectOption = {
   color: 'text',
   px: 'xsmall',
   listStyle: 'none',
+};
+const sliderThumb = {
+  WebkitAppearance: 'none',
+  boxSizing: 'border-box',
+  border: '4px solid ' + colors.gray70,
+  width: '16px',
+  height: '16px',
+  background: colors.gray00,
+  borderRadius: '8px',
+  cursor: 'pointer',
+  marginTop: '-4px',
+};
+const sliderTrack = {
+  WebkitAppearance: 'none',
+  width: '100%',
+  height: '8px',
+  background: colors.gray30,
+  borderRadius: '8px',
+  border: 'none',
 };
 
 const theme: BaseTheme = {
@@ -217,18 +241,28 @@ const theme: BaseTheme = {
     info: colors.blue70,
     success: colors.green70,
   },
+  root: {
+    body: {
+      margin: 0,
+      padding: 0,
+      fontFamily: 'body',
+    },
+  },
   alerts: {
     error: {
+      alignItems: 'center',
       borderStyle: 'solid',
       borderColor: 'error',
       borderWidth: '2px 2px 2px 0px',
     },
     warning: {
+      alignItems: 'center',
       borderStyle: 'solid',
       borderColor: 'warning',
       borderWidth: '2px 2px 2px 0px',
     },
     success: {
+      alignItems: 'center',
       borderStyle: 'solid',
       borderColor: 'success',
       borderWidth: '2px 2px 2px 0px',
@@ -257,6 +291,9 @@ const theme: BaseTheme = {
       lineHeight: '30px',
       paddingX: 'medium',
     },
+    xsmall: {
+      lineHeight: '16px',
+    },
     primary: {
       ...button.root,
       ...button.primary,
@@ -281,21 +318,95 @@ const theme: BaseTheme = {
       ...button.root,
       ...button.select,
     },
+    close: {
+      ...button.root,
+      ...button.close,
+    },
+  },
+  card: {
+    default: {
+      maxWidth: '500px',
+      background: colors.gray00,
+      p: 'small',
+      boxShadow: '0px 4px 4px rgba(165, 165, 165, 0.25)',
+      borderRadius: '10px',
+    },
   },
   checkbox: {
     default: {
-      color: colors.gray70,
+      ariaHidden: 'true',
+      mr: 2,
+      verticalAlign: 'middle',
+      ':hover': { cursor: 'pointer' },
+      'input:disabled ~ &': {
+        cursor: 'not-allowed',
+      },
+    },
+    checked: {
+      fill: colors.blue60,
+      stroke: colors.blue70,
+      disabled: {
+        fill: colors.gray30,
+        stroke: colors.gray30,
+      },
+      icon: {
+        fill: colors.gray00,
+      },
+    },
+    unchecked: {
+      fill: colors.gray00,
+      stroke: colors.gray40,
+      disabled: {
+        stroke: colors.gray30,
+      },
+      error: {
+        stroke: 'error',
+      },
+    },
+  },
+  radio: {
+    default: {
+      ariaHidden: 'true',
+      mr: 2,
+      verticalAlign: 'middle',
+      ':hover': { cursor: 'pointer' },
+      'input:disabled ~ &': {
+        color: 'muted',
+        cursor: 'not-allowed',
+      },
+    },
+    checked: {
+      fill: colors.blue60,
+      stroke: colors.blue70,
+      disabled: {
+        fill: colors.gray30,
+        stroke: colors.gray30,
+      },
+      circle: {
+        fill: colors.gray00,
+      },
+    },
+    unchecked: {
+      fill: colors.gray00,
+      stroke: colors.gray40,
+      disabled: {
+        stroke: colors.gray30,
+      },
+      error: {
+        stroke: 'error',
+      },
     },
   },
   dialog: {
     wrapper: {
-      display: 'block',
+      display: 'flex',
+      justifyContent: 'space-between',
       borderRadius: '2px',
       paddingLeft: 'large',
       paddingBottom: 'large',
     },
     body: {
-      paddingTop: 'small',
+      paddingTop: 'medium',
     },
     onClose: {
       display: 'flex',
@@ -303,6 +414,23 @@ const theme: BaseTheme = {
       alignItems: 'start',
       paddingTop: 'xsmall',
       paddingX: 'xsmall',
+    },
+    modalWrapper: {
+      position: 'fixed',
+      zIndex: 100,
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      background: 'rgba(0, 0, 0, 0.5)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    modalBody: {
+      background: '#ffffff',
+      minWidth: '510px',
+      minHeight: '240px',
     },
   },
   divider: {
@@ -318,14 +446,12 @@ const theme: BaseTheme = {
       border: 0,
       borderBottom: '2px solid',
     },
-  },
-  field: {
-    default: {
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      color: 'text',
-      fontWeight: 'body',
-      lineHeight: '1.5rem',
+    section: {
+      m: 'none',
+      mb: 'small',
+      border: 0,
+      borderBottom: '1px solid',
+      borderColor: colors.gray50,
     },
   },
   images: {
@@ -336,17 +462,16 @@ const theme: BaseTheme = {
   },
   input: {
     default: {
-      display: 'block',
       fontFamily: 'body',
       color: 'text',
-      border: 0,
-      outline: '1px solid',
-      outlineColor: colors.gray40,
+      border: 'none',
+      borderRadius: '2px',
+      boxShadow: '0 0 0 1px ' + colors.gray40,
+      outline: 'none',
       padding: '0 8px',
       lineHeight: '32px',
       ':focus': {
-        outline: '2px solid',
-        outlineColor: colors.blue60,
+        boxShadow: '0 0 0 2px ' + colors.blue60,
       },
       ':disabled': {
         bg: colors.gray20,
@@ -354,21 +479,32 @@ const theme: BaseTheme = {
         cursor: 'not-allowed',
       },
     },
+    error: {
+      color: 'text',
+      border: 'none',
+      borderRadius: '2px',
+      boxShadow: '0 0 0 1px ' + colors.red60,
+      outline: 'none',
+      padding: '0 8px',
+      lineHeight: '32px',
+    },
   },
   label: {
-    default: {
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      fontWeight: 'body',
-      lineHeight: '1.5rem',
-      color: 'text',
-    },
     above: {
       fontFamily: 'body',
       fontSize: 'xxsmall',
       fontWeight: 'body',
       lineHeight: 'body',
       color: 'text',
+    },
+    inline: {
+      fontFamily: 'body',
+      fontSize: 'xsmall',
+      fontWeight: 'body',
+      lineHeight: '1.5rem',
+      color: 'text',
+      display: 'inline-flex',
+      alignItems: 'center',
     },
     disabled: {
       fontFamily: 'body',
@@ -377,21 +513,16 @@ const theme: BaseTheme = {
       lineHeight: 'body',
       color: colors.gray30,
     },
-  },
-  link: {
-    normal: {
-      color: colors.blue60,
-      ':hover': {
-        textDecoration: 'none',
-      },
-    },
-    menu: {
-      color: 'text',
-      textDecoration: 'none',
+    section: {
+      fontFamily: 'body',
+      fontSize: 'small',
+      fontWeight: 'body',
+      lineHeight: '32px',
+      color: colors.gray50,
     },
   },
-  menu: {
-    menuItem: {
+  menuItem: {
+    default: {
       display: 'block',
       fontFamily: 'body',
       fontSize: 'xsmall',
@@ -476,6 +607,16 @@ const theme: BaseTheme = {
       textTransform: 'uppercase',
       m: 'none',
     },
+    link: {
+      color: colors.blue60,
+      ':hover': {
+        textDecoration: 'none',
+      },
+    },
+    menuItemLink: {
+      color: 'text',
+      textDecoration: 'none',
+    },
   },
   textarea: {
     default: {
@@ -515,26 +656,30 @@ const theme: BaseTheme = {
     listbox: {
       __default: {
         background: colors.gray00,
-        borderTop: 'none',
-        borderRight: '1px solid',
-        borderLeft: '1px solid',
-        borderBottom: '1px solid',
+        border: '1px solid transparent',
+        borderLeftColor: colors.gray40,
+        borderRightColor: colors.gray40,
+        borderBottomColor: colors.gray40,
         borderBottomRightRadius: '2px',
         borderBottomLeftRadius: '2px',
-        borderColor: colors.gray40,
-        outline: 'none',
       },
       error: {
         background: colors.gray00,
-        borderTop: 'none',
-        borderRight: '1px solid',
-        borderLeft: '1px solid',
-        borderBottom: '1px solid',
-        borderBottomRightRadius: '2px',
+        border: '1px solid transparent',
+        borderLeftColor: 'error',
+        borderRightColor: 'error',
+        borderBottomColor: 'error',
         borderBottomLeftRadius: '2px',
-        borderColor: 'error',
-        outline: 'none',
+        borderBottomRightRadius: '2px',
       },
+    },
+    section: {
+      fontFamily: 'body',
+      fontSize: 'xsmall',
+      fontWeight: 'body',
+      lineHeight: '32px',
+      px: 'xxsmall',
+      color: colors.gray50,
     },
     option: {
       __default: {
@@ -552,6 +697,73 @@ const theme: BaseTheme = {
         ...selectOption,
         cursor: 'not-allowed',
         color: colors.gray40,
+      },
+    },
+  },
+  slider: {
+    default: {
+      // styles need to be applied to range inputs in all browsers to override their basic appearance.
+      WebkitAppearance: 'none',
+      background: 'transparent',
+      borderColor: 'transparent',
+      color: 'transparent',
+      ':focus': {
+        outline: 'none',
+      },
+      // chrome, safari, opera (theres actually no webkit option to style the progress bar like in firefox)
+      '&::-webkit-slider-thumb': {
+        ...sliderThumb,
+      },
+      '&:focus::-webkit-slider-thumb': {
+        ...sliderThumb,
+        border: '4px solid ' + colors.blue60,
+      },
+      '&:disabled::-webkit-slider-thumb': {
+        ...sliderThumb,
+        border: '4px solid ' + colors.gray40,
+        background: colors.gray40,
+      },
+      '&::-webkit-slider-runnable-track': {
+        ...sliderTrack,
+      },
+      '&:focus::-webkit-slider-runnable-track': {
+        ...sliderTrack,
+        background: colors.blue60,
+      },
+      '&:disabled::-webkit-slider-runnable-track': {
+        ...sliderTrack,
+        background: colors.gray40,
+      },
+      '&::-webkit-progress-value': {
+        background: colors.green60,
+      },
+      // firefox
+      '&::-moz-range-thumb': {
+        ...sliderThumb,
+      },
+      '&:focus::-moz-range-thumb': {
+        ...sliderThumb,
+        border: '4px solid ' + colors.blue60,
+      },
+      '&:disabled::-moz-range-thumb': {
+        ...sliderThumb,
+        border: '4px solid ' + colors.gray40,
+        background: colors.gray40,
+      },
+      '&::-moz-range-track': {
+        ...sliderTrack,
+      },
+      '&::-moz-range-progress': {
+        ...sliderTrack,
+        background: colors.gray70,
+      },
+      '&:focus::-moz-range-progress': {
+        ...sliderTrack,
+        background: colors.blue60,
+      },
+      '&:disabled::-moz-range-progress': {
+        ...sliderTrack,
+        background: colors.gray40,
       },
     },
   },

@@ -13,7 +13,7 @@ import { Text } from '../Text';
       description: 'Responsive Style Value',
       table: {
         defaultValue: {
-          summary: '0',
+          summary: 'none',
         },
       },
     },
@@ -37,10 +37,12 @@ import { Text } from '../Text';
 export const Template = args => (
   <Stack {...args}>
     <Heading>Heading</Heading>
-    <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-          dignissim dapibus elit, vel egestas felis pharetra non. Cras
-          malesuada, massa nec ultricies efficitur, lectus ante consequat magna,
-          a porttitor massa ex ut quam.</Text>
+    <Text>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+      dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
+      massa nec ultricies efficitur, lectus ante consequat magna, a porttitor
+      massa ex ut quam.
+    </Text>
   </Stack>
 );
 

@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 import { Field } from './Field';
-import { useStyles } from '@marigold/system';
 
 const theme = {
   field: {
@@ -14,28 +13,6 @@ const theme = {
     },
   },
 };
-
-test('supports default variant and themeSection', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Field htmlFor="myId" label="label" />
-    </ThemeProvider>
-  );
-  const field = screen.getByText(/label/);
-
-  expect(field).toHaveStyle(`padding: 4px`);
-});
-
-test('accepts other variant than default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Field htmlFor="myId" label="inputField" variant="inputField" />
-    </ThemeProvider>
-  );
-  const inputField = screen.getByText(/inputField/);
-
-  expect(inputField).toHaveStyle(`padding: 8px`);
-});
 
 test('renders correct HTML element', () => {
   render(
@@ -56,34 +33,48 @@ test('supports label prop', () => {
 });
 
 test('supports htmlFor prop', () => {
-  render(<Field htmlFor="myId" label="Name" error="Validation error" />);
+  render(<Field htmlFor="myId" label="Name" />);
   const field = screen.getByText(/Name/);
 
   expect(field).toHaveAttribute('for');
 });
 
-test('supports error prop', () => {
-  render(<Field htmlFor="myId" label="label" error="Validation error" />);
-  const field = screen.getByText(/Validation/);
+test('supports required prop', () => {
+  render(<Field htmlFor="myId" label="label" required />);
+  const fieldLabel = screen.getByText(/label/);
 
-  expect(field).toBeDefined();
+  expect(fieldLabel.nextSibling).toBeDefined();
+  expect(fieldLabel.nextSibling instanceof SVGElement).toBeTruthy();
+});
+
+test('supports error and errorMessage prop', () => {
+  render(
+    <Field htmlFor="myId" label="label" error errorMessage="Validation error" />
+  );
+
+  const errorMessage = screen.getByText(/Validation/);
+  expect(errorMessage).toBeDefined();
+});
+
+test('supports disabled prop', () => {
+  render(<Field htmlFor="myId" label="label" disabled />);
+  const fieldLabel = screen.getByText(/label/);
+  expect(fieldLabel.nextSibling).toHaveAttribute('disabled');
 });
 
 test('accepts custom styles prop className', () => {
-  const TestComponent: React.FC = ({ children, ...props }) => {
-    const classNames = useStyles({ css: { fontSize: '8px' } });
-    return (
-      <Field htmlFor="myId" label="label" className={classNames} {...props} />
-    );
-  };
-
-  const { getByText } = render(
+  render(
     <ThemeProvider theme={theme}>
-      <TestComponent />
+      <Field
+        htmlFor="myId"
+        label="label"
+        className="custom-class-name"
+        title="field"
+        data-testid="field"
+      />
     </ThemeProvider>
   );
-  const testelem = getByText('label');
-  const field = getComputedStyle(testelem);
+  const field = screen.getByTestId(/field/);
 
-  expect(field.fontSize).toEqual('8px');
+  expect(field.className).toMatch('custom-class-name');
 });

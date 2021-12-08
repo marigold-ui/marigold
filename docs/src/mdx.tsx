@@ -4,9 +4,8 @@ import { preToCodeBlock } from 'mdx-utils';
 
 import { Box, Heading, Text } from '@marigold/components';
 import { ComponentProps } from '@marigold/types';
-import { useStyles } from '@marigold/system';
 
-import { CodeBlock } from './components/CodeBlock';
+import { Preview } from './components/Preview';
 
 // Typography
 // ---------------
@@ -57,34 +56,31 @@ export const p: React.FC<ComponentProps<'p'>> = ({ children, ...props }) => (
 export const inlineCode: React.FC<ComponentProps<'code'>> = ({
   children,
   ...props
-}) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const className = useStyles({
-    css: {
+}) => (
+  <Box
+    as="code"
+    {...props}
+    borderRadius="small"
+    p="xxsmall"
+    my="none"
+    mx="xxsmall"
+    css={{
       lineHeight: 'cap',
-      my: 'none',
-      mx: 'xxsmall',
-      p: 'xxsmall',
       whiteSpace: 'nowrap',
-      borderRadius: 'small',
       fontSize: 'xxsmall',
       fontFamily: 'code',
       color: 'gray.10',
       bg: 'gray.90',
-    },
-  });
-
-  return (
-    <code {...props} className={className}>
-      {children}
-    </code>
-  );
-};
+    }}
+  >
+    {children}
+  </Box>
+);
 
 export const pre: React.FC<ComponentProps<'pre'>> = preProps => {
   const props = preToCodeBlock(preProps);
   if (props) {
-    return <CodeBlock type={props.metastring} {...props} />;
+    return <Preview type={props.metastring} {...props} />;
   }
   return <pre {...preProps} />;
 };
@@ -92,11 +88,19 @@ export const pre: React.FC<ComponentProps<'pre'>> = preProps => {
 // Lists
 // ---------------
 export const ul: React.FC<ComponentProps<'ul'>> = ({ children, ...props }) => (
-  <ul {...props}><Text as="p" variant="body">{children}</Text></ul>
+  <ul {...props}>
+    <Text as="p" variant="body">
+      {children}
+    </Text>
+  </ul>
 );
 
 export const ol: React.FC<ComponentProps<'ol'>> = ({ children, ...props }) => (
-  <ol {...props}><Text as="p" variant="body">{children}</Text></ol>
+  <ol {...props}>
+    <Text as="p" variant="body">
+      {children}
+    </Text>
+  </ol>
 );
 
 export const li: React.FC<ComponentProps<'li'>> = ({ children, ...props }) => (
@@ -116,13 +120,17 @@ export const table: React.FC<ComponentProps<'table'>> = ({
 
 export const td: React.FC<ComponentProps<'td'>> = ({ children, ...props }) => (
   <Box as="td" p="xsmall" {...props}>
-    <Text as="p" variant="body">{children}</Text>
+    <Text as="p" variant="body">
+      {children}
+    </Text>
   </Box>
 );
 
 export const th: React.FC<ComponentProps<'th'>> = ({ children, ...props }) => (
   <Box as="th" p="xsmall" bg="gray.80" {...props}>
-    <Heading as="h5" variant="h5">{children}</Heading>
+    <Heading as="h5" variant="h5">
+      {children}
+    </Heading>
   </Box>
 );
 

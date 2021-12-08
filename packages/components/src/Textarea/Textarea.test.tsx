@@ -58,14 +58,13 @@ test('supports label prop', () => {
   expect(textarea instanceof HTMLLabelElement).toBeTruthy();
 });
 
-test('supports errorMessage prop', () => {
+test('supports error and errorMessage prop', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Textarea errorMessage="error" title="textarea" />
+      <Textarea error errorMessage="error" label="label" title="textarea" />
     </ThemeProvider>
   );
   const textarea = screen.getByText(/error/);
-
   expect(textarea).toBeDefined();
 });
 
@@ -75,9 +74,9 @@ test('supports required prop', () => {
       <Textarea label="test" htmlFor="myId" required title="textarea" />
     </ThemeProvider>
   );
-  const textarea = screen.getByText(/test/).lastChild;
+  const label = screen.getByText(/test/);
 
-  expect(textarea instanceof SVGElement).toBeTruthy();
+  expect(label.nextSibling instanceof SVGElement).toBeTruthy();
 });
 
 test('accepts custom styles prop className', () => {

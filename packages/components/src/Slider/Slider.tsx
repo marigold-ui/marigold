@@ -1,23 +1,23 @@
 import React from 'react';
-import { useStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
+
+import { Box } from '../Box';
 
 export type SliderProps = {
   variant?: string;
 } & ComponentProps<'input'>;
 
 export const Slider: React.FC<SliderProps> = ({
-  variant = 'slider',
+  variant = 'default',
   className,
   ...props
-}) => {
-  const classNames = useStyles({
-    variant: `form.${variant}`,
-    css: {
-      verticalAlign: 'middle',
-    },
-    className,
-  });
-
-  return <input type="range" className={classNames} {...props} />;
-};
+}) => (
+  <Box
+    as="input"
+    type="range"
+    css={{ verticalAlign: 'middle' }}
+    variant={`slider.${variant}`}
+    className={className}
+    {...props}
+  />
+);

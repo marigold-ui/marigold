@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTheme } from '@marigold/system';
 import { render, screen } from '@testing-library/react';
-import { useModal } from '@react-aria/overlays';
 
 import { MarigoldProvider } from './MarigoldProvider';
 
@@ -64,19 +63,67 @@ test('themes can be cascaded', () => {
   `);
 });
 
-// if theres no OverlayProvider you got an error with text: Modal is not contained within a provider
-test('OverlayProvider is present and supports useModal hook', () => {
-  const ChildComponent: React.FC = ({ children }) => {
-    const { modalProps } = useModal();
-    return <div {...modalProps}>{children}</div>;
-  };
+test('OverlayProvider is added', () => {
+  const { container } = render(
+    <MarigoldProvider theme={theme}>Test</MarigoldProvider>
+  );
 
-  render(
+  expect(
+    container.querySelector(`div[data-overlay-container="true"]`)
+  ).toBeDefined();
+});
+
+test('OverlayProvider is added only once', () => {
+  const innerTheme = { colors: { primary: 'red' } };
+  const { container } = render(
     <MarigoldProvider theme={theme}>
-      <ChildComponent>Test</ChildComponent>
+      <MarigoldProvider theme={innerTheme}>Test</MarigoldProvider>
     </MarigoldProvider>
   );
 
-  const childComp = screen.getByText('Test');
-  expect(childComp).toBeDefined();
+  expect(
+    container.querySelectorAll(`div[data-overlay-container="true"]`).length
+  ).toEqual(1);
+});
+
+test('applies global styles for body and html based on `theme.root`', () => {
+  const theme = {
+    fonts: {
+      body: 'Inter',
+      html: 'Roboto',
+    },
+    lineHeights: {
+      body: 2.5,
+    },
+    fontWeights: {
+      body: 500,
+      html: 700,
+    },
+    root: {
+      body: {
+        fontFamily: 'body',
+        lineHeight: 'body',
+        fontWeight: 'body',
+      },
+      html: {
+        fontFamily: 'html',
+        fontWeight: 'html',
+      },
+    },
+  };
+
+  const root = render(
+    <MarigoldProvider theme={theme}>
+      <h1>Hello</h1>
+    </MarigoldProvider>
+  );
+
+  const html = root.baseElement.parentElement;
+  expect(html).toHaveStyle(`font-family: ${theme.fonts.html}`);
+  expect(html).toHaveStyle(`font-weight: ${theme.fontWeights.html}`);
+
+  const body = root.baseElement;
+  expect(body).toHaveStyle(`font-family: ${theme.fonts.body}`);
+  expect(body).toHaveStyle(`font-weight: ${theme.fontWeights.body}`);
+  expect(body).toHaveStyle(`line-height: ${theme.lineHeights.body}`);
 });

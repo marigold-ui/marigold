@@ -16,32 +16,50 @@ With the Column component you can add a column with a width in percent of the fu
 
 ## Import
 
-```tsx code
+```tsx onlyCode
 import { Column } from '@marigold/components';
 ```
 
 ## Live-Code Example
 
-```tsx live
-<Column>width=12</Column>
+```tsx expandCode
+<Column>
+  <Box p="small" border="1px solid #9496a3" borderRadius="4px">
+    width=12
+  </Box>
+</Column>
 ```
 
 ## Usage
 
-import { useStyles } from '@marigold/system';
-
 ```tsx
-<Column>width=12</Column>
+<Column>
+  <Box p="small" border="1px solid gray" borderRadius="4px">
+    width=12
+  </Box>
+</Column>
 ```
 
 ```tsx
-<Column width={6}>width=6</Column>
+<Column width={6}>
+  <Box p="small" border="1px solid gray" borderRadius="4px">
+    width=6
+  </Box>
+</Column>
 ```
 
 ```tsx
-<Column width={3}>width=3</Column>
+<Column width={3}>
+  <Box p="small" border="1px solid gray" borderRadius="4px">
+    width=3
+  </Box>
+</Column>
 ```
 
 ```tsx
-<Column width={2}>width=2</Column>
+<Column width={2}>
+  <Box p="small" border="1px solid gray" borderRadius="4px">
+    width=2
+  </Box>
+</Column>
 ```

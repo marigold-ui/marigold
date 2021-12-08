@@ -14,10 +14,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js 12.x
+      - name: Setup Node.js 16.x
         uses: actions/setup-node@master
         with:
-          node-version: 12.x
+          node-version: 16.x
 
       - uses: actions/cache@v2
         with:
@@ -26,7 +26,7 @@ jobs:
 
       - name: Install Dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn
+        run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn
 
       - name: Typecheck
         run: yarn tsc --noEmit

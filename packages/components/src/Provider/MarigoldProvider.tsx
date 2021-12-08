@@ -1,15 +1,30 @@
 import React from 'react';
 import { OverlayProvider } from '@react-aria/overlays';
-import { ThemeProvider, ThemeProviderProps } from '@marigold/system';
+import {
+  Global,
+  ThemeProvider,
+  ThemeProviderProps,
+  useTheme,
+  __defaultTheme,
+} from '@marigold/system';
 
-// a merge of the ThemeProvider and the react-aria OverlayProvider
 export const MarigoldProvider: React.FC<ThemeProviderProps> = ({
   theme,
   children,
 }) => {
+  const outer = useTheme();
+  const isTopLevel = outer.theme === __defaultTheme;
+
   return (
     <ThemeProvider theme={theme}>
-      <OverlayProvider>{children}</OverlayProvider>
+      {isTopLevel ? (
+        <>
+          <Global />
+          <OverlayProvider>{children}</OverlayProvider>
+        </>
+      ) : (
+        children
+      )}
     </ThemeProvider>
   );
 };

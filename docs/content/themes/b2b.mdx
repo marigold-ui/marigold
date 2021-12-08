@@ -3,6 +3,7 @@ title: B2B Theme
 ---
 
 import {
+  Box,
   Column,
   Columns,
   Container,
@@ -10,7 +11,6 @@ import {
   Stack,
   Text,
 } from '@marigold/components';
-import { useStyles } from '@marigold/system';
 
 # B2B Theme
 
@@ -66,59 +66,23 @@ Inter Regular for body text.
 As a rule of thumb, any text displayed over colours with a classname number of 50 or above should be white.
 Anything below 50 should have black text (gray-70 | #4b4b4b).
 
-<div>
+<Box>
   <Columns>
     <Column width={2}>
-      <Stack space={4}>
-        <Container
-          className={useStyles({
-            css: { bg: '#fa8005', width: '96px', height: '24px' },
-          })}
-        />
-        <Container
-          className={useStyles({
-            css: { bg: '#4b4b4b', width: '96px', height: '24px' },
-          })}
-        />
-        <Container
-          className={useStyles({
-            css: { bg: '#4b4b4b', width: '96px', height: '24px' },
-          })}
-        />
-        <Container
-          className={useStyles({
-            css: { bg: '#fafafa', width: '96px', height: '24px' },
-          })}
-        />
-        <Container
-          className={useStyles({
-            css: { bg: '#e3e3e3', width: '96px', height: '24px' },
-          })}
-        />
-        <Container
-          className={useStyles({
-            css: { bg: '#dd4142', width: '96px', height: '24px' },
-          })}
-        />
-        <Container
-          className={useStyles({
-            css: { bg: '#fa8005', width: '96px', height: '24px' },
-          })}
-        />
-        <Container
-          className={useStyles({
-            css: { bg: '#1d67b6', width: '96px', height: '24px' },
-          })}
-        />
-        <Container
-          className={useStyles({
-            css: { bg: '#44a112', width: '96px', height: '24px' },
-          })}
-        />
+      <Stack>
+        <Box as={Container} bg="#fa8005" width="96px" height="24px" />
+        <Box as={Container} bg="#4b4b4b" width="96px" height="24px" />
+        <Box as={Container} bg="#4b4b4b" width="96px" height="24px" />
+        <Box as={Container} bg="#fafafa" width="96px" height="24px" />
+        <Box as={Container} bg="#e3e3e3" width="96px" height="24px" />
+        <Box as={Container} bg="#dd4142" width="96px" height="24px" />
+        <Box as={Container} bg="#fa8005" width="96px" height="24px" />
+        <Box as={Container} bg="#1d67b6" width="96px" height="24px" />
+        <Box as={Container} bg="#44a112" width="96px" height="24px" />
       </Stack>
     </Column>
     <Column width={6}>
-      <Stack space={4}>
+      <Stack>
         <Text>Primary</Text>
         <Text>Secondary</Text>
         <Text>Text</Text>
@@ -131,4 +95,4 @@ Anything below 50 should have black text (gray-70 | #4b4b4b).
       </Stack>
     </Column>
   </Columns>
-</div>
+</Box>

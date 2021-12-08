@@ -5,7 +5,7 @@ import { Alert } from './Alert';
 
 const theme = {
   alerts: {
-    info: {
+    success: {
       alignItems: 'center',
     },
     error: {

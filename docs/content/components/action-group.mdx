@@ -1,0 +1,70 @@
+---
+title: ActionGroup
+---
+
+# ActionGroup
+
+## Description
+
+The ActionGroup component adds two or more components together to form a common group.
+
+## Properties
+
+| Property                       | Type                           | Default |
+| :----------------------------- | :----------------------------- | :------ |
+| `space` (optional)             | `ResponsiveStyleValue<string>` | `none`  |
+| `verticalAlignment` (optional) | `boolean`                      | `false` |
+
+## Import
+
+```tsx onlyCode
+import { ActionGroup } from '@marigold/components';
+```
+
+## Live-Code Example
+
+```tsx expandCode
+<ActionGroup space="xsmall">
+  <Button variant="text" size="small">
+    Cancel
+  </Button>
+  <Button variant="primary" size="small">
+    Confirm
+  </Button>
+</ActionGroup>
+```
+
+## Usage
+
+```tsx
+<ActionGroup>
+  <Button variant="text" size="small">
+    Cancel
+  </Button>
+  <Button variant="secondary" size="small">
+    Delete <Delete />
+  </Button>
+</ActionGroup>
+```
+
+### With space
+
+```tsx
+<ActionGroup space="small">
+  <Button variant="ghost">Back</Button>
+  <Button variant="secondary">Next</Button>
+</ActionGroup>
+```
+
+### With vertical alignment
+
+```tsx
+<ActionGroup space="small" verticalAlignment>
+  <Button variant="ghost" size="small">
+    Sort <SortUp />
+  </Button>
+  <Button variant="secondary" size="small">
+    Sort <SortDown />
+  </Button>
+</ActionGroup>
+```

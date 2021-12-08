@@ -2,26 +2,22 @@
 title: Box Primitive
 ---
 
-import Link from 'gatsby-link';
-import { useStyles } from '@marigold/system';
-
 # Box Primitive
 
 ## Box as Layout Component
 
 As the basis of all our components, we use the `<Box>`. It is a versatile layout component that
-can be modified with layout props as listed in the <Link to="../../components/box">Box component</Link> description.
+can be modified with layout props as listed in the [Box component](../../components/box) description.
 Additionally, use the `variant` prop to define custom styles in your themes. With the `as` prop, you
 determine the rendered HTML element. Instead of exposing the underlying tools that will create CSS, the `<Box>` component
 wraps them and exposes an API for applying styling to a component while respecting the rules and constraints of our design
 system.
 
-```tsx code
+```tsx onlyCode
 import { Box } from '@marigold/components';
-import { useStyles } from '@marigold/system';
 ```
 
-```tsx live
+```tsx expandCode
 <Box as="button" bg="orange" p="8px">
   Button box with backgroundcolor and padding
 </Box>
@@ -35,7 +31,7 @@ By default, the `Box` component will render a `<div />`. This might be fine most
 rather render a `<button>` or an `<input>` etc. To allow this, the `Box` takes the special prop called `as`, accepting
 all HTML tag names as input. Don't forget to define variants in your theme.
 
-```tsx code
+```tsx onlyCode
 export type ButtonProps = {
   variant?: string;
 } & ComponentPropsWithRef<'button'>;
@@ -58,16 +54,16 @@ export const Button: React.FC<ButtonProps> = ({
 ## Custom CSS
 
 Staying inside the boundaries of the design system and its contraints should be the norm. But as limiting styling only
-to allowed values defined by the system can be very restrictive, you can use the `className` prop and generate custom
-styles with the <Link to="../../guides/usestyles">`useStyles`</Link> hook.
+to allowed values defined by the system can be very restrictive, you can use the `css` prop and generate custom
+styles.
 
-```tsx code
+```tsx onlyCode
 ...
     <Box
       as="button"
-      className={useStyles({ css: { fontSize: '11pt' } })}
-      {...props}
       variant={`button.${variant}`}
+      css={{ fontSize: '11pt' } }}
+      {...props}
     >
       ...
     </Box>

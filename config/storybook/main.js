@@ -13,11 +13,12 @@ module.exports = {
   stories: ['*.stories.mdx', path.resolve(root, 'packages/**/*.stories.mdx')],
   addons: [
     '@storybook/react',
+    '@storybook/addon-docs',
     '@storybook/addon-a11y',
     '@storybook/addon-controls',
-    '@storybook/addon-docs',
     '@storybook/addon-essentials',
     'storybook-addon-themes',
+    'storybook-addon-performance/register',
   ],
   typescript: {
     reactDocgen: 'none',
