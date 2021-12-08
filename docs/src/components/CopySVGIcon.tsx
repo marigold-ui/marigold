@@ -1,6 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import { renderToString } from 'react-dom/server';
-import { Snackbar, Tooltip } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import Tooltip from '@mui/material/Tooltip';
 
 import { Button } from '@marigold/components';
 
