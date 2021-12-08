@@ -3715,7 +3715,7 @@ __metadata:
   dependencies:
     "@typescript-eslint/eslint-plugin": 5.6.0
     "@typescript-eslint/parser": 5.6.0
-    babel-eslint: 10.1.0
+    babel-eslint: ^10.1.0
     eslint-config-prettier: ^8.3.0
     eslint-config-react-app: 6.0.0
     eslint-plugin-flowtype: ^8.0.0
@@ -8916,7 +8916,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-eslint@npm:10.1.0, babel-eslint@npm:^10.0.3":
+"babel-eslint@npm:^10.0.3, babel-eslint@npm:^10.1.0":
   version: 10.1.0
   resolution: "babel-eslint@npm:10.1.0"
   dependencies:
