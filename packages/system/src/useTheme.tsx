@@ -1,13 +1,18 @@
 import React, { createContext, useCallback, useContext } from 'react';
 import { css as themeUi } from '@theme-ui/css';
-import { Theme } from '@marigold/system';
+import { ThemeProvider as EmotionProvider } from '@emotion/react';
 
-import { StyleObject } from './types';
+import { StyleObject, Theme } from './types';
 
-const Context = createContext<Theme>({});
+/**
+ * @internal
+ */
+export const __defaultTheme: Theme = {};
+
+const InternalContext = createContext<Theme>(__defaultTheme);
 
 export const useTheme = () => {
-  const theme = useContext(Context);
+  const theme = useContext(InternalContext);
   const css = useCallback(
     (style: StyleObject) => themeUi(style)(theme),
     [theme]
@@ -19,4 +24,10 @@ export type ThemeProviderProps = { theme: any };
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   theme,
   children,
-}) => <Context.Provider value={theme}>{children}</Context.Provider>;
+}) => (
+  <EmotionProvider theme={theme}>
+    <InternalContext.Provider value={theme}>
+      {children}
+    </InternalContext.Provider>
+  </EmotionProvider>
+);

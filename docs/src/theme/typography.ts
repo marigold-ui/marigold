@@ -5,6 +5,10 @@ const text = {
     lineHeight: 'body',
     fontWeight: 'body',
   },
+  heading: {
+    fontWeight: 'heading',
+    color: 'gray.20',
+  },
 };
 
 export const typography = {
@@ -37,10 +41,15 @@ export const typography = {
   text: {
     body: {
       ...text.root,
+      color: 'gray.40',
+    },
+    muted: {
+      ...text.root,
+      color: 'gray.60',
     },
     h1: {
       ...text.root,
-      fontWeight: 'heading',
+      ...text.heading,
       fontSize: 'xlarge',
       marginBottom: 'medium',
       '&:first-child': {
@@ -49,7 +58,7 @@ export const typography = {
     },
     h2: {
       ...text.root,
-      fontWeight: 'heading',
+      ...text.heading,
       fontSize: 'large',
       marginTop: 'large',
       marginBottom: 'xsmall',
@@ -59,7 +68,7 @@ export const typography = {
     },
     h3: {
       ...text.root,
-      fontWeight: 'heading',
+      ...text.heading,
       fontSize: 'medium',
       marginTop: 'small',
       marginBottom: 'xsmall',
@@ -69,12 +78,12 @@ export const typography = {
     },
     h4: {
       ...text.root,
-      fontWeight: 'heading',
+      ...text.heading,
       fontSize: 'small',
     },
     h5: {
       ...text.root,
-      fontWeight: 'heading',
+      ...text.heading,
       fontSize: 'xsmall',
     },
     h6: {
@@ -83,10 +92,10 @@ export const typography = {
       textTransform: 'uppercase',
     },
     link: {
-      color: 'primary',
+      color: 'gray.20',
       textDecoration: 'none',
       '&:hover': {
-        textDecoration: 'underline',
+        color: 'blue.70',
       },
     },
   },

@@ -6,15 +6,22 @@ import { Column, Columns, Text } from '@marigold/components';
   argTypes={{
     space: {
       control: {
-        type: 'range',
-        min: 0,
-        max: 96,
-        step: 2,
+        type: 'select',
       },
-      description: 'Absolute space value',
+      options: [
+        'none',
+        'xxsmall',
+        'xsmall',
+        'small',
+        'medium',
+        'large',
+        'xlarge',
+        'xxlarge',
+      ],
+      description: 'space value',
       table: {
         defaultValue: {
-          summary: 0,
+          summary: 'none',
         },
       },
     },
@@ -51,9 +58,19 @@ export const Template = args => (
   <Columns {...args}>
     <Column width={6}>
       <Text>First column</Text>
+      <Text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+        dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
+        massa nec ultricies efficitur.
+      </Text>
     </Column>
     <Column width={6}>
       <Text>Second column</Text>
+      <Text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+        dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
+        massa nec ultricies efficitur.
+      </Text>
     </Column>
   </Columns>
 );

@@ -35,8 +35,6 @@ const button = {
     fontSize: 'body',
     fontFamily: 'body',
     textDecoration: 'none',
-    px: 'xsmall',
-    py: 'xxsmall',
     color: 'white',
     bg: 'primary',
     border: 'none',
@@ -50,6 +48,10 @@ const button = {
   large: {
     px: 'small',
     py: 'xsmall',
+  },
+  small: {
+    px: 'xsmall',
+    py: 'xxsmall',
   },
   select: {
     ...selectButton,
@@ -99,22 +101,56 @@ const button = {
   },
 };
 
+const card = {
+  default: {
+    background: 'white',
+    p: 'small',
+    boxShadow: '0px 4px 4px rgba(165, 165, 165, 0.25)',
+    borderRadius: '10px',
+  },
+  highlight: {
+    p: 'xxlarge',
+    background: '#F3F3F3',
+    borderRadius: '10px',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+};
+
+const divider = {
+  do: {
+    m: 'none',
+    my: 'small',
+    border: 'none',
+    borderBottom: '8px solid',
+    color: 'green',
+  },
+  dont: {
+    m: 'none',
+    my: 'small',
+    border: 'none',
+    borderBottom: '8px solid',
+    color: 'red',
+  },
+};
+
 const navigation = {
   wrapper: {
     fontFamily: 'body',
   },
+  list: {
+    p: 'none',
+  },
   header: {
-    textTransform: 'uppercase',
-    color: 'gray.80',
-    fontSize: 'xxxsmall',
+    color: 'gray.20',
+    fontSize: 'xxsmall',
     fontWeight: 'bold',
-    letterSpacing: '0.1em',
     pt: 'large',
     pb: 'small',
   },
   item: {
-    fontSize: 'small',
-    fontWeight: 'medium',
+    fontSize: 'xxsmall',
+    fontWeight: 'body',
     lineHeight: 'cap',
     pb: 'small',
   },
@@ -181,42 +217,37 @@ const select = {
 
 export const components = {
   button: {
+    large: {
+      ...button.large,
+    },
+    small: {
+      ...button.small,
+    },
     primary: {
-      small: {
-        ...button.primary,
-      },
-      large: {
-        ...button.large,
-      },
+      ...button.primary,
     },
     secondary: {
-      small: {
-        ...button.primary,
-        ...button.secondary,
-      },
-      large: {
-        ...button.primary,
-        ...button.secondary,
-        ...button.large,
-      },
+      ...button.secondary,
     },
-    copy: {
+    action: {
       ...button.primary,
-      ...button.large,
-      color: 'black',
+      pr: 'xsmall',
+      color: 'gray.40',
       bg: 'transparent',
-      border: 'grey',
-    },
-    toggle: {
-      ...button.primary,
-      color: 'black',
-      bg: 'transparent',
+      fontWeight: 'body',
+      fontFamily: 'body',
+      fontSize: 'xxsmall',
+      ':focus': {
+        outline: 'none',
+      },
     },
     select: {
       ...button.primary,
       ...button.select,
     },
   },
+  card,
+  divider,
   navigation,
   select,
 };

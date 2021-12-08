@@ -1,14 +1,11 @@
 {
   "name": "@marigold/icons",
   "description": "",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/components.esm.js",
   "typings": "dist/index.d.ts",
-  "dependencies": {
-    "@marigold/components": "workspace:*"
-  },
   "peerDependencies": {
     "react": "^16.x || ^17.0.0"
   },

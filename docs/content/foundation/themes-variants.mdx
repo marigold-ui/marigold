@@ -2,8 +2,6 @@
 title: Theme & Variants
 ---
 
-import Link from 'gatsby-link';
-
 # Theme & Variants
 
 Marigold uses a theme for its base styles.
@@ -11,7 +9,7 @@ Marigold uses a theme for its base styles.
 ## Theme Object
 
 Theming is based on a `theme object` that builds on the [System UI Theme Specification](https://system-ui.com/theme/).
-The theme object defines your application's spacings, colors, fonts and component styles.
+The theme object defines your application's spacings, colors, fonts and component styles. In the theme, you can define root styles that are applied globally.
 
 ### Spacings
 
@@ -56,7 +54,7 @@ you intend to use. By creating variant objects on the same level with the compon
 variant name in the component. If you want the same base styles applied to all the variants of one component, use a root object which you define outside the
 theme. See an example:
 
-```tsx code
+```tsx onlyCode
 // Root styles
 const alerts = {
   root: {
@@ -92,7 +90,7 @@ const theme: BaseTheme = {
 
 The `ThemeProvider` is a wrapper around the component tree on the root level and applies the theme to the components.
 
-```tsx code
+```tsx onlyCode
 import { ThemeProvider } from '@marigold/system';
 import b2bTheme from '@marigold/theme-b2b';
 
@@ -107,7 +105,7 @@ Theme variables are styles that are stored in key-value-pairs and defined as des
 If you change the theme, the value for a certain variable can change because a different style is stored in the new theme.
 Reuse theme variables within the theme while defining variants of a component. Like this, you create a unique theme that is applied in all the components:
 
-```tsx code
+```tsx onlyCode
 const theme: BaseTheme = {
   fonts: {
     body: 'Inter',
@@ -129,24 +127,28 @@ const theme: BaseTheme = {
 };
 ```
 
-These values can also be accessed as in
+These values can also be accessed in
 
-```tsx code
-const classNames = useStyles({
-  css: {
-    fontSize: b2bTheme.fontSize.small,
-  },
-});
+```tsx onlyCode
+<Box css={{ fontSize: 'small' }}>...</Box>
 ```
 
 ### Create a Theme
 
 Create a file, e.g. `index.ts` in your theme folder and define your theme object.
+Define the overall applied root styles in the theme aswell.
 Import and use the theme in the `<ThemeProvider>`.
 See a working example base theme here:
 
-```tsx code
+```tsx onlyCode
 const theme: BaseTheme = {
+  styles: {
+    root: {
+      fontFamily: 'body',
+      margin: 0,
+      padding: 0,
+    },
+  },
   breakpoints: ['768', '1200'],
   space: {
     none: 0,
@@ -200,6 +202,7 @@ See the theme object keys and the corresponding CSS properties in the following 
 
 | Theme Key     | CSS Properties                                                                                                                                                                                     |
 | :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `styles.root` | CSSObject                                                                                                                                                                                          |
 | `space`       | `margin`, `margin-top`, `margin-right`, `margin-bottom`, `margin-left`, `padding`, `padding-top`, `padding-right`, `padding-bottom`, `padding-left`, `grid-gap`, `grid-column-gap`, `grid-row-gap` |
 | `breakpoints` | `min-width` (media query)                                                                                                                                                                          |
 | `fonts`       | `font-family `                                                                                                                                                                                     |
@@ -210,4 +213,4 @@ See the theme object keys and the corresponding CSS properties in the following 
 
 ### Examples
 
-See example themes under <Link to="/themes/b2b">Themes/B2B</Link> and <Link to="/themes/unicorn">Themes/Unicorn</Link>.
+See example themes under [Themes/B2B](/themes/b2b) and [Themes/Unicorn](/themes/unicorn).

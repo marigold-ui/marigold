@@ -1,9 +1,11 @@
 export * from './theme';
 
+export * from './ActionGroup';
 export * from './Alert';
 export * from './Badge';
 export * from './Box';
 export * from './Button';
+export * from './Card';
 export * from './Checkbox';
 export * from './Column';
 export * from './Columns';
@@ -13,6 +15,7 @@ export * from './Field';
 export * from './Heading';
 export * from './Hidden';
 export * from './Image';
+export * from './Inline';
 export * from './Label';
 export * from './Link';
 export * from './Menu';
@@ -29,4 +32,4 @@ export * from './Input';
 export * from './Container';
 export * from './ValidationMessage';
 
-export { Item } from '@react-stately/collections';
+export { Item, Section } from '@react-stately/collections';

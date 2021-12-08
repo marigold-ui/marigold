@@ -10,7 +10,7 @@
 
 # Marigold
 
-React implementation of the Marigold Design System built on [Emotion](https://emotion.sh/).
+React implementation of the Marigold Design System based on [Emotion](https://emotion.sh/) and [theme-ui](https://theme-ui.com/).
 
 ## Installation 🔧
 
@@ -27,9 +27,18 @@ cd marigold
 yarn install
 ```
 
+If you want to use a marigold theme you have to install them seperatly like:
+```sh
+# with npm
+npm install @marigold/theme-unicorn --save
+
+# with yarn
+yarn add @marigold/theme-unicorn
+```
+
 ## Usage 💡
 
-Use the styles for your component from a global `theme` object. To provide the theme in context, wrap your component into the `ThemeProvider`.
+Use the styles for your component from a global `theme` object. To provide the theme in context, wrap your component into the `MarigoldProvider`.
 
 ```
 // basic usage
@@ -38,9 +47,9 @@ import { ThemeProvider } from '@marigold/system'
 import { Text } from '@marigold/components'
 import unicornTheme from '@marigold/theme-unicorn'
 
-<ThemeProvider theme={unicornTheme}>
+<MarigoldProvider theme={unicornTheme}>
   <Text>Lorem ipsum</Text>
-</ThemeProvider>
+</MarigoldProvider>
 ```
 
 ## For Developers

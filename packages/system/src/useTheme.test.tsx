@@ -1,4 +1,5 @@
 import React from 'react';
+import { jsx } from '@emotion/react';
 import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 
@@ -112,4 +113,11 @@ test('themes can be cascaded', () => {
       }
     }"
   `);
+});
+
+test('theme is passed down to emotion', () => {
+  const css = jest.fn().mockReturnValue({});
+  render(<ThemeProvider theme={theme}>{jsx('div', { css })}</ThemeProvider>);
+
+  expect(css).toHaveBeenCalledWith(theme);
 });

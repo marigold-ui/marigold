@@ -7,52 +7,69 @@ title: Field
 ## Description
 
 With the Field component you can add a HTML `<label>` and `<input>` element to your form.
-The variant can be added with the variant prop. The default variant is `default`.
 
 ## Properties
 
-| Property             | Type                                                                                       | Default   |
-| :------------------- | :----------------------------------------------------------------------------------------- | :-------- |
-| `variant` (optional) | `string`                                                                                   | `default` |
-| `htmlFor`            | `string`                                                                                   |           |
-| `label`              | `string`                                                                                   |           |
-| `error` (optional)   | `string`                                                                                   |           |
-| `type`               | `date, datetime-local, email, month, number, password, search, tel, text, time, url, week` | `text`    |
+| Property                  | Type                                                                                       | Default |
+| :------------------------ | :----------------------------------------------------------------------------------------- | :------ |
+| `htmlFor`                 | `string`                                                                                   |         |
+| `label`                   | `string`                                                                                   |         |
+| `required` (optional)     | `boolean`                                                                                  | `false` |
+| `error` (optional)        | `boolean`                                                                                  | `false` |
+| `errorMessage` (optional) | `string`                                                                                   |         |
+| `disabled` (optional)     | `boolean`                                                                                  | `false` |
+| `type`                    | `date, datetime-local, email, month, number, password, search, tel, text, time, url, week` | `text`  |
 
 ## Import
 
-```tsx code
+```tsx onlyCode
 import { Field } from '@marigold/components';
 ```
 
 ## Live-Code Example
 
-```tsx live
+```tsx expandCode
 <Field label="This is my field:" htmlFor="id" />
 ```
 
 ## Usage
 
-### Input type text
+### Standard Field
 
 ```tsx
-<Field label="Firstname" htmlFor="myId" />
+<Field label="Firstname" htmlFor="myId1" />
 ```
 
-### Input type text with error
+### Disabled Field
 
 ```tsx
-<Field label="Name" htmlFor="myId" error="Validation message" />
+<Field label="Field disabled" htmlFor="myId6" disabled />
 ```
 
-### Another input type
+### Required Field
 
 ```tsx
-<Field label="Choose the week" type="week" htmlFor="myId" />
+<Field label="Name" htmlFor="myId2" required />
 ```
 
-### Another input type with error
+### Error Field
 
 ```tsx
-<Field label="Pick your date" type="date" htmlFor="myId" error="ERROR!" />
+<Field label="Name" htmlFor="myId3" error errorMessage="Validation message" />
+```
+
+### Field Examples
+
+```tsx
+<Field label="Choose the week" type="week" htmlFor="myId4" />
+```
+
+```tsx
+<Field
+  label="Pick your date"
+  type="date"
+  htmlFor="myId5"
+  error
+  errorMessage="ERROR!"
+/>
 ```

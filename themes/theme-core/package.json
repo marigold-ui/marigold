@@ -1,0 +1,16 @@
+{
+  "name": "@marigold/theme-core",
+  "version": "0.2.0",
+  "description": "Marigold Core Theme",
+  "main": "dist/index.js",
+  "module": "dist/theme-core.esm.js",
+  "typings": "dist/index.d.ts",
+  "license": "MIT",
+  "dependencies": {
+    "@marigold/components": "workspace:*"
+  },
+  "scripts": {
+    "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly",
+    "watch": "tsdx watch --tsconfig tsconfig.build.json --transpileOnly"
+  }
+}

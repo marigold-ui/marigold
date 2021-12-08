@@ -1,7 +1,7 @@
 {
   "name": "@marigold/types",
   "description": "Marigold System Helper Types",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "main": "src/index.ts",
   "files": [
@@ -12,7 +12,7 @@
     "@types/react": "^17.x"
   },
   "devDependencies": {
-    "@types/react": "17.0.19"
+    "@types/react": "17.0.37"
   },
   "scripts": {
     "build": "echo types only",

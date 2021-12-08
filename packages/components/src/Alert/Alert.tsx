@@ -1,57 +1,35 @@
 import React from 'react';
 import { ComponentProps } from '@marigold/types';
 import { Exclamation, Check, Notification } from '@marigold/icons';
-import { useStyles } from '@marigold/system';
 import { Box } from '../Box';
 
+const ICON_MAP = {
+  success: Check,
+  warning: Notification,
+  error: Exclamation,
+} as const;
+
 export type AlertProps = {
-  variant?: string;
+  variant?: keyof typeof ICON_MAP;
 } & ComponentProps<'div'>;
 
 export const Alert: React.FC<AlertProps> = ({
   variant = 'success',
   children,
-  className,
   ...props
 }) => {
-  const classNames = useStyles({
-    css: {
-      display: 'flex',
-      alignItems: 'center',
-    },
-    variant: `alerts.${variant}`,
-    className,
-  });
-
-  var bgColor = 'success';
-  if (variant === 'warning') {
-    bgColor = 'warning';
-  } else if (variant === 'error') {
-    bgColor = 'error';
-  }
-  const iconClassName = useStyles({ css: { bg: bgColor, m: '10px' } });
-
-  var icon = <Check size={12} color="#ffffff" className={iconClassName} />;
-  if (variant === 'warning') {
-    icon = <Notification size={12} color="#ffffff" className={iconClassName} />;
-  } else if (variant === 'error') {
-    icon = <Exclamation size={12} color="#ffffff" className={iconClassName} />;
-  }
+  const Icon = ICON_MAP[variant];
 
   return (
-    <Box {...props} className={classNames}>
+    <Box {...props} display="flex" variant={`alerts.${variant}`}>
       <Box
         display="inline-block"
         alignItems="center"
         width="32px"
         height="32px"
-        className={useStyles({
-          css: {
-            bg: bgColor,
-          },
-        })}
+        bg={variant}
       >
-        {icon}
+        <Box as={Icon} size={12} color="#fff" bg={variant} m={10} />
       </Box>
       <Box mx="16px">{children}</Box>
     </Box>

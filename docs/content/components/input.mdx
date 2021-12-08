@@ -17,13 +17,13 @@ The variant in your section can be added with the variant prop. The default vari
 
 ## Import
 
-```tsx code
+```tsx onlyCode
 import { Input } from '@marigold/components';
 ```
 
 ## Live-Code Example
 
-```tsx live
+```tsx expandCode
 <Label htmlFor="input">
   Give me your input:
   <Input id="input" type="text" placeholder="Placeholder" />
@@ -32,23 +32,29 @@ import { Input } from '@marigold/components';
 
 ## Usage
 
+### Standard Input
+
 ```tsx
-<Label htmlFor="input">
+<Label htmlFor="input1">
   Label
-  <Input id="input" placeholder="Placeholder" />
+  <Input id="input1" placeholder="Placeholder" />
 </Label>
 ```
 
+### Disabled Input
+
 ```tsx
-<Label htmlFor="input2">
-  Label
+<Label htmlFor="input2" variant="disabled">
+  Label disabled
   <Input id="input2" placeholder="Disabled" disabled />
 </Label>
 ```
 
+### Type changend Input
+
 ```tsx
 <Label htmlFor="input3">
   Label
-  <Input id="input2" type="submit" />
+  <Input id="input3" type="submit" />
 </Label>
 ```

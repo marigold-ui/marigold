@@ -22,3 +22,11 @@ test('accepts custom styles prop className', () => {
 
   expect(column.className).toMatch('custom-class-name');
 });
+
+test('accepts responsive values', () => {
+  render(<Column width={[12, 6]}>column</Column>);
+  const column = screen.getByText('column');
+
+  // Note: as of November 2021 jest-dom does not support media queries...
+  expect(column).toHaveStyle('width: 100%');
+});

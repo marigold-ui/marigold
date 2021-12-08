@@ -7,48 +7,68 @@ title: Slider
 ## Description
 
 With the Slider component you can add a HTML `<input>` element with `type="range"` to your form.
-The variant can be added with the variant prop. The default variant is `slider`.
+The variant can be added with the variant prop. The default variant ist `default`.
 
 ## Properties
 
-| Property             | Type     | Default  |
-| :------------------- | :------- | :------- |
-| `variant` (optional) | `string` | `slider` |
+| Property             | Type     | Default   |
+| :------------------- | :------- | :-------- |
+| `variant` (optional) | `string` | `default` |
 
 ## Import
 
-```tsx code
+```tsx onlyCode
 import { Slider } from '@marigold/components';
 ```
 
 ## Live-Code Example
 
-```tsx live
-<Slider id="vol" name="vol" min="0" max="50" />
+```tsx expandCode
+<Label htmlFor="slider">
+  Slider:
+  <br />
+  <Slider id="slider" name="slider" min="0" max="50" />
+</Label>
 ```
 
 ## Usage
 
-### Slider with default range and fix value
+### Slider with default range
 
 ```tsx
-<Label htmlFor="vol">
-  Volume:
+<Label htmlFor="slider2">
+  Default range:
   <br />
-  <Slider id="vol" name="vol" min="0" max="50" />
+  <Slider id="slider2" name="slider" min="0" max="50" />
+</Label>
+```
+
+### Slider with fixed value
+
+```tsx
+<Label htmlFor="slider3">
+  Fix value:
   <br />
-  <Slider id="vol" name="vol" min="0" max="50" value="25" />
+  <Slider id="slider3" name="slider" min="0" max="50" value="25" />
 </Label>
 ```
 
 ### Slider with steps
 
 ```tsx
-<Label htmlFor="vol">
-  Volume:
+<Label htmlFor="slider4">
+  Slider with steps:
   <br />
-  <Slider id="vol" name="vol" min="0" max="100" step="10"></Slider>
+  <Slider id="slider4" name="slider" min="0" max="100" step="10" />
+</Label>
+```
+
+### Slider disabled
+
+```tsx
+<Label htmlFor="slider5">
+  Disabled:
   <br />
-  <Slider id="vol" name="vol" min="20" max="80" step="5"></Slider>
+  <Slider id="slider5" name="slider" min="0" max="100" disabled />
 </Label>
 ```

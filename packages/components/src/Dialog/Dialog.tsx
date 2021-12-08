@@ -1,32 +1,84 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import { ComponentProps } from '@marigold/types';
-
+import { useOverlayTriggerState } from '@react-stately/overlays';
+import { OverlayContainer } from '@react-aria/overlays';
+import { useButton } from '@react-aria/button';
 import { Close } from '@marigold/icons';
-import { Button } from '../Button';
+
 import { Box } from '../Box';
+import { Button } from '../Button';
+import { Heading } from '../Heading';
+
+import { ModalDialog } from './ModalDialog';
 
 export type DialogProps = {
-  onClose?: ComponentProps<typeof Button>['onClick'];
+  isOpen: boolean;
+  close: ComponentProps<typeof Button>['onClick'];
+  title?: string;
 } & ComponentProps<'div'>;
 
 export const Dialog: React.FC<DialogProps> = ({
-  onClose,
   children,
+  title,
   className,
+  isOpen,
+  close,
   ...props
 }) => {
+  const closeButtonRef = React.useRef<HTMLElement>() as RefObject<HTMLElement>;
+
+  // useButton ensures that focus management is handled correctly,
+  // across all browsers. Focus is restored to the button once the
+  // dialog closes.
+  const { buttonProps: closeButtonProps } = useButton(
+    {
+      onPress: () => close(),
+    },
+    closeButtonRef
+  );
+
   return (
-    <Box display="flex" width="100%">
-      <Box {...props} variant="dialog.wrapper" className={className}>
-        <Box display="flex">
-          <Box variant="dialog.body">{children}</Box>
+    <OverlayContainer>
+      <ModalDialog isOpen={isOpen} onClose={close} isDismissable>
+        <Box variant="dialog.wrapper" className={className} {...props}>
+          <Box variant="dialog.body">
+            {title && (
+              <Heading as="h4" variant="h4">
+                {title}
+              </Heading>
+            )}
+            {children}
+          </Box>
           <Box variant="dialog.onClose">
-            <Button variant="text" onClick={onClose}>
+            <Button
+              variant="close"
+              size="xsmall"
+              {...closeButtonProps}
+              ref={closeButtonRef}
+            >
               <Close size={16} />
             </Button>
           </Box>
         </Box>
-      </Box>
-    </Box>
+      </ModalDialog>
+    </OverlayContainer>
   );
+};
+
+// use this hook to get the overlayTriggerState and openButton props for using the dialog component
+export const useDialogButtonProps = () => {
+  const state = useOverlayTriggerState({});
+  const openButtonRef = React.useRef<HTMLElement>() as RefObject<HTMLElement>;
+  const { buttonProps: openButtonProps } = useButton(
+    {
+      onPress: () => state.open(),
+    },
+    openButtonRef
+  );
+
+  return {
+    state,
+    openButtonProps,
+    openButtonRef,
+  };
 };
