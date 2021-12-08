@@ -30,13 +30,13 @@ const isNotEmpty = (val: any) =>
 const ensureArray = <T extends any>(val?: T | T[]) =>
   Array.isArray(val) ? val : [val];
 
-type CreateStypeProps = Pick<
+type CreateStyleProps = Pick<
   ElementProps,
   'as' | '__baseCSS' | 'variant' | 'css'
 >;
 
 const createThemedStyle =
-  ({ as, __baseCSS, variant, css }: CreateStypeProps) =>
+  ({ as, __baseCSS, variant, css }: CreateStyleProps) =>
   (theme: Theme) => {
     return [
       getNormalizedStyles(as),
