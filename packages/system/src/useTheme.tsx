@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext } from 'react';
-import { css as themeUi } from '@theme-ui/css';
+import { css as transformStyleObject } from '@theme-ui/css';
 import { ThemeProvider as EmotionProvider } from '@emotion/react';
 
 import { StyleObject, Theme } from './types';
@@ -14,7 +14,7 @@ const InternalContext = createContext<Theme>(__defaultTheme);
 export const useTheme = () => {
   const theme = useContext(InternalContext);
   const css = useCallback(
-    (style: StyleObject) => themeUi(style)(theme),
+    (style: StyleObject) => transformStyleObject(style)(theme),
     [theme]
   );
   return { theme, css };
