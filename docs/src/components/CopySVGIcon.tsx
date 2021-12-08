@@ -1,5 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import { renderToString } from 'react-dom/server';
+
+// if we use our own Tooltip and Snackbar remove also no-restricted-imports in eslint config rules
 import Snackbar from '@mui/material/Snackbar';
 import Tooltip from '@mui/material/Tooltip';
 
