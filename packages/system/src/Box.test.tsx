@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from './useTheme';
-import { Element, StyleProps } from './Element';
+import { Box, StyleProps } from './Box';
 import { normalize } from './normalize';
 
 const theme = {
@@ -66,21 +66,21 @@ const theme = {
 };
 
 test('renders a <div> by default', () => {
-  render(<Element>Test</Element>);
+  render(<Box>Test</Box>);
   const testelem = screen.getByText('Test');
 
   expect(testelem instanceof HTMLDivElement).toBeTruthy();
 });
 
 test('changes rendered element via "as" prop', () => {
-  render(<Element as="p">Test</Element>);
+  render(<Box as="p">Test</Box>);
   const testelem = screen.getByText('Test');
 
   expect(testelem instanceof HTMLParagraphElement).toBeTruthy();
 });
 
 test('supports custom className', () => {
-  render(<Element className="my-custom-class">Test</Element>);
+  render(<Box className="my-custom-class">Test</Box>);
   const element = screen.getByText('Test');
 
   expect(element.getAttribute('class')).toMatch('my-custom-class');
@@ -88,9 +88,9 @@ test('supports custom className', () => {
 
 test('passes down HTML attributes', () => {
   render(
-    <Element className="my-custom-class" id="element-id" disabled>
+    <Box className="my-custom-class" id="element-id" disabled>
       Test
-    </Element>
+    </Box>
   );
   const element = screen.getByText('Test');
 
@@ -101,16 +101,16 @@ test('passes down HTML attributes', () => {
 test('forwards ref', () => {
   const ref = React.createRef<HTMLButtonElement>();
   render(
-    <Element as="button" ref={ref}>
+    <Box as="button" ref={ref}>
       button
-    </Element>
+    </Box>
   );
 
   expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
 });
 
 test('apply normalized styles', () => {
-  render(<Element>Test</Element>);
+  render(<Box>Test</Box>);
   const element = screen.getByText('Test');
   const { base } = normalize;
 
@@ -121,7 +121,7 @@ test('apply normalized styles', () => {
 });
 
 test('base normalization is always applied', () => {
-  render(<Element as="button">Test</Element>);
+  render(<Box as="button">Test</Box>);
   const element = screen.getByText('Test');
   const { base } = normalize;
 
@@ -131,7 +131,7 @@ test('base normalization is always applied', () => {
 });
 
 test('apply normalized styles based on element', () => {
-  render(<Element as="h1">Test</Element>);
+  render(<Box as="h1">Test</Box>);
   const element = screen.getByText('Test');
   const { h1 } = normalize;
 
@@ -139,7 +139,7 @@ test('apply normalized styles based on element', () => {
 });
 
 test('accepts default styling via "__baseCSS" prop', () => {
-  render(<Element __baseCSS={{ color: 'hotpink' }}>Test</Element>);
+  render(<Box __baseCSS={{ color: 'hotpink' }}>Test</Box>);
   const element = screen.getByText('Test');
 
   expect(element).toHaveStyle('color: hotpink');
@@ -148,7 +148,7 @@ test('accepts default styling via "__baseCSS" prop', () => {
 test('default styling overrides normalization', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Element __baseCSS={{ m: 'medium' }}>Test</Element>
+      <Box __baseCSS={{ m: 'medium' }}>Test</Box>
     </ThemeProvider>
   );
   const element = screen.getByText('Test');
@@ -159,7 +159,7 @@ test('default styling overrides normalization', () => {
 test('variants are applied correctly', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Element variant="text.body">Test</Element>
+      <Box variant="text.body">Test</Box>
     </ThemeProvider>
   );
   const element = screen.getByText('Test');
@@ -171,9 +171,9 @@ test('variants are applied correctly', () => {
 test('accept an array of variants', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Element as="p" variant={['text.heading', 'text.whitespace']}>
+      <Box as="p" variant={['text.heading', 'text.whitespace']}>
         Test
-      </Element>
+      </Box>
     </ThemeProvider>
   );
   const element = screen.getByText('Test');
@@ -186,9 +186,9 @@ test('accept an array of variants', () => {
 test('variants override normalization and default styles', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Element __baseCSS={{ p: 'small' }} variant="variant.spacing">
+      <Box __baseCSS={{ p: 'small' }} variant="variant.spacing">
         Test
-      </Element>
+      </Box>
     </ThemeProvider>
   );
   const element = screen.getByText('Test');
@@ -241,7 +241,7 @@ test.each([
 
   render(
     <ThemeProvider theme={theme}>
-      <Element {...props}>What's in the box!</Element>
+      <Box {...props}>What's in the box!</Box>
     </ThemeProvider>
   );
 
@@ -254,7 +254,7 @@ test.each([
 test('style props override normalization, defaults and variants', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Element
+      <Box
         __baseCSS={{ p: 'small' }}
         variant="text.body"
         bg="blue"
@@ -262,7 +262,7 @@ test('style props override normalization, defaults and variants', () => {
         p="large"
       >
         Test
-      </Element>
+      </Box>
     </ThemeProvider>
   );
   const element = screen.getByText('Test');
@@ -275,7 +275,7 @@ test('style props override normalization, defaults and variants', () => {
 test('apply custom styling via css prop', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Element css={{ color: 'secondary', padding: '1rem' }}>Test</Element>
+      <Box css={{ color: 'secondary', padding: '1rem' }}>Test</Box>
     </ThemeProvider>
   );
   const element = screen.getByText('Test');
@@ -287,14 +287,14 @@ test('apply custom styling via css prop', () => {
 test('custom styling overrides normalization, defaults, variants and style props', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Element
+      <Box
         __baseCSS={{ p: 'small' }}
         variant="text.body"
         bg="black"
         css={{ fontSize: 'large', m: 'small', p: 'large', bg: 'blue' }}
       >
         Test
-      </Element>
+      </Box>
     </ThemeProvider>
   );
   const element = screen.getByText('Test');
