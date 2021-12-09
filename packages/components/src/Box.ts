@@ -1,1 +1,1 @@
-export { Box, BoxProps as ElementProps, StyleProps } from '@marigold/system';
+export { Box, BoxProps, BoxOwnProps, StyleProps } from '@marigold/system';
