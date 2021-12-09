@@ -1,6 +1,5 @@
 import { jsx, Theme } from '@emotion/react';
 import { css as transformStyleObject } from '@theme-ui/css';
-import { Property } from 'csstype';
 import { forwardRef } from 'react';
 import {
   PolymorphicPropsWithRef,
@@ -70,93 +69,6 @@ export type ElementProps = PolymorphicPropsWithRef<ElementOwnProps, 'div'>;
 const isNotEmpty = (val: any) =>
   !(val && Object.keys(val).length === 0 && val.constructor === Object);
 
-const pickStyleProps = (props: ElementOwnProps) => {
-  const {
-    display,
-    height,
-    width,
-    minWidth,
-    maxWidth,
-    position,
-    top,
-    bottom,
-    right,
-    left,
-    zIndex,
-    p,
-    px,
-    py,
-    pt,
-    pb,
-    pl,
-    pr,
-    m,
-    mx,
-    my,
-    mt,
-    mb,
-    ml,
-    mr,
-    flexDirection,
-    flexWrap,
-    flexShrink,
-    flexGrow,
-    alignItems,
-    justifyContent,
-    bg,
-    border,
-    borderRadius,
-    boxShadow,
-    opacity,
-    overflow,
-    transition,
-    ...rest
-  } = props;
-
-  const styles = {
-    display,
-    height,
-    width,
-    minWidth,
-    maxWidth,
-    position,
-    top,
-    bottom,
-    right,
-    left,
-    zIndex,
-    p,
-    px,
-    py,
-    pt,
-    pb,
-    pl,
-    pr,
-    m,
-    mx,
-    my,
-    mt,
-    mb,
-    ml,
-    mr,
-    flexDirection,
-    flexWrap,
-    flexShrink,
-    flexGrow,
-    alignItems,
-    justifyContent,
-    bg,
-    border,
-    borderRadius,
-    boxShadow,
-    opacity,
-    overflow,
-    transition,
-  };
-
-  return { styles, rest };
-};
-
 const ensureArray = <T extends any>(val?: T | T[]) =>
   Array.isArray(val) ? val : [val];
 
@@ -181,18 +93,107 @@ const createThemedStyle =
 
 export const Element: PolymorphicComponentWithRef<ElementOwnProps, 'div'> =
   forwardRef(
-    ({ as = 'div', __baseCSS, css = {}, variant, children, ...props }, ref) => {
-      const { styles, rest } = pickStyleProps(props);
-      return jsx(
+    (
+      {
+        as = 'div',
+        children,
+        __baseCSS,
+        variant,
+        css = {},
+        display,
+        height,
+        width,
+        minWidth,
+        maxWidth,
+        position,
+        top,
+        bottom,
+        right,
+        left,
+        zIndex,
+        p,
+        px,
+        py,
+        pt,
+        pb,
+        pl,
+        pr,
+        m,
+        mx,
+        my,
+        mt,
+        mb,
+        ml,
+        mr,
+        flexDirection,
+        flexWrap,
+        flexShrink,
+        flexGrow,
+        alignItems,
+        justifyContent,
+        bg,
+        border,
+        borderRadius,
+        boxShadow,
+        opacity,
+        overflow,
+        transition,
+        ...props
+      },
+      ref
+    ) =>
+      jsx(
         as,
         {
-          ...rest,
-          ...{
-            css: createThemedStyle({ as, __baseCSS, variant, styles, css }),
-          },
+          ...props,
+          css: createThemedStyle({
+            as,
+            __baseCSS,
+            variant,
+            css,
+            styles: {
+              display,
+              height,
+              width,
+              minWidth,
+              maxWidth,
+              position,
+              top,
+              bottom,
+              right,
+              left,
+              zIndex,
+              p,
+              px,
+              py,
+              pt,
+              pb,
+              pl,
+              pr,
+              m,
+              mx,
+              my,
+              mt,
+              mb,
+              ml,
+              mr,
+              flexDirection,
+              flexWrap,
+              flexShrink,
+              flexGrow,
+              alignItems,
+              justifyContent,
+              bg,
+              border,
+              borderRadius,
+              boxShadow,
+              opacity,
+              overflow,
+              transition,
+            },
+          }),
           ref,
         },
         children
-      );
-    }
+      )
   );
