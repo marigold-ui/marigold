@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, RefObject } from 'react';
 import {
   LiveProvider,
   LiveEditor,
@@ -9,7 +9,6 @@ import {
 } from 'react-live';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/github';
-import { RefObject } from 'markdown-to-jsx/node_modules/@types/react';
 
 import * as Components from '@marigold/components';
 import { Box } from '@marigold/components';
