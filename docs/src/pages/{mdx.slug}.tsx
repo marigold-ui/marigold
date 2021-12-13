@@ -1,7 +1,7 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
-import { Box } from 'packages/components/src/Box';
+import { Box } from '@marigold/components';
 
 type PageProps = {
   data: {
