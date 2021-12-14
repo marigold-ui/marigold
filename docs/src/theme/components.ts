@@ -49,6 +49,10 @@ const button = {
     px: 'small',
     py: 'xsmall',
   },
+  medium: {
+    px: 'xsmall',
+    py: 'xsmall',
+  },
   small: {
     px: 'xsmall',
     py: 'xxsmall',
@@ -220,6 +224,9 @@ export const components = {
     large: {
       ...button.large,
     },
+    medium: {
+      ...button.medium,
+    },
     small: {
       ...button.small,
     },
@@ -231,7 +238,10 @@ export const components = {
     },
     action: {
       ...button.primary,
-      pr: 'xsmall',
+      width: '100%',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      display: 'inline-flex',
       color: 'gray.40',
       bg: 'transparent',
       fontWeight: 'body',
@@ -239,6 +249,9 @@ export const components = {
       fontSize: 'xxsmall',
       ':focus': {
         outline: 'none',
+      },
+      ':hover': {
+        bg: '#FFF8F1',
       },
     },
     select: {

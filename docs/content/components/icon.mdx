@@ -1,0 +1,64 @@
+---
+title: Icon
+---
+
+# Icon
+
+## Installation
+
+### 1. React Icon component:
+
+Marigold Icons have a seperate package to install.
+The first option is to install the package and use the Icons like other React components and as in the code example below.
+You have to specify the name of the icon directly between the `< />` brackets.
+
+```bash onlyCode
+# with npm
+npm install @marigold/icons --save
+
+# with yarn
+yarn add @marigold/icons
+```
+
+### 2. HTML SVG Element
+
+The second option is to go to [Marigold Icons](../../foundation/icons) and click on an Icon in the list to copy them as `<svg>` Element
+
+## Description
+
+With the Icon component you can render one of the [Marigold Icons](../../foundation/icons).
+By adding the `size` prop you can change to another size. `24` is the default size.
+The `fill` prop is the second attribute and per default `currentcolor`.
+
+## Properties
+
+| Property | Type     | Default          |
+| :------- | :------- | :--------------- |
+| `size`   | `number` | `24`             |
+| `fill`   | `string` | `'currentcolor'` |
+
+## Import
+
+```tsx onlyCode
+import { DesignTicket } from '@marigold/icons';
+```
+
+## Live-Code Example
+
+```tsx expandCode
+<DesignTicket />
+```
+
+## Usage
+
+### size prop
+
+```tsx
+<DesignTicket size={40} />
+```
+
+### fill prop
+
+```tsx
+<DesignTicket fill="red" />
+```
