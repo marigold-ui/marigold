@@ -78,6 +78,6 @@ test('supports verticalAlignment prop', () => {
   const button1 = screen.getByText(/Button1/);
   const button2 = screen.getByText(/Button2/);
 
-  expect(getTopPadding(button1)).toEqual('');
+  expect(getTopPadding(button1.parentElement!)).toEqual('');
   expect(button2.parentElement).toHaveStyle(`padding-top: 2px`);
 });
