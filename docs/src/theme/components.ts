@@ -49,9 +49,9 @@ const button = {
     px: 'small',
     py: 'xsmall',
   },
-  medium: {
+  table: {
     px: 'xsmall',
-    py: 'xsmall',
+    py: 'small',
   },
   small: {
     px: 'xsmall',
@@ -224,8 +224,8 @@ export const components = {
     large: {
       ...button.large,
     },
-    medium: {
-      ...button.medium,
+    table: {
+      ...button.table,
     },
     small: {
       ...button.small,

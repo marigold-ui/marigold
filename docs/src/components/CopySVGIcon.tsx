@@ -8,6 +8,7 @@ import { copyToClipboard } from './CopyButton';
 
 export const CopySVGIcon: React.FC = ({ children }) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   // remove class prop from stringified html element
   const stringifiedChildren = renderToString(children as ReactElement);
@@ -16,12 +17,14 @@ export const CopySVGIcon: React.FC = ({ children }) => {
 
   return (
     <>
-      <Tooltip title="Copy" placement="bottom" arrow>
+      <Tooltip title={copied ? 'Copied' : 'Copy'} placement="bottom" arrow>
         <Button
           variant="action"
-          size="medium"
+          size="table"
           onClick={() => {
             copyToClipboard(finalString);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 3000);
             setOpenSnackbar(true);
           }}
         >
