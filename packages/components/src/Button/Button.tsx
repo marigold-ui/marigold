@@ -16,6 +16,7 @@ export const Button: PolymorphicComponentWithRef<BoxOwnProps, 'button'> =
         as = 'button',
         variant = 'primary',
         size = 'large',
+        space = 'none',
         disabled,
         children,
         className,
@@ -37,13 +38,14 @@ export const Button: PolymorphicComponentWithRef<BoxOwnProps, 'button'> =
           {...buttonProps}
           {...props}
           as={as}
+          display="inline-flex"
+          alignItems="center"
           variant={[`button.${variant}`, `button.${size}`]}
           className={className}
           ref={ref}
+          css={{ columnGap: space }}
         >
-          <Box as="span" display="inline-flex" alignItems="center">
-            {children}
-          </Box>
+          {children}
         </Box>
       );
     }
