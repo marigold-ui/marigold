@@ -28,6 +28,6 @@ export const CopyButton: React.FC<CopyProps> = ({ codeString }) => {
   );
 };
 
-export const copyToClipboard = (codeString: string) => {
+const copyToClipboard = (codeString: string) => {
   navigator.clipboard.writeText(codeString);
 };
