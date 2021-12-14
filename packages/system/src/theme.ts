@@ -23,11 +23,18 @@ export type ScaleValue<T> = T | T[] | NestedScaleDict<T> | undefined;
  * Scales are a set of named, pre-defined CSS values which are used
  * to create consitency in sizing across visual elements.
  *
- * Marigold uses a plain object to define scales, where the key is a
- * descriptive name for the scale (e.g. `small` or `medium`), and the value
- * is the CSS value.
+ * Marigold uses a plain object to define scales, where the key should be a
+ * descriptive name for the scale (e.g. `small`/`medium`/.. or `body`/`heading`/...),
+ * and the value is the CSS value.
  */
 export type Scale<T> = {
+  [key: string]: ScaleValue<T>;
+};
+
+/**
+ * Predefined {@link Scale} scale which uses size values.
+ */
+export type SizeScale<T> = {
   xxsmall?: ScaleValue<T>;
   xsmall?: ScaleValue<T>;
   small?: ScaleValue<T>;
@@ -38,14 +45,17 @@ export type Scale<T> = {
 };
 
 /**
- * A {@link Scale} that also includes a required `none` value, which is
+ * A {@link SizeScale} that also includes a required `none` value, which is
  * usually used to define the blank value (e.g `0`).
  */
 export type ZeroScale<T> = {
   none: ScaleValue<T>;
 } & Scale<T>;
 
-export interface Theme {
+/**
+ * Base theme with typings for available scales properties.
+ */
+export interface BaseTheme {
   /**
    * To configure the default breakpoints used in responsive array values,
    * add a breakpoints array to your theme.
@@ -66,7 +76,79 @@ export interface Theme {
   breakpoints?: Array<string>;
 
   /**
-   * Used for whitespace properties like `padding`, `margin`, `gap`, etc.
+   * Used to define a scale for whitspace values,
+   * like `padding`, `margin`, `gap`, etc.
    */
   space?: ZeroScale<CSS.Property.Margin<number | string>>;
+
+  /**
+   * Used to define a `font-size` scale.
+   */
+  fontSizes?: Scale<CSS.Property.FontSize<number>>;
+
+  /**
+   * Used to define a `font-family` scale.
+   */
+  fonts?: Scale<CSS.Property.FontFamily>;
+
+  /**
+   * Used to define a `font-weight` scale.
+   */
+  fontWeights?: Scale<CSS.Property.FontWeight>;
+
+  /**
+   * Used to define a `line-height` scale.
+   */
+  lineHeights?: Scale<CSS.Property.LineHeight<string | 0 | number>>;
+
+  /**
+   * Used to define a `letter-spacing` scale.
+   */
+  letterSpacings?: ZeroScale<CSS.Property.LetterSpacing<string | 0 | number>>;
+
+  /**
+   * Used to define a scale for size values,
+   * like `height`, `width`, `flexBasis`, etc.
+   */
+  sizes?: ZeroScale<CSS.Property.Height<{}> | CSS.Property.Width<{}>>;
+
+  /**
+   * Used to define different `border` styles.
+   */
+  borders?: ZeroScale<CSS.Property.Border<{}>>;
+
+  /**
+   * Used to define `border-style` styles.
+   */
+  borderStyles?: Scale<CSS.Property.Border<{}>>;
+
+  /**
+   * Used to define `border-width` styles.
+   */
+  borderWidths?: ZeroScale<CSS.Property.BorderWidth<string | 0 | number>>;
+
+  /**
+   * Used to define `border-radius` styles.
+   */
+  radii?: ZeroScale<CSS.Property.BorderRadius<string | 0 | number>>;
+
+  /**
+   * Used to define `Shadow` styles.
+   */
+  shadows?: ZeroScale<CSS.Property.BoxShadow>;
+
+  /**
+   * Used to define a `z-index` scake.
+   */
+  zIndices?: Scale<CSS.Property.ZIndex>;
+
+  /**
+   * Used to define a `opacity` scale.
+   */
+  opacities?: Scale<CSS.Property.Opacity>;
+
+  /**
+   * Used to define a `transition` styles.
+   */
+  transitions?: ZeroScale<CSS.Property.Transition>;
 }
