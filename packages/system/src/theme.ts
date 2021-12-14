@@ -21,7 +21,8 @@ export type ScaleValue<T> = T | T[] | NestedScaleDict<T> | undefined;
 
 /**
  * Scales are a set of named, pre-defined CSS values which are used
- * to create consitency in sizing across visual elements.
+ * to create consitency in sizing across visual elements. They give
+ * plain values semantics meaning.
  *
  * Marigold uses a plain object to define scales, where the key should be a
  * descriptive name for the scale (e.g. `small`/`medium`/.. or `body`/`heading`/...),
@@ -74,6 +75,8 @@ export interface BaseTheme {
    * ```
    */
   breakpoints?: Array<string>;
+
+  colors?: Scale<CSS.Property.Color | NestedScaleDict<CSS.Property.Color>>;
 
   /**
    * Used to define a scale for whitspace values,

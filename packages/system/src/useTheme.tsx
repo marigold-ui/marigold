@@ -1,4 +1,9 @@
-import React, { createContext, useCallback, useContext } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+} from 'react';
 import { css as transformStyleObject } from '@theme-ui/css';
 import { ThemeProvider as EmotionProvider } from '@emotion/react';
 
@@ -26,14 +31,20 @@ export const useTheme = () => {
   return { theme, css };
 };
 
-export type ThemeProviderProps = { theme: any };
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({
+export type ThemeProviderProps<T extends Theme> = {
+  theme: T;
+  children: ReactNode;
+};
+
+export function ThemeProvider<T extends Theme>({
   theme,
   children,
-}) => (
-  <EmotionProvider theme={theme}>
-    <InternalContext.Provider value={theme}>
-      {children}
-    </InternalContext.Provider>
-  </EmotionProvider>
-);
+}: ThemeProviderProps<T>) {
+  return (
+    <EmotionProvider theme={theme}>
+      <InternalContext.Provider value={theme}>
+        {children}
+      </InternalContext.Provider>
+    </EmotionProvider>
+  );
+}

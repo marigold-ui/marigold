@@ -4,12 +4,16 @@ import { ThemeProvider } from '@marigold/system';
 import { Textarea } from '../Textarea';
 
 const theme = {
+  fonts: {
+    body: 'Inter Regular',
+    fancy: 'Roboto',
+  },
   textarea: {
     default: {
-      fontFamily: 'Inter Regular',
+      fontFamily: 'body',
     },
     textarea2: {
-      fontFamily: 'Roboto',
+      fontFamily: 'fancy',
     },
   },
 };
