@@ -27,10 +27,6 @@ const theme = {
       fontFamily: 'body',
     },
   },
-  space: {
-    none: 0,
-    small: 2,
-  },
 };
 
 test('supports default variant', () => {
