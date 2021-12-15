@@ -1,5 +1,4 @@
-import React, { Children, ReactElement, useState } from 'react';
-import { renderToString } from 'react-dom/server';
+import React from 'react';
 import { Snackbar, Tooltip } from '@mui/material';
 
 import { Button } from '@marigold/components';
@@ -7,30 +6,27 @@ import { Button } from '@marigold/components';
 import { copyToClipboard } from './CopyButton';
 
 export const CopySVGIcon: React.FC = ({ children }) => {
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [copied, setCopied] = React.useState(false);
+  const ref = React.createRef<any>();
 
-  // remove class prop from stringified html element
-  const childrenArray = Children.toArray(children);
-  const stringifiedIcon = renderToString(childrenArray[1] as ReactElement);
-  const modifiedString = stringifiedIcon.replace(
-    / class="[a-zA-Z0-9:;.\s()\-,]*"/,
-    ''
-  );
+  const onClick = () => {
+    // remove class prop from svg element
+    const svgElement = ref.current.querySelector('svg').outerHTML;
+    const modifiedString = svgElement.replace(
+      / class="[a-zA-Z0-9:;.\s()\-,]*"/,
+      ''
+    );
+    copyToClipboard(modifiedString);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 3000);
+    setOpenSnackbar(true);
+  };
 
   return (
     <>
       <Tooltip title={copied ? 'Copied' : 'Copy'} placement="bottom" arrow>
-        <Button
-          variant="icon"
-          size="table"
-          onClick={() => {
-            copyToClipboard(modifiedString);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 3000);
-            setOpenSnackbar(true);
-          }}
-        >
+        <Button ref={ref} variant="icon" size="table" onClick={onClick}>
           {children}
         </Button>
       </Tooltip>
