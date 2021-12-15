@@ -56,7 +56,7 @@ export type ZeroScale<T> = {
 /**
  * Base theme with typings for available scales properties.
  */
-export interface BaseTheme {
+export interface Theme {
   /**
    * To configure the default breakpoints used in responsive array values,
    * add a breakpoints array to your theme.

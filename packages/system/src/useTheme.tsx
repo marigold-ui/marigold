@@ -7,7 +7,7 @@ import React, {
 import { css as transformStyleObject } from '@theme-ui/css';
 import { ThemeProvider as EmotionProvider } from '@emotion/react';
 
-import { BaseTheme as Theme } from './theme';
+import { Theme } from './theme';
 import { StyleObject } from './types';
 
 /**

@@ -4,12 +4,16 @@ import { ThemeProvider } from '@marigold/system';
 import { Slider } from './Slider';
 
 const theme = {
+  fonts: {
+    regular: 'Oswald Regular',
+    body: 'Inter',
+  },
   slider: {
     default: {
-      fontFamily: 'Oswald Regular',
+      fontFamily: 'regular',
     },
     special: {
-      fontFamily: 'Inter',
+      fontFamily: 'body',
     },
   },
 };

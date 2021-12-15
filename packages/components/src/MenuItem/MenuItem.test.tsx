@@ -4,12 +4,17 @@ import { ThemeProvider } from '@marigold/system';
 import { MenuItem } from './MenuItem';
 
 const theme = {
+  space: {
+    none: 0,
+    small: 4,
+    medium: 8,
+  },
   menuItem: {
     default: {
-      padding: '4px',
+      padding: 'small',
     },
     item: {
-      padding: '8px',
+      padding: 'medium',
     },
   },
 };

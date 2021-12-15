@@ -4,6 +4,9 @@ import { ThemeProvider } from '@marigold/system';
 import { Message } from './Message';
 
 const theme = {
+  colors: {
+    primary: 'hotpink',
+  },
   messages: {
     info: {
       alignItems: 'center',

@@ -4,9 +4,13 @@ import { Radio } from './Radio';
 import { ThemeProvider } from '@marigold/system';
 
 const theme = {
+  space: {
+    none: 0,
+    small: 2,
+  },
   radio: {
     default: {
-      m: '2px',
+      m: 'small',
     },
   },
 };

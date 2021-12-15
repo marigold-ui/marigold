@@ -4,12 +4,17 @@ import { ThemeProvider } from '@marigold/system';
 import { ValidationMessage } from './ValidationMessage';
 
 const theme = {
+  space: {
+    none: 0,
+    small: 4,
+    medium: 8,
+  },
   validation: {
     error: {
-      p: '8px',
+      p: 'medium',
     },
     warning: {
-      p: '4px',
+      p: 'small',
     },
   },
 };

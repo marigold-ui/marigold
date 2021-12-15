@@ -7,9 +7,16 @@ import { MarigoldProvider } from './MarigoldProvider';
 // Setup
 // ---------------
 const theme = {
+  colors: {
+    black: '#000',
+  },
+  fontSizes: {
+    body: 16,
+    heading: 32,
+  },
   text: {
     body: {
-      fontSize: 1,
+      fontSize: 'body',
       color: 'black',
     },
   },
