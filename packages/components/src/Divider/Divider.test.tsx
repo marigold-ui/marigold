@@ -4,16 +4,24 @@ import { ThemeProvider } from '@marigold/system';
 import { Divider } from './Divider';
 
 const theme = {
+  space: {
+    none: 0,
+    small: 2,
+  },
+  borders: {
+    none: 0,
+    regular: '1px solid',
+  },
   divider: {
     regular: {
-      border: 0,
-      borderBottom: '1px solid',
-      margin: '2px',
+      border: 'none',
+      borderBottom: 'regular',
+      margin: 'small',
     },
     bold: {
-      border: 0,
+      border: 'none',
       borderBottom: '2px solid',
-      margin: '2px',
+      margin: 'small',
     },
   },
 };

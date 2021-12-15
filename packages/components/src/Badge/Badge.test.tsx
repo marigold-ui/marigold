@@ -4,6 +4,10 @@ import { ThemeProvider } from '@marigold/system';
 import { Badge } from './Badge';
 
 const theme = {
+  radii: {
+    none: 0,
+    larger: 8,
+  },
   badge: {
     default: {
       borderRadius: '8px',

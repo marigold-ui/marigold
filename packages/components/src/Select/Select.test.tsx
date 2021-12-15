@@ -7,7 +7,7 @@ import { Select } from './Select';
 
 const theme = {
   colors: {
-    red: '#c92a2a',
+    red: 'red',
   },
   fonts: {
     body: 'Inter',

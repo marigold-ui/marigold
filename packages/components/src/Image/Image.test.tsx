@@ -4,6 +4,9 @@ import { ThemeProvider } from '@marigold/system';
 import { Image } from './Image';
 
 const theme = {
+  colors: {
+    primary: 'hotpink',
+  },
   images: {
     fullWidth: {
       alignItems: 'center',

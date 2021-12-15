@@ -4,12 +4,17 @@ import { ThemeProvider } from '@marigold/system';
 import { Field } from './Field';
 
 const theme = {
+  space: {
+    none: 0,
+    small: 4,
+    medium: 8,
+  },
   field: {
     default: {
-      padding: '4px',
+      padding: 'small',
     },
     inputField: {
-      padding: '8px',
+      padding: 'medium',
     },
   },
 };
