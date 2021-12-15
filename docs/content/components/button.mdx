@@ -19,6 +19,7 @@ The style variant and size of the button can be added with the variant prop and 
 | `variant` (optional)  | `primary`, `secondary`, `ghost`, `text` | `primary` |
 | `size` (optional)     | `small`, `large`                        | `large`   |
 | `disabled` (optional) | boolean                                 |           |
+| `space` (optional)    | `ResponsiveStyleValue<string>`          | `none`    |
 
 ## Import
 
@@ -136,20 +137,20 @@ They can be used in a similar way of a secondary button, but they are meant to b
 Icons can be added in Order to make clearer what a button does. Buttons should not be made only with icons, because every user may understand them on a different way.
 
 ```tsx
-<Button>
+<Button space="xxsmall">
   <Ticket /> Icon Primary
 </Button>
 ```
 
 ```tsx
-<Button disabled>
+<Button space="xxsmall" disabled>
   <Ticket /> Icon Primary
 </Button>
 ```
 
 ### Small Buttons
 
-If there are many actions in one page, is it possible to use small buttons instead of big ones. As well if the page is required to be onpen on mobile devices.
+If there are many actions in one page, is it possible to use small buttons instead of big ones. As well if the page is required to be open on mobile devices.
 
 ```tsx
 <Button size="small">Primary</Button>
@@ -202,25 +203,25 @@ If there are many actions in one page, is it possible to use small buttons inste
 Icons can be added in Order to make clearer what a button does. Buttons should not be made only with icons, because every user may understand them on a different way.Icons can be added in Order to make clearer what a button does. Buttons should not be made only with icons, because every user may understand them on a different way.
 
 ```tsx
-<Button size="small">
+<Button size="small" space="xxsmall">
   <Ticket /> Primary
 </Button>
 ```
 
 ```tsx
-<Button variant="secondary" size="small">
+<Button variant="secondary" size="small" space="xxsmall">
   <Direction /> Secondary
 </Button>
 ```
 
 ```tsx
-<Button variant="ghost" size="small">
+<Button variant="ghost" size="small" space="xxsmall">
   <CircleUnchecked /> Ghost
 </Button>
 ```
 
 ```tsx
-<Button variant="text" size="small">
+<Button variant="text" size="small" space="xxsmall">
   <FormatSize /> Text Only
 </Button>
 ```

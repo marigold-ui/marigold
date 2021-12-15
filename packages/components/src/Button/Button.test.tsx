@@ -27,6 +27,10 @@ const theme = {
       fontFamily: 'body',
     },
   },
+  space: {
+    none: 0,
+    small: 2,
+  },
 };
 
 test('supports default variant', () => {
@@ -37,7 +41,7 @@ test('supports default variant', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button.parentElement).toHaveStyle(`font-family: Inter`);
+  expect(button).toHaveStyle(`font-family: Inter`);
 });
 
 test('supports default size', () => {
@@ -48,7 +52,7 @@ test('supports default size', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button.parentElement).toHaveStyle(`padding: 16px`);
+  expect(button).toHaveStyle(`padding: 16px`);
 });
 
 test('accepts other variant than default', () => {
@@ -59,7 +63,7 @@ test('accepts other variant than default', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button.parentElement).toHaveStyle(`font-family: Arial`);
+  expect(button).toHaveStyle(`font-family: Arial`);
 });
 
 test('accepts other size than default', () => {
@@ -70,7 +74,7 @@ test('accepts other size than default', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button.parentElement).toHaveStyle(`padding: 16px`);
+  expect(button).toHaveStyle(`padding: 16px`);
 });
 
 test('renders <button> element', () => {
@@ -81,8 +85,7 @@ test('renders <button> element', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button.parentElement instanceof HTMLButtonElement).toBeTruthy();
-  expect(button instanceof HTMLSpanElement).toBeTruthy();
+  expect(button instanceof HTMLButtonElement).toBeTruthy();
 });
 
 test('accepts other button components', () => {
@@ -113,11 +116,26 @@ test('add icon in button works as expected', () => {
   const button = screen.getByText(/iconbutton/);
   const icon = screen.getByTitle(/facebook/);
 
-  expect(button instanceof HTMLSpanElement).toBeTruthy();
+  expect(button instanceof HTMLButtonElement).toBeTruthy();
   expect(button).toHaveStyle('display: inline-flex');
   expect(button.firstChild instanceof SVGElement).toBeTruthy();
   expect(icon.getAttribute('fill')).toEqual('red');
   expect(icon.getAttribute('width')).toEqual('30');
+});
+
+test('add space to button works as expected', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Button title="iconbutton" space="small">
+        <Facebook fill="red" size={30} title="facebook" />
+        iconbutton
+      </Button>
+    </ThemeProvider>
+  );
+  const button = screen.getByTitle(/iconbutton/);
+
+  const style = window.getComputedStyle(button);
+  expect(style.columnGap).toBe(`2px`);
 });
 
 test('accepts custom styles prop className', () => {

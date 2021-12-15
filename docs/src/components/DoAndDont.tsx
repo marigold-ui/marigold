@@ -36,7 +36,8 @@ export const DoAndDont: React.FC<DoAndDontProps> = ({
         <Box
           display="flex"
           alignItems="center"
-          py="xsmall"
+          pt="small"
+          pb="xsmall"
           css={{ color: dont ? 'red' : 'green' }}
         >
           {dont ? (
