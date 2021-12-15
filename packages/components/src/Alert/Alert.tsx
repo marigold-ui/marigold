@@ -1,5 +1,6 @@
 import React from 'react';
 import { Exclamation, Check, Notification } from '@marigold/icons';
+import { type CSSObject } from '@marigold/system';
 import { type ComponentProps } from '@marigold/types';
 
 import { Box } from '../Box';
@@ -12,6 +13,16 @@ const ICON_MAP = {
 
 export type AlertVariants = keyof typeof ICON_MAP;
 
+// Variants
+// ---------------
+export interface AlertThemeExtension {
+  alert?: {
+    [key in AlertVariants]?: CSSObject;
+  };
+}
+
+// Props
+// ---------------
 export type AlertProps = {
   variant?: AlertVariants;
 } & ComponentProps<'div'>;

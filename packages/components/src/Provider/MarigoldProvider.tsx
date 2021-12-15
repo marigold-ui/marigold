@@ -7,11 +7,25 @@ import {
   ThemeProviderProps,
   useTheme,
   __defaultTheme,
+  CSSObject,
 } from '@marigold/system';
 
+// Theme Extension
+// ---------------
+export interface RootThemeExtension {
+  root?: {
+    body?: CSSObject;
+    html?: CSSObject;
+  };
+}
+
+// Props
+// ---------------
 export interface MarigoldProviderProps<T extends Theme>
   extends ThemeProviderProps<T> {}
 
+// Provider
+// ---------------
 export function MarigoldProvider<T extends Theme>({
   theme,
   children,
