@@ -11,7 +11,7 @@ export const CopySVGIcon: React.FC = ({ children }) => {
   const ref = React.createRef<any>();
 
   const onClick = () => {
-    // remove class prop from svg element
+    // get svg element and remove class prop from it
     const svgElement = ref.current.querySelector('svg').outerHTML;
     const modifiedString = svgElement.replace(
       / class="[a-zA-Z0-9:;.\s()\-,]*"/,
