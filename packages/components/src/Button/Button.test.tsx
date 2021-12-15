@@ -11,6 +11,7 @@ const theme = {
   },
   space: {
     none: 0,
+    small: 2,
     large: 16,
   },
   button: {
