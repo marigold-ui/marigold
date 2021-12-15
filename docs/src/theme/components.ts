@@ -49,6 +49,10 @@ const button = {
     px: 'small',
     py: 'xsmall',
   },
+  table: {
+    px: 'xsmall',
+    py: 'small',
+  },
   small: {
     px: 'xsmall',
     py: 'xxsmall',
@@ -220,6 +224,9 @@ export const components = {
     large: {
       ...button.large,
     },
+    table: {
+      ...button.table,
+    },
     small: {
       ...button.small,
     },
@@ -235,10 +242,26 @@ export const components = {
       color: 'gray.40',
       bg: 'transparent',
       fontWeight: 'body',
-      fontFamily: 'body',
       fontSize: 'xxsmall',
       ':focus': {
         outline: 'none',
+      },
+    },
+    icon: {
+      ...button.primary,
+      width: '100%',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      display: 'inline-flex',
+      color: 'gray.40',
+      bg: 'transparent',
+      fontWeight: 'body',
+      fontSize: 'xxsmall',
+      ':focus': {
+        outline: 'none',
+      },
+      ':hover': {
+        bg: '#FFF8F1',
       },
     },
     select: {
