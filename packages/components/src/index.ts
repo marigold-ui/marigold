@@ -1,4 +1,4 @@
-export * from './theme';
+export { type Theme } from '@marigold/system';
 
 export * from './ActionGroup';
 export * from './Alert';

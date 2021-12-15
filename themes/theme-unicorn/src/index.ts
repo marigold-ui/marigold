@@ -1,4 +1,4 @@
-import { BaseTheme } from '@marigold/components';
+import { type Theme } from '@marigold/components';
 import { colors } from './colors';
 
 const selectButton = {
@@ -196,8 +196,7 @@ const sliderTrack = {
   border: 'none',
 };
 
-const theme: BaseTheme = {
-  breakpoints: ['768', '1200'],
+const theme: Theme = {
   space: {
     none: 0,
     xxsmall: 3,
@@ -248,7 +247,7 @@ const theme: BaseTheme = {
       fontFamily: 'body',
     },
   },
-  alerts: {
+  alert: {
     error: {
       alignItems: 'center',
       borderStyle: 'solid',

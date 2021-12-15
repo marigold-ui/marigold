@@ -1,6 +1,7 @@
 import React from 'react';
-import { ComponentProps } from '@marigold/types';
 import { Exclamation, Check, Notification } from '@marigold/icons';
+import { type ComponentProps } from '@marigold/types';
+
 import { Box } from '../Box';
 
 const ICON_MAP = {
@@ -9,10 +10,14 @@ const ICON_MAP = {
   error: Exclamation,
 } as const;
 
+export type AlertVariants = keyof typeof ICON_MAP;
+
 export type AlertProps = {
-  variant?: keyof typeof ICON_MAP;
+  variant?: AlertVariants;
 } & ComponentProps<'div'>;
 
+// Component
+// ---------------
 export const Alert: React.FC<AlertProps> = ({
   variant = 'success',
   children,
@@ -21,7 +26,7 @@ export const Alert: React.FC<AlertProps> = ({
   const Icon = ICON_MAP[variant];
 
   return (
-    <Box {...props} display="flex" variant={`alerts.${variant}`}>
+    <Box {...props} display="flex" variant={`alert.${variant}`}>
       <Box
         display="inline-block"
         alignItems="center"
