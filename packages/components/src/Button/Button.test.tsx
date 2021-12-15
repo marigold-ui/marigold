@@ -5,23 +5,28 @@ import { Button } from './Button';
 import { Facebook } from '@marigold/icons';
 
 const theme = {
-  button: {
-    large: {
-      p: '16px',
-    },
-    small: {
-      p: '16px',
-    },
-    primary: {
-      fontFamily: 'Inter',
-    },
-    secondary: {
-      fontFamily: 'Arial',
-    },
+  fonts: {
+    body: 'Arial',
+    fancy: 'Inter',
   },
   space: {
     none: 0,
     small: 2,
+    large: 16,
+  },
+  button: {
+    large: {
+      p: 'large',
+    },
+    small: {
+      p: 'large',
+    },
+    primary: {
+      fontFamily: 'fancy',
+    },
+    secondary: {
+      fontFamily: 'body',
+    },
   },
 };
 

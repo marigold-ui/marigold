@@ -4,6 +4,9 @@ import { ThemeProvider } from '@marigold/system';
 import { Alert } from './Alert';
 
 const theme = {
+  colors: {
+    primary: '#000',
+  },
   alerts: {
     success: {
       alignItems: 'center',

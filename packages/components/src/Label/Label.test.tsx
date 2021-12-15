@@ -4,12 +4,16 @@ import { ThemeProvider } from '@marigold/system';
 import { Label } from './Label';
 
 const theme = {
+  fonts: {
+    body: 'Inter Regular',
+    label: 'Oswald',
+  },
   label: {
     above: {
-      fontFamily: 'Inter Regular',
+      fontFamily: 'body',
     },
     myLabel: {
-      fontFamily: 'Oswald Regular',
+      fontFamily: 'label',
     },
   },
 };
@@ -35,7 +39,7 @@ test('supports other variant than default', () => {
   );
   const label = screen.getByText(/label/);
 
-  expect(label).toHaveStyle(`font-family: Oswald Regular`);
+  expect(label).toHaveStyle(`font-family: Oswald`);
 });
 
 test('supports htmlFor prop', () => {

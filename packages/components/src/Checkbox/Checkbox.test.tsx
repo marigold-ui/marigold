@@ -4,9 +4,13 @@ import { Checkbox } from './Checkbox';
 import { ThemeProvider } from '@marigold/system';
 
 const theme = {
+  space: {
+    none: 0,
+    small: 2,
+  },
   checkbox: {
     default: {
-      m: '2px',
+      m: 'small',
     },
   },
 };

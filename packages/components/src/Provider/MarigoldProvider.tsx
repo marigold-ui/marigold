@@ -1,6 +1,7 @@
 import React from 'react';
 import { OverlayProvider } from '@react-aria/overlays';
 import {
+  Theme,
   Global,
   ThemeProvider,
   ThemeProviderProps,
@@ -8,10 +9,13 @@ import {
   __defaultTheme,
 } from '@marigold/system';
 
-export const MarigoldProvider: React.FC<ThemeProviderProps> = ({
+export interface MarigoldProviderProps<T extends Theme>
+  extends ThemeProviderProps<T> {}
+
+export function MarigoldProvider<T extends Theme>({
   theme,
   children,
-}) => {
+}: MarigoldProviderProps<T>) {
   const outer = useTheme();
   const isTopLevel = outer.theme === __defaultTheme;
 
@@ -27,4 +31,4 @@ export const MarigoldProvider: React.FC<ThemeProviderProps> = ({
       )}
     </ThemeProvider>
   );
-};
+}

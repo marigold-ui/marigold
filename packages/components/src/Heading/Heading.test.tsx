@@ -4,12 +4,16 @@ import { ThemeProvider } from '@marigold/system';
 import { Heading } from './Heading';
 
 const theme = {
+  fonts: {
+    body: 'Roboto',
+    headings: 'Inter',
+  },
   text: {
     h2: {
-      fontFamily: 'Inter',
+      fontFamily: 'headings',
     },
     h3: {
-      fontFamily: 'Roboto',
+      fontFamily: 'body',
     },
   },
 };

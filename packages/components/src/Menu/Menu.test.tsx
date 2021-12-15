@@ -5,12 +5,17 @@ import { Menu } from './Menu';
 import { MenuItem } from '../MenuItem';
 
 const theme = {
+  space: {
+    none: 0,
+    small: 4,
+    medium: 8,
+  },
   menu: {
     default: {
-      padding: '4px',
+      padding: 'small',
     },
     custom: {
-      padding: '8px',
+      padding: 'medium',
     },
   },
 };

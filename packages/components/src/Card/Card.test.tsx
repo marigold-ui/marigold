@@ -5,12 +5,17 @@ import { ThemeProvider } from '@marigold/system';
 import { Card } from './Card';
 
 const theme = {
+  space: {
+    none: 0,
+    small: 4,
+    medium: 8,
+  },
   card: {
     default: {
-      p: '8px',
+      p: 'medium',
     },
     custom: {
-      p: '4px',
+      p: 'small',
     },
   },
 };

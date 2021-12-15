@@ -6,15 +6,20 @@ import { Dialog, useDialogButtonProps } from './Dialog';
 import { Button } from '../Button';
 
 const theme = {
+  space: {
+    none: 0,
+    small: 4,
+    medium: 8,
+  },
   dialog: {
     wrapper: {
-      p: '8px',
+      p: 'medium',
     },
     body: {
-      p: '4px',
+      p: 'small',
     },
     onClose: {
-      p: '0px',
+      p: 'none',
     },
   },
 };

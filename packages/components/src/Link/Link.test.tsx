@@ -4,12 +4,16 @@ import { ThemeProvider } from '@marigold/system';
 import { Link } from './Link';
 
 const theme = {
+  fonts: {
+    link: 'Inter',
+    body: 'Oswald',
+  },
   text: {
     link: {
-      fontFamily: 'Inter',
+      fontFamily: 'link',
     },
     second: {
-      fontFamily: 'Oswald',
+      fontFamily: 'body',
     },
   },
 };

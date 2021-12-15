@@ -6,9 +6,15 @@ import { Item, MarigoldProvider, Section } from '..';
 import { Select } from './Select';
 
 const theme = {
+  colors: {
+    red: 'red',
+  },
+  fonts: {
+    body: 'Inter',
+  },
   button: {
     select: {
-      fontFamily: 'Inter',
+      fontFamily: 'body',
       errorOpened: {
         color: 'red',
       },
