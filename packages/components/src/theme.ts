@@ -21,6 +21,7 @@ import { type LinkThemeExtension } from './Link';
 import { type MenuThemeExtension } from './Menu';
 import { type MenuItemThemeExtension } from './MenuItem';
 import { type MessageThemeExtension } from './Message';
+import { type RadioThemeExtension } from './Radio';
 import { type SelectThemeExtension } from './Select';
 import { type SliderThemeExtension } from './Slider';
 import { type TextThemeExtension } from './Text';
@@ -45,6 +46,7 @@ export interface Theme
     MenuThemeExtension<CSSObject>,
     MenuItemThemeExtension<CSSObject>,
     MessageThemeExtension<CSSObject>,
+    RadioThemeExtension<CSSObject>,
     SelectThemeExtension<CSSObject>,
     SliderThemeExtension<CSSObject>,
     TextThemeExtension<CSSObject>,

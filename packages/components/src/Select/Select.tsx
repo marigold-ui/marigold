@@ -25,6 +25,12 @@ export interface SelectThemeExtension<Value> {
   select?: {
     __default: Value;
     disabled?: Value;
+    listbox?: {
+      __default: Value;
+      error?: Value;
+    };
+    section?: Value;
+    option?: Value;
   };
 }
 

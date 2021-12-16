@@ -8,6 +8,14 @@ import { ValidationMessage } from '../ValidationMessage';
 
 import { RadioChecked, RadioUnchecked } from './RadioIcons';
 
+// Theme Extension
+// ---------------
+export interface RadioThemeExtension<Value> {
+  radio?: {
+    [key: string]: Value;
+  };
+}
+
 // Radio Icon
 // ---------------
 type RadioIconProps = {

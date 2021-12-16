@@ -14,7 +14,7 @@ const selectButton = {
   px: 'xsmall',
   color: 'inherit',
   bg: 'transparent',
-};
+} as const;
 const button = {
   root: {
     position: 'relative',
@@ -146,7 +146,7 @@ const button = {
       cursor: 'pointer',
     },
   },
-};
+} as const;
 const text = {
   root: {
     fontFamily: 'body',
@@ -164,7 +164,7 @@ const text = {
       marginBottom: 'small',
     },
   },
-};
+} as const;
 const selectOption = {
   fontFamily: 'body',
   fontSize: 'xsmall',
@@ -175,7 +175,7 @@ const selectOption = {
   color: 'text',
   px: 'xsmall',
   listStyle: 'none',
-};
+} as const;
 const sliderThumb = {
   WebkitAppearance: 'none',
   boxSizing: 'border-box',
@@ -186,7 +186,7 @@ const sliderThumb = {
   borderRadius: '8px',
   cursor: 'pointer',
   marginTop: '-4px',
-};
+} as const;
 const sliderTrack = {
   WebkitAppearance: 'none',
   width: '100%',
@@ -194,7 +194,7 @@ const sliderTrack = {
   background: colors.gray30,
   borderRadius: '8px',
   border: 'none',
-};
+} as const;
 
 const theme: Theme = {
   space: {
@@ -453,16 +453,7 @@ const theme: Theme = {
       borderColor: colors.gray50,
     },
   },
-  field: {
-    default: {
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      color: 'text',
-      fontWeight: 'body',
-      lineHeight: '2rem',
-    },
-  },
-  images: {
+  image: {
     fullWidth: {
       maxWidth: '100%',
       height: 'auto',
@@ -546,7 +537,7 @@ const theme: Theme = {
       },
     },
   },
-  messages: {
+  message: {
     warning: {
       borderStyle: 'solid',
       borderColor: 'warning',
@@ -623,7 +614,7 @@ const theme: Theme = {
     h6: {
       ...text.root,
       fontSize: 'xsmall',
-      textTransform: 'uppoercase',
+      textTransform: 'uppercase',
     },
     link: {
       color: 'primary',
@@ -792,6 +783,6 @@ const theme: Theme = {
       color: 'error',
     },
   },
-};
+} as const;
 
 export default theme;

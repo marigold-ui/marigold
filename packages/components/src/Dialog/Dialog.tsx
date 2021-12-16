@@ -18,6 +18,8 @@ export interface DialogThemeExtension<Value> {
     wrapper?: Value;
     body?: Value;
     onClose?: Value;
+    modalWrapper?: Value;
+    modalBody?: Value;
   };
 }
 

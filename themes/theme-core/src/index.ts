@@ -14,7 +14,7 @@ const selectButton = {
   px: 'xxsmall',
   color: 'text',
   bg: colors.gray00,
-};
+} as const;
 const button = {
   root: {
     position: 'relative',
@@ -150,7 +150,7 @@ const button = {
       cursor: 'pointer',
     },
   },
-};
+} as const;
 const text = {
   root: {
     fontFamily: 'body',
@@ -168,7 +168,7 @@ const text = {
       marginBottom: 'small',
     },
   },
-};
+} as const;
 const selectOption = {
   fontFamily: 'body',
   fontSize: 'xxsmall',
@@ -180,7 +180,7 @@ const selectOption = {
   px: '6px',
   listStyle: 'none',
   bg: colors.gray00,
-};
+} as const;
 const sliderThumb = {
   WebkitAppearance: 'none',
   boxSizing: 'border-box',
@@ -191,7 +191,7 @@ const sliderThumb = {
   borderRadius: '8px',
   cursor: 'pointer',
   marginTop: '-4px',
-};
+} as const;
 const sliderTrack = {
   WebkitAppearance: 'none',
   width: '100%',
@@ -199,7 +199,7 @@ const sliderTrack = {
   background: colors.gray30,
   borderRadius: '8px',
   border: 'none',
-};
+} as const;
 
 const theme: Theme = {
   space: {
@@ -451,16 +451,7 @@ const theme: Theme = {
       borderBottom: '2px solid',
     },
   },
-  field: {
-    default: {
-      fontFamily: 'body',
-      fontSize: 'xxsmall',
-      fontWeight: 'body',
-      lineHeight: 'body',
-      color: 'text',
-    },
-  },
-  images: {
+  image: {
     fullWidth: {
       maxWidth: '100%',
       height: 'auto',
@@ -547,7 +538,7 @@ const theme: Theme = {
       },
     },
   },
-  messages: {
+  message: {
     warning: {
       borderStyle: 'solid',
       borderColor: 'warning',
@@ -792,6 +783,6 @@ const theme: Theme = {
       color: 'error',
     },
   },
-};
+} as const;
 
 export default theme;
