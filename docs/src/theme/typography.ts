@@ -9,7 +9,7 @@ const text = {
     fontWeight: 'heading',
     color: 'gray.20',
   },
-};
+} as const;
 
 export const typography = {
   fonts: {
@@ -47,6 +47,15 @@ export const typography = {
       ...text.root,
       color: 'gray.60',
     },
+    link: {
+      color: 'gray.20',
+      textDecoration: 'none',
+      '&:hover': {
+        color: 'blue.70',
+      },
+    },
+  },
+  heading: {
     h1: {
       ...text.root,
       ...text.heading,
@@ -91,12 +100,5 @@ export const typography = {
       fontSize: 'xsmall',
       textTransform: 'uppercase',
     },
-    link: {
-      color: 'gray.20',
-      textDecoration: 'none',
-      '&:hover': {
-        color: 'blue.70',
-      },
-    },
   },
-};
+} as const;

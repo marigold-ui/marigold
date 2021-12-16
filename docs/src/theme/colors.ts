@@ -31,4 +31,4 @@ export const colors = {
   },
   yellow: '#ffde70',
   red: '#DD4142',
-};
+} as const;

@@ -4,4 +4,4 @@ export const root = {
     padding: 0,
     fontFamily: 'body',
   },
-};
+} as const;
