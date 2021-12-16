@@ -6,6 +6,8 @@ import { Input } from '../Input';
 import { Label } from '../Label';
 import { ValidationMessage } from '../ValidationMessage';
 
+// Props
+// ---------------
 export type FieldProps = {
   htmlFor: string;
   label: string;
@@ -15,6 +17,8 @@ export type FieldProps = {
   disabled?: boolean;
 } & ComponentProps<'input'>;
 
+// Component
+// ---------------
 export const Field: React.FC<FieldProps> = ({
   type = 'text',
   className,

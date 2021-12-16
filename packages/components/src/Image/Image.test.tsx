@@ -7,7 +7,7 @@ const theme = {
   colors: {
     primary: 'hotpink',
   },
-  images: {
+  image: {
     fullWidth: {
       alignItems: 'center',
     },

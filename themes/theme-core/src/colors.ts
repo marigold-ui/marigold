@@ -33,4 +33,4 @@ export const colors = {
   red60: '#dd4142',
   red70: '#8b0027',
   red80: '#4d0419',
-};
+} as const;

@@ -3,10 +3,22 @@ import { ComponentProps } from '@marigold/types';
 import { Link } from '../Link';
 import { Box } from '../Box';
 
+// Theme Extension
+// ---------------
+export interface MenuItemThemeExtension<Value> {
+  menuItem?: {
+    [key: string]: Value;
+  };
+}
+
+// Props
+// ---------------
 export type MenuItemProps = {
   variant?: string;
 } & ComponentProps<typeof Link>;
 
+// Component
+// ---------------
 export const MenuItem: React.FC<MenuItemProps> = ({
   variant = 'default',
   className,

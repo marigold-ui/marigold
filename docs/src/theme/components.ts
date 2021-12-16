@@ -12,7 +12,7 @@ const selectButton = {
   py: 'xxsmall',
   color: 'inherit',
   bg: 'transparent',
-};
+} as const;
 
 const selectOption = {
   fontFamily: 'body',
@@ -24,7 +24,7 @@ const selectOption = {
   color: 'text',
   px: 'xsmall',
   listStyle: 'none',
-};
+} as const;
 
 const button = {
   primary: {
@@ -103,7 +103,7 @@ const button = {
       borderTopLeftRadius: 'medium',
     },
   },
-};
+} as const;
 
 const card = {
   default: {
@@ -119,7 +119,7 @@ const card = {
     display: 'flex',
     justifyContent: 'center',
   },
-};
+} as const;
 
 const divider = {
   do: {
@@ -136,7 +136,7 @@ const divider = {
     borderBottom: '8px solid',
     color: 'red',
   },
-};
+} as const;
 
 const navigation = {
   wrapper: {
@@ -158,7 +158,7 @@ const navigation = {
     lineHeight: 'cap',
     pb: 'small',
   },
-};
+} as const;
 
 const select = {
   __default: {
@@ -217,7 +217,7 @@ const select = {
       color: 'gray.80',
     },
   },
-};
+} as const;
 
 export const components = {
   button: {
@@ -273,4 +273,4 @@ export const components = {
   divider,
   navigation,
   select,
-};
+} as const;

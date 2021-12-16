@@ -11,12 +11,28 @@ import { Heading } from '../Heading';
 
 import { ModalDialog } from './ModalDialog';
 
+// Theme Extension
+// ---------------
+export interface DialogThemeExtension<Value> {
+  dialog?: {
+    wrapper?: Value;
+    body?: Value;
+    onClose?: Value;
+    modalWrapper?: Value;
+    modalBody?: Value;
+  };
+}
+
+// Props
+// ---------------
 export type DialogProps = {
   isOpen: boolean;
   close: ComponentProps<typeof Button>['onClick'];
   title?: string;
 } & ComponentProps<'div'>;
 
+// Component
+// ---------------
 export const Dialog: React.FC<DialogProps> = ({
   children,
   title,

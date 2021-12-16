@@ -7,6 +7,16 @@ import {
 
 import { Box, BoxOwnProps } from '../Box';
 
+// Theme Extension
+// ---------------
+export interface TextThemeExtension<Value> {
+  text?: {
+    [key: string]: Value;
+  };
+}
+
+// Props
+// ---------------
 export type TextOwnProps = {
   align?: ResponsiveStyleValue<string>;
   color?: ResponsiveStyleValue<string>;
@@ -17,6 +27,8 @@ export type TextOwnProps = {
 
 export type TextProps = PolymorphicPropsWithRef<TextOwnProps, 'span'>;
 
+// Component
+// ---------------
 export const Text: PolymorphicComponentWithRef<TextOwnProps, 'span'> =
   forwardRef(
     (

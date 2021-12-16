@@ -1,4 +1,4 @@
-import { BaseTheme } from '@marigold/components';
+import { type Theme } from '@marigold/components';
 import { colors } from './colors';
 
 const selectButton = {
@@ -14,7 +14,7 @@ const selectButton = {
   px: 'xsmall',
   color: 'inherit',
   bg: 'transparent',
-};
+} as const;
 const button = {
   root: {
     position: 'relative',
@@ -146,7 +146,7 @@ const button = {
       cursor: 'pointer',
     },
   },
-};
+} as const;
 const text = {
   root: {
     fontFamily: 'body',
@@ -164,7 +164,7 @@ const text = {
       marginBottom: 'small',
     },
   },
-};
+} as const;
 const selectOption = {
   fontFamily: 'body',
   fontSize: 'xsmall',
@@ -175,7 +175,7 @@ const selectOption = {
   color: 'text',
   px: 'xsmall',
   listStyle: 'none',
-};
+} as const;
 const sliderThumb = {
   WebkitAppearance: 'none',
   boxSizing: 'border-box',
@@ -186,7 +186,7 @@ const sliderThumb = {
   borderRadius: '8px',
   cursor: 'pointer',
   marginTop: '-4px',
-};
+} as const;
 const sliderTrack = {
   WebkitAppearance: 'none',
   width: '100%',
@@ -194,10 +194,9 @@ const sliderTrack = {
   background: colors.gray30,
   borderRadius: '8px',
   border: 'none',
-};
+} as const;
 
-const theme: BaseTheme = {
-  breakpoints: ['768', '1200'],
+const theme: Theme = {
   space: {
     none: 0,
     xxsmall: 4,
@@ -248,7 +247,7 @@ const theme: BaseTheme = {
       fontFamily: 'body',
     },
   },
-  alerts: {
+  alert: {
     error: {
       alignItems: 'center',
       borderStyle: 'solid',
@@ -454,7 +453,7 @@ const theme: BaseTheme = {
       borderColor: colors.gray50,
     },
   },
-  images: {
+  image: {
     fullWidth: {
       maxWidth: '100%',
       height: 'auto',
@@ -536,7 +535,7 @@ const theme: BaseTheme = {
       },
     },
   },
-  messages: {
+  message: {
     warning: {
       borderStyle: 'solid',
       borderColor: 'warning',
@@ -774,6 +773,6 @@ const theme: BaseTheme = {
       color: 'error',
     },
   },
-};
+} as const;
 
 export default theme;

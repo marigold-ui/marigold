@@ -1,10 +1,11 @@
+import { Theme } from '@marigold/components';
+
 import { root } from './root';
 import { colors } from './colors';
 import { components } from './components';
 import { typography } from './typography';
 
-export const theme = {
-  // TODO: breakpoints: ['768', '1200'],
+export const theme: Theme = {
   root,
   space: {
     none: 0,
@@ -39,4 +40,4 @@ export const theme = {
   },
   ...typography,
   ...components,
-};
+} as const;

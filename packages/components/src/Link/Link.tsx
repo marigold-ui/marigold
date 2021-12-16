@@ -4,9 +4,19 @@ import { PolymorphicComponent, PolymorphicProps } from '@marigold/types';
 
 import { Text, TextOwnProps } from '../Text';
 
+// Theme Extension
+// ---------------
+export interface LinkThemeExtension<Value> {
+  link?: Value;
+}
+
+// Props
+// ---------------
 export type LinkOwnProps = { disabled?: boolean } & TextOwnProps;
 export type LinkProps = PolymorphicProps<LinkOwnProps, 'a'>;
 
+// Component
+// ---------------
 export const Link = (({
   as = 'a',
   variant = 'link',

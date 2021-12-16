@@ -4,12 +4,24 @@ import { Required } from '@marigold/icons';
 
 import { Box } from '../Box';
 
+// Theme Extension
+// ---------------
+export interface LabelThemeExtension<Value> {
+  label?: {
+    [key: string]: Value;
+  };
+}
+
+// Props
+// ---------------
 export type LabelProps = {
   htmlFor?: string;
   variant?: string;
   required?: boolean;
 } & ComponentProps<'label'>;
 
+// Component
+// ---------------
 export const Label: React.FC<LabelProps> = ({
   variant = 'above',
   required,

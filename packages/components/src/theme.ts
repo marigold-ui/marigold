@@ -1,49 +1,54 @@
-export type CSSObject = object;
+import { type CSSObject, type Theme as Scales } from '@marigold/system';
 
-export type BaseTheme = {
-  breakpoints: string[];
-  space: {
-    none: number;
-    xxsmall: number;
-    xsmall: number;
-    small: number;
-    medium: number;
-    large: number;
-    xlarge: number;
-    xxlarge: number;
-  };
-  fonts: {
-    body: string;
-    heading: string;
-  };
-  fontSizes: {
-    xxsmall: string;
-    xsmall: string;
-    small: string;
-    medium: string;
-    large: string;
-    xlarge: string;
-  };
-  fontWeights: {
-    body: number;
-    heading: number;
-    bold: number;
-  };
-  lineHeights: {
-    body: number;
-    heading: number;
-  };
-  colors: {
-    text: string;
-    background: string;
-    primary: string;
-    secondary: string;
-    disabled: string;
-    error: string;
-    warning: string;
-    info: string;
-    success: string;
-    [key: string]: string;
-  };
-  [key: string]: CSSObject;
-};
+// Provider
+// ---------------
+import { type RootThemeExtension } from './Provider';
+
+// Components
+// ---------------
+import { type AlertThemeExtension } from './Alert';
+import { type BadgeThemeExtension } from './Badge';
+import { type ButtonThemeExtension } from './Button';
+import { type CardThemeExtension } from './Card';
+import { type CheckboxThemeExtension } from './Checkbox';
+import { type DialogThemeExtension } from './Dialog';
+import { type DividerThemeExtension } from './Divider';
+import { type HeadingThemeExtension } from './Heading';
+import { type ImageThemeExtension } from './Image';
+import { type InputThemeExtension } from './Input';
+import { type LabelThemeExtension } from './Label';
+import { type LinkThemeExtension } from './Link';
+import { type MenuThemeExtension } from './Menu';
+import { type MenuItemThemeExtension } from './MenuItem';
+import { type MessageThemeExtension } from './Message';
+import { type RadioThemeExtension } from './Radio';
+import { type SelectThemeExtension } from './Select';
+import { type SliderThemeExtension } from './Slider';
+import { type TextThemeExtension } from './Text';
+import { type TextareaThemeExtension } from './Textarea';
+import { type ValidationMessageThemeExtension } from './ValidationMessage';
+
+export interface Theme
+  extends Scales,
+    RootThemeExtension<CSSObject>,
+    AlertThemeExtension<CSSObject>,
+    BadgeThemeExtension<CSSObject>,
+    ButtonThemeExtension<CSSObject>,
+    CardThemeExtension<CSSObject>,
+    CheckboxThemeExtension<CSSObject>,
+    DialogThemeExtension<CSSObject>,
+    DividerThemeExtension<CSSObject>,
+    HeadingThemeExtension<CSSObject>,
+    ImageThemeExtension<CSSObject>,
+    InputThemeExtension<CSSObject>,
+    LabelThemeExtension<CSSObject>,
+    LinkThemeExtension<CSSObject>,
+    MenuThemeExtension<CSSObject>,
+    MenuItemThemeExtension<CSSObject>,
+    MessageThemeExtension<CSSObject>,
+    RadioThemeExtension<CSSObject>,
+    SelectThemeExtension<CSSObject>,
+    SliderThemeExtension<CSSObject>,
+    TextThemeExtension<CSSObject>,
+    TextareaThemeExtension<CSSObject>,
+    ValidationMessageThemeExtension<CSSObject> {}

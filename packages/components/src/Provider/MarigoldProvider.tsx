@@ -9,9 +9,22 @@ import {
   __defaultTheme,
 } from '@marigold/system';
 
+// Theme Extension
+// ---------------
+export interface RootThemeExtension<Value> {
+  root?: {
+    body?: Value;
+    html?: Value;
+  };
+}
+
+// Props
+// ---------------
 export interface MarigoldProviderProps<T extends Theme>
   extends ThemeProviderProps<T> {}
 
+// Provider
+// ---------------
 export function MarigoldProvider<T extends Theme>({
   theme,
   children,
