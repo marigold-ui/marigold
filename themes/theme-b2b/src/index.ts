@@ -343,8 +343,8 @@ const theme: BaseTheme = {
       },
     },
     checked: {
-      fill: colors.blue60,
-      stroke: colors.blue70,
+      fill: colors.orange60,
+      stroke: colors.orange80,
       disabled: {
         fill: colors.gray30,
         stroke: colors.gray30,
@@ -376,8 +376,8 @@ const theme: BaseTheme = {
       },
     },
     checked: {
-      fill: colors.blue60,
-      stroke: colors.blue70,
+      fill: colors.orange60,
+      stroke: colors.orange80,
       disabled: {
         fill: colors.gray30,
         stroke: colors.gray30,
@@ -716,7 +716,7 @@ const theme: BaseTheme = {
       },
       '&:focus::-webkit-slider-thumb': {
         ...sliderThumb,
-        border: '4px solid ' + colors.blue60,
+        border: '4px solid ' + colors.orange60,
       },
       '&:disabled::-webkit-slider-thumb': {
         ...sliderThumb,
@@ -728,7 +728,7 @@ const theme: BaseTheme = {
       },
       '&:focus::-webkit-slider-runnable-track': {
         ...sliderTrack,
-        background: colors.blue60,
+        background: colors.orange60,
       },
       '&:disabled::-webkit-slider-runnable-track': {
         ...sliderTrack,
@@ -743,7 +743,7 @@ const theme: BaseTheme = {
       },
       '&:focus::-moz-range-thumb': {
         ...sliderThumb,
-        border: '4px solid ' + colors.blue60,
+        border: '4px solid ' + colors.orange60,
       },
       '&:disabled::-moz-range-thumb': {
         ...sliderThumb,
@@ -759,7 +759,7 @@ const theme: BaseTheme = {
       },
       '&:focus::-moz-range-progress': {
         ...sliderTrack,
-        background: colors.blue60,
+        background: colors.orange60,
       },
       '&:disabled::-moz-range-progress': {
         ...sliderTrack,

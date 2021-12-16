@@ -231,10 +231,10 @@ const theme: BaseTheme = {
   },
   colors: {
     ...colors,
-    text: '#070708',
-    background: '#fdfcfd',
-    primary: '#c9b1ff',
-    secondary: '#ffcaf2',
+    text: colors.gray90,
+    background: colors.gray00,
+    primary: '#673ab7',
+    secondary: '#9575cd',
     disabled: '#e9e7eb',
     error: '#ffb2b1',
     warning: '#fff3ad',
@@ -344,7 +344,7 @@ const theme: BaseTheme = {
     },
     checked: {
       fill: 'primary',
-      stroke: 'primary',
+      stroke: '#311b92',
       disabled: {
         fill: colors.gray30,
         stroke: colors.gray30,
@@ -377,7 +377,7 @@ const theme: BaseTheme = {
     },
     checked: {
       fill: 'primary',
-      stroke: 'primary',
+      stroke: '#311b92',
       disabled: {
         fill: colors.gray30,
         stroke: colors.gray30,
@@ -734,7 +734,7 @@ const theme: BaseTheme = {
       },
       '&:focus::-webkit-slider-thumb': {
         ...sliderThumb,
-        border: '4px solid ' + colors.blue60,
+        border: '4px solid #673ab7',
       },
       '&:disabled::-webkit-slider-thumb': {
         ...sliderThumb,
@@ -746,7 +746,7 @@ const theme: BaseTheme = {
       },
       '&:focus::-webkit-slider-runnable-track': {
         ...sliderTrack,
-        background: colors.blue60,
+        background: '#673ab7',
       },
       '&:disabled::-webkit-slider-runnable-track': {
         ...sliderTrack,
@@ -761,7 +761,7 @@ const theme: BaseTheme = {
       },
       '&:focus::-moz-range-thumb': {
         ...sliderThumb,
-        border: '4px solid ' + colors.blue60,
+        border: '4px solid #673ab7',
       },
       '&:disabled::-moz-range-thumb': {
         ...sliderThumb,
@@ -777,7 +777,7 @@ const theme: BaseTheme = {
       },
       '&:focus::-moz-range-progress': {
         ...sliderTrack,
-        background: colors.blue60,
+        background: '#673ab7',
       },
       '&:disabled::-moz-range-progress': {
         ...sliderTrack,
