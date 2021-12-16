@@ -7,7 +7,7 @@ const theme = {
   colors: {
     primary: 'hotpink',
   },
-  messages: {
+  message: {
     info: {
       alignItems: 'center',
     },

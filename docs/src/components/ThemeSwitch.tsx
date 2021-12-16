@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { BaseTheme } from '@marigold/components';
+import { type Theme } from '@marigold/components';
 
 import unicornTheme from '@marigold/theme-unicorn';
 import b2bTheme from '@marigold/theme-b2b';
@@ -15,7 +15,7 @@ export const themes = {
 // ---------------
 export type ThemeSwitchContextType = {
   current: string | undefined;
-  themes: { [name: string]: BaseTheme };
+  themes: { [name: string]: Theme };
   setTheme: Function;
 };
 
@@ -31,7 +31,7 @@ export const useThemeSwitch = () => useContext(Context);
 // Component
 // ---------------
 export type MarigoldThemeSwitchProps = {
-  themes: { [name: string]: BaseTheme };
+  themes: { [name: string]: Theme };
   initial?: string;
 };
 

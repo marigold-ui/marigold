@@ -6,6 +6,16 @@ import { ValidationMessage } from '../ValidationMessage';
 import { Label } from '../Label';
 import { Box } from '../Box';
 
+// Theme Extension
+// ---------------
+export interface TextareaThemeExtension<Value> {
+  textarea?: {
+    [key: string]: Value;
+  };
+}
+
+// Props
+// ---------------
 export type TextareaProps = {
   variant?: string;
   label?: string;
@@ -15,6 +25,8 @@ export type TextareaProps = {
   errorMessage?: string;
 } & ComponentProps<'textarea'>;
 
+// Component
+// ---------------
 export const Textarea: React.FC<TextareaProps> = ({
   variant = 'default',
   htmlFor = 'textarea',

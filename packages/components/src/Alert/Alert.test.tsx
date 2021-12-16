@@ -7,7 +7,7 @@ const theme = {
   colors: {
     primary: '#000',
   },
-  alerts: {
+  alert: {
     success: {
       alignItems: 'center',
     },

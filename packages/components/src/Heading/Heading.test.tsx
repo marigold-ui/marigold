@@ -8,7 +8,7 @@ const theme = {
     body: 'Roboto',
     headings: 'Inter',
   },
-  text: {
+  heading: {
     h2: {
       fontFamily: 'headings',
     },

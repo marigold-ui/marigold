@@ -7,8 +7,20 @@ import {
 
 import { Box, BoxOwnProps } from '../Box';
 
+// Theme Extension
+// ---------------
+export interface ButtonThemeExtension<Value> {
+  button?: {
+    [key: string]: Value;
+  };
+}
+
+// Props
+// ---------------
 export type ButtonProps = PolymorphicPropsWithRef<BoxOwnProps, 'button'>;
 
+// Component
+// ---------------
 export const Button: PolymorphicComponentWithRef<BoxOwnProps, 'button'> =
   forwardRef(
     (

@@ -4,6 +4,14 @@ import { ComponentProps } from '@marigold/types';
 import { Button } from '../Button';
 import { Box } from '../Box';
 
+// Theme Extension
+// ---------------
+export interface MenuThemeExtension<Value> {
+  menu?: Value;
+}
+
+// Props
+// ---------------
 export type MenuProps = {
   variant?: string;
   label?: string;
@@ -13,6 +21,8 @@ export type MenuProps = {
   title?: string; // For testing
 };
 
+// Component
+// ---------------
 export const Menu: React.FC<MenuProps> = ({
   variant = 'default',
   label = 'Menu',
