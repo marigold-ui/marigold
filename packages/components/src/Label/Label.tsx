@@ -12,7 +12,7 @@ export interface LabelThemeExtension<Value> {
   };
 }
 
-// Label
+// Props
 // ---------------
 export type LabelProps = {
   htmlFor?: string;
