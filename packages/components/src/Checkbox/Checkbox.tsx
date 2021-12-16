@@ -8,6 +8,14 @@ import { Box } from '../Box';
 import { Label } from '../Label';
 import { ValidationMessage } from '../ValidationMessage';
 
+// Theme Extension
+// ---------------
+export interface CheckboxThemeExtension<Value> {
+  checkbox?: {
+    [key: string]: Value;
+  };
+}
+
 // Checkbox Icon
 // ---------------
 type CheckboxIconProps = {

@@ -19,6 +19,17 @@ import { ValidationMessage } from '../ValidationMessage';
 import { ListBox } from './ListBox';
 import { Popover } from './Popover';
 
+// Theme Extension
+// ---------------
+export interface SelectThemeExtension<Value> {
+  select?: {
+    __default: Value;
+    disabled?: Value;
+  };
+}
+
+// Props
+// ---------------
 export type SelectProps = {
   placeholder?: string;
   disabled?: boolean;
@@ -30,6 +41,8 @@ export type SelectProps = {
   AriaSelectProps<object> &
   SingleSelection;
 
+// Component
+// ---------------
 export const Select = ({
   placeholder = 'Select an option',
   disabled,

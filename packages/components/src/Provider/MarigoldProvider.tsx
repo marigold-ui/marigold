@@ -7,15 +7,14 @@ import {
   ThemeProviderProps,
   useTheme,
   __defaultTheme,
-  CSSObject,
 } from '@marigold/system';
 
 // Theme Extension
 // ---------------
-export interface RootThemeExtension {
+export interface RootThemeExtension<Value> {
   root?: {
-    body?: CSSObject;
-    html?: CSSObject;
+    body?: Value;
+    html?: Value;
   };
 }
 
