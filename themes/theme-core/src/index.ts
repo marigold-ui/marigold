@@ -569,6 +569,18 @@ const theme: Theme = {
       ...text.root,
       ...text.span,
     },
+    link: {
+      color: '#900',
+      ':hover': {
+        textDecoration: 'underline',
+      },
+    },
+    menuItemLink: {
+      color: 'text',
+      textDecoration: 'none',
+    },
+  },
+  heading: {
     heading: {
       ...text.root,
       ...text.p,
@@ -611,16 +623,6 @@ const theme: Theme = {
       fontSize: 'xsmall',
       textTransform: 'uppercase',
       m: 'none',
-    },
-    link: {
-      color: '#900',
-      ':hover': {
-        textDecoration: 'underline',
-      },
-    },
-    menuItemLink: {
-      color: 'text',
-      textDecoration: 'none',
     },
   },
   textarea: {
