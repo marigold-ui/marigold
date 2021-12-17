@@ -14,7 +14,12 @@ const base = {
 
   // transform
   transform: {
-    '^.+\\.(t|j)sx?$': ['@swc/jest'],
+    '^.+\\.(t|j)sx?$': [
+      '@swc/jest',
+      {
+        sourceMaps: true,
+      },
+    ],
   },
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
 
