@@ -343,8 +343,8 @@ const theme: BaseTheme = {
       },
     },
     checked: {
-      fill: colors.orange60,
-      stroke: colors.orange80,
+      fill: 'orange60',
+      stroke: 'orange80',
       disabled: {
         fill: colors.gray30,
         stroke: colors.gray30,
@@ -376,8 +376,8 @@ const theme: BaseTheme = {
       },
     },
     checked: {
-      fill: colors.orange60,
-      stroke: colors.orange80,
+      fill: 'orange60',
+      stroke: 'orange80',
       disabled: {
         fill: colors.gray30,
         stroke: colors.gray30,
