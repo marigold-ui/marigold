@@ -716,7 +716,8 @@ const theme: BaseTheme = {
       },
       '&:focus::-webkit-slider-thumb': {
         ...sliderThumb,
-        border: '4px solid ' + colors.orange60,
+        border: '4px solid',
+        borderColor: 'orange60',
       },
       '&:disabled::-webkit-slider-thumb': {
         ...sliderThumb,
@@ -728,7 +729,7 @@ const theme: BaseTheme = {
       },
       '&:focus::-webkit-slider-runnable-track': {
         ...sliderTrack,
-        background: colors.orange60,
+        backgroundColor: 'orange60',
       },
       '&:disabled::-webkit-slider-runnable-track': {
         ...sliderTrack,
@@ -743,7 +744,8 @@ const theme: BaseTheme = {
       },
       '&:focus::-moz-range-thumb': {
         ...sliderThumb,
-        border: '4px solid ' + colors.orange60,
+        border: '4px solid',
+        borderColor: 'orange60',
       },
       '&:disabled::-moz-range-thumb': {
         ...sliderThumb,
@@ -759,7 +761,7 @@ const theme: BaseTheme = {
       },
       '&:focus::-moz-range-progress': {
         ...sliderTrack,
-        background: colors.orange60,
+        backgroundColor: 'orange60',
       },
       '&:disabled::-moz-range-progress': {
         ...sliderTrack,

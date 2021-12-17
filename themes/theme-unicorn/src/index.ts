@@ -734,7 +734,8 @@ const theme: BaseTheme = {
       },
       '&:focus::-webkit-slider-thumb': {
         ...sliderThumb,
-        border: '4px solid #673ab7',
+        border: '4px solid',
+        borderColor: 'primary',
       },
       '&:disabled::-webkit-slider-thumb': {
         ...sliderThumb,
@@ -746,7 +747,7 @@ const theme: BaseTheme = {
       },
       '&:focus::-webkit-slider-runnable-track': {
         ...sliderTrack,
-        background: '#673ab7',
+        backgroundColor: 'primary',
       },
       '&:disabled::-webkit-slider-runnable-track': {
         ...sliderTrack,
@@ -761,7 +762,8 @@ const theme: BaseTheme = {
       },
       '&:focus::-moz-range-thumb': {
         ...sliderThumb,
-        border: '4px solid #673ab7',
+        border: '4px solid',
+        borderColor: 'primary',
       },
       '&:disabled::-moz-range-thumb': {
         ...sliderThumb,
@@ -777,7 +779,7 @@ const theme: BaseTheme = {
       },
       '&:focus::-moz-range-progress': {
         ...sliderTrack,
-        background: '#673ab7',
+        backgroundColor: 'primary',
       },
       '&:disabled::-moz-range-progress': {
         ...sliderTrack,
