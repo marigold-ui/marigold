@@ -230,10 +230,10 @@ const theme: Theme = {
   },
   colors: {
     ...colors,
-    text: '#070708',
-    background: '#fdfcfd',
-    primary: '#c9b1ff',
-    secondary: '#ffcaf2',
+    text: 'gray90',
+    background: 'gray00',
+    primary: '#673ab7',
+    secondary: '#9575cd',
     disabled: '#e9e7eb',
     error: '#ffb2b1',
     warning: '#fff3ad',
@@ -343,7 +343,7 @@ const theme: Theme = {
     },
     checked: {
       fill: 'primary',
-      stroke: 'primary',
+      stroke: '#311b92',
       disabled: {
         fill: colors.gray30,
         stroke: colors.gray30,
@@ -376,7 +376,7 @@ const theme: Theme = {
     },
     checked: {
       fill: 'primary',
-      stroke: 'primary',
+      stroke: '#311b92',
       disabled: {
         fill: colors.gray30,
         stroke: colors.gray30,
@@ -726,7 +726,8 @@ const theme: Theme = {
       },
       '&:focus::-webkit-slider-thumb': {
         ...sliderThumb,
-        border: '4px solid ' + colors.blue60,
+        border: '4px solid',
+        borderColor: 'primary',
       },
       '&:disabled::-webkit-slider-thumb': {
         ...sliderThumb,
@@ -738,7 +739,7 @@ const theme: Theme = {
       },
       '&:focus::-webkit-slider-runnable-track': {
         ...sliderTrack,
-        background: colors.blue60,
+        backgroundColor: 'primary',
       },
       '&:disabled::-webkit-slider-runnable-track': {
         ...sliderTrack,
@@ -753,7 +754,8 @@ const theme: Theme = {
       },
       '&:focus::-moz-range-thumb': {
         ...sliderThumb,
-        border: '4px solid ' + colors.blue60,
+        border: '4px solid',
+        borderColor: 'primary',
       },
       '&:disabled::-moz-range-thumb': {
         ...sliderThumb,
@@ -769,7 +771,7 @@ const theme: Theme = {
       },
       '&:focus::-moz-range-progress': {
         ...sliderTrack,
-        background: colors.blue60,
+        backgroundColor: 'primary',
       },
       '&:disabled::-moz-range-progress': {
         ...sliderTrack,

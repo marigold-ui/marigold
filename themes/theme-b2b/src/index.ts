@@ -342,8 +342,8 @@ const theme: Theme = {
       },
     },
     checked: {
-      fill: colors.blue60,
-      stroke: colors.blue70,
+      fill: 'orange60',
+      stroke: 'orange80',
       disabled: {
         fill: colors.gray30,
         stroke: colors.gray30,
@@ -375,8 +375,8 @@ const theme: Theme = {
       },
     },
     checked: {
-      fill: colors.blue60,
-      stroke: colors.blue70,
+      fill: 'orange60',
+      stroke: 'orange80',
       disabled: {
         fill: colors.gray30,
         stroke: colors.gray30,
@@ -717,7 +717,8 @@ const theme: Theme = {
       },
       '&:focus::-webkit-slider-thumb': {
         ...sliderThumb,
-        border: '4px solid ' + colors.blue60,
+        border: '4px solid',
+        borderColor: 'orange60',
       },
       '&:disabled::-webkit-slider-thumb': {
         ...sliderThumb,
@@ -729,7 +730,7 @@ const theme: Theme = {
       },
       '&:focus::-webkit-slider-runnable-track': {
         ...sliderTrack,
-        background: colors.blue60,
+        backgroundColor: 'orange60',
       },
       '&:disabled::-webkit-slider-runnable-track': {
         ...sliderTrack,
@@ -744,7 +745,8 @@ const theme: Theme = {
       },
       '&:focus::-moz-range-thumb': {
         ...sliderThumb,
-        border: '4px solid ' + colors.blue60,
+        border: '4px solid',
+        borderColor: 'orange60',
       },
       '&:disabled::-moz-range-thumb': {
         ...sliderThumb,
@@ -760,7 +762,7 @@ const theme: Theme = {
       },
       '&:focus::-moz-range-progress': {
         ...sliderTrack,
-        background: colors.blue60,
+        backgroundColor: 'orange60',
       },
       '&:disabled::-moz-range-progress': {
         ...sliderTrack,
