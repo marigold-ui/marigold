@@ -1,7 +1,7 @@
 const findUp = require('find-up').sync;
 const path = require('path');
 const merge = require('merge-deep');
-const { pathsToModuleNameMapper } = require('ts-jest/utils');
+const { pathsToModuleNameMapper } = require('ts-jest');
 
 /**
  * Base configuration for jest

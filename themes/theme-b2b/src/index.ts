@@ -566,6 +566,18 @@ const theme: Theme = {
       ...text.root,
       ...text.span,
     },
+    link: {
+      color: colors.blue60,
+      ':hover': {
+        textDecoration: 'none',
+      },
+    },
+    menuItemLink: {
+      color: 'text',
+      textDecoration: 'none',
+    },
+  },
+  heading: {
     heading: {
       ...text.root,
       ...text.p,
@@ -605,16 +617,6 @@ const theme: Theme = {
       fontSize: 'xsmall',
       textTransform: 'uppercase',
       m: 'none',
-    },
-    link: {
-      color: colors.blue60,
-      ':hover': {
-        textDecoration: 'none',
-      },
-    },
-    menuItemLink: {
-      color: 'text',
-      textDecoration: 'none',
     },
   },
   textarea: {
