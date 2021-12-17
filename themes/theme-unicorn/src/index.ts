@@ -231,8 +231,8 @@ const theme: BaseTheme = {
   },
   colors: {
     ...colors,
-    text: colors.gray90,
-    background: colors.gray00,
+    text: 'gray90',
+    background: 'gray00',
     primary: '#673ab7',
     secondary: '#9575cd',
     disabled: '#e9e7eb',
