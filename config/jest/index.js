@@ -14,8 +14,12 @@ const base = {
 
   // transform
   transform: {
-    '.(ts|tsx)$': require.resolve('ts-jest/dist'),
-    '.(js|jsx)$': require.resolve('babel-jest'), // jest's default
+    '^.+\\.(t|j)sx?$': [
+      '@swc/jest',
+      {
+        sourceMaps: true,
+      },
+    ],
   },
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
 
