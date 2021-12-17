@@ -1,10 +1,12 @@
 import React from 'react';
-import { Text, Heading } from '@marigold/components';
+import { Text } from '@marigold/components';
 
 export default function NotFoundPage() {
   return (
     <>
-      <Heading variant="h1">404</Heading>
+      <Text as="h1" variant="headline1">
+        404
+      </Text>
       <Text>oooops</Text>
     </>
   );
