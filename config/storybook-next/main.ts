@@ -5,6 +5,14 @@ const config: StorybookConfig = {
   stories: ['./debug.stories.tsx'],
   logLevel: 'debug',
   addons: ['@storybook/addon-essentials', '@storybook/addon-a11y'],
+  typescript: {
+    check: true,
+    checkOptions: {},
+  },
+  features: {
+    postcss: false,
+  },
+  framework: '@storybook/react',
 };
 
 module.exports = config;
