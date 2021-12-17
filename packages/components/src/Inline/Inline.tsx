@@ -31,7 +31,9 @@ export const Inline: React.FC<InlineProps> = ({
     {Children.map(
       flattenChildren(children) as unknown as React.ReactElement,
       (child: React.ReactElement) => (
-        <Box>{React.cloneElement(child, {}, child.props.children)}</Box>
+        <Box display="inline-flex">
+          {React.cloneElement(child, {}, child.props.children)}
+        </Box>
       )
     )}
   </Box>
