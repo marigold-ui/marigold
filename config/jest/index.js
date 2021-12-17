@@ -17,6 +17,9 @@ const base = {
     '^.+\\.(t|j)sx?$': [
       '@swc/jest',
       {
+        jsc: {
+          target: 'es2021',
+        },
         sourceMaps: true,
       },
     ],
