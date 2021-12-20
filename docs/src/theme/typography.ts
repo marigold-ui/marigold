@@ -43,6 +43,50 @@ export const typography = {
       ...text.root,
       color: 'gray.40',
     },
+    headline1: {
+      ...text.root,
+      ...text.heading,
+      fontSize: 'xlarge',
+      marginBottom: 'medium',
+      '&:first-child': {
+        marginTop: 'none',
+      },
+    },
+    headline2: {
+      ...text.root,
+      ...text.heading,
+      fontSize: 'large',
+      marginTop: 'large',
+      marginBottom: 'xsmall',
+      '&:first-child': {
+        marginTop: 'none',
+      },
+    },
+    headline3: {
+      ...text.root,
+      ...text.heading,
+      fontSize: 'medium',
+      marginTop: 'small',
+      marginBottom: 'xsmall',
+      '&:first-child': {
+        marginTop: 'none',
+      },
+    },
+    headline4: {
+      ...text.root,
+      ...text.heading,
+      fontSize: 'small',
+    },
+    headline5: {
+      ...text.root,
+      ...text.heading,
+      fontSize: 'xsmall',
+    },
+    headline6: {
+      ...text.root,
+      fontSize: 'xsmall',
+      textTransform: 'uppercase',
+    },
     muted: {
       ...text.root,
       color: 'gray.60',
@@ -53,52 +97,6 @@ export const typography = {
       '&:hover': {
         color: 'blue.70',
       },
-    },
-  },
-  heading: {
-    h1: {
-      ...text.root,
-      ...text.heading,
-      fontSize: 'xlarge',
-      marginBottom: 'medium',
-      '&:first-child': {
-        marginTop: 'none',
-      },
-    },
-    h2: {
-      ...text.root,
-      ...text.heading,
-      fontSize: 'large',
-      marginTop: 'large',
-      marginBottom: 'xsmall',
-      '&:first-child': {
-        marginTop: 'none',
-      },
-    },
-    h3: {
-      ...text.root,
-      ...text.heading,
-      fontSize: 'medium',
-      marginTop: 'small',
-      marginBottom: 'xsmall',
-      '&:first-child': {
-        marginTop: 'none',
-      },
-    },
-    h4: {
-      ...text.root,
-      ...text.heading,
-      fontSize: 'small',
-    },
-    h5: {
-      ...text.root,
-      ...text.heading,
-      fontSize: 'xsmall',
-    },
-    h6: {
-      ...text.root,
-      fontSize: 'xsmall',
-      textTransform: 'uppercase',
     },
   },
 } as const;

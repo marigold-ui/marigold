@@ -157,13 +157,6 @@ const text = {
   span: {
     display: 'inline-block',
   },
-  p: {
-    display: 'inline-block',
-    margin: '0 0 8px',
-    ':last-child': {
-      marginBottom: 'small',
-    },
-  },
 } as const;
 const selectOption = {
   fontFamily: 'body',
@@ -568,23 +561,7 @@ const theme: Theme = {
       ...text.root,
       ...text.span,
     },
-    link: {
-      color: 'primary',
-      ':hover': {
-        textDecoration: 'none',
-      },
-    },
-    menuItemLink: {
-      color: 'text',
-      textDecoration: 'none',
-    },
-  },
-  heading: {
-    heading: {
-      ...text.root,
-      ...text.p,
-    },
-    h1: {
+    headline1: {
       ...text.root,
       fontWeight: 'heading',
       fontSize: 'xlarge',
@@ -593,7 +570,7 @@ const theme: Theme = {
         marginTop: 'none',
       },
     },
-    h2: {
+    headline2: {
       ...text.root,
       fontWeight: 'heading',
       fontSize: 'large',
@@ -603,7 +580,7 @@ const theme: Theme = {
         marginTop: 'none',
       },
     },
-    h3: {
+    headline3: {
       ...text.root,
       fontWeight: 'heading',
       fontSize: 'medium',
@@ -613,20 +590,30 @@ const theme: Theme = {
         marginTop: 'none',
       },
     },
-    h4: {
+    headline4: {
       ...text.root,
       fontWeight: 'heading',
       fontSize: 'small',
     },
-    h5: {
+    headline5: {
       ...text.root,
       fontWeight: 'heading',
       fontSize: 'xsmall',
     },
-    h6: {
+    headline6: {
       ...text.root,
       fontSize: 'xsmall',
       textTransform: 'uppercase',
+    },
+    link: {
+      color: 'primary',
+      ':hover': {
+        textDecoration: 'none',
+      },
+    },
+    menuItemLink: {
+      color: 'text',
+      textDecoration: 'none',
     },
   },
   textarea: {

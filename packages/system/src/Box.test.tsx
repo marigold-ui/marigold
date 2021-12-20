@@ -49,7 +49,7 @@ const theme = {
       color: 'primary',
       bg: 'white',
     },
-    heading: {
+    headline1: {
       fontSize: 'large',
       color: 'secondary',
     },
@@ -171,7 +171,7 @@ test('variants are applied correctly', () => {
 test('accept an array of variants', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Box as="p" variant={['text.heading', 'text.whitespace']}>
+      <Box as="p" variant={['text.headline1', 'text.whitespace']}>
         Test
       </Box>
     </ThemeProvider>
