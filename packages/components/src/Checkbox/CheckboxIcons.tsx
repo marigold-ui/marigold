@@ -1,5 +1,5 @@
 import React from 'react';
-import { SVG } from '@marigold/icons';
+import { SVG } from '@marigold/system';
 
 import { Box } from '../Box';
 

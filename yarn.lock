@@ -3599,6 +3599,8 @@ __metadata:
 "@marigold/icons@workspace:*, @marigold/icons@workspace:packages/icons":
   version: 0.0.0-use.local
   resolution: "@marigold/icons@workspace:packages/icons"
+  dependencies:
+    "@marigold/system": "workspace:*"
   peerDependencies:
     react: ^16.x || ^17.0.0
   languageName: unknown
@@ -10381,7 +10383,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"color-name@npm:^1.0.0, color-name@npm:^1.1.4, color-name@npm:~1.1.4":
+"color-name@npm:^1.0.0, color-name@npm:~1.1.4":
   version: 1.1.4
   resolution: "color-name@npm:1.1.4"
   checksum: b0445859521eb4021cd0fb0cc1a75cecf67fceecae89b63f62b201cca8d345baf8b952c966862a9d9a2632987d4f6581f0ec8d957dfacece86f0a7919316f610
@@ -17227,13 +17229,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"is-url-superb@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "is-url-superb@npm:4.0.0"
-  checksum: fd55e91c96349acb0d688f95fcb1ac67450e5db934976e3a8ff13ef446841e779a6f4d18b15f02331f05a3429c8fdaba2382ac1ab444059e86e9ffcde1ec8db0
-  languageName: node
-  linkType: hard
-
 "is-url@npm:^1.2.4":
   version: 1.2.4
   resolution: "is-url@npm:1.2.4"
@@ -22010,37 +22005,41 @@ fsevents@^1.2.7:
   linkType: hard
 
 "postcss-color-functional-notation@npm:^4.0.1":
-  version: 4.0.2
-  resolution: "postcss-color-functional-notation@npm:4.0.2"
+  version: 4.1.0
+  resolution: "postcss-color-functional-notation@npm:4.1.0"
   dependencies:
     postcss-value-parser: ^4.2.0
   peerDependencies:
     postcss: ^8.3
   bin:
     postcss-color-functional-notation: dist/cli.mjs
-  checksum: 8ce385cce919e35d98f3386d412c57c95657fa386e8d4ef999de6a78ddd526029f23f7b7b8526fd9b7aca5355fcb3efdde6afcbfd216717fdda132774bb3c8d9
+  checksum: 32b57c35273275047d3f4f80298d3edc8979f6f3b68642632331c7d9a1e046b5844e24e31f6849f423959bd4492718318265e52dac895cf1ecc5cee311d441bd
   languageName: node
   linkType: hard
 
 "postcss-color-hex-alpha@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "postcss-color-hex-alpha@npm:8.0.0"
+  version: 8.0.1
+  resolution: "postcss-color-hex-alpha@npm:8.0.1"
   dependencies:
-    postcss-values-parser: ^6.0.0
+    postcss-value-parser: ^4.2.0
   peerDependencies:
-    postcss: ^8.3.7
-  checksum: f8948940da4a41f332f017bf178e0dd36a2e329f65b7add0cd1b7648a6c1d556d45b7555a3c22dab1c83700d0edde1bde5333e094a68129136cd7e402cd65815
+    postcss: ^8.3
+  bin:
+    postcss-color-hex-alpha: dist/cli.mjs
+  checksum: 9cfcbddff5e55c378bf5670ba4b5d73f2fff208538ab96b5d555291d5d7aa0785a310b4642059f02ddfd9b35c241f777c6021d67892cd91a3e3b215a56497252
   languageName: node
   linkType: hard
 
 "postcss-color-rebeccapurple@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "postcss-color-rebeccapurple@npm:7.0.0"
+  version: 7.0.1
+  resolution: "postcss-color-rebeccapurple@npm:7.0.1"
   dependencies:
-    postcss-values-parser: ^6
+    postcss-value-parser: ^4.2.0
   peerDependencies:
     postcss: ^8.3
-  checksum: 46a0da9f88c2951001e24d5357d6a39d07c52e501c139a7525291ec032c05e875e1830ffe29abf7cb3a963f7ce3c7be067ac7479aec49425c421fab289dd73a5
+  bin:
+    postcss-color-rebeccapurple: dist/cli.mjs
+  checksum: 53facaba204a637f4de6979d8ccafdef8ec846714804854a07ca2184a32fa88e6685cbbf23c2dac02f43d84befac04649810a779f2ba44ca7e6d337789ea8760
   languageName: node
   linkType: hard
 
@@ -22090,13 +22089,15 @@ fsevents@^1.2.7:
   linkType: hard
 
 "postcss-custom-properties@npm:^12.0.0":
-  version: 12.0.0
-  resolution: "postcss-custom-properties@npm:12.0.0"
+  version: 12.0.1
+  resolution: "postcss-custom-properties@npm:12.0.1"
   dependencies:
-    postcss-values-parser: ^6
+    postcss-value-parser: ^4.2.0
   peerDependencies:
     postcss: ^8.3
-  checksum: 6b06287f1f88f828b4fba60f6081019dc8428e227b807c225903cadb4776d3b30cd6e9e87130522ae4a8f188fc8b757f68699b9e80ab5b3ddb3c31d0dade691c
+  bin:
+    postcss-custom-properties: dist/cli.mjs
+  checksum: 363e67ff5e0514c2d4df6e3435ab35eac6bae7042a5c658d47eee8471c745aeb946f142c5480fe3f7268d859c893c88108495d29a1fd556a99ad5132e1c2bc47
   languageName: node
   linkType: hard
 
@@ -22833,19 +22834,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-values-parser@npm:^6, postcss-values-parser@npm:^6.0.0":
-  version: 6.0.1
-  resolution: "postcss-values-parser@npm:6.0.1"
-  dependencies:
-    color-name: ^1.1.4
-    is-url-superb: ^4.0.0
-    quote-unquote: ^1.0.0
-  peerDependencies:
-    postcss: ^8.2.9
-  checksum: 367d108bb6ff20415683380a3ef707a7090792e91c4c20a8a20727937094c1b1441a10418c4ac2e1665f44d98353742e529982c92697ebaf4db081d03fedfb71
-  languageName: node
-  linkType: hard
-
 "postcss@npm:^7.0.14, postcss@npm:^7.0.26, postcss@npm:^7.0.32, postcss@npm:^7.0.36, postcss@npm:^7.0.5, postcss@npm:^7.0.6":
   version: 7.0.38
   resolution: "postcss@npm:7.0.38"
@@ -23411,13 +23399,6 @@ fsevents@^1.2.7:
   version: 5.1.1
   resolution: "quick-lru@npm:5.1.1"
   checksum: a516faa25574be7947969883e6068dbe4aa19e8ef8e8e0fd96cddd6d36485e9106d85c0041a27153286b0770b381328f4072aa40d3b18a19f5f7d2b78b94b5ed
-  languageName: node
-  linkType: hard
-
-"quote-unquote@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "quote-unquote@npm:1.0.0"
-  checksum: 955a2ead534f5b6a3f8d4dc5a4b95ac6468213d3fb11f8c1592a0a56345c45a3d14d5ca04d3de2bc9891493fcac38c03dfa91c48a6159aef50124e9c5afcea49
   languageName: node
   linkType: hard
 

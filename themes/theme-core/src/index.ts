@@ -161,13 +161,6 @@ const text = {
   span: {
     display: 'inline-block',
   },
-  p: {
-    display: 'inline-block',
-    margin: '0 0 8px',
-    ':last-child': {
-      marginBottom: 'small',
-    },
-  },
 } as const;
 const selectOption = {
   fontFamily: 'body',
@@ -569,6 +562,45 @@ const theme: Theme = {
       ...text.root,
       ...text.span,
     },
+    headline1: {
+      ...text.root,
+      fontWeight: 'heading',
+      fontSize: 'xlarge',
+      lineHeight: '36px',
+      m: 'none',
+    },
+    headline2: {
+      ...text.root,
+      fontWeight: 'heading',
+      fontSize: 'large',
+      lineHeight: '27px',
+      m: 'none',
+    },
+    headline3: {
+      ...text.root,
+      fontWeight: 'heading',
+      fontSize: 'medium',
+      lineHeight: '21px',
+      m: 'none',
+    },
+    headline4: {
+      ...text.root,
+      fontWeight: 'heading',
+      fontSize: 'small',
+      m: 'none',
+    },
+    headline5: {
+      ...text.root,
+      fontWeight: 'heading',
+      fontSize: 'xsmall',
+      m: 'none',
+    },
+    headline6: {
+      ...text.root,
+      fontSize: 'xsmall',
+      textTransform: 'uppercase',
+      m: 'none',
+    },
     link: {
       color: '#900',
       ':hover': {
@@ -578,51 +610,6 @@ const theme: Theme = {
     menuItemLink: {
       color: 'text',
       textDecoration: 'none',
-    },
-  },
-  heading: {
-    heading: {
-      ...text.root,
-      ...text.p,
-    },
-    h1: {
-      ...text.root,
-      fontWeight: 'heading',
-      fontSize: 'xlarge',
-      lineHeight: '36px',
-      m: 'none',
-    },
-    h2: {
-      ...text.root,
-      fontWeight: 'heading',
-      fontSize: 'large',
-      lineHeight: '27px',
-      m: 'none',
-    },
-    h3: {
-      ...text.root,
-      fontWeight: 'heading',
-      fontSize: 'medium',
-      lineHeight: '21px',
-      m: 'none',
-    },
-    h4: {
-      ...text.root,
-      fontWeight: 'heading',
-      fontSize: 'small',
-      m: 'none',
-    },
-    h5: {
-      ...text.root,
-      fontWeight: 'heading',
-      fontSize: 'xsmall',
-      m: 'none',
-    },
-    h6: {
-      ...text.root,
-      fontSize: 'xsmall',
-      textTransform: 'uppercase',
-      m: 'none',
     },
   },
   textarea: {

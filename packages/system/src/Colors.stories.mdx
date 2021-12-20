@@ -1,12 +1,5 @@
 import { Meta, Story, Canvas } from '@storybook/addon-docs';
-import {
-  Box,
-  Column,
-  Columns,
-  Container,
-  Heading,
-  Text,
-} from '@marigold/components';
+import { Box, Column, Columns, Container, Text } from '@marigold/components';
 
 <Meta title="Tokens/Marigold Colours" />
 
@@ -18,7 +11,9 @@ import {
   <Story name="B2B Theme">
     <Columns space={16}>
       <Column width={6}>
-        <Heading>Gray</Heading>
+        <Text as="h2" variant="headline2">
+          Gray
+        </Text>
         <Box
           as={Container}
           bg="#ffffff"
@@ -125,7 +120,9 @@ import {
         </Box>
       </Column>
       <Column width={6}>
-        <Heading>Orange</Heading>
+        <Text as="h2" variant="headline2">
+          Orange
+        </Text>
         <Box
           as={Container}
           bg="#fff8f1"
@@ -191,7 +188,9 @@ import {
     </Columns>
     <Columns space={16}>
       <Column width={6}>
-        <Heading>Blue</Heading>
+        <Text as="h2" variant="headline2">
+          Blue
+        </Text>
         <Box
           as={Container}
           bg="#e8f4fa"
@@ -256,7 +255,9 @@ import {
         </Box>
       </Column>
       <Column width={6}>
-        <Heading>Green</Heading>
+        <Text as="h2" variant="headline2">
+          Green
+        </Text>
         <Box
           as={Container}
           bg="#f9fed0"
@@ -322,7 +323,9 @@ import {
     </Columns>
     <Columns space={16}>
       <Column width={6}>
-        <Heading>Red</Heading>
+        <Text as="h2" variant="headline2">
+          Red
+        </Text>
         <Box
           as={Container}
           bg="#fff8f8"
@@ -463,7 +466,9 @@ import {
   <Story name="Unicorn Theme">
     <Columns space={16}>
       <Column width={6}>
-        <Heading>Base Colours</Heading>
+        <Text as="h2" variant="headline2">
+          Base Colours
+        </Text>
         <Box
           as={Container}
           css={{ color: 'white' }}

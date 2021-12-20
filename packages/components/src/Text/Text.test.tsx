@@ -15,7 +15,7 @@ const theme = {
     body: {
       fontFamily: 'Oswald Regular',
     },
-    heading: {
+    headline1: {
       fontFamily: 'Inter',
     },
   },
@@ -35,7 +35,7 @@ test('uses `text.body` as default variant', () => {
 test('allows to change variants via `variant` prop (with "text" prefix)', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Text variant="heading">text</Text>
+      <Text variant="headline1">text</Text>
     </ThemeProvider>
   );
   const text = screen.getByText(/text/);

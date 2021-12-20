@@ -1,5 +1,5 @@
 import React from 'react';
-import { SVG } from '../SVG';
+import { SVG } from '@marigold/system';
 
 export const ArrowRight = ({ className = '', ...props }) => (
   <SVG className={className} {...props}>
