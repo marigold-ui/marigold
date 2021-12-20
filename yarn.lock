@@ -9512,21 +9512,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist@npm:^4.19.1":
-  version: 4.19.1
-  resolution: "browserslist@npm:4.19.1"
-  dependencies:
-    caniuse-lite: ^1.0.30001286
-    electron-to-chromium: ^1.4.17
-    escalade: ^3.1.1
-    node-releases: ^2.0.1
-    picocolors: ^1.0.0
-  bin:
-    browserslist: cli.js
-  checksum: c0777fd483691638fd6801e16c9d809e1d65f6d2b06db2e806654be51045cbab1452a89841a2c5caea2cbe19d621b4f1d391cffbb24512aa33280039ab345875
-  languageName: node
-  linkType: hard
-
 "bs-logger@npm:0.x":
   version: 0.2.6
   resolution: "bs-logger@npm:0.2.6"
@@ -9883,13 +9868,6 @@ __metadata:
   version: 1.0.30001285
   resolution: "caniuse-lite@npm:1.0.30001285"
   checksum: 03abdcea913961f4484a7e9494482a0e8a32d6b2305e3922196d0672897c043ac2e1ce884c69730921400c7cddb41ae27a9fcfdaa7d82d11a75d7331393ab5c6
-  languageName: node
-  linkType: hard
-
-"caniuse-lite@npm:^1.0.30001286, caniuse-lite@npm:^1.0.30001287":
-  version: 1.0.30001287
-  resolution: "caniuse-lite@npm:1.0.30001287"
-  checksum: b53c26a3a267a2920394e4aa5d1f60a76f891943914068066700e5497dda512f096d8a77dfefda17306a9df06e16ce9c6b5179f8856cc0efbcd8873d13b2fbea
   languageName: node
   linkType: hard
 
@@ -11029,16 +11007,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-blank-pseudo@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "css-blank-pseudo@npm:3.0.0"
-  dependencies:
-    postcss-selector-parser: ^6.0.7
+"css-blank-pseudo@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "css-blank-pseudo@npm:2.0.0"
   peerDependencies:
     postcss: ^8.3
   bin:
-    css-blank-pseudo: dist/cli.mjs
-  checksum: d7f8f6c4d9b03ad57dd45f5eb0ff982c748518d1b5cc63f1101e2edcdb18c7e49c3a89ff7d93f1367b3c7ac151bd19e4f44177dc00b6e9e4847d1acf652e556d
+    css-blank-pseudo: cli.js
+  checksum: e4e036f6ea017c1eb23f3c2964cb14bb2d7478c9b7f88be38ac3b5e71e574eb8d4e446a35fcbab9de77e4c5702c1bec789e23e1a47b5ce21683ea58fa662d546
   languageName: node
   linkType: hard
 
@@ -11067,16 +11043,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-has-pseudo@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "css-has-pseudo@npm:3.0.0"
+"css-has-pseudo@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "css-has-pseudo@npm:2.0.0"
   dependencies:
-    postcss-selector-parser: ^6.0.7
+    postcss-selector-parser: ^6
   peerDependencies:
-    postcss: ^8.3
+    postcss: ">=8.3"
   bin:
-    css-has-pseudo: dist/cli.mjs
-  checksum: 06d869b30f81d78878de5310ab24465a08bb38abb1e38a8f72103c0e91f04a3c7c273167f954885e532ff519ab3fb807fb03fac8085b75f15dffb95929e7a99e
+    css-has-pseudo: cli.js
+  checksum: 79c9039a287cb8df7dc06af929dfc310c9abee4331bb4a5a04b2c9b40219e6fc76c48d585b14646e7fb6b9503f16394858ec16d76d747761a71f20b73568e4db
   languageName: node
   linkType: hard
 
@@ -11145,14 +11121,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-prefers-color-scheme@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "css-prefers-color-scheme@npm:6.0.0"
+"css-prefers-color-scheme@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "css-prefers-color-scheme@npm:5.0.0"
   peerDependencies:
     postcss: ^8.3
   bin:
-    css-prefers-color-scheme: dist/cli.mjs
-  checksum: d31271ebe9c9e7cb93dc073d54b124f5395f92d135cefd02bf7a934409d59ed32ae47ac2dfd66c80b4feedcf503b69036b0bd9bb99dd33cf9a48469b56d93a93
+    css-prefers-color-scheme: cli.js
+  checksum: 1e7e7c5f0f44e1abd49ae4c4c4edc0f3b87137967182167f960f51daddd7d038e3f23020840368d205634cda6a5f020541dd6c43acee87b1e68e967c057befef
   languageName: node
   linkType: hard
 
@@ -12297,13 +12273,6 @@ __metadata:
   version: 1.4.12
   resolution: "electron-to-chromium@npm:1.4.12"
   checksum: 3a7571e9ca069d19251c11a4ed71953c16ff056c6ae77bc0a841d488c401613c9545189da8394f4da47d7a56ce081c5b78546fa1d1aaa76625a8e490defd8967
-  languageName: node
-  linkType: hard
-
-"electron-to-chromium@npm:^1.4.17":
-  version: 1.4.24
-  resolution: "electron-to-chromium@npm:1.4.24"
-  checksum: 71c065ae9cb74bc7e44abeea20c1639a2057bee4927f09ccc2a6d492fa5c7a31da63ad5d5d8659f7d04db680225543aae54579793f269c9d2ecc1c1541018688
   languageName: node
   linkType: hard
 
@@ -22033,7 +22002,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-color-functional-notation@npm:^4.1.0":
+"postcss-color-functional-notation@npm:^4.0.1":
   version: 4.1.0
   resolution: "postcss-color-functional-notation@npm:4.1.0"
   dependencies:
@@ -22046,7 +22015,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-color-hex-alpha@npm:^8.0.1":
+"postcss-color-hex-alpha@npm:^8.0.0":
   version: 8.0.1
   resolution: "postcss-color-hex-alpha@npm:8.0.1"
   dependencies:
@@ -22059,7 +22028,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-color-rebeccapurple@npm:^7.0.1":
+"postcss-color-rebeccapurple@npm:^7.0.0":
   version: 7.0.1
   resolution: "postcss-color-rebeccapurple@npm:7.0.1"
   dependencies:
@@ -22117,7 +22086,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-custom-properties@npm:^12.0.1":
+"postcss-custom-properties@npm:^12.0.0":
   version: 12.0.1
   resolution: "postcss-custom-properties@npm:12.0.1"
   dependencies:
@@ -22141,7 +22110,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-dir-pseudo-class@npm:^6.0.1":
+"postcss-dir-pseudo-class@npm:^6.0.0":
   version: 6.0.1
   resolution: "postcss-dir-pseudo-class@npm:6.0.1"
   dependencies:
@@ -22190,7 +22159,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-double-position-gradients@npm:^3.0.3":
+"postcss-double-position-gradients@npm:^3.0.1":
   version: 3.0.3
   resolution: "postcss-double-position-gradients@npm:3.0.3"
   dependencies:
@@ -22203,7 +22172,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-env-function@npm:^4.0.3":
+"postcss-env-function@npm:^4.0.2":
   version: 4.0.3
   resolution: "postcss-env-function@npm:4.0.3"
   dependencies:
@@ -22234,7 +22203,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-focus-visible@npm:^6.0.2":
+"postcss-focus-visible@npm:^6.0.1":
   version: 6.0.2
   resolution: "postcss-focus-visible@npm:6.0.2"
   dependencies:
@@ -22247,7 +22216,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-focus-within@npm:^5.0.2":
+"postcss-focus-within@npm:^5.0.1":
   version: 5.0.2
   resolution: "postcss-focus-within@npm:5.0.2"
   dependencies:
@@ -22269,7 +22238,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-gap-properties@npm:^3.0.1":
+"postcss-gap-properties@npm:^3.0.0":
   version: 3.0.1
   resolution: "postcss-gap-properties@npm:3.0.1"
   peerDependencies:
@@ -22280,7 +22249,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-image-set-function@npm:^4.0.3":
+"postcss-image-set-function@npm:^4.0.2":
   version: 4.0.3
   resolution: "postcss-image-set-function@npm:4.0.3"
   dependencies:
@@ -22315,7 +22284,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-lab-function@npm:^4.0.2":
+"postcss-lab-function@npm:^4.0.1":
   version: 4.0.2
   resolution: "postcss-lab-function@npm:4.0.2"
   dependencies:
@@ -22358,7 +22327,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-logical@npm:^5.0.1":
+"postcss-logical@npm:^5.0.0":
   version: 5.0.1
   resolution: "postcss-logical@npm:5.0.1"
   peerDependencies:
@@ -22542,7 +22511,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-nesting@npm:^10.0.3":
+"postcss-nesting@npm:^10.0.2":
   version: 10.0.3
   resolution: "postcss-nesting@npm:10.0.3"
   dependencies:
@@ -22670,7 +22639,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-overflow-shorthand@npm:^3.0.1":
+"postcss-overflow-shorthand@npm:^3.0.0":
   version: 3.0.1
   resolution: "postcss-overflow-shorthand@npm:3.0.1"
   peerDependencies:
@@ -22690,7 +22659,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-place@npm:^7.0.2":
+"postcss-place@npm:^7.0.1":
   version: 7.0.2
   resolution: "postcss-place@npm:7.0.2"
   dependencies:
@@ -22703,52 +22672,51 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-preset-env@npm:7.0.2":
-  version: 7.0.2
-  resolution: "postcss-preset-env@npm:7.0.2"
+"postcss-preset-env@npm:7.0.1":
+  version: 7.0.1
+  resolution: "postcss-preset-env@npm:7.0.1"
   dependencies:
     autoprefixer: ^10.4.0
-    browserslist: ^4.19.1
-    caniuse-lite: ^1.0.30001287
-    css-blank-pseudo: ^3.0.0
-    css-has-pseudo: ^3.0.0
-    css-prefers-color-scheme: ^6.0.0
+    browserslist: ^4.17.5
+    caniuse-lite: ^1.0.30001272
+    css-blank-pseudo: ^2.0.0
+    css-has-pseudo: ^2.0.0
+    css-prefers-color-scheme: ^5.0.0
     cssdb: ^5.0.0
+    postcss: ^8.3
     postcss-attribute-case-insensitive: ^5.0.0
-    postcss-color-functional-notation: ^4.1.0
-    postcss-color-hex-alpha: ^8.0.1
-    postcss-color-rebeccapurple: ^7.0.1
+    postcss-color-functional-notation: ^4.0.1
+    postcss-color-hex-alpha: ^8.0.0
+    postcss-color-rebeccapurple: ^7.0.0
     postcss-custom-media: ^8.0.0
-    postcss-custom-properties: ^12.0.1
+    postcss-custom-properties: ^12.0.0
     postcss-custom-selectors: ^6.0.0
-    postcss-dir-pseudo-class: ^6.0.1
-    postcss-double-position-gradients: ^3.0.3
-    postcss-env-function: ^4.0.3
-    postcss-focus-visible: ^6.0.2
-    postcss-focus-within: ^5.0.2
+    postcss-dir-pseudo-class: ^6.0.0
+    postcss-double-position-gradients: ^3.0.1
+    postcss-env-function: ^4.0.2
+    postcss-focus-visible: ^6.0.1
+    postcss-focus-within: ^5.0.1
     postcss-font-variant: ^5.0.0
-    postcss-gap-properties: ^3.0.1
-    postcss-image-set-function: ^4.0.3
+    postcss-gap-properties: ^3.0.0
+    postcss-image-set-function: ^4.0.2
     postcss-initial: ^4.0.1
-    postcss-lab-function: ^4.0.2
-    postcss-logical: ^5.0.1
+    postcss-lab-function: ^4.0.1
+    postcss-logical: ^5.0.0
     postcss-media-minmax: ^5.0.0
-    postcss-nesting: ^10.0.3
-    postcss-overflow-shorthand: ^3.0.1
+    postcss-nesting: ^10.0.2
+    postcss-overflow-shorthand: ^3.0.0
     postcss-page-break: ^3.0.4
-    postcss-place: ^7.0.2
-    postcss-pseudo-class-any-link: ^7.0.1
+    postcss-place: ^7.0.1
+    postcss-pseudo-class-any-link: ^7.0.0
     postcss-replace-overflow-wrap: ^4.0.0
     postcss-selector-not: ^5.0.0
   peerDependencies:
     postcss: ^8.3
-  bin:
-    postcss-preset-env: dist/cli.mjs
-  checksum: 198a90f35f4d7ea88cb035e89ecb7c9009c528f8e0cffc44670d18e07bbc362f9eb486fd329f57043e1530862032cade3f4ff5df6bfd8e99b371d508b9e0173e
+  checksum: 822a17d5bc5b1e52e1dca68ed9b64062acce1b2067f5d8dcefc7b97972c1bc5a9e3f46d03868b3d7501699e3a2954f247c8c25430ca13ca52d4297c7f23abf80
   languageName: node
   linkType: hard
 
-"postcss-pseudo-class-any-link@npm:^7.0.1":
+"postcss-pseudo-class-any-link@npm:^7.0.0":
   version: 7.0.1
   resolution: "postcss-pseudo-class-any-link@npm:7.0.1"
   dependencies:
@@ -22805,6 +22773,16 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"postcss-selector-parser@npm:^6, postcss-selector-parser@npm:^6.0.7":
+  version: 6.0.7
+  resolution: "postcss-selector-parser@npm:6.0.7"
+  dependencies:
+    cssesc: ^3.0.0
+    util-deprecate: ^1.0.2
+  checksum: 661808ad629e3f289e0d237fbe9bb13766dadd2d548ec09ae86f68118f5d98be0f25bbaf5cd88486c5416e2eefaa9f73c59c2fc98dc370872fa51b250c7d1d9c
+  languageName: node
+  linkType: hard
+
 "postcss-selector-parser@npm:^6.0.0, postcss-selector-parser@npm:^6.0.2, postcss-selector-parser@npm:^6.0.4, postcss-selector-parser@npm:^6.0.5":
   version: 6.0.6
   resolution: "postcss-selector-parser@npm:6.0.6"
@@ -22812,16 +22790,6 @@ fsevents@^1.2.7:
     cssesc: ^3.0.0
     util-deprecate: ^1.0.2
   checksum: 3602758798048bffbd6a97d6f009b32a993d6fd2cc70775bb59593e803d7fa8738822ecffb2fafc745edf7fad297dad53c30d2cfe78446a7d3f4a4a258cb15b2
-  languageName: node
-  linkType: hard
-
-"postcss-selector-parser@npm:^6.0.7":
-  version: 6.0.7
-  resolution: "postcss-selector-parser@npm:6.0.7"
-  dependencies:
-    cssesc: ^3.0.0
-    util-deprecate: ^1.0.2
-  checksum: 661808ad629e3f289e0d237fbe9bb13766dadd2d548ec09ae86f68118f5d98be0f25bbaf5cd88486c5416e2eefaa9f73c59c2fc98dc370872fa51b250c7d1d9c
   languageName: node
   linkType: hard
 
@@ -22882,6 +22850,17 @@ fsevents@^1.2.7:
     picocolors: ^1.0.0
     source-map-js: ^1.0.1
   checksum: 6cf3fe0ecdf5a0d2aeb5e8404938c7eab968704e2e29dc5421e90b4014eb1975c1c0ad828425f2428807ef6e3fcfadd71f988ab55cb06c28ac2866f22403255b
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.3":
+  version: 8.4.5
+  resolution: "postcss@npm:8.4.5"
+  dependencies:
+    nanoid: ^3.1.30
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.1
+  checksum: b78abdd89c10f7b48f4bdcd376104a19d6e9c7495ab521729bdb3df315af6c211360e9f06887ad3bc0ab0f61a04b91d68ea11462997c79cced58b9ccd66fac07
   languageName: node
   linkType: hard
 
