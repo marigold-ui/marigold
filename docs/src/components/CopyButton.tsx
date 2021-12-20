@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Button } from '@marigold/components';
-import { SVG } from '@marigold/icons';
+import { SVG } from '@marigold/system';
 
 type CopyProps = {
   codeString: string;
