@@ -3599,6 +3599,8 @@ __metadata:
 "@marigold/icons@workspace:*, @marigold/icons@workspace:packages/icons":
   version: 0.0.0-use.local
   resolution: "@marigold/icons@workspace:packages/icons"
+  dependencies:
+    "@marigold/system": "workspace:*"
   peerDependencies:
     react: ^16.x || ^17.0.0
   languageName: unknown
