@@ -39,6 +39,10 @@ const base = {
     '!**/node_modules/**',
   ],
 
+  snapshotFormat: {
+    printBasicPrototype: false,
+  },
+
   // plugins
   watchPlugins: [
     require.resolve('jest-watch-typeahead/filename'),
