@@ -17,7 +17,7 @@
   "dependencies": {
     "@swc/core": "^1.2.120",
     "@swc/jest": "^0.2.15",
-    "@types/jest": "27.0.3",
+    "@types/jest": "27.4.0",
     "babel-jest": "27.4.5",
     "find-up": "5.0.0",
     "jest-watch-typeahead": "1.0.0",
