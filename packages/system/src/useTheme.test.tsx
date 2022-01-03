@@ -49,22 +49,22 @@ test('transpile style object to css object', () => {
   const css = result.current.css;
 
   expect(css({ p: 'small' })).toMatchInlineSnapshot(`
-Object {
-  "padding": 16,
-}
-`);
+    {
+      "padding": 16,
+    }
+  `);
   expect(css({ color: 'primary', p: 'large' })).toMatchInlineSnapshot(`
-Object {
-  "color": "hotpink",
-  "padding": 32,
-}
-`);
+    {
+      "color": "hotpink",
+      "padding": 32,
+    }
+  `);
   expect(css({ variant: 'text.body' })).toMatchInlineSnapshot(`
-Object {
-  "color": "#000",
-  "fontSize": 14,
-}
-`);
+    {
+      "color": "#000",
+      "fontSize": 14,
+    }
+  `);
 });
 
 test('themes can be cascaded', () => {
