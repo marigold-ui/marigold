@@ -43,8 +43,7 @@ Use the styles for your component from a global `theme` object. To provide the t
 ```
 // basic usage
 import React from 'react'
-import { ThemeProvider } from '@marigold/system'
-import { Text } from '@marigold/components'
+import { MarigoldProvider, Text } from '@marigold/components'
 import unicornTheme from '@marigold/theme-unicorn'
 
 <MarigoldProvider theme={unicornTheme}>
