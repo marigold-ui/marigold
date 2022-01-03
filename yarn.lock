@@ -1950,19 +1950,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/cache@npm:^11.6.0":
-  version: 11.6.0
-  resolution: "@emotion/cache@npm:11.6.0"
-  dependencies:
-    "@emotion/memoize": ^0.7.4
-    "@emotion/sheet": ^1.1.0
-    "@emotion/utils": ^1.0.0
-    "@emotion/weak-memoize": ^0.2.5
-    stylis: ^4.0.10
-  checksum: 3c72c50bfe06fd7ec2728988181173664183d2320305a01bb757caa6a9d485de25fccde1b173d810423d2ff88a178d5a72cc21db76b9e458311a8ce3044dd2a1
-  languageName: node
-  linkType: hard
-
 "@emotion/cache@npm:^11.7.1":
   version: 11.7.1
   resolution: "@emotion/cache@npm:11.7.1"
@@ -2062,29 +2049,6 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 3392aa71f9c68c16022947959f7f842174e6b075b3baf58e185462411cd9b5a87557109a9225b1abaa2d7200a08b7cb9d7f21aa035f0d36b2c89e19b2a124e02
-  languageName: node
-  linkType: hard
-
-"@emotion/react@npm:^11.6.0":
-  version: 11.7.0
-  resolution: "@emotion/react@npm:11.7.0"
-  dependencies:
-    "@babel/runtime": ^7.13.10
-    "@emotion/cache": ^11.6.0
-    "@emotion/serialize": ^1.0.2
-    "@emotion/sheet": ^1.1.0
-    "@emotion/utils": ^1.0.0
-    "@emotion/weak-memoize": ^0.2.5
-    hoist-non-react-statics: ^3.3.1
-  peerDependencies:
-    "@babel/core": ^7.0.0
-    react: ">=16.8.0"
-  peerDependenciesMeta:
-    "@babel/core":
-      optional: true
-    "@types/react":
-      optional: true
-  checksum: 8b50d61caabe04ae413ae23b98c170da643754ec89f25eb001464095685686585d0f88988bc36432f231e6de6abdbee73308c42ba427de9eaaf5a54d7f2f6ae5
   languageName: node
   linkType: hard
 
@@ -3663,7 +3627,7 @@ __metadata:
   resolution: "@marigold/system@workspace:packages/system"
   dependencies:
     "@emotion/react": 11.7.1
-    "@theme-ui/css": 0.12.1
+    "@theme-ui/css": 0.13.0
     csstype: 3.0.10
   peerDependencies:
     react: ^16.x || ^17.0.0
@@ -6216,13 +6180,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@theme-ui/css@npm:0.12.1":
-  version: 0.12.1
-  resolution: "@theme-ui/css@npm:0.12.1"
+"@theme-ui/css@npm:0.13.0":
+  version: 0.13.0
+  resolution: "@theme-ui/css@npm:0.13.0"
   dependencies:
-    "@emotion/react": ^11.6.0
     csstype: ^3.0.10
-  checksum: 3a8248d78471cab414b58a02b75e7a1af9439f4c3aa1a37683cd23953076d9ae4b9d74993392177448a31c8c148edda101330c6f3211c8d21d093a2f254db6ca
+  peerDependencies:
+    "@emotion/react": ^11
+  checksum: 990392d6389b5c87998b16823f2cddd034db9b16ebdef063fe139fe0f864e06de3edbc603c55c16630ac8ecb0307c01a00c4d12f702541fd4ecf366c4619c464
   languageName: node
   linkType: hard
 
@@ -26512,13 +26477,6 @@ resolve@^2.0.0-next.3:
   version: 4.0.13
   resolution: "stylis@npm:4.0.13"
   checksum: 8ea7a87028b6383c6a982231c4b5b6150031ce028e0fdaf7b2ace82253d28a8af50cc5a9da8a421d3c7c4441592f393086e332795add672aa4a825f0fe3713a3
-  languageName: node
-  linkType: hard
-
-"stylis@npm:^4.0.10":
-  version: 4.0.10
-  resolution: "stylis@npm:4.0.10"
-  checksum: 0fecaf5c234ec3ffcb0afc21478742a815a21cb964365259789be9c1692e72e13d8c081c1150fd76ed2146633a3251cdecd6e0c120b158f44bd74c38f81cafb3
   languageName: node
   linkType: hard
 
