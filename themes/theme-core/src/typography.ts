@@ -43,6 +43,7 @@ export const typography = {
     medium: 1.5,
     large: 2,
     xlarge: 2.5,
+    xxlarge: 3,
   },
   text: {
     body: {
