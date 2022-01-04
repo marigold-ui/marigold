@@ -366,7 +366,7 @@ export const components = {
   },
   button: {
     large: {
-      lineHeight: 'xlarge',
+      lineHeight: 'xxlarge',
       paddingX: 'xlarge',
     },
     small: {
