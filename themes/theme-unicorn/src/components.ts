@@ -185,7 +185,7 @@ const button = {
       cursor: 'pointer',
     },
     ':focus': {
-      boxShadow: '0 0 0 2px ' + 'blue60',
+      boxShadow: '0 0 0 2px ' + colors.blue60,
       border: '1px solid transparent',
     },
     ':disabled': {
@@ -361,7 +361,7 @@ export const components = {
   },
   button: {
     large: {
-      lineHeight: 'xlarge',
+      lineHeight: 'xxlarge',
       paddingX: 'xlarge',
     },
     small: {
