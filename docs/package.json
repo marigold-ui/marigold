@@ -11,7 +11,7 @@
     "@marigold/types": "workspace:*",
     "@mdx-js/mdx": "1.6.22",
     "@mdx-js/react": "1.6.22",
-    "@mui/material": "5.2.6",
+    "@mui/material": "5.2.7",
     "@mui/styles": "5.2.3",
     "babel-preset-gatsby": "2.4.0",
     "gatsby": "4.4.0",
