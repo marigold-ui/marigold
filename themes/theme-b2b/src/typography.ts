@@ -2,7 +2,7 @@ export const text = {
   root: {
     fontFamily: 'body',
     fontSize: 'xsmall',
-    lineHeight: 'body',
+    lineHeight: 'medium',
     fontWeight: 'body',
   },
   span: {
@@ -38,8 +38,11 @@ export const typography = {
     bold: 700,
   },
   lineHeights: {
-    body: 1.5,
-    heading: 1.125,
+    xsmall: 1,
+    small: 1.125,
+    medium: 1.5,
+    large: 2,
+    xlarge: 2.5,
   },
   text: {
     body: {
