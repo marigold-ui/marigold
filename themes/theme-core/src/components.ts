@@ -264,7 +264,7 @@ const sliderTrack = {
 } as const;
 
 const slider = {
-  default: {
+  __default: {
     // styles need to be applied to range inputs in all browsers to override their basic appearance.
     WebkitAppearance: 'none',
     background: 'transparent',
