@@ -21,7 +21,7 @@ export type BadgeProps = {
 // Component
 // ---------------
 export const Badge: React.FC<BadgeProps> = ({
-  variant = 'default',
+  variant,
   bgColor = 'transparent',
   borderColor = 'transparent',
   children,
@@ -29,7 +29,7 @@ export const Badge: React.FC<BadgeProps> = ({
 }) => (
   <Box
     css={{ bg: bgColor, borderColor: borderColor }}
-    variant={`badge.${variant}`}
+    variant={variant ? `badge.${variant}` : 'badge'}
     {...props}
   >
     {children}
