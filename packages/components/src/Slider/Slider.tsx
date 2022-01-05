@@ -20,7 +20,7 @@ export type SliderProps = {
 // Component
 // ---------------
 export const Slider: React.FC<SliderProps> = ({
-  variant,
+  variant = '',
   className,
   ...props
 }) => (
@@ -28,7 +28,7 @@ export const Slider: React.FC<SliderProps> = ({
     as="input"
     type="range"
     css={{ verticalAlign: 'middle' }}
-    variant={variant ? `slider.${variant}` : 'slider'}
+    variant={`slider.${variant}`}
     className={className}
     {...props}
   />
