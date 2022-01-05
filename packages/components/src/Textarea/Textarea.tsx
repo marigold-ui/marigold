@@ -28,7 +28,7 @@ export type TextareaProps = {
 // Component
 // ---------------
 export const Textarea: React.FC<TextareaProps> = ({
-  variant,
+  variant = '',
   htmlFor = 'textarea',
   label,
   error,
@@ -48,7 +48,7 @@ export const Textarea: React.FC<TextareaProps> = ({
       as="textarea"
       {...props}
       display="block"
-      variant={variant ? `textarea.${variant}` : 'textarea'}
+      variant={`textarea.${variant}`}
       css={{ outlineColor: error && 'error' }}
       className={className}
     />
