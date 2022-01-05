@@ -69,8 +69,19 @@ export type BoxProps = PolymorphicPropsWithRef<BoxOwnProps, 'div'>;
 const isNotEmpty = (val: any) =>
   !(val && Object.keys(val).length === 0 && val.constructor === Object);
 
-const ensureArray = <T extends any>(val?: T | T[]) =>
-  Array.isArray(val) ? val : [val];
+/**
+ * Ensure that variant is an array and remove dot at the end of the string
+ * to set __default in theme without giving a default variant to the component
+ */
+const ensureCorrectVariant = <T extends string>(variant?: T | T[]) => {
+  return Array.isArray(variant)
+    ? variant.map(v => {
+        return v.replace(/\.$/, '');
+      })
+    : variant
+    ? [variant.replace(/\.$/, '')]
+    : [variant];
+};
 
 type CreateStyleProps = {
   as?: BoxProps['as'];
@@ -86,7 +97,7 @@ const createThemedStyle =
     return [
       getNormalizedStyles(as),
       transformStyleObject(__baseCSS)(theme),
-      ...ensureArray(variant).map(v =>
+      ...ensureCorrectVariant(variant).map(v =>
         transformStyleObject({ variant: v })(theme)
       ),
       transformStyleObject(styles)(theme),
