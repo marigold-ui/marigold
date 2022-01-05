@@ -653,7 +653,7 @@ export const components = {
   select,
   slider,
   textarea: {
-    default: {
+    __default: {
       fontFamily: 'body',
       lineHeight: 'medium',
       py: 'xxsmall',

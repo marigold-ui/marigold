@@ -644,7 +644,7 @@ export const components = {
   select,
   slider,
   textarea: {
-    default: {
+    __default: {
       fontFamily: 'body',
       lineHeight: 'medium',
       padding: '4px 8px',
