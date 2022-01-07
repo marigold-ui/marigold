@@ -69,8 +69,8 @@ export const inlineCode: React.FC<ComponentProps<'code'>> = ({
       whiteSpace: 'nowrap',
       fontSize: 'xxsmall',
       fontFamily: 'code',
-      color: 'gray.10',
-      bg: 'gray.90',
+      color: 'gray80',
+      bg: 'gray30',
     }}
   >
     {children}
@@ -127,7 +127,7 @@ export const td: React.FC<ComponentProps<'td'>> = ({ children, ...props }) => (
 );
 
 export const th: React.FC<ComponentProps<'th'>> = ({ children, ...props }) => (
-  <Box as="th" p="xsmall" bg="gray.80" {...props}>
+  <Box as="th" p="xsmall" bg="gray30" {...props}>
     <Text as="h5" variant="headline5">
       {children}
     </Text>
