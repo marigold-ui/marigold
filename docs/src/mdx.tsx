@@ -65,7 +65,7 @@ export const inlineCode: React.FC<ComponentProps<'code'>> = ({
     my="none"
     mx="xxsmall"
     css={{
-      lineHeight: 'cap',
+      lineHeight: 'xsmall',
       whiteSpace: 'nowrap',
       fontSize: 'xxsmall',
       fontFamily: 'code',

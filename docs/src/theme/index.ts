@@ -41,6 +41,7 @@ export const theme: Theme = {
   },
   borders: {
     none: 0,
+    solid: `1px solid`,
     grey: `1px solid ${colors.gray60}`,
   },
   ...typography,
