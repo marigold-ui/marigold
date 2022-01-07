@@ -106,7 +106,7 @@ const button = {
 } as const;
 
 const card = {
-  default: {
+  __default: {
     background: 'white',
     p: 'small',
     boxShadow: '0px 4px 4px rgba(165, 165, 165, 0.25)',
