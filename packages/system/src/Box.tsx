@@ -69,18 +69,18 @@ export type BoxProps = PolymorphicPropsWithRef<BoxOwnProps, 'div'>;
 const isNotEmpty = (val: any) =>
   !(val && Object.keys(val).length === 0 && val.constructor === Object);
 
+const ensureArray = <T extends any>(val?: T | T[]) =>
+  Array.isArray(val) ? val : [val];
+
 /**
  * Ensure that variant is an array and remove dot at the end of the string
  * to set __default in theme without giving a default variant to the component
  */
 const ensureCorrectVariant = (variant?: any | any[]) => {
   if (variant) {
-    if (Array.isArray(variant)) {
-      return variant.map(v => {
-        return v.replace(/\.$/, '');
-      });
-    }
-    return [variant.replace(/\.$/, '')];
+    return ensureArray(variant).map(v => {
+      return v.replace(/\.$/, '');
+    });
   }
   return [variant];
 };
