@@ -73,14 +73,16 @@ const isNotEmpty = (val: any) =>
  * Ensure that variant is an array and remove dot at the end of the string
  * to set __default in theme without giving a default variant to the component
  */
-const ensureCorrectVariant = <T extends string>(variant?: T | T[]) => {
-  return Array.isArray(variant)
-    ? variant.map(v => {
+const ensureCorrectVariant = (variant?: any | any[]) => {
+  if (variant) {
+    if (Array.isArray(variant)) {
+      return variant.map(v => {
         return v.replace(/\.$/, '');
-      })
-    : variant
-    ? [variant.replace(/\.$/, '')]
-    : [variant];
+      });
+    }
+    return [variant.replace(/\.$/, '')];
+  }
+  return [variant];
 };
 
 type CreateStyleProps = {
