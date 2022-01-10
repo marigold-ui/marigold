@@ -77,7 +77,6 @@ const ensureArray = <T extends string>(val: T | T[]) =>
  * to set __default in theme without giving a default variant to the component
  */
 
-// (variant?: string | string[])
 const ensureCorrectVariant = <T extends string>(variant?: T | T[]) => {
   if (variant) {
     return ensureArray(variant).map(v => v.replace(/\.$/, ''));
