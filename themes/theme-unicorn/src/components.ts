@@ -35,36 +35,36 @@ const select = {
   __default: {
     fontFamily: 'body',
     fontSize: 'xsmall',
-    fontWeight: 'body',
+    fontWeight: 400,
     lineHeight: 'large',
     color: 'text',
   },
   disabled: {
     fontFamily: 'body',
     fontSize: 'xsmall',
-    fontWeight: 'body',
+    fontWeight: 400,
     lineHeight: 'large',
     color: 'disabled',
     cursor: 'not-allowed',
   },
   listbox: {
     __default: {
-      bg: 'gray00',
+      bg: 'background',
       border: '1px solid transparent',
       borderLeftColor: 'gray40',
       borderRightColor: 'gray40',
       borderBottomColor: 'gray40',
-      borderBottomRightRadius: 'small',
-      borderBottomLeftRadius: 'small',
+      borderBottomLeftRadius: '8px',
+      borderBottomRightRadius: '8px',
     },
     error: {
-      bg: 'gray00',
+      bg: 'background',
       border: '1px solid transparent',
       borderLeftColor: 'error',
       borderRightColor: 'error',
       borderBottomColor: 'error',
-      borderBottomLeftRadius: 'small',
-      borderBottomRightRadius: 'small',
+      borderBottomRightRadius: '8px',
+      borderBottomLeftRadius: '8px',
     },
   },
   section: {
@@ -89,7 +89,6 @@ const select = {
     },
     disabled: {
       ...selectOption,
-      cursor: 'not-allowed',
       color: 'gray40',
     },
   },
@@ -105,15 +104,14 @@ const button = {
     fontSize: 'xsmall',
     fontWeight: 'body',
     border: 'none',
-    borderRadius: 'small',
+    borderRadius: '8px',
     display: 'inline-flex',
   },
   primary: {
     color: 'background',
     bg: 'primary',
     ':hover': {
-      color: 'background',
-      bg: 'orange40',
+      bg: 'secondary',
       cursor: 'pointer',
     },
     ':disabled': {
@@ -126,8 +124,7 @@ const button = {
     color: 'background',
     bg: 'secondary',
     ':hover': {
-      color: 'background',
-      bg: 'gray60',
+      bg: 'primary',
       cursor: 'pointer',
     },
     ':disabled': {
@@ -155,7 +152,6 @@ const button = {
   text: {
     color: 'secondary',
     ':hover': {
-      color: 'secondary',
       outlineColor: 'gray70',
       bg: 'gray30',
       cursor: 'pointer',
@@ -200,7 +196,7 @@ const button = {
     error: {
       ...selectButton,
       border: '1px solid',
-      borderRadius: 'small',
+      borderRadius: '8px',
       borderColor: 'error',
     },
     open: {
@@ -209,8 +205,8 @@ const button = {
       borderTopColor: 'gray40',
       borderLeftColor: 'gray40',
       borderRightColor: 'gray40',
-      borderTopRightRadius: 'small',
-      borderTopLeftRadius: 'small',
+      borderTopRightRadius: '8px',
+      borderTopLeftRadius: '8px',
     },
     errorOpened: {
       ...selectButton,
@@ -218,8 +214,8 @@ const button = {
       borderTopColor: 'error',
       borderLeftColor: 'error',
       borderRightColor: 'error',
-      borderTopRightRadius: 'small',
-      borderTopLeftRadius: 'small',
+      borderTopRightRadius: '8px',
+      borderTopLeftRadius: '8px',
     },
   },
 } as const;
@@ -232,20 +228,20 @@ const sliderThumb = {
   boxSizing: 'border-box',
   border: '4px solid',
   borderColor: 'gray70',
-  width: 16,
-  height: 16,
+  width: '16px',
+  height: '16px',
   bg: 'gray00',
-  borderRadius: 'large',
+  borderRadius: '8px',
   cursor: 'pointer',
-  marginTop: -4,
+  marginTop: '-4px',
 } as const;
 
 const sliderTrack = {
   WebkitAppearance: 'none',
   width: '100%',
-  height: 8,
+  height: '8px',
   bg: 'gray30',
-  borderRadius: 'large',
+  borderRadius: '8px',
   border: 'none',
 } as const;
 
@@ -279,7 +275,7 @@ const slider = {
     },
     '&:focus::-webkit-slider-runnable-track': {
       ...sliderTrack,
-      backgroundColor: 'primary',
+      bg: 'primary',
     },
     '&:disabled::-webkit-slider-runnable-track': {
       ...sliderTrack,
@@ -312,7 +308,7 @@ const slider = {
     },
     '&:focus::-moz-range-progress': {
       ...sliderTrack,
-      backgroundColor: 'primary',
+      bg: 'primary',
     },
     '&:disabled::-moz-range-progress': {
       ...sliderTrack,
@@ -327,19 +323,19 @@ export const components = {
       alignItems: 'center',
       borderStyle: 'solid',
       borderColor: 'error',
-      borderWidth: '2px 2px 2px 0px',
+      borderWidth: '3px 3px 3px 0px',
     },
     warning: {
       alignItems: 'center',
       borderStyle: 'solid',
       borderColor: 'warning',
-      borderWidth: '2px 2px 2px 0px',
+      borderWidth: '3px 3px 3px 0px',
     },
     success: {
       alignItems: 'center',
       borderStyle: 'solid',
       borderColor: 'success',
-      borderWidth: '2px 2px 2px 0px',
+      borderWidth: '3px 3px 3px 0px',
     },
   },
   badge: {
@@ -349,12 +345,11 @@ export const components = {
       fontFamily: 'body',
       fontSize: 'xsmall',
       fontWeight: 'body',
-      borderRadius: 'large',
+      borderRadius: '10px',
       border: '2px solid transparent',
       whiteSpace: 'nowrap',
-      py: 4,
-      px: 12,
-      mx: 8,
+      padding: '0.25rem 0.75rem',
+      mx: '0.5rem',
     },
   },
   button: {
@@ -393,11 +388,11 @@ export const components = {
   },
   card: {
     default: {
-      maxWidth: 500,
+      maxWidth: '500px',
       bg: 'gray00',
       p: 'small',
-      boxShadow: '0px 4px 4px rgba(165, 165, 165, 0.25)',
-      borderRadius: 'large',
+      boxShadow: '8px 8px 4px rgba(201, 177, 255, 0.5)',
+      borderRadius: '8px',
     },
   },
   checkbox: {
@@ -412,7 +407,7 @@ export const components = {
     },
     checked: {
       fill: 'primary',
-      stroke: 'orange80',
+      stroke: '#311b92',
       disabled: {
         fill: 'gray30',
         stroke: 'gray30',
@@ -435,8 +430,8 @@ export const components = {
   dialog: {
     __default: {
       bg: 'background',
-      minWidth: 510,
-      minHeight: 240,
+      minWidth: '400px',
+      minHeight: '400px',
     },
     backdrop: {
       bg: '#00000080',
@@ -446,19 +441,19 @@ export const components = {
     regular: {
       m: 'none',
       my: 'small',
-      border: 'none',
+      border: 0,
       borderBottom: '1px solid',
     },
     bold: {
       m: 'none',
       my: 'small',
-      border: 'none',
-      borderBottom: '2px solid',
+      border: 0,
+      borderBottom: '3px solid',
     },
     section: {
       m: 'none',
       mb: 'small',
-      border: 'none',
+      border: 0,
       borderBottom: '1px solid',
       borderColor: 'gray50',
     },
@@ -471,13 +466,14 @@ export const components = {
   },
   input: {
     default: {
+      display: 'block',
       fontFamily: 'body',
       color: 'text',
       border: 'none',
-      borderRadius: 'small',
+      borderRadius: '2px',
       boxShadow: '0 0 0 1px ' + colors.gray40,
       outline: 'none',
-      padding: '0 8px',
+      padding: '0 12px',
       lineHeight: 'large',
       ':focus': {
         boxShadow: '0 0 0 2px ' + colors.blue60,
@@ -489,9 +485,10 @@ export const components = {
       },
     },
     error: {
+      fontFamily: 'body',
       color: 'text',
       border: 'none',
-      borderRadius: 'small',
+      borderRadius: '2px',
       boxShadow: '0 0 0 1px ' + colors.red60,
       outline: 'none',
       padding: '0 8px',
@@ -501,7 +498,7 @@ export const components = {
   label: {
     above: {
       fontFamily: 'body',
-      fontSize: 'xxsmall',
+      fontSize: 'xsmall',
       fontWeight: 'body',
       lineHeight: 'medium',
       color: 'text',
@@ -510,14 +507,14 @@ export const components = {
       fontFamily: 'body',
       fontSize: 'xsmall',
       fontWeight: 'body',
-      lineHeight: 'medium',
+      lineHeight: 'large',
       color: 'text',
       display: 'inline-flex',
       alignItems: 'center',
     },
     disabled: {
       fontFamily: 'body',
-      fontSize: 'xxsmall',
+      fontSize: 'xsmall',
       fontWeight: 'body',
       lineHeight: 'medium',
       color: 'gray30',
@@ -540,7 +537,7 @@ export const components = {
       bg: 'background',
       color: 'text',
       ':hover': {
-        bg: 'gray30',
+        bg: 'secondary',
         cursor: 'pointer',
       },
     },
@@ -550,31 +547,25 @@ export const components = {
       borderStyle: 'solid',
       borderColor: 'warning',
       borderWidth: '2px 2px 2px 16px',
-      pt: 'xsmall',
-      pb: 'small',
-      px: 'small',
+      padding: '8px 16px 16px',
       color: 'warning',
     },
     error: {
       borderStyle: 'solid',
       borderColor: 'error',
       borderWidth: '2px 2px 2px 16px',
-      pt: 'xsmall',
-      pb: 'small',
-      px: 'small',
+      padding: '8px 16px 16px',
       color: 'error',
     },
     info: {
       borderStyle: 'solid',
       borderColor: 'info',
       borderWidth: '2px 2px 2px 16px',
-      pt: 'xsmall',
-      pb: 'small',
-      px: 'small',
+      padding: '8px 16px 16px',
       color: 'info',
     },
     title: {
-      mb: 'xsmall',
+      mb: 'small',
     },
   },
   radio: {
@@ -590,7 +581,7 @@ export const components = {
     },
     checked: {
       fill: 'primary',
-      stroke: 'orange80',
+      stroke: '#311b92',
       disabled: {
         fill: 'gray30',
         stroke: 'gray30',
@@ -616,15 +607,14 @@ export const components = {
     default: {
       fontFamily: 'body',
       lineHeight: 'medium',
-      py: 'xxsmall',
-      px: 'xsmall',
+      padding: '4px 8px',
       color: 'text',
-      border: 'none',
-      borderRadius: 'small',
-      outline: '1px solid',
+      border: 0,
+      borderRadius: '8px',
+      outline: '2px solid',
       ':focus': {
-        outline: '2px solid',
-        outlineColor: 'blue60',
+        outline: '4px solid',
+        outlineColor: 'primary',
       },
       ':disabled': {
         bg: 'gray20',
@@ -635,7 +625,8 @@ export const components = {
   validation: {
     error: {
       ...text.root,
-      fontSize: 'xxsmall',
+      fontSize: 'xsmall',
+      textTransform: 'uppercase',
       color: 'error',
     },
   },
