@@ -31,7 +31,7 @@ export const DoAndDont: React.FC<DoAndDontProps> = ({
           alignItems="center"
           pt="small"
           pb="xsmall"
-          css={{ color: dont ? 'red' : 'green' }}
+          css={{ color: dont ? 'red60' : 'green60' }}
         >
           {dont ? (
             <Inline space="xsmall">
