@@ -15,6 +15,7 @@ The variant can be added with the variant prop. The default variant is `above`.
 | :-------------------- | :-------- | :------ |
 | `variant` (optional)  | `string`  | `above` |
 | `required` (optional) | `boolean` | `false` |
+| `disabled` (optional) | `boolean` | `false` |
 | `htmlFor`             | `string`  |         |
 
 ## Import
@@ -56,7 +57,7 @@ import { Label } from '@marigold/components';
 ### Label disabled
 
 ```tsx
-<Label variant="disabled" htmlFor="labelId">
+<Label htmlFor="labelId" disabled>
   I am a disabled Label!
 </Label>
 ```

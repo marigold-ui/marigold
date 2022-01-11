@@ -16,9 +16,13 @@ const theme = {
       fontFamily: 'label',
     },
   },
+  colors: {
+    text: 'black',
+    disabled: 'gray',
+  },
 };
 
-test('supports default variant and themeSection', () => {
+test('supports default variant and styles', () => {
   render(
     <ThemeProvider theme={theme}>
       <Label htmlFor="labelId">label</Label>
@@ -27,6 +31,7 @@ test('supports default variant and themeSection', () => {
   const label = screen.getByText(/label/);
 
   expect(label).toHaveStyle(`font-family: Inter Regular`);
+  expect(label).toHaveStyle(`color: black`);
 });
 
 test('supports other variant than default', () => {
@@ -65,6 +70,18 @@ test('supports required prop', () => {
   const parent = label.parentElement;
 
   expect(parent instanceof HTMLSpanElement).toBeTruthy();
+});
+
+test('supports disabled prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Label htmlFor="labelId" disabled>
+        label
+      </Label>
+    </ThemeProvider>
+  );
+  const label = screen.getByText(/label/);
+  expect(label).toHaveStyle(`color: gray`);
 });
 
 test('renders <label> element', () => {

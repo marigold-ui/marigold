@@ -497,32 +497,15 @@ export const components = {
   },
   label: {
     above: {
-      fontFamily: 'body',
       fontSize: 'xsmall',
-      fontWeight: 'body',
-      lineHeight: 'medium',
-      color: 'text',
     },
     inline: {
-      fontFamily: 'body',
       fontSize: 'xsmall',
-      fontWeight: 'body',
-      lineHeight: 'large',
-      color: 'text',
       display: 'inline-flex',
       alignItems: 'center',
     },
-    disabled: {
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      fontWeight: 'body',
-      lineHeight: 'medium',
-      color: 'gray30',
-    },
     section: {
-      fontFamily: 'body',
       fontSize: 'small',
-      fontWeight: 'body',
       lineHeight: 'large',
       color: 'gray50',
     },

@@ -12,32 +12,51 @@ export interface LabelThemeExtension<Value> {
   };
 }
 
-// Props
+// LabelBase
 // ---------------
-export type LabelProps = {
+export type LabelBaseProps = {
   htmlFor?: string;
   variant?: string;
   required?: boolean;
+  disabled?: boolean;
 } & ComponentProps<'label'>;
 
-// Component
-// ---------------
-export const Label: React.FC<LabelProps> = ({
+export const LabelBase: React.FC<LabelProps> = ({
   variant = 'above',
+  required,
+  disabled,
+  children,
+  ...props
+}) => {
+  return (
+    <Box
+      {...props}
+      as="label"
+      __baseCSS={disabled ? { color: 'disabled' } : { color: 'text' }}
+      variant={`label.${variant}`}
+    >
+      {children}
+    </Box>
+  );
+};
+
+// Label
+// ---------------
+export type LabelProps = {
+  required?: boolean;
+} & LabelBaseProps;
+
+export const Label: React.FC<LabelProps> = ({
   required,
   children,
   ...props
 }) => {
   return required ? (
     <Box as="span" display="inline-flex" alignItems="center">
-      <Box {...props} as="label" variant={`label.${variant}`}>
-        {children}
-      </Box>
-      {required && <Box as={Required} size={16} css={{ color: 'red60' }} />}
+      <LabelBase {...props}>{children}</LabelBase>
+      {required && <Box as={Required} size={16} css={{ color: 'error' }} />}
     </Box>
   ) : (
-    <Box {...props} as="label" variant={`label.${variant}`}>
-      {children}
-    </Box>
+    <LabelBase {...props}>{children}</LabelBase>
   );
 };
