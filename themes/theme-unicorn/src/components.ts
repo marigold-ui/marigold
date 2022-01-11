@@ -465,7 +465,7 @@ export const components = {
     },
   },
   input: {
-    default: {
+    __default: {
       display: 'block',
       fontFamily: 'body',
       color: 'text',

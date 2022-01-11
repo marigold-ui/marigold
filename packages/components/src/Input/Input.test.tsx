@@ -9,7 +9,7 @@ const theme = {
     forms: 'Roboto',
   },
   input: {
-    default: {
+    __default: {
       fontFamily: 'body',
     },
     input2: {

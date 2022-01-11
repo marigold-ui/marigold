@@ -470,7 +470,7 @@ export const components = {
     },
   },
   input: {
-    default: {
+    __default: {
       fontFamily: 'body',
       color: 'text',
       border: 'none',
