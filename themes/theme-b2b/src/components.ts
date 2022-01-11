@@ -222,13 +222,6 @@ const button = {
       borderTopLeftRadius: 'small',
     },
   },
-  close: {
-    color: 'text',
-    bg: 'transparent',
-    ':hover': {
-      cursor: 'pointer',
-    },
-  },
 } as const;
 
 /**
@@ -373,9 +366,6 @@ export const components = {
       lineHeight: 'large',
       paddingX: 'medium',
     },
-    xsmall: {
-      lineHeight: 'xsmall',
-    },
     primary: {
       ...button.root,
       ...button.primary,
@@ -399,10 +389,6 @@ export const components = {
     select: {
       ...button.root,
       ...button.select,
-    },
-    close: {
-      ...button.root,
-      ...button.close,
     },
   },
   card: {
@@ -447,39 +433,13 @@ export const components = {
     },
   },
   dialog: {
-    wrapper: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      borderRadius: 2,
-      paddingLeft: 'large',
-      paddingBottom: 'large',
-    },
-    body: {
-      paddingTop: 'medium',
-    },
-    onClose: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      alignItems: 'start',
-      paddingTop: 'xsmall',
-      paddingX: 'xsmall',
-    },
-    modalWrapper: {
-      position: 'fixed',
-      zIndex: 100,
-      top: 'none',
-      left: 'none',
-      bottom: 'none',
-      right: 'none',
-      bg: 'rgba(0, 0, 0, 0.5)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    modalBody: {
-      backgroundColor: 'background',
+    __default: {
+      bg: 'background',
       minWidth: 510,
       minHeight: 240,
+    },
+    backdrop: {
+      bg: '#00000080',
     },
   },
   divider: {
