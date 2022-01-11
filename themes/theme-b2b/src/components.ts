@@ -392,7 +392,7 @@ export const components = {
     },
   },
   card: {
-    default: {
+    __default: {
       maxWidth: 500,
       bg: 'gray00',
       p: 'small',

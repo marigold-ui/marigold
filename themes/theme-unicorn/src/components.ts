@@ -387,7 +387,7 @@ export const components = {
     },
   },
   card: {
-    default: {
+    __default: {
       maxWidth: '500px',
       bg: 'gray00',
       p: 'small',

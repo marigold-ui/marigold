@@ -404,7 +404,7 @@ export const components = {
     },
   },
   card: {
-    default: {
+    __default: {
       maxWidth: '500px',
       background: colors.gray00,
       p: 'small',
