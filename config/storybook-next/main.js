@@ -1,12 +1,10 @@
-import type { StorybookConfig } from '@storybook/react/types';
-
-const config: StorybookConfig = {
+const config = {
   // TODO: add correct path :D
   stories: ['./debug.stories.tsx'],
   logLevel: 'debug',
   addons: ['@storybook/addon-essentials', '@storybook/addon-a11y'],
   typescript: {
-    check: true,
+    check: false,
     checkOptions: {},
   },
   features: {

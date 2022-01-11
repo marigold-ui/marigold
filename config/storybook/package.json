@@ -21,7 +21,7 @@
     "@storybook/addon-docs": "6.3.12",
     "@storybook/addon-essentials": "6.3.12",
     "@storybook/preset-typescript": "3.0.0",
-    "@storybook/react": "6.3.12",
+    "@storybook/react": "6.4.10",
     "babel-loader": "8.2.3",
     "find-up": "5.0.0",
     "storybook-addon-performance": "^0.16.1",

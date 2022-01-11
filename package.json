@@ -20,7 +20,7 @@
     "@marigold/jest-config": "*",
     "@marigold/prettier-config": "*",
     "@marigold/tsconfig": "*",
-    "@storybook/react": "6.3.12",
+    "@storybook/react": "6.4.10",
     "@testing-library/jest-dom": "5.16.1",
     "@testing-library/react": "12.1.2",
     "@testing-library/react-hooks": "7.0.2",
@@ -43,7 +43,7 @@
   },
   "scripts": {
     "start": "start-storybook -p 6005 -c config/storybook -s config/storybook/assets",
-    "sb": "start-storybook -p 6005 -c config/storybook-next",
+    "sb": "start-storybook -p 6005 -c ./config/storybook-next",
     "watch": "workspaces-run --only-fs=\"packages/**\" --only-fs=\"themes/**\" --order-by-deps -- yarn watch",
     "build": "workspaces-run --only-fs=\"packages/**\" --only-fs=\"themes/**\" --order-by-deps -- yarn build",
     "docs": "cd docs && yarn start",
