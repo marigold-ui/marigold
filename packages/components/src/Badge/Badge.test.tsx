@@ -9,7 +9,7 @@ const theme = {
     larger: 8,
   },
   badge: {
-    default: {
+    __default: {
       borderRadius: '8px',
     },
     fatBadge: {

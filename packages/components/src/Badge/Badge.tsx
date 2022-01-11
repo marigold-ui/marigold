@@ -21,7 +21,7 @@ export type BadgeProps = {
 // Component
 // ---------------
 export const Badge: React.FC<BadgeProps> = ({
-  variant = 'default',
+  variant = '',
   bgColor = 'transparent',
   borderColor = 'transparent',
   children,

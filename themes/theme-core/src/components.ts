@@ -349,7 +349,7 @@ export const components = {
     },
   },
   badge: {
-    default: {
+    __default: {
       display: 'inline-flex',
       alignItems: 'center',
       fontFamily: 'body',
