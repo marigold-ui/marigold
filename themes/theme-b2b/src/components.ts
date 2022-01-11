@@ -613,22 +613,22 @@ export const components = {
   select,
   slider,
   textarea: {
-    default: {
+    __default: {
       fontFamily: 'body',
       lineHeight: 'medium',
       py: 'xxsmall',
       px: 'xsmall',
-      color: 'text',
+      color: 'disabled',
       border: 'none',
       borderRadius: 'small',
       outline: '1px solid',
+      outlineColor: 'disabled',
       ':focus': {
         outline: '2px solid',
         outlineColor: 'blue60',
       },
       ':disabled': {
         bg: 'gray20',
-        color: 'gray40',
       },
     },
   },

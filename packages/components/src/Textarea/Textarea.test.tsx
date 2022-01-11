@@ -9,7 +9,7 @@ const theme = {
     fancy: 'Roboto',
   },
   textarea: {
-    default: {
+    __default: {
       fontFamily: 'body',
     },
     textarea2: {

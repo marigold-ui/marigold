@@ -28,7 +28,7 @@ export type TextareaProps = {
 // Component
 // ---------------
 export const Textarea: React.FC<TextareaProps> = ({
-  variant = 'default',
+  variant = '',
   htmlFor = 'textarea',
   label,
   error,
