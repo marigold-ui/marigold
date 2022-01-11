@@ -230,13 +230,6 @@ const button = {
       backgroundImage: 'linear-gradient(#eee 20%, #fff 80%)',
     },
   },
-  close: {
-    color: 'text',
-    bg: 'transparent',
-    ':hover': {
-      cursor: 'pointer',
-    },
-  },
 } as const;
 
 /**
@@ -409,10 +402,6 @@ export const components = {
       ...button.root,
       ...button.select,
     },
-    close: {
-      ...button.root,
-      ...button.close,
-    },
   },
   card: {
     default: {
@@ -456,39 +445,13 @@ export const components = {
     },
   },
   dialog: {
-    wrapper: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      borderRadius: 'small',
-      paddingLeft: 'large',
-      paddingBottom: 'large',
-    },
-    body: {
-      paddingTop: 'medium',
-    },
-    onClose: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      alignItems: 'start',
-      paddingTop: 'xsmall',
-      paddingX: 'xsmall',
-    },
-    modalWrapper: {
-      position: 'fixed',
-      zIndex: 100,
-      top: 0,
-      left: 0,
-      bottom: 0,
-      right: 0,
-      background: 'rgba(0, 0, 0, 0.5)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    modalBody: {
-      background: '#ffffff',
+    __default: {
+      bg: '#ffffff',
       minWidth: '510px',
       minHeight: '240px',
+    },
+    backdrop: {
+      bg: '#00000080',
     },
   },
   divider: {

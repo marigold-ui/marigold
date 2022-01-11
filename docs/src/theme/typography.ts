@@ -2,7 +2,7 @@ const text = {
   root: {
     fontFamily: 'body',
     fontSize: 'body',
-    lineHeight: 'body',
+    lineHeight: 'medium',
     fontWeight: 'body',
   },
   heading: {
@@ -34,9 +34,12 @@ export const typography = {
     bold: 700,
   },
   lineHeights: {
-    cap: 1,
-    body: 1.5,
-    heading: 1.125,
+    xsmall: 1,
+    small: 1.125,
+    medium: 1.5,
+    large: 2,
+    xlarge: 2.5,
+    xxlarge: 3,
   },
   text: {
     body: {

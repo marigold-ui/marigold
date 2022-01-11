@@ -11,7 +11,6 @@ import { type BadgeThemeExtension } from './Badge';
 import { type ButtonThemeExtension } from './Button';
 import { type CardThemeExtension } from './Card';
 import { type CheckboxThemeExtension } from './Checkbox';
-import { type DialogThemeExtension } from './Dialog';
 import { type DividerThemeExtension } from './Divider';
 import { type ImageThemeExtension } from './Image';
 import { type InputThemeExtension } from './Input';
@@ -35,7 +34,6 @@ export interface Theme
     ButtonThemeExtension<CSSObject>,
     CardThemeExtension<CSSObject>,
     CheckboxThemeExtension<CSSObject>,
-    DialogThemeExtension<CSSObject>,
     DividerThemeExtension<CSSObject>,
     ImageThemeExtension<CSSObject>,
     InputThemeExtension<CSSObject>,
