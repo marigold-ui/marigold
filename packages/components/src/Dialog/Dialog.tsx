@@ -9,36 +9,29 @@ import { Box } from '../Box';
 import { Button } from '../Button';
 import { Text } from '../Text';
 
-import { ModalDialog } from './ModalDialog';
-
-// Theme Extension
-// ---------------
-export interface DialogThemeExtension<Value> {
-  dialog?: {
-    wrapper?: Value;
-    body?: Value;
-    onClose?: Value;
-    modalWrapper?: Value;
-    modalBody?: Value;
-  };
-}
+import { ModalDialog, ModalDialogProps } from './ModalDialog';
 
 // Props
 // ---------------
 export type DialogProps = {
-  isOpen: boolean;
+  backdropVariant?: string;
   close: ComponentProps<typeof Button>['onClick'];
+  isOpen: boolean;
   title?: string;
-} & ComponentProps<'div'>;
+  variant?: string;
+} & ModalDialogProps &
+  ComponentProps<'div'>;
 
 // Component
 // ---------------
 export const Dialog: React.FC<DialogProps> = ({
+  backdropVariant,
   children,
-  title,
   className,
-  isOpen,
   close,
+  isOpen,
+  title,
+  variant,
   ...props
 }) => {
   const closeButtonRef = React.useRef<HTMLElement>() as RefObject<HTMLElement>;
@@ -55,9 +48,25 @@ export const Dialog: React.FC<DialogProps> = ({
 
   return (
     <OverlayContainer>
-      <ModalDialog isOpen={isOpen} onClose={close} isDismissable>
-        <Box variant="dialog.wrapper" className={className} {...props}>
-          <Box variant="dialog.body">
+      <ModalDialog
+        variant={variant}
+        backdropVariant={backdropVariant}
+        isOpen={isOpen}
+        onClose={close}
+        isDismissable
+        {...props}
+      >
+        <Box
+          __baseCSS={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            borderRadius: 'small',
+            pl: 'large',
+            pb: 'large',
+          }}
+          className={className}
+        >
+          <Box pt="medium">
             {title && (
               <Text as="h4" variant="headline4">
                 {title}
@@ -65,15 +74,36 @@ export const Dialog: React.FC<DialogProps> = ({
             )}
             {children}
           </Box>
-          <Box variant="dialog.onClose">
-            <Button
-              variant="close"
-              size="xsmall"
+          <Box
+            __baseCSS={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'start',
+              paddingTop: 'xsmall',
+              paddingX: 'xsmall',
+            }}
+          >
+            <Box
+              as={Button}
+              __baseCSS={{
+                color: 'text',
+                bg: 'transparent',
+                lineHeight: 'xsmall',
+                px: 'xxsmall',
+                ':hover': {
+                  color: 'text',
+                  bg: 'transparent',
+                  cursor: 'pointer',
+                },
+                ':focus': {
+                  outline: 0,
+                },
+              }}
               {...closeButtonProps}
               ref={closeButtonRef}
             >
               <Close size={16} />
-            </Button>
+            </Box>
           </Box>
         </Box>
       </ModalDialog>
@@ -81,7 +111,7 @@ export const Dialog: React.FC<DialogProps> = ({
   );
 };
 
-// use this hook to get the overlayTriggerState and openButton props for using the dialog component
+// get the overlayTriggerState and openButton props for using the dialog component
 export const useDialogButtonProps = () => {
   const state = useOverlayTriggerState({});
   const openButtonRef = React.useRef<HTMLElement>() as RefObject<HTMLElement>;

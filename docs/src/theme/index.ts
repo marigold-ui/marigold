@@ -1,12 +1,10 @@
 import { Theme } from '@marigold/components';
 
-import { root } from './root';
 import { colors } from './colors';
 import { components } from './components';
 import { typography } from './typography';
 
 export const theme: Theme = {
-  root,
   space: {
     none: 0,
     xxsmall: 4,
@@ -19,24 +17,32 @@ export const theme: Theme = {
   },
   colors: {
     ...colors,
-    text: colors.black,
-    background: colors.gray[80],
+    text: colors.gray90,
+    background: colors.gray30,
     primary: colors.brand.red,
     secondary: colors.brand.orange,
-    disabled: colors.gray[70],
-    error: colors.red,
-    warning: colors.yellow,
-    info: colors.blue,
-    success: colors.green,
+    disabled: colors.gray40,
+    error: colors.red60,
+    warning: colors.orange60,
+    info: colors.blue60,
+    success: colors.green60,
   },
   radii: {
     none: 0,
     small: 2,
     medium: 4,
   },
+  root: {
+    body: {
+      margin: 8,
+      padding: 0,
+      fontFamily: 'body',
+    },
+  },
   borders: {
     none: 0,
-    grey: `1px solid ${colors.gray[60]}`,
+    solid: `1px solid`,
+    grey: `1px solid ${colors.gray60}`,
   },
   ...typography,
   ...components,
