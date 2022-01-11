@@ -13,6 +13,9 @@ See [Box Primitive](../../foundation/box-primitive)
 | Property                    | Type                                  | Default |
 | :-------------------------- | :------------------------------------ | :------ |
 | `as` (optional)             | `HTMLElement`                         | `div`   |
+| `variant` (optional)        | `string⎮string[]`                     |         |
+| `__baseCSS` (optional)      | `CSSObject`                           |         |
+| `css` (optional)            | `CSSObject`                           |         |
 | `display` (optional)        | `ResponsiveStyleValue<string>`        |         |
 | `height` (optional)         | `ResponsiveStyleValue<number⎮string>` |         |
 | `width` (optional)          | `ResponsiveStyleValue<number⎮string>` |         |
@@ -60,24 +63,24 @@ import { Box } from '@marigold/components';
 
 ```tsx expandCode
 <Box bg="success" p="8px" width="25%">
-  <Text>Box Example</Text>
+  <Text color="white">Box Example</Text>
 </Box>
 ```
 
 ## Usage
 
 ```tsx
-<Box>I am basic box!</Box>
+<Box>I am basic div box!</Box>
 ```
 
 ```tsx
-<Box as="button" bg="primary">
+<Box as="button" bg="primary" variant="button.primary" p="8px">
   I am a button box!
 </Box>
 ```
 
 ```tsx
-<Box as="p" p="16px">
-  I am a paragraph with padding!
+<Box as="p" border="1px solid" p="8px">
+  I am a paragraph with a border!
 </Box>
 ```
