@@ -5,7 +5,6 @@ import { Required } from '@marigold/icons';
 import { ResponsiveStyleValue } from '@marigold/system';
 
 import { Box } from '../Box';
-import { Inline } from '../Inline';
 
 // Theme Extension
 // ---------------
