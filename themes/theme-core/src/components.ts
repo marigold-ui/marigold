@@ -498,32 +498,18 @@ export const components = {
   },
   label: {
     above: {
-      fontFamily: 'body',
       fontSize: 'xxsmall',
-      fontWeight: 'body',
       lineHeight: 'small',
       color: 'text',
     },
     inline: {
-      fontFamily: 'body',
       fontSize: 'xxsmall',
-      fontWeight: 'body',
       lineHeight: 'small',
-      color: 'text',
       display: 'inline-flex',
       alignItems: 'center',
     },
-    disabled: {
-      fontFamily: 'body',
-      fontSize: 'xxsmall',
-      fontWeight: 'body',
-      lineHeight: 'small',
-      color: colors.gray30,
-    },
     section: {
-      fontFamily: 'body',
       fontSize: 'xsmall',
-      fontWeight: 'body',
       lineHeight: '32px',
       color: colors.gray50,
     },

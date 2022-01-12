@@ -110,7 +110,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         <Label
           htmlFor={props.id}
           required={required}
-          variant={props.disabled ? 'disabled' : 'inline'}
+          variant="inline"
+          color={props.disabled ? 'disabled' : 'text'}
         >
           <Box as={CheckboxInput} pr="8px" error={error} {...props} />
           {label}
