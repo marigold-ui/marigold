@@ -9,6 +9,8 @@ import { ValidationMessage } from '../ValidationMessage';
 // Props
 // ---------------
 export type FieldProps = {
+  variant?: string;
+  labelVariant?: string;
   htmlFor: string;
   label: string;
   required?: boolean;
@@ -21,7 +23,8 @@ export type FieldProps = {
 // ---------------
 export const Field: React.FC<FieldProps> = ({
   type = 'text',
-  className,
+  variant = '',
+  labelVariant = 'above',
   htmlFor,
   label,
   required,
@@ -32,7 +35,7 @@ export const Field: React.FC<FieldProps> = ({
 }) => {
   return (
     <>
-      <Label variant="above" htmlFor={htmlFor} required={required}>
+      <Label variant={labelVariant} htmlFor={htmlFor} required={required}>
         {label}
       </Label>
       <Input
@@ -40,8 +43,7 @@ export const Field: React.FC<FieldProps> = ({
         type={type}
         id={htmlFor}
         disabled={disabled}
-        variant={error ? 'error' : 'default'}
-        className={className}
+        variant={variant}
       />
       {error && errorMessage && (
         <ValidationMessage>
