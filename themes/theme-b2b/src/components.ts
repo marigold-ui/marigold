@@ -401,7 +401,7 @@ export const components = {
     },
   },
   checkbox: {
-    default: {
+    __default: {
       ariaHidden: 'true',
       mr: 2,
       verticalAlign: 'middle',
