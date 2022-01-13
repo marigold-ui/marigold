@@ -15,9 +15,9 @@
   "dependencies": {
     "@babel/core": "7.16.5",
     "@mdx-js/react": "1.6.22",
-    "@storybook/addon-a11y": "6.4.9",
-    "@storybook/addon-essentials": "6.4.9",
-    "@storybook/react": "6.4.10",
+    "@storybook/addon-a11y": "6.4.12",
+    "@storybook/addon-essentials": "6.4.12",
+    "@storybook/react": "6.4.12",
     "babel-loader": "8.2.3",
     "find-up": "5.0.0",
     "tsconfig-paths-webpack-plugin": "3.5.2"
