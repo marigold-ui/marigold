@@ -9,11 +9,41 @@ const theme = {
     small: 2,
   },
   radio: {
-    default: {
+    __default: {
       m: 'small',
     },
   },
+  label: {
+    above: {
+      fontSize: '8px',
+    },
+    inline: {
+      fontSize: '14px',
+    },
+  },
 };
+
+test('supports default labelVariant', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio id="test" title="checkbox" label="label" />
+    </ThemeProvider>
+  );
+
+  const label = screen.getByText(/label/);
+  expect(label).toHaveStyle(`font-size: 14px`);
+});
+
+test('supports other labelVariant than default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio id="test" title="checkbox" label="label" labelVariant="above" />
+    </ThemeProvider>
+  );
+
+  const label = screen.getByText(/label/);
+  expect(label).toHaveStyle(`font-size: 8px`);
+});
 
 test('supports label prop', () => {
   render(<Radio label="Test" id="test" title="radio" />);
