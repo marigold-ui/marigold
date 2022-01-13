@@ -106,7 +106,8 @@ export const Radio: React.FC<RadioProps> = ({
         <Label
           htmlFor={props.id}
           required={required}
-          variant={props.disabled ? 'disabled' : 'inline'}
+          variant="inline"
+          color={props.disabled ? 'disabled' : 'text'}
         >
           <Box as={RadioInput} pr="8px" error={error} {...props} />
           {label}
