@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "esModuleInterop": true,
-    "jsx": "preserve",
     "skipLibCheck": true,
-    "strict": true
-  }
+    "strict": true,
+    "esModuleInterop": true
+  },
+  "include": ["main.ts"]
 }

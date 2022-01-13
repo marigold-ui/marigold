@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta, ComponentStory } from '@storybook/react';
 import { screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
-import { Button } from './debug';
+import { Button } from './example';
 
 export default {
   component: Button,

@@ -3,6 +3,8 @@
   "description": "Marigold's storybook configuration",
   "version": "0.2.0",
   "license": "MIT",
+  "type": "module",
+  "exports": "./main.js",
   "keywords": [
     "storybook",
     "config",
@@ -16,9 +18,11 @@
     "@storybook/addon-a11y": "6.4.9",
     "@storybook/addon-essentials": "6.4.9",
     "@storybook/react": "6.4.10",
-    "babel-loader": "8.2.3"
+    "babel-loader": "8.2.3",
+    "find-up": "5.0.0",
+    "tsconfig-paths-webpack-plugin": "3.5.2"
   },
   "scripts": {
-    "start": "start-storybook -p 1337 -c . --smoke-test"
+    "start": "start-storybook -p 1337 -c ."
   }
 }
