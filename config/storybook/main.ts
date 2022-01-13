@@ -1,6 +1,10 @@
+import path from 'path';
+
+console.log(path.basename(__filename));
+
 const config = {
   // TODO: add correct path :D
-  stories: ['./debug.stories.tsx'],
+  stories: [`${__dirname}/debug.stories.tsx`],
   logLevel: 'debug',
   addons: ['@storybook/addon-essentials', '@storybook/addon-a11y'],
   typescript: {

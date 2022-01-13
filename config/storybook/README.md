@@ -1,3 +1,3 @@
 # `@marigold/storybook-config`
 
-> Shareable `storybook` configuration used by marigold
+> `storybook` configuration used by marigold

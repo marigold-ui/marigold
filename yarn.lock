@@ -3708,7 +3708,50 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marigold/eslint-config@*, @marigold/eslint-config@workspace:config/eslint":
+"@marigold/docs@workspace:docs":
+  version: 0.0.0-use.local
+  resolution: "@marigold/docs@workspace:docs"
+  dependencies:
+    "@marigold/components": "workspace:*"
+    "@marigold/icons": "workspace:*"
+    "@marigold/system": "workspace:*"
+    "@marigold/theme-b2b": "workspace:*"
+    "@marigold/types": "workspace:*"
+    "@mdx-js/mdx": 1.6.22
+    "@mdx-js/react": 1.6.22
+    "@mui/material": ^5.2.3
+    "@mui/styles": ^5.2.3
+    "@types/mdx-js__react": 1.5.5
+    "@types/react": 17.0.37
+    "@types/react-helmet": 6.1.4
+    babel-preset-gatsby: 2.3.0
+    gatsby: 4.3.0
+    gatsby-plugin-image: 2.3.0
+    gatsby-plugin-manifest: 4.3.0
+    gatsby-plugin-mdx: 3.3.0
+    gatsby-plugin-react-helmet: 5.3.0
+    gatsby-plugin-remove-serviceworker: 1.0.0
+    gatsby-plugin-sharp: 4.3.0
+    gatsby-plugin-sitemap: 5.3.0
+    gatsby-source-filesystem: 4.3.0
+    gatsby-transformer-sharp: 4.3.0
+    gh-pages: 3.2.3
+    mdx-utils: 0.2.0
+    open-props: ^1.0.13
+    postcss-combine-duplicated-selectors: ^10.0.3
+    postcss-import: ^14.0.2
+    postcss-preset-env: ^7.0.1
+    prism-react-renderer: 1.2.1
+    prismjs: 1.25.0
+    react: 17.0.2
+    react-dom: 17.0.2
+    react-helmet: 6.1.0
+    react-live: 2.3.0
+    tsconfig-paths-webpack-plugin: 3.5.2
+  languageName: unknown
+  linkType: soft
+
+"@marigold/eslint-config@workspace:*, @marigold/eslint-config@workspace:config/eslint":
   version: 0.0.0-use.local
   resolution: "@marigold/eslint-config@workspace:config/eslint"
   dependencies:
@@ -3744,7 +3787,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marigold/jest-config@*, @marigold/jest-config@workspace:config/jest":
+"@marigold/jest-config@workspace:*, @marigold/jest-config@workspace:config/jest":
   version: 0.0.0-use.local
   resolution: "@marigold/jest-config@workspace:config/jest"
   dependencies:
@@ -3763,7 +3806,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marigold/prettier-config@*, @marigold/prettier-config@workspace:config/prettier":
+"@marigold/prettier-config@workspace:*, @marigold/prettier-config@workspace:config/prettier":
   version: 0.0.0-use.local
   resolution: "@marigold/prettier-config@workspace:config/prettier"
   peerDependencies:
@@ -3771,22 +3814,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marigold/storybook-config-next@workspace:config/storybook-next":
+"@marigold/storybook-config-old@workspace:config/storybook-old":
   version: 0.0.0-use.local
-  resolution: "@marigold/storybook-config-next@workspace:config/storybook-next"
-  dependencies:
-    "@babel/core": 7.16.5
-    "@mdx-js/react": 1.6.22
-    "@storybook/addon-a11y": 6.4.9
-    "@storybook/addon-essentials": 6.4.9
-    "@storybook/react": 6.4.10
-    babel-loader: 8.2.3
-  languageName: unknown
-  linkType: soft
-
-"@marigold/storybook-config@workspace:config/storybook":
-  version: 0.0.0-use.local
-  resolution: "@marigold/storybook-config@workspace:config/storybook"
+  resolution: "@marigold/storybook-config-old@workspace:config/storybook-old"
   dependencies:
     "@storybook/addon-a11y": 6.3.12
     "@storybook/addon-controls": ^6.3.8
@@ -3799,6 +3829,19 @@ __metadata:
     storybook-addon-performance: ^0.16.1
     storybook-addon-themes: 6.1.0
     tsconfig-paths-webpack-plugin: 3.5.2
+  languageName: unknown
+  linkType: soft
+
+"@marigold/storybook-config@workspace:config/storybook":
+  version: 0.0.0-use.local
+  resolution: "@marigold/storybook-config@workspace:config/storybook"
+  dependencies:
+    "@babel/core": 7.16.5
+    "@mdx-js/react": 1.6.22
+    "@storybook/addon-a11y": 6.4.9
+    "@storybook/addon-essentials": 6.4.9
+    "@storybook/react": 6.4.10
+    babel-loader: 8.2.3
   languageName: unknown
   linkType: soft
 
@@ -3839,7 +3882,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marigold/tsconfig@*, @marigold/tsconfig@workspace:config/tsconfig":
+"@marigold/tsconfig@workspace:*, @marigold/tsconfig@workspace:config/tsconfig":
   version: 0.0.0-use.local
   resolution: "@marigold/tsconfig@workspace:config/tsconfig"
   languageName: unknown
@@ -13855,49 +13898,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docs@workspace:docs":
-  version: 0.0.0-use.local
-  resolution: "docs@workspace:docs"
-  dependencies:
-    "@marigold/components": "workspace:*"
-    "@marigold/icons": "workspace:*"
-    "@marigold/system": "workspace:*"
-    "@marigold/theme-b2b": "workspace:*"
-    "@marigold/types": "workspace:*"
-    "@mdx-js/mdx": 1.6.22
-    "@mdx-js/react": 1.6.22
-    "@mui/material": ^5.2.3
-    "@mui/styles": ^5.2.3
-    "@types/mdx-js__react": 1.5.5
-    "@types/react": 17.0.37
-    "@types/react-helmet": 6.1.4
-    babel-preset-gatsby: 2.3.0
-    gatsby: 4.3.0
-    gatsby-plugin-image: 2.3.0
-    gatsby-plugin-manifest: 4.3.0
-    gatsby-plugin-mdx: 3.3.0
-    gatsby-plugin-react-helmet: 5.3.0
-    gatsby-plugin-remove-serviceworker: 1.0.0
-    gatsby-plugin-sharp: 4.3.0
-    gatsby-plugin-sitemap: 5.3.0
-    gatsby-source-filesystem: 4.3.0
-    gatsby-transformer-sharp: 4.3.0
-    gh-pages: 3.2.3
-    mdx-utils: 0.2.0
-    open-props: ^1.0.13
-    postcss-combine-duplicated-selectors: ^10.0.3
-    postcss-import: ^14.0.2
-    postcss-preset-env: ^7.0.1
-    prism-react-renderer: 1.2.1
-    prismjs: 1.25.0
-    react: 17.0.2
-    react-dom: 17.0.2
-    react-helmet: 6.1.0
-    react-live: 2.3.0
-    tsconfig-paths-webpack-plugin: 3.5.2
-  languageName: unknown
-  linkType: soft
-
 "doctrine@npm:^2.1.0":
   version: 2.1.0
   resolution: "doctrine@npm:2.1.0"
@@ -21659,10 +21659,10 @@ fsevents@^1.2.7:
   dependencies:
     "@changesets/changelog-github": 0.4.2
     "@changesets/cli": 2.18.1
-    "@marigold/eslint-config": "*"
-    "@marigold/jest-config": "*"
-    "@marigold/prettier-config": "*"
-    "@marigold/tsconfig": "*"
+    "@marigold/eslint-config": "workspace:*"
+    "@marigold/jest-config": "workspace:*"
+    "@marigold/prettier-config": "workspace:*"
+    "@marigold/tsconfig": "workspace:*"
     "@storybook/react": 6.4.10
     "@testing-library/jest-dom": 5.16.1
     "@testing-library/react": 12.1.2
