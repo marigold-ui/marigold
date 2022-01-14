@@ -53,5 +53,8 @@
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit",
     "release": "yarn build && changeset publish"
+  },
+  "dependencies": {
+    "@storybook/react": "^6.4.12"
   }
 }

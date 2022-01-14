@@ -3821,12 +3821,13 @@ __metadata:
     "@storybook/addon-essentials": 6.4.12
     "@storybook/addon-interactions": ^6.4.12
     "@storybook/jest": ^0.0.5
-    "@storybook/react": 6.4.12
     "@storybook/testing-library": ^0.0.7
     babel-loader: 8.2.3
     find-up: 5.0.0
     storybook-addon-themes: ^6.1.0
     tsconfig-paths-webpack-plugin: 3.5.2
+  peerDependencies:
+    "@storybook/react": 6.4.12
   languageName: unknown
   linkType: soft
 
@@ -6163,7 +6164,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/react@npm:6.4.12":
+"@storybook/react@npm:^6.4.12":
   version: 6.4.12
   resolution: "@storybook/react@npm:6.4.12"
   dependencies:
@@ -20004,6 +20005,7 @@ fsevents@^1.2.7:
     "@marigold/jest-config": "workspace:*"
     "@marigold/prettier-config": "workspace:*"
     "@marigold/tsconfig": "workspace:*"
+    "@storybook/react": ^6.4.12
     "@testing-library/jest-dom": 5.16.1
     "@testing-library/react": 12.1.2
     "@testing-library/react-hooks": 7.0.2

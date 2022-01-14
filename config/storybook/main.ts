@@ -3,7 +3,8 @@ import path from 'node:path';
 import { sync as findUpSync } from 'find-up';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
-const root = path.dirname(findUpSync('package.json') || '.');
+const parent = path.resolve(__dirname, '..');
+const root = path.dirname(findUpSync('package.json', { cwd: parent }) || '.');
 const configFile = findUpSync('tsconfig.json', { cwd: root });
 
 const config: StorybookConfig = {
