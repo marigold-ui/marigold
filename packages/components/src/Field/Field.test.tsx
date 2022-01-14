@@ -9,11 +9,16 @@ const theme = {
     small: 4,
     medium: 8,
   },
-  field: {
-    default: {
+  label: {
+    above: {
+      fontSize: '14px',
+    },
+  },
+  input: {
+    __default: {
       padding: 'small',
     },
-    inputField: {
+    error: {
       padding: 'medium',
     },
   },
@@ -28,6 +33,46 @@ test('renders correct HTML element', () => {
   const field = screen.getByText(/label/);
 
   expect(field instanceof HTMLLabelElement).toBeTruthy();
+});
+
+test('supports default variant', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Field htmlFor="myId" label="Name" data-testid="field" />
+    </ThemeProvider>
+  );
+  const field = screen.getByTestId(/field/);
+  expect(field).toHaveStyle(`padding: 4px`);
+});
+
+test('supports other variant than default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Field htmlFor="myId" label="Name" variant="error" data-testid="field" />
+    </ThemeProvider>
+  );
+  const field = screen.getByTestId(/field/);
+  expect(field).toHaveStyle(`padding: 8px`);
+});
+
+test('supports default variantLabel', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Field htmlFor="myId" label="Name" />
+    </ThemeProvider>
+  );
+  const label = screen.getByText(/Name/);
+  expect(label).toHaveStyle(`font-size: 14px`);
+});
+
+test('supports other variantLabel than default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Field htmlFor="myId" label="Name" />
+    </ThemeProvider>
+  );
+  const label = screen.getByText(/Name/);
+  expect(label).toHaveStyle(`font-size: 14px`);
 });
 
 test('supports label prop', () => {

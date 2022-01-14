@@ -466,14 +466,13 @@ export const components = {
   },
   input: {
     __default: {
-      display: 'block',
       fontFamily: 'body',
       color: 'text',
       border: 'none',
       borderRadius: '2px',
       boxShadow: '0 0 0 1px ' + colors.gray40,
       outline: 'none',
-      padding: '0 12px',
+      padding: '0 8px',
       lineHeight: 'large',
       ':focus': {
         boxShadow: '0 0 0 2px ' + colors.blue60,

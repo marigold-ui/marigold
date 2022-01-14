@@ -471,7 +471,6 @@ export const components = {
   },
   input: {
     __default: {
-      fontFamily: 'body',
       color: 'text',
       border: 'none',
       borderRadius: 'small',

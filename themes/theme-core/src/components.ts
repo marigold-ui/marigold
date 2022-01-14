@@ -476,10 +476,7 @@ export const components = {
   },
   input: {
     __default: {
-      display: 'block',
-      fontFamily: 'body',
       color: 'text',
-      background: colors.gray00,
       border: 'none',
       borderRadius: 'small',
       boxShadow: '0 0 0 1px #aaa',
@@ -494,6 +491,15 @@ export const components = {
         color: colors.gray40,
         cursor: 'not-allowed',
       },
+    },
+    error: {
+      color: 'text',
+      border: 'none',
+      borderRadius: 'small',
+      boxShadow: '0 0 0 1px #f33',
+      outline: 'none',
+      padding: '0 4px',
+      lineHeight: '24px',
     },
   },
   label: {

@@ -4,6 +4,28 @@ import { Field } from './Field';
 <Meta
   title="Components/Field"
   argTypes={{
+    variant: {
+      control: {
+        type: 'text',
+      },
+      description: 'Field variant',
+      table: {
+        defaultValue: {
+          summary: '__default',
+        },
+      },
+    },
+    labelVariant: {
+      control: {
+        type: 'text',
+      },
+      description: 'Field label variant',
+      table: {
+        defaultValue: {
+          summary: 'above',
+        },
+      },
+    },
     htmlFor: {
       control: {
         type: 'text',
