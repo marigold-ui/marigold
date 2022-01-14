@@ -41,8 +41,7 @@
     }
   },
   "scripts": {
-    "start": "start-storybook -p 6005 -c config/storybook -s config/storybook/assets",
-    "sb": "yarn workspace @marigold/storybook-config start",
+    "start": "yarn workspace @marigold/storybook-config start",
     "watch": "workspaces-run --only-fs=\"packages/**\" --only-fs=\"themes/**\" --order-by-deps -- yarn watch",
     "build": "workspaces-run --only-fs=\"packages/**\" --only-fs=\"themes/**\" --order-by-deps -- yarn build",
     "docs": "yarn workspace @marigold/docs start",

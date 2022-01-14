@@ -8,7 +8,15 @@ const configFile = findUpSync('tsconfig.json', { cwd: root });
 
 const config: StorybookConfig = {
   stories: [path.resolve(root, '**/*.stories.tsx')],
-  addons: ['@storybook/addon-essentials', '@storybook/addon-a11y'],
+  addons: [
+    {
+      name: '@storybook/addon-essentials',
+      options: {
+        docs: false,
+      },
+    },
+    '@storybook/addon-a11y',
+  ],
   typescript: {
     check: false,
     checkOptions: {},
@@ -22,6 +30,7 @@ const config: StorybookConfig = {
     config.resolve!.plugins = [new TsconfigPathsPlugin({ configFile })];
     return config;
   },
+  staticDirs: [{ from: './assets', to: '/assets' }],
 };
 
 module.exports = config;

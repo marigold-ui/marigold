@@ -23,6 +23,6 @@
     "tsconfig-paths-webpack-plugin": "3.5.2"
   },
   "scripts": {
-    "start": "start-storybook -p 1337 -c ."
+    "start": "start-storybook -p 1337 -c . --no-manager-cache"
   }
 }
