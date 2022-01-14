@@ -1,6 +1,6 @@
 import type { StorybookConfig } from '@storybook/react/types';
-import { sync as findUpSync } from 'find-up';
 import path from 'node:path';
+import { sync as findUpSync } from 'find-up';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
 const root = path.dirname(findUpSync('package.json') || '.');
@@ -12,9 +12,12 @@ const config: StorybookConfig = {
     {
       name: '@storybook/addon-essentials',
       options: {
+        backgrounds: false,
         docs: false,
       },
     },
+    'storybook-addon-themes',
+    '@storybook/addon-interactions',
     '@storybook/addon-a11y',
   ],
   typescript: {
@@ -23,6 +26,7 @@ const config: StorybookConfig = {
   },
   features: {
     postcss: false,
+    interactionsDebugger: true,
   },
   framework: '@storybook/react',
   webpackFinal: async config => {
