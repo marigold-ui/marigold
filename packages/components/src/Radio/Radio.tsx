@@ -56,7 +56,7 @@ type RadioInputProps = {
 
 const RadioInput: React.FC<RadioInputProps> = ({
   className,
-  variant = 'default',
+  variant = '',
   error,
   ...props
 }) => (
@@ -89,6 +89,7 @@ export type RadioProps = {
   id: string;
   label?: string;
   required?: boolean;
+  labelVariant?: string;
   error?: boolean;
   errorMessage?: string;
 } & RadioInputProps;
@@ -96,6 +97,7 @@ export type RadioProps = {
 export const Radio: React.FC<RadioProps> = ({
   label,
   required,
+  labelVariant = 'inline',
   error,
   errorMessage,
   ...props
@@ -106,7 +108,7 @@ export const Radio: React.FC<RadioProps> = ({
         <Label
           htmlFor={props.id}
           required={required}
-          variant="inline"
+          variant={labelVariant}
           color={props.disabled ? 'disabled' : 'text'}
         >
           <Box as={RadioInput} pr="8px" error={error} {...props} />
