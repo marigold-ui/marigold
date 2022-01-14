@@ -9,11 +9,41 @@ const theme = {
     small: 2,
   },
   checkbox: {
-    default: {
+    __default: {
       m: 'small',
     },
   },
+  label: {
+    inline: {
+      fontSize: '14px',
+    },
+    above: {
+      fontSize: '8px',
+    },
+  },
 };
+
+test('supports default labelVariant', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox id="test" title="checkbox" label="label" />
+    </ThemeProvider>
+  );
+
+  const label = screen.getByText(/label/);
+  expect(label).toHaveStyle(`font-size: 14px`);
+});
+
+test('supports other labelVariant than default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox id="test" title="checkbox" label="label" labelVariant="above" />
+    </ThemeProvider>
+  );
+
+  const label = screen.getByText(/label/);
+  expect(label).toHaveStyle(`font-size: 8px`);
+});
 
 test('supports label prop', () => {
   render(<Checkbox label="Test" id="test" title="checkbox" />);
