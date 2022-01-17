@@ -6,7 +6,7 @@ import { ActionGroup } from './ActionGroup';
 
 export default {
   component: ActionGroup,
-  title: 'Component/ActionGroup',
+  title: 'Components/ActionGroup',
   argTypes: {
     space: {
       control: {
