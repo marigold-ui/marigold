@@ -20,6 +20,7 @@
     "@marigold/jest-config": "workspace:*",
     "@marigold/prettier-config": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
+    "@storybook/react": "6.4.13",
     "@testing-library/jest-dom": "5.16.1",
     "@testing-library/react": "12.1.2",
     "@testing-library/react-hooks": "7.0.2",
@@ -52,9 +53,7 @@
     "lint": "eslint . --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern packages/types/src/index.ts --ignore-pattern \".cache\" --ignore-pattern public",
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit",
-    "release": "yarn build && changeset publish"
-  },
-  "dependencies": {
-    "@storybook/react": "^6.4.12"
+    "release": "yarn build && changeset publish",
+    "postinstall": "rm node_modules/@emotion/core/types/index.d.ts"
   }
 }
