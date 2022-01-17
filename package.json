@@ -16,10 +16,10 @@
   "devDependencies": {
     "@changesets/changelog-github": "0.4.2",
     "@changesets/cli": "2.19.0",
-    "@marigold/eslint-config": "*",
-    "@marigold/jest-config": "*",
-    "@marigold/prettier-config": "*",
-    "@marigold/tsconfig": "*",
+    "@marigold/eslint-config": "workspace:*",
+    "@marigold/jest-config": "workspace:*",
+    "@marigold/prettier-config": "workspace:*",
+    "@marigold/tsconfig": "workspace:*",
     "@storybook/react": "6.4.13",
     "@testing-library/jest-dom": "5.16.1",
     "@testing-library/react": "12.1.2",
@@ -54,6 +54,6 @@
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit",
     "release": "yarn build && changeset publish",
-    "postinstall": "rm node_modules/@emotion/core/types/index.d.ts"
+    "postinstall": "rm -f node_modules/@emotion/core/types/index.d.ts"
   }
 }
