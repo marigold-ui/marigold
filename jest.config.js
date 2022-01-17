@@ -2,6 +2,7 @@ const createConfig = require('@marigold/jest-config');
 
 module.exports = createConfig({
   collectCoverageFrom: [
+    '!**/config/**',
     '!**/docs/**',
     '!**/icons/**',
     '!**/themes/**',
