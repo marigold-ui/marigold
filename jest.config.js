@@ -6,7 +6,7 @@ module.exports = createConfig({
     '!**/icons/**',
     '!**/themes/**',
     '!**/packages/types/**',
-    '!**/stories.tsx',
+    '!**/*.stories.tsx',
   ],
   moduleNameMapper: {
     '^@marigold/theme-(.+)$': '<rootDir>/themes/theme-$1/src',
