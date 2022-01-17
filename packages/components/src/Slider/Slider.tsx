@@ -20,7 +20,7 @@ export type SliderProps = {
 // Component
 // ---------------
 export const Slider: React.FC<SliderProps> = ({
-  variant = 'default',
+  variant = '',
   className,
   ...props
 }) => (

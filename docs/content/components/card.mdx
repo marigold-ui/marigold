@@ -2,20 +2,23 @@
 title: Card
 ---
 
+import { DoAndDont } from '../../src/components/DoAndDont';
+import { Box, Card, Link, Stack } from '@marigold/components';
+
 # Card
 
 ## Description
 
 The card component can be used for organizing information inside the UI, as well it provides a better readability and helps the user to find information in an easier way.
-The variant can be added with the variant prop. The default variant is `default`.
+The variant can be added with the variant prop.
 
 ## Properties
 
-| Property  | Type                           | Default   |
-| :-------- | :----------------------------- | :-------- |
-| `variant` | `string`                       | `default` |
-| `width`   | `ResponsiveStyleValue<string>` |           |
-| `title`   | `string`                       |           |
+| Property  | Type                           | Default     |
+| :-------- | :----------------------------- | :---------- |
+| `variant` | `string`                       | `__default` |
+| `width`   | `ResponsiveStyleValue<string>` |             |
+| `title`   | `string`                       |             |
 
 ## Import
 
@@ -68,3 +71,51 @@ import { Card } from '@marigold/components';
   </Select>
 </Card>
 ```
+
+<Stack space="small">
+  <Box
+    display="grid"
+    css={{
+      gridGap: 'small',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(min(500px, 100%), 1fr))',
+    }}
+  >
+    <DoAndDont
+      preview={
+        <Card title="Title">
+          <Text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            dignissim dapibus elit, vel.
+          </Text>
+          <Link href="#">
+            <Text>Read more...</Text>
+          </Link>
+        </Card>
+      }
+    >
+      Use a maximum of three lines of text. The rest can be read on the card
+      after opening the linked page.
+    </DoAndDont>
+    <DoAndDont
+      dont
+      preview={
+        <Card title="Title">
+          <Text>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s, when an unknown printer took a galley of type
+            and scrambled it to make a type specimen book. It has survived not
+            only five centuries, but also the leap into electronic typesetting,
+            remaining essentially unchanged. It was popularised in the 1960s
+            with the release of Letraset sheets containing Lorem Ipsum passages,
+            and more recently with desktop publishing software like Aldus
+            PageMaker including versions of Lorem Ipsum.
+          </Text>
+        </Card>
+      }
+    >
+      Do not write a whole paragraph on a card. The card is created to link to
+      the full article.{' '}
+    </DoAndDont>
+  </Box>
+</Stack>

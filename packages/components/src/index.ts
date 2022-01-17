@@ -12,7 +12,6 @@ export * from './Columns';
 export * from './Dialog';
 export * from './Divider';
 export * from './Field';
-export * from './Heading';
 export * from './Hidden';
 export * from './Image';
 export * from './Inline';

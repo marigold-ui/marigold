@@ -60,7 +60,7 @@ type CheckboxInputProps = {
 
 const CheckboxInput: React.FC<CheckboxInputProps> = ({
   className,
-  variant = 'default',
+  variant = '',
   error,
   ...props
 }) => (
@@ -93,6 +93,7 @@ export type CheckboxProps = {
   id: string;
   label?: string;
   required?: boolean;
+  labelVariant?: string;
   error?: boolean;
   errorMessage?: string;
 } & CheckboxInputProps;
@@ -100,6 +101,7 @@ export type CheckboxProps = {
 export const Checkbox: React.FC<CheckboxProps> = ({
   label,
   required,
+  labelVariant = 'inline',
   error,
   errorMessage,
   ...props
@@ -110,7 +112,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         <Label
           htmlFor={props.id}
           required={required}
-          variant={props.disabled ? 'disabled' : 'inline'}
+          variant={labelVariant}
+          color={props.disabled ? 'disabled' : 'text'}
         >
           <Box as={CheckboxInput} pr="8px" error={error} {...props} />
           {label}

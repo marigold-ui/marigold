@@ -11,9 +11,9 @@ The variant in your section can be added with the variant prop. The default vari
 
 ## Properties
 
-| Property             | Type     | Default   |
-| :------------------- | :------- | :-------- |
-| `variant` (optional) | `string` | `default` |
+| Property             | Type     | Default     |
+| :------------------- | :------- | :---------- |
+| `variant` (optional) | `string` | `__default` |
 
 ## Import
 
@@ -44,8 +44,8 @@ import { Input } from '@marigold/components';
 ### Disabled Input
 
 ```tsx
-<Label htmlFor="input2" variant="disabled">
-  Label disabled
+<Label htmlFor="input2">
+  Disabled Input
   <Input id="input2" placeholder="Disabled" disabled />
 </Label>
 ```

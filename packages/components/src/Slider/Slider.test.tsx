@@ -9,7 +9,7 @@ const theme = {
     body: 'Inter',
   },
   slider: {
-    default: {
+    __default: {
       fontFamily: 'regular',
     },
     special: {

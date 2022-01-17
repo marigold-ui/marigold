@@ -1,13 +1,6 @@
 import * as React from 'react';
 
-import {
-  Box,
-  Card,
-  Divider,
-  Heading,
-  Inline,
-  Text,
-} from '@marigold/components';
+import { Box, Card, Divider, Inline, Text } from '@marigold/components';
 import { Banned, Check } from '@marigold/icons';
 import { ComponentProps } from '@marigold/types';
 
@@ -38,21 +31,21 @@ export const DoAndDont: React.FC<DoAndDontProps> = ({
           alignItems="center"
           pt="small"
           pb="xsmall"
-          css={{ color: dont ? 'red' : 'green' }}
+          css={{ color: dont ? 'red60' : 'green60' }}
         >
           {dont ? (
             <Inline space="xsmall">
               <Banned size={20} />
-              <Heading as="h4" variant="h4">
+              <Text as="h4" variant="headline4">
                 Don't
-              </Heading>
+              </Text>
             </Inline>
           ) : (
             <Inline space="xsmall">
               <Check size={20} />
-              <Heading as="h4" variant="h4">
+              <Text as="h4" variant="headline4" color="">
                 Do
-              </Heading>
+              </Text>
             </Inline>
           )}
         </Box>

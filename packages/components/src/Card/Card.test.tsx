@@ -11,7 +11,7 @@ const theme = {
     medium: 8,
   },
   card: {
-    default: {
+    __default: {
       p: 'medium',
     },
     custom: {

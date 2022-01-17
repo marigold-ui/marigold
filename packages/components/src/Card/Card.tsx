@@ -23,7 +23,7 @@ export type CardProps = {
 // Component
 // ---------------
 export const Card: React.FC<CardProps> = ({
-  variant = 'default',
+  variant = '',
   title,
   width,
   className,
