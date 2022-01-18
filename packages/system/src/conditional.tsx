@@ -1,3 +1,5 @@
+import { ensureCorrectVariant } from '.';
+
 export type State = {
   checked?: boolean;
   focus?: boolean;
@@ -11,12 +13,14 @@ const toVariantState = (variant: string, state: string) => {
 };
 
 /**
- * function to create an array of variant and their conditional props
+ * function to create an array of variants and their conditional props
  */
-export const conditional = (variant: string, state: State) => {
-  var disabled = false;
-  const correctVariant = variant.replace(/\.$/, '');
-  const conditionalVariants = Object.entries(state)
+export const conditional = (
+  variant: string,
+  { disabled = false, ...states }: State
+) => {
+  const correctVariant = ensureCorrectVariant(variant)[0];
+  const conditionalVariants = Object.entries(states)
     .filter(([key, val]) => {
       if (key === 'disabled' && Boolean(val)) {
         disabled = true;
