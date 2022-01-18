@@ -2,11 +2,12 @@ const createConfig = require('@marigold/jest-config');
 
 module.exports = createConfig({
   collectCoverageFrom: [
+    '!**/config/**',
     '!**/docs/**',
     '!**/icons/**',
     '!**/themes/**',
     '!**/packages/types/**',
-    '!**/stories.tsx',
+    '!**/*.stories.tsx',
   ],
   moduleNameMapper: {
     '^@marigold/theme-(.+)$': '<rootDir>/themes/theme-$1/src',

@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@marigold/*": ["../../packages/*/src", "../../themes/*/src"]
+    },
+    "skipLibCheck": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+  }
+}

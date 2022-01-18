@@ -16,11 +16,11 @@
   "devDependencies": {
     "@changesets/changelog-github": "0.4.2",
     "@changesets/cli": "2.19.0",
-    "@marigold/eslint-config": "*",
-    "@marigold/jest-config": "*",
-    "@marigold/prettier-config": "*",
-    "@marigold/tsconfig": "*",
-    "@storybook/react": "6.3.12",
+    "@marigold/eslint-config": "workspace:*",
+    "@marigold/jest-config": "workspace:*",
+    "@marigold/prettier-config": "workspace:*",
+    "@marigold/tsconfig": "workspace:*",
+    "@storybook/react": "6.4.13",
     "@testing-library/jest-dom": "5.16.1",
     "@testing-library/react": "12.1.2",
     "@testing-library/react-hooks": "7.0.2",
@@ -42,10 +42,10 @@
     }
   },
   "scripts": {
-    "start": "start-storybook -p 6005 -c config/storybook -s config/storybook/assets",
+    "start": "yarn workspace @marigold/storybook-config start",
     "watch": "workspaces-run --only-fs=\"packages/**\" --only-fs=\"themes/**\" --order-by-deps -- yarn watch",
     "build": "workspaces-run --only-fs=\"packages/**\" --only-fs=\"themes/**\" --order-by-deps -- yarn build",
-    "docs": "cd docs && yarn start",
+    "docs": "yarn workspace @marigold/docs start",
     "test": "jest --config jest.config.js --coverage --coverageReporters html",
     "coverage": "jest --config jest.config.js --coverage",
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'`",
@@ -53,6 +53,7 @@
     "lint": "eslint . --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern packages/types/src/index.ts --ignore-pattern \".cache\" --ignore-pattern public",
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit",
-    "release": "yarn build && changeset publish"
+    "release": "yarn build && changeset publish",
+    "postinstall": "rm -f node_modules/@emotion/core/types/index.d.ts"
   }
 }
