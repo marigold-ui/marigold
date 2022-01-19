@@ -552,35 +552,18 @@ export const components = {
   },
   radio: {
     __default: {
-      ariaHidden: 'true',
-      mr: 2,
-      verticalAlign: 'middle',
-      ':hover': { cursor: 'pointer' },
-      'input:disabled ~ &': {
-        color: 'muted',
-        cursor: 'not-allowed',
-      },
-    },
-    checked: {
-      fill: 'primary',
-      stroke: '#311b92',
-      disabled: {
-        fill: 'gray30',
-        stroke: 'gray30',
-      },
-      circle: {
-        fill: 'gray00',
-      },
-    },
-    unchecked: {
       fill: 'gray00',
       stroke: 'gray40',
-      disabled: {
-        stroke: 'gray30',
-      },
-      error: {
-        stroke: 'error',
-      },
+    },
+    ':disabled': {
+      fill: 'gray30',
+    },
+    ':error': {
+      stroke: 'error',
+    },
+    ':checked': {
+      fill: 'primary',
+      stroke: '#311b92',
     },
   },
   select,
