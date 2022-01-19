@@ -9,9 +9,6 @@ test('returns the variant and the conditional states', () => {
       "input.:disabled",
     ]
   `);
-  // expect(['input', 'input.:checked', 'input.:disabled']).toEqual(
-  //   expect.arrayContaining(variant)
-  // );
 });
 
 test('returns only truthy states', () => {
@@ -27,10 +24,10 @@ test('returns only truthy states', () => {
 test('sets disabled at the last position in the returned array', () => {
   const variant = conditional('input', { disabled: true, checked: true });
   expect(variant).toMatchInlineSnapshot(`
-  [
-    "input",
-    "input.:checked",
-    "input.:disabled",
-  ]
-`);
+      [
+        "input",
+        "input.:checked",
+        "input.:disabled",
+      ]
+  `);
 });
