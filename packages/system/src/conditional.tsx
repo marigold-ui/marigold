@@ -21,13 +21,7 @@ export const conditional = (
 ) => {
   const correctVariant = ensureCorrectVariant(variant)[0];
   const conditionalVariants = Object.entries(states)
-    .filter(([key, val]) => {
-      if (key === 'disabled' && Boolean(val)) {
-        disabled = true;
-        return false;
-      }
-      return Boolean(val);
-    })
+    .filter(([, val]) => Boolean(val))
     .map(([key]) => {
       return toVariantState(correctVariant, key);
     });
