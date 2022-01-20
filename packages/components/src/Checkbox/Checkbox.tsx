@@ -87,7 +87,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         variant={`label.${labelVariant}`}
         color={props.disabled ? 'disabled' : 'text'}
       >
-        <CheckboxInput error={error} {...props} />
+        <Box as={CheckboxInput} error={error} {...props} />
         {label}
       </Box>
       {error && errorMessage && (
