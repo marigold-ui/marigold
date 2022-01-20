@@ -36,6 +36,17 @@ test('conditional variants', () => {
   expect(
     conditional('foo', {
       checked: true,
+    })
+  ).toMatchInlineSnapshot(`
+    [
+      "foo",
+      "foo.:checked",
+    ]
+  `);
+
+  expect(
+    conditional('foo', {
+      checked: true,
       focus: true,
       disabled: true,
     })
