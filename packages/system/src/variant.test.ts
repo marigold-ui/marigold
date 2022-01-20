@@ -10,6 +10,7 @@ test('ensure array', () => {
   expect(ensureArray('foo')).toEqual(['foo']);
   expect(ensureArray(['foo'])).toEqual(['foo']);
   expect(ensureArray(['foo', 'bar'])).toEqual(['foo', 'bar']);
+  expect(ensureArray(null)).toEqual([]);
   expect(ensureArray(undefined)).toEqual([]);
 });
 
