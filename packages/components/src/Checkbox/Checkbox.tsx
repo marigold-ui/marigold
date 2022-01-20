@@ -1,9 +1,14 @@
 import React from 'react';
+import { useFocusRing } from '@react-aria/focus';
+import { VisuallyHidden } from '@react-aria/visually-hidden';
+import { useCheckbox } from '@react-aria/checkbox';
+import { useToggleState } from '@react-stately/toggle';
+import { ToggleProps } from '@react-types/checkbox';
+
 import { ComponentProps } from '@marigold/types';
 import { Exclamation } from '@marigold/icons';
 
-import { CheckboxChecked, CheckboxUnchecked } from './CheckboxIcons';
-
+import { CheckboxIcon, CheckboxIconProps } from './CheckboxIcons';
 import { Box } from '../Box';
 import { Label } from '../Label';
 import { ValidationMessage } from '../ValidationMessage';
@@ -16,82 +21,46 @@ export interface CheckboxThemeExtension<Value> {
   };
 }
 
-// Checkbox Icon
-// ---------------
-type CheckboxIconProps = {
-  variant?: string;
-  checked?: boolean;
-  disabled?: boolean;
-  children?: never;
-  error?: boolean;
-};
-
-const CheckboxIcon: React.FC<CheckboxIconProps> = ({
-  variant,
-  checked,
-  disabled,
-  error,
-}) => {
-  if (checked) {
-    return (
-      <Box
-        as={CheckboxChecked}
-        variant={`checkbox.${variant}`}
-        disabled={disabled}
-      />
-    );
-  }
-  return (
-    <Box
-      as={CheckboxUnchecked}
-      variant={`checkbox.${variant}`}
-      disabled={disabled}
-      error={error}
-    />
-  );
-};
-
 // Checkbox Input
 // ---------------
-type CheckboxInputProps = {
-  variant?: string;
-  error?: boolean;
-} & ComponentProps<'input'>;
+type CheckboxInputProps = CheckboxIconProps &
+  ToggleProps &
+  ComponentProps<'input'>;
 
-const CheckboxInput: React.FC<CheckboxInputProps> = ({
-  className,
-  variant = '',
-  error,
-  ...props
-}) => (
-  <Box display="inline-block" className={className}>
-    <Box
-      as="input"
-      type="checkbox"
-      css={{
-        position: 'absolute',
-        opacity: 0,
-        zIndex: -1,
-        width: 1,
-        height: 1,
-        overflow: 'hidden',
-      }}
-      {...props}
-    />
-    <CheckboxIcon
-      checked={props.checked}
-      variant={variant}
-      disabled={props.disabled}
-      error={error}
-    />
-  </Box>
-);
+const CheckboxInput: React.FC<CheckboxInputProps> = ({ error, ...props }) => {
+  const state = useToggleState(props);
+  const ref = React.useRef<HTMLInputElement>(null);
+  const { inputProps } = useCheckbox(props, state, ref);
+  const { focusProps } = useFocusRing();
+
+  return (
+    <Box pr="xsmall">
+      <VisuallyHidden>
+        <Box
+          as="input"
+          type="checkbox"
+          disabled={props.disabled}
+          {...inputProps}
+          {...focusProps}
+          ref={ref}
+          {...props}
+        />
+      </VisuallyHidden>
+      <CheckboxIcon
+        checked={props.checked}
+        variant={props.variant}
+        disabled={props.disabled}
+        error={error}
+      />
+    </Box>
+  );
+};
 
 // Checkbox
 // ---------------
 export type CheckboxProps = {
   id: string;
-  label?: string;
+  label: string;
   required?: boolean;
   labelVariant?: string;
   error?: boolean;
@@ -106,27 +75,27 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   errorMessage,
   ...props
 }) => {
-  if (label) {
-    return (
-      <>
-        <Label
-          htmlFor={props.id}
-          required={required}
-          variant={labelVariant}
-          color={props.disabled ? 'disabled' : 'text'}
-        >
-          <Box as={CheckboxInput} pr="8px" error={error} {...props} />
-          {label}
-        </Label>
-        {error && errorMessage && (
-          <ValidationMessage>
-            <Exclamation size={16} />
-            {errorMessage}
-          </ValidationMessage>
-        )}
-      </>
-    );
-  }
-
-  return <CheckboxInput {...props} />;
+  return (
+    <>
+      <Box
+        as={Label}
+        __baseCSS={{
+          ':hover': { cursor: props.disabled ? 'not-allowed' : 'pointer' },
+        }}
+        htmlFor={props.id}
+        required={required}
+        variant={`label.${labelVariant}`}
+        color={props.disabled ? 'disabled' : 'text'}
+      >
+        <CheckboxInput error={error} {...props} />
+        {label}
+      </Box>
+      {error && errorMessage && (
+        <ValidationMessage>
+          <Exclamation size={16} />
+          {errorMessage}
+        </ValidationMessage>
+      )}
+    </>
+  );
 };

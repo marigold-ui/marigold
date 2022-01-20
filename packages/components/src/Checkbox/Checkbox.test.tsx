@@ -8,6 +8,9 @@ const theme = {
     none: 0,
     small: 2,
   },
+  colors: {
+    disabled: 'gray',
+  },
   checkbox: {
     __default: {
       m: 'small',
@@ -60,14 +63,14 @@ test('supports required prop and renders required icon', () => {
 });
 
 test('supports default type', () => {
-  render(<Checkbox id="checkbox" title="checkbox" />);
+  render(<Checkbox id="checkbox" title="checkbox" label="Test" />);
 
   const checkbox = screen.getByTitle(/checkbox/);
   expect(checkbox.getAttribute('type')).toEqual('checkbox');
 });
 
 test('renders <input> element', () => {
-  render(<Checkbox id="checkbox" title="checkbox" />);
+  render(<Checkbox id="checkbox" title="checkbox" label="Test" />);
 
   const checkbox = screen.getByTitle(/checkbox/);
   expect(checkbox instanceof HTMLInputElement).toBeTruthy();
@@ -82,6 +85,8 @@ test('supports disabled prop', () => {
 
   const checkbox = screen.getByTitle(/checkbox/);
   expect(checkbox).toHaveAttribute('disabled');
+  const label = screen.getByText(/label/);
+  expect(label).toHaveStyle(`color: gray`);
 });
 
 test('supports error and errorMessage prop', () => {
@@ -104,12 +109,18 @@ test('supports error and errorMessage prop', () => {
 test('supports checked checkbox', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" onChange={() => {}} checked />
+      <Checkbox
+        id="test"
+        title="checkbox"
+        label="Test"
+        onChange={() => {}}
+        checked
+      />
     </ThemeProvider>
   );
 
   const checkbox = screen.getByTitle(/checkbox/);
-  expect(checkbox).toBeDefined();
+  expect(checkbox).toHaveAttribute('checked');
 });
 
 test('supports checked and disabled checkbox', () => {
@@ -118,6 +129,7 @@ test('supports checked and disabled checkbox', () => {
       <Checkbox
         id="test"
         title="checkbox"
+        label="Test"
         onChange={() => {}}
         checked
         disabled
@@ -126,6 +138,6 @@ test('supports checked and disabled checkbox', () => {
   );
 
   const checkbox = screen.getByTitle(/checkbox/);
-  expect(checkbox).toBeDefined();
+  expect(checkbox).toHaveAttribute('checked');
   expect(checkbox).toHaveAttribute('disabled');
 });

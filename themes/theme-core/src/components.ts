@@ -414,34 +414,18 @@ export const components = {
   },
   checkbox: {
     __default: {
-      ariaHidden: 'true',
-      mr: 2,
-      verticalAlign: 'middle',
-      ':hover': { cursor: 'pointer' },
-      'input:disabled ~ &': {
-        cursor: 'not-allowed',
-      },
+      fill: 'gray00',
+      stroke: 'gray40',
     },
-    checked: {
+    ':checked': {
       fill: colors.blue60,
       stroke: colors.blue70,
-      disabled: {
-        fill: colors.gray30,
-        stroke: colors.gray30,
-      },
-      icon: {
-        fill: colors.gray00,
-      },
     },
-    unchecked: {
-      fill: colors.gray00,
-      stroke: colors.gray40,
-      disabled: {
-        stroke: colors.gray30,
-      },
-      error: {
-        stroke: 'error',
-      },
+    ':disabled': {
+      fill: 'gray30',
+    },
+    ':error': {
+      stroke: 'error',
     },
   },
   dialog: {
