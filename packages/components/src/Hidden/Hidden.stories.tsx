@@ -1,10 +1,12 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
+
 import { Hidden } from './Hidden';
 import { Text } from '../Text';
 
-<Meta
-  title="Components/Hidden"
-  argTypes={{
+export default {
+  title: 'Components/Hidden',
+  argTypes: {
     show: {
       control: {
         type: 'boolean',
@@ -17,23 +19,15 @@ import { Text } from '../Text';
         },
       },
     },
-  }}
-/>
+  },
+} as Meta;
 
-# Hidden
-
-export const Template = args => (
-  <div>
-    <Text>Change the "show" switch to "true"</Text>
+export const Basic: ComponentStory<typeof Hidden> = ({ children, ...args }) => (
+  <>
+    <Text>Change the "show" control to "true"</Text>
     <Hidden {...args}>
       <br />
       <Text>Hello here I am!</Text>
     </Hidden>
-  </div>
+  </>
 );
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />

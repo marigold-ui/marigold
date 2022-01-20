@@ -1,4 +1,6 @@
 import React from 'react';
+import { useVisuallyHidden, VisuallyHidden } from '@react-aria/visually-hidden';
+
 import { Box } from '../Box';
 
 export type HiddenProps = {
@@ -9,8 +11,14 @@ export const Hidden: React.FC<HiddenProps> = ({
   show = false,
   children,
   ...props
-}) => (
-  <Box {...props} as="span" display={show ? 'display' : 'none'}>
-    {children}
-  </Box>
-);
+}) => {
+  const { visuallyHiddenProps } = useVisuallyHidden();
+
+  return show ? (
+    <Box {...props}>{children}</Box>
+  ) : (
+    <VisuallyHidden {...visuallyHiddenProps} {...props}>
+      {children}
+    </VisuallyHidden>
+  );
+};

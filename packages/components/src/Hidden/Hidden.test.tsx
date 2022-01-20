@@ -2,11 +2,11 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Hidden } from './Hidden';
 
-test('text is not visible, show prop = false', () => {
+test('supports default of show prop', () => {
   render(<Hidden>Default</Hidden>);
   const hidden = screen.getByText('Default');
 
-  expect(hidden).not.toBeVisible();
+  expect(hidden).toHaveStyle(`overflow: hidden`);
 });
 
 test('support show prop = true', () => {
@@ -20,5 +20,5 @@ test('renders correct HTML element', () => {
   render(<Hidden>Default</Hidden>);
   const hidden = screen.getByText('Default');
 
-  expect(hidden instanceof HTMLSpanElement).toBeTruthy();
+  expect(hidden instanceof HTMLDivElement).toBeTruthy();
 });
