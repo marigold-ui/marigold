@@ -30,14 +30,12 @@ const RadioInput: React.FC<RadioInputProps> = ({ error, ...props }) => {
         <Box
           as="input"
           type="radio"
-          variant="radio"
           disabled={props.disabled}
           {...focusProps}
           {...props}
         />
       </VisuallyHidden>
-      <Box
-        as={RadioIcon}
+      <RadioIcon
         variant={props.variant}
         disabled={props.disabled}
         checked={props.checked}
