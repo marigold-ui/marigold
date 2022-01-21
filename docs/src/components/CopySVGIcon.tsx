@@ -41,7 +41,7 @@ export const CopySVGIcon: React.FC = ({ children }) => {
 
   return (
     <MarigoldTooltip
-      title={copied ? 'Copied' : 'Copy'}
+      title={copied ? 'Copied' : 'Click to copy'}
       placement="bottom"
       arrow
     >
