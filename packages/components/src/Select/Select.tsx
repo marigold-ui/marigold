@@ -37,6 +37,7 @@ export interface SelectThemeExtension<Value> {
 // Props
 // ---------------
 export type SelectProps = {
+  labelVariant?: string;
   placeholder?: string;
   disabled?: boolean;
   required?: boolean;
@@ -50,6 +51,7 @@ export type SelectProps = {
 // Component
 // ---------------
 export const Select = ({
+  labelVariant = 'above',
   placeholder = 'Select an option',
   disabled,
   required,
@@ -94,11 +96,7 @@ export const Select = ({
     <Box position="relative" display="inline-block" width={width && width}>
       {props.label && (
         <Box>
-          <Label
-            {...labelProps}
-            htmlFor={labelProps.id}
-            variant={disabled ? 'disabled' : 'above'}
-          >
+          <Label {...labelProps} htmlFor={labelProps.id} variant={labelVariant}>
             {required ? (
               <Box as="span" display="inline-flex" alignItems="center">
                 {props.label}
