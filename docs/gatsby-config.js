@@ -3,7 +3,7 @@ module.exports = {
   siteMetadata: {
     title: 'Marigold Design System',
     siteUrl: 'https://marigold-ui.github.io/marigold/',
-    navigation: ['foundation', 'components', 'themes'],
+    navigation: ['foundation', 'components', 'themes', 'develop'],
   },
   plugins: [
     'gatsby-plugin-image',
