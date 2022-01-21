@@ -3549,6 +3549,7 @@ __metadata:
     "@react-aria/select": ^3.4.1
     "@react-aria/ssr": ^3.1.0
     "@react-aria/utils": ^3.8.2
+    "@react-aria/visually-hidden": ^3.2.3
     "@react-stately/collections": ^3.3.3
     "@react-stately/list": ^3.3.0
     "@react-stately/overlays": ^3.1.3
