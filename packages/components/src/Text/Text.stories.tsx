@@ -1,15 +1,16 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
 import { Text } from './Text';
 
-<Meta
-  title="Components/Text"
-  argTypes={{
+export default {
+  title: 'Components/Text',
+  argTypes: {
     as: {
       control: {
         type: 'select',
       },
-      options: ['span', 'p'],
-      description: 'Set inline',
+      options: ['span', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+      description: 'Set HTML element',
       table: {
         defaultValue: {
           summary: 'span',
@@ -20,8 +21,16 @@ import { Text } from './Text';
       control: {
         type: 'select',
       },
-      options: ['body', 'heading'],
-      description: 'Doesnt matter',
+      options: [
+        'body',
+        'headline1',
+        'headline2',
+        'headline3',
+        'headline4',
+        'headline5',
+        'headline6',
+      ],
+      description: 'CHoose between body and different headlines',
       table: {
         defaultValue: {
           summary: 'body',
@@ -39,12 +48,10 @@ import { Text } from './Text';
         },
       },
     },
-  }}
-/>
+  },
+} as Meta;
 
-# Text
-
-export const Template = args => (
+export const Basic: ComponentStory<typeof Text> = args => (
   <Text {...args}>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
     dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
@@ -52,9 +59,3 @@ export const Template = args => (
     massa ex ut quam.
   </Text>
 );
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />

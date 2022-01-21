@@ -1,10 +1,11 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
 import { Card } from './Card';
 import { Text } from '../Text';
 
-<Meta
-  title="Components/Card"
-  argTypes={{
+export default {
+  title: 'Components/Card',
+  argTypes: {
     variant: {
       control: {
         type: 'text',
@@ -27,12 +28,10 @@ import { Text } from '../Text';
       },
       description: 'max width of the card',
     },
-  }}
-/>
+  },
+} as Meta;
 
-# Card
-
-export const Template = args => (
+export const Basic: ComponentStory<typeof Card> = args => (
   <Card title="Card" {...args}>
     <Text>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
@@ -40,9 +39,3 @@ export const Template = args => (
     </Text>
   </Card>
 );
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />

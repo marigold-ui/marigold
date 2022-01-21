@@ -1,10 +1,11 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
 import { Input } from './Input';
 import { Label } from '../Label';
 
-<Meta
-  title="Components/Input"
-  argTypes={{
+export default {
+  title: 'Components/Input',
+  argTypes: {
     variant: {
       control: {
         type: 'text',
@@ -35,27 +36,19 @@ import { Label } from '../Label';
         'url',
         'week',
       ],
-      type: { required: true },
+      defaultValue: 'text',
       table: {
         defaultValue: {
           summary: 'text',
         },
       },
     },
-  }}
-/>
+  },
+} as Meta;
 
-# Input
-
-export const Template = args => (
+export const Basic: ComponentStory<typeof Input> = args => (
   <Label htmlFor="input">
     Label
     <Input id="input" placeholder="Placeholder..." {...args} />
   </Label>
 );
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />

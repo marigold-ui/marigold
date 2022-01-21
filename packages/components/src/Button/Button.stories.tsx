@@ -1,15 +1,16 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
 
-<Meta
-  title="Components/Button"
-  parameters={{
+export default {
+  title: 'Components/Button',
+  parameters: {
     actions: {
       handles: ['click'],
     },
-  }}
-  argTypes={{
+  },
+  argTypes: {
     variant: {
       control: {
         type: 'select',
@@ -46,19 +47,11 @@ import { Button } from './Button';
         },
       },
     },
-  }}
-/>
+  },
+} as Meta;
 
-# Button
-
-export const Template = args => (
+export const Basic: ComponentStory<typeof Button> = args => (
   <Button {...args}>
     <Facebook /> Like me
   </Button>
 );
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />

@@ -1,9 +1,10 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
 import { Slider } from './Slider';
 
-<Meta
-  title="Components/Slider"
-  argTypes={{
+export default {
+  title: 'Components/Slider',
+  argTypes: {
     variant: {
       control: {
         type: 'text',
@@ -15,17 +16,9 @@ import { Slider } from './Slider';
         },
       },
     },
-  }}
-/>
+  },
+} as Meta;
 
-# Slider
-
-export const Template = args => (
+export const Basic: ComponentStory<typeof Slider> = args => (
   <Slider name="vol" min="0" max="50" {...args} />
 );
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />

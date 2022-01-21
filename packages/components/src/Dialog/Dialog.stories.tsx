@@ -1,16 +1,17 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
 import { Dialog, useDialogButtonProps } from './Dialog';
 import { Button } from '../Button';
 import { Text } from '../Text';
 
-<Meta
-  title="Components/Dialog"
-  parameters={{
+export default {
+  title: 'Components/Dialog',
+  parameters: {
     actions: {
       handles: ['click'],
     },
-  }}
-  argTypes={{
+  },
+  argTypes: {
     isOpen: {
       control: {
         type: 'boolean',
@@ -57,12 +58,10 @@ import { Text } from '../Text';
         },
       },
     },
-  }}
-/>
+  },
+} as Meta;
 
-# Dialog
-
-export const Template = ({ ...args }) => {
+export const Basic: ComponentStory<typeof Dialog> = args => {
   const { state, openButtonProps, openButtonRef } = useDialogButtonProps();
   return (
     <>
@@ -77,9 +76,9 @@ export const Template = ({ ...args }) => {
       {state.isOpen && (
         <Dialog
           title="Dialog Title"
+          {...args}
           isOpen={state.isOpen}
           close={state.close}
-          {...args}
         >
           <Text>Dialog content</Text>
         </Dialog>
@@ -87,9 +86,3 @@ export const Template = ({ ...args }) => {
     </>
   );
 };
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />

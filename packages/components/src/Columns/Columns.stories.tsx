@@ -1,9 +1,10 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
 import { Column, Columns, Text } from '@marigold/components';
 
-<Meta
-  title="Components/Columns"
-  argTypes={{
+export default {
+  title: 'Components/Columns',
+  argTypes: {
     space: {
       control: {
         type: 'select',
@@ -18,7 +19,7 @@ import { Column, Columns, Text } from '@marigold/components';
         'xlarge',
         'xxlarge',
       ],
-      description: 'space value',
+      description: 'Responsive Style Value',
       table: {
         defaultValue: {
           summary: 'none',
@@ -49,12 +50,10 @@ import { Column, Columns, Text } from '@marigold/components';
         },
       },
     },
-  }}
-/>
+  },
+} as Meta;
 
-# Columns
-
-export const Template = args => (
+export const Basic: ComponentStory<typeof Columns> = args => (
   <Columns {...args}>
     <Column width={6}>
       <Text>First column</Text>
@@ -74,9 +73,3 @@ export const Template = args => (
     </Column>
   </Columns>
 );
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />

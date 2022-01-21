@@ -1,10 +1,11 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
 import { Divider } from './Divider';
 import { Text } from '../Text';
 
-<Meta
-  title="Components/Divider"
-  argTypes={{
+export default {
+  title: 'Components/Divider',
+  argTypes: {
     variant: {
       control: {
         type: 'select',
@@ -17,21 +18,13 @@ import { Text } from '../Text';
         },
       },
     },
-  }}
-/>
+  },
+} as Meta;
 
-# Divider
-
-export const Template = args => (
-  <div>
+export const Basic: ComponentStory<typeof Divider> = args => (
+  <>
     <Text>Above</Text>
     <Divider {...args} />
     <Text>Below</Text>
-  </div>
+  </>
 );
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />

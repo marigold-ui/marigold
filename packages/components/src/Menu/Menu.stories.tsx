@@ -1,17 +1,16 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React, { useState } from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
 import { Menu } from './Menu';
 import { MenuItem } from '../MenuItem';
-import { BurgerMenu } from '@marigold/icons';
-import { useState } from 'react';
 
-<Meta
-  title="Components/Menu"
-  parameters={{
+export default {
+  title: 'Components/Menu',
+  parameters: {
     actions: {
       handles: ['click'],
     },
-  }}
-  argTypes={{
+  },
+  argTypes: {
     variant: {
       control: {
         type: 'text',
@@ -28,11 +27,7 @@ import { useState } from 'react';
         type: 'text',
       },
       description: 'Menu label on hover',
-      table: {
-        defaultValue: {
-          summary: 'Menu',
-        },
-      },
+      defaultValue: 'Menu',
     },
     show: {
       control: {
@@ -51,31 +46,17 @@ import { useState } from 'react';
         type: 'text',
       },
       description: 'Function to show menu or toggle something',
-      type: { required: true },
     },
-  }}
-/>
+  },
+} as Meta;
 
-# Menu
-
-export const Template = ({ onClick, ...args }) => {
-  const [showMenu, setShowMenu] = React.useState(false);
+export const Basic: ComponentStory<typeof Menu> = ({ onClick, ...args }) => {
+  const [showMenu, setShowMenu] = useState(false);
   return (
-    <Menu
-      onClick={() => setShowMenu(!showMenu)}
-      show={showMenu}
-      label={<BurgerMenu />}
-      {...args}
-    >
+    <Menu onClick={() => setShowMenu(!showMenu)} show={showMenu} {...args}>
       <MenuItem href="#">Home</MenuItem>
       <MenuItem href="#">Tickets</MenuItem>
       <MenuItem href="#">Logout</MenuItem>
     </Menu>
   );
 };
-
-<Canvas>
-  <Story name="Mini menu">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Mini menu" />
