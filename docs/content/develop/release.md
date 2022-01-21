@@ -2,6 +2,8 @@
 title: Release
 ---
 
+# Release
+
 To cut a new release please follow this steps:
 
 1. Make sure the test suite passes (`yarn test`)
