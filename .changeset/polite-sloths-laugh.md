@@ -1,5 +1,5 @@
 ---
-"docs": patch
+'@marigold/docs': patch
 ---
 
 docs: complete icons mdx file

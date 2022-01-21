@@ -1,5 +1,5 @@
 ---
-"docs": patch
+'@marigold/docs': patch
 ---
 
 docs: fix bad action group example

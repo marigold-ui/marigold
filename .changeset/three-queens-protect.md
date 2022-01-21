@@ -1,7 +1,7 @@
 ---
-"docs": patch
-"@marigold/components": patch
-"@marigold/icons": patch
+'@marigold/docs': patch
+'@marigold/components': patch
+'@marigold/icons': patch
 ---
 
 feat: normalize <SVG> and move to system package
