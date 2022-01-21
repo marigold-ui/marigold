@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Checkbox } from './Checkbox';
 import { ThemeProvider } from '@marigold/system';
 
@@ -140,4 +140,27 @@ test('supports checked and disabled checkbox', () => {
   const checkbox = screen.getByTitle(/checkbox/);
   expect(checkbox).toHaveAttribute('checked');
   expect(checkbox).toHaveAttribute('disabled');
+});
+
+test('correctly handles interaction', () => {
+  const click = jest.fn();
+  const change = jest.fn();
+
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox
+        id="test"
+        title="checkbox"
+        label="Test"
+        onClick={click}
+        onChange={change}
+      />
+    </ThemeProvider>
+  );
+
+  const checkbox = screen.getByTitle(/checkbox/);
+  fireEvent.click(checkbox);
+
+  expect(click).toHaveBeenCalledTimes(1);
+  expect(change).toHaveBeenCalledTimes(1);
 });
