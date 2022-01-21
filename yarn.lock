@@ -3598,7 +3598,7 @@ __metadata:
     postcss-import: 14.0.2
     postcss-preset-env: 7.2.3
     prism-react-renderer: 1.2.1
-    prismjs: 1.25.0
+    prismjs: 1.26.0
     react: 17.0.2
     react-dom: 17.0.2
     react-helmet: 6.1.0
@@ -22947,7 +22947,14 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prismjs@npm:1.25.0, prismjs@npm:^1.21.0":
+"prismjs@npm:1.26.0":
+  version: 1.26.0
+  resolution: "prismjs@npm:1.26.0"
+  checksum: 6de058930ce767d44d60322e625bbc255f5107c7bf82c441ade19a289358e01e35040cea0c17adf8f7b829f17aa48e2d84b40866b5b3f8c75a12c6b3f0ead231
+  languageName: node
+  linkType: hard
+
+"prismjs@npm:^1.21.0":
   version: 1.25.0
   resolution: "prismjs@npm:1.25.0"
   checksum: 04d8eae9d1b26b76c350bc65621584c8f8cab80ace7da3953f8aef2f9a8dd4b4f71c1d15bc5c67f126ddc90cd5af613919dc1340589a6c57355bed86fa3ac010
