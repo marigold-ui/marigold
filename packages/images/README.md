@@ -1,3 +1,0 @@
-# `@marigold/images`
-
-> Marigold images

@@ -3639,12 +3639,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marigold/images@workspace:packages/images":
-  version: 0.0.0-use.local
-  resolution: "@marigold/images@workspace:packages/images"
-  languageName: unknown
-  linkType: soft
-
 "@marigold/jest-config@workspace:*, @marigold/jest-config@workspace:config/jest":
   version: 0.0.0-use.local
   resolution: "@marigold/jest-config@workspace:config/jest"
