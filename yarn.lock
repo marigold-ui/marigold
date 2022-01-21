@@ -3505,7 +3505,7 @@ __metadata:
     react: 17.0.2
     react-dom: 17.0.2
     react-helmet: 6.1.0
-    react-live: 2.3.0
+    react-live: 2.4.0
     tsconfig-paths-webpack-plugin: 3.5.2
   languageName: unknown
   linkType: soft
@@ -23299,9 +23299,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-live@npm:2.3.0":
-  version: 2.3.0
-  resolution: "react-live@npm:2.3.0"
+"react-live@npm:2.4.0":
+  version: 2.4.0
+  resolution: "react-live@npm:2.4.0"
   dependencies:
     "@types/buble": ^0.20.0
     buble: 0.19.6
@@ -23311,7 +23311,7 @@ fsevents@^1.2.7:
     prop-types: ^15.7.2
     react-simple-code-editor: ^0.11.0
     unescape: ^1.0.1
-  checksum: c390df78312e5264692b0ac8f745c64294d433546a60eb5992f19fdc517ac6f726a91b7f726e71a79c24db6d16d8ee8a1e927064bec57b52dae488fe6741a93f
+  checksum: f85fe4df12ee89aa3f6cb664507faed53b31825376b6ce4f299cb7c0e977962078e13d181ae5639eee87b70b1d1c9e1c4e4b822a32cd0b8b08982a6fdc37e53a
   languageName: node
   linkType: hard
 
