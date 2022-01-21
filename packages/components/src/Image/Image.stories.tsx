@@ -1,7 +1,6 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Image } from './Image';
-import image1 from '../../../images/src/type_logo.png';
 
 export default {
   title: 'Components/Image',
@@ -27,5 +26,9 @@ export default {
 } as Meta;
 
 export const Basic: ComponentStory<typeof Image> = args => (
-  <Image src={image1} alt="marigold_logo" {...args} />
+  <Image
+    src="https://www.reservix.net/_Resources/Persistent/0e8f5885125940fdb2bc2d54840f497782f56584/Reservix_Logo_dtp_web_rgb_font_black_180704.png"
+    alt="marigold_logo"
+    {...args}
+  />
 );
