@@ -1,20 +1,39 @@
-# Contributing to Marigold 🎉
+# Contributing to 🏵 Marigold
 
-If you have questions or concerns, you can first of all look up our documentation site.
+We love your input! We want to make contributing to this project as easy and transparent as possible, whether it's:
 
-## How we work 💻
+- Reporting a bug
+- Discussing the current state of the code
+- Submitting a fix
+- Proposing new features
 
-As we want to avoid working through huge piles of tasks with no end in sight and just solving problems one after the other, we decided to work in 8-week cycles.
+## We develop with Github
 
-#### Planning in 2-week phases
+We use github to host code, to track issues and feature requests, as well as accept pull requests.
 
-Each cycle starts with planning and discussing. We look through our issues and discuss our topics, so that we can finish this phase with a meeting to set the topics of our next development cycle.
+## We work in Cycles
 
-#### Development in 6-week phases
+We usually work in an eight week cycle consisting of two phases: a two week planing phase and a six week implementation phase. We believe that this model lets us better concentrate on shaping on what we want to work (planning phase) and provides a reasonable timeframe for building something meaningful and a firm deadline that encourages the team to use time efficiently and intentionally (implementation phase). We rather think in terms of [bets](https://cutle.fish/blog/50-product-lessons#anchor1) than in tasks that try to resolve issues up front.
 
-After the planning, we come to the development phase. We want to use our full focus on one task and not rush through a jungle of issues without knowing when the project ends.
-This is why we invest six full weeks into a few tasks each. Like this, we can spend our time individually and really look into a topic for a good amount of time.
+## We use [Github Flow](https://guides.github.com/introduction/flow/index.html), So all Code Changes happen through Pull Requests
 
-## Do you have a feature request? Did you find a bug? 🐛
+Pull requests are the best way to propose changes to the codebase (we use [Github Flow](https://guides.github.com/introduction/flow/index.html)). We actively welcome your pull requests:
 
-- Drop us a message or open an issue with a detailed description of your request.
+1. Fork the repo and create your branch from `main`.
+2. If you've added code that should be tested, add tests.
+3. If you've changed APIs, update the documentation.
+4. Ensure the test suite passes.
+5. Make sure your code lints and typechecks.
+6. Issue that pull request!
+
+## Any contributions you make will be under the MIT Software License
+
+In short, when you submit code changes, your submissions are understood to be under the same [MIT License](http://choosealicense.com/licenses/mit/) that covers the project. Feel free to contact the maintainers if that's a concern.
+
+## Report bugs using Github's [issues](https://github.com/marigold-ui/marigold/issues/new?assignees=&labels=bug&template=2.bug.md&title=)
+
+We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/marigold-ui/marigold/issues/new?assignees=&labels=bug&template=2.bug.md&title=).
+
+## Code of Conduct
+
+We take our open source community seriously and hold ourselves and other contributors to high standards of communication. By participating and contributing to this project, you agree to uphold our [Code of Conduct](https://github.com/marigold-ui/marigold/blob/main/CODE-OF-CONDUCT.md).

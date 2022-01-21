@@ -1,5 +1,4 @@
 ---
-'docs': patch
 '@marigold/docs': patch
 ---
 

@@ -53,7 +53,9 @@
     "lint": "eslint . --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern packages/types/src/index.ts --ignore-pattern \".cache\" --ignore-pattern public",
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit",
-    "release": "yarn build && changeset publish",
+    "release:status": "changeset status",
+    "release:version": "changeset version",
+    "release:publish": "yarn build && changeset publish",
     "postinstall": "rm -f node_modules/@emotion/core/types/index.d.ts"
   }
 }

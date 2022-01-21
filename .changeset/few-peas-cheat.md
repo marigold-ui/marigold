@@ -1,7 +1,7 @@
 ---
-"@marigold/storybook-config": patch
-"docs": patch
-"@marigold/theme-core": patch
+'@marigold/storybook-config': patch
+'@marigold/docs': patch
+'@marigold/theme-core': patch
 ---
 
 docs: initial core-theme
