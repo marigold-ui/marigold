@@ -1,9 +1,10 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
 import { Field } from './Field';
 
-<Meta
-  title="Components/Field"
-  argTypes={{
+export default {
+  title: 'Components/Field',
+  argTypes: {
     variant: {
       control: {
         type: 'text',
@@ -30,13 +31,13 @@ import { Field } from './Field';
       control: {
         type: 'text',
       },
-      type: { required: true },
+      defaultValue: 'id',
     },
     label: {
       control: {
         type: 'text',
       },
-      type: { required: true },
+      defaultValue: 'Label',
     },
     error: {
       control: {
@@ -96,24 +97,14 @@ import { Field } from './Field';
         'url',
         'week',
       ],
-      type: { required: true },
+      defaultValue: 'text',
       table: {
         defaultValue: {
           summary: 'text',
         },
       },
     },
-  }}
-/>
+  },
+} as Meta;
 
-# Field
-
-export const Template = args => (
-  <Field htmlFor="id" label="A label" type="text" {...args} />
-);
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />
+export const Basic: ComponentStory<typeof Field> = args => <Field {...args} />;

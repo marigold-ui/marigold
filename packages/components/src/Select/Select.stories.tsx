@@ -1,10 +1,22 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
 import { Select } from './Select';
 import { Item } from '@marigold/components';
 
-<Meta
-  title="Components/Select"
-  argTypes={{
+export default {
+  title: 'Components/Select',
+  argTypes: {
+    label: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        defaultValue: {
+          summary: 'Select label',
+        },
+      },
+      defaultValue: 'Favorite Color',
+    },
     placeholder: {
       control: {
         type: 'text',
@@ -57,22 +69,13 @@ import { Item } from '@marigold/components';
     width: {
       control: 'number',
     },
-  }}
-/>
+  },
+} as Meta;
 
-# Select
-
-export const Template = args => (
-  <Select label="Favorite Color" htmlFor="id" {...args}>
-    {/* Storybook crashes with imported <Item> component
-      <Item>Red</Item>
-      <Item>Orange</Item>
-      <Item>Yellow</Item> */}
+export const Basic: ComponentStory<typeof Select> = args => (
+  <Select {...args}>
+    <Item>Red</Item>
+    <Item>Orange</Item>
+    <Item>Yellow</Item>
   </Select>
 );
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />

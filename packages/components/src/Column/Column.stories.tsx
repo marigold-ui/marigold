@@ -1,11 +1,12 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
+
 import { Column } from './Column';
 import { Box } from '../Box';
-import { Text } from '../Text';
 
-<Meta
-  title="Components/Column"
-  argTypes={{
+export default {
+  title: 'Components/Column',
+  argTypes: {
     width: {
       control: {
         type: 'range',
@@ -20,21 +21,13 @@ import { Text } from '../Text';
         },
       },
     },
-  }}
-/>
+  },
+} as Meta;
 
-# Column
-
-export const Template = args => (
+export const Basic: ComponentStory<typeof Column> = args => (
   <Column width={12} {...args}>
     <Box p="small" border="1px solid gray" borderRadius="4px">
       width=12
     </Box>
   </Column>
 );
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />

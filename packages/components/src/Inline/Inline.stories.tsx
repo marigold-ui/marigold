@@ -1,11 +1,12 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
 import { Text } from '../Text';
 import { Inline } from './Inline';
 import { Check } from '@marigold/icons';
 
-<Meta
-  title="Components/Inline"
-  argTypes={{
+export default {
+  title: 'Components/Inline',
+  argTypes: {
     space: {
       control: {
         type: 'select',
@@ -27,20 +28,12 @@ import { Check } from '@marigold/icons';
         },
       },
     },
-  }}
-/>
+  },
+} as Meta;
 
-# Inline
-
-export const Template = args => (
+export const Basic: ComponentStory<typeof Inline> = args => (
   <Inline {...args}>
     <Check />
     <Text>Check</Text>
   </Inline>
 );
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />

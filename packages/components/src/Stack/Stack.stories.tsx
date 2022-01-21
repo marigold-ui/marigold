@@ -1,14 +1,25 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
 import { Stack } from './Stack';
 import { Text } from '../Text';
 
-<Meta
-  title="Components/Stack"
-  argTypes={{
+export default {
+  title: 'Components/Stack',
+  argTypes: {
     space: {
       control: {
-        type: 'text',
+        type: 'select',
       },
+      options: [
+        'none',
+        'xxsmall',
+        'xsmall',
+        'small',
+        'medium',
+        'large',
+        'xlarge',
+        'xxlarge',
+      ],
       description: 'Responsive Style Value',
       table: {
         defaultValue: {
@@ -28,14 +39,12 @@ import { Text } from '../Text';
         },
       },
     },
-  }}
-/>
+  },
+} as Meta;
 
-# Stack
-
-export const Template = args => (
+export const Basic: ComponentStory<typeof Stack> = args => (
   <Stack {...args}>
-    <Text as="h2" vairant="headline2">
+    <Text as="h2" variant="headline2">
       Heading
     </Text>
     <Text>
@@ -46,9 +55,3 @@ export const Template = args => (
     </Text>
   </Stack>
 );
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />

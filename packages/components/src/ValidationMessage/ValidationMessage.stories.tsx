@@ -1,36 +1,27 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
 import { ValidationMessage } from './ValidationMessage';
 import { Exclamation } from '@marigold/icons';
 
-<Meta
-  title="Components/ValidationMessage"
-  argTypes={{
+export default {
+  title: 'Components/ValidationMessage',
+  argTypes: {
     variant: {
       control: {
         type: 'text',
       },
-      description: '?',
       table: {
         defaultValue: {
           summary: 'error',
         },
       },
     },
-  }}
-/>
+  },
+} as Meta;
 
-# ValidationMessage
-
-
-export const Template = args => (
+export const Basic: ComponentStory<typeof ValidationMessage> = args => (
   <ValidationMessage {...args}>
     <Exclamation />
     Validation message
   </ValidationMessage>
 );
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />

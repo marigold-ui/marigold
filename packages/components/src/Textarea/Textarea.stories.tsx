@@ -1,9 +1,10 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
-import { Textarea } from '../Textarea';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
+import { Textarea } from '.';
 
-<Meta
-  title="Components/Textarea"
-  argTypes={{
+export default {
+  title: 'Components/Textarea',
+  argTypes: {
     variant: {
       control: {
         type: 'text',
@@ -18,18 +19,15 @@ import { Textarea } from '../Textarea';
       control: {
         type: 'text',
       },
-      description: 'Text above',
+      description: 'Label text',
+      defaultValue: 'Textarea Label',
     },
     htmlFor: {
       control: {
         type: 'text',
       },
       description: 'Bind to label',
-      table: {
-        defaultValue: {
-          summary: 'textarea',
-        },
-      },
+      defaultValue: 'textareaId',
     },
     error: {
       control: {
@@ -58,17 +56,9 @@ import { Textarea } from '../Textarea';
         },
       },
     },
-  }}
-/>
+  },
+} as Meta;
 
-# Textarea
-
-export const Template = args => (
-  <Textarea placeholder="Placeholder..." label="Textarea Label" {...args} />
+export const Basic: ComponentStory<typeof Textarea> = args => (
+  <Textarea placeholder="Placeholder..." {...args} />
 );
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />
