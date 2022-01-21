@@ -12,7 +12,7 @@ export * from './Columns';
 export * from './Dialog';
 export * from './Divider';
 export * from './Field';
-export * from './Hidden';
+export * from './VisuallyHidden';
 export * from './Image';
 export * from './Inline';
 export * from './Label';

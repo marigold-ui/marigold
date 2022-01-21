@@ -1,0 +1,25 @@
+---
+title: VisuallyHidden
+---
+
+# VisuallyHidden
+
+## Description
+
+VisuallyHidden is a utility component that can be used to hide its children visually, while keeping them visible to screen readers and other assistive technology.
+This would typically be used when you want to take advantage of the behavior and semantics of a native element like a checkbox or radio button, but replace it with a custom styled element visually.
+
+## Import
+
+```tsx onlyCode
+import { VisuallyHidden } from '@marigold/components';
+```
+
+## Usage
+
+```tsx expandCode
+<>
+  <Text>The Text below is visually hidden</Text>
+  <VisuallyHidden>I am invisible</VisuallyHidden>
+</>
+```
