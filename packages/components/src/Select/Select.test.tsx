@@ -20,6 +20,14 @@ const theme = {
       },
     },
   },
+  label: {
+    above: {
+      fontSize: '8px',
+    },
+    inline: {
+      fontSize: '14px',
+    },
+  },
 };
 
 test('supports button select variant', () => {
@@ -33,6 +41,30 @@ test('supports button select variant', () => {
   const select = screen.getByTestId('selectId');
   expect(select).toBeDefined();
   expect(select).toHaveStyle(`font-family: Inter`);
+});
+
+test('supports default labelVariant', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Select label="MyLabel" data-testid="selectId">
+        <Item>1</Item>
+      </Select>
+    </MarigoldProvider>
+  );
+  const label = screen.getAllByText('MyLabel');
+  expect(label[0]).toHaveStyle(`font-size: 8px`);
+});
+
+test('supports other labelVariant than default', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Select label="MyLabel" data-testid="selectId" labelVariant="inline">
+        <Item>1</Item>
+      </Select>
+    </MarigoldProvider>
+  );
+  const label = screen.getAllByText('MyLabel');
+  expect(label[0]).toHaveStyle(`font-size: 14px`);
 });
 
 test('accepts custom styles prop className', () => {
