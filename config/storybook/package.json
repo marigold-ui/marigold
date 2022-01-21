@@ -23,7 +23,7 @@
     "@storybook/addon-essentials": "6.4.13",
     "@storybook/addon-interactions": "6.4.13",
     "@storybook/jest": "0.0.5",
-    "@storybook/testing-library": "0.0.7",
+    "@storybook/testing-library": "0.0.8",
     "babel-loader": "8.2.3",
     "find-up": "5.0.0",
     "storybook-addon-themes": "6.1.0",
