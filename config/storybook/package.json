@@ -13,7 +13,7 @@
     "docs"
   ],
   "dependencies": {
-    "@babel/core": "7.16.5",
+    "@babel/core": "7.16.12",
     "@marigold/components": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
