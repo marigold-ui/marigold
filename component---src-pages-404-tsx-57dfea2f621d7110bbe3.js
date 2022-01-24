@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[218],{50457:function(e,n,t){t.r(n),t.d(n,{default:function(){return a}});var r=t(27378),u=t(55857);function a(){return r.createElement(r.Fragment,null,r.createElement(u.Heading,{variant:"h1"},"404"),r.createElement(u.Text,null,"oooops"))}}}]);
-//# sourceMappingURL=component---src-pages-404-tsx-57dfea2f621d7110bbe3.js.map
