@@ -1,9 +1,10 @@
-import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import React from 'react';
+import type { Meta, ComponentStory } from '@storybook/react';
 import { SVG } from './SVG';
 
-<Meta
-  title="Components/SVG"
-  argTypes={{
+export default {
+  title: 'Components/SVG',
+  argTypes: {
     variant: {
       control: {
         type: 'text',
@@ -37,19 +38,11 @@ import { SVG } from './SVG';
         },
       },
     },
-  }}
-/>
+  },
+} as Meta;
 
-# SVG
-
-export const Template = args => (
+export const Basic: ComponentStory<typeof SVG> = args => (
   <SVG {...args}>
     <path d="M9.9 20.113V13.8415H14.1V20.113H19.35V11.751H22.5L12 2.34375L1.5 11.751H4.65V20.113H9.9Z" />
   </SVG>
 );
-
-<Canvas>
-  <Story name="Default">{Template.bind({})}</Story>
-</Canvas>
-
-<ArgsTable story="Default" />
