@@ -6,7 +6,7 @@ title: Release
 
 ## Prerequisites
 
-- Make sure your npm account has enabled wo-factor authentication. If not, please follow the instrucations at https://docs.npmjs.com/configuring-two-factor-authentication to do so.
+- Make sure your npm account has enabled two-factor authentication. If not, please follow the instrucations at https://docs.npmjs.com/configuring-two-factor-authentication to do so.
 - Make sure you are logged into npm registry. If not, log in via `yarn login`.
 - Make sure you have a GitHub personal access token set as `GITHUB_TOKEN` in your environment variables. If not, please create one at https://github.com/settings/tokens/new and add it as the `GITHUB_TOKEN` environment variable.
 
