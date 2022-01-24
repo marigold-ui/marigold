@@ -27,7 +27,8 @@ export const Link = (({
   const ref = useRef<any>();
   const { linkProps } = useLink(
     {
-      ...props,
+      // We typecast here because the element could very well be a `span`
+      ...(props as PolymorphicProps<LinkOwnProps, any>),
       elementType: typeof as === 'string' ? as : 'span',
       isDisabled: disabled,
     },
