@@ -27,8 +27,7 @@ const RadioInput: React.FC<RadioInputProps> = ({ error, ...props }) => {
   return (
     <Box pr="xsmall">
       <VisuallyHidden>
-        <Box
-          as="input"
+        <input
           type="radio"
           disabled={props.disabled}
           {...focusProps}

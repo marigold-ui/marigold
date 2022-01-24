@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Radio } from './Radio';
 import { ThemeProvider } from '@marigold/system';
 
@@ -128,4 +128,27 @@ test('supports checked and disabled radio', () => {
   const radio = screen.getByTitle(/radio/);
   expect(radio).toHaveAttribute('checked');
   expect(radio).toHaveAttribute('disabled');
+});
+
+test('correctly handles interaction', () => {
+  const click = jest.fn();
+  const change = jest.fn();
+
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio
+        id="test"
+        title="radio"
+        label="Test"
+        onClick={click}
+        onChange={change}
+      />
+    </ThemeProvider>
+  );
+
+  const radio = screen.getByTitle(/radio/);
+  fireEvent.click(radio);
+
+  expect(click).toHaveBeenCalledTimes(1);
+  expect(change).toHaveBeenCalledTimes(1);
 });
