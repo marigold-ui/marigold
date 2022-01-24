@@ -1,0 +1,1 @@
+{"version":3,"file":"component---src-pages-index-tsx-4876dba99d9ed077f88f.js","mappings":"8JAEe,SAASA,IACtB,OAAO","sources":["webpack://docs/./src/pages/index.tsx"],"sourcesContent":["import React from 'react';\n\nexport default function LandingPage() {\n  return <em>Currently not in use!</em>;\n}\n"],"names":["LandingPage"],"sourceRoot":""}
