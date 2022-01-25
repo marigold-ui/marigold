@@ -66,13 +66,14 @@ export const Radio: React.FC<RadioProps> = ({
   <>
     <Box
       as={Label}
-      __baseCSS={{
-        ':hover': { cursor: props.disabled ? 'not-allowed' : 'pointer' },
-      }}
       htmlFor={props.id}
       required={required}
       variant={`label.${labelVariant}`}
-      color={props.disabled ? 'disabled' : 'text'}
+      css={
+        props.disabled
+          ? { color: 'disabled', ':hover': { cursor: 'not-allowed' } }
+          : { color: 'text', ':hover': { cursor: 'pointer' } }
+      }
     >
       <Box as={RadioInput} error={error} {...props} />
       {label}

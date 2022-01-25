@@ -43,9 +43,7 @@ export const RadioIcon: React.FC<RadioIconProps> = ({
         cy="16"
         r="7.5"
       />
-      {checked && (
-        <Box __baseCSS={{ fill: 'gray00' }} as="circle" cx="8" cy="16" r="3" />
-      )}
+      {checked && <circle fill="white" cx="8" cy="16" r="3" />}
     </SVG>
   );
 };
