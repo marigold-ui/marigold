@@ -11,14 +11,3 @@ exports.onCreateWebpackConfig = ({ stage, actions }) => {
     },
   });
 };
-
-exports.createPages = ({ actions }) => {
-  const { createRedirect } = actions;
-
-  createRedirect({
-    fromPath: '/',
-    toPath: '/guides/installation',
-    redirectInBrowser: true,
-    isPermanent: true,
-  });
-};

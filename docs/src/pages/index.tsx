@@ -1,5 +1,10 @@
-import React from 'react';
+import { useEffect } from 'react';
+import { navigate } from 'gatsby';
 
 export default function LandingPage() {
-  return <em>Currently not in use!</em>;
+  useEffect(() => {
+    navigate('/guides/installation');
+  }, []);
+
+  return null;
 }
