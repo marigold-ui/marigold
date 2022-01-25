@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunk_marigold_docs=self.webpackChunk_marigold_docs||[]).push([[691],{86237:function(e,n,u){u.r(n),u.d(n,{default:function(){return t}});var r=u(27378);function t(){return r.createElement("em",null,"Currently not in use!")}}}]);
-//# sourceMappingURL=component---src-pages-index-tsx-3b223577d605cd60c053.js.map
