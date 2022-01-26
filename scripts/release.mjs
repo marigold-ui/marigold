@@ -38,14 +38,14 @@ log(brand.bold('└────────────────────�
 space();
 
 step('🧼', 'Checking git status ...');
-const branch = $`git branch --show-current`;
+const branch = await $`git branch --show-current`;
 if (branch !== 'main') {
   exit(
     `You are not on the main branch.`,
     `Please switch to the ${chalk.underline('main')} branch before releasing.`
   );
 }
-const clean = $`git status --untracked-files=no --porcelain`;
+const clean = await $`git status --untracked-files=no --porcelain`;
 if (clean !== '') {
   exit(
     'There are uncommitted changes.',
@@ -55,7 +55,7 @@ if (clean !== '') {
 
 step('🔒', 'Checking npm status ...');
 try {
-  $`npm whoami`;
+  await $`npm whoami`;
 } catch {
   exit(
     'You are not logged in to npm.',
