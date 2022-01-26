@@ -3530,7 +3530,7 @@ __metadata:
     eslint-plugin-prettier: 4.0.0
     eslint-plugin-react: 7.28.0
     eslint-plugin-react-hooks: ^4.2.0
-    eslint-plugin-testing-library: 5.0.3
+    eslint-plugin-testing-library: 5.0.4
   peerDependencies:
     eslint: 7.26 || 7.27 || 7.29 || 7.30 || 7.31 || 7.32
   languageName: unknown
@@ -13037,14 +13037,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-testing-library@npm:5.0.3":
-  version: 5.0.3
-  resolution: "eslint-plugin-testing-library@npm:5.0.3"
+"eslint-plugin-testing-library@npm:5.0.4":
+  version: 5.0.4
+  resolution: "eslint-plugin-testing-library@npm:5.0.4"
   dependencies:
     "@typescript-eslint/experimental-utils": ^5.9.0
   peerDependencies:
     eslint: ^7.5.0 || ^8.0.0
-  checksum: 177b101749770618b94baad8e06984ced6f2cc628dc931972843eef3e5ba9d6aac3bf996a147f8f156fb2975b929211b621729b13a3df9883055c7d5acea5ef7
+  checksum: 12edd7d4985ba23f58146e167b72ebfedba7b88754bbd0324cb69d97f9aed26d8930ee72772ed4b7db618e0cf10edba062d603196aaa467d18f8d87ae5d9185d
   languageName: node
   linkType: hard
 
