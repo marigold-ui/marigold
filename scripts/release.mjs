@@ -24,7 +24,7 @@ const exit = (msg, detail) => {
   if (detail) {
     log(chalk.red(`   ${detail.replace(/\n/gm, '\n   ')}`));
   }
-  // process.exit(1);
+  process.exit(1);
 };
 const brand = chalk.hex('#fa8005'); // orange color
 
