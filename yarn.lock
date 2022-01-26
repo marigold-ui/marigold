@@ -3500,7 +3500,7 @@ __metadata:
     gatsby-transformer-sharp: 4.5.0
     gh-pages: 3.2.3
     mdx-utils: 0.2.0
-    open-props: 1.1.5
+    open-props: 1.1.6
     postcss-combine-duplicated-selectors: 10.0.3
     postcss-import: 14.0.2
     postcss-preset-env: 7.2.3
@@ -21011,10 +21011,10 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"open-props@npm:1.1.5":
-  version: 1.1.5
-  resolution: "open-props@npm:1.1.5"
-  checksum: a1fb4a81aa7cae69a4274a820e176bca9683b91c9c4a4d4f71afaa67fc1873e9c67ee9d12578226c88fb9d6d9d55529647253939d6aca2c8610e19b7c7cfc0ab
+"open-props@npm:1.1.6":
+  version: 1.1.6
+  resolution: "open-props@npm:1.1.6"
+  checksum: 7cc47b600bf3eb74e6043d5116879743e2604963177dbb6d41ea236b8109440dede11d6f0d0d909a44939357c9d55af3c657130c8d7d2793e5effc5e9bf01add
   languageName: node
   linkType: hard
 
