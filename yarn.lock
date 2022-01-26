@@ -3455,6 +3455,7 @@ __metadata:
     "@react-aria/overlays": ^3.7.2
     "@react-aria/select": ^3.4.1
     "@react-aria/ssr": ^3.1.0
+    "@react-aria/textfield": ^3.5.0
     "@react-aria/utils": ^3.8.2
     "@react-aria/visually-hidden": ^3.2.3
     "@react-stately/collections": ^3.3.3
@@ -4273,6 +4274,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-aria/textfield@npm:^3.5.0":
+  version: 3.5.0
+  resolution: "@react-aria/textfield@npm:3.5.0"
+  dependencies:
+    "@babel/runtime": ^7.6.2
+    "@react-aria/focus": ^3.5.0
+    "@react-aria/label": ^3.2.1
+    "@react-aria/utils": ^3.10.0
+    "@react-types/shared": ^3.10.0
+    "@react-types/textfield": ^3.3.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1
+  checksum: d0debd4190772a95161b39cc69910d93e976441fee3fec6c0388f31aae3dc36c89b60fd05550076650f1aee5ce98accde2b8723440b8829fd7c5581581fd26bc
+  languageName: node
+  linkType: hard
+
 "@react-aria/toggle@npm:^3.1.4":
   version: 3.1.5
   resolution: "@react-aria/toggle@npm:3.1.5"
@@ -4581,6 +4598,17 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0-rc.1
   checksum: 5843c8be07d916fdc167671db3779de5792582ec06bd14bfebb028ad4acdb44c4b5ecbf9b953a01a252f1261b9527395df0cba9214b7bddeff8a76e08a03853a
+  languageName: node
+  linkType: hard
+
+"@react-types/textfield@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "@react-types/textfield@npm:3.3.0"
+  dependencies:
+    "@react-types/shared": ^3.9.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1
+  checksum: 26765fb83a3c8f8d7d9f96a0ccf1b79f3deb384bbd0a075a3de154c9b0f157b9e56a3b6752fe8bba29e86d82bd5faf4ef1f10a746edd22bb78df5eb53007cf00
   languageName: node
   linkType: hard
 

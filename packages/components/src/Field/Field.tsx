@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { useTextField } from '@react-aria/textfield';
+import { AriaTextFieldProps } from '@react-types/textfield';
+
 import { Exclamation } from '@marigold/icons';
 import { ComponentProps } from '@marigold/types';
 
@@ -17,7 +20,8 @@ export type FieldProps = {
   error?: boolean;
   errorMessage?: string;
   disabled?: boolean;
-} & ComponentProps<'input'>;
+} & AriaTextFieldProps &
+  ComponentProps<'input'>;
 
 // Component
 // ---------------
@@ -26,20 +30,29 @@ export const Field: React.FC<FieldProps> = ({
   variant = '',
   labelVariant = 'above',
   htmlFor,
-  label,
   required,
   error,
   errorMessage,
   disabled,
   ...props
 }) => {
+  const { label } = props;
+  const ref = useRef<HTMLInputElement>(null);
+  const { labelProps, inputProps, descriptionProps, errorMessageProps } =
+    useTextField(props, ref);
   return (
     <>
-      <Label variant={labelVariant} htmlFor={htmlFor} required={required}>
+      <Label
+        variant={labelVariant}
+        htmlFor={htmlFor}
+        required={required}
+        {...labelProps}
+      >
         {label}
       </Label>
       <Input
         {...props}
+        {...inputProps}
         type={type}
         id={htmlFor}
         disabled={disabled}
