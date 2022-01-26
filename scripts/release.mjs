@@ -63,6 +63,17 @@ try {
   );
 }
 
+step('📱', 'Checking 2FA status ...');
+const mode = await $`npm profile get "two-factor auth"`;
+if (mode !== 'auth-and-writes') {
+  exit(
+    'You have not set 2FA to the correct mode.',
+    `Please set 2FA to "auth-and-writes" via ${chalk.underline(
+      'npm profile enable-2fa auth-and-writes'
+    )}.`
+  );
+}
+
 step('🐈', 'Checking for auth token ...');
 if (!process.env.GITHUB_TOKEN) {
   exit(
