@@ -88,7 +88,7 @@ await $`yarn changeset status`.pipe(process.stdout);
 
 space();
 log(chalk.bold('Please review the changeset.'));
-option('Do you want to continue?');
+await option('Do you want to continue?');
 
 step('🍾', 'Bumping versions & generating changelog...');
 await $`yarn changeset version`.pipe(process.stdout);
@@ -101,7 +101,7 @@ step('🌟', 'Publishing to npm...');
 await $`yarn changeset publish`.pipe(process.stdout);
 log(brand.bold('🥳  Release complete!'));
 
-option(
+await option(
   `Do you want to release new docs to ${chalk.underline(
     'https://marigold-ui.io/'
   )}?`
