@@ -34,7 +34,8 @@
     "react-dom": "17.0.2",
     "tsdx": "0.14.1",
     "typescript": "4.5.5",
-    "workspaces-run": "1.0.1"
+    "workspaces-run": "1.0.1",
+    "zx": "^4.3.0"
   },
   "husky": {
     "hooks": {
@@ -53,6 +54,8 @@
     "lint": "eslint . --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern packages/types/src/index.ts --ignore-pattern \".cache\" --ignore-pattern public",
     "format": "prettier --write \"**/*\"",
     "typecheck": "tsc --noEmit",
+    "changeset": "changeset",
+    "release": "zx scripts/release.mjs --quiet",
     "release:status": "changeset status",
     "release:version": "changeset version",
     "release:publish": "yarn build && changeset publish",
