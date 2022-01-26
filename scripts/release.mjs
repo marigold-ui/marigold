@@ -1,11 +1,23 @@
 #!/usr/bin/env zx
 
 // Set available globals for eslint
-/* global $, question, chalk, fs, globby, os, path, minimist */
+/* global $, question, chalk */
 
+// Helper
+// ---------------
 const log = console.log;
 const space = () => log('');
 const step = (icon, msg) => log(chalk.white.bold(`${icon}  ${msg}`));
+const option = async msg => {
+  space();
+  const asw = await question(chalk.bold(`${msg} [yes/no]`), {
+    choices: ['yes', 'no'],
+  });
+  if (asw !== 'yes') {
+    log(chalk.yellow('Aborted by user.'));
+    process.exit(0);
+  }
+};
 const exit = (msg, detail) => {
   space();
   log(chalk.red(`🚨 ${chalk.bold.underline('ERROR')}:`, chalk.bold(msg)));
@@ -16,10 +28,8 @@ const exit = (msg, detail) => {
 };
 const brand = chalk.hex('#fa8005'); // orange color
 
-/**
- * - Check if there are uncommitted changes
- * - run all release steps
- */
+// Scripts
+// ---------------
 log(brand.bold('┌───────────────────────────────────┐'));
 log(brand.bold('│                                   │ '));
 log(brand.bold('│   🏵  Preparing a new release!     │ '));
@@ -66,14 +76,26 @@ await $`yarn changeset status`.pipe(process.stdout);
 
 space();
 log(chalk.bold('Please review the changeset.'));
-const asw = await question(chalk.bold('Do you want to continue? [yes/no]'), {
-  choices: ['yes', 'no'],
-});
-
-if (asw !== 'yes') {
-  log(chalk.yellow('Aborted by user.'));
-  process.exit(0);
-}
+option('Do you want to continue?');
 
 step('🍾', 'Bumping versions & generating changelog...');
 await $`yarn changeset version`.pipe(process.stdout);
+
+step('👷‍♂️', 'Building packages...');
+await $`yarn build`;
+log('✓  Packages built.');
+
+step('🌟', 'Publishing to npm...');
+await $`yarn changeset publish`.pipe(process.stdout);
+log(brand.bold('🥳  Release complete!'));
+
+option(
+  `Do you want to release new docs to ${chalk.underline(
+    'https://marigold-ui.io/'
+  )}?`
+);
+await $`yarn workspace @marigold/docs deploy`;
+log('✓  Docs deployed.');
+
+space();
+log(brand.bold('🥳  Release complete!'));
