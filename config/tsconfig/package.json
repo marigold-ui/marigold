@@ -4,11 +4,9 @@
   "version": "0.2.0",
   "license": "MIT",
   "keywords": [
+    "marigold",
     "typescript",
     "tsconfig"
-  ],
-  "files": [
-    "tsconfig.base.json"
   ],
   "tsconfig": "./tsconfig.base.json"
 }

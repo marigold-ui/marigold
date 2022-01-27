@@ -2,10 +2,19 @@
   "name": "@marigold/theme-b2b",
   "version": "0.3.3",
   "description": "Marigold B2B Theme",
+  "license": "MIT",
+  "keywords": [
+    "marigold",
+    "b2b",
+    "theme",
+    "styles"
+  ],
   "main": "dist/index.js",
   "module": "dist/theme-b2b.esm.js",
   "typings": "dist/index.d.ts",
-  "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "peerDependencies": {
     "@marigold/components": "workspace:*"
   },
