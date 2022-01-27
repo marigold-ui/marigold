@@ -2,7 +2,7 @@ module.exports = {
   pathPrefix: '/marigold/',
   siteMetadata: {
     title: 'Marigold Design System',
-    siteUrl: 'https://marigold-ui.github.io/marigold/',
+    siteUrl: 'https://marigold-ui.io/',
     navigation: ['foundation', 'components', 'themes', 'develop'],
   },
   plugins: [
