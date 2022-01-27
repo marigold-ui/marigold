@@ -111,8 +111,8 @@ await $`git commit -am "release: v${version}"`;
 await $`git push`;
 await $`git push --tags`;
 
-step('👷‍♂️', 'Building packages...');
-await $`yarn build`;
+step('👷', 'Building packages...');
+await $`yarn build`.pipe(process.stdout);
 log('✓  Packages built.');
 
 step('🌟', 'Publishing to npm...');
