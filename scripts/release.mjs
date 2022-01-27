@@ -1,7 +1,7 @@
 #!/usr/bin/env zx
 
 // Set available globals for eslint
-/* global $, question, chalk */
+/* global $, question, chalk, fs */
 
 // Helper
 // ---------------
@@ -93,6 +93,13 @@ await option('Do you want to continue?');
 step('🍾', 'Bumping versions & generating changelog...');
 await $`yarn changeset version`.pipe(process.stdout);
 
+step('🔼', 'Pushing changes to main branch...');
+// We use "@marigold/components" as leading version
+let { version } = await fs.readFile('./packages/components/package.json');
+await $`git commit -am "release: v${version}"`;
+await $`git push"`;
+await $`git push --tags"`;
+
 step('👷‍♂️', 'Building packages...');
 await $`yarn build`;
 log('✓  Packages built.');
@@ -106,8 +113,8 @@ await option(
     'https://marigold-ui.io/'
   )}?`
 );
-await $`yarn workspace @marigold/docs deploy`;
-log('✓  Docs deployed.');
+await $`yarn workspace @marigold/docs clean`;
+await $`yarn workspace @marigold/docs deploy`.pipe(process.stdout);
 
 space();
 log(brand.bold('🥳  Release complete!'));
