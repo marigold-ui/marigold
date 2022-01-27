@@ -2,10 +2,23 @@
   "name": "@marigold/system",
   "version": "0.3.3",
   "description": "Marigold System Library",
+  "license": "MIT",
+  "keywords": [
+    "marigold",
+    "system",
+    "library",
+    "react",
+    "theme-ui",
+    "styling",
+    "css",
+    "emotion"
+  ],
   "main": "dist/index.js",
   "module": "dist/system.esm.js",
   "typings": "dist/index.d.ts",
-  "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@emotion/react": "11.7.1",
     "@theme-ui/css": "0.13.1",

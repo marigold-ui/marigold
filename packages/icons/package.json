@@ -3,9 +3,18 @@
   "description": "Marigold Icons",
   "version": "0.3.3",
   "license": "MIT",
+  "keywords": [
+    "marigold",
+    "icons",
+    "react",
+    "svg"
+  ],
   "main": "dist/index.js",
   "module": "dist/components.esm.js",
   "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@marigold/system": "workspace:*"
   },
