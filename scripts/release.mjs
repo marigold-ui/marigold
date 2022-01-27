@@ -1,13 +1,16 @@
 #!/usr/bin/env zx
 
 // Set available globals for eslint
-/* global $, question, chalk, fs */
+/* global $, cd, question, chalk, fs */
 
 // Helper
 // ---------------
 const log = console.log;
 const space = () => log('');
+const brand = chalk.hex('#fa8005'); // orange color
+const trim = val => `${val}`.trim();
 const step = (icon, msg) => log(chalk.white.bold(`${icon}  ${msg}`));
+
 const option = async msg => {
   space();
   const asw = await question(chalk.bold(`${msg} [yes/no]`), {
@@ -18,6 +21,7 @@ const option = async msg => {
     process.exit(0);
   }
 };
+
 const exit = (msg, detail) => {
   space();
   log(chalk.red(`🚨 ${chalk.bold.underline('ERROR')}:`, chalk.bold(msg)));
@@ -26,8 +30,15 @@ const exit = (msg, detail) => {
   }
   process.exit(1);
 };
-const brand = chalk.hex('#fa8005'); // orange color
-const trim = val => `${val}`.trim();
+
+const publish = async workspace => {
+  const cwd = process.cwd();
+  cd(workspace);
+  await $`yarn npm publish --access public  --tolerate-republish`.pipe(
+    process.stdout
+  );
+  cd(cwd); // restore cwd
+};
 
 // Scripts
 // ---------------
@@ -105,7 +116,18 @@ await $`yarn build`;
 log('✓  Packages built.');
 
 step('🌟', 'Publishing to npm...');
-await $`yarn changeset publish`.pipe(process.stdout);
+await publish('config/eslint');
+await publish('config/jest');
+await publish('config/prettier');
+await publish('config/storybook');
+await publish('config/tsconfig');
+await publish('packages/components');
+await publish('packages/icons');
+await publish('packages/system');
+await publish('packages/types');
+await publish('themes/theme-b2b');
+await publish('themes/theme-core');
+await publish('themes/theme-unicorn');
 log(brand.bold('🥳  Release complete!'));
 
 await option(
