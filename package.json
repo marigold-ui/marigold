@@ -57,9 +57,6 @@
     "typecheck": "tsc --noEmit",
     "changeset": "changeset",
     "release": "zx scripts/release.mjs --quiet",
-    "release:status": "changeset status",
-    "release:version": "changeset version",
-    "release:publish": "yarn build && changeset publish",
     "release:docs": "yarn workspace @marigold/docs deploy",
     "postinstall": "rm -f node_modules/@emotion/core/types/index.d.ts"
   }
