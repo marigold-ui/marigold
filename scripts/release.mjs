@@ -94,15 +94,15 @@ if (!process.env.GITHUB_TOKEN) {
   );
 }
 
-step('📦', 'Checking package status...');
-await $`yarn changeset status`.pipe(process.stdout);
+// step('📦', 'Checking package status...');
+// await $`yarn changeset status`.pipe(process.stdout);
 
-space();
-log(chalk.bold('Please review the changeset.'));
-await option('Do you want to continue?');
+// space();
+// log(chalk.bold('Please review the changeset.'));
+// await option('Do you want to continue?');
 
-step('🍾', 'Bumping versions & generating changelog...');
-await $`yarn changeset version`.pipe(process.stdout);
+// step('🍾', 'Bumping versions & generating changelog...');
+// await $`yarn changeset version`.pipe(process.stdout);
 
 step('🔼', 'Pushing changes to main branch...');
 // We use "@marigold/components" as leading version
