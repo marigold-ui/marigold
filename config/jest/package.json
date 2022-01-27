@@ -10,11 +10,16 @@
     "testing",
     "config"
   ],
+  "main": "index.js",
   "files": [
     "index.js",
     "jest.setup.ts"
   ],
-  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "github:marigold-ui/marigold",
+    "directory": "config/jest"
+  },
   "dependencies": {
     "@swc/core": "^1.2.120",
     "@swc/jest": "^0.2.15",

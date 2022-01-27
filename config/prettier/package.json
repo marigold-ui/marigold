@@ -8,10 +8,15 @@
     "prettier",
     "config"
   ],
+  "main": "index.json",
   "files": [
     "index.json"
   ],
-  "main": "index.json",
+  "repository": {
+    "type": "git",
+    "url": "github:marigold-ui/marigold",
+    "directory": "config/prettier"
+  },
   "peerDependencies": {
     "prettier": "2.x"
   }

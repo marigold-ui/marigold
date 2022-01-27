@@ -13,6 +13,11 @@
   "files": [
     "index.js"
   ],
+  "repository": {
+    "type": "git",
+    "url": "github:marigold-ui/marigold",
+    "directory": "config/eslint"
+  },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "5.10.0",
     "@typescript-eslint/parser": "5.10.0",

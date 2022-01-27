@@ -8,5 +8,13 @@
     "typescript",
     "tsconfig"
   ],
+  "files": [
+    "tsconfig.base.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "github:marigold-ui/marigold",
+    "directory": "config/tsconfig"
+  },
   "tsconfig": "./tsconfig.base.json"
 }
