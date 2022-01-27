@@ -95,7 +95,7 @@ await $`yarn changeset version`.pipe(process.stdout);
 
 step('🔼', 'Pushing changes to main branch...');
 // We use "@marigold/components" as leading version
-let { version } = await fs.readFile('./packages/components/package.json');
+let { version } = await fs.readJson('./packages/components/package.json');
 await $`git commit -am "release: v${version}"`;
 await $`git push"`;
 await $`git push --tags"`;

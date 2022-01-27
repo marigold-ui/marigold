@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-core",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Marigold Core Theme",
   "main": "dist/index.js",
   "module": "dist/theme-core.esm.js",

@@ -1,5 +1,17 @@
 # @marigold/docs
 
+## 0.3.2
+
+### Patch Changes
+
+- [#1701](https://github.com/marigold-ui/marigold/pull/1701) [`45b05af2`](https://github.com/marigold-ui/marigold/commit/45b05af2d93eb21d50ed21363d7177d9161865be) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): rewrite Divider and add react-aria
+
+* [#1706](https://github.com/marigold-ui/marigold/pull/1706) [`73757fb0`](https://github.com/marigold-ui/marigold/commit/73757fb0cd73d7fa799e3e320f5c897df2e1c87f) Thanks [@sebald](https://github.com/sebald)! - feat(docs): awesome 404!
+
+* Updated dependencies [[`45b05af2`](https://github.com/marigold-ui/marigold/commit/45b05af2d93eb21d50ed21363d7177d9161865be)]:
+  - @marigold/components@0.3.2
+  - @marigold/theme-b2b@0.3.2
+
 ## 0.3.1
 
 ### Patch Changes
