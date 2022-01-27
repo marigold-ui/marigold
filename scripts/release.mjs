@@ -49,21 +49,21 @@ log(brand.bold('│                                   │ '));
 log(brand.bold('└───────────────────────────────────┘'));
 space();
 
-step('🧼', 'Checking git status ...');
-let branch = await $`git branch --show-current`;
-if (trim(branch) !== 'main') {
-  exit(
-    `You are not on the main branch.`,
-    `Please switch to the ${chalk.underline('main')} branch before releasing.`
-  );
-}
-const clean = await $`git status --untracked-files=no --porcelain`;
-if (trim(clean) !== '') {
-  exit(
-    'There are uncommitted changes.',
-    'Please commit or stash them before releasing.'
-  );
-}
+// step('🧼', 'Checking git status ...');
+// let branch = await $`git branch --show-current`;
+// if (trim(branch) !== 'main') {
+//   exit(
+//     `You are not on the main branch.`,
+//     `Please switch to the ${chalk.underline('main')} branch before releasing.`
+//   );
+// }
+// const clean = await $`git status --untracked-files=no --porcelain`;
+// if (trim(clean) !== '') {
+//   exit(
+//     'There are uncommitted changes.',
+//     'Please commit or stash them before releasing.'
+//   );
+// }
 
 step('🔒', 'Checking npm status ...');
 try {
@@ -108,8 +108,8 @@ step('🔼', 'Pushing changes to main branch...');
 // We use "@marigold/components" as leading version
 let { version } = await fs.readJson('./packages/components/package.json');
 await $`git commit -am "release: v${version}"`;
-await $`git push"`;
-await $`git push --tags"`;
+await $`git push`;
+await $`git push --tags`;
 
 step('👷‍♂️', 'Building packages...');
 await $`yarn build`;
