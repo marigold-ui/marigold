@@ -56,11 +56,11 @@ if (trim(clean) !== '') {
 
 step('🔒', 'Checking npm status ...');
 try {
-  await $`npm whoami`;
+  await $`yarn npm whoami`;
 } catch {
   exit(
     'You are not logged in to npm.',
-    'Please log via "npm login" in before releasing.'
+    'Please log via "yarn npm login" in before releasing.'
   );
 }
 
