@@ -1,7 +1,7 @@
 #!/usr/bin/env zx
 
 // Set available globals for eslint
-/* global $, cd, question, chalk, fs */
+/* global $, cd, question, chalk */
 
 // Helper
 // ---------------
@@ -52,21 +52,21 @@ log(brand.bold('│                                   │'));
 log(brand.bold('└───────────────────────────────────┘'));
 space();
 
-// step('🧼', 'Checking git status ...');
-// let branch = await $`git branch --show-current`;
-// if (trim(branch) !== 'main') {
-//   exit(
-//     `You are not on the main branch.`,
-//     `Please switch to the ${chalk.underline('main')} branch before releasing.`
-//   );
-// }
-// const clean = await $`git status --untracked-files=no --porcelain`;
-// if (trim(clean) !== '') {
-//   exit(
-//     'There are uncommitted changes.',
-//     'Please commit or stash them before releasing.'
-//   );
-// }
+step('🧼', 'Checking git status ...');
+let branch = await $`git branch --show-current`;
+if (trim(branch) !== 'main') {
+  exit(
+    `You are not on the main branch.`,
+    `Please switch to the ${chalk.underline('main')} branch before releasing.`
+  );
+}
+const clean = await $`git status --untracked-files=no --porcelain`;
+if (trim(clean) !== '') {
+  exit(
+    'There are uncommitted changes.',
+    'Please commit or stash them before releasing.'
+  );
+}
 
 step('🔒', 'Checking npm status ...');
 try {
@@ -97,15 +97,15 @@ if (!process.env.GITHUB_TOKEN) {
   );
 }
 
-// step('📦', 'Checking package status...');
-// await $`yarn changeset status`.pipe(process.stdout);
+step('📦', 'Checking package status...');
+await $`yarn changeset status`.pipe(process.stdout);
 
-// space();
-// log(chalk.bold('Please review the changeset.'));
-// await option('Do you want to continue?');
+space();
+log(chalk.bold('Please review the changeset.'));
+await option('Do you want to continue?');
 
-// step('🍾', 'Bumping versions & generating changelog...');
-// await $`yarn changeset version`.pipe(process.stdout);
+step('🍾', 'Bumping versions & generating changelog...');
+await $`yarn changeset version`.pipe(process.stdout);
 
 step('🔼', 'Pushing changes to main branch...');
 // We use "@marigold/components" as leading version
