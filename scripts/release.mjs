@@ -139,4 +139,4 @@ await $`yarn workspace @marigold/docs clean`;
 await $`yarn workspace @marigold/docs deploy`.pipe(process.stdout);
 
 space();
-log(brand.bold('🥳  Release complete!'));
+log(brand.bold('🥳  Deployment complete!'));
