@@ -1,13 +1,16 @@
 #!/usr/bin/env zx
 
 // Set available globals for eslint
-/* global $, question, chalk, fs */
+/* global $, cd, question, chalk */
 
 // Helper
 // ---------------
 const log = console.log;
 const space = () => log('');
+const brand = chalk.hex('#fa8005'); // orange color
+const trim = val => `${val}`.trim();
 const step = (icon, msg) => log(chalk.white.bold(`${icon}  ${msg}`));
+
 const option = async msg => {
   space();
   const asw = await question(chalk.bold(`${msg} [yes/no]`), {
@@ -18,6 +21,7 @@ const option = async msg => {
     process.exit(0);
   }
 };
+
 const exit = (msg, detail) => {
   space();
   log(chalk.red(`🚨 ${chalk.bold.underline('ERROR')}:`, chalk.bold(msg)));
@@ -26,15 +30,25 @@ const exit = (msg, detail) => {
   }
   process.exit(1);
 };
-const brand = chalk.hex('#fa8005'); // orange color
-const trim = val => `${val}`.trim();
+
+const publish = async workspace => {
+  const { name, version } = require(`../${workspace}/package.json`);
+  space();
+  log(chalk.bold(`📦  Publishing ${name}@${version}...`));
+  const cwd = process.cwd();
+  cd(workspace);
+  await $`yarn npm publish --access public  --tolerate-republish`.pipe(
+    process.stdout
+  );
+  cd(cwd); // restore cwd
+};
 
 // Scripts
 // ---------------
 log(brand.bold('┌───────────────────────────────────┐'));
-log(brand.bold('│                                   │ '));
-log(brand.bold('│   🏵  Preparing a new release!     │ '));
-log(brand.bold('│                                   │ '));
+log(brand.bold('│                                   │'));
+log(brand.bold('│   🏵  Preparing a new release!     │'));
+log(brand.bold('│                                   │'));
 log(brand.bold('└───────────────────────────────────┘'));
 space();
 
@@ -95,17 +109,31 @@ await $`yarn changeset version`.pipe(process.stdout);
 
 step('🔼', 'Pushing changes to main branch...');
 // We use "@marigold/components" as leading version
-let { version } = await fs.readJson('./packages/components/package.json');
+const { version } = require('../packages/components/package.json');
 await $`git commit -am "release: v${version}"`;
-await $`git push"`;
-await $`git push --tags"`;
+await $`git push`;
+await $`git push --tags`;
 
-step('👷‍♂️', 'Building packages...');
-await $`yarn build`;
+step('👷', 'Building packages...');
+await $`yarn build`.pipe(process.stdout);
 log('✓  Packages built.');
 
 step('🌟', 'Publishing to npm...');
-await $`yarn changeset publish`.pipe(process.stdout);
+await option(
+  'Do you want to continue? (you will be prompted for your 2FA token)'
+);
+await publish('config/eslint');
+await publish('config/jest');
+await publish('config/prettier');
+await publish('config/storybook');
+await publish('config/tsconfig');
+await publish('packages/components');
+await publish('packages/icons');
+await publish('packages/system');
+await publish('packages/types');
+await publish('themes/theme-b2b');
+await publish('themes/theme-core');
+await publish('themes/theme-unicorn');
 log(brand.bold('🥳  Release complete!'));
 
 await option(
@@ -117,4 +145,4 @@ await $`yarn workspace @marigold/docs clean`;
 await $`yarn workspace @marigold/docs deploy`.pipe(process.stdout);
 
 space();
-log(brand.bold('🥳  Release complete!'));
+log(brand.bold('🥳  Deployment complete!'));

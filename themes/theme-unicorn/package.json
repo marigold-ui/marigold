@@ -1,12 +1,12 @@
 {
   "name": "@marigold/theme-unicorn",
-  "version": "0.3.2",
+  "version": "0.3.4",
   "description": "Marigold's Developer Theme",
   "main": "dist/index.js",
   "module": "dist/theme-unicorn.esm.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
-  "dependencies": {
+  "peerDependencies": {
     "@marigold/components": "workspace:*"
   },
   "scripts": {

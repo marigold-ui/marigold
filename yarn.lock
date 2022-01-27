@@ -3614,7 +3614,7 @@ __metadata:
 "@marigold/theme-b2b@workspace:*, @marigold/theme-b2b@workspace:themes/theme-b2b":
   version: 0.0.0-use.local
   resolution: "@marigold/theme-b2b@workspace:themes/theme-b2b"
-  dependencies:
+  peerDependencies:
     "@marigold/components": "workspace:*"
   languageName: unknown
   linkType: soft
@@ -3622,7 +3622,7 @@ __metadata:
 "@marigold/theme-core@workspace:*, @marigold/theme-core@workspace:themes/theme-core":
   version: 0.0.0-use.local
   resolution: "@marigold/theme-core@workspace:themes/theme-core"
-  dependencies:
+  peerDependencies:
     "@marigold/components": "workspace:*"
   languageName: unknown
   linkType: soft
@@ -3630,7 +3630,7 @@ __metadata:
 "@marigold/theme-unicorn@workspace:*, @marigold/theme-unicorn@workspace:themes/theme-unicorn":
   version: 0.0.0-use.local
   resolution: "@marigold/theme-unicorn@workspace:themes/theme-unicorn"
-  dependencies:
+  peerDependencies:
     "@marigold/components": "workspace:*"
   languageName: unknown
   linkType: soft
