@@ -237,18 +237,14 @@ export const components = {
   },
   divider: {
     do: {
-      m: 'none',
       my: 'small',
-      border: 'none',
-      borderBottom: '8px solid',
-      color: 'green60',
+      height: '8px',
+      bg: 'green60',
     },
     dont: {
-      m: 'none',
       my: 'small',
-      border: 'none',
-      borderBottom: '8px solid',
-      color: 'red60',
+      height: '8px',
+      bg: 'red60',
     },
   },
   navigation: {
