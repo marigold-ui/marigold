@@ -5,7 +5,7 @@ import { AriaTextFieldProps } from '@react-types/textfield';
 import { Exclamation } from '@marigold/icons';
 import { ComponentProps } from '@marigold/types';
 
-import { Input } from '../Input';
+import { Box } from '../Box';
 import { Label } from '../Label';
 import { ValidationMessage } from '../ValidationMessage';
 
@@ -17,7 +17,6 @@ export type FieldProps = {
   htmlFor: string;
   required?: boolean;
   error?: boolean;
-  disabled?: boolean;
 } & AriaTextFieldProps &
   ComponentProps<'input'>;
 
@@ -31,7 +30,6 @@ export const Field: React.FC<FieldProps> = ({
   required,
   error,
   errorMessage,
-  disabled,
   ...props
 }) => {
   const ref = useRef<HTMLInputElement>(null);
@@ -49,13 +47,14 @@ export const Field: React.FC<FieldProps> = ({
       >
         {props.label}
       </Label>
-      <Input
-        {...props}
-        {...inputProps}
+      <Box
+        as="input"
         type={type}
         id={htmlFor}
-        disabled={disabled}
-        variant={variant}
+        variant={`input.${variant}`}
+        {...inputProps}
+        ref={ref}
+        {...props}
       />
       {error && errorMessage && (
         <ValidationMessage {...errorMessageProps}>

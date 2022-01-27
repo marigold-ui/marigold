@@ -109,7 +109,7 @@ test('supports error and errorMessage prop', () => {
 });
 
 test('supports disabled prop', () => {
-  render(<Field htmlFor="myId" label="label" disabled />);
-  const fieldLabel = screen.getByText(/label/);
-  expect(fieldLabel.nextSibling).toHaveAttribute('disabled');
+  render(<Field htmlFor="myId" label="label" data-testid="myId" disabled />);
+  const field = screen.getByTestId(/myId/);
+  expect(field).toHaveAttribute('disabled');
 });
