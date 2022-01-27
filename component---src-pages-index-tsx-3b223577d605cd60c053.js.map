@@ -1,1 +1,0 @@
-{"version":3,"file":"component---src-pages-index-tsx-3b223577d605cd60c053.js","mappings":"kLAEe,SAASA,IACtB,OAAO","sources":["webpack://@marigold/docs/./src/pages/index.tsx"],"sourcesContent":["import React from 'react';\n\nexport default function LandingPage() {\n  return <em>Currently not in use!</em>;\n}\n"],"names":["LandingPage"],"sourceRoot":""}
