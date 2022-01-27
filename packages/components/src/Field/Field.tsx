@@ -15,10 +15,8 @@ export type FieldProps = {
   variant?: string;
   labelVariant?: string;
   htmlFor: string;
-  label: string;
   required?: boolean;
   error?: boolean;
-  errorMessage?: string;
   disabled?: boolean;
 } & AriaTextFieldProps &
   ComponentProps<'input'>;
@@ -36,10 +34,11 @@ export const Field: React.FC<FieldProps> = ({
   disabled,
   ...props
 }) => {
-  const { label } = props;
   const ref = useRef<HTMLInputElement>(null);
-  const { labelProps, inputProps, descriptionProps, errorMessageProps } =
-    useTextField(props, ref);
+  const { labelProps, inputProps, errorMessageProps } = useTextField(
+    props,
+    ref
+  );
   return (
     <>
       <Label
@@ -48,7 +47,7 @@ export const Field: React.FC<FieldProps> = ({
         required={required}
         {...labelProps}
       >
-        {label}
+        {props.label}
       </Label>
       <Input
         {...props}
@@ -59,7 +58,7 @@ export const Field: React.FC<FieldProps> = ({
         variant={variant}
       />
       {error && errorMessage && (
-        <ValidationMessage>
+        <ValidationMessage {...errorMessageProps}>
           <Exclamation size={16} />
           {errorMessage}
         </ValidationMessage>
