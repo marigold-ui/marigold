@@ -43,9 +43,9 @@ const publish = async workspace => {
 // Scripts
 // ---------------
 log(brand.bold('┌───────────────────────────────────┐'));
-log(brand.bold('│                                   │ '));
-log(brand.bold('│   🏵  Preparing a new release!     │ '));
-log(brand.bold('│                                   │ '));
+log(brand.bold('│                                   │'));
+log(brand.bold('│   🏵  Preparing a new release!     │'));
+log(brand.bold('│                                   │'));
 log(brand.bold('└───────────────────────────────────┘'));
 space();
 
@@ -116,6 +116,9 @@ await $`yarn build`.pipe(process.stdout);
 log('✓  Packages built.');
 
 step('🌟', 'Publishing to npm...');
+await option(
+  'Do you want to continue? (you will be prompted for your 2FA token)'
+);
 await publish('config/eslint');
 await publish('config/jest');
 await publish('config/prettier');
