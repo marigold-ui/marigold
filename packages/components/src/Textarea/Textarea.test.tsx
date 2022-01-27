@@ -8,20 +8,23 @@ const theme = {
     body: 'Inter Regular',
     fancy: 'Roboto',
   },
+  colors: {
+    error: 'red',
+  },
   textarea: {
     __default: {
       fontFamily: 'body',
     },
-    textarea2: {
+    custom: {
       fontFamily: 'fancy',
     },
   },
 };
 
-test('supports default variant and themeSection', () => {
+test('supports default variant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Textarea title="textarea" />
+      <Textarea label="label" htmlFor="id" title="textarea" />
     </ThemeProvider>
   );
   const textarea = screen.getByTitle(/textarea/);
@@ -32,7 +35,7 @@ test('supports default variant and themeSection', () => {
 test('accepts other variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Textarea variant="textarea2" title="textarea" />
+      <Textarea label="label" htmlFor="id" variant="custom" title="textarea" />
     </ThemeProvider>
   );
   const textarea = screen.getByTitle(/textarea/);
@@ -43,7 +46,7 @@ test('accepts other variant than default', () => {
 test('renders correct HTML element', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Textarea title="textarea" />
+      <Textarea label="label" htmlFor="id" title="textarea" />
     </ThemeProvider>
   );
   const textarea = screen.getByTitle(/textarea/);
@@ -54,42 +57,39 @@ test('renders correct HTML element', () => {
 test('supports label prop', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Textarea label="test" htmlFor="myId" title="textarea" />
+      <Textarea label="test" htmlFor="id" title="textarea" />
     </ThemeProvider>
   );
-  const textarea = screen.getByText(/test/);
+  const label = screen.getByText(/test/);
 
-  expect(textarea instanceof HTMLLabelElement).toBeTruthy();
+  expect(label instanceof HTMLLabelElement).toBeTruthy();
 });
 
 test('supports error and errorMessage prop', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Textarea error errorMessage="error" label="label" title="textarea" />
+      <Textarea
+        error
+        errorMessage="error"
+        label="label"
+        htmlFor="id"
+        title="textarea"
+      />
     </ThemeProvider>
   );
-  const textarea = screen.getByText(/error/);
-  expect(textarea).toBeDefined();
+  const errorMessage = screen.getByText(/error/);
+  expect(errorMessage).toBeDefined();
+  const textarea = screen.getByTitle(/textarea/);
+  expect(textarea).toHaveStyle(`outline-color: red`);
 });
 
 test('supports required prop', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Textarea label="test" htmlFor="myId" required title="textarea" />
+      <Textarea label="test" htmlFor="id" required title="textarea" />
     </ThemeProvider>
   );
   const label = screen.getByText(/test/);
 
   expect(label.nextSibling instanceof SVGElement).toBeTruthy();
-});
-
-test('accepts custom styles prop className', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Textarea className="custom-class-name" title="textarea" />
-    </ThemeProvider>
-  );
-  const textarea = screen.getByTitle(/textarea/);
-
-  expect(textarea.className).toMatch('custom-class-name');
 });
