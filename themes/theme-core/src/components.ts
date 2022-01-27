@@ -439,17 +439,12 @@ export const components = {
     },
   },
   divider: {
-    regular: {
-      m: 'none',
-      my: 'small',
-      border: 0,
-      borderBottom: '1px solid',
+    __default: {
+      my: 'xsmall',
     },
     bold: {
-      m: 'none',
-      my: 'small',
-      border: 0,
-      borderBottom: '2px solid',
+      my: 'xsmall',
+      height: '2px',
     },
   },
   image: {

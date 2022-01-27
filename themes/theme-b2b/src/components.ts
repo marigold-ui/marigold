@@ -427,24 +427,16 @@ export const components = {
     },
   },
   divider: {
-    regular: {
-      m: 'none',
-      my: 'small',
-      border: 'none',
-      borderBottom: '1px solid',
+    __default: {
+      my: 'xsmall',
     },
     bold: {
-      m: 'none',
-      my: 'small',
-      border: 'none',
-      borderBottom: '2px solid',
+      my: 'xsmall',
+      height: '2px',
     },
     section: {
-      m: 'none',
-      mb: 'small',
-      border: 'none',
-      borderBottom: '1px solid',
-      borderColor: 'gray50',
+      my: 'xxsmall',
+      bg: 'gray50',
     },
   },
   image: {

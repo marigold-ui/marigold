@@ -7,65 +7,66 @@ const theme = {
   space: {
     none: 0,
     small: 2,
+    medium: 4,
   },
-  borders: {
-    none: 0,
-    regular: '1px solid',
+  colors: {
+    text: 'hotpink',
   },
   divider: {
-    regular: {
-      border: 'none',
-      borderBottom: 'regular',
+    __default: {
       margin: 'small',
     },
     bold: {
-      border: 'none',
-      borderBottom: '2px solid',
-      margin: 'small',
+      margin: 'medium',
     },
   },
 };
 
-test('supports default variant and themeSection', () => {
+test('has base styles', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Divider title="divider" />
+      <Divider data-testid="divider" />
     </ThemeProvider>
   );
-  const divider = screen.getByTitle(/divider/);
+  const divider = screen.getByTestId(/divider/);
 
-  expect(divider).toHaveStyle(`borderBottom: 1px solid`);
+  // __baseCSS
+  expect(divider).toHaveStyle(`background: hotpink`);
+  expect(divider).toHaveStyle(`width: 100%`);
+  expect(divider).toHaveStyle(`height: 1px`);
+  // margin from default variant
+  expect(divider).toHaveStyle(`margin: 2px`);
+});
+
+test('supports default variant', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Divider data-testid="divider" />
+    </ThemeProvider>
+  );
+  const divider = screen.getByTestId(/divider/);
+
+  expect(divider).toHaveStyle(`margin: 2px`);
 });
 
 test('accepts other variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Divider variant="bold" title="divider" />
+      <Divider variant="bold" data-testid="divider" />
     </ThemeProvider>
   );
-  const divider = screen.getByTitle(/divider/);
+  const divider = screen.getByTestId(/divider/);
 
-  expect(divider).toHaveStyle(`borderBottom: 2px solid`);
+  expect(divider).toHaveStyle(`margin: 4px`);
 });
 
 test('renders correct HTML element', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Divider title="divider" />
+      <Divider data-testid="divider" />
     </ThemeProvider>
   );
-  const divider = screen.getByTitle(/divider/);
+  const divider = screen.getByTestId(/divider/);
 
-  expect(divider instanceof HTMLHRElement).toBeTruthy();
-});
-
-test('accepts custom styles prop className', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Divider className="custom-class-name" title="divider" />
-    </ThemeProvider>
-  );
-  const divider = screen.getByTitle(/divider/);
-
-  expect(divider.className).toMatch('custom-class-name');
+  expect(divider instanceof HTMLDivElement).toBeTruthy();
 });
