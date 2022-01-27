@@ -19,6 +19,11 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "github:marigold-ui/marigold",
+    "directory": "packages/system"
+  },
   "dependencies": {
     "@emotion/react": "11.7.1",
     "@theme-ui/css": "0.13.1",

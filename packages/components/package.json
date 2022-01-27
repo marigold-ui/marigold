@@ -16,6 +16,11 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "github:marigold-ui/marigold",
+    "directory": "packages/components"
+  },
   "dependencies": {
     "@marigold/icons": "workspace:*",
     "@marigold/system": "workspace:*",

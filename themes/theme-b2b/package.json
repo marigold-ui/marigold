@@ -15,6 +15,11 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "github:marigold-ui/marigold",
+    "directory": "themes/theme-b2b"
+  },
   "peerDependencies": {
     "@marigold/components": "workspace:*"
   },

@@ -10,11 +10,16 @@
     "svg"
   ],
   "main": "dist/index.js",
-  "module": "dist/components.esm.js",
+  "module": "dist/icons.esm.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "github:marigold-ui/marigold",
+    "directory": "packages/icons"
+  },
   "dependencies": {
     "@marigold/system": "workspace:*"
   },
