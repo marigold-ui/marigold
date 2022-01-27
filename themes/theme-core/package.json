@@ -2,10 +2,19 @@
   "name": "@marigold/theme-core",
   "version": "0.3.3",
   "description": "Marigold Core Theme",
+  "license": "MIT",
+  "keywords": [
+    "marigold",
+    "core",
+    "theme",
+    "styles"
+  ],
   "main": "dist/index.js",
   "module": "dist/theme-core.esm.js",
   "typings": "dist/index.d.ts",
-  "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "peerDependencies": {
     "@marigold/components": "workspace:*"
   },
