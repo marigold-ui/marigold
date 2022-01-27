@@ -1,81 +1,53 @@
 # @marigold/theme-core
 
-## 0.3.0
+## 0.3.1
+
 ### Patch Changes
 
+- [#1634](https://github.com/marigold-ui/marigold/pull/1634) [`26ff3618`](https://github.com/marigold-ui/marigold/commit/26ff361822fe31d466bfeae988b0193ac5999f3b) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Radio component rewrite
 
+- Updated dependencies [[`26ff3618`](https://github.com/marigold-ui/marigold/commit/26ff361822fe31d466bfeae988b0193ac5999f3b), [`379041bc`](https://github.com/marigold-ui/marigold/commit/379041bc7d4502bca98029a95afe43ce693222cd)]:
+  - @marigold/components@0.3.1
+
+## 0.3.0
+
+### Patch Changes
 
 - [#1651](https://github.com/marigold-ui/marigold/pull/1651) [`4452b39c`](https://github.com/marigold-ui/marigold/commit/4452b39c822fa82671530e4c475c0cf1df967c60) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Checkbox component rewrite
 
-
-
-- [#1631](https://github.com/marigold-ui/marigold/pull/1631) [`9d0e0b96`](https://github.com/marigold-ui/marigold/commit/9d0e0b961afc21ef7a649e8d4dbf584ece6f0e57) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): improve Label and add color prop
-
-
+* [#1631](https://github.com/marigold-ui/marigold/pull/1631) [`9d0e0b96`](https://github.com/marigold-ui/marigold/commit/9d0e0b961afc21ef7a649e8d4dbf584ece6f0e57) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): improve Label and add color prop
 
 - [#1296](https://github.com/marigold-ui/marigold/pull/1296) [`796e901f`](https://github.com/marigold-ui/marigold/commit/796e901f185dae7d063f18d61663b000d6361861) Thanks [@ti10le](https://github.com/ti10le)! - docs: initial core-theme
 
-
-
-- [#1618](https://github.com/marigold-ui/marigold/pull/1618) [`bd51a81b`](https://github.com/marigold-ui/marigold/commit/bd51a81b4d961f3366c28f34732e13840e78b346) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): change Input default variant
-
-
+* [#1618](https://github.com/marigold-ui/marigold/pull/1618) [`bd51a81b`](https://github.com/marigold-ui/marigold/commit/bd51a81b4d961f3366c28f34732e13840e78b346) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): change Input default variant
 
 - [#1447](https://github.com/marigold-ui/marigold/pull/1447) [`29e4dcc5`](https://github.com/marigold-ui/marigold/commit/29e4dcc589f9bc97db56e554804b4cd78c0d2ec8) Thanks [@ti10le](https://github.com/ti10le)! - feature: Card component
 
-
-
-- [`4f5d51bc`](https://github.com/marigold-ui/marigold/commit/4f5d51bc173b4b286d453c79973c30ec9243af55) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): new colors for radio, checkbox, slider
-
-
+* [`4f5d51bc`](https://github.com/marigold-ui/marigold/commit/4f5d51bc173b4b286d453c79973c30ec9243af55) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): new colors for radio, checkbox, slider
 
 - [#1616](https://github.com/marigold-ui/marigold/pull/1616) [`ac186e8c`](https://github.com/marigold-ui/marigold/commit/ac186e8c6658bcd6a2892bbe4717c0d60c67e0b4) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): remove hardcoded variants in <Dialog>
 
-
-
-- [#1610](https://github.com/marigold-ui/marigold/pull/1610) [`116d6b0f`](https://github.com/marigold-ui/marigold/commit/116d6b0f3ae1db882882daee99901668997c23f2) Thanks [@ti10le](https://github.com/ti10le)! - feat(core-theme): split theme + make more consistent
-
-
+* [#1610](https://github.com/marigold-ui/marigold/pull/1610) [`116d6b0f`](https://github.com/marigold-ui/marigold/commit/116d6b0f3ae1db882882daee99901668997c23f2) Thanks [@ti10le](https://github.com/ti10le)! - feat(core-theme): split theme + make more consistent
 
 - [#1622](https://github.com/marigold-ui/marigold/pull/1622) [`1829cf17`](https://github.com/marigold-ui/marigold/commit/1829cf17e16c574e5577b3e1709c34dc7ed4faaf) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): change Card default variant
 
-
-
-- [#1619](https://github.com/marigold-ui/marigold/pull/1619) [`57d955ee`](https://github.com/marigold-ui/marigold/commit/57d955ee7c04350a4cdabc582f7d1a1937cb4802) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): change Textarea default variant
-
-
+* [#1619](https://github.com/marigold-ui/marigold/pull/1619) [`57d955ee`](https://github.com/marigold-ui/marigold/commit/57d955ee7c04350a4cdabc582f7d1a1937cb4802) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): change Textarea default variant
 
 - [#1366](https://github.com/marigold-ui/marigold/pull/1366) [`78a8e5c8`](https://github.com/marigold-ui/marigold/commit/78a8e5c879760ba666be4566935dd773996159cf) Thanks [@ti10le](https://github.com/ti10le)! - feature: renew radio component
 
-
-
-- [#1365](https://github.com/marigold-ui/marigold/pull/1365) [`6d1e47c1`](https://github.com/marigold-ui/marigold/commit/6d1e47c190c527f3a1ae014f87523c7fcc70c8c8) Thanks [@ti10le](https://github.com/ti10le)! - feature: redesign dialog component
-
-
+* [#1365](https://github.com/marigold-ui/marigold/pull/1365) [`6d1e47c1`](https://github.com/marigold-ui/marigold/commit/6d1e47c190c527f3a1ae014f87523c7fcc70c8c8) Thanks [@ti10le](https://github.com/ti10le)! - feature: redesign dialog component
 
 - [#1367](https://github.com/marigold-ui/marigold/pull/1367) [`902be38c`](https://github.com/marigold-ui/marigold/commit/902be38ca9efb3018a0f6c0cf981229c7ae2bf7f) Thanks [@ti10le](https://github.com/ti10le)! - feature: renew checkbox component
 
-
-
-- [#1633](https://github.com/marigold-ui/marigold/pull/1633) [`ab786e92`](https://github.com/marigold-ui/marigold/commit/ab786e927ab1069a83aeed7bb3b223d0c0d1bd50) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): remove hard coded label variant in radio
-
-
+* [#1633](https://github.com/marigold-ui/marigold/pull/1633) [`ab786e92`](https://github.com/marigold-ui/marigold/commit/ab786e927ab1069a83aeed7bb3b223d0c0d1bd50) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): remove hard coded label variant in radio
 
 - [#1617](https://github.com/marigold-ui/marigold/pull/1617) [`e5aed4bf`](https://github.com/marigold-ui/marigold/commit/e5aed4bffc4cb81ab531bb1ed8b5da871c9b8b00) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): change Slider default variant
 
-
-
-- [#1621](https://github.com/marigold-ui/marigold/pull/1621) [`2f7b936f`](https://github.com/marigold-ui/marigold/commit/2f7b936f5b07eade00a51cb138c3c492f1e08c9d) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): change Badge default variant
-
-
+* [#1621](https://github.com/marigold-ui/marigold/pull/1621) [`2f7b936f`](https://github.com/marigold-ui/marigold/commit/2f7b936f5b07eade00a51cb138c3c492f1e08c9d) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): change Badge default variant
 
 - [#1636](https://github.com/marigold-ui/marigold/pull/1636) [`4aeac33f`](https://github.com/marigold-ui/marigold/commit/4aeac33f619e6f9caee36a71223b312cfe1b9401) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Field fix default variant + remove hardcoded variants
 
-
-
-- [#1474](https://github.com/marigold-ui/marigold/pull/1474) [`abdde032`](https://github.com/marigold-ui/marigold/commit/abdde0326428a1fa5db340197e71ca0190e7780e) Thanks [@sebald](https://github.com/sebald)! - refa: remove useStyles from <Alert>
-
-
+* [#1474](https://github.com/marigold-ui/marigold/pull/1474) [`abdde032`](https://github.com/marigold-ui/marigold/commit/abdde0326428a1fa5db340197e71ca0190e7780e) Thanks [@sebald](https://github.com/sebald)! - refa: remove useStyles from <Alert>
 
 - [#1632](https://github.com/marigold-ui/marigold/pull/1632) [`c96d54a2`](https://github.com/marigold-ui/marigold/commit/c96d54a21901a72aeb6af71837c9642ace394c78) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): remove hard coded label variant in checkbox
 

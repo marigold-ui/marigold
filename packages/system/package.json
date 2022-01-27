@@ -1,6 +1,6 @@
 {
   "name": "@marigold/system",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Marigold System Library",
   "main": "dist/index.js",
   "module": "dist/system.esm.js",

@@ -1,7 +1,7 @@
 {
   "name": "@marigold/icons",
   "description": "",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/components.esm.js",
