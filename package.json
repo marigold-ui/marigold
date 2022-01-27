@@ -10,6 +10,7 @@
     "packages/*",
     "themes/*"
   ],
+  "packageManager": "yarn@3.2.0-rc.12",
   "engines": {
     "node": ">=16.x"
   },
