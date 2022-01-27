@@ -32,6 +32,9 @@ const exit = (msg, detail) => {
 };
 
 const publish = async workspace => {
+  const { name, version } = require(`../${workspace}/package.json`);
+  space();
+  log(chalk.bold(`📦  Publishing ${name}@${version}...`));
   const cwd = process.cwd();
   cd(workspace);
   await $`yarn npm publish --access public  --tolerate-republish`.pipe(
@@ -106,7 +109,7 @@ if (!process.env.GITHUB_TOKEN) {
 
 step('🔼', 'Pushing changes to main branch...');
 // We use "@marigold/components" as leading version
-const { version } = await fs.readJson('./packages/components/package.json');
+const { version } = require('../packages/components/package.json');
 await $`git commit -am "release: v${version}"`;
 await $`git push`;
 await $`git push --tags`;
