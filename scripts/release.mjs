@@ -1,7 +1,7 @@
 #!/usr/bin/env zx
 
 // Set available globals for eslint
-/* global $, question, chalk */
+/* global $, question, chalk, fs */
 
 // Helper
 // ---------------
@@ -27,6 +27,7 @@ const exit = (msg, detail) => {
   process.exit(1);
 };
 const brand = chalk.hex('#fa8005'); // orange color
+const trim = val => `${val}`.trim();
 
 // Scripts
 // ---------------
@@ -38,15 +39,15 @@ log(brand.bold('└────────────────────�
 space();
 
 step('🧼', 'Checking git status ...');
-const branch = await $`git branch --show-current`;
-if (branch !== 'main') {
+let branch = await $`git branch --show-current`;
+if (trim(branch) !== 'main') {
   exit(
     `You are not on the main branch.`,
     `Please switch to the ${chalk.underline('main')} branch before releasing.`
   );
 }
 const clean = await $`git status --untracked-files=no --porcelain`;
-if (clean !== '') {
+if (trim(clean) !== '') {
   exit(
     'There are uncommitted changes.',
     'Please commit or stash them before releasing.'
@@ -65,7 +66,7 @@ try {
 
 step('📱', 'Checking 2FA status ...');
 const mode = await $`npm profile get "two-factor auth"`;
-if (mode !== 'auth-and-writes') {
+if (trim(mode) !== 'auth-and-writes') {
   exit(
     'You have not set 2FA to the correct mode.',
     `Please set 2FA to "auth-and-writes" via ${chalk.underline(
@@ -87,10 +88,17 @@ await $`yarn changeset status`.pipe(process.stdout);
 
 space();
 log(chalk.bold('Please review the changeset.'));
-option('Do you want to continue?');
+await option('Do you want to continue?');
 
 step('🍾', 'Bumping versions & generating changelog...');
 await $`yarn changeset version`.pipe(process.stdout);
+
+step('🔼', 'Pushing changes to main branch...');
+// We use "@marigold/components" as leading version
+let { version } = await fs.readFile('./packages/components/package.json');
+await $`git commit -am "release: v${version}"`;
+await $`git push"`;
+await $`git push --tags"`;
 
 step('👷‍♂️', 'Building packages...');
 await $`yarn build`;
@@ -100,13 +108,13 @@ step('🌟', 'Publishing to npm...');
 await $`yarn changeset publish`.pipe(process.stdout);
 log(brand.bold('🥳  Release complete!'));
 
-option(
+await option(
   `Do you want to release new docs to ${chalk.underline(
     'https://marigold-ui.io/'
   )}?`
 );
-await $`yarn workspace @marigold/docs deploy`;
-log('✓  Docs deployed.');
+await $`yarn workspace @marigold/docs clean`;
+await $`yarn workspace @marigold/docs deploy`.pipe(process.stdout);
 
 space();
 log(brand.bold('🥳  Release complete!'));

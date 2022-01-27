@@ -10,11 +10,11 @@ export default {
       control: {
         type: 'select',
       },
-      options: ['regular', 'bold'],
+      options: ['__default', 'bold'],
       description: 'Thick or thin line',
       table: {
         defaultValue: {
-          summary: 'regular',
+          summary: '__default',
         },
       },
     },
