@@ -24,15 +24,17 @@ const theme = {
   },
 };
 
-test('renders correct HTML element', () => {
+test('renders correct HTML elements', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Field htmlFor="myId" label="label" />
+      <Field htmlFor="myId" label="label" data-testid="field" />
     </ThemeProvider>
   );
-  const field = screen.getByText(/label/);
+  const label = screen.getByText(/label/);
+  const field = screen.getByTestId(/field/);
 
-  expect(field instanceof HTMLLabelElement).toBeTruthy();
+  expect(label instanceof HTMLLabelElement).toBeTruthy();
+  expect(field instanceof HTMLInputElement).toBeTruthy();
 });
 
 test('supports default variant', () => {
@@ -107,24 +109,7 @@ test('supports error and errorMessage prop', () => {
 });
 
 test('supports disabled prop', () => {
-  render(<Field htmlFor="myId" label="label" disabled />);
-  const fieldLabel = screen.getByText(/label/);
-  expect(fieldLabel.nextSibling).toHaveAttribute('disabled');
-});
-
-test('accepts custom styles prop className', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Field
-        htmlFor="myId"
-        label="label"
-        className="custom-class-name"
-        title="field"
-        data-testid="field"
-      />
-    </ThemeProvider>
-  );
-  const field = screen.getByTestId(/field/);
-
-  expect(field.className).toMatch('custom-class-name');
+  render(<Field htmlFor="myId" label="label" data-testid="myId" disabled />);
+  const field = screen.getByTestId(/myId/);
+  expect(field).toHaveAttribute('disabled');
 });
