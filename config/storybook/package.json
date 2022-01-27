@@ -12,6 +12,11 @@
     "react",
     "docs"
   ],
+  "repository": {
+    "type": "git",
+    "url": "github:marigold-ui/marigold",
+    "directory": "config/prettier"
+  },
   "dependencies": {
     "@babel/core": "7.16.12",
     "@marigold/components": "workspace:*",
