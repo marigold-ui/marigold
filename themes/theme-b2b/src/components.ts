@@ -559,7 +559,7 @@ export const components = {
       lineHeight: 'medium',
       py: 'xxsmall',
       px: 'xsmall',
-      color: 'disabled',
+      color: 'text',
       border: 'none',
       borderRadius: 'small',
       outline: '1px solid',
@@ -569,6 +569,7 @@ export const components = {
         outlineColor: 'blue60',
       },
       ':disabled': {
+        color: 'disabled',
         bg: 'gray20',
       },
     },
