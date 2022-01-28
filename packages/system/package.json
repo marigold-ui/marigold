@@ -13,9 +13,10 @@
     "css",
     "emotion"
   ],
-  "main": "dist/index.js",
-  "module": "dist/system.esm.js",
-  "typings": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
@@ -26,6 +27,7 @@
   },
   "dependencies": {
     "@emotion/react": "11.7.1",
+    "@marigold/types": "workspace:*",
     "@theme-ui/css": "0.13.1",
     "csstype": "3.0.10"
   },
@@ -33,8 +35,13 @@
     "react": "^16.x || ^17.0.0",
     "react-dom": "^16.x || ^17.0.0"
   },
+  "devDependencies": {
+    "@marigold/tsconfig": "workspace:*",
+    "tsup": "5.11.11"
+  },
   "scripts": {
-    "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly",
-    "watch": "tsdx watch --tsconfig tsconfig.build.json --transpileOnly"
+    "build": "tsup src/index.ts",
+    "watch": "tsup src/index.ts --watch",
+    "clean": "rm -rf node_modules && rm -rf dist"
   }
 }

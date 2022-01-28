@@ -1,0 +1,8 @@
+{
+  "extends": "./base",
+  "compilerOptions": {
+    "target": "es2018",
+    "lib": ["es2017", "dom"],
+    "jsx": "react"
+  }
+}

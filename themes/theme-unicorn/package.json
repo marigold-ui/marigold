@@ -9,9 +9,10 @@
     "theme",
     "styles"
   ],
-  "main": "dist/index.js",
-  "module": "dist/theme-unicorn.esm.js",
-  "typings": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
@@ -20,11 +21,13 @@
     "url": "github:marigold-ui/marigold",
     "directory": "themes/theme-unicorn"
   },
-  "peerDependencies": {
-    "@marigold/components": "workspace:*"
+  "devDependencies": {
+    "@marigold/tsconfig": "workspace:*",
+    "tsup": "5.11.11"
   },
   "scripts": {
-    "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly",
-    "watch": "tsdx watch --tsconfig tsconfig.build.json --transpileOnly"
+    "build": "tsup src/index.ts",
+    "watch": "tsup src/index.ts --watch",
+    "clean": "rm -rf node_modules && rm -rf dist"
   }
 }
