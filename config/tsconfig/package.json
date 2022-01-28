@@ -9,12 +9,13 @@
     "tsconfig"
   ],
   "files": [
-    "tsconfig.base.json"
+    "base.json",
+    "react.json"
   ],
   "repository": {
     "type": "git",
     "url": "github:marigold-ui/marigold",
     "directory": "config/tsconfig"
   },
-  "tsconfig": "./tsconfig.base.json"
+  "tsconfig": "./base.json"
 }
