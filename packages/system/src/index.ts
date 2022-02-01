@@ -4,5 +4,6 @@ export * from './normalize';
 export * from './SVG';
 export * from './theme';
 export * from './types';
+export * from './useResponsiveValue';
 export * from './useTheme';
 export * from './variant';
