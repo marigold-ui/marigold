@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { ResponsiveStyleValue } from '@marigold/system';
+import { ResponsiveStyleValue, Theme } from '@marigold/system';
 import {
   PolymorphicComponentWithRef,
   PolymorphicPropsWithRef,
@@ -21,6 +21,7 @@ export type TextOwnProps = {
   align?: ResponsiveStyleValue<string>;
   color?: ResponsiveStyleValue<string>;
   cursor?: ResponsiveStyleValue<string>;
+  size?: ResponsiveStyleValue<keyof Theme['fontSizes'] | string>;
   outline?: ResponsiveStyleValue<string>;
   userSelect?: ResponsiveStyleValue<string>;
 } & BoxOwnProps;
@@ -40,6 +41,7 @@ export const Text: PolymorphicComponentWithRef<TextOwnProps, 'span'> =
         align,
         color,
         cursor,
+        size,
         outline,
         userSelect,
         ...props
@@ -50,7 +52,14 @@ export const Text: PolymorphicComponentWithRef<TextOwnProps, 'span'> =
         {...props}
         as={as}
         variant={`text.${variant}`}
-        css={{ textAlign: align, color, cursor, outline, userSelect }}
+        css={{
+          textAlign: align,
+          fontSize: size,
+          color,
+          cursor,
+          outline,
+          userSelect,
+        }}
         className={className}
         ref={ref}
       >
