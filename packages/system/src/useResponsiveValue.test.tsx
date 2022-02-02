@@ -101,3 +101,33 @@ test('responds to resize event', () => {
   act(() => resize());
   expect(result.current).toEqual('one');
 });
+
+test('throws if default index is below 0', () => {
+  window.matchMedia = mockMatchMedia([
+    'screen and (min-width: 40em)',
+    'screen and (min-width: 52em)',
+  ]);
+
+  const { result } = renderHook(() =>
+    useResponsiveValue(['one', 'two', 'three'], -1)
+  );
+
+  expect(result.error).toMatchInlineSnapshot(
+    `[RangeError: Default breakpoint index is out of bounds. Theme has 3 breakpoints, default is -1.]`
+  );
+});
+
+test('throws if default index is out of bounds', () => {
+  window.matchMedia = mockMatchMedia([
+    'screen and (min-width: 40em)',
+    'screen and (min-width: 52em)',
+  ]);
+
+  const { result } = renderHook(() =>
+    useResponsiveValue(['one', 'two', 'three'], 100)
+  );
+
+  expect(result.error).toMatchInlineSnapshot(
+    `[RangeError: Default breakpoint index is out of bounds. Theme has 3 breakpoints, default is 100.]`
+  );
+});
