@@ -3323,7 +3323,7 @@ __metadata:
     eslint-plugin-prettier: 4.0.0
     eslint-plugin-react: 7.28.0
     eslint-plugin-react-hooks: ^4.2.0
-    eslint-plugin-testing-library: 5.0.4
+    eslint-plugin-testing-library: 5.0.5
   peerDependencies:
     eslint: 7.26 || 7.27 || 7.29 || 7.30 || 7.31 || 7.32
   languageName: unknown
@@ -6951,17 +6951,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/experimental-utils@npm:^5.9.0":
-  version: 5.10.2
-  resolution: "@typescript-eslint/experimental-utils@npm:5.10.2"
-  dependencies:
-    "@typescript-eslint/utils": 5.10.2
-  peerDependencies:
-    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-  checksum: 49945b0652d431d4caa3618807c69bd2585e38ffc31b72379d27f43213b793b1193948b2e23dac9aa0c7afe01d0d4dbef589a0a64caf514623b73ee89beb6a43
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/parser@npm:5.10.1":
   version: 5.10.1
   resolution: "@typescript-eslint/parser@npm:5.10.1"
@@ -7133,7 +7122,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:5.10.2":
+"@typescript-eslint/utils@npm:^5.10.2":
   version: 5.10.2
   resolution: "@typescript-eslint/utils@npm:5.10.2"
   dependencies:
@@ -12443,14 +12432,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-testing-library@npm:5.0.4":
-  version: 5.0.4
-  resolution: "eslint-plugin-testing-library@npm:5.0.4"
+"eslint-plugin-testing-library@npm:5.0.5":
+  version: 5.0.5
+  resolution: "eslint-plugin-testing-library@npm:5.0.5"
   dependencies:
-    "@typescript-eslint/experimental-utils": ^5.9.0
+    "@typescript-eslint/utils": ^5.10.2
   peerDependencies:
     eslint: ^7.5.0 || ^8.0.0
-  checksum: 12edd7d4985ba23f58146e167b72ebfedba7b88754bbd0324cb69d97f9aed26d8930ee72772ed4b7db618e0cf10edba062d603196aaa467d18f8d87ae5d9185d
+  checksum: 423b5c27ce8b71ed3c8815bc55f97194dfbc6a228b08a4d71743b5c9882de9570fc190727f529d94b3f938dd5b2c8a1a9276e720486aff5e8653bf7512d0b9f1
   languageName: node
   linkType: hard
 
