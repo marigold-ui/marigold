@@ -19,8 +19,8 @@
     "directory": "config/eslint"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "5.10.1",
-    "@typescript-eslint/parser": "5.10.1",
+    "@typescript-eslint/eslint-plugin": "5.10.2",
+    "@typescript-eslint/parser": "5.10.2",
     "babel-eslint": "^10.1.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-react-app": "6.0.0",
