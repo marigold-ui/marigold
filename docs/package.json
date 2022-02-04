@@ -14,7 +14,7 @@
     "@mui/material": "5.4.0",
     "@mui/styles": "5.3.0",
     "babel-preset-gatsby": "2.6.0",
-    "gatsby": "4.6.1",
+    "gatsby": "4.6.2",
     "gatsby-plugin-image": "2.6.0",
     "gatsby-plugin-manifest": "4.6.0",
     "gatsby-plugin-mdx": "3.6.0",
