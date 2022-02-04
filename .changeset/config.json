@@ -6,5 +6,12 @@
     "@changesets/changelog-github",
     { "repo": "marigold-ui/marigold" }
   ],
-  "linked": [["@marigold/*"]]
+  "linked": [
+    [
+      "@marigold/system",
+      "@marigold/components",
+      "@marigold/icons",
+      "@marigold/theme-*"
+    ]
+  ]
 }
