@@ -3430,7 +3430,7 @@ __metadata:
     "@mui/material": 5.4.0
     "@mui/styles": 5.3.0
     "@types/mdx-js__react": 1.5.5
-    "@types/react": 17.0.38
+    "@types/react": 17.0.39
     "@types/react-helmet": 6.1.5
     babel-preset-gatsby: 2.6.0
     gatsby: 4.6.1
@@ -3601,7 +3601,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@marigold/types@workspace:packages/types"
   dependencies:
-    "@types/react": 17.0.38
+    "@types/react": 17.0.39
   peerDependencies:
     "@types/react": ^17.x
   languageName: unknown
@@ -7014,7 +7014,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:17.0.38, @types/react@npm:>=16.9.0":
+"@types/react@npm:*, @types/react@npm:>=16.9.0":
   version: 17.0.38
   resolution: "@types/react@npm:17.0.38"
   dependencies:
@@ -7022,6 +7022,17 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: 4079f4f959cd4a4bfaeda8b89fe8a1b1f8bdc9d87acfdc5f74a0b39cec9ec6a470724357c62778c0f063180b360c250e920c5a142f1dbcda67d9cc25a6d43a85
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:17.0.39":
+  version: 17.0.39
+  resolution: "@types/react@npm:17.0.39"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: bf04d3c2894559012710d595553e12b422d3b91cd8f4f7e122d8cb044ba9c2ba17f6e8a4e09581359cc5509ddc59cd8c8fabd6774f3505a40a45393f074d6e6e
   languageName: node
   linkType: hard
 
