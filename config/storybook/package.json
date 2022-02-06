@@ -19,15 +19,15 @@
     "directory": "config/prettier"
   },
   "dependencies": {
-    "@babel/core": "7.16.12",
+    "@babel/core": "7.17.0",
     "@marigold/components": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
     "@marigold/theme-unicorn": "workspace:*",
     "@mdx-js/react": "1.6.22",
-    "@storybook/addon-a11y": "6.4.17",
-    "@storybook/addon-essentials": "6.4.17",
-    "@storybook/addon-interactions": "6.4.17",
+    "@storybook/addon-a11y": "6.4.18",
+    "@storybook/addon-essentials": "6.4.18",
+    "@storybook/addon-interactions": "6.4.18",
     "@storybook/jest": "0.0.5",
     "@storybook/testing-library": "0.0.8",
     "babel-loader": "8.2.3",
@@ -36,7 +36,7 @@
     "tsconfig-paths-webpack-plugin": "3.5.2"
   },
   "peerDependencies": {
-    "@storybook/react": "6.4.17"
+    "@storybook/react": "6.4.18"
   },
   "scripts": {
     "start": "start-storybook -p 1337 -c ."
