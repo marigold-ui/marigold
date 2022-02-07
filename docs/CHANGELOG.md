@@ -1,5 +1,30 @@
 # @marigold/docs
 
+## 0.4.0
+
+### Minor Changes
+
+- [#1752](https://github.com/marigold-ui/marigold/pull/1752) [`4e28d056`](https://github.com/marigold-ui/marigold/commit/4e28d056292c56ca2fdbd2f223af3928db84f4c6) Thanks [@sebald](https://github.com/sebald)! - feat(docs): Initial about page
+
+* [`f9526234`](https://github.com/marigold-ui/marigold/commit/f9526234257a149b12c14191a524691470da3942) Thanks [@sebald](https://github.com/sebald)! - feat(docs): Update "Getting Started"
+
+- [#1753](https://github.com/marigold-ui/marigold/pull/1753) [`306887b6`](https://github.com/marigold-ui/marigold/commit/306887b6e931c0e6c1d9b8a73dba0b464137f76a) Thanks [@sebald](https://github.com/sebald)! - feat(docs): add padding to paragraphs
+
+* [`f9526234`](https://github.com/marigold-ui/marigold/commit/f9526234257a149b12c14191a524691470da3942) Thanks [@sebald](https://github.com/sebald)! - feat(docs): Update release + scripts documentation
+
+### Patch Changes
+
+- [`f9526234`](https://github.com/marigold-ui/marigold/commit/f9526234257a149b12c14191a524691470da3942) Thanks [@sebald](https://github.com/sebald)! - feat(comp): Rewrite Textarea with react-aria
+
+* [`f9526234`](https://github.com/marigold-ui/marigold/commit/f9526234257a149b12c14191a524691470da3942) Thanks [@sebald](https://github.com/sebald)! - feat(comp): rewrite Field component with react-aria
+
+* Updated dependencies [[`f9526234`](https://github.com/marigold-ui/marigold/commit/f9526234257a149b12c14191a524691470da3942), [`f9526234`](https://github.com/marigold-ui/marigold/commit/f9526234257a149b12c14191a524691470da3942), [`f9526234`](https://github.com/marigold-ui/marigold/commit/f9526234257a149b12c14191a524691470da3942), [`f9526234`](https://github.com/marigold-ui/marigold/commit/f9526234257a149b12c14191a524691470da3942)]:
+  - @marigold/components@0.4.0
+  - @marigold/icons@0.4.0
+  - @marigold/system@0.4.0
+  - @marigold/theme-b2b@1.0.0
+  - @marigold/types@0.4.0
+
 ## 0.3.2
 
 ### Patch Changes
