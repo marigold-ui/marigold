@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunk_marigold_docs=self.webpackChunk_marigold_docs||[]).push([[691],{86237:function(n,t,u){u.r(t),u.d(t,{default:function(){return i}});var e=u(27378),c=u(87296);function i(){return(0,e.useEffect)((function(){(0,c.navigate)("/introduction/getting-started")}),[]),null}}}]);
-//# sourceMappingURL=component---src-pages-index-tsx-37bc0cb274a213677035.js.map
