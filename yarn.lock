@@ -3453,7 +3453,7 @@ __metadata:
     "@storybook/addon-a11y": 6.4.18
     "@storybook/addon-essentials": 6.4.18
     "@storybook/addon-interactions": 6.4.18
-    "@storybook/jest": 0.0.5
+    "@storybook/jest": 0.0.6
     "@storybook/testing-library": 0.0.8
     babel-loader: 8.2.3
     find-up: 5.0.0
@@ -5550,14 +5550,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/jest@npm:0.0.5":
-  version: 0.0.5
-  resolution: "@storybook/jest@npm:0.0.5"
+"@storybook/jest@npm:0.0.6":
+  version: 0.0.6
+  resolution: "@storybook/jest@npm:0.0.6"
   dependencies:
     "@storybook/expect": storybook-jest
     "@storybook/instrumenter": 6.4.0-rc.5
     jest-mock: ^27.3.0
-  checksum: 66d3e5175674d92cbbced21f7ab7d1bea772eeb31acc7622f9f5e07132dd6c652c2a55227f74c30314819074c077da3bc24cc0d1d2d60138842fc4c9f7b1bd15
+  checksum: accf942c0c395483f766d718860688e9d38adfdd3a1cba25c35fd10598dfe52b212a63479db3e3eddc58bd83eeb3f0360fec03b223f3920543d86f08eadd1378
   languageName: node
   linkType: hard
 
