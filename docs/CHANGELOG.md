@@ -1,5 +1,26 @@
 # @marigold/docs
 
+## 0.4.0
+
+### Minor Changes
+
+- [#1744](https://github.com/marigold-ui/marigold/pull/1744) [`14b72860`](https://github.com/marigold-ui/marigold/commit/14b72860f46800858a4020a3613e15a4e5678af9) Thanks [@sebald](https://github.com/sebald)! - feat(docs): Update "Getting Started"
+
+* [#1711](https://github.com/marigold-ui/marigold/pull/1711) [`f33acc67`](https://github.com/marigold-ui/marigold/commit/f33acc674e9f4e7e2dabf9df1c9373165eeba776) Thanks [@sebald](https://github.com/sebald)! - feat(docs): Update release + scripts documentation
+
+### Patch Changes
+
+- [#1712](https://github.com/marigold-ui/marigold/pull/1712) [`d07348b9`](https://github.com/marigold-ui/marigold/commit/d07348b9b8ab0fb77c6ab26ed49c64243ea69078) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Rewrite Textarea with react-aria
+
+* [#1708](https://github.com/marigold-ui/marigold/pull/1708) [`574173ce`](https://github.com/marigold-ui/marigold/commit/574173ce561489a6893906a7f5678c06f6dd8f9f) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): rewrite Field component with react-aria
+
+* Updated dependencies [[`efc30e30`](https://github.com/marigold-ui/marigold/commit/efc30e30228fd25a6a5c51e04bf001e2c23af76b), [`165fe48c`](https://github.com/marigold-ui/marigold/commit/165fe48cf046c291aacd944bd2ca71d6bba7330c), [`d07348b9`](https://github.com/marigold-ui/marigold/commit/d07348b9b8ab0fb77c6ab26ed49c64243ea69078), [`574173ce`](https://github.com/marigold-ui/marigold/commit/574173ce561489a6893906a7f5678c06f6dd8f9f)]:
+  - @marigold/components@1.0.0
+  - @marigold/icons@1.0.0
+  - @marigold/system@1.0.0
+  - @marigold/theme-b2b@1.0.0
+  - @marigold/types@0.4.0
+
 ## 0.3.2
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @marigold/icons
 
+## 1.0.0
+
+### Minor Changes
+
+- [#1717](https://github.com/marigold-ui/marigold/pull/1717) [`efc30e30`](https://github.com/marigold-ui/marigold/commit/efc30e30228fd25a6a5c51e04bf001e2c23af76b) Thanks [@sebald](https://github.com/sebald)! - chore: Use `tsup` to build packages
+
+* [#1713](https://github.com/marigold-ui/marigold/pull/1713) [`165fe48c`](https://github.com/marigold-ui/marigold/commit/165fe48cf046c291aacd944bd2ca71d6bba7330c) Thanks [@sebald](https://github.com/sebald)! - Improved size in node_modules
+
+### Patch Changes
+
+- Updated dependencies [[`efc30e30`](https://github.com/marigold-ui/marigold/commit/efc30e30228fd25a6a5c51e04bf001e2c23af76b), [`165fe48c`](https://github.com/marigold-ui/marigold/commit/165fe48cf046c291aacd944bd2ca71d6bba7330c)]:
+  - @marigold/system@1.0.0
+
 ## 0.3.1
 
 ### Patch Changes
