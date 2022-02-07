@@ -1,19 +1,5 @@
 # @marigold/storybook-config
 
-## 0.4.0
-
-### Minor Changes
-
-- [#1713](https://github.com/marigold-ui/marigold/pull/1713) [`165fe48c`](https://github.com/marigold-ui/marigold/commit/165fe48cf046c291aacd944bd2ca71d6bba7330c) Thanks [@sebald](https://github.com/sebald)! - Improved size in node_modules
-
-### Patch Changes
-
-- Updated dependencies [[`efc30e30`](https://github.com/marigold-ui/marigold/commit/efc30e30228fd25a6a5c51e04bf001e2c23af76b), [`165fe48c`](https://github.com/marigold-ui/marigold/commit/165fe48cf046c291aacd944bd2ca71d6bba7330c), [`d07348b9`](https://github.com/marigold-ui/marigold/commit/d07348b9b8ab0fb77c6ab26ed49c64243ea69078), [`574173ce`](https://github.com/marigold-ui/marigold/commit/574173ce561489a6893906a7f5678c06f6dd8f9f)]:
-  - @marigold/components@1.0.0
-  - @marigold/theme-b2b@1.0.0
-  - @marigold/theme-core@1.0.0
-  - @marigold/theme-unicorn@1.0.0
-
 ## 0.3.2
 
 ### Patch Changes

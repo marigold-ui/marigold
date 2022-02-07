@@ -1,24 +1,5 @@
 # @marigold/components
 
-## 1.0.0
-
-### Minor Changes
-
-- [#1717](https://github.com/marigold-ui/marigold/pull/1717) [`efc30e30`](https://github.com/marigold-ui/marigold/commit/efc30e30228fd25a6a5c51e04bf001e2c23af76b) Thanks [@sebald](https://github.com/sebald)! - chore: Use `tsup` to build packages
-
-* [#1713](https://github.com/marigold-ui/marigold/pull/1713) [`165fe48c`](https://github.com/marigold-ui/marigold/commit/165fe48cf046c291aacd944bd2ca71d6bba7330c) Thanks [@sebald](https://github.com/sebald)! - Improved size in node_modules
-
-### Patch Changes
-
-- [#1712](https://github.com/marigold-ui/marigold/pull/1712) [`d07348b9`](https://github.com/marigold-ui/marigold/commit/d07348b9b8ab0fb77c6ab26ed49c64243ea69078) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Rewrite Textarea with react-aria
-
-* [#1708](https://github.com/marigold-ui/marigold/pull/1708) [`574173ce`](https://github.com/marigold-ui/marigold/commit/574173ce561489a6893906a7f5678c06f6dd8f9f) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): rewrite Field component with react-aria
-
-* Updated dependencies [[`efc30e30`](https://github.com/marigold-ui/marigold/commit/efc30e30228fd25a6a5c51e04bf001e2c23af76b), [`165fe48c`](https://github.com/marigold-ui/marigold/commit/165fe48cf046c291aacd944bd2ca71d6bba7330c)]:
-  - @marigold/icons@1.0.0
-  - @marigold/system@1.0.0
-  - @marigold/types@0.4.0
-
 ## 0.3.2
 
 ### Patch Changes
