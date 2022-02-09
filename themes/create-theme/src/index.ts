@@ -1,5 +1,3 @@
-// @ts-expect-error (you can check available props here: https://open-props.style/)
-import op from 'open-props';
 import { Theme } from '@marigold/system';
 
 const base: Theme = {
