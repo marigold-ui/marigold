@@ -8253,6 +8253,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"async-retry@npm:1.3.3":
+  version: 1.3.3
+  resolution: "async-retry@npm:1.3.3"
+  dependencies:
+    retry: 0.13.1
+  checksum: 38a7152ff7265a9321ea214b9c69e8224ab1febbdec98efbbde6e562f17ff68405569b796b1c5271f354aef8783665d29953f051f68c1fc45306e61aec82fdc4
+  languageName: node
+  linkType: hard
+
 "async@npm:1.5.2":
   version: 1.5.2
   resolution: "async@npm:1.5.2"
@@ -18203,6 +18212,7 @@ __metadata:
     "@testing-library/user-event": 13.5.0
     "@types/node": 16.11.22
     all-contributors-cli: 6.20.0
+    async-retry: 1.3.3
     eslint: 7.32.0
     husky: 7.0.4
     jest: 27.4.7
@@ -22963,6 +22973,13 @@ __metadata:
     parse-english: ^4.0.0
     unherit: ^1.0.4
   checksum: 0a8f164753eb187a4c02a4e55bf70bf72a3a41055a8d6e2b864fb7e601ceae20e31e726d14e8aca69b769e26056e6f15a76e36ac74c6ad24165ffe0d24f5c34c
+  languageName: node
+  linkType: hard
+
+"retry@npm:0.13.1":
+  version: 0.13.1
+  resolution: "retry@npm:0.13.1"
+  checksum: 47c4d5be674f7c13eee4cfe927345023972197dbbdfba5d3af7e461d13b44de1bfd663bfc80d2f601f8ef3fc8164c16dd99655a221921954a65d044a2fc1233b
   languageName: node
   linkType: hard
 

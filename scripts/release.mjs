@@ -2,6 +2,7 @@
 
 // Set available globals for eslint
 /* global $, cd, question, chalk */
+const retry = require('async-retry');
 
 // Helper
 // ---------------
@@ -32,15 +33,28 @@ const exit = (msg, detail) => {
 };
 
 const publish = async workspace => {
-  const { name, version } = require(`../${workspace}/package.json`);
-  space();
-  log(chalk.bold(`📦  Publishing ${name}@${version}...`));
   const cwd = process.cwd();
-  cd(workspace);
-  await $`yarn npm publish --access public  --tolerate-republish`.pipe(
-    process.stdout
+
+  await retry(
+    async () => {
+      const { name, version } = require(`../${workspace}/package.json`);
+      space();
+      log(chalk.bold(`📦  Publishing ${name}@${version}...`));
+      cd(workspace);
+      await $`yarn npm publish --access public  --tolerate-republish`.pipe(
+        process.stdout
+      );
+    },
+    {
+      retries: 5,
+      onRetry: () => {
+        log(chalk.bold("🔁  Whoopsie, let's try again!"));
+      },
+    }
   );
-  cd(cwd); // restore cwd
+
+  // always restore cwd
+  cd(cwd);
 };
 
 // Scripts
