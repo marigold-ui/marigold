@@ -69,7 +69,7 @@ export interface Theme {
    * ```ts
    * {
    *   breakpoints: [
-   *     '40em', '@media (min-width: 56em) and (orientation: landscape)', '64em',
+   *     '40em', '50em', '64em',
    *   ],
    * }
    * ```

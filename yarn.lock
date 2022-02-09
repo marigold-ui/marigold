@@ -3342,6 +3342,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@marigold/create-theme@workspace:themes/create-theme":
+  version: 0.0.0-use.local
+  resolution: "@marigold/create-theme@workspace:themes/create-theme"
+  dependencies:
+    "@marigold/tsconfig": "workspace:*"
+    open-props: 1.3.5
+    tsup: 5.11.13
+  peerDependencies:
+    "@marigold/components": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
 "@marigold/docs@workspace:docs":
   version: 0.0.0-use.local
   resolution: "@marigold/docs@workspace:docs"
@@ -19627,6 +19639,13 @@ __metadata:
   version: 1.3.3
   resolution: "open-props@npm:1.3.3"
   checksum: eede2d142c8721a1db5f8d3608cd0af5616d5e7ea63fe8032fb454c1e38b0a688876106399c461a9463b9843c017d84edf5e0b56521c27ad153f2859dfa2170f
+  languageName: node
+  linkType: hard
+
+"open-props@npm:1.3.5":
+  version: 1.3.5
+  resolution: "open-props@npm:1.3.5"
+  checksum: f66a0860f0644748eaa98894d16b085393ba453659833cca90b22d2a7c5ba009fc96ebb2093cc71ef5c993cdfb67b137d765abfa9265b7bb2ca84827d2d437bc
   languageName: node
   linkType: hard
 
