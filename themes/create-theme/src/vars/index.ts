@@ -8,3 +8,6 @@
  */
 
 export * as color from './color';
+
+export { aspect } from './aspect';
+export { shadow } from './shadow';
