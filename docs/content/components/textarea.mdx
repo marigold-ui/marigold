@@ -6,17 +6,15 @@ title: Textarea
 
 ## Description
 
-With the Textarea component you can add a HTML `<textarea>` element for larger text input to your form.
-The variant can be added with the variant prop. The default variant is `default`.
-If you use the label prop you have to add htmlFor. Optionally you can pass an error with errorMessage or the required prop.
+The Textarea component consists of an `<textarea>` element and a `<label>`.
 
 ## Properties
 
 | Property                  | Type      | Default     |
 | :------------------------ | :-------- | :---------- |
 | `variant` (optional)      | `string`  | `__default` |
-| `label` (optional)        | `string`  |             |
-| `htmlFor` (optional)      | `string`  | `textarea`  |
+| `label`                   | `string`  |             |
+| `htmlFor`                 | `string`  |             |
 | `error` (optional)        | `boolean` |             |
 | `errorMessage` (optional) | `string`  |             |
 | `required` (optional)     | `boolean` |             |
@@ -30,7 +28,11 @@ import { Textarea } from '@marigold/components';
 ## Live-Code Example
 
 ```tsx expandCode
-<Textarea placeholder="Place your text here.." />
+<Textarea
+  label="Textarea One"
+  htmlFor="textareaOne"
+  placeholder="Place your text here.."
+/>
 ```
 
 ## Usage
@@ -38,32 +40,35 @@ import { Textarea } from '@marigold/components';
 ### Basic Textarea
 
 ```tsx
-<Textarea placeholder="Placeholder" />
+<Textarea
+  label="Textarea Two"
+  htmlFor="textareaTwo"
+  placeholder="Placeholder"
+/>
 ```
 
 ### Disabled Textarea
 
 ```tsx
-<Textarea placeholder="Placeholder disabled" disabled />
-```
-
-### Labeled Textarea
-
-```tsx
-<Textarea label="Labeled" htmlFor="label" />
+<Textarea
+  label="Textarea Three"
+  htmlFor="textareaThree"
+  placeholder="Placeholder disabled"
+  disabled
+/>
 ```
 
 ### Required Textarea
 
 ```tsx
-<Textarea label="Required" htmlFor="required" required />
+<Textarea label="Required Textarea" htmlFor="required" required />
 ```
 
 ### Error Textarea
 
 ```tsx
 <Textarea
-  label="Required with error"
+  label="Required Textarea with error"
   htmlFor="error"
   required
   error

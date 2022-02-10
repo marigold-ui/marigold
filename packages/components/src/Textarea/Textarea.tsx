@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { useTextField } from '@react-aria/textfield';
+import { AriaTextFieldProps } from '@react-types/textfield';
+
 import { Exclamation } from '@marigold/icons';
 import { ComponentProps } from '@marigold/types';
 
@@ -18,45 +21,53 @@ export interface TextareaThemeExtension<Value> {
 // ---------------
 export type TextareaProps = {
   variant?: string;
-  label?: string;
-  htmlFor?: string;
+  htmlFor: string;
   required?: boolean;
   error?: boolean;
-  errorMessage?: string;
-} & ComponentProps<'textarea'>;
+} & AriaTextFieldProps &
+  ComponentProps<'textarea'>;
 
 // Component
 // ---------------
 export const Textarea: React.FC<TextareaProps> = ({
   variant = '',
-  htmlFor = 'textarea',
-  label,
+  htmlFor,
   error,
   errorMessage,
   required,
-  className = '',
   children,
   ...props
-}) => (
-  <Box>
-    {label && (
-      <Label htmlFor={htmlFor} required={required}>
-        {label}
+}) => {
+  const ref = useRef<HTMLTextAreaElement>(null);
+  const { labelProps, inputProps, errorMessageProps } = useTextField(
+    {
+      ...props,
+      inputElementType: 'textarea',
+    },
+    ref
+  );
+
+  return (
+    <Box>
+      <Label htmlFor={htmlFor} required={required} {...labelProps}>
+        {props.label}
       </Label>
-    )}
-    <Box
-      as="textarea"
-      {...props}
-      display="block"
-      variant={`textarea.${variant}`}
-      css={{ outlineColor: error && 'error' }}
-      className={className}
-    />
-    {error && errorMessage && (
-      <ValidationMessage>
-        <Exclamation size={16} />
-        {errorMessage}
-      </ValidationMessage>
-    )}
-  </Box>
-);
+      <Box
+        as="textarea"
+        variant={`textarea.${variant}`}
+        css={{
+          outlineColor: error && 'error',
+        }}
+        {...inputProps}
+        ref={ref}
+        {...props}
+      />
+      {error && errorMessage && (
+        <ValidationMessage {...errorMessageProps}>
+          <Exclamation size={16} />
+          {errorMessage}
+        </ValidationMessage>
+      )}
+    </Box>
+  );
+};

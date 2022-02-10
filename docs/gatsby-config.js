@@ -1,9 +1,20 @@
+const git = require('git-rev-sync');
+const pkg = require('./package.json');
+
 module.exports = {
   pathPrefix: '/marigold/',
   siteMetadata: {
     title: 'Marigold Design System',
     siteUrl: 'https://marigold-ui.io/',
-    navigation: ['foundation', 'components', 'themes', 'develop'],
+    hash: git.long(),
+    version: pkg.version,
+    navigation: [
+      'introduction',
+      'foundation',
+      'components',
+      'themes',
+      'develop',
+    ],
   },
   plugins: [
     'gatsby-plugin-image',

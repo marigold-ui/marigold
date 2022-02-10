@@ -45,13 +45,14 @@ export const typography = {
     body: {
       ...text.root,
       color: 'gray.40',
+      marginBottom: 'medium',
     },
     headline1: {
       ...text.root,
       ...text.heading,
       fontSize: 'xlarge',
       marginBottom: 'medium',
-      '&:first-child': {
+      '&:first-of-type': {
         marginTop: 'none',
       },
     },
@@ -61,7 +62,7 @@ export const typography = {
       fontSize: 'large',
       marginTop: 'large',
       marginBottom: 'xsmall',
-      '&:first-child': {
+      '&:first-of-type': {
         marginTop: 'none',
       },
     },
@@ -71,7 +72,7 @@ export const typography = {
       fontSize: 'medium',
       marginTop: 'small',
       marginBottom: 'xsmall',
-      '&:first-child': {
+      '&:first-of-type': {
         marginTop: 'none',
       },
     },

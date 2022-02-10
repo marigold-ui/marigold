@@ -1,19 +1,25 @@
 {
   "name": "@marigold/jest-config",
   "description": "Marigold's jest configuration",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "license": "MIT",
   "keywords": [
+    "marigold",
     "jest",
     "test",
     "testing",
     "config"
   ],
+  "main": "index.js",
   "files": [
     "index.js",
     "jest.setup.ts"
   ],
-  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marigold-ui/marigold",
+    "directory": "config/jest"
+  },
   "dependencies": {
     "@swc/core": "^1.2.120",
     "@swc/jest": "^0.2.15",

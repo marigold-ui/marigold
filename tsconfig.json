@@ -1,5 +1,5 @@
 {
-  "extends": "@marigold/tsconfig",
+  "extends": "@marigold/tsconfig/react",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

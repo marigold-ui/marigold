@@ -1,13 +1,33 @@
 {
   "name": "@marigold/system",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Marigold System Library",
-  "main": "dist/index.js",
-  "module": "dist/system.esm.js",
-  "typings": "dist/index.d.ts",
   "license": "MIT",
+  "keywords": [
+    "marigold",
+    "system",
+    "library",
+    "react",
+    "theme-ui",
+    "styling",
+    "css",
+    "emotion"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marigold-ui/marigold",
+    "directory": "packages/system"
+  },
   "dependencies": {
     "@emotion/react": "11.7.1",
+    "@marigold/types": "workspace:*",
     "@theme-ui/css": "0.13.1",
     "csstype": "3.0.10"
   },
@@ -15,8 +35,13 @@
     "react": "^16.x || ^17.0.0",
     "react-dom": "^16.x || ^17.0.0"
   },
+  "devDependencies": {
+    "@marigold/tsconfig": "workspace:*",
+    "tsup": "5.11.13"
+  },
   "scripts": {
-    "build": "tsdx build --tsconfig tsconfig.build.json --transpileOnly",
-    "watch": "tsdx watch --tsconfig tsconfig.build.json --transpileOnly"
+    "build": "tsup src/index.ts",
+    "watch": "tsup src/index.ts --watch",
+    "clean": "rm -rf node_modules && rm -rf dist"
   }
 }
