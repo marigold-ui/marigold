@@ -80,6 +80,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "andres-dediego2",
+      "name": "andres-dediego2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/34473133?v=4",
+      "profile": "https://github.com/andres-dediego2",
+      "contributions": [
+        "design",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
