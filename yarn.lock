@@ -3370,7 +3370,7 @@ __metadata:
     gatsby-source-filesystem: 4.6.0
     gatsby-transformer-sharp: 4.6.0
     gh-pages: 3.2.3
-    git-rev-sync: ^3.0.2
+    git-rev-sync: 3.0.2
     mdx-utils: 0.2.0
     open-props: 1.3.3
     postcss-combine-duplicated-selectors: 10.0.3
@@ -14576,7 +14576,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"git-rev-sync@npm:^3.0.2":
+"git-rev-sync@npm:3.0.2":
   version: 3.0.2
   resolution: "git-rev-sync@npm:3.0.2"
   dependencies:
