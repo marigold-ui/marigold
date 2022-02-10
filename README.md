@@ -81,6 +81,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://toshibot.com"><img src="https://avatars3.githubusercontent.com/u/6447213?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Toshi</b></sub></a><br /><a href="https://github.com/marigold-ui/marigold/commits?author=Toshibot" title="Code">💻</a> <a href="https://github.com/marigold-ui/marigold/commits?author=Toshibot" title="Documentation">📖</a> <a href="#design-Toshibot" title="Design">🎨</a></td>
     <td align="center"><a href="https://github.com/julianthiel"><img src="https://avatars1.githubusercontent.com/u/59880423?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Julian Thiel</b></sub></a><br /><a href="https://github.com/marigold-ui/marigold/commits?author=julianthiel" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/johannaracky"><img src="https://avatars.githubusercontent.com/u/86712740?v=4?s=100" width="100px;" alt=""/><br /><sub><b>johannaracky</b></sub></a><br /><a href="https://github.com/marigold-ui/marigold/commits?author=johannaracky" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://bandism.net/"><img src="https://avatars.githubusercontent.com/u/22633385?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ikko Ashimine</b></sub></a><br /><a href="https://github.com/marigold-ui/marigold/commits?author=eltociear" title="Documentation">📖</a></td>
   </tr>
 </table>
 
