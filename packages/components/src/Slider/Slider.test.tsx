@@ -8,56 +8,118 @@ const theme = {
     regular: 'Oswald Regular',
     body: 'Inter',
   },
+  label: {
+    above: {
+      fontSize: '14px',
+    },
+    inline: {
+      fontSize: '8px',
+    },
+  },
   slider: {
     __default: {
-      fontFamily: 'regular',
+      p: '16px',
     },
-    special: {
-      fontFamily: 'body',
+    default: {
+      p: '8px',
+    },
+  },
+  sliderThumb: {
+    __default: {
+      width: 16,
+    },
+    default: {
+      width: 8,
     },
   },
 };
 
-test('supports default variant and themeSection', () => {
+test('supports default variant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Slider title="slider" />
+      <Slider label="slider" id="slider" title="sliderTitle" />
     </ThemeProvider>
   );
-  const slider = screen.getByTitle(/slider/);
+  const sliderLabel = screen.getAllByTitle(/sliderTitle/)[0];
 
-  expect(slider).toHaveStyle(`font-family: Oswald Regular`);
+  expect(sliderLabel.firstChild).toHaveStyle(`padding: 16px`);
 });
 
 test('accepts other variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Slider variant="special" title="slider" />
+      <Slider
+        label="slider"
+        id="slider"
+        title="sliderTitle"
+        variant="default"
+      />
     </ThemeProvider>
   );
-  const slider = screen.getByTitle(/slider/);
+  const sliderLabel = screen.getAllByTitle(/sliderTitle/)[0];
 
-  expect(slider).toHaveStyle(`font-family: Inter`);
+  expect(sliderLabel.firstChild).toHaveStyle(`padding: 8px`);
 });
 
-test('renders <input> element by default', () => {
+test('supports default thumbVariant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Slider title="slider" />
+      <Slider label="slider" id="slider" title="sliderTitle" />
     </ThemeProvider>
   );
-  const slider = screen.getByTitle(/slider/);
+  const sliderLabel = screen.getAllByTitle(/sliderTitle/)[1].parentElement;
 
-  expect(slider instanceof HTMLInputElement).toBeTruthy();
+  expect(sliderLabel?.parentElement).toHaveStyle(`width: 16px`);
 });
 
-test('accepts custom styles prop className', () => {
+test('accepts other thumbVariant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Slider className="custom-class-name" title="slider" />
+      <Slider
+        label="slider"
+        id="slider"
+        title="sliderTitle"
+        thumbVariant="default"
+      />
     </ThemeProvider>
   );
-  const slider = screen.getByTitle(/slider/);
+  const sliderLabel = screen.getAllByTitle(/sliderTitle/)[1].parentElement;
 
-  expect(slider.className).toMatch('custom-class-name');
+  expect(sliderLabel?.parentElement).toHaveStyle(`width: 8px`);
 });
+
+test('supports default labelVariant', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Slider label="slider" id="slider" />
+    </ThemeProvider>
+  );
+  const sliderLabel = screen.getByText(/slider/);
+
+  expect(sliderLabel).toHaveStyle(`font-size: 14px`);
+});
+
+test('accepts other labelVariant than default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Slider label="slider" labelVariant="inline" id="slider" />
+    </ThemeProvider>
+  );
+  const sliderLabel = screen.getByText(/slider/);
+
+  expect(sliderLabel).toHaveStyle(`font-size: 8px`);
+});
+
+test('supports disabled prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Slider label="slider" id="slider" title="sliderTitle" disabled />
+    </ThemeProvider>
+  );
+  const slider = screen.getAllByTitle(/sliderTitle/);
+
+  expect(slider[0]).toHaveAttribute(`disabled`);
+  expect(slider[0]).toHaveStyle(`cursor: not-allowed`);
+});
+
+test('moves slider thumb like accepted', () => {});

@@ -1,16 +1,19 @@
 import React, { HTMLAttributes, RefObject } from 'react';
+import { useFocusRing } from '@react-aria/focus';
+import { mergeProps } from '@react-aria/utils';
 import { SliderState } from '@react-stately/slider';
 
-import { conditional } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 import { Box } from '../Box';
+import { Thumb } from './Thumb';
+import { TrackLine } from './TrackLine';
 
 // Track Props
 // ---------------
 export type SliderTrackProps = {
   variant?: string;
-  isFocused?: boolean;
+  thumbVariant?: string;
   trackRef: RefObject<HTMLElement>;
   state: SliderState;
 } & HTMLAttributes<HTMLElement> &
@@ -20,65 +23,41 @@ export type SliderTrackProps = {
 // ---------------
 export const SliderTrack: React.FC<SliderTrackProps> = ({
   variant = '',
+  thumbVariant = '',
   trackRef,
-  isFocused,
   state,
-  children,
   ...props
-}) => (
-  <Box
-    __baseCSS={{
-      position: 'relative',
-      height: 32,
-      width: ' 100%',
-      cursor: 'pointer',
-    }}
-    ref={trackRef}
-    variant={`track.${variant}`}
-    {...props}
-  >
-    <TrackLine variant={variant} disabled={props.disabled} />
-    <TrackLine
-      variant={variant}
-      disabled={props.disabled}
-      isFocused={isFocused}
-      thumbPercent={state.getThumbPercent(0)}
-    />
-    {children}
-  </Box>
-);
-
-// TrackLine Props
-// ---------------
-type TrackLineProps = {
-  variant?: string;
-  disabled?: boolean;
-  isFocused?: boolean;
-  thumbPercent?: number;
-};
-
-// TrackLine
-// ---------------
-const TrackLine: React.FC<TrackLineProps> = ({
-  variant = '',
-  disabled = false,
-  isFocused = false,
-  thumbPercent,
 }) => {
+  const { isFocusVisible, focusProps, isFocused } = useFocusRing();
+  const focused = isFocused || isFocusVisible || state.isThumbDragging(0);
+
   return (
     <Box
       __baseCSS={{
-        width: thumbPercent ? `${thumbPercent * 100}%` : '100%',
-        position: 'absolute',
-        top: 16,
-        height: 8,
-        border: 'none',
+        position: 'relative',
+        height: 32,
+        width: '100%',
+        cursor: props.disabled ? 'not-allowed' : 'pointer',
       }}
-      variant={conditional(`slider.${variant}`, {
-        focus: isFocused,
-        disabled: disabled,
-        checked: thumbPercent ? thumbPercent > 0 && !isFocused : false,
-      })}
-    />
+      ref={trackRef}
+      {...props}
+    >
+      <TrackLine variant={variant} />
+      <TrackLine
+        variant={variant}
+        disabled={props.disabled}
+        focused={focused}
+        thumbPercent={state.getThumbPercent(0)}
+      />
+      <Thumb
+        state={state}
+        trackRef={trackRef}
+        variant={thumbVariant}
+        index={0}
+        disabled={props.disabled}
+        focused={focused}
+        {...mergeProps(focusProps, props)}
+      />
+    </Box>
   );
 };

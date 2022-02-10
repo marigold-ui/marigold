@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import { useFocusRing } from '@react-aria/focus';
 import { useSlider } from '@react-aria/slider';
+import { mergeProps } from '@react-aria/utils';
 import { useSliderState } from '@react-stately/slider';
 import { useNumberFormatter } from '@react-aria/i18n';
 import { NumberFormatOptions } from '@internationalized/number';
@@ -10,7 +10,6 @@ import { ComponentProps } from '@marigold/types';
 
 import { Box } from '../Box';
 import { Label } from '../Label';
-import { Thumb } from './Thumb';
 import { SliderTrack } from './SliderTrack';
 
 // Theme Extension
@@ -25,6 +24,7 @@ export interface SliderThemeExtension<Value> {
 // ---------------
 export type SliderProps = {
   variant?: string;
+  thumbVariant?: string;
   labelVariant?: string;
   formatOptions?: NumberFormatOptions;
   required?: boolean;
@@ -35,6 +35,7 @@ export type SliderProps = {
 // ---------------
 export const Slider: React.FC<SliderProps> = ({
   variant = '',
+  thumbVariant = '',
   labelVariant = 'above',
   required,
   ...props
@@ -47,45 +48,29 @@ export const Slider: React.FC<SliderProps> = ({
     state,
     trackRef
   );
-  const { isFocusVisible, focusProps, isFocused } = useFocusRing();
-  const isSliderFocused =
-    isFocused || isFocusVisible || state.isThumbDragging(0);
 
-  // problem with focused und 0
-  // problem with disabled
   return (
-    <>
-      <Box
-        __baseCSS={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: 180,
-          touchAction: 'none',
-        }}
-        {...groupProps}
-      >
-        {props.label && (
-          <Label variant={labelVariant} required={required} {...labelProps}>
-            {props.label}
-          </Label>
-        )}
-        <SliderTrack
-          variant={variant}
-          state={state}
-          {...trackProps}
-          trackRef={trackRef}
-          isFocused={isSliderFocused}
-        >
-          <Thumb
-            index={0}
-            state={state}
-            trackRef={trackRef}
-            disabled={props.disabled}
-            isFocused={isSliderFocused}
-            focusProps={focusProps}
-          />
-        </SliderTrack>
-      </Box>
-    </>
+    <Box
+      __baseCSS={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: 180,
+        touchAction: 'none',
+      }}
+      {...groupProps}
+    >
+      {props.label && (
+        <Label variant={labelVariant} required={required} {...labelProps}>
+          {props.label}
+        </Label>
+      )}
+      <SliderTrack
+        variant={variant}
+        thumbVariant={thumbVariant}
+        state={state}
+        trackRef={trackRef}
+        {...mergeProps(trackProps, props)}
+      />
+    </Box>
   );
 };

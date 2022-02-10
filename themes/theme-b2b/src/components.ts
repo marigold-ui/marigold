@@ -227,7 +227,7 @@ const button = {
 /**
  * Slider component
  */
-const thumb = {
+const sliderThumb = {
   __default: {
     border: '4px solid',
     borderColor: 'gray70',
@@ -499,7 +499,7 @@ export const components = {
   },
   select,
   slider,
-  thumb,
+  sliderThumb,
   textarea: {
     __default: {
       fontFamily: 'body',

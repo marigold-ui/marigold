@@ -1,8 +1,7 @@
-import React, { HTMLAttributes, RefObject, useEffect } from 'react';
+import React, { RefObject, useEffect } from 'react';
 import { useSliderThumb } from '@react-aria/slider';
 import { mergeProps } from '@react-aria/utils';
 import { SliderState } from '@react-stately/slider';
-import { AriaSliderThumbProps } from '@react-types/slider';
 
 import { ComponentProps } from '@marigold/types';
 import { conditional } from '@marigold/system';
@@ -16,11 +15,10 @@ export type ThumbProps = {
   state: SliderState;
   trackRef: RefObject<HTMLElement>;
   variant?: string;
+  index: number;
   disabled?: boolean;
-  isFocused: boolean;
-  focusProps: HTMLAttributes<HTMLElement>;
-} & AriaSliderThumbProps &
-  ComponentProps<'div'>;
+  focused?: boolean;
+} & ComponentProps<'input'>;
 
 // Component
 // ---------------
@@ -30,8 +28,7 @@ export const Thumb: React.FC<ThumbProps> = ({
   index,
   state,
   trackRef,
-  focusProps,
-  isFocused,
+  focused,
   ...props
 }) => {
   const inputRef = React.useRef(null);
@@ -62,8 +59,8 @@ export const Thumb: React.FC<ThumbProps> = ({
         __baseCSS={{
           verticalAlign: 'middle',
         }}
-        variant={conditional(`thumb.${variant}`, {
-          focus: isFocused,
+        variant={conditional(`sliderThumb.${variant}`, {
+          focus: focused,
           disabled: disabled,
         })}
       >
@@ -72,7 +69,7 @@ export const Thumb: React.FC<ThumbProps> = ({
             as="input"
             type="range"
             ref={inputRef}
-            {...mergeProps(inputProps, focusProps, props)}
+            {...mergeProps(inputProps, props)}
           />
         </VisuallyHidden>
       </Box>
