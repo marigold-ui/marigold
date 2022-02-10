@@ -1,6 +1,6 @@
 {
   "projectName": "marigold",
-  "projectOwner": "rx",
+  "projectOwner": "marigold-ui",
   "repoType": "github",
   "repoHost": "https://github.com",
   "files": [
@@ -59,6 +59,15 @@
       "name": "Julian Thiel",
       "avatar_url": "https://avatars1.githubusercontent.com/u/59880423?v=4",
       "profile": "https://github.com/julianthiel",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "johannaracky",
+      "name": "johannaracky",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86712740?v=4",
+      "profile": "https://github.com/johannaracky",
       "contributions": [
         "doc"
       ]

@@ -1,7 +1,7 @@
 {
   "name": "@marigold/types",
   "description": "Marigold System Helper Types",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "license": "MIT",
   "keywords": [
     "marigold",
@@ -14,14 +14,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "github:marigold-ui/marigold",
+    "url": "https://github.com/marigold-ui/marigold",
     "directory": "packages/types"
   },
   "peerDependencies": {
     "@types/react": "^17.x"
   },
   "devDependencies": {
-    "@types/react": "17.0.38"
+    "@types/react": "17.0.39"
   },
   "scripts": {
     "build": "echo types only",

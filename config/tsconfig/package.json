@@ -1,7 +1,7 @@
 {
   "name": "@marigold/tsconfig",
   "description": "marigold tsconfig",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "MIT",
   "keywords": [
     "marigold",
@@ -14,7 +14,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "github:marigold-ui/marigold",
+    "url": "https://github.com/marigold-ui/marigold",
     "directory": "config/tsconfig"
   },
   "tsconfig": "./base.json"

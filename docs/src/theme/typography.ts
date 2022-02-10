@@ -45,6 +45,7 @@ export const typography = {
     body: {
       ...text.root,
       color: 'gray.40',
+      marginBottom: 'medium',
     },
     headline1: {
       ...text.root,
