@@ -3455,6 +3455,7 @@ __metadata:
     "@react-aria/overlays": ^3.7.2
     "@react-aria/select": ^3.4.1
     "@react-aria/separator": ^3.1.3
+    "@react-aria/slider": ^3.0.3
     "@react-aria/ssr": ^3.1.0
     "@react-aria/textfield": ^3.5.0
     "@react-aria/utils": ^3.8.2
@@ -4100,7 +4101,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-aria/i18n@npm:^3.3.3":
+"@react-aria/i18n@npm:^3.3.2, @react-aria/i18n@npm:^3.3.3":
   version: 3.3.4
   resolution: "@react-aria/i18n@npm:3.3.4"
   dependencies:
@@ -4277,6 +4278,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-aria/slider@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "@react-aria/slider@npm:3.0.3"
+  dependencies:
+    "@babel/runtime": ^7.6.2
+    "@react-aria/focus": ^3.4.1
+    "@react-aria/i18n": ^3.3.2
+    "@react-aria/interactions": ^3.5.1
+    "@react-aria/label": ^3.1.3
+    "@react-aria/utils": ^3.8.2
+    "@react-stately/radio": ^3.3.2
+    "@react-stately/slider": ^3.0.3
+    "@react-types/radio": ^3.1.2
+    "@react-types/slider": ^3.0.2
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1
+  checksum: c74dafbe1d86323ef2e26d20c0d5f5127f6ca42b31d788802e93b30c0dca7afec6028402d5e356393570a55bf8796a165244b7763354847302f9fe02281bfb70
+  languageName: node
+  linkType: hard
+
 "@react-aria/ssr@npm:^3.0.3, @react-aria/ssr@npm:^3.1.0":
   version: 3.1.0
   resolution: "@react-aria/ssr@npm:3.1.0"
@@ -4420,6 +4441,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-stately/radio@npm:^3.3.2":
+  version: 3.3.2
+  resolution: "@react-stately/radio@npm:3.3.2"
+  dependencies:
+    "@babel/runtime": ^7.6.2
+    "@react-stately/utils": ^3.2.2
+    "@react-types/radio": ^3.1.2
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1
+  checksum: fa22d5803f48172d2c811c6a65e84ebcca72c6cba500286d01264b9e08737566566a0852f7ce47fcf3aeca1867d40c759e551cbe13cfa6fdcbe86fecc16485df
+  languageName: node
+  linkType: hard
+
 "@react-stately/select@npm:^3.1.3":
   version: 3.1.3
   resolution: "@react-stately/select@npm:3.1.3"
@@ -4449,6 +4483,21 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0-rc.1
   checksum: 59b1fe42f79299adf8b84a95c7a527bf2b2ff67987fc5e049e1162eed2808bd9074bf0c2024b7adaa21ca2987bf902f3da416521eb59b40b7b75942d8940ffe5
+  languageName: node
+  linkType: hard
+
+"@react-stately/slider@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "@react-stately/slider@npm:3.0.3"
+  dependencies:
+    "@babel/runtime": ^7.6.2
+    "@react-aria/i18n": ^3.3.2
+    "@react-aria/utils": ^3.8.2
+    "@react-stately/utils": ^3.2.2
+    "@react-types/slider": ^3.0.2
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1
+  checksum: 9fb7cc3acd9ab587bf28e78c10525236c33187246bd6a9447662529c2d2c23690afcfb3f5e7c212705b13019a46ed2326975f78536da6d01841cc910e72ea3d0
   languageName: node
   linkType: hard
 
@@ -4583,6 +4632,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-types/radio@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "@react-types/radio@npm:3.1.2"
+  dependencies:
+    "@react-types/shared": ^3.8.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1
+  checksum: 97027ab9ddd850759c42c63e5c9751aafb6976ca55e1737170a14bde771164396619632348cd19052776860e9f7996eac501cbde38d10129226a99a2e11b9e7f
+  languageName: node
+  linkType: hard
+
 "@react-types/select@npm:^3.3.1, @react-types/select@npm:^3.5.0":
   version: 3.5.1
   resolution: "@react-types/select@npm:3.5.1"
@@ -4600,6 +4660,17 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0-rc.1
   checksum: 6c4b7c6d43f84994521c4780f3b969a70c6b2ce69892f03c309f88b5d5d3c862a1a0d07f6060f9f650dbdd834cd16568db957c03543028eb8e52eb7dc97c58ea
+  languageName: node
+  linkType: hard
+
+"@react-types/slider@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "@react-types/slider@npm:3.0.2"
+  dependencies:
+    "@react-types/shared": ^3.8.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1
+  checksum: 873692e3d777c5adae171b69b234255ef90e16f81aecd6d6f9c7555fa7c13a4bed69d1e4291455076cc5a799b27c7324031da8727e39ef6981f9d96649892590
   languageName: node
   linkType: hard
 

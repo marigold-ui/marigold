@@ -16,6 +16,24 @@ export default {
         },
       },
     },
+    label: {
+      control: {
+        type: 'text',
+      },
+      description: 'Slider label',
+      defaultValue: 'Default Slider',
+    },
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+      options: [true, false],
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
   },
 } as Meta;
 

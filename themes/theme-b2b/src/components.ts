@@ -227,97 +227,43 @@ const button = {
 /**
  * Slider component
  */
-const sliderThumb = {
-  WebkitAppearance: 'none',
-  boxSizing: 'border-box',
-  border: '4px solid',
-  borderColor: 'gray70',
-  width: 16,
-  height: 16,
-  bg: 'gray00',
-  borderRadius: 'large',
-  cursor: 'pointer',
-  marginTop: -4,
-} as const;
-
-const sliderTrack = {
-  WebkitAppearance: 'none',
-  width: '100%',
-  height: 8,
-  bg: 'gray30',
-  borderRadius: 'large',
-  border: 'none',
+const thumb = {
+  __default: {
+    border: '4px solid',
+    borderColor: 'gray70',
+    width: 16,
+    height: 16,
+    bg: 'gray00',
+    borderRadius: 'large',
+    marginTop: -4,
+  },
+  ':focus': {
+    border: '4px solid',
+    borderColor: 'primary',
+  },
+  ':disabled': {
+    border: '4px solid',
+    borderColor: 'gray40',
+    bg: 'gray40',
+  },
 } as const;
 
 const slider = {
   __default: {
-    // styles need to be applied to range inputs in all browsers to override their basic appearance.
-    WebkitAppearance: 'none',
-    bg: 'transparent',
     borderColor: 'transparent',
+    borderRadius: 'large',
     color: 'transparent',
-    ':focus': {
-      outline: 'none',
-    },
-    // chrome, safari, opera (theres actually no webkit option to style the progress bar like in firefox)
-    '&::-webkit-slider-thumb': {
-      ...sliderThumb,
-    },
-    '&:focus::-webkit-slider-thumb': {
-      ...sliderThumb,
-      border: '4px solid',
-      borderColor: 'primary',
-    },
-    '&:disabled::-webkit-slider-thumb': {
-      ...sliderThumb,
-      border: '4px solid',
-      borderColor: 'gray40',
-      bg: 'gray40',
-    },
-    '&::-webkit-slider-runnable-track': {
-      ...sliderTrack,
-    },
-    '&:focus::-webkit-slider-runnable-track': {
-      ...sliderTrack,
-      backgroundColor: 'primary',
-    },
-    '&:disabled::-webkit-slider-runnable-track': {
-      ...sliderTrack,
-      bg: 'gray40',
-    },
-    '&::-webkit-progress-value': {
-      bg: 'green60',
-    },
-    // firefox
-    '&::-moz-range-thumb': {
-      ...sliderThumb,
-    },
-    '&:focus::-moz-range-thumb': {
-      ...sliderThumb,
-      border: '4px solid',
-      borderColor: 'primary',
-    },
-    '&:disabled::-moz-range-thumb': {
-      ...sliderThumb,
-      border: '4px solid',
-      borderColor: 'gray40',
-      bg: 'gray40',
-    },
-    '&::-moz-range-track': {
-      ...sliderTrack,
-    },
-    '&::-moz-range-progress': {
-      ...sliderTrack,
-      bg: 'gray70',
-    },
-    '&:focus::-moz-range-progress': {
-      ...sliderTrack,
-      backgroundColor: 'primary',
-    },
-    '&:disabled::-moz-range-progress': {
-      ...sliderTrack,
-      bg: 'gray40',
-    },
+    bg: 'gray30',
+  },
+  ':focus': {
+    outline: 'none',
+    bg: 'primary',
+  },
+  ':disabled': {
+    bg: 'gray40',
+  },
+  ':checked': {
+    bg: 'gray70',
   },
 } as const;
 
@@ -553,6 +499,7 @@ export const components = {
   },
   select,
   slider,
+  thumb,
   textarea: {
     __default: {
       fontFamily: 'body',
