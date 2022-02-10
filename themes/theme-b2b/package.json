@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-b2b",
-  "version": "0.3.3",
+  "version": "1.0.0",
   "description": "Marigold B2B Theme",
   "license": "MIT",
   "keywords": [
@@ -18,7 +18,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "github:marigold-ui/marigold",
+    "url": "https://github.com/marigold-ui/marigold",
     "directory": "themes/theme-b2b"
   },
   "peerDependencies": {

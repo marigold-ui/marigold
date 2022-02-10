@@ -3,7 +3,7 @@ import { navigate } from 'gatsby';
 
 export default function LandingPage() {
   useEffect(() => {
-    navigate('/introduction/getting-started');
+    navigate('/introduction/00-getting-started');
   }, []);
 
   return null;
