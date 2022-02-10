@@ -41,7 +41,7 @@ test('return last if all breakpoints match', () => {
 });
 
 test('return last provided value even if larger breakpoints match', () => {
-  // This would result in returnen the third array value
+  // This would result in the third array value being returned
   window.matchMedia = mockMatchMedia([
     'screen and (min-width: 40em)',
     'screen and (min-width: 52em)',
