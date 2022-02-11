@@ -29,7 +29,9 @@ const theme = {
 test('supports default labelVariant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" label="label" />
+      <Checkbox id="test" title="checkbox">
+        label
+      </Checkbox>
     </ThemeProvider>
   );
 
@@ -40,7 +42,9 @@ test('supports default labelVariant', () => {
 test('supports other labelVariant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" label="label" labelVariant="above" />
+      <Checkbox id="test" title="checkbox" labelVariant="above">
+        label
+      </Checkbox>
     </ThemeProvider>
   );
 
@@ -49,28 +53,44 @@ test('supports other labelVariant than default', () => {
 });
 
 test('supports label prop', () => {
-  render(<Checkbox label="Test" id="test" title="checkbox" />);
+  render(
+    <Checkbox id="test" title="checkbox">
+      Test
+    </Checkbox>
+  );
 
   const checkboxLabel = screen.getByText(/Test/);
   expect(checkboxLabel).toBeDefined();
 });
 
 test('supports required prop and renders required icon', () => {
-  render(<Checkbox label="Test" id="test" required title="checkbox" />);
+  render(
+    <Checkbox id="test" required title="checkbox">
+      Test
+    </Checkbox>
+  );
 
   const label = screen.getByText(/Test/);
   expect(label.nextSibling).toContainHTML('path d="M10.8');
 });
 
 test('supports default type', () => {
-  render(<Checkbox id="checkbox" title="checkbox" label="Test" />);
+  render(
+    <Checkbox id="checkbox" title="checkbox">
+      Test
+    </Checkbox>
+  );
 
   const checkbox = screen.getByTitle(/checkbox/);
   expect(checkbox.getAttribute('type')).toEqual('checkbox');
 });
 
 test('renders <input> element', () => {
-  render(<Checkbox id="checkbox" title="checkbox" label="Test" />);
+  render(
+    <Checkbox id="checkbox" title="checkbox">
+      Test
+    </Checkbox>
+  );
 
   const checkbox = screen.getByTitle(/checkbox/);
   expect(checkbox instanceof HTMLInputElement).toBeTruthy();
@@ -79,7 +99,9 @@ test('renders <input> element', () => {
 test('supports disabled prop', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" label="label" disabled />
+      <Checkbox id="test" title="checkbox" disabled>
+        label
+      </Checkbox>
     </ThemeProvider>
   );
 
@@ -92,13 +114,9 @@ test('supports disabled prop', () => {
 test('supports error and errorMessage prop', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Checkbox
-        id="test"
-        title="checkbox"
-        label="test"
-        error
-        errorMessage="error"
-      />
+      <Checkbox id="test" error errorMessage="error">
+        test
+      </Checkbox>
     </ThemeProvider>
   );
 
@@ -109,13 +127,9 @@ test('supports error and errorMessage prop', () => {
 test('supports checked checkbox', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Checkbox
-        id="test"
-        title="checkbox"
-        label="Test"
-        onChange={() => {}}
-        checked
-      />
+      <Checkbox id="test" title="checkbox" onChange={() => {}} checked>
+        Test
+      </Checkbox>
     </ThemeProvider>
   );
 
@@ -126,14 +140,9 @@ test('supports checked checkbox', () => {
 test('supports checked and disabled checkbox', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Checkbox
-        id="test"
-        title="checkbox"
-        label="Test"
-        onChange={() => {}}
-        checked
-        disabled
-      />
+      <Checkbox id="test" title="checkbox" onChange={() => {}} checked disabled>
+        Test
+      </Checkbox>
     </ThemeProvider>
   );
 
@@ -148,13 +157,9 @@ test('correctly handles interaction', () => {
 
   render(
     <ThemeProvider theme={theme}>
-      <Checkbox
-        id="test"
-        title="checkbox"
-        label="Test"
-        onClick={click}
-        onChange={change}
-      />
+      <Checkbox id="test" title="checkbox" onClick={click} onChange={change}>
+        Test
+      </Checkbox>
     </ThemeProvider>
   );
 

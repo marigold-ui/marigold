@@ -8,7 +8,7 @@ import { ToggleProps } from '@react-types/checkbox';
 import { ComponentProps } from '@marigold/types';
 import { Exclamation } from '@marigold/icons';
 
-import { CheckboxIcon, CheckboxIconProps } from './CheckboxIcons';
+import { CheckboxIcon, CheckboxIconProps } from './CheckboxIcon';
 import { Box } from '../Box';
 import { Label } from '../Label';
 import { ValidationMessage } from '../ValidationMessage';
@@ -32,19 +32,12 @@ const CheckboxInput: React.FC<CheckboxInputProps> = ({ error, ...props }) => {
   const ref = React.useRef<HTMLInputElement>(null);
   const { inputProps } = useCheckbox(props, state, ref);
   const { focusProps } = useFocusRing();
+  const { children, ...restProps } = props;
 
   return (
     <Box pr="xsmall">
       <VisuallyHidden>
-        <Box
-          as="input"
-          type="checkbox"
-          disabled={props.disabled}
-          {...inputProps}
-          {...focusProps}
-          ref={ref}
-          {...props}
-        />
+        <input {...inputProps} {...focusProps} ref={ref} {...restProps} />
       </VisuallyHidden>
       <CheckboxIcon
         checked={props.checked}
@@ -60,18 +53,14 @@ const CheckboxInput: React.FC<CheckboxInputProps> = ({ error, ...props }) => {
 // ---------------
 export type CheckboxProps = {
   id: string;
-  label: string;
   required?: boolean;
   labelVariant?: string;
-  error?: boolean;
   errorMessage?: string;
 } & CheckboxInputProps;
 
 export const Checkbox: React.FC<CheckboxProps> = ({
-  label,
   required,
   labelVariant = 'inline',
-  error,
   errorMessage,
   ...props
 }) => {
@@ -87,10 +76,10 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         variant={`label.${labelVariant}`}
         color={props.disabled ? 'disabled' : 'text'}
       >
-        <Box as={CheckboxInput} error={error} {...props} />
-        {label}
+        <Box as={CheckboxInput} error={props.error} {...props} />
+        {props.children}
       </Box>
-      {error && errorMessage && (
+      {props.error && errorMessage && (
         <ValidationMessage>
           <Exclamation size={16} />
           {errorMessage}

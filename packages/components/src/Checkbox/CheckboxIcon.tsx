@@ -10,7 +10,6 @@ export type CheckboxIconProps = {
   checked?: boolean;
   disabled?: boolean;
   error?: boolean;
-  children?: never;
 };
 
 export const CheckboxIcon: React.FC<CheckboxIconProps> = ({
