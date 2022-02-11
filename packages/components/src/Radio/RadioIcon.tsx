@@ -10,7 +10,6 @@ export type RadioIconProps = {
   checked?: boolean;
   disabled?: boolean;
   error?: boolean;
-  children?: never;
 };
 
 export const RadioIcon: React.FC<RadioIconProps> = ({
