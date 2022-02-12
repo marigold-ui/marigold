@@ -7,7 +7,7 @@ title: Radio
 ## Description
 
 With the Radio Button component you can add a HTML `<input>` element with `type="radio"` to your form.
-The variant can be added with the variant prop. The default variant is `default`.
+The variant can be added with the variant prop. The default variant is `__default`.
 
 ## Properties
 
@@ -15,7 +15,6 @@ The variant can be added with the variant prop. The default variant is `default`
 | :------------------------ | :-------- | :---------- |
 | `id`                      | `string`  |             |
 | `variant` (optional)      | `string`  | `__default` |
-| `label`                   | `string`  |             |
 | `labelVariant` (optional) | `string`  | `inline`    |
 | `required` (optional)     | `boolean` | `false`     |
 | `disabled` (optional)     | `boolean` | `false`     |
@@ -31,7 +30,9 @@ import { Radio } from '@marigold/components';
 ## Live-Code Example
 
 ```tsx expandCode
-<Radio checked id="live" value="live" label="Radio label" />
+<Radio checked id="live" value="live">
+  Radio label
+</Radio>
 ```
 
 ## Usage
@@ -52,8 +53,9 @@ import { Radio } from '@marigold/components';
         onChange={onChange}
         checked={state === 'Mastercard'}
         value="Mastercard"
-        label="Mastercard"
-      />
+      >
+        Mastercard
+      </Radio>
       <br />
       <Radio
         id="vi"
@@ -61,8 +63,9 @@ import { Radio } from '@marigold/components';
         onChange={onChange}
         checked={state === 'Visa'}
         value="Visa"
-        label="Visa"
-      />
+      >
+        Visa
+      </Radio>
       <br />
       <Radio
         id="ae"
@@ -70,8 +73,9 @@ import { Radio } from '@marigold/components';
         onChange={onChange}
         checked={state === 'AmericanExpress'}
         value="AmericanExpress"
-        label="AmericanExpress"
-      />
+      >
+        AmericanExpress
+      </Radio>
     </>
   );
 };
@@ -81,9 +85,13 @@ import { Radio } from '@marigold/components';
 
 ```tsx
 <>
-  <Radio label="Disabled" id="disabled" disabled />
+  <Radio id="disabled" disabled>
+    Disabled
+  </Radio>
   <br />
-  <Radio label="Checked and disabled" id="checkedDisabled" checked disabled />
+  <Radio id="checkedDisabled" checked disabled>
+    Checked and disabled
+  </Radio>
 </>
 ```
 
@@ -91,13 +99,9 @@ import { Radio } from '@marigold/components';
 
 ```tsx
 <>
-  <Radio
-    checked
-    id="required"
-    value="required"
-    required
-    label="This label is required"
-  />
+  <Radio checked id="required" value="required" required>
+    This label is required
+  </Radio>
 </>
 ```
 
@@ -106,11 +110,7 @@ import { Radio } from '@marigold/components';
 Only use the error and errorMesssage prop together
 
 ```tsx
-<Radio
-  id="error"
-  value="error"
-  label="This radio has an error"
-  error
-  errorMessage="radio error"
-/>
+<Radio id="error" value="error" error errorMessage="radio error">
+  This radio has an error
+</Radio>
 ```

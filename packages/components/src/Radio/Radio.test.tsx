@@ -29,7 +29,9 @@ const theme = {
 test('supports default labelVariant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Radio id="test" title="checkbox" label="label" />
+      <Radio id="test" title="checkbox">
+        label
+      </Radio>
     </ThemeProvider>
   );
 
@@ -40,7 +42,9 @@ test('supports default labelVariant', () => {
 test('supports other labelVariant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Radio id="test" title="checkbox" label="label" labelVariant="above" />
+      <Radio id="test" title="checkbox" labelVariant="above">
+        label
+      </Radio>
     </ThemeProvider>
   );
 
@@ -49,28 +53,44 @@ test('supports other labelVariant than default', () => {
 });
 
 test('supports label prop', () => {
-  render(<Radio label="Test" id="test" title="radio" />);
+  render(
+    <Radio id="test" title="radio">
+      Test
+    </Radio>
+  );
 
   const radioLabel = screen.getByText(/Test/);
   expect(radioLabel).toBeDefined();
 });
 
 test('supports required prop and renders required icon', () => {
-  render(<Radio label="Test" id="test" required title="radio" />);
+  render(
+    <Radio id="test" required title="radio">
+      Test
+    </Radio>
+  );
 
   const label = screen.getByText(/Test/);
   expect(label.nextSibling).toContainHTML('path d="M10.8');
 });
 
 test('supports default type', () => {
-  render(<Radio id="radio" title="radio" label="test" />);
+  render(
+    <Radio id="radio" title="radio">
+      test
+    </Radio>
+  );
 
   const radio = screen.getByTitle(/radio/);
   expect(radio.getAttribute('type')).toEqual('radio');
 });
 
 test('renders <input> element', () => {
-  render(<Radio id="radio" title="radio" label="test" />);
+  render(
+    <Radio id="radio" title="radio">
+      test
+    </Radio>
+  );
 
   const radio = screen.getByTitle(/radio/);
   expect(radio instanceof HTMLInputElement).toBeTruthy();
@@ -79,7 +99,9 @@ test('renders <input> element', () => {
 test('supports disabled prop', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Radio id="test" title="radio" label="label" disabled />
+      <Radio id="test" title="radio" disabled>
+        label
+      </Radio>
     </ThemeProvider>
   );
 
@@ -92,7 +114,9 @@ test('supports disabled prop', () => {
 test('supports error and errorMessage prop', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Radio id="test" title="radio" label="test" error errorMessage="error" />
+      <Radio id="test" title="radio" error errorMessage="error">
+        test
+      </Radio>
     </ThemeProvider>
   );
 
@@ -103,7 +127,9 @@ test('supports error and errorMessage prop', () => {
 test('supports checked radio', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Radio id="test" title="radio" label="test" onChange={() => {}} checked />
+      <Radio id="test" title="radio" onChange={() => {}} checked>
+        test
+      </Radio>{' '}
     </ThemeProvider>
   );
 
@@ -114,14 +140,9 @@ test('supports checked radio', () => {
 test('supports checked and disabled radio', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Radio
-        id="test"
-        title="radio"
-        label="test"
-        onChange={() => {}}
-        checked
-        disabled
-      />
+      <Radio id="test" title="radio" onChange={() => {}} checked disabled>
+        test
+      </Radio>
     </ThemeProvider>
   );
 
@@ -136,13 +157,9 @@ test('correctly handles interaction', () => {
 
   render(
     <ThemeProvider theme={theme}>
-      <Radio
-        id="test"
-        title="radio"
-        label="Test"
-        onClick={click}
-        onChange={change}
-      />
+      <Radio id="test" title="radio" onClick={click} onChange={change}>
+        Test
+      </Radio>
     </ThemeProvider>
   );
 
