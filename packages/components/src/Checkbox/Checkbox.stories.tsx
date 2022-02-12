@@ -25,7 +25,7 @@ export default {
       description: 'Checkbox label variant',
       defaultValue: 'inline',
     },
-    label: {
+    children: {
       control: {
         type: 'text',
       },
