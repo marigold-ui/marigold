@@ -3383,7 +3383,7 @@ __metadata:
     gh-pages: 3.2.3
     git-rev-sync: 3.0.2
     mdx-utils: 0.2.0
-    open-props: 1.3.5
+    open-props: 1.3.7
     postcss-combine-duplicated-selectors: 10.0.3
     postcss-import: 14.0.2
     postcss-preset-env: 7.3.1
@@ -19998,10 +19998,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"open-props@npm:1.3.5":
-  version: 1.3.5
-  resolution: "open-props@npm:1.3.5"
-  checksum: f66a0860f0644748eaa98894d16b085393ba453659833cca90b22d2a7c5ba009fc96ebb2093cc71ef5c993cdfb67b137d765abfa9265b7bb2ca84827d2d437bc
+"open-props@npm:1.3.7":
+  version: 1.3.7
+  resolution: "open-props@npm:1.3.7"
+  checksum: 6a28e54759e04b0178f790dc7a9a71451a0ab041aef16fe2128ce809fff482dc3f64cb090d9ff368c867c05876a16c6ba3c001ad6288a019006bb03b960f078d
   languageName: node
   linkType: hard
 
