@@ -11,9 +11,14 @@ The variant can be added with the variant prop. The default variant ist `default
 
 ## Properties
 
-| Property             | Type     | Default     |
-| :------------------- | :------- | :---------- |
-| `variant` (optional) | `string` | `__default` |
+| Property                  | Type      | Default     |
+| :------------------------ | :-------- | :---------- |
+| `variant` (optional)      | `string`  | `__default` |
+| `labelVariant` (optional) | `string`  | `above`     |
+| `thumbVariant` (optional) | `string`  | `__default` |
+| `label` (optional)        | `string`  |             |
+| `disabled` (optional)     | `boolean` |             |
+| `required` (optional)     | `boolean` |             |
 
 ## Import
 
@@ -39,4 +44,10 @@ import { Slider } from '@marigold/components';
 
 ```tsx
 <Slider label="Disabled" id="slider3" disabled />
+```
+
+### Slider with required label
+
+```tsx
+<Slider label="Required" id="slider4" required />
 ```

@@ -9,7 +9,29 @@ export default {
       control: {
         type: 'text',
       },
-      description: 'Style',
+      description: 'variant to style the Slider track',
+      table: {
+        defaultValue: {
+          summary: '__default',
+        },
+      },
+    },
+    labelVariant: {
+      control: {
+        type: 'text',
+      },
+      description: 'variant to style the Slider label',
+      table: {
+        defaultValue: {
+          summary: 'above',
+        },
+      },
+    },
+    thumbVariant: {
+      control: {
+        type: 'text',
+      },
+      description: 'variant to style the Slider thumb',
       table: {
         defaultValue: {
           summary: '__default',
@@ -24,6 +46,17 @@ export default {
       defaultValue: 'Default Slider',
     },
     disabled: {
+      control: {
+        type: 'boolean',
+      },
+      options: [true, false],
+      table: {
+        defaultValue: {
+          summary: false,
+        },
+      },
+    },
+    required: {
       control: {
         type: 'boolean',
       },
