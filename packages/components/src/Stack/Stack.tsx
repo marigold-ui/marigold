@@ -5,10 +5,10 @@ import { ResponsiveStyleValue } from '@marigold/system';
 
 import { Box } from '../Box';
 
-export type StackProps = {
+export interface StackProps {
   space?: ResponsiveStyleValue<string>;
   align?: 'left' | 'right' | 'center';
-};
+}
 
 const ALIGNMENT = {
   left: 'flex-start',

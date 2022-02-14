@@ -5,10 +5,10 @@ import { ResponsiveStyleValue } from '@marigold/system';
 
 import { Box } from '../Box';
 
-export type InlineProps = {
+export interface InlineProps {
   space?: ResponsiveStyleValue<string>;
   align?: 'top' | 'center' | 'bottom';
-};
+}
 
 const ALIGNMENT = {
   top: 'flex-start',

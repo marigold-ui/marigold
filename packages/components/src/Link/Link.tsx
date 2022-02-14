@@ -12,8 +12,10 @@ export interface LinkThemeExtension<Value> {
 
 // Props
 // ---------------
-export type LinkOwnProps = { disabled?: boolean } & TextOwnProps;
-export type LinkProps = PolymorphicProps<LinkOwnProps, 'a'>;
+export interface LinkOwnProps extends TextOwnProps {
+  disabled?: boolean;
+}
+export interface LinkProps extends PolymorphicProps<LinkOwnProps, 'a'> {}
 
 // Component
 // ---------------

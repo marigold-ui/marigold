@@ -1,26 +1,25 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+
 import { Container } from './Container';
 import { Text } from '../Text';
 
 test('renders correct HTML element', () => {
   render(
-    <Container title="container">
+    <Container data-testid="container">
       <Text>sdf</Text>
     </Container>
   );
-  const container = screen.getByTitle(/container/);
-
+  const container = screen.getByTestId(/container/);
   expect(container instanceof HTMLDivElement).toBeTruthy();
 });
 
-test('accepts custom styles prop className', () => {
+test('has default width', () => {
   render(
-    <Container className="custom-class-name" title="container">
+    <Container data-testid="container">
       <Text>text</Text>
     </Container>
   );
-  const container = screen.getByTitle(/container/);
-
-  expect(container.className).toMatch('custom-class-name');
+  const container = screen.getByTestId(/container/);
+  expect(container).toHaveStyle(`width: 100%`);
 });

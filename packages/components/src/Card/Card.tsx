@@ -14,11 +14,11 @@ export interface CardThemeExtension<Value> {
 
 // Props
 // ---------------
-export type CardProps = {
+export interface CardProps extends ComponentProps<'div'> {
   title?: string;
   width?: ResponsiveStyleValue<string>;
   variant?: string;
-} & ComponentProps<'div'>;
+}
 
 // Component
 // ---------------

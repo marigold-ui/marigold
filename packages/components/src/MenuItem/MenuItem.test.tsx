@@ -53,16 +53,3 @@ test('renders correct HTML element', () => {
 
   expect(menuItem instanceof HTMLAnchorElement).toBeTruthy();
 });
-
-test('accepts custom styles prop className', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <MenuItem title="menuItem" className="custom-class-name">
-        Item
-      </MenuItem>
-    </ThemeProvider>
-  );
-  const menuItem = screen.getByText(/Item/).parentElement;
-
-  expect(menuItem).toHaveClass('custom-class-name');
-});

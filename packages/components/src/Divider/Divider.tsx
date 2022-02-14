@@ -13,9 +13,9 @@ export interface DividerThemeExtension<Value> {
 
 // Props
 // ---------------
-export type DividerProps = {
+export interface DividerProps extends SeparatorProps {
   variant?: string;
-} & SeparatorProps;
+}
 
 // Component
 // ---------------

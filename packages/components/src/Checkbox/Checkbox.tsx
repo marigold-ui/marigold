@@ -51,12 +51,12 @@ const CheckboxInput: React.FC<CheckboxInputProps> = ({ error, ...props }) => {
 
 // Checkbox
 // ---------------
-export type CheckboxProps = {
+export interface CheckboxProps extends CheckboxInputProps {
   id: string;
   required?: boolean;
   labelVariant?: string;
   errorMessage?: string;
-} & CheckboxInputProps;
+}
 
 export const Checkbox: React.FC<CheckboxProps> = ({
   required,

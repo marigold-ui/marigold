@@ -19,7 +19,7 @@ export interface RadioThemeExtension<Value> {
 
 // Radio Input
 // ---------------
-type RadioInputProps = RadioIconProps & ComponentProps<'input'>;
+interface RadioInputProps extends RadioIconProps, ComponentProps<'input'> {}
 
 const RadioInput: React.FC<RadioInputProps> = ({ error, ...props }) => {
   const { focusProps } = useFocusRing();
@@ -47,12 +47,12 @@ const RadioInput: React.FC<RadioInputProps> = ({ error, ...props }) => {
 
 // Radio
 // ---------------
-export type RadioProps = {
+export interface RadioProps extends RadioInputProps {
   id: string;
   required?: boolean;
   labelVariant?: string;
   errorMessage?: string;
-} & RadioInputProps;
+}
 
 export const Radio: React.FC<RadioProps> = ({
   required,
