@@ -2,10 +2,10 @@ import React from 'react';
 import { Box, Button } from '@marigold/components';
 import { ArrowDown, ArrowUp } from '@marigold/icons';
 
-type ShowHideButtonProps = {
+interface ShowHideButtonProps {
   hide: boolean;
   onHideChange: React.Dispatch<React.SetStateAction<boolean>>;
-};
+}
 
 export const ShowHideButton: React.FC<ShowHideButtonProps> = ({
   hide,
