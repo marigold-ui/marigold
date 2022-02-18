@@ -31,12 +31,12 @@ enum ActionType {
   OnlyCode = 'onlyCode',
 }
 
-type CodeBlockProps = {
+interface CodeBlockProps {
   className?: string;
   codeString: string;
   type: ActionType;
   language?: Language;
-};
+}
 
 const codeBoxStyles = {
   fontFamily: 'monospace',

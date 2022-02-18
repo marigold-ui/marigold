@@ -4,10 +4,10 @@ import { Box } from '@marigold/components';
 import { Link } from '../Link';
 import { NavigationItem, NavigationTree, useNavigation } from './useNavigation';
 
-type NavigationSectionProps = {
+interface NavigationSectionProps {
   name: string;
   children: NavigationTree;
-};
+}
 
 // Helper
 // ---------------

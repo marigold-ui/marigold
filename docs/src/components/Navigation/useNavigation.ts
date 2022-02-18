@@ -2,7 +2,7 @@ import { graphql, useStaticQuery } from 'gatsby';
 
 // Types
 // ---------------
-type NavigationNode = {
+interface NavigationNode {
   slug: string;
   frontmatter: {
     title?: string;
@@ -10,12 +10,12 @@ type NavigationNode = {
   headings: { value: string }[];
 };
 
-type NavigationData = NavigationNode & {
+interface NavigationData extends NavigationNode {
   path: string[];
 };
 
-export type NavigationItem = { title: string; slug: string };
-export type NavigationEdge = {
+export interface NavigationItem { title: string; slug: string };
+export interface NavigationEdge {
   name: string;
   children: NavigationTree;
 };
