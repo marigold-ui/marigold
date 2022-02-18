@@ -12,11 +12,11 @@ export interface BadgeThemeExtension<Value> {
 
 // Props
 // ---------------
-export type BadgeProps = {
+export interface BadgeProps extends ComponentProps<'div'> {
   variant?: string;
   bgColor?: string;
   borderColor?: string;
-} & ComponentProps<'div'>;
+}
 
 // Component
 // ---------------

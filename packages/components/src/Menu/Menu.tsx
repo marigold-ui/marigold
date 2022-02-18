@@ -12,14 +12,14 @@ export interface MenuThemeExtension<Value> {
 
 // Props
 // ---------------
-export type MenuProps = {
+export interface MenuProps {
   variant?: string;
   label?: string;
   onClick: ComponentProps<typeof Button>['onClick'];
   show?: boolean;
   className?: string;
   title?: string; // For testing
-};
+}
 
 // Component
 // ---------------

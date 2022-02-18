@@ -17,7 +17,8 @@ export interface ButtonThemeExtension<Value> {
 
 // Props
 // ---------------
-export type ButtonProps = PolymorphicPropsWithRef<BoxOwnProps, 'button'>;
+export interface ButtonProps
+  extends PolymorphicPropsWithRef<BoxOwnProps, 'button'> {}
 
 // Component
 // ---------------

@@ -17,15 +17,16 @@ export interface TextThemeExtension<Value> {
 
 // Props
 // ---------------
-export type TextOwnProps = {
+export interface TextOwnProps extends BoxOwnProps {
   align?: ResponsiveStyleValue<string>;
   color?: ResponsiveStyleValue<string>;
   cursor?: ResponsiveStyleValue<string>;
   outline?: ResponsiveStyleValue<string>;
   userSelect?: ResponsiveStyleValue<string>;
-} & BoxOwnProps;
+}
 
-export type TextProps = PolymorphicPropsWithRef<TextOwnProps, 'span'>;
+export interface TextProps
+  extends PolymorphicPropsWithRef<TextOwnProps, 'span'> {}
 
 // Component
 // ---------------

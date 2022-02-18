@@ -3,10 +3,10 @@ import { Box } from '../Box';
 
 type WidthValues = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
-export type ColumnProps = {
+export interface ColumnProps {
   className?: string;
   width?: WidthValues | WidthValues[];
-};
+}
 
 const transform = (width: WidthValues | WidthValues[]) => {
   if (Array.isArray(width)) {
