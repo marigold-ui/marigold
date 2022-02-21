@@ -48,6 +48,21 @@ export default {
         },
       },
     },
+    size: {
+      control: {
+        type: 'select',
+      },
+      options: [
+        undefined,
+        'xxsmall',
+        'xsmall',
+        'small',
+        'medium',
+        'large',
+        'xlarge',
+      ],
+      description: 'Text size',
+    },
   },
 } as Meta;
 

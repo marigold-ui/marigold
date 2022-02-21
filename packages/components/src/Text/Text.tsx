@@ -37,7 +37,6 @@ export const Text: PolymorphicComponentWithRef<TextOwnProps, 'span'> =
         as = 'span',
         variant = 'body',
         children,
-        className,
         align,
         color,
         cursor,
@@ -60,7 +59,6 @@ export const Text: PolymorphicComponentWithRef<TextOwnProps, 'span'> =
           outline,
           userSelect,
         }}
-        className={className}
         ref={ref}
       >
         {children}
