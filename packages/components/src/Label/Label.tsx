@@ -16,12 +16,12 @@ export interface LabelThemeExtension<Value> {
 
 // LabelBase
 // ---------------
-export interface LabelBaseProps extends ComponentProps<'label'> {
+export type LabelBaseProps = {
   htmlFor?: string;
   variant?: string;
   required?: boolean;
   color?: ResponsiveStyleValue<string>;
-}
+} & ComponentProps<'label'>;
 
 export const LabelBase: React.FC<LabelProps> = ({
   variant = 'above',
