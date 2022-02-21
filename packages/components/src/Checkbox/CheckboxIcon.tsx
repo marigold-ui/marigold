@@ -5,12 +5,12 @@ import { Box } from '../Box';
 
 // Checkbox Icon
 // ---------------
-export type CheckboxIconProps = {
+export interface CheckboxIconProps {
   variant?: string;
   checked?: boolean;
   disabled?: boolean;
   error?: boolean;
-};
+}
 
 export const CheckboxIcon: React.FC<CheckboxIconProps> = ({
   variant = '',

@@ -5,12 +5,12 @@ import { Box } from '../Box';
 
 // Radio Icon
 // ---------------
-export type RadioIconProps = {
+export interface RadioIconProps {
   variant?: string;
   checked?: boolean;
   disabled?: boolean;
   error?: boolean;
-};
+}
 
 export const RadioIcon: React.FC<RadioIconProps> = ({
   variant = '',
