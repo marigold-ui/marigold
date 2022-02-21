@@ -11,6 +11,10 @@ const theme = {
     white: '#FFF',
     blue: '#2980b9',
   },
+  fontSizes: {
+    body: '1rem',
+    medium: '1.25rem',
+  },
   text: {
     body: {
       fontFamily: 'Oswald Regular',
@@ -66,11 +70,13 @@ test('allows to control the rendered element via the `as` prop', () => {
 });
 
 test.each([
-  [{ color: 'primary' }, 'color: hotpink'],
-  [{ color: 'blue' }, 'color: #2980b9'],
+  [{ color: 'primary' }, `color: ${theme.colors.primary}`],
+  [{ color: 'blue' }, `color: ${theme.colors.blue}`],
   [{ align: 'center' }, 'text-align: center'],
   [{ cursor: 'pointer' }, 'cursor: pointer'],
   [{ outline: 'dashed red' }, 'outline: dashed red'],
+  [{ size: 'body' }, `font-size: ${theme.fontSizes.body}`],
+  [{ size: 'medium' }, `font-size: ${theme.fontSizes.medium}`],
   [{ userSelect: 'none' }, 'user-select: none'],
 ])('test style prop %o', (...args) => {
   const props = args.shift();
