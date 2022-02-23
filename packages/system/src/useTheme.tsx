@@ -31,10 +31,10 @@ export const useTheme = () => {
   return { theme, css };
 };
 
-export type ThemeProviderProps<T extends Theme> = {
+export interface ThemeProviderProps<T extends Theme> {
   theme: T;
   children: ReactNode;
-};
+}
 
 export function ThemeProvider<T extends Theme>({
   theme,
