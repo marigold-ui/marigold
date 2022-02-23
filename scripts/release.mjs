@@ -129,6 +129,7 @@ await $`git push`;
 await $`git push --tags`;
 
 step('👷', 'Building packages...');
+await $`yarn install`.pipe(process.stdout);
 await $`yarn build`.pipe(process.stdout);
 log('✓  Packages built.');
 
