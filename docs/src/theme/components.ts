@@ -207,7 +207,7 @@ export const components = {
       color: 'gray60',
       bg: 'transparent',
       fontWeight: 'body',
-      fontSize: 'xxsmall',
+      fontSize: 'xsmall',
       ':focus': {
         outline: 'none',
       },

@@ -52,7 +52,7 @@ export const CopySVGIcon: React.FC = ({ children }) => {
         size="table"
         onClick={onClick}
         css={{
-          '> * + *': { animation: copied ? 'var(--animation-bounce)' : '' },
+          '> *': { animation: copied ? 'var(--animation-bounce)' : '' },
         }}
       >
         {children}
