@@ -21,14 +21,18 @@ export const flattenChildren = (
   depth: number = 0,
   keys: (string | number)[] = []
 ): ReactChild[] =>
-  Children.toArray(children).reduce((acc: ReactChild[], node, nodeIndex) => {
+  Children.toArray(children).reduce((acc: ReactChild[], node) => {
     if (isFragment(node)) {
       acc.push.apply(
         acc,
         flattenChildren(
           node.props.children,
           depth + 1,
-          keys.concat(node.key || nodeIndex)
+          /**
+           * No need for index fallback, Eeact will always assign keys
+           * See: https://reactjs.org/docs/react-api.html#reactchildrentoarray
+           */
+          keys.concat(node.key!)
         )
       );
     } else {
