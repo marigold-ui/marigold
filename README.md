@@ -85,7 +85,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/andres-dediego2"><img src="https://avatars.githubusercontent.com/u/34473133?v=4?s=100" width="100px;" alt=""/><br /><sub><b>andres-dediego2</b></sub></a><br /><a href="#design-andres-dediego2" title="Design">🎨</a> <a href="https://github.com/marigold-ui/marigold/commits?author=andres-dediego2" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/sarahgm"><img src="https://avatars.githubusercontent.com/u/38324334?v=4?s=100" width="100px;" alt=""/><br /><sub><b>sarahgm</b></sub></a><br /><a href="https://github.com/marigold-ui/marigold/commits?author=sarahgm" title="Code">💻</a> <a href="#design-sarahgm" title="Design">🎨</a> <a href="https://github.com/marigold-ui/marigold/commits?author=sarahgm" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/sarahgm"><img src="https://avatars.githubusercontent.com/u/38324334?v=4?s=100" width="100px;" alt=""/><br /><sub><b>sarahgm</b></sub></a><br /><a href="https://github.com/marigold-ui/marigold/commits?author=sarahgm" title="Code">💻</a> <a href="#design-sarahgm" title="Design">🎨</a> <a href="https://github.com/marigold-ui/marigold/commits?author=sarahgm" title="Documentation">📖</a> <a href="#infra-sarahgm" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
   </tr>
 </table>
 
