@@ -134,20 +134,21 @@ test('array children', () => {
   render(
     <Assert spy={spy}>
       <span>one</span>
-      {['two', <span key="apple">three</span>, <span key="banana">four</span>]}
+      {['two', 42, <span key="apple">three</span>, <span>four</span>]}
       <span>five</span>
     </Assert>
   );
 
   const result = spy.mock.calls[0][0];
 
-  expect(result.length).toEqual(5);
+  expect(result.length).toEqual(6);
   expect(result.map((c: any) => c.key)).toMatchInlineSnapshot(`
     [
       ".0",
       undefined,
+      undefined,
       ".1:$apple",
-      ".1:$banana",
+      ".1:3",
       ".2",
     ]
   `);
