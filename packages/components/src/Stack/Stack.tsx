@@ -1,8 +1,7 @@
 import React, { Children } from 'react';
-import flattenChildren from 'react-keyed-flatten-children';
-
 import { ResponsiveStyleValue } from '@marigold/system';
 
+import { flattenChildren } from '../utils';
 import { Box } from '../Box';
 
 export interface StackProps {
