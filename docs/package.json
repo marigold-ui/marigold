@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "description": "docs",
   "dependencies": {
