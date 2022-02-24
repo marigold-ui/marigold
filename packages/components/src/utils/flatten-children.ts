@@ -29,7 +29,7 @@ export const flattenChildren = (
           node.props.children,
           depth + 1,
           /**
-           * No need for index fallback, Eeact will always assign keys
+           * No need for index fallback, React will always assign keys
            * See: https://reactjs.org/docs/react-api.html#reactchildrentoarray
            */
           keys.concat(node.key!)
