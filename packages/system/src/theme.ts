@@ -36,6 +36,8 @@ export type Scale<T> = {
  * Predefined {@link Scale} scale which uses size values.
  */
 export type SizeScale<T> = {
+  regular?: ScaleValue<T>;
+
   xxsmall?: ScaleValue<T>;
   xsmall?: ScaleValue<T>;
   small?: ScaleValue<T>;
@@ -43,6 +45,9 @@ export type SizeScale<T> = {
   large?: ScaleValue<T>;
   xlarge?: ScaleValue<T>;
   xxlarge?: ScaleValue<T>;
+  xxxlarge?: ScaleValue<T>;
+  huge?: ScaleValue<T>;
+  epic?: ScaleValue<T>;
 };
 
 /**

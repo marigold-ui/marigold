@@ -14,9 +14,43 @@ const lineHeight = {
   '3': 1.5,
   '4': 1.75,
   '5': 2,
-};
+} as const;
+
+const letterSpacing = {
+  '0': '-.05em',
+  '1': '.025em',
+  '2': '.050em',
+  '3': '.075em',
+  '4': '.150em',
+  '5': '.500em',
+  '6': '.750em',
+  '7': '1em',
+} as const;
+
+const size = {
+  xsmall: '.5rem',
+  small: '.75rem',
+  regular: '1rem',
+  medium: '1.1rem',
+  large: '1.25rem',
+  xlarge: '1.5rem',
+  xxlarge: '2rem',
+  xxxlarge: '2.5rem',
+  huge: '3rem',
+  epic: '3.5rem',
+} as const;
+
+const sizeFluid = {
+  small: 'clamp(.75rem, 2vw, 1rem)',
+  regular: 'clamp(1rem, 4vw, 1.5rem)',
+  large: 'clamp(1.5rem, 6vw, 2.5rem)',
+  xlarge: 'clamp(2rem, 9vw, 3.5rem)',
+} as const;
 
 export const typography = {
   font,
   lineHeight,
+  letterSpacing,
+  size,
+  sizeFluid,
 };
