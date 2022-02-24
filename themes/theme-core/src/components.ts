@@ -594,6 +594,17 @@ export const components = {
       },
     },
   },
+  tooltip: {
+    __default: {
+      p: 'xsmall',
+      color: 'gray90',
+      fontSize: 14,
+      border: '1px solid',
+      borderColor: 'info',
+      borderRadius: 'large',
+      bg: 'blue10',
+    },
+  },
   validation: {
     error: {
       ...text.root,

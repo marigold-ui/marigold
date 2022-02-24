@@ -353,6 +353,10 @@ export const components = {
     },
   },
   button: {
+    __default: {
+      p: 0,
+      border: 'none',
+    },
     large: {
       lineHeight: 'xxlarge',
       paddingX: 'xlarge',
@@ -561,6 +565,15 @@ export const components = {
         bg: 'gray20',
         color: 'gray40',
       },
+    },
+  },
+  tooltip: {
+    __default: {
+      p: 'xsmall',
+      color: 'gray90',
+      border: '1px solid',
+      borderRadius: 'large',
+      bg: 'info',
     },
   },
   validation: {

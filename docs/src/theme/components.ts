@@ -273,4 +273,15 @@ export const components = {
     },
   },
   select,
+  tooltip: {
+    __default: {
+      p: 'xsmall',
+      color: 'gray90',
+      fontSize: 14,
+      border: '1px solid',
+      borderColor: 'blue70',
+      borderRadius: 'large',
+      bg: 'blue10',
+    },
+  },
 } as const;
