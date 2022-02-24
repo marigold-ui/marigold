@@ -1,7 +1,7 @@
 import React, { Children } from 'react';
 import { Box } from '../Box';
-import flattenChildren from 'react-keyed-flatten-children';
 import { ResponsiveStyleValue, useTheme } from '@marigold/system';
+import { flattenChildren } from '../utils';
 
 export interface ColumnsProps {
   className?: string;
