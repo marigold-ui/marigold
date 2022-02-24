@@ -1,0 +1,121 @@
+---
+title: Tooltip
+---
+
+import { DoAndDont } from '../../src/components/DoAndDont';
+import {
+  Box,
+  Button,
+  Stack,
+  Tooltip,
+  TooltipIcon,
+  TooltipTrigger,
+} from '@marigold/components';
+
+# Tooltip
+
+## Demo
+
+<MarigoldTheme>
+  <TooltipTrigger isOpen>
+    <Button variant="" size="" aria-label="infoIconButton">
+      <TooltipIcon />
+    </Button>
+    <Tooltip>Tooltip</Tooltip>
+  </TooltipTrigger>
+</MarigoldTheme>
+<br />
+
+## Description
+
+The Tooltip should provide extra information to the user. This information should be
+secondary and not escential to perform a task.
+A tooltip consists of two parts: the **trigger** element and the **tooltip** itself.
+Users may reveal the tooltip by hovering or focusing the trigger.
+
+## Properties
+
+| Property             | Type     | Default     |
+| :------------------- | :------- | :---------- |
+| `variant` (optional) | `string` | `__default` |
+
+## Import
+
+```tsx onlyCode
+import { Tooltip, TooltipIcon, TooltipTrigger } from '@marigold/components';
+```
+
+## Types
+
+### Alignment
+
+Different alignment is coming soon.
+
+```tsx expandCode
+<TooltipTrigger>
+  <Button variant="" size="" aria-label="infoIconButton">
+    <TooltipIcon />
+  </Button>
+  <Tooltip>Tooltip</Tooltip>
+</TooltipTrigger>
+```
+
+## Usage
+
+<Stack space="small">
+  <Box
+    display="grid"
+    css={{
+      gridGap: 'small',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(min(500px, 100%), 1fr))',
+    }}
+  >
+    <DoAndDont
+      preview={
+        <TooltipTrigger isOpen>
+          <Button variant="" size="" aria-label="infoIconButton">
+            <TooltipIcon />
+          </Button>
+          <Box as={Tooltip} css={{ position: 'relative' }}>
+            Tooltip
+          </Box>
+        </TooltipTrigger>
+      }
+    >
+      Point an information icon.
+    </DoAndDont>
+    <DoAndDont
+      dont
+      preview={
+        <TooltipTrigger isOpen>
+          <Button variant="" size="" aria-label="infoIconButton">
+            <TooltipIcon />
+          </Button>
+          <Box as={Tooltip} css={{ position: 'relative' }}>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry.
+          </Box>
+        </TooltipTrigger>
+      }
+    >
+      Don't make extensive explanations on a tool tip. It is only for short and
+      “nice to have” extra information.
+    </DoAndDont>
+    <DoAndDont
+      dont
+      preview={
+        <TooltipTrigger isOpen>
+          <Button variant="" size="" aria-label="infoIconButton">
+            <TooltipIcon />
+          </Button>
+          <Box as={Tooltip} css={{ position: 'relative' }}>
+            If you do not click the box, all data will be deleted.
+          </Box>
+        </TooltipTrigger>
+      }
+    >
+      Don't put highly important information on a tooltip, this element is
+      hidden and should only contain “nice to have” information.
+    </DoAndDont>
+  </Box>
+</Stack>

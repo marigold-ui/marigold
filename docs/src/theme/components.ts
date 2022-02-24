@@ -172,6 +172,10 @@ const button = {
 
 export const components = {
   button: {
+    __default: {
+      p: 0,
+      border: 'none',
+    },
     large: {
       ...button.large,
     },

@@ -358,6 +358,10 @@ export const components = {
     },
   },
   button: {
+    __default: {
+      p: 0,
+      border: 'none',
+    },
     large: {
       lineHeight: 'xxlarge',
       paddingX: 'xlarge',
@@ -572,6 +576,17 @@ export const components = {
         color: 'disabled',
         bg: 'gray20',
       },
+    },
+  },
+  tooltip: {
+    __default: {
+      p: 'xsmall',
+      color: 'gray90',
+      fontSize: 14,
+      border: '1px solid',
+      borderColor: 'blue70',
+      borderRadius: 'large',
+      bg: 'blue10',
     },
   },
   validation: {
