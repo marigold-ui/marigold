@@ -14,7 +14,7 @@ export const Shadows = () => {
       css={{
         height: 100,
         width: 100,
-        bg: Vars.color.gray['gray-00'],
+        bg: Vars.color.gray['00'],
         boxShadow: value,
       }}
     />
@@ -22,7 +22,7 @@ export const Shadows = () => {
 
   const shadow = Vars.shadow;
   return (
-    <Box bg={Vars.color.gray['gray-30']} p={40}>
+    <Box bg={Vars.color.gray['30']} p={40}>
       <Stack space="32px" align="center">
         {Object.values(shadow).map(value => (
           <Shadow key={value} value={value} />

@@ -15,8 +15,8 @@ export const Aspects = () => (
         css={{
           display: 'grid',
           placeItems: 'center',
-          color: Vars.color.gray['gray-00'],
-          bg: Vars.color.gray['gray-80'],
+          color: Vars.color.gray['00'],
+          bg: Vars.color.gray['80'],
           blockSize: 100,
           aspectRatio: value,
         }}

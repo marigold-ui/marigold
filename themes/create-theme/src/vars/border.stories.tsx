@@ -16,9 +16,9 @@ export const Size = () => (
         css={{
           width: 100,
           height: 100,
-          bg: Vars.color.gray['gray-20'],
+          bg: Vars.color.gray['20'],
           borderStyle: 'solid',
-          borderColor: Vars.color.gray['gray-80'],
+          borderColor: Vars.color.gray['80'],
           borderWidth: value,
         }}
       />
@@ -35,7 +35,7 @@ export const Radius = () => (
           width: 100,
           height: 100,
           borderStyle: 'solid',
-          borderColor: Vars.color.gray['gray-80'],
+          borderColor: Vars.color.gray['80'],
           borderWidth: Vars.border.size.medium,
           borderRadius: value,
         }}
