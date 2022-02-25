@@ -43,7 +43,7 @@ const header = {
   small: '20ch',
   medium: '25ch',
   large: '35ch',
-};
+} as const;
 
 export const size = {
   fixed,

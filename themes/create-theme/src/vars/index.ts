@@ -10,6 +10,7 @@
 export * as color from './color';
 
 export { aspect } from './aspect';
+export { border } from './border';
 export { shadow } from './shadow';
 export { size } from './size';
 export { typography } from './typography';
