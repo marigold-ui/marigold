@@ -1,4 +1,4 @@
-// Sizes (from https://open-props.style/#borders)
+// Borders (from https://open-props.style/#borders)
 // ---------------
 
 const width = {

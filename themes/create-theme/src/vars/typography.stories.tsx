@@ -11,7 +11,7 @@ export default {
 export const Fonts = () => (
   <Stack space="32px" align="center">
     {Object.values(Vars.typography.font).map(value => (
-      <Box css={{ fontFamily: value }}>
+      <Box key={value} css={{ fontFamily: value }}>
         A wizard's job is to vex chumps quickly in fog.
       </Box>
     ))}
@@ -22,6 +22,7 @@ export const LineHeights = () => (
   <Stack space="32px" align="center">
     {Object.values(Vars.typography.lineHeight).map(value => (
       <Box
+        key={value}
         css={{
           lineHeight: value,
           fontFamily: Vars.typography.font.sans,
@@ -43,6 +44,7 @@ export const LetterSpacing = () => (
   <Stack space="32px" align="center">
     {Object.values(Vars.typography.letterSpacing).map(value => (
       <Box
+        key={value}
         css={{
           letterSpacing: value,
           fontFamily: Vars.typography.font.sans,
@@ -58,6 +60,7 @@ export const FontSizes = () => (
   <Stack space="32px" align="center">
     {Object.values(Vars.typography.size).map(value => (
       <Box
+        key={value}
         css={{
           fontSize: value,
           fontFamily: Vars.typography.font.sans,
@@ -73,6 +76,7 @@ export const FluidFontSizes = () => (
   <Stack space="32px" align="center">
     {Object.values(Vars.typography.sizeFluid).map(value => (
       <Box
+        key={value}
         css={{
           fontSize: value,
           fontFamily: Vars.typography.font.sans,
@@ -88,6 +92,7 @@ export const FontWeights = () => (
   <Stack space="32px" align="center">
     {Object.values(Vars.typography.weight).map(value => (
       <Box
+        key={value}
         css={{
           fontWeight: value,
           fontSize: Vars.typography.size.large,

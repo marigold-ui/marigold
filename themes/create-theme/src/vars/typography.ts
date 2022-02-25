@@ -54,7 +54,7 @@ const weight = {
   medium: 500,
   bold: 700,
   heavy: 900,
-};
+} as const;
 
 export const typography = {
   font,

@@ -65,6 +65,7 @@ export const Content = () => (
   <Stack space="24px">
     {Object.values(Vars.size.content).map(value => (
       <Box
+        key={value}
         css={{
           fontSize: Vars.typography.sizeFluid.small,
           fontFamily: Vars.typography.font.sans,

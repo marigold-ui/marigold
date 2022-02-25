@@ -8,18 +8,19 @@ export default {
   title: 'Vars',
 } as Meta;
 
-export const Aspects = () => (
+export const Opacity = () => (
   <Stack space="12px">
-    {Object.entries(Vars.aspect).map(([name, value]) => (
+    {Object.entries(Vars.opacity).map(([name, value]) => (
       <Box
         key={name}
         css={{
           display: 'grid',
           placeItems: 'center',
-          color: Vars.color.gray['00'],
+          color: value > 0 ? Vars.color.gray['00'] : Vars.color.gray['90'],
           bg: Vars.color.gray['80'],
           blockSize: 100,
-          aspectRatio: value,
+          aspectRatio: Vars.aspect.square,
+          opacity: value,
         }}
       >
         {name}
