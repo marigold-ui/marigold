@@ -15,8 +15,8 @@ export const Fixed = () => (
         css={{
           display: 'grid',
           placeItems: 'center',
-          color: Vars.color.gray['gray-00'],
-          bg: Vars.color.gray['gray-80'],
+          color: Vars.color.gray['00'],
+          bg: Vars.color.gray['80'],
           blockSize: 100,
           height: Vars.size.fixed.xxlarge,
           width: value,
@@ -33,8 +33,8 @@ export const Fluid = () => (
         css={{
           display: 'grid',
           placeItems: 'center',
-          color: Vars.color.gray['gray-00'],
-          bg: Vars.color.gray['gray-80'],
+          color: Vars.color.gray['00'],
+          bg: Vars.color.gray['80'],
           blockSize: 100,
           height: Vars.size.fixed.xxlarge,
           width: value,
