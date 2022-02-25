@@ -112,7 +112,7 @@ export interface Theme {
   /**
    * Used to define a `letter-spacing` scale.
    */
-  letterSpacings?: ZeroScale<CSS.Property.LetterSpacing<string | 0 | number>>;
+  letterSpacings?: Scale<CSS.Property.LetterSpacing<string | 0 | number>>;
 
   /**
    * Used to define a scale for size values,

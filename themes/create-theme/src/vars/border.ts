@@ -1,7 +1,7 @@
 // Sizes (from https://open-props.style/#borders)
 // ---------------
 
-const size = {
+const width = {
   none: 0,
 
   small: '1px',
@@ -25,6 +25,6 @@ const radius = {
 } as const;
 
 export const border = {
-  size,
+  width,
   radius,
 };

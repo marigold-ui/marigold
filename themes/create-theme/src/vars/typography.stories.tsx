@@ -83,3 +83,19 @@ export const FluidFontSizes = () => (
     ))}
   </Stack>
 );
+
+export const FontWeights = () => (
+  <Stack space="32px" align="center">
+    {Object.values(Vars.typography.weight).map(value => (
+      <Box
+        css={{
+          fontWeight: value,
+          fontSize: Vars.typography.size.large,
+          fontFamily: Vars.typography.font.sans,
+        }}
+      >
+        Unabhängigkeitserklärungen
+      </Box>
+    ))}
+  </Stack>
+);

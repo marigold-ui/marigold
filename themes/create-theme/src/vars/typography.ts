@@ -47,10 +47,20 @@ const sizeFluid = {
   xlarge: 'clamp(2rem, 9vw, 3.5rem)',
 } as const;
 
+const weight = {
+  thin: 200,
+  light: 300,
+  regular: 400,
+  medium: 500,
+  bold: 700,
+  heavy: 900,
+};
+
 export const typography = {
   font,
   lineHeight,
   letterSpacing,
   size,
   sizeFluid,
+  weight,
 };
