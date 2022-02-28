@@ -1,5 +1,23 @@
 # @marigold/components
 
+## 0.5.0
+
+### Minor Changes
+
+- [#1784](https://github.com/marigold-ui/marigold/pull/1784) [`99af3b37`](https://github.com/marigold-ui/marigold/commit/99af3b37de24599138777ed90de0445571c3095e) Thanks [@ti10le](https://github.com/ti10le)! - refa(comp): use interface instead of type
+
+* [#1727](https://github.com/marigold-ui/marigold/pull/1727) [`026300b1`](https://github.com/marigold-ui/marigold/commit/026300b1b539b57785c0eb0282a3d3fd763194bc) Thanks [@sebald](https://github.com/sebald)! - feat(components): <Text> add possibility to change font size via style props
+
+### Patch Changes
+
+- [#1774](https://github.com/marigold-ui/marigold/pull/1774) [`93480b63`](https://github.com/marigold-ui/marigold/commit/93480b6333a4d6231db35dbf12de5726533ebfc8) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): remove label prop and add children + refa
+
+* [#1775](https://github.com/marigold-ui/marigold/pull/1775) [`6da8eba2`](https://github.com/marigold-ui/marigold/commit/6da8eba28c518c75758180697e5f0f5e5989c1f4) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Checkbox remove label prop and add children + refa
+
+* Updated dependencies [[`5936de75`](https://github.com/marigold-ui/marigold/commit/5936de75e5a0134584438117c53c5edfe15c6c5d)]:
+  - @marigold/system@0.5.0
+  - @marigold/icons@0.4.1
+
 ## 0.4.0
 
 ### Minor Changes

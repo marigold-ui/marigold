@@ -1,14 +1,13 @@
 import React, { Children } from 'react';
-import flattenChildren from 'react-keyed-flatten-children';
-
 import { ResponsiveStyleValue } from '@marigold/system';
 
+import { flattenChildren } from '../utils';
 import { Box } from '../Box';
 
-export type InlineProps = {
+export interface InlineProps {
   space?: ResponsiveStyleValue<string>;
   align?: 'top' | 'center' | 'bottom';
-};
+}
 
 const ALIGNMENT = {
   top: 'flex-start',

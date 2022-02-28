@@ -13,20 +13,19 @@ export interface MenuItemThemeExtension<Value> {
 
 // Props
 // ---------------
-export type MenuItemProps = {
+export interface MenuItemProps extends ComponentProps<typeof Link> {
   variant?: string;
-} & ComponentProps<typeof Link>;
+}
 
 // Component
 // ---------------
 export const MenuItem: React.FC<MenuItemProps> = ({
   variant = 'default',
-  className,
   children,
   ...props
 }) => {
   return (
-    <Box variant={`menuItem.${variant}`} className={className}>
+    <Box variant={`menuItem.${variant}`}>
       <Link variant="menuItemLink" {...props}>
         {children}
       </Link>

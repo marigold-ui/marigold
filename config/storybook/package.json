@@ -1,7 +1,7 @@
 {
   "name": "@marigold/storybook-config",
   "description": "Marigold's storybook configuration",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "license": "MIT",
   "type": "module",
   "exports": "./main.js",
@@ -19,7 +19,7 @@
     "directory": "config/prettier"
   },
   "dependencies": {
-    "@babel/core": "7.17.0",
+    "@babel/core": "7.17.5",
     "@marigold/components": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
@@ -28,7 +28,7 @@
     "@storybook/addon-a11y": "6.4.18",
     "@storybook/addon-essentials": "6.4.18",
     "@storybook/addon-interactions": "6.4.18",
-    "@storybook/jest": "0.0.6",
+    "@storybook/jest": "0.0.9",
     "@storybook/testing-library": "0.0.9",
     "babel-loader": "8.2.3",
     "find-up": "5.0.0",

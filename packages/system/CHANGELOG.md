@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 0.5.0
+
+### Minor Changes
+
+- [#1723](https://github.com/marigold-ui/marigold/pull/1723) [`5936de75`](https://github.com/marigold-ui/marigold/commit/5936de75e5a0134584438117c53c5edfe15c6c5d) Thanks [@sebald](https://github.com/sebald)! - feat(system): add hook that allows to use values based on screen size
+
 ## 0.4.0
 
 ### Minor Changes

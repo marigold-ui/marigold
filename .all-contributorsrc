@@ -71,7 +71,39 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "eltociear",
+      "name": "Ikko Ashimine",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22633385?v=4",
+      "profile": "https://bandism.net/",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "andres-dediego2",
+      "name": "andres-dediego2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/34473133?v=4",
+      "profile": "https://github.com/andres-dediego2",
+      "contributions": [
+        "design",
+        "doc"
+      ]
+    },
+    {
+      "login": "sarahgm",
+      "name": "sarahgm",
+      "avatar_url": "https://avatars.githubusercontent.com/u/38324334?v=4",
+      "profile": "https://github.com/sarahgm",
+      "contributions": [
+        "code",
+        "design",
+        "doc",
+        "infra"
+      ]
     }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 7,
+  "skipCi": true
 }

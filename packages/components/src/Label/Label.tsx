@@ -44,9 +44,9 @@ export const LabelBase: React.FC<LabelProps> = ({
 
 // Label
 // ---------------
-export type LabelProps = {
+export interface LabelProps extends LabelBaseProps {
   required?: boolean;
-} & LabelBaseProps;
+}
 
 export const Label: React.FC<LabelProps> = ({
   required,

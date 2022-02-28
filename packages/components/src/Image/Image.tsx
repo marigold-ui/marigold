@@ -12,10 +12,10 @@ export interface ImageThemeExtension<Value> {
 
 // Props
 // ---------------
-export type ImageProps = {
+export interface ImageProps extends ComponentProps<'img'> {
   variant?: string;
   children?: never;
-} & ComponentProps<'img'>;
+}
 
 // Component
 // ---------------

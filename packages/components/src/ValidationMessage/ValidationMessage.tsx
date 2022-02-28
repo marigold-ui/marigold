@@ -13,9 +13,9 @@ export interface ValidationMessageThemeExtension<Value> {
 
 // Props
 // ---------------
-export type ValidationMessageProps = {
+export interface ValidationMessageProps extends ComponentProps<'span'> {
   variant?: string;
-} & ComponentProps<'span'>;
+}
 
 // Component
 // ---------------

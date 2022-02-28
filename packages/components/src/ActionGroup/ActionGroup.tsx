@@ -8,10 +8,10 @@ import { Stack } from '../Stack';
 
 // Props
 // ---------------
-export type ActionGroupProps = {
+export interface ActionGroupProps extends ComponentProps<'div'> {
   space?: ResponsiveStyleValue<string>;
   verticalAlignment?: boolean;
-} & ComponentProps<'div'>;
+}
 
 // Component
 // ---------------

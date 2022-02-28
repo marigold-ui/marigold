@@ -5,9 +5,9 @@ import { getNormalizedStyles } from './normalize';
 
 const css = getNormalizedStyles('svg');
 
-export type SVGProps = {
+export interface SVGProps extends ComponentProps<'svg'> {
   size?: number;
-} & ComponentProps<'svg'>;
+}
 
 export const SVG: React.FC<SVGProps> = ({ size = 24, children, ...props }) =>
   jsx(
