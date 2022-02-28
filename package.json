@@ -15,7 +15,7 @@
     "node": ">=16.x"
   },
   "devDependencies": {
-    "@changesets/changelog-github": "0.4.2",
+    "@changesets/changelog-github": "0.4.3",
     "@changesets/cli": "2.20.0",
     "@marigold/eslint-config": "workspace:*",
     "@marigold/jest-config": "workspace:*",
