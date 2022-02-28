@@ -22,7 +22,7 @@ export interface SliderThemeExtension<Value> {
 
 // Props
 // ---------------
-export interface SliderProps extends ComponentProps<'input'> {
+export type SliderProps = {
   variant?: string;
   thumbVariant?: string;
   labelVariant?: string;
