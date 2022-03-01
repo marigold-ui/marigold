@@ -1,5 +1,17 @@
 # @marigold/docs
 
+## 0.5.1
+
+### Patch Changes
+
+- [#1794](https://github.com/marigold-ui/marigold/pull/1794) [`01bd6196`](https://github.com/marigold-ui/marigold/commit/01bd61960582487ea46910c6766c2b6b220e0dd6) Thanks [@ti10le](https://github.com/ti10le)! - fix:(docs): icons page remove text because of mb
+
+- Updated dependencies [[`a178eafe`](https://github.com/marigold-ui/marigold/commit/a178eafe8c8380ee23b4587d953ee52b231414ff), [`9939b743`](https://github.com/marigold-ui/marigold/commit/9939b743df4dfe40bfd5dd61a1a4b88641ef9559)]:
+  - @marigold/components@0.5.1
+  - @marigold/system@0.5.1
+  - @marigold/theme-b2b@2.0.1
+  - @marigold/icons@0.4.2
+
 ## 0.5.0
 
 ### Minor Changes
