@@ -28,14 +28,14 @@ export type ScaleValue<T> = T | T[] | NestedScaleDict<T> | undefined;
  * descriptive name for the scale (e.g. `small`/`medium`/.. or `body`/`heading`/...),
  * and the value is the CSS value.
  */
-export type Scale<T> = {
+export interface Scale<T> {
   [key: string]: ScaleValue<T>;
-};
+}
 
 /**
  * Predefined {@link Scale} scale which uses size values.
  */
-export type SizeScale<T> = {
+export interface SizeScale<T> {
   regular?: ScaleValue<T>;
 
   xxsmall?: ScaleValue<T>;
@@ -48,15 +48,26 @@ export type SizeScale<T> = {
   xxxlarge?: ScaleValue<T>;
   huge?: ScaleValue<T>;
   epic?: ScaleValue<T>;
-};
+}
 
 /**
  * A {@link SizeScale} that also includes a required `none` value, which is
  * usually used to define the blank value (e.g `0`).
  */
-export type ZeroScale<T> = {
+export interface ZeroScale<T> extends SizeScale<T> {
   none: ScaleValue<T>;
-} & Scale<T>;
+}
+
+/**
+ * Predefined {@link Scale} scale which uses speed values.
+ */
+export interface SpeedScale<T> {
+  slowest: ScaleValue<T>;
+  slow: ScaleValue<T>;
+  medium: ScaleValue<T>;
+  fast: ScaleValue<T>;
+  fastest: ScaleValue<T>;
+}
 
 /**
  * Base theme with typings for available scales properties.
@@ -158,5 +169,5 @@ export interface Theme {
   /**
    * Used to define a `transition` styles.
    */
-  transitions?: ZeroScale<CSS.Property.Transition>;
+  transitions?: SpeedScale<CSS.Property.Transition>;
 }

@@ -1,6 +1,6 @@
 import { Theme } from '@marigold/system';
 
-import { border, layer, size, typography } from './vars';
+import { border, layer, opacity, size, typography } from './vars';
 
 export const base: Theme = {
   breakpoints: ['40em', '52em', '64em'],
@@ -17,10 +17,12 @@ export const base: Theme = {
   radii: border.radius,
 
   zIndices: layer,
+  opacities: opacity,
 };
 
 /*#__PURE__*/
 export const createTheme = () => {
   // pick colors,
   // fallback fonts
+  // fluid or fixed?
 };
