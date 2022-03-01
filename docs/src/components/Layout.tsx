@@ -9,6 +9,7 @@ import { ThemeSelect } from './ThemeSelect';
 import { Version } from './Version';
 
 export const Layout: React.FC = ({ children }) => {
+  const devMode = process.env.NODE_ENV === 'development';
   return (
     <>
       <Helmet>
@@ -19,23 +20,28 @@ export const Layout: React.FC = ({ children }) => {
         />
         <title>Marigold Design System</title>
       </Helmet>
+      {devMode && (
+        <Box
+          bg="#f3f3f3"
+          css={{ textAlign: 'center', textTransform: 'uppercase' }}
+        >
+          <Text color="#1d67b6">localhost</Text>
+        </Box>
+      )}
       <Columns space="xsmall">
         <Column width={[12, 2]}>
           <Stack space="small">
-            <Text color="red">Develop mode 1</Text>
             <Box p="medium">
               <Link to="/">
                 <Logo />
               </Link>
             </Box>
+
             <ThemeSelect />
             <Navigation />
           </Stack>
         </Column>
-        <Column width={[12, 10]}>
-          <Text color="red">Develop mode 2</Text>
-          {children}
-        </Column>
+        <Column width={[12, 10]}>{children}</Column>
       </Columns>
       <Version />
     </>
