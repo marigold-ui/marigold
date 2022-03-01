@@ -36,9 +36,10 @@
     "pretty-quick": "3.1.3",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "slack-notify": "^2.0.2",
     "typescript": "4.5.5",
     "workspaces-run": "1.0.1",
-    "zx": "4.3.0"
+    "zx": "^5.1.0"
   },
   "husky": {
     "hooks": {
@@ -61,6 +62,10 @@
     "changeset": "changeset",
     "release": "zx scripts/release.mjs --quiet",
     "release:docs": "yarn workspace @marigold/docs deploy",
-    "postinstall": "rm -f node_modules/@emotion/core/types/index.d.ts"
+    "postinstall": "rm -f node_modules/@emotion/core/types/index.d.ts",
+    "slack": "zx scripts/slack-release-notification.mjs --quiet"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0"
   }
 }
