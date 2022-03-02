@@ -27,7 +27,11 @@ type CheckboxInputProps = CheckboxIconProps &
   ToggleProps &
   ComponentProps<'input'>;
 
-const CheckboxInput: React.FC<CheckboxInputProps> = ({ error, ...props }) => {
+const CheckboxInput: React.FC<CheckboxInputProps> = ({
+  error,
+  indeterminated = false,
+  ...props
+}) => {
   const state = useToggleState(props);
   const ref = React.useRef<HTMLInputElement>(null);
   const { inputProps } = useCheckbox(props, state, ref);
@@ -43,6 +47,7 @@ const CheckboxInput: React.FC<CheckboxInputProps> = ({ error, ...props }) => {
         checked={props.checked}
         variant={props.variant}
         disabled={props.disabled}
+        indeterminated={indeterminated}
         error={error}
       />
     </Box>
@@ -63,28 +68,26 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   labelVariant = 'inline',
   errorMessage,
   ...props
-}) => {
-  return (
-    <>
-      <Box
-        as={Label}
-        __baseCSS={{
-          ':hover': { cursor: props.disabled ? 'not-allowed' : 'pointer' },
-        }}
-        htmlFor={props.id}
-        required={required}
-        variant={`label.${labelVariant}`}
-        color={props.disabled ? 'disabled' : 'text'}
-      >
-        <Box as={CheckboxInput} error={props.error} {...props} />
-        {props.children}
-      </Box>
-      {props.error && errorMessage && (
-        <ValidationMessage>
-          <Exclamation size={16} />
-          {errorMessage}
-        </ValidationMessage>
-      )}
-    </>
-  );
-};
+}) => (
+  <>
+    <Box
+      as={Label}
+      __baseCSS={{
+        ':hover': { cursor: props.disabled ? 'not-allowed' : 'pointer' },
+      }}
+      htmlFor={props.id}
+      required={required}
+      variant={`label.${labelVariant}`}
+      color={props.disabled ? 'disabled' : 'text'}
+    >
+      <CheckboxInput error={props.error} {...props} />
+      {props.children}
+    </Box>
+    {props.error && errorMessage && (
+      <ValidationMessage>
+        <Exclamation size={16} />
+        {errorMessage}
+      </ValidationMessage>
+    )}
+  </>
+);
