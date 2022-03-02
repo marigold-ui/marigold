@@ -22,6 +22,7 @@ import { type MessageThemeExtension } from './Message';
 import { type RadioThemeExtension } from './Radio';
 import { type SelectThemeExtension } from './Select';
 import { type SliderThemeExtension } from './Slider';
+import { type SwitchThemeExtension } from './Switch';
 import { type TextThemeExtension } from './Text';
 import { type TextareaThemeExtension } from './Textarea';
 import { type ValidationMessageThemeExtension } from './ValidationMessage';
@@ -45,6 +46,7 @@ export interface Theme
     RadioThemeExtension<CSSObject>,
     SelectThemeExtension<CSSObject>,
     SliderThemeExtension<CSSObject>,
+    SwitchThemeExtension<CSSObject>,
     TextThemeExtension<CSSObject>,
     TextareaThemeExtension<CSSObject>,
     ValidationMessageThemeExtension<CSSObject> {}

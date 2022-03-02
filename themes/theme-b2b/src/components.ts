@@ -553,6 +553,18 @@ export const components = {
   },
   select,
   slider,
+  switch: {
+    fill: 'gray20',
+    stroke: 'gray40',
+    ':checked': {
+      fill: 'primary',
+      stroke: 'orange80',
+    },
+    ':disabled': {
+      fill: 'gray30',
+      stroke: 'gray40',
+    },
+  },
   textarea: {
     __default: {
       fontFamily: 'body',
