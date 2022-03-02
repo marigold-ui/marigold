@@ -2,18 +2,30 @@
 title: Alert
 ---
 
-# Alert
+import { DoAndDont } from '../../src/components/DoAndDont';
+import { Alert, Box, Inline, Stack, Text } from '@marigold/components';
+import { SortDown } from '@marigold/icons';
+
+# Button
+
+## Demo
+
+<MarigoldTheme>
+  <Alert variant="success">
+    <Text>Success message</Text>
+  </Alert>
+</MarigoldTheme>
 
 ## Description
 
-Simple colored element to display an alert message as a reaction to an event.
+Warnings highlight relevant information related to the page, they should be as close as possible to the related content.
 Predefined variants are info, success, danger and warning.
 
 ## Properties
 
-| Property             | Type                      | Default   |
-| :------------------- | :------------------------ | :-------- |
-| `variant` (optional) | `success, error, warning` | `success` |
+| Property             | Type                            | Default   |
+| :------------------- | :------------------------------ | :-------- |
+| `variant` (optional) | `success, info, error, warning` | `success` |
 
 ## Import
 
@@ -21,19 +33,17 @@ Predefined variants are info, success, danger and warning.
 import { Alert } from '@marigold/components';
 ```
 
-## Live-Code Example
+## Types
 
 ```tsx expandCode
-<Alert variant="success">
-  <Text>Tests passed</Text>
+<Alert>
+  <Text>Success message</Text>
 </Alert>
 ```
 
-## Usage
-
 ```tsx
-<Alert>
-  <Text>Success message</Text>
+<Alert variant="info">
+  <Text>Info message</Text>
 </Alert>
 ```
 
@@ -48,3 +58,49 @@ import { Alert } from '@marigold/components';
   <Text>Warning message</Text>
 </Alert>
 ```
+
+## Usage
+
+<Stack space="small">
+  <Box
+    display="grid"
+    css={{
+      gridGap: 'small',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(min(500px, 100%), 1fr))',
+    }}
+  >
+    <DoAndDont
+      preview={
+        <Alert>
+          <Inline space="small">
+            <Text>Success message</Text>
+            <SortDown />
+          </Inline>
+        </Alert>
+      }
+    >
+      Group several alerts messages.
+    </DoAndDont>
+    <DoAndDont
+      dont
+      preview={
+        <Stack space="small">
+          <Alert variant="error">
+            <Text>Error message 1</Text>
+          </Alert>
+          <Alert variant="error">
+            <Text>Error message 2</Text>
+          </Alert>
+          <Alert variant="error">
+            <Text>Error message 3</Text>
+          </Alert>
+          <Alert variant="error">
+            <Text>Error message 4</Text>
+          </Alert>
+        </Stack>
+      }
+    >
+      Do not show too many alert messages at once.
+    </DoAndDont>
+  </Box>
+</Stack>
