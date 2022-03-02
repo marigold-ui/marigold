@@ -58,7 +58,7 @@ export const LetterSpacing = () => (
 
 export const FontSizes = () => (
   <Stack space="32px" align="center">
-    {Object.values(Vars.typography.size).map(value => (
+    {Object.values(Vars.typography.size.fixed).map(value => (
       <Box
         key={value}
         css={{
@@ -74,7 +74,7 @@ export const FontSizes = () => (
 
 export const FluidFontSizes = () => (
   <Stack space="32px" align="center">
-    {Object.values(Vars.typography.sizeFluid).map(value => (
+    {Object.values(Vars.typography.size.fluid).map(value => (
       <Box
         key={value}
         css={{
@@ -95,7 +95,7 @@ export const FontWeights = () => (
         key={value}
         css={{
           fontWeight: value,
-          fontSize: Vars.typography.size.large,
+          fontSize: Vars.typography.size.fixed.large,
           fontFamily: Vars.typography.font.sans,
         }}
       >

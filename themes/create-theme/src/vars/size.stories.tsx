@@ -49,7 +49,7 @@ export const Headlines = () => (
     {Object.values(Vars.size.header).map(value => (
       <Box
         css={{
-          fontSize: Vars.typography.sizeFluid.regular,
+          fontSize: Vars.typography.size.fluid.regular,
           fontFamily: Vars.typography.font.sans,
           maxWidth: value,
         }}
@@ -67,7 +67,7 @@ export const Content = () => (
       <Box
         key={value}
         css={{
-          fontSize: Vars.typography.sizeFluid.small,
+          fontSize: Vars.typography.size.fluid.small,
           fontFamily: Vars.typography.font.sans,
           maxWidth: value,
         }}

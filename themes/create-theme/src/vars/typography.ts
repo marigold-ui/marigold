@@ -29,7 +29,7 @@ const letterSpacing = {
   xxxlarge: '1em',
 } as const;
 
-const size = {
+const fixed = {
   xsmall: '.5rem',
   small: '.75rem',
   regular: '1rem',
@@ -42,7 +42,7 @@ const size = {
   epic: '3.5rem',
 } as const;
 
-const sizeFluid = {
+const fluid = {
   small: 'clamp(.75rem, 2vw, 1rem)',
   regular: 'clamp(1rem, 4vw, 1.5rem)',
   large: 'clamp(1.5rem, 6vw, 2.5rem)',
@@ -62,7 +62,9 @@ export const typography = {
   font,
   lineHeight,
   letterSpacing,
-  size,
-  sizeFluid,
   weight,
-};
+  size: {
+    fixed,
+    fluid,
+  },
+} as const;
