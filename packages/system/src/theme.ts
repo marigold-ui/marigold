@@ -33,6 +33,14 @@ export interface Scale<T> {
 }
 
 /**
+ * A {@link Scale} that also includes a required `none` value, which is
+ * usually used to define the blank value (e.g `0`).
+ */
+export interface ZeroScale<T> extends Scale<T> {
+  none: ScaleValue<T>;
+}
+
+/**
  * Predefined {@link Scale} scale which uses size values.
  */
 export interface SizeScale<T> {
@@ -54,19 +62,8 @@ export interface SizeScale<T> {
  * A {@link SizeScale} that also includes a required `none` value, which is
  * usually used to define the blank value (e.g `0`).
  */
-export interface ZeroScale<T> extends SizeScale<T> {
+export interface ZeroSizeScale<T> extends SizeScale<T> {
   none: ScaleValue<T>;
-}
-
-/**
- * Predefined {@link Scale} scale which uses speed values.
- */
-export interface SpeedScale<T> {
-  slowest: ScaleValue<T>;
-  slow: ScaleValue<T>;
-  medium: ScaleValue<T>;
-  fast: ScaleValue<T>;
-  fastest: ScaleValue<T>;
 }
 
 /**
@@ -98,7 +95,7 @@ export interface Theme {
    * Used to define a scale for whitspace values,
    * like `padding`, `margin`, `gap`, etc.
    */
-  space?: ZeroScale<CSS.Property.Margin<number | string>>;
+  space?: ZeroSizeScale<CSS.Property.Margin<number | string>>;
 
   /**
    * Used to define a `font-size` scale.
@@ -129,7 +126,7 @@ export interface Theme {
    * Used to define a scale for size values,
    * like `height`, `width`, `flexBasis`, etc.
    */
-  sizes?: ZeroScale<CSS.Property.Height<{}> | CSS.Property.Width<{}>>;
+  sizes?: ZeroSizeScale<CSS.Property.Height<{}> | CSS.Property.Width<{}>>;
 
   /**
    * Used to define different `border` styles.
@@ -169,5 +166,5 @@ export interface Theme {
   /**
    * Used to define a `transition` styles.
    */
-  transitions?: SpeedScale<CSS.Property.Transition>;
+  transitions?: Scale<CSS.Property.Transition>;
 }
