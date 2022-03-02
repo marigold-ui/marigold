@@ -2,24 +2,59 @@
 title: Checkbox
 ---
 
+import { DoAndDont } from '../../src/components/DoAndDont';
+import {
+  Box,
+  Card,
+  Checkbox,
+  Columns,
+  Column,
+  Inline,
+  Stack,
+  Text,
+} from '@marigold/components';
+
 # Checkbox
+
+## Demo
+
+<MarigoldTheme>
+  <Inline space="medium">
+    <Checkbox id="unchecked" aria-label="unchecked" />
+    <Checkbox id="disabled" aria-label="disabled" disabled />
+    <Checkbox id="checked" aria-label="checked" checked />
+    <Checkbox
+      id="disabled-checked"
+      aria-label="disabled-checked"
+      checked
+      disabled
+    />
+    <Checkbox
+      id="indeterminated-checked"
+      aria-label="indeterminated-checked"
+      checked
+      indeterminated
+    />
+  </Inline>
+</MarigoldTheme>
 
 ## Description
 
-With the Checkbox component you can add a HTML `<input>` element with `type="checkbox"` to your form.
-The variant can be added with the variant prop. The default variant is `__default`.
+Checkboxes allow users to select multiple items from a list of individual items,
+or to mark one individual item as selected.
 
 ## Properties
 
-| Property                  | Type      | Default     |
-| :------------------------ | :-------- | :---------- |
-| `id`                      | `string`  |             |
-| `variant` (optional)      | `string`  | `__default` |
-| `labelVariant` (optional) | `string`  | `inline`    |
-| `required` (optional)     | `boolean` | `false`     |
-| `disabled` (optional)     | `boolean` | `false`     |
-| `error` (optional)        | `boolean` | `false`     |
-| `errorMessage` (optional) | `string`  |             |
+| Property                    | Type      | Default     |
+| :-------------------------- | :-------- | :---------- |
+| `id`                        | `string`  |             |
+| `variant` (optional)        | `string`  | `__default` |
+| `labelVariant` (optional)   | `string`  | `inline`    |
+| `required` (optional)       | `boolean` | `false`     |
+| `disabled` (optional)       | `boolean` | `false`     |
+| `indeterminated` (optional) | `boolean` | `false`     |
+| `error` (optional)          | `boolean` | `false`     |
+| `errorMessage` (optional)   | `string`  |             |
 
 ## Import
 
@@ -27,7 +62,9 @@ The variant can be added with the variant prop. The default variant is `__defaul
 import { Checkbox } from '@marigold/components';
 ```
 
-## Live-Code Example
+## Types
+
+### Checkbox standard labeled
 
 ```tsx expandCode
 () => {
@@ -37,37 +74,13 @@ import { Checkbox } from '@marigold/components';
   };
   return (
     <Checkbox
-      id="checkboxLive"
-      name="checkboxLive"
+      id="standard"
+      name="standard"
       onChange={onChange}
       checked={isChecked}
       value="Checkbox"
     >
-      Check the box
-    </Checkbox>
-  );
-};
-```
-
-## Usage
-
-### Checkbox standard labeled
-
-```tsx
-() => {
-  const [isChecked, setChecked] = React.useState(false);
-  const onChange = () => {
-    setChecked(!isChecked);
-  };
-  return (
-    <Checkbox
-      id="myCheckbox"
-      name="myCheckbox"
-      onChange={onChange}
-      checked={isChecked}
-      value="Checkbox"
-    >
-      check if you like Marigold
+      Agree to Marigold terms
     </Checkbox>
   );
 };
@@ -87,20 +100,139 @@ import { Checkbox } from '@marigold/components';
 </>
 ```
 
-### Checkbox with required label
+### Checkbox required label
 
 ```tsx
 <Checkbox checked id="required" value="required" required>
-  This label is required
+  Agree to Marigold terms
 </Checkbox>
 ```
 
-### Checkbox with error and errorMessage
+### Checkbox error and errorMessage
 
-Only use the error and errorMesssage prop together
+Use the error and errorMesssage prop together
 
 ```tsx
-<Checkbox id="error" value="error" error errorMessage="checkbox error">
-  This checkbox has an error
+<Checkbox
+  id="error"
+  value="error"
+  error
+  errorMessage="Please check the required checkbox"
+  required
+>
+  Agree to Marigold terms
 </Checkbox>
 ```
+
+### Indeterminated Checkbox
+
+Use indeterminate state when it represents both selected and not selected values.
+
+```tsx
+<Checkbox id="selectAll" checked indeterminated>
+  Select all
+</Checkbox>
+```
+
+## Usage
+
+<Stack space="small">
+  <Box
+    display="grid"
+    css={{
+      gridGap: 'small',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(min(500px, 100%), 1fr))',
+    }}
+  >
+    <DoAndDont
+      preview={
+        <Card>
+          <Stack>
+            <Checkbox id="blue" checked>
+              Blue
+            </Checkbox>
+            <Checkbox id="red" checked>
+              Red
+            </Checkbox>
+            <Checkbox id="yellow">Yellow</Checkbox>
+          </Stack>
+        </Card>
+      }
+    >
+      Use checkboxes to allow users to select one or more options from a list.
+    </DoAndDont>
+    <DoAndDont
+      preview={
+        <Card>
+          <Stack space="medium">
+            <Checkbox id="select" value="error" checked indeterminated>
+              Select all colors
+            </Checkbox>
+            <Stack>
+              <Checkbox id="blue" checked>
+                Blue
+              </Checkbox>
+              <Checkbox id="red" checked>
+                Red
+              </Checkbox>
+              <Checkbox id="yellow">Yellow</Checkbox>
+            </Stack>
+          </Stack>
+        </Card>
+      }
+    >
+      Use a checkbox to select all values. When multiple values that are not
+      identical are represented, the checkbox should appear in the indeterminate
+      state.
+    </DoAndDont>
+    <DoAndDont
+      dont
+      preview={
+        <Card>
+          <Columns space="small">
+            <Column width={9}>Activate Option Number 1</Column>
+            <Column width={3}>
+              <Checkbox id="option" checked aria-label="option" />
+            </Column>
+            <Column width={9}>Create a Backup</Column>
+            <Column width={3}>
+              <Checkbox id="backup" checked aria-label="backup" />
+            </Column>
+            <Column width={9}>Allow password changing</Column>
+            <Column width={3}>
+              <Checkbox id="pw" checked aria-label="pw" />
+            </Column>
+          </Columns>
+        </Card>
+      }
+    >
+      Do not use checkboxes to replace a switch.
+    </DoAndDont>
+    <DoAndDont
+      dont
+      preview={
+        <Card>
+          <Text as="h5" variant="headline5">
+            Select your answer
+          </Text>
+          <Columns space="small">
+            <Column width={9}>Yes</Column>
+            <Column width={3}>
+              <Checkbox id="yes" checked aria-label="yes" />
+            </Column>
+            <Column width={9}>No</Column>
+            <Column width={3}>
+              <Checkbox id="no" checked aria-label="no" />
+            </Column>
+            <Column width={9}>I am not sure</Column>
+            <Column width={3}>
+              <Checkbox id="not-sure" checked aria-label="not-sure" />
+            </Column>
+          </Columns>
+        </Card>
+      }
+    >
+      Do not use checkboxes to replace a radio.
+    </DoAndDont>
+  </Box>
+</Stack>
