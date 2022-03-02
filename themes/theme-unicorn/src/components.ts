@@ -545,8 +545,10 @@ export const components = {
   select,
   slider,
   switch: {
-    fill: 'gray20',
-    stroke: 'gray40',
+    __default: {
+      fill: 'gray20',
+      stroke: 'gray40',
+    },
     ':checked': {
       fill: 'primary',
       stroke: '#311b92',
