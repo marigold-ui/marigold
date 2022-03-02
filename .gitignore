@@ -16,3 +16,5 @@ docs/public
 !.yarn/versions
 .pnp.*
 .history
+
+local.env

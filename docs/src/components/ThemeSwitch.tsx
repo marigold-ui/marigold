@@ -13,11 +13,11 @@ export const themes = {
 
 // Context
 // ---------------
-export type ThemeSwitchContextType = {
+export interface ThemeSwitchContextType {
   current: string | undefined;
   themes: { [name: string]: Theme };
   setTheme: Function;
-};
+}
 
 export const Context = React.createContext({
   current: undefined,
@@ -30,10 +30,10 @@ export const useThemeSwitch = () => useContext(Context);
 
 // Component
 // ---------------
-export type MarigoldThemeSwitchProps = {
+export interface MarigoldThemeSwitchProps {
   themes: { [name: string]: Theme };
   initial?: string;
-};
+}
 
 export const MarigoldThemeSwitch: React.FC<MarigoldThemeSwitchProps> = ({
   themes,

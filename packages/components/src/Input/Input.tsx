@@ -12,9 +12,9 @@ export interface InputThemeExtension<Value> {
 
 // Props
 // ---------------
-export type InputProps = {
+export interface InputProps extends ComponentProps<'input'> {
   variant?: string;
-} & ComponentProps<'input'>;
+}
 
 // Component
 // ---------------

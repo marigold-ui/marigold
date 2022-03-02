@@ -13,23 +13,18 @@ export interface SliderThemeExtension<Value> {
 
 // Props
 // ---------------
-export type SliderProps = {
+export interface SliderProps extends ComponentProps<'input'> {
   variant?: string;
-} & ComponentProps<'input'>;
+}
 
 // Component
 // ---------------
-export const Slider: React.FC<SliderProps> = ({
-  variant = '',
-  className,
-  ...props
-}) => (
+export const Slider: React.FC<SliderProps> = ({ variant = '', ...props }) => (
   <Box
     as="input"
     type="range"
     css={{ verticalAlign: 'middle' }}
     variant={`slider.${variant}`}
-    className={className}
     {...props}
   />
 );

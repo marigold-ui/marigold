@@ -13,11 +13,10 @@ import { Box } from '../Box';
 
 // Props
 // ---------------
-export type ModalDialogProps = {
+export interface ModalDialogProps extends OverlayProps, AriaDialogProps {
   variant?: string;
   backdropVariant?: string;
-} & OverlayProps &
-  AriaDialogProps;
+}
 
 // Component
 // ---------------

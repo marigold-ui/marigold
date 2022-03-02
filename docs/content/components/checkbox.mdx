@@ -7,7 +7,7 @@ title: Checkbox
 ## Description
 
 With the Checkbox component you can add a HTML `<input>` element with `type="checkbox"` to your form.
-The variant can be added with the variant prop. The default variant is `default`.
+The variant can be added with the variant prop. The default variant is `__default`.
 
 ## Properties
 
@@ -15,7 +15,6 @@ The variant can be added with the variant prop. The default variant is `default`
 | :------------------------ | :-------- | :---------- |
 | `id`                      | `string`  |             |
 | `variant` (optional)      | `string`  | `__default` |
-| `label`                   | `string`  |             |
 | `labelVariant` (optional) | `string`  | `inline`    |
 | `required` (optional)     | `boolean` | `false`     |
 | `disabled` (optional)     | `boolean` | `false`     |
@@ -43,8 +42,9 @@ import { Checkbox } from '@marigold/components';
       onChange={onChange}
       checked={isChecked}
       value="Checkbox"
-      label="Checkbox to play with"
-    />
+    >
+      Check the box
+    </Checkbox>
   );
 };
 ```
@@ -66,8 +66,9 @@ import { Checkbox } from '@marigold/components';
       onChange={onChange}
       checked={isChecked}
       value="Checkbox"
-      label="check if you like Marigold"
-    />
+    >
+      check if you like Marigold
+    </Checkbox>
   );
 };
 ```
@@ -76,27 +77,22 @@ import { Checkbox } from '@marigold/components';
 
 ```tsx
 <>
-  <Checkbox label="Disabled" id="disabled" disabled />
+  <Checkbox id="disabled" disabled>
+    Disabled
+  </Checkbox>
   <br />
-  <Checkbox
-    label="Checked and disabled"
-    id="checkedDisabled"
-    checked
-    disabled
-  />
+  <Checkbox id="checkedDisabled" checked disabled>
+    Checked and disabled
+  </Checkbox>
 </>
 ```
 
 ### Checkbox with required label
 
 ```tsx
-<Checkbox
-  checked
-  id="required"
-  value="required"
-  required
-  label="This label is required"
-/>
+<Checkbox checked id="required" value="required" required>
+  This label is required
+</Checkbox>
 ```
 
 ### Checkbox with error and errorMessage
@@ -104,11 +100,7 @@ import { Checkbox } from '@marigold/components';
 Only use the error and errorMesssage prop together
 
 ```tsx
-<Checkbox
-  id="error"
-  value="error"
-  label="This checkbox has an error"
-  error
-  errorMessage="checkbox error"
-/>
+<Checkbox id="error" value="error" error errorMessage="checkbox error">
+  This checkbox has an error
+</Checkbox>
 ```

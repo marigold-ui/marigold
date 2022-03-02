@@ -22,9 +22,9 @@ export interface AlertThemeExtension<Value> {
 
 // Props
 // ---------------
-export type AlertProps = {
+export interface AlertProps extends ComponentProps<'div'> {
   variant?: AlertVariants;
-} & ComponentProps<'div'>;
+}
 
 // Component
 // ---------------

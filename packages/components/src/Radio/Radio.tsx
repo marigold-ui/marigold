@@ -19,10 +19,11 @@ export interface RadioThemeExtension<Value> {
 
 // Radio Input
 // ---------------
-type RadioInputProps = RadioIconProps & ComponentProps<'input'>;
+interface RadioInputProps extends RadioIconProps, ComponentProps<'input'> {}
 
 const RadioInput: React.FC<RadioInputProps> = ({ error, ...props }) => {
   const { focusProps } = useFocusRing();
+  const { children, ...restProps } = props;
 
   return (
     <Box pr="xsmall">
@@ -31,7 +32,7 @@ const RadioInput: React.FC<RadioInputProps> = ({ error, ...props }) => {
           type="radio"
           disabled={props.disabled}
           {...focusProps}
-          {...props}
+          {...restProps}
         />
       </VisuallyHidden>
       <RadioIcon
@@ -46,20 +47,16 @@ const RadioInput: React.FC<RadioInputProps> = ({ error, ...props }) => {
 
 // Radio
 // ---------------
-export type RadioProps = {
+export interface RadioProps extends RadioInputProps {
   id: string;
-  label: string;
   required?: boolean;
   labelVariant?: string;
-  error?: boolean;
   errorMessage?: string;
-} & RadioInputProps;
+}
 
 export const Radio: React.FC<RadioProps> = ({
-  label,
   required,
   labelVariant = 'inline',
-  error,
   errorMessage,
   ...props
 }) => (
@@ -75,10 +72,10 @@ export const Radio: React.FC<RadioProps> = ({
           : { color: 'text', ':hover': { cursor: 'pointer' } }
       }
     >
-      <Box as={RadioInput} error={error} {...props} />
-      {label}
+      <Box as={RadioInput} error={props.error} {...props} />
+      {props.children}
     </Box>
-    {error && errorMessage && (
+    {props.error && errorMessage && (
       <ValidationMessage>
         <Exclamation size={16} />
         {errorMessage}

@@ -6,11 +6,11 @@ import { ComponentProps } from '@marigold/types';
 
 import { MarigoldTheme } from './MarigoldTheme';
 
-export type DoAndDontProps = {
+export interface DoAndDontProps extends ComponentProps<'div'> {
   preview: string;
   dont?: boolean;
   variant?: string;
-} & ComponentProps<'div'>;
+}
 
 export const DoAndDont: React.FC<DoAndDontProps> = ({
   variant = 'default',

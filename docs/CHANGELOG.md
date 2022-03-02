@@ -1,5 +1,39 @@
 # @marigold/docs
 
+## 0.5.1
+
+### Patch Changes
+
+- [#1794](https://github.com/marigold-ui/marigold/pull/1794) [`01bd6196`](https://github.com/marigold-ui/marigold/commit/01bd61960582487ea46910c6766c2b6b220e0dd6) Thanks [@ti10le](https://github.com/ti10le)! - fix:(docs): icons page remove text because of mb
+
+- Updated dependencies [[`a178eafe`](https://github.com/marigold-ui/marigold/commit/a178eafe8c8380ee23b4587d953ee52b231414ff), [`9939b743`](https://github.com/marigold-ui/marigold/commit/9939b743df4dfe40bfd5dd61a1a4b88641ef9559)]:
+  - @marigold/components@0.5.1
+  - @marigold/system@0.5.1
+  - @marigold/theme-b2b@2.0.1
+  - @marigold/icons@0.4.2
+
+## 0.5.0
+
+### Minor Changes
+
+- [#1726](https://github.com/marigold-ui/marigold/pull/1726) [`ff4a992d`](https://github.com/marigold-ui/marigold/commit/ff4a992db9e8916c87aa9934aa903263a05c01d9) Thanks [@sebald](https://github.com/sebald)! - feat(docs): Add version and short hash
+
+* [#1785](https://github.com/marigold-ui/marigold/pull/1785) [`5584cd71`](https://github.com/marigold-ui/marigold/commit/5584cd716aa8aee2217666948be9e98c87642c4d) Thanks [@ti10le](https://github.com/ti10le)! - refa(docs): use interface instead of type
+
+### Patch Changes
+
+- [#1774](https://github.com/marigold-ui/marigold/pull/1774) [`93480b63`](https://github.com/marigold-ui/marigold/commit/93480b6333a4d6231db35dbf12de5726533ebfc8) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): remove label prop and add children + refa
+
+* [#1771](https://github.com/marigold-ui/marigold/pull/1771) [`3362da23`](https://github.com/marigold-ui/marigold/commit/3362da239085f6de111edc94780a6ef75b85702e) Thanks [@eltociear](https://github.com/eltociear)! - feat(docs): fix typo in icon.mdx
+
+- [#1775](https://github.com/marigold-ui/marigold/pull/1775) [`6da8eba2`](https://github.com/marigold-ui/marigold/commit/6da8eba28c518c75758180697e5f0f5e5989c1f4) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Checkbox remove label prop and add children + refa
+
+- Updated dependencies [[`93480b63`](https://github.com/marigold-ui/marigold/commit/93480b6333a4d6231db35dbf12de5726533ebfc8), [`99af3b37`](https://github.com/marigold-ui/marigold/commit/99af3b37de24599138777ed90de0445571c3095e), [`026300b1`](https://github.com/marigold-ui/marigold/commit/026300b1b539b57785c0eb0282a3d3fd763194bc), [`5936de75`](https://github.com/marigold-ui/marigold/commit/5936de75e5a0134584438117c53c5edfe15c6c5d), [`6da8eba2`](https://github.com/marigold-ui/marigold/commit/6da8eba28c518c75758180697e5f0f5e5989c1f4)]:
+  - @marigold/components@0.5.0
+  - @marigold/system@0.5.0
+  - @marigold/theme-b2b@2.0.0
+  - @marigold/icons@0.4.1
+
 ## 0.4.0
 
 ### Minor Changes

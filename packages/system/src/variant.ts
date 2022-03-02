@@ -19,13 +19,13 @@ export const ensureVariantDefault = (val: string) => val.replace(/\.$/, '');
 export const ensureArrayVariant = <T extends string>(variant?: T | T[]) =>
   ensureArray(variant).map(ensureVariantDefault);
 
-export type State = {
+export interface State {
   checked?: boolean;
   focus?: boolean;
   hover?: boolean;
   disabled?: boolean;
   error?: boolean;
-};
+}
 
 /**
  * Appends given `state` to a `variant`.

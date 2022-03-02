@@ -14,10 +14,10 @@ export interface MessageThemeExtension<Value> {
 
 // Props
 // ---------------
-export type MessageProps = {
+export interface MessageProps extends ComponentProps<'div'> {
   messageTitle: string;
   variant?: string;
-} & ComponentProps<'div'>;
+}
 
 // Component
 // ---------------

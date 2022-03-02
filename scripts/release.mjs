@@ -129,6 +129,7 @@ await $`git push`;
 await $`git push --tags`;
 
 step('👷', 'Building packages...');
+await $`yarn install`.pipe(process.stdout);
 await $`yarn build`.pipe(process.stdout);
 log('✓  Packages built.');
 
@@ -157,6 +158,9 @@ await option(
 );
 await $`yarn workspace @marigold/docs clean`;
 await $`yarn workspace @marigold/docs deploy`.pipe(process.stdout);
+
+step('🛎', 'inform Slack Channel ...');
+await $`yarn slack`
 
 space();
 log(brand.bold('🥳  Deployment complete!'));

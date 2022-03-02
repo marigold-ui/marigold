@@ -1,14 +1,14 @@
 import React, { Children } from 'react';
 import { Box } from '../Box';
-import flattenChildren from 'react-keyed-flatten-children';
 import { ResponsiveStyleValue, useTheme } from '@marigold/system';
+import { flattenChildren } from '../utils';
 
-type ColumnsProps = {
+export interface ColumnsProps {
   className?: string;
   space?: ResponsiveStyleValue<string>;
   horizontalAlign?: 'left' | 'right' | 'center';
   verticalAlign?: 'top' | 'bottom' | 'center';
-};
+}
 
 const useAlignment = (direction: string) => {
   switch (direction) {

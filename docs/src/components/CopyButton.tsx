@@ -2,9 +2,9 @@ import React from 'react';
 import { Box, Button } from '@marigold/components';
 import { SVG } from '@marigold/system';
 
-type CopyProps = {
+interface CopyProps {
   codeString: string;
-};
+}
 
 export const CopyButton: React.FC<CopyProps> = ({ codeString }) => {
   const [isCopied, setIsCopied] = React.useState(false);

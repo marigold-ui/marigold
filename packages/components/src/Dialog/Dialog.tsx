@@ -13,14 +13,14 @@ import { ModalDialog, ModalDialogProps } from './ModalDialog';
 
 // Props
 // ---------------
-export type DialogProps = {
+export interface DialogProps extends ModalDialogProps, ComponentProps<'div'> {
   backdropVariant?: string;
   close: ComponentProps<typeof Button>['onClick'];
   isOpen: boolean;
   title?: string;
   variant?: string;
-} & ModalDialogProps &
-  ComponentProps<'div'>;
+  role?: 'dialog' | 'alertdialog';
+}
 
 // Component
 // ---------------

@@ -1,5 +1,17 @@
 # @marigold/system
 
+## 0.5.1
+
+### Patch Changes
+
+- [#1795](https://github.com/marigold-ui/marigold/pull/1795) [`a178eafe`](https://github.com/marigold-ui/marigold/commit/a178eafe8c8380ee23b4587d953ee52b231414ff) Thanks [@ti10le](https://github.com/ti10le)! - refa: use interface instead of type
+
+## 0.5.0
+
+### Minor Changes
+
+- [#1723](https://github.com/marigold-ui/marigold/pull/1723) [`5936de75`](https://github.com/marigold-ui/marigold/commit/5936de75e5a0134584438117c53c5edfe15c6c5d) Thanks [@sebald](https://github.com/sebald)! - feat(system): add hook that allows to use values based on screen size
+
 ## 0.4.0
 
 ### Minor Changes

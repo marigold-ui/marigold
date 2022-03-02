@@ -6,6 +6,7 @@ import { Link } from './Link';
 import { Logo } from './Logo';
 import { Navigation } from './Navigation';
 import { ThemeSelect } from './ThemeSelect';
+import { Version } from './Version';
 
 export const Layout: React.FC = ({ children }) => {
   return (
@@ -32,6 +33,7 @@ export const Layout: React.FC = ({ children }) => {
         </Column>
         <Column width={[12, 10]}>{children}</Column>
       </Columns>
+      <Version />
     </>
   );
 };
