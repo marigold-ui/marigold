@@ -1,11 +1,12 @@
 import React from 'react';
-import { Exclamation, Check, Notification } from '@marigold/icons';
+import { Exclamation, Check, Info, Notification } from '@marigold/icons';
 import { type ComponentProps } from '@marigold/types';
 
 import { Box } from '../Box';
 
 const ICON_MAP = {
   success: Check,
+  info: Info,
   warning: Notification,
   error: Exclamation,
 } as const;
