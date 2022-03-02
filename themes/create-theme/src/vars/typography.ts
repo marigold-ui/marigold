@@ -17,14 +17,16 @@ const lineHeight = {
 } as const;
 
 const letterSpacing = {
-  '0': '-.05em',
-  '1': '.025em',
-  '2': '.050em',
-  '3': '.075em',
-  '4': '.150em',
-  '5': '.500em',
-  '6': '.750em',
-  '7': '1em',
+  none: 'normal',
+
+  xxsmall: '-.05em',
+  xsmall: '.025em',
+  small: '.050em',
+  medium: '.075em',
+  large: '.150em',
+  xlarge: '.500em',
+  xxlarge: '.750em',
+  xxxlarge: '1em',
 } as const;
 
 const size = {
