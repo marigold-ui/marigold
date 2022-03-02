@@ -13,13 +13,7 @@ import { MarigoldTheme } from './components/MarigoldTheme';
 export const WrapPageElement: GatsbyBrowser['wrapPageElement'] = ({
   element,
   props,
-}) => {
-  return (
-    <>
-      <Layout {...props}>{element}</Layout>;
-    </>
-  );
-};
+}) => <Layout {...props}>{element}</Layout>;
 
 export const WrapRootElement: GatsbyBrowser['wrapRootElement'] = ({
   element,
