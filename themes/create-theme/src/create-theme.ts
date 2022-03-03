@@ -1,4 +1,4 @@
-import { ScaleValue, Theme } from '@marigold/system';
+import type { CSSObject, ScaleValue, Theme } from '@marigold/system';
 
 import * as Vars from './vars';
 
@@ -18,6 +18,7 @@ export const base: Theme = {
 
 type AvailableColor = keyof typeof Vars.color;
 type CustomColor = { name: string; value: ScaleValue<string> };
+type ComponentStyles = { [key: string]: ComponentStyles | CSSObject };
 
 export interface ThemeConfig {
   /**
@@ -39,15 +40,18 @@ export interface ThemeConfig {
    * Used to define if fluid or fixed sizes and whitespace should be used.
    */
   dimensions?: 'fixed' | 'fluid';
+
+  components?: ComponentStyles;
 }
 
 /*#__PURE__*/
-export const createTheme = ({
+export const createTheme = <C extends ComponentStyles>({
   colors: configColors = [],
   fonts: configFonts,
   typography = 'fixed',
   dimensions = 'fixed',
-}: ThemeConfig): Theme => {
+  components = {},
+}: ThemeConfig): Theme & C => {
   // Create colors (pick from vars or custom)
   let colors: Theme['colors'] = {};
   for (let i = 0; i < configColors.length; i++) {
@@ -75,5 +79,8 @@ export const createTheme = ({
 
     // Use fixed or fluid typography
     fontSizes: Vars.typography.size[typography],
+
+    // Add component styles
+    ...components,
   };
 };

@@ -245,3 +245,30 @@ test('allows to use fluid dimensions', () => {
     }
   `);
 });
+
+test('allows to add component styles', () => {
+  const { link, text, button } = createTheme({
+    colors: ['brand', 'red'],
+    components: {
+      link: {
+        color: 'red.80',
+      },
+
+      text: {
+        fontFamily: 'sans',
+      },
+
+      button: {
+        __default: {
+          color: 'brand.primary',
+        },
+
+        primary: {
+          color: 'red.00',
+        },
+      },
+    },
+  });
+
+  expect({ link, text, button }).toMatchInlineSnapshot();
+});
