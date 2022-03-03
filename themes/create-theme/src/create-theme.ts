@@ -1,4 +1,5 @@
-import type { CSSObject, ScaleValue, Theme } from '@marigold/system';
+import type { CSSObject, ScaleValue } from '@marigold/system';
+import type { Theme } from '@marigold/components';
 
 import * as Vars from './vars';
 
@@ -45,13 +46,13 @@ export interface ThemeConfig {
 }
 
 /*#__PURE__*/
-export const createTheme = <C extends ComponentStyles>({
+export const createTheme = ({
   colors: configColors = [],
   fonts: configFonts,
   typography = 'fixed',
   dimensions = 'fixed',
-  components = {},
-}: ThemeConfig): Theme & C => {
+  components,
+}: ThemeConfig): Theme => {
   // Create colors (pick from vars or custom)
   let colors: Theme['colors'] = {};
   for (let i = 0; i < configColors.length; i++) {
