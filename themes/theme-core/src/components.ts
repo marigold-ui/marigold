@@ -336,6 +336,12 @@ export const components = {
       color: 'error',
       borderWidth: '1px 1px 1px 0px',
     },
+    info: {
+      alignItems: 'center',
+      borderStyle: 'solid',
+      borderColor: 'info',
+      borderWidth: '2px 2px 2px 0px',
+    },
     warning: {
       alignItems: 'center',
       borderStyle: 'solid',

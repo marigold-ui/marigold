@@ -9,6 +9,7 @@ export interface CheckboxIconProps {
   variant?: string;
   checked?: boolean;
   disabled?: boolean;
+  indeterminated?: boolean;
   error?: boolean;
 }
 
@@ -16,6 +17,7 @@ export const CheckboxIcon: React.FC<CheckboxIconProps> = ({
   variant = '',
   checked = false,
   disabled = false,
+  indeterminated,
   error = false,
 }) => {
   const conditionalStates: State = disabled
@@ -44,7 +46,16 @@ export const CheckboxIcon: React.FC<CheckboxIconProps> = ({
         rx="1.5"
         variant={conditional(`checkbox.${variant}`, conditionalStates)}
       />
-      {checked && (
+      {checked && indeterminated && (
+        <Box
+          __baseCSS={{ fill: 'gray00' }}
+          as="path"
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M13.5 17.0402H2.5V15.4688H13.5V17.0402V17.0402Z"
+        />
+      )}
+      {checked && !indeterminated && (
         <Box
           __baseCSS={{ fill: 'gray00' }}
           as="path"
