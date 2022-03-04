@@ -1,4 +1,4 @@
-import type { CSSObject, ScaleValue, Theme as Scales } from '@marigold/system';
+import type { ScaleValue, Theme as Scales } from '@marigold/system';
 import type { Theme } from '@marigold/components';
 
 import * as Vars from './vars';
@@ -19,7 +19,6 @@ export const base: Theme = {
 
 type AvailableColor = keyof typeof Vars.color;
 type CustomColor = { name: string; value: ScaleValue<string> };
-type ComponentStyles = { [key: string]: ComponentStyles | CSSObject };
 
 export interface ThemeConfig {
   /**
