@@ -1,4 +1,4 @@
-import type { CSSObject, ScaleValue } from '@marigold/system';
+import type { CSSObject, ScaleValue, Theme as Scales } from '@marigold/system';
 import type { Theme } from '@marigold/components';
 
 import * as Vars from './vars';
@@ -42,7 +42,7 @@ export interface ThemeConfig {
    */
   dimensions?: 'fixed' | 'fluid';
 
-  components?: ComponentStyles;
+  components?: Omit<Theme, keyof Scales>;
 }
 
 /*#__PURE__*/

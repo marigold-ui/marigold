@@ -255,7 +255,9 @@ test('allows to add component styles', () => {
       },
 
       text: {
-        fontFamily: 'sans',
+        body: {
+          fontFamily: 'sans',
+        },
       },
 
       button: {
@@ -270,5 +272,24 @@ test('allows to add component styles', () => {
     },
   });
 
-  expect({ link, text, button }).toMatchInlineSnapshot();
+  expect({ link, text, button }).toMatchInlineSnapshot(`
+    {
+      "button": {
+        "__default": {
+          "color": "brand.primary",
+        },
+        "primary": {
+          "color": "red.00",
+        },
+      },
+      "link": {
+        "color": "red.80",
+      },
+      "text": {
+        "body": {
+          "fontFamily": "sans",
+        },
+      },
+    }
+  `);
 });
