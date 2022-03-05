@@ -3577,7 +3577,7 @@ __metadata:
     "@marigold/tsconfig": "workspace:*"
     "@marigold/types": "workspace:*"
     "@theme-ui/css": 0.13.1
-    csstype: 3.0.10
+    csstype: 3.0.11
     tsup: 5.11.13
   peerDependencies:
     react: ^16.x || ^17.0.0
@@ -11177,10 +11177,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csstype@npm:3.0.10, csstype@npm:^3.0.10, csstype@npm:^3.0.2":
-  version: 3.0.10
-  resolution: "csstype@npm:3.0.10"
-  checksum: 20a8fa324f2b33ddf94aa7507d1b6ab3daa6f3cc308888dc50126585d7952f2471de69b2dbe0635d1fdc31223fef8e070842691877e725caf456e2378685a631
+"csstype@npm:3.0.11":
+  version: 3.0.11
+  resolution: "csstype@npm:3.0.11"
+  checksum: 95e56abfe9ca219ae065acb4e43f61771a03170eed919127f558dfa168240867aba7629c8d98a201a0dd06d9a5ce82686f0570031c928516c61816adbc7c877f
   languageName: node
   linkType: hard
 
@@ -11188,6 +11188,13 @@ __metadata:
   version: 2.6.19
   resolution: "csstype@npm:2.6.19"
   checksum: 72b51ddd30ba308d08373cd890e79526efdc19a9762941845040055f75353992f2d8d4cf4db282a8e1d3d9d2a39c989c65fe32b7b2655f08d313660c4048d2d6
+  languageName: node
+  linkType: hard
+
+"csstype@npm:^3.0.10, csstype@npm:^3.0.2":
+  version: 3.0.10
+  resolution: "csstype@npm:3.0.10"
+  checksum: 20a8fa324f2b33ddf94aa7507d1b6ab3daa6f3cc308888dc50126585d7952f2471de69b2dbe0635d1fdc31223fef8e070842691877e725caf456e2378685a631
   languageName: node
   linkType: hard
 
