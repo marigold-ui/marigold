@@ -42,6 +42,21 @@ export const typography = {
     xxlarge: 3,
   },
   text: {
+    figma: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      columnGap: 10,
+      borderRadius: 'medium',
+      border: 'solid',
+      lineHeight: 1,
+      color: 'gray.20',
+      textDecoration: 'none',
+      py: 'xsmall',
+      px: 'medium',
+      ':hover': {
+        bg: 'gray.90',
+      },
+    },
     body: {
       ...text.root,
       color: 'gray.40',

@@ -1,5 +1,17 @@
 # @marigold/components
 
+## 0.5.1
+
+### Patch Changes
+
+- [#1795](https://github.com/marigold-ui/marigold/pull/1795) [`a178eafe`](https://github.com/marigold-ui/marigold/commit/a178eafe8c8380ee23b4587d953ee52b231414ff) Thanks [@ti10le](https://github.com/ti10le)! - refa: use interface instead of type
+
+* [#1798](https://github.com/marigold-ui/marigold/pull/1798) [`9939b743`](https://github.com/marigold-ui/marigold/commit/9939b743df4dfe40bfd5dd61a1a4b88641ef9559) Thanks [@sebald](https://github.com/sebald)! - fix(components): Use own `flattenChildren` helper to fix ESM build
+
+* Updated dependencies [[`a178eafe`](https://github.com/marigold-ui/marigold/commit/a178eafe8c8380ee23b4587d953ee52b231414ff)]:
+  - @marigold/system@0.5.1
+  - @marigold/icons@0.4.2
+
 ## 0.5.0
 
 ### Minor Changes

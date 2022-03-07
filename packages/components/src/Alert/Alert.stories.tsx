@@ -12,7 +12,7 @@ export default {
       control: {
         type: 'select',
       },
-      options: ['success', 'warning', 'error'],
+      options: ['success', 'info', 'warning', 'error'],
       defaultValue: 'success',
     },
     children: {
@@ -20,7 +20,7 @@ export default {
       control: {
         type: 'text',
       },
-      defaultValue: 'Put some text here!',
+      defaultValue: 'Alert Message!',
     },
   },
 } as Meta;

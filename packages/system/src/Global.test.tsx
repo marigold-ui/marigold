@@ -9,6 +9,8 @@ test('applies normlaization to html and body', () => {
 
   const html = window.getComputedStyle(root.baseElement.parentElement!);
   expect(html.height).toBe('100%');
+  // expect(html.textSizeAdjust).toBe('none'); can not test this in JSDOM :(
+  console.log(html);
   const body = window.getComputedStyle(root.baseElement);
   expect(body.height).toBe('100%');
   expect(body.lineHeight).toBe('1.5');
