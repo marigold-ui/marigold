@@ -33,7 +33,7 @@ export const Layout: React.FC = ({ children }) => {
           <Stack space="small">
             <Box p="medium">
               <Link to="/">
-                <Logo />
+                <Logo size="small" />
               </Link>
             </Box>
             <ThemeSelect />
