@@ -21,7 +21,11 @@
     "url": "https://github.com/marigold-ui/marigold",
     "directory": "themes/theme-unicorn"
   },
+  "peerDependencies": {
+    "@marigold/components": "workspace:*"
+  },
   "devDependencies": {
+    "@marigold/components": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
     "tsup": "5.11.13"
   },

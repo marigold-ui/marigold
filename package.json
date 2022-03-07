@@ -4,13 +4,6 @@
   "repository": "github:marigold-ui/marigold",
   "private": true,
   "license": "MIT",
-  "workspaces": [
-    "config/*",
-    "docs",
-    "packages/*",
-    "themes/*"
-  ],
-  "packageManager": "yarn@3.2.0-rc.15",
   "engines": {
     "node": ">=16.x"
   },
@@ -47,7 +40,7 @@
     }
   },
   "scripts": {
-    "start": "yarn workspace @marigold/storybook-config start",
+    "start": "pnpm --filter @marigold/storybook-config start",
     "watch": "workspaces-run --only-fs=\"packages/**\" --only-fs=\"themes/**\" --order-by-deps -- yarn watch",
     "build": "workspaces-run --only-fs=\"packages/**\" --only-fs=\"themes/**\" --order-by-deps -- yarn build",
     "docs": "yarn workspace @marigold/docs start",
