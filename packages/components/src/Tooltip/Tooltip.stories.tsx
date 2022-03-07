@@ -1,8 +1,10 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
+
+import { Info } from '@marigold/icons';
+
 import { Tooltip } from './Tooltip';
 import { TooltipTrigger } from './TooltipTrigger';
-import { TooltipIcon } from './TooltipIcon';
 import { Button } from '../Button';
 
 export default {
@@ -28,7 +30,7 @@ export const Basic: ComponentStory<typeof Tooltip> = args => {
   return (
     <TooltipTrigger>
       <Button variant="" size="" aria-label="infoIconButton">
-        <TooltipIcon />
+        <Info fill="info" />
       </Button>
       <Tooltip {...args} />
     </TooltipTrigger>

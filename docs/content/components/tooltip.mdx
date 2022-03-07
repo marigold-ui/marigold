@@ -8,9 +8,9 @@ import {
   Button,
   Stack,
   Tooltip,
-  TooltipIcon,
   TooltipTrigger,
 } from '@marigold/components';
+import { Info } from '@marigold/icons';
 
 # Tooltip
 
@@ -19,7 +19,7 @@ import {
 <MarigoldTheme>
   <TooltipTrigger isOpen>
     <Button variant="" size="" aria-label="infoIconButton">
-      <TooltipIcon />
+      <Info fill="info" />
     </Button>
     <Tooltip>Tooltip</Tooltip>
   </TooltipTrigger>
@@ -42,7 +42,7 @@ Users may reveal the tooltip by hovering or focusing the trigger.
 ## Import
 
 ```tsx onlyCode
-import { Tooltip, TooltipIcon, TooltipTrigger } from '@marigold/components';
+import { Tooltip, TooltipTrigger } from '@marigold/components';
 ```
 
 ## Types
@@ -54,7 +54,7 @@ Different alignment is coming soon.
 ```tsx expandCode
 <TooltipTrigger>
   <Button variant="" size="" aria-label="infoIconButton">
-    <TooltipIcon />
+    <Info fill="info" />
   </Button>
   <Tooltip>Tooltip</Tooltip>
 </TooltipTrigger>
@@ -74,7 +74,7 @@ Different alignment is coming soon.
       preview={
         <TooltipTrigger isOpen>
           <Button variant="" size="" aria-label="infoIconButton">
-            <TooltipIcon />
+            <Info fill="info" />
           </Button>
           <Box as={Tooltip} css={{ position: 'relative' }}>
             Tooltip
@@ -89,7 +89,7 @@ Different alignment is coming soon.
       preview={
         <TooltipTrigger isOpen>
           <Button variant="" size="" aria-label="infoIconButton">
-            <TooltipIcon />
+            <Info fill="info" />
           </Button>
           <Box as={Tooltip} css={{ position: 'relative' }}>
             Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -106,7 +106,7 @@ Different alignment is coming soon.
       preview={
         <TooltipTrigger isOpen>
           <Button variant="" size="" aria-label="infoIconButton">
-            <TooltipIcon />
+            <Info fill="info" />
           </Button>
           <Box as={Tooltip} css={{ position: 'relative' }}>
             If you do not click the box, all data will be deleted.
