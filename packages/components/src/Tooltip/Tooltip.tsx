@@ -28,12 +28,12 @@ export const Tooltip: React.FC<TooltipProps> = ({
   ...props
 }) => {
   const { state, ...tooltipProviderProps } = useContext(TooltipContext);
-  props = mergeProps(props, tooltipProviderProps);
-  const { tooltipProps } = useTooltip(props, state);
+  const mergedProps = mergeProps(props, tooltipProviderProps);
+  const { tooltipProps } = useTooltip(mergedProps, state);
 
   return (
     <Box position="relative" {...tooltipProps}>
-      <Box position="absolute" variant={`tooltip.${variant}`} {...props}>
+      <Box position="absolute" variant={`tooltip.${variant}`} {...mergedProps}>
         {children}
       </Box>
     </Box>
