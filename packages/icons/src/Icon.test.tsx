@@ -6,7 +6,7 @@ test('supports default fill color', () => {
   render(<Facebook title="svg" />);
   const svg = screen.getByTitle(/svg/);
 
-  expect(svg.getAttribute('fill')).toEqual('currentcolor');
+  expect(svg).toHaveStyle('fill: currentcolor');
 });
 
 test('supports default size', () => {
@@ -27,5 +27,5 @@ test('supports fill prop', () => {
   render(<Facebook title="svg" fill="orange" />);
   const svg = screen.getByTitle(/svg/);
 
-  expect(svg.getAttribute('fill')).toEqual('orange');
+  expect(svg).toHaveStyle('fill: orange');
 });
