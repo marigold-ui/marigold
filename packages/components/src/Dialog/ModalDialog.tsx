@@ -7,7 +7,7 @@ import {
 } from '@react-aria/overlays';
 import { useDialog } from '@react-aria/dialog';
 import { FocusScope } from '@react-aria/focus';
-import { AriaDialogProps } from '@react-types/dialog';
+import type { AriaDialogProps } from '@react-types/dialog';
 
 import { Box } from '../Box';
 
