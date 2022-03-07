@@ -21,6 +21,11 @@ export const Global = () => {
   const styles = css({
     html: {
       height: '100%',
+      /**
+       * Prevent Mobile Safari from zooming stuff ...
+       * Source: https://css-tricks.com/your-css-reset-needs-text-size-adjust-probably/
+       */
+      textSizeAdjust: 'none',
       variant: 'root.html',
     },
     body: {

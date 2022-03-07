@@ -120,22 +120,25 @@ const button = {
       cursor: 'pointer',
     },
     ':disabled': {
-      color: colors.gray40,
-      bg: colors.gray20,
+      color: 'disabled',
+      bg: colors.gray00,
+      outlineColor: 'disabled',
       cursor: 'not-allowed',
     },
   },
   secondary: {
-    color: 'background',
-    bg: 'secondary',
+    color: 'gray70',
+    bg: 'gray30',
+    border: '1px solid',
+    outlineColor: 'gray70',
     ':hover': {
-      color: 'background',
-      bg: colors.gray60,
+      bg: colors.gray00,
       cursor: 'pointer',
     },
     ':disabled': {
-      color: colors.gray40,
-      bg: colors.gray20,
+      color: 'disabled',
+      bg: colors.gray00,
+      outlineColor: 'disabled',
       cursor: 'not-allowed',
     },
   },
@@ -145,7 +148,7 @@ const button = {
     outlineColor: colors.gray70,
     ':hover': {
       color: 'secondary',
-      bg: colors.gray30,
+      bg: colors.gray10,
       cursor: 'pointer',
     },
     ':disabled': {
@@ -166,8 +169,8 @@ const button = {
     ':disabled': {
       color: 'disabled',
       bg: colors.gray00,
+      outlineColor: 'disabled',
       cursor: 'not-allowed',
-      outline: 'none',
     },
   },
   menu: {
@@ -333,6 +336,12 @@ export const components = {
       color: 'error',
       borderWidth: '1px 1px 1px 0px',
     },
+    info: {
+      alignItems: 'center',
+      borderStyle: 'solid',
+      borderColor: 'info',
+      borderWidth: '2px 2px 2px 0px',
+    },
     warning: {
       alignItems: 'center',
       borderStyle: 'solid',
@@ -364,11 +373,6 @@ export const components = {
   },
   button: {
     large: {
-      lineHeight: '46px',
-      paddingX: 'large',
-      fontSize: 'xsmall',
-    },
-    medium: {
       lineHeight: '30px',
       paddingX: 'medium',
       fontSize: 'xxsmall',

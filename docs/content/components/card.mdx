@@ -3,14 +3,27 @@ title: Card
 ---
 
 import { DoAndDont } from '../../src/components/DoAndDont';
-import { Box, Card, Link, Stack } from '@marigold/components';
+import { Box, Card, Link, Stack, Text } from '@marigold/components';
 
 # Card
+
+## Demo
+
+<MarigoldTheme>
+  <Card title="Title">
+    <Text>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+      dignissim dapibus elit, vel.
+    </Text>
+    <Link href="#">
+      <Text>Read more...</Text>
+    </Link>
+  </Card>
+</MarigoldTheme>
 
 ## Description
 
 The card component can be used for organizing information inside the UI, as well it provides a better readability and helps the user to find information in an easier way.
-The variant can be added with the variant prop.
 
 ## Properties
 
@@ -26,11 +39,11 @@ The variant can be added with the variant prop.
 import { Card } from '@marigold/components';
 ```
 
-## Usage
+## Types
 
-### Standard
+### Standard title and text
 
-```tsx
+```tsx expandCode
 <Card title="Title">
   <Text>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
@@ -42,7 +55,7 @@ import { Card } from '@marigold/components';
 </Card>
 ```
 
-### Custom Width
+### Custom width
 
 ```tsx
 <Card title="Title" width="320px">
@@ -50,7 +63,7 @@ import { Card } from '@marigold/components';
 </Card>
 ```
 
-### Examples
+### Card title and fields
 
 ```tsx
 <Card title="Name">
@@ -58,6 +71,8 @@ import { Card } from '@marigold/components';
   <Field label="Lastname" htmlFor="myId2" />
 </Card>
 ```
+
+### Card title and select
 
 ```tsx
 <Card title="Choose Color">
@@ -71,6 +86,8 @@ import { Card } from '@marigold/components';
   </Select>
 </Card>
 ```
+
+## Usage
 
 <Stack space="small">
   <Box

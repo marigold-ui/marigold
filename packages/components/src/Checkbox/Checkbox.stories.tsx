@@ -46,6 +46,13 @@ export default {
       description: 'Disabled',
       defaultValue: false,
     },
+    indeterminated: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Option to define an indeterminated state',
+      defaultValue: false,
+    },
     error: {
       control: {
         type: 'boolean',

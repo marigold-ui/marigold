@@ -3,14 +3,34 @@ title: Button
 ---
 
 import { DoAndDont } from '../../src/components/DoAndDont';
+import { FigmaLink } from '../../src/components/FigmaLink';
 import { Box, ActionGroup, Button, Stack } from '@marigold/components';
 
 # Button
 
+## Demo
+
+<MarigoldTheme>
+  <ActionGroup space="small">
+    <Button>Primary</Button>
+    <Button variant="secondary">Secondary</Button>
+    <Button variant="ghost">Ghost</Button>
+    <Button variant="text">Text Only</Button>
+  </ActionGroup>
+</MarigoldTheme>
+
 ## Description
 
-With the Button component you can render a `button` element.
+The Button component renders a `<button>` element.
+Buttons allow users to perform an action.
+They have multiple styles for various needs, and are ideal for calling attention to where a user needs to do something in order to move forward in a flow.
 The style variant and size of the button can be added with the variant prop and is composed like `variant.size`.
+
+<FigmaLink
+  to={
+    'https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=11%3A269'
+  }
+/>
 
 ## Properties
 
@@ -27,32 +47,7 @@ The style variant and size of the button can be added with the variant prop and 
 import { Button } from '@marigold/components';
 ```
 
-## Demo
-
-<MarigoldTheme>
-  <ActionGroup space="small">
-    <Button>Primary</Button>
-    <Button variant="secondary">Secondary</Button>
-    <Button variant="ghost">Ghost</Button>
-    <Button variant="text">Text Only</Button>
-  </ActionGroup>
-</MarigoldTheme>
-
-## Live-Code Example
-
-```tsx expandCode
-<Button
-  variant="secondary"
-  size="small"
-  onClick={() => {
-    alert('Hello!');
-  }}
->
-  Secondary
-</Button>
-```
-
-## Usage
+## Types
 
 ### Primary Button
 
@@ -62,7 +57,7 @@ The primary button function is to achieve the most common or most important goal
 
 #### Default
 
-```tsx
+```tsx expandCode
 <Button>Primary</Button>
 ```
 

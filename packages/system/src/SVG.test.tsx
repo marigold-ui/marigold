@@ -1,6 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { SVG } from './SVG';
+import { ThemeProvider } from './useTheme';
+
+const theme = {
+  colors: {
+    info: 'blue',
+  },
+};
 
 test('renders svg', () => {
   render(<SVG data-testid="svg" />);
@@ -23,7 +30,7 @@ test('supports default fill color', () => {
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg.getAttribute('fill')).toEqual('currentcolor');
+  expect(svg).toHaveStyle('fill: currentcolor');
 });
 
 test('supports default size', () => {
@@ -56,7 +63,20 @@ test('supports fill prop', () => {
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg.getAttribute('fill')).toEqual('#fafafa');
+  expect(svg).toHaveStyle('fill: #fafafa');
+});
+
+test('supports fill from theme', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <SVG data-testid="svg" fill="info">
+        <path d="M9.9 20.113V13.8415H14" />
+      </SVG>
+    </ThemeProvider>
+  );
+  const svg = screen.getByTestId(/svg/);
+
+  expect(svg).toHaveStyle('fill: blue');
 });
 
 test('accepts custom styles prop className', () => {

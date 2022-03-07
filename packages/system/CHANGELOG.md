@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 0.5.1
+
+### Patch Changes
+
+- [#1795](https://github.com/marigold-ui/marigold/pull/1795) [`a178eafe`](https://github.com/marigold-ui/marigold/commit/a178eafe8c8380ee23b4587d953ee52b231414ff) Thanks [@ti10le](https://github.com/ti10le)! - refa: use interface instead of type
+
 ## 0.5.0
 
 ### Minor Changes
