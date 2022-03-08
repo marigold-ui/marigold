@@ -3443,6 +3443,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@marigold/create-theme@workspace:themes/create-theme":
+  version: 0.0.0-use.local
+  resolution: "@marigold/create-theme@workspace:themes/create-theme"
+  dependencies:
+    "@marigold/tsconfig": "workspace:*"
+    tsup: 5.11.13
+  peerDependencies:
+    "@marigold/components": "workspace:*"
+    "@marigold/system": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
 "@marigold/docs@workspace:docs":
   version: 0.0.0-use.local
   resolution: "@marigold/docs@workspace:docs"

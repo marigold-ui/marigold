@@ -28,14 +28,24 @@ export type ScaleValue<T> = T | T[] | NestedScaleDict<T> | undefined;
  * descriptive name for the scale (e.g. `small`/`medium`/.. or `body`/`heading`/...),
  * and the value is the CSS value.
  */
-export type Scale<T> = {
+export interface Scale<T> {
   [key: string]: ScaleValue<T>;
-};
+}
+
+/**
+ * A {@link Scale} that also includes a required `none` value, which is
+ * usually used to define the blank value (e.g `0`).
+ */
+export interface ZeroScale<T> extends Scale<T> {
+  none: ScaleValue<T>;
+}
 
 /**
  * Predefined {@link Scale} scale which uses size values.
  */
-export type SizeScale<T> = {
+export interface SizeScale<T> {
+  regular?: ScaleValue<T>;
+
   xxsmall?: ScaleValue<T>;
   xsmall?: ScaleValue<T>;
   small?: ScaleValue<T>;
@@ -43,15 +53,18 @@ export type SizeScale<T> = {
   large?: ScaleValue<T>;
   xlarge?: ScaleValue<T>;
   xxlarge?: ScaleValue<T>;
-};
+  xxxlarge?: ScaleValue<T>;
+  huge?: ScaleValue<T>;
+  epic?: ScaleValue<T>;
+}
 
 /**
  * A {@link SizeScale} that also includes a required `none` value, which is
  * usually used to define the blank value (e.g `0`).
  */
-export type ZeroScale<T> = {
+export interface ZeroSizeScale<T> extends SizeScale<T> {
   none: ScaleValue<T>;
-} & Scale<T>;
+}
 
 /**
  * Base theme with typings for available scales properties.
@@ -69,7 +82,7 @@ export interface Theme {
    * ```ts
    * {
    *   breakpoints: [
-   *     '40em', '@media (min-width: 56em) and (orientation: landscape)', '64em',
+   *     '40em', '50em', '64em',
    *   ],
    * }
    * ```
@@ -82,7 +95,7 @@ export interface Theme {
    * Used to define a scale for whitspace values,
    * like `padding`, `margin`, `gap`, etc.
    */
-  space?: ZeroScale<CSS.Property.Margin<number | string>>;
+  space?: ZeroSizeScale<CSS.Property.Margin<number | string>>;
 
   /**
    * Used to define a `font-size` scale.
@@ -107,13 +120,13 @@ export interface Theme {
   /**
    * Used to define a `letter-spacing` scale.
    */
-  letterSpacings?: ZeroScale<CSS.Property.LetterSpacing<string | 0 | number>>;
+  letterSpacings?: Scale<CSS.Property.LetterSpacing<string | 0 | number>>;
 
   /**
    * Used to define a scale for size values,
    * like `height`, `width`, `flexBasis`, etc.
    */
-  sizes?: ZeroScale<CSS.Property.Height<{}> | CSS.Property.Width<{}>>;
+  sizes?: ZeroSizeScale<CSS.Property.Height<{}> | CSS.Property.Width<{}>>;
 
   /**
    * Used to define different `border` styles.
@@ -153,5 +166,5 @@ export interface Theme {
   /**
    * Used to define a `transition` styles.
    */
-  transitions?: ZeroScale<CSS.Property.Transition>;
+  transitions?: Scale<CSS.Property.Transition>;
 }
