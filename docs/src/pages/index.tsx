@@ -12,6 +12,7 @@ export default function LandingPage() {
         display: 'grid',
         placeItems: 'center',
         height: '100vh',
+        my: '-xsmall',
       }}
     >
       <Stack space="xxlarge" align="center">

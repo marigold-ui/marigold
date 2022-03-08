@@ -4,9 +4,8 @@ import { GatsbyBrowser } from 'gatsby';
 import { MDXProvider } from '@mdx-js/react';
 
 import { Box, MarigoldProvider, SSRProvider, Text } from '@marigold/components';
-import { theme } from './theme';
 
-import { Layout } from './components/Layout';
+import { theme } from './theme';
 import { MarigoldThemeSwitch, themes } from './components/ThemeSwitch';
 import * as mdxComponents from './mdx';
 import { MarigoldTheme } from './components/MarigoldTheme';
