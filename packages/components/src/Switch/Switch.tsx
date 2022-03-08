@@ -7,10 +7,10 @@ import { ToggleProps } from '@react-types/checkbox';
 import { AriaSwitchProps } from '@react-types/switch';
 
 import { ComponentProps } from '@marigold/types';
+import { conditional } from '@marigold/system';
 
 import { Box } from '../Box';
-import { Label } from '..';
-import { conditional } from '@marigold/system';
+import { Label } from '../Label';
 
 // Theme Extension
 // ---------------
