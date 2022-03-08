@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 import { Switch } from './Switch';
@@ -101,5 +101,25 @@ test('focus element and toggle switch per keyboard space', () => {
 
   userEvent.keyboard('{space}');
   expect(svg.firstChild).toHaveStyle(`fill: blue`);
+  expect(switchInput).toHaveAttribute('aria-checked', 'false');
+});
+
+test('supports controlled component usage', () => {
+  const TestComponent = () => {
+    const [selected, setSelected] = useState(false);
+    return (
+      <ThemeProvider theme={theme}>
+        <Switch isSelected={selected} onChange={() => setSelected(!selected)}>
+          Label
+        </Switch>
+      </ThemeProvider>
+    );
+  };
+  render(<TestComponent />);
+
+  const switchInput = screen.getByRole(/switch/);
+  fireEvent.click(switchInput);
+  expect(switchInput).toHaveAttribute('aria-checked', 'true');
+  fireEvent.click(switchInput);
   expect(switchInput).toHaveAttribute('aria-checked', 'false');
 });
