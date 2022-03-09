@@ -24,6 +24,7 @@ import { type SelectThemeExtension } from './Select';
 import { type SliderThemeExtension } from './Slider';
 import { type TextThemeExtension } from './Text';
 import { type TextareaThemeExtension } from './Textarea';
+import { type TooltipThemeExtension } from './Tooltip';
 import { type ValidationMessageThemeExtension } from './ValidationMessage';
 
 export interface Theme
@@ -47,4 +48,5 @@ export interface Theme
     SliderThemeExtension<CSSObject>,
     TextThemeExtension<CSSObject>,
     TextareaThemeExtension<CSSObject>,
+    TooltipThemeExtension<CSSObject>,
     ValidationMessageThemeExtension<CSSObject> {}

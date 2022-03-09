@@ -42,7 +42,7 @@ export const typography = {
     xxlarge: 3,
   },
   text: {
-    figma: {
+    outlineLink: {
       display: 'inline-flex',
       alignItems: 'center',
       columnGap: 10,

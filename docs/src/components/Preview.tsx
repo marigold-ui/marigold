@@ -1,12 +1,5 @@
-import React, { Component, RefObject } from 'react';
-import {
-  LiveProvider,
-  LiveEditor,
-  LiveError,
-  LivePreview,
-  EditorProps,
-  DivProps,
-} from 'react-live';
+import React from 'react';
+import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/github';
 
@@ -54,9 +47,6 @@ const LiveEdit: React.FC<CodeBlockProps> = ({
 }) => {
   const [hide, setHide] = React.useState(type === ActionType.CollapseCode);
 
-  const liveEditorRef = React.createRef<EditorProps>();
-  const livePreviewRef = React.createRef<DivProps>();
-
   return (
     <LiveProvider
       code={codeString}
@@ -67,7 +57,6 @@ const LiveEdit: React.FC<CodeBlockProps> = ({
         <MarigoldTheme>
           <Box
             as={LivePreview}
-            ref={livePreviewRef as RefObject<Component<DivProps>>}
             css={{
               py: 'large',
               px: 'small',
@@ -78,11 +67,7 @@ const LiveEdit: React.FC<CodeBlockProps> = ({
       </Box>
       {!hide && (
         <Box css={codeBoxStyles}>
-          <Box
-            as={LiveEditor}
-            ref={liveEditorRef as RefObject<Component<EditorProps>>}
-            css={codeBoxStyles}
-          />
+          <Box as={LiveEditor} css={codeBoxStyles} />
           <LiveError />
           <CopyButton codeString={codeString} />
         </Box>

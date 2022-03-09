@@ -5,7 +5,7 @@ export interface FigmaLinksProps {
   to: string;
 }
 export const FigmaLink = ({ to }: FigmaLinksProps) => (
-  <Link to={to} variant="figma" target="_blank">
+  <Link to={to} variant="outlineLink" target="_blank">
     <svg
       width={10}
       height={15}
