@@ -48,7 +48,13 @@ export const Switch: React.FC<SwitchProps> = ({
   const { focusProps } = useFocusRing();
 
   return (
-    <Label variant={labelVariant}>
+    <Box
+      as={Label}
+      __baseCSS={{
+        userSelect: 'none',
+      }}
+      variant={labelVariant}
+    >
       {props.children}
       <VisuallyHidden>
         <input
@@ -92,6 +98,6 @@ export const Switch: React.FC<SwitchProps> = ({
           }}
         />
       </Box>
-    </Label>
+    </Box>
   );
 };
