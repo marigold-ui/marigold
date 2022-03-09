@@ -1,12 +1,13 @@
 {
   "name": "marigold-repo",
-  "version": "0.2.0",
+  "version": "0.0.0",
   "repository": "github:marigold-ui/marigold",
   "private": true,
   "license": "MIT",
   "engines": {
     "node": ">=16.x"
   },
+  "packageManager": "pnpm@6.32.3",
   "devDependencies": {
     "@changesets/changelog-github": "0.4.3",
     "@changesets/cli": "2.21.0",
@@ -45,7 +46,7 @@
     "build": "pnpm --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" build",
     "docs": "pnpm --filter @marigold/docs start",
     "test": "jest --config jest.config.js --coverage --coverageReporters html",
-    "coverage": "jest --config jest.config.js --coverage",
+    "test:ci": "jest --config jest.config.js --coverage --ci",
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'`",
     "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
     "lint": "eslint . --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern packages/types/src/index.ts --ignore-pattern \".cache\" --ignore-pattern public",
