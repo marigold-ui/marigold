@@ -6,7 +6,6 @@ import { type RootThemeExtension } from './Provider';
 
 // Components
 // ---------------
-import { type AlertThemeExtension } from './Alert';
 import { type BadgeThemeExtension } from './Badge';
 import { type ButtonThemeExtension } from './Button';
 import { type CardThemeExtension } from './Card';
@@ -31,7 +30,6 @@ import { type ValidationMessageThemeExtension } from './ValidationMessage';
 export interface Theme
   extends Scales,
     RootThemeExtension<CSSObject>,
-    AlertThemeExtension<CSSObject>,
     BadgeThemeExtension<CSSObject>,
     ButtonThemeExtension<CSSObject>,
     CardThemeExtension<CSSObject>,

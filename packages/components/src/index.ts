@@ -1,7 +1,6 @@
 export * from './theme';
 
 export * from './ActionGroup';
-export * from './Alert';
 export * from './Badge';
 export * from './Box';
 export * from './Button';
