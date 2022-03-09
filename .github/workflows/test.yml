@@ -1,6 +1,6 @@
 name: Test & Coverage
 
-on: ['push', 'pull_request']
+on: ['push']
 
 jobs:
   test:
@@ -9,6 +9,7 @@ jobs:
     env:
       CI: true
     steps:
+      # Setup
       - uses: actions/checkout@v2
       - uses: pnpm/action-setup@v2.0.1
         with:
@@ -20,6 +21,8 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+
+      # Action
       - name: Run Test Suite with Coverage (as lcov file)
         run: pnpm test:ci
       - name: Upload Coverage to coveralls
