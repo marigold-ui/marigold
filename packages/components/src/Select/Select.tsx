@@ -100,7 +100,7 @@ export const Select = ({
             {required ? (
               <Box as="span" display="inline-flex" alignItems="center">
                 {props.label}
-                <Box as={Required} size={16} css={{ color: 'error' }} />
+                <Required size={16} fill="error" />
               </Box>
             ) : (
               props.label
@@ -139,13 +139,9 @@ export const Select = ({
           {state.selectedItem ? state.selectedItem.rendered : placeholder}
         </Box>
         {state.isOpen && !disabled ? (
-          <Box as={ArrowUp} size={16} css={{ fill: 'text' }} />
+          <ArrowUp size={16} fill="text" />
         ) : (
-          <Box
-            as={ArrowDown}
-            size={16}
-            css={{ fill: disabled ? 'disabled' : 'text' }}
-          />
+          <ArrowDown size={16} fill={disabled ? 'disabled' : 'text'} />
         )}
       </Box>
       {state.isOpen && !disabled && (
