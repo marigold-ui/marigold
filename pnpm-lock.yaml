@@ -246,6 +246,7 @@ importers:
       '@react-aria/separator': ^3.1.3
       '@react-aria/ssr': ^3.1.0
       '@react-aria/textfield': ^3.5.0
+      '@react-aria/tooltip': ^3.1.3
       '@react-aria/utils': ^3.8.2
       '@react-aria/visually-hidden': ^3.2.3
       '@react-stately/collections': ^3.3.3
@@ -253,8 +254,10 @@ importers:
       '@react-stately/overlays': ^3.1.3
       '@react-stately/select': ^3.1.3
       '@react-stately/toggle': ^3.2.5
+      '@react-stately/tooltip': ^3.0.5
       '@react-types/dialog': ^3.3.1
       '@react-types/shared': ^3.8.0
+      '@react-types/tooltip': ^3.1.2
       react-is: ^17.0.2
       tsup: 5.11.13
     dependencies:
@@ -272,6 +275,7 @@ importers:
       '@react-aria/separator': 3.1.5_react@17.0.2
       '@react-aria/ssr': 3.1.2_react@17.0.2
       '@react-aria/textfield': 3.5.2_react@17.0.2
+      '@react-aria/tooltip': 3.1.6_react@17.0.2
       '@react-aria/utils': 3.11.2_react@17.0.2
       '@react-aria/visually-hidden': 3.2.5_react@17.0.2
       '@react-stately/collections': 3.3.6_react@17.0.2
@@ -279,8 +283,10 @@ importers:
       '@react-stately/overlays': 3.1.5_react@17.0.2
       '@react-stately/select': 3.1.5_react@17.0.2
       '@react-stately/toggle': 3.2.5_react@17.0.2
+      '@react-stately/tooltip': 3.0.8_react@17.0.2
       '@react-types/dialog': 3.3.3_react@17.0.2
       '@react-types/shared': 3.11.1_react@17.0.2
+      '@react-types/tooltip': 3.1.5_react@17.0.2
       react-is: 17.0.2
     devDependencies:
       '@marigold/tsconfig': link:../../config/tsconfig
@@ -319,6 +325,14 @@ importers:
       '@types/react': 17.0.39
     devDependencies:
       '@types/react': 17.0.39
+
+  themes/create-theme:
+    specifiers:
+      '@marigold/tsconfig': workspace:*
+      tsup: 5.11.13
+    devDependencies:
+      '@marigold/tsconfig': link:../../config/tsconfig
+      tsup: 5.11.13_typescript@4.6.2
 
   themes/theme-b2b:
     specifiers:
@@ -4523,6 +4537,19 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@react-aria/focus/3.5.3_react@17.0.2:
+    resolution: {integrity: sha512-Bf8Zm30WQx4iWJbNRKhjc7c/5PnT43HxnIbiDcWDDZ9IuWzfAcg/JV9sRPFOViiEcCXIG3D1sHpiGf6pU+Xbow==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1
+    dependencies:
+      '@babel/runtime': 7.17.2
+      '@react-aria/interactions': 3.8.2_react@17.0.2
+      '@react-aria/utils': 3.11.3_react@17.0.2
+      '@react-types/shared': 3.11.2_react@17.0.2
+      clsx: 1.1.1
+      react: 17.0.2
+    dev: false
+
   /@react-aria/i18n/3.3.6_react@17.0.2:
     resolution: {integrity: sha512-GOogCx5UR3RpkJSceQwwenLctaK7tbDP0DKzmaWQv1ZNUg9nr35w65VMq46WIGz2dIQhqydTagZP1Exci1KhkQ==}
     peerDependencies:
@@ -4546,6 +4573,17 @@ packages:
       '@babel/runtime': 7.17.2
       '@react-aria/utils': 3.11.2_react@17.0.2
       '@react-types/shared': 3.11.1_react@17.0.2
+      react: 17.0.2
+    dev: false
+
+  /@react-aria/interactions/3.8.2_react@17.0.2:
+    resolution: {integrity: sha512-AyTTwflthmyNcgIfjzHLdrQTcUJpLer9jMtB7IyTJ90c1eYbd+iy40WbyBZYhQhI8Zkq+q9bfeIOQFlEMDWh8A==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1
+    dependencies:
+      '@babel/runtime': 7.17.2
+      '@react-aria/utils': 3.11.3_react@17.0.2
+      '@react-types/shared': 3.11.2_react@17.0.2
       react: 17.0.2
     dev: false
 
@@ -4723,6 +4761,21 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@react-aria/tooltip/3.1.6_react@17.0.2:
+    resolution: {integrity: sha512-AdpX0m9JzcGFIQg88GzGnMH560ym+l6Gb3+RSRJkcmlS+BNtjzqUbkKkKA0coWyPga6xTSsLuzQodfk7x1iNvw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1
+    dependencies:
+      '@babel/runtime': 7.17.2
+      '@react-aria/focus': 3.5.3_react@17.0.2
+      '@react-aria/interactions': 3.8.2_react@17.0.2
+      '@react-aria/utils': 3.11.3_react@17.0.2
+      '@react-stately/tooltip': 3.0.8_react@17.0.2
+      '@react-types/shared': 3.11.2_react@17.0.2
+      '@react-types/tooltip': 3.1.5_react@17.0.2
+      react: 17.0.2
+    dev: false
+
   /@react-aria/utils/3.11.2_react@17.0.2:
     resolution: {integrity: sha512-mbOIPJ2zXgSMQTVXUenl8A8oOUvXPQPmlJv1OqkYPXf74yI5MagpWqbekj8t9Mwrbnj87LL3dY39pWjvlHoJ+w==}
     peerDependencies:
@@ -4732,6 +4785,19 @@ packages:
       '@react-aria/ssr': 3.1.2_react@17.0.2
       '@react-stately/utils': 3.4.1_react@17.0.2
       '@react-types/shared': 3.11.1_react@17.0.2
+      clsx: 1.1.1
+      react: 17.0.2
+    dev: false
+
+  /@react-aria/utils/3.11.3_react@17.0.2:
+    resolution: {integrity: sha512-EH3SyA3FtbhuOj1cgGveiEYidKe3CgGYkP8D57O46rlTWcgTxhGHUEibGeJw3PFXxmbgm5RIOdBo29YwItvtcQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1
+    dependencies:
+      '@babel/runtime': 7.17.2
+      '@react-aria/ssr': 3.1.2_react@17.0.2
+      '@react-stately/utils': 3.4.1_react@17.0.2
+      '@react-types/shared': 3.11.2_react@17.0.2
       clsx: 1.1.1
       react: 17.0.2
     dev: false
@@ -4807,6 +4873,17 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@react-stately/overlays/3.1.6_react@17.0.2:
+    resolution: {integrity: sha512-0iOdRqYjhTj8966lO9xN8+9IXXJ1Ngv2hCF2imPa40Jl1BXLBogLPblCq3HEQPcPsa+0pU3+xoaIb0MWdIkY9w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1
+    dependencies:
+      '@babel/runtime': 7.17.2
+      '@react-stately/utils': 3.4.1_react@17.0.2
+      '@react-types/overlays': 3.5.4_react@17.0.2
+      react: 17.0.2
+    dev: false
+
   /@react-stately/select/3.1.5_react@17.0.2:
     resolution: {integrity: sha512-ivTVsWn0It0ADm+lkj624KMlQcY+USNHc109LdYfrMYK4cUUlunlBnjzqwlmEJ1r6GauGhIlclgrnp2wMu1V3w==}
     peerDependencies:
@@ -4844,6 +4921,18 @@ packages:
       '@react-stately/utils': 3.4.1_react@17.0.2
       '@react-types/checkbox': 3.2.5_react@17.0.2
       '@react-types/shared': 3.11.1_react@17.0.2
+      react: 17.0.2
+    dev: false
+
+  /@react-stately/tooltip/3.0.8_react@17.0.2:
+    resolution: {integrity: sha512-udq97gIXNtFY9F/Fnca0PFA8zylDqRNitmIKiTjIive1lMuDH9b2xWqKLi4b6WOFpDlAX6UQTj4TjGdnAyaIbw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1
+    dependencies:
+      '@babel/runtime': 7.17.2
+      '@react-stately/overlays': 3.1.6_react@17.0.2
+      '@react-stately/utils': 3.4.1_react@17.0.2
+      '@react-types/tooltip': 3.1.5_react@17.0.2
       react: 17.0.2
     dev: false
 
@@ -4944,6 +5033,15 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@react-types/overlays/3.5.4_react@17.0.2:
+    resolution: {integrity: sha512-lofEJS+ng9ydgHwztftTGIOaiuOni1zPTSZHmxPqlOrC+VQIdvdHUKF+3IOR1d6CbYA65a80oXO5sbMwij2Z/w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1
+    dependencies:
+      '@react-types/shared': 3.11.2_react@17.0.2
+      react: 17.0.2
+    dev: false
+
   /@react-types/select/3.5.3_react@17.0.2:
     resolution: {integrity: sha512-B9l3kN8mlfwr9VK7Yabuk2knb2yZ2nbKDsDwCkICtDX7Xj04HpYOaeeXUOwea/AOnPQ/XoKuKgPA14c8ct1k2A==}
     peerDependencies:
@@ -4955,6 +5053,14 @@ packages:
 
   /@react-types/shared/3.11.1_react@17.0.2:
     resolution: {integrity: sha512-2wwUnvLFsWPiNXK5kiKfS3+k6mtWXAtfp76haIow3OyyFLEezWD9F9ZsCtyjNG+R+JlRcmvQRgRjQaGoeUWLKg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1
+    dependencies:
+      react: 17.0.2
+    dev: false
+
+  /@react-types/shared/3.11.2_react@17.0.2:
+    resolution: {integrity: sha512-MIjjjkFi/DTzMVmeFJJrpc51eS/PLNzLZEv6o/QJPhQ9uOMElYqA790qAcG75u3tR0XGU2Vv9RyeOC7+ppw8/Q==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1
     dependencies:
@@ -4977,6 +5083,16 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1
     dependencies:
       '@react-types/shared': 3.11.1_react@17.0.2
+      react: 17.0.2
+    dev: false
+
+  /@react-types/tooltip/3.1.5_react@17.0.2:
+    resolution: {integrity: sha512-bDFl4drdlAcm5D0WAK66YN7Dx97Nfgs3mBdprOASGWQmiPMDobCiUcycA7p/h9Akzua1SR5OQyYdbU0qJBO54A==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1
+    dependencies:
+      '@react-types/overlays': 3.5.4_react@17.0.2
+      '@react-types/shared': 3.11.2_react@17.0.2
       react: 17.0.2
     dev: false
 
