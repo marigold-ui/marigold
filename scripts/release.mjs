@@ -41,7 +41,7 @@ const publish = async workspace => {
       space();
       log(chalk.bold(`📦  Publishing ${name}@${version}...`));
       cd(workspace);
-      await $`yarn npm publish --access public  --tolerate-republish`.pipe(
+      await $`pnpm publish --access public  --tolerate-republish`.pipe(
         process.stdout
       );
     },
@@ -84,11 +84,11 @@ if (trim(clean) !== '') {
 
 step('🔒', 'Checking npm status ...');
 try {
-  await $`yarn npm whoami`;
+  await $`pnpm whoami`;
 } catch {
   exit(
     'You are not logged in to npm.',
-    'Please log via "yarn npm login" in before releasing.'
+    'Please log via "pnpm login" in before releasing.'
   );
 }
 
@@ -112,14 +112,14 @@ if (!process.env.GITHUB_TOKEN) {
 }
 
 step('📦', 'Checking package status...');
-await $`yarn changeset status`.pipe(process.stdout);
+await $`pnpm changeset status`.pipe(process.stdout);
 
 space();
 log(chalk.bold('Please review the changeset.'));
 await option('Do you want to continue?');
 
 step('🍾', 'Bumping versions & generating changelog...');
-await $`yarn changeset version`.pipe(process.stdout);
+await $`pnpm changeset version`.pipe(process.stdout);
 
 step('🔼', 'Pushing changes to main branch...');
 // We use "@marigold/components" as leading version
@@ -129,8 +129,8 @@ await $`git push`;
 await $`git push --tags`;
 
 step('👷', 'Building packages...');
-await $`yarn install`.pipe(process.stdout);
-await $`yarn build`.pipe(process.stdout);
+await $`pnpm install`.pipe(process.stdout);
+await $`pnpm build`.pipe(process.stdout);
 log('✓  Packages built.');
 
 step('🌟', 'Publishing to npm...');
@@ -156,11 +156,11 @@ await option(
     'https://marigold-ui.io/'
   )}?`
 );
-await $`yarn workspace @marigold/docs clean`;
-await $`yarn workspace @marigold/docs deploy`.pipe(process.stdout);
+await $`pnpm --filter @marigold/docs clean`;
+await $`pnpm --filter @marigold/docs deploy`.pipe(process.stdout);
 
 step('🛎', 'inform Slack Channel ...');
-await $`yarn slack`
+await $`pnpm slack`;
 
 space();
 log(brand.bold('🥳  Deployment complete!'));
