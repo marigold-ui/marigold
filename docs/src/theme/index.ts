@@ -34,8 +34,8 @@ export const theme: Theme = {
   },
   root: {
     body: {
-      margin: 8,
-      padding: 0,
+      m: 'xsmall',
+      p: 'none',
       fontFamily: 'body',
     },
   },

@@ -1,19 +1,48 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { GatsbyBrowser } from 'gatsby';
 import { MDXProvider } from '@mdx-js/react';
 
-import { MarigoldProvider, SSRProvider } from '@marigold/components';
-import { theme } from './theme';
+import { Box, MarigoldProvider, SSRProvider, Text } from '@marigold/components';
 
-import { Layout } from './components/Layout';
+import { theme } from './theme';
 import { MarigoldThemeSwitch, themes } from './components/ThemeSwitch';
 import * as mdxComponents from './mdx';
 import { MarigoldTheme } from './components/MarigoldTheme';
 
+const DevMode = () => {
+  const devMode = process.env.NODE_ENV === 'development';
+  if (devMode) {
+    return (
+      <Box
+        bg="#f3f3f3"
+        css={{ textAlign: 'center', textTransform: 'uppercase' }}
+      >
+        <Text color="#1d67b6">localhost</Text>
+      </Box>
+    );
+  }
+  return null;
+};
+
 export const WrapPageElement: GatsbyBrowser['wrapPageElement'] = ({
   element,
-  props,
-}) => <Layout {...props}>{element}</Layout>;
+}) => {
+  return (
+    <>
+      <Helmet>
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+          rel="stylesheet"
+        />
+        <title>Marigold Design System</title>
+      </Helmet>
+      <DevMode />
+      {element}
+    </>
+  );
+};
 
 export const WrapRootElement: GatsbyBrowser['wrapRootElement'] = ({
   element,
