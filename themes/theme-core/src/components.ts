@@ -328,35 +328,6 @@ const slider = {
 } as const;
 
 export const components = {
-  alert: {
-    error: {
-      alignItems: 'center',
-      borderStyle: 'solid',
-      borderColor: 'error',
-      color: 'error',
-      borderWidth: '1px 1px 1px 0px',
-    },
-    info: {
-      alignItems: 'center',
-      borderStyle: 'solid',
-      borderColor: 'info',
-      borderWidth: '2px 2px 2px 0px',
-    },
-    warning: {
-      alignItems: 'center',
-      borderStyle: 'solid',
-      borderColor: 'warning',
-      color: 'warning',
-      borderWidth: '1px 1px 1px 0px',
-    },
-    success: {
-      alignItems: 'center',
-      borderStyle: 'solid',
-      borderColor: 'success',
-      color: 'success',
-      borderWidth: '1px 1px 1px 0px',
-    },
-  },
   badge: {
     __default: {
       display: 'inline-flex',
@@ -578,6 +549,20 @@ export const components = {
   },
   select,
   slider,
+  switch: {
+    __default: {
+      fill: 'gray20',
+      stroke: 'gray40',
+    },
+    ':checked': {
+      fill: 'primary',
+      stroke: 'orange80',
+    },
+    ':disabled': {
+      fill: 'gray30',
+      stroke: 'gray40',
+    },
+  },
   textarea: {
     __default: {
       fontFamily: 'body',

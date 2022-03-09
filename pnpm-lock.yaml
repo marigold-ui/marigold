@@ -245,6 +245,7 @@ importers:
       '@react-aria/select': ^3.4.1
       '@react-aria/separator': ^3.1.3
       '@react-aria/ssr': ^3.1.0
+      '@react-aria/switch': ^3.1.5
       '@react-aria/textfield': ^3.5.0
       '@react-aria/tooltip': ^3.1.3
       '@react-aria/utils': ^3.8.2
@@ -274,6 +275,7 @@ importers:
       '@react-aria/select': 3.6.2_react-dom@17.0.2+react@17.0.2
       '@react-aria/separator': 3.1.5_react@17.0.2
       '@react-aria/ssr': 3.1.2_react@17.0.2
+      '@react-aria/switch': 3.1.6_react@17.0.2
       '@react-aria/textfield': 3.5.2_react@17.0.2
       '@react-aria/tooltip': 3.1.6_react@17.0.2
       '@react-aria/utils': 3.11.2_react@17.0.2
@@ -4731,6 +4733,18 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@react-aria/switch/3.1.6_react@17.0.2:
+    resolution: {integrity: sha512-od6LokfNGfsbqYRXk1/NwcfODnGC8jmk6LOk2NE3MaXAtHYcV4oT85Fs3a6GeSrldbqiifIBFsjdvVH/ZnPquw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1
+    dependencies:
+      '@babel/runtime': 7.17.2
+      '@react-aria/toggle': 3.2.2_react@17.0.2
+      '@react-stately/toggle': 3.2.6_react@17.0.2
+      '@react-types/switch': 3.1.5_react@17.0.2
+      react: 17.0.2
+    dev: false
+
   /@react-aria/textfield/3.5.2_react@17.0.2:
     resolution: {integrity: sha512-EHrAn2XkNYAB0UfUuji3iV177826I+PczENMF+7UN7pmWC7v3vXeq3S5WtnU24JvVLthIrLqr7B/64KmPuoTSQ==}
     peerDependencies:
@@ -4758,6 +4772,22 @@ packages:
       '@react-types/checkbox': 3.2.5_react@17.0.2
       '@react-types/shared': 3.11.1_react@17.0.2
       '@react-types/switch': 3.1.4_react@17.0.2
+      react: 17.0.2
+    dev: false
+
+  /@react-aria/toggle/3.2.2_react@17.0.2:
+    resolution: {integrity: sha512-gAFP737qBMwNgPSpfCkYCj429Oj3qAhhDRbd3t4qipCVGTE3Kd4Rm1xLVxIMBxgvHzr6QPOi9xFxn+fWLwPxuQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1
+    dependencies:
+      '@babel/runtime': 7.17.2
+      '@react-aria/focus': 3.5.3_react@17.0.2
+      '@react-aria/interactions': 3.8.2_react@17.0.2
+      '@react-aria/utils': 3.11.3_react@17.0.2
+      '@react-stately/toggle': 3.2.6_react@17.0.2
+      '@react-types/checkbox': 3.2.6_react@17.0.2
+      '@react-types/shared': 3.11.2_react@17.0.2
+      '@react-types/switch': 3.1.5_react@17.0.2
       react: 17.0.2
     dev: false
 
@@ -4924,6 +4954,18 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@react-stately/toggle/3.2.6_react@17.0.2:
+    resolution: {integrity: sha512-M/+iX6eHYZScKfaOQvp3KqityOuRTWLOgskCNlnQBTq5VSszuD2p4uWxJQWXq3DbU+q872Fz4vJ7eTc2l9YA/Q==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1
+    dependencies:
+      '@babel/runtime': 7.17.2
+      '@react-stately/utils': 3.4.1_react@17.0.2
+      '@react-types/checkbox': 3.2.6_react@17.0.2
+      '@react-types/shared': 3.11.2_react@17.0.2
+      react: 17.0.2
+    dev: false
+
   /@react-stately/tooltip/3.0.8_react@17.0.2:
     resolution: {integrity: sha512-udq97gIXNtFY9F/Fnca0PFA8zylDqRNitmIKiTjIive1lMuDH9b2xWqKLi4b6WOFpDlAX6UQTj4TjGdnAyaIbw==}
     peerDependencies:
@@ -4973,6 +5015,15 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1
     dependencies:
       '@react-types/shared': 3.11.1_react@17.0.2
+      react: 17.0.2
+    dev: false
+
+  /@react-types/checkbox/3.2.6_react@17.0.2:
+    resolution: {integrity: sha512-bOQAnnDEpXL1P4oRBiwjnOskKQtawc+JcRZzQk/9k7NwKWfv5MHG/MFDJsW057GPm9Ks0onNATohtw6LFvzAQA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1
+    dependencies:
+      '@react-types/shared': 3.11.2_react@17.0.2
       react: 17.0.2
     dev: false
 
@@ -5074,6 +5125,16 @@ packages:
     dependencies:
       '@react-types/checkbox': 3.2.5_react@17.0.2
       '@react-types/shared': 3.11.1_react@17.0.2
+      react: 17.0.2
+    dev: false
+
+  /@react-types/switch/3.1.5_react@17.0.2:
+    resolution: {integrity: sha512-ZCqMGg0NievmgMuzCuW3f/6cHO6PXbFNULd1DXaPxSxKitiDrNFrE0Y6ui3LtYhKosICJ/Z7EeEDGb8FAyyT9g==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1
+    dependencies:
+      '@react-types/checkbox': 3.2.6_react@17.0.2
+      '@react-types/shared': 3.11.2_react@17.0.2
       react: 17.0.2
     dev: false
 

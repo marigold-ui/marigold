@@ -1,7 +1,6 @@
 export * from './theme';
 
 export * from './ActionGroup';
-export * from './Alert';
 export * from './Badge';
 export * from './Box';
 export * from './Button';
@@ -22,8 +21,9 @@ export * from './MenuItem';
 export * from './Message';
 export * from './Provider';
 export * from './Radio';
-export * from './Slider';
 export * from './Select';
+export * from './Slider';
+export * from './Switch';
 export * from './Stack';
 export * from './Text';
 export * from './Textarea';
