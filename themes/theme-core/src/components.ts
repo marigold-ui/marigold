@@ -578,6 +578,20 @@ export const components = {
   },
   select,
   slider,
+  switch: {
+    __default: {
+      fill: 'gray20',
+      stroke: 'gray40',
+    },
+    ':checked': {
+      fill: 'primary',
+      stroke: 'orange80',
+    },
+    ':disabled': {
+      fill: 'gray30',
+      stroke: 'gray40',
+    },
+  },
   textarea: {
     __default: {
       fontFamily: 'body',

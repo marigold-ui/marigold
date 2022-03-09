@@ -1,0 +1,141 @@
+---
+title: Switch
+---
+
+import { DoAndDont } from '../../src/components/DoAndDont';
+import {
+  Box,
+  Card,
+  Column,
+  Columns,
+  Stack,
+  Switch,
+} from '@marigold/components';
+
+# Switch
+
+## Demo
+
+<MarigoldTheme>
+  <Switch aria-label="demo-switch" />
+</MarigoldTheme>
+
+## Description
+
+The Switch component allows the users to select between two states, e.g. on and off.  
+It consists of a visual selection indicator and a label.
+Users may click or touch a Switch to toggle the state, or use the Tab key to navigate to it and the Space key to toggle it.
+
+## Properties
+
+| Property                  | Type      | Default     |
+| :------------------------ | :-------- | :---------- |
+| `variant` (optional)      | `string`  | `__default` |
+| `labelVariant` (optional) | `string`  | `above`     |
+| `disabled` (optional)     | `boolean` | `false`     |
+
+## Import
+
+```tsx onlyCode
+import { Switch } from '@marigold/components';
+```
+
+## Types
+
+### Default
+
+```tsx expandCode
+<Switch>Default Switch</Switch>
+```
+
+### Active
+
+```tsx
+<Switch defaultSelected>Active Switch</Switch>
+```
+
+### Disabled
+
+In this mode the user can not change the status of the switch.
+
+```tsx
+<Switch disabled>Disabled Switch</Switch>
+```
+
+### Disabled (active)
+
+This mode can be used when an option is or was already active and there is a variable that does not allow the user switch to be moved from its "on" mode.
+
+```tsx
+<Switch defaultSelected disabled>
+  Disabled active Switch
+</Switch>
+```
+
+<Stack space="small">
+  <Box
+    display="grid"
+    css={{
+      gridGap: 'small',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(min(500px, 100%), 1fr))',
+    }}
+  >
+    <DoAndDont
+      preview={
+        <Card>
+          <Columns space="small">
+            <Column width={9}>Activate Option Number 1</Column>
+            <Column width={3}>
+              <Switch defaultSelected aria-label="option1" />
+            </Column>
+            <Column width={9}>Create a Backup</Column>
+            <Column width={3}>
+              <Switch defaultSelected aria-label="backup" />
+            </Column>
+            <Column width={9}>Allow password changing</Column>
+            <Column width={3}>
+              <Switch aria-label="pw-change" />
+            </Column>
+          </Columns>
+        </Card>
+      }
+    >
+      Use a clear text that indicates what will be on or off when changing the
+      status of the switch.
+    </DoAndDont>
+    <DoAndDont
+      dont
+      preview={
+        <Card>
+          <Columns space="small">
+            <Column width={9}>
+              Do you want to turn off the automatic elimination of items?
+            </Column>
+            <Column width={3}>
+              <Switch defaultSelected aria-label="switch-dont" />
+            </Column>
+          </Columns>
+        </Card>
+      }
+    >
+      Do not write confusing questions. It should be clear what is active or
+      inactive.
+    </DoAndDont>
+    <DoAndDont
+      dont
+      preview={
+        <Card>
+          <Columns space="small">
+            <Column width={6}>Agree to terms</Column>
+            <Column width={6}>
+              <Switch defaultSelected aria-label="switch-dont-2" />
+            </Column>
+          </Columns>
+        </Card>
+      }
+    >
+      Do not use Switches if an error state exists. Switches, unlike checkboxes,
+      can't have an error state.
+    </DoAndDont>
+  </Box>
+</Stack>
