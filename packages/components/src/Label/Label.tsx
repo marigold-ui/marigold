@@ -56,7 +56,7 @@ export const Label: React.FC<LabelProps> = ({
   return required ? (
     <Box as="span" display="inline-flex" alignItems="center">
       <LabelBase {...props}>{children}</LabelBase>
-      {required && <Box as={Required} size={16} css={{ color: 'error' }} />}
+      {required && <Required size={16} fill="error" />}
     </Box>
   ) : (
     <LabelBase {...props}>{children}</LabelBase>
