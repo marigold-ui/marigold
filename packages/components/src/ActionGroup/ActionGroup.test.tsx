@@ -11,9 +11,6 @@ const theme = {
   },
 };
 
-const getLeftPadding = (element: HTMLElement) =>
-  getComputedStyle(element).getPropertyValue('padding-left');
-
 const getTopPadding = (element: HTMLElement) =>
   getComputedStyle(element).getPropertyValue('padding-top');
 
@@ -26,11 +23,8 @@ test('default space is "none"', () => {
       </ActionGroup>
     </ThemeProvider>
   );
-  const first = screen.getByTitle(/Button1/).parentElement!;
-  const second = screen.getByTitle(/Button2/).parentElement!;
-
-  expect(getLeftPadding(first)).toEqual('');
-  expect(second).toHaveStyle(`padding-left: 0px`);
+  const first = screen.getByTitle(/Button1/).parentElement;
+  expect(first).toHaveStyle(`gap: 0`);
 });
 
 test('supports space prop', () => {
@@ -42,11 +36,8 @@ test('supports space prop', () => {
       </ActionGroup>
     </ThemeProvider>
   );
-  const first = screen.getByTitle(/Button1/).parentElement!;
-  const second = screen.getByTitle(/Button2/).parentElement;
-
-  expect(getLeftPadding(first)).toEqual('');
-  expect(second).toHaveStyle(`padding-left: 8px`);
+  const first = screen.getByTitle(/Button1/).parentElement;
+  expect(first).toHaveStyle(`gap: 8px`);
 });
 
 test('accepts and uses spacing from theme', () => {
@@ -58,11 +49,8 @@ test('accepts and uses spacing from theme', () => {
       </ActionGroup>
     </ThemeProvider>
   );
-  const first = screen.getByTitle(/Button1/).parentElement!;
-  const second = screen.getByTitle(/Button2/).parentElement;
-
-  expect(getLeftPadding(first)).toEqual('');
-  expect(second).toHaveStyle(`padding-left: 2px`);
+  const first = screen.getByTitle(/Button1/).parentElement;
+  expect(first).toHaveStyle(`gap: 2px`);
 });
 
 test('supports verticalAlignment prop', () => {

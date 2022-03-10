@@ -22,14 +22,14 @@ export const Inline: React.FC<InlineProps> = ({
   ...props
 }) => (
   <Box
+    __baseCSS={{ gap: space, flexWrap: 'wrap' }}
     display="inline-flex"
-    css={{ '> * + *': { pl: space } }}
     alignItems={ALIGNMENT[align]}
     {...props}
   >
     {Children.map(
       flattenChildren(children) as unknown as React.ReactElement,
-      (child: React.ReactElement) => child && <Box>{child}</Box>
+      (child: React.ReactElement) => child
     )}
   </Box>
 );
