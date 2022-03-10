@@ -52,7 +52,15 @@ export const p: React.FC<ComponentProps<'p'>> = ({ children, ...props }) => (
   </Text>
 );
 
-export const a = Link;
+export const a: React.FC<ComponentProps<'a'>> = ({
+  children,
+  href = '',
+  ...props
+}) => (
+  <Link to={href} {...props}>
+    {children}
+  </Link>
+);
 
 // Code
 // ---------------
