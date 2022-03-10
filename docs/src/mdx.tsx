@@ -6,7 +6,7 @@ import { Box, Text } from '@marigold/components';
 import { ComponentProps } from '@marigold/types';
 
 import { Preview } from './components/Preview';
-import { Link } from './components/Link';
+import { Link, LinkProps } from './components/Link';
 
 // Typography
 // ---------------
@@ -52,7 +52,15 @@ export const p: React.FC<ComponentProps<'p'>> = ({ children, ...props }) => (
   </Text>
 );
 
-export const a = Link;
+export const a: React.FC<ComponentProps<'a'>> = ({
+  children,
+  href = '',
+  ...props
+}) => (
+  <Link to={href} {...props}>
+    {children}
+  </Link>
+);
 
 // Code
 // ---------------
