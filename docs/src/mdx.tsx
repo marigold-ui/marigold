@@ -6,6 +6,7 @@ import { Box, Text } from '@marigold/components';
 import { ComponentProps } from '@marigold/types';
 
 import { Preview } from './components/Preview';
+import { Link } from './components/Link';
 
 // Typography
 // ---------------
