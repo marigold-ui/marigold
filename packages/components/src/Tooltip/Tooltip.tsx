@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useTooltip } from '@react-aria/tooltip';
 import { mergeProps } from '@react-aria/utils';
-import { TooltipTriggerProps } from '@react-types/tooltip';
+import type { TooltipTriggerProps } from '@react-types/tooltip';
 
 import { Box } from '../Box';
 import { TooltipContext } from './TooltipTrigger';
