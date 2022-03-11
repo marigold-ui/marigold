@@ -62,10 +62,7 @@ jobs:
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
         with:
-            # Slack channel id, channel name, or user id to post message.
-            # See also: https://api.slack.com/methods/chat.postMessage#channels
             channel-id: 'C034HD165V1'
-            username: 'Marigold'
             payload: |
               {
                 "text": "<https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md|:marigold: *View Changelog*>",
