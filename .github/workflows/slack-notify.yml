@@ -1,0 +1,32 @@
+
+on: push
+name: Slack Notification
+jobs:
+  slackNotification:
+    name: Slack Notification
+    runs-on: ubuntu-latest
+    steps:
+    # Setup
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.32.3
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+    
+    # Action
+    - name: Slack Notification
+      uses: /action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: general
+        SLACK_COLOR: '#fa8005'
+        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_MESSAGE: ':marigold: View Changelog:' 
+        SLACK_TITLE: 'New Release :tada:'
+        SLACK_USERNAME: Marigold
+        SLACK_WEBHOOK: ${{ secrets.SLACK_TEST }}
