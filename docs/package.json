@@ -18,6 +18,7 @@
     "gatsby-plugin-image": "2.7.0",
     "gatsby-plugin-manifest": "4.7.0",
     "gatsby-plugin-mdx": "3.7.0",
+    "gatsby-plugin-pnpm": "^1.2.10",
     "gatsby-plugin-react-helmet": "5.7.0",
     "gatsby-plugin-remove-serviceworker": "1.0.0",
     "gatsby-plugin-sharp": "4.7.0",
