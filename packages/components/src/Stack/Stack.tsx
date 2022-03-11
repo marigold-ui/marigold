@@ -23,16 +23,17 @@ export const Stack: React.FC<StackProps> = ({
 }) => (
   <Box
     {...props}
+    __baseCSS={{
+      '> *': { marginBlock: 0 },
+      '* + *': { marginBlockStart: space },
+    }}
     display="flex"
     flexDirection="column"
     alignItems={ALIGNMENT[align]}
-    css={{ '> * + *': { pt: space } }}
   >
     {Children.map(
       flattenChildren(children) as unknown as React.ReactElement,
-      (child: React.ReactElement) => (
-        <Box>{React.cloneElement(child, {}, child.props.children)}</Box>
-      )
+      (child: React.ReactElement) => child
     )}
   </Box>
 );
