@@ -23,6 +23,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Slack Notification
+        uses: /action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_TEST }}
 # on: push
