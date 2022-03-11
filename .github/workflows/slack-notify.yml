@@ -40,12 +40,12 @@ on:
   pull_request:
     branches:
       - 1659-release-npm-and-slack-with-github
-      
-name: Slack Notification
   jobs:
     slackNotification:
       name: Slack Notification
       runs-on: ubuntu-latest
+      env:
+        CI: true
       steps:
         - uses: actions/checkout@v2
         - uses: pnpm/action-setup@v2.0.1
@@ -58,6 +58,7 @@ name: Slack Notification
             cache: 'pnpm'
         - name: Install dependencies
           run: pnpm install
+
         - name: Slack Notification
           id: slack
           uses: slackapi/slack-github-action@v1.18.0
@@ -77,3 +78,4 @@ name: Slack Notification
               }
           env:
             SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
+            SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
