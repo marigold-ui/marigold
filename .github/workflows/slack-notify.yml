@@ -63,28 +63,8 @@ jobs:
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
         with:
-          payload: |
-            "blocks": [
-                {   
-                    "type": "header",
-                    "text": {
-                        "type": "plain_text",
-                        "text": 'New Release'
-                    }
-                },{
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": 'Click below to see all *changes*'
-                    },
-                },{
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": " <https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md|:marigold: *View Changelog*>"
-                    }
-                }
-            ]
+          payload-file-path: './payload-slack-content.json'
+
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
