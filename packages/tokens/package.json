@@ -26,10 +26,6 @@
     "@marigold/tsconfig": "workspace:*",
     "tsup": "5.11.13"
   },
-  "peerDependencies": {
-    "@marigold/components": "workspace:*",
-    "@marigold/system": "workspace:*"
-  },
   "scripts": {
     "build": "tsup src/index.ts",
     "watch": "tsup src/index.ts --watch",

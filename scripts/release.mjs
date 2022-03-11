@@ -143,8 +143,10 @@ await publish('config/prettier');
 await publish('config/storybook');
 await publish('config/tsconfig');
 await publish('packages/components');
+await publish('packages/create-theme');
 await publish('packages/icons');
 await publish('packages/system');
+await publish('packages/tokens');
 await publish('packages/types');
 await publish('themes/theme-b2b');
 await publish('themes/theme-core');
@@ -160,7 +162,7 @@ await $`yarn workspace @marigold/docs clean`;
 await $`yarn workspace @marigold/docs deploy`.pipe(process.stdout);
 
 step('🛎', 'inform Slack Channel ...');
-await $`yarn slack`
+await $`yarn slack`;
 
 space();
 log(brand.bold('🥳  Deployment complete!'));

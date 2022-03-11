@@ -1,7 +1,7 @@
 import type { ScaleValue, Theme as Scales } from '@marigold/system';
 import type { Theme } from '@marigold/components';
 
-import * as Token from './Token';
+import * as Token from '@marigold/tokens';
 
 export const base: Theme = {
   breakpoints: ['40em', '52em', '64em'],
