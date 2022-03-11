@@ -29,5 +29,5 @@ jobs:
           SLACK_COLOR: '#fa8005'
           SLACK_MESSAGE: ':marigold: View Changelog:'
           SLACK_TITLE: 'New Release :tada:'
-          SLACK_USERNAME: Marigold
+          MSG_MINIMAL: true
           SLACK_WEBHOOK: ${{ secrets.SLACK_TEST }}
