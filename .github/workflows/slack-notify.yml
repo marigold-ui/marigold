@@ -71,7 +71,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "New Release"
+                    "text": ':information_source: New Release v' + ${{ require("../packages/components/package.json").version }} + ' :tada:'
                   }
                 },
                 {
