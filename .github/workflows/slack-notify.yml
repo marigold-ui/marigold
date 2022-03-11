@@ -1,3 +1,38 @@
+# on:
+#   push:
+#     branches:
+#       - 1659-release-npm-and-slack-with-github
+#   pull_request:
+#     branches:
+#       - 1659-release-npm-and-slack-with-github
+# name: Slack Notification
+# jobs:
+#   slackNotification:
+#     name: Slack Notification
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#       - uses: pnpm/action-setup@v2.0.1
+#         with:
+#           version: 6.32.3
+#       - name: Setup Node (using .node-version)
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version-file: '.node-version'
+#           cache: 'pnpm'
+#       - name: Install dependencies
+#         run: pnpm install
+#       - name: Slack Notification
+#         uses: rtCamp/action-slack-notify@v2
+#         env:
+#           SLACK_COLOR: '#fa8005'
+#           SLACK_MESSAGE: ':marigold: <https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md|:marigold: *View Changelog*>'
+#           SLACK_TITLE: 'New Release :tada: '
+#           SLACK_USERNAME: Marigold
+#           MSG_MINIMAL: true
+#           SLACK_FOOTER: ''
+#           SLACK_WEBHOOK: ${{ secrets.SLACK_TEST }}
+
 on:
   push:
     branches:
@@ -23,12 +58,25 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_COLOR: '#fa8005'
-          SLACK_MESSAGE: ':marigold: <https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md|:marigold: *View Changelog*>'
-          SLACK_TITLE: 'New Release :tada: '
-          SLACK_USERNAME: Marigold
-          MSG_MINIMAL: true
-          SLACK_FOOTER: ''
-          SLACK_WEBHOOK: ${{ secrets.SLACK_TEST }}
+        id: slack
+        uses: slackapi/slack-github-action@v1.18.0
+        with:
+            # Slack channel id, channel name, or user id to post message.
+            # See also: https://api.slack.com/methods/chat.postMessage#channels
+            channel-id: 'C034HD165V1'
+            username: 'Marigold'
+            payload: |
+              {
+                "text": "<https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md|:marigold: *View Changelog*>",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": "<https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md|:marigold: *View Changelog*>"
+                    }
+                  }
+                ]
+              }
+          env:
+            SLACK_BOT_TOKEN: ${{ secrets.SLACK_TEST }}
