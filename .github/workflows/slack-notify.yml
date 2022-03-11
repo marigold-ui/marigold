@@ -58,12 +58,6 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
-      - name: Read version from package.json
-        uses: culshaw/read-package-version-actions@v1
-        id: package-version
-
-      - name: Show node version number
-        run: echo "Version is ${{ steps.package-version.outputs.version }}"
       - name: Slack Notification
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
