@@ -65,14 +65,9 @@ jobs:
         with:
           payload: |
             {
+              "text": "",
               "blocks": [
-                {   
-                    "type": "header",
-                    "text": {
-                        "type": "plain_text",
-                        "text": ':information_source: New Release :tada:';
-                    }
-                },{
+                {
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
@@ -85,7 +80,7 @@ jobs:
                         "text": " <https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md|:marigold: *View Changelog*>"
                     }
                 }
-            ]
+              ]
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
