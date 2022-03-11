@@ -66,14 +66,7 @@ jobs:
           payload: |
             {
               "text": "<https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md|:marigold: *View Changelog*>",
-              "blocks": [
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": 'Click below to see all *changes*'
-                    },
-                },{
+              "blocks": [{
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
