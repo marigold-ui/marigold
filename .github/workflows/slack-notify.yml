@@ -1,4 +1,10 @@
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - 1659-release-npm-and-slack-with-github
+  pull_request:
+    branches:
+      - 1659-release-npm-and-slack-with-github
 name: Slack Notification
 jobs:
   slackNotification:
