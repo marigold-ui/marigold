@@ -42,9 +42,9 @@
     }
   },
   "scripts": {
-    "start": "pnpm --filter @marigold/storybook-config start",
+    "start": "pnpm --filter @marigold/docs start",
+    "dev": "pnpm --filter @marigold/storybook-config start",
     "build": "pnpm --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" build",
-    "docs": "pnpm --filter @marigold/docs start",
     "test": "jest --config jest.config.js --coverage --coverageReporters html",
     "test:ci": "jest --config jest.config.js --coverage --ci",
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'`",
