@@ -22,7 +22,11 @@ const dirToText = (dir: string) =>
 // ---------------
 const NavigationItemComponent = ({ title, slug }: NavigationItem) => (
   <Box variant="navigation.item">
-    <Link to={slug.startsWith('/') ? slug : `/${slug}`}>{title}</Link>
+    <Link
+      to={slug.startsWith('/') || slug.startsWith('http') ? slug : `/${slug}`}
+    >
+      {title}
+    </Link>
   </Box>
 );
 
@@ -57,6 +61,27 @@ export const Navigation: React.FC = () => {
       aria-labelledby="primary-navigation"
     >
       <NavigationSection name="" children={tree} />
+      <NavigationSection
+        name="Useful Links"
+        children={[
+          {
+            title: 'Github',
+            slug: 'https://github.com/marigold-ui/marigold/',
+          },
+          {
+            title: 'Issues',
+            slug: 'https://github.com/marigold-ui/marigold/issues',
+          },
+          {
+            title: 'Changelog',
+            slug: 'https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md',
+          },
+          {
+            title: 'Slack Channel',
+            slug: 'https://reservix.slack.com/archives/C02727BNZ3J',
+          },
+        ]}
+      />
     </Box>
   );
 };
