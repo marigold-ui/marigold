@@ -12,12 +12,23 @@ export interface LinkProps
   extends Pick<MarigoldLinkProps, 'variant' | 'target'> {
   to: GatsbyLinkProps<unknown>['to'];
 }
-export const Link: React.FC<LinkProps> = ({ children, ...props }) => (
-  <MarigoldLink
-    activeStyle={{ color: colors.blue70 }}
-    as={GatsbyLink}
-    {...props}
-  >
-    {children}
-  </MarigoldLink>
-);
+
+export const Link: React.FC<LinkProps> = ({ children, to, ...props }) => {
+  const regex = /https?:\/\/((?:[\w\d-]+\.)+[\w\d]{2,})/i;
+  const externalLink = regex.test(to);
+
+  return externalLink ? (
+    <MarigoldLink href={to} {...props}>
+      {children}
+    </MarigoldLink>
+  ) : (
+    <MarigoldLink
+      as={GatsbyLink}
+      to={to}
+      activeStyle={{ color: colors.blue70 }}
+      {...props}
+    >
+      {children}
+    </MarigoldLink>
+  );
+};

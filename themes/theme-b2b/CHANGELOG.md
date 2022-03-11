@@ -1,5 +1,22 @@
 # @marigold/theme-b2b
 
+## 3.0.0
+
+### Minor Changes
+
+- [#1819](https://github.com/marigold-ui/marigold/pull/1819) [`d162a6a8`](https://github.com/marigold-ui/marigold/commit/d162a6a8d1f9d99bfc08d59f6dae294a6fa95310) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): add new Component Switch
+
+* [#1822](https://github.com/marigold-ui/marigold/pull/1822) [`527ba94f`](https://github.com/marigold-ui/marigold/commit/527ba94fa1a3255dc6f846fcc9def978ec906bf3) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp/docs): Alert update variant + docs
+
+- [#1807](https://github.com/marigold-ui/marigold/pull/1807) [`b55e10bc`](https://github.com/marigold-ui/marigold/commit/b55e10bc7119554373d43f9d8872346c1e6d6c39) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): add Tooltip component v1
+
+### Patch Changes
+
+- [#1849](https://github.com/marigold-ui/marigold/pull/1849) [`21f72b34`](https://github.com/marigold-ui/marigold/commit/21f72b3499c7ed2f88a0b96315f0374140e98e85) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: remove Alert
+
+- Updated dependencies [[`d162a6a8`](https://github.com/marigold-ui/marigold/commit/d162a6a8d1f9d99bfc08d59f6dae294a6fa95310), [`e053b7b9`](https://github.com/marigold-ui/marigold/commit/e053b7b903f02c56cf10e6b9aecbedd29399895d), [`527ba94f`](https://github.com/marigold-ui/marigold/commit/527ba94fa1a3255dc6f846fcc9def978ec906bf3), [`b55e10bc`](https://github.com/marigold-ui/marigold/commit/b55e10bc7119554373d43f9d8872346c1e6d6c39), [`9a95a6f5`](https://github.com/marigold-ui/marigold/commit/9a95a6f541dec34e27eac8557186f929e811c07c), [`f62033b6`](https://github.com/marigold-ui/marigold/commit/f62033b642a623a75f311af701febc4b54f77120), [`21f72b34`](https://github.com/marigold-ui/marigold/commit/21f72b3499c7ed2f88a0b96315f0374140e98e85), [`25c8675e`](https://github.com/marigold-ui/marigold/commit/25c8675ed470cc71f8f968a83b9781b66412c493)]:
+  - @marigold/components@0.6.0
+
 ## 2.0.1
 
 ### Patch Changes
