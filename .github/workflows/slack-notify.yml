@@ -57,6 +57,7 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+
       - name: Slack Notification
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
@@ -78,5 +79,6 @@ jobs:
                   }
                 ]
               }
-          env:
-            SLACK_BOT_TOKEN: ${{ secrets.SLACK_TEST }}
+             env:
+    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
+    SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
