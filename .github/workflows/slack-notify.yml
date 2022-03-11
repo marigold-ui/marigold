@@ -25,9 +25,10 @@ jobs:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_CHANNEL: general
           SLACK_COLOR: '#fa8005'
-          SLACK_MESSAGE: ':marigold: View Changelog:'
-          SLACK_TITLE: 'New Release :tada:'
+          SLACK_MESSAGE: ':marigold: <https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md|:marigold: *View Changelog*>'
+          SLACK_TITLE: 'New Release :tada: '
+          SLACK_USERNAME: Marigold
           MSG_MINIMAL: true
+          SLACK_FOOTER: ''
           SLACK_WEBHOOK: ${{ secrets.SLACK_TEST }}
