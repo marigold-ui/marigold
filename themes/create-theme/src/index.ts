@@ -1,2 +1,2 @@
-export * from './vars';
+export * from './Token';
 export * from './create-theme';
