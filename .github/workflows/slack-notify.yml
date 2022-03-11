@@ -63,7 +63,7 @@ jobs:
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
         with:
-          payload-file-path: './payload-slack-content.json'
+          payload-file-path: '/payload-slack-content.json'
 
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
