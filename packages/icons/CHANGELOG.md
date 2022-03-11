@@ -1,5 +1,18 @@
 # @marigold/icons
 
+## 0.5.0
+
+### Minor Changes
+
+- [#1842](https://github.com/marigold-ui/marigold/pull/1842) [`e053b7b9`](https://github.com/marigold-ui/marigold/commit/e053b7b903f02c56cf10e6b9aecbedd29399895d) Thanks [@ti10le](https://github.com/ti10le)! - feat: extend svg fill prop to handle theme color
+
+### Patch Changes
+
+- [#1844](https://github.com/marigold-ui/marigold/pull/1844) [`64b9089e`](https://github.com/marigold-ui/marigold/commit/64b9089ed2e1e35975472e342b02cda40f5de66f) Thanks [@sarahgm](https://github.com/sarahgm)! - Icon fix
+
+- Updated dependencies [[`4cc0ad3b`](https://github.com/marigold-ui/marigold/commit/4cc0ad3b85b993e01b4d85b6f30b1a81cdee2351), [`539d4198`](https://github.com/marigold-ui/marigold/commit/539d41987118db125ee37a4a83231335ea15830a), [`e053b7b9`](https://github.com/marigold-ui/marigold/commit/e053b7b903f02c56cf10e6b9aecbedd29399895d)]:
+  - @marigold/system@0.6.0
+
 ## 0.4.2
 
 ### Patch Changes

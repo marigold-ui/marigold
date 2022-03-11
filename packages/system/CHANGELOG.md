@@ -1,5 +1,17 @@
 # @marigold/system
 
+## 0.6.0
+
+### Minor Changes
+
+- [#1817](https://github.com/marigold-ui/marigold/pull/1817) [`4cc0ad3b`](https://github.com/marigold-ui/marigold/commit/4cc0ad3b85b993e01b4d85b6f30b1a81cdee2351) Thanks [@sebald](https://github.com/sebald)! - feat(system): Add textSizeAdjust to globals
+
+* [#1842](https://github.com/marigold-ui/marigold/pull/1842) [`e053b7b9`](https://github.com/marigold-ui/marigold/commit/e053b7b903f02c56cf10e6b9aecbedd29399895d) Thanks [@ti10le](https://github.com/ti10le)! - feat: extend svg fill prop to handle theme color
+
+### Patch Changes
+
+- [#1809](https://github.com/marigold-ui/marigold/pull/1809) [`539d4198`](https://github.com/marigold-ui/marigold/commit/539d41987118db125ee37a4a83231335ea15830a) Thanks [@sebald](https://github.com/sebald)! - feat(create-theme): Introduce helper package to create themes with sensible defaults
+
 ## 0.5.1
 
 ### Patch Changes

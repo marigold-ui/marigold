@@ -1,5 +1,17 @@
 # @marigold/theme-unicorn
 
+## 0.5.0
+
+### Minor Changes
+
+- [#1819](https://github.com/marigold-ui/marigold/pull/1819) [`d162a6a8`](https://github.com/marigold-ui/marigold/commit/d162a6a8d1f9d99bfc08d59f6dae294a6fa95310) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): add new Component Switch
+
+* [#1822](https://github.com/marigold-ui/marigold/pull/1822) [`527ba94f`](https://github.com/marigold-ui/marigold/commit/527ba94fa1a3255dc6f846fcc9def978ec906bf3) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp/docs): Alert update variant + docs
+
+### Patch Changes
+
+- [#1849](https://github.com/marigold-ui/marigold/pull/1849) [`21f72b34`](https://github.com/marigold-ui/marigold/commit/21f72b3499c7ed2f88a0b96315f0374140e98e85) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: remove Alert
+
 ## 0.4.0
 
 ### Minor Changes
