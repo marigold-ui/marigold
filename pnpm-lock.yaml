@@ -296,6 +296,17 @@ importers:
       '@marigold/tsconfig': link:../../config/tsconfig
       tsup: 5.11.13_typescript@4.6.2
 
+  packages/create-theme:
+    specifiers:
+      '@marigold/tokens': workspace:*
+      '@marigold/tsconfig': workspace:*
+      tsup: 5.11.13
+    dependencies:
+      '@marigold/tokens': link:../tokens
+    devDependencies:
+      '@marigold/tsconfig': link:../../config/tsconfig
+      tsup: 5.11.13_typescript@4.6.2
+
   packages/icons:
     specifiers:
       '@marigold/system': workspace:*
@@ -324,19 +335,19 @@ importers:
       '@marigold/tsconfig': link:../../config/tsconfig
       tsup: 5.11.13_typescript@4.6.2
 
-  packages/types:
-    specifiers:
-      '@types/react': 17.0.39
-    devDependencies:
-      '@types/react': 17.0.39
-
-  themes/create-theme:
+  packages/tokens:
     specifiers:
       '@marigold/tsconfig': workspace:*
       tsup: 5.11.13
     devDependencies:
       '@marigold/tsconfig': link:../../config/tsconfig
       tsup: 5.11.13_typescript@4.6.2
+
+  packages/types:
+    specifiers:
+      '@types/react': 17.0.39
+    devDependencies:
+      '@types/react': 17.0.39
 
   themes/theme-b2b:
     specifiers:

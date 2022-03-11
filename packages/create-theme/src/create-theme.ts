@@ -1,23 +1,23 @@
 import type { ScaleValue, Theme as Scales } from '@marigold/system';
 import type { Theme } from '@marigold/components';
 
-import * as Vars from './vars';
+import * as Token from '@marigold/tokens';
 
 export const base: Theme = {
   breakpoints: ['40em', '52em', '64em'],
 
-  fontWeights: Vars.typography.weight,
-  lineHeights: Vars.typography.lineHeight,
-  letterSpacings: Vars.typography.letterSpacing,
+  fontWeights: Token.typography.weight,
+  lineHeights: Token.typography.lineHeight,
+  letterSpacings: Token.typography.letterSpacing,
 
-  borderWidths: Vars.border.width,
-  radii: Vars.border.radius,
+  borderWidths: Token.border.width,
+  radii: Token.border.radius,
 
-  zIndices: Vars.layer,
-  opacities: Vars.opacity,
+  zIndices: Token.layer,
+  opacities: Token.opacity,
 };
 
-type AvailableColor = keyof typeof Vars.color;
+type AvailableColor = keyof typeof Token.color;
 type CustomColor = { name: string; value: ScaleValue<string> };
 
 export interface ThemeConfig {
@@ -52,12 +52,12 @@ export const createTheme = ({
   dimensions = 'fixed',
   components,
 }: ThemeConfig): Theme => {
-  // Create colors (pick from vars or custom)
+  // Create colors (pick from Token or custom)
   let colors: Theme['colors'] = {};
   for (let i = 0; i < configColors.length; i++) {
     const color = configColors[i];
     if (typeof color === 'string') {
-      colors[color] = Vars.color[color];
+      colors[color] = Token.color[color];
     } else {
       colors[color.name] = color.value;
     }
@@ -71,14 +71,14 @@ export const createTheme = ({
     colors,
 
     // Use fixed or fluid dimensions
-    space: Vars.size[dimensions],
-    sizes: Vars.size[dimensions],
+    space: Token.size[dimensions],
+    sizes: Token.size[dimensions],
 
     // Use fallback font if none provided
-    fonts: configFonts || Vars.typography.font,
+    fonts: configFonts || Token.typography.font,
 
     // Use fixed or fluid typography
-    fontSizes: Vars.typography.size[typography],
+    fontSizes: Token.typography.size[typography],
 
     // Add component styles
     ...components,
