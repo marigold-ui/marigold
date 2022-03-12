@@ -169,7 +169,7 @@ importers:
       gatsby-plugin-image: 2.7.0
       gatsby-plugin-manifest: 4.7.0
       gatsby-plugin-mdx: 3.7.0
-      gatsby-plugin-pnpm: ^1.2.10
+      gatsby-plugin-pnpm: 1.2.10
       gatsby-plugin-react-helmet: 5.7.0
       gatsby-plugin-remove-serviceworker: 1.0.0
       gatsby-plugin-sharp: 4.7.0
@@ -9151,6 +9151,7 @@ packages:
 
   /bindings/1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
+    requiresBuild: true
     dependencies:
       file-uri-to-path: 1.0.0
     dev: false
@@ -12588,6 +12589,7 @@ packages:
 
   /file-uri-to-path/1.0.0:
     resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
+    requiresBuild: true
     dev: false
     optional: true
 
