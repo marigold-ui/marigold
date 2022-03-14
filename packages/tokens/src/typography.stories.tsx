@@ -2,15 +2,15 @@ import React from 'react';
 import { Box, Stack } from '@marigold/components';
 import type { Meta } from '@storybook/react';
 
-import * as Vars from '.';
+import * as Token from '.';
 
 export default {
-  title: 'Vars/Typography',
+  title: 'Token/Typography',
 } as Meta;
 
 export const Fonts = () => (
   <Stack space="32px" align="center">
-    {Object.values(Vars.typography.font).map(value => (
+    {Object.values(Token.typography.font).map(value => (
       <Box key={value} css={{ fontFamily: value }}>
         A wizard's job is to vex chumps quickly in fog.
       </Box>
@@ -20,12 +20,12 @@ export const Fonts = () => (
 
 export const LineHeights = () => (
   <Stack space="32px" align="center">
-    {Object.values(Vars.typography.lineHeight).map(value => (
+    {Object.values(Token.typography.lineHeight).map(value => (
       <Box
         key={value}
         css={{
           lineHeight: value,
-          fontFamily: Vars.typography.font.sans,
+          fontFamily: Token.typography.font.sans,
           maxWidth: '75ch',
         }}
       >
@@ -42,12 +42,12 @@ export const LineHeights = () => (
 
 export const LetterSpacing = () => (
   <Stack space="32px" align="center">
-    {Object.values(Vars.typography.letterSpacing).map(value => (
+    {Object.values(Token.typography.letterSpacing).map(value => (
       <Box
         key={value}
         css={{
           letterSpacing: value,
-          fontFamily: Vars.typography.font.sans,
+          fontFamily: Token.typography.font.sans,
         }}
       >
         Streichholzschächtelchen
@@ -58,12 +58,12 @@ export const LetterSpacing = () => (
 
 export const FontSizes = () => (
   <Stack space="32px" align="center">
-    {Object.values(Vars.typography.size.fixed).map(value => (
+    {Object.values(Token.typography.size.fixed).map(value => (
       <Box
         key={value}
         css={{
           fontSize: value,
-          fontFamily: Vars.typography.font.sans,
+          fontFamily: Token.typography.font.sans,
         }}
       >
         Waldeinsamkeit
@@ -74,12 +74,12 @@ export const FontSizes = () => (
 
 export const FluidFontSizes = () => (
   <Stack space="32px" align="center">
-    {Object.values(Vars.typography.size.fluid).map(value => (
+    {Object.values(Token.typography.size.fluid).map(value => (
       <Box
         key={value}
         css={{
           fontSize: value,
-          fontFamily: Vars.typography.font.sans,
+          fontFamily: Token.typography.font.sans,
         }}
       >
         Waldeinsamkeit
@@ -90,13 +90,13 @@ export const FluidFontSizes = () => (
 
 export const FontWeights = () => (
   <Stack space="32px" align="center">
-    {Object.values(Vars.typography.weight).map(value => (
+    {Object.values(Token.typography.weight).map(value => (
       <Box
         key={value}
         css={{
           fontWeight: value,
-          fontSize: Vars.typography.size.fixed.large,
-          fontFamily: Vars.typography.font.sans,
+          fontSize: Token.typography.size.fixed.large,
+          fontFamily: Token.typography.font.sans,
         }}
       >
         Unabhängigkeitserklärungen
