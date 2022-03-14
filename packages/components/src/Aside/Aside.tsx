@@ -21,6 +21,7 @@ const SIDE_MAP = {
 
 export const Aside = ({
   children,
+  sideWidth,
   side = 'left',
   space = 'none',
   stretch = true,
@@ -36,6 +37,7 @@ export const Aside = ({
         alignItems: stretch ? undefined : 'flex-start',
 
         [`> ${aside}`]: {
+          flexBasis: sideWidth,
           flexGrow: 1,
         },
 

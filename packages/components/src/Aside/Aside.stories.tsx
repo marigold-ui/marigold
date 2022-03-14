@@ -1,6 +1,5 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
-import { Text } from '../Text';
 import { Aside } from './Aside';
 
 export default {
@@ -38,12 +37,19 @@ export default {
       defaultValue: true,
       description: 'Make the adjacent elements adopt their natural height',
     },
+    sideWidth: {
+      control: {
+        type: 'text',
+      },
+      defaultValue: 'huge',
+      description: `Represents the width of the sidebar when adjacent. If not set (undefined) it defaults to the sidebar's content width`,
+    },
   },
 } as Meta;
 
 export const Basic: ComponentStory<typeof Aside> = args => (
   <Aside {...args}>
-    <div style={{ width: 200 }}>
+    <div>
       Ketchup was once sold as medicine. The condiment was prescribed and sold
       to people suffering with indigestion back in 1834.
     </div>
