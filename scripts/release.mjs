@@ -2,7 +2,6 @@
 
 // Set available globals for eslint
 /* global $, cd, question, chalk */
-const retry = require('async-retry');
 
 // Helper
 // ---------------
@@ -30,31 +29,6 @@ const exit = (msg, detail) => {
     log(chalk.red(`   ${detail.replace(/\n/gm, '\n   ')}`));
   }
   process.exit(1);
-};
-
-const publish = async workspace => {
-  const cwd = process.cwd();
-
-  await retry(
-    async () => {
-      const { name, version } = require(`../${workspace}/package.json`);
-      space();
-      log(chalk.bold(`📦  Publishing ${name}@${version}...`));
-      cd(workspace);
-      await $`pnpm publish --access public  --tolerate-republish`.pipe(
-        process.stdout
-      );
-    },
-    {
-      retries: 5,
-      onRetry: () => {
-        log(chalk.bold("🔁  Whoopsie, let's try again!"));
-      },
-    }
-  );
-
-  // always restore cwd
-  cd(cwd);
 };
 
 // Scripts
@@ -121,6 +95,11 @@ await option('Do you want to continue?');
 step('🍾', 'Bumping versions & generating changelog...');
 await $`pnpm changeset version`.pipe(process.stdout);
 
+step('👷', 'Building packages...');
+await $`pnpm install`.pipe(process.stdout);
+await $`pnpm build`.pipe(process.stdout);
+log('✓  Packages built.');
+
 step('🔼', 'Pushing changes to main branch...');
 // We use "@marigold/components" as leading version
 const { version } = require('../packages/components/package.json');
@@ -128,29 +107,11 @@ await $`git commit -am "release: v${version}"`;
 await $`git push`;
 await $`git push --tags`;
 
-step('👷', 'Building packages...');
-await $`pnpm install`.pipe(process.stdout);
-await $`pnpm build`.pipe(process.stdout);
-log('✓  Packages built.');
-
 step('🌟', 'Publishing to npm...');
 await option(
   'Do you want to continue? (you will be prompted for your 2FA token)'
 );
-await publish('config/eslint');
-await publish('config/jest');
-await publish('config/prettier');
-await publish('config/storybook');
-await publish('config/tsconfig');
-await publish('packages/components');
-await publish('packages/create-theme');
-await publish('packages/icons');
-await publish('packages/system');
-await publish('packages/tokens');
-await publish('packages/types');
-await publish('themes/theme-b2b');
-await publish('themes/theme-core');
-await publish('themes/theme-unicorn');
+await $`pnpm changeset publish --access public`.pipe(process.stdout);
 log(brand.bold('🥳  Release complete!'));
 
 await option(
