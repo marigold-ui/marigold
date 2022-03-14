@@ -11,9 +11,6 @@ const theme = {
   },
 };
 
-const getTopPadding = (element: HTMLElement) =>
-  getComputedStyle(element).getPropertyValue('padding-top');
-
 test('default space is "none"', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -62,10 +59,6 @@ test('supports verticalAlignment prop', () => {
       </ActionGroup>
     </ThemeProvider>
   );
-
   const button1 = screen.getByText(/Button1/);
-  const button2 = screen.getByText(/Button2/);
-
-  expect(getTopPadding(button1.parentElement!)).toEqual('');
-  expect(button2.parentElement).toHaveStyle(`padding-top: 2px`);
+  expect(button1.parentElement).toHaveStyle(`gap: 2px`);
 });
