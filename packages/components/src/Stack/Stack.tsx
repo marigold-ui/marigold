@@ -1,7 +1,6 @@
-import React, { Children } from 'react';
+import React from 'react';
 import { ResponsiveStyleValue } from '@marigold/system';
 
-import { flattenChildren } from '../utils';
 import { Box } from '../Box';
 
 export interface StackProps {
@@ -23,17 +22,11 @@ export const Stack: React.FC<StackProps> = ({
 }) => (
   <Box
     {...props}
-    __baseCSS={{
-      '> *': { marginBlock: 0 },
-      '* + *': { marginBlockStart: space },
-    }}
+    __baseCSS={{ gap: space }}
     display="flex"
     flexDirection="column"
     alignItems={ALIGNMENT[align]}
   >
-    {Children.map(
-      flattenChildren(children) as unknown as React.ReactElement,
-      (child: React.ReactElement) => child
-    )}
+    {children}
   </Box>
 );

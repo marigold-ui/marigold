@@ -64,7 +64,7 @@ export const Basic: ComponentStory<typeof Stack> = args => (
 
 export const Nested: ComponentStory<typeof Stack> = args => (
   <Stack {...args}>
-    <Stack {...args} space="xsmall">
+    <Stack space="xsmall">
       <Text as="h2" variant="headline2">
         Heading
       </Text>
@@ -81,7 +81,7 @@ export const Nested: ComponentStory<typeof Stack> = args => (
         porttitor massa ex ut quam.
       </Text>
     </Stack>
-    <Stack {...args} space="xsmall">
+    <Stack space="xsmall">
       <Text as="h2" variant="headline2">
         Heading
       </Text>
