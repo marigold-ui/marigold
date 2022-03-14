@@ -21,7 +21,7 @@ export default {
         'xlarge',
         'xxlarge',
       ],
-      defaultValue: 'none',
+      defaultValue: 'medium',
       description: 'Value representing the space between the two elements',
     },
     side: {
