@@ -1,5 +1,7 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
+import { Box } from '../Box';
+
 import { Aside } from './Aside';
 
 export default {
@@ -49,14 +51,14 @@ export default {
 
 export const Basic: ComponentStory<typeof Aside> = args => (
   <Aside {...args}>
-    <div>
+    <Box css={{ bg: '#ccc' }}>
       Ketchup was once sold as medicine. The condiment was prescribed and sold
       to people suffering with indigestion back in 1834.
-    </div>
-    <div>
+    </Box>
+    <Box css={{ bg: '#ccc' }}>
       There is actually a word for someone giving an opinion on something they
       know nothing about. An 'ultracrepidarian' is someone who voices thoughts
       beyond their expertise.
-    </div>
+    </Box>
   </Aside>
 );
