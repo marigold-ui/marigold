@@ -18,7 +18,7 @@
     "gatsby-plugin-image": "2.7.0",
     "gatsby-plugin-manifest": "4.7.0",
     "gatsby-plugin-mdx": "3.7.0",
-    "gatsby-plugin-pnpm": "^1.2.10",
+    "gatsby-plugin-pnpm": "1.2.10",
     "gatsby-plugin-react-helmet": "5.7.0",
     "gatsby-plugin-remove-serviceworker": "1.0.0",
     "gatsby-plugin-sharp": "4.7.0",
@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@types/mdx-js__react": "1.5.5",
-    "@types/react": "17.0.39",
+    "@types/react": "17.0.40",
     "@types/react-helmet": "6.1.5",
     "tsconfig-paths-webpack-plugin": "3.5.2"
   },

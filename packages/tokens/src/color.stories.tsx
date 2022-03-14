@@ -2,10 +2,10 @@ import React from 'react';
 import { Box, Inline, Stack } from '@marigold/components';
 import type { Meta } from '@storybook/react';
 
-import * as Vars from '.';
+import * as Token from '.';
 
 export default {
-  title: 'Vars',
+  title: 'Token',
 } as Meta;
 
 export const Colors = () => {
@@ -21,12 +21,12 @@ export const Colors = () => {
     </Inline>
   );
 
-  const { brand, ...colors } = Vars.color;
+  const { brand, ...colors } = Token.color;
   return (
     <Stack space="12px">
       <List color={brand} />
       {Object.keys(colors).map(name => (
-        <List key={name} color={(Vars.color as any)[name]} />
+        <List key={name} color={(Token.color as any)[name]} />
       ))}
     </Stack>
   );
