@@ -27,6 +27,7 @@ test('supports default variant', () => {
   );
   const menuItem = screen.getByTitle(/menuItem/);
 
+  // eslint-disable-next-line testing-library/no-node-access
   expect(menuItem.parentElement).toHaveStyle(`padding: 4px`);
 });
 
@@ -40,6 +41,7 @@ test('accepts other variant than default', () => {
   );
   const menuItem = screen.getByTitle(/menuItem/);
 
+  // eslint-disable-next-line testing-library/no-node-access
   expect(menuItem.parentElement).toHaveStyle(`padding: 8px`);
 });
 

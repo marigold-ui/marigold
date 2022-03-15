@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-node-access */
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Checkbox } from './Checkbox';
@@ -42,13 +43,16 @@ const theme = {
 test('supports default variant', () => {
   const { rerender } = render(
     <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox">
+      <Checkbox id="test" title="label">
         label
       </Checkbox>
     </ThemeProvider>
   );
-  const svg = screen.getByText(/label/).firstChild!;
-  expect(svg.lastChild?.firstChild).toHaveStyle(`fill: white`);
+  // eslint-disable-next-line testing-library/no-node-access
+  const label = screen.getByLabelText(/label/).closest('label')!;
+  // eslint-disable-next-line testing-library/no-node-access
+  const rect = label.querySelector('rect');
+  expect(rect).toHaveStyle(`fill: white`);
 
   rerender(
     <ThemeProvider theme={theme}>
@@ -57,7 +61,7 @@ test('supports default variant', () => {
       </Checkbox>
     </ThemeProvider>
   );
-  expect(svg.lastChild?.firstChild).toHaveStyle(`fill: orange`);
+  expect(rect).toHaveStyle(`fill: orange`);
 
   rerender(
     <ThemeProvider theme={theme}>
@@ -66,7 +70,7 @@ test('supports default variant', () => {
       </Checkbox>
     </ThemeProvider>
   );
-  expect(svg.lastChild?.firstChild).toHaveStyle(`fill: gray`);
+  expect(rect).toHaveStyle(`fill: gray`);
 
   rerender(
     <ThemeProvider theme={theme}>
@@ -75,7 +79,7 @@ test('supports default variant', () => {
       </Checkbox>
     </ThemeProvider>
   );
-  expect(svg.lastChild?.firstChild).toHaveStyle(`fill: red`);
+  expect(rect).toHaveStyle(`fill: red`);
 });
 
 test('supports other variant than default', () => {
@@ -86,8 +90,9 @@ test('supports other variant than default', () => {
       </Checkbox>
     </ThemeProvider>
   );
-  const svg = screen.getByText(/label/).firstChild!;
-  expect(svg.lastChild?.firstChild).toHaveStyle(`fill: blue`);
+  const label = screen.getByLabelText(/label/).closest('label')!;
+  const rect = label.querySelector('rect');
+  expect(rect).toHaveStyle(`fill: blue`);
 });
 
 test('supports default labelVariant', () => {

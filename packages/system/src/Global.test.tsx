@@ -5,12 +5,13 @@ import { ThemeProvider } from './useTheme';
 import { Global } from './Global';
 
 test('applies normlaization to html and body', () => {
-  const root = render(<Global />);
+  const view = render(<Global />);
 
-  const html = window.getComputedStyle(root.baseElement.parentElement!);
+  // eslint-disable-next-line testing-library/no-node-access
+  const html = window.getComputedStyle(view.baseElement.parentElement!);
   expect(html.height).toBe('100%');
   // expect(html.textSizeAdjust).toBe('none'); can not test this in JSDOM :(
-  const body = window.getComputedStyle(root.baseElement);
+  const body = window.getComputedStyle(view.baseElement);
   expect(body.height).toBe('100%');
   expect(body.lineHeight).toBe('1.5');
 });
@@ -42,16 +43,17 @@ test('applies global styles for body and html based on `theme.root`', () => {
     },
   };
 
-  const root = render(
+  const view = render(
     <ThemeProvider theme={theme}>
       <Global />
     </ThemeProvider>
   );
 
-  const html = root.baseElement.parentElement;
+  // eslint-disable-next-line testing-library/no-node-access
+  const html = view.baseElement.parentElement;
   expect(html).toHaveStyle(`background: ${theme.colors.background}`);
 
-  const body = root.baseElement;
+  const body = view.baseElement;
   expect(body).toHaveStyle(`font-family: ${theme.fonts.body}`);
   expect(body).toHaveStyle(`line-height: ${theme.lineHeights.body}`);
   expect(body).toHaveStyle(`font-weight: ${theme.fontWeights.body}`);
