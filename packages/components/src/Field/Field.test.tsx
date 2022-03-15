@@ -95,7 +95,9 @@ test('supports required prop', () => {
   render(<Field htmlFor="myId" label="label" required />);
   const fieldLabel = screen.getByText(/label/);
 
+  // eslint-disable-next-line testing-library/no-node-access
   expect(fieldLabel.nextSibling).toBeDefined();
+  // eslint-disable-next-line testing-library/no-node-access
   expect(fieldLabel.nextSibling instanceof SVGElement).toBeTruthy();
 });
 
