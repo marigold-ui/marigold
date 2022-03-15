@@ -91,5 +91,6 @@ test('supports required prop', () => {
   );
   const label = screen.getByText(/test/);
 
+  // eslint-disable-next-line testing-library/no-node-access
   expect(label.nextSibling instanceof SVGElement).toBeTruthy();
 });
