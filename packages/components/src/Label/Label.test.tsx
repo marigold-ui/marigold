@@ -67,6 +67,7 @@ test('supports required prop', () => {
     </ThemeProvider>
   );
   const label = screen.getByText(/label/);
+  // eslint-disable-next-line testing-library/no-node-access
   const parent = label.parentElement;
 
   expect(parent instanceof HTMLSpanElement).toBeTruthy();
