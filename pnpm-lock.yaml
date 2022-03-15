@@ -166,14 +166,14 @@ importers:
       '@mui/material': 5.4.4
       '@mui/styles': 5.4.4
       '@types/mdx-js__react': 1.5.5
-      '@types/react': 17.0.39
+      '@types/react': 17.0.40
       '@types/react-helmet': 6.1.5
       babel-preset-gatsby: 2.7.0
       gatsby: 4.7.1
       gatsby-plugin-image: 2.7.0
       gatsby-plugin-manifest: 4.7.0
       gatsby-plugin-mdx: 3.7.0
-      gatsby-plugin-pnpm: ^1.2.10
+      gatsby-plugin-pnpm: 1.2.10
       gatsby-plugin-react-helmet: 5.7.0
       gatsby-plugin-remove-serviceworker: 1.0.0
       gatsby-plugin-sharp: 4.7.0
@@ -202,8 +202,8 @@ importers:
       '@marigold/types': link:../packages/types
       '@mdx-js/mdx': 1.6.22
       '@mdx-js/react': 1.6.22_react@17.0.2
-      '@mui/material': 5.4.4_b8fdba992ce7d797017dc07106486496
-      '@mui/styles': 5.4.4_a0c521d4794c7ad97f5f4c1c4a7d5818
+      '@mui/material': 5.4.4_f456dfc349ace84b0ea11d9e6e4ef3ab
+      '@mui/styles': 5.4.4_00d6772dea80510e818fd171caaa025a
       babel-preset-gatsby: 2.7.0
       gatsby: 4.7.1_cad5377062f308ea526983a664636c00
       gatsby-plugin-image: 2.7.0_eb6c5d2d1605a164b8a17b5cf8d46ded
@@ -231,7 +231,7 @@ importers:
       react-live: 2.4.1_react-dom@17.0.2+react@17.0.2
     devDependencies:
       '@types/mdx-js__react': 1.5.5
-      '@types/react': 17.0.39
+      '@types/react': 17.0.40
       '@types/react-helmet': 6.1.5
       tsconfig-paths-webpack-plugin: 3.5.2
 
@@ -300,6 +300,17 @@ importers:
       '@marigold/tsconfig': link:../../config/tsconfig
       tsup: 5.11.13_typescript@4.6.2
 
+  packages/create-theme:
+    specifiers:
+      '@marigold/tokens': workspace:*
+      '@marigold/tsconfig': workspace:*
+      tsup: 5.11.13
+    dependencies:
+      '@marigold/tokens': link:../tokens
+    devDependencies:
+      '@marigold/tsconfig': link:../../config/tsconfig
+      tsup: 5.11.13_typescript@4.6.2
+
   packages/icons:
     specifiers:
       '@marigold/system': workspace:*
@@ -328,19 +339,19 @@ importers:
       '@marigold/tsconfig': link:../../config/tsconfig
       tsup: 5.11.13_typescript@4.6.2
 
-  packages/types:
-    specifiers:
-      '@types/react': 17.0.39
-    devDependencies:
-      '@types/react': 17.0.39
-
-  themes/create-theme:
+  packages/tokens:
     specifiers:
       '@marigold/tsconfig': workspace:*
       tsup: 5.11.13
     devDependencies:
       '@marigold/tsconfig': link:../../config/tsconfig
       tsup: 5.11.13_typescript@4.6.2
+
+  packages/types:
+    specifiers:
+      '@types/react': 17.0.40
+    devDependencies:
+      '@types/react': 17.0.40
 
   themes/theme-b2b:
     specifiers:
@@ -4259,7 +4270,7 @@ packages:
       glob-to-regexp: 0.3.0
     dev: false
 
-  /@mui/base/5.0.0-alpha.70_b8fdba992ce7d797017dc07106486496:
+  /@mui/base/5.0.0-alpha.70_f456dfc349ace84b0ea11d9e6e4ef3ab:
     resolution: {integrity: sha512-8UZWhz1JYuQnPkAbC37cl4aL1JyNWZ08wDXlp57W7fYQp5xFpBP/7p56AcWg2qG9CNJP0IlFg2Wp4md1v2l4iA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -4274,7 +4285,7 @@ packages:
       '@emotion/is-prop-valid': 1.1.2
       '@mui/utils': 5.4.4_react@17.0.2
       '@popperjs/core': 2.11.2
-      '@types/react': 17.0.39
+      '@types/react': 17.0.40
       clsx: 1.1.1
       prop-types: 15.8.1
       react: 17.0.2
@@ -4282,7 +4293,7 @@ packages:
       react-is: 17.0.2
     dev: false
 
-  /@mui/material/5.4.4_b8fdba992ce7d797017dc07106486496:
+  /@mui/material/5.4.4_f456dfc349ace84b0ea11d9e6e4ef3ab:
     resolution: {integrity: sha512-VDJC7GzO1HTFqfMe2zwvaW/sRhABBJXFkKEv5gO3uXx7x9fdwJHQr4udU7NWZCUdOcx9Y0h3BsAILLefYq+WPw==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -4300,11 +4311,11 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.17.2
-      '@mui/base': 5.0.0-alpha.70_b8fdba992ce7d797017dc07106486496
-      '@mui/system': 5.4.4_a0c521d4794c7ad97f5f4c1c4a7d5818
-      '@mui/types': 7.1.2_@types+react@17.0.39
+      '@mui/base': 5.0.0-alpha.70_f456dfc349ace84b0ea11d9e6e4ef3ab
+      '@mui/system': 5.4.4_00d6772dea80510e818fd171caaa025a
+      '@mui/types': 7.1.2_@types+react@17.0.40
       '@mui/utils': 5.4.4_react@17.0.2
-      '@types/react': 17.0.39
+      '@types/react': 17.0.40
       '@types/react-transition-group': 4.4.4
       clsx: 1.1.1
       csstype: 3.0.11
@@ -4316,7 +4327,7 @@ packages:
       react-transition-group: 4.4.2_react-dom@17.0.2+react@17.0.2
     dev: false
 
-  /@mui/private-theming/5.4.4_a0c521d4794c7ad97f5f4c1c4a7d5818:
+  /@mui/private-theming/5.4.4_00d6772dea80510e818fd171caaa025a:
     resolution: {integrity: sha512-V/gxttr6736yJoU9q+4xxXsa0K/w9Hn9pg99zsOHt7i/O904w2CX5NHh5WqDXtoUzVcayLF0RB17yr6l79CE+A==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -4328,7 +4339,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.17.2
       '@mui/utils': 5.4.4_react@17.0.2
-      '@types/react': 17.0.39
+      '@types/react': 17.0.40
       prop-types: 15.8.1
       react: 17.0.2
     dev: false
@@ -4352,7 +4363,7 @@ packages:
       react: 17.0.2
     dev: false
 
-  /@mui/styles/5.4.4_a0c521d4794c7ad97f5f4c1c4a7d5818:
+  /@mui/styles/5.4.4_00d6772dea80510e818fd171caaa025a:
     resolution: {integrity: sha512-w+9VIC1+JiPfF7osomX1j+aX7yyNNw8BnMYo6niK+zbwIxSYX/wcq4Jh7rlt6FSiaKL4Qi1uf7MPlNAhIxXq3g==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -4364,10 +4375,10 @@ packages:
     dependencies:
       '@babel/runtime': 7.17.2
       '@emotion/hash': 0.8.0
-      '@mui/private-theming': 5.4.4_a0c521d4794c7ad97f5f4c1c4a7d5818
-      '@mui/types': 7.1.2_@types+react@17.0.39
+      '@mui/private-theming': 5.4.4_00d6772dea80510e818fd171caaa025a
+      '@mui/types': 7.1.2_@types+react@17.0.40
       '@mui/utils': 5.4.4_react@17.0.2
-      '@types/react': 17.0.39
+      '@types/react': 17.0.40
       clsx: 1.1.1
       csstype: 3.0.11
       hoist-non-react-statics: 3.3.2
@@ -4383,7 +4394,7 @@ packages:
       react: 17.0.2
     dev: false
 
-  /@mui/system/5.4.4_a0c521d4794c7ad97f5f4c1c4a7d5818:
+  /@mui/system/5.4.4_00d6772dea80510e818fd171caaa025a:
     resolution: {integrity: sha512-Zjbztq2o/VRuRRCWjG44juRrPKYLQMqtQpMHmMttGu5BnvK6PAPW3WOY0r1JCAwLhbd8Kug9nyhGQYKETjo+tQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -4400,18 +4411,18 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.17.2
-      '@mui/private-theming': 5.4.4_a0c521d4794c7ad97f5f4c1c4a7d5818
+      '@mui/private-theming': 5.4.4_00d6772dea80510e818fd171caaa025a
       '@mui/styled-engine': 5.4.4_react@17.0.2
-      '@mui/types': 7.1.2_@types+react@17.0.39
+      '@mui/types': 7.1.2_@types+react@17.0.40
       '@mui/utils': 5.4.4_react@17.0.2
-      '@types/react': 17.0.39
+      '@types/react': 17.0.40
       clsx: 1.1.1
       csstype: 3.0.11
       prop-types: 15.8.1
       react: 17.0.2
     dev: false
 
-  /@mui/types/7.1.2_@types+react@17.0.39:
+  /@mui/types/7.1.2_@types+react@17.0.40:
     resolution: {integrity: sha512-SD7O1nVzqG+ckQpFjDhXPZjRceB8HQFHEvdLLrPhlJy4lLbwEBbxK74Tj4t6Jgk0fTvLJisuwOutrtYe9P/xBQ==}
     peerDependencies:
       '@types/react': '*'
@@ -4419,7 +4430,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@types/react': 17.0.39
+      '@types/react': 17.0.40
     dev: false
 
   /@mui/utils/5.4.4_react@17.0.2:
@@ -7312,7 +7323,7 @@ packages:
   /@types/mdx-js__react/1.5.5:
     resolution: {integrity: sha512-k8pnaP6JXVlQh18HgL5X6sYFNC/qZnzO7R2+HsmwrwUd+JnnsU0d9lyyT0RQrHg1anxDU36S98TI/fsGtmYqqg==}
     dependencies:
-      '@types/react': 17.0.39
+      '@types/react': 17.0.40
     dev: true
 
   /@types/minimatch/3.0.5:
@@ -7398,7 +7409,7 @@ packages:
   /@types/reach__router/1.3.10:
     resolution: {integrity: sha512-iHAFGaVOrWi00/q7oBybggGsz5TOmwOW4M1H9sT7i9lly4qFC8XOgsdf6jUsoaOz2sknFHALEtZqCoDbokdJ2Q==}
     dependencies:
-      '@types/react': 17.0.39
+      '@types/react': 17.0.40
     dev: false
 
   /@types/react-dom/17.0.13:
@@ -7410,13 +7421,13 @@ packages:
   /@types/react-helmet/6.1.5:
     resolution: {integrity: sha512-/ICuy7OHZxR0YCAZLNg9r7I9aijWUWvxaPR6uTuyxe8tAj5RL4Sw1+R6NhXUtOsarkGYPmaHdBDvuXh2DIN/uA==}
     dependencies:
-      '@types/react': 17.0.39
+      '@types/react': 17.0.40
     dev: true
 
   /@types/react-is/17.0.3:
     resolution: {integrity: sha512-aBTIWg1emtu95bLTLx0cpkxwGW3ueZv71nE2YFBpL8k/z5czEW8yYpOo8Dp+UUAFAtKwNaOsh/ioSeQnWlZcfw==}
     dependencies:
-      '@types/react': 17.0.39
+      '@types/react': 17.0.40
     dev: false
 
   /@types/react-syntax-highlighter/11.0.5:
@@ -7434,11 +7445,19 @@ packages:
   /@types/react-transition-group/4.4.4:
     resolution: {integrity: sha512-7gAPz7anVK5xzbeQW9wFBDg7G++aPLAFY0QaSMOou9rJZpbuI58WAuJrgu+qR92l61grlnCUe7AFX8KGahAgug==}
     dependencies:
-      '@types/react': 17.0.39
+      '@types/react': 17.0.40
     dev: false
 
   /@types/react/17.0.39:
     resolution: {integrity: sha512-UVavlfAxDd/AgAacMa60Azl7ygyQNRwC/DsHZmKgNvPmRR5p70AJ5Q9EAmL2NWOJmeV+vVUI4IAP7GZrN8h8Ug==}
+    dependencies:
+      '@types/prop-types': 15.7.4
+      '@types/scheduler': 0.16.2
+      csstype: 3.0.11
+    dev: false
+
+  /@types/react/17.0.40:
+    resolution: {integrity: sha512-UrXhD/JyLH+W70nNSufXqMZNuUD2cXHu6UjCllC6pmOQgBX4SGXOH8fjRka0O0Ee0HrFxapDD8Bwn81Kmiz6jQ==}
     dependencies:
       '@types/prop-types': 15.7.4
       '@types/scheduler': 0.16.2
@@ -9207,6 +9226,7 @@ packages:
 
   /bindings/1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
+    requiresBuild: true
     dependencies:
       file-uri-to-path: 1.0.0
     dev: false
@@ -12797,6 +12817,7 @@ packages:
 
   /file-uri-to-path/1.0.0:
     resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
+    requiresBuild: true
     dev: false
     optional: true
 

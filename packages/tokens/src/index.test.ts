@@ -1,7 +1,7 @@
-import * as Vars from '.';
+import * as Token from '.';
 
 test('smoketest', () => {
-  expect(Vars).toMatchInlineSnapshot(`
+  expect(Token).toMatchInlineSnapshot(`
     {
       "aspect": {
         "golden": "1.6180/1",

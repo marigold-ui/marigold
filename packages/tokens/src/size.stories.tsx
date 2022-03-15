@@ -2,23 +2,23 @@ import React from 'react';
 import { Box, Inline, Stack } from '@marigold/components';
 import type { Meta } from '@storybook/react';
 
-import * as Vars from '.';
+import * as Token from '.';
 
 export default {
-  title: 'Vars/Size',
+  title: 'Token/Size',
 } as Meta;
 
 export const Fixed = () => (
   <Inline space="12px">
-    {Object.values(Vars.size.fixed).map(value => (
+    {Object.values(Token.size.fixed).map(value => (
       <Box
         css={{
           display: 'grid',
           placeItems: 'center',
-          color: Vars.color.gray['00'],
-          bg: Vars.color.gray['80'],
+          color: Token.color.gray['00'],
+          bg: Token.color.gray['80'],
           blockSize: 100,
-          height: Vars.size.fixed.xxlarge,
+          height: Token.size.fixed.xxlarge,
           width: value,
         }}
       />
@@ -28,15 +28,15 @@ export const Fixed = () => (
 
 export const Fluid = () => (
   <Inline space="12px">
-    {Object.values(Vars.size.fluid).map(value => (
+    {Object.values(Token.size.fluid).map(value => (
       <Box
         css={{
           display: 'grid',
           placeItems: 'center',
-          color: Vars.color.gray['00'],
-          bg: Vars.color.gray['80'],
+          color: Token.color.gray['00'],
+          bg: Token.color.gray['80'],
           blockSize: 100,
-          height: Vars.size.fixed.xxlarge,
+          height: Token.size.fixed.xxlarge,
           width: value,
         }}
       />
@@ -46,11 +46,11 @@ export const Fluid = () => (
 
 export const Headlines = () => (
   <Stack space="24px">
-    {Object.values(Vars.size.header).map(value => (
+    {Object.values(Token.size.header).map(value => (
       <Box
         css={{
-          fontSize: Vars.typography.size.fluid.regular,
-          fontFamily: Vars.typography.font.sans,
+          fontSize: Token.typography.size.fluid.regular,
+          fontFamily: Token.typography.font.sans,
           maxWidth: value,
         }}
       >
@@ -63,12 +63,12 @@ export const Headlines = () => (
 
 export const Content = () => (
   <Stack space="24px">
-    {Object.values(Vars.size.content).map(value => (
+    {Object.values(Token.size.content).map(value => (
       <Box
         key={value}
         css={{
-          fontSize: Vars.typography.size.fluid.small,
-          fontFamily: Vars.typography.font.sans,
+          fontSize: Token.typography.size.fluid.small,
+          fontFamily: Token.typography.font.sans,
           maxWidth: value,
         }}
       >

@@ -13,7 +13,7 @@ To install Marigold you can use package managers like [yarn](https://yarnpkg.com
 
 **With npm:**
 ```bash onlyCode
-npm install @marigold/components
+npm install @marigold/components --save
 ```
 
 **With yarn:**
@@ -42,11 +42,13 @@ import theme from '@marigold/theme-unicorn';
 
 const App = () =>  (
   <MarigoldProvider theme={theme}>
-    <Button variant="primary" onClick={alert('Hey there!')}>
+    <Button variant="primary" onClick={() => alert('Hey there!')}>
       Hello World
     </Button>
   </MarigoldProvider>
 );
+
+export default App;
 ```
 
 See the [Provider](../components/provider) and [Button](../components/button) docs for more information about the components used in this example.

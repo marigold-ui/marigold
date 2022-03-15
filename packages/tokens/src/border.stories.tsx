@@ -2,23 +2,23 @@ import React from 'react';
 import { Box, Inline, Stack } from '@marigold/components';
 import type { Meta } from '@storybook/react';
 
-import * as Vars from '.';
+import * as Token from '.';
 
 export default {
-  title: 'Vars/Border',
+  title: 'Token/Border',
 } as Meta;
 
 export const Size = () => (
   <Inline space="12px">
-    {Object.values(Vars.border.width).map(value => (
+    {Object.values(Token.border.width).map(value => (
       <Box
         key={value}
         css={{
           width: 100,
           height: 100,
-          bg: Vars.color.gray['20'],
+          bg: Token.color.gray['20'],
           borderStyle: 'solid',
-          borderColor: Vars.color.gray['80'],
+          borderColor: Token.color.gray['80'],
           borderWidth: value,
         }}
       />
@@ -28,15 +28,15 @@ export const Size = () => (
 
 export const Radius = () => (
   <Stack space="12px">
-    {Object.values(Vars.border.radius).map(value => (
+    {Object.values(Token.border.radius).map(value => (
       <Box
         key={value}
         css={{
           width: 200,
           height: 200,
           borderStyle: 'solid',
-          borderColor: Vars.color.gray['80'],
-          borderWidth: Vars.border.width.medium,
+          borderColor: Token.color.gray['80'],
+          borderWidth: Token.border.width.medium,
           borderRadius: value,
         }}
       />
