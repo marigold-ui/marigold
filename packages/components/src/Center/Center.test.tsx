@@ -3,23 +3,98 @@ import { render, screen } from '@testing-library/react';
 
 import { Center } from './Center';
 import { Text } from '../Text';
+import { ThemeProvider } from '@marigold/system';
 
-test('renders correct HTML element', () => {
+const theme = {
+  sizes: {
+    none: 0,
+    small: 40,
+    medium: 80,
+    large: 120,
+  },
+};
+
+test('supports maxWidth', () => {
   render(
-    <Center data-testid="container">
-      <Text>sdf</Text>
-    </Center>
+    <ThemeProvider theme={theme}>
+      <Center maxWidth="50ch" data-testid="center">
+        <Text>content</Text>
+      </Center>
+    </ThemeProvider>
   );
-  const container = screen.getByTestId(/container/);
-  expect(container instanceof HTMLDivElement).toBeTruthy();
+  const center = screen.getByTestId(/center/);
+  expect(center).toHaveStyle(`maxInlineSize: 50ch`);
 });
 
-test('has default width', () => {
+test('supports maxWidth from theme sizes', () => {
   render(
-    <Center data-testid="container">
-      <Text>text</Text>
-    </Center>
+    <ThemeProvider theme={theme}>
+      <Center maxWidth="large" data-testid="center">
+        <Text>content</Text>
+      </Center>
+    </ThemeProvider>
   );
-  const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`width: 100%`);
+  const center = screen.getByTestId(/center/);
+  expect(center).toHaveStyle(`maxInlineSize: 120px`);
+});
+
+test('supports maxHeight', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Center maxHeight="50ch" data-testid="center">
+        <Text>content</Text>
+      </Center>
+    </ThemeProvider>
+  );
+  const center = screen.getByTestId(/center/);
+  expect(center).toHaveStyle(`maxHeight: 50ch`);
+});
+
+test('supports maxHeight from theme sizes', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Center maxHeight="large" data-testid="center">
+        <Text>content</Text>
+      </Center>
+    </ThemeProvider>
+  );
+  const center = screen.getByTestId(/center/);
+  expect(center).toHaveStyle(`maxHeight: 120px`);
+});
+
+test('supports default textAlign', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Center data-testid="center">
+        <Text>content</Text>
+      </Center>
+    </ThemeProvider>
+  );
+  const center = screen.getByTestId(/center/);
+  expect(center).toHaveStyle(`textAlign: center`);
+});
+
+test('supports other textAlign', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Center textAlign="left" data-testid="center">
+        <Text>content</Text>
+      </Center>
+    </ThemeProvider>
+  );
+  const center = screen.getByTestId(/center/);
+  expect(center).toHaveStyle(`textAlign: left`);
+});
+
+test('supports superCentered', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Center superCentered data-testid="center">
+        <Text>content</Text>
+      </Center>
+    </ThemeProvider>
+  );
+  const center = screen.getByTestId(/center/);
+  expect(center).toHaveStyle(`display: grid`);
+  expect(center).toHaveStyle(`placeItems: center`);
 });

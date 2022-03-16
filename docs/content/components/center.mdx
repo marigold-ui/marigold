@@ -1,0 +1,109 @@
+---
+title: Center
+---
+
+import { Box, Center, Text } from '@marigold/components';
+
+# Center
+
+## Description
+
+Center is a layout component that centers its children within itself.
+
+## Usage
+
+```tsx onlyCode
+import { Center } from '@marigold/components';
+```
+
+<MarigoldTheme>
+  <Center maxHeight="large" maxWidth="huge">
+    <Box height="100%" border="1px dashed gray" p="small">
+      Centered Box
+    </Box>
+  </Center>
+</MarigoldTheme>
+
+## Properties (API)
+
+| Property    | Type                           | Default  |
+| :---------- | :----------------------------- | :------- |
+| `maxHeight` | `ResponsiveStyleValue<string>` |          |
+| `maxWidth`  | `ResponsiveStyleValue<string>` |          |
+| `textAlign` | `left, center, right`          | `center` |
+
+## Variants
+
+### Center maxHeight
+
+```tsx expandCode
+<Center maxHeight="large">
+  <Box height="100%" border="1px dashed gray" p="small">
+    Centered Box
+  </Box>
+</Center>
+```
+
+### Center maxWidth
+
+```tsx
+<Center maxWidth="xxlarge">
+  <Box height="100%" border="1px dashed gray" p="small">
+    Centered Box
+  </Box>
+</Center>
+```
+
+### Center textAlign
+
+```tsx
+<Center textAlign="left" maxWidth="huge">
+  <Box height="100%" border="1px dashed gray" p="small">
+    Left aligned Box
+  </Box>
+</Center>
+```
+
+```tsx
+<Center textAlign="left" maxWidth="huge">
+  <Box bg="blue10" p="small">
+    <Text as="h2" variant="headline2">
+      Star Wars - The Empire Strikes Back
+    </Text>
+    It is a dark time for the Rebellion. Although the Death Star has been destroyed,
+    Imperial troops have driven the Rebel forces from their hidden base and pursued
+    them across the galaxy. Evading the dreaded Imperial Starfleet, a group of freedom
+    fighters led by Luke Skywalker has established a new secret base on the remote
+    ice world of Hoth. The evil lord Darth Vader, obsessed with finding young Skywalker,
+    has dispatched thousands of remote probes into the far reaches of space....
+  </Box>
+</Center>
+```
+
+### SuperCentered
+
+See [Dialog component](../../components/dialog) for example using `superCentered`
+
+### Center an element inside others
+
+```tsx
+<Stack space="medium">
+  <Text as="h2" variant="headline2">
+    Star Wars - The Empire Strikes Back
+  </Text>
+  <Text>
+    It is a dark time for the Rebellion. Although the Death Star has been
+    destroyed, Imperial troops have driven the Rebel forces from their hidden
+    base and pursued them across the galaxy.
+  </Text>
+  <Center>
+    <Button variant="secondary">Watch now</Button>
+  </Center>
+  <Text>
+    Evading the dreaded Imperial Starfleet, a group of freedom fighters led by
+    Luke Skywalker has established a new secret base on the remote ice world of
+    Hoth. The evil lord Darth Vader, obsessed with finding young Skywalker, has
+    dispatched thousands of remote probes into the far reaches of space....
+  </Text>
+</Stack>
+```
