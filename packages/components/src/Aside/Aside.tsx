@@ -1,5 +1,6 @@
 import React, { ReactChild } from 'react';
 import { ResponsiveStyleValue } from '@marigold/system';
+import { Percentage } from '@marigold/types';
 
 import { Box } from '../Box';
 
@@ -9,6 +10,7 @@ export interface AsideProps {
   sideWidth?: ResponsiveStyleValue<string>;
   space?: ResponsiveStyleValue<string>;
   stretch?: boolean;
+  wrap?: Percentage;
 }
 
 /**
@@ -25,6 +27,7 @@ export const Aside = ({
   side = 'left',
   space = 'none',
   stretch = true,
+  wrap = '50%',
 }: AsideProps) => {
   const [aside, content] = SIDE_MAP[side];
 
@@ -44,7 +47,7 @@ export const Aside = ({
         [`> ${content}`]: {
           flexBasis: 0,
           flexGrow: 999,
-          minInlineSize: '50%',
+          minInlineSize: wrap,
         },
       }}
     >
