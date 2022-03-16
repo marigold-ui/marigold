@@ -47,7 +47,7 @@ test('supports maxHeight', () => {
     </ThemeProvider>
   );
   const center = screen.getByTestId(/center/);
-  expect(center).toHaveStyle(`maxHeight: 50ch`);
+  expect(center).toHaveStyle(`height: 50ch`);
 });
 
 test('supports maxHeight from theme sizes', () => {
@@ -59,7 +59,7 @@ test('supports maxHeight from theme sizes', () => {
     </ThemeProvider>
   );
   const center = screen.getByTestId(/center/);
-  expect(center).toHaveStyle(`maxHeight: 120px`);
+  expect(center).toHaveStyle(`height: 120px`);
 });
 
 test('supports default textAlign', () => {
