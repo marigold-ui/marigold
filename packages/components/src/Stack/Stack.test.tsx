@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-node-access */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
@@ -16,26 +17,17 @@ const theme = {
   },
 };
 
-const getTopPadding = (element: HTMLElement) =>
-  getComputedStyle(element).getPropertyValue('padding-top');
-
 test('default space is "none"', () => {
   render(
     <ThemeProvider theme={theme}>
       <Stack>
         <Text>first</Text>
         <Text>second</Text>
-        <Text>third</Text>
       </Stack>
     </ThemeProvider>
   );
-  const first = screen.getByText(/first/).parentElement!;
-  const second = screen.getByText(/second/).parentElement!;
-  const third = screen.getByText(/third/).parentElement!;
-
-  expect(getTopPadding(first)).toEqual('');
-  expect(second).toHaveStyle(`padding-top: 0px`);
-  expect(third).toHaveStyle(`padding-top: 0px`);
+  const first = screen.getByText(/first/).parentElement;
+  expect(first).toHaveStyle(`gap: 0`);
 });
 
 test('accepts and uses spacing from theme', () => {
@@ -44,17 +36,11 @@ test('accepts and uses spacing from theme', () => {
       <Stack space="small">
         <Text>first</Text>
         <Text>second</Text>
-        <Text>third</Text>
       </Stack>
     </ThemeProvider>
   );
-  const first = screen.getByText(/first/);
-  const second = screen.getByText(/second/);
-  const third = screen.getByText(/third/);
-
-  expect(getTopPadding(first)).toEqual('');
-  expect(second.parentElement).toHaveStyle(`padding-top: 2px`);
-  expect(third.parentElement).toHaveStyle(`padding-top: 2px`);
+  const first = screen.getByText(/first/).parentElement;
+  expect(first).toHaveStyle(`gap: 2px`);
 });
 
 test('aligns children left by default', () => {
@@ -64,7 +50,6 @@ test('aligns children left by default', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-
   expect(stack).toHaveStyle(`align-items: flex-start`);
 });
 
@@ -75,7 +60,6 @@ test('allows to aligns children to the center', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-
   expect(stack).toHaveStyle(`align-items: center`);
 });
 
@@ -86,7 +70,6 @@ test('allows to aligns children to the right', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-
   expect(stack).toHaveStyle(`align-items: flex-end`);
 });
 
@@ -105,22 +88,15 @@ test('supports nesting', () => {
       </Stack>
     </ThemeProvider>
   );
-  const first = screen.getByText(/first/);
-  const second = screen.getByText(/second/);
-  const upperStack = screen.getByTestId('upperStack');
+  const first = screen.getByText(/first/).parentElement;
+  const upperStack = screen.getByTestId('upperStack').parentElement;
+  expect(first).toHaveStyle(`gap: 2px`);
+  expect(upperStack).toHaveStyle(`gap: 8px`);
 
-  const third = screen.getByText(/third/);
-  const fourth = screen.getByText(/fourth/);
-  const lowerStack = screen.getByTestId('lowerStack');
-
-  expect(getTopPadding(upperStack.parentElement!)).toEqual('');
-  expect(lowerStack.parentElement).toHaveStyle(`padding-top: 8px`);
-
-  expect(getTopPadding(first.parentElement!)).toEqual('');
-  expect(second.parentElement).toHaveStyle(`padding-top: 2px`);
-
-  expect(getTopPadding(third.parentElement!)).toEqual('');
-  expect(fourth.parentElement).toHaveStyle(`padding-top: 2px`);
+  const third = screen.getByText(/third/).parentElement;
+  const lowerStack = screen.getByTestId('lowerStack').parentElement;
+  expect(third).toHaveStyle(`gap: 2px`);
+  expect(lowerStack).toHaveStyle(`gap: 8px`);
 });
 
 test('renders as div per default', () => {

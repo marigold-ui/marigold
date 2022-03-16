@@ -71,6 +71,7 @@ test('supports required prop and renders required icon', () => {
   );
 
   const label = screen.getByText(/Test/);
+  // eslint-disable-next-line testing-library/no-node-access
   expect(label.nextSibling).toContainHTML('path d="M10.8');
 });
 

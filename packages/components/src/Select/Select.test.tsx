@@ -155,6 +155,7 @@ test('supports width prop', () => {
   );
   const select = screen.getByTestId('selectId');
 
+  // eslint-disable-next-line testing-library/no-node-access
   expect(select.parentElement).toHaveStyle(`width: 120px`);
 });
 

@@ -1,3 +1,5 @@
+/* eslint-disable testing-library/no-node-access */
+/* eslint-disable testing-library/no-container */
 import React from 'react';
 import { useTheme } from '@marigold/system';
 import { render, screen } from '@testing-library/react';
@@ -119,17 +121,18 @@ test('applies global styles for body and html based on `theme.root`', () => {
     },
   };
 
-  const root = render(
+  const view = render(
     <MarigoldProvider theme={theme}>
       <h1>Hello</h1>
     </MarigoldProvider>
   );
 
-  const html = root.baseElement.parentElement;
+  // eslint-disable-next-line testing-library/no-node-access
+  const html = view.baseElement.parentElement;
   expect(html).toHaveStyle(`font-family: ${theme.fonts.html}`);
   expect(html).toHaveStyle(`font-weight: ${theme.fontWeights.html}`);
 
-  const body = root.baseElement;
+  const body = view.baseElement;
   expect(body).toHaveStyle(`font-family: ${theme.fonts.body}`);
   expect(body).toHaveStyle(`font-weight: ${theme.fontWeights.body}`);
   expect(body).toHaveStyle(`line-height: ${theme.lineHeights.body}`);

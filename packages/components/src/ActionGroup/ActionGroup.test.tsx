@@ -11,33 +11,30 @@ const theme = {
   },
 };
 
-const getTopPadding = (element: HTMLElement) =>
-  getComputedStyle(element).getPropertyValue('padding-top');
-
 test('default space is "none"', () => {
   render(
     <ThemeProvider theme={theme}>
       <ActionGroup title="actionGroup">
-        <Button title="Button1">Button1</Button>
-        <Button title="Button2">Button2</Button>
+        <Button>Button1</Button>
+        <Button>Button2</Button>
       </ActionGroup>
     </ThemeProvider>
   );
-  const first = screen.getByTitle(/Button1/).parentElement;
-  expect(first).toHaveStyle(`gap: 0`);
+  const group = screen.getByTitle(/actionGroup/);
+  expect(group).toHaveStyle(`gap: 0`);
 });
 
 test('supports space prop', () => {
   render(
     <ThemeProvider theme={theme}>
       <ActionGroup title="actionGroup" space="8px">
-        <Button title="Button1">Button1</Button>
-        <Button title="Button2">Button2</Button>
+        <Button>Button1</Button>
+        <Button>Button2</Button>
       </ActionGroup>
     </ThemeProvider>
   );
-  const first = screen.getByTitle(/Button1/).parentElement;
-  expect(first).toHaveStyle(`gap: 8px`);
+  const groupt = screen.getByTitle(/actionGroup/);
+  expect(groupt).toHaveStyle(`gap: 8px`);
 });
 
 test('accepts and uses spacing from theme', () => {
@@ -49,8 +46,8 @@ test('accepts and uses spacing from theme', () => {
       </ActionGroup>
     </ThemeProvider>
   );
-  const first = screen.getByTitle(/Button1/).parentElement;
-  expect(first).toHaveStyle(`gap: 2px`);
+  const group = screen.getByTitle(/actionGroup/);
+  expect(group).toHaveStyle(`gap: 2px`);
 });
 
 test('supports verticalAlignment prop', () => {
@@ -62,10 +59,6 @@ test('supports verticalAlignment prop', () => {
       </ActionGroup>
     </ThemeProvider>
   );
-
-  const button1 = screen.getByText(/Button1/);
-  const button2 = screen.getByText(/Button2/);
-
-  expect(getTopPadding(button1.parentElement!)).toEqual('');
-  expect(button2.parentElement).toHaveStyle(`padding-top: 2px`);
+  const group = screen.getByTitle(/actionGroup/);
+  expect(group).toHaveStyle(`gap: 2px`);
 });
