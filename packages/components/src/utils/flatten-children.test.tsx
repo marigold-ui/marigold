@@ -180,6 +180,7 @@ test('renders correctly through react', () => {
   const result = spy.mock.calls[0][0];
   const element = screen.getByTestId('assert');
 
+  // eslint-disable-next-line testing-library/no-node-access
   expect(element.children.length).toEqual(6);
   expect(result.map((c: any) => c.key)).toMatchInlineSnapshot(`
     [
