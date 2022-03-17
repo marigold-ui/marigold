@@ -14,6 +14,18 @@ const theme: Theme = {
     xlarge: 42,
     xxlarge: 64,
   },
+  sizes: {
+    none: 0,
+    xxsmall: 16,
+    xsmall: 32,
+    small: 40,
+    medium: 80,
+    large: 120,
+    xlarge: 160,
+    xxlarge: 240,
+    huge: 320,
+    epic: 480,
+  },
   colors: {
     ...colors,
     text: colors.gray90,
