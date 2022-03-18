@@ -1,5 +1,14 @@
 import React from 'react';
 
+export type OneToNine = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+export type ZeroToNine = 0 | OneToNine;
+
+/**
+ * Percentage value.
+ */
+export type Percentage = `${ZeroToNine}%` | `${OneToNine}${ZeroToNine}%`;
+export type NonZeroPercentage = `${OneToNine}%` | `${OneToNine}${ZeroToNine}%`;
+
 /**
  * Get values of an `array` as literals.
  */
@@ -67,8 +76,8 @@ export type PolymorphicPropsWithRef<P, T extends React.ElementType> = Merge<
 
 /**
  * Create a polymorphpic component with the `as` prop.
- * 
- * This type can be used to create a component that allows to change the rendered 
+ *
+ * This type can be used to create a component that allows to change the rendered
  * element via its `as` prop.
  *
  * @example
@@ -87,8 +96,8 @@ export interface PolymorphicComponent<P, T extends React.ElementType>
 
 /**
  * Create a polymorphpic component with the `as` prop that also support passing a `ref`.
- * 
- * This type can be used to create a component that allows to change the rendered 
+ *
+ * This type can be used to create a component that allows to change the rendered
  * element via its `as` prop and forwarding a `ref` to it.
  *
  * **Note: you should use React's `forwardRef` with this type.**
