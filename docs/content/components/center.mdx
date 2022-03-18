@@ -2,35 +2,35 @@
 title: Center
 ---
 
-import { Box, Center, Text } from '@marigold/components';
-
 # Center
 
 ## Description
 
 Center is a layout component that centers its children within itself.
 
-## Usage
-
-```tsx onlyCode
-import { Center } from '@marigold/components';
-```
+## Demo
 
 <MarigoldTheme>
   <Center maxHeight="large" maxWidth="huge">
-    <Box height="100%" border="1px dashed gray" p="small">
-      Centered Box
-    </Box>
+    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
   </Center>
 </MarigoldTheme>
 
 ## Properties (API)
 
-| Property    | Type                           | Default  |
-| :---------- | :----------------------------- | :------- |
-| `maxHeight` | `ResponsiveStyleValue<string>` |          |
-| `maxWidth`  | `ResponsiveStyleValue<string>` |          |
-| `textAlign` | `left, center, right`          | `center` |
+| Property         | Type                           | Default  |
+| :--------------- | :----------------------------- | :------- |
+| `maxHeight`      | `string`                       |          |
+| `maxWidth`       | `string`                       |          |
+| `textAlign`      | `left, center, right`          | `center` |
+| `space`          | `ResponsiveStyleValue<string>` | `none`   |
+| `superCenntered` | `boolean`                      | `false`  |
+
+## Import
+
+```tsx onlyCode
+import { Center } from '@marigold/components';
+```
 
 ## Variants
 
@@ -38,9 +38,7 @@ import { Center } from '@marigold/components';
 
 ```tsx expandCode
 <Center maxHeight="large">
-  <Box height="100%" border="1px dashed gray" p="small">
-    Centered Box
-  </Box>
+  <Box border="1px solid #ced4da" bg="#e9ecef" />
 </Center>
 ```
 
@@ -48,9 +46,7 @@ import { Center } from '@marigold/components';
 
 ```tsx
 <Center maxWidth="xxlarge">
-  <Box height="100%" border="1px dashed gray" p="small">
-    Centered Box
-  </Box>
+  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
 </Center>
 ```
 
@@ -58,7 +54,7 @@ import { Center } from '@marigold/components';
 
 ```tsx
 <Center textAlign="left" maxWidth="huge">
-  <Box height="100%" border="1px dashed gray" p="small">
+  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" p="small">
     Left aligned Box
   </Box>
 </Center>
@@ -66,7 +62,7 @@ import { Center } from '@marigold/components';
 
 ```tsx
 <Center textAlign="left" maxWidth="huge">
-  <Box bg="blue10" p="small">
+  <Box border="1px solid #ced4da" bg="#e9ecef" p="small">
     <Text as="h2" variant="headline2">
       Star Wars - The Empire Strikes Back
     </Text>
@@ -77,6 +73,16 @@ import { Center } from '@marigold/components';
     ice world of Hoth. The evil lord Darth Vader, obsessed with finding young Skywalker,
     has dispatched thousands of remote probes into the far reaches of space....
   </Box>
+</Center>
+```
+
+### Center space
+
+```tsx
+<Center space="medium" maxWidth="xxlarge">
+  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
 </Center>
 ```
 

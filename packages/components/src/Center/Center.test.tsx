@@ -12,6 +12,10 @@ const theme = {
     medium: 80,
     large: 120,
   },
+  space: {
+    none: 0,
+    medium: 16,
+  },
 };
 
 test('supports maxWidth', () => {
@@ -84,6 +88,20 @@ test('supports other textAlign', () => {
   );
   const center = screen.getByTestId(/center/);
   expect(center).toHaveStyle(`textAlign: left`);
+});
+
+test('supports space prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Center space="medium" data-testid="center">
+        <Text>content</Text>
+        <Text>content2</Text>
+      </Center>
+    </ThemeProvider>
+  );
+  const center = screen.getByTestId(/center/);
+  expect(center).toHaveStyle(`display: grid`);
+  expect(center).toHaveStyle(`gap: 16px`);
 });
 
 test('supports superCentered', () => {

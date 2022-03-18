@@ -68,6 +68,27 @@ export default {
         },
       },
     },
+    space: {
+      control: {
+        type: 'select',
+      },
+      options: [
+        'none',
+        'xxsmall',
+        'xsmall',
+        'small',
+        'medium',
+        'large',
+        'xlarge',
+        'xxlarge',
+      ],
+      description: 'Responsive Style Value',
+      table: {
+        defaultValue: {
+          summary: 'none',
+        },
+      },
+    },
     superCentered: {
       control: {
         type: 'boolean',
@@ -83,6 +104,14 @@ export const Basic: ComponentStory<typeof Center> = args => (
     <Box height="100%" bg="blue10">
       Centered Box
     </Box>
+  </Center>
+);
+
+export const Children: ComponentStory<typeof Center> = args => (
+  <Center maxWidth="huge" {...args}>
+    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
   </Center>
 );
 
