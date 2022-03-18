@@ -1,6 +1,6 @@
 import React, { ReactChild } from 'react';
 import { ResponsiveStyleValue } from '@marigold/system';
-import { Percentage } from '@marigold/types';
+import { NonZeroPercentage } from '@marigold/types';
 
 import { Box } from '../Box';
 
@@ -10,22 +10,22 @@ export interface AsideProps {
   sideWidth?: ResponsiveStyleValue<string>;
   space?: ResponsiveStyleValue<string>;
   stretch?: boolean;
-  wrap?: Percentage;
+  wrap?: NonZeroPercentage;
 }
 
 /**
  * Apply CSS depending on which element should serve as sidebar.
  */
 const SIDE_MAP = {
-  left: [':first-child', ':last-child'],
-  right: [':last-child', ':first-child'],
+  left: [':not(style):first-of-type', ':last-child'],
+  right: [':last-child', ':not(style):first-of-type'],
 };
 
 export const Aside = ({
   children,
   sideWidth,
-  side = 'left',
   space = 'none',
+  side = 'left',
   stretch = true,
   wrap = '50%',
 }: AsideProps) => {

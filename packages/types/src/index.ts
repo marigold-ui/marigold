@@ -7,6 +7,7 @@ export type ZeroToNine = 0 | OneToNine;
  * Percentage value.
  */
 export type Percentage = `${ZeroToNine}%` | `${OneToNine}${ZeroToNine}%`;
+export type NonZeroPercentage = `${OneToNine}%` | `${OneToNine}${ZeroToNine}%`;
 
 /**
  * Get values of an `array` as literals.
