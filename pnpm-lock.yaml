@@ -5,7 +5,7 @@ importers:
   .:
     specifiers:
       '@changesets/changelog-github': 0.4.3
-      '@changesets/cli': 2.21.0
+      '@changesets/cli': 2.21.1
       '@marigold/eslint-config': workspace:*
       '@marigold/jest-config': workspace:*
       '@marigold/prettier-config': workspace:*
@@ -32,7 +32,7 @@ importers:
       zx: 5.1.0
     dependencies:
       '@changesets/changelog-github': 0.4.3
-      '@changesets/cli': 2.21.0
+      '@changesets/cli': 2.21.1
       '@marigold/eslint-config': link:config/eslint
       '@marigold/jest-config': link:config/jest
       '@marigold/prettier-config': link:config/prettier
@@ -2844,8 +2844,8 @@ packages:
       - encoding
     dev: false
 
-  /@changesets/cli/2.21.0:
-    resolution: {integrity: sha512-cJXRg28MmF9VbQrlwSjpY4AJA2xZUbXFCpQ3kFmX0IeppO7wknZ2QfocAhIqwM828t8d3R4Zpi5xnvJ/crIcQw==}
+  /@changesets/cli/2.21.1:
+    resolution: {integrity: sha512-4AJKo/UW0P217m2VHjiuhZy+CstLw54eu9I1fsY7tst76GeEN7mX0mVrTNEisR6CvOH7wLav3ITqvDcKVPbKsw==}
     hasBin: true
     dependencies:
       '@babel/runtime': 7.17.2
@@ -9210,6 +9210,7 @@ packages:
 
   /bindings/1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
+    requiresBuild: true
     dependencies:
       file-uri-to-path: 1.0.0
     dev: false
@@ -12800,6 +12801,7 @@ packages:
 
   /file-uri-to-path/1.0.0:
     resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
+    requiresBuild: true
     dev: false
     optional: true
 
