@@ -10,6 +10,7 @@ import { FocusScope } from '@react-aria/focus';
 import type { AriaDialogProps } from '@react-types/dialog';
 
 import { Box } from '../Box';
+import { Center } from '../Center';
 
 // Props
 // ---------------
@@ -45,11 +46,10 @@ export const ModalDialog: React.FC<ModalDialogProps> = ({
 
   return (
     <Box
+      as={Center}
+      superCentered
       __baseCSS={{
-        display: 'grid',
-        placeItems: 'center',
         position: 'fixed',
-        zIndex: 100,
         top: 0,
         left: 0,
         bottom: 0,
