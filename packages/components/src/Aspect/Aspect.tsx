@@ -9,7 +9,7 @@ import { ComponentProps } from '@marigold/types';
 import { Box } from '../Box';
 
 export interface AspectProps extends ComponentProps<'div'> {
-  ratio: keyof typeof aspect;
+  ratio?: keyof typeof aspect;
   maxWidth?: string;
 }
 

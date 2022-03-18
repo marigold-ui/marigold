@@ -56,7 +56,6 @@ export const Map: ComponentStory<typeof Aspect> = args => (
       title="map_sc"
       width="100%"
       height="100%"
-      loading="lazy"
     />
   </Aspect>
 );
