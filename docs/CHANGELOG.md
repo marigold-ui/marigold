@@ -1,5 +1,25 @@
 # @marigold/docs
 
+## 0.7.0
+
+### Minor Changes
+
+- [#1882](https://github.com/marigold-ui/marigold/pull/1882) [`d436930f`](https://github.com/marigold-ui/marigold/commit/d436930f7d88b572c4365a442a0914bba1147657) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): introduce Tiles component
+
+* [#1881](https://github.com/marigold-ui/marigold/pull/1881) [`d2c3eb50`](https://github.com/marigold-ui/marigold/commit/d2c3eb50ceb9941926e7e658dcba7a74cb87e6d7) Thanks [@ti10le](https://github.com/ti10le)! - Component: Aspect
+
+- [#1868](https://github.com/marigold-ui/marigold/pull/1868) [`ec4f8f22`](https://github.com/marigold-ui/marigold/commit/ec4f8f228f05e88f2b9f17784b59f3cfc8ceabe7) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): renew Container component
+
+### Patch Changes
+
+- [#1854](https://github.com/marigold-ui/marigold/pull/1854) [`081e6252`](https://github.com/marigold-ui/marigold/commit/081e62529e61773a58b1dfbcf41cdf7b913d88c5) Thanks [@sarahgm](https://github.com/sarahgm)! - 1739 add links to docs
+
+- Updated dependencies [[`d436930f`](https://github.com/marigold-ui/marigold/commit/d436930f7d88b572c4365a442a0914bba1147657), [`274a370a`](https://github.com/marigold-ui/marigold/commit/274a370a8a1f740df135ac73baae5903e90b6d44), [`d2c3eb50`](https://github.com/marigold-ui/marigold/commit/d2c3eb50ceb9941926e7e658dcba7a74cb87e6d7), [`ec4f8f22`](https://github.com/marigold-ui/marigold/commit/ec4f8f228f05e88f2b9f17784b59f3cfc8ceabe7)]:
+  - @marigold/components@0.7.0
+  - @marigold/theme-b2b@4.0.0
+  - @marigold/system@0.7.0
+  - @marigold/icons@0.5.1
+
 ## 0.6.0
 
 ### Minor Changes
