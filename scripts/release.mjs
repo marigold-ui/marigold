@@ -103,6 +103,7 @@ log('✓  Packages built.');
 step('🔼', 'Pushing changes to main branch...');
 // We use "@marigold/components" as leading version
 const { version } = require('../packages/components/package.json');
+await $`git add -A`;
 await $`git commit -am "release: v${version}"`;
 await $`git push`;
 await $`git push --tags`;
