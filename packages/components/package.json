@@ -25,6 +25,7 @@
   "dependencies": {
     "@marigold/icons": "workspace:*",
     "@marigold/system": "workspace:*",
+    "@marigold/tokens": "workspace:*",
     "@marigold/types": "workspace:*",
     "@react-aria/button": "^3.3.3",
     "@react-aria/checkbox": "^3.2.3",
