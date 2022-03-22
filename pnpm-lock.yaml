@@ -304,12 +304,16 @@ importers:
 
   packages/create-theme:
     specifiers:
+      '@marigold/components': workspace:*
+      '@marigold/system': workspace:*
       '@marigold/tokens': workspace:*
       '@marigold/tsconfig': workspace:*
       tsup: 5.11.13
     dependencies:
       '@marigold/tokens': link:../tokens
     devDependencies:
+      '@marigold/components': link:../components
+      '@marigold/system': link:../system
       '@marigold/tsconfig': link:../../config/tsconfig
       tsup: 5.11.13_typescript@4.6.2
 
