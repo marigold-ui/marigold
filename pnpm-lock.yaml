@@ -239,6 +239,7 @@ importers:
     specifiers:
       '@marigold/icons': workspace:*
       '@marigold/system': workspace:*
+      '@marigold/tokens': workspace:*
       '@marigold/tsconfig': workspace:*
       '@marigold/types': workspace:*
       '@react-aria/button': ^3.3.3
@@ -270,6 +271,7 @@ importers:
     dependencies:
       '@marigold/icons': link:../icons
       '@marigold/system': link:../system
+      '@marigold/tokens': link:../tokens
       '@marigold/types': link:../types
       '@react-aria/button': 3.4.1_react@17.0.2
       '@react-aria/checkbox': 3.3.1_react@17.0.2
