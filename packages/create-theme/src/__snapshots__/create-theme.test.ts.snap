@@ -2,12 +2,12 @@
 
 exports[`created theme comes with defaults for "borderWidths" 1`] = `
 {
-  "large": "5px",
-  "medium": "2px",
+  "large-1": "5px",
+  "large-2": "10px",
+  "large-3": "25px",
+  "medium-1": "2px",
   "none": 0,
-  "small": "1px",
-  "xlarge": "10px",
-  "xxlarge": "25px",
+  "small-1": "1px",
 }
 `;
 
@@ -32,27 +32,27 @@ exports[`created theme comes with defaults for "fontWeights" 1`] = `
 
 exports[`created theme comes with defaults for "letterSpacings" 1`] = `
 {
-  "large": ".150em",
-  "medium": ".075em",
+  "large-1": ".750em",
+  "large-2": "1em",
+  "medium-1": ".075em",
+  "medium-2": ".150em",
+  "medium-3": ".500em",
   "none": "normal",
-  "small": ".050em",
-  "xlarge": ".500em",
-  "xsmall": ".025em",
-  "xxlarge": ".750em",
-  "xxsmall": "-.05em",
-  "xxxlarge": "1em",
+  "small-1": "-.05em",
+  "small-2": ".025em",
+  "small-3": ".050em",
 }
 `;
 
 exports[`created theme comes with defaults for "lineHeights" 1`] = `
 {
-  "0": 1.1,
-  "00": 0.95,
-  "1": 1.25,
-  "2": 1.375,
-  "3": 1.5,
-  "4": 1.75,
-  "5": 2,
+  "large-1": 1.75,
+  "large-2": 2,
+  "medium-1": 1.375,
+  "medium-2": 1.5,
+  "small-1": 0.95,
+  "small-2": 1.1,
+  "small-3": 1.25,
 }
 `;
 
@@ -68,14 +68,14 @@ exports[`created theme comes with defaults for "opacities" 1`] = `
 
 exports[`created theme comes with defaults for "radii" 1`] = `
 {
-  "large": "2rem",
-  "medium": "1rem",
+  "large-1": "4rem",
+  "large-2": "8rem",
+  "medium-1": "1rem",
+  "medium-2": "2rem",
   "none": 0,
   "round": "1e5px",
-  "small": "5px",
-  "xlarge": "4rem",
-  "xsmall": "2px",
-  "xxlarge": "8rem",
+  "small-1": "2px",
+  "small-2": "5px",
 }
 `;
 

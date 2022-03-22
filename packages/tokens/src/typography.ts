@@ -7,46 +7,46 @@ const font = {
 } as const;
 
 const lineHeight = {
-  '00': 0.95,
-  '0': 1.1,
-  '1': 1.25,
-  '2': 1.375,
-  '3': 1.5,
-  '4': 1.75,
-  '5': 2,
+  'small-1': 0.95,
+  'small-2': 1.1,
+  'small-3': 1.25,
+  'medium-1': 1.375,
+  'medium-2': 1.5,
+  'large-1': 1.75,
+  'large-2': 2,
 } as const;
 
 const letterSpacing = {
   none: 'normal',
 
-  xxsmall: '-.05em',
-  xsmall: '.025em',
-  small: '.050em',
-  medium: '.075em',
-  large: '.150em',
-  xlarge: '.500em',
-  xxlarge: '.750em',
-  xxxlarge: '1em',
+  'small-1': '-.05em',
+  'small-2': '.025em',
+  'small-3': '.050em',
+  'medium-1': '.075em',
+  'medium-2': '.150em',
+  'medium-3': '.500em',
+  'large-1': '.750em',
+  'large-2': '1em',
 } as const;
 
 const fixed = {
-  xsmall: '.5rem',
-  small: '.75rem',
-  regular: '1rem',
-  medium: '1.1rem',
-  large: '1.25rem',
-  xlarge: '1.5rem',
-  xxlarge: '2rem',
-  xxxlarge: '2.5rem',
-  huge: '3rem',
-  epic: '3.5rem',
+  'small-1': '.5rem',
+  'small-2': '.75rem',
+  'small-3': '1rem',
+  'medium-1': '1.1rem',
+  'medium-2': '1.25rem',
+  'medium-3': '1.5rem',
+  'medium-4': '2rem',
+  'large-1': '2.5rem',
+  'large-2': '3rem',
+  'large-3': '3.5rem',
 } as const;
 
 const fluid = {
-  small: 'clamp(.75rem, 2vw, 1rem)',
-  regular: 'clamp(1rem, 4vw, 1.5rem)',
-  large: 'clamp(1.5rem, 6vw, 2.5rem)',
-  xlarge: 'clamp(2rem, 9vw, 3.5rem)',
+  'small-1': 'clamp(.75rem, 2vw, 1rem)',
+  'medium-1': 'clamp(1rem, 4vw, 1.5rem)',
+  'medium-2': 'clamp(1.5rem, 6vw, 2.5rem)',
+  'large-1': 'clamp(2rem, 9vw, 3.5rem)',
 } as const;
 
 const weight = {

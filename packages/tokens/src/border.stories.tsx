@@ -36,7 +36,7 @@ export const Radius = () => (
           height: 200,
           borderStyle: 'solid',
           borderColor: Token.color.gray['80'],
-          borderWidth: Token.border.width.medium,
+          borderWidth: Token.border.width['medium-1'],
           borderRadius: value,
         }}
       />
