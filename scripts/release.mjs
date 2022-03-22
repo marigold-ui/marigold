@@ -1,7 +1,7 @@
 #!/usr/bin/env zx
 
 // Set available globals for eslint
-/* global $, cd, question, chalk */
+/* global $, question, chalk */
 
 // Helper
 // ---------------
@@ -112,7 +112,7 @@ step('🌟', 'Publishing to npm...');
 await option(
   'Do you want to continue? (you will be prompted for your 2FA token)'
 );
-await $`pnpm changeset publish --access public`.pipe(process.stdout);
+await $`pnpm changeset publish`.pipe(process.stdout);
 log(brand.bold('🥳  Release complete!'));
 
 await option(
