@@ -28,6 +28,7 @@ export * from './Switch';
 export * from './Stack';
 export * from './Text';
 export * from './Textarea';
+export * from './Tiles';
 export * from './Tooltip';
 export * from './Input';
 export * from './Container';
