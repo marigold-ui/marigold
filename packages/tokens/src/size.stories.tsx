@@ -18,7 +18,7 @@ export const Fixed = () => (
           color: Token.color.gray['00'],
           bg: Token.color.gray['80'],
           blockSize: 100,
-          height: Token.size.fixed.xxlarge,
+          height: Token.size.fixed['large-4'],
           width: value,
         }}
       />
@@ -36,7 +36,7 @@ export const Fluid = () => (
           color: Token.color.gray['00'],
           bg: Token.color.gray['80'],
           blockSize: 100,
-          height: Token.size.fixed.xxlarge,
+          height: Token.size.fixed['large-4'],
           width: value,
         }}
       />
@@ -49,7 +49,7 @@ export const Headlines = () => (
     {Object.values(Token.size.header).map(value => (
       <Box
         css={{
-          fontSize: Token.typography.size.fluid.regular,
+          fontSize: Token.typography.size.fluid['medium-1'],
           fontFamily: Token.typography.font.sans,
           maxWidth: value,
         }}
@@ -67,7 +67,7 @@ export const Content = () => (
       <Box
         key={value}
         css={{
-          fontSize: Token.typography.size.fluid.small,
+          fontSize: Token.typography.size.fluid['small-1'],
           fontFamily: Token.typography.font.sans,
           maxWidth: value,
         }}
