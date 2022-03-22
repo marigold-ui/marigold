@@ -95,7 +95,7 @@ export const FontWeights = () => (
         key={value}
         css={{
           fontWeight: value,
-          fontSize: Token.typography.size.fixed.large,
+          fontSize: Token.typography.size.fixed['medium-4'],
           fontFamily: Token.typography.font.sans,
         }}
       >
