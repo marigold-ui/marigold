@@ -74,7 +74,7 @@ importers:
       eslint-plugin-prettier: 4.0.0
       eslint-plugin-react: 7.29.4
       eslint-plugin-react-hooks: ^4.3.0
-      eslint-plugin-testing-library: 5.0.6
+      eslint-plugin-testing-library: 5.1.0
     dependencies:
       '@babel/plugin-syntax-flow': 7.16.7
       '@babel/plugin-transform-react-jsx': 7.17.3
@@ -90,7 +90,7 @@ importers:
       eslint-plugin-prettier: 4.0.0_f3d13a703a9c1079e3d1af6044603beb
       eslint-plugin-react: 7.29.4_eslint@8.10.0
       eslint-plugin-react-hooks: 4.3.0_eslint@8.10.0
-      eslint-plugin-testing-library: 5.0.6_eslint@8.10.0+typescript@4.6.2
+      eslint-plugin-testing-library: 5.1.0_eslint@8.10.0+typescript@4.6.2
 
   config/jest:
     specifiers:
@@ -12884,7 +12884,7 @@ packages:
       eslint-plugin-jsx-a11y: 6.5.1_eslint@8.10.0
       eslint-plugin-react: 7.29.4_eslint@8.10.0
       eslint-plugin-react-hooks: 4.3.0_eslint@8.10.0
-      eslint-plugin-testing-library: 5.0.6_eslint@8.10.0+typescript@4.6.2
+      eslint-plugin-testing-library: 5.1.0_eslint@8.10.0+typescript@4.6.2
     transitivePeerDependencies:
       - '@babel/plugin-syntax-flow'
       - '@babel/plugin-transform-react-jsx'
@@ -13164,8 +13164,8 @@ packages:
       string.prototype.matchall: 4.0.6
     dev: false
 
-  /eslint-plugin-testing-library/5.0.6_eslint@8.10.0+typescript@4.6.2:
-    resolution: {integrity: sha512-mMU4+slZsWKHNxtxc5TE2+bs9S//e2uFPlcpTapPhVdnctgn0+G/DaUu6VbT0JLiVMcbBjy3IcfddK+abZawbw==}
+  /eslint-plugin-testing-library/5.1.0_eslint@8.10.0+typescript@4.6.2:
+    resolution: {integrity: sha512-YSNzasJUbyhOTe14ZPygeOBvcPvcaNkwHwrj4vdf+uirr2D32JTDaKi6CP5Os2aWtOcvt4uBSPXp9h5xGoqvWQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0, npm: '>=6'}
     peerDependencies:
       eslint: ^7.5.0 || ^8.0.0
