@@ -128,7 +128,7 @@ importers:
       '@storybook/addon-a11y': 6.4.19
       '@storybook/addon-essentials': 6.4.19
       '@storybook/addon-interactions': 6.4.19
-      '@storybook/jest': 0.0.9
+      '@storybook/jest': 0.0.10
       '@storybook/testing-library': 0.0.9
       babel-loader: 8.2.3
       find-up: 5.0.0
@@ -144,7 +144,7 @@ importers:
       '@storybook/addon-a11y': 6.4.19_react-dom@17.0.2+react@17.0.2
       '@storybook/addon-essentials': 6.4.19_2f7305caa686126c105f5c2cfab5f045
       '@storybook/addon-interactions': 6.4.19_56ffc67857808b91cf4ce450bd1b66d6
-      '@storybook/jest': 0.0.9_react-dom@17.0.2+react@17.0.2
+      '@storybook/jest': 0.0.10_react-dom@17.0.2+react@17.0.2
       '@storybook/testing-library': 0.0.9_react-dom@17.0.2+react@17.0.2
       babel-loader: 8.2.3_@babel+core@7.17.8
       find-up: 5.0.0
@@ -7404,8 +7404,8 @@ packages:
       - react-dom
     dev: false
 
-  /@storybook/jest/0.0.9_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-ilk9x+yem/w2VfvfCKtpJg+/4p53l4mu+sVDbEt0FOcUuEzcuzO+tJO6c98ccgGaiJ4Xq1pQK2BN3hQ62HJqog==}
+  /@storybook/jest/0.0.10_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-qeYLIplpcOUQXboJde5pRCjTvkGmF80jEszRUoNYCNcEPfC2sMK68Wq6Ct8EQj3CoEdJqsK54O2YYh+7D9S+ag==}
     dependencies:
       '@storybook/expect': 27.5.2-0
       '@storybook/instrumenter': 6.4.19_react-dom@17.0.2+react@17.0.2
