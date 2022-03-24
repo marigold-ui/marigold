@@ -29,7 +29,7 @@ importers:
       slack-notify: 2.0.2
       typescript: 4.6.2
       workspaces-run: 1.0.1
-      zx: 5.1.0
+      zx: 5.3.0
     dependencies:
       '@changesets/changelog-github': 0.4.3
       '@changesets/cli': 2.21.1
@@ -56,7 +56,7 @@ importers:
       slack-notify: 2.0.2
       typescript: 4.6.2
       workspaces-run: 1.0.1
-      zx: 5.1.0
+      zx: 5.3.0
 
   config/eslint:
     specifiers:
@@ -18465,8 +18465,8 @@ packages:
       whatwg-url: 5.0.0
     dev: false
 
-  /node-fetch/3.2.2:
-    resolution: {integrity: sha512-Cwhq1JFIoon15wcIkFzubVNFE5GvXGV82pKf4knXXjvGmn7RJKcypeuqcVNZMGDZsAFWyIRya/anwAJr7TWJ7w==}
+  /node-fetch/3.2.3:
+    resolution: {integrity: sha512-AXP18u4pidSZ1xYXRDPY/8jdv3RAozIt/WLNR/MBGZAz+xjtlr90RvCnsvHQRiXyWliZF/CpytExp32UU67/SA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       data-uri-to-buffer: 4.0.0
@@ -24477,8 +24477,8 @@ packages:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
     dev: false
 
-  /zx/5.1.0:
-    resolution: {integrity: sha512-J62b/7sFwqt4zbmPbeKJGwZlvW2X3ynyfWHZPr+xLAGF80h4aY4SgXaadMjljpvIbWGOwRmK38vwEdi5XgUpcQ==}
+  /zx/5.3.0:
+    resolution: {integrity: sha512-woT7luj41wcHk9D/pGEJrENl5/tQLzVl5WPp+nQ+2h8vWQCTxDVGUm5TYEi5lqlY/F+13xCr/hl1Na6+JD+Edg==}
     engines: {node: '>= 16.0.0'}
     hasBin: true
     dependencies:
@@ -24489,7 +24489,7 @@ packages:
       fs-extra: 10.0.1
       globby: 13.1.1
       minimist: 1.2.5
-      node-fetch: 3.2.2
+      node-fetch: 3.2.3
       ps-tree: 1.2.0
       which: 2.0.2
       yaml: 1.10.2
