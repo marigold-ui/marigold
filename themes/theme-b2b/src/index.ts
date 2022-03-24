@@ -3,6 +3,10 @@ import { colors } from './colors';
 import { components } from './components';
 import { typography } from './typography';
 
+export const webFontUrl = [
+  'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap',
+] as const;
+
 const theme: Theme = {
   space: {
     none: 0,
