@@ -23,10 +23,11 @@ export const Stack: React.FC<StackProps> = ({
 }) => (
   <Box
     {...props}
-    __baseCSS={{ gap: space, p: 0 }}
     display="flex"
     flexDirection="column"
     alignItems={ALIGNMENT[align]}
+    p="0"
+    css={{ gap: space }}
   >
     {children}
   </Box>
