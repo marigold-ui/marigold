@@ -15,4 +15,5 @@ export { layer } from './layer';
 export { opacity } from './opacity';
 export { shadow } from './shadow';
 export { size } from './size';
+export { space } from './space';
 export { typography } from './typography';
