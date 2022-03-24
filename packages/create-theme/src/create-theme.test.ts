@@ -172,42 +172,32 @@ test('allow to use fluid typography', () => {
 test('uses fixed values for dimensaions by default', () => {
   expect(createTheme({}).space).toMatchInlineSnapshot(`
     {
-      "large-1": "7.5rem",
-      "large-2": "10rem",
-      "large-3": "15rem",
-      "large-4": "20rem",
-      "large-5": "30rem",
-      "medium-1": "1.75rem",
-      "medium-2": "2rem",
-      "medium-3": "3rem",
-      "medium-4": "4rem",
-      "medium-5": "5rem",
+      "large-1": "2rem",
+      "large-2": "3rem",
+      "large-3": "4rem",
+      "large-4": "5rem",
+      "medium-1": "1.25rem",
+      "medium-2": "1.5rem",
+      "medium-3": "1.75rem",
       "none": 0,
       "small-1": ".25rem",
       "small-2": ".5rem",
       "small-3": "1rem",
-      "small-4": "1.25rem",
-      "small-5": "1.5rem",
     }
   `);
   expect(createTheme({}).space).toMatchInlineSnapshot(`
     {
-      "large-1": "7.5rem",
-      "large-2": "10rem",
-      "large-3": "15rem",
-      "large-4": "20rem",
-      "large-5": "30rem",
-      "medium-1": "1.75rem",
-      "medium-2": "2rem",
-      "medium-3": "3rem",
-      "medium-4": "4rem",
-      "medium-5": "5rem",
+      "large-1": "2rem",
+      "large-2": "3rem",
+      "large-3": "4rem",
+      "large-4": "5rem",
+      "medium-1": "1.25rem",
+      "medium-2": "1.5rem",
+      "medium-3": "1.75rem",
       "none": 0,
       "small-1": ".25rem",
       "small-2": ".5rem",
       "small-3": "1rem",
-      "small-4": "1.25rem",
-      "small-5": "1.5rem",
     }
   `);
 
@@ -222,32 +212,27 @@ test('uses fixed values for dimensaions by default', () => {
 test('allows to use fluid dimensions', () => {
   expect(createTheme({ dimensions: 'fluid' }).space).toMatchInlineSnapshot(`
     {
-      "large-1": "clamp(7.5rem, 10vw, 10rem)",
-      "large-2": "clamp(10rem, 20vw, 15rem)",
-      "large-3": "clamp(15rem, 30vw, 20rem)",
-      "large-4": "clamp(20rem, 40vw, 30rem)",
-      "medium-1": "clamp(2rem, 4vw, 3rem)",
-      "medium-2": "clamp(4rem, 5vw, 5rem)",
-      "medium-3": "clamp(5rem, 7vw, 7.5rem)",
+      "large-1": "clamp(2rem, 4vw, 3rem)",
+      "large-2": "clamp(4rem, 5vw, 5rem)",
+      "large-3": "clamp(5rem, 7vw, 7.5rem)",
+      "medium-1": "clamp(1rem, 2vw, 1.5rem)",
+      "medium-2": "clamp(1.5rem, 3vw, 2rem)",
       "none": 0,
       "small-1": "clamp(.5rem, 1vw, 1rem)",
-      "small-2": "clamp(1rem, 2vw, 1.5rem)",
-      "small-3": "clamp(1.5rem, 3vw, 2rem)",
     }
   `);
   expect(createTheme({ dimensions: 'fluid' }).sizes).toMatchInlineSnapshot(`
     {
-      "large-1": "clamp(7.5rem, 10vw, 10rem)",
-      "large-2": "clamp(10rem, 20vw, 15rem)",
-      "large-3": "clamp(15rem, 30vw, 20rem)",
-      "large-4": "clamp(20rem, 40vw, 30rem)",
-      "medium-1": "clamp(2rem, 4vw, 3rem)",
-      "medium-2": "clamp(4rem, 5vw, 5rem)",
-      "medium-3": "clamp(5rem, 7vw, 7.5rem)",
+      "large-1": "clamp(10rem, 20vw, 15rem)",
+      "large-2": "clamp(15rem, 30vw, 20rem)",
+      "large-3": "clamp(20rem, 40vw, 30rem)",
+      "medium-1": "clamp(4rem, 5vw, 5rem)",
+      "medium-2": "clamp(5rem, 7vw, 7.5rem)",
+      "medium-3": "clamp(7.5rem, 10vw, 10rem)",
       "none": 0,
-      "small-1": "clamp(.5rem, 1vw, 1rem)",
-      "small-2": "clamp(1rem, 2vw, 1.5rem)",
-      "small-3": "clamp(1.5rem, 3vw, 2rem)",
+      "small-1": "clamp(1rem, 2vw, 1.5rem)",
+      "small-2": "clamp(1.5rem, 3vw, 2rem)",
+      "small-3": "clamp(2rem, 4vw, 3rem)",
     }
   `);
 });
