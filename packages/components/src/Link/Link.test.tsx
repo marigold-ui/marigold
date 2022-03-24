@@ -8,12 +8,17 @@ const theme = {
     link: 'Inter',
     body: 'Oswald',
   },
-  text: {
-    link: {
+  link: {
+    __default: {
       fontFamily: 'link',
+      color: 'blue',
     },
     second: {
       fontFamily: 'body',
+      color: 'green',
+    },
+    ':disabled': {
+      color: 'grey',
     },
   },
 };
@@ -94,4 +99,17 @@ test('a link can be disabled via aria attributes', () => {
   );
   const link = screen.getByText(/Link/);
   expect(link.getAttribute('aria-disabled')).toEqual('true');
+});
+
+test('link supports disabled variant', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Link href="#!" disabled={true}>
+        Link
+      </Link>
+    </ThemeProvider>
+  );
+
+  const link = screen.getByText(/Link/);
+  expect(link).toHaveStyle(`color: grey`);
 });

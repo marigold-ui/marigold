@@ -100,3 +100,18 @@ export const Nested: ComponentStory<typeof Stack> = args => (
     </Stack>
   </Stack>
 );
+
+export const List: ComponentStory<typeof Stack> = args => (
+  <Stack space="large">
+    <Stack as="ol" {...args}>
+      <li>one</li>
+      <li>two</li>
+      <li>three</li>
+    </Stack>
+    <Stack as="ul" {...args}>
+      <li>one</li>
+      <li>two</li>
+      <li>three</li>
+    </Stack>
+  </Stack>
+);

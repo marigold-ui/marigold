@@ -224,6 +224,13 @@ export const components = {
       ...button.select,
     },
   },
+  link: {
+    color: 'gray.20',
+    textDecoration: 'none',
+    '&:hover': {
+      color: 'blue.70',
+    },
+  },
   card: {
     __default: {
       bg: 'gray00',

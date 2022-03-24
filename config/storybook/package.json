@@ -28,7 +28,7 @@
     "@storybook/addon-a11y": "6.4.19",
     "@storybook/addon-essentials": "6.4.19",
     "@storybook/addon-interactions": "6.4.19",
-    "@storybook/jest": "0.0.9",
+    "@storybook/jest": "0.0.10",
     "@storybook/testing-library": "0.0.9",
     "babel-loader": "8.2.3",
     "find-up": "5.0.0",

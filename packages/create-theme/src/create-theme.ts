@@ -71,7 +71,7 @@ export const createTheme = ({
     colors,
 
     // Use fixed or fluid dimensions
-    space: Token.size[dimensions],
+    space: Token.space[dimensions],
     sizes: Token.size[dimensions],
 
     // Use fallback font if none provided

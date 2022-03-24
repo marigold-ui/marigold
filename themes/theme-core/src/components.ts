@@ -479,13 +479,13 @@ export const components = {
     },
   },
   link: {
-    normal: {
+    __default: {
       color: '#900',
       ':hover, :visited': {
         textDecoration: 'none',
       },
     },
-    menu: {
+    menuItemLink: {
       color: 'text',
       textDecoration: 'none',
     },

@@ -89,15 +89,5 @@ export const typography = {
       textTransform: 'uppercase',
       m: 'none',
     },
-    link: {
-      color: '#900',
-      ':hover': {
-        textDecoration: 'underline',
-      },
-    },
-    menuItemLink: {
-      color: 'text',
-      textDecoration: 'none',
-    },
   },
 } as const;
