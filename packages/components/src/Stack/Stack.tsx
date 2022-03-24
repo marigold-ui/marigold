@@ -4,6 +4,7 @@ import { ResponsiveStyleValue } from '@marigold/system';
 import { Box } from '../Box';
 
 export interface StackProps {
+  as?: 'div' | 'ul' | 'ol';
   space?: ResponsiveStyleValue<string>;
   align?: 'left' | 'right' | 'center';
 }
@@ -22,7 +23,7 @@ export const Stack: React.FC<StackProps> = ({
 }) => (
   <Box
     {...props}
-    __baseCSS={{ gap: space }}
+    __baseCSS={{ gap: space, p: 0 }}
     display="flex"
     flexDirection="column"
     alignItems={ALIGNMENT[align]}
