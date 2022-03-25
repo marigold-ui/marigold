@@ -22,7 +22,7 @@ importers:
       eslint: 8.11.0
       husky: 7.0.4
       jest: 27.5.1
-      prettier: 2.5.1
+      prettier: 2.6.1
       pretty-quick: 3.1.3
       react: 17.0.2
       react-dom: 17.0.2
@@ -49,8 +49,8 @@ importers:
       eslint: 8.11.0
       husky: 7.0.4
       jest: 27.5.1
-      prettier: 2.5.1
-      pretty-quick: 3.1.3_prettier@2.5.1
+      prettier: 2.6.1
+      pretty-quick: 3.1.3_prettier@2.6.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       slack-notify: 2.0.2
@@ -87,7 +87,7 @@ importers:
       eslint-plugin-import: 2.25.4_eslint@8.11.0
       eslint-plugin-jest: 26.1.3_001ad503201c4e9538a066f91264180f
       eslint-plugin-jsx-a11y: 6.5.1_eslint@8.11.0
-      eslint-plugin-prettier: 4.0.0_c9d5adccfd1d43a8805a302169f6a967
+      eslint-plugin-prettier: 4.0.0_e2923b5169e23c4db59b86a638c599a3
       eslint-plugin-react: 7.29.4_eslint@8.11.0
       eslint-plugin-react-hooks: 4.3.0_eslint@8.11.0
       eslint-plugin-testing-library: 5.1.0_eslint@8.10.0+typescript@4.6.2
@@ -13083,7 +13083,7 @@ packages:
       minimatch: 3.1.2
     dev: false
 
-  /eslint-plugin-prettier/4.0.0_c9d5adccfd1d43a8805a302169f6a967:
+  /eslint-plugin-prettier/4.0.0_e2923b5169e23c4db59b86a638c599a3:
     resolution: {integrity: sha512-98MqmCJ7vJodoQK359bqQWaxOE0CS8paAz/GgjaZLyex4TTk3g9HugoO89EqWCrFiOqn9EVvcoo7gZzONCWVwQ==}
     engines: {node: '>=6.0.0'}
     peerDependencies:
@@ -13096,7 +13096,7 @@ packages:
     dependencies:
       eslint: 8.11.0
       eslint-config-prettier: 8.5.0_eslint@8.11.0
-      prettier: 2.5.1
+      prettier: 2.6.1
       prettier-linter-helpers: 1.0.0
     dev: false
 
@@ -20160,8 +20160,8 @@ packages:
     hasBin: true
     dev: false
 
-  /prettier/2.5.1:
-    resolution: {integrity: sha512-vBZcPRUR5MZJwoyi3ZoyQlc1rXeEck8KgeC9AwwOn+exuxLxq5toTRDTSaVrXHxelDMHy9zlicw8u66yxoSUFg==}
+  /prettier/2.6.1:
+    resolution: {integrity: sha512-8UVbTBYGwN37Bs9LERmxCPjdvPxlEowx2urIL6urHzdb3SDq4B/Z6xLFCblrSnE4iKWcS6ziJ3aOYrc1kz/E2A==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: false
@@ -20192,7 +20192,7 @@ packages:
     engines: {node: '>= 0.8'}
     dev: false
 
-  /pretty-quick/3.1.3_prettier@2.5.1:
+  /pretty-quick/3.1.3_prettier@2.6.1:
     resolution: {integrity: sha512-kOCi2FJabvuh1as9enxYmrnBC6tVMoVOenMaBqRfsvBHB0cbpYHjdQEpSglpASDFEXVwplpcGR4CLEaisYAFcA==}
     engines: {node: '>=10.13'}
     hasBin: true
@@ -20205,7 +20205,7 @@ packages:
       ignore: 5.2.0
       mri: 1.2.0
       multimatch: 4.0.0
-      prettier: 2.5.1
+      prettier: 2.6.1
     dev: false
 
   /prism-react-renderer/1.3.1_react@17.0.2:
