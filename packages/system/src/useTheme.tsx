@@ -32,7 +32,7 @@ export const useTheme = () => {
     [theme]
   );
   /**
-   * Get value from them by pasing a path (e.g. "colors.primary").
+   * Get value from theme by pasing a path (e.g. "colors.primary").
    */
   const get = useCallback((path: string) => getfromTheme(theme, path), [theme]);
   return { theme, css, get };
