@@ -4,7 +4,10 @@ import React, {
   useCallback,
   useContext,
 } from 'react';
-import { css as transformStyleObject } from '@theme-ui/css';
+import {
+  css as transformStyleObject,
+  get as getfromTheme,
+} from '@theme-ui/css';
 import { ThemeProvider as EmotionProvider } from '@emotion/react';
 
 import { Theme } from './theme';
@@ -21,14 +24,18 @@ export const useTheme = () => {
   const theme = useContext(InternalContext);
   /**
    * We cast the theme here to `any` since our subset is not
-   * compatible with the typings of `theme-ui`, since they
-   * also support arrays as scale values, while we don't.
+   * compatible with the typings of `theme-ui`. They support
+   * arrays as scale values, we don't.
    */
   const css = useCallback(
     (style: StyleObject) => transformStyleObject(style)(theme as any),
     [theme]
   );
-  return { theme, css };
+  /**
+   * Get value from them by pasing a path (e.g. "colors.primary").
+   */
+  const get = useCallback((path: string) => getfromTheme(theme, path), [theme]);
+  return { theme, css, get };
 };
 
 export interface ThemeProviderProps<T extends Theme> {
