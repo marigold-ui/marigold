@@ -28,6 +28,12 @@ const theme = {
       color: 'primary',
     },
   },
+  button: {
+    __default: {
+      fontSize: 16,
+      border: 'none',
+    },
+  },
 };
 
 const wrapper: React.FC = ({ children }) => (
@@ -63,6 +69,20 @@ test('transpile style object to css object', () => {
     {
       "color": "#000",
       "fontSize": 14,
+    }
+  `);
+});
+
+test('get value from theme', () => {
+  const { result } = renderHook(() => useTheme(), { wrapper });
+  const get = result.current.get;
+
+  expect(get('colors.primary')).toEqual('hotpink');
+  expect(get('space.small')).toEqual(16);
+  expect(get('button')).toMatchInlineSnapshot(`
+    {
+      "border": "none",
+      "fontSize": 16,
     }
   `);
 });
