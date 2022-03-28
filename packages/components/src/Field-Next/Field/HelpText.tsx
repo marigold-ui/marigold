@@ -34,12 +34,15 @@ export const HelpText = ({
   error,
   errorMessage,
   errorMessageProps,
+  ...props
 }: HelpTextProps) => {
   const { get } = useTheme();
   const iconSize = get('helpText.icon.size');
   const isErrorMessage = errorMessage && error;
+
   return (
     <Box
+      {...props}
       variant={`helpText.${isErrorMessage ? 'error' : 'description'}`}
       __baseCSS={{ display: 'flex', alignItems: 'center', gap: 4 }}
     >

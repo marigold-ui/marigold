@@ -4,16 +4,23 @@ import { ThemeProvider } from '@marigold/system';
 import { HelpText } from './HelpText';
 
 const theme = {
+  sizes: {
+    none: 0,
+    small: 14,
+  },
   colors: {
     text: 'black',
     error: 'red',
   },
-  helperText: {
+  helpText: {
     description: {
       color: 'text',
     },
     error: {
       color: 'error',
+    },
+    icon: {
+      size: 'small',
     },
   },
 };
@@ -35,35 +42,85 @@ test('render description even if erorr message is defined', () => {
 
   const element = screen.getByText('This is a help text description');
   expect(element).toBeInTheDocument();
+
+  const error = screen.queryByText('Something went wrong');
+  expect(error).not.toBeInTheDocument();
 });
 
 test('uses description variant by default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <HelpText description="This is a help text description" />
+      <HelpText
+        data-testid="help-text"
+        description="This is a help text description"
+      />
     </ThemeProvider>
   );
-  const label = screen.getByText(/label/);
-  expect(label).toHaveStyle(`color: black`);
+
+  const element = screen.getByTestId('help-text');
+  expect(element).toHaveStyle(`color: ${theme.colors.text}`);
 });
 
-test('supports error variant', () => {
+test('renders error message when error is set', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <HelpText variant="error">label</HelpText>
-    </ThemeProvider>
+    <HelpText
+      error={true}
+      description="This is a help text description"
+      errorMessage="Something went wrong"
+    />
   );
-  const label = screen.getByText(/label/);
-  expect(label).toHaveStyle(`color: red`);
+
+  const error = screen.getByText('Something went wrong');
+  expect(error).toBeInTheDocument();
+
+  const descrption = screen.queryByText('This is a help text description');
+  expect(descrption).not.toBeInTheDocument();
 });
 
-test('renders icon when variant is error', () => {
+test('uses error variant when error is set', () => {
   render(
     <ThemeProvider theme={theme}>
-      <HelpText variant="error">label</HelpText>
+      <HelpText
+        data-testid="help-text"
+        error={true}
+        description="This is a help text description"
+        errorMessage="Something went wrong"
+      />
     </ThemeProvider>
   );
-  const label = screen.getByText(/label/);
-  const icon = within(label).getByRole(/presentation/);
+
+  const element = screen.getByTestId('help-text');
+  expect(element).toHaveStyle(`color: ${theme.colors.error}`);
+});
+
+test('renders icon when when error message is shown', () => {
+  render(
+    <HelpText
+      data-testid="help-text"
+      error={true}
+      description="This is a help text description"
+      errorMessage="Something went wrong"
+    />
+  );
+
+  const element = screen.getByTestId('help-text');
+  const icon = within(element).getByRole(/presentation/);
   expect(icon).toBeInTheDocument();
+});
+
+test('icon can be sized via theme', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <HelpText
+        data-testid="help-text"
+        error={true}
+        description="This is a help text description"
+        errorMessage="Something went wrong"
+      />
+    </ThemeProvider>
+  );
+
+  const element = screen.getByTestId('help-text');
+  const icon = within(element).getByRole(/presentation/);
+  expect(icon).toHaveStyle(`width: ${theme.sizes.small}px`);
 });
