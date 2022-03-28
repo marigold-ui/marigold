@@ -24,10 +24,11 @@ export const Container: React.FC<ContainerProps> = ({
   ...props
 }) => (
   <Box
-    display="flex"
-    flexDirection="column"
+    display="grid"
     maxWidth={tokenSize[contentType][size]}
-    alignItems={ALIGNMENT[align]}
+    css={{
+      placeItems: ALIGNMENT[align],
+    }}
     {...props}
   >
     {children}
