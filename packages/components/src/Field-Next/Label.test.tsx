@@ -49,7 +49,7 @@ test('supports required prop', () => {
     </ThemeProvider>
   );
   const label = screen.getByTestId(/label/);
-  const requiredIcon = within(label).getByRole('img');
+  const requiredIcon = within(label).getByRole('presentation');
   expect(requiredIcon).toBeInTheDocument();
 });
 

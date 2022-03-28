@@ -45,7 +45,7 @@ export const Label: React.FC<LabelProps> = ({
        * aria-required is set on the field and will already be announced,
        * so we don't need to add it here.
        */}
-      {required && <Required role="img" size={16} />}
+      {required && <Required role="presentation" size={16} />}
     </Box>
   );
 };
