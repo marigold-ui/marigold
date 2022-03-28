@@ -71,7 +71,7 @@ test('supports default align left', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`alignItems: flex-start`);
+  expect(container).toHaveStyle(`placeItems: flex-start`);
 });
 
 test('supports align center', () => {
@@ -81,7 +81,7 @@ test('supports align center', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`alignItems: center`);
+  expect(container).toHaveStyle(`placeItems: center`);
 });
 
 test('supports align right', () => {
@@ -91,7 +91,7 @@ test('supports align right', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`alignItems: flex-end`);
+  expect(container).toHaveStyle(`placeItems: flex-end`);
 });
 
 test('renders correct HTML element', () => {

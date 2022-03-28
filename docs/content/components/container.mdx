@@ -10,27 +10,35 @@ import { Box, Container, Text } from '@marigold/components';
 
 Containers width is based on used font and is optimized for readability. You can use `header`or `content`as content type and set the `maxWidth` to `small`, `medium` or `large`.
 
-## Usage
+<Box
+  as={Container}
+  border="1px solid #ced4da"
+  bg="#e9ecef"
+  height="100px"
+  p="xsmall"
+  contentType="header"
+>
+  <Text as="h5" variant="headline5">
+    Container header
+  </Text>
+</Box>
+<br />
+<Box
+  as={Container}
+  border="1px solid #ced4da"
+  bg="#e9ecef"
+  height="100px"
+  p="xsmall"
+>
+  <Text>Container content</Text>
+</Box>
+<br />
 
 ```tsx onlyCode
 import { Container } from '@marigold/components';
 ```
 
-<Box
-  as={Container}
-  __baseCSS={{ border: '1px dashed gray', borderBottom: 'none' }}
-  p="xsmall"
-  contentType="header"
->
-  <Text as="h5" variant="headline5">
-    Medium sized container header
-  </Text>
-</Box>
-<Box as={Container} border="1px dashed gray" p="xsmall" height="180px">
-  <Text>Medium sized container content</Text>
-</Box>
-
-## Properties (API)
+## Props
 
 | Property      | Type                   | Default   |
 | :------------ | :--------------------- | :-------- |
@@ -38,9 +46,9 @@ import { Container } from '@marigold/components';
 | `size`        | `small, medium, large` | `medium`  |
 | `align`       | `left, center, right`  | `left`    |
 
-## Variants
+## Examples
 
-### Small header
+Container header small, medium & large
 
 ```tsx
 <Container contentType="header" size="small">
@@ -50,8 +58,6 @@ import { Container } from '@marigold/components';
 </Container>
 ```
 
-### Medium header
-
 ```tsx
 <Container contentType="header">
   <Text as="h2" variant="headline2">
@@ -59,8 +65,6 @@ import { Container } from '@marigold/components';
   </Text>
 </Container>
 ```
-
-### Large header
 
 ```tsx
 <Container contentType="header" size="large">
@@ -70,7 +74,7 @@ import { Container } from '@marigold/components';
 </Container>
 ```
 
-### Small content
+Container content small, medium & large
 
 ```tsx
 <Container size="small">
@@ -82,8 +86,6 @@ import { Container } from '@marigold/components';
 </Container>
 ```
 
-### Medium content
-
 ```tsx
 <Container>
   <Text>
@@ -94,8 +96,6 @@ import { Container } from '@marigold/components';
 </Container>
 ```
 
-### Large content
-
 ```tsx
 <Container size="large">
   <Text>
@@ -105,7 +105,7 @@ import { Container } from '@marigold/components';
 </Container>
 ```
 
-## Align content center
+## Text Container
 
 In some cases, the width of the content can be smaller than the container's width. You can use the align prop to align the content left, center or right.
 
