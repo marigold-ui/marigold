@@ -1,13 +1,15 @@
 import React from 'react';
 import { jsx } from '@emotion/react';
 import { ComponentProps } from '@marigold/types';
+
 import { getNormalizedStyles } from './normalize';
+import { ResponsiveStyleValue } from './types';
 import { useTheme } from './useTheme';
 
 const normalizedStyles = getNormalizedStyles('svg');
 
 export interface SVGProps extends ComponentProps<'svg'> {
-  size?: number;
+  size?: ResponsiveStyleValue<string | number>;
 }
 
 export const SVG: React.FC<SVGProps> = ({
@@ -21,10 +23,8 @@ export const SVG: React.FC<SVGProps> = ({
   return jsx(
     'svg',
     {
-      width: size,
-      height: size,
       viewBox: '0 0 24 24',
-      css: css({ fill: fill, ...normalizedStyles }),
+      css: css({ ...normalizedStyles, fill, width: size, height: size }),
       ...props,
     },
     children

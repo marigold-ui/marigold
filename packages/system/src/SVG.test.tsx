@@ -4,6 +4,10 @@ import { SVG } from './SVG';
 import { ThemeProvider } from './useTheme';
 
 const theme = {
+  sizes: {
+    none: 0,
+    small: 16,
+  },
   colors: {
     info: 'blue',
   },
@@ -41,7 +45,8 @@ test('supports default size', () => {
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg.getAttribute('width')).toEqual('24');
+  expect(svg).toHaveStyle('width: 24px');
+  expect(svg).toHaveStyle('height: 24px');
 });
 
 test('supports size prop', () => {
@@ -52,7 +57,22 @@ test('supports size prop', () => {
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg.getAttribute('width')).toEqual('30');
+  expect(svg).toHaveStyle('width: 30px');
+  expect(svg).toHaveStyle('height: 30px');
+});
+
+test('supports size from theme', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <SVG data-testid="svg" size="small">
+        <path d="M9.9 20.113V13.8415H14" />
+      </SVG>
+    </ThemeProvider>
+  );
+  const svg = screen.getByTestId(/svg/);
+
+  expect(svg).toHaveStyle('width: 16px');
+  expect(svg).toHaveStyle('height: 16px');
 });
 
 test('supports fill prop', () => {
