@@ -5,7 +5,7 @@ import { Box } from '../Box';
 
 // Theme Extension
 // ---------------
-export interface LabelThemeExtension<Value> {
+export interface HelperTextThemeExtension<Value> {
   helperText?: {
     description: Value;
     error: Value;
