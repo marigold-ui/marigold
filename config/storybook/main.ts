@@ -7,8 +7,18 @@ const parent = path.resolve(__dirname, '..');
 const root = path.dirname(findUpSync('package.json', { cwd: parent }) || '.');
 const configFile = findUpSync('tsconfig.json', { cwd: root });
 
+let paths = [path.resolve(root, '**/*.stories.tsx')];
+if (process.env.FOLDERS) {
+  paths = process.env.FOLDERS.split(',').map(folder =>
+    path.resolve(root, folder, '**/*.stories.tsx')
+  );
+}
+
+console.log('WATCHTING THE FOLLOWING PATHS FOR CHANGES:');
+console.log(paths);
+
 const config: StorybookConfig = {
-  stories: [path.resolve(root, '**/*.stories.tsx')],
+  stories: paths,
   addons: [
     {
       name: '@storybook/addon-essentials',
