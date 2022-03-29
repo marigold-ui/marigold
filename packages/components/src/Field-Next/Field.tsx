@@ -1,6 +1,6 @@
 import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
 import { Label } from './Label';
-import { Stack } from '../../Stack';
+import { Stack } from '../Stack';
 import { HelpText } from './HelpText';
 
 export interface FieldProps {
