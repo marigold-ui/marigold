@@ -11,7 +11,7 @@ test('supports default contentType content', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`maxWidth: 45ch`);
+  expect(container).toHaveStyle(`gridTemplateColumns: 45ch 1fr 1fr`);
 });
 
 test('supports contentType header', () => {
@@ -21,7 +21,7 @@ test('supports contentType header', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`maxWidth: 25ch`);
+  expect(container).toHaveStyle(`gridTemplateColumns: 25ch 1fr 1fr`);
 });
 
 test('supports default size', () => {
@@ -31,7 +31,7 @@ test('supports default size', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`maxWidth: 45ch`);
+  expect(container).toHaveStyle(`gridTemplateColumns: 45ch 1fr 1fr`);
 });
 
 test('supports size small', () => {
@@ -41,7 +41,7 @@ test('supports size small', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`maxWidth: 20ch`);
+  expect(container).toHaveStyle(`gridTemplateColumns: 20ch 1fr 1fr`);
 });
 
 test('supports size large', () => {
@@ -51,7 +51,7 @@ test('supports size large', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`maxWidth: 60ch`);
+  expect(container).toHaveStyle(`gridTemplateColumns: 60ch 1fr 1fr`);
 });
 
 test('supports size and contentType', () => {
@@ -61,7 +61,7 @@ test('supports size and contentType', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`maxWidth: 35ch`);
+  expect(container).toHaveStyle(`gridTemplateColumns: 35ch 1fr 1fr`);
 });
 
 test('supports default align left', () => {
@@ -92,6 +92,39 @@ test('supports align right', () => {
   );
   const container = screen.getByTestId(/container/);
   expect(container).toHaveStyle(`placeItems: flex-end`);
+});
+
+test('supports default alignContainer left', () => {
+  render(
+    <Container data-testid="container">
+      <Text>sdf</Text>
+    </Container>
+  );
+  const container = screen.getByTestId(/container/);
+  expect(container).toHaveStyle(`gridTemplateColumns: 45ch 1fr 1fr`);
+  expect(container.firstChild).toHaveStyle(`gridColumn: 1`);
+});
+
+test('supports alignContainer center', () => {
+  render(
+    <Container alignContainer="center" data-testid="container">
+      <Text>sdf</Text>
+    </Container>
+  );
+  const container = screen.getByTestId(/container/);
+  expect(container).toHaveStyle(`gridTemplateColumns: 1fr 45ch 1fr`);
+  expect(container.firstChild).toHaveStyle(`gridColumn: 2`);
+});
+
+test('supports alignContainer right', () => {
+  render(
+    <Container alignContainer="right" data-testid="container">
+      <Text>sdf</Text>
+    </Container>
+  );
+  const container = screen.getByTestId(/container/);
+  expect(container).toHaveStyle(`gridTemplateColumns: 1fr 1fr 45ch`);
+  expect(container.firstChild).toHaveStyle(`gridColumn: 3`);
 });
 
 test('renders correct HTML element', () => {
