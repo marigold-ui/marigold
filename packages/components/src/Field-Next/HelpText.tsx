@@ -2,7 +2,7 @@ import React, { HTMLAttributes, ReactNode } from 'react';
 import { Exclamation } from '@marigold/icons';
 import { useTheme } from '@marigold/system';
 
-import { Box } from '../../Box';
+import { Box } from '../Box';
 
 // Theme Extension
 // ---------------
