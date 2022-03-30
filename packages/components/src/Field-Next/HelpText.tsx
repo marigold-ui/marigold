@@ -1,8 +1,6 @@
 import React, { HTMLAttributes, ReactNode } from 'react';
 import { Exclamation } from '@marigold/icons';
-import { useTheme } from '@marigold/system';
-
-import { Box } from '../Box';
+import { Box, useTheme } from '@marigold/system';
 
 // Theme Extension
 // ---------------
@@ -19,6 +17,7 @@ export interface HelpTextThemeExtension<Value> {
 // Props
 // ---------------
 export interface HelpTextProps {
+  disabled?: boolean;
   description?: ReactNode;
   descriptionProps?: HTMLAttributes<HTMLElement>;
   error?: boolean;
@@ -29,6 +28,7 @@ export interface HelpTextProps {
 // Component
 // ---------------
 export const HelpText = ({
+  disabled,
   description,
   descriptionProps,
   error,
@@ -40,10 +40,16 @@ export const HelpText = ({
   const iconSize = get('helpText.icon.size');
   const isErrorMessage = errorMessage && error;
 
+  const variant = disabled
+    ? `helpText.disabled`
+    : isErrorMessage
+    ? `helpText.error`
+    : `helpText.description`;
+
   return (
     <Box
       {...props}
-      variant={`helpText.${isErrorMessage ? 'error' : 'description'}`}
+      variant={variant}
       __baseCSS={{ display: 'flex', alignItems: 'center', gap: 4 }}
     >
       {isErrorMessage ? (

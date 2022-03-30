@@ -1,10 +1,31 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
-import { HelpText } from './HelpText';
+import { Field } from './Field';
 
 export default {
-  title: 'Field/HelpText',
+  title: 'Field/Field',
   argTypes: {
+    required: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Whether the field is required',
+      defaultValue: false,
+    },
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Whether the field is disabled',
+      defaultValue: false,
+    },
+    label: {
+      control: {
+        type: 'text',
+      },
+      description: 'The label',
+      defaultValue: 'Field Label',
+    },
     description: {
       control: {
         type: 'text',
@@ -26,16 +47,11 @@ export default {
       description: 'Whether the help text is an error',
       defaultValue: false,
     },
-    disabled: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'Whether the help text is disabled',
-      defaultValue: false,
-    },
   },
 } as Meta;
 
-export const Basic: ComponentStory<typeof HelpText> = args => (
-  <HelpText {...args} />
+export const Basic: ComponentStory<typeof Field> = args => (
+  <Field {...args}>
+    <input type="text" />
+  </Field>
 );
