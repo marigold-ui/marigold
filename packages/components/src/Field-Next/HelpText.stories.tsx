@@ -26,6 +26,13 @@ export default {
       description: 'Whether the help text is an error',
       defaultValue: false,
     },
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Whether the help text is disabled',
+      defaultValue: false,
+    },
   },
 } as Meta;
 

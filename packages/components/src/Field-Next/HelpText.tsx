@@ -40,7 +40,7 @@ export const HelpText = ({
   const iconSize = get('helpText.icon.size');
   const isErrorMessage = errorMessage && error;
 
-  let variant = disabled
+  const variant = disabled
     ? `helpText.disabled`
     : isErrorMessage
     ? `helpText.error`

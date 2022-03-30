@@ -16,8 +16,8 @@ interface MockedTestFieldProps extends AriaTextFieldOptions<'input'> {
 }
 
 const MockedTextField = (props: MockedTestFieldProps) => {
-  let ref = React.useRef(null);
-  let { labelProps, inputProps, descriptionProps, errorMessageProps } =
+  const ref = React.useRef(null);
+  const { labelProps, inputProps, descriptionProps, errorMessageProps } =
     useTextField(props, ref);
 
   return (
