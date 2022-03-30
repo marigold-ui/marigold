@@ -8,29 +8,26 @@ import { Box, Container, Text } from '@marigold/components';
 
 ## Description
 
-Containers width is based on used font and is optimized for readability. You can use `header`or `content`as content type and set the `maxWidth` to `small`, `medium` or `large`.
+Containers width is based on used font and is optimized for readability. You can use `header` or `content` as content type and set the `size` prop to `small`, `medium` or `large`.
 
-<Box
-  as={Container}
-  border="1px solid #ced4da"
-  bg="#e9ecef"
-  height="100px"
-  p="xsmall"
-  contentType="header"
->
-  <Text as="h5" variant="headline5">
-    Container header
-  </Text>
-</Box>
-<br />
-<Box
-  as={Container}
-  border="1px solid #ced4da"
-  bg="#e9ecef"
-  height="100px"
-  p="xsmall"
->
-  <Text>Container content</Text>
+<Box border="1px solid #ced4da" bg="#e9ecef" p="xsmall">
+  <Box
+    as={Container}
+    contentType="header"
+    align="center"
+    alignContainer="center"
+  >
+    <Text as="h2" variant="headline2">
+      Container header
+    </Text>
+  </Box>
+  <Box as={Container} align="center" alignContainer="center">
+    <Text>
+      The container content is for example a long text to present information.
+      In this case it is an unnecessary text that is only used to fill the width
+      of the container content. Thank you for reading this.
+    </Text>
+  </Box>
 </Box>
 <br />
 
@@ -40,11 +37,12 @@ import { Container } from '@marigold/components';
 
 ## Props
 
-| Property      | Type                   | Default   |
-| :------------ | :--------------------- | :-------- |
-| `contentType` | `content, header`      | `content` |
-| `size`        | `small, medium, large` | `medium`  |
-| `align`       | `left, center, right`  | `left`    |
+| Property         | Type                   | Default   |
+| :--------------- | :--------------------- | :-------- |
+| `contentType`    | `content, header`      | `content` |
+| `size`           | `small, medium, large` | `medium`  |
+| `align`          | `left, center, right`  | `left`    |
+| `alignContainer` | `left, center, right`  | `left`    |
 
 ## Examples
 
@@ -77,7 +75,7 @@ Container header small, medium & large
 Container content small, medium & large
 
 ```tsx
-<Container size="small">
+<Container size="small" alignContainer="center">
   <Text>
     It is a dark time for the Rebellion. Although the Death Star has been
     destroyed, Imperial troops have driven the Rebel forces from their hidden
@@ -87,7 +85,7 @@ Container content small, medium & large
 ```
 
 ```tsx
-<Container>
+<Container alignContainer="center">
   <Text>
     Evading the dreaded Imperial Starfleet, a group of freedom fighters led by
     Luke Skywalker has established a new secret base on the remote ice world of
@@ -97,7 +95,7 @@ Container content small, medium & large
 ```
 
 ```tsx
-<Container size="large">
+<Container size="large" alignContainer="center">
   <Text>
     The evil lord Darth Vader, obsessed with finding young Skywalker, has
     dispatched thousands of remote probes into the far reaches of space....
@@ -110,7 +108,13 @@ Container content small, medium & large
 In some cases, the width of the content can be smaller than the container's width. You can use the align prop to align the content left, center or right.
 
 ```tsx
-<Box as={Container} bg="blue10" align="center" p="small">
+<Box
+  as={Container}
+  bg="blue10"
+  align="center"
+  alignContainer="center"
+  p="small"
+>
   <Text as="h2" variant="headline2">
     Star Wars - The Empire Strikes Back
   </Text>
