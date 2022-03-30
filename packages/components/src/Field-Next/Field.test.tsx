@@ -55,6 +55,21 @@ test('render Field with label and errorMessage', () => {
   render(
     <MockedTextField
       label="Label"
+      errorMessage="Something went wrong"
+      error={true}
+    />
+  );
+
+  const label = screen.getByText('Label');
+  expect(label).toBeInTheDocument();
+  const error = screen.getByText('Something went wrong');
+  expect(error).toBeInTheDocument();
+});
+
+test('render Field with label and errorMessage although description is set', () => {
+  render(
+    <MockedTextField
+      label="Label"
       description="This is a helpful text"
       errorMessage="Something went wrong"
       error={true}
