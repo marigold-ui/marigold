@@ -26,7 +26,7 @@ test('supports verticalAlign center', () => {
   expect(breakout).toHaveStyle(`justifyContent: center`);
 });
 
-test('supports verticalAlign center', () => {
+test('supports verticalAlign right', () => {
   render(
     <Breakout verticalAlign="right" data-testid="breakout">
       breakout
@@ -36,7 +36,7 @@ test('supports verticalAlign center', () => {
   expect(breakout).toHaveStyle(`justifyContent: flex-end`);
 });
 
-test('supports default horizontalAlign left', () => {
+test('supports default horizontalAlign top', () => {
   render(<Breakout data-testid="breakout">breakout</Breakout>);
   const breakout = screen.getByTestId(/breakout/);
   expect(breakout).toHaveStyle(`alignItems: flex-start`);
@@ -52,7 +52,7 @@ test('supports horizontalAlign center', () => {
   expect(breakout).toHaveStyle(`alignItems: center`);
 });
 
-test('supports horizontalAlign center', () => {
+test('supports horizontalAlign bottom', () => {
   render(
     <Breakout horizontalAlign="bottom" data-testid="breakout">
       breakout
