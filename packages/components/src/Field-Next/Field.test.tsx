@@ -81,4 +81,5 @@ test('field label shows requried indicator', () => {
 
   const label = screen.getByText('Label');
   const requiredIcon = within(label).getByRole('presentation');
+  expect(requiredIcon).toBeInTheDocument();
 });
