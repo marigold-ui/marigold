@@ -102,6 +102,7 @@ test('supports default alignContainer left', () => {
   );
   const container = screen.getByTestId(/container/);
   expect(container).toHaveStyle(`gridTemplateColumns: 45ch 1fr 1fr`);
+  // eslint-disable-next-line testing-library/no-node-access
   expect(container.firstChild).toHaveStyle(`gridColumn: 1`);
 });
 
@@ -113,6 +114,7 @@ test('supports alignContainer center', () => {
   );
   const container = screen.getByTestId(/container/);
   expect(container).toHaveStyle(`gridTemplateColumns: 1fr 45ch 1fr`);
+  // eslint-disable-next-line testing-library/no-node-access
   expect(container.firstChild).toHaveStyle(`gridColumn: 2`);
 });
 
@@ -124,6 +126,7 @@ test('supports alignContainer right', () => {
   );
   const container = screen.getByTestId(/container/);
   expect(container).toHaveStyle(`gridTemplateColumns: 1fr 1fr 45ch`);
+  // eslint-disable-next-line testing-library/no-node-access
   expect(container.firstChild).toHaveStyle(`gridColumn: 3`);
 });
 
