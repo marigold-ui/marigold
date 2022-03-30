@@ -1,9 +1,11 @@
 import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
-import { Label } from './Label';
 import { Stack } from '../Stack';
+
+import { Label } from './Label';
 import { HelpText } from './HelpText';
 
 export interface FieldProps {
+  disabled?: boolean;
   required?: boolean;
   label?: ReactNode;
   labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
@@ -16,6 +18,7 @@ export interface FieldProps {
 
 export const Field: React.FC<FieldProps> = ({
   children,
+  disabled,
   required,
   label,
   labelProps,
@@ -36,10 +39,14 @@ export const Field: React.FC<FieldProps> = ({
       )}
       {children}
       {hasHelpText && (
-        // TODO: Move error/description logic inside of HelpText!
-        <HelpText variant={error ? 'error' : 'description'}>
-          {error ? errorMessage : description}
-        </HelpText>
+        <HelpText
+          disabled={disabled}
+          description={description}
+          descriptionProps={descriptionProps}
+          error={error}
+          errorMessage={errorMessage}
+          errorMessageProps={errorMessageProps}
+        />
       )}
     </Stack>
   );

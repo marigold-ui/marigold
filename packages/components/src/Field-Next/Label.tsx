@@ -1,9 +1,8 @@
 // TODO: But this back into the root, when we realease all the new fields!
 import React from 'react';
 import { Required } from '@marigold/icons';
+import { Box } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
-
-import { Box } from '../../Box';
 
 // Theme Extension
 // ---------------
