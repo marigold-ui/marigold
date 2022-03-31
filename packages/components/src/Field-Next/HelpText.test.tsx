@@ -11,6 +11,7 @@ const theme = {
   colors: {
     text: 'black',
     error: 'red',
+    disabled: 'grey',
   },
   helpText: {
     description: {
@@ -18,6 +19,9 @@ const theme = {
     },
     error: {
       color: 'error',
+    },
+    disabled: {
+      color: 'disabled',
     },
     icon: {
       size: 'small',
@@ -32,7 +36,7 @@ test('render description', () => {
   expect(element).toBeInTheDocument();
 });
 
-test('render description even if erorr message is defined', () => {
+test('render description even if error message is defined', () => {
   render(
     <HelpText
       description="This is a help text description"
@@ -123,4 +127,19 @@ test('icon can be sized via theme', () => {
   const element = screen.getByTestId('help-text');
   const icon = within(element).getByRole(/presentation/);
   expect(icon).toHaveStyle(`width: ${theme.sizes.small}px`);
+});
+
+test('uses disabled variant when disabled is set', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <HelpText
+        data-testid="help-text"
+        disabled={true}
+        description="This is a help text description"
+      />
+    </ThemeProvider>
+  );
+
+  const element = screen.getByTestId('help-text');
+  expect(element).toHaveStyle(`color: ${theme.colors.disabled}`);
 });
