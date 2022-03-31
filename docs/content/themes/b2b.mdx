@@ -2,15 +2,6 @@
 title: B2B Theme
 ---
 
-import {
-  Box,
-  Column,
-  Columns,
-  Container,
-  Stack,
-  Text,
-} from '@marigold/components';
-
 # B2B Theme
 
 The B2B theme should be used in all Reservix applications that are provided for other business customers.
@@ -65,33 +56,32 @@ Inter Regular for body text.
 As a rule of thumb, any text displayed over colours with a classname number of 50 or above should be white.
 Anything below 50 should have black text (gray-70 | #4b4b4b).
 
-<Box>
-  <Columns>
-    <Column width={2}>
-      <Stack>
-        <Box as={Container} bg="#fa8005" width="96px" height="24px" />
-        <Box as={Container} bg="#4b4b4b" width="96px" height="24px" />
-        <Box as={Container} bg="#4b4b4b" width="96px" height="24px" />
-        <Box as={Container} bg="#fafafa" width="96px" height="24px" />
-        <Box as={Container} bg="#e3e3e3" width="96px" height="24px" />
-        <Box as={Container} bg="#dd4142" width="96px" height="24px" />
-        <Box as={Container} bg="#fa8005" width="96px" height="24px" />
-        <Box as={Container} bg="#1d67b6" width="96px" height="24px" />
-        <Box as={Container} bg="#44a112" width="96px" height="24px" />
-      </Stack>
-    </Column>
-    <Column width={6}>
-      <Stack>
-        <Text>Primary</Text>
-        <Text>Secondary</Text>
-        <Text>Text</Text>
-        <Text>Background</Text>
-        <Text>Disabled</Text>
-        <Text>Error</Text>
-        <Text>Warning</Text>
-        <Text>Info</Text>
-        <Text>Success</Text>
-      </Stack>
-    </Column>
-  </Columns>
-</Box>
+<Tiles itemMinWidth="500px">
+  <Box bg="#fa8005" p="xsmall">
+    <Text color="white">Primary</Text>
+  </Box>
+  <Box bg="#4b4b4b" p="xsmall">
+    <Text color="white">Secondary</Text>
+  </Box>
+  <Box bg="#4b4b4b" p="xsmall">
+    <Text color="white">Text</Text>
+  </Box>
+  <Box bg="#fafafa" p="xsmall">
+    <Text color="text">Background</Text>
+  </Box>
+  <Box bg="#e3e3e3" p="xsmall">
+    <Text color="text">Disabled</Text>
+  </Box>
+  <Box bg="#dd4142" p="xsmall">
+    <Text color="white">Error</Text>
+  </Box>
+  <Box bg="#fa8005" p="xsmall">
+    <Text color="white">Warning</Text>
+  </Box>
+  <Box bg="#1d67b6" p="xsmall">
+    <Text color="white">Info</Text>
+  </Box>
+  <Box bg="#44a112" p="xsmall">
+    <Text color="text">Success</Text>
+  </Box>
+</Tiles>

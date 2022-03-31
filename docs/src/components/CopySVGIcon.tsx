@@ -3,7 +3,7 @@ import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/styles';
 import 'open-props/style';
 
-import { Box, Button } from '@marigold/components';
+import { Box, Button, Divider } from '@marigold/components';
 
 import { copyToClipboard } from './CopyButton';
 
@@ -40,23 +40,28 @@ export const CopySVGIcon: React.FC = ({ children }) => {
   };
 
   return (
-    <MarigoldTooltip
-      title={copied ? 'Copied' : 'Click to copy'}
-      placement="bottom"
-      arrow
-    >
-      <Box
-        as={Button}
-        ref={ref}
-        variant="button.icon"
-        size="table"
-        onClick={onClick}
-        css={{
-          '> *': { animation: copied ? 'var(--animation-bounce)' : '' },
-        }}
+    <>
+      <MarigoldTooltip
+        title={copied ? 'Copied' : 'Click to copy'}
+        placement="bottom"
+        arrow
       >
-        {children}
-      </Box>
-    </MarigoldTooltip>
+        <Box>
+          <Box
+            as={Button}
+            ref={ref}
+            variant="button.icon"
+            size="table"
+            onClick={onClick}
+            css={{
+              '> *': { animation: copied ? 'var(--animation-bounce)' : '' },
+            }}
+          >
+            {children}
+          </Box>
+          <Divider />
+        </Box>
+      </MarigoldTooltip>
+    </>
   );
 };
