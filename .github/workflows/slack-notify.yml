@@ -63,7 +63,7 @@ jobs:
       - name: Slack Notification
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
-
+      - bash: echo $(version)
         with:
           payload: |
             { "type": "plain_text",
