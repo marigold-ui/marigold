@@ -46,11 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: true
-
-    variables:
-      version: version
     steps:
-      - bash: echo $(version)
       - uses: actions/checkout@v2
       - uses: pnpm/action-setup@v2.0.1
         with:
@@ -68,13 +64,13 @@ jobs:
         with:
           payload: |
             { "type": "plain_text",
-              "text": ":information: New Release v {{ version }} :tada:",
+              "text": ":information: New Release v :tada:",
               "blocks": [
                 {
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": ":tada: New Release v {{ version }}"
+                    "text": ":tada: New Release v "
                   }
                 },
                 {
@@ -93,7 +89,8 @@ jobs:
                 }
               ]
             }
-
+        run: echo "$version"
         env:
+          version: testversion
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
