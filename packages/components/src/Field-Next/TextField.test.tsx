@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 
 import { TextField } from './TextField';
+import userEvent from '@testing-library/user-event';
 
 const theme = {
   colors: {
@@ -106,6 +107,7 @@ test('correctly sets up aria attributes', () => {
       data-testid="text-field"
       label="A Label"
       description="Some helpful text"
+      errorMessage="Whoopsie"
     />
   );
 
@@ -118,13 +120,77 @@ test('correctly sets up aria attributes', () => {
   const inputId = input.getAttribute('id');
 
   expect(label).toHaveAttribute('for', inputId);
+  expect(htmlFor).toEqual(inputId);
   expect(input).toHaveAttribute('aria-labelledby', labelId);
 
-  console.log(description.getAttribute('id'));
-  console.log(inputId, htmlFor);
+  expect(input).toHaveAttribute(
+    'aria-describedby',
+    description.getAttribute('id')
+  );
+
+  expect(input).not.toHaveAttribute('aria-invalid');
+  expect(input).not.toHaveAttribute('aria-errormessage');
 });
 
-// aria-invalid aria-errormessage
+test('correctly sets up aria attributes (with error)', () => {
+  render(
+    <TextField
+      data-testid="text-field"
+      label="A Label"
+      description="Some helpful text"
+      error={true}
+      errorMessage="Whoopsie"
+    />
+  );
 
-// test('can have default value');
-// test('can be controlled');
+  const label = screen.getByText('A Label');
+  const input = screen.getByTestId('text-field');
+  const error = screen.getByText('Whoopsie');
+
+  const htmlFor = label.getAttribute('for');
+  const labelId = label.getAttribute('id');
+  const inputId = input.getAttribute('id');
+
+  expect(label).toHaveAttribute('for', inputId);
+  expect(htmlFor).toEqual(inputId);
+  expect(input).toHaveAttribute('aria-labelledby', labelId);
+
+  expect(input).toHaveAttribute('aria-describedby', error.getAttribute('id'));
+
+  expect(input).toHaveAttribute('aria-invalid', 'true');
+  expect(input).not.toHaveAttribute('aria-errormessage');
+});
+
+test('can have default value', () => {
+  render(
+    <TextField
+      data-testid="text-field"
+      label="A Label"
+      defaultValue="Default Value"
+    />
+  );
+
+  const input = screen.getByTestId('text-field');
+  expect(input).toHaveValue('Default Value');
+});
+
+test('can be controlled', () => {
+  const Controlled = () => {
+    const [value, setValue] = React.useState('');
+    return (
+      <>
+        <TextField
+          data-testid="text-field"
+          label="A Label"
+          onChange={setValue}
+        />
+        <span data-testid="output">{value}</span>
+      </>
+    );
+  };
+
+  render(<Controlled />);
+
+  userEvent.type(screen.getByTestId('text-field'), 'Hello there!');
+  expect(screen.getByTestId('output')).toHaveTextContent('Hello there!');
+});
