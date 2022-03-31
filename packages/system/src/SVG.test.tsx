@@ -73,6 +73,18 @@ test('supports size prop with string', () => {
   expect(svg).toHaveStyle('height: 30px');
 });
 
+test('supports responsive sizing', () => {
+  render(
+    <SVG data-testid="svg" size={[32, 64]}>
+      <path d="M9.9 20.113V13.8415H14" />
+    </SVG>
+  );
+  const svg = screen.getByTestId(/svg/);
+
+  expect(svg).toHaveStyle('width: 32px');
+  expect(svg).toHaveStyle('height: 32px');
+});
+
 test('supports size from theme', () => {
   render(
     <ThemeProvider theme={theme}>
