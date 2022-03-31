@@ -34,7 +34,7 @@ export const theme: Theme = {
   },
   root: {
     body: {
-      m: 'xsmall',
+      m: 'small',
       p: 'none',
       fontFamily: 'body',
     },

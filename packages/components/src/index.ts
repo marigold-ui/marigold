@@ -10,7 +10,6 @@ export * from './Breakout';
 export * from './Card';
 export * from './Center';
 export * from './Checkbox';
-export * from './Column';
 export * from './Columns';
 export * from './Dialog';
 export * from './Divider';
