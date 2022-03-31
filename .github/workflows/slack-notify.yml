@@ -58,9 +58,6 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
-      - run: echo "$version"
-        env:
-          version: testversion
       - name: Slack Notification
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
@@ -73,7 +70,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": ":tada: New Release v "
+                    "text": ":tada: New Release v " ${{ env.VERSION }}
                   }
                 },
                 {
@@ -93,5 +90,6 @@ jobs:
               ]
             }
         env:
+          VERSION: version
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
