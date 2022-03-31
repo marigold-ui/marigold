@@ -113,7 +113,7 @@ test('supports custom width instead of default size', () => {
   expect(svg).toHaveStyle('height: 24px');
 });
 
-test('supports custom width instead of default size', () => {
+test('supports custom height instead of default size', () => {
   render(
     <ThemeProvider theme={theme}>
       <SVG data-testid="svg" height={16}>
