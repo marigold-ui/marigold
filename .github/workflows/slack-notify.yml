@@ -41,6 +41,8 @@ on:
     branches:
       - 1659-release-npm-and-slack-with-github
 jobs:
+  variables:
+    version: version
   slackNotification:
     name: Slack Notification
     runs-on: ubuntu-latest
@@ -61,8 +63,7 @@ jobs:
       - name: Slack Notification
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
-        variables:
-          version: version
+
         with:
           payload: |
             { "type": "plain_text",
