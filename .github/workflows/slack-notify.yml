@@ -90,6 +90,6 @@ jobs:
               ]
             }
         env:
-          VERSION: $(-e "require('../packages/components/package.json').version")
+          VERSION: export $(node -e "require('../packages/components/package.json').version")
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
