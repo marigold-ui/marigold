@@ -5,6 +5,7 @@ import { MDXProvider } from '@mdx-js/react';
 
 import { Box, MarigoldProvider, SSRProvider, Text } from '@marigold/components';
 import * as MarigoldComponents from '@marigold/components';
+import * as MarigoldIcons from '@marigold/icons';
 
 import { theme } from './theme';
 import { MarigoldThemeSwitch, themes } from './components/ThemeSwitch';
@@ -55,6 +56,7 @@ export const WrapRootElement: GatsbyBrowser['wrapRootElement'] = ({
           components={{
             ...mdxComponents,
             ...(MarigoldComponents as any),
+            ...(MarigoldIcons as any),
             MarigoldTheme,
           }}
         >
