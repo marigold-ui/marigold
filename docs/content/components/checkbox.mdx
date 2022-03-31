@@ -3,18 +3,7 @@ title: Checkbox
 ---
 
 import { FigmaLink } from '../../src/components/FigmaLink';
-
 import { DoAndDont } from '../../src/components/DoAndDont';
-import {
-  Box,
-  Card,
-  Checkbox,
-  Columns,
-  Column,
-  Inline,
-  Stack,
-  Text,
-} from '@marigold/components';
 
 # Checkbox
 
@@ -197,20 +186,17 @@ Use indeterminate state when it represents both selected and not selected values
       dont
       preview={
         <Card>
-          <Columns space="small">
-            <Column width={9}>Activate Option Number 1</Column>
-            <Column width={3}>
-              <Checkbox id="option" checked aria-label="option" />
-            </Column>
-            <Column width={9}>Create a Backup</Column>
-            <Column width={3}>
-              <Checkbox id="backup" checked aria-label="backup" />
-            </Column>
-            <Column width={9}>Allow password changing</Column>
-            <Column width={3}>
-              <Checkbox id="pw" checked aria-label="pw" />
-            </Column>
-          </Columns>
+          <Stack space="xsmall">
+            <Checkbox id="option" checked aria-label="option">
+              Activate Option Number 1
+            </Checkbox>
+            <Checkbox id="option" checked aria-label="option">
+              Create a Backup
+            </Checkbox>
+            <Checkbox id="option" checked aria-label="option">
+              Allow password changing
+            </Checkbox>
+          </Stack>
         </Card>
       }
     >
@@ -220,23 +206,20 @@ Use indeterminate state when it represents both selected and not selected values
       dont
       preview={
         <Card>
-          <Text as="h5" variant="headline5">
-            Select your answer
-          </Text>
-          <Columns space="small">
-            <Column width={9}>Yes</Column>
-            <Column width={3}>
-              <Checkbox id="yes" checked aria-label="yes" />
-            </Column>
-            <Column width={9}>No</Column>
-            <Column width={3}>
-              <Checkbox id="no" checked aria-label="no" />
-            </Column>
-            <Column width={9}>I am not sure</Column>
-            <Column width={3}>
-              <Checkbox id="not-sure" checked aria-label="not-sure" />
-            </Column>
-          </Columns>
+          <Stack space="xsmall">
+            <Text as="h5" variant="headline5">
+              Select your answer
+            </Text>
+            <Checkbox id="yes" checked aria-label="yes">
+              Yes
+            </Checkbox>
+            <Checkbox id="no" checked aria-label="no">
+              No
+            </Checkbox>
+            <Checkbox id="not-sure" checked aria-label="not-sure">
+              I am not sure
+            </Checkbox>
+          </Stack>
         </Card>
       }
     >
