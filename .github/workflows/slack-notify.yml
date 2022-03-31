@@ -70,7 +70,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": ":tada: New Release v " ${{ env.VERSION }}
+                    "text": ":tada: New Release v ${{ env.VERSION }}"
                   }
                 },
                 {
