@@ -89,7 +89,7 @@ jobs:
                 }
               ]
             }
-        run: echo "$version"
+      - run: echo "$version"
         env:
           version: testversion
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
