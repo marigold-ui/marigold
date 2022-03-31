@@ -37,7 +37,7 @@ export const HelpText = ({
   ...props
 }: HelpTextProps) => {
   const { get } = useTheme();
-  const iconSize = get('helpText.icon.size');
+  const iconSize = get('helpText.icon.size') || 14;
   const isErrorMessage = errorMessage && error;
 
   const variant = disabled

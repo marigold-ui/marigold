@@ -6,7 +6,7 @@ import { HelpText } from './HelpText';
 const theme = {
   sizes: {
     none: 0,
-    small: 14,
+    small: 20,
   },
   colors: {
     text: 'black',
@@ -110,6 +110,23 @@ test('renders icon when when error message is shown', () => {
   const element = screen.getByTestId('help-text');
   const icon = within(element).getByRole(/presentation/);
   expect(icon).toBeInTheDocument();
+});
+
+test('icon has a default size', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <HelpText
+        data-testid="help-text"
+        error={true}
+        description="This is a help text description"
+        errorMessage="Something went wrong"
+      />
+    </ThemeProvider>
+  );
+
+  const element = screen.getByTestId('help-text');
+  const icon = within(element).getByRole(/presentation/);
+  expect(icon).toHaveStyle(`width: 14px`);
 });
 
 test('icon can be sized via theme', () => {

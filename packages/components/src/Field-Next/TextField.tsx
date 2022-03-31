@@ -1,14 +1,25 @@
-import React, { ReactNode, useRef } from 'react';
-import { AriaTextFieldOptions, useTextField } from '@react-aria/textfield';
-import { useHover } from '@react-aria/interactions';
+import React, { useRef } from 'react';
+import { useTextField } from '@react-aria/textfield';
+import { AriaTextFieldProps } from '@react-types/textfield';
 
+import { Box } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-export interface TextFieldProps extends ComponentProps<'input'> {
-  label?: ReactNode;
-  description?: ReactNode;
-  error?: boolean;
-  errrorMessage?: ReactNode;
+import { Field, FieldProps } from './Field';
+
+export interface TextFieldProps
+  extends Omit<
+      ComponentProps<'input'>,
+      'value' | 'defaultValue' | 'onChange' | 'onFocus' | 'onBlur'
+    >,
+    /**
+     * `react-aria` has a slightly different API for `onChange`, `onFocus`
+     * and `onBlur` events. Thus, we adjust our regular props to match them.
+     */
+    Pick<AriaTextFieldProps, 'onChange' | 'onFocus' | 'onBlur'>,
+    Pick<FieldProps, 'label' | 'description' | 'error' | 'errorMessage'> {
+  value?: string;
+  defaultValue?: string;
 }
 
 export const TextField = ({
@@ -18,7 +29,8 @@ export const TextField = ({
   error,
   ...props
 }: TextFieldProps) => {
-  let ref = useRef<HTMLInputElement>(null);
+  const { label, description, errorMessage } = props;
+  const ref = useRef<HTMLInputElement>(null);
   const { labelProps, inputProps, descriptionProps, errorMessageProps } =
     useTextField(
       {
@@ -26,18 +38,22 @@ export const TextField = ({
         isRequired: required,
         isReadOnly: readOnly,
         validationState: error ? 'invalid' : 'valid',
-        /**
-         * React's event handler types and react-arias don't work very well together.
-         * We just ignore it, since it still works fine. ¯\_(ツ)_/¯
-         */
-        ...(props as any),
+        ...props,
       },
       ref
     );
-  const { hoverProps, isHovered } = useHover({ isDisabled: disabled });
 
-  // let { label } = props;
-  // let ref = React.useRef();
-
-  return <FieldContainer></FieldContainer>;
+  return (
+    <Field
+      label={label}
+      labelProps={labelProps}
+      description={description}
+      descriptionProps={descriptionProps}
+      error={error}
+      errorMessage={errorMessage}
+      errorMessageProps={errorMessageProps}
+    >
+      <Box as="input" variant="input" ref={ref} {...inputProps} />
+    </Field>
+  );
 };
