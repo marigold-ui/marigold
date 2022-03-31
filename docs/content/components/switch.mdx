@@ -3,14 +3,6 @@ title: Switch
 ---
 
 import { DoAndDont } from '../../src/components/DoAndDont';
-import {
-  Box,
-  Card,
-  Column,
-  Columns,
-  Stack,
-  Switch,
-} from '@marigold/components';
 
 # Switch
 
@@ -83,20 +75,20 @@ This mode can be used when an option is or was already active and there is a var
     <DoAndDont
       preview={
         <Card>
-          <Columns space="small">
-            <Column width={9}>Activate Option Number 1</Column>
-            <Column width={3}>
+          <Stack space="xsmall">
+            <Inline space="small">
               <Switch defaultSelected aria-label="option1" />
-            </Column>
-            <Column width={9}>Create a Backup</Column>
-            <Column width={3}>
+              Activate Option Number 1
+            </Inline>
+            <Inline space="small">
               <Switch defaultSelected aria-label="backup" />
-            </Column>
-            <Column width={9}>Allow password changing</Column>
-            <Column width={3}>
+              Create a Backup
+            </Inline>
+            <Inline space="small">
               <Switch aria-label="pw-change" />
-            </Column>
-          </Columns>
+              Allow password changing
+            </Inline>
+          </Stack>
         </Card>
       }
     >
@@ -107,14 +99,8 @@ This mode can be used when an option is or was already active and there is a var
       dont
       preview={
         <Card>
-          <Columns space="small">
-            <Column width={9}>
-              Do you want to turn off the automatic elimination of items?
-            </Column>
-            <Column width={3}>
-              <Switch defaultSelected aria-label="switch-dont" />
-            </Column>
-          </Columns>
+          Do you want to turn off the automatic elimination of items?
+          <Switch defaultSelected aria-label="switch-dont" />
         </Card>
       }
     >
@@ -125,12 +111,10 @@ This mode can be used when an option is or was already active and there is a var
       dont
       preview={
         <Card>
-          <Columns space="small">
-            <Column width={6}>Agree to terms</Column>
-            <Column width={6}>
-              <Switch defaultSelected aria-label="switch-dont-2" />
-            </Column>
-          </Columns>
+          <Inline space="small">
+            <Switch defaultSelected aria-label="switch-dont-2" />
+            Agree to terms
+          </Inline>
         </Card>
       }
     >
