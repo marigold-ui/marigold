@@ -99,6 +99,48 @@ test('supports size from theme', () => {
   expect(svg).toHaveStyle('height: 16px');
 });
 
+test('supports custom width instead of default size', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <SVG data-testid="svg" width={16}>
+        <path d="M9.9 20.113V13.8415H14" />
+      </SVG>
+    </ThemeProvider>
+  );
+  const svg = screen.getByTestId(/svg/);
+
+  expect(svg).toHaveStyle('width: 16px');
+  expect(svg).toHaveStyle('height: 24px');
+});
+
+test('supports custom width instead of default size', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <SVG data-testid="svg" height={16}>
+        <path d="M9.9 20.113V13.8415H14" />
+      </SVG>
+    </ThemeProvider>
+  );
+  const svg = screen.getByTestId(/svg/);
+
+  expect(svg).toHaveStyle('width: 24px');
+  expect(svg).toHaveStyle('height: 16px');
+});
+
+test('supports width and height from theme', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <SVG data-testid="svg" width="small" height="small">
+        <path d="M9.9 20.113V13.8415H14" />
+      </SVG>
+    </ThemeProvider>
+  );
+  const svg = screen.getByTestId(/svg/);
+
+  expect(svg).toHaveStyle('width: 16px');
+  expect(svg).toHaveStyle('height: 16px');
+});
+
 test('supports fill prop', () => {
   render(
     <SVG data-testid="svg" fill="#fafafa">

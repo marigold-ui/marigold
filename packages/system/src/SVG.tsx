@@ -25,7 +25,6 @@ export const SVG = ({
   ...props
 }: SVGProps) => {
   const { css } = useTheme();
-  const dimension = toDimension(size);
 
   return jsx(
     'svg',
@@ -34,8 +33,8 @@ export const SVG = ({
       css: css({
         ...normalizedStyles,
         fill,
-        width: dimension,
-        height: dimension,
+        width: toDimension(props.width || size),
+        height: toDimension(props.height || size),
       }),
       ...props,
     },
