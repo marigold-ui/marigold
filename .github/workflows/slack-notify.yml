@@ -59,7 +59,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - run: echo "$version"
-        env: version: testversion
+        env:
+          version: testversion
       - name: Slack Notification
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
