@@ -90,6 +90,6 @@ jobs:
               ]
             }
         env:
-          VERSION: version
+          VERSION: $(node -p "require('./package.json').version")
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
