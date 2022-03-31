@@ -61,20 +61,18 @@ jobs:
       - name: Slack Notification
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
+        variables:
+          version: version
         with:
-          build:
-            stage: build
-            script:
-              - export VERSION=$(node -p "require('./package.json').version")
           payload: |
             { "type": "plain_text",
-              "text": ":information: New Release v $VERSION :tada:",
+              "text": ":information: New Release v {{ version }} :tada:",
               "blocks": [
                 {
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": ":tada: New Release v $VERSION"
+                    "text": ":tada: New Release v {{ version }}"
                   }
                 },
                 {
