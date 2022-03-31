@@ -1,6 +1,6 @@
 import React, { Children } from 'react';
 
-import { CSSObject, ResponsiveStyleValue } from '@marigold/system';
+import { ResponsiveStyleValue } from '@marigold/system';
 
 import { Box } from '../Box';
 
@@ -38,15 +38,17 @@ export const Columns: React.FC<ColumnsProps> = ({
   return (
     <Box
       display="flex"
-      __baseCSS={{
-        flexWrap: 'wrap',
-        gap: space,
-        '> *': {
-          // display breakpoint at collapseAt value
-          flexBasis: `calc(( ${collapseAt} - 100%) * 999)`,
+      css={Object.assign(
+        {
+          flexWrap: 'wrap',
+          gap: space,
+          '> *': {
+            // display breakpoint at collapseAt value
+            flexBasis: `calc(( ${collapseAt} - 100%) * 999)`,
+          },
         },
-      }}
-      css={Object.assign({}, ...getColumnWidths!) as CSSObject}
+        ...getColumnWidths!
+      )}
       {...props}
     >
       {children}
