@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Box, Card, Divider, Inline, Text } from '@marigold/components';
+import { Card, Divider, Inline, Stack, Text } from '@marigold/components';
 import { Banned, Check } from '@marigold/icons';
 import { ComponentProps } from '@marigold/types';
 
@@ -9,49 +9,38 @@ import { MarigoldTheme } from './MarigoldTheme';
 export interface DoAndDontProps extends ComponentProps<'div'> {
   preview: string;
   dont?: boolean;
-  variant?: string;
 }
 
 export const DoAndDont: React.FC<DoAndDontProps> = ({
-  variant = 'default',
   preview,
   dont = false,
-  className,
   children,
   ...props
 }) => {
+  var icon = <Check size={20} fill="success" />;
+  var dividerVariant = 'do';
+  var title = 'Do';
+  if (dont) {
+    icon = <Banned size={20} fill="error" />;
+    var dividerVariant = 'dont';
+    var title = 'Do';
+  }
+
   return (
-    <Card className={className} {...props}>
-      <Box display="flex" flexDirection="column">
+    <Card {...props}>
+      <Stack space="small">
         <Card variant="highlight">
           <MarigoldTheme>{preview}</MarigoldTheme>
         </Card>
-        <Box
-          display="flex"
-          alignItems="center"
-          pt="small"
-          pb="xsmall"
-          css={{ color: dont ? 'red60' : 'green60' }}
-        >
-          {dont ? (
-            <Inline space="xsmall">
-              <Banned size={20} />
-              <Text as="h4" variant="headline4">
-                Don't
-              </Text>
-            </Inline>
-          ) : (
-            <Inline space="xsmall">
-              <Check size={20} />
-              <Text as="h4" variant="headline4" color="">
-                Do
-              </Text>
-            </Inline>
-          )}
-        </Box>
+        <Inline space="xsmall">
+          {icon}
+          <Text as="h4" variant="headline4">
+            {title}
+          </Text>
+        </Inline>
         <Text variant="muted">{children}</Text>
-      </Box>
-      <Divider variant={dont ? 'dont' : 'do'} />
+        <Divider variant={dividerVariant} />
+      </Stack>
     </Card>
   );
 };

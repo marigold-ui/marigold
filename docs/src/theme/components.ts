@@ -256,6 +256,7 @@ export const components = {
       borderRadius: '10px',
     },
     highlight: {
+      width: '100%',
       p: 'xxlarge',
       bg: 'gray20',
       borderRadius: '10px',
@@ -265,12 +266,10 @@ export const components = {
   },
   divider: {
     do: {
-      my: 'small',
       height: '8px',
       bg: 'green60',
     },
     dont: {
-      my: 'small',
       height: '8px',
       bg: 'red60',
     },
