@@ -114,14 +114,12 @@ test('renders icon when when error message is shown', () => {
 
 test('icon has a default size', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <HelpText
-        data-testid="help-text"
-        error={true}
-        description="This is a help text description"
-        errorMessage="Something went wrong"
-      />
-    </ThemeProvider>
+    <HelpText
+      data-testid="help-text"
+      error={true}
+      description="This is a help text description"
+      errorMessage="Something went wrong"
+    />
   );
 
   const element = screen.getByTestId('help-text');
