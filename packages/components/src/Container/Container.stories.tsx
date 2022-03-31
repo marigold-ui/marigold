@@ -37,7 +37,19 @@ export default {
         type: 'select',
       },
       options: ['left', 'center', 'right'],
-      description: 'choose between left, center and right alignment',
+      description: 'choose between left, center and right items alignment',
+      table: {
+        defaultValue: {
+          summary: 'left',
+        },
+      },
+    },
+    alignContainer: {
+      control: {
+        type: 'select',
+      },
+      options: ['left', 'center', 'right'],
+      description: 'choose between left, center and right container alignment',
       table: {
         defaultValue: {
           summary: 'left',
