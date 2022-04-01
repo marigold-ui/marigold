@@ -64,16 +64,13 @@ jobs:
         with:
           payload: |
             { "type": "plain_text",
-              "text": ":information: New Release v :tada:",
+              "text": ":information: New Release v ${{ env.VERSION }} :tada:",
               "blocks": [
                 {
                   "type": "header",
-                  "properties": {
-                    "$ref": 'require("../packages/components/package.json").version'
-                  }
                   "text": {
                     "type": "plain_text",
-                    "text": ":tada: New Release v " {"$ref": 'require("../packages/components/package.json").version'}
+                    "text": ":tada: New Release v ${{ env.VERSION }}" 
                   }
                 },
                 {
@@ -93,6 +90,6 @@ jobs:
               ]
             }
         env:
-          VERSION: $(node -p 'require("../packages/components/package.json").version')
+          VERSION: 1234
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
