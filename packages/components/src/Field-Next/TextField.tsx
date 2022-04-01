@@ -47,6 +47,7 @@ export const TextField = ({
     <Field
       label={label}
       labelProps={labelProps}
+      required={required}
       description={description}
       descriptionProps={descriptionProps}
       error={error}
