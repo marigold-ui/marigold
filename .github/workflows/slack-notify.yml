@@ -61,7 +61,6 @@ jobs:
       - name: Slack Notification
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
-        VERSION: export VERSION=$(node -p "require('../packages/components/package.json').version")
         with:
           payload: |
             { "type": "plain_text",
@@ -91,6 +90,6 @@ jobs:
               ]
             }
         env:
-          VERSION: VERSION
+          VERSION: export $("require('../packages/components/package.json').version")
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
