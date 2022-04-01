@@ -41,6 +41,8 @@ on:
     branches:
       - 1659-release-npm-and-slack-with-github
 jobs:
+  variables:
+    test: 'blabla'
   slackNotification:
     name: Slack Notification
     runs-on: ubuntu-latest
@@ -90,6 +92,6 @@ jobs:
               ]
             }
         env:
-          VERSION: "{{ require("../packages/components/package.json").version }}"
+          VERSION: '{{ test }}'
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
