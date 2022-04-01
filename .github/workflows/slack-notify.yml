@@ -41,6 +41,10 @@ on:
     branches:
       - 1659-release-npm-and-slack-with-github
 jobs:
+  variables:
+      VERSION: export $(node -e "require('../packages/components/package.json').version")
+    script: 
+      - echo "$VERSION"
   slackNotification:
     name: Slack Notification
     runs-on: ubuntu-latest
@@ -58,10 +62,6 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
-      variables:
-        VERSION: export $(node -e "require('../packages/components/package.json').version")
-      script: 
-        - echo "$VERSION"
       - name: Slack Notification
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
