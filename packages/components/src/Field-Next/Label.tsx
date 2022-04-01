@@ -36,7 +36,7 @@ export const Label: React.FC<LabelProps> = ({
     <Box
       {...props}
       as={as}
-      variant="label"
+      variant="label.above"
       __baseCSS={{ display: 'flex', alignItems: 'center', gap: 4 }}
     >
       {children}
@@ -44,7 +44,7 @@ export const Label: React.FC<LabelProps> = ({
        * aria-required is set on the field and will already be announced,
        * so we don't need to add it here.
        */}
-      {required && <Required role="presentation" size={16} />}
+      {required && <Required role="presentation" size={16} fill="error" />}
     </Box>
   );
 };

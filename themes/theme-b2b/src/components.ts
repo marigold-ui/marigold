@@ -423,6 +423,18 @@ export const components = {
       bg: 'gray50',
     },
   },
+  helpText: {
+    error: {
+      ...text.root,
+      fontSize: 'xxsmall',
+      color: 'error',
+    },
+    description: {
+      ...text.root,
+      fontSize: 'xxsmall',
+      color: 'text',
+    },
+  },
   image: {
     fullWidth: {
       maxWidth: '100%',
@@ -460,6 +472,7 @@ export const components = {
   label: {
     above: {
       fontSize: 'xxsmall',
+      color: 'text',
     },
     inline: {
       fontSize: 'xsmall',

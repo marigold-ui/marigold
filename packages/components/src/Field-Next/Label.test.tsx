@@ -12,8 +12,10 @@ const theme = {
     text: 'black',
   },
   label: {
-    fontFamily: 'body',
-    color: 'text',
+    above: {
+      fontFamily: 'body',
+      color: 'text',
+    },
   },
 };
 
