@@ -64,13 +64,18 @@ jobs:
         with:
           payload: |
             { "type": "plain_text",
-              "text": ":information: New Release v ${{ version.VERSION }} :tada:",
+              "text": ":information: New Release v  :tada:",
               "blocks": [
+                {
+                  "$vars": {
+                    "version": "require('../packages/components/package.json').version"
+                  }
+                },
                 {
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": ":tada: New Release v ${{ version.VERSION }}" 
+                    "text": ":tada: New Release v " 
                   }
                 },
                 {
@@ -92,5 +97,3 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-        - version:
-          VERSION: "require('../packages/components/package.json').version"
