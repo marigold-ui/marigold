@@ -67,16 +67,14 @@ jobs:
               "text": ":information: New Release v  :tada:",
               "blocks": [
                 {
-                  "$vars": {
-                    "version": "require('../packages/components/package.json').version"
-                  }
-                },
-                {
                   "type": "header",
                   "text": {
                     "type": "plain_text",
                     "text": ":tada: New Release v " 
-                  }
+                  },
+                  "$vars": {
+                    "version": "require('../packages/components/package.json').version"
+                  },
                 },
                 {
                   "type": "section",
