@@ -7,7 +7,7 @@ const text = {
   },
   heading: {
     fontWeight: 'heading',
-    color: 'gray.20',
+    color: 'gray70',
   },
 } as const;
 
@@ -44,7 +44,7 @@ export const typography = {
   text: {
     body: {
       ...text.root,
-      color: 'gray.40',
+      color: 'gray60',
       marginBottom: 'medium',
     },
     headline1: {
@@ -93,7 +93,7 @@ export const typography = {
     },
     muted: {
       ...text.root,
-      color: 'gray.60',
+      color: 'gray50',
     },
   },
 } as const;

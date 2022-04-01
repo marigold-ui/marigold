@@ -54,7 +54,7 @@ const select = {
       borderBottom: 'solid',
       borderBottomRightRadius: 'medium',
       borderBottomLeftRadius: 'medium',
-      borderColor: 'gray30',
+      borderColor: 'orange70',
       outline: 'none',
     },
     error: {
@@ -73,13 +73,13 @@ const select = {
     __default: {
       ...selectOption,
       ':focus': {
-        bg: 'blue20',
+        bg: 'orange20',
       },
     },
     selected: {
       ...selectOption,
       color: 'gray00',
-      bg: 'blue60',
+      bg: 'primary',
     },
     disabled: {
       ...selectOption,
@@ -125,12 +125,12 @@ const button = {
   select: {
     ...selectButton,
     border: 'solid',
-    borderColor: 'gray40',
+    borderColor: 'orange70',
     ':hover': {
       cursor: 'pointer',
     },
     ':focus': {
-      boxShadow: '0 0 0 2px #3ab3d5',
+      boxShadow: '0 0 0 2px #ff980f',
       border: 'none',
       margin: '1px',
     },
@@ -152,7 +152,7 @@ const button = {
       borderLeft: 'solid',
       borderBottom: 'none',
       marginBottom: '1px',
-      borderColor: 'gray40',
+      borderColor: 'orange70',
       borderTopRightRadius: 'medium',
       borderTopLeftRadius: 'medium',
     },
@@ -194,7 +194,7 @@ export const components = {
     action: {
       ...button.primary,
       pr: 'xsmall',
-      color: 'gray60',
+      color: 'orange80',
       bg: 'transparent',
       fontWeight: 'body',
       fontSize: 'xxsmall',
@@ -226,10 +226,10 @@ export const components = {
   },
   link: {
     __default: {
-      color: 'gray.20',
+      color: 'orange90',
       textDecoration: 'none',
       '&:hover': {
-        color: 'blue.70',
+        color: 'orange80',
       },
     },
     outlineLink: {
@@ -239,12 +239,12 @@ export const components = {
       borderRadius: 'medium',
       border: 'solid',
       lineHeight: 1,
-      color: 'gray.20',
+      color: 'gray70',
       textDecoration: 'none',
       py: 'xsmall',
       px: 'medium',
       ':hover': {
-        bg: 'gray.90',
+        bg: 'gray20',
       },
     },
   },

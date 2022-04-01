@@ -25,7 +25,7 @@ export const Link: React.FC<LinkProps> = ({ children, to, ...props }) => {
     <MarigoldLink
       as={GatsbyLink}
       to={to}
-      activeStyle={{ color: colors.blue70 }}
+      activeStyle={{ color: colors.orange70 }}
       {...props}
     >
       {children}

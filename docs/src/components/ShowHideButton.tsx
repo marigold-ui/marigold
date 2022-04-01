@@ -20,7 +20,7 @@ export const ShowHideButton: React.FC<ShowHideButtonProps> = ({
     <Box
       as={hide ? ArrowDown : ArrowUp}
       size={16}
-      fill="#696b78"
+      fill="#9e490e"
       mr="xxsmall"
     />
     {hide ? 'View code' : 'Hide code'}

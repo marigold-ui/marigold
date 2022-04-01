@@ -1,7 +1,7 @@
 import React from 'react';
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
-import theme from 'prism-react-renderer/themes/github';
+import theme from './PreviewTheme';
 
 import * as Components from '@marigold/components';
 import { Box } from '@marigold/components';
@@ -33,7 +33,7 @@ interface CodeBlockProps {
 
 const codeBoxStyles = {
   fontFamily: 'monospace',
-  bg: '#F6F8FA',
+  bg: '#fffaec',
   fontSize: 'body',
   p: 'small',
 } as CSSObject;
@@ -53,7 +53,7 @@ const LiveEdit: React.FC<CodeBlockProps> = ({
       scope={{ ...Components, ...Icons }}
       theme={theme}
     >
-      <Box css={{ border: 'grey', borderRadius: '4px' }}>
+      <Box css={{ border: '1px solid #7f3d0f', borderRadius: '4px' }}>
         <MarigoldTheme>
           <Box
             as={LivePreview}
