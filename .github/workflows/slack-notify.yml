@@ -58,6 +58,10 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+      variables:
+        VERSION: export $(node -e "require('../packages/components/package.json').version")
+      script: 
+        - echo "$VERSION"
       - name: Slack Notification
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
@@ -90,6 +94,5 @@ jobs:
               ]
             }
         env:
-          VERSION: export $(node -e "require('../packages/components/package.json').version")
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
