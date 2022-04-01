@@ -60,21 +60,20 @@ jobs:
         run: pnpm install
       - name: Slack Notification
         id: slack
+        scripts:
+          - export VERSION=$(node -p "require('../packages/components/package.json').version")
         uses: slackapi/slack-github-action@v1.18.0
         with:
           payload: |
             { "type": "plain_text",
-              "text": ":information: New Release v  :tada:",
+              "text": ":information: New Release v ${{ env.VERSION }} :tada:",
               "blocks": [
                 {
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": ":tada: New Release v " 
-                  },
-                  "$vars": {
-                    "version": "require('../packages/components/package.json').version"
-                  },
+                    "text": ":tada: New Release v ${{ env.VERSION }}" 
+                  }
                 },
                 {
                   "type": "section",
@@ -93,5 +92,6 @@ jobs:
               ]
             }
         env:
+          VERSION: VERSION
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
