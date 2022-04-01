@@ -68,9 +68,12 @@ jobs:
               "blocks": [
                 {
                   "type": "header",
+                  "properties": {
+                    "$ref": 'require("../packages/components/package.json").version'
+                  }
                   "text": {
                     "type": "plain_text",
-                    "text": ":tada: New Release v ${VERSION}"
+                    "text": ":tada: New Release v " {"$ref": 'require("../packages/components/package.json").version'}
                   }
                 },
                 {
