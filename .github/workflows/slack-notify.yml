@@ -40,9 +40,10 @@ on:
   pull_request:
     branches:
       - 1659-release-npm-and-slack-with-github
+
+variables:
+  test: 'blabla'
 jobs:
-  variables:
-    test: 'blabla'
   slackNotification:
     name: Slack Notification
     runs-on: ubuntu-latest
