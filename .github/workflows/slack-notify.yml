@@ -70,7 +70,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": ":tada: New Release v ${{ env.VERSION.version }}"
+                    "text": ":tada: New Release v ${{ env.VERSION }}"
                   }
                 },
                 {
@@ -90,6 +90,6 @@ jobs:
               ]
             }
         env:
-          VERSION: require("../packages/components/package.json");
+          VERSION: require("../packages/components/package.json").version;
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
