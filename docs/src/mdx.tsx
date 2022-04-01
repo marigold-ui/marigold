@@ -7,6 +7,7 @@ import { ComponentProps } from '@marigold/types';
 
 import { Preview } from './components/Preview';
 import { Link } from './components/Link';
+import { Table, TableData, TableHead } from './components/PropsTable';
 
 // Typography
 // ---------------
@@ -123,30 +124,18 @@ export const li: React.FC<ComponentProps<'li'>> = ({ children, ...props }) => (
 export const table: React.FC<ComponentProps<'table'>> = ({
   children,
   ...props
-}) => (
-  <Box as="table" width="100%" {...props}>
-    {children}
-  </Box>
-);
+}) => <Table {...props}>{children}</Table>;
 
 export const td: React.FC<ComponentProps<'td'>> = ({ children, ...props }) => (
-  <Box as="td" p="xsmall" {...props}>
-    <Text as="p" variant="body">
-      {children}
-    </Text>
-  </Box>
+  <TableData {...props}>{children}</TableData>
 );
 
 export const th: React.FC<ComponentProps<'th'>> = ({ children, ...props }) => (
-  <Box as="th" p="xsmall" bg="gray30" {...props}>
-    <Text as="h5" variant="headline5">
-      {children}
-    </Text>
-  </Box>
+  <TableHead {...props}>{children}</TableHead>
 );
 
 export const tr: React.FC<ComponentProps<'tr'>> = ({ children, ...props }) => (
-  <Box as="tr" p="xsmall" {...props}>
+  <Box as="tr" {...props}>
     {children}
   </Box>
 );
