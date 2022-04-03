@@ -183,7 +183,7 @@ importers:
       gh-pages: 3.2.3
       git-rev-sync: 3.0.2
       mdx-utils: 0.2.0
-      open-props: 1.3.9
+      open-props: 1.3.12
       postcss-combine-duplicated-selectors: 10.0.3
       postcss-import: 14.1.0
       postcss-preset-env: 7.4.3
@@ -219,7 +219,7 @@ importers:
       gh-pages: 3.2.3
       git-rev-sync: 3.0.2
       mdx-utils: 0.2.0
-      open-props: 1.3.9
+      open-props: 1.3.12
       postcss-combine-duplicated-selectors: 10.0.3
       postcss-import: 14.1.0
       postcss-preset-env: 7.4.3
@@ -18358,8 +18358,8 @@ packages:
     dependencies:
       mimic-fn: 2.1.0
 
-  /open-props/1.3.9:
-    resolution: {integrity: sha512-Lv69rcEx0XA0r5IsPwFo59V+Wxh/l5fIXeTubcuchXk5h+e+2tAIGH64Tyz6JWsBxufiCFI5Q5N0xWrtlbYilQ==}
+  /open-props/1.3.12:
+    resolution: {integrity: sha512-/Jc0t9bjHpuh6SsSzUuRJsspTaPt6WcC4OqPe5r1KJcsqdYj6QAXv+OgpmP2Tw53K+746JWo26Y+IdwBZXo1ww==}
     dev: false
 
   /open/7.4.2:
