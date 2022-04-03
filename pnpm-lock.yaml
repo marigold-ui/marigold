@@ -4,7 +4,7 @@ importers:
 
   .:
     specifiers:
-      '@changesets/changelog-github': 0.4.3
+      '@changesets/changelog-github': 0.4.4
       '@changesets/cli': 2.22.0
       '@marigold/eslint-config': workspace:*
       '@marigold/jest-config': workspace:*
@@ -31,7 +31,7 @@ importers:
       workspaces-run: 1.0.1
       zx: 6.0.7
     dependencies:
-      '@changesets/changelog-github': 0.4.3
+      '@changesets/changelog-github': 0.4.4
       '@changesets/cli': 2.22.0
       '@marigold/eslint-config': link:config/eslint
       '@marigold/jest-config': link:config/jest
@@ -2840,11 +2840,11 @@ packages:
       '@changesets/types': 5.0.0
     dev: false
 
-  /@changesets/changelog-github/0.4.3:
-    resolution: {integrity: sha512-93X4arork7DV4+tVYeNlOTrw7HOXIvvd41yRPY9atJ+nS32W0uS+ewkZdc6WThuqmwGx9xaU+pxHtVLeYJTF0A==}
+  /@changesets/changelog-github/0.4.4:
+    resolution: {integrity: sha512-htSILqCkyYtTB5/LoVKwx7GCJQGxAiBcYbfUKWiz/QoDARuM01owYtMXhV6/iytJZq/Dqqz3PjMZUNB4MphpbQ==}
     dependencies:
       '@changesets/get-github-info': 0.5.0
-      '@changesets/types': 4.1.0
+      '@changesets/types': 5.0.0
       dotenv: 8.6.0
     transitivePeerDependencies:
       - encoding
