@@ -333,13 +333,13 @@ importers:
       '@emotion/react': 11.8.2
       '@marigold/tsconfig': workspace:*
       '@marigold/types': workspace:*
-      '@theme-ui/css': 0.14.1
+      '@theme-ui/css': 0.14.2
       csstype: 3.0.11
       tsup: 5.12.3
     dependencies:
       '@emotion/react': 11.8.2_react@17.0.2
       '@marigold/types': link:../types
-      '@theme-ui/css': 0.14.1_@emotion+react@11.8.2
+      '@theme-ui/css': 0.14.2_@emotion+react@11.8.2
       csstype: 3.0.11
     devDependencies:
       '@marigold/tsconfig': link:../../config/tsconfig
@@ -7584,8 +7584,8 @@ packages:
       '@testing-library/dom': 8.12.0
     dev: false
 
-  /@theme-ui/css/0.14.1_@emotion+react@11.8.2:
-    resolution: {integrity: sha512-bABQOqDqZj7BzuvlmW8hAscmaQGbcUxd+bey7aAu0EoBgeTUrBRx1Nn/UQUVMahnAiD5dCF9CBw6rUUUz6Y6Zw==}
+  /@theme-ui/css/0.14.2_@emotion+react@11.8.2:
+    resolution: {integrity: sha512-xQdXgDjiyrB3ScjqLabRzup5OmJ5pOdIvfSQfA/iVOZi/SZl4nYqRyf7WRyvpiq+vlXxlrpwFwUV/9MCXuiKxw==}
     peerDependencies:
       '@emotion/react': ^11
     dependencies:
