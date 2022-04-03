@@ -25,9 +25,9 @@
     "@marigold/theme-core": "workspace:*",
     "@marigold/theme-unicorn": "workspace:*",
     "@mdx-js/react": "1.6.22",
-    "@storybook/addon-a11y": "6.4.19",
-    "@storybook/addon-essentials": "6.4.19",
-    "@storybook/addon-interactions": "6.4.19",
+    "@storybook/addon-a11y": "6.4.20",
+    "@storybook/addon-essentials": "6.4.20",
+    "@storybook/addon-interactions": "6.4.20",
     "@storybook/jest": "0.0.10",
     "@storybook/testing-library": "0.0.9",
     "babel-loader": "8.2.4",
@@ -36,7 +36,7 @@
     "tsconfig-paths-webpack-plugin": "3.5.2"
   },
   "peerDependencies": {
-    "@storybook/react": "6.4.19"
+    "@storybook/react": "6.4.20"
   },
   "scripts": {
     "start": "start-storybook -p 1337 -c ."
