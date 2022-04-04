@@ -5,7 +5,7 @@ import { AriaTextFieldProps } from '@react-types/textfield';
 import { Box } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { Field, FieldProps } from './Field';
+import { Field, FieldProps } from '../Field';
 
 export interface TextFieldProps
   extends Omit<
