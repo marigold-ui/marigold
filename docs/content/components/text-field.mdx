@@ -1,0 +1,97 @@
+---
+title: TextField
+---
+
+# TextField
+
+## Description
+
+The `TextField` components allows user so enter text with a keyboard. It consists of a label, an input field and a help text. The later also includes error messages.
+
+```tsx
+<TextField label="Try me" description="You should really try this!" />
+```
+
+```tsx onlyCode
+import { TextField } from '@marigold/components';
+```
+
+## Props
+
+| Name                      | Type        | Default | Description                                                                                                                              |
+| ------------------------- | ----------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `label` (optional)        | `ReactNode` |         | The label text. If you don't want to visually display a label, provide an `aria-label` or `aria-labelledby` attribute for accessibility. |
+| `description` (optional)  | `ReactNode` |         | A helpful text                                                                                                                           |
+| `errorMessage` (optional) | `ReactNode` |         | An error message                                                                                                                         |
+| `error` (optional)        | `boolean`   | `false` | If `true`, the is considered invalid and if set the `errorMessage` is shown instead of the `description`.                                |
+| `value` (optional)        | `string`    |         | The value of the input field                                                                                                             |
+| `disabled` (optional)     | `boolean`   | `false` | If `true`, the input is disabled.                                                                                                        |
+| `required` (optional)     | `boolean`   | `false` | If `true`, the input is required.                                                                                                        |
+| `readOnly` (optional)     | `boolean`   | `false` | If `true`, the input is readOnly.                                                                                                        |
+| `type` (optional)         | `string`    | `text`  | The type of the input field.                                                                                                             |
+| `onChange` (optional)     | `function`  |         | A callback function that is called with the input's current `value` when the input value changes.                                        |
+| others                    |             |         | Yes you can use all regular attributes of `input`!                                                                                       |
+
+## Examples
+
+### Simple Text Field
+
+```tsx
+<TextField label="Firstname" />
+```
+
+### Disabled Text Field
+
+```tsx
+<TextField label="Field disabled" disabled />
+```
+
+### Required Text Field
+
+```tsx
+<TextField label="Name" required />
+```
+
+### Text Field with an Error
+
+```tsx
+<TextField label="Name" error errorMessage="Something went wrong!" />
+```
+
+### Not every number is a `number`!
+
+[Just because the input contains numbers, it is not necessarily correctly to use `input[type=number]`!](https://www.coywolf.news/webmaster/accessible-number-input/)
+
+```tsx
+() => {
+  const [value, setValue] = React.useState('');
+  const error = value.length > 0 && !/^\d+$/.test(value);
+
+  return (
+    <TextField
+      label="Promo Code"
+      description="You find you promo code on the back of your ticket."
+      errorMessage="Your promo code is not valid! Please review your input."
+      value={value}
+      onChange={setValue}
+      error={error}
+      inputmode="numeric"
+      pattern="[0-9]*"
+    />
+  );
+};
+```
+
+### Uer different `input` methods
+
+```tsx
+<TextField label="EMail" type="email" />
+```
+
+```tsx
+<TextField label="Date" type="date" />
+```
+
+```tsx
+<TextField label="Phone Number" type="tel" />
+```
