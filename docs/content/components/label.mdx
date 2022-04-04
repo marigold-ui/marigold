@@ -6,10 +6,16 @@ import { FigmaLink } from '../../src/components/FigmaLink';
 
 # Label
 
-## Description
-
 With the Label component you can add a HTML `<Label>` element to your form.
 The variant can be added with the variant prop. The default variant is `above`.
+
+<MarigoldTheme>
+  <Label htmlFor="labelId">Just a simple label</Label>
+</MarigoldTheme>
+
+```tsx onlyCode
+import { Label } from '@marigold/components';
+```
 
 <FigmaLink
   to={
@@ -17,7 +23,7 @@ The variant can be added with the variant prop. The default variant is `above`.
   }
 />
 
-## Properties
+## Props
 
 | Property              | Type                           | Default |
 | :-------------------- | :----------------------------- | :------ |
@@ -26,112 +32,69 @@ The variant can be added with the variant prop. The default variant is `above`.
 | `color` (optional)    | `ResponsiveStyleValue<string>` | `text`  |
 | `htmlFor`             | `string`                       |         |
 
-## Import
+## Examples
 
-```tsx onlyCode
-import { Label } from '@marigold/components';
-```
-
-## Live-Code Example
-
-```tsx expandCode
-<Label htmlFor="labelId">Just a boring label</Label>
-```
-
-## Usage
-
-### Label required
+Label required
 
 ```tsx
-<Label variant="inline" htmlFor="labelId" required>
+<Label htmlFor="labelId" required>
   I am a required Label!
 </Label>
 ```
 
-### Label above
+Label colored
 
 ```tsx
-<Label htmlFor="labelId">I am a Label!</Label>
-```
-
-### Label inline
-
-```tsx
-<Label variant="inline" htmlFor="labelId">
-  I am a Label!
+<Label htmlFor="labelId" color="info">
+  I am a disabled Label!
 </Label>
 ```
 
-### Label disabled
+## Label above
 
 ```tsx
-<Label htmlFor="labelId">I am a disabled Label!</Label>
+<>
+  <Label htmlFor="labelId">Name:</Label>
+  <Input id="labelId" />
+</>
 ```
 
-### Collective Label
+## Label inline
 
 ```tsx
-<Label htmlFor="labelId">
-  Collective Label
-  <Box display="flex" justifyContent="space-between" width="25%">
-    <Radio id="one" name="collective" value="RadioOne" label="Radio One" />
-    <Radio id="two" name="collective" value="RadioTwo" label="Radio Two" />
-  </Box>
-</Label>
-```
-
-### Section Label
-
-```tsx
-<Label htmlFor="labelId" variant="section">
-  Section Label
-  <Divider variant="section" />
-</Label>
-```
-
-### Label Examples
-
-```tsx
-<Label htmlFor="labelId" variant="section">
-  Radios
-  <Divider variant="section" />
-  <Label htmlFor="labelId">
-    Radio Group
-    <Box display="flex" justifyContent="space-between" width="50%">
-      <Radio id="one" name="collective" value="RadioOne" label="Radio One" />
-      <Radio id="two" name="collective" value="RadioTwo" label="Radio Two" />
-      <Radio
-        id="three"
-        name="collective"
-        value="RadioThree"
-        label="Radio Three"
-      />
-    </Box>
+<Inline space="xxsmall">
+  <Checkbox id="labelId" />
+  <Label variant="inline" htmlFor="labelId">
+    Agree to Marigold terms
   </Label>
-</Label>
+</Inline>
 ```
 
+## Section Label
+
 ```tsx
-<Label htmlFor="labelId" variant="section">
-  Dropdowns
+<Stack>
+  <Label htmlFor="labelId" variant="section">
+    Payment Selection
+  </Label>
   <Divider variant="section" />
-  <Box display="flex" justifyContent="space-between" width="50%">
-    <Select
-      label="Dropdown One"
-      placeholder="Select Primary Color"
-      htmlFor="id"
-    >
-      <Item key="Red">Red</Item>
-      <Item key="Orange">Orange</Item>
-    </Select>
-    <Select
-      label="Dropdown Two"
-      placeholder="Select Secondary Color"
-      htmlFor="id2"
-    >
-      <Item key="Red">Red</Item>
-      <Item key="Orange">Orange</Item>
-    </Select>
-  </Box>
-</Label>
+  <Inline space="small">
+    <Radio id="one" name="Section1" value="RadioOne" label="Radio One" />
+    <Label variant="inline" htmlFor="labelId">
+      Visa
+    </Label>
+  </Inline>
+  <Inline space="small">
+    <Radio id="two" name="Section2" value="RadioTwo" label="Radio Two" />
+    <Label variant="inline" htmlFor="labelId">
+      Paypal
+    </Label>
+  </Inline>
+  <Inline space="small">
+    <Radio id="two" name="Section3" value="RadioThree" label="Radio Three" />
+    <Label variant="inline" htmlFor="labelId">
+      Sofortüberweisung
+    </Label>
+  </Inline>
+</Stack>
 ```
