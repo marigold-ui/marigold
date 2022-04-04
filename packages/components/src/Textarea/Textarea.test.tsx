@@ -1,96 +1,188 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
-import { Textarea } from '../Textarea';
+import { TextArea } from './TextArea';
+import userEvent from '@testing-library/user-event';
 
 const theme = {
   fonts: {
     body: 'Inter Regular',
     fancy: 'Roboto',
   },
-  colors: {
-    error: 'red',
-  },
-  textarea: {
-    __default: {
-      fontFamily: 'body',
-    },
-    custom: {
-      fontFamily: 'fancy',
-    },
+  textArea: {
+    fontFamily: 'body',
   },
 };
 
-test('supports default variant', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Textarea label="label" htmlFor="id" title="textarea" />
-    </ThemeProvider>
-  );
-  const textarea = screen.getByTitle(/textarea/);
+test('renders an textarea', () => {
+  render(<TextArea label="Label" data-testid="textarea" />);
 
-  expect(textarea).toHaveStyle(`font-family: Inter Regular`);
+  const textArea = screen.getByTestId('textarea');
+  expect(textArea).toBeInTheDocument();
+  expect(textArea).toHaveAttribute('type', 'text');
+  expect(textArea instanceof HTMLTextAreaElement).toBeTruthy();
 });
 
-test('accepts other variant than default', () => {
+test('can be styled via variant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Textarea label="label" htmlFor="id" variant="custom" title="textarea" />
+      <TextArea label="A Label" data-testid="textarea" />
     </ThemeProvider>
   );
-  const textarea = screen.getByTitle(/textarea/);
-
-  expect(textarea).toHaveStyle(`font-family: Roboto`);
+  const textArea = screen.getByTestId('textarea');
+  expect(textArea).toHaveStyle(`font-family: ${theme.fonts.body}`);
 });
 
-test('renders correct HTML element', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Textarea label="label" htmlFor="id" title="textarea" />
-    </ThemeProvider>
-  );
-  const textarea = screen.getByTitle(/textarea/);
+test('supports disabled', () => {
+  render(<TextArea label="A Label" disabled data-testid="textarea" />);
 
-  expect(textarea instanceof HTMLTextAreaElement).toBeTruthy();
+  const textArea = screen.getByTestId('textarea');
+  expect(textArea).toBeDisabled();
 });
 
-test('supports label prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Textarea label="test" htmlFor="id" title="textarea" />
-    </ThemeProvider>
-  );
-  const label = screen.getByText(/test/);
+test('supports required', () => {
+  render(<TextArea label="A Label" required data-testid="textarea" />);
 
-  expect(label instanceof HTMLLabelElement).toBeTruthy();
+  const textArea = screen.getByTestId('textarea');
+  /** Note that the required attribute is not passed down! */
+  expect(textArea).toHaveAttribute('aria-required', 'true');
 });
 
-test('supports error and errorMessage prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Textarea
-        error
-        errorMessage="error"
-        label="label"
-        htmlFor="id"
-        title="textarea"
-      />
-    </ThemeProvider>
-  );
-  const errorMessage = screen.getByText(/error/);
-  expect(errorMessage).toBeDefined();
-  const textarea = screen.getByTitle(/textarea/);
-  expect(textarea).toHaveStyle(`outline-color: red`);
+test('supports readonly', () => {
+  render(<TextArea label="A Label" readOnly data-testid="textarea" />);
+
+  const textArea = screen.getByTestId('textarea');
+  expect(textArea).toHaveAttribute('readonly');
 });
 
-test('supports required prop', () => {
+test('supports field structure', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Textarea label="test" htmlFor="id" required title="textarea" />
-    </ThemeProvider>
+    <TextArea
+      label="A Label"
+      description="Some helpful text"
+      errorMessage="Whoopsie"
+    />
   );
-  const label = screen.getByText(/test/);
 
-  // eslint-disable-next-line testing-library/no-node-access
-  expect(label.nextSibling instanceof SVGElement).toBeTruthy();
+  const label = screen.queryByText('A Label');
+  expect(label).toBeInTheDocument();
+
+  const description = screen.queryByText('Some helpful text');
+  expect(description).toBeInTheDocument();
+
+  const error = screen.queryByText('Whoopsie');
+  expect(error).not.toBeInTheDocument();
+});
+
+test('supports field structure (with error)', () => {
+  render(
+    <TextArea
+      label="A Label"
+      description="Some helpful text"
+      error={true}
+      errorMessage="Whoopsie"
+    />
+  );
+
+  const label = screen.queryByText('A Label');
+  expect(label).toBeInTheDocument();
+
+  const description = screen.queryByText('Some helpful text');
+  expect(description).not.toBeInTheDocument();
+
+  const error = screen.queryByText('Whoopsie');
+  expect(error).toBeInTheDocument();
+});
+
+test('correctly sets up aria attributes', () => {
+  render(
+    <TextArea
+      data-testid="textarea"
+      label="A Label"
+      description="Some helpful text"
+      errorMessage="Whoopsie"
+    />
+  );
+
+  const label = screen.getByText('A Label');
+  const textarea = screen.getByTestId('textarea');
+  const description = screen.getByText('Some helpful text');
+
+  const htmlFor = label.getAttribute('for');
+  const labelId = label.getAttribute('id');
+  const inputId = textarea.getAttribute('id');
+
+  expect(label).toHaveAttribute('for', inputId);
+  expect(htmlFor).toEqual(inputId);
+  expect(textarea).toHaveAttribute('aria-labelledby', labelId);
+
+  expect(textarea).toHaveAttribute(
+    'aria-describedby',
+    description.getAttribute('id')
+  );
+
+  expect(textarea).not.toHaveAttribute('aria-invalid');
+  expect(textarea).not.toHaveAttribute('aria-errormessage');
+});
+
+test('correctly sets up aria attributes (with error)', () => {
+  render(
+    <TextArea
+      data-testid="textarea"
+      label="A Label"
+      description="Some helpful text"
+      error={true}
+      errorMessage="Whoopsie"
+    />
+  );
+
+  const label = screen.getByText('A Label');
+  const textArea = screen.getByTestId('textarea');
+  const error = screen.getByText('Whoopsie');
+
+  const htmlFor = label.getAttribute('for');
+  const labelId = label.getAttribute('id');
+  const inputId = textArea.getAttribute('id');
+
+  expect(label).toHaveAttribute('for', inputId);
+  expect(htmlFor).toEqual(inputId);
+  expect(textArea).toHaveAttribute('aria-labelledby', labelId);
+
+  expect(textArea).toHaveAttribute(
+    'aria-describedby',
+    error.getAttribute('id')
+  );
+
+  expect(textArea).toHaveAttribute('aria-invalid', 'true');
+  expect(textArea).not.toHaveAttribute('aria-errormessage');
+});
+
+test('can have default value', () => {
+  render(
+    <TextArea
+      data-testid="textarea"
+      label="A Label"
+      defaultValue="Default Value"
+    />
+  );
+
+  const textArea = screen.getByTestId('textarea');
+  expect(textArea).toHaveValue('Default Value');
+});
+
+test('can be controlled', () => {
+  const Controlled = () => {
+    const [value, setValue] = React.useState('');
+    return (
+      <>
+        <TextArea data-testid="textarea" label="A Label" onChange={setValue} />
+        <span data-testid="output">{value}</span>
+      </>
+    );
+  };
+
+  render(<Controlled />);
+
+  userEvent.type(screen.getByTestId('textarea'), 'Hello there!');
+  expect(screen.getByTestId('output')).toHaveTextContent('Hello there!');
 });

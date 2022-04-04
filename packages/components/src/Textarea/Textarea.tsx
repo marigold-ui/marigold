@@ -2,72 +2,74 @@ import React, { useRef } from 'react';
 import { useTextField } from '@react-aria/textfield';
 import { AriaTextFieldProps } from '@react-types/textfield';
 
-import { Exclamation } from '@marigold/icons';
+import { Box } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { ValidationMessage } from '../ValidationMessage';
-import { Label } from '../Label';
-import { Box } from '../Box';
+import { Field, FieldProps } from '../Field';
 
-// Theme Extension
-// ---------------
-export interface TextareaThemeExtension<Value> {
-  textarea?: {
-    [key: string]: Value;
-  };
+/**
+ * `react-aria` has a slightly different API for the above events.
+ * Thus, we adjust our regular props to match them.
+ */
+export type CustomTextAreEvents =
+  | 'onChange'
+  | 'onFocus'
+  | 'onBlur'
+  | 'onCopy'
+  | 'onSelect'
+  | 'onPaste'
+  | 'onCut'
+  | 'onCompositionStart'
+  | 'onCompositionUpdate'
+  | 'onCompositionEnd'
+  | 'onBeforeInput'
+  | 'onInput';
+
+export interface TextAreaProps
+  extends Omit<
+      ComponentProps<'textarea'>,
+      'value' | 'defaultValue' | CustomTextAreEvents
+    >,
+    Pick<AriaTextFieldProps, CustomTextAreEvents>,
+    Pick<FieldProps, 'label' | 'description' | 'error' | 'errorMessage'> {
+  value?: string;
+  defaultValue?: string;
 }
 
-// Props
-// ---------------
-export type TextareaProps = {
-  variant?: string;
-  htmlFor: string;
-  required?: boolean;
-  error?: boolean;
-} & AriaTextFieldProps &
-  ComponentProps<'textarea'>;
-
-// Component
-// ---------------
-export const Textarea: React.FC<TextareaProps> = ({
-  variant = '',
-  htmlFor,
-  error,
-  errorMessage,
+export const TextArea = ({
+  disabled,
   required,
-  children,
+  readOnly,
+  error,
   ...props
-}) => {
+}: TextAreaProps) => {
+  const { label, description, errorMessage } = props;
   const ref = useRef<HTMLTextAreaElement>(null);
-  const { labelProps, inputProps, errorMessageProps } = useTextField(
-    {
-      ...props,
-      inputElementType: 'textarea',
-    },
-    ref
-  );
+  const { labelProps, inputProps, descriptionProps, errorMessageProps } =
+    useTextField(
+      {
+        inputElementType: 'textarea',
+        isDisabled: disabled,
+        isRequired: required,
+        isReadOnly: readOnly,
+        validationState: error ? 'invalid' : 'valid',
+        ...props,
+      },
+      ref
+    );
 
   return (
-    <Box>
-      <Label htmlFor={htmlFor} required={required} {...labelProps}>
-        {props.label}
-      </Label>
-      <Box
-        as="textarea"
-        variant={`textarea.${variant}`}
-        css={{
-          outlineColor: error && 'error',
-        }}
-        {...inputProps}
-        ref={ref}
-        {...props}
-      />
-      {error && errorMessage && (
-        <ValidationMessage {...errorMessageProps}>
-          <Exclamation size={16} />
-          {errorMessage}
-        </ValidationMessage>
-      )}
-    </Box>
+    <Field
+      label={label}
+      labelProps={labelProps}
+      required={required}
+      description={description}
+      descriptionProps={descriptionProps}
+      error={error}
+      errorMessage={errorMessage}
+      errorMessageProps={errorMessageProps}
+    >
+      <Box as="textarea" variant="input" ref={ref} {...inputProps} />
+    </Field>
   );
 };

@@ -7,6 +7,8 @@ import { ComponentProps } from '@marigold/types';
 
 import { Field, FieldProps } from '../Field';
 
+// Props
+// ---------------
 export interface TextFieldProps
   extends Omit<
       ComponentProps<'input'>,
@@ -22,6 +24,8 @@ export interface TextFieldProps
   defaultValue?: string;
 }
 
+// Component
+// ---------------
 export const TextField = ({
   disabled,
   required,

@@ -1,64 +1,59 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
-import { Textarea } from '.';
+import { TextArea } from './TextArea';
 
 export default {
-  title: 'Components/Textarea',
+  title: 'Components/TextArea',
   argTypes: {
-    variant: {
-      control: {
-        type: 'text',
-      },
-      table: {
-        defaultValue: {
-          summary: '__default',
-        },
-      },
-    },
     label: {
       control: {
         type: 'text',
       },
-      description: 'Label text',
-      defaultValue: 'Textarea Label',
+      description: 'The label',
+      defaultValue: 'Label',
     },
-    htmlFor: {
+    description: {
       control: {
         type: 'text',
       },
-      description: 'Bind to label',
-      defaultValue: 'textareaId',
+      description: 'Help Text',
+      defaultValue: 'This is a help text description',
     },
     error: {
       control: {
         type: 'boolean',
       },
-      description: 'Error',
-      table: {
-        defaultValue: {
-          summary: false,
-        },
-      },
+      description: 'Is the input invalid?',
+      defaultValue: false,
     },
     errorMessage: {
       control: {
         type: 'text',
       },
       description: 'Error Message',
+      defaultValue: 'Something went wrong',
     },
     required: {
       control: {
         type: 'boolean',
       },
-      table: {
-        defaultValue: {
-          summary: false,
-        },
+      defaultValue: false,
+    },
+    disabled: {
+      control: {
+        type: 'boolean',
       },
+      defaultValue: false,
+    },
+    readOnly: {
+      control: {
+        type: 'boolean',
+      },
+      defaultValue: false,
     },
   },
 } as Meta;
 
-export const Basic: ComponentStory<typeof Textarea> = args => (
-  <Textarea placeholder="Placeholder..." {...args} />
+export const Basic: ComponentStory<typeof TextArea> = args => (
+  <TextArea {...args} />
 );

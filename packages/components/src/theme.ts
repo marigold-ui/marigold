@@ -23,7 +23,7 @@ import { type SelectThemeExtension } from './Select';
 import { type SliderThemeExtension } from './Slider';
 import { type SwitchThemeExtension } from './Switch';
 import { type TextThemeExtension } from './Text';
-import { type TextareaThemeExtension } from './Textarea';
+import { type TextAreaThemeExtension } from './TextArea';
 import { type TooltipThemeExtension } from './Tooltip';
 import { type ValidationMessageThemeExtension } from './ValidationMessage';
 
@@ -47,6 +47,6 @@ export interface Theme
     SliderThemeExtension<CSSObject>,
     SwitchThemeExtension<CSSObject>,
     TextThemeExtension<CSSObject>,
-    TextareaThemeExtension<CSSObject>,
+    TextAreaThemeExtension<CSSObject>,
     TooltipThemeExtension<CSSObject>,
     ValidationMessageThemeExtension<CSSObject> {}

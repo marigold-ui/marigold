@@ -576,7 +576,7 @@ export const components = {
       stroke: 'gray40',
     },
   },
-  textarea: {
+  textArea: {
     __default: {
       fontFamily: 'body',
       lineHeight: 'medium',

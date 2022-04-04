@@ -563,7 +563,7 @@ export const components = {
       stroke: 'gray40',
     },
   },
-  textarea: {
+  textArea: {
     __default: {
       fontFamily: 'body',
       fontSize: 'xxsmall',
