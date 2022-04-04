@@ -3,108 +3,55 @@ import type { Meta, ComponentStory } from '@storybook/react';
 import { Field } from './Field';
 
 export default {
-  title: 'Components/Field',
+  title: 'Field/Field',
   argTypes: {
-    variant: {
-      control: {
-        type: 'text',
-      },
-      description: 'Field variant',
-      table: {
-        defaultValue: {
-          summary: '__default',
-        },
-      },
-    },
-    labelVariant: {
-      control: {
-        type: 'text',
-      },
-      description: 'Field label variant',
-      table: {
-        defaultValue: {
-          summary: 'above',
-        },
-      },
-    },
-    htmlFor: {
-      control: {
-        type: 'text',
-      },
-      defaultValue: 'id',
-    },
-    label: {
-      control: {
-        type: 'text',
-      },
-      defaultValue: 'Label',
-    },
-    error: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'Error',
-      table: {
-        defaultValue: {
-          summary: false,
-        },
-      },
-    },
-    errorMessage: {
-      control: {
-        type: 'text',
-      },
-      description: 'Error Message',
-    },
     required: {
       control: {
         type: 'boolean',
       },
-      options: [true, false],
-      table: {
-        defaultValue: {
-          summary: false,
-        },
-      },
+      description: 'Whether the field is required',
+      defaultValue: false,
     },
     disabled: {
       control: {
         type: 'boolean',
       },
-      options: [true, false],
-      table: {
-        defaultValue: {
-          summary: false,
-        },
-      },
+      description: 'Whether the field is disabled',
+      defaultValue: false,
     },
-    type: {
+    label: {
       control: {
-        type: 'select',
+        type: 'text',
       },
-      options: [
-        'date',
-        'datetime-local',
-        'email',
-        'month',
-        'number',
-        'password',
-        'search',
-        'tel',
-        'text',
-        'time',
-        'time',
-        'url',
-        'week',
-      ],
-      defaultValue: 'text',
-      table: {
-        defaultValue: {
-          summary: 'text',
-        },
+      description: 'The label',
+      defaultValue: 'Field Label',
+    },
+    description: {
+      control: {
+        type: 'text',
       },
+      description: 'The description',
+      defaultValue: 'This is a help text description',
+    },
+    errorMessage: {
+      control: {
+        type: 'text',
+      },
+      description: 'The error message',
+      defaultValue: 'Something went wrong',
+    },
+    error: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Whether the help text is an error',
+      defaultValue: false,
     },
   },
 } as Meta;
 
-export const Basic: ComponentStory<typeof Field> = args => <Field {...args} />;
+export const Basic: ComponentStory<typeof Field> = args => (
+  <Field {...args}>
+    <input type="text" />
+  </Field>
+);

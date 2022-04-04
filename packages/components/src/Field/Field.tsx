@@ -1,67 +1,53 @@
-import React, { useRef } from 'react';
-import { useTextField } from '@react-aria/textfield';
-import { AriaTextFieldProps } from '@react-types/textfield';
+import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
+import { Stack } from '../Stack';
 
-import { Exclamation } from '@marigold/icons';
-import { ComponentProps } from '@marigold/types';
+import { Label } from './Label';
+import { HelpText } from './HelpText';
 
-import { Box } from '../Box';
-import { Label } from '../Label';
-import { ValidationMessage } from '../ValidationMessage';
-
-// Props
-// ---------------
-export type FieldProps = {
-  variant?: string;
-  labelVariant?: string;
-  htmlFor: string;
+export interface FieldProps {
+  disabled?: boolean;
   required?: boolean;
+  label?: ReactNode;
+  labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+  description?: ReactNode;
+  descriptionProps?: HTMLAttributes<HTMLElement>;
   error?: boolean;
-} & AriaTextFieldProps &
-  ComponentProps<'input'>;
+  errorMessage?: ReactNode;
+  errorMessageProps?: HTMLAttributes<HTMLElement>;
+}
 
-// Component
-// ---------------
 export const Field: React.FC<FieldProps> = ({
-  type = 'text',
-  variant = '',
-  labelVariant = 'above',
-  htmlFor,
+  children,
+  disabled,
   required,
+  label,
+  labelProps,
+  description,
+  descriptionProps,
   error,
   errorMessage,
-  ...props
+  errorMessageProps,
 }) => {
-  const ref = useRef<HTMLInputElement>(null);
-  const { labelProps, inputProps, errorMessageProps } = useTextField(
-    props,
-    ref
-  );
+  const hasHelpText = !!description || (errorMessage && error);
+
   return (
-    <>
-      <Label
-        variant={labelVariant}
-        htmlFor={htmlFor}
-        required={required}
-        {...labelProps}
-      >
-        {props.label}
-      </Label>
-      <Box
-        as="input"
-        type={type}
-        id={htmlFor}
-        variant={`input.${variant}`}
-        {...inputProps}
-        ref={ref}
-        {...props}
-      />
-      {error && errorMessage && (
-        <ValidationMessage {...errorMessageProps}>
-          <Exclamation size={16} />
-          {errorMessage}
-        </ValidationMessage>
+    <Stack>
+      {label && (
+        <Label {...labelProps} required={required}>
+          {label}
+        </Label>
       )}
-    </>
+      {children}
+      {hasHelpText && (
+        <HelpText
+          disabled={disabled}
+          description={description}
+          descriptionProps={descriptionProps}
+          error={error}
+          errorMessage={errorMessage}
+          errorMessageProps={errorMessageProps}
+        />
+      )}
+    </Stack>
   );
 };
