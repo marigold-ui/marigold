@@ -12,7 +12,7 @@ importers:
       '@marigold/tsconfig': workspace:*
       '@storybook/react': 6.4.20
       '@testing-library/jest-dom': 5.16.3
-      '@testing-library/react': 12.1.4
+      '@testing-library/react': 13.0.0
       '@testing-library/react-hooks': 7.0.2
       '@testing-library/user-event': 13.5.0
       '@types/node': 16.11.26
@@ -39,7 +39,7 @@ importers:
       '@marigold/tsconfig': link:config/tsconfig
       '@storybook/react': 6.4.20_f20e6186fe6af3f477ab127b79656e9d
       '@testing-library/jest-dom': 5.16.3
-      '@testing-library/react': 12.1.4_react-dom@17.0.2+react@17.0.2
+      '@testing-library/react': 13.0.0_react-dom@17.0.2+react@17.0.2
       '@testing-library/react-hooks': 7.0.2_react-dom@17.0.2+react@17.0.2
       '@testing-library/user-event': 13.5.0
       '@types/node': 16.11.26
@@ -7391,12 +7391,12 @@ packages:
       react-error-boundary: 3.1.4_react@17.0.2
     dev: false
 
-  /@testing-library/react/12.1.4_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-jiPKOm7vyUw311Hn/HlNQ9P8/lHNtArAx0PisXyFixDDvfl8DbD6EUdbshK5eqauvBSvzZd19itqQ9j3nferJA==}
+  /@testing-library/react/13.0.0_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-p0lYA1M7uoEmk2LnCbZLGmHJHyH59sAaZVXChTXlyhV/PRW9LoIh4mdf7tiXsO8BoNG+vN8UnFJff1hbZeXv+w==}
     engines: {node: '>=12'}
     peerDependencies:
-      react: '*'
-      react-dom: '*'
+      react: ^18.0.0
+      react-dom: ^18.0.0
     dependencies:
       '@babel/runtime': 7.17.8
       '@testing-library/dom': 8.12.0
