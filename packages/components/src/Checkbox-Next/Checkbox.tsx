@@ -66,6 +66,17 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       <VisuallyHidden>
         <input {...inputProps} {...focusProps} ref={ref} />
       </VisuallyHidden>
+      <svg width={16} height={16} fill="none" aria-hidden="true">
+        <rect
+          width={15}
+          height={15}
+          x={0.5}
+          y={0.5}
+          rx={1.5}
+          fill="#fff"
+          stroke="#CCC"
+        />
+      </svg>
       <svg width={24} height={24} aria-hidden="true">
         <rect
           x={state.isSelected ? 4 : 5}
