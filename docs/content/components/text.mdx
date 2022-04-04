@@ -4,12 +4,14 @@ title: Text
 
 # Text
 
-## Description
-
 With the Text component you can easily add different body text HTML elements. As a default, a `span` element is rendered.
 By adding the `as` prop you can alternatively render a `p` element.
 
-## Properties
+```tsx onlyCode
+import { Text } from '@marigold/components';
+```
+
+## Props
 
 | Property                | Type                 | Default |
 | :---------------------- | :------------------- | :------ |
@@ -22,19 +24,11 @@ By adding the `as` prop you can alternatively render a `p` element.
 | `size` (optional)       | `string`             |         |
 | `userSelect` (optional) | `string`             |         |
 
-## Import
+## Examples
 
-```tsx onlyCode
-import { Text } from '@marigold/components';
-```
+### Text
 
-## Live-Code Example
-
-```tsx expandCode
-<Text>I am a simple span Text.</Text>
-```
-
-## Usage
+Default span and paragraph Text
 
 ```tsx
 <Text>
@@ -61,6 +55,8 @@ import { Text } from '@marigold/components';
   gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
 </Text>
 ```
+
+Colored Text
 
 ```tsx
 <Text color="hotpink">Pink is awesome!</Text>

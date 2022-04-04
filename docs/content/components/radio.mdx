@@ -6,10 +6,12 @@ import { FigmaLink } from '../../src/components/FigmaLink';
 
 # Radio
 
-## Description
-
 With the Radio Button component you can add a HTML `<input>` element with `type="radio"` to your form.
 The variant can be added with the variant prop. The default variant is `__default`.
+
+```tsx onlyCode
+import { Radio } from '@marigold/components';
+```
 
 <FigmaLink
   to={
@@ -17,7 +19,7 @@ The variant can be added with the variant prop. The default variant is `__defaul
   }
 />
 
-## Properties
+## Props
 
 | Property                  | Type      | Default     |
 | :------------------------ | :-------- | :---------- |
@@ -29,23 +31,9 @@ The variant can be added with the variant prop. The default variant is `__defaul
 | `error` (optional)        | `boolean` | `false`     |
 | `errorMessage` (optional) | `string`  |             |
 
-## Import
+## Examples
 
-```tsx onlyCode
-import { Radio } from '@marigold/components';
-```
-
-## Live-Code Example
-
-```tsx expandCode
-<Radio checked id="live" value="live">
-  Radio label
-</Radio>
-```
-
-## Usage
-
-### Radio standard labeled
+Radio standard labeled
 
 ```tsx
 () => {
@@ -89,7 +77,7 @@ import { Radio } from '@marigold/components';
 };
 ```
 
-### Radio disabled
+Radio disabled
 
 ```tsx
 <>
@@ -103,7 +91,7 @@ import { Radio } from '@marigold/components';
 </>
 ```
 
-### Radio with required label
+Radio with required label
 
 ```tsx
 <>
@@ -113,9 +101,7 @@ import { Radio } from '@marigold/components';
 </>
 ```
 
-### Radio with error and errorMessage
-
-Only use the error and errorMesssage prop together
+Radio with error and errorMessage
 
 ```tsx
 <Radio id="error" value="error" error errorMessage="radio error">

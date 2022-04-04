@@ -6,9 +6,19 @@ import { FigmaLink } from '../../src/components/FigmaLink';
 
 # Textarea
 
-## Description
-
 The Textarea component consists of an `<textarea>` element and a `<label>`.
+
+<MarigoldTheme>
+  <Textarea
+    label="Textarea One"
+    htmlFor="textareaOne"
+    placeholder="Place your text here.."
+  />
+</MarigoldTheme>
+
+```tsx onlyCode
+import { Textarea } from '@marigold/components';
+```
 
 <FigmaLink
   to={
@@ -16,7 +26,7 @@ The Textarea component consists of an `<textarea>` element and a `<label>`.
   }
 />
 
-## Properties
+## Props
 
 | Property                  | Type      | Default     |
 | :------------------------ | :-------- | :---------- |
@@ -27,13 +37,9 @@ The Textarea component consists of an `<textarea>` element and a `<label>`.
 | `errorMessage` (optional) | `string`  |             |
 | `required` (optional)     | `boolean` |             |
 
-## Import
+## Examples
 
-```tsx onlyCode
-import { Textarea } from '@marigold/components';
-```
-
-## Live-Code Example
+Default Textarea
 
 ```tsx expandCode
 <Textarea
@@ -43,19 +49,7 @@ import { Textarea } from '@marigold/components';
 />
 ```
 
-## Usage
-
-### Basic Textarea
-
-```tsx
-<Textarea
-  label="Textarea Two"
-  htmlFor="textareaTwo"
-  placeholder="Placeholder"
-/>
-```
-
-### Disabled Textarea
+Disabled Textarea
 
 ```tsx
 <Textarea
@@ -66,13 +60,13 @@ import { Textarea } from '@marigold/components';
 />
 ```
 
-### Required Textarea
+Required Textarea
 
 ```tsx
 <Textarea label="Required Textarea" htmlFor="required" required />
 ```
 
-### Error Textarea
+Error Textarea
 
 ```tsx
 <Textarea
