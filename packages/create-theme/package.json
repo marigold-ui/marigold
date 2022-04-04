@@ -1,6 +1,6 @@
 {
   "name": "@marigold/create-theme",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Marigold helper to kickoff Themes",
   "license": "MIT",
   "keywords": [

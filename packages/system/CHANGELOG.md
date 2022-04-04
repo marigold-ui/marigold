@@ -1,5 +1,15 @@
 # @marigold/system
 
+## 0.8.0
+
+### Minor Changes
+
+- [#1935](https://github.com/marigold-ui/marigold/pull/1935) [`382ac6cc`](https://github.com/marigold-ui/marigold/commit/382ac6cca1865d033ba601ad269247f26ee0a13e) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): improve SVG to handle width and height prop
+
+* [#1915](https://github.com/marigold-ui/marigold/pull/1915) [`2f45aa5d`](https://github.com/marigold-ui/marigold/commit/2f45aa5d236f861ab8187a4a574a7113d6c1f1b8) Thanks [@sebald](https://github.com/sebald)! - feat(system): theme getter
+
+- [#1919](https://github.com/marigold-ui/marigold/pull/1919) [`5319745c`](https://github.com/marigold-ui/marigold/commit/5319745cbc20919a423dda49f4fb8ac4608009e1) Thanks [@sebald](https://github.com/sebald)! - feat: SVG supports size token from theme
+
 ## 0.7.0
 
 ## 0.6.0

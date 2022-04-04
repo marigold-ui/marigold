@@ -1,5 +1,22 @@
 # @marigold/theme-b2b
 
+## 5.0.0
+
+### Minor Changes
+
+- [#1892](https://github.com/marigold-ui/marigold/pull/1892) [`a91171f9`](https://github.com/marigold-ui/marigold/commit/a91171f96d0eed696f988e4fc45c13757ea1971e) Thanks [@sebald](https://github.com/sebald)! - feat(components): Normalize link variant
+
+* [#1937](https://github.com/marigold-ui/marigold/pull/1937) [`a1f4796f`](https://github.com/marigold-ui/marigold/commit/a1f4796fafe476154e8e03cd4a336e5266a8950d) Thanks [@sebald](https://github.com/sebald)! - refa: Redo `<Field>` now called `<TextField>`
+
+- [#1890](https://github.com/marigold-ui/marigold/pull/1890) [`140c0517`](https://github.com/marigold-ui/marigold/commit/140c051745416cc05a5ae2775650352c92eb468a) Thanks [@sebald](https://github.com/sebald)! - feat: add font urls to themes + docs
+
+  See https://marigold-ui.io/introduction/03-theming for more infos!
+
+### Patch Changes
+
+- Updated dependencies [[`059e9324`](https://github.com/marigold-ui/marigold/commit/059e9324375b0dc67fef6ac84b65f997a930a345), [`a91171f9`](https://github.com/marigold-ui/marigold/commit/a91171f96d0eed696f988e4fc45c13757ea1971e), [`a1f4796f`](https://github.com/marigold-ui/marigold/commit/a1f4796fafe476154e8e03cd4a336e5266a8950d), [`5319745c`](https://github.com/marigold-ui/marigold/commit/5319745cbc20919a423dda49f4fb8ac4608009e1), [`249b0c81`](https://github.com/marigold-ui/marigold/commit/249b0c81a5889e558d85e8f9214afa0897368dd8), [`3cf378e9`](https://github.com/marigold-ui/marigold/commit/3cf378e9c80f700e78eaafcfc0701a20e29e37d0), [`5e5e0fcc`](https://github.com/marigold-ui/marigold/commit/5e5e0fcc45aadf62f8c3b33e722e9132a7267cbc), [`e3d62a22`](https://github.com/marigold-ui/marigold/commit/e3d62a22fdc42c394516d477ad8d477ae02bff1e), [`e94a08d7`](https://github.com/marigold-ui/marigold/commit/e94a08d76d036754aa9237ee5b1ef52fb93aadab)]:
+  - @marigold/components@0.8.0
+
 ## 4.0.0
 
 ### Patch Changes

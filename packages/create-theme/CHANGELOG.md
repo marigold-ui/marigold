@@ -1,5 +1,16 @@
 # @marigold/create-theme
 
+## 2.0.0
+
+### Major Changes
+
+- [#1891](https://github.com/marigold-ui/marigold/pull/1891) [`74c91e28`](https://github.com/marigold-ui/marigold/commit/74c91e289ffadfc082a548fc55ab9bd315ac1d8a) Thanks [@sebald](https://github.com/sebald)! - feat(tokens): Separate size and space scale
+
+### Patch Changes
+
+- Updated dependencies [[`74c91e28`](https://github.com/marigold-ui/marigold/commit/74c91e289ffadfc082a548fc55ab9bd315ac1d8a)]:
+  - @marigold/tokens@2.0.0
+
 ## 1.0.0
 
 ### Major Changes

@@ -1,5 +1,37 @@
 # @marigold/docs
 
+## 0.8.0
+
+### Minor Changes
+
+- [#1928](https://github.com/marigold-ui/marigold/pull/1928) [`059e9324`](https://github.com/marigold-ui/marigold/commit/059e9324375b0dc67fef6ac84b65f997a930a345) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): improve Container component
+
+* [#1892](https://github.com/marigold-ui/marigold/pull/1892) [`a91171f9`](https://github.com/marigold-ui/marigold/commit/a91171f96d0eed696f988e4fc45c13757ea1971e) Thanks [@sebald](https://github.com/sebald)! - feat(components): Normalize link variant
+
+- [#1930](https://github.com/marigold-ui/marigold/pull/1930) [`249b0c81`](https://github.com/marigold-ui/marigold/commit/249b0c81a5889e558d85e8f9214afa0897368dd8) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Introduce Breakout component
+
+* [#1890](https://github.com/marigold-ui/marigold/pull/1890) [`140c0517`](https://github.com/marigold-ui/marigold/commit/140c051745416cc05a5ae2775650352c92eb468a) Thanks [@sebald](https://github.com/sebald)! - feat: add font urls to themes + docs
+
+  See https://marigold-ui.io/introduction/03-theming for more infos!
+
+- [#1925](https://github.com/marigold-ui/marigold/pull/1925) [`e3d62a22`](https://github.com/marigold-ui/marigold/commit/e3d62a22fdc42c394516d477ad8d477ae02bff1e) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Rewrite Columns and remove Column
+
+* [#1870](https://github.com/marigold-ui/marigold/pull/1870) [`e94a08d7`](https://github.com/marigold-ui/marigold/commit/e94a08d76d036754aa9237ee5b1ef52fb93aadab) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Center component
+
+### Patch Changes
+
+- [#1933](https://github.com/marigold-ui/marigold/pull/1933) [`74c53684`](https://github.com/marigold-ui/marigold/commit/74c5368411866876974a80c35ed48377c366da3c) Thanks [@sebald](https://github.com/sebald)! - docs: fix outline links styles
+
+* [#1926](https://github.com/marigold-ui/marigold/pull/1926) [`5e5e0fcc`](https://github.com/marigold-ui/marigold/commit/5e5e0fcc45aadf62f8c3b33e722e9132a7267cbc) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Container with grid
+
+- [#1934](https://github.com/marigold-ui/marigold/pull/1934) [`039c6c1d`](https://github.com/marigold-ui/marigold/commit/039c6c1d8e0e8f733645e80dba6ab1bd7749a4b1) Thanks [@ti10le](https://github.com/ti10le)! - refa(docs): improve mdx pages
+
+- Updated dependencies [[`382ac6cc`](https://github.com/marigold-ui/marigold/commit/382ac6cca1865d033ba601ad269247f26ee0a13e), [`059e9324`](https://github.com/marigold-ui/marigold/commit/059e9324375b0dc67fef6ac84b65f997a930a345), [`2f45aa5d`](https://github.com/marigold-ui/marigold/commit/2f45aa5d236f861ab8187a4a574a7113d6c1f1b8), [`a91171f9`](https://github.com/marigold-ui/marigold/commit/a91171f96d0eed696f988e4fc45c13757ea1971e), [`a1f4796f`](https://github.com/marigold-ui/marigold/commit/a1f4796fafe476154e8e03cd4a336e5266a8950d), [`5319745c`](https://github.com/marigold-ui/marigold/commit/5319745cbc20919a423dda49f4fb8ac4608009e1), [`249b0c81`](https://github.com/marigold-ui/marigold/commit/249b0c81a5889e558d85e8f9214afa0897368dd8), [`3cf378e9`](https://github.com/marigold-ui/marigold/commit/3cf378e9c80f700e78eaafcfc0701a20e29e37d0), [`140c0517`](https://github.com/marigold-ui/marigold/commit/140c051745416cc05a5ae2775650352c92eb468a), [`5e5e0fcc`](https://github.com/marigold-ui/marigold/commit/5e5e0fcc45aadf62f8c3b33e722e9132a7267cbc), [`e3d62a22`](https://github.com/marigold-ui/marigold/commit/e3d62a22fdc42c394516d477ad8d477ae02bff1e), [`e94a08d7`](https://github.com/marigold-ui/marigold/commit/e94a08d76d036754aa9237ee5b1ef52fb93aadab)]:
+  - @marigold/system@0.8.0
+  - @marigold/components@0.8.0
+  - @marigold/theme-b2b@5.0.0
+  - @marigold/icons@0.6.0
+
 ## 0.7.0
 
 ### Minor Changes

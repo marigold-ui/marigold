@@ -1,5 +1,16 @@
 # @marigold/icons
 
+## 0.6.0
+
+### Minor Changes
+
+- [#1919](https://github.com/marigold-ui/marigold/pull/1919) [`5319745c`](https://github.com/marigold-ui/marigold/commit/5319745cbc20919a423dda49f4fb8ac4608009e1) Thanks [@sebald](https://github.com/sebald)! - feat: SVG supports size token from theme
+
+### Patch Changes
+
+- Updated dependencies [[`382ac6cc`](https://github.com/marigold-ui/marigold/commit/382ac6cca1865d033ba601ad269247f26ee0a13e), [`2f45aa5d`](https://github.com/marigold-ui/marigold/commit/2f45aa5d236f861ab8187a4a574a7113d6c1f1b8), [`5319745c`](https://github.com/marigold-ui/marigold/commit/5319745cbc20919a423dda49f4fb8ac4608009e1)]:
+  - @marigold/system@0.8.0
+
 ## 0.5.1
 
 ### Patch Changes
