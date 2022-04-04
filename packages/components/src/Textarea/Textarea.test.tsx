@@ -20,7 +20,6 @@ test('renders an textarea', () => {
 
   const textArea = screen.getByTestId('textarea');
   expect(textArea).toBeInTheDocument();
-  expect(textArea).toHaveAttribute('type', 'text');
   expect(textArea instanceof HTMLTextAreaElement).toBeTruthy();
 });
 
