@@ -4,11 +4,19 @@ title: Link
 
 # Link
 
-## Description
-
 Element to style links.
 
-## Properties
+<MarigoldTheme>
+  <Link href="http://www.reservix.de" target="_blank">
+    reservix.de
+  </Link>
+</MarigoldTheme>
+
+```tsx onlyCode
+import { Link } from '@marigold/components';
+```
+
+## Props
 
 | Property              | Type                 | Default |
 | :-------------------- | :------------------- | :------ |
@@ -16,30 +24,26 @@ Element to style links.
 | `variant` (optional)  | `string ⎮ string[]`  | `link`  |
 | `disabled` (optional) | boolean              |         |
 
-## Import
+## Examples
 
-```tsx onlyCode
-import { Link } from '@marigold/components';
-```
-
-## Live-Code Example
-
-```tsx expandCode
-<Text>
-  You can jump to
-  <Link href="http://www.reservix.de" target="_blank">
-    reservix.de
-  </Link>
-</Text>
-```
-
-## Usage
+Standard Link
 
 ```tsx
 <Text>
   Link something nice like
   <Link href="#!" target="_blank">
     Marigold
+  </Link>
+</Text>
+```
+
+Link disabled
+
+```tsx
+<Text>
+  You can jump to
+  <Link href="http://www.reservix.de" target="_blank" disabled>
+    reservix.de
   </Link>
 </Text>
 ```
