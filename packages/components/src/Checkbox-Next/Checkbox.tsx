@@ -8,6 +8,14 @@ import { AriaCheckboxProps } from '@react-types/checkbox';
 import { Box } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
+// Theme Extension
+// ---------------
+export interface CheckboxThemeExtension<Value> {
+  checkbox?: {
+    [key: string]: Value;
+  };
+}
+
 // Props
 // ---------------
 /**
