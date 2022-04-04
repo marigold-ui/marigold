@@ -1,117 +1,100 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import React, { ReactNode } from 'react';
+import { AriaTextFieldOptions, useTextField } from '@react-aria/textfield';
+import { render, screen, within } from '@testing-library/react';
+
 import { Field } from './Field';
 
-const theme = {
-  space: {
-    none: 0,
-    small: 4,
-    medium: 8,
-  },
-  label: {
-    above: {
-      fontSize: '14px',
-    },
-  },
-  input: {
-    __default: {
-      padding: 'small',
-    },
-    error: {
-      padding: 'medium',
-    },
-  },
+// Setup
+// ---------------
+interface MockedTestFieldProps extends AriaTextFieldOptions<'input'> {
+  disabled?: boolean;
+  required?: boolean;
+  label?: ReactNode;
+  description?: ReactNode;
+  error?: boolean;
+  errorMessage?: ReactNode;
+}
+
+const MockedTextField = (props: MockedTestFieldProps) => {
+  const ref = React.useRef(null);
+  const { labelProps, inputProps, descriptionProps, errorMessageProps } =
+    useTextField(props, ref);
+
+  return (
+    <Field
+      {...props}
+      labelProps={labelProps}
+      descriptionProps={descriptionProps}
+      errorMessageProps={errorMessageProps}
+    >
+      <input {...inputProps} ref={ref} />
+    </Field>
+  );
 };
 
-test('renders correct HTML elements', () => {
+// Tests
+// ---------------
+test('render Field with label and helptext', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Field htmlFor="myId" label="label" data-testid="field" />
-    </ThemeProvider>
-  );
-  const label = screen.getByText(/label/);
-  const field = screen.getByTestId(/field/);
-
-  expect(label instanceof HTMLLabelElement).toBeTruthy();
-  expect(field instanceof HTMLInputElement).toBeTruthy();
-});
-
-test('supports default variant', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Field htmlFor="myId" label="Name" data-testid="field" />
-    </ThemeProvider>
-  );
-  const field = screen.getByTestId(/field/);
-  expect(field).toHaveStyle(`padding: 4px`);
-});
-
-test('supports other variant than default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Field htmlFor="myId" label="Name" variant="error" data-testid="field" />
-    </ThemeProvider>
-  );
-  const field = screen.getByTestId(/field/);
-  expect(field).toHaveStyle(`padding: 8px`);
-});
-
-test('supports default variantLabel', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Field htmlFor="myId" label="Name" />
-    </ThemeProvider>
-  );
-  const label = screen.getByText(/Name/);
-  expect(label).toHaveStyle(`font-size: 14px`);
-});
-
-test('supports other variantLabel than default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Field htmlFor="myId" label="Name" />
-    </ThemeProvider>
-  );
-  const label = screen.getByText(/Name/);
-  expect(label).toHaveStyle(`font-size: 14px`);
-});
-
-test('supports label prop', () => {
-  render(<Field htmlFor="myId" label="Name" />);
-  const field = screen.getByText(/Name/);
-
-  expect(field).toBeDefined();
-});
-
-test('supports htmlFor prop', () => {
-  render(<Field htmlFor="myId" label="Name" />);
-  const field = screen.getByText(/Name/);
-
-  expect(field).toHaveAttribute('for');
-});
-
-test('supports required prop', () => {
-  render(<Field htmlFor="myId" label="label" required />);
-  const fieldLabel = screen.getByText(/label/);
-
-  // eslint-disable-next-line testing-library/no-node-access
-  expect(fieldLabel.nextSibling).toBeDefined();
-  // eslint-disable-next-line testing-library/no-node-access
-  expect(fieldLabel.nextSibling instanceof SVGElement).toBeTruthy();
-});
-
-test('supports error and errorMessage prop', () => {
-  render(
-    <Field htmlFor="myId" label="label" error errorMessage="Validation error" />
+    <MockedTextField
+      label="Label"
+      description="This is a helpful text"
+      errorMessage="Something went wrong"
+    />
   );
 
-  const errorMessage = screen.getByText(/Validation/);
-  expect(errorMessage).toBeDefined();
+  const label = screen.getByText('Label');
+  expect(label).toBeInTheDocument();
+  const description = screen.getByText('This is a helpful text');
+  expect(description).toBeInTheDocument();
+  const error = screen.queryByText('Something went wrong');
+  expect(error).not.toBeInTheDocument();
 });
 
-test('supports disabled prop', () => {
-  render(<Field htmlFor="myId" label="label" data-testid="myId" disabled />);
-  const field = screen.getByTestId(/myId/);
-  expect(field).toHaveAttribute('disabled');
+test('render Field with label and errorMessage', () => {
+  render(
+    <MockedTextField
+      label="Label"
+      errorMessage="Something went wrong"
+      error={true}
+    />
+  );
+
+  const label = screen.getByText('Label');
+  expect(label).toBeInTheDocument();
+  const error = screen.getByText('Something went wrong');
+  expect(error).toBeInTheDocument();
+});
+
+test('render Field with label and errorMessage although description is set', () => {
+  render(
+    <MockedTextField
+      label="Label"
+      description="This is a helpful text"
+      errorMessage="Something went wrong"
+      error={true}
+    />
+  );
+
+  const label = screen.getByText('Label');
+  expect(label).toBeInTheDocument();
+  const description = screen.queryByText('This is a helpful text');
+  expect(description).not.toBeInTheDocument();
+  const error = screen.getByText('Something went wrong');
+  expect(error).toBeInTheDocument();
+});
+
+test('field label shows requried indicator', () => {
+  render(
+    <MockedTextField
+      label="Label"
+      required
+      description="This is a helpful text"
+      errorMessage="Something went wrong"
+    />
+  );
+
+  const label = screen.getByText('Label');
+  const requiredIcon = within(label).getByRole('presentation');
+  expect(requiredIcon).toBeInTheDocument();
 });
