@@ -1,8 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
-import { TextArea } from './TextArea';
 import userEvent from '@testing-library/user-event';
+import { ThemeProvider } from '@marigold/system';
+
+import { TextArea } from './TextArea';
 
 const theme = {
   fonts: {
