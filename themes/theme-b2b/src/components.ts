@@ -592,6 +592,7 @@ export const components = {
         outlineColor: 'blue60',
       },
       ':disabled': {
+        cursor: 'not-allowed',
         color: 'disabled',
         bg: 'gray20',
       },
