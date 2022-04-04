@@ -4,11 +4,13 @@ title: Box
 
 # Box
 
-## Description
+See [Box Primitive](../../foundation/box-primitive) for detailed description
 
-See [Box Primitive](../../foundation/box-primitive)
+```tsx onlyCode
+import { Box } from '@marigold/components';
+```
 
-## Properties
+## Props
 
 | Property                    | Type                                  | Default |
 | :-------------------------- | :------------------------------------ | :------ |
@@ -53,21 +55,13 @@ See [Box Primitive](../../foundation/box-primitive)
 | `overflow` (optional)       | `ResponsiveStyleValue<string>`        |         |
 | `transition` (optional)     | `ResponsiveStyleValue<number⎮string>` |         |
 
-## Import
-
-```tsx onlyCode
-import { Box } from '@marigold/components';
-```
-
-## Live-Code Example
+## Examples
 
 ```tsx expandCode
-<Box bg="success" p="8px" width="25%">
+<Box bg="success" p="8px" width="25%" display="flex" justifyContent="center">
   <Text color="white">Box Example</Text>
 </Box>
 ```
-
-## Usage
 
 ```tsx
 <Box>I am basic div box!</Box>
@@ -75,7 +69,7 @@ import { Box } from '@marigold/components';
 
 ```tsx
 <Box as="button" bg="primary" variant="button.primary" p="8px">
-  I am a button box!
+  I am a button
 </Box>
 ```
 

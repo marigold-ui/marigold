@@ -4,7 +4,9 @@ title: Aside
 
 # Aside
 
-## Demo
+The `<Aside>` layout is useful when you want to set two things next to each other and the one has a fixed width (the aside) and the other can have a dynamic width (the content).
+
+It is important to note that the `<Aside>` must have exactly too children, where none is a `<Fragment>`.
 
 <MarigoldTheme>
   <Aside space="medium">
@@ -13,13 +15,11 @@ title: Aside
   </Aside>
 </MarigoldTheme>
 
-## Description
+```tsx onlyCode
+import { Aside } from '@marigold/components';
+```
 
-The `<Aside>` layout is useful when you want to set two things next to each other and the one has a fixed width (the aside) and the other can have a dynamic width (the content).
-
-It is important to note that the `<Aside>` must have exactly too children, where none is a `<Fragment>`.
-
-## Properties
+## Props
 
 | Property               | Type                           | Default |
 | :--------------------- | :----------------------------- | :------ |
@@ -29,29 +29,22 @@ It is important to note that the `<Aside>` must have exactly too children, where
 | `stretch` (optional)   | boolean                        | `true`  |
 | `wrap` (optional)      | `Non-zero Percentage`          | `50%`   |
 
-## Import
+## Examples
 
-```tsx onlyCode
-import { Aside } from '@marigold/components';
-```
-
-## Types
-
-### Spacing
+Space between elements
 
 ```tsx
-  <Aside space="medium">
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="50px" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" />
-  </Aside>
+<Aside space="medium">
+  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="50px" />
+  <Box border="1px solid #ced4da" bg="#e9ecef" />
+</Aside>
 ```
 
-### Aside on the right
+Aside on the right
 
 ```tsx
-  <Aside space="medium" side="right">
-    <Box border="1px solid #ced4da" bg="#e9ecef" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="50px" />
-  </Aside>
+<Aside space="medium" side="right">
+  <Box border="1px solid #ced4da" bg="#e9ecef" />
+  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="50px" />
+</Aside>
 ```
-

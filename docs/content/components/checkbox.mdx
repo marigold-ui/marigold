@@ -7,7 +7,8 @@ import { DoAndDont } from '../../src/components/DoAndDont';
 
 # Checkbox
 
-## Demo
+Checkboxes allow users to select multiple items from a list of individual items,
+or to mark one individual item as selected.
 
 <MarigoldTheme>
   <Inline space="medium">
@@ -29,10 +30,9 @@ import { DoAndDont } from '../../src/components/DoAndDont';
   </Inline>
 </MarigoldTheme>
 
-## Description
-
-Checkboxes allow users to select multiple items from a list of individual items,
-or to mark one individual item as selected.
+```tsx onlyCode
+import { Checkbox } from '@marigold/components';
+```
 
 <FigmaLink
   to={
@@ -40,7 +40,7 @@ or to mark one individual item as selected.
   }
 />
 
-## Properties
+## Props
 
 | Property                    | Type      | Default     |
 | :-------------------------- | :-------- | :---------- |
@@ -53,15 +53,9 @@ or to mark one individual item as selected.
 | `error` (optional)          | `boolean` | `false`     |
 | `errorMessage` (optional)   | `string`  |             |
 
-## Import
+## Examples
 
-```tsx onlyCode
-import { Checkbox } from '@marigold/components';
-```
-
-## Types
-
-### Checkbox standard labeled
+Checkbox standard labeled
 
 ```tsx expandCode
 () => {
@@ -83,7 +77,7 @@ import { Checkbox } from '@marigold/components';
 };
 ```
 
-### Checkbox disabled
+Checkbox disabled
 
 ```tsx
 <>
@@ -97,7 +91,7 @@ import { Checkbox } from '@marigold/components';
 </>
 ```
 
-### Checkbox required label
+Checkbox required label
 
 ```tsx
 <Checkbox checked id="required" value="required" required>
@@ -105,9 +99,7 @@ import { Checkbox } from '@marigold/components';
 </Checkbox>
 ```
 
-### Checkbox error and errorMessage
-
-Use the error and errorMesssage prop together
+Checkbox error and errorMessage
 
 ```tsx
 <Checkbox
@@ -121,7 +113,7 @@ Use the error and errorMesssage prop together
 </Checkbox>
 ```
 
-### Indeterminated Checkbox
+Indeterminated Checkbox
 
 Use indeterminate state when it represents both selected and not selected values.
 
@@ -131,7 +123,7 @@ Use indeterminate state when it represents both selected and not selected values
 </Checkbox>
 ```
 
-## Usage
+## Dos & Don'ts
 
 <Stack space="small">
   <Box

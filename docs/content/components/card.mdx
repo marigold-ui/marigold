@@ -3,11 +3,10 @@ title: Card
 ---
 
 import { DoAndDont } from '../../src/components/DoAndDont';
-import { Box, Card, Link, Stack, Text } from '@marigold/components';
 
 # Card
 
-## Demo
+The card component can be used for organizing information inside the UI, as well it provides a better readability and helps the user to find information in an easier way.
 
 <MarigoldTheme>
   <Card title="Title">
@@ -21,11 +20,11 @@ import { Box, Card, Link, Stack, Text } from '@marigold/components';
   </Card>
 </MarigoldTheme>
 
-## Description
+```tsx onlyCode
+import { Card } from '@marigold/components';
+```
 
-The card component can be used for organizing information inside the UI, as well it provides a better readability and helps the user to find information in an easier way.
-
-## Properties
+## Props
 
 | Property  | Type                           | Default     |
 | :-------- | :----------------------------- | :---------- |
@@ -33,15 +32,9 @@ The card component can be used for organizing information inside the UI, as well
 | `width`   | `ResponsiveStyleValue<string>` |             |
 | `title`   | `string`                       |             |
 
-## Import
+## Examples
 
-```tsx onlyCode
-import { Card } from '@marigold/components';
-```
-
-## Types
-
-### Standard title and text
+Standard title and text
 
 ```tsx expandCode
 <Card title="Title">
@@ -55,7 +48,7 @@ import { Card } from '@marigold/components';
 </Card>
 ```
 
-### Custom width
+Custom width
 
 ```tsx
 <Card title="Title" width="320px">
@@ -63,7 +56,7 @@ import { Card } from '@marigold/components';
 </Card>
 ```
 
-### Card title and fields
+## Card with form fields
 
 ```tsx
 <Card title="Name">
@@ -72,7 +65,7 @@ import { Card } from '@marigold/components';
 </Card>
 ```
 
-### Card title and select
+## Card with select
 
 ```tsx
 <Card title="Choose Color">
@@ -87,7 +80,7 @@ import { Card } from '@marigold/components';
 </Card>
 ```
 
-## Usage
+## Dos & Don'ts
 
 <Stack space="small">
   <Box

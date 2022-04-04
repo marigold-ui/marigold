@@ -4,11 +4,27 @@ title: Badge
 
 # Badge
 
-## Description
-
 A badge tags an element with a short note and color. The content of the badge can be anything but preferably a string and/or icon.
 
-## Properties
+<MarigoldTheme>
+  <Inline space="xsmall">
+    <Badge bgColor="info">
+      <Text color="white">Info</Text>
+    </Badge>
+    <Badge bgColor="success">
+      <Text color="white">Success</Text>
+    </Badge>
+    <Badge bgColor="error">
+      <Text color="white">Error</Text>
+    </Badge>
+  </Inline>
+</MarigoldTheme>
+
+```tsx onlyCode
+import { Badge } from '@marigold/components';
+```
+
+## Props
 
 | Property                 | Type     | Default       |
 | :----------------------- | :------- | :------------ |
@@ -16,31 +32,31 @@ A badge tags an element with a short note and color. The content of the badge ca
 | `borderColor` (optional) | `string` | `transparent` |
 | `bgColor` (optional)     | `string` | `inherit`     |
 
-## Import
+## Examples
 
-```tsx onlyCode
-import { Badge } from '@marigold/components';
-```
-
-## Live-Code Example
+Background color
 
 ```tsx expandCode
 <Badge bgColor="error">
-  <Text color="white">Error Badge</Text>
+  <Text color="white">Error</Text>
 </Badge>
 ```
 
-## Usage
+Border color
 
 ```tsx
-<Badge borderColor="secondary" bgColor="primary">
-  <Text>New</Text>
+<Badge borderColor="info" bgColor="white">
+  <Text color="info">New</Text>
 </Badge>
 ```
 
+## Badge with icon
+
 ```tsx
-<Badge borderColor="primary">
-  <Check size={18} />
-  cool
+<Badge borderColor="secondary">
+  <Inline space="xsmall">
+    type:documentation
+    <ResaleLogbook size={18} />
+  </Inline>
 </Badge>
 ```

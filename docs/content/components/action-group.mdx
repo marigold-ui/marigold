@@ -6,9 +6,22 @@ import { FigmaLink } from '../../src/components/FigmaLink';
 
 # ActionGroup
 
-## Description
-
 The ActionGroup component adds two or more components together to form a common group.
+
+<MarigoldTheme>
+  <ActionGroup space="xsmall">
+    <Button variant="text" size="small">
+      Cancel
+    </Button>
+    <Button variant="primary" size="small">
+      Confirm
+    </Button>
+  </ActionGroup>
+</MarigoldTheme>
+
+```tsx onlyCode
+import { ActionGroup } from '@marigold/components';
+```
 
 <FigmaLink
   to={
@@ -16,46 +29,16 @@ The ActionGroup component adds two or more components together to form a common 
   }
 />
 
-## Properties
+## Props
 
 | Property                       | Type                           | Default |
 | :----------------------------- | :----------------------------- | :------ |
 | `space` (optional)             | `ResponsiveStyleValue<string>` | `none`  |
 | `verticalAlignment` (optional) | `boolean`                      | `false` |
 
-## Import
+## Examples
 
-```tsx onlyCode
-import { ActionGroup } from '@marigold/components';
-```
-
-## Live-Code Example
-
-```tsx expandCode
-<ActionGroup space="xsmall">
-  <Button variant="text" size="small">
-    Cancel
-  </Button>
-  <Button variant="primary" size="small">
-    Confirm
-  </Button>
-</ActionGroup>
-```
-
-## Usage
-
-```tsx
-<ActionGroup>
-  <Button variant="text" size="small">
-    Cancel
-  </Button>
-  <Button variant="secondary" size="small">
-    Delete <Delete />
-  </Button>
-</ActionGroup>
-```
-
-### With space
+Space between the elements
 
 ```tsx
 <ActionGroup space="small">
@@ -64,7 +47,7 @@ import { ActionGroup } from '@marigold/components';
 </ActionGroup>
 ```
 
-### With vertical alignment
+Vertical alignment
 
 ```tsx
 <ActionGroup space="small" verticalAlignment>
@@ -73,6 +56,19 @@ import { ActionGroup } from '@marigold/components';
   </Button>
   <Button variant="secondary" size="small">
     Sort <SortDown />
+  </Button>
+</ActionGroup>
+```
+
+## Group two Buttons in a form
+
+```tsx
+<ActionGroup space="xsmall">
+  <Button variant="text" size="small">
+    Cancel
+  </Button>
+  <Button variant="primary" size="small" space="xsmall">
+    Save Settings <Save />
   </Button>
 </ActionGroup>
 ```

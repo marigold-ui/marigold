@@ -4,11 +4,7 @@ title: Aspect
 
 # Aspect
 
-## Description
-
 The Aspect component is used to embed responsive images, videos, maps, etc. You can use a predefined ratio and maximum width.
-
-## Demo
 
 <MarigoldTheme>
   <Aspect maxWidth="25vw" ratio="portrait">
@@ -19,22 +15,20 @@ The Aspect component is used to embed responsive images, videos, maps, etc. You 
   </Aspect>
 </MarigoldTheme>
 
-## Properties (API)
+```tsx onlyCode
+import { Aspect } from '@marigold/components';
+```
+
+## Props
 
 | Property   | Type                                                         | Default  |
 | :--------- | :----------------------------------------------------------- | :------- |
 | `ratio`    | `square, landscape, portrait, widescreen, ultrawide, golden` | `square` |
 | `maxWidth` | `string`                                                     | `100%`   |
 
-## Import
+## Examples
 
-```tsx onlyCode
-import { Aspect } from '@marigold/components';
-```
-
-## Variants
-
-### Image - Ratio Square
+Ratio Square and maximum width
 
 ```tsx
 <Aspect maxWidth="25vw">
@@ -45,7 +39,7 @@ import { Aspect } from '@marigold/components';
 </Aspect>
 ```
 
-### Map Ratio Landscape
+## Map
 
 ```tsx
 <Aspect ratio="landscape">
@@ -58,7 +52,7 @@ import { Aspect } from '@marigold/components';
 </Aspect>
 ```
 
-### Video - Ratio Widescreen
+## Video
 
 ```tsx
 <Aspect ratio="widescreen">
