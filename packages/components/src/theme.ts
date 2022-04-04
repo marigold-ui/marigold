@@ -23,7 +23,7 @@ import { type SelectThemeExtension } from './Select';
 import { type SliderThemeExtension } from './Slider';
 import { type SwitchThemeExtension } from './Switch';
 import { type TextThemeExtension } from './Text';
-import { type TextAreaThemeExtension } from './TextArea';
+import { type TextAreaThemeExtension } from './TextArea-new';
 import { type TooltipThemeExtension } from './Tooltip';
 import { type ValidationMessageThemeExtension } from './ValidationMessage';
 
