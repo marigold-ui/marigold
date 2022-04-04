@@ -28,7 +28,7 @@ export * from './Slider';
 export * from './Switch';
 export * from './Stack';
 export * from './Text';
-export * from './TextArea-new';
+export * from './TextArea';
 export * from './TextField';
 export * from './Tiles';
 export * from './Tooltip';
