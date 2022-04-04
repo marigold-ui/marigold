@@ -7,6 +7,16 @@ import { ComponentProps } from '@marigold/types';
 
 import { Field, FieldProps } from '../Field';
 
+// Theme Extension
+// ---------------
+export interface TextAreaThemeExtension<Value> {
+  textArea?: {
+    [key: string]: Value;
+  };
+}
+
+// Props
+// ---------------
 /**
  * `react-aria` has a slightly different API for the above events.
  * Thus, we adjust our regular props to match them.
@@ -36,6 +46,8 @@ export interface TextAreaProps
   defaultValue?: string;
 }
 
+// Component
+// ---------------
 export const TextArea = ({
   disabled,
   required,
@@ -69,7 +81,7 @@ export const TextArea = ({
       errorMessage={errorMessage}
       errorMessageProps={errorMessageProps}
     >
-      <Box as="textarea" variant="input" ref={ref} {...inputProps} />
+      <Box as="textarea" variant="textArea" ref={ref} {...inputProps} />
     </Field>
   );
 };
