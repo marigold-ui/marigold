@@ -6,10 +6,12 @@ import { FigmaLink } from '../../src/components/FigmaLink';
 
 # Dialog
 
-## Description
-
 Component to display a Dialog as a reaction to an event. The Dialog could be styled via theme and should be filled with content.
 You can also add a title via title prop.
+
+```tsx onlyCode
+import { Dialog } from '@marigold/components';
+```
 
 <FigmaLink
   to={
@@ -17,7 +19,7 @@ You can also add a title via title prop.
   }
 />
 
-## Properties
+## Props
 
 | Property                     | Type                                       | Default     |
 | :--------------------------- | :----------------------------------------- | :---------- |
@@ -27,15 +29,9 @@ You can also add a title via title prop.
 | `variant (optional)`         | `string`                                   | `__default` |
 | `backdropVariant (optional)` | `string`                                   | `backdrop`  |
 
-## Import
+## Example
 
-```tsx onlyCode
-import { Dialog } from '@marigold/components';
-```
-
-## Live-Code Example
-
-```tsx expandCode
+```tsx
 () => {
   const { state, openButtonProps, openButtonRef } = useDialogButtonProps();
   return (
@@ -56,34 +52,6 @@ import { Dialog } from '@marigold/components';
         >
           <Text>
             This is your dialog text. You can read some interesting information.
-          </Text>
-        </Dialog>
-      )}
-    </>
-  );
-};
-```
-
-## Usage
-
-```tsx
-() => {
-  const { state, openButtonProps, openButtonRef } = useDialogButtonProps();
-  return (
-    <>
-      <Button
-        variant="secondary"
-        size="small"
-        {...openButtonProps}
-        ref={openButtonRef}
-      >
-        Open Dialog
-      </Button>
-      {state.isOpen && (
-        <Dialog title="Dialog Title" isOpen={state.isOpen} close={state.close}>
-          <Text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit.
           </Text>
         </Dialog>
       )}

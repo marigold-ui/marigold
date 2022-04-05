@@ -576,7 +576,7 @@ export const components = {
       stroke: 'gray40',
     },
   },
-  textarea: {
+  textArea: {
     __default: {
       fontFamily: 'body',
       lineHeight: 'medium',
@@ -592,6 +592,7 @@ export const components = {
         outlineColor: 'blue60',
       },
       ':disabled': {
+        cursor: 'not-allowed',
         color: 'disabled',
         bg: 'gray20',
       },
