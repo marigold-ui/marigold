@@ -7,18 +7,40 @@ import { ComponentProps } from '@marigold/types';
 
 import { Field, FieldProps } from '../Field';
 
+// Theme Extension
+// ---------------
+export interface TextAreaThemeExtension<Value> {
+  textArea?: {
+    [key: string]: Value;
+  };
+}
+
 // Props
 // ---------------
-export interface TextFieldProps
+/**
+ * `react-aria` has a slightly different API for the above events.
+ * Thus, we adjust our regular props to match them.
+ */
+export type CustomTextAreEvents =
+  | 'onChange'
+  | 'onFocus'
+  | 'onBlur'
+  | 'onCopy'
+  | 'onSelect'
+  | 'onPaste'
+  | 'onCut'
+  | 'onCompositionStart'
+  | 'onCompositionUpdate'
+  | 'onCompositionEnd'
+  | 'onBeforeInput'
+  | 'onInput';
+
+export interface TextAreaProps
   extends Omit<
-      ComponentProps<'input'>,
-      'value' | 'defaultValue' | 'onChange' | 'onFocus' | 'onBlur'
+      ComponentProps<'textarea'>,
+      'value' | 'defaultValue' | CustomTextAreEvents
     >,
-    /**
-     * `react-aria` has a slightly different API for `onChange`, `onFocus`
-     * and `onBlur` events. Thus, we adjust our regular props to match them.
-     */
-    Pick<AriaTextFieldProps, 'onChange' | 'onFocus' | 'onBlur'>,
+    Pick<AriaTextFieldProps, CustomTextAreEvents>,
     Pick<FieldProps, 'label' | 'description' | 'error' | 'errorMessage'> {
   value?: string;
   defaultValue?: string;
@@ -26,18 +48,19 @@ export interface TextFieldProps
 
 // Component
 // ---------------
-export const TextField = ({
+export const TextArea = ({
   disabled,
   required,
   readOnly,
   error,
   ...props
-}: TextFieldProps) => {
+}: TextAreaProps) => {
   const { label, description, errorMessage } = props;
-  const ref = useRef<HTMLInputElement>(null);
+  const ref = useRef<HTMLTextAreaElement>(null);
   const { labelProps, inputProps, descriptionProps, errorMessageProps } =
     useTextField(
       {
+        inputElementType: 'textarea',
         isDisabled: disabled,
         isRequired: required,
         isReadOnly: readOnly,
@@ -58,7 +81,7 @@ export const TextField = ({
       errorMessage={errorMessage}
       errorMessageProps={errorMessageProps}
     >
-      <Box as="input" variant="input" ref={ref} {...inputProps} />
+      <Box as="textarea" variant="textArea" ref={ref} {...inputProps} />
     </Field>
   );
 };

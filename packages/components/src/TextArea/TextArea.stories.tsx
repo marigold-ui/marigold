@@ -1,9 +1,9 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
-import { TextField } from './TextField';
+import { TextArea } from './TextArea';
 
 export default {
-  title: 'Components/TextField',
+  title: 'Components/TextArea',
   argTypes: {
     label: {
       control: {
@@ -51,43 +51,9 @@ export default {
       },
       defaultValue: false,
     },
-    type: {
-      control: {
-        type: 'select',
-      },
-      options: [
-        'date',
-        'datetime-local',
-        'email',
-        'month',
-        'number',
-        'password',
-        'search',
-        'tel',
-        'text',
-        'time',
-        'time',
-        'url',
-        'week',
-      ],
-      defaultValue: 'text',
-    },
   },
 } as Meta;
 
-export const Basic: ComponentStory<typeof TextField> = args => (
-  <TextField {...args} />
+export const Basic: ComponentStory<typeof TextArea> = args => (
+  <TextArea {...args} />
 );
-
-export const Controlled: ComponentStory<typeof TextField> = args => {
-  const [value, setValue] = React.useState('');
-  return (
-    <>
-      <TextField {...args} value={value} onChange={setValue} />
-      <pre>
-        <strong>Input Value:</strong>
-        {value}
-      </pre>
-    </>
-  );
-};
