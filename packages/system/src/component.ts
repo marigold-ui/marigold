@@ -9,7 +9,24 @@
 //   return <Box css={{}} />;
 // };
 
+export type ComponentState =
+  | 'hover'
+  | 'focus'
+  | 'active'
+  | 'visited'
+  | 'disabled'
+  | 'readOnly'
+  | 'error'
+  | 'checked'
+  | 'indeterminate';
+
+export interface UseStyleConfigProps {
+  variant?: string;
+  size?: string;
+  state?: ComponentState;
+}
+
 export const useStyleConfig = (
   componentName: string,
-  { size, variant, state }
+  props?: UseStyleConfigProps = {}
 ) => {};
