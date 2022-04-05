@@ -1,4 +1,4 @@
-import { useStyleConfig } from './component';
+import { useComponentStyles } from './component';
 
 test('get base styles for a component');
 test('get variant styles for a component');
@@ -15,5 +15,5 @@ test('support multiple parts');
 test('usage with <Box>');
 
 const Component = () => {
-  useStyleConfig('name');
+  useComponentStyles('name');
 };

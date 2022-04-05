@@ -20,13 +20,20 @@ export type ComponentState =
   | 'checked'
   | 'indeterminate';
 
-export interface UseStyleConfigProps {
+export interface ComponentStylesProps {
   variant?: string;
   size?: string;
   state?: ComponentState;
 }
 
-export const useStyleConfig = (
+export interface ComponentStylesOptions {
+  parts?: string[];
+}
+
+export const useComponentStyles = (
   componentName: string,
-  props?: UseStyleConfigProps = {}
+  props?: ComponentStylesProps = {},
+  options: ComponentStylesOptions = {}
 ) => {};
+
+// useRef for perf
