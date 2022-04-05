@@ -4,38 +4,32 @@ title: Stack
 
 # Stack
 
-## Description
-
 Layout component to stack elements. This component uses the spaces from the given theme.
 
-## Properties
+<Box border="1px solid #ced4da" bg="#e9ecef" p="small">
+  <Stack space="small">
+    <Text as="h2" variant="headline2">
+      Header
+    </Text>
+    <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
+    <Text>
+      Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
+    </Text>
+  </Stack>
+</Box>
+
+```tsx onlyCode
+import { Stack } from '@marigold/components';
+```
+
+## Props
 
 | Property | Type                           | Default |
 | :------- | :----------------------------- | :------ |
 | `space`  | `ResponsiveStyleValue<string>` | `none`  |
 | `align`  | `left, right, center`          | `left`  |
 
-## Import
-
-```tsx onlyCode
-import { Stack } from '@marigold/components';
-```
-
-## Live-Code Example
-
-```tsx expandCode
-<Stack space="small">
-  <Text as="h2" variant="headline2">
-    Header
-  </Text>
-  <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
-  <Text>
-    Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
-  </Text>
-</Stack>
-```
-
-## Usage
+## Examples
 
 ### Spacing
 

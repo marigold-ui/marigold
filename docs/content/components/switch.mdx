@@ -3,22 +3,29 @@ title: Switch
 ---
 
 import { DoAndDont } from '../../src/components/DoAndDont';
+import { FigmaLink } from '../../src/components/FigmaLink';
 
 # Switch
-
-## Demo
-
-<MarigoldTheme>
-  <Switch aria-label="demo-switch" />
-</MarigoldTheme>
-
-## Description
 
 The Switch component allows the users to select between two states, e.g. on and off.  
 It consists of a visual selection indicator and a label.
 Users may click or touch a Switch to toggle the state, or use the Tab key to navigate to it and the Space key to toggle it.
 
-## Properties
+<MarigoldTheme>
+  <Switch aria-label="demo-switch" />
+</MarigoldTheme>
+
+```tsx onlyCode
+import { Switch } from '@marigold/components';
+```
+
+<FigmaLink
+  to={
+    'https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=2458%3A2254'
+  }
+/>
+
+## Props
 
 | Property                  | Type      | Default     |
 | :------------------------ | :-------- | :---------- |
@@ -26,13 +33,7 @@ Users may click or touch a Switch to toggle the state, or use the Tab key to nav
 | `labelVariant` (optional) | `string`  | `above`     |
 | `disabled` (optional)     | `boolean` | `false`     |
 
-## Import
-
-```tsx onlyCode
-import { Switch } from '@marigold/components';
-```
-
-## Types
+## Examples
 
 ### Default
 
@@ -63,6 +64,8 @@ This mode can be used when an option is or was already active and there is a var
   Disabled active Switch
 </Switch>
 ```
+
+## Dos & Don'ts
 
 <Stack space="small">
   <Box

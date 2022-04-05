@@ -6,9 +6,18 @@ import { FigmaLink } from '../../src/components/FigmaLink';
 
 # ValidationMessage
 
-## Description
-
 Simple colored element to display a validation message as a reaction to an event.
+
+<MarigoldTheme>
+  <ValidationMessage>
+    <Exclamation />
+    Validation message
+  </ValidationMessage>
+</MarigoldTheme>
+
+```tsx onlyCode
+import { ValidationMessage } from '@marigold/components';
+```
 
 <FigmaLink
   to={
@@ -16,28 +25,15 @@ Simple colored element to display a validation message as a reaction to an event
   }
 />
 
-## Properties
+## Props
 
 | Property             | Type     | Default |
 | :------------------- | :------- | :------ |
 | `variant` (optional) | `string` | `error` |
 
-## Import
-
-```tsx onlyCode
-import { ValidationMessage } from '@marigold/components';
-```
+## Examples
 
 ```tsx expandCode
-<ValidationMessage>
-  <SmilieDissatisfied />
-  Error!
-</ValidationMessage>
-```
-
-## Usage
-
-```tsx
 <ValidationMessage>
   <Exclamation />
   Validation message

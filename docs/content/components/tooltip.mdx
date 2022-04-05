@@ -14,7 +14,10 @@ import { Info } from '@marigold/icons';
 
 # Tooltip
 
-## Demo
+The Tooltip should provide extra information to the user. This information should be
+secondary and not escential to perform a task.
+A tooltip consists of two parts: the **trigger** element and the **tooltip** itself.
+Users may reveal the tooltip by hovering or focusing the trigger.
 
 <MarigoldTheme>
   <TooltipTrigger isOpen>
@@ -24,32 +27,20 @@ import { Info } from '@marigold/icons';
     <Tooltip>Tooltip</Tooltip>
   </TooltipTrigger>
 </MarigoldTheme>
-<br />
-
-## Description
-
-The Tooltip should provide extra information to the user. This information should be
-secondary and not escential to perform a task.
-A tooltip consists of two parts: the **trigger** element and the **tooltip** itself.
-Users may reveal the tooltip by hovering or focusing the trigger.
-
-## Properties
-
-| Property             | Type     | Default     |
-| :------------------- | :------- | :---------- |
-| `variant` (optional) | `string` | `__default` |
-
-## Import
 
 ```tsx onlyCode
 import { Tooltip, TooltipTrigger } from '@marigold/components';
 ```
 
-## Types
+## Props
 
-### Alignment
+| Property             | Type     | Default     |
+| :------------------- | :------- | :---------- |
+| `variant` (optional) | `string` | `__default` |
 
-Different alignment is coming soon.
+## Examples
+
+### Default Tooltip
 
 ```tsx expandCode
 <TooltipTrigger>
@@ -60,7 +51,7 @@ Different alignment is coming soon.
 </TooltipTrigger>
 ```
 
-## Usage
+## Dos & Don'ts
 
 <Stack space="small">
   <Box
