@@ -4,8 +4,6 @@ title: Columns
 
 # Columns
 
-## Description
-
 Columns component with sized columns in one row. Add an array of numbers to set the size of the children. The columns array length and the count of children must be the same. You can add space between the columns und set a collapseAt prop to collapse the columns at a certain width.
 
 <Columns space="xsmall" columns={[2, 8, 2]}>
@@ -28,7 +26,7 @@ import { Columns } from '@marigold/components';
 
 ## Examples
 
-Columns and a space between them
+### Columns and a space between them
 
 ```tsx expandCode
 <Columns space="xsmall" columns={[2, 8, 2]}>
@@ -38,7 +36,7 @@ Columns and a space between them
 </Columns>
 ```
 
-Columns collapsing at a certain width
+### Columns collapsing at a certain width
 
 ```tsx
 <Columns collapseAt="50em" space="xsmall" columns={[2, 10]}>
@@ -47,7 +45,7 @@ Columns collapsing at a certain width
 </Columns>
 ```
 
-## Page layout
+### Page layout
 
 Create a page layout with three columns
 
@@ -63,7 +61,7 @@ Create a page layout with three columns
   </Box>
 </Columns>
 
-## Breadcrumb
+### Breadcrumb
 
 Create a Breadcrumb with different widths
 
