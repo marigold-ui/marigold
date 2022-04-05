@@ -15,5 +15,7 @@ test('support multiple parts');
 test('usage with <Box>');
 
 const Component = () => {
-  useComponentStyles('name');
+  const r = useComponentStyles('name');
+  const f = useComponentStyles('name', {}, { parts: ['wrapper', 'icon'] });
+  console.log(f.wrapper, f.icon, f.name);
 };

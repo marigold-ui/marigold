@@ -30,10 +30,43 @@ export interface ComponentStylesOptions {
   parts?: string[];
 }
 
-export const useComponentStyles = (
+export type ComponentStyles<T extends string[]> = {
+  [P in T[number]]: string[];
+};
+
+export function useComponentStyles(
+  componentName: string,
+  props?: ComponentStylesProps,
+  options?: {
+    parts?: never;
+  }
+): string[];
+
+export function useComponentStyles<Parts extends string[]>(
+  componentName: string,
+  props?: ComponentStylesProps,
+  options?: {
+    parts: Parts;
+  }
+): ComponentStyles<Parts>;
+
+export function useComponentStyles(
   componentName: string,
   props?: ComponentStylesProps = {},
-  options: ComponentStylesOptions = {}
-) => {};
+  options?: any = {}
+) {
+  // Just some PoC that the overloads work
+  if (options.parts) {
+    return {
+      [options.parts[0]]: ['asd'],
+      [options.parts[1]]: ['asd'],
+    };
+  }
+
+  return ['foo'];
+}
 
 // useRef for perf
+
+// Q: if we get styles from the theme and deep merge directly,
+//    can we avoid using `variant` and instead pass it to `__baseCSS`/`css` directly?
