@@ -16,6 +16,40 @@ export interface CheckboxThemeExtension<Value> {
   };
 }
 
+// SVG Icon
+// ---------------
+interface IconProps {
+  checked?: boolean;
+  focused?: boolean;
+  disabled?: boolean;
+}
+
+const Icon = (props: IconProps) => {
+  return (
+    <Box
+      aria-hidden="true"
+      __baseCSS={{
+        width: 16,
+        height: 16,
+        bg: '#fff',
+        border: '1px solid #ccc',
+        borderRadius: 3,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        p: '1px',
+      }}
+    >
+      <svg viewBox="0 0 12 10">
+        <path
+          fill="#000"
+          d="M11.915 1.548 10.367 0 4.045 6.315 1.557 3.827 0 5.373l4.045 4.046 7.87-7.871Z"
+        />
+      </svg>
+    </Box>
+  );
+};
+
 // Props
 // ---------------
 /**
@@ -66,17 +100,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       <VisuallyHidden>
         <input {...inputProps} {...focusProps} ref={ref} />
       </VisuallyHidden>
-      <svg width={16} height={16} fill="none" aria-hidden="true">
-        <rect
-          width={15}
-          height={15}
-          x={0.5}
-          y={0.5}
-          rx={1.5}
-          fill="#fff"
-          stroke="#CCC"
-        />
-      </svg>
+      <Icon />
       <svg width={24} height={24} aria-hidden="true">
         <rect
           x={state.isSelected ? 4 : 5}
