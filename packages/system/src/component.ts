@@ -1,3 +1,4 @@
+import { CSSObject } from './types';
 /**
  * 1. transform object to "variant string"
  * 2. pass to Box' variant prop
@@ -26,17 +27,13 @@ export interface ComponentStylesProps {
   state?: ComponentState;
 }
 
-export type ComponentStyles<T extends ReadonlyArray<string>> = {
-  [P in T[number]]: string[];
-};
-
 export function useComponentStyles(
   componentName: string,
   props?: ComponentStylesProps,
   options?: {
     parts: never;
   }
-): string[];
+): CSSObject;
 
 export function useComponentStyles<
   Part extends string,
@@ -48,7 +45,7 @@ export function useComponentStyles<
     parts: Parts;
   }
 ): {
-  [P in Parts[number]]: string[];
+  [P in Parts[number]]: CSSObject;
 };
 
 export function useComponentStyles(
@@ -59,12 +56,12 @@ export function useComponentStyles(
   // Just some PoC that the overloads work
   if (options.parts) {
     return {
-      [options.parts[0]]: ['asd'],
-      [options.parts[1]]: ['asd'],
+      [options.parts[0]]: {},
+      [options.parts[1]]: {},
     };
   }
 
-  return ['foo'];
+  return {};
 }
 
 // useRef for perf
