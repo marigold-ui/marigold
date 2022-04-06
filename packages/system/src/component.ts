@@ -26,11 +26,7 @@ export interface ComponentStylesProps {
   state?: ComponentState;
 }
 
-export interface ComponentStylesOptions {
-  parts?: string[];
-}
-
-export type ComponentStyles<T extends string[]> = {
+export type ComponentStyles<T extends ReadonlyArray<string>> = {
   [P in T[number]]: string[];
 };
 
@@ -38,17 +34,22 @@ export function useComponentStyles(
   componentName: string,
   props?: ComponentStylesProps,
   options?: {
-    parts?: never;
+    parts: never;
   }
 ): string[];
 
-export function useComponentStyles<Parts extends string[]>(
+export function useComponentStyles<
+  Part extends string,
+  Parts extends ReadonlyArray<Part>
+>(
   componentName: string,
   props?: ComponentStylesProps,
   options?: {
     parts: Parts;
   }
-): ComponentStyles<Parts>;
+): {
+  [P in Parts[number]]: string[];
+};
 
 export function useComponentStyles(
   componentName: string,
