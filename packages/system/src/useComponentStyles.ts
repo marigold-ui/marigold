@@ -1,4 +1,8 @@
+import merge from 'deepmerge';
+
 import { CSSObject } from './types';
+import { useTheme } from './useTheme';
+
 /**
  * 1. transform object to "variant string"
  * 2. pass to Box' variant prop
@@ -10,6 +14,15 @@ import { CSSObject } from './types';
 //   return <Box css={{}} />;
 // };
 
+// Helper
+// ---------------
+const get = (obj: object, path: string | string[]): any => {
+  const keys = typeof path === 'string' ? path.split('.') : path;
+  return keys.reduce((acc, key) => acc && (acc as any)[key], obj);
+};
+
+// Types
+// ---------------
 export type ComponentState =
   | 'hover'
   | 'focus'
@@ -50,9 +63,12 @@ export function useComponentStyles<
 
 export function useComponentStyles(
   componentName: string,
-  props?: ComponentStylesProps = {},
-  options?: any = {}
+  props: ComponentStylesProps = {},
+  options: any = {}
 ) {
+  const { theme } = useTheme();
+  const styles = get(theme, `components.${componentName}`);
+
   // Just some PoC that the overloads work
   if (options.parts) {
     return {
@@ -61,7 +77,10 @@ export function useComponentStyles(
     };
   }
 
-  return {};
+  return merge(
+    styles.base,
+    props.variant ? styles?.variant?.[props.variant] ?? {} : {}
+  );
 }
 
 // useRef for perf
