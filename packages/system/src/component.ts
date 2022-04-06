@@ -68,3 +68,4 @@ export function useComponentStyles(
 
 // Q: if we get styles from the theme and deep merge directly,
 //    can we avoid using `variant` and instead pass it to `__baseCSS`/`css` directly?
+// -> Make we can remove variant from `<Box>` altogether then? (since this hook is the better appraoch)
