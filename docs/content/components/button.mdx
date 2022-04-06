@@ -4,11 +4,13 @@ title: Button
 
 import { DoAndDont } from '../../src/components/DoAndDont';
 import { FigmaLink } from '../../src/components/FigmaLink';
-import { Box, ActionGroup, Button, Stack } from '@marigold/components';
 
 # Button
 
-## Demo
+The Button component renders a `<button>` element.
+Buttons allow users to perform an action.
+They have multiple styles for various needs, and are ideal for calling attention to where a user needs to do something in order to move forward in a flow.
+The style variant and size of the button can be added with the variant prop and is composed like `variant.size`.
 
 <MarigoldTheme>
   <ActionGroup space="small">
@@ -19,12 +21,9 @@ import { Box, ActionGroup, Button, Stack } from '@marigold/components';
   </ActionGroup>
 </MarigoldTheme>
 
-## Description
-
-The Button component renders a `<button>` element.
-Buttons allow users to perform an action.
-They have multiple styles for various needs, and are ideal for calling attention to where a user needs to do something in order to move forward in a flow.
-The style variant and size of the button can be added with the variant prop and is composed like `variant.size`.
+```tsx onlyCode
+import { Button } from '@marigold/components';
+```
 
 <FigmaLink
   to={
@@ -32,7 +31,7 @@ The style variant and size of the button can be added with the variant prop and 
   }
 />
 
-## Properties
+## Props
 
 | Property              | Type                                    | Default   |
 | :-------------------- | :-------------------------------------- | :-------- |
@@ -40,12 +39,6 @@ The style variant and size of the button can be added with the variant prop and 
 | `size` (optional)     | `small`, `large`                        | `large`   |
 | `disabled` (optional) | boolean                                 |           |
 | `space` (optional)    | `ResponsiveStyleValue<string>`          | `none`    |
-
-## Import
-
-```tsx onlyCode
-import { Button } from '@marigold/components';
-```
 
 ## Types
 
@@ -57,7 +50,7 @@ The primary button function is to achieve the most common or most important goal
 
 #### Default
 
-```tsx expandCode
+```tsx
 <Button>Primary</Button>
 ```
 
@@ -221,7 +214,7 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
 </Button>
 ```
 
-## Usage
+## Dos & Don'ts
 
 <Stack space="small">
   <Box

@@ -7,7 +7,8 @@ import { DoAndDont } from '../../src/components/DoAndDont';
 
 # Checkbox
 
-## Demo
+Checkboxes allow users to select multiple items from a list of individual items,
+or to mark one individual item as selected.
 
 <MarigoldTheme>
   <Inline space="medium">
@@ -29,10 +30,9 @@ import { DoAndDont } from '../../src/components/DoAndDont';
   </Inline>
 </MarigoldTheme>
 
-## Description
-
-Checkboxes allow users to select multiple items from a list of individual items,
-or to mark one individual item as selected.
+```tsx onlyCode
+import { Checkbox } from '@marigold/components';
+```
 
 <FigmaLink
   to={
@@ -40,7 +40,7 @@ or to mark one individual item as selected.
   }
 />
 
-## Properties
+## Props
 
 | Property                    | Type      | Default     |
 | :-------------------------- | :-------- | :---------- |
@@ -53,13 +53,7 @@ or to mark one individual item as selected.
 | `error` (optional)          | `boolean` | `false`     |
 | `errorMessage` (optional)   | `string`  |             |
 
-## Import
-
-```tsx onlyCode
-import { Checkbox } from '@marigold/components';
-```
-
-## Types
+## Examples
 
 ### Checkbox standard labeled
 
@@ -107,8 +101,6 @@ import { Checkbox } from '@marigold/components';
 
 ### Checkbox error and errorMessage
 
-Use the error and errorMesssage prop together
-
 ```tsx
 <Checkbox
   id="error"
@@ -131,7 +123,7 @@ Use indeterminate state when it represents both selected and not selected values
 </Checkbox>
 ```
 
-## Usage
+## Dos & Don'ts
 
 <Stack space="small">
   <Box
