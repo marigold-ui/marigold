@@ -22,9 +22,32 @@ interface IconProps {
   checked?: boolean;
   focused?: boolean;
   disabled?: boolean;
+  indeterminate?: boolean;
 }
 
-const Icon = (props: IconProps) => {
+const CheckMark = () => (
+  <svg viewBox="0 0 12 10">
+    <path
+      fill="#000"
+      stroke="none"
+      d="M11.915 1.548 10.367 0 4.045 6.315 1.557 3.827 0 5.373l4.045 4.046 7.87-7.871Z"
+    />
+  </svg>
+);
+
+const IndeterminateMark = () => (
+  <svg width="12" height="3" viewBox="0 0 12 3">
+    <path
+      fill="#000"
+      stroke="none"
+      d="M11.5 2.04018H0.5V0.46875H11.5V2.04018Z"
+    />
+  </svg>
+);
+
+const Icon = ({ checked, focused, disabled, indeterminate }: IconProps) => {
+  const mark = indeterminate ? <IndeterminateMark /> : <CheckMark />;
+
   return (
     <Box
       aria-hidden="true"
@@ -40,12 +63,7 @@ const Icon = (props: IconProps) => {
         p: '1px',
       }}
     >
-      <svg viewBox="0 0 12 10">
-        <path
-          fill="#000"
-          d="M11.915 1.548 10.367 0 4.045 6.315 1.557 3.827 0 5.373l4.045 4.046 7.87-7.871Z"
-        />
-      </svg>
+      {checked ? mark : null}
     </Box>
   );
 };
@@ -92,46 +110,23 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         display: 'flex',
         alignItems: 'center',
         gap: 4,
+        userSelect: 'none',
       }}
       __baseCSS={{
-        ':hover': { cursor: props.disabled ? 'not-allowed' : 'pointer' },
+        ':hover': { cursor: inputProps.disabled ? 'not-allowed' : 'pointer' },
       }}
     >
       <VisuallyHidden>
         <input {...inputProps} {...focusProps} ref={ref} />
       </VisuallyHidden>
-      <Icon />
-      <svg width={24} height={24} aria-hidden="true">
-        <rect
-          x={state.isSelected ? 4 : 5}
-          y={state.isSelected ? 4 : 5}
-          width={state.isSelected ? 16 : 14}
-          height={state.isSelected ? 16 : 14}
-          fill={state.isSelected ? 'orange' : 'none'}
-          stroke={state.isSelected ? 'none' : 'gray'}
-          strokeWidth={2}
-        />
-        {state.isSelected && (
-          <path
-            transform="translate(7 7)"
-            d={`M3.788 9A.999.999 0 0 1 3 8.615l-2.288-3a1 1 0 1 1
-            1.576-1.23l1.5 1.991 3.924-4.991a1 1 0 1 1 1.576 1.23l-4.712
-            6A.999.999 0 0 1 3.788 9z`}
-          />
-        )}
-        {isFocusVisible && (
-          <rect
-            x={1}
-            y={1}
-            width={22}
-            height={22}
-            fill="none"
-            stroke="orange"
-            strokeWidth={2}
-          />
-        )}
-      </svg>
-      {props.children}
+      <Icon
+        checked={state.isSelected}
+        focused={isFocusVisible}
+        disabled={inputProps.disabled}
+        indeterminate={indeterminate}
+      />
+      {/* make error, disabled styles available */}
+      <Box>{props.children}</Box>
     </Box>
   );
 };
