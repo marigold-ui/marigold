@@ -118,21 +118,36 @@ test('get base styles for a component', () => {
       "bg": "white",
     }
   `);
-  expect(result.current).toMatchInlineSnapshot(`
-    {
-      "appearance": "none",
-      "bg": "white",
-    }
-  `);
 });
 
 test('get variant styles for a component', () => {
-  const { result } = renderHook(
+  let view = renderHook(
     () => useComponentStyles('Button', { variant: 'primary' }),
     {
       wrapper,
     }
   );
+  expect(view.result.current).toMatchInlineSnapshot(`
+    {
+      "appearance": "none",
+      "bg": "white",
+      "color": "primary",
+    }
+  `);
+
+  view = renderHook(
+    () => useComponentStyles('Button', { variant: 'secondary' }),
+    {
+      wrapper,
+    }
+  );
+  expect(view.result.current).toMatchInlineSnapshot(`
+    {
+      "appearance": "none",
+      "bg": "white",
+      "color": "secondary",
+    }
+  `);
 });
 
 // test('works if variant does not exist');
@@ -145,6 +160,7 @@ test('get variant styles for a component', () => {
 // test('get size styles for a component (with parts)');
 // test('get state styles for a component (with parts)');
 
+// test('base styles are always added');
 // test('override order: base < variant < size < state');
 // test('override order: base < variant < size < state (with parts)');
 

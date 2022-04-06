@@ -1,25 +1,23 @@
 import merge from 'deepmerge';
+import { useRef } from 'react';
+import isEqual from 'react-fast-compare';
 
 import { CSSObject } from './types';
 import { useTheme } from './useTheme';
 
-/**
- * 1. transform object to "variant string"
- * 2. pass to Box' variant prop
- */
-
-// const Button = ({}) => {
-//   const styles = f({ component: 'Button', size: 'small', variant: 'primary' }); // base + size + variant
-
-//   return <Box css={{}} />;
-// };
-
 // Helper
 // ---------------
-const get = (obj: object, path: string | string[]): any => {
-  const keys = typeof path === 'string' ? path.split('.') : path;
-  return keys.reduce((acc, key) => acc && (acc as any)[key], obj);
-};
+export function get(obj: object, path: string, fallback?: any): any {
+  const key = typeof path === 'string' ? path.split('.') : [path];
+
+  let result = obj;
+  for (let i = 0, length = key.length; i < length; i++) {
+    if (!result) break;
+    result = (result as any)[key[i]];
+  }
+
+  return result === undefined ? fallback : result;
+}
 
 // Types
 // ---------------
@@ -63,28 +61,27 @@ export function useComponentStyles<
 
 export function useComponentStyles(
   componentName: string,
-  props: ComponentStylesProps = {},
+  props: any = {},
   options: any = {}
 ) {
   const { theme } = useTheme();
-  const styles = get(theme, `components.${componentName}`);
+  const componentStyles = get(theme, `components.${componentName}`, {});
 
-  // Just some PoC that the overloads work
-  if (options.parts) {
-    return {
-      [options.parts[0]]: {},
-      [options.parts[1]]: {},
-    };
+  // Store styles in ref to prevent re-computation
+  const stylesRef = useRef({});
+
+  if (componentStyles) {
+    const base = componentStyles.base || {};
+    const variant = componentStyles?.variant?.[props.variant] || {};
+    const size = componentStyles?.size?.[props.size] || {};
+    const state = componentStyles?.state?.[props.state] || {};
+
+    const styles = merge.all([base, variant, size, state]);
+
+    if (!isEqual(stylesRef.current, styles)) {
+      stylesRef.current = styles;
+    }
   }
 
-  return merge(
-    styles.base,
-    props.variant ? styles?.variant?.[props.variant] ?? {} : {}
-  );
+  return stylesRef.current;
 }
-
-// useRef for perf
-
-// Q: if we get styles from the theme and deep merge directly,
-//    can we avoid using `variant` and instead pass it to `__baseCSS`/`css` directly?
-// -> Make we can remove variant from `<Box>` altogether then? (since this hook is the better appraoch)
