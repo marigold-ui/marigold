@@ -74,7 +74,12 @@ const theme = {
         error: {
           bg: 'red',
         },
+        focus: {
+          outline: '2px solid',
+          outlineColor: 'blue',
+        },
         disabled: {
+          cursor: 'not-allowed',
           bg: 'grey',
         },
       },
@@ -323,8 +328,26 @@ describe('useComponentStyles (simple)', () => {
     `);
   });
 
-  test('get multiple states', () => {
+  test('get multiple states (disabled overrides other states)', () => {
     let view = renderHook(
+      () =>
+        useComponentStyles('Button', {
+          states: { hover: true, focus: true },
+        }),
+      {
+        wrapper,
+      }
+    );
+    expect(view.result.current).toMatchInlineSnapshot(`
+      {
+        "appearance": "none",
+        "bg": "blue",
+        "outline": "2px solid",
+        "outlineColor": "blue",
+      }
+    `);
+
+    view = renderHook(
       () =>
         useComponentStyles('Button', {
           states: { hover: true, disabled: true },
@@ -333,6 +356,13 @@ describe('useComponentStyles (simple)', () => {
         wrapper,
       }
     );
+    expect(view.result.current).toMatchInlineSnapshot(`
+      {
+        "appearance": "none",
+        "bg": "grey",
+        "cursor": "not-allowed",
+      }
+    `);
   });
 
   test('works if state does not exist', () => {
@@ -346,6 +376,24 @@ describe('useComponentStyles (simple)', () => {
       {
         "appearance": "none",
         "bg": "white",
+      }
+    `);
+  });
+
+  test('only applies set styles', () => {
+    const { result } = renderHook(
+      () =>
+        useComponentStyles('Button', {
+          states: { hover: true, disabled: false },
+        }),
+      {
+        wrapper,
+      }
+    );
+    expect(result.current).toMatchInlineSnapshot(`
+      {
+        "appearance": "none",
+        "bg": "blue",
       }
     `);
   });
