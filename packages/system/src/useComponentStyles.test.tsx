@@ -1,16 +1,16 @@
 import React from 'react';
+import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { ThemeProvider } from './useTheme';
 
 import { useComponentStyles } from './useComponentStyles';
+import { Box } from './Box';
 
 // Setup
 // ---------------
 const theme = {
   /**
-   * Design tokens will not applied in the tests,
-   * but adding them will make sure that they are
-   * REALLY not applied!
+   * Design tokens will not applied in most tests!
    */
   colors: {
     primary: '#0070f3',
@@ -93,7 +93,8 @@ const theme = {
           gap: 'small-1',
         },
         icon: {
-          size: 'small-1',
+          height: 'small-1',
+          width: 'small-1',
         },
         label: {
           color: 'black',
@@ -131,7 +132,8 @@ const theme = {
             p: 'small-1',
           },
           icon: {
-            size: 'small-1',
+            height: 'small-1',
+            width: 'small-1',
           },
         },
         medium: {
@@ -139,7 +141,8 @@ const theme = {
             p: 'medium-1',
           },
           icon: {
-            size: 'medium-1',
+            height: 'medium-1',
+            width: 'medium-1',
           },
           label: {
             fontSize: 'medium-2',
@@ -150,7 +153,8 @@ const theme = {
             p: 'large-1',
           },
           icon: {
-            size: 'large-1',
+            height: 'large-1',
+            width: 'large-1',
           },
           label: {
             fontSize: 'large-1',
@@ -427,7 +431,8 @@ describe('useComponentStyles (complex)', () => {
           "gap": "small-1",
         },
         "icon": {
-          "size": "small-1",
+          "height": "small-1",
+          "width": "small-1",
         },
         "label": {
           "color": "black",
@@ -457,7 +462,8 @@ describe('useComponentStyles (complex)', () => {
           "gap": "small-1",
         },
         "icon": {
-          "size": "small-1",
+          "height": "small-1",
+          "width": "small-1",
         },
         "label": {
           "color": "pink",
@@ -488,7 +494,8 @@ describe('useComponentStyles (complex)', () => {
           "p": "small-1",
         },
         "icon": {
-          "size": "small-1",
+          "height": "small-1",
+          "width": "small-1",
         },
         "label": {
           "color": "black",
@@ -519,8 +526,9 @@ describe('useComponentStyles (complex)', () => {
         },
         "icon": {
           "bg": "blue",
+          "height": "small-1",
           "opacity": 1,
-          "size": "small-1",
+          "width": "small-1",
         },
         "label": {
           "color": "black",
@@ -597,7 +605,8 @@ describe('style superiority', () => {
         },
         "icon": {
           "fill": "red",
-          "size": "small-1",
+          "height": "small-1",
+          "width": "small-1",
         },
         "label": {
           "color": "pink",
@@ -608,11 +617,82 @@ describe('style superiority', () => {
   });
 });
 
-// // example 'Button.state.hover' => 'Button:hover'
-// test('transform state styles');
-// test('transform state styles (with parts)');
+test('styles are not transpiled with tokens', () => {
+  const { result } = renderHook(
+    () =>
+      useComponentStyles('Button', {
+        size: 'small',
+        variant: 'pink',
+        states: { disabled: true },
+      }),
+    {
+      wrapper,
+    }
+  );
+  expect(result.current).toMatchInlineSnapshot(`
+    {
+      "appearance": "none",
+      "bg": "grey",
+      "cursor": "not-allowed",
+      "height": "small-1",
+    }
+  `);
+});
 
-// test('styles are not transpiled with tokens')
+test('usage with <Box>', () => {
+  const Button: React.FC = ({ children }) => {
+    const styles = useComponentStyles('Button');
+    return (
+      <Box __baseCSS={styles} data-testid="button">
+        {children}
+      </Box>
+    );
+  };
 
-// test('usage with <Box>');
-// test('usage with <Box> (with parts)');
+  render(
+    <ThemeProvider theme={theme}>
+      <Button>Click me!</Button>
+    </ThemeProvider>
+  );
+
+  const element = screen.getByTestId('button');
+  expect(element).toHaveStyle('appearance: none');
+  expect(element).toHaveStyle(`background: ${theme.colors.white}`);
+});
+
+test('usage with <Box> (with parts)', () => {
+  const Checkbox: React.FC = ({ children }) => {
+    const styles = useComponentStyles(
+      'Checkbox',
+      {},
+      { parts: ['container', 'icon', 'label'] }
+    );
+    return (
+      <Box data-testid="container" __baseCSS={styles.container}>
+        <Box data-testid="label" as="label" __baseCSS={styles.label}>
+          {children}
+          <Box data-testid="icon" __baseCSS={styles.icon} />
+        </Box>
+      </Box>
+    );
+  };
+
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox>Click me!</Checkbox>
+    </ThemeProvider>
+  );
+
+  const container = screen.getByTestId('container');
+  expect(container).toHaveStyle('display: flex');
+  expect(container).toHaveStyle('align-items: center');
+  expect(container).toHaveStyle(`gap: ${theme.space['small-1']}px`);
+
+  const label = screen.getByTestId('label');
+  expect(label).toHaveStyle(`color: ${theme.colors.black}`);
+  expect(label).toHaveStyle(`font-size: ${theme.fontSizes['small-2']}`);
+
+  const icon = screen.getByTestId('icon');
+  expect(icon).toHaveStyle(`height: ${theme.sizes['small-1']}px`);
+  expect(icon).toHaveStyle(`width: ${theme.sizes['small-1']}px`);
+});
