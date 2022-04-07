@@ -37,7 +37,7 @@ export type ComponentState =
 export interface ComponentStylesProps {
   variant?: string;
   size?: string;
-  state?: ComponentState;
+  states?: ComponentState[];
 }
 
 export function useComponentStyles(
@@ -75,11 +75,13 @@ export function useComponentStyles(
   if (componentStyles) {
     const base = componentStyles.base || {};
     const size = componentStyles?.size?.[props.size] || {};
-    const state = componentStyles?.state?.[props.state] || {};
     const variant = componentStyles?.variant?.[props.variant] || {};
+    const states = (props.state || []).map(
+      (state: string) => componentStyles?.state?.[state] || {}
+    );
 
     // We deep merge so that parts (if they exists) also get put together
-    const styles = merge.all([base, size, state, variant]) as IndexObject;
+    const styles = merge.all([base, size, states, variant]) as IndexObject;
 
     // If a part does not exists in the theme, well add an empty object
     if (options.parts) {

@@ -301,7 +301,7 @@ describe('useComponentStyles (simple)', () => {
 
   test('get state styles for a component', () => {
     let view = renderHook(
-      () => useComponentStyles('Button', { state: 'hover' }),
+      () => useComponentStyles('Button', { states: ['hover'] }),
       {
         wrapper,
       }
@@ -313,9 +313,12 @@ describe('useComponentStyles (simple)', () => {
       }
     `);
 
-    view = renderHook(() => useComponentStyles('Button', { state: 'error' }), {
-      wrapper,
-    });
+    view = renderHook(
+      () => useComponentStyles('Button', { states: ['error'] }),
+      {
+        wrapper,
+      }
+    );
     expect(view.result.current).toMatchInlineSnapshot(`
       {
         "appearance": "none",
@@ -326,7 +329,7 @@ describe('useComponentStyles (simple)', () => {
 
   test('works if state does not exist', () => {
     const { result } = renderHook(
-      () => useComponentStyles('Button', { state: 'visited' }),
+      () => useComponentStyles('Button', { states: ['visited'] }),
       {
         wrapper,
       }
@@ -437,7 +440,7 @@ describe('useComponentStyles (complex)', () => {
       () =>
         useComponentStyles(
           'Checkbox',
-          { state: 'checked' },
+          { states: ['checked'] },
           { parts: ['container', 'icon', 'label'] }
         ),
       {
@@ -492,9 +495,3 @@ describe('useComponentStyles (complex)', () => {
 
 // test('usage with <Box>');
 // test('usage with <Box> (with parts)');
-
-// const Component = () => {
-//   const r = useComponentStyles('name');
-//   const f = useComponentStyles('name', {}, { parts: ['wrapper', 'icon'] });
-//   console.log(f.wrapper, f.icon, f.name);
-// };
