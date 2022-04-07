@@ -17,6 +17,7 @@ const theme = {
     secondary: '#ff4081',
     white: '#f8f9fa',
     black: '#212529',
+    grey: '#adb5bd',
     blue: '#228be6',
     red: '#c92a2a',
     pink: '#d6336c',
@@ -73,6 +74,9 @@ const theme = {
         error: {
           bg: 'red',
         },
+        disabled: {
+          bg: 'grey',
+        },
       },
     },
     // Component with multiple parts
@@ -101,14 +105,6 @@ const theme = {
         unchecked: {
           icon: {
             opacity: 0,
-          },
-        },
-        indeterminate: {
-          icon: {
-            opacity: 1,
-          },
-          label: {
-            fontStyle: 'italic',
           },
         },
         error: {
@@ -301,7 +297,7 @@ describe('useComponentStyles (simple)', () => {
 
   test('get state styles for a component', () => {
     let view = renderHook(
-      () => useComponentStyles('Button', { states: ['hover'] }),
+      () => useComponentStyles('Button', { states: { hover: true } }),
       {
         wrapper,
       }
@@ -314,7 +310,7 @@ describe('useComponentStyles (simple)', () => {
     `);
 
     view = renderHook(
-      () => useComponentStyles('Button', { states: ['error'] }),
+      () => useComponentStyles('Button', { states: { error: true } }),
       {
         wrapper,
       }
@@ -327,9 +323,21 @@ describe('useComponentStyles (simple)', () => {
     `);
   });
 
+  test('get multiple states', () => {
+    let view = renderHook(
+      () =>
+        useComponentStyles('Button', {
+          states: { hover: true, disabled: true },
+        }),
+      {
+        wrapper,
+      }
+    );
+  });
+
   test('works if state does not exist', () => {
     const { result } = renderHook(
-      () => useComponentStyles('Button', { states: ['visited'] }),
+      () => useComponentStyles('Button', { states: { visited: true } }),
       {
         wrapper,
       }
@@ -440,7 +448,7 @@ describe('useComponentStyles (complex)', () => {
       () =>
         useComponentStyles(
           'Checkbox',
-          { states: ['checked'] },
+          { states: { checked: true } },
           { parts: ['container', 'icon', 'label'] }
         ),
       {
