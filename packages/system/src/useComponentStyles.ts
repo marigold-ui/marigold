@@ -98,7 +98,7 @@ export function useComponentStyles(
   options: any = {}
 ) {
   const { theme } = useTheme();
-  const componentStyles = get(theme, `components.${componentName}`, {});
+  const componentStyles = get(theme, `components.${componentName}`);
 
   // Store styles in ref to prevent re-computation
   const stylesRef = useRef({});

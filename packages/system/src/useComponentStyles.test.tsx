@@ -187,6 +187,13 @@ describe('useComponentStyles (simple)', () => {
       `);
   });
 
+  test('returns empty object if component does not exist in theme', () => {
+    const { result } = renderHook(() => useComponentStyles('NotExisting'), {
+      wrapper,
+    });
+    expect(result.current).toEqual({});
+  });
+
   test('get variant styles for a component', () => {
     let view = renderHook(
       () => useComponentStyles('Button', { variant: 'primary' }),
@@ -539,9 +546,67 @@ describe('useComponentStyles (complex)', () => {
   });
 });
 
-// test('base styles are always added');
-// test('override order: base < size < state < variant');
-// test('override order: base < size < state < variant (with parts)');
+describe('style superiority', () => {
+  test('override order: base < size < state < variant', () => {
+    const { result } = renderHook(
+      () =>
+        useComponentStyles('Button', {
+          size: 'small',
+          variant: 'pink',
+          states: { disabled: true },
+        }),
+      {
+        wrapper,
+      }
+    );
+    expect(result.current).toMatchInlineSnapshot(`
+      {
+        "appearance": "none",
+        "bg": "grey",
+        "cursor": "not-allowed",
+        "height": "small-1",
+      }
+    `);
+  });
+
+  test('override order: base < size < state < variant (with parts)', () => {
+    const { result } = renderHook(
+      () =>
+        useComponentStyles(
+          'Checkbox',
+          {
+            size: 'small',
+            variant: 'pink',
+            states: { error: true },
+          },
+          { parts: ['container', 'icon', 'label'] }
+        ),
+      {
+        wrapper,
+      }
+    );
+    expect(result.current).toMatchInlineSnapshot(`
+      {
+        "container": {
+          "alignItems": "center",
+          "border": "1px solid",
+          "borderColor": "red",
+          "display": "flex",
+          "gap": "small-1",
+          "p": "small-1",
+        },
+        "icon": {
+          "fill": "red",
+          "size": "small-1",
+        },
+        "label": {
+          "color": "pink",
+          "fontSize": "small-2",
+        },
+      }
+    `);
+  });
+});
 
 // // example 'Button.state.hover' => 'Button:hover'
 // test('transform state styles');
