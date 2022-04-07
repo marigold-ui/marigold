@@ -19,6 +19,7 @@ const theme = {
     black: '#212529',
     blue: '#228be6',
     red: '#c92a2a',
+    pink: '#d6336c',
   },
   fontSizes: {
     'small-1': '12px',
@@ -152,6 +153,13 @@ const theme = {
           },
           label: {
             fontSize: 'large-1',
+          },
+        },
+      },
+      variant: {
+        pink: {
+          label: {
+            color: 'pink',
           },
         },
       },
@@ -363,17 +371,13 @@ describe('useComponentStyles (complex)', () => {
     `);
   });
 
-  // test('get variant styles for a component (with parts)');
-  // test('get size styles for a component (with parts)');
-  // test('get state styles for a component (with parts)');
-
-  test('returns empty objects if part does not exist', () => {
+  test('get variant styles for a component (with parts)', () => {
     const { result } = renderHook(
       () =>
         useComponentStyles(
           'Checkbox',
-          {},
-          { parts: ['container', 'non-existing-part'] }
+          { variant: 'pink' },
+          { parts: ['container', 'icon', 'label'] }
         ),
       {
         wrapper,
@@ -390,12 +394,89 @@ describe('useComponentStyles (complex)', () => {
           "size": "small-1",
         },
         "label": {
+          "color": "pink",
+          "fontSize": "small-2",
+        },
+      }
+    `);
+  });
+
+  test('get size styles for a component (with parts)', () => {
+    const { result } = renderHook(
+      () =>
+        useComponentStyles(
+          'Checkbox',
+          { size: 'small' },
+          { parts: ['container', 'icon', 'label'] }
+        ),
+      {
+        wrapper,
+      }
+    );
+    expect(result.current).toMatchInlineSnapshot(`
+      {
+        "container": {
+          "alignItems": "center",
+          "display": "flex",
+          "gap": "small-1",
+          "p": "small-1",
+        },
+        "icon": {
+          "size": "small-1",
+        },
+        "label": {
           "color": "black",
           "fontSize": "small-2",
         },
-        "non-existing-part": {},
       }
     `);
+  });
+
+  test('get state styles for a component (with parts)', () => {
+    const { result } = renderHook(
+      () =>
+        useComponentStyles(
+          'Checkbox',
+          { state: 'checked' },
+          { parts: ['container', 'icon', 'label'] }
+        ),
+      {
+        wrapper,
+      }
+    );
+    expect(result.current).toMatchInlineSnapshot(`
+      {
+        "container": {
+          "alignItems": "center",
+          "display": "flex",
+          "gap": "small-1",
+        },
+        "icon": {
+          "bg": "blue",
+          "opacity": 1,
+          "size": "small-1",
+        },
+        "label": {
+          "color": "black",
+          "fontSize": "small-2",
+        },
+      }
+    `);
+  });
+
+  test('returns empty objects if part does not exist', () => {
+    const { result } = renderHook(
+      () =>
+        useComponentStyles(
+          'Checkbox',
+          {},
+          { parts: ['container', 'non-existing-part'] }
+        ),
+      {
+        wrapper,
+      }
+    );
+    expect(result.current['non-existing-part']).toMatchInlineSnapshot(`{}`);
   });
 });
 

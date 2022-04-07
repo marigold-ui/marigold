@@ -78,13 +78,15 @@ export function useComponentStyles(
     const state = componentStyles?.state?.[props.state] || {};
     const variant = componentStyles?.variant?.[props.variant] || {};
 
+    // We deep merge so that parts (if they exists) also get put together
     const styles = merge.all([base, size, state, variant]) as IndexObject;
 
-    // if (options.parts) {
-    //   options.parts.forEach((part: string) => {
-    //     styles[part] = styles[part] ?? {};
-    //   });
-    // }
+    // If a part does not exists in the theme, well add an empty object
+    if (options.parts) {
+      options.parts.forEach((part: string) => {
+        styles[part] = styles[part] ?? {};
+      });
+    }
 
     if (!isEqual(stylesRef.current, styles)) {
       stylesRef.current = styles;
