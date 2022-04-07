@@ -31,8 +31,7 @@ export type ComponentState =
   | 'disabled'
   | 'readOnly'
   | 'error'
-  | 'checked'
-  | 'indeterminate';
+  | 'checked';
 
 export interface ComponentStylesProps {
   variant?: string;
