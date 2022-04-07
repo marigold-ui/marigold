@@ -179,6 +179,20 @@ const wrapper: React.FC = ({ children }) => (
 
 // Tests
 // ---------------
+describe('smoketests', () => {
+  test('works without a theme', () => {
+    const { result } = renderHook(() => useComponentStyles('NotExisting'));
+    expect(result.current).toEqual({});
+  });
+
+  test('returns empty object if component does not exist in theme', () => {
+    const { result } = renderHook(() => useComponentStyles('NotExisting'), {
+      wrapper,
+    });
+    expect(result.current).toEqual({});
+  });
+});
+
 describe('useComponentStyles (simple)', () => {
   test('get base styles for a component', () => {
     const { result } = renderHook(() => useComponentStyles('Button'), {
@@ -194,13 +208,6 @@ describe('useComponentStyles (simple)', () => {
 
   test('returns empty object if component has no base styles', () => {
     const { result } = renderHook(() => useComponentStyles('GotNoBase'), {
-      wrapper,
-    });
-    expect(result.current).toEqual({});
-  });
-
-  test('returns empty object if component does not exist in theme', () => {
-    const { result } = renderHook(() => useComponentStyles('NotExisting'), {
       wrapper,
     });
     expect(result.current).toEqual({});
