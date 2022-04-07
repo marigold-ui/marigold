@@ -21,6 +21,8 @@ export function get(obj: object, path: string, fallback?: any): any {
 
 // Types
 // ---------------
+type IndexObject = { [key: string]: any };
+
 export type ComponentState =
   | 'hover'
   | 'focus'
@@ -72,11 +74,17 @@ export function useComponentStyles(
 
   if (componentStyles) {
     const base = componentStyles.base || {};
-    const variant = componentStyles?.variant?.[props.variant] || {};
     const size = componentStyles?.size?.[props.size] || {};
     const state = componentStyles?.state?.[props.state] || {};
+    const variant = componentStyles?.variant?.[props.variant] || {};
 
-    const styles = merge.all([base, variant, size, state]);
+    const styles = merge.all([base, size, state, variant]) as IndexObject;
+
+    // if (options.parts) {
+    //   options.parts.forEach((part: string) => {
+    //     styles[part] = styles[part] ?? {};
+    //   });
+    // }
 
     if (!isEqual(stylesRef.current, styles)) {
       stylesRef.current = styles;
