@@ -30,7 +30,7 @@ export type ComponentState =
  * Based on: https://github.com/developit/dlv
  */
 const get = (obj: object, path: string, fallback?: any): any => {
-  const key = typeof path === 'string' ? path.split('.') : [path];
+  const key = path.split('.');
 
   let result = obj;
   for (let i = 0, length = key.length; i < length; i++) {

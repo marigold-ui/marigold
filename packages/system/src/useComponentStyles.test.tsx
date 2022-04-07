@@ -169,6 +169,7 @@ const theme = {
         },
       },
     },
+    GotNoBase: {},
   },
 };
 
@@ -189,6 +190,13 @@ describe('useComponentStyles (simple)', () => {
             "bg": "white",
           }
       `);
+  });
+
+  test('returns empty object if component has no base styles', () => {
+    const { result } = renderHook(() => useComponentStyles('GotNoBase'), {
+      wrapper,
+    });
+    expect(result.current).toEqual({});
   });
 
   test('returns empty object if component does not exist in theme', () => {
@@ -617,19 +625,20 @@ describe('style superiority', () => {
   });
 });
 
-test('styles are not transpiled with tokens', () => {
-  const { result } = renderHook(
-    () =>
-      useComponentStyles('Button', {
-        size: 'small',
-        variant: 'pink',
-        states: { disabled: true },
-      }),
-    {
-      wrapper,
-    }
-  );
-  expect(result.current).toMatchInlineSnapshot(`
+describe('style usage', () => {
+  test('styles are not transpiled with tokens', () => {
+    const { result } = renderHook(
+      () =>
+        useComponentStyles('Button', {
+          size: 'small',
+          variant: 'pink',
+          states: { disabled: true },
+        }),
+      {
+        wrapper,
+      }
+    );
+    expect(result.current).toMatchInlineSnapshot(`
     {
       "appearance": "none",
       "bg": "grey",
@@ -637,62 +646,63 @@ test('styles are not transpiled with tokens', () => {
       "height": "small-1",
     }
   `);
-});
+  });
 
-test('usage with <Box>', () => {
-  const Button: React.FC = ({ children }) => {
-    const styles = useComponentStyles('Button');
-    return (
-      <Box __baseCSS={styles} data-testid="button">
-        {children}
-      </Box>
-    );
-  };
-
-  render(
-    <ThemeProvider theme={theme}>
-      <Button>Click me!</Button>
-    </ThemeProvider>
-  );
-
-  const element = screen.getByTestId('button');
-  expect(element).toHaveStyle('appearance: none');
-  expect(element).toHaveStyle(`background: ${theme.colors.white}`);
-});
-
-test('usage with <Box> (with parts)', () => {
-  const Checkbox: React.FC = ({ children }) => {
-    const styles = useComponentStyles(
-      'Checkbox',
-      {},
-      { parts: ['container', 'icon', 'label'] }
-    );
-    return (
-      <Box data-testid="container" __baseCSS={styles.container}>
-        <Box data-testid="label" as="label" __baseCSS={styles.label}>
+  test('usage with <Box>', () => {
+    const Button: React.FC = ({ children }) => {
+      const styles = useComponentStyles('Button');
+      return (
+        <Box __baseCSS={styles} data-testid="button">
           {children}
-          <Box data-testid="icon" __baseCSS={styles.icon} />
         </Box>
-      </Box>
+      );
+    };
+
+    render(
+      <ThemeProvider theme={theme}>
+        <Button>Click me!</Button>
+      </ThemeProvider>
     );
-  };
 
-  render(
-    <ThemeProvider theme={theme}>
-      <Checkbox>Click me!</Checkbox>
-    </ThemeProvider>
-  );
+    const element = screen.getByTestId('button');
+    expect(element).toHaveStyle('appearance: none');
+    expect(element).toHaveStyle(`background: ${theme.colors.white}`);
+  });
 
-  const container = screen.getByTestId('container');
-  expect(container).toHaveStyle('display: flex');
-  expect(container).toHaveStyle('align-items: center');
-  expect(container).toHaveStyle(`gap: ${theme.space['small-1']}px`);
+  test('usage with <Box> (with parts)', () => {
+    const Checkbox: React.FC = ({ children }) => {
+      const styles = useComponentStyles(
+        'Checkbox',
+        {},
+        { parts: ['container', 'icon', 'label'] }
+      );
+      return (
+        <Box data-testid="container" __baseCSS={styles.container}>
+          <Box data-testid="label" as="label" __baseCSS={styles.label}>
+            {children}
+            <Box data-testid="icon" __baseCSS={styles.icon} />
+          </Box>
+        </Box>
+      );
+    };
 
-  const label = screen.getByTestId('label');
-  expect(label).toHaveStyle(`color: ${theme.colors.black}`);
-  expect(label).toHaveStyle(`font-size: ${theme.fontSizes['small-2']}`);
+    render(
+      <ThemeProvider theme={theme}>
+        <Checkbox>Click me!</Checkbox>
+      </ThemeProvider>
+    );
 
-  const icon = screen.getByTestId('icon');
-  expect(icon).toHaveStyle(`height: ${theme.sizes['small-1']}px`);
-  expect(icon).toHaveStyle(`width: ${theme.sizes['small-1']}px`);
+    const container = screen.getByTestId('container');
+    expect(container).toHaveStyle('display: flex');
+    expect(container).toHaveStyle('align-items: center');
+    expect(container).toHaveStyle(`gap: ${theme.space['small-1']}px`);
+
+    const label = screen.getByTestId('label');
+    expect(label).toHaveStyle(`color: ${theme.colors.black}`);
+    expect(label).toHaveStyle(`font-size: ${theme.fontSizes['small-2']}`);
+
+    const icon = screen.getByTestId('icon');
+    expect(icon).toHaveStyle(`height: ${theme.sizes['small-1']}px`);
+    expect(icon).toHaveStyle(`width: ${theme.sizes['small-1']}px`);
+  });
 });
