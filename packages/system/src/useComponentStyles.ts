@@ -17,6 +17,7 @@ export type ComponentState =
   | 'disabled'
   | 'readOnly'
   | 'checked'
+  | 'indeterminate'
   | 'error';
 
 // Helper
