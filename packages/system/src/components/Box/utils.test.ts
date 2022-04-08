@@ -109,6 +109,7 @@ describe('transform states', () => {
   test('transform nested pseudos', () => {
     expect(
       transformPseudos({
+        padding: 8,
         '&:hover': {
           color: '#1864ab',
           '&:focus': {
@@ -124,6 +125,7 @@ describe('transform states', () => {
           },
           "color": "#1864ab",
         },
+        "padding": 8,
       }
     `);
   });
