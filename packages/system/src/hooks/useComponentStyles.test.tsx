@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { ThemeProvider } from './useTheme';
 
 import { useComponentStyles } from './useComponentStyles';
-import { Box } from '../components/Box/Box';
+import { Box } from '../components';
 
 // Setup
 // ---------------

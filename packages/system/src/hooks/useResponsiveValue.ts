@@ -21,7 +21,7 @@ export const useResponsiveValue = <T>(
   defaultIndex: number = 0
 ) => {
   const { theme } = useTheme();
-  const breakpoints = theme.breakpoints || emptyBreakpoints;
+  const breakpoints: string[] = theme.breakpoints || emptyBreakpoints;
 
   if (defaultIndex < 0 || defaultIndex >= breakpoints.length) {
     throw new RangeError(
