@@ -2,7 +2,7 @@ import merge from 'deepmerge';
 import { useRef } from 'react';
 import isEqual from 'react-fast-compare';
 
-import { CSSObject } from './types';
+import { CSSObject } from './types/system';
 import { useTheme } from './useTheme';
 
 // Types

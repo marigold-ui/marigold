@@ -10,8 +10,8 @@ import {
 } from '@theme-ui/css';
 import { ThemeProvider as EmotionProvider } from '@emotion/react';
 
-import { Theme } from './theme';
-import { StyleObject } from './types';
+import { Theme } from './theme.types';
+import { StyleObject } from './types/system';
 
 /**
  * @internal

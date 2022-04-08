@@ -1,9 +1,6 @@
-export * from './Box';
-export * from './Global';
-export * from './normalize';
-export * from './SVG';
-export * from './theme';
+export * from './components';
+export * from './hooks';
 export * from './types';
-export * from './useResponsiveValue';
-export * from './useTheme';
+
+export * from './normalize';
 export * from './variant';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from './useTheme';
+import { ThemeProvider } from '../../useTheme';
 import { Box, StyleProps } from './Box';
-import { normalize } from './normalize';
+import { normalize } from '../../normalize';
 
 const theme = {
   colors: {
