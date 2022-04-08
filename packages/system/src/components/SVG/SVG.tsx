@@ -1,8 +1,8 @@
 import { jsx } from '@emotion/react';
 import { ComponentProps } from '@marigold/types';
 
-import { getNormalizedStyles } from './normalize';
-import { useTheme } from './useTheme';
+import { getNormalizedStyles } from '../../normalize';
+import { useTheme } from '../../hooks';
 
 const normalizedStyles = getNormalizedStyles('svg');
 

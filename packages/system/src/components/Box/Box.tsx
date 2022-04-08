@@ -6,9 +6,9 @@ import {
   PolymorphicComponentWithRef,
 } from '@marigold/types';
 
-import { getNormalizedStyles } from './normalize';
-import { CSSObject } from './types';
-import { ensureArrayVariant } from './variant';
+import { getNormalizedStyles } from '../../normalize';
+import { CSSObject } from '../../types/system';
+import { ensureArrayVariant } from '../../variant';
 
 export interface StyleProps
   extends Pick<
