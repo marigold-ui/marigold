@@ -1,6 +1,6 @@
 import React from 'react';
 import { Global as EmotionGlobal } from '@emotion/react';
-import { useTheme } from './useTheme';
+import { useTheme } from '../../hooks';
 
 /**
  * CSS snippet and idea from:
