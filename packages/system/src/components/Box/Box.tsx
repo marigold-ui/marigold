@@ -1,6 +1,8 @@
+import { forwardRef } from 'react';
 import { jsx, Theme } from '@emotion/react';
 import { css as transformStyleObject } from '@theme-ui/css';
-import { forwardRef } from 'react';
+import merge from 'deepmerge';
+
 import {
   PolymorphicPropsWithRef,
   PolymorphicComponentWithRef,
@@ -9,6 +11,7 @@ import {
 import { getNormalizedStyles } from '../../normalize';
 import { CSSObject } from '../../types/system';
 import { ensureArrayVariant } from '../../variant';
+import { transformPseudos } from './utils';
 
 export interface StyleProps
   extends Pick<
@@ -82,7 +85,7 @@ interface CreateStyleProps {
 const createThemedStyle =
   ({ as, __baseCSS, variant, styles, css }: CreateStyleProps) =>
   (theme: Theme) => {
-    return [
+    const themedStyles = merge.all([
       getNormalizedStyles(as),
       transformStyleObject(__baseCSS)(theme),
       ...ensureArrayVariant(variant).map(v =>
@@ -90,7 +93,9 @@ const createThemedStyle =
       ),
       transformStyleObject(styles)(theme),
       transformStyleObject(css)(theme),
-    ].filter(isNotEmpty);
+    ]) as CSSObject;
+
+    return transformPseudos(themedStyles);
   };
 
 export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef(

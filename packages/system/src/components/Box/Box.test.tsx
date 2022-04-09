@@ -1,8 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+
 import { ThemeProvider } from '../../hooks';
-import { Box, StyleProps } from './Box';
 import { normalize } from '../../normalize';
+
+import { Box, StyleProps } from './Box';
 
 const theme = {
   colors: {
@@ -11,6 +13,7 @@ const theme = {
     black: '#000',
     white: '#fff',
     blue: 'cornflowerblue',
+    red: '#c92a2a',
   },
   fontSizes: {
     body: 16,
@@ -305,4 +308,29 @@ test('custom styling overrides normalization, defaults, variants and style props
   expect(element).toHaveStyle(`background: ${theme.colors.blue}`); // overrides style prop
 
   expect(element).not.toHaveStyle(`color: ${theme.colors.primary}px`); // variant part that is not overriden
+});
+
+test('transforms states selectors', async () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Box
+        data-hover
+        data-invalid
+        __baseCSS={{ p: 'small', '&:hover': { p: 'medium' } }}
+        css={{
+          fontSize: 'large',
+          m: 'small',
+          bg: 'blue',
+          '&:invalid': {
+            bg: 'red',
+          },
+        }}
+      >
+        Test
+      </Box>
+    </ThemeProvider>
+  );
+  const element = screen.getByText('Test');
+  expect(element).toHaveStyle(`padding: ${theme.space.medium}px`);
+  expect(element).toHaveStyle(`background: ${theme.colors.red}`);
 });
