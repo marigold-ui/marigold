@@ -68,12 +68,6 @@ export interface BoxOwnProps extends StyleProps {
 
 export interface BoxProps extends PolymorphicPropsWithRef<BoxOwnProps, 'div'> {}
 
-/**
- * Check if there is any falsy value or empty object
- */
-const isNotEmpty = (val: any) =>
-  !(val && Object.keys(val).length === 0 && val.constructor === Object);
-
 interface CreateStyleProps {
   as?: BoxProps['as'];
   __baseCSS?: BoxOwnProps['__baseCSS'];
