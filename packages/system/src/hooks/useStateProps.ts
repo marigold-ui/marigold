@@ -18,6 +18,11 @@ export type StateAttrs = {
   [key in StateAttrsKey]?: '';
 };
 
+/**
+ * Given a map of states (e.g. `{ hover: true, focus: false }`) returns an
+ * object that can be used to set state props on a component
+ * (e.g. `[data-hover]` and `[data-focus]`).
+ */
 export const useStateProps = (
   states: { [key in ComponentState]?: boolean } = {}
 ): StateAttrs => {
