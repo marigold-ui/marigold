@@ -75,12 +75,14 @@ export function useComponentStyles(
     const variant = componentStyles.variant?.[props.variant as any] || {};
 
     // We deep merge so that parts (if they exists) also get put together
-    const styles = merge.all([base, size, variant]) as IndexObject;
+    let styles = merge.all([base, size, variant]) as IndexObject;
 
+    // Only return requested parts. If they don't exist, set them as empty object
     if (options.parts) {
-      options.parts.forEach((part: string) => {
-        styles[part] = styles[part] ?? {};
-      });
+      styles = options.parts.reduce((result: IndexObject, part: string) => {
+        result[part] = styles[part] || {};
+        return result;
+      }, {});
     }
 
     if (!isEqual(stylesRef.current, styles)) {

@@ -395,6 +395,23 @@ describe('useComponentStyles (complex)', () => {
     );
     expect(result.current['non-existing-part']).toMatchInlineSnapshot(`{}`);
   });
+
+  test('returns only requested parts', () => {
+    const { result } = renderHook(
+      () => useComponentStyles('Checkbox', {}, { parts: ['label'] }),
+      {
+        wrapper,
+      }
+    );
+    expect(result.current).toMatchInlineSnapshot(`
+      {
+        "label": {
+          "color": "black",
+          "fontSize": "small-2",
+        },
+      }
+    `);
+  });
 });
 
 describe('style superiority', () => {
