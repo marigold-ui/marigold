@@ -9,17 +9,6 @@ import { useTheme } from './useTheme';
 // ---------------
 type IndexObject = { [key: string]: any };
 
-export type ComponentState =
-  | 'hover'
-  | 'focus'
-  | 'active'
-  | 'visited'
-  | 'disabled'
-  | 'readOnly'
-  | 'checked'
-  | 'indeterminate'
-  | 'error';
-
 // Helper
 // ---------------
 /**
@@ -41,35 +30,11 @@ const get = (obj: object, path: string, fallback?: any): any => {
   return result === undefined ? fallback : result;
 };
 
-/**
- * Convert an object of states, where the key is the state name and
- * the value is a boolean, to an array of strings.
- */
-const statesToFlags = ({
-  disabled,
-  ...states
-}: { [key in ComponentState]?: boolean } = {}): ComponentState[] => {
-  let flags = Object.keys(states).filter(
-    key => states[key as keyof typeof states]
-  ) as ComponentState[];
-
-  /**
-   * Adding `disabled` at the end of the array so that it
-   * will be the most prominent state and override the others.
-   */
-  if (disabled) {
-    flags.push('disabled');
-  }
-
-  return flags;
-};
-
 // Hook
 // ---------------
 export interface ComponentStylesProps {
   variant?: string;
   size?: string;
-  states?: { [key in ComponentState]?: boolean };
 }
 
 export function useComponentStyles(
@@ -108,14 +73,10 @@ export function useComponentStyles(
     const base = componentStyles.base || {};
     const size = componentStyles.size?.[props.size as any] || {};
     const variant = componentStyles.variant?.[props.variant as any] || {};
-    const states = statesToFlags(props.states).map(
-      state => componentStyles.state?.[state] || {}
-    );
 
     // We deep merge so that parts (if they exists) also get put together
-    const styles = merge.all([base, size, ...states, variant]) as IndexObject;
+    const styles = merge.all([base, size, variant]) as IndexObject;
 
-    // If a part does not exists in the theme, well add an empty object
     if (options.parts) {
       options.parts.forEach((part: string) => {
         styles[part] = styles[part] ?? {};
