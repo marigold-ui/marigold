@@ -23,9 +23,9 @@ export type StateAttrs = {
  * object that can be used to set state props on a component
  * (e.g. `[data-hover]` and `[data-focus]`).
  */
-export const useStateProps = (
-  states: { [key in ComponentState]?: boolean } = {}
-): StateAttrs => {
+export const useStateProps = (states: {
+  [key in ComponentState]?: boolean;
+}): StateAttrs => {
   // Store states in ref to prevent re-computation
   const statePropsRef = useRef({});
 
