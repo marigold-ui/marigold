@@ -53,7 +53,7 @@ test('return only set states', () => {
   `);
 });
 
-test('worls with empty object', () => {
+test('works with empty object', () => {
   const { result } = renderHook(() => useStateProps({}));
 
   expect(result.current).toMatchInlineSnapshot(`{}`);
