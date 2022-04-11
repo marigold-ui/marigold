@@ -14,19 +14,6 @@ describe('transform states', () => {
         "padding": 10,
       }
     `);
-    expect({
-      maring: 10,
-      '> *': {
-        marginTop: 4,
-      },
-    }).toMatchInlineSnapshot(`
-      {
-        "> *": {
-          "marginTop": 4,
-        },
-        "maring": 10,
-      }
-    `);
   });
 
   test.each([
