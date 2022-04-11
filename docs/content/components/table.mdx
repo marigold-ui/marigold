@@ -1,0 +1,259 @@
+---
+title: Table
+---
+
+import { DoAndDont } from '../../src/components/DoAndDont';
+import { FigmaLink } from '../../src/components/FigmaLink';
+
+# Table
+
+A table can be built using the `<table>, <tr>, <td>` and other table specific HTML elements, but is very limited in functionality especially when it comes to user interactions. HTML tables are meant for static content, rather than tables with rich interactions like focusable elements within cells, keyboard navigation, row selection, sorting, etc. The Table helps achieve accessible and interactive table components that can be styled as needed.
+
+```tsx
+<Table aria-label="Table with multiple selection" selectionMode="multiple">
+  <TableHeader>
+    <Column>Name</Column>
+    <Column>Firstname</Column>
+    <Column>House</Column>
+    <Column>Year of birth</Column>
+  </TableHeader>
+  <TableBody>
+    <Row key={1}>
+      <Cell>Potter</Cell>
+      <Cell>Harry</Cell>
+      <Cell>Gryffindor</Cell>
+      <Cell>1980</Cell>
+    </Row>
+    <Row key={2}>
+      <Cell>Malfoy</Cell>
+      <Cell>Draco</Cell>
+      <Cell>Slytherin</Cell>
+      <Cell>1980</Cell>
+    </Row>
+    <Row key={3}>
+      <Cell>Diggory</Cell>
+      <Cell>Cedric</Cell>
+      <Cell>Hufflepuff</Cell>
+      <Cell>1977</Cell>
+    </Row>
+    <Row key={4}>
+      <Cell>Lovegood</Cell>
+      <Cell>Luna</Cell>
+      <Cell>Ravenclaw</Cell>
+      <Cell>1981</Cell>
+    </Row>
+  </TableBody>
+</Table>
+```
+
+```tsx onlyCode
+import {
+  Cell,
+  Column,
+  Row,
+  Table,
+  TableBody,
+  TableHeader,
+} from '@marigold/components';
+```
+
+<FigmaLink
+  to={
+    'https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=2387%3A1928'
+  }
+/>
+
+## Props
+
+| Property                       | Type                           | Default | Description                                              |
+| :----------------------------- | :----------------------------- | :------ | :------------------------------------------------------- |
+| `selectionMode` (optional)     | `'none', 'single', 'multiple'` | `none`  | The type of selection that is allowed in the collection. |
+| `onSelectionChange` (optional) | `(keys: Selection) => any`     |         | Handler that is called when the selection changes.       |
+| `align` (optional)             | `left, center, right`          | `left`  | Align the cell content from the rows except the header.  |
+| `alignHeader` (optional)       | `left, center, right`          | `left`  | Align the header content.                                |
+
+## Examples
+
+### Selection mode single
+
+```tsx
+<Table aria-label="Table with multiple selection" selectionMode="single">
+  <TableHeader>
+    <Column>Name</Column>
+    <Column>Firstname</Column>
+    <Column>House</Column>
+    <Column>Year of birth</Column>
+  </TableHeader>
+  <TableBody>
+    <Row key={1}>
+      <Cell>Potter</Cell>
+      <Cell>Harry</Cell>
+      <Cell>Gryffindor</Cell>
+      <Cell>1980</Cell>
+    </Row>
+    <Row key={2}>
+      <Cell>Malfoy</Cell>
+      <Cell>Draco</Cell>
+      <Cell>Slytherin</Cell>
+      <Cell>1980</Cell>
+    </Row>
+    <Row key={3}>
+      <Cell>Diggory</Cell>
+      <Cell>Cedric</Cell>
+      <Cell>Hufflepuff</Cell>
+      <Cell>1977</Cell>
+    </Row>
+    <Row key={4}>
+      <Cell>Lovegood</Cell>
+      <Cell>Luna</Cell>
+      <Cell>Ravenclaw</Cell>
+      <Cell>1981</Cell>
+    </Row>
+  </TableBody>
+</Table>
+```
+
+### Selection mode multiple
+
+```tsx
+<Table aria-label="Table with multiple selection" selectionMode="multiple">
+  <TableHeader>
+    <Column>Name</Column>
+    <Column>Firstname</Column>
+    <Column>House</Column>
+    <Column>Year of birth</Column>
+  </TableHeader>
+  <TableBody>
+    <Row key={1}>
+      <Cell>Potter</Cell>
+      <Cell>Harry</Cell>
+      <Cell>Gryffindor</Cell>
+      <Cell>1980</Cell>
+    </Row>
+    <Row key={2}>
+      <Cell>Malfoy</Cell>
+      <Cell>Draco</Cell>
+      <Cell>Slytherin</Cell>
+      <Cell>1980</Cell>
+    </Row>
+    <Row key={3}>
+      <Cell>Diggory</Cell>
+      <Cell>Cedric</Cell>
+      <Cell>Hufflepuff</Cell>
+      <Cell>1977</Cell>
+    </Row>
+    <Row key={4}>
+      <Cell>Lovegood</Cell>
+      <Cell>Luna</Cell>
+      <Cell>Ravenclaw</Cell>
+      <Cell>1981</Cell>
+    </Row>
+  </TableBody>
+</Table>
+```
+
+### Text Alignment
+
+Align column headers and rows to the left, center, or right.
+
+```tsx
+<Table
+  aria-label="Table with multiple selection"
+  align="center"
+  alignHeader="center"
+>
+  <TableHeader>
+    <Column>Name</Column>
+    <Column>Firstname</Column>
+    <Column>House</Column>
+    <Column>Year of birth</Column>
+  </TableHeader>
+  <TableBody>
+    <Row key={1}>
+      <Cell>Potter</Cell>
+      <Cell>Harry</Cell>
+      <Cell>Gryffindor</Cell>
+      <Cell>1980</Cell>
+    </Row>
+    <Row key={2}>
+      <Cell>Malfoy</Cell>
+      <Cell>Draco</Cell>
+      <Cell>Slytherin</Cell>
+      <Cell>1980</Cell>
+    </Row>
+    <Row key={3}>
+      <Cell>Diggory</Cell>
+      <Cell>Cedric</Cell>
+      <Cell>Hufflepuff</Cell>
+      <Cell>1977</Cell>
+    </Row>
+    <Row key={4}>
+      <Cell>Lovegood</Cell>
+      <Cell>Luna</Cell>
+      <Cell>Ravenclaw</Cell>
+      <Cell>1981</Cell>
+    </Row>
+  </TableBody>
+</Table>
+```
+
+### Dynamic collections
+
+```tsx
+() => {
+  const columns = [
+    { name: 'Name', key: 'name' },
+    { name: 'Firstname', key: 'firstname' },
+    { name: 'House', key: 'house' },
+    { name: 'Year of birth', key: 'year' },
+  ];
+  const rows = [
+    {
+      id: '1',
+      name: 'Potter',
+      firstname: 'Harry',
+      house: 'Gryffindor',
+      year: '1980',
+    },
+    {
+      id: '2',
+      name: 'Malfoy',
+      firstname: 'Draco',
+      house: 'Slytherin',
+      year: '1980',
+    },
+    {
+      id: '3',
+      name: 'Diggory',
+      firstname: 'Cedric',
+      house: 'Hufflepuff',
+      year: '1977',
+    },
+    {
+      id: '4',
+      name: 'Lovegood',
+      firstname: 'Luna',
+      house: 'Ravenclaw',
+      year: '1981',
+    },
+  ];
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set());
+  return (
+    <Stack space="small">
+      <Table
+        aria-label="Example dynamic collection table"
+        selectionMode="multiple"
+        onSelectionChange={key => setSelectedKeys(new Set(key))}
+      >
+        <TableHeader columns={columns}>
+          {column => <Column>{column.name}</Column>}
+        </TableHeader>
+        <TableBody items={rows}>
+          {item => <Row>{columnKey => <Cell>{item[columnKey]}</Cell>}</Row>}
+        </TableBody>
+      </Table>
+      <Text>Selected rows: {selectedKeys}</Text>
+    </Stack>
+  );
+};
+```

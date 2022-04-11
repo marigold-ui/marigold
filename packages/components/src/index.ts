@@ -26,6 +26,7 @@ export * from './Select';
 export * from './Slider';
 export * from './Switch';
 export * from './Stack';
+export * from './Table';
 export * from './Text';
 export * from './TextArea';
 export * from './TextField';
@@ -36,3 +37,10 @@ export * from './Container';
 export * from './ValidationMessage';
 
 export { Item, Section } from '@react-stately/collections';
+export {
+  Cell,
+  Column,
+  Row,
+  TableBody,
+  TableHeader,
+} from '@react-stately/table';
