@@ -2,8 +2,8 @@
 title: Button
 ---
 
-import { DoAndDont } from '../../src/components/DoAndDont';
-import { FigmaLink } from '../../src/components/FigmaLink';
+import { DoAndDont } from "../../src/components/DoAndDont";
+import { FigmaLink } from "../../src/components/FigmaLink";
 
 # Button
 
@@ -13,21 +13,21 @@ They have multiple styles for various needs, and are ideal for calling attention
 The style variant and size of the button can be added with the variant prop and is composed like `variant.size`.
 
 <MarigoldTheme>
-  <ActionGroup space="small">
+  <Inline space="small">
     <Button>Primary</Button>
     <Button variant="secondary">Secondary</Button>
     <Button variant="ghost">Ghost</Button>
     <Button variant="text">Text Only</Button>
-  </ActionGroup>
+  </Inline>
 </MarigoldTheme>
 
 ```tsx onlyCode
-import { Button } from '@marigold/components';
+import { Button } from "@marigold/components";
 ```
 
 <FigmaLink
   to={
-    'https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=11%3A269'
+    "https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=11%3A269"
   }
 />
 
@@ -220,36 +220,36 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
   <Box
     display="grid"
     css={{
-      gridGap: 'small',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(min(500px, 100%), 1fr))',
+      gridGap: "small",
+      gridTemplateColumns: "repeat(auto-fit, minmax(min(500px, 100%), 1fr))",
     }}
   >
     <DoAndDont
       preview={
-        <ActionGroup space="small">
+        <Inline space="small">
           <Button variant="ghost">Ghost</Button>
           <Button>Primary</Button>
-        </ActionGroup>
+        </Inline>
       }
     >
       Use a ghost button next to a Primary button.
     </DoAndDont>
     <DoAndDont
       preview={
-        <ActionGroup space="small">
+        <Inline space="small">
           <Button variant="text">Text</Button>
           <Button>Primary</Button>
-        </ActionGroup>
+        </Inline>
       }
     >
       Use a Text button next to a Primary button.
     </DoAndDont>
     <DoAndDont
       preview={
-        <ActionGroup space="small">
+        <Inline space="small">
           <Button variant="text">Text</Button>
           <Button variant="text">Text</Button>
-        </ActionGroup>
+        </Inline>
       }
     >
       Use a Text button next to another text button.
@@ -257,10 +257,10 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
     <DoAndDont
       dont
       preview={
-        <ActionGroup space="small">
+        <Inline space="small">
           <Button>Primary</Button>
           <Button>Primary</Button>
-        </ActionGroup>
+        </Inline>
       }
     >
       Use two Primary buttons on the same page, there should be only one
@@ -269,10 +269,10 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
     <DoAndDont
       dont
       preview={
-        <ActionGroup space="small">
+        <Inline space="small">
           <Button variant="secondary">Secondary</Button>
           <Button variant="secondary">Secondary</Button>
-        </ActionGroup>
+        </Inline>
       }
     >
       Use two Secondary buttons next to each other, it loses hierarchie and is
@@ -281,12 +281,12 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
     <DoAndDont
       dont
       preview={
-        <ActionGroup space="small">
+        <Inline space="small">
           <Button variant="secondary">Secondary</Button>
           <Button variant="secondary" size="small">
             Secondary
           </Button>
-        </ActionGroup>
+        </Inline>
       }
     >
       Mix normal sized buttons with small buttons inmediatly next or below each
