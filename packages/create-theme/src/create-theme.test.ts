@@ -238,47 +238,24 @@ test('allows to use fluid dimensions', () => {
 });
 
 test('allows to add component styles', () => {
-  const { link, text, button } = createTheme({
+  const { components } = createTheme({
     colors: ['brand', 'red'],
     components: {
-      link: {
-        color: 'red.80',
-      },
-
-      text: {
-        body: {
-          fontFamily: 'sans',
-        },
-      },
-
-      button: {
-        __default: {
+      Badge: {
+        base: {
           color: 'brand.primary',
-        },
-
-        primary: {
-          color: 'red.00',
         },
       },
     },
   });
 
-  expect({ link, text, button }).toMatchInlineSnapshot(`
+  expect({ components }).toMatchInlineSnapshot(`
     {
-      "button": {
-        "__default": {
-          "color": "brand.primary",
-        },
-        "primary": {
-          "color": "red.00",
-        },
-      },
-      "link": {
-        "color": "red.80",
-      },
-      "text": {
-        "body": {
-          "fontFamily": "sans",
+      "components": {
+        "Badge": {
+          "base": {
+            "color": "brand.primary",
+          },
         },
       },
     }

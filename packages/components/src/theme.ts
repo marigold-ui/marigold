@@ -51,5 +51,5 @@ export interface Theme
     TextAreaThemeExtension<CSSObject>,
     TooltipThemeExtension<CSSObject>,
     ValidationMessageThemeExtension<CSSObject> {
-  components?: ComponentStyles;
+  components: ComponentStyles;
 }

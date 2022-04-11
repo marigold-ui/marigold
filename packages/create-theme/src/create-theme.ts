@@ -43,7 +43,7 @@ export interface ThemeConfig {
    */
   dimensions?: 'fixed' | 'fluid';
 
-  components?: Omit<Theme, keyof Scales>;
+  components?: Theme['components'];
 }
 
 /*#__PURE__*/
@@ -52,7 +52,7 @@ export const createTheme = ({
   fonts: configFonts,
   typography = 'fixed',
   dimensions = 'fixed',
-  components,
+  components = {},
 }: ThemeConfig): Theme => {
   // Create colors (pick from Token or custom)
   let colors: Theme['colors'] = {};
@@ -83,6 +83,6 @@ export const createTheme = ({
     fontSizes: Token.typography.size[typography],
 
     // Add component styles
-    ...components,
+    components,
   };
 };
