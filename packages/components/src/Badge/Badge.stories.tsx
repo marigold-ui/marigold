@@ -2,7 +2,6 @@ import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 
 import { Badge } from './Badge';
-import { Check } from '@marigold/icons';
 
 export default {
   title: 'Components/Badge',
@@ -14,25 +13,14 @@ export default {
       },
       defaultValue: '',
     },
-    bgColor: {
-      description: 'background color',
+    children: {
       control: {
         type: 'text',
       },
-      defaultValue: 'primary',
-    },
-    borderColor: {
-      description: 'outline color',
-      control: {
-        type: 'text',
-      },
-      defaultValue: 'transparent',
+      description: 'Contents of the badge',
+      defaultValue: 'new',
     },
   },
 } as Meta;
 
-export const Basic: ComponentStory<typeof Badge> = args => (
-  <Badge {...args}>
-    <Check /> Check
-  </Badge>
-);
+export const Basic: ComponentStory<typeof Badge> = args => <Badge {...args} />;
