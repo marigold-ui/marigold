@@ -7,17 +7,7 @@ title: Badge
 A badge tags an element with a short note and color. The content of the badge can be anything but preferably a string and/or icon.
 
 <MarigoldTheme>
-  <Inline space="xsmall">
-    <Badge bgColor="info">
-      <Text color="white">Info</Text>
-    </Badge>
-    <Badge bgColor="success">
-      <Text color="white">Success</Text>
-    </Badge>
-    <Badge bgColor="error">
-      <Text color="white">Error</Text>
-    </Badge>
-  </Inline>
+  <Badge variant="info">New</Badge>
 </MarigoldTheme>
 
 ```tsx onlyCode
@@ -26,34 +16,16 @@ import { Badge } from '@marigold/components';
 
 ## Props
 
-| Property                 | Type     | Default       |
-| :----------------------- | :------- | :------------ |
-| `variant` (optional)     | `string` | `__default`   |
-| `borderColor` (optional) | `string` | `transparent` |
-| `bgColor` (optional)     | `string` | `inherit`     |
+| Property             | Type     | Default     |
+| :------------------- | :------- | :---------- |
+| `variant` (optional) | `string` | `__default` |
 
 ## Examples
-
-### Background color
-
-```tsx expandCode
-<Badge bgColor="error">
-  <Text color="white">Error</Text>
-</Badge>
-```
-
-Border color
-
-```tsx
-<Badge borderColor="info" bgColor="white">
-  <Text color="info">New</Text>
-</Badge>
-```
 
 ### Badge with icon
 
 ```tsx
-<Badge borderColor="secondary">
+<Badge>
   <Inline space="xsmall">
     type:documentation
     <ResaleLogbook size={18} />
