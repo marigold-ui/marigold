@@ -15,6 +15,8 @@ export const base: Theme = {
 
   zIndices: Token.layer,
   opacities: Token.opacity,
+
+  components: {},
 };
 
 type AvailableColor = keyof typeof Token.color;

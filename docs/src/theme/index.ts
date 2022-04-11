@@ -46,4 +46,5 @@ export const theme: Theme = {
   },
   ...typography,
   ...components,
+  components: {},
 } as const;
