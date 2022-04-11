@@ -23,7 +23,7 @@ test('supports default variant and themeSection', () => {
       <Image data-testid="images" />
     </ThemeProvider>
   );
-  const img = screen.getByTitle(/images/);
+  const img = screen.getByTestId(/images/);
 
   expect(img).toHaveStyle(`align-items: center`);
 });
@@ -34,7 +34,7 @@ test('accepts other variant than default', () => {
       <Image data-testid="logos" variant="logos" />
     </ThemeProvider>
   );
-  const img = screen.getByTitle(/logos/);
+  const img = screen.getByTestId(/logos/);
 
   expect(img).toHaveStyle(`align-items: right`);
 });
@@ -45,7 +45,7 @@ test('renders correct HTML element', () => {
       <Image data-testid="default" />
     </ThemeProvider>
   );
-  const img = screen.getByTitle(/default/);
+  const img = screen.getByTestId(/default/);
 
   expect(img instanceof HTMLImageElement).toBeTruthy();
 });
@@ -53,10 +53,10 @@ test('renders correct HTML element', () => {
 test('accept alt', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Image alt="altText" title="default" />
+      <Image alt="altText" data-testid="default" />
     </ThemeProvider>
   );
-  const img = screen.getByTitle(/default/);
+  const img = screen.getByTestId(/default/);
 
   expect(img.getAttribute('alt')).toEqual('altText');
 });
@@ -67,7 +67,7 @@ test('accepts custom styles prop className', () => {
       <Image className="custom-class-name" data-testid="image" />
     </ThemeProvider>
   );
-  const image = screen.getByTitle(/image/);
+  const image = screen.getByTestId(/image/);
 
   expect(image.className).toMatch('custom-class-name');
 });
