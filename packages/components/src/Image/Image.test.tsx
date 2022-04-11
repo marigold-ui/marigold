@@ -20,7 +20,7 @@ const theme = {
 test('supports default variant and themeSection', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Image title="images" />
+      <Image data-testid="images" />
     </ThemeProvider>
   );
   const img = screen.getByTitle(/images/);
@@ -31,7 +31,7 @@ test('supports default variant and themeSection', () => {
 test('accepts other variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Image title="logos" variant="logos" />
+      <Image data-testid="logos" variant="logos" />
     </ThemeProvider>
   );
   const img = screen.getByTitle(/logos/);
@@ -42,7 +42,7 @@ test('accepts other variant than default', () => {
 test('renders correct HTML element', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Image title="default" />
+      <Image data-testid="default" />
     </ThemeProvider>
   );
   const img = screen.getByTitle(/default/);
@@ -64,7 +64,7 @@ test('accept alt', () => {
 test('accepts custom styles prop className', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Image className="custom-class-name" title="image" />
+      <Image className="custom-class-name" data-testid="image" />
     </ThemeProvider>
   );
   const image = screen.getByTitle(/image/);
