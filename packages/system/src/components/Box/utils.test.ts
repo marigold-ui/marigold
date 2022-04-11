@@ -117,5 +117,3 @@ describe('transform states', () => {
     `);
   });
 });
-
-// -> add to box and test it there
