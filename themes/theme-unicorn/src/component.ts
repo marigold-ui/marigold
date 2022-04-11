@@ -317,42 +317,7 @@ const slider = {
   },
 } as const;
 
-export const components = {
-  components: {
-    Table: {
-      base: {
-        table: { borderCollapse: 'collapse' },
-        header: {
-          py: 'xxsmall',
-          px: 'xsmall',
-          cursor: 'default',
-          color: 'gray00',
-          bg: 'gray50',
-        },
-        row: { bg: '#EDE7F6' },
-        cell: {
-          p: 'xsmall',
-          cursor: 'default',
-          borderBottom: '1px solid',
-          borderColor: 'gray50',
-        },
-      },
-    },
-  },
-  badge: {
-    __default: {
-      display: 'inline-flex',
-      alignItems: 'center',
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      fontWeight: 'body',
-      borderRadius: '10px',
-      border: '2px solid transparent',
-      whiteSpace: 'nowrap',
-      padding: '0.25rem 0.75rem',
-      mx: '0.5rem',
-    },
-  },
+export const component = {
   button: {
     __default: {
       p: 0,

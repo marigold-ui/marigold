@@ -1,7 +1,10 @@
 import { type Theme } from '@marigold/components';
 import { colors } from './colors';
-import { components } from './components';
+import { component } from './component';
 import { typography } from './typography';
+
+// NEW STYLES!
+import * as components from './components';
 
 const theme: Theme = {
   space: {
@@ -53,7 +56,9 @@ const theme: Theme = {
     xlarge: 10,
   },
   ...typography,
-  ...components,
+  ...component,
+  // NEW STYLES!!!
+  components,
 } as const;
 
 export default theme;

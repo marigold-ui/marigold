@@ -28,10 +28,11 @@ import { type TextAreaThemeExtension } from './TextArea';
 import { type TooltipThemeExtension } from './Tooltip';
 import { type ValidationMessageThemeExtension } from './ValidationMessage';
 
+interface ComponentStyles extends BadgeThemeExtension<CSSObject> {}
+
 export interface Theme
   extends Scales,
     RootThemeExtension<CSSObject>,
-    BadgeThemeExtension<CSSObject>,
     ButtonThemeExtension<CSSObject>,
     CardThemeExtension<CSSObject>,
     CheckboxThemeExtension<CSSObject>,
@@ -51,4 +52,6 @@ export interface Theme
     TextThemeExtension<CSSObject>,
     TextAreaThemeExtension<CSSObject>,
     TooltipThemeExtension<CSSObject>,
-    ValidationMessageThemeExtension<CSSObject> {}
+    ValidationMessageThemeExtension<CSSObject> {
+  components: ComponentStyles;
+}
