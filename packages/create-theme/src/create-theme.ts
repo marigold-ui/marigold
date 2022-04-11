@@ -1,4 +1,4 @@
-import type { ScaleValue, Theme as Scales } from '@marigold/system';
+import type { ScaleValue } from '@marigold/system';
 import type { Theme } from '@marigold/components';
 
 import * as Token from '@marigold/tokens';
