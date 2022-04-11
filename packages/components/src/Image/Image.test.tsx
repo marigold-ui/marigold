@@ -7,36 +7,29 @@ const theme = {
   colors: {
     primary: 'hotpink',
   },
-  image: {
-    fullWidth: {
-      alignItems: 'center',
-    },
-    logos: {
-      alignItems: 'right',
+  components: {
+    Image: {
+      base: {
+        alignItems: 'center',
+      },
+      variant: {
+        fullWidth: {
+          alignItems: 'center',
+        },
+      },
     },
   },
 };
 
-test('supports default variant and themeSection', () => {
+test('supports Image variant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Image data-testid="images" />
+      <Image data-testid="images" variant="fullWidth" />
     </ThemeProvider>
   );
   const img = screen.getByTestId(/images/);
 
   expect(img).toHaveStyle(`align-items: center`);
-});
-
-test('accepts other variant than default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Image data-testid="logos" variant="logos" />
-    </ThemeProvider>
-  );
-  const img = screen.getByTestId(/logos/);
-
-  expect(img).toHaveStyle(`align-items: right`);
 });
 
 test('renders correct HTML element', () => {
