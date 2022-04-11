@@ -15,8 +15,11 @@ import { TableRowGroup } from './TableRowGroup';
 // Theme Extension
 // ---------------
 export interface TableThemeExtension<Value> {
-  table?: {
-    [key: string]: Value;
+  Table?: {
+    base: Value;
+    variant?: {
+      [key: string]: Value;
+    };
   };
 }
 
@@ -27,6 +30,7 @@ export interface TableProps
     TablePropsStately<object> {
   align?: TableCellProps['align'];
   alignHeader?: TableColumnHeaderProps['align'];
+  variant?: string;
 }
 
 // Table Component
@@ -34,6 +38,7 @@ export interface TableProps
 export const Table: React.FC<TableProps> = ({
   align,
   alignHeader,
+  variant,
   ...props
 }) => {
   const { selectionMode, selectionBehavior } = props;
@@ -49,7 +54,7 @@ export const Table: React.FC<TableProps> = ({
 
   const styles = useComponentStyles(
     'Table',
-    {},
+    { variant },
     { parts: ['table', 'header', 'row', 'cell'] }
   );
 
