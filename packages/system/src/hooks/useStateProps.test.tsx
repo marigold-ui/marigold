@@ -53,6 +53,12 @@ test('return only set states', () => {
   `);
 });
 
+test('worls with empty object', () => {
+  const { result } = renderHook(() => useStateProps({}));
+
+  expect(result.current).toMatchInlineSnapshot(`{}`);
+});
+
 test('works with components', () => {
   const Component = ({ disabled }: { disabled?: boolean }) => {
     const stateProps = useStateProps({ disabled });
