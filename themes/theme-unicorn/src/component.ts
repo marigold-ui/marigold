@@ -404,12 +404,6 @@ export const component = {
       bg: 'gray50',
     },
   },
-  image: {
-    fullWidth: {
-      maxWidth: '100%',
-      height: 'auto',
-    },
-  },
   input: {
     __default: {
       fontFamily: 'body',

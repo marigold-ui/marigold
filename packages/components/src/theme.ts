@@ -30,6 +30,7 @@ import { type ValidationMessageThemeExtension } from './ValidationMessage';
 
 interface ComponentStyles
   extends BadgeThemeExtension<CSSObject>,
+    ImageThemeExtension<CSSObject>,
     TableThemeExtension<CSSObject> {}
 
 export interface Theme
@@ -39,7 +40,6 @@ export interface Theme
     CardThemeExtension<CSSObject>,
     CheckboxThemeExtension<CSSObject>,
     DividerThemeExtension<CSSObject>,
-    ImageThemeExtension<CSSObject>,
     InputThemeExtension<CSSObject>,
     LabelThemeExtension<CSSObject>,
     LinkThemeExtension<CSSObject>,
