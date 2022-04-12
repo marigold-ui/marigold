@@ -10,7 +10,7 @@ import { TableState } from '@react-stately/table';
 import { useToggleState } from '@react-stately/toggle';
 import { Node } from '@react-types/shared';
 
-import { CSSObject } from '@marigold/system';
+import { CSSObject, useStateProps } from '@marigold/system';
 
 import { Box } from '../Box';
 import { Text } from '../Text';
@@ -40,8 +40,8 @@ export const TableColumnHeader: React.FC<TableColumnHeaderProps> = ({
     state,
     ref as RefObject<HTMLElement>
   );
-  // get isFocusVisible from useFocusRing if we can handle states in useComponentStyles
-  const { focusProps } = useFocusRing();
+  const { focusProps, isFocusVisible } = useFocusRing();
+  const stateProps = useStateProps({ focus: isFocusVisible });
 
   const { checkboxProps } = useTableSelectAllCheckbox(state);
   const inputRef = useRef(null);
@@ -62,6 +62,7 @@ export const TableColumnHeader: React.FC<TableColumnHeaderProps> = ({
         },
         ...styles,
       }}
+      {...stateProps}
     >
       {isSelectionColumn ? (
         <input {...inputProps} ref={inputRef} />

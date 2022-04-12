@@ -7,7 +7,7 @@ import { TableState } from '@react-stately/table';
 import { useToggleState } from '@react-stately/toggle';
 import { Node } from '@react-types/shared';
 
-import { CSSObject } from '@marigold/system';
+import { CSSObject, useStateProps } from '@marigold/system';
 
 import { Box } from '../Box';
 import { Text } from '../Text';
@@ -37,8 +37,8 @@ export const TableCell: React.FC<TableCellProps> = ({
     state,
     ref as RefObject<HTMLElement>
   );
-  // get isFocusVisible from useFocusRing if we can handle states in useComponentStyles
-  const { focusProps } = useFocusRing();
+  const { focusProps, isFocusVisible } = useFocusRing();
+  const stateProps = useStateProps({ focus: isFocusVisible });
 
   const { checkboxProps } = useTableSelectionCheckbox(
     { key: cell.parentKey! },
@@ -62,6 +62,7 @@ export const TableCell: React.FC<TableCellProps> = ({
         },
         ...styles,
       }}
+      {...stateProps}
     >
       {isSelectionCell ? (
         <input {...inputProps} />

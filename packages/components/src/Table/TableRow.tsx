@@ -5,7 +5,7 @@ import { mergeProps } from '@react-aria/utils';
 import { TableState } from '@react-stately/table';
 import { Node } from '@react-types/shared';
 
-import { CSSObject } from '@marigold/system';
+import { CSSObject, useStateProps } from '@marigold/system';
 
 import { Box } from '../Box';
 
@@ -34,18 +34,19 @@ export const TableRow: React.FC<TableRowProps> = ({
     state,
     ref as RefObject<HTMLElement>
   );
-  // get isFocusVisible from useFocusRing if we can handle states in useComponentStyles
-  const { focusProps } = useFocusRing();
+  const { focusProps, isFocusVisible } = useFocusRing();
+  const stateProps = useStateProps({
+    focus: isFocusVisible,
+    checked: isSelected,
+  });
 
   return (
     <Box
       as="tr"
       ref={ref as RefObject<HTMLTableRowElement>}
       {...mergeProps(rowProps, focusProps)}
-      __baseCSS={{
-        // change this if we can handle states in useComponentStyles
-        ...(isSelected && styles),
-      }}
+      __baseCSS={{ ...styles }}
+      {...stateProps}
     >
       {children}
     </Box>

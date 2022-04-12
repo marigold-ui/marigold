@@ -9,13 +9,26 @@ export const Table: Theme['components']['Table'] = {
       cursor: 'default',
       color: 'gray00',
       bg: 'gray50',
+      '&:focus': {
+        outlineColor: 'purple60',
+      },
     },
-    row: { bg: 'purple10' },
+    row: {
+      '&:checked': {
+        bg: 'purple10',
+      },
+      '&:focus': {
+        outlineColor: 'purple60',
+      },
+    },
     cell: {
       p: 'xsmall',
       cursor: 'default',
       borderBottom: '1px solid',
       borderColor: 'gray50',
+      '&:focus': {
+        outlineColor: 'purple60',
+      },
     },
   },
 };
