@@ -246,6 +246,7 @@ importers:
       '@react-aria/checkbox': ^3.2.3
       '@react-aria/dialog': ^3.1.4
       '@react-aria/focus': ^3.4.1
+      '@react-aria/interactions': ^3.8.3
       '@react-aria/link': ^3.1.4
       '@react-aria/listbox': ^3.3.1
       '@react-aria/overlays': ^3.7.2
@@ -277,6 +278,7 @@ importers:
       '@react-aria/checkbox': 3.3.3_react@17.0.2
       '@react-aria/dialog': 3.1.8_react@17.0.2
       '@react-aria/focus': 3.5.4_react@17.0.2
+      '@react-aria/interactions': 3.8.3_react@17.0.2
       '@react-aria/link': 3.2.4_react@17.0.2
       '@react-aria/listbox': 3.4.4_react@17.0.2
       '@react-aria/overlays': 3.8.1_react-dom@17.0.2+react@17.0.2

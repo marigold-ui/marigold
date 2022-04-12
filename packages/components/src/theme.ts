@@ -11,6 +11,7 @@ import { type ButtonThemeExtension } from './Button';
 import { type CardThemeExtension } from './Card';
 import { type CheckboxThemeExtension } from './Checkbox';
 import { type DividerThemeExtension } from './Divider';
+import { type FieldThemeExtension } from './Field';
 import { type ImageThemeExtension } from './Image';
 import { type InputThemeExtension } from './Input';
 import { type LabelThemeExtension } from './Label';
@@ -29,6 +30,7 @@ import { type ValidationMessageThemeExtension } from './ValidationMessage';
 
 interface ComponentStyles
   extends BadgeThemeExtension<CSSObject>,
+    FieldThemeExtension<CSSObject>,
     ImageThemeExtension<CSSObject> {}
 
 export interface Theme

@@ -3,8 +3,33 @@ import { Stack } from '../Stack';
 
 import { Label } from './Label';
 import { HelpText } from './HelpText';
+import { useComponentStyles } from '@marigold/system';
 
+// Theme Extension
+// ---------------
+interface FieldParts<Value> {
+  label?: Value;
+  helptext?: Value;
+  input?: Value;
+}
+export interface FieldThemeExtension<Value> {
+  Field?: {
+    base: FieldParts<Value>;
+    variant?: {
+      [key: string]: FieldParts<Value>;
+    };
+    size?: {
+      [key: string]: FieldParts<Value>;
+    };
+  };
+}
+
+// Props
+// ---------------
 export interface FieldProps {
+  children?: React.ReactNode;
+  variant?: string;
+  size?: string;
   disabled?: boolean;
   required?: boolean;
   label?: ReactNode;
@@ -16,7 +41,11 @@ export interface FieldProps {
   errorMessageProps?: HTMLAttributes<HTMLElement>;
 }
 
-export const Field: React.FC<FieldProps> = ({
+// Component
+// ---------------
+export const Field = ({
+  variant,
+  size,
   children,
   disabled,
   required,
@@ -27,27 +56,35 @@ export const Field: React.FC<FieldProps> = ({
   error,
   errorMessage,
   errorMessageProps,
-}) => {
+  ...props
+}: FieldProps) => {
+  const styles = useComponentStyles(
+    'Field',
+    { variant, size },
+    { parts: ['label', 'helptext'] }
+  );
   const hasHelpText = !!description || (errorMessage && error);
-
   return (
-    <Stack>
-      {label && (
-        <Label {...labelProps} required={required}>
-          {label}
-        </Label>
-      )}
-      {children}
-      {hasHelpText && (
-        <HelpText
-          disabled={disabled}
-          description={description}
-          descriptionProps={descriptionProps}
-          error={error}
-          errorMessage={errorMessage}
-          errorMessageProps={errorMessageProps}
-        />
-      )}
-    </Stack>
+    <div {...props}>
+      <Stack>
+        {label && (
+          <Label {...labelProps} required={required} css={styles.label}>
+            {label}
+          </Label>
+        )}
+        {children}
+        {hasHelpText && (
+          <HelpText
+            disabled={disabled}
+            description={description}
+            descriptionProps={descriptionProps}
+            error={error}
+            errorMessage={errorMessage}
+            errorMessageProps={errorMessageProps}
+            css={styles.helptext}
+          />
+        )}
+      </Stack>
+    </div>
   );
 };

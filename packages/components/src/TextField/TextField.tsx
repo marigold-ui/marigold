@@ -1,11 +1,13 @@
 import React, { useRef } from 'react';
+import { useFocusWithin, useHover } from '@react-aria/interactions';
 import { useTextField } from '@react-aria/textfield';
 import { AriaTextFieldProps } from '@react-types/textfield';
 
-import { Box } from '@marigold/system';
+import { Box, useComponentStyles, useStateProps } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 import { Field, FieldProps } from '../Field';
+import { useFocusRing } from '@react-aria/focus';
 
 // Props
 // ---------------
@@ -34,6 +36,7 @@ export const TextField = ({
   ...props
 }: TextFieldProps) => {
   const { label, description, errorMessage } = props;
+
   const ref = useRef<HTMLInputElement>(null);
   const { labelProps, inputProps, descriptionProps, errorMessageProps } =
     useTextField(
@@ -47,8 +50,21 @@ export const TextField = ({
       ref
     );
 
+  const { hoverProps, isHovered } = useHover({});
+  const { focusProps, isFocusVisible } = useFocusRing();
+  const stateProps = useStateProps({
+    hover: isHovered,
+    focus: isFocusVisible,
+    disabled,
+    readOnly,
+    invalid: error,
+  });
+
+  const styles = useComponentStyles('Field', {}, { parts: ['input'] });
+
   return (
     <Field
+      {...stateProps}
       label={label}
       labelProps={labelProps}
       required={required}
@@ -58,7 +74,16 @@ export const TextField = ({
       errorMessage={errorMessage}
       errorMessageProps={errorMessageProps}
     >
-      <Box as="input" variant="input" ref={ref} {...inputProps} />
+      <Box
+        as="input"
+        variant="input"
+        ref={ref}
+        css={styles.input}
+        {...inputProps}
+        {...focusProps}
+        {...hoverProps}
+        {...stateProps}
+      />
     </Field>
   );
 };

@@ -3,7 +3,7 @@ import type { Meta, ComponentStory } from '@storybook/react';
 import { Field } from './Field';
 
 export default {
-  title: 'Field/Field',
+  title: 'Components/Field',
   argTypes: {
     required: {
       control: {

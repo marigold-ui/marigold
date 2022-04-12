@@ -1,6 +1,6 @@
 import React, { HTMLAttributes, ReactNode } from 'react';
 import { Exclamation } from '@marigold/icons';
-import { Box, useTheme } from '@marigold/system';
+import { Box, CSSObject, useTheme } from '@marigold/system';
 
 // Theme Extension
 // ---------------
@@ -23,6 +23,7 @@ export interface HelpTextProps {
   error?: boolean;
   errorMessage?: ReactNode;
   errorMessageProps?: HTMLAttributes<HTMLElement>;
+  css?: CSSObject;
 }
 
 // Component
@@ -34,6 +35,7 @@ export const HelpText = ({
   error,
   errorMessage,
   errorMessageProps,
+  css,
   ...props
 }: HelpTextProps) => {
   const { get } = useTheme();
@@ -55,10 +57,14 @@ export const HelpText = ({
       {isErrorMessage ? (
         <>
           <Exclamation role="presentation" size={iconSize} />
-          <Box {...errorMessageProps}>{errorMessage}</Box>
+          <Box {...errorMessageProps} css={css}>
+            {errorMessage}
+          </Box>
         </>
       ) : (
-        <Box {...descriptionProps}>{description}</Box>
+        <Box {...descriptionProps} css={css}>
+          {description}
+        </Box>
       )}
     </Box>
   );
