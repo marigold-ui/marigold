@@ -134,7 +134,12 @@ test('array children', () => {
   render(
     <Assert spy={spy}>
       <span>one</span>
-      {['two', 42, <span key="apple">three</span>, <span>four</span>]}
+      {[
+        'two',
+        42,
+        <span key="apple">three</span>,
+        <span key="banana">four</span>,
+      ]}
       <span>five</span>
     </Assert>
   );
@@ -148,7 +153,7 @@ test('array children', () => {
       undefined,
       undefined,
       ".1:$apple",
-      ".1:3",
+      ".1:$banana",
       ".2",
     ]
   `);
@@ -175,6 +180,7 @@ test('renders correctly through react', () => {
   const result = spy.mock.calls[0][0];
   const element = screen.getByTestId('assert');
 
+  // eslint-disable-next-line testing-library/no-node-access
   expect(element.children.length).toEqual(6);
   expect(result.map((c: any) => c.key)).toMatchInlineSnapshot(`
     [

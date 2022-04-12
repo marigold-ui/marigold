@@ -172,6 +172,10 @@ const button = {
 
 export const components = {
   button: {
+    __default: {
+      p: 0,
+      border: 'none',
+    },
     large: {
       ...button.large,
     },
@@ -220,6 +224,30 @@ export const components = {
       ...button.select,
     },
   },
+  link: {
+    __default: {
+      color: 'gray.20',
+      textDecoration: 'none',
+      '&:hover': {
+        color: 'blue.70',
+      },
+    },
+    outlineLink: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      columnGap: 10,
+      borderRadius: 'medium',
+      border: 'solid',
+      lineHeight: 1,
+      color: 'gray.20',
+      textDecoration: 'none',
+      py: 'xsmall',
+      px: 'medium',
+      ':hover': {
+        bg: 'gray.90',
+      },
+    },
+  },
   card: {
     __default: {
       bg: 'gray00',
@@ -228,6 +256,7 @@ export const components = {
       borderRadius: '10px',
     },
     highlight: {
+      width: '100%',
       p: 'xxlarge',
       bg: 'gray20',
       borderRadius: '10px',
@@ -237,12 +266,10 @@ export const components = {
   },
   divider: {
     do: {
-      my: 'small',
       height: '8px',
       bg: 'green60',
     },
     dont: {
-      my: 'small',
       height: '8px',
       bg: 'red60',
     },
@@ -269,4 +296,15 @@ export const components = {
     },
   },
   select,
+  tooltip: {
+    __default: {
+      p: 'xsmall',
+      color: 'gray90',
+      fontSize: 14,
+      border: '1px solid',
+      borderColor: 'blue70',
+      borderRadius: 'large',
+      bg: 'blue10',
+    },
+  },
 } as const;

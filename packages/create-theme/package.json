@@ -1,0 +1,37 @@
+{
+  "name": "@marigold/create-theme",
+  "version": "2.0.0",
+  "description": "Marigold helper to kickoff Themes",
+  "license": "MIT",
+  "keywords": [
+    "marigold",
+    "theme",
+    "styles"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "github:marigold-ui/marigold",
+    "directory": "themes/create-theme"
+  },
+  "dependencies": {
+    "@marigold/tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "@marigold/components": "workspace:*",
+    "@marigold/system": "workspace:*",
+    "@marigold/tsconfig": "workspace:*",
+    "tsup": "5.12.4"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts",
+    "watch": "tsup src/index.ts --watch",
+    "clean": "rm -rf node_modules && rm -rf dist"
+  }
+}

@@ -2,15 +2,6 @@
 title: Unicorn Theme
 ---
 
-import {
-  Box,
-  Column,
-  Columns,
-  Container,
-  Stack,
-  Text,
-} from '@marigold/components';
-
 # Unicorn Theme
 
 This theme is used for testing and as a playground.
@@ -62,34 +53,32 @@ Arial for body text.
 
 ## Colors
 
-<br />
-<div>
-  <Columns>
-    <Column width={2}>
-      <Stack>
-        <Box as={Container} bg="#c9b1ff" width="96px" height="24px" />
-        <Box as={Container} bg="#ffcaf2" width="96px" height="24px" />
-        <Box as={Container} bg="#070708" width="96px" height="24px" />
-        <Box as={Container} bg="#fdfcfd" width="96px" height="24px" />
-        <Box as={Container} bg="#e9e7eb" width="96px" height="24px" />
-        <Box as={Container} bg="#ffb2b1" width="96px" height="24px" />
-        <Box as={Container} bg="#fff3ad" width="96px" height="24px" />
-        <Box as={Container} bg="#a2edff" width="96px" height="24px" />
-        <Box as={Container} bg="#bcffbc" width="96px" height="24px" />
-      </Stack>
-    </Column>
-    <Column width={6}>
-      <Stack>
-        <Text>Primary</Text>
-        <Text>Secondary</Text>
-        <Text>Text</Text>
-        <Text>Background</Text>
-        <Text>Disabled</Text>
-        <Text>Error</Text>
-        <Text>Warning</Text>
-        <Text>Info</Text>
-        <Text>Success</Text>
-      </Stack>
-    </Column>
-  </Columns>
-</div>
+<Tiles itemMinWidth="500px">
+  <Box bg="#673ab7" p="xsmall">
+    <Text color="white">Primary</Text>
+  </Box>
+  <Box bg="#9575cd" p="xsmall">
+    <Text color="white">Secondary</Text>
+  </Box>
+  <Box bg="#0f0f0f" p="xsmall">
+    <Text color="white">Text</Text>
+  </Box>
+  <Box bg="#ffffff" p="xsmall">
+    <Text color="text">Background</Text>
+  </Box>
+  <Box bg="#e9e7eb" p="xsmall">
+    <Text color="text">Disabled</Text>
+  </Box>
+  <Box bg="#ffb2b1" p="xsmall">
+    <Text color="text">Error</Text>
+  </Box>
+  <Box bg="#fff3ad" p="xsmall">
+    <Text color="text">Warning</Text>
+  </Box>
+  <Box bg="#a2edff" p="xsmall">
+    <Text color="text">Info</Text>
+  </Box>
+  <Box bg="#bcffbc" p="xsmall">
+    <Text color="text">Success</Text>
+  </Box>
+</Tiles>

@@ -1,19 +1,34 @@
 import React from 'react';
 import { Link as GatsbyLink, GatsbyLinkProps } from 'gatsby';
 
-import { Link as MarigoldLink } from '@marigold/components';
+import {
+  Link as MarigoldLink,
+  LinkProps as MarigoldLinkProps,
+} from '@marigold/components';
 
 import { colors } from '../theme/colors';
 
-export const Link: React.FC<GatsbyLinkProps<unknown>> = ({
-  children,
-  ...props
-}) => (
-  <MarigoldLink
-    activeStyle={{ color: colors.blue70 }}
-    {...props}
-    as={GatsbyLink}
-  >
-    {children}
-  </MarigoldLink>
-);
+export interface LinkProps
+  extends Pick<MarigoldLinkProps, 'variant' | 'target'> {
+  to: GatsbyLinkProps<unknown>['to'];
+}
+
+export const Link: React.FC<LinkProps> = ({ children, to, ...props }) => {
+  const regex = /https?:\/\/((?:[\w\d-]+\.)+[\w\d]{2,})/i;
+  const externalLink = regex.test(to);
+
+  return externalLink ? (
+    <MarigoldLink href={to} {...props}>
+      {children}
+    </MarigoldLink>
+  ) : (
+    <MarigoldLink
+      as={GatsbyLink}
+      to={to}
+      activeStyle={{ color: colors.blue70 }}
+      {...props}
+    >
+      {children}
+    </MarigoldLink>
+  );
+};

@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`created theme comes with defaults for "borderWidths" 1`] = `
+{
+  "large-1": "5px",
+  "large-2": "10px",
+  "large-3": "25px",
+  "medium-1": "2px",
+  "none": 0,
+  "small-1": "1px",
+}
+`;
+
+exports[`created theme comes with defaults for "breakpoints" 1`] = `
+[
+  "40em",
+  "52em",
+  "64em",
+]
+`;
+
+exports[`created theme comes with defaults for "fontWeights" 1`] = `
+{
+  "bold": 700,
+  "heavy": 900,
+  "light": 300,
+  "medium": 500,
+  "regular": 400,
+  "thin": 200,
+}
+`;
+
+exports[`created theme comes with defaults for "letterSpacings" 1`] = `
+{
+  "large-1": ".750em",
+  "large-2": "1em",
+  "medium-1": ".075em",
+  "medium-2": ".150em",
+  "medium-3": ".500em",
+  "none": "normal",
+  "small-1": "-.05em",
+  "small-2": ".025em",
+  "small-3": ".050em",
+}
+`;
+
+exports[`created theme comes with defaults for "lineHeights" 1`] = `
+{
+  "large-1": 1.75,
+  "large-2": 2,
+  "medium-1": 1.375,
+  "medium-2": 1.5,
+  "small-1": 0.95,
+  "small-2": 1.1,
+  "small-3": 1.25,
+}
+`;
+
+exports[`created theme comes with defaults for "opacities" 1`] = `
+{
+  "dimmed": 0.5,
+  "faded": 0.75,
+  "ghost": 0.25,
+  "solid": 1,
+  "transparent": 0,
+}
+`;
+
+exports[`created theme comes with defaults for "radii" 1`] = `
+{
+  "large-1": "4rem",
+  "large-2": "8rem",
+  "medium-1": "1rem",
+  "medium-2": "2rem",
+  "none": 0,
+  "round": "1e5px",
+  "small-1": "2px",
+  "small-2": "5px",
+}
+`;
+
+exports[`created theme comes with defaults for "zIndices" 1`] = `
+{
+  "1": 1,
+  "2": 2,
+  "3": 3,
+  "4": 4,
+  "5": 5,
+  "important": 2147483647,
+}
+`;

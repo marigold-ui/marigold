@@ -115,9 +115,8 @@ test('add icon in button works as expected', () => {
 
   expect(button instanceof HTMLButtonElement).toBeTruthy();
   expect(button).toHaveStyle('display: inline-flex');
-  expect(button.firstChild instanceof SVGElement).toBeTruthy();
-  expect(icon.getAttribute('fill')).toEqual('red');
-  expect(icon.getAttribute('width')).toEqual('30');
+  expect(icon).toHaveStyle('fill: red');
+  expect(icon).toHaveStyle('width: 30px');
 });
 
 test('add space to button works as expected', () => {

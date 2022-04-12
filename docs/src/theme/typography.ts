@@ -95,12 +95,5 @@ export const typography = {
       ...text.root,
       color: 'gray.60',
     },
-    link: {
-      color: 'gray.20',
-      textDecoration: 'none',
-      '&:hover': {
-        color: 'blue.70',
-      },
-    },
   },
 } as const;

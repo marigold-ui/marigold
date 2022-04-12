@@ -2,37 +2,38 @@
 title: Slider
 ---
 
-# Slider
+import { FigmaLink } from '../../src/components/FigmaLink';
 
-## Description
+# Slider
 
 With the Slider component you can add a HTML `<input>` element with `type="range"` to your form.
 The variant can be added with the variant prop. The default variant ist `default`.
 
-## Properties
-
-| Property                  | Type      | Default     |
-| :------------------------ | :-------- | :---------- |
-| `variant` (optional)      | `string`  | `__default` |
-| `labelVariant` (optional) | `string`  | `above`     |
-| `thumbVariant` (optional) | `string`  | `__default` |
-| `label` (optional)        | `string`  |             |
-| `disabled` (optional)     | `boolean` |             |
-| `required` (optional)     | `boolean` |             |
-
-## Import
+<MarigoldTheme>
+  <Label htmlFor="slider">
+    Slider:
+    <br />
+    <Slider id="slider" name="slider" min="0" max="50" />
+  </Label>
+</MarigoldTheme>
 
 ```tsx onlyCode
 import { Slider } from '@marigold/components';
 ```
 
-## Live-Code Example
+<FigmaLink
+  to={
+    'https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=845%3A1254'
+  }
+/>
 
-```tsx expandCode
-<Slider label="Slider" id="slider" />
-```
+## Props
 
-## Usage
+| Property             | Type     | Default     |
+| :------------------- | :------- | :---------- |
+| `variant` (optional) | `string` | `__default` |
+
+## Examples
 
 ### Slider with steps
 

@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-node-access */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
@@ -16,9 +17,6 @@ const theme = {
   },
 };
 
-const getLeftPadding = (element: HTMLElement) =>
-  getComputedStyle(element).getPropertyValue('padding-left');
-
 test('default space is "none"', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -28,11 +26,8 @@ test('default space is "none"', () => {
       </Inline>
     </ThemeProvider>
   );
-  const first = screen.getByText(/first/).parentElement!;
-  const second = screen.getByText(/second/).parentElement!;
-
-  expect(getLeftPadding(first)).toEqual('');
-  expect(second).toHaveStyle(`padding-left: 0px`);
+  const first = screen.getByText(/first/).parentElement;
+  expect(first).toHaveStyle(`gap: 0`);
 });
 
 test('accepts and uses spacing from theme', () => {
@@ -44,11 +39,8 @@ test('accepts and uses spacing from theme', () => {
       </Inline>
     </ThemeProvider>
   );
-  const first = screen.getByText(/first/);
-  const second = screen.getByText(/second/);
-
-  expect(getLeftPadding(first)).toEqual('');
-  expect(second.parentElement).toHaveStyle(`padding-left: 2px`);
+  const first = screen.getByText(/first/).parentElement;
+  expect(first).toHaveStyle(`gap: 2px`);
 });
 
 test('supports nesting', () => {
@@ -66,22 +58,40 @@ test('supports nesting', () => {
       </Inline>
     </ThemeProvider>
   );
-  const first = screen.getByText(/first/);
-  const second = screen.getByText(/second/);
-  const leftInline = screen.getByTestId('leftInline');
+  const first = screen.getByText(/first/).parentElement;
+  const leftInline = screen.getByTestId('leftInline').parentElement;
+  expect(first).toHaveStyle(`gap: 2px`);
+  expect(leftInline).toHaveStyle(`gap: 8px`);
 
-  const third = screen.getByText(/third/);
-  const fourth = screen.getByText(/fourth/);
-  const rightInline = screen.getByTestId('rightInline');
+  const third = screen.getByText(/third/).parentElement;
+  const rightInline = screen.getByTestId('rightInline').parentElement;
+  expect(third).toHaveStyle(`gap: 2px`);
+  expect(rightInline).toHaveStyle(`gap: 8px`);
+});
 
-  expect(getLeftPadding(leftInline.parentElement!)).toEqual('');
-  expect(rightInline.parentElement).toHaveStyle(`padding-left: 8px`);
+test('supports a standalone element', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Inline>
+        <Text>element</Text>
+      </Inline>
+    </ThemeProvider>
+  );
+  const element = screen.getByText(/element/).parentElement;
+  expect(element).toHaveStyle(`gap: 0`);
+});
 
-  expect(getLeftPadding(first.parentElement!)).toEqual('');
-  expect(second.parentElement).toHaveStyle(`padding-left: 2px`);
-
-  expect(getLeftPadding(third.parentElement!)).toEqual('');
-  expect(fourth.parentElement).toHaveStyle(`padding-left: 2px`);
+test('supports a non React.Fragment element', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Inline space="small">
+        <Text>element</Text>
+        Text
+      </Inline>
+    </ThemeProvider>
+  );
+  const textElement = screen.getByText(/Text/);
+  expect(textElement).toHaveStyle(`gap: 2px`);
 });
 
 test('renders div per default', () => {

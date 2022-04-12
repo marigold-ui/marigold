@@ -1,5 +1,89 @@
 # @marigold/components
 
+## 0.8.0
+
+### Minor Changes
+
+- [#1928](https://github.com/marigold-ui/marigold/pull/1928) [`059e9324`](https://github.com/marigold-ui/marigold/commit/059e9324375b0dc67fef6ac84b65f997a930a345) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): improve Container component
+
+* [#1892](https://github.com/marigold-ui/marigold/pull/1892) [`a91171f9`](https://github.com/marigold-ui/marigold/commit/a91171f96d0eed696f988e4fc45c13757ea1971e) Thanks [@sebald](https://github.com/sebald)! - feat(components): Normalize link variant
+
+- [#1937](https://github.com/marigold-ui/marigold/pull/1937) [`a1f4796f`](https://github.com/marigold-ui/marigold/commit/a1f4796fafe476154e8e03cd4a336e5266a8950d) Thanks [@sebald](https://github.com/sebald)! - refa: Redo `<Field>` now called `<TextField>`
+
+* [#1919](https://github.com/marigold-ui/marigold/pull/1919) [`5319745c`](https://github.com/marigold-ui/marigold/commit/5319745cbc20919a423dda49f4fb8ac4608009e1) Thanks [@sebald](https://github.com/sebald)! - feat: SVG supports size token from theme
+
+- [#1930](https://github.com/marigold-ui/marigold/pull/1930) [`249b0c81`](https://github.com/marigold-ui/marigold/commit/249b0c81a5889e558d85e8f9214afa0897368dd8) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Introduce Breakout component
+
+* [#1898](https://github.com/marigold-ui/marigold/pull/1898) [`3cf378e9`](https://github.com/marigold-ui/marigold/commit/3cf378e9c80f700e78eaafcfc0701a20e29e37d0) Thanks [@sebald](https://github.com/sebald)! - feat: `<Stack>` supports rendering as list
+
+- [#1925](https://github.com/marigold-ui/marigold/pull/1925) [`e3d62a22`](https://github.com/marigold-ui/marigold/commit/e3d62a22fdc42c394516d477ad8d477ae02bff1e) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Rewrite Columns and remove Column
+
+* [#1870](https://github.com/marigold-ui/marigold/pull/1870) [`e94a08d7`](https://github.com/marigold-ui/marigold/commit/e94a08d76d036754aa9237ee5b1ef52fb93aadab) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Center component
+
+### Patch Changes
+
+- [#1926](https://github.com/marigold-ui/marigold/pull/1926) [`5e5e0fcc`](https://github.com/marigold-ui/marigold/commit/5e5e0fcc45aadf62f8c3b33e722e9132a7267cbc) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Container with grid
+
+- Updated dependencies [[`382ac6cc`](https://github.com/marigold-ui/marigold/commit/382ac6cca1865d033ba601ad269247f26ee0a13e), [`2f45aa5d`](https://github.com/marigold-ui/marigold/commit/2f45aa5d236f861ab8187a4a574a7113d6c1f1b8), [`5319745c`](https://github.com/marigold-ui/marigold/commit/5319745cbc20919a423dda49f4fb8ac4608009e1), [`74c91e28`](https://github.com/marigold-ui/marigold/commit/74c91e289ffadfc082a548fc55ab9bd315ac1d8a)]:
+  - @marigold/system@0.8.0
+  - @marigold/icons@0.6.0
+  - @marigold/tokens@2.0.0
+
+## 0.7.0
+
+### Minor Changes
+
+- [#1882](https://github.com/marigold-ui/marigold/pull/1882) [`d436930f`](https://github.com/marigold-ui/marigold/commit/d436930f7d88b572c4365a442a0914bba1147657) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): introduce Tiles component
+
+* [#1881](https://github.com/marigold-ui/marigold/pull/1881) [`d2c3eb50`](https://github.com/marigold-ui/marigold/commit/d2c3eb50ceb9941926e7e658dcba7a74cb87e6d7) Thanks [@ti10le](https://github.com/ti10le)! - Component: Aspect
+
+- [#1868](https://github.com/marigold-ui/marigold/pull/1868) [`ec4f8f22`](https://github.com/marigold-ui/marigold/commit/ec4f8f228f05e88f2b9f17784b59f3cfc8ceabe7) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): renew Container component
+
+### Patch Changes
+
+- Updated dependencies [[`af566de4`](https://github.com/marigold-ui/marigold/commit/af566de483e80bfedcd09b073be8559eebf17fca)]:
+  - @marigold/tokens@1.0.0
+  - @marigold/system@0.7.0
+  - @marigold/icons@0.5.1
+
+## 0.6.0
+
+### Minor Changes
+
+- [#1819](https://github.com/marigold-ui/marigold/pull/1819) [`d162a6a8`](https://github.com/marigold-ui/marigold/commit/d162a6a8d1f9d99bfc08d59f6dae294a6fa95310) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): add new Component Switch
+
+* [#1842](https://github.com/marigold-ui/marigold/pull/1842) [`e053b7b9`](https://github.com/marigold-ui/marigold/commit/e053b7b903f02c56cf10e6b9aecbedd29399895d) Thanks [@ti10le](https://github.com/ti10le)! - feat: extend svg fill prop to handle theme color
+
+- [#1822](https://github.com/marigold-ui/marigold/pull/1822) [`527ba94f`](https://github.com/marigold-ui/marigold/commit/527ba94fa1a3255dc6f846fcc9def978ec906bf3) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp/docs): Alert update variant + docs
+
+* [#1807](https://github.com/marigold-ui/marigold/pull/1807) [`b55e10bc`](https://github.com/marigold-ui/marigold/commit/b55e10bc7119554373d43f9d8872346c1e6d6c39) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): add Tooltip component v1
+
+- [#1851](https://github.com/marigold-ui/marigold/pull/1851) [`9a95a6f5`](https://github.com/marigold-ui/marigold/commit/9a95a6f541dec34e27eac8557186f929e811c07c) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): make Inline accepting fragment + standard text
+
+* [#1820](https://github.com/marigold-ui/marigold/pull/1820) [`f62033b6`](https://github.com/marigold-ui/marigold/commit/f62033b642a623a75f311af701febc4b54f77120) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Checkbox add indeterminated state + doc update
+
+### Patch Changes
+
+- [#1849](https://github.com/marigold-ui/marigold/pull/1849) [`21f72b34`](https://github.com/marigold-ui/marigold/commit/21f72b3499c7ed2f88a0b96315f0374140e98e85) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: remove Alert
+
+* [#1852](https://github.com/marigold-ui/marigold/pull/1852) [`25c8675e`](https://github.com/marigold-ui/marigold/commit/25c8675ed470cc71f8f968a83b9781b66412c493) Thanks [@ti10le](https://github.com/ti10le)! - refa(comp): fill prop instead of css or \_\_basCSS
+
+* Updated dependencies [[`4cc0ad3b`](https://github.com/marigold-ui/marigold/commit/4cc0ad3b85b993e01b4d85b6f30b1a81cdee2351), [`64b9089e`](https://github.com/marigold-ui/marigold/commit/64b9089ed2e1e35975472e342b02cda40f5de66f), [`539d4198`](https://github.com/marigold-ui/marigold/commit/539d41987118db125ee37a4a83231335ea15830a), [`e053b7b9`](https://github.com/marigold-ui/marigold/commit/e053b7b903f02c56cf10e6b9aecbedd29399895d)]:
+  - @marigold/system@0.6.0
+  - @marigold/icons@0.5.0
+
+## 0.5.1
+
+### Patch Changes
+
+- [#1795](https://github.com/marigold-ui/marigold/pull/1795) [`a178eafe`](https://github.com/marigold-ui/marigold/commit/a178eafe8c8380ee23b4587d953ee52b231414ff) Thanks [@ti10le](https://github.com/ti10le)! - refa: use interface instead of type
+
+* [#1798](https://github.com/marigold-ui/marigold/pull/1798) [`9939b743`](https://github.com/marigold-ui/marigold/commit/9939b743df4dfe40bfd5dd61a1a4b88641ef9559) Thanks [@sebald](https://github.com/sebald)! - fix(components): Use own `flattenChildren` helper to fix ESM build
+
+* Updated dependencies [[`a178eafe`](https://github.com/marigold-ui/marigold/commit/a178eafe8c8380ee23b4587d953ee52b231414ff)]:
+  - @marigold/system@0.5.1
+  - @marigold/icons@0.4.2
+
 ## 0.5.0
 
 ### Minor Changes

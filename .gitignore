@@ -1,18 +1,13 @@
-node_modules
 .DS_Store
+.history
+.swc
+
+node_modules
 coverage
 dist
-yarn-error.log
+
 docs/.cache
 docs/public
 
-# YARN: not using Zero-Installs
-# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
-.yarn/*
-!.yarn/patches
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions
-.pnp.*
-.history
+
+local.env

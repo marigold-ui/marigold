@@ -5,12 +5,8 @@
 .prettierignore
 .DS_Store
 .env.local
-.yarn
-.yarnrc
-.yarnclean
 
 LICENSE
-yarn.lock
 
 dist
 coverage

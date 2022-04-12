@@ -1,8 +1,7 @@
 #!/usr/bin/env zx
 
 // Set available globals for eslint
-/* global $, cd, question, chalk */
-const retry = require('async-retry');
+/* global $, question, chalk */
 
 // Helper
 // ---------------
@@ -32,31 +31,6 @@ const exit = (msg, detail) => {
   process.exit(1);
 };
 
-const publish = async workspace => {
-  const cwd = process.cwd();
-
-  await retry(
-    async () => {
-      const { name, version } = require(`../${workspace}/package.json`);
-      space();
-      log(chalk.bold(`📦  Publishing ${name}@${version}...`));
-      cd(workspace);
-      await $`yarn npm publish --access public  --tolerate-republish`.pipe(
-        process.stdout
-      );
-    },
-    {
-      retries: 5,
-      onRetry: () => {
-        log(chalk.bold("🔁  Whoopsie, let's try again!"));
-      },
-    }
-  );
-
-  // always restore cwd
-  cd(cwd);
-};
-
 // Scripts
 // ---------------
 log(brand.bold('┌───────────────────────────────────┐'));
@@ -84,11 +58,11 @@ if (trim(clean) !== '') {
 
 step('🔒', 'Checking npm status ...');
 try {
-  await $`yarn npm whoami`;
+  await $`pnpm whoami`;
 } catch {
   exit(
     'You are not logged in to npm.',
-    'Please log via "yarn npm login" in before releasing.'
+    'Please log via "pnpm login" in before releasing.'
   );
 }
 
@@ -112,43 +86,33 @@ if (!process.env.GITHUB_TOKEN) {
 }
 
 step('📦', 'Checking package status...');
-await $`yarn changeset status`.pipe(process.stdout);
+await $`pnpm changeset status`.pipe(process.stdout);
 
 space();
 log(chalk.bold('Please review the changeset.'));
 await option('Do you want to continue?');
 
 step('🍾', 'Bumping versions & generating changelog...');
-await $`yarn changeset version`.pipe(process.stdout);
+await $`pnpm changeset version`.pipe(process.stdout);
+
+step('👷', 'Building packages...');
+await $`pnpm install`.pipe(process.stdout);
+await $`pnpm build`.pipe(process.stdout);
+log('✓  Packages built.');
 
 step('🔼', 'Pushing changes to main branch...');
 // We use "@marigold/components" as leading version
 const { version } = require('../packages/components/package.json');
+await $`git add -A`;
 await $`git commit -am "release: v${version}"`;
 await $`git push`;
 await $`git push --tags`;
-
-step('👷', 'Building packages...');
-await $`yarn install`.pipe(process.stdout);
-await $`yarn build`.pipe(process.stdout);
-log('✓  Packages built.');
 
 step('🌟', 'Publishing to npm...');
 await option(
   'Do you want to continue? (you will be prompted for your 2FA token)'
 );
-await publish('config/eslint');
-await publish('config/jest');
-await publish('config/prettier');
-await publish('config/storybook');
-await publish('config/tsconfig');
-await publish('packages/components');
-await publish('packages/icons');
-await publish('packages/system');
-await publish('packages/types');
-await publish('themes/theme-b2b');
-await publish('themes/theme-core');
-await publish('themes/theme-unicorn');
+await $`pnpm changeset publish`.pipe(process.stdout);
 log(brand.bold('🥳  Release complete!'));
 
 await option(
@@ -156,8 +120,11 @@ await option(
     'https://marigold-ui.io/'
   )}?`
 );
-await $`yarn workspace @marigold/docs clean`;
-await $`yarn workspace @marigold/docs deploy`.pipe(process.stdout);
+await $`pnpm --filter @marigold/docs clean`;
+await $`pnpm --filter @marigold/docs deploy`.pipe(process.stdout);
+
+step('🛎', 'inform Slack Channel ...');
+await $`pnpm slack`;
 
 space();
 log(brand.bold('🥳  Deployment complete!'));

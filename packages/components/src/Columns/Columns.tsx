@@ -1,69 +1,57 @@
 import React, { Children } from 'react';
+
+import { ResponsiveStyleValue } from '@marigold/system';
+
 import { Box } from '../Box';
-import { ResponsiveStyleValue, useTheme } from '@marigold/system';
-import { flattenChildren } from '../utils';
 
 export interface ColumnsProps {
-  className?: string;
+  columns: Array<number>;
   space?: ResponsiveStyleValue<string>;
-  horizontalAlign?: 'left' | 'right' | 'center';
-  verticalAlign?: 'top' | 'bottom' | 'center';
+  columnLimit?: number;
+  collapseAt?: string;
 }
-
-const useAlignment = (direction: string) => {
-  switch (direction) {
-    case 'right':
-      return 'flex-end';
-    case 'bottom':
-      return 'flex-end';
-    case 'center':
-      return 'center';
-  }
-  return 'flex-start';
-};
 
 export const Columns: React.FC<ColumnsProps> = ({
   space = 'none',
-  horizontalAlign = 'left',
-  verticalAlign = 'top',
-  className,
+  columns,
+  collapseAt = '40em',
   children,
   ...props
 }) => {
-  const justifyContent = useAlignment(horizontalAlign);
-  const alignItems = useAlignment(verticalAlign);
+  if (Children.count(children) !== columns.length) {
+    throw new Error(
+      `Columns: expected ${columns.length} children, got ${Children.count(
+        children
+      )}`
+    );
+  }
 
-  /**
-   * transform space string to space value from theme
-   */
-  const { css } = useTheme();
-  const spaceObject = css({ space }) as Object;
-  const spaceValue = Object.values(spaceObject)[0];
+  // create an array to get column widths
+  const getColumnWidths = columns.map((column, index) => {
+    return {
+      [`> :nth-of-type(${index + 1})`]: {
+        flexGrow: column,
+      },
+    };
+  });
 
   return (
-    <Box p={space} display="flex" className={className}>
-      <Box
-        width={`calc(100% + ${spaceValue}px)`}
-        m={`${-spaceValue / 2}px`}
-        display="flex"
-        flexWrap="wrap"
-        alignItems={alignItems}
-        justifyContent={justifyContent}
-        {...props}
-      >
-        {Children.map(
-          flattenChildren(children) as unknown as React.ReactElement,
-          (child: React.ReactElement) => {
-            return React.cloneElement(
-              child,
-              {},
-              <Box css={{ p: `${spaceValue / 2}px` }}>
-                {child.props.children}
-              </Box>
-            );
-          }
-        )}
-      </Box>
+    <Box
+      display="flex"
+      css={Object.assign(
+        {
+          flexWrap: 'wrap',
+          gap: space,
+          '> *': {
+            // display breakpoint at collapseAt value
+            flexBasis: `calc(( ${collapseAt} - 100%) * 999)`,
+          },
+        },
+        ...getColumnWidths!
+      )}
+      {...props}
+    >
+      {children}
     </Box>
   );
 };

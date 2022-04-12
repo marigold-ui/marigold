@@ -1,7 +1,6 @@
-import React, { Children } from 'react';
+import React from 'react';
 import { ResponsiveStyleValue } from '@marigold/system';
 
-import { flattenChildren } from '../utils';
 import { Box } from '../Box';
 
 export interface InlineProps {
@@ -22,16 +21,11 @@ export const Inline: React.FC<InlineProps> = ({
   ...props
 }) => (
   <Box
+    __baseCSS={{ gap: space, flexWrap: 'wrap' }}
     display="inline-flex"
-    css={{ '> * + *': { pl: space } }}
     alignItems={ALIGNMENT[align]}
     {...props}
   >
-    {Children.map(
-      flattenChildren(children) as unknown as React.ReactElement,
-      (child: React.ReactElement) => (
-        <Box>{React.cloneElement(child, {}, child.props.children)}</Box>
-      )
-    )}
+    {children}
   </Box>
 );

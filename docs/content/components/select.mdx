@@ -2,13 +2,38 @@
 title: Select
 ---
 
+import { FigmaLink } from '../../src/components/FigmaLink';
+
 # Select
 
 ## Description
 
 Dropdown for selecting an item among different options.
 
-## Properties
+```tsx
+<Select label="Favorite character" placeholder="Select your character">
+  <Item>Mario</Item>
+  <Item>Luigi</Item>
+  <Item>Toad</Item>
+  <Item>Yoshi</Item>
+  <Item>Bowser</Item>
+  <Item>Peach</Item>
+</Select>
+```
+
+```tsx onlyCode
+import { Select } from '@marigold/components';
+import { Item } from '@marigold/components';
+import { Section } from '@marigold/components';
+```
+
+<FigmaLink
+  to={
+    'https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=2596%3A2348'
+  }
+/>
+
+## Props
 
 | Property                        | Type                                                                                                     | Default |
 | :------------------------------ | :------------------------------------------------------------------------------------------------------- | :------ |
@@ -25,34 +50,7 @@ Dropdown for selecting an item among different options.
 | `width` (optional)              | `ResponsiveStyleValue<number⎮string>`                                                                    |         |
 | `onSelectionChange` (optional)  | `(key: Key) => any`                                                                                      |         |
 
-## Import
-
-```tsx onlyCode
-import { Select } from '@marigold/components';
-```
-
-```tsx onlyCode
-import { Item } from '@marigold/components';
-```
-
-```tsx onlyCode
-import { Section } from '@marigold/components';
-```
-
-## Live-Code Example
-
-```tsx expandCode
-<Select label="Favorite character" placeholder="Select your character">
-  <Item>Mario</Item>
-  <Item>Luigi</Item>
-  <Item>Toad</Item>
-  <Item>Yoshi</Item>
-  <Item>Bowser</Item>
-  <Item>Peach</Item>
-</Select>
-```
-
-## Usage
+## Examples
 
 ### Standard Select
 

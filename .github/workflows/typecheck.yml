@@ -1,6 +1,6 @@
 name: Typecheck
 
-on: 'push'
+on: ['push']
 
 jobs:
   typecheck:
@@ -9,24 +9,19 @@ jobs:
     env:
       CI: true
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@master
+      # Setup
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.1
         with:
-          fetch-depth: 0
-
-      - name: Setup Node.js 16.x
-        uses: actions/setup-node@master
+          version: 6.32.3
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
 
-      - uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install Dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn
-
+      # Action
       - name: Typecheck
-        run: yarn tsc --noEmit
+        run: pnpm tsc --noEmit

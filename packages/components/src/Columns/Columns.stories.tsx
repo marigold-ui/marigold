@@ -1,10 +1,30 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
-import { Column, Columns, Text } from '@marigold/components';
+
+import { Box, Columns } from '@marigold/components';
 
 export default {
   title: 'Components/Columns',
   argTypes: {
+    columns: {
+      control: {
+        type: 'select',
+      },
+      options: [
+        [4, 4, 4],
+        [2, 8, 2],
+        [2, 5, 5],
+        [3, 6, 3],
+        [8, 2, 2],
+      ],
+      description: 'array of numbers to set width of every column',
+      defaultValue: [2, 8, 2],
+      table: {
+        defaultValue: {
+          summary: [2, 8, 2],
+        },
+      },
+    },
     space: {
       control: {
         type: 'select',
@@ -26,27 +46,15 @@ export default {
         },
       },
     },
-    horizontalAlign: {
+    collapseAt: {
       control: {
-        type: 'select',
+        type: 'text',
       },
-      options: ['left', 'right', 'center'],
-      description: 'where to place',
+      defaultValue: '40em',
+      description: 'Responsive Style Value',
       table: {
         defaultValue: {
-          summary: 'left',
-        },
-      },
-    },
-    verticalAlign: {
-      control: {
-        type: 'select',
-      },
-      options: ['top', 'bottom', 'center'],
-      description: 'where to place',
-      table: {
-        defaultValue: {
-          summary: 'top',
+          summary: '40em',
         },
       },
     },
@@ -55,21 +63,8 @@ export default {
 
 export const Basic: ComponentStory<typeof Columns> = args => (
   <Columns {...args}>
-    <Column width={6}>
-      <Text>First column</Text>
-      <Text>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-        dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
-        massa nec ultricies efficitur.
-      </Text>
-    </Column>
-    <Column width={6}>
-      <Text>Second column</Text>
-      <Text>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-        dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
-        massa nec ultricies efficitur.
-      </Text>
-    </Column>
+    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
   </Columns>
 );

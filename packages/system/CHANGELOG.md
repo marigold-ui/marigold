@@ -1,5 +1,35 @@
 # @marigold/system
 
+## 0.8.0
+
+### Minor Changes
+
+- [#1935](https://github.com/marigold-ui/marigold/pull/1935) [`382ac6cc`](https://github.com/marigold-ui/marigold/commit/382ac6cca1865d033ba601ad269247f26ee0a13e) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): improve SVG to handle width and height prop
+
+* [#1915](https://github.com/marigold-ui/marigold/pull/1915) [`2f45aa5d`](https://github.com/marigold-ui/marigold/commit/2f45aa5d236f861ab8187a4a574a7113d6c1f1b8) Thanks [@sebald](https://github.com/sebald)! - feat(system): theme getter
+
+- [#1919](https://github.com/marigold-ui/marigold/pull/1919) [`5319745c`](https://github.com/marigold-ui/marigold/commit/5319745cbc20919a423dda49f4fb8ac4608009e1) Thanks [@sebald](https://github.com/sebald)! - feat: SVG supports size token from theme
+
+## 0.7.0
+
+## 0.6.0
+
+### Minor Changes
+
+- [#1817](https://github.com/marigold-ui/marigold/pull/1817) [`4cc0ad3b`](https://github.com/marigold-ui/marigold/commit/4cc0ad3b85b993e01b4d85b6f30b1a81cdee2351) Thanks [@sebald](https://github.com/sebald)! - feat(system): Add textSizeAdjust to globals
+
+* [#1842](https://github.com/marigold-ui/marigold/pull/1842) [`e053b7b9`](https://github.com/marigold-ui/marigold/commit/e053b7b903f02c56cf10e6b9aecbedd29399895d) Thanks [@ti10le](https://github.com/ti10le)! - feat: extend svg fill prop to handle theme color
+
+### Patch Changes
+
+- [#1809](https://github.com/marigold-ui/marigold/pull/1809) [`539d4198`](https://github.com/marigold-ui/marigold/commit/539d41987118db125ee37a4a83231335ea15830a) Thanks [@sebald](https://github.com/sebald)! - feat(create-theme): Introduce helper package to create themes with sensible defaults
+
+## 0.5.1
+
+### Patch Changes
+
+- [#1795](https://github.com/marigold-ui/marigold/pull/1795) [`a178eafe`](https://github.com/marigold-ui/marigold/commit/a178eafe8c8380ee23b4587d953ee52b231414ff) Thanks [@ti10le](https://github.com/ti10le)! - refa: use interface instead of type
+
 ## 0.5.0
 
 ### Minor Changes

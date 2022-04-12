@@ -1,7 +1,14 @@
-import { type Theme } from '@marigold/components';
-import { colors } from './colors';
-import { components } from './components';
-import { typography } from './typography';
+import { type Theme } from "@marigold/components";
+import { colors } from "./colors";
+import { component } from "./component";
+import { typography } from "./typography";
+
+// NEW STYLES!
+import * as components from "./components";
+
+export const webFontUrl = [
+  "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap",
+] as const;
 
 const theme: Theme = {
   space: {
@@ -13,6 +20,18 @@ const theme: Theme = {
     large: 32,
     xlarge: 40,
     xxlarge: 48,
+  },
+  sizes: {
+    none: 0,
+    xxsmall: 16,
+    xsmall: 32,
+    small: 40,
+    medium: 80,
+    large: 120,
+    xlarge: 160,
+    xxlarge: 240,
+    huge: 320,
+    epic: 480,
   },
   colors: {
     ...colors,
@@ -30,7 +49,7 @@ const theme: Theme = {
     body: {
       margin: 0,
       padding: 0,
-      fontFamily: 'body',
+      fontFamily: "body",
     },
   },
   radii: {
@@ -40,7 +59,10 @@ const theme: Theme = {
     large: 8,
   },
   ...typography,
-  ...components,
+  ...component,
+
+  // NEW STYLES!!!
+  components,
 } as const;
 
 export default theme;

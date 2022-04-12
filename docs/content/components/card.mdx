@@ -3,16 +3,28 @@ title: Card
 ---
 
 import { DoAndDont } from '../../src/components/DoAndDont';
-import { Box, Card, Link, Stack } from '@marigold/components';
 
 # Card
 
-## Description
-
 The card component can be used for organizing information inside the UI, as well it provides a better readability and helps the user to find information in an easier way.
-The variant can be added with the variant prop.
 
-## Properties
+<MarigoldTheme>
+  <Card title="Title">
+    <Text>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+      dignissim dapibus elit, vel.
+    </Text>
+    <Link href="#">
+      <Text>Read more...</Text>
+    </Link>
+  </Card>
+</MarigoldTheme>
+
+```tsx onlyCode
+import { Card } from '@marigold/components';
+```
+
+## Props
 
 | Property  | Type                           | Default     |
 | :-------- | :----------------------------- | :---------- |
@@ -20,17 +32,11 @@ The variant can be added with the variant prop.
 | `width`   | `ResponsiveStyleValue<string>` |             |
 | `title`   | `string`                       |             |
 
-## Import
+## Examples
 
-```tsx onlyCode
-import { Card } from '@marigold/components';
-```
+### Standard title and text
 
-## Usage
-
-### Standard
-
-```tsx
+```tsx expandCode
 <Card title="Title">
   <Text>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
@@ -42,7 +48,7 @@ import { Card } from '@marigold/components';
 </Card>
 ```
 
-### Custom Width
+### Custom width
 
 ```tsx
 <Card title="Title" width="320px">
@@ -50,14 +56,16 @@ import { Card } from '@marigold/components';
 </Card>
 ```
 
-### Examples
+### Card with form fields
 
 ```tsx
 <Card title="Name">
-  <Field label="Firstname" htmlFor="myId1" />
-  <Field label="Lastname" htmlFor="myId2" />
+  <TextField label="Firstname" />
+  <TextField label="Lastname" />
 </Card>
 ```
+
+### Card with select
 
 ```tsx
 <Card title="Choose Color">
@@ -71,6 +79,8 @@ import { Card } from '@marigold/components';
   </Select>
 </Card>
 ```
+
+## Dos & Don'ts
 
 <Stack space="small">
   <Box

@@ -48,10 +48,70 @@ export const Basic: ComponentStory<typeof Stack> = args => (
       Heading
     </Text>
     <Text>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-      dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
-      massa nec ultricies efficitur, lectus ante consequat magna, a porttitor
-      massa ex ut quam.
+      Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
+      malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a
+      porttitor massa ex ut quam.
     </Text>
+    <Text>
+      Part 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
+      malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a
+      porttitor massa ex ut quam.
+    </Text>
+  </Stack>
+);
+
+export const Nested: ComponentStory<typeof Stack> = args => (
+  <Stack {...args}>
+    <Stack space="xsmall">
+      <Text as="h2" variant="headline2">
+        Heading
+      </Text>
+      <Text>
+        Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
+        malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a
+        porttitor massa ex ut quam.
+      </Text>
+      <Text>
+        Part 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
+        malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a
+        porttitor massa ex ut quam.
+      </Text>
+    </Stack>
+    <Stack space="xsmall">
+      <Text as="h2" variant="headline2">
+        Heading
+      </Text>
+      <Text>
+        Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
+        malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a
+        porttitor massa ex ut quam.
+      </Text>
+      <Text>
+        Part 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
+        malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a
+        porttitor massa ex ut quam.
+      </Text>
+    </Stack>
+  </Stack>
+);
+
+export const List: ComponentStory<typeof Stack> = args => (
+  <Stack space="large">
+    <Stack as="ol" {...args}>
+      <li>one</li>
+      <li>two</li>
+      <li>three</li>
+    </Stack>
+    <Stack as="ul" {...args}>
+      <li>one</li>
+      <li>two</li>
+      <li>three</li>
+    </Stack>
   </Stack>
 );

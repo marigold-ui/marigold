@@ -2,53 +2,51 @@
 title: Divider
 ---
 
-# Divider
+import { DoAndDont } from '../../src/components/DoAndDont';
 
-## Description
+# Divider
 
 A divider is a visual separator between two groups of content,
 e.g. groups of menu items or sections of a page.
 
-## Properties
-
-| Property             | Type     | Default     |
-| :------------------- | :------- | :---------- |
-| `variant` (optional) | `string` | `__default` |
-
-## Import
+<Divider />
 
 ```tsx onlyCode
 import { Divider } from '@marigold/components';
 ```
 
-## Live-Code Example
+## Props
 
-```tsx expandCode
-<>
-  <Text>Brightside</Text>
-  <Divider />
-  <Text>Darkside</Text>
-</>
-```
+| Property             | Type     | Default     |
+| :------------------- | :------- | :---------- |
+| `variant` (optional) | `string` | `__default` |
 
-## Usage
+## Examples
 
 ### Standard Divider
 
 ```tsx
-<>
-  <Text>Some text</Text>
-  <Divider />
-  <Text>Some other text to show regular divider</Text>
-</>
+<Divider />
 ```
 
 ### Bold Divider
 
 ```tsx
+<Divider variant="bold" />
+```
+
+### Divider between Text
+
+```tsx
 <>
-  <Text>Some text</Text>
-  <Divider variant="bold" />
-  <Text>Some other text to show strong divider</Text>
+  <Text>Dark Side</Text>
+  <Divider />
+  <Text>Bright Side</Text>
 </>
 ```
+
+### Divider in Do & Don't component
+
+<DoAndDont preview={<Text>Look at the greend bold Divider below</Text>}>
+  Example to show how Divider is used in Do & Don't component
+</DoAndDont>

@@ -1,10 +1,10 @@
-import React, { Children } from 'react';
+import React from 'react';
 import { ResponsiveStyleValue } from '@marigold/system';
 
-import { flattenChildren } from '../utils';
 import { Box } from '../Box';
 
 export interface StackProps {
+  as?: 'div' | 'ul' | 'ol';
   space?: ResponsiveStyleValue<string>;
   align?: 'left' | 'right' | 'center';
 }
@@ -26,13 +26,9 @@ export const Stack: React.FC<StackProps> = ({
     display="flex"
     flexDirection="column"
     alignItems={ALIGNMENT[align]}
-    css={{ '> * + *': { pt: space } }}
+    p="0"
+    css={{ gap: space }}
   >
-    {Children.map(
-      flattenChildren(children) as unknown as React.ReactElement,
-      (child: React.ReactElement) => (
-        <Box>{React.cloneElement(child, {}, child.props.children)}</Box>
-      )
-    )}
+    {children}
   </Box>
 );
