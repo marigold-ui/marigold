@@ -17,4 +17,5 @@ export const Field: Theme['components']['Field'] = {
       },
     },
   },
+  variant: {},
 };

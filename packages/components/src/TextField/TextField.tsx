@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { useFocusWithin, useHover } from '@react-aria/interactions';
+import { useHover } from '@react-aria/interactions';
 import { useTextField } from '@react-aria/textfield';
 import { AriaTextFieldProps } from '@react-types/textfield';
 
