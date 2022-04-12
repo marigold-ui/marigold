@@ -67,22 +67,6 @@ const theme = {
           color: 'secondary',
         },
       },
-      state: {
-        hover: {
-          bg: 'blue',
-        },
-        error: {
-          bg: 'red',
-        },
-        focus: {
-          outline: '2px solid',
-          outlineColor: 'blue',
-        },
-        disabled: {
-          cursor: 'not-allowed',
-          bg: 'grey',
-        },
-      },
     },
     // Component with multiple parts
     Checkbox: {
@@ -99,31 +83,6 @@ const theme = {
         label: {
           color: 'black',
           fontSize: 'small-2',
-        },
-      },
-      state: {
-        checked: {
-          icon: {
-            opacity: 1,
-            bg: 'blue',
-          },
-        },
-        unchecked: {
-          icon: {
-            opacity: 0,
-          },
-        },
-        error: {
-          container: {
-            border: '1px solid',
-            borderColor: 'red',
-          },
-          icon: {
-            fill: 'red',
-          },
-          label: {
-            color: 'red',
-          },
         },
       },
       size: {
@@ -325,104 +284,6 @@ describe('useComponentStyles (simple)', () => {
       bg: 'white',
     });
   });
-
-  test('get state styles for a component', () => {
-    let view = renderHook(
-      () => useComponentStyles('Button', { states: { hover: true } }),
-      {
-        wrapper,
-      }
-    );
-    expect(view.result.current).toMatchInlineSnapshot(`
-      {
-        "appearance": "none",
-        "bg": "blue",
-      }
-    `);
-
-    view = renderHook(
-      () => useComponentStyles('Button', { states: { error: true } }),
-      {
-        wrapper,
-      }
-    );
-    expect(view.result.current).toMatchInlineSnapshot(`
-      {
-        "appearance": "none",
-        "bg": "red",
-      }
-    `);
-  });
-
-  test('get multiple states (disabled overrides other states)', () => {
-    let view = renderHook(
-      () =>
-        useComponentStyles('Button', {
-          states: { hover: true, focus: true },
-        }),
-      {
-        wrapper,
-      }
-    );
-    expect(view.result.current).toMatchInlineSnapshot(`
-      {
-        "appearance": "none",
-        "bg": "blue",
-        "outline": "2px solid",
-        "outlineColor": "blue",
-      }
-    `);
-
-    view = renderHook(
-      () =>
-        useComponentStyles('Button', {
-          states: { hover: true, disabled: true },
-        }),
-      {
-        wrapper,
-      }
-    );
-    expect(view.result.current).toMatchInlineSnapshot(`
-      {
-        "appearance": "none",
-        "bg": "grey",
-        "cursor": "not-allowed",
-      }
-    `);
-  });
-
-  test('works if state does not exist', () => {
-    const { result } = renderHook(
-      () => useComponentStyles('Button', { states: { visited: true } }),
-      {
-        wrapper,
-      }
-    );
-    expect(result.current).toMatchInlineSnapshot(`
-      {
-        "appearance": "none",
-        "bg": "white",
-      }
-    `);
-  });
-
-  test('only applies set styles', () => {
-    const { result } = renderHook(
-      () =>
-        useComponentStyles('Button', {
-          states: { hover: true, disabled: false },
-        }),
-      {
-        wrapper,
-      }
-    );
-    expect(result.current).toMatchInlineSnapshot(`
-      {
-        "appearance": "none",
-        "bg": "blue",
-      }
-    `);
-  });
 });
 
 describe('useComponentStyles (complex)', () => {
@@ -520,39 +381,6 @@ describe('useComponentStyles (complex)', () => {
     `);
   });
 
-  test('get state styles for a component (with parts)', () => {
-    const { result } = renderHook(
-      () =>
-        useComponentStyles(
-          'Checkbox',
-          { states: { checked: true } },
-          { parts: ['container', 'icon', 'label'] }
-        ),
-      {
-        wrapper,
-      }
-    );
-    expect(result.current).toMatchInlineSnapshot(`
-      {
-        "container": {
-          "alignItems": "center",
-          "display": "flex",
-          "gap": "small-1",
-        },
-        "icon": {
-          "bg": "blue",
-          "height": "small-1",
-          "opacity": 1,
-          "width": "small-1",
-        },
-        "label": {
-          "color": "black",
-          "fontSize": "small-2",
-        },
-      }
-    `);
-  });
-
   test('returns empty objects if part does not exist', () => {
     const { result } = renderHook(
       () =>
@@ -567,16 +395,32 @@ describe('useComponentStyles (complex)', () => {
     );
     expect(result.current['non-existing-part']).toMatchInlineSnapshot(`{}`);
   });
+
+  test('returns only requested parts', () => {
+    const { result } = renderHook(
+      () => useComponentStyles('Checkbox', {}, { parts: ['label'] }),
+      {
+        wrapper,
+      }
+    );
+    expect(result.current).toMatchInlineSnapshot(`
+      {
+        "label": {
+          "color": "black",
+          "fontSize": "small-2",
+        },
+      }
+    `);
+  });
 });
 
 describe('style superiority', () => {
-  test('override order: base < size < state < variant', () => {
+  test('override order: base < size < variant', () => {
     const { result } = renderHook(
       () =>
         useComponentStyles('Button', {
           size: 'small',
           variant: 'pink',
-          states: { disabled: true },
         }),
       {
         wrapper,
@@ -585,14 +429,13 @@ describe('style superiority', () => {
     expect(result.current).toMatchInlineSnapshot(`
       {
         "appearance": "none",
-        "bg": "grey",
-        "cursor": "not-allowed",
+        "bg": "white",
         "height": "small-1",
       }
     `);
   });
 
-  test('override order: base < size < state < variant (with parts)', () => {
+  test('override order: base < size < variant (with parts)', () => {
     const { result } = renderHook(
       () =>
         useComponentStyles(
@@ -600,7 +443,6 @@ describe('style superiority', () => {
           {
             size: 'small',
             variant: 'pink',
-            states: { error: true },
           },
           { parts: ['container', 'icon', 'label'] }
         ),
@@ -612,14 +454,11 @@ describe('style superiority', () => {
       {
         "container": {
           "alignItems": "center",
-          "border": "1px solid",
-          "borderColor": "red",
           "display": "flex",
           "gap": "small-1",
           "p": "small-1",
         },
         "icon": {
-          "fill": "red",
           "height": "small-1",
           "width": "small-1",
         },
@@ -639,20 +478,18 @@ describe('style usage', () => {
         useComponentStyles('Button', {
           size: 'small',
           variant: 'pink',
-          states: { disabled: true },
         }),
       {
         wrapper,
       }
     );
     expect(result.current).toMatchInlineSnapshot(`
-    {
-      "appearance": "none",
-      "bg": "grey",
-      "cursor": "not-allowed",
-      "height": "small-1",
-    }
-  `);
+      {
+        "appearance": "none",
+        "bg": "white",
+        "height": "small-1",
+      }
+    `);
   });
 
   test('usage with <Box>', () => {

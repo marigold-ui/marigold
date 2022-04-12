@@ -412,12 +412,6 @@ export const component = {
       height: '2px',
     },
   },
-  image: {
-    fullWidth: {
-      maxWidth: '100%',
-      height: 'auto',
-    },
-  },
   input: {
     __default: {
       color: 'text',

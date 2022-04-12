@@ -7,45 +7,38 @@ const theme = {
   colors: {
     primary: 'hotpink',
   },
-  image: {
-    fullWidth: {
-      alignItems: 'center',
-    },
-    logos: {
-      alignItems: 'right',
+  components: {
+    Image: {
+      base: {
+        alignItems: 'center',
+      },
+      variant: {
+        fullWidth: {
+          alignItems: 'center',
+        },
+      },
     },
   },
 };
 
-test('supports default variant and themeSection', () => {
+test('supports Image variant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Image title="images" />
+      <Image data-testid="images" variant="fullWidth" />
     </ThemeProvider>
   );
-  const img = screen.getByTitle(/images/);
+  const img = screen.getByTestId(/images/);
 
   expect(img).toHaveStyle(`align-items: center`);
-});
-
-test('accepts other variant than default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Image title="logos" variant="logos" />
-    </ThemeProvider>
-  );
-  const img = screen.getByTitle(/logos/);
-
-  expect(img).toHaveStyle(`align-items: right`);
 });
 
 test('renders correct HTML element', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Image title="default" />
+      <Image data-testid="default" />
     </ThemeProvider>
   );
-  const img = screen.getByTitle(/default/);
+  const img = screen.getByTestId(/default/);
 
   expect(img instanceof HTMLImageElement).toBeTruthy();
 });
@@ -53,10 +46,10 @@ test('renders correct HTML element', () => {
 test('accept alt', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Image alt="altText" title="default" />
+      <Image alt="altText" data-testid="default" />
     </ThemeProvider>
   );
-  const img = screen.getByTitle(/default/);
+  const img = screen.getByTestId(/default/);
 
   expect(img.getAttribute('alt')).toEqual('altText');
 });
@@ -64,10 +57,10 @@ test('accept alt', () => {
 test('accepts custom styles prop className', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Image className="custom-class-name" title="image" />
+      <Image className="custom-class-name" data-testid="image" />
     </ThemeProvider>
   );
-  const image = screen.getByTitle(/image/);
+  const image = screen.getByTestId(/image/);
 
   expect(image.className).toMatch('custom-class-name');
 });
