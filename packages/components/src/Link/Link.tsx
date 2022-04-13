@@ -38,7 +38,7 @@ export const Link = (({
     ref
   );
 
-  const styles = useComponentStyles('Link', { variant });
+  const styles = useComponentStyles('Link', { variant, size });
 
   return (
     <Box as={as} css={styles} ref={ref} {...props} {...linkProps}>
