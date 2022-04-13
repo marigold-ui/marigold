@@ -1,7 +1,6 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Input } from './Input';
-import { Label } from '../Label';
 
 export default {
   title: 'Components/Input',
@@ -10,12 +9,7 @@ export default {
       control: {
         type: 'text',
       },
-      description: '?',
-      table: {
-        defaultValue: {
-          summary: '__default',
-        },
-      },
+      description: 'Input variant',
     },
     type: {
       control: {
@@ -37,18 +31,16 @@ export default {
         'week',
       ],
       defaultValue: 'text',
-      table: {
-        defaultValue: {
-          summary: 'text',
-        },
+    },
+    pattern: {
+      control: {
+        type: 'text',
       },
+      description: 'Pattern for the input',
     },
   },
 } as Meta;
 
 export const Basic: ComponentStory<typeof Input> = args => (
-  <Label htmlFor="input">
-    Label
-    <Input id="input" placeholder="Placeholder..." {...args} />
-  </Label>
+  <Input placeholder="Placeholder..." {...args} />
 );

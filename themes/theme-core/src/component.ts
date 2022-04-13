@@ -412,34 +412,6 @@ export const component = {
       height: '2px',
     },
   },
-  input: {
-    __default: {
-      color: 'text',
-      border: 'none',
-      borderRadius: 'small',
-      boxShadow: '0 0 0 1px #aaa',
-      outline: 'none',
-      padding: '0 4px',
-      lineHeight: '24px',
-      ':focus': {
-        boxShadow: '0 0 0 2px ' + colors.blue60,
-      },
-      ':disabled': {
-        bg: colors.gray20,
-        color: colors.gray40,
-        cursor: 'not-allowed',
-      },
-    },
-    error: {
-      color: 'text',
-      border: 'none',
-      borderRadius: 'small',
-      boxShadow: '0 0 0 1px #f33',
-      outline: 'none',
-      padding: '0 4px',
-      lineHeight: '24px',
-    },
-  },
   label: {
     above: {
       fontSize: 'xxsmall',

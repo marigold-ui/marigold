@@ -4,10 +4,11 @@ import { useTextField } from '@react-aria/textfield';
 import { AriaTextFieldProps } from '@react-types/textfield';
 import { useFocusRing } from '@react-aria/focus';
 
-import { Box, useComponentStyles, useStateProps } from '@marigold/system';
+import { useStateProps } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 import { FieldBase, FieldBaseProps } from '../Field';
+import { Input } from '../Input';
 
 // Props
 // ---------------
@@ -60,8 +61,6 @@ export const TextField = ({
     error,
   });
 
-  const styles = useComponentStyles('Field', {}, { parts: ['input'] });
-
   return (
     <FieldBase
       label={label}
@@ -74,12 +73,13 @@ export const TextField = ({
       errorMessageProps={errorMessageProps}
       stateProps={stateProps}
     >
-      <Box
-        as="input"
-        variant="input"
+      <Input
         ref={ref}
-        css={styles.input}
-        {...inputProps}
+        /**
+         * We use `size` for styles which is a string, not like
+         * the regular HTML attribute, which is a number
+         */
+        {...(inputProps as any)}
         {...focusProps}
         {...hoverProps}
         {...stateProps}
