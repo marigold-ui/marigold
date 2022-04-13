@@ -11,7 +11,7 @@ export const HelpText: Theme['components']['HelpText'] = {
       },
     },
     icon: {
-      size: 14,
+      size: 'xxsmall',
     },
   },
 };

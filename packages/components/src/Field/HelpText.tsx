@@ -55,7 +55,7 @@ export const HelpText = ({
         <>
           <Exclamation
             role="presentation"
-            size={Number(styles.icon.size) || 16}
+            size={(styles?.icon?.size as any) || 16}
           />
           <Box {...errorMessageProps}>{errorMessage}</Box>
         </>
