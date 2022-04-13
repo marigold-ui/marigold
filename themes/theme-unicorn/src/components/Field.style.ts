@@ -6,16 +6,24 @@ export const Field: Theme['components']['Field'] = {
     label: {
       fontSize: 'xxsmall',
     },
-    helptext: {
-      fontSize: 'xxsmall',
-      fontStyle: 'italic',
-      color: 'text',
-    },
     input: {
       '&:focus': {
         outline: '2px solid' + colors.blue60,
       },
     },
   },
-  variant: {},
+  variant: {
+    helptext: {
+      description: {
+        fontSize: 'xxsmall',
+        fontStyle: 'italic',
+        color: 'text',
+      },
+      error: {
+        fontSize: 'xxsmall',
+        fontStyle: 'italic',
+        color: 'error',
+      },
+    },
+  },
 };

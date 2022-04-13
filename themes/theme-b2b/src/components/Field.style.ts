@@ -7,13 +7,17 @@ export const Field: Theme['components']['Field'] = {
       fontSize: 'xxsmall',
       color: 'text',
     },
-    helptext: {
-      fontSize: 'xxsmall',
-      color: 'text',
-    },
     input: {
       '&:focus': {
         outline: '2px solid' + colors.blue60,
+      },
+    },
+    helpText: {
+      fontSize: 'xxsmall',
+      color: 'text',
+      '&:invalid': {
+        fontSize: 'xxsmall',
+        color: 'error',
       },
     },
   },

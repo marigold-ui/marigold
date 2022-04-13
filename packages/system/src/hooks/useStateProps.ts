@@ -12,10 +12,14 @@ export type ComponentState =
   | 'indeterminate'
   | 'invalid';
 
-export type StateAttrsKey = `data-${Lowercase<ComponentState>}`;
+export type StateAttrKeyProps = `data-${Lowercase<ComponentState>}`;
 
-export type StateAttrs = {
-  [key in StateAttrsKey]?: '';
+export type StateAttrProps = {
+  [key in StateAttrKeyProps]?: '';
+};
+
+export type UseStateProps = {
+  [key in ComponentState]?: boolean;
 };
 
 /**
@@ -23,16 +27,14 @@ export type StateAttrs = {
  * object that can be used to set state props on a component
  * (e.g. `[data-hover]` and `[data-focus]`).
  */
-export const useStateProps = (states: {
-  [key in ComponentState]?: boolean;
-}): StateAttrs => {
+export const useStateProps = (states: UseStateProps): StateAttrProps => {
   // Store states in ref to prevent re-computation
   const statePropsRef = useRef({});
 
-  let stateProps: StateAttrs = {};
+  let stateProps: StateAttrProps = {};
   for (let state in states) {
     if (states[state as ComponentState]) {
-      const key = `data-${state.toLocaleLowerCase()}` as StateAttrsKey;
+      const key = `data-${state.toLocaleLowerCase()}` as StateAttrKeyProps;
       stateProps[key] = '';
     }
   }

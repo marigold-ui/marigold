@@ -408,18 +408,18 @@ export const component = {
       bg: 'gray50',
     },
   },
-  helpText: {
-    error: {
-      ...text.root,
-      fontSize: 'xxsmall',
-      color: 'error',
-    },
-    description: {
-      ...text.root,
-      fontSize: 'xxsmall',
-      color: 'text',
-    },
-  },
+  // helpText: {
+  //   error: {
+  //     ...text.root,
+  //     fontSize: 'xxsmall',
+  //     color: 'error',
+  //   },
+  //   description: {
+  //     ...text.root,
+  //     fontSize: 'xxsmall',
+  //     color: 'text',
+  //   },
+  // },
   input: {
     __default: {
       color: 'text',

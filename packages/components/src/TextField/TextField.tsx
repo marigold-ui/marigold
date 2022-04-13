@@ -2,12 +2,12 @@ import React, { useRef } from 'react';
 import { useHover } from '@react-aria/interactions';
 import { useTextField } from '@react-aria/textfield';
 import { AriaTextFieldProps } from '@react-types/textfield';
+import { useFocusRing } from '@react-aria/focus';
 
 import { Box, useComponentStyles, useStateProps } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 import { Field, FieldProps } from '../Field';
-import { useFocusRing } from '@react-aria/focus';
 
 // Props
 // ---------------
@@ -64,7 +64,6 @@ export const TextField = ({
 
   return (
     <Field
-      {...stateProps}
       label={label}
       labelProps={labelProps}
       required={required}
@@ -73,6 +72,7 @@ export const TextField = ({
       error={error}
       errorMessage={errorMessage}
       errorMessageProps={errorMessageProps}
+      stateProps={stateProps}
     >
       <Box
         as="input"
