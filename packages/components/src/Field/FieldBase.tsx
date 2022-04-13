@@ -1,31 +1,9 @@
 import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
-
-import { useComponentStyles, StateAttrProps } from '@marigold/system';
+import { StateAttrProps } from '@marigold/system';
 
 import { Stack } from '../Stack';
-
 import { Label } from './Label';
 import { HelpText } from './HelpText';
-
-// Theme Extension
-// ---------------
-interface FieldParts<Value> {
-  label?: Value;
-  input?: Value;
-  helpText?: Value;
-}
-
-export interface FieldThemeExtension<Value> {
-  Field?: {
-    base: FieldParts<Value>;
-    variant?: {
-      [key: string]: FieldParts<Value>;
-    };
-    size?: {
-      [key: string]: FieldParts<Value>;
-    };
-  };
-}
 
 // Props
 // ---------------
@@ -62,22 +40,11 @@ export const FieldBase = ({
   errorMessageProps,
   stateProps,
 }: FieldBaseProps) => {
-  const styles = useComponentStyles(
-    'Field',
-    { variant, size },
-    { parts: ['label', 'helpText'] }
-  );
-
   const hasHelpText = !!description || (errorMessage && error);
   return (
     <Stack>
       {label && (
-        <Label
-          {...labelProps}
-          {...stateProps}
-          required={required}
-          css={styles.label}
-        >
+        <Label {...labelProps} {...stateProps} required={required}>
           {label}
         </Label>
       )}
@@ -91,7 +58,6 @@ export const FieldBase = ({
           error={error}
           errorMessage={errorMessage}
           errorMessageProps={errorMessageProps}
-          css={styles.helpText}
         />
       )}
     </Stack>

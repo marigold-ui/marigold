@@ -1,57 +1,62 @@
 import React, { HTMLAttributes, ReactNode } from 'react';
 import { Exclamation } from '@marigold/icons';
-import { Box, CSSObject, useTheme } from '@marigold/system';
+import {
+  Box,
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+} from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 // Theme Extension
 // ---------------
-export interface HelpTextThemeExtension<Value> {
-  helpText?: {
-    description: Value;
-    error: Value;
-    icon: {
-      size: number | string;
-    };
-  };
-}
+export interface HelpTextThemeExtension
+  extends ThemeExtensionsWithParts<'HelpText', ['container', 'icon']> {}
 
 // Props
 // ---------------
 export interface HelpTextProps extends ComponentProps<'div'> {
+  variant?: string;
+  size?: string;
   disabled?: boolean;
   description?: ReactNode;
   descriptionProps?: HTMLAttributes<HTMLElement>;
   error?: boolean;
   errorMessage?: ReactNode;
   errorMessageProps?: HTMLAttributes<HTMLElement>;
-  css?: CSSObject;
 }
 
 // Component
 // ---------------
 export const HelpText = ({
+  variant,
+  size,
   disabled,
   description,
   descriptionProps,
   error,
   errorMessage,
   errorMessageProps,
-  css,
   ...props
 }: HelpTextProps) => {
-  const { get } = useTheme();
-  const iconSize = get('helpText.icon.size') || 14;
   const hasErrorMessage = errorMessage && error;
-  console.log(props, css);
+  const styles = useComponentStyles(
+    'HelpText',
+    { variant, size },
+    { parts: ['container', 'icon'] }
+  );
+
   return (
     <Box
       {...props}
       __baseCSS={{ display: 'flex', alignItems: 'center', gap: 4 }}
-      css={css}
+      css={styles.container}
     >
       {hasErrorMessage ? (
         <>
-          <Exclamation role="presentation" size={iconSize} />
+          <Exclamation
+            role="presentation"
+            size={Number(styles.icon.size) || 16}
+          />
           <Box {...errorMessageProps}>{errorMessage}</Box>
         </>
       ) : (
