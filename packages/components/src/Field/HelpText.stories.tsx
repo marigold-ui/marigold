@@ -3,7 +3,7 @@ import type { Meta, ComponentStory } from '@storybook/react';
 import { HelpText } from './HelpText';
 
 export default {
-  title: 'Field/HelpText',
+  title: 'Components/HelpText',
   argTypes: {
     description: {
       control: {

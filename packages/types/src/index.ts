@@ -10,6 +10,12 @@ export type Percentage = `${ZeroToNine}%` | `${OneToNine}${ZeroToNine}%`;
 export type NonZeroPercentage = `${OneToNine}%` | `${OneToNine}${ZeroToNine}%`;
 
 /**
+ * Useful to flatten the type output to improve type hints shown in editors.
+ * And also to transform an interface into a type to aide with assignability.
+ */
+export type Simplify<T> = { [P in keyof T]: T[P] };
+
+/**
  * Get values of an `array` as literals.
  */
 export type ValueOf<T> = T[keyof T];

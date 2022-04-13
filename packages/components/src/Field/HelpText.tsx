@@ -1,22 +1,22 @@
 import React, { HTMLAttributes, ReactNode } from 'react';
 import { Exclamation } from '@marigold/icons';
-import { Box, useTheme } from '@marigold/system';
+import {
+  Box,
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+} from '@marigold/system';
+import { ComponentProps } from '@marigold/types';
 
 // Theme Extension
 // ---------------
-export interface HelpTextThemeExtension<Value> {
-  helpText?: {
-    description: Value;
-    error: Value;
-    icon: {
-      size: number | string;
-    };
-  };
-}
+export interface HelpTextThemeExtension
+  extends ThemeExtensionsWithParts<'HelpText', ['container', 'icon']> {}
 
 // Props
 // ---------------
-export interface HelpTextProps {
+export interface HelpTextProps extends ComponentProps<'div'> {
+  variant?: string;
+  size?: string;
   disabled?: boolean;
   description?: ReactNode;
   descriptionProps?: HTMLAttributes<HTMLElement>;
@@ -28,6 +28,8 @@ export interface HelpTextProps {
 // Component
 // ---------------
 export const HelpText = ({
+  variant,
+  size,
   disabled,
   description,
   descriptionProps,
@@ -36,25 +38,25 @@ export const HelpText = ({
   errorMessageProps,
   ...props
 }: HelpTextProps) => {
-  const { get } = useTheme();
-  const iconSize = get('helpText.icon.size') || 14;
-  const isErrorMessage = errorMessage && error;
-
-  const variant = disabled
-    ? `helpText.disabled`
-    : isErrorMessage
-    ? `helpText.error`
-    : `helpText.description`;
+  const hasErrorMessage = errorMessage && error;
+  const styles = useComponentStyles(
+    'HelpText',
+    { variant, size },
+    { parts: ['container', 'icon'] }
+  );
 
   return (
     <Box
       {...props}
-      variant={variant}
       __baseCSS={{ display: 'flex', alignItems: 'center', gap: 4 }}
+      css={styles.container}
     >
-      {isErrorMessage ? (
+      {hasErrorMessage ? (
         <>
-          <Exclamation role="presentation" size={iconSize} />
+          <Exclamation
+            role="presentation"
+            size={(styles?.icon?.size as any) || 16}
+          />
           <Box {...errorMessageProps}>{errorMessage}</Box>
         </>
       ) : (

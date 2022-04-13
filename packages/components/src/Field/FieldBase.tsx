@@ -1,10 +1,16 @@
 import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
-import { Stack } from '../Stack';
+import { StateAttrProps } from '@marigold/system';
 
+import { Stack } from '../Stack';
 import { Label } from './Label';
 import { HelpText } from './HelpText';
 
-export interface FieldProps {
+// Props
+// ---------------
+export interface FieldBaseProps {
+  children?: React.ReactNode;
+  variant?: string;
+  size?: string;
   disabled?: boolean;
   required?: boolean;
   label?: ReactNode;
@@ -14,9 +20,14 @@ export interface FieldProps {
   error?: boolean;
   errorMessage?: ReactNode;
   errorMessageProps?: HTMLAttributes<HTMLElement>;
+  stateProps?: StateAttrProps;
 }
 
-export const Field: React.FC<FieldProps> = ({
+// Component
+// ---------------
+export const FieldBase = ({
+  variant,
+  size,
   children,
   disabled,
   required,
@@ -27,19 +38,20 @@ export const Field: React.FC<FieldProps> = ({
   error,
   errorMessage,
   errorMessageProps,
-}) => {
+  stateProps,
+}: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
-
   return (
     <Stack>
       {label && (
-        <Label {...labelProps} required={required}>
+        <Label {...labelProps} {...stateProps} required={required}>
           {label}
         </Label>
       )}
       {children}
       {hasHelpText && (
         <HelpText
+          {...stateProps}
           disabled={disabled}
           description={description}
           descriptionProps={descriptionProps}

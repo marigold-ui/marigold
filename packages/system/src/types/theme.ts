@@ -1,5 +1,39 @@
 import * as CSS from 'csstype';
 import { NestedScaleDict } from '@theme-ui/css';
+import { CSSObject } from './system';
+
+/**
+ * Structure for component styles in a theme.
+ */
+export type ThemeExtension<ComponentName extends string> = {
+  [P in ComponentName]?: {
+    base?: CSSObject;
+    variant?: {
+      [key: string]: CSSObject;
+    };
+    size?: {
+      [key: string]: CSSObject;
+    };
+  };
+};
+
+/**
+ * Structure for component styles in a theme that consists of multiple parts.
+ */
+export type ThemeExtensionsWithParts<
+  ComponentName extends string,
+  Parts extends string[]
+> = {
+  [P in ComponentName]?: {
+    base?: { [Part in Parts[number]]?: CSSObject };
+    variant?: {
+      [key: string]: { [Part in Parts[number]]?: CSSObject };
+    };
+    size?: {
+      [key: string]: { [Part in Parts[number]]?: CSSObject };
+    };
+  };
+};
 
 /**
  * Value used to define a scale.

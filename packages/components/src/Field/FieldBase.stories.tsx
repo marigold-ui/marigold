@@ -1,9 +1,9 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
-import { Field } from './Field';
+import { FieldBase } from './FieldBase';
 
 export default {
-  title: 'Field/Field',
+  title: 'Components/FieldBase',
   argTypes: {
     required: {
       control: {
@@ -50,8 +50,8 @@ export default {
   },
 } as Meta;
 
-export const Basic: ComponentStory<typeof Field> = args => (
-  <Field {...args}>
+export const Basic: ComponentStory<typeof FieldBase> = args => (
+  <FieldBase {...args}>
     <input type="text" />
-  </Field>
+  </FieldBase>
 );
