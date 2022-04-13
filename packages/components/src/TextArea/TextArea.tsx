@@ -5,7 +5,7 @@ import { AriaTextFieldProps } from '@react-types/textfield';
 import { Box } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { Field, FieldProps } from '../Field';
+import { FieldBase, FieldBaseProps } from '../Field';
 
 // Theme Extension
 // ---------------
@@ -41,7 +41,7 @@ export interface TextAreaProps
       'value' | 'defaultValue' | CustomTextAreEvents
     >,
     Pick<AriaTextFieldProps, CustomTextAreEvents>,
-    Pick<FieldProps, 'label' | 'description' | 'error' | 'errorMessage'> {
+    Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
   value?: string;
   defaultValue?: string;
 }
@@ -71,7 +71,7 @@ export const TextArea = ({
     );
 
   return (
-    <Field
+    <FieldBase
       label={label}
       labelProps={labelProps}
       required={required}
@@ -82,6 +82,6 @@ export const TextArea = ({
       errorMessageProps={errorMessageProps}
     >
       <Box as="textarea" variant="textArea" ref={ref} {...inputProps} />
-    </Field>
+    </FieldBase>
   );
 };

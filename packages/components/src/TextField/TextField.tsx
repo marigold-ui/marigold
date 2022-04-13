@@ -7,7 +7,7 @@ import { useFocusRing } from '@react-aria/focus';
 import { Box, useComponentStyles, useStateProps } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { Field, FieldProps } from '../Field';
+import { FieldBase, FieldBaseProps } from '../Field';
 
 // Props
 // ---------------
@@ -21,7 +21,7 @@ export interface TextFieldProps
      * and `onBlur` events. Thus, we adjust our regular props to match them.
      */
     Pick<AriaTextFieldProps, 'onChange' | 'onFocus' | 'onBlur'>,
-    Pick<FieldProps, 'label' | 'description' | 'error' | 'errorMessage'> {
+    Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
   value?: string;
   defaultValue?: string;
 }
@@ -63,7 +63,7 @@ export const TextField = ({
   const styles = useComponentStyles('Field', {}, { parts: ['input'] });
 
   return (
-    <Field
+    <FieldBase
       label={label}
       labelProps={labelProps}
       required={required}
@@ -84,6 +84,6 @@ export const TextField = ({
         {...hoverProps}
         {...stateProps}
       />
-    </Field>
+    </FieldBase>
   );
 };

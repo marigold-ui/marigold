@@ -29,7 +29,7 @@ export interface FieldThemeExtension<Value> {
 
 // Props
 // ---------------
-export interface FieldProps {
+export interface FieldBaseProps {
   children?: React.ReactNode;
   variant?: string;
   size?: string;
@@ -47,7 +47,7 @@ export interface FieldProps {
 
 // Component
 // ---------------
-export const Field = ({
+export const FieldBase = ({
   variant,
   size,
   children,
@@ -61,7 +61,7 @@ export const Field = ({
   errorMessage,
   errorMessageProps,
   stateProps,
-}: FieldProps) => {
+}: FieldBaseProps) => {
   const styles = useComponentStyles(
     'Field',
     { variant, size },

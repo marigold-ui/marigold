@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { AriaTextFieldOptions, useTextField } from '@react-aria/textfield';
 import { render, screen, within } from '@testing-library/react';
 
-import { Field } from './Field';
+import { FieldBase } from './FieldBase';
 
 // Setup
 // ---------------
@@ -21,14 +21,14 @@ const MockedTextField = (props: MockedTestFieldProps) => {
     useTextField(props, ref);
 
   return (
-    <Field
+    <FieldBase
       {...props}
       labelProps={labelProps}
       descriptionProps={descriptionProps}
       errorMessageProps={errorMessageProps}
     >
       <input {...inputProps} ref={ref} />
-    </Field>
+    </FieldBase>
   );
 };
 
