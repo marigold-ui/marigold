@@ -10,6 +10,7 @@ import type { BadgeThemeExtension } from './Badge';
 import type { HelpTextThemeExtension } from './Field/HelpText';
 import type { ImageThemeExtension } from './Image';
 import type { LabelThemeExtension } from './Field/Label';
+import type { TextAreaThemeExtension } from './TextArea';
 
 // Old Styling Solution
 import { type ButtonThemeExtension } from './Button';
@@ -27,7 +28,6 @@ import { type SelectThemeExtension } from './Select';
 import { type SliderThemeExtension } from './Slider';
 import { type SwitchThemeExtension } from './Switch';
 import { type TextThemeExtension } from './Text';
-import { type TextAreaThemeExtension } from './TextArea';
 import { type TooltipThemeExtension } from './Tooltip';
 import { type ValidationMessageThemeExtension } from './ValidationMessage';
 
@@ -35,7 +35,8 @@ interface ComponentStyles
   extends BadgeThemeExtension,
     HelpTextThemeExtension,
     ImageThemeExtension,
-    LabelThemeExtension {}
+    LabelThemeExtension,
+    TextAreaThemeExtension {}
 
 export interface Theme
   extends Scales,
@@ -55,7 +56,6 @@ export interface Theme
     SliderThemeExtension<CSSObject>,
     SwitchThemeExtension<CSSObject>,
     TextThemeExtension<CSSObject>,
-    TextAreaThemeExtension<CSSObject>,
     TooltipThemeExtension<CSSObject>,
     ValidationMessageThemeExtension<CSSObject> {
   components: ComponentStyles;

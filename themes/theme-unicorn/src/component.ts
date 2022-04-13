@@ -534,25 +534,6 @@ export const component = {
       stroke: 'gray40',
     },
   },
-  textArea: {
-    __default: {
-      fontFamily: 'body',
-      lineHeight: 'medium',
-      padding: '4px 8px',
-      color: 'text',
-      border: 0,
-      borderRadius: '8px',
-      outline: '2px solid',
-      ':focus': {
-        outline: '4px solid',
-        outlineColor: 'primary',
-      },
-      ':disabled': {
-        bg: 'gray20',
-        color: 'gray40',
-      },
-    },
-  },
   tooltip: {
     __default: {
       p: 'xsmall',
