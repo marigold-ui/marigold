@@ -23,7 +23,8 @@ export interface LinkProps extends PolymorphicProps<LinkOwnProps, 'a'> {}
 export const Link = (({
   as = 'a',
   variant,
-  children,
+   size,
+   children,
   disabled,
   ...props
 }: LinkProps) => {
