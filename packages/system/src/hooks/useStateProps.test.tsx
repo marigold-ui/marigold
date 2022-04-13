@@ -15,7 +15,7 @@ test('returns state attributes', () => {
       readOnly: true,
       checked: true,
       indeterminate: true,
-      invalid: true,
+      error: true,
     })
   );
 
@@ -24,10 +24,10 @@ test('returns state attributes', () => {
       "data-active": "",
       "data-checked": "",
       "data-disabled": "",
+      "data-error": "",
       "data-focus": "",
       "data-hover": "",
       "data-indeterminate": "",
-      "data-invalid": "",
       "data-readonly": "",
       "data-visited": "",
     }

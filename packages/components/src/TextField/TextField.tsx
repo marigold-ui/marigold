@@ -57,7 +57,7 @@ export const TextField = ({
     focus: isFocusVisible,
     disabled,
     readOnly,
-    invalid: error,
+    error,
   });
 
   const styles = useComponentStyles('Field', {}, { parts: ['input'] });

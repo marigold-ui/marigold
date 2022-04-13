@@ -9,7 +9,7 @@ const pseudos = {
   '&:checked': '&[aria-checked=true], &[data-checked]',
   '&:indeterminate':
     '&:indeterminate, &[aria-checked=mixed], &[data-indeterminate]',
-  '&:invalid': '&:invalid, &[aria-invalid=true], &[data-invalid]',
+  '&:error': '&:invalid, &[aria-invalid=true], &[data-error]',
 } as const;
 
 /**

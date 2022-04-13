@@ -42,7 +42,7 @@ export const HelpText = ({
   const { get } = useTheme();
   const iconSize = get('helpText.icon.size') || 14;
   const hasErrorMessage = errorMessage && error;
-
+  console.log(props, css);
   return (
     <Box
       {...props}

@@ -10,7 +10,7 @@ export type ComponentState =
   | 'readOnly'
   | 'checked'
   | 'indeterminate'
-  | 'invalid';
+  | 'error';
 
 export type StateAttrKeyProps = `data-${Lowercase<ComponentState>}`;
 

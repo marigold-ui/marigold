@@ -15,7 +15,7 @@ export const Field: Theme['components']['Field'] = {
     helpText: {
       fontSize: 'xxsmall',
       color: 'text',
-      '&:invalid': {
+      '&:error': {
         fontSize: 'xxsmall',
         color: 'error',
       },

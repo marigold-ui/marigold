@@ -8,7 +8,7 @@ export const Field: Theme['components']['Field'] = {
       lineHeight: 'small',
       color: 'text',
     },
-    helptext: {
+    helpText: {
       fontSize: 'xxsmall',
       color: 'text',
     },

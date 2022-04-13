@@ -13,7 +13,7 @@ export const Field: Theme['components']['Field'] = {
     },
   },
   variant: {
-    helptext: {
+    helpText: {
       description: {
         fontSize: 'xxsmall',
         fontStyle: 'italic',
