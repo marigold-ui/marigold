@@ -17,7 +17,7 @@ export const TextArea: Theme['components']['TextArea'] = {
       bg: 'gray20',
       color: 'gray40',
     },
-    '&error': {
+    '&:error': {
       color: 'red60',
     },
   },
