@@ -315,13 +315,13 @@ test('transforms states selectors', async () => {
     <ThemeProvider theme={theme}>
       <Box
         data-hover
-        data-invalid
+        data-error
         __baseCSS={{ p: 'small', '&:hover': { p: 'medium' } }}
         css={{
           fontSize: 'large',
           m: 'small',
           bg: 'blue',
-          '&:invalid': {
+          '&:error': {
             bg: 'red',
           },
         }}

@@ -1,12 +1,7 @@
 // TODO: But this back into the root, when we realease all the new fields!
 import React from 'react';
 import { Required } from '@marigold/icons';
-import {
-  Box,
-  CSSObject,
-  ThemeExtension,
-  useComponentStyles,
-} from '@marigold/system';
+import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 // Theme Extension
@@ -33,6 +28,7 @@ export const Label = ({
   ...props
 }: LabelProps) => {
   const styles = useComponentStyles('Label', { size, variant });
+
   return (
     <Box
       {...props}

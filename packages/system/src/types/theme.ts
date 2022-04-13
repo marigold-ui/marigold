@@ -6,7 +6,7 @@ import { CSSObject } from './system';
  * Structure for component styles in a theme.
  */
 export type ThemeExtension<ComponentName extends string> = {
-  [P in ComponentName]: {
+  [P in ComponentName]?: {
     base?: CSSObject;
     variant?: {
       [key: string]: CSSObject;
@@ -24,7 +24,7 @@ export type ThemeExtensionsWithParts<
   ComponentName extends string,
   Parts extends string[]
 > = {
-  [P in ComponentName]: {
+  [P in ComponentName]?: {
     base?: { [Part in Parts[number]]?: CSSObject };
     variant?: {
       [key: string]: { [Part in Parts[number]]?: CSSObject };

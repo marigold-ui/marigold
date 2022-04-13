@@ -11,15 +11,17 @@ const theme = {
   colors: {
     text: 'black',
   },
-  label: {
-    above: {
-      fontFamily: 'body',
-      color: 'text',
+  components: {
+    Label: {
+      base: {
+        fontFamily: 'body',
+        color: 'text',
+      },
     },
   },
 };
 
-test('supports default variant and styles', () => {
+test('uses base styles from theme', () => {
   render(
     <ThemeProvider theme={theme}>
       <Label>label</Label>
