@@ -14,6 +14,7 @@ export interface LinkThemeExtension extends ThemeExtension<'Link'> {}
 export interface LinkOwnProps extends BoxOwnProps {
   disabled?: boolean;
   variant?: string;
+  size?: string;
 }
 
 export interface LinkProps extends PolymorphicProps<LinkOwnProps, 'a'> {}
