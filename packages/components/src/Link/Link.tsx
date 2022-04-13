@@ -1,10 +1,6 @@
 import React, { useRef } from 'react';
 import { useLink } from '@react-aria/link';
-import {
-  conditional,
-  ThemeExtension,
-  useComponentStyles,
-} from '@marigold/system';
+import { ThemeExtension, useComponentStyles } from '@marigold/system';
 import { PolymorphicComponent, PolymorphicProps } from '@marigold/types';
 
 import { Box, BoxOwnProps } from '../Box';
