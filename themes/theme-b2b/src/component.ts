@@ -408,34 +408,7 @@ export const component = {
       bg: 'gray50',
     },
   },
-  input: {
-    __default: {
-      color: 'text',
-      border: 'none',
-      borderRadius: 'small',
-      boxShadow: '0 0 0 1px ' + colors.gray40,
-      outline: 'none',
-      padding: '0 8px',
-      lineHeight: 'large',
-      ':focus': {
-        boxShadow: '0 0 0 2px ' + colors.blue60,
-      },
-      ':disabled': {
-        bg: 'gray20',
-        color: 'gray40',
-        cursor: 'not-allowed',
-      },
-    },
-    error: {
-      color: 'text',
-      border: 'none',
-      borderRadius: 'small',
-      boxShadow: '0 0 0 1px ' + colors.red60,
-      outline: 'none',
-      padding: '0 8px',
-      lineHeight: 'large',
-    },
-  },
+
   label: {
     above: {
       fontSize: 'xxsmall',
@@ -529,28 +502,6 @@ export const component = {
     ':disabled': {
       fill: 'gray30',
       stroke: 'gray40',
-    },
-  },
-  textArea: {
-    __default: {
-      fontFamily: 'body',
-      lineHeight: 'medium',
-      py: 'xxsmall',
-      px: 'xsmall',
-      color: 'text',
-      border: 'none',
-      borderRadius: 'small',
-      outline: '1px solid',
-      outlineColor: 'disabled',
-      ':focus': {
-        outline: '2px solid',
-        outlineColor: 'blue60',
-      },
-      ':disabled': {
-        cursor: 'not-allowed',
-        color: 'disabled',
-        bg: 'gray20',
-      },
     },
   },
   tooltip: {
