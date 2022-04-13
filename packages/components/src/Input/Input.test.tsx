@@ -8,12 +8,16 @@ const theme = {
     body: 'Inter',
     forms: 'Roboto',
   },
-  input: {
-    __default: {
-      fontFamily: 'body',
-    },
-    input2: {
-      fontFamily: 'forms',
+  components: {
+    Input: {
+      base: {
+        fontFamily: 'body',
+      },
+      variant: {
+        robo: {
+          fontFamily: 'forms',
+        },
+      },
     },
   },
 };
@@ -32,7 +36,7 @@ test('supports default variant and themeSection', () => {
 test('accepts other variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Input title="input" variant="input2" />
+      <Input title="input" variant="robo" />
     </ThemeProvider>
   );
   const input = screen.getByTitle('input');
@@ -60,15 +64,4 @@ test('supports custom prop', () => {
   const input = screen.getByTitle('input');
 
   expect(input).toHaveAttribute('placeholder');
-});
-
-test('accepts custom styles prop className', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Input className="custom-class-name" title="input" />
-    </ThemeProvider>
-  );
-  const input = screen.getByTitle(/input/);
-
-  expect(input.className).toMatch('custom-class-name');
 });
