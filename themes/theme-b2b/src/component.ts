@@ -516,28 +516,6 @@ export const component = {
       stroke: 'gray40',
     },
   },
-  textArea: {
-    __default: {
-      fontFamily: 'body',
-      lineHeight: 'medium',
-      py: 'xxsmall',
-      px: 'xsmall',
-      color: 'text',
-      border: 'none',
-      borderRadius: 'small',
-      outline: '1px solid',
-      outlineColor: 'disabled',
-      ':focus': {
-        outline: '2px solid',
-        outlineColor: 'blue60',
-      },
-      ':disabled': {
-        cursor: 'not-allowed',
-        color: 'disabled',
-        bg: 'gray20',
-      },
-    },
-  },
   tooltip: {
     __default: {
       p: 'xsmall',
