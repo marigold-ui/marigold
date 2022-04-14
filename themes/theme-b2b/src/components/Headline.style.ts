@@ -2,7 +2,6 @@ import type { Theme } from '@marigold/components';
 
 export const Headline: Theme['components']['Headline'] = {
   base: {
-    m: 'none',
     fontWeight: 'heading',
   },
   size: {
