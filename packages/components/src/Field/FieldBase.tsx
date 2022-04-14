@@ -8,7 +8,7 @@ import { HelpText } from './HelpText';
 // Props
 // ---------------
 export interface FieldBaseProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
   variant?: string;
   size?: string;
   disabled?: boolean;

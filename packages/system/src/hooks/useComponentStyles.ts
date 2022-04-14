@@ -37,6 +37,10 @@ export interface ComponentStylesProps {
   size?: string;
 }
 
+export type ComponentStyleParts<Parts extends string[]> = {
+  [P in Parts[number]]: CSSObject;
+};
+
 export function useComponentStyles(
   componentName: string,
   props?: ComponentStylesProps,
