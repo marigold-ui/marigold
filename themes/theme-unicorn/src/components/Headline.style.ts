@@ -5,7 +5,7 @@ export const Headline: Theme['components']['Headline'] = {
     m: 'none',
     fontWeight: 'heading',
   },
-  variant: {
+  size: {
     'level-1': {
       fontSize: 'xlarge',
       marginBottom: 'medium',
