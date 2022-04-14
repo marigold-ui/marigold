@@ -1,7 +1,10 @@
 import { Theme } from '@marigold/components';
 
+// NEW STYLES!
+import * as components from './components';
+
 import { colors } from './colors';
-import { components } from './components';
+import { component } from './component';
 import { typography } from './typography';
 
 export const theme: Theme = {
@@ -45,6 +48,7 @@ export const theme: Theme = {
     grey: `1px solid ${colors.gray60}`,
   },
   ...typography,
-  ...components,
-  components: {},
+  ...component,
+
+  components,
 } as const;

@@ -6,7 +6,7 @@ export const Link: Theme['components']['Link'] = {
     '&:hover': {
       textDecoration: 'none',
     },
-    '&disabled': {
+    '&:disabled': {
       cursor: 'disabled',
     },
   },

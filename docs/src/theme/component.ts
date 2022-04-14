@@ -170,7 +170,7 @@ const button = {
   },
 } as const;
 
-export const components = {
+export const component = {
   button: {
     __default: {
       p: 0,
@@ -222,46 +222,6 @@ export const components = {
     select: {
       ...button.primary,
       ...button.select,
-    },
-  },
-  link: {
-    __default: {
-      color: 'gray.20',
-      textDecoration: 'none',
-      '&:hover': {
-        color: 'blue.70',
-      },
-    },
-    outlineLink: {
-      display: 'inline-flex',
-      alignItems: 'center',
-      columnGap: 10,
-      borderRadius: 'medium',
-      border: 'solid',
-      lineHeight: 1,
-      color: 'gray.20',
-      textDecoration: 'none',
-      py: 'xsmall',
-      px: 'medium',
-      ':hover': {
-        bg: 'gray.90',
-      },
-    },
-  },
-  card: {
-    __default: {
-      bg: 'gray00',
-      p: 'small',
-      boxShadow: '0px 4px 4px rgba(165, 165, 165, 0.25)',
-      borderRadius: '10px',
-    },
-    highlight: {
-      width: '100%',
-      p: 'xxlarge',
-      bg: 'gray20',
-      borderRadius: '10px',
-      display: 'flex',
-      justifyContent: 'center',
     },
   },
   divider: {
