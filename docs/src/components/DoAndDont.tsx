@@ -1,6 +1,13 @@
 import * as React from 'react';
 
-import { Card, Divider, Inline, Stack, Text } from '@marigold/components';
+import {
+  Card,
+  Divider,
+  Headline,
+  Inline,
+  Stack,
+  Text,
+} from '@marigold/components';
 import { Banned, Check } from '@marigold/icons';
 import { ComponentProps } from '@marigold/types';
 
@@ -34,9 +41,7 @@ export const DoAndDont: React.FC<DoAndDontProps> = ({
         </Card>
         <Inline space="xsmall">
           {icon}
-          <Text as="h4" variant="headline4">
-            {title}
-          </Text>
+          <Headline level="4">{title}</Headline>
         </Inline>
         <Text variant="muted">{children}</Text>
         <Divider variant={dividerVariant} />

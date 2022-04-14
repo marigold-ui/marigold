@@ -1,12 +1,13 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
+import { Ticket } from '@marigold/icons';
 
 import { Box } from '../Box';
 import { Center } from './Center';
+import { Headline } from '../Headline';
 import { Stack } from '../Stack';
 import { Text } from '../Text';
 import { Button } from '../Button';
-import { Ticket } from '@marigold/icons';
 
 export default {
   title: 'Components/Center',
@@ -80,9 +81,7 @@ export const Icon: ComponentStory<typeof Center> = args => (
 
 export const Complex: ComponentStory<typeof Center> = args => (
   <Stack space="medium">
-    <Text as="h2" variant="headline2">
-      Star Wars - The Empire Strikes Back
-    </Text>
+    <Headline level="2">Star Wars - The Empire Strikes Back</Headline>
     <Text>
       It is a dark time for the Rebellion. Although the Death Star has been
       destroyed, Imperial troops have driven the Rebel forces from their hidden

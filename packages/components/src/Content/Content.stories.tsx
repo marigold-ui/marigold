@@ -4,7 +4,7 @@ import { Content } from './Content';
 import { Container } from '../Container';
 
 export default {
-  title: 'Components/COntent',
+  title: 'Components/Content',
   argTypes: {
     variant: {
       control: {
