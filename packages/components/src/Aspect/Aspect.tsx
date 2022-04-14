@@ -22,6 +22,7 @@ export const Aspect = ({
   <Box
     css={{
       aspectRatio: aspect[ratio],
+      overflow: 'hidden',
       maxWidth,
     }}
   >
