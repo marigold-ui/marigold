@@ -430,18 +430,6 @@ export const component = {
       color: colors.gray50,
     },
   },
-  link: {
-    __default: {
-      color: '#900',
-      ':hover, :visited': {
-        textDecoration: 'none',
-      },
-    },
-    menuItemLink: {
-      color: 'text',
-      textDecoration: 'none',
-    },
-  },
   menuItem: {
     default: {
       display: 'block',

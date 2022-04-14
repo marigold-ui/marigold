@@ -11,6 +11,7 @@ import type { HelpTextThemeExtension } from './Field/HelpText';
 import type { ImageThemeExtension } from './Image';
 import type { InputThemeExtension } from './Input';
 import type { LabelThemeExtension } from './Field/Label';
+import type { LinkThemeExtension } from './Link';
 import type { TextAreaThemeExtension } from './TextArea';
 
 // Old Styling Solution
@@ -19,7 +20,6 @@ import { type CardThemeExtension } from './Card';
 import { type CheckboxThemeExtension } from './Checkbox';
 import { type DividerThemeExtension } from './Divider';
 import { type LabelThemeExtension as LegacyLabelThemeExtension } from './Label';
-import { type LinkThemeExtension } from './Link';
 import { type MenuThemeExtension } from './Menu';
 import { type MenuItemThemeExtension } from './MenuItem';
 import { type MessageThemeExtension } from './Message';
@@ -38,6 +38,7 @@ interface ComponentStyles
     LabelThemeExtension,
     InputThemeExtension,
     LabelThemeExtension,
+    LinkThemeExtension,
     TextAreaThemeExtension {}
 
 export interface Theme
@@ -48,7 +49,6 @@ export interface Theme
     CheckboxThemeExtension<CSSObject>,
     DividerThemeExtension<CSSObject>,
     LegacyLabelThemeExtension<CSSObject>,
-    LinkThemeExtension<CSSObject>,
     MenuThemeExtension<CSSObject>,
     MenuItemThemeExtension<CSSObject>,
     MessageThemeExtension<CSSObject>,
