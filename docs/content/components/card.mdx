@@ -9,7 +9,7 @@ import { DoAndDont } from '../../src/components/DoAndDont';
 The card component can be used for organizing information inside the UI, as well it provides a better readability and helps the user to find information in an easier way.
 
 <MarigoldTheme>
-  <Card title="Title">
+  <Card>
     <Text>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
       dignissim dapibus elit, vel.
@@ -26,18 +26,17 @@ import { Card } from '@marigold/components';
 
 ## Props
 
-| Property  | Type                           | Default     |
-| :-------- | :----------------------------- | :---------- |
-| `variant` | `string`                       | `__default` |
-| `width`   | `ResponsiveStyleValue<string>` |             |
-| `title`   | `string`                       |             |
+| Property  | Type     | Default |
+| :-------- | :------- | :------ |
+| `variant` | `string` |         |
+| `size`    | `string` |         |
 
 ## Examples
 
-### Standard title and text
+### Standard
 
 ```tsx expandCode
-<Card title="Title">
+<Card>
   <Text>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
     dignissim dapibus elit, vel.
@@ -48,18 +47,10 @@ import { Card } from '@marigold/components';
 </Card>
 ```
 
-### Custom width
-
-```tsx
-<Card title="Title" width="320px">
-  <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
-</Card>
-```
-
 ### Card with form fields
 
 ```tsx
-<Card title="Name">
+<Card>
   <TextField label="Firstname" />
   <TextField label="Lastname" />
 </Card>
@@ -68,7 +59,7 @@ import { Card } from '@marigold/components';
 ### Card with select
 
 ```tsx
-<Card title="Choose Color">
+<Card>
   <Select label="Favorite Color" placeholder="Choose a color" width={450}>
     <Item>Red</Item>
     <Item>Orange</Item>
@@ -92,7 +83,7 @@ import { Card } from '@marigold/components';
   >
     <DoAndDont
       preview={
-        <Card title="Title">
+        <Card>
           <Text>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
             dignissim dapibus elit, vel.
@@ -109,7 +100,7 @@ import { Card } from '@marigold/components';
     <DoAndDont
       dont
       preview={
-        <Card title="Title">
+        <Card>
           <Text>
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text

@@ -360,15 +360,6 @@ export const component = {
       ...button.select,
     },
   },
-  card: {
-    __default: {
-      maxWidth: 500,
-      bg: 'gray00',
-      p: 'small',
-      boxShadow: '0px 4px 4px rgba(165, 165, 165, 0.25)',
-      borderRadius: 'large',
-    },
-  },
   checkbox: {
     __default: {
       fill: 'gray00',

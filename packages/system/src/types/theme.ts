@@ -3,6 +3,14 @@ import { NestedScaleDict } from '@theme-ui/css';
 import { CSSObject } from './system';
 
 /**
+ * Props that every component should accepts to change the styling
+ */
+export type ThemeComponentProps = {
+  variant?: string;
+  size?: string;
+};
+
+/**
  * Structure for component styles in a theme.
  */
 export type ThemeExtension<ComponentName extends string> = {

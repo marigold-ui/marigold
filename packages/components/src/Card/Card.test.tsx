@@ -7,65 +7,62 @@ import { Card } from './Card';
 const theme = {
   space: {
     none: 0,
-    small: 4,
-    medium: 8,
+    'small-1': 4,
+    'medium-1': 16,
   },
-  card: {
-    __default: {
-      p: 'medium',
-    },
-    custom: {
-      p: 'small',
+  colors: {
+    grey: '#dee2e6',
+    yellow: '#fff9db',
+  },
+  components: {
+    Card: {
+      base: {
+        p: 'small-1',
+        border: '1px solid',
+        borderColor: 'grey',
+      },
+      variant: {
+        yellow: {
+          bg: 'yellow',
+        },
+      },
+      size: {
+        medium: {
+          p: 'medium-1',
+        },
+      },
     },
   },
 };
 
-test('supports default variant', () => {
+test('renders as a "div" element', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Card>card</Card>
+      <Card data-testid="card" />
     </ThemeProvider>
   );
-  const card = screen.getByText(/card/);
-  expect(card).toHaveStyle(`padding: 8px`);
-});
 
-test('supports other variant than default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Card variant="custom">card</Card>
-    </ThemeProvider>
-  );
-  const card = screen.getByText(/card/);
-  expect(card).toHaveStyle(`padding: 4px`);
-});
-
-test('accepts title prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Card title="title">content</Card>
-    </ThemeProvider>
-  );
-  const title = screen.getByText(/title/);
-  expect(title).toBeDefined();
-});
-
-test('accepts width prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Card width="320px">content</Card>
-    </ThemeProvider>
-  );
-  const card = screen.getByText(/content/);
-  expect(card).toHaveStyle(`maxWidth: 320px`);
-});
-
-test('renders correct HTMl element', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Card>card</Card>
-    </ThemeProvider>
-  );
-  const card = screen.getByText(/card/);
+  const card = screen.getByTestId('card');
   expect(card instanceof HTMLDivElement).toBeTruthy();
+});
+
+test('uses base styling form "Card" in theme', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Card data-testid="card" />
+    </ThemeProvider>
+  );
+  const card = screen.getByTestId('card');
+  expect(card).toHaveStyle(`padding: ${theme.space['small-1']}px`);
+});
+
+test('Card accepts a variant and size', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Card data-testid="card" variant="yellow" size="medium" />
+    </ThemeProvider>
+  );
+  const card = screen.getByTestId('card');
+  expect(card).toHaveStyle(`background: ${theme.colors.yellow}`);
+  expect(card).toHaveStyle(`padding: ${theme.space['medium-1']}px`);
 });

@@ -356,15 +356,6 @@ export const component = {
       ...button.select,
     },
   },
-  card: {
-    __default: {
-      maxWidth: '500px',
-      bg: 'gray00',
-      p: 'small',
-      boxShadow: '8px 8px 4px rgba(201, 177, 255, 0.5)',
-      borderRadius: '8px',
-    },
-  },
   checkbox: {
     __default: {
       fill: 'gray00',
