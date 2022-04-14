@@ -14,6 +14,7 @@ export * from './Content';
 export * from './Dialog';
 export * from './Divider';
 export * from './VisuallyHidden';
+export * from './Headline';
 export * from './Image';
 export * from './Inline';
 export * from './Label';

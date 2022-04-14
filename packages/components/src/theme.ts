@@ -8,7 +8,9 @@ import type { RootThemeExtension } from './Provider';
 // ---------------
 import type { BadgeThemeExtension } from './Badge';
 import type { CardThemeExtension } from './Card';
+import type { ContentThemeExtension } from './Content';
 import type { DividerThemeExtension } from './Divider';
+import type { HeadlineThemeExtension } from './Headline';
 import type { HelpTextThemeExtension } from './Field/HelpText';
 import type { ImageThemeExtension } from './Image';
 import type { InputThemeExtension } from './Input';
@@ -34,7 +36,9 @@ import { type ValidationMessageThemeExtension } from './ValidationMessage';
 interface ComponentStyles
   extends BadgeThemeExtension,
     CardThemeExtension,
+    ContentThemeExtension,
     DividerThemeExtension,
+    HeadlineThemeExtension,
     HelpTextThemeExtension,
     ImageThemeExtension,
     LabelThemeExtension,
