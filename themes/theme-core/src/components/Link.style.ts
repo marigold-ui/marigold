@@ -7,7 +7,7 @@ export const Link: Theme['components']['Link'] = {
       textDecoration: 'none',
       cursor: 'pointer',
     },
-    '&disabled': {
+    '&:disabled': {
       cursor: 'disabled',
     },
   },
