@@ -1,4 +1,5 @@
 export * from './Badge.style';
+export * from './Headline.style';
 export * from './HelpText.style';
 export * from './Image.style';
 export * from './Input.style';

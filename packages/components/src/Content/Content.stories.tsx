@@ -4,19 +4,19 @@ import { Content } from './Content';
 import { Container } from '../Container';
 
 export default {
-  title: 'Components/Card',
+  title: 'Components/COntent',
   argTypes: {
     variant: {
       control: {
         type: 'text',
       },
-      description: 'The variant of the card',
+      description: 'The variant of the content',
     },
     size: {
       control: {
         type: 'text',
       },
-      description: 'The size of the card',
+      description: 'The size of the content',
     },
   },
 } as Meta;
