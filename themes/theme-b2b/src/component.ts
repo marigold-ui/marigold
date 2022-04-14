@@ -386,20 +386,6 @@ export const component = {
       bg: '#00000080',
     },
   },
-  divider: {
-    __default: {
-      my: 'xsmall',
-    },
-    bold: {
-      my: 'xsmall',
-      height: '2px',
-    },
-    section: {
-      my: 'xxsmall',
-      bg: 'gray50',
-    },
-  },
-
   label: {
     above: {
       fontSize: 'xxsmall',
