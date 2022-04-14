@@ -30,8 +30,8 @@ export const Headline = ({
   ...props
 }: HeadlineProps) => {
   const styles = useComponentStyles('Headline', {
-    variant: variant ?? `level-${level}`,
-    size,
+    variant,
+    size: size ?? `level-${level}`,
   });
   return (
     <Box as={`h${level}`} {...props} css={styles}>

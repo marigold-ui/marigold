@@ -10,6 +10,7 @@ const theme = {
     'small-1': 4,
     'medium-1': 16,
   },
+  color: { white: '#FFF' },
   fontSizes: {
     xxsmall: '0.875rem',
     xsmall: '1rem',
@@ -24,7 +25,7 @@ const theme = {
         m: 'none',
         fontWeight: 'heading',
       },
-      variant: {
+      size: {
         'level-1': {
           fontSize: 'xlarge',
         },
@@ -45,9 +46,9 @@ const theme = {
           textTransform: 'uppercase',
         },
       },
-      size: {
-        medium: {
-          p: 'medium-1',
+      variant: {
+        one: {
+          color: 'white',
         },
       },
     },
@@ -66,7 +67,7 @@ test('renders as a "section" element', () => {
 });
 
 test.each(['1', '2', '3', '4', '5', '6'])(
-  'uses styles based on given level from theme (%s)',
+  'uses styles based on given level from theme sizes (%s)',
   lvl => {
     render(
       <ThemeProvider theme={theme}>
@@ -76,7 +77,7 @@ test.each(['1', '2', '3', '4', '5', '6'])(
 
     const headline = screen.getByTestId('headline');
     // @ts-expect-error
-    const token = theme.components.Headline.variant[`level-${lvl}`].fontSize;
+    const token = theme.components.Headline.size[`level-${lvl}`].fontSize;
     // @ts-expect-error
     expect(headline).toHaveStyle(`font-size: ${theme.fontSizes[token]}`);
   }
@@ -90,17 +91,17 @@ test('uses "level-1" by default', () => {
   );
 
   const headline = screen.getByTestId('headline');
-  const token = theme.components.Headline.variant[`level-1`].fontSize;
+  const token = theme.components.Headline.size[`level-1`].fontSize;
   // @ts-expect-error
   expect(headline).toHaveStyle(`font-size: ${theme.fontSizes[token]}`);
 });
 
-test('headline accepts a size', () => {
+test('headline accepts a variant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Headline data-testid="headline" size="medium" />
+      <Headline data-testid="headline" variant="one" />
     </ThemeProvider>
   );
   const headline = screen.getByTestId('headline');
-  expect(headline).toHaveStyle(`padding: ${theme.space['medium-1']}px`);
+  expect(headline).toHaveStyle(`color: white`);
 });
