@@ -12,12 +12,16 @@ const theme = {
   colors: {
     text: 'hotpink',
   },
-  divider: {
-    __default: {
-      margin: 'small',
-    },
-    bold: {
-      margin: 'medium',
+  components: {
+    Divider: {
+      base: {
+        margin: 'small',
+      },
+      variant: {
+        bold: {
+          margin: 'medium',
+        },
+      },
     },
   },
 };
@@ -38,7 +42,7 @@ test('has base styles', () => {
   expect(divider).toHaveStyle(`margin: 2px`);
 });
 
-test('supports default variant', () => {
+test('supports base styles', () => {
   render(
     <ThemeProvider theme={theme}>
       <Divider data-testid="divider" />
@@ -49,7 +53,7 @@ test('supports default variant', () => {
   expect(divider).toHaveStyle(`margin: 2px`);
 });
 
-test('accepts other variant than default', () => {
+test('accepts other variants', () => {
   render(
     <ThemeProvider theme={theme}>
       <Divider variant="bold" data-testid="divider" />

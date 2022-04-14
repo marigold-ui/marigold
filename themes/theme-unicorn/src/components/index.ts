@@ -1,5 +1,6 @@
 export * from './Badge.style';
 export * from './Card.style';
+export * from './Divider.style';
 export * from './HelpText.style';
 export * from './Image.style';
 export * from './Input.style';
