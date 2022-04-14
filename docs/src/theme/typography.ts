@@ -47,50 +47,6 @@ export const typography = {
       color: 'gray.40',
       marginBottom: 'medium',
     },
-    headline1: {
-      ...text.root,
-      ...text.heading,
-      fontSize: 'xlarge',
-      marginBottom: 'medium',
-      '&:first-of-type': {
-        marginTop: 'none',
-      },
-    },
-    headline2: {
-      ...text.root,
-      ...text.heading,
-      fontSize: 'large',
-      marginTop: 'large',
-      marginBottom: 'xsmall',
-      '&:first-of-type': {
-        marginTop: 'none',
-      },
-    },
-    headline3: {
-      ...text.root,
-      ...text.heading,
-      fontSize: 'medium',
-      marginTop: 'small',
-      marginBottom: 'xsmall',
-      '&:first-of-type': {
-        marginTop: 'none',
-      },
-    },
-    headline4: {
-      ...text.root,
-      ...text.heading,
-      fontSize: 'small',
-    },
-    headline5: {
-      ...text.root,
-      ...text.heading,
-      fontSize: 'xsmall',
-    },
-    headline6: {
-      ...text.root,
-      fontSize: 'xsmall',
-      textTransform: 'uppercase',
-    },
     muted: {
       ...text.root,
       color: 'gray.60',

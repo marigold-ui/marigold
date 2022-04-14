@@ -11,37 +11,37 @@ import { Link } from './components/Link';
 // Typography
 // ---------------
 export const h1: React.FC<ComponentProps<'h1'>> = ({ children, ...props }) => (
-  <Headline level="1" {...props}>
+  <Headline level="1" variant="mdx" {...props}>
     {children}
   </Headline>
 );
 
 export const h2: React.FC<ComponentProps<'h2'>> = ({ children, ...props }) => (
-  <Headline level="2" {...props}>
+  <Headline level="2" variant="mdx" {...props}>
     {children}
   </Headline>
 );
 
 export const h3: React.FC<ComponentProps<'h3'>> = ({ children, ...props }) => (
-  <Headline level="3" {...props}>
+  <Headline level="3" variant="mdx" {...props}>
     {children}
   </Headline>
 );
 
 export const h4: React.FC<ComponentProps<'h4'>> = ({ children, ...props }) => (
-  <Headline level="4" {...props}>
+  <Headline level="4" variant="mdx" {...props}>
     {children}
   </Headline>
 );
 
 export const h5: React.FC<ComponentProps<'h5'>> = ({ children, ...props }) => (
-  <Headline level="5" {...props}>
+  <Headline level="5" variant="mdx" {...props}>
     {children}
   </Headline>
 );
 
 export const h6: React.FC<ComponentProps<'h6'>> = ({ children, ...props }) => (
-  <Headline level="6" {...props}>
+  <Headline level="6" variant="mdx" {...props}>
     {children}
   </Headline>
 );
