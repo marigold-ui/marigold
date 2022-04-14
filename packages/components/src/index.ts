@@ -10,6 +10,7 @@ export * from './Card';
 export * from './Center';
 export * from './Checkbox';
 export * from './Columns';
+export * from './Content';
 export * from './Dialog';
 export * from './Divider';
 export * from './VisuallyHidden';
