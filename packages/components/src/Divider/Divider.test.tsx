@@ -26,22 +26,6 @@ const theme = {
   },
 };
 
-test('has base styles', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Divider data-testid="divider" />
-    </ThemeProvider>
-  );
-  const divider = screen.getByTestId(/divider/);
-
-  // __baseCSS
-  expect(divider).toHaveStyle(`background: hotpink`);
-  expect(divider).toHaveStyle(`width: 100%`);
-  expect(divider).toHaveStyle(`height: 1px`);
-  // margin from default variant
-  expect(divider).toHaveStyle(`margin: 2px`);
-});
-
 test('supports base styles', () => {
   render(
     <ThemeProvider theme={theme}>

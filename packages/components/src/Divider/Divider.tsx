@@ -19,12 +19,5 @@ export interface DividerProps extends SeparatorProps {
 export const Divider = ({ variant, ...props }: DividerProps) => {
   const { separatorProps } = useSeparator(props);
   const styles = useComponentStyles('Divider', { variant });
-  return (
-    <Box
-      __baseCSS={{ width: '100%', height: '1px', m: 'none', bg: 'text' }}
-      css={styles}
-      {...props}
-      {...separatorProps}
-    />
-  );
+  return <Box css={styles} {...props} {...separatorProps} />;
 };
