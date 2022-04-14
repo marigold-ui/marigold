@@ -14,6 +14,10 @@ export const Input: Theme['components']['Input'] = {
     py: 'none',
     px: 'xsmall',
 
+    '&:hover': {
+      borderColor: 'gray50',
+    },
+
     '&:focus': {
       borderColor: 'blue60',
       boxShadow: `0 0 0 1px ${colors.blue60}`,

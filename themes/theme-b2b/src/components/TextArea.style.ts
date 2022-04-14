@@ -1,27 +1,37 @@
 import { Theme } from '@marigold/components';
+import { colors } from '../colors';
 
 export const TextArea: Theme['components']['TextArea'] = {
   base: {
-    fontFamily: 'body',
-    lineHeight: 'medium',
-    py: 'xxsmall',
-    px: 'xsmall',
     color: 'text',
-    border: 'none',
+    lineHeight: 'large',
+
+    border: '1px solid',
+    borderColor: 'gray40',
     borderRadius: 'small',
-    outline: '1px solid',
-    outlineColor: 'disabled',
+    outline: 'none',
+
+    py: 'none',
+    px: 'xsmall',
+
+    '&:hover': {
+      borderColor: 'gray50',
+    },
+
     '&:focus': {
-      outline: '2px solid',
-      outlineColor: 'blue60',
+      borderColor: 'blue60',
+      boxShadow: `0 0 0 1px ${colors.blue60}`,
     },
+
     '&:disabled': {
-      cursor: 'not-allowed',
-      color: 'disabled',
       bg: 'gray20',
+      color: 'gray40',
+      cursor: 'not-allowed',
     },
+
     '&:error': {
-      color: 'red60',
+      borderColor: 'red60',
+      boxShadow: `0 0 0 1px ${colors.red60}`,
     },
   },
 };
