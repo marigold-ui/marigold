@@ -360,22 +360,6 @@ export const component = {
       ...button.select,
     },
   },
-  checkbox: {
-    __default: {
-      fill: 'gray00',
-      stroke: 'gray40',
-    },
-    ':checked': {
-      fill: 'primary',
-      stroke: 'orange80',
-    },
-    ':disabled': {
-      fill: 'gray30',
-    },
-    ':error': {
-      stroke: 'error',
-    },
-  },
   dialog: {
     __default: {
       bg: 'background',

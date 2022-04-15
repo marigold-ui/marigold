@@ -1,93 +1,174 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { useFocusRing } from '@react-aria/focus';
-import { VisuallyHidden } from '@react-aria/visually-hidden';
 import { useCheckbox } from '@react-aria/checkbox';
+import { VisuallyHidden } from '@react-aria/visually-hidden';
 import { useToggleState } from '@react-stately/toggle';
-import { ToggleProps } from '@react-types/checkbox';
+import { AriaCheckboxProps } from '@react-types/checkbox';
 
+import {
+  Box,
+  CSSObject,
+  StateAttrProps,
+  ThemeComponentProps,
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+  useStateProps,
+} from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
-import { Exclamation } from '@marigold/icons';
-
-import { CheckboxIcon, CheckboxIconProps } from './CheckboxIcon';
-import { Box } from '../Box';
-import { Label } from '../Label';
-import { ValidationMessage } from '../ValidationMessage';
 
 // Theme Extension
 // ---------------
-export interface CheckboxThemeExtension<Value> {
-  checkbox?: {
-    [key: string]: Value;
-  };
+export interface CheckboxThemeExtension
+  extends ThemeExtensionsWithParts<
+    'Checkbox',
+    ['container', 'label', 'checkbox']
+  > {}
+
+// SVG Icon
+// ---------------
+interface IconProps extends StateAttrProps {
+  css?: CSSObject;
+  checked?: boolean;
+  indeterminate?: boolean;
 }
 
-// Checkbox Input
-// ---------------
-type CheckboxInputProps = CheckboxIconProps &
-  ToggleProps &
-  ComponentProps<'input'>;
+const CheckMark = () => (
+  <svg viewBox="0 0 12 10">
+    <path
+      fill="currentColor"
+      stroke="none"
+      d="M11.915 1.548 10.367 0 4.045 6.315 1.557 3.827 0 5.373l4.045 4.046 7.87-7.871Z"
+    />
+  </svg>
+);
 
-const CheckboxInput: React.FC<CheckboxInputProps> = ({
-  error,
-  indeterminated = false,
-  ...props
-}) => {
-  const state = useToggleState(props);
-  const ref = React.useRef<HTMLInputElement>(null);
-  const { inputProps } = useCheckbox(props, state, ref);
-  const { focusProps } = useFocusRing();
-  const { children, ...restProps } = props;
+const IndeterminateMark = () => (
+  <svg width="12" height="3" viewBox="0 0 12 3">
+    <path
+      fill="currentColor"
+      stroke="none"
+      d="M11.5 2.04018H0.5V0.46875H11.5V2.04018Z"
+    />
+  </svg>
+);
 
+const Icon = ({ css, checked, indeterminate, ...props }: IconProps) => {
+  const icon = indeterminate ? <IndeterminateMark /> : <CheckMark />;
+  console.log(css);
   return (
-    <Box pr="xsmall">
-      <VisuallyHidden>
-        <input {...inputProps} {...focusProps} ref={ref} {...restProps} />
-      </VisuallyHidden>
-      <CheckboxIcon
-        checked={props.checked}
-        variant={props.variant}
-        disabled={props.disabled}
-        indeterminated={indeterminated}
-        error={error}
-      />
+    <Box
+      aria-hidden="true"
+      __baseCSS={{
+        width: 16,
+        height: 16,
+        bg: '#fff',
+        border: '1px solid #000',
+        borderRadius: 3,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        p: '1px',
+      }}
+      css={css}
+      {...props}
+    >
+      {checked ? icon : null}
     </Box>
   );
 };
 
-// Checkbox
+// Props
 // ---------------
-export interface CheckboxProps extends CheckboxInputProps {
-  id: string;
-  required?: boolean;
-  labelVariant?: string;
-  errorMessage?: string;
+/**
+ * `react-aria` has a slightly different API for the above events.
+ * Thus, we adjust our regular props to match them.
+ */
+export type CustomCheckboxProps = 'value' | 'onChange' | 'onFocus' | 'onBlur';
+
+export interface CheckboxProps
+  extends ThemeComponentProps,
+    Omit<
+      ComponentProps<'input'>,
+      'size' | 'type' | 'defaultValue' | CustomCheckboxProps
+    >,
+    Pick<AriaCheckboxProps, CustomCheckboxProps> {
+  children?: ReactNode;
+  indeterminate?: boolean;
 }
 
-export const Checkbox: React.FC<CheckboxProps> = ({
+// Component
+// ---------------
+export const Checkbox = ({
+  size,
+  variant,
+  disabled,
+  checked,
+  defaultChecked,
+  indeterminate,
+  readOnly,
   required,
-  labelVariant = 'inline',
-  errorMessage,
   ...props
-}) => (
-  <>
+}: CheckboxProps) => {
+  const ref = React.useRef<HTMLInputElement>(null);
+  const styles = useComponentStyles(
+    'Checkbox',
+    { variant, size },
+    { parts: ['container', 'label', 'checkbox'] }
+  );
+
+  const state = useToggleState({
+    isSelected: checked,
+    defaultSelected: defaultChecked,
+    ...props,
+  });
+  const { inputProps } = useCheckbox(
+    {
+      isSelected: checked,
+      defaultSelected: defaultChecked,
+      isIndeterminate: indeterminate,
+      isDisabled: disabled,
+      isReadOnly: readOnly,
+      isRequired: required,
+      ...props,
+    },
+    state,
+    ref
+  );
+  const { isFocusVisible, focusProps } = useFocusRing();
+
+  const stateProps = useStateProps({
+    checked: state.isSelected,
+    focus: isFocusVisible,
+    disabled: inputProps.disabled,
+    indeterminate,
+  });
+
+  return (
     <Box
-      as={Label}
+      as="label"
+      variant="checkbox"
       __baseCSS={{
-        ':hover': { cursor: props.disabled ? 'not-allowed' : 'pointer' },
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1ch',
+        userSelect: 'none',
+        '&:hover': { cursor: inputProps.disabled ? 'not-allowed' : 'pointer' },
       }}
-      htmlFor={props.id}
-      required={required}
-      variant={`label.${labelVariant}`}
-      color={props.disabled ? 'disabled' : 'text'}
+      css={styles.container}
+      {...stateProps}
     >
-      <CheckboxInput error={props.error} {...props} />
-      {props.children}
+      <VisuallyHidden>
+        <input {...inputProps} {...focusProps} ref={ref} />
+      </VisuallyHidden>
+      <Icon
+        css={styles.checkbox}
+        checked={state.isSelected}
+        indeterminate={indeterminate}
+        {...stateProps}
+      />
+      <Box css={styles.label} {...stateProps}>
+        {props.children}
+      </Box>
     </Box>
-    {props.error && errorMessage && (
-      <ValidationMessage>
-        <Exclamation size={16} />
-        {errorMessage}
-      </ValidationMessage>
-    )}
-  </>
-);
+  );
+};
