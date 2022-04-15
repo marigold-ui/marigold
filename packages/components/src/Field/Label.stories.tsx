@@ -3,7 +3,7 @@ import type { Meta, ComponentStory } from '@storybook/react';
 import { Label } from './Label';
 
 export default {
-  title: 'Field/Label',
+  title: 'Components/Label',
   argTypes: {
     children: {
       control: {

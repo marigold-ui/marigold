@@ -1,6 +1,5 @@
 export * from './theme';
 
-export * from './ActionGroup';
 export * from './Aside';
 export * from './Aspect';
 export * from './Badge';
@@ -11,9 +10,11 @@ export * from './Card';
 export * from './Center';
 export * from './Checkbox';
 export * from './Columns';
+export * from './Content';
 export * from './Dialog';
 export * from './Divider';
 export * from './VisuallyHidden';
+export * from './Headline';
 export * from './Image';
 export * from './Inline';
 export * from './Label';
@@ -28,7 +29,7 @@ export * from './Slider';
 export * from './Switch';
 export * from './Stack';
 export * from './Text';
-export * from './Textarea';
+export * from './TextArea';
 export * from './TextField';
 export * from './Tiles';
 export * from './Tooltip';

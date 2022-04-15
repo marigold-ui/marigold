@@ -1,12 +1,17 @@
 import React, { useRef } from 'react';
+import { useHover } from '@react-aria/interactions';
 import { useTextField } from '@react-aria/textfield';
 import { AriaTextFieldProps } from '@react-types/textfield';
+import { useFocusRing } from '@react-aria/focus';
 
-import { Box } from '@marigold/system';
+import { useStateProps } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { Field, FieldProps } from '../Field';
+import { FieldBase, FieldBaseProps } from '../Field';
+import { Input } from '../Input';
 
+// Props
+// ---------------
 export interface TextFieldProps
   extends Omit<
       ComponentProps<'input'>,
@@ -17,11 +22,13 @@ export interface TextFieldProps
      * and `onBlur` events. Thus, we adjust our regular props to match them.
      */
     Pick<AriaTextFieldProps, 'onChange' | 'onFocus' | 'onBlur'>,
-    Pick<FieldProps, 'label' | 'description' | 'error' | 'errorMessage'> {
+    Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
   value?: string;
   defaultValue?: string;
 }
 
+// Component
+// ---------------
 export const TextField = ({
   disabled,
   required,
@@ -30,6 +37,7 @@ export const TextField = ({
   ...props
 }: TextFieldProps) => {
   const { label, description, errorMessage } = props;
+
   const ref = useRef<HTMLInputElement>(null);
   const { labelProps, inputProps, descriptionProps, errorMessageProps } =
     useTextField(
@@ -43,8 +51,18 @@ export const TextField = ({
       ref
     );
 
+  const { hoverProps, isHovered } = useHover({});
+  const { focusProps, isFocusVisible } = useFocusRing();
+  const stateProps = useStateProps({
+    hover: isHovered,
+    focus: isFocusVisible,
+    disabled,
+    readOnly,
+    error,
+  });
+
   return (
-    <Field
+    <FieldBase
       label={label}
       labelProps={labelProps}
       required={required}
@@ -53,8 +71,19 @@ export const TextField = ({
       error={error}
       errorMessage={errorMessage}
       errorMessageProps={errorMessageProps}
+      stateProps={stateProps}
     >
-      <Box as="input" variant="input" ref={ref} {...inputProps} />
-    </Field>
+      <Input
+        ref={ref}
+        /**
+         * We use `size` for styles which is a string, not like
+         * the regular HTML attribute, which is a number
+         */
+        {...(inputProps as any)}
+        {...focusProps}
+        {...hoverProps}
+        {...stateProps}
+      />
+    </FieldBase>
   );
 };

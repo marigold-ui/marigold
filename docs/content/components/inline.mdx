@@ -4,33 +4,38 @@ title: Inline
 
 # Inline
 
-## Description
+Layout component to inline elements with space. This component uses the spaces from the given theme or a responsive string.
 
-Layout component to inline elements with space. This component uses the spaces from the given theme.
+<MarigoldTheme>
+  <Inline space="small">
+    <Check />
+    <Text>Check</Text>
+  </Inline>
+</MarigoldTheme>
 
-## Properties
+```tsx onlyCode
+import { Inline } from "@marigold/components";
+```
+
+## Props
 
 | Property | Type                           | Default  |
 | :------- | :----------------------------- | :------- |
 | `space`  | `ResponsiveStyleValue<string>` | `none`   |
 | `align`  | `center, top, bottom`          | `center` |
 
-## Import
+## Examples
 
-```tsx onlyCode
-import { Inline } from '@marigold/components';
-```
-
-## Live-Code Example
+### More than two elements
 
 ```tsx expandCode
 <Inline space="small">
   <Check />
   <Text>Check</Text>
+  <Text>this</Text>
+  <Text>out</Text>
 </Inline>
 ```
-
-## Usage
 
 ### Spacing
 
@@ -51,7 +56,7 @@ import { Inline } from '@marigold/components';
 </Inline>
 ```
 
-### Nested
+### Nested Inline
 
 ```tsx
 <Inline space="large">
@@ -70,7 +75,7 @@ import { Inline } from '@marigold/components';
 </Inline>
 ```
 
-### Alignment
+### Different alignment
 
 ```tsx
 <Inline space="medium" align="top">
@@ -98,3 +103,8 @@ import { Inline } from '@marigold/components';
   <Text>Lorem ipsum dolor sit amet.</Text>
 </Inline>
 ```
+
+## Use cases
+
+- [Badge](../badge)
+- [Button](../button)

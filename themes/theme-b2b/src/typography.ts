@@ -50,41 +50,5 @@ export const typography = {
       ...text.root,
       ...text.span,
     },
-    headline1: {
-      ...text.root,
-      fontWeight: 'heading',
-      fontSize: 'xlarge',
-      m: 'none',
-    },
-    headline2: {
-      ...text.root,
-      fontWeight: 'heading',
-      fontSize: 'large',
-      m: 'none',
-    },
-    headline3: {
-      ...text.root,
-      fontWeight: 'heading',
-      fontSize: 'medium',
-      m: 'none',
-    },
-    headline4: {
-      ...text.root,
-      fontWeight: 'heading',
-      fontSize: 'small',
-      m: 'none',
-    },
-    headline5: {
-      ...text.root,
-      fontWeight: 'heading',
-      fontSize: 'xsmall',
-      m: 'none',
-    },
-    headline6: {
-      ...text.root,
-      fontSize: 'xsmall',
-      textTransform: 'uppercase',
-      m: 'none',
-    },
   },
 } as const;

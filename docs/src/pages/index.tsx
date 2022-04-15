@@ -18,7 +18,7 @@ export default function LandingPage() {
       <Stack space="xxlarge" align="center">
         <Logo size="large" />
         <Inline space="xxlarge">
-          <Link variant="outlineLink" to="/introduction/00-getting-started">
+          <Link variant="outline" to="/introduction/00-getting-started">
             <ResaleLogbook size="16" />
             View in Documentation
           </Link>

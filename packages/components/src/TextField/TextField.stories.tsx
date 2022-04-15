@@ -71,11 +71,6 @@ export default {
         'week',
       ],
       defaultValue: 'text',
-      table: {
-        defaultValue: {
-          summary: 'text',
-        },
-      },
     },
   },
 } as Meta;

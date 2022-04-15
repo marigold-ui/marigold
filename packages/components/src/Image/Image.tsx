@@ -1,14 +1,11 @@
 import React from 'react';
 import { ComponentProps } from '@marigold/types';
 import { Box } from '../Box';
+import { ThemeExtension, useComponentStyles } from '@marigold/system';
 
 // Theme Extension
 // ---------------
-export interface ImageThemeExtension<Value> {
-  image?: {
-    [key: string]: Value;
-  };
-}
+export interface ImageThemeExtension extends ThemeExtension<'Image'> {}
 
 // Props
 // ---------------
@@ -19,7 +16,7 @@ export interface ImageProps extends ComponentProps<'img'> {
 
 // Component
 // ---------------
-export const Image: React.FC<ImageProps> = ({
-  variant = 'fullWidth',
-  ...props
-}) => <Box {...props} as="img" variant={`image.${variant}`} />;
+export const Image = ({ variant, ...props }: ImageProps) => {
+  const styles = useComponentStyles('Image', { variant });
+  return <Box {...props} as="img" css={styles} />;
+};
