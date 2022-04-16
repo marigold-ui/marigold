@@ -54,7 +54,6 @@ const IndeterminateMark = () => (
 
 const Icon = ({ css, checked, indeterminate, ...props }: IconProps) => {
   const icon = indeterminate ? <IndeterminateMark /> : <CheckMark />;
-  console.log(css);
   return (
     <Box
       aria-hidden="true"
@@ -161,9 +160,9 @@ export const Checkbox = ({
         <input {...inputProps} {...focusProps} ref={ref} />
       </VisuallyHidden>
       <Icon
-        css={styles.checkbox}
         checked={state.isSelected}
         indeterminate={indeterminate}
+        css={styles.checkbox}
         {...stateProps}
       />
       <Box css={styles.label} {...stateProps}>
