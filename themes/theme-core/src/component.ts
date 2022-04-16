@@ -377,22 +377,6 @@ export const component = {
       borderRadius: 'xlarge',
     },
   },
-  checkbox: {
-    __default: {
-      fill: 'gray00',
-      stroke: 'gray40',
-    },
-    ':checked': {
-      fill: colors.blue60,
-      stroke: colors.blue70,
-    },
-    ':disabled': {
-      fill: 'gray30',
-    },
-    ':error': {
-      stroke: 'error',
-    },
-  },
   dialog: {
     __default: {
       bg: '#ffffff',
