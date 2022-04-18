@@ -27,7 +27,6 @@ const base = {
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
 
   // coverage
-  collectCoverage: true,
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
     '**/*.{ts,tsx}',
