@@ -142,6 +142,7 @@ export const Checkbox = ({
     checked: state.isSelected,
     focus: isFocusVisible,
     disabled: inputProps.disabled,
+    readOnly,
     indeterminate,
     error,
   });
