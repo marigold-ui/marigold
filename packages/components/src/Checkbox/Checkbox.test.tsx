@@ -1,250 +1,223 @@
-/* eslint-disable testing-library/no-node-access */
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Checkbox } from './Checkbox';
 import { ThemeProvider } from '@marigold/system';
 
+import { Checkbox } from './Checkbox';
+
 const theme = {
-  space: {
-    none: 0,
-    small: 2,
-  },
   colors: {
-    disabled: 'gray',
-    error: 'red',
+    gray: '#868e96',
+    blue: '#a5d8ff',
+    teal: '#099268',
+    green: '#2b8a3e',
+    red: '#c92a2a',
   },
-  checkbox: {
-    __default: {
-      fill: 'white',
-    },
-    custom: {
-      fill: 'blue',
-    },
-    ':checked': {
-      fill: 'orange',
-    },
-    ':disabled': {
-      fill: 'disabled',
-    },
-    ':error': {
-      fill: 'error',
-    },
+  fontSizes: {
+    'small-1': 12,
+    'large-1': 24,
   },
-  label: {
-    inline: {
-      fontSize: '14px',
-    },
-    above: {
-      fontSize: '8px',
+  radii: {
+    none: 0,
+    'small-1': 2,
+  },
+  components: {
+    Checkbox: {
+      base: {
+        label: {
+          fontSize: 'small-1',
+        },
+        checkbox: {
+          borderRadius: 'small-1',
+          '&:focus': {
+            outline: '1px solid',
+            outlineColor: 'blue',
+          },
+          '&:checked': {
+            color: 'teal',
+          },
+          '&:disabled': {
+            bg: 'gray',
+          },
+          '&:read-only': {
+            opacity: 0.5,
+          },
+          '&:error': {
+            bg: 'red',
+          },
+        },
+      },
+      variant: {
+        green: {
+          label: {
+            color: 'green',
+          },
+          checkbox: {
+            '&:checked': {
+              color: 'green',
+            },
+          },
+        },
+      },
+      sies: {
+        large: {
+          label: {
+            fontSize: 'large-1',
+          },
+          checkbox: {
+            width: 32,
+            height: 32,
+          },
+        },
+      },
     },
   },
 };
 
-test('supports default variant', () => {
-  const { rerender } = render(
-    <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="label">
-        label
-      </Checkbox>
-    </ThemeProvider>
-  );
+// There is no real accesible way to get to the element that acts as checkbox
+const getVisibleCheckbox = () => {
+  const label = screen.getByText('With Label');
   // eslint-disable-next-line testing-library/no-node-access
-  const label = screen.getByLabelText(/label/).closest('label')!;
-  // eslint-disable-next-line testing-library/no-node-access
-  const rect = label.querySelector('rect');
-  expect(rect).toHaveStyle(`fill: white`);
+  return label.parentElement?.querySelector('[aria-hidden="true"]');
+};
 
-  rerender(
-    <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" checked>
-        label
-      </Checkbox>
-    </ThemeProvider>
-  );
-  expect(rect).toHaveStyle(`fill: orange`);
+// Tests
+// ---------------
+test('renders label and (hidden) checkbox', () => {
+  render(<Checkbox data-testid="checkbox">With Label</Checkbox>);
 
-  rerender(
-    <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" disabled>
-        label
-      </Checkbox>
-    </ThemeProvider>
-  );
-  expect(rect).toHaveStyle(`fill: gray`);
+  const label = screen.getByText('With Label');
+  expect(label).toBeInTheDocument();
 
-  rerender(
-    <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" error>
-        label
-      </Checkbox>
-    </ThemeProvider>
-  );
-  expect(rect).toHaveStyle(`fill: red`);
+  const checkbox = screen.getByTestId('checkbox');
+  expect(checkbox).toBeInTheDocument();
+  expect(checkbox).toBeInstanceOf(HTMLInputElement);
+  expect(checkbox).toHaveAttribute('type', 'checkbox');
 });
 
-test('supports other variant than default', () => {
+test('allows styling via theme', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" variant="custom">
-        label
+      <Checkbox data-testid="checkbox">With Label</Checkbox>
+    </ThemeProvider>
+  );
+
+  const label = screen.getByText('With Label');
+  expect(label).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
+
+  expect(getVisibleCheckbox()).toHaveStyle(
+    `border-radius: ${theme.radii['small-1']}px`
+  );
+});
+
+test('allows styling "checked" state via theme', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox data-testid="checkbox" checked>
+        With Label
       </Checkbox>
     </ThemeProvider>
   );
-  const label = screen.getByLabelText(/label/).closest('label')!;
-  const rect = label.querySelector('rect');
-  expect(rect).toHaveStyle(`fill: blue`);
+  const checkbox = getVisibleCheckbox();
+  expect(checkbox).toHaveStyle(`border-radius: ${theme.radii['small-1']}px`);
+  expect(checkbox).toHaveStyle(`color: ${theme.colors.teal}`);
 });
 
-test('supports default labelVariant', () => {
+test('allows styling "focus" state via theme', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox">
-        label
+      <Checkbox data-testid="checkbox">With Label</Checkbox>
+    </ThemeProvider>
+  );
+  const input = screen.getByTestId('checkbox');
+  input.focus();
+
+  const checkbox = getVisibleCheckbox();
+  expect(checkbox).toHaveStyle(`outline: 1px solid`);
+  expect(checkbox).toHaveStyle(`outline-color: ${theme.colors.blue}`);
+});
+
+test('allows styling "disabled" state via theme', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox data-testid="checkbox" disabled>
+        With Label
       </Checkbox>
     </ThemeProvider>
   );
-  const label = screen.getByText(/label/);
-  expect(label).toHaveStyle(`font-size: 14px`);
+  const checkbox = getVisibleCheckbox();
+  expect(checkbox).toHaveStyle(`background: ${theme.colors.gray}`);
 });
 
-test('supports other labelVariant than default', () => {
+test('allows styling "read-only" state via theme', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" labelVariant="above">
-        label
+      <Checkbox data-testid="checkbox" readOnly>
+        With Label
       </Checkbox>
     </ThemeProvider>
   );
-  const label = screen.getByText(/label/);
-  expect(label).toHaveStyle(`font-size: 8px`);
+  const checkbox = getVisibleCheckbox();
+  expect(checkbox).toHaveStyle(`opacity: 0.5`);
 });
 
-test('supports label prop', () => {
+test('allows styling "error" state via theme', () => {
   render(
-    <Checkbox id="test" title="checkbox">
-      Test
+    <ThemeProvider theme={theme}>
+      <Checkbox data-testid="checkbox" error>
+        With Label
+      </Checkbox>
+    </ThemeProvider>
+  );
+  const checkbox = getVisibleCheckbox();
+  expect(checkbox).toHaveStyle(`background: ${theme.colors.red}`);
+});
+
+test('support default checked', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox data-testid="checkbox" defaultChecked>
+        With Label
+      </Checkbox>
+    </ThemeProvider>
+  );
+  const input = screen.getByTestId('checkbox');
+  expect(input).toHaveAttribute('aria-checked', 'true');
+
+  // Visible checkbox looks checked
+  const checkbox = getVisibleCheckbox();
+  expect(checkbox).toHaveStyle(`border-radius: ${theme.radii['small-1']}px`);
+  expect(checkbox).toHaveStyle(`color: ${theme.colors.teal}`);
+});
+
+test('supports indeterminate state', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox data-testid="checkbox" indeterminate checked>
+        With Label
+      </Checkbox>
+    </ThemeProvider>
+  );
+  const input: HTMLInputElement = screen.getByTestId('checkbox');
+  expect(input.indeterminate).toBeTruthy();
+
+  // Visible checkbox looks checked
+  const checkbox = getVisibleCheckbox();
+  expect(checkbox).toHaveStyle(`border-radius: ${theme.radii['small-1']}px`);
+  expect(checkbox).toHaveStyle(`color: ${theme.colors.teal}`);
+});
+
+test('controlled', () => {
+  const onChange = jest.fn();
+  render(
+    <Checkbox data-testid="checkbox" onChange={onChange}>
+      With Label
     </Checkbox>
   );
-  const checkboxLabel = screen.getByText(/Test/);
-  expect(checkboxLabel).toBeDefined();
-});
+  const input: HTMLInputElement = screen.getByTestId('checkbox');
 
-test('supports required prop and renders required icon', () => {
-  render(
-    <Checkbox id="test" required title="checkbox">
-      Test
-    </Checkbox>
-  );
-  const label = screen.getByText(/Test/);
-  expect(label.nextSibling).toContainHTML('path d="M10.8');
-});
+  fireEvent.click(input);
+  expect(onChange).toHaveBeenCalledWith(true);
 
-test('supports default type', () => {
-  render(
-    <Checkbox id="checkbox" title="checkbox">
-      Test
-    </Checkbox>
-  );
-  const checkbox = screen.getByTitle(/checkbox/);
-  expect(checkbox.getAttribute('type')).toEqual('checkbox');
-});
-
-test('renders <input> element', () => {
-  render(
-    <Checkbox id="checkbox" title="checkbox">
-      Test
-    </Checkbox>
-  );
-  const checkbox = screen.getByTitle(/checkbox/);
-  expect(checkbox instanceof HTMLInputElement).toBeTruthy();
-});
-
-test('supports disabled prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" disabled>
-        label
-      </Checkbox>
-    </ThemeProvider>
-  );
-  const checkbox = screen.getByTitle(/checkbox/);
-  expect(checkbox).toHaveAttribute('disabled');
-});
-
-test('renders correct svg checkbox icon', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" checked>
-        label
-      </Checkbox>
-    </ThemeProvider>
-  );
-  const svg = screen.getByText(/label/).firstChild!;
-  expect(svg.lastChild).toContainHTML('d="M13.9571');
-});
-
-test('supports indeterminated prop and renders correct svg checkbox icon', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" checked indeterminated>
-        label
-      </Checkbox>
-    </ThemeProvider>
-  );
-  const svg = screen.getByText(/label/).firstChild!;
-  expect(svg.lastChild).toContainHTML('d="M13.5');
-});
-
-test('supports error and errorMessage prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Checkbox id="test" error errorMessage="error">
-        test
-      </Checkbox>
-    </ThemeProvider>
-  );
-  const errorMessage = screen.getByText(/error/);
-  expect(errorMessage).toBeDefined();
-});
-
-test('supports checked checkbox', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" onChange={() => {}} checked>
-        Test
-      </Checkbox>
-    </ThemeProvider>
-  );
-  const checkbox = screen.getByTitle(/checkbox/);
-  expect(checkbox).toHaveAttribute('checked');
-});
-
-test('supports checked and disabled checkbox', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" onChange={() => {}} checked disabled>
-        Test
-      </Checkbox>
-    </ThemeProvider>
-  );
-  const checkbox = screen.getByTitle(/checkbox/);
-  expect(checkbox).toHaveAttribute('checked');
-  expect(checkbox).toHaveAttribute('disabled');
-});
-
-test('correctly handles interaction', () => {
-  const click = jest.fn();
-  const change = jest.fn();
-
-  render(
-    <ThemeProvider theme={theme}>
-      <Checkbox id="test" title="checkbox" onClick={click} onChange={change}>
-        Test
-      </Checkbox>
-    </ThemeProvider>
-  );
-  const checkbox = screen.getByTitle(/checkbox/);
-  fireEvent.click(checkbox);
-  expect(click).toHaveBeenCalledTimes(1);
-  expect(change).toHaveBeenCalledTimes(1);
+  fireEvent.click(input);
+  expect(onChange).toHaveBeenCalledWith(false);
 });
