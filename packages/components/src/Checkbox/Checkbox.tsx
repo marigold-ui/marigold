@@ -93,6 +93,7 @@ export interface CheckboxProps
     Pick<AriaCheckboxProps, CustomCheckboxProps> {
   children?: ReactNode;
   indeterminate?: boolean;
+  error?: boolean;
 }
 
 // Component
@@ -106,6 +107,7 @@ export const Checkbox = ({
   indeterminate,
   readOnly,
   required,
+  error,
   ...props
 }: CheckboxProps) => {
   const ref = React.useRef<HTMLInputElement>(null);
@@ -128,6 +130,7 @@ export const Checkbox = ({
       isDisabled: disabled,
       isReadOnly: readOnly,
       isRequired: required,
+      validationState: error ? 'invalid' : 'valid',
       ...props,
     },
     state,
@@ -140,6 +143,7 @@ export const Checkbox = ({
     focus: isFocusVisible,
     disabled: inputProps.disabled,
     indeterminate,
+    error,
   });
 
   return (
