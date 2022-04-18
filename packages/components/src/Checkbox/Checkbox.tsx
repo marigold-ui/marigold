@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useContext } from 'react';
+import { useCheckbox, useCheckboxGroupItem } from '@react-aria/checkbox';
 import { useFocusRing } from '@react-aria/focus';
-import { useCheckbox } from '@react-aria/checkbox';
 import { VisuallyHidden } from '@react-aria/visually-hidden';
 import { useToggleState } from '@react-stately/toggle';
 import { AriaCheckboxProps } from '@react-types/checkbox';
@@ -15,6 +15,8 @@ import {
   useStateProps,
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
+
+import { CheckboxGroupContext } from './CheckboxGroup';
 
 // Theme Extension
 // ---------------
@@ -117,25 +119,52 @@ export const Checkbox = ({
     { parts: ['container', 'label', 'checkbox'] }
   );
 
+  // Adjust props to the react-aria API
+  const checkboxProps = {
+    isIndeterminate: indeterminate,
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    isRequired: required,
+    validationState: error ? 'invalid' : 'valid',
+  } as const;
+  const groupState = useContext(CheckboxGroupContext);
+
   const state = useToggleState({
     isSelected: checked,
     defaultSelected: defaultChecked,
     ...props,
   });
-  const { inputProps } = useCheckbox(
-    {
-      isSelected: checked,
-      defaultSelected: defaultChecked,
-      isIndeterminate: indeterminate,
-      isDisabled: disabled,
-      isReadOnly: readOnly,
-      isRequired: required,
-      validationState: error ? 'invalid' : 'valid',
-      ...props,
-    },
-    state,
-    ref
-  );
+  /* eslint-disable react-hooks/rules-of-hooks */
+  const { inputProps } = groupState
+    ? useCheckboxGroupItem(
+        {
+          ...props,
+          ...checkboxProps,
+          /**
+           * value is optional for standalone checkboxes, but required when
+           * used inside a group.
+           */
+          value: props.value as string,
+        },
+        groupState,
+        ref
+      )
+    : useCheckbox(
+        {
+          isSelected: checked,
+          defaultSelected: defaultChecked,
+          ...checkboxProps,
+          ...props,
+        },
+        useToggleState({
+          isSelected: checked,
+          defaultSelected: defaultChecked,
+          ...props,
+        }),
+        ref
+      );
+  /* eslint-enable react-hooks/rules-of-hooks */
+
   const { isFocusVisible, focusProps } = useFocusRing();
 
   const stateProps = useStateProps({
