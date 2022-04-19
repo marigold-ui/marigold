@@ -31,12 +31,22 @@ export default {
   },
 } as Meta;
 
-export const Basic: ComponentStory<typeof CheckboxGroup> = args => (
-  <CheckboxGroup {...args}>
-    <Checkbox value="cheese">Cheese</Checkbox>
-    <Checkbox value="ham">Ham</Checkbox>
-    <Checkbox value="tomato">Tomate</Checkbox>
-    <Checkbox value="cucumber">Cucumber</Checkbox>
-    <Checkbox value="onions">Onions</Checkbox>
-  </CheckboxGroup>
-);
+export const Basic: ComponentStory<typeof CheckboxGroup> = args => {
+  const [selected, setSelected] = React.useState<string[]>([]);
+  return (
+    <>
+      <CheckboxGroup {...args} onChange={setSelected}>
+        <Checkbox value="ham">Ham</Checkbox>
+        <Checkbox value="salami" disabled>
+          Salami
+        </Checkbox>
+        <Checkbox value="cheese">Cheese</Checkbox>
+        <Checkbox value="tomato">Tomate</Checkbox>
+        <Checkbox value="cucumber">Cucumber</Checkbox>
+        <Checkbox value="onions">Onions</Checkbox>
+      </CheckboxGroup>
+      <hr />
+      <pre>Selected values: {selected.join(', ')}</pre>
+    </>
+  );
+};

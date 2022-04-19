@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext } from 'react';
+import React, { ReactNode } from 'react';
 import { useCheckbox, useCheckboxGroupItem } from '@react-aria/checkbox';
 import { useFocusRing } from '@react-aria/focus';
 import { useHover } from '@react-aria/interactions';
@@ -17,7 +17,7 @@ import {
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { CheckboxGroupContext } from './CheckboxGroup';
+import { useCheckboxGroupContext } from './CheckboxGroup';
 
 // Theme Extension
 // ---------------
@@ -134,7 +134,7 @@ export const Checkbox = ({
    * This is unusual, but since the checkboxs is not moving out of the group,
    * it should be safe.
    */
-  const groupState = useContext(CheckboxGroupContext);
+  const groupState = useCheckboxGroupContext();
   /* eslint-disable react-hooks/rules-of-hooks */
   const { inputProps } = groupState
     ? useCheckboxGroupItem(

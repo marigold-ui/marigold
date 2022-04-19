@@ -8,7 +8,10 @@ import type { RootThemeExtension } from './Provider';
 // ---------------
 import type { BadgeThemeExtension } from './Badge';
 import type { CardThemeExtension } from './Card';
-import type { CheckboxThemeExtension } from './Checkbox';
+import type {
+  CheckboxThemeExtension,
+  CheckboxGroupThemeExtension,
+} from './Checkbox';
 import type { ContentThemeExtension } from './Content';
 import type { DividerThemeExtension } from './Divider';
 import type { HeadlineThemeExtension } from './Headline';
@@ -37,6 +40,7 @@ interface ComponentStyles
   extends BadgeThemeExtension,
     CardThemeExtension,
     CheckboxThemeExtension,
+    CheckboxGroupThemeExtension,
     ContentThemeExtension,
     DividerThemeExtension,
     HeadlineThemeExtension,

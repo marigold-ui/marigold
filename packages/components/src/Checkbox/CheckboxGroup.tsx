@@ -1,28 +1,43 @@
-import React, { createContext, ReactNode } from 'react';
+import React, { createContext, ReactNode, useContext } from 'react';
 import { useCheckboxGroup } from '@react-aria/checkbox';
 import {
   CheckboxGroupState,
   useCheckboxGroupState,
 } from '@react-stately/checkbox';
 
-import { Box } from '@marigold/system';
+import {
+  Box,
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+} from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 import { Label } from '../Field/Label';
 
 // Context
 // ---------------
-export const CheckboxGroupContext = createContext<CheckboxGroupState>(
-  null as any
+export interface CheckboxGroupContextProps extends CheckboxGroupState {
+  variant?: string;
+  size?: string;
+}
+
+export const CheckboxGroupContext = createContext<CheckboxGroupContextProps>(
+  {} as any
 );
+
+export const useCheckboxGroupContext = () => useContext(CheckboxGroupContext);
 
 // Theme Extension
 // ---------------
+export interface CheckboxGroupThemeExtension
+  extends ThemeExtensionsWithParts<'CheckboxGroup', ['container', 'group']> {}
 
 // Props
 // ---------------
 interface CheckboxGroupProps extends Omit<ComponentProps<'div'>, 'onChange'> {
   children?: ReactNode;
+  variant?: string;
+  size?: string;
   label?: ReactNode;
   required?: boolean;
   disabled?: boolean;
@@ -41,6 +56,8 @@ export const CheckboxGroup = ({
   disabled,
   readonly,
   children,
+  variant,
+  size,
   ...rest
 }: CheckboxGroupProps) => {
   // Adjust props to the react-aria API
@@ -53,8 +70,14 @@ export const CheckboxGroup = ({
   const state = useCheckboxGroupState(props);
   const { groupProps, labelProps } = useCheckboxGroup(props, state);
 
+  const styles = useComponentStyles(
+    'CheckboxGroup',
+    { variant, size },
+    { parts: ['container', 'group'] }
+  );
+
   return (
-    <Box {...groupProps}>
+    <Box {...groupProps} css={styles.container}>
       {label && (
         <Label as="span" required={required} {...labelProps}>
           {label}
@@ -66,10 +89,11 @@ export const CheckboxGroup = ({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'left',
-          gap: 4,
+          gap: 2,
         }}
+        css={styles.group}
       >
-        <CheckboxGroupContext.Provider value={state}>
+        <CheckboxGroupContext.Provider value={{ variant, size, ...state }}>
           {children}
         </CheckboxGroupContext.Provider>
       </Box>
