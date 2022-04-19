@@ -2,7 +2,7 @@ import React from 'react';
 // @ts-ignore (reason: package has no types)
 import { preToCodeBlock } from 'mdx-utils';
 
-import { Box, Text } from '@marigold/components';
+import { Box, Headline, Text } from '@marigold/components';
 import { ComponentProps } from '@marigold/types';
 
 import { Preview } from './components/Preview';
@@ -11,39 +11,39 @@ import { Link } from './components/Link';
 // Typography
 // ---------------
 export const h1: React.FC<ComponentProps<'h1'>> = ({ children, ...props }) => (
-  <Text as="h1" variant="headline1" {...props}>
+  <Headline level="1" variant="mdx" {...props}>
     {children}
-  </Text>
+  </Headline>
 );
 
 export const h2: React.FC<ComponentProps<'h2'>> = ({ children, ...props }) => (
-  <Text as="h2" variant="headline2" {...props}>
+  <Headline level="2" variant="mdx" {...props}>
     {children}
-  </Text>
+  </Headline>
 );
 
 export const h3: React.FC<ComponentProps<'h3'>> = ({ children, ...props }) => (
-  <Text as="h3" variant="headline3" {...props}>
+  <Headline level="3" variant="mdx" {...props}>
     {children}
-  </Text>
+  </Headline>
 );
 
 export const h4: React.FC<ComponentProps<'h4'>> = ({ children, ...props }) => (
-  <Text as="h4" variant="headline4" {...props}>
+  <Headline level="4" variant="mdx" {...props}>
     {children}
-  </Text>
+  </Headline>
 );
 
 export const h5: React.FC<ComponentProps<'h5'>> = ({ children, ...props }) => (
-  <Text as="h5" variant="headline5" {...props}>
+  <Headline level="5" variant="mdx" {...props}>
     {children}
-  </Text>
+  </Headline>
 );
 
 export const h6: React.FC<ComponentProps<'h6'>> = ({ children, ...props }) => (
-  <Text as="h6" variant="headline6" {...props}>
+  <Headline level="6" variant="mdx" {...props}>
     {children}
-  </Text>
+  </Headline>
 );
 
 export const p: React.FC<ComponentProps<'p'>> = ({ children, ...props }) => (
@@ -139,9 +139,7 @@ export const td: React.FC<ComponentProps<'td'>> = ({ children, ...props }) => (
 
 export const th: React.FC<ComponentProps<'th'>> = ({ children, ...props }) => (
   <Box as="th" p="xsmall" bg="gray30" {...props}>
-    <Text as="h5" variant="headline5">
-      {children}
-    </Text>
+    <Headline level="5">{children}</Headline>
   </Box>
 );
 

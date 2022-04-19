@@ -3,6 +3,12 @@ import type { Theme } from '@marigold/components';
 export const Headline: Theme['components']['Headline'] = {
   base: {
     fontWeight: 'heading',
+    color: 'gray.20',
+  },
+  variant: {
+    mdx: {
+      marginBottom: 'xsmall',
+    },
   },
   size: {
     'level-1': {
