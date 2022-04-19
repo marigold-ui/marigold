@@ -28,6 +28,20 @@ export default {
       description: 'Required',
       defaultValue: false,
     },
+    readOnly: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Read only',
+      defaultValue: false,
+    },
+    error: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Error state',
+      defaultValue: false,
+    },
   },
 } as Meta;
 

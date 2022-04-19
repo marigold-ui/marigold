@@ -4,6 +4,7 @@ import {
   CheckboxGroupState,
   useCheckboxGroupState,
 } from '@react-stately/checkbox';
+import { AriaCheckboxGroupProps } from '@react-types/checkbox';
 
 import {
   Box,
@@ -17,6 +18,7 @@ import { Label } from '../Field/Label';
 // Context
 // ---------------
 export interface CheckboxGroupContextProps extends CheckboxGroupState {
+  error?: boolean;
   variant?: string;
   size?: string;
 }
@@ -38,14 +40,16 @@ export interface CheckboxGroupThemeExtension
 
 // Props
 // ---------------
-interface CheckboxGroupProps extends Omit<ComponentProps<'div'>, 'onChange'> {
+interface CheckboxGroupProps
+  extends Omit<ComponentProps<'div'>, 'onChange'>,
+    AriaCheckboxGroupProps {
   children?: ReactNode;
   variant?: string;
   size?: string;
   label?: ReactNode;
   required?: boolean;
   disabled?: boolean;
-  readonly?: boolean;
+  readOnly?: boolean;
   error?: boolean;
   value?: string[];
   defaultValue?: string[];
@@ -55,20 +59,21 @@ interface CheckboxGroupProps extends Omit<ComponentProps<'div'>, 'onChange'> {
 // Components
 // ---------------
 export const CheckboxGroup = ({
-  label,
-  required,
-  disabled,
-  readonly,
   children,
   variant,
   size,
+  required,
+  disabled,
+  readOnly,
+  error,
   ...rest
 }: CheckboxGroupProps) => {
   // Adjust props to the react-aria API
   const props = {
-    isRquired: required,
+    isRequired: required,
     isDisabled: disabled,
-    isReadOnly: readonly,
+    isReadOnly: readOnly,
+    validationState: error ? 'invalid' : 'valid',
     ...rest,
   } as const;
   const state = useCheckboxGroupState(props);
@@ -82,9 +87,9 @@ export const CheckboxGroup = ({
 
   return (
     <Box {...groupProps} css={styles.container}>
-      {label && (
+      {props.label && (
         <Label as="span" required={required} {...labelProps}>
-          {label}
+          {props.label}
         </Label>
       )}
       <Box
@@ -97,7 +102,9 @@ export const CheckboxGroup = ({
         }}
         css={styles.group}
       >
-        <CheckboxGroupContext.Provider value={{ variant, size, ...state }}>
+        <CheckboxGroupContext.Provider
+          value={{ variant, size, error, ...state }}
+        >
           {children}
         </CheckboxGroupContext.Provider>
       </Box>

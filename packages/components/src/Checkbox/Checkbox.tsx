@@ -129,7 +129,7 @@ export const Checkbox = ({
    * it should be safe.
    */
   const groupState = useCheckboxGroupContext();
-  console.log(groupState);
+
   /* eslint-disable react-hooks/rules-of-hooks */
   const { inputProps } = groupState
     ? useCheckboxGroupItem(
@@ -174,9 +174,9 @@ export const Checkbox = ({
     focus: isFocusVisible,
     checked: inputProps.checked,
     disabled: inputProps.disabled,
+    error: groupState?.error || error,
     readOnly,
     indeterminate,
-    error,
   });
 
   return (
