@@ -15,14 +15,23 @@ const theme = {
     body: '1rem',
     medium: '1.25rem',
   },
-  text: {
-    body: {
-      fontFamily: 'Oswald Regular',
+
+  components: {
+    Text: {
+      base: {
+        fontFamily: 'Oswald Regular',
+      },
+      variant: {
+        one: {
+          fontFamily: 'Arial',
+          color: 'green',
+        },
+      },
     },
   },
 };
 
-test('uses `text.body` as default variant', () => {
+test('uses base as default variant', () => {
   render(
     <ThemeProvider theme={theme}>
       <Text>text</Text>
@@ -41,7 +50,7 @@ test('renders a <p> element by default', () => {
   );
   const text = screen.getByText(/text/);
 
-  expect(text instanceof HTMLSpanElement).toBeTruthy();
+  expect(text instanceof HTMLParagraphElement).toBeTruthy();
 });
 
 test.each([
@@ -50,9 +59,8 @@ test.each([
   [{ align: 'center' }, 'text-align: center'],
   [{ cursor: 'pointer' }, 'cursor: pointer'],
   [{ outline: 'dashed red' }, 'outline: dashed red'],
-  [{ size: 'body' }, `font-size: ${theme.fontSizes.body}`],
-  [{ size: 'medium' }, `font-size: ${theme.fontSizes.medium}`],
-  [{ userSelect: 'none' }, 'user-select: none'],
+  [{ fontSize: 'body' }, `font-size: ${theme.fontSizes.body}`],
+  [{ fontSize: 'medium' }, `font-size: ${theme.fontSizes.medium}`],
 ])('test style prop %o', (...args) => {
   const props = args.shift();
 

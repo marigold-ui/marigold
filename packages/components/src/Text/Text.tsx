@@ -18,7 +18,7 @@ export interface TextProps
   extends ThemeComponentProps,
     ComponentProps<'p'>,
     Omit<BoxOwnProps, 'variant'> {
-  textAlign?: string;
+  align?: string;
   color?: string;
   cursor?: string;
   fontSize?: string;
@@ -31,7 +31,7 @@ export interface TextProps
 export const Text = ({
   variant,
   size,
-  textAlign,
+  align,
   color,
   fontSize,
   cursor,
@@ -47,7 +47,7 @@ export const Text = ({
     <Box
       as="p"
       {...props}
-      css={{ textAlign, color, cursor, outline, fontSize, ...styles }}
+      css={{ align, color, cursor, outline, fontSize, ...styles }}
     >
       {children}
     </Box>
