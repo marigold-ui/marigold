@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  CSSObject,
   ThemeComponentProps,
   ThemeExtension,
   useComponentStyles,
@@ -18,7 +19,7 @@ export interface TextProps
   extends ThemeComponentProps,
     ComponentProps<'p'>,
     Omit<BoxOwnProps, 'variant'> {
-  align?: string;
+  align?: CSSObject['textAlign'];
   color?: string;
   cursor?: string;
   fontSize?: string;
@@ -47,7 +48,7 @@ export const Text = ({
     <Box
       as="p"
       {...props}
-      css={{ align, color, cursor, outline, fontSize, ...styles }}
+      css={{ color, cursor, outline, fontSize, textAlign: align, ...styles }}
     >
       {children}
     </Box>

@@ -66,7 +66,7 @@ test.each([
 
   render(
     <ThemeProvider theme={theme}>
-      <Text {...props}>This is the Text!</Text>
+      <Text {...(props as any)}>This is the Text!</Text>
     </ThemeProvider>
   );
 
