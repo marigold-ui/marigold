@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
-import { Box, Image, Stack, Text, Tiles } from '@marigold/components';
+import { Box, Headline, Image, Stack, Text, Tiles } from '@marigold/components';
 
 export default {
   title: 'Components/Tiles',
@@ -65,9 +65,7 @@ export const Stacks: ComponentStory<typeof Tiles> = args => (
           width={200}
           height={200}
         />
-        <Text as="h4" variant="headline4">
-          Glumanda
-        </Text>
+        <Headline level="4">Glumanda</Headline>
         <Text>
           Glumanda ist ein Pokémon mit dem Typ Feuer und existiert seit der
           ersten Spielgeneration. Es ist neben Bisasam und Schiggy eines der
@@ -83,9 +81,7 @@ export const Stacks: ComponentStory<typeof Tiles> = args => (
           width={200}
           height={200}
         />
-        <Text as="h4" variant="headline4">
-          Glutexo
-        </Text>
+        <Headline level="4">Glutexo</Headline>
         <Text>
           Glutexo ist ein Pokémon mit dem Typ Feuer und existiert seit der
           ersten Spielgeneration. Als erste Weiterentwicklung von Glumanda
@@ -102,9 +98,7 @@ export const Stacks: ComponentStory<typeof Tiles> = args => (
           width={250}
           height={200}
         />
-        <Text as="h4" variant="headline4">
-          Glurak
-        </Text>
+        <Headline level="4">Glurak</Headline>
         <Text>
           Glurak ist ein Pokémon mit den Typen Feuer und Flug und existiert seit
           der ersten Spielgeneration. Es stellt die zweite Entwicklungsstufe von

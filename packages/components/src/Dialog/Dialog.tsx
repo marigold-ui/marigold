@@ -7,7 +7,7 @@ import { Close } from '@marigold/icons';
 
 import { Box } from '../Box';
 import { Button } from '../Button';
-import { Text } from '../Text';
+import { Headline } from '../Headline';
 
 import { ModalDialog, ModalDialogProps } from './ModalDialog';
 
@@ -67,11 +67,7 @@ export const Dialog: React.FC<DialogProps> = ({
           className={className}
         >
           <Box pt="medium">
-            {title && (
-              <Text as="h4" variant="headline4">
-                {title}
-              </Text>
-            )}
+            {title && <Headline level="4">{title}</Headline>}
             {children}
           </Box>
           <Box
