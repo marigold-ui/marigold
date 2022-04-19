@@ -43,7 +43,7 @@ test('renders as a "footer" element', () => {
   );
 
   const footer = screen.getByTestId('footer');
-  expect(footer.tagName).toEqual('SECTION');
+  expect(footer.tagName).toEqual('FOOTER');
 });
 
 test('uses base styling form "footer" in theme', () => {
