@@ -15,7 +15,7 @@ const theme = {
     yellow: '#fff9db',
   },
   components: {
-    Content: {
+    Header: {
       base: {
         p: 'small-1',
         border: '1px solid',
