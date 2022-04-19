@@ -22,7 +22,7 @@ export interface HeaderProps
 // Component
 // ---------------
 export const Header = ({ children, variant, size, ...props }: HeaderProps) => {
-  const styles = useComponentStyles('Content', { variant, size });
+  const styles = useComponentStyles('Header', { variant, size });
   return (
     <Box as="header" {...props} css={styles}>
       {children}
