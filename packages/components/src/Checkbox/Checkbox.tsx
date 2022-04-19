@@ -1,6 +1,7 @@
 import React, { ReactNode, useContext } from 'react';
 import { useCheckbox, useCheckboxGroupItem } from '@react-aria/checkbox';
 import { useFocusRing } from '@react-aria/focus';
+import { useHover } from '@react-aria/interactions';
 import { VisuallyHidden } from '@react-aria/visually-hidden';
 import { useToggleState } from '@react-stately/toggle';
 import { AriaCheckboxProps } from '@react-types/checkbox';
@@ -127,19 +128,13 @@ export const Checkbox = ({
     isRequired: required,
     validationState: error ? 'invalid' : 'valid',
   } as const;
-  const groupState = useContext(CheckboxGroupContext);
-
-  const state = useToggleState({
-    isSelected: checked,
-    defaultSelected: defaultChecked,
-    ...props,
-  });
 
   /**
    * Use hook depending if the checkbox is used inside a group or standalone.
    * This is unusual, but since the checkboxs is not moving out of the group,
    * it should be safe.
    */
+  const groupState = useContext(CheckboxGroupContext);
   /* eslint-disable react-hooks/rules-of-hooks */
   const { inputProps } = groupState
     ? useCheckboxGroupItem(
@@ -171,11 +166,12 @@ export const Checkbox = ({
       );
   /* eslint-enable react-hooks/rules-of-hooks */
 
+  const { hoverProps, isHovered } = useHover({});
   const { isFocusVisible, focusProps } = useFocusRing();
-
   const stateProps = useStateProps({
-    checked: state.isSelected,
+    hover: isHovered,
     focus: isFocusVisible,
+    checked: inputProps.checked,
     disabled: inputProps.disabled,
     readOnly,
     indeterminate,
@@ -194,13 +190,14 @@ export const Checkbox = ({
         '&:hover': { cursor: inputProps.disabled ? 'not-allowed' : 'pointer' },
       }}
       css={styles.container}
+      {...hoverProps}
       {...stateProps}
     >
       <VisuallyHidden>
         <input {...inputProps} {...focusProps} ref={ref} />
       </VisuallyHidden>
       <Icon
-        checked={state.isSelected}
+        checked={inputProps.checked}
         indeterminate={indeterminate}
         css={styles.checkbox}
         {...stateProps}
