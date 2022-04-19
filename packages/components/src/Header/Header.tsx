@@ -9,7 +9,7 @@ import { ComponentProps } from '@marigold/types';
 
 // Theme Extension
 // ---------------
-export interface HeaderThemeExtension extends ThemeExtension<'Content'> {}
+export interface HeaderThemeExtension extends ThemeExtension<'Header'> {}
 
 // Props
 // ---------------
