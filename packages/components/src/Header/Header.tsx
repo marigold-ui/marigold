@@ -15,7 +15,7 @@ export interface HeaderThemeExtension extends ThemeExtension<'Header'> {}
 // ---------------
 export interface HeaderProps
   extends ThemeComponentProps,
-    ComponentProps<'section'> {
+    ComponentProps<'header'> {
   children?: ReactNode;
 }
 
