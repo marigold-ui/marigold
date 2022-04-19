@@ -1,7 +1,6 @@
 import { type Theme } from '@marigold/components';
 import { colors } from './colors';
 import { component } from './component';
-import { typography } from './typography';
 
 // NEW STYLES!
 import * as components from './components';
@@ -58,7 +57,31 @@ const theme: Theme = {
     medium: 4,
     large: 8,
   },
-  ...typography,
+  fonts: {
+    body: 'Arial',
+    heading: 'Roboto',
+  },
+  fontSizes: {
+    xxsmall: '0.66rem',
+    xsmall: '1rem',
+    small: '1.33rem',
+    medium: '1.66rem',
+    large: '2rem',
+    xlarge: '2.33rem',
+  },
+  fontWeights: {
+    body: 300,
+    heading: 800,
+    bold: 600,
+  },
+  lineHeights: {
+    xsmall: 1,
+    small: 1.125,
+    medium: 1.5,
+    large: 2,
+    xlarge: 2.5,
+    xxlarge: 3,
+  },
   ...component,
 
   // NEW STYLES!!!

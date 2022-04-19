@@ -19,9 +19,6 @@ const theme = {
     body: {
       fontFamily: 'Oswald Regular',
     },
-    headline1: {
-      fontFamily: 'Inter',
-    },
   },
 };
 
@@ -36,18 +33,7 @@ test('uses `text.body` as default variant', () => {
   expect(text).toHaveStyle(`font-family: Oswald Regular`);
 });
 
-test('allows to change variants via `variant` prop (with "text" prefix)', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Text variant="headline1">text</Text>
-    </ThemeProvider>
-  );
-  const text = screen.getByText(/text/);
-
-  expect(text).toHaveStyle(`font-family: Inter`);
-});
-
-test('renders a <span> element by default', () => {
+test('renders a <p> element by default', () => {
   render(
     <ThemeProvider theme={theme}>
       <Text>text</Text>
@@ -56,17 +42,6 @@ test('renders a <span> element by default', () => {
   const text = screen.getByText(/text/);
 
   expect(text instanceof HTMLSpanElement).toBeTruthy();
-});
-
-test('allows to control the rendered element via the `as` prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Text as="p">text</Text>
-    </ThemeProvider>
-  );
-  const text = screen.getByText(/text/);
-
-  expect(text instanceof HTMLParagraphElement).toBeTruthy();
 });
 
 test.each([
@@ -91,15 +66,4 @@ test.each([
   args.forEach((style: any) => {
     expect(box).toHaveStyle(style);
   });
-});
-
-test('forwards ref', () => {
-  const ref = React.createRef<HTMLButtonElement>();
-  render(
-    <Text as="button" ref={ref}>
-      button
-    </Text>
-  );
-
-  expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
 });

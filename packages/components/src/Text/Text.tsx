@@ -1,68 +1,55 @@
-import React, { forwardRef } from 'react';
-import { ResponsiveStyleValue, Theme } from '@marigold/system';
+import React from 'react';
 import {
-  PolymorphicComponentWithRef,
-  PolymorphicPropsWithRef,
-} from '@marigold/types';
+  ThemeComponentProps,
+  ThemeExtension,
+  useComponentStyles,
+} from '@marigold/system';
+import { ComponentProps } from '@marigold/types';
 
-import { Box, BoxOwnProps } from '../Box';
+import { Box, BoxOwnProps } from '@marigold/system';
 
 // Theme Extension
 // ---------------
-export interface TextThemeExtension<Value> {
-  text?: {
-    [key: string]: Value;
-  };
-}
+export interface TextThemeExtension extends ThemeExtension<'Text'> {}
 
 // Props
 // ---------------
-export interface TextOwnProps extends BoxOwnProps {
-  align?: ResponsiveStyleValue<string>;
-  color?: ResponsiveStyleValue<string>;
-  cursor?: ResponsiveStyleValue<string>;
-  size?: ResponsiveStyleValue<keyof Theme['fontSizes'] | string>;
-  outline?: ResponsiveStyleValue<string>;
-  userSelect?: ResponsiveStyleValue<string>;
-}
-
 export interface TextProps
-  extends PolymorphicPropsWithRef<TextOwnProps, 'span'> {}
+  extends ThemeComponentProps,
+    ComponentProps<'p'>,
+    Omit<BoxOwnProps, 'variant'> {
+  textAlign?: string;
+  color?: string;
+  cursor?: string;
+  fontSize?: string;
+  outline?: string;
+  children?: React.ReactNode;
+}
 
 // Component
 // ---------------
-export const Text: PolymorphicComponentWithRef<TextOwnProps, 'span'> =
-  forwardRef(
-    (
-      {
-        as = 'span',
-        variant = 'body',
-        children,
-        align,
-        color,
-        cursor,
-        size,
-        outline,
-        userSelect,
-        ...props
-      },
-      ref
-    ) => (
-      <Box
-        {...props}
-        as={as}
-        variant={`text.${variant}`}
-        css={{
-          textAlign: align,
-          fontSize: size,
-          color,
-          cursor,
-          outline,
-          userSelect,
-        }}
-        ref={ref}
-      >
-        {children}
-      </Box>
-    )
+export const Text = ({
+  variant,
+  size,
+  textAlign,
+  color,
+  fontSize,
+  cursor,
+  outline,
+  children,
+  ...props
+}: TextProps) => {
+  const styles = useComponentStyles('Text', {
+    variant,
+    size,
+  });
+  return (
+    <Box
+      as="p"
+      {...props}
+      css={{ textAlign, color, cursor, outline, fontSize, ...styles }}
+    >
+      {children}
+    </Box>
   );
+};

@@ -17,6 +17,7 @@ import type { ImageThemeExtension } from './Image';
 import type { InputThemeExtension } from './Input';
 import type { LabelThemeExtension } from './Field/Label';
 import type { LinkThemeExtension } from './Link';
+import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
 
 // Old Styling Solution
@@ -29,7 +30,6 @@ import { type RadioThemeExtension } from './Radio';
 import { type SelectThemeExtension } from './Select';
 import { type SliderThemeExtension } from './Slider';
 import { type SwitchThemeExtension } from './Switch';
-import { type TextThemeExtension } from './Text';
 import { type TooltipThemeExtension } from './Tooltip';
 import { type ValidationMessageThemeExtension } from './ValidationMessage';
 
@@ -46,6 +46,7 @@ interface ComponentStyles
     InputThemeExtension,
     LabelThemeExtension,
     LinkThemeExtension,
+    TextThemeExtension,
     TextAreaThemeExtension {}
 
 export interface Theme
@@ -60,7 +61,6 @@ export interface Theme
     SelectThemeExtension<CSSObject>,
     SliderThemeExtension<CSSObject>,
     SwitchThemeExtension<CSSObject>,
-    TextThemeExtension<CSSObject>,
     TooltipThemeExtension<CSSObject>,
     ValidationMessageThemeExtension<CSSObject> {
   components: ComponentStyles;

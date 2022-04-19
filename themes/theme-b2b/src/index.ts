@@ -1,6 +1,5 @@
 import { colors } from './colors';
 import { component } from './component';
-import { typography } from './typography';
 
 // NEW STYLES!
 import * as components from './components';
@@ -57,7 +56,31 @@ const theme: any = {
     medium: 4,
     large: 8,
   },
-  ...typography,
+  fonts: {
+    body: 'Inter',
+    heading: 'Inter Black',
+  },
+  fontSizes: {
+    xxsmall: '0.875rem',
+    xsmall: '1rem',
+    small: '1.125rem',
+    medium: '1.25rem',
+    large: '1.5rem',
+    xlarge: '2rem',
+  },
+  fontWeights: {
+    body: 400,
+    heading: 900,
+    bold: 700,
+  },
+  lineHeights: {
+    xsmall: 1,
+    small: 1.125,
+    medium: 1.5,
+    large: 2,
+    xlarge: 2.5,
+    xxlarge: 3,
+  },
   ...component,
 
   // NEW STYLES!!!

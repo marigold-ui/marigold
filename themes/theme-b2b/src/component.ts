@@ -1,5 +1,4 @@
 import { colors } from './colors';
-import { text } from './typography';
 
 /**
  * Select component
@@ -478,7 +477,6 @@ export const component = {
   },
   validation: {
     error: {
-      ...text.root,
       fontSize: 'xxsmall',
       color: 'error',
     },

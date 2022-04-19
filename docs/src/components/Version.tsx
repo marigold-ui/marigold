@@ -23,7 +23,7 @@ export const Version = () => {
   const { version, hash } = useVersion();
 
   return (
-    <Text variant="muted" display="block" align="right" p="xsmall">
+    <Text variant="muted" display="block" textAlign="right" p="xsmall">
       v{version} ({hash.slice(0, 7)})
     </Text>
   );
