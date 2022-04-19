@@ -134,6 +134,12 @@ export const Checkbox = ({
     defaultSelected: defaultChecked,
     ...props,
   });
+
+  /**
+   * Use hook depending if the checkbox is used inside a group or standalone.
+   * This is unusual, but since the checkboxs is not moving out of the group,
+   * it should be safe.
+   */
   /* eslint-disable react-hooks/rules-of-hooks */
   const { inputProps } = groupState
     ? useCheckboxGroupItem(
