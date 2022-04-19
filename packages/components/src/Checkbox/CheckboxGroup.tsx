@@ -22,7 +22,11 @@ export interface CheckboxGroupContextProps extends CheckboxGroupState {
 }
 
 export const CheckboxGroupContext = createContext<CheckboxGroupContextProps>(
-  {} as any
+  /**
+   * Needs to be falsy so we can check if a checkbox is used as standalone
+   * or in a group.
+   */
+  null as any
 );
 
 export const useCheckboxGroupContext = () => useContext(CheckboxGroupContext);

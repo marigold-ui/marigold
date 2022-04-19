@@ -114,12 +114,6 @@ export const Checkbox = ({
   ...props
 }: CheckboxProps) => {
   const ref = React.useRef<HTMLInputElement>(null);
-  const styles = useComponentStyles(
-    'Checkbox',
-    { variant, size },
-    { parts: ['container', 'label', 'checkbox'] }
-  );
-
   // Adjust props to the react-aria API
   const checkboxProps = {
     isIndeterminate: indeterminate,
@@ -135,6 +129,7 @@ export const Checkbox = ({
    * it should be safe.
    */
   const groupState = useCheckboxGroupContext();
+  console.log(groupState);
   /* eslint-disable react-hooks/rules-of-hooks */
   const { inputProps } = groupState
     ? useCheckboxGroupItem(
@@ -165,6 +160,12 @@ export const Checkbox = ({
         ref
       );
   /* eslint-enable react-hooks/rules-of-hooks */
+
+  const styles = useComponentStyles(
+    'Checkbox',
+    { variant: groupState?.variant || variant, size: groupState?.size || size },
+    { parts: ['container', 'label', 'checkbox'] }
+  );
 
   const { hoverProps, isHovered } = useHover({});
   const { isFocusVisible, focusProps } = useFocusRing();
