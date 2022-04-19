@@ -11,6 +11,7 @@ import type { CardThemeExtension } from './Card';
 import type { CheckboxThemeExtension } from './Checkbox';
 import type { ContentThemeExtension } from './Content';
 import type { DividerThemeExtension } from './Divider';
+import type { FooterThemeExtension } from './Footer';
 import type { HeaderThemeExtension } from './Header';
 import type { HeadlineThemeExtension } from './Headline';
 import type { HelpTextThemeExtension } from './Field/HelpText';
@@ -40,6 +41,7 @@ interface ComponentStyles
     CheckboxThemeExtension,
     ContentThemeExtension,
     DividerThemeExtension,
+    FooterThemeExtension,
     HeaderThemeExtension,
     HeadlineThemeExtension,
     HelpTextThemeExtension,

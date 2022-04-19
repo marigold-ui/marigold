@@ -13,6 +13,7 @@ export * from './Columns';
 export * from './Content';
 export * from './Dialog';
 export * from './Divider';
+export * from './Footer';
 export * from './VisuallyHidden';
 export * from './Header';
 export * from './Headline';
