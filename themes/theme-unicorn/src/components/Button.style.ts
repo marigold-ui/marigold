@@ -3,13 +3,13 @@ import type { Theme } from '@marigold/components';
 export const Button: Theme['components']['Button'] = {
   base: {
     border: 'none',
-    borderRadius: 'small',
-    // FIXME: when we use open-props
+    borderRadius: '8px',
     lineHeight: '48px',
     px: 'large',
     '&:disabled': {
       color: 'gray40',
       bg: 'gray20',
+      cursor: 'not-allowed',
     },
   },
   variant: {
@@ -17,16 +17,16 @@ export const Button: Theme['components']['Button'] = {
       color: 'background',
       bg: 'primary',
       '&:hover': {
-        color: 'background',
-        bg: 'orange40',
+        bg: 'secondary',
+        cursor: 'pointer',
       },
     },
     secondary: {
       color: 'background',
       bg: 'secondary',
-      ':hover': {
-        color: 'background',
-        bg: 'gray60',
+      '&:hover': {
+        bg: 'primary',
+        cursor: 'pointer',
       },
     },
     ghost: {
@@ -36,14 +36,15 @@ export const Button: Theme['components']['Button'] = {
       '&:hover': {
         color: 'secondary',
         bg: 'gray30',
+        cursor: 'pointer',
       },
     },
     text: {
       color: 'secondary',
       '&:hover': {
-        color: 'secondary',
         outlineColor: 'gray70',
         bg: 'gray30',
+        cursor: 'pointer',
       },
     },
   },

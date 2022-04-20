@@ -2,8 +2,8 @@
 title: Button
 ---
 
-import { DoAndDont } from "../../src/components/DoAndDont";
-import { FigmaLink } from "../../src/components/FigmaLink";
+import { DoAndDont } from '../../src/components/DoAndDont';
+import { FigmaLink } from '../../src/components/FigmaLink';
 
 # Button
 
@@ -14,7 +14,7 @@ The style variant and size of the button can be added with the variant prop and 
 
 <MarigoldTheme>
   <Inline space="small">
-    <Button>Primary</Button>
+    <Button variant="primary">Primary</Button>
     <Button variant="secondary">Secondary</Button>
     <Button variant="ghost">Ghost</Button>
     <Button variant="text">Text Only</Button>
@@ -22,23 +22,23 @@ The style variant and size of the button can be added with the variant prop and 
 </MarigoldTheme>
 
 ```tsx onlyCode
-import { Button } from "@marigold/components";
+import { Button } from '@marigold/components';
 ```
 
 <FigmaLink
   to={
-    "https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=11%3A269"
+    'https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=11%3A269'
   }
 />
 
 ## Props
 
-| Property              | Type                                    | Default   |
-| :-------------------- | :-------------------------------------- | :-------- |
-| `variant` (optional)  | `primary`, `secondary`, `ghost`, `text` | `primary` |
-| `size` (optional)     | `small`, `large`                        | `large`   |
-| `disabled` (optional) | boolean                                 |           |
-| `space` (optional)    | `ResponsiveStyleValue<string>`          | `none`    |
+| Property              | Type                                    | Default |
+| :-------------------- | :-------------------------------------- | :------ |
+| `variant` (optional)  | `primary`, `secondary`, `ghost`, `text` | `none`  |
+| `size` (optional)     | `small`, `large`                        | `large` |
+| `disabled` (optional) | boolean                                 |         |
+| `space` (optional)    | `ResponsiveStyleValue<string>`          | `none`  |
 
 ## Types
 
@@ -51,13 +51,15 @@ The primary button function is to achieve the most common or most important goal
 #### Default
 
 ```tsx
-<Button>Primary</Button>
+<Button variant="primary">Primary</Button>
 ```
 
 #### Disabled
 
 ```tsx
-<Button disabled>Primary</Button>
+<Button variant="primary" disabled>
+  Primary
+</Button>
 ```
 
 ### Secondary Button
@@ -125,13 +127,13 @@ They can be used in a similar way of a secondary button, but they are meant to b
 Icons can be added in Order to make clearer what a button does. Buttons should not be made only with icons, because every user may understand them on a different way.
 
 ```tsx
-<Button space="xxsmall">
+<Button variant="primary" space="xxsmall">
   <Ticket /> Icon Primary
 </Button>
 ```
 
 ```tsx
-<Button space="xxsmall" disabled>
+<Button variant="primary" space="xxsmall" disabled>
   <Ticket /> Icon Primary
 </Button>
 ```
@@ -141,11 +143,13 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
 If there are many actions in one page, is it possible to use small buttons instead of big ones. As well if the page is required to be open on mobile devices.
 
 ```tsx
-<Button size="small">Primary</Button>
+<Button variant="primary" size="small">
+  Primary
+</Button>
 ```
 
 ```tsx
-<Button size="small" disabled>
+<Button variant="primary" size="small" disabled>
   Primary
 </Button>
 ```
@@ -191,7 +195,7 @@ If there are many actions in one page, is it possible to use small buttons inste
 Icons can be added in Order to make clearer what a button does. Buttons should not be made only with icons, because every user may understand them on a different way.Icons can be added in Order to make clearer what a button does. Buttons should not be made only with icons, because every user may understand them on a different way.
 
 ```tsx
-<Button size="small" space="xxsmall">
+<Button variant="primary" size="small" space="xxsmall">
   <Ticket /> Primary
 </Button>
 ```
@@ -220,15 +224,15 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
   <Box
     display="grid"
     css={{
-      gridGap: "small",
-      gridTemplateColumns: "repeat(auto-fit, minmax(min(500px, 100%), 1fr))",
+      gridGap: 'small',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(min(500px, 100%), 1fr))',
     }}
   >
     <DoAndDont
       preview={
         <Inline space="small">
           <Button variant="ghost">Ghost</Button>
-          <Button>Primary</Button>
+          <Button variant="primary">Primary</Button>
         </Inline>
       }
     >
@@ -238,7 +242,7 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
       preview={
         <Inline space="small">
           <Button variant="text">Text</Button>
-          <Button>Primary</Button>
+          <Button variant="primary">Primary</Button>
         </Inline>
       }
     >
@@ -258,8 +262,8 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
       dont
       preview={
         <Inline space="small">
-          <Button>Primary</Button>
-          <Button>Primary</Button>
+          <Button variant="primary">Primary</Button>
+          <Button variant="primary">Primary</Button>
         </Inline>
       }
     >

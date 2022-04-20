@@ -92,36 +92,6 @@ const select = {
  * Button component
  */
 const button = {
-  primary: {
-    appearance: 'none',
-    display: 'inline-flex',
-    textAlign: 'center',
-    lineHeight: 'medium',
-    fontSize: 'body',
-    fontFamily: 'body',
-    textDecoration: 'none',
-    color: 'gray00',
-    bg: 'primary',
-    border: 'none',
-    borderRadius: 'medium',
-    cursor: 'pointer',
-  },
-  secondary: {
-    color: 'gray00',
-    bg: 'secondary',
-  },
-  large: {
-    px: 'small',
-    py: 'xsmall',
-  },
-  table: {
-    px: 'xsmall',
-    py: 'small',
-  },
-  small: {
-    px: 'xsmall',
-    py: 'xxsmall',
-  },
   select: {
     ...selectButton,
     border: 'solid',
@@ -172,55 +142,7 @@ const button = {
 
 export const component = {
   button: {
-    __default: {
-      p: 0,
-      border: 'none',
-    },
-    large: {
-      ...button.large,
-    },
-    table: {
-      ...button.table,
-    },
-    small: {
-      ...button.small,
-    },
-    primary: {
-      ...button.primary,
-    },
-    secondary: {
-      ...button.secondary,
-    },
-    action: {
-      ...button.primary,
-      pr: 'xsmall',
-      color: 'gray60',
-      bg: 'transparent',
-      fontWeight: 'body',
-      fontSize: 'xxsmall',
-      ':focus': {
-        outline: 'none',
-      },
-    },
-    icon: {
-      ...button.primary,
-      width: '100%',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      display: 'inline-flex',
-      color: 'gray60',
-      bg: 'transparent',
-      fontWeight: 'body',
-      fontSize: 'xsmall',
-      ':focus': {
-        outline: 'none',
-      },
-      ':hover': {
-        bg: 'gray00',
-      },
-    },
     select: {
-      ...button.primary,
       ...button.select,
     },
   },

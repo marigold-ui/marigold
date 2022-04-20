@@ -277,7 +277,6 @@ export const component = {
     },
     text: {
       ...button.root,
-      ...button.text,
     },
     menu: {
       ...button.root,
