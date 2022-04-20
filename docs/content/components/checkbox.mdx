@@ -7,8 +7,7 @@ import { DoAndDont } from '../../src/components/DoAndDont';
 
 # Checkbox
 
-Checkboxes allow users to select multiple items from a list of individual items,
-or to mark one individual item as selected.
+The `Checkbox` components allows users to select one or more options from a list of options. In order to group multiple checkboxes, use the `CheckboxGroup` component.
 
 <MarigoldTheme>
   <Inline space="medium">
@@ -31,7 +30,7 @@ or to mark one individual item as selected.
 </MarigoldTheme>
 
 ```tsx onlyCode
-import { Checkbox } from '@marigold/components';
+import { Checkbox, CheckboxGroup } from '@marigold/components';
 ```
 
 <FigmaLink
@@ -42,16 +41,13 @@ import { Checkbox } from '@marigold/components';
 
 ## Props
 
-| Property                    | Type      | Default     |
-| :-------------------------- | :-------- | :---------- |
-| `id`                        | `string`  |             |
-| `variant` (optional)        | `string`  | `__default` |
-| `labelVariant` (optional)   | `string`  | `inline`    |
-| `required` (optional)       | `boolean` | `false`     |
-| `disabled` (optional)       | `boolean` | `false`     |
-| `indeterminated` (optional) | `boolean` | `false`     |
+| Name      | Type     | Default     | Description                                               |
+| :-------- | :------- | :---------- | :-------------------------------------------------------- |
+| `variant` | `string` |             | Use a different _variant_ from theme                      |
+| `size`    | `string` | `'level-1'` | Use a different _size_ from 
+
 | `error` (optional)          | `boolean` | `false`     |
-| `errorMessage` (optional)   | `string`  |             |
+| others                      |           |             | Yes you can use all regular attributes of `input`! |
 
 ## Examples
 
