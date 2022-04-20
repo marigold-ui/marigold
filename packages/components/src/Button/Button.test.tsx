@@ -14,23 +14,32 @@ const theme = {
     small: 2,
     large: 16,
   },
-  button: {
-    large: {
-      p: 'large',
-    },
-    small: {
-      p: 'large',
-    },
-    primary: {
-      fontFamily: 'fancy',
-    },
-    secondary: {
-      fontFamily: 'body',
+  components: {
+    Button: {
+      base: {
+        fontFamily: 'fancy',
+      },
+      size: {
+        large: {
+          p: '16px',
+        },
+        small: {
+          p: 'large',
+        },
+      },
+      variant: {
+        primary: {
+          fontFamily: 'fancy',
+        },
+        secondary: {
+          fontFamily: 'body',
+        },
+      },
     },
   },
 };
 
-test('supports default variant', () => {
+test('supports base style', () => {
   render(
     <ThemeProvider theme={theme}>
       <Button>button</Button>
@@ -44,7 +53,7 @@ test('supports default variant', () => {
 test('supports default size', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Button>button</Button>
+      <Button size="large">button</Button>
     </ThemeProvider>
   );
   const button = screen.getByText(/button/);
@@ -52,7 +61,7 @@ test('supports default size', () => {
   expect(button).toHaveStyle(`padding: 16px`);
 });
 
-test('accepts other variant than default', () => {
+test('accepts other variants', () => {
   render(
     <ThemeProvider theme={theme}>
       <Button variant="secondary">button</Button>
@@ -122,29 +131,16 @@ test('add icon in button works as expected', () => {
 test('add space to button works as expected', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Button title="iconbutton" space="small">
+      <Button data-testid="iconbutton" space="small">
         <Facebook fill="red" size={30} title="facebook" />
         iconbutton
       </Button>
     </ThemeProvider>
   );
-  const button = screen.getByTitle(/iconbutton/);
+  const button = screen.getByTestId('iconbutton');
 
   const style = window.getComputedStyle(button);
-  expect(style.columnGap).toBe(`2px`);
-});
-
-test('accepts custom styles prop className', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Button className="custom-class-name" title="button">
-        click
-      </Button>
-    </ThemeProvider>
-  );
-  const button = screen.getByTitle(/button/);
-
-  expect(button.className).toMatch('custom-class-name');
+  expect(style.gap).toBe(`0.5ch`);
 });
 
 test('can be used as a "link button"', () => {
@@ -155,7 +151,23 @@ test('can be used as a "link button"', () => {
       </Button>
     </ThemeProvider>
   );
+  const button = screen.getByText('I am a Link!');
+  expect(button).toBeTruthy();
+});
 
-  // Still uses the styling from a button
-  // renders a link
+test('can be used as a "link button" and has button styling', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Button
+        as="a"
+        href="https://karriere.reservix.net"
+        variant="primary"
+        data-testid="button"
+      >
+        I am a Link!
+      </Button>
+    </ThemeProvider>
+  );
+  const button = screen.getByText('I am a Link!');
+  expect(button).toBeTruthy();
 });
