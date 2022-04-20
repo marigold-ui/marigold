@@ -47,9 +47,7 @@ export const h6: React.FC<ComponentProps<'h6'>> = ({ children, ...props }) => (
 );
 
 export const p: React.FC<ComponentProps<'p'>> = ({ children, ...props }) => (
-  <Text as="p" variant="body" {...props}>
-    {children}
-  </Text>
+  <Text {...props}>{children}</Text>
 );
 
 export const a: React.FC<ComponentProps<'a'>> = ({
@@ -100,17 +98,13 @@ export const pre: React.FC<ComponentProps<'pre'>> = preProps => {
 // ---------------
 export const ul: React.FC<ComponentProps<'ul'>> = ({ children, ...props }) => (
   <ul {...props}>
-    <Text as="p" variant="body">
-      {children}
-    </Text>
+    <Text>{children}</Text>
   </ul>
 );
 
 export const ol: React.FC<ComponentProps<'ol'>> = ({ children, ...props }) => (
   <ol {...props}>
-    <Text as="p" variant="body">
-      {children}
-    </Text>
+    <Text>{children}</Text>
   </ol>
 );
 
@@ -131,9 +125,7 @@ export const table: React.FC<ComponentProps<'table'>> = ({
 
 export const td: React.FC<ComponentProps<'td'>> = ({ children, ...props }) => (
   <Box as="td" p="xsmall" {...props}>
-    <Text as="p" variant="body">
-      {children}
-    </Text>
+    <Text>{children}</Text>
   </Box>
 );
 
