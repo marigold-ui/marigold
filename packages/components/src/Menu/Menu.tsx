@@ -7,10 +7,13 @@ import React, {
 import { FocusScope } from '@react-aria/focus';
 import { useMenu } from '@react-aria/menu';
 import { DismissButton } from '@react-aria/overlays';
+import { Item } from '@react-stately/collections';
 import { useTreeState } from '@react-stately/tree';
 import { CollectionElement } from '@react-types/shared';
 
 import { ComponentProps } from '@marigold/types';
+
+import { MenuItem } from './MenuItem';
 
 export interface MenuContextProps
   extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
@@ -19,7 +22,7 @@ export interface MenuContextProps
 }
 
 export const MenuContext = createContext<MenuContextProps>({});
-const useMenuContext = () => useContext(MenuContext);
+export const useMenuContext = () => useContext(MenuContext);
 
 export interface MenuProps extends ComponentProps<'ul'> {
   children: CollectionElement<object> | CollectionElement<object>[];
@@ -32,7 +35,7 @@ export const Menu = (props: MenuProps) => {
   const ref = useRef(null);
   const state = useTreeState(ownProps);
   const { menuProps } = useMenu(ownProps, state, ref);
-  console.log(state);
+
   /**
    * - FocusScope: restore focus back to the trigger when menu is closed
    * - DismissButton: sllow screen reader to easily dimiss menu
@@ -42,17 +45,19 @@ export const Menu = (props: MenuProps) => {
       <div>
         <DismissButton onDismiss={ownProps.onClose} />
         <ul {...menuProps} ref={ref}>
-          {/* {[...state.collection].map(item => (
-            // <MenuItem
-            //   key={item.key}
-            //   item={item}
-            //   state={state}
-            //   onAction={props.onAction}
-            //   onClose={props.onClose} />
-          ))} */}
+          {[...state.collection].map(item => (
+            <MenuItem
+              key={item.key}
+              item={item}
+              state={state}
+              onAction={props.onAction}
+            />
+          ))}
         </ul>
         <DismissButton onDismiss={ownProps.onClose} />
       </div>
     </FocusScope>
   );
 };
+
+Menu.Item = Item;

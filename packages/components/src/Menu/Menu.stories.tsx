@@ -14,7 +14,9 @@ export const Basic: ComponentStory<any> = () => (
   <MenuTrigger>
     <Button>Menu</Button>
     <Menu>
-      <li>asasd</li>
+      <Menu.Item>1</Menu.Item>
+      <Menu.Item>2</Menu.Item>
+      <Menu.Item>3</Menu.Item>
     </Menu>
   </MenuTrigger>
 );

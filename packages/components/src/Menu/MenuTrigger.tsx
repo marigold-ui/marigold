@@ -18,6 +18,7 @@ export const MenuTrigger = ({ children }: MenuTriggerProps) => {
   const menuContext: MenuContextProps = {
     ...menuProps,
     open: state.isOpen,
+    onClose: state.close,
   };
 
   return (
