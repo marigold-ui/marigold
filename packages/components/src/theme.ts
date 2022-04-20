@@ -7,6 +7,7 @@ import type { RootThemeExtension } from './Provider';
 // Components
 // ---------------
 import type { BadgeThemeExtension } from './Badge';
+import type { ButtonThemeExtension } from './Button';
 import type { CardThemeExtension } from './Card';
 import type { CheckboxThemeExtension } from './Checkbox';
 import type { ContentThemeExtension } from './Content';
@@ -23,7 +24,6 @@ import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
 
 // Old Styling Solution
-import { type ButtonThemeExtension } from './Button';
 import { type LabelThemeExtension as LegacyLabelThemeExtension } from './Label';
 import { type MenuThemeExtension } from './Menu';
 import { type MenuItemThemeExtension } from './MenuItem';
@@ -37,6 +37,7 @@ import { type ValidationMessageThemeExtension } from './ValidationMessage';
 
 interface ComponentStyles
   extends BadgeThemeExtension,
+    ButtonThemeExtension,
     CardThemeExtension,
     CheckboxThemeExtension,
     ContentThemeExtension,
@@ -56,7 +57,6 @@ interface ComponentStyles
 export interface Theme
   extends Scales,
     RootThemeExtension<CSSObject>,
-    ButtonThemeExtension<CSSObject>,
     LegacyLabelThemeExtension<CSSObject>,
     MenuThemeExtension<CSSObject>,
     MenuItemThemeExtension<CSSObject>,

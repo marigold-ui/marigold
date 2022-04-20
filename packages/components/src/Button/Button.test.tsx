@@ -146,3 +146,16 @@ test('accepts custom styles prop className', () => {
 
   expect(button.className).toMatch('custom-class-name');
 });
+
+test('can be used as a "link button"', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Button as="a" href="https://karriere.reservix.net" data-testid="button">
+        I am a Link!
+      </Button>
+    </ThemeProvider>
+  );
+
+  // Still uses the styling from a button
+  // renders a link
+});
