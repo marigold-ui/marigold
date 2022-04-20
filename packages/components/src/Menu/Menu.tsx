@@ -1,51 +1,58 @@
-import React from 'react';
+import React, {
+  createContext,
+  HTMLAttributes,
+  useContext,
+  useRef,
+} from 'react';
+import { FocusScope } from '@react-aria/focus';
+import { useMenu } from '@react-aria/menu';
+import { DismissButton } from '@react-aria/overlays';
+import { useTreeState } from '@react-stately/tree';
+import { CollectionElement } from '@react-types/shared';
+
 import { ComponentProps } from '@marigold/types';
 
-import { Button } from '../Button';
-import { Box } from '../Box';
-
-// Theme Extension
-// ---------------
-export interface MenuThemeExtension<Value> {
-  menu?: Value;
+export interface MenuContextProps
+  extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
+  open?: boolean;
+  onClose?: () => void;
 }
 
-// Props
-// ---------------
-export interface MenuProps {
-  variant?: string;
-  label?: string;
-  onClick: ComponentProps<typeof Button>['onClick'];
-  show?: boolean;
-  className?: string;
-  title?: string; // For testing
+export const MenuContext = createContext<MenuContextProps>({});
+const useMenuContext = () => useContext(MenuContext);
+
+export interface MenuProps extends ComponentProps<'ul'> {
+  children: CollectionElement<object> | CollectionElement<object>[];
 }
 
-// Component
-// ---------------
-export const Menu: React.FC<MenuProps> = ({
-  variant = 'default',
-  label = 'Menu',
-  onClick,
-  show = false,
-  children,
-  ...props
-}) => {
+export const Menu = (props: MenuProps) => {
+  const menuContext = useMenuContext();
+  const ownProps = { ...props, ...menuContext };
+
+  const ref = useRef(null);
+  const state = useTreeState(ownProps);
+  const { menuProps } = useMenu(ownProps, state, ref);
+  console.log(state);
+  /**
+   * - FocusScope: restore focus back to the trigger when menu is closed
+   * - DismissButton: sllow screen reader to easily dimiss menu
+   */
   return (
-    <Box variant={`menu.${variant}`} {...props}>
-      <Button onClick={onClick} variant="menu">
-        {label}
-      </Button>
-      {show ? (
-        <Box
-          display="block"
-          position="absolute"
-          minWidth="120px"
-          borderRadius="2px"
-        >
-          {children}
-        </Box>
-      ) : null}
-    </Box>
+    <FocusScope restoreFocus>
+      <div>
+        <DismissButton onDismiss={ownProps.onClose} />
+        <ul {...menuProps} ref={ref}>
+          {/* {[...state.collection].map(item => (
+            // <MenuItem
+            //   key={item.key}
+            //   item={item}
+            //   state={state}
+            //   onAction={props.onAction}
+            //   onClose={props.onClose} />
+          ))} */}
+        </ul>
+        <DismissButton onDismiss={ownProps.onClose} />
+      </div>
+    </FocusScope>
   );
 };
