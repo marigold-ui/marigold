@@ -5,53 +5,50 @@ import { Button } from './Button';
 
 export default {
   title: 'Components/Button',
-  parameters: {
-    actions: {
-      handles: ['click'],
-    },
-  },
   argTypes: {
+    children: {
+      control: {
+        type: 'text',
+      },
+      description: 'Contents of the button',
+      defaultValue: 'Click me!',
+    },
     variant: {
       control: {
-        type: 'select',
+        type: 'text',
       },
-      options: ['primary', 'secondary', 'ghost', 'text', 'menu', 'select'],
-      description: 'What the button looks like',
-      table: {
-        defaultValue: {
-          summary: 'primary',
-        },
-      },
+      description: 'Variant of the button',
+      defaultValue: 'primary',
     },
     size: {
       control: {
-        type: 'select',
+        type: 'text',
       },
-      options: ['large', 'small'],
-      description: 'How big the button is rendered',
-      table: {
-        defaultValue: {
-          summary: 'large',
-        },
-      },
+      description: 'Size of the button',
     },
     disabled: {
       control: {
         type: 'boolean',
       },
-      options: [true, false],
       description: 'Disable the button',
-      table: {
-        defaultValue: {
-          summary: 'false',
-        },
-      },
+      defaultValue: false,
     },
   },
 } as Meta;
 
 export const Basic: ComponentStory<typeof Button> = args => (
+  <Button {...args} />
+);
+
+export const WithIcon: ComponentStory<typeof Button> = ({
+  children,
+  ...args
+}) => (
   <Button {...args}>
-    <Facebook /> Like me
+    <Facebook /> {children}
   </Button>
+);
+
+export const OnPress: ComponentStory<typeof Button> = args => (
+  <Button {...args} onPress={(e: any) => console.log(e)} />
 );

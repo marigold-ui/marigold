@@ -1,4 +1,5 @@
 export * from './Badge.style';
+export * from './Button.style';
 export * from './Checkbox.style';
 export * from './Divider.style';
 export * from './Headline.style';

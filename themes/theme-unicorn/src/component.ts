@@ -106,62 +106,7 @@ const button = {
     borderRadius: '8px',
     display: 'inline-flex',
   },
-  primary: {
-    color: 'background',
-    bg: 'primary',
-    ':hover': {
-      bg: 'secondary',
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'gray40',
-      bg: 'gray20',
-      cursor: 'not-allowed',
-    },
-  },
-  secondary: {
-    color: 'background',
-    bg: 'secondary',
-    ':hover': {
-      bg: 'primary',
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'gray40',
-      bg: 'gray20',
-      cursor: 'not-allowed',
-    },
-  },
-  ghost: {
-    color: 'secondary',
-    border: '1px solid',
-    outlineColor: 'gray70',
-    ':hover': {
-      color: 'secondary',
-      bg: 'gray30',
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'disabled',
-      bg: 'gray00',
-      outlineColor: 'disabled',
-      cursor: 'not-allowed',
-    },
-  },
-  text: {
-    color: 'secondary',
-    ':hover': {
-      outlineColor: 'gray70',
-      bg: 'gray30',
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'disabled',
-      bg: 'gray00',
-      cursor: 'not-allowed',
-      outline: 'none',
-    },
-  },
+
   menu: {
     color: 'secondary',
     bg: 'background',
@@ -332,19 +277,15 @@ export const component = {
     },
     primary: {
       ...button.root,
-      ...button.primary,
     },
     secondary: {
       ...button.root,
-      ...button.secondary,
     },
     ghost: {
       ...button.root,
-      ...button.ghost,
     },
     text: {
       ...button.root,
-      ...button.text,
     },
     menu: {
       ...button.root,
