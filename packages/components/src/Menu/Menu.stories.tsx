@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 
 import { Button } from '../Button';
@@ -10,13 +10,20 @@ export default {
   argTypes: {},
 } as Meta;
 
-export const Basic: ComponentStory<any> = () => (
-  <MenuTrigger>
-    <Button>Menu</Button>
-    <Menu>
-      <Menu.Item>1</Menu.Item>
-      <Menu.Item>2</Menu.Item>
-      <Menu.Item>3</Menu.Item>
-    </Menu>
-  </MenuTrigger>
-);
+export const Basic: ComponentStory<any> = () => {
+  const [selected, setSelected] = useState<string | number>('');
+  return (
+    <>
+      <MenuTrigger>
+        <Button>Choose Menu</Button>
+        <Menu onSelect={setSelected}>
+          <Menu.Item key="burger">🍔 Burger</Menu.Item>
+          <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+          <Menu.Item key="fries">🍟 Fries</Menu.Item>
+        </Menu>
+      </MenuTrigger>
+      <hr />
+      <pre>selected: {selected}</pre>
+    </>
+  );
+};

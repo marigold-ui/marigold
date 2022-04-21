@@ -1,6 +1,7 @@
 import React, {
   createContext,
   HTMLAttributes,
+  Key,
   useContext,
   useRef,
 } from 'react';
@@ -24,7 +25,8 @@ export interface MenuContextProps
 export const MenuContext = createContext<MenuContextProps>({});
 export const useMenuContext = () => useContext(MenuContext);
 
-export interface MenuProps extends ComponentProps<'ul'> {
+export interface MenuProps extends Omit<ComponentProps<'ul'>, 'onSelect'> {
+  onSelect?: (key: Key) => void;
   children: CollectionElement<object> | CollectionElement<object>[];
 }
 
@@ -33,7 +35,7 @@ export const Menu = (props: MenuProps) => {
   const ownProps = { ...props, ...menuContext };
 
   const ref = useRef(null);
-  const state = useTreeState(ownProps);
+  const state = useTreeState({ ...ownProps, selectionMode: 'none' });
   const { menuProps } = useMenu(ownProps, state, ref);
 
   /**
@@ -50,7 +52,7 @@ export const Menu = (props: MenuProps) => {
               key={item.key}
               item={item}
               state={state}
-              onAction={props.onAction}
+              onAction={props.onSelect}
             />
           ))}
         </ul>
