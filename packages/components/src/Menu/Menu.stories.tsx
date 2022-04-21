@@ -37,3 +37,12 @@ export const Basic: ComponentStory<typeof MenuTrigger> = args => {
     </>
   );
 };
+
+export const MenuOnly: ComponentStory<typeof Menu> = () => (
+  <Menu>
+    <Menu.Item key="burger">🍔 Burger</Menu.Item>
+    <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+    <Menu.Item key="salad">🥗 Salad</Menu.Item>
+    <Menu.Item key="fries">🍟 Fries</Menu.Item>
+  </Menu>
+);

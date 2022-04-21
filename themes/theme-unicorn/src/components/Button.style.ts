@@ -47,5 +47,13 @@ export const Button: Theme['components']['Button'] = {
         cursor: 'pointer',
       },
     },
+    menu: {
+      color: 'secondary',
+      bg: 'background',
+      '&:hover': {
+        color: 'background',
+        bg: 'gray60',
+      },
+    },
   },
 };

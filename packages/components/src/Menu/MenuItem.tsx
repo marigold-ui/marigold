@@ -1,5 +1,5 @@
 import React, { Key, useRef } from 'react';
-import { useFocus } from '@react-aria/interactions';
+import { useFocusRing } from '@react-aria/focus';
 import { useMenuItem } from '@react-aria/menu';
 import { mergeProps } from '@react-aria/utils';
 import { TreeState } from '@react-stately/tree';
@@ -31,17 +31,20 @@ export const MenuItem = ({ item, state, onAction, css }: MenuItemProps) => {
   );
 
   // Handles focus AND hover state
-  const [isFocused, setFocused] = React.useState(false);
-  const { focusProps } = useFocus({ onFocusChange: setFocused });
-
+  const { isFocusVisible, focusProps } = useFocusRing();
   const stateProps = useStateProps({
-    focus: isFocused,
+    focus: isFocusVisible,
   });
 
   return (
     <Box
       as="li"
       ref={ref}
+      __baseCSS={{
+        '&:focus': {
+          outline: 0,
+        },
+      }}
       css={css}
       {...mergeProps(menuItemProps, focusProps)}
       {...stateProps}

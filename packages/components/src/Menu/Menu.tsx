@@ -59,7 +59,11 @@ export const Menu = ({ variant, size, ...props }: MenuProps) => {
           as="ul"
           ref={ref}
           style={{ width: triggerWidth }}
-          __baseCSS={{ overflowWrap: 'break-word' }}
+          __baseCSS={{
+            listStyle: 'none',
+            p: 0,
+            overflowWrap: 'break-word',
+          }}
           css={styles.menu}
           {...menuProps}
         >

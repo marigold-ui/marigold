@@ -7,7 +7,6 @@ export const Button: Theme['components']['Button'] = {
     // FIXME: when we use open-props
     lineHeight: '48px',
     px: 'large',
-    outline: 'none',
 
     '&:disabled': {
       color: 'gray40',

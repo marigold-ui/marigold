@@ -292,21 +292,6 @@ export const component = {
       color: 'gray50',
     },
   },
-  menuItem: {
-    default: {
-      display: 'block',
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      fontWeight: 'body',
-      padding: 'xsmall',
-      bg: 'background',
-      color: 'text',
-      ':hover': {
-        bg: 'gray30',
-        cursor: 'pointer',
-      },
-    },
-  },
   message: {
     warning: {
       borderStyle: 'solid',

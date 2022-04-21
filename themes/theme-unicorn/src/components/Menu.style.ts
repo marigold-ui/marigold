@@ -6,7 +6,7 @@ export const Menu: Theme['components']['Menu'] = {
       bg: 'gray00',
       border: '1px solid',
       borderColor: 'gray40',
-      borderRadius: 'small',
+      borderRadius: 'medium',
     },
     item: {
       px: 'small',
@@ -14,7 +14,7 @@ export const Menu: Theme['components']['Menu'] = {
       cursor: 'pointer',
 
       '&:focus': {
-        bg: 'gray20',
+        bg: 'purple10',
       },
     },
   },
