@@ -107,65 +107,6 @@ const button = {
     borderRadius: 'small',
     display: 'inline-flex',
   },
-  primary: {
-    color: 'background',
-    bg: 'primary',
-    ':hover': {
-      color: 'background',
-      bg: 'orange40',
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'gray40',
-      bg: 'gray20',
-      cursor: 'not-allowed',
-    },
-  },
-  secondary: {
-    color: 'background',
-    bg: 'secondary',
-    ':hover': {
-      color: 'background',
-      bg: 'gray60',
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'gray40',
-      bg: 'gray20',
-      cursor: 'not-allowed',
-    },
-  },
-  ghost: {
-    color: 'secondary',
-    border: '1px solid',
-    outlineColor: 'gray70',
-    ':hover': {
-      color: 'secondary',
-      bg: 'gray30',
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'disabled',
-      bg: 'gray00',
-      outlineColor: 'disabled',
-      cursor: 'not-allowed',
-    },
-  },
-  text: {
-    color: 'secondary',
-    ':hover': {
-      color: 'secondary',
-      outlineColor: 'gray70',
-      bg: 'gray30',
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'disabled',
-      bg: 'gray00',
-      cursor: 'not-allowed',
-      outline: 'none',
-    },
-  },
   menu: {
     color: 'secondary',
     bg: 'background',
@@ -334,21 +275,8 @@ export const component = {
       lineHeight: 'large',
       paddingX: 'medium',
     },
-    primary: {
-      ...button.root,
-      ...button.primary,
-    },
-    secondary: {
-      ...button.root,
-      ...button.secondary,
-    },
-    ghost: {
-      ...button.root,
-      ...button.ghost,
-    },
     text: {
       ...button.root,
-      ...button.text,
     },
     menu: {
       ...button.root,

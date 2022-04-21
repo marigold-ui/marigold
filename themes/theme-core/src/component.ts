@@ -110,68 +110,6 @@ const button = {
     borderRadius: 'small',
     display: 'inline-flex',
   },
-  primary: {
-    color: 'background',
-    bg: 'primary',
-    ':hover': {
-      color: 'background',
-      bg: colors.orange40,
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'disabled',
-      bg: colors.gray00,
-      outlineColor: 'disabled',
-      cursor: 'not-allowed',
-    },
-  },
-  secondary: {
-    color: 'gray70',
-    bg: 'gray30',
-    border: '1px solid',
-    outlineColor: 'gray70',
-    ':hover': {
-      bg: colors.gray00,
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'disabled',
-      bg: colors.gray00,
-      outlineColor: 'disabled',
-      cursor: 'not-allowed',
-    },
-  },
-  ghost: {
-    color: 'secondary',
-    border: '1px solid',
-    outlineColor: colors.gray70,
-    ':hover': {
-      color: 'secondary',
-      bg: colors.gray10,
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'disabled',
-      bg: colors.gray00,
-      outlineColor: 'disabled',
-      cursor: 'not-allowed',
-    },
-  },
-  text: {
-    color: 'secondary',
-    ':hover': {
-      color: 'secondary',
-      outlineColor: colors.gray70,
-      bg: colors.gray30,
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'disabled',
-      bg: colors.gray00,
-      outlineColor: 'disabled',
-      cursor: 'not-allowed',
-    },
-  },
   menu: {
     color: 'secondary',
     bg: 'background',
@@ -342,28 +280,10 @@ export const component = {
       paddingX: 'small',
       fontSize: 'xxsmall',
     },
-    primary: {
-      ...button.root,
-      ...button.primary,
-    },
-    secondary: {
-      ...button.root,
-      ...button.secondary,
-    },
-    ghost: {
-      ...button.root,
-      ...button.ghost,
-    },
-    text: {
-      ...button.root,
-      ...button.text,
-    },
     menu: {
-      ...button.root,
       ...button.menu,
     },
     select: {
-      ...button.root,
       ...button.select,
     },
   },
