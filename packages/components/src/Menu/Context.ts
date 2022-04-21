@@ -6,6 +6,7 @@ export interface MenuContextProps
   autoFocus?: boolean | FocusStrategy;
   open?: boolean;
   onClose?: () => void;
+  triggerWidth?: number;
 }
 
 export const MenuContext = createContext<MenuContextProps>({});

@@ -34,7 +34,7 @@ export interface MenuProps
 // Component
 // ---------------
 export const Menu = ({ variant, size, ...props }: MenuProps) => {
-  const menuContext = useMenuContext();
+  const { triggerWidth, ...menuContext } = useMenuContext();
   const ownProps = { ...props, ...menuContext };
 
   const ref = useRef(null);
@@ -55,7 +55,14 @@ export const Menu = ({ variant, size, ...props }: MenuProps) => {
     <FocusScope restoreFocus>
       <div>
         <DismissButton onDismiss={ownProps.onClose} />
-        <Box as="ul" ref={ref} css={styles.menu} {...menuProps}>
+        <Box
+          as="ul"
+          ref={ref}
+          style={{ width: triggerWidth }}
+          __baseCSS={{ overflowWrap: 'break-word' }}
+          css={styles.menu}
+          {...menuProps}
+        >
           {[...state.collection].map(item => (
             <MenuItem
               key={item.key}

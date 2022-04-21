@@ -36,6 +36,9 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
     open: state.isOpen,
     onClose: state.close,
     autoFocus: state.focusStrategy,
+    triggerWidth: menuTriggerRef.current
+      ? menuTriggerRef.current.offsetWidth
+      : undefined,
   };
 
   return (
