@@ -26,6 +26,11 @@ const theme = {
           },
         },
       },
+      variant: {
+        one: {
+          color: 'pink',
+        },
+      },
     },
   },
 };
@@ -186,8 +191,52 @@ test('trigger can be disabled', () => {
 });
 
 // test('return selected item')
+test('return selected item', () => {
+  const spy = jest.fn();
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Menu.Trigger>
+          <Button>Choose</Button>
+          <Menu onSelect={spy}>
+            <Menu.Item key="burger">Burger</Menu.Item>
+            <Menu.Item key="pizza">Pizza</Menu.Item>
+          </Menu>
+        </Menu.Trigger>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
 
-// test('uses base styling from "Menu" in theme');
+  const button = screen.getByText('Choose');
+  fireEvent.click(button);
+
+  const burger = screen.getByText('Burger');
+  fireEvent.click(burger);
+  expect(spy).toHaveBeenCalledWith('burger');
+  expect(spy).not.toHaveBeenCalledWith('pizza');
+});
+
+test('uses base styling from "Menu" in theme', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Menu.Trigger>
+          <Button>Choose</Button>
+          <Menu data-testid="menu">
+            <Menu.Item key="burger">Burger</Menu.Item>
+            <Menu.Item key="pizza">Pizza</Menu.Item>
+          </Menu>
+        </Menu.Trigger>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+  const button = screen.getByText('Choose');
+  fireEvent.click(button);
+
+  const menu = screen.getByTestId('menu');
+  expect(menu).toHaveStyle(`background-color: ${theme.colors.white}`);
+});
+
 // test('supports "Menu" variants from theme');
 // test('supports "Menu" sizes from theme');
 // test('apply focus style on hover AND focus');

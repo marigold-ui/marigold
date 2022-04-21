@@ -38,7 +38,7 @@ export const Basic: ComponentStory<typeof Menu.Trigger> = args => {
 };
 
 export const MenuOnly: ComponentStory<typeof Menu> = () => (
-  <Menu>
+  <Menu aria-label="Only a Menu">
     <Menu.Item key="burger">🍔 Burger</Menu.Item>
     <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
     <Menu.Item key="salad">🥗 Salad</Menu.Item>
