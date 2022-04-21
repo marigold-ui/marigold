@@ -7,6 +7,8 @@ export const Button: Theme['components']['Button'] = {
     // FIXME: when we use open-props
     lineHeight: '48px',
     px: 'large',
+    outline: 'none',
+
     '&:disabled': {
       color: 'gray40',
       bg: 'gray20',
@@ -24,7 +26,7 @@ export const Button: Theme['components']['Button'] = {
     secondary: {
       color: 'background',
       bg: 'secondary',
-      ':hover': {
+      '&:hover': {
         color: 'background',
         bg: 'gray60',
       },
@@ -45,6 +47,20 @@ export const Button: Theme['components']['Button'] = {
         outlineColor: 'gray70',
         bg: 'gray30',
       },
+    },
+    menu: {
+      color: 'secondary',
+      bg: 'background',
+      '&:hover': {
+        color: 'background',
+        bg: 'gray60',
+      },
+    },
+  },
+  size: {
+    small: {
+      lineHeight: '32px',
+      px: 'small',
     },
   },
 };

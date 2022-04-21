@@ -10,10 +10,10 @@ export interface PopoverProps
     OverlayProps,
     'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled'
   > {
+  children?: ReactNode;
   open?: boolean;
   dismissable?: boolean;
   keyboardDismissDisabled?: boolean;
-  children?: ReactNode;
 }
 
 export const Popover = forwardRef(

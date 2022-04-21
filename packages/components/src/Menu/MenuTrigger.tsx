@@ -15,7 +15,7 @@ export interface MenuTriggerProps {
 export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
   const [menuTrigger, menu] = React.Children.toArray(children);
 
-  const menuTriggerRef = useRef(null);
+  const menuTriggerRef = useRef<HTMLElement>(null);
   const overlayRef = useRef(null);
 
   const state = useMenuTriggerState({});

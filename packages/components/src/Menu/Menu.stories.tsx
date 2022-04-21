@@ -22,7 +22,9 @@ export const Basic: ComponentStory<typeof MenuTrigger> = args => {
   return (
     <>
       <MenuTrigger {...args}>
-        <Button>Choose Menu</Button>
+        <Button variant="menu" size="small">
+          Choose Menu
+        </Button>
         <Menu onSelect={setSelected}>
           <Menu.Item key="burger">🍔 Burger</Menu.Item>
           <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
