@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react';
 import { useCheckbox, useCheckboxGroupItem } from '@react-aria/checkbox';
 import { useFocusRing } from '@react-aria/focus';
 import { useHover } from '@react-aria/interactions';
-import { VisuallyHidden } from '@react-aria/visually-hidden';
 import { useToggleState } from '@react-stately/toggle';
 import { AriaCheckboxProps } from '@react-types/checkbox';
 
@@ -187,16 +186,30 @@ export const Checkbox = ({
         display: 'flex',
         alignItems: 'center',
         gap: '1ch',
-        userSelect: 'none',
-        '&:hover': { cursor: inputProps.disabled ? 'not-allowed' : 'pointer' },
+        position: 'relative',
       }}
       css={styles.container}
       {...hoverProps}
       {...stateProps}
     >
-      <VisuallyHidden>
-        <input {...inputProps} {...focusProps} ref={ref} />
-      </VisuallyHidden>
+      <Box
+        as="input"
+        type="checkbox"
+        css={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          top: 0,
+          left: 0,
+          zIndex: 1,
+          opacity: 0.0001,
+          '&:hover': {
+            cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
+          },
+        }}
+        {...inputProps}
+        {...focusProps}
+      />
       <Icon
         checked={inputProps.checked}
         indeterminate={indeterminate}
