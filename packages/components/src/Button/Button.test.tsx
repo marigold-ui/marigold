@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 import { Button } from './Button';
 import { Facebook } from '@marigold/icons';
@@ -151,7 +151,7 @@ test('can be used as a "link button"', () => {
       </Button>
     </ThemeProvider>
   );
-  const button = screen.getByText('I am a Link!');
+  const button = screen.getByTestId('button');
   expect(button).toBeTruthy();
 });
 
@@ -168,6 +168,20 @@ test('can be used as a "link button" and has button styling', () => {
       </Button>
     </ThemeProvider>
   );
-  const button = screen.getByText('I am a Link!');
+  const button = screen.getByTestId('button');
   expect(button).toBeTruthy();
+});
+
+test('supports onPress', () => {
+  const onPress = jest.fn();
+  render(
+    <Button onPress={onPress} href={onPress} data-testid="button">
+      Some Button
+    </Button>
+  );
+
+  const button = screen.getByTestId('button');
+  fireEvent.click(button);
+
+  expect(onPress).toHaveBeenCalled();
 });

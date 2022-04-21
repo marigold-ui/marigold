@@ -1,5 +1,6 @@
 import React, { ReactNode, useRef } from 'react';
 import { useButton } from '@react-aria/button';
+import { PressEvents } from '@react-types/shared';
 
 import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
 import { PolymorphicComponent, PolymorphicProps } from '@marigold/types';
@@ -10,14 +11,14 @@ export interface ButtonThemeExtension extends ThemeExtension<'Button'> {}
 
 // Props
 // ---------------
-export interface ButtonOwnProps {
+export interface ButtonOwnProps extends PressEvents {
   children?: ReactNode;
   variant?: string;
   size?: string;
 }
 
 export interface ButtonProps
-  extends PolymorphicProps<ButtonOwnProps, 'button'> {}
+  extends Omit<PolymorphicProps<ButtonOwnProps, 'button'>, 'onClick'> {}
 
 // Component
 // ---------------
