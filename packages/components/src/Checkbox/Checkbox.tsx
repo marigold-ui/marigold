@@ -195,6 +195,7 @@ export const Checkbox = ({
       <Box
         as="input"
         type="checkbox"
+        ref={ref}
         css={{
           position: 'absolute',
           width: '100%',
