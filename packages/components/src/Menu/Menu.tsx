@@ -1,36 +1,25 @@
-import React, {
-  createContext,
-  HTMLAttributes,
-  Key,
-  useContext,
-  useRef,
-} from 'react';
+import React, { Key, useRef } from 'react';
 import { FocusScope } from '@react-aria/focus';
 import { useMenu } from '@react-aria/menu';
 import { DismissButton } from '@react-aria/overlays';
 import { Item } from '@react-stately/collections';
 import { useTreeState } from '@react-stately/tree';
-import { CollectionElement, FocusStrategy } from '@react-types/shared';
+import { CollectionElement } from '@react-types/shared';
 
 import { ComponentProps } from '@marigold/types';
 
+import { useMenuContext } from './Context';
 import { MenuItem } from './MenuItem';
 
-export interface MenuContextProps
-  extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
-  autoFocus?: boolean | FocusStrategy;
-  open?: boolean;
-  onClose?: () => void;
-}
-
-export const MenuContext = createContext<MenuContextProps>({});
-export const useMenuContext = () => useContext(MenuContext);
-
+// Props
+// ---------------
 export interface MenuProps extends Omit<ComponentProps<'ul'>, 'onSelect'> {
   onSelect?: (key: Key) => void;
   children: CollectionElement<object> | CollectionElement<object>[];
 }
 
+// Component
+// ---------------
 export const Menu = (props: MenuProps) => {
   const menuContext = useMenuContext();
   const ownProps = { ...props, ...menuContext };

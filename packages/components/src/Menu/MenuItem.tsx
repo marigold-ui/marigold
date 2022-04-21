@@ -3,11 +3,12 @@ import { useFocus } from '@react-aria/interactions';
 import { useMenuItem } from '@react-aria/menu';
 import { mergeProps } from '@react-aria/utils';
 import { TreeState } from '@react-stately/tree';
+import { Node } from '@react-types/shared';
 
-import { useMenuContext } from './Menu';
+import { useMenuContext } from './Context';
 
 export interface MenuItemProps {
-  item?: any; //Node<object>,
+  item: Node<object>;
   state: TreeState<object>;
   // isVirtualized?: boolean;
   onAction?: (key: Key) => void;
@@ -20,7 +21,6 @@ export const MenuItem = ({ item, state, onAction }: MenuItemProps) => {
   const { menuItemProps } = useMenuItem(
     {
       key: item.key,
-      isDisabled: item.isDisabled,
       onAction,
       onClose,
     },

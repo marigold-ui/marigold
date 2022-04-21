@@ -7,18 +7,26 @@ import { MenuTrigger } from './MenuTrigger';
 
 export default {
   title: 'Components/Menu',
-  argTypes: {},
+  argTypes: {
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+      defaultValue: false,
+    },
+  },
 } as Meta;
 
-export const Basic: ComponentStory<any> = () => {
+export const Basic: ComponentStory<typeof MenuTrigger> = args => {
   const [selected, setSelected] = useState<string | number>('');
   return (
     <>
-      <MenuTrigger>
+      <MenuTrigger {...args}>
         <Button>Choose Menu</Button>
         <Menu onSelect={setSelected}>
           <Menu.Item key="burger">🍔 Burger</Menu.Item>
           <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+          <Menu.Item key="salad">🥗 Salad</Menu.Item>
           <Menu.Item key="fries">🍟 Fries</Menu.Item>
         </Menu>
       </MenuTrigger>
