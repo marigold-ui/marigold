@@ -203,9 +203,7 @@ export const Checkbox = ({
           left: 0,
           zIndex: 1,
           opacity: 0.0001,
-          '&:hover': {
-            cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
-          },
+          cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
         }}
         {...inputProps}
         {...focusProps}

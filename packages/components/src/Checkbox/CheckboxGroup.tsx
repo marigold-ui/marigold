@@ -98,7 +98,6 @@ export const CheckboxGroup = ({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'left',
-          gap: 2,
         }}
         css={styles.group}
       >
