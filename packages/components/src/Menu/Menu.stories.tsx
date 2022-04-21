@@ -3,7 +3,6 @@ import type { Meta, ComponentStory } from '@storybook/react';
 
 import { Button } from '../Button';
 import { Menu } from './Menu';
-import { MenuTrigger } from './MenuTrigger';
 
 export default {
   title: 'Components/Menu',
@@ -17,11 +16,11 @@ export default {
   },
 } as Meta;
 
-export const Basic: ComponentStory<typeof MenuTrigger> = args => {
+export const Basic: ComponentStory<typeof Menu.Trigger> = args => {
   const [selected, setSelected] = useState<string | number>('');
   return (
     <>
-      <MenuTrigger {...args}>
+      <Menu.Trigger {...args}>
         <Button variant="menu" size="small">
           Choose Menu
         </Button>
@@ -31,7 +30,7 @@ export const Basic: ComponentStory<typeof MenuTrigger> = args => {
           <Menu.Item key="salad">🥗 Salad</Menu.Item>
           <Menu.Item key="fries">🍟 Fries</Menu.Item>
         </Menu>
-      </MenuTrigger>
+      </Menu.Trigger>
       <hr />
       <pre>selected: {selected}</pre>
     </>

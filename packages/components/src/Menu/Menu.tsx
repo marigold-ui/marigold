@@ -14,12 +14,13 @@ import {
 import { ComponentProps } from '@marigold/types';
 
 import { useMenuContext } from './Context';
+import { MenuTrigger } from './MenuTrigger';
 import { MenuItem } from './MenuItem';
 
 // Theme Extension
 // ---------------
 export interface MenuThemeExtension
-  extends ThemeExtensionsWithParts<'Menu', ['menu', 'item']> {}
+  extends ThemeExtensionsWithParts<'Menu', ['container', 'item']> {}
 
 // Props
 // ---------------
@@ -44,7 +45,7 @@ export const Menu = ({ variant, size, ...props }: MenuProps) => {
   const styles = useComponentStyles(
     'Menu',
     { variant, size },
-    { parts: ['menu', 'item'] }
+    { parts: ['container', 'item'] }
   );
 
   /**
@@ -64,7 +65,7 @@ export const Menu = ({ variant, size, ...props }: MenuProps) => {
             p: 0,
             overflowWrap: 'break-word',
           }}
-          css={styles.menu}
+          css={styles.container}
           {...menuProps}
         >
           {[...state.collection].map(item => (
@@ -83,4 +84,5 @@ export const Menu = ({ variant, size, ...props }: MenuProps) => {
   );
 };
 
+Menu.Trigger = MenuTrigger;
 Menu.Item = Item;

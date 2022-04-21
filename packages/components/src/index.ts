@@ -22,7 +22,6 @@ export * from './Inline';
 export * from './Label';
 export * from './Link';
 export * from './Menu';
-export * from './MenuItem';
 export * from './Message';
 export * from './Overlay';
 export * from './Provider';
