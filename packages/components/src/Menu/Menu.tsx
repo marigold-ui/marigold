@@ -10,7 +10,7 @@ import { useMenu } from '@react-aria/menu';
 import { DismissButton } from '@react-aria/overlays';
 import { Item } from '@react-stately/collections';
 import { useTreeState } from '@react-stately/tree';
-import { CollectionElement } from '@react-types/shared';
+import { CollectionElement, FocusStrategy } from '@react-types/shared';
 
 import { ComponentProps } from '@marigold/types';
 
@@ -18,6 +18,7 @@ import { MenuItem } from './MenuItem';
 
 export interface MenuContextProps
   extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
+  autoFocus?: boolean | FocusStrategy;
   open?: boolean;
   onClose?: () => void;
 }
@@ -35,7 +36,7 @@ export const Menu = (props: MenuProps) => {
   const ownProps = { ...props, ...menuContext };
 
   const ref = useRef(null);
-  const state = useTreeState({ ...ownProps, selectionMode: 'none' });
+  const state = useTreeState({ ...ownProps });
   const { menuProps } = useMenu(ownProps, state, ref);
 
   /**
