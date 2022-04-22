@@ -9,7 +9,10 @@ import type { RootThemeExtension } from './Provider';
 import type { BadgeThemeExtension } from './Badge';
 import type { ButtonThemeExtension } from './Button';
 import type { CardThemeExtension } from './Card';
-import type { CheckboxThemeExtension } from './Checkbox';
+import type {
+  CheckboxThemeExtension,
+  CheckboxGroupThemeExtension,
+} from './Checkbox';
 import type { ContentThemeExtension } from './Content';
 import type { DividerThemeExtension } from './Divider';
 import type { FooterThemeExtension } from './Footer';
@@ -41,6 +44,7 @@ interface ComponentStyles
     ButtonThemeExtension,
     CardThemeExtension,
     CheckboxThemeExtension,
+    CheckboxGroupThemeExtension,
     ContentThemeExtension,
     DividerThemeExtension,
     FooterThemeExtension,

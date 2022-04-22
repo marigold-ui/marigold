@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { useHover } from '@react-aria/interactions';
+import { useFocusRing } from '@react-aria/focus';
 import { useTextField } from '@react-aria/textfield';
 import { AriaTextFieldProps } from '@react-types/textfield';
-import { useFocusRing } from '@react-aria/focus';
 
 import { useStateProps } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
