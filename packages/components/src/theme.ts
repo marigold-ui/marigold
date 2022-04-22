@@ -51,7 +51,7 @@ interface ComponentStyles
     InputThemeExtension,
     LabelThemeExtension,
     LinkThemeExtension,
-    TableThemeExtension<CSSObject>,
+    TableThemeExtension,
     TextThemeExtension,
     TextAreaThemeExtension {}
 

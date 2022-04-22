@@ -2,7 +2,7 @@ import React, { RefObject, useRef } from 'react';
 import { useTable, TableProps as TablePropsStately } from '@react-aria/table';
 import { TableStateProps, useTableState } from '@react-stately/table';
 
-import { useComponentStyles } from '@marigold/system';
+import { ThemeExtensionsWithParts, useComponentStyles } from '@marigold/system';
 
 import { Box } from '../Box';
 
@@ -14,14 +14,11 @@ import { TableRowGroup } from './TableRowGroup';
 
 // Theme Extension
 // ---------------
-export interface TableThemeExtension<Value> {
-  Table?: {
-    base: Value;
-    variant?: {
-      [key: string]: Value;
-    };
-  };
-}
+export interface TableThemeExtension
+  extends ThemeExtensionsWithParts<
+    'Table',
+    ['table', 'header', 'row', 'cell']
+  > {}
 
 // Props
 // ---------------
