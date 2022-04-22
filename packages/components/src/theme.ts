@@ -37,7 +37,8 @@ import { type TooltipThemeExtension } from './Tooltip';
 import { type ValidationMessageThemeExtension } from './ValidationMessage';
 
 interface ComponentStyles
-  extends ButtonThemeExtension,
+  extends BadgeThemeExtension,
+    ButtonThemeExtension,
     CardThemeExtension,
     CheckboxThemeExtension,
     ContentThemeExtension,
