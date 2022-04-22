@@ -5257,7 +5257,7 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1
     dependencies:
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       '@react-aria/focus': 3.5.4_react@17.0.2
       '@react-aria/i18n': 3.3.8_react@17.0.2
       '@react-aria/interactions': 3.8.3_react@17.0.2
@@ -5350,7 +5350,7 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1
     dependencies:
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       '@react-aria/utils': 3.11.3_react@17.0.2
       '@react-aria/visually-hidden': 3.2.7_react@17.0.2
       react: 17.0.2
@@ -5476,7 +5476,7 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1
     dependencies:
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       '@react-aria/focus': 3.5.4_react@17.0.2
       '@react-aria/grid': 3.2.5_react-dom@17.0.2+react@17.0.2
       '@react-aria/i18n': 3.3.8_react@17.0.2
@@ -5591,7 +5591,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1
     dependencies:
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       '@react-stately/selection': 3.9.3_react@17.0.2
       '@react-types/grid': 3.0.3_react@17.0.2
       '@react-types/shared': 3.11.2_react@17.0.2
@@ -5668,7 +5668,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1
     dependencies:
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       '@react-stately/collections': 3.3.7_react@17.0.2
       '@react-stately/grid': 3.1.3_react@17.0.2
       '@react-stately/selection': 3.9.3_react@17.0.2
@@ -5729,7 +5729,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1
     dependencies:
-      '@babel/runtime': 7.17.8
+      '@babel/runtime': 7.17.9
       '@react-aria/utils': 3.11.3_react@17.0.2
       '@react-types/shared': 3.11.2_react@17.0.2
       react: 17.0.2
