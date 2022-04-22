@@ -2,7 +2,6 @@ import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
-import { Box } from '@marigold/system';
 
 export default {
   title: 'Components/Button',
