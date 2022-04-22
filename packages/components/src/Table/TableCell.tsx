@@ -17,9 +17,12 @@ import { Text } from '../Text';
 export interface TableCellProps {
   item: Node<object>;
   state: TableState<object>;
+  /**
+   * Wheter it is a cell with a checkbox or a regular data cell
+   */
   isSelectionCell?: boolean;
   align?: 'left' | 'center' | 'right';
-  styles?: CSSObject;
+  css?: CSSObject;
 }
 
 // TableCell Component
@@ -29,16 +32,10 @@ export const TableCell: React.FC<TableCellProps> = ({
   state,
   isSelectionCell,
   align = 'left',
-  styles,
+  css,
 }) => {
-  const ref = useRef<HTMLElement>();
-  const { gridCellProps } = useTableCell(
-    { node: cell },
-    state,
-    ref as RefObject<HTMLElement>
-  );
-  const { focusProps, isFocusVisible } = useFocusRing();
-  const stateProps = useStateProps({ focus: isFocusVisible });
+  const cellRef = useRef(null);
+  const { gridCellProps } = useTableCell({ node: cell }, state, cellRef);
 
   const { checkboxProps } = useTableSelectionCheckbox(
     { key: cell.parentKey! },
@@ -51,17 +48,18 @@ export const TableCell: React.FC<TableCellProps> = ({
     inputRef
   );
 
+  const { focusProps, isFocusVisible } = useFocusRing();
+  const stateProps = useStateProps({ focus: isFocusVisible });
+
   return (
     <Box
       as="td"
-      {...mergeProps(gridCellProps, focusProps)}
-      ref={ref as RefObject<HTMLTableCellElement>}
+      ref={cellRef}
       __baseCSS={{
-        ...{
-          textAlign: isSelectionCell ? 'center' : align,
-        },
-        ...styles,
+        textAlign: isSelectionCell ? 'center' : align,
       }}
+      css={css}
+      {...mergeProps(gridCellProps, focusProps)}
       {...stateProps}
     >
       {isSelectionCell ? (
