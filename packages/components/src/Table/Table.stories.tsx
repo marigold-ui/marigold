@@ -1,14 +1,7 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
-import {
-  Cell,
-  Column,
-  Row,
-  Stack,
-  Table,
-  TableBody,
-  TableHeader,
-} from '@marigold/components';
+import { Stack } from '../Stack';
+import { Table } from './Table';
 
 export default {
   title: 'Components/Table',
@@ -43,38 +36,38 @@ export default {
 
 export const Basic: ComponentStory<typeof Table> = args => (
   <Table aria-label="Table with selection" {...args}>
-    <TableHeader>
-      <Column>Name</Column>
-      <Column>Firstname</Column>
-      <Column>House</Column>
-      <Column>Year of birth</Column>
-    </TableHeader>
-    <TableBody>
-      <Row key={1}>
-        <Cell>Potter</Cell>
-        <Cell>Harry</Cell>
-        <Cell>Gryffindor</Cell>
-        <Cell>1980</Cell>
-      </Row>
-      <Row key={2}>
-        <Cell>Malfoy</Cell>
-        <Cell>Draco</Cell>
-        <Cell>Slytherin</Cell>
-        <Cell>1980</Cell>
-      </Row>
-      <Row key={3}>
-        <Cell>Diggory</Cell>
-        <Cell>Cedric</Cell>
-        <Cell>Hufflepuff</Cell>
-        <Cell>1977</Cell>
-      </Row>
-      <Row key={4}>
-        <Cell>Lovegood</Cell>
-        <Cell>Luna</Cell>
-        <Cell>Ravenclaw</Cell>
-        <Cell>1981</Cell>
-      </Row>
-    </TableBody>
+    <Table.Header>
+      <Table.Column>Name</Table.Column>
+      <Table.Column>Firstname</Table.Column>
+      <Table.Column>House</Table.Column>
+      <Table.Column>Year of birth</Table.Column>
+    </Table.Header>
+    <Table.Body>
+      <Table.Row key={1}>
+        <Table.Cell>Potter</Table.Cell>
+        <Table.Cell>Harry</Table.Cell>
+        <Table.Cell>Gryffindor</Table.Cell>
+        <Table.Cell>1980</Table.Cell>
+      </Table.Row>
+      <Table.Row key={2}>
+        <Table.Cell>Malfoy</Table.Cell>
+        <Table.Cell>Draco</Table.Cell>
+        <Table.Cell>Slytherin</Table.Cell>
+        <Table.Cell>1980</Table.Cell>
+      </Table.Row>
+      <Table.Row key={3}>
+        <Table.Cell>Diggory</Table.Cell>
+        <Table.Cell>Cedric</Table.Cell>
+        <Table.Cell>Hufflepuff</Table.Cell>
+        <Table.Cell>1977</Table.Cell>
+      </Table.Row>
+      <Table.Row key={4}>
+        <Table.Cell>Lovegood</Table.Cell>
+        <Table.Cell>Luna</Table.Cell>
+        <Table.Cell>Ravenclaw</Table.Cell>
+        <Table.Cell>1981</Table.Cell>
+      </Table.Row>
+    </Table.Body>
   </Table>
 );
 
@@ -125,12 +118,16 @@ export const ControlledTable: ComponentStory<typeof Table> = args => {
         {...args}
         onSelectionChange={key => setSelectedKeys(new Set(key))}
       >
-        <TableHeader columns={columns}>
-          {column => <Column>{column.name}</Column>}
-        </TableHeader>
-        <TableBody items={rows}>
-          {item => <Row>{columnKey => <Cell>{item[columnKey]}</Cell>}</Row>}
-        </TableBody>
+        <Table.Header columns={columns}>
+          {column => <Table.Column>{column.name}</Table.Column>}
+        </Table.Header>
+        <Table.Body items={rows}>
+          {item => (
+            <Table.Row>
+              {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+            </Table.Row>
+          )}
+        </Table.Body>
       </Table>
       <div>Selected rows: {selectedKeys}</div>
     </Stack>

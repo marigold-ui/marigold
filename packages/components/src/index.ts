@@ -41,10 +41,3 @@ export * from './Container';
 export * from './ValidationMessage';
 
 export { Item, Section } from '@react-stately/collections';
-export {
-  Cell,
-  Column,
-  Row,
-  TableBody,
-  TableHeader,
-} from '@react-stately/table';

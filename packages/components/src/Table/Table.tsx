@@ -1,6 +1,14 @@
-import React, { RefObject, useRef } from 'react';
-import { useTable, TableProps as TablePropsStately } from '@react-aria/table';
-import { TableStateProps, useTableState } from '@react-stately/table';
+import React, { ReactNode, useRef } from 'react';
+import { useTable, TableProps as AriaTableProps } from '@react-aria/table';
+import {
+  Cell,
+  Column,
+  Row,
+  TableBody,
+  TableHeader,
+  TableStateProps,
+  useTableState,
+} from '@react-stately/table';
 
 import { ThemeExtensionsWithParts, useComponentStyles } from '@marigold/system';
 
@@ -23,8 +31,8 @@ export interface TableThemeExtension
 // Props
 // ---------------
 export interface TableProps
-  extends TableStateProps<object>,
-    TablePropsStately<object> {
+  extends AriaTableProps<object>,
+    TableStateProps<object> {
   align?: TableCellProps['align'];
   alignHeader?: TableColumnHeaderProps['align'];
   variant?: string;
@@ -33,23 +41,23 @@ export interface TableProps
 
 // Table Component
 // ---------------
-export const Table: React.FC<TableProps> = ({
+export const Table: Table = ({
   align,
   alignHeader,
   variant,
   size,
   ...props
-}) => {
-  const { selectionMode, selectionBehavior } = props;
+}: TableProps) => {
+  // Setup table state and mode
+  const showSelectionCheckboxes =
+    props.selectionMode === 'multiple' && props.selectionBehavior !== 'replace';
   const state = useTableState({
     ...props,
-    showSelectionCheckboxes:
-      selectionMode === 'multiple' && selectionBehavior !== 'replace',
+    showSelectionCheckboxes,
   });
 
-  const ref = useRef<HTMLElement>();
-  const { collection } = state;
-  const { gridProps } = useTable(props, state, ref as RefObject<HTMLElement>);
+  const ref = useRef(null);
+  const { gridProps } = useTable(props, state, ref);
 
   const styles = useComponentStyles(
     'Table',
@@ -58,14 +66,9 @@ export const Table: React.FC<TableProps> = ({
   );
 
   return (
-    <Box
-      as="table"
-      __baseCSS={styles.table}
-      {...gridProps}
-      ref={ref as RefObject<HTMLTableElement>}
-    >
+    <Box as="table" ref={ref} __baseCSS={styles.table} {...gridProps}>
       <TableRowGroup type="thead">
-        {collection.headerRows.map(headerRow => (
+        {state.collection.headerRows.map(headerRow => (
           <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
             {[...headerRow.childNodes].map(column => (
               <TableColumnHeader
@@ -81,7 +84,7 @@ export const Table: React.FC<TableProps> = ({
         ))}
       </TableRowGroup>
       <TableRowGroup type="tbody">
-        {[...collection.body.childNodes].map(row => (
+        {[...state.collection.body.childNodes].map(row => (
           <TableRow styles={styles.row} key={row.key} item={row} state={state}>
             {[...row.childNodes].map(cell => (
               <TableCell
@@ -99,3 +102,23 @@ export const Table: React.FC<TableProps> = ({
     </Box>
   );
 };
+
+// Export collection components to conveniently have access to them.
+Table.Body = TableBody;
+Table.Cell = Cell;
+Table.Column = Column;
+Table.Header = TableHeader;
+Table.Row = Row;
+
+/**
+ * Necessary since TypeScript can not infer the
+ * types of the @react-stately components correctly.
+ */
+interface Table {
+  (props: TableProps): JSX.Element;
+  Body: typeof TableBody;
+  Cell: typeof Cell;
+  Column: typeof Column;
+  Header: typeof TableHeader;
+  Row: typeof Row;
+}

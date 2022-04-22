@@ -9,6 +9,9 @@ export const Table: Theme['components']['Table'] = {
       cursor: 'default',
       color: 'gray00',
       bg: 'gray50',
+
+      '&:nth-child(even)': { bg: 'gray60' },
+
       '&:focus': {
         outlineColor: 'orange60',
       },
