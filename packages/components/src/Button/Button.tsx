@@ -1,9 +1,24 @@
-import React, { ReactNode, useRef } from 'react';
+import React, {
+  forwardRef,
+  ReactNode,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import { useButton } from '@react-aria/button';
+import { useFocusRing } from '@react-aria/focus';
+import { mergeProps } from '@react-aria/utils';
 import { PressEvents } from '@react-types/shared';
 
-import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
-import { PolymorphicComponent, PolymorphicProps } from '@marigold/types';
+import {
+  Box,
+  ThemeExtension,
+  useComponentStyles,
+  useStateProps,
+} from '@marigold/system';
+import {
+  PolymorphicComponentWithRef,
+  PolymorphicPropsWithRef,
+} from '@marigold/types';
 
 // Theme Extension
 // ---------------
@@ -18,48 +33,63 @@ export interface ButtonOwnProps extends PressEvents {
 }
 
 export interface ButtonProps
-  extends Omit<PolymorphicProps<ButtonOwnProps, 'button'>, 'onClick'> {}
+  extends PolymorphicPropsWithRef<ButtonOwnProps, 'button'> {}
 
 // Component
 // ---------------
-export const Button = (({
-  as = 'button',
-  children,
-  variant,
-  size,
-  disabled,
-  ...props
-}: ButtonProps) => {
-  const styles = useComponentStyles('Button', { variant, size });
+export const Button: PolymorphicComponentWithRef<ButtonOwnProps, 'button'> =
+  forwardRef(
+    (
+      {
+        as = 'button',
+        children,
+        variant,
+        size,
+        disabled,
+        ...props
+      }: Omit<ButtonProps, 'ref'>,
+      ref
+    ) => {
+      const buttonRef = useRef(null);
+      // FIXME
+      useImperativeHandle(ref, () => buttonRef.current);
 
-  const ref = useRef<any>();
-  const { buttonProps } = useButton(
-    {
-      /**
-       * `react-aria` only expected `Element` but our
-       * props are from HTMLButtonElement.
-       */
-      ...(props as any),
-      elementType: typeof as === 'string' ? as : 'span',
-      isDisabled: disabled,
-    },
-    ref
-  );
+      const { buttonProps, isPressed } = useButton(
+        {
+          /**
+           * `react-aria` only expected `Element` but our
+           * props are from `HTMLButtonElement` 🤫
+           */
+          ...(props as any),
+          elementType: typeof as === 'string' ? as : 'span',
+          isDisabled: disabled,
+        },
+        buttonRef
+      );
 
-  return (
-    <Box
-      {...buttonProps}
-      as={as}
-      ref={ref}
-      __baseCSS={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '0.5ch',
-        cursor: disabled ? 'not-allowed' : 'pointer',
-      }}
-      css={styles}
-    >
-      {children}
-    </Box>
+      const { isFocusVisible, focusProps } = useFocusRing();
+      const styles = useComponentStyles('Button', { variant, size });
+      const stateProps = useStateProps({
+        active: isPressed,
+        focus: isFocusVisible,
+      });
+
+      return (
+        <Box
+          {...mergeProps(buttonProps, focusProps)}
+          {...stateProps}
+          as={as}
+          ref={buttonRef}
+          __baseCSS={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5ch',
+            cursor: disabled ? 'not-allowed' : 'pointer',
+          }}
+          css={styles}
+        >
+          {children}
+        </Box>
+      );
+    }
   );
-}) as PolymorphicComponent<ButtonOwnProps, 'button'>;

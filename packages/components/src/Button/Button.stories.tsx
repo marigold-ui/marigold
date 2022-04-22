@@ -50,5 +50,7 @@ export const WithIcon: ComponentStory<typeof Button> = ({
 );
 
 export const OnPress: ComponentStory<typeof Button> = args => (
-  <Button {...args} onPress={(e: any) => console.log(e)} />
+  <>
+    <Button {...args} onPress={(e: any) => console.log(e)} />
+  </>
 );
