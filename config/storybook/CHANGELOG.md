@@ -1,5 +1,17 @@
 # @marigold/storybook-config
 
+## 0.5.1
+
+### Patch Changes
+
+- [#2010](https://github.com/marigold-ui/marigold/pull/2010) [`e100b82d`](https://github.com/marigold-ui/marigold/commit/e100b82d23329786d95c52fc9b26854673247079) Thanks [@renovate](https://github.com/apps/renovate)! - fix(deps): update storybook monorepo to v6.4.22
+
+- Updated dependencies [[`121e2b3a`](https://github.com/marigold-ui/marigold/commit/121e2b3aa2fd1d87c534c92a9665678abe031d20), [`d79a590a`](https://github.com/marigold-ui/marigold/commit/d79a590aeb7dcbda23ddb40e3f712385c2b11da0), [`5dfe5f88`](https://github.com/marigold-ui/marigold/commit/5dfe5f8869c7cd9f5ca912575990b211ee9d3a69), [`37b3b0e9`](https://github.com/marigold-ui/marigold/commit/37b3b0e93bc12ff93946a314d6128b2c50089157), [`6e4f52cf`](https://github.com/marigold-ui/marigold/commit/6e4f52cf1f6d74d5c6464feab642187e5c9c2720), [`cc149c9a`](https://github.com/marigold-ui/marigold/commit/cc149c9aaaf11f78a58f0c6d51bc9f12720f18a4), [`6b693a0c`](https://github.com/marigold-ui/marigold/commit/6b693a0cfbe1c543f0e20bd6493bbe48c7b5c05d), [`f6c3263f`](https://github.com/marigold-ui/marigold/commit/f6c3263fc327478372069b7a3d6352e151af930c), [`413df088`](https://github.com/marigold-ui/marigold/commit/413df088ed497a3dfb4221c31a1b68245f43e984), [`4ff1e2b6`](https://github.com/marigold-ui/marigold/commit/4ff1e2b6e668db90cfb7e2d04d9365c80dbf4cc2), [`872c7413`](https://github.com/marigold-ui/marigold/commit/872c7413f7dca317fc048437634c78d909cefd15), [`59f3e6f3`](https://github.com/marigold-ui/marigold/commit/59f3e6f31c00c422bc95b25fb0faf1b77bc9a273), [`a98ddc11`](https://github.com/marigold-ui/marigold/commit/a98ddc11076150886d4384cc7a7e7cc12f4c2494), [`3dff2282`](https://github.com/marigold-ui/marigold/commit/3dff2282b75ca91547f478f3305b138d1d409670), [`7fc15cb7`](https://github.com/marigold-ui/marigold/commit/7fc15cb7624b5ccb8c282f238fa6954947789731), [`08ee4bf5`](https://github.com/marigold-ui/marigold/commit/08ee4bf520779e1696b18d2959bed89e0bac2d39), [`37d2fd69`](https://github.com/marigold-ui/marigold/commit/37d2fd69aafedd288490410dc56be1ede43bd41d), [`7c1129dc`](https://github.com/marigold-ui/marigold/commit/7c1129dc140d435e5312f80a57fd48f8498c33ee), [`b3246070`](https://github.com/marigold-ui/marigold/commit/b3246070c7bd3dcadb28e30140aead330a6b9ff1), [`cc01f7dc`](https://github.com/marigold-ui/marigold/commit/cc01f7dc5e9aae665511374b1352efa9f2c942bf), [`f0ec4333`](https://github.com/marigold-ui/marigold/commit/f0ec433306319e6ed948bfa573a18aad6c41906c), [`6dd92ad6`](https://github.com/marigold-ui/marigold/commit/6dd92ad6e8ecc8bbf3d578413bd2b2c5fbe5a6f8), [`733f5488`](https://github.com/marigold-ui/marigold/commit/733f54887393503fbdeb4fb6803d3bd267ec6138), [`4d220862`](https://github.com/marigold-ui/marigold/commit/4d2208627bc3716ea2fbe0a5ce2dcd8577f5f550)]:
+  - @marigold/components@0.9.0
+  - @marigold/theme-b2b@6.0.0
+  - @marigold/theme-unicorn@3.0.0
+  - @marigold/theme-core@6.0.0
+
 ## 0.5.0
 
 ### Minor Changes

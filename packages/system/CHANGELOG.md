@@ -1,5 +1,20 @@
 # @marigold/system
 
+## 0.9.0
+
+### Patch Changes
+
+- [#1979](https://github.com/marigold-ui/marigold/pull/1979) [`424f1705`](https://github.com/marigold-ui/marigold/commit/424f1705159d7a03dce368adadbae152acc80687) Thanks [@sebald](https://github.com/sebald)! - feat: transform state to corresponding css selector and data-attr
+
+* [#1972](https://github.com/marigold-ui/marigold/pull/1972) [`dbc55934`](https://github.com/marigold-ui/marigold/commit/dbc55934775a6c2362525f0078ecf1595475ddc8) Thanks [@sebald](https://github.com/sebald)! - feat: introduce `useComponentStyles` hook
+
+- [#1994](https://github.com/marigold-ui/marigold/pull/1994) [`3dff2282`](https://github.com/marigold-ui/marigold/commit/3dff2282b75ca91547f478f3305b138d1d409670) Thanks [@sarahgm](https://github.com/sarahgm)! - Refa: card-styles-structur
+
+* [#1988](https://github.com/marigold-ui/marigold/pull/1988) [`7c1129dc`](https://github.com/marigold-ui/marigold/commit/7c1129dc140d435e5312f80a57fd48f8498c33ee) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: Field Component restructure
+
+* Updated dependencies [[`7c1129dc`](https://github.com/marigold-ui/marigold/commit/7c1129dc140d435e5312f80a57fd48f8498c33ee)]:
+  - @marigold/types@0.4.1
+
 ## 0.8.0
 
 ### Minor Changes

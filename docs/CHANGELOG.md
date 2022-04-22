@@ -1,5 +1,60 @@
 # @marigold/docs
 
+## 0.9.0
+
+### Minor Changes
+
+- [#2016](https://github.com/marigold-ui/marigold/pull/2016) [`d79a590a`](https://github.com/marigold-ui/marigold/commit/d79a590aeb7dcbda23ddb40e3f712385c2b11da0) Thanks [@sebald](https://github.com/sebald)! - refa: <Checkbox> and <CheckboxGroup>
+
+* [#1987](https://github.com/marigold-ui/marigold/pull/1987) [`cc149c9a`](https://github.com/marigold-ui/marigold/commit/cc149c9aaaf11f78a58f0c6d51bc9f12720f18a4) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): introduce Table component v1
+
+- [#1963](https://github.com/marigold-ui/marigold/pull/1963) [`872c7413`](https://github.com/marigold-ui/marigold/commit/872c7413f7dca317fc048437634c78d909cefd15) Thanks [@sebald](https://github.com/sebald)! - feat: Introduce a new input for text `<TextField>`
+
+* [#1964](https://github.com/marigold-ui/marigold/pull/1964) [`08ee4bf5`](https://github.com/marigold-ui/marigold/commit/08ee4bf520779e1696b18d2959bed89e0bac2d39) Thanks [@sebald](https://github.com/sebald)! - refa: Use `<Field>` in `<TextArea>`
+
+- [#1997](https://github.com/marigold-ui/marigold/pull/1997) [`37d2fd69`](https://github.com/marigold-ui/marigold/commit/37d2fd69aafedd288490410dc56be1ede43bd41d) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: New component <Content>
+
+### Patch Changes
+
+- [#2017](https://github.com/marigold-ui/marigold/pull/2017) [`5dfe5f88`](https://github.com/marigold-ui/marigold/commit/5dfe5f8869c7cd9f5ca912575990b211ee9d3a69) Thanks [@sarahgm](https://github.com/sarahgm)! - Button restructure
+
+* [#1968](https://github.com/marigold-ui/marigold/pull/1968) [`3476f21f`](https://github.com/marigold-ui/marigold/commit/3476f21fdf5e2213196cff3ec5ef13a75577b3c5) Thanks [@ti10le](https://github.com/ti10le)! - refa(docs): headings fix and use template comps d-p
+
+- [#2018](https://github.com/marigold-ui/marigold/pull/2018) [`6e4f52cf`](https://github.com/marigold-ui/marigold/commit/6e4f52cf1f6d74d5c6464feab642187e5c9c2720) Thanks [@sarahgm](https://github.com/sarahgm)! - Menu component restructure
+
+* [#1939](https://github.com/marigold-ui/marigold/pull/1939) [`870718c0`](https://github.com/marigold-ui/marigold/commit/870718c0886979249f85467e9f2350442832173c) Thanks [@ti10le](https://github.com/ti10le)! - refa(docs): use component page template for components name a-c
+
+- [#1995](https://github.com/marigold-ui/marigold/pull/1995) [`6b693a0c`](https://github.com/marigold-ui/marigold/commit/6b693a0cfbe1c543f0e20bd6493bbe48c7b5c05d) Thanks [@sarahgm](https://github.com/sarahgm)! - fix docu links and card
+
+* [#2013](https://github.com/marigold-ui/marigold/pull/2013) [`f6c3263f`](https://github.com/marigold-ui/marigold/commit/f6c3263fc327478372069b7a3d6352e151af930c) Thanks [@sarahgm](https://github.com/sarahgm)! - feat:Footer component
+
+- [#2015](https://github.com/marigold-ui/marigold/pull/2015) [`724b65ce`](https://github.com/marigold-ui/marigold/commit/724b65ced57cd40971b8fe43cf622f793df88829) Thanks [@sebald](https://github.com/sebald)! - docs: remove theme section
+
+* [#1994](https://github.com/marigold-ui/marigold/pull/1994) [`3dff2282`](https://github.com/marigold-ui/marigold/commit/3dff2282b75ca91547f478f3305b138d1d409670) Thanks [@sarahgm](https://github.com/sarahgm)! - Refa: card-styles-structur
+
+- [#1982](https://github.com/marigold-ui/marigold/pull/1982) [`7fc15cb7`](https://github.com/marigold-ui/marigold/commit/7fc15cb7624b5ccb8c282f238fa6954947789731) Thanks [@sebald](https://github.com/sebald)! - refa: Badge uses new styling solution
+
+* [#2001](https://github.com/marigold-ui/marigold/pull/2001) [`b3246070`](https://github.com/marigold-ui/marigold/commit/b3246070c7bd3dcadb28e30140aead330a6b9ff1) Thanks [@sebald](https://github.com/sebald)! - refa: Use <Headline> instead of <Text>
+
+- [#1967](https://github.com/marigold-ui/marigold/pull/1967) [`93d54845`](https://github.com/marigold-ui/marigold/commit/93d548453bea63d4037519ca9a6d47933b5a821d) Thanks [@ti10le](https://github.com/ti10le)! - refa(docs): update mdx pages with name r-v
+
+* [#2014](https://github.com/marigold-ui/marigold/pull/2014) [`cc01f7dc`](https://github.com/marigold-ui/marigold/commit/cc01f7dc5e9aae665511374b1352efa9f2c942bf) Thanks [@sarahgm](https://github.com/sarahgm)! - Text component restructure
+
+- [#2012](https://github.com/marigold-ui/marigold/pull/2012) [`f0ec4333`](https://github.com/marigold-ui/marigold/commit/f0ec433306319e6ed948bfa573a18aad6c41906c) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: Header component
+
+* [#1998](https://github.com/marigold-ui/marigold/pull/1998) [`6dd92ad6`](https://github.com/marigold-ui/marigold/commit/6dd92ad6e8ecc8bbf3d578413bd2b2c5fbe5a6f8) Thanks [@sarahgm](https://github.com/sarahgm)! - feat(comp): headline component
+
+- [#1966](https://github.com/marigold-ui/marigold/pull/1966) [`ff1d083a`](https://github.com/marigold-ui/marigold/commit/ff1d083a196f4093bc4043b9510da76b390c1b17) Thanks [@ti10le](https://github.com/ti10le)! - refa(docs): update mdx pages with name d-p
+
+* [#1986](https://github.com/marigold-ui/marigold/pull/1986) [`6e5b193f`](https://github.com/marigold-ui/marigold/commit/6e5b193f1ec87dcdc1040fda2ed0f2e4c39cee63) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: delete default variant in docs
+
+* Updated dependencies [[`121e2b3a`](https://github.com/marigold-ui/marigold/commit/121e2b3aa2fd1d87c534c92a9665678abe031d20), [`d79a590a`](https://github.com/marigold-ui/marigold/commit/d79a590aeb7dcbda23ddb40e3f712385c2b11da0), [`5dfe5f88`](https://github.com/marigold-ui/marigold/commit/5dfe5f8869c7cd9f5ca912575990b211ee9d3a69), [`37b3b0e9`](https://github.com/marigold-ui/marigold/commit/37b3b0e93bc12ff93946a314d6128b2c50089157), [`6e4f52cf`](https://github.com/marigold-ui/marigold/commit/6e4f52cf1f6d74d5c6464feab642187e5c9c2720), [`cc149c9a`](https://github.com/marigold-ui/marigold/commit/cc149c9aaaf11f78a58f0c6d51bc9f12720f18a4), [`424f1705`](https://github.com/marigold-ui/marigold/commit/424f1705159d7a03dce368adadbae152acc80687), [`dbc55934`](https://github.com/marigold-ui/marigold/commit/dbc55934775a6c2362525f0078ecf1595475ddc8), [`6b693a0c`](https://github.com/marigold-ui/marigold/commit/6b693a0cfbe1c543f0e20bd6493bbe48c7b5c05d), [`f6c3263f`](https://github.com/marigold-ui/marigold/commit/f6c3263fc327478372069b7a3d6352e151af930c), [`413df088`](https://github.com/marigold-ui/marigold/commit/413df088ed497a3dfb4221c31a1b68245f43e984), [`4ff1e2b6`](https://github.com/marigold-ui/marigold/commit/4ff1e2b6e668db90cfb7e2d04d9365c80dbf4cc2), [`872c7413`](https://github.com/marigold-ui/marigold/commit/872c7413f7dca317fc048437634c78d909cefd15), [`59f3e6f3`](https://github.com/marigold-ui/marigold/commit/59f3e6f31c00c422bc95b25fb0faf1b77bc9a273), [`a98ddc11`](https://github.com/marigold-ui/marigold/commit/a98ddc11076150886d4384cc7a7e7cc12f4c2494), [`3dff2282`](https://github.com/marigold-ui/marigold/commit/3dff2282b75ca91547f478f3305b138d1d409670), [`7fc15cb7`](https://github.com/marigold-ui/marigold/commit/7fc15cb7624b5ccb8c282f238fa6954947789731), [`08ee4bf5`](https://github.com/marigold-ui/marigold/commit/08ee4bf520779e1696b18d2959bed89e0bac2d39), [`37d2fd69`](https://github.com/marigold-ui/marigold/commit/37d2fd69aafedd288490410dc56be1ede43bd41d), [`7c1129dc`](https://github.com/marigold-ui/marigold/commit/7c1129dc140d435e5312f80a57fd48f8498c33ee), [`b3246070`](https://github.com/marigold-ui/marigold/commit/b3246070c7bd3dcadb28e30140aead330a6b9ff1), [`cc01f7dc`](https://github.com/marigold-ui/marigold/commit/cc01f7dc5e9aae665511374b1352efa9f2c942bf), [`f0ec4333`](https://github.com/marigold-ui/marigold/commit/f0ec433306319e6ed948bfa573a18aad6c41906c), [`6dd92ad6`](https://github.com/marigold-ui/marigold/commit/6dd92ad6e8ecc8bbf3d578413bd2b2c5fbe5a6f8), [`733f5488`](https://github.com/marigold-ui/marigold/commit/733f54887393503fbdeb4fb6803d3bd267ec6138), [`4d220862`](https://github.com/marigold-ui/marigold/commit/4d2208627bc3716ea2fbe0a5ce2dcd8577f5f550)]:
+  - @marigold/components@0.9.0
+  - @marigold/theme-b2b@6.0.0
+  - @marigold/system@0.9.0
+  - @marigold/types@0.4.1
+  - @marigold/icons@0.6.1
+
 ## 0.8.0
 
 ### Minor Changes
