@@ -1,5 +1,6 @@
 ---
 title: Checkbox
+figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=467%3A159
 ---
 
 import { FigmaLink } from '../../src/components/FigmaLink';
@@ -7,120 +8,77 @@ import { DoAndDont } from '../../src/components/DoAndDont';
 
 # Checkbox
 
-Checkboxes allow users to select multiple items from a list of individual items,
-or to mark one individual item as selected.
+The `Checkbox` components allows users to select one or more options from a list of options. In order to group multiple checkboxes, use the `CheckboxGroup` component.
 
 <MarigoldTheme>
-  <Inline space="medium">
-    <Checkbox id="unchecked" aria-label="unchecked" />
-    <Checkbox id="disabled" aria-label="disabled" disabled />
-    <Checkbox id="checked" aria-label="checked" checked />
-    <Checkbox
-      id="disabled-checked"
-      aria-label="disabled-checked"
-      checked
-      disabled
-    />
-    <Checkbox
-      id="indeterminated-checked"
-      aria-label="indeterminated-checked"
-      checked
-      indeterminated
-    />
-  </Inline>
+  <Checkbox defaultChecked>I will not talk about Fight Club</Checkbox>
 </MarigoldTheme>
 
 ```tsx onlyCode
-import { Checkbox } from '@marigold/components';
+import { Checkbox, CheckboxGroup } from '@marigold/components';
 ```
-
-<FigmaLink
-  to={
-    'https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=467%3A159'
-  }
-/>
 
 ## Props
 
-| Property                    | Type      | Default     |
-| :-------------------------- | :-------- | :---------- |
-| `id`                        | `string`  |             |
-| `variant` (optional)        | `string`  | `__default` |
-| `labelVariant` (optional)   | `string`  | `inline`    |
-| `required` (optional)       | `boolean` | `false`     |
-| `disabled` (optional)       | `boolean` | `false`     |
-| `indeterminated` (optional) | `boolean` | `false`     |
-| `error` (optional)          | `boolean` | `false`     |
-| `errorMessage` (optional)   | `string`  |             |
+| Name               | Type      | Default     | Description                                                                                                        |
+| :----------------- | :-------- | :---------- | :----------------------------------------------------------------------------------------------------------------- |
+| `variant`          | `string`  |             | Use a different _variant_ from theme                                                                               |
+| `size`             | `string`  | `'level-1'` | Use a different _size_ from theme                                                                                  |
+| `error` (optional) | `boolean` | `false`     | If `true`, the checkbox is considered invalid and if set the `errorMessage` is shown instead of the `description`. |
+| ...                |           |             | Yes you can use all regular attributes of `input`!                                                                 |
 
 ## Examples
 
-### Checkbox standard labeled
+### Simple Checkbox
 
-```tsx expandCode
-() => {
-  const [isChecked, setChecked] = React.useState(false);
-  const onChange = () => {
-    setChecked(!isChecked);
-  };
-  return (
-    <Checkbox
-      id="standard"
-      name="standard"
-      onChange={onChange}
-      checked={isChecked}
-      value="Checkbox"
-    >
-      Agree to Marigold terms
-    </Checkbox>
-  );
-};
+```tsx
+<Checkbox>Agree to business terms</Checkbox>
 ```
 
 ### Checkbox disabled
 
 ```tsx
 <>
-  <Checkbox id="disabled" disabled>
-    Disabled
-  </Checkbox>
+  <Checkbox disabled>Disabled</Checkbox>
   <br />
-  <Checkbox id="checkedDisabled" checked disabled>
+  <Checkbox checked disabled>
     Checked and disabled
   </Checkbox>
 </>
 ```
 
-### Checkbox required label
-
-```tsx
-<Checkbox checked id="required" value="required" required>
-  Agree to Marigold terms
-</Checkbox>
-```
-
-### Checkbox error and errorMessage
-
-```tsx
-<Checkbox
-  id="error"
-  value="error"
-  error
-  errorMessage="Please check the required checkbox"
-  required
->
-  Agree to Marigold terms
-</Checkbox>
-```
-
-### Indeterminated Checkbox
+### Indeterminate Checkbox
 
 Use indeterminate state when it represents both selected and not selected values.
 
 ```tsx
-<Checkbox id="selectAll" checked indeterminated>
+<Checkbox defaultChecked indeterminate>
   Select all
 </Checkbox>
+```
+
+### Group checkboxes
+
+```tsx
+() => {
+  const [selected, setSelected] = React.useState([]);
+  return (
+    <>
+      <CheckboxGroup label="Choose your toppings:" onChange={setSelected}>
+        <Checkbox value="ham">🐖 Ham</Checkbox>
+        <Checkbox value="beef" disabled>
+          🐄 Beef (out of stock)
+        </Checkbox>
+        <Checkbox value="tuna">🐟 Tuna</Checkbox>
+        <Checkbox value="tomatos">🍅 Tomatos</Checkbox>
+        <Checkbox value="onions">🧅 Onions</Checkbox>
+        <Checkbox value="pineapple">🍍 Pineapple</Checkbox>
+      </CheckboxGroup>
+      <hr />
+      <pre>Selected values: {selected.join(', ')}</pre>
+    </>
+  );
+};
 ```
 
 ## Dos & Don'ts

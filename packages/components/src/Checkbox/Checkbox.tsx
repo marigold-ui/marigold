@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
+import { useCheckbox, useCheckboxGroupItem } from '@react-aria/checkbox';
 import { useFocusRing } from '@react-aria/focus';
-import { useCheckbox } from '@react-aria/checkbox';
-import { VisuallyHidden } from '@react-aria/visually-hidden';
+import { useHover } from '@react-aria/interactions';
 import { useToggleState } from '@react-stately/toggle';
 import { AriaCheckboxProps } from '@react-types/checkbox';
 
@@ -15,6 +15,8 @@ import {
   useStateProps,
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
+
+import { useCheckboxGroupContext } from './CheckboxGroup';
 
 // Theme Extension
 // ---------------
@@ -111,40 +113,69 @@ export const Checkbox = ({
   ...props
 }: CheckboxProps) => {
   const ref = React.useRef<HTMLInputElement>(null);
+  // Adjust props to the react-aria API
+  const checkboxProps = {
+    isIndeterminate: indeterminate,
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    isRequired: required,
+    validationState: error ? 'invalid' : 'valid',
+  } as const;
+
+  /**
+   * Use hook depending if the checkbox is used inside a group or standalone.
+   * This is unusual, but since the checkboxs is not moving out of the group,
+   * it should be safe.
+   */
+  const groupState = useCheckboxGroupContext();
+
+  /* eslint-disable react-hooks/rules-of-hooks */
+  const { inputProps } = groupState
+    ? useCheckboxGroupItem(
+        {
+          ...props,
+          ...checkboxProps,
+          /**
+           * value is optional for standalone checkboxes, but required when
+           * used inside a group.
+           */
+          value: props.value as string,
+        },
+        groupState,
+        ref
+      )
+    : useCheckbox(
+        {
+          isSelected: checked,
+          defaultSelected: defaultChecked,
+          ...checkboxProps,
+          ...props,
+        },
+        useToggleState({
+          isSelected: checked,
+          defaultSelected: defaultChecked,
+          ...props,
+        }),
+        ref
+      );
+  /* eslint-enable react-hooks/rules-of-hooks */
+
   const styles = useComponentStyles(
     'Checkbox',
-    { variant, size },
+    { variant: groupState?.variant || variant, size: groupState?.size || size },
     { parts: ['container', 'label', 'checkbox'] }
   );
 
-  const state = useToggleState({
-    isSelected: checked,
-    defaultSelected: defaultChecked,
-    ...props,
-  });
-  const { inputProps } = useCheckbox(
-    {
-      isSelected: checked,
-      defaultSelected: defaultChecked,
-      isIndeterminate: indeterminate,
-      isDisabled: disabled,
-      isReadOnly: readOnly,
-      isRequired: required,
-      validationState: error ? 'invalid' : 'valid',
-      ...props,
-    },
-    state,
-    ref
-  );
+  const { hoverProps, isHovered } = useHover({});
   const { isFocusVisible, focusProps } = useFocusRing();
-
   const stateProps = useStateProps({
-    checked: state.isSelected,
+    hover: isHovered,
     focus: isFocusVisible,
+    checked: inputProps.checked,
     disabled: inputProps.disabled,
+    error: groupState?.error || error,
     readOnly,
     indeterminate,
-    error,
   });
 
   return (
@@ -155,17 +186,31 @@ export const Checkbox = ({
         display: 'flex',
         alignItems: 'center',
         gap: '1ch',
-        userSelect: 'none',
-        '&:hover': { cursor: inputProps.disabled ? 'not-allowed' : 'pointer' },
+        position: 'relative',
       }}
       css={styles.container}
+      {...hoverProps}
       {...stateProps}
     >
-      <VisuallyHidden>
-        <input {...inputProps} {...focusProps} ref={ref} />
-      </VisuallyHidden>
+      <Box
+        as="input"
+        type="checkbox"
+        ref={ref}
+        css={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          top: 0,
+          left: 0,
+          zIndex: 1,
+          opacity: 0.0001,
+          cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
+        }}
+        {...inputProps}
+        {...focusProps}
+      />
       <Icon
-        checked={state.isSelected}
+        checked={inputProps.checked}
         indeterminate={indeterminate}
         css={styles.checkbox}
         {...stateProps}
