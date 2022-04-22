@@ -107,20 +107,6 @@ const button = {
     borderRadius: 'small',
     display: 'inline-flex',
   },
-  menu: {
-    color: 'secondary',
-    bg: 'background',
-    ':hover': {
-      color: 'background',
-      bg: 'gray60',
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'gray40',
-      bg: 'gray20',
-      cursor: 'not-allowed',
-    },
-  },
   select: {
     ...selectButton,
     border: '1px solid transparent',
@@ -275,13 +261,6 @@ export const component = {
       lineHeight: 'large',
       paddingX: 'medium',
     },
-    text: {
-      ...button.root,
-    },
-    menu: {
-      ...button.root,
-      ...button.menu,
-    },
     select: {
       ...button.root,
       ...button.select,
@@ -311,21 +290,6 @@ export const component = {
       fontSize: 'small',
       lineHeight: 'large',
       color: 'gray50',
-    },
-  },
-  menuItem: {
-    default: {
-      display: 'block',
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      fontWeight: 'body',
-      padding: 'xsmall',
-      bg: 'background',
-      color: 'text',
-      ':hover': {
-        bg: 'gray30',
-        cursor: 'pointer',
-      },
     },
   },
   message: {

@@ -32,7 +32,7 @@ export const Button: Theme['components']['Button'] = {
     secondary: {
       color: 'background',
       bg: 'secondary',
-      ':hover': {
+      '&:hover': {
         color: 'background',
         bg: 'gray60',
       },
@@ -53,6 +53,20 @@ export const Button: Theme['components']['Button'] = {
         outlineColor: 'gray70',
         bg: 'gray30',
       },
+    },
+    menu: {
+      color: 'secondary',
+      bg: 'background',
+      '&:hover': {
+        color: 'background',
+        bg: 'gray60',
+      },
+    },
+  },
+  size: {
+    small: {
+      lineHeight: '32px',
+      px: 'small',
     },
   },
 };

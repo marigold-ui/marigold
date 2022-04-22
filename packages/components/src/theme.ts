@@ -23,13 +23,12 @@ import type { ImageThemeExtension } from './Image';
 import type { InputThemeExtension } from './Input';
 import type { LabelThemeExtension } from './Field/Label';
 import type { LinkThemeExtension } from './Link';
+import type { MenuThemeExtension } from './Menu';
 import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
 
 // Old Styling Solution
 import { type LabelThemeExtension as LegacyLabelThemeExtension } from './Label';
-import { type MenuThemeExtension } from './Menu';
-import { type MenuItemThemeExtension } from './MenuItem';
 import { type MessageThemeExtension } from './Message';
 import { type RadioThemeExtension } from './Radio';
 import { type SelectThemeExtension } from './Select';
@@ -52,10 +51,11 @@ interface ComponentStyles
     HeadlineThemeExtension,
     HelpTextThemeExtension,
     ImageThemeExtension,
-    LabelThemeExtension,
     InputThemeExtension,
     LabelThemeExtension,
+    LabelThemeExtension,
     LinkThemeExtension,
+    MenuThemeExtension,
     TableThemeExtension,
     TextThemeExtension,
     TextAreaThemeExtension {}
@@ -64,8 +64,6 @@ export interface Theme
   extends Scales,
     RootThemeExtension<CSSObject>,
     LegacyLabelThemeExtension<CSSObject>,
-    MenuThemeExtension<CSSObject>,
-    MenuItemThemeExtension<CSSObject>,
     MessageThemeExtension<CSSObject>,
     RadioThemeExtension<CSSObject>,
     SelectThemeExtension<CSSObject>,
