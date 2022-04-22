@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useTable, TableProps as AriaTableProps } from '@react-aria/table';
 import {
   Cell,
@@ -89,11 +89,11 @@ export const Table: Table = ({
             {[...row.childNodes].map(cell => (
               <TableCell
                 key={cell.key}
-                styles={styles.cell}
                 item={cell}
                 state={state}
                 isSelectionCell={cell.props.isSelectionCell}
                 align={align}
+                css={styles.cell}
               />
             ))}
           </TableRow>
