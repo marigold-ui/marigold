@@ -1,4 +1,4 @@
-import React, { RefObject, useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
 import { useFocusRing } from '@react-aria/focus';
 import { useTableRow } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
@@ -12,27 +12,23 @@ import { Box } from '../Box';
 // Props
 // ----------------------------
 export interface TableRowProps {
+  children?: ReactNode;
   item: Node<object>;
   state: TableState<object>;
-  styles?: CSSObject;
+  css?: CSSObject;
 }
 
 // TableRow Component
 // ----------------------------
-export const TableRow: React.FC<TableRowProps> = ({
-  item,
-  state,
-  children,
-  styles,
-}) => {
-  const ref = useRef<HTMLElement>();
+export const TableRow = ({ item, state, children, css }: TableRowProps) => {
+  const ref = useRef(null);
   const isSelected = state.selectionManager.isSelected(item.key);
   const { rowProps } = useTableRow(
     {
       node: item,
     },
     state,
-    ref as RefObject<HTMLElement>
+    ref
   );
   const { focusProps, isFocusVisible } = useFocusRing();
   const stateProps = useStateProps({
@@ -43,9 +39,9 @@ export const TableRow: React.FC<TableRowProps> = ({
   return (
     <Box
       as="tr"
-      ref={ref as RefObject<HTMLTableRowElement>}
+      ref={ref}
+      css={css}
       {...mergeProps(rowProps, focusProps)}
-      __baseCSS={{ ...styles }}
       {...stateProps}
     >
       {children}

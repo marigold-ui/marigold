@@ -1,4 +1,4 @@
-import React, { RefObject, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useCheckbox } from '@react-aria/checkbox';
 import { useFocusRing } from '@react-aria/focus';
 import { useTableCell, useTableSelectionCheckbox } from '@react-aria/table';
@@ -27,13 +27,13 @@ export interface TableCellProps {
 
 // TableCell Component
 // ----------------------------
-export const TableCell: React.FC<TableCellProps> = ({
+export const TableCell = ({
   item: cell,
   state,
   isSelectionCell,
   align = 'left',
   css,
-}) => {
+}: TableCellProps) => {
   const cellRef = useRef(null);
   const { gridCellProps } = useTableCell({ node: cell }, state, cellRef);
 

@@ -67,7 +67,7 @@ export const Table: Table = ({
 
   return (
     <Box as="table" ref={ref} __baseCSS={styles.table} {...gridProps}>
-      <TableRowGroup type="thead">
+      <TableRowGroup as="thead">
         {state.collection.headerRows.map(headerRow => (
           <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
             {[...headerRow.childNodes].map(column => (
@@ -83,9 +83,9 @@ export const Table: Table = ({
           </TableHeaderRow>
         ))}
       </TableRowGroup>
-      <TableRowGroup type="tbody">
+      <TableRowGroup as="tbody">
         {[...state.collection.body.childNodes].map(row => (
-          <TableRow styles={styles.row} key={row.key} item={row} state={state}>
+          <TableRow css={styles.row} key={row.key} item={row} state={state}>
             {[...row.childNodes].map(cell => (
               <TableCell
                 key={cell.key}

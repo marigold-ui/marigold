@@ -1,4 +1,4 @@
-import React, { RefObject, useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
 import { useTableHeaderRow } from '@react-aria/table';
 import { TableState } from '@react-stately/table';
 import { Node } from '@react-types/shared';
@@ -8,24 +8,21 @@ import { Node } from '@react-types/shared';
 export interface TableHeaderRowProps {
   item: Node<object>;
   state: TableState<object>;
+  children?: ReactNode;
 }
 
 // TableHeaderRow Component
 // ----------------------------
-export const TableHeaderRow: React.FC<TableHeaderRowProps> = ({
+export const TableHeaderRow = ({
   item,
   state,
   children,
-}) => {
-  const ref = useRef<HTMLElement>();
-  const { rowProps } = useTableHeaderRow(
-    { node: item },
-    state,
-    ref as RefObject<HTMLElement>
-  );
+}: TableHeaderRowProps) => {
+  const ref = useRef(null);
+  const { rowProps } = useTableHeaderRow({ node: item }, state, ref);
 
   return (
-    <tr {...rowProps} ref={ref as RefObject<HTMLTableRowElement>}>
+    <tr {...rowProps} ref={ref}>
       {children}
     </tr>
   );

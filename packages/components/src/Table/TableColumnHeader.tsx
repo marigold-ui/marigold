@@ -1,4 +1,4 @@
-import React, { RefObject, useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
 import { useCheckbox } from '@react-aria/checkbox';
 import { useFocusRing } from '@react-aria/focus';
 import {
@@ -18,6 +18,7 @@ import { Text } from '../Text';
 // Props
 // ----------------------------
 export interface TableColumnHeaderProps {
+  chilren?: ReactNode;
   item: Node<object>;
   state: TableState<object>;
   isSelectionColumn?: boolean;
@@ -27,13 +28,13 @@ export interface TableColumnHeaderProps {
 
 // TableColumnHeader Component
 // ----------------------------
-export const TableColumnHeader: React.FC<TableColumnHeaderProps> = ({
+export const TableColumnHeader = ({
   item: column,
   state,
   isSelectionColumn,
   align = 'left',
   css,
-}) => {
+}: TableColumnHeaderProps) => {
   const ref = useRef(null);
   const { columnHeaderProps } = useTableColumnHeader(
     { node: column },
