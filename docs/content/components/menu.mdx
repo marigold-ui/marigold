@@ -9,6 +9,20 @@ The structure of the Menu component is a `Menu.Trigger`, a simple `Button` compo
 The variant can be added with the variant prop.
 The `Trigger`has also a prop for `disabled`
 
+```tsx
+<Menu.Trigger>
+  <Button variant="menu" size="small">
+    Choose Menu
+  </Button>
+  <Menu>
+    <Menu.Item key="burger">🍔 Burger</Menu.Item>
+    <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+    <Menu.Item key="salad">🥗 Salad</Menu.Item>
+    <Menu.Item key="fries">🍟 Fries</Menu.Item>
+  </Menu>
+</Menu.Trigger>
+```
+
 ```tsx onlyCode
 import { Menu } from '@marigold/components';
 ```
