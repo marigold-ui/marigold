@@ -22,7 +22,7 @@ export interface TableColumnHeaderProps {
   state: TableState<object>;
   isSelectionColumn?: boolean;
   align?: 'left' | 'center' | 'right';
-  styles?: CSSObject;
+  css?: CSSObject;
 }
 
 // TableColumnHeader Component
@@ -32,16 +32,14 @@ export const TableColumnHeader: React.FC<TableColumnHeaderProps> = ({
   state,
   isSelectionColumn,
   align = 'left',
-  styles,
+  css,
 }) => {
-  const ref = useRef<HTMLElement>();
+  const ref = useRef(null);
   const { columnHeaderProps } = useTableColumnHeader(
     { node: column },
     state,
-    ref as RefObject<HTMLElement>
+    ref
   );
-  const { focusProps, isFocusVisible } = useFocusRing();
-  const stateProps = useStateProps({ focus: isFocusVisible });
 
   const { checkboxProps } = useTableSelectAllCheckbox(state);
   const inputRef = useRef(null);
@@ -51,17 +49,16 @@ export const TableColumnHeader: React.FC<TableColumnHeaderProps> = ({
     inputRef
   );
 
+  const { focusProps, isFocusVisible } = useFocusRing();
+  const stateProps = useStateProps({ focus: isFocusVisible });
+
   return (
     <Box
       as="th"
-      ref={ref as RefObject<HTMLTableCellElement>}
+      ref={ref}
+      __baseCSS={{ textAlign: isSelectionColumn ? 'center' : align }}
+      css={css}
       {...mergeProps(columnHeaderProps, focusProps)}
-      __baseCSS={{
-        ...{
-          textAlign: isSelectionColumn ? 'center' : align,
-        },
-        ...styles,
-      }}
       {...stateProps}
     >
       {isSelectionColumn ? (

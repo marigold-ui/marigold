@@ -72,12 +72,12 @@ export const Table: Table = ({
           <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
             {[...headerRow.childNodes].map(column => (
               <TableColumnHeader
-                styles={styles.header}
                 key={column.key}
                 item={column}
                 state={state}
                 isSelectionColumn={column.props.isSelectionCell}
                 align={alignHeader}
+                css={styles.header}
               />
             ))}
           </TableHeaderRow>
