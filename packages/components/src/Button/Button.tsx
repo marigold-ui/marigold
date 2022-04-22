@@ -46,11 +46,11 @@ export const Button: PolymorphicComponentWithRef<ButtonOwnProps, 'button'> =
         disabled,
         ...props
       }: Omit<ButtonProps, 'ref'>,
-      forwardRef
+      ref
     ) => {
       const buttonRef = useRef(null);
       // FIXME
-      useImperativeHandle(forwardRef, () => buttonRef.current);
+      useImperativeHandle(ref, () => buttonRef.current);
 
       const { buttonProps, isPressed } = useButton(
         {
