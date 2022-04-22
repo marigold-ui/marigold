@@ -1,15 +1,9 @@
+/* eslint-disable testing-library/prefer-presence-queries */
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-
-import {
-  Cell,
-  Column,
-  Row,
-  TableBody,
-  TableHeader,
-  Table,
-} from '@marigold/components';
 import { ThemeProvider } from '@marigold/system';
+
+import { Table } from '@marigold/components';
 
 // Setup
 // ---------------
@@ -55,16 +49,48 @@ const rows: { [key: string]: string }[] = [
   },
 ];
 
-test('supports parts from componentStyles', () => {
+test('renders contens correctly', () => {
+  render(
+    <Table aria-label="Example table">
+      <Table.Header columns={columns}>
+        {column => <Table.Column>{column.name}</Table.Column>}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {item => (
+          <Table.Row>
+            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          </Table.Row>
+        )}
+      </Table.Body>
+    </Table>
+  );
+
+  // Renders Header
+  expect(screen.queryByText('Name')).toBeInTheDocument();
+  expect(screen.queryByText('Firstname')).toBeInTheDocument();
+
+  // Renders Content
+  expect(screen.queryByText('Potter')).toBeInTheDocument();
+  expect(screen.queryByText('Harry')).toBeInTheDocument();
+
+  expect(screen.queryByText('Malfoy')).toBeInTheDocument();
+  expect(screen.queryByText('Draco')).toBeInTheDocument();
+});
+
+test('supports theme with parts', () => {
   render(
     <ThemeProvider theme={theme}>
       <Table aria-label="Example table" selectionMode="single">
-        <TableHeader columns={columns}>
-          {column => <Column>{column.name}</Column>}
-        </TableHeader>
-        <TableBody items={rows}>
-          {item => <Row>{columnKey => <Cell>{item[columnKey]}</Cell>}</Row>}
-        </TableBody>
+        <Table.Header columns={columns}>
+          {column => <Table.Column>{column.name}</Table.Column>}
+        </Table.Header>
+        <Table.Body items={rows}>
+          {item => (
+            <Table.Row>
+              {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+            </Table.Row>
+          )}
+        </Table.Body>
       </Table>
     </ThemeProvider>
   );
@@ -85,12 +111,16 @@ test('supports parts from componentStyles', () => {
 test('supports default align prop', () => {
   render(
     <Table aria-label="Example table">
-      <TableHeader columns={columns}>
-        {column => <Column>{column.name}</Column>}
-      </TableHeader>
-      <TableBody items={rows}>
-        {item => <Row>{columnKey => <Cell>{item[columnKey]}</Cell>}</Row>}
-      </TableBody>
+      <Table.Header columns={columns}>
+        {column => <Table.Column>{column.name}</Table.Column>}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {item => (
+          <Table.Row>
+            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          </Table.Row>
+        )}
+      </Table.Body>
     </Table>
   );
   const tableCells = screen.getAllByRole(/rowheader/);
@@ -100,12 +130,16 @@ test('supports default align prop', () => {
 test('supports custom align prop center', () => {
   render(
     <Table aria-label="Example table" align="center">
-      <TableHeader columns={columns}>
-        {column => <Column>{column.name}</Column>}
-      </TableHeader>
-      <TableBody items={rows}>
-        {item => <Row>{columnKey => <Cell>{item[columnKey]}</Cell>}</Row>}
-      </TableBody>
+      <Table.Header columns={columns}>
+        {column => <Table.Column>{column.name}</Table.Column>}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {item => (
+          <Table.Row>
+            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          </Table.Row>
+        )}
+      </Table.Body>
     </Table>
   );
   const tableCells = screen.getAllByRole(/rowheader/);
@@ -115,12 +149,16 @@ test('supports custom align prop center', () => {
 test('supports custom align prop right', () => {
   render(
     <Table aria-label="Example table" align="right">
-      <TableHeader columns={columns}>
-        {column => <Column>{column.name}</Column>}
-      </TableHeader>
-      <TableBody items={rows}>
-        {item => <Row>{columnKey => <Cell>{item[columnKey]}</Cell>}</Row>}
-      </TableBody>
+      <Table.Header columns={columns}>
+        {column => <Table.Column>{column.name}</Table.Column>}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {item => (
+          <Table.Row>
+            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          </Table.Row>
+        )}
+      </Table.Body>
     </Table>
   );
   const tableCells = screen.getAllByRole(/rowheader/);
@@ -130,12 +168,16 @@ test('supports custom align prop right', () => {
 test('supports default alignHeader prop', () => {
   render(
     <Table aria-label="Example table">
-      <TableHeader columns={columns}>
-        {column => <Column>{column.name}</Column>}
-      </TableHeader>
-      <TableBody items={rows}>
-        {item => <Row>{columnKey => <Cell>{item[columnKey]}</Cell>}</Row>}
-      </TableBody>
+      <Table.Header columns={columns}>
+        {column => <Table.Column>{column.name}</Table.Column>}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {item => (
+          <Table.Row>
+            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          </Table.Row>
+        )}
+      </Table.Body>
     </Table>
   );
   const tableHeader = screen.getAllByRole(/columnheader/);
@@ -145,12 +187,16 @@ test('supports default alignHeader prop', () => {
 test('supports custom alignHeader prop center', () => {
   render(
     <Table aria-label="Example table" alignHeader="center">
-      <TableHeader columns={columns}>
-        {column => <Column>{column.name}</Column>}
-      </TableHeader>
-      <TableBody items={rows}>
-        {item => <Row>{columnKey => <Cell>{item[columnKey]}</Cell>}</Row>}
-      </TableBody>
+      <Table.Header columns={columns}>
+        {column => <Table.Column>{column.name}</Table.Column>}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {item => (
+          <Table.Row>
+            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          </Table.Row>
+        )}
+      </Table.Body>
     </Table>
   );
   const tableHeader = screen.getAllByRole(/columnheader/);
@@ -160,12 +206,16 @@ test('supports custom alignHeader prop center', () => {
 test('supports custom alignHeader prop right', () => {
   render(
     <Table aria-label="Example table" alignHeader="right">
-      <TableHeader columns={columns}>
-        {column => <Column>{column.name}</Column>}
-      </TableHeader>
-      <TableBody items={rows}>
-        {item => <Row>{columnKey => <Cell>{item[columnKey]}</Cell>}</Row>}
-      </TableBody>
+      <Table.Header columns={columns}>
+        {column => <Table.Column>{column.name}</Table.Column>}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {item => (
+          <Table.Row>
+            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          </Table.Row>
+        )}
+      </Table.Body>
     </Table>
   );
   const tableHeader = screen.getAllByRole(/columnheader/);
@@ -176,12 +226,16 @@ test('supports selectionMode single', () => {
   render(
     <ThemeProvider theme={theme}>
       <Table aria-label="Example table" selectionMode="single">
-        <TableHeader columns={columns}>
-          {column => <Column>{column.name}</Column>}
-        </TableHeader>
-        <TableBody items={rows}>
-          {item => <Row>{columnKey => <Cell>{item[columnKey]}</Cell>}</Row>}
-        </TableBody>
+        <Table.Header columns={columns}>
+          {column => <Table.Column>{column.name}</Table.Column>}
+        </Table.Header>
+        <Table.Body items={rows}>
+          {item => (
+            <Table.Row>
+              {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+            </Table.Row>
+          )}
+        </Table.Body>
       </Table>
     </ThemeProvider>
   );
@@ -195,12 +249,16 @@ test('supports selectionMode multiple', () => {
   render(
     <ThemeProvider theme={theme}>
       <Table aria-label="Example table" selectionMode="multiple">
-        <TableHeader columns={columns}>
-          {column => <Column>{column.name}</Column>}
-        </TableHeader>
-        <TableBody items={rows}>
-          {item => <Row>{columnKey => <Cell>{item[columnKey]}</Cell>}</Row>}
-        </TableBody>
+        <Table.Header columns={columns}>
+          {column => <Table.Column>{column.name}</Table.Column>}
+        </Table.Header>
+        <Table.Body items={rows}>
+          {item => (
+            <Table.Row>
+              {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+            </Table.Row>
+          )}
+        </Table.Body>
       </Table>
     </ThemeProvider>
   );
