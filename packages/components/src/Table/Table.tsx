@@ -31,7 +31,7 @@ export interface TableThemeExtension
 // Props
 // ---------------
 export interface TableProps
-  extends AriaTableProps<object>,
+  extends Pick<AriaTableProps<object>, 'onRowAction' | 'onCellAction'>,
     TableStateProps<object> {
   align?: TableCellProps['align'];
   alignHeader?: TableColumnHeaderProps['align'];
