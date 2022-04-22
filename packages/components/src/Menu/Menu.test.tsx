@@ -12,11 +12,19 @@ const theme = {
     white: '#f8f9fa',
     pink: '#fcc2d7',
   },
+  space: {
+    none: 0,
+    small: 4,
+    large: 10,
+  },
   components: {
     Menu: {
       base: {
         container: {
           bg: 'white',
+          '&:focus': {
+            color: 'pink',
+          },
         },
         item: {
           color: 'black',
@@ -28,7 +36,22 @@ const theme = {
       },
       variant: {
         one: {
-          color: 'pink',
+          container: {
+            bg: 'pink',
+          },
+          item: {
+            color: 'white',
+          },
+        },
+      },
+      size: {
+        large: {
+          container: {
+            p: 'large',
+          },
+          item: {
+            p: 'small',
+          },
         },
       },
     },
@@ -237,6 +260,72 @@ test('uses base styling from "Menu" in theme', () => {
   expect(menu).toHaveStyle(`background-color: ${theme.colors.white}`);
 });
 
-// test('supports "Menu" variants from theme');
-// test('supports "Menu" sizes from theme');
-// test('apply focus style on hover AND focus');
+test('supports "Menu" variants from theme', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Menu.Trigger>
+          <Button>Choose</Button>
+          <Menu data-testid="menu" variant="one">
+            <Menu.Item key="burger">Burger</Menu.Item>
+            <Menu.Item key="pizza">Pizza</Menu.Item>
+          </Menu>
+        </Menu.Trigger>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+  const button = screen.getByText('Choose');
+  fireEvent.click(button);
+
+  const menu = screen.getByTestId('menu');
+  const item = screen.getByText('Burger');
+
+  expect(menu).toHaveStyle(`background-color: ${theme.colors.pink}`);
+  expect(item).toHaveStyle(`color: ${theme.colors.white}`);
+});
+
+test('supports "Menu" sizes from theme', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Menu.Trigger>
+          <Button>Choose</Button>
+          <Menu data-testid="menu" size="large">
+            <Menu.Item key="burger">Burger</Menu.Item>
+            <Menu.Item key="pizza">Pizza</Menu.Item>
+          </Menu>
+        </Menu.Trigger>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+  const button = screen.getByText('Choose');
+  fireEvent.click(button);
+
+  const menu = screen.getByTestId('menu');
+  expect(menu).toHaveStyle(`padding: ${theme.space.large}px`);
+
+  const item = screen.getByText('Burger');
+  expect(item).toHaveStyle(`padding: ${theme.space.small}px`);
+});
+
+test('apply focus style on focus', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Menu.Trigger>
+          <Button>Choose</Button>
+          <Menu data-testid="menu">
+            <Menu.Item key="burger">Burger</Menu.Item>
+            <Menu.Item key="pizza">Pizza</Menu.Item>
+          </Menu>
+        </Menu.Trigger>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+  const button = screen.getByText('Choose');
+  fireEvent.click(button);
+
+  const item = screen.getByText('Burger');
+  fireEvent.focus(item);
+  expect(item).toHaveStyle(`background: ${theme.colors.pink}`);
+});

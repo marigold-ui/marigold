@@ -39,7 +39,7 @@ export const Menu = ({ variant, size, ...props }: MenuProps) => {
   const ownProps = { ...props, ...menuContext };
 
   const ref = useRef(null);
-  const state = useTreeState({ ...ownProps });
+  const state = useTreeState({ ...ownProps, selectionMode: 'none' });
   const { menuProps } = useMenu(ownProps, state, ref);
 
   const styles = useComponentStyles(
@@ -50,7 +50,7 @@ export const Menu = ({ variant, size, ...props }: MenuProps) => {
 
   /**
    * - FocusScope: restore focus back to the trigger when menu is closed
-   * - DismissButton: sllow screen reader to easily dimiss menu
+   * - DismissButton: allow screen reader to easily dimiss menu
    */
   return (
     <FocusScope restoreFocus>
