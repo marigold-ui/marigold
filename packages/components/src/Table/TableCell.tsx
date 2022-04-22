@@ -62,13 +62,7 @@ export const TableCell = ({
       {...mergeProps(gridCellProps, focusProps)}
       {...stateProps}
     >
-      {isSelectionCell ? (
-        <input {...inputProps} />
-      ) : (
-        <Text size="xxsmall" color="secondary">
-          {cell.rendered}
-        </Text>
-      )}
+      {isSelectionCell ? <input {...inputProps} /> : <>{cell.rendered}</>}
     </Box>
   );
 };
