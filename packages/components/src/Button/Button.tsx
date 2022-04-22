@@ -1,12 +1,21 @@
-import React, { forwardRef, ReactNode, useRef } from 'react';
+import React, {
+  forwardRef,
+  ReactNode,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import { useButton } from '@react-aria/button';
 import { PressEvents } from '@react-types/shared';
 
-import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
 import {
-  PolymorphicComponent,
+  Box,
+  ThemeExtension,
+  useComponentStyles,
+  useStateProps,
+} from '@marigold/system';
+import {
   PolymorphicComponentWithRef,
-  PolymorphicProps,
+  PolymorphicPropsWithRef,
 } from '@marigold/types';
 
 // Theme Extension
@@ -22,7 +31,7 @@ export interface ButtonOwnProps extends PressEvents {
 }
 
 export interface ButtonProps
-  extends PolymorphicComponentWithRef<ButtonOwnProps, 'button'> {}
+  extends PolymorphicPropsWithRef<ButtonOwnProps, 'button'> {}
 
 // Component
 // ---------------
@@ -36,29 +45,37 @@ export const Button: PolymorphicComponentWithRef<ButtonOwnProps, 'button'> =
         size,
         disabled,
         ...props
-      }: ButtonProps,
-      ref
+      }: Omit<ButtonProps, 'ref'>,
+      forwardRef
     ) => {
-      const styles = useComponentStyles('Button', { variant, size });
+      const buttonRef = useRef(null);
+      // FIXME
+      useImperativeHandle(forwardRef, () => buttonRef.current);
 
-      const { buttonProps } = useButton(
+      const { buttonProps, isPressed } = useButton(
         {
           /**
            * `react-aria` only expected `Element` but our
-           * props are from HTMLButtonElement.
+           * props are from `HTMLButtonElement` 🤫
            */
           ...(props as any),
           elementType: typeof as === 'string' ? as : 'span',
           isDisabled: disabled,
         },
-        ref
+        buttonRef
       );
+
+      const styles = useComponentStyles('Button', { variant, size });
+      const stateProps = useStateProps({
+        active: isPressed,
+      });
 
       return (
         <Box
           {...buttonProps}
+          {...stateProps}
           as={as}
-          ref={ref}
+          ref={buttonRef}
           __baseCSS={{
             display: 'inline-flex',
             alignItems: 'center',

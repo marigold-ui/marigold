@@ -2,6 +2,7 @@ import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
+import { Box } from '@marigold/system';
 
 export default {
   title: 'Components/Button',
@@ -50,5 +51,7 @@ export const WithIcon: ComponentStory<typeof Button> = ({
 );
 
 export const OnPress: ComponentStory<typeof Button> = args => (
-  <Button {...args} onPress={(e: any) => console.log(e)} />
+  <>
+    <Button {...args} onPress={(e: any) => console.log(e)} />
+  </>
 );

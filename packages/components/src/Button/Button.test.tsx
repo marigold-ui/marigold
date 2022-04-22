@@ -185,3 +185,10 @@ test('supports onPress', () => {
 
   expect(onPress).toHaveBeenCalled();
 });
+
+test('forwards ref', () => {
+  const ref = React.createRef<HTMLButtonElement>();
+  render(<Button ref={ref}>button</Button>);
+
+  expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
+});
