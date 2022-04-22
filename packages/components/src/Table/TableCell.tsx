@@ -10,7 +10,6 @@ import { Node } from '@react-types/shared';
 import { CSSObject, useStateProps } from '@marigold/system';
 
 import { Box } from '../Box';
-import { Text } from '../Text';
 
 // Props
 // ----------------------------
