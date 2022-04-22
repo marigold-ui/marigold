@@ -24,12 +24,12 @@ test('supports default variant', async () => {
   render(
     <ThemeProvider theme={theme}>
       <TooltipTrigger>
-        <Button title="button">Info</Button>
+        <Button data-testid="button">Info</Button>
         <Tooltip data-testid="tooltip">Tooltip</Tooltip>
       </TooltipTrigger>
     </ThemeProvider>
   );
-  const button = screen.getByTitle('button');
+  const button = screen.getByTestId('button');
   button.focus();
   expect(button).toHaveFocus();
 
@@ -41,14 +41,14 @@ test('supports other variant than default', async () => {
   render(
     <ThemeProvider theme={theme}>
       <TooltipTrigger>
-        <Button title="button">Info</Button>
+        <Button data-testid="button">Info</Button>
         <Tooltip variant="styled" data-testid="tooltip">
           Tooltip
         </Tooltip>
       </TooltipTrigger>
     </ThemeProvider>
   );
-  const button = screen.getByTitle('button');
+  const button = screen.getByTestId('button');
   button.focus();
   expect(button).toHaveFocus();
 
@@ -60,12 +60,12 @@ test('shows Tooltip', async () => {
   render(
     <ThemeProvider theme={theme}>
       <TooltipTrigger>
-        <Button title="button">Info</Button>
+        <Button data-testid="button">Info</Button>
         <Tooltip>Tooltip</Tooltip>
       </TooltipTrigger>
     </ThemeProvider>
   );
-  const button = screen.getByTitle('button');
+  const button = screen.getByTestId('button');
   button.focus();
   expect(button).toHaveFocus();
 

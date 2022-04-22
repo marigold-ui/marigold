@@ -5,37 +5,11 @@ import { Text } from './Text';
 export default {
   title: 'Components/Text',
   argTypes: {
-    as: {
-      control: {
-        type: 'select',
-      },
-      options: ['span', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-      description: 'Set HTML element',
-      table: {
-        defaultValue: {
-          summary: 'span',
-        },
-      },
-    },
     variant: {
       control: {
-        type: 'select',
+        type: 'text',
       },
-      options: [
-        'body',
-        'headline1',
-        'headline2',
-        'headline3',
-        'headline4',
-        'headline5',
-        'headline6',
-      ],
-      description: 'CHoose between body and different headlines',
-      table: {
-        defaultValue: {
-          summary: 'body',
-        },
-      },
+      description: 'The variant of the text',
     },
     color: {
       control: {

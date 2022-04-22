@@ -4,8 +4,7 @@ title: Text
 
 # Text
 
-With the Text component you can easily add different body text HTML elements. As a default, a `span` element is rendered.
-By adding the `as` prop you can alternatively render a `p` element.
+With the Text component you can easily add different body text HTML elements.
 
 ```tsx onlyCode
 import { Text } from '@marigold/components';
@@ -13,39 +12,25 @@ import { Text } from '@marigold/components';
 
 ## Props
 
-| Property                | Type                 | Default |
-| :---------------------- | :------------------- | :------ |
-| `as` (optional)         | `string ⎮ Component` | `span`  |
-| `variant` (optional)    | `string ⎮ string[]`  | `body`  |
-| `align` (optional)      | `string`             |         |
-| `color` (optional)      | `string`             |         |
-| `cursor` (optional)     | `string`             |         |
-| `outline` (optional)    | `string`             |         |
-| `size` (optional)       | `string`             |         |
-| `userSelect` (optional) | `string`             |         |
+| Property              | Type                | Default |
+| :-------------------- | :------------------ | :------ |
+| `variant` (optional)  | `string ⎮ string[]` |         |
+| `align` (optional)    | `string`            |         |
+| `color` (optional)    | `string`            |         |
+| `cursor` (optional)   | `string`            |         |
+| `outline` (optional)  | `string`            |         |
+| `size` (optional)     | `string`            |         |
+| `fontSize` (optional) | `string`            |         |
 
 ## Examples
 
 ### Text
 
-### Default span and paragraph Text
+### Default paragraph Text
 
 ```tsx
 <Text>
-  SPAN: Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-  eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-  voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
-  kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem
-  ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-  tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
-  vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
-  gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-</Text>
-```
-
-```tsx
-<Text as="p">
-  P: Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
   eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
   voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
   kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem
@@ -66,10 +51,8 @@ import { Text } from '@marigold/components';
 
 ```tsx
 <>
-  <Text as="h1" variant="headline1">
-    H1 amazing heading
-  </Text>
-  <Text as="p">
+  <Headline level="1">H1 amazing heading</Headline>
+  <Text>
     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
     eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
     voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
@@ -81,10 +64,8 @@ import { Text } from '@marigold/components';
 
 ```tsx
 <>
-  <Text as="h2" variant="headline2">
-    H2 amazing heading
-  </Text>
-  <Text as="p">
+  <Headline level="2">H2 amazing heading</Headline>
+  <Text>
     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
     eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
     voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
@@ -96,10 +77,8 @@ import { Text } from '@marigold/components';
 
 ```tsx
 <>
-  <Text as="h3" variant="headline3">
-    H3 amazing heading
-  </Text>
-  <Text as="p">
+  <Headline level="3">H3 amazing heading</Headline>
+  <Text>
     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
     eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
     voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
@@ -111,10 +90,8 @@ import { Text } from '@marigold/components';
 
 ```tsx
 <>
-  <Text as="h4" variant="headline4">
-    H4 amazing heading
-  </Text>
-  <Text as="p">
+  <Headline level="4">H4 amazing heading</Headline>
+  <Text>
     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
     eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
     voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
@@ -126,10 +103,8 @@ import { Text } from '@marigold/components';
 
 ```tsx
 <>
-  <Text as="h5" variant="headline5">
-    H5 amazing heading
-  </Text>
-  <Text as="p">
+  <Headline level="5">H5 amazing heading</Headline>
+  <Text>
     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
     eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
     voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
@@ -141,10 +116,8 @@ import { Text } from '@marigold/components';
 
 ```tsx
 <>
-  <Text as="h6" variant="headline6">
-    H6 amazing heading
-  </Text>
-  <Text as="p">
+  <Headline level="6">H6 amazing heading</Headline>
+  <Text>
     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
     eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
     voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet

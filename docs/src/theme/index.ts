@@ -1,8 +1,10 @@
 import { Theme } from '@marigold/components';
 
+// NEW STYLES!
+import * as components from './components';
+
 import { colors } from './colors';
-import { components } from './components';
-import { typography } from './typography';
+import { component } from './component';
 
 export const theme: Theme = {
   space: {
@@ -44,7 +46,36 @@ export const theme: Theme = {
     solid: `1px solid`,
     grey: `1px solid ${colors.gray60}`,
   },
-  ...typography,
-  ...components,
-  components: {},
+  fonts: {
+    body: 'Inter',
+    heading: 'Inter Black',
+    code: 'monospace',
+  },
+  fontSizes: {
+    body: '1rem',
+    xxxsmall: '0.75rem',
+    xxsmall: '0.875rem',
+    xsmall: '1rem',
+    small: '1.125rem',
+    medium: '1.25rem',
+    large: '1.5rem',
+    xlarge: '2rem',
+  },
+  fontWeights: {
+    body: 400,
+    heading: 900,
+    medium: 600,
+    bold: 700,
+  },
+  lineHeights: {
+    xsmall: 1,
+    small: 1.125,
+    medium: 1.5,
+    large: 2,
+    xlarge: 2.5,
+    xxlarge: 3,
+  },
+  ...component,
+
+  components,
 } as const;

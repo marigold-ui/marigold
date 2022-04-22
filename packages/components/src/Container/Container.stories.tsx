@@ -3,6 +3,7 @@ import type { Meta, ComponentStory } from '@storybook/react';
 
 import { Box } from '../Box';
 import { Container } from './Container';
+import { Headline } from '../Headline';
 import { Text } from '../Text';
 
 export default {
@@ -75,17 +76,13 @@ export const Content: ComponentStory<typeof Container> = args => (
 
 export const Header: ComponentStory<typeof Container> = args => (
   <Container contentType="header" {...args}>
-    <Text as="h2" variant="headline2">
-      Star Wars - The Empire Strikes Back
-    </Text>
+    <Headline level="2">Star Wars - The Empire Strikes Back</Headline>
   </Container>
 );
 
 export const InnerContent: ComponentStory<typeof Container> = args => (
   <Box as={Container} bg="blue10" p="small" {...args}>
-    <Text as="h2" variant="headline2">
-      Star Wars - The Empire Strikes Back
-    </Text>
+    <Headline level="2">Star Wars - The Empire Strikes Back</Headline>
     <Box pt="xsmall" width="100%">
       <Text>
         It is a dark time for the Rebellion. Although the Death Star has been

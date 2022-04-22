@@ -81,12 +81,12 @@ describe('transform states', () => {
       },
     },
     {
-      name: ':invalid',
+      name: ':error',
       input: {
-        '&:invalid': {},
+        '&:error': {},
       },
       expected: {
-        '&:invalid, &[aria-invalid=true], &[data-invalid]': {},
+        '&:invalid, &[aria-invalid=true], &[data-error]': {},
       },
     },
   ])('tramsform "$name" to selector', ({ input, expected }) => {

@@ -9,8 +9,12 @@ const theme = {
   colors: {
     blue: '#00f',
   },
-  input: {
-    borderColor: 'blue',
+  components: {
+    Input: {
+      base: {
+        borderColor: 'blue',
+      },
+    },
   },
 };
 
@@ -30,7 +34,7 @@ test('allows to change the input type', () => {
   expect(textField).toHaveAttribute('type', 'email');
 });
 
-test('input can be styled via variant', () => {
+test('input can be styled via "Input" styles', () => {
   render(
     <ThemeProvider theme={theme}>
       <TextField label="A Label" data-testid="text-field" />
