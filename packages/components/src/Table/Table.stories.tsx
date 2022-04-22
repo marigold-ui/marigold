@@ -19,11 +19,7 @@ export default {
       },
       options: ['none', 'single', 'multiple'],
       description: 'selection mode',
-      table: {
-        defaultValue: {
-          summary: 'none',
-        },
-      },
+      defaultValue: 'none',
     },
     align: {
       control: {
@@ -31,11 +27,8 @@ export default {
       },
       options: ['left', 'right', 'center'],
       description: 'cell element alignment',
-      table: {
-        defaultValue: {
-          summary: 'left',
-        },
-      },
+
+      defaultValue: 'left',
     },
     alignHeader: {
       control: {
@@ -43,11 +36,7 @@ export default {
       },
       options: ['left', 'right', 'center'],
       description: 'header element alignment',
-      table: {
-        defaultValue: {
-          summary: 'left',
-        },
-      },
+      defaultValue: 'left',
     },
   },
 } as Meta;
