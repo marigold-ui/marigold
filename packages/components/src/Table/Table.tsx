@@ -28,6 +28,7 @@ export interface TableProps
   align?: TableCellProps['align'];
   alignHeader?: TableColumnHeaderProps['align'];
   variant?: string;
+  size?: string;
 }
 
 // Table Component
@@ -36,6 +37,7 @@ export const Table: React.FC<TableProps> = ({
   align,
   alignHeader,
   variant,
+  size,
   ...props
 }) => {
   const { selectionMode, selectionBehavior } = props;
@@ -51,7 +53,7 @@ export const Table: React.FC<TableProps> = ({
 
   const styles = useComponentStyles(
     'Table',
-    { variant },
+    { variant, size },
     { parts: ['table', 'header', 'row', 'cell'] }
   );
 
