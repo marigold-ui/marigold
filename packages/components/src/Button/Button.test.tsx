@@ -9,6 +9,9 @@ const theme = {
     body: 'Arial',
     fancy: 'Inter',
   },
+  colors: {
+    red: '#ffa8a8',
+  },
   space: {
     none: 0,
     small: 2,
@@ -18,6 +21,9 @@ const theme = {
     Button: {
       base: {
         fontFamily: 'fancy',
+        '&[data-focus]': {
+          bg: 'red',
+        },
       },
       size: {
         large: {
@@ -124,7 +130,7 @@ test('add icon in button works as expected', () => {
 
   expect(button instanceof HTMLButtonElement).toBeTruthy();
   expect(button).toHaveStyle('display: inline-flex');
-  expect(icon).toHaveStyle('fill: red');
+  expect(icon).toHaveStyle(`fill: ${theme.colors.red}`);
   expect(icon).toHaveStyle('width: 30px');
 });
 

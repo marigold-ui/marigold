@@ -9,7 +9,7 @@ export const Button: Theme['components']['Button'] = {
     px: 'large',
     outline: 'none',
 
-    '&:focus-visible': {
+    '&[data-focus]': {
       outline: '1px solid',
       outlineColor: 'primary',
       outlineOffset: '1px',

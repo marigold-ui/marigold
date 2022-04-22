@@ -5,6 +5,8 @@ import React, {
   useRef,
 } from 'react';
 import { useButton } from '@react-aria/button';
+import { useFocusRing } from '@react-aria/focus';
+import { mergeProps } from '@react-aria/utils';
 import { PressEvents } from '@react-types/shared';
 
 import {
@@ -65,14 +67,16 @@ export const Button: PolymorphicComponentWithRef<ButtonOwnProps, 'button'> =
         buttonRef
       );
 
+      const { isFocusVisible, focusProps } = useFocusRing();
       const styles = useComponentStyles('Button', { variant, size });
       const stateProps = useStateProps({
         active: isPressed,
+        focus: isFocusVisible,
       });
 
       return (
         <Box
-          {...buttonProps}
+          {...mergeProps(buttonProps, focusProps)}
           {...stateProps}
           as={as}
           ref={buttonRef}
