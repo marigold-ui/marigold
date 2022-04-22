@@ -100,20 +100,19 @@ await $`pnpm install`.pipe(process.stdout);
 await $`pnpm build`.pipe(process.stdout);
 log('✓  Packages built.');
 
-step('🔼', 'Pushing changes to main branch...');
-// We use "@marigold/components" as leading version
-const { version } = require('../packages/components/package.json');
-await $`git add -A`;
-await $`git commit -am "release: v${version}"`;
-await $`git push`;
-await $`git push --tags`;
-
 step('🌟', 'Publishing to npm...');
 await option(
   'Do you want to continue? (you will be prompted for your 2FA token)'
 );
 await $`pnpm changeset publish`.pipe(process.stdout);
 log(brand.bold('🥳  Release complete!'));
+
+step('🔼', 'Pushing changes to main branch...');
+// We use "@marigold/components" as leading version
+const { version } = require('../packages/components/package.json');
+await $`git add -A`;
+await $`git commit -am "release: v${version}"`;
+await $`git push --follow-tags`;
 
 await option(
   `Do you want to release new docs to ${chalk.underline(
