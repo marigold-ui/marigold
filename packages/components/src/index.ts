@@ -25,7 +25,7 @@ export * from './Menu';
 export * from './Message';
 export * from './Overlay';
 export * from './Provider';
-export * from './Radio';
+export * from './RadioGroup';
 export * from './Select';
 export * from './Slider';
 export * from './Switch';
