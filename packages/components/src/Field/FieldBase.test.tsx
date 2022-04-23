@@ -3,9 +3,49 @@ import { AriaTextFieldOptions, useTextField } from '@react-aria/textfield';
 import { render, screen, within } from '@testing-library/react';
 
 import { FieldBase } from './FieldBase';
+import { ThemeProvider } from '@marigold/system';
 
 // Setup
 // ---------------
+const theme = {
+  colors: {
+    blue: '#1c7ed6',
+  },
+  fontSizes: {
+    'small-1': 12,
+  },
+  components: {
+    Label: {
+      variant: {
+        blue: {
+          color: 'blue',
+        },
+      },
+      size: {
+        small: {
+          fontSize: 'small-1',
+        },
+      },
+    },
+    HelpText: {
+      variant: {
+        blue: {
+          container: {
+            color: 'blue',
+          },
+        },
+      },
+      size: {
+        small: {
+          container: {
+            fontSize: 'small-1',
+          },
+        },
+      },
+    },
+  },
+};
+
 interface MockedTestFieldProps extends AriaTextFieldOptions<'input'> {
   disabled?: boolean;
   required?: boolean;
@@ -97,4 +137,25 @@ test('field label shows requried indicator', () => {
   const label = screen.getByText('Label');
   const requiredIcon = within(label).getByRole('presentation');
   expect(requiredIcon).toBeInTheDocument();
+});
+
+test('passes down variant and size', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <FieldBase
+        label="Label"
+        description="Description"
+        variant="blue"
+        size="small"
+      >
+        <input type="text" />
+      </FieldBase>
+    </ThemeProvider>
+  );
+
+  const label = screen.getByText('Label');
+  expect(label).toHaveStyle(`color: ${theme.colors.blue}`);
+
+  const helptext = screen.getByText('Description');
+  expect(helptext).toHaveStyle(`color: ${theme.colors.blue}`);
 });

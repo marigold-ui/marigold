@@ -44,9 +44,10 @@ export const HelpText = ({
     { variant, size },
     { parts: ['container', 'icon'] }
   );
-
+  console.log(styles);
   return (
     <Box
+      {...(hasErrorMessage ? errorMessageProps : descriptionProps)}
       {...props}
       __baseCSS={{ display: 'flex', alignItems: 'center', gap: 4 }}
       css={styles.container}
@@ -57,10 +58,10 @@ export const HelpText = ({
             role="presentation"
             size={(styles?.icon?.size as any) || 16}
           />
-          <Box {...errorMessageProps}>{errorMessage}</Box>
+          {errorMessage}
         </>
       ) : (
-        <Box {...descriptionProps}>{description}</Box>
+        <>{description}</>
       )}
     </Box>
   );

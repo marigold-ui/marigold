@@ -15,7 +15,7 @@ import { Input } from '../Input';
 export interface TextFieldProps
   extends Omit<
       ComponentProps<'input'>,
-      'value' | 'defaultValue' | 'onChange' | 'onFocus' | 'onBlur'
+      'value' | 'defaultValue' | 'onChange' | 'onFocus' | 'onBlur' | 'size'
     >,
     /**
      * `react-aria` has a slightly different API for `onChange`, `onFocus`
@@ -23,6 +23,8 @@ export interface TextFieldProps
      */
     Pick<AriaTextFieldProps, 'onChange' | 'onFocus' | 'onBlur'>,
     Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
+  variant?: string;
+  size?: string;
   value?: string;
   defaultValue?: string;
 }
@@ -34,6 +36,8 @@ export const TextField = ({
   required,
   readOnly,
   error,
+  variant,
+  size,
   ...props
 }: TextFieldProps) => {
   const { label, description, errorMessage } = props;
@@ -72,9 +76,13 @@ export const TextField = ({
       errorMessage={errorMessage}
       errorMessageProps={errorMessageProps}
       stateProps={stateProps}
+      variant={variant}
+      size={size}
     >
       <Input
         ref={ref}
+        variant={variant}
+        size={size}
         /**
          * We use `size` for styles which is a string, not like
          * the regular HTML attribute, which is a number
