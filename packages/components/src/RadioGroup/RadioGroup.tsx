@@ -18,8 +18,10 @@ export interface RadioGroupContextProps extends RadioGroupState {
   size?: string;
 }
 
-const RadioContext = React.createContext<RadioGroupContextProps>(null as any);
-export const useRadioGroupContext = () => useContext(RadioContext);
+const RadioGroupContext = React.createContext<RadioGroupContextProps>(
+  null as any
+);
+export const useRadioGroupContext = () => useContext(RadioGroupContext);
 
 // Props
 // ---------------
@@ -82,9 +84,9 @@ export const RadioGroup = ({
         }}
         css={styles.group}
       >
-        <RadioContext.Provider value={{ variant, size, ...state }}>
+        <RadioGroupContext.Provider value={{ variant, size, ...state }}>
           {children}
-        </RadioContext.Provider>
+        </RadioGroupContext.Provider>
       </Box>
     </Box>
   );
