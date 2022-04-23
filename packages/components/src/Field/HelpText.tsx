@@ -44,7 +44,7 @@ export const HelpText = ({
     { variant, size },
     { parts: ['container', 'icon'] }
   );
-  console.log(styles);
+
   return (
     <Box
       {...(hasErrorMessage ? errorMessageProps : descriptionProps)}
