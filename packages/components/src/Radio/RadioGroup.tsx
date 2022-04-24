@@ -3,12 +3,13 @@ import { useRadioGroup } from '@react-aria/radio';
 import { RadioGroupState, useRadioGroupState } from '@react-stately/radio';
 import { AriaRadioGroupProps } from '@react-types/radio';
 
-import { Box, useComponentStyles } from '@marigold/system';
+import {
+  Box,
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+} from '@marigold/system';
 
 import { Label } from '../Field/Label';
-
-// Theme Extension
-// ---------------
 
 // Context
 // ---------------
@@ -22,6 +23,11 @@ const RadioGroupContext = React.createContext<RadioGroupContextProps>(
   null as any
 );
 export const useRadioGroupContext = () => useContext(RadioGroupContext);
+
+// Theme Extension
+// ---------------
+export interface RadioGroupThemeExtension
+  extends ThemeExtensionsWithParts<'RadioGroup', ['container', 'group']> {}
 
 // Props
 // ---------------

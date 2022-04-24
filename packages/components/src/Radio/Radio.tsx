@@ -2,13 +2,19 @@ import React, { useRef } from 'React';
 import { useRadio } from '@react-aria/radio';
 import type { AriaRadioProps } from '@react-types/radio';
 
-import { Box, ThemeComponentProps } from '@marigold/system';
+import {
+  Box,
+  ThemeComponentProps,
+  ThemeExtensionsWithParts,
+} from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 import { RadioGroup, useRadioGroupContext } from './RadioGroup';
 
 // Theme Extension
 // ---------------
+export interface RadioThemeExtension
+  extends ThemeExtensionsWithParts<'Radio', ['container', 'label', 'radio']> {}
 
 // SVG Icon
 // ---------------
