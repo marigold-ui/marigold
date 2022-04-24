@@ -39,8 +39,8 @@ export default {
 
 export const Basic: ComponentStory<typeof Radio.Group> = args => (
   <Radio.Group {...args}>
-    <Radio.Option value="1">Option 1</Radio.Option>
-    <Radio.Option value="2">Option 2</Radio.Option>
-    <Radio.Option value="3">Option 3</Radio.Option>
+    <Radio value="1">Option 1</Radio>
+    <Radio value="2">Option 2</Radio>
+    <Radio value="3">Option 3</Radio>
   </Radio.Group>
 );

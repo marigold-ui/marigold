@@ -5,7 +5,7 @@ import type { AriaRadioProps } from '@react-types/radio';
 import { Box, ThemeComponentProps } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { useRadioGroupContext } from './RadioGroup';
+import { RadioGroup, useRadioGroupContext } from './RadioGroup';
 
 // Theme Extension
 // ---------------
@@ -52,7 +52,7 @@ export type CustomRadioProps =
   | 'onKeyUp'
   | 'onKeyDown';
 
-export interface RadioOptionProps
+export interface RadioProps
   extends ThemeComponentProps,
     Omit<
       ComponentProps<'input'>,
@@ -62,7 +62,7 @@ export interface RadioOptionProps
 
 // Component
 // ---------------
-export const RadioOption = (props: RadioOptionProps) => {
+export const Radio = (props: RadioProps) => {
   const { variant, size, error, ...state } = useRadioGroupContext();
 
   const ref = useRef(null);
@@ -98,3 +98,5 @@ export const RadioOption = (props: RadioOptionProps) => {
     </Box>
   );
 };
+
+Radio.Group = RadioGroup;
