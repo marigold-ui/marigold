@@ -5,7 +5,7 @@ import type { AriaRadioProps } from '@react-types/radio';
 import { Box, ThemeComponentProps } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { RadioGroup, useRadioGroupContext } from './RadioGroup';
+import { useRadioGroupContext } from './RadioGroup';
 
 // Theme Extension
 // ---------------
@@ -98,5 +98,3 @@ export const RadioOption = (props: RadioOptionProps) => {
     </Box>
   );
 };
-
-RadioOption.Group = RadioGroup;
