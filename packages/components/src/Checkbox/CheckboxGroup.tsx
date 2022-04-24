@@ -96,7 +96,7 @@ export const CheckboxGroup = ({
         __baseCSS={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'left',
+          alignItems: 'start',
         }}
         css={styles.group}
       >

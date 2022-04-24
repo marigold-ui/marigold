@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Radio } from './RadioOption';
+import { Radio } from './Radio';
 import { ThemeProvider } from '@marigold/system';
 
 const theme = {

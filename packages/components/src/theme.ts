@@ -30,7 +30,7 @@ import type { TextAreaThemeExtension } from './TextArea';
 // Old Styling Solution
 import { type LabelThemeExtension as LegacyLabelThemeExtension } from './Label';
 import { type MessageThemeExtension } from './Message';
-import { type RadioThemeExtension } from './Radio';
+import { type RadioThemeExtension } from './Radio-old';
 import { type SelectThemeExtension } from './Select';
 import { type SliderThemeExtension } from './Slider';
 import { type SwitchThemeExtension } from './Switch';

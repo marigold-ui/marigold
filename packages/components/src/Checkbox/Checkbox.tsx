@@ -28,12 +28,6 @@ export interface CheckboxThemeExtension
 
 // SVG Icon
 // ---------------
-interface IconProps extends StateAttrProps {
-  css?: CSSObject;
-  checked?: boolean;
-  indeterminate?: boolean;
-}
-
 const CheckMark = () => (
   <svg viewBox="0 0 12 10">
     <path
@@ -54,6 +48,12 @@ const IndeterminateMark = () => (
   </svg>
 );
 
+interface IconProps extends StateAttrProps {
+  css?: CSSObject;
+  checked?: boolean;
+  indeterminate?: boolean;
+}
+
 const Icon = ({ css, checked, indeterminate, ...props }: IconProps) => {
   const icon = indeterminate ? <IndeterminateMark /> : <CheckMark />;
   return (
@@ -68,7 +68,7 @@ const Icon = ({ css, checked, indeterminate, ...props }: IconProps) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        p: '1px',
+        p: 1,
       }}
       css={css}
       {...props}
@@ -181,7 +181,6 @@ export const Checkbox = ({
   return (
     <Box
       as="label"
-      variant="checkbox"
       __baseCSS={{
         display: 'flex',
         alignItems: 'center',
@@ -194,7 +193,6 @@ export const Checkbox = ({
     >
       <Box
         as="input"
-        type="checkbox"
         ref={ref}
         css={{
           position: 'absolute',

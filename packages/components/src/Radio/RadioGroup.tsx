@@ -12,10 +12,10 @@ import { Label } from '../Field/Label';
 
 // Context
 // ---------------
-// TODO: Pass down error as well?
 export interface RadioGroupContextProps extends RadioGroupState {
   variant?: string;
   size?: string;
+  error?: boolean;
 }
 
 const RadioGroupContext = React.createContext<RadioGroupContextProps>(
@@ -25,7 +25,7 @@ export const useRadioGroupContext = () => useContext(RadioGroupContext);
 
 // Props
 // ---------------
-interface RadioGroupProps
+export interface RadioGroupProps
   extends Omit<
     AriaRadioGroupProps,
     'isDisabled' | 'isRquired' | 'isReadOnly ' | 'validationState'
@@ -80,11 +80,11 @@ export const RadioGroup = ({
         __baseCSS={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'left',
+          alignItems: 'start',
         }}
         css={styles.group}
       >
-        <RadioGroupContext.Provider value={{ variant, size, ...state }}>
+        <RadioGroupContext.Provider value={{ variant, size, error, ...state }}>
           {children}
         </RadioGroupContext.Provider>
       </Box>
