@@ -146,16 +146,6 @@ export const component = {
       ...button.select,
     },
   },
-  divider: {
-    do: {
-      height: '8px',
-      bg: 'green60',
-    },
-    dont: {
-      height: '8px',
-      bg: 'red60',
-    },
-  },
   navigation: {
     wrapper: {
       fontFamily: 'body',
