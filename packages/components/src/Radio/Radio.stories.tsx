@@ -13,6 +13,13 @@ export default {
       description: 'Label',
       defaultValue: 'The Label',
     },
+    orientation: {
+      control: {
+        type: 'select',
+        options: ['horizontal', 'vertical'],
+      },
+      description: 'Orientation',
+    },
     required: {
       control: {
         type: 'boolean',

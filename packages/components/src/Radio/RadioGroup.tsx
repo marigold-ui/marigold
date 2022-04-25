@@ -49,6 +49,7 @@ export interface RadioGroupProps
 // ---------------
 export const RadioGroup = ({
   children,
+  orientation = 'vertical',
   size,
   variant,
   required,
@@ -83,10 +84,12 @@ export const RadioGroup = ({
       )}
       <Box
         role="presentation"
+        data-orientation={orientation}
         __baseCSS={{
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: orientation === 'vertical' ? 'column' : 'row',
           alignItems: 'start',
+          gap: orientation === 'vertical' ? '0.5ch' : '1.5ch',
         }}
         css={styles.group}
       >

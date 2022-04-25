@@ -76,6 +76,10 @@ const theme = {
         },
         group: {
           fontStyle: 'italic',
+
+          '&[data-orientation="horizontal"]': {
+            gap: '3ch',
+          },
         },
       },
       variant: {
@@ -194,7 +198,119 @@ test('supports styling via variant and size', () => {
   expect(group).toHaveStyle(`font-size: ${theme.fontSizes['large-1']}px`);
 });
 
-// error
-// default value
-// value (controlled)
+test('support vertical orientation by default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label">
+        <Radio value="1" data-testid="radio-1">
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+        <Radio value="3" data-testid="radio-3">
+          Option 3
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+
+  const group = screen.getByRole('presentation');
+  expect(group).toHaveAttribute('data-orientation', 'vertical');
+});
+
+test('support horizontal orientation', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label" orientation="horizontal">
+        <Radio value="1" data-testid="radio-1">
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+        <Radio value="3" data-testid="radio-3">
+          Option 3
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+
+  const group = screen.getByRole('presentation');
+  expect(group).toHaveAttribute('data-orientation', 'horizontal');
+
+  expect(group).toHaveStyle(`gap: 3ch;`);
+});
+
+test('supports error styling via theme & passes down error', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label" error>
+        <Radio value="1" data-testid="radio-1">
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+        <Radio value="3" data-testid="radio-3">
+          Option 3
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+
+  // Note that there is no error styling for the container and group yet!
+  const radio = getVisibleRadios()?.[0];
+  expect(radio).toHaveStyle(`background: ${theme.colors.red}`);
+});
+
+test('supports default value (uncontrolled)', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label" defaultValue="3">
+        <Radio value="1" data-testid="radio-1">
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+        <Radio value="3" data-testid="radio-3">
+          Option 3
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+
+  const checkedRadio = getVisibleRadios()?.[2];
+  expect(checkedRadio).toHaveStyle(`color: ${theme.colors.teal}`);
+});
+
+test('controlled', () => {
+  const onChange = jest.fn();
+
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label" onChange={onChange}>
+        <Radio value="1" data-testid="radio-1">
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+        <Radio value="3" data-testid="radio-3">
+          Option 3
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+
+  fireEvent.click(getVisibleRadios()?.[0]!);
+
+  const checkedRadio = getVisibleRadios()?.[0];
+  expect(checkedRadio).toHaveStyle(`color: ${theme.colors.teal}`);
+
+  expect(onChange).toHaveBeenCalledTimes(1);
+  expect(onChange).toHaveBeenCalledWith('1');
+});
+
 // orientation?
