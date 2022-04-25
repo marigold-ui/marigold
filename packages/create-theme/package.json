@@ -27,7 +27,7 @@
     "@marigold/components": "workspace:*",
     "@marigold/system": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
-    "tsup": "5.12.5"
+    "tsup": "5.12.6"
   },
   "scripts": {
     "build": "tsup src/index.ts",
