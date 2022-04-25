@@ -41,10 +41,12 @@ export type CustomTextAreEvents =
 export interface TextAreaProps
   extends Omit<
       ComponentProps<'textarea'>,
-      'value' | 'defaultValue' | CustomTextAreEvents
+      'value' | 'defaultValue' | CustomTextAreEvents | 'size'
     >,
     Pick<AriaTextFieldProps, CustomTextAreEvents>,
     Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
+  variant?: string;
+  size?: string;
   value?: string;
   defaultValue?: string;
 }
@@ -56,6 +58,8 @@ export const TextArea = ({
   required,
   readOnly,
   error,
+  variant,
+  size,
   ...props
 }: TextAreaProps) => {
   const { label, description, errorMessage } = props;
@@ -84,7 +88,7 @@ export const TextArea = ({
     error,
   });
 
-  const styles = useComponentStyles('TextArea', {});
+  const styles = useComponentStyles('TextArea', { variant, size });
   return (
     <FieldBase
       label={label}
@@ -96,10 +100,11 @@ export const TextArea = ({
       errorMessage={errorMessage}
       errorMessageProps={errorMessageProps}
       stateProps={stateProps}
+      variant={variant}
+      size={size}
     >
       <Box
         as="textarea"
-        variant="textArea"
         css={styles}
         ref={ref}
         {...inputProps}
