@@ -5,23 +5,16 @@ import { useSliderState } from '@react-stately/slider';
 import { useNumberFormatter } from '@react-aria/i18n';
 import { AriaSliderProps } from '@react-types/slider';
 
-import { useComponentStyles } from '@marigold/system';
+import { ThemeExtension, useComponentStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 import { Box } from '../Box';
-import { Field, FieldProps } from '../Field';
+import { FieldBase, FieldBaseProps } from '../Field';
 import { Track } from './Track';
 
 // Theme Extension
 // ---------------
-export interface SliderThemeExtension<Value> {
-  Slider?: {
-    base: Value;
-    variant?: {
-      [key: string]: Value;
-    };
-  };
-}
+export interface SliderThemeExtension extends ThemeExtension<'Slider'> {}
 
 // Props
 // ---------------
@@ -38,7 +31,7 @@ export interface SliderProps
       AriaSliderProps,
       'maxValue' | 'step' | 'value' | 'defaultValue' | 'onChange'
     >,
-    Pick<FieldProps, 'label'> {
+    Pick<FieldBaseProps, 'label'> {
   variant?: string;
   width?: number | string;
   formatOptions?: Intl.NumberFormatOptions;
@@ -72,7 +65,7 @@ export const Slider: React.FC<SliderProps> = ({
   );
 
   return (
-    <Field
+    <FieldBase
       label={label}
       labelProps={labelProps}
       description={state.getThumbValueLabel(0)}
@@ -94,6 +87,6 @@ export const Slider: React.FC<SliderProps> = ({
           {...mergeProps(trackProps, props)}
         />
       </Box>
-    </Field>
+    </FieldBase>
   );
 };
