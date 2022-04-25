@@ -4,39 +4,42 @@ import { mergeProps } from '@react-aria/utils';
 import { SliderState } from '@react-stately/slider';
 
 import { ComponentProps } from '@marigold/types';
-import { conditional } from '@marigold/system';
+import { CSSObject, useStateProps } from '@marigold/system';
 
 import { Box } from '../Box';
 import { VisuallyHidden } from '../VisuallyHidden';
 
 // Props
 // ---------------
-export type ThumbProps = {
+export interface ThumbProps extends Pick<ComponentProps<'input'>, 'disabled'> {
   state: SliderState;
   trackRef: RefObject<HTMLElement>;
-  variant?: string;
-  index: number;
-  disabled?: boolean;
-  focused?: boolean;
-} & ComponentProps<'input'>;
+  focused: boolean;
+  styles: CSSObject;
+}
 
 // Component
 // ---------------
 export const Thumb: React.FC<ThumbProps> = ({
-  variant = '',
-  disabled = false,
-  index,
   state,
   trackRef,
   focused,
+  styles,
   ...props
 }) => {
+  const { disabled } = props;
   const inputRef = React.useRef(null);
+  const stateProps = useStateProps({
+    focus: focused,
+    disabled: disabled,
+  });
   const { thumbProps, inputProps } = useSliderThumb(
     {
-      index,
+      // if two thumbs should be rendered, we can pass index prop to the thumb component
+      index: 0,
       trackRef,
       inputRef,
+      isDisabled: disabled,
     },
     state
   );
@@ -51,19 +54,10 @@ export const Thumb: React.FC<ThumbProps> = ({
         position: 'absolute',
         top: 16,
         transform: 'translateX(-50%)',
-        left: `${state.getThumbPercent(index) * 100}%`,
+        left: `${state.getThumbPercent(0) * 100}%`,
       }}
     >
-      <Box
-        {...thumbProps}
-        __baseCSS={{
-          verticalAlign: 'middle',
-        }}
-        variant={conditional(`sliderThumb.${variant}`, {
-          focus: focused,
-          disabled: disabled,
-        })}
-      >
+      <Box {...thumbProps} __baseCSS={styles} {...stateProps}>
         <VisuallyHidden>
           <Box
             as="input"

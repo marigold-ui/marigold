@@ -9,67 +9,56 @@ export default {
       control: {
         type: 'text',
       },
-      description: 'variant to style the Slider track',
-      table: {
-        defaultValue: {
-          summary: '__default',
-        },
-      },
-    },
-    labelVariant: {
-      control: {
-        type: 'text',
-      },
-      description: 'variant to style the Slider label',
-      table: {
-        defaultValue: {
-          summary: 'above',
-        },
-      },
-    },
-    thumbVariant: {
-      control: {
-        type: 'text',
-      },
-      description: 'variant to style the Slider thumb',
-      table: {
-        defaultValue: {
-          summary: '__default',
-        },
-      },
+      description: 'Variant to style the Slider',
     },
     label: {
       control: {
         type: 'text',
       },
-      description: 'Slider label',
-      defaultValue: 'Default Slider',
+      description: 'Label to display above the Slider',
+      defaultValue: 'Label',
     },
     disabled: {
       control: {
         type: 'boolean',
       },
-      options: [true, false],
-      table: {
-        defaultValue: {
-          summary: false,
-        },
-      },
+      description: 'Whether the Slider is disabled',
+      defaultValue: false,
     },
-    required: {
+    maxValue: {
       control: {
-        type: 'boolean',
+        type: 'text',
       },
-      options: [true, false],
-      table: {
-        defaultValue: {
-          summary: false,
-        },
+      defaultValue: '500',
+      description: 'The maximum value of the slider',
+    },
+    // defaultValue: {
+    //   control: {
+    //     type: 'text',
+    //   },
+    //   defaultValue: '[100]',
+    //   description: 'The default value of the slider',
+    // },
+    step: {
+      control: {
+        type: 'range',
+        min: 1,
+        max: 1000,
+        step: 1,
       },
+      description: 'The step size of the slider',
     },
   },
 } as Meta;
 
-export const Basic: ComponentStory<typeof Slider> = args => (
-  <Slider name="vol" min="0" max="50" {...args} />
+export const Percent: ComponentStory<typeof Slider> = args => (
+  <Slider formatOptions={{ style: 'percent' }} {...args} />
+);
+
+export const Currency: ComponentStory<typeof Slider> = args => (
+  <Slider
+    formatOptions={{ style: 'currency', currency: 'EUR' }}
+    defaultValue={[100]}
+    {...args}
+  />
 );

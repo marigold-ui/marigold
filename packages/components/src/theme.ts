@@ -29,7 +29,8 @@ import { type ValidationMessageThemeExtension } from './ValidationMessage';
 
 interface ComponentStyles
   extends BadgeThemeExtension<CSSObject>,
-    ImageThemeExtension<CSSObject> {}
+    ImageThemeExtension<CSSObject>,
+    SliderThemeExtension<CSSObject> {}
 
 export interface Theme
   extends Scales,
@@ -46,7 +47,6 @@ export interface Theme
     MessageThemeExtension<CSSObject>,
     RadioThemeExtension<CSSObject>,
     SelectThemeExtension<CSSObject>,
-    SliderThemeExtension<CSSObject>,
     SwitchThemeExtension<CSSObject>,
     TextThemeExtension<CSSObject>,
     TextAreaThemeExtension<CSSObject>,

@@ -224,49 +224,6 @@ const button = {
   },
 } as const;
 
-/**
- * Slider component
- */
-const sliderThumb = {
-  __default: {
-    border: '4px solid',
-    borderColor: 'gray70',
-    width: 16,
-    height: 16,
-    bg: 'gray00',
-    borderRadius: 'large',
-    marginTop: -4,
-  },
-  ':focus': {
-    border: '4px solid',
-    borderColor: 'primary',
-  },
-  ':disabled': {
-    border: '4px solid',
-    borderColor: 'gray40',
-    bg: 'gray40',
-  },
-} as const;
-
-const slider = {
-  __default: {
-    borderColor: 'transparent',
-    borderRadius: 'large',
-    color: 'transparent',
-    bg: 'gray30',
-  },
-  ':focus': {
-    outline: 'none',
-    bg: 'primary',
-  },
-  ':disabled': {
-    bg: 'gray40',
-  },
-  ':checked': {
-    bg: 'gray70',
-  },
-} as const;
-
 export const component = {
   button: {
     __default: {
@@ -486,7 +443,6 @@ export const component = {
     },
   },
   select,
-  slider,
   switch: {
     __default: {
       fill: 'gray20',
