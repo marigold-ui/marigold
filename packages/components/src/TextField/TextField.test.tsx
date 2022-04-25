@@ -8,11 +8,53 @@ import userEvent from '@testing-library/user-event';
 const theme = {
   colors: {
     blue: '#00f',
+    lime: '#82c91e',
+  },
+  fontSizes: {
+    'small-1': 12,
   },
   components: {
+    Label: {
+      variant: {
+        lime: {
+          color: 'lime',
+        },
+      },
+      size: {
+        small: {
+          fontSize: 'small-1',
+        },
+      },
+    },
+    HelpText: {
+      variant: {
+        lime: {
+          container: {
+            color: 'lime',
+          },
+        },
+      },
+      size: {
+        small: {
+          container: {
+            fontSize: 'small-1',
+          },
+        },
+      },
+    },
     Input: {
       base: {
         borderColor: 'blue',
+      },
+      variant: {
+        lime: {
+          color: 'lime',
+        },
+      },
+      size: {
+        small: {
+          fontSize: 'small-1',
+        },
       },
     },
   },
@@ -42,6 +84,32 @@ test('input can be styled via "Input" styles', () => {
   );
   const textField = screen.getByTestId('text-field');
   expect(textField).toHaveStyle(`border-color: ${theme.colors.blue}`);
+});
+
+test('passes down variant and size', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <TextField
+        data-testid="text-field"
+        label="Label"
+        description="Description"
+        variant="lime"
+        size="small"
+      />
+    </ThemeProvider>
+  );
+
+  const textField = screen.getByTestId('text-field');
+  expect(textField).toHaveStyle(`color: ${theme.colors.lime}`);
+  expect(textField).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
+
+  const label = screen.getByText('Label');
+  expect(label).toHaveStyle(`color: ${theme.colors.lime}`);
+  expect(label).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
+
+  const description = screen.getByText('Description');
+  expect(description).toHaveStyle(`color: ${theme.colors.lime}`);
+  expect(description).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
 });
 
 test('supports disabled', () => {
