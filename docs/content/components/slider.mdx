@@ -6,15 +6,17 @@ import { FigmaLink } from '../../src/components/FigmaLink';
 
 # Slider
 
-With the Slider component you can add a HTML `<input>` element with `type="range"` to your form.
-The variant can be added with the variant prop. The default variant ist `default`.
+The Slider component allows users to quickly select a value within a range. They should be used when the upper and lower bounds to the range are invariable.
 
 <MarigoldTheme>
-  <Label htmlFor="slider">
-    Slider:
-    <br />
-    <Slider id="slider" name="slider" min="0" max="50" />
-  </Label>
+  <Slider
+    label="Marigold Completition"
+    formatOptions={{ style: 'percent' }}
+    step={0.01}
+    maxValue={1}
+    defaultValue={[0.5]}
+    width={180}
+  />
 </MarigoldTheme>
 
 ```tsx onlyCode
@@ -29,26 +31,72 @@ import { Slider } from '@marigold/components';
 
 ## Props
 
-| Property             | Type     | Default     |
-| :------------------- | :------- | :---------- |
-| `variant` (optional) | `string` | `__default` |
+| Property                   | Type                                                                                                                                          | Default | Description                                                                                                                              |
+| :------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| `label` (optional)         | `ReactNode`                                                                                                                                   |         | The label text. If you don't want to visually display a label, provide an `aria-label` or `aria-labelledby` attribute for accessibility. |
+| `disabled` (optional)      | `boolean`                                                                                                                                     | `false` | If `true`, the slider is disabled.                                                                                                       |
+| `width` (optional)         | `string, boolean`                                                                                                                             | `100%`  | The slider's width value.                                                                                                                |
+| `value` (optional)         | `number[]`                                                                                                                                    |         | The slider's value (controlled).                                                                                                         |
+| `defaultValue` (optional)  | `number[]`                                                                                                                                    |         | The slider's default value (uncontrolled).                                                                                               |
+| `maxValue` (optional)      | `number`                                                                                                                                      | `100`   | The slider's maximum value.                                                                                                              |
+| `step` (optional)          | `number`                                                                                                                                      |         | The slider's step value.                                                                                                                 |
+| `formatOptions` (optional) | [`Intl.NumberFormatOptions`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) |         | The slider's step value.                                                                                                                 |
+| ...                        |                                                                                                                                               |         | Yes you can use all regular attributes of `input type = range`!                                                                          |
 
 ## Examples
 
-### Slider with steps
+## Width
 
 ```tsx
-<Slider label="Slider with steps" id="slider2" step="25" />
+<Slider width={180} aria-label="width" />
 ```
 
-### Slider disabled
+## Step
 
 ```tsx
-<Slider label="Disabled" id="slider3" disabled />
+<Slider step={10} aria-label="step" />
 ```
 
-### Slider with required label
+## Max value
 
 ```tsx
-<Slider label="Required" id="slider4" required />
+<Slider aria-label="maxValue" maxValue={50} />
+```
+
+## Value (controlled)
+
+```tsx
+() => {
+  const [value, setValue] = React.useState([75]);
+  return <Slider aria-label="value" value={value} onChange={setValue} />;
+};
+```
+
+## Default Value (uncontrolled)
+
+```tsx
+<Slider aria-label="defaultValue" defaultValue={[25]} />
+```
+
+## Currency
+
+```tsx
+<Slider label="Price" formatOptions={{ style: 'currency', currency: 'EUR' }} />
+```
+
+## Percent
+
+```tsx
+<Slider
+  label="Percent"
+  formatOptions={{ style: 'percent' }}
+  step={0.01}
+  maxValue={1}
+/>
+```
+
+# for testing
+
+```tsx
+<Slider aria-label="slider" />
 ```

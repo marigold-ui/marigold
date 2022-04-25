@@ -35,7 +35,7 @@ export const Thumb: React.FC<ThumbProps> = ({
   });
   const { thumbProps, inputProps } = useSliderThumb(
     {
-      // if two thumbs should be rendered, we can pass index prop to the thumb component
+      // if two thumbs are to be used in the future index can be added
       index: 0,
       trackRef,
       inputRef,

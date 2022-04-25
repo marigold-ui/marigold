@@ -1,6 +1,5 @@
 import React, { RefObject } from 'react';
 import { useFocusRing } from '@react-aria/focus';
-import { mergeProps } from '@react-aria/utils';
 import { SliderState } from '@react-stately/slider';
 
 import { CSSObject, useStateProps } from '@marigold/system';
@@ -31,8 +30,8 @@ export const Track: React.FC<TrackProps> = ({
   const { isFocusVisible, focusProps, isFocused } = useFocusRing();
   const focused = isFocused || isFocusVisible || state.isThumbDragging(0);
 
-  // two tracks are needed to display one track without states styling in the back
-  // and the other one with states style in the front
+  // two tracks are needed - one to display track without states styling in the back
+  // and the other one with track states style in the front
   const trackStateProps = useStateProps({
     focus: thumbPercent > 0 && focused,
     disabled: disabled,
@@ -50,6 +49,8 @@ export const Track: React.FC<TrackProps> = ({
         cursor: disabled ? 'not-allowed' : 'pointer',
       }}
       ref={trackRef}
+      // main props müssen in den thumb zum <input>
+      // track props hier her
       {...props}
     >
       <Box width="100%" __baseCSS={trackStyles} />
@@ -61,9 +62,10 @@ export const Track: React.FC<TrackProps> = ({
       <Thumb
         state={state}
         trackRef={trackRef}
+        disabled={disabled}
         focused={focused}
         styles={thumbStyles}
-        {...mergeProps(focusProps, props)}
+        {...focusProps}
       />
     </Box>
   );

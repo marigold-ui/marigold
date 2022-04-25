@@ -5,7 +5,7 @@ import { useSliderState } from '@react-stately/slider';
 import { useNumberFormatter } from '@react-aria/i18n';
 import { AriaSliderProps } from '@react-types/slider';
 
-import { ThemeExtension, useComponentStyles } from '@marigold/system';
+import { ThemeExtensionsWithParts, useComponentStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 import { Box } from '../Box';
@@ -14,7 +14,8 @@ import { Track } from './Track';
 
 // Theme Extension
 // ---------------
-export interface SliderThemeExtension extends ThemeExtension<'Slider'> {}
+export interface SliderThemeExtension
+  extends ThemeExtensionsWithParts<'Slider', ['track', 'thumb']> {}
 
 // Props
 // ---------------
@@ -24,8 +25,8 @@ export interface SliderProps
       'step' | 'value' | 'defaultValue' | 'onChange' | 'onFocus' | 'onBlur'
     >,
     /**
-     * `react-aria` has a slightly different API for `onChange`, `onFocus`
-     * and `onBlur` events. Thus, we adjust our regular props to match them.
+     * `react-aria` has a slightly different API for some events e.g `onChange`, `onFocus`
+     * `onBlur`. Thus, we adjust our regular props to match them.
      */
     Pick<
       AriaSliderProps,
@@ -41,10 +42,12 @@ export interface SliderProps
 // ---------------
 export const Slider: React.FC<SliderProps> = ({
   variant,
-  width = 180,
+  width = '100%',
+  disabled,
   ...props
 }) => {
-  const { disabled, label, formatOptions } = props;
+  const { label, formatOptions, value, defaultValue, maxValue, ...restProps } =
+    props;
   const trackRef = useRef<HTMLElement>(null);
   const numberFormatter = useNumberFormatter(formatOptions);
   const state = useSliderState({ ...props, numberFormatter });
@@ -84,7 +87,7 @@ export const Slider: React.FC<SliderProps> = ({
           state={state}
           trackRef={trackRef}
           styles={styles}
-          {...mergeProps(trackProps, props)}
+          {...mergeProps(trackProps, restProps)}
         />
       </Box>
     </FieldBase>

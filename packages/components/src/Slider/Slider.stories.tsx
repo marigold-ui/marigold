@@ -18,6 +18,16 @@ export default {
       description: 'Label to display above the Slider',
       defaultValue: 'Label',
     },
+    width: {
+      control: {
+        type: 'range',
+        min: 1,
+        max: 1000,
+        step: 100,
+      },
+      defaultValue: 300,
+      description: 'The width size of the slider',
+    },
     disabled: {
       control: {
         type: 'boolean',
@@ -32,33 +42,19 @@ export default {
       defaultValue: '500',
       description: 'The maximum value of the slider',
     },
-    // defaultValue: {
-    //   control: {
-    //     type: 'text',
-    //   },
-    //   defaultValue: '[100]',
-    //   description: 'The default value of the slider',
-    // },
     step: {
       control: {
         type: 'range',
         min: 1,
-        max: 1000,
+        max: 100,
         step: 1,
       },
+      defaultValue: 10,
       description: 'The step size of the slider',
     },
   },
 } as Meta;
 
-export const Percent: ComponentStory<typeof Slider> = args => (
-  <Slider formatOptions={{ style: 'percent' }} {...args} />
-);
-
 export const Currency: ComponentStory<typeof Slider> = args => (
-  <Slider
-    formatOptions={{ style: 'currency', currency: 'EUR' }}
-    defaultValue={[100]}
-    {...args}
-  />
+  <Slider formatOptions={{ style: 'currency', currency: 'EUR' }} {...args} />
 );
