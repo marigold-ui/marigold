@@ -16,7 +16,6 @@ import { ComponentProps } from '@marigold/types';
 import { RadioGroup, useRadioGroupContext } from './RadioGroup';
 import { useHover } from '@react-aria/interactions';
 import { useFocusRing } from '@react-aria/focus';
-import { isDisabled } from '@testing-library/user-event/dist/utils';
 
 // Theme Extension
 // ---------------
