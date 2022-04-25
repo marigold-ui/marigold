@@ -6,12 +6,57 @@ import { ThemeProvider } from '@marigold/system';
 import { TextArea } from './TextArea';
 
 const theme = {
-  fonts: {
-    body: 'Inter Regular',
-    fancy: 'Roboto',
+  colors: {
+    blue: '#00f',
+    lime: '#82c91e',
   },
-  textArea: {
-    fontFamily: 'body',
+  fontSizes: {
+    'small-1': 12,
+  },
+  components: {
+    Label: {
+      variant: {
+        lime: {
+          color: 'lime',
+        },
+      },
+      size: {
+        small: {
+          fontSize: 'small-1',
+        },
+      },
+    },
+    HelpText: {
+      variant: {
+        lime: {
+          container: {
+            color: 'lime',
+          },
+        },
+      },
+      size: {
+        small: {
+          container: {
+            fontSize: 'small-1',
+          },
+        },
+      },
+    },
+    TextArea: {
+      base: {
+        borderColor: 'blue',
+      },
+      variant: {
+        lime: {
+          color: 'lime',
+        },
+      },
+      size: {
+        small: {
+          fontSize: 'small-1',
+        },
+      },
+    },
   },
 };
 
@@ -23,14 +68,40 @@ test('renders an textarea', () => {
   expect(textArea instanceof HTMLTextAreaElement).toBeTruthy();
 });
 
-test('can be styled via variant', () => {
+test('textarea can be styled via "TextArea" styles', () => {
   render(
     <ThemeProvider theme={theme}>
-      <TextArea label="A Label" data-testid="textarea" />
+      <TextArea label="Label" data-testid="text-area" />
     </ThemeProvider>
   );
-  const textArea = screen.getByTestId('textarea');
-  expect(textArea).toHaveStyle(`font-family: ${theme.fonts.body}`);
+  const textArea = screen.getByTestId('text-area');
+  expect(textArea).toHaveStyle(`border-color: ${theme.colors.blue}`);
+});
+
+test('passes down variant and size', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <TextArea
+        data-testid="text-area"
+        label="Label"
+        description="Description"
+        variant="lime"
+        size="small"
+      />
+    </ThemeProvider>
+  );
+
+  const textArea = screen.getByTestId('text-area');
+  expect(textArea).toHaveStyle(`color: ${theme.colors.lime}`);
+  expect(textArea).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
+
+  const label = screen.getByText('Label');
+  expect(label).toHaveStyle(`color: ${theme.colors.lime}`);
+  expect(label).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
+
+  const description = screen.getByText('Description');
+  expect(description).toHaveStyle(`color: ${theme.colors.lime}`);
+  expect(description).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
 });
 
 test('supports disabled', () => {

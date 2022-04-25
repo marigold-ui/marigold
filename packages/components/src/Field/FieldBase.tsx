@@ -44,7 +44,13 @@ export const FieldBase = ({
   return (
     <Stack>
       {label && (
-        <Label {...labelProps} {...stateProps} required={required}>
+        <Label
+          required={required}
+          variant={variant}
+          size={size}
+          {...labelProps}
+          {...stateProps}
+        >
           {label}
         </Label>
       )}
@@ -52,6 +58,8 @@ export const FieldBase = ({
       {hasHelpText && (
         <HelpText
           {...stateProps}
+          variant={variant}
+          size={size}
           disabled={disabled}
           description={description}
           descriptionProps={descriptionProps}
