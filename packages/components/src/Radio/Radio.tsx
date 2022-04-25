@@ -1,4 +1,4 @@
-import React, { useRef } from 'React';
+import React, { useRef } from 'react';
 import { useRadio } from '@react-aria/radio';
 import type { AriaRadioProps } from '@react-types/radio';
 
