@@ -4,7 +4,7 @@ import type { Meta, ComponentStory } from '@storybook/react';
 import { Radio } from './Radio';
 
 export default {
-  title: 'Components/Radio',
+  title: 'Components/Radio-old',
   parameters: {
     actions: {
       handles: ['click'],

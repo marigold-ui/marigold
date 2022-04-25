@@ -4,12 +4,19 @@ import type { AriaRadioProps } from '@react-types/radio';
 
 import {
   Box,
+  CSSObject,
+  StateAttrProps,
   ThemeComponentProps,
   ThemeExtensionsWithParts,
+  useComponentStyles,
+  useStateProps,
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 import { RadioGroup, useRadioGroupContext } from './RadioGroup';
+import { useHover } from '@react-aria/interactions';
+import { useFocusRing } from '@react-aria/focus';
+import { isDisabled } from '@testing-library/user-event/dist/utils';
 
 // Theme Extension
 // ---------------
@@ -24,11 +31,12 @@ const Dot = () => (
   </svg>
 );
 
-interface IconProps {
+interface IconProps extends StateAttrProps {
+  css?: CSSObject;
   checked?: boolean;
 }
 
-const Icon = ({ checked }: IconProps) => {
+const Icon = ({ checked, css, ...props }: IconProps) => {
   return (
     <Box
       aria-hidden="true"
@@ -43,6 +51,8 @@ const Icon = ({ checked }: IconProps) => {
         justifyContent: 'center',
         p: 4,
       }}
+      css={css}
+      {...props}
     >
       {checked ? <Dot /> : null}
     </Box>
@@ -64,15 +74,38 @@ export interface RadioProps
       ComponentProps<'input'>,
       'size' | 'type' | 'defaultValue' | CustomRadioProps
     >,
-    AriaRadioProps {}
+    AriaRadioProps {
+  disabled?: boolean;
+}
 
 // Component
 // ---------------
-export const Radio = (props: RadioProps) => {
+export const Radio = ({ disabled, ...props }: RadioProps) => {
   const { variant, size, error, ...state } = useRadioGroupContext();
 
   const ref = useRef(null);
-  const { inputProps } = useRadio(props, state, ref);
+  const { inputProps } = useRadio(
+    { isDisabled: disabled, ...props },
+    state,
+    ref
+  );
+
+  const styles = useComponentStyles(
+    'Radio',
+    { variant: variant || props.variant, size: size || props.size },
+    { parts: ['container', 'label', 'radio'] }
+  );
+
+  const { hoverProps, isHovered } = useHover({});
+  const { isFocusVisible, focusProps } = useFocusRing();
+  const stateProps = useStateProps({
+    hover: isHovered,
+    focus: isFocusVisible,
+    checked: inputProps.checked,
+    disabled: inputProps.disabled,
+    readOnly: inputProps.readOnly,
+    error,
+  });
 
   return (
     <Box
@@ -83,6 +116,9 @@ export const Radio = (props: RadioProps) => {
         gap: '1ch',
         position: 'relative',
       }}
+      css={styles.container}
+      {...hoverProps}
+      {...stateProps}
     >
       <Box
         as="input"
@@ -98,9 +134,12 @@ export const Radio = (props: RadioProps) => {
           cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
         }}
         {...inputProps}
+        {...focusProps}
       />
-      <Icon checked={inputProps.checked} />
-      <Box>{props.children}</Box>
+      <Icon checked={inputProps.checked} css={styles.radio} {...stateProps} />
+      <Box css={styles.label} {...stateProps}>
+        {props.children}
+      </Box>
     </Box>
   );
 };
