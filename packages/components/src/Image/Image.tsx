@@ -1,18 +1,11 @@
 import React from 'react';
 import { ComponentProps } from '@marigold/types';
 import { Box } from '../Box';
-import { useComponentStyles } from '@marigold/system';
+import { ThemeExtension, useComponentStyles } from '@marigold/system';
 
 // Theme Extension
 // ---------------
-export interface ImageThemeExtension<Value> {
-  Image?: {
-    base: Value;
-    variant?: {
-      [key: string]: Value;
-    };
-  };
-}
+export interface ImageThemeExtension extends ThemeExtension<'Image'> {}
 
 // Props
 // ---------------

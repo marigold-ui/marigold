@@ -1,5 +1,11 @@
 # @marigold/types
 
+## 0.4.1
+
+### Patch Changes
+
+- [#1988](https://github.com/marigold-ui/marigold/pull/1988) [`7c1129dc`](https://github.com/marigold-ui/marigold/commit/7c1129dc140d435e5312f80a57fd48f8498c33ee) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: Field Component restructure
+
 ## 0.4.0
 
 ### Minor Changes

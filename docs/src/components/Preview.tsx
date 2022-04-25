@@ -48,6 +48,7 @@ const LiveEdit: React.FC<CodeBlockProps> = ({
   const [hide, setHide] = React.useState(type === ActionType.CollapseCode);
 
   return (
+    // @ts-expect-error
     <LiveProvider
       code={codeString}
       scope={{ ...Components, ...Icons }}
@@ -68,6 +69,7 @@ const LiveEdit: React.FC<CodeBlockProps> = ({
       {!hide && (
         <Box css={codeBoxStyles}>
           <Box as={LiveEditor} css={codeBoxStyles} />
+          {/* @ts-expect-error */}
           <LiveError />
           <CopyButton codeString={codeString} />
         </Box>
@@ -91,6 +93,7 @@ export const Preview: React.FC<CodeBlockProps> = ({
     }
     case ActionType.OnlyCode: {
       return (
+        // @ts-expect-error
         <Highlight
           {...defaultProps}
           code={codeString}
@@ -99,6 +102,7 @@ export const Preview: React.FC<CodeBlockProps> = ({
         >
           {({ className, style, tokens, getLineProps, getTokenProps }) => (
             <>
+              {/* @ts-expect-error */}
               <LiveProvider scope={{ ...Components, ...Icons }}>
                 <Box
                   as="pre"

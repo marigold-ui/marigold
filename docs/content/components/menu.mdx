@@ -5,7 +5,23 @@ title: Menu
 # Menu
 
 With the Menu component you can add a Menu Button with Text or Icon as Label and as children some MenuItem components.
-The variant can be added with the variant prop. The default variant is `menu`.
+The structure of the Menu component is a `Menu.Trigger`, a simple `Button` component and the `Menu` with its children the `Menu.Item`.
+The variant can be added with the variant prop.
+The `Trigger`has also a prop for `disabled`
+
+```tsx
+<Menu.Trigger>
+  <Button variant="menu" size="small">
+    Choose Menu
+  </Button>
+  <Menu>
+    <Menu.Item key="burger">🍔 Burger</Menu.Item>
+    <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+    <Menu.Item key="salad">🥗 Salad</Menu.Item>
+    <Menu.Item key="fries">🍟 Fries</Menu.Item>
+  </Menu>
+</Menu.Trigger>
+```
 
 ```tsx onlyCode
 import { Menu } from '@marigold/components';
@@ -13,27 +29,58 @@ import { Menu } from '@marigold/components';
 
 ## Props
 
-| Property             | Type       | Default   |
-| :------------------- | :--------- | :-------- |
-| `variant` (optional) | `string`   | `default` |
-| `label` (optional)   | `string`   | `Menu`    |
-| `onClick`            | `function` |           |
-| `show` (optional)    | `boolean`  | `false`   |
+| Property                      | Type      | Default |
+| :---------------------------- | :-------- | :------ |
+| `variant` (optional)          | `string`  |         |
+| `size` (optional)             | `string`  |         |
+| `disabled` (only for Trigger) | `boolean` |         |
 
 ## Examples
 
+### Simple Menu
+
 ```tsx
 () => {
-  const [showMenu, setShowMenu] = React.useState(false);
-  const toggle = () => {
-    setShowMenu(!showMenu);
-  };
+  const [selected, setSelected] = React.useState('');
   return (
-    <Menu onClick={toggle} show={showMenu} label={<BurgerMenu />}>
-      <MenuItem href="#">Home</MenuItem>
-      <MenuItem href="#">Tickets</MenuItem>
-      <MenuItem href="#">Kundenkonto</MenuItem>
-    </Menu>
+    <>
+      <Menu.Trigger>
+        <Button variant="menu" size="small">
+          Choose Menu
+        </Button>
+        <Menu onSelect={setSelected}>
+          <Menu.Item key="burger">🍔 Burger</Menu.Item>
+          <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+          <Menu.Item key="salad">🥗 Salad</Menu.Item>
+          <Menu.Item key="fries">🍟 Fries</Menu.Item>
+        </Menu>
+      </Menu.Trigger>
+      <hr />
+      <Text>selected: {selected}</Text>
+    </>
+  );
+};
+```
+
+### Disabled Menu
+
+```tsx
+() => {
+  const [selected, setSelected] = React.useState('');
+  return (
+    <>
+      <Menu.Trigger disabled>
+        <Button variant="menu" size="small">
+          Choose Menu
+        </Button>
+        <Menu onSelect={setSelected}>
+          <Menu.Item key="burger">🍔 Burger</Menu.Item>
+          <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+          <Menu.Item key="salad">🥗 Salad</Menu.Item>
+          <Menu.Item key="fries">🍟 Fries</Menu.Item>
+        </Menu>
+      </Menu.Trigger>
+    </>
   );
 };
 ```

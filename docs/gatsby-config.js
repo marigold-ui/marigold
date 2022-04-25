@@ -8,13 +8,7 @@ module.exports = {
     siteUrl: 'https://marigold-ui.io/',
     hash: git.long(),
     version: pkg.version,
-    navigation: [
-      'introduction',
-      'foundation',
-      'components',
-      'themes',
-      'develop',
-    ],
+    navigation: ['introduction', 'foundation', 'components', 'develop'],
   },
   plugins: [
     'gatsby-plugin-pnpm',

@@ -1,5 +1,7 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
+
+import { Headline } from '../Headline';
 import { Stack } from './Stack';
 import { Text } from '../Text';
 
@@ -44,9 +46,7 @@ export default {
 
 export const Basic: ComponentStory<typeof Stack> = args => (
   <Stack {...args}>
-    <Text as="h2" variant="headline2">
-      Heading
-    </Text>
+    <Headline level="2">Heading</Headline>
     <Text>
       Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
       Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
@@ -65,9 +65,7 @@ export const Basic: ComponentStory<typeof Stack> = args => (
 export const Nested: ComponentStory<typeof Stack> = args => (
   <Stack {...args}>
     <Stack space="xsmall">
-      <Text as="h2" variant="headline2">
-        Heading
-      </Text>
+      <Headline level="2">Heading</Headline>
       <Text>
         Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
@@ -82,9 +80,7 @@ export const Nested: ComponentStory<typeof Stack> = args => (
       </Text>
     </Stack>
     <Stack space="xsmall">
-      <Text as="h2" variant="headline2">
-        Heading
-      </Text>
+      <Headline level="2">Heading</Headline>
       <Text>
         Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras

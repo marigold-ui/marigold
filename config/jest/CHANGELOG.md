@@ -1,5 +1,11 @@
 # @marigold/jest-config
 
+## 0.5.0
+
+### Minor Changes
+
+- [#2009](https://github.com/marigold-ui/marigold/pull/2009) [`6abb9051`](https://github.com/marigold-ui/marigold/commit/6abb90515312af180fe799a61e97ced49dfce4e6) Thanks [@sebald](https://github.com/sebald)! - feat: don't collect coverage by default
+
 ## 0.4.0
 
 ### Minor Changes

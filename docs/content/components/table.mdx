@@ -1,0 +1,256 @@
+---
+title: Table
+figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=2387%3A1928
+---
+
+import { FigmaLink } from '../../src/components/FigmaLink';
+
+# Table
+
+The `Table` component allows to present data in a table format. It enhances the functionality of regular `<table>` elements with the possibility to interact and select the data, as well as, helps with accessibility by providing keyboard navigation.
+
+```tsx
+<Table aria-label="Table with multiple selection" selectionMode="multiple">
+  <Table.Header>
+    <Table.Column>Name</Table.Column>
+    <Table.Column>Firstname</Table.Column>
+    <Table.Column>House</Table.Column>
+    <Table.Column>Year of birth</Table.Column>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row key={1}>
+      <Table.Cell>Potter</Table.Cell>
+      <Table.Cell>Harry</Table.Cell>
+      <Table.Cell>Gryffindor</Table.Cell>
+      <Table.Cell>1980</Table.Cell>
+    </Table.Row>
+    <Table.Row key={2}>
+      <Table.Cell>Malfoy</Table.Cell>
+      <Table.Cell>Draco</Table.Cell>
+      <Table.Cell>Slytherin</Table.Cell>
+      <Table.Cell>1980</Table.Cell>
+    </Table.Row>
+    <Table.Row key={3}>
+      <Table.Cell>Diggory</Table.Cell>
+      <Table.Cell>Cedric</Table.Cell>
+      <Table.Cell>Hufflepuff</Table.Cell>
+      <Table.Cell>1977</Table.Cell>
+    </Table.Row>
+    <Table.Row key={4}>
+      <Table.Cell>Lovegood</Table.Cell>
+      <Table.Cell>Luna</Table.Cell>
+      <Table.Cell>Ravenclaw</Table.Cell>
+      <Table.Cell>1981</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+```
+
+```tsx onlyCode
+import { Table } from '@marigold/components';
+```
+
+<FigmaLink
+  to={
+    'https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=2387%3A1928'
+  }
+/>
+
+## Props
+
+| Property                       | Type                           | Default | Description                                              |
+| :----------------------------- | :----------------------------- | :------ | :------------------------------------------------------- |
+| `selectionMode` (optional)     | `'none', 'single', 'multiple'` | `none`  | The type of selection that is allowed in the collection. |
+| `onSelectionChange` (optional) | `(keys: Selection) => any`     |         | Handler that is called when the selection changes.       |
+| `align` (optional)             | `left, center, right`          | `left`  | Align the cell content from the rows except the header.  |
+| `alignHeader` (optional)       | `left, center, right`          | `left`  | Align the header content.                                |
+
+## Examples
+
+### Selection mode single
+
+```tsx
+<Table aria-label="Table with multiple selection" selectionMode="single">
+  <Table.Header>
+    <Table.Column>Name</Table.Column>
+    <Table.Column>Firstname</Table.Column>
+    <Table.Column>House</Table.Column>
+    <Table.Column>Year of birth</Table.Column>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row key={1}>
+      <Table.Cell>Potter</Table.Cell>
+      <Table.Cell>Harry</Table.Cell>
+      <Table.Cell>Gryffindor</Table.Cell>
+      <Table.Cell>1980</Table.Cell>
+    </Table.Row>
+    <Table.Row key={2}>
+      <Table.Cell>Malfoy</Table.Cell>
+      <Table.Cell>Draco</Table.Cell>
+      <Table.Cell>Slytherin</Table.Cell>
+      <Table.Cell>1980</Table.Cell>
+    </Table.Row>
+    <Table.Row key={3}>
+      <Table.Cell>Diggory</Table.Cell>
+      <Table.Cell>Cedric</Table.Cell>
+      <Table.Cell>Hufflepuff</Table.Cell>
+      <Table.Cell>1977</Table.Cell>
+    </Table.Row>
+    <Table.Row key={4}>
+      <Table.Cell>Lovegood</Table.Cell>
+      <Table.Cell>Luna</Table.Cell>
+      <Table.Cell>Ravenclaw</Table.Cell>
+      <Table.Cell>1981</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+```
+
+### Selection mode multiple
+
+```tsx
+<Table aria-label="Table with multiple selection" selectionMode="multiple">
+  <Table.Header>
+    <Table.Column>Name</Table.Column>
+    <Table.Column>Firstname</Table.Column>
+    <Table.Column>House</Table.Column>
+    <Table.Column>Year of birth</Table.Column>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row key={1}>
+      <Table.Cell>Potter</Table.Cell>
+      <Table.Cell>Harry</Table.Cell>
+      <Table.Cell>Gryffindor</Table.Cell>
+      <Table.Cell>1980</Table.Cell>
+    </Table.Row>
+    <Table.Row key={2}>
+      <Table.Cell>Malfoy</Table.Cell>
+      <Table.Cell>Draco</Table.Cell>
+      <Table.Cell>Slytherin</Table.Cell>
+      <Table.Cell>1980</Table.Cell>
+    </Table.Row>
+    <Table.Row key={3}>
+      <Table.Cell>Diggory</Table.Cell>
+      <Table.Cell>Cedric</Table.Cell>
+      <Table.Cell>Hufflepuff</Table.Cell>
+      <Table.Cell>1977</Table.Cell>
+    </Table.Row>
+    <Table.Row key={4}>
+      <Table.Cell>Lovegood</Table.Cell>
+      <Table.Cell>Luna</Table.Cell>
+      <Table.Cell>Ravenclaw</Table.Cell>
+      <Table.Cell>1981</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+```
+
+### Text Alignment
+
+Align column headers and rows to the left, center, or right.
+
+```tsx
+<Table
+  aria-label="Table with multiple selection"
+  align="center"
+  alignHeader="center"
+>
+  <Table.Header>
+    <Table.Column>Name</Table.Column>
+    <Table.Column>Firstname</Table.Column>
+    <Table.Column>House</Table.Column>
+    <Table.Column>Year of birth</Table.Column>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row key={1}>
+      <Table.Cell>Potter</Table.Cell>
+      <Table.Cell>Harry</Table.Cell>
+      <Table.Cell>Gryffindor</Table.Cell>
+      <Table.Cell>1980</Table.Cell>
+    </Table.Row>
+    <Table.Row key={2}>
+      <Table.Cell>Malfoy</Table.Cell>
+      <Table.Cell>Draco</Table.Cell>
+      <Table.Cell>Slytherin</Table.Cell>
+      <Table.Cell>1980</Table.Cell>
+    </Table.Row>
+    <Table.Row key={3}>
+      <Table.Cell>Diggory</Table.Cell>
+      <Table.Cell>Cedric</Table.Cell>
+      <Table.Cell>Hufflepuff</Table.Cell>
+      <Table.Cell>1977</Table.Cell>
+    </Table.Row>
+    <Table.Row key={4}>
+      <Table.Cell>Lovegood</Table.Cell>
+      <Table.Cell>Luna</Table.Cell>
+      <Table.Cell>Ravenclaw</Table.Cell>
+      <Table.Cell>1981</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+```
+
+### Dynamic collections
+
+```tsx
+() => {
+  const columns = [
+    { name: 'Name', key: 'name' },
+    { name: 'Firstname', key: 'firstname' },
+    { name: 'House', key: 'house' },
+    { name: 'Year of birth', key: 'year' },
+  ];
+  const rows = [
+    {
+      id: '1',
+      name: 'Potter',
+      firstname: 'Harry',
+      house: 'Gryffindor',
+      year: '1980',
+    },
+    {
+      id: '2',
+      name: 'Malfoy',
+      firstname: 'Draco',
+      house: 'Slytherin',
+      year: '1980',
+    },
+    {
+      id: '3',
+      name: 'Diggory',
+      firstname: 'Cedric',
+      house: 'Hufflepuff',
+      year: '1977',
+    },
+    {
+      id: '4',
+      name: 'Lovegood',
+      firstname: 'Luna',
+      house: 'Ravenclaw',
+      year: '1981',
+    },
+  ];
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set());
+  return (
+    <Stack space="small">
+      <Table
+        aria-label="Example dynamic collection table"
+        selectionMode="multiple"
+        onSelectionChange={key => setSelectedKeys(new Set(key))}
+      >
+        <Table.Header columns={columns}>
+          {column => <Table.Column>{column.name}</Table.Column>}
+        </Table.Header>
+        <Table.Body items={rows}>
+          {item => (
+            <Table.Row>
+              {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+      <Text>Selected rows: {selectedKeys}</Text>
+    </Stack>
+  );
+};
+```

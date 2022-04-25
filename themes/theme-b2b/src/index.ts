@@ -1,16 +1,14 @@
-import { type Theme } from "@marigold/components";
-import { colors } from "./colors";
-import { component } from "./component";
-import { typography } from "./typography";
+import { colors } from './colors';
+import { component } from './component';
 
 // NEW STYLES!
-import * as components from "./components";
+import * as components from './components';
 
 export const webFontUrl = [
-  "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap",
+  'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap',
 ] as const;
 
-const theme: Theme = {
+const theme: any = {
   space: {
     none: 0,
     xxsmall: 4,
@@ -49,7 +47,7 @@ const theme: Theme = {
     body: {
       margin: 0,
       padding: 0,
-      fontFamily: "body",
+      fontFamily: 'body',
     },
   },
   radii: {
@@ -58,7 +56,31 @@ const theme: Theme = {
     medium: 4,
     large: 8,
   },
-  ...typography,
+  fonts: {
+    body: 'Inter',
+    heading: 'Inter Black',
+  },
+  fontSizes: {
+    xxsmall: '0.875rem',
+    xsmall: '1rem',
+    small: '1.125rem',
+    medium: '1.25rem',
+    large: '1.5rem',
+    xlarge: '2rem',
+  },
+  fontWeights: {
+    body: 400,
+    heading: 900,
+    bold: 700,
+  },
+  lineHeights: {
+    xsmall: 1,
+    small: 1.125,
+    medium: 1.5,
+    large: 2,
+    xlarge: 2.5,
+    xxlarge: 3,
+  },
   ...component,
 
   // NEW STYLES!!!

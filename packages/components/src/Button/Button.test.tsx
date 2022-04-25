@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 import { Button } from './Button';
 import { Facebook } from '@marigold/icons';
@@ -9,28 +9,43 @@ const theme = {
     body: 'Arial',
     fancy: 'Inter',
   },
+  colors: {
+    red: '#ffa8a8',
+  },
   space: {
     none: 0,
     small: 2,
     large: 16,
   },
-  button: {
-    large: {
-      p: 'large',
-    },
-    small: {
-      p: 'large',
-    },
-    primary: {
-      fontFamily: 'fancy',
-    },
-    secondary: {
-      fontFamily: 'body',
+  components: {
+    Button: {
+      base: {
+        fontFamily: 'fancy',
+        '&[data-focus]': {
+          bg: 'red',
+        },
+      },
+      size: {
+        large: {
+          p: '16px',
+        },
+        small: {
+          p: 'large',
+        },
+      },
+      variant: {
+        primary: {
+          fontFamily: 'fancy',
+        },
+        secondary: {
+          fontFamily: 'body',
+        },
+      },
     },
   },
 };
 
-test('supports default variant', () => {
+test('supports base style', () => {
   render(
     <ThemeProvider theme={theme}>
       <Button>button</Button>
@@ -44,7 +59,7 @@ test('supports default variant', () => {
 test('supports default size', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Button>button</Button>
+      <Button size="large">button</Button>
     </ThemeProvider>
   );
   const button = screen.getByText(/button/);
@@ -52,7 +67,7 @@ test('supports default size', () => {
   expect(button).toHaveStyle(`padding: 16px`);
 });
 
-test('accepts other variant than default', () => {
+test('accepts other variants', () => {
   render(
     <ThemeProvider theme={theme}>
       <Button variant="secondary">button</Button>
@@ -115,34 +130,71 @@ test('add icon in button works as expected', () => {
 
   expect(button instanceof HTMLButtonElement).toBeTruthy();
   expect(button).toHaveStyle('display: inline-flex');
-  expect(icon).toHaveStyle('fill: red');
+  expect(icon).toHaveStyle(`fill: ${theme.colors.red}`);
   expect(icon).toHaveStyle('width: 30px');
 });
 
 test('add space to button works as expected', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Button title="iconbutton" space="small">
+      <Button data-testid="iconbutton" space="small">
         <Facebook fill="red" size={30} title="facebook" />
         iconbutton
       </Button>
     </ThemeProvider>
   );
-  const button = screen.getByTitle(/iconbutton/);
+  const button = screen.getByTestId('iconbutton');
 
   const style = window.getComputedStyle(button);
-  expect(style.columnGap).toBe(`2px`);
+  expect(style.gap).toBe(`0.5ch`);
 });
 
-test('accepts custom styles prop className', () => {
+test('can be used as a "link button"', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Button className="custom-class-name" title="button">
-        click
+      <Button as="a" href="https://karriere.reservix.net" data-testid="button">
+        I am a Link!
       </Button>
     </ThemeProvider>
   );
-  const button = screen.getByTitle(/button/);
+  const button = screen.getByTestId('button');
+  expect(button).toBeTruthy();
+});
 
-  expect(button.className).toMatch('custom-class-name');
+test('can be used as a "link button" and has button styling', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Button
+        as="a"
+        href="https://karriere.reservix.net"
+        variant="primary"
+        data-testid="button"
+      >
+        I am a Link!
+      </Button>
+    </ThemeProvider>
+  );
+  const button = screen.getByTestId('button');
+  expect(button).toBeTruthy();
+});
+
+test('supports onPress', () => {
+  const onPress = jest.fn();
+  render(
+    <Button onPress={onPress} href={onPress} data-testid="button">
+      Some Button
+    </Button>
+  );
+
+  const button = screen.getByTestId('button');
+  fireEvent.click(button);
+
+  expect(onPress).toHaveBeenCalled();
+});
+
+test('forwards ref', () => {
+  const ref = React.createRef<HTMLButtonElement>();
+  render(<Button ref={ref}>button</Button>);
+
+  expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
 });

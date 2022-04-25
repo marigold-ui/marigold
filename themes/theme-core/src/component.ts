@@ -1,5 +1,4 @@
 import { colors } from './colors';
-import { text } from './typography';
 
 /**
  * Select component
@@ -110,82 +109,6 @@ const button = {
     border: 'none',
     borderRadius: 'small',
     display: 'inline-flex',
-  },
-  primary: {
-    color: 'background',
-    bg: 'primary',
-    ':hover': {
-      color: 'background',
-      bg: colors.orange40,
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'disabled',
-      bg: colors.gray00,
-      outlineColor: 'disabled',
-      cursor: 'not-allowed',
-    },
-  },
-  secondary: {
-    color: 'gray70',
-    bg: 'gray30',
-    border: '1px solid',
-    outlineColor: 'gray70',
-    ':hover': {
-      bg: colors.gray00,
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'disabled',
-      bg: colors.gray00,
-      outlineColor: 'disabled',
-      cursor: 'not-allowed',
-    },
-  },
-  ghost: {
-    color: 'secondary',
-    border: '1px solid',
-    outlineColor: colors.gray70,
-    ':hover': {
-      color: 'secondary',
-      bg: colors.gray10,
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'disabled',
-      bg: colors.gray00,
-      outlineColor: 'disabled',
-      cursor: 'not-allowed',
-    },
-  },
-  text: {
-    color: 'secondary',
-    ':hover': {
-      color: 'secondary',
-      outlineColor: colors.gray70,
-      bg: colors.gray30,
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'disabled',
-      bg: colors.gray00,
-      outlineColor: 'disabled',
-      cursor: 'not-allowed',
-    },
-  },
-  menu: {
-    color: 'secondary',
-    bg: 'background',
-    ':hover': {
-      color: 'background',
-      bg: colors.gray60,
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: colors.gray40,
-      bg: colors.gray20,
-      cursor: 'not-allowed',
-    },
   },
   select: {
     ...selectButton,
@@ -343,28 +266,7 @@ export const component = {
       paddingX: 'small',
       fontSize: 'xxsmall',
     },
-    primary: {
-      ...button.root,
-      ...button.primary,
-    },
-    secondary: {
-      ...button.root,
-      ...button.secondary,
-    },
-    ghost: {
-      ...button.root,
-      ...button.ghost,
-    },
-    text: {
-      ...button.root,
-      ...button.text,
-    },
-    menu: {
-      ...button.root,
-      ...button.menu,
-    },
     select: {
-      ...button.root,
       ...button.select,
     },
   },
@@ -377,22 +279,6 @@ export const component = {
       borderRadius: 'xlarge',
     },
   },
-  checkbox: {
-    __default: {
-      fill: 'gray00',
-      stroke: 'gray40',
-    },
-    ':checked': {
-      fill: colors.blue60,
-      stroke: colors.blue70,
-    },
-    ':disabled': {
-      fill: 'gray30',
-    },
-    ':error': {
-      stroke: 'error',
-    },
-  },
   dialog: {
     __default: {
       bg: '#ffffff',
@@ -401,43 +287,6 @@ export const component = {
     },
     backdrop: {
       bg: '#00000080',
-    },
-  },
-  divider: {
-    __default: {
-      my: 'xsmall',
-    },
-    bold: {
-      my: 'xsmall',
-      height: '2px',
-    },
-  },
-  input: {
-    __default: {
-      color: 'text',
-      border: 'none',
-      borderRadius: 'small',
-      boxShadow: '0 0 0 1px #aaa',
-      outline: 'none',
-      padding: '0 4px',
-      lineHeight: '24px',
-      ':focus': {
-        boxShadow: '0 0 0 2px ' + colors.blue60,
-      },
-      ':disabled': {
-        bg: colors.gray20,
-        color: colors.gray40,
-        cursor: 'not-allowed',
-      },
-    },
-    error: {
-      color: 'text',
-      border: 'none',
-      borderRadius: 'small',
-      boxShadow: '0 0 0 1px #f33',
-      outline: 'none',
-      padding: '0 4px',
-      lineHeight: '24px',
     },
   },
   label: {
@@ -456,33 +305,6 @@ export const component = {
       fontSize: 'xsmall',
       lineHeight: '32px',
       color: colors.gray50,
-    },
-  },
-  link: {
-    __default: {
-      color: '#900',
-      ':hover, :visited': {
-        textDecoration: 'none',
-      },
-    },
-    menuItemLink: {
-      color: 'text',
-      textDecoration: 'none',
-    },
-  },
-  menuItem: {
-    default: {
-      display: 'block',
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      fontWeight: 'body',
-      padding: 'xsmall',
-      bg: colors.gray10,
-      color: 'text',
-      ':hover': {
-        bg: colors.gray30,
-        cursor: 'pointer',
-      },
     },
   },
   message: {
@@ -543,26 +365,6 @@ export const component = {
       stroke: 'gray40',
     },
   },
-  textArea: {
-    __default: {
-      fontFamily: 'body',
-      fontSize: 'xxsmall',
-      padding: '2px',
-      color: 'text',
-      background: colors.gray00,
-      border: 0,
-      boxShadow: '0 0 0 1px #aaa',
-      outline: 'none',
-      ':focus': {
-        borderRadius: 'small',
-        boxShadow: '0 0 0 2px ' + colors.blue60,
-      },
-      ':disabled': {
-        bg: colors.gray20,
-        color: colors.gray40,
-      },
-    },
-  },
   tooltip: {
     __default: {
       p: 'xsmall',
@@ -576,7 +378,6 @@ export const component = {
   },
   validation: {
     error: {
-      ...text.root,
       fontSize: '0.813rem',
       color: 'error',
     },

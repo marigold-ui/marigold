@@ -2,7 +2,7 @@ import React from 'react';
 import { Exclamation, Info, Notification } from '@marigold/icons';
 import { ComponentProps } from '@marigold/types';
 import { Box } from '../Box';
-import { Text } from '../Text';
+import { Headline } from '../Headline';
 
 // Theme Extension
 // ---------------
@@ -45,9 +45,7 @@ export const Message: React.FC<MessageProps> = ({
     >
       <Box display="flex" alignItems="center" variant="message.title">
         {icon}
-        <Text as="h4" variant="headline4">
-          {messageTitle}
-        </Text>
+        <Headline level="4">{messageTitle}</Headline>
       </Box>
       <Box css={{ color: 'black' }}>{children}</Box>
     </Box>

@@ -1,5 +1,4 @@
 import { colors } from './colors';
-import { text } from './typography';
 
 /**
  * Select component
@@ -106,76 +105,6 @@ const button = {
     border: 'none',
     borderRadius: '8px',
     display: 'inline-flex',
-  },
-  primary: {
-    color: 'background',
-    bg: 'primary',
-    ':hover': {
-      bg: 'secondary',
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'gray40',
-      bg: 'gray20',
-      cursor: 'not-allowed',
-    },
-  },
-  secondary: {
-    color: 'background',
-    bg: 'secondary',
-    ':hover': {
-      bg: 'primary',
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'gray40',
-      bg: 'gray20',
-      cursor: 'not-allowed',
-    },
-  },
-  ghost: {
-    color: 'secondary',
-    border: '1px solid',
-    outlineColor: 'gray70',
-    ':hover': {
-      color: 'secondary',
-      bg: 'gray30',
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'disabled',
-      bg: 'gray00',
-      outlineColor: 'disabled',
-      cursor: 'not-allowed',
-    },
-  },
-  text: {
-    color: 'secondary',
-    ':hover': {
-      outlineColor: 'gray70',
-      bg: 'gray30',
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'disabled',
-      bg: 'gray00',
-      cursor: 'not-allowed',
-      outline: 'none',
-    },
-  },
-  menu: {
-    color: 'secondary',
-    bg: 'background',
-    ':hover': {
-      color: 'background',
-      bg: 'gray60',
-      cursor: 'pointer',
-    },
-    ':disabled': {
-      color: 'gray40',
-      bg: 'gray20',
-      cursor: 'not-allowed',
-    },
   },
   select: {
     ...selectButton,
@@ -333,52 +262,19 @@ export const component = {
     },
     primary: {
       ...button.root,
-      ...button.primary,
     },
     secondary: {
       ...button.root,
-      ...button.secondary,
     },
     ghost: {
       ...button.root,
-      ...button.ghost,
     },
     text: {
       ...button.root,
-      ...button.text,
-    },
-    menu: {
-      ...button.root,
-      ...button.menu,
     },
     select: {
       ...button.root,
       ...button.select,
-    },
-  },
-  card: {
-    __default: {
-      maxWidth: '500px',
-      bg: 'gray00',
-      p: 'small',
-      boxShadow: '8px 8px 4px rgba(201, 177, 255, 0.5)',
-      borderRadius: '8px',
-    },
-  },
-  checkbox: {
-    __default: {
-      fill: 'gray00',
-      stroke: 'gray40',
-    },
-    ':checked': {
-      fill: 'primary',
-      stroke: '#311b92',
-    },
-    ':disabled': {
-      fill: 'gray30',
-    },
-    ':error': {
-      stroke: 'error',
     },
   },
   dialog: {
@@ -389,49 +285,6 @@ export const component = {
     },
     backdrop: {
       bg: '#00000080',
-    },
-  },
-  divider: {
-    __default: {
-      my: 'xsmall',
-    },
-    bold: {
-      my: 'xsmall',
-      height: '2px',
-    },
-    section: {
-      my: 'xxsmall',
-      bg: 'gray50',
-    },
-  },
-  input: {
-    __default: {
-      fontFamily: 'body',
-      color: 'text',
-      border: 'none',
-      borderRadius: '2px',
-      boxShadow: '0 0 0 1px ' + colors.gray40,
-      outline: 'none',
-      padding: '0 8px',
-      lineHeight: 'large',
-      ':focus': {
-        boxShadow: '0 0 0 2px ' + colors.blue60,
-      },
-      ':disabled': {
-        bg: 'gray20',
-        color: 'gray40',
-        cursor: 'not-allowed',
-      },
-    },
-    error: {
-      fontFamily: 'body',
-      color: 'text',
-      border: 'none',
-      borderRadius: '2px',
-      boxShadow: '0 0 0 1px ' + colors.red60,
-      outline: 'none',
-      padding: '0 8px',
-      lineHeight: 'large',
     },
   },
   label: {
@@ -447,18 +300,6 @@ export const component = {
       fontSize: 'small',
       lineHeight: 'large',
       color: 'gray50',
-    },
-  },
-  link: {
-    __default: {
-      color: 'primary',
-      ':hover': {
-        textDecoration: 'none',
-      },
-    },
-    menuItemLink: {
-      color: 'text',
-      textDecoration: 'none',
     },
   },
   menuItem: {
@@ -534,25 +375,6 @@ export const component = {
       stroke: 'gray40',
     },
   },
-  textArea: {
-    __default: {
-      fontFamily: 'body',
-      lineHeight: 'medium',
-      padding: '4px 8px',
-      color: 'text',
-      border: 0,
-      borderRadius: '8px',
-      outline: '2px solid',
-      ':focus': {
-        outline: '4px solid',
-        outlineColor: 'primary',
-      },
-      ':disabled': {
-        bg: 'gray20',
-        color: 'gray40',
-      },
-    },
-  },
   tooltip: {
     __default: {
       p: 'xsmall',
@@ -564,7 +386,6 @@ export const component = {
   },
   validation: {
     error: {
-      ...text.root,
       fontSize: 'xsmall',
       textTransform: 'uppercase',
       color: 'error',

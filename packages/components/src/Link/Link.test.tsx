@@ -8,22 +8,27 @@ const theme = {
     link: 'Inter',
     body: 'Oswald',
   },
-  link: {
-    __default: {
-      fontFamily: 'link',
-      color: 'blue',
-    },
-    second: {
-      fontFamily: 'body',
-      color: 'green',
-    },
-    ':disabled': {
-      color: 'grey',
+
+  components: {
+    Link: {
+      base: {
+        fontFamily: 'link',
+        color: 'blue',
+        '&:disabled': {
+          color: 'grey',
+        },
+      },
+      variant: {
+        second: {
+          fontFamily: 'body',
+          color: 'green',
+        },
+      },
     },
   },
 };
 
-test('uses `text.link` as default variant', () => {
+test('uses base variant', () => {
   render(
     <ThemeProvider theme={theme}>
       <Link href="#!">Link</Link>

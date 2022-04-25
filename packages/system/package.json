@@ -1,6 +1,6 @@
 {
   "name": "@marigold/system",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Marigold System Library",
   "license": "MIT",
   "keywords": [
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "tsup": "5.12.4"
+    "tsup": "5.12.5"
   },
   "scripts": {
     "build": "tsup src/index.ts",

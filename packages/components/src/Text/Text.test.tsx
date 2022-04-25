@@ -15,17 +15,23 @@ const theme = {
     body: '1rem',
     medium: '1.25rem',
   },
-  text: {
-    body: {
-      fontFamily: 'Oswald Regular',
-    },
-    headline1: {
-      fontFamily: 'Inter',
+
+  components: {
+    Text: {
+      base: {
+        fontFamily: 'Oswald Regular',
+      },
+      variant: {
+        one: {
+          fontFamily: 'Arial',
+          color: 'green',
+        },
+      },
     },
   },
 };
 
-test('uses `text.body` as default variant', () => {
+test('uses base as default variant', () => {
   render(
     <ThemeProvider theme={theme}>
       <Text>text</Text>
@@ -36,32 +42,10 @@ test('uses `text.body` as default variant', () => {
   expect(text).toHaveStyle(`font-family: Oswald Regular`);
 });
 
-test('allows to change variants via `variant` prop (with "text" prefix)', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Text variant="headline1">text</Text>
-    </ThemeProvider>
-  );
-  const text = screen.getByText(/text/);
-
-  expect(text).toHaveStyle(`font-family: Inter`);
-});
-
-test('renders a <span> element by default', () => {
+test('renders a <p> element by default', () => {
   render(
     <ThemeProvider theme={theme}>
       <Text>text</Text>
-    </ThemeProvider>
-  );
-  const text = screen.getByText(/text/);
-
-  expect(text instanceof HTMLSpanElement).toBeTruthy();
-});
-
-test('allows to control the rendered element via the `as` prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Text as="p">text</Text>
     </ThemeProvider>
   );
   const text = screen.getByText(/text/);
@@ -75,15 +59,14 @@ test.each([
   [{ align: 'center' }, 'text-align: center'],
   [{ cursor: 'pointer' }, 'cursor: pointer'],
   [{ outline: 'dashed red' }, 'outline: dashed red'],
-  [{ size: 'body' }, `font-size: ${theme.fontSizes.body}`],
-  [{ size: 'medium' }, `font-size: ${theme.fontSizes.medium}`],
-  [{ userSelect: 'none' }, 'user-select: none'],
+  [{ fontSize: 'body' }, `font-size: ${theme.fontSizes.body}`],
+  [{ fontSize: 'medium' }, `font-size: ${theme.fontSizes.medium}`],
 ])('test style prop %o', (...args) => {
   const props = args.shift();
 
   render(
     <ThemeProvider theme={theme}>
-      <Text {...props}>This is the Text!</Text>
+      <Text {...(props as any)}>This is the Text!</Text>
     </ThemeProvider>
   );
 
@@ -91,15 +74,4 @@ test.each([
   args.forEach((style: any) => {
     expect(box).toHaveStyle(style);
   });
-});
-
-test('forwards ref', () => {
-  const ref = React.createRef<HTMLButtonElement>();
-  render(
-    <Text as="button" ref={ref}>
-      button
-    </Text>
-  );
-
-  expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
 });
