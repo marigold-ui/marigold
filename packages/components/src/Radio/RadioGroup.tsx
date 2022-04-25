@@ -69,13 +69,13 @@ export const RadioGroup = ({
   const { radioGroupProps, labelProps } = useRadioGroup(props, state);
 
   const styles = useComponentStyles(
-    'CheckboxGroup',
+    'RadioGroup',
     { variant, size },
     { parts: ['container', 'group'] }
   );
 
   return (
-    <Box {...radioGroupProps}>
+    <Box {...radioGroupProps} css={styles.container}>
       {props.label && (
         <Label as="span" required={required} {...labelProps}>
           {props.label}

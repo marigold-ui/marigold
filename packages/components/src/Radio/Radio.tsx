@@ -35,28 +35,26 @@ interface IconProps extends StateAttrProps {
   checked?: boolean;
 }
 
-const Icon = ({ checked, css, ...props }: IconProps) => {
-  return (
-    <Box
-      aria-hidden="true"
-      __baseCSS={{
-        width: 16,
-        height: 16,
-        bg: '#fff',
-        border: '1px solid #000',
-        borderRadius: '50%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        p: 4,
-      }}
-      css={css}
-      {...props}
-    >
-      {checked ? <Dot /> : null}
-    </Box>
-  );
-};
+const Icon = ({ checked, css, ...props }: IconProps) => (
+  <Box
+    aria-hidden="true"
+    __baseCSS={{
+      width: 16,
+      height: 16,
+      bg: '#fff',
+      border: '1px solid #000',
+      borderRadius: '50%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      p: 4,
+    }}
+    css={css}
+    {...props}
+  >
+    {checked ? <Dot /> : null}
+  </Box>
+);
 
 // Props
 // ---------------
@@ -71,7 +69,7 @@ export interface RadioProps
   extends ThemeComponentProps,
     Omit<
       ComponentProps<'input'>,
-      'size' | 'type' | 'defaultValue' | CustomRadioProps
+      'size' | 'type' | 'defaultChecked' | CustomRadioProps
     >,
     AriaRadioProps {
   disabled?: boolean;
@@ -102,7 +100,7 @@ export const Radio = ({ disabled, ...props }: RadioProps) => {
     focus: isFocusVisible,
     checked: inputProps.checked,
     disabled: inputProps.disabled,
-    readOnly: inputProps.readOnly,
+    readOnly: props.readOnly,
     error,
   });
 

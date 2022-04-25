@@ -1,172 +1,292 @@
-// import React from 'react';
-// import { fireEvent, render, screen } from '@testing-library/react';
-// import { Radio } from './';
-// import { ThemeProvider } from '@marigold/system';
+import React from 'react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { Radio } from '.';
+import { ThemeProvider } from '@marigold/system';
 
-// const theme = {
-//   space: {
-//     none: 0,
-//     small: 2,
-//   },
-//   colors: {
-//     disabled: 'gray',
-//   },
-//   radio: {
-//     __default: {
-//       m: 'small',
-//     },
-//   },
-//   label: {
-//     above: {
-//       fontSize: '8px',
-//     },
-//     inline: {
-//       fontSize: '14px',
-//     },
-//   },
-// };
+const theme = {
+  colors: {
+    gray: '#868e96',
+    blue: '#a5d8ff',
+    teal: '#099268',
+    green: '#2b8a3e',
+    red: '#c92a2a',
+  },
+  fontSizes: {
+    'small-1': 12,
+    'large-1': 24,
+  },
+  radii: {
+    none: 0,
+    'large-1': '9999px',
+  },
+  components: {
+    Radio: {
+      base: {
+        label: {
+          fontSize: 'small-1',
+        },
+        radio: {
+          borderRadius: 'large-1',
+          '&:focus': {
+            outline: '1px solid',
+            outlineColor: 'blue',
+          },
+          '&:checked': {
+            color: 'teal',
+          },
+          '&:disabled': {
+            bg: 'gray',
+          },
+          '&:read-only': {
+            opacity: 0.5,
+          },
+          '&:error': {
+            bg: 'red',
+          },
+        },
+      },
+      variant: {
+        green: {
+          label: {
+            color: 'green',
+          },
+          radio: {
+            '&:checked': {
+              color: 'green',
+            },
+          },
+        },
+      },
+      size: {
+        large: {
+          label: {
+            fontSize: 'large-1',
+          },
+          radio: {
+            width: 32,
+            height: 32,
+          },
+        },
+      },
+    },
+    RadioGroup: {
+      base: {
+        container: {
+          bg: 'gray',
+        },
+        group: {
+          fontStyle: 'italic',
+        },
+      },
+      variant: {
+        green: {
+          container: {
+            bg: 'green',
+          },
+        },
+      },
+      size: {
+        large: {
+          group: {
+            fontSize: 'large-1',
+          },
+        },
+      },
+    },
+  },
+};
 
-// test('supports default labelVariant', () => {
-//   render(
-//     <ThemeProvider theme={theme}>
-//       <Radio id="test" title="checkbox">
-//         label
-//       </Radio>
-//     </ThemeProvider>
-//   );
+// There is no real accesible way to get to the element that acts as radio
+const getVisibleRadios = () => {
+  const label = screen.getByText('With Label');
+  // eslint-disable-next-line testing-library/no-node-access
+  return label.parentElement?.querySelectorAll('[aria-hidden="true"]');
+};
 
-//   const label = screen.getByText(/label/);
-//   expect(label).toHaveStyle(`font-size: 14px`);
-// });
+// Tests
+// ---------------
+test('allows styling via theme', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label">
+        <Radio value="1" data-testid="radio-1">
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+        <Radio value="3" data-testid="radio-3">
+          Option 3
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
 
-// test('supports other labelVariant than default', () => {
-//   render(
-//     <ThemeProvider theme={theme}>
-//       <Radio id="test" title="checkbox" labelVariant="above">
-//         label
-//       </Radio>
-//     </ThemeProvider>
-//   );
+  const radioLabel = screen.getByText('Option 1');
+  expect(radioLabel).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
 
-//   const label = screen.getByText(/label/);
-//   expect(label).toHaveStyle(`font-size: 8px`);
-// });
+  const radio = getVisibleRadios()?.[0];
+  expect(radio).toHaveStyle(`border-radius: ${theme.radii['large-1']}`);
+});
 
-// test('supports label prop', () => {
-//   render(
-//     <Radio id="test" title="radio">
-//       Test
-//     </Radio>
-//   );
+test('supports styling via variant and size', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label" variant="green" size="large">
+        <Radio value="1" data-testid="radio-1">
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+        <Radio value="3" data-testid="radio-3">
+          Option 3
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
 
-//   const radioLabel = screen.getByText(/Test/);
-//   expect(radioLabel).toBeDefined();
-// });
+  const radioLabel = screen.getByText('Option 1');
+  expect(radioLabel).toHaveStyle(`color: ${theme.colors.green}`);
+  expect(radioLabel).toHaveStyle(`font-size: ${theme.fontSizes['large-1']}px`);
 
-// test('supports required prop and renders required icon', () => {
-//   render(
-//     <Radio id="test" required title="radio">
-//       Test
-//     </Radio>
-//   );
+  fireEvent.click(screen.getByTestId('radio-1'));
 
-//   const label = screen.getByText(/Test/);
-//   // eslint-disable-next-line testing-library/no-node-access
-//   expect(label.nextSibling).toContainHTML('path d="M10.8');
-// });
+  const radio = getVisibleRadios()?.[0];
+  expect(radio).toHaveStyle(`color: ${theme.colors.green}`);
+  expect(radio).toHaveStyle(`width: 32px`);
+  expect(radio).toHaveStyle(`height: 32px`);
+});
 
-// test('supports default type', () => {
-//   render(
-//     <Radio id="radio" title="radio">
-//       test
-//     </Radio>
-//   );
+test('variant and size styling on radio option', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label">
+        <Radio value="1" data-testid="radio-1">
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2" variant="green" size="large">
+          Option 2
+        </Radio>
+        <Radio value="3" data-testid="radio-3">
+          Option 3
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
 
-//   const radio = screen.getByTitle(/radio/);
-//   expect(radio.getAttribute('type')).toEqual('radio');
-// });
+  // 1st option has no variant / size
+  const radioLabelOne = screen.getByText('Option 1');
+  expect(radioLabelOne).not.toHaveStyle(`color: ${theme.colors.green}`);
+  expect(radioLabelOne).not.toHaveStyle(
+    `font-size: ${theme.fontSizes['large-1']}px`
+  );
 
-// test('renders <input> element', () => {
-//   render(
-//     <Radio id="radio" title="radio">
-//       test
-//     </Radio>
-//   );
+  fireEvent.click(screen.getByTestId('radio-1'));
 
-//   const radio = screen.getByTitle(/radio/);
-//   expect(radio instanceof HTMLInputElement).toBeTruthy();
-// });
+  const radioOne = getVisibleRadios()?.[0];
+  expect(radioOne).not.toHaveStyle(`color: ${theme.colors.green}`);
+  expect(radioOne).not.toHaveStyle(`width: 32px`);
+  expect(radioOne).not.toHaveStyle(`height: 32px`);
 
-// test('supports disabled prop', () => {
-//   render(
-//     <ThemeProvider theme={theme}>
-//       <Radio id="test" title="radio" disabled>
-//         label
-//       </Radio>
-//     </ThemeProvider>
-//   );
+  // 2nd option has variant / size
+  const radioLabelTwo = screen.getByText('Option 2');
+  expect(radioLabelTwo).toHaveStyle(`color: ${theme.colors.green}`);
+  expect(radioLabelTwo).toHaveStyle(
+    `font-size: ${theme.fontSizes['large-1']}px`
+  );
 
-//   const radio = screen.getByTitle(/radio/);
-//   expect(radio).toHaveAttribute('disabled');
-//   const label = screen.getByText(/label/);
-//   expect(label).toHaveStyle(`color: gray`);
-// });
+  fireEvent.click(screen.getByTestId('radio-2'));
 
-// test('supports error and errorMessage prop', () => {
-//   render(
-//     <ThemeProvider theme={theme}>
-//       <Radio id="test" title="radio" error errorMessage="error">
-//         test
-//       </Radio>
-//     </ThemeProvider>
-//   );
+  const radio = getVisibleRadios()?.[1];
+  expect(radio).toHaveStyle(`color: ${theme.colors.green}`);
+  expect(radio).toHaveStyle(`width: 32px`);
+  expect(radio).toHaveStyle(`height: 32px`);
+});
 
-//   const errorMessage = screen.getByText(/error/);
-//   expect(errorMessage).toBeDefined();
-// });
+test('allows styling "checked" state via theme', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label">
+        <Radio value="1" data-testid="radio-1">
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+        <Radio value="3" data-testid="radio-3">
+          Option 3
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
 
-// test('supports checked radio', () => {
-//   render(
-//     <ThemeProvider theme={theme}>
-//       <Radio id="test" title="radio" onChange={() => {}} checked>
-//         test
-//       </Radio>{' '}
-//     </ThemeProvider>
-//   );
+  fireEvent.click(screen.getByTestId('radio-1'));
 
-//   const radio = screen.getByTitle(/radio/);
-//   expect(radio).toHaveAttribute('checked');
-// });
+  const radio = getVisibleRadios()?.[0];
+  expect(radio).toHaveStyle(`color: ${theme.colors.teal}`);
+});
 
-// test('supports checked and disabled radio', () => {
-//   render(
-//     <ThemeProvider theme={theme}>
-//       <Radio id="test" title="radio" onChange={() => {}} checked disabled>
-//         test
-//       </Radio>
-//     </ThemeProvider>
-//   );
+test('allows styling "focus" state via theme', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label">
+        <Radio value="1" data-testid="radio-1">
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+        <Radio value="3" data-testid="radio-3">
+          Option 3
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+  const input = screen.getByTestId('radio-1');
+  input.focus();
 
-//   const radio = screen.getByTitle(/radio/);
-//   expect(radio).toHaveAttribute('checked');
-//   expect(radio).toHaveAttribute('disabled');
-// });
+  const radio = getVisibleRadios()?.[0];
+  expect(radio).toHaveStyle(`outline: 1px solid`);
+  expect(radio).toHaveStyle(`outline-color: ${theme.colors.blue}`);
+});
 
-// test('correctly handles interaction', () => {
-//   const click = jest.fn();
-//   const change = jest.fn();
+test('allows styling "disabled" state via theme', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label">
+        <Radio value="1" data-testid="radio-1" disabled>
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+        <Radio value="3" data-testid="radio-3">
+          Option 3
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+  const radio = getVisibleRadios()?.[0];
+  expect(radio).toHaveStyle(`background: ${theme.colors.gray}`);
+});
 
-//   render(
-//     <ThemeProvider theme={theme}>
-//       <Radio id="test" title="radio" onClick={click} onChange={change}>
-//         Test
-//       </Radio>
-//     </ThemeProvider>
-//   );
-
-//   const radio = screen.getByTitle(/radio/);
-//   fireEvent.click(radio);
-
-//   expect(click).toHaveBeenCalledTimes(1);
-//   expect(change).toHaveBeenCalledTimes(1);
-// });
+test('allows styling "read-only" state via theme', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label">
+        <Radio value="1" data-testid="radio-1" readOnly>
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+        <Radio value="3" data-testid="radio-3">
+          Option 3
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+  const radio = getVisibleRadios()?.[0];
+  expect(radio).toHaveStyle(`opacity: 0.5`);
+});

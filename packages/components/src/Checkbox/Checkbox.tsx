@@ -174,7 +174,7 @@ export const Checkbox = ({
     checked: inputProps.checked,
     disabled: inputProps.disabled,
     error: groupState?.error || error,
-    readOnly: inputProps.readOnly,
+    readOnly,
     indeterminate,
   });
 
