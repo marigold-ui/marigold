@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ResponsiveStyleValue } from '@marigold/system';
 
 import { Box } from '../Box';
@@ -7,6 +7,7 @@ export interface StackProps {
   as?: 'div' | 'ul' | 'ol';
   space?: ResponsiveStyleValue<string>;
   align?: 'left' | 'right' | 'center';
+  children?: ReactNode;
 }
 
 const ALIGNMENT = {
@@ -15,12 +16,12 @@ const ALIGNMENT = {
   right: 'flex-end',
 };
 
-export const Stack: React.FC<StackProps> = ({
+export const Stack = ({
   space = 'none',
   align = 'left',
   children,
   ...props
-}) => (
+}: StackProps) => (
   <Box
     {...props}
     display="flex"
