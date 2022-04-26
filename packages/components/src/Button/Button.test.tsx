@@ -11,6 +11,7 @@ const theme = {
   },
   colors: {
     red: '#ffa8a8',
+    gray: '#e3e3e3',
   },
   space: {
     none: 0,
@@ -23,6 +24,9 @@ const theme = {
         fontFamily: 'fancy',
         '&[data-focus]': {
           bg: 'red',
+        },
+        '&:disabled': {
+          bg: 'gray',
         },
       },
       size: {
@@ -197,4 +201,15 @@ test('forwards ref', () => {
   render(<Button ref={ref}>button</Button>);
 
   expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
+});
+
+test('supports disabled prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Button disabled>button</Button>
+    </ThemeProvider>
+  );
+  const button = screen.getByText(/button/);
+  expect(button).toHaveAttribute('disabled');
+  expect(button).toHaveStyle('backgroundColor: #e3e3e3');
 });
