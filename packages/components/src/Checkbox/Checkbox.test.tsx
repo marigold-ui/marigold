@@ -58,7 +58,7 @@ const theme = {
           },
         },
       },
-      sies: {
+      size: {
         large: {
           label: {
             fontSize: 'large-1',

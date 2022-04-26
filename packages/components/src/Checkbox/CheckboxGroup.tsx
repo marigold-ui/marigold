@@ -23,14 +23,13 @@ export interface CheckboxGroupContextProps extends CheckboxGroupState {
   size?: string;
 }
 
+/**
+ * Needs to be falsy so we can check if a checkbox is used as standalone
+ * or in a group.
+ */
 export const CheckboxGroupContext = createContext<CheckboxGroupContextProps>(
-  /**
-   * Needs to be falsy so we can check if a checkbox is used as standalone
-   * or in a group.
-   */
   null as any
 );
-
 export const useCheckboxGroupContext = () => useContext(CheckboxGroupContext);
 
 // Theme Extension
@@ -43,7 +42,7 @@ export interface CheckboxGroupThemeExtension
 interface CheckboxGroupProps
   extends Omit<ComponentProps<'div'>, 'onChange'>,
     AriaCheckboxGroupProps {
-  children?: ReactNode;
+  children: ReactNode;
   variant?: string;
   size?: string;
   label?: ReactNode;
@@ -68,7 +67,6 @@ export const CheckboxGroup = ({
   error,
   ...rest
 }: CheckboxGroupProps) => {
-  // Adjust props to the react-aria API
   const props = {
     isRequired: required,
     isDisabled: disabled,
@@ -76,6 +74,7 @@ export const CheckboxGroup = ({
     validationState: error ? 'invalid' : 'valid',
     ...rest,
   } as const;
+
   const state = useCheckboxGroupState(props);
   const { groupProps, labelProps } = useCheckboxGroup(props, state);
 
@@ -97,7 +96,7 @@ export const CheckboxGroup = ({
         __baseCSS={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'left',
+          alignItems: 'start',
         }}
         css={styles.group}
       >

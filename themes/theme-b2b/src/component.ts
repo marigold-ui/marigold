@@ -324,22 +324,6 @@ export const component = {
       mb: 'xsmall',
     },
   },
-  radio: {
-    __default: {
-      fill: 'gray00',
-      stroke: 'gray40',
-    },
-    ':disabled': {
-      fill: 'gray30',
-    },
-    ':error': {
-      stroke: 'error',
-    },
-    ':checked': {
-      fill: 'primary',
-      stroke: 'orange80',
-    },
-  },
   select,
   slider,
   switch: {

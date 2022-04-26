@@ -76,6 +76,10 @@ const theme = {
         },
         group: {
           fontStyle: 'italic',
+
+          '&[data-orientation="horizontal"]': {
+            gap: '3ch',
+          },
         },
       },
       variant: {
@@ -105,6 +109,47 @@ const getVisibleRadios = () => {
 
 // Tests
 // ---------------
+test('renders label(s) and (hidden) radio', () => {
+  render(
+    <Radio.Group label="With Label">
+      <Radio value="1" data-testid="radio-1">
+        Option 1
+      </Radio>
+      <Radio value="2" data-testid="radio-2">
+        Option 2
+      </Radio>
+      <Radio value="3" data-testid="radio-3">
+        Option 3
+      </Radio>
+    </Radio.Group>
+  );
+
+  const label = screen.queryByText('With Label');
+  expect(label).toBeInTheDocument();
+
+  const radios = screen.queryAllByTestId(/radio/);
+  expect(radios).toHaveLength(3);
+
+  expect(screen.getByText('Option 1')).toBeInTheDocument();
+  expect(screen.getByText('Option 2')).toBeInTheDocument();
+  expect(screen.getByText('Option 3')).toBeInTheDocument();
+});
+
+test('label is optional (can use aria-label instead)', () => {
+  render(
+    <Radio.Group aria-label="With Label">
+      <Radio value="1" data-testid="radio-1">
+        Option 1
+      </Radio>
+      <Radio value="2" data-testid="radio-2">
+        Option 2
+      </Radio>
+    </Radio.Group>
+  );
+
+  expect(screen.queryByText('With Label')).not.toBeInTheDocument();
+});
+
 test('allows styling via theme', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -122,11 +167,11 @@ test('allows styling via theme', () => {
     </ThemeProvider>
   );
 
-  const radioLabel = screen.getByText('Option 1');
-  expect(radioLabel).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
+  const container = screen.getByRole('radiogroup');
+  expect(container).toHaveStyle(`background: ${theme.colors.gray}`);
 
-  const radio = getVisibleRadios()?.[0];
-  expect(radio).toHaveStyle(`border-radius: ${theme.radii['large-1']}`);
+  const group = screen.getByRole('presentation');
+  expect(group).toHaveStyle(`font-style: italic`);
 });
 
 test('supports styling via variant and size', () => {
@@ -146,65 +191,14 @@ test('supports styling via variant and size', () => {
     </ThemeProvider>
   );
 
-  const radioLabel = screen.getByText('Option 1');
-  expect(radioLabel).toHaveStyle(`color: ${theme.colors.green}`);
-  expect(radioLabel).toHaveStyle(`font-size: ${theme.fontSizes['large-1']}px`);
+  const container = screen.getByRole('radiogroup');
+  expect(container).toHaveStyle(`background: ${theme.colors.green}`);
 
-  fireEvent.click(screen.getByTestId('radio-1'));
-
-  const radio = getVisibleRadios()?.[0];
-  expect(radio).toHaveStyle(`color: ${theme.colors.green}`);
-  expect(radio).toHaveStyle(`width: 32px`);
-  expect(radio).toHaveStyle(`height: 32px`);
+  const group = screen.getByRole('presentation');
+  expect(group).toHaveStyle(`font-size: ${theme.fontSizes['large-1']}px`);
 });
 
-test('variant and size styling on radio option', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label">
-        <Radio value="1" data-testid="radio-1">
-          Option 1
-        </Radio>
-        <Radio value="2" data-testid="radio-2" variant="green" size="large">
-          Option 2
-        </Radio>
-        <Radio value="3" data-testid="radio-3">
-          Option 3
-        </Radio>
-      </Radio.Group>
-    </ThemeProvider>
-  );
-
-  // 1st option has no variant / size
-  const radioLabelOne = screen.getByText('Option 1');
-  expect(radioLabelOne).not.toHaveStyle(`color: ${theme.colors.green}`);
-  expect(radioLabelOne).not.toHaveStyle(
-    `font-size: ${theme.fontSizes['large-1']}px`
-  );
-
-  fireEvent.click(screen.getByTestId('radio-1'));
-
-  const radioOne = getVisibleRadios()?.[0];
-  expect(radioOne).not.toHaveStyle(`color: ${theme.colors.green}`);
-  expect(radioOne).not.toHaveStyle(`width: 32px`);
-  expect(radioOne).not.toHaveStyle(`height: 32px`);
-
-  // 2nd option has variant / size
-  const radioLabelTwo = screen.getByText('Option 2');
-  expect(radioLabelTwo).toHaveStyle(`color: ${theme.colors.green}`);
-  expect(radioLabelTwo).toHaveStyle(
-    `font-size: ${theme.fontSizes['large-1']}px`
-  );
-
-  fireEvent.click(screen.getByTestId('radio-2'));
-
-  const radio = getVisibleRadios()?.[1];
-  expect(radio).toHaveStyle(`color: ${theme.colors.green}`);
-  expect(radio).toHaveStyle(`width: 32px`);
-  expect(radio).toHaveStyle(`height: 32px`);
-});
-
-test('allows styling "checked" state via theme', () => {
+test('support vertical orientation by default', () => {
   render(
     <ThemeProvider theme={theme}>
       <Radio.Group label="With Label">
@@ -221,16 +215,14 @@ test('allows styling "checked" state via theme', () => {
     </ThemeProvider>
   );
 
-  fireEvent.click(screen.getByTestId('radio-1'));
-
-  const radio = getVisibleRadios()?.[0];
-  expect(radio).toHaveStyle(`color: ${theme.colors.teal}`);
+  const group = screen.getByRole('presentation');
+  expect(group).toHaveAttribute('data-orientation', 'vertical');
 });
 
-test('allows styling "focus" state via theme', () => {
+test('support horizontal orientation', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label">
+      <Radio.Group label="With Label" orientation="horizontal">
         <Radio value="1" data-testid="radio-1">
           Option 1
         </Radio>
@@ -243,19 +235,18 @@ test('allows styling "focus" state via theme', () => {
       </Radio.Group>
     </ThemeProvider>
   );
-  const input = screen.getByTestId('radio-1');
-  input.focus();
 
-  const radio = getVisibleRadios()?.[0];
-  expect(radio).toHaveStyle(`outline: 1px solid`);
-  expect(radio).toHaveStyle(`outline-color: ${theme.colors.blue}`);
+  const group = screen.getByRole('presentation');
+  expect(group).toHaveAttribute('data-orientation', 'horizontal');
+
+  expect(group).toHaveStyle(`gap: 3ch;`);
 });
 
-test('allows styling "disabled" state via theme', () => {
+test('supports error styling via theme & passes down error', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label">
-        <Radio value="1" data-testid="radio-1" disabled>
+      <Radio.Group label="With Label" error>
+        <Radio value="1" data-testid="radio-1">
           Option 1
         </Radio>
         <Radio value="2" data-testid="radio-2">
@@ -267,15 +258,17 @@ test('allows styling "disabled" state via theme', () => {
       </Radio.Group>
     </ThemeProvider>
   );
+
+  // Note that there is no error styling for the container and group yet!
   const radio = getVisibleRadios()?.[0];
-  expect(radio).toHaveStyle(`background: ${theme.colors.gray}`);
+  expect(radio).toHaveStyle(`background: ${theme.colors.red}`);
 });
 
-test('allows styling "read-only" state via theme', () => {
+test('supports default value (uncontrolled)', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label">
-        <Radio value="1" data-testid="radio-1" readOnly>
+      <Radio.Group label="With Label" defaultValue="3">
+        <Radio value="1" data-testid="radio-1">
           Option 1
         </Radio>
         <Radio value="2" data-testid="radio-2">
@@ -287,6 +280,37 @@ test('allows styling "read-only" state via theme', () => {
       </Radio.Group>
     </ThemeProvider>
   );
-  const radio = getVisibleRadios()?.[0];
-  expect(radio).toHaveStyle(`opacity: 0.5`);
+
+  const checkedRadio = getVisibleRadios()?.[2];
+  expect(checkedRadio).toHaveStyle(`color: ${theme.colors.teal}`);
 });
+
+test('controlled', () => {
+  const onChange = jest.fn();
+
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label" onChange={onChange}>
+        <Radio value="1" data-testid="radio-1">
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+        <Radio value="3" data-testid="radio-3">
+          Option 3
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+
+  fireEvent.click(getVisibleRadios()?.[0]!);
+
+  const checkedRadio = getVisibleRadios()?.[0];
+  expect(checkedRadio).toHaveStyle(`color: ${theme.colors.teal}`);
+
+  expect(onChange).toHaveBeenCalledTimes(1);
+  expect(onChange).toHaveBeenCalledWith('1');
+});
+
+// orientation?
