@@ -1,7 +1,7 @@
 /**
  * Thanks to react-aria: https://react-spectrum.adobe.com/react-aria/useSlider.html
  */
-import React, { useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
 import { useSlider } from '@react-aria/slider';
 import { useSliderState } from '@react-stately/slider';
 import { useNumberFormatter } from '@react-aria/i18n';
@@ -39,6 +39,7 @@ export interface SliderProps
   variant?: string;
   width?: number | string;
   formatOptions?: Intl.NumberFormatOptions;
+  children?: ReactNode;
 }
 
 /**
