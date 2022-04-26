@@ -1,6 +1,8 @@
+/**
+ * Thanks to react-aria: https://react-spectrum.adobe.com/react-aria/useSlider.html
+ */
 import React, { useRef } from 'react';
 import { useSlider } from '@react-aria/slider';
-import { mergeProps } from '@react-aria/utils';
 import { useSliderState } from '@react-stately/slider';
 import { useNumberFormatter } from '@react-aria/i18n';
 import { AriaSliderProps } from '@react-types/slider';
@@ -9,13 +11,15 @@ import { ThemeExtensionsWithParts, useComponentStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 import { Box } from '../Box';
-import { FieldBase, FieldBaseProps } from '../Field';
-import { Track } from './Track';
+import { Thumb } from './Thumb';
 
 // Theme Extension
 // ---------------
 export interface SliderThemeExtension
-  extends ThemeExtensionsWithParts<'Slider', ['track', 'thumb']> {}
+  extends ThemeExtensionsWithParts<
+    'Slider',
+    ['track', 'thumb', 'label', 'output']
+  > {}
 
 // Props
 // ---------------
@@ -31,30 +35,26 @@ export interface SliderProps
     Pick<
       AriaSliderProps,
       'maxValue' | 'step' | 'value' | 'defaultValue' | 'onChange'
-    >,
-    Pick<FieldBaseProps, 'label'> {
+    > {
   variant?: string;
   width?: number | string;
   formatOptions?: Intl.NumberFormatOptions;
 }
 
-// Component
-// ---------------
-export const Slider: React.FC<SliderProps> = ({
-  variant,
-  width = '100%',
-  disabled,
-  ...props
-}) => {
-  const { label, formatOptions, value, defaultValue, maxValue, ...restProps } =
-    props;
+/**
+ * Component Slider
+ * The slider consists of two parts.
+ * A label + the output value and the slider functionality itself.
+ * The slider itself consists of a track line and a thumb.
+ */
+export const Slider = ({ variant, width = '100%', ...props }: SliderProps) => {
+  const { formatOptions } = props;
   const trackRef = useRef<HTMLElement>(null);
   const numberFormatter = useNumberFormatter(formatOptions);
   const state = useSliderState({ ...props, numberFormatter });
-
   const { groupProps, trackProps, labelProps, outputProps } = useSlider(
     {
-      isDisabled: disabled,
+      label: props.children,
       ...props,
     },
     state,
@@ -64,32 +64,54 @@ export const Slider: React.FC<SliderProps> = ({
   const styles = useComponentStyles(
     'Slider',
     { variant },
-    { parts: ['track', 'thumb'] }
+    { parts: ['track', 'thumb', 'label', 'output'] }
   );
 
   return (
-    <FieldBase
-      label={label}
-      labelProps={labelProps}
-      description={state.getThumbValueLabel(0)}
-      descriptionProps={outputProps}
+    <Box
+      __baseCSS={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: width,
+        touchAction: 'none',
+      }}
+      {...groupProps}
     >
+      {/* Flex container for the label and output element. */}
+      <Box __baseCSS={{ display: 'flex', alignSelf: 'stretch' }}>
+        {props.children && (
+          <Box as="label" __baseCSS={styles.label} {...labelProps}>
+            {props.children}
+          </Box>
+        )}
+        <Box
+          as="output"
+          {...outputProps}
+          __baseCSS={{ flex: '1 0 auto', textAlign: 'end' }}
+          css={styles.output}
+        >
+          {state.getThumbValueLabel(0)}
+        </Box>
+      </Box>
+      {/* The track element holds the visible track line and the thumb. */}
       <Box
+        {...trackProps}
+        ref={trackRef}
         __baseCSS={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: width,
-          touchAction: 'none',
+          position: 'relative',
+          height: 32,
+          width: '100%',
+          cursor: props.disabled ? 'not-allowed' : 'pointer',
         }}
-        {...groupProps}
       >
-        <Track
+        <Box __baseCSS={styles.track} />
+        <Thumb
           state={state}
           trackRef={trackRef}
-          styles={styles}
-          {...mergeProps(trackProps, restProps)}
+          disabled={props.disabled}
+          styles={styles.thumb}
         />
       </Box>
-    </FieldBase>
+    </Box>
   );
 };

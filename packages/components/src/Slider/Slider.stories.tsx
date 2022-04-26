@@ -5,18 +5,16 @@ import { Slider } from './Slider';
 export default {
   title: 'Components/Slider',
   argTypes: {
+    children: {
+      control: 'text',
+      description: 'The label of the slider',
+      defaultValue: 'Example Slider',
+    },
     variant: {
       control: {
         type: 'text',
       },
       description: 'Variant to style the Slider',
-    },
-    label: {
-      control: {
-        type: 'text',
-      },
-      description: 'Label to display above the Slider',
-      defaultValue: 'Label',
     },
     width: {
       control: {
@@ -54,6 +52,10 @@ export default {
     },
   },
 } as Meta;
+
+export const Basic: ComponentStory<typeof Slider> = args => (
+  <Slider {...args} />
+);
 
 export const Currency: ComponentStory<typeof Slider> = args => (
   <Slider formatOptions={{ style: 'currency', currency: 'EUR' }} {...args} />

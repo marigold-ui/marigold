@@ -10,13 +10,14 @@ The Slider component allows users to quickly select a value within a range. They
 
 <MarigoldTheme>
   <Slider
-    label="Marigold Completition"
     formatOptions={{ style: 'percent' }}
     step={0.01}
     maxValue={1}
     defaultValue={[0.5]}
-    width={180}
-  />
+    width={300}
+  >
+    Marigold Completition
+  </Slider>
 </MarigoldTheme>
 
 ```tsx onlyCode
@@ -31,36 +32,45 @@ import { Slider } from '@marigold/components';
 
 ## Props
 
-| Property                   | Type                                                                                                                                          | Default | Description                                                                                                                              |
-| :------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------- |
-| `label` (optional)         | `ReactNode`                                                                                                                                   |         | The label text. If you don't want to visually display a label, provide an `aria-label` or `aria-labelledby` attribute for accessibility. |
-| `disabled` (optional)      | `boolean`                                                                                                                                     | `false` | If `true`, the slider is disabled.                                                                                                       |
-| `width` (optional)         | `string, boolean`                                                                                                                             | `100%`  | The slider's width value.                                                                                                                |
-| `value` (optional)         | `number[]`                                                                                                                                    |         | The slider's value (controlled).                                                                                                         |
-| `defaultValue` (optional)  | `number[]`                                                                                                                                    |         | The slider's default value (uncontrolled).                                                                                               |
-| `maxValue` (optional)      | `number`                                                                                                                                      | `100`   | The slider's maximum value.                                                                                                              |
-| `step` (optional)          | `number`                                                                                                                                      |         | The slider's step value.                                                                                                                 |
-| `formatOptions` (optional) | [`Intl.NumberFormatOptions`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) |         | The slider's step value.                                                                                                                 |
-| ...                        |                                                                                                                                               |         | Yes you can use all regular attributes of `input type = range`!                                                                          |
+| Property                   | Type                                                                                                                                          | Default | Description                                                     |
+| :------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :-------------------------------------------------------------- |
+| `disabled` (optional)      | `boolean`                                                                                                                                     | `false` | If `true`, the slider is disabled.                              |
+| `width` (optional)         | `string, boolean`                                                                                                                             | `100%`  | The slider's width value.                                       |
+| `value` (optional)         | `number[]`                                                                                                                                    |         | The slider's value (controlled).                                |
+| `defaultValue` (optional)  | `number[]`                                                                                                                                    |         | The slider's default value (uncontrolled).                      |
+| `maxValue` (optional)      | `number`                                                                                                                                      | `100`   | The slider's maximum value.                                     |
+| `step` (optional)          | `number`                                                                                                                                      |         | The slider's step value.                                        |
+| `formatOptions` (optional) | [`Intl.NumberFormatOptions`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) |         | The slider's step value.                                        |
+| ...                        |                                                                                                                                               |         | Yes you can use all regular attributes of `input type = range`! |
 
 ## Examples
 
 ## Width
 
 ```tsx
-<Slider width={180} aria-label="width" />
+<Slider width={180} aria-label="width">
+  Example
+</Slider>
+```
+
+## Disabled
+
+```tsx
+<Slider disabled>Example</Slider>
 ```
 
 ## Step
 
 ```tsx
-<Slider step={10} aria-label="step" />
+<Slider step={10}>Example</Slider>
 ```
 
 ## Max value
 
 ```tsx
-<Slider aria-label="maxValue" maxValue={50} />
+<Slider aria-label="maxValue" maxValue={50}>
+  Example
+</Slider>
 ```
 
 ## Value (controlled)
@@ -68,35 +78,30 @@ import { Slider } from '@marigold/components';
 ```tsx
 () => {
   const [value, setValue] = React.useState([75]);
-  return <Slider aria-label="value" value={value} onChange={setValue} />;
+  return (
+    <Slider value={value} onChange={setValue}>
+      Example
+    </Slider>
+  );
 };
 ```
 
 ## Default Value (uncontrolled)
 
 ```tsx
-<Slider aria-label="defaultValue" defaultValue={[25]} />
+<Slider defaultValue={[25]}>Example</Slider>
 ```
 
 ## Currency
 
 ```tsx
-<Slider label="Price" formatOptions={{ style: 'currency', currency: 'EUR' }} />
+<Slider formatOptions={{ style: 'currency', currency: 'EUR' }}>Price</Slider>
 ```
 
 ## Percent
 
 ```tsx
-<Slider
-  label="Percent"
-  formatOptions={{ style: 'percent' }}
-  step={0.01}
-  maxValue={1}
-/>
-```
-
-# for testing
-
-```tsx
-<Slider aria-label="slider" />
+<Slider formatOptions={{ style: 'percent' }} step={0.01} maxValue={1}>
+  Percent
+</Slider>
 ```

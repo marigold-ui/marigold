@@ -149,103 +149,6 @@ const button = {
   },
 } as const;
 
-/**
- * Slider component
- */
-const sliderThumb = {
-  WebkitAppearance: 'none',
-  boxSizing: 'border-box',
-  border: '4px solid',
-  borderColor: 'gray70',
-  width: '16px',
-  height: '16px',
-  bg: 'gray00',
-  borderRadius: '8px',
-  cursor: 'pointer',
-  marginTop: '-4px',
-} as const;
-
-const sliderTrack = {
-  WebkitAppearance: 'none',
-  width: '100%',
-  height: '8px',
-  bg: 'gray30',
-  borderRadius: '8px',
-  border: 'none',
-} as const;
-
-const slider = {
-  __default: {
-    // styles need to be applied to range inputs in all browsers to override their basic appearance.
-    WebkitAppearance: 'none',
-    bg: 'transparent',
-    borderColor: 'transparent',
-    color: 'transparent',
-    ':focus': {
-      outline: 'none',
-    },
-    // chrome, safari, opera (theres actually no webkit option to style the progress bar like in firefox)
-    '&::-webkit-slider-thumb': {
-      ...sliderThumb,
-    },
-    '&:focus::-webkit-slider-thumb': {
-      ...sliderThumb,
-      border: '4px solid',
-      borderColor: 'primary',
-    },
-    '&:disabled::-webkit-slider-thumb': {
-      ...sliderThumb,
-      border: '4px solid',
-      borderColor: 'gray40',
-      bg: 'gray40',
-    },
-    '&::-webkit-slider-runnable-track': {
-      ...sliderTrack,
-    },
-    '&:focus::-webkit-slider-runnable-track': {
-      ...sliderTrack,
-      bg: 'primary',
-    },
-    '&:disabled::-webkit-slider-runnable-track': {
-      ...sliderTrack,
-      bg: 'gray40',
-    },
-    '&::-webkit-progress-value': {
-      bg: 'green60',
-    },
-    // firefox
-    '&::-moz-range-thumb': {
-      ...sliderThumb,
-    },
-    '&:focus::-moz-range-thumb': {
-      ...sliderThumb,
-      border: '4px solid',
-      borderColor: 'primary',
-    },
-    '&:disabled::-moz-range-thumb': {
-      ...sliderThumb,
-      border: '4px solid',
-      borderColor: 'gray40',
-      bg: 'gray40',
-    },
-    '&::-moz-range-track': {
-      ...sliderTrack,
-    },
-    '&::-moz-range-progress': {
-      ...sliderTrack,
-      bg: 'gray70',
-    },
-    '&:focus::-moz-range-progress': {
-      ...sliderTrack,
-      bg: 'primary',
-    },
-    '&:disabled::-moz-range-progress': {
-      ...sliderTrack,
-      bg: 'gray40',
-    },
-  },
-} as const;
-
 export const component = {
   button: {
     __default: {
@@ -344,7 +247,6 @@ export const component = {
     },
   },
   select,
-  slider,
   switch: {
     __default: {
       fill: 'gray20',

@@ -8,13 +8,13 @@ import { CSSObject, useStateProps } from '@marigold/system';
 
 import { Box } from '../Box';
 import { VisuallyHidden } from '../VisuallyHidden';
+import { useFocusRing } from '@react-aria/focus';
 
 // Props
 // ---------------
 export interface ThumbProps extends Pick<ComponentProps<'input'>, 'disabled'> {
   state: SliderState;
   trackRef: RefObject<HTMLElement>;
-  focused: boolean;
   styles: CSSObject;
 }
 
@@ -23,19 +23,19 @@ export interface ThumbProps extends Pick<ComponentProps<'input'>, 'disabled'> {
 export const Thumb: React.FC<ThumbProps> = ({
   state,
   trackRef,
-  focused,
   styles,
   ...props
 }) => {
   const { disabled } = props;
   const inputRef = React.useRef(null);
+  const { isFocusVisible, focusProps, isFocused } = useFocusRing();
+  const focused = isFocused || isFocusVisible || state.isThumbDragging(0);
   const stateProps = useStateProps({
     focus: focused,
     disabled: disabled,
   });
   const { thumbProps, inputProps } = useSliderThumb(
     {
-      // if two thumbs are to be used in the future index can be added
       index: 0,
       trackRef,
       inputRef,
@@ -63,7 +63,7 @@ export const Thumb: React.FC<ThumbProps> = ({
             as="input"
             type="range"
             ref={inputRef}
-            {...mergeProps(inputProps, props)}
+            {...mergeProps(inputProps, focusProps)}
           />
         </VisuallyHidden>
       </Box>
