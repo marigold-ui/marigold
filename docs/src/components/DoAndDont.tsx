@@ -24,13 +24,13 @@ export const DoAndDont: React.FC<DoAndDontProps> = ({
   children,
   ...props
 }) => {
-  var icon = <Check size={20} fill="success" />;
-  var dividerVariant = 'do';
-  var title = 'Do';
+  let icon = <Check size={20} fill="success" />;
+  let dividerVariant = 'do';
+  let title = 'Do';
   if (dont) {
     icon = <Banned size={20} fill="error" />;
-    var dividerVariant = 'dont';
-    var title = 'Do';
+    dividerVariant = 'dont';
+    title = `Don't`;
   }
 
   return (
