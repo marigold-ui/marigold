@@ -3,7 +3,7 @@ import { useOption } from '@react-aria/listbox';
 import type { ListState } from '@react-stately/list';
 import type { Node } from '@react-types/shared';
 
-import { Box } from '@marigold/system';
+import { Box, useStateProps } from '@marigold/system';
 
 export interface ListBoxOptionProps {
   item: Node<unknown>;
@@ -20,7 +20,10 @@ export const ListBoxOption = ({ item, state }: ListBoxOptionProps) => {
     ref
   );
 
-  // TODO: Add support for disabled and selected
+  const { stateProps } = useStateProps({
+    disabled: isDisabled,
+    active:
+  })
 
   return (
     <Box as="li" {...optionProps} ref={ref}>
