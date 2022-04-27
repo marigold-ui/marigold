@@ -17,6 +17,9 @@
     "url": "https://github.com/marigold-ui/marigold",
     "directory": "packages/types"
   },
+  "dependencies": {
+    "type-fest": "^2.12.2"
+  },
   "peerDependencies": {
     "@types/react": "^17.x"
   },

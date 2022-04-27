@@ -9,6 +9,7 @@ test('returns state attributes', () => {
     useStateProps({
       hover: true,
       focus: true,
+      focusVisible: true,
       active: true,
       visited: true,
       disabled: true,
@@ -16,6 +17,7 @@ test('returns state attributes', () => {
       checked: true,
       indeterminate: true,
       error: true,
+      selected: true,
     })
   );
 
@@ -26,9 +28,11 @@ test('returns state attributes', () => {
       "data-disabled": "",
       "data-error": "",
       "data-focus": "",
+      "data-focus-visible": "",
       "data-hover": "",
       "data-indeterminate": "",
-      "data-readonly": "",
+      "data-read-only": "",
+      "data-selected": "",
       "data-visited": "",
     }
   `);

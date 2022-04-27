@@ -3,10 +3,12 @@ import { StyleObject } from '../../types';
 const pseudos = {
   '&:hover': '&:hover, &[data-hover]',
   '&:focus': '&:focus, &[data-focus]',
+  '&:focus-visible': '&:focus-visible, &[data-focus-visible]',
   '&:active': '&:active, &[data-active]',
   '&:disabled': '&[disabled], &[aria-disabled=true], &[data-disabled]',
-  '&:read-only': '&[readonly], &[aria-readonly=true], &[data-readonly]',
+  '&:read-only': '&[readonly], &[aria-readonly=true], &[data-read-only]',
   '&:checked': '&[aria-checked=true], &[data-checked]',
+  '&:selected': '&[aria-selected=true], &[data-selected]',
   '&:indeterminate':
     '&:indeterminate, &[aria-checked=mixed], &[data-indeterminate]',
   '&:error': '&:invalid, &[aria-invalid=true], &[data-error]',

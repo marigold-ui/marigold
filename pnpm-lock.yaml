@@ -15,7 +15,7 @@ importers:
       '@testing-library/react': 12.1.5
       '@testing-library/react-hooks': 7.0.2
       '@testing-library/user-event': 13.5.0
-      '@types/node': 16.11.27
+      '@types/node': 16.11.31
       all-contributors-cli: 6.20.0
       async-retry: 1.3.3
       dotenv: 16.0.0
@@ -42,7 +42,7 @@ importers:
       '@testing-library/react': 12.1.5_react-dom@17.0.2+react@17.0.2
       '@testing-library/react-hooks': 7.0.2_react-dom@17.0.2+react@17.0.2
       '@testing-library/user-event': 13.5.0
-      '@types/node': 16.11.27
+      '@types/node': 16.11.31
       all-contributors-cli: 6.20.0
       async-retry: 1.3.3
       dotenv: 16.0.0
@@ -205,7 +205,7 @@ importers:
       '@mui/material': 5.5.3_b49bddbe4b905ced4713cb857cca91fa
       '@mui/styles': 5.5.3_c8e45b4eb687790dba17b4e1c4b4273f
       babel-preset-gatsby: 2.11.1
-      gatsby: 4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2
+      gatsby: 4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9
       gatsby-plugin-image: 2.11.1_f7864ef0bcea373833bd2a438072b4fe
       gatsby-plugin-manifest: 4.11.1_gatsby@4.11.1
       gatsby-plugin-mdx: 3.11.1_ee23a59bf2e1789fbc8eee222995a207
@@ -352,18 +352,18 @@ importers:
 
   packages/system:
     specifiers:
-      '@emotion/react': 11.8.2
+      '@emotion/react': 11.9.0
       '@marigold/tsconfig': workspace:*
       '@marigold/types': workspace:*
-      '@theme-ui/css': 0.14.2
+      '@theme-ui/css': 0.14.4
       csstype: 3.0.11
       deepmerge: ^4.2.2
       react-fast-compare: ^3.2.0
       tsup: 5.12.6
     dependencies:
-      '@emotion/react': 11.8.2_react@17.0.2
+      '@emotion/react': 11.9.0_react@17.0.2
       '@marigold/types': link:../types
-      '@theme-ui/css': 0.14.2_@emotion+react@11.8.2
+      '@theme-ui/css': 0.14.4_@emotion+react@11.9.0
       csstype: 3.0.11
       deepmerge: 4.2.2
       react-fast-compare: 3.2.0
@@ -382,6 +382,9 @@ importers:
   packages/types:
     specifiers:
       '@types/react': 17.0.44
+      type-fest: ^2.12.2
+    dependencies:
+      type-fest: 2.12.2
     devDependencies:
       '@types/react': 17.0.44
 
@@ -3209,8 +3212,8 @@ packages:
     resolution: {integrity: sha512-igX9a37DR2ZPGYtV6suZ6whr8pTFtyHL3K/oLUotxpSVO2ASaprmAe2Dkq7tBo7CRY7MMDrAa9nuQP9/YG8FxQ==}
     dev: false
 
-  /@emotion/react/11.8.2_react@17.0.2:
-    resolution: {integrity: sha512-+1bcHBaNJv5nkIIgnGKVsie3otS0wF9f1T1hteF3WeVvMNQEtfZ4YyFpnphGoot3ilU/wWMgP2SgIDuHLE/wAA==}
+  /@emotion/react/11.9.0_react@17.0.2:
+    resolution: {integrity: sha512-lBVSF5d0ceKtfKCDQJveNAtkC7ayxpVlgOohLgXqRwqWr9bOf4TZAFFyIcNngnV6xK6X4x2ZeXq7vliHkoVkxQ==}
     peerDependencies:
       '@babel/core': ^7.0.0
       '@types/react': '*'
@@ -3525,7 +3528,7 @@ packages:
       value-or-promise: 1.0.6
     dev: false
 
-  /@graphql-tools/url-loader/6.10.1_8801d5f0b2ba2e2a3d22da37a8968208:
+  /@graphql-tools/url-loader/6.10.1_23a9246980341bd24d7442a87f2e9d52:
     resolution: {integrity: sha512-DSDrbhQIv7fheQ60pfDpGD256ixUQIR6Hhf9Z5bRjVkXOCvO5XrkwoWLiU7iHL81GB1r0Ba31bf+sl+D4nyyfw==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0
@@ -3544,7 +3547,7 @@ packages:
       is-promise: 4.0.0
       isomorphic-ws: 4.0.1_ws@7.4.5
       lodash: 4.17.21
-      meros: 1.1.4_@types+node@16.11.27
+      meros: 1.1.4_@types+node@16.11.31
       subscriptions-transport-ws: 0.9.19_graphql@15.8.0
       sync-fetch: 0.3.0
       tslib: 2.2.0
@@ -7603,12 +7606,12 @@ packages:
       '@testing-library/dom': 8.13.0
     dev: false
 
-  /@theme-ui/css/0.14.2_@emotion+react@11.8.2:
-    resolution: {integrity: sha512-xQdXgDjiyrB3ScjqLabRzup5OmJ5pOdIvfSQfA/iVOZi/SZl4nYqRyf7WRyvpiq+vlXxlrpwFwUV/9MCXuiKxw==}
+  /@theme-ui/css/0.14.4_@emotion+react@11.9.0:
+    resolution: {integrity: sha512-eeLVQDo4sJdGOCG8mObMOd3/DeE/T2yKAHdWu8PGY/14FHWlxjaZfOHBPVyw/u06SLGHvp1BYlYm2VxFLR/KQA==}
     peerDependencies:
       '@emotion/react': ^11
     dependencies:
-      '@emotion/react': 11.8.2_react@17.0.2
+      '@emotion/react': 11.9.0_react@17.0.2
       csstype: 3.0.11
     dev: false
 
@@ -7891,8 +7894,8 @@ packages:
     resolution: {integrity: sha512-Z6/KzgyWOga3pJNS42A+zayjhPbf2zM3hegRQaOPnLOzEi86VV++6FLDWgR1LGrVCRufP/ph2daa3tEa5br1zA==}
     dev: false
 
-  /@types/node/16.11.27:
-    resolution: {integrity: sha512-C1pD3kgLoZ56Uuy5lhfOxie4aZlA3UMGLX9rXteq4WitEZH6Rl80mwactt9QG0w0gLFlN/kLBTFnGXtDVWvWQw==}
+  /@types/node/16.11.31:
+    resolution: {integrity: sha512-wh/d0pcu/Ie2mqTIqh4tjd0mLAB4JWxOjHQtLN20HS7sjMHiV4Afr+90hITTyZcxowwha5wjv32jGEn1zkEFMg==}
     dev: false
 
   /@types/node/16.9.1:
@@ -9608,7 +9611,7 @@ packages:
     dependencies:
       '@babel/core': 7.17.9
       '@babel/runtime': 7.17.9
-      gatsby: 4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2
+      gatsby: 4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9
       gatsby-core-utils: 3.12.1
     dev: false
 
@@ -9620,7 +9623,7 @@ packages:
       gatsby: ^4.0.0-next
     dependencies:
       '@babel/runtime': 7.17.9
-      gatsby: 4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2
+      gatsby: 4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9
       gatsby-core-utils: 3.12.1
     dev: false
 
@@ -12587,7 +12590,7 @@ packages:
       string-natural-compare: 3.0.1
     dev: false
 
-  /eslint-plugin-graphql/4.0.0_f72dd96cfc72147f15ef963c38d334a4:
+  /eslint-plugin-graphql/4.0.0_08e5765b66c8638ecf85fd981e266106:
     resolution: {integrity: sha512-d5tQm24YkVvCEk29ZR5ScsgXqAGCjKlMS8lx3mS7FS/EKsWbkvXQImpvic03EpMIvNTBW5e+2xnHzXB/VHNZJw==}
     engines: {node: '>=10.0'}
     peerDependencies:
@@ -12595,7 +12598,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.17.9
       graphql: 15.8.0
-      graphql-config: 3.4.1_f72dd96cfc72147f15ef963c38d334a4
+      graphql-config: 3.4.1_08e5765b66c8638ecf85fd981e266106
       lodash.flatten: 4.4.0
       lodash.without: 4.4.0
     transitivePeerDependencies:
@@ -14030,7 +14033,7 @@ packages:
       chokidar: 3.5.3
       common-tags: 1.8.2
       fs-extra: 10.1.0
-      gatsby: 4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2
+      gatsby: 4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9
       gatsby-core-utils: 3.12.1
       gatsby-plugin-sharp: 4.11.1_gatsby@4.11.1
       gatsby-source-filesystem: 4.11.1_gatsby@4.11.1
@@ -14049,7 +14052,7 @@ packages:
       gatsby: ^4.0.0-next
     dependencies:
       '@babel/runtime': 7.17.9
-      gatsby: 4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2
+      gatsby: 4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9
       gatsby-core-utils: 3.12.1
       gatsby-plugin-utils: 3.6.1_gatsby@4.11.1
       semver: 7.3.7
@@ -14085,7 +14088,7 @@ packages:
       escape-string-regexp: 1.0.5
       eval: 0.1.8
       fs-extra: 10.1.0
-      gatsby: 4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2
+      gatsby: 4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9
       gatsby-core-utils: 3.12.1
       gray-matter: 4.0.3
       json5: 2.2.1
@@ -14125,7 +14128,7 @@ packages:
       '@sindresorhus/slugify': 1.1.2
       chokidar: 3.5.3
       fs-exists-cached: 1.0.0
-      gatsby: 4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2
+      gatsby: 4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9
       gatsby-core-utils: 3.12.1
       gatsby-page-utils: 2.12.1
       gatsby-plugin-utils: 3.6.1_gatsby@4.11.1+graphql@15.8.0
@@ -14143,7 +14146,7 @@ packages:
     peerDependencies:
       gatsby: ~2.x.x || ~3.x.x || ~4.x.x
     dependencies:
-      gatsby: 4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2
+      gatsby: 4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9
       lodash.get: 4.4.2
       lodash.uniq: 4.5.0
     dev: false
@@ -14156,7 +14159,7 @@ packages:
       react-helmet: ^5.1.3 || ^6.0.0
     dependencies:
       '@babel/runtime': 7.17.9
-      gatsby: 4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2
+      gatsby: 4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9
       react-helmet: 6.1.0_react@17.0.2
     dev: false
 
@@ -14176,7 +14179,7 @@ packages:
       debug: 4.3.4
       filenamify: 4.3.0
       fs-extra: 10.1.0
-      gatsby: 4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2
+      gatsby: 4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9
       gatsby-core-utils: 3.12.1
       gatsby-plugin-utils: 3.6.1_gatsby@4.11.1
       gatsby-telemetry: 3.12.1
@@ -14206,7 +14209,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.17.9
       common-tags: 1.8.2
-      gatsby: 4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2
+      gatsby: 4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9
       minimatch: 3.1.2
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -14226,7 +14229,7 @@ packages:
       '@babel/preset-typescript': 7.16.7_@babel+core@7.17.9
       '@babel/runtime': 7.17.9
       babel-plugin-remove-graphql-queries: 4.12.1_@babel+core@7.17.9+gatsby@4.11.1
-      gatsby: 4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2
+      gatsby: 4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -14239,7 +14242,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.17.9
       fs-extra: 10.1.0
-      gatsby: 4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2
+      gatsby: 4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9
       gatsby-core-utils: 3.12.1
       gatsby-sharp: 0.6.1
       graphql-compose: 9.0.8
@@ -14258,7 +14261,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.17.9
       fs-extra: 10.1.0
-      gatsby: 4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2
+      gatsby: 4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9
       gatsby-core-utils: 3.12.1
       gatsby-sharp: 0.6.1
       graphql-compose: 9.0.8_graphql@15.8.0
@@ -14312,7 +14315,7 @@ packages:
       chokidar: 3.5.3
       file-type: 16.5.3
       fs-extra: 10.1.0
-      gatsby: 4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2
+      gatsby: 4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9
       gatsby-core-utils: 3.12.1
       got: 9.6.0
       md5-file: 5.0.0
@@ -14356,7 +14359,7 @@ packages:
       bluebird: 3.7.2
       common-tags: 1.8.2
       fs-extra: 10.1.0
-      gatsby: 4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2
+      gatsby: 4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9
       gatsby-plugin-sharp: 4.11.1_gatsby@4.11.1
       potrace: 2.1.8
       probe-image-size: 7.2.3
@@ -14374,7 +14377,7 @@ packages:
       - supports-color
     dev: false
 
-  /gatsby/4.11.1_7df6671bb6ce2188e8de9d2bbd0950b2:
+  /gatsby/4.11.1_b716d6ad45bf4050b8f6282a3e8e8db9:
     resolution: {integrity: sha512-ffEXb/mvZtB0cQ8javEkhruubxjTbZSsN81IYGGY/ym4YB+Zm1a8K0NV7DsRGsPO9nx7Z/D/OBVxVmse1Nnxzw==}
     engines: {node: '>=14.15.0'}
     hasBin: true
@@ -14435,7 +14438,7 @@ packages:
       eslint: 7.32.0
       eslint-config-react-app: 6.0.0_f14f129f2f5bd24733aefe49dfb1dbac
       eslint-plugin-flowtype: 5.10.0_eslint@7.32.0
-      eslint-plugin-graphql: 4.0.0_f72dd96cfc72147f15ef963c38d334a4
+      eslint-plugin-graphql: 4.0.0_08e5765b66c8638ecf85fd981e266106
       eslint-plugin-import: 2.26.0_eslint@7.32.0
       eslint-plugin-jsx-a11y: 6.5.1_eslint@7.32.0
       eslint-plugin-react: 7.29.4_eslint@7.32.0
@@ -14944,7 +14947,7 @@ packages:
       graphql-type-json: 0.3.2_graphql@15.8.0
     dev: false
 
-  /graphql-config/3.4.1_f72dd96cfc72147f15ef963c38d334a4:
+  /graphql-config/3.4.1_08e5765b66c8638ecf85fd981e266106:
     resolution: {integrity: sha512-g9WyK4JZl1Ko++FSyE5Ir2g66njfxGzrDDhBOwnkoWf/t3TnnZG6BBkWP+pkqVJ5pqMJGPKHNrbew8jRxStjhw==}
     engines: {node: '>= 10.0.0'}
     peerDependencies:
@@ -14955,7 +14958,7 @@ packages:
       '@graphql-tools/json-file-loader': 6.2.6_graphql@15.8.0
       '@graphql-tools/load': 6.2.8_graphql@15.8.0
       '@graphql-tools/merge': 6.2.14_graphql@15.8.0
-      '@graphql-tools/url-loader': 6.10.1_8801d5f0b2ba2e2a3d22da37a8968208
+      '@graphql-tools/url-loader': 6.10.1_23a9246980341bd24d7442a87f2e9d52
       '@graphql-tools/utils': 7.10.0_graphql@15.8.0
       cosmiconfig: 7.0.0
       cosmiconfig-toml-loader: 1.0.0
@@ -17778,7 +17781,7 @@ packages:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
 
-  /meros/1.1.4_@types+node@16.11.27:
+  /meros/1.1.4_@types+node@16.11.31:
     resolution: {integrity: sha512-E9ZXfK9iQfG9s73ars9qvvvbSIkJZF5yOo9j4tcwM5tN8mUKfj/EKN5PzOr3ZH0y5wL7dLAHw3RVEfpQV9Q7VQ==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -17787,7 +17790,7 @@ packages:
       '@types/node':
         optional: true
     dependencies:
-      '@types/node': 16.11.27
+      '@types/node': 16.11.31
     dev: false
 
   /methods/1.1.2:
@@ -23084,6 +23087,11 @@ packages:
   /type-fest/0.8.1:
     resolution: {integrity: sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==}
     engines: {node: '>=8'}
+    dev: false
+
+  /type-fest/2.12.2:
+    resolution: {integrity: sha512-qt6ylCGpLjZ7AaODxbpyBZSs9fCI9SkL3Z9q2oxMBQhs/uyY+VD8jHA8ULCGmWQJlBgqvO3EJeAngOHD8zQCrQ==}
+    engines: {node: '>=12.20'}
     dev: false
 
   /type-is/1.6.18:
