@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import ReactDOM from 'react-dom';
+import { OverlayContainer } from '@react-aria/overlays';
 
 import { ComponentProps } from '@marigold/types';
 
@@ -8,7 +8,7 @@ import { Box } from '../Box';
 export interface OverlayProps extends ComponentProps<'div'> {
   children: ReactNode;
   open?: boolean;
-  container?: Element;
+  container?: HTMLElement;
 }
 
 export const Overlay = ({
@@ -21,10 +21,9 @@ export const Overlay = ({
     return null;
   }
 
-  /**
-   * Annotate as JSX.Element so we don't have to export
-   * ReactDOM typings
-   */
-  const component = <Box {...props}>{children}</Box>;
-  return ReactDOM.createPortal(component, container) as JSX.Element;
+  return (
+    <OverlayContainer portalContainer={container}>
+      <Box {...props}>{children}</Box>
+    </OverlayContainer>
+  );
 };
