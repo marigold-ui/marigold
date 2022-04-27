@@ -9,7 +9,8 @@ export const Message: Theme['components']['Message'] = {
       pb: 'small',
       px: 'small',
       fontSize: 'xxsmall',
-      color: 'grey70',
+      color: 'gray70',
+      bg: 'gray10',
     },
     title: {
       lineHeight: 'large',

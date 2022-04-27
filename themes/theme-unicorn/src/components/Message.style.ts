@@ -7,6 +7,7 @@ export const Message: Theme['components']['Message'] = {
       borderWidth: '2px 2px 2px 16px',
       padding: '8px 16px 16px',
       fontSize: 'xsmall',
+      bg: 'gray10',
     },
     title: {
       lineHeight: 'large',
