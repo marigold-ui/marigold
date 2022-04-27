@@ -1,5 +1,7 @@
 import React from 'react';
-import { Merge } from 'type-fest';
+
+// Simple merge
+type Merge<T, U> = Omit<T, keyof U> & U;
 
 /**
  * Get props without supporting `ref` and strip the `style` prop.
