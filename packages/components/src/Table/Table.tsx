@@ -14,8 +14,8 @@ import { ThemeExtensionsWithParts, useComponentStyles } from '@marigold/system';
 
 import { Box } from '../Box';
 
-import { TableCell, TableCellProps } from './TableCell';
-import { TableColumnHeader, TableColumnHeaderProps } from './TableColumnHeader';
+import { TableCell } from './TableCell';
+import { TableColumnHeader } from './TableColumnHeader';
 import { TableHeaderRow } from './TableHeaderRow';
 import { TableRow } from './TableRow';
 import { TableRowGroup } from './TableRowGroup';
