@@ -92,6 +92,20 @@ test('accepts a variant with parts and an icon', () => {
   expect(icon).toBeInTheDocument();
 });
 
+test('accepts error variant', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Message data-testid="messages" messageTitle="error" variant="error">
+        Error
+      </Message>
+    </ThemeProvider>
+  );
+
+  const content = screen.getByText('Error');
+
+  expect(content).toHaveStyle(`alignItems: left`);
+});
+
 test('accepts size', () => {
   render(
     <ThemeProvider theme={theme}>
