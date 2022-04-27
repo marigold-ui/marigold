@@ -14,23 +14,6 @@ export default {
       description: 'selection mode',
       defaultValue: 'none',
     },
-    align: {
-      control: {
-        type: 'select',
-      },
-      options: ['left', 'right', 'center'],
-      description: 'cell element alignment',
-
-      defaultValue: 'left',
-    },
-    alignHeader: {
-      control: {
-        type: 'select',
-      },
-      options: ['left', 'right', 'center'],
-      description: 'header element alignment',
-      defaultValue: 'left',
-    },
   },
 } as Meta;
 
