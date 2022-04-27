@@ -7,20 +7,36 @@ const theme = {
   colors: {
     primary: 'hotpink',
   },
-  message: {
-    info: {
-      alignItems: 'center',
-    },
-    warning: {
-      alignItems: 'right',
-    },
-    error: {
-      alignItems: 'left',
+  spaces: {
+    small: '10px',
+    medium: '20px',
+  },
+  components: {
+    message: {
+      base: {
+        color: 'primary',
+      },
+      variant: {
+        info: {
+          alignItems: 'center',
+        },
+        warning: {
+          alignItems: 'right',
+        },
+        error: {
+          alignItems: 'left',
+        },
+      },
+      size: {
+        small: {
+          p: 'small',
+        },
+      },
     },
   },
 };
 
-test('supports default variant and themeSection', () => {
+test('supports base styling and themeSection', () => {
   render(
     <ThemeProvider theme={theme}>
       <Message data-testid="messages" messageTitle="Default">
@@ -28,12 +44,14 @@ test('supports default variant and themeSection', () => {
       </Message>
     </ThemeProvider>
   );
-  const message = screen.getByTestId(/messages/);
 
-  expect(message).toHaveStyle(`align-items: center`);
+  const message = screen.getByTestId(/messages/);
+  console.log(message.style);
+
+  expect(message).toHaveStyle(`color: ${theme.colors.primary}`);
 });
 
-test('accepts other variant than default', () => {
+test('accepts variant', () => {
   render(
     <ThemeProvider theme={theme}>
       <Message data-testid="messages" messageTitle="info" variant="warning">
@@ -70,21 +88,4 @@ test('renders correct HTML element', () => {
   const message = screen.getByTestId(/messages/);
 
   expect(message instanceof HTMLDivElement).toBeTruthy();
-});
-
-test('accepts custom styles prop className', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Message
-        className="custom-class-name"
-        data-testid="message"
-        messageTitle="message"
-      >
-        message
-      </Message>
-    </ThemeProvider>
-  );
-  const message = screen.getByTestId(/message/);
-
-  expect(message.className).toMatch('custom-class-name');
 });

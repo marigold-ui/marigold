@@ -292,38 +292,6 @@ export const component = {
       color: 'gray50',
     },
   },
-  message: {
-    warning: {
-      borderStyle: 'solid',
-      borderColor: 'warning',
-      borderWidth: '2px 2px 2px 16px',
-      pt: 'xsmall',
-      pb: 'small',
-      px: 'small',
-      color: 'warning',
-    },
-    error: {
-      borderStyle: 'solid',
-      borderColor: 'error',
-      borderWidth: '2px 2px 2px 16px',
-      pt: 'xsmall',
-      pb: 'small',
-      px: 'small',
-      color: 'error',
-    },
-    info: {
-      borderStyle: 'solid',
-      borderColor: 'info',
-      borderWidth: '2px 2px 2px 16px',
-      pt: 'xsmall',
-      pb: 'small',
-      px: 'small',
-      color: 'info',
-    },
-    title: {
-      mb: 'xsmall',
-    },
-  },
   select,
   slider,
   switch: {
