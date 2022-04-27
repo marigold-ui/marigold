@@ -62,8 +62,6 @@ import { Table } from '@marigold/components';
 | :----------------------------- | :----------------------------- | :------ | :------------------------------------------------------- |
 | `selectionMode` (optional)     | `'none', 'single', 'multiple'` | `none`  | The type of selection that is allowed in the collection. |
 | `onSelectionChange` (optional) | `(keys: Selection) => any`     |         | Handler that is called when the selection changes.       |
-| `align` (optional)             | `left, center, right`          | `left`  | Align the cell content from the rows except the header.  |
-| `alignHeader` (optional)       | `left, center, right`          | `left`  | Align the header content.                                |
 
 ## Examples
 
@@ -110,51 +108,6 @@ import { Table } from '@marigold/components';
 
 ```tsx
 <Table aria-label="Table with multiple selection" selectionMode="multiple">
-  <Table.Header>
-    <Table.Column>Name</Table.Column>
-    <Table.Column>Firstname</Table.Column>
-    <Table.Column>House</Table.Column>
-    <Table.Column>Year of birth</Table.Column>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row key={1}>
-      <Table.Cell>Potter</Table.Cell>
-      <Table.Cell>Harry</Table.Cell>
-      <Table.Cell>Gryffindor</Table.Cell>
-      <Table.Cell>1980</Table.Cell>
-    </Table.Row>
-    <Table.Row key={2}>
-      <Table.Cell>Malfoy</Table.Cell>
-      <Table.Cell>Draco</Table.Cell>
-      <Table.Cell>Slytherin</Table.Cell>
-      <Table.Cell>1980</Table.Cell>
-    </Table.Row>
-    <Table.Row key={3}>
-      <Table.Cell>Diggory</Table.Cell>
-      <Table.Cell>Cedric</Table.Cell>
-      <Table.Cell>Hufflepuff</Table.Cell>
-      <Table.Cell>1977</Table.Cell>
-    </Table.Row>
-    <Table.Row key={4}>
-      <Table.Cell>Lovegood</Table.Cell>
-      <Table.Cell>Luna</Table.Cell>
-      <Table.Cell>Ravenclaw</Table.Cell>
-      <Table.Cell>1981</Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
-```
-
-### Text Alignment
-
-Align column headers and rows to the left, center, or right.
-
-```tsx
-<Table
-  aria-label="Table with multiple selection"
-  align="center"
-  alignHeader="center"
->
   <Table.Header>
     <Table.Column>Name</Table.Column>
     <Table.Column>Firstname</Table.Column>

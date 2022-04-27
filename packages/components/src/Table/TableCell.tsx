@@ -20,7 +20,6 @@ export interface TableCellProps {
    * Wheter it is a cell with a checkbox or a regular data cell
    */
   isSelectionCell?: boolean;
-  align?: 'left' | 'center' | 'right';
   css?: CSSObject;
 }
 
@@ -30,7 +29,6 @@ export const TableCell = ({
   item: cell,
   state,
   isSelectionCell,
-  align = 'left',
   css,
 }: TableCellProps) => {
   const cellRef = useRef(null);
@@ -55,7 +53,7 @@ export const TableCell = ({
       as="td"
       ref={cellRef}
       __baseCSS={{
-        textAlign: isSelectionCell ? 'center' : align,
+        textAlign: isSelectionCell ? 'center' : 'left',
       }}
       css={css}
       {...mergeProps(gridCellProps, focusProps)}

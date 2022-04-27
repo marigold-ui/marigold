@@ -33,21 +33,13 @@ export interface TableThemeExtension
 export interface TableProps
   extends Pick<AriaTableProps<object>, 'onRowAction' | 'onCellAction'>,
     TableStateProps<object> {
-  align?: TableCellProps['align'];
-  alignHeader?: TableColumnHeaderProps['align'];
   variant?: string;
   size?: string;
 }
 
 // Table Component
 // ---------------
-export const Table: Table = ({
-  align,
-  alignHeader,
-  variant,
-  size,
-  ...props
-}: TableProps) => {
+export const Table: Table = ({ variant, size, ...props }: TableProps) => {
   // Setup table state and mode
   const showSelectionCheckboxes =
     props.selectionMode === 'multiple' && props.selectionBehavior !== 'replace';
@@ -76,7 +68,6 @@ export const Table: Table = ({
                 item={column}
                 state={state}
                 isSelectionColumn={column.props.isSelectionCell}
-                align={alignHeader}
                 css={styles.header}
               />
             ))}
@@ -92,7 +83,6 @@ export const Table: Table = ({
                 item={cell}
                 state={state}
                 isSelectionCell={cell.props.isSelectionCell}
-                align={align}
                 css={styles.cell}
               />
             ))}
