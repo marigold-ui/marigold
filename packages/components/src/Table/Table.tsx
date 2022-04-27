@@ -14,18 +14,20 @@ import { ThemeExtensionsWithParts, useComponentStyles } from '@marigold/system';
 
 import { Box } from '../Box';
 
-import { TableCell, TableCellProps } from './TableCell';
-import { TableColumnHeader, TableColumnHeaderProps } from './TableColumnHeader';
+import { TableCell } from './TableCell';
+import { TableColumnHeader } from './TableColumnHeader';
 import { TableHeaderRow } from './TableHeaderRow';
 import { TableRow } from './TableRow';
 import { TableRowGroup } from './TableRowGroup';
+import { TableCheckboxCell } from './TableCheckboxCell';
+import { TableSelectAllCell } from './TableSelectAllCell';
 
 // Theme Extension
 // ---------------
 export interface TableThemeExtension
   extends ThemeExtensionsWithParts<
     'Table',
-    ['table', 'header', 'row', 'cell']
+    ['table', 'header', 'row', 'cell', 'checkboxCell']
   > {}
 
 // Props
@@ -54,7 +56,7 @@ export const Table: Table = ({ variant, size, ...props }: TableProps) => {
   const styles = useComponentStyles(
     'Table',
     { variant, size },
-    { parts: ['table', 'header', 'row', 'cell'] }
+    { parts: ['table', 'header', 'row', 'cell', 'checkboxCell'] }
   );
 
   return (
@@ -62,30 +64,46 @@ export const Table: Table = ({ variant, size, ...props }: TableProps) => {
       <TableRowGroup as="thead">
         {state.collection.headerRows.map(headerRow => (
           <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
-            {[...headerRow.childNodes].map(column => (
-              <TableColumnHeader
-                key={column.key}
-                item={column}
-                state={state}
-                isSelectionColumn={column.props.isSelectionCell}
-                css={styles.header}
-              />
-            ))}
+            {[...headerRow.childNodes].map(column =>
+              column.props.isSelectionCell ? (
+                <TableSelectAllCell
+                  key={column.key}
+                  item={column}
+                  state={state}
+                  css={styles.header}
+                />
+              ) : (
+                <TableColumnHeader
+                  key={column.key}
+                  item={column}
+                  state={state}
+                  css={styles.header}
+                />
+              )
+            )}
           </TableHeaderRow>
         ))}
       </TableRowGroup>
       <TableRowGroup as="tbody">
         {[...state.collection.body.childNodes].map(row => (
           <TableRow css={styles.row} key={row.key} item={row} state={state}>
-            {[...row.childNodes].map(cell => (
-              <TableCell
-                key={cell.key}
-                item={cell}
-                state={state}
-                isSelectionCell={cell.props.isSelectionCell}
-                css={styles.cell}
-              />
-            ))}
+            {[...row.childNodes].map(cell =>
+              cell.props.isSelectionCell ? (
+                <TableCheckboxCell
+                  key={cell.key}
+                  item={cell}
+                  state={state}
+                  css={styles.checkboxCell}
+                />
+              ) : (
+                <TableCell
+                  key={cell.key}
+                  item={cell}
+                  state={state}
+                  css={styles.cell}
+                />
+              )
+            )}
           </TableRow>
         ))}
       </TableRowGroup>

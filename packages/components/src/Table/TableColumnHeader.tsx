@@ -1,13 +1,8 @@
 import React, { ReactNode, useRef } from 'react';
-import { useCheckbox } from '@react-aria/checkbox';
 import { useFocusRing } from '@react-aria/focus';
-import {
-  useTableSelectAllCheckbox,
-  useTableColumnHeader,
-} from '@react-aria/table';
+import { useTableColumnHeader } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
 import { TableState } from '@react-stately/table';
-import { useToggleState } from '@react-stately/toggle';
 import { Node } from '@react-types/shared';
 
 import { CSSObject, useStateProps } from '@marigold/system';
@@ -21,7 +16,6 @@ export interface TableColumnHeaderProps {
   chilren?: ReactNode;
   item: Node<object>;
   state: TableState<object>;
-  isSelectionColumn?: boolean;
   css?: CSSObject;
 }
 
@@ -30,7 +24,6 @@ export interface TableColumnHeaderProps {
 export const TableColumnHeader = ({
   item: column,
   state,
-  isSelectionColumn,
   css,
 }: TableColumnHeaderProps) => {
   const ref = useRef(null);
@@ -39,15 +32,6 @@ export const TableColumnHeader = ({
     state,
     ref
   );
-
-  const { checkboxProps } = useTableSelectAllCheckbox(state);
-  const inputRef = useRef(null);
-  const { inputProps } = useCheckbox(
-    checkboxProps,
-    useToggleState(checkboxProps),
-    inputRef
-  );
-
   const { focusProps, isFocusVisible } = useFocusRing();
   const stateProps = useStateProps({ focus: isFocusVisible });
 
@@ -55,16 +39,11 @@ export const TableColumnHeader = ({
     <Box
       as="th"
       ref={ref}
-      __baseCSS={{ textAlign: isSelectionColumn ? 'center' : 'left' }}
       css={css}
       {...mergeProps(columnHeaderProps, focusProps)}
       {...stateProps}
     >
-      {isSelectionColumn ? (
-        <input {...inputProps} ref={inputRef} />
-      ) : (
-        <Text size="xxsmall">{column.rendered}</Text>
-      )}
+      <Text size="xxsmall">{column.rendered}</Text>
     </Box>
   );
 };
