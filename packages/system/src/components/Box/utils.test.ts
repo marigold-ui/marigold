@@ -36,6 +36,15 @@ describe('transform states', () => {
       },
     },
     {
+      name: ':focus-visible',
+      input: {
+        '&:focus-visible': {},
+      },
+      expected: {
+        '&:focus-visible, &[data-focus-visible]': {},
+      },
+    },
+    {
       name: ':active',
       input: {
         '&:active': {},
@@ -59,7 +68,7 @@ describe('transform states', () => {
         '&:read-only': {},
       },
       expected: {
-        '&[readonly], &[aria-readonly=true], &[data-readonly]': {},
+        '&[readonly], &[aria-readonly=true], &[data-read-only]': {},
       },
     },
     {
@@ -69,6 +78,15 @@ describe('transform states', () => {
       },
       expected: {
         '&[aria-checked=true], &[data-checked]': {},
+      },
+    },
+    {
+      name: ':selected',
+      input: {
+        '&:selected': {},
+      },
+      expected: {
+        '&[aria-selected=true], &[data-selected]': {},
       },
     },
     {
