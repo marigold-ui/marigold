@@ -1,13 +1,9 @@
 import React, { ReactNode } from 'react';
 import { Exclamation, Info, Notification } from '@marigold/icons';
+import { ThemeExtensionsWithParts, useComponentStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
+
 import { Box } from '../Box';
-import {
-  ThemeExtension,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-} from '@marigold/system';
-import { Inline } from '../Inline';
 
 // Theme Extension
 // ---------------
@@ -52,7 +48,10 @@ export const Message = ({
 
   return (
     <Box css={styles.container} {...props}>
-      <Box __baseCSS={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+      <Box
+        role="presentation"
+        __baseCSS={{ display: 'flex', alignItems: 'center', gap: 4 }}
+      >
         <Box css={styles.icon}>{icon}</Box>
         <Box css={styles.title}>{messageTitle}</Box>
       </Box>
