@@ -26,7 +26,7 @@
     "directory": "packages/system"
   },
   "dependencies": {
-    "@emotion/react": "11.8.2",
+    "@emotion/react": "11.9.0",
     "@marigold/types": "workspace:*",
     "@theme-ui/css": "0.14.4",
     "csstype": "3.0.11",
