@@ -1,100 +1,6 @@
 import { colors } from './colors';
 
 /**
- * Select component
- */
-const selectButton = {
-  appearance: 'none',
-  position: 'relative',
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  overflow: 'hidden',
-  outline: 'none',
-  width: '100%',
-  lineHeight: 'large',
-  px: 'xsmall',
-  color: 'inherit',
-  bg: 'transparent',
-} as const;
-
-const selectOption = {
-  fontFamily: 'body',
-  fontSize: 'xsmall',
-  fontWeight: 'body',
-  lineHeight: 'large',
-  outline: 'none',
-  cursor: 'pointer',
-  color: 'text',
-  px: 'xsmall',
-  listStyle: 'none',
-} as const;
-
-const select = {
-  __default: {
-    fontFamily: 'body',
-    fontSize: 'xsmall',
-    fontWeight: 'body',
-    lineHeight: 'large',
-    color: 'text',
-  },
-  disabled: {
-    fontFamily: 'body',
-    fontSize: 'xsmall',
-    fontWeight: 'body',
-    lineHeight: 'large',
-    color: 'disabled',
-    cursor: 'not-allowed',
-  },
-  listbox: {
-    __default: {
-      bg: 'gray00',
-      border: '1px solid transparent',
-      borderLeftColor: 'gray40',
-      borderRightColor: 'gray40',
-      borderBottomColor: 'gray40',
-      borderBottomRightRadius: 'small',
-      borderBottomLeftRadius: 'small',
-    },
-    error: {
-      bg: 'gray00',
-      border: '1px solid transparent',
-      borderLeftColor: 'error',
-      borderRightColor: 'error',
-      borderBottomColor: 'error',
-      borderBottomLeftRadius: 'small',
-      borderBottomRightRadius: 'small',
-    },
-  },
-  section: {
-    fontFamily: 'body',
-    fontSize: 'xsmall',
-    fontWeight: 'body',
-    lineHeight: 'large',
-    px: 'xxsmall',
-    color: 'gray50',
-  },
-  option: {
-    __default: {
-      ...selectOption,
-      ':focus': {
-        bg: 'blue20',
-      },
-    },
-    selected: {
-      ...selectOption,
-      color: 'gray00',
-      bg: 'blue60',
-    },
-    disabled: {
-      ...selectOption,
-      cursor: 'not-allowed',
-      color: 'gray40',
-    },
-  },
-} as const;
-
-/**
  * Button component
  */
 const button = {
@@ -106,47 +12,6 @@ const button = {
     border: 'none',
     borderRadius: 'small',
     display: 'inline-flex',
-  },
-  select: {
-    ...selectButton,
-    border: '1px solid transparent',
-    borderColor: 'gray40',
-    ':hover': {
-      cursor: 'pointer',
-    },
-    ':focus': {
-      boxShadow: '0 0 0 2px ' + colors.blue60,
-      border: '1px solid transparent',
-    },
-    ':disabled': {
-      bg: 'gray20',
-      color: 'disabled',
-      cursor: 'not-allowed',
-    },
-    error: {
-      ...selectButton,
-      border: '1px solid',
-      borderRadius: 'small',
-      borderColor: 'error',
-    },
-    open: {
-      ...selectButton,
-      border: '1px solid transparent',
-      borderTopColor: 'gray40',
-      borderLeftColor: 'gray40',
-      borderRightColor: 'gray40',
-      borderTopRightRadius: 'small',
-      borderTopLeftRadius: 'small',
-    },
-    errorOpened: {
-      ...selectButton,
-      border: '1px solid transparent',
-      borderTopColor: 'error',
-      borderLeftColor: 'error',
-      borderRightColor: 'error',
-      borderTopRightRadius: 'small',
-      borderTopLeftRadius: 'small',
-    },
   },
 } as const;
 
@@ -261,10 +126,6 @@ export const component = {
       lineHeight: 'large',
       paddingX: 'medium',
     },
-    select: {
-      ...button.root,
-      ...button.select,
-    },
   },
   dialog: {
     __default: {
@@ -324,7 +185,6 @@ export const component = {
       mb: 'xsmall',
     },
   },
-  select,
   slider,
   switch: {
     __default: {

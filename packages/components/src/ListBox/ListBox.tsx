@@ -44,7 +44,13 @@ export const ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
 
     return (
       <ListBoxContext.Provider value={{ styles }}>
-        <Box as="ul" ref={innerRef} css={styles.container} {...listBoxProps}>
+        <Box
+          as="ul"
+          ref={innerRef}
+          __baseCSS={{ listStyle: 'none' }}
+          css={styles.container}
+          {...listBoxProps}
+        >
           {[...state.collection].map(item =>
             item.type === 'section' ? (
               <ListBoxSection key={item.key} section={item} state={state} />

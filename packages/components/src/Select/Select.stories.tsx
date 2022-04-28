@@ -54,10 +54,9 @@ export default {
 
 export const Basic: ComponentStory<typeof Select> = args => {
   const [selected, setSelected] = useState('');
-
   return (
     <>
-      <Select {...args} onSelect={setSelected}>
+      <Select {...args} onSelectionChange={setSelected}>
         <Select.Option>Harry Potter</Select.Option>
         <Select.Option>Lord of the Rings</Select.Option>
         <Select.Option>Star Wars</Select.Option>

@@ -13,10 +13,14 @@ export const Select: Theme['components']['Select'] = {
       lineHeight: 'large',
       px: 'xsmall',
       color: 'inherit',
-      bg: 'transparent',
       border: '1px solid transparent',
       borderColor: 'gray40',
+      bg: 'transparent',
 
+      '&:disabled': {
+        color: 'disabled',
+        cursor: 'not-allowed',
+      },
       '&:hover': {
         cursor: 'pointer',
       },
@@ -24,14 +28,9 @@ export const Select: Theme['components']['Select'] = {
         boxShadow: '0 0 0 2px ' + 'blue60',
         border: '1px solid transparent',
       },
-      '&:disabled': {
-        bg: 'gray20',
-        color: 'disabled',
-        cursor: 'not-allowed',
-      },
       '&:error': {
         border: '1px solid',
-        borderRadius: 'small',
+        borderRadius: '8px',
         borderColor: 'error',
       },
       '&:open': {
@@ -39,16 +38,16 @@ export const Select: Theme['components']['Select'] = {
         borderTopColor: 'gray40',
         borderLeftColor: 'gray40',
         borderRightColor: 'gray40',
-        borderTopRightRadius: 'small',
-        borderTopLeftRadius: 'small',
+        borderTopRightRadius: '8px',
+        borderTopLeftRadius: '8px',
       },
       '&:errorOpened': {
         border: '1px solid transparent',
         borderTopColor: 'error',
         borderLeftColor: 'error',
         borderRightColor: 'error',
-        borderTopRightRadius: 'small',
-        borderTopLeftRadius: 'small',
+        borderTopRightRadius: '8px',
+        borderTopLeftRadius: '8px',
       },
     },
   },
