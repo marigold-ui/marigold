@@ -1,6 +1,6 @@
-import React, { forwardRef, ReactNode } from 'react';
+import React, { forwardRef, ReactNode, useRef } from 'react';
 import { OverlayProps, useModal, useOverlay } from '@react-aria/overlays';
-import { mergeProps } from '@react-aria/utils';
+import { mergeProps, useObjectRef } from '@react-aria/utils';
 
 import { Box } from '../Box';
 import { Overlay } from './Overlay';
@@ -28,6 +28,9 @@ export const Popover = forwardRef(
     }: PopoverProps,
     ref
   ) => {
+    // FIXME: Why can't we use `useObjectRef` here?
+    const fallbackRef = useRef(null);
+    const popoverRef = ref || fallbackRef;
     const { overlayProps } = useOverlay(
       {
         isOpen: open,
@@ -36,7 +39,7 @@ export const Popover = forwardRef(
         shouldCloseOnBlur,
         ...props,
       },
-      ref as any
+      popoverRef as any
     );
     /**
      * Hide content outside the container from screen readers.
@@ -46,7 +49,7 @@ export const Popover = forwardRef(
     return (
       <Overlay open={open}>
         <Box
-          ref={ref}
+          ref={popoverRef}
           role="presentation"
           {...mergeProps(props, overlayProps, modalProps)}
         >

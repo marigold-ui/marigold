@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Select } from './Select';
 
@@ -52,14 +52,22 @@ export default {
   },
 } as Meta;
 
-export const Basic: ComponentStory<typeof Select> = args => (
-  <Select {...args}>
-    <Select.Option>Harry Potter</Select.Option>
-    <Select.Option>Lord of the Rings</Select.Option>
-    <Select.Option>Star Wars</Select.Option>
-    <Select.Option>Star Trek</Select.Option>
-  </Select>
-);
+export const Basic: ComponentStory<typeof Select> = args => {
+  const [selected, setSelected] = useState('');
+
+  return (
+    <>
+      <Select {...args} onSelect={setSelected}>
+        <Select.Option>Harry Potter</Select.Option>
+        <Select.Option>Lord of the Rings</Select.Option>
+        <Select.Option>Star Wars</Select.Option>
+        <Select.Option>Star Trek</Select.Option>
+      </Select>
+      <hr />
+      <pre>selected: {selected}</pre>
+    </>
+  );
+};
 
 export const Sections: ComponentStory<typeof Select> = args => (
   <Select {...args}>
