@@ -4,7 +4,7 @@ import { Select } from './Select';
 import { Item } from '@marigold/components';
 
 export default {
-  title: 'Components/Select',
+  title: 'Components/Select-Old',
   argTypes: {
     label: {
       control: {
