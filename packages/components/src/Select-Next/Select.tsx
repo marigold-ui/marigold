@@ -87,7 +87,7 @@ export const Select = ({
         label={props.label}
         name={props.name}
       />
-      <Box as="button" {...mergeProps(buttonProps, focusProps)}>
+      <Box as="button" ref={ref} {...mergeProps(buttonProps, focusProps)}>
         <span {...valueProps}>
           {state.selectedItem ? state.selectedItem.rendered : props.placeholder}
         </span>
