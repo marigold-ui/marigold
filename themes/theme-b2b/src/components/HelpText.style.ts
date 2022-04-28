@@ -6,7 +6,6 @@ export const HelpText: Theme['components']['HelpText'] = {
       fontSize: 'xxsmall',
       color: 'text',
       '&:error': {
-        fontSize: 'xxsmall',
         color: 'error',
       },
     },

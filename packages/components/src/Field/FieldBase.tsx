@@ -2,7 +2,7 @@ import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
 import { StateAttrProps } from '@marigold/system';
 
 import { Stack } from '../Stack';
-import { Label } from './Label';
+import { Label, LabelProps } from './Label';
 import { HelpText } from './HelpText';
 
 // Props
@@ -14,7 +14,7 @@ export interface FieldBaseProps {
   disabled?: boolean;
   required?: boolean;
   label?: ReactNode;
-  labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+  labelProps?: LabelHTMLAttributes<HTMLLabelElement> & Pick<LabelProps, 'as'>;
   description?: ReactNode;
   descriptionProps?: HTMLAttributes<HTMLElement>;
   error?: boolean;

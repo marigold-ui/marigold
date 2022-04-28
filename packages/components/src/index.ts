@@ -26,7 +26,7 @@ export * from './Message';
 export * from './Overlay';
 export * from './Provider';
 export * from './Radio';
-export * from './Select';
+export * from './Select-old';
 export * from './Slider';
 export * from './Switch';
 export * from './Stack';

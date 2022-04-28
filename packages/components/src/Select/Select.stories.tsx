@@ -1,21 +1,16 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Select } from './Select';
-import { Item } from '@marigold/components';
 
 export default {
-  title: 'Components/Select-Old',
+  title: 'Components/Select',
   argTypes: {
     label: {
       control: {
         type: 'text',
       },
-      table: {
-        defaultValue: {
-          summary: 'Select label',
-        },
-      },
-      defaultValue: 'Favorite Color',
+      description: 'Set the select label',
+      defaultValue: 'Select for favorite:',
     },
     placeholder: {
       control: {
@@ -23,7 +18,7 @@ export default {
       },
       table: {
         defaultValue: {
-          summary: 'Select an option',
+          summary: 'Select an option...',
         },
       },
     },
@@ -31,34 +26,22 @@ export default {
       control: {
         type: 'boolean',
       },
-      options: [true, false],
-      table: {
-        defaultValue: {
-          summary: false,
-        },
-      },
+      description: 'Disable the select',
+      defaultValue: false,
     },
     required: {
       control: {
         type: 'boolean',
       },
-      options: [true, false],
-      table: {
-        defaultValue: {
-          summary: false,
-        },
-      },
+      description: 'Require the select',
+      defaultValue: false,
     },
     error: {
       control: {
         type: 'boolean',
       },
-      description: 'Error',
-      table: {
-        defaultValue: {
-          summary: false,
-        },
-      },
+      description: 'Set error state',
+      defaultValue: false,
     },
     errorMessage: {
       control: {
@@ -66,16 +49,27 @@ export default {
       },
       description: 'Error Message',
     },
-    width: {
-      control: 'number',
-    },
   },
 } as Meta;
 
 export const Basic: ComponentStory<typeof Select> = args => (
   <Select {...args}>
-    <Item>Red</Item>
-    <Item>Orange</Item>
-    <Item>Yellow</Item>
+    <Select.Option>Harry Potter</Select.Option>
+    <Select.Option>Lord of the Rings</Select.Option>
+    <Select.Option>Star Wars</Select.Option>
+    <Select.Option>Star Trek</Select.Option>
+  </Select>
+);
+
+export const Sections: ComponentStory<typeof Select> = args => (
+  <Select {...args}>
+    <Select.Section title="Fantasy">
+      <Select.Option>Harry Potter</Select.Option>
+      <Select.Option>Lord of the Rings</Select.Option>
+    </Select.Section>
+    <Select.Section title="Sci-Fi">
+      <Select.Option>Star Wars</Select.Option>
+      <Select.Option>Star Trek</Select.Option>
+    </Select.Section>
   </Select>
 );
