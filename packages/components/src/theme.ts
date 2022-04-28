@@ -25,6 +25,7 @@ import type { LabelThemeExtension } from './Field/Label';
 import type { LinkThemeExtension } from './Link';
 import type { MenuThemeExtension } from './Menu';
 import type { RadioThemeExtension, RadioGroupThemeExtension } from './Radio';
+import type { SelectThemeExtension } from './Select';
 import type { TableThemeExtension } from './Table';
 import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
@@ -32,7 +33,6 @@ import type { TextAreaThemeExtension } from './TextArea';
 // Old Styling Solution
 import { type LabelThemeExtension as LegacyLabelThemeExtension } from './Label';
 import { type MessageThemeExtension } from './Message';
-import { type SelectThemeExtension } from './Select';
 import { type SliderThemeExtension } from './Slider';
 import { type SwitchThemeExtension } from './Switch';
 import { type TooltipThemeExtension } from './Tooltip';
@@ -58,6 +58,7 @@ interface ComponentStyles
     MenuThemeExtension,
     RadioThemeExtension,
     RadioGroupThemeExtension,
+    SelectThemeExtension,
     TableThemeExtension,
     TextThemeExtension,
     TextAreaThemeExtension {}
@@ -67,7 +68,6 @@ export interface Theme
     RootThemeExtension<CSSObject>,
     LegacyLabelThemeExtension<CSSObject>,
     MessageThemeExtension<CSSObject>,
-    SelectThemeExtension<CSSObject>,
     SliderThemeExtension<CSSObject>,
     SwitchThemeExtension<CSSObject>,
     TooltipThemeExtension<CSSObject>,

@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { useListBox } from '@react-aria/listbox';
 import type { AriaListBoxOptions } from '@react-aria/listbox';
 import type { ListState } from '@react-stately/list';
+import { CSSObject } from '@marigold/system';
 
 import { Box } from '../Box';
 import { Option } from './Option';
@@ -10,6 +11,7 @@ import { ListBoxSection } from './ListBoxSection';
 interface ListBoxProps extends AriaListBoxOptions<unknown> {
   state: ListState<unknown>;
   error?: boolean;
+  css?: CSSObject;
 }
 
 export const ListBox = (props: ListBoxProps) => {

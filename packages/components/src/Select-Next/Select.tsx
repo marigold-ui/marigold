@@ -9,13 +9,23 @@ import type { AriaSelectProps } from '@react-types/select';
 import { mergeProps } from '@react-aria/utils';
 
 import { ArrowDown } from '@marigold/icons';
-import { Box } from '@marigold/system';
+import {
+  Box,
+  CSSObject,
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+} from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 import { messages } from './intl';
 import { Label } from '../Field/Label';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay';
+
+// Theme Extension
+// ---------------
+export interface SelectThemeExtension
+  extends ThemeExtensionsWithParts<'Select', ['option', 'section', 'button']> {}
 
 // Props
 // ---------------
@@ -32,12 +42,15 @@ export interface SelectProps
     >,
     Omit<
       ComponentProps<'select'>,
-      'onKeyUp' | 'onKeyDown' | 'onFocus' | 'onBlur' | 'children'
+      'onKeyUp' | 'onKeyDown' | 'onFocus' | 'onBlur' | 'children' | 'size'
     > {
   open?: boolean;
   disabled?: boolean;
   required?: boolean;
   error?: boolean;
+  variant?: string;
+  size?: string;
+  css?: CSSObject;
 }
 
 // TODO: `placeholder` prop need an internationalized default
@@ -49,6 +62,9 @@ export const Select = ({
   disabled,
   required,
   error,
+  variant,
+  size,
+  css,
   ...rest
 }: SelectProps) => {
   // Set up i18n
@@ -76,6 +92,12 @@ export const Select = ({
 
   // TODO: Button needs state for styling + open/closed (state.isOpen)
 
+  const styles = useComponentStyles(
+    'Select',
+    { variant, size },
+    { parts: ['option', 'section', 'button'] }
+  );
+
   return (
     <Box>
       <Label as="span" required={required} {...labelProps}>
@@ -87,7 +109,12 @@ export const Select = ({
         label={props.label}
         name={props.name}
       />
-      <Box as="button" ref={ref} {...mergeProps(buttonProps, focusProps)}>
+      <Box
+        as="button"
+        css={styles.button}
+        ref={ref}
+        {...mergeProps(buttonProps, focusProps)}
+      >
         <span {...valueProps}>
           {state.selectedItem ? state.selectedItem.rendered : props.placeholder}
         </span>
@@ -101,7 +128,7 @@ export const Select = ({
         dismissable={true}
         shouldCloseOnBlur={true}
       >
-        <ListBox state={state} {...menuProps} />
+        <ListBox css={styles.option} state={state} {...menuProps} />
       </Popover>
     </Box>
   );
