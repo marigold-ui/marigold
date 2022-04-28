@@ -4,23 +4,29 @@ import type { ListState } from '@react-stately/list';
 import type { Node } from '@react-types/shared';
 
 import { ListBoxOption } from './ListBoxOption';
-import { Box } from '@marigold/system';
+import { Box, CSSObject } from '@marigold/system';
 
+// Props
+// ---------------
 export interface ListSectionProps {
+  css?: CSSObject;
   section: Node<unknown>;
   state: ListState<unknown>;
 }
 
-export const ListBoxSection = ({ section, state }: ListSectionProps) => {
+// Component
+// ---------------
+export const ListBoxSection = ({ css, section, state }: ListSectionProps) => {
   const { itemProps, headingProps, groupProps } = useListBoxSection({
     heading: section.rendered,
     'aria-label': section['aria-label'],
   });
 
+  // TODO: Separate style for heading/section and childs
   return (
     <Box as="li" {...itemProps}>
       {section.rendered && <span {...headingProps}>{section.rendered}</span>}
-      <Box as="ul" {...groupProps}>
+      <Box as="ul" css={css} {...groupProps}>
         {[...section.childNodes].map(node => (
           <ListBoxOption key={node.key} item={node} state={state} />
         ))}
