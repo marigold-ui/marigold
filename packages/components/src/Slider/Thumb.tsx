@@ -20,12 +20,7 @@ export interface ThumbProps extends Pick<ComponentProps<'input'>, 'disabled'> {
 
 // Component
 // ---------------
-export const Thumb: React.FC<ThumbProps> = ({
-  state,
-  trackRef,
-  styles,
-  ...props
-}) => {
+export const Thumb = ({ state, trackRef, styles, ...props }: ThumbProps) => {
   const { disabled } = props;
   const inputRef = React.useRef(null);
   const { isFocusVisible, focusProps, isFocused } = useFocusRing();
