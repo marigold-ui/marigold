@@ -25,7 +25,7 @@ import type { LabelThemeExtension } from './Field/Label';
 import type { LinkThemeExtension } from './Link';
 import type { MenuThemeExtension } from './Menu';
 import type { RadioThemeExtension, RadioGroupThemeExtension } from './Radio';
-import { type SliderThemeExtension } from './Slider';
+import type { SliderThemeExtension } from './Slider';
 import type { TableThemeExtension } from './Table';
 import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
