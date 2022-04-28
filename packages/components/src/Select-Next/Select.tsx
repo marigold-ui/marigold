@@ -14,13 +14,14 @@ import {
   CSSObject,
   ThemeExtensionsWithParts,
   useComponentStyles,
+  useStateProps,
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { messages } from './intl';
-import { Label } from '../Field/Label';
+import { FieldBase } from '../Field';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay';
+import { messages } from './intl';
 
 // Theme Extension
 // ---------------
@@ -53,8 +54,6 @@ export interface SelectProps
   css?: CSSObject;
 }
 
-// TODO: `placeholder` prop need an internationalized default
-
 // Component
 // ---------------
 export const Select = ({
@@ -81,11 +80,14 @@ export const Select = ({
 
   const state = useSelectState(props);
   const ref = useRef(null);
-  const { labelProps, triggerProps, valueProps, menuProps } = useSelect(
-    props,
-    state,
-    ref
-  );
+  const {
+    labelProps,
+    triggerProps,
+    valueProps,
+    menuProps,
+    descriptionProps,
+    errorMessageProps,
+  } = useSelect(props, state, ref);
 
   const { buttonProps } = useButton(triggerProps, ref);
   const { focusProps, isFocusVisible } = useFocusRing();
@@ -95,14 +97,27 @@ export const Select = ({
   const styles = useComponentStyles(
     'Select',
     { variant, size },
-    { parts: ['option', 'section', 'button'] }
+    { parts: ['container', 'button', 'icon'] }
   );
-
+  const stateProps = useStateProps({
+    error,
+  });
+  console.log(stateProps);
   return (
-    <Box>
-      <Label as="span" required={required} {...labelProps}>
-        {props.label}
-      </Label>
+    <FieldBase
+      variant={variant}
+      size={size}
+      label={props.label}
+      labelProps={{ as: 'span', ...labelProps }}
+      description={props.description}
+      descriptionProps={descriptionProps}
+      error={error}
+      errorMessage={props.errorMessage}
+      errorMessageProps={errorMessageProps}
+      stateProps={stateProps}
+      disabled={disabled}
+      required={required}
+    >
       <HiddenSelect
         state={state}
         triggerRef={ref}
@@ -118,7 +133,10 @@ export const Select = ({
         <span {...valueProps}>
           {state.selectedItem ? state.selectedItem.rendered : props.placeholder}
         </span>
-        <Box css={state.isOpen ? {} : { transform: 'rotate(180deg)' }}>
+        <Box
+          __baseCSS={state.isOpen ? {} : { transform: 'rotate(180deg)' }}
+          css={styles.icon}
+        >
           <ArrowDown size={16} />
         </Box>
       </Box>
@@ -128,9 +146,9 @@ export const Select = ({
         dismissable={true}
         shouldCloseOnBlur={true}
       >
-        <ListBox css={styles.option} state={state} {...menuProps} />
+        <ListBox state={state} {...menuProps} />
       </Popover>
-    </Box>
+    </FieldBase>
   );
 };
 
