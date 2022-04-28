@@ -22,6 +22,7 @@ import { FieldBase } from '../Field';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay';
 import { messages } from './intl';
+import { useOverlayPosition } from '@react-aria/overlays';
 
 // Theme Extension
 // ---------------
@@ -80,6 +81,8 @@ export const Select = ({
 
   const state = useSelectState(props);
   const ref = useRef(null);
+  const overlayRef = useRef(null);
+
   const {
     labelProps,
     triggerProps,
@@ -93,6 +96,12 @@ export const Select = ({
   const { focusProps, isFocusVisible } = useFocusRing();
 
   // TODO: Button needs state for styling + open/closed (state.isOpen)
+
+  const { overlayProps: positionProps } = useOverlayPosition({
+    targetRef: ref,
+    overlayRef,
+    isOpen: state.isOpen,
+  });
 
   const styles = useComponentStyles(
     'Select',
@@ -145,6 +154,8 @@ export const Select = ({
         onClose={state.close}
         dismissable={true}
         shouldCloseOnBlur={true}
+        ref={overlayRef}
+        {...positionProps}
       >
         <ListBox state={state} {...menuProps} />
       </Popover>
