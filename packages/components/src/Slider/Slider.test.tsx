@@ -103,16 +103,6 @@ test('supports disabled prop', () => {
   expect(inputElement).toHaveAttribute(`disabled`);
 });
 
-test('supports width prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Slider width={180}>Example</Slider>
-    </ThemeProvider>
-  );
-  const inputElement = screen.getByRole(/group/);
-  expect(inputElement).toHaveStyle(`width: 180px`);
-});
-
 test('supports defaultValue (uncontrolled)', () => {
   render(
     <ThemeProvider theme={theme}>

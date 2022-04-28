@@ -26,7 +26,13 @@ export interface SliderThemeExtension
 export interface SliderProps
   extends Omit<
       ComponentProps<'input'>,
-      'step' | 'value' | 'defaultValue' | 'onChange' | 'onFocus' | 'onBlur'
+      | 'step'
+      | 'value'
+      | 'defaultValue'
+      | 'onChange'
+      | 'onFocus'
+      | 'onBlur'
+      | 'size'
     >,
     /**
      * `react-aria` has a slightly different API for some events e.g `onChange`, `onFocus`
@@ -37,7 +43,7 @@ export interface SliderProps
       'maxValue' | 'step' | 'value' | 'defaultValue' | 'onChange'
     > {
   variant?: string;
-  width?: number | string;
+  size?: string;
   formatOptions?: Intl.NumberFormatOptions;
   children?: ReactNode;
 }
@@ -48,7 +54,7 @@ export interface SliderProps
  * A label + the output value and the slider functionality itself.
  * The slider itself consists of a track line and a thumb.
  */
-export const Slider = ({ variant, width = '100%', ...props }: SliderProps) => {
+export const Slider = ({ variant, size, ...props }: SliderProps) => {
   const { formatOptions } = props;
   const trackRef = useRef<HTMLElement>(null);
   const numberFormatter = useNumberFormatter(formatOptions);
@@ -64,7 +70,7 @@ export const Slider = ({ variant, width = '100%', ...props }: SliderProps) => {
 
   const styles = useComponentStyles(
     'Slider',
-    { variant },
+    { variant, size },
     { parts: ['track', 'thumb', 'label', 'output'] }
   );
 
@@ -73,7 +79,6 @@ export const Slider = ({ variant, width = '100%', ...props }: SliderProps) => {
       __baseCSS={{
         display: 'flex',
         flexDirection: 'column',
-        width: width,
         touchAction: 'none',
       }}
       {...groupProps}
