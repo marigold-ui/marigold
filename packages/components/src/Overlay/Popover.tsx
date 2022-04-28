@@ -1,6 +1,6 @@
 import React, { forwardRef, ReactNode, useRef } from 'react';
 import { OverlayProps, useModal, useOverlay } from '@react-aria/overlays';
-import { mergeProps, useObjectRef } from '@react-aria/utils';
+import { mergeProps } from '@react-aria/utils';
 
 import { Box } from '../Box';
 import { Overlay } from './Overlay';
