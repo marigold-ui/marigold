@@ -3,19 +3,20 @@ import { useOption } from '@react-aria/listbox';
 import type { ListState } from '@react-stately/list';
 import type { Node } from '@react-types/shared';
 
-import { Box, CSSObject, useStateProps } from '@marigold/system';
+import { Box, useStateProps } from '@marigold/system';
+
+import { useListBoxContext } from './Context';
 
 // Props
 // ---------------
 export interface ListBoxOptionProps {
-  css?: CSSObject;
   item: Node<unknown>;
   state: ListState<unknown>;
 }
 
 // Component
 // ---------------
-export const ListBoxOption = ({ css, item, state }: ListBoxOptionProps) => {
+export const ListBoxOption = ({ item, state }: ListBoxOptionProps) => {
   const ref = useRef<HTMLLIElement>(null);
   const { optionProps, isSelected, isDisabled, isFocused } = useOption(
     {
@@ -25,6 +26,7 @@ export const ListBoxOption = ({ css, item, state }: ListBoxOptionProps) => {
     ref
   );
 
+  const { styles } = useListBoxContext();
   const stateProps = useStateProps({
     selected: isSelected,
     disabled: isDisabled,
@@ -32,7 +34,7 @@ export const ListBoxOption = ({ css, item, state }: ListBoxOptionProps) => {
   });
 
   return (
-    <Box as="li" ref={ref} css={css} {...optionProps} {...stateProps}>
+    <Box as="li" ref={ref} css={styles.option} {...optionProps} {...stateProps}>
       {item.rendered}
       {isSelected && 'THIS IS SELECTED!'}
     </Box>

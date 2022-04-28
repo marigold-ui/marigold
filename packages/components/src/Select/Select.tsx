@@ -26,7 +26,7 @@ import { messages } from './intl';
 // Theme Extension
 // ---------------
 export interface SelectThemeExtension
-  extends ThemeExtensionsWithParts<'Select', ['option', 'section', 'button']> {}
+  extends ThemeExtensionsWithParts<'Select', ['container', 'button', 'icon']> {}
 
 // Props
 // ---------------
@@ -102,7 +102,7 @@ export const Select = ({
   const stateProps = useStateProps({
     error,
   });
-  console.log(stateProps);
+
   return (
     <FieldBase
       variant={variant}

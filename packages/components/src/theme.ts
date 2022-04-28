@@ -23,6 +23,7 @@ import type { ImageThemeExtension } from './Image';
 import type { InputThemeExtension } from './Input';
 import type { LabelThemeExtension } from './Field/Label';
 import type { LinkThemeExtension } from './Link';
+import type { ListBoxThemeExtension } from './ListBox';
 import type { MenuThemeExtension } from './Menu';
 import type { RadioThemeExtension, RadioGroupThemeExtension } from './Radio';
 import type { SelectThemeExtension } from './Select';
@@ -53,8 +54,8 @@ interface ComponentStyles
     ImageThemeExtension,
     InputThemeExtension,
     LabelThemeExtension,
-    LabelThemeExtension,
     LinkThemeExtension,
+    ListBoxThemeExtension,
     MenuThemeExtension,
     RadioThemeExtension,
     RadioGroupThemeExtension,
