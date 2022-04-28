@@ -47,18 +47,9 @@ export const CopySVGIcon: React.FC = ({ children }) => {
         arrow
       >
         <Box>
-          <Box
-            as={Button}
-            ref={ref}
-            variant="button.icon"
-            size="table"
-            onClick={onClick}
-            css={{
-              '> *': { animation: copied ? 'var(--animation-bounce)' : '' },
-            }}
-          >
+          <Button ref={ref} variant="icon" size="table" onClick={onClick}>
             {children}
-          </Box>
+          </Button>
           <Divider />
         </Box>
       </MarigoldTooltip>
