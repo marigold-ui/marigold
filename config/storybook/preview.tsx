@@ -27,7 +27,7 @@ addParameters({
   },
   controls: { expanded: true },
   themes: {
-    default: 'b2b',
+    default: 'core',
     clearable: false,
     Decorator: ({
       themeName,

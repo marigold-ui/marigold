@@ -13,6 +13,7 @@ export type ComponentState =
   | 'checked'
   | 'selected'
   | 'indeterminate'
+  | 'expanded'
   | 'error';
 
 export type StateAttrKeyProps = `data-${KebabCase<ComponentState>}`;
