@@ -19,18 +19,6 @@ export const Button: Theme['components']['Button'] = {
     secondary: {
       bg: 'secondary',
     },
-    large: {
-      px: 'small',
-      py: 'xsmall',
-    },
-    table: {
-      px: 'xsmall',
-      py: 'small',
-    },
-    small: {
-      px: 'xsmall',
-      py: 'xxsmall',
-    },
     action: {
       pr: 'xsmall',
       color: 'gray60',
@@ -55,6 +43,20 @@ export const Button: Theme['components']['Button'] = {
       '&:hover': {
         bg: 'gray00',
       },
+    },
+  },
+  size: {
+    table: {
+      px: 'xsmall',
+      py: 'small',
+    },
+    small: {
+      px: 'xsmall',
+      py: 'xxsmall',
+    },
+    large: {
+      px: 'small',
+      py: 'xsmall',
     },
   },
 };
