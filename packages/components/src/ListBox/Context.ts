@@ -3,7 +3,7 @@ import { ComponentStyleParts } from '@marigold/system';
 
 export interface ListBoxContextProps {
   styles: ComponentStyleParts<
-    ['container', 'section', 'sectionTitle', 'option']
+    ['container', 'list', 'option', 'section', 'sectionTitle']
   >;
 }
 

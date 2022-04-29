@@ -34,7 +34,12 @@ export const ListBoxSection = ({ section, state }: ListSectionProps) => {
           {section.rendered}
         </Box>
       )}
-      <Box as="ul" {...groupProps}>
+      <Box
+        as="ul"
+        __baseCSS={{ listStyle: 'none', p: 0 }}
+        css={styles.list}
+        {...groupProps}
+      >
         {[...section.childNodes].map(node => (
           <ListBoxOption key={node.key} item={node} state={state} />
         ))}
