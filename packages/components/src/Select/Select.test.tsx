@@ -339,10 +339,28 @@ test('dismiss when clicking escape', () => {
   userEvent.type(button, '{esc}');
 });
 
+test('disable select', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" disabled>
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+  const button = screen.getByTestId('select');
+  expect(button).toHaveAttribute('disabled');
+  console.log(button);
+  fireEvent.click(button);
+  expect(button).toHaveAttribute('aria-expanded', 'false');
+});
+
 // controlled (onSelectionChange)
 // uncontrolled -> supports "defaultSelectedKey"
 // supports required
-// disabled the select
 // disabled options (disabledKeys)
 // error (aria-invalid) .. if we can find the <select>
 // supports sections
