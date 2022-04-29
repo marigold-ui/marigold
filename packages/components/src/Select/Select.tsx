@@ -115,8 +115,6 @@ export const Select = ({
   const { buttonProps } = useButton(triggerProps, buttonRef);
   const { focusProps, isFocusVisible } = useFocusRing();
 
-  // TODO: Button needs state for styling + open/closed (state.isOpen)
-
   const overlayRef = useRef(null);
   const { overlayProps: positionProps } = useOverlayPosition({
     targetRef: buttonRef,
@@ -131,6 +129,7 @@ export const Select = ({
     { parts: ['container', 'button', 'icon'] }
   );
   const stateProps = useStateProps({
+    disabled,
     error,
     focusVisible: isFocusVisible,
     expanded: state.isOpen,
@@ -185,8 +184,8 @@ export const Select = ({
       <Popover
         open={state.isOpen}
         onClose={state.close}
-        dismissable={false}
-        shouldCloseOnBlur={false}
+        dismissable
+        shouldCloseOnBlur
         minWidth={buttonRef.current ? buttonRef.current.offsetWidth : undefined}
         ref={overlayRef}
         {...positionProps}

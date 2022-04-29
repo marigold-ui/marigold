@@ -21,6 +21,15 @@ export const Select: Theme['components']['Select'] = {
         borderColor: 'gray50',
       },
 
+      '&:disabled': {
+        color: 'gray40',
+
+        bg: 'gray20',
+        borderColor: 'gray40',
+
+        cursor: 'not-allowed',
+      },
+
       '&:focus-visible': {
         borderColor: 'blue60',
         boxShadow: `0 0 0 1px ${colors.blue60}`,
@@ -29,12 +38,6 @@ export const Select: Theme['components']['Select'] = {
       '&:expanded': {
         bg: 'gray20',
         borderColor: 'gray40',
-      },
-
-      '&:disabled': {
-        bg: 'gray20',
-        color: 'gray40',
-        cursor: 'not-allowed',
       },
 
       '&:error': {
