@@ -10,11 +10,13 @@ export const ListBox: Theme['components']['ListBox'] = {
       borderColor: 'gray40',
       borderRadius: 'small',
 
-      outline: 'none',
-
       '&:error': {
         borderColor: 'error',
       },
+    },
+
+    list: {
+      outline: 'none',
     },
 
     option: {

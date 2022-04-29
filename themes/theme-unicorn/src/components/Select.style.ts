@@ -1,53 +1,47 @@
 import type { Theme } from '@marigold/components';
+import { colors } from '../colors';
 
 export const Select: Theme['components']['Select'] = {
   base: {
     button: {
       appearance: 'none',
-      position: 'relative',
-      display: 'inline-flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      overflow: 'hidden',
-      outline: 'none',
       lineHeight: 'large',
+
       px: 'xsmall',
-      color: 'inherit',
-      border: '1px solid transparent',
+
+      bg: 'gray00',
+      borderRadius: 'small',
+      border: '1px solid',
       borderColor: 'gray40',
-      bg: 'transparent',
+
+      outline: 'none',
+      cursor: 'pointer',
+
+      '&:hover': {
+        borderColor: 'gray50',
+      },
 
       '&:disabled': {
-        color: 'disabled',
+        color: 'gray40',
+
+        bg: 'gray20',
+        borderColor: 'gray40',
+
         cursor: 'not-allowed',
       },
-      '&:hover': {
-        cursor: 'pointer',
+
+      '&:focus-visible': {
+        borderColor: 'purple60',
+        boxShadow: `0 0 0 1px ${colors.purple60}`,
       },
-      '&:focus': {
-        boxShadow: '0 0 0 2px ' + 'blue60',
-        border: '1px solid transparent',
+
+      '&:expanded': {
+        bg: 'gray20',
+        borderColor: 'gray40',
       },
+
       '&:error': {
-        border: '1px solid',
-        borderRadius: '8px',
         borderColor: 'error',
-      },
-      '&:open': {
-        border: '1px solid transparent',
-        borderTopColor: 'gray40',
-        borderLeftColor: 'gray40',
-        borderRightColor: 'gray40',
-        borderTopRightRadius: '8px',
-        borderTopLeftRadius: '8px',
-      },
-      '&:errorOpened': {
-        border: '1px solid transparent',
-        borderTopColor: 'error',
-        borderLeftColor: 'error',
-        borderRightColor: 'error',
-        borderTopRightRadius: '8px',
-        borderTopLeftRadius: '8px',
       },
     },
   },

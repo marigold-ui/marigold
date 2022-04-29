@@ -3,45 +3,56 @@ import type { Theme } from '@marigold/components';
 export const ListBox: Theme['components']['ListBox'] = {
   base: {
     container: {
-      fontFamily: 'body',
-      fontSize: 'xsmall',
-      fontWeight: 'body',
-      lineHeight: 'large',
-      bg: 'background',
-      border: '1px solid transparent',
-      borderLeftColor: 'gray40',
-      borderRightColor: 'gray40',
-      borderBottomColor: 'gray40',
-      borderBottomLeftRadius: '8px',
-      borderBottomRightRadius: '8px',
+      mt: 2,
+
+      bg: 'gray00',
+      border: '1px solid',
+      borderColor: 'gray40',
+      borderRadius: 'small',
 
       '&:error': {
-        bg: 'background',
-        border: '1px solid transparent',
-        borderLeftColor: 'error',
-        borderRightColor: 'error',
-        borderBottomColor: 'error',
-        borderBottomRightRadius: '8px',
-        borderBottomLeftRadius: '8px',
+        borderColor: 'error',
       },
     },
-    section: {
-      px: 'xxsmall',
-      color: 'gray50',
+
+    list: {
+      outline: 'none',
     },
+
     option: {
+      p: 'xsmall',
+
       outline: 'none',
       cursor: 'pointer',
-      color: 'text',
-      px: 'xsmall',
-      listStyle: 'none',
+
+      '&:focus': {
+        bg: 'purple20',
+      },
+
       '&:selected': {
         color: 'gray00',
-        bg: 'blue60',
+        bg: 'purple60',
       },
+
       '&:disabled': {
         cursor: 'not-allowed',
         color: 'gray40',
+      },
+    },
+
+    sectionTitle: {
+      color: 'gray50',
+      fontSize: 'xxsmall',
+      pt: 'xsmall',
+      px: 'xsmall',
+    },
+
+    section: {
+      outline: 'none',
+
+      '&:nth-child(n+1)': {
+        borderTop: '1px solid',
+        borderColor: 'gray40',
       },
     },
   },
