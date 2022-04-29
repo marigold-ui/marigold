@@ -53,14 +53,14 @@ export default {
 } as Meta;
 
 export const Basic: ComponentStory<typeof Select> = args => {
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState<string | number>('');
   return (
     <>
       <Select {...args} onSelectionChange={setSelected}>
-        <Select.Option>Harry Potter</Select.Option>
-        <Select.Option>Lord of the Rings</Select.Option>
-        <Select.Option>Star Wars</Select.Option>
-        <Select.Option>Star Trek</Select.Option>
+        <Select.Option key="Harry Potter">Harry Potter</Select.Option>
+        <Select.Option key="Lord of the Rings">Lord of the Rings</Select.Option>
+        <Select.Option key="Star Wars">Star Wars</Select.Option>
+        <Select.Option key="Star Trek">Star Trek</Select.Option>
       </Select>
       <hr />
       <pre>selected: {selected}</pre>

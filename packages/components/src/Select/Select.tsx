@@ -2,13 +2,13 @@ import React, { useRef } from 'react';
 import { useButton } from '@react-aria/button';
 import { useFocusRing } from '@react-aria/focus';
 import { useMessageFormatter } from '@react-aria/i18n';
+import { useOverlayPosition } from '@react-aria/overlays';
 import { HiddenSelect, useSelect } from '@react-aria/select';
 import { useSelectState } from '@react-stately/select';
 import { Item, Section } from '@react-stately/collections';
 import type { AriaSelectProps } from '@react-types/select';
 import { mergeProps } from '@react-aria/utils';
 
-import { ArrowDown } from '@marigold/icons';
 import {
   Box,
   CSSObject,
@@ -22,7 +22,29 @@ import { FieldBase } from '../Field';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay';
 import { messages } from './intl';
-import { useOverlayPosition } from '@react-aria/overlays';
+
+// Select Icon
+// ---------------
+interface ArrowsProps {
+  css: CSSObject;
+}
+
+const Arrows = ({ css }: ArrowsProps) => (
+  <Box
+    as="svg"
+    __baseCSS={{ width: 16, height: 16 }}
+    css={css}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+    />
+  </Box>
+);
 
 // Theme Extension
 // ---------------
@@ -69,7 +91,6 @@ export const Select = ({
 }: SelectProps) => {
   // Set up i18n
   const formatMessage = useMessageFormatter(messages);
-
   const props: AriaSelectProps<object> = {
     isOpen: open,
     isDisabled: disabled,
@@ -80,8 +101,7 @@ export const Select = ({
   };
 
   const state = useSelectState(props);
-  const ref = useRef(null);
-  const overlayRef = useRef(null);
+  const buttonRef = useRef(null);
 
   const {
     labelProps,
@@ -90,17 +110,19 @@ export const Select = ({
     menuProps,
     descriptionProps,
     errorMessageProps,
-  } = useSelect(props, state, ref);
+  } = useSelect(props, state, buttonRef);
 
-  const { buttonProps } = useButton(triggerProps, ref);
+  const { buttonProps } = useButton(triggerProps, buttonRef);
   const { focusProps, isFocusVisible } = useFocusRing();
 
   // TODO: Button needs state for styling + open/closed (state.isOpen)
 
+  const overlayRef = useRef(null);
   const { overlayProps: positionProps } = useOverlayPosition({
-    targetRef: ref,
+    targetRef: buttonRef,
     overlayRef,
     isOpen: state.isOpen,
+    placement: 'bottom left',
   });
 
   const styles = useComponentStyles(
@@ -110,6 +132,7 @@ export const Select = ({
   );
   const stateProps = useStateProps({
     error,
+    focusVisible: isFocusVisible,
   });
 
   return (
@@ -129,25 +152,21 @@ export const Select = ({
     >
       <HiddenSelect
         state={state}
-        triggerRef={ref}
+        triggerRef={buttonRef}
         label={props.label}
         name={props.name}
       />
       <Box
         as="button"
         css={styles.button}
-        ref={ref}
+        ref={buttonRef}
         {...mergeProps(buttonProps, focusProps)}
       >
         <span {...valueProps}>
           {state.selectedItem ? state.selectedItem.rendered : props.placeholder}
         </span>
-        <Box
-          __baseCSS={state.isOpen ? {} : { transform: 'rotate(180deg)' }}
-          css={styles.icon}
-        >
-          <ArrowDown size={16} />
-        </Box>
+
+        <Arrows css={styles.icon} />
       </Box>
       <Popover
         open={state.isOpen}
