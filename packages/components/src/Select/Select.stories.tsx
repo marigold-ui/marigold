@@ -17,11 +17,13 @@ export default {
       control: {
         type: 'text',
       },
-      table: {
-        defaultValue: {
-          summary: 'Select an option...',
-        },
+      description: 'Set the placeholder text',
+    },
+    description: {
+      control: {
+        type: 'text',
       },
+      description: 'Set the field description',
     },
     disabled: {
       control: {
