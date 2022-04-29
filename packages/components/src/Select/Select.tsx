@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { useButton } from '@react-aria/button';
-import { useFocusRing } from '@react-aria/focus';
+import { FocusScope, useFocusRing } from '@react-aria/focus';
 import { useMessageFormatter } from '@react-aria/i18n';
-import { useOverlayPosition } from '@react-aria/overlays';
+import { DismissButton, useOverlayPosition } from '@react-aria/overlays';
 import { HiddenSelect, useSelect } from '@react-aria/select';
 import { useSelectState } from '@react-stately/select';
 import { Item, Section } from '@react-stately/collections';
@@ -101,7 +101,7 @@ export const Select = ({
   };
 
   const state = useSelectState(props);
-  const buttonRef = useRef(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const {
     labelProps,
@@ -133,6 +133,7 @@ export const Select = ({
   const stateProps = useStateProps({
     error,
     focusVisible: isFocusVisible,
+    expanded: state.isOpen,
   });
 
   return (
@@ -158,25 +159,43 @@ export const Select = ({
       />
       <Box
         as="button"
+        __baseCSS={{
+          display: 'flex',
+          position: 'relative',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%',
+        }}
         css={styles.button}
         ref={buttonRef}
         {...mergeProps(buttonProps, focusProps)}
+        {...stateProps}
       >
-        <span {...valueProps}>
+        <Box
+          css={{
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+          }}
+          {...valueProps}
+        >
           {state.selectedItem ? state.selectedItem.rendered : props.placeholder}
-        </span>
-
+        </Box>
         <Arrows css={styles.icon} />
       </Box>
       <Popover
         open={state.isOpen}
         onClose={state.close}
-        dismissable={true}
-        shouldCloseOnBlur={true}
+        dismissable={false}
+        shouldCloseOnBlur={false}
+        minWidth={buttonRef.current ? buttonRef.current.offsetWidth : undefined}
         ref={overlayRef}
         {...positionProps}
       >
-        <ListBox state={state} {...menuProps} />
+        <FocusScope restoreFocus>
+          <DismissButton onDismiss={state.close} />
+          <ListBox state={state} {...menuProps} />
+          <DismissButton onDismiss={state.close} />
+        </FocusScope>
       </Popover>
     </FieldBase>
   );

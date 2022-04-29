@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Select } from './Select';
+import { Container } from '../Container';
 
 export default {
   title: 'Components/Select',
@@ -55,7 +56,7 @@ export default {
 export const Basic: ComponentStory<typeof Select> = args => {
   const [selected, setSelected] = useState<string | number>('');
   return (
-    <>
+    <Container size="small">
       <Select {...args} onSelectionChange={setSelected}>
         <Select.Option key="Harry Potter">Harry Potter</Select.Option>
         <Select.Option key="Lord of the Rings">Lord of the Rings</Select.Option>
@@ -64,7 +65,7 @@ export const Basic: ComponentStory<typeof Select> = args => {
       </Select>
       <hr />
       <pre>selected: {selected}</pre>
-    </>
+    </Container>
   );
 };
 

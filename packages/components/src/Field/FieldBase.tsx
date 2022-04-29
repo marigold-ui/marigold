@@ -1,7 +1,6 @@
 import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
-import { StateAttrProps } from '@marigold/system';
+import { Box, StateAttrProps } from '@marigold/system';
 
-import { Stack } from '../Stack';
 import { Label, LabelProps } from './Label';
 import { HelpText } from './HelpText';
 
@@ -42,7 +41,7 @@ export const FieldBase = ({
 }: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
   return (
-    <Stack>
+    <Box css={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
       {label && (
         <Label
           required={required}
@@ -68,6 +67,6 @@ export const FieldBase = ({
           errorMessageProps={errorMessageProps}
         />
       )}
-    </Stack>
+    </Box>
   );
 };

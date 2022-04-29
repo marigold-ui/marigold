@@ -6,6 +6,7 @@ export const Input: Theme['components']['Input'] = {
     color: 'text',
     lineHeight: 'large',
 
+    bg: 'gray00',
     border: '1px solid',
     borderColor: 'gray40',
     borderRadius: 'small',

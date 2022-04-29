@@ -14,6 +14,12 @@ export interface PopoverProps
   open?: boolean;
   dismissable?: boolean;
   keyboardDismissDisabled?: boolean;
+
+  /**
+   * Adjust size of the popover. This is used to make the popover
+   * at least the same width as its anchor element.
+   */
+  minWidth?: number | string;
 }
 
 export const Popover = forwardRef(
@@ -24,6 +30,7 @@ export const Popover = forwardRef(
       dismissable,
       keyboardDismissDisabled,
       shouldCloseOnBlur,
+      minWidth = 0,
       ...props
     }: PopoverProps,
     ref
@@ -41,17 +48,23 @@ export const Popover = forwardRef(
       },
       popoverRef as any
     );
+
     /**
      * Hide content outside the container from screen readers.
      */
     const { modalProps } = useModal({});
+
+    /**
+     * Fit size to anchor element if children contents is smaller.
+     */
+    const style = { minWidth };
 
     return (
       <Overlay open={open}>
         <Box
           ref={popoverRef}
           role="presentation"
-          {...mergeProps(props, overlayProps, modalProps)}
+          {...mergeProps(props, overlayProps, modalProps, style)}
         >
           {children}
         </Box>

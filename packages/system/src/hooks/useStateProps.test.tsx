@@ -18,6 +18,7 @@ test('returns state attributes', () => {
       indeterminate: true,
       error: true,
       selected: true,
+      expanded: true,
     })
   );
 
