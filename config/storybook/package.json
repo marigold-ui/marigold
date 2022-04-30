@@ -19,7 +19,7 @@
     "directory": "config/prettier"
   },
   "dependencies": {
-    "@babel/core": "7.17.9",
+    "@babel/core": "7.17.10",
     "@marigold/components": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
@@ -30,7 +30,7 @@
     "@storybook/addon-interactions": "6.4.22",
     "@storybook/jest": "0.0.10",
     "@storybook/testing-library": "0.0.9",
-    "babel-loader": "8.2.4",
+    "babel-loader": "8.2.5",
     "find-up": "5.0.0",
     "storybook-addon-themes": "6.1.0",
     "tsconfig-paths-webpack-plugin": "3.5.2"
