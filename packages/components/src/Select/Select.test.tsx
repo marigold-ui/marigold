@@ -79,14 +79,14 @@ const theme = {
       },
       variant: {
         violet: {
-          base: {
+          button: {
             color: 'violet',
           },
         },
       },
       size: {
         medium: {
-          base: {
+          button: {
             fontSize: 'medium-1',
           },
         },
@@ -443,8 +443,67 @@ test('supports default value via "defaultSelectedKey"', () => {
   expect(three).toHaveStyle(`background: ${theme.colors.lime}`);
 });
 
-// error (aria-invalid) .. if we can find the <select>
-// supports sections
+test('supports sections', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select">
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+          <Select.Section title="Section 2">
+            <Select.Option key="three">three</Select.Option>
+            <Select.Option key="four">four</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  fireEvent.click(button);
+
+  const options = screen.getByRole('listbox');
+  const sectionOne = within(options).getByText('Section 1');
+  const sectionTwo = within(options).getByText('Section 2');
+
+  expect(sectionOne).toBeVisible();
+  expect(sectionTwo).toBeVisible();
+});
+
+test.only('supports styling with variants and sizes from theme', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select
+          label="Label"
+          data-testid="select"
+          variant="violet"
+          size="medium"
+        >
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  expect(button).toHaveStyle(`color: ${theme.colors.violet}`);
+  expect(button).toHaveStyle(`font-size: ${theme.fontSizes['medium-1']}px`);
+  fireEvent.click(button);
+
+  const options = screen.getByRole('listbox');
+
+  const one = within(options).getByText('one');
+  expect(one).toHaveStyle(`color: ${theme.colors.violet}`);
+
+  const section = within(options).getByText('Section 1');
+  expect(section).toHaveStyle(`font-size: ${theme.fontSizes['medium-1']}px`);
+});
 
 // styling + variant + size
 // button style + hover, focus, expanded, error, disabled
