@@ -262,11 +262,10 @@ test('option list closes when button is clicked', () => {
 });
 
 test('supports to select an option and closes listbox afterwards', () => {
-  const spy = jest.fn();
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" onSelectionChange={spy}>
+        <Select label="Label" data-testid="select">
           <Select.Option key="one">one</Select.Option>
           <Select.Option key="two">two</Select.Option>
           <Select.Option key="three">three</Select.Option>
@@ -284,18 +283,15 @@ test('supports to select an option and closes listbox afterwards', () => {
   const two = within(options).getByText('two');
   fireEvent.click(two);
 
-  expect(spy).toHaveBeenCalledWith('two');
-
   expect(options).not.toBeVisible();
   expect(button).toHaveAttribute('aria-expanded', 'false');
 });
 
 test('selected option is displayed in button', () => {
-  const spy = jest.fn();
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" onSelectionChange={spy}>
+        <Select label="Label" data-testid="select">
           <Select.Option key="one">one</Select.Option>
           <Select.Option key="two">two</Select.Option>
           <Select.Option key="three">three</Select.Option>
@@ -312,8 +308,6 @@ test('selected option is displayed in button', () => {
 
   const one = within(options).getByText('one');
   fireEvent.click(one);
-
-  expect(spy).toHaveBeenCalledWith('one');
 
   expect(button).toHaveAttribute('aria-expanded', 'false');
   expect(button).toHaveTextContent(/one/);
@@ -340,7 +334,7 @@ test('dismiss when clicking escape', () => {
   userEvent.type(button, '{esc}');
 });
 
-test.only('disable select', () => {
+test('allows to disable select', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
@@ -359,10 +353,96 @@ test.only('disable select', () => {
   expect(button).toHaveAttribute('aria-expanded', 'false');
 });
 
-// controlled (onSelectionChange)
-// uncontrolled -> supports "defaultSelectedKey"
-// supports required
-// disabled options (disabledKeys)
+test('allows to disable options', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" disabledKeys={['two']}>
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  fireEvent.click(button);
+
+  const options = screen.getByRole('listbox');
+  const two = within(options).getByText('two');
+
+  expect(two).toHaveAttribute('aria-disabled', 'true');
+});
+
+test('allows select to be required', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" required>
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const label = screen.getAllByText('Label')[0].parentElement!;
+  const requiredIcon = within(label).getByRole('presentation');
+  expect(requiredIcon).toBeInTheDocument();
+});
+
+test('controlled', () => {
+  const spy = jest.fn();
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" onSelectionChange={spy}>
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  fireEvent.click(button);
+
+  const options = screen.getByRole('listbox');
+  const three = within(options).getByText('three');
+  fireEvent.click(three);
+
+  expect(spy).toHaveBeenCalledTimes(1);
+  expect(spy).toHaveBeenCalledWith('three');
+});
+
+test('supports default value via "defaultSelectedKey"', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" defaultSelectedKey="three">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  expect(button).toHaveTextContent(/three/);
+
+  fireEvent.click(button);
+
+  const options = screen.getByRole('listbox');
+  const three = within(options).getByText('three');
+
+  expect(three).toHaveStyle(`background: ${theme.colors.lime}`);
+});
+
 // error (aria-invalid) .. if we can find the <select>
 // supports sections
 
