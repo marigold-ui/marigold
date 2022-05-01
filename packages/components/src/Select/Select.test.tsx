@@ -1,6 +1,6 @@
 import React from 'react';
 import { OverlayProvider } from '@react-aria/overlays';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { ThemeProvider } from '@marigold/system';
@@ -261,7 +261,7 @@ test('option list closes when button is clicked', () => {
   expect(options).not.toBeVisible();
 });
 
-test('supports to select an option and closes listbox', () => {
+test('supports to select an option and closes listbox afterwards', () => {
   const spy = jest.fn();
   render(
     <OverlayProvider>
@@ -281,11 +281,12 @@ test('supports to select an option and closes listbox', () => {
   const options = screen.getByRole('listbox');
   expect(options).toBeVisible();
 
-  console.log(options.children[1]);
-  fireEvent.click(options.children[1]);
+  const two = within(options).getByText('two');
+  fireEvent.click(two);
 
   expect(spy).toHaveBeenCalledWith('two');
 
+  expect(options).not.toBeVisible();
   expect(button).toHaveAttribute('aria-expanded', 'false');
 });
 
@@ -309,13 +310,13 @@ test('selected option is displayed in button', () => {
   const options = screen.getByRole('listbox');
   expect(options).toBeVisible();
 
-  fireEvent.click(options.children[1]);
+  const one = within(options).getByText('one');
+  fireEvent.click(one);
 
-  expect(spy).toHaveBeenCalledWith('two');
+  expect(spy).toHaveBeenCalledWith('one');
 
   expect(button).toHaveAttribute('aria-expanded', 'false');
-
-  expect(button).toHaveTextContent(/two/);
+  expect(button).toHaveTextContent(/one/);
 });
 
 test('dismiss when clicking escape', () => {
@@ -339,7 +340,7 @@ test('dismiss when clicking escape', () => {
   userEvent.type(button, '{esc}');
 });
 
-test('disable select', () => {
+test.only('disable select', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
@@ -352,8 +353,8 @@ test('disable select', () => {
     </OverlayProvider>
   );
   const button = screen.getByTestId('select');
-  expect(button).toHaveAttribute('disabled');
-  console.log(button);
+  expect(button).toBeDisabled();
+
   fireEvent.click(button);
   expect(button).toHaveAttribute('aria-expanded', 'false');
 });

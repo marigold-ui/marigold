@@ -112,7 +112,10 @@ export const Select = ({
     errorMessageProps,
   } = useSelect(props, state, buttonRef);
 
-  const { buttonProps } = useButton(triggerProps, buttonRef);
+  const { buttonProps } = useButton(
+    { isDisabled: disabled, ...triggerProps },
+    buttonRef
+  );
   const { focusProps, isFocusVisible } = useFocusRing();
 
   const overlayRef = useRef(null);
@@ -155,6 +158,7 @@ export const Select = ({
         triggerRef={buttonRef}
         label={props.label}
         name={props.name}
+        isDisabled={disabled}
       />
       <Box
         as="button"
