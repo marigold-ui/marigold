@@ -137,7 +137,7 @@ export const Select = ({
     focusVisible: isFocusVisible,
     expanded: state.isOpen,
   });
-  console.log(styles.button);
+
   return (
     <FieldBase
       variant={variant}

@@ -472,7 +472,7 @@ test('supports sections', () => {
   expect(sectionTwo).toBeVisible();
 });
 
-test.only('supports styling with variants and sizes from theme', () => {
+test('supports styling with variants and sizes from theme', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
