@@ -10,7 +10,7 @@ import { Version } from './Version';
 export const Layout: React.FC = ({ children }) => {
   return (
     <>
-      <Columns columns={[2, 10]} space="xsmall" collapseAt="60em">
+      <Columns columns={[2, 10]} space="medium" collapseAt="60em">
         <Stack space="small">
           <Box p="medium">
             <Link to="/">
