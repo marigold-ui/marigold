@@ -11,7 +11,6 @@ export const ThemeSelect = () => {
       selectedKey={current}
       value={current}
       onSelectionChange={current => setTheme(current)}
-      width={160}
       aria-label="theme-select"
     >
       {Object.keys(themes).map(name => (

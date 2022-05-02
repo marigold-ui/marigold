@@ -1,8 +1,7 @@
 import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
-import { StateAttrProps } from '@marigold/system';
+import { Box, StateAttrProps } from '@marigold/system';
 
-import { Stack } from '../Stack';
-import { Label } from './Label';
+import { Label, LabelProps } from './Label';
 import { HelpText } from './HelpText';
 
 // Props
@@ -14,7 +13,7 @@ export interface FieldBaseProps {
   disabled?: boolean;
   required?: boolean;
   label?: ReactNode;
-  labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+  labelProps?: LabelHTMLAttributes<HTMLLabelElement> & Pick<LabelProps, 'as'>;
   description?: ReactNode;
   descriptionProps?: HTMLAttributes<HTMLElement>;
   error?: boolean;
@@ -42,7 +41,7 @@ export const FieldBase = ({
 }: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
   return (
-    <Stack>
+    <Box css={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
       {label && (
         <Label
           required={required}
@@ -68,6 +67,6 @@ export const FieldBase = ({
           errorMessageProps={errorMessageProps}
         />
       )}
-    </Stack>
+    </Box>
   );
 };

@@ -12,6 +12,7 @@ const pseudos = {
   '&:indeterminate':
     '&:indeterminate, &[aria-checked=mixed], &[data-indeterminate]',
   '&:error': '&:invalid, &[aria-invalid=true], &[data-error]',
+  '&:expanded': '&[aria-expanded=true], &[data-expanded]',
 } as const;
 
 /**
