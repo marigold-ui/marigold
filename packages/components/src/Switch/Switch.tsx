@@ -7,37 +7,41 @@ import { ToggleProps } from '@react-types/checkbox';
 import { AriaSwitchProps } from '@react-types/switch';
 
 import { ComponentProps } from '@marigold/types';
-import { conditional } from '@marigold/system';
+import {
+  CSSObject,
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+  useStateProps,
+} from '@marigold/system';
 
 import { Box } from '../Box';
 import { Label } from '../Label';
 
 // Theme Extension
 // ---------------
-export interface SwitchThemeExtension<Value> {
-  switch?: {
-    [key: string]: Value;
-  };
-}
+export interface SwitchThemeExtension
+  extends ThemeExtensionsWithParts<'Switch', ['switch', 'label']> {}
 
 // Props
 // ---------------
 export type SwitchProps = {
   variant?: string;
-  labelVariant?: string;
   disabled?: boolean;
+  size?: string;
+  css?: CSSObject;
 } & AriaSwitchProps &
   ToggleProps &
   ComponentProps<'input'>;
 
 // Component
 // ---------------
-export const Switch: React.FC<SwitchProps> = ({
-  variant = '',
-  labelVariant = 'above',
+export const Switch = ({
+  variant,
+  size,
   disabled,
+  css,
   ...props
-}) => {
+}: SwitchProps) => {
   const state = useToggleState(props);
   const ref = useRef<HTMLInputElement>();
   const { inputProps } = useSwitch(
@@ -46,14 +50,22 @@ export const Switch: React.FC<SwitchProps> = ({
     ref as RefObject<HTMLInputElement>
   );
   const { focusProps } = useFocusRing();
-
+  const stateProps = useStateProps({
+    checked: state.isSelected,
+    disabled: disabled,
+  });
+  const styles = useComponentStyles(
+    'Switch',
+    { variant, size },
+    { parts: ['switch', 'label'] }
+  );
   return (
     <Box
       as={Label}
       __baseCSS={{
         userSelect: 'none',
       }}
-      variant={labelVariant}
+      css={styles.label}
     >
       {props.children}
       <VisuallyHidden>
@@ -66,11 +78,13 @@ export const Switch: React.FC<SwitchProps> = ({
       </VisuallyHidden>
       <Box
         as="svg"
+        {...stateProps}
         __baseCSS={{
           cursor: disabled ? 'not-allowed' : 'pointer',
           width: 56,
           height: 32,
         }}
+        css={styles.switch}
         aria-hidden="true"
       >
         <Box
@@ -82,10 +96,6 @@ export const Switch: React.FC<SwitchProps> = ({
             width: 48,
             height: 24,
           }}
-          variant={conditional(`switch.${variant}`, {
-            checked: state.isSelected,
-            disabled: disabled,
-          })}
         />
         <Box
           as="circle"

@@ -27,6 +27,7 @@ import type { MenuThemeExtension } from './Menu';
 import type { MessageThemeExtension } from './Message';
 import type { RadioThemeExtension, RadioGroupThemeExtension } from './Radio';
 import type { SliderThemeExtension } from './Slider';
+import type { SwitchThemeExtension } from './Switch';
 import type { TableThemeExtension } from './Table';
 import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
@@ -34,7 +35,7 @@ import type { TextAreaThemeExtension } from './TextArea';
 // Old Styling Solution
 import { type LabelThemeExtension as LegacyLabelThemeExtension } from './Label';
 import { type SelectThemeExtension } from './Select';
-import { type SwitchThemeExtension } from './Switch';
+
 import { type TooltipThemeExtension } from './Tooltip';
 import { type ValidationMessageThemeExtension } from './ValidationMessage';
 
@@ -53,13 +54,13 @@ interface ComponentStyles
     ImageThemeExtension,
     InputThemeExtension,
     LabelThemeExtension,
-    LabelThemeExtension,
     LinkThemeExtension,
     MenuThemeExtension,
     MessageThemeExtension,
     RadioThemeExtension,
     RadioGroupThemeExtension,
     SliderThemeExtension,
+    SwitchThemeExtension,
     TableThemeExtension,
     TextThemeExtension,
     TextAreaThemeExtension {}
@@ -69,7 +70,6 @@ export interface Theme
     RootThemeExtension<CSSObject>,
     LegacyLabelThemeExtension<CSSObject>,
     SelectThemeExtension<CSSObject>,
-    SwitchThemeExtension<CSSObject>,
     TooltipThemeExtension<CSSObject>,
     ValidationMessageThemeExtension<CSSObject> {
   components: ComponentStyles;
