@@ -36,7 +36,6 @@ export const ListBoxOption = ({ item, state }: ListBoxOptionProps) => {
   return (
     <Box as="li" ref={ref} css={styles.option} {...optionProps} {...stateProps}>
       {item.rendered}
-      {isSelected}
     </Box>
   );
 };

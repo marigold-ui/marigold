@@ -28,6 +28,7 @@ test('returns state attributes', () => {
       "data-checked": "",
       "data-disabled": "",
       "data-error": "",
+      "data-expanded": "",
       "data-focus": "",
       "data-focus-visible": "",
       "data-hover": "",

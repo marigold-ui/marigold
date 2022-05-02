@@ -10,7 +10,7 @@ import { Select } from './Select';
 const theme = {
   colors: {
     black: '#212529',
-    grey: '#868e96',
+    gray: '#868e96',
     blue: '#339af0',
     lime: '#82c91e',
     violet: '#6741d9',
@@ -505,6 +505,127 @@ test('supports styling with variants and sizes from theme', () => {
   expect(section).toHaveStyle(`font-size: ${theme.fontSizes['medium-1']}px`);
 });
 
-// styling + variant + size
-// button style + hover, focus, expanded, error, disabled
-// option style + hover, focus, selected
+test('supports focus styling for button', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select">
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  userEvent.tab();
+
+  expect(button).toHaveStyle(`border-color: ${theme.colors.blue}`);
+});
+
+test('supports styling when select is open', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select">
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  userEvent.tab();
+  userEvent.keyboard('[ArrowDown]');
+
+  expect(button).toHaveStyle(`border-color: ${theme.colors.gray}`);
+});
+
+test('supports styling error state', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" error>
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  expect(button).toHaveStyle(`border-color: ${theme.colors.error}`);
+});
+
+test('supports styling disabled state', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" disabled>
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  expect(button).toHaveStyle(`color: ${theme.colors.disabled}`);
+});
+
+test('supports styling selected option', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" defaultSelectedKey="one">
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  fireEvent.click(button);
+
+  const options = screen.getByRole('listbox');
+  const one = within(options).getByText('one');
+
+  expect(one).toHaveStyle(`background: ${theme.colors.lime}`);
+});
+
+test('supports styling disabled option', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" disabledKeys={['two']}>
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  fireEvent.click(button);
+
+  const options = screen.getByRole('listbox');
+  const two = within(options).getByText('two');
+
+  expect(two).toHaveStyle(`color: ${theme.colors.disabled}`);
+});
+
+// FIXME: We currently have no easy way to test the focus + hover styling
