@@ -1,20 +1,6 @@
 import { colors } from './colors';
 
 /**
- * Button component
- */
-const button = {
-  root: {
-    position: 'relative',
-    fontFamily: 'body',
-    fontWeight: 'body',
-    border: 'none',
-    borderRadius: 'small',
-    display: 'inline-flex',
-  },
-} as const;
-
-/**
  * Slider component
  */
 const sliderThumb = {

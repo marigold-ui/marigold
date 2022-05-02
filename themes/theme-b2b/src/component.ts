@@ -1,20 +1,3 @@
-import { colors } from './colors';
-
-/**
- * Button component
- */
-const button = {
-  root: {
-    position: 'relative',
-    fontFamily: 'body',
-    fontSize: 'xsmall',
-    fontWeight: 'body',
-    border: 'none',
-    borderRadius: 'small',
-    display: 'inline-flex',
-  },
-} as const;
-
 /**
  * Slider component
  */
@@ -113,20 +96,6 @@ const slider = {
 } as const;
 
 export const component = {
-  button: {
-    __default: {
-      p: 0,
-      border: 'none',
-    },
-    large: {
-      lineHeight: 'xxlarge',
-      paddingX: 'xlarge',
-    },
-    small: {
-      lineHeight: 'large',
-      paddingX: 'medium',
-    },
-  },
   dialog: {
     __default: {
       bg: 'background',
