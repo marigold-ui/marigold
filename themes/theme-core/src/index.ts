@@ -36,7 +36,7 @@ const theme: Theme = {
     secondary: colors.gray70,
     disabled: colors.gray40,
     error: '#f33',
-    warning: '#d80',
+    warning: colors.yellow70,
     info: '#008',
     success: '#080',
   },

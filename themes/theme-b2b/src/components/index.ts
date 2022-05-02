@@ -11,6 +11,7 @@ export * from './Input.style';
 export * from './Label.style';
 export * from './Link.style';
 export * from './Menu.style';
+export * from './Message.style';
 export * from './Radio.style';
 export * from './Slider.style';
 export * from './Table.style';

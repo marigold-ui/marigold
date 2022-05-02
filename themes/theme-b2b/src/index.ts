@@ -39,7 +39,7 @@ const theme: any = {
     secondary: colors.gray70,
     disabled: colors.gray40,
     error: colors.red60,
-    warning: colors.orange60,
+    warning: colors.yellow70,
     info: colors.blue70,
     success: colors.green70,
   },
