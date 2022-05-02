@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 import { Message } from './Message';
 
@@ -7,20 +7,59 @@ const theme = {
   colors: {
     primary: 'hotpink',
   },
-  message: {
-    info: {
-      alignItems: 'center',
-    },
-    warning: {
-      alignItems: 'right',
-    },
-    error: {
-      alignItems: 'left',
+  spaces: {
+    small: '10px',
+    medium: '20px',
+  },
+  fonts: {
+    body: 'Oswald',
+  },
+  components: {
+    Message: {
+      base: {
+        container: {
+          color: 'primary',
+        },
+      },
+      variant: {
+        info: {
+          container: {
+            alignItems: 'center',
+          },
+          content: {
+            color: 'black',
+          },
+        },
+        warning: {
+          container: {
+            color: 'orange',
+          },
+          content: {
+            alignItems: 'right',
+          },
+          title: {
+            fontFamily: 'body',
+          },
+        },
+        error: {
+          container: {
+            color: 'red',
+          },
+          content: {
+            alignItems: 'left',
+          },
+        },
+      },
+      size: {
+        small: {
+          p: 'small',
+        },
+      },
     },
   },
 };
 
-test('supports default variant and themeSection', () => {
+test('message container supports base styling and themeSection', () => {
   render(
     <ThemeProvider theme={theme}>
       <Message data-testid="messages" messageTitle="Default">
@@ -28,12 +67,12 @@ test('supports default variant and themeSection', () => {
       </Message>
     </ThemeProvider>
   );
-  const message = screen.getByTestId(/messages/);
 
-  expect(message).toHaveStyle(`align-items: center`);
+  const message = screen.getByTestId(/messages/);
+  expect(message).toHaveStyle(`color: ${theme.colors.primary}`);
 });
 
-test('accepts other variant than default', () => {
+test('accepts a variant with parts and an icon', () => {
   render(
     <ThemeProvider theme={theme}>
       <Message data-testid="messages" messageTitle="info" variant="warning">
@@ -41,22 +80,43 @@ test('accepts other variant than default', () => {
       </Message>
     </ThemeProvider>
   );
-  const message = screen.getByTestId(/messages/);
+  const container = screen.getByTestId('messages');
+  const title = screen.getByText('info');
+  const content = screen.getByText('Danger');
+  const icon = within(container).getByRole(/presentation/);
 
-  expect(message).toHaveStyle(`align-items: right`);
+  expect(container).toHaveStyle(`color: orange`);
+  expect(content).toHaveStyle(`align-items: right`);
+  expect(title).toHaveStyle(`font-family: Oswald`);
+
+  expect(icon).toBeInTheDocument();
 });
 
-test('accepts other third variant than default', () => {
+test('accepts error variant', () => {
   render(
     <ThemeProvider theme={theme}>
       <Message data-testid="messages" messageTitle="error" variant="error">
+        Error
+      </Message>
+    </ThemeProvider>
+  );
+
+  const content = screen.getByText('Error');
+
+  expect(content).toHaveStyle(`alignItems: left`);
+});
+
+test('accepts size', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Message data-testid="messages" messageTitle="error" size="small">
         error
       </Message>
     </ThemeProvider>
   );
   const message = screen.getByTestId(/messages/);
 
-  expect(message).toHaveStyle(`align-items: left`);
+  expect(message).toHaveStyle(`padding: ${theme.spaces.small}px`);
 });
 
 test('renders correct HTML element', () => {
@@ -70,21 +130,4 @@ test('renders correct HTML element', () => {
   const message = screen.getByTestId(/messages/);
 
   expect(message instanceof HTMLDivElement).toBeTruthy();
-});
-
-test('accepts custom styles prop className', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Message
-        className="custom-class-name"
-        data-testid="message"
-        messageTitle="message"
-      >
-        message
-      </Message>
-    </ThemeProvider>
-  );
-  const message = screen.getByTestId(/message/);
-
-  expect(message.className).toMatch('custom-class-name');
 });

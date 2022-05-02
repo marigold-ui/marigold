@@ -8,10 +8,9 @@ export default {
   argTypes: {
     variant: {
       control: {
-        type: 'select',
+        type: 'text',
       },
-      options: ['warning', 'error', 'info'],
-      description: 'Messaging in different colors and icons',
+      description: 'The variants of the message',
     },
     messageTitle: {
       control: {

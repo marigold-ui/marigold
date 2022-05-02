@@ -22,7 +22,6 @@ export interface TableColumnHeaderProps {
   item: Node<object>;
   state: TableState<object>;
   isSelectionColumn?: boolean;
-  align?: 'left' | 'center' | 'right';
   css?: CSSObject;
 }
 
@@ -32,7 +31,6 @@ export const TableColumnHeader = ({
   item: column,
   state,
   isSelectionColumn,
-  align = 'left',
   css,
 }: TableColumnHeaderProps) => {
   const ref = useRef(null);
@@ -57,7 +55,7 @@ export const TableColumnHeader = ({
     <Box
       as="th"
       ref={ref}
-      __baseCSS={{ textAlign: isSelectionColumn ? 'center' : align }}
+      __baseCSS={{ textAlign: isSelectionColumn ? 'center' : 'left' }}
       css={css}
       {...mergeProps(columnHeaderProps, focusProps)}
       {...stateProps}

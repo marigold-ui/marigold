@@ -25,16 +25,16 @@ import type { LabelThemeExtension } from './Field/Label';
 import type { LinkThemeExtension } from './Link';
 import type { ListBoxThemeExtension } from './ListBox';
 import type { MenuThemeExtension } from './Menu';
+import type { MessageThemeExtension } from './Message';
 import type { RadioThemeExtension, RadioGroupThemeExtension } from './Radio';
 import type { SelectThemeExtension } from './Select';
+import type { SliderThemeExtension } from './Slider';
 import type { TableThemeExtension } from './Table';
 import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
 
 // Old Styling Solution
 import { type LabelThemeExtension as LegacyLabelThemeExtension } from './Label';
-import { type MessageThemeExtension } from './Message';
-import { type SliderThemeExtension } from './Slider';
 import { type SwitchThemeExtension } from './Switch';
 import { type TooltipThemeExtension } from './Tooltip';
 import { type ValidationMessageThemeExtension } from './ValidationMessage';
@@ -57,9 +57,11 @@ interface ComponentStyles
     LinkThemeExtension,
     ListBoxThemeExtension,
     MenuThemeExtension,
+    MessageThemeExtension,
     RadioThemeExtension,
     RadioGroupThemeExtension,
     SelectThemeExtension,
+    SliderThemeExtension,
     TableThemeExtension,
     TextThemeExtension,
     TextAreaThemeExtension {}
@@ -68,8 +70,6 @@ export interface Theme
   extends Scales,
     RootThemeExtension<CSSObject>,
     LegacyLabelThemeExtension<CSSObject>,
-    MessageThemeExtension<CSSObject>,
-    SliderThemeExtension<CSSObject>,
     SwitchThemeExtension<CSSObject>,
     TooltipThemeExtension<CSSObject>,
     ValidationMessageThemeExtension<CSSObject> {
