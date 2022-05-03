@@ -24,20 +24,6 @@ export const component = {
       color: 'gray50',
     },
   },
-  switch: {
-    __default: {
-      fill: 'gray20',
-      stroke: 'gray40',
-    },
-    ':checked': {
-      fill: 'primary',
-      stroke: '#311b92',
-    },
-    ':disabled': {
-      fill: 'gray30',
-      stroke: 'gray40',
-    },
-  },
   tooltip: {
     __default: {
       p: 'xsmall',

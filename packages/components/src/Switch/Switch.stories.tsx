@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Switch } from './Switch';
+import { Container } from '../Container';
 
 export default {
   title: 'Components/Switch',
@@ -16,23 +17,19 @@ export default {
         },
       },
     },
-    labelVariant: {
-      control: {
-        type: 'text',
-      },
-      description: 'Switch labelVariant style',
-      table: {
-        defaultValue: {
-          summary: '__default',
-        },
-      },
-    },
     children: {
       control: {
         type: 'text',
       },
       description: 'label',
       defaultValue: 'Default Switch',
+    },
+    size: {
+      control: {
+        type: 'text',
+      },
+      description: 'size',
+      defaultValue: 'Default Size',
     },
     disabled: {
       control: {
@@ -41,9 +38,18 @@ export default {
       description: 'disabled',
       defaultValue: false,
     },
+    checked: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'checked',
+      defaultValue: false,
+    },
   },
 } as Meta;
 
 export const Basic: ComponentStory<typeof Switch> = args => (
-  <Switch {...args} />
+  <Container>
+    <Switch {...args} />
+  </Container>
 );

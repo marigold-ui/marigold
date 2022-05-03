@@ -1,101 +1,144 @@
-import React, { LegacyRef, RefObject, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useFocusRing } from '@react-aria/focus';
 import { useSwitch } from '@react-aria/switch';
-import { VisuallyHidden } from '@react-aria/visually-hidden';
 import { useToggleState } from '@react-stately/toggle';
-import { ToggleProps } from '@react-types/checkbox';
 import { AriaSwitchProps } from '@react-types/switch';
 
 import { ComponentProps } from '@marigold/types';
-import { conditional } from '@marigold/system';
+import {
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+  useStateProps,
+} from '@marigold/system';
 
 import { Box } from '../Box';
-import { Label } from '../Label';
 
 // Theme Extension
 // ---------------
-export interface SwitchThemeExtension<Value> {
-  switch?: {
-    [key: string]: Value;
-  };
-}
+export interface SwitchThemeExtension
+  extends ThemeExtensionsWithParts<
+    'Switch',
+    ['container', 'label', 'track', 'thumb']
+  > {}
 
 // Props
 // ---------------
-export type SwitchProps = {
-  variant?: string;
-  labelVariant?: string;
-  disabled?: boolean;
-} & AriaSwitchProps &
-  ToggleProps &
-  ComponentProps<'input'>;
+export type CustomSwitchProps =
+  | 'size'
+  | 'value'
+  | 'onBlur'
+  | 'onChange'
+  | 'onFocus'
+  | 'onKeyDown'
+  | 'onKeyUp';
 
+export interface SwitchProps
+  extends Omit<AriaSwitchProps, 'isSelected'>,
+    Omit<ComponentProps<'input'>, CustomSwitchProps> {
+  checked?: boolean;
+  variant?: string;
+  size?: string;
+}
 // Component
 // ---------------
-export const Switch: React.FC<SwitchProps> = ({
-  variant = '',
-  labelVariant = 'above',
+export const Switch = ({
+  variant,
+  size,
+  checked,
   disabled,
-  ...props
-}) => {
+  readOnly,
+  defaultChecked,
+  ...rest
+}: SwitchProps) => {
+  const ref = useRef<HTMLInputElement>(null);
+  // Adjust props to the react-aria API
+  const props = {
+    isSelected: checked,
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    defaultSelected: defaultChecked,
+    ...rest,
+  };
+
   const state = useToggleState(props);
-  const ref = useRef<HTMLInputElement>();
-  const { inputProps } = useSwitch(
-    props,
-    state,
-    ref as RefObject<HTMLInputElement>
+  const { inputProps } = useSwitch(props, state, ref);
+  const { isFocusVisible, focusProps } = useFocusRing();
+  const stateProps = useStateProps({
+    checked: state.isSelected,
+    disabled: disabled,
+    readOnly: readOnly,
+    focus: isFocusVisible,
+  });
+
+  const styles = useComponentStyles(
+    'Switch',
+    { variant, size },
+    { parts: ['container', 'label', 'track', 'thumb'] }
   );
-  const { focusProps } = useFocusRing();
 
   return (
     <Box
-      as={Label}
+      as="label"
       __baseCSS={{
-        userSelect: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '1ch',
+        position: 'relative',
       }}
-      variant={labelVariant}
+      css={styles.container}
     >
-      {props.children}
-      <VisuallyHidden>
-        <input
-          {...inputProps}
-          {...focusProps}
-          disabled={disabled}
-          ref={ref as LegacyRef<HTMLInputElement>}
-        />
-      </VisuallyHidden>
       <Box
-        as="svg"
-        __baseCSS={{
-          cursor: disabled ? 'not-allowed' : 'pointer',
-          width: 56,
-          height: 32,
+        as="input"
+        ref={ref}
+        css={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          top: 0,
+          left: 0,
+          zIndex: 1,
+          opacity: 0.0001,
+          cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
         }}
-        aria-hidden="true"
+        {...inputProps}
+        {...focusProps}
+      />
+      {props.children && <Box css={styles.label}>{props.children}</Box>}
+      <Box
+        __baseCSS={{
+          position: 'relative',
+          width: 48,
+          height: 24,
+          bg: '#dee2e6',
+          borderRadius: 20,
+        }}
+        css={styles.track}
+        {...stateProps}
       >
         <Box
-          as="rect"
           __baseCSS={{
-            x: 4,
-            y: 4,
-            rx: 12,
-            width: 48,
-            height: 24,
+            display: 'block',
+            position: 'absolute',
+            top: 1,
+            left: 0,
+
+            willChange: 'transform',
+            transform: 'translateX(1px)',
+            transition: 'all 0.1s cubic-bezier(.7, 0, .3, 1)',
+
+            height: 22,
+            width: 22,
+
+            borderRadius: 9999,
+            bg: '#fff',
+
+            '&:checked': {
+              transform: 'translateX(calc(47px - 100%))',
+            },
           }}
-          variant={conditional(`switch.${variant}`, {
-            checked: state.isSelected,
-            disabled: disabled,
-          })}
-        />
-        <Box
-          as="circle"
-          __baseCSS={{
-            boxShadow: '1px 1px 4px rgba(0, 0, 0, 0.25)',
-            cx: state.isSelected ? 40 : 16,
-            cy: 16,
-            r: 11,
-            fill: disabled ? 'gray20' : 'gray00',
-          }}
+          css={styles.thumb}
+          {...stateProps}
         />
       </Box>
     </Box>
