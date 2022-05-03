@@ -48,21 +48,20 @@ export const Switch = ({
   disabled,
   readOnly,
   defaultChecked,
-  ...props
+  ...rest
 }: SwitchProps) => {
-  const state = useToggleState(props);
   const ref = useRef<HTMLInputElement>(null);
-  const { inputProps } = useSwitch(
-    {
-      isSelected: checked,
-      isDisabled: disabled,
-      isReadOnly: readOnly,
-      defaultSelected: defaultChecked,
-      ...props,
-    },
-    state,
-    ref
-  );
+  // Adjust props to the react-aria API
+  const props = {
+    isSelected: checked,
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    defaultSelected: defaultChecked,
+    ...rest,
+  };
+
+  const state = useToggleState(props);
+  const { inputProps } = useSwitch(props, state, ref);
   const { isFocusVisible, focusProps } = useFocusRing();
   const stateProps = useStateProps({
     checked: state.isSelected,
@@ -70,11 +69,13 @@ export const Switch = ({
     readOnly: readOnly,
     focus: isFocusVisible,
   });
+
   const styles = useComponentStyles(
     'Switch',
     { variant, size },
     { parts: ['container', 'label', 'track', 'thumb'] }
   );
+
   return (
     <Box
       as="label"

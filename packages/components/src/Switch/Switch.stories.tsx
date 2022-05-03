@@ -42,7 +42,7 @@ export default {
 } as Meta;
 
 export const Basic: ComponentStory<typeof Switch> = args => (
-  <Container size="large">
+  <Container>
     <Switch {...args} />
   </Container>
 );
