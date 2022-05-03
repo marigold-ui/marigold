@@ -27,24 +27,29 @@ import { Switch } from '@marigold/components';
 
 ## Props
 
-| Property                  | Type      | Default     |
-| :------------------------ | :-------- | :---------- |
-| `variant` (optional)      | `string`  | `__default` |
-| `labelVariant` (optional) | `string`  | `above`     |
-| `disabled` (optional)     | `boolean` | `false`     |
+| Property              | Type      | Default |
+| :-------------------- | :-------- | :------ |
+| `variant` (optional)  | `string`  | ``      |
+| `disabled` (optional) | `boolean` | `false` |
+| `checked` (optional)  | `boolean` | `false` |
+| `size` (optional)     | `string`  | ``      |
 
 ## Examples
 
 ### Default
 
 ```tsx expandCode
-<Switch>Default Switch</Switch>
+<Container>
+  <Switch>Default Switch</Switch>
+</Container>
 ```
 
 ### Active
 
 ```tsx
-<Switch defaultSelected>Active Switch</Switch>
+<Container>
+  <Switch defaultSelected>Active Switch</Switch>
+</Container>
 ```
 
 ### Disabled
@@ -52,7 +57,9 @@ import { Switch } from '@marigold/components';
 In this mode the user can not change the status of the switch.
 
 ```tsx
-<Switch disabled>Disabled Switch</Switch>
+<Container>
+  <Switch disabled>Disabled Switch</Switch>
+</Container>
 ```
 
 ### Disabled (active)
@@ -60,9 +67,11 @@ In this mode the user can not change the status of the switch.
 This mode can be used when an option is or was already active and there is a variable that does not allow the user switch to be moved from its "on" mode.
 
 ```tsx
-<Switch defaultSelected disabled>
-  Disabled active Switch
-</Switch>
+<Container>
+  <Switch defaultSelected disabled>
+    Disabled active Switch
+  </Switch>
+</Container>
 ```
 
 ## Dos & Don'ts
