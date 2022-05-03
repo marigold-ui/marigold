@@ -1,21 +1,46 @@
 import type { Theme } from '@marigold/components';
+import { colors } from '../colors';
 
 export const Switch: Theme['components']['Switch'] = {
   base: {
-    label: {
-      fontSize: 'xxsmall',
-      color: 'text',
-    },
-    switch: {
-      fill: 'gray20',
-      stroke: 'gray40',
+    track: {
+      bg: 'gray20',
+      boxShadow: `inset 0 0 0 1px ${colors.gray40}`,
+
       '&:checked': {
-        fill: 'primary',
-        stroke: 'orange80',
+        bg: 'primary',
+        boxShadow: `inset 0 0 0 1px ${colors.orange80}`,
       },
       '&:disabled': {
-        fill: 'gray30',
-        stroke: 'gray40',
+        opacity: 0.5, // not in spec, but disabled is easier recognizable
+        bg: 'gray30',
+        boxShadow: `inset 0 0 0 1px ${colors.gray40}`,
+      },
+    },
+    thumb: {
+      boxShadow: '1px 1px 4px rgba(0, 0, 0, 0.25)',
+
+      '&:disabled': {
+        bg: 'gray20',
+      },
+    },
+  },
+  size: {
+    large: {
+      track: {
+        width: 96,
+        height: 48,
+
+        borderRadius: 40,
+      },
+      thumb: {
+        top: 2,
+        width: 44,
+        height: 44,
+
+        '&:checked': {
+          transform: 'translateX(calc(95px - 44px))',
+        },
       },
     },
   },
