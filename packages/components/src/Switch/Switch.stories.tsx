@@ -38,6 +38,13 @@ export default {
       description: 'disabled',
       defaultValue: false,
     },
+    checked: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'checked',
+      defaultValue: false,
+    },
   },
 } as Meta;
 
