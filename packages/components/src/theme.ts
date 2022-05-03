@@ -36,8 +36,6 @@ import type { TextAreaThemeExtension } from './TextArea';
 
 // Old Styling Solution
 import { type LabelThemeExtension as LegacyLabelThemeExtension } from './Label';
-import { type SelectThemeExtension } from './Select';
-import { type SwitchThemeExtension } from './Switch';
 import { type TooltipThemeExtension } from './Tooltip';
 import { type ValidationMessageThemeExtension } from './ValidationMessage';
 
