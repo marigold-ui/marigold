@@ -17,23 +17,19 @@ export default {
         },
       },
     },
-    labelVariant: {
-      control: {
-        type: 'text',
-      },
-      description: 'Switch labelVariant style',
-      table: {
-        defaultValue: {
-          summary: '__default',
-        },
-      },
-    },
     children: {
       control: {
         type: 'text',
       },
       description: 'label',
       defaultValue: 'Default Switch',
+    },
+    size: {
+      control: {
+        type: 'text',
+      },
+      description: 'size',
+      defaultValue: 'Default Size',
     },
     disabled: {
       control: {
