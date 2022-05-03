@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Switch } from './Switch';
+import { Container } from '../Container';
 
 export default {
   title: 'Components/Switch',
@@ -45,5 +46,7 @@ export default {
 } as Meta;
 
 export const Basic: ComponentStory<typeof Switch> = args => (
-  <Switch {...args} />
+  <Container size="large">
+    <Switch {...args} />
+  </Container>
 );
