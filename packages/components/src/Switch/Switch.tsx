@@ -63,10 +63,12 @@ export const Switch = ({
     state,
     ref
   );
-  const { focusProps } = useFocusRing();
+  const { isFocusVisible, focusProps } = useFocusRing();
   const stateProps = useStateProps({
     checked: state.isSelected,
     disabled: disabled,
+    readOnly: readOnly,
+    focus: isFocusVisible,
   });
   const styles = useComponentStyles(
     'Switch',
