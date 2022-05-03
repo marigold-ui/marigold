@@ -1,350 +1,631 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { OverlayProvider } from '@react-aria/overlays';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { Item, MarigoldProvider, Section } from '..';
+import { ThemeProvider } from '@marigold/system';
+
 import { Select } from './Select';
 
 const theme = {
   colors: {
-    red: 'red',
+    black: '#212529',
+    gray: '#868e96',
+    blue: '#339af0',
+    lime: '#82c91e',
+    violet: '#6741d9',
+    error: '#c92a2a',
+    disabled: '#ced4da',
   },
-  fonts: {
-    body: 'Inter',
+  fontSizes: {
+    'small-1': 14,
+    'medium-1': 18,
   },
-  button: {
-    select: {
-      fontFamily: 'body',
-      errorOpened: {
-        color: 'red',
+  components: {
+    Label: {
+      base: {
+        color: 'black',
+      },
+      variant: {
+        lime: {
+          color: 'lime',
+        },
+      },
+      size: {
+        small: {
+          fontSize: 'small-1',
+        },
       },
     },
-  },
-  label: {
-    above: {
-      fontSize: '8px',
+    HelpText: {
+      base: {
+        color: 'black',
+      },
+      variant: {
+        lime: {
+          container: {
+            color: 'lime',
+          },
+        },
+      },
+      size: {
+        small: {
+          container: {
+            fontSize: 'small-1',
+          },
+        },
+      },
     },
-    inline: {
-      fontSize: '14px',
+    Select: {
+      base: {
+        button: {
+          color: 'black',
+          '&:hover': {
+            borderColor: 'lime',
+          },
+          '&:disabled': {
+            color: 'disabled',
+          },
+          '&:focus-visible': {
+            borderColor: 'blue',
+          },
+          '&:expanded': {
+            borderColor: 'gray',
+          },
+          '&:error': {
+            borderColor: 'error',
+          },
+        },
+      },
+      variant: {
+        violet: {
+          button: {
+            color: 'violet',
+          },
+        },
+      },
+      size: {
+        medium: {
+          button: {
+            fontSize: 'medium-1',
+          },
+        },
+      },
+    },
+    ListBox: {
+      base: {
+        option: {
+          color: 'black',
+          '&:focus': {
+            bg: 'blue',
+          },
+          '&:selected': {
+            bg: 'lime',
+          },
+          '&:disabled': {
+            color: 'disabled',
+          },
+        },
+        sectionTitle: {
+          fontSize: 'small-1',
+        },
+      },
+      variant: {
+        violet: {
+          option: {
+            color: 'violet',
+          },
+        },
+      },
+      size: {
+        medium: {
+          sectionTitle: {
+            fontSize: 'medium-1',
+          },
+        },
+      },
     },
   },
 };
 
-test('supports button select variant', () => {
+test('renders a field (label, helptext, select)', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" data-testid="selectId">
-        <Item>1</Item>
-      </Select>
-    </MarigoldProvider>
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select
+          label="Label"
+          description="Description"
+          errorMessage="ERRR!"
+          data-testid="select"
+        >
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
   );
-  const select = screen.getByTestId('selectId');
-  expect(select).toBeDefined();
-  expect(select).toHaveStyle(`font-family: Inter`);
+
+  // We need to query all, since there is also a label in the hidden select
+  const label = screen.queryAllByText('Label')[0];
+  expect(label).toBeInTheDocument();
+
+  const description = screen.queryByText('Description');
+  expect(description).toBeInTheDocument();
+
+  const errorMessage = screen.queryByText('ERRR!');
+  expect(errorMessage).not.toBeInTheDocument();
+
+  const button = screen.queryByTestId('select');
+  expect(button).toBeInTheDocument();
 });
 
-test('supports default labelVariant', () => {
+test('visible label is not a <label> element (for a11y)', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" data-testid="selectId">
-        <Item>1</Item>
-      </Select>
-    </MarigoldProvider>
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
   );
-  const label = screen.getAllByText('MyLabel');
-  expect(label[0]).toHaveStyle(`font-size: 8px`);
+
+  const labels = screen.queryAllByText('Label');
+
+  expect(labels.length).toEqual(2);
+  expect(labels[0]).toBeInstanceOf(HTMLSpanElement);
+  expect(labels[1]).toBeInstanceOf(HTMLLabelElement);
 });
 
-test('supports other labelVariant than default', () => {
+test('default placeholder is rendered', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" data-testid="selectId" labelVariant="inline">
-        <Item>1</Item>
-      </Select>
-    </MarigoldProvider>
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" placeholder="placeholder" data-testid="select">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
   );
-  const label = screen.getAllByText('MyLabel');
-  expect(label[0]).toHaveStyle(`font-size: 14px`);
-});
 
-test('accepts custom styles prop className', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Select
-        label="MyLabel"
-        className="custom-class-name"
-        data-testid="selectId"
-      >
-        <Item>1</Item>
-      </Select>
-    </MarigoldProvider>
-  );
-  const select = screen.getByTestId('selectId');
-  expect(select.className).toMatch('custom-class-name');
-});
-
-test('supports label with htmlFor prop', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel">
-        <Item>1</Item>
-      </Select>
-    </MarigoldProvider>
-  );
-  const selectLabel = screen.getAllByText(/MyLabel/);
-  expect(selectLabel[0]).toHaveAttribute('for');
-});
-
-test('supports disabled prop', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" data-testid="selectId" disabled>
-        <Item>1</Item>
-      </Select>
-    </MarigoldProvider>
-  );
-  const select = screen.getByTestId('selectId');
-  expect(select).toHaveAttribute('disabled');
-  fireEvent.click(select);
-  expect(select).toHaveAttribute('aria-expanded', 'false');
-});
-
-test('supports placeholder prop', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" placeholder="placeholder" data-testid="selectId">
-        <Item>1</Item>
-      </Select>
-    </MarigoldProvider>
-  );
-  const button = screen.getByTestId('selectId');
+  const button = screen.getByTestId('select');
   expect(button).toHaveTextContent(/placeholder/);
 });
 
-test('supports required prop', () => {
+test('custom placeholder is rendered', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" required data-testid="selectId">
-        <Item>1</Item>
-      </Select>
-    </MarigoldProvider>
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" placeholder="Select me" data-testid="select">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
   );
-  const selectLabel = screen.getAllByText(/MyLabel/);
-  expect(selectLabel[0]).toContainHTML('path d="M10.8 3.84003');
+
+  const button = screen.getByTestId('select');
+  expect(button).toHaveTextContent(/Select me/);
 });
 
-test('supports error and errorMessage prop', () => {
+test('option list opens when button is clicked', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" error errorMessage="error" data-testid="selectId">
-        <Item>1</Item>
-      </Select>
-    </MarigoldProvider>
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
   );
-  const validationMessage = screen.getAllByText(/error/);
-  expect(validationMessage).toBeDefined();
+  const button = screen.getByTestId('select');
+
+  expect(button).toHaveAttribute('aria-expanded', 'false');
+
+  fireEvent.click(button);
+
+  const options = screen.getByRole('listbox');
+  expect(options).toBeVisible();
+  expect(button).toHaveAttribute('aria-expanded', 'true');
 });
 
-test('supports width prop', () => {
+test('option list closes when button is clicked', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" width="120px" data-testid="selectId">
-        <Item>1</Item>
-      </Select>
-    </MarigoldProvider>
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
   );
-  const select = screen.getByTestId('selectId');
+  const button = screen.getByTestId('select');
+  fireEvent.click(button);
+  expect(button).toHaveAttribute('aria-expanded', 'true');
+
+  const options = screen.getByRole('listbox');
+  expect(options).toBeVisible();
+
+  fireEvent.click(button);
+  expect(button).toHaveAttribute('aria-expanded', 'false');
+  expect(options).not.toBeVisible();
+});
+
+test('supports to select an option and closes listbox afterwards', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+  const button = screen.getByTestId('select');
+  fireEvent.click(button);
+  expect(button).toHaveAttribute('aria-expanded', 'true');
+
+  const options = screen.getByRole('listbox');
+  expect(options).toBeVisible();
+
+  const two = within(options).getByText('two');
+  fireEvent.click(two);
+
+  expect(options).not.toBeVisible();
+  expect(button).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('selected option is displayed in button', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+  const button = screen.getByTestId('select');
+  fireEvent.click(button);
+  expect(button).toHaveAttribute('aria-expanded', 'true');
+
+  const options = screen.getByRole('listbox');
+  expect(options).toBeVisible();
+
+  const one = within(options).getByText('one');
+  fireEvent.click(one);
+
+  expect(button).toHaveAttribute('aria-expanded', 'false');
+  expect(button).toHaveTextContent(/one/);
+});
+
+test('dismiss when clicking escape', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+  const button = screen.getByTestId('select');
+  fireEvent.click(button);
+  expect(button).toHaveAttribute('aria-expanded', 'true');
+
+  const options = screen.getByRole('listbox');
+  expect(options).toBeVisible();
+  userEvent.type(button, '{esc}');
+});
+
+test('allows to disable select', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" disabled>
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+  const button = screen.getByTestId('select');
+  expect(button).toBeDisabled();
+
+  fireEvent.click(button);
+  expect(button).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('allows to disable options', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" disabledKeys={['two']}>
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  fireEvent.click(button);
+
+  const options = screen.getByRole('listbox');
+  const two = within(options).getByText('two');
+
+  expect(two).toHaveAttribute('aria-disabled', 'true');
+});
+
+test('allows select to be required', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" required>
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
 
   // eslint-disable-next-line testing-library/no-node-access
-  expect(select.parentElement).toHaveStyle(`width: 120px`);
+  const label = screen.getAllByText('Label')[0].parentElement!;
+  const requiredIcon = within(label).getByRole('presentation');
+  expect(requiredIcon).toBeInTheDocument();
 });
 
-test('option list opens when element is clicked', () => {
+test('controlled', () => {
+  const spy = jest.fn();
   render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" data-testid="selectId">
-        <Item>Red</Item>
-      </Select>
-    </MarigoldProvider>
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" onSelectionChange={spy}>
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
   );
-  const button = screen.getByTestId('selectId');
-  expect(button).toHaveAttribute('aria-expanded', 'false');
+
+  const button = screen.getByTestId('select');
+  fireEvent.click(button);
+
+  const options = screen.getByRole('listbox');
+  const three = within(options).getByText('three');
+  fireEvent.click(three);
+
+  expect(spy).toHaveBeenCalledTimes(1);
+  expect(spy).toHaveBeenCalledWith('three');
+});
+
+test('supports default value via "defaultSelectedKey"', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" defaultSelectedKey="three">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+          <Select.Option key="three">three</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  expect(button).toHaveTextContent(/three/);
 
   fireEvent.click(button);
 
-  // more than one item found because of the HiddenSelect component
-  const items = screen.getByRole('listbox');
-  expect(items).toBeVisible();
-  expect(button).toHaveAttribute('aria-expanded', 'true');
+  const options = screen.getByRole('listbox');
+  const three = within(options).getByText('three');
+
+  expect(three).toHaveStyle(`background: ${theme.colors.lime}`);
 });
 
-test('option list opens when element is clicked and theres an error', () => {
+test('supports sections', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" error errorMessage="error" data-testid="selectId">
-        <Item>Red</Item>
-      </Select>
-    </MarigoldProvider>
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select">
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+          <Select.Section title="Section 2">
+            <Select.Option key="three">three</Select.Option>
+            <Select.Option key="four">four</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
   );
-  const button = screen.getByTestId('selectId');
-  expect(button).toHaveAttribute('aria-expanded', 'false');
 
+  const button = screen.getByTestId('select');
   fireEvent.click(button);
 
-  const items = screen.getByRole('listbox');
-  expect(items).toBeVisible();
-  expect(button).toHaveAttribute('aria-expanded', 'true');
-  expect(button).toHaveStyle(`color: red`);
+  const options = screen.getByRole('listbox');
+  const sectionOne = within(options).getByText('Section 1');
+  const sectionTwo = within(options).getByText('Section 2');
+
+  expect(sectionOne).toBeVisible();
+  expect(sectionTwo).toBeVisible();
 });
 
-test('supports click and select an option', () => {
+test('supports styling with variants and sizes from theme', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" data-testid="selectId">
-        <Item>Red</Item>
-      </Select>
-    </MarigoldProvider>
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select
+          label="Label"
+          data-testid="select"
+          variant="violet"
+          size="medium"
+        >
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
   );
-  const button = screen.getByTestId('selectId');
-  expect(button).toHaveAttribute('aria-expanded', 'false');
 
-  fireEvent.click(button);
-  expect(button).toHaveAttribute('aria-expanded', 'true');
-  const items = screen.getAllByText(/Red/);
-  expect(items[1]).toBeVisible();
-  expect(items[1]).toHaveAttribute('aria-selected', 'false');
-
-  fireEvent.click(items[1]);
-  expect(button).toHaveTextContent('Red');
-
-  fireEvent.click(button);
-
-  // after selecting one item there are three elements with item text
-  const newItems = screen.getAllByText(/Red/);
-  expect(newItems[2]).toHaveAttribute('aria-selected', 'true');
-});
-
-test('popup closes after an option is selected', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" data-testid="selectId">
-        <Item>Red</Item>
-      </Select>
-    </MarigoldProvider>
-  );
-  const button = screen.getByTestId('selectId');
-  expect(button).toHaveAttribute('aria-expanded', 'false');
-
-  fireEvent.click(button);
-  expect(button).toHaveAttribute('aria-expanded', 'true');
-  const items = screen.getAllByText(/Red/);
-  expect(items[1]).toBeVisible();
-
-  fireEvent.click(items[1]);
-  expect(button).toHaveTextContent('Red');
-  expect(items[1]).not.toBeVisible();
-});
-
-test('dismiss popup by clicking escape', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" data-testid="selectId">
-        <Item>Red</Item>
-      </Select>
-    </MarigoldProvider>
-  );
-  const selectButton = screen.getByTestId('selectId');
-  fireEvent.click(selectButton);
-  expect(selectButton).toHaveAttribute('aria-expanded', 'true');
-  userEvent.type(selectButton, '{esc}');
-  expect(selectButton).toHaveAttribute('aria-expanded', 'false');
-});
-
-test('allow users to dismiss the popup with hidden dismiss button', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" data-testid="selectId">
-        <Item>Red</Item>
-      </Select>
-    </MarigoldProvider>
-  );
-  const selectButton = screen.getByTestId('selectId');
-  fireEvent.click(selectButton);
-
-  const dismissButton = screen.getByLabelText(/Dismiss/);
-  expect(dismissButton).toBeDefined();
-
-  fireEvent.click(dismissButton);
-  expect(selectButton).toHaveAttribute('aria-expanded', 'false');
-});
-
-test('supports default selectedKey prop', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" data-testid="selectId" defaultSelectedKey="Red">
-        <Item key="Red">Red</Item>
-        <Item key="Orange">Orange</Item>
-      </Select>
-    </MarigoldProvider>
-  );
-  const button = screen.getByTestId('selectId');
-  expect(button).toHaveTextContent('Red');
-});
-
-test('supports change default selectedKey', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" data-testid="selectId" defaultSelectedKey="Red">
-        <Item key="Red">Red</Item>
-        <Item key="Orange">Orange</Item>
-      </Select>
-    </MarigoldProvider>
-  );
-  const button = screen.getByTestId('selectId');
-  expect(button).toHaveTextContent('Red');
-
-  fireEvent.click(button);
-  const items = screen.getAllByText(/Red/);
-  fireEvent.click(items[1]);
-
-  expect(button).toHaveTextContent('Red');
-});
-
-test('supports disabled item prop', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Select label="MyLabel" data-testid="selectId" disabledKeys={['Red']}>
-        <Item key="Red">Red</Item>
-        <Item key="Orange">Orange</Item>
-      </Select>
-    </MarigoldProvider>
-  );
-  const button = screen.getByTestId('selectId');
-  fireEvent.click(button);
-  const redItem = screen.getAllByText(/Red/);
-  fireEvent.click(redItem[1]);
-  expect(button).toHaveTextContent('Select an option');
-
-  const orangeItem = screen.getAllByText(/Orange/);
-  fireEvent.click(orangeItem[1]);
-  expect(button).toHaveTextContent('Orange');
-});
-
-test('supports section with items', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Select label="Section" data-testid="selectId">
-        <Section title="Color">
-          <Item>Red</Item>
-        </Section>
-      </Select>
-    </MarigoldProvider>
-  );
-  const button = screen.getByTestId('selectId');
+  const button = screen.getByTestId('select');
+  expect(button).toHaveStyle(`color: ${theme.colors.violet}`);
+  expect(button).toHaveStyle(`font-size: ${theme.fontSizes['medium-1']}px`);
   fireEvent.click(button);
 
-  const items = screen.getAllByText(/Red/);
-  expect(items[1]).toBeVisible();
-  const sections = screen.getAllByText(/Color/);
-  expect(sections[0]).toBeVisible();
+  const options = screen.getByRole('listbox');
+
+  const one = within(options).getByText('one');
+  expect(one).toHaveStyle(`color: ${theme.colors.violet}`);
+
+  const section = within(options).getByText('Section 1');
+  expect(section).toHaveStyle(`font-size: ${theme.fontSizes['medium-1']}px`);
 });
+
+test('supports focus styling for button', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select">
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  userEvent.tab();
+
+  expect(button).toHaveStyle(`border-color: ${theme.colors.blue}`);
+});
+
+test('supports styling when select is open', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select">
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  userEvent.tab();
+  userEvent.keyboard('[ArrowDown]');
+
+  expect(button).toHaveStyle(`border-color: ${theme.colors.gray}`);
+});
+
+test('supports styling error state', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" error>
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  expect(button).toHaveStyle(`border-color: ${theme.colors.error}`);
+});
+
+test('supports styling disabled state', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" disabled>
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  expect(button).toHaveStyle(`color: ${theme.colors.disabled}`);
+});
+
+test('supports styling selected option', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" defaultSelectedKey="one">
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  fireEvent.click(button);
+
+  const options = screen.getByRole('listbox');
+  const one = within(options).getByText('one');
+
+  expect(one).toHaveStyle(`background: ${theme.colors.lime}`);
+});
+
+test('supports styling disabled option', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" disabledKeys={['two']}>
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  fireEvent.click(button);
+
+  const options = screen.getByRole('listbox');
+  const two = within(options).getByText('two');
+
+  expect(two).toHaveStyle(`color: ${theme.colors.disabled}`);
+});
+
+// FIXME: We currently have no easy way to test the focus + hover styling

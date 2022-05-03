@@ -107,6 +107,15 @@ describe('transform states', () => {
         '&:invalid, &[aria-invalid=true], &[data-error]': {},
       },
     },
+    {
+      name: ':expanded',
+      input: {
+        '&:expanded': {},
+      },
+      expected: {
+        '&[aria-expanded=true], &[data-expanded]': {},
+      },
+    },
   ])('tramsform "$name" to selector', ({ input, expected }) => {
     expect(transformPseudos(input)).toEqual(expected);
   });

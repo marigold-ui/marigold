@@ -1,23 +1,24 @@
-import React, { Children } from 'react';
+import React, { Children, ReactNode } from 'react';
 
 import { ResponsiveStyleValue } from '@marigold/system';
 
 import { Box } from '../Box';
 
 export interface ColumnsProps {
+  children?: ReactNode;
   columns: Array<number>;
   space?: ResponsiveStyleValue<string>;
   columnLimit?: number;
   collapseAt?: string;
 }
 
-export const Columns: React.FC<ColumnsProps> = ({
+export const Columns = ({
   space = 'none',
   columns,
   collapseAt = '40em',
   children,
   ...props
-}) => {
+}: ColumnsProps) => {
   if (Children.count(children) !== columns.length) {
     throw new Error(
       `Columns: expected ${columns.length} children, got ${Children.count(

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Select } from './Select';
-import { Item } from '@marigold/components';
+import { Container } from '../Container';
 
 export default {
   title: 'Components/Select',
@@ -10,55 +10,41 @@ export default {
       control: {
         type: 'text',
       },
-      table: {
-        defaultValue: {
-          summary: 'Select label',
-        },
-      },
-      defaultValue: 'Favorite Color',
+      description: 'Set the select label',
+      defaultValue: 'Select for favorite:',
     },
     placeholder: {
       control: {
         type: 'text',
       },
-      table: {
-        defaultValue: {
-          summary: 'Select an option',
-        },
+      description: 'Set the placeholder text',
+    },
+    description: {
+      control: {
+        type: 'text',
       },
+      description: 'Set the field description',
     },
     disabled: {
       control: {
         type: 'boolean',
       },
-      options: [true, false],
-      table: {
-        defaultValue: {
-          summary: false,
-        },
-      },
+      description: 'Disable the select',
+      defaultValue: false,
     },
     required: {
       control: {
         type: 'boolean',
       },
-      options: [true, false],
-      table: {
-        defaultValue: {
-          summary: false,
-        },
-      },
+      description: 'Require the select',
+      defaultValue: false,
     },
     error: {
       control: {
         type: 'boolean',
       },
-      description: 'Error',
-      table: {
-        defaultValue: {
-          summary: false,
-        },
-      },
+      description: 'Set error state',
+      defaultValue: false,
     },
     errorMessage: {
       control: {
@@ -66,16 +52,39 @@ export default {
       },
       description: 'Error Message',
     },
-    width: {
-      control: 'number',
-    },
   },
 } as Meta;
 
-export const Basic: ComponentStory<typeof Select> = args => (
+export const Basic: ComponentStory<typeof Select> = args => {
+  const [selected, setSelected] = useState<string | number>('');
+  return (
+    <Container size="small">
+      <Select
+        {...args}
+        onSelectionChange={setSelected}
+        disabledKeys={['Firefly']}
+      >
+        <Select.Option key="Harry Potter">Harry Potter</Select.Option>
+        <Select.Option key="Lord of the Rings">Lord of the Rings</Select.Option>
+        <Select.Option key="Star Wars">Star Wars</Select.Option>
+        <Select.Option key="Star Trek">Star Trek</Select.Option>
+        <Select.Option key="Firefly">Firefly</Select.Option>
+      </Select>
+      <hr />
+      <pre>selected: {selected}</pre>
+    </Container>
+  );
+};
+
+export const Sections: ComponentStory<typeof Select> = args => (
   <Select {...args}>
-    <Item>Red</Item>
-    <Item>Orange</Item>
-    <Item>Yellow</Item>
+    <Select.Section title="Fantasy">
+      <Select.Option>Harry Potter</Select.Option>
+      <Select.Option>Lord of the Rings</Select.Option>
+    </Select.Section>
+    <Select.Section title="Sci-Fi">
+      <Select.Option>Star Wars</Select.Option>
+      <Select.Option>Star Trek</Select.Option>
+    </Select.Section>
   </Select>
 );

@@ -27,6 +27,8 @@ addParameters({
   },
   controls: { expanded: true },
   themes: {
+    default: 'b2b',
+    clearable: false,
     Decorator: ({
       themeName,
       children,
@@ -39,7 +41,6 @@ addParameters({
     list: (Object.keys(themes) as ThemeNames[]).map(name => ({
       name,
       color: themes[name].colors!.primary,
-      default: name === 'b2b',
     })),
   },
 });

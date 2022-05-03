@@ -58,6 +58,6 @@
     "release": "zx scripts/release.mjs --quiet",
     "release:docs": "pnpm --filter @marigold/docs deploy",
     "slack": "zx scripts/slack-release-notification.mjs --quiet",
-    "postinstall": "rm -f node_modules/@emotion/core/types/index.d.ts"
+    "postinstall": "rm -f node_modules/@emotion/core/types/index.d.ts && rm -rf node_modules/.pnpm/@emotion+core@10.3.1_react@17.0.2/node_modules/@emotion/core/types/index.d.ts"
   }
 }

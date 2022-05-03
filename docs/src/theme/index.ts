@@ -33,6 +33,7 @@ export const theme: Theme = {
     none: 0,
     small: 2,
     medium: 4,
+    large: 8,
   },
   root: {
     body: {
