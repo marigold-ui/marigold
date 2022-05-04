@@ -10,6 +10,10 @@ export const Dialog: Theme['components']['Dialog'] = {
       pb: 'large',
       pt: 'small',
     },
-    closeButton: {},
+    closeButton: {
+      position: 'relative',
+      right: '-24px',
+      top: '-8px',
+    },
   },
 };
