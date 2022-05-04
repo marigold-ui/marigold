@@ -4,6 +4,7 @@ import { useOverlayTriggerState } from '@react-stately/overlays';
 
 import { Modal } from '../Overlay/Modal';
 import { DialogContext } from './Context';
+import { Overlay } from '../Overlay';
 
 export interface DialogTriggerProps {
   children: [trigger: ReactNode, menu: ReactNode];
@@ -32,14 +33,16 @@ export const DialogTrigger = ({
       >
         {dialogTrigger}
       </PressResponder>
-      <Modal
-        open={state.isOpen}
-        onClose={state.close}
-        dismissable={dismissable}
-        keyboardDismissable={keyboardDismissable}
-      >
-        {dialog}
-      </Modal>
+      <Overlay open={state.isOpen}>
+        <Modal
+          open={state.isOpen}
+          onClose={state.close}
+          dismissable={dismissable}
+          keyboardDismissable={keyboardDismissable}
+        >
+          {dialog}
+        </Modal>
+      </Overlay>
     </DialogContext.Provider>
   );
 };
