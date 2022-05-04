@@ -15,17 +15,20 @@ import { Box } from '../Box';
 // ---------------
 export interface ModalDialogProps extends OverlayProps, AriaDialogProps {
   variant?: string;
+  size?: string;
   backdropVariant?: string;
+  children?: React.ReactNode;
 }
 
 // Component
 // ---------------
-export const ModalDialog: React.FC<ModalDialogProps> = ({
+export const ModalDialog = ({
   variant,
+  size,
   backdropVariant = 'backdrop',
   children,
   ...props
-}) => {
+}: ModalDialogProps) => {
   const { isDismissable, isOpen, onClose, ...restProps } = props;
 
   // Handle interacting outside the dialog and pressing

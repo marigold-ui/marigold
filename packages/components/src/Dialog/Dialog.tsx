@@ -1,4 +1,5 @@
 import React, { RefObject } from 'react';
+import { ThemeExtension } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 import { useOverlayTriggerState } from '@react-stately/overlays';
 import { OverlayContainer } from '@react-aria/overlays';
@@ -11,6 +12,10 @@ import { Headline } from '../Headline';
 
 import { ModalDialog, ModalDialogProps } from './ModalDialog';
 
+// Theme Extension
+// ---------------
+export interface DialogThemeExtension extends ThemeExtension<'Dialog'> {}
+
 // Props
 // ---------------
 export interface DialogProps extends ModalDialogProps, ComponentProps<'div'> {
@@ -19,12 +24,13 @@ export interface DialogProps extends ModalDialogProps, ComponentProps<'div'> {
   isOpen: boolean;
   title?: string;
   variant?: string;
+  size?: string;
   role?: 'dialog' | 'alertdialog';
 }
 
 // Component
 // ---------------
-export const Dialog: React.FC<DialogProps> = ({
+export const Dialog = ({
   backdropVariant,
   children,
   className,
@@ -32,8 +38,9 @@ export const Dialog: React.FC<DialogProps> = ({
   isOpen,
   title,
   variant,
+  size,
   ...props
-}) => {
+}: DialogProps) => {
   const closeButtonRef = React.useRef<HTMLElement>() as RefObject<HTMLElement>;
 
   // useButton ensures that focus management is handled correctly,
