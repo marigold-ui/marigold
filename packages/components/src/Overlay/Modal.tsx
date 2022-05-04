@@ -41,8 +41,6 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
     usePreventScroll();
     const { modalProps } = useModal({});
 
-    console.log('open', open);
-
     /**
      * In order to support opacity on the `<Unverlay>` it can't wrap
      * the modal content. BUT, we need to center the modal content and still
@@ -55,26 +53,24 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
      *    content.
      */
     return (
-      <>
+      <FocusScope contain restoreFocus autoFocus>
         <Underlay {...underlayProps} />
-        <FocusScope contain restoreFocus autoFocus>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'fixed',
-              inset: 0,
-              zIndex: 2,
-              pointerEvents: 'none',
-            }}
-            ref={modalRef}
-            {...mergeProps(props, overlayProps, modalProps)}
-          >
-            <div style={{ pointerEvents: 'auto' }}>{children}</div>
-          </div>
-        </FocusScope>
-      </>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'fixed',
+            inset: 0,
+            zIndex: 2,
+            pointerEvents: 'none',
+          }}
+          ref={modalRef}
+          {...mergeProps(props, overlayProps, modalProps)}
+        >
+          <div style={{ pointerEvents: 'auto' }}>{children}</div>
+        </div>
+      </FocusScope>
     );
   }
 );
