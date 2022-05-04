@@ -1,4 +1,6 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useRef } from 'react';
+import { useDialog } from '@react-aria/dialog';
+import type { AriaDialogProps } from '@react-types/dialog';
 
 import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
 
@@ -10,7 +12,7 @@ export interface DialogThemeExtension extends ThemeExtension<'Dialog'> {}
 
 // Props
 // ---------------
-export interface DialogProps {
+export interface DialogProps extends AriaDialogProps {
   children?: ReactNode;
   variant?: string;
   size?: string;
@@ -18,13 +20,23 @@ export interface DialogProps {
 
 // Component
 // ---------------
-export const Dialog = ({ children, variant, size }: DialogProps) => {
+export const Dialog = ({ children, variant, size, ...props }: DialogProps) => {
+  const ref = useRef(null);
+  // FIXME: Where to put the titleProps
+  const { dialogProps } = useDialog(props, ref);
   const styles = useComponentStyles('Dialog', { variant, size });
   return (
-    <Box __baseCSS={{ bg: '#fff' }} css={styles}>
+    <Box __baseCSS={{ bg: '#fff' }} css={styles} {...dialogProps}>
       {children}
     </Box>
   );
 };
 
 Dialog.Trigger = DialogTrigger;
+
+/**
+ * TODO:
+ *
+ * - dismiss button
+ * - pass down close when children is a function
+ */

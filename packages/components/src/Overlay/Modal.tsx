@@ -1,41 +1,35 @@
-import React, { forwardRef, ReactNode } from 'react';
+import React, { forwardRef, HTMLAttributes, ReactNode } from 'react';
 import { FocusScope } from '@react-aria/focus';
-import {
-  OverlayProps,
-  useModal,
-  useOverlay,
-  usePreventScroll,
-} from '@react-aria/overlays';
+import { useModal, useOverlay, usePreventScroll } from '@react-aria/overlays';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import { Overlay } from './Overlay';
 import { Underlay } from './Underlay';
-import { Box } from '@marigold/system';
 
 // Props
 // ---------------
-export interface ModalProps
-  extends Omit<
-    OverlayProps,
-    'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled'
-  > {
+export interface ModalProps extends HTMLAttributes<HTMLElement> {
   children?: ReactNode;
   open?: boolean;
+  onClose?: () => void;
   dismissable?: boolean;
-  keyboardDismissDisabled?: boolean;
+  keyboardDismissable?: boolean;
 }
 
 // Component
 // ---------------
 export const Modal = forwardRef<HTMLDivElement, ModalProps>(
-  ({ children, open, dismissable, keyboardDismissDisabled, ...props }, ref) => {
+  (
+    { children, open, dismissable, keyboardDismissable, onClose, ...props },
+    ref
+  ) => {
     // FIXME: Do we have to pass variant and size to the Underlay?
     const modalRef = useObjectRef(ref);
     const { overlayProps, underlayProps } = useOverlay(
       {
         isOpen: open,
+        onClose,
         isDismissable: dismissable,
-        isKeyboardDismissDisabled: keyboardDismissDisabled,
-        ...props,
+        isKeyboardDismissDisabled: !keyboardDismissable,
       },
       modalRef
     );
@@ -47,12 +41,23 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
     usePreventScroll();
     const { modalProps } = useModal({});
 
+    /**
+     * In order to support opacity on the `<Unverlay>` it can't wrap
+     * the modal content. BUT, we need to center the modal content and still
+     * be able to click the `<Underlay>` (has the on close listener).
+     *
+     * Solution:
+     *  - Make a wrapper that centers the modal content, but is not clickable
+     *    (`pointer-events: none`)
+     *  - Make another wrapper the "re-enables" pointer events on the modal
+     *    content.
+     */
     return (
       <Overlay open={open}>
         <Underlay {...underlayProps} />
         <FocusScope contain restoreFocus autoFocus>
-          <Box
-            __baseCSS={{
+          <div
+            style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -62,11 +67,10 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
               pointerEvents: 'none',
             }}
             ref={modalRef}
-            role="presentation"
             {...mergeProps(props, overlayProps, modalProps)}
           >
-            {children}
-          </Box>
+            <div style={{ pointerEvents: 'auto' }}>{children}</div>
+          </div>
         </FocusScope>
       </Overlay>
     );
