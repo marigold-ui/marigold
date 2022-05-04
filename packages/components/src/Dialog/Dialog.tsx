@@ -38,8 +38,3 @@ export const Dialog = ({ children, variant, size, ...props }: DialogProps) => {
 };
 
 Dialog.Trigger = DialogTrigger;
-
-/**
- * TODO:
- * - dismiss button
- */
