@@ -3,14 +3,23 @@ import { useButton } from '@react-aria/button';
 import { useDialog } from '@react-aria/dialog';
 import type { AriaDialogProps } from '@react-types/dialog';
 
-import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
+import {
+  Box,
+  CSSObject,
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+} from '@marigold/system';
 
 import { DialogContextProps, useDialogContext } from './Context';
 import { DialogTrigger } from './DialogTrigger';
 
 // Close Button
 // ---------------
-const CloseButton = () => {
+interface CloseButtonProps {
+  css?: CSSObject;
+}
+
+const CloseButton = ({ css }: CloseButtonProps) => {
   const ref = useRef<HTMLButtonElement>(null);
   const { close } = useDialogContext();
 
@@ -34,6 +43,7 @@ const CloseButton = () => {
           lineHeight: 1,
           p: 0,
         }}
+        css={css}
         ref={ref}
         {...buttonProps}
       >
@@ -51,7 +61,8 @@ const CloseButton = () => {
 
 // Theme Extension
 // ---------------
-export interface DialogThemeExtension extends ThemeExtension<'Dialog'> {}
+export interface DialogThemeExtension
+  extends ThemeExtensionsWithParts<'Dialog', ['container', 'closeButton']> {}
 
 // Props
 // ---------------
@@ -73,15 +84,20 @@ export const Dialog = ({
   closeButton,
   ...props
 }: DialogProps) => {
-  const { close, open } = useDialogContext();
-
   const ref = useRef(null);
-  // FIXME: Where to put the titleProps
+  const { close, open } = useDialogContext();
+  // FIXME: Where to put the titleProps90
   const { dialogProps } = useDialog(props, ref);
-  const styles = useComponentStyles('Dialog', { variant, size });
+
+  const styles = useComponentStyles(
+    'Dialog',
+    { variant, size },
+    { parts: ['container', 'closeButton'] }
+  );
+
   return (
-    <Box __baseCSS={{ bg: '#fff' }} css={styles} {...dialogProps}>
-      {closeButton && <CloseButton />}
+    <Box __baseCSS={{ bg: '#fff' }} css={styles.container} {...dialogProps}>
+      {closeButton && <CloseButton css={styles.closeButton} />}
       {typeof children === 'function' ? children({ close, open }) : children}
     </Box>
   );
