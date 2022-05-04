@@ -14,6 +14,7 @@ import type {
   CheckboxGroupThemeExtension,
 } from './Checkbox';
 import type { ContentThemeExtension } from './Content';
+import type { DialogThemeExtension } from './Dialog';
 import type { DividerThemeExtension } from './Divider';
 import type { FooterThemeExtension } from './Footer';
 import type { HeaderThemeExtension } from './Header';
@@ -26,6 +27,7 @@ import type { LinkThemeExtension } from './Link';
 import type { ListBoxThemeExtension } from './ListBox';
 import type { MenuThemeExtension } from './Menu';
 import type { MessageThemeExtension } from './Message';
+import type { UnderlayThemeExtension } from './Overlay';
 import type { RadioThemeExtension, RadioGroupThemeExtension } from './Radio';
 import type { SelectThemeExtension } from './Select';
 import type { SliderThemeExtension } from './Slider';
@@ -46,6 +48,7 @@ interface ComponentStyles
     CheckboxThemeExtension,
     CheckboxGroupThemeExtension,
     ContentThemeExtension,
+    DialogThemeExtension,
     DividerThemeExtension,
     FooterThemeExtension,
     HeaderThemeExtension,
@@ -65,7 +68,8 @@ interface ComponentStyles
     SwitchThemeExtension,
     TableThemeExtension,
     TextThemeExtension,
-    TextAreaThemeExtension {}
+    TextAreaThemeExtension,
+    UnderlayThemeExtension {}
 
 export interface Theme
   extends Scales,
