@@ -1,7 +1,9 @@
 import React, { ReactNode, useRef } from 'react';
 import { PressResponder } from '@react-aria/interactions';
 import { useOverlayTriggerState } from '@react-stately/overlays';
+
 import { Modal } from '../Overlay/Modal';
+import { DialogContext } from './Context';
 
 export interface DialogTriggerProps {
   children: [trigger: ReactNode, menu: ReactNode];
@@ -19,8 +21,10 @@ export const DialogTrigger = ({
   const dialogTriggerRef = useRef(null);
   const state = useOverlayTriggerState({});
 
+  const ctx = { open: state.isOpen, close: state.close };
+
   return (
-    <>
+    <DialogContext.Provider value={ctx}>
       <PressResponder
         ref={dialogTriggerRef}
         isPressed={state.isOpen}
@@ -36,6 +40,6 @@ export const DialogTrigger = ({
       >
         {dialog}
       </Modal>
-    </>
+    </DialogContext.Provider>
   );
 };
