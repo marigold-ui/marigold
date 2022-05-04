@@ -2,7 +2,7 @@ import { Theme } from '@marigold/components';
 
 export const Underlay: Theme['components']['Underlay'] = {
   base: {
-    bg: 'gray70',
-    opacity: 0.33,
+    bg: 'rgba(206, 212, 218, 0.5)',
+    backdropFilter: 'blur(1px)',
   },
 };
