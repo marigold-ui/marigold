@@ -9,7 +9,18 @@ import { TextField } from '../TextField';
 
 export default {
   title: 'Components/Dialog',
-  argTypes: {},
+  argTypes: {
+    dismissable: {
+      control: { type: 'boolean' },
+      description: 'Set dismissable',
+      defaultValue: true,
+    },
+    keyboardDismissable: {
+      control: { type: 'boolean' },
+      description: 'Set keyboardDismissable',
+      defaultValue: true,
+    },
+  },
 } as Meta;
 
 export const Basic: ComponentStory<typeof Dialog.Trigger> = args => {
@@ -17,7 +28,7 @@ export const Basic: ComponentStory<typeof Dialog.Trigger> = args => {
     <>
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
-        <Dialog>
+        <Dialog closeButton>
           <Headline>This is a headline!</Headline>
           <Text>This is some not so very long text.</Text>
         </Dialog>
