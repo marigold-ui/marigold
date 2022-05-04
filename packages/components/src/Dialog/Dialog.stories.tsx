@@ -3,9 +3,11 @@ import type { Meta, ComponentStory } from '@storybook/react';
 
 import { Button } from '../Button';
 import { Headline } from '../Headline';
+import { Inline } from '../Inline';
 import { Text } from '../Text';
 import { Dialog } from './Dialog';
 import { TextField } from '../TextField';
+import { Stack } from '../Stack';
 
 export default {
   title: 'Components/Dialog',
@@ -46,12 +48,16 @@ export const Form: ComponentStory<typeof Dialog.Trigger> = args => {
           {({ close }) => (
             <>
               <Headline>Please log into account</Headline>
-              <TextField label="Username" />
-              <TextField label="Password" type="password" />
-              <Button variant="ghost" onPress={close}>
-                Cancel
-              </Button>
-              <Button variant="primary">Login</Button>
+              <Stack space="small">
+                <TextField label="Username" />
+                <TextField label="Password" type="password" />
+                <Inline space="medium">
+                  <Button variant="ghost" onPress={close}>
+                    Cancel
+                  </Button>
+                  <Button variant="primary">Login</Button>
+                </Inline>
+              </Stack>
             </>
           )}
         </Dialog>
