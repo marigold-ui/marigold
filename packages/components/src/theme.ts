@@ -37,7 +37,6 @@ import type { TextAreaThemeExtension } from './TextArea';
 // Old Styling Solution
 import { type LabelThemeExtension as LegacyLabelThemeExtension } from './Label';
 import { type TooltipThemeExtension } from './Tooltip';
-import { type ValidationMessageThemeExtension } from './ValidationMessage';
 
 interface ComponentStyles
   extends BadgeThemeExtension,
@@ -71,7 +70,6 @@ export interface Theme
   extends Scales,
     RootThemeExtension<CSSObject>,
     LegacyLabelThemeExtension<CSSObject>,
-    TooltipThemeExtension<CSSObject>,
-    ValidationMessageThemeExtension<CSSObject> {
+    TooltipThemeExtension<CSSObject> {
   components: ComponentStyles;
 }

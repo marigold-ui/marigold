@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useThemeSwitch } from './ThemeSwitch';
-import { Item, Select } from '@marigold/components';
+import { Select } from '@marigold/components';
 
 export const ThemeSelect = () => {
   const { current, themes, setTheme } = useThemeSwitch();
@@ -14,7 +14,7 @@ export const ThemeSelect = () => {
       aria-label="theme-select"
     >
       {Object.keys(themes).map(name => (
-        <Item key={name}>{name}</Item>
+        <Select.Option key={name}>{name}</Select.Option>
       ))}
     </Select>
   );
