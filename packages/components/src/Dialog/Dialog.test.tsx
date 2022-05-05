@@ -81,7 +81,7 @@ test('supports close Button', () => {
   const dialog = screen.getByText('Content');
   expect(dialog).toBeVisible();
 
-  const closeButton = dialog.firstChild?.lastChild;
+  const closeButton = dialog.firstChild?.lastChild!;
   expect(closeButton).toBeInTheDocument();
 
   fireEvent.click(closeButton);
