@@ -65,3 +65,17 @@ export const Form: ComponentStory<typeof Dialog.Trigger> = args => {
     </>
   );
 };
+
+export const CustomTitleProps: ComponentStory<typeof Dialog.Trigger> = args => {
+  return (
+    <>
+      <Dialog.Trigger {...args}>
+        <Button variant="primary">Open</Button>
+        <Dialog closeButton aria-labelledby="my-cool-headline">
+          <Headline id="my-cool-headline">This is a headline!</Headline>
+          <Text>This is some not so very long text.</Text>
+        </Dialog>
+      </Dialog.Trigger>
+    </>
+  );
+};
