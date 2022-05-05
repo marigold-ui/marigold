@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react';
+import React, { HTMLAttributes, ReactElement, ReactNode, useRef } from 'react';
 import { useButton } from '@react-aria/button';
 import { useDialog } from '@react-aria/dialog';
 import type { AriaDialogProps } from '@react-types/dialog';
@@ -10,6 +10,8 @@ import {
   useComponentStyles,
 } from '@marigold/system';
 
+import { Header } from '../Header';
+import { Headline } from '../Headline';
 import { DialogContextProps, useDialogContext } from './Context';
 import { DialogTrigger } from './DialogTrigger';
 
@@ -59,6 +61,39 @@ const CloseButton = ({ css }: CloseButtonProps) => {
   );
 };
 
+/**
+ * Search for a direct child that can act as title to improve accessibility.
+ */
+const addTitleProps = (
+  children: ReactNode,
+  titleProps: HTMLAttributes<HTMLElement>
+) => {
+  const childs = React.Children.toArray(children);
+
+  const titleIndex = childs.findIndex(
+    child =>
+      React.isValidElement(child) &&
+      (child.type === Header || child.type === Headline)
+  );
+
+  // No child found that can act as title
+  if (titleIndex < 0) {
+    console.warn(
+      'No child in <Dialog> found that can act as title for accessibility. Please add a <Header> or <Headline> as direct child.'
+    );
+    return children;
+  }
+
+  // If we found a child, add the titleProps to it
+  const titleChild = React.cloneElement(
+    childs[titleIndex] as ReactElement<any>,
+    titleProps
+  );
+  childs.splice(titleIndex, 1, titleChild);
+
+  return childs;
+};
+
 // Theme Extension
 // ---------------
 export interface DialogThemeExtension
@@ -66,10 +101,13 @@ export interface DialogThemeExtension
 
 // Props
 // ---------------
+export interface DialogChildProps
+  extends Pick<DialogContextProps, 'close' | 'open'> {
+  titleProps: HTMLAttributes<HTMLElement>;
+}
+
 export interface DialogProps extends AriaDialogProps {
-  children?:
-    | ReactNode
-    | ((props: Pick<DialogContextProps, 'close' | 'open'>) => ReactNode);
+  children?: ReactNode | ((props: DialogChildProps) => ReactNode);
   variant?: string;
   size?: string;
   closeButton?: boolean;
@@ -86,8 +124,7 @@ export const Dialog = ({
 }: DialogProps) => {
   const ref = useRef(null);
   const { close, open } = useDialogContext();
-  // FIXME: Where to put the titleProps90
-  const { dialogProps } = useDialog(props, ref);
+  const { dialogProps, titleProps } = useDialog(props, ref);
 
   const styles = useComponentStyles(
     'Dialog',
@@ -98,7 +135,11 @@ export const Dialog = ({
   return (
     <Box __baseCSS={{ bg: '#fff' }} css={styles.container} {...dialogProps}>
       {closeButton && <CloseButton css={styles.closeButton} />}
-      {typeof children === 'function' ? children({ close, open }) : children}
+      {typeof children === 'function'
+        ? children({ close, open, titleProps })
+        : props['aria-labelledby']
+        ? children
+        : addTitleProps(children, titleProps)}
     </Box>
   );
 };
