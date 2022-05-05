@@ -179,6 +179,23 @@ test('supports custom title for accessability reasons', () => {
   expect(headline.id).toBe(dialog.getAttribute('aria-labelledby'));
 });
 
+test('can not find a title for accessability reasons', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Dialog.Trigger>
+        <Button variant="primary">Open</Button>
+        <Dialog closeButton>Content</Dialog>
+      </Dialog.Trigger>
+    </ThemeProvider>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
+
+  const dialog = screen.getByRole('dialog');
+  expect(dialog).not.toHaveAttribute('aria-labelledby');
+  expect(dialog.firstChild).not.toHaveAttribute('id');
+});
+
 test('supports focus and open dialog with keyboard', () => {
   render(
     <ThemeProvider theme={theme}>
