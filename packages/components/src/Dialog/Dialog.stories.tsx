@@ -45,9 +45,9 @@ export const Form: ComponentStory<typeof Dialog.Trigger> = args => {
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
         <Dialog>
-          {({ close }) => (
+          {({ close, titleProps }) => (
             <>
-              <Headline>Please log into account</Headline>
+              <Headline {...titleProps}>Please log into account</Headline>
               <Stack space="small">
                 <TextField label="Username" />
                 <TextField label="Password" type="password" />
