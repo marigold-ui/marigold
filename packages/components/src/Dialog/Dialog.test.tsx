@@ -46,6 +46,27 @@ const theme = {
   },
 };
 
+test('renders correctly children', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Dialog.Trigger>
+        <Button variant="primary">Open</Button>
+        <Dialog closeButton>
+          <Headline>Headline</Headline>
+          Content
+        </Dialog>
+      </Dialog.Trigger>
+    </ThemeProvider>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
+  const dialog = screen.getByText('Content');
+
+  expect(button instanceof HTMLButtonElement).toBeTruthy();
+  expect(dialog instanceof HTMLDivElement).toBeTruthy();
+  console.log(dialog.lastChild);
+});
+
 test('dialog can be opened by button', () => {
   render(
     <ThemeProvider theme={theme}>
