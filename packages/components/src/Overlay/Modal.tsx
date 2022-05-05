@@ -2,7 +2,6 @@ import React, { forwardRef, HTMLAttributes, ReactNode } from 'react';
 import { FocusScope } from '@react-aria/focus';
 import { useModal, useOverlay, usePreventScroll } from '@react-aria/overlays';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
-import { Overlay } from './Overlay';
 import { Underlay } from './Underlay';
 
 // Props
