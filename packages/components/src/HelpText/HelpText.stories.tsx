@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
-import { HelpText } from './HelpText';
+import { HelpText } from '../HelpText';
 
 export default {
   title: 'Components/HelpText',

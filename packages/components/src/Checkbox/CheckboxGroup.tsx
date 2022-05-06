@@ -13,7 +13,7 @@ import {
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { Label } from '../Field/Label';
+import { Label } from '../Label';
 
 // Context
 // ---------------

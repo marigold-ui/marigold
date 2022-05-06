@@ -1,88 +1,81 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
-import { Dialog, useDialogButtonProps } from './Dialog';
+
 import { Button } from '../Button';
+import { Headline } from '../Headline';
+import { Inline } from '../Inline';
 import { Text } from '../Text';
+import { Dialog } from './Dialog';
+import { TextField } from '../TextField';
+import { Stack } from '../Stack';
 
 export default {
   title: 'Components/Dialog',
-  parameters: {
-    actions: {
-      handles: ['click'],
-    },
-  },
   argTypes: {
-    isOpen: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'handled by state from useDialogButtonProps',
-      options: [true, false],
-      table: {
-        defaultValue: {
-          summary: false,
-        },
-      },
+    dismissable: {
+      control: { type: 'boolean' },
+      description: 'Set dismissable',
+      defaultValue: true,
     },
-    title: {
-      control: {
-        type: 'text',
-      },
-      description: 'set dialog title',
-    },
-    close: {
-      control: {
-        type: 'text',
-      },
-      description: 'handled by state from useDialogButtonProps',
-    },
-    variant: {
-      control: {
-        type: 'text',
-      },
-      description: 'Dialog variant',
-      table: {
-        defaultValue: {
-          summary: '__default',
-        },
-      },
-    },
-    backdropVariant: {
-      control: {
-        type: 'text',
-      },
-      description: 'Dialog backdrop variant',
-      table: {
-        defaultValue: {
-          summary: 'backdrop',
-        },
-      },
+    keyboardDismissable: {
+      control: { type: 'boolean' },
+      description: 'Set keyboardDismissable',
+      defaultValue: true,
     },
   },
 } as Meta;
 
-export const Basic: ComponentStory<typeof Dialog> = args => {
-  const { state, openButtonProps, openButtonRef } = useDialogButtonProps();
+export const Basic: ComponentStory<typeof Dialog.Trigger> = args => {
   return (
     <>
-      <Button
-        variant="secondary"
-        size="small"
-        {...openButtonProps}
-        ref={openButtonRef}
-      >
-        Open Dialog
-      </Button>
-      {state.isOpen && (
-        <Dialog
-          title="Dialog Title"
-          {...args}
-          isOpen={state.isOpen}
-          close={state.close}
-        >
-          <Text>Dialog content</Text>
+      <Dialog.Trigger {...args}>
+        <Button variant="primary">Open</Button>
+        <Dialog closeButton>
+          <Headline>This is a headline!</Headline>
+          <Text>This is some not so very long text.</Text>
         </Dialog>
-      )}
+      </Dialog.Trigger>
+    </>
+  );
+};
+
+export const Form: ComponentStory<typeof Dialog.Trigger> = args => {
+  return (
+    <>
+      <Dialog.Trigger {...args}>
+        <Button variant="primary">Open</Button>
+        <Dialog>
+          {({ close, titleProps }) => (
+            <>
+              <Headline {...titleProps}>Please log into account</Headline>
+              <Stack space="small">
+                <TextField label="Username" />
+                <TextField label="Password" type="password" />
+                <Inline space="medium">
+                  <Button variant="ghost" onPress={close}>
+                    Cancel
+                  </Button>
+                  <Button variant="primary">Login</Button>
+                </Inline>
+              </Stack>
+            </>
+          )}
+        </Dialog>
+      </Dialog.Trigger>
+    </>
+  );
+};
+
+export const CustomTitleProps: ComponentStory<typeof Dialog.Trigger> = args => {
+  return (
+    <>
+      <Dialog.Trigger {...args}>
+        <Button variant="primary">Open</Button>
+        <Dialog closeButton aria-labelledby="my-cool-headline">
+          <Headline id="my-cool-headline">This is a headline!</Headline>
+          <Text>This is some not so very long text.</Text>
+        </Dialog>
+      </Dialog.Trigger>
     </>
   );
 };

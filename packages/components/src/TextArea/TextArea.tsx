@@ -10,7 +10,7 @@ import {
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { FieldBase, FieldBaseProps } from '../Field';
+import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { useHover } from '@react-aria/interactions';
 import { useFocusRing } from '@react-aria/focus';
 
