@@ -48,12 +48,25 @@ export interface NumberFieldProps
     Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
   variant?: string;
   size?: string;
+  hideStepper?: boolean;
 }
 
 // Component
 // ---------------
 export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
-  ({ disabled, required, readOnly, error, variant, size, ...rest }, ref) => {
+  (
+    {
+      disabled,
+      required,
+      readOnly,
+      error,
+      variant,
+      size,
+      hideStepper,
+      ...rest
+    },
+    ref
+  ) => {
     const props = {
       isDisabled: disabled,
       isRequired: required,
@@ -61,6 +74,8 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
       validationState: error ? 'invalid' : 'valid',
       ...rest,
     } as const;
+    const showStepper = !hideStepper;
+
     const { locale } = useLocale();
     const inputRef = useObjectRef(ref);
 
@@ -122,11 +137,13 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
           {...mergeProps(groupProps, focusProps, hoverProps)}
           {...stateProps}
         >
-          <StepButton
-            direction="down"
-            css={styles.stepper}
-            {...decrementButtonProps}
-          />
+          {showStepper && (
+            <StepButton
+              direction="down"
+              css={styles.stepper}
+              {...decrementButtonProps}
+            />
+          )}
           <Input
             ref={inputRef}
             variant={variant}
@@ -138,11 +155,13 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
             {...(inputProps as any)}
             {...stateProps}
           />
-          <StepButton
-            direction="up"
-            css={styles.stepper}
-            {...incrementButtonProps}
-          />
+          {showStepper && (
+            <StepButton
+              direction="up"
+              css={styles.stepper}
+              {...incrementButtonProps}
+            />
+          )}
         </Box>
       </FieldBase>
     );

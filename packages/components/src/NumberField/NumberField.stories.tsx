@@ -51,6 +51,12 @@ export default {
       },
       defaultValue: false,
     },
+    hideStepper: {
+      control: {
+        type: 'boolean',
+      },
+      defaultValue: false,
+    },
     // TODO: Add formatting props!
     // TODO: Hide stepper?
   },
