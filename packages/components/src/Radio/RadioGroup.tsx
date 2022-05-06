@@ -9,7 +9,7 @@ import {
   useComponentStyles,
 } from '@marigold/system';
 
-import { Label } from '../FieldBase/Label';
+import { Label } from '../Label';
 
 // Context
 // ---------------
