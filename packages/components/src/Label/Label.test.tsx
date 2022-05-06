@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 import { Label } from './Label';
 
@@ -8,43 +8,29 @@ const theme = {
     body: 'Inter Regular',
     label: 'Oswald',
   },
-  label: {
-    above: {
-      fontFamily: 'body',
-    },
-    myLabel: {
-      fontFamily: 'label',
-    },
-  },
   colors: {
     text: 'black',
-    disabled: 'gray',
+  },
+  components: {
+    Label: {
+      base: {
+        fontFamily: 'body',
+        color: 'text',
+      },
+    },
   },
 };
 
-test('supports default variant and styles', () => {
+test('uses base styles from theme', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Label htmlFor="labelId">label</Label>
+      <Label>label</Label>
     </ThemeProvider>
   );
   const label = screen.getByText(/label/);
 
   expect(label).toHaveStyle(`font-family: Inter Regular`);
   expect(label).toHaveStyle(`color: black`);
-});
-
-test('supports other variant than default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Label htmlFor="labelId" variant="myLabel">
-        label
-      </Label>
-    </ThemeProvider>
-  );
-  const label = screen.getByText(/label/);
-
-  expect(label).toHaveStyle(`font-family: Oswald`);
 });
 
 test('supports htmlFor prop', () => {
@@ -61,50 +47,32 @@ test('supports htmlFor prop', () => {
 test('supports required prop', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Label htmlFor="labelId" required>
+      <Label data-testid="label" required>
         label
       </Label>
     </ThemeProvider>
   );
-  const label = screen.getByText(/label/);
-  // eslint-disable-next-line testing-library/no-node-access
-  const parent = label.parentElement;
-
-  expect(parent instanceof HTMLSpanElement).toBeTruthy();
+  const label = screen.getByTestId(/label/);
+  const requiredIcon = within(label).getByRole('presentation');
+  expect(requiredIcon).toBeInTheDocument();
 });
 
-test('supports color prop', () => {
+test('renders <label> element by default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Label htmlFor="labelId" color="disabled">
-        label
-      </Label>
+      <Label>label</Label>
     </ThemeProvider>
   );
   const label = screen.getByText(/label/);
-  expect(label).toHaveStyle(`color: gray`);
-});
-
-test('renders <label> element', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Label htmlFor="labelId">label</Label>
-    </ThemeProvider>
-  );
-  const label = screen.getByText(/label/);
-
   expect(label instanceof HTMLLabelElement).toBeTruthy();
 });
 
-test('accepts custom styles prop className', () => {
+test('can render as <span>', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Label htmlFor="labelId" className="custom-class-name" title="label">
-        label
-      </Label>
+      <Label as="span">label</Label>
     </ThemeProvider>
   );
-  const label = screen.getByTitle(/label/);
-
-  expect(label.className).toMatch('custom-class-name');
+  const label = screen.getByText(/label/);
+  expect(label instanceof HTMLSpanElement).toBeTruthy();
 });

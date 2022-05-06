@@ -18,10 +18,10 @@ import type { DividerThemeExtension } from './Divider';
 import type { FooterThemeExtension } from './Footer';
 import type { HeaderThemeExtension } from './Header';
 import type { HeadlineThemeExtension } from './Headline';
-import type { HelpTextThemeExtension } from './Field/HelpText';
+import type { HelpTextThemeExtension } from './HelpText';
 import type { ImageThemeExtension } from './Image';
 import type { InputThemeExtension } from './Input';
-import type { LabelThemeExtension } from './Field/Label';
+import type { LabelThemeExtension } from './Label';
 import type { LinkThemeExtension } from './Link';
 import type { ListBoxThemeExtension } from './ListBox';
 import type { MenuThemeExtension } from './Menu';
@@ -35,7 +35,6 @@ import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
 
 // Old Styling Solution
-import { type LabelThemeExtension as LegacyLabelThemeExtension } from './Label';
 import { type TooltipThemeExtension } from './Tooltip';
 
 interface ComponentStyles
@@ -69,7 +68,6 @@ interface ComponentStyles
 export interface Theme
   extends Scales,
     RootThemeExtension<CSSObject>,
-    LegacyLabelThemeExtension<CSSObject>,
     TooltipThemeExtension<CSSObject> {
   components: ComponentStyles;
 }

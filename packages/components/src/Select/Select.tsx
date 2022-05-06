@@ -18,7 +18,7 @@ import {
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { FieldBase } from '../Field';
+import { FieldBase } from '../FieldBase';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay';
 import { messages } from './intl';

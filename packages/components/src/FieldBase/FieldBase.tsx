@@ -1,8 +1,8 @@
 import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
 import { Box, StateAttrProps } from '@marigold/system';
 
-import { Label, LabelProps } from './Label';
-import { HelpText } from './HelpText';
+import { Label, LabelProps } from '../Label';
+import { HelpText } from '../HelpText';
 
 // Props
 // ---------------
