@@ -64,6 +64,7 @@
     "@react-stately/tree": "^3.2.3",
     "@react-types/checkbox": "^3.2.6",
     "@react-types/dialog": "^3.3.1",
+    "@react-types/numberfield": "^3.2.0",
     "@react-types/radio": "^3.1.5",
     "@react-types/shared": "^3.8.0",
     "@react-types/tooltip": "^3.1.5",
