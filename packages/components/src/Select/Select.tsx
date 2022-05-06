@@ -25,11 +25,11 @@ import { messages } from './intl';
 
 // Select Icon
 // ---------------
-interface ArrowsProps {
+interface ChevronProps {
   css: CSSObject;
 }
 
-const Arrows = ({ css }: ArrowsProps) => (
+const Chevron = ({ css }: ChevronProps) => (
   <Box
     as="svg"
     __baseCSS={{ width: 16, height: 16 }}
@@ -180,7 +180,7 @@ export const Select = ({
         >
           {state.selectedItem ? state.selectedItem.rendered : props.placeholder}
         </Box>
-        <Arrows css={styles.icon} />
+        <Chevron css={styles.icon} />
       </Box>
       <Popover
         open={state.isOpen}
