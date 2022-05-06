@@ -12,6 +12,7 @@ import { useStateProps } from '@marigold/system';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { Input } from '../Input';
+import { StepButton } from './StepButton';
 
 // Props
 // ---------------
@@ -91,6 +92,7 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
         size={size}
       >
         <div {...mergeProps(groupProps, focusProps, hoverProps)}>
+          <StepButton direction="down" {...decrementButtonProps} />
           <Input
             ref={inputRef}
             variant={variant}
@@ -102,6 +104,7 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
             {...(inputProps as any)}
             {...stateProps}
           />
+          <StepButton direction="up" {...incrementButtonProps} />
         </div>
       </FieldBase>
     );
