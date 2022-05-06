@@ -89,29 +89,6 @@ test('supports children as function', () => {
   expect(spy).toHaveBeenCalled();
 });
 
-test('child function is passed an id for the dialog title (a11y)', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Dialog.Trigger>
-        <Button>Open</Button>
-        <Dialog>
-          {({ titleProps }) => <div {...titleProps}>Custom Headline</div>}
-        </Dialog>
-      </Dialog.Trigger>
-    </ThemeProvider>
-  );
-  const button = screen.getByText('Open');
-  fireEvent.click(button);
-
-  const dialog = screen.getByRole('dialog');
-  const headline = screen.getByText('Custom Headline');
-
-  expect(dialog).toHaveAttribute(
-    'aria-labelledby',
-    headline.getAttribute('id')
-  );
-});
-
 test('dialog can be opened by button', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -199,6 +176,27 @@ test('close Dialog by clicking on the Underlay', () => {
   expect(dialog).not.toBeVisible();
 });
 
+test('child function is passed a close function', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog>
+          {({ close }) => <button onClick={close}>Custom Close</button>}
+        </Dialog>
+      </Dialog.Trigger>
+    </ThemeProvider>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
+
+  const dialog = screen.getByRole('dialog');
+  const closeButton = screen.getByText('Custom Close');
+  fireEvent.click(closeButton);
+
+  expect(dialog).not.toBeVisible();
+});
+
 test('supports title for accessability reasons', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -247,7 +245,32 @@ test('supports custom title for accessability reasons', () => {
   expect(headline.id).toBe(dialog.getAttribute('aria-labelledby'));
 });
 
+test('child function is passed an id for the dialog title (a11y)', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog>
+          {({ titleProps }) => <div {...titleProps}>Custom Headline</div>}
+        </Dialog>
+      </Dialog.Trigger>
+    </ThemeProvider>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
+
+  const dialog = screen.getByRole('dialog');
+  const headline = screen.getByText('Custom Headline');
+
+  expect(dialog).toHaveAttribute(
+    'aria-labelledby',
+    headline.getAttribute('id')
+  );
+});
+
 test('warns if no element to attach the title can be found', () => {
+  const warn = jest.spyOn(console, 'warn').mockImplementation();
+
   render(
     <ThemeProvider theme={theme}>
       <Dialog.Trigger>
@@ -262,6 +285,12 @@ test('warns if no element to attach the title can be found', () => {
   const dialog = screen.getByRole('dialog');
   expect(dialog).not.toHaveAttribute('aria-labelledby');
   expect(dialog.firstChild).not.toHaveAttribute('id');
+
+  expect(warn).toHaveBeenCalled();
+  expect(warn.mock.calls[0][0]).toMatchInlineSnapshot(
+    `"No child in <Dialog> found that can act as title for accessibility. Please add a <Header> or <Headline> as direct child."`
+  );
+  warn.mockRestore();
 });
 
 test('supports focus and open dialog with keyboard', () => {
