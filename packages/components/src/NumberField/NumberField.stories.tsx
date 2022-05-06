@@ -58,7 +58,6 @@ export default {
       defaultValue: false,
     },
     // TODO: Add formatting props!
-    // TODO: Hide stepper?
   },
 } as Meta;
 
