@@ -8,7 +8,12 @@ import { useNumberFieldState } from '@react-stately/numberfield';
 import { AriaNumberFieldProps } from '@react-types/numberfield';
 
 import { ComponentProps } from '@marigold/types';
-import { ThemeExtensionsWithParts, useStateProps } from '@marigold/system';
+import {
+  Box,
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+  useStateProps,
+} from '@marigold/system';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { Input } from '../Input';
@@ -71,14 +76,20 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
     } = useNumberField(props, state, inputRef);
 
     const { hoverProps, isHovered } = useHover({ isDisabled: disabled });
-    const { focusProps, isFocusVisible } = useFocusRing({
+    const { focusProps, isFocused } = useFocusRing({
       within: true,
       isTextInput: true,
       autoFocus: props.autoFocus,
     });
+
+    const styles = useComponentStyles(
+      'NumberField',
+      { variant, size },
+      { parts: ['group', 'stepper'] }
+    );
     const stateProps = useStateProps({
       hover: isHovered,
-      focus: isFocusVisible,
+      focus: isFocused,
       disabled,
       readOnly,
       error,
@@ -98,13 +109,28 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
         variant={variant}
         size={size}
       >
-        <div {...mergeProps(groupProps, focusProps, hoverProps)}>
-          <StepButton direction="down" {...decrementButtonProps} />
+        <Box
+          data-group
+          __baseCSS={{
+            display: 'flex',
+            alignItems: 'stretch',
+            '> input': {
+              flexGrow: 1,
+            },
+          }}
+          css={styles.group}
+          {...mergeProps(groupProps, focusProps, hoverProps)}
+          {...stateProps}
+        >
+          <StepButton
+            direction="down"
+            css={styles.stepper}
+            {...decrementButtonProps}
+          />
           <Input
             ref={inputRef}
             variant={variant}
             size={size}
-            data-grouped
             /**
              * We use `size` for styles which is a string, not like
              * the regular HTML attribute, which is a number
@@ -112,8 +138,12 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
             {...(inputProps as any)}
             {...stateProps}
           />
-          <StepButton direction="up" {...incrementButtonProps} />
-        </div>
+          <StepButton
+            direction="up"
+            css={styles.stepper}
+            {...incrementButtonProps}
+          />
+        </Box>
       </FieldBase>
     );
   }

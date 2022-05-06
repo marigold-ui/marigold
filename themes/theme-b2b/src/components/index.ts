@@ -14,6 +14,7 @@ export * from './Link.style';
 export * from './ListBox.style';
 export * from './Menu.style';
 export * from './Message.style';
+export * from './NumberField.style';
 export * from './Radio.style';
 export * from './Select.style';
 export * from './Slider.style';

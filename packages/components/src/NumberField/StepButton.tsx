@@ -1,17 +1,13 @@
 import React, { useRef } from 'react';
 import { useButton } from '@react-aria/button';
 import { AriaButtonProps } from '@react-types/button';
-import { useFocusRing } from '@react-aria/focus';
 import { useHover } from '@react-aria/interactions';
 import { mergeProps } from '@react-aria/utils';
 
-import { Box, useStateProps } from '@marigold/system';
+import { Box, CSSObject, useStateProps } from '@marigold/system';
 
-export interface StepButtonProps extends AriaButtonProps {
-  // We allow `isDisabled` to be passed down here.
-  direction: 'up' | 'down';
-}
-
+// Icons
+// ---------------
 const Plus = () => (
   <Box
     as="svg"
@@ -42,7 +38,17 @@ const Minus = () => (
   </Box>
 );
 
-export const StepButton = ({ direction, ...props }: StepButtonProps) => {
+// Props
+// ---------------
+export interface StepButtonProps extends AriaButtonProps {
+  // We allow `isDisabled` to be passed down here.
+  direction: 'up' | 'down';
+  css?: CSSObject;
+}
+
+// Components
+// ---------------
+export const StepButton = ({ direction, css, ...props }: StepButtonProps) => {
   const ref = useRef(null);
   /**
    * We use a `div` because there is a but in safari with disabled
@@ -53,18 +59,27 @@ export const StepButton = ({ direction, ...props }: StepButtonProps) => {
     ref
   );
   const { hoverProps, isHovered } = useHover(props);
-  const { focusProps, isFocusVisible } = useFocusRing();
 
   const stateProps = useStateProps({
     active: isPressed,
     hover: isHovered,
-    focus: isFocusVisible,
+    disabled: props.isDisabled,
   });
 
   const Icon = direction === 'up' ? Plus : Minus;
 
   return (
-    <Box {...mergeProps(buttonProps, hoverProps, focusProps)} {...stateProps}>
+    <Box
+      __baseCSS={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: props.isDisabled ? 'not-allowed' : 'pointer',
+      }}
+      css={css}
+      {...mergeProps(buttonProps, hoverProps)}
+      {...stateProps}
+    >
       <Icon />
     </Box>
   );

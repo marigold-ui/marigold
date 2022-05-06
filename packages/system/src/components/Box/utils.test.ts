@@ -116,6 +116,15 @@ describe('transform states', () => {
         '&[aria-expanded=true], &[data-expanded]': {},
       },
     },
+    {
+      name: ':in-group',
+      input: {
+        '&:in-group': {},
+      },
+      expected: {
+        '[role=group] &, [data-group] &': {},
+      },
+    },
   ])('tramsform "$name" to selector', ({ input, expected }) => {
     expect(transformPseudos(input)).toEqual(expected);
   });
