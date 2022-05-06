@@ -1,5 +1,6 @@
 ---
 title: Dialog
+figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=845%3A1095
 ---
 
 import { FigmaLink } from '../../src/components/FigmaLink';
@@ -21,41 +22,49 @@ import { Dialog } from '@marigold/components';
 
 ## Props
 
-| Property                     | Type                                       | Default     |
-| :--------------------------- | :----------------------------------------- | :---------- |
-| `isOpen `                    | `boolean`                                  | `false`     |
-| `close`                      | `ComponentProps<typeof Button>['onClick']` |             |
-| `title (optional)`           | `string`                                   |             |
-| `variant (optional)`         | `string`                                   | `__default` |
-| `backdropVariant (optional)` | `string`                                   | `backdrop`  |
+| Property             | Type                                       | Default |
+| :------------------- | :----------------------------------------- | :------ |
+| `isOpen `            | `boolean`                                  | `false` |
+| `close`              | `ComponentProps<typeof Button>['onClick']` |         |
+| `title (optional)`   | `string`                                   |         |
+| `variant (optional)` | `string`                                   |         |
+| `size (optional)`    | `string`                                   |         |
 
 ## Examples
 
+### Simple Dialog
+
 ```tsx
-() => {
-  const { state, openButtonProps, openButtonRef } = useDialogButtonProps();
-  return (
-    <>
-      <Button
-        variant="secondary"
-        size="small"
-        {...openButtonProps}
-        ref={openButtonRef}
-      >
-        Open Dialog
-      </Button>
-      {state.isOpen && (
-        <Dialog
-          title="Dialog Livecode example"
-          isOpen={state.isOpen}
-          close={state.close}
-        >
-          <Text>
-            This is your dialog text. You can read some interesting information.
-          </Text>
-        </Dialog>
-      )}
-    </>
-  );
-};
+<Dialog.Trigger>
+  <Button variant="primary">Open me</Button>
+  <Dialog closeButton>
+    <Headline level="3">Information!</Headline>
+    <Text>This is a simple info Dialog.</Text>
+  </Dialog>
+</Dialog.Trigger>
+```
+
+### Form Dialog
+
+```tsx
+<Dialog.Trigger>
+  <Button variant="primary">Login</Button>
+  <Dialog>
+    {({ close }) => (
+      <>
+        <Headline level="2">Please log into account</Headline>
+        <Stack space="small">
+          <TextField label="Username" />
+          <TextField label="Password" type="password" />
+          <Inline space="medium">
+            <Button variant="ghost" onPress={close}>
+              Cancel
+            </Button>
+            <Button variant="primary">Login</Button>
+          </Inline>
+        </Stack>
+      </>
+    )}
+  </Dialog>
+</Dialog.Trigger>
 ```
