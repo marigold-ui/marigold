@@ -8,11 +8,16 @@ import { useNumberFieldState } from '@react-stately/numberfield';
 import { AriaNumberFieldProps } from '@react-types/numberfield';
 
 import { ComponentProps } from '@marigold/types';
-import { useStateProps } from '@marigold/system';
+import { ThemeExtensionsWithParts, useStateProps } from '@marigold/system';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { Input } from '../Input';
 import { StepButton } from './StepButton';
+
+// Theme Extension
+// ---------------
+export interface NumberFieldThemeExtension
+  extends ThemeExtensionsWithParts<'NumberField', ['group', 'stepper']> {}
 
 // Props
 // ---------------
@@ -40,6 +45,8 @@ export interface NumberFieldProps
   size?: string;
 }
 
+// Component
+// ---------------
 export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
   ({ disabled, required, readOnly, error, variant, size, ...rest }, ref) => {
     const props = {
@@ -97,6 +104,7 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
             ref={inputRef}
             variant={variant}
             size={size}
+            data-grouped
             /**
              * We use `size` for styles which is a string, not like
              * the regular HTML attribute, which is a number
