@@ -1,4 +1,3 @@
-/* eslint-disable testing-library/no-node-access */
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -10,19 +9,23 @@ import { Button } from '../Button';
 import { Headline } from '../Headline';
 
 const theme = {
+  colors: {
+    green: '#2f9e44',
+    black: '#212529',
+  },
   space: {
     none: 'none',
-    small: '4px',
-    large: '16px',
+    'small-1': '4px',
+    'large-1': '16px',
   },
   components: {
     Dialog: {
       base: {
         container: {
-          p: 'large',
+          p: 'large-1',
         },
         closeButton: {
-          p: 'small',
+          p: 'small-1',
         },
       },
       variant: {
@@ -46,12 +49,12 @@ const theme = {
   },
 };
 
-test('renders correctly children', () => {
+test('renders children correctly', () => {
   render(
     <ThemeProvider theme={theme}>
       <Dialog.Trigger>
-        <Button variant="primary">Open</Button>
-        <Dialog closeButton>
+        <Button>Open</Button>
+        <Dialog>
           <Headline>Headline</Headline>
           Content
         </Dialog>
@@ -59,20 +62,62 @@ test('renders correctly children', () => {
     </ThemeProvider>
   );
   const button = screen.getByText('Open');
-  fireEvent.click(button);
-  const dialog = screen.getByText('Content');
+  expect(button).toBeInTheDocument();
 
-  expect(button instanceof HTMLButtonElement).toBeTruthy();
-  expect(dialog instanceof HTMLDivElement).toBeTruthy();
-  console.log(dialog.lastChild);
+  fireEvent.click(button);
+
+  const headline = screen.getByText('Headline');
+  expect(headline).toBeInTheDocument();
+
+  const dialog = screen.getByText('Content');
+  expect(dialog).toBeInTheDocument();
+});
+
+test('supports children as function', () => {
+  const spy = jest.fn().mockReturnValue(<div>I am a spy!</div>);
+  render(
+    <ThemeProvider theme={theme}>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog>{spy}</Dialog>
+      </Dialog.Trigger>
+    </ThemeProvider>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
+
+  expect(spy).toHaveBeenCalled();
+});
+
+test('child function is passed an id for the dialog title (a11y)', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog>
+          {({ titleProps }) => <div {...titleProps}>Custom Headline</div>}
+        </Dialog>
+      </Dialog.Trigger>
+    </ThemeProvider>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
+
+  const dialog = screen.getByRole('dialog');
+  const headline = screen.getByText('Custom Headline');
+
+  expect(dialog).toHaveAttribute(
+    'aria-labelledby',
+    headline.getAttribute('id')
+  );
 });
 
 test('dialog can be opened by button', () => {
   render(
     <ThemeProvider theme={theme}>
       <Dialog.Trigger>
-        <Button variant="primary">Open</Button>
-        <Dialog closeButton>
+        <Button>Open</Button>
+        <Dialog>
           <Headline>Headline</Headline>
           Content
         </Dialog>
@@ -81,15 +126,16 @@ test('dialog can be opened by button', () => {
   );
   const button = screen.getByText('Open');
   fireEvent.click(button);
+
   const dialog = screen.getByText('Content');
   expect(dialog).toBeVisible();
 });
 
-test('supports close Button', () => {
+test('optionally renders a close button', () => {
   render(
     <ThemeProvider theme={theme}>
       <Dialog.Trigger>
-        <Button variant="primary">Open</Button>
+        <Button>Open</Button>
         <Dialog closeButton>
           <Headline>Headline</Headline>
           Content
@@ -102,6 +148,7 @@ test('supports close Button', () => {
   const dialog = screen.getByText('Content');
   expect(dialog).toBeVisible();
 
+  /* eslint-disable-next-line testing-library/no-node-access */
   const closeButton = dialog.firstChild?.lastChild!;
   expect(closeButton).toBeInTheDocument();
 
@@ -109,11 +156,11 @@ test('supports close Button', () => {
   expect(dialog).not.toBeVisible();
 });
 
-test('close Dialog by escape key', () => {
+test('supoorts closing the dialog with escape key', () => {
   render(
     <ThemeProvider theme={theme}>
       <Dialog.Trigger>
-        <Button variant="primary">Open</Button>
+        <Button>Open</Button>
         <Dialog closeButton>
           <Headline>Headline</Headline>
           Content
@@ -133,7 +180,7 @@ test('close Dialog by clicking on the Underlay', () => {
   render(
     <ThemeProvider theme={theme}>
       <Dialog.Trigger>
-        <Button variant="primary">Open</Button>
+        <Button>Open</Button>
         <Dialog closeButton>
           <Headline>Headline</Headline>
           Content
@@ -156,7 +203,7 @@ test('supports title for accessability reasons', () => {
   render(
     <ThemeProvider theme={theme}>
       <Dialog.Trigger>
-        <Button variant="primary">Open</Button>
+        <Button>Open</Button>
         <Dialog closeButton>
           <Headline>Headline</Headline>
           Content
@@ -180,7 +227,7 @@ test('supports custom title for accessability reasons', () => {
   render(
     <ThemeProvider theme={theme}>
       <Dialog.Trigger>
-        <Button variant="primary">Open</Button>
+        <Button>Open</Button>
         <Dialog closeButton aria-labelledby="myTitle">
           <Headline id="myTitle">Headline</Headline>
           Content
@@ -200,11 +247,11 @@ test('supports custom title for accessability reasons', () => {
   expect(headline.id).toBe(dialog.getAttribute('aria-labelledby'));
 });
 
-test('can not find a title for accessability reasons', () => {
+test('warns if no element to attach the title can be found', () => {
   render(
     <ThemeProvider theme={theme}>
       <Dialog.Trigger>
-        <Button variant="primary">Open</Button>
+        <Button>Open</Button>
         <Dialog closeButton>Content</Dialog>
       </Dialog.Trigger>
     </ThemeProvider>
@@ -221,7 +268,7 @@ test('supports focus and open dialog with keyboard', () => {
   render(
     <ThemeProvider theme={theme}>
       <Dialog.Trigger>
-        <Button variant="primary">Open</Button>
+        <Button>Open</Button>
         <Dialog closeButton>
           <Headline>Headline</Headline>
           Content
@@ -241,7 +288,7 @@ test('dialog has base style', () => {
   render(
     <ThemeProvider theme={theme}>
       <Dialog.Trigger>
-        <Button variant="primary">Open</Button>
+        <Button>Open</Button>
         <Dialog closeButton>
           <Headline>Headline</Headline>
           Content
@@ -257,15 +304,15 @@ test('dialog has base style', () => {
 
   const closeButton = dialog.firstChild?.lastChild;
 
-  expect(closeButton).toHaveStyle(`padding: ${theme.space.small}`);
-  expect(dialog).toHaveStyle(`padding: ${theme.space.large}`);
+  expect(closeButton).toHaveStyle(`padding: ${theme.space['small-1']}`);
+  expect(dialog).toHaveStyle(`padding: ${theme.space['large-1']}`);
 });
 
 test('dialog has variant style', () => {
   render(
     <ThemeProvider theme={theme}>
       <Dialog.Trigger>
-        <Button variant="primary">Open</Button>
+        <Button>Open</Button>
         <Dialog variant="custom" closeButton>
           <Headline>Headline</Headline>
           Content
@@ -281,15 +328,15 @@ test('dialog has variant style', () => {
 
   const closeButton = dialog.firstChild?.lastChild;
 
-  expect(closeButton).toHaveStyle('background-color: black');
-  expect(dialog).toHaveStyle('background-color: green');
+  expect(closeButton).toHaveStyle(`background-color: ${theme.colors.black}`);
+  expect(dialog).toHaveStyle(`background-color: ${theme.colors.green}`);
 });
 
 test('dialog supports size', () => {
   render(
     <ThemeProvider theme={theme}>
       <Dialog.Trigger>
-        <Button variant="primary">Open</Button>
+        <Button>Open</Button>
         <Dialog size="large" closeButton>
           <Headline>Headline</Headline>
           Content

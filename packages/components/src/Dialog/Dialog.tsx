@@ -101,8 +101,8 @@ export interface DialogThemeExtension
 
 // Props
 // ---------------
-export interface DialogChildProps
-  extends Pick<DialogContextProps, 'close' | 'open'> {
+export interface DialogChildProps {
+  close: DialogContextProps['close'];
   titleProps: HTMLAttributes<HTMLElement>;
 }
 
@@ -123,7 +123,7 @@ export const Dialog = ({
   ...props
 }: DialogProps) => {
   const ref = useRef(null);
-  const { close, open } = useDialogContext();
+  const { close } = useDialogContext();
   const { dialogProps, titleProps } = useDialog(props, ref);
 
   const styles = useComponentStyles(
@@ -136,7 +136,7 @@ export const Dialog = ({
     <Box __baseCSS={{ bg: '#fff' }} css={styles.container} {...dialogProps}>
       {closeButton && <CloseButton css={styles.closeButton} />}
       {typeof children === 'function'
-        ? children({ close, open, titleProps })
+        ? children({ close, titleProps })
         : props['aria-labelledby']
         ? children
         : addTitleProps(children, titleProps)}
