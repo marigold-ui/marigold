@@ -7,7 +7,7 @@ import { AriaTextFieldProps } from '@react-types/textfield';
 import { useStateProps } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { FieldBase, FieldBaseProps } from '../Field';
+import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { Input } from '../Input';
 
 // Props
