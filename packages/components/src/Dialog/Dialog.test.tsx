@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-node-access */
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -125,7 +126,6 @@ test('optionally renders a close button', () => {
   const dialog = screen.getByText('Content');
   expect(dialog).toBeVisible();
 
-  /* eslint-disable-next-line testing-library/no-node-access */
   const closeButton = dialog.firstChild?.lastChild!;
   expect(closeButton).toBeInTheDocument();
 
