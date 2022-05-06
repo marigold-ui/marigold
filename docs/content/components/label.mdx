@@ -1,16 +1,16 @@
 ---
 title: Label
+figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=92%3A0
 ---
 
 import { FigmaLink } from '../../src/components/FigmaLink';
 
 # Label
 
-With the Label component you can add a HTML `<Label>` element to your form.
-The variant can be added with the variant prop. The default variant is `above`.
+The `Label` component is used to accosiate and describe a form field.
 
 <MarigoldTheme>
-  <Label htmlFor="labelId">Just a simple label</Label>
+  <Label>Some Label</Label>
 </MarigoldTheme>
 
 ```tsx onlyCode
@@ -25,76 +25,17 @@ import { Label } from '@marigold/components';
 
 ## Props
 
-| Property              | Type                           | Default |
-| :-------------------- | :----------------------------- | :------ |
-| `variant` (optional)  | `string`                       | `above` |
-| `required` (optional) | `boolean`                      | `false` |
-| `color` (optional)    | `ResponsiveStyleValue<string>` | `text`  |
-| `htmlFor`             | `string`                       |         |
+| Property              | Type                | Default   |
+| :-------------------- | :------------------ | :-------- |
+| `variant` (optional)  | `string`            |           |
+| `size` (optional)     | `string`            |           |
+| `as` (optional)       | `'label' \| 'span'` | `'label'` |
+| `required` (optional) | `boolean`           |           |
 
 ## Examples
 
 ### Label required
 
 ```tsx
-<Label htmlFor="labelId" required>
-  I am a required Label!
-</Label>
-```
-
-### Label colored
-
-```tsx
-<Label htmlFor="labelId" color="info">
-  I am a disabled Label!
-</Label>
-```
-
-### Label above
-
-```tsx
-<>
-  <Label htmlFor="labelId">Name:</Label>
-  <Input id="labelId" />
-</>
-```
-
-### Label inline
-
-```tsx
-<Inline space="xxsmall">
-  <Checkbox id="labelId" />
-  <Label variant="inline" htmlFor="labelId">
-    Agree to Marigold terms
-  </Label>
-</Inline>
-```
-
-### Section Label
-
-```tsx
-<Stack>
-  <Label htmlFor="labelId" variant="section">
-    Payment Selection
-  </Label>
-  <Divider variant="section" />
-  <Inline space="small">
-    <Radio id="one" name="Section1" value="RadioOne" label="Radio One" />
-    <Label variant="inline" htmlFor="labelId">
-      Visa
-    </Label>
-  </Inline>
-  <Inline space="small">
-    <Radio id="two" name="Section2" value="RadioTwo" label="Radio Two" />
-    <Label variant="inline" htmlFor="labelId">
-      Paypal
-    </Label>
-  </Inline>
-  <Inline space="small">
-    <Radio id="two" name="Section3" value="RadioThree" label="Radio Three" />
-    <Label variant="inline" htmlFor="labelId">
-      Sofortüberweisung
-    </Label>
-  </Inline>
-</Stack>
+<Label required>I am a required Label!</Label>
 ```

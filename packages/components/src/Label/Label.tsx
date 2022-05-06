@@ -1,64 +1,47 @@
+// TODO: But this back into the root, when we realease all the new fields!
 import React from 'react';
-
-import { ComponentProps } from '@marigold/types';
 import { Required } from '@marigold/icons';
-import { ResponsiveStyleValue } from '@marigold/system';
-
-import { Box } from '../Box';
+import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
+import { ComponentProps } from '@marigold/types';
 
 // Theme Extension
 // ---------------
-export interface LabelThemeExtension<Value> {
-  label?: {
-    [key: string]: Value;
-  };
+export interface LabelThemeExtension extends ThemeExtension<'Label'> {}
+
+// Props
+// ---------------
+export interface LabelProps extends ComponentProps<'label'> {
+  as?: 'label' | 'span';
+  variant?: string;
+  size?: string;
+  required?: boolean;
 }
 
-// LabelBase
+// Component
 // ---------------
-export type LabelBaseProps = {
-  htmlFor?: string;
-  variant?: string;
-  required?: boolean;
-  color?: ResponsiveStyleValue<string>;
-} & ComponentProps<'label'>;
-
-export const LabelBase: React.FC<LabelProps> = ({
-  variant = 'above',
+export const Label = ({
+  as = 'label',
   required,
-  color = 'text',
   children,
+  variant,
+  size,
   ...props
-}) => {
+}: LabelProps) => {
+  const styles = useComponentStyles('Label', { size, variant });
+
   return (
     <Box
       {...props}
-      as="label"
-      __baseCSS={{ color: color }}
-      variant={`label.${variant}`}
+      as={as}
+      __baseCSS={{ display: 'flex', alignItems: 'center', gap: 4 }}
+      css={styles}
     >
       {children}
+      {/*
+       * aria-required is set on the field and will already be announced,
+       * so we don't need to add it here.
+       */}
+      {required && <Required role="presentation" size={16} fill="error" />}
     </Box>
-  );
-};
-
-// Label
-// ---------------
-export interface LabelProps extends LabelBaseProps {
-  required?: boolean;
-}
-
-export const Label: React.FC<LabelProps> = ({
-  required,
-  children,
-  ...props
-}) => {
-  return required ? (
-    <Box as="span" display="inline-flex" alignItems="center">
-      <LabelBase {...props}>{children}</LabelBase>
-      {required && <Required size={16} fill="error" />}
-    </Box>
-  ) : (
-    <LabelBase {...props}>{children}</LabelBase>
   );
 };
