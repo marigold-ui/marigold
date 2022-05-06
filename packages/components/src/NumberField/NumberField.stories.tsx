@@ -65,6 +65,21 @@ export const Basic: ComponentStory<typeof NumberField> = args => (
   <NumberField {...args} />
 );
 
+export const WithFormatting: ComponentStory<typeof NumberField> = args => (
+  <NumberField
+    defaultValue={10}
+    formatOptions={{
+      style: 'currency',
+      currency: 'EUR',
+    }}
+    {...args}
+  />
+);
+
+export const MinMax: ComponentStory<typeof NumberField> = args => (
+  <NumberField minValue={0} maxValue={100} step={10} {...args} />
+);
+
 export const Controlled: ComponentStory<typeof NumberField> = args => {
   const [value, setValue] = React.useState(0);
   return (

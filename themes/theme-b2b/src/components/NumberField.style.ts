@@ -51,6 +51,10 @@ export const NumberField: Theme['components']['NumberField'] = {
       '[data-error] &': {
         borderColor: 'red60',
       },
+
+      '&:disabled': {
+        color: 'gray40',
+      },
     },
   },
 };
