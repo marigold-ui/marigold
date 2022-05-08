@@ -8,7 +8,7 @@ export const NumberField: Theme['components']['NumberField'] = {
       borderColor: 'gray40',
       borderRadius: 'small',
 
-      '&[data-hover]': {
+      '&:hover': {
         borderColor: 'gray50',
       },
 
@@ -31,10 +31,6 @@ export const NumberField: Theme['components']['NumberField'] = {
     stepper: {
       width: 'xsmall',
 
-      '&[data-hover]': {
-        bg: 'gray10',
-      },
-
       '&:nth-of-type(1)': {
         borderRight: '1px solid',
         borderColor: 'gray40',
@@ -42,6 +38,14 @@ export const NumberField: Theme['components']['NumberField'] = {
       '&:nth-of-type(2)': {
         borderLeft: '1px solid',
         borderColor: 'gray40',
+      },
+
+      '&:hover': {
+        bg: 'gray10',
+      },
+
+      '[data-hover] &': {
+        borderColor: 'gray50',
       },
 
       '[data-focus] &': {
