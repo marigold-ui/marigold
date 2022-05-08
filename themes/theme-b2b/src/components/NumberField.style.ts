@@ -44,20 +44,20 @@ export const NumberField: Theme['components']['NumberField'] = {
         bg: 'gray10',
       },
 
-      '[data-hover] &': {
+      '&:disabled': {
+        color: 'gray40',
+      },
+
+      '&:hover-group': {
         borderColor: 'gray50',
       },
 
-      '[data-focus] &': {
+      '&:focus-group': {
         borderColor: 'blue60',
       },
 
-      '[data-error] &': {
+      '&:error-group': {
         borderColor: 'red60',
-      },
-
-      '&:disabled': {
-        color: 'gray40',
       },
     },
   },

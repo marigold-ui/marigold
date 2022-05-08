@@ -1,19 +1,73 @@
 import { StyleObject } from '../../types';
 
+const createteSelector = (
+  selectors: string[],
+  states: string[],
+  suffix = ''
+) => {
+  return selectors
+    .map(selector =>
+      states.map(state => `${selector}${state}${suffix ? ` ${suffix}` : ''}`)
+    )
+    .flat()
+    .join(', ');
+};
+
+const selector = {
+  self: '&',
+  grouped: ['[role=group]', '[data-group]'],
+};
+
+const state = {
+  none: [''],
+  hover: [':hover', '[data-hover]'],
+  focus: [':focus', '[data-focus]'],
+  focusVisible: [':focus-visible', '[data-focus-visible]'],
+  active: [':active', '[data-active]'],
+  disabled: ['[disabled]', '[aria-disabled=true]', '[data-disabled]'],
+  readOnly: ['[readonly]', '[aria-readonly=true]', '[data-read-only]'],
+  checked: ['[aria-checked=true]', '[data-checked]'],
+  indeterminate: ['[aria-checked=mixed]', '[data-indeterminate]'],
+  selected: ['[aria-selected=true]', '[data-selected]'],
+  error: [':invalid', '[aria-invalid=true]', '[data-error]'],
+  expanded: ['[aria-expanded=true]', '[data-expanded]'],
+};
+
 const pseudos = {
-  '&:hover': '&:hover, &[data-hover]',
-  '&:focus': '&:focus, &[data-focus]',
-  '&:focus-visible': '&:focus-visible, &[data-focus-visible]',
-  '&:active': '&:active, &[data-active]',
-  '&:disabled': '&[disabled], &[aria-disabled=true], &[data-disabled]',
-  '&:read-only': '&[readonly], &[aria-readonly=true], &[data-read-only]',
-  '&:checked': '&[aria-checked=true], &[data-checked]',
-  '&:selected': '&[aria-selected=true], &[data-selected]',
-  '&:indeterminate':
-    '&:indeterminate, &[aria-checked=mixed], &[data-indeterminate]',
-  '&:error': '&:invalid, &[aria-invalid=true], &[data-error]',
-  '&:expanded': '&[aria-expanded=true], &[data-expanded]',
-  '&:in-group': '[role=group] &, [data-group] &',
+  '&:hover': createteSelector([selector.self], state.hover),
+  '&:focus': createteSelector([selector.self], state.focus),
+  '&:focus-visible': createteSelector([selector.self], state.focusVisible),
+  '&:active': createteSelector([selector.self], state.active),
+  '&:disabled': createteSelector([selector.self], state.disabled),
+  '&:read-only': createteSelector([selector.self], state.readOnly),
+  '&:checked': createteSelector([selector.self], state.checked),
+  '&:selected': createteSelector([selector.self], state.selected),
+  '&:indeterminate': createteSelector([selector.self], state.indeterminate),
+  '&:error': createteSelector([selector.self], state.error),
+  '&:expanded': createteSelector([selector.self], state.expanded),
+
+  // Selector for elements that are part of a group
+  '&:in-group': createteSelector(selector.grouped, state.none, selector.self),
+  '&:hover-group': createteSelector(
+    selector.grouped,
+    state.hover,
+    selector.self
+  ),
+  '&:focus-group': createteSelector(
+    selector.grouped,
+    state.focus,
+    selector.self
+  ),
+  '&:active-group': createteSelector(
+    selector.grouped,
+    state.active,
+    selector.self
+  ),
+  '&:error-group': createteSelector(
+    selector.grouped,
+    state.error,
+    selector.self
+  ),
 } as const;
 
 /**
