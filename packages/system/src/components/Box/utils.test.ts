@@ -95,7 +95,7 @@ describe('transform states', () => {
         '&:indeterminate': {},
       },
       expected: {
-        '&:indeterminate, &[aria-checked=mixed], &[data-indeterminate]': {},
+        '&[aria-checked=mixed], &[data-indeterminate]': {},
       },
     },
     {
@@ -114,6 +114,55 @@ describe('transform states', () => {
       },
       expected: {
         '&[aria-expanded=true], &[data-expanded]': {},
+      },
+    },
+    {
+      name: ':in-group',
+      input: {
+        '&:in-group': {},
+      },
+      expected: {
+        '[role=group] &, [data-group] &': {},
+      },
+    },
+    {
+      name: ':hover-group',
+      input: {
+        '&:hover-group': {},
+      },
+      expected: {
+        '[role=group]:hover &, [role=group][data-hover] &, [data-group]:hover &, [data-group][data-hover] &':
+          {},
+      },
+    },
+    {
+      name: ':focus-group',
+      input: {
+        '&:focus-group': {},
+      },
+      expected: {
+        '[role=group]:focus &, [role=group][data-focus] &, [data-group]:focus &, [data-group][data-focus] &':
+          {},
+      },
+    },
+    {
+      name: ':active-group',
+      input: {
+        '&:active-group': {},
+      },
+      expected: {
+        '[role=group]:active &, [role=group][data-active] &, [data-group]:active &, [data-group][data-active] &':
+          {},
+      },
+    },
+    {
+      name: ':error-group',
+      input: {
+        '&:error-group': {},
+      },
+      expected: {
+        '[role=group]:invalid &, [role=group][aria-invalid=true] &, [role=group][data-error] &, [data-group]:invalid &, [data-group][aria-invalid=true] &, [data-group][data-error] &':
+          {},
       },
     },
   ])('tramsform "$name" to selector', ({ input, expected }) => {
