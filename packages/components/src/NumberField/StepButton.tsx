@@ -51,7 +51,7 @@ export interface StepButtonProps extends AriaButtonProps {
 export const StepButton = ({ direction, css, ...props }: StepButtonProps) => {
   const ref = useRef(null);
   /**
-   * We use a `div` because there is a but in safari with disabled
+   * We use a `div` because there is a bug in safari with disabled
    * form elements. See: https://bugs.webkit.org/show_bug.cgi?id=219188
    */
   const { buttonProps, isPressed } = useButton(
