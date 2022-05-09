@@ -21,18 +21,25 @@
     "directory": "config/jest"
   },
   "dependencies": {
-    "@swc/core": "^1.2.120",
-    "@swc/jest": "^0.2.15",
+    "@babel/core": "7.17.10",
+    "@swc/core": "1.2.120",
+    "@swc/jest": "0.2.15",
     "@types/jest": "27.4.1",
     "babel-jest": "27.5.1",
     "find-up": "5.0.0",
     "jest-watch-typeahead": "1.0.0",
-    "merge-deep": "^3.0.3",
+    "merge-deep": "3.0.3",
     "react-test-renderer": "17.0.2",
     "ts-jest": "27.1.4"
   },
   "peerDependencies": {
-    "jest": "25.x || 26.x || 27.x",
-    "typescript": "3.8.x || 3.9.x || 4.2.x || 4.3.x || 4.4.x || 4.5.x || 4.6.x"
+    "jest": "27.x",
+    "react": "17.0.2",
+    "typescript": "4.6.3"
+  },
+  "devDependencies": {
+    "jest": "27.5.1",
+    "react": "17.0.2",
+    "typescript": "4.6.3"
   }
 }
