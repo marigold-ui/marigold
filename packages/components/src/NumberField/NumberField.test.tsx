@@ -4,6 +4,7 @@ import { ThemeProvider } from '@marigold/system';
 
 import { NumberField } from './NumberField';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
 
 const theme = {
   colors: {
@@ -275,6 +276,35 @@ test('can be controlled', () => {
   expect(screen.getByTestId('output')).toHaveTextContent('42');
 });
 
+test('allows to specify min and max value', () => {
+  const onChange = jest.fn();
+  render(
+    <NumberField
+      label="A Label"
+      data-testid="number-field"
+      min={0}
+      max={10}
+      onChange={onChange}
+    />
+  );
+
+  const input = screen.getByTestId('number-field');
+  userEvent.click(input);
+  userEvent.type(input, '1');
+  userEvent.type(input, '0');
+  userEvent.type(input, '0');
+  userEvent.type(input, '1');
+  userEvent.tab();
+
+  console.log(onChange.mock.calls);
+  console.log(input.value);
+});
+
+// test('increment and decrement value via stepper', () => {
+
+// })
+
+// min max
 // Use stepper
 // hide stepper
 // stepper increment value
