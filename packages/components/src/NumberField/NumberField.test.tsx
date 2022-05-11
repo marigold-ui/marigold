@@ -4,7 +4,6 @@ import { ThemeProvider } from '@marigold/system';
 
 import { NumberField } from './NumberField';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 
 const theme = {
   colors: {
