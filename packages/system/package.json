@@ -38,8 +38,10 @@
     "react-dom": "^16.x || ^17.0.0"
   },
   "devDependencies": {
+    "@babel/core": "7.17.10",
     "@marigold/tsconfig": "workspace:*",
-    "tsup": "5.12.6"
+    "react": "17.x",
+    "tsup": "5.12.7"
   },
   "scripts": {
     "build": "tsup src/index.ts",
