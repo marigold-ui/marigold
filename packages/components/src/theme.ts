@@ -37,7 +37,7 @@ import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
 
 // Old Styling Solution
-import { type TooltipThemeExtension } from './Tooltip';
+import { type TooltipThemeExtension } from './Tooltip--old';
 
 interface ComponentStyles
   extends BadgeThemeExtension,

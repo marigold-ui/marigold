@@ -1,45 +1,66 @@
-import React, { Ref, RefObject, useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
 import { FocusableProvider } from '@react-aria/focus';
+import { useOverlayPosition } from '@react-aria/overlays';
 import { useTooltipTrigger } from '@react-aria/tooltip';
-import {
-  TooltipTriggerState,
-  useTooltipTriggerState,
-} from '@react-stately/tooltip';
+import { useTooltipTriggerState } from '@react-stately/tooltip';
+import { PositionProps } from '@react-types/overlays';
+import { TooltipTriggerProps as AriaTooltipTriggerProps } from '@react-types/tooltip';
+import { TooltipContext } from './Context';
+import { Overlay } from '../Overlay';
 
-// TooltipContext
-// ---------------
-export const TooltipContext = React.createContext<{
-  state?: TooltipTriggerState;
-}>({});
+export interface TooltipTriggerProps
+  extends Omit<AriaTooltipTriggerProps, 'isDisabled' | 'isOpen'>,
+    Omit<PositionProps, 'isOpen'> {
+  children: [trigger: ReactNode, menu: ReactNode];
+  disabled?: boolean;
+  open?: boolean;
+}
 
-// TooltipTrigger Component
-// ---------------
-export const TooltipTrigger: React.FC = ({ children, ...props }) => {
-  const [trigger, tooltip] = React.Children.toArray(children);
+export const TooltipTrigger = ({
+  disabled,
+  open,
+  children,
+  ...rest
+}: TooltipTriggerProps) => {
+  const [tooltipTrigger, tooltip] = React.Children.toArray(children);
+  const props = { ...rest, isDisabled: disabled, isOpen: open };
+
+  const tooltipTriggerRef = useRef(null);
+  const overlayRef = useRef(null);
+
   const state = useTooltipTriggerState(props);
-  const tooltipTriggerRef = useRef<HTMLElement>();
+
   const { triggerProps, tooltipProps } = useTooltipTrigger(
-    {},
+    props,
     state,
-    tooltipTriggerRef as RefObject<HTMLElement>
+    tooltipTriggerRef
   );
 
+  const { overlayProps, arrowProps, placement } = useOverlayPosition({
+    placement: props.placement || 'top',
+    targetRef: tooltipTriggerRef,
+    offset: props.offset,
+    crossOffset: props.crossOffset,
+    isOpen: state.isOpen,
+    overlayRef,
+  });
+  console.log(overlayProps);
   return (
-    <FocusableProvider
-      {...triggerProps}
-      ref={tooltipTriggerRef as Ref<HTMLElement>}
-    >
-      {trigger}
-      {state.isOpen && (
-        <TooltipContext.Provider
-          value={{
-            state,
-            ...tooltipProps,
-          }}
-        >
+    <FocusableProvider ref={tooltipTriggerRef} {...triggerProps}>
+      {tooltipTrigger}
+      <TooltipContext.Provider
+        value={{
+          state,
+          placement,
+          overlayRef,
+          arrowProps,
+          ...tooltipProps,
+        }}
+      >
+        <Overlay open={state.isOpen} {...overlayProps}>
           {tooltip}
-        </TooltipContext.Provider>
-      )}
+        </Overlay>
+      </TooltipContext.Provider>
     </FocusableProvider>
   );
 };
