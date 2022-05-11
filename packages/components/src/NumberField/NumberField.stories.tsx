@@ -57,7 +57,6 @@ export default {
       },
       defaultValue: false,
     },
-    // TODO: Add formatting props!
   },
 } as Meta;
 
@@ -77,7 +76,10 @@ export const WithFormatting: ComponentStory<typeof NumberField> = args => (
 );
 
 export const MinMax: ComponentStory<typeof NumberField> = args => (
-  <NumberField minValue={0} maxValue={100} step={10} {...args} />
+  <>
+    <NumberField minValue={0} maxValue={100} step={10} {...args} />
+    <small>min: 0, max: 100</small>
+  </>
 );
 
 export const Controlled: ComponentStory<typeof NumberField> = args => {

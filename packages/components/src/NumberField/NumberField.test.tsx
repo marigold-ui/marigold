@@ -282,30 +282,164 @@ test('allows to specify min and max value', () => {
     <NumberField
       label="A Label"
       data-testid="number-field"
-      min={0}
-      max={10}
+      minValue={0}
+      maxValue={10}
       onChange={onChange}
     />
   );
 
-  const input = screen.getByTestId('number-field');
+  const input: HTMLInputElement = screen.getByTestId('number-field');
+
   userEvent.click(input);
-  userEvent.type(input, '1');
-  userEvent.type(input, '0');
-  userEvent.type(input, '0');
-  userEvent.type(input, '1');
+  userEvent.type(input, '100');
   userEvent.tab();
 
-  console.log(onChange.mock.calls);
-  console.log(input.value);
+  expect(input.value).toEqual('10');
+  expect(onChange).toHaveBeenCalledWith(10);
 });
 
-// test('increment and decrement value via stepper', () => {
+test('increment and decrement value via stepper', () => {
+  render(
+    <NumberField label="A Label" data-testid="number-field" defaultValue={50} />
+  );
 
-// })
+  const input: HTMLInputElement = screen.getByTestId('number-field');
+  const [decrement, increment] = screen.getAllByRole('button');
 
-// min max
-// Use stepper
-// hide stepper
-// stepper increment value
-// formating
+  userEvent.click(increment);
+  userEvent.click(increment);
+  userEvent.click(increment);
+
+  expect(input.value).toEqual('53');
+
+  userEvent.click(decrement);
+  userEvent.click(decrement);
+
+  expect(input.value).toEqual('51');
+});
+
+test('increment and decrement value via stepper (with min and max)', () => {
+  render(
+    <NumberField
+      label="A Label"
+      data-testid="number-field"
+      minValue={0}
+      maxValue={5}
+      defaultValue={1}
+    />
+  );
+
+  const input: HTMLInputElement = screen.getByTestId('number-field');
+  const group = screen.getByRole('group');
+  const [decrement, increment] = within(group).getAllByRole('button');
+
+  userEvent.click(decrement);
+  userEvent.click(decrement);
+  userEvent.click(decrement);
+  userEvent.click(decrement);
+  userEvent.click(decrement);
+
+  expect(input.value).toEqual('0');
+
+  userEvent.click(increment);
+  userEvent.click(increment);
+  userEvent.click(increment);
+  userEvent.click(increment);
+  userEvent.click(increment);
+  userEvent.click(increment);
+
+  expect(input.value).toEqual('5');
+});
+
+test('increment and decrement with custom steps', () => {
+  render(
+    <NumberField
+      label="A Label"
+      data-testid="number-field"
+      defaultValue={0}
+      step={10}
+    />
+  );
+
+  const input: HTMLInputElement = screen.getByTestId('number-field');
+  const group = screen.getByRole('group');
+  const [decrement, increment] = within(group).queryAllByRole('button');
+
+  userEvent.click(increment);
+  userEvent.click(increment);
+
+  expect(input.value).toEqual('20');
+
+  userEvent.click(decrement);
+
+  expect(input.value).toEqual('10');
+});
+
+test('hide stepper buttons', () => {
+  render(
+    <NumberField label="A Label" data-testid="number-field" hideStepper />
+  );
+
+  const group = screen.getByRole('group');
+  const stepper = within(group).queryAllByRole('button');
+
+  expect(stepper).toHaveLength(0);
+});
+
+test('allows formatting of displayed value', () => {
+  render(
+    <>
+      <NumberField
+        label="A Label"
+        data-testid="number-field-decimal"
+        defaultValue={3.41}
+        formatOptions={{
+          signDisplay: 'exceptZero',
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 2,
+        }}
+      />
+      <NumberField
+        label="A Label"
+        data-testid="number-field-money"
+        defaultValue={9.99}
+        formatOptions={{
+          style: 'currency',
+          currency: 'EUR',
+        }}
+      />
+      <NumberField
+        label="A Label"
+        data-testid="number-field-percentage"
+        defaultValue={0.34}
+        formatOptions={{
+          style: 'percent',
+        }}
+      />
+      <NumberField
+        label="A Label"
+        data-testid="number-field-unit"
+        defaultValue={150}
+        formatOptions={{
+          style: 'unit',
+          unit: 'centimeter',
+          unitDisplay: 'short',
+        }}
+      />
+    </>
+  );
+
+  const decimal: HTMLInputElement = screen.getByTestId('number-field-decimal');
+  expect(decimal.value).toEqual('+3.41');
+
+  const money: HTMLInputElement = screen.getByTestId('number-field-money');
+  expect(money.value).toEqual('€9.99');
+
+  const percentage: HTMLInputElement = screen.getByTestId(
+    'number-field-percentage'
+  );
+  expect(percentage.value).toEqual('34%');
+
+  const unit: HTMLInputElement = screen.getByTestId('number-field-unit');
+  expect(unit.value).toEqual('150 cm');
+});

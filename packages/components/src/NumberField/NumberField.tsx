@@ -40,7 +40,9 @@ type CustomProps =
   | 'onFocus'
   | 'onBlur'
   | 'onKeyDown'
-  | 'onKeyUp';
+  | 'onKeyUp'
+  | 'min'
+  | 'max';
 
 export interface NumberFieldProps
   extends Omit<ComponentProps<'input'>, CustomProps>,
