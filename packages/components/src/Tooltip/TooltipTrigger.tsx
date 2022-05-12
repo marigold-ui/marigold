@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react';
+import React, { ReactElement, useRef } from 'react';
 import { FocusableProvider } from '@react-aria/focus';
 import { useOverlayPosition } from '@react-aria/overlays';
 import { useTooltipTrigger } from '@react-aria/tooltip';
@@ -8,14 +8,18 @@ import { TooltipTriggerProps as AriaTooltipTriggerProps } from '@react-types/too
 import { TooltipContext } from './Context';
 import { Overlay } from '../Overlay';
 
+// Props
+// ---------------
 export interface TooltipTriggerProps
   extends Omit<AriaTooltipTriggerProps, 'isDisabled' | 'isOpen'>,
     Omit<PositionProps, 'isOpen'> {
-  children: [trigger: ReactNode, menu: ReactNode];
+  children: [trigger: ReactElement, menu: ReactElement];
   disabled?: boolean;
   open?: boolean;
 }
 
+// Component
+// ---------------
 export const TooltipTrigger = ({
   disabled,
   open,

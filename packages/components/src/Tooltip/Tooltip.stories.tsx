@@ -15,6 +15,9 @@ export const Basic: ComponentStory<typeof Tooltip> = args => {
   return (
     <Box
       css={{
+        display: 'grid',
+        placeItems: 'center',
+        height: '300px',
         width: 'min(100% - 3rem, 60ch)',
         marginInline: 'auto',
       }}
