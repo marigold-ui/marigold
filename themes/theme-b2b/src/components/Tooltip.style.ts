@@ -36,9 +36,33 @@ export const Tooltip: Theme['components']['Tooltip'] = {
       borderWidth: arrowSize,
       borderTopColor: 'blue70',
 
+      '::after': {
+        content: '""',
+        position: 'absolute',
+        height: 0,
+        width: 0,
+
+        borderStyle: 'solid',
+        borderLeftColor: 'transparent',
+        borderRightColor: 'transparent',
+        borderBottomColor: 'transparent',
+
+        borderWidth: arrowSize - 1,
+        borderTopColor: 'blue10',
+
+        left: `-${arrowSize - 1}px`,
+        // weird but looks better
+        top: `-${arrowSize}.5px`,
+      },
+
       '[data-placement="right"] &, [data-placement="left"] &': {
         top: '50%',
         mt: `-${arrowSize}px`,
+
+        '::after': {
+          // weird but looks better
+          top: `-${arrowSize}.5px`,
+        },
       },
 
       '[data-placement="top"] &, [data-placement="bottom"] &': {
