@@ -3,7 +3,6 @@ import type { Meta, ComponentStory } from '@storybook/react';
 import { Box } from '@marigold/system';
 
 import { Tooltip } from './Tooltip';
-import { TooltipTrigger } from './TooltipTrigger';
 import { Button } from '../Button';
 
 export default {
@@ -77,17 +76,17 @@ export const Basic: ComponentStory<typeof Tooltip> = args => {
         marginInline: 'auto',
       }}
     >
-      <TooltipTrigger {...args}>
+      <Tooltip.Trigger {...args}>
         <Button variant="primary">Hover me!</Button>
         <Tooltip>Look at this tooltip!</Tooltip>
-      </TooltipTrigger>
-      <TooltipTrigger {...args}>
+      </Tooltip.Trigger>
+      <Tooltip.Trigger {...args}>
         <Button variant="primary">Hover no! Me!</Button>
         <Tooltip>
           <div>I am a much more longer tooltip you know!</div>
           <div>I even have two lines!</div>
         </Tooltip>
-      </TooltipTrigger>
+      </Tooltip.Trigger>
     </Box>
   );
 };

@@ -9,6 +9,7 @@ import {
 import { ComponentProps } from '@marigold/types';
 
 import { useTooltipContext } from './Context';
+import { TooltipTrigger } from './TooltipTrigger';
 
 // Theme Extension
 // ---------------
@@ -61,3 +62,5 @@ export const Tooltip = ({ children, variant, size }: TooltipProps) => {
     </Box>
   );
 };
+
+Tooltip.Trigger = TooltipTrigger;
