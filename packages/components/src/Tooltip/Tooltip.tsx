@@ -14,16 +14,18 @@ export interface TooltipThemeExtension extends ThemeExtension<'Tooltip'> {}
 // ---------------
 export interface TooltipProps extends ComponentProps<'div'> {
   children?: ReactNode;
+  variant?: string;
+  size?: string;
 }
 
 // Component
 // ---------------
-export const Tooltip = ({ children }: TooltipProps) => {
+export const Tooltip = ({ children, variant, size }: TooltipProps) => {
   const { arrowProps, state, overlayRef, placement, ...rest } =
     useTooltipContext();
   const { tooltipProps } = useTooltip({}, state);
 
-  const styles = useComponentStyles('Tooltip');
+  const styles = useComponentStyles('Tooltip', { variant, size });
 
   return (
     <Box {...tooltipProps} {...rest} ref={overlayRef} css={styles}>

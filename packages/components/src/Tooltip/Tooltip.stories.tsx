@@ -18,12 +18,16 @@ export default {
     },
     offset: {
       control: {
-        type: 'range',
-        min: 0,
-        max: 20,
+        type: 'integer',
       },
-      defaultValue: 0,
       description: 'The offset from the trigger element',
+    },
+    crossOffset: {
+      control: {
+        type: 'integer',
+      },
+      description:
+        'The additional offset across the cross acis from the trigger element',
     },
     delay: {
       control: {
@@ -38,6 +42,26 @@ export default {
       options: [undefined, 'focus'],
       defaultValue: undefined,
       description: 'The trigger type (default = focus AND hover)',
+    },
+    placement: {
+      control: {
+        type: 'select',
+      },
+      options: ['top', 'bottom', 'left', 'right'],
+      defaultValue: undefined,
+      description: 'The placement of the tooltip',
+    },
+    containerPadding: {
+      control: {
+        type: 'number',
+      },
+      description: 'The padding around the tooltip',
+    },
+    shouldFlip: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Should the tooltip be automatically be flipped',
     },
   },
 } as Meta;
