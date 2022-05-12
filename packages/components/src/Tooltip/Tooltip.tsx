@@ -11,11 +11,11 @@ export interface TooltipProps extends ComponentProps<'div'> {
 }
 
 export const Tooltip = ({ children }: TooltipProps) => {
-  const { state, overlayRef } = useTooltipContext();
+  const { state, overlayRef, ...rest } = useTooltipContext();
   const { tooltipProps } = useTooltip({}, state);
 
   return (
-    <Box {...tooltipProps} ref={overlayRef}>
+    <Box {...tooltipProps} {...rest} ref={overlayRef}>
       {children}
     </Box>
   );
