@@ -1,8 +1,6 @@
-import { type Theme } from '@marigold/components';
-import { colors } from './colors';
-import { component } from './component';
+import type { Theme } from '@marigold/components';
 
-// NEW STYLES!
+import { colors } from './colors';
 import * as components from './components';
 
 export const webFontUrl = [
@@ -82,9 +80,6 @@ const theme: Theme = {
     xlarge: 2.5,
     xxlarge: 3,
   },
-  ...component,
-
-  // NEW STYLES!!!
   components,
 } as const;
 
