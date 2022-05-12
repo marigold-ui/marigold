@@ -1,7 +1,4 @@
 import { colors } from './colors';
-import { component } from './component';
-
-// NEW STYLES!
 import * as components from './components';
 
 export const webFontUrl = [
@@ -81,9 +78,6 @@ const theme: any = {
     xlarge: 2.5,
     xxlarge: 3,
   },
-  ...component,
-
-  // NEW STYLES!!!
   components,
 } as const;
 

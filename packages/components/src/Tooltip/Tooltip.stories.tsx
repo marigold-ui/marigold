@@ -70,9 +70,9 @@ export const Basic: ComponentStory<typeof Tooltip> = args => {
   return (
     <Box
       css={{
-        display: 'grid',
-        placeItems: 'center',
-        height: '300px',
+        display: 'flex',
+        gap: 10,
+        pt: 120,
         width: 'min(100% - 3rem, 60ch)',
         marginInline: 'auto',
       }}
@@ -80,6 +80,13 @@ export const Basic: ComponentStory<typeof Tooltip> = args => {
       <TooltipTrigger {...args}>
         <Button variant="primary">Hover me!</Button>
         <Tooltip>Look at this tooltip!</Tooltip>
+      </TooltipTrigger>
+      <TooltipTrigger {...args}>
+        <Button variant="primary">Hover no! Me!</Button>
+        <Tooltip>
+          <div>I am a much more longer tooltip you know!</div>
+          <div>I even have two lines!</div>
+        </Tooltip>
       </TooltipTrigger>
     </Box>
   );

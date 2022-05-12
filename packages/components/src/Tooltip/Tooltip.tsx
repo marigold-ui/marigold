@@ -1,14 +1,19 @@
 import React, { ReactNode } from 'react';
 import { useTooltip } from '@react-aria/tooltip';
 
-import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
+import {
+  Box,
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+} from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 import { useTooltipContext } from './Context';
 
 // Theme Extension
 // ---------------
-export interface TooltipThemeExtension extends ThemeExtension<'Tooltip'> {}
+export interface TooltipThemeExtension
+  extends ThemeExtensionsWithParts<'Tooltip', ['container', 'arrow']> {}
 
 // Props
 // ---------------
@@ -25,12 +30,34 @@ export const Tooltip = ({ children, variant, size }: TooltipProps) => {
     useTooltipContext();
   const { tooltipProps } = useTooltip({}, state);
 
-  const styles = useComponentStyles('Tooltip', { variant, size });
+  const styles = useComponentStyles(
+    'Tooltip',
+    { variant, size },
+    { parts: ['container', 'arrow'] }
+  );
 
   return (
-    <Box {...tooltipProps} {...rest} ref={overlayRef} css={styles}>
-      <span>{children}</span>
-      <Box {...arrowProps} data-placement={placement} />
+    <Box
+      {...tooltipProps}
+      {...rest}
+      ref={overlayRef}
+      css={styles.container}
+      data-placement={placement}
+    >
+      <div>{children}</div>
+      <Box
+        {...arrowProps}
+        __baseCSS={{
+          position: 'absolute',
+          height: 0,
+          width: 0,
+          borderStyle: 'solid',
+          borderLeftColor: 'transparent',
+          borderRightColor: 'transparent',
+          borderBottomColor: 'transparent',
+        }}
+        css={styles.arrow}
+      />
     </Box>
   );
 };
