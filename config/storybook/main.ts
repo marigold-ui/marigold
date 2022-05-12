@@ -34,6 +34,7 @@ const config: StorybookConfig = {
   typescript: {
     check: false,
     checkOptions: {},
+    reactDocgen: false,
   },
   features: {
     postcss: false,
