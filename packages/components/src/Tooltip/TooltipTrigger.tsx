@@ -60,7 +60,7 @@ export const TooltipTrigger = ({
     isOpen: state.isOpen,
     overlayRef,
   });
-  console.log(positionProps.style);
+
   return (
     <FocusableProvider ref={tooltipTriggerRef} {...triggerProps}>
       {tooltipTrigger}

@@ -2,111 +2,63 @@
 title: Tooltip
 ---
 
-import { DoAndDont } from '../../src/components/DoAndDont';
-import {
-  Box,
-  Button,
-  Stack,
-  Tooltip,
-  TooltipTrigger,
-} from '@marigold/components';
-import { Info } from '@marigold/icons';
-
 # Tooltip
 
-The Tooltip should provide extra information to the user. This information should be
-secondary and not escential to perform a task.
-A tooltip consists of two parts: the **trigger** element and the **tooltip** itself.
-Users may reveal the tooltip by hovering or focusing the trigger.
+The `Tooltip` components allows to provide additional information to that user.
 
-<MarigoldTheme>
-  <TooltipTrigger isOpen>
-    <Button variant="" size="" aria-label="infoIconButton">
-      <Info fill="info" />
-    </Button>
-    <Tooltip>Tooltip</Tooltip>
-  </TooltipTrigger>
-</MarigoldTheme>
+```tsx
+<Tooltip.Trigger>
+  <Button variant="primary">Hover me!</Button>
+  <Tooltip>Look at this cool tip!</Tooltip>
+</Tooltip.Trigger>
+```
 
 ```tsx onlyCode
-import { Tooltip, TooltipTrigger } from '@marigold/components';
+import { Tooltip } from '@marigold/components';
 ```
 
 ## Props
 
-| Property             | Type     | Default     |
-| :------------------- | :------- | :---------- |
-| `variant` (optional) | `string` | `__default` |
+### TooltipTrigger
+
+| Property                 | Type                                     | Default    |
+| :----------------------- | :--------------------------------------- | :--------- |
+| `variant` (optional)     | `string`                                 |            |
+| `size` (optional)        | `string`                                 |            |
+| `disabled` (optional)    | `boolean`                                | `false`    |
+| `offset` (optional)      | `number`                                 |            |
+| `crossOffset` (optional) | `number`                                 |            |
+| `delay` (optional)       | `number`                                 |            |
+| `trogger` (optional)     | `'focus''                                | undefined` |
+| `placement` (optional)   | `'top' \| 'bottom' \| 'left' \| 'right'` | `'top'`    |
 
 ## Examples
 
 ### Default Tooltip
 
 ```tsx expandCode
-<TooltipTrigger>
-  <Button variant="" size="" aria-label="infoIconButton">
+<Tooltip.Trigger>
+  <Button>
     <Info fill="info" />
   </Button>
   <Tooltip>Tooltip</Tooltip>
-</TooltipTrigger>
+</Tooltip.Trigger>
 ```
 
-## Dos & Don'ts
+### Tooltip with custom placement
 
-<Stack space="small">
-  <Box
-    display="grid"
-    css={{
-      gridGap: 'small',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(min(500px, 100%), 1fr))',
-    }}
-  >
-    <DoAndDont
-      preview={
-        <TooltipTrigger isOpen>
-          <Button variant="" size="" aria-label="infoIconButton">
-            <Info fill="info" />
-          </Button>
-          <Box as={Tooltip} css={{ position: 'relative' }}>
-            Tooltip
-          </Box>
-        </TooltipTrigger>
-      }
-    >
-      Point an information icon.
-    </DoAndDont>
-    <DoAndDont
-      dont
-      preview={
-        <TooltipTrigger isOpen>
-          <Button variant="" size="" aria-label="infoIconButton">
-            <Info fill="info" />
-          </Button>
-          <Box as={Tooltip} css={{ position: 'relative' }}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
-          </Box>
-        </TooltipTrigger>
-      }
-    >
-      Don't make extensive explanations on a tool tip. It is only for short and
-      “nice to have” extra information.
-    </DoAndDont>
-    <DoAndDont
-      dont
-      preview={
-        <TooltipTrigger isOpen>
-          <Button variant="" size="" aria-label="infoIconButton">
-            <Info fill="info" />
-          </Button>
-          <Box as={Tooltip} css={{ position: 'relative' }}>
-            If you do not click the box, all data will be deleted.
-          </Box>
-        </TooltipTrigger>
-      }
-    >
-      Don't put highly important information on a tooltip, this element is
-      hidden and should only contain “nice to have” information.
-    </DoAndDont>
-  </Box>
-</Stack>
+```tsx expandCode
+<Tooltip.Trigger placement="right">
+  <Button>Hover me!</Button>
+  <Tooltip>Tooltip</Tooltip>
+</Tooltip.Trigger>
+```
+
+### Tooltip only shows when focused
+
+```tsx expandCode
+<Tooltip.Trigger trigger="focus">
+  <Button>Hover me!</Button>
+  <Tooltip>Tooltip</Tooltip>
+</Tooltip.Trigger>
+```
