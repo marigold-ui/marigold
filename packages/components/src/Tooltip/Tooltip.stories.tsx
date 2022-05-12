@@ -8,7 +8,38 @@ import { Button } from '../Button';
 
 export default {
   title: 'Components/Tooltip',
-  argTypes: {},
+  argTypes: {
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+      defaultValue: false,
+      description: 'Disabled state',
+    },
+    offset: {
+      control: {
+        type: 'range',
+        min: 0,
+        max: 20,
+      },
+      defaultValue: 0,
+      description: 'The offset from the trigger element',
+    },
+    delay: {
+      control: {
+        type: 'number',
+      },
+      description: 'The delay before the tooltip is shown',
+    },
+    trigger: {
+      control: {
+        type: 'select',
+      },
+      options: [undefined, 'focus'],
+      defaultValue: undefined,
+      description: 'The trigger type (default = focus AND hover)',
+    },
+  },
 } as Meta;
 
 export const Basic: ComponentStory<typeof Tooltip> = args => {

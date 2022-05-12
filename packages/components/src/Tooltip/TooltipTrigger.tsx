@@ -23,11 +23,19 @@ export interface TooltipTriggerProps
 export const TooltipTrigger = ({
   disabled,
   open,
+  delay = 1000,
+  placement = 'top',
   children,
   ...rest
 }: TooltipTriggerProps) => {
   const [tooltipTrigger, tooltip] = React.Children.toArray(children);
-  const props = { ...rest, isDisabled: disabled, isOpen: open };
+  const props = {
+    ...rest,
+    isDisabled: disabled,
+    isOpen: open,
+    delay,
+    placement,
+  };
 
   const tooltipTriggerRef = useRef(null);
   const overlayRef = useRef(null);
@@ -42,8 +50,8 @@ export const TooltipTrigger = ({
 
   const {
     overlayProps: positionProps,
+    placement: overlayPlacement,
     arrowProps,
-    placement,
   } = useOverlayPosition({
     placement: props.placement || 'top',
     targetRef: tooltipTriggerRef,
@@ -59,9 +67,9 @@ export const TooltipTrigger = ({
       <TooltipContext.Provider
         value={{
           state,
-          placement,
           overlayRef,
           arrowProps,
+          placement: overlayPlacement,
           ...tooltipProps,
           ...positionProps,
         }}

@@ -24,7 +24,7 @@ export const Tooltip = ({ children }: TooltipProps) => {
   const { tooltipProps } = useTooltip({}, state);
 
   const styles = useComponentStyles('Tooltip');
-  console.log(arrowProps);
+
   return (
     <Box {...tooltipProps} {...rest} ref={overlayRef} css={styles}>
       <span>{children}</span>
