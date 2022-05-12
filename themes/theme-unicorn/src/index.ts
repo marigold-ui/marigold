@@ -54,6 +54,7 @@ const theme: Theme = {
     small: 2,
     medium: 4,
     large: 8,
+    huge: 16,
   },
   fonts: {
     body: 'Arial',
