@@ -33,5 +33,10 @@ export const Input: Theme['components']['Input'] = {
       borderColor: 'red60',
       boxShadow: `0 0 0 1px ${colors.red60}`,
     },
+
+    '&:in-group': {
+      border: 'none',
+      boxShadow: 'none',
+    },
   },
 };

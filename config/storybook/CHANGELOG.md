@@ -1,5 +1,21 @@
 # @marigold/storybook-config
 
+## 0.6.0-beta.0
+
+### Minor Changes
+
+- [#2048](https://github.com/marigold-ui/marigold/pull/2048) [`2ab80ae6`](https://github.com/marigold-ui/marigold/commit/2ab80ae677be0785cfa6e2bdf9f7ff2f3d38baec) Thanks [@sebald](https://github.com/sebald)! - refa: <Select>
+
+* [#2068](https://github.com/marigold-ui/marigold/pull/2068) [`e1a9c51f`](https://github.com/marigold-ui/marigold/commit/e1a9c51f73053a4dcd3a0384253cf144a75d261c) Thanks [@sebald](https://github.com/sebald)! - feat(storybook): Store selected theme + remove docgen
+
+### Patch Changes
+
+- Updated dependencies [[`bbe8ad99`](https://github.com/marigold-ui/marigold/commit/bbe8ad99f64cea5cc25fa19bb7705c3f9f1b7104), [`819dab0b`](https://github.com/marigold-ui/marigold/commit/819dab0bfe549f7fb6156cdb9938595ccbe32439), [`6a369f5f`](https://github.com/marigold-ui/marigold/commit/6a369f5f8e9f637e8aa9a560e63443e3d821c075), [`0db2b687`](https://github.com/marigold-ui/marigold/commit/0db2b687a6f4cc35981e1e35a82873e61e1589e5), [`2ab80ae6`](https://github.com/marigold-ui/marigold/commit/2ab80ae677be0785cfa6e2bdf9f7ff2f3d38baec), [`bf12129c`](https://github.com/marigold-ui/marigold/commit/bf12129c6d5d21bf372fd6ee7e3a28f6a03326c9), [`5f64c882`](https://github.com/marigold-ui/marigold/commit/5f64c88286c7248e881a7f5548aba2afbe82f728), [`f761f1ef`](https://github.com/marigold-ui/marigold/commit/f761f1ef65a826eb8c70da2fa03e5caf3393c3b9), [`759abe94`](https://github.com/marigold-ui/marigold/commit/759abe94648f7935723cfb47e2097ba918ce1255), [`3abbc813`](https://github.com/marigold-ui/marigold/commit/3abbc8130c8b5156f3ca62f237dd59278354eb7c), [`3c86c3b7`](https://github.com/marigold-ui/marigold/commit/3c86c3b7399a525c2743a1a42b806f862b050cd3), [`2b5a0967`](https://github.com/marigold-ui/marigold/commit/2b5a0967707534a1650f1258bebdd176c934dedc)]:
+  - @marigold/components@1.0.0-beta.0
+  - @marigold/theme-b2b@7.0.0-beta.0
+  - @marigold/theme-core@7.0.0-beta.0
+  - @marigold/theme-unicorn@4.0.0-beta.0
+
 ## 0.5.1
 
 ### Patch Changes
