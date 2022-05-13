@@ -10,41 +10,43 @@ const theme = {
     secondary: 'blue',
     disabled: 'gray',
   },
-  ...{
-    components: {
-      Slider: {
-        base: {
-          track: {
-            color: 'green',
-            '&:focus': {
-              bg: 'primary',
-            },
-            '&:checked': {
-              bg: 'secondary',
-            },
-            '&:disabled': {
-              bg: 'disabled',
-            },
+  sizes: {
+    none: 0,
+    large: 120,
+  },
+  components: {
+    Slider: {
+      base: {
+        track: {
+          color: 'green',
+          '&:focus': {
+            bg: 'primary',
           },
-          thumb: {
-            color: 'green',
-            '&:focus': {
-              bg: 'primary',
-            },
-            '&:disabled': {
-              bg: 'disabled',
-            },
+          '&:checked': {
+            bg: 'secondary',
           },
-          label: {
-            color: 'text',
-            fontSize: 'xxsmall',
-            fontWeight: 'body',
+          '&:disabled': {
+            bg: 'disabled',
           },
-          output: {
-            color: 'text',
-            fontSize: 'xxsmall',
-            fontWeight: 'body',
+        },
+        thumb: {
+          color: 'green',
+          '&:focus': {
+            bg: 'primary',
           },
+          '&:disabled': {
+            bg: 'disabled',
+          },
+        },
+        label: {
+          color: 'text',
+          fontSize: 'xxsmall',
+          fontWeight: 'body',
+        },
+        output: {
+          color: 'text',
+          fontSize: 'xxsmall',
+          fontWeight: 'body',
         },
       },
     },
@@ -146,4 +148,26 @@ test('supports formatOptions prop', () => {
   fireEvent.change(slider, { target: { value: '0.5' } });
   expect(slider).toHaveValue('0.5');
   expect(screen.getByRole(/status/)).toContainHTML('50%');
+});
+
+test('takes full width by default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Slider>Percent</Slider>
+    </ThemeProvider>
+  );
+
+  const container = screen.getByRole('group');
+  expect(container).toHaveStyle('width: 100%');
+});
+
+test('allows to set width via prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Slider width="large">Percent</Slider>
+    </ThemeProvider>
+  );
+
+  const container = screen.getByRole('group');
+  expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
 });
