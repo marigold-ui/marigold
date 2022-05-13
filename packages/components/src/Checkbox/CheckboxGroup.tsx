@@ -1,9 +1,6 @@
-import React, { createContext, ReactNode, useContext } from 'react';
+import React, { ReactNode } from 'react';
 import { useCheckboxGroup } from '@react-aria/checkbox';
-import {
-  CheckboxGroupState,
-  useCheckboxGroupState,
-} from '@react-stately/checkbox';
+import { useCheckboxGroupState } from '@react-stately/checkbox';
 import { AriaCheckboxGroupProps } from '@react-types/checkbox';
 
 import {
@@ -14,23 +11,7 @@ import {
 import { ComponentProps } from '@marigold/types';
 
 import { Label } from '../Label';
-
-// Context
-// ---------------
-export interface CheckboxGroupContextProps extends CheckboxGroupState {
-  error?: boolean;
-  variant?: string;
-  size?: string;
-}
-
-/**
- * Needs to be falsy so we can check if a checkbox is used as standalone
- * or in a group.
- */
-export const CheckboxGroupContext = createContext<CheckboxGroupContextProps>(
-  null as any
-);
-export const useCheckboxGroupContext = () => useContext(CheckboxGroupContext);
+import { CheckboxGroupContext } from './Context';
 
 // Theme Extension
 // ---------------
@@ -45,6 +26,7 @@ interface CheckboxGroupProps
   children: ReactNode;
   variant?: string;
   size?: string;
+  width?: string;
   label?: ReactNode;
   required?: boolean;
   disabled?: boolean;
@@ -61,6 +43,7 @@ export const CheckboxGroup = ({
   children,
   variant,
   size,
+  width,
   required,
   disabled,
   readOnly,
@@ -101,7 +84,7 @@ export const CheckboxGroup = ({
         css={styles.group}
       >
         <CheckboxGroupContext.Provider
-          value={{ variant, size, error, ...state }}
+          value={{ variant, size, width, error, ...state }}
         >
           {children}
         </CheckboxGroupContext.Provider>

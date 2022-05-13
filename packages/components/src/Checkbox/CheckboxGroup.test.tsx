@@ -16,6 +16,11 @@ const theme = {
     'small-1': 12,
     'large-1': 24,
   },
+  sizes: {
+    none: 0,
+    medium: 40,
+    large: 60,
+  },
   components: {
     Checkbox: {
       base: {
@@ -164,6 +169,48 @@ test('passed down variant and size to checkboxes', () => {
   );
 });
 
+test('passes down "width" to checkboxes', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <CheckboxGroup label="Group of Checkboxes" width="large">
+        <Checkbox value="one" data-testid="one">
+          one
+        </Checkbox>
+        <Checkbox value="two" data-testid="two">
+          two
+        </Checkbox>
+      </CheckboxGroup>
+    </ThemeProvider>
+  );
+
+  const oneContainer = screen.getByTestId('one').parentElement;
+  expect(oneContainer).toHaveStyle(`width: ${theme.sizes.large}px`);
+
+  const twoContainer = screen.getByTestId('two').parentElement;
+  expect(twoContainer).toHaveStyle(`width: ${theme.sizes.large}px`);
+});
+
+test('passed down "width" can be locally overriden', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <CheckboxGroup label="Group of Checkboxes" width="large">
+        <Checkbox value="one" data-testid="one">
+          one
+        </Checkbox>
+        <Checkbox value="two" data-testid="two" width="medium">
+          two
+        </Checkbox>
+      </CheckboxGroup>
+    </ThemeProvider>
+  );
+
+  const oneContainer = screen.getByTestId('one').parentElement;
+  expect(oneContainer).toHaveStyle(`width: ${theme.sizes.large}px`);
+
+  const twoContainer = screen.getByTestId('two').parentElement;
+  expect(twoContainer).toHaveStyle(`width: ${theme.sizes.medium}px`);
+});
+
 test('passes down "disabled" to checkboxes', () => {
   render(
     <CheckboxGroup label="Group of Checkboxes" disabled>
@@ -232,7 +279,7 @@ test('passes down "error" to checkboxes', () => {
   );
 });
 
-test('constrolled', () => {
+test('controlled', () => {
   const onChange = jest.fn();
   render(
     <CheckboxGroup label="Group of Checkboxes" onChange={onChange}>

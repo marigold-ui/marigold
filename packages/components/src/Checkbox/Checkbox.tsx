@@ -16,7 +16,7 @@ import {
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { useCheckboxGroupContext } from './CheckboxGroup';
+import { useCheckboxGroupContext } from './Context';
 
 // Theme Extension
 // ---------------
@@ -104,7 +104,7 @@ export interface CheckboxProps
 export const Checkbox = ({
   size,
   variant,
-  width = '100%',
+  width,
   disabled,
   checked,
   defaultChecked,
@@ -188,7 +188,7 @@ export const Checkbox = ({
         alignItems: 'center',
         gap: '1ch',
         position: 'relative',
-        width,
+        width: width || groupState?.width || '100%',
       }}
       css={styles.container}
       {...hoverProps}
