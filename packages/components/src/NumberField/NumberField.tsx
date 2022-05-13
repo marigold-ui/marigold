@@ -32,6 +32,7 @@ export interface NumberFieldThemeExtension
  */
 type CustomProps =
   | 'size'
+  | 'width'
   | 'type'
   | 'value'
   | 'defaultValue'
@@ -50,6 +51,7 @@ export interface NumberFieldProps
     Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
   variant?: string;
   size?: string;
+  width?: string;
   hideStepper?: boolean;
 }
 
@@ -58,12 +60,13 @@ export interface NumberFieldProps
 export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
   (
     {
+      variant,
+      size,
+      width,
       disabled,
       required,
       readOnly,
       error,
-      variant,
-      size,
       hideStepper,
       ...rest
     },
@@ -125,6 +128,7 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
         stateProps={stateProps}
         variant={variant}
         size={size}
+        width={width}
       >
         <Box
           data-group

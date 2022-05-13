@@ -17,6 +17,10 @@ const theme = {
     'small-1': 12,
     'large-1': 24,
   },
+  sizes: {
+    none: 0,
+    huge: 120,
+  },
   components: {
     Label: {
       variant: {
@@ -172,6 +176,17 @@ test('passes down variant and size', () => {
   const description = screen.getByText('Description');
   expect(description).toHaveStyle(`color: ${theme.colors.lime}`);
   expect(description).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
+});
+
+test('allows to set width via prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <NumberField data-testid="number-field" label="Label" width="huge" />
+    </ThemeProvider>
+  );
+
+  const container = screen.getByText('Label').parentElement;
+  expect(container).toHaveStyle(`width: ${theme.sizes.huge}px`);
 });
 
 test('supports disabled', () => {
