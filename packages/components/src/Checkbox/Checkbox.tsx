@@ -90,10 +90,11 @@ export interface CheckboxProps
   extends ThemeComponentProps,
     Omit<
       ComponentProps<'input'>,
-      'size' | 'type' | 'defaultValue' | CustomCheckboxProps
+      'size' | 'width' | 'type' | 'defaultValue' | CustomCheckboxProps
     >,
     Pick<AriaCheckboxProps, CustomCheckboxProps> {
   children?: ReactNode;
+  width?: string;
   indeterminate?: boolean;
   error?: boolean;
 }
@@ -103,6 +104,7 @@ export interface CheckboxProps
 export const Checkbox = ({
   size,
   variant,
+  width = '100%',
   disabled,
   checked,
   defaultChecked,
@@ -186,6 +188,7 @@ export const Checkbox = ({
         alignItems: 'center',
         gap: '1ch',
         position: 'relative',
+        width,
       }}
       css={styles.container}
       {...hoverProps}
