@@ -21,6 +21,10 @@ const theme = {
     'small-1': 14,
     'medium-1': 18,
   },
+  sizes: {
+    none: 0,
+    huge: 120,
+  },
   components: {
     Label: {
       base: {
@@ -503,6 +507,23 @@ test('supports styling with variants and sizes from theme', () => {
 
   const section = within(options).getByText('Section 1');
   expect(section).toHaveStyle(`font-size: ${theme.fontSizes['medium-1']}px`);
+});
+
+test('set width via props', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" width="huge">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  // We need to query all, since there is also a label in the hidden select
+  const container = screen.getAllByText('Label')[0].parentElement;
+  expect(container).toHaveStyle(`width: ${theme.sizes.huge}px`);
 });
 
 test('supports focus styling for button', () => {
