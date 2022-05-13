@@ -15,7 +15,13 @@ import { Input } from '../Input';
 export interface TextFieldProps
   extends Omit<
       ComponentProps<'input'>,
-      'value' | 'defaultValue' | 'onChange' | 'onFocus' | 'onBlur' | 'size'
+      | 'value'
+      | 'defaultValue'
+      | 'onChange'
+      | 'onFocus'
+      | 'onBlur'
+      | 'size'
+      | 'width'
     >,
     /**
      * `react-aria` has a slightly different API for `onChange`, `onFocus`
@@ -25,6 +31,7 @@ export interface TextFieldProps
     Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
   variant?: string;
   size?: string;
+  width?: string;
   value?: string;
   defaultValue?: string;
 }
@@ -32,12 +39,13 @@ export interface TextFieldProps
 // Component
 // ---------------
 export const TextField = ({
+  variant,
+  size,
+  width,
   disabled,
   required,
   readOnly,
   error,
-  variant,
-  size,
   ...props
 }: TextFieldProps) => {
   const { label, description, errorMessage, autoFocus } = props;
@@ -81,6 +89,7 @@ export const TextField = ({
       stateProps={stateProps}
       variant={variant}
       size={size}
+      width={width}
     >
       <Input
         ref={ref}
