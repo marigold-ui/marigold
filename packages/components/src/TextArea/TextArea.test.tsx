@@ -13,6 +13,10 @@ const theme = {
   fontSizes: {
     'small-1': 12,
   },
+  sizes: {
+    none: 0,
+    large: 60,
+  },
   components: {
     Label: {
       variant: {
@@ -102,6 +106,30 @@ test('passes down variant and size', () => {
   const description = screen.getByText('Description');
   expect(description).toHaveStyle(`color: ${theme.colors.lime}`);
   expect(description).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
+});
+
+test('takes full width by default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <TextArea data-testid="text-area" label="Label" />
+    </ThemeProvider>
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByText('Label').parentElement;
+  expect(container).toHaveStyle('width: 100%');
+});
+
+test('allows to set custom width', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <TextArea data-testid="text-area" label="Label" width="large" />
+    </ThemeProvider>
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByText('Label').parentElement;
+  expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
 });
 
 test('supports disabled', () => {
