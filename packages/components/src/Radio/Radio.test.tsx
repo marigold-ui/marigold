@@ -223,6 +223,7 @@ test('takes full width by default', () => {
     </ThemeProvider>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   const containerOne = screen.getByTestId('radio-1').parentElement;
   expect(containerOne).toHaveStyle('width: 100%');
 });
@@ -241,6 +242,7 @@ test('set width via prop', () => {
     </ThemeProvider>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   const containerOne = screen.getByTestId('radio-1').parentElement;
   expect(containerOne).toHaveStyle(`width: ${theme.sizes['large-1']}px`);
 });
@@ -259,9 +261,11 @@ test('set width via prop in group', () => {
     </ThemeProvider>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   const containerOne = screen.getByTestId('radio-1').parentElement;
   expect(containerOne).toHaveStyle(`width: ${theme.sizes['huge-1']}px`);
 
+  // eslint-disable-next-line testing-library/no-node-access
   const containerTwo = screen.getByTestId('radio-2').parentElement;
   expect(containerTwo).toHaveStyle(`width: ${theme.sizes['huge-1']}px`);
 });
@@ -280,9 +284,11 @@ test('width can be overriden locally', () => {
     </ThemeProvider>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   const containerOne = screen.getByTestId('radio-1').parentElement;
   expect(containerOne).toHaveStyle(`width: ${theme.sizes['large-1']}px`);
 
+  // eslint-disable-next-line testing-library/no-node-access
   const containerTwo = screen.getByTestId('radio-2').parentElement;
   expect(containerTwo).toHaveStyle(`width: ${theme.sizes['huge-1']}px`);
 });

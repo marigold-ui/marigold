@@ -185,6 +185,7 @@ test('allows to set width via prop', () => {
     </ThemeProvider>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
   expect(container).toHaveStyle(`width: ${theme.sizes.huge}px`);
 });

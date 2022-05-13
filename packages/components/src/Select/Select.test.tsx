@@ -522,6 +522,7 @@ test('set width via props', () => {
   );
 
   // We need to query all, since there is also a label in the hidden select
+  // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getAllByText('Label')[0].parentElement;
   expect(container).toHaveStyle(`width: ${theme.sizes.huge}px`);
 });

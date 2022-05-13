@@ -183,6 +183,7 @@ test('takes full width by default', () => {
     </ThemeProvider>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByTestId('checkbox').parentElement;
   expect(container).toHaveStyle('width: 100%');
 });
@@ -196,6 +197,7 @@ test('allows to set width', () => {
     </ThemeProvider>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByTestId('checkbox').parentElement;
   expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
 });

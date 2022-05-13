@@ -183,9 +183,11 @@ test('passes down "width" to checkboxes', () => {
     </ThemeProvider>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   const oneContainer = screen.getByTestId('one').parentElement;
   expect(oneContainer).toHaveStyle(`width: ${theme.sizes.large}px`);
 
+  // eslint-disable-next-line testing-library/no-node-access
   const twoContainer = screen.getByTestId('two').parentElement;
   expect(twoContainer).toHaveStyle(`width: ${theme.sizes.large}px`);
 });
@@ -204,9 +206,11 @@ test('passed down "width" can be locally overriden', () => {
     </ThemeProvider>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   const oneContainer = screen.getByTestId('one').parentElement;
   expect(oneContainer).toHaveStyle(`width: ${theme.sizes.large}px`);
 
+  // eslint-disable-next-line testing-library/no-node-access
   const twoContainer = screen.getByTestId('two').parentElement;
   expect(twoContainer).toHaveStyle(`width: ${theme.sizes.medium}px`);
 });
