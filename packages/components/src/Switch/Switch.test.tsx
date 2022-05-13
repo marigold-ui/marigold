@@ -13,6 +13,10 @@ const theme = {
     medium: '16px',
     small: '8px',
   },
+  sizes: {
+    none: 0,
+    large: 120,
+  },
   components: {
     Switch: {
       base: {
@@ -115,6 +119,26 @@ test('supports a size', () => {
   const { track } = getSwitchParts();
 
   expect(track).toHaveStyle(`padding: ${theme.spaces.medium}px`);
+});
+
+test('takes full width by default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Switch>Label</Switch>
+    </ThemeProvider>
+  );
+  const { container } = getSwitchParts();
+  expect(container).toHaveStyle('width: 100%');
+});
+
+test('allows to set width via prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Switch width="large">Label</Switch>
+    </ThemeProvider>
+  );
+  const { container } = getSwitchParts();
+  expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
 });
 
 test('supports disabled prop', () => {
