@@ -24,6 +24,7 @@ export * from './Label';
 export * from './Link';
 export * from './Menu';
 export * from './Message';
+export * from './NumberField';
 export * from './Overlay';
 export * from './Provider';
 export * from './Radio';

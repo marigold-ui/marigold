@@ -1,9 +1,9 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
-import { TextField } from './TextField';
+import { NumberField } from './NumberField';
 
 export default {
-  title: 'Components/TextField',
+  title: 'Components/NumberField',
   argTypes: {
     label: {
       control: {
@@ -51,38 +51,42 @@ export default {
       },
       defaultValue: false,
     },
-    type: {
+    hideStepper: {
       control: {
-        type: 'select',
+        type: 'boolean',
       },
-      options: [
-        'date',
-        'datetime-local',
-        'email',
-        'month',
-        'password',
-        'search',
-        'tel',
-        'text',
-        'time',
-        'time',
-        'url',
-        'week',
-      ],
-      defaultValue: 'text',
+      defaultValue: false,
     },
   },
 } as Meta;
 
-export const Basic: ComponentStory<typeof TextField> = args => (
-  <TextField {...args} />
+export const Basic: ComponentStory<typeof NumberField> = args => (
+  <NumberField {...args} />
 );
 
-export const Controlled: ComponentStory<typeof TextField> = args => {
-  const [value, setValue] = React.useState('');
+export const WithFormatting: ComponentStory<typeof NumberField> = args => (
+  <NumberField
+    defaultValue={10}
+    formatOptions={{
+      style: 'currency',
+      currency: 'EUR',
+    }}
+    {...args}
+  />
+);
+
+export const MinMax: ComponentStory<typeof NumberField> = args => (
+  <>
+    <NumberField minValue={0} maxValue={100} step={10} {...args} />
+    <small>min: 0, max: 100</small>
+  </>
+);
+
+export const Controlled: ComponentStory<typeof NumberField> = args => {
+  const [value, setValue] = React.useState(0);
   return (
     <>
-      <TextField {...args} value={value} onChange={setValue} />
+      <NumberField {...args} value={value} onChange={setValue} />
       <pre>
         <strong>Input Value:</strong>
         {value}

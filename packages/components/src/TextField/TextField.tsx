@@ -40,7 +40,7 @@ export const TextField = ({
   size,
   ...props
 }: TextFieldProps) => {
-  const { label, description, errorMessage } = props;
+  const { label, description, errorMessage, autoFocus } = props;
 
   const ref = useRef<HTMLInputElement>(null);
   const { labelProps, inputProps, descriptionProps, errorMessageProps } =
@@ -56,7 +56,10 @@ export const TextField = ({
     );
 
   const { hoverProps, isHovered } = useHover({});
-  const { focusProps, isFocusVisible } = useFocusRing();
+  const { focusProps, isFocusVisible } = useFocusRing({
+    isTextInput: true,
+    autoFocus,
+  });
   const stateProps = useStateProps({
     hover: isHovered,
     focus: isFocusVisible,

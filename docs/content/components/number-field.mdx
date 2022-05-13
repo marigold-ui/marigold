@@ -1,0 +1,137 @@
+---
+title: NumberField
+---
+
+# NumberField
+
+## Description
+
+The `NumberField` components allows users to enter numbers with a keyboard. This includes plain numbers as well as percentages, decimals and sums of money. It consists of a label, an input field and a help text. The later also includes error messages.
+
+<MarigoldTheme>
+  <NumberField
+    label="Try me"
+    description="You should really try this!"
+    defaultValue={9.99}
+    formatOptions={{
+      style: 'currency',
+      currency: 'EUR',
+    }}
+  />
+</MarigoldTheme>
+
+```tsx onlyCode
+import { NumberField } from '@marigold/components';
+```
+
+| Name                       | Type                       | Default | Description                                                                                                                                                                          |
+| -------------------------- | -------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `label` (optional)         | `ReactNode`                |         | The label text. If you don't want to visually display a label, provide an `aria-label` or `aria-labelledby` attribute for accessibility.                                             |
+| `description` (optional)   | `ReactNode`                |         | A helpful text                                                                                                                                                                       |
+| `errorMessage` (optional)  | `ReactNode`                |         | An error message                                                                                                                                                                     |
+| `error` (optional)         | `boolean`                  | `false` | If `true`, the field is considered invalid and if set the `errorMessage` is shown instead of the `description`.                                                                      |
+| `value` (optional)         | `number`                   |         | The value of the input field                                                                                                                                                         |
+| `disabled` (optional)      | `boolean`                  | `false` | If `true`, the input is disabled.                                                                                                                                                    |
+| `required` (optional)      | `boolean`                  | `false` | If `true`, the input is required.                                                                                                                                                    |
+| `readOnly` (optional)      | `boolean`                  | `false` | If `true`, the input is readOnly.                                                                                                                                                    |
+| `onChange` (optional)      | `function`                 |         | A callback function that is called with the input's current `value` when the input value changes.                                                                                    |
+| `formatOptions` (optional) | `Intl.NumberFormatOptions` |         | Apply formatting. See [`Intl.NumberFormatOptions`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for available options. |
+| ...                        |                            |         | Yes you can use all regular attributes of `input`!                                                                                                                                   |
+
+## Examples
+
+### Simple Number Field
+
+```tsx
+<NumberField label="Numbers" />
+```
+
+### Disabled Number Field
+
+```tsx
+<NumberField label="Field disabled" disabled />
+```
+
+### Required Number Field
+
+```tsx
+<NumberField label="Numbers" required />
+```
+
+### Number Field with an Error
+
+```tsx
+<NumberField label="Amount" error errorMessage="Something went wrong!" />
+```
+
+### Min and max Values
+
+```tsx
+<NumberField label="Length" defaultValue={55} minValue={0} maxValue={100} />
+```
+
+### Step Amount
+
+```tsx
+<NumberField label="Length" defaultValue={10} step={10} />
+```
+
+### Hide Stepper
+
+```tsx
+<NumberField label="Numbers" hideStepper />
+```
+
+### Diplay a Decimals
+
+```tsx
+<NumberField
+  label="Decimals"
+  formatOptions={{
+    signDisplay: 'exceptZero',
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 2,
+  }}
+  defaultValue={0}
+/>
+```
+
+### Diplay a Currency
+
+```tsx
+<NumberField
+  label="Amount"
+  defaultValue={19.99}
+  formatOptions={{
+    style: 'currency',
+    currency: 'USD',
+  }}
+/>
+```
+
+### Diplay a Percentage
+
+```tsx
+<NumberField
+  label="Percentage"
+  defaultValue={0.42}
+  formatOptions={{
+    style: 'percent',
+  }}
+/>
+```
+
+### Display a Unit
+
+```tsx
+<NumberField
+  label="Length"
+  defaultValue={150}
+  minValue={0}
+  formatOptions={{
+    style: 'unit',
+    unit: 'centimeter',
+    unitDisplay: 'short',
+  }}
+/>
+```
