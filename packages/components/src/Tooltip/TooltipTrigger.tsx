@@ -53,7 +53,7 @@ export const TooltipTrigger = ({
     placement: overlayPlacement,
     arrowProps,
   } = useOverlayPosition({
-    placement: props.placement || 'top',
+    placement: props.placement,
     targetRef: tooltipTriggerRef,
     offset: props.offset,
     crossOffset: props.crossOffset,
