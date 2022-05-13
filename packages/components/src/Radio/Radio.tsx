@@ -1,4 +1,6 @@
 import React, { useRef } from 'react';
+import { useHover } from '@react-aria/interactions';
+import { useFocusRing } from '@react-aria/focus';
 import { useRadio } from '@react-aria/radio';
 import type { AriaRadioProps } from '@react-types/radio';
 
@@ -13,9 +15,8 @@ import {
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { RadioGroup, useRadioGroupContext } from './RadioGroup';
-import { useHover } from '@react-aria/interactions';
-import { useFocusRing } from '@react-aria/focus';
+import { useRadioGroupContext } from './Context';
+import { RadioGroup } from './RadioGroup';
 
 // Theme Extension
 // ---------------
@@ -59,6 +60,10 @@ const Icon = ({ checked, css, ...props }: IconProps) => (
 // Props
 // ---------------
 export type CustomRadioProps =
+  | 'size'
+  | 'width'
+  | 'type'
+  | 'defaultChecked'
   | 'value'
   | 'onFocus'
   | 'onBlur'
@@ -67,18 +72,22 @@ export type CustomRadioProps =
 
 export interface RadioProps
   extends ThemeComponentProps,
-    Omit<
-      ComponentProps<'input'>,
-      'size' | 'type' | 'defaultChecked' | CustomRadioProps
-    >,
+    Omit<ComponentProps<'input'>, CustomRadioProps>,
     AriaRadioProps {
+  width?: string;
   disabled?: boolean;
 }
 
 // Component
 // ---------------
-export const Radio = ({ disabled, ...props }: RadioProps) => {
-  const { variant, size, error, ...state } = useRadioGroupContext();
+export const Radio = ({ width, disabled, ...props }: RadioProps) => {
+  const {
+    variant,
+    size,
+    error,
+    width: groupWidth,
+    ...state
+  } = useRadioGroupContext();
 
   const ref = useRef(null);
   const { inputProps } = useRadio(
@@ -112,6 +121,7 @@ export const Radio = ({ disabled, ...props }: RadioProps) => {
         alignItems: 'center',
         gap: '1ch',
         position: 'relative',
+        width: width || groupWidth || '100%',
       }}
       css={styles.container}
       {...hoverProps}

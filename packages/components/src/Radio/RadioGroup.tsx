@@ -1,6 +1,6 @@
-import React, { ReactNode, useContext } from 'react';
+import React, { ReactNode } from 'react';
 import { useRadioGroup } from '@react-aria/radio';
-import { RadioGroupState, useRadioGroupState } from '@react-stately/radio';
+import { useRadioGroupState } from '@react-stately/radio';
 import { AriaRadioGroupProps } from '@react-types/radio';
 
 import {
@@ -10,19 +10,7 @@ import {
 } from '@marigold/system';
 
 import { Label } from '../Label';
-
-// Context
-// ---------------
-export interface RadioGroupContextProps extends RadioGroupState {
-  variant?: string;
-  size?: string;
-  error?: boolean;
-}
-
-const RadioGroupContext = React.createContext<RadioGroupContextProps>(
-  null as any
-);
-export const useRadioGroupContext = () => useContext(RadioGroupContext);
+import { RadioGroupContext } from './Context';
 
 // Theme Extension
 // ---------------
@@ -39,6 +27,7 @@ export interface RadioGroupProps
   children: ReactNode[];
   variant?: string;
   size?: string;
+  width?: string;
   required?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
@@ -52,6 +41,7 @@ export const RadioGroup = ({
   orientation = 'vertical',
   size,
   variant,
+  width,
   required,
   disabled,
   readOnly,
@@ -93,7 +83,9 @@ export const RadioGroup = ({
         }}
         css={styles.group}
       >
-        <RadioGroupContext.Provider value={{ variant, size, error, ...state }}>
+        <RadioGroupContext.Provider
+          value={{ variant, size, width, error, ...state }}
+        >
           {children}
         </RadioGroupContext.Provider>
       </Box>
