@@ -24,6 +24,12 @@ export default {
       },
       description: 'Switch size style',
     },
+    width: {
+      control: {
+        type: 'text',
+      },
+      description: 'The width of the field',
+    },
     disabled: {
       control: {
         type: 'boolean',
