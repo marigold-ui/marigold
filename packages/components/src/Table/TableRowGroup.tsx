@@ -8,7 +8,7 @@ export interface TableRowGroupProps {
   as: 'thead' | 'tbody' | 'tfoot';
 }
 
-// TableRowGroup Component
+// Component
 // ----------------------------
 export const TableRowGroup = ({
   as: Element,

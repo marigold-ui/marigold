@@ -19,6 +19,7 @@ import { TableColumnHeader } from './TableColumnHeader';
 import { TableHeaderRow } from './TableHeaderRow';
 import { TableRow } from './TableRow';
 import { TableRowGroup } from './TableRowGroup';
+import { TableContext } from './Context';
 
 // Theme Extension
 // ---------------
@@ -31,7 +32,10 @@ export interface TableThemeExtension
 // Props
 // ---------------
 export interface TableProps
-  extends Pick<AriaTableProps<object>, 'onRowAction' | 'onCellAction'>,
+  extends Pick<
+      AriaTableProps<object>,
+      'focusMode' | 'onRowAction' | 'onCellAction'
+    >,
     TableStateProps<object> {
   variant?: string;
   size?: string;
@@ -40,7 +44,6 @@ export interface TableProps
 // Table Component
 // ---------------
 export const Table: Table = ({ variant, size, ...props }: TableProps) => {
-  // Setup table state and mode
   const showSelectionCheckboxes =
     props.selectionMode === 'multiple' && props.selectionBehavior !== 'replace';
   const state = useTableState({
@@ -58,38 +61,40 @@ export const Table: Table = ({ variant, size, ...props }: TableProps) => {
   );
 
   return (
-    <Box as="table" ref={ref} __baseCSS={styles.table} {...gridProps}>
-      <TableRowGroup as="thead">
-        {state.collection.headerRows.map(headerRow => (
-          <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
-            {[...headerRow.childNodes].map(column => (
-              <TableColumnHeader
-                key={column.key}
-                item={column}
-                state={state}
-                isSelectionColumn={column.props.isSelectionCell}
-                css={styles.header}
-              />
-            ))}
-          </TableHeaderRow>
-        ))}
-      </TableRowGroup>
-      <TableRowGroup as="tbody">
-        {[...state.collection.body.childNodes].map(row => (
-          <TableRow css={styles.row} key={row.key} item={row} state={state}>
-            {[...row.childNodes].map(cell => (
-              <TableCell
-                key={cell.key}
-                item={cell}
-                state={state}
-                isSelectionCell={cell.props.isSelectionCell}
-                css={styles.cell}
-              />
-            ))}
-          </TableRow>
-        ))}
-      </TableRowGroup>
-    </Box>
+    <TableContext.Provider value={{ state, styles }}>
+      <Box as="table" ref={ref} __baseCSS={styles.table} {...gridProps}>
+        <TableRowGroup as="thead">
+          {state.collection.headerRows.map(headerRow => (
+            <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
+              {[...headerRow.childNodes].map(column => (
+                <TableColumnHeader
+                  key={column.key}
+                  item={column}
+                  state={state}
+                  isSelectionColumn={column.props.isSelectionCell}
+                  css={styles.header}
+                />
+              ))}
+            </TableHeaderRow>
+          ))}
+        </TableRowGroup>
+        <TableRowGroup as="tbody">
+          {[...state.collection.body.childNodes].map(row => (
+            <TableRow css={styles.row} key={row.key} item={row} state={state}>
+              {[...row.childNodes].map(cell => (
+                <TableCell
+                  key={cell.key}
+                  item={cell}
+                  state={state}
+                  isSelectionCell={cell.props.isSelectionCell}
+                  css={styles.cell}
+                />
+              ))}
+            </TableRow>
+          ))}
+        </TableRowGroup>
+      </Box>
+    </TableContext.Provider>
   );
 };
 
@@ -102,7 +107,7 @@ Table.Row = Row;
 
 /**
  * Necessary since TypeScript can not infer the
- * types of the @react-stately components correctly.
+ * types of the @react-stately components.
  */
 interface Table {
   (props: TableProps): JSX.Element;

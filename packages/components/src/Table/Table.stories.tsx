@@ -14,6 +14,14 @@ export default {
       description: 'selection mode',
       defaultValue: 'none',
     },
+    focusMode: {
+      control: {
+        type: 'select',
+      },
+      options: ['row', 'cell'],
+      description: 'Focus Mode with Keyboard',
+      defaultValue: 'row',
+    },
   },
 } as Meta;
 
