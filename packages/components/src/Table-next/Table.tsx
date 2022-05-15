@@ -4,8 +4,8 @@ import {
   Cell,
   Column,
   Row,
-  TableBody,
-  TableHeader,
+  TableBody as Body,
+  TableHeader as Header,
   TableStateProps,
   useTableState,
 } from '@react-stately/table';
@@ -17,6 +17,7 @@ import {
 } from '@marigold/system';
 
 import { TableContext } from './Context';
+import { TableHeader } from './TableHeader';
 
 // Theme Extension
 // ---------------
@@ -60,6 +61,7 @@ export const Table: Table = ({ variant, size, ...props }: TableProps) => {
   return (
     <TableContext.Provider value={{ state, styles }}>
       <Box ref={tableRef} css={styles.table} {...gridProps}>
+        <TableHeader></TableHeader>
         hello!
       </Box>
     </TableContext.Provider>
@@ -67,10 +69,10 @@ export const Table: Table = ({ variant, size, ...props }: TableProps) => {
 };
 
 // Export collection components to conveniently have access to them.
-Table.Body = TableBody;
+Table.Body = Body;
 Table.Cell = Cell;
 Table.Column = Column;
-Table.Header = TableHeader;
+Table.Header = Header;
 Table.Row = Row;
 
 /**
@@ -79,9 +81,9 @@ Table.Row = Row;
  */
 interface Table {
   (props: TableProps): JSX.Element;
-  Body: typeof TableBody;
+  Body: typeof Body;
   Cell: typeof Cell;
   Column: typeof Column;
-  Header: typeof TableHeader;
+  Header: typeof Header;
   Row: typeof Row;
 }
