@@ -36,7 +36,7 @@ export interface TableProps
       AriaTableProps<object>,
       'focusMode' | 'onRowAction' | 'onCellAction'
     >,
-    TableStateProps<object> {
+    Omit<TableStateProps<object>, 'showSelectionCheckboxes'> {
   variant?: string;
   size?: string;
 }
@@ -44,15 +44,14 @@ export interface TableProps
 // Table Component
 // ---------------
 export const Table: Table = ({ variant, size, ...props }: TableProps) => {
-  const showSelectionCheckboxes =
-    props.selectionMode === 'multiple' && props.selectionBehavior !== 'replace';
+  const tableRef = useRef(null);
   const state = useTableState({
     ...props,
-    showSelectionCheckboxes,
+    showSelectionCheckboxes:
+      props.selectionMode === 'multiple' &&
+      props.selectionBehavior !== 'replace',
   });
-
-  const ref = useRef(null);
-  const { gridProps } = useTable(props, state, ref);
+  const { gridProps } = useTable(props, state, tableRef);
 
   const styles = useComponentStyles(
     'Table',
@@ -62,7 +61,7 @@ export const Table: Table = ({ variant, size, ...props }: TableProps) => {
 
   return (
     <TableContext.Provider value={{ state, styles }}>
-      <Box as="table" ref={ref} __baseCSS={styles.table} {...gridProps}>
+      <Box as="table" ref={tableRef} css={styles.table} {...gridProps}>
         <TableRowGroup as="thead">
           {state.collection.headerRows.map(headerRow => (
             <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
