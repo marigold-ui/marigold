@@ -18,6 +18,7 @@ import {
 
 import { TableContext } from './Context';
 import { TableHeader } from './TableHeader';
+import { TableHeaderRow } from './TableHeaderRow';
 
 // Theme Extension
 // ---------------
@@ -58,11 +59,19 @@ export const Table: Table = ({ variant, size, ...props }: TableProps) => {
     { parts: ['table', 'header', 'row', 'cell'] }
   );
 
+  const { collection } = state;
+
   return (
     <TableContext.Provider value={{ state, styles }}>
-      <Box ref={tableRef} css={styles.table} {...gridProps}>
-        <TableHeader></TableHeader>
-        hello!
+      <Box as="table" ref={tableRef} css={styles.table} {...gridProps}>
+        <TableHeader>
+          {collection.headerRows.map(headerRow => (
+            <TableHeaderRow key={headerRow.key} item={headerRow}>
+              header cell
+            </TableHeaderRow>
+          ))}
+        </TableHeader>
+        body!
       </Box>
     </TableContext.Provider>
   );
