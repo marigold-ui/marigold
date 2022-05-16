@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Radio } from '.';
+import { Radio } from './Radio';
 import { ThemeProvider } from '@marigold/system';
 
 const theme = {
@@ -18,6 +18,11 @@ const theme = {
   radii: {
     none: 0,
     'large-1': '9999px',
+  },
+  sizes: {
+    none: 0,
+    'large-1': 100,
+    'huge-1': 200,
   },
   components: {
     Radio: {
@@ -202,6 +207,90 @@ test('variant and size styling on radio option', () => {
   expect(radio).toHaveStyle(`color: ${theme.colors.green}`);
   expect(radio).toHaveStyle(`width: 32px`);
   expect(radio).toHaveStyle(`height: 32px`);
+});
+
+test('takes full width by default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label">
+        <Radio value="1" data-testid="radio-1">
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const containerOne = screen.getByTestId('radio-1').parentElement;
+  expect(containerOne).toHaveStyle('width: 100%');
+});
+
+test('set width via prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label">
+        <Radio value="1" data-testid="radio-1" width="large-1">
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const containerOne = screen.getByTestId('radio-1').parentElement;
+  expect(containerOne).toHaveStyle(`width: ${theme.sizes['large-1']}px`);
+});
+
+test('set width via prop in group', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label" width="huge-1">
+        <Radio value="1" data-testid="radio-1">
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const containerOne = screen.getByTestId('radio-1').parentElement;
+  expect(containerOne).toHaveStyle(`width: ${theme.sizes['huge-1']}px`);
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const containerTwo = screen.getByTestId('radio-2').parentElement;
+  expect(containerTwo).toHaveStyle(`width: ${theme.sizes['huge-1']}px`);
+});
+
+test('width can be overriden locally', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label" width="huge-1">
+        <Radio value="1" data-testid="radio-1" width="large-1">
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const containerOne = screen.getByTestId('radio-1').parentElement;
+  expect(containerOne).toHaveStyle(`width: ${theme.sizes['large-1']}px`);
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const containerTwo = screen.getByTestId('radio-2').parentElement;
+  expect(containerTwo).toHaveStyle(`width: ${theme.sizes['huge-1']}px`);
 });
 
 test('allows styling "checked" state via theme', () => {

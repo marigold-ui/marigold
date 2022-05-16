@@ -14,6 +14,10 @@ const theme = {
   fontSizes: {
     'small-1': 12,
   },
+  sizes: {
+    none: 0,
+    large: 60,
+  },
   components: {
     Label: {
       variant: {
@@ -158,4 +162,32 @@ test('passes down variant and size', () => {
 
   const helptext = screen.getByText('Description');
   expect(helptext).toHaveStyle(`color: ${theme.colors.blue}`);
+});
+
+test('takes full width by default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <FieldBase label="Label" description="Description">
+        <input type="text" />
+      </FieldBase>
+    </ThemeProvider>
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByText('Label').parentElement;
+  expect(container).toHaveStyle('width: 100%');
+});
+
+test('allows to set custom width', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <FieldBase label="Label" description="Description" width="large">
+        <input type="text" />
+      </FieldBase>
+    </ThemeProvider>
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByText('Label').parentElement;
+  expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
 });

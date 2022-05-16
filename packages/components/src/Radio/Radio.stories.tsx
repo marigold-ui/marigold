@@ -41,6 +41,12 @@ export default {
       description: 'Error',
       defaultValue: false,
     },
+    width: {
+      control: {
+        type: 'text',
+      },
+      description: 'The width of the field',
+    },
   },
 } as Meta;
 

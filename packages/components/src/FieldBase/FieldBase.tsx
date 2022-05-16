@@ -10,6 +10,7 @@ export interface FieldBaseProps {
   children?: ReactNode;
   variant?: string;
   size?: string;
+  width?: string;
   disabled?: boolean;
   required?: boolean;
   label?: ReactNode;
@@ -25,9 +26,10 @@ export interface FieldBaseProps {
 // Component
 // ---------------
 export const FieldBase = ({
+  children,
   variant,
   size,
-  children,
+  width = '100%',
   disabled,
   required,
   label,
@@ -41,7 +43,7 @@ export const FieldBase = ({
 }: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
   return (
-    <Box css={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+    <Box css={{ display: 'flex', flexDirection: 'column', width }}>
       {label && (
         <Label
           required={required}

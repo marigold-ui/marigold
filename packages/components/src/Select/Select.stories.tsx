@@ -52,6 +52,12 @@ export default {
       },
       description: 'Error Message',
     },
+    width: {
+      control: {
+        type: 'text',
+      },
+      description: 'The width of the field',
+    },
   },
 } as Meta;
 

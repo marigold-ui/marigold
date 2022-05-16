@@ -20,6 +20,10 @@ const theme = {
     none: 0,
     'small-1': 2,
   },
+  sizes: {
+    none: 0,
+    large: 40,
+  },
   components: {
     Checkbox: {
       base: {
@@ -170,6 +174,32 @@ test('allows styling "error" state via theme', () => {
   );
   const checkbox = getVisibleCheckbox();
   expect(checkbox).toHaveStyle(`background: ${theme.colors.red}`);
+});
+
+test('takes full width by default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox data-testid="checkbox">With Label</Checkbox>
+    </ThemeProvider>
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByTestId('checkbox').parentElement;
+  expect(container).toHaveStyle('width: 100%');
+});
+
+test('allows to set width', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox data-testid="checkbox" width="large">
+        With Label
+      </Checkbox>
+    </ThemeProvider>
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByTestId('checkbox').parentElement;
+  expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
 });
 
 test('support default checked', () => {

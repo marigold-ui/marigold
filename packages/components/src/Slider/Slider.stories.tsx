@@ -16,16 +16,6 @@ export default {
       },
       description: 'Variant to style the Slider',
     },
-    width: {
-      control: {
-        type: 'range',
-        min: 1,
-        max: 1000,
-        step: 100,
-      },
-      defaultValue: 300,
-      description: 'The width size of the slider',
-    },
     disabled: {
       control: {
         type: 'boolean',
@@ -49,6 +39,12 @@ export default {
       },
       defaultValue: 10,
       description: 'The step size of the slider',
+    },
+    width: {
+      control: {
+        type: 'text',
+      },
+      description: 'The width of the field',
     },
   },
 } as Meta;

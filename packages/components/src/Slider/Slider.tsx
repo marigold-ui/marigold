@@ -33,6 +33,7 @@ export interface SliderProps
       | 'onFocus'
       | 'onBlur'
       | 'size'
+      | 'width'
     >,
     /**
      * `react-aria` has a slightly different API for some events e.g `onChange`, `onFocus`
@@ -44,17 +45,24 @@ export interface SliderProps
     > {
   variant?: string;
   size?: string;
+  width?: string;
   formatOptions?: Intl.NumberFormatOptions;
   children?: ReactNode;
 }
 
+// Component
+// ---------------
 /**
- * Component Slider
  * The slider consists of two parts.
  * A label + the output value and the slider functionality itself.
  * The slider itself consists of a track line and a thumb.
  */
-export const Slider = ({ variant, size, ...props }: SliderProps) => {
+export const Slider = ({
+  variant,
+  size,
+  width = '100%',
+  ...props
+}: SliderProps) => {
   const { formatOptions } = props;
   const trackRef = useRef<HTMLElement>(null);
   const numberFormatter = useNumberFormatter(formatOptions);
@@ -80,6 +88,7 @@ export const Slider = ({ variant, size, ...props }: SliderProps) => {
         display: 'flex',
         flexDirection: 'column',
         touchAction: 'none',
+        width,
       }}
       {...groupProps}
     >

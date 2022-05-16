@@ -16,7 +16,7 @@ import {
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { useCheckboxGroupContext } from './CheckboxGroup';
+import { useCheckboxGroupContext } from './Context';
 
 // Theme Extension
 // ---------------
@@ -90,10 +90,11 @@ export interface CheckboxProps
   extends ThemeComponentProps,
     Omit<
       ComponentProps<'input'>,
-      'size' | 'type' | 'defaultValue' | CustomCheckboxProps
+      'size' | 'width' | 'type' | 'defaultValue' | CustomCheckboxProps
     >,
     Pick<AriaCheckboxProps, CustomCheckboxProps> {
   children?: ReactNode;
+  width?: string;
   indeterminate?: boolean;
   error?: boolean;
 }
@@ -103,6 +104,7 @@ export interface CheckboxProps
 export const Checkbox = ({
   size,
   variant,
+  width,
   disabled,
   checked,
   defaultChecked,
@@ -186,6 +188,7 @@ export const Checkbox = ({
         alignItems: 'center',
         gap: '1ch',
         position: 'relative',
+        width: width || groupState?.width || '100%',
       }}
       css={styles.container}
       {...hoverProps}

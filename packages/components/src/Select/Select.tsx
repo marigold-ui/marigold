@@ -65,25 +65,25 @@ export interface SelectProps
       ComponentProps<'select'>,
       'onKeyUp' | 'onKeyDown' | 'onFocus' | 'onBlur' | 'children' | 'size'
     > {
+  variant?: string;
+  size?: string;
+  width?: string;
   open?: boolean;
   disabled?: boolean;
   required?: boolean;
   error?: boolean;
-  variant?: string;
-  size?: string;
-  css?: CSSObject;
 }
 
 // Component
 // ---------------
 export const Select = ({
+  variant,
+  size,
+  width,
   open,
   disabled,
   required,
   error,
-  variant,
-  size,
-  css,
   ...rest
 }: SelectProps) => {
   // Set up i18n
@@ -139,6 +139,7 @@ export const Select = ({
     <FieldBase
       variant={variant}
       size={size}
+      width={width}
       label={props.label}
       labelProps={{ as: 'span', ...labelProps }}
       description={props.description}

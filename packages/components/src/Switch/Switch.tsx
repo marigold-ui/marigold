@@ -38,12 +38,14 @@ export interface SwitchProps
   checked?: boolean;
   variant?: string;
   size?: string;
+  width?: string;
 }
 // Component
 // ---------------
 export const Switch = ({
   variant,
   size,
+  width = '100%',
   checked,
   disabled,
   readOnly,
@@ -85,6 +87,7 @@ export const Switch = ({
         justifyContent: 'space-between',
         gap: '1ch',
         position: 'relative',
+        width,
       }}
       css={styles.container}
     >
