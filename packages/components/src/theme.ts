@@ -36,9 +36,7 @@ import type { SwitchThemeExtension } from './Switch';
 import type { TableThemeExtension } from './Table';
 import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
-
-// Old Styling Solution
-import { type TooltipThemeExtension } from './Tooltip';
+import type { TooltipThemeExtension } from './Tooltip';
 
 interface ComponentStyles
   extends BadgeThemeExtension,
@@ -69,11 +67,9 @@ interface ComponentStyles
     TableThemeExtension,
     TextThemeExtension,
     TextAreaThemeExtension,
+    TooltipThemeExtension,
     UnderlayThemeExtension {}
 
-export interface Theme
-  extends Scales,
-    RootThemeExtension<CSSObject>,
-    TooltipThemeExtension<CSSObject> {
+export interface Theme extends Scales, RootThemeExtension<CSSObject> {
   components: ComponentStyles;
 }
