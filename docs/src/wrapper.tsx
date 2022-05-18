@@ -32,6 +32,7 @@ export const WrapPageElement: GatsbyBrowser['wrapPageElement'] = ({
 }) => {
   return (
     <>
+      {/* @ts-expect-error  */}
       <Helmet>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
