@@ -4,7 +4,7 @@ import { Stack } from '../Stack';
 import { Table } from './Table';
 
 export default {
-  title: 'Components/Table-old',
+  title: 'Components/Table',
   argTypes: {
     selectionMode: {
       control: {

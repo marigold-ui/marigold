@@ -2,6 +2,11 @@ import type { Theme } from '@marigold/components';
 
 export const Checkbox: Theme['components']['Checkbox'] = {
   base: {
+    container: {
+      'th &': {
+        display: 'inline-flex',
+      },
+    },
     label: {
       fontSize: 'xsmall',
 

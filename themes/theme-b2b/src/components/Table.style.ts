@@ -5,7 +5,7 @@ export const Table: Theme['components']['Table'] = {
     table: { borderCollapse: 'collapse', fontSize: 'xxsmall' },
     header: {
       py: 'xxsmall',
-      px: 'xsmall',
+      px: 'small',
       cursor: 'default',
       color: 'gray00',
       bg: 'gray50',

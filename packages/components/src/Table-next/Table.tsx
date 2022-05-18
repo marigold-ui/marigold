@@ -17,8 +17,10 @@ import {
 } from '@marigold/system';
 
 import { TableContext } from './Context';
+import { TableColumnHeader } from './TableColumnHeader';
 import { TableHeader } from './TableHeader';
 import { TableHeaderRow } from './TableHeaderRow';
+import { TableSelectAllCell } from './TableSelectAllCell';
 
 // Theme Extension
 // ---------------
@@ -67,7 +69,13 @@ export const Table: Table = ({ variant, size, ...props }: TableProps) => {
         <TableHeader>
           {collection.headerRows.map(headerRow => (
             <TableHeaderRow key={headerRow.key} item={headerRow}>
-              header cell
+              {[...headerRow.childNodes].map(column =>
+                column.props?.isSelectionCell ? (
+                  <TableSelectAllCell key={column.key} column={column} />
+                ) : (
+                  <TableColumnHeader column={column} />
+                )
+              )}
             </TableHeaderRow>
           ))}
         </TableHeader>
