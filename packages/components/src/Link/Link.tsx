@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
 import { useLink } from '@react-aria/link';
 import { ThemeExtension, useComponentStyles } from '@marigold/system';
 import { PolymorphicComponent, PolymorphicProps } from '@marigold/types';
@@ -15,6 +15,7 @@ export interface LinkOwnProps extends BoxOwnProps {
   disabled?: boolean;
   variant?: string;
   size?: string;
+  children?: ReactNode;
 }
 
 export interface LinkProps extends PolymorphicProps<LinkOwnProps, 'a'> {}
@@ -24,8 +25,8 @@ export interface LinkProps extends PolymorphicProps<LinkOwnProps, 'a'> {}
 export const Link = (({
   as = 'a',
   variant,
-   size,
-   children,
+  size,
+  children,
   disabled,
   ...props
 }: LinkProps) => {
