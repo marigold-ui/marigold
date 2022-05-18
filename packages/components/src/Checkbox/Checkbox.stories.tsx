@@ -27,12 +27,6 @@ export default {
       description: 'Option to define an indeterminate state',
       defaultValue: false,
     },
-    width: {
-      control: {
-        type: 'text',
-      },
-      description: 'The width of the field',
-    },
   },
 } as Meta;
 

@@ -20,10 +20,6 @@ const theme = {
     none: 0,
     'small-1': 2,
   },
-  sizes: {
-    none: 0,
-    large: 40,
-  },
   components: {
     Checkbox: {
       base: {
@@ -37,6 +33,9 @@ const theme = {
             outlineColor: 'blue',
           },
           '&:checked': {
+            color: 'teal',
+          },
+          '&:indeterminate': {
             color: 'teal',
           },
           '&:disabled': {
@@ -96,6 +95,17 @@ test('renders label and (hidden) checkbox', () => {
   expect(checkbox).toBeInTheDocument();
   expect(checkbox).toBeInstanceOf(HTMLInputElement);
   expect(checkbox).toHaveAttribute('type', 'checkbox');
+});
+
+test('allows to render without label', () => {
+  render(<Checkbox data-testid="checkbox" aria-label="No Label" />);
+
+  const checkbox = screen.getByTestId('checkbox');
+  expect(checkbox).toBeInTheDocument();
+  expect(checkbox).toBeInstanceOf(HTMLInputElement);
+  expect(checkbox).toHaveAttribute('type', 'checkbox');
+
+  expect(checkbox).toHaveAttribute('aria-label', 'No Label');
 });
 
 test('allows styling via theme', () => {
@@ -176,32 +186,6 @@ test('allows styling "error" state via theme', () => {
   expect(checkbox).toHaveStyle(`background: ${theme.colors.red}`);
 });
 
-test('takes full width by default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Checkbox data-testid="checkbox">With Label</Checkbox>
-    </ThemeProvider>
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByTestId('checkbox').parentElement;
-  expect(container).toHaveStyle('width: 100%');
-});
-
-test('allows to set width', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Checkbox data-testid="checkbox" width="large">
-        With Label
-      </Checkbox>
-    </ThemeProvider>
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByTestId('checkbox').parentElement;
-  expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
-});
-
 test('support default checked', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -222,7 +206,7 @@ test('support default checked', () => {
 test('supports indeterminate state', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Checkbox data-testid="checkbox" indeterminate checked>
+      <Checkbox data-testid="checkbox" indeterminate>
         With Label
       </Checkbox>
     </ThemeProvider>
