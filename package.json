@@ -38,11 +38,6 @@
     "workspaces-run": "1.0.1",
     "zx": "6.1.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  },
   "scripts": {
     "start": "pnpm --filter @marigold/docs start",
     "dev": "FOLDERS=packages/components/src,packages/system/src pnpm --filter @marigold/storybook-config start",
@@ -60,6 +55,10 @@
     "release": "zx scripts/release.mjs --quiet",
     "release:docs": "pnpm --filter @marigold/docs deploy",
     "slack": "zx scripts/slack-release-notification.mjs --quiet",
-    "postinstall": "rm -f node_modules/@emotion/core/types/index.d.ts && rm -rf node_modules/.pnpm/@emotion+core@10.3.1_react@17.0.2/node_modules/@emotion/core/types/index.d.ts"
+    "postinstall": "rm -f node_modules/@emotion/core/types/index.d.ts && rm -rf node_modules/.pnpm/@emotion+core@10.3.1_react@17.0.2/node_modules/@emotion/core/types/index.d.ts",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "husky": "^8.0.0"
   }
 }
