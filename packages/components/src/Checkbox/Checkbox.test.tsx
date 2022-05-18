@@ -35,6 +35,9 @@ const theme = {
           '&:checked': {
             color: 'teal',
           },
+          '&:indeterminate': {
+            color: 'teal',
+          },
           '&:disabled': {
             bg: 'gray',
           },
@@ -95,7 +98,7 @@ test('renders label and (hidden) checkbox', () => {
 });
 
 test('allows to render without label', () => {
-  render(<Checkbox data-testid="checkbox" arial-label="No Label" />);
+  render(<Checkbox data-testid="checkbox" aria-label="No Label" />);
 
   const checkbox = screen.getByTestId('checkbox');
   expect(checkbox).toBeInTheDocument();
@@ -203,7 +206,7 @@ test('support default checked', () => {
 test('supports indeterminate state', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Checkbox data-testid="checkbox" indeterminate checked>
+      <Checkbox data-testid="checkbox" indeterminate>
         With Label
       </Checkbox>
     </ThemeProvider>
