@@ -7,7 +7,6 @@ import {
   useTableSelectAllCheckbox,
 } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
-import { VisuallyHidden } from '@react-aria/visually-hidden';
 import { GridNode } from '@react-types/grid';
 
 import { Box, useStateProps } from '@marigold/system';
@@ -34,13 +33,10 @@ export const TableSelectAllCell = ({ column }: TableSelectAllCell) => {
     ref
   );
 
-  const singleSelectionMode = state.selectionManager.selectionMode === 'single';
   const {
     checkboxProps: { isIndeterminate, isSelected, defaultSelected, ...rest },
   } = useTableSelectAllCheckbox(state);
   const checkboxProps = {
-    disabled: singleSelectionMode,
-    style: singleSelectionMode ? { visibility: 'hidden' } : undefined,
     checked: isSelected,
     defaultChecked: defaultSelected,
     indeterminate: isIndeterminate,
@@ -68,15 +64,6 @@ export const TableSelectAllCell = ({ column }: TableSelectAllCell) => {
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
     >
-      {
-        /*
-        Single selection mode hides the checkbox. In order to leave the column
-        with accessible content, we use a hidden aria-label (from the checkbocProps).
-      */
-        singleSelectionMode && (
-          <VisuallyHidden>{checkboxProps['aria-label']}</VisuallyHidden>
-        )
-      }
       <Checkbox {...checkboxProps} />
     </Box>
   );
