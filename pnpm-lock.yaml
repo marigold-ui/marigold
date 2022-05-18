@@ -215,7 +215,7 @@ importers:
       gatsby-plugin-sitemap: 5.11.1
       gatsby-source-filesystem: 4.11.1
       gatsby-transformer-sharp: 4.11.0
-      gh-pages: 3.2.3
+      gh-pages: 4.0.0
       git-rev-sync: 3.0.2
       graphql: 16.5.0
       mdx-utils: 0.2.0
@@ -259,7 +259,7 @@ importers:
       gatsby-plugin-sitemap: 5.11.1_qumi42jitwfanjvk42k7rxh5re
       gatsby-source-filesystem: 4.11.1_gatsby@4.11.1
       gatsby-transformer-sharp: 4.11.0_eakii7l2c4h7n7lvdyyjwephju
-      gh-pages: 3.2.3
+      gh-pages: 4.0.0
       git-rev-sync: 3.0.2
       graphql: 16.5.0
       mdx-utils: 0.2.0
@@ -9195,7 +9195,7 @@ packages:
     dev: false
 
   /async/1.5.2:
-    resolution: {integrity: sha1-7GphrlZIDAw8skHJVhjiCJL5Zyo=}
+    resolution: {integrity: sha512-nSVgobk4rv61R9PUSDtYt7mPVB2olxNR5RWJcAsH676/ef11bUZwvu7+RGYrYauVdDPcO519v68wRhXQtxsV9w==}
     dev: false
 
   /async/2.6.4:
@@ -14641,8 +14641,8 @@ packages:
       - supports-color
     dev: false
 
-  /gh-pages/3.2.3:
-    resolution: {integrity: sha512-jA1PbapQ1jqzacECfjUaO9gV8uBgU6XNMV0oXLtfCX3haGLe5Atq8BxlrADhbD6/UdG9j6tZLWAkAybndOXTJg==}
+  /gh-pages/4.0.0:
+    resolution: {integrity: sha512-p8S0T3aGJc68MtwOcZusul5qPSNZCalap3NWbhRUZYu1YOdp+EjZ+4kPmRM8h3NNRdqw00yuevRjlkuSzCn7iQ==}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
