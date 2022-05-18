@@ -94,6 +94,17 @@ test('renders label and (hidden) checkbox', () => {
   expect(checkbox).toHaveAttribute('type', 'checkbox');
 });
 
+test('allows to render without label', () => {
+  render(<Checkbox data-testid="checkbox" arial-label="No Label" />);
+
+  const checkbox = screen.getByTestId('checkbox');
+  expect(checkbox).toBeInTheDocument();
+  expect(checkbox).toBeInstanceOf(HTMLInputElement);
+  expect(checkbox).toHaveAttribute('type', 'checkbox');
+
+  expect(checkbox).toHaveAttribute('aria-label', 'No Label');
+});
+
 test('allows styling via theme', () => {
   render(
     <ThemeProvider theme={theme}>

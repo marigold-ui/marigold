@@ -213,9 +213,11 @@ export const Checkbox = ({
         css={styles.checkbox}
         {...stateProps}
       />
-      <Box css={styles.label} {...stateProps}>
-        {props.children}
-      </Box>
+      {props.children && (
+        <Box css={styles.label} {...stateProps}>
+          {props.children}
+        </Box>
+      )}
     </Box>
   );
 };
