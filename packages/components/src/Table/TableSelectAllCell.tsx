@@ -35,7 +35,7 @@ export const TableSelectAllCell = ({ column }: TableSelectAllCell) => {
   );
 
   const { checkboxProps } = mapCheckboxProps(useTableSelectAllCheckbox(state));
-  console.log(checkboxProps.indeterminate);
+
   const { hoverProps, isHovered } = useHover({});
   const { focusProps, isFocusVisible } = useFocusRing();
   const stateProps = useStateProps({

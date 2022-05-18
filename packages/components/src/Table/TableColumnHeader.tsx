@@ -1,70 +1,46 @@
-import React, { ReactNode, useRef } from 'react';
-import { useCheckbox } from '@react-aria/checkbox';
+import React, { useRef } from 'react';
+
 import { useFocusRing } from '@react-aria/focus';
-import {
-  useTableSelectAllCheckbox,
-  useTableColumnHeader,
-} from '@react-aria/table';
+import { useHover } from '@react-aria/interactions';
+import { useTableColumnHeader } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
-import { TableState } from '@react-stately/table';
-import { useToggleState } from '@react-stately/toggle';
-import { Node } from '@react-types/shared';
+import { GridNode } from '@react-types/grid';
 
-import { CSSObject, useStateProps } from '@marigold/system';
+import { Box, useStateProps } from '@marigold/system';
 
-import { Box } from '../Box';
-import { Text } from '../Text';
+import { useTableContext } from './Context';
 
-// Props
-// ----------------------------
-export interface TableColumnHeaderProps {
-  chilren?: ReactNode;
-  item: Node<object>;
-  state: TableState<object>;
-  isSelectionColumn?: boolean;
-  css?: CSSObject;
+interface TableColumnHeaderProps {
+  column: GridNode<object>;
 }
 
-// TableColumnHeader Component
-// ----------------------------
-export const TableColumnHeader = ({
-  item: column,
-  state,
-  isSelectionColumn,
-  css,
-}: TableColumnHeaderProps) => {
+export const TableColumnHeader = ({ column }: TableColumnHeaderProps) => {
   const ref = useRef(null);
+  const { state, styles } = useTableContext();
   const { columnHeaderProps } = useTableColumnHeader(
-    { node: column },
+    {
+      node: column,
+    },
     state,
     ref
   );
 
-  const { checkboxProps } = useTableSelectAllCheckbox(state);
-  const inputRef = useRef(null);
-  const { inputProps } = useCheckbox(
-    checkboxProps,
-    useToggleState(checkboxProps),
-    inputRef
-  );
-
+  const { hoverProps, isHovered } = useHover({});
   const { focusProps, isFocusVisible } = useFocusRing();
-  const stateProps = useStateProps({ focus: isFocusVisible });
+  const stateProps = useStateProps({
+    hover: isHovered,
+    focusVisible: isFocusVisible,
+  });
 
   return (
     <Box
       as="th"
       ref={ref}
-      __baseCSS={{ textAlign: isSelectionColumn ? 'center' : 'left' }}
-      css={css}
-      {...mergeProps(columnHeaderProps, focusProps)}
+      css={styles.header}
+      {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
     >
-      {isSelectionColumn ? (
-        <input {...inputProps} ref={inputRef} />
-      ) : (
-        <Text size="xxsmall">{column.rendered}</Text>
-      )}
+      {column.rendered}
     </Box>
   );
 };

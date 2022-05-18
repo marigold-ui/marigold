@@ -1,9 +1,8 @@
-/* eslint-disable testing-library/prefer-presence-queries */
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 
-import { Table } from '@marigold/components';
+import { Table } from './Table';
 
 // Setup
 // ---------------
@@ -148,13 +147,6 @@ test('supports selectionMode multiple', () => {
       </Table>
     </ThemeProvider>
   );
-  // Are the Checkboxes rendered?
-  const tableHeaderCheckbox = screen.getAllByRole(/columnheader/)[0];
-  // eslint-disable-next-line testing-library/no-node-access
-  expect(tableHeaderCheckbox.firstChild instanceof HTMLInputElement).toBe(true);
-  const tableRowCheckbox = screen.getAllByRole(/gridcell/)[0];
-  // eslint-disable-next-line testing-library/no-node-access
-  expect(tableRowCheckbox.firstChild instanceof HTMLInputElement).toBe(true);
 
   // select two rows
   const tableRows = screen.getAllByRole('row');

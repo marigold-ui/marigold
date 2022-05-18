@@ -4,22 +4,27 @@ import {
   Cell,
   Column,
   Row,
-  TableBody,
-  TableHeader,
+  TableBody as Body,
+  TableHeader as Header,
   TableStateProps,
   useTableState,
 } from '@react-stately/table';
 
-import { ThemeExtensionsWithParts, useComponentStyles } from '@marigold/system';
+import {
+  Box,
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+} from '@marigold/system';
 
-import { Box } from '../Box';
-
+import { TableContext } from './Context';
+import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
+import { TableCheckboxCell } from './TableCheckboxCell';
 import { TableColumnHeader } from './TableColumnHeader';
+import { TableHeader } from './TableHeader';
 import { TableHeaderRow } from './TableHeaderRow';
 import { TableRow } from './TableRow';
-import { TableRowGroup } from './TableRowGroup';
-import { TableContext } from './Context';
+import { TableSelectAllCell } from './TableSelectAllCell';
 
 // Theme Extension
 // ---------------
@@ -49,6 +54,7 @@ export const Table: Table = ({ variant, size, ...props }: TableProps) => {
     ...props,
     showSelectionCheckboxes:
       props.selectionMode === 'multiple' &&
+      // TODO: It this necessary?
       props.selectionBehavior !== 'replace',
   });
   const { gridProps } = useTable(props, state, tableRef);
@@ -59,49 +65,47 @@ export const Table: Table = ({ variant, size, ...props }: TableProps) => {
     { parts: ['table', 'header', 'row', 'cell'] }
   );
 
+  const { collection } = state;
+
   return (
     <TableContext.Provider value={{ state, styles }}>
       <Box as="table" ref={tableRef} css={styles.table} {...gridProps}>
-        <TableRowGroup as="thead">
-          {state.collection.headerRows.map(headerRow => (
-            <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
-              {[...headerRow.childNodes].map(column => (
-                <TableColumnHeader
-                  key={column.key}
-                  item={column}
-                  state={state}
-                  isSelectionColumn={column.props.isSelectionCell}
-                  css={styles.header}
-                />
-              ))}
+        <TableHeader>
+          {collection.headerRows.map(headerRow => (
+            <TableHeaderRow key={headerRow.key} item={headerRow}>
+              {[...headerRow.childNodes].map(column =>
+                column.props?.isSelectionCell ? (
+                  <TableSelectAllCell key={column.key} column={column} />
+                ) : (
+                  <TableColumnHeader key={column.key} column={column} />
+                )
+              )}
             </TableHeaderRow>
           ))}
-        </TableRowGroup>
-        <TableRowGroup as="tbody">
-          {[...state.collection.body.childNodes].map(row => (
-            <TableRow css={styles.row} key={row.key} item={row} state={state}>
-              {[...row.childNodes].map(cell => (
-                <TableCell
-                  key={cell.key}
-                  item={cell}
-                  state={state}
-                  isSelectionCell={cell.props.isSelectionCell}
-                  css={styles.cell}
-                />
-              ))}
+        </TableHeader>
+        <TableBody>
+          {[...collection.body.childNodes].map(row => (
+            <TableRow key={row.key} row={row}>
+              {[...row.childNodes].map(cell =>
+                cell.props?.isSelectionCell ? (
+                  <TableCheckboxCell key={cell.key} cell={cell} />
+                ) : (
+                  <TableCell key={cell.key} cell={cell} />
+                )
+              )}
             </TableRow>
           ))}
-        </TableRowGroup>
+        </TableBody>
       </Box>
     </TableContext.Provider>
   );
 };
 
 // Export collection components to conveniently have access to them.
-Table.Body = TableBody;
+Table.Body = Body;
 Table.Cell = Cell;
 Table.Column = Column;
-Table.Header = TableHeader;
+Table.Header = Header;
 Table.Row = Row;
 
 /**
@@ -110,9 +114,9 @@ Table.Row = Row;
  */
 interface Table {
   (props: TableProps): JSX.Element;
-  Body: typeof TableBody;
+  Body: typeof Body;
   Cell: typeof Cell;
   Column: typeof Column;
-  Header: typeof TableHeader;
+  Header: typeof Header;
   Row: typeof Row;
 }
