@@ -29,7 +29,7 @@
     "gatsby-plugin-sitemap": "5.11.1",
     "gatsby-source-filesystem": "4.11.1",
     "gatsby-transformer-sharp": "4.11.0",
-    "gh-pages": "3.2.3",
+    "gh-pages": "4.0.0",
     "git-rev-sync": "3.0.2",
     "graphql": "16.5.0",
     "mdx-utils": "0.2.0",
