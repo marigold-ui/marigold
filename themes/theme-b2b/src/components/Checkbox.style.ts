@@ -2,11 +2,6 @@ import type { Theme } from '@marigold/components';
 
 export const Checkbox: Theme['components']['Checkbox'] = {
   base: {
-    container: {
-      'th &': {
-        display: 'inline-flex',
-      },
-    },
     label: {
       fontSize: 'xsmall',
 
@@ -29,6 +24,12 @@ export const Checkbox: Theme['components']['Checkbox'] = {
       },
 
       '&:checked': {
+        color: 'white',
+        borderColor: 'orange80',
+        bg: 'primary',
+      },
+
+      '&:indeterminate': {
         color: 'white',
         borderColor: 'orange80',
         bg: 'primary',

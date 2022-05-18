@@ -54,29 +54,26 @@ interface IconProps extends StateAttrProps {
   indeterminate?: boolean;
 }
 
-const Icon = ({ css, checked, indeterminate, ...props }: IconProps) => {
-  const icon = indeterminate ? <IndeterminateMark /> : <CheckMark />;
-  return (
-    <Box
-      aria-hidden="true"
-      __baseCSS={{
-        width: 16,
-        height: 16,
-        bg: '#fff',
-        border: '1px solid #000',
-        borderRadius: 3,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        p: 1,
-      }}
-      css={css}
-      {...props}
-    >
-      {checked ? icon : null}
-    </Box>
-  );
-};
+const Icon = ({ css, checked, indeterminate, ...props }: IconProps) => (
+  <Box
+    aria-hidden="true"
+    __baseCSS={{
+      width: 16,
+      height: 16,
+      bg: '#fff',
+      border: '1px solid #000',
+      borderRadius: 3,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      p: 1,
+    }}
+    css={css}
+    {...props}
+  >
+    {indeterminate ? <IndeterminateMark /> : checked ? <CheckMark /> : null}
+  </Box>
+);
 
 // Props
 // ---------------
