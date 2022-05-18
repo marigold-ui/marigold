@@ -47,7 +47,7 @@ export const TableCell = ({
 
   const { focusProps, isFocusVisible } = useFocusRing();
   const stateProps = useStateProps({ focus: isFocusVisible });
-  console.log(inputProps);
+
   return (
     <Box
       as="td"

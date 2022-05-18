@@ -9,6 +9,7 @@ export const Table: Theme['components']['Table'] = {
       cursor: 'default',
       color: 'gray00',
       bg: 'gray50',
+      textAlign: 'left',
 
       '&:nth-of-type(even)': { bg: 'gray60' },
 
@@ -25,7 +26,8 @@ export const Table: Theme['components']['Table'] = {
       },
     },
     cell: {
-      p: 'xsmall',
+      py: 'xxsmall',
+      px: 'small',
       cursor: 'default',
       borderBottom: '1px solid',
       borderColor: 'gray50',

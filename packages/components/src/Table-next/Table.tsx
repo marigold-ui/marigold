@@ -17,9 +17,13 @@ import {
 } from '@marigold/system';
 
 import { TableContext } from './Context';
+import { TableBody } from './TableBody';
+import { TableCell } from './TableCell';
+import { TableCheckboxCell } from './TableCheckboxCell';
 import { TableColumnHeader } from './TableColumnHeader';
 import { TableHeader } from './TableHeader';
 import { TableHeaderRow } from './TableHeaderRow';
+import { TableRow } from './TableRow';
 import { TableSelectAllCell } from './TableSelectAllCell';
 
 // Theme Extension
@@ -73,13 +77,25 @@ export const Table: Table = ({ variant, size, ...props }: TableProps) => {
                 column.props?.isSelectionCell ? (
                   <TableSelectAllCell key={column.key} column={column} />
                 ) : (
-                  <TableColumnHeader column={column} />
+                  <TableColumnHeader key={column.key} column={column} />
                 )
               )}
             </TableHeaderRow>
           ))}
         </TableHeader>
-        body!
+        <TableBody>
+          {[...collection.body.childNodes].map(row => (
+            <TableRow key={row.key} row={row}>
+              {[...row.childNodes].map(cell =>
+                cell.props?.isSelectionCell ? (
+                  <TableCheckboxCell key={cell.key} cell={cell} />
+                ) : (
+                  <TableCell key={cell.key} cell={cell} />
+                )
+              )}
+            </TableRow>
+          ))}
+        </TableBody>
       </Box>
     </TableContext.Provider>
   );

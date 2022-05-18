@@ -13,6 +13,7 @@ import { Box, useStateProps } from '@marigold/system';
 
 import { Checkbox } from '../Checkbox';
 import { useTableContext } from './Context';
+import { mapCheckboxProps } from './utils';
 
 // Props
 // ---------------
@@ -33,22 +34,13 @@ export const TableSelectAllCell = ({ column }: TableSelectAllCell) => {
     ref
   );
 
-  const {
-    checkboxProps: { isIndeterminate, isSelected, defaultSelected, ...rest },
-  } = useTableSelectAllCheckbox(state);
-  const checkboxProps = {
-    checked: isSelected,
-    defaultChecked: defaultSelected,
-    indeterminate: isIndeterminate,
-    ...rest,
-  };
-
+  const { checkboxProps } = mapCheckboxProps(useTableSelectAllCheckbox(state));
+  console.log(checkboxProps.indeterminate);
   const { hoverProps, isHovered } = useHover({});
   const { focusProps, isFocusVisible } = useFocusRing();
   const stateProps = useStateProps({
     hover: isHovered,
     focusVisible: isFocusVisible,
-    indeterminate: isIndeterminate,
   });
 
   return (
