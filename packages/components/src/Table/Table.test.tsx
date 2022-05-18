@@ -65,15 +65,15 @@ test('renders contens correctly', () => {
   );
 
   // Renders Header
-  expect(screen.queryByText('Name')).toBeInTheDocument();
-  expect(screen.queryByText('Firstname')).toBeInTheDocument();
+  expect(screen.getByText('Name')).toBeInTheDocument();
+  expect(screen.getByText('Firstname')).toBeInTheDocument();
 
   // Renders Content
-  expect(screen.queryByText('Potter')).toBeInTheDocument();
-  expect(screen.queryByText('Harry')).toBeInTheDocument();
+  expect(screen.getByText('Potter')).toBeInTheDocument();
+  expect(screen.getByText('Harry')).toBeInTheDocument();
 
-  expect(screen.queryByText('Malfoy')).toBeInTheDocument();
-  expect(screen.queryByText('Draco')).toBeInTheDocument();
+  expect(screen.getByText('Malfoy')).toBeInTheDocument();
+  expect(screen.getByText('Draco')).toBeInTheDocument();
 });
 
 test('supports theme with parts', () => {
