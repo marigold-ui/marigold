@@ -33,8 +33,8 @@
     "ts-jest": "28.0.2"
   },
   "peerDependencies": {
-    "jest": "27.x || 28.x",
-    "jest-environment-jsdom": "28.1.0",
+    "jest": "28.x",
+    "jest-environment-jsdom": "28.x",
     "react": "17.0.2",
     "typescript": "4.6.3"
   },
