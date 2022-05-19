@@ -21,7 +21,7 @@
     "directory": "config/jest"
   },
   "dependencies": {
-    "@babel/core": "7.17.10",
+    "@babel/core": "7.17.12",
     "@swc/core": "1.2.183",
     "@swc/jest": "0.2.15",
     "@types/jest": "27.4.1",
