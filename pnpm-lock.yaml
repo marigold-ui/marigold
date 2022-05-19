@@ -111,7 +111,7 @@ importers:
     specifiers:
       '@babel/core': 7.17.12
       '@swc/core': 1.2.183
-      '@swc/jest': 0.2.15
+      '@swc/jest': 0.2.21
       '@types/jest': 27.4.1
       babel-jest: 28.1.0
       find-up: 5.0.0
@@ -125,7 +125,7 @@ importers:
     dependencies:
       '@babel/core': 7.17.12
       '@swc/core': 1.2.183
-      '@swc/jest': 0.2.15_@swc+core@1.2.183
+      '@swc/jest': 0.2.21_@swc+core@1.2.183
       '@types/jest': 27.4.1
       babel-jest: 28.1.0_@babel+core@7.17.12
       find-up: 5.0.0
@@ -7682,8 +7682,8 @@ packages:
     resolution: {integrity: sha512-ZCioFJz6NcLAA4zQqN6BORE/SFu2tBdwRU3JXQgLBu6JETvFElAOpaP0HYjWpbnCHFEJ5o6c4wWT8QeLbRoe2w==}
     dev: false
 
-  /@swc/jest/0.2.15_@swc+core@1.2.183:
-    resolution: {integrity: sha512-Ja+YCVPOGPX/nFnPvPKaWpx2HUwrtuvHP1onHOey1gNGhq8CktQ7xQhCFSuyYBQJiW3WOZ+qMsv3aZk1XUBSOg==}
+  /@swc/jest/0.2.21_@swc+core@1.2.183:
+    resolution: {integrity: sha512-/+NcExiZbxXANNhNPnIdFuGq62CeumulLS1bngwqIXd8H7d96LFUfrYzdt8tlTwLMel8tFtQ5aRjzVkyOTyPDw==}
     engines: {npm: '>= 7.0.0'}
     peerDependencies:
       '@swc/core': '*'
