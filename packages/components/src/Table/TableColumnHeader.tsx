@@ -35,6 +35,7 @@ export const TableColumnHeader = ({ column }: TableColumnHeaderProps) => {
   return (
     <Box
       as="th"
+      colSpan={column.colspan}
       ref={ref}
       css={styles.header}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
