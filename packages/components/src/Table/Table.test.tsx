@@ -159,3 +159,36 @@ test('supports selectionMode multiple', () => {
   fireEvent.click(tableRows[1]);
   expect(tableRows[1]).toHaveAttribute('aria-selected', 'false');
 });
+
+test('supports colspans', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Table aria-label="Example table for nested columns">
+        <Table.Header>
+          <Table.Column title="Name">
+            <Table.Column isRowHeader>First Name</Table.Column>
+            <Table.Column isRowHeader>Last Name</Table.Column>
+          </Table.Column>
+          <Table.Column title="Information">
+            <Table.Column>Age</Table.Column>
+            <Table.Column>Birthday</Table.Column>
+          </Table.Column>
+        </Table.Header>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>Sam</Table.Cell>
+            <Table.Cell>Smith</Table.Cell>
+            <Table.Cell>36</Table.Cell>
+            <Table.Cell>May 3</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+    </ThemeProvider>
+  );
+
+  const nameHeader = screen.getByText('Name');
+  expect(nameHeader).toHaveAttribute('colspan', '2');
+
+  const informationHeader = screen.getByText('Information');
+  expect(informationHeader).toHaveAttribute('colspan', '2');
+});
