@@ -23,7 +23,7 @@ export default {
       ],
       description: 'Responsive Style Value',
     },
-    align: {
+    alignY: {
       control: {
         type: 'select',
       },

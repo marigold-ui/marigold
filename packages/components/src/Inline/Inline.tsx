@@ -5,10 +5,10 @@ import { Box } from '../Box';
 
 export interface InlineProps {
   space?: ResponsiveStyleValue<string>;
-  align?: 'top' | 'center' | 'bottom';
+  alignY?: 'top' | 'center' | 'bottom';
 }
 
-const ALIGNMENT = {
+const ALIGNMENT_Y = {
   top: 'flex-start',
   center: 'center',
   bottom: 'flex-end',
@@ -16,7 +16,7 @@ const ALIGNMENT = {
 
 export const Inline: React.FC<InlineProps> = ({
   space = 'none',
-  align = 'center',
+  alignY = 'center',
   children,
   ...props
 }) => (
@@ -25,7 +25,7 @@ export const Inline: React.FC<InlineProps> = ({
       display: 'inline-flex',
       flexWrap: 'wrap',
       gap: space,
-      alignItems: ALIGNMENT[align],
+      alignItems: ALIGNMENT_Y[alignY],
     }}
     {...props}
   >
