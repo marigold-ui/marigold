@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Box } from '@marigold/system';
+import { shadow } from '@marigold/tokens';
 
 import { Inline } from './Inline';
 
@@ -23,6 +24,13 @@ export default {
       ],
       description: 'Responsive Style Value',
     },
+    alignX: {
+      control: {
+        type: 'select',
+      },
+      options: ['left', 'center', 'right'],
+      description: 'Vertical Alignment',
+    },
     alignY: {
       control: {
         type: 'select',
@@ -42,6 +50,7 @@ const Block = ({ children }: { children: ReactNode }) => (
       color: '#edf2ff',
       px: 32,
       py: 12,
+      boxShadow: shadow['medium-1'],
     }}
   >
     {children}
