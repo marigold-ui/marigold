@@ -21,9 +21,12 @@ export const Inline: React.FC<InlineProps> = ({
   ...props
 }) => (
   <Box
-    __baseCSS={{ gap: space, flexWrap: 'wrap' }}
-    display="inline-flex"
-    alignItems={ALIGNMENT[align]}
+    css={{
+      display: 'inline-flex',
+      flexWrap: 'wrap',
+      gap: space,
+      alignItems: ALIGNMENT[align],
+    }}
     {...props}
   >
     {children}
