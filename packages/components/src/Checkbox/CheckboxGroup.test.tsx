@@ -232,7 +232,7 @@ test('passes down "error" to checkboxes', () => {
   );
 });
 
-test('constrolled', () => {
+test('controlled', () => {
   const onChange = jest.fn();
   render(
     <CheckboxGroup label="Group of Checkboxes" onChange={onChange}>
