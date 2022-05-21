@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ResponsiveStyleValue } from '@marigold/system';
 
 import { Box } from '../Box';
@@ -18,6 +18,7 @@ const ALIGNMENT_Y = {
 // Props
 // ---------------
 export interface InlineProps {
+  children?: ReactNode;
   space?: ResponsiveStyleValue<string>;
   alignX?: keyof typeof ALIGNMENT_X;
   alignY?: keyof typeof ALIGNMENT_Y;
@@ -25,13 +26,13 @@ export interface InlineProps {
 
 // Component
 // ---------------
-export const Inline: React.FC<InlineProps> = ({
+export const Inline = ({
   space = 'none',
   alignX = 'left',
   alignY = 'center',
   children,
   ...props
-}) => (
+}: InlineProps) => (
   <Box
     css={{
       display: 'flex',
