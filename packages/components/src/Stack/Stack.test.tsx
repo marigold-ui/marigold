@@ -83,7 +83,7 @@ test('children to the top by default', () => {
   expect(stack).toHaveStyle(`justify-content: flex-start`);
 });
 
-test('allows to align children to the center', () => {
+test('allows to align children to the vertical center', () => {
   render(
     <Stack alignY="center" data-testid="stack">
       <Text>first</Text>
