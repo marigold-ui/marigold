@@ -22,10 +22,12 @@ import { Stack } from '@marigold/components';
 
 ## Props
 
-| Property | Type                           | Default |
-| :------- | :----------------------------- | :------ |
-| `space`  | `ResponsiveStyleValue<string>` | `none`  |
-| `align`  | `left, right, center`          | `left`  |
+| Property  | Type                           | Default |
+| :-------- | :----------------------------- | :------ |
+| `space`   | `ResponsiveStyleValue<string>` | `none`  |
+| `alignX`  | `left, right, center`          | `left`  |
+| `alignY`  | `top, bottom, center`          | `left`  |
+| `stretch` | `boolean`                      | `false` |
 
 ## Examples
 
@@ -70,18 +72,30 @@ import { Stack } from '@marigold/components';
 </Stack>
 ```
 
-### Alignment
+### Horizontal Alignment
 
 ```tsx
 <>
   <Stack space="medium">
     <Text>Left</Text>
   </Stack>
-  <Stack space="medium" align="center">
+  <Stack space="medium" alignX="center">
     <Text>Center</Text>
   </Stack>
-  <Stack space="medium" align="right">
+  <Stack space="medium" alignX="right">
     <Text>Right</Text>
   </Stack>
 </>
+```
+
+### Vertical Alignment
+
+```tsx
+<Box css={{ height: 200, bg: '#f1f3f5', p: 8 }}>
+  <Stack space="medium" stretch alignY="bottom">
+    <Text>Lirum</Text>
+    <Text>Larum</Text>
+    <Text>Löffelstiel!</Text>
+  </Stack>
+</Box>
 ```

@@ -40,6 +40,13 @@ export default {
       options: ['top', 'center', 'bottom'],
       description: 'Vertical Alignment',
     },
+    stretch: {
+      control: {
+        type: 'boolean',
+      },
+      description:
+        'Stretch to fill space (useful if you want to change y alignment)',
+    },
   },
 } as Meta;
 
@@ -127,10 +134,12 @@ const Block = ({ children }: { children: ReactNode }) => (
   </Box>
 );
 
-export const Align: ComponentStory<typeof Stack> = args => (
-  <Stack {...args}>
-    <Block>Lirum</Block>
-    <Block>Larum</Block>
-    <Block>Löffelstiel!</Block>
-  </Stack>
+export const Stretch: ComponentStory<typeof Stack> = args => (
+  <Box css={{ height: 300 }}>
+    <Stack {...args}>
+      <Block>Lirum</Block>
+      <Block>Larum</Block>
+      <Block>Löffelstiel!</Block>
+    </Stack>
+  </Box>
 );
