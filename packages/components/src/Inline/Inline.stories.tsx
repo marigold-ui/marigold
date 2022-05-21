@@ -29,7 +29,7 @@ export default {
         type: 'select',
       },
       options: ['left', 'center', 'right'],
-      description: 'Vertical Alignment',
+      description: 'Horizontal Alignment',
     },
     alignY: {
       control: {
