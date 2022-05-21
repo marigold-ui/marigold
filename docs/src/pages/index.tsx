@@ -15,7 +15,7 @@ export default function LandingPage() {
         my: '-xsmall',
       }}
     >
-      <Stack space="xxlarge" align="center">
+      <Stack space="xxlarge" alignX="center">
         <Logo size="large" />
         <Inline space="xxlarge">
           <Link variant="outline" to="/introduction/00-getting-started">

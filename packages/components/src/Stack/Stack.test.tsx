@@ -55,7 +55,7 @@ test('aligns children left by default', () => {
 
 test('allows to aligns children to the center', () => {
   render(
-    <Stack align="center" data-testid="stack">
+    <Stack alignX="center" data-testid="stack">
       <Text>first</Text>
     </Stack>
   );
@@ -65,7 +65,7 @@ test('allows to aligns children to the center', () => {
 
 test('allows to aligns children to the right', () => {
   render(
-    <Stack align="right" data-testid="stack">
+    <Stack alignX="right" data-testid="stack">
       <Text>first</Text>
     </Stack>
   );
