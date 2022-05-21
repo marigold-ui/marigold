@@ -42,12 +42,6 @@ export default {
       description: 'Error state',
       defaultValue: false,
     },
-    width: {
-      control: {
-        type: 'text',
-      },
-      description: 'The width of the group',
-    },
   },
 } as Meta;
 
