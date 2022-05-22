@@ -1,47 +1,55 @@
 import React, { ReactNode, useRef } from 'react';
 import { useFocusRing } from '@react-aria/focus';
+import { useHover } from '@react-aria/interactions';
 import { useTableRow } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
-import { TableState } from '@react-stately/table';
-import { Node } from '@react-types/shared';
+import { GridNode } from '@react-types/grid';
 
-import { CSSObject, useStateProps } from '@marigold/system';
+import { Box, useStateProps } from '@marigold/system';
 
-import { Box } from '../Box';
+import { useTableContext } from './Context';
 
 // Props
-// ----------------------------
+// ---------------
 export interface TableRowProps {
   children?: ReactNode;
-  item: Node<object>;
-  state: TableState<object>;
-  css?: CSSObject;
+  row: GridNode<object>;
 }
 
-// TableRow Component
-// ----------------------------
-export const TableRow = ({ item, state, children, css }: TableRowProps) => {
+// Component
+// ---------------
+export const TableRow = ({ children, row }: TableRowProps) => {
   const ref = useRef(null);
-  const isSelected = state.selectionManager.isSelected(item.key);
-  const { rowProps } = useTableRow(
+  const { state, styles } = useTableContext();
+  const { rowProps, isPressed } = useTableRow(
     {
-      node: item,
+      node: row,
     },
     state,
     ref
   );
-  const { focusProps, isFocusVisible } = useFocusRing();
+
+  const disabled = state.disabledKeys.has(row.key);
+  const selected = state.selectionManager.isSelected(row.key);
+
+  // Rows are focused if any cell inside it is focused
+  const { focusProps, isFocusVisible } = useFocusRing({ within: true });
+  const { hoverProps, isHovered } = useHover({ isDisabled: disabled });
+
   const stateProps = useStateProps({
-    focus: isFocusVisible,
-    checked: isSelected,
+    disabled,
+    selected,
+    hover: isHovered,
+    focusVisible: isFocusVisible,
+    active: isPressed,
   });
 
   return (
     <Box
       as="tr"
       ref={ref}
-      css={css}
-      {...mergeProps(rowProps, focusProps)}
+      css={styles.row}
+      {...mergeProps(rowProps, focusProps, hoverProps)}
       {...stateProps}
     >
       {children}

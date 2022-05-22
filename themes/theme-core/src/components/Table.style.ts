@@ -17,7 +17,10 @@ export const Table: Theme['components']['Table'] = {
       '&:checked': {
         bg: 'orange10',
       },
-      '&:focus': {
+      '&:hover': {
+        bg: 'gray20',
+      },
+      '&:focus-visible': {
         outlineColor: 'orange60',
       },
     },

@@ -1,9 +1,8 @@
-/* eslint-disable testing-library/prefer-presence-queries */
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 
-import { Table } from '@marigold/components';
+import { Table } from './Table';
 
 // Setup
 // ---------------
@@ -66,15 +65,15 @@ test('renders contens correctly', () => {
   );
 
   // Renders Header
-  expect(screen.queryByText('Name')).toBeInTheDocument();
-  expect(screen.queryByText('Firstname')).toBeInTheDocument();
+  expect(screen.getByText('Name')).toBeInTheDocument();
+  expect(screen.getByText('Firstname')).toBeInTheDocument();
 
   // Renders Content
-  expect(screen.queryByText('Potter')).toBeInTheDocument();
-  expect(screen.queryByText('Harry')).toBeInTheDocument();
+  expect(screen.getByText('Potter')).toBeInTheDocument();
+  expect(screen.getByText('Harry')).toBeInTheDocument();
 
-  expect(screen.queryByText('Malfoy')).toBeInTheDocument();
-  expect(screen.queryByText('Draco')).toBeInTheDocument();
+  expect(screen.getByText('Malfoy')).toBeInTheDocument();
+  expect(screen.getByText('Draco')).toBeInTheDocument();
 });
 
 test('supports theme with parts', () => {
@@ -148,13 +147,6 @@ test('supports selectionMode multiple', () => {
       </Table>
     </ThemeProvider>
   );
-  // Are the Checkboxes rendered?
-  const tableHeaderCheckbox = screen.getAllByRole(/columnheader/)[0];
-  // eslint-disable-next-line testing-library/no-node-access
-  expect(tableHeaderCheckbox.firstChild instanceof HTMLInputElement).toBe(true);
-  const tableRowCheckbox = screen.getAllByRole(/gridcell/)[0];
-  // eslint-disable-next-line testing-library/no-node-access
-  expect(tableRowCheckbox.firstChild instanceof HTMLInputElement).toBe(true);
 
   // select two rows
   const tableRows = screen.getAllByRole('row');
@@ -166,4 +158,37 @@ test('supports selectionMode multiple', () => {
   // unselect one row
   fireEvent.click(tableRows[1]);
   expect(tableRows[1]).toHaveAttribute('aria-selected', 'false');
+});
+
+test('supports colspans', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Table aria-label="Example table for nested columns">
+        <Table.Header>
+          <Table.Column title="Name">
+            <Table.Column isRowHeader>First Name</Table.Column>
+            <Table.Column isRowHeader>Last Name</Table.Column>
+          </Table.Column>
+          <Table.Column title="Information">
+            <Table.Column>Age</Table.Column>
+            <Table.Column>Birthday</Table.Column>
+          </Table.Column>
+        </Table.Header>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>Sam</Table.Cell>
+            <Table.Cell>Smith</Table.Cell>
+            <Table.Cell>36</Table.Cell>
+            <Table.Cell>May 3</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+    </ThemeProvider>
+  );
+
+  const nameHeader = screen.getByText('Name');
+  expect(nameHeader).toHaveAttribute('colspan', '2');
+
+  const informationHeader = screen.getByText('Information');
+  expect(informationHeader).toHaveAttribute('colspan', '2');
 });
