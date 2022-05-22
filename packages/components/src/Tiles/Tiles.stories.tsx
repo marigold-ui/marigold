@@ -58,7 +58,7 @@ export const Boxes: ComponentStory<typeof Tiles> = args => (
 export const Stacks: ComponentStory<typeof Tiles> = args => (
   <Tiles {...args}>
     <Box border="1px solid #fa8005" bg="orange10" p="small">
-      <Stack space="medium" align="center">
+      <Stack space="medium" alignX="center">
         <Image
           src="https://www.pokewiki.de/images/6/63/Sugimori_004.png"
           alt="glumanda"
@@ -74,7 +74,7 @@ export const Stacks: ComponentStory<typeof Tiles> = args => (
       </Stack>
     </Box>
     <Box border="1px solid #fa8005" bg="orange10" p="small">
-      <Stack space="medium" align="center">
+      <Stack space="medium" alignX="center">
         <Image
           src="https://www.pokewiki.de/images/7/7a/Sugimori_005.png"
           alt="glutexo"
@@ -91,7 +91,7 @@ export const Stacks: ComponentStory<typeof Tiles> = args => (
       </Stack>
     </Box>
     <Box border="1px solid #fa8005" bg="orange10" p="small">
-      <Stack space="medium" align="center">
+      <Stack space="medium" alignX="center">
         <Image
           src="https://www.pokewiki.de/images/9/96/Sugimori_006.png"
           alt="glurak"

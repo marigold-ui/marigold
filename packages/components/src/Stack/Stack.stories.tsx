@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
+import { Box } from '@marigold/system';
+import { shadow } from '@marigold/tokens';
 
 import { Headline } from '../Headline';
-import { Stack } from './Stack';
 import { Text } from '../Text';
+import { Stack } from './Stack';
 
 export default {
   title: 'Components/Stack',
@@ -23,23 +25,27 @@ export default {
         'xxlarge',
       ],
       description: 'Responsive Style Value',
-      table: {
-        defaultValue: {
-          summary: 'none',
-        },
-      },
     },
-    align: {
+    alignX: {
       control: {
         type: 'select',
       },
-      options: ['left', 'right', 'center'],
-      description: 'HTML element style',
-      table: {
-        defaultValue: {
-          summary: 'left',
-        },
+      options: ['left', 'center', 'right'],
+      description: 'Vertical Alignment',
+    },
+    alignY: {
+      control: {
+        type: 'select',
       },
+      options: ['top', 'center', 'bottom'],
+      description: 'Vertical Alignment',
+    },
+    stretch: {
+      control: {
+        type: 'boolean',
+      },
+      description:
+        'Stretch to fill space (useful if you want to change y alignment)',
     },
   },
 } as Meta;
@@ -110,4 +116,30 @@ export const List: ComponentStory<typeof Stack> = args => (
       <li>three</li>
     </Stack>
   </Stack>
+);
+
+const Block = ({ children }: { children: ReactNode }) => (
+  <Box
+    css={{
+      border: '1px solid #364fc7',
+      borderRadius: 16,
+      bg: '#4263eb',
+      color: '#edf2ff',
+      px: 32,
+      py: 12,
+      boxShadow: shadow['medium-1'],
+    }}
+  >
+    {children}
+  </Box>
+);
+
+export const Stretch: ComponentStory<typeof Stack> = args => (
+  <Box css={{ height: 300 }}>
+    <Stack {...args}>
+      <Block>Lirum</Block>
+      <Block>Larum</Block>
+      <Block>Löffelstiel!</Block>
+    </Stack>
+  </Box>
 );

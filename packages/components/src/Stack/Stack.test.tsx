@@ -43,7 +43,7 @@ test('accepts and uses spacing from theme', () => {
   expect(first).toHaveStyle(`gap: 2px`);
 });
 
-test('aligns children left by default', () => {
+test('align children left by default', () => {
   render(
     <Stack data-testid="stack">
       <Text>first</Text>
@@ -53,9 +53,9 @@ test('aligns children left by default', () => {
   expect(stack).toHaveStyle(`align-items: flex-start`);
 });
 
-test('allows to aligns children to the center', () => {
+test('allows to align children to the center', () => {
   render(
-    <Stack align="center" data-testid="stack">
+    <Stack alignX="center" data-testid="stack">
       <Text>first</Text>
     </Stack>
   );
@@ -63,14 +63,64 @@ test('allows to aligns children to the center', () => {
   expect(stack).toHaveStyle(`align-items: center`);
 });
 
-test('allows to aligns children to the right', () => {
+test('allows to align children to the right', () => {
   render(
-    <Stack align="right" data-testid="stack">
+    <Stack alignX="right" data-testid="stack">
       <Text>first</Text>
     </Stack>
   );
   const stack = screen.getByTestId('stack');
   expect(stack).toHaveStyle(`align-items: flex-end`);
+});
+
+test('children to the top by default', () => {
+  render(
+    <Stack data-testid="stack">
+      <Text>first</Text>
+    </Stack>
+  );
+  const stack = screen.getByTestId('stack');
+  expect(stack).toHaveStyle(`justify-content: flex-start`);
+});
+
+test('allows to align children to the vertical center', () => {
+  render(
+    <Stack alignY="center" data-testid="stack">
+      <Text>first</Text>
+    </Stack>
+  );
+  const stack = screen.getByTestId('stack');
+  expect(stack).toHaveStyle(`justify-content: center`);
+});
+
+test('allows to align children to the bottom', () => {
+  render(
+    <Stack alignY="bottom" data-testid="stack">
+      <Text>first</Text>
+    </Stack>
+  );
+  const stack = screen.getByTestId('stack');
+  expect(stack).toHaveStyle(`justify-content: flex-end`);
+});
+
+test('behaves as inline be default', () => {
+  render(
+    <Stack data-testid="stack">
+      <Text>first</Text>
+    </Stack>
+  );
+  const stack = screen.getByTestId('stack');
+  expect(stack).toHaveStyle(`blockSize: auto`);
+});
+
+test('allows to fill space', () => {
+  render(
+    <Stack stretch data-testid="stack">
+      <Text>first</Text>
+    </Stack>
+  );
+  const stack = screen.getByTestId('stack');
+  expect(stack).toHaveStyle(`blockSize: 100%`);
 });
 
 test('supports nesting', () => {
