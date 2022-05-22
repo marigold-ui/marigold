@@ -1,8 +1,7 @@
 import React from 'react';
 import { SeparatorProps, useSeparator } from '@react-aria/separator';
 
-import { Box } from '../Box';
-import { ThemeExtension, useComponentStyles } from '@marigold/system';
+import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
 
 // Theme Extension
 // ---------------
