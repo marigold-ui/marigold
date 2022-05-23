@@ -1,5 +1,11 @@
 # @marigold/tokens
 
+## 3.0.0
+
+### Major Changes
+
+- [#2096](https://github.com/marigold-ui/marigold/pull/2096) [`a41bb8a3`](https://github.com/marigold-ui/marigold/commit/a41bb8a39ace6006bfc2351f6d4649305bc1d286) Thanks [@sebald](https://github.com/sebald)! - feat: <Stack> can align on x and y axis
+
 ## 2.0.0
 
 ### Major Changes

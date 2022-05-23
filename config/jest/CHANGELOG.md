@@ -1,5 +1,11 @@
 # @marigold/jest-config
 
+## 1.0.0
+
+### Major Changes
+
+- [#2078](https://github.com/marigold-ui/marigold/pull/2078) [`dc07c277`](https://github.com/marigold-ui/marigold/commit/dc07c2773c8c248eb47f02b08a3df3048fd4261c) Thanks [@renovate](https://github.com/apps/renovate)! - fix(deps): update jest to 28
+
 ## 0.5.0
 
 ### Minor Changes
