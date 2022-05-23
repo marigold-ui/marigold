@@ -9,8 +9,7 @@ import {
 } from '@marigold/types';
 
 import { getNormalizedStyles } from '../../normalize';
-import { CSSObject } from '../../types/system';
-import { ensureArrayVariant } from '../../variant';
+import { CSSObject } from '../../types';
 import { transformPseudos } from './utils';
 
 export interface StyleProps
@@ -58,10 +57,9 @@ export interface StyleProps
 
 export interface BoxOwnProps extends StyleProps {
   css?: CSSObject;
-  variant?: string | string[];
   /**
    * Use to set base styles for the component
-   * @internal Used to set default styles for Marigold components
+   * @internal
    */
   __baseCSS?: CSSObject;
 }
@@ -71,20 +69,16 @@ export interface BoxProps extends PolymorphicPropsWithRef<BoxOwnProps, 'div'> {}
 interface CreateStyleProps {
   as?: BoxProps['as'];
   __baseCSS?: BoxOwnProps['__baseCSS'];
-  variant?: BoxOwnProps['variant'];
   css?: BoxOwnProps['css'];
   styles?: StyleProps;
 }
 
 const createThemedStyle =
-  ({ as, __baseCSS, variant, styles, css }: CreateStyleProps) =>
+  ({ as, __baseCSS, styles, css }: CreateStyleProps) =>
   (theme: Theme) => {
     const themedStyles = merge.all([
       getNormalizedStyles(as),
       transformStyleObject(__baseCSS)(theme),
-      ...ensureArrayVariant(variant).map(v =>
-        transformStyleObject({ variant: v })(theme)
-      ),
       transformStyleObject(styles)(theme),
       transformStyleObject(css)(theme),
     ]) as CSSObject;
@@ -98,8 +92,7 @@ export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef(
       as = 'div',
       children,
       __baseCSS,
-      variant,
-      css = {},
+      css,
       display,
       height,
       width,
@@ -149,7 +142,6 @@ export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef(
         css: createThemedStyle({
           as,
           __baseCSS,
-          variant,
           css,
           styles: {
             display,

@@ -28,6 +28,12 @@ export const Checkbox: Theme['components']['Checkbox'] = {
         bg: 'blue60',
       },
 
+      '&:indeterminate': {
+        color: 'white',
+        borderColor: 'blue70',
+        bg: 'blue60',
+      },
+
       '&:disabled': {
         bg: 'gray30',
         borderColor: 'gray40',

@@ -16,11 +16,6 @@ const theme = {
     'small-1': 12,
     'large-1': 24,
   },
-  sizes: {
-    none: 0,
-    medium: 40,
-    large: 60,
-  },
   components: {
     Checkbox: {
       base: {
@@ -167,52 +162,6 @@ test('passed down variant and size to checkboxes', () => {
   expect(screen.getByText('two')).toHaveStyle(
     `font-size: ${theme.fontSizes['small-1']}px`
   );
-});
-
-test('passes down "width" to checkboxes', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <CheckboxGroup label="Group of Checkboxes" width="large">
-        <Checkbox value="one" data-testid="one">
-          one
-        </Checkbox>
-        <Checkbox value="two" data-testid="two">
-          two
-        </Checkbox>
-      </CheckboxGroup>
-    </ThemeProvider>
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const oneContainer = screen.getByTestId('one').parentElement;
-  expect(oneContainer).toHaveStyle(`width: ${theme.sizes.large}px`);
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const twoContainer = screen.getByTestId('two').parentElement;
-  expect(twoContainer).toHaveStyle(`width: ${theme.sizes.large}px`);
-});
-
-test('passed down "width" can be locally overriden', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <CheckboxGroup label="Group of Checkboxes" width="large">
-        <Checkbox value="one" data-testid="one">
-          one
-        </Checkbox>
-        <Checkbox value="two" data-testid="two" width="medium">
-          two
-        </Checkbox>
-      </CheckboxGroup>
-    </ThemeProvider>
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const oneContainer = screen.getByTestId('one').parentElement;
-  expect(oneContainer).toHaveStyle(`width: ${theme.sizes.large}px`);
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const twoContainer = screen.getByTestId('two').parentElement;
-  expect(twoContainer).toHaveStyle(`width: ${theme.sizes.medium}px`);
 });
 
 test('passes down "disabled" to checkboxes', () => {

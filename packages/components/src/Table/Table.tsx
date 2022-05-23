@@ -4,21 +4,27 @@ import {
   Cell,
   Column,
   Row,
-  TableBody,
-  TableHeader,
+  TableBody as Body,
+  TableHeader as Header,
   TableStateProps,
   useTableState,
 } from '@react-stately/table';
 
-import { ThemeExtensionsWithParts, useComponentStyles } from '@marigold/system';
+import {
+  Box,
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+} from '@marigold/system';
 
-import { Box } from '../Box';
-
+import { TableContext } from './Context';
+import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
+import { TableCheckboxCell } from './TableCheckboxCell';
 import { TableColumnHeader } from './TableColumnHeader';
+import { TableHeader } from './TableHeader';
 import { TableHeaderRow } from './TableHeaderRow';
 import { TableRow } from './TableRow';
-import { TableRowGroup } from './TableRowGroup';
+import { TableSelectAllCell } from './TableSelectAllCell';
 
 // Theme Extension
 // ---------------
@@ -31,8 +37,11 @@ export interface TableThemeExtension
 // Props
 // ---------------
 export interface TableProps
-  extends Pick<AriaTableProps<object>, 'onRowAction' | 'onCellAction'>,
-    TableStateProps<object> {
+  extends Pick<
+      AriaTableProps<object>,
+      'focusMode' | 'onRowAction' | 'onCellAction'
+    >,
+    Omit<TableStateProps<object>, 'showSelectionCheckboxes'> {
   variant?: string;
   size?: string;
 }
@@ -40,16 +49,15 @@ export interface TableProps
 // Table Component
 // ---------------
 export const Table: Table = ({ variant, size, ...props }: TableProps) => {
-  // Setup table state and mode
-  const showSelectionCheckboxes =
-    props.selectionMode === 'multiple' && props.selectionBehavior !== 'replace';
+  const tableRef = useRef(null);
   const state = useTableState({
     ...props,
-    showSelectionCheckboxes,
+    showSelectionCheckboxes:
+      props.selectionMode === 'multiple' &&
+      // TODO: It this necessary?
+      props.selectionBehavior !== 'replace',
   });
-
-  const ref = useRef(null);
-  const { gridProps } = useTable(props, state, ref);
+  const { gridProps } = useTable(props, state, tableRef);
 
   const styles = useComponentStyles(
     'Table',
@@ -57,58 +65,58 @@ export const Table: Table = ({ variant, size, ...props }: TableProps) => {
     { parts: ['table', 'header', 'row', 'cell'] }
   );
 
+  const { collection } = state;
+
   return (
-    <Box as="table" ref={ref} __baseCSS={styles.table} {...gridProps}>
-      <TableRowGroup as="thead">
-        {state.collection.headerRows.map(headerRow => (
-          <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
-            {[...headerRow.childNodes].map(column => (
-              <TableColumnHeader
-                key={column.key}
-                item={column}
-                state={state}
-                isSelectionColumn={column.props.isSelectionCell}
-                css={styles.header}
-              />
-            ))}
-          </TableHeaderRow>
-        ))}
-      </TableRowGroup>
-      <TableRowGroup as="tbody">
-        {[...state.collection.body.childNodes].map(row => (
-          <TableRow css={styles.row} key={row.key} item={row} state={state}>
-            {[...row.childNodes].map(cell => (
-              <TableCell
-                key={cell.key}
-                item={cell}
-                state={state}
-                isSelectionCell={cell.props.isSelectionCell}
-                css={styles.cell}
-              />
-            ))}
-          </TableRow>
-        ))}
-      </TableRowGroup>
-    </Box>
+    <TableContext.Provider value={{ state, styles }}>
+      <Box as="table" ref={tableRef} css={styles.table} {...gridProps}>
+        <TableHeader>
+          {collection.headerRows.map(headerRow => (
+            <TableHeaderRow key={headerRow.key} item={headerRow}>
+              {[...headerRow.childNodes].map(column =>
+                column.props?.isSelectionCell ? (
+                  <TableSelectAllCell key={column.key} column={column} />
+                ) : (
+                  <TableColumnHeader key={column.key} column={column} />
+                )
+              )}
+            </TableHeaderRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {[...collection.body.childNodes].map(row => (
+            <TableRow key={row.key} row={row}>
+              {[...row.childNodes].map(cell =>
+                cell.props?.isSelectionCell ? (
+                  <TableCheckboxCell key={cell.key} cell={cell} />
+                ) : (
+                  <TableCell key={cell.key} cell={cell} />
+                )
+              )}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Box>
+    </TableContext.Provider>
   );
 };
 
 // Export collection components to conveniently have access to them.
-Table.Body = TableBody;
+Table.Body = Body;
 Table.Cell = Cell;
 Table.Column = Column;
-Table.Header = TableHeader;
+Table.Header = Header;
 Table.Row = Row;
 
 /**
  * Necessary since TypeScript can not infer the
- * types of the @react-stately components correctly.
+ * types of the @react-stately components.
  */
 interface Table {
   (props: TableProps): JSX.Element;
-  Body: typeof TableBody;
+  Body: typeof Body;
   Cell: typeof Cell;
   Column: typeof Column;
-  Header: typeof TableHeader;
+  Header: typeof Header;
   Row: typeof Row;
 }

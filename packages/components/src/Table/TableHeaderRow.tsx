@@ -1,23 +1,21 @@
 import React, { ReactNode, useRef } from 'react';
 import { useTableHeaderRow } from '@react-aria/table';
-import { TableState } from '@react-stately/table';
-import { Node } from '@react-types/shared';
+import { GridNode } from '@react-types/grid';
+
+import { useTableContext } from './Context';
 
 // Props
-// ----------------------------
+// ---------------
 export interface TableHeaderRowProps {
-  item: Node<object>;
-  state: TableState<object>;
-  children?: ReactNode;
+  children: ReactNode;
+  item: GridNode<object>;
 }
 
-// TableHeaderRow Component
-// ----------------------------
-export const TableHeaderRow = ({
-  item,
-  state,
-  children,
-}: TableHeaderRowProps) => {
+// Component
+// ---------------
+export const TableHeaderRow = ({ item, children }: TableHeaderRowProps) => {
+  const { state } = useTableContext();
+
   const ref = useRef(null);
   const { rowProps } = useTableHeaderRow({ node: item }, state, ref);
 

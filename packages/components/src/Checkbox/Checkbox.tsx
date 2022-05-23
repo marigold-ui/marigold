@@ -16,7 +16,7 @@ import {
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { useCheckboxGroupContext } from './Context';
+import { useCheckboxGroupContext } from './CheckboxGroup';
 
 // Theme Extension
 // ---------------
@@ -54,29 +54,26 @@ interface IconProps extends StateAttrProps {
   indeterminate?: boolean;
 }
 
-const Icon = ({ css, checked, indeterminate, ...props }: IconProps) => {
-  const icon = indeterminate ? <IndeterminateMark /> : <CheckMark />;
-  return (
-    <Box
-      aria-hidden="true"
-      __baseCSS={{
-        width: 16,
-        height: 16,
-        bg: '#fff',
-        border: '1px solid #000',
-        borderRadius: 3,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        p: 1,
-      }}
-      css={css}
-      {...props}
-    >
-      {checked ? icon : null}
-    </Box>
-  );
-};
+const Icon = ({ css, checked, indeterminate, ...props }: IconProps) => (
+  <Box
+    aria-hidden="true"
+    __baseCSS={{
+      width: 16,
+      height: 16,
+      bg: '#fff',
+      border: '1px solid #000',
+      borderRadius: 3,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      p: 1,
+    }}
+    css={css}
+    {...props}
+  >
+    {indeterminate ? <IndeterminateMark /> : checked ? <CheckMark /> : null}
+  </Box>
+);
 
 // Props
 // ---------------
@@ -90,11 +87,10 @@ export interface CheckboxProps
   extends ThemeComponentProps,
     Omit<
       ComponentProps<'input'>,
-      'size' | 'width' | 'type' | 'defaultValue' | CustomCheckboxProps
+      'size' | 'type' | 'defaultValue' | CustomCheckboxProps
     >,
     Pick<AriaCheckboxProps, CustomCheckboxProps> {
   children?: ReactNode;
-  width?: string;
   indeterminate?: boolean;
   error?: boolean;
 }
@@ -104,7 +100,6 @@ export interface CheckboxProps
 export const Checkbox = ({
   size,
   variant,
-  width,
   disabled,
   checked,
   defaultChecked,
@@ -188,7 +183,6 @@ export const Checkbox = ({
         alignItems: 'center',
         gap: '1ch',
         position: 'relative',
-        width: width || groupState?.width || '100%',
       }}
       css={styles.container}
       {...hoverProps}
@@ -216,9 +210,11 @@ export const Checkbox = ({
         css={styles.checkbox}
         {...stateProps}
       />
-      <Box css={styles.label} {...stateProps}>
-        {props.children}
-      </Box>
+      {props.children && (
+        <Box css={styles.label} {...stateProps}>
+          {props.children}
+        </Box>
+      )}
     </Box>
   );
 };
