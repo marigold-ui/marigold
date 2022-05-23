@@ -58,8 +58,5 @@
     "slack": "zx scripts/slack-release-notification.mjs --quiet",
     "postinstall": "rm -f node_modules/@emotion/core/types/index.d.ts && rm -rf node_modules/.pnpm/@emotion+core@10.3.1_react@17.0.2/node_modules/@emotion/core/types/index.d.ts",
     "prepare": "husky install"
-  },
-  "devDependencies": {
-    "husky": "^8.0.0"
   }
 }
