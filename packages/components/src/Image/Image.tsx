@@ -11,6 +11,7 @@ export interface ImageThemeExtension extends ThemeExtension<'Image'> {}
 // ---------------
 export interface ImageProps extends ComponentProps<'img'> {
   variant?: string;
+  size?: string;
   children?: never;
 }
 
