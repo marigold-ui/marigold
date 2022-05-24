@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ComponentProps } from '@marigold/types';
 import { size as tokenSize } from '@marigold/tokens';
 
 import { Box } from '../Box';
 
 export interface ContainerProps extends ComponentProps<'div'> {
+  children?: ReactNode;
   contentType?: 'content' | 'header';
   size?: keyof typeof tokenSize.content | keyof typeof tokenSize.header;
   align?: 'left' | 'right' | 'center';
@@ -17,14 +18,14 @@ const ALIGNMENT = {
   right: 'flex-end',
 };
 
-export const Container: React.FC<ContainerProps> = ({
+export const Container = ({
   contentType = 'content',
   size = 'medium',
   align = 'left',
   alignContainer = 'left',
   children,
   ...props
-}) => {
+}: ContainerProps) => {
   const maxWidth = tokenSize[contentType][size];
 
   let gridTemplateColumns = `${maxWidth} 1fr 1fr`;

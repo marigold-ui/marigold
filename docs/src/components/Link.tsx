@@ -9,11 +9,11 @@ import {
 import { colors } from '../theme/colors';
 
 export interface LinkProps
-  extends Pick<MarigoldLinkProps, 'variant' | 'target'> {
+  extends Pick<MarigoldLinkProps, 'variant' | 'target' | 'children'> {
   to: GatsbyLinkProps<unknown>['to'];
 }
 
-export const Link: React.FC<LinkProps> = ({ children, to, ...props }) => {
+export const Link = ({ children, to, ...props }: LinkProps) => {
   const regex = /https?:\/\/((?:[\w\d-]+\.)+[\w\d]{2,})/i;
   const externalLink = regex.test(to);
 

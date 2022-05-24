@@ -41,10 +41,10 @@ const codeBoxStyles = {
 /**
  * Custom styled LiveEditor component which renders a component preview and editable code.
  */
-const LiveEdit: React.FC<CodeBlockProps> = ({
+const LiveEdit = ({
   codeString,
   type = ActionType.CollapseCode,
-}) => {
+}: CodeBlockProps) => {
   const [hide, setHide] = React.useState(type === ActionType.CollapseCode);
 
   return (
@@ -79,11 +79,11 @@ const LiveEdit: React.FC<CodeBlockProps> = ({
   );
 };
 
-export const Preview: React.FC<CodeBlockProps> = ({
+export const Preview = ({
   codeString,
   type = ActionType.CollapseCode,
   language = 'tsx',
-}) => {
+}: CodeBlockProps) => {
   switch (type) {
     case ActionType.CollapseCode: {
       return <LiveEdit codeString={codeString} type={type} />;

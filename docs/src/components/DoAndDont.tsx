@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { ReactNode } from 'react';
 
 import {
   Card,
@@ -14,16 +14,17 @@ import { ComponentProps } from '@marigold/types';
 import { MarigoldTheme } from './MarigoldTheme';
 
 export interface DoAndDontProps extends ComponentProps<'div'> {
+  children?: ReactNode;
   preview: string;
   dont?: boolean;
 }
 
-export const DoAndDont: React.FC<DoAndDontProps> = ({
+export const DoAndDont = ({
   preview,
   dont = false,
   children,
   ...props
-}) => {
+}: DoAndDontProps) => {
   let icon = <Check size={20} fill="success" />;
   let dividerVariant = 'do';
   let title = 'Do';

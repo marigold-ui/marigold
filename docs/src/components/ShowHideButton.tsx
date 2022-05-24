@@ -7,10 +7,7 @@ interface ShowHideButtonProps {
   onHideChange: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const ShowHideButton: React.FC<ShowHideButtonProps> = ({
-  hide,
-  onHideChange,
-}) => (
+export const ShowHideButton = ({ hide, onHideChange }: ShowHideButtonProps) => (
   <Button
     variant="action"
     onClick={() => {

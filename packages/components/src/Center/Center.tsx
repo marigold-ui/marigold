@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { ComponentProps } from '@marigold/types';
 import { ResponsiveStyleValue } from '@marigold/system';
@@ -6,16 +6,17 @@ import { ResponsiveStyleValue } from '@marigold/system';
 import { Box } from '../Box';
 
 export interface CenterProps extends ComponentProps<'div'> {
+  children?: ReactNode;
   maxWidth?: string;
   space?: ResponsiveStyleValue<string>;
 }
 
-export const Center: React.FC<CenterProps> = ({
+export const Center = ({
   maxWidth,
   space = 'none',
   children,
   ...props
-}) => (
+}: CenterProps) => (
   <Box
     css={{
       boxSizing: 'content-box',

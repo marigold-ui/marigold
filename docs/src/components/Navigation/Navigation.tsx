@@ -64,7 +64,7 @@ const NavigationSection = ({ name, children, css }: NavigationSectionProps) => {
   );
 };
 
-export const Navigation: React.FC = () => {
+export const Navigation = () => {
   const tree = useNavigation();
   const styles = useComponentStyles(
     'Navigation',

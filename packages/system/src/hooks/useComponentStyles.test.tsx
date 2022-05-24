@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { ThemeProvider } from './useTheme';
@@ -132,7 +132,7 @@ const theme = {
   },
 };
 
-const wrapper: React.FC = ({ children }) => (
+const wrapper = ({ children }: { children?: ReactNode }) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>
 );
 
@@ -493,7 +493,7 @@ describe('style usage', () => {
   });
 
   test('usage with <Box>', () => {
-    const Button: React.FC = ({ children }) => {
+    const Button = ({ children }: { children?: ReactNode }) => {
       const styles = useComponentStyles('Button');
       return (
         <Box __baseCSS={styles} data-testid="button">
@@ -514,7 +514,7 @@ describe('style usage', () => {
   });
 
   test('usage with <Box> (with parts)', () => {
-    const Checkbox: React.FC = ({ children }) => {
+    const Checkbox = ({ children }: { children?: ReactNode }) => {
       const styles = useComponentStyles(
         'Checkbox',
         {},

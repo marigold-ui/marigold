@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ComponentProps } from '@marigold/types';
 
 import { Box } from '../Box';
 
 export interface BreakoutProps extends ComponentProps<'div'> {
+  children?: ReactNode;
   horizontalAlign?: 'top' | 'bottom' | 'center';
   verticalAlign?: 'left' | 'right' | 'center';
 }
@@ -20,12 +21,12 @@ const useAlignment = (direction?: string) => {
   return 'flex-start';
 };
 
-export const Breakout: React.FC<BreakoutProps> = ({
+export const Breakout = ({
   horizontalAlign,
   verticalAlign,
   children,
   ...props
-}) => {
+}: BreakoutProps) => {
   const alignItems = useAlignment(horizontalAlign);
   const justifyContent = useAlignment(verticalAlign);
   return (

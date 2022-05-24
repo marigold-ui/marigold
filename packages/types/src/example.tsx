@@ -1,4 +1,4 @@
-import React, { createElement, forwardRef, useRef } from 'react';
+import React, { createElement, forwardRef, ReactNode, useRef } from 'react';
 import {
   PolymorphicProps,
   PolymorphicComponentWithRef,
@@ -45,7 +45,12 @@ export const SimpleLink = () => (
   <Link href="https://github.com/marigold-ui/marigold">Click me!</Link>
 );
 
-const RouterLink: React.FC<{ to: string }> = ({ to, children }) => (
+export interface RouterLinkProps {
+  children?: ReactNode;
+  to: string;
+}
+
+const RouterLink = ({ to, children }: RouterLinkProps) => (
   <a href={to}>{children}</a>
 );
 export const IntegrateLinkWithRouter = () => (

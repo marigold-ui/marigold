@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/styles';
 import 'open-props/style';
@@ -23,7 +23,11 @@ const MarigoldTooltip = styled(({ className, ...props }) => (
   },
 }));
 
-export const CopySVGIcon: React.FC = ({ children }) => {
+export interface CopySVGIconProps {
+  children?: ReactNode;
+}
+
+export const CopySVGIcon = ({ children }: CopySVGIconProps) => {
   const [copied, setCopied] = React.useState(false);
   const ref = React.createRef<any>();
 
