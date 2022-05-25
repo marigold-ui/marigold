@@ -40,7 +40,7 @@ export const WithInline: ComponentStory<typeof Split> = () => (
 
 export const WithStack: ComponentStory<typeof Split> = () => (
   <Box css={{ height: 400 }}>
-    <Stack space="xsmall">
+    <Stack space="xsmall" stretch>
       <Block>First</Block>
       <Split />
       <Block>Second</Block>

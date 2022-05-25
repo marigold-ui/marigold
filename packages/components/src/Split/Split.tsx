@@ -5,5 +5,5 @@ import { ComponentProps } from '@marigold/types';
 export interface SplitProps extends ComponentProps<'div'> {}
 
 export const Split = (props: SplitProps) => (
-  <Box {...props} css={{ flexGrow: 1 }} />
+  <Box {...props} role="separator" css={{ flexGrow: 1 }} />
 );
