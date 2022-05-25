@@ -1,5 +1,20 @@
 # @marigold/components
 
+## 1.0.1
+
+### Patch Changes
+
+- [#2103](https://github.com/marigold-ui/marigold/pull/2103) [`68921616`](https://github.com/marigold-ui/marigold/commit/6892161681c8673dd94af8bbd4312f73a125cc68) Thanks [@sebald](https://github.com/sebald)! - fix: `Textarea` allows to set rows via prop
+
+* [#2101](https://github.com/marigold-ui/marigold/pull/2101) [`52fdb7d2`](https://github.com/marigold-ui/marigold/commit/52fdb7d2d5ebf220b1800e639693276af62eb70e) Thanks [@sebald](https://github.com/sebald)! - fix: add `size` prop to `<Image>`
+
+- [#2102](https://github.com/marigold-ui/marigold/pull/2102) [`23c1a5ce`](https://github.com/marigold-ui/marigold/commit/23c1a5cece356465f07b7206a0fe0f65512f3350) Thanks [@sebald](https://github.com/sebald)! - feat: Remove all occurances of `React.FC`
+
+- Updated dependencies [[`23c1a5ce`](https://github.com/marigold-ui/marigold/commit/23c1a5cece356465f07b7206a0fe0f65512f3350), [`bfa0caea`](https://github.com/marigold-ui/marigold/commit/bfa0caeac9fdb817ceed7ee30dbcce0819460f30)]:
+  - @marigold/system@1.0.1
+  - @marigold/types@0.5.1
+  - @marigold/icons@0.7.1
+
 ## 1.0.0
 
 ### Major Changes
