@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, ReactNode } from 'react';
 import { type Theme } from '@marigold/components';
 
 import unicornTheme from '@marigold/theme-unicorn';
@@ -31,15 +31,16 @@ export const useThemeSwitch = () => useContext(Context);
 // Component
 // ---------------
 export interface MarigoldThemeSwitchProps {
+  children?: ReactNode;
   themes: { [name: string]: Theme };
   initial?: string;
 }
 
-export const MarigoldThemeSwitch: React.FC<MarigoldThemeSwitchProps> = ({
+export const MarigoldThemeSwitch = ({
   themes,
   initial,
   children,
-}) => {
+}: MarigoldThemeSwitchProps) => {
   const [theme, setTheme] = useState(initial);
   return (
     <Context.Provider value={{ current: theme, themes, setTheme }}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { cleanup } from '@testing-library/react';
 import { act, renderHook } from '@testing-library/react-hooks';
 
@@ -59,7 +59,7 @@ test('uses breakpoints from theme', () => {
   ]);
 
   const theme = { breakpoints: ['25em', '50em', '65em'] };
-  const wrapper: React.FC = ({ children }) => (
+  const wrapper = ({ children }: { children?: ReactNode }) => (
     <ThemeProvider theme={theme}>{children}</ThemeProvider>
   );
   const { result } = renderHook(() => useResponsiveValue(['one', 'two']), {

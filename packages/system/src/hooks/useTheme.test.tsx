@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { jsx } from '@emotion/react';
 import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
@@ -36,7 +36,7 @@ const theme = {
   },
 };
 
-const wrapper: React.FC = ({ children }) => (
+const wrapper = ({ children }: { children?: ReactNode }) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>
 );
 

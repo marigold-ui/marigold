@@ -1,17 +1,15 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Box } from '../Box';
 import { ResponsiveStyleValue } from '@marigold/system';
 
 export interface TilesProps {
+  children: ReactNode;
   space?: ResponsiveStyleValue<string>;
   itemMinWidth?: ResponsiveStyleValue<string>;
 }
 
-export const Tiles: React.FC<TilesProps> = React.forwardRef(function Tiles(
-  { space = 'none', itemMinWidth = '250px', children, ...props },
-  ref
-) {
-  return (
+export const Tiles = React.forwardRef<HTMLDivElement, TilesProps>(
+  ({ space = 'none', itemMinWidth = '250px', children, ...props }, ref) => (
     <Box
       ref={ref}
       display="grid"
@@ -23,5 +21,5 @@ export const Tiles: React.FC<TilesProps> = React.forwardRef(function Tiles(
     >
       {children}
     </Box>
-  );
-});
+  )
+);

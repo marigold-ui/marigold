@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Box, Columns, Stack } from '@marigold/components';
 
 import { Link } from './Link';
@@ -7,7 +7,11 @@ import { Navigation } from './Navigation';
 import { ThemeSelect } from './ThemeSelect';
 import { Version } from './Version';
 
-export const Layout: React.FC = ({ children }) => {
+export interface LayoutProps {
+  children: ReactNode;
+}
+
+export const Layout = ({ children }: LayoutProps) => {
   return (
     <>
       <Columns columns={[2, 10]} space="medium" collapseAt="60em">
