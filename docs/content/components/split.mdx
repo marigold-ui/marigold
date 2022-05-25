@@ -1,0 +1,52 @@
+---
+title: Split
+---
+
+# Split
+
+Layout component that allows to split the content of `<Inline>` and `<Stack>` layouts.
+
+<MarigoldTheme>
+  <Box css={{ px: 'small', py: 'xsmall', bg: 'gray30', borderRadius: 'large' }}>
+    <Inline space="medium">
+      <Text>Blog</Text>
+      <Text>About</Text>
+      <Split />
+      <Text>Login</Text>
+    </Inline>
+  </Box>
+</MarigoldTheme>
+
+```tsx onlyCode
+import { Split } from '@marigold/components';
+```
+
+## Props
+
+None!
+
+## Examples
+
+### With Inline
+
+```tsx expandCode
+<Inline space="small">
+  <Text>Blog</Text>
+  <Text>About</Text>
+  <Split />
+  <Text>Login</Text>
+</Inline>
+```
+
+### With Stack
+
+```tsx expandCode
+<Box css={{ height: 200 }}>
+  <Stack space="xxsmall" stretch>
+    <Text>It's gonna be ...</Text>
+    <Text>wait for it!</Text>
+    <Split />
+    <Text>... legendary!</Text>
+  </Stack>
+</Box>
+```

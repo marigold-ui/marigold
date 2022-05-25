@@ -30,6 +30,7 @@ export * from './Provider';
 export * from './Radio';
 export * from './Select';
 export * from './Slider';
+export * from './Split';
 export * from './Stack';
 export * from './Switch';
 export * from './Table';
