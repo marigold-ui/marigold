@@ -269,6 +269,20 @@ test('can have default value', () => {
   expect(textArea).toHaveValue('Default Value');
 });
 
+test('passes down "rows" attribute', () => {
+  render(
+    <TextArea
+      data-testid="textarea"
+      label="A Label"
+      defaultValue="Default Value"
+      rows={5}
+    />
+  );
+
+  const textArea = screen.getByTestId('textarea');
+  expect(textArea).toHaveAttribute('rows', '5');
+});
+
 test('can be controlled', () => {
   const Controlled = () => {
     const [value, setValue] = React.useState('');

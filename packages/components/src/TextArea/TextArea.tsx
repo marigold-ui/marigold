@@ -62,6 +62,7 @@ export const TextArea = ({
   required,
   readOnly,
   error,
+  rows,
   ...props
 }: TextAreaProps) => {
   const { label, description, errorMessage } = props;
@@ -110,6 +111,7 @@ export const TextArea = ({
         as="textarea"
         css={styles}
         ref={ref}
+        rows={rows}
         {...inputProps}
         {...focusProps}
         {...hoverProps}

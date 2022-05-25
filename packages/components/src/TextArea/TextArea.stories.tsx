@@ -57,6 +57,12 @@ export default {
       },
       description: 'The width of the field',
     },
+    rows: {
+      control: {
+        type: 'number',
+      },
+      description: 'The number of rows',
+    },
   },
 } as Meta;
 
