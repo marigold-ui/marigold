@@ -14,7 +14,7 @@ export default function Home() {
 
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         {webFontUrl.map(url => (
-          <link href={url} rel="stylesheet" />
+          <link key={url} href={url} rel="stylesheet" />
         ))}
       </Head>
 
