@@ -5,9 +5,15 @@
 node_modules
 coverage
 dist
+build
 
 docs/.cache
 docs/public
 
+.pnpm-debug.log*
 
 local.env
+
+# next.js
+.next
+out
