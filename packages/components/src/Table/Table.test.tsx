@@ -257,9 +257,12 @@ test('sorting', () => {
   expect(rows[3].textContent).toContain('Banana');
 
   // Sort by name
+  // eslint-disable-next-line testing-library/no-node-access
   fireEvent.click(rows[0].firstChild!);
+  // eslint-disable-next-line testing-library/no-node-access
   fireEvent.click(rows[0].firstChild!);
 
+  // eslint-disable-next-line testing-library/no-node-access
   const header = rows[0].querySelector('[aria-sort]');
   expect(header).toBeInTheDocument();
   expect(header?.textContent).toContain('Name');
