@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { SortDescriptor } from '@react-types/shared';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 
@@ -191,4 +192,80 @@ test('supports colspans', () => {
 
   const informationHeader = screen.getByText('Information');
   expect(informationHeader).toHaveAttribute('colspan', '2');
+});
+
+test('sorting', () => {
+  const data = [
+    {
+      name: 'Apple',
+      amount: 32,
+    },
+    { name: 'Orange', amount: 11 },
+    { name: 'Banana', amount: 24 },
+  ];
+
+  const SortingTable = () => {
+    const [list, setList] = useState(data);
+    const [descriptor, setDescriptor] = useState<SortDescriptor>({});
+    const sort = ({ column, direction }: SortDescriptor) => {
+      const result = list.sort((a: any, b: any) => {
+        let first = a[column!];
+        let second = b[column!];
+        let cmp =
+          (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
+        if (direction === 'descending') {
+          cmp *= -1;
+        }
+        return cmp;
+      });
+      setDescriptor({ column, direction });
+      setList(result);
+    };
+
+    return (
+      <Table
+        aria-label="Example table with client side sorting"
+        sortDescriptor={descriptor}
+        onSortChange={sort}
+      >
+        <Table.Header>
+          <Table.Column key="name" allowsSorting>
+            Name
+          </Table.Column>
+          <Table.Column key="amount" allowsSorting>
+            Amount
+          </Table.Column>
+        </Table.Header>
+        <Table.Body items={list}>
+          {item => (
+            <Table.Row key={item.name}>
+              {columnKey => <Table.Cell>{(item as any)[columnKey]}</Table.Cell>}
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+    );
+  };
+
+  render(<SortingTable />);
+
+  const rows = screen.getAllByRole('row');
+
+  // Unsorted
+  expect(rows[1].textContent).toContain('Apple');
+  expect(rows[2].textContent).toContain('Orange');
+  expect(rows[3].textContent).toContain('Banana');
+
+  // Sort by name
+  fireEvent.click(rows[0].firstChild!);
+  fireEvent.click(rows[0].firstChild!);
+
+  const header = rows[0].querySelector('[aria-sort]');
+  expect(header).toBeInTheDocument();
+  expect(header?.textContent).toContain('Name');
+
+  const sortedRows = screen.getAllByRole('row');
+  expect(sortedRows[1].textContent).toContain('Orange');
+  expect(sortedRows[2].textContent).toContain('Banana');
+  expect(sortedRows[3].textContent).toContain('Apple');
 });

@@ -22,14 +22,16 @@ const SortIndicator = ({
   visible,
 }: SortIndicatorProps) => (
   <Box
+    as="span"
+    role="presentation"
     aria-hidden="true"
     css={{
       color: 'currentColor',
-      transform: `rotate(${direction === 'ascending' ? 0 : 180}deg)`,
+      paddingInlineStart: '0.5ch',
       visibility: visible ? 'visible' : 'hidden',
     }}
   >
-    ▲
+    {direction === 'ascending' ? '▲' : '▼'}
   </Box>
 );
 
