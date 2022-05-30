@@ -44,11 +44,17 @@ export interface TableProps
     Omit<TableStateProps<object>, 'showSelectionCheckboxes'> {
   variant?: string;
   size?: string;
+  stretch?: boolean;
 }
 
 // Table Component
 // ---------------
-export const Table: Table = ({ variant, size, ...props }: TableProps) => {
+export const Table: Table = ({
+  variant,
+  size,
+  stretch,
+  ...props
+}: TableProps) => {
   const tableRef = useRef(null);
   const state = useTableState({
     ...props,
@@ -69,7 +75,16 @@ export const Table: Table = ({ variant, size, ...props }: TableProps) => {
 
   return (
     <TableContext.Provider value={{ state, styles }}>
-      <Box as="table" ref={tableRef} css={styles.table} {...gridProps}>
+      <Box
+        as="table"
+        ref={tableRef}
+        __baseCSS={{
+          borderCollapse: 'collapse',
+          width: stretch ? '100%' : undefined,
+        }}
+        css={styles.table}
+        {...gridProps}
+      >
         <TableHeader>
           {collection.headerRows.map(headerRow => (
             <TableHeaderRow key={headerRow.key} item={headerRow}>

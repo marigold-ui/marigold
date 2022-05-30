@@ -24,6 +24,12 @@ export default {
       description: 'Focus Mode with Keyboard',
       defaultValue: 'row',
     },
+    stretch: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Stretch to fill the container',
+    },
   },
 } as Meta;
 

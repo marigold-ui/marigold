@@ -272,3 +272,23 @@ test('sorting', () => {
   expect(sortedRows[2].textContent).toContain('Banana');
   expect(sortedRows[3].textContent).toContain('Apple');
 });
+
+test('allows to strecht to fit container', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Table aria-label="Streched table" stretch>
+        <Table.Header>
+          <Table.Column>Name</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>Alice</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+    </ThemeProvider>
+  );
+
+  const table = screen.getAllByRole(/grid/);
+  expect(table[0]).toHaveStyle(`width: 100%`);
+});
