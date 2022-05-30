@@ -1,5 +1,21 @@
 # @marigold/docs
 
+## 1.1.0
+
+### Minor Changes
+
+- [#2106](https://github.com/marigold-ui/marigold/pull/2106) [`d0b3abfe`](https://github.com/marigold-ui/marigold/commit/d0b3abfe218e7b6d8b0d943836b4b17c0551a785) Thanks [@sebald](https://github.com/sebald)! - feat: Introduce `<Split>` component for `<Inline>` and `<Stack>`
+
+* [#2116](https://github.com/marigold-ui/marigold/pull/2116) [`16f1459c`](https://github.com/marigold-ui/marigold/commit/16f1459c9bc19402b960fe8edb8662b632b1e583) Thanks [@sebald](https://github.com/sebald)! - feat: Add option to stretch `<Table>`
+
+### Patch Changes
+
+- Updated dependencies [[`d0b3abfe`](https://github.com/marigold-ui/marigold/commit/d0b3abfe218e7b6d8b0d943836b4b17c0551a785), [`5a32c4b4`](https://github.com/marigold-ui/marigold/commit/5a32c4b49482c961f93f0db74cfbdf083329ba1e), [`16f1459c`](https://github.com/marigold-ui/marigold/commit/16f1459c9bc19402b960fe8edb8662b632b1e583)]:
+  - @marigold/components@1.1.0
+  - @marigold/theme-b2b@8.0.0
+  - @marigold/system@1.1.0
+  - @marigold/icons@0.7.2
+
 ## 1.0.1
 
 ### Patch Changes
