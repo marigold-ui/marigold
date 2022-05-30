@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "tsup": "5.12.8"
+    "tsup": "5.12.9"
   },
   "scripts": {
     "build": "tsup src/index.ts",
