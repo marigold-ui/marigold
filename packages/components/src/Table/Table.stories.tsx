@@ -237,8 +237,8 @@ export const Sorting: ComponentStory<typeof Table> = () => {
   const [descriptor, setDescriptor] = useState<SortDescriptor>({});
   const sort = ({ column, direction }: SortDescriptor) => {
     const result = list.sort((a: any, b: any) => {
-      let first = a[column!];
-      let second = b[column!];
+      const first = a[column!];
+      const second = b[column!];
       let cmp =
         (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
       if (direction === 'descending') {
