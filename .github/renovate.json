@@ -2,14 +2,18 @@
   "extends": ["config:base"],
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["before 5am on Sunday"]
+    "schedule": ["before 3am on Sunday"]
   },
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true
+      "matchPackagePatterns": ["eslint"],
+      "groupName": "eslint"
+    },
+    {
+      "matchPackagePatterns": ["jest"],
+      "groupName": "jest"
     }
   ],
-  "schedule": ["before 3am on Saturday"],
+  "schedule": ["before 3am on the first day of the month"],
   "timezone": "Europe/Berlin"
 }
