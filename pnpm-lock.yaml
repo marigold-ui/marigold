@@ -428,7 +428,7 @@ importers:
       '@marigold/tsconfig': workspace:*
       '@marigold/types': workspace:*
       '@theme-ui/css': 0.14.5
-      csstype: 3.0.11
+      csstype: 3.1.0
       deepmerge: ^4.2.2
       react: 17.0.2
       react-fast-compare: ^3.2.0
@@ -437,7 +437,7 @@ importers:
       '@emotion/react': 11.9.0_b6yy62xn5l3zgof3irqqpoxddi
       '@marigold/types': link:../types
       '@theme-ui/css': 0.14.5_@emotion+react@11.9.0
-      csstype: 3.0.11
+      csstype: 3.1.0
       deepmerge: 4.2.2
       react-fast-compare: 3.2.0
     devDependencies:
@@ -2480,7 +2480,7 @@ packages:
       '@emotion/memoize': 0.7.5
       '@emotion/unitless': 0.7.5
       '@emotion/utils': 1.1.0
-      csstype: 3.0.11
+      csstype: 3.1.0
     dev: false
 
   /@emotion/sheet/1.1.0:
@@ -7704,7 +7704,7 @@ packages:
       '@emotion/react': ^11
     dependencies:
       '@emotion/react': 11.9.0_b6yy62xn5l3zgof3irqqpoxddi
-      csstype: 3.0.11
+      csstype: 3.1.0
     dev: false
 
   /@tokenizer/token/0.3.0:
@@ -11319,10 +11319,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       cssom: 0.3.8
-    dev: false
-
-  /csstype/3.0.11:
-    resolution: {integrity: sha512-sa6P2wJ+CAbgyy4KFssIb/JNMLxFvKF1pCYCSXS8ZMuqZnMsrxqI2E5sPyoTpxoPU/gVZMzr2zjOfg8GIZOMsw==}
     dev: false
 
   /csstype/3.1.0:
