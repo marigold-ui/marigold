@@ -8,12 +8,12 @@ const config = {
   },
   webpack: (config, { defaultLoaders: { babel } }) => {
     config.module.rules.push({
-      include: [path.resolve(__dirname, '../')],
+      include: [path.resolve(__dirname, '..')],
       test: /\.(js|jsx|ts|tsx)$/,
       use: [babel],
     });
 
-    config.resolve.alias.root = path.resolve(__dirname, '../');
+    config.resolve.alias.root = path.resolve(__dirname, '..');
 
     return config;
   },
