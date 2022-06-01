@@ -10,10 +10,39 @@ import { Box, useStateProps } from '@marigold/system';
 
 import { useTableContext } from './Context';
 
+// Sort Icon
+// ---------------
+interface SortIndicatorProps {
+  direction?: 'ascending' | 'descending';
+  visible: boolean;
+}
+
+const SortIndicator = ({
+  direction = 'ascending',
+  visible,
+}: SortIndicatorProps) => (
+  <Box
+    as="span"
+    role="presentation"
+    aria-hidden="true"
+    css={{
+      color: 'currentColor',
+      paddingInlineStart: '0.5ch',
+      visibility: visible ? 'visible' : 'hidden',
+    }}
+  >
+    {direction === 'ascending' ? '▲' : '▼'}
+  </Box>
+);
+
+// Props
+// ---------------
 interface TableColumnHeaderProps {
   column: GridNode<object>;
 }
 
+// Component
+// ---------------
 export const TableColumnHeader = ({ column }: TableColumnHeaderProps) => {
   const ref = useRef(null);
   const { state, styles } = useTableContext();
@@ -42,6 +71,12 @@ export const TableColumnHeader = ({ column }: TableColumnHeaderProps) => {
       {...stateProps}
     >
       {column.rendered}
+      {column.props.allowsSorting && (
+        <SortIndicator
+          direction={state.sortDescriptor?.direction}
+          visible={state.sortDescriptor?.column === column.key}
+        />
+      )}
     </Box>
   );
 };

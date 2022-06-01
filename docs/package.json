@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "private": true,
   "description": "docs",
   "dependencies": {
@@ -16,7 +16,7 @@
     "@mui/styles": "5.5.3",
     "babel-eslint": "10.1.0",
     "babel-preset-gatsby": "2.11.1",
-    "core-js": "3.22.5",
+    "core-js": "3.22.7",
     "eslint": "8.12.0",
     "gatsby": "4.11.1",
     "gatsby-plugin-image": "2.11.1",
