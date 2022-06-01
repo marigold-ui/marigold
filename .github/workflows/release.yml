@@ -58,7 +58,7 @@ jobs:
         if: steps.changesets.outputs.published == 'true'
         uses: slackapi/slack-github-action@v1.19.0
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_HOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         with:
           payload: |
