@@ -1,10 +1,9 @@
 name: Release
 
-on: ['push']
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -25,88 +24,83 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
-      - name: CWD
-        run: echo $GITHUB_WORKSPACE
-      - name: Get current version
-        id: version
-        run: echo "::set-output name=version::$(node -p "require('./packages/components/package.json').version")"
 
-      # # Publish
-      # - name: Build packages
-      #   run: pnpm build
-      # - name: Create Release Pull Request or Publish to npm
-      #   id: changesets
-      #   uses: changesets/action@v1
-      #   with:
-      #     title: 'release: v${{ steps.version.outputs.version }}'
-      #     publish: pnpm changeset publish
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # Publish
+      - name: Build packages
+        run: pnpm build
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          title: 'release: version packages'
+          publish: pnpm changeset publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # # Docs
-      # - name: Update "marigold-ui.io"
-      #   if: steps.changesets.outputs.published == 'true'
-      #   run: pnpm release:docs
+      # Docs
+      - name: Update "marigold-ui.io"
+        if: steps.changesets.outputs.published == 'true'
+        run: pnpm release:docs
 
-      # # Slack Notification
-      # - name: Get current date
-      #   id: date
-      #   run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-      # - name: Slack Notification
-      #   if: steps.changesets.outputs.published == 'true'
-      #   uses: slackapi/slack-github-action@v1.19.0
-      #   with:
-      #     payload: |
-      #       {
-      #         "blocks": [
-      #           {
-      #             "type": "header",
-      #             "text": {
-      #               "type": "plain_text",
-      #               "text": ":tada:  New Marigold Release (v${{ steps.version.outputs.version }})"
-      #             }
-      #           },
-      #           {
-      #             "type": "context",
-      #             "elements": [
-      #               {
-      #                 "text": "*${{ steps.date.outputs.date }}*  |  Design System Team",
-      #                 "type": "mrkdwn"
-      #               }
-      #             ]
-      #           },
-      #           {
-      #             "type": "divider"
-      #           },
-      #           {
-      #             "type": "section",
-      #             "text": {
-      #               "type": "mrkdwn",
-      #               "text": "For a detailed list of updates, fixes and additions see the latest changelog."
-      #             }
-      #           },
-      #           {
-      #             "type": "section",
-      #             "text": {
-      #               "type": "mrkdwn",
-      #               "text": "*<https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md#marigoldcomponents|View Changelog>*"
-      #             }
-      #           },
-      #           {
-      #             "type": "divider"
-      #           },
-      #           {
-      #             "type": "context",
-      #             "elements": [
-      #               {
-      #                 "type": "mrkdwn",
-      #                 "text": "If you find any bugs or have suggestions how we can improve Marigold, please <https://github.com/marigold-ui/marigold/issues/new/choose|let us know>!"
-      #               }
-      #             ]
-      #           }
-      #         ]
-      #       }
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_HOOK }}
-      #     SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      # Slack Notification
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      - name: Slack Notification
+        if: steps.changesets.outputs.published == 'true'
+        uses: slackapi/slack-github-action@v1.19.0
+        with:
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": ":tada:  New Marigold Release"
+                  }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "text": "*${{ steps.date.outputs.date }}* | Design System Team",
+                      "type": "mrkdwn"
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "For a detailed list of updates, fixes and additions see the latest changelog."
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*<https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md#marigoldcomponents|View Changelog>*"
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "If you find any bugs or have suggestions how we can improve Marigold, please <https://github.com/marigold-ui/marigold/issues/new/choose|let us know>!"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_HOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
