@@ -1,5 +1,5 @@
-import React from 'react';
-import { Box, Column, Columns, Stack } from '@marigold/components';
+import React, { ReactNode } from 'react';
+import { Box, Columns, Stack } from '@marigold/components';
 
 import { Link } from './Link';
 import { Logo } from './Logo';
@@ -7,22 +7,24 @@ import { Navigation } from './Navigation';
 import { ThemeSelect } from './ThemeSelect';
 import { Version } from './Version';
 
-export const Layout: React.FC = ({ children }) => {
+export interface LayoutProps {
+  children: ReactNode;
+}
+
+export const Layout = ({ children }: LayoutProps) => {
   return (
     <>
-      <Columns space="xsmall">
-        <Column width={[12, 2]}>
-          <Stack space="small">
-            <Box p="medium">
-              <Link to="/">
-                <Logo size="small" />
-              </Link>
-            </Box>
-            <ThemeSelect />
-            <Navigation />
-          </Stack>
-        </Column>
-        <Column width={[12, 10]}>{children}</Column>
+      <Columns columns={[2, 10]} space="medium" collapseAt="60em">
+        <Stack space="small">
+          <Box p="medium">
+            <Link to="/">
+              <Logo size="small" />
+            </Link>
+          </Box>
+          <ThemeSelect />
+          <Navigation />
+        </Stack>
+        <Box>{children}</Box>
       </Columns>
       <Version />
     </>

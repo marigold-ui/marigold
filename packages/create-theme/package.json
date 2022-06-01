@@ -1,6 +1,6 @@
 {
   "name": "@marigold/create-theme",
-  "version": "0.0.1",
+  "version": "2.0.1",
   "description": "Marigold helper to kickoff Themes",
   "license": "MIT",
   "keywords": [
@@ -24,12 +24,10 @@
     "@marigold/tokens": "workspace:*"
   },
   "devDependencies": {
-    "@marigold/tsconfig": "workspace:*",
-    "tsup": "5.11.13"
-  },
-  "peerDependencies": {
     "@marigold/components": "workspace:*",
-    "@marigold/system": "workspace:*"
+    "@marigold/system": "workspace:*",
+    "@marigold/tsconfig": "workspace:*",
+    "tsup": "6.0.1"
   },
   "scripts": {
     "build": "tsup src/index.ts",

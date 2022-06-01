@@ -6,10 +6,23 @@ import { FigmaLink } from '../../src/components/FigmaLink';
 
 # Slider
 
-## Description
+The Slider component allows users to quickly select a value within a range. They should be used when the upper and lower bounds to the range are invariable.
 
-With the Slider component you can add a HTML `<input>` element with `type="range"` to your form.
-The variant can be added with the variant prop. The default variant ist `default`.
+<MarigoldTheme>
+  <Slider
+    formatOptions={{ style: 'percent' }}
+    step={0.01}
+    maxValue={1}
+    defaultValue={[0.5]}
+    width={300}
+  >
+    Marigold Completition
+  </Slider>
+</MarigoldTheme>
+
+```tsx onlyCode
+import { Slider } from '@marigold/components';
+```
 
 <FigmaLink
   to={
@@ -17,66 +30,78 @@ The variant can be added with the variant prop. The default variant ist `default
   }
 />
 
-## Properties
+## Props
 
-| Property             | Type     | Default     |
-| :------------------- | :------- | :---------- |
-| `variant` (optional) | `string` | `__default` |
+| Property                   | Type                                                                                                                                          | Default | Description                                                     |
+| :------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :-------------------------------------------------------------- |
+| `disabled` (optional)      | `boolean`                                                                                                                                     | `false` | If `true`, the slider is disabled.                              |
+| `value` (optional)         | `number[]`                                                                                                                                    |         | The slider's value (controlled).                                |
+| `defaultValue` (optional)  | `number[]`                                                                                                                                    |         | The slider's default value (uncontrolled).                      |
+| `maxValue` (optional)      | `number`                                                                                                                                      | `100`   | The slider's maximum value.                                     |
+| `step` (optional)          | `number`                                                                                                                                      |         | The slider's step value.                                        |
+| `formatOptions` (optional) | [`Intl.NumberFormatOptions`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) |         | The slider's step value.                                        |
+| `width` (optional)         | `string`                                                                                                                                      | `100%`  | Control the width of the field.                                 |
+| ...                        |                                                                                                                                               |         | Yes you can use all regular attributes of `input type = range`! |
 
-## Import
+## Examples
 
-```tsx onlyCode
-import { Slider } from '@marigold/components';
-```
-
-## Live-Code Example
-
-```tsx expandCode
-<Label htmlFor="slider">
-  Slider:
-  <br />
-  <Slider id="slider" name="slider" min="0" max="50" />
-</Label>
-```
-
-## Usage
-
-### Slider with default range
+## Width
 
 ```tsx
-<Label htmlFor="slider2">
-  Default range:
-  <br />
-  <Slider id="slider2" name="slider" min="0" max="50" />
-</Label>
+<Slider width={180} aria-label="width">
+  Example
+</Slider>
 ```
 
-### Slider with fixed value
+## Disabled
 
 ```tsx
-<Label htmlFor="slider3">
-  Fix value:
-  <br />
-  <Slider id="slider3" name="slider" min="0" max="50" value="25" />
-</Label>
+<Slider disabled>Example</Slider>
 ```
 
-### Slider with steps
+## Step
 
 ```tsx
-<Label htmlFor="slider4">
-  Slider with steps:
-  <br />
-  <Slider id="slider4" name="slider" min="0" max="100" step="10" />
-</Label>
+<Slider step={10}>Example</Slider>
 ```
 
-### Slider disabled
+## Max value
 
 ```tsx
-<Label htmlFor="slider5">
-  Disabled:
-  <br />
-  <Slider id="slider5" name="slider" min="0" max="100" disabled />
-</Label>
+<Slider aria-label="maxValue" maxValue={50}>
+  Example
+</Slider>
+```
+
+## Value (controlled)
+
+```tsx
+() => {
+  const [value, setValue] = React.useState([75]);
+  return (
+    <Slider value={value} onChange={setValue}>
+      Example
+    </Slider>
+  );
+};
+```
+
+## Default Value (uncontrolled)
+
+```tsx
+<Slider defaultValue={[25]}>Example</Slider>
+```
+
+## Currency
+
+```tsx
+<Slider formatOptions={{ style: 'currency', currency: 'EUR' }}>Price</Slider>
+```
+
+## Percent
+
+```tsx
+<Slider formatOptions={{ style: 'percent' }} step={0.01} maxValue={1}>
+  Percent
+</Slider>
 ```

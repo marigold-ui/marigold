@@ -2,31 +2,26 @@
 title: Image
 ---
 
-import { Logo } from '../../src/components/Logo/Logo';
-
 # Image
 
-## Description
-
-With the Image component you can render an image.
-The variant can be added with the variant prop. The default variant is `fullWidth`.
-
-## Properties
-
-| Property             | Type     | Default     |
-| :------------------- | :------- | :---------- |
-| `variant` (optional) | `string` | `fullWidth` |
-
-## Import
+With the Image component you can render an image element.
+The variant can be added with the variant prop. You can also put the standard html image props like `alt` and `src`.
 
 ```tsx onlyCode
 import { Image } from '@marigold/components';
 ```
 
+## Props
+
+| Property             | Type     | Default |
+| :------------------- | :------- | :------ |
+| `variant` (optional) | `string` |         |
+
 ## Usage
 
-<Logo />
-
-```tsx onlyCode
-<Image src="./marigoldLogo" alt="marigold_logo" />
+```tsx expandCode
+<Image
+  src="https://images.unsplash.com/photo-1603910234616-3b5f4a6be2b4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+  alt="event_image"
+/>
 ```

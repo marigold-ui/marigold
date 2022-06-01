@@ -5,7 +5,7 @@ export * from './FormatBold';
 export * from './FormatItalic';
 export * from './FormatSize';
 export * from './HighlightOff';
-export * from './Image';
+export * from './Picture';
 export * from './Location';
 export * from './Lock';
 export * from './LockOpen';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 import { Switch } from './Switch';
@@ -9,40 +9,136 @@ const theme = {
     regular: 'Oswald Regular',
     body: 'Inter',
   },
-  switch: {
-    __default: {
-      fill: 'blue',
-    },
-    custom: {
-      fill: 'green',
-    },
-    ':checked': {
-      fill: 'orange',
-    },
-    ':disabled': {
-      fill: 'gray',
+  spaces: {
+    medium: '16px',
+    small: '8px',
+  },
+  sizes: {
+    none: 0,
+    large: 120,
+  },
+  components: {
+    Switch: {
+      base: {
+        container: {
+          p: 'medium',
+        },
+        label: {
+          fontFamily: 'body',
+        },
+        track: {
+          bg: 'blue',
+          '&:checked': {
+            bg: 'orange',
+          },
+          '&:disabled': {
+            bg: 'gray',
+          },
+          '&:focus': {
+            borderColor: 'gray',
+          },
+        },
+        thumb: {
+          bg: 'white',
+          '&:disabled': {
+            bg: 'black',
+          },
+        },
+      },
+      variant: {
+        custom: {
+          container: {
+            p: 'small',
+          },
+          track: {
+            bg: 'green',
+          },
+          thumb: {
+            bg: 'hotpink',
+          },
+        },
+      },
+      size: {
+        medium: {
+          track: {
+            p: 'medium',
+          },
+        },
+      },
     },
   },
 };
 
-test('supports default variant', () => {
+const getSwitchParts = () => {
+  const label = screen.getByText('Label');
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = label.parentElement!;
+  // eslint-disable-next-line testing-library/no-node-access
+  const track = container.lastChild!;
+  // eslint-disable-next-line testing-library/no-node-access
+  const thumb = track.lastChild!;
+
+  const input = screen.getByRole('switch');
+
+  return { label, input, container, track, thumb };
+};
+
+test('supports base styling', () => {
   render(
     <ThemeProvider theme={theme}>
       <Switch>Label</Switch>
     </ThemeProvider>
   );
-  const svg = screen.getByText(/Label/).lastChild!;
-  expect(svg.firstChild).toHaveStyle(`fill: blue`);
+  const { label, container, track, thumb } = getSwitchParts();
+
+  expect(label).toHaveStyle('font-family: Inter');
+  expect(container).toHaveStyle(`padding: ${theme.spaces.medium}px`);
+  expect(track).toHaveStyle('background-color: blue');
+  expect(thumb).toHaveStyle('background-color: white');
 });
 
-test('supports other variant than default', () => {
+test('supports a custom variant', () => {
   render(
     <ThemeProvider theme={theme}>
       <Switch variant="custom">Label</Switch>
     </ThemeProvider>
   );
-  const svg = screen.getByText(/Label/).lastChild!;
-  expect(svg.firstChild).toHaveStyle(`fill: green`);
+  const { container, track, thumb } = getSwitchParts();
+
+  expect(container).toHaveStyle(`padding: ${theme.spaces.small}px`);
+  expect(track).toHaveStyle('background-color: green');
+  expect(thumb).toHaveStyle('background-color: hotpink');
+});
+
+test('supports a size', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Switch size="medium">Label</Switch>
+    </ThemeProvider>
+  );
+  const { track } = getSwitchParts();
+
+  expect(track).toHaveStyle(`padding: ${theme.spaces.medium}px`);
+});
+
+test('takes full width by default', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Switch>Label</Switch>
+    </ThemeProvider>
+  );
+  const { container } = getSwitchParts();
+  expect(container).toHaveStyle('width: 100%');
+});
+
+test('allows to set width via prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Switch width="large">Label</Switch>
+    </ThemeProvider>
+  );
+  const { container } = getSwitchParts();
+  expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
 });
 
 test('supports disabled prop', () => {
@@ -51,12 +147,11 @@ test('supports disabled prop', () => {
       <Switch disabled>Label</Switch>
     </ThemeProvider>
   );
-  const switchInput = screen.getByRole(/switch/);
-  const svg = screen.getByText(/Label/).lastChild!;
+  const { input, thumb, track } = getSwitchParts();
 
-  expect(switchInput).toHaveAttribute('disabled');
-  expect(svg.firstChild).toHaveStyle(`fill: gray`);
-  expect(svg).toHaveStyle(`cursor: not-allowed`);
+  expect(input).toBeDisabled();
+  expect(track).toHaveStyle('background-color: gray');
+  expect(thumb).toHaveStyle('background-color: black');
 });
 
 test('renders hidden <input> element', () => {
@@ -65,8 +160,8 @@ test('renders hidden <input> element', () => {
       <Switch>Label</Switch>
     </ThemeProvider>
   );
-  const switchComp = screen.getByRole(/switch/);
-  expect(switchComp instanceof HTMLInputElement).toBeTruthy();
+  const { input } = getSwitchParts();
+  expect(input instanceof HTMLInputElement).toBeTruthy();
 });
 
 test('toggle switch per click', () => {
@@ -75,15 +170,16 @@ test('toggle switch per click', () => {
       <Switch>Label</Switch>
     </ThemeProvider>
   );
-  const switchInput = screen.getByRole(/switch/);
-  const svg = screen.getByText(/Label/).lastChild!;
-  fireEvent.click(switchInput);
-  expect(svg.firstChild).toHaveStyle(`fill: orange`);
-  expect(switchInput).toHaveAttribute('aria-checked', 'true');
 
-  fireEvent.click(switchInput);
-  expect(svg.firstChild).toHaveStyle(`fill: blue`);
-  expect(switchInput).toHaveAttribute('aria-checked', 'false');
+  const { input, track } = getSwitchParts();
+
+  fireEvent.click(input);
+  expect(track).toHaveStyle(`background-color: orange`);
+  expect(input).toHaveAttribute('aria-checked', 'true');
+
+  fireEvent.click(input);
+  expect(track).toHaveStyle(`background-color: blue`);
+  expect(input).toHaveAttribute('aria-checked', 'false');
 });
 
 test('focus element and toggle switch per keyboard space', () => {
@@ -92,34 +188,51 @@ test('focus element and toggle switch per keyboard space', () => {
       <Switch>Label</Switch>
     </ThemeProvider>
   );
-  const switchInput = screen.getByRole(/switch/);
-  const svg = screen.getByText(/Label/).lastChild!;
-  switchInput.focus();
-  userEvent.keyboard('{space}');
-  expect(svg.firstChild).toHaveStyle(`fill: orange`);
-  expect(switchInput).toHaveAttribute('aria-checked', 'true');
+
+  const { input, track } = getSwitchParts();
+
+  userEvent.tab();
+  expect(track).toHaveAttribute('data-focus');
 
   userEvent.keyboard('{space}');
-  expect(svg.firstChild).toHaveStyle(`fill: blue`);
-  expect(switchInput).toHaveAttribute('aria-checked', 'false');
+
+  expect(track).toHaveStyle(`background-color: orange`);
+  expect(input).toHaveAttribute('aria-checked', 'true');
+
+  userEvent.keyboard('{space}');
+  expect(track).toHaveStyle(`background-color: blue`);
+  expect(input).toHaveAttribute('aria-checked', 'false');
+});
+
+test('supports default checked', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Switch defaultChecked>Label</Switch>
+    </ThemeProvider>
+  );
+
+  const { input } = getSwitchParts();
+
+  expect(input).toHaveAttribute('aria-checked', 'true');
+  fireEvent.click(input);
+  expect(input).toHaveAttribute('aria-checked', 'false');
 });
 
 test('supports controlled component usage', () => {
-  const TestComponent = () => {
-    const [selected, setSelected] = useState(false);
-    return (
-      <ThemeProvider theme={theme}>
-        <Switch isSelected={selected} onChange={() => setSelected(!selected)}>
-          Label
-        </Switch>
-      </ThemeProvider>
-    );
-  };
-  render(<TestComponent />);
+  const onChange = jest.fn();
+  render(
+    <ThemeProvider theme={theme}>
+      <Switch onChange={onChange}>Label</Switch>
+    </ThemeProvider>
+  );
 
-  const switchInput = screen.getByRole(/switch/);
-  fireEvent.click(switchInput);
-  expect(switchInput).toHaveAttribute('aria-checked', 'true');
-  fireEvent.click(switchInput);
-  expect(switchInput).toHaveAttribute('aria-checked', 'false');
+  const { input } = getSwitchParts();
+
+  fireEvent.click(input);
+  expect(onChange).toHaveBeenCalledWith(true);
+  expect(input).toHaveAttribute('aria-checked', 'true');
+
+  fireEvent.click(input);
+  expect(onChange).toHaveBeenCalledWith(false);
+  expect(input).toHaveAttribute('aria-checked', 'false');
 });

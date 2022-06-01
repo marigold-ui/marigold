@@ -1,51 +1,88 @@
-import React from 'react';
+import React, { Key, useRef } from 'react';
+import { FocusScope } from '@react-aria/focus';
+import { useMenu } from '@react-aria/menu';
+import { DismissButton } from '@react-aria/overlays';
+import { Item } from '@react-stately/collections';
+import { useTreeState } from '@react-stately/tree';
+import { CollectionElement } from '@react-types/shared';
+
+import {
+  Box,
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+} from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { Button } from '../Button';
-import { Box } from '../Box';
+import { useMenuContext } from './Context';
+import { MenuTrigger } from './MenuTrigger';
+import { MenuItem } from './MenuItem';
 
 // Theme Extension
 // ---------------
-export interface MenuThemeExtension<Value> {
-  menu?: Value;
-}
+export interface MenuThemeExtension
+  extends ThemeExtensionsWithParts<'Menu', ['container', 'item']> {}
 
 // Props
 // ---------------
-export interface MenuProps {
+export interface MenuProps
+  extends Omit<ComponentProps<'ul'>, 'onSelect' | 'size'> {
+  children: CollectionElement<object> | CollectionElement<object>[];
   variant?: string;
-  label?: string;
-  onClick: ComponentProps<typeof Button>['onClick'];
-  show?: boolean;
-  className?: string;
-  title?: string; // For testing
+  size?: string;
+  onSelect?: (key: Key) => void;
 }
 
 // Component
 // ---------------
-export const Menu: React.FC<MenuProps> = ({
-  variant = 'default',
-  label = 'Menu',
-  onClick,
-  show = false,
-  children,
-  ...props
-}) => {
+export const Menu = ({ variant, size, ...props }: MenuProps) => {
+  const { triggerWidth, ...menuContext } = useMenuContext();
+  const ownProps = { ...props, ...menuContext };
+
+  const ref = useRef(null);
+  const state = useTreeState({ ...ownProps, selectionMode: 'none' });
+  const { menuProps } = useMenu(ownProps, state, ref);
+
+  const styles = useComponentStyles(
+    'Menu',
+    { variant, size },
+    { parts: ['container', 'item'] }
+  );
+
+  /**
+   * - FocusScope: restore focus back to the trigger when menu is closed
+   * - DismissButton: allow screen reader to easily dimiss menu
+   */
   return (
-    <Box variant={`menu.${variant}`} {...props}>
-      <Button onClick={onClick} variant="menu">
-        {label}
-      </Button>
-      {show ? (
+    <FocusScope restoreFocus>
+      <div>
+        <DismissButton onDismiss={ownProps.onClose} />
         <Box
-          display="block"
-          position="absolute"
-          minWidth="120px"
-          borderRadius="2px"
+          as="ul"
+          ref={ref}
+          style={{ width: triggerWidth }}
+          __baseCSS={{
+            listStyle: 'none',
+            p: 0,
+            overflowWrap: 'break-word',
+          }}
+          css={styles.container}
+          {...menuProps}
         >
-          {children}
+          {[...state.collection].map(item => (
+            <MenuItem
+              key={item.key}
+              item={item}
+              state={state}
+              onAction={props.onSelect}
+              css={styles.item}
+            />
+          ))}
         </Box>
-      ) : null}
-    </Box>
+        <DismissButton onDismiss={ownProps.onClose} />
+      </div>
+    </FocusScope>
   );
 };
+
+Menu.Trigger = MenuTrigger;
+Menu.Item = Item;

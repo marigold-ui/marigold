@@ -1,7 +1,8 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
+import { Link } from '../Link';
 import { Card } from './Card';
-import { Text } from '../Text';
+import { Container } from '../Container';
 
 export default {
   title: 'Components/Card',
@@ -10,32 +11,36 @@ export default {
       control: {
         type: 'text',
       },
-      table: {
-        defaultValue: {
-          summary: '__default',
-        },
-      },
+      description: 'The variant of the card',
     },
-    title: {
+    size: {
       control: {
         type: 'text',
       },
-      description: 'card title',
-    },
-    width: {
-      control: {
-        type: 'text',
-      },
-      description: 'max width of the card',
+      description: 'The size of the card',
     },
   },
 } as Meta;
 
 export const Basic: ComponentStory<typeof Card> = args => (
-  <Card title="Card" {...args}>
-    <Text>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-      dignissim dapibus elit.
-    </Text>
-  </Card>
+  <Container contentType="content" size="medium">
+    <Card {...args}>
+      <h2>Professor Severus Snape</h2>
+      <section>
+        <p>
+          <strong>Professor Severus Snape</strong> (9 January, 1960[1] - 2 May,
+          1998)[2] was an English half-blood[3] wizard serving as Potions Master
+          (1981-1996), Head of Slytherin House (1981-1997), Defence Against the
+          Dark Arts professor (1996-1997), and Headmaster (1997-1998) of the
+          Hogwarts School of Witchcraft and Wizardry as well as a member of the
+          Order of the Phoenix and a Death Eater. His double life played an
+          extremely important role in both of the Wizarding Wars against
+          Voldemort.
+        </p>
+        <Link href="https://harrypotter.fandom.com/wiki/Severus_Snape">
+          Source
+        </Link>
+      </section>
+    </Card>
+  </Container>
 );

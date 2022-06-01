@@ -4,27 +4,26 @@ title: Button
 
 import { DoAndDont } from '../../src/components/DoAndDont';
 import { FigmaLink } from '../../src/components/FigmaLink';
-import { Box, ActionGroup, Button, Stack } from '@marigold/components';
 
 # Button
-
-## Demo
-
-<MarigoldTheme>
-  <ActionGroup space="small">
-    <Button>Primary</Button>
-    <Button variant="secondary">Secondary</Button>
-    <Button variant="ghost">Ghost</Button>
-    <Button variant="text">Text Only</Button>
-  </ActionGroup>
-</MarigoldTheme>
-
-## Description
 
 The Button component renders a `<button>` element.
 Buttons allow users to perform an action.
 They have multiple styles for various needs, and are ideal for calling attention to where a user needs to do something in order to move forward in a flow.
 The style variant and size of the button can be added with the variant prop and is composed like `variant.size`.
+
+<MarigoldTheme>
+  <Inline space="small">
+    <Button variant="primary">Primary</Button>
+    <Button variant="secondary">Secondary</Button>
+    <Button variant="ghost">Ghost</Button>
+    <Button variant="text">Text Only</Button>
+  </Inline>
+</MarigoldTheme>
+
+```tsx onlyCode
+import { Button } from '@marigold/components';
+```
 
 <FigmaLink
   to={
@@ -32,20 +31,14 @@ The style variant and size of the button can be added with the variant prop and 
   }
 />
 
-## Properties
+## Props
 
-| Property              | Type                                    | Default   |
-| :-------------------- | :-------------------------------------- | :-------- |
-| `variant` (optional)  | `primary`, `secondary`, `ghost`, `text` | `primary` |
-| `size` (optional)     | `small`, `large`                        | `large`   |
-| `disabled` (optional) | boolean                                 |           |
-| `space` (optional)    | `ResponsiveStyleValue<string>`          | `none`    |
-
-## Import
-
-```tsx onlyCode
-import { Button } from '@marigold/components';
-```
+| Property              | Type                                    | Default |
+| :-------------------- | :-------------------------------------- | :------ |
+| `variant` (optional)  | `primary`, `secondary`, `ghost`, `text` | `none`  |
+| `size` (optional)     | `small`, `large`                        | `large` |
+| `disabled` (optional) | boolean                                 |         |
+| `space` (optional)    | `ResponsiveStyleValue<string>`          | `none`  |
 
 ## Types
 
@@ -57,14 +50,16 @@ The primary button function is to achieve the most common or most important goal
 
 #### Default
 
-```tsx expandCode
-<Button>Primary</Button>
+```tsx
+<Button variant="primary">Primary</Button>
 ```
 
 #### Disabled
 
 ```tsx
-<Button disabled>Primary</Button>
+<Button variant="primary" disabled>
+  Primary
+</Button>
 ```
 
 ### Secondary Button
@@ -132,13 +127,13 @@ They can be used in a similar way of a secondary button, but they are meant to b
 Icons can be added in Order to make clearer what a button does. Buttons should not be made only with icons, because every user may understand them on a different way.
 
 ```tsx
-<Button space="xxsmall">
+<Button variant="primary" space="xxsmall">
   <Ticket /> Icon Primary
 </Button>
 ```
 
 ```tsx
-<Button space="xxsmall" disabled>
+<Button variant="primary" space="xxsmall" disabled>
   <Ticket /> Icon Primary
 </Button>
 ```
@@ -148,11 +143,13 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
 If there are many actions in one page, is it possible to use small buttons instead of big ones. As well if the page is required to be open on mobile devices.
 
 ```tsx
-<Button size="small">Primary</Button>
+<Button variant="primary" size="small">
+  Primary
+</Button>
 ```
 
 ```tsx
-<Button size="small" disabled>
+<Button variant="primary" size="small" disabled>
   Primary
 </Button>
 ```
@@ -198,7 +195,7 @@ If there are many actions in one page, is it possible to use small buttons inste
 Icons can be added in Order to make clearer what a button does. Buttons should not be made only with icons, because every user may understand them on a different way.Icons can be added in Order to make clearer what a button does. Buttons should not be made only with icons, because every user may understand them on a different way.
 
 ```tsx
-<Button size="small" space="xxsmall">
+<Button variant="primary" size="small" space="xxsmall">
   <Ticket /> Primary
 </Button>
 ```
@@ -221,7 +218,7 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
 </Button>
 ```
 
-## Usage
+## Dos & Don'ts
 
 <Stack space="small">
   <Box
@@ -233,30 +230,30 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
   >
     <DoAndDont
       preview={
-        <ActionGroup space="small">
+        <Inline space="small">
           <Button variant="ghost">Ghost</Button>
-          <Button>Primary</Button>
-        </ActionGroup>
+          <Button variant="primary">Primary</Button>
+        </Inline>
       }
     >
       Use a ghost button next to a Primary button.
     </DoAndDont>
     <DoAndDont
       preview={
-        <ActionGroup space="small">
+        <Inline space="small">
           <Button variant="text">Text</Button>
-          <Button>Primary</Button>
-        </ActionGroup>
+          <Button variant="primary">Primary</Button>
+        </Inline>
       }
     >
       Use a Text button next to a Primary button.
     </DoAndDont>
     <DoAndDont
       preview={
-        <ActionGroup space="small">
+        <Inline space="small">
           <Button variant="text">Text</Button>
           <Button variant="text">Text</Button>
-        </ActionGroup>
+        </Inline>
       }
     >
       Use a Text button next to another text button.
@@ -264,10 +261,10 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
     <DoAndDont
       dont
       preview={
-        <ActionGroup space="small">
-          <Button>Primary</Button>
-          <Button>Primary</Button>
-        </ActionGroup>
+        <Inline space="small">
+          <Button variant="primary">Primary</Button>
+          <Button variant="primary">Primary</Button>
+        </Inline>
       }
     >
       Use two Primary buttons on the same page, there should be only one
@@ -276,10 +273,10 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
     <DoAndDont
       dont
       preview={
-        <ActionGroup space="small">
+        <Inline space="small">
           <Button variant="secondary">Secondary</Button>
           <Button variant="secondary">Secondary</Button>
-        </ActionGroup>
+        </Inline>
       }
     >
       Use two Secondary buttons next to each other, it loses hierarchie and is
@@ -288,12 +285,12 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
     <DoAndDont
       dont
       preview={
-        <ActionGroup space="small">
+        <Inline space="small">
           <Button variant="secondary">Secondary</Button>
           <Button variant="secondary" size="small">
             Secondary
           </Button>
-        </ActionGroup>
+        </Inline>
       }
     >
       Mix normal sized buttons with small buttons inmediatly next or below each

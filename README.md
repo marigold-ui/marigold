@@ -6,7 +6,7 @@
 
 [![ci][ci-badge]][ci] [![coverage][coverage-badge]][coverage] [![MIT License][license-badge]][license] [![version][version-badge]][package]
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/marigold-ui/marigold)
+[![Open in Visual Studio Code](https://shields.io/badge/-Open%20in%20Visual%20Studio%20Code-blue?logo=visualstudiocode&style=for-the-badge)](https://open.vscode.dev/marigold-ui/marigold)
 
 # Marigold
 
@@ -28,6 +28,7 @@ yarn install
 ```
 
 If you want to use a marigold theme you have to install them seperatly like:
+
 ```sh
 # with npm
 npm install @marigold/theme-unicorn --save
@@ -86,6 +87,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/andres-dediego2"><img src="https://avatars.githubusercontent.com/u/34473133?v=4?s=100" width="100px;" alt=""/><br /><sub><b>andres-dediego2</b></sub></a><br /><a href="#design-andres-dediego2" title="Design">🎨</a> <a href="https://github.com/marigold-ui/marigold/commits?author=andres-dediego2" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/sarahgm"><img src="https://avatars.githubusercontent.com/u/38324334?v=4?s=100" width="100px;" alt=""/><br /><sub><b>sarahgm</b></sub></a><br /><a href="https://github.com/marigold-ui/marigold/commits?author=sarahgm" title="Code">💻</a> <a href="#design-sarahgm" title="Design">🎨</a> <a href="https://github.com/marigold-ui/marigold/commits?author=sarahgm" title="Documentation">📖</a> <a href="#infra-sarahgm" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://github.com/snragund"><img src="https://avatars.githubusercontent.com/u/62615094?v=4?s=100" width="100px;" alt=""/><br /><sub><b>snragund</b></sub></a><br /><a href="https://github.com/marigold-ui/marigold/commits?author=snragund" title="Documentation">📖</a></td>
   </tr>
 </table>
 
@@ -99,7 +101,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 <!-- LINKS + BADGES -->
 
 [ci]: https://github.com/marigold-ui/marigold/actions
-[ci-badge]: https://github.com/marigold-ui/marigold/workflows/Validate/badge.svg
+[ci-badge]: https://img.shields.io/github/workflow/status/marigold-ui/marigold/Validate?style=flat-square
 [license]: https://github.com/marigold-ui/marigold/blob/master/LICENSE
 [license-badge]: https://img.shields.io/github/license/marigold-ui/marigold?style=flat-square
 [package]: https://www.npmjs.com/package/@marigold/components

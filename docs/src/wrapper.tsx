@@ -4,6 +4,8 @@ import { GatsbyBrowser } from 'gatsby';
 import { MDXProvider } from '@mdx-js/react';
 
 import { Box, MarigoldProvider, SSRProvider, Text } from '@marigold/components';
+import * as MarigoldComponents from '@marigold/components';
+import * as MarigoldIcons from '@marigold/icons';
 
 import { theme } from './theme';
 import { MarigoldThemeSwitch, themes } from './components/ThemeSwitch';
@@ -30,6 +32,7 @@ export const WrapPageElement: GatsbyBrowser['wrapPageElement'] = ({
 }) => {
   return (
     <>
+      {/* @ts-expect-error  */}
       <Helmet>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
@@ -50,7 +53,14 @@ export const WrapRootElement: GatsbyBrowser['wrapRootElement'] = ({
   <SSRProvider>
     <MarigoldProvider theme={theme}>
       <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
-        <MDXProvider components={{ ...mdxComponents, MarigoldTheme }}>
+        <MDXProvider
+          components={{
+            ...mdxComponents,
+            ...(MarigoldComponents as any),
+            ...(MarigoldIcons as any),
+            MarigoldTheme,
+          }}
+        >
           {element}
         </MDXProvider>
       </MarigoldThemeSwitch>

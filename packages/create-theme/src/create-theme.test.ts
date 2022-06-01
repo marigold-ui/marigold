@@ -140,16 +140,16 @@ test('uses fallback fonts if none provided', () => {
 test('uses fixed values for typography by default', () => {
   expect(createTheme({}).fontSizes).toMatchInlineSnapshot(`
     {
-      "epic": "3.5rem",
-      "huge": "3rem",
-      "large": "1.25rem",
-      "medium": "1.1rem",
-      "regular": "1rem",
-      "small": ".75rem",
-      "xlarge": "1.5rem",
-      "xsmall": ".5rem",
-      "xxlarge": "2rem",
-      "xxxlarge": "2.5rem",
+      "large-1": "2.5rem",
+      "large-2": "3rem",
+      "large-3": "3.5rem",
+      "medium-1": "1.1rem",
+      "medium-2": "1.25rem",
+      "medium-3": "1.5rem",
+      "medium-4": "2rem",
+      "small-1": ".5rem",
+      "small-2": ".75rem",
+      "small-3": "1rem",
     }
   `);
 
@@ -161,10 +161,10 @@ test('uses fixed values for typography by default', () => {
 test('allow to use fluid typography', () => {
   expect(createTheme({ typography: 'fluid' }).fontSizes).toMatchInlineSnapshot(`
     {
-      "large": "clamp(1.5rem, 6vw, 2.5rem)",
-      "regular": "clamp(1rem, 4vw, 1.5rem)",
-      "small": "clamp(.75rem, 2vw, 1rem)",
-      "xlarge": "clamp(2rem, 9vw, 3.5rem)",
+      "large-1": "clamp(2rem, 9vw, 3.5rem)",
+      "medium-1": "clamp(1rem, 4vw, 1.5rem)",
+      "medium-2": "clamp(1.5rem, 6vw, 2.5rem)",
+      "small-1": "clamp(.75rem, 2vw, 1rem)",
     }
   `);
 });
@@ -172,36 +172,32 @@ test('allow to use fluid typography', () => {
 test('uses fixed values for dimensaions by default', () => {
   expect(createTheme({}).space).toMatchInlineSnapshot(`
     {
-      "colossal": "10rem",
-      "epic": "7.5rem",
-      "huge": "5rem",
-      "large": "1.75rem",
-      "medium": "1.5rem",
+      "large-1": "2rem",
+      "large-2": "3rem",
+      "large-3": "4rem",
+      "large-4": "5rem",
+      "medium-1": "1.25rem",
+      "medium-2": "1.5rem",
+      "medium-3": "1.75rem",
       "none": 0,
-      "small": "1.25rem",
-      "tiny": ".25rem",
-      "xlarge": "2rem",
-      "xsmall": "1rem",
-      "xxlarge": "3rem",
-      "xxsmall": ".5rem",
-      "xxxlarge": "4rem",
+      "small-1": ".25rem",
+      "small-2": ".5rem",
+      "small-3": "1rem",
     }
   `);
   expect(createTheme({}).space).toMatchInlineSnapshot(`
     {
-      "colossal": "10rem",
-      "epic": "7.5rem",
-      "huge": "5rem",
-      "large": "1.75rem",
-      "medium": "1.5rem",
+      "large-1": "2rem",
+      "large-2": "3rem",
+      "large-3": "4rem",
+      "large-4": "5rem",
+      "medium-1": "1.25rem",
+      "medium-2": "1.5rem",
+      "medium-3": "1.75rem",
       "none": 0,
-      "small": "1.25rem",
-      "tiny": ".25rem",
-      "xlarge": "2rem",
-      "xsmall": "1rem",
-      "xxlarge": "3rem",
-      "xxsmall": ".5rem",
-      "xxxlarge": "4rem",
+      "small-1": ".25rem",
+      "small-2": ".5rem",
+      "small-3": "1rem",
     }
   `);
 
@@ -216,78 +212,50 @@ test('uses fixed values for dimensaions by default', () => {
 test('allows to use fluid dimensions', () => {
   expect(createTheme({ dimensions: 'fluid' }).space).toMatchInlineSnapshot(`
     {
-      "colossal": "clamp(20rem, 40vw, 30rem)",
-      "epic": "clamp(15rem, 30vw, 20rem)",
-      "huge": "clamp(10rem, 20vw, 15rem)",
-      "large": "clamp(2rem, 4vw, 3rem)",
-      "medium": "clamp(1.5rem, 3vw, 2rem)",
+      "large-1": "clamp(2rem, 4vw, 3rem)",
+      "large-2": "clamp(4rem, 5vw, 5rem)",
+      "large-3": "clamp(5rem, 7vw, 7.5rem)",
+      "medium-1": "clamp(1rem, 2vw, 1.5rem)",
+      "medium-2": "clamp(1.5rem, 3vw, 2rem)",
       "none": 0,
-      "small": "clamp(1rem, 2vw, 1.5rem)",
-      "xlarge": "clamp(4rem, 5vw, 5rem)",
-      "xsmall": "clamp(.5rem, 1vw, 1rem)",
-      "xxlarge": "clamp(5rem, 7vw, 7.5rem)",
-      "xxxlarge": "clamp(7.5rem, 10vw, 10rem)",
+      "small-1": "clamp(.5rem, 1vw, 1rem)",
     }
   `);
   expect(createTheme({ dimensions: 'fluid' }).sizes).toMatchInlineSnapshot(`
     {
-      "colossal": "clamp(20rem, 40vw, 30rem)",
-      "epic": "clamp(15rem, 30vw, 20rem)",
-      "huge": "clamp(10rem, 20vw, 15rem)",
-      "large": "clamp(2rem, 4vw, 3rem)",
-      "medium": "clamp(1.5rem, 3vw, 2rem)",
+      "large-1": "clamp(10rem, 20vw, 15rem)",
+      "large-2": "clamp(15rem, 30vw, 20rem)",
+      "large-3": "clamp(20rem, 40vw, 30rem)",
+      "medium-1": "clamp(4rem, 5vw, 5rem)",
+      "medium-2": "clamp(5rem, 7vw, 7.5rem)",
+      "medium-3": "clamp(7.5rem, 10vw, 10rem)",
       "none": 0,
-      "small": "clamp(1rem, 2vw, 1.5rem)",
-      "xlarge": "clamp(4rem, 5vw, 5rem)",
-      "xsmall": "clamp(.5rem, 1vw, 1rem)",
-      "xxlarge": "clamp(5rem, 7vw, 7.5rem)",
-      "xxxlarge": "clamp(7.5rem, 10vw, 10rem)",
+      "small-1": "clamp(1rem, 2vw, 1.5rem)",
+      "small-2": "clamp(1.5rem, 3vw, 2rem)",
+      "small-3": "clamp(2rem, 4vw, 3rem)",
     }
   `);
 });
 
 test('allows to add component styles', () => {
-  const { link, text, button } = createTheme({
+  const { components } = createTheme({
     colors: ['brand', 'red'],
     components: {
-      link: {
-        color: 'red.80',
-      },
-
-      text: {
-        body: {
-          fontFamily: 'sans',
-        },
-      },
-
-      button: {
-        __default: {
+      Badge: {
+        base: {
           color: 'brand.primary',
-        },
-
-        primary: {
-          color: 'red.00',
         },
       },
     },
   });
 
-  expect({ link, text, button }).toMatchInlineSnapshot(`
+  expect({ components }).toMatchInlineSnapshot(`
     {
-      "button": {
-        "__default": {
-          "color": "brand.primary",
-        },
-        "primary": {
-          "color": "red.00",
-        },
-      },
-      "link": {
-        "color": "red.80",
-      },
-      "text": {
-        "body": {
-          "fontFamily": "sans",
+      "components": {
+        "Badge": {
+          "base": {
+            "color": "brand.primary",
+          },
         },
       },
     }

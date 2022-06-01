@@ -1,4 +1,4 @@
-import type { ScaleValue, Theme as Scales } from '@marigold/system';
+import type { ScaleValue } from '@marigold/system';
 import type { Theme } from '@marigold/components';
 
 import * as Token from '@marigold/tokens';
@@ -15,6 +15,8 @@ export const base: Theme = {
 
   zIndices: Token.layer,
   opacities: Token.opacity,
+
+  components: {},
 };
 
 type AvailableColor = keyof typeof Token.color;
@@ -41,7 +43,7 @@ export interface ThemeConfig {
    */
   dimensions?: 'fixed' | 'fluid';
 
-  components?: Omit<Theme, keyof Scales>;
+  components?: Theme['components'];
 }
 
 /*#__PURE__*/
@@ -50,7 +52,7 @@ export const createTheme = ({
   fonts: configFonts,
   typography = 'fixed',
   dimensions = 'fixed',
-  components,
+  components = {},
 }: ThemeConfig): Theme => {
   // Create colors (pick from Token or custom)
   let colors: Theme['colors'] = {};
@@ -71,7 +73,7 @@ export const createTheme = ({
     colors,
 
     // Use fixed or fluid dimensions
-    space: Token.size[dimensions],
+    space: Token.space[dimensions],
     sizes: Token.size[dimensions],
 
     // Use fallback font if none provided
@@ -81,6 +83,6 @@ export const createTheme = ({
     fontSizes: Token.typography.size[typography],
 
     // Add component styles
-    ...components,
+    components,
   };
 };

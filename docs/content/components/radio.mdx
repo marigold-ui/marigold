@@ -1,15 +1,28 @@
 ---
 title: Radio
+figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=467%3A332
 ---
 
 import { FigmaLink } from '../../src/components/FigmaLink';
 
 # Radio
 
-## Description
+The `Radio` and `Radio.Group` components allow users to select one option from a set of options. They are useful for presenting a list of options to users and collecting their responses.
 
-With the Radio Button component you can add a HTML `<input>` element with `type="radio"` to your form.
-The variant can be added with the variant prop. The default variant is `__default`.
+```tsx
+<Radio.Group label="Choose desert" defaultValue="apple">
+  <Radio value="ice cream">🍨 Ice Cream</Radio>
+  <Radio value="cupcake">🧁 Cupcake</Radio>
+  <Radio value="cookie" disabled>
+    🍪 Cookie (sold out)
+  </Radio>
+  <Radio value="apple">🍎 Apple</Radio>
+</Radio.Group>
+```
+
+```tsx onlyCode
+import { Radio } from '@marigold/components';
+```
 
 <FigmaLink
   to={
@@ -17,108 +30,53 @@ The variant can be added with the variant prop. The default variant is `__defaul
   }
 />
 
-## Properties
+## Props
 
-| Property                  | Type      | Default     |
-| :------------------------ | :-------- | :---------- |
-| `id`                      | `string`  |             |
-| `variant` (optional)      | `string`  | `__default` |
-| `labelVariant` (optional) | `string`  | `inline`    |
-| `required` (optional)     | `boolean` | `false`     |
-| `disabled` (optional)     | `boolean` | `false`     |
-| `error` (optional)        | `boolean` | `false`     |
-| `errorMessage` (optional) | `string`  |             |
+| Name                 | Type      | Default     | Description                                                                                                        |
+| :------------------- | :-------- | :---------- | :----------------------------------------------------------------------------------------------------------------- |
+| `variant` (optional) | `string`  |             | Use a different _variant_ from theme                                                                               |
+| `size` (optional)    | `string`  | `'level-1'` | Use a different _size_ from theme                                                                                  |
+| `error` (optional)   | `boolean` | `false`     | If `true`, the checkbox is considered invalid and if set the `errorMessage` is shown instead of the `description`. |
+| `width` (optional)   | `string`  | `100%`      | Control the width of the field.                                                                                    |
+| ...                  |           |             | Yes you can use all regular attributes of `input`!                                                                 |
 
-## Import
+## Examples
 
-```tsx onlyCode
-import { Radio } from '@marigold/components';
-```
-
-## Live-Code Example
-
-```tsx expandCode
-<Radio checked id="live" value="live">
-  Radio label
-</Radio>
-```
-
-## Usage
-
-### Radio standard labeled
+### Simple Radio
 
 ```tsx
-() => {
-  const [state, setState] = React.useState('Mastercard');
-  const onChange = changeEvent => {
-    setState(changeEvent.currentTarget.value);
-  };
-  return (
-    <>
-      <Radio
-        id="mc"
-        name="payment"
-        onChange={onChange}
-        checked={state === 'Mastercard'}
-        value="Mastercard"
-      >
-        Mastercard
-      </Radio>
-      <br />
-      <Radio
-        id="vi"
-        name="payment"
-        onChange={onChange}
-        checked={state === 'Visa'}
-        value="Visa"
-      >
-        Visa
-      </Radio>
-      <br />
-      <Radio
-        id="ae"
-        name="payment"
-        onChange={onChange}
-        checked={state === 'AmericanExpress'}
-        value="AmericanExpress"
-      >
-        AmericanExpress
-      </Radio>
-    </>
-  );
-};
+<Radio.Group label="Radio Group">
+  <Radio value="1">Option 1</Radio>
+  <Radio value="2">Option 2</Radio>
+  <Radio value="3" disabled>
+    Option 3
+  </Radio>
+  <Radio value="4">Option 4</Radio>
+</Radio.Group>
 ```
 
-### Radio disabled
+### Disabed Radio
 
 ```tsx
-<>
-  <Radio id="disabled" disabled>
-    Disabled
+<Radio.Group label="Radio Group" disabled>
+  <Radio value="1">Option 1</Radio>
+  <Radio value="2">Option 2</Radio>
+  <Radio value="3" disabled>
+    Option 3
   </Radio>
-  <br />
-  <Radio id="checkedDisabled" checked disabled>
-    Checked and disabled
-  </Radio>
-</>
+  <Radio value="4">Option 4</Radio>
+</Radio.Group>
 ```
 
 ### Radio with required label
 
 ```tsx
-<>
-  <Radio checked id="required" value="required" required>
-    This label is required
+<Radio.Group label="Radio Group" required>
+  <Radio value="1">Option 1</Radio>
+  <Radio value="2">Option 2</Radio>
+  <Radio value="3" disabled>
+    Option 3
   </Radio>
-</>
-```
-
-### Radio with error and errorMessage
-
-Only use the error and errorMesssage prop together
-
-```tsx
-<Radio id="error" value="error" error errorMessage="radio error">
-  This radio has an error
-</Radio>
+  <Radio value="4">Option 4</Radio>
+</Radio.Group>
 ```

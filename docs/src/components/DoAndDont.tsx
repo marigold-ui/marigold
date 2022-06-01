@@ -1,57 +1,52 @@
-import * as React from 'react';
+import React, { ReactNode } from 'react';
 
-import { Box, Card, Divider, Inline, Text } from '@marigold/components';
+import {
+  Card,
+  Divider,
+  Headline,
+  Inline,
+  Stack,
+  Text,
+} from '@marigold/components';
 import { Banned, Check } from '@marigold/icons';
 import { ComponentProps } from '@marigold/types';
 
 import { MarigoldTheme } from './MarigoldTheme';
 
 export interface DoAndDontProps extends ComponentProps<'div'> {
+  children?: ReactNode;
   preview: string;
   dont?: boolean;
-  variant?: string;
 }
 
-export const DoAndDont: React.FC<DoAndDontProps> = ({
-  variant = 'default',
+export const DoAndDont = ({
   preview,
   dont = false,
-  className,
   children,
   ...props
-}) => {
+}: DoAndDontProps) => {
+  let icon = <Check size={20} fill="success" />;
+  let dividerVariant = 'do';
+  let title = 'Do';
+  if (dont) {
+    icon = <Banned size={20} fill="error" />;
+    dividerVariant = 'dont';
+    title = `Don't`;
+  }
+
   return (
-    <Card className={className} {...props}>
-      <Box display="flex" flexDirection="column">
+    <Card {...props}>
+      <Stack space="small">
         <Card variant="highlight">
           <MarigoldTheme>{preview}</MarigoldTheme>
         </Card>
-        <Box
-          display="flex"
-          alignItems="center"
-          pt="small"
-          pb="xsmall"
-          css={{ color: dont ? 'red60' : 'green60' }}
-        >
-          {dont ? (
-            <Inline space="xsmall">
-              <Banned size={20} />
-              <Text as="h4" variant="headline4">
-                Don't
-              </Text>
-            </Inline>
-          ) : (
-            <Inline space="xsmall">
-              <Check size={20} />
-              <Text as="h4" variant="headline4" color="">
-                Do
-              </Text>
-            </Inline>
-          )}
-        </Box>
+        <Inline space="xsmall">
+          {icon}
+          <Headline level="4">{title}</Headline>
+        </Inline>
         <Text variant="muted">{children}</Text>
-      </Box>
-      <Divider variant={dont ? 'dont' : 'do'} />
+        <Divider variant={dividerVariant} />
+      </Stack>
     </Card>
   );
 };

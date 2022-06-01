@@ -1,25 +1,27 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { ComponentProps } from '@marigold/types';
-import { Box } from '../Box';
+import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
 
 // Theme Extension
 // ---------------
-export interface InputThemeExtension<Value> {
-  input?: {
-    [key: string]: Value;
-  };
-}
+export interface InputThemeExtension extends ThemeExtension<'Input'> {}
 
 // Props
 // ---------------
-export interface InputProps extends ComponentProps<'input'> {
+export interface InputOwnProps extends Omit<ComponentProps<'input'>, 'size'> {
+  size?: string;
   variant?: string;
 }
 
+export interface InputProps
+  extends Omit<React.ComponentPropsWithRef<'input'>, 'size'>,
+    InputOwnProps {}
+
 // Component
 // ---------------
-export const Input: React.FC<InputProps> = ({
-  variant = '',
-  type = 'text',
-  ...props
-}) => <Box {...props} as="input" type={type} variant={`input.${variant}`} />;
+export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
+  ({ variant, size, type = 'text', ...props }: InputOwnProps, ref) => {
+    const styles = useComponentStyles('Input', { variant, size });
+    return <Box {...props} ref={ref} as="input" type={type} css={styles} />;
+  }
+);

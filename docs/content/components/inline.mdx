@@ -4,33 +4,39 @@ title: Inline
 
 # Inline
 
-## Description
+Layout component to inline elements with space. This component uses the spaces from the given theme or a responsive string.
 
-Layout component to inline elements with space. This component uses the spaces from the given theme.
-
-## Properties
-
-| Property | Type                           | Default  |
-| :------- | :----------------------------- | :------- |
-| `space`  | `ResponsiveStyleValue<string>` | `none`   |
-| `align`  | `center, top, bottom`          | `center` |
-
-## Import
+<MarigoldTheme>
+  <Inline space="small">
+    <Check />
+    <Text>Check</Text>
+  </Inline>
+</MarigoldTheme>
 
 ```tsx onlyCode
 import { Inline } from '@marigold/components';
 ```
 
-## Live-Code Example
+## Props
+
+| Property | Type                           | Default  |
+| :------- | :----------------------------- | :------- |
+| `space`  | `ResponsiveStyleValue<string>` | `none`   |
+| `alignY` | `top, center, bottom`          | `center` |
+| `alignX` | `left, center, right`          | `left`   |
+
+## Examples
+
+### More than two elements
 
 ```tsx expandCode
 <Inline space="small">
   <Check />
   <Text>Check</Text>
+  <Text>this</Text>
+  <Text>out</Text>
 </Inline>
 ```
-
-## Usage
 
 ### Spacing
 
@@ -51,50 +57,45 @@ import { Inline } from '@marigold/components';
 </Inline>
 ```
 
-### Nested
+### Nested Inline
 
 ```tsx
 <Inline space="large">
   <Inline space="xsmall">
-    <Text as="h2" variant="headline2">
-      Block #1
-    </Text>
+    <Headline level="2">Block #1</Headline>
     <Text>Lorem ipsum dolor sit amet.</Text>
   </Inline>
   <Inline space="xsmall">
-    <Text as="h2" variant="headline2">
-      Bock #2
-    </Text>
+    <Headline level="2">Bock #2</Headline>
     <Text>Lorem ipsum dolor sit amet.</Text>
   </Inline>
 </Inline>
 ```
 
-### Alignment
+### Different alignment
 
 ```tsx
 <Inline space="medium" align="top">
-  <Text as="h2" variant="headline2">
-    Top
-  </Text>
+  <Headline level="2">Top</Headline>
   <Text>Lorem ipsum dolor sit amet.</Text>
 </Inline>
 ```
 
 ```tsx
 <Inline space="medium">
-  <Text as="h2" variant="headline2">
-    Center
-  </Text>
+  <Headline level="2">Center</Headline>
   <Text>Lorem ipsum dolor sit amet.</Text>
 </Inline>
 ```
 
 ```tsx
 <Inline space="medium" align="bottom">
-  <Text as="h2" variant="headline2">
-    Bottom
-  </Text>
+  <Headline level="2">Bottom</Headline>
   <Text>Lorem ipsum dolor sit amet.</Text>
 </Inline>
 ```
+
+## Use cases
+
+- [Badge](../badge)
+- [Button](../button)

@@ -1,12 +1,21 @@
 import React from 'react';
-import { Box } from '@marigold/components';
+import { Box, CSSObject, useComponentStyles } from '@marigold/system';
 
 import { Link } from '../Link';
 import { NavigationItem, NavigationTree, useNavigation } from './useNavigation';
 
+interface NavigationItemProps extends NavigationItem {
+  css: CSSObject;
+}
+
 interface NavigationSectionProps {
-  name: string;
   children: NavigationTree;
+  name: string;
+  css: {
+    header: CSSObject;
+    list: CSSObject;
+    item: CSSObject;
+  };
 }
 
 // Helper
@@ -20,8 +29,8 @@ const dirToText = (dir: string) =>
 
 // Components
 // ---------------
-const NavigationItemComponent = ({ title, slug }: NavigationItem) => (
-  <Box variant="navigation.item">
+const NavigationItemComponent = ({ title, slug, css }: NavigationItemProps) => (
+  <Box css={css}>
     <Link
       to={slug.startsWith('/') || slug.startsWith('http') ? slug : `/${slug}`}
     >
@@ -30,20 +39,24 @@ const NavigationItemComponent = ({ title, slug }: NavigationItem) => (
   </Box>
 );
 
-const NavigationSection = ({ name, children }: NavigationSectionProps) => {
+const NavigationSection = ({ name, children, css }: NavigationSectionProps) => {
   return (
     <div>
       {Boolean(name.length) && (
-        <Box as="h2" variant="navigation.header">
+        <Box as="h2" css={css.header}>
           {dirToText(name)}
         </Box>
       )}
-      <Box as="ul" variant="navigation.list">
+      <Box as="ul" css={css.list}>
         {children.map(child =>
           'title' in child ? (
-            <NavigationItemComponent key={child.slug} {...child} />
+            <NavigationItemComponent
+              css={css.item}
+              key={child.slug}
+              {...child}
+            />
           ) : (
-            <NavigationSection key={child.name} {...child} />
+            <NavigationSection css={css} key={child.name} {...child} />
           )
         )}
       </Box>
@@ -51,17 +64,19 @@ const NavigationSection = ({ name, children }: NavigationSectionProps) => {
   );
 };
 
-export const Navigation: React.FC = () => {
+export const Navigation = () => {
   const tree = useNavigation();
+  const styles = useComponentStyles(
+    'Navigation',
+    {},
+    { parts: ['container', 'header', 'list', 'item'] }
+  );
 
   return (
-    <Box
-      as="nav"
-      variant="navigation.wrapper"
-      aria-labelledby="primary-navigation"
-    >
-      <NavigationSection name="" children={tree} />
+    <Box as="nav" css={styles.container} aria-labelledby="primary-navigation">
+      <NavigationSection css={styles} name="" children={tree} />
       <NavigationSection
+        css={styles}
         name="Useful Links"
         children={[
           {

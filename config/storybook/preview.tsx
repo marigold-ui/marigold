@@ -27,6 +27,11 @@ addParameters({
   },
   controls: { expanded: true },
   themes: {
+    default: localStorage.getItem('marigold-storybook-current-theme') || 'b2b',
+    clearable: false,
+    onChange: ({ name }: { name: ThemeNames }) => {
+      localStorage.setItem('marigold-storybook-current-theme', name);
+    },
     Decorator: ({
       themeName,
       children,
@@ -39,7 +44,6 @@ addParameters({
     list: (Object.keys(themes) as ThemeNames[]).map(name => ({
       name,
       color: themes[name].colors!.primary,
-      default: name === 'b2b',
     })),
   },
 });

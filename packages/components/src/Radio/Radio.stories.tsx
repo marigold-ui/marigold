@@ -1,36 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 
-import { Radio } from './Radio';
+import { Radio } from '@marigold/components';
 
 export default {
   title: 'Components/Radio',
-  parameters: {
-    actions: {
-      handles: ['click'],
-    },
-  },
   argTypes: {
-    variant: {
-      control: {
-        type: 'text',
-      },
-      description: 'Radio variant',
-      defaultValue: '__default',
-    },
-    labelVariant: {
-      control: {
-        type: 'text',
-      },
-      description: 'Radio label variant',
-      defaultValue: 'inline',
-    },
-    children: {
+    label: {
       control: {
         type: 'text',
       },
       description: 'Label',
-      defaultValue: 'Radio Label',
+      defaultValue: 'The Label',
+    },
+    orientation: {
+      control: {
+        type: 'select',
+        options: ['horizontal', 'vertical'],
+      },
+      description: 'Orientation',
     },
     required: {
       control: {
@@ -53,26 +41,22 @@ export default {
       description: 'Error',
       defaultValue: false,
     },
-    errorMessage: {
+    width: {
       control: {
         type: 'text',
       },
-      description: 'Error Message',
+      description: 'The width of the field',
     },
   },
 } as Meta;
 
-export const Basic: ComponentStory<typeof Radio> = ({
-  onChange,
-  checked,
-  ...args
-}) => {
-  const [isChecked, setChecked] = useState(false);
-  return (
-    <Radio
-      onChange={() => setChecked(!isChecked)}
-      checked={isChecked}
-      {...args}
-    />
-  );
-};
+export const Basic: ComponentStory<typeof Radio.Group> = args => (
+  <Radio.Group {...args}>
+    <Radio value="1">Option 1</Radio>
+    <Radio value="2">Option 2</Radio>
+    <Radio value="3" disabled>
+      Option 3
+    </Radio>
+    <Radio value="4">Option 4</Radio>
+  </Radio.Group>
+);

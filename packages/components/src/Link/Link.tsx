@@ -1,32 +1,36 @@
-import React, { useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
 import { useLink } from '@react-aria/link';
+import { ThemeExtension, useComponentStyles } from '@marigold/system';
 import { PolymorphicComponent, PolymorphicProps } from '@marigold/types';
 
-import { Text, TextOwnProps } from '../Text';
+import { Box, BoxOwnProps } from '../Box';
 
 // Theme Extension
 // ---------------
-export interface LinkThemeExtension<Value> {
-  link?: Value;
-}
+export interface LinkThemeExtension extends ThemeExtension<'Link'> {}
 
 // Props
 // ---------------
-export interface LinkOwnProps extends TextOwnProps {
+export interface LinkOwnProps extends BoxOwnProps {
   disabled?: boolean;
+  variant?: string;
+  size?: string;
+  children?: ReactNode;
 }
+
 export interface LinkProps extends PolymorphicProps<LinkOwnProps, 'a'> {}
 
 // Component
 // ---------------
 export const Link = (({
   as = 'a',
-  variant = 'link',
+  variant,
+  size,
   children,
   disabled,
   ...props
 }: LinkProps) => {
-  const ref = useRef<any>();
+  const ref = useRef(null);
   const { linkProps } = useLink(
     {
       // We typecast here because the element could very well be a `span`
@@ -37,9 +41,11 @@ export const Link = (({
     ref
   );
 
+  const styles = useComponentStyles('Link', { variant, size });
+
   return (
-    <Text {...props} {...linkProps} as={as} variant={variant} ref={ref}>
+    <Box as={as} css={styles} ref={ref} {...props} {...linkProps}>
       {children}
-    </Text>
+    </Box>
   );
 }) as PolymorphicComponent<LinkOwnProps, 'a'>;

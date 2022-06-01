@@ -1,10 +1,13 @@
-node_modules
 .DS_Store
+.history
+.swc
+
+node_modules
 coverage
 dist
+
 docs/.cache
 docs/public
 
-.history
 
 local.env

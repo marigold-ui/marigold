@@ -1,85 +1,154 @@
-import React from 'react';
-import { ComponentProps } from '@marigold/types';
-import { Exclamation } from '@marigold/icons';
+import React, { useRef } from 'react';
+import { useHover } from '@react-aria/interactions';
 import { useFocusRing } from '@react-aria/focus';
-import { VisuallyHidden } from '@react-aria/visually-hidden';
+import { useRadio } from '@react-aria/radio';
+import type { AriaRadioProps } from '@react-types/radio';
 
-import { RadioIcon, RadioIconProps } from './RadioIcon';
-import { Box } from '../Box';
-import { Label } from '../Label';
-import { ValidationMessage } from '../ValidationMessage';
+import {
+  Box,
+  CSSObject,
+  StateAttrProps,
+  ThemeComponentProps,
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+  useStateProps,
+} from '@marigold/system';
+import { ComponentProps } from '@marigold/types';
+
+import { useRadioGroupContext } from './Context';
+import { RadioGroup } from './RadioGroup';
 
 // Theme Extension
 // ---------------
-export interface RadioThemeExtension<Value> {
-  radio?: {
-    [key: string]: Value;
-  };
+export interface RadioThemeExtension
+  extends ThemeExtensionsWithParts<'Radio', ['container', 'label', 'radio']> {}
+
+// SVG Icon
+// ---------------
+const Dot = () => (
+  <svg viewBox="0 0 6 6">
+    <circle fill="currentColor" cx="3" cy="3" r="3" />
+  </svg>
+);
+
+interface IconProps extends StateAttrProps {
+  css?: CSSObject;
+  checked?: boolean;
 }
 
-// Radio Input
-// ---------------
-interface RadioInputProps extends RadioIconProps, ComponentProps<'input'> {}
+const Icon = ({ checked, css, ...props }: IconProps) => (
+  <Box
+    aria-hidden="true"
+    __baseCSS={{
+      width: 16,
+      height: 16,
+      bg: '#fff',
+      border: '1px solid #000',
+      borderRadius: '50%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      p: 4,
+    }}
+    css={css}
+    {...props}
+  >
+    {checked ? <Dot /> : null}
+  </Box>
+);
 
-const RadioInput: React.FC<RadioInputProps> = ({ error, ...props }) => {
-  const { focusProps } = useFocusRing();
-  const { children, ...restProps } = props;
+// Props
+// ---------------
+export type CustomRadioProps =
+  | 'size'
+  | 'width'
+  | 'type'
+  | 'defaultChecked'
+  | 'value'
+  | 'onFocus'
+  | 'onBlur'
+  | 'onKeyUp'
+  | 'onKeyDown';
+
+export interface RadioProps
+  extends ThemeComponentProps,
+    Omit<ComponentProps<'input'>, CustomRadioProps>,
+    AriaRadioProps {
+  width?: string;
+  disabled?: boolean;
+}
+
+// Component
+// ---------------
+export const Radio = ({ width, disabled, ...props }: RadioProps) => {
+  const {
+    variant,
+    size,
+    error,
+    width: groupWidth,
+    ...state
+  } = useRadioGroupContext();
+
+  const ref = useRef(null);
+  const { inputProps } = useRadio(
+    { isDisabled: disabled, ...props },
+    state,
+    ref
+  );
+
+  const styles = useComponentStyles(
+    'Radio',
+    { variant: variant || props.variant, size: size || props.size },
+    { parts: ['container', 'label', 'radio'] }
+  );
+
+  const { hoverProps, isHovered } = useHover({});
+  const { isFocusVisible, focusProps } = useFocusRing();
+  const stateProps = useStateProps({
+    hover: isHovered,
+    focus: isFocusVisible,
+    checked: inputProps.checked,
+    disabled: inputProps.disabled,
+    readOnly: props.readOnly,
+    error,
+  });
 
   return (
-    <Box pr="xsmall">
-      <VisuallyHidden>
-        <input
-          type="radio"
-          disabled={props.disabled}
-          {...focusProps}
-          {...restProps}
-        />
-      </VisuallyHidden>
-      <RadioIcon
-        variant={props.variant}
-        disabled={props.disabled}
-        checked={props.checked}
-        error={error}
+    <Box
+      as="label"
+      __baseCSS={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1ch',
+        position: 'relative',
+        width: width || groupWidth || '100%',
+      }}
+      css={styles.container}
+      {...hoverProps}
+      {...stateProps}
+    >
+      <Box
+        as="input"
+        ref={ref}
+        css={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          top: 0,
+          left: 0,
+          zIndex: 1,
+          opacity: 0.0001,
+          cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
+        }}
+        {...inputProps}
+        {...focusProps}
       />
+      <Icon checked={inputProps.checked} css={styles.radio} {...stateProps} />
+      <Box css={styles.label} {...stateProps}>
+        {props.children}
+      </Box>
     </Box>
   );
 };
 
-// Radio
-// ---------------
-export interface RadioProps extends RadioInputProps {
-  id: string;
-  required?: boolean;
-  labelVariant?: string;
-  errorMessage?: string;
-}
-
-export const Radio: React.FC<RadioProps> = ({
-  required,
-  labelVariant = 'inline',
-  errorMessage,
-  ...props
-}) => (
-  <>
-    <Box
-      as={Label}
-      htmlFor={props.id}
-      required={required}
-      variant={`label.${labelVariant}`}
-      css={
-        props.disabled
-          ? { color: 'disabled', ':hover': { cursor: 'not-allowed' } }
-          : { color: 'text', ':hover': { cursor: 'pointer' } }
-      }
-    >
-      <Box as={RadioInput} error={props.error} {...props} />
-      {props.children}
-    </Box>
-    {props.error && errorMessage && (
-      <ValidationMessage>
-        <Exclamation size={16} />
-        {errorMessage}
-      </ValidationMessage>
-    )}
-  </>
-);
+Radio.Group = RadioGroup;

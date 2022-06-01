@@ -4,46 +4,38 @@ title: Stack
 
 # Stack
 
-## Description
-
 Layout component to stack elements. This component uses the spaces from the given theme.
 
-## Properties
-
-| Property | Type                           | Default |
-| :------- | :----------------------------- | :------ |
-| `space`  | `ResponsiveStyleValue<string>` | `none`  |
-| `align`  | `left, right, center`          | `left`  |
-
-## Import
+<Box border="1px solid #ced4da" bg="#e9ecef" p="small">
+  <Stack space="small">
+    <Headline level="2">Header</Headline>
+    <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
+    <Text>
+      Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
+    </Text>
+  </Stack>
+</Box>
 
 ```tsx onlyCode
 import { Stack } from '@marigold/components';
 ```
 
-## Live-Code Example
+## Props
 
-```tsx expandCode
-<Stack space="small">
-  <Text as="h2" variant="headline2">
-    Header
-  </Text>
-  <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
-  <Text>
-    Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
-  </Text>
-</Stack>
-```
+| Property  | Type                           | Default |
+| :-------- | :----------------------------- | :------ |
+| `space`   | `ResponsiveStyleValue<string>` | `none`  |
+| `alignX`  | `left, right, center`          | `left`  |
+| `alignY`  | `top, bottom, center`          | `left`  |
+| `stretch` | `boolean`                      | `false` |
 
-## Usage
+## Examples
 
 ### Spacing
 
 ```tsx
 <Stack space="large">
-  <Text as="h2" variant="headline2">
-    Header
-  </Text>
+  <Headline level="2">Header</Headline>
   <Text>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
     dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
@@ -64,18 +56,14 @@ import { Stack } from '@marigold/components';
 ```tsx
 <Stack space="large">
   <Stack space="medium">
-    <Text as="h2" variant="headline2">
-      Stack Content #1
-    </Text>
+    <Headline level="2">Stack Content #1</Headline>
     <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
     <Text>
       Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
     </Text>
   </Stack>
   <Stack space="medium">
-    <Text as="h2" variant="headline2">
-      Stack Content #2
-    </Text>
+    <Headline level="2">Stack Content #2</Headline>
     <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
     <Text>
       Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
@@ -84,18 +72,30 @@ import { Stack } from '@marigold/components';
 </Stack>
 ```
 
-### Alignment
+### Horizontal Alignment
 
 ```tsx
 <>
   <Stack space="medium">
     <Text>Left</Text>
   </Stack>
-  <Stack space="medium" align="center">
+  <Stack space="medium" alignX="center">
     <Text>Center</Text>
   </Stack>
-  <Stack space="medium" align="right">
+  <Stack space="medium" alignX="right">
     <Text>Right</Text>
   </Stack>
 </>
+```
+
+### Vertical Alignment
+
+```tsx
+<Box css={{ height: 200, bg: '#f1f3f5', p: 8 }}>
+  <Stack space="medium" stretch alignY="bottom">
+    <Text>Lirum</Text>
+    <Text>Larum</Text>
+    <Text>Löffelstiel!</Text>
+  </Stack>
+</Box>
 ```

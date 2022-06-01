@@ -1,15 +1,21 @@
 ---
 title: Label
+figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=92%3A0
 ---
 
 import { FigmaLink } from '../../src/components/FigmaLink';
 
 # Label
 
-## Description
+The `Label` component is used to accosiate and describe a form field.
 
-With the Label component you can add a HTML `<Label>` element to your form.
-The variant can be added with the variant prop. The default variant is `above`.
+<MarigoldTheme>
+  <Label>Some Label</Label>
+</MarigoldTheme>
+
+```tsx onlyCode
+import { Label } from '@marigold/components';
+```
 
 <FigmaLink
   to={
@@ -17,121 +23,19 @@ The variant can be added with the variant prop. The default variant is `above`.
   }
 />
 
-## Properties
+## Props
 
-| Property              | Type                           | Default |
-| :-------------------- | :----------------------------- | :------ |
-| `variant` (optional)  | `string`                       | `above` |
-| `required` (optional) | `boolean`                      | `false` |
-| `color` (optional)    | `ResponsiveStyleValue<string>` | `text`  |
-| `htmlFor`             | `string`                       |         |
+| Property              | Type                | Default   |
+| :-------------------- | :------------------ | :-------- |
+| `variant` (optional)  | `string`            |           |
+| `size` (optional)     | `string`            |           |
+| `as` (optional)       | `'label' \| 'span'` | `'label'` |
+| `required` (optional) | `boolean`           |           |
 
-## Import
-
-```tsx onlyCode
-import { Label } from '@marigold/components';
-```
-
-## Live-Code Example
-
-```tsx expandCode
-<Label htmlFor="labelId">Just a boring label</Label>
-```
-
-## Usage
+## Examples
 
 ### Label required
 
 ```tsx
-<Label variant="inline" htmlFor="labelId" required>
-  I am a required Label!
-</Label>
-```
-
-### Label above
-
-```tsx
-<Label htmlFor="labelId">I am a Label!</Label>
-```
-
-### Label inline
-
-```tsx
-<Label variant="inline" htmlFor="labelId">
-  I am a Label!
-</Label>
-```
-
-### Label disabled
-
-```tsx
-<Label htmlFor="labelId">I am a disabled Label!</Label>
-```
-
-### Collective Label
-
-```tsx
-<Label htmlFor="labelId">
-  Collective Label
-  <Box display="flex" justifyContent="space-between" width="25%">
-    <Radio id="one" name="collective" value="RadioOne" label="Radio One" />
-    <Radio id="two" name="collective" value="RadioTwo" label="Radio Two" />
-  </Box>
-</Label>
-```
-
-### Section Label
-
-```tsx
-<Label htmlFor="labelId" variant="section">
-  Section Label
-  <Divider variant="section" />
-</Label>
-```
-
-### Label Examples
-
-```tsx
-<Label htmlFor="labelId" variant="section">
-  Radios
-  <Divider variant="section" />
-  <Label htmlFor="labelId">
-    Radio Group
-    <Box display="flex" justifyContent="space-between" width="50%">
-      <Radio id="one" name="collective" value="RadioOne" label="Radio One" />
-      <Radio id="two" name="collective" value="RadioTwo" label="Radio Two" />
-      <Radio
-        id="three"
-        name="collective"
-        value="RadioThree"
-        label="Radio Three"
-      />
-    </Box>
-  </Label>
-</Label>
-```
-
-```tsx
-<Label htmlFor="labelId" variant="section">
-  Dropdowns
-  <Divider variant="section" />
-  <Box display="flex" justifyContent="space-between" width="50%">
-    <Select
-      label="Dropdown One"
-      placeholder="Select Primary Color"
-      htmlFor="id"
-    >
-      <Item key="Red">Red</Item>
-      <Item key="Orange">Orange</Item>
-    </Select>
-    <Select
-      label="Dropdown Two"
-      placeholder="Select Secondary Color"
-      htmlFor="id2"
-    >
-      <Item key="Red">Red</Item>
-      <Item key="Orange">Orange</Item>
-    </Select>
-  </Box>
-</Label>
+<Label required>I am a required Label!</Label>
 ```

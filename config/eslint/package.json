@@ -1,7 +1,7 @@
 {
   "name": "@marigold/eslint-config",
   "description": "marigold's eslint configuration",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "MIT",
   "keywords": [
     "marigiold",
@@ -19,21 +19,30 @@
     "directory": "config/eslint"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "5.10.2",
-    "@typescript-eslint/parser": "5.10.2",
+    "@babel/core": "7.17.12",
+    "@babel/plugin-syntax-flow": "^7.16.7",
+    "@babel/plugin-transform-react-jsx": "^7.17.3",
+    "@typescript-eslint/eslint-plugin": "5.27.0",
+    "@typescript-eslint/parser": "5.27.0",
     "babel-eslint": "^10.1.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-config-react-app": "6.0.0",
-    "eslint-plugin-flowtype": "^8.0.0",
-    "eslint-plugin-import": "2.25.4",
-    "eslint-plugin-jest": "24.7.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-react-app": "7.0.1",
+    "eslint-plugin-flowtype": "^8.0.3",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-jest": "26.1.4",
     "eslint-plugin-jsx-a11y": "6.5.1",
     "eslint-plugin-prettier": "4.0.0",
-    "eslint-plugin-react": "7.28.0",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "eslint-plugin-testing-library": "5.0.6"
+    "eslint-plugin-react": "7.30.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "eslint-plugin-testing-library": "5.5.1",
+    "prettier": "2.6.2"
   },
   "peerDependencies": {
-    "eslint": "7.26 || 7.27 || 7.29 || 7.30 || 7.31 || 7.32"
+    "eslint": "8.16.0",
+    "typescript": "4.6.4"
+  },
+  "devDependencies": {
+    "eslint": "8.16.0",
+    "typescript": "4.6.4"
   }
 }

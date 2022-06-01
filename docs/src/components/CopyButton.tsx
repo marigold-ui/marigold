@@ -6,7 +6,7 @@ interface CopyProps {
   codeString: string;
 }
 
-export const CopyButton: React.FC<CopyProps> = ({ codeString }) => {
+export const CopyButton = ({ codeString }: CopyProps) => {
   const [isCopied, setIsCopied] = React.useState(false);
   return (
     <Button

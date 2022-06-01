@@ -10,35 +10,31 @@ export default {
         type: 'text',
       },
       description: 'Switch variant style',
-      table: {
-        defaultValue: {
-          summary: '__default',
-        },
-      },
-    },
-    labelVariant: {
-      control: {
-        type: 'text',
-      },
-      description: 'Switch labelVariant style',
-      table: {
-        defaultValue: {
-          summary: '__default',
-        },
-      },
     },
     children: {
       control: {
         type: 'text',
       },
-      description: 'label',
+      description: 'Switch label',
       defaultValue: 'Default Switch',
+    },
+    size: {
+      control: {
+        type: 'text',
+      },
+      description: 'Switch size style',
+    },
+    width: {
+      control: {
+        type: 'text',
+      },
+      description: 'The width of the field',
     },
     disabled: {
       control: {
         type: 'boolean',
       },
-      description: 'disabled',
+      description: 'Switch disabled state',
       defaultValue: false,
     },
   },

@@ -11,24 +11,26 @@ export default {
         type: 'text',
       },
       description: '?',
-      table: {
-        defaultValue: {
-          summary: 'link',
-        },
-      },
     },
     href: {
       control: {
         type: 'text',
       },
+      defaultValue: 'https://marigold-ui.io',
       description: 'The URL to direct to',
+    },
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+      defaultValue: false,
     },
   },
 } as Meta;
 
 export const Basic: ComponentStory<typeof Link> = args => (
   <Text>
-    <Link href="https://marigold-ui.io" target="_blank" {...args}>
+    <Link target="_blank" {...args}>
       Marigold Docs
     </Link>
   </Text>

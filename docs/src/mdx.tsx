@@ -2,7 +2,7 @@ import React from 'react';
 // @ts-ignore (reason: package has no types)
 import { preToCodeBlock } from 'mdx-utils';
 
-import { Box, Text } from '@marigold/components';
+import { Box, Headline, Text } from '@marigold/components';
 import { ComponentProps } from '@marigold/types';
 
 import { Preview } from './components/Preview';
@@ -10,53 +10,47 @@ import { Link } from './components/Link';
 
 // Typography
 // ---------------
-export const h1: React.FC<ComponentProps<'h1'>> = ({ children, ...props }) => (
-  <Text as="h1" variant="headline1" {...props}>
+export const h1 = ({ children, ...props }: ComponentProps<'h1'>) => (
+  <Headline level="1" variant="mdx" {...props}>
     {children}
-  </Text>
+  </Headline>
 );
 
-export const h2: React.FC<ComponentProps<'h2'>> = ({ children, ...props }) => (
-  <Text as="h2" variant="headline2" {...props}>
+export const h2 = ({ children, ...props }: ComponentProps<'h2'>) => (
+  <Headline level="2" variant="mdx" {...props}>
     {children}
-  </Text>
+  </Headline>
 );
 
-export const h3: React.FC<ComponentProps<'h3'>> = ({ children, ...props }) => (
-  <Text as="h3" variant="headline3" {...props}>
+export const h3 = ({ children, ...props }: ComponentProps<'h3'>) => (
+  <Headline level="3" variant="mdx" {...props}>
     {children}
-  </Text>
+  </Headline>
 );
 
-export const h4: React.FC<ComponentProps<'h4'>> = ({ children, ...props }) => (
-  <Text as="h4" variant="headline4" {...props}>
+export const h4 = ({ children, ...props }: ComponentProps<'h4'>) => (
+  <Headline level="4" variant="mdx" {...props}>
     {children}
-  </Text>
+  </Headline>
 );
 
-export const h5: React.FC<ComponentProps<'h5'>> = ({ children, ...props }) => (
-  <Text as="h5" variant="headline5" {...props}>
+export const h5 = ({ children, ...props }: ComponentProps<'h5'>) => (
+  <Headline level="5" variant="mdx" {...props}>
     {children}
-  </Text>
+  </Headline>
 );
 
-export const h6: React.FC<ComponentProps<'h6'>> = ({ children, ...props }) => (
-  <Text as="h6" variant="headline6" {...props}>
+export const h6 = ({ children, ...props }: ComponentProps<'h6'>) => (
+  <Headline level="6" variant="mdx" {...props}>
     {children}
-  </Text>
+  </Headline>
 );
 
-export const p: React.FC<ComponentProps<'p'>> = ({ children, ...props }) => (
-  <Text as="p" variant="body" {...props}>
-    {children}
-  </Text>
+export const p = ({ children, ...props }: ComponentProps<'p'>) => (
+  <Text {...props}>{children}</Text>
 );
 
-export const a: React.FC<ComponentProps<'a'>> = ({
-  children,
-  href = '',
-  ...props
-}) => (
+export const a = ({ children, href = '', ...props }: ComponentProps<'a'>) => (
   <Link to={href} {...props}>
     {children}
   </Link>
@@ -64,10 +58,7 @@ export const a: React.FC<ComponentProps<'a'>> = ({
 
 // Code
 // ---------------
-export const inlineCode: React.FC<ComponentProps<'code'>> = ({
-  children,
-  ...props
-}) => (
+export const inlineCode = ({ children, ...props }: ComponentProps<'code'>) => (
   <Box
     as="code"
     {...props}
@@ -88,7 +79,7 @@ export const inlineCode: React.FC<ComponentProps<'code'>> = ({
   </Box>
 );
 
-export const pre: React.FC<ComponentProps<'pre'>> = preProps => {
+export const pre = (preProps: ComponentProps<'pre'>) => {
   const props = preToCodeBlock(preProps);
   if (props) {
     return <Preview type={props.metastring} {...props} />;
@@ -98,54 +89,43 @@ export const pre: React.FC<ComponentProps<'pre'>> = preProps => {
 
 // Lists
 // ---------------
-export const ul: React.FC<ComponentProps<'ul'>> = ({ children, ...props }) => (
+export const ul = ({ children, ...props }: ComponentProps<'ul'>) => (
   <ul {...props}>
-    <Text as="p" variant="body">
-      {children}
-    </Text>
+    <Text>{children}</Text>
   </ul>
 );
 
-export const ol: React.FC<ComponentProps<'ol'>> = ({ children, ...props }) => (
+export const ol = ({ children, ...props }: ComponentProps<'ol'>) => (
   <ol {...props}>
-    <Text as="p" variant="body">
-      {children}
-    </Text>
+    <Text>{children}</Text>
   </ol>
 );
 
-export const li: React.FC<ComponentProps<'li'>> = ({ children, ...props }) => (
+export const li = ({ children, ...props }: ComponentProps<'li'>) => (
   <li {...props}>{children}</li>
 );
 
 // Table
 // ---------------
-export const table: React.FC<ComponentProps<'table'>> = ({
-  children,
-  ...props
-}) => (
+export const table = ({ children, ...props }: ComponentProps<'table'>) => (
   <Box as="table" width="100%" {...props}>
     {children}
   </Box>
 );
 
-export const td: React.FC<ComponentProps<'td'>> = ({ children, ...props }) => (
+export const td = ({ children, ...props }: ComponentProps<'td'>) => (
   <Box as="td" p="xsmall" {...props}>
-    <Text as="p" variant="body">
-      {children}
-    </Text>
+    <Text>{children}</Text>
   </Box>
 );
 
-export const th: React.FC<ComponentProps<'th'>> = ({ children, ...props }) => (
+export const th = ({ children, ...props }: ComponentProps<'th'>) => (
   <Box as="th" p="xsmall" bg="gray30" {...props}>
-    <Text as="h5" variant="headline5">
-      {children}
-    </Text>
+    <Headline level="5">{children}</Headline>
   </Box>
 );
 
-export const tr: React.FC<ComponentProps<'tr'>> = ({ children, ...props }) => (
+export const tr = ({ children, ...props }: ComponentProps<'tr'>) => (
   <Box as="tr" p="xsmall" {...props}>
     {children}
   </Box>

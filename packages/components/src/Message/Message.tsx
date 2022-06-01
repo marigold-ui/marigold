@@ -1,33 +1,43 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Exclamation, Info, Notification } from '@marigold/icons';
+import { ThemeExtensionsWithParts, useComponentStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
+
 import { Box } from '../Box';
-import { Text } from '../Text';
 
 // Theme Extension
 // ---------------
-export interface MessageThemeExtension<Value> {
-  message?: {
-    [key: string]: Value;
-  };
-}
+export interface MessageThemeExtension
+  extends ThemeExtensionsWithParts<
+    'Message',
+    ['container', 'icon', 'title', 'content']
+  > {}
 
 // Props
 // ---------------
 export interface MessageProps extends ComponentProps<'div'> {
-  messageTitle: string;
+  messageTitle: ReactNode;
   variant?: string;
+  size?: string;
 }
 
 // Component
 // ---------------
-export const Message: React.FC<MessageProps> = ({
+export const Message = ({
   messageTitle,
   variant = 'info',
-  className,
+  size,
   children,
   ...props
-}) => {
+}: MessageProps) => {
+  const styles = useComponentStyles(
+    'Message',
+    {
+      variant,
+      size,
+    },
+    { parts: ['container', 'icon', 'title', 'content'] }
+  );
   var icon = <Info />;
   if (variant === 'warning') {
     icon = <Notification />;
@@ -37,19 +47,14 @@ export const Message: React.FC<MessageProps> = ({
   }
 
   return (
-    <Box
-      display="inline-block"
-      variant={`message.${variant}`}
-      className={className}
-      {...props}
-    >
-      <Box display="flex" alignItems="center" variant="message.title">
-        {icon}
-        <Text as="h4" variant="headline4">
-          {messageTitle}
-        </Text>
+    <Box css={styles.container} {...props}>
+      <Box __baseCSS={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <Box role="presentation" css={styles.icon}>
+          {icon}
+        </Box>
+        <Box css={styles.title}>{messageTitle}</Box>
       </Box>
-      <Box css={{ color: 'black' }}>{children}</Box>
+      <Box css={styles.content}>{children}</Box>
     </Box>
   );
 };

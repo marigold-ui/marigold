@@ -9,7 +9,7 @@ export default {
 } as Meta;
 
 export const Fonts = () => (
-  <Stack space="32px" align="center">
+  <Stack space="32px" alignX="center">
     {Object.values(Token.typography.font).map(value => (
       <Box key={value} css={{ fontFamily: value }}>
         A wizard's job is to vex chumps quickly in fog.
@@ -19,7 +19,7 @@ export const Fonts = () => (
 );
 
 export const LineHeights = () => (
-  <Stack space="32px" align="center">
+  <Stack space="32px" alignX="center">
     {Object.values(Token.typography.lineHeight).map(value => (
       <Box
         key={value}
@@ -41,7 +41,7 @@ export const LineHeights = () => (
 );
 
 export const LetterSpacing = () => (
-  <Stack space="32px" align="center">
+  <Stack space="32px" alignX="center">
     {Object.values(Token.typography.letterSpacing).map(value => (
       <Box
         key={value}
@@ -57,7 +57,7 @@ export const LetterSpacing = () => (
 );
 
 export const FontSizes = () => (
-  <Stack space="32px" align="center">
+  <Stack space="32px" alignX="center">
     {Object.values(Token.typography.size.fixed).map(value => (
       <Box
         key={value}
@@ -73,7 +73,7 @@ export const FontSizes = () => (
 );
 
 export const FluidFontSizes = () => (
-  <Stack space="32px" align="center">
+  <Stack space="32px" alignX="center">
     {Object.values(Token.typography.size.fluid).map(value => (
       <Box
         key={value}
@@ -89,13 +89,13 @@ export const FluidFontSizes = () => (
 );
 
 export const FontWeights = () => (
-  <Stack space="32px" align="center">
+  <Stack space="32px" alignX="center">
     {Object.values(Token.typography.weight).map(value => (
       <Box
         key={value}
         css={{
           fontWeight: value,
-          fontSize: Token.typography.size.fixed.large,
+          fontSize: Token.typography.size.fixed['medium-4'],
           fontFamily: Token.typography.font.sans,
         }}
       >

@@ -1,170 +1,206 @@
-import React, { Ref, RefObject, useRef } from 'react';
-import { useSelectState } from '@react-stately/select';
+import React, { useRef } from 'react';
 import { useButton } from '@react-aria/button';
-import { mergeProps } from '@react-aria/utils';
-import { useFocusRing } from '@react-aria/focus';
+import { FocusScope, useFocusRing } from '@react-aria/focus';
+import { useMessageFormatter } from '@react-aria/i18n';
+import { DismissButton, useOverlayPosition } from '@react-aria/overlays';
 import { HiddenSelect, useSelect } from '@react-aria/select';
+import { useSelectState } from '@react-stately/select';
+import { Item, Section } from '@react-stately/collections';
 import type { AriaSelectProps } from '@react-types/select';
-import { useOverlayTriggerState } from '@react-stately/overlays';
-import { useOverlayTrigger, useOverlayPosition } from '@react-aria/overlays';
-import { SingleSelection } from '@react-types/shared';
+import { mergeProps } from '@react-aria/utils';
 
+import {
+  Box,
+  CSSObject,
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+  useStateProps,
+} from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
-import { ArrowDown, ArrowUp, Exclamation, Required } from '@marigold/icons';
-import { ResponsiveStyleValue } from '@marigold/system';
 
-import { Box } from '../Box';
-import { Label } from '../Label';
-import { ValidationMessage } from '../ValidationMessage';
-import { ListBox } from './ListBox';
-import { Popover } from './Popover';
+import { FieldBase } from '../FieldBase';
+import { ListBox } from '../ListBox';
+import { Popover } from '../Overlay';
+import { messages } from './intl';
+
+// Select Icon
+// ---------------
+interface ChevronProps {
+  css: CSSObject;
+}
+
+const Chevron = ({ css }: ChevronProps) => (
+  <Box
+    as="svg"
+    __baseCSS={{ width: 16, height: 16 }}
+    css={css}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+  </Box>
+);
 
 // Theme Extension
 // ---------------
-export interface SelectThemeExtension<Value> {
-  select?: {
-    __default: Value;
-    disabled?: Value;
-    listbox?: {
-      __default: Value;
-      error?: Value;
-    };
-    section?: Value;
-    option?: Value;
-  };
-}
+export interface SelectThemeExtension
+  extends ThemeExtensionsWithParts<'Select', ['container', 'button', 'icon']> {}
 
 // Props
 // ---------------
-export type SelectProps = {
-  labelVariant?: string;
-  placeholder?: string;
+export interface SelectProps
+  extends Omit<
+      AriaSelectProps<object>,
+      | 'autoComplete'
+      | 'isOpen'
+      | 'isLoading'
+      | 'onLoadMore'
+      | 'isDisabled'
+      | 'isRequired'
+      | 'validationState'
+    >,
+    Omit<
+      ComponentProps<'select'>,
+      'onKeyUp' | 'onKeyDown' | 'onFocus' | 'onBlur' | 'children' | 'size'
+    > {
+  variant?: string;
+  size?: string;
+  width?: string;
+  open?: boolean;
   disabled?: boolean;
   required?: boolean;
-  width?: ResponsiveStyleValue<number | string>;
   error?: boolean;
-  errorMessage?: string;
-} & ComponentProps<'select'> &
-  AriaSelectProps<object> &
-  SingleSelection;
+}
 
 // Component
 // ---------------
 export const Select = ({
-  labelVariant = 'above',
-  placeholder = 'Select an option',
+  variant,
+  size,
+  width,
+  open,
   disabled,
   required,
   error,
-  errorMessage,
-  width,
-  className,
-  ...props
+  ...rest
 }: SelectProps) => {
+  // Set up i18n
+  const formatMessage = useMessageFormatter(messages);
+  const props: AriaSelectProps<object> = {
+    isOpen: open,
+    isDisabled: disabled,
+    isRequired: required,
+    validationState: error ? 'invalid' : 'valid',
+    placeholder: rest.placeholder || formatMessage('placeholder'),
+    ...rest,
+  };
+
   const state = useSelectState(props);
-  const overlayTriggerState = useOverlayTriggerState({});
-  const triggerRef = useRef<HTMLElement>() as RefObject<HTMLElement>;
-  const overlayRef = useRef<HTMLDivElement>();
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Get props for the overlay
-  const { overlayProps } = useOverlayTrigger(
-    { type: 'listbox' },
-    overlayTriggerState,
-    triggerRef
+  const {
+    labelProps,
+    triggerProps,
+    valueProps,
+    menuProps,
+    descriptionProps,
+    errorMessageProps,
+  } = useSelect(props, state, buttonRef);
+
+  const { buttonProps } = useButton(
+    { isDisabled: disabled, ...triggerProps },
+    buttonRef
   );
-  // Get popover positioning props relative to the trigger
+  const { focusProps, isFocusVisible } = useFocusRing();
+
+  const overlayRef = useRef(null);
   const { overlayProps: positionProps } = useOverlayPosition({
-    targetRef: triggerRef,
-    overlayRef: overlayRef as RefObject<HTMLElement>,
-    placement: 'bottom',
-    shouldFlip: false,
+    targetRef: buttonRef,
+    overlayRef,
     isOpen: state.isOpen,
-    onClose: state.close,
+    placement: 'bottom left',
   });
-  // Get props for child elements from useSelect
-  const { labelProps, triggerProps, valueProps, menuProps } = useSelect(
-    props,
-    state,
-    triggerRef
-  );
-  // Get props for the button based on the trigger props from useSelect
-  const { buttonProps } = useButton(triggerProps, triggerRef);
 
-  const { focusProps } = useFocusRing();
+  const styles = useComponentStyles(
+    'Select',
+    { variant, size },
+    { parts: ['container', 'button', 'icon'] }
+  );
+  const stateProps = useStateProps({
+    disabled,
+    error,
+    focusVisible: isFocusVisible,
+    expanded: state.isOpen,
+  });
 
   return (
-    <Box position="relative" display="inline-block" width={width && width}>
-      {props.label && (
-        <Box>
-          <Label {...labelProps} htmlFor={labelProps.id} variant={labelVariant}>
-            {required ? (
-              <Box as="span" display="inline-flex" alignItems="center">
-                {props.label}
-                <Required size={16} fill="error" />
-              </Box>
-            ) : (
-              props.label
-            )}
-          </Label>
-        </Box>
-      )}
+    <FieldBase
+      variant={variant}
+      size={size}
+      width={width}
+      label={props.label}
+      labelProps={{ as: 'span', ...labelProps }}
+      description={props.description}
+      descriptionProps={descriptionProps}
+      error={error}
+      errorMessage={props.errorMessage}
+      errorMessageProps={errorMessageProps}
+      stateProps={stateProps}
+      disabled={disabled}
+      required={required}
+    >
       <HiddenSelect
         state={state}
-        triggerRef={triggerRef}
+        triggerRef={buttonRef}
         label={props.label}
         name={props.name}
         isDisabled={disabled}
       />
       <Box
         as="button"
+        __baseCSS={{
+          display: 'flex',
+          position: 'relative',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%',
+        }}
+        css={styles.button}
+        ref={buttonRef}
         {...mergeProps(buttonProps, focusProps)}
-        ref={triggerRef as RefObject<HTMLButtonElement>}
-        variant={
-          error && state.isOpen && !disabled
-            ? 'button.select.errorOpened'
-            : error
-            ? 'button.select.error'
-            : state.isOpen && !disabled
-            ? 'button.select.open'
-            : 'button.select'
-        }
-        disabled={disabled}
-        className={className}
+        {...stateProps}
       >
         <Box
-          as="span"
-          {...valueProps}
-          variant={disabled ? 'select.disabled' : 'select'}
-        >
-          {state.selectedItem ? state.selectedItem.rendered : placeholder}
-        </Box>
-        {state.isOpen && !disabled ? (
-          <ArrowUp size={16} fill="text" />
-        ) : (
-          <ArrowDown size={16} fill={disabled ? 'disabled' : 'text'} />
-        )}
-      </Box>
-      {state.isOpen && !disabled && (
-        <Box
-          as={Popover}
-          {...overlayProps}
-          {...positionProps}
           css={{
-            width: triggerRef.current && triggerRef.current.offsetWidth + 'px',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
           }}
-          ref={overlayRef as Ref<HTMLDivElement>}
-          isOpen={state.isOpen}
-          onClose={state.close}
+          {...valueProps}
         >
-          <ListBox error={error} {...menuProps} state={state} />
+          {state.selectedItem ? state.selectedItem.rendered : props.placeholder}
         </Box>
-      )}
-      {error && errorMessage && (
-        <Box as="span" display="inline-flex" alignItems="center">
-          <Box as={Exclamation} size={16} css={{ color: 'error' }} />
-          <ValidationMessage>{errorMessage}</ValidationMessage>
-        </Box>
-      )}
-    </Box>
+        <Chevron css={styles.icon} />
+      </Box>
+      <Popover
+        open={state.isOpen}
+        onClose={state.close}
+        dismissable
+        shouldCloseOnBlur
+        minWidth={buttonRef.current ? buttonRef.current.offsetWidth : undefined}
+        ref={overlayRef}
+        {...positionProps}
+      >
+        <FocusScope restoreFocus>
+          <DismissButton onDismiss={state.close} />
+          <ListBox state={state} variant={variant} size={size} {...menuProps} />
+          <DismissButton onDismiss={state.close} />
+        </FocusScope>
+      </Popover>
+    </FieldBase>
   );
 };
+
+Select.Option = Item;
+Select.Section = Section;

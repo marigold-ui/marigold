@@ -1,7 +1,7 @@
 {
   "name": "@marigold/storybook-config",
   "description": "Marigold's storybook configuration",
-  "version": "0.4.3",
+  "version": "0.6.2",
   "license": "MIT",
   "type": "module",
   "exports": "./main.js",
@@ -19,26 +19,38 @@
     "directory": "config/prettier"
   },
   "dependencies": {
-    "@babel/core": "7.17.5",
+    "@babel/core": "7.17.12",
+    "@emotion/react": "^11.0.0-rc.0",
+    "@emotion/styled": "^11.8.1",
     "@marigold/components": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
     "@marigold/theme-unicorn": "workspace:*",
     "@mdx-js/react": "1.6.22",
-    "@storybook/addon-a11y": "6.4.18",
-    "@storybook/addon-essentials": "6.4.18",
-    "@storybook/addon-interactions": "6.4.18",
-    "@storybook/jest": "0.0.9",
-    "@storybook/testing-library": "0.0.9",
-    "babel-loader": "8.2.3",
+    "@storybook/addon-a11y": "6.5.2",
+    "@storybook/addon-essentials": "6.5.0",
+    "@storybook/addon-interactions": "6.5.0",
+    "@storybook/jest": "0.0.10",
+    "@storybook/testing-library": "0.0.11",
+    "@types/react": "^17",
+    "babel-loader": "8.2.5",
     "find-up": "5.0.0",
     "storybook-addon-themes": "6.1.0",
-    "tsconfig-paths-webpack-plugin": "3.5.2"
+    "tsconfig-paths-webpack-plugin": "3.5.2",
+    "webpack": "4"
   },
   "peerDependencies": {
-    "@storybook/react": "6.4.18"
+    "@storybook/react": "6.5.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "typescript": "4.6.4"
   },
   "scripts": {
     "start": "start-storybook -p 1337 -c ."
+  },
+  "devDependencies": {
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "typescript": "4.6.4"
   }
 }

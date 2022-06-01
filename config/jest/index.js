@@ -8,6 +8,7 @@ const { pathsToModuleNameMapper } = require('ts-jest');
  */
 const base = {
   testEnvironment: 'jsdom',
+  testEnvironmentOptions: {},
   testMatch: ['<rootDir>/**/*.test.{ts,tsx}'],
   setupFilesAfterEnv: [path.resolve(__dirname, 'jest.setup.ts')],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
@@ -27,7 +28,6 @@ const base = {
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
 
   // coverage
-  collectCoverage: true,
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
     '**/*.{ts,tsx}',

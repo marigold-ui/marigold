@@ -1,62 +1,47 @@
 import React, { useState } from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
+
+import { Button } from '../Button';
 import { Menu } from './Menu';
-import { MenuItem } from '../MenuItem';
 
 export default {
   title: 'Components/Menu',
-  parameters: {
-    actions: {
-      handles: ['click'],
-    },
-  },
   argTypes: {
-    variant: {
-      control: {
-        type: 'text',
-      },
-      description: '?',
-      table: {
-        defaultValue: {
-          summary: 'default',
-        },
-      },
-    },
-    label: {
-      control: {
-        type: 'text',
-      },
-      description: 'Menu label on hover',
-      defaultValue: 'Menu',
-    },
-    show: {
+    disabled: {
       control: {
         type: 'boolean',
       },
-      options: [true, false],
-      description: 'Show what',
-      table: {
-        defaultValue: {
-          summary: false,
-        },
-      },
-    },
-    onClick: {
-      control: {
-        type: 'text',
-      },
-      description: 'Function to show menu or toggle something',
+      defaultValue: false,
     },
   },
 } as Meta;
 
-export const Basic: ComponentStory<typeof Menu> = ({ onClick, ...args }) => {
-  const [showMenu, setShowMenu] = useState(false);
+export const Basic: ComponentStory<typeof Menu.Trigger> = args => {
+  const [selected, setSelected] = useState<string | number>('');
   return (
-    <Menu onClick={() => setShowMenu(!showMenu)} show={showMenu} {...args}>
-      <MenuItem href="#">Home</MenuItem>
-      <MenuItem href="#">Tickets</MenuItem>
-      <MenuItem href="#">Logout</MenuItem>
-    </Menu>
+    <>
+      <Menu.Trigger {...args}>
+        <Button variant="menu" size="small">
+          Choose Menu
+        </Button>
+        <Menu onSelect={setSelected}>
+          <Menu.Item key="burger">🍔 Burger</Menu.Item>
+          <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+          <Menu.Item key="salad">🥗 Salad</Menu.Item>
+          <Menu.Item key="fries">🍟 Fries</Menu.Item>
+        </Menu>
+      </Menu.Trigger>
+      <hr />
+      <pre>selected: {selected}</pre>
+    </>
   );
 };
+
+export const MenuOnly: ComponentStory<typeof Menu> = () => (
+  <Menu aria-label="Only a Menu">
+    <Menu.Item key="burger">🍔 Burger</Menu.Item>
+    <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+    <Menu.Item key="salad">🥗 Salad</Menu.Item>
+    <Menu.Item key="fries">🍟 Fries</Menu.Item>
+  </Menu>
+);
