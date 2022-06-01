@@ -29,7 +29,7 @@
     "eslint-config-react-app": "7.0.1",
     "eslint-plugin-flowtype": "^8.0.3",
     "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-jest": "26.1.4",
+    "eslint-plugin-jest": "26.4.6",
     "eslint-plugin-jsx-a11y": "6.5.1",
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-react": "7.30.0",
