@@ -58,9 +58,13 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: Slack Notification
         id: slack
-        uses: slackapi/slack-github-action@v1.18.0
+        uses: slackapi/slack-github-action@v1.19.0
         env:
           VERSION: export $("require('../packages/components/package.json').version")
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
@@ -80,7 +84,7 @@ jobs:
                   "type": "context",
                   "elements": [
                     {
-                      "text": "*$(date --rfc-3339=date)*  |  Design System Team",
+                      "text": "*${{ steps.date.outputs.date }}*  |  Design System Team",
                       "type": "mrkdwn"
                     }
                   ]
@@ -92,25 +96,14 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*CHANGELOG*"
+                    "text": "For a detailed list of updates, fixes and additions see the latest changelog."
                   }
                 },
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "For a detailed list of updates, fixes and additions see the latest changelog."
-                  },
-                  "accessory": {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "View Changelog",
-                      "emoji": true
-                    },
-                    "value": "view_changelog",
-                    "url": "https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md#marigoldcomponents",
-                    "action_id": "changelog-action"
+                    "text": ":point_right: *<https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md#marigoldcomponents|View Changelog>* :point_left:"
                   }
                 },
                 {
