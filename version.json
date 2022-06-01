@@ -1,0 +1,138 @@
+{
+  "changesets": [
+    {
+      "releases": [
+        {
+          "name": "@marigold/tokens",
+          "type": "minor"
+        }
+      ],
+      "summary": "This is just a test",
+      "id": "nervous-poems-switch"
+    },
+    {
+      "releases": [
+        {
+          "name": "@marigold/eslint-config",
+          "type": "patch"
+        },
+        {
+          "name": "@marigold/jest-config",
+          "type": "patch"
+        }
+      ],
+      "summary": "fix(deps): update jest",
+      "id": "silver-garlics-design"
+    },
+    {
+      "releases": [
+        {
+          "name": "@marigold/eslint-config",
+          "type": "patch"
+        },
+        {
+          "name": "@marigold/docs",
+          "type": "patch"
+        }
+      ],
+      "summary": "fix(deps): update eslint",
+      "id": "thin-icons-worry"
+    },
+    {
+      "releases": [
+        {
+          "name": "@marigold/jest-config",
+          "type": "patch"
+        }
+      ],
+      "summary": "fix(deps): update dependency @swc/core to v1.2.196",
+      "id": "twelve-cats-kneel"
+    }
+  ],
+  "releases": [
+    {
+      "name": "@marigold/tokens",
+      "type": "minor",
+      "oldVersion": "3.0.0",
+      "changesets": ["nervous-poems-switch"],
+      "newVersion": "3.1.0"
+    },
+    {
+      "name": "@marigold/eslint-config",
+      "type": "patch",
+      "oldVersion": "0.3.1",
+      "changesets": ["silver-garlics-design", "thin-icons-worry"],
+      "newVersion": "0.3.2"
+    },
+    {
+      "name": "@marigold/jest-config",
+      "type": "patch",
+      "oldVersion": "1.0.0",
+      "changesets": ["silver-garlics-design", "twelve-cats-kneel"],
+      "newVersion": "1.0.1"
+    },
+    {
+      "name": "@marigold/docs",
+      "type": "patch",
+      "oldVersion": "1.1.0",
+      "changesets": ["thin-icons-worry"],
+      "newVersion": "1.1.1"
+    },
+    {
+      "name": "@marigold/components",
+      "type": "patch",
+      "oldVersion": "1.1.0",
+      "changesets": [],
+      "newVersion": "1.1.1"
+    },
+    {
+      "name": "@marigold/create-theme",
+      "type": "patch",
+      "oldVersion": "2.0.1",
+      "changesets": [],
+      "newVersion": "2.0.2"
+    },
+    {
+      "name": "@marigold/storybook-config",
+      "type": "patch",
+      "oldVersion": "0.6.2",
+      "changesets": [],
+      "newVersion": "0.6.3"
+    },
+    {
+      "name": "@marigold/theme-b2b",
+      "type": "patch",
+      "oldVersion": "8.0.0",
+      "changesets": [],
+      "newVersion": "8.0.1"
+    },
+    {
+      "name": "@marigold/theme-core",
+      "type": "patch",
+      "oldVersion": "8.0.0",
+      "changesets": [],
+      "newVersion": "8.0.1"
+    },
+    {
+      "name": "@marigold/theme-unicorn",
+      "type": "patch",
+      "oldVersion": "5.0.0",
+      "changesets": [],
+      "newVersion": "5.0.1"
+    },
+    {
+      "name": "@marigold/system",
+      "type": "patch",
+      "oldVersion": "1.1.0",
+      "changesets": [],
+      "newVersion": "1.1.1"
+    },
+    {
+      "name": "@marigold/icons",
+      "type": "patch",
+      "oldVersion": "0.7.2",
+      "changesets": [],
+      "newVersion": "0.7.3"
+    }
+  ]
+}
