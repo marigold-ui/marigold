@@ -11,8 +11,6 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    env:
-      VERSION: export $("require('../packages/components/package.json').version")
     steps:
       # Setup
       - uses: actions/checkout@v3
@@ -26,11 +24,9 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
-      - name: Get package version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@main
-        with:
-          path: packages/components
+      - name: Get current version
+        id: version
+        run: echo "::set-output name=version::$(node -p "require('../packages/components/package.json').version")"
 
       # Publish
       - name: Build packages
@@ -39,7 +35,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          title: 'release: v${{ steps.package-version.outputs.current-version}}'
+          title: 'release: v${{ steps.version.outputs.version }}'
           publish: pnpm changeset publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -65,7 +61,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": ":tada:  New Marigold Release (v${{ steps.package-version.outputs.current-version}})"
+                    "text": ":tada:  New Marigold Release (v${{ steps.version.outputs.version }})"
                   }
                 },
                 {
