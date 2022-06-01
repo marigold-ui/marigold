@@ -32,7 +32,7 @@ jobs:
         with:
           path: packages/components
 
-      # Actions
+      # Publish
       - name: Build packages
         run: pnpm build
       - name: Create Release Pull Request or Publish to npm
@@ -44,6 +44,70 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Update "marigold-ui.io/"
+
+      # Docs
+      - name: Update "marigold-ui.io"
         if: steps.changesets.outputs.published == 'true'
         run: pnpm release:docs
+
+      # Slack Notification
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      - name: Slack Notification
+        if: steps.changesets.outputs.published == 'true'
+        uses: slackapi/slack-github-action@v1.19.0
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        with:
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": ":tada:  New Marigold Release (v${{ steps.package-version.outputs.current-version}})"
+                  }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "text": "*${{ steps.date.outputs.date }}*  |  Design System Team",
+                      "type": "mrkdwn"
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "For a detailed list of updates, fixes and additions see the latest changelog."
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*<https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md#marigoldcomponents|View Changelog>*"
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "If you find any bugs or have suggestions how we can improve Marigold, please <https://github.com/marigold-ui/marigold/issues/new/choose|let us know>!"
+                    }
+                  ]
+                }
+              ]
+            }

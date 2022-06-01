@@ -103,7 +103,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":point_right: *<https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md#marigoldcomponents|View Changelog>* :point_left:"
+                    "text": "*<https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md#marigoldcomponents|View Changelog>*"
                   }
                 },
                 {
