@@ -1,5 +1,5 @@
 {
-  "extends": ["config:base"],
+  "extends": ["config:base", ":semanticCommitTypeAll(chore)"],
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["before 3am on Sunday"]
