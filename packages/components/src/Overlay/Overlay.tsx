@@ -14,7 +14,7 @@ export interface OverlayProps extends ComponentProps<'div'> {
 export const Overlay = ({
   children,
   open = false,
-  container = document.body,
+  container,
   ...props
 }: OverlayProps) => {
   if (!open) {
