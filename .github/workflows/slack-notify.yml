@@ -61,35 +61,69 @@ jobs:
       - name: Slack Notification
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
+        env:
+          VERSION: export $("require('../packages/components/package.json').version")
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         with:
           payload: |
-            { "type": "plain_text",
-              "text": ":information: New Release v ${{ env.VERSION }} :tada:",
+            {
               "blocks": [
                 {
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": ":tada: New Release v ${{ env.VERSION }}" 
+                    "text": ":tada:  New Marigold Release (v${{123}})"
+                  }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "text": "*$(date --rfc-3339=date)*  |  Design System Team",
+                      "type": "mrkdwn"
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*CHANGELOG*"
                   }
                 },
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "Click below to see all *changes*"
+                    "text": "For a detailed list of updates, fixes and additions see the latest changelog."
+                  },
+                  "accessory": {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "View Changelog",
+                      "emoji": true
+                    },
+                    "value": "view_changelog",
+                    "url": "https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md#marigoldcomponents",
+                    "action_id": "changelog-action"
                   }
                 },
                 {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": " <https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md|:marigold: *View Changelog*>"
-                  }
+                  "type": "divider"
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "If you find any bugs or have suggestions how we can improve Marigold, please <https://github.com/marigold-ui/marigold/issues/new/choose|let us know>!"
+                    }
+                  ]
                 }
               ]
             }
-        env:
-          VERSION: export $("require('../packages/components/package.json').version")
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
