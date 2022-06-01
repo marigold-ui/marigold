@@ -24,13 +24,13 @@
     "@babel/core": "7.17.12",
     "@swc/core": "1.2.196",
     "@swc/jest": "0.2.21",
-    "@types/jest": "27.4.1",
+    "@types/jest": "27.5.1",
     "babel-jest": "28.1.0",
     "find-up": "5.0.0",
-    "jest-watch-typeahead": "1.0.0",
+    "jest-watch-typeahead": "1.1.0",
     "merge-deep": "3.0.3",
     "react-test-renderer": "17.0.2",
-    "ts-jest": "28.0.2"
+    "ts-jest": "28.0.3"
   },
   "peerDependencies": {
     "jest": "28.x",
