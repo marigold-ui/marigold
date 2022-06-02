@@ -23,6 +23,6 @@ const out = published
     const anchor = version.replace(/\./g, '');
     return `• \`${name}\` (v${version}, <${changelog}#${anchor}|view changelog>)`;
   })
-  .join('\n');
+  .join('%0A');
 
 console.log(out);

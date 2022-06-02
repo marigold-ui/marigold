@@ -51,7 +51,7 @@ jobs:
       - name: Get release info
         if: steps.changesets.outputs.published == 'true'
         id: releases
-        run: echo "::set-output name=releases::$(node node scripts/format-published-packages.mjs '${{ steps.changesets.outputs.publishedPackages }}')"
+        run: echo "::set-output name=releases::$(node scripts/format-published-packages.mjs '${{ steps.changesets.outputs.publishedPackages }}')"
       - name: Slack Notification
         if: steps.changesets.outputs.published == 'true'
         uses: slackapi/slack-github-action@v1.19.0
