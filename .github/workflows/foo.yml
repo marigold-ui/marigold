@@ -24,5 +24,6 @@ jobs:
 
       # Slack Notification
       - name: Get release info
-        id: releases
-        run: echo "::set-output name=releases::$(node scripts/format-published-packages.mjs '[{"name":"@marigold/components","version":"1.1.0"},{"name":"@marigold/system","version":"1.0.0"}]')"
+        id: message
+        run: pnpm release:notification -- '[{"name":"@marigold/components","version":"1.1.0"},{"name":"@marigold/system","version":"1.0.0"}]'
+        # run: echo "::set-output name=releases::$(node scripts/format-published-packages.mjs '[{"name":"@marigold/components","version":"1.1.0"},{"name":"@marigold/system","version":"1.0.0"}]')"
