@@ -45,8 +45,13 @@ jobs:
 
       # Slack Notification
       - name: Get current date
+        if: steps.changesets.outputs.published == 'true'
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      - name: Get release info
+        if: steps.changesets.outputs.published == 'true'
+        id: releases
+        run: echo "::set-output name=releases::$(node node scripts/format-published-packages.mjs '${{ steps.changesets.outputs.publishedPackages }}')"
       - name: Slack Notification
         if: steps.changesets.outputs.published == 'true'
         uses: slackapi/slack-github-action@v1.19.0
@@ -77,27 +82,22 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "For a detailed list of updates, fixes and additions see the latest changelog."
+                    "text": "We updated the following packages. For a detailed list of updates, fixes and additions see the latest changelog of the respective package."
                   }
                 },
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*<https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md#marigoldcomponents|View Changelog>*"
+                    "text": "${{ steps.releases.outputs.releases }}"
                   }
                 },
                 {
-                  "type": "divider"
-                },
-                {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "If you find any bugs or have suggestions how we can improve Marigold, please <https://github.com/marigold-ui/marigold/issues/new/choose|let us know>!"
-                    }
-                  ]
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "If you find any bugs or have suggestions how we can improve Marigold, please <https://github.com/marigold-ui/marigold/issues/new/choose|let us know>!"
+                  }
                 }
               ]
             }
