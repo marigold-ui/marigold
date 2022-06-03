@@ -24,7 +24,7 @@ jobs:
 
       # Send Slack Notification
       - name: Create release notification
-        run: pnpm release:notification -- '[{"name":"@marigold/components","version":"1.1.0"},{"name":"@marigold/system","version":"1.0.0"}]'
+        run: pnpm release:notification -- --packages '[{"name":"@marigold/components","version":"1.1.0"},{"name":"@marigold/system","version":"1.0.0"}]'
       - name: Slack Notification
         uses: slackapi/slack-github-action@v1.19.0
         with:
