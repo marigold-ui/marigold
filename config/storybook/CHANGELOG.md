@@ -1,5 +1,17 @@
 # @marigold/storybook-config
 
+## 0.6.3
+
+### Patch Changes
+
+- [#2136](https://github.com/marigold-ui/marigold/pull/2136) [`58f716b2`](https://github.com/marigold-ui/marigold/commit/58f716b2a476dbb6404409105076bb5da6c91a22) Thanks [@sebald](https://github.com/sebald)! - fix: revert to using TypeScript 4.6
+
+- Updated dependencies []:
+  - @marigold/components@1.1.1
+  - @marigold/theme-b2b@8.0.1
+  - @marigold/theme-core@8.0.1
+  - @marigold/theme-unicorn@5.0.1
+
 ## 0.6.2
 
 ### Patch Changes
