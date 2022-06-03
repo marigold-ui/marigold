@@ -113,6 +113,12 @@ export interface ZeroSizeScale<T> extends SizeScale<T> {
  */
 export interface Theme {
   /**
+   * Styles that applied globally. This is useful for additional normalization
+   * or to style non-Marigold elements.
+   */
+  globals?: CSSObject;
+
+  /**
    * To configure the default breakpoints used in responsive array values,
    * add a breakpoints array to your theme.
    *

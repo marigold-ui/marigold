@@ -32,6 +32,8 @@ export function MarigoldProvider<T extends Theme>({
   const outer = useTheme();
   const isTopLevel = outer.theme === __defaultTheme;
 
+  // TODO: useComponentStyles to get stuff from theme? Global does not apply it anymore!
+
   return (
     <ThemeProvider theme={theme}>
       {isTopLevel ? (
