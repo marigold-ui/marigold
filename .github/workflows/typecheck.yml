@@ -2,6 +2,10 @@ name: Typecheck
 
 on: ['push']
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   typecheck:
     name: Typecheck
