@@ -1,0 +1,36 @@
+{
+  "blocks": [
+    {
+      "type": "header",
+      "text": { "type": "plain_text", "text": ":tada:  New Marigold Release" }
+    },
+    {
+      "type": "context",
+      "elements": [
+        { "text": "*2022-06-03* | Design System Team", "type": "mrkdwn" }
+      ]
+    },
+    { "type": "divider" },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "We updated the following packages. For a detailed list of updates, fixes and additions see the latest changelog of the respective package."
+      }
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "• `@marigold/components` (v1.1.0, <https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md#110|view changelog>)\n• `@marigold/system` (v1.0.0, <https://github.com/marigold-ui/marigold/blob/main/packages/system/CHANGELOG.md#100|view changelog>)"
+      }
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "If you find any bugs or have suggestions how we can improve Marigold, please <https://github.com/marigold-ui/marigold/issues/new/choose|let us know>!"
+      }
+    }
+  ]
+}
