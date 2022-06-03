@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 import { getPackagesSync } from '@manypkg/get-packages';
-import { writeFileSync } from 'node:fs';
 
 /** @type {Array<{ name: string, version: string }>} */
 const published = JSON.parse(process.argv[2] || '[]');
@@ -26,9 +25,10 @@ const releaseInfos = published
   })
   .join('\n');
 
-// Format YYYY-MM-DD
+// Get current date formatted in "YYYY-MM-DD"
 const currentDate = new Date().toISOString().split('T')[0];
 
+// Slack Message (to edit copy/paste to https://app.slack.com/block-kit-builder/)
 const message = {
   blocks: [
     {
@@ -75,4 +75,3 @@ const message = {
 };
 
 console.log(JSON.stringify(message));
-// writeFileSync('./slack-release-notification.json', JSON.stringify(message));
