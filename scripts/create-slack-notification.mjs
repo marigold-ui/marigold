@@ -8,7 +8,12 @@ import { getPackagesSync } from '@manypkg/get-packages';
 //const published = JSON.parse(process.argv[2] || '[]');
 
 console.log(argv.packages);
-const published = JSON.parse(argv.packages);
+if (!argv.packages) {
+  console.log('No packages provided, use "--packages" the flag.');
+  process.exit(1);
+}
+
+const published = JSON.parse(argv.packages || {});
 
 if (published.length === 0) {
   console.warn('No released packages found!');
@@ -76,6 +81,9 @@ const message = {
         type: 'mrkdwn',
         text: 'If you find any bugs or have suggestions how we can improve Marigold, please <https://github.com/marigold-ui/marigold/issues/new/choose|let us know>!',
       },
+    },
+    {
+      type: 'divider',
     },
   ],
 };
