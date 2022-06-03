@@ -16,7 +16,13 @@ const reduceMotionStyles = {
   },
 };
 
+export type GlobalProps = {
+  rootSelector?: string;
+  globalCss?: boolean;
+};
+
 export const Global = () => {
+  // TODO: useComponentStyles to get stuff from theme?
   const { css } = useTheme();
   const styles = css({
     html: {
@@ -28,6 +34,7 @@ export const Global = () => {
       textSizeAdjust: 'none',
       variant: 'root.html',
     },
+
     body: {
       height: '100%',
       lineHeight: 1.5,

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 
 import { ThemeProvider } from '../../hooks';
-import { normalize } from '../../normalize';
+import { normalize } from './normalize';
 
 import { Box, StyleProps } from './Box';
 
@@ -120,7 +120,6 @@ test('apply normalized styles', () => {
   // Smoketest
   expect(element).toHaveStyle(`box-sizing: ${base.boxSizing}`);
   expect(element).toHaveStyle(`margin: ${base.margin}px`);
-  expect(element).toHaveStyle(`min-width: ${base.minWidth}`);
 });
 
 test('base normalization is always applied', () => {
@@ -130,7 +129,6 @@ test('base normalization is always applied', () => {
 
   expect(element).toHaveStyle(`box-sizing: ${base.boxSizing}`);
   expect(element).toHaveStyle(`margin: ${base.margin}px`);
-  expect(element).toHaveStyle(`min-width: ${base.minWidth}`);
 });
 
 test('apply normalized styles based on element', () => {

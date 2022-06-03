@@ -7,7 +7,6 @@ import { ElementType } from 'react';
 const base = {
   boxSizing: 'border-box',
   margin: 0,
-  minWidth: 0,
 } as const;
 
 const a = {
