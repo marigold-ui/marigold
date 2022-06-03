@@ -1,10 +1,21 @@
-#!/usr/bin/env node
+#!/usr/bin/env zx
+
+// Set available globals for eslint
+/* global fs, argv */
 import { getPackagesSync } from '@manypkg/get-packages';
 
 /** @type {Array<{ name: string, version: string }>} */
-const published = JSON.parse(process.argv[2] || '[]');
+//const published = JSON.parse(process.argv[2] || '[]');
 
-if (!published.length) {
+console.log(argv.packages);
+if (!argv.packages) {
+  console.log('No packages provided, use "--packages" the flag.');
+  process.exit(1);
+}
+
+const published = JSON.parse(argv.packages || {});
+
+if (published.length === 0) {
   console.warn('No released packages found!');
   process.exit(0);
 }
@@ -71,7 +82,10 @@ const message = {
         text: 'If you find any bugs or have suggestions how we can improve Marigold, please <https://github.com/marigold-ui/marigold/issues/new/choose|let us know>!',
       },
     },
+    {
+      type: 'divider',
+    },
   ],
 };
 
-console.log(JSON.stringify(message));
+fs.writeJsonSync('./slack-notification.json', message);

@@ -1,13 +1,15 @@
+# OS
 .DS_Store
 .history
-.swc
 
+# generated files
 node_modules
+.swc
 coverage
 dist
-
 docs/.cache
 docs/public
+slack-notification.json
 
-
+## env
 local.env
