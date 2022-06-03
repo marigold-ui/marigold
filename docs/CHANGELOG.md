@@ -1,5 +1,17 @@
 # @marigold/docs
 
+## 1.1.1
+
+### Patch Changes
+
+- [#2123](https://github.com/marigold-ui/marigold/pull/2123) [`ca4433f2`](https://github.com/marigold-ui/marigold/commit/ca4433f24e65b5d9c438f12708e71eb3d2489d75) Thanks [@renovate](https://github.com/apps/renovate)! - fix(deps): update eslint
+
+- Updated dependencies []:
+  - @marigold/system@1.1.1
+  - @marigold/components@1.1.1
+  - @marigold/icons@0.7.3
+  - @marigold/theme-b2b@8.0.1
+
 ## 1.1.0
 
 ### Minor Changes
