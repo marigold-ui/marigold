@@ -46,7 +46,8 @@
     "typescript": "4.6.4"
   },
   "scripts": {
-    "start": "start-storybook -p 1337 -c ."
+    "start": "start-storybook -p 1337 -c .",
+    "test": "start-storybook --smoke-test --ci -c ."
   },
   "devDependencies": {
     "react": "17.0.2",
