@@ -1,22 +1,75 @@
+/* eslint-disable testing-library/no-node-access */
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '../../hooks';
 
 import { Global } from './Global';
 
-test('applies normlaization to html and body', () => {
-  const view = render(<Global />);
+test('normalize document (html, body)', () => {
+  render(<Global />);
 
-  // eslint-disable-next-line testing-library/no-node-access
-  const html = window.getComputedStyle(view.baseElement.parentElement!);
-  expect(html.height).toBe('100%');
-  // expect(html.textSizeAdjust).toBe('none'); can not test this in JSDOM :(
-  const body = window.getComputedStyle(view.baseElement);
-  expect(body.height).toBe('100%');
-  expect(body.lineHeight).toBe('1.5');
+  const html = document.querySelector('html')!;
+  expect(html).toHaveStyle('height: 100%');
+
+  const body = document.querySelector('body')!;
+  expect(body).toHaveStyle('height: 100%');
+  expect(body).toHaveStyle('line-height: 1.5');
 });
 
-test('applies global styles for body and html based on `theme.root`', () => {
+test('opt out of document normalization', () => {
+  render(<Global normalizeDocument={false} />);
+
+  const html = document.querySelector('html')!;
+  expect(html).not.toHaveStyle('height: 100%');
+
+  const body = document.querySelector('body')!;
+  expect(body).not.toHaveStyle('height: 100%');
+  expect(body).not.toHaveStyle('line-height: 1.5');
+});
+
+test('normalize elements', () => {
+  render(
+    <>
+      <Global />
+      <div data-testid="div">Div</div>
+      <p data-testid="p">Paragraph</p>
+      <a data-testid="a">Link</a>
+      <button data-testid="button">Button</button>
+      <img data-testid="img" alt="foo" src="" />
+    </>
+  );
+
+  const div = screen.getByTestId('div');
+  expect(div).toHaveStyle('box-sizing: border-box');
+  expect(div).toHaveStyle('margin: 0');
+
+  const p = screen.getByTestId('p');
+  expect(p).toHaveStyle('box-sizing: border-box');
+  expect(p).toHaveStyle('margin: 0');
+  expect(p).toHaveStyle('overflow-wrap: break-word');
+
+  const a = screen.getByTestId('a');
+  expect(a).toHaveStyle('box-sizing: border-box');
+  expect(a).toHaveStyle('margin: 0');
+  expect(a).toHaveStyle('text-decoration: none');
+
+  const button = screen.getByTestId('button');
+  expect(button).toHaveStyle('box-sizing: border-box');
+  expect(button).toHaveStyle('margin: 0');
+  expect(button).toHaveStyle('display: block');
+  expect(button).toHaveStyle('appearance: none');
+  expect(button).toHaveStyle('font: inherit');
+  expect(button).toHaveStyle('background: transparent');
+  expect(button).toHaveStyle('text-align: center');
+
+  const img = screen.getByTestId('img');
+  expect(img).toHaveStyle('box-sizing: border-box');
+  expect(img).toHaveStyle('margin: 0');
+  expect(img).toHaveStyle('display: block');
+  expect(img).toHaveStyle('max-width: 100%');
+});
+
+test.skip('applies global styles for body and html based on `theme.root`', () => {
   const theme = {
     colors: {
       background: '#fff',

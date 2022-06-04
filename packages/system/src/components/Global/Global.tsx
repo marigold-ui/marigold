@@ -22,7 +22,7 @@ export const Global = ({ normalizeDocument = true, selector }: GlobalProps) => {
 
   const styles = [
     normalizeDocument ? normalize.document : {},
-    // Prefix normalization and globals with selector, if provided.
+    // Prefix normalization and globals with selector if provided.
     selector
       ? { [`:where(${selector})`]: normalize.element }
       : normalize.element,
