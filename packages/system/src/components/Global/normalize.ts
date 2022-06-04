@@ -19,10 +19,22 @@ export const document = {
     lineHeight: 1.5,
     WebkitFontSmoothing: 'antialiased',
     /**
-     * We have du duplicate this here, since the "*" selector will not be
-     * applied to the body element, if a custom `selector` is used.
+     * We have to duplicate this here, since the "*" selector will not be
+     * applied to the body element if a custom `selector` is used.
      */
     margin: 0,
+  },
+
+  /**
+   * CSS snippet and idea from:
+   * https://css-tricks.com/revisiting-prefers-reduced-motion-the-reduced-motion-media-query/
+   */
+  '@media screen and (prefers-reduced-motion: reduce), (update: slow)': {
+    '*': {
+      animationDuration: '0.001ms !important',
+      animationIterationCount: '1 !important',
+      transitionDuration: '0.001ms !important',
+    },
   },
 };
 

@@ -27,18 +27,6 @@ export const Global = ({ normalizeDocument = true, selector }: GlobalProps) => {
     ...(selector
       ? { [`:where(${selector})`]: normalize.element }
       : normalize.element),
-
-    /**
-     * CSS snippet and idea from:
-     * https://css-tricks.com/revisiting-prefers-reduced-motion-the-reduced-motion-media-query/
-     */
-    '@media screen and (prefers-reduced-motion: reduce), (update: slow)': {
-      '*': {
-        animationDuration: '0.001ms !important',
-        animationIterationCount: '1 !important',
-        transitionDuration: '0.001ms !important',
-      },
-    },
   };
 
   return <EmotionGlobal styles={[base, globals]} />;
