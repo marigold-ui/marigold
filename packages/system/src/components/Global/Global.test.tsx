@@ -69,6 +69,30 @@ test('normalize elements', () => {
   expect(img).toHaveStyle('max-width: 100%');
 });
 
+test('apply element normalization to a selector (instead of the whole document)', () => {
+  render(
+    <>
+      <Global selector="#root" />
+      <p data-testid="outside">Paragraph</p>
+      <div id="root">
+        <p data-testid="inside">Paragraph</p>
+      </div>
+    </>
+  );
+
+  const outside = screen.getByTestId('outside');
+  expect(outside).not.toHaveStyle('box-sizing: border-box');
+  expect(outside).not.toHaveStyle('margin: 0');
+  expect(outside).not.toHaveStyle('overflow-wrap: break-word');
+
+  const inside = screen.getByTestId('inside');
+
+  console.log(getComputedStyle(inside));
+  expect(inside).toHaveStyle('box-sizing: border-box');
+  expect(inside).toHaveStyle('margin: 0');
+  expect(inside).toHaveStyle('overflow-wrap: break-word');
+});
+
 test.skip('applies global styles for body and html based on `theme.root`', () => {
   const theme = {
     colors: {
