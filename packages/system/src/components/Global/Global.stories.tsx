@@ -44,8 +44,8 @@ export const Custom: ComponentStory<typeof Global> = () => (
   <ThemeProvider theme={theme}>
     <Global selector="#custom" />
     <p>
-      Set selector to "#custom" to apply global styles locally to the container
-      with the "Inside Button".
+      Element normalization and globals styles are only applied to the "Inside
+      Button"
     </p>
     <div style={{ paddingBottom: 10 }}>
       <button>Outside Button</button>

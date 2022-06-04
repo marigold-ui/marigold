@@ -33,6 +33,7 @@ export function MarigoldProvider<T extends Theme>({
   const isTopLevel = outer.theme === __defaultTheme;
 
   // TODO: useComponentStyles to get stuff from theme? Global does not apply it anymore!
+  // TODO: apply document normalization only if its the top level provider and it is not set to false!
 
   return (
     <ThemeProvider theme={theme}>
