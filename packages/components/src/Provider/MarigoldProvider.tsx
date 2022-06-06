@@ -29,7 +29,7 @@ export function MarigoldProvider<T extends Theme>({
 
   if (outer.theme?.root && !isTopLevel && !selector) {
     throw new Error(
-      `[MarigoldProvider] You cannot use nest a MarigoldProvider inside another MarigoldProvider! 
+      `[MarigoldProvider] You cannot nest a MarigoldProvider inside another MarigoldProvider without a "selector"! 
       Nested themes with a "root" property must specify a "selector" to prevent accidentally overriding global CSS`
     );
   }
