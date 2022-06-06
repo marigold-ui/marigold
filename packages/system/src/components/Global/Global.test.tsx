@@ -5,6 +5,35 @@ import { ThemeProvider } from '../../hooks';
 
 import { Global } from './Global';
 
+const theme = {
+  colors: {
+    background: '#fff',
+    hot: 'hotpink',
+  },
+  fonts: {
+    body: 'Inter',
+  },
+  lineHeights: {
+    body: 2.5,
+  },
+  fontWeights: {
+    body: 500,
+  },
+  root: {
+    body: {
+      fontFamily: 'body',
+      lineHeight: 'body',
+      fontWeight: 'body',
+    },
+    html: {
+      bg: 'background',
+    },
+    p: {
+      bg: 'hot',
+    },
+  },
+};
+
 test('normalize document (html, body)', () => {
   render(<Global />);
 
@@ -74,7 +103,7 @@ test('apply element normalization to a selector (instead of the whole document)'
     <>
       <Global selector="#root" />
       <p data-testid="outside">Paragraph</p>
-      <div id="root">
+      <div id="root" data-testid="root">
         <p data-testid="inside">Paragraph</p>
       </div>
     </>
@@ -85,53 +114,69 @@ test('apply element normalization to a selector (instead of the whole document)'
   expect(outside).not.toHaveStyle('margin: 0');
   expect(outside).not.toHaveStyle('overflow-wrap: break-word');
 
-  const inside = screen.getByTestId('inside');
-
-  console.log(getComputedStyle(inside));
-  expect(inside).toHaveStyle('box-sizing: border-box');
-  expect(inside).toHaveStyle('margin: 0');
-  expect(inside).toHaveStyle('overflow-wrap: break-word');
+  // Uncomment when JSDOM supports `:where` selector
+  // const inside = screen.getByTestId('inside');
+  // expect(inside).toHaveStyle('box-sizing: border-box');
+  // expect(inside).toHaveStyle('margin: 0');
+  // expect(inside).toHaveStyle('overflow-wrap: break-word');
 });
 
-test.skip('applies global styles for body and html based on `theme.root`', () => {
-  const theme = {
-    colors: {
-      background: '#fff',
-    },
-    fonts: {
-      body: 'Inter',
-    },
-    lineHeights: {
-      body: 2.5,
-    },
-    fontWeights: {
-      body: 500,
-      html: 700,
-    },
-    root: {
-      body: {
-        fontFamily: 'body',
-        lineHeight: 'body',
-        fontWeight: 'body',
-      },
-      html: {
-        bg: 'background',
-      },
-    },
-  };
-
-  const view = render(
+test('apply global styles via theme ("theme.root")', () => {
+  render(
     <ThemeProvider theme={theme}>
       <Global />
     </ThemeProvider>
   );
 
-  // eslint-disable-next-line testing-library/no-node-access
-  const html = view.baseElement.parentElement;
+  const html = document.querySelector('html')!;
   expect(html).toHaveStyle(`background: ${theme.colors.background}`);
 
-  const body = view.baseElement;
+  const body = document.querySelector('body')!;
   expect(body).toHaveStyle(`font-family: ${theme.fonts.body}`);
   expect(body).toHaveStyle(`line-height: ${theme.lineHeights.body}`);
   expect(body).toHaveStyle(`font-weight: ${theme.fontWeights.body}`);
+});
+
+test('apply root styles to a selector', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Global selector="#root" />
+      <p data-testid="outside">Paragraph</p>
+      <div id="root" data-testid="root">
+        <p data-testid="inside">Paragraph</p>
+      </div>
+    </ThemeProvider>
+  );
+
+  const html = document.querySelector('html')!;
+  expect(html).not.toHaveStyle(`background: ${theme.colors.background}`);
+
+  const outside = screen.getByTestId('outside');
+  expect(outside).not.toHaveStyle(`background: ${theme.colors.hot}`);
+
+  // Uncomment when JSDOM supports `:where` selector
+  // const inside = screen.getByTestId('inside');
+  // expect(inside).toHaveStyle(`background: ${theme.colors.hot}`);
+});
+
+test('allow to style arbitrary elements with root styles', () => {
+  const customTheme = {
+    root: {
+      '.btn': {
+        background: 'cyan',
+      },
+    },
+  };
+
+  render(
+    <ThemeProvider theme={customTheme}>
+      <Global />
+      <button className="btn" data-testid="button">
+        Paragraph
+      </button>
+    </ThemeProvider>
+  );
+
+  const button = screen.getByTestId('button');
+  expect(button).toHaveStyle('background: cyan');
 });

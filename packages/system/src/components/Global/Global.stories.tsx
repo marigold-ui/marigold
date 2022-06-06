@@ -22,7 +22,7 @@ export default {
 } as Meta;
 
 const theme = {
-  globals: {
+  root: {
     button: {
       color: '#fff0f6',
       border: '1px solid #a61e4d',
