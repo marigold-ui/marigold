@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 
 import { ThemeProvider } from '../../hooks';
-import { normalize } from './normalize';
 
 import { Box, StyleProps } from './Box';
 
@@ -112,33 +111,6 @@ test('forwards ref', () => {
   expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
 });
 
-test('apply normalized styles', () => {
-  render(<Box>Test</Box>);
-  const element = screen.getByText('Test');
-  const { base } = normalize;
-
-  // Smoketest
-  expect(element).toHaveStyle(`box-sizing: ${base.boxSizing}`);
-  expect(element).toHaveStyle(`margin: ${base.margin}px`);
-});
-
-test('base normalization is always applied', () => {
-  render(<Box as="button">Test</Box>);
-  const element = screen.getByText('Test');
-  const { base } = normalize;
-
-  expect(element).toHaveStyle(`box-sizing: ${base.boxSizing}`);
-  expect(element).toHaveStyle(`margin: ${base.margin}px`);
-});
-
-test('apply normalized styles based on element', () => {
-  render(<Box as="h1">Test</Box>);
-  const element = screen.getByText('Test');
-  const { h1 } = normalize;
-
-  expect(element).toHaveStyle(`overflow-wrap: ${h1.overflowWrap}`);
-});
-
 test('accepts default styling via "__baseCSS" prop', () => {
   render(<Box __baseCSS={{ color: 'hotpink' }}>Test</Box>);
   const element = screen.getByText('Test');
@@ -146,7 +118,7 @@ test('accepts default styling via "__baseCSS" prop', () => {
   expect(element).toHaveStyle('color: hotpink');
 });
 
-test('default styling overrides normalization', () => {
+test('default styling overrides (global) normalization', () => {
   render(
     <ThemeProvider theme={theme}>
       <Box __baseCSS={{ m: 'medium' }}>Test</Box>
