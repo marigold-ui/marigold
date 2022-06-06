@@ -113,10 +113,11 @@ export interface ZeroSizeScale<T> extends SizeScale<T> {
  */
 export interface Theme {
   /**
-   * Styles that applied globally. This is useful for additional normalization
-   * or to style non-Marigold elements.
+   * Styles that applied to the root of the app, where the root can be either the document
+   * for full page apps or an element if you're only using Marigold on a portion of the page.
+   * This is useful for additional normalizationor and to style non-Marigold elements.
    */
-  globals?: CSSObject;
+  root?: CSSObject;
 
   /**
    * To configure the default breakpoints used in responsive array values,

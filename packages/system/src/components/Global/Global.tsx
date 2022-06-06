@@ -18,15 +18,15 @@ export type GlobalProps = {
 
 export const Global = ({ normalizeDocument = true, selector }: GlobalProps) => {
   const { css, theme } = useTheme();
-  const globals = css(theme.globals || {});
+  const rootStyles = css(theme?.root || {});
 
   const styles = [
     normalizeDocument ? normalize.document : {},
-    // Prefix normalization and globals with selector if provided.
+    // Prefix normalization and root styles with selector if provided.
     selector
       ? { [`:where(${selector})`]: normalize.element }
       : normalize.element,
-    selector ? { [`:where(${selector})`]: globals } : globals,
+    selector ? { [`:where(${selector})`]: rootStyles } : rootStyles,
   ];
 
   return <EmotionGlobal styles={styles} />;
