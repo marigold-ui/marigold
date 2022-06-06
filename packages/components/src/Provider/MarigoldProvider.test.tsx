@@ -24,7 +24,7 @@ const theme = {
   },
 };
 
-test('themes can be cascaded', () => {
+test('support cascading themes', () => {
   const outerTheme = {
     colors: {
       primary: 'coral',
@@ -72,7 +72,7 @@ test('themes can be cascaded', () => {
   `);
 });
 
-test('OverlayProvider is added', () => {
+test('add OverlayProvider from `react-aria`', () => {
   const { container } = render(
     <MarigoldProvider theme={theme}>Test</MarigoldProvider>
   );
@@ -95,7 +95,7 @@ test('OverlayProvider is added only once', () => {
   ).toEqual(1);
 });
 
-test('applies global styles for body and html based on `theme.root`', () => {
+test('apply styles base on theme (`theme.root`)', () => {
   const theme = {
     fonts: {
       body: 'Inter',

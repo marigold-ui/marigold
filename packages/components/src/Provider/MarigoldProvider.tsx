@@ -1,50 +1,46 @@
 import React from 'react';
 import { OverlayProvider } from '@react-aria/overlays';
 import {
-  Theme,
   Global,
+  GlobalProps,
+  Theme,
   ThemeProvider,
   ThemeProviderProps,
   useTheme,
   __defaultTheme,
 } from '@marigold/system';
 
-// Theme Extension
-// ---------------
-export interface RootThemeExtension<Value> {
-  root?: {
-    body?: Value;
-    html?: Value;
-  };
-}
-
 // Props
 // ---------------
 export interface MarigoldProviderProps<T extends Theme>
-  extends ThemeProviderProps<T> {}
+  extends ThemeProviderProps<T>,
+    GlobalProps {}
 
 // Provider
 // ---------------
 export function MarigoldProvider<T extends Theme>({
-  theme,
   children,
+  theme,
+  selector,
+  normalizeDocument = true,
 }: MarigoldProviderProps<T>) {
   const outer = useTheme();
   const isTopLevel = outer.theme === __defaultTheme;
 
-  // TODO: useComponentStyles to get stuff from theme? Global does not apply it anymore!
-  // TODO: apply document normalization only if its the top level provider and it is not set to false!
+  if (outer.theme?.root && !isTopLevel && !selector) {
+    throw new Error(
+      `[MarigoldProvider] You cannot use nest a MarigoldProvider inside another MarigoldProvider! 
+      Nested themes with a "root" property must specify a "selector" to prevent accidentally overriding global CSS`
+    );
+  }
 
   return (
     <ThemeProvider theme={theme}>
-      {isTopLevel ? (
-        <>
-          <Global />
-          <OverlayProvider>{children}</OverlayProvider>
-        </>
-      ) : (
-        children
-      )}
+      <Global
+        normalizeDocument={isTopLevel && normalizeDocument}
+        selector={selector}
+      />
+      {isTopLevel ? <OverlayProvider>{children}</OverlayProvider> : children}
     </ThemeProvider>
   );
 }
