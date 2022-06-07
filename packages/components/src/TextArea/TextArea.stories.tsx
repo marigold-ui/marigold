@@ -69,3 +69,16 @@ export default {
 export const Basic: ComponentStory<typeof TextArea> = args => (
   <TextArea {...args} />
 );
+
+export const Controlled: ComponentStory<typeof TextArea> = args => {
+  const [value, setValue] = React.useState('');
+  return (
+    <>
+      <TextArea {...args} value={value} onChange={setValue} />
+      <pre>
+        <strong>Input Value:</strong>
+        {value}
+      </pre>
+    </>
+  );
+};
