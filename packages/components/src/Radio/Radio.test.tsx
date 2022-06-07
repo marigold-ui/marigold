@@ -379,3 +379,21 @@ test('allows styling "read-only" state via theme', () => {
   const radio = getVisibleRadios()?.[0];
   expect(radio).toHaveStyle(`opacity: 0.5`);
 });
+
+test('forwards ref', () => {
+  const ref = React.createRef<HTMLInputElement>();
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label">
+        <Radio value="1" data-testid="radio-1" ref={ref}>
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+
+  expect(ref.current).toBeInstanceOf(HTMLInputElement);
+});
