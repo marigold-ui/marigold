@@ -236,3 +236,14 @@ test('supports controlled component usage', () => {
   expect(onChange).toHaveBeenCalledWith(false);
   expect(input).toHaveAttribute('aria-checked', 'false');
 });
+
+test('forwards ref', () => {
+  const ref = React.createRef<HTMLInputElement>();
+  render(
+    <ThemeProvider theme={theme}>
+      <Switch ref={ref}>Label</Switch>
+    </ThemeProvider>
+  );
+
+  expect(ref.current).toBeInstanceOf(HTMLInputElement);
+});
