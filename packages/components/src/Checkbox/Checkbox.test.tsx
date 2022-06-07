@@ -235,3 +235,16 @@ test('controlled', () => {
   fireEvent.click(input);
   expect(onChange).toHaveBeenCalledWith(false);
 });
+
+test('forwards ref', () => {
+  const ref = React.createRef<HTMLInputElement>();
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox data-testid="checkbox" ref={ref}>
+        Check it
+      </Checkbox>
+    </ThemeProvider>
+  );
+
+  expect(ref.current).toBeInstanceOf(HTMLInputElement);
+});
