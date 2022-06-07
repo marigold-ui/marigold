@@ -1,7 +1,7 @@
 /**
  * Thanks to react-aria: https://react-spectrum.adobe.com/react-aria/useSlider.html
  */
-import React, { forwardRef, ReactNode, useRef } from 'react';
+import React, { forwardRef, ReactNode } from 'react';
 import { useSlider } from '@react-aria/slider';
 import { useSliderState } from '@react-stately/slider';
 import { useNumberFormatter } from '@react-aria/i18n';
