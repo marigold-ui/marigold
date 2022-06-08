@@ -212,4 +212,6 @@ test('supports disabled prop', () => {
   const button = screen.getByText(/button/);
   expect(button).toHaveAttribute('disabled');
   expect(button).toHaveStyle('backgroundColor: #e3e3e3');
+
+  expect(button).toMatchSnapshot();
 });

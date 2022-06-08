@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`supports disabled prop 1`] = `
+<button
+  class="css-1xjkecy"
+  disabled=""
+  type="button"
+>
+  button
+</button>
+`;
