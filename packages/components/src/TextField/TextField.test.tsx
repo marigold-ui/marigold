@@ -294,3 +294,14 @@ test('can be controlled', () => {
   userEvent.type(screen.getByTestId('text-field'), 'Hello there!');
   expect(screen.getByTestId('output')).toHaveTextContent('Hello there!');
 });
+
+test('forwards ref', () => {
+  const ref = React.createRef<HTMLInputElement>();
+  render(
+    <ThemeProvider theme={theme}>
+      <TextField data-testid="text-field" label="A Label" ref={ref} />
+    </ThemeProvider>
+  );
+
+  expect(ref.current).toBeInstanceOf(HTMLInputElement);
+});
