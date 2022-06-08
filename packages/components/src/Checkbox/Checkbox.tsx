@@ -1,7 +1,8 @@
-import React, { ReactNode } from 'react';
+import React, { forwardRef, ReactNode } from 'react';
 import { useCheckbox, useCheckboxGroupItem } from '@react-aria/checkbox';
 import { useFocusRing } from '@react-aria/focus';
 import { useHover } from '@react-aria/interactions';
+import { useObjectRef } from '@react-aria/utils';
 import { useToggleState } from '@react-stately/toggle';
 import { AriaCheckboxProps } from '@react-types/checkbox';
 
@@ -97,124 +98,132 @@ export interface CheckboxProps
 
 // Component
 // ---------------
-export const Checkbox = ({
-  size,
-  variant,
-  disabled,
-  checked,
-  defaultChecked,
-  indeterminate,
-  readOnly,
-  required,
-  error,
-  ...props
-}: CheckboxProps) => {
-  const ref = React.useRef<HTMLInputElement>(null);
-  // Adjust props to the react-aria API
-  const checkboxProps = {
-    isIndeterminate: indeterminate,
-    isDisabled: disabled,
-    isReadOnly: readOnly,
-    isRequired: required,
-    validationState: error ? 'invalid' : 'valid',
-  } as const;
+export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
+  (
+    {
+      size,
+      variant,
+      disabled,
+      checked,
+      defaultChecked,
+      indeterminate,
+      readOnly,
+      required,
+      error,
+      ...props
+    },
+    ref
+  ) => {
+    const inputRef = useObjectRef(ref);
+    // Adjust props to the react-aria API
+    const checkboxProps = {
+      isIndeterminate: indeterminate,
+      isDisabled: disabled,
+      isReadOnly: readOnly,
+      isRequired: required,
+      validationState: error ? 'invalid' : 'valid',
+    } as const;
 
-  /**
-   * Use hook depending if the checkbox is used inside a group or standalone.
-   * This is unusual, but since the checkboxs is not moving out of the group,
-   * it should be safe.
-   */
-  const groupState = useCheckboxGroupContext();
+    /**
+     * Use hook depending if the checkbox is used inside a group or standalone.
+     * This is unusual, but since the checkboxs is not moving out of the group,
+     * it should be safe.
+     */
+    const groupState = useCheckboxGroupContext();
 
-  /* eslint-disable react-hooks/rules-of-hooks */
-  const { inputProps } = groupState
-    ? useCheckboxGroupItem(
-        {
-          ...props,
-          ...checkboxProps,
-          /**
-           * value is optional for standalone checkboxes, but required when
-           * used inside a group.
-           */
-          value: props.value as string,
-        },
-        groupState,
-        ref
-      )
-    : useCheckbox(
-        {
-          isSelected: checked,
-          defaultSelected: defaultChecked,
-          ...checkboxProps,
-          ...props,
-        },
-        useToggleState({
-          isSelected: checked,
-          defaultSelected: defaultChecked,
-          ...props,
-        }),
-        ref
-      );
-  /* eslint-enable react-hooks/rules-of-hooks */
+    /* eslint-disable react-hooks/rules-of-hooks */
+    const { inputProps } = groupState
+      ? useCheckboxGroupItem(
+          {
+            ...props,
+            ...checkboxProps,
+            /**
+             * value is optional for standalone checkboxes, but required when
+             * used inside a group.
+             */
+            value: props.value as string,
+          },
+          groupState,
+          inputRef
+        )
+      : useCheckbox(
+          {
+            isSelected: checked,
+            defaultSelected: defaultChecked,
+            ...checkboxProps,
+            ...props,
+          },
+          useToggleState({
+            isSelected: checked,
+            defaultSelected: defaultChecked,
+            ...props,
+          }),
+          inputRef
+        );
+    /* eslint-enable react-hooks/rules-of-hooks */
 
-  const styles = useComponentStyles(
-    'Checkbox',
-    { variant: groupState?.variant || variant, size: groupState?.size || size },
-    { parts: ['container', 'label', 'checkbox'] }
-  );
+    const styles = useComponentStyles(
+      'Checkbox',
+      {
+        variant: groupState?.variant || variant,
+        size: groupState?.size || size,
+      },
+      { parts: ['container', 'label', 'checkbox'] }
+    );
 
-  const { hoverProps, isHovered } = useHover({});
-  const { isFocusVisible, focusProps } = useFocusRing();
-  const stateProps = useStateProps({
-    hover: isHovered,
-    focus: isFocusVisible,
-    checked: inputProps.checked,
-    disabled: inputProps.disabled,
-    error: groupState?.error || error,
-    readOnly,
-    indeterminate,
-  });
+    const { hoverProps, isHovered } = useHover({});
+    const { isFocusVisible, focusProps } = useFocusRing();
+    const stateProps = useStateProps({
+      hover: isHovered,
+      focus: isFocusVisible,
+      checked: inputProps.checked,
+      disabled: inputProps.disabled,
+      error: groupState?.error || error,
+      readOnly,
+      indeterminate,
+    });
 
-  return (
-    <Box
-      as="label"
-      __baseCSS={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1ch',
-        position: 'relative',
-      }}
-      css={styles.container}
-      {...hoverProps}
-      {...stateProps}
-    >
+    return (
       <Box
-        as="input"
-        ref={ref}
-        css={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          top: 0,
-          left: 0,
-          zIndex: 1,
-          opacity: 0.0001,
-          cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
+        as="label"
+        __baseCSS={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '1ch',
+          position: 'relative',
         }}
-        {...inputProps}
-        {...focusProps}
-      />
-      <Icon
-        checked={inputProps.checked}
-        indeterminate={indeterminate}
-        css={styles.checkbox}
+        css={styles.container}
+        {...hoverProps}
         {...stateProps}
-      />
-      {props.children && (
-        <Box css={styles.label} {...stateProps}>
-          {props.children}
-        </Box>
-      )}
-    </Box>
-  );
-};
+      >
+        <Box
+          as="input"
+          ref={inputRef}
+          css={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            opacity: 0.0001,
+            cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
+          }}
+          {...inputProps}
+          {...focusProps}
+        />
+        <Icon
+          checked={inputProps.checked}
+          indeterminate={indeterminate}
+          css={styles.checkbox}
+          {...stateProps}
+        />
+        {props.children && (
+          <Box css={styles.label} {...stateProps}>
+            {props.children}
+          </Box>
+        )}
+      </Box>
+    );
+  }
+);
