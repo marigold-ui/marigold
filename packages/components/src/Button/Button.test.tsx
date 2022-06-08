@@ -201,6 +201,8 @@ test('forwards ref', () => {
   render(<Button ref={ref}>button</Button>);
 
   expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
+
+  expect(ref.current instanceof HTMLButtonElement).toMatchSnapshot();
 });
 
 test('supports disabled prop', () => {
