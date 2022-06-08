@@ -1,8 +1,4 @@
-import type { CSSObject, Theme as Scales } from '@marigold/system';
-
-// Provider
-// ---------------
-import type { RootThemeExtension } from './Provider';
+import type { Theme as BaseTheme } from '@marigold/system';
 
 // Components
 // ---------------
@@ -70,6 +66,6 @@ interface ComponentStyles
     TooltipThemeExtension,
     UnderlayThemeExtension {}
 
-export interface Theme extends Scales, RootThemeExtension<CSSObject> {
+export interface Theme extends BaseTheme {
   components: ComponentStyles;
 }

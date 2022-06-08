@@ -1,4 +1,4 @@
-import { transformPseudos } from './utils';
+import { transformPseudos } from './selector';
 
 describe('transform states', () => {
   test('returns a css object', () => {

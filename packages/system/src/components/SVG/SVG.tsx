@@ -1,10 +1,6 @@
 import { jsx } from '@emotion/react';
 import { ComponentProps } from '@marigold/types';
-
-import { getNormalizedStyles } from '../../normalize';
 import { useTheme } from '../../hooks';
-
-const normalizedStyles = getNormalizedStyles('svg');
 
 // Make sure that numbered values are converted to px.
 const toDimension = (value: number | string | number[] | string[]) =>
@@ -31,7 +27,6 @@ export const SVG = ({
     {
       viewBox: '0 0 24 24',
       css: css({
-        ...normalizedStyles,
         fill,
         width: toDimension(props.width || size),
         height: toDimension(props.height || size),

@@ -8,9 +8,8 @@ import {
   PolymorphicComponentWithRef,
 } from '@marigold/types';
 
-import { getNormalizedStyles } from '../../normalize';
+import { transformPseudos } from './selector';
 import { CSSObject } from '../../types';
-import { transformPseudos } from './utils';
 
 export interface StyleProps
   extends Pick<
@@ -77,7 +76,6 @@ const createThemedStyle =
   ({ as, __baseCSS, styles, css }: CreateStyleProps) =>
   (theme: Theme) => {
     const themedStyles = merge.all([
-      getNormalizedStyles(as),
       transformStyleObject(__baseCSS)(theme),
       transformStyleObject(styles)(theme),
       transformStyleObject(css)(theme),
