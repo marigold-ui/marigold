@@ -1,4 +1,9 @@
-import React, { useRef } from 'react';
+import React, {
+  forwardRef,
+  ForwardRefExoticComponent,
+  RefAttributes,
+  useRef,
+} from 'react';
 import { useButton } from '@react-aria/button';
 import { FocusScope, useFocusRing } from '@react-aria/focus';
 import { useMessageFormatter } from '@react-aria/i18n';
@@ -7,7 +12,7 @@ import { HiddenSelect, useSelect } from '@react-aria/select';
 import { useSelectState } from '@react-stately/select';
 import { Item, Section } from '@react-stately/collections';
 import type { AriaSelectProps } from '@react-types/select';
-import { mergeProps } from '@react-aria/utils';
+import { mergeProps, useObjectRef } from '@react-aria/utils';
 
 import {
   Box,
@@ -76,131 +81,145 @@ export interface SelectProps
 
 // Component
 // ---------------
-export const Select = ({
-  variant,
-  size,
-  width,
-  open,
-  disabled,
-  required,
-  error,
-  ...rest
-}: SelectProps) => {
-  // Set up i18n
-  const formatMessage = useMessageFormatter(messages);
-  const props: AriaSelectProps<object> = {
-    isOpen: open,
-    isDisabled: disabled,
-    isRequired: required,
-    validationState: error ? 'invalid' : 'valid',
-    placeholder: rest.placeholder || formatMessage('placeholder'),
-    ...rest,
-  };
+export const Select = forwardRef<HTMLButtonElement, SelectProps>(
+  ({ variant, size, width, open, disabled, required, error, ...rest }, ref) => {
+    // Set up i18n
+    const formatMessage = useMessageFormatter(messages);
 
-  const state = useSelectState(props);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+    const buttonRef = useObjectRef(ref);
+    const props = {
+      isOpen: open,
+      isDisabled: disabled,
+      isRequired: required,
+      validationState: error ? 'invalid' : 'valid',
+      placeholder: rest.placeholder || formatMessage('placeholder'),
+      ...rest,
+    } as const;
+    const state = useSelectState(props);
 
-  const {
-    labelProps,
-    triggerProps,
-    valueProps,
-    menuProps,
-    descriptionProps,
-    errorMessageProps,
-  } = useSelect(props, state, buttonRef);
+    const {
+      labelProps,
+      triggerProps,
+      valueProps,
+      menuProps,
+      descriptionProps,
+      errorMessageProps,
+    } = useSelect(props, state, buttonRef);
 
-  const { buttonProps } = useButton(
-    { isDisabled: disabled, ...triggerProps },
-    buttonRef
-  );
-  const { focusProps, isFocusVisible } = useFocusRing();
+    const { buttonProps } = useButton(
+      { isDisabled: disabled, ...triggerProps },
+      buttonRef
+    );
+    const { focusProps, isFocusVisible } = useFocusRing();
 
-  const overlayRef = useRef(null);
-  const { overlayProps: positionProps } = useOverlayPosition({
-    targetRef: buttonRef,
-    overlayRef,
-    isOpen: state.isOpen,
-    placement: 'bottom left',
-  });
+    const overlayRef = useRef(null);
+    const { overlayProps: positionProps } = useOverlayPosition({
+      targetRef: buttonRef,
+      overlayRef,
+      isOpen: state.isOpen,
+      placement: 'bottom left',
+    });
 
-  const styles = useComponentStyles(
-    'Select',
-    { variant, size },
-    { parts: ['container', 'button', 'icon'] }
-  );
-  const stateProps = useStateProps({
-    disabled,
-    error,
-    focusVisible: isFocusVisible,
-    expanded: state.isOpen,
-  });
+    const styles = useComponentStyles(
+      'Select',
+      { variant, size },
+      { parts: ['container', 'button', 'icon'] }
+    );
+    const stateProps = useStateProps({
+      disabled,
+      error,
+      focusVisible: isFocusVisible,
+      expanded: state.isOpen,
+    });
 
-  return (
-    <FieldBase
-      variant={variant}
-      size={size}
-      width={width}
-      label={props.label}
-      labelProps={{ as: 'span', ...labelProps }}
-      description={props.description}
-      descriptionProps={descriptionProps}
-      error={error}
-      errorMessage={props.errorMessage}
-      errorMessageProps={errorMessageProps}
-      stateProps={stateProps}
-      disabled={disabled}
-      required={required}
-    >
-      <HiddenSelect
-        state={state}
-        triggerRef={buttonRef}
+    return (
+      <FieldBase
+        variant={variant}
+        size={size}
+        width={width}
         label={props.label}
-        name={props.name}
-        isDisabled={disabled}
-      />
-      <Box
-        as="button"
-        __baseCSS={{
-          display: 'flex',
-          position: 'relative',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          width: '100%',
-        }}
-        css={styles.button}
-        ref={buttonRef}
-        {...mergeProps(buttonProps, focusProps)}
-        {...stateProps}
+        labelProps={{ as: 'span', ...labelProps }}
+        description={props.description}
+        descriptionProps={descriptionProps}
+        error={error}
+        errorMessage={props.errorMessage}
+        errorMessageProps={errorMessageProps}
+        stateProps={stateProps}
+        disabled={disabled}
+        required={required}
       >
+        <HiddenSelect
+          state={state}
+          triggerRef={buttonRef}
+          label={props.label}
+          name={props.name}
+          isDisabled={disabled}
+        />
         <Box
-          css={{
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
+          as="button"
+          __baseCSS={{
+            display: 'flex',
+            position: 'relative',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
           }}
-          {...valueProps}
+          css={styles.button}
+          ref={buttonRef}
+          {...mergeProps(buttonProps, focusProps)}
+          {...stateProps}
         >
-          {state.selectedItem ? state.selectedItem.rendered : props.placeholder}
+          <Box
+            css={{
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+            }}
+            {...valueProps}
+          >
+            {state.selectedItem
+              ? state.selectedItem.rendered
+              : props.placeholder}
+          </Box>
+          <Chevron css={styles.icon} />
         </Box>
-        <Chevron css={styles.icon} />
-      </Box>
-      <Popover
-        open={state.isOpen}
-        onClose={state.close}
-        dismissable
-        shouldCloseOnBlur
-        minWidth={buttonRef.current ? buttonRef.current.offsetWidth : undefined}
-        ref={overlayRef}
-        {...positionProps}
-      >
-        <FocusScope restoreFocus>
-          <DismissButton onDismiss={state.close} />
-          <ListBox state={state} variant={variant} size={size} {...menuProps} />
-          <DismissButton onDismiss={state.close} />
-        </FocusScope>
-      </Popover>
-    </FieldBase>
-  );
-};
+        <Popover
+          open={state.isOpen}
+          onClose={state.close}
+          dismissable
+          shouldCloseOnBlur
+          minWidth={
+            buttonRef.current ? buttonRef.current.offsetWidth : undefined
+          }
+          ref={overlayRef}
+          {...positionProps}
+        >
+          <FocusScope restoreFocus>
+            <DismissButton onDismiss={state.close} />
+            <ListBox
+              state={state}
+              variant={variant}
+              size={size}
+              {...menuProps}
+            />
+            <DismissButton onDismiss={state.close} />
+          </FocusScope>
+        </Popover>
+      </FieldBase>
+    );
+  }
+) as SelectComponent;
 
 Select.Option = Item;
 Select.Section = Section;
+
+/**
+ * We need this so that TypeScripts allows us to add
+ * additional properties to the component (function).
+ */
+export interface SelectComponent
+  extends ForwardRefExoticComponent<
+    SelectProps & RefAttributes<HTMLButtonElement>
+  > {
+  Option: typeof Item;
+  Section: typeof Section;
+}
