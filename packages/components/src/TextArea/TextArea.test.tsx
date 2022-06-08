@@ -299,3 +299,14 @@ test('can be controlled', () => {
   userEvent.type(screen.getByTestId('textarea'), 'Hello there!');
   expect(screen.getByTestId('output')).toHaveTextContent('Hello there!');
 });
+
+test('forwards ref', () => {
+  const ref = React.createRef<HTMLTextAreaElement>();
+  render(
+    <ThemeProvider theme={theme}>
+      <TextArea data-testid="text-area" label="A Label" ref={ref} />
+    </ThemeProvider>
+  );
+
+  expect(ref.current).toBeInstanceOf(HTMLTextAreaElement);
+});
