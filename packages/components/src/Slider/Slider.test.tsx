@@ -171,3 +171,14 @@ test('allows to set width via prop', () => {
   const container = screen.getByRole('group');
   expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
 });
+
+test('forwards ref', () => {
+  const ref = React.createRef<HTMLDivElement>();
+  render(
+    <ThemeProvider theme={theme}>
+      <Slider ref={ref}>Percent</Slider>
+    </ThemeProvider>
+  );
+
+  expect(ref.current).toBeInstanceOf(HTMLDivElement);
+});
