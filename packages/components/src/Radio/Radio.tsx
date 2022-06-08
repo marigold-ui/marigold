@@ -1,7 +1,12 @@
-import React, { useRef } from 'react';
+import React, {
+  forwardRef,
+  type ForwardRefExoticComponent,
+  type RefAttributes,
+} from 'react';
 import { useHover } from '@react-aria/interactions';
 import { useFocusRing } from '@react-aria/focus';
 import { useRadio } from '@react-aria/radio';
+import { useObjectRef } from '@react-aria/utils';
 import type { AriaRadioProps } from '@react-types/radio';
 
 import {
@@ -13,7 +18,7 @@ import {
   useComponentStyles,
   useStateProps,
 } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import type { ComponentProps } from '@marigold/types';
 
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
@@ -80,75 +85,88 @@ export interface RadioProps
 
 // Component
 // ---------------
-export const Radio = ({ width, disabled, ...props }: RadioProps) => {
-  const {
-    variant,
-    size,
-    error,
-    width: groupWidth,
-    ...state
-  } = useRadioGroupContext();
+export const Radio = forwardRef<HTMLInputElement, RadioProps>(
+  ({ width, disabled, ...props }, ref) => {
+    const {
+      variant,
+      size,
+      error,
+      width: groupWidth,
+      ...state
+    } = useRadioGroupContext();
 
-  const ref = useRef(null);
-  const { inputProps } = useRadio(
-    { isDisabled: disabled, ...props },
-    state,
-    ref
-  );
+    const inputRef = useObjectRef(ref);
+    const { inputProps } = useRadio(
+      { isDisabled: disabled, ...props },
+      state,
+      inputRef
+    );
 
-  const styles = useComponentStyles(
-    'Radio',
-    { variant: variant || props.variant, size: size || props.size },
-    { parts: ['container', 'label', 'radio'] }
-  );
+    const styles = useComponentStyles(
+      'Radio',
+      { variant: variant || props.variant, size: size || props.size },
+      { parts: ['container', 'label', 'radio'] }
+    );
 
-  const { hoverProps, isHovered } = useHover({});
-  const { isFocusVisible, focusProps } = useFocusRing();
-  const stateProps = useStateProps({
-    hover: isHovered,
-    focus: isFocusVisible,
-    checked: inputProps.checked,
-    disabled: inputProps.disabled,
-    readOnly: props.readOnly,
-    error,
-  });
+    const { hoverProps, isHovered } = useHover({});
+    const { isFocusVisible, focusProps } = useFocusRing();
+    const stateProps = useStateProps({
+      hover: isHovered,
+      focus: isFocusVisible,
+      checked: inputProps.checked,
+      disabled: inputProps.disabled,
+      readOnly: props.readOnly,
+      error,
+    });
 
-  return (
-    <Box
-      as="label"
-      __baseCSS={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1ch',
-        position: 'relative',
-        width: width || groupWidth || '100%',
-      }}
-      css={styles.container}
-      {...hoverProps}
-      {...stateProps}
-    >
+    return (
       <Box
-        as="input"
-        ref={ref}
-        css={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          top: 0,
-          left: 0,
-          zIndex: 1,
-          opacity: 0.0001,
-          cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
+        as="label"
+        __baseCSS={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '1ch',
+          position: 'relative',
+          width: width || groupWidth || '100%',
         }}
-        {...inputProps}
-        {...focusProps}
-      />
-      <Icon checked={inputProps.checked} css={styles.radio} {...stateProps} />
-      <Box css={styles.label} {...stateProps}>
-        {props.children}
+        css={styles.container}
+        {...hoverProps}
+        {...stateProps}
+      >
+        <Box
+          as="input"
+          ref={inputRef}
+          css={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            opacity: 0.0001,
+            cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
+          }}
+          {...inputProps}
+          {...focusProps}
+        />
+        <Icon checked={inputProps.checked} css={styles.radio} {...stateProps} />
+        <Box css={styles.label} {...stateProps}>
+          {props.children}
+        </Box>
       </Box>
-    </Box>
-  );
-};
+    );
+  }
+) as RadioComponent;
 
 Radio.Group = RadioGroup;
+
+/**
+ * We need this so that TypeScripts allows us to add
+ * additional properties to the component (function).
+ */
+export interface RadioComponent
+  extends ForwardRefExoticComponent<
+    RadioProps & RefAttributes<HTMLInputElement>
+  > {
+  Group: typeof RadioGroup;
+}
