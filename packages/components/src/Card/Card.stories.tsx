@@ -28,7 +28,7 @@ export const Basic: ComponentStory<typeof Card> = args => (
       <h2>Professor Severus Snape</h2>
       <section>
         <p>
-          <strong>Professor Severus SNAPE</strong> (9 January, 1960[1] - 2 May,
+          <strong>Professor Severus Snape</strong> (9 January, 1960[1] - 2 May,
           1998)[2] was an English half-blood[3] wizard serving as Potions Master
           (1981-1996), Head of Slytherin House (1981-1997), Defence Against the
           Dark Arts professor (1996-1997), and Headmaster (1997-1998) of the
