@@ -47,7 +47,9 @@
   },
   "scripts": {
     "start": "start-storybook -p 1337 -c .",
-    "test": "start-storybook --smoke-test --ci -c ."
+    "build": "build-storybook -c .",
+    "test": "start-storybook --smoke-test --ci -c .",
+    "chromatic": "npx chromatic --project-token= --force-rebuild --exit-zero-on-changes"
   },
   "devDependencies": {
     "react": "17.0.2",
