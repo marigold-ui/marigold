@@ -13,3 +13,4 @@ slack-notification.json
 
 ## env
 local.env
+.env.local
