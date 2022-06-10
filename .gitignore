@@ -7,9 +7,11 @@ node_modules
 .swc
 coverage
 dist
+storybook-static
 docs/.cache
 docs/public
 slack-notification.json
 
 ## env
 local.env
+.env.local
