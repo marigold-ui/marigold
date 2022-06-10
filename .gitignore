@@ -8,6 +8,7 @@ node_modules
 coverage
 dist
 storybook-static
+build-storybook.log
 docs/.cache
 docs/public
 slack-notification.json
