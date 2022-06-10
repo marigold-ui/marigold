@@ -47,6 +47,7 @@
   },
   "scripts": {
     "start": "start-storybook -p 1337 -c .",
+    "build": "build-storybook --disable-telemetry -c . -o ../../storybook-static",
     "test": "start-storybook --smoke-test --ci -c ."
   },
   "devDependencies": {
