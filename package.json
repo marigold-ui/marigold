@@ -7,12 +7,6 @@
   "engines": {
     "node": ">=16.x"
   },
-  "workspaces": [
-    "config/*",
-    "docs",
-    "packages/*",
-    "themes/*"
-  ],
   "packageManager": "pnpm@7.1.7",
   "dependencies": {
     "@babel/core": "7.17.12",
