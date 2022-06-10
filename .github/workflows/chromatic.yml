@@ -36,4 +36,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # Option to prevent the workflow from failing (https://www.chromatic.com/docs/github-actions#command-exit-code-for-required-checks)
           exitZeroOnChanges: true
+          exitOnceUploaded: true
           skip: 'renovate/**'
