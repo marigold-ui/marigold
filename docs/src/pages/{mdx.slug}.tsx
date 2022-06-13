@@ -21,7 +21,6 @@ const Page = ({ data: { mdx } }: PageProps) => {
   return (
     <Layout>
       <Box as="main" maxWidth="700px" pt="medium">
-        {/* @ts-expect-error */}
         <MDXRenderer>{body}</MDXRenderer>
       </Box>
     </Layout>
