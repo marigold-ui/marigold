@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 
 import { Checkbox } from './Checkbox';
@@ -136,7 +136,7 @@ test('allows styling "checked" state via theme', () => {
   expect(checkbox).toHaveStyle(`color: ${theme.colors.teal}`);
 });
 
-test('allows styling "focus" state via theme', () => {
+test('allows styling "focus" state via theme', async () => {
   render(
     <ThemeProvider theme={theme}>
       <Checkbox data-testid="checkbox">With Label</Checkbox>
@@ -145,7 +145,8 @@ test('allows styling "focus" state via theme', () => {
   const input = screen.getByTestId('checkbox');
   input.focus();
 
-  const checkbox = getVisibleCheckbox();
+  const checkbox = await waitFor(() => getVisibleCheckbox());
+
   expect(checkbox).toHaveStyle(`outline: 1px solid`);
   expect(checkbox).toHaveStyle(`outline-color: ${theme.colors.blue}`);
 });
