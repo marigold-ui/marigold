@@ -14,7 +14,7 @@ importers:
       '@storybook/react': 6.5.6
       '@testing-library/dom': 8.13.0
       '@testing-library/jest-dom': 5.16.4
-      '@testing-library/react': 13.3.0
+      '@testing-library/react': ^13.3
       '@testing-library/react-hooks': 8.0.0
       '@testing-library/user-event': 14.2.0
       '@types/node': 16.11.38
@@ -120,7 +120,7 @@ importers:
       jest-watch-typeahead: 1.1.0
       merge-deep: 3.0.3
       react: ^17.x || 18.1.0
-      react-test-renderer: 17.0.2
+      react-test-renderer: 18.1.0
       ts-jest: 28.0.3
       typescript: 4.7.2
     dependencies:
@@ -132,7 +132,7 @@ importers:
       find-up: 5.0.0
       jest-watch-typeahead: 1.1.0_jest@28.1.1
       merge-deep: 3.0.3
-      react-test-renderer: 17.0.2_react@18.1.0
+      react-test-renderer: 18.1.0_react@18.1.0
       ts-jest: 28.0.3_5e1bf94c57113a12ccf2bf31fb1440d3
     devDependencies:
       jest: 28.1.1_@types+node@16.11.38
@@ -26910,19 +26910,18 @@ packages:
       refractor: 3.6.0
     dev: false
 
-  /react-test-renderer/17.0.2_react@18.1.0:
+  /react-test-renderer/18.1.0_react@18.1.0:
     resolution:
       {
-        integrity: sha512-yaQ9cB89c17PUb0x6UfWRs7kQCorVdHlutU1boVPEsB8IDZH6n9tHxMacc3y0JoXOJUsZb/t/Mb8FUWMKaM7iQ==,
+        integrity: sha512-OfuueprJFW7h69GN+kr4Ywin7stcuqaYAt1g7airM5cUgP0BoF5G5CXsPGmXeDeEkncb2fqYNECO4y18sSqphg==,
       }
     peerDependencies:
-      react: 17.0.2
+      react: ^18.1.0
     dependencies:
-      object-assign: 4.1.1
       react: 18.1.0
-      react-is: 17.0.2
+      react-is: 18.1.0
       react-shallow-renderer: 16.15.0_react@18.1.0
-      scheduler: 0.20.2
+      scheduler: 0.22.0
     dev: false
 
   /react-transition-group/4.4.2_react-dom@18.1.0+react@18.1.0:
@@ -27881,16 +27880,6 @@ packages:
     engines: { node: '>=10' }
     dependencies:
       xmlchars: 2.2.0
-    dev: false
-
-  /scheduler/0.20.2:
-    resolution:
-      {
-        integrity: sha512-2eWfGgAqqWFGqtdMmcL5zCMK1U8KlXv8SQFGglL3CEtd0aDVDWgeF/YoCmvln55m5zSk3J/20hTaSBeSObsQDQ==,
-      }
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
     dev: false
 
   /scheduler/0.22.0:
