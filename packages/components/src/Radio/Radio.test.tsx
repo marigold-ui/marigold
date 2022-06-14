@@ -2,6 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Radio } from './Radio';
 import { ThemeProvider } from '@marigold/system';
+import { act } from 'react-dom/test-utils';
 
 const theme = {
   colors: {
@@ -333,9 +334,11 @@ test('allows styling "focus" state via theme', async () => {
     </ThemeProvider>
   );
   const input = screen.getByTestId('radio-1');
-  input.focus();
 
   const radio = await waitFor(() => getVisibleRadios()?.[0]);
+  act(() => {
+    input.focus();
+  });
   expect(radio).toHaveStyle(`outline: 1px solid`);
   expect(radio).toHaveStyle(`outline-color: ${theme.colors.blue}`);
 });

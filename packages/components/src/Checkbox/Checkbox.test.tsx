@@ -1,9 +1,8 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
-
 import { Checkbox } from './Checkbox';
-
+import { act } from 'react-dom/test-utils';
 const theme = {
   colors: {
     gray: '#868e96',
@@ -143,10 +142,10 @@ test('allows styling "focus" state via theme', async () => {
     </ThemeProvider>
   );
   const input = screen.getByTestId('checkbox');
-  input.focus();
-
   const checkbox = await waitFor(() => getVisibleCheckbox());
-
+  act(() => {
+    input.focus();
+  });
   expect(checkbox).toHaveStyle(`outline: 1px solid`);
   expect(checkbox).toHaveStyle(`outline-color: ${theme.colors.blue}`);
 });
