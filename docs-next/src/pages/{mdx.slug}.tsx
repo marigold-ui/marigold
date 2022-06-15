@@ -1,0 +1,43 @@
+import { Layout } from '../components/Layout';
+import { Box } from '@marigold/components';
+
+type PageProps = {
+  data: {
+    mdx: {
+      body: string;
+      frontmatter: {
+        title?: string;
+      };
+      headings: { value: string }[];
+    };
+  };
+};
+
+const Page = ({ data: { mdx } }: PageProps) => {
+  const { body } = mdx;
+  return (
+    <Layout>
+      <Box as="main" maxWidth="700px" pt="medium">
+        {/* @ts-expect-error */}
+        <MDXRenderer>{body}</MDXRenderer>
+      </Box>
+    </Layout>
+  );
+};
+
+export const query = {
+  query: `
+  query ($id: String) {
+    mdx(id: { eq: $id }) {
+      body
+      frontmatter {
+        title
+      }
+      headings(depth: h1) {
+        value
+      }
+    }
+  }`,
+};
+
+export default Page;
