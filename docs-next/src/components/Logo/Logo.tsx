@@ -2,14 +2,16 @@ import React from 'react';
 import Image from 'next/image';
 
 const Small = () => (
-  <Image src="/./logo.png" alt="Marigold Logo" width={140} height={60} />
+  <Image src="/Logo/logo.png" alt="Marigold Logo" width={140} height={60} />
 );
 
 const Large = () => (
-  <Image src="/./logo.png" alt="Marigold Logo" width={750} height={620} />
+  <Image src="/Logo/logo.png" alt="Marigold Logo" width={750} height={325} />
 );
 
-const Fit = () => <Image src="/./logo.png" layout="fill" alt="Marigold Logo" />;
+const Fit = () => (
+  <Image src="/Logo/logo.png" layout="fill" alt="Marigold Logo" />
+);
 
 const sizes = {
   small: Small,

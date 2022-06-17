@@ -5,18 +5,11 @@ import { MarigoldTheme } from '../components/MarigoldTheme';
 
 import { theme } from '../theme';
 import { Helmet } from 'react-helmet';
+import { LandingPage } from './landingpage';
 
-import {
-  Button,
-  Stack,
-  Box,
-  Text,
-  MarigoldProvider,
-  SSRProvider,
-} from '@marigold/components';
+import { Box, Text, MarigoldProvider, SSRProvider } from '@marigold/components';
 import { MarigoldThemeSwitch, themes } from '../components/ThemeSwitch';
-import * as MarigoldComponents from '@marigold/components';
-import * as MarigoldIcons from '@marigold/icons';
+import { FigmaLink } from '../components/FigmaLink';
 
 const DevMode = () => {
   const devMode = process.env.NODE_ENV === 'development';
@@ -49,14 +42,7 @@ export default function WrapPageElement() {
       <SSRProvider>
         <MarigoldProvider theme={theme}>
           <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
-            <MDXProvider
-              components={{
-                ...(MarigoldComponents as any),
-                ...(MarigoldIcons as any),
-                MarigoldTheme,
-              }}
-              children={undefined}
-            ></MDXProvider>
+            <LandingPage />
           </MarigoldThemeSwitch>
         </MarigoldProvider>
       </SSRProvider>

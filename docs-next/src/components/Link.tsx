@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as GatsbyLink, GatsbyLinkProps } from 'gatsby';
+import { Link as GatsbyLink, GatsbyLinkProps } from 'next/link';
 
 import {
   Link as MarigoldLink,

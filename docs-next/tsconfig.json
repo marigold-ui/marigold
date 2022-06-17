@@ -4,7 +4,8 @@
     "allowJs": true,
     "noEmit": true,
     "incremental": true,
-    "module": "esnext",
+    "target": "es6",
+    "module": "commonjs",
     "resolveJsonModule": true,
     "jsx": "preserve"
   },

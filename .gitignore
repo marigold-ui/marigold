@@ -17,3 +17,4 @@ local.env
 # next.js
 .next
 out
+.chache
