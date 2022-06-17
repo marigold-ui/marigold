@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as GatsbyLink, GatsbyLinkProps } from 'next/link';
+import { Link as NextLink, NextLinkProps } from 'next/link';
 
 import {
   Link as MarigoldLink,
@@ -10,7 +10,7 @@ import { colors } from '../theme/colors';
 
 export interface LinkProps
   extends Pick<MarigoldLinkProps, 'variant' | 'target' | 'children'> {
-  to: GatsbyLinkProps<unknown>['to'];
+  to: NextLinkProps<unknown>['href'];
 }
 
 export const Link = ({ children, to, ...props }: LinkProps) => {
@@ -23,8 +23,8 @@ export const Link = ({ children, to, ...props }: LinkProps) => {
     </MarigoldLink>
   ) : (
     <MarigoldLink
-      as={GatsbyLink}
-      to={to}
+      as={NextLink}
+      href={to}
       activeStyle={{ color: colors.blue70 }}
       {...props}
     >

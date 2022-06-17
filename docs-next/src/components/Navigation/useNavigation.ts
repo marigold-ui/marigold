@@ -117,6 +117,8 @@ export const useNavigation = () => {
     site: { siteMetadata: { navigation: string[] } };
   };
 
+  console.log('hallo hueir');
+
   // Create tree structure from nodes
   const tree: NavigationTree = [];
   nodes

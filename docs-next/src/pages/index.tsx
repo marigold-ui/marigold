@@ -6,10 +6,11 @@ import { MarigoldTheme } from '../components/MarigoldTheme';
 import { theme } from '../theme';
 import { Helmet } from 'react-helmet';
 import { LandingPage } from './landingpage';
+import * as MarigoldComponents from '@marigold/components';
+import * as MarigoldIcons from '@marigold/icons';
 
 import { Box, Text, MarigoldProvider, SSRProvider } from '@marigold/components';
 import { MarigoldThemeSwitch, themes } from '../components/ThemeSwitch';
-import { FigmaLink } from '../components/FigmaLink';
 
 const DevMode = () => {
   const devMode = process.env.NODE_ENV === 'development';
@@ -49,7 +50,6 @@ export default function WrapPageElement() {
     </div>
   );
 }
-
 /**
  * Enforce reloading to update styles.
  */

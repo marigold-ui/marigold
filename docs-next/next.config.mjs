@@ -10,6 +10,10 @@ const isProduction = process.env.NODE_ENV === 'production';
 const config = {
   reactStrictMode: true,
   optimizeFonts: true,
+  remarkPlugins: [],
+  rehypePlugins: [],
+  providerImportSource: '@mdx-js/react',
+  pageExtensions: ['mdx', 'md', 'jsx', 'js', 'tsx', 'ts'],
   compiler: {
     emotion: true,
   },
@@ -22,6 +26,7 @@ const config = {
     config.module.rules.push({
       include: [path.resolve(__dirname, '..')],
       test: /\.(js|jsx|ts|tsx)$/,
+
       use: [babel],
     });
 

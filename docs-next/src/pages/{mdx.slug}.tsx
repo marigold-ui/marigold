@@ -1,7 +1,8 @@
-import { Layout } from '../components/Layout';
 import { Box } from '@marigold/components';
+import { NextPage } from 'next';
+import { Layout } from '../components/Layout';
 
-type PageProps = {
+interface PageProps {
   data: {
     mdx: {
       body: string;
@@ -11,33 +12,22 @@ type PageProps = {
       headings: { value: string }[];
     };
   };
-};
+}
 
-const Page = ({ data: { mdx } }: PageProps) => {
+const Page: NextPage<PageProps> = ({ data: { mdx } }) => {
   const { body } = mdx;
+  console.log('mdx', mdx);
   return (
     <Layout>
       <Box as="main" maxWidth="700px" pt="medium">
-        {/* @ts-expect-error */}
-        <MDXRenderer>{body}</MDXRenderer>
+        {body}
       </Box>
     </Layout>
   );
 };
 
-export const query = {
-  query: `
-  query ($id: String) {
-    mdx(id: { eq: $id }) {
-      body
-      frontmatter {
-        title
-      }
-      headings(depth: h1) {
-        value
-      }
-    }
-  }`,
-};
+// const Page: NextPage<PageProps> = ({ userAgent }) => (
+//   <main>Your user agent: {userAgent}</main>
+// );
 
 export default Page;
