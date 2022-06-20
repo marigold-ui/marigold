@@ -240,7 +240,7 @@ importers:
       react-dom: 17.0.2
       react-helmet: 6.1.0
       react-live: 2.4.1
-      react-simple-code-editor: 0.11.0
+      react-simple-code-editor: 0.11.2
       tsconfig-paths-webpack-plugin: 3.5.2
       typescript: 4.7.2
     dependencies:
@@ -284,7 +284,7 @@ importers:
       react-dom: 17.0.2_react@17.0.2
       react-helmet: 6.1.0_react@17.0.2
       react-live: 2.4.1_sfoxds7t5ydpegc3knd667wn6m
-      react-simple-code-editor: 0.11.0_sfoxds7t5ydpegc3knd667wn6m
+      react-simple-code-editor: 0.11.2_sfoxds7t5ydpegc3knd667wn6m
       typescript: 4.7.2
     devDependencies:
       '@types/mdx-js__react': 1.5.5
@@ -20395,7 +20395,7 @@ packages:
       prop-types: 15.8.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-simple-code-editor: 0.11.0_sfoxds7t5ydpegc3knd667wn6m
+      react-simple-code-editor: 0.11.2_sfoxds7t5ydpegc3knd667wn6m
       unescape: 1.0.1
     dev: false
 
@@ -20431,11 +20431,11 @@ packages:
       react: 17.0.2
     dev: false
 
-  /react-simple-code-editor/0.11.0_sfoxds7t5ydpegc3knd667wn6m:
-    resolution: {integrity: sha512-xGfX7wAzspl113ocfKQAR8lWPhavGWHL3xSzNLeseDRHysT+jzRBi/ExdUqevSMos+7ZtdfeuBOXtgk9HTwsrw==}
+  /react-simple-code-editor/0.11.2_sfoxds7t5ydpegc3knd667wn6m:
+    resolution: {integrity: sha512-vLMEDj+qLrZ88zK/8bhRdqM2Mp0cQJCUbHPc/QIfxlIYHzAclaAzPX0TQ4ZI5LTYSP3hsYYOT3EciV2dCG4o0Q==}
     peerDependencies:
-      react: ^16.0.0
-      react-dom: ^16.0.0
+      react: '*'
+      react-dom: '*'
     dependencies:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
