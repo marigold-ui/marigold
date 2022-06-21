@@ -19,8 +19,10 @@ export const LandingPage = () => {
         <Logo size="large" />
         <Inline space="xxlarge">
           <Link variant="outline" to="/introduction/00-getting-started">
-            <ResaleLogbook size="16" />
-            View in Documentation
+            <a>
+              <ResaleLogbook size="16" />
+              View in Documentation
+            </a>
           </Link>
           <FigmaLink to="https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=0%3A1" />
         </Inline>

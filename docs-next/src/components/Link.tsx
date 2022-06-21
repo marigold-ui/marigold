@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as NextLink, NextLinkProps } from 'next/link';
+import NextLink, { LinkProps as NextLinkProps } from 'next/link';
 
 import {
   Link as MarigoldLink,
@@ -9,13 +9,14 @@ import {
 import { colors } from '../theme/colors';
 
 export interface LinkProps
-  extends Pick<MarigoldLinkProps, 'variant' | 'target' | 'children'> {
-  to: NextLinkProps<unknown>['href'];
+  extends Pick<MarigoldLinkProps, 'variant' | 'target' | 'children'>,
+    Omit<NextLinkProps, 'href' | 'as' | 'passHref'> {
+  to: NextLinkProps['href'];
 }
 
 export const Link = ({ children, to, ...props }: LinkProps) => {
   const regex = /https?:\/\/((?:[\w\d-]+\.)+[\w\d]{2,})/i;
-  const externalLink = regex.test(to);
+  const externalLink = regex.test(to.toString());
 
   return externalLink ? (
     <MarigoldLink href={to} {...props}>
@@ -24,8 +25,9 @@ export const Link = ({ children, to, ...props }: LinkProps) => {
   ) : (
     <MarigoldLink
       as={NextLink}
+      passHref={true}
       href={to}
-      activeStyle={{ color: colors.blue70 }}
+      activestyle={{ color: colors.blue70 }}
       {...props}
     >
       {children}
