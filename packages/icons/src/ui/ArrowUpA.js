@@ -1,0 +1,11 @@
+import React from 'react';
+import { SVG } from '@marigold/system';
+export const ArrowUpA = ({ className = '', ...props }) =>
+  React.createElement(
+    SVG,
+    { className: className, ...props },
+    React.createElement('path', {
+      d: 'M3 12L4.58625 13.5863L10.875 7.30875V21H13.125V7.30875L19.4025 13.5975L21 12L12 3L3 12Z',
+    })
+  );
+//# sourceMappingURL=ArrowUpA.js.map

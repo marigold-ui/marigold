@@ -1,0 +1,1 @@
+{"version":3,"file":"TableHeaderRow.d.ts","sourceRoot":"","sources":["TableHeaderRow.tsx"],"names":[],"mappings":"AAAA,OAAc,EAAE,SAAS,EAAU,MAAM,OAAO,CAAC;AAEjD,OAAO,EAAE,QAAQ,EAAE,MAAM,mBAAmB,CAAC;AAM7C,MAAM,WAAW,mBAAmB;IAClC,QAAQ,EAAE,SAAS,CAAC;IACpB,IAAI,EAAE,QAAQ,CAAC,MAAM,CAAC,CAAC;CACxB;AAID,eAAO,MAAM,cAAc,uBAAwB,mBAAmB,gBAWrE,CAAC"}

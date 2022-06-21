@@ -1,0 +1,11 @@
+import React from 'react';
+import { SVG } from '@marigold/system';
+export const Filter = ({ className = '', ...props }) =>
+  React.createElement(
+    SVG,
+    { className: className, ...props },
+    React.createElement('path', {
+      d: 'M3 6V8H21V6H3ZM10 18H14V16H10V18ZM18 13H6V11H18V13Z',
+    })
+  );
+//# sourceMappingURL=Filter.js.map
