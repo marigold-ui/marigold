@@ -11,6 +11,11 @@ import * as MarigoldIcons from '@marigold/icons';
 
 import { Box, Text, MarigoldProvider, SSRProvider } from '@marigold/components';
 import { MarigoldThemeSwitch, themes } from '../components/ThemeSwitch';
+import { NextPage } from 'next';
+import type { ReactElement } from 'react';
+import type { NextPageWithLayout } from './__app';
+import { Layout } from '../components/Layout';
+import Page from './{mdx.slug}';
 
 const DevMode = () => {
   const devMode = process.env.NODE_ENV === 'development';
@@ -27,7 +32,7 @@ const DevMode = () => {
   return null;
 };
 
-export default function WrapPageElement() {
+Page.getLayout = function getLayout(page: ReactElement) {
   return (
     <div>
       <Helmet>
@@ -43,13 +48,37 @@ export default function WrapPageElement() {
       <SSRProvider>
         <MarigoldProvider theme={theme}>
           <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
-            <LandingPage />
+            {page}
           </MarigoldThemeSwitch>
         </MarigoldProvider>
       </SSRProvider>
     </div>
   );
-}
+};
+
+// export default function Page({ element }) {
+//   return (
+//     <div>
+//       <Helmet>
+//         <title>Marigold Design System</title>
+//         <link rel="preconnect" href="https://fonts.gstatic.com" />
+//         <link
+//           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+//           rel="stylesheet"
+//         />
+//       </Helmet>
+//       <DevMode />
+
+//       <SSRProvider>
+//         <MarigoldProvider theme={theme}>
+//           <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
+//             {element}{' '}
+//           </MarigoldThemeSwitch>
+//         </MarigoldProvider>
+//       </SSRProvider>
+//     </div>
+//   );
+// }
 /**
  * Enforce reloading to update styles.
  */
@@ -59,3 +88,5 @@ if (module.hot) {
     window.location.reload();
   });
 }
+
+export default Page;
