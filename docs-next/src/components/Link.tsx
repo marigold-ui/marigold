@@ -27,7 +27,8 @@ export const Link = ({ children, to, ...props }: LinkProps) => {
       as={NextLink}
       passHref={true}
       href={to}
-      activestyle={{ color: colors.blue70 }}
+      legacyBehavior={false}
+      // activeStyle={{ color: colors.blue70 }}
       {...props}
     >
       {children}
