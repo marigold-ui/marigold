@@ -1,0 +1,40 @@
+name: 'Chromatic'
+
+on: ['push']
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  chromatic:
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+    steps:
+      # Setup
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Required to retrieve git history, do not delete!
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 6.32.3
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+
+      # Action
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        with:
+          buildScriptName: build:storybook
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # Option to prevent the workflow from failing (https://www.chromatic.com/docs/github-actions#command-exit-code-for-required-checks)
+          exitZeroOnChanges: true
+          exitOnceUploaded: true
+          skip: 'renovate/**'

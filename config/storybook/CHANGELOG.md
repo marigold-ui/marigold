@@ -1,5 +1,41 @@
 # @marigold/storybook-config
 
+## 0.6.5
+
+### Patch Changes
+
+- [#2155](https://github.com/marigold-ui/marigold/pull/2155) [`acf52ed2`](https://github.com/marigold-ui/marigold/commit/acf52ed2c94b6978ce20eacb8dd0baed9a28a302) Thanks [@sarahgm](https://github.com/sarahgm)! - chore:Visual regression tests
+
+* [#2164](https://github.com/marigold-ui/marigold/pull/2164) [`b43464fc`](https://github.com/marigold-ui/marigold/commit/b43464fce6f7e2662b27313c6f74190e8c0f540f) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: update to React 18
+
+* Updated dependencies [[`b43464fc`](https://github.com/marigold-ui/marigold/commit/b43464fce6f7e2662b27313c6f74190e8c0f540f)]:
+  - @marigold/components@1.2.1
+  - @marigold/theme-b2b@9.0.1
+  - @marigold/theme-core@9.0.1
+  - @marigold/theme-unicorn@6.0.1
+
+## 0.6.4
+
+### Patch Changes
+
+- Updated dependencies [[`2e688960`](https://github.com/marigold-ui/marigold/commit/2e6889600f9c2e50e58e928e09dadd61c5488fd8), [`1e512a48`](https://github.com/marigold-ui/marigold/commit/1e512a480bd9784525241fef7874c9e37c67d3e8), [`8980b645`](https://github.com/marigold-ui/marigold/commit/8980b64518f792c837776aea817e422ea0e3d658), [`82c376a9`](https://github.com/marigold-ui/marigold/commit/82c376a9c34c69104456e6e356231132f53c3efe), [`1a0070a4`](https://github.com/marigold-ui/marigold/commit/1a0070a437304cb0ebc9a2a0e30082ba8deee821), [`33c54b37`](https://github.com/marigold-ui/marigold/commit/33c54b37cd96b232c2f81a38af64143be4b02283), [`8f3c3e1b`](https://github.com/marigold-ui/marigold/commit/8f3c3e1b92eed5e432667ae8dae0a5f26a6dea3f), [`9e6e0671`](https://github.com/marigold-ui/marigold/commit/9e6e0671908491566ac9d5a2f1f316145e7c2d6a)]:
+  - @marigold/components@1.2.0
+  - @marigold/theme-b2b@9.0.0
+  - @marigold/theme-core@9.0.0
+  - @marigold/theme-unicorn@6.0.0
+
+## 0.6.3
+
+### Patch Changes
+
+- [#2136](https://github.com/marigold-ui/marigold/pull/2136) [`58f716b2`](https://github.com/marigold-ui/marigold/commit/58f716b2a476dbb6404409105076bb5da6c91a22) Thanks [@sebald](https://github.com/sebald)! - fix: revert to using TypeScript 4.6
+
+- Updated dependencies []:
+  - @marigold/components@1.1.1
+  - @marigold/theme-b2b@8.0.1
+  - @marigold/theme-core@8.0.1
+  - @marigold/theme-unicorn@5.0.1
+
 ## 0.6.2
 
 ### Patch Changes

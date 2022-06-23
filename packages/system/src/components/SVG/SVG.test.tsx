@@ -19,13 +19,6 @@ test('renders svg', () => {
   expect(svg instanceof SVGElement).toBeTruthy();
 });
 
-test('normalizes <svg>', () => {
-  render(<SVG data-testid="svg" />);
-  const svg = screen.getByTestId('svg');
-  expect(svg).toHaveStyle('display: block');
-  expect(svg).toHaveStyle('max-width: 100%');
-});
-
 test('supports default fill color', () => {
   render(
     <SVG data-testid="svg">

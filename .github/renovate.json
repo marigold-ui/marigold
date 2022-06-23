@@ -1,5 +1,5 @@
 {
-  "extends": ["config:base"],
+  "extends": ["config:base", ":semanticCommitTypeAll(chore)"],
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["before 3am on Sunday"]
@@ -10,8 +10,8 @@
       "groupName": "eslint"
     },
     {
-      "matchPackagePatterns": ["jest"],
-      "groupName": "jest"
+      "matchPackagePatterns": ["jest", "testing-library"],
+      "groupName": "testing"
     }
   ],
   "schedule": ["before 3am on the first day of the month"],

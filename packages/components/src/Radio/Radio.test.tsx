@@ -1,7 +1,8 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Radio } from './Radio';
 import { ThemeProvider } from '@marigold/system';
+import { act } from 'react-dom/test-utils';
 
 const theme = {
   colors: {
@@ -316,7 +317,7 @@ test('allows styling "checked" state via theme', () => {
   expect(radio).toHaveStyle(`color: ${theme.colors.teal}`);
 });
 
-test('allows styling "focus" state via theme', () => {
+test('allows styling "focus" state via theme', async () => {
   render(
     <ThemeProvider theme={theme}>
       <Radio.Group label="With Label">
@@ -333,9 +334,11 @@ test('allows styling "focus" state via theme', () => {
     </ThemeProvider>
   );
   const input = screen.getByTestId('radio-1');
-  input.focus();
 
-  const radio = getVisibleRadios()?.[0];
+  const radio = await waitFor(() => getVisibleRadios()?.[0]);
+  act(() => {
+    input.focus();
+  });
   expect(radio).toHaveStyle(`outline: 1px solid`);
   expect(radio).toHaveStyle(`outline-color: ${theme.colors.blue}`);
 });
@@ -378,4 +381,22 @@ test('allows styling "read-only" state via theme', () => {
   );
   const radio = getVisibleRadios()?.[0];
   expect(radio).toHaveStyle(`opacity: 0.5`);
+});
+
+test('forwards ref', () => {
+  const ref = React.createRef<HTMLInputElement>();
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label">
+        <Radio value="1" data-testid="radio-1" ref={ref}>
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+
+  expect(ref.current).toBeInstanceOf(HTMLInputElement);
 });

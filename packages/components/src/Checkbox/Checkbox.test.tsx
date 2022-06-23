@@ -1,9 +1,8 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
-
 import { Checkbox } from './Checkbox';
-
+import { act } from 'react-dom/test-utils';
 const theme = {
   colors: {
     gray: '#868e96',
@@ -136,16 +135,17 @@ test('allows styling "checked" state via theme', () => {
   expect(checkbox).toHaveStyle(`color: ${theme.colors.teal}`);
 });
 
-test('allows styling "focus" state via theme', () => {
+test('allows styling "focus" state via theme', async () => {
   render(
     <ThemeProvider theme={theme}>
       <Checkbox data-testid="checkbox">With Label</Checkbox>
     </ThemeProvider>
   );
   const input = screen.getByTestId('checkbox');
-  input.focus();
-
-  const checkbox = getVisibleCheckbox();
+  const checkbox = await waitFor(() => getVisibleCheckbox());
+  act(() => {
+    input.focus();
+  });
   expect(checkbox).toHaveStyle(`outline: 1px solid`);
   expect(checkbox).toHaveStyle(`outline-color: ${theme.colors.blue}`);
 });
@@ -234,4 +234,17 @@ test('controlled', () => {
 
   fireEvent.click(input);
   expect(onChange).toHaveBeenCalledWith(false);
+});
+
+test('forwards ref', () => {
+  const ref = React.createRef<HTMLInputElement>();
+  render(
+    <ThemeProvider theme={theme}>
+      <Checkbox data-testid="checkbox" ref={ref}>
+        Check it
+      </Checkbox>
+    </ThemeProvider>
+  );
+
+  expect(ref.current).toBeInstanceOf(HTMLInputElement);
 });

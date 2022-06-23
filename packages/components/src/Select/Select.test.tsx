@@ -650,4 +650,22 @@ test('supports styling disabled option', () => {
   expect(two).toHaveStyle(`color: ${theme.colors.disabled}`);
 });
 
+test('forwards ref', () => {
+  const ref = React.createRef<HTMLButtonElement>();
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" ref={ref}>
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  expect(ref.current).toBeInstanceOf(HTMLButtonElement);
+});
+
 // FIXME: We currently have no easy way to test the focus + hover styling

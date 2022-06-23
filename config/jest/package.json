@@ -1,7 +1,7 @@
 {
   "name": "@marigold/jest-config",
   "description": "Marigold's jest configuration",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "license": "MIT",
   "keywords": [
     "marigold",
@@ -22,25 +22,25 @@
   },
   "dependencies": {
     "@babel/core": "7.17.12",
-    "@swc/core": "1.2.194",
+    "@swc/core": "1.2.196",
     "@swc/jest": "0.2.21",
-    "@types/jest": "27.4.1",
+    "@types/jest": "27.5.1",
     "babel-jest": "28.1.0",
     "find-up": "5.0.0",
-    "jest-watch-typeahead": "1.0.0",
+    "jest-watch-typeahead": "1.1.0",
     "merge-deep": "3.0.3",
-    "react-test-renderer": "17.0.2",
-    "ts-jest": "28.0.2"
+    "react-test-renderer": "18.1.0",
+    "ts-jest": "28.0.3"
   },
   "peerDependencies": {
     "jest": "28.x",
     "jest-environment-jsdom": "28.x",
-    "react": "17.0.2",
-    "typescript": "4.6.4"
+    "react": "18.x",
+    "typescript": "4.7.2"
   },
   "devDependencies": {
-    "jest": "28.1.0",
-    "react": "17.0.2",
-    "typescript": "4.6.4"
+    "jest": "28.1.1",
+    "react": "18.1.0",
+    "typescript": "4.7.2"
   }
 }

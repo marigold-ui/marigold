@@ -1,6 +1,6 @@
 {
   "name": "@marigold/system",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "description": "Marigold System Library",
   "license": "MIT",
   "keywords": [
@@ -29,18 +29,18 @@
     "@emotion/react": "11.9.0",
     "@marigold/types": "workspace:*",
     "@theme-ui/css": "0.14.5",
-    "csstype": "3.0.11",
+    "csstype": "3.1.0",
     "deepmerge": "^4.2.2",
     "react-fast-compare": "^3.2.0"
   },
   "peerDependencies": {
-    "react": "^16.x || ^17.0.0",
-    "react-dom": "^16.x || ^17.0.0"
+    "react": "16.x || 17.x || 18.x",
+    "react-dom": "16.x || 17.x || 18.x"
   },
   "devDependencies": {
     "@babel/core": "7.17.12",
     "@marigold/tsconfig": "workspace:*",
-    "react": "17.0.2",
+    "react": "18.1.0",
     "tsup": "6.0.1"
   },
   "scripts": {

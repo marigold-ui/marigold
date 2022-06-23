@@ -1,5 +1,19 @@
 # @marigold/jest-config
 
+## 1.0.2
+
+### Patch Changes
+
+- [#2164](https://github.com/marigold-ui/marigold/pull/2164) [`b43464fc`](https://github.com/marigold-ui/marigold/commit/b43464fce6f7e2662b27313c6f74190e8c0f540f) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: update to React 18
+
+## 1.0.1
+
+### Patch Changes
+
+- [#2124](https://github.com/marigold-ui/marigold/pull/2124) [`bdd3e2bd`](https://github.com/marigold-ui/marigold/commit/bdd3e2bd04af7e1419b4264935967bf2e3990040) Thanks [@renovate](https://github.com/apps/renovate)! - fix(deps): update jest
+
+* [#2126](https://github.com/marigold-ui/marigold/pull/2126) [`85ec457f`](https://github.com/marigold-ui/marigold/commit/85ec457f974d9ffa326330096b0532c32b1ca37a) Thanks [@renovate](https://github.com/apps/renovate)! - fix(deps): update dependency @swc/core to v1.2.196
+
 ## 1.0.0
 
 ### Major Changes

@@ -1,20 +1,26 @@
+# OS
 .DS_Store
 .history
-.swc
 
+# generated files
 node_modules
+.swc
 coverage
 dist
 build
 
+storybook-static
+build-storybook.log
 docs/.cache
 docs/public
+slack-notification.json
 
 .pnpm-debug.log*
-
-local.env
 
 # next.js
 .next
 out
 .cache
+## env
+local.env
+.env.local

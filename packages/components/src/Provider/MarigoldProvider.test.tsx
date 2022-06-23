@@ -1,8 +1,8 @@
 /* eslint-disable testing-library/no-node-access */
 /* eslint-disable testing-library/no-container */
 import React from 'react';
-import { useTheme } from '@marigold/system';
 import { render, screen } from '@testing-library/react';
+import { useTheme } from '@marigold/system';
 
 import { MarigoldProvider } from './MarigoldProvider';
 
@@ -24,7 +24,17 @@ const theme = {
   },
 };
 
-test('themes can be cascaded', () => {
+let errorMock: jest.SpyInstance;
+
+beforeEach(() => {
+  errorMock = jest.spyOn(console, 'error').mockImplementation();
+});
+
+afterEach(() => {
+  errorMock.mockRestore();
+});
+
+test('support cascading themes', () => {
   const outerTheme = {
     colors: {
       primary: 'coral',
@@ -72,7 +82,7 @@ test('themes can be cascaded', () => {
   `);
 });
 
-test('OverlayProvider is added', () => {
+test('add OverlayProvider from `react-aria`', () => {
   const { container } = render(
     <MarigoldProvider theme={theme}>Test</MarigoldProvider>
   );
@@ -95,7 +105,7 @@ test('OverlayProvider is added only once', () => {
   ).toEqual(1);
 });
 
-test('applies global styles for body and html based on `theme.root`', () => {
+test('apply styles base on theme (`theme.root`)', () => {
   const theme = {
     fonts: {
       body: 'Inter',
@@ -136,4 +146,99 @@ test('applies global styles for body and html based on `theme.root`', () => {
   expect(body).toHaveStyle(`font-family: ${theme.fonts.body}`);
   expect(body).toHaveStyle(`font-weight: ${theme.fontWeights.body}`);
   expect(body).toHaveStyle(`line-height: ${theme.lineHeights.body}`);
+});
+
+test('normalize document (html, body)', () => {
+  render(<MarigoldProvider theme={theme}>child</MarigoldProvider>);
+
+  const html = document.querySelector('html')!;
+  expect(html).toHaveStyle('height: 100%');
+
+  const body = document.querySelector('body')!;
+  expect(body).toHaveStyle('height: 100%');
+  expect(body).toHaveStyle('line-height: 1.5');
+});
+
+test('opt out of document normalization', () => {
+  render(
+    <MarigoldProvider theme={theme} normalizeDocument={false}>
+      child
+    </MarigoldProvider>
+  );
+
+  const html = document.querySelector('html')!;
+  expect(html).not.toHaveStyle('height: 100%');
+
+  const body = document.querySelector('body')!;
+  expect(body).not.toHaveStyle('height: 100%');
+  expect(body).not.toHaveStyle('line-height: 1.5');
+});
+
+test('cascading fails if inner theme has root styles', () => {
+  const outerTheme = {
+    root: {
+      background: 'coral',
+    },
+  };
+
+  const innerTheme = {
+    root: {
+      background: 'gainsboro',
+    },
+  };
+
+  expect(() =>
+    render(
+      <MarigoldProvider theme={outerTheme}>
+        <MarigoldProvider theme={innerTheme}>child</MarigoldProvider>
+      </MarigoldProvider>
+    )
+  ).toThrowError();
+  expect(errorMock).toHaveBeenCalled();
+});
+
+test('cascading without a selector is allowed when inner theme has not root styles', () => {
+  const outerTheme = {
+    colors: {
+      primary: 'coral',
+    },
+  };
+
+  const innerTheme = {
+    colors: {
+      primary: 'gainsboro',
+    },
+  };
+
+  expect(() =>
+    render(
+      <MarigoldProvider theme={outerTheme}>
+        <MarigoldProvider theme={innerTheme}>child</MarigoldProvider>
+      </MarigoldProvider>
+    )
+  ).not.toThrowError();
+});
+
+test('cascading with a selector is allowed when inner theme has specified a selector', () => {
+  const outerTheme = {
+    root: {
+      background: 'coral',
+    },
+  };
+
+  const innerTheme = {
+    root: {
+      background: 'gainsboro',
+    },
+  };
+
+  expect(() =>
+    render(
+      <MarigoldProvider theme={outerTheme}>
+        <MarigoldProvider theme={innerTheme} selector="#root">
+          <div id="root" />
+        </MarigoldProvider>
+      </MarigoldProvider>
+    )
+  ).not.toThrowError();
 });

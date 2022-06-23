@@ -1,6 +1,6 @@
-name: Test & Coverage
+name: Build Storybook
 
-on: ['push']
+on: ['pull_request']
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -8,7 +8,7 @@ concurrency:
 
 jobs:
   test:
-    name: Test & Coverage
+    name: Build Storybook
     runs-on: ubuntu-latest
     env:
       CI: true
@@ -27,9 +27,5 @@ jobs:
         run: pnpm install
 
       # Action
-      - name: Run Test Suite with Coverage (as lcov file)
-        run: pnpm test:ci
-      - name: Upload Coverage to coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check if Storybook builds
+        run: pnpm test:storybook

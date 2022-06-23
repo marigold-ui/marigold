@@ -1,5 +1,50 @@
 # @marigold/components
 
+## 1.2.1
+
+### Patch Changes
+
+- [#2164](https://github.com/marigold-ui/marigold/pull/2164) [`b43464fc`](https://github.com/marigold-ui/marigold/commit/b43464fce6f7e2662b27313c6f74190e8c0f540f) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: update to React 18
+
+- Updated dependencies [[`b43464fc`](https://github.com/marigold-ui/marigold/commit/b43464fce6f7e2662b27313c6f74190e8c0f540f)]:
+  - @marigold/icons@0.7.5
+  - @marigold/system@1.2.1
+  - @marigold/types@0.5.2
+
+## 1.2.0
+
+### Minor Changes
+
+- [#2147](https://github.com/marigold-ui/marigold/pull/2147) [`2e688960`](https://github.com/marigold-ui/marigold/commit/2e6889600f9c2e50e58e928e09dadd61c5488fd8) Thanks [@sebald](https://github.com/sebald)! - feat: forward ref for `<FieldText>`
+
+* [#2151](https://github.com/marigold-ui/marigold/pull/2151) [`1e512a48`](https://github.com/marigold-ui/marigold/commit/1e512a480bd9784525241fef7874c9e37c67d3e8) Thanks [@sebald](https://github.com/sebald)! - feat: forward ref for `<Slider>`
+
+- [#2144](https://github.com/marigold-ui/marigold/pull/2144) [`82c376a9`](https://github.com/marigold-ui/marigold/commit/82c376a9c34c69104456e6e356231132f53c3efe) Thanks [@sebald](https://github.com/sebald)! - feat: Improve usage of Marigold when not used as a full page app
+
+* [#2149](https://github.com/marigold-ui/marigold/pull/2149) [`1a0070a4`](https://github.com/marigold-ui/marigold/commit/1a0070a437304cb0ebc9a2a0e30082ba8deee821) Thanks [@sebald](https://github.com/sebald)! - feat: forward ref for `<Radio>`
+
+- [#2148](https://github.com/marigold-ui/marigold/pull/2148) [`33c54b37`](https://github.com/marigold-ui/marigold/commit/33c54b37cd96b232c2f81a38af64143be4b02283) Thanks [@sebald](https://github.com/sebald)! - feat: forward ref for `<TextArea>`
+
+* [#2150](https://github.com/marigold-ui/marigold/pull/2150) [`8f3c3e1b`](https://github.com/marigold-ui/marigold/commit/8f3c3e1b92eed5e432667ae8dae0a5f26a6dea3f) Thanks [@sebald](https://github.com/sebald)! - feat: forward ref for `<Select>``
+
+- [#2146](https://github.com/marigold-ui/marigold/pull/2146) [`9e6e0671`](https://github.com/marigold-ui/marigold/commit/9e6e0671908491566ac9d5a2f1f316145e7c2d6a) Thanks [@sebald](https://github.com/sebald)! - feat: forward ref of `<Checkbox>`
+
+### Patch Changes
+
+- [#2152](https://github.com/marigold-ui/marigold/pull/2152) [`8980b645`](https://github.com/marigold-ui/marigold/commit/8980b64518f792c837776aea817e422ea0e3d658) Thanks [@sebald](https://github.com/sebald)! - feat: forward ref for `<Switch>`
+
+- Updated dependencies [[`82c376a9`](https://github.com/marigold-ui/marigold/commit/82c376a9c34c69104456e6e356231132f53c3efe)]:
+  - @marigold/system@1.2.0
+  - @marigold/icons@0.7.4
+
+## 1.1.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@1.1.1
+  - @marigold/icons@0.7.3
+
 ## 1.1.0
 
 ### Minor Changes

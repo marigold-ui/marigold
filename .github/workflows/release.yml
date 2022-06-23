@@ -14,7 +14,7 @@ jobs:
     steps:
       # Setup
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2.2.1
+      - uses: pnpm/action-setup@v2.2.2
         with:
           version: 6.32.3
       - name: Setup Node (using .node-version)
@@ -25,18 +25,33 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      # Actions
+      # Publish to npm
       - name: Build packages
         run: pnpm build
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
         with:
-          title: 'chore: release new version'
+          title: 'release: version packages'
           publish: pnpm changeset publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Update "marigold-ui.io/"
+
+      # Update Docs
+      - name: Update "marigold-ui.io"
         if: steps.changesets.outputs.published == 'true'
         run: pnpm release:docs
+
+      # Send Slack Notification
+      - name: Create release notification
+        if: steps.changesets.outputs.published == 'true'
+        run: pnpm release:notification -- --packages '${{ steps.changesets.outputs.publishedPackages }}'
+      - name: Slack Notification
+        if: steps.changesets.outputs.published == 'true'
+        uses: slackapi/slack-github-action@v1.19.0
+        with:
+          payload-file-path: './slack-notification.json'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_HOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

@@ -1,7 +1,7 @@
 {
   "name": "@marigold/icons",
   "description": "Marigold Icons",
-  "version": "0.7.2",
+  "version": "0.7.5",
   "license": "MIT",
   "keywords": [
     "marigold",
@@ -25,7 +25,7 @@
     "@marigold/system": "workspace:*"
   },
   "peerDependencies": {
-    "react": "^16.x || ^17.0.0"
+    "react": "17.x || 18.x"
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",

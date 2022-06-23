@@ -1,6 +1,6 @@
 /* eslint-disable testing-library/no-node-access */
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { ThemeProvider } from '@marigold/system';
@@ -50,6 +50,7 @@ const theme = {
   },
 };
 
+const user = userEvent.setup();
 test('renders children correctly', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -133,7 +134,7 @@ test('optionally renders a close button', () => {
   expect(dialog).not.toBeVisible();
 });
 
-test('supoorts closing the dialog with escape key', () => {
+test('supoorts closing the dialog with escape key', async () => {
   render(
     <ThemeProvider theme={theme}>
       <Dialog.Trigger>
@@ -149,8 +150,10 @@ test('supoorts closing the dialog with escape key', () => {
   fireEvent.click(button);
 
   const dialog = screen.getByText('Content');
-  userEvent.type(dialog, '{esc}');
-  expect(dialog).not.toBeVisible();
+  await user.type(dialog, '{esc}');
+  await waitFor(() => {
+    expect(screen.queryByRole('Dialog')).not.toBeInTheDocument();
+  });
 });
 
 test('close Dialog by clicking on the Underlay', () => {
@@ -293,7 +296,7 @@ test('warns if no element to attach the title can be found', () => {
   warn.mockRestore();
 });
 
-test('supports focus and open dialog with keyboard', () => {
+test('supports focus and open dialog with keyboard', async () => {
   render(
     <ThemeProvider theme={theme}>
       <Dialog.Trigger>
@@ -306,11 +309,13 @@ test('supports focus and open dialog with keyboard', () => {
     </ThemeProvider>
   );
 
-  userEvent.tab();
-  userEvent.keyboard('[Enter]');
+  user.tab();
+  await user.keyboard('[Enter]');
 
   const dialog = screen.getByRole('dialog');
-  expect(dialog).toBeVisible();
+  await waitFor(() => {
+    expect(dialog).toBeVisible();
+  });
 });
 
 test('dialog has base style', () => {

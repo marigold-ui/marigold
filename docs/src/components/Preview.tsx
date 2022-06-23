@@ -48,7 +48,6 @@ const LiveEdit = ({
   const [hide, setHide] = React.useState(type === ActionType.CollapseCode);
 
   return (
-    // @ts-expect-error
     <LiveProvider
       code={codeString}
       scope={{ ...Components, ...Icons }}
@@ -69,7 +68,6 @@ const LiveEdit = ({
       {!hide && (
         <Box css={codeBoxStyles}>
           <Box as={LiveEditor} css={codeBoxStyles} />
-          {/* @ts-expect-error */}
           <LiveError />
           <CopyButton codeString={codeString} />
         </Box>
@@ -93,7 +91,6 @@ export const Preview = ({
     }
     case ActionType.OnlyCode: {
       return (
-        // @ts-expect-error
         <Highlight
           {...defaultProps}
           code={codeString}
@@ -102,7 +99,6 @@ export const Preview = ({
         >
           {({ className, style, tokens, getLineProps, getTokenProps }) => (
             <>
-              {/* @ts-expect-error */}
               <LiveProvider scope={{ ...Components, ...Icons }}>
                 <Box
                   as="pre"
