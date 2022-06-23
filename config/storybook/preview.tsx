@@ -1,49 +1,39 @@
 import React from 'react';
 
-import { addDecorator, addParameters } from '@storybook/react';
-// @ts-ignore (no types)
-import { withThemes } from 'storybook-addon-themes/react';
-
 import { MarigoldProvider } from '@marigold/components';
 import b2bTheme from '@marigold/theme-b2b';
 import coreTheme from '@marigold/theme-core';
 import unicornTheme from '@marigold/theme-unicorn';
 
-// Theme Switch
-const themes = {
+const THEME = {
   b2b: b2bTheme,
   core: coreTheme,
   unicorn: unicornTheme,
-} as const;
+};
 
-type ThemeNames = keyof typeof themes;
-
-addDecorator(withThemes);
-addParameters({
+export const parameters = {
   a11y: {
     element: '#root',
     config: {},
     options: {},
   },
   controls: { expanded: true },
-  themes: {
-    default: localStorage.getItem('marigold-storybook-current-theme') || 'b2b',
-    clearable: false,
-    onChange: ({ name }: { name: ThemeNames }) => {
-      localStorage.setItem('marigold-storybook-current-theme', name);
+};
+
+export const decorators = [];
+
+export const globalTypes = {
+  // Add theme selector to toolbar
+  theme: {
+    name: 'Theme',
+    description: 'Global theme for components',
+    defaultValue: { value: 'b2b', title: 'b2b' },
+    toolbar: {
+      icon: 'paintbrush',
+      items: Object.keys(THEME).map(key => ({
+        value: key,
+        title: key,
+      })),
     },
-    Decorator: ({
-      themeName,
-      children,
-    }: {
-      themeName: ThemeNames;
-      children: React.ReactChild;
-    }) => (
-      <MarigoldProvider theme={themes[themeName]}>{children}</MarigoldProvider>
-    ),
-    list: (Object.keys(themes) as ThemeNames[]).map(name => ({
-      name,
-      color: themes[name].colors!.primary,
-    })),
   },
-});
+};
