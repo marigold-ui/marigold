@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { StoryFn } from '@storybook/react';
+
 import { MarigoldProvider } from '@marigold/components';
 import b2bTheme from '@marigold/theme-b2b';
 import coreTheme from '@marigold/theme-core';
@@ -20,7 +22,18 @@ export const parameters = {
   controls: { expanded: true },
 };
 
-export const decorators = [];
+export const decorators = [
+  (Story: StoryFn, { globals, parameters }: any) => {
+    const theme: keyof typeof THEME =
+      globals.theme || parameters.theme || 'b2b';
+
+    return (
+      <MarigoldProvider theme={THEME[theme]}>
+        <Story />
+      </MarigoldProvider>
+    );
+  },
+];
 
 export const globalTypes = {
   // Add theme selector to toolbar
