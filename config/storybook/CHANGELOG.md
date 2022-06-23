@@ -1,5 +1,19 @@
 # @marigold/storybook-config
 
+## 0.6.5
+
+### Patch Changes
+
+- [#2155](https://github.com/marigold-ui/marigold/pull/2155) [`acf52ed2`](https://github.com/marigold-ui/marigold/commit/acf52ed2c94b6978ce20eacb8dd0baed9a28a302) Thanks [@sarahgm](https://github.com/sarahgm)! - chore:Visual regression tests
+
+* [#2164](https://github.com/marigold-ui/marigold/pull/2164) [`b43464fc`](https://github.com/marigold-ui/marigold/commit/b43464fce6f7e2662b27313c6f74190e8c0f540f) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: update to React 18
+
+* Updated dependencies [[`b43464fc`](https://github.com/marigold-ui/marigold/commit/b43464fce6f7e2662b27313c6f74190e8c0f540f)]:
+  - @marigold/components@1.2.1
+  - @marigold/theme-b2b@9.0.1
+  - @marigold/theme-core@9.0.1
+  - @marigold/theme-unicorn@6.0.1
+
 ## 0.6.4
 
 ### Patch Changes
