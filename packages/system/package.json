@@ -34,13 +34,13 @@
     "react-fast-compare": "^3.2.0"
   },
   "peerDependencies": {
-    "react": "^16.x || ^17.0.0",
-    "react-dom": "^16.x || ^17.0.0"
+    "react": "16.x || 17.x || 18.x",
+    "react-dom": "16.x || 17.x || 18.x"
   },
   "devDependencies": {
     "@babel/core": "7.17.12",
     "@marigold/tsconfig": "workspace:*",
-    "react": "17.0.2",
+    "react": "18.1.0",
     "tsup": "6.0.1"
   },
   "scripts": {

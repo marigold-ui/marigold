@@ -116,6 +116,8 @@ const theme = {
   },
 };
 
+const user = userEvent.setup();
+
 // Tests
 // ---------------
 test('renders an input', () => {
@@ -264,7 +266,7 @@ test('can have default value', () => {
   expect(input).toHaveValue('50');
 });
 
-test('can be controlled', () => {
+test('can be controlled', async () => {
   const Controlled = () => {
     const [value, setValue] = React.useState(0);
 
@@ -284,14 +286,13 @@ test('can be controlled', () => {
   render(<Controlled />);
 
   const input = screen.getByTestId('number-field');
-  userEvent.click(input);
-  userEvent.type(input, '42');
-  userEvent.tab();
-
+  user.click(input);
+  await user.type(input, '42');
+  user.tab();
   expect(screen.getByTestId('output')).toHaveTextContent('42');
 });
 
-test('allows to specify min and max value', () => {
+test('allows to specify min and max value', async () => {
   const onChange = jest.fn();
   render(
     <NumberField
@@ -305,15 +306,15 @@ test('allows to specify min and max value', () => {
 
   const input: HTMLInputElement = screen.getByTestId('number-field');
 
-  userEvent.click(input);
-  userEvent.type(input, '100');
-  userEvent.tab();
+  user.click(input);
+  await user.type(input, '100');
+  user.tab();
 
   expect(input.value).toEqual('10');
   expect(onChange).toHaveBeenCalledWith(10);
 });
 
-test('increment and decrement value via stepper', () => {
+test('increment and decrement value via stepper', async () => {
   render(
     <NumberField label="A Label" data-testid="number-field" defaultValue={50} />
   );
@@ -321,19 +322,19 @@ test('increment and decrement value via stepper', () => {
   const input: HTMLInputElement = screen.getByTestId('number-field');
   const [decrement, increment] = screen.getAllByRole('button');
 
-  userEvent.click(increment);
-  userEvent.click(increment);
-  userEvent.click(increment);
+  user.click(increment);
+  await user.click(increment);
+  await user.click(increment);
 
   expect(input.value).toEqual('53');
 
-  userEvent.click(decrement);
-  userEvent.click(decrement);
+  await user.click(decrement);
+  await user.click(decrement);
 
   expect(input.value).toEqual('51');
 });
 
-test('increment and decrement value via stepper (with min and max)', () => {
+test('increment and decrement value via stepper (with min and max)', async () => {
   render(
     <NumberField
       label="A Label"
@@ -348,25 +349,25 @@ test('increment and decrement value via stepper (with min and max)', () => {
   const group = screen.getByRole('group');
   const [decrement, increment] = within(group).getAllByRole('button');
 
-  userEvent.click(decrement);
-  userEvent.click(decrement);
-  userEvent.click(decrement);
-  userEvent.click(decrement);
-  userEvent.click(decrement);
+  user.click(decrement);
+  await user.click(decrement);
+  await user.click(decrement);
+  await user.click(decrement);
+  await user.click(decrement);
 
   expect(input.value).toEqual('0');
 
-  userEvent.click(increment);
-  userEvent.click(increment);
-  userEvent.click(increment);
-  userEvent.click(increment);
-  userEvent.click(increment);
-  userEvent.click(increment);
+  await user.click(increment);
+  await user.click(increment);
+  await user.click(increment);
+  await user.click(increment);
+  await user.click(increment);
+  await user.click(increment);
 
   expect(input.value).toEqual('5');
 });
 
-test('increment and decrement with custom steps', () => {
+test('increment and decrement with custom steps', async () => {
   render(
     <NumberField
       label="A Label"
@@ -380,12 +381,12 @@ test('increment and decrement with custom steps', () => {
   const group = screen.getByRole('group');
   const [decrement, increment] = within(group).queryAllByRole('button');
 
-  userEvent.click(increment);
-  userEvent.click(increment);
+  user.click(increment);
+  await user.click(increment);
 
   expect(input.value).toEqual('20');
 
-  userEvent.click(decrement);
+  await user.click(decrement);
 
   expect(input.value).toEqual('10');
 });

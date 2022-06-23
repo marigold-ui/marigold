@@ -108,8 +108,8 @@ export const ControlledTable: ComponentStory<typeof Table> = args => {
       year: '1981',
     },
   ];
-
   const [selectedKeys, setSelectedKeys] = React.useState(new Set());
+  const selected = Array.from(selectedKeys);
   return (
     <Stack space="small">
       <Table
@@ -128,7 +128,7 @@ export const ControlledTable: ComponentStory<typeof Table> = args => {
           )}
         </Table.Body>
       </Table>
-      <div>Selected rows: {selectedKeys}</div>
+      <div>Selected rows: {selected.join(', ')}</div>
     </Stack>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 
 import { TextField } from './TextField';
@@ -64,6 +64,7 @@ const theme = {
   },
 };
 
+const user = userEvent.setup();
 test('renders an text input', () => {
   render(<TextField label="Label" data-testid="text-field" />);
 
@@ -274,7 +275,7 @@ test('can have default value', () => {
   expect(input).toHaveValue('Default Value');
 });
 
-test('can be controlled', () => {
+test('can be controlled', async () => {
   const Controlled = () => {
     const [value, setValue] = React.useState('');
     return (
@@ -291,8 +292,10 @@ test('can be controlled', () => {
 
   render(<Controlled />);
 
-  userEvent.type(screen.getByTestId('text-field'), 'Hello there!');
-  expect(screen.getByTestId('output')).toHaveTextContent('Hello there!');
+  user.type(screen.getByTestId('text-field'), 'Hello there!');
+  await waitFor(() => {
+    expect(screen.getByTestId('output')).toHaveTextContent('Hello there!');
+  });
 });
 
 test('forwards ref', () => {

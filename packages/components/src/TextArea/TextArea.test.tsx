@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from '@marigold/system';
 
@@ -64,6 +64,7 @@ const theme = {
   },
 };
 
+const user = userEvent.setup();
 test('renders an textarea', () => {
   render(<TextArea label="Label" data-testid="textarea" />);
 
@@ -283,7 +284,7 @@ test('passes down "rows" attribute', () => {
   expect(textArea).toHaveAttribute('rows', '5');
 });
 
-test('can be controlled', () => {
+test('can be controlled', async () => {
   const Controlled = () => {
     const [value, setValue] = React.useState('');
     return (
@@ -296,8 +297,10 @@ test('can be controlled', () => {
 
   render(<Controlled />);
 
-  userEvent.type(screen.getByTestId('textarea'), 'Hello there!');
-  expect(screen.getByTestId('output')).toHaveTextContent('Hello there!');
+  user.type(screen.getByTestId('textarea'), 'Hello there!');
+  await waitFor(() => {
+    expect(screen.getByTestId('output')).toHaveTextContent('Hello there!');
+  });
 });
 
 test('forwards ref', () => {

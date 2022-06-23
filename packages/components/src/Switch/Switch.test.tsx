@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 import { Switch } from './Switch';
 import userEvent from '@testing-library/user-event';
@@ -68,7 +68,7 @@ const theme = {
     },
   },
 };
-
+const user = userEvent.setup();
 const getSwitchParts = () => {
   const label = screen.getByText('Label');
   // eslint-disable-next-line testing-library/no-node-access
@@ -182,7 +182,7 @@ test('toggle switch per click', () => {
   expect(input).toHaveAttribute('aria-checked', 'false');
 });
 
-test('focus element and toggle switch per keyboard space', () => {
+test('focus element and toggle switch per keyboard space', async () => {
   render(
     <ThemeProvider theme={theme}>
       <Switch>Label</Switch>
@@ -190,18 +190,21 @@ test('focus element and toggle switch per keyboard space', () => {
   );
 
   const { input, track } = getSwitchParts();
+  user.tab();
 
-  userEvent.tab();
-  expect(track).toHaveAttribute('data-focus');
+  // eslint-disable-next-line testing-library/await-async-utils
+  waitFor(() => expect(track).toHaveAttribute('data-focus'));
+  user.keyboard('{space}');
+  // eslint-disable-next-line testing-library/await-async-utils
+  waitFor(() => expect(track).toHaveStyle(`background-color: orange`));
+  // eslint-disable-next-line testing-library/await-async-utils
+  waitFor(() => expect(input).toHaveAttribute('aria-checked', 'true'));
 
-  userEvent.keyboard('{space}');
-
-  expect(track).toHaveStyle(`background-color: orange`);
-  expect(input).toHaveAttribute('aria-checked', 'true');
-
-  userEvent.keyboard('{space}');
-  expect(track).toHaveStyle(`background-color: blue`);
-  expect(input).toHaveAttribute('aria-checked', 'false');
+  user.keyboard('{space}');
+  // eslint-disable-next-line testing-library/await-async-utils
+  waitFor(() => expect(track).toHaveStyle(`background-color: blue`));
+  // eslint-disable-next-line testing-library/await-async-utils
+  waitFor(() => expect(input).toHaveAttribute('aria-checked', 'false'));
 });
 
 test('supports default checked', () => {
