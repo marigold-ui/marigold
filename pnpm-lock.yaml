@@ -303,6 +303,7 @@ importers:
       '@types/node': 16.11.36
       '@types/react': ^18.0.9
       '@types/react-dom': ^18.0.5
+      date-fns: ^2.28.0
       eslint: 8.12.0
       eslint-config-next: 12.1.6
       gray-matter: ^4.0.3
@@ -326,6 +327,7 @@ importers:
       '@marigold/types': link:../packages/types
       '@mdx-js/loader': 2.1.1
       '@next/mdx': 12.1.6_@mdx-js+loader@2.1.1
+      date-fns: 2.28.0
       gray-matter: 4.0.3
       mdx-utils: 0.2.0
       next: 12.1.6_1c8eb55a7cd394dff7d2e804253294a5

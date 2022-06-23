@@ -3,48 +3,63 @@ import { NextPage } from 'next';
 import { Layout } from '../components/Layout';
 import type { NextPageWithLayout } from './_app';
 
-const Page: NextPageWithLayout = ({ data: { mdx } }) => {
-  const { body } = mdx;
+const Page: NextPageWithLayout = () => {
+  const { content } = getAllPosts();
 
-  console.log('mdx', mdx);
   return (
     <Layout>
       <Box as="main" maxWidth="700px" pt="medium">
-        {body}
+        {content}
       </Box>
     </Layout>
   );
 };
 
-// interface PageProps {
-//   data: {
-//     mdx: {
-//       body: string;
-//       frontmatter: {
-//         title?: string;
-//       };
-//       headings: { value: string }[];
-//     };
-//   };
-// }
+import { remark } from 'remark';
+import html from 'remark-html';
+import { getPostBySlug, getAllPosts } from '../../posts';
 
-// const Page: NextPage<PageProps> = ({ userAgent, data: { mdx } }) => {
-//   const { body } = mdx;
+export async function getStaticProps() {
+  const post = getPostBySlug();
+  const markdown = await remark()
+    .use(html)
+    .process(post.content || '');
+  const content = markdown.toString();
 
-//   console.log('userAgent', userAgent);
-//   console.log('mdx', mdx);
-//   return (
-//     <Layout>
-//       <Box as="main" maxWidth="700px" pt="medium">
-//         {body}
-//         {userAgent}
-//       </Box>
-//     </Layout>
-//   );
-// };
+  return {
+    props: {
+      ...post,
+      content,
+    },
+  };
+}
 
-// const Page: NextPage<PageProps> = ({ userAgent }) => (
-//   <main>Your user agent: {userAgent}</main>
-// );
+export async function getStaticPaths() {
+  const posts = getAllPosts();
+  console.log(posts);
+
+  return {
+    paths: posts.map(post => {
+      return {
+        params: {
+          slug: post.slug,
+        },
+      };
+    }),
+    fallback: false,
+  };
+}
+
+interface PageProps {
+  data: {
+    mdx: {
+      body: string;
+      frontmatter: {
+        title?: string;
+      };
+      headings: { value: string }[];
+    };
+  };
+}
 
 export default Page;

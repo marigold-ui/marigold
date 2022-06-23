@@ -7,10 +7,9 @@ export type NextPageWithLayout = NextPage & {
   data?: { mdx: any };
 };
 
-type PagePropsWithLayout = AppProps &
-  PageProps & {
-    Component: NextPageWithLayout;
-  };
+type PagePropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
 
 interface PageProps {
   data: {
