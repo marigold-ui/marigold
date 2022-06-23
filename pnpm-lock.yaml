@@ -159,6 +159,7 @@ importers:
       '@storybook/testing-library': 0.0.11
       '@types/react': '18'
       babel-loader: 8.2.5
+      chromatic: ^6.6.3
       find-up: 5.0.0
       react: 18.1.0
       react-dom: 18.1.0
@@ -181,6 +182,7 @@ importers:
       '@storybook/testing-library': 0.0.11_ef5jwxihqo6n7gxfmzogljlgcm
       '@types/react': 18.0.12
       babel-loader: 8.2.5_tlrwjfnbl7llelxqoonrmw2kde
+      chromatic: 6.6.3
       find-up: 5.0.0
       tsconfig-paths-webpack-plugin: 3.5.2
       webpack: 4.46.0
@@ -12659,6 +12661,16 @@ packages:
         integrity: sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==,
       }
     engines: { node: '>=10' }
+    dev: false
+
+  /chromatic/6.6.3:
+    resolution:
+      {
+        integrity: sha512-6FS39fAZnQL2A+bECyU469Qo4Th9EYpQ2ciIX/y1Qj+BRQib0N99hab34teYf2bVCD4+WuGMMTdUbt3rp3qcQw==,
+      }
+    hasBin: true
+    dependencies:
+      '@types/webpack-env': 1.17.0
     dev: false
 
   /chrome-trace-event/1.0.3:
