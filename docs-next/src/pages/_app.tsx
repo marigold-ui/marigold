@@ -1,10 +1,11 @@
+// unnessessary? - I tryed some things to make it work
+
 import type { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
-  data?: { mdx: any };
 };
 
 type PagePropsWithLayout = AppProps & {

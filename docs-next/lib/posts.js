@@ -14,7 +14,6 @@ export const posts = () => {
         ? -1
         : 1
     );
-  console.log(slug);
 
   return allPosts;
 };

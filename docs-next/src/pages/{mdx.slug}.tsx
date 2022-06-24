@@ -1,11 +1,11 @@
 import { Box } from '@marigold/components';
-import { NextPage } from 'next';
 import { Layout } from '../components/Layout';
 import type { NextPageWithLayout } from './_app';
 
-const Page: NextPageWithLayout = () => {
-  const { content } = getAllPosts();
+import { getAllPosts, getPostBySlug } from '../../lib/posts';
+import markdownToHtml from '../../lib/markdownToHtml';
 
+export default function Doc({ content }: any) {
   return (
     <Layout>
       <Box as="main" maxWidth="700px" pt="medium">
@@ -13,36 +13,27 @@ const Page: NextPageWithLayout = () => {
       </Box>
     </Layout>
   );
-};
+}
 
-import { remark } from 'remark';
-import html from 'remark-html';
-import { getPostBySlug, getAllPosts } from '../../posts';
-
-export async function getStaticProps() {
-  const post = getPostBySlug();
-  const markdown = await remark()
-    .use(html)
-    .process(post.content || '');
-  const content = markdown.toString();
+export async function getStaticProps({ params }: any) {
+  const doc = getPostBySlug(params.slug);
+  const content = await markdownToHtml(doc.content || '');
 
   return {
     props: {
-      ...post,
+      ...doc,
       content,
     },
   };
 }
 
 export async function getStaticPaths() {
-  const posts = getAllPosts();
-  console.log(posts);
-
+  const docs = getAllPosts();
   return {
-    paths: posts.map(post => {
+    paths: docs.map(doc => {
       return {
         params: {
-          slug: post.slug,
+          slug: doc.slug,
         },
       };
     }),
@@ -50,16 +41,28 @@ export async function getStaticPaths() {
   };
 }
 
-interface PageProps {
-  data: {
-    mdx: {
-      body: string;
-      frontmatter: {
-        title?: string;
-      };
-      headings: { value: string }[];
-    };
-  };
-}
+// const Page: NextPageWithLayout = ({}) => {
+//   const postsDirectory = join(process.cwd(), 'src', 'content', 'introduction');
 
-export default Page;
+//   return (
+//     <Layout>
+//       <Box as="main" maxWidth="700px" pt="medium">
+//         {body}
+//       </Box>
+//     </Layout>
+//   );
+// };
+
+// interface PageProps {
+//   data: {
+//     mdx: {
+//       body: string;
+//       frontmatter: {
+//         title?: string;
+//       };
+//       headings: { value: string }[];
+//     };
+//   };
+// }
+
+// export default Page;
