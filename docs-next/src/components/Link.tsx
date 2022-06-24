@@ -28,7 +28,8 @@ export const Link = ({ children, to, ...props }: LinkProps) => {
       passHref={true}
       href={to}
       legacyBehavior={false}
-      // activeStyle={{ color: colors.blue70 }}
+      // its a gatsby thing
+      //activeStyle={{ color: colors.blue70 }}
       {...props}
     >
       {children}

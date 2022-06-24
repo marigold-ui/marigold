@@ -14,6 +14,7 @@ import { Box, Text, MarigoldProvider, SSRProvider } from '@marigold/components';
 import { MarigoldThemeSwitch, themes } from '../components/ThemeSwitch';
 import type { ReactElement } from 'react';
 import markdownToHtml from 'docs-next/lib/markdownToHtml';
+import { useRouter } from 'next/router';
 
 const DevMode = () => {
   const devMode = process.env.NODE_ENV === 'development';
@@ -30,7 +31,7 @@ const DevMode = () => {
   return null;
 };
 
-export function Page({ children }: { children: ReactElement }) {
+export function Page() {
   return (
     <div>
       <Helmet>
@@ -62,32 +63,6 @@ export function Page({ children }: { children: ReactElement }) {
       </SSRProvider>
     </div>
   );
-}
-
-export async function getStaticProps({ params }: any) {
-  const doc = getPostBySlug(params.slug);
-  console.log(doc);
-  const content = await markdownToHtml(doc.content || '');
-  return {
-    props: {
-      ...doc,
-      content,
-    },
-  };
-}
-
-export async function getStaticPaths() {
-  const docs = getAllPosts();
-  return {
-    paths: docs.map(doc => {
-      return {
-        params: {
-          slug: doc.slug,
-        },
-      };
-    }),
-    fallback: false,
-  };
 }
 
 /**
