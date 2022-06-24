@@ -11,10 +11,7 @@ import * as MarigoldIcons from '@marigold/icons';
 
 import { Box, Text, MarigoldProvider, SSRProvider } from '@marigold/components';
 import { MarigoldThemeSwitch, themes } from '../components/ThemeSwitch';
-import { NextPage } from 'next';
 import type { ReactElement } from 'react';
-import type { NextPageWithLayout } from './__app';
-import { Layout } from '../components/Layout';
 import Page from './{mdx.slug}';
 
 const DevMode = () => {
@@ -48,7 +45,7 @@ Page.getLayout = function getLayout(page: ReactElement) {
       <SSRProvider>
         <MarigoldProvider theme={theme}>
           <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
-            {page}
+            <LandingPage />
           </MarigoldThemeSwitch>
         </MarigoldProvider>
       </SSRProvider>
