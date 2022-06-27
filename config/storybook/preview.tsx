@@ -47,12 +47,11 @@ export const parameters = {
 // ---------------
 export const decorators = [
   (Story: StoryFn, { globals, parameters }: any) => {
-    const theme: ThemeNames = globals.theme || parameters.theme || 'b2b';
-    const layout: 'single' | 'stacked' = isChromatic()
+    const theme = isChromatic()
       ? 'stacked'
-      : globals.layout || parameters.layout || 'single';
+      : globals.theme || parameters.theme || 'b2b';
 
-    switch (layout) {
+    switch (theme) {
       case 'stacked': {
         return (
           <>
@@ -68,7 +67,7 @@ export const decorators = [
       }
       default: {
         return (
-          <MarigoldProvider theme={THEME[theme]}>
+          <MarigoldProvider theme={THEME[theme as ThemeNames]}>
             <Story />
           </MarigoldProvider>
         );
@@ -86,27 +85,12 @@ export const globalTypes = {
     description: 'Global theme for components',
     toolbar: {
       icon: 'paintbrush',
-      items: Object.keys(THEME).map(key => ({
-        value: key,
-        title: key,
-      })),
-    },
-  },
-  // Change layout
-  layout: {
-    name: 'Layout',
-    description: 'Toggle theme display',
-    toolbar: {
-      icon: 'grid',
       items: [
-        {
-          title: 'Single',
-          value: 'single',
-        },
-        {
-          title: 'Stacked',
-          value: 'stacked',
-        },
+        ...Object.keys(THEME).map(key => ({
+          value: key,
+          title: key,
+        })),
+        { value: 'stacked', title: 'stacked' },
       ],
     },
   },
