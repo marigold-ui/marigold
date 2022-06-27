@@ -18,16 +18,20 @@ const THEME = {
 
 type ThemeNames = keyof typeof THEME;
 
-const Divider = () => (
-  <Box
-    css={{
-      width: '100vw',
-      height: 1,
-      bg: '#adb5bd',
-      my: '1.5rem',
-      mx: '-1rem',
-    }}
-  />
+const Frame = ({ children, title }: any) => (
+  <Box css={{ p: '16px' }}>
+    <Box css={{ color: '#495057', fontSize: '0.75rem' }}>{title}</Box>
+    <Box
+      css={{
+        p: '16px',
+        border: '1px solid #dee2e6',
+        borderRadius: 'clamp(0px, calc(100vw - 100%) * 1e5, 5px)',
+        boxShadow: 'inset 0 1px 4px 0 hsl(220 3% 15% / 10%);',
+      }}
+    >
+      {children}
+    </Box>
+  </Box>
 );
 
 // Parameters
@@ -44,22 +48,20 @@ export const parameters = {
 export const decorators = [
   (Story: StoryFn, { globals, parameters }: any) => {
     const theme: ThemeNames = globals.theme || parameters.theme || 'b2b';
-    const layout: 'single' | 'stacked' =
-      globals.layout ||
-      parameters.layout ||
-      (isChromatic() ? 'stacked' : 'single');
+    const layout: 'single' | 'stacked' = isChromatic()
+      ? 'stacked'
+      : globals.layout || parameters.layout || 'single';
 
     switch (layout) {
       case 'stacked': {
         return (
           <>
-            {Object.keys(THEME).map((key, idx) => (
-              <React.Fragment key={key}>
-                {idx > 0 ? <Divider /> : null}
+            {Object.keys(THEME).map(key => (
+              <Frame key={key} title={`Theme "${key}"`}>
                 <MarigoldProvider theme={THEME[key as ThemeNames]}>
                   <Story />
                 </MarigoldProvider>
-              </React.Fragment>
+              </Frame>
             ))}
           </>
         );
