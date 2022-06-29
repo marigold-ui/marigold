@@ -159,10 +159,10 @@ importers:
       '@storybook/testing-library': 0.0.11
       '@types/react': '18'
       babel-loader: 8.2.5
+      chromatic: ^6.6.3
       find-up: 5.0.0
       react: 18.1.0
       react-dom: 18.1.0
-      storybook-addon-themes: 6.1.0
       tsconfig-paths-webpack-plugin: 3.5.2
       typescript: 4.6.4
       webpack: '4'
@@ -182,8 +182,8 @@ importers:
       '@storybook/testing-library': 0.0.11_ef5jwxihqo6n7gxfmzogljlgcm
       '@types/react': 18.0.12
       babel-loader: 8.2.5_tlrwjfnbl7llelxqoonrmw2kde
+      chromatic: 6.6.3
       find-up: 5.0.0
-      storybook-addon-themes: 6.1.0_ef5jwxihqo6n7gxfmzogljlgcm
       tsconfig-paths-webpack-plugin: 3.5.2
       webpack: 4.46.0
     devDependencies:
@@ -7513,28 +7513,6 @@ packages:
       util-deprecate: 1.0.2
     dev: false
 
-  /@storybook/components/6.5.7_ef5jwxihqo6n7gxfmzogljlgcm:
-    resolution:
-      {
-        integrity: sha512-xSOaOK8q6bXYkmN4LZKucvXU2HRHqKwwTafFDh5yzsCSEB2VQIJlyo4ePVyv/GJgBUX6+WdSA7c5r5ePXK6IYQ==,
-      }
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      '@storybook/client-logger': 6.5.7
-      '@storybook/csf': 0.0.2--canary.4566f4d.1
-      '@storybook/theming': 6.5.7_ef5jwxihqo6n7gxfmzogljlgcm
-      '@types/react-syntax-highlighter': 11.0.5
-      core-js: 3.22.8
-      qs: 6.10.3
-      react: 18.1.0
-      react-dom: 18.1.0_react@18.1.0
-      react-syntax-highlighter: 15.5.0_react@18.1.0
-      regenerator-runtime: 0.13.9
-      util-deprecate: 1.0.2
-    dev: false
-
   /@storybook/core-client/6.5.6_gcxiqyht5f6yd7nugdnl5aeqi4:
     resolution:
       {
@@ -12683,6 +12661,16 @@ packages:
         integrity: sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==,
       }
     engines: { node: '>=10' }
+    dev: false
+
+  /chromatic/6.6.3:
+    resolution:
+      {
+        integrity: sha512-6FS39fAZnQL2A+bECyU469Qo4Th9EYpQ2ciIX/y1Qj+BRQib0N99hab34teYf2bVCD4+WuGMMTdUbt3rp3qcQw==,
+      }
+    hasBin: true
+    dependencies:
+      '@types/webpack-env': 1.17.0
     dev: false
 
   /chrome-trace-event/1.0.3:
@@ -29073,36 +29061,6 @@ packages:
       {
         integrity: sha512-CMtO2Uneg3SAz/d6fZ/6qbqqQHi2ynq6/KzMD/26gTkiEShCcpqFfTHgOxsE0egAq6SX3FmN4CeSqn8BzXQkJg==,
       }
-    dev: false
-
-  /storybook-addon-themes/6.1.0_ef5jwxihqo6n7gxfmzogljlgcm:
-    resolution:
-      {
-        integrity: sha512-ZT8aNgrwFVNEOmOPBLNS0WBacjvMFo/bZ83P8MmsJ3Ewqt0AbmPioghTZccARUn/EQ+LrDxyh2D0QgmLaKo07Q==,
-      }
-    peerDependencies:
-      react: '*'
-      svelte: '*'
-      vue: '*'
-    peerDependenciesMeta:
-      react:
-        optional: true
-      svelte:
-        optional: true
-      vue:
-        optional: true
-    dependencies:
-      '@storybook/addons': 6.5.7_ef5jwxihqo6n7gxfmzogljlgcm
-      '@storybook/api': 6.5.7_ef5jwxihqo6n7gxfmzogljlgcm
-      '@storybook/components': 6.5.7_ef5jwxihqo6n7gxfmzogljlgcm
-      '@storybook/core-events': 6.5.7
-      '@storybook/theming': 6.5.7_ef5jwxihqo6n7gxfmzogljlgcm
-      core-js: 3.22.8
-      global: 4.4.0
-      memoizerific: 1.11.3
-      react: 18.1.0
-    transitivePeerDependencies:
-      - react-dom
     dev: false
 
   /stream-browserify/2.0.2:
