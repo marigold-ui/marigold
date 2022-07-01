@@ -61,7 +61,7 @@ test('does not render tooltip by default', () => {
   expect(screen.queryByText('Look at this tooltip!')).toBeNull();
 });
 
-test('shows tooltip on focus', () => {
+test('shows tooltip on focus', async () => {
   render(
     <Tooltip.Trigger>
       <Button>Button!</Button>
@@ -72,7 +72,7 @@ test('shows tooltip on focus', () => {
   const button = screen.getByText('Button!');
   fireEvent.focus(button);
 
-  expect(screen.getByRole('tooltip')).toBeVisible();
+  waitFor(() => expect(screen.getByRole('tooltip')).toBeVisible());
 
   fireEvent.blur(button);
 
@@ -95,7 +95,7 @@ test('shows tooltip on hover', async () => {
   fireEvent.mouseEnter(button);
   fireEvent.mouseMove(button);
 
-  expect(screen.getByRole('tooltip')).toBeVisible();
+  waitFor(() => expect(screen.getByRole('tooltip')).toBeVisible());
 
   fireEvent.mouseLeave(button);
 
@@ -140,7 +140,7 @@ test('allows to change tooltip placement', () => {
   const button = screen.getByText('Button!');
   fireEvent.focus(button);
 
-  expect(screen.getByRole('tooltip')).toBeVisible();
+  waitFor(() => expect(screen.getByRole('tooltip')).toBeVisible());
 });
 
 test('styled via "Tooltip" from theme', () => {
@@ -190,5 +190,6 @@ test('sets placement as data attribute for styling', () => {
   );
 
   const tooltip = screen.getByRole('tooltip');
-  expect(tooltip).toHaveAttribute('data-placement', 'left');
+
+  waitFor(() => expect(tooltip).toHaveAttribute('data-placement', 'left'));
 });
