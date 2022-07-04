@@ -1,5 +1,11 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 import { Switch } from './Switch';
 import userEvent from '@testing-library/user-event';
@@ -68,7 +74,7 @@ const theme = {
     },
   },
 };
-const user = userEvent.setup();
+
 const getSwitchParts = () => {
   const label = screen.getByText('Label');
   // eslint-disable-next-line testing-library/no-node-access
@@ -190,21 +196,24 @@ test('focus element and toggle switch per keyboard space', async () => {
   );
 
   const { input, track } = getSwitchParts();
-  user.tab();
+  // tests if focus
+  userEvent.tab();
 
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => expect(track).toHaveAttribute('data-focus'));
-  user.keyboard('{space}');
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => expect(track).toHaveStyle(`background-color: orange`));
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => expect(input).toHaveAttribute('aria-checked', 'true'));
+  expect(track).toHaveAttribute('data-focus');
+  expect(input).toHaveAttribute('aria-checked', 'false');
 
-  user.keyboard('{space}');
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => expect(track).toHaveStyle(`background-color: blue`));
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => expect(input).toHaveAttribute('aria-checked', 'false'));
+  await userEvent.keyboard('[space]');
+
+  await waitFor(() => {
+    expect(track).toHaveStyle(`background-color: orange`);
+    expect(input).toHaveAttribute('aria-checked', 'true');
+  });
+
+  await userEvent.keyboard('[space]');
+  await waitFor(() => {
+    expect(track).toHaveStyle(`background-color: blue`);
+    expect(input).toHaveAttribute('aria-checked', 'false');
+  });
 });
 
 test('supports default checked', () => {
