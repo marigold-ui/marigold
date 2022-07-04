@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 import { Switch } from './Switch';
 import userEvent from '@testing-library/user-event';
@@ -196,7 +190,6 @@ test('focus element and toggle switch per keyboard space', async () => {
   );
 
   const { input, track } = getSwitchParts();
-  // tests if focus
   userEvent.tab();
 
   expect(track).toHaveAttribute('data-focus');
