@@ -299,7 +299,7 @@ importers:
       '@marigold/tokens': workspace:*
       '@marigold/tsconfig': workspace:*
       '@marigold/types': workspace:*
-      '@react-aria/button': 3.5.0
+      '@react-aria/button': 3.5.1
       '@react-aria/checkbox': 3.4.1
       '@react-aria/dialog': 3.2.1
       '@react-aria/focus': 3.6.0
@@ -349,7 +349,7 @@ importers:
       '@marigold/system': link:../system
       '@marigold/tokens': link:../tokens
       '@marigold/types': link:../types
-      '@react-aria/button': 3.5.0_react@18.1.0
+      '@react-aria/button': 3.5.1_react@18.1.0
       '@react-aria/checkbox': 3.4.1_react@18.1.0
       '@react-aria/dialog': 3.2.1_react@18.1.0
       '@react-aria/focus': 3.6.0_react@18.1.0
@@ -4805,16 +4805,16 @@ packages:
     resolution: {integrity: sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==}
     dev: false
 
-  /@react-aria/button/3.5.0_react@18.1.0:
-    resolution: {integrity: sha512-S15W77YemT5g8jNHr8QpIHqT242TxpiBwzj3D0HsQFKoTEb5uXoNAIqZinDjhmbl4ovx2s7h/XevqDNEzvjAtw==}
+  /@react-aria/button/3.5.1_react@18.1.0:
+    resolution: {integrity: sha512-M0AaDeJoM4wu2xkv1FvbhuvWB78yF8yNE91KkyEW+TMBiEjSaij61jyov95m08DT2EXSxuXnch3BoP8s3XHj4g==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
       '@babel/runtime': 7.18.6
-      '@react-aria/focus': 3.6.0_react@18.1.0
+      '@react-aria/focus': 3.6.1_react@18.1.0
       '@react-aria/interactions': 3.9.1_react@18.1.0
-      '@react-aria/utils': 3.13.0_react@18.1.0
-      '@react-stately/toggle': 3.3.0_react@18.1.0
+      '@react-aria/utils': 3.13.1_react@18.1.0
+      '@react-stately/toggle': 3.3.1_react@18.1.0
       '@react-types/button': 3.5.1_react@18.1.0
       react: 18.1.0
     dev: false
