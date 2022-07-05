@@ -300,7 +300,7 @@ importers:
       '@marigold/tsconfig': workspace:*
       '@marigold/types': workspace:*
       '@react-aria/button': 3.5.0
-      '@react-aria/checkbox': 3.4.0
+      '@react-aria/checkbox': 3.4.1
       '@react-aria/dialog': 3.2.1
       '@react-aria/focus': 3.6.0
       '@react-aria/i18n': 3.4.0
@@ -350,7 +350,7 @@ importers:
       '@marigold/tokens': link:../tokens
       '@marigold/types': link:../types
       '@react-aria/button': 3.5.0_react@18.1.0
-      '@react-aria/checkbox': 3.4.0_react@18.1.0
+      '@react-aria/checkbox': 3.4.1_react@18.1.0
       '@react-aria/dialog': 3.2.1_react@18.1.0
       '@react-aria/focus': 3.6.0_react@18.1.0
       '@react-aria/i18n': 3.4.0_react@18.1.0
@@ -4632,18 +4632,18 @@ packages:
       react: 18.1.0
     dev: false
 
-  /@react-aria/checkbox/3.4.0_react@18.1.0:
-    resolution: {integrity: sha512-G1lxa7Glb0HWOjPyA4bYx8n3vAPGF7GKpZ7E4wGnMt3UQfslHavhEmtFyplt3l0f4OkhV8E/yr8SXnNb0cZDLQ==}
+  /@react-aria/checkbox/3.4.1_react@18.1.0:
+    resolution: {integrity: sha512-aTGW7Yo8rXC741GB2FPt0LqtjUm8E0KW2OldskcQuBUk2jSc11q7626VFvagk6bxMuoT+0gKAgehz/+yNHmmzA==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
       '@babel/runtime': 7.18.3
-      '@react-aria/label': 3.3.0_react@18.1.0
-      '@react-aria/toggle': 3.3.0_react@18.1.0
-      '@react-aria/utils': 3.13.0_react@18.1.0
-      '@react-stately/checkbox': 3.1.0_react@18.1.0
-      '@react-stately/toggle': 3.3.0_react@18.1.0
-      '@react-types/checkbox': 3.3.0_react@18.1.0
+      '@react-aria/label': 3.3.1_react@18.1.0
+      '@react-aria/toggle': 3.3.1_react@18.1.0
+      '@react-aria/utils': 3.13.1_react@18.1.0
+      '@react-stately/checkbox': 3.1.1_react@18.1.0
+      '@react-stately/toggle': 3.3.1_react@18.1.0
+      '@react-types/checkbox': 3.3.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -4693,18 +4693,18 @@ packages:
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
       '@babel/runtime': 7.18.3
-      '@react-aria/focus': 3.6.0_react@18.1.0
+      '@react-aria/focus': 3.6.1_react@18.1.0
       '@react-aria/i18n': 3.4.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/live-announcer': 3.1.0
       '@react-aria/selection': 3.9.0_react@18.1.0
-      '@react-aria/utils': 3.13.0_react@18.1.0
+      '@react-aria/utils': 3.13.1_react@18.1.0
       '@react-stately/grid': 3.2.0_react@18.1.0
       '@react-stately/selection': 3.10.0_react@18.1.0
       '@react-stately/virtualizer': 3.2.0_react@18.1.0
-      '@react-types/checkbox': 3.3.0_react@18.1.0
+      '@react-types/checkbox': 3.3.1_react@18.1.0
       '@react-types/grid': 3.1.0_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
     dev: false
@@ -4755,6 +4755,18 @@ packages:
       '@react-aria/utils': 3.13.0_react@18.1.0
       '@react-types/label': 3.6.0_react@18.1.0
       '@react-types/shared': 3.13.0_react@18.1.0
+      react: 18.1.0
+    dev: false
+
+  /@react-aria/label/3.3.1_react@18.1.0:
+    resolution: {integrity: sha512-Md4AEYBNByD8e6okbM/GR320++N/i4/xZZXdWtDVIfwpMVnLZ0v/ZPEi4DgLTc4Rwhm021s2qpYhZHQYThOd4A==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.18.3
+      '@react-aria/utils': 3.13.1_react@18.1.0
+      '@react-types/label': 3.6.1_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -4906,13 +4918,13 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
       '@babel/runtime': 7.18.3
-      '@react-aria/focus': 3.6.0_react@18.1.0
+      '@react-aria/focus': 3.6.1_react@18.1.0
       '@react-aria/i18n': 3.4.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
-      '@react-aria/utils': 3.13.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
+      '@react-aria/utils': 3.13.1_react@18.1.0
       '@react-stately/collections': 3.4.0_react@18.1.0
       '@react-stately/selection': 3.10.0_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -4954,9 +4966,9 @@ packages:
       '@babel/runtime': 7.18.3
       '@react-aria/i18n': 3.4.0_react@18.1.0
       '@react-aria/live-announcer': 3.1.0
-      '@react-aria/utils': 3.13.0_react@18.1.0
+      '@react-aria/utils': 3.13.1_react@18.1.0
       '@react-types/button': 3.5.0_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
     dev: false
@@ -5036,6 +5048,22 @@ packages:
       react: 18.1.0
     dev: false
 
+  /@react-aria/toggle/3.3.1_react@18.1.0:
+    resolution: {integrity: sha512-y9m5K5UbhfR/xqeHM3N0dV9Z5t4j9dpyCq/VNa9XOvL/NquKVnn7rpXEO715wEfUV7nUILsP2idz99bi3vohDA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.18.3
+      '@react-aria/focus': 3.6.1_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
+      '@react-aria/utils': 3.13.1_react@18.1.0
+      '@react-stately/toggle': 3.3.1_react@18.1.0
+      '@react-types/checkbox': 3.3.1_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
+      '@react-types/switch': 3.2.1_react@18.1.0
+      react: 18.1.0
+    dev: false
+
   /@react-aria/tooltip/3.2.0_react@18.1.0:
     resolution: {integrity: sha512-JnchvAwt3N+F76gfpxfRLoHU2FRI8hUfMKr1CrcmLGJs996kINiBSIsETobTZhLnPzYk+pLZ26ZoqJYjP1bJwg==}
     peerDependencies:
@@ -5098,6 +5126,18 @@ packages:
       '@react-stately/toggle': 3.3.0_react@18.1.0
       '@react-stately/utils': 3.5.0_react@18.1.0
       '@react-types/checkbox': 3.3.0_react@18.1.0
+      react: 18.1.0
+    dev: false
+
+  /@react-stately/checkbox/3.1.1_react@18.1.0:
+    resolution: {integrity: sha512-IxqZ6NYe3GV4RZ4ZGBJLuDuVg8/jaWj9eT2QW9YauFDzZvlFFP5tt6w+easWg7X2wG17wHo6VKoIxnKmY82K4A==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.18.3
+      '@react-stately/toggle': 3.3.1_react@18.1.0
+      '@react-stately/utils': 3.5.0_react@18.1.0
+      '@react-types/checkbox': 3.3.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -5264,6 +5304,18 @@ packages:
       react: 18.1.0
     dev: false
 
+  /@react-stately/toggle/3.3.1_react@18.1.0:
+    resolution: {integrity: sha512-JIOPfeZ46vfQqfBygCmyIRL0KJwdHdVQ5PSii5YM0qs/kzaHm3SLGf/iiGjwcRCOsnL50zN9U5YNDtRAEbsncg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.18.3
+      '@react-stately/utils': 3.5.0_react@18.1.0
+      '@react-types/checkbox': 3.3.1_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
+      react: 18.1.0
+    dev: false
+
   /@react-stately/tooltip/3.1.0_react@18.1.0:
     resolution: {integrity: sha512-Wg7nF7sb1tiMNiLq0tDYBqUhqb2tBZS6ORTPOey1YoOI/wh4QB1OalCC62a3dzFjdv5dhnThdai3d4X1AXya0A==}
     peerDependencies:
@@ -5304,8 +5356,8 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
       '@babel/runtime': 7.18.3
-      '@react-aria/utils': 3.13.0_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-aria/utils': 3.13.1_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -5324,6 +5376,15 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
       '@react-types/shared': 3.13.0_react@18.1.0
+      react: 18.1.0
+    dev: false
+
+  /@react-types/checkbox/3.3.1_react@18.1.0:
+    resolution: {integrity: sha512-6PlyvfqisuObrltmJdBx88t143NaQ/ibkvuDdsEaiMlJbHKU4m0dbxaYNhGNQ0Jm4AK/x9Rig0tbpMeXjBXaDA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -5352,7 +5413,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -5362,6 +5423,15 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
       '@react-types/shared': 3.13.0_react@18.1.0
+      react: 18.1.0
+    dev: false
+
+  /@react-types/label/3.6.1_react@18.1.0:
+    resolution: {integrity: sha512-Yjz1qWJ3uAdMYMOKDUiB28Wdc/3kqeuE9BtrLbvqjX/VZcnFgbVEQ6Yy8G9v6pcjEF/EJRl+hcA0deUews/G0w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -5380,7 +5450,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -5435,7 +5505,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -5474,13 +5544,23 @@ packages:
       react: 18.1.0
     dev: false
 
+  /@react-types/switch/3.2.1_react@18.1.0:
+    resolution: {integrity: sha512-Vert9rhsoZb9x8weluROR02EoNz21eg/l1djawORUbLxqK/wal0eYrjlA2S+FPlXtgAwdeFe9AVXDdpvYT0oNQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@react-types/checkbox': 3.3.1_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
+      react: 18.1.0
+    dev: false
+
   /@react-types/table/3.2.0_react@18.1.0:
     resolution: {integrity: sha512-YCfUDT8ysNX/nfm6nvc9rhjSUeVDou5L2e+Y52xnzNU9qw05raLbS8Etm6X/Y5sDLD3qgOlUNjUYkm3swGfaHA==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
       '@react-types/grid': 3.1.0_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -5489,7 +5569,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
