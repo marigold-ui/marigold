@@ -304,7 +304,7 @@ importers:
       '@react-aria/dialog': 3.2.1
       '@react-aria/focus': 3.6.0
       '@react-aria/i18n': 3.4.0
-      '@react-aria/interactions': 3.9.0
+      '@react-aria/interactions': 3.9.1
       '@react-aria/link': 3.3.0
       '@react-aria/listbox': 3.5.0
       '@react-aria/menu': 3.5.0
@@ -354,7 +354,7 @@ importers:
       '@react-aria/dialog': 3.2.1_react@18.1.0
       '@react-aria/focus': 3.6.0_react@18.1.0
       '@react-aria/i18n': 3.4.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/link': 3.3.0_react@18.1.0
       '@react-aria/listbox': 3.5.0_react@18.1.0
       '@react-aria/menu': 3.5.0_ef5jwxihqo6n7gxfmzogljlgcm
@@ -4625,7 +4625,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.3
       '@react-aria/focus': 3.6.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/utils': 3.13.0_react@18.1.0
       '@react-stately/toggle': 3.3.0_react@18.1.0
       '@react-types/button': 3.5.0_react@18.1.0
@@ -4666,7 +4666,7 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
       '@babel/runtime': 7.18.3
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/utils': 3.13.0_react@18.1.0
       '@react-types/shared': 3.13.0_react@18.1.0
       clsx: 1.1.1
@@ -4724,17 +4724,6 @@ packages:
       react: 18.1.0
     dev: false
 
-  /@react-aria/interactions/3.9.0_react@18.1.0:
-    resolution: {integrity: sha512-tf9vJtHf7DSnj4e/q19hoO5h61xb0qxNXUkOwaVwU1XlaA+eh+Qas2RF0GIMARLj+JhGX9y2nLjw3FK8F+pItQ==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
-    dependencies:
-      '@babel/runtime': 7.18.3
-      '@react-aria/utils': 3.13.0_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
-      react: 18.1.0
-    dev: false
-
   /@react-aria/interactions/3.9.1_react@18.1.0:
     resolution: {integrity: sha512-qPTJpUwIiis2OwpVzDd3I8dBjBkelDnvAW+dJkX+8B840JP5a7E1zVoAuR7OOAXqKa95R7miwK+5la1aSeWoDg==}
     peerDependencies:
@@ -4777,7 +4766,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.3
       '@react-aria/focus': 3.6.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/utils': 3.13.0_react@18.1.0
       '@react-types/link': 3.3.0_react@18.1.0
       '@react-types/shared': 3.13.0_react@18.1.0
@@ -4791,7 +4780,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.3
       '@react-aria/focus': 3.6.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/label': 3.3.0_react@18.1.0
       '@react-aria/selection': 3.9.0_react@18.1.0
       '@react-aria/utils': 3.13.0_react@18.1.0
@@ -4816,7 +4805,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.3
       '@react-aria/i18n': 3.4.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/overlays': 3.9.0_ef5jwxihqo6n7gxfmzogljlgcm
       '@react-aria/selection': 3.9.0_react@18.1.0
       '@react-aria/utils': 3.13.0_react@18.1.0
@@ -4838,7 +4827,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.3
       '@react-aria/i18n': 3.4.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/live-announcer': 3.1.0
       '@react-aria/spinbutton': 3.1.0_ef5jwxihqo6n7gxfmzogljlgcm
       '@react-aria/textfield': 3.6.0_react@18.1.0
@@ -4860,7 +4849,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.3
       '@react-aria/i18n': 3.4.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/utils': 3.13.0_react@18.1.0
       '@react-aria/visually-hidden': 3.3.0_react@18.1.0
       '@react-stately/overlays': 3.3.0_react@18.1.0
@@ -4881,7 +4870,7 @@ packages:
       '@babel/runtime': 7.18.3
       '@react-aria/focus': 3.6.0_react@18.1.0
       '@react-aria/i18n': 3.4.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/label': 3.3.0_react@18.1.0
       '@react-aria/utils': 3.13.0_react@18.1.0
       '@react-stately/radio': 3.4.0_react@18.1.0
@@ -4897,7 +4886,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.3
       '@react-aria/i18n': 3.4.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/label': 3.3.0_react@18.1.0
       '@react-aria/listbox': 3.5.0_react@18.1.0
       '@react-aria/menu': 3.5.0_ef5jwxihqo6n7gxfmzogljlgcm
@@ -4947,7 +4936,7 @@ packages:
       '@babel/runtime': 7.18.3
       '@react-aria/focus': 3.6.0_react@18.1.0
       '@react-aria/i18n': 3.4.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/label': 3.3.0_react@18.1.0
       '@react-aria/utils': 3.13.0_react@18.1.0
       '@react-stately/radio': 3.4.0_react@18.1.0
@@ -5004,7 +4993,7 @@ packages:
       '@react-aria/focus': 3.6.0_react@18.1.0
       '@react-aria/grid': 3.3.0_ef5jwxihqo6n7gxfmzogljlgcm
       '@react-aria/i18n': 3.4.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/live-announcer': 3.1.0
       '@react-aria/selection': 3.9.0_react@18.1.0
       '@react-aria/utils': 3.13.0_react@18.1.0
@@ -5039,7 +5028,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.3
       '@react-aria/focus': 3.6.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/utils': 3.13.0_react@18.1.0
       '@react-stately/toggle': 3.3.0_react@18.1.0
       '@react-types/checkbox': 3.3.0_react@18.1.0
@@ -5071,7 +5060,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.3
       '@react-aria/focus': 3.6.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/utils': 3.13.0_react@18.1.0
       '@react-stately/tooltip': 3.1.0_react@18.1.0
       '@react-types/shared': 3.13.0_react@18.1.0
@@ -5111,7 +5100,7 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
       '@babel/runtime': 7.18.3
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/utils': 3.13.0_react@18.1.0
       clsx: 1.1.1
       react: 18.1.0
@@ -5422,7 +5411,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -5440,7 +5429,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-types/shared': 3.13.0_react@18.1.0
       react: 18.1.0
     dev: false
