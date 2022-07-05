@@ -426,7 +426,7 @@ importers:
   packages/system:
     specifiers:
       '@babel/core': 7.17.12
-      '@emotion/react': 11.9.0
+      '@emotion/react': 11.9.3
       '@marigold/tsconfig': workspace:*
       '@marigold/types': workspace:*
       '@theme-ui/css': 0.14.5
@@ -436,9 +436,9 @@ importers:
       react-fast-compare: ^3.2.0
       tsup: 6.0.1
     dependencies:
-      '@emotion/react': 11.9.0_qnx65i4ebckra2zlsr23yz4uva
+      '@emotion/react': 11.9.3_qnx65i4ebckra2zlsr23yz4uva
       '@marigold/types': link:../types
-      '@theme-ui/css': 0.14.5_@emotion+react@11.9.0
+      '@theme-ui/css': 0.14.5_@emotion+react@11.9.3
       csstype: 3.1.0
       deepmerge: 4.2.2
       react-fast-compare: 3.2.0
@@ -2394,7 +2394,7 @@ packages:
       '@babel/runtime': 7.18.3
       '@emotion/hash': 0.8.0
       '@emotion/memoize': 0.7.5
-      '@emotion/serialize': 1.0.3
+      '@emotion/serialize': 1.0.4
       babel-plugin-macros: 2.8.0
       convert-source-map: 1.8.0
       escape-string-regexp: 4.0.0
@@ -2408,6 +2408,16 @@ packages:
     dependencies:
       '@emotion/memoize': 0.7.5
       '@emotion/sheet': 1.1.0
+      '@emotion/utils': 1.1.0
+      '@emotion/weak-memoize': 0.2.5
+      stylis: 4.0.13
+    dev: false
+
+  /@emotion/cache/11.9.3:
+    resolution: {integrity: sha512-0dgkI/JKlCXa+lEXviaMtGBL0ynpx4osh7rjOXE71q9bIF8G+XhJgvi+wDu0B0IdCVx37BffiwXlN9I3UuzFvg==}
+    dependencies:
+      '@emotion/memoize': 0.7.5
+      '@emotion/sheet': 1.1.1
       '@emotion/utils': 1.1.0
       '@emotion/weak-memoize': 0.2.5
       stylis: 4.0.13
@@ -2451,8 +2461,8 @@ packages:
       react: 18.1.0
     dev: false
 
-  /@emotion/react/11.9.0_qnx65i4ebckra2zlsr23yz4uva:
-    resolution: {integrity: sha512-lBVSF5d0ceKtfKCDQJveNAtkC7ayxpVlgOohLgXqRwqWr9bOf4TZAFFyIcNngnV6xK6X4x2ZeXq7vliHkoVkxQ==}
+  /@emotion/react/11.9.3_qnx65i4ebckra2zlsr23yz4uva:
+    resolution: {integrity: sha512-g9Q1GcTOlzOEjqwuLF/Zd9LC+4FljjPjDfxSM7KmEakm+hsHXk+bYZ2q+/hTJzr0OUNkujo72pXLQvXj6H+GJQ==}
     peerDependencies:
       '@babel/core': ^7.0.0
       '@types/react': '*'
@@ -2466,8 +2476,8 @@ packages:
       '@babel/core': 7.17.12
       '@babel/runtime': 7.18.3
       '@emotion/babel-plugin': 11.9.2_@babel+core@7.17.12
-      '@emotion/cache': 11.7.1
-      '@emotion/serialize': 1.0.3
+      '@emotion/cache': 11.9.3
+      '@emotion/serialize': 1.0.4
       '@emotion/utils': 1.1.0
       '@emotion/weak-memoize': 0.2.5
       hoist-non-react-statics: 3.3.2
@@ -2484,8 +2494,22 @@ packages:
       csstype: 3.1.0
     dev: false
 
+  /@emotion/serialize/1.0.4:
+    resolution: {integrity: sha512-1JHamSpH8PIfFwAMryO2bNka+y8+KA5yga5Ocf2d7ZEiJjb7xlLW7aknBGZqJLajuLOvJ+72vN+IBSwPlXD1Pg==}
+    dependencies:
+      '@emotion/hash': 0.8.0
+      '@emotion/memoize': 0.7.5
+      '@emotion/unitless': 0.7.5
+      '@emotion/utils': 1.1.0
+      csstype: 3.1.0
+    dev: false
+
   /@emotion/sheet/1.1.0:
     resolution: {integrity: sha512-u0AX4aSo25sMAygCuQTzS+HsImZFuS8llY8O7b9MDRzbJM0kVJlAz6KNDqcG7pOuQZJmj/8X/rAW+66kMnMW+g==}
+    dev: false
+
+  /@emotion/sheet/1.1.1:
+    resolution: {integrity: sha512-J3YPccVRMiTZxYAY0IOq3kd+hUP8idY8Kz6B/Cyo+JuXq52Ek+zbPbSQUrVQp95aJ+lsAW7DPL1P2Z+U1jGkKA==}
     dev: false
 
   /@emotion/styled/11.8.1_kquxywth6qxalrxkhxh4aj463u:
@@ -7283,12 +7307,12 @@ packages:
       '@testing-library/dom': 8.13.0
     dev: false
 
-  /@theme-ui/css/0.14.5_@emotion+react@11.9.0:
+  /@theme-ui/css/0.14.5_@emotion+react@11.9.3:
     resolution: {integrity: sha512-EZztsPXJEg8rceTRGwWDD++d9QFSwEkl5913BvWmWTmB/Ips91ZIpnTbhfVRbG3bgUa+9lc1VwSEHOsHkN5mgw==}
     peerDependencies:
       '@emotion/react': ^11
     dependencies:
-      '@emotion/react': 11.9.0_qnx65i4ebckra2zlsr23yz4uva
+      '@emotion/react': 11.9.3_qnx65i4ebckra2zlsr23yz4uva
       csstype: 3.1.0
     dev: false
 
@@ -21878,7 +21902,7 @@ packages:
     dev: false
 
   /source-map/0.5.7:
-    resolution: {integrity: sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=}
+    resolution: {integrity: sha512-LbrmJOMUSdEVxIKvdcJzQC+nQhe8FUZQTXQy6+I75skNgn3OoQ0DZA8YnFa7gp8tqtL3KPf1kmo0R5DoApeSGQ==}
     engines: {node: '>=0.10.0'}
     dev: false
 
@@ -22806,7 +22830,7 @@ packages:
     dev: false
 
   /to-fast-properties/2.0.0:
-    resolution: {integrity: sha1-3F5pjL0HkmW8c+A3doGk5Og/YW4=}
+    resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==}
     engines: {node: '>=4'}
 
   /to-object-path/0.3.0:
