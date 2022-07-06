@@ -4,7 +4,6 @@ import { ThemeProvider } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Tooltip } from './Tooltip';
-import userEvent from '@testing-library/user-event';
 
 const theme = {
   fontSizes: {
@@ -75,7 +74,7 @@ test('shows tooltip on focus', async () => {
   const tooltip = screen.getByRole('tooltip');
 
   await waitFor(() => {
-    expect(screen.getByRole('tooltip')).toBeVisible();
+    expect(tooltip).toBeVisible();
   });
 
   fireEvent.blur(button);
@@ -193,10 +192,12 @@ test.only('sets placement as data attribute for styling', async () => {
     </ThemeProvider>
   );
 
+  const button = screen.getByText('Button!');
+  fireEvent.focus(button);
+
   const tooltip = screen.getByRole('tooltip');
 
-  console.log(tooltip.parentElement);
-  await waitFor(() =>
-    expect(tooltip).toHaveAttribute('data-placement', 'left')
-  );
+  console.log(tooltip);
+  await waitFor(() => expect(tooltip).toBeVisible());
+  expect(tooltip).toHaveAttribute('data-placement', 'left');
 });

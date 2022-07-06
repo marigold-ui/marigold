@@ -298,7 +298,7 @@ importers:
       '@marigold/tokens': workspace:*
       '@marigold/tsconfig': workspace:*
       '@marigold/types': workspace:*
-      '@react-aria/button': 3.5.1
+      '@react-aria/button': 3.5.0
       '@react-aria/checkbox': 3.4.0
       '@react-aria/dialog': 3.2.1
       '@react-aria/focus': 3.6.0
@@ -348,7 +348,7 @@ importers:
       '@marigold/system': link:../system
       '@marigold/tokens': link:../tokens
       '@marigold/types': link:../types
-      '@react-aria/button': 3.5.1_react@18.1.0
+      '@react-aria/button': 3.5.0_react@18.1.0
       '@react-aria/checkbox': 3.4.0_react@18.1.0
       '@react-aria/dialog': 3.2.1_react@18.1.0
       '@react-aria/focus': 3.6.0_react@18.1.0
@@ -5684,10 +5684,10 @@ packages:
       }
     dev: false
 
-  /@react-aria/button/3.5.1_react@18.1.0:
+  /@react-aria/button/3.5.0_react@18.1.0:
     resolution:
       {
-        integrity: sha512-M0AaDeJoM4wu2xkv1FvbhuvWB78yF8yNE91KkyEW+TMBiEjSaij61jyov95m08DT2EXSxuXnch3BoP8s3XHj4g==,
+        integrity: sha512-S15W77YemT5g8jNHr8QpIHqT242TxpiBwzj3D0HsQFKoTEb5uXoNAIqZinDjhmbl4ovx2s7h/XevqDNEzvjAtw==,
       }
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
@@ -5779,16 +5779,16 @@ packages:
       '@babel/runtime': 7.18.3
       '@react-aria/focus': 3.6.1_react@18.1.0
       '@react-aria/i18n': 3.4.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/live-announcer': 3.1.0
       '@react-aria/selection': 3.9.0_react@18.1.0
       '@react-aria/utils': 3.13.1_react@18.1.0
       '@react-stately/grid': 3.2.0_react@18.1.0
       '@react-stately/selection': 3.10.0_react@18.1.0
       '@react-stately/virtualizer': 3.2.0_react@18.1.0
-      '@react-types/checkbox': 3.3.0_react@18.1.0
+      '@react-types/checkbox': 3.3.1_react@18.1.0
       '@react-types/grid': 3.1.0_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
     dev: false
@@ -5850,7 +5850,7 @@ packages:
       '@babel/runtime': 7.18.3
       '@react-aria/utils': 3.13.1_react@18.1.0
       '@react-types/label': 3.6.0_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -6031,11 +6031,11 @@ packages:
       '@babel/runtime': 7.18.3
       '@react-aria/focus': 3.6.1_react@18.1.0
       '@react-aria/i18n': 3.4.0_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/utils': 3.13.1_react@18.1.0
       '@react-stately/collections': 3.4.0_react@18.1.0
       '@react-stately/selection': 3.10.0_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -6087,8 +6087,8 @@ packages:
       '@react-aria/i18n': 3.4.0_react@18.1.0
       '@react-aria/live-announcer': 3.1.0
       '@react-aria/utils': 3.13.1_react@18.1.0
-      '@react-types/button': 3.5.0_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/button': 3.5.1_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
     dev: false
@@ -6174,11 +6174,11 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.3
       '@react-aria/focus': 3.6.1_react@18.1.0
-      '@react-aria/interactions': 3.9.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
       '@react-aria/utils': 3.13.1_react@18.1.0
-      '@react-stately/toggle': 3.3.0_react@18.1.0
-      '@react-types/checkbox': 3.3.0_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-stately/toggle': 3.3.1_react@18.1.0
+      '@react-types/checkbox': 3.3.1_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       '@react-types/switch': 3.2.0_react@18.1.0
       react: 18.1.0
     dev: false
@@ -6287,7 +6287,7 @@ packages:
       '@babel/runtime': 7.18.3
       '@react-stately/selection': 3.10.0_react@18.1.0
       '@react-types/grid': 3.1.0_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -6411,7 +6411,7 @@ packages:
       '@babel/runtime': 7.18.3
       '@react-stately/collections': 3.4.0_react@18.1.0
       '@react-stately/utils': 3.5.0_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -6533,7 +6533,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.3
       '@react-aria/utils': 3.13.1_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -6619,7 +6619,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -6643,8 +6643,8 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@react-aria/interactions': 3.9.0_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-aria/interactions': 3.9.1_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -6656,7 +6656,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -6729,7 +6729,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -6763,7 +6763,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -6775,8 +6775,8 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@react-types/checkbox': 3.3.0_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/checkbox': 3.3.1_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -6789,7 +6789,7 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
       '@react-types/grid': 3.1.0_react@18.1.0
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
@@ -6801,7 +6801,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@react-types/shared': 3.13.0_react@18.1.0
+      '@react-types/shared': 3.13.1_react@18.1.0
       react: 18.1.0
     dev: false
 
