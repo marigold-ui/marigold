@@ -429,7 +429,7 @@ importers:
       '@emotion/react': 11.9.3
       '@marigold/tsconfig': workspace:*
       '@marigold/types': workspace:*
-      '@theme-ui/css': 0.14.5
+      '@theme-ui/css': 0.14.6
       csstype: 3.1.0
       deepmerge: ^4.2.2
       react: 18.1.0
@@ -438,7 +438,7 @@ importers:
     dependencies:
       '@emotion/react': 11.9.3_qnx65i4ebckra2zlsr23yz4uva
       '@marigold/types': link:../types
-      '@theme-ui/css': 0.14.5_@emotion+react@11.9.3
+      '@theme-ui/css': 0.14.6_@emotion+react@11.9.3
       csstype: 3.1.0
       deepmerge: 4.2.2
       react-fast-compare: 3.2.0
@@ -7430,8 +7430,8 @@ packages:
       '@testing-library/dom': 8.13.0
     dev: false
 
-  /@theme-ui/css/0.14.5_@emotion+react@11.9.3:
-    resolution: {integrity: sha512-EZztsPXJEg8rceTRGwWDD++d9QFSwEkl5913BvWmWTmB/Ips91ZIpnTbhfVRbG3bgUa+9lc1VwSEHOsHkN5mgw==}
+  /@theme-ui/css/0.14.6_@emotion+react@11.9.3:
+    resolution: {integrity: sha512-/gUkro5YksMLD/NAA45iBGMHnZ4Qedq1aNeLXUTwvZmKhLfBs/TiK+fH+9xl4RJp9BZmSIHppMMtmGCbTuvckA==}
     peerDependencies:
       '@emotion/react': ^11
     dependencies:
