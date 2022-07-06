@@ -343,7 +343,7 @@ importers:
       react: 18.1.0
       react-dom: 18.1.0
       react-is: 18.1.0
-      tsup: 6.0.1
+      tsup: 6.1.3
     dependencies:
       '@marigold/icons': link:../icons
       '@marigold/system': link:../system
@@ -395,7 +395,7 @@ importers:
       '@marigold/tsconfig': link:../../config/tsconfig
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
-      tsup: 6.0.1
+      tsup: 6.1.3
 
   packages/create-theme:
     specifiers:
@@ -403,25 +403,25 @@ importers:
       '@marigold/system': workspace:*
       '@marigold/tokens': workspace:*
       '@marigold/tsconfig': workspace:*
-      tsup: 6.0.1
+      tsup: 6.1.3
     dependencies:
       '@marigold/tokens': link:../tokens
     devDependencies:
       '@marigold/components': link:../components
       '@marigold/system': link:../system
       '@marigold/tsconfig': link:../../config/tsconfig
-      tsup: 6.0.1
+      tsup: 6.1.3
 
   packages/icons:
     specifiers:
       '@marigold/system': workspace:*
       '@marigold/tsconfig': workspace:*
-      tsup: 6.0.1
+      tsup: 6.1.3
     dependencies:
       '@marigold/system': link:../system
     devDependencies:
       '@marigold/tsconfig': link:../../config/tsconfig
-      tsup: 6.0.1
+      tsup: 6.1.3
 
   packages/system:
     specifiers:
@@ -434,7 +434,7 @@ importers:
       deepmerge: ^4.2.2
       react: 18.1.0
       react-fast-compare: ^3.2.0
-      tsup: 6.0.1
+      tsup: 6.1.3
     dependencies:
       '@emotion/react': 11.9.3_qnx65i4ebckra2zlsr23yz4uva
       '@marigold/types': link:../types
@@ -446,15 +446,15 @@ importers:
       '@babel/core': 7.17.12
       '@marigold/tsconfig': link:../../config/tsconfig
       react: 18.1.0
-      tsup: 6.0.1
+      tsup: 6.1.3
 
   packages/tokens:
     specifiers:
       '@marigold/tsconfig': workspace:*
-      tsup: 6.0.1
+      tsup: 6.1.3
     devDependencies:
       '@marigold/tsconfig': link:../../config/tsconfig
-      tsup: 6.0.1
+      tsup: 6.1.3
 
   packages/types:
     specifiers:
@@ -469,31 +469,31 @@ importers:
     specifiers:
       '@marigold/components': workspace:*
       '@marigold/tsconfig': workspace:*
-      tsup: 6.0.1
+      tsup: 6.1.3
     devDependencies:
       '@marigold/components': link:../../packages/components
       '@marigold/tsconfig': link:../../config/tsconfig
-      tsup: 6.0.1
+      tsup: 6.1.3
 
   themes/theme-core:
     specifiers:
       '@marigold/components': workspace:*
       '@marigold/tsconfig': workspace:*
-      tsup: 6.0.1
+      tsup: 6.1.3
     devDependencies:
       '@marigold/components': link:../../packages/components
       '@marigold/tsconfig': link:../../config/tsconfig
-      tsup: 6.0.1
+      tsup: 6.1.3
 
   themes/theme-unicorn:
     specifiers:
       '@marigold/components': workspace:*
       '@marigold/tsconfig': workspace:*
-      tsup: 6.0.1
+      tsup: 6.1.3
     devDependencies:
       '@marigold/components': link:../../packages/components
       '@marigold/tsconfig': link:../../config/tsconfig
-      tsup: 6.0.1
+      tsup: 6.1.3
 
 packages:
 
@@ -23148,8 +23148,8 @@ packages:
     resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
     dev: false
 
-  /tsup/6.0.1:
-    resolution: {integrity: sha512-2Pl1YkEEvzfg4aYgwUILaHV0wwZQKO7mNHMQChyzdCNlQqf11eug7gWk86XCb3CvRofCXBX87x73BTGjyS3cOQ==}
+  /tsup/6.1.3:
+    resolution: {integrity: sha512-eRpBnbfpDFng+EJNTQ90N7QAf4HAGGC7O3buHIjroKWK7D1ibk9/YnR/3cS8HsMU5T+6Oi+cnF+yU5WmCnB//Q==}
     engines: {node: '>=14'}
     hasBin: true
     peerDependencies:
