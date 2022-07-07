@@ -31,7 +31,7 @@
     "@storybook/addon-essentials": "6.5.9",
     "@storybook/addon-interactions": "6.5.9",
     "@storybook/jest": "0.0.10",
-    "@storybook/testing-library": "0.0.11",
+    "@storybook/testing-library": "0.0.13",
     "@types/react": "18",
     "babel-loader": "8.2.5",
     "chromatic": "^6.6.3",
