@@ -1,59 +1,43 @@
 import fs from 'fs';
+import path from 'path';
+
 import matter from 'gray-matter';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import Link from 'next/link';
-import path from 'path';
 
-import { POSTS_PATH, postFilePaths } from '../utils';
+import * as MdxComponents from '../mdx';
+import * as MarigoldComponents from '@marigold/components';
+
+import { CONTENT_PATH } from '../config';
 
 const components = {
   Head,
+  ...MdxComponents,
+  ...MarigoldComponents,
 };
 
-export default function PostPage({ source, frontMatter }: any) {
-  return (
-    <div>
-      <header>
-        <nav>
-          <Link href="/">
-            <a>👈 Go back home</a>
-          </Link>
-        </nav>
-      </header>
-      <div className="post-header">
-        <h1>{frontMatter.title}</h1>
-        {frontMatter.description && (
-          <p className="description">{frontMatter.description}</p>
-        )}
-      </div>
-      <main>
-        <MDXRemote {...source} />
-      </main>
-
-      <style jsx>{`
-        .post-header h1 {
-          margin-bottom: 0;
-        }
-
-        .post-header {
-          margin-bottom: 2rem;
-        }
-        .description {
-          opacity: 0.6;
-        }
-      `}</style>
+const ContentPage = ({ source, frontMatter }: any) => (
+  <div>
+    <div className="post-header">
+      <h1>{frontMatter.title}</h1>
+      {frontMatter.description && (
+        <p className="description">{frontMatter.description}</p>
+      )}
     </div>
-  );
-}
+    <main>
+      <MDXRemote {...source} components={components} />
+    </main>
+  </div>
+);
+
+export default ContentPage;
 
 export const getStaticProps = async ({ params }: any) => {
-  const postFilePath = path.join(POSTS_PATH, `${params.slug}.mdx`);
-  const source = fs.readFileSync(postFilePath);
+  const contentFilePath = path.join(CONTENT_PATH, `${params.slug}.mdx`);
+  const source = fs.readFileSync(contentFilePath);
 
-  const { content, data } = matter(source);
+  const { content, data: frontMatter } = matter(source);
 
   const mdxSource = await serialize(content, {
     // Optionally pass remark/rehype plugins
@@ -61,22 +45,24 @@ export const getStaticProps = async ({ params }: any) => {
       remarkPlugins: [],
       rehypePlugins: [],
     },
-    scope: data,
+    scope: frontMatter,
   });
 
   return {
     props: {
       source: mdxSource,
-      frontMatter: data,
+      frontMatter,
     },
   };
 };
 
 export const getStaticPaths = async () => {
-  const paths = postFilePaths
-    // Remove file extensions for page paths
+  const contentFilePaths = fs
+    .readdirSync(CONTENT_PATH)
+    .filter(p => /\.mdx?$/.test(p));
+
+  const paths = contentFilePaths
     .map(path => path.replace(/\.mdx?$/, ''))
-    // Map the path into the static paths object required by Next.js
     .map(slug => ({ params: { slug } }));
 
   return {

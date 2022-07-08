@@ -1,11 +1,8 @@
 import React from 'react';
-// @ts-ignore (reason: package has no types)
-import { preToCodeBlock } from 'mdx-utils';
 
 import { Box, Headline, Text } from '@marigold/components';
 import { ComponentProps } from '@marigold/types';
 
-import { Preview } from './components/Preview';
 import { Link } from './components/Link';
 
 // Typography
@@ -78,14 +75,6 @@ export const inlineCode = ({ children, ...props }: ComponentProps<'code'>) => (
     {children}
   </Box>
 );
-
-export const pre = (preProps: ComponentProps<'pre'>) => {
-  const props = preToCodeBlock(preProps);
-  if (props) {
-    return <Preview type={props.metastring} {...props} />;
-  }
-  return <pre {...preProps} />;
-};
 
 // Lists
 // ---------------
