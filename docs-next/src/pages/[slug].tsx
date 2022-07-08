@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 
-import matter from 'gray-matter';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import Head from 'next/head';
@@ -17,12 +16,12 @@ const components = {
   ...MarigoldComponents,
 };
 
-const ContentPage = ({ source, frontMatter }: any) => (
+const ContentPage = ({ source }: any) => (
   <div>
     <div className="post-header">
-      <h1>{frontMatter.title}</h1>
-      {frontMatter.description && (
-        <p className="description">{frontMatter.description}</p>
+      <h1>{source.frontmatter.title}</h1>
+      {source.frontmatter.description && (
+        <p className="description">{source.frontmatter.description}</p>
       )}
     </div>
     <main>
@@ -35,23 +34,18 @@ export default ContentPage;
 
 export const getStaticProps = async ({ params }: any) => {
   const contentFilePath = path.join(CONTENT_PATH, `${params.slug}.mdx`);
-  const source = fs.readFileSync(contentFilePath);
-
-  const { content, data: frontMatter } = matter(source);
-
-  const mdxSource = await serialize(content, {
-    // Optionally pass remark/rehype plugins
+  const source = fs.readFileSync(contentFilePath, 'utf8');
+  const mdxSource = await serialize(source, {
     mdxOptions: {
       remarkPlugins: [],
       rehypePlugins: [],
     },
-    scope: frontMatter,
+    parseFrontmatter: true,
   });
 
   return {
     props: {
       source: mdxSource,
-      frontMatter,
     },
   };
 };
