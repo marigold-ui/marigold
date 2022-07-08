@@ -1,32 +1,24 @@
-// unnessessary? - I tryed some things to make it work
-
-import type { ReactElement, ReactNode } from 'react';
-import type { NextPage } from 'next';
+import { MDXProvider } from '@mdx-js/react';
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 
-export type NextPageWithLayout = NextPage & {
-  getLayout?: (page: ReactElement) => ReactNode;
+import { MarigoldProvider } from '@marigold/components';
+import * as MarigoldComponents from '@marigold/components';
+
+import * as MdxComponents from '../mdx';
+import { theme } from '../theme';
+
+const components = {
+  Head,
+  ...MdxComponents,
+  ...MarigoldComponents,
 };
+const App = ({ Component, pageProps }: AppProps) => (
+  <MarigoldProvider theme={theme}>
+    <MDXProvider components={components as any}>
+      <Component {...pageProps} />
+    </MDXProvider>
+  </MarigoldProvider>
+);
 
-type PagePropsWithLayout = AppProps & {
-  Component: NextPageWithLayout;
-};
-
-interface PageProps {
-  data: {
-    mdx: {
-      body: string;
-      frontmatter: {
-        title?: string;
-      };
-      headings: { value: string }[];
-    };
-  };
-}
-
-export default function MyApp({ Component, pageProps }: PagePropsWithLayout) {
-  // Use the layout defined at the page level, if available
-  const getLayout = Component.getLayout ?? (page => page);
-
-  return getLayout(<Component {...pageProps} />);
-}
+export default App;

@@ -298,15 +298,12 @@ importers:
       '@marigold/system': workspace:*
       '@marigold/theme-b2b': workspace:*
       '@marigold/types': workspace:*
-      '@mdx-js/loader': ^2.1.2
-      '@next/mdx': ^12.1.6
       '@types/mdx-js__react': 1.5.5
       '@types/node': 18.0.0
       '@types/react': 18.0.12
       date-fns: ^2.28.0
       eslint: 8.18.0
       eslint-config-next: 12.1.6
-      mdx-utils: 0.2.0
       next: 12.1.6
       next-mdx-remote: ^4.0.3
       next-remote-watch: ^1.0.0
@@ -324,10 +321,7 @@ importers:
       '@marigold/system': link:../packages/system
       '@marigold/theme-b2b': link:../themes/theme-b2b
       '@marigold/types': link:../packages/types
-      '@mdx-js/loader': 2.1.2
-      '@next/mdx': 12.1.6_@mdx-js+loader@2.1.2
       date-fns: 2.28.0
-      mdx-utils: 0.2.0
       next: 12.1.6_ef5jwxihqo6n7gxfmzogljlgcm
       next-mdx-remote: 4.0.3_ef5jwxihqo6n7gxfmzogljlgcm
       react: 18.1.0
@@ -4876,20 +4870,6 @@ packages:
       read-yaml-file: 1.1.0
     dev: false
 
-  /@mdx-js/loader/2.1.2:
-    resolution:
-      {
-        integrity: sha512-P7CWhrqE5rZ3ewBngZ9t/zQPbSq42iuty78K3zJ8Bl518qnOX1d106c+n7I/zHODPAmw9JfYMQdbv9WrrHa0DA==,
-      }
-    peerDependencies:
-      webpack: '>=4'
-    dependencies:
-      '@mdx-js/mdx': 2.1.1
-      source-map: 0.7.3
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /@mdx-js/mdx/1.6.22:
     resolution:
       {
@@ -5289,18 +5269,6 @@ packages:
     dependencies:
       glob: 7.1.7
     dev: true
-
-  /@next/mdx/12.1.6_@mdx-js+loader@2.1.2:
-    resolution:
-      {
-        integrity: sha512-pyE8CZQ3xHs5rIXp6Js4zN3+u77Y50YFw5kHMtbW1Gfw6zwl9UcJci4K27vURDAItoVFdcwZZ4kvuI2YjO1Cwg==,
-      }
-    peerDependencies:
-      '@mdx-js/loader': '>=0.15.0'
-      '@mdx-js/react': '*'
-    dependencies:
-      '@mdx-js/loader': 2.1.2
-    dev: false
 
   /@next/swc-android-arm-eabi/12.1.6:
     resolution:

@@ -1,20 +1,19 @@
 import fs from 'fs';
 import path from 'path';
-
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
+
 import Head from 'next/head';
-
-import * as MdxComponents from '../mdx';
 import * as MarigoldComponents from '@marigold/components';
-
-import { CONTENT_PATH } from '../config';
+import * as MdxComponents from '../mdx';
 
 const components = {
   Head,
   ...MdxComponents,
   ...MarigoldComponents,
 };
+
+import { CONTENT_PATH } from '../config';
 
 const ContentPage = ({ source }: any) => (
   <div>
@@ -25,7 +24,7 @@ const ContentPage = ({ source }: any) => (
       )}
     </div>
     <main>
-      <MDXRemote {...source} components={components} />
+      <MDXRemote {...source} components={components as any} />
     </main>
   </div>
 );

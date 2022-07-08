@@ -10,11 +10,6 @@ const isProduction = process.env.NODE_ENV === 'production';
 const config = {
   reactStrictMode: true,
   optimizeFonts: true,
-  remarkPlugins: [],
-  rehypePlugins: [],
-  providerImportSource: '@mdx-js/react',
-
-  pageExtensions: ['mdx', 'md', 'jsx', 'js', 'tsx', 'ts'],
   compiler: {
     emotion: true,
   },
@@ -22,10 +17,6 @@ const config = {
     /** Do not run TypeScript during production builds (`next build`). */
     ignoreBuildErrors: isProduction,
     tsconfigPath: './tsconfig.json',
-  },
-  withMDX: {
-    // Append the default value with md extensions
-    pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   },
   webpack: (config, { defaultLoaders: { babel } }) => {
     config.module.rules.push({
