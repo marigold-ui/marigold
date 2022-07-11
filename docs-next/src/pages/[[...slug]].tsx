@@ -27,7 +27,7 @@ export const getStaticProps = async ({ params }: any) => {
     CONTENT_PATH,
     (params.slug || ['index']).join('/')
   );
-  // TODO: try file path, if not exis add /"index.mdx"
+
   let source;
   try {
     source = await fs.readFile(`${contentFilePath}.mdx`, 'utf8');
@@ -59,8 +59,11 @@ export const getStaticPaths = async () => {
     .map(p => path.relative(CONTENT_PATH, p))
     .map(slug => ({ params: { slug: slug.split('/') } }));
 
-  paths.push({ params: { slug: [] } });
-  paths.push({ params: { slug: ['introduction'] } });
+  paths.forEach(p =>
+    p.params.slug.length > 1
+      ? paths.push({ params: { slug: [p.params.slug[0]] } })
+      : paths.push({ params: { slug: [] } })
+  );
 
   return {
     paths,
