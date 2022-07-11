@@ -1,4 +1,4 @@
-import { MDXProvider } from '@mdx-js/react';
+import { MDXProvider } from 'next-mdx-remote';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 

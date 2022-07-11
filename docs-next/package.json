@@ -20,7 +20,7 @@
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/types": "workspace:*",
     "next": "12.1.6",
-    "next-mdx-remote": "^4.0.3",
+    "next-mdx-remote": "https://github.com/marigold-ui/next-mdx-remote.git#4b55fcba75bf4897cb252e175ddc121067c923ae",
     "react": "18.1.0",
     "react-dom": "18.1.0"
   },
