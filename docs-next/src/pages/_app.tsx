@@ -28,6 +28,7 @@ const components = {
   ...MdxComponents,
   ...MarigoldComponents,
 };
+
 const App = ({ Component, pageProps }: AppProps) => (
   <MarigoldProvider theme={theme}>
     <MDXProvider components={components as any}>

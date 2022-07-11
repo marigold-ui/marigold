@@ -3,16 +3,6 @@ import path from 'path';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 
-import Head from 'next/head';
-import * as MarigoldComponents from '@marigold/components';
-import * as MdxComponents from '../mdx';
-
-const components = {
-  Head,
-  ...MdxComponents,
-  ...MarigoldComponents,
-};
-
 import { CONTENT_PATH } from '../config';
 
 const ContentPage = ({ source }: any) => (
@@ -24,7 +14,7 @@ const ContentPage = ({ source }: any) => (
       )}
     </div>
     <main>
-      <MDXRemote {...source} components={components as any} />
+      <MDXRemote {...source} />
     </main>
   </div>
 );
