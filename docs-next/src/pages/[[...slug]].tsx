@@ -1,5 +1,6 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
+import { globby } from 'globby';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 
@@ -22,8 +23,18 @@ const ContentPage = ({ source }: any) => (
 export default ContentPage;
 
 export const getStaticProps = async ({ params }: any) => {
-  const contentFilePath = path.join(CONTENT_PATH, `${params.slug}.mdx`);
-  const source = fs.readFileSync(contentFilePath, 'utf8');
+  const contentFilePath = path.join(
+    CONTENT_PATH,
+    (params.slug || ['index']).join('/')
+  );
+  // TODO: try file path, if not exis add /"index.mdx"
+  let source;
+  try {
+    source = await fs.readFile(`${contentFilePath}.mdx`, 'utf8');
+  } catch {
+    source = await fs.readFile(`${contentFilePath}/index.mdx`, 'utf8');
+  }
+
   const mdxSource = await serialize(source, {
     mdxOptions: {
       remarkPlugins: [],
@@ -40,13 +51,16 @@ export const getStaticProps = async ({ params }: any) => {
 };
 
 export const getStaticPaths = async () => {
-  const contentFilePaths = fs
-    .readdirSync(CONTENT_PATH)
-    .filter(p => /\.mdx?$/.test(p));
+  const contentFilePaths = await globby([CONTENT_PATH]);
 
   const paths = contentFilePaths
-    .map(path => path.replace(/\.mdx?$/, ''))
-    .map(slug => ({ params: { slug } }));
+    .filter(p => /\.mdx?$/.test(p))
+    .map(p => p.replace(/\.mdx?$/, ''))
+    .map(p => path.relative(CONTENT_PATH, p))
+    .map(slug => ({ params: { slug: slug.split('/') } }));
+
+  paths.push({ params: { slug: [] } });
+  paths.push({ params: { slug: ['introduction'] } });
 
   return {
     paths,

@@ -302,6 +302,8 @@ importers:
       '@types/react': 18.0.12
       eslint: 8.18.0
       eslint-config-next: 12.1.6
+      fs-extra: ^10.1.0
+      globby: ^13.1.2
       next: 12.1.6
       next-mdx-remote: https://github.com/marigold-ui/next-mdx-remote.git#4b55fcba75bf4897cb252e175ddc121067c923ae
       next-remote-watch: ^1.0.0
@@ -314,6 +316,8 @@ importers:
       '@marigold/system': link:../packages/system
       '@marigold/theme-b2b': link:../themes/theme-b2b
       '@marigold/types': link:../packages/types
+      fs-extra: 10.1.0
+      globby: 13.1.2
       next: 12.1.6_ef5jwxihqo6n7gxfmzogljlgcm
       next-mdx-remote: github.com/marigold-ui/next-mdx-remote/4b55fcba75bf4897cb252e175ddc121067c923ae_ef5jwxihqo6n7gxfmzogljlgcm
       react: 18.1.0
@@ -19880,6 +19884,20 @@ packages:
     resolution:
       {
         integrity: sha512-XMzoDZbGZ37tufiv7g0N4F/zp3zkwdFtVbV3EHsVl1KQr4RPLfNoT068/97RPshz2J5xYNEjLKKBKaGHifBd3Q==,
+      }
+    engines: { node: ^12.20.0 || ^14.13.1 || >=16.0.0 }
+    dependencies:
+      dir-glob: 3.0.1
+      fast-glob: 3.2.11
+      ignore: 5.2.0
+      merge2: 1.4.1
+      slash: 4.0.0
+    dev: false
+
+  /globby/13.1.2:
+    resolution:
+      {
+        integrity: sha512-LKSDZXToac40u8Q1PQtZihbNdTYSNMuWe+K5l+oa6KgDzSvVrHXlJy40hUP522RjAIoNLJYBJi7ow+rbFpIhHQ==,
       }
     engines: { node: ^12.20.0 || ^14.13.1 || >=16.0.0 }
     dependencies:
