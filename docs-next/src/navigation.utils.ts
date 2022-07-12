@@ -40,7 +40,11 @@ export const getNavigation = async () => {
       return {
         slug: toSlug(filePath),
         ...(frontmatter as any),
-      } as { slug: string; frontmatter: { [key: string]: any } };
+      } as {
+        group: any;
+        slug: string;
+        frontmatter: { [key: string]: any };
+      };
     })
   );
 
@@ -62,7 +66,6 @@ export const getNavigation = async () => {
         siteMetaData.navigation.indexOf(a) - siteMetaData.navigation.indexOf(b)
     );
   });
-  console.log(category);
 
   // TODO: group by frontmatter.group -> 2. level
   // 1. iterate items in group
@@ -70,6 +73,13 @@ export const getNavigation = async () => {
   // 3. does group exist? -> if not create it
   // 4. add to group
   // 5. sort based on config
+  const group: string[] = [];
+  result.map(f => {
+    if (f.group && !group.includes(f.group)) {
+      group.push(f.group);
+    }
+  });
+  console.log(group);
 
   return result;
 };
