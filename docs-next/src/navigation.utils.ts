@@ -3,6 +3,7 @@ import { serialize } from 'next-mdx-remote/serialize';
 import fs from 'fs-extra';
 import path from 'path';
 import { CONTENT_PATH } from './config';
+import { Split } from '@marigold/components';
 
 const toSlug = (val: string) =>
   path.relative(CONTENT_PATH, val.replace(/\.mdx?$/, ''));
@@ -51,6 +52,14 @@ export const getNavigation = async () => {
   // 4. add to catetory
   // 5. sort based on config
 
+  const category: string[] = [];
+  result.map(r => {
+    const resultSplit = r.slug.split('/');
+    if (resultSplit.length > 1 && !category.includes(resultSplit[0])) {
+      category.push(resultSplit[0]);
+    }
+  });
+
   // TODO: group by frontmatter.group -> 2. level
   // 1. iterate items in group
   // 2. is there a "group" frontmatter?
@@ -80,12 +89,12 @@ interface NavigationItem {
   title: string;
 }
 
-const Navigation = (nav: Navigation) => {
-  nav.map(category => {
-    if ('groups' in category) {
-      return <NavigationGroup groups={category.groups} />;
-    }
+// const Navigation = (nav: Navigation) => {
+//   nav.map(category => {
+//     if ('groups' in category) {
+//       return <NavigationGroup groups={category.groups} />;
+//     }
 
-    return <NavigationList items={category.items} />;
-  });
-};
+//     return <NavigationList items={category.items} />;
+//   });
+// };

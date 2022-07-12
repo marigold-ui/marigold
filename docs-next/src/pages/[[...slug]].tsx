@@ -6,20 +6,19 @@ import { serialize } from 'next-mdx-remote/serialize';
 import { CONTENT_PATH } from '../config';
 import { getContentPaths, getNavigation } from '../navigation.utils';
 
-const ContentPage = ({ source, navigation }: any) =>
-  console.log(navigation) || (
-    <div>
-      <div className="post-header">
-        <h1>{source.frontmatter.title}</h1>
-        {source.frontmatter.description && (
-          <p className="description">{source.frontmatter.description}</p>
-        )}
-      </div>
-      <main>
-        <MDXRemote {...source} />
-      </main>
+const ContentPage = ({ source, navigation }: any) => (
+  <div>
+    <div className="post-header">
+      <h1>{source.frontmatter.title}</h1>
+      {source.frontmatter.description && (
+        <p className="description">{source.frontmatter.description}</p>
+      )}
     </div>
-  );
+    <main>
+      <MDXRemote {...source} />
+    </main>
+  </div>
+);
 
 export default ContentPage;
 
