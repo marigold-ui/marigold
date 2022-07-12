@@ -1,0 +1,34 @@
+---
+title: Badge
+---
+
+# Badge
+
+A badge tags an element with a short note and color. The content of the badge can be anything but preferably a string and/or icon.
+
+<MarigoldTheme>
+  <Badge variant="info">New</Badge>
+</MarigoldTheme>
+
+```tsx onlyCode
+import { Badge } from '@marigold/components';
+```
+
+## Props
+
+| Property             | Type     | Default |
+| :------------------- | :------- | :------ |
+| `variant` (optional) | `string` |         |
+
+## Examples
+
+### Badge with icon
+
+```tsx
+<Badge>
+  <Inline space="xsmall">
+    type:documentation
+    <ResaleLogbook size={18} />
+  </Inline>
+</Badge>
+```

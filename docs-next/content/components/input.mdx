@@ -1,0 +1,54 @@
+---
+title: Input
+---
+
+# Input
+
+With the Input component you can add a HTML `<input>` field for different types of text to your form.
+The variant in your section can be added with the variant prop. The default variant is `default`.
+
+<MarigoldTheme>
+  <Label htmlFor="input">
+    Give me your input:
+    <Input id="input" type="text" placeholder="Placeholder" />
+  </Label>
+</MarigoldTheme>
+
+```tsx onlyCode
+import { Input } from '@marigold/components';
+```
+
+## Props
+
+| Property             | Type     | Default     |
+| :------------------- | :------- | :---------- |
+| `variant` (optional) | `string` | `__default` |
+
+## Examples
+
+### Standard Input
+
+```tsx expandCode
+<Label htmlFor="input">
+  Give me your input:
+  <Input id="input" type="text" placeholder="Placeholder" />
+</Label>
+```
+
+### Disabled Input
+
+```tsx
+<Label htmlFor="input2">
+  Disabled Input
+  <Input id="input2" placeholder="Disabled" disabled />
+</Label>
+```
+
+### Type changend Input
+
+```tsx
+<Label htmlFor="input3">
+  Label
+  <Input id="input3" type="submit" />
+</Label>
+```

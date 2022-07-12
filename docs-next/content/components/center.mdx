@@ -1,0 +1,90 @@
+---
+title: Center
+---
+
+# Center
+
+Center is a layout component that centers its children horizontally.
+You can use it to center a single child or a list of children.
+
+<Center maxWidth="min(350px, 50vw)">
+  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="100%" />
+</Center>
+
+```tsx onlyCode
+import { Center } from '@marigold/components';
+```
+
+## Props
+
+| Property   | Type                           | Default |
+| :--------- | :----------------------------- | :------ |
+| `maxWidth` | `string`                       |         |
+| `space`    | `ResponsiveStyleValue<string>` | `none`  |
+
+## Examples
+
+### Center element with maximum width
+
+```tsx
+<Center maxWidth="xxlarge">
+  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="100%" />
+</Center>
+```
+
+```tsx
+<Center maxWidth="min(100px, 50vw)">
+  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="100%" />
+</Center>
+```
+
+### Center more than one element with space
+
+```tsx
+<Center maxWidth="xxlarge" space="xsmall">
+  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="100%" />
+  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="100%" />
+  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="100%" />
+</Center>
+```
+
+### Center inside Text Block
+
+```tsx
+<Stack space="medium">
+  <Headline level="2">Star Wars - The Empire Strikes Back</Headline>
+  <Text>
+    It is a dark time for the Rebellion. Although the Death Star has been
+    destroyed, Imperial troops have driven the Rebel forces from their hidden
+    base and pursued them across the galaxy.
+  </Text>
+  <Center>
+    <Button variant="secondary">Watch now</Button>
+  </Center>
+  <Text>
+    Evading the dreaded Imperial Starfleet, a group of freedom fighters led by
+    Luke Skywalker has established a new secret base on the remote ice world of
+    Hoth. The evil lord Darth Vader, obsessed with finding young Skywalker, has
+    dispatched thousands of remote probes into the far reaches of space....
+  </Text>
+</Stack>
+```
+
+### Center something inside a box
+
+```tsx
+<Inline space="xsmall">
+  <Box as={Center} border="2px solid #ced4da" width="80px" height="40px">
+    <Text color="secondary">Song 1</Text>
+  </Box>
+  <Box as={Center} bg="secondary" width="40px" height="40px">
+    <Play fill="white" />
+  </Box>
+  <Box as={Center} bg="secondary" width="40px" height="40px">
+    <Pause fill="white" />
+  </Box>
+  <Box as={Center} bg="secondary" width="40px" height="40px">
+    <Stop fill="white" />
+  </Box>
+</Inline>
+```

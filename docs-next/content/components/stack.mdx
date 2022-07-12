@@ -1,0 +1,101 @@
+---
+title: Stack
+---
+
+# Stack
+
+Layout component to stack elements. This component uses the spaces from the given theme.
+
+<Box border="1px solid #ced4da" bg="#e9ecef" p="small">
+  <Stack space="small">
+    <Headline level="2">Header</Headline>
+    <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
+    <Text>
+      Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
+    </Text>
+  </Stack>
+</Box>
+
+```tsx onlyCode
+import { Stack } from '@marigold/components';
+```
+
+## Props
+
+| Property  | Type                           | Default |
+| :-------- | :----------------------------- | :------ |
+| `space`   | `ResponsiveStyleValue<string>` | `none`  |
+| `alignX`  | `left, right, center`          | `left`  |
+| `alignY`  | `top, bottom, center`          | `left`  |
+| `stretch` | `boolean`                      | `false` |
+
+## Examples
+
+### Spacing
+
+```tsx
+<Stack space="large">
+  <Headline level="2">Header</Headline>
+  <Text>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+    dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
+    massa nec ultricies efficitur, lectus ante consequat magna, a porttitor
+    massa ex ut quam.
+  </Text>
+  <Text>
+    Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
+    Vestibulum malesuada ante eu velit malesuada, nec ultricies sapien finibus.
+    Aenean rutrum in sem a ullamcorper. Integer ut euismod urna. Interdum et
+    malesuada fames ac ante ipsum primis in faucibus.
+  </Text>
+</Stack>
+```
+
+### Nested
+
+```tsx
+<Stack space="large">
+  <Stack space="medium">
+    <Headline level="2">Stack Content #1</Headline>
+    <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
+    <Text>
+      Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
+    </Text>
+  </Stack>
+  <Stack space="medium">
+    <Headline level="2">Stack Content #2</Headline>
+    <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
+    <Text>
+      Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
+    </Text>
+  </Stack>
+</Stack>
+```
+
+### Horizontal Alignment
+
+```tsx
+<>
+  <Stack space="medium">
+    <Text>Left</Text>
+  </Stack>
+  <Stack space="medium" alignX="center">
+    <Text>Center</Text>
+  </Stack>
+  <Stack space="medium" alignX="right">
+    <Text>Right</Text>
+  </Stack>
+</>
+```
+
+### Vertical Alignment
+
+```tsx
+<Box css={{ height: 200, bg: '#f1f3f5', p: 8 }}>
+  <Stack space="medium" stretch alignY="bottom">
+    <Text>Lirum</Text>
+    <Text>Larum</Text>
+    <Text>Löffelstiel!</Text>
+  </Stack>
+</Box>
+```

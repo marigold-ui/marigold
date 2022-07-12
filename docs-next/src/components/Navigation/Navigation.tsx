@@ -1,9 +1,10 @@
 import React from 'react';
+import Link from 'next/link';
 import { Box, CSSObject, useComponentStyles } from '@marigold/system';
-
-import { Link } from '../Link';
 import { NavigationItem, NavigationTree, useNavigation } from './useNavigation';
 
+// Props
+// ---------------
 interface NavigationItemProps extends NavigationItem {
   css: CSSObject;
 }
@@ -18,21 +19,12 @@ interface NavigationSectionProps {
   };
 }
 
-// Helper
-// ---------------
-const dirToText = (dir: string) =>
-  dir
-    .split('/')[0]
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-
 // Components
 // ---------------
 const NavigationItemComponent = ({ title, slug, css }: NavigationItemProps) => (
   <Box css={css}>
     <Link
-      to={slug.startsWith('/') || slug.startsWith('http') ? slug : `/${slug}`}
+      href={slug.startsWith('/') || slug.startsWith('http') ? slug : `/${slug}`}
     >
       {title}
     </Link>
@@ -40,13 +32,10 @@ const NavigationItemComponent = ({ title, slug, css }: NavigationItemProps) => (
 );
 
 const NavigationSection = ({ name, children, css }: NavigationSectionProps) => {
+  console.log('NavigationSection', name, children);
   return (
     <div>
-      {Boolean(name.length) && (
-        <Box as="h2" css={css.header}>
-          {dirToText(name)}
-        </Box>
-      )}
+      {Boolean(name.length) && <Box as="h2" css={css.header}></Box>}
       <Box as="ul" css={css.list}>
         {children.map(child =>
           'title' in child ? (
@@ -64,17 +53,15 @@ const NavigationSection = ({ name, children, css }: NavigationSectionProps) => {
   );
 };
 
-export const Navigation = () => {
+const Navigation = () => {
   const tree = useNavigation();
   const styles = useComponentStyles(
     'Navigation',
     {},
     { parts: ['container', 'header', 'list', 'item'] }
   );
-
   return (
     <Box as="nav" css={styles.container} aria-labelledby="primary-navigation">
-      <NavigationSection css={styles} name="" children={tree} />
       <NavigationSection
         css={styles}
         name="Useful Links"
@@ -100,3 +87,5 @@ export const Navigation = () => {
     </Box>
   );
 };
+
+export default Navigation;

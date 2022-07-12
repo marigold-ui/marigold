@@ -1,0 +1,59 @@
+---
+title: Icon
+---
+
+# Icon
+
+With the Icon component you can render one of the [Marigold Icons](../../foundation/icons).
+By adding the `size` prop you can change to another size. `24` is the default size.
+The `fill` prop is the second attribute and per default `currentcolor`.
+
+<Inline space="small">
+  <DesignTicket />
+  <Ticket />
+  <TicketInsurance />
+  <Resale />
+</Inline>
+
+### React Icon component
+
+Marigold Icons have a separate package to install.
+The first option is to install the package and use the Icons like other React components and as in the code example below.
+You have to specify the name of the icon directly between the `< />` brackets.
+
+```bash onlyCode
+# with npm
+npm install @marigold/icons --save
+
+# with yarn
+yarn add @marigold/icons
+```
+
+```tsx onlyCode
+import { DesignTicket } from '@marigold/icons';
+```
+
+### HTML SVG Element
+
+The second option is to go to [Marigold Icons](../../foundation/icons) and click on an Icon in the list to copy them as `<svg>` Element
+
+## Props
+
+| Property | Type     | Default          |
+| :------- | :------- | :--------------- |
+| `size`   | `number` | `24`             |
+| `fill`   | `string` | `'currentcolor'` |
+
+## Examples
+
+### Icon size
+
+```tsx
+<DesignTicket size={40} />
+```
+
+### Icon color fill
+
+```tsx
+<DesignTicket fill="red" />
+```

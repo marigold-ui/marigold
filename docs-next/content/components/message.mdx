@@ -1,0 +1,127 @@
+---
+title: Message
+---
+
+import { DoAndDont } from '../../src/components/DoAndDont';
+import { FigmaLink } from '../../src/components/FigmaLink';
+
+# Message
+
+## Demo
+
+<MarigoldTheme>
+  <Message messageTitle="There is an update available.">
+    <Text>Hello, I am a simple info message.</Text>
+  </Message>
+</MarigoldTheme>
+
+```tsx onlyCode
+import { Message } from '@marigold/components';
+```
+
+<FigmaLink
+  to={
+    'https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=582%3A119'
+  }
+/>
+
+## Description
+
+Message component to display a message with a title and icon based on a `div` element and styled with a theme.
+The message component is used to capture the user atention to provide information. It is meant to show only very relevant information. The title should contain the most relevant information about the message.
+This component should not be added on a dynymic way.
+
+## Props
+
+| Property             | Type     | Default |
+| :------------------- | :------- | :------ |
+| `messageTitle`       | `string` |         |
+| `variant` (optional) | `string` |         |
+| `size` (optional)    | `string` |         |
+
+## Types
+
+### Info Message
+
+```tsx
+<Message messageTitle="There is an update available.">
+  <Text>Hello, I am a simple info message.</Text>
+</Message>
+```
+
+### Warning Message
+
+```tsx
+<Message variant="warning" messageTitle="Danger Zone!">
+  <Text>Hello, I am a simple warning message.</Text>
+</Message>
+```
+
+### Error Message
+
+```tsx
+<Message variant="error" messageTitle="Wrong here.">
+  <Text>Hello, I am a simple error message.</Text>
+</Message>
+```
+
+## Usage
+
+## Dos & Don'ts
+
+<Stack space="small">
+  <Box
+    display="grid"
+    css={{
+      gridGap: 'small',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(min(500px, 100%), 1fr))',
+    }}
+  >
+    <DoAndDont
+      preview={
+        <Stack space="small">
+          <Message messageTitle="Info Message" variant="info">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sem
+            eros, pharetra vel mauris rutrum, auctor consequat lectus. Sed
+            euismod lorem sit amet mauris tempor lacinia.
+          </Message>
+          <Text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sem
+            eros, pharetra vel mauris rutrum, auctor consequat lectus. Sed
+            euismod lorem sit amet mauris tempor lacinia. Lorem ipsum dolor sit
+            amet, consectetur adipiscing elit. Donec sem eros, pharetra vel
+            mauris rutrum, auctor consequat lectus. Sed euismod lorem sit amet
+            mauris tempor lacinia.{' '}
+          </Text>
+        </Stack>
+      }
+    >
+      Use the Message Component inline as in the example. Do not use it as a
+      Dynamic component.
+    </DoAndDont>
+    <DoAndDont
+      dont
+      preview={
+        <Message messageTitle="Info Message" variant="info">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
+          volutpat a turpis sed fringilla. Aenean suscipit et ligula ac
+          ultricies. Aliquam rutrum facilisis dui quis eleifend. Maecenas
+          finibus dapibus lobortis. Cras dictum viverra augue. Sed bibendum vel
+          est eget cursus. Nullam quis eros efficitur, sollicitudin odio vitae,
+          congue nulla. Aliquam lobortis, dui at porttitor malesuada, nisl leo
+          tempor leo, eget cursus risus ligula non nunc. Lorem ipsum dolor sit
+          amet, consectetur adipiscing elit. Curabitur volutpat a turpis sed
+          fringilla. Aenean suscipit et ligula ac ultricies. Aliquam rutrum
+          facilisis dui quis eleifend. Maecenas finibus dapibus lobortis. Cras
+          dictum viverra augue. Sed bibendum vel est eget cursus. Nullam quis
+          eros efficitur, sollicitudin odio vitae, congue nulla. Aliquam
+          lobortis, dui at porttitor malesuada, nisl leo tempor leo, eget cursus
+          risus ligula non nunc.
+        </Message>
+      }
+    >
+      Do not write very long explanations on an info message. Use it to write
+      only concrete messages in a clear and short way (3 to 4 lines maximum).
+    </DoAndDont>
+  </Box>
+</Stack>
