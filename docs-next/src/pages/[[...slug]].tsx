@@ -3,7 +3,8 @@ import path from 'path';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 
-import { CONTENT_PATH, getNavigation, getContentPaths } from '../config';
+import { CONTENT_PATH } from '../config';
+import { getContentPaths, getNavigation } from '../navigation.utils';
 
 const ContentPage = ({ source, navigation }: any) =>
   console.log(navigation) || (
