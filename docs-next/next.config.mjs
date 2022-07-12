@@ -10,6 +10,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const config = {
   reactStrictMode: true,
   optimizeFonts: true,
+  trailingSlash: true,
   compiler: {
     emotion: true,
   },

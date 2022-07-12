@@ -29,13 +29,16 @@ const components = {
   ...MarigoldComponents,
 };
 
-const App = ({ Component, pageProps }: AppProps) => (
-  <MarigoldProvider theme={theme}>
-    <MDXProvider components={components as any}>
-      <DevMode />
-      <Component {...pageProps} />
-    </MDXProvider>
-  </MarigoldProvider>
-);
+const App = ({ Component, pageProps }: AppProps) => {
+  return (
+    <MarigoldProvider theme={theme}>
+      <MDXProvider components={components as any}>
+        <DevMode />
+
+        <Component {...pageProps} />
+      </MDXProvider>
+    </MarigoldProvider>
+  );
+};
 
 export default App;

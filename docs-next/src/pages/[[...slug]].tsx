@@ -1,24 +1,24 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { globby } from 'globby';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 
-import { CONTENT_PATH } from '../config';
+import { CONTENT_PATH, getContentData, getContentPaths } from '../config';
 
-const ContentPage = ({ source }: any) => (
-  <div>
-    <div className="post-header">
-      <h1>{source.frontmatter.title}</h1>
-      {source.frontmatter.description && (
-        <p className="description">{source.frontmatter.description}</p>
-      )}
+const ContentPage = ({ source, navigation }: any) =>
+  console.log(navigation) || (
+    <div>
+      <div className="post-header">
+        <h1>{source.frontmatter.title}</h1>
+        {source.frontmatter.description && (
+          <p className="description">{source.frontmatter.description}</p>
+        )}
+      </div>
+      <main>
+        <MDXRemote {...source} />
+      </main>
     </div>
-    <main>
-      <MDXRemote {...source} />
-    </main>
-  </div>
-);
+  );
 
 export default ContentPage;
 
@@ -43,28 +43,19 @@ export const getStaticProps = async ({ params }: any) => {
     parseFrontmatter: true,
   });
 
+  const navigation = await getContentData();
+
   return {
     props: {
       source: mdxSource,
+      navigation,
     },
   };
 };
 
 export const getStaticPaths = async () => {
-  const contentFilePaths = await globby([CONTENT_PATH]);
-
-  const paths = contentFilePaths
-    .filter(p => /\.mdx?$/.test(p))
-    .map(p => p.replace(/\.mdx?$/, ''))
-    .map(p => path.relative(CONTENT_PATH, p))
-    .map(slug => ({ params: { slug: slug.split('/') } }));
-
-  paths.forEach(p =>
-    p.params.slug.length > 1
-      ? paths.push({ params: { slug: [p.params.slug[0]] } })
-      : paths.push({ params: { slug: [] } })
-  );
-
+  const paths = await getContentPaths();
+  console.log(paths);
   return {
     paths,
     fallback: false,
