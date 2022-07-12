@@ -63,7 +63,7 @@ export const getNavigation = async () => {
     }
     category.sort(
       (a, b) =>
-        siteMetaData.navigation.indexOf(a) - siteMetaData.navigation.indexOf(b)
+        siteMetaData.category.indexOf(a) - siteMetaData.category.indexOf(b)
     );
   });
 
@@ -78,6 +78,9 @@ export const getNavigation = async () => {
     if (f.group && !group.includes(f.group)) {
       group.push(f.group);
     }
+    category.sort(
+      (a, b) => siteMetaData.groups.indexOf(a) - siteMetaData.groups.indexOf(b)
+    );
   });
   console.log(group);
 
