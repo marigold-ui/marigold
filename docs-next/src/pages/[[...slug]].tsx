@@ -3,7 +3,7 @@ import path from 'path';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 
-import { CONTENT_PATH, getContentData, getContentPaths } from '../config';
+import { CONTENT_PATH, getNavigation, getContentPaths } from '../config';
 
 const ContentPage = ({ source, navigation }: any) =>
   console.log(navigation) || (
@@ -43,7 +43,7 @@ export const getStaticProps = async ({ params }: any) => {
     parseFrontmatter: true,
   });
 
-  const navigation = await getContentData();
+  const navigation = await getNavigation();
 
   return {
     props: {
@@ -55,7 +55,6 @@ export const getStaticProps = async ({ params }: any) => {
 
 export const getStaticPaths = async () => {
   const paths = await getContentPaths();
-  console.log(paths);
   return {
     paths,
     fallback: false,
