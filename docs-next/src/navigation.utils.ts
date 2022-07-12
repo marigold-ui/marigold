@@ -2,8 +2,7 @@ import { globby } from 'globby';
 import { serialize } from 'next-mdx-remote/serialize';
 import fs from 'fs-extra';
 import path from 'path';
-import { CONTENT_PATH } from './config';
-import { Split } from '@marigold/components';
+import { CONTENT_PATH, siteMetaData } from './config';
 
 const toSlug = (val: string) =>
   path.relative(CONTENT_PATH, val.replace(/\.mdx?$/, ''));
@@ -48,8 +47,8 @@ export const getNavigation = async () => {
   // TODO: group by slug -> category (1. level)
   // 1. iterate list
   // 2. split slug by "/" -> if slug.length > 1
-  // 3. does catetory exist? -> if not create it
-  // 4. add to catetory
+  // 3. does category exist? -> if not create it
+  // 4. add to category
   // 5. sort based on config
 
   const category: string[] = [];
@@ -58,7 +57,12 @@ export const getNavigation = async () => {
     if (resultSplit.length > 1 && !category.includes(resultSplit[0])) {
       category.push(resultSplit[0]);
     }
+    category.sort(
+      (a, b) =>
+        siteMetaData.navigation.indexOf(a) - siteMetaData.navigation.indexOf(b)
+    );
   });
+  console.log(category);
 
   // TODO: group by frontmatter.group -> 2. level
   // 1. iterate items in group
