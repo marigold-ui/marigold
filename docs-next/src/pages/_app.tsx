@@ -7,6 +7,7 @@ import * as MarigoldComponents from '@marigold/components';
 
 import * as MdxComponents from '../mdx';
 import { theme } from '../theme';
+import { Navigation } from '../components/Navigation';
 
 const DevMode = () => {
   const devMode = process.env.NODE_ENV === 'development';
@@ -34,7 +35,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     <MarigoldProvider theme={theme}>
       <MDXProvider components={components as any}>
         <DevMode />
-
+        <Navigation />
         <Component {...pageProps} />
       </MDXProvider>
     </MarigoldProvider>

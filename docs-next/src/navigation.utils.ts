@@ -56,8 +56,8 @@ export const getNavigation = async () => {
   // 5. sort based on config
 
   const category: string[] = [];
-  result.map(r => {
-    const resultSplit = r.slug.split('/');
+  result.map(res => {
+    const resultSplit = res.slug.split('/');
     if (resultSplit.length > 1 && !category.includes(resultSplit[0])) {
       category.push(resultSplit[0]);
     }
@@ -73,45 +73,16 @@ export const getNavigation = async () => {
   // 3. does group exist? -> if not create it
   // 4. add to group
   // 5. sort based on config
+
   const group: string[] = [];
-  result.map(f => {
-    if (f.group && !group.includes(f.group)) {
-      group.push(f.group);
+  result.map(front => {
+    if (front.group && !group.includes(front.group)) {
+      group.push(front.group);
     }
     category.sort(
       (a, b) => siteMetaData.groups.indexOf(a) - siteMetaData.groups.indexOf(b)
     );
   });
-  console.log(group);
 
-  return result;
+  return { result, category, group };
 };
-
-type Navigation = (NavigationCategory | NavigationCategoryWithGroup)[];
-
-interface NavigationCategory {
-  name: string;
-  items: NavigationItem[];
-}
-
-interface NavigationCategoryWithGroup {
-  name: string;
-  groups: {
-    name: string;
-    items: NavigationItem[];
-  }[];
-}
-interface NavigationItem {
-  slug: string;
-  title: string;
-}
-
-// const Navigation = (nav: Navigation) => {
-//   nav.map(category => {
-//     if ('groups' in category) {
-//       return <NavigationGroup groups={category.groups} />;
-//     }
-
-//     return <NavigationList items={category.items} />;
-//   });
-// };
