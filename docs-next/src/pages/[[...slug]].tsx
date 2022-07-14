@@ -5,9 +5,11 @@ import { serialize } from 'next-mdx-remote/serialize';
 
 import { CONTENT_PATH } from '../config';
 import { getContentPaths, getNavigation } from '../navigation.utils';
+import { Navigation } from '../components/Navigation';
 
 const ContentPage = ({ source, navigation }: any) => (
   <div>
+    <Navigation navigation={navigation} />
     <div className="post-header">
       <h1>{source.frontmatter.title}</h1>
       {source.frontmatter.description && (
