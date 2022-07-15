@@ -62,5 +62,5 @@ export const Navigation = ({ navigation }: any) => {
   //   </Box>
   // );
 
-  return <div>{JSON.stringify(navigation)}</div>;
+  return <pre>{JSON.stringify(navigation, null, 2)}</pre>;
 };

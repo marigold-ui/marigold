@@ -55,14 +55,15 @@ export const getNavigation = async () => {
   // 4. add to category
   // 5. sort based on config
 
-  const navigation: Navigation = [];
+  const categories: NavigationCategory[] = [];
+  const topItems: NavigationItem[] = [];
 
   items.forEach(item => {
     const { slug, group } = item;
     const hasCategory = slug.includes('/');
 
     if (!hasCategory) {
-      navigation.push({
+      topItems.push({
         title: item.title,
         slug,
       });
@@ -71,17 +72,17 @@ export const getNavigation = async () => {
 
     // Assign to a navigation category
     const [category] = slug.split('/');
-    let itemCategory = navigation.find(
+    let itemCategory = categories.find(
       item => 'name' in item && item.name === category
     ) as NavigationCategory | undefined;
 
     if (!itemCategory) {
-      navigation.push({
+      categories.push({
         name: category,
         items: [],
         groups: [],
       });
-      itemCategory = navigation[navigation.length - 1] as NavigationCategory;
+      itemCategory = categories[categories.length - 1] as NavigationCategory;
     }
 
     if (!group) {
@@ -101,21 +102,34 @@ export const getNavigation = async () => {
     itemGroup.items.push(item);
   });
 
-  // Sort by config
-  const sortedNavigation: string[] = [];
-  navigation.forEach(list => {
-    if ('name' in list) {
-      sortedNavigation.push(list.name);
-    }
-    sortedNavigation.sort(
-      (a, b) =>
-        NAVIGATION_CONFIG.category.indexOf(a) -
-        NAVIGATION_CONFIG.category.indexOf(b)
+  // Sort categories based on config
+  categories.sort((a, b) => {
+    const aIndex = NAVIGATION_CONFIG.order.findIndex(
+      item => item.name === a.name
     );
+    const bIndex = NAVIGATION_CONFIG.order.findIndex(
+      item => item.name === b.name
+    );
+    return aIndex - bIndex;
   });
-  console.log(sortedNavigation);
 
-  return navigation;
+  // Sort groups based on config
+  NAVIGATION_CONFIG.order.forEach(cat => {
+    const groupOrder = cat.groups;
+    if (!groupOrder) {
+      return;
+    }
+
+    const groups = categories.find(item => item.name === cat.name)!.groups;
+    groups.sort((a, b) => {
+      const aIndex = cat.groups.indexOf(a.name);
+      const bIndex = cat.groups.indexOf(b.name);
+
+      return aIndex - bIndex;
+    });
+  });
+
+  return [...topItems, ...categories];
 };
 
 export type Navigation = (NavigationCategory | NavigationItem)[];
