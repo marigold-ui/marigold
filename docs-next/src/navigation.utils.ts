@@ -4,8 +4,29 @@ import fs from 'fs-extra';
 import path from 'path';
 import { CONTENT_PATH, NAVIGATION_CONFIG } from './config';
 
+export type NavigationMenu = (NavigationMenuCategory | NavigationMenuItem)[];
+
+export interface NavigationMenuCategory {
+  name: string;
+  items: NavigationMenuItem[];
+  groups: {
+    name: string;
+    items: NavigationMenuItem[];
+  }[];
+}
+export interface NavigationMenuItem {
+  title: string;
+  slug: string;
+  group?: string;
+  order?: number;
+}
+
 const toSlug = (val: string) =>
   path.relative(CONTENT_PATH, val.replace(/\.mdx?$/, ''));
+
+const sortByOrder = (items: NavigationMenuItem[]) => {
+  items.sort((a, b) => (a.order || 9999999999) - (b.order || 9999999999));
+};
 
 export const getContentPaths = async () => {
   const contentFilePaths = await globby([`${CONTENT_PATH}/**/*.mdx`]);
@@ -24,8 +45,8 @@ export const getContentPaths = async () => {
 };
 
 export const getNavigation = async () => {
+  // Get all information for MDX pages (their frontmatter)
   const contentFilePaths = await globby([`${CONTENT_PATH}/**/*.mdx`]);
-
   const items = await Promise.all(
     contentFilePaths.map(async filePath => {
       const source = await fs.readFile(filePath, 'utf8');
@@ -40,11 +61,7 @@ export const getNavigation = async () => {
       return {
         slug: toSlug(filePath),
         ...(frontmatter as any),
-      } as {
-        title: string;
-        group?: string;
-        slug: string;
-      };
+      } as NavigationMenuItem;
     })
   );
 
@@ -55,8 +72,8 @@ export const getNavigation = async () => {
   // 4. add to category
   // 5. sort based on config
 
-  const categories: NavigationCategory[] = [];
-  const topItems: NavigationItem[] = [];
+  const categories: NavigationMenuCategory[] = [];
+  const topItems: NavigationMenuItem[] = [];
 
   items.forEach(item => {
     const { slug, group } = item;
@@ -74,7 +91,7 @@ export const getNavigation = async () => {
     const [category] = slug.split('/');
     let itemCategory = categories.find(
       item => 'name' in item && item.name === category
-    ) as NavigationCategory | undefined;
+    ) as NavigationMenuCategory | undefined;
 
     if (!itemCategory) {
       categories.push({
@@ -82,7 +99,9 @@ export const getNavigation = async () => {
         items: [],
         groups: [],
       });
-      itemCategory = categories[categories.length - 1] as NavigationCategory;
+      itemCategory = categories[
+        categories.length - 1
+      ] as NavigationMenuCategory;
     }
 
     if (!group) {
@@ -113,36 +132,33 @@ export const getNavigation = async () => {
     return aIndex - bIndex;
   });
 
-  // Sort groups based on config
-  NAVIGATION_CONFIG.order.forEach(cat => {
-    const groupOrder = cat.groups;
-    if (!groupOrder) {
+  categories.forEach(category => {
+    // Sort items (without group) by order
+    sortByOrder(category.items);
+
+    const groups = category.groups;
+
+    // Sort items (within group) by order
+    groups.forEach(group => {
+      sortByOrder(group.items);
+    });
+
+    // Sort groups based on config
+    const order = NAVIGATION_CONFIG.order.find(c => c.name === category.name)!;
+
+    if (!order.groups) {
       return;
     }
 
-    const groups = categories.find(item => item.name === cat.name)!.groups;
     groups.sort((a, b) => {
-      const aIndex = cat.groups.indexOf(a.name);
-      const bIndex = cat.groups.indexOf(b.name);
+      const aIndex = order.groups.indexOf(a.name);
+      const bIndex = order.groups.indexOf(b.name);
 
       return aIndex - bIndex;
     });
   });
 
+  sortByOrder(topItems);
+
   return [...topItems, ...categories];
 };
-
-export type Navigation = (NavigationCategory | NavigationItem)[];
-
-export interface NavigationCategory {
-  name: string;
-  items: NavigationItem[];
-  groups: {
-    name: string;
-    items: NavigationItem[];
-  }[];
-}
-export interface NavigationItem {
-  slug: string;
-  title: string;
-}

@@ -47,8 +47,6 @@ export const getStaticProps = async ({ params }: any) => {
 
   const navigation = await getNavigation();
 
-  console.log(navigation);
-
   return {
     props: {
       source: mdxSource,

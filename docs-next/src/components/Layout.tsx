@@ -3,7 +3,7 @@ import { Box, Columns, Stack } from '@marigold/components';
 
 import { Link } from './Link';
 import { Logo } from './Logo';
-import { Navigation } from './Navigation';
+import { NavigationMenu } from './Navigation';
 import { ThemeSelect } from './ThemeSelect';
 import { Version } from './Version';
 

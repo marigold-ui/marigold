@@ -1,55 +1,54 @@
 import React from 'react';
-// import { Box, Link } from '@marigold/components';
-// import { navigationLinks } from '../../config';
-// import { CSSObject, useComponentStyles } from '@marigold/system';
-// // import { getNavigation } from '../../navigation.utils';
+import type {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuCategory,
+} from '../../navigation.utils';
 
-// type Navigation = (NavigationCategory | NavigationCategoryWithGroup)[];
+import { Box, Link } from '@marigold/components';
 
-// interface NavigationCategory {
-//   name: string;
-//   items: NavigationItem[];
-// }
+interface NavigationItemProps extends NavigationMenuItem {}
 
-// interface NavigationCategoryWithGroup {
-//   name: string;
-//   groups: {
-//     name: string;
-//     items: NavigationItem[];
-//   }[];
-// }
-// interface NavigationItem {
-//   slug: string;
-//   title: string;
-// }
+interface NavigationCategoryProps extends NavigationMenuCategory {}
 
-// interface NavigationProps {
-//   children?: Navigation;
-//   css: {
-//     list: CSSObject;
-//     item: CSSObject;
-//   };
-// }
+const NavigationItem = ({ slug, title }: NavigationItemProps) => (
+  <Box as="ul" role="menuitem">
+    <Link href={slug}>{title}</Link>
+  </Box>
+);
 
-// //TODO: lists category and get groups?
-// const NavigationCategory = async () => {
-//   const navigation = await getNavigation();
-//   console.log('navigation', navigation);
-// };
+const NavigationCategory = ({
+  name,
+  items,
+  groups,
+}: NavigationCategoryProps) => {
+  console.log(groups);
+  return (
+    <Box as="ul" role="menubar">
+      <Box as="h2">{name}</Box>
+      <Box as="ul">
+        {groups.map(item =>
+          'items' in item ? (
+            <Box as="ul">{item.name}</Box>
+          ) : (
+            <Box as="ul">
+              <NavigationItem
+                slug={item.items[0].slug}
+                title={item.items[0].title}
+              />
+            </Box>
+          )
+        )}
+      </Box>
+    </Box>
+  );
+};
 
-// const NavigationList = ({ css }: NavigationProps) => {
-//   //TODO: check if its a mdx page
-//   return (
-//     <Box as="ul" css={css.list}>
-//       {navigationLinks.map(child =>
-//         'title' in child ? <Box as="li" children={child.title} /> : <Box />
-//       )}
-//     </Box>
-//   );
-// };
+export interface NavigationProps {
+  navigation: NavigationMenu;
+}
 
-// navigation component
-export const Navigation = ({ navigation }: any) => {
+export const Navigation = ({ navigation }: NavigationProps) => {
   // const styles = useComponentStyles(
   //   'Navigation',
   //   {},
@@ -61,6 +60,17 @@ export const Navigation = ({ navigation }: any) => {
   //     <NavigationList css={styles}></NavigationList>
   //   </Box>
   // );
+  return (
+    <Box as="nav" aria-labelledby="marigold-navigation">
+      {navigation.map(item =>
+        'title' in item ? (
+          <NavigationItem key={item.slug} {...item} />
+        ) : (
+          <NavigationCategory key={item.name} {...item} />
+        )
+      )}
+    </Box>
+  );
 
-  return <pre>{JSON.stringify(navigation, null, 2)}</pre>;
+  // return <pre>{JSON.stringify(navigation, null, 2)}</pre>;
 };
