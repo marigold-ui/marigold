@@ -1,4 +1,4 @@
-import path from 'node:path';
+import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -21,7 +21,10 @@ const config = {
   },
   webpack: (config, { defaultLoaders: { babel } }) => {
     config.module.rules.push({
-      include: [path.resolve(__dirname, '..')],
+      include: [
+        path.resolve(__dirname, '..', 'packages'),
+        path.resolve(__dirname, '..', 'themes'),
+      ],
       test: /\.(js|jsx|ts|tsx)$/,
 
       use: [babel],
