@@ -294,6 +294,7 @@ importers:
   docs-next:
     specifiers:
       '@codesandbox/sandpack-react': ^1.2.4
+      '@codesandbox/sandpack-themes': ^1.0.0
       '@marigold/components': workspace:*
       '@marigold/icons': workspace:*
       '@marigold/system': workspace:*
@@ -311,6 +312,7 @@ importers:
       typescript: 4.7.4
     dependencies:
       '@codesandbox/sandpack-react': 1.2.4_ef5jwxihqo6n7gxfmzogljlgcm
+      '@codesandbox/sandpack-themes': 1.0.0
       '@marigold/components': link:../packages/components
       '@marigold/icons': link:../packages/icons
       '@marigold/system': link:../packages/system
@@ -3047,6 +3049,13 @@ packages:
       react-devtools-inline: 4.4.0
       react-dom: 18.1.0_react@18.1.0
       react-is: 17.0.2
+    dev: false
+
+  /@codesandbox/sandpack-themes/1.0.0:
+    resolution:
+      {
+        integrity: sha512-t0T6b0jIA46u9MtPmTR7nQye3CJgpzauK70NslxSuRUH7W2J39gDMbcw0GuCgjmRqiM/4bBa401OKRRKDzUPpQ==,
+      }
     dev: false
 
   /@colors/colors/1.5.0:

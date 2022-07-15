@@ -8,6 +8,8 @@ import * as MarigoldComponents from '@marigold/components';
 import * as MdxComponents from '../mdx';
 import { theme } from '../theme';
 
+import CodeEditorPreview from '../components/CodeEditorPreview';
+
 const DevMode = () => {
   const devMode = process.env.NODE_ENV === 'development';
   if (devMode) {
@@ -27,6 +29,7 @@ const components = {
   Head,
   ...MdxComponents,
   ...MarigoldComponents,
+  CodeEditorPreview,
 };
 
 const App = ({ Component, pageProps }: AppProps) => {
