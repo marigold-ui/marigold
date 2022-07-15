@@ -7,11 +7,11 @@ import { CONTENT_PATH } from '../config';
 import { getContentPaths, getNavigation } from '../navigation.utils';
 import { Navigation } from '../components/Navigation';
 
-import { Sandpack } from '@codesandbox/sandpack-react';
+//import { Sandpack } from '@codesandbox/sandpack-react';
 
 const ContentPage = ({ source, navigation }: any) => (
   <div>
-    <Sandpack template="react" />;
+    {/* <Sandpack template="react" />; */}
     <Navigation navigation={navigation} />
     <div className="post-header">
       <h1>{source.frontmatter.title}</h1>

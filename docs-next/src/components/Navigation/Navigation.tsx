@@ -22,22 +22,32 @@ const NavigationCategory = ({
   items,
   groups,
 }: NavigationCategoryProps) => {
-  console.log(groups);
   return (
     <Box as="ul" role="menubar">
       <Box as="h2">{name}</Box>
       <Box as="ul">
-        {groups.map(item =>
-          'items' in item ? (
-            <Box as="ul">{item.name}</Box>
-          ) : (
-            <Box as="ul">
-              <NavigationItem
-                slug={item.items[0].slug}
-                title={item.items[0].title}
-              />
-            </Box>
+        {Boolean(groups.length != 0) ? (
+          groups.map(i =>
+            'items' in i ? (
+              <Box as="ul">
+                {i.name}
+                <NavigationItem
+                  title={i.items[0].title}
+                  slug={i.items[0].slug}
+                ></NavigationItem>
+              </Box>
+            ) : (
+              <Box as="ul">
+                <NavigationItem slug="hall" title="uff" />
+              </Box>
+            )
           )
+        ) : (
+          <Box as="ul">
+            {items.map(i => (
+              <NavigationItem {...i} />
+            ))}
+          </Box>
         )}
       </Box>
     </Box>
@@ -71,6 +81,4 @@ export const Navigation = ({ navigation }: NavigationProps) => {
       )}
     </Box>
   );
-
-  // return <pre>{JSON.stringify(navigation, null, 2)}</pre>;
 };
