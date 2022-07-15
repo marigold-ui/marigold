@@ -101,38 +101,21 @@ export const getNavigation = async () => {
     itemGroup.items.push(item);
   });
 
-  // TODO: Sort by config
+  // Sort by config
+  const sortedNavigation: string[] = [];
+  navigation.forEach(list => {
+    if ('name' in list) {
+      sortedNavigation.push(list.name);
+    }
+    sortedNavigation.sort(
+      (a, b) =>
+        NAVIGATION_CONFIG.category.indexOf(a) -
+        NAVIGATION_CONFIG.category.indexOf(b)
+    );
+  });
+  console.log(sortedNavigation);
 
-  // const category: string[] = [];
-  // items.map(res => {
-  //   const resultSplit = res.slug.split('/');
-  //   if (resultSplit.length > 1 && !category.includes(resultSplit[0])) {
-  //     category.push(resultSplit[0]);
-  //   }
-  //   category.sort(
-  //     (a, b) =>
-  //       siteMetaData.category.indexOf(a) - siteMetaData.category.indexOf(b)
-  //   );
-  // });
-
-  // TODO: group by frontmatter.group -> 2. level
-  // 1. iterate items in group
-  // 2. is there a "group" frontmatter?
-  // 3. does group exist? -> if not create it
-  // 4. add to group
-  // 5. sort based on config
-
-  // const group: string[] = [];
-  // items.map(front => {
-  //   if (front.group && !group.includes(front.group)) {
-  //     group.push(front.group);
-  //   }
-  //   category.sort(
-  //     (a, b) => siteMetaData.groups.indexOf(a) - siteMetaData.groups.indexOf(b)
-  //   );
-  // });
-
-  // return { result: items, category, group };
+  return navigation;
 };
 
 export type Navigation = (NavigationCategory | NavigationItem)[];
