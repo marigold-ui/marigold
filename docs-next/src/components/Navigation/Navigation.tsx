@@ -22,11 +22,12 @@ const NavigationCategory = ({
   items,
   groups,
 }: NavigationCategoryProps) => {
+  console.log(items);
   return (
     <Box as="ul" role="menubar">
       <Box as="h2">{name}</Box>
       <Box as="ul">
-        {Boolean(groups.length != 0) ? (
+        {Boolean(groups.length !== 0) ? (
           groups.map(i =>
             'items' in i ? (
               <Box as="ul">
