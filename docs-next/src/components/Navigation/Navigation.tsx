@@ -22,7 +22,6 @@ const NavigationCategory = ({
   items,
   groups,
 }: NavigationCategoryProps) => {
-  console.log(items);
   return (
     <Box as="ul" role="menubar">
       <Box as="h2">{name}</Box>
@@ -32,10 +31,13 @@ const NavigationCategory = ({
             'items' in i ? (
               <Box as="ul">
                 {i.name}
-                <NavigationItem
-                  title={i.items[0].title}
-                  slug={i.items[0].slug}
-                ></NavigationItem>
+                {console.log(
+                  'groups',
+                  i['items'].map(i => i.title)
+                )}
+                {i['items'].map(i => (
+                  <NavigationItem {...i} />
+                ))}
               </Box>
             ) : (
               <Box as="ul">
