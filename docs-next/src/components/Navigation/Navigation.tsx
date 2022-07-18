@@ -3,6 +3,7 @@ import type {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuCategory,
+  NavigationMenuGroup,
 } from '../../navigation.utils';
 
 import { Box, Link } from '@marigold/components';
@@ -13,7 +14,18 @@ interface NavigationCategoryProps extends NavigationMenuCategory {}
 
 const NavigationItem = ({ slug, title }: NavigationItemProps) => (
   <Box as="li">
-    <Link href={slug}>{title}</Link>
+    <Link href={`/${slug}`}>{title}</Link>
+  </Box>
+);
+
+const NavigationGroup = ({ name, items }: NavigationMenuGroup) => (
+  <Box as="li">
+    <Box as="ul">
+      {name}
+      {items.map(i => (
+        <NavigationItem key={i.slug} {...i} />
+      ))}
+    </Box>
   </Box>
 );
 
@@ -24,32 +36,17 @@ const NavigationCategory = ({
 }: NavigationCategoryProps) => {
   return (
     <Box as="ul" role="menubar">
-      <Box as="h2">{name}</Box>
-      <Box as="ul">
-        {console.log(groups)}
-        {Boolean(groups.length !== 0) ? (
-          groups.map(i =>
-            'items' in i ? (
-              <Box as="ul">
-                {i.name}
-                {i['items'].map(i => (
-                  <NavigationItem key={i.slug} {...i} />
-                ))}
-              </Box>
-            ) : (
-              <Box as="ul">
-                <NavigationItem title={'hallo'} slug={''} />
-              </Box>
-            )
-          )
-        ) : (
-          <Box as="ul">
-            {items.map(i => (
-              <NavigationItem {...i} />
-            ))}
-          </Box>
-        )}
-      </Box>
+      <li>
+        <Box as="h2">{name}</Box>
+        <Box as="ul">
+          {groups.map(group => (
+            <NavigationGroup {...group} />
+          ))}
+          {items.map(i => (
+            <NavigationItem key={i.slug} {...i} />
+          ))}
+        </Box>
+      </li>
     </Box>
   );
 };
@@ -65,11 +62,6 @@ export const Navigation = ({ navigation }: NavigationProps) => {
   //   { parts: ['container', 'header', 'list', 'item'] }
   // );
 
-  // return (
-  //   <Box as="nav" css={styles.container} aria-labelledby="primary-navigation">
-  //     <NavigationList css={styles}></NavigationList>
-  //   </Box>
-  // );
   return (
     <Box as="nav" aria-labelledby="marigold-navigation">
       {navigation.map(item =>
