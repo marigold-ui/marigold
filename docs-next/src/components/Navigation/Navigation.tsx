@@ -12,7 +12,7 @@ interface NavigationItemProps extends NavigationMenuItem {}
 interface NavigationCategoryProps extends NavigationMenuCategory {}
 
 const NavigationItem = ({ slug, title }: NavigationItemProps) => (
-  <Box as="ul" role="menuitem">
+  <Box as="li">
     <Link href={slug}>{title}</Link>
   </Box>
 );
@@ -26,18 +26,19 @@ const NavigationCategory = ({
     <Box as="ul" role="menubar">
       <Box as="h2">{name}</Box>
       <Box as="ul">
+        {console.log(groups)}
         {Boolean(groups.length !== 0) ? (
           groups.map(i =>
             'items' in i ? (
               <Box as="ul">
                 {i.name}
                 {i['items'].map(i => (
-                  <NavigationItem {...i} />
+                  <NavigationItem key={i.slug} {...i} />
                 ))}
               </Box>
             ) : (
               <Box as="ul">
-                <NavigationItem slug="hall" title="uff" />
+                <NavigationItem title={'hallo'} slug={''} />
               </Box>
             )
           )
