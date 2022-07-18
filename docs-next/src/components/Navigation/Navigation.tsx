@@ -31,10 +31,6 @@ const NavigationCategory = ({
             'items' in i ? (
               <Box as="ul">
                 {i.name}
-                {console.log(
-                  'groups',
-                  i['items'].map(i => i.title)
-                )}
                 {i['items'].map(i => (
                   <NavigationItem {...i} />
                 ))}
