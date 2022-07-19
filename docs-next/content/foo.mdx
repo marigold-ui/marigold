@@ -1,108 +1,15 @@
 ---
-title: Button
+title: Sandpack Code Demo
 ---
 
-# This is a Button Sandpack Experimence
+# Sandpack Code Demo
 
-<CodeEditorPreviewProvider>
-```js App.tsx
-function Card(){
-    return(
-      <div className="c-card">
-        <div className='c-card__content'>
-            <h1>Card Test</h1>
-        </div>
-      </div>
-    )
-}
-export default Card;
-````
-
-```css styles.css hidden
-.App {
-  display: block;
-  max-width: 720px;
-  margin-top: 150px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.c-card {
-  display: flex;
-  justify-content: center;
-  width: 360px;
-  margin-left: auto;
-  margin-right: auto;
-  color: #fff;
-  background-color: #1a5f7a;
-  border-radius: 8px;
-  box-shadow: 5px 5px 20px #1a5f7a5d;
-  margin-bottom: 24px;
-}
-```
-
-</CodeEditorPreviewProvider>
-
-## How to use it
-
-<CodeEditorPreview>
-```js App.tsx
-function Card(){
-    return(
-      <div className="c-card">
-        <div className='c-card__content'>
-            <h1>Card Test</h1>
-        </div>
-      </div>
-    )
-}
-export default Card;
-````
-
-```css styles.css hidden
-.App {
-  display: block;
-  max-width: 720px;
-  margin-top: 150px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.c-card {
-  display: flex;
-  justify-content: center;
-  width: 360px;
-  margin-left: auto;
-  margin-right: auto;
-  color: #fff;
-  background-color: #1a5f7a;
-  border-radius: 8px;
-  box-shadow: 5px 5px 20px #1a5f7a5d;
-  margin-bottom: 24px;
-}
-```
-
-</CodeEditorPreview>
-
-```
-
-```
-
-# Provider
-
-# Button
-
-<Inline space="small">
-  <Button variant="primary">Primary</Button>
-  <Button variant="secondary">Secondary</Button>
-  <Button variant="ghost">Ghost</Button>
-  <Button variant="text">Text Only</Button>
-</Inline>
-
-## Button Test
-
-<CodeEditorPreviewProvider>
+<CodeDemo theme="unicorn">
   ```js
-  <Button variant="primary">Primary</Button>
+import {Button} from '@marigold/components';
+
+export default () => (
+    <Button variant="primary">Primary</Button>
+)
   ```
-</CodeEditorPreviewProvider>
+</CodeDemo>
