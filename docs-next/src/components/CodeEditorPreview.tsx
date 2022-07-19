@@ -7,7 +7,6 @@ export default function CodeEditorPreview(props: {
   template: any;
 }) {
   let { children, template = 'react-ts' } = props;
-  console.log({ props });
 
   let codeSnippets = React.Children.toArray(children);
 
@@ -20,21 +19,6 @@ export default function CodeEditorPreview(props: {
     let filePath;
     let fileHidden = false;
     let fileActive = false;
-
-    // Not neccessary
-    // if (props.meta) {
-    //   const [name, ...params] = props.meta.split(' ');
-    //   filePath = (template === 'react-ts' ? '/' : '/src/') + name;
-
-    //   if (params.includes('hidden')) {
-    //     fileHidden = true;
-    //   }
-
-    //   if (params.includes('active')) {
-    //     fileActive = true;
-    //   }
-    // } else {
-    // }
 
     if (props.className === 'language-js') {
       filePath = '/App.tsx';
