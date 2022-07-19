@@ -8,10 +8,22 @@ import type {
 
 import { Box, Link } from '@marigold/components';
 import { useComponentStyles } from '@marigold/system';
+import { NAVIGATION_CONFIG } from 'docs-next/src/config';
 
 interface NavigationItemProps extends NavigationMenuItem {}
 
 interface NavigationCategoryProps extends NavigationMenuCategory {}
+
+const NavigationLinks = () => (
+  <Box as="ul">
+    <Box as="h2">Useful Links</Box>
+    <Box as="ul">
+      {NAVIGATION_CONFIG.links.map(link => (
+        <NavigationItem key={link.slug} {...link}></NavigationItem>
+      ))}
+    </Box>
+  </Box>
+);
 
 const NavigationItem = ({ slug, title }: NavigationItemProps) => (
   <Box as="li">
@@ -75,6 +87,7 @@ export const Navigation = ({ navigation }: NavigationProps) => {
             <NavigationCategory key={item.name} {...item} />
           )
         )}
+        <NavigationLinks></NavigationLinks>
       </ul>
     </Box>
   );

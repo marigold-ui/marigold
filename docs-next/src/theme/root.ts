@@ -4,4 +4,7 @@ export const root = {
     fontFamily: 'body',
     color: 'brand.text',
   },
+  li: {
+    listStyle: 'none',
+  },
 };

@@ -67,13 +67,6 @@ export const getNavigation = async () => {
     })
   );
 
-  // TODO: group by slug -> category (1. level)
-  // 1. iterate list
-  // 2. split slug by "/" -> if slug.length > 1
-  // 3. does category exist? -> if not create it
-  // 4. add to category
-  // 5. sort based on config
-
   const categories: NavigationMenuCategory[] = [];
   const topItems: NavigationMenuItem[] = [];
 
