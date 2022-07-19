@@ -27,7 +27,11 @@ const NavigationLinks = () => (
 
 const NavigationItem = ({ slug, title }: NavigationItemProps) => (
   <Box as="li">
-    <Link href={`/${slug}`}>{title}</Link>
+    {slug.startsWith('https') ? (
+      <Link href={slug}>{title}</Link>
+    ) : (
+      <Link href={`/${slug}`}>{title}</Link>
+    )}
   </Box>
 );
 
