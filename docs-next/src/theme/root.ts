@@ -7,4 +7,7 @@ export const root = {
   li: {
     listStyle: 'none',
   },
+  a: {
+    color: 'brand.text',
+  },
 };

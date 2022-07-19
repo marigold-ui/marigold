@@ -9,7 +9,10 @@ import { ThemeExtensionsWithParts } from '@marigold/system';
 
 export interface Theme extends BaseTheme {
   components: BaseTheme['components'] &
-    ThemeExtensionsWithParts<'Navigation', ['container']>;
+    ThemeExtensionsWithParts<
+      'Navigation',
+      ['container', 'category', 'item', 'list']
+    >;
 }
 
 export const theme: Theme = {
