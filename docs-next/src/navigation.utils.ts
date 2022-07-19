@@ -6,13 +6,15 @@ import { CONTENT_PATH, NAVIGATION_CONFIG } from './config';
 
 export type NavigationMenu = (NavigationMenuCategory | NavigationMenuItem)[];
 
+export interface NavigationMenuGroup {
+  name: string;
+  items: NavigationMenuItem[];
+}
+
 export interface NavigationMenuCategory {
   name: string;
   items: NavigationMenuItem[];
-  groups: {
-    name: string;
-    items: NavigationMenuItem[];
-  }[];
+  groups: NavigationMenuGroup[];
 }
 export interface NavigationMenuItem {
   title: string;
