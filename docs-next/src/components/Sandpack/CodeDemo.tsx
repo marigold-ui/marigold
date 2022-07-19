@@ -5,7 +5,6 @@ import {
   SandpackCodeEditor,
 } from '@codesandbox/sandpack-react';
 import { nightOwl } from '@codesandbox/sandpack-themes';
-import { result } from 'lodash';
 import React from 'react';
 
 import { entryCore, entryB2B, entryUnicorn } from './index';
@@ -72,7 +71,6 @@ export default function CodeDemo(props: { children: any; theme: string }) {
     >
       <SandpackLayout>
         <SandpackCodeEditor showLineNumbers={true} />
-        {/* <MarigoldCodeEditor /> */}
         <SandpackPreview />
       </SandpackLayout>
     </SandpackProvider>
