@@ -1,5 +1,6 @@
 packages:
   - config/*
   - docs
+  - examples/*
   - packages/*
   - themes/*
