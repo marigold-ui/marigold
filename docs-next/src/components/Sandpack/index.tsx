@@ -1,4 +1,4 @@
-export const entryCore = `import React, { StrictMode } from "react";
+export const entryCore = `import React from "react";
   import { createRoot } from "react-dom/client";
   import { MarigoldProvider } from '@marigold/components';
   import theme from '@marigold/theme-core';
@@ -11,7 +11,7 @@ export const entryCore = `import React, { StrictMode } from "react";
   );
 `;
 
-export const entryB2B = `import React, { StrictMode } from "react";
+export const entryB2B = `import React from "react";
 import { createRoot } from "react-dom/client";
 import { MarigoldProvider } from '@marigold/components';
 import theme from '@marigold/theme-b2b';
@@ -24,7 +24,7 @@ root.render(
 );
 `;
 
-export const entryUnicorn = `import React, { StrictMode } from "react";
+export const entryUnicorn = `import React from "react";
 import { createRoot } from "react-dom/client";
 import { MarigoldProvider } from '@marigold/components';
 import theme from '@marigold/theme-unicorn';
