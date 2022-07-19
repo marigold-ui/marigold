@@ -9,6 +9,7 @@ import * as MdxComponents from '../mdx';
 import { theme } from '../theme';
 
 import CodeEditorPreview from '../components/CodeEditorPreview';
+import CodeEditorPreviewProvider from '../components/CodeEditorPreviewProvider';
 
 const DevMode = () => {
   const devMode = process.env.NODE_ENV === 'development';
@@ -30,6 +31,7 @@ const components = {
   ...MdxComponents,
   ...MarigoldComponents,
   CodeEditorPreview,
+  CodeEditorPreviewProvider,
 };
 
 const App = ({ Component, pageProps }: AppProps) => {

@@ -1,5 +1,5 @@
-// import React from 'react';
-// import { Text } from '@marigold/components';
+import React from 'react';
+import { Text } from '@marigold/components';
 // import { graphql, useStaticQuery } from 'gatsby';
 
 // const useVersion = () => {
@@ -19,12 +19,10 @@
 //   };
 // };
 
-// export const Version = () => {
-//   const { version, hash } = useVersion();
-
-//   return (
-//     <Text variant="muted" display="block" align="right" p="xsmall">
-//       v{version} ({hash.slice(0, 7)})
-//     </Text>
-//   );
-// };
+export const Version = () => {
+  return (
+    <Text variant="muted" display="block" align="right" p="xsmall">
+      v{process.env.version}
+    </Text>
+  );
+};

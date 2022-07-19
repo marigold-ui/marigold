@@ -7,6 +7,7 @@ import type {
 } from '../../navigation.utils';
 
 import { Box, Link } from '@marigold/components';
+import { useComponentStyles } from '@marigold/system';
 
 interface NavigationItemProps extends NavigationMenuItem {}
 
@@ -35,19 +36,21 @@ const NavigationCategory = ({
   groups,
 }: NavigationCategoryProps) => {
   return (
-    <Box as="ul" role="menubar">
-      <li>
-        <Box as="h2">{name}</Box>
-        <Box as="ul">
-          {groups.map(group => (
-            <NavigationGroup {...group} />
-          ))}
-          {items.map(i => (
-            <NavigationItem key={i.slug} {...i} />
-          ))}
-        </Box>
-      </li>
-    </Box>
+    <li>
+      <Box as="ul" role="menubar">
+        <li>
+          <Box as="h2">{name}</Box>
+          <Box as="ul">
+            {groups.map(group => (
+              <NavigationGroup {...group} />
+            ))}
+            {items.map(i => (
+              <NavigationItem key={i.slug} {...i} />
+            ))}
+          </Box>
+        </li>
+      </Box>
+    </li>
   );
 };
 
@@ -56,21 +59,23 @@ export interface NavigationProps {
 }
 
 export const Navigation = ({ navigation }: NavigationProps) => {
-  // const styles = useComponentStyles(
-  //   'Navigation',
-  //   {},
-  //   { parts: ['container', 'header', 'list', 'item'] }
-  // );
+  const styles = useComponentStyles('Navigation', {}, { parts: ['container'] });
 
   return (
-    <Box as="nav" aria-labelledby="marigold-navigation">
-      {navigation.map(item =>
-        'title' in item ? (
-          <NavigationItem key={item.slug} {...item} />
-        ) : (
-          <NavigationCategory key={item.name} {...item} />
-        )
-      )}
+    <Box
+      role="navigation"
+      css={styles.container}
+      aria-labelledby="marigold-navigation"
+    >
+      <ul>
+        {navigation.map(item =>
+          'title' in item ? (
+            <NavigationItem key={item.slug} {...item} />
+          ) : (
+            <NavigationCategory key={item.name} {...item} />
+          )
+        )}
+      </ul>
     </Box>
   );
 };

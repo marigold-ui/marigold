@@ -5,14 +5,10 @@ import { serialize } from 'next-mdx-remote/serialize';
 
 import { CONTENT_PATH } from '../config';
 import { getContentPaths, getNavigation } from '../navigation.utils';
-import { Navigation } from '../components/Navigation';
-
-//import { Sandpack } from '@codesandbox/sandpack-react';
+import { Layout } from '../components/Layout';
 
 const ContentPage = ({ source, navigation }: any) => (
-  <div>
-    {/* <Sandpack template="react" />; */}
-    <Navigation navigation={navigation} />
+  <Layout navigation={navigation}>
     <div className="post-header">
       <h1>{source.frontmatter.title}</h1>
       {source.frontmatter.description && (
@@ -22,7 +18,7 @@ const ContentPage = ({ source, navigation }: any) => (
     <main>
       <MDXRemote {...source} />
     </main>
-  </div>
+  </Layout>
 );
 
 export default ContentPage;
