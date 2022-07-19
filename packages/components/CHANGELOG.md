@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 1.2.2
+
+### Patch Changes
+
+- [#2177](https://github.com/marigold-ui/marigold/pull/2177) [`51132dd8`](https://github.com/marigold-ui/marigold/commit/51132dd83ead1b5b5a89b1281ba1a2c2d4e17f04) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update react-aria
+
+- Updated dependencies []:
+  - @marigold/system@1.2.2
+  - @marigold/icons@0.7.6
+
 ## 1.2.1
 
 ### Patch Changes
