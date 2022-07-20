@@ -13,7 +13,7 @@ import { NAVIGATION_CONFIG } from 'docs-next/src/config';
 
 export interface NavigationProps {
   navigation: NavigationMenu;
-  css: CSSObject;
+  css?: CSSObject;
 }
 
 interface NavigationItemProps extends NavigationMenuItem, NavigationStyles {}

@@ -6,6 +6,7 @@ import { serialize } from 'next-mdx-remote/serialize';
 import { CONTENT_PATH } from '../config';
 import { getContentPaths, getNavigation } from '../navigation.utils';
 import { Layout } from '../components/Layout';
+import React from 'react';
 
 const ContentPage = ({ source, navigation }: any) => (
   <Layout navigation={navigation}>

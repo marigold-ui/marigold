@@ -8,7 +8,7 @@ export const Navigation = {
       lineHeight: 'large-1',
     },
     category: {
-      textTransform: 'uppercase',
+      // textTransform: 'uppercase',
       fontSize: 'small-1',
       color: 'brand.secondary',
       fontWeight: 'bold',
