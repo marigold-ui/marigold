@@ -2,25 +2,42 @@ import type { Theme } from '@marigold/components';
 
 export const Button: Theme['components']['Button'] = {
   base: {
-    p: 0,
-    border: 'none',
-    lineHeight: '30px',
-    px: 'large',
-    '&:disabled': {
-      color: 'disabled',
+    cursor: 'pointer',
+    appearance: 'none',
+    borderRadius: 'small',
+    fontSize: 'xxsmall',
+    lineHeight: '22px',
+    height: 24,
+    py: 0,
+    px: 'small',
+    bg: 'gray30',
+    color: 'gray70',
+    border: '1px solid',
+    borderColor: 'gray70',
+    transition: 'all 200ms ease-out',
+
+    '&:hover': {
       bg: 'gray00',
-      outlineColor: 'disabled',
-      cursor: 'not-allowed',
+    },
+
+    '&:disabled': {
+      cursor: 'none',
+      color: 'gray40',
+      bg: 'gray00',
+      border: '1px solid',
+      borderColor: 'gray00',
     },
   },
   variant: {
     primary: {
-      color: 'background',
+      color: 'gray00',
       bg: 'primary',
+      borderColor: 'primary',
+
       '&:hover': {
         color: 'background',
         bg: 'orange40',
-        cursor: 'pointer',
+        borderColor: 'orange40',
       },
     },
     secondary: {
@@ -30,7 +47,6 @@ export const Button: Theme['components']['Button'] = {
       outlineColor: 'gray70',
       '&:hover': {
         bg: 'gray00',
-        cursor: 'pointer',
       },
     },
     ghost: {
