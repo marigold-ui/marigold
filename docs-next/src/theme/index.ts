@@ -11,7 +11,7 @@ export interface Theme extends BaseTheme {
   components: BaseTheme['components'] &
     ThemeExtensionsWithParts<
       'Navigation',
-      ['container', 'category', 'item', 'list']
+      ['container', 'category', 'item', 'list', 'group']
     >;
 }
 

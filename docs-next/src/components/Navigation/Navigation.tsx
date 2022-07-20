@@ -15,51 +15,47 @@ export interface NavigationProps {
   css: CSSObject;
 }
 
-interface NavigationItemProps extends NavigationMenuItem {
-  css: CSSObject;
-}
+interface NavigationItemProps extends NavigationMenuItem, NavigationStyles {}
 
-interface NavigationMenuGroupProps extends NavigationMenuGroup {
-  css: {
-    category: CSSObject;
-    list: CSSObject;
-    item: CSSObject;
-  };
-}
-interface NavigationCategoryProps extends NavigationMenuCategory {
-  css: {
-    category: CSSObject;
-    headline: CSSObject;
-    list: CSSObject;
-    item: CSSObject;
-  };
-}
+interface NavigationMenuGroupProps
+  extends NavigationMenuGroup,
+    NavigationStyles {}
+interface NavigationCategoryProps
+  extends NavigationMenuCategory,
+    NavigationStyles {}
 
-interface NavigationLinksProps {
+interface NavigationLinksProps extends NavigationStyles {}
+interface NavigationStyles {
   css: {
     category: CSSObject;
     item: CSSObject;
     list: CSSObject;
+    group: CSSObject;
   };
 }
-
 const NavigationLinks = ({ css }: NavigationLinksProps) => (
-  <Box as="ul" css={css.category}>
-    <Box as="h2">Useful Links</Box>
-    <Box as="ul" css={css.list}>
-      {NAVIGATION_CONFIG.links.map(link => (
-        <NavigationItem
-          key={link.slug}
-          css={css.item}
-          {...link}
-        ></NavigationItem>
-      ))}
+  <li>
+    <Box as="ul" role="menubar" css={css.list}>
+      <li>
+        <Box as="h2" css={css.category}>
+          Useful Links
+        </Box>
+        <Box as="ul" css={css.list}>
+          {NAVIGATION_CONFIG.links.map(link => (
+            <NavigationItem
+              key={link.slug}
+              css={css}
+              {...link}
+            ></NavigationItem>
+          ))}
+        </Box>
+      </li>
     </Box>
-  </Box>
+  </li>
 );
 
 const NavigationItem = ({ slug, title, css }: NavigationItemProps) => (
-  <Box as="li" css={css}>
+  <Box as="li" css={css.item}>
     {slug.startsWith('https') ? (
       <Link href={slug}>{title}</Link>
     ) : (
@@ -69,14 +65,16 @@ const NavigationItem = ({ slug, title, css }: NavigationItemProps) => (
 );
 
 const NavigationGroup = ({ name, items, css }: NavigationMenuGroupProps) => (
-  <Box as="li">
-    <Box as="ul" css={css.category}>
-      {name}
+  <li>
+    <Box as="ul" css={css.list}>
+      <Box as="h4" css={css.group}>
+        {name}
+      </Box>
       {items.map(i => (
-        <NavigationItem key={i.slug} css={css.item} {...i} />
+        <NavigationItem key={i.slug} css={css} {...i} />
       ))}
     </Box>
-  </Box>
+  </li>
 );
 
 const NavigationCategory = ({
@@ -87,15 +85,17 @@ const NavigationCategory = ({
 }: NavigationCategoryProps) => {
   return (
     <li>
-      <Box as="ul" role="menubar" css={css.category}>
+      <Box as="ul" role="menubar" css={css.list}>
         <li>
-          <Box as="h2">{name}</Box>
-          <Box as="ul">
+          <Box as="h2" css={css.category}>
+            {name}
+          </Box>
+          <Box as="ul" css={css.list}>
             {groups.map(group => (
               <NavigationGroup css={css} {...group} />
             ))}
             {items.map(i => (
-              <NavigationItem css={css.item} key={i.slug} {...i} />
+              <NavigationItem css={css} key={i.slug} {...i} />
             ))}
           </Box>
         </li>
@@ -108,7 +108,7 @@ export const Navigation = ({ navigation }: NavigationProps) => {
   const styles = useComponentStyles(
     'Navigation',
     {},
-    { parts: ['container', 'category', 'item'] }
+    { parts: ['container', 'category', 'item', 'list', 'group'] }
   );
 
   return (
@@ -120,7 +120,7 @@ export const Navigation = ({ navigation }: NavigationProps) => {
       <ul>
         {navigation.map(item =>
           'title' in item ? (
-            <NavigationItem key={item.slug} css={styles.item} {...item} />
+            <NavigationItem key={item.slug} css={styles} {...item} />
           ) : (
             <NavigationCategory key={item.name} css={styles} {...item} />
           )

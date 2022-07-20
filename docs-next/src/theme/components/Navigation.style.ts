@@ -3,16 +3,25 @@ export const Navigation = {
     container: {
       fontFamily: 'headline',
       bg: '#fff',
+      lineHeight: 'large-1',
     },
     category: {
+      textTransform: 'uppercase',
       fontSize: 'small-1',
-      p: '0',
+      color: 'brand.secondary',
+      fontWeight: 'medium',
     },
     item: {
       p: '0',
-      fontFamily: 'body',
       fontSize: 'small-1',
     },
-    list: {},
+    list: {
+      p: '0',
+      pb: 'small-1',
+    },
+    group: {
+      color: 'brand.text',
+      fontWeight: 'medium',
+    },
   },
-} as const;
+};
