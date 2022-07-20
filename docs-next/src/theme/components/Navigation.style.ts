@@ -8,10 +8,10 @@ export const Navigation = {
       lineHeight: 'large-1',
     },
     category: {
-      // textTransform: 'uppercase',
       fontSize: 'small-1',
       color: 'brand.secondary',
       fontWeight: 'bold',
+      textTransform: 'uppercase',
     },
     item: {
       pl: '10px',
@@ -30,4 +30,4 @@ export const Navigation = {
       fontWeight: 'medium',
     },
   },
-};
+} as const;

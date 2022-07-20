@@ -8,4 +8,4 @@ export const Link: Theme['components']['Link'] = {
       transform: 'scale(1.1)',
     },
   },
-};
+} as const;
