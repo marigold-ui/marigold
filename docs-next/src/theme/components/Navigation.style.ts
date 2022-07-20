@@ -1,3 +1,5 @@
+import { colors } from '../colors';
+
 export const Navigation = {
   base: {
     container: {
@@ -9,11 +11,15 @@ export const Navigation = {
       textTransform: 'uppercase',
       fontSize: 'small-1',
       color: 'brand.secondary',
-      fontWeight: 'medium',
+      fontWeight: 'bold',
     },
     item: {
-      p: '0',
+      pl: '10px',
       fontSize: 'small-1',
+      '&:hover': {
+        pl: '8px',
+        borderLeft: `2px solid  ${colors.brand.primary}`,
+      },
     },
     list: {
       p: '0',

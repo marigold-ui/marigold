@@ -6,7 +6,8 @@ import type {
   NavigationMenuGroup,
 } from '../../navigation.utils';
 
-import { Box, Link } from '@marigold/components';
+import { Box } from '@marigold/components';
+import { Link } from '../Link';
 import { CSSObject, useComponentStyles } from '@marigold/system';
 import { NAVIGATION_CONFIG } from 'docs-next/src/config';
 
@@ -57,9 +58,11 @@ const NavigationLinks = ({ css }: NavigationLinksProps) => (
 const NavigationItem = ({ slug, title, css }: NavigationItemProps) => (
   <Box as="li" css={css.item}>
     {slug.startsWith('https') ? (
-      <Link href={slug}>{title}</Link>
+      <Link to={slug} target="_blank">
+        {title}
+      </Link>
     ) : (
-      <Link href={`/${slug}`}>{title}</Link>
+      <Link to={`/${slug}`}>{title}</Link>
     )}
   </Box>
 );

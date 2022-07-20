@@ -6,8 +6,6 @@ import {
   LinkProps as MarigoldLinkProps,
 } from '@marigold/components';
 
-import { colors } from '../theme/colors';
-
 export interface LinkProps
   extends Pick<MarigoldLinkProps, 'variant' | 'target' | 'children'>,
     Omit<NextLinkProps, 'href' | 'as' | 'passHref'> {
@@ -28,8 +26,6 @@ export const Link = ({ children, to, ...props }: LinkProps) => {
       passHref={true}
       href={to}
       legacyBehavior={false}
-      // its a gatsby thing
-      //activeStyle={{ color: colors.blue70 }}
       {...props}
     >
       {children}
