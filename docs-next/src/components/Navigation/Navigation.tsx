@@ -95,7 +95,7 @@ const NavigationCategory = ({
           </Box>
           <Box as="ul" css={css.list}>
             {groups.map(group => (
-              <NavigationGroup css={css} {...group} />
+              <NavigationGroup css={css} key={group.name} {...group} />
             ))}
             {items.map(i => (
               <NavigationItem css={css} key={i.slug} {...i} />
