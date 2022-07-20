@@ -1,0 +1,123 @@
+---
+title: Card
+group: Content
+---
+
+import { DoAndDont } from '../../src/components/DoAndDont';
+
+# Card
+
+The card component can be used for organizing information inside the UI, as well it provides a better readability and helps the user to find information in an easier way.
+
+<MarigoldTheme>
+  <Card>
+    <Text>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+      dignissim dapibus elit, vel.
+    </Text>
+    <Link href="#">
+      <Text>Read more...</Text>
+    </Link>
+  </Card>
+</MarigoldTheme>
+
+```tsx onlyCode
+import { Card } from '@marigold/components';
+```
+
+## Props
+
+| Property  | Type     | Default | Description                          |
+| :-------- | :------- | :------ | :----------------------------------- |
+| `variant` | `string` |         | Use a different _variant_ from theme |
+| `size`    | `string` |         | Use a different _size_ from theme    |
+
+## Examples
+
+### Standard
+
+```tsx expandCode
+<Card>
+  <Text>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+    dignissim dapibus elit, vel.
+  </Text>
+  <Link href="#">
+    <Text>Read more...</Text>
+  </Link>
+</Card>
+```
+
+### Card with form fields
+
+```tsx
+<Card>
+  <TextField label="Firstname" />
+  <TextField label="Lastname" />
+</Card>
+```
+
+### Card with select
+
+```tsx
+<Card>
+  <Select label="Favorite Color" placeholder="Choose a color" width={450}>
+    <Item>Red</Item>
+    <Item>Orange</Item>
+    <Item>Yellow</Item>
+    <Item>Green</Item>
+    <Item>Blue</Item>
+    <Item>Purple</Item>
+  </Select>
+</Card>
+```
+
+## Dos & Don'ts
+
+<Stack space="small">
+  <Box
+    display="grid"
+    css={{
+      gridGap: 'small',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(min(500px, 100%), 1fr))',
+    }}
+  >
+    <DoAndDont
+      preview={
+        <Card>
+          <Text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            dignissim dapibus elit, vel.
+          </Text>
+          <Link href="#">
+            <Text>Read more...</Text>
+          </Link>
+        </Card>
+      }
+    >
+      Use a maximum of three lines of text. The rest can be read on the card
+      after opening the linked page.
+    </DoAndDont>
+    <DoAndDont
+      dont
+      preview={
+        <Card>
+          <Text>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s, when an unknown printer took a galley of type
+            and scrambled it to make a type specimen book. It has survived not
+            only five centuries, but also the leap into electronic typesetting,
+            remaining essentially unchanged. It was popularised in the 1960s
+            with the release of Letraset sheets containing Lorem Ipsum passages,
+            and more recently with desktop publishing software like Aldus
+            PageMaker including versions of Lorem Ipsum.
+          </Text>
+        </Card>
+      }
+    >
+      Do not write a whole paragraph on a card. The card is created to link to
+      the full article.{' '}
+    </DoAndDont>
+  </Box>
+</Stack>

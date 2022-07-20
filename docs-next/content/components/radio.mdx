@@ -1,0 +1,83 @@
+---
+title: Radio
+figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=467%3A332
+group: Forms
+---
+
+import { FigmaLink } from '../../src/components/FigmaLink';
+
+# Radio
+
+The `Radio` and `Radio.Group` components allow users to select one option from a set of options. They are useful for presenting a list of options to users and collecting their responses.
+
+```tsx
+<Radio.Group label="Choose desert" defaultValue="apple">
+  <Radio value="ice cream">🍨 Ice Cream</Radio>
+  <Radio value="cupcake">🧁 Cupcake</Radio>
+  <Radio value="cookie" disabled>
+    🍪 Cookie (sold out)
+  </Radio>
+  <Radio value="apple">🍎 Apple</Radio>
+</Radio.Group>
+```
+
+```tsx onlyCode
+import { Radio } from '@marigold/components';
+```
+
+<FigmaLink
+  to={
+    'https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=467%3A332'
+  }
+/>
+
+## Props
+
+| Name                 | Type      | Default     | Description                                                                                                        |
+| :------------------- | :-------- | :---------- | :----------------------------------------------------------------------------------------------------------------- |
+| `variant` (optional) | `string`  |             | Use a different _variant_ from theme                                                                               |
+| `size` (optional)    | `string`  | `'level-1'` | Use a different _size_ from theme                                                                                  |
+| `error` (optional)   | `boolean` | `false`     | If `true`, the checkbox is considered invalid and if set the `errorMessage` is shown instead of the `description`. |
+| `width` (optional)   | `string`  | `100%`      | Control the width of the field.                                                                                    |
+| ...                  |           |             | Yes you can use all regular attributes of `input`!                                                                 |
+
+## Examples
+
+### Simple Radio
+
+```tsx
+<Radio.Group label="Radio Group">
+  <Radio value="1">Option 1</Radio>
+  <Radio value="2">Option 2</Radio>
+  <Radio value="3" disabled>
+    Option 3
+  </Radio>
+  <Radio value="4">Option 4</Radio>
+</Radio.Group>
+```
+
+### Disabed Radio
+
+```tsx
+<Radio.Group label="Radio Group" disabled>
+  <Radio value="1">Option 1</Radio>
+  <Radio value="2">Option 2</Radio>
+  <Radio value="3" disabled>
+    Option 3
+  </Radio>
+  <Radio value="4">Option 4</Radio>
+</Radio.Group>
+```
+
+### Radio with required label
+
+```tsx
+<Radio.Group label="Radio Group" required>
+  <Radio value="1">Option 1</Radio>
+  <Radio value="2">Option 2</Radio>
+  <Radio value="3" disabled>
+    Option 3
+  </Radio>
+  <Radio value="4">Option 4</Radio>
+</Radio.Group>
+```
