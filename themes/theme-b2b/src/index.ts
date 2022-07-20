@@ -1,3 +1,5 @@
+import type { Theme } from '@marigold/components';
+
 import { colors } from './colors';
 import * as components from './components';
 
@@ -5,7 +7,7 @@ export const webFontUrl = [
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap',
 ] as const;
 
-const theme: any = {
+const theme: Theme = {
   space: {
     none: 0,
     xxsmall: 4,
