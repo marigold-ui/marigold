@@ -5273,7 +5273,7 @@ packages:
       react: '>=16'
     dependencies:
       '@types/mdx': 2.0.2
-      '@types/react': 18.0.12
+      '@types/react': 18.0.15
       react: 18.2.0
     dev: false
 
