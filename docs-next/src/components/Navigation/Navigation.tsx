@@ -58,9 +58,16 @@ const NavigationLinks = ({ css }: NavigationLinksProps) => (
   </li>
 );
 
-const NavigationItem = ({ title, css, ...props }: NavigationItemProps) => (
+const NavigationItem = ({
+  title,
+  css,
+  variant,
+  ...props
+}: NavigationItemProps) => (
   <Box as="li" css={css?.item}>
-    <Link {...props}>{title}</Link>
+    <Link variant="navigation" {...props}>
+      {title}
+    </Link>
   </Box>
 );
 
@@ -88,6 +95,7 @@ const NavigationCategory = ({
   groups,
   css,
 }: NavigationCategoryProps) => {
+  console.log(NavigationItem);
   return (
     <li>
       <Box as="ul" role="menubar" css={css?.list}>
