@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Headline, Text } from '@marigold/components';
+import { Headline, Text } from '@marigold/components';
 import { ComponentProps } from '@marigold/types';
 
 import { Link } from './components/Link';

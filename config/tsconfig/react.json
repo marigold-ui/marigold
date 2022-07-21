@@ -2,7 +2,7 @@
   "extends": "./base",
   "compilerOptions": {
     "target": "es2018",
-    "lib": ["es2017", "dom"],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "jsx": "react"
   }
 }
