@@ -95,7 +95,6 @@ const NavigationCategory = ({
   groups,
   css,
 }: NavigationCategoryProps) => {
-  console.log(NavigationItem);
   return (
     <li>
       <Box as="ul" role="menubar" css={css?.list}>
