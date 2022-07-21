@@ -1,4 +1,3 @@
-import React from 'react';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
 
 import {
@@ -7,28 +6,21 @@ import {
 } from '@marigold/components';
 
 export interface LinkProps
-  extends Pick<MarigoldLinkProps, 'variant' | 'target' | 'children'>,
-    Omit<NextLinkProps, 'href' | 'as' | 'passHref'> {
-  to: NextLinkProps['href'];
+  extends NextLinkProps,
+    Pick<MarigoldLinkProps, 'variant' | 'target' | 'children'> {
+  href: string;
 }
 
-export const Link = ({ children, to, ...props }: LinkProps) => {
-  const regex = /https?:\/\/((?:[\w\d-]+\.)+[\w\d]{2,})/i;
-  const externalLink = regex.test(to.toString());
+const Foo = ({ onClick, ...props }: Omit<LinkProps, 'href' | 'as'>) => (
+  <MarigoldLink onPress={onClick} {...props}>
+    {props.children}
+  </MarigoldLink>
+);
 
-  return externalLink ? (
-    <MarigoldLink href={to} {...props}>
-      {children}
-    </MarigoldLink>
-  ) : (
-    <MarigoldLink
-      as={NextLink}
-      passHref={true}
-      href={to}
-      legacyBehavior={false}
-      {...props}
-    >
-      {children}
-    </MarigoldLink>
+export const Link = ({ variant, href, children }: LinkProps) => {
+  return (
+    <NextLink href={href} passHref>
+      <Foo variant={variant}>{children}</Foo>
+    </NextLink>
   );
 };
