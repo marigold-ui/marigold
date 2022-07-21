@@ -1,9 +1,15 @@
-import React, { ReactNode, useRef } from 'react';
+import React, { forwardRef, ReactNode, useRef } from 'react';
 import { useLink } from '@react-aria/link';
+import { PressEvents } from '@react-types/shared';
 import { ThemeExtension, useComponentStyles } from '@marigold/system';
-import { PolymorphicComponent, PolymorphicProps } from '@marigold/types';
+import {
+  PolymorphicComponentWithRef,
+  PolymorphicProps,
+  PolymorphicPropsWithRef,
+} from '@marigold/types';
 
 import { Box, BoxOwnProps } from '../Box';
+import { useObjectRef } from '@react-aria/utils';
 
 // Theme Extension
 // ---------------
@@ -11,41 +17,48 @@ export interface LinkThemeExtension extends ThemeExtension<'Link'> {}
 
 // Props
 // ---------------
-export interface LinkOwnProps extends BoxOwnProps {
+export interface LinkOwnProps extends PressEvents, BoxOwnProps {
   disabled?: boolean;
   variant?: string;
   size?: string;
   children?: ReactNode;
 }
 
-export interface LinkProps extends PolymorphicProps<LinkOwnProps, 'a'> {}
+export interface LinkProps extends PolymorphicPropsWithRef<LinkOwnProps, 'a'> {}
 
 // Component
 // ---------------
-export const Link = (({
-  as = 'a',
-  variant,
-  size,
-  children,
-  disabled,
-  ...props
-}: LinkProps) => {
-  const ref = useRef(null);
-  const { linkProps } = useLink(
+export const Link: PolymorphicComponentWithRef<LinkOwnProps, 'a'> = forwardRef(
+  (
     {
-      // We typecast here because the element could very well be a `span`
-      ...(props as PolymorphicProps<LinkOwnProps, any>),
-      elementType: typeof as === 'string' ? as : 'span',
-      isDisabled: disabled,
-    },
+      as = 'a',
+      variant,
+      size,
+      children,
+      disabled,
+      onPress,
+      onPressStart,
+      ...props
+    }: Omit<LinkProps, 'ref'>,
     ref
-  );
+  ) => {
+    const linkRef = useObjectRef<HTMLAnchorElement>(ref as any);
+    const { linkProps } = useLink(
+      {
+        // We typecast here because the element could very well be a `span`
+        ...(props as PolymorphicProps<LinkOwnProps, any>),
+        elementType: typeof as === 'string' ? as : 'span',
+        isDisabled: disabled,
+      },
+      linkRef
+    );
 
-  const styles = useComponentStyles('Link', { variant, size });
+    const styles = useComponentStyles('Link', { variant, size });
 
-  return (
-    <Box as={as} css={styles} ref={ref} {...props} {...linkProps}>
-      {children}
-    </Box>
-  );
-}) as PolymorphicComponent<LinkOwnProps, 'a'>;
+    return (
+      <Box as={as} css={styles} ref={linkRef} {...props} {...linkProps}>
+        {children}
+      </Box>
+    );
+  }
+);
