@@ -10,6 +10,8 @@ import { theme } from '../theme';
 
 import CodeDemo from '../components/Sandpack/CodeDemo';
 
+import CodeEditorExperience from '../components/CodeEditor';
+
 const DevMode = () => {
   const devMode = process.env.NODE_ENV === 'development';
   if (devMode) {
@@ -30,6 +32,7 @@ const components = {
   ...MdxComponents,
   ...MarigoldComponents,
   CodeDemo,
+  CodeEditorExperience,
 };
 
 const App = ({ Component, pageProps }: AppProps) => {

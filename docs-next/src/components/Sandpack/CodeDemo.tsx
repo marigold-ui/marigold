@@ -32,6 +32,10 @@ export default function CodeDemo(props: { children: any; theme: string }) {
     {}
   );
 
+  if (theme === undefined) {
+    theme = 'unicorn';
+  }
+
   let themeSnippet = React.Children.toArray(theme);
 
   const activeTheme = themeSnippet.reduce((result: any) => {
@@ -62,7 +66,7 @@ export default function CodeDemo(props: { children: any; theme: string }) {
       theme={nightOwl}
       customSetup={{
         dependencies: {
-          '@marigold/components': '1.1.0',
+          '@marigold/components': '1.2.2',
           '@marigold/theme-b2b': '9.0.1',
           '@marigold/theme-core': '9.0.2',
           '@marigold/theme-unicorn': '6.0.2',

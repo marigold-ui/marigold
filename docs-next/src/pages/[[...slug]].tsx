@@ -2,6 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
+import { remarkMdxCodeMeta } from 'remark-mdx-code-meta';
 
 import { CONTENT_PATH } from '../config';
 import { getContentPaths, getNavigation } from '../navigation.utils';
@@ -38,7 +39,7 @@ export const getStaticProps = async ({ params }: any) => {
 
   const mdxSource = await serialize(source, {
     mdxOptions: {
-      remarkPlugins: [],
+      remarkPlugins: [remarkMdxCodeMeta],
       rehypePlugins: [],
     },
     parseFrontmatter: true,

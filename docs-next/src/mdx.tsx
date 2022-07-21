@@ -5,6 +5,9 @@ import { ComponentProps } from '@marigold/types';
 
 import { Link } from './components/Link';
 
+import CodeEditor from './components/CodeEditor';
+import CodeEditorExperience from './components/CodeEditorExperience';
+
 // Typography
 // ---------------
 export const h1 = ({ children, ...props }: ComponentProps<'h1'>) => (
@@ -50,3 +53,11 @@ export const a = ({ children, href = '', ...props }: ComponentProps<'a'>) => (
     {children}
   </Link>
 );
+
+export const pre = (props: ComponentProps<'pre'>) => {
+  if (props.editor !== undefined) {
+    return <CodeEditorExperience code={props.children.props.children} />;
+  } else {
+    return <pre {...props} />;
+  }
+};
