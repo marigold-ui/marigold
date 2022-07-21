@@ -1,7 +1,6 @@
 import React from 'react';
 import type {
   NavigationMenu,
-  NavigationMenuItem,
   NavigationMenuCategory,
   NavigationMenuGroup,
 } from '../../navigation.utils';
@@ -38,12 +37,12 @@ interface NavigationStyles {
 }
 const NavigationLinks = ({ css }: NavigationLinksProps) => (
   <li>
-    <Box as="ul" role="menubar" css={css.list}>
+    <Box as="ul" role="menubar" css={css?.list}>
       <li>
-        <Box as="h2" css={css.category}>
+        <Box as="h2" css={css?.category}>
           Useful Links
         </Box>
-        <Box as="ul" css={css.list}>
+        <Box as="ul" css={css?.list}>
           {NAVIGATION_CONFIG.links.map(({ title, url }) => (
             <NavigationItem
               key={url}
@@ -60,15 +59,15 @@ const NavigationLinks = ({ css }: NavigationLinksProps) => (
 );
 
 const NavigationItem = ({ title, css, ...props }: NavigationItemProps) => (
-  <Box as="li" css={css.item}>
+  <Box as="li" css={css?.item}>
     <Link {...props}>{title}</Link>
   </Box>
 );
 
 const NavigationGroup = ({ name, items, css }: NavigationMenuGroupProps) => (
   <li>
-    <Box as="ul" css={css.list}>
-      <Box as="h4" css={css.group}>
+    <Box as="ul" css={css?.list}>
+      <Box as="h4" css={css?.group}>
         {name}
       </Box>
       {items.map(item => (
@@ -91,12 +90,12 @@ const NavigationCategory = ({
 }: NavigationCategoryProps) => {
   return (
     <li>
-      <Box as="ul" role="menubar" css={css.list}>
+      <Box as="ul" role="menubar" css={css?.list}>
         <li>
-          <Box as="h2" css={css.category}>
+          <Box as="h2" css={css?.category}>
             {name}
           </Box>
-          <Box as="ul" css={css.list}>
+          <Box as="ul" css={css?.list}>
             {groups.map(group => (
               <NavigationGroup css={css} key={group.name} {...group} />
             ))}
@@ -121,7 +120,6 @@ export const Navigation = ({ navigation }: NavigationProps) => {
     {},
     { parts: ['container', 'category', 'item', 'list', 'group'] }
   );
-
   return (
     <Box
       role="navigation"
