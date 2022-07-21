@@ -309,12 +309,12 @@ importers:
       next: 12.1.6
       next-mdx-remote: https://github.com/marigold-ui/next-mdx-remote.git#4b55fcba75bf4897cb252e175ddc121067c923ae
       next-remote-watch: ^1.0.0
-      react: 18.1.0
-      react-dom: 18.1.0
+      react: 18.2.0
+      react-dom: 18.2.0
       typescript: 4.7.4
     dependencies:
       '@codesandbox/sandpack-client': 1.2.2
-      '@codesandbox/sandpack-react': 1.2.4_react-dom@18.1.0+react@18.1.0
+      '@codesandbox/sandpack-react': 1.2.4_react-dom@18.2.0+react@18.2.0
       '@codesandbox/sandpack-themes': 1.0.0
       '@marigold/components': link:../packages/components
       '@marigold/icons': link:../packages/icons
@@ -324,10 +324,10 @@ importers:
       '@marigold/types': link:../packages/types
       fs-extra: 10.1.0
       globby: 13.1.2
-      next: 12.1.6_c67b4f77bfc426104434363ed603058c
-      next-mdx-remote: github.com/marigold-ui/next-mdx-remote/4b55fcba75bf4897cb252e175ddc121067c923ae_react-dom@18.1.0+react@18.1.0
-      react: 18.1.0
-      react-dom: 18.1.0_react@18.1.0
+      next: 12.1.6_0908d72966b1673abcfd19ae9fb41f04
+      next-mdx-remote: github.com/marigold-ui/next-mdx-remote/4b55fcba75bf4897cb252e175ddc121067c923ae_react-dom@18.2.0+react@18.2.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     devDependencies:
       '@types/node': 18.0.0
       '@types/react': 18.0.12
@@ -2763,7 +2763,7 @@ packages:
       minimist: 1.2.6
     dev: false
 
-  /@code-hike/classer/0.0.0-e48fa74_react@18.1.0:
+  /@code-hike/classer/0.0.0-e48fa74_react@18.2.0:
     resolution:
       {
         integrity: sha512-CyPYvfl4K5Hp9uyhLhUemul56eiGOF0FNXh5ALzzK9VNhRmRmj1O0mKtLDpoccI8W90r9kQES/nW2FC8jVVieg==,
@@ -2771,7 +2771,7 @@ packages:
     peerDependencies:
       react: '>=16.8'
     dependencies:
-      react: 18.1.0
+      react: 18.2.0
     dev: false
 
   /@codemirror/autocomplete/0.19.15:
@@ -3023,7 +3023,7 @@ packages:
       lodash.isequal: 4.5.0
     dev: false
 
-  /@codesandbox/sandpack-react/1.2.4_react-dom@18.1.0+react@18.1.0:
+  /@codesandbox/sandpack-react/1.2.4_react-dom@18.2.0+react@18.2.0:
     resolution:
       {
         integrity: sha512-Izfg4MxfIwWa2CLK2Pj7s+Gtf700oBb7Tkhqls8mO55E/cfsA30alK81FxLjjey5jOIqqK7Bqf1zwtMpw5sm+Q==,
@@ -3032,7 +3032,7 @@ packages:
       react: ^16.8.0 || ^17 || ^18
       react-dom: ^16.8.0 || ^17 || ^18
     dependencies:
-      '@code-hike/classer': 0.0.0-e48fa74_react@18.1.0
+      '@code-hike/classer': 0.0.0-e48fa74_react@18.2.0
       '@codemirror/closebrackets': 0.19.2
       '@codemirror/commands': 0.19.8
       '@codemirror/comment': 0.19.1
@@ -3047,14 +3047,14 @@ packages:
       '@codemirror/state': 0.19.9
       '@codemirror/view': 0.19.48
       '@codesandbox/sandpack-client': 1.2.2
-      '@react-hook/intersection-observer': 3.1.1_react@18.1.0
+      '@react-hook/intersection-observer': 3.1.1_react@18.2.0
       '@stitches/core': 1.2.8
       codesandbox-import-util-types: 2.2.3
       lodash.isequal: 4.5.0
       lz-string: 1.4.4
-      react: 18.1.0
+      react: 18.2.0
       react-devtools-inline: 4.4.0
-      react-dom: 18.1.0_react@18.1.0
+      react-dom: 18.2.0_react@18.2.0
       react-is: 17.0.2
     dev: false
 
@@ -4170,7 +4170,7 @@ packages:
     engines: { node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0 }
     dependencies:
       '@jest/types': 28.1.3
-      '@types/node': 18.0.6
+      '@types/node': 17.0.45
       chalk: 4.1.2
       jest-message-util: 28.1.3
       jest-util: 28.1.3
@@ -4193,14 +4193,14 @@ packages:
       '@jest/test-result': 28.1.3
       '@jest/transform': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 18.0.6
+      '@types/node': 17.0.45
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       ci-info: 3.3.2
       exit: 0.1.2
       graceful-fs: 4.2.10
       jest-changed-files: 28.1.3
-      jest-config: 28.1.3_@types+node@18.0.6
+      jest-config: 28.1.3_@types+node@17.0.45
       jest-haste-map: 28.1.3
       jest-message-util: 28.1.3
       jest-regex-util: 28.0.2
@@ -4309,7 +4309,7 @@ packages:
       '@jest/transform': 28.1.3
       '@jest/types': 28.1.3
       '@jridgewell/trace-mapping': 0.3.14
-      '@types/node': 18.0.6
+      '@types/node': 17.0.45
       chalk: 4.1.2
       collect-v8-coverage: 1.0.1
       exit: 0.1.2
@@ -5264,7 +5264,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@mdx-js/react/2.1.2_react@18.1.0:
+  /@mdx-js/react/2.1.2_react@18.2.0:
     resolution:
       {
         integrity: sha512-52e3DTJBrjsw3U51ZCdZ3N1IBaqnbzLIngCSXpKtiYiGr7PIqp3/P/+kym0MPTwBL/y9ZBmCieD8FyrXuEDrRw==,
@@ -5274,7 +5274,7 @@ packages:
     dependencies:
       '@types/mdx': 2.0.2
       '@types/react': 18.0.12
-      react: 18.1.0
+      react: 18.2.0
     dev: false
 
   /@mdx-js/util/1.6.22:
@@ -7107,7 +7107,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@react-hook/intersection-observer/3.1.1_react@18.1.0:
+  /@react-hook/intersection-observer/3.1.1_react@18.2.0:
     resolution:
       {
         integrity: sha512-OTDx8/wFaRvzFtKl1dEUEXSOqK2zVJHporiTTdC2xO++0e9FEx9wIrPis5q3lqtXeZH9zYGLbk+aB75qNFbbuw==,
@@ -7115,12 +7115,12 @@ packages:
     peerDependencies:
       react: '>=16.8'
     dependencies:
-      '@react-hook/passive-layout-effect': 1.2.1_react@18.1.0
+      '@react-hook/passive-layout-effect': 1.2.1_react@18.2.0
       intersection-observer: 0.10.0
-      react: 18.1.0
+      react: 18.2.0
     dev: false
 
-  /@react-hook/passive-layout-effect/1.2.1_react@18.1.0:
+  /@react-hook/passive-layout-effect/1.2.1_react@18.2.0:
     resolution:
       {
         integrity: sha512-IwEphTD75liO8g+6taS+4oqz+nnroocNfWVHWz7j+N+ZO2vYrc6PV1q7GQhuahL0IOR7JccFTsFKQ/mb6iZWAg==,
@@ -7128,7 +7128,7 @@ packages:
     peerDependencies:
       react: '>=16.8'
     dependencies:
-      react: 18.1.0
+      react: 18.2.0
     dev: false
 
   /@react-stately/checkbox/3.1.1_react@18.2.0:
@@ -9856,7 +9856,7 @@ packages:
         integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==,
       }
     dependencies:
-      '@types/node': 18.0.6
+      '@types/node': 17.0.45
 
   /@types/hast/2.3.4:
     resolution:
@@ -10113,6 +10113,7 @@ packages:
       {
         integrity: sha512-/xUq6H2aQm261exT6iZTMifUySEt4GR5KX8eYyY+C4MSNPqSh9oNIP7tz2GLKTlFaiBbgZNxffoR3CVRG+cljw==,
       }
+    dev: false
 
   /@types/node/8.10.66:
     resolution:
@@ -11329,6 +11330,14 @@ packages:
     engines: { node: '>= 0.12.0' }
     dev: false
 
+  /address/1.2.0:
+    resolution:
+      {
+        integrity: sha512-tNEZYz5G/zYunxFm7sfhAxkXEuLj3K6BKwv6ZURlsF6yiUQ65z0Q2wZW9L5cPUl9ocofGvXOdFYbFHp0+6MOig==,
+      }
+    engines: { node: '>= 10.0.0' }
+    dev: false
+
   /agent-base/6.0.2:
     resolution:
       {
@@ -12066,7 +12075,7 @@ packages:
     hasBin: true
     dependencies:
       browserslist: 4.21.2
-      caniuse-lite: 1.0.30001367
+      caniuse-lite: 1.0.30001368
       normalize-range: 0.1.2
       num2fraction: 1.2.2
       picocolors: 0.2.1
@@ -12948,8 +12957,8 @@ packages:
     engines: { node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7 }
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001367
-      electron-to-chromium: 1.4.195
+      caniuse-lite: 1.0.30001368
+      electron-to-chromium: 1.4.196
       node-releases: 2.0.6
       update-browserslist-db: 1.0.5_browserslist@4.21.2
 
@@ -13334,6 +13343,13 @@ packages:
     resolution:
       {
         integrity: sha512-XDgbeOHfifWV3GEES2B8rtsrADx4Jf+juKX2SICJcaUhjYBO3bR96kvEIHa15VU6ohtOhBZuPGGYGbXMRn0NCw==,
+      }
+    dev: false
+
+  /caniuse-lite/1.0.30001368:
+    resolution:
+      {
+        integrity: sha512-wgfRYa9DenEomLG/SdWgQxpIyvdtH3NW8Vq+tB6AwR9e56iOIcu1im5F/wNdDf04XlKHXqIx4N8Jo0PemeBenQ==,
       }
 
   /capital-case/1.0.4:
@@ -15423,7 +15439,7 @@ packages:
     engines: { node: '>= 4.2.1' }
     hasBin: true
     dependencies:
-      address: 1.1.2
+      address: 1.2.0
       debug: 2.6.9
     dev: false
 
@@ -15810,10 +15826,10 @@ packages:
   /ee-first/1.1.1:
     resolution: { integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0= }
 
-  /electron-to-chromium/1.4.195:
+  /electron-to-chromium/1.4.196:
     resolution:
       {
-        integrity: sha512-vefjEh0sk871xNmR5whJf9TEngX+KTKS3hOHpjoMpauKkwlGwtMz1H8IaIjAT/GNnX0TbGwAdmVoXCAzXf+PPg==,
+        integrity: sha512-uxMa/Dt7PQsLBVXwH+t6JvpHJnrsYBaxWKi/J6HE+/nBtoHENhwBoNkgkm226/Kfxeg0z1eMQLBRPPKcDH8xWA==,
       }
 
   /element-resize-detector/1.2.4:
@@ -21858,7 +21874,7 @@ packages:
       '@jest/expect': 28.1.3
       '@jest/test-result': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 18.0.6
+      '@types/node': 17.0.45
       chalk: 4.1.2
       co: 4.6.0
       dedent: 0.7.0
@@ -21947,7 +21963,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /jest-config/28.1.3_@types+node@18.0.6:
+  /jest-config/28.1.3_@types+node@17.0.45:
     resolution:
       {
         integrity: sha512-MG3INjByJ0J4AsNBm7T3hsuxKQqFIiRo/AUqb1q9LRKI5UU6Aar9JHbr9Ivn1TVwfUD9KirRoM/T6u8XlcQPHQ==,
@@ -21965,7 +21981,7 @@ packages:
       '@babel/core': 7.18.6
       '@jest/test-sequencer': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 18.0.6
+      '@types/node': 17.0.45
       babel-jest: 28.1.3_@babel+core@7.18.6
       chalk: 4.1.2
       ci-info: 3.3.2
@@ -22054,7 +22070,7 @@ packages:
       '@jest/environment': 28.1.3
       '@jest/fake-timers': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 18.0.6
+      '@types/node': 17.0.45
       jest-mock: 28.1.3
       jest-util: 28.1.3
 
@@ -22098,7 +22114,7 @@ packages:
     dependencies:
       '@jest/types': 28.1.3
       '@types/graceful-fs': 4.1.5
-      '@types/node': 18.0.6
+      '@types/node': 17.0.45
       anymatch: 3.1.2
       fb-watchman: 2.0.1
       graceful-fs: 4.2.10
@@ -22240,7 +22256,7 @@ packages:
       '@jest/test-result': 28.1.3
       '@jest/transform': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 18.0.6
+      '@types/node': 17.0.45
       chalk: 4.1.2
       emittery: 0.10.2
       graceful-fs: 4.2.10
@@ -22406,7 +22422,7 @@ packages:
     dependencies:
       '@jest/test-result': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 18.0.6
+      '@types/node': 17.0.45
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.10.2
@@ -22420,7 +22436,7 @@ packages:
       }
     engines: { node: '>= 10.13.0' }
     dependencies:
-      '@types/node': 18.0.6
+      '@types/node': 17.0.45
       merge-stream: 2.0.0
       supports-color: 7.2.0
     dev: false
@@ -22432,7 +22448,7 @@ packages:
       }
     engines: { node: '>= 10.13.0' }
     dependencies:
-      '@types/node': 18.0.6
+      '@types/node': 17.0.45
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: false
@@ -22444,7 +22460,7 @@ packages:
       }
     engines: { node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0 }
     dependencies:
-      '@types/node': 18.0.6
+      '@types/node': 17.0.45
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -25108,7 +25124,7 @@ packages:
       }
     dev: false
 
-  /next/12.1.6_c67b4f77bfc426104434363ed603058c:
+  /next/12.1.6_0908d72966b1673abcfd19ae9fb41f04:
     resolution:
       {
         integrity: sha512-cebwKxL3/DhNKfg9tPZDQmbRKjueqykHHbgaoG4VBRH3AHQJ2HO0dbKFiS1hPhe1/qgc2d/hFeadsbPicmLD+A==,
@@ -25132,9 +25148,9 @@ packages:
       '@next/env': 12.1.6
       caniuse-lite: 1.0.30001367
       postcss: 8.4.5
-      react: 18.1.0
-      react-dom: 18.1.0_react@18.1.0
-      styled-jsx: 5.0.2_@babel+core@7.18.6+react@18.1.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      styled-jsx: 5.0.2_@babel+core@7.18.6+react@18.2.0
     optionalDependencies:
       '@next/swc-android-arm-eabi': 12.1.6
       '@next/swc-android-arm64': 12.1.6
@@ -28371,19 +28387,6 @@ packages:
       - supports-color
     dev: false
 
-  /react-dom/18.1.0_react@18.1.0:
-    resolution:
-      {
-        integrity: sha512-fU1Txz7Budmvamp7bshe4Zi32d0ll7ect+ccxNu9FlObT605GOEB8BfO4tmRJ39R5Zj831VCpvQ05QPBW5yb+w==,
-      }
-    peerDependencies:
-      react: ^18.1.0
-    dependencies:
-      loose-envify: 1.4.0
-      react: 18.1.0
-      scheduler: 0.22.0
-    dev: false
-
   /react-dom/18.2.0_react@18.2.0:
     resolution:
       {
@@ -28632,16 +28635,6 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-    dev: false
-
-  /react/18.1.0:
-    resolution:
-      {
-        integrity: sha512-4oL8ivCz5ZEPyclFQXaNksK3adutVS8l2xzZU0cqEFrE9Sb7fC0EFK5uEk74wIreL1DERyjvsU915j1pcT2uEQ==,
-      }
-    engines: { node: '>=0.10.0' }
-    dependencies:
-      loose-envify: 1.4.0
     dev: false
 
   /react/18.2.0:
@@ -29649,15 +29642,6 @@ packages:
     engines: { node: '>=10' }
     dependencies:
       xmlchars: 2.2.0
-    dev: false
-
-  /scheduler/0.22.0:
-    resolution:
-      {
-        integrity: sha512-6QAm1BgQI88NPYymgGQLCZgvep4FyePDWFpXVK+zNSUgHwlqpJy8VEh8Et0KxTACS4VWwMousBElAZOH9nkkoQ==,
-      }
-    dependencies:
-      loose-envify: 1.4.0
     dev: false
 
   /scheduler/0.23.0:
@@ -31065,7 +31049,7 @@ packages:
       inline-style-parser: 0.1.1
     dev: false
 
-  /styled-jsx/5.0.2_@babel+core@7.18.6+react@18.1.0:
+  /styled-jsx/5.0.2_@babel+core@7.18.6+react@18.2.0:
     resolution:
       {
         integrity: sha512-LqPQrbBh3egD57NBcHET4qcgshPks+yblyhPlH2GY8oaDgKs8SK4C3dBh3oSJjgzJ3G5t1SYEZGHkP+QEpX9EQ==,
@@ -31082,7 +31066,7 @@ packages:
         optional: true
     dependencies:
       '@babel/core': 7.18.6
-      react: 18.1.0
+      react: 18.2.0
     dev: false
 
   /stylehacks/5.1.0_postcss@8.4.13:
@@ -34202,7 +34186,7 @@ packages:
       yaml: 2.1.1
     dev: false
 
-  github.com/marigold-ui/next-mdx-remote/4b55fcba75bf4897cb252e175ddc121067c923ae_react-dom@18.1.0+react@18.1.0:
+  github.com/marigold-ui/next-mdx-remote/4b55fcba75bf4897cb252e175ddc121067c923ae_react-dom@18.2.0+react@18.2.0:
     resolution:
       {
         tarball: https://codeload.github.com/marigold-ui/next-mdx-remote/tar.gz/4b55fcba75bf4897cb252e175ddc121067c923ae,
@@ -34216,9 +34200,9 @@ packages:
       react-dom: '>=16.x <=18.x'
     dependencies:
       '@mdx-js/mdx': 2.1.2
-      '@mdx-js/react': 2.1.2_react@18.1.0
-      react: 18.1.0
-      react-dom: 18.1.0_react@18.1.0
+      '@mdx-js/react': 2.1.2_react@18.2.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
       vfile: 5.3.4
       vfile-matter: 3.0.1
     transitivePeerDependencies:
