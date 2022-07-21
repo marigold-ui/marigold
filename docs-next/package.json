@@ -27,8 +27,8 @@
     "globby": "^13.1.2",
     "next": "12.1.6",
     "next-mdx-remote": "https://github.com/marigold-ui/next-mdx-remote.git#4b55fcba75bf4897cb252e175ddc121067c923ae",
-    "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
