@@ -36,9 +36,9 @@ interface NavigationStyles {
   };
 }
 const NavigationLinks = ({ css }: NavigationLinksProps) => (
-  <li>
+  <Box as="li">
     <Box as="ul" role="menubar" css={css?.list}>
-      <li>
+      <Box as="li">
         <Box as="h2" css={css?.category}>
           Useful Links
         </Box>
@@ -53,9 +53,9 @@ const NavigationLinks = ({ css }: NavigationLinksProps) => (
             ></NavigationItem>
           ))}
         </Box>
-      </li>
+      </Box>
     </Box>
-  </li>
+  </Box>
 );
 
 const NavigationItem = ({
@@ -72,7 +72,7 @@ const NavigationItem = ({
 );
 
 const NavigationGroup = ({ name, items, css }: NavigationMenuGroupProps) => (
-  <li>
+  <Box as="li">
     <Box as="ul" css={css?.list}>
       <Box as="h4" css={css?.group}>
         {name}
@@ -86,7 +86,7 @@ const NavigationGroup = ({ name, items, css }: NavigationMenuGroupProps) => (
         />
       ))}
     </Box>
-  </li>
+  </Box>
 );
 
 const NavigationCategory = ({
@@ -96,9 +96,9 @@ const NavigationCategory = ({
   css,
 }: NavigationCategoryProps) => {
   return (
-    <li>
+    <Box as="li">
       <Box as="ul" role="menubar" css={css?.list}>
-        <li>
+        <Box as="li">
           <Box as="h2" css={css?.category}>
             {name}
           </Box>
@@ -115,9 +115,9 @@ const NavigationCategory = ({
               />
             ))}
           </Box>
-        </li>
+        </Box>
       </Box>
-    </li>
+    </Box>
   );
 };
 
@@ -133,7 +133,7 @@ export const Navigation = ({ navigation }: NavigationProps) => {
       css={styles.container}
       aria-labelledby="marigold-navigation"
     >
-      <ul>
+      <Box as="ul">
         {navigation.map(item =>
           'title' in item ? (
             <NavigationItem
@@ -147,7 +147,7 @@ export const Navigation = ({ navigation }: NavigationProps) => {
           )
         )}
         <NavigationLinks css={styles} />
-      </ul>
+      </Box>
     </Box>
   );
 };
