@@ -1,6 +1,7 @@
 packages:
   - config/*
   - docs
+  - docs-next
   - examples/*
   - packages/*
   - themes/*

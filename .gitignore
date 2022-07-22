@@ -7,12 +7,20 @@ node_modules
 .swc
 coverage
 dist
+build
+
 storybook-static
 build-storybook.log
 docs/.cache
 docs/public
 slack-notification.json
 
+.pnpm-debug.log*
+
+# next.js
+.next
+out
+.cache
 ## env
 local.env
 .env.local

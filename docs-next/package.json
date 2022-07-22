@@ -1,0 +1,39 @@
+{
+  "name": "@marigold/docs-next",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "browser": {
+    "fs": false
+  },
+  "scripts": {
+    "dev": "next dev",
+    "watch": "next-remote-watch",
+    "build": "next build && next export",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@codesandbox/sandpack-client": "^1.2.2",
+    "@codesandbox/sandpack-react": "^1.2.4",
+    "@codesandbox/sandpack-themes": "^1.0.0",
+    "@marigold/components": "workspace:*",
+    "@marigold/icons": "workspace:*",
+    "@marigold/system": "workspace:*",
+    "@marigold/theme-b2b": "workspace:*",
+    "@marigold/tokens": "workspace:*",
+    "@marigold/types": "workspace:*",
+    "fs-extra": "^10.1.0",
+    "globby": "^13.1.2",
+    "next": "12.2.2",
+    "next-mdx-remote": "https://github.com/marigold-ui/next-mdx-remote.git#4b55fcba75bf4897cb252e175ddc121067c923ae",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.0.0",
+    "@types/react": "18.0.15",
+    "next-remote-watch": "^1.0.0",
+    "typescript": "4.7.4"
+  }
+}

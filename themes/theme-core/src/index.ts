@@ -53,8 +53,8 @@ const theme: Theme = {
     xlarge: 10,
   },
   fonts: {
-    body: 'Inter',
-    heading: 'Inter Black',
+    body: 'Arial, Helvetica, sans-serif',
+    heading: 'Arial, Helvetica, sans-serif',
   },
   fontSizes: {
     xxsmall: '0.875rem',
