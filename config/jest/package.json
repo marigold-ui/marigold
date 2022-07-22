@@ -27,7 +27,7 @@
     "@types/jest": "28.1.4",
     "babel-jest": "28.1.2",
     "find-up": "5.0.0",
-    "jest-watch-typeahead": "1.1.0",
+    "jest-watch-typeahead": "2.0.0",
     "merge-deep": "3.0.3",
     "react-test-renderer": "18.2.0",
     "ts-jest": "28.0.5"
