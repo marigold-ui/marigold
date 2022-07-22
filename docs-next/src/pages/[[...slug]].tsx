@@ -9,12 +9,6 @@ import { Layout } from '../components/Layout';
 
 const ContentPage = ({ source, navigation }: any) => (
   <Layout navigation={navigation}>
-    <div className="post-header">
-      <h1>{source.frontmatter.title}</h1>
-      {source.frontmatter.description && (
-        <p className="description">{source.frontmatter.description}</p>
-      )}
-    </div>
     <main>
       <MDXRemote {...source} />
     </main>

@@ -22,7 +22,9 @@ const DevMode = () => {
           fontFamily: 'headline',
         }}
       >
-        <Text color="#1d67b6">localhost</Text>
+        <Box as="span" color="#1d67b6">
+          localhost
+        </Box>
       </Box>
     );
   }
