@@ -1,0 +1,84 @@
+---
+title: Code Editor
+---
+
+# Code Editor
+
+The Code Editor is used for the Documentation to have a Code Preview with a live editor and a live render or a static code example.
+
+For the Live Code Editor and Preview there is the component `<CodeEditorEditable />`.
+For the Static Code Example there is the component `<CodeEditorStatic />`
+
+## Static Code Example
+
+Editor with static code example
+
+If you write this Example below the Editor.
+
+````
+```tsx
+import { Box } from '@marigold/components';
+
+render(<Box>Ich bin ein Text 3</Box>);
+```
+````
+
+will be rendered to the example below.
+
+```tsx
+import { Box } from '@marigold/components';
+
+render(<Box>Ich bin ein Text 3</Box>);
+```
+
+## Live Code Editor and Preview
+
+If you want to have a live code editor with a live preview you must add this meta information into the head from the ` ```tsx `
+
+For example
+
+````tsx
+```tsx editor="live"
+<Text>Ich bin ein Text</Text>
+```
+````
+
+this will be rendered to this
+
+```tsx editor="live"
+<Text>Ich bin ein Text</Text>
+```
+
+## Live Code with render function
+
+If you want to display a code with a render function you must add `noInline="true"` into the meta information into the ` ```tsx ` scope
+
+````tsx
+```tsx editor="live" noInline="true"
+render(<Text>Ich bin ein Text</Text>);
+```
+`````
+
+this will rendered to
+
+```tsx editor="live" noInline="true"
+render(
+    <Text>Ich bin ein Text</Text>
+);
+```
+
+## Error
+
+In addition on an error. The react-live has an error viewer.
+
+For Example
+````
+```tsx editor="live"
+<Text>Ich bin ein Text</
+```
+````
+
+will show following error message
+
+```tsx editor="live"
+<Text>Ich bin ein Text</

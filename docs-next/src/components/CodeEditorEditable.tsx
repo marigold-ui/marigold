@@ -8,25 +8,37 @@ import nightOwl from 'prism-react-renderer/themes/nightOwl';
 import copy from 'copy-to-clipboard';
 import { useComponentStyles } from '@marigold/system';
 
-export default function CodeEditor({ code }: any) {
+interface CodeEditorProps {
+  variant?: string;
+}
+
+export default function CodeEditorEditable(
+  { code, noInline }: any,
+  { variant }: CodeEditorProps
+) {
   const styles = useComponentStyles(
     'CodeEditor',
-    {},
+    { variant },
     {
       parts: [
         'container',
         'livePreview',
         'editorWrapper',
         'buttonWrapper',
-        'copyButton',
         'liveEditor',
         'liveError',
+        'text',
+        'editor',
+        'editorButtonWrapper',
+        'editorButton',
       ],
     }
   );
 
+  console.log(noInline);
+
   const [copied, setCopied] = useState(false);
-  const [editorCode, setEditorCode] = useState(code);
+  const [editorCode, setEditorCode] = useState(code.trim());
 
   useEffect(() => {
     if (copied && editorCode) {
@@ -53,6 +65,7 @@ export default function CodeEditor({ code }: any) {
         code={editorCode}
         scope={{ ...Components }}
         theme={nightOwl}
+        noInline={noInline ? true : false}
       >
         <MarigoldTheme>
           {/* Live Preview */}
@@ -60,38 +73,36 @@ export default function CodeEditor({ code }: any) {
 
           {/* Live Editor Wrapper and Live Editor */}
           <Box css={styles.editorWrapper}>
-            <Box
-              css={styles.buttonWrapper}
-              __baseCSS={{
-                zIndex: 1,
-              }}
-            >
+            <Box css={styles.editor}>
+              <Box css={styles.editorButtonWrapper}>
+                <Box css={styles.editorButton}></Box>
+                <Box css={styles.editorButton}></Box>
+                <Box css={styles.editorButton}></Box>
+              </Box>
+              <Text __baseCSS={styles.text}>Editable Example</Text>
               <Box
-                as={Button}
-                variant="button.primary"
-                css={styles.copyButton}
-                onPress={() => {
-                  setCopied(true);
+                css={styles.buttonWrapper}
+                __baseCSS={{
+                  zIndex: 1,
                 }}
               >
-                {copied ? 'Copied 🎉' : 'Copy'}
+                <Button
+                  variant="copy"
+                  onPress={() => {
+                    setCopied(true);
+                  }}
+                >
+                  {copied ? 'Copied 🎉' : 'Copy'}
+                </Button>
               </Box>
             </Box>
-            <Text
-              fontSize="12px"
-              color="#cccccc"
-              __baseCSS={{
-                fontWeight: 600,
-                textTransform: 'uppercase',
-              }}
-            >
-              Editable Example
-            </Text>
-            <Box
-              as={LiveEditor}
-              onChange={handleOnChange}
-              css={styles.liveEditor}
-            ></Box>
+            <Box css={styles.liveEditor}>
+              <Box
+                as={LiveEditor}
+                onChange={handleOnChange}
+                css={styles.liveEditor}
+              ></Box>
+            </Box>
           </Box>
 
           {/* Live Error */}

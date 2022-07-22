@@ -5,8 +5,9 @@ import { ComponentProps } from '@marigold/types';
 
 import { Link } from './components/Link';
 
-import CodeEditor from './components/CodeEditor';
+import CodeEditorEditable from './components/CodeEditorEditable';
 import CodeEditorExperience from './components/CodeEditorExperience';
+import CodeEditorStatic from './components/CodeEditorStatic';
 
 // Typography
 // ---------------
@@ -54,10 +55,22 @@ export const a = ({ children, href = '', ...props }: ComponentProps<'a'>) => (
   </Link>
 );
 
-export const pre = (props: ComponentProps<'pre'>) => {
+interface CodeProps {
+  editor: string;
+  noInline: string;
+  pre: ComponentProps<'pre'>;
+  children: any;
+}
+
+export const pre = (props: CodeProps) => {
   if (props.editor !== undefined) {
-    return <CodeEditorExperience code={props.children.props.children} />;
+    return (
+      <CodeEditorEditable
+        code={props.children.props.children}
+        noInline={props.noInline}
+      />
+    );
   } else {
-    return <pre {...props} />;
+    return <CodeEditorStatic code={props.children.props.children} />;
   }
 };
