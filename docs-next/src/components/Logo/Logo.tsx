@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import logo from '../Logo/logo.png';
+import logo from '../Logo/marigold-boxy.svg';
 
 const Small = () => (
   <Image src={logo} alt="Marigold Logo" width={140} height={60} />

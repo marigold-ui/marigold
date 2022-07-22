@@ -24,7 +24,7 @@ export const Headline: Theme['components']['Headline'] = {
       },
     },
     pageHeadlines: {
-      color: 'brand.primary',
+      color: 'brand.text',
       fontWeight: 'regular',
     },
   },
