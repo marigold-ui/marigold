@@ -2,7 +2,7 @@ import { MDXProvider } from 'next-mdx-remote';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
-import { Box, Text, MarigoldProvider } from '@marigold/components';
+import { Box, MarigoldProvider } from '@marigold/components';
 import * as MarigoldComponents from '@marigold/components';
 
 import * as MdxComponents from '../mdx';
