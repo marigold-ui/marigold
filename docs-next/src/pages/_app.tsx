@@ -16,7 +16,11 @@ const DevMode = () => {
     return (
       <Box
         bg="#f3f3f3"
-        css={{ textAlign: 'center', textTransform: 'uppercase' }}
+        css={{
+          textAlign: 'center',
+          textTransform: 'uppercase',
+          fontFamily: 'headline',
+        }}
       >
         <Text color="#1d67b6">localhost</Text>
       </Box>

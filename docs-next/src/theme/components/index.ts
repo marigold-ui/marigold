@@ -1,4 +1,5 @@
-import { Navigation } from './Navigation.style';
+import { Headline } from './Headline.style';
 import { Link } from './Link.style';
+import { Navigation } from './Navigation.style';
 
-export { Navigation, Link };
+export { Headline, Link, Navigation };
