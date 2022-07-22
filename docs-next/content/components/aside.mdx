@@ -1,0 +1,53 @@
+---
+title: Aside
+group: Layout
+---
+
+# Aside (group layout)
+
+The `<Aside>` layout is useful when you want to set two things next to each other and the one has a fixed width (the aside) and the other can have a dynamic width (the content).
+
+It is important to note that the `<Aside>` must have exactly too children, where none is a `<Fragment>`.
+
+```tsx
+<MarigoldTheme>
+  <Aside space="medium">
+    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="50px" />
+    <Box border="1px solid #ced4da" bg="#e9ecef" />
+  </Aside>
+</MarigoldTheme>
+```
+
+```tsx onlyCode
+import { Aside } from '@marigold/components';
+```
+
+## Props
+
+| Property               | Type                           | Default |
+| :--------------------- | :----------------------------- | :------ |
+| `space` (optional)     | `ResponsiveStyleValue<string>` | `none`  |
+| `side` (optional)      | `left`, `right`                | `left`  |
+| `sideWidth` (optional) | `ResponsiveStyleValue<string>` |         |
+| `stretch` (optional)   | boolean                        | `true`  |
+| `wrap` (optional)      | `Non-zero Percentage`          | `50%`   |
+
+## Examples
+
+Space between elements
+
+```tsx
+<Aside space="medium">
+  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="50px" />
+  <Box border="1px solid #ced4da" bg="#e9ecef" />
+</Aside>
+```
+
+### Aside on the right
+
+```tsx
+<Aside space="medium" side="right">
+  <Box border="1px solid #ced4da" bg="#e9ecef" />
+  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="50px" />
+</Aside>
+```

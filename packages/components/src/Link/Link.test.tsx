@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 import { Link } from './Link';
 
@@ -27,6 +27,16 @@ const theme = {
     },
   },
 };
+
+let warnMock: jest.SpyInstance;
+
+beforeEach(() => {
+  warnMock = jest.spyOn(console, 'warn').mockImplementation();
+});
+
+afterEach(() => {
+  warnMock.mockRestore();
+});
 
 test('uses base variant', () => {
   render(
@@ -117,4 +127,47 @@ test('link supports disabled variant', () => {
 
   const link = screen.getByText(/Link/);
   expect(link).toHaveStyle(`color: grey`);
+});
+
+test('forwards ref', () => {
+  const ref = React.createRef<HTMLAnchorElement>();
+  render(<Link ref={ref}>Link</Link>);
+
+  expect(ref.current).toBeInstanceOf(HTMLAnchorElement);
+});
+
+test('forwards ref (with "as")', () => {
+  const ref = React.createRef<HTMLSpanElement>();
+  render(
+    <Link as="span" ref={ref}>
+      Link
+    </Link>
+  );
+
+  expect(ref.current).toBeInstanceOf(HTMLSpanElement);
+});
+
+test('deprecate "onClick"', () => {
+  render(<Link onClick={() => {}}>Link</Link>);
+
+  const link = screen.getByText('Link');
+  fireEvent.click(link);
+
+  expect(warnMock).toHaveBeenCalledTimes(1);
+  expect(warnMock.mock.calls).toMatchInlineSnapshot(`
+    [
+      [
+        "onClick is deprecated, please use onPress",
+      ],
+    ]
+  `);
+});
+
+test('supports "onPress"', () => {
+  render(<Link onPress={() => {}}>Link</Link>);
+
+  const link = screen.getByText('Link');
+  fireEvent.click(link);
+
+  expect(warnMock).not.toHaveBeenCalled();
 });
