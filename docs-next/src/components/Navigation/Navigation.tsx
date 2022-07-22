@@ -40,7 +40,7 @@ const NavigationLinks = ({ css }: NavigationLinksProps) => (
     <Box as="ul" role="menubar" css={css?.list}>
       <Box as="li">
         <Box as="h2" css={css?.category}>
-          Useful Links
+          external links
         </Box>
         <Box as="ul" css={css?.list}>
           {NAVIGATION_CONFIG.links.map(({ title, url }) => (
