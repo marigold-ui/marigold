@@ -15,19 +15,19 @@ export const NAVIGATION_CONFIG = {
   links: [
     {
       title: 'Github',
-      slug: 'https://github.com/marigold-ui/marigold/',
+      url: 'https://github.com/marigold-ui/marigold/',
     },
     {
       title: 'Issues',
-      slug: 'https://github.com/marigold-ui/marigold/issues',
+      url: 'https://github.com/marigold-ui/marigold/issues',
     },
     {
       title: 'Changelog',
-      slug: 'https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md',
+      url: 'https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md',
     },
     {
       title: 'Slack Channel',
-      slug: 'https://reservix.slack.com/archives/C02727BNZ3J',
+      url: 'https://reservix.slack.com/archives/C02727BNZ3J',
     },
   ],
 };

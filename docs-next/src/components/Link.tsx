@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
 
 import {
@@ -7,28 +7,21 @@ import {
 } from '@marigold/components';
 
 export interface LinkProps
-  extends Pick<MarigoldLinkProps, 'variant' | 'target' | 'children'>,
-    Omit<NextLinkProps, 'href' | 'as' | 'passHref'> {
-  to: NextLinkProps['href'];
-}
+  extends NextLinkProps,
+    Pick<MarigoldLinkProps, 'variant' | 'target' | 'children'> {}
 
-export const Link = ({ children, to, ...props }: LinkProps) => {
-  const regex = /https?:\/\/((?:[\w\d-]+\.)+[\w\d]{2,})/i;
-  const externalLink = regex.test(to.toString());
+const InnerLink = forwardRef(
+  ({ onClick, ...props }: Omit<LinkProps, 'href' | 'as'>, ref) => (
+    <MarigoldLink onPress={onClick} {...props} ref={ref}>
+      {props.children}
+    </MarigoldLink>
+  )
+);
 
-  return externalLink ? (
-    <MarigoldLink href={to} {...props}>
+export const Link = ({ variant, href, children, target }: LinkProps) => (
+  <NextLink href={href} passHref>
+    <InnerLink variant={variant} target={target}>
       {children}
-    </MarigoldLink>
-  ) : (
-    <MarigoldLink
-      as={NextLink}
-      passHref={true}
-      href={to}
-      legacyBehavior={false}
-      {...props}
-    >
-      {children}
-    </MarigoldLink>
-  );
-};
+    </InnerLink>
+  </NextLink>
+);

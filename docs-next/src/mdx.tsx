@@ -45,8 +45,8 @@ export const h6 = ({ children, ...props }: ComponentProps<'h6'>) => (
 
 export const p = Text;
 
-export const a = ({ children, href = '', ...props }: ComponentProps<'a'>) => (
-  <Link to={href} {...props}>
+export const a = ({ children, href = '#', ...props }: ComponentProps<'a'>) => (
+  <Link href={href} {...props}>
     {children}
   </Link>
 );

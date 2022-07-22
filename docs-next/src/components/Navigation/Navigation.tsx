@@ -1,13 +1,12 @@
 import React from 'react';
 import type {
   NavigationMenu,
-  NavigationMenuItem,
   NavigationMenuCategory,
   NavigationMenuGroup,
 } from '../../navigation.utils';
 
 import { Box } from '@marigold/components';
-import { Link } from '../Link';
+import { Link, LinkProps } from '../Link';
 import { CSSObject, useComponentStyles } from '@marigold/system';
 import { NAVIGATION_CONFIG } from 'docs-next/src/config';
 
@@ -16,7 +15,9 @@ export interface NavigationProps {
   css?: CSSObject;
 }
 
-interface NavigationItemProps extends NavigationMenuItem, NavigationStyles {}
+interface NavigationItemProps extends LinkProps, NavigationStyles {
+  title: string;
+}
 
 interface NavigationMenuGroupProps
   extends NavigationMenuGroup,
@@ -35,49 +36,57 @@ interface NavigationStyles {
   };
 }
 const NavigationLinks = ({ css }: NavigationLinksProps) => (
-  <li>
-    <Box as="ul" role="menubar" css={css.list}>
-      <li>
-        <Box as="h2" css={css.category}>
+  <Box as="li">
+    <Box as="ul" role="menubar" css={css?.list}>
+      <Box as="li">
+        <Box as="h2" css={css?.category}>
           Useful Links
         </Box>
-        <Box as="ul" css={css.list}>
-          {NAVIGATION_CONFIG.links.map(link => (
+        <Box as="ul" css={css?.list}>
+          {NAVIGATION_CONFIG.links.map(({ title, url }) => (
             <NavigationItem
-              key={link.slug}
+              key={url}
               css={css}
-              {...link}
+              title={title}
+              href={url}
+              target="_blank"
             ></NavigationItem>
           ))}
         </Box>
-      </li>
+      </Box>
     </Box>
-  </li>
+  </Box>
 );
 
-const NavigationItem = ({ slug, title, css }: NavigationItemProps) => (
-  <Box as="li" css={css.item}>
-    {slug.startsWith('https') ? (
-      <Link to={slug} target="_blank">
-        {title}
-      </Link>
-    ) : (
-      <Link to={`/${slug}`}>{title}</Link>
-    )}
+const NavigationItem = ({
+  title,
+  css,
+  variant,
+  ...props
+}: NavigationItemProps) => (
+  <Box as="li" css={css?.item}>
+    <Link variant="navigation" {...props}>
+      {title}
+    </Link>
   </Box>
 );
 
 const NavigationGroup = ({ name, items, css }: NavigationMenuGroupProps) => (
-  <li>
-    <Box as="ul" css={css.list}>
-      <Box as="h4" css={css.group}>
+  <Box as="li">
+    <Box as="ul" css={css?.list}>
+      <Box as="h4" css={css?.group}>
         {name}
       </Box>
-      {items.map(i => (
-        <NavigationItem key={i.slug} css={css} {...i} />
+      {items.map(item => (
+        <NavigationItem
+          key={item.slug}
+          css={css}
+          title={item.title}
+          href={`/${item.slug}`}
+        />
       ))}
     </Box>
-  </li>
+  </Box>
 );
 
 const NavigationCategory = ({
@@ -87,23 +96,28 @@ const NavigationCategory = ({
   css,
 }: NavigationCategoryProps) => {
   return (
-    <li>
-      <Box as="ul" role="menubar" css={css.list}>
-        <li>
-          <Box as="h2" css={css.category}>
+    <Box as="li">
+      <Box as="ul" role="menubar" css={css?.list}>
+        <Box as="li">
+          <Box as="h2" css={css?.category}>
             {name}
           </Box>
-          <Box as="ul" css={css.list}>
+          <Box as="ul" css={css?.list}>
             {groups.map(group => (
               <NavigationGroup css={css} key={group.name} {...group} />
             ))}
             {items.map(i => (
-              <NavigationItem css={css} key={i.slug} {...i} />
+              <NavigationItem
+                css={css}
+                key={i.slug}
+                title={i.title}
+                href={`/${i.slug}`}
+              />
             ))}
           </Box>
-        </li>
+        </Box>
       </Box>
-    </li>
+    </Box>
   );
 };
 
@@ -113,23 +127,27 @@ export const Navigation = ({ navigation }: NavigationProps) => {
     {},
     { parts: ['container', 'category', 'item', 'list', 'group'] }
   );
-
   return (
     <Box
       role="navigation"
       css={styles.container}
       aria-labelledby="marigold-navigation"
     >
-      <ul>
+      <Box as="ul">
         {navigation.map(item =>
           'title' in item ? (
-            <NavigationItem key={item.slug} css={styles} {...item} />
+            <NavigationItem
+              key={item.slug}
+              css={styles}
+              title={item.title}
+              href={`/${item.slug}`}
+            />
           ) : (
             <NavigationCategory key={item.name} css={styles} {...item} />
           )
         )}
         <NavigationLinks css={styles} />
-      </ul>
+      </Box>
     </Box>
   );
 };
