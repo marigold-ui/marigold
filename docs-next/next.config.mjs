@@ -15,9 +15,6 @@ const config = {
   reactStrictMode: true,
   optimizeFonts: true,
   trailingSlash: true,
-  compiler: {
-    emotion: true,
-  },
   typescript: {
     /** Do not run TypeScript during production builds (`next build`). */
     ignoreBuildErrors: isProduction,
