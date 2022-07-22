@@ -3,6 +3,7 @@ import { Box, Aside } from '@marigold/components';
 
 import { Navigation } from './Navigation';
 import { NavigationMenu } from '../navigation.utils';
+import { Version } from './Version';
 
 export interface LayoutProps {
   children: ReactNode;
@@ -16,6 +17,7 @@ export const Layout = ({ navigation, children }: LayoutProps) => {
         <Navigation navigation={navigation} />
         <Box>{children}</Box>
       </Aside>
+      <Version />
     </>
   );
 };
