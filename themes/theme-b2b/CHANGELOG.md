@@ -1,5 +1,16 @@
 # @marigold/theme-b2b
 
+## 9.1.0
+
+### Minor Changes
+
+- [#2165](https://github.com/marigold-ui/marigold/pull/2165) [`7fc2e498`](https://github.com/marigold-ui/marigold/commit/7fc2e4981ccdcee59a04328927d71cb5a02f25a9) Thanks [@sebald](https://github.com/sebald)! - feat: A stacked layout for Chromatic
+
+### Patch Changes
+
+- Updated dependencies [[`51132dd8`](https://github.com/marigold-ui/marigold/commit/51132dd83ead1b5b5a89b1281ba1a2c2d4e17f04)]:
+  - @marigold/components@1.2.2
+
 ## 9.0.1
 
 ### Patch Changes

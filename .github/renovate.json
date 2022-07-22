@@ -6,6 +6,10 @@
   },
   "packageRules": [
     {
+      "matchPackagePatterns": ["@react-aria", "@react-stately", "@react-types"],
+      "groupName": "react-aria"
+    },
+    {
       "matchPackagePatterns": ["eslint"],
       "groupName": "eslint"
     },

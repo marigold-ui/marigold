@@ -62,7 +62,9 @@ test('normalize elements', () => {
       <Global />
       <div data-testid="div">Div</div>
       <p data-testid="p">Paragraph</p>
-      <a data-testid="a">Link</a>
+      <a href="https://reservix.de" data-testid="a">
+        Link
+      </a>
       <button data-testid="button">Button</button>
       <img data-testid="img" alt="foo" src="" />
     </>

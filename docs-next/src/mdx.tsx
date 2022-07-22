@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { Box, Headline, Text } from '@marigold/components';
+import { Headline, Text } from '@marigold/components';
 import { ComponentProps } from '@marigold/types';
 
 import { Link } from './components/Link';
 
 import CodeEditorEditable from './components/CodeEditorEditable';
-import CodeEditorExperience from './components/CodeEditorExperience';
 import CodeEditorStatic from './components/CodeEditorStatic';
 
 // Typography
@@ -49,12 +48,11 @@ export const h6 = ({ children, ...props }: ComponentProps<'h6'>) => (
 
 export const p = Text;
 
-export const a = ({ children, href = '', ...props }: ComponentProps<'a'>) => (
-  <Link to={href} {...props}>
+export const a = ({ children, href = '#', ...props }: ComponentProps<'a'>) => (
+  <Link href={href} {...props}>
     {children}
   </Link>
 );
-
 interface CodeProps {
   editor: string;
   noInline: string;

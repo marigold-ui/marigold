@@ -23,6 +23,10 @@ export interface NavigationMenuItem {
   order?: number;
 }
 
+/**
+ * Generates a "slug" from a file path. Slugs are always absolute paths that
+ * don't include the starting backslash (e.g. "foo/bar" not "/foo/bar").
+ */
 const toSlug = (val: string) =>
   path.relative(CONTENT_PATH, val.replace(/\.mdx?$/, ''));
 

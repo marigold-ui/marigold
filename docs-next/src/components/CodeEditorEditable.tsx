@@ -35,8 +35,6 @@ export default function CodeEditorEditable(
     }
   );
 
-  console.log(noInline);
-
   const [copied, setCopied] = useState(false);
   const [editorCode, setEditorCode] = useState(code.trim());
 

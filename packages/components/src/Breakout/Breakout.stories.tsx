@@ -1,11 +1,13 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 
-import { Box } from '../Box';
-import { Breakout } from './Breakout';
-import { Container } from '../Container';
-import { Text } from '../Text';
 import { Aspect } from '../Aspect';
+import { Box } from '../Box';
+import { Container } from '../Container';
+import { Image } from '../Image';
+import { Text } from '../Text';
+
+import { Breakout } from './Breakout';
 
 export default {
   title: 'Components/Breakout',
@@ -99,11 +101,9 @@ export const ExampleFrame: ComponentStory<typeof Breakout> = args => (
     </Box>
     <Breakout>
       <Aspect ratio="ultrawide">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4820.000043444012!2d7.826018541821473!3d48.020383262446884!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47911b1e29425703%3A0xbe342117a976e59!2sEuropa-Park%20Stadion!5e1!3m2!1sde!2sde!4v1647595604899!5m2!1sde!2sde"
-          title="sc_map"
-          width="100%"
-          height="100%"
+        <Image
+          src="https://images.unsplash.com/photo-1511468102400-883d6ea28755?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80"
+          alt="Black Forest"
         />
       </Aspect>
     </Breakout>
