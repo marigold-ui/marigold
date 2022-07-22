@@ -4,6 +4,7 @@ import { Headline, Text } from '@marigold/components';
 import { ComponentProps } from '@marigold/types';
 
 import { Link } from './components/Link';
+import { ExternalLink } from '@marigold/icons';
 
 // Typography
 // ---------------

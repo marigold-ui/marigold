@@ -1,6 +1,5 @@
 export const colors = {
   brand: {
-    // old one: #fffdfa
     background: '#fffdfa',
     // alternative
     //background: '#FFF8ED',

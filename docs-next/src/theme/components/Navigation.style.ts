@@ -7,7 +7,6 @@ export const Navigation = {
       bg: '#fff',
       lineHeight: 'large-1',
       p: 'small-1',
-      pt: '-5rem',
     },
     category: {
       fontSize: 'small-1',

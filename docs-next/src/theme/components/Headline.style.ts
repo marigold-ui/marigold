@@ -23,6 +23,8 @@ export const Headline: Theme['components']['Headline'] = {
         },
       },
     },
-    pageHeadlines: {},
+    pageHeadlines: {
+      color: 'brand.primary',
+    },
   },
 };
