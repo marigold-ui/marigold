@@ -10,7 +10,7 @@ export const Headline: Theme['components']['Headline'] = {
     pageTitle: {
       color: 'transparent',
       fontWeight: 'heavy',
-      background: `linear-gradient(90deg, ${colors.brand.primary}, #e3e361,  ${colors.brand.secondary}, ${colors.brand.primary}) 0 0 / 60% `,
+      background: `linear-gradient(90deg, ${colors.brand.primary}, #e3e361, ${colors.brand.primary}) 0 0 / 60% `,
       backgroundClip: 'text',
       pt: 'small-1',
       pb: 'small-1',
@@ -25,6 +25,7 @@ export const Headline: Theme['components']['Headline'] = {
     },
     pageHeadlines: {
       color: 'brand.primary',
+      fontWeight: 'regular',
     },
   },
 };

@@ -11,7 +11,7 @@ export const Navigation = {
     category: {
       fontSize: 'small-1',
       color: 'brand.secondary',
-      fontWeight: 'bold',
+      fontWeight: 'regular',
       textTransform: 'uppercase',
     },
     item: {
