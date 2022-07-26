@@ -1,6 +1,7 @@
+import { assert } from 'node:console';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-// import pkg from './package.json';
+import pkg from './package.json' assert { type: 'json' };
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -9,9 +10,9 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 /** @type {import('next').NextConfig} */
 const config = {
-  // env: {
-  //   version: pkg.version,
-  // },
+  env: {
+    version: pkg.version,
+  },
   reactStrictMode: true,
   optimizeFonts: true,
   trailingSlash: true,
