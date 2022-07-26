@@ -11,6 +11,7 @@ export const Text: Theme['components']['Text'] = {
       fontFamily: 'headline',
       fontSize: 'small-1',
       color: 'text.light',
+      m: 'none',
     },
   },
 };
