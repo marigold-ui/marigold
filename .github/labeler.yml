@@ -1,11 +1,13 @@
 'type:feature':
   - packages/*
   - packages/**/*
-  - themes/**/src/index.ts
+  - themes/**
 
 'type:infrastructure':
   - config/*
   - config/**/*
+  - .github/*
+  - .github/**/*
 
 'type:docs':
   - docs/*
