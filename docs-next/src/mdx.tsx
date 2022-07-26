@@ -8,13 +8,13 @@ import { Link } from './components/Link';
 // Typography
 // ---------------
 export const h1 = ({ children, ...props }: ComponentProps<'h1'>) => (
-  <Headline level="1" variant="pageTitle" {...props}>
-    {children}
+  <Headline level="1" {...props}>
+    <span>{children}</span>
   </Headline>
 );
 
 export const h2 = ({ children, ...props }: ComponentProps<'h2'>) => (
-  <Headline level="2" variant="pageHeadlines" {...props}>
+  <Headline level="2" {...props}>
     {children}
   </Headline>
 );
