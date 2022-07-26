@@ -11,7 +11,7 @@ import { ListContext } from './Context';
 import { ListItem } from './ListItem';
 
 export interface ListThemeExtension
-  extends ThemeExtensionsWithParts<'List', ['containter', 'item']> {}
+  extends ThemeExtensionsWithParts<'List', ['container', 'item']> {}
 
 export interface ListProps extends ComponentProps<'ul'> {
   variant?: string;
