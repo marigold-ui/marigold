@@ -4,6 +4,7 @@ import type { Theme as BaseTheme } from '@marigold/system';
 // ---------------
 import type { BadgeThemeExtension } from './Badge';
 import type { ButtonThemeExtension } from './Button';
+import type { CalloutThemeExtension } from './Callout';
 import type { CardThemeExtension } from './Card';
 import type {
   CheckboxThemeExtension,
@@ -39,6 +40,7 @@ interface ComponentStyles
   extends BadgeThemeExtension,
     ButtonThemeExtension,
     CardThemeExtension,
+    CalloutThemeExtension,
     CheckboxThemeExtension,
     CheckboxGroupThemeExtension,
     ContentThemeExtension,

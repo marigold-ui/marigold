@@ -1,6 +1,7 @@
 export * from './Badge.style';
 export * from './Button.style';
 export * from './Card.style';
+export * from './Callout.style';
 export * from './Checkbox.style';
 export * from './CheckboxGroup.style';
 export * from './Dialog.style';

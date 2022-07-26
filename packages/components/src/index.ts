@@ -7,6 +7,7 @@ export * from './Box';
 export * from './Breakout';
 export * from './Button';
 export * from './Card';
+export * from './Callout';
 export * from './Center';
 export * from './Checkbox';
 export * from './Columns';
