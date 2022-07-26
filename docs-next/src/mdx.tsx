@@ -9,7 +9,7 @@ import { Link } from './components/Link';
 // ---------------
 export const h1 = ({ children, ...props }: ComponentProps<'h1'>) => (
   <Headline level="1" {...props}>
-    <span>{children}</span>
+    {children}
   </Headline>
 );
 

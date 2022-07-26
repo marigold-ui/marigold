@@ -4,7 +4,6 @@ export const Navigation = {
   base: {
     container: {
       fontFamily: 'headline',
-      bg: '#fff',
       lineHeight: 'large-1',
       p: 'small-1',
     },
@@ -27,7 +26,7 @@ export const Navigation = {
       pb: 'small-1',
     },
     group: {
-      color: 'brand.text',
+      color: 'text.regular',
       fontWeight: 'medium',
     },
   },

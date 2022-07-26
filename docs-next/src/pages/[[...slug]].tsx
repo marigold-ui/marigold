@@ -1,19 +1,42 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { MDXRemote } from 'next-mdx-remote';
+import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
+import { Container, Header, Text } from '@marigold/components';
 
 import { CONTENT_PATH } from '../config';
-import { getContentPaths, getNavigation } from '../navigation.utils';
-import { Layout } from '../components/Layout';
+import {
+  getContentPaths,
+  getNavigation,
+  NavigationMenu,
+} from '../navigation.utils';
+import { GradientHeadline, Layout } from '../components';
 
-const ContentPage = ({ source, navigation }: any) => (
-  <Layout navigation={navigation}>
-    <main>
-      <MDXRemote {...source} />
-    </main>
-  </Layout>
-);
+export interface ContentPageProps {
+  source: MDXRemoteSerializeResult;
+  navigation: NavigationMenu;
+}
+
+const ContentPage = ({ source, navigation }: ContentPageProps) => {
+  const frontmatter = source.frontmatter as { [key: string]: any } | undefined;
+  return (
+    <Layout navigation={navigation}>
+      <main>
+        {frontmatter?.title && (
+          <Header>
+            <GradientHeadline>{frontmatter.title}</GradientHeadline>
+            {frontmatter.caption && (
+              <Text variant="page-caption">{frontmatter.caption}</Text>
+            )}
+          </Header>
+        )}
+        <Container contentType="content" size="large">
+          <MDXRemote {...source} />
+        </Container>
+      </main>
+    </Layout>
+  );
+};
 
 export default ContentPage;
 

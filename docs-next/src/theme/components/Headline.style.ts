@@ -11,21 +11,25 @@ export const Headline: Theme['components']['Headline'] = {
     mb: 'small-1',
   },
 
-  size: {
-    'level-1': {
-      mt: 'none',
-      mb: 'small-2',
-
+  variant: {
+    gradient: {
       '> span': {
         display: 'inline-block',
         color: 'transparent',
-        fontSize: 'large-1',
-        fontWeight: 'heavy',
-        textTransform: 'uppercase',
-        letterSpacing: '1px',
         background: `linear-gradient(45deg, ${colors.brand.primary}, #edca55) 0 0 / 100% `,
         backgroundClip: 'text',
       },
+    },
+  },
+
+  size: {
+    'level-1': {
+      my: 'none',
+      fontSize: 'large-2',
+      fontWeight: 'heavy',
+      lineHeight: 'small-1',
+      textTransform: 'uppercase',
+      letterSpacing: '1px',
     },
   },
 };

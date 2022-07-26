@@ -1,11 +1,16 @@
 export const colors = {
   brand: {
-    background: '#fffdfa',
-    // alternative
-    //background: '#FFF8ED',
-    text: '#0f0700',
     primary: '#ff7f0f',
     secondary: '#2e907a',
     shade: '#bf7738',
+  },
+  background: {
+    // alternative
+    //background: '#FFF8ED',
+    page: '#fffdfa',
+  },
+  text: {
+    light: '#b78c64',
+    regular: '#0f0700',
   },
 };

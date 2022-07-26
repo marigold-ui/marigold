@@ -1,13 +1,13 @@
 export const root = {
   body: {
-    bg: 'brand.background',
+    bg: 'background.page',
     fontFamily: 'body',
-    color: 'brand.text',
+    color: 'text.regular',
   },
   li: {
     listStyle: 'none',
   },
   a: {
-    color: 'brand.text',
+    color: 'text.regular',
   },
 };
