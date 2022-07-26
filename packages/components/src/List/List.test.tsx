@@ -77,7 +77,7 @@ test('renders an "ol" with "li"s', () => {
   expect(item).toBeInstanceOf(HTMLLIElement);
 });
 
-test('renders all children', () => {
+test('renders all children', async () => {
   render(
     <List as="ol" data-testid="list">
       <List.Item data-testid="one">one</List.Item>
@@ -86,8 +86,8 @@ test('renders all children', () => {
     </List>
   );
 
-  const list = screen.getByTestId('list');
-  expect(list.children.length).toEqual(3);
+  const items = await screen.findAllByRole('listitem');
+  expect(items).toHaveLength(3);
 });
 
 test('use base styling from "List" in theme', () => {
