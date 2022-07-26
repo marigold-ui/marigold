@@ -20,6 +20,7 @@ import type { ImageThemeExtension } from './Image';
 import type { InputThemeExtension } from './Input';
 import type { LabelThemeExtension } from './Label';
 import type { LinkThemeExtension } from './Link';
+import type { ListThemeExtension } from './List';
 import type { ListBoxThemeExtension } from './ListBox';
 import type { MenuThemeExtension } from './Menu';
 import type { MessageThemeExtension } from './Message';
@@ -51,6 +52,7 @@ interface ComponentStyles
     InputThemeExtension,
     LabelThemeExtension,
     LinkThemeExtension,
+    ListThemeExtension,
     ListBoxThemeExtension,
     MenuThemeExtension,
     MessageThemeExtension,

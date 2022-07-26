@@ -1,6 +1,9 @@
 name: 'Chromatic'
 
-on: ['pull_request']
+on:
+  pull_request:
+    paths:
+      - '**.tsx?'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
