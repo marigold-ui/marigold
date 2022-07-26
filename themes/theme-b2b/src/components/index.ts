@@ -11,6 +11,7 @@ export * from './Image.style';
 export * from './Input.style';
 export * from './Label.style';
 export * from './Link.style';
+export * from './List.style';
 export * from './ListBox.style';
 export * from './Menu.style';
 export * from './Message.style';
