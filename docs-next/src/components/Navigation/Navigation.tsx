@@ -137,9 +137,7 @@ export const Navigation = ({ navigation }: NavigationProps) => {
         {navigation.map(item =>
           'name' in item ? (
             <NavigationCategory key={item.name} css={styles} {...item} />
-          ) : (
-            ''
-          )
+          ) : null
         )}
         <NavigationLinks css={styles} />
       </Box>
