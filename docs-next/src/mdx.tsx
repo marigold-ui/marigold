@@ -52,5 +52,14 @@ export const a = ({ children, href = '#', ...props }: ComponentProps<'a'>) => (
 );
 
 export const ul = ({ children, ...props }: ComponentProps<'ul'>) => (
-  <List></List>
+  <List {...props}>{children}</List>
+);
+
+export const ol = ({ children, ...props }: ComponentProps<'ol'>) => (
+  <List as="ol" {...props}>
+    {children}
+  </List>
+);
+export const li = ({ children, ...props }: ComponentProps<'li'>) => (
+  <List.Item {...props}>{children}</List.Item>
 );

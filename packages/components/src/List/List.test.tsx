@@ -17,7 +17,10 @@ const theme = {
   components: {
     List: {
       base: {
-        container: {
+        ul: {
+          listStyle: 'none',
+        },
+        ol: {
           listStyle: 'none',
         },
         item: {
@@ -26,7 +29,7 @@ const theme = {
       },
       variant: {
         yellow: {
-          container: {
+          ul: {
             bg: 'yellow',
           },
           item: {
@@ -36,7 +39,7 @@ const theme = {
       },
       size: {
         small: {
-          container: {
+          ul: {
             p: 'small-1',
           },
         },
