@@ -13,16 +13,18 @@ export interface LayoutProps {
 }
 
 export const Layout = ({ navigation, children }: LayoutProps) => (
-  <Aside space="medium-1">
-    <Box p="medium">
-      <Link href="/index">
-        <Center>
-          <Logo size="small" />
-        </Center>
-      </Link>
-      <Navigation navigation={navigation} />
-      <Version />
-    </Box>
-    <Box>{children}</Box>
-  </Aside>
+  <>
+    <Aside space="medium-1">
+      <Box p="medium">
+        <Link href="/index">
+          <Center>
+            <Logo size="small" />
+          </Center>
+        </Link>
+        <Navigation navigation={navigation} />
+      </Box>
+      <Box>{children}</Box>
+    </Aside>
+    <Version />
+  </>
 );
