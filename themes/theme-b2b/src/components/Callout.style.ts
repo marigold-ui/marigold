@@ -5,9 +5,10 @@ export const Callout: Theme['components']['Callout'] = {
     container: {
       border: '1px solid',
       borderColor: 'info',
-    },
-    content: {
       p: 'small',
+    },
+    icon: {
+      color: 'info',
     },
   },
 };
