@@ -6,9 +6,6 @@ export interface PropsTableProps {
 }
 
 export const PropsTable = ({ props }: PropsTableProps) => {
-  props.map((element: { property: string }) =>
-    console.log('ELEMENT', element.property)
-  );
   return (
     <Table aria-label="Table with component props">
       <Table.Header>
@@ -19,7 +16,7 @@ export const PropsTable = ({ props }: PropsTableProps) => {
       </Table.Header>
       <Table.Body>
         {props.map((element: { props: string }) => (
-          <Table.Row key={props.length}>
+          <Table.Row key={element.property}>
             <Table.Cell>{element.property}</Table.Cell>
             <Table.Cell>{element.type}</Table.Cell>
             <Table.Cell>{element.default}</Table.Cell>
