@@ -135,15 +135,10 @@ export const Navigation = ({ navigation }: NavigationProps) => {
     >
       <Box as="ul">
         {navigation.map(item =>
-          'title' in item ? (
-            <NavigationItem
-              key={item.slug}
-              css={styles}
-              title={item.title}
-              href={`/${item.slug}`}
-            />
-          ) : (
+          'name' in item ? (
             <NavigationCategory key={item.name} css={styles} {...item} />
+          ) : (
+            ''
           )
         )}
         <NavigationLinks css={styles} />
