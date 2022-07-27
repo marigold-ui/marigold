@@ -11,4 +11,30 @@ export const Callout: Theme['components']['Callout'] = {
       color: 'info',
     },
   },
+  variant: {
+    warning: {
+      icon: {
+        color: 'warning',
+      },
+      container: {
+        borderColor: 'warning',
+      },
+    },
+    danger: {
+      icon: {
+        color: 'red40',
+      },
+      container: {
+        borderColor: 'red40',
+      },
+    },
+    tip: {
+      icon: {
+        color: 'green40',
+      },
+      container: {
+        borderColor: 'green40',
+      },
+    },
+  },
 };

@@ -12,10 +12,7 @@ import { Banned, Feedback, Info, Notification } from '@marigold/icons';
 // Theme Extension
 // ---------------
 export interface CalloutThemeExtension
-  extends ThemeExtensionsWithParts<
-    'Callout',
-    ['container', 'content', 'icon']
-  > {}
+  extends ThemeExtensionsWithParts<'Callout', ['container', 'icon']> {}
 
 // Props
 // ---------------
@@ -34,7 +31,7 @@ export const Callout = ({
   const styles = useComponentStyles(
     'Callout',
     { variant, size },
-    { parts: ['container', 'content', 'icon'] }
+    { parts: ['container', 'icon'] }
   );
 
   var icon = <Info />;
