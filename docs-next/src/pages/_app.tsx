@@ -9,6 +9,7 @@ import * as MdxComponents from '../mdx';
 import { theme } from '../theme';
 
 import CodeDemo from '../components/Sandpack/CodeDemo';
+import { PropsTable } from '../components/PropsTable';
 
 const DevMode = () => {
   const devMode = process.env.NODE_ENV === 'development';
@@ -27,6 +28,7 @@ const DevMode = () => {
 
 const components = {
   Head,
+  PropsTable,
   ...MdxComponents,
   ...MarigoldComponents,
   CodeDemo,
