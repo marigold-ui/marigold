@@ -10,8 +10,7 @@
     "dev": "next dev",
     "watch": "next-remote-watch ./content",
     "build": "next build && next export",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
     "@codesandbox/sandpack-client": "^1.2.2",

@@ -13,5 +13,9 @@ export const Text: Theme['components']['Text'] = {
       color: 'text.light',
       m: 'none',
     },
+    muted: {
+      fontFamily: 'headline',
+      color: 'brand.secondary',
+    },
   },
 };

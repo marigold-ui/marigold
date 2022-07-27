@@ -5,6 +5,7 @@ import { Navigation } from './Navigation';
 import { NavigationMenu } from '../navigation.utils';
 import { Logo } from './Logo';
 import { Link } from './Link';
+import { Version } from './Version';
 
 export interface LayoutProps {
   children: ReactElement;
@@ -20,6 +21,7 @@ export const Layout = ({ navigation, children }: LayoutProps) => (
         </Center>
       </Link>
       <Navigation navigation={navigation} />
+      <Version />
     </Box>
     <Box>{children}</Box>
   </Aside>
