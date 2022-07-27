@@ -11,4 +11,4 @@ export const root = {
   a: {
     color: 'text.regular',
   },
-};
+} as const;
