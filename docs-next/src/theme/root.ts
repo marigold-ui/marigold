@@ -1,4 +1,8 @@
 export const root = {
+  html: {
+    scrollBehavior: 'smooth',
+    scrollPaddingTop: 'medium-1',
+  },
   body: {
     bg: 'background.page',
     fontFamily: 'body',

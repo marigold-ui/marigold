@@ -4,7 +4,8 @@ import { colors } from '../colors';
 export const Headline: Theme['components']['Headline'] = {
   base: {
     fontFamily: 'headline',
-    fontWeight: 'regular',
+    fontWeight: 'medium',
+    textTransform: 'uppercase',
     fontSize: 'medium-1',
     lineHeight: 'small-3',
     mt: 'small-3',

@@ -2,6 +2,9 @@ import fs from 'fs-extra';
 import path from 'path';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeSlug from 'rehype-slug';
+import remarkGfm from 'remark-gfm';
 import { Container, Header, Text } from '@marigold/components';
 
 import { CONTENT_PATH } from '../config';
@@ -55,8 +58,11 @@ export const getStaticProps = async ({ params }: any) => {
 
   const mdxSource = await serialize(source, {
     mdxOptions: {
-      remarkPlugins: [],
-      rehypePlugins: [],
+      remarkPlugins: [remarkGfm],
+      rehypePlugins: [
+        rehypeSlug,
+        [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+      ],
     },
     parseFrontmatter: true,
   });
