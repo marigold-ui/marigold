@@ -7,6 +7,7 @@ export const colors = {
   background: {
     // alternative
     //background: '#FFF8ED',
+    light: 'hsla(28, 100%, 2.9%, .2)',
     page: '#fffdfa',
   },
   text: {

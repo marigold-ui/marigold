@@ -4,5 +4,6 @@ import { Link } from './Link.style';
 import { List } from './List.style';
 import { Navigation } from './Navigation.style';
 import { Text } from './Text.style';
+import { Table } from './Table.style';
 
-export { Header, Headline, Link, List, Navigation, Text };
+export { Header, Headline, Link, List, Navigation, Table, Text };

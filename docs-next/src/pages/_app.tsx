@@ -2,13 +2,15 @@ import { MDXProvider } from 'next-mdx-remote';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
-import { Box, MarigoldProvider } from '@marigold/components';
+import { Box, MarigoldProvider, SSRProvider } from '@marigold/components';
 import * as MarigoldComponents from '@marigold/components';
 
 import * as MdxComponents from '../mdx';
 import { theme } from '../theme';
 
 import CodeDemo from '../components/Sandpack/CodeDemo';
+import { PropsTable } from '../components/PropsTable';
+import { MarigoldTheme } from '../components/MarigoldTheme';
 
 const DevMode = () => {
   const devMode = process.env.NODE_ENV === 'development';
@@ -33,6 +35,8 @@ const DevMode = () => {
 
 const components = {
   Head,
+  PropsTable,
+  MarigoldTheme,
   ...MdxComponents,
   ...MarigoldComponents,
   CodeDemo,
@@ -40,12 +44,14 @@ const components = {
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <MarigoldProvider theme={theme}>
-      <MDXProvider components={components as any}>
-        <DevMode />
-        <Component {...pageProps} />
-      </MDXProvider>
-    </MarigoldProvider>
+    <SSRProvider>
+      <MarigoldProvider theme={theme}>
+        <MDXProvider components={components as any}>
+          <DevMode />
+          <Component {...pageProps} />
+        </MDXProvider>
+      </MarigoldProvider>
+    </SSRProvider>
   );
 };
 

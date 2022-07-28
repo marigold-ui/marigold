@@ -22,34 +22,40 @@ import { Aside } from '@marigold/components';
 
 ## Props
 
-```
 <PropsTable
   props={[
     {
-      name: 'space',
-      type: 'string',
+      property: 'space',
+      type: 'ResponsiveStyleValue<string>',
       description: 'The space between the content and the aside.',
-      defaultValue: 'medium',
+      default: 'none',
     },
     {
-      name: 'align',
-      type: 'string',
-      description: 'The alignment of the content and the aside.',
-      defaultValue: 'center',
+      property: 'side',
+      type: '"left" | "right"',
+      description: 'The side of the content.',
+      default: 'left',
+    },
+    {
+      property: 'sideWidth',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'The side with of the content.',
+      default: 'none',
+    },
+    {
+      property: 'wrap',
+      type: 'Non-zero Percentage',
+      description: 'The wrap of the content.',
+      default: '50%',
+    },
+    {
+      property: 'strech',
+      type: 'boolean',
+      description: 'strech the aside.',
+      default: 'true',
     },
   ]}
-/>
-```
-
-## Table
-
-| Property               | Type                           | Default |
-| ---------------------- | ------------------------------ | ------- |
-| `space` (optional)     | `ResponsiveStyleValue<string>` | `none`  |
-| `side` (optional)      | `left`, `right`                | `left`  |
-| `sideWidth` (optional) | `ResponsiveStyleValue<string>` |         |
-| `stretch` (optional)   | boolean                        | `true`  |
-| `wrap` (optional)      | `Non-zero Percentage`          | `50%`   |
+></PropsTable>
 
 ## Examples
 
