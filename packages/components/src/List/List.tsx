@@ -11,7 +11,7 @@ import { ListContext } from './Context';
 import { ListItem } from './ListItem';
 
 export interface ListThemeExtension
-  extends ThemeExtensionsWithParts<'List', ['container', 'item']> {}
+  extends ThemeExtensionsWithParts<'List', ['ul', 'ol', 'item']> {}
 
 export interface ListProps extends ComponentProps<'ul'> {
   variant?: string;
@@ -30,10 +30,10 @@ export const List = ({
   const styles = useComponentStyles(
     'List',
     { variant, size },
-    { parts: ['container', 'item'] }
+    { parts: ['ul', 'ol', 'item'] }
   );
   return (
-    <Box {...props} as={as} css={styles.container}>
+    <Box {...props} as={as} css={styles[as]}>
       <ListContext.Provider value={{ styles: styles.item }}>
         {children}
       </ListContext.Provider>
