@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Headline, Text } from '@marigold/components';
+import { Headline, List, Text } from '@marigold/components';
 import { ComponentProps } from '@marigold/types';
 
 import { Link } from './components/Link';
@@ -49,4 +49,17 @@ export const a = ({ children, href = '#', ...props }: ComponentProps<'a'>) => (
   <Link href={href} {...props}>
     {children}
   </Link>
+);
+
+export const ul = ({ children, ...props }: ComponentProps<'ul'>) => (
+  <List {...props}>{children}</List>
+);
+
+export const ol = ({ children, ...props }: ComponentProps<'ol'>) => (
+  <List as="ol" {...props}>
+    {children}
+  </List>
+);
+export const li = ({ children, ...props }: ComponentProps<'li'>) => (
+  <List.Item {...props}>{children}</List.Item>
 );

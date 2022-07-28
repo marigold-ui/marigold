@@ -36,11 +36,11 @@ interface NavigationStyles {
   };
 }
 const NavigationLinks = ({ css }: NavigationLinksProps) => (
-  <Box as="li">
+  <Box as="li" __baseCSS={{ listStyle: 'none' }}>
     <Box as="ul" role="menubar" css={css?.list}>
-      <Box as="li">
+      <Box as="li" __baseCSS={{ listStyle: 'none' }}>
         <Box as="h2" css={css?.category}>
-          Useful Links
+          external links
         </Box>
         <Box as="ul" css={css?.list}>
           {NAVIGATION_CONFIG.links.map(({ title, url }) => (
@@ -64,7 +64,7 @@ const NavigationItem = ({
   variant,
   ...props
 }: NavigationItemProps) => (
-  <Box as="li" css={css?.item}>
+  <Box as="li" __baseCSS={{ listStyle: 'none' }} css={css?.item}>
     <Link variant="navigation" {...props}>
       {title}
     </Link>
@@ -72,7 +72,7 @@ const NavigationItem = ({
 );
 
 const NavigationGroup = ({ name, items, css }: NavigationMenuGroupProps) => (
-  <Box as="li">
+  <Box as="li" __baseCSS={{ listStyle: 'none' }}>
     <Box as="ul" css={css?.list}>
       <Box as="h4" css={css?.group}>
         {name}
@@ -96,9 +96,9 @@ const NavigationCategory = ({
   css,
 }: NavigationCategoryProps) => {
   return (
-    <Box as="li">
+    <Box as="li" __baseCSS={{ listStyle: 'none' }}>
       <Box as="ul" role="menubar" css={css?.list}>
-        <Box as="li">
+        <Box as="li" __baseCSS={{ listStyle: 'none' }}>
           <Box as="h2" css={css?.category}>
             {name}
           </Box>
@@ -135,16 +135,9 @@ export const Navigation = ({ navigation }: NavigationProps) => {
     >
       <Box as="ul">
         {navigation.map(item =>
-          'title' in item ? (
-            <NavigationItem
-              key={item.slug}
-              css={styles}
-              title={item.title}
-              href={`/${item.slug}`}
-            />
-          ) : (
+          'name' in item ? (
             <NavigationCategory key={item.name} css={styles} {...item} />
-          )
+          ) : null
         )}
         <NavigationLinks css={styles} />
       </Box>

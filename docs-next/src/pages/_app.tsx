@@ -2,7 +2,7 @@ import { MDXProvider } from 'next-mdx-remote';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
-import { Box, Text, MarigoldProvider, SSRProvider } from '@marigold/components';
+import { Box, MarigoldProvider, SSRProvider } from '@marigold/components';
 import * as MarigoldComponents from '@marigold/components';
 
 import * as MdxComponents from '../mdx';
@@ -18,9 +18,15 @@ const DevMode = () => {
     return (
       <Box
         bg="#f3f3f3"
-        css={{ textAlign: 'center', textTransform: 'uppercase' }}
+        css={{
+          textAlign: 'center',
+          textTransform: 'uppercase',
+          fontFamily: 'headline',
+        }}
       >
-        <Text color="#1d67b6">localhost</Text>
+        <Box as="span" color="#1d67b6">
+          localhost
+        </Box>
       </Box>
     );
   }

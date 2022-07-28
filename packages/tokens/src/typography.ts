@@ -47,6 +47,7 @@ const fluid = {
   'medium-1': 'clamp(1rem, 4vw, 1.5rem)',
   'medium-2': 'clamp(1.5rem, 6vw, 2.5rem)',
   'large-1': 'clamp(2rem, 9vw, 3.5rem)',
+  'large-2': 'clamp(3.5rem, 12vw, 5rem)',
 } as const;
 
 const weight = {
