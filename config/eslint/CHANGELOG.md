@@ -1,5 +1,19 @@
 # @marigold/eslint-config
 
+## 0.3.3
+
+### Patch Changes
+
+- [#2213](https://github.com/marigold-ui/marigold/pull/2213) [`a5088e04`](https://github.com/marigold-ui/marigold/commit/a5088e042b42210ea20850b208fb31ff6e525026) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update eslint
+
+* [#2204](https://github.com/marigold-ui/marigold/pull/2204) [`e3d63a5e`](https://github.com/marigold-ui/marigold/commit/e3d63a5e156b7455bb0959e26facd547bd0a9390) Thanks [@sebald](https://github.com/sebald)! - chore: Update dependencies
+
+- [#2221](https://github.com/marigold-ui/marigold/pull/2221) [`c60f8527`](https://github.com/marigold-ui/marigold/commit/c60f8527cc4d61c3b7d8eeb2ec29a0cd7679e8dc) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @babel/core to v7.18.9
+
+* [#2215](https://github.com/marigold-ui/marigold/pull/2215) [`247d615e`](https://github.com/marigold-ui/marigold/commit/247d615e9b127c3f2a94d0ad7561c09d11000366) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update testing
+
+- [#2200](https://github.com/marigold-ui/marigold/pull/2200) [`f9b9655b`](https://github.com/marigold-ui/marigold/commit/f9b9655b66aaa1a81bed8c19b2a84a3b604cbd49) Thanks [@sebald](https://github.com/sebald)! - fix: losen peer dep of eslint
+
 ## 0.3.2
 
 ### Patch Changes
