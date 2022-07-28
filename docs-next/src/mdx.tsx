@@ -64,7 +64,7 @@ export const li = ({ children, ...props }: ComponentProps<'li'>) => (
   <List.Item {...props}>{children}</List.Item>
 );
 
-export const pre = ({ children, props }: ComponentProps<'pre'>) => {
+export const pre = ({ children, ...props }: ComponentProps<'pre'>) => {
   console.log(props);
   return <pre>{children}</pre>;
 };
