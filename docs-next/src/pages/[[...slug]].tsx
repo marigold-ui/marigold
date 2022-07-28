@@ -1,25 +1,45 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { MDXRemote } from 'next-mdx-remote';
+import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeSlug from 'rehype-slug';
+import remarkGfm from 'remark-gfm';
+import { Container, Header, Text } from '@marigold/components';
 
 import { CONTENT_PATH } from '../config';
-import { getContentPaths, getNavigation } from '../navigation.utils';
-import { Layout } from '../components/Layout';
+import {
+  getContentPaths,
+  getNavigation,
+  NavigationMenu,
+} from '../navigation.utils';
+import { GradientHeadline, Layout } from '../components';
 
-const ContentPage = ({ source, navigation }: any) => (
-  <Layout navigation={navigation}>
-    <div className="post-header">
-      <h1>{source.frontmatter.title}</h1>
-      {source.frontmatter.description && (
-        <p className="description">{source.frontmatter.description}</p>
-      )}
-    </div>
-    <main>
-      <MDXRemote {...source} />
-    </main>
-  </Layout>
-);
+export interface ContentPageProps {
+  source: MDXRemoteSerializeResult;
+  navigation: NavigationMenu;
+}
+
+const ContentPage = ({ source, navigation }: ContentPageProps) => {
+  const frontmatter = source.frontmatter as { [key: string]: any } | undefined;
+  return (
+    <Layout navigation={navigation}>
+      <main>
+        {frontmatter?.title && (
+          <Header>
+            <GradientHeadline>{frontmatter.title}</GradientHeadline>
+            {frontmatter.caption && (
+              <Text variant="page-caption">{frontmatter.caption}</Text>
+            )}
+          </Header>
+        )}
+        <Container contentType="content" size="large">
+          <MDXRemote {...source} />
+        </Container>
+      </main>
+    </Layout>
+  );
+};
 
 export default ContentPage;
 
@@ -38,8 +58,11 @@ export const getStaticProps = async ({ params }: any) => {
 
   const mdxSource = await serialize(source, {
     mdxOptions: {
-      remarkPlugins: [],
-      rehypePlugins: [],
+      remarkPlugins: [remarkGfm],
+      rehypePlugins: [
+        rehypeSlug,
+        [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+      ],
     },
     parseFrontmatter: true,
   });

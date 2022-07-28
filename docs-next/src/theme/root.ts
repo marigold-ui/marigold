@@ -1,13 +1,14 @@
 export const root = {
-  body: {
-    bg: 'brand.background',
-    fontFamily: 'body',
-    color: 'brand.text',
+  html: {
+    scrollBehavior: 'smooth',
+    scrollPaddingTop: 'medium-1',
   },
-  li: {
-    listStyle: 'none',
+  body: {
+    bg: 'background.page',
+    fontFamily: 'body',
+    color: 'text.regular',
   },
   a: {
-    color: 'brand.text',
+    color: 'text.regular',
   },
-};
+} as const;

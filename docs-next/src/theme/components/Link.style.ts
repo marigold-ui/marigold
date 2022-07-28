@@ -2,13 +2,21 @@ import { Theme } from '@marigold/components';
 
 export const Link: Theme['components']['Link'] = {
   base: {
+    position: 'relative',
     '&:hover': {
       color: 'brand.secondary',
+    },
+    'h2 &': {
+      '&:hover::before': {
+        content: '"#"',
+        position: 'absolute',
+        display: 'inline-block',
+        left: '-1em',
+      },
     },
   },
   variant: {
     navigation: {
-      transition: 'transform .2s ease-in-out',
       '&:hover': {
         color: 'brand.text',
         fontWeight: 'medium',

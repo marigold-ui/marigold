@@ -3,8 +3,6 @@ title: Aside
 group: Layout
 ---
 
-# Aside (group layout)
-
 The `<Aside>` layout is useful when you want to set two things next to each other and the one has a fixed width (the aside) and the other can have a dynamic width (the content).
 
 It is important to note that the `<Aside>` must have exactly too children, where none is a `<Fragment>`.
@@ -24,8 +22,29 @@ import { Aside } from '@marigold/components';
 
 ## Props
 
+```
+<PropsTable
+  props={[
+    {
+      name: 'space',
+      type: 'string',
+      description: 'The space between the content and the aside.',
+      defaultValue: 'medium',
+    },
+    {
+      name: 'align',
+      type: 'string',
+      description: 'The alignment of the content and the aside.',
+      defaultValue: 'center',
+    },
+  ]}
+/>
+```
+
+## Table
+
 | Property               | Type                           | Default |
-| :--------------------- | :----------------------------- | :------ |
+| ---------------------- | ------------------------------ | ------- |
 | `space` (optional)     | `ResponsiveStyleValue<string>` | `none`  |
 | `side` (optional)      | `left`, `right`                | `left`  |
 | `sideWidth` (optional) | `ResponsiveStyleValue<string>` |         |
@@ -43,7 +62,7 @@ Space between elements
 </Aside>
 ```
 
-### Aside on the right
+## Aside on the right
 
 ```tsx
 <Aside space="medium" side="right">
