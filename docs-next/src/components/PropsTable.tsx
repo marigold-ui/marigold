@@ -16,9 +16,15 @@ export const PropsTable = ({ props }: PropsTableProps) => {
       <Table.Body items={props}>
         {item => (
           <Table.Row key={item.property}>
-            <Table.Cell>{item.property}</Table.Cell>
-            <Table.Cell>{item.type}</Table.Cell>
-            <Table.Cell>{item.default}</Table.Cell>
+            <Table.Cell>
+              <code>{item.property}</code>
+            </Table.Cell>
+            <Table.Cell>
+              <code>{item.type}</code>
+            </Table.Cell>
+            <Table.Cell>
+              <code>{item.default}</code>
+            </Table.Cell>
             <Table.Cell>{item.description}</Table.Cell>
           </Table.Row>
         )}

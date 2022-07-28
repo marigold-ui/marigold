@@ -1,4 +1,3 @@
-import { assert } from 'node:console';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pkg from './package.json' assert { type: 'json' };
@@ -12,6 +11,10 @@ const isProduction = process.env.NODE_ENV === 'production';
 const config = {
   env: {
     version: pkg.version,
+  },
+  i18n: {
+    locales: ['en'],
+    defaultLocale: 'en',
   },
   reactStrictMode: true,
   optimizeFonts: true,
