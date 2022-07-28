@@ -1,28 +1,27 @@
-import React, { ReactNode } from 'react';
 import { Table } from '@marigold/components';
 
 export interface PropsTableProps {
-  props: { [key: string]: any };
+  props: { [key: string]: string }[];
 }
 
 export const PropsTable = ({ props }: PropsTableProps) => {
   return (
-    <Table aria-label="Table with component props">
+    <Table aria-label="Table with component props" variant="propsTable">
       <Table.Header>
-        <Table.Column>Property</Table.Column>
-        <Table.Column>Type</Table.Column>
-        <Table.Column>Default</Table.Column>
-        <Table.Column>Description</Table.Column>
+        <Table.Column key="property">Property</Table.Column>
+        <Table.Column key="type">Type</Table.Column>
+        <Table.Column key="default">Default</Table.Column>
+        <Table.Column key="description">Description</Table.Column>
       </Table.Header>
-      <Table.Body>
-        {props.map((element: { props: string }) => (
-          <Table.Row key={element.property}>
-            <Table.Cell>{element.property}</Table.Cell>
-            <Table.Cell>{element.type}</Table.Cell>
-            <Table.Cell>{element.default}</Table.Cell>
-            <Table.Cell>{element.description}</Table.Cell>
+      <Table.Body items={props}>
+        {item => (
+          <Table.Row key={item.property}>
+            <Table.Cell>{item.property}</Table.Cell>
+            <Table.Cell>{item.type}</Table.Cell>
+            <Table.Cell>{item.default}</Table.Cell>
+            <Table.Cell>{item.description}</Table.Cell>
           </Table.Row>
-        ))}
+        )}
       </Table.Body>
     </Table>
   );

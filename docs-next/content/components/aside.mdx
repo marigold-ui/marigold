@@ -26,13 +26,40 @@ import { Aside } from '@marigold/components';
 
 ## Props
 
-| Property               | Type                           | Default |
-| :--------------------- | :----------------------------- | :------ |
-| `space` (optional)     | `ResponsiveStyleValue<string>` | `none`  |
-| `side` (optional)      | `left`, `right`                | `left`  |
-| `sideWidth` (optional) | `ResponsiveStyleValue<string>` |         |
-| `stretch` (optional)   | boolean                        | `true`  |
-| `wrap` (optional)      | `Non-zero Percentage`          | `50%`   |
+<PropsTable
+  props={[
+    {
+      property: 'space',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'The space between the content and the aside.',
+      default: 'none',
+    },
+    {
+      property: 'side',
+      type: 'left`, `right',
+      description: 'The side of the content.',
+      default: 'left',
+    },
+    {
+      property: 'sideWidth',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'The side with of the content.',
+      default: 'none',
+    },
+    {
+      property: 'wrap',
+      type: 'Non-zero Percentage',
+      description: 'The wrap of the content.',
+      default: '50%',
+    },
+    {
+      property: 'strech',
+      type: 'boolean',
+      description: 'strech the aside.',
+      default: 'true',
+    },
+  ]}
+></PropsTable>
 
 ## Examples
 
@@ -53,20 +80,3 @@ Space between elements
   <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="50px" />
 </Aside>
 ```
-
-<PropsTable
-  props={[
-    {
-      property: 'space',
-      type: 'string',
-      description: 'The space between the content and the aside.',
-      default: 'medium',
-    },
-    {
-      property: 'align',
-      type: 'string',
-      description: 'The alignment of the content and the aside.',
-      default: 'center',
-    },
-  ]}
-></PropsTable>
