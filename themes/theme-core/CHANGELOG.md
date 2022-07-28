@@ -1,5 +1,16 @@
 # @marigold/theme-core
 
+## 10.0.0
+
+### Minor Changes
+
+- [#2203](https://github.com/marigold-ui/marigold/pull/2203) [`e376618f`](https://github.com/marigold-ui/marigold/commit/e376618f87c4ca0d78c9bd8ecb4a1db245ef7bcf) Thanks [@sebald](https://github.com/sebald)! - feat: Update styles for `<Button>` in core theme
+
+### Patch Changes
+
+- Updated dependencies [[`527b222f`](https://github.com/marigold-ui/marigold/commit/527b222f1776c30ffb887c72cef2c58b2392309c), [`a5b7e876`](https://github.com/marigold-ui/marigold/commit/a5b7e876c3a70351fc7fac889af9f89a1ab25f8c), [`c346ef60`](https://github.com/marigold-ui/marigold/commit/c346ef60aa4d64e66645ef5966fdf327a1d8337e), [`3adfdeea`](https://github.com/marigold-ui/marigold/commit/3adfdeea7bb962b1d4241b4d05b8ff51fa65b584)]:
+  - @marigold/components@1.3.0
+
 ## 9.0.2
 
 ### Patch Changes

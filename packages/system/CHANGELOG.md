@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 1.3.0
+
+### Patch Changes
+
+- [#2221](https://github.com/marigold-ui/marigold/pull/2221) [`c60f8527`](https://github.com/marigold-ui/marigold/commit/c60f8527cc4d61c3b7d8eeb2ec29a0cd7679e8dc) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @babel/core to v7.18.9
+
 ## 1.2.2
 
 ## 1.2.1
