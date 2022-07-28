@@ -1,10 +1,10 @@
 .all-contributorsrc
-.gitignore
-.npmrc
-.eslintignore
-.prettierignore
+.changeset
 .DS_Store
 .env.local
+.eslintignore
+.gitignore
+.prettierignore
 
 LICENSE
 
