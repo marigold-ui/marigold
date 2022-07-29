@@ -1,11 +1,9 @@
-import React from 'react';
-
 import { Headline, List, Text } from '@marigold/components';
 import { ComponentProps } from '@marigold/types';
 
 import { Link } from './components/Link';
 
-import Highlight, { defaultProps } from 'prism-react-renderer';
+import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/nightOwl';
 
 // Typography
@@ -67,23 +65,31 @@ export const li = ({ children, ...props }: ComponentProps<'li'>) => (
   <List.Item {...props}>{children}</List.Item>
 );
 
-export const pre = ({ children, ...props }: ComponentProps<'pre'>) => {
+export interface PreProps {
+  type: 'code';
+  children: {
+    props: {
+      children: string;
+      className: string;
+    };
+  };
+}
+
+export const pre = ({ children, ...props }: PreProps) => {
+  const codeProps = children.props;
+
+  const code = codeProps.children.replace(/\n$/, '');
+  const language = codeProps.className.replace('language-', '') as Language;
+
   return (
-    <Highlight
-      {...defaultProps}
-      theme={theme}
-      code={children.props.children}
-      language="jsx"
-    >
+    <Highlight {...defaultProps} theme={theme} code={code} language={language}>
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <pre className={className} style={style}>
           {tokens.map((line, i) => (
             <div key={i} {...getLineProps({ line, key: i })}>
-              <span>
-                {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({ token, key })} />
-                ))}
-              </span>
+              {line.map((token, key) => (
+                <span key={key} {...getTokenProps({ token, key })} />
+              ))}
             </div>
           ))}
         </pre>
