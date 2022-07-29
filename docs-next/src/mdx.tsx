@@ -1,4 +1,4 @@
-import { Headline, List, Text } from '@marigold/components';
+import { Box, Headline, List, Text } from '@marigold/components';
 import { ComponentProps } from '@marigold/types';
 
 import { Link } from './components/Link';
@@ -102,3 +102,15 @@ export const pre = ({ children, ...props }: PreProps) => {
     </Highlight>
   );
 };
+
+export const code = ({ children, ...props }: ComponentProps<'code'>) => (
+  <Box
+    as="code"
+    {...props}
+    css={{
+      fontFamily: 'mono',
+    }}
+  >
+    {children}
+  </Box>
+);

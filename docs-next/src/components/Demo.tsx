@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import { Box, MarigoldProvider } from '@marigold/components';
 import { useThemeSwitch } from './ThemeSwitch';
 import { useComponentStyles } from '@marigold/system';
-import { CopyButton } from './CopyButton';
 
 export interface DemoProps {
   code: boolean;
