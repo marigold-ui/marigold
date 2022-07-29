@@ -79,7 +79,6 @@ export const pre = ({ children, ...props }: ComponentProps<'pre'>) => {
         <pre className={className} style={style}>
           {tokens.map((line, i) => (
             <div key={i} {...getLineProps({ line, key: i })}>
-              <span>{i + 1}</span>
               <span>
                 {line.map((token, key) => (
                   <span key={key} {...getTokenProps({ token, key })} />
