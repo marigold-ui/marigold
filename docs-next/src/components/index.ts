@@ -1,3 +1,4 @@
+export * from './CopyButton';
 export * from './Demo';
 export * from './GradientHeadline';
 export * from './Layout';

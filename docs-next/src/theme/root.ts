@@ -15,7 +15,7 @@ export const root = {
     fontFamily: 'mono',
     py: 'small-1',
     px: 'small-1',
-    mb: 'medium-1',
+    borderRadius: '10px',
     overflowX: 'auto',
     maxWidth: '100%',
   },

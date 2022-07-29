@@ -7,12 +7,12 @@ The `<Aside>` layout is useful when you want to set two things next to each othe
 
 It is important to note that the `<Aside>` must have exactly too children, where none is a `<Fragment>`.
 
-<Demo>
-  <Aside space="medium-1">
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="50px" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" />
-  </Aside>
-</Demo>
+```tsx preview
+<Aside space="medium-1">
+  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="50px" />
+  <Box border="1px solid #ced4da" bg="#e9ecef" />
+</Aside>
+```
 
 ```tsx
 import { Aside } from '@marigold/components';
@@ -59,16 +59,16 @@ import { Aside } from '@marigold/components';
 
 Space between elements
 
-```tsx
+```tsx preview
 <Aside space="medium">
   <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="50px" />
   <Box border="1px solid #ced4da" bg="#e9ecef" />
 </Aside>
 ```
 
-## Aside on the right
+Aside on the right
 
-```tsx
+```tsx preview
 <Aside space="medium" side="right">
   <Box border="1px solid #ced4da" bg="#e9ecef" />
   <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="50px" />
