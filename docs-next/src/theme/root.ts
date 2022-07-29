@@ -16,5 +16,7 @@ export const root = {
     py: 'small-1',
     px: 'small-1',
     mb: 'medium-1',
+    overflowX: 'auto',
+    maxWidth: '100%',
   },
 } as const;

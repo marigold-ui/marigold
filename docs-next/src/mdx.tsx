@@ -73,6 +73,7 @@ export interface PreProps {
       className: string;
     };
   };
+  preview: boolean;
 }
 
 export const pre = ({ children, ...props }: PreProps) => {

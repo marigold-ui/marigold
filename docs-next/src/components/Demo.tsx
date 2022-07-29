@@ -3,10 +3,11 @@ import { Box, ThemeProvider } from '@marigold/system';
 import { useThemeSwitch } from './ThemeSwitch';
 
 export interface DemoProps {
+  code: boolean;
   children: ReactNode;
 }
 
-export const Demo = ({ children }: DemoProps) => {
+export const Demo = ({ children, code = false }: DemoProps) => {
   const { current, themes } = useThemeSwitch();
 
   return (
