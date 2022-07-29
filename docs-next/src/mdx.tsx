@@ -5,6 +5,9 @@ import { ComponentProps } from '@marigold/types';
 
 import { Link } from './components/Link';
 
+import Highlight, { defaultProps } from 'prism-react-renderer';
+import theme from 'prism-react-renderer/themes/nightOwl';
+
 // Typography
 // ---------------
 export const h1 = ({ children, ...props }: ComponentProps<'h1'>) => (
@@ -65,6 +68,27 @@ export const li = ({ children, ...props }: ComponentProps<'li'>) => (
 );
 
 export const pre = ({ children, ...props }: ComponentProps<'pre'>) => {
-  console.log(props);
-  return <pre>{children}</pre>;
+  return (
+    <Highlight
+      {...defaultProps}
+      theme={theme}
+      code={children.props.children}
+      language="jsx"
+    >
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <pre className={className} style={style}>
+          {tokens.map((line, i) => (
+            <div key={i} {...getLineProps({ line, key: i })}>
+              <span>{i + 1}</span>
+              <span>
+                {line.map((token, key) => (
+                  <span key={key} {...getTokenProps({ token, key })} />
+                ))}
+              </span>
+            </div>
+          ))}
+        </pre>
+      )}
+    </Highlight>
+  );
 };
