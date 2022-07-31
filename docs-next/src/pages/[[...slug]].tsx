@@ -69,6 +69,7 @@ export const getStaticProps = async ({ params }: any) => {
       remarkPlugins: [
         remarkGfm,
         [
+          //@ts-ignore-error
           remarkCodeExtra,
           {
             transform: (node: any) => {
