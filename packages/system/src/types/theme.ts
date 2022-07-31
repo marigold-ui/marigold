@@ -117,7 +117,7 @@ export interface Theme {
    * for full page apps or an element if you're only using Marigold on a portion of the page.
    * This is useful for additional normalizationor and to style non-Marigold elements.
    */
-  root?: CSSObject;
+  root?: { [key: string]: CSSObject };
 
   /**
    * To configure the default breakpoints used in responsive array values,
