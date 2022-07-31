@@ -308,7 +308,7 @@ importers:
       fs-extra: ^10.1.0
       globby: ^13.1.2
       next: 12.2.3
-      next-mdx-remote: https://github.com/marigold-ui/next-mdx-remote.git#4b55fcba75bf4897cb252e175ddc121067c923ae
+      next-mdx-remote: https://github.com/marigold-ui/next-mdx-remote.git#1ed5e9f376eb3d6b14cc8c0c7d39fed214993edf
       next-remote-watch: ^1.0.0
       react: 18.2.0
       react-dom: 18.2.0
@@ -329,7 +329,7 @@ importers:
       fs-extra: 10.1.0
       globby: 13.1.2
       next: 12.2.3_biqbaboplfbrettd7655fr4n2y
-      next-mdx-remote: github.com/marigold-ui/next-mdx-remote/4b55fcba75bf4897cb252e175ddc121067c923ae_biqbaboplfbrettd7655fr4n2y
+      next-mdx-remote: github.com/marigold-ui/next-mdx-remote/1ed5e9f376eb3d6b14cc8c0c7d39fed214993edf_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       rehype-autolink-headings: 6.1.1
@@ -26014,9 +26014,9 @@ packages:
       yaml: 2.1.1
     dev: false
 
-  github.com/marigold-ui/next-mdx-remote/4b55fcba75bf4897cb252e175ddc121067c923ae_biqbaboplfbrettd7655fr4n2y:
-    resolution: {tarball: https://codeload.github.com/marigold-ui/next-mdx-remote/tar.gz/4b55fcba75bf4897cb252e175ddc121067c923ae}
-    id: github.com/marigold-ui/next-mdx-remote/4b55fcba75bf4897cb252e175ddc121067c923ae
+  github.com/marigold-ui/next-mdx-remote/1ed5e9f376eb3d6b14cc8c0c7d39fed214993edf_biqbaboplfbrettd7655fr4n2y:
+    resolution: {tarball: https://codeload.github.com/marigold-ui/next-mdx-remote/tar.gz/1ed5e9f376eb3d6b14cc8c0c7d39fed214993edf}
+    id: github.com/marigold-ui/next-mdx-remote/1ed5e9f376eb3d6b14cc8c0c7d39fed214993edf
     name: next-mdx-remote
     version: 4.0.3
     engines: {node: '>=14', npm: '>=7'}
