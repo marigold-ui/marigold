@@ -177,13 +177,17 @@ test('opt out of document normalization', () => {
 test('cascading fails if inner theme has root styles', () => {
   const outerTheme = {
     root: {
-      background: 'coral',
+      body: {
+        background: 'coral',
+      },
     },
   };
 
   const innerTheme = {
     root: {
-      background: 'gainsboro',
+      body: {
+        background: 'gainsboro',
+      },
     },
   };
 
@@ -222,13 +226,17 @@ test('cascading without a selector is allowed when inner theme has not root styl
 test('cascading with a selector is allowed when inner theme has specified a selector', () => {
   const outerTheme = {
     root: {
-      background: 'coral',
+      body: {
+        background: 'coral',
+      },
     },
   };
 
   const innerTheme = {
     root: {
-      background: 'gainsboro',
+      body: {
+        background: 'gainsboro',
+      },
     },
   };
 
