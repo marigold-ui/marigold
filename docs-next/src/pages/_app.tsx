@@ -6,7 +6,9 @@ import { Box, MarigoldProvider, SSRProvider } from '@marigold/components';
 import * as MarigoldComponents from '@marigold/components';
 
 import * as DocsComponents from '../components';
-import * as MdxComponents from '../mdx';
+import { mdxComponents } from '../mdx';
+import * as demos from '../demos';
+
 import { theme } from '../theme';
 
 import CodeDemo from '../components/Sandpack/CodeDemo';
@@ -46,7 +48,8 @@ const DevMode = () => {
 const components = {
   Head,
   ...DocsComponents,
-  ...MdxComponents,
+  ...mdxComponents,
+  // ...demos,
   ...MarigoldComponents,
   CodeDemo,
 };
