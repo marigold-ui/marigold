@@ -122,8 +122,6 @@ const NavigationCategory = ({
 };
 
 export const Navigation = ({ navigation }: NavigationProps) => {
-  const isMobile = useMediaQuery({ query: '(max-width: 540px)' });
-
   const styles = useComponentStyles(
     'Navigation',
     {},

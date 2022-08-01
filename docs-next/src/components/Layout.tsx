@@ -1,5 +1,12 @@
 import React, { ReactElement } from 'react';
-import { Box, Aside, Center, Menu, Button } from '@marigold/components';
+import {
+  Box,
+  Aside,
+  Center,
+  Menu,
+  Button,
+  VisuallyHidden,
+} from '@marigold/components';
 
 import { Navigation } from './Navigation';
 import { NavigationMenu } from '../navigation.utils';
@@ -26,11 +33,6 @@ export const Layout = ({ navigation, children }: LayoutProps) => {
       {isMobile ? (
         <Aside space="medium-1" wrap="99%">
           <Box p="small-1">
-            <Button>
-              <BurgerMenu />
-            </Button>
-            <Navigation navigation={navigation} />
-
             <Navigation navigation={navigation} />
           </Box>
           <Box p="medium-1">{children}</Box>
