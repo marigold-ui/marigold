@@ -54,10 +54,14 @@ export const remarkCodeDemo: any = [
 
       if (meta.file) {
         node.value = codeFromFile(meta.file);
+        const tree = createPreview('<DemoTest/>');
+        console.log(tree);
+        return {
+          before: [tree],
+        };
       }
 
       const tree = createPreview(node.value);
-      console.log(tree);
 
       return {
         before: [tree],

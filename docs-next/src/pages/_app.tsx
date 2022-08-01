@@ -49,7 +49,7 @@ const components = {
   Head,
   ...DocsComponents,
   ...mdxComponents,
-  // ...demos,
+  ...demos,
   ...MarigoldComponents,
   CodeDemo,
 };
