@@ -4,16 +4,9 @@ import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
-import remarkCodeExtra from 'remark-code-extra';
 import remarkGfm from 'remark-gfm';
 import remarkMdxCodeMeta from 'remark-mdx-code-meta';
-/** */
-import { fromMarkdown } from 'mdast-util-from-markdown';
-import { mdxjs } from 'micromark-extension-mdxjs';
-import { mdxFromMarkdown } from 'mdast-util-mdx';
-import { select } from 'unist-util-select';
-import type { Root } from 'mdast';
-/** */
+
 import { Container, Header, Text } from '@marigold/components';
 
 import { CONTENT_PATH } from '../config';
@@ -23,6 +16,7 @@ import {
   NavigationMenu,
 } from '../navigation.utils';
 import { GradientHeadline, Layout } from '../components';
+import { remarkCodeDemo } from '../mdx/remark-code-demo';
 
 export interface ContentPageProps {
   source: MDXRemoteSerializeResult;
@@ -67,39 +61,7 @@ export const getStaticProps = async ({ params }: any) => {
 
   const mdxSource = await serialize(source, {
     mdxOptions: {
-      remarkPlugins: [
-        remarkGfm,
-        [
-          //@ts-ignore-error
-          remarkCodeExtra,
-          {
-            transform: (node: any) => {
-              if (node.meta && node.meta.includes('preview')) {
-                const tree = fromMarkdown(
-                  `<Demo>${node.value}</Demo>`.replace(/(\r\n|\n|\r)/gm, ''),
-                  {
-                    extensions: [mdxjs()],
-                    mdastExtensions: [mdxFromMarkdown()],
-                  }
-                );
-
-                console.log(JSON.stringify(tree, null, 2));
-                const jsx = select(
-                  ':any(mdxJsxTextElement, mdxJsxFlowElement)',
-                  tree
-                );
-
-                return {
-                  before: [jsx],
-                };
-              }
-
-              return null;
-            },
-          },
-        ],
-        remarkMdxCodeMeta,
-      ],
+      remarkPlugins: [remarkGfm, remarkCodeDemo, remarkMdxCodeMeta],
       rehypePlugins: [
         rehypeSlug,
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],

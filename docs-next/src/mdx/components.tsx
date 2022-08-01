@@ -1,11 +1,11 @@
 import { Box, Headline, List, Text } from '@marigold/components';
 import { ComponentProps } from '@marigold/types';
 
-import { Link } from './components/Link';
+import { Link } from '../components/Link';
 
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/nightOwl';
-import { CopyButton } from './components';
+import { CopyButton } from '../components';
 
 // Typography
 // ---------------
@@ -80,7 +80,7 @@ export interface PreProps {
 export const pre = ({ children, ...props }: PreProps) => {
   const codeProps = children.props;
 
-  const code = codeProps.children.replace(/\n$/, '');
+  const code = (codeProps.children || '').replace(/\n$/, '');
   const language = codeProps.className.replace('language-', '') as Language;
 
   return (
