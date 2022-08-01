@@ -302,6 +302,7 @@ importers:
       '@marigold/theme-b2b': workspace:*
       '@marigold/tokens': workspace:*
       '@marigold/types': workspace:*
+      '@swc/core': 1.2.218
       '@types/node': 18.0.0
       '@types/react': 18.0.15
       fs-extra: ^10.1.0
@@ -333,6 +334,7 @@ importers:
       '@marigold/theme-b2b': link:../themes/theme-b2b
       '@marigold/tokens': link:../packages/tokens
       '@marigold/types': link:../packages/types
+      '@swc/core': 1.2.218
       fs-extra: 10.1.0
       globby: 13.1.2
       mdast-util-from-markdown: 1.2.0

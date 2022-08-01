@@ -8,9 +8,9 @@ import { mdxjs } from 'micromark-extension-mdxjs';
 import { select } from 'unist-util-select';
 import remarkCodeExtra from 'remark-code-extra';
 
-const codeFromFile = (file: string) => {
+const codeFromFile = async (file: string) => {
   const filePath = path.resolve(process.cwd(), file);
-  const content = fs.readFileSync(filePath, 'utf8');
+  const content = await fs.readFile(filePath, 'utf8');
 
   return content;
 };
@@ -31,7 +31,7 @@ export const remarkCodeDemo: any = [
   //@ts-ignore-error
   remarkCodeExtra,
   {
-    transform: (node: Code) => {
+    transform: async (node: Code) => {
       if (!node.meta) {
         return;
       }
@@ -53,7 +53,7 @@ export const remarkCodeDemo: any = [
       }
 
       if (meta.file) {
-        node.value = codeFromFile(meta.file);
+        node.value = await codeFromFile(meta.file);
         const tree = createPreview('<DemoTest/>');
         console.log(tree);
         return {
