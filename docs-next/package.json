@@ -28,6 +28,7 @@
     "next-mdx-remote": "https://github.com/marigold-ui/next-mdx-remote.git#4b55fcba75bf4897cb252e175ddc121067c923ae",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-responsive": "9.0.0-beta.10",
     "rehype-autolink-headings": "^6.1.1",
     "rehype-slug": "^5.0.1",
     "remark-gfm": "^3.0.1"
