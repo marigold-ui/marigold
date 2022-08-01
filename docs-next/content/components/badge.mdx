@@ -3,33 +3,32 @@ title: Badge
 group: Content
 ---
 
-# Badge
+A badge tags an element with a short note and color. The content of the `<Badge/>` can be anything but preferably a string and/or icon.
 
-A badge tags an element with a short note and color. The content of the badge can be anything but preferably a string and/or icon.
-
-<MarigoldTheme>
-  <Badge variant="info">New</Badge>
-</MarigoldTheme>
-
-```tsx onlyCode
+```tsx
 import { Badge } from '@marigold/components';
 ```
 
 ## Props
 
-| Property             | Type     | Default |
-| :------------------- | :------- | :------ |
-| `variant` (optional) | `string` |         |
-
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'string',
+      description: 'The variant of the badge.',
+      default: 'none',
+    },
+  ]}
+/>
 ## Examples
 
 ### Badge with icon
 
-```tsx
+```tsx preview
 <Badge>
   <Inline space="xsmall">
-    type:documentation
-    <ResaleLogbook size={18} />
+    <a>foo</a>
   </Inline>
 </Badge>
 ```

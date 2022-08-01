@@ -8,10 +8,11 @@ import remarkCodeExtra from 'remark-code-extra';
 import remarkGfm from 'remark-gfm';
 import remarkMdxCodeMeta from 'remark-mdx-code-meta';
 /** */
-import * as acorn from 'acorn';
 import { fromMarkdown } from 'mdast-util-from-markdown';
-import { mdxJsx } from 'micromark-extension-mdx-jsx';
-import { mdxJsxFromMarkdown } from 'mdast-util-mdx-jsx';
+import { mdxjs } from 'micromark-extension-mdxjs';
+import { mdxFromMarkdown } from 'mdast-util-mdx';
+import { select } from 'unist-util-select';
+import type { Root } from 'mdast';
 /** */
 import { Container, Header, Text } from '@marigold/components';
 
@@ -74,13 +75,22 @@ export const getStaticProps = async ({ params }: any) => {
           {
             transform: (node: any) => {
               if (node.meta && node.meta.includes('preview')) {
-                const tree = fromMarkdown(`<Demo>${node.value}</Demo>`, {
-                  extensions: [mdxJsx({ acorn: acorn, addResult: true })],
-                  mdastExtensions: [mdxJsxFromMarkdown()],
-                });
+                const tree = fromMarkdown(
+                  `<Demo>${node.value}</Demo>`.replace(/(\r\n|\n|\r)/gm, ''),
+                  {
+                    extensions: [mdxjs()],
+                    mdastExtensions: [mdxFromMarkdown()],
+                  }
+                );
+
+                console.log(JSON.stringify(tree, null, 2));
+                const jsx = select(
+                  ':any(mdxJsxTextElement, mdxJsxFlowElement)',
+                  tree
+                );
 
                 return {
-                  before: [tree],
+                  before: [jsx],
                 };
               }
 

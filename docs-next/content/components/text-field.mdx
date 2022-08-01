@@ -131,7 +131,7 @@ import { TextField } from '@marigold/components';
 [Just because the input contains numbers, it is not necessarily correctly to use `input[type=number]`!](https://www.coywolf.news/webmaster/accessible-number-input/)
 
 ```tsx
-() => {
+const FieldTextErrorNumberImput = () => {
   const [value, setValue] = React.useState('');
   const error = value.length > 0 && !/^\d+$/.test(value);
 
@@ -152,7 +152,7 @@ import { TextField } from '@marigold/components';
 
 ### Use different `input` methods
 
-```tsx
+```tsx preview
 <TextField label="EMail" type="email" />
 ```
 
