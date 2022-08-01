@@ -25,7 +25,7 @@ export interface LayoutProps {
 
 export const Layout = ({ navigation, children }: LayoutProps) => {
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
-  //const isMobile = useResponsiveValue(['800px'], 800);
+  //const isMobile = useResponsiveValue(['40em'], 0);
   console.log(isMobile);
 
   return (
