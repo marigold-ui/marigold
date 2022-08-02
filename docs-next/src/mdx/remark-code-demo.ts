@@ -6,8 +6,13 @@ import { fromMarkdown } from 'mdast-util-from-markdown';
 import { mdxFromMarkdown } from 'mdast-util-mdx';
 import { mdxjs } from 'micromark-extension-mdxjs';
 import remarkCodeExtra from 'remark-code-extra';
+import { DEMO_PATH } from '../config';
 
-// poor people's argument parser
+/**
+ * Very simple argument parser. Converts key=value pairs into
+ * an object. `value` will be a string, if only a key is given its
+ * value will be set to `true`.
+ */
 const parseMeta = (val: string) =>
   Object.fromEntries(
     val.split(/\s+/).map(part => {
@@ -16,46 +21,29 @@ const parseMeta = (val: string) =>
     })
   ) as { preview?: undefined; file?: string };
 
-const codeFromFile = async (file: string) => {
-  const filePath = path.resolve(process.cwd(), file);
-  const content = await fs.readFile(filePath, 'utf8');
-
-  return content;
-};
-
-// import { JsxEmit, ModuleKind, ScriptTarget, transpileModule } from 'typescript';
-// const transpile = (code: string) =>
-//   transpileModule(code, {
-//     compilerOptions: {
-//       module: ModuleKind.ESNext,
-//       jsx: JsxEmit.Preserve,
-//       target: ScriptTarget.ESNext,
-//     },
-//   }).outputText;
-
-const getDemoComponent = (code: string) => {
+/**
+ * Try to find the preview to render based on the exported component.
+ * Note that any component has to exist in the MDX scope to make this work.
+ * Meaing it has to be added to the `<MDXProvider>`.
+ */
+const findExportedComponent = (code: string) => {
   const result = code.match(/export const\s(?<component>\w+)\s/);
   if (!result?.groups) {
     throw Error(
       'No demo component found. Please make sure to export a component from your demo file.'
     );
   }
-
-  return result.groups.component;
+  return `<${result.groups.component}/>`;
 };
 
-const createPreview = (code: string) => {
-  const tree = fromMarkdown(code, {
+/**
+ * Create the `mdast` from the code using the mdx extensions.
+ */
+const parseCodeToAst = (code: string) => {
+  return fromMarkdown(code, {
     extensions: [mdxjs()],
     mdastExtensions: [mdxFromMarkdown()],
-  });
-
-  return {
-    type: 'mdxJsxFlowElement',
-    name: 'Demo',
-    attributes: [],
-    children: [...tree.children],
-  };
+  }).children;
 };
 
 export const remarkCodeDemo: any = [
@@ -63,11 +51,11 @@ export const remarkCodeDemo: any = [
   remarkCodeExtra,
   {
     transform: async (node: Code) => {
-      if (!node.meta) {
+      if (!node.lang) {
         return;
       }
 
-      if (!node.lang) {
+      if (!node.meta) {
         return;
       }
 
@@ -78,15 +66,21 @@ export const remarkCodeDemo: any = [
       }
 
       if (meta.file) {
-        node.value = await codeFromFile(meta.file);
+        node.value = await fs.readFile(path.join(DEMO_PATH, meta.file), 'utf8');
       }
 
-      const tree = createPreview(
-        meta.file ? `<${getDemoComponent(node.value)}/>` : node.value
-      );
+      const code = meta.file ? findExportedComponent(node.value) : node.value;
+      const ast = parseCodeToAst(code);
 
       return {
-        before: [tree],
+        before: [
+          {
+            type: 'mdxJsxFlowElement',
+            name: 'Demo',
+            attributes: [],
+            children: ast,
+          },
+        ],
       };
     },
   },
