@@ -9,11 +9,11 @@ import { useResponsiveValue } from '@marigold/system';
 
 const useIsSmallScreen = () => useResponsiveValue([true, false, false], 0);
 
-export interface LayoutProps {
+export interface NavigationLayoutProps {
   navigation: NavigationMenu;
 }
 
-export const NavigationLayout = ({ navigation }: LayoutProps) => {
+export const NavigationLayout = ({ navigation }: NavigationLayoutProps) => {
   const isSmallScreen = useIsSmallScreen();
   const [showNavigation, setShowNavigation] = React.useState(false);
   const show = isSmallScreen ? showNavigation : true;
