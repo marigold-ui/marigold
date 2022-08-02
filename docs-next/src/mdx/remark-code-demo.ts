@@ -5,7 +5,6 @@ import { Code } from 'mdast';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { mdxFromMarkdown } from 'mdast-util-mdx';
 import { mdxjs } from 'micromark-extension-mdxjs';
-import { select } from 'unist-util-select';
 import remarkCodeExtra from 'remark-code-extra';
 
 // poor people's argument parser
@@ -46,15 +45,17 @@ const getDemoComponent = (code: string) => {
 };
 
 const createPreview = (code: string) => {
-  const tree = fromMarkdown(
-    `<Demo>${code}</Demo>`.replace(/(\r\n|\n|\r)/gm, ''),
-    {
-      extensions: [mdxjs()],
-      mdastExtensions: [mdxFromMarkdown()],
-    }
-  );
+  const tree = fromMarkdown(code.replace(/(\r\n|\n|\r)/gm, ''), {
+    extensions: [mdxjs()],
+    mdastExtensions: [mdxFromMarkdown()],
+  });
 
-  return select(':any(mdxJsxTextElement, mdxJsxFlowElement)', tree)!;
+  return {
+    type: 'mdxJsxFlowElement',
+    name: 'Demo',
+    attributes: [],
+    children: [...tree.children],
+  };
 };
 
 export const remarkCodeDemo: any = [
