@@ -35,17 +35,14 @@ const codeFromFile = async (file: string) => {
 //   }).outputText;
 
 const getDemoComponent = (code: string) => {
-  const result = /export const\s(\w+)\s/.exec(code);
-
-  if (!result) {
+  const result = code.match(/export const\s(?<component>\w+)\s/);
+  if (!result?.groups) {
     throw Error(
       'No demo component found. Please make sure to export a component from your demo file.'
     );
   }
 
-  // result = [<searched senctence>, <1st capturing group>, ...]
-  const [, component] = result;
-  return component;
+  return result.groups.component;
 };
 
 const createPreview = (code: string) => {
