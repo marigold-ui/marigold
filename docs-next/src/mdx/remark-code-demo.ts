@@ -1,11 +1,16 @@
 import path from 'node:path';
 import fs from 'fs-extra';
 
+import { Program, Identifier } from 'estree';
+import { visit as estreeVisit } from 'estree-util-visit';
 import { Code } from 'mdast';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { mdxFromMarkdown } from 'mdast-util-mdx';
 import { mdxjs } from 'micromark-extension-mdxjs';
 import remarkCodeExtra from 'remark-code-extra';
+import { JsxEmit, ModuleKind, ScriptTarget, transpileModule } from 'typescript';
+import { visit } from 'unist-util-visit';
+
 import { DEMO_PATH } from '../config';
 
 /**
@@ -34,6 +39,46 @@ const findExportedComponent = (code: string) => {
     );
   }
   return `<${result.groups.component}/>`;
+};
+
+const getExportedComponent = (input: string, lang: string) => {
+  const code = /tsx?/.test(lang)
+    ? transpileModule(input, {
+        compilerOptions: {
+          module: ModuleKind.ESNext,
+          jsx: JsxEmit.Preserve,
+          target: ScriptTarget.ESNext,
+        },
+      }).outputText
+    : input;
+
+  const tree = parseCodeToAst(code)[0].data?.estree as Program;
+
+  let component = '';
+  estreeVisit(tree, node => {
+    if (component) {
+      return;
+    }
+    if (node.type === 'ExportNamedDeclaration') {
+      estreeVisit(node, child => {
+        // TODO: can we be more specific? go into the `declarations`?
+        if (component) {
+          return;
+        }
+        if (child.type === 'Identifier') {
+          component = (child as Identifier).name;
+        }
+      });
+    }
+  });
+
+  if (!component) {
+    throw Error(
+      'No component for demo found. Please make sure to export a component from your demo file.'
+    );
+  }
+
+  return `<${component}/>`;
 };
 
 /**
@@ -69,8 +114,10 @@ export const remarkCodeDemo: any = [
         node.value = await fs.readFile(path.join(DEMO_PATH, meta.file), 'utf8');
       }
 
-      const code = meta.file ? findExportedComponent(node.value) : node.value;
-      const ast = parseCodeToAst(code);
+      const code = meta.file
+        ? getExportedComponent(node.value, node.lang)
+        : node.value;
+      const tree = parseCodeToAst(code);
 
       return {
         before: [
@@ -78,10 +125,18 @@ export const remarkCodeDemo: any = [
             type: 'mdxJsxFlowElement',
             name: 'Demo',
             attributes: [],
-            children: ast,
+            children: tree,
           },
         ],
       };
     },
   },
 ];
+
+// export const plugin = () => {
+//   return tree => {
+//     visit(tree, 'code', node => {
+//       console.log(node);
+//     });
+//   };
+// };
