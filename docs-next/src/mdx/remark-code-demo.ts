@@ -8,11 +8,44 @@ import { mdxjs } from 'micromark-extension-mdxjs';
 import { select } from 'unist-util-select';
 import remarkCodeExtra from 'remark-code-extra';
 
+// poor people's argument parser
+const parseMeta = (val: string) =>
+  Object.fromEntries(
+    val.split(/\s+/).map(part => {
+      const [key, val] = part.split('=');
+      return [key, val === undefined ? true : val];
+    })
+  ) as { preview?: undefined; file?: string };
+
 const codeFromFile = async (file: string) => {
   const filePath = path.resolve(process.cwd(), file);
   const content = await fs.readFile(filePath, 'utf8');
 
   return content;
+};
+
+// import { JsxEmit, ModuleKind, ScriptTarget, transpileModule } from 'typescript';
+// const transpile = (code: string) =>
+//   transpileModule(code, {
+//     compilerOptions: {
+//       module: ModuleKind.ESNext,
+//       jsx: JsxEmit.Preserve,
+//       target: ScriptTarget.ESNext,
+//     },
+//   }).outputText;
+
+const getDemoComponent = (code: string) => {
+  const result = /export const\s(\w+)\s/.exec(code);
+
+  if (!result) {
+    throw Error(
+      'No demo component found. Please make sure to export a component from your demo file.'
+    );
+  }
+
+  // result = [<searched senctence>, <1st capturing group>, ...]
+  const [, component] = result;
+  return component;
 };
 
 const createPreview = (code: string) => {
@@ -40,13 +73,7 @@ export const remarkCodeDemo: any = [
         return;
       }
 
-      // poor people's argument parser
-      const meta = Object.fromEntries(
-        node.meta.split(/\s+/).map(arg => {
-          const [key, val] = arg.split('=');
-          return [key, val === undefined ? true : val];
-        })
-      ) as { preview?: undefined; file?: string };
+      const meta = parseMeta(node.meta);
 
       if (!meta.preview) {
         return;
@@ -54,14 +81,11 @@ export const remarkCodeDemo: any = [
 
       if (meta.file) {
         node.value = await codeFromFile(meta.file);
-        const tree = createPreview('<DemoTest/>');
-        console.log(tree);
-        return {
-          before: [tree],
-        };
       }
 
-      const tree = createPreview(node.value);
+      const tree = createPreview(
+        meta.file ? `<${getDemoComponent(node.value)}/>` : node.value
+      );
 
       return {
         before: [tree],
