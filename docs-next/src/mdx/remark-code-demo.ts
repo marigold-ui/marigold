@@ -45,7 +45,7 @@ const getDemoComponent = (code: string) => {
 };
 
 const createPreview = (code: string) => {
-  const tree = fromMarkdown(code.replace(/(\r\n|\n|\r)/gm, ''), {
+  const tree = fromMarkdown(code, {
     extensions: [mdxjs()],
     mdastExtensions: [mdxFromMarkdown()],
   });
