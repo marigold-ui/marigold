@@ -5,12 +5,24 @@ import Head from 'next/head';
 import { Box, MarigoldProvider, SSRProvider } from '@marigold/components';
 import * as MarigoldComponents from '@marigold/components';
 
-import * as MdxComponents from '../mdx';
+import * as DocsComponents from '../components';
+import { mdxComponents } from '../mdx';
+import * as demos from '../demos';
+
 import { theme } from '../theme';
 
 import CodeDemo from '../components/Sandpack/CodeDemo';
-import { PropsTable } from '../components/PropsTable';
-import { MarigoldTheme } from '../components/MarigoldTheme';
+
+import { MarigoldThemeSwitch } from '../components';
+import unicornTheme from '@marigold/theme-unicorn';
+import b2bTheme from '@marigold/theme-b2b';
+import coreTheme from '@marigold/theme-core';
+
+const themes = {
+  unicornTheme,
+  b2bTheme,
+  coreTheme,
+};
 
 const DevMode = () => {
   const devMode = process.env.NODE_ENV === 'development';
@@ -35,9 +47,9 @@ const DevMode = () => {
 
 const components = {
   Head,
-  PropsTable,
-  MarigoldTheme,
-  ...MdxComponents,
+  ...DocsComponents,
+  ...mdxComponents,
+  ...demos,
   ...MarigoldComponents,
   CodeDemo,
 };
@@ -46,10 +58,12 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <SSRProvider>
       <MarigoldProvider theme={theme}>
-        <MDXProvider components={components as any}>
-          <DevMode />
-          <Component {...pageProps} />
-        </MDXProvider>
+        <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
+          <MDXProvider components={components as any}>
+            <DevMode />
+            <Component {...pageProps} />
+          </MDXProvider>
+        </MarigoldThemeSwitch>
       </MarigoldProvider>
     </SSRProvider>
   );

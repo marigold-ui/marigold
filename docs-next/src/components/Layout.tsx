@@ -23,7 +23,7 @@ export const Layout = ({ navigation, children }: LayoutProps) => (
         </Link>
         <Navigation navigation={navigation} />
       </Box>
-      <Box>{children}</Box>
+      <div>{children}</div>
     </Aside>
     <Version />
   </>
