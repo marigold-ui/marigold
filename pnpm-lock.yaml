@@ -311,7 +311,6 @@ importers:
       next-remote-watch: ^1.0.0
       react: 18.2.0
       react-dom: 18.2.0
-      react-responsive: 9.0.0-beta.10
       rehype-autolink-headings: ^6.1.1
       rehype-slug: ^5.0.1
       remark-gfm: ^3.0.1
@@ -332,7 +331,6 @@ importers:
       next-mdx-remote: github.com/marigold-ui/next-mdx-remote/4b55fcba75bf4897cb252e175ddc121067c923ae_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-responsive: 9.0.0-beta.10_react@18.2.0
       rehype-autolink-headings: 6.1.1
       rehype-slug: 5.0.1
       remark-gfm: 3.0.1
@@ -14703,13 +14701,6 @@ packages:
       webpack: 5.74.0
     dev: false
 
-  /css-mediaquery/0.1.2:
-    resolution:
-      {
-        integrity: sha512-COtn4EROW5dBGlE/4PiKnh6rZpAPxDeFLaEEwt4i10jpDMFt2EhQGS79QmmrO+iKCHv0PU/HrOWEhijFd1x99Q==,
-      }
-    dev: false
-
   /css-minimizer-webpack-plugin/2.0.0_webpack@5.74.0:
     resolution:
       {
@@ -24049,15 +24040,6 @@ packages:
       }
     dev: false
 
-  /matchmediaquery/0.3.1:
-    resolution:
-      {
-        integrity: sha512-Hlk20WQHRIm9EE9luN1kjRjYXAQToHOIAHPJn9buxBwuhfTHoKUcX+lXBbxc85DVQfXYbEQ4HcwQdd128E3qHQ==,
-      }
-    dependencies:
-      css-mediaquery: 0.1.2
-    dev: false
-
   /md5-file/5.0.0:
     resolution:
       {
@@ -29055,22 +29037,6 @@ packages:
     engines: { node: '>=0.10.0' }
     dev: false
 
-  /react-responsive/9.0.0-beta.10_react@18.2.0:
-    resolution:
-      {
-        integrity: sha512-41H8g4FYP46ln16rsHvs9/0ZoZxAPfnNiHET86/5pgS+Vw8fSKfLBuOS2SAquaxOxq7DgPviFoHmybgVvSKCNQ==,
-      }
-    engines: { node: '>=0.10' }
-    peerDependencies:
-      react: '>=16.8.0'
-    dependencies:
-      hyphenate-style-name: 1.0.4
-      matchmediaquery: 0.3.1
-      prop-types: 15.8.1
-      react: 18.2.0
-      shallow-equal: 1.2.1
-    dev: false
-
   /react-shallow-renderer/16.15.0_react@18.2.0:
     resolution:
       {
@@ -30502,13 +30468,6 @@ packages:
     resolution:
       {
         integrity: sha512-LUMFi+RppPlrHzbqmFnINTrazo0lPNwhcgzuAXVVcfy/mqPDrQmHAyz5bvV0gDAuRFrk804V0HpQ6u9sZ0tBeg==,
-      }
-    dev: false
-
-  /shallow-equal/1.2.1:
-    resolution:
-      {
-        integrity: sha512-S4vJDjHHMBaiZuT9NPb616CSmLf618jawtv3sufLl6ivK8WocjAo58cXwbRV1cgqxH0Qbv+iUt6m05eqEa2IRA==,
       }
     dev: false
 

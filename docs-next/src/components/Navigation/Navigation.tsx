@@ -8,7 +8,6 @@ import { Box } from '@marigold/components';
 import { Link, LinkProps } from '../Link';
 import { CSSObject, useComponentStyles } from '@marigold/system';
 import { NAVIGATION_CONFIG } from 'docs-next/src/config';
-import { useMediaQuery } from 'react-responsive';
 
 export interface NavigationProps {
   navigation: NavigationMenu;
