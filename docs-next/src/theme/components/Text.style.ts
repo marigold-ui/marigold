@@ -3,7 +3,7 @@ import type { Theme } from '@marigold/components';
 export const Text: Theme['components']['Text'] = {
   base: {
     lineHeight: 'large-1',
-    mb: 'small-1',
+    mb: 'medium-1',
   },
 
   variant: {

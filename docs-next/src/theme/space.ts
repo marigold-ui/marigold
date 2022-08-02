@@ -1,3 +1,3 @@
-import { size } from '@marigold/tokens';
+import { space as tokens } from '@marigold/tokens';
 
-export const space = size.fluid;
+export const space = tokens.fluid;

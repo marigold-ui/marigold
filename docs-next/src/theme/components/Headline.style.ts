@@ -8,8 +8,8 @@ export const Headline: Theme['components']['Headline'] = {
     textTransform: 'uppercase',
     fontSize: 'fluid.medium-1',
     lineHeight: 'small-3',
-    mt: 'small-3',
-    mb: 'small-1',
+    mt: 'large-1',
+    mb: 'medium-1',
   },
 
   variant: {

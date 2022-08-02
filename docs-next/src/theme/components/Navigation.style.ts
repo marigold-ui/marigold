@@ -5,7 +5,7 @@ export const Navigation = {
     container: {
       fontFamily: 'headline',
       lineHeight: 'large-1',
-      p: 'small-1',
+      p: 'medium-1',
     },
     category: {
       fontSize: 'fixed.small-3',
@@ -23,7 +23,7 @@ export const Navigation = {
     },
     list: {
       p: '0',
-      pb: 'small-1',
+      pb: 'medium-1',
     },
     group: {
       color: 'text.regular',

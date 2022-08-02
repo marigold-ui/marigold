@@ -8,12 +8,12 @@ export const Table: Theme['components']['Table'] = {
       header: {
         fontFamily: 'headline',
         textAlign: 'left',
-        p: 'small-1',
+        p: 'medium-1',
         borderBottom: '1px solid',
         borderColor: 'background.light',
       },
       cell: {
-        p: 'small-1',
+        p: 'medium-1',
         borderBottom: '1px solid',
         borderColor: 'background.light',
         color: 'brand.secondary',
