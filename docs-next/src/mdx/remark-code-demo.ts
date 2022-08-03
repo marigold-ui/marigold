@@ -1,17 +1,19 @@
 import path from 'node:path';
 import fs from 'fs-extra';
 
-import { Program } from 'estree';
-import { Code } from 'mdast';
+import type { Program } from 'estree';
+import type { Code, Parent } from 'mdast';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { mdxFromMarkdown } from 'mdast-util-mdx';
 import { mdxjs } from 'micromark-extension-mdxjs';
 import remarkCodeExtra from 'remark-code-extra';
 import { JsxEmit, ModuleKind, ScriptTarget, transpileModule } from 'typescript';
+import type { Transformer } from 'unified';
 import { visit } from 'unist-util-visit';
 
 import { getFirstNamedExport } from './utils/estree';
 import { DEMO_PATH } from '../config';
+import { flatMap } from './utils/unist';
 
 /**
  * Very simple argument parser. Converts key=value pairs into
@@ -64,27 +66,72 @@ const parseCodeToAst = (code: string) => {
   }).children;
 };
 
-export const remarkCodeDemo: any = [
-  //@ts-ignore-error
-  remarkCodeExtra,
-  {
-    transform: async (node: Code) => {
+// export const remarkCodeDemo: any = [
+//   //@ts-ignore-error
+//   remarkCodeExtra,
+//   {
+//     transform: async (node: Code) => {
+//       return {};
+//       if (!node.lang) {
+//         return;
+//       }
+
+//       if (!node.meta) {
+//         return;
+//       }
+
+//       const meta = parseMeta(node.meta);
+
+//       if (!meta.preview) {
+//         return;
+//       }
+
+//       if (meta.file) {
+//         node.value = await fs.readFile(path.join(DEMO_PATH, meta.file), 'utf8');
+//       }
+
+//       const code = meta.file
+//         ? getExportedComponent(node.value, node.lang)
+//         : node.value;
+//       const tree = parseCodeToAst(code);
+
+//       return {
+//         before: [
+//           {
+//             type: 'mdxJsxFlowElement',
+//             name: 'Demo',
+//             attributes: [],
+//             children: tree,
+//           },
+//         ],
+//       };
+//     },
+//   },
+// ];
+
+export const remarkCodeDemo = (): Transformer => {
+  return tree => {
+    flatMap(tree, node => {
+      if (node.type !== 'code') {
+        return [node];
+      }
+
       if (!node.lang) {
-        return;
+        return [node];
       }
 
       if (!node.meta) {
-        return;
+        return [node];
       }
 
       const meta = parseMeta(node.meta);
 
       if (!meta.preview) {
-        return;
+        return [node];
       }
 
       if (meta.file) {
-        node.value = await fs.readFile(path.join(DEMO_PATH, meta.file), 'utf8');
+        node.value = fs.readFileSync(path.join(DEMO_PATH, meta.file), 'utf8');
       }
 
       const code = meta.file
@@ -92,24 +139,140 @@ export const remarkCodeDemo: any = [
         : node.value;
       const tree = parseCodeToAst(code);
 
-      return {
-        before: [
-          {
-            type: 'mdxJsxFlowElement',
-            name: 'Demo',
-            attributes: [],
-            children: tree,
-          },
-        ],
+      const preview = {
+        type: 'mdxJsxFlowElement',
+        name: 'Demo',
+        attributes: [],
+        children: tree,
       };
-    },
-  },
-];
 
-// export const plugin = () => {
-//   return tree => {
-//     visit(tree, 'code', node => {
-//       console.log(node);
+      return [node, preview];
+    });
+
+    // const nodes: [any, number, Parent][] = [];
+
+    // visit(
+    //   tree,
+    //   'code',
+    //   (node: Code, index: number | null, parent: Parent | null) => {
+    //     if (!parent) {
+    //       return;
+    //     }
+
+    //     if (index === null) {
+    //       return;
+    //     }
+
+    //     if (!node.lang) {
+    //       return;
+    //     }
+
+    //     if (!node.meta) {
+    //       return;
+    //     }
+
+    //     const meta = parseMeta(node.meta);
+
+    //     if (!meta.preview) {
+    //       return;
+    //     }
+
+    //     if (meta.file) {
+    //       node.value = fs.readFileSync(path.join(DEMO_PATH, meta.file), 'utf8');
+    //     }
+
+    //     const code = meta.file
+    //       ? getExportedComponent(node.value, node.lang)
+    //       : node.value;
+    //     const tree = parseCodeToAst(code);
+
+    //     const preview = {
+    //       type: 'mdxJsxFlowElement',
+    //       name: 'Demo',
+    //       attributes: [],
+    //       children: tree,
+    //     };
+
+    //     nodes.push([preview, index, parent]);
+    //   }
+    // );
+
+    // nodes.forEach(([node, index, parent]) => {
+    //   // console.log(node);
+    //   // parent.children.splice(index, 0, p);
+    //   parent.children.push(node);
+    // });
+
+    return tree;
+  };
+};
+
+// export const plugin = (): Transformer => {
+//   return async tree => {
+//     const nodes: [any, number, Parent][] = [];
+
+//     visit(
+//       tree,
+//       'code',
+//       (node: Code, index: number | null, parent: Parent | null) => {
+//         if (!parent) {
+//           return;
+//         }
+
+//         if (index === null) {
+//           return;
+//         }
+
+//         if (!node.lang) {
+//           return;
+//         }
+
+//         if (!node.meta) {
+//           return;
+//         }
+
+//         const meta = parseMeta(node.meta);
+
+//         if (!meta.preview) {
+//           return;
+//         }
+
+//         if (meta.file) {
+//           node.value = fs.readFileSync(path.join(DEMO_PATH, meta.file), 'utf8');
+//         }
+
+//         const code = meta.file
+//           ? getExportedComponent(node.value, node.lang)
+//           : node.value;
+//         const tree = parseCodeToAst(code);
+
+//         const preview = {
+//           type: 'mdxJsxFlowElement',
+//           name: 'Demo',
+//           attributes: [],
+//           children: tree,
+//         };
+
+//         nodes.push([preview, index, parent]);
+//       }
+//     );
+
+//     nodes.forEach(([node, index, parent]) => {
+//       // console.log(node);
+
+//       const p = {
+//         type: 'paragraph',
+//         children: [
+//           {
+//             type: 'text',
+//             value: '!!!!!!!!!!!!!!!!!!!!!HELLO!!!!!!!!!!!!!!!!!',
+//           },
+//         ],
+//       };
+//       // parent.children.splice(index, 0, p);
+//       parent.children.push(node);
 //     });
+
+//     return tree;
 //   };
 // };
