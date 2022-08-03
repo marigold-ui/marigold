@@ -1,6 +1,5 @@
 export * from './CopyButton';
 export * from './Demo';
-export * from './JumpLinks';
 export * from './GradientHeadline';
 export * from './Layout';
 export * from './Link';

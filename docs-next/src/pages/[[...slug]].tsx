@@ -6,8 +6,9 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import remarkMdxCodeMeta from 'remark-mdx-code-meta';
-
 import { Container, Header, Text } from '@marigold/components';
+import remarkToc from 'remark-toc';
+import { tableOfContents } from '../mdx/table-of-contents-tree';
 
 import { CONTENT_PATH } from '../config';
 import {
@@ -61,7 +62,13 @@ export const getStaticProps = async ({ params }: any) => {
 
   const mdxSource = await serialize(source, {
     mdxOptions: {
-      remarkPlugins: [remarkGfm, remarkCodeDemo, remarkMdxCodeMeta],
+      remarkPlugins: [
+        remarkGfm,
+        remarkCodeDemo,
+        remarkMdxCodeMeta,
+        remarkToc,
+        tableOfContents,
+      ],
       rehypePlugins: [
         rehypeSlug,
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],

@@ -309,9 +309,12 @@ importers:
       globby: ^13.1.2
       mdast-util-from-markdown: ^1.2.0
       mdast-util-mdx: ^2.0.0
+      mdast-util-toc: ^6.1.0
       micromark-extension-mdxjs: ^1.0.0
       next: 12.2.3
+      next-mdx: ^0.6.2
       next-mdx-remote: https://github.com/marigold-ui/next-mdx-remote.git#4b55fcba75bf4897cb252e175ddc121067c923ae
+      next-mdx-toc: ^0.1.3
       next-remote-watch: ^1.0.0
       prism-react-renderer: 1.3.1
       react: 18.2.0
@@ -321,8 +324,11 @@ importers:
       remark-code-extra: ^1.0.1
       remark-gfm: ^3.0.1
       remark-mdx-code-meta: ^2.0.0
+      remark-toc: ^8.0.1
       typescript: 4.7.4
       unified: ^10.1.2
+      unist-builder: ^3.0.0
+      unist-util-visit: ^4.1.0
     dependencies:
       '@codesandbox/sandpack-client': 1.2.2
       '@codesandbox/sandpack-react': 1.3.1_biqbaboplfbrettd7655fr4n2y
@@ -338,9 +344,12 @@ importers:
       globby: 13.1.2
       mdast-util-from-markdown: 1.2.0
       mdast-util-mdx: 2.0.0
+      mdast-util-toc: 6.1.0
       micromark-extension-mdxjs: 1.0.0
       next: 12.2.3_biqbaboplfbrettd7655fr4n2y
+      next-mdx: 0.6.2_53oqlnqnxhbetdy4ljlkkvmoby
       next-mdx-remote: github.com/marigold-ui/next-mdx-remote/4b55fcba75bf4897cb252e175ddc121067c923ae_biqbaboplfbrettd7655fr4n2y
+      next-mdx-toc: 0.1.3_53oqlnqnxhbetdy4ljlkkvmoby
       prism-react-renderer: 1.3.1_react@18.2.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -349,7 +358,10 @@ importers:
       remark-code-extra: 1.0.1
       remark-gfm: 3.0.1
       remark-mdx-code-meta: 2.0.0
+      remark-toc: 8.0.1
       unified: 10.1.2
+      unist-builder: 3.0.0
+      unist-util-visit: 4.1.0
     devDependencies:
       '@types/node': 18.0.0
       '@types/react': 18.0.15
@@ -1272,7 +1284,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.12.9
-      '@babel/helper-plugin-utils': 7.10.4
+      '@babel/helper-plugin-utils': 7.18.9
       '@babel/plugin-syntax-object-rest-spread': 7.8.3_@babel+core@7.12.9
       '@babel/plugin-transform-parameters': 7.18.8_@babel+core@7.12.9
     dev: false
@@ -9910,6 +9922,13 @@ packages:
       }
     dev: false
 
+  /@types/extend/3.0.1:
+    resolution:
+      {
+        integrity: sha512-R1g/VyKFFI2HLC1QGAeTtCBWCo6n75l41OnsVYNbmKG+kempOESaodf6BeJyUM3Q0rKa/NQcTHbB2+66lNnxLw==,
+      }
+    dev: false
+
   /@types/fs-extra/9.0.13:
     resolution:
       {
@@ -9923,6 +9942,13 @@ packages:
     resolution:
       {
         integrity: sha512-TiNg8R1kjDde5Pub9F9vCwZA/BNW9HeXP5b9j7Qucqncy/McfPZ6xze/EyBdXS5FhMIGN6Fx3vg75l5KHy3V1Q==,
+      }
+    dev: false
+
+  /@types/github-slugger/1.3.0:
+    resolution:
+      {
+        integrity: sha512-J/rMZa7RqiH/rT29TEVZO4nBoDP9XJOjnbbIofg7GQKs4JIduEO3WLpte+6WeUz/TcrXKlY+bM7FYrp8yFB+3g==,
       }
     dev: false
 
@@ -24155,6 +24181,21 @@ packages:
       unist-util-visit-parents: 5.1.0
     dev: false
 
+  /mdast-util-from-markdown/0.8.5:
+    resolution:
+      {
+        integrity: sha512-2hkTXtYYnr+NubD/g6KGBS/0mFmBcifAsI0yIWRiRo0PjVs6SSOSOdtzbp6kSGnShDN6G5aWZpKQ2lWRy27mWQ==,
+      }
+    dependencies:
+      '@types/mdast': 3.0.10
+      mdast-util-to-string: 2.0.0
+      micromark: 2.11.4
+      parse-entities: 2.0.0
+      unist-util-stringify-position: 2.0.3
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /mdast-util-from-markdown/1.2.0:
     resolution:
       {
@@ -24346,6 +24387,20 @@ packages:
       unist-util-visit: 4.1.0
     dev: false
 
+  /mdast-util-to-markdown/0.6.5:
+    resolution:
+      {
+        integrity: sha512-XeV9sDE7ZlOQvs45C9UKMtfTcctcaj/pGwH8YLbMHoMOXNNCn2LsqVQOqrF1+/NU8lKDAqozme9SCXWyo9oAcQ==,
+      }
+    dependencies:
+      '@types/unist': 2.0.6
+      longest-streak: 2.0.4
+      mdast-util-to-string: 2.0.0
+      parse-entities: 2.0.0
+      repeat-string: 1.6.1
+      zwitch: 1.0.5
+    dev: false
+
   /mdast-util-to-markdown/1.3.0:
     resolution:
       {
@@ -24380,6 +24435,13 @@ packages:
       }
     dev: false
 
+  /mdast-util-to-string/2.0.0:
+    resolution:
+      {
+        integrity: sha512-AW4DRS3QbBayY/jJmD8437V1Gombjf8RSOUCMFBuo5iHi58AGEgVCKQ+ezHkZZDpAQS75hcBMpLqjpJTjtUL7w==,
+      }
+    dev: false
+
   /mdast-util-to-string/3.1.0:
     resolution:
       {
@@ -24397,6 +24459,37 @@ packages:
       mdast-util-to-string: 1.1.0
       unist-util-is: 2.1.3
       unist-util-visit: 1.4.1
+    dev: false
+
+  /mdast-util-toc/5.1.0:
+    resolution:
+      {
+        integrity: sha512-csimbRIVkiqc+PpFeKDGQ/Ck2N4f9FYH3zzBMMJzcxoKL8m+cM0n94xXm0I9eaxHnKdY9n145SGTdyJC7i273g==,
+      }
+    dependencies:
+      '@types/mdast': 3.0.10
+      '@types/unist': 2.0.6
+      extend: 3.0.2
+      github-slugger: 1.4.0
+      mdast-util-to-string: 2.0.0
+      unist-util-is: 4.1.0
+      unist-util-visit: 2.0.3
+    dev: false
+
+  /mdast-util-toc/6.1.0:
+    resolution:
+      {
+        integrity: sha512-0PuqZELXZl4ms1sF7Lqigrqik4Ll3UhbI+jdTrfw7pZ9QPawgl7LD4GQ8MkU7bT/EwiVqChNTbifa2jLLKo76A==,
+      }
+    dependencies:
+      '@types/extend': 3.0.1
+      '@types/github-slugger': 1.3.0
+      '@types/mdast': 3.0.10
+      extend: 3.0.2
+      github-slugger: 1.4.0
+      mdast-util-to-string: 3.1.0
+      unist-util-is: 5.1.1
+      unist-util-visit: 3.1.0
     dev: false
 
   /mdn-data/2.0.14:
@@ -25016,6 +25109,18 @@ packages:
       }
     dev: false
 
+  /micromark/2.11.4:
+    resolution:
+      {
+        integrity: sha512-+WoovN/ppKolQOFIAajxi7Lu9kInbPxFuTBVEavFcL8eAfVstoc5MocPmqBeAdBOJV00uaVjegzH4+MA0DN/uA==,
+      }
+    dependencies:
+      debug: 4.3.4
+      parse-entities: 2.0.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /micromark/3.0.10:
     resolution:
       {
@@ -25610,6 +25715,69 @@ packages:
       }
     dev: false
 
+  /next-mdx-remote/2.1.4_biqbaboplfbrettd7655fr4n2y:
+    resolution:
+      {
+        integrity: sha512-HHJasFVgPGjWXW3tWC37NCvHcQUOjJgVUMdwxgVbshwgtDLrGmupNkist/iamDLlvVibU52B9rqM9VAWofq7cA==,
+      }
+    peerDependencies:
+      react: '>=16.x <=17.x'
+      react-dom: '>=16.x <=17.x'
+    dependencies:
+      '@babel/core': 7.18.9
+      '@babel/preset-env': 7.18.9_@babel+core@7.18.9
+      '@babel/preset-react': 7.18.6_@babel+core@7.18.9
+      '@babel/preset-typescript': 7.18.6_@babel+core@7.18.9
+      '@mdx-js/mdx': 1.6.22
+      '@mdx-js/react': 1.6.22_react@18.2.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /next-mdx-toc/0.1.3_53oqlnqnxhbetdy4ljlkkvmoby:
+    resolution:
+      {
+        integrity: sha512-GJU62GSlHWOdbRUaBAjg6N398nt3+ZLHuV1gXPXup47Z/FBdsKRGSDVg5q23RVzmG0zwF5jLcxuYnuLXtUWPEA==,
+      }
+    peerDependencies:
+      next: '>= 10.0.0'
+      react: '>= 16.8.0'
+    dependencies:
+      mdast-util-toc: 5.1.0
+      next: 12.2.3_biqbaboplfbrettd7655fr4n2y
+      next-mdx: 0.6.2_53oqlnqnxhbetdy4ljlkkvmoby
+      react: 18.2.0
+      remark: 13.0.0
+      unist-util-visit: 2.0.3
+    transitivePeerDependencies:
+      - react-dom
+      - supports-color
+    dev: false
+
+  /next-mdx/0.6.2_53oqlnqnxhbetdy4ljlkkvmoby:
+    resolution:
+      {
+        integrity: sha512-3eX9PrzEZgLBiG1oA6Ig09Ou55WshF8hFtMZJqDQQkWGrmNfk31Rdu4c1apkkkl+Ir+hCHk7OFLZUO6PBCQTGA==,
+      }
+    peerDependencies:
+      next: '>= 10.0.0'
+      react: '>= 16.8.0'
+    dependencies:
+      '@mdx-js/react': 1.6.22_react@18.2.0
+      fast-glob: 3.2.11
+      gray-matter: 4.0.3
+      hasha: 5.2.2
+      next: 12.2.3_biqbaboplfbrettd7655fr4n2y
+      next-mdx-remote: 2.1.4_biqbaboplfbrettd7655fr4n2y
+      node-cache: 5.1.2
+      react: 18.2.0
+    transitivePeerDependencies:
+      - react-dom
+      - supports-color
+    dev: false
+
   /next-remote-watch/1.0.0:
     resolution:
       {
@@ -25743,6 +25911,16 @@ packages:
       {
         integrity: sha512-CvkDw2OEnme7ybCykJpVcKH+uAOLV2qLqiyla128dN9TkEWfrYmxG6C2boDe5KcNQqZF3orkqzGgOMvZ/JNekA==,
       }
+    dev: false
+
+  /node-cache/5.1.2:
+    resolution:
+      {
+        integrity: sha512-t1QzWwnk4sjLWaQAS8CHgOJ+RAfmHpxFWmc36IWTiWHQfs0w5JDMBS1b1ZxQteo0vVVuWJvIUKHDkkeK7vIGCg==,
+      }
+    engines: { node: '>= 8.0.0' }
+    dependencies:
+      clone: 2.1.2
     dev: false
 
   /node-dir/0.1.17:
@@ -29786,6 +29964,17 @@ packages:
       xtend: 4.0.2
     dev: false
 
+  /remark-parse/9.0.0:
+    resolution:
+      {
+        integrity: sha512-geKatMwSzEXKHuzBNU1z676sGcDcFoChMK38TgdHJNAYfFtsfHDQG7MoJAjs6sgYMqyLduCYWDIWZIxiPeafEw==,
+      }
+    dependencies:
+      mdast-util-from-markdown: 0.8.5
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /remark-rehype/10.1.0:
     resolution:
       {
@@ -29849,6 +30038,26 @@ packages:
       xtend: 4.0.2
     dev: false
 
+  /remark-stringify/9.0.1:
+    resolution:
+      {
+        integrity: sha512-mWmNg3ZtESvZS8fv5PTvaPckdL4iNlCHTt8/e/8oN08nArHRHjNZMKzA/YW3+p7/lYqIw4nx1XsjCBo/AxNChg==,
+      }
+    dependencies:
+      mdast-util-to-markdown: 0.6.5
+    dev: false
+
+  /remark-toc/8.0.1:
+    resolution:
+      {
+        integrity: sha512-7he2VOm/cy13zilnOTZcyAoyoolV26ULlon6XyCFU+vG54Z/LWJnwphj/xKIDLOt66QmJUgTyUvLVHi2aAElyg==,
+      }
+    dependencies:
+      '@types/mdast': 3.0.10
+      mdast-util-toc: 6.1.0
+      unified: 10.1.2
+    dev: false
+
   /remark/10.0.1:
     resolution:
       {
@@ -29858,6 +30067,19 @@ packages:
       remark-parse: 6.0.3
       remark-stringify: 6.0.4
       unified: 7.1.0
+    dev: false
+
+  /remark/13.0.0:
+    resolution:
+      {
+        integrity: sha512-HDz1+IKGtOyWN+QgBiAT0kn+2s6ovOxHyPAFGKVE81VSzJ+mq7RwHFledEvB5F1p4iJvOah/LOKdFuzvRnNLCA==,
+      }
+    dependencies:
+      remark-parse: 9.0.0
+      remark-stringify: 9.0.1
+      unified: 9.2.0
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /remove-trailing-separator/1.1.0:
@@ -32470,10 +32692,7 @@ packages:
     dev: false
 
   /trim/0.0.1:
-    resolution:
-      {
-        integrity: sha512-YzQV+TZg4AxpKxaTHK3c3D+kRDCGVEE7LemdlQZoQXn0iennk10RsIoY6ikzAqJTc9Xjl9C1/waHom/J86ziAQ==,
-      }
+    resolution: { integrity: sha1-WFhUf2spB1fulczMZm+1AITEYN0= }
     dev: false
 
   /trough/1.0.5:
@@ -33274,6 +33493,16 @@ packages:
       unist-util-is: 4.1.0
     dev: false
 
+  /unist-util-visit-parents/4.1.1:
+    resolution:
+      {
+        integrity: sha512-1xAFJXAKpnnJl8G7K5KgU7FY55y3GcLIXqkzUj5QF/QVP7biUm0K0O2oqVkYsdjzJKifYeWn9+o6piAK2hGSHw==,
+      }
+    dependencies:
+      '@types/unist': 2.0.6
+      unist-util-is: 5.1.1
+    dev: false
+
   /unist-util-visit-parents/5.1.0:
     resolution:
       {
@@ -33302,6 +33531,17 @@ packages:
       '@types/unist': 2.0.6
       unist-util-is: 4.1.0
       unist-util-visit-parents: 3.1.1
+    dev: false
+
+  /unist-util-visit/3.1.0:
+    resolution:
+      {
+        integrity: sha512-Szoh+R/Ll68QWAyQyZZpQzZQm2UPbxibDvaY8Xc9SUtYgPsDzx5AWSk++UUt2hJuow8mvwR+rG+LQLw+KsuAKA==,
+      }
+    dependencies:
+      '@types/unist': 2.0.6
+      unist-util-is: 5.1.1
+      unist-util-visit-parents: 4.1.1
     dev: false
 
   /unist-util-visit/4.1.0:

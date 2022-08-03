@@ -19,4 +19,14 @@ export const root = {
     overflowX: 'auto',
     maxWidth: '100%',
   },
+  'h2#table-of-contents': {
+    display: 'none',
+  },
+  'h2#table-of-contents + ul': {
+    fontFamily: 'headline',
+    position: 'absolute',
+    right: 'medium-1',
+    listStyle: 'none',
+    borderLeft: '1px solid',
+  },
 } as const;

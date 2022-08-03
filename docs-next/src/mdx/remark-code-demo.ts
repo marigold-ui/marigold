@@ -49,7 +49,6 @@ const createPreview = (code: string) => {
     extensions: [mdxjs()],
     mdastExtensions: [mdxFromMarkdown()],
   });
-
   return {
     type: 'mdxJsxFlowElement',
     name: 'Demo',

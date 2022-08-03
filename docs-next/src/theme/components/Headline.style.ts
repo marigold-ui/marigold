@@ -32,5 +32,13 @@ export const Headline: Theme['components']['Headline'] = {
       textTransform: 'uppercase',
       letterSpacing: '1px',
     },
+    'level-3': {
+      my: 'none',
+      fontSize: 'small-1',
+      fontWeight: 'medium',
+      lineHeight: 'small-1',
+      textTransform: 'uppercase',
+      letterSpacing: '1px',
+    },
   },
 };
