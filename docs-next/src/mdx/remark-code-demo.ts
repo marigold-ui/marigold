@@ -1,7 +1,12 @@
 import path from 'node:path';
 import fs from 'fs-extra';
 
-import { Program, Identifier } from 'estree';
+import {
+  Identifier,
+  ExportNamedDeclaration,
+  Program,
+  VariableDeclaration,
+} from 'estree';
 import { visit as estreeVisit } from 'estree-util-visit';
 import { Code } from 'mdast';
 import { fromMarkdown } from 'mdast-util-from-markdown';
@@ -11,6 +16,7 @@ import remarkCodeExtra from 'remark-code-extra';
 import { JsxEmit, ModuleKind, ScriptTarget, transpileModule } from 'typescript';
 import { visit } from 'unist-util-visit';
 
+import { getFirstNamedExport } from './utils/estree';
 import { DEMO_PATH } from '../config';
 
 /**
@@ -27,20 +33,10 @@ const parseMeta = (val: string) =>
   ) as { preview?: undefined; file?: string };
 
 /**
- * Try to find the preview to render based on the exported component.
- * Note that any component has to exist in the MDX scope to make this work.
- * Meaing it has to be added to the `<MDXProvider>`.
+ * Try to find the preview to render based on an exported component.
+ * Note that any component has to exist in the MDX scope to make this work,
+ * it has to be added to the `<MDXProvider>`.
  */
-const findExportedComponent = (code: string) => {
-  const result = code.match(/export const\s(?<component>\w+)\s/);
-  if (!result?.groups) {
-    throw Error(
-      'No demo component found. Please make sure to export a component from your demo file.'
-    );
-  }
-  return `<${result.groups.component}/>`;
-};
-
 const getExportedComponent = (input: string, lang: string) => {
   const code = /tsx?/.test(lang)
     ? transpileModule(input, {
@@ -53,24 +49,7 @@ const getExportedComponent = (input: string, lang: string) => {
     : input;
 
   const tree = parseCodeToAst(code)[0].data?.estree as Program;
-
-  let component = '';
-  estreeVisit(tree, node => {
-    if (component) {
-      return;
-    }
-    if (node.type === 'ExportNamedDeclaration') {
-      estreeVisit(node, child => {
-        // TODO: can we be more specific? go into the `declarations`?
-        if (component) {
-          return;
-        }
-        if (child.type === 'Identifier') {
-          component = (child as Identifier).name;
-        }
-      });
-    }
-  });
+  const component = getFirstNamedExport(tree);
 
   if (!component) {
     throw Error(
