@@ -1,7 +1,18 @@
-export function flatMap(ast, fn) {
-  return transform(ast, 0, null)[0];
+import type { Node, Parent } from 'unist';
 
-  function transform(node, index, parent) {
+export type MapFunction = (
+  node: Node,
+  index: number,
+  parent: Parent | null
+) => Node[];
+
+export const flatMap = <Tree extends Node = Node>(
+  tree: Tree,
+  fn: MapFunction
+) => {
+  return transform(tree, 0, null)[0];
+
+  function transform(node: Node, index: number, parent: Parent | null) {
     if (node.children) {
       var out = [];
       for (var i = 0, n = node.children.length; i < n; i++) {
@@ -17,4 +28,4 @@ export function flatMap(ast, fn) {
 
     return fn(node, index, parent);
   }
-}
+};
