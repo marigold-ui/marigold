@@ -1,13 +1,7 @@
 import path from 'node:path';
 import fs from 'fs-extra';
 
-import {
-  Identifier,
-  ExportNamedDeclaration,
-  Program,
-  VariableDeclaration,
-} from 'estree';
-import { visit as estreeVisit } from 'estree-util-visit';
+import { Program } from 'estree';
 import { Code } from 'mdast';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { mdxFromMarkdown } from 'mdast-util-mdx';
