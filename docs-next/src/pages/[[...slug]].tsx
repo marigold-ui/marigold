@@ -65,8 +65,8 @@ export const getStaticProps = async ({ params }: any) => {
         [
           remarkCodeDemo,
           {
-            previewComponent: 'Demo',
             demoPath: DEMO_PATH,
+            wrapperComponent: 'Demo',
           },
         ],
       ],

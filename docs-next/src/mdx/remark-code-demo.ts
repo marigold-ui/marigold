@@ -34,7 +34,7 @@ const isCodePreview = (
   node.meta?.includes('preview');
 
 export interface Options {
-  previewComponent: string;
+  wrapperComponent: string;
   demoPath: string;
 }
 
@@ -44,7 +44,7 @@ export interface Options {
  */
 export const remarkCodeDemo = ({
   demoPath,
-  previewComponent,
+  wrapperComponent,
 }: Options): Transformer => {
   return tree => {
     flatMap(tree, node => {
@@ -64,7 +64,7 @@ export const remarkCodeDemo = ({
 
       const preview = {
         type: 'mdxJsxFlowElement',
-        name: previewComponent,
+        name: wrapperComponent,
         attributes: [],
         children: tree,
       };
