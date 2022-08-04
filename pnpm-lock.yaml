@@ -387,6 +387,7 @@ importers:
       '@react-aria/visually-hidden': 3.3.1
       '@react-stately/checkbox': 3.1.1
       '@react-stately/collections': 3.4.1
+      '@react-stately/data': ^3.6.0
       '@react-stately/list': 3.5.1
       '@react-stately/menu': 3.3.1
       '@react-stately/numberfield': 3.1.1
@@ -437,6 +438,7 @@ importers:
       '@react-aria/visually-hidden': 3.3.1_react@18.2.0
       '@react-stately/checkbox': 3.1.1_react@18.2.0
       '@react-stately/collections': 3.4.1_react@18.2.0
+      '@react-stately/data': 3.6.0_react@18.2.0
       '@react-stately/list': 3.5.1_react@18.2.0
       '@react-stately/menu': 3.3.1_react@18.2.0
       '@react-stately/numberfield': 3.1.1_react@18.2.0
@@ -7218,6 +7220,19 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@react-stately/data/3.6.0_react@18.2.0:
+    resolution:
+      {
+        integrity: sha512-psuc5nziuPWYdxIFhXEt9DBT+cuhOCyGPz8cOP5RuWFfSM4r583M0SYrsi5YXCvUwhZEFFQNbapxJFfMpAHPtw==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.18.9
+      '@react-types/shared': 3.14.0_react@18.2.0
+      react: 18.2.0
+    dev: false
+
   /@react-stately/grid/3.2.1_react@18.2.0:
     resolution:
       {
@@ -7601,6 +7616,17 @@ packages:
     resolution:
       {
         integrity: sha512-EHQqILDJeDvnloy5VV9lnnEjpCMwH1ghptCfa/lz9Ht9nwco3qGCvUABkWyND7yU1Adt3A/1oJxhpRUu3eTlyg==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
+
+  /@react-types/shared/3.14.0_react@18.2.0:
+    resolution:
+      {
+        integrity: sha512-K069Bh/P0qV3zUG8kqabeO8beAUlFdyVPvpcNVPjRl+0Q9NDS9mfdQbmUa0LqdVo5e6jRPdos77Ylflkrz8wcw==,
       }
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
