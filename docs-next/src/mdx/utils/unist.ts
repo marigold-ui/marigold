@@ -8,6 +8,10 @@ export type MapFunction = (
 
 const hasChildren = (node: Node | Parent): node is Parent => 'children' in node;
 
+/**
+ * Create a new Unist tree by mapping (to an array) with the provided function and then flattening.
+ * Adopted from: https://www.npmjs.com/package/unist-util-flatmap
+ */
 export const flatMap = (tree: Parent | Node, mapper: MapFunction) => {
   return walk(tree, 0, null)[0];
 
