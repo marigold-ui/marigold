@@ -9,7 +9,7 @@ export const Text: Theme['components']['Text'] = {
   variant: {
     'page-caption': {
       fontFamily: 'headline',
-      fontSize: 'small-1',
+      fontSize: 'fixed.medium-1',
       color: 'text.light',
       m: 'none',
     },

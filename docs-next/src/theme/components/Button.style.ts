@@ -19,5 +19,9 @@ export const Button: Theme['components']['Button'] = {
         outline: 'none',
       },
     },
+    navigationSmall: {
+      border: 'none',
+      outline: 'none',
+    },
   },
 };
