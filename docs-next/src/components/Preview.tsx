@@ -3,18 +3,22 @@ import { Box, MarigoldProvider } from '@marigold/components';
 import { useThemeSwitch } from './ThemeSwitch';
 import { useComponentStyles } from '@marigold/system';
 
-export interface DemoProps {
+export interface Preview {
   code: boolean;
   children: ReactNode;
 }
 
-export const Demo = ({ children }: DemoProps) => {
+export const Preview = ({ children }: Preview) => {
   const { current, themes } = useThemeSwitch();
   const theme = (current && themes[current]) || themes.b2b2;
-  const styles = useComponentStyles('Demo', {});
+  const styles = useComponentStyles('Preview');
   return (
     <Box css={styles}>
-      <MarigoldProvider theme={theme} normalizeDocument selector="[data-demo]">
+      <MarigoldProvider
+        theme={theme}
+        normalizeDocument
+        selector="[data-preview]"
+      >
         <Box
           css={{
             ...theme.root?.body,
@@ -22,7 +26,7 @@ export const Demo = ({ children }: DemoProps) => {
             p: 20,
             borderRadius: '10px',
           }}
-          data-demo
+          data-preview
         >
           {children}
         </Box>
