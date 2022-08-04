@@ -34,7 +34,6 @@ export const rehypeTableOfContents = (): Transformer<Root> => {
         },
       ],
     };
-
     tree.children.unshift(toc);
   };
 };
