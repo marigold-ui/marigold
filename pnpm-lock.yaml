@@ -324,10 +324,8 @@ importers:
       remark-code-extra: ^1.0.1
       remark-gfm: ^3.0.1
       remark-mdx-code-meta: ^2.0.0
-      remark-toc: ^8.0.1
       typescript: 4.7.4
       unified: ^10.1.2
-      unist-builder: ^3.0.0
       unist-util-visit: ^4.1.0
     dependencies:
       '@codesandbox/sandpack-client': 1.2.2
@@ -358,9 +356,7 @@ importers:
       remark-code-extra: 1.0.1
       remark-gfm: 3.0.1
       remark-mdx-code-meta: 2.0.0
-      remark-toc: 8.0.1
       unified: 10.1.2
-      unist-builder: 3.0.0
       unist-util-visit: 4.1.0
     devDependencies:
       '@types/node': 18.0.0
@@ -30045,17 +30041,6 @@ packages:
       }
     dependencies:
       mdast-util-to-markdown: 0.6.5
-    dev: false
-
-  /remark-toc/8.0.1:
-    resolution:
-      {
-        integrity: sha512-7he2VOm/cy13zilnOTZcyAoyoolV26ULlon6XyCFU+vG54Z/LWJnwphj/xKIDLOt66QmJUgTyUvLVHi2aAElyg==,
-      }
-    dependencies:
-      '@types/mdast': 3.0.10
-      mdast-util-toc: 6.1.0
-      unified: 10.1.2
     dev: false
 
   /remark/10.0.1:

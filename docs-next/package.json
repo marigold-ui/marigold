@@ -41,9 +41,7 @@
     "remark-code-extra": "^1.0.1",
     "remark-gfm": "^3.0.1",
     "remark-mdx-code-meta": "^2.0.0",
-    "remark-toc": "^8.0.1",
     "unified": "^10.1.2",
-    "unist-builder": "^3.0.0",
     "unist-util-visit": "^4.1.0"
   },
   "devDependencies": {
