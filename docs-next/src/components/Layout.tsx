@@ -1,10 +1,8 @@
 import React, { ReactElement } from 'react';
-import { Box, Aside, Center } from '@marigold/components';
+import { Box } from '@marigold/components';
 
-import { Navigation } from './Navigation';
+import { NavigationLayout } from './Navigation';
 import { NavigationMenu } from '../navigation.utils';
-import { Logo } from './Logo';
-import { Link } from './Link';
 import { Version } from './Version';
 
 export interface LayoutProps {
@@ -12,19 +10,21 @@ export interface LayoutProps {
   navigation: NavigationMenu;
 }
 
-export const Layout = ({ navigation, children }: LayoutProps) => (
-  <>
-    <Aside space="medium-1">
-      <Box p="medium">
-        <Link href="/index">
-          <Center>
-            <Logo size="small" />
-          </Center>
-        </Link>
-        <Navigation navigation={navigation} />
+export const Layout = ({ navigation, children }: LayoutProps) => {
+  return (
+    <>
+      <Box
+        css={{
+          display: 'flex',
+          flexDirection: ['column', 'row'],
+          gap: 'small-2',
+          p: ['small-1', 'none'],
+        }}
+      >
+        <NavigationLayout navigation={navigation}></NavigationLayout>
+        <Box>{children}</Box>
       </Box>
-      <div>{children}</div>
-    </Aside>
-    <Version />
-  </>
-);
+      <Version />
+    </>
+  );
+};
