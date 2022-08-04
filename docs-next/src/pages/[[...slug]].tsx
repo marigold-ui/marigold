@@ -15,7 +15,7 @@ import {
   getNavigation,
   NavigationMenu,
 } from '../navigation.utils';
-import { GradientHeadline, Layout } from '../components';
+import { GradientHeadline, Layout, ThemeSelect } from '../components';
 import { remarkCodeDemo } from '../mdx/remark-code-demo';
 
 export interface ContentPageProps {
@@ -37,6 +37,7 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
           </Header>
         )}
         <Container contentType="content" size="large">
+          {frontmatter?.switch && <ThemeSelect></ThemeSelect>}
           <MDXRemote {...source} />
         </Container>
       </main>
