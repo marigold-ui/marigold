@@ -6,26 +6,28 @@ export type MapFunction = (
   parent: Parent | null
 ) => Node[];
 
-export const flatMap = <Tree extends Node = Node>(
-  tree: Tree,
-  fn: MapFunction
-) => {
-  return transform(tree, 0, null)[0];
+const hasChildren = (node: Node | Parent): node is Parent => 'children' in node;
 
-  function transform(node: Node, index: number, parent: Parent | null) {
-    if (node.children) {
-      var out = [];
-      for (var i = 0, n = node.children.length; i < n; i++) {
-        var xs = transform(node.children[i], i, node);
-        if (xs) {
-          for (var j = 0, m = xs.length; j < m; j++) {
-            out.push(xs[j]);
+export const flatMap = (tree: Parent | Node, mapper: MapFunction) => {
+  return walk(tree, 0, null)[0];
+
+  // Recursivly walk tree
+  function walk(node: Parent | Node, index: number, parent: Parent | null) {
+    if (hasChildren(node)) {
+      let out = [];
+
+      for (let i = 0, n = node.children.length; i < n; i++) {
+        const subtree = walk(node.children[i], i, node);
+        if (subtree) {
+          for (let j = 0, m = subtree.length; j < m; j++) {
+            out.push(subtree[j]);
           }
         }
       }
+
       node.children = out;
     }
 
-    return fn(node, index, parent);
+    return mapper(node, index, parent);
   }
 };

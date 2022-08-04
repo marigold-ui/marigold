@@ -302,7 +302,6 @@ importers:
       '@marigold/theme-b2b': workspace:*
       '@marigold/tokens': workspace:*
       '@marigold/types': workspace:*
-      '@swc/core': 1.2.222
       '@types/node': 18.0.0
       '@types/react': 18.0.15
       estree-util-visit: ^1.2.0
@@ -319,12 +318,10 @@ importers:
       react-dom: 18.2.0
       rehype-autolink-headings: ^6.1.1
       rehype-slug: ^5.0.1
-      remark-code-extra: ^1.0.1
       remark-gfm: ^3.0.1
       remark-mdx-code-meta: ^2.0.0
       typescript: 4.7.4
       unified: ^10.1.2
-      unist-util-visit: ^4.1.0
     dependencies:
       '@codesandbox/sandpack-client': 1.2.2
       '@codesandbox/sandpack-react': 1.3.1_biqbaboplfbrettd7655fr4n2y
@@ -335,7 +332,6 @@ importers:
       '@marigold/theme-b2b': link:../themes/theme-b2b
       '@marigold/tokens': link:../packages/tokens
       '@marigold/types': link:../packages/types
-      '@swc/core': 1.2.222
       estree-util-visit: 1.2.0
       fs-extra: 10.1.0
       globby: 13.1.2
@@ -349,11 +345,9 @@ importers:
       react-dom: 18.2.0_react@18.2.0
       rehype-autolink-headings: 6.1.1
       rehype-slug: 5.0.1
-      remark-code-extra: 1.0.1
       remark-gfm: 3.0.1
       remark-mdx-code-meta: 2.0.0
       unified: 10.1.2
-      unist-util-visit: 4.1.0
     devDependencies:
       '@types/node': 18.0.0
       '@types/react': 18.0.15
@@ -29639,15 +29633,6 @@ packages:
       invariant: 2.2.4
     transitivePeerDependencies:
       - encoding
-    dev: false
-
-  /remark-code-extra/1.0.1:
-    resolution:
-      {
-        integrity: sha512-MHKTd2zsKc9ayrLBaUzyiIw7rNY4Q/aNSx1L1xss7ZthQ/oSEoMvtA5wpXALVKTWOL5JQXDf/Q9lP8IWbP3cig==,
-      }
-    dependencies:
-      unist-util-visit: 1.4.1
     dev: false
 
   /remark-external-links/8.0.0:

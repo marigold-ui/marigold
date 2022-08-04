@@ -2,14 +2,11 @@ import path from 'node:path';
 import fs from 'fs-extra';
 
 import type { Program } from 'estree';
-import type { Code, Parent } from 'mdast';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { mdxFromMarkdown } from 'mdast-util-mdx';
 import { mdxjs } from 'micromark-extension-mdxjs';
-import remarkCodeExtra from 'remark-code-extra';
 import { JsxEmit, ModuleKind, ScriptTarget, transpileModule } from 'typescript';
 import type { Transformer } from 'unified';
-import { visit } from 'unist-util-visit';
 
 import { getFirstNamedExport } from './utils/estree';
 import { DEMO_PATH } from '../config';
@@ -103,7 +100,7 @@ export const remarkCodeDemo = (): Transformer => {
         children: tree,
       };
 
-      return [node, preview];
+      return [preview, node];
     });
 
     return tree;
