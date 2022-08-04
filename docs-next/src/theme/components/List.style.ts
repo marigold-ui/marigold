@@ -16,6 +16,10 @@ export const List: Theme['components']['List'] = {
     toc: {
       ul: {
         listStyle: 'none',
+        position: 'fixed',
+
+        borderLeft: '1px solid',
+        borderColor: 'background.light',
       },
       item: {
         fontSize: 14,

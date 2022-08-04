@@ -119,7 +119,14 @@ export const code = ({ children, ...props }: ComponentProps<'code'>) => (
 // Custom HTML
 // ---------------
 export const toc = ({ children }: any) => (
-  <Box css={{ bg: 'brand.primary' }} aria-hidden="true">
+  <Box
+    css={{
+      position: 'absolute',
+      left: '85%',
+      display: ['none', 'none', 'block'],
+    }}
+    aria-hidden="true"
+  >
     {React.Children.map(children, child => {
       if (!React.isValidElement(child)) {
         return child;
