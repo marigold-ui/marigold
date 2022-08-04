@@ -323,7 +323,6 @@ importers:
       remark-mdx-code-meta: ^2.0.0
       typescript: 4.7.4
       unified: ^10.1.2
-      unist-util-select: ^4.0.1
     dependencies:
       '@codesandbox/sandpack-client': 1.2.2
       '@codesandbox/sandpack-react': 1.3.1_biqbaboplfbrettd7655fr4n2y
@@ -351,7 +350,6 @@ importers:
       remark-gfm: 3.0.1
       remark-mdx-code-meta: 2.0.0
       unified: 10.1.2
-      unist-util-select: 4.0.1
     devDependencies:
       '@types/node': 18.0.0
       '@types/react': 18.0.15
@@ -14830,13 +14828,6 @@ packages:
       domhandler: 4.3.1
       domutils: 2.8.0
       nth-check: 2.1.1
-    dev: false
-
-  /css-selector-parser/1.4.1:
-    resolution:
-      {
-        integrity: sha512-HYPSb7y/Z7BNDCOrakL4raGO2zltZkbeXyAd6Tg9obzix6QhzxCotdBl6VT0Dv4vZfJGVz3WL/xaEI9Ly3ul0g==,
-      }
     dev: false
 
   /css-tree/1.0.0-alpha.37:
@@ -33230,19 +33221,6 @@ packages:
       }
     dependencies:
       unist-util-is: 4.1.0
-    dev: false
-
-  /unist-util-select/4.0.1:
-    resolution:
-      {
-        integrity: sha512-zPozyEo5vr1csbHf1TqlQrnuLVJ0tNMo63og3HrnINh2+OIDAgQpqHVr+0BMw1DIVHJV8ft/e6BZqtvD1Y5enw==,
-      }
-    dependencies:
-      '@types/unist': 2.0.6
-      css-selector-parser: 1.4.1
-      nth-check: 2.1.1
-      unist-util-is: 5.1.1
-      zwitch: 2.0.2
     dev: false
 
   /unist-util-stringify-position/1.1.2:

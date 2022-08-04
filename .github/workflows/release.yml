@@ -36,11 +36,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # Update Docs
-      - name: Update "marigold-ui.io"
-        if: steps.changesets.outputs.published == 'true'
-        run: pnpm release:docs
-
       # Send Slack Notification
       - name: Create release notification
         if: steps.changesets.outputs.published == 'true'
@@ -53,3 +48,15 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_HOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+      # Update Docs
+      - name: Build "marigold-ui.io"
+        if: steps.changesets.outputs.published == 'true'
+        run: pnpm build:docs
+      - name: Deploy "marigold-ui.io"
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          npx gh-pages -d public -u "github-actions-bot <support+actions@github.com>"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
