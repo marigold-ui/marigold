@@ -19,10 +19,9 @@ export const List: Theme['components']['List'] = {
         position: 'fixed',
         borderLeft: '1px solid',
         borderColor: 'background.light',
-        mr: 'small-1',
       },
       item: {
-        fontSize: 14,
+        fontSize: 'fixed.small-2',
         fontFamily: 'headline',
         pb: 'small-1',
       },
