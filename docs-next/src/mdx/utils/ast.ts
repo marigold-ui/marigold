@@ -26,7 +26,7 @@ export const parseToMdAst = (md: string) => {
 
 /**
  * Try to find the preview to render based on an exported component.
- * Note that any component has to exist in the MDX scope to make this work,
+ * Note that the component has to exist in the MDX scope to make this work,
  * it has to be added to the `<MDXProvider>`.
  */
 export const getExportedComponent = (input: string, lang: string) => {

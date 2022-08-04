@@ -5,7 +5,6 @@ import type { Code } from 'mdast';
 import type { Transformer } from 'unified';
 
 import { flatMap, getExportedComponent, parseToMdAst } from './utils/ast';
-import { DEMO_PATH } from '../config';
 
 /**
  * Very simple argument parser. Converts key=value pairs into
@@ -34,11 +33,19 @@ const isCodePreview = (
   node.meta &&
   node.meta?.includes('preview');
 
+export interface Options {
+  previewComponent: string;
+  demoPath: string;
+}
+
 /**
  * Render a preview from `<pre>` blocks for React components.
  * Complex code can be loaded from file.
  */
-export const remarkCodeDemo = (): Transformer => {
+export const remarkCodeDemo = ({
+  demoPath,
+  previewComponent,
+}: Options): Transformer => {
   return tree => {
     flatMap(tree, node => {
       if (!isCodePreview(node)) {
@@ -48,7 +55,7 @@ export const remarkCodeDemo = (): Transformer => {
       const meta = parseMeta(node.meta);
 
       if (meta.file) {
-        node.value = fs.readFileSync(path.join(DEMO_PATH, meta.file), 'utf8');
+        node.value = fs.readFileSync(path.join(demoPath, meta.file), 'utf8');
       }
 
       const tree = meta.file
@@ -57,7 +64,7 @@ export const remarkCodeDemo = (): Transformer => {
 
       const preview = {
         type: 'mdxJsxFlowElement',
-        name: 'Demo',
+        name: previewComponent,
         attributes: [],
         children: tree,
       };
