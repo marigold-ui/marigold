@@ -6,7 +6,7 @@ export const Headline: Theme['components']['Headline'] = {
     fontFamily: 'headline',
     fontWeight: 'medium',
     textTransform: 'uppercase',
-    fontSize: 'medium-1',
+    fontSize: 'fluid.medium-1',
     lineHeight: 'small-3',
     mt: 'large-1',
     mb: 'medium-1',
@@ -26,7 +26,7 @@ export const Headline: Theme['components']['Headline'] = {
   size: {
     'level-1': {
       my: 'none',
-      fontSize: 'large-2',
+      fontSize: 'fluid.large-2',
       fontWeight: 'heavy',
       lineHeight: 'small-1',
       textTransform: 'uppercase',

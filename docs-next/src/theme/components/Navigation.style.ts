@@ -8,14 +8,14 @@ export const Navigation = {
       p: 'medium-1',
     },
     category: {
-      fontSize: 'small-1',
+      fontSize: 'fixed.small-3',
       color: 'brand.secondary',
       fontWeight: 'regular',
       textTransform: 'uppercase',
     },
     item: {
       pl: '10px',
-      fontSize: 'small-1',
+      fontSize: 'fixed.medium-1',
       '&:hover': {
         pl: '8px',
         borderLeft: `2px solid  ${colors.brand.primary}`,

@@ -4,7 +4,7 @@ export const Table: Theme['components']['Table'] = {
   base: {},
   variant: {
     propsTable: {
-      table: { fontSize: 'small-1' },
+      table: { fontSize: 'fixed.small-3' },
       header: {
         fontFamily: 'headline',
         textAlign: 'left',

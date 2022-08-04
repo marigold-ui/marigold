@@ -51,6 +51,7 @@
     "@react-aria/visually-hidden": "3.3.1",
     "@react-stately/checkbox": "3.1.1",
     "@react-stately/collections": "3.4.1",
+    "@react-stately/data": "^3.6.0",
     "@react-stately/list": "3.5.1",
     "@react-stately/menu": "3.3.1",
     "@react-stately/numberfield": "3.1.1",
