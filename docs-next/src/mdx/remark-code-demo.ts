@@ -2,11 +2,13 @@ import path from 'node:path';
 import fs from 'fs-extra';
 
 import type { Program } from 'estree';
+import type { Code } from 'mdast';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { mdxFromMarkdown } from 'mdast-util-mdx';
 import { mdxjs } from 'micromark-extension-mdxjs';
 import { JsxEmit, ModuleKind, ScriptTarget, transpileModule } from 'typescript';
 import type { Transformer } from 'unified';
+import type { Node } from 'unist';
 
 import { getFirstNamedExport } from './utils/estree';
 import { DEMO_PATH } from '../config';
@@ -50,7 +52,16 @@ const getExportedComponent = (input: string, lang: string) => {
     );
   }
 
-  return `<${component}/>`;
+  // return `<${component}/>`;
+
+  return [
+    {
+      type: 'mdxJsxFlowElement',
+      name: component,
+      attributes: [],
+      children: [],
+    },
+  ];
 };
 
 /**
@@ -63,35 +74,40 @@ const parseCodeToAst = (code: string) => {
   }).children;
 };
 
+/**
+ * Test if a node has all information that we need:
+ * - is a <code>
+ * - has a lang attribute with js, jsx, ts or tsx
+ * - has a meta attribute that includes "preview"
+ */
+const isCodePreview = (
+  node: any
+): node is Code & { meta: string; lang: 'js' | 'jsx' | 'ts' | 'tsx' } =>
+  node.type === 'code' &&
+  /[jt]sx?/.test(node.lang) &&
+  node.meta &&
+  node.meta?.includes('preview');
+
+/**
+ * Render a preview from `<pre>` blocks for React components.
+ * Complex code can be loaded from file.
+ */
 export const remarkCodeDemo = (): Transformer => {
   return tree => {
     flatMap(tree, node => {
-      if (node.type !== 'code') {
-        return [node];
-      }
-
-      if (!node.lang) {
-        return [node];
-      }
-
-      if (!node.meta) {
+      if (!isCodePreview(node)) {
         return [node];
       }
 
       const meta = parseMeta(node.meta);
 
-      if (!meta.preview) {
-        return [node];
-      }
-
       if (meta.file) {
         node.value = fs.readFileSync(path.join(DEMO_PATH, meta.file), 'utf8');
       }
 
-      const code = meta.file
+      const tree = meta.file
         ? getExportedComponent(node.value, node.lang)
-        : node.value;
-      const tree = parseCodeToAst(code);
+        : parseCodeToAst(node.value);
 
       const preview = {
         type: 'mdxJsxFlowElement',
