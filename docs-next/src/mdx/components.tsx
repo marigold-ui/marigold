@@ -6,6 +6,7 @@ import { Link } from '../components/Link';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/nightOwl';
 import { CopyButton } from '../components';
+import React from 'react';
 
 // Typography
 // ---------------
@@ -112,5 +113,22 @@ export const code = ({ children, ...props }: ComponentProps<'code'>) => (
     }}
   >
     {children}
+  </Box>
+);
+
+// Custom HTML
+// ---------------
+export const toc = ({ children }: any) => (
+  <Box css={{ bg: 'brand.primary' }} aria-hidden="true">
+    {React.Children.map(children, child => {
+      if (!React.isValidElement(child)) {
+        return child;
+      }
+
+      return React.cloneElement(child, {
+        ...(child.props as any),
+        variant: 'toc',
+      });
+    })}
   </Box>
 );

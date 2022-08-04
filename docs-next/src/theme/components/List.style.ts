@@ -12,4 +12,15 @@ export const List: Theme['components']['List'] = {
       lineHeight: 'large-1',
     },
   },
+  variant: {
+    toc: {
+      ul: {
+        listStyle: 'none',
+      },
+      item: {
+        fontSize: 14,
+        fontFamily: 'headline',
+      },
+    },
+  },
 };

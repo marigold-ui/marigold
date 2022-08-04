@@ -7,8 +7,6 @@ import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import remarkMdxCodeMeta from 'remark-mdx-code-meta';
 import { Container, Header, Text } from '@marigold/components';
-import remarkToc from 'remark-toc';
-import { tableOfContents } from '../mdx/table-of-contents-tree';
 
 import { CONTENT_PATH } from '../config';
 import {
@@ -17,6 +15,7 @@ import {
   NavigationMenu,
 } from '../navigation.utils';
 import { GradientHeadline, Layout } from '../components';
+import { rehypeTableOfContents } from '../mdx/rehype-toc';
 import { remarkCodeDemo } from '../mdx/remark-code-demo';
 
 export interface ContentPageProps {
@@ -62,16 +61,11 @@ export const getStaticProps = async ({ params }: any) => {
 
   const mdxSource = await serialize(source, {
     mdxOptions: {
-      remarkPlugins: [
-        remarkGfm,
-        remarkCodeDemo,
-        remarkMdxCodeMeta,
-        remarkToc,
-        tableOfContents,
-      ],
+      remarkPlugins: [remarkGfm, remarkCodeDemo, remarkMdxCodeMeta],
       rehypePlugins: [
         rehypeSlug,
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+        rehypeTableOfContents,
       ],
     },
     parseFrontmatter: true,
