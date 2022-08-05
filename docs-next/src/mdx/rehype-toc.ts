@@ -59,6 +59,7 @@ export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
     //   children: [],
     // });
 
+    console.log(links.map(link => link.children.map(child => child.value)));
     tree.children.unshift({
       type: 'mdxJsxFlowElement',
       name: 'Toc',
@@ -71,7 +72,9 @@ export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
         {
           type: 'mdxJsxAttribute',
           name: 'items',
-          value: JSON.stringify(links.map(link => link.children)),
+          value: JSON.stringify(
+            links.map(link => link.children.map(child => child.value))
+          ),
         },
       ],
       children: [],

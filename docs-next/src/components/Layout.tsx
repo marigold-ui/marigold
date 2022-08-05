@@ -21,6 +21,7 @@ export const Layout = ({ navigation, children }: LayoutProps) => {
         }}
       >
         <NavigationLayout navigation={navigation}></NavigationLayout>
+
         <Box>{children}</Box>
       </Box>
       <Version />
