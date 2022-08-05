@@ -8,7 +8,14 @@ export const NAVIGATION_CONFIG = {
     { name: 'foundation' },
     {
       name: 'components',
-      groups: ['Content', 'Layout', 'Forms'],
+      groups: [
+        'Layout',
+        'Content',
+        'Forms',
+        'Collections',
+        'Overlay',
+        'Application',
+      ],
     },
     { name: 'develop' },
   ],
