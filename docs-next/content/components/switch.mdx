@@ -1,30 +1,19 @@
 ---
 title: Switch
-group: Content
+group: Forms
+figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=2458%3A2254
 ---
 
-import { DoAndDont } from '../../src/components/DoAndDont';
-import { FigmaLink } from '../../src/components/FigmaLink';
-
-# Switch
-
 The Switch component allows the users to select between two states, e.g. on and off.  
-It consists of a visual selection indicator and a label.
-Users may click or touch a Switch to toggle the state, or use the Tab key to navigate to it and the Space key to toggle it.
+It consists of a visual selection indicator and a label. Users may click or touch a Switch to toggle the state, or use the Tab key to navigate to it and the Space key to toggle it.
 
-<MarigoldTheme>
+<Preview>
   <Switch aria-label="demo-switch" />
-</MarigoldTheme>
+</Preview>
 
 ```tsx onlyCode
 import { Switch } from '@marigold/components';
 ```
-
-<FigmaLink
-  to={
-    'https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=2458%3A2254'
-  }
-/>
 
 ## Props
 
@@ -75,65 +64,3 @@ This mode can be used when an option is or was already active and there is a var
   </Switch>
 </Container>
 ```
-
-## Dos & Don'ts
-
-<Stack space="small">
-  <Box
-    display="grid"
-    css={{
-      gridGap: 'small',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(min(500px, 100%), 1fr))',
-    }}
-  >
-    <DoAndDont
-      preview={
-        <Card>
-          <Stack space="xsmall">
-            <Inline space="small">
-              <Switch defaultSelected aria-label="option1" />
-              Activate Option Number 1
-            </Inline>
-            <Inline space="small">
-              <Switch defaultSelected aria-label="backup" />
-              Create a Backup
-            </Inline>
-            <Inline space="small">
-              <Switch aria-label="pw-change" />
-              Allow password changing
-            </Inline>
-          </Stack>
-        </Card>
-      }
-    >
-      Use a clear text that indicates what will be on or off when changing the
-      status of the switch.
-    </DoAndDont>
-    <DoAndDont
-      dont
-      preview={
-        <Card>
-          Do you want to turn off the automatic elimination of items?
-          <Switch defaultSelected aria-label="switch-dont" />
-        </Card>
-      }
-    >
-      Do not write confusing questions. It should be clear what is active or
-      inactive.
-    </DoAndDont>
-    <DoAndDont
-      dont
-      preview={
-        <Card>
-          <Inline space="small">
-            <Switch defaultSelected aria-label="switch-dont-2" />
-            Agree to terms
-          </Inline>
-        </Card>
-      }
-    >
-      Do not use Switches if an error state exists. Switches, unlike checkboxes,
-      can't have an error state.
-    </DoAndDont>
-  </Box>
-</Stack>
