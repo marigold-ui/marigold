@@ -1,13 +1,13 @@
+import { Box, CSSObject, useComponentStyles } from '@marigold/system';
+
 import type {
   NavigationMenu,
   NavigationMenuCategory,
   NavigationMenuGroup,
-} from '../../navigation.utils';
+} from '~/navigation.utils';
+import { NAVIGATION_CONFIG } from '~/config';
 
-import { Box } from '@marigold/components';
-import { Link, LinkProps } from '../Link';
-import { CSSObject, useComponentStyles } from '@marigold/system';
-import { NAVIGATION_CONFIG } from 'docs-next/src/config';
+import { Link, LinkProps } from '~/components/Link';
 
 export interface NavigationProps {
   navigation: NavigationMenu;

@@ -7,15 +7,15 @@ import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 
 import { Container, Header, Text } from '@marigold/components';
-
 import { CONTENT_PATH, DEMO_PATH } from '../config';
+
 import {
   getContentPaths,
   getNavigation,
   NavigationMenu,
-} from '../navigation.utils';
-import { GradientHeadline, Layout } from '../components';
-import { remarkCodeDemo } from '../mdx/remark-code-demo';
+} from '~/navigation.utils';
+import { GradientHeadline, Layout } from '~/components';
+import { remarkCodeDemo } from '~/mdx/remark-code-demo';
 
 export interface ContentPageProps {
   source: MDXRemoteSerializeResult;
