@@ -2,14 +2,12 @@ import { typography } from '@marigold/tokens';
 
 export const fonts = {
   mono: '"Fira Mono", "DejaVu Sans Mono", Menlo, Consolas, "Liberation Mono", Monaco, "Lucida Console", monospace',
-  body: 'Merriweather',
-  headline: 'Montserrat',
+  body: 'Merriweather, serif',
+  headline: 'Montserrat, sans-serif',
 };
 
 export const webFontUrl = [
-  'https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap',
-  'https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap',
-  'https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap',
+  'https://fonts.bunny.net/css?family=fira-mono:400,500,700|merriweather:300,300i,400,400i,700,700i,900,900i|montserrat:200,300,400,500,600,700,800,900',
 ] as const;
 
 export const fontSizes = {
