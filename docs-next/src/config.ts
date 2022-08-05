@@ -10,7 +10,14 @@ export const NAVIGATION_CONFIG = {
     { name: 'foundation' },
     {
       name: 'components',
-      groups: ['Content', 'Layout', 'Forms'],
+      groups: [
+        'Layout',
+        'Forms',
+        'Collections',
+        'Overlay',
+        'Content',
+        'Application',
+      ],
     },
     { name: 'develop' },
   ],
