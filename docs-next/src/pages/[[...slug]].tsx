@@ -2,12 +2,8 @@ import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { Container, Header, Text } from '@marigold/components';
 
 import { GradientHeadline, Layout } from '~/components';
-
-import {
-  getContentPaths,
-  getNavigation,
-  NavigationMenu,
-} from '~/navigation.utils';
+import { getNavigation, NavigationMenu } from '~/navigation.utils';
+import { getMdxPaths } from '~/mdx/pages';
 import { serialize } from '~/mdx/serialize';
 
 export interface ContentPageProps {
@@ -52,7 +48,7 @@ export const getStaticProps = async ({ params }: any) => {
 };
 
 export const getStaticPaths = async () => {
-  const paths = await getContentPaths();
+  const paths = await getMdxPaths();
   return {
     paths,
     fallback: false,
