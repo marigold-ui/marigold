@@ -65,7 +65,7 @@ export const getStaticProps = async ({ params }: any) => {
       rehypePlugins: [
         rehypeSlug,
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-        rehypeTableOfContents,
+        [rehypeTableOfContents, { tocSelector: '#toc' }],
       ],
     },
     parseFrontmatter: true,
