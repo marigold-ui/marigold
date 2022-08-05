@@ -23,7 +23,7 @@ export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
       }
     });
 
-    const toc: Element = {
+    const tocc: Element = {
       type: 'element',
       tagName: 'toc',
       children: [
@@ -39,7 +39,7 @@ export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
       ],
     };
 
-    tree.children.unshift(toc);
+    tree.children.unshift(tocc);
 
     // {
     //   type: 'mdxJsxFlowElement',
@@ -66,7 +66,7 @@ export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
 
     const toc = {
       type: 'mdxJsxFlowElement',
-      name: 'TOC',
+      name: 'Toc',
       attributes: [
         {
           type: 'mdxJsxAttribute',
@@ -84,6 +84,8 @@ export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
       ],
       children: [],
     };
+
+    tree.children.unshift(toc);
 
     tree.children.unshift({
       type: 'mdxJsxFlowElement',

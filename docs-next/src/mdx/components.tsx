@@ -1,8 +1,9 @@
-import { Box, Headline, List, Text } from '@marigold/components';
+import { Box, Headline, List, Overlay, Text } from '@marigold/components';
 import type { ComponentProps } from '@marigold/types';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/nightOwl';
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import { CopyButton, Link } from '~/components';
 
@@ -116,24 +117,36 @@ export const code = ({ children, ...props }: ComponentProps<'code'>) => (
 
 // Custom HTML
 // ---------------
-export const toc = ({ children }: any) => (
-  <Box
-    css={{
-      position: 'absolute',
-      left: '85%',
-      display: ['none', 'none', 'block'],
-    }}
-    aria-hidden="true"
-  >
-    {React.Children.map(children, child => {
-      if (!React.isValidElement(child)) {
-        return child;
-      }
+// export const toc = ({ children }: any) => (
+//   <Box
+//     css={{
+//       position: 'absolute',
+//       left: '85%',
+//       display: ['none', 'none', 'block'],
+//     }}
+//     aria-hidden="true"
+//   >
+//     {React.Children.map(children, child => {
+//       if (!React.isValidElement(child)) {
+//         return child;
+//       }
 
-      return React.cloneElement(child, {
-        ...(child.props as any),
-        variant: 'toc',
-      });
-    })}
-  </Box>
-);
+//       return React.cloneElement(child, {
+//         ...(child.props as any),
+//         variant: 'toc',
+//       });
+//     })}
+//   </Box>
+// );
+
+interface TableofContentsProps {
+  container: HTMLElement;
+}
+
+export const tocc = ({ children }: any) => {
+  return (
+    <Overlay>
+      <Box>{children}hahah</Box>
+    </Overlay>
+  );
+};
