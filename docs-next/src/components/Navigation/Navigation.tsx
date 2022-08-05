@@ -1,13 +1,27 @@
 import { Box, CSSObject, useComponentStyles } from '@marigold/system';
-
-import type {
-  NavigationMenu,
-  NavigationMenuCategory,
-  NavigationMenuGroup,
-} from '~/navigation.utils';
 import { NAVIGATION_CONFIG } from '~/config';
-
 import { Link, LinkProps } from '~/components/Link';
+
+// Props
+// ---------------
+export type NavigationMenu = (NavigationMenuCategory | NavigationMenuItem)[];
+
+export interface NavigationMenuGroup {
+  name: string;
+  items: NavigationMenuItem[];
+}
+
+export interface NavigationMenuCategory {
+  name: string;
+  items: NavigationMenuItem[];
+  groups: NavigationMenuGroup[];
+}
+export interface NavigationMenuItem {
+  title: string;
+  slug: string;
+  group?: string;
+  order?: number;
+}
 
 export interface NavigationProps {
   navigation: NavigationMenu;
@@ -34,6 +48,9 @@ interface NavigationStyles {
     group: CSSObject;
   };
 }
+
+// Components
+// ---------------
 const NavigationLinks = ({ css }: NavigationLinksProps) => (
   <Box as="li" __baseCSS={{ listStyle: 'none' }}>
     <Box as="ul" role="menubar" css={css?.list}>

@@ -1,9 +1,9 @@
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { Container, Header, Text } from '@marigold/components';
 
-import { GradientHeadline, Layout } from '~/components';
-import { getNavigation, NavigationMenu } from '~/navigation.utils';
-import { getMdxPaths } from '~/mdx/pages';
+import { GradientHeadline, Layout, NavigationMenu } from '~/components';
+import { getNavigation } from '~/navigation.utils';
+import { getMdxFromSlug, getMdxPaths } from '~/mdx/pages';
 import { serialize } from '~/mdx/serialize';
 
 export interface ContentPageProps {
@@ -35,7 +35,8 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
 export default ContentPage;
 
 export const getStaticProps = async ({ params }: any) => {
-  const source = await serialize(params.slug);
+  const content = await getMdxFromSlug(params.slug || ['index']);
+  const source = await serialize(content);
 
   const navigation = await getNavigation();
 

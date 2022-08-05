@@ -1,27 +1,11 @@
+import path from 'node:path';
+
+import fs from 'fs-extra';
 import { globby } from 'globby';
 import { serialize } from 'next-mdx-remote/serialize';
-import fs from 'fs-extra';
-import path from 'path';
+
 import { CONTENT_PATH, NAVIGATION_CONFIG } from '~/config';
-
-export type NavigationMenu = (NavigationMenuCategory | NavigationMenuItem)[];
-
-export interface NavigationMenuGroup {
-  name: string;
-  items: NavigationMenuItem[];
-}
-
-export interface NavigationMenuCategory {
-  name: string;
-  items: NavigationMenuItem[];
-  groups: NavigationMenuGroup[];
-}
-export interface NavigationMenuItem {
-  title: string;
-  slug: string;
-  group?: string;
-  order?: number;
-}
+import type { NavigationMenuCategory, NavigationMenuItem } from '~/components';
 
 /**
  * Generates a "slug" from a file path. Slugs are always absolute paths that
@@ -32,22 +16,6 @@ const toSlug = (val: string) =>
 
 const sortByOrder = (items: NavigationMenuItem[]) => {
   items.sort((a, b) => (a.order || 9999999999) - (b.order || 9999999999));
-};
-
-export const getContentPaths = async () => {
-  const contentFilePaths = await globby([`${CONTENT_PATH}/**/*.mdx`]);
-
-  const paths = contentFilePaths
-    .map(toSlug)
-    .map(slug => ({ params: { slug: slug.split('/') } }));
-
-  // Add path alias: "/index" -> "/"
-  const root = paths.find(path => path.params.slug === ['index']);
-  if (root) {
-    paths.push({ params: { slug: [] } });
-  }
-
-  return paths;
 };
 
 export const getNavigation = async () => {
