@@ -32,7 +32,7 @@ export const serialize = async (content: string) => {
   });
 };
 
-export const frontmatter = async <T extends object = { [key: string]: any }>(
+export const getFrontmatter = async <T extends object = { [key: string]: any }>(
   filePath: string
 ) => {
   const file = await read(filePath);

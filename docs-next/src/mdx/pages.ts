@@ -5,6 +5,7 @@ import { globby } from 'globby';
 import type { NavigationMenuItem, NavigationMenuCategory } from '~/components';
 import { CONTENT_PATH, NAVIGATION_CONFIG } from '~/config';
 import { serialize } from 'next-mdx-remote/serialize';
+import { getFrontmatter } from './serialize';
 
 /**
  * Get list of all mdx page files.
@@ -67,14 +68,7 @@ export const getNavigation = async () => {
   const files = await getAllMdxFiles();
   const items = await Promise.all(
     files.map(async filePath => {
-      const source = await fs.readFile(filePath, 'utf8');
-      const { frontmatter } = await serialize(source, {
-        mdxOptions: {
-          remarkPlugins: [],
-          rehypePlugins: [],
-        },
-        parseFrontmatter: true,
-      });
+      const frontmatter = await getFrontmatter(filePath);
 
       return {
         slug: toSlug(filePath),
