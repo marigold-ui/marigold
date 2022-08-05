@@ -9,14 +9,14 @@ import remarkMdxCodeMeta from 'remark-mdx-code-meta';
 
 import { Container, Header, Text } from '@marigold/components';
 
-import { CONTENT_PATH } from '../config';
+import { CONTENT_PATH } from '~/config';
 import {
   getContentPaths,
   getNavigation,
   NavigationMenu,
-} from '../navigation.utils';
-import { GradientHeadline, Layout } from '../components';
-import { remarkCodeDemo } from '../mdx/remark-code-demo';
+} from '~/navigation.utils';
+import { GradientHeadline, Layout } from '~/components';
+import { remarkCodeDemo } from '~/mdx/remark-code-demo';
 
 export interface ContentPageProps {
   source: MDXRemoteSerializeResult;
