@@ -1,21 +1,14 @@
-import fs from 'fs-extra';
-import path from 'path';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
-import { serialize } from 'next-mdx-remote/serialize';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import rehypeSlug from 'rehype-slug';
-import remarkGfm from 'remark-gfm';
-
 import { Container, Header, Text } from '@marigold/components';
-import { CONTENT_PATH, DEMO_PATH } from '../config';
+
+import { GradientHeadline, Layout } from '~/components';
 
 import {
   getContentPaths,
   getNavigation,
   NavigationMenu,
 } from '~/navigation.utils';
-import { GradientHeadline, Layout } from '~/components';
-import { remarkCodeDemo } from '~/mdx/remark-code-demo';
+import { serialize } from '~/mdx/serialize';
 
 export interface ContentPageProps {
   source: MDXRemoteSerializeResult;
@@ -46,43 +39,13 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
 export default ContentPage;
 
 export const getStaticProps = async ({ params }: any) => {
-  const contentFilePath = path.join(
-    CONTENT_PATH,
-    (params.slug || ['index']).join('/')
-  );
-
-  let source;
-  try {
-    source = await fs.readFile(`${contentFilePath}.mdx`, 'utf8');
-  } catch {
-    source = await fs.readFile(`${contentFilePath}/index.mdx`, 'utf8');
-  }
-
-  const mdxSource = await serialize(source, {
-    mdxOptions: {
-      remarkPlugins: [
-        remarkGfm,
-        [
-          remarkCodeDemo,
-          {
-            demoPath: DEMO_PATH,
-            wrapperComponent: 'Preview',
-          },
-        ],
-      ],
-      rehypePlugins: [
-        rehypeSlug,
-        [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-      ],
-    },
-    parseFrontmatter: true,
-  });
+  const source = await serialize(params.slug);
 
   const navigation = await getNavigation();
 
   return {
     props: {
-      source: mdxSource,
+      source,
       navigation,
     },
   };

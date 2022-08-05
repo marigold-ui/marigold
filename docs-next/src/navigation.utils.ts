@@ -41,11 +41,11 @@ export const getContentPaths = async () => {
     .map(toSlug)
     .map(slug => ({ params: { slug: slug.split('/') } }));
 
-  paths.forEach(p =>
-    p.params.slug.length > 1
-      ? paths.push({ params: { slug: [p.params.slug[0]] } })
-      : paths.push({ params: { slug: [] } })
-  );
+  // Add path alias: "/index" -> "/"
+  const root = paths.find(path => path.params.slug === ['index']);
+  if (root) {
+    paths.push({ params: { slug: [] } });
+  }
 
   return paths;
 };
