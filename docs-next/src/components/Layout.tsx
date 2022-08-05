@@ -16,7 +16,7 @@ export const Layout = ({ navigation, children }: LayoutProps) => {
         css={{
           display: 'flex',
           flexDirection: ['column', 'row'],
-          gap: 'small-2',
+          gap: ['medium-1', 'large-1', 'large-2'],
           p: ['small-1', 'none'],
         }}
       >
