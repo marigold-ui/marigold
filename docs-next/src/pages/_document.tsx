@@ -9,6 +9,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <link rel="preconnect" href="https://fonts.bunny.net" />
           {urls.map(url => (
             <link key={url} href={url} rel="stylesheet" />
           ))}
