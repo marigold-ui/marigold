@@ -12,10 +12,10 @@ export const NAVIGATION_CONFIG = {
       name: 'components',
       groups: [
         'Layout',
-        'Content',
         'Forms',
         'Collections',
         'Overlay',
+        'Content',
         'Application',
       ],
     },

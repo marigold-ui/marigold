@@ -4,6 +4,7 @@ import Head from 'next/head';
 
 import { Box, MarigoldProvider, SSRProvider } from '@marigold/components';
 import * as MarigoldComponents from '@marigold/components';
+import * as MarigoldIcons from '@marigold/icons';
 import unicornTheme from '@marigold/theme-unicorn';
 import b2bTheme from '@marigold/theme-b2b';
 import coreTheme from '@marigold/theme-core';
@@ -48,6 +49,7 @@ const components = {
   ...MdxComponents,
   ...DemoComponents,
   ...MarigoldComponents,
+  ...MarigoldIcons,
 };
 
 const App = ({ Component, pageProps }: AppProps) => {
