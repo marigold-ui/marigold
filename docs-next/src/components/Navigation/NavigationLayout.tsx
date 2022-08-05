@@ -1,11 +1,12 @@
 import React from 'react';
 import { Box, Center, Button, Columns } from '@marigold/components';
+import { useResponsiveValue } from '@marigold/system';
+
+import { Link } from '~/components/Link';
+import { Logo } from '~/components/Logo';
+import type { NavigationMenu } from '~/navigation.utils';
 
 import { Navigation } from './Navigation';
-import { NavigationMenu } from '../../navigation.utils';
-import { Logo } from '../Logo';
-import { Link } from '../Link';
-import { useResponsiveValue } from '@marigold/system';
 
 const useIsSmallScreen = () => useResponsiveValue([true, false, false], 0);
 

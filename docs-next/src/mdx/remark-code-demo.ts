@@ -1,13 +1,16 @@
 import path from 'node:path';
 import fs from 'fs-extra';
 
-import { Code } from 'mdast';
-import { fromMarkdown } from 'mdast-util-from-markdown';
-import { mdxFromMarkdown } from 'mdast-util-mdx';
-import { mdxjs } from 'micromark-extension-mdxjs';
-import remarkCodeExtra from 'remark-code-extra';
+import type { Code } from 'mdast';
+import type { Transformer } from 'unified';
 
-// poor people's argument parser
+import { flatMap, getExportedComponent, parseToMdAst } from './utils/ast';
+
+/**
+ * Very simple argument parser. Converts key=value pairs into
+ * an object. `value` will be a string, if only a key is given its
+ * value will be set to `true`.
+ */
 const parseMeta = (val: string) =>
   Object.fromEntries(
     val.split(/\s+/).map(part => {
@@ -16,77 +19,59 @@ const parseMeta = (val: string) =>
     })
   ) as { preview?: undefined; file?: string };
 
-const codeFromFile = async (file: string) => {
-  const filePath = path.resolve(process.cwd(), file);
-  const content = await fs.readFile(filePath, 'utf8');
+/**
+ * Test if a node has all information that we need:
+ * - is a <code>
+ * - has a lang attribute with js, jsx, ts or tsx
+ * - has a meta attribute that includes "preview"
+ */
+const isCodePreview = (
+  node: any
+): node is Code & { meta: string; lang: 'js' | 'jsx' | 'ts' | 'tsx' } =>
+  node.type === 'code' &&
+  /[jt]sx?/.test(node.lang) &&
+  node.meta &&
+  node.meta?.includes('preview');
 
-  return content;
-};
+export interface Options {
+  wrapperComponent: string;
+  demoPath: string;
+}
 
-// import { JsxEmit, ModuleKind, ScriptTarget, transpileModule } from 'typescript';
-// const transpile = (code: string) =>
-//   transpileModule(code, {
-//     compilerOptions: {
-//       module: ModuleKind.ESNext,
-//       jsx: JsxEmit.Preserve,
-//       target: ScriptTarget.ESNext,
-//     },
-//   }).outputText;
-
-const getDemoComponent = (code: string) => {
-  const result = code.match(/export const\s(?<component>\w+)\s/);
-  if (!result?.groups) {
-    throw Error(
-      'No demo component found. Please make sure to export a component from your demo file.'
-    );
-  }
-
-  return result.groups.component;
-};
-
-const createPreview = (code: string) => {
-  const tree = fromMarkdown(code, {
-    extensions: [mdxjs()],
-    mdastExtensions: [mdxFromMarkdown()],
-  });
-  return {
-    type: 'mdxJsxFlowElement',
-    name: 'Demo',
-    attributes: [],
-    children: [...tree.children],
-  };
-};
-
-export const remarkCodeDemo: any = [
-  //@ts-ignore-error
-  remarkCodeExtra,
-  {
-    transform: async (node: Code) => {
-      if (!node.meta) {
-        return;
-      }
-
-      if (!node.lang) {
-        return;
+/**
+ * Render a preview from `<pre>` blocks for React components.
+ * Complex code can be loaded from file.
+ */
+export const remarkCodeDemo = ({
+  demoPath,
+  wrapperComponent,
+}: Options): Transformer => {
+  return tree => {
+    flatMap(tree, node => {
+      if (!isCodePreview(node)) {
+        return [node];
       }
 
       const meta = parseMeta(node.meta);
 
-      if (!meta.preview) {
-        return;
-      }
-
       if (meta.file) {
-        node.value = await codeFromFile(meta.file);
+        node.value = fs.readFileSync(path.join(demoPath, meta.file), 'utf8');
       }
 
-      const tree = createPreview(
-        meta.file ? `<${getDemoComponent(node.value)}/>` : node.value
-      );
+      const tree = meta.file
+        ? getExportedComponent(node.value, node.lang)
+        : parseToMdAst(node.value);
 
-      return {
-        before: [tree],
+      const preview = {
+        type: 'mdxJsxFlowElement',
+        name: wrapperComponent,
+        attributes: [],
+        children: tree,
       };
-    },
-  },
-];
+
+      return [preview, node];
+    });
+
+    return tree;
+  };
+};

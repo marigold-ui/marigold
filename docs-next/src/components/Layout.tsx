@@ -1,9 +1,8 @@
 import React, { ReactElement } from 'react';
 import { Box } from '@marigold/components';
 
-import { NavigationLayout } from './Navigation';
-import { NavigationMenu } from '../navigation.utils';
-import { Version } from './Version';
+import { NavigationMenu } from '~/navigation.utils';
+import { NavigationLayout, Version } from '~/components';
 
 export interface LayoutProps {
   children: ReactElement;
@@ -17,7 +16,7 @@ export const Layout = ({ navigation, children }: LayoutProps) => {
         css={{
           display: 'flex',
           flexDirection: ['column', 'row'],
-          gap: 'medium-2',
+          gap: ['medium-1', 'large-1', 'large-2'],
           p: ['small-1', 'none'],
         }}
       >

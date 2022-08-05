@@ -5,18 +5,17 @@ import { serialize } from 'next-mdx-remote/serialize';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
-import remarkMdxCodeMeta from 'remark-mdx-code-meta';
 import { Container, Header, Text } from '@marigold/components';
+import { CONTENT_PATH, DEMO_PATH } from '../config';
 
-import { CONTENT_PATH } from '../config';
 import {
   getContentPaths,
   getNavigation,
   NavigationMenu,
-} from '../navigation.utils';
-import { GradientHeadline, Layout } from '../components';
+} from '~/navigation.utils';
+import { GradientHeadline, Layout } from '~/components';
+import { remarkCodeDemo } from '~/mdx/remark-code-demo';
 import { rehypeTableOfContents } from '../mdx/rehype-toc';
-import { remarkCodeDemo } from '../mdx/remark-code-demo';
 
 export interface ContentPageProps {
   source: MDXRemoteSerializeResult;
@@ -61,7 +60,16 @@ export const getStaticProps = async ({ params }: any) => {
 
   const mdxSource = await serialize(source, {
     mdxOptions: {
-      remarkPlugins: [remarkGfm, remarkCodeDemo, remarkMdxCodeMeta],
+      remarkPlugins: [
+        remarkGfm,
+        [
+          remarkCodeDemo,
+          {
+            demoPath: DEMO_PATH,
+            wrapperComponent: 'Preview',
+          },
+        ],
+      ],
       rehypePlugins: [
         rehypeSlug,
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],

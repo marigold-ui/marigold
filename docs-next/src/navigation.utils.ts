@@ -2,7 +2,7 @@ import { globby } from 'globby';
 import { serialize } from 'next-mdx-remote/serialize';
 import fs from 'fs-extra';
 import path from 'path';
-import { CONTENT_PATH, NAVIGATION_CONFIG } from './config';
+import { CONTENT_PATH, NAVIGATION_CONFIG } from '~/config';
 
 export type NavigationMenu = (NavigationMenuCategory | NavigationMenuItem)[];
 
