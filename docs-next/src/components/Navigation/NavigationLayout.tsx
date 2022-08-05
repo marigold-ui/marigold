@@ -8,7 +8,7 @@ import type { NavigationMenu } from '~/navigation.utils';
 
 import { Navigation } from './Navigation';
 
-const useIsSmallScreen = () => useResponsiveValue([true, false, false], 0);
+const useIsSmallScreen = () => useResponsiveValue([true, false, false], 2);
 
 export interface NavigationLayoutProps {
   navigation: NavigationMenu;
