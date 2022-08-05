@@ -1,5 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
-import { webFontUrl } from '../theme';
+import { webFontUrl } from '~/theme';
 
 class MyDocument extends Document {
   render() {

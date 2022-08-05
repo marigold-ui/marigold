@@ -1,9 +1,8 @@
 import React, { ReactElement } from 'react';
 import { Box } from '@marigold/components';
 
-import { NavigationLayout } from './Navigation';
-import { NavigationMenu } from '../navigation.utils';
-import { Version } from './Version';
+import { NavigationMenu } from '~/navigation.utils';
+import { NavigationLayout, Version } from '~/components';
 
 export interface LayoutProps {
   children: ReactElement;

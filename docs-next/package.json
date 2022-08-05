@@ -13,16 +13,13 @@
     "start": "next start"
   },
   "dependencies": {
-    "@codesandbox/sandpack-client": "^1.2.2",
-    "@codesandbox/sandpack-react": "^1.2.4",
-    "@codesandbox/sandpack-themes": "^1.0.0",
     "@marigold/components": "workspace:*",
     "@marigold/icons": "workspace:*",
     "@marigold/system": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/tokens": "workspace:*",
     "@marigold/types": "workspace:*",
-    "@swc/core": "1.2.222",
+    "estree-util-visit": "^1.2.0",
     "fs-extra": "^10.1.0",
     "globby": "^13.1.2",
     "mdast-util-from-markdown": "^1.2.0",
@@ -35,7 +32,6 @@
     "react-dom": "18.2.0",
     "rehype-autolink-headings": "^6.1.1",
     "rehype-slug": "^5.0.1",
-    "remark-code-extra": "^1.0.1",
     "remark-gfm": "^3.0.1",
     "remark-mdx-code-meta": "^2.0.0",
     "unified": "^10.1.2"

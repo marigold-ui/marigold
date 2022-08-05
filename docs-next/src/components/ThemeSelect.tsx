@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useThemeSwitch } from './ThemeSwitch';
 import { Select } from '@marigold/components';
+import { useThemeSwitch } from '~/components';
 
 export const ThemeSelect = () => {
   const { current, themes, setTheme } = useThemeSwitch();

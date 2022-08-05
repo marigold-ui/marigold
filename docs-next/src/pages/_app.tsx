@@ -4,19 +4,16 @@ import Head from 'next/head';
 
 import { Box, MarigoldProvider, SSRProvider } from '@marigold/components';
 import * as MarigoldComponents from '@marigold/components';
-
-import * as DocsComponents from '../components';
-import { mdxComponents } from '../mdx';
-import * as demos from '../demos';
-
-import { theme } from '../theme';
-
-import CodeDemo from '../components/Sandpack/CodeDemo';
-
-import { MarigoldThemeSwitch } from '../components';
 import unicornTheme from '@marigold/theme-unicorn';
 import b2bTheme from '@marigold/theme-b2b';
 import coreTheme from '@marigold/theme-core';
+
+import * as DocsComponents from '~/components';
+import * as MdxComponents from '~/mdx/components';
+import * as DemoComponents from '~/demos';
+
+import { MarigoldThemeSwitch } from '~/components';
+import { theme } from '~/theme';
 
 const themes = {
   unicornTheme,
@@ -48,10 +45,9 @@ const DevMode = () => {
 const components = {
   Head,
   ...DocsComponents,
-  ...mdxComponents,
-  ...demos,
+  ...MdxComponents,
+  ...DemoComponents,
   ...MarigoldComponents,
-  CodeDemo,
 };
 
 const App = ({ Component, pageProps }: AppProps) => {

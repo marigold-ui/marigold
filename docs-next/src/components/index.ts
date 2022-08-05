@@ -1,5 +1,5 @@
 export * from './CopyButton';
-export * from './Demo';
+export * from './Preview';
 export * from './GradientHeadline';
 export * from './Layout';
 export * from './Link';
