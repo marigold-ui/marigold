@@ -23,23 +23,23 @@ export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
       }
     });
 
-    const tocc: Element = {
-      type: 'element',
-      tagName: 'toc',
-      children: [
-        {
-          type: 'element',
-          tagName: 'ul',
-          children: links.map(link => ({
-            type: 'element',
-            tagName: 'li',
-            children: [link],
-          })),
-        },
-      ],
-    };
+    // const toc: Element = {
+    //   type: 'element',
+    //   tagName: 'toc',
+    //   children: [
+    //     {
+    //       type: 'element',
+    //       tagName: 'ul',
+    //       children: links.map(link => ({
+    //         type: 'element',
+    //         tagName: 'li',
+    //         children: [link],
+    //       })),
+    //     },
+    //   ],
+    // };
 
-    tree.children.unshift(tocc);
+    // tree.children.unshift(toc);
 
     // {
     //   type: 'mdxJsxFlowElement',
@@ -50,21 +50,16 @@ export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
     //   data: { _mdxExplicitJsx: true }
     // },
 
-    const child = tree.children.find(
-      child => child.type === 'mdxJsxFlowElement'
-    );
-    console.log(child.attributes);
+    // tree.children.unshift({
+    //   type: 'mdxJsxFlowElement',
+    //   name: 'Toc',
+    //   attributes: [
+    //     { type: 'mdxJsxAttribute', name: 'messageTitle', value: 'Hint' },
+    //   ],
+    //   children: [],
+    // });
 
-    const value = {
-      type: 'mdxJsxAttribute',
-      name: 'props',
-      value: {
-        type: 'mdxJsxAttributeValueExpression',
-        value: '<json>',
-      },
-    };
-
-    const toc = {
+    tree.children.unshift({
       type: 'mdxJsxFlowElement',
       name: 'Toc',
       attributes: [
@@ -76,22 +71,8 @@ export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
         {
           type: 'mdxJsxAttribute',
           name: 'items',
-          value: {
-            type: 'mdxJsxAttributeValueExpression',
-            value: '<json>',
-          },
+          value: JSON.stringify(links.map(link => link.children)),
         },
-      ],
-      children: [],
-    };
-
-    tree.children.unshift(toc);
-
-    tree.children.unshift({
-      type: 'mdxJsxFlowElement',
-      name: 'Message',
-      attributes: [
-        { type: 'mdxJsxAttribute', name: 'messageTitle', value: 'Hint' },
       ],
       children: [],
     });

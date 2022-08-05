@@ -1,9 +1,8 @@
-import { Box, Headline, List, Overlay, Text } from '@marigold/components';
+import { Box, Headline, List, Text } from '@marigold/components';
 import type { ComponentProps } from '@marigold/types';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/nightOwl';
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import { CopyButton, Link } from '~/components';
 
@@ -140,13 +139,15 @@ export const code = ({ children, ...props }: ComponentProps<'code'>) => (
 // );
 
 interface TableofContentsProps {
-  container: HTMLElement;
+  container?: HTMLElement;
+  items?: any[];
+  attributes?: {
+    name: string;
+    value: string;
+  };
 }
 
-export const tocc = ({ children }: any) => {
-  return (
-    <Overlay>
-      <Box>{children}hahah</Box>
-    </Overlay>
-  );
+export const Toc = ({ items, selector }: any) => {
+  console.log('ITEMS', items, selector);
+  return <Box>hallo</Box>;
 };
