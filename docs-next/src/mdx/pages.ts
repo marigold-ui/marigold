@@ -2,9 +2,12 @@ import path from 'node:path';
 import fs from 'fs-extra';
 import { globby } from 'globby';
 
-import type { NavigationMenuItem, NavigationMenuCategory } from '~/components';
+import type {
+  NavigationMenuItem,
+  NavigationMenuCategory,
+  NavigationTree,
+} from '~/components';
 import { CONTENT_PATH, NAVIGATION_CONFIG } from '~/config';
-import { serialize } from 'next-mdx-remote/serialize';
 import { getFrontmatter } from './serialize';
 
 /**
@@ -63,17 +66,16 @@ const sortByOrder = (items: { order?: number }[]) => {
   items.sort((a, b) => (a.order || 9999999999) - (b.order || 9999999999));
 };
 
-export const getNavigation = async () => {
+export const createNavigationTree = async (): Promise<NavigationTree> => {
   // Get all information for MDX pages (their frontmatter)
   const files = await getAllMdxFiles();
   const items = await Promise.all(
     files.map(async filePath => {
-      const frontmatter = await getFrontmatter(filePath);
-
+      const frontmatter = await getFrontmatter<NavigationMenuItem>(filePath);
       return {
+        ...frontmatter,
         slug: toSlug(filePath),
-        ...(frontmatter as any),
-      } as NavigationMenuItem;
+      };
     })
   );
 

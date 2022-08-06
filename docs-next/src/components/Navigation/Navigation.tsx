@@ -4,7 +4,7 @@ import { Link, LinkProps } from '~/components/Link';
 
 // Props
 // ---------------
-export type NavigationMenu = (NavigationMenuCategory | NavigationMenuItem)[];
+export type NavigationTree = (NavigationMenuCategory | NavigationMenuItem)[];
 
 export interface NavigationMenuGroup {
   name: string;
@@ -24,7 +24,7 @@ export interface NavigationMenuItem {
 }
 
 export interface NavigationProps {
-  navigation: NavigationMenu;
+  navigation: NavigationTree;
   css?: CSSObject;
 }
 

@@ -38,5 +38,5 @@ export const getFrontmatter = async <T extends object = { [key: string]: any }>(
   const file = await read(filePath);
   matter(file);
 
-  return file.data.matter || ({} as T);
+  return (file.data.matter || {}) as T;
 };
