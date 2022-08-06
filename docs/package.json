@@ -17,7 +17,7 @@
     "babel-eslint": "10.1.0",
     "babel-preset-gatsby": "2.15.0",
     "core-js": "3.22.7",
-    "eslint": "8.20.0",
+    "eslint": "8.21.0",
     "gatsby": "4.15.2",
     "gatsby-plugin-image": "2.15.1",
     "gatsby-plugin-manifest": "4.15.1",
