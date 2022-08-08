@@ -20,12 +20,17 @@ export interface IconListItemProps {
 const IconListItem = ({ icon }: IconListItemProps) => {
   const Component = Icons[icon];
 
+  if (!Component) {
+    console.warn(`${icon} is not a valid icon!`);
+    return null;
+  }
+
   return (
     <div>
       <Center>
         <Button variant="outline" size="full">
           <Box css={{ py: 'large-1' }}>
-            <Component size={24} />
+            <Component size={48} />
           </Box>
         </Button>
         <Text variant="caption" size="small">

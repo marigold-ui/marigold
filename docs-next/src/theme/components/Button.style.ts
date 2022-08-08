@@ -21,7 +21,7 @@ export const Button: Theme['components']['Button'] = {
       borderColor: 'background.light',
 
       '&:hover': {
-        bg: 'background.light',
+        bg: 'hover.light',
       },
     },
     copy: {

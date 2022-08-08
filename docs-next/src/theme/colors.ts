@@ -14,4 +14,7 @@ export const colors = {
     light: 'hsl(29, 37%, 55%)',
     regular: 'hsl(28, 100%, 3%)',
   },
+  hover: {
+    light: 'hsl(28, 100%, 53%, 0.1)',
+  },
 };
