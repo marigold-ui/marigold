@@ -319,9 +319,11 @@ importers:
       rehype-slug: ^5.0.1
       remark-gfm: ^3.0.1
       remark-mdx-code-meta: ^2.0.0
+      to-vfile: ^7.2.3
       typescript: 4.7.4
       unified: ^10.1.2
       unist-util-visit: ^4.1.0
+      vfile-matter: ^4.0.0
     dependencies:
       '@marigold/components': link:../packages/components
       '@marigold/icons': link:../packages/icons
@@ -346,8 +348,10 @@ importers:
       rehype-slug: 5.0.1
       remark-gfm: 3.0.1
       remark-mdx-code-meta: 2.0.0
+      to-vfile: 7.2.3
       unified: 10.1.2
       unist-util-visit: 4.1.0
+      vfile-matter: 4.0.0
     devDependencies:
       '@types/node': 18.0.0
       '@types/react': 18.0.15
@@ -32143,6 +32147,16 @@ packages:
       safe-regex: 1.1.0
     dev: false
 
+  /to-vfile/7.2.3:
+    resolution:
+      {
+        integrity: sha512-QO0A9aE6Z/YkmQadJ0syxpmNXtcQiu0qAtCKYKD5cS3EfgfFTAXfgLX6AOaBrSfWSek5nfsMf3gBZ9KGVFcLuw==,
+      }
+    dependencies:
+      is-buffer: 2.0.5
+      vfile: 5.3.4
+    dev: false
+
   /toidentifier/1.0.0:
     resolution:
       {
@@ -33565,6 +33579,16 @@ packages:
       '@types/js-yaml': 4.0.5
       is-buffer: 2.0.5
       js-yaml: 4.1.0
+    dev: false
+
+  /vfile-matter/4.0.0:
+    resolution:
+      {
+        integrity: sha512-NObJWq76zoXQh9xlFqcYMpvB60PzwvTzO5XhXRMEX9O/YWyfx7SniO+YzskIvueP4SnGFt2/DfedBx+38dWNwA==,
+      }
+    dependencies:
+      is-buffer: 2.0.5
+      yaml: 2.1.1
     dev: false
 
   /vfile-message/1.1.1:
