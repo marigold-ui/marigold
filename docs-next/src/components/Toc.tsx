@@ -30,7 +30,7 @@ export const Toc = ({ items, selector }: any) => {
         ml: 'large-2',
         pl: 'medium-2',
         borderLeft: '1px solid',
-        borderColor: 'page.light',
+        borderColor: 'background.light',
       }}
     >
       <Headline level="3">Table of Contents</Headline>
