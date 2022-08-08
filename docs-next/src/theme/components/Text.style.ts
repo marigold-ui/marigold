@@ -13,6 +13,11 @@ export const Text: Theme['components']['Text'] = {
       color: 'text.light',
       m: 'none',
     },
+    caption: {
+      fontFamily: 'headline',
+      fontSize: 'fixed.small-2',
+      letterSpacing: '0.5px',
+    },
     muted: {
       fontFamily: 'headline',
       color: 'brand.secondary',

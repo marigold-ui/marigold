@@ -9,6 +9,17 @@ export const Button: Theme['components']['Button'] = {
     border: 'none',
   },
   variant: {
+    outline: {
+      background: 'transparent',
+      borderStyle: 'solid',
+      borderWidth: 'small-1',
+      borderRadius: 'small-2',
+      borderColor: 'background.light',
+
+      '&:hover': {
+        bg: 'background.light',
+      },
+    },
     copy: {
       mb: 'medium-2',
       p: 'small-1',
@@ -22,6 +33,11 @@ export const Button: Theme['components']['Button'] = {
     navigationSmall: {
       border: 'none',
       outline: 'none',
+    },
+  },
+  size: {
+    large: {
+      p: 'medium-1',
     },
   },
 };

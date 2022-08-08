@@ -4,6 +4,7 @@ const SHADOW_COLOR = '220 3% 15%';
 const SHADOW_STRENGTH = '1%';
 
 export const shadow = {
+  none: 'none',
   'small-1': `0 1px 2px -1px hsl(${SHADOW_COLOR} / calc(${SHADOW_STRENGTH} + 9%))`,
   'small-2': `
     0 3px 5px -2px hsl(${SHADOW_COLOR} / calc(${SHADOW_STRENGTH} + 3%)),

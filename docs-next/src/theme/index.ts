@@ -1,4 +1,5 @@
 import { Theme as BaseTheme } from '@marigold/components';
+import { border, shadow } from '@marigold/tokens';
 import * as components from './components';
 import { root } from './root';
 import { colors } from './colors';
@@ -19,8 +20,11 @@ export const theme: Theme = {
   root,
   space,
   sizes,
-  components,
   colors,
+  radii: border.radius,
+  borderWidths: border.width,
+  shadows: shadow,
+  components,
   ...typography,
 };
 
