@@ -1,8 +1,8 @@
 import React from 'react';
 import { SVG } from '@marigold/system';
 
-export const ArrowDown = ({ ...props }) => (
-  <SVG {...props}>
-    <path d="M5.97563 7.125L12 13.1363L18.0244 7.125L19.875 8.97563L12 16.8506L4.125 8.97563L5.97563 7.125Z" />
+export const ArrowDown = ({ className = '', ...props }) => (
+  <SVG className={className} {...props}>
+    <path d="M21 12L19.4137 10.4138L13.125 16.6912V3H10.875V16.6912L4.5975 10.4025L3 12L12 21L21 12Z" />
   </SVG>
 );
