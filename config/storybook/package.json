@@ -19,7 +19,7 @@
     "directory": "config/prettier"
   },
   "dependencies": {
-    "@babel/core": "7.18.9",
+    "@babel/core": "7.18.10",
     "@emotion/react": "^11.0.0-rc.0",
     "@emotion/styled": "^11.8.1",
     "@marigold/components": "workspace:*",
