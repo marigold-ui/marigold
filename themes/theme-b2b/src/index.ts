@@ -4,7 +4,7 @@ import { colors } from './colors';
 import * as components from './components';
 
 export const webFontUrl = [
-  'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap',
+  'https://fonts.bunny.net/css?family=inter:400,600,700',
 ] as const;
 
 const theme: Theme = {
