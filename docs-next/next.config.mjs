@@ -12,10 +12,6 @@ const config = {
   env: {
     version: pkg.version,
   },
-  i18n: {
-    locales: ['en'],
-    defaultLocale: 'en',
-  },
   reactStrictMode: true,
   optimizeFonts: true,
   trailingSlash: true,
