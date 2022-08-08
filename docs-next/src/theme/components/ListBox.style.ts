@@ -8,11 +8,9 @@ export const ListBox: Theme['components']['ListBox'] = {
       border: '1px solid',
       borderColor: 'brand.primary',
       borderRadius: '0px 0px 10px 10px ',
-      py: 'small-1',
     },
 
     list: {
-      p: 'small-1',
       outline: 'none',
     },
 
