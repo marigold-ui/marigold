@@ -3,6 +3,6 @@ import { SVG } from '@marigold/system';
 
 export const ArrowLeft = ({ className = '', ...props }) => (
   <SVG className={className} {...props}>
-    <path d="M16.8506 18.0244L10.8394 12L16.8506 5.97563L15 4.125L7.125 12L15 19.875L16.8506 18.0244Z" />
+    <path d="M21 10.875H7.30875L13.5975 4.58625L12 3L3 12L12 21L13.5863 19.4137L7.30875 13.125H21V10.875Z" />
   </SVG>
 );

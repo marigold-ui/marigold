@@ -3,6 +3,6 @@ import { SVG } from '@marigold/system';
 
 export const ArrowUp = ({ className = '', ...props }) => (
   <SVG className={className} {...props}>
-    <path d="M5.97563 16.8506L12 10.8394L18.0244 16.8506L19.875 15L12 7.125L4.125 15L5.97563 16.8506Z" />
+    <path d="M3 12L4.58625 13.5863L10.875 7.30875V21H13.125V7.30875L19.4025 13.5975L21 12L12 3L3 12Z" />
   </SVG>
 );
