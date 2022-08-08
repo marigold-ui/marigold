@@ -2,13 +2,22 @@ import path from 'path';
 
 export const CONTENT_PATH = path.join(process.cwd(), 'content');
 
+export const DEMO_PATH = path.join(process.cwd(), 'src', 'demos');
+
 export const NAVIGATION_CONFIG = {
   order: [
     { name: 'introduction' },
     { name: 'foundation' },
     {
       name: 'components',
-      groups: ['Content', 'Layout', 'Forms'],
+      groups: [
+        'Layout',
+        'Forms',
+        'Collections',
+        'Overlay',
+        'Content',
+        'Application',
+      ],
     },
     { name: 'develop' },
   ],

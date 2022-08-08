@@ -1,25 +1,25 @@
 ---
 title: Dialog
+group: Overlay
 figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=845%3A1095
-group: Content
 ---
-
-import { FigmaLink } from '../../src/components/FigmaLink';
-
-# Dialog
 
 Component to display a Dialog as a reaction to an event. The Dialog could be styled via theme and should be filled with content.
 You can also add a title via title prop.
 
+<Preview>
+  <Dialog.Trigger>
+    <Button variant="primary">Open me</Button>
+    <Dialog closeButton>
+      <Headline level="3">Information!</Headline>
+      <Text>This is a simple info Dialog.</Text>
+    </Dialog>
+  </Dialog.Trigger>
+</Preview>
+
 ```tsx onlyCode
 import { Dialog } from '@marigold/components';
 ```
-
-<FigmaLink
-  to={
-    'https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=845%3A1095'
-  }
-/>
 
 ## Props
 

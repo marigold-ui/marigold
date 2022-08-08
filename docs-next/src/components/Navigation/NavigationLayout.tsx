@@ -1,16 +1,15 @@
 import React from 'react';
 import { Box, Center, Button, Columns } from '@marigold/components';
-
-import { Navigation } from './Navigation';
-import { NavigationMenu } from '../../navigation.utils';
-import { Logo } from '../Logo';
-import { Link } from '../Link';
 import { useResponsiveValue } from '@marigold/system';
 
-const useIsSmallScreen = () => useResponsiveValue([true, false, false], 0);
+import { Link, Logo, NavigationTree } from '~/components';
+
+import { Navigation } from './Navigation';
+
+const useIsSmallScreen = () => useResponsiveValue([true, false, false], 2);
 
 export interface NavigationLayoutProps {
-  navigation: NavigationMenu;
+  navigation: NavigationTree;
 }
 
 export const NavigationLayout = ({ navigation }: NavigationLayoutProps) => {
@@ -19,7 +18,7 @@ export const NavigationLayout = ({ navigation }: NavigationLayoutProps) => {
   const show = isSmallScreen ? showNavigation : true;
 
   return (
-    <Box>
+    <Box css={{ py: ['none', 'medium-1'] }}>
       {isSmallScreen && (
         <Columns space="small-1" columns={[2, 8, 2]} collapseAt="0px">
           <Box>

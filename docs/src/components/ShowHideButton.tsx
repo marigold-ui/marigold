@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Button } from '@marigold/components';
-import { ArrowDown, ArrowUp } from '@marigold/icons';
+import { ChevronDown, ChevronUp } from '@marigold/icons';
 
 interface ShowHideButtonProps {
   hide: boolean;
@@ -15,7 +15,7 @@ export const ShowHideButton = ({ hide, onHideChange }: ShowHideButtonProps) => (
     }}
   >
     <Box
-      as={hide ? ArrowDown : ArrowUp}
+      as={hide ? ChevronDown : ChevronUp}
       size={16}
       fill="#696b78"
       mr="xxsmall"

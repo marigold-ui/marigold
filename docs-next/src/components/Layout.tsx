@@ -1,13 +1,11 @@
-import React, { ReactElement } from 'react';
+import React, { ReactNode } from 'react';
 import { Box } from '@marigold/components';
 
-import { NavigationLayout } from './Navigation';
-import { NavigationMenu } from '../navigation.utils';
-import { Version } from './Version';
+import { NavigationLayout, NavigationTree, Version } from '~/components';
 
 export interface LayoutProps {
-  children: ReactElement;
-  navigation: NavigationMenu;
+  children: ReactNode;
+  navigation: NavigationTree;
 }
 
 export const Layout = ({ navigation, children }: LayoutProps) => {
@@ -17,12 +15,12 @@ export const Layout = ({ navigation, children }: LayoutProps) => {
         css={{
           display: 'flex',
           flexDirection: ['column', 'row'],
-          gap: 'medium-2',
+          gap: ['medium-1', 'large-1', 'large-2'],
           p: ['small-1', 'none'],
         }}
       >
         <NavigationLayout navigation={navigation}></NavigationLayout>
-        <Box>{children}</Box>
+        <main>{children}</main>
       </Box>
       <Version />
     </>

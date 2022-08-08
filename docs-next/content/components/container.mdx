@@ -3,12 +3,15 @@ title: Container
 group: Layout
 ---
 
-import { Box, Container, Text } from '@marigold/components';
-
-# Container
-
 Containers width is based on used font and is optimized for readability. You can use `header` or `content` as content type and set the `size` prop to `small`, `medium` or `large`.
 
+<Container align="center" alignContainer="center">
+  The container content is for example a long text to present information. In
+  this case it is an unnecessary text that is only used to fill the width of the
+  container content. Thank you for reading this.
+</Container>
+
+```tsx
 <Box border="1px solid #ced4da" bg="#e9ecef" p="xsmall">
   <Box
     as={Container}
@@ -26,8 +29,9 @@ Containers width is based on used font and is optimized for readability. You can
     </Text>
   </Box>
 </Box>
+```
 
-```tsx onlyCode
+```tsx
 import { Container } from '@marigold/components';
 ```
 

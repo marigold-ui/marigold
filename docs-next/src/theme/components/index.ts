@@ -1,25 +1,9 @@
-import { Button } from './Button.style';
-import { Demo } from './Demo.style';
-import { Header } from './Header.style';
-import { Headline } from './Headline.style';
-import { Link } from './Link.style';
-import { List } from './List.style';
-import { ListBox } from './ListBox.style';
-import { Navigation } from './Navigation.style';
-import { Select } from './Select.style';
-import { Text } from './Text.style';
-import { Table } from './Table.style';
-
-export {
-  Button,
-  Demo,
-  Header,
-  Headline,
-  Link,
-  ListBox,
-  List,
-  Navigation,
-  Select,
-  Table,
-  Text,
-};
+export * from './Button.style';
+export * from './Preview.style';
+export * from './Header.style';
+export * from './Headline.style';
+export * from './Link.style';
+export * from './List.style';
+export * from './Navigation.style';
+export * from './Text.style';
+export * from './Table.style';

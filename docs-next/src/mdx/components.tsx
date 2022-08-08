@@ -1,11 +1,9 @@
 import { Box, Headline, List, Text } from '@marigold/components';
-import { ComponentProps } from '@marigold/types';
-
-import { Link } from '../components/Link';
-
+import type { ComponentProps } from '@marigold/types';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/nightOwl';
-import { CopyButton } from '../components';
+
+import { CopyButton, Link } from '~/components';
 
 // Typography
 // ---------------
