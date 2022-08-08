@@ -58,17 +58,3 @@ export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
     });
   };
 };
-
-/**
- * 1. Portal
- *
- * - create a dedicate placeholder "#toc"
- * - ceate a <TOC selector={options.tocSelector}> components
- *    - that uses ReactDOM.createPortal(<ul>...</ul>, #toc)
- *
- * 2. Context
- *
- * - inside rehype render a "info component"
- *   -> renders "null", but `useToC(<data>)`
- * - create <TOC> that uses context to get the set data from `useToC`
- */
