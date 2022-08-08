@@ -20,7 +20,7 @@ export const NavigationLayout = ({ navigation }: NavigationLayoutProps) => {
   const show = isSmallScreen ? showNavigation : true;
 
   return (
-    <Box>
+    <Box css={{ py: ['none', 'medium-1'] }}>
       {isSmallScreen && (
         <Columns space="small-1" columns={[2, 8, 2]} collapseAt="0px">
           <Box>
