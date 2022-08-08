@@ -1,12 +1,11 @@
-import React, { ReactElement } from 'react';
+import React, { ReactNode } from 'react';
 import { Box } from '@marigold/components';
 
-import { NavigationMenu } from '~/navigation.utils';
-import { NavigationLayout, Version } from '~/components';
+import { NavigationLayout, NavigationTree, Version } from '~/components';
 
 export interface LayoutProps {
-  children: ReactElement;
-  navigation: NavigationMenu;
+  children: ReactNode;
+  navigation: NavigationTree;
 }
 
 export const Layout = ({ navigation, children }: LayoutProps) => {
@@ -21,7 +20,7 @@ export const Layout = ({ navigation, children }: LayoutProps) => {
         }}
       >
         <NavigationLayout navigation={navigation}></NavigationLayout>
-        <Box>{children}</Box>
+        <main>{children}</main>
       </Box>
       <Version />
     </>

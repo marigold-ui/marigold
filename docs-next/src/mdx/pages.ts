@@ -1,43 +1,52 @@
-import { globby } from 'globby';
-import { serialize } from 'next-mdx-remote/serialize';
+import path from 'node:path';
 import fs from 'fs-extra';
-import path from 'path';
+import { globby } from 'globby';
+
+import type {
+  NavigationMenuItem,
+  NavigationMenuCategory,
+  NavigationTree,
+} from '~/components';
 import { CONTENT_PATH, NAVIGATION_CONFIG } from '~/config';
-
-export type NavigationMenu = (NavigationMenuCategory | NavigationMenuItem)[];
-
-export interface NavigationMenuGroup {
-  name: string;
-  items: NavigationMenuItem[];
-}
-
-export interface NavigationMenuCategory {
-  name: string;
-  items: NavigationMenuItem[];
-  groups: NavigationMenuGroup[];
-}
-export interface NavigationMenuItem {
-  title: string;
-  slug: string;
-  group?: string;
-  order?: number;
-}
+import { getFrontmatter } from './serialize';
 
 /**
- * Generates a "slug" from a file path. Slugs are always absolute paths that
- * don't include the starting backslash (e.g. "foo/bar" not "/foo/bar").
+ * Get list of all mdx page files.
  */
-const toSlug = (val: string) =>
-  path.relative(CONTENT_PATH, val.replace(/\.mdx?$/, ''));
+export const getAllMdxFiles = async () =>
+  await globby([`${CONTENT_PATH}/**/*.mdx`]);
 
-const sortByOrder = (items: NavigationMenuItem[]) => {
-  items.sort((a, b) => (a.order || 9999999999) - (b.order || 9999999999));
+/**
+ * Get content of mdx file by passing a slug.
+ */
+export const getMdxFromSlug = async (slug: string[]) => {
+  const file = path.join(CONTENT_PATH, slug.join('/'));
+
+  // Read file with "index" fallback
+  let source: string;
+  try {
+    source = await fs.readFile(`${file}.mdx`, 'utf8');
+  } catch {
+    source = await fs.readFile(`${file}/index.mdx`, 'utf8');
+  }
+  return source;
 };
 
-export const getContentPaths = async () => {
-  const contentFilePaths = await globby([`${CONTENT_PATH}/**/*.mdx`]);
+/**
+ * Generates a "slug" from a mdx file path. Slugs are always
+ * absolute paths that don't include the starting backslash
+ * (e.g. "foo/bar" not "/foo/bar").
+ */
+export const toSlug = (file: string) =>
+  path.relative(CONTENT_PATH, file.replace(/\.mdx?$/, ''));
 
-  const paths = contentFilePaths
+/**
+ * Get all paths for the mdx pages.
+ */
+export const getMdxPaths = async () => {
+  const files = await getAllMdxFiles();
+
+  const paths = files
     .map(toSlug)
     .map(slug => ({ params: { slug: slug.split('/') } }));
 
@@ -50,24 +59,23 @@ export const getContentPaths = async () => {
   return paths;
 };
 
-export const getNavigation = async () => {
-  // Get all information for MDX pages (their frontmatter)
-  const contentFilePaths = await globby([`${CONTENT_PATH}/**/*.mdx`]);
-  const items = await Promise.all(
-    contentFilePaths.map(async filePath => {
-      const source = await fs.readFile(filePath, 'utf8');
-      const { frontmatter } = await serialize(source, {
-        mdxOptions: {
-          remarkPlugins: [],
-          rehypePlugins: [],
-        },
-        parseFrontmatter: true,
-      });
+/**
+ * Sort a list of objects by their `order` prop.
+ */
+const sortByOrder = (items: { order?: number }[]) => {
+  items.sort((a, b) => (a.order || 9999999999) - (b.order || 9999999999));
+};
 
+export const createNavigationTree = async (): Promise<NavigationTree> => {
+  // Get all information for MDX pages (their frontmatter)
+  const files = await getAllMdxFiles();
+  const items = await Promise.all(
+    files.map(async filePath => {
+      const frontmatter = await getFrontmatter<NavigationMenuItem>(filePath);
       return {
+        ...frontmatter,
         slug: toSlug(filePath),
-        ...(frontmatter as any),
-      } as NavigationMenuItem;
+      };
     })
   );
 

@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - '**.tsx?'
+      - '!docs/**'
+      - '!docs-next/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

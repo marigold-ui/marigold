@@ -34,7 +34,9 @@
     "rehype-slug": "^5.0.1",
     "remark-gfm": "^3.0.1",
     "remark-mdx-code-meta": "^2.0.0",
-    "unified": "^10.1.2"
+    "to-vfile": "^7.2.3",
+    "unified": "^10.1.2",
+    "vfile-matter": "^4.0.0"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
