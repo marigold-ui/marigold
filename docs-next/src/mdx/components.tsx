@@ -2,8 +2,8 @@ import { Box, Container, Headline, List, Text } from '@marigold/components';
 import type { ComponentProps } from '@marigold/types';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/nightOwl';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import ReactDOM, { createPortal } from 'react-dom';
 
 import { CopyButton, Link } from '~/components';
 
@@ -115,49 +115,34 @@ export const code = ({ children, ...props }: ComponentProps<'code'>) => (
   </Box>
 );
 
-// Custom HTML
+// Custom HTML - Toc Component
 // ---------------
-// export const toc = ({ children }: any) => (
-//   <Box
-//     css={{
-//       position: 'absolute',
-//       left: '85%',
-//       display: ['none', 'none', 'block'],
-//     }}
-//     aria-hidden="true"
-//   >
-//     {React.Children.map(children, child => {
-//       if (!React.isValidElement(child)) {
-//         return child;
-//       }
-
-//       return React.cloneElement(child, {
-//         ...(child.props as any),
-//         variant: 'toc',
-//       });
-//     })}
-//   </Box>
-// );
-
-interface TableofContentsProps {
-  container?: HTMLElement;
-}
-
-export const TocPortal = ({ items, selector }: any) => {
-  if (!selector) return null;
-  return ReactDOM.createPortal(
-    <div className="tocPortal">
-      <span>{items}</span>
-    </div>,
-    document.body
-  );
-};
-
 export const Toc = ({ items, selector }: any) => {
-  console.log('ITEMS', items, selector);
-  return (
-    <div className="component">
-      <TocPortal items={items} selector={selector} />
+  const elements = JSON.parse(items);
+  const [, setMounted] = useState(false);
+
+  const ref = useRef();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      ref.current = document.querySelector(selector);
+      setMounted(true);
+    }
+  }, []);
+
+  if (!ref.current) {
+    return null;
+  }
+
+  const TocPortal = () => (
+    <div>
+      {elements.map(i => (
+        <List key={i.title}>
+          <Link href={i.anchor}>{i.title}</Link>
+        </List>
+      ))}
     </div>
   );
+
+  return createPortal(<TocPortal />, ref.current);
 };

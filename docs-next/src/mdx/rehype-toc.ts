@@ -1,5 +1,5 @@
 import { visit } from 'unist-util-visit';
-import { Element, Root } from 'hast';
+import type { Element, Root, Text } from 'hast';
 
 import type { Transformer } from 'unified';
 
@@ -22,7 +22,7 @@ export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
         links.push(link);
       }
     });
-
+    console.log(links);
     // const toc: Element = {
     //   type: 'element',
     //   tagName: 'toc',
@@ -59,7 +59,14 @@ export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
     //   children: [],
     // });
 
-    console.log(links.map(link => link.children.map(child => child.value)));
+    const data = links.map(link => {
+      console.log(link.children);
+      return {
+        anchor: link?.properties?.href,
+        title: (link?.children[0] as Text)?.value,
+      };
+    });
+
     tree.children.unshift({
       type: 'mdxJsxFlowElement',
       name: 'Toc',
@@ -69,12 +76,20 @@ export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
           name: 'selector',
           value: options.tocSelector,
         },
+        // this is how the data should be passed but it's not working
+        //
+        // const value = {
+        //   type: 'mdxJsxAttribute',
+        //   name: 'props',
+        //   value: {
+        //     type: 'mdxJsxAttributeValueExpression',
+        //     value: '<json>',
+        //   },
+        // };
         {
           type: 'mdxJsxAttribute',
           name: 'items',
-          value: JSON.stringify(
-            links.map(link => link.children.map(child => child.value))
-          ),
+          value: JSON.stringify(data),
         },
       ],
       children: [],

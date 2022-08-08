@@ -35,7 +35,7 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
             )}
           </Header>
         )}
-        <Container id="#toc"></Container>
+        <Container id="toc"></Container>
         <Container contentType="content" size="large">
           <MDXRemote {...source} />
         </Container>
