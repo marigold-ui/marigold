@@ -1,12 +1,4 @@
-import {
-  JSXElementConstructor,
-  Key,
-  ReactElement,
-  ReactFragment,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { Box, Headline, Link, List } from '@marigold/components';
@@ -32,6 +24,7 @@ export const Toc = ({ items, selector }: any) => {
     <Box
       css={{
         position: 'sticky',
+        fontSize: 'fixed.small-2',
         display: ['none', 'none', 'block'],
         top: 20,
         ml: 'large-2',
@@ -43,7 +36,9 @@ export const Toc = ({ items, selector }: any) => {
       <Headline level="3">Table of Contents</Headline>
       {elements.map((i: { title: string; anchor: string }) => (
         <List key={i.title}>
-          <Link href={i.anchor}>{i.title}</Link>
+          <Link variant="toc" href={i.anchor}>
+            {i.title}
+          </Link>
         </List>
       ))}
     </Box>

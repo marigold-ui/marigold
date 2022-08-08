@@ -22,45 +22,7 @@ export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
         links.push(link);
       }
     });
-    console.log(links);
-    // const toc: Element = {
-    //   type: 'element',
-    //   tagName: 'toc',
-    //   children: [
-    //     {
-    //       type: 'element',
-    //       tagName: 'ul',
-    //       children: links.map(link => ({
-    //         type: 'element',
-    //         tagName: 'li',
-    //         children: [link],
-    //       })),
-    //     },
-    //   ],
-    // };
-
-    // tree.children.unshift(toc);
-
-    // {
-    //   type: 'mdxJsxFlowElement',
-    //   name: 'PropsTable',
-    //   attributes: [ [Object] ],
-    //   children: [],
-    //   position: { start: [Object], end: [Object] },
-    //   data: { _mdxExplicitJsx: true }
-    // },
-
-    // tree.children.unshift({
-    //   type: 'mdxJsxFlowElement',
-    //   name: 'Toc',
-    //   attributes: [
-    //     { type: 'mdxJsxAttribute', name: 'messageTitle', value: 'Hint' },
-    //   ],
-    //   children: [],
-    // });
-
     const data = links.map(link => {
-      console.log(link.children);
       return {
         anchor: link?.properties?.href,
         title: (link?.children[0] as Text)?.value,

@@ -12,19 +12,4 @@ export const List: Theme['components']['List'] = {
       lineHeight: 'large-1',
     },
   },
-  variant: {
-    toc: {
-      ul: {
-        listStyle: 'none',
-        position: 'fixed',
-        borderLeft: '1px solid',
-        borderColor: 'background.light',
-      },
-      item: {
-        fontSize: 'fixed.small-2',
-        fontFamily: 'headline',
-        pb: 'small-1',
-      },
-    },
-  },
 };
