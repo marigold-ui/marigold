@@ -7,6 +7,7 @@ export * from './Logo';
 export * from './MarigoldTheme';
 export * from './Navigation';
 export * from './PropsTable';
+export * from './Toc';
 export * from './ThemeSelect';
 export * from './ThemeSwitch';
 export * from './Version';

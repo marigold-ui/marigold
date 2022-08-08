@@ -5,7 +5,7 @@ import { serialize } from 'next-mdx-remote/serialize';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
-import { Container, Header, Text } from '@marigold/components';
+import { Aside, Container, Header, Text } from '@marigold/components';
 import { CONTENT_PATH, DEMO_PATH } from '../config';
 
 import {
@@ -13,7 +13,7 @@ import {
   getNavigation,
   NavigationMenu,
 } from '~/navigation.utils';
-import { GradientHeadline, Layout } from '~/components';
+import { GradientHeadline, Layout, TocContainer } from '~/components';
 import { remarkCodeDemo } from '~/mdx/remark-code-demo';
 import { rehypeTableOfContents } from '../mdx/rehype-toc';
 
@@ -35,10 +35,12 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
             )}
           </Header>
         )}
-        <Container id="toc"></Container>
-        <Container contentType="content" size="large">
-          <MDXRemote {...source} />
-        </Container>
+        <Aside side="right" space="large-2">
+          <Container contentType="content" size="large">
+            <MDXRemote {...source} />
+          </Container>
+          <TocContainer />
+        </Aside>
       </main>
     </Layout>
   );

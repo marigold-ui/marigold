@@ -1,9 +1,7 @@
-import { Box, Container, Headline, List, Text } from '@marigold/components';
+import { Box, Headline, List, Text } from '@marigold/components';
 import type { ComponentProps } from '@marigold/types';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/nightOwl';
-import React, { useEffect, useRef, useState } from 'react';
-import ReactDOM, { createPortal } from 'react-dom';
 
 import { CopyButton, Link } from '~/components';
 
@@ -114,35 +112,3 @@ export const code = ({ children, ...props }: ComponentProps<'code'>) => (
     {children}
   </Box>
 );
-
-// Custom HTML - Toc Component
-// ---------------
-export const Toc = ({ items, selector }: any) => {
-  const elements = JSON.parse(items);
-  const [, setMounted] = useState(false);
-
-  const ref = useRef();
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      ref.current = document.querySelector(selector);
-      setMounted(true);
-    }
-  }, []);
-
-  if (!ref.current) {
-    return null;
-  }
-
-  const TocPortal = () => (
-    <div>
-      {elements.map(i => (
-        <List key={i.title}>
-          <Link href={i.anchor}>{i.title}</Link>
-        </List>
-      ))}
-    </div>
-  );
-
-  return createPortal(<TocPortal />, ref.current);
-};
