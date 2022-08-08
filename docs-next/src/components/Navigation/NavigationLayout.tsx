@@ -2,16 +2,14 @@ import React from 'react';
 import { Box, Center, Button, Columns } from '@marigold/components';
 import { useResponsiveValue } from '@marigold/system';
 
-import { Link } from '~/components/Link';
-import { Logo } from '~/components/Logo';
-import type { NavigationMenu } from '~/navigation.utils';
+import { Link, Logo, NavigationTree } from '~/components';
 
 import { Navigation } from './Navigation';
 
 const useIsSmallScreen = () => useResponsiveValue([true, false, false], 2);
 
 export interface NavigationLayoutProps {
-  navigation: NavigationMenu;
+  navigation: NavigationTree;
 }
 
 export const NavigationLayout = ({ navigation }: NavigationLayoutProps) => {
