@@ -9,6 +9,7 @@ import remarkGfm from 'remark-gfm';
 import { remarkCodeDemo } from '~/mdx/remark-code-demo';
 
 import { CONTENT_PATH, DEMO_PATH } from '~/config';
+import { rehypeTableOfContents } from './rehype-toc';
 
 export const serialize = async (slug = ['index']) => {
   const file = path.join(CONTENT_PATH, slug.join('/'));
@@ -36,6 +37,7 @@ export const serialize = async (slug = ['index']) => {
       rehypePlugins: [
         rehypeSlug,
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+        [rehypeTableOfContents, { tocSelector: '#toc' }],
       ],
     },
     parseFrontmatter: true,
