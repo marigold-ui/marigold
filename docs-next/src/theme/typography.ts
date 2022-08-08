@@ -11,8 +11,7 @@ export const webFontUrl = [
 ] as const;
 
 export const fontSizes = {
-  fluid: typography.size.fluid,
-  fixed: typography.size.fixed,
+  ...typography.size,
 };
 
 export const fontWeights = {

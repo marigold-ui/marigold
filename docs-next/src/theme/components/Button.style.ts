@@ -2,11 +2,15 @@ import type { Theme } from '@marigold/components';
 
 export const Button: Theme['components']['Button'] = {
   base: {
-    display: 'inline-flex',
-    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center',
     lineHeight: 'medium-1',
     fontFamily: 'body',
     border: 'none',
+
+    '&:focus-visible': {
+      outlineColor: 'brand.primary',
+    },
   },
   variant: {
     outline: {
@@ -36,8 +40,8 @@ export const Button: Theme['components']['Button'] = {
     },
   },
   size: {
-    large: {
-      p: 'medium-1',
+    full: {
+      width: '100%',
     },
   },
 };

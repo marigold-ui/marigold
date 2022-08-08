@@ -13,24 +13,37 @@ export interface IconListProps {
   icons: (keyof typeof Icons)[];
 }
 
+export interface IconListItemProps {
+  icon: keyof typeof Icons;
+}
+
+const IconListItem = ({ icon }: IconListItemProps) => {
+  const Component = Icons[icon];
+
+  return (
+    <div>
+      <Center>
+        <Button variant="outline" size="full">
+          <Box css={{ py: 'large-1' }}>
+            <Component size={24} />
+          </Box>
+        </Button>
+        <Text variant="caption" size="small">
+          {icon}
+        </Text>
+      </Center>
+    </div>
+  );
+};
+
 export const IconList = ({ title, icons }: IconListProps) => {
   return (
     <Box css={{ width: '100%' }}>
       <Headline level="2">{title}</Headline>
-      <Tiles space="small-1" itemMinWidth="100px">
-        {icons.map(icon => {
-          const Component = Icons[icon];
-          return (
-            <Center key={icon} space="small-1">
-              <Button variant="outline" size="large">
-                <Component size={32} />
-              </Button>
-              <Text variant="caption" size="small">
-                {icon}
-              </Text>
-            </Center>
-          );
-        })}
+      <Tiles space="small-1" itemMinWidth="120px">
+        {icons.map(icon => (
+          <IconListItem key={icon} icon={icon} />
+        ))}
       </Tiles>
     </Box>
   );

@@ -1,3 +1,5 @@
 import { size } from '@marigold/tokens';
 
-export const sizes = size.fluid;
+export const sizes = {
+  ...size,
+};
