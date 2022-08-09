@@ -1,4 +1,4 @@
-import React, { useState, useContext, ReactNode } from 'react';
+import React, { useState, useContext, ReactNode, useEffect } from 'react';
 import { type Theme } from '@marigold/components';
 
 // Context
@@ -31,10 +31,20 @@ export const MarigoldThemeSwitch = ({
   initial,
   children,
 }: MarigoldThemeSwitchProps) => {
-  const [theme, setTheme] = useState(initial);
-  return (
-    <Context.Provider value={{ current: theme, themes, setTheme }}>
-      {children}
-    </Context.Provider>
-  );
+  if (typeof window !== 'undefined') {
+    const [theme, setTheme] = useState(initial);
+    useEffect(() => {
+      window.localStorage.setItem('storedTheme', JSON.stringify(theme));
+      const storedTheme = localStorage.getItem('theme');
+      if (storedTheme !== null) {
+        setTheme(JSON.parse(storedTheme));
+      }
+      console.log(storedTheme, '###');
+    }, [theme]);
+    return (
+      <Context.Provider value={{ current: theme, themes, setTheme }}>
+        {children}
+      </Context.Provider>
+    );
+  }
 };
