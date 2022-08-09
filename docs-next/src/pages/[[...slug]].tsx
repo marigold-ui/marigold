@@ -1,7 +1,12 @@
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
-import { Container, Header, Text } from '@marigold/components';
+import { Aside, Container, Header, Text } from '@marigold/components';
 
-import { GradientHeadline, Layout, NavigationTree } from '~/components';
+import {
+  GradientHeadline,
+  Layout,
+  NavigationTree,
+  TocContainer,
+} from '~/components';
 import { getMdxFromSlug, getMdxPaths, createNavigationTree } from '~/mdx/pages';
 import { serialize } from '~/mdx/serialize';
 
@@ -22,9 +27,12 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
           )}
         </Header>
       )}
-      <Container contentType="content" size="large">
-        <MDXRemote {...source} />
-      </Container>
+      <Aside side="right" space="large-2">
+        <Container contentType="content" size="large">
+          <MDXRemote {...source} />
+        </Container>
+        <TocContainer />
+      </Aside>
     </Layout>
   );
 };
