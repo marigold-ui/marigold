@@ -236,6 +236,7 @@ test('smoketest', () => {
         0 5px 5px -2px hsl(220 3% 15% / calc(1% + 4%)),
         0 9px 9px -2px hsl(220 3% 15% / calc(1% + 5%)),
         0 16px 16px -2px hsl(220 3% 15% / calc(1% + 6%))",
+        "none": "none",
         "small-1": "0 1px 2px -1px hsl(220 3% 15% / calc(1% + 9%))",
         "small-2": "
         0 3px 5px -2px hsl(220 3% 15% / calc(1% + 3%)),
