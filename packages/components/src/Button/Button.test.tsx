@@ -162,7 +162,7 @@ test('can be used as a "link button"', () => {
     </ThemeProvider>
   );
   const button = screen.getByTestId('button');
-  expect(button).toBeTruthy();
+  expect(button).toBeInstanceOf(HTMLAnchorElement);
 });
 
 test('can be used as a "link button" and has button styling', () => {
@@ -185,7 +185,7 @@ test('can be used as a "link button" and has button styling', () => {
 test('supports onPress', () => {
   const onPress = jest.fn();
   render(
-    <Button onPress={onPress} href={onPress} data-testid="button">
+    <Button onPress={onPress} data-testid="button">
       Some Button
     </Button>
   );
@@ -212,4 +212,13 @@ test('supports disabled prop', () => {
   const button = screen.getByText(/button/);
   expect(button).toHaveAttribute('disabled');
   expect(button).toHaveStyle('backgroundColor: #e3e3e3');
+});
+
+test('pass through native props', () => {
+  const spy = jest.fn();
+  render(<Button onMouseEnter={spy}>button</Button>);
+  const button = screen.getByText(/button/);
+
+  fireEvent.mouseEnter(button);
+  expect(spy).toHaveBeenCalledTimes(1);
 });

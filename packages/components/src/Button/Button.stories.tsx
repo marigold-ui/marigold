@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
@@ -50,7 +50,24 @@ export const WithIcon: ComponentStory<typeof Button> = ({
 );
 
 export const OnPress: ComponentStory<typeof Button> = args => (
-  <>
-    <Button {...args} onPress={(e: any) => console.log(e)} />
-  </>
+  <Button {...args} onPress={(e: any) => console.log(e)} />
 );
+
+export const AsProp: ComponentStory<typeof Button> = args => (
+  <Button {...args} as="a" href="https://reservix.net" />
+);
+
+export const PassThroughProps: ComponentStory<typeof Button> = args => {
+  const [isHovered, setHovered] = useState(false);
+  return (
+    <>
+      <Button
+        {...args}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      />
+      <br />
+      state: {isHovered ? 'hovered' : 'not hovered'}
+    </>
+  );
+};
