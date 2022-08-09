@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Box,
   Button,
@@ -18,19 +19,25 @@ export interface IconListItemProps {
 }
 
 const IconListItem = ({ icon }: IconListItemProps) => {
+  const [isHovered, setHovered] = useState(false);
   const Component = Icons[icon];
 
   if (!Component) {
     console.warn(`${icon} is not a valid icon!`);
     return null;
   }
-
+  console.log(isHovered);
   return (
     <div>
       <Center>
-        <Button variant="outline" size="full">
+        <Button
+          variant="outline"
+          size="full"
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
           <Box css={{ py: 'large-1' }}>
-            <Component size={48} />
+            {isHovered ? <span>hello!</span> : <Component size={48} />}
           </Box>
         </Button>
         <Text variant="caption" size="small">
