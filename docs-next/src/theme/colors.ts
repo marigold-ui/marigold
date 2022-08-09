@@ -1,5 +1,3 @@
-import { color } from '@marigold/tokens';
-
 export const colors = {
   brand: {
     primary: 'hsl(28, 100%, 53%)',
@@ -20,6 +18,7 @@ export const colors = {
   border: {
     light: 'hsl(29, 37%, 90%)',
     regular: 'hsl(29, 37%, 85%)',
+    dark: 'hsl(29, 37%, 80%)',
   },
   hover: {
     light: 'hsl(28, 100%, 53%, 0.1)',

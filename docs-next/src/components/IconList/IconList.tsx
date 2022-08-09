@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Box, Button, Card, Text, Tiles } from '@marigold/components';
+import { useCopyToClipboard } from 'react-use';
+
+import { Box, Card, Text, Tiles } from '@marigold/components';
 import * as Icons from '@marigold/icons';
 
 export interface IconListProps {
@@ -11,8 +13,10 @@ export interface IconListItemProps {
 }
 
 const IconListItem = ({ icon }: IconListItemProps) => {
-  const [isHovered, setHovered] = useState(false);
   const Component = Icons[icon];
+
+  const [, copyToClipboard] = useCopyToClipboard();
+  const [isHovered, setHovered] = useState(false);
 
   if (!Component) {
     console.warn(`${icon} is not a valid icon!`);
@@ -23,6 +27,7 @@ const IconListItem = ({ icon }: IconListItemProps) => {
     <div>
       <Card
         variant="icon"
+        onClick={() => copyToClipboard('hello!')}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
@@ -33,19 +38,17 @@ const IconListItem = ({ icon }: IconListItemProps) => {
             height: 'large-1',
           }}
         >
-          {isHovered ? (
-            <Box
-              css={{
-                fontFamily: 'headline',
-                fontWeight: 'medium',
-                letterSpacing: '0.5px',
-              }}
-            >
-              COPY SVG
-            </Box>
-          ) : (
-            <Component size={48} />
-          )}
+          <Box
+            css={{
+              display: isHovered ? 'block' : 'none',
+              fontFamily: 'headline',
+              fontWeight: 'medium',
+              letterSpacing: '0.5px',
+            }}
+          >
+            COPY SVG
+          </Box>
+          <Component size={48} />
         </Box>
       </Card>
       <Text variant="caption" size="small" align="center">

@@ -31,13 +31,14 @@
     "prism-react-renderer": "1.3.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-use": "^17.4.0",
     "rehype-autolink-headings": "^6.1.1",
     "rehype-slug": "^5.0.1",
     "remark-gfm": "^3.0.1",
     "remark-mdx-code-meta": "^2.0.0",
+    "to-vfile": "^7.2.3",
     "unified": "^10.1.2",
     "unist-util-visit": "^4.1.0",
-    "to-vfile": "^7.2.3",
     "vfile-matter": "^4.0.0"
   },
   "devDependencies": {
