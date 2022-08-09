@@ -3,20 +3,25 @@ import { createPortal } from 'react-dom';
 
 import { Box, Headline, Link, List } from '@marigold/components';
 
-export const Toc = ({ items, selector }: any) => {
-  const elements = JSON.parse(items);
+export interface TocProps {
+  selector: string;
+  items: string;
+}
+
+export const Toc = ({ items, selector }: TocProps) => {
+  const elements = JSON.parse(items) as { anchor: string; title: string }[];
   const [, setMounted] = useState(false);
 
-  const ref = useRef();
+  const ref = useRef<Element>();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      ref.current = document.querySelector(selector);
+      ref.current = document.querySelector(selector) || undefined;
       setMounted(true);
     }
   }, []);
 
-  if (!ref.current) {
+  if (!ref.current || elements.length === 0) {
     return null;
   }
 
