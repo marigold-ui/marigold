@@ -12,6 +12,7 @@ export interface ContentPageProps {
 
 const ContentPage = ({ source, navigation }: ContentPageProps) => {
   const frontmatter = source.frontmatter as { [key: string]: any } | undefined;
+
   return (
     <Layout navigation={navigation}>
       {frontmatter?.title && (

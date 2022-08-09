@@ -18,10 +18,12 @@ const InnerLink = forwardRef(
   )
 );
 
-export const Link = ({ variant, href, children, target }: LinkProps) => (
-  <NextLink href={href} passHref>
-    <InnerLink variant={variant} target={target}>
-      {children}
-    </InnerLink>
-  </NextLink>
-);
+export const Link = ({ variant, href, children, target }: LinkProps) => {
+  return (
+    <NextLink href={href} passHref shallow={true}>
+      <InnerLink variant={variant} target={target}>
+        {children}
+      </InnerLink>
+    </NextLink>
+  );
+};
