@@ -7,7 +7,7 @@ const urls = [...docFonts, ...b2bFonts];
 class MyDocument extends Document {
   render() {
     return (
-      <Html>
+      <Html lang="en">
         <Head>
           <link rel="preconnect" href="https://fonts.bunny.net" />
           {urls.map(url => (
