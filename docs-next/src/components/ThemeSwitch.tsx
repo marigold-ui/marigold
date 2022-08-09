@@ -31,8 +31,8 @@ export const MarigoldThemeSwitch = ({
   initial,
   children,
 }: MarigoldThemeSwitchProps) => {
+  const [theme, setTheme] = useState(initial);
   if (typeof window !== 'undefined') {
-    const [theme, setTheme] = useState(initial);
     useEffect(() => {
       window.localStorage.setItem('storedTheme', JSON.stringify(theme));
       const storedTheme = localStorage.getItem('theme');
@@ -41,10 +41,10 @@ export const MarigoldThemeSwitch = ({
       }
       console.log(storedTheme, '###');
     }, [theme]);
-    return (
-      <Context.Provider value={{ current: theme, themes, setTheme }}>
-        {children}
-      </Context.Provider>
-    );
   }
+  return (
+    <Context.Provider value={{ current: theme, themes, setTheme }}>
+      {children}
+    </Context.Provider>
+  );
 };
