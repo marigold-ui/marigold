@@ -4,7 +4,7 @@
   "private": true,
   "description": "docs",
   "dependencies": {
-    "@babel/core": "7.18.9",
+    "@babel/core": "7.18.10",
     "@marigold/components": "workspace:*",
     "@marigold/icons": "workspace:*",
     "@marigold/system": "workspace:*",
