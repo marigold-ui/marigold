@@ -1,16 +1,8 @@
 import { useState } from 'react';
-import {
-  Box,
-  Button,
-  Center,
-  Headline,
-  Text,
-  Tiles,
-} from '@marigold/components';
+import { Box, Button, Card, Text, Tiles } from '@marigold/components';
 import * as Icons from '@marigold/icons';
 
 export interface IconListProps {
-  title: string;
   icons: (keyof typeof Icons)[];
 }
 
@@ -26,33 +18,47 @@ const IconListItem = ({ icon }: IconListItemProps) => {
     console.warn(`${icon} is not a valid icon!`);
     return null;
   }
-  console.log(isHovered);
+
   return (
     <div>
-      <Center>
-        <Button
-          variant="outline"
-          size="full"
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
+      <Card
+        variant="icon"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        <Box
+          css={{
+            display: 'grid',
+            placeItems: 'center',
+            height: 'large-1',
+          }}
         >
-          <Box css={{ py: 'large-1' }}>
-            {isHovered ? <span>hello!</span> : <Component size={48} />}
-          </Box>
-        </Button>
-        <Text variant="caption" size="small">
-          {icon}
-        </Text>
-      </Center>
+          {isHovered ? (
+            <Box
+              css={{
+                fontFamily: 'headline',
+                fontWeight: 'medium',
+                letterSpacing: '0.5px',
+              }}
+            >
+              COPY SVG
+            </Box>
+          ) : (
+            <Component size={48} />
+          )}
+        </Box>
+      </Card>
+      <Text variant="caption" size="small" align="center">
+        {icon}
+      </Text>
     </div>
   );
 };
 
-export const IconList = ({ title, icons }: IconListProps) => {
+export const IconList = ({ icons }: IconListProps) => {
   return (
     <Box css={{ width: '100%' }}>
-      <Headline level="2">{title}</Headline>
-      <Tiles space="small-1" itemMinWidth="120px">
+      <Tiles space="small-1" itemMinWidth="7.5rem">
         {icons.map(icon => (
           <IconListItem key={icon} icon={icon} />
         ))}

@@ -1,4 +1,5 @@
 export * from './Button.style';
+export * from './Card.style';
 export * from './Preview.style';
 export * from './Header.style';
 export * from './Headline.style';

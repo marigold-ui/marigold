@@ -1,5 +1,5 @@
 import { size } from '@marigold/tokens';
 
 export const sizes = {
-  ...size,
+  ...size.fixed,
 };
