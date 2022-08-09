@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useCopyToClipboard } from 'react-use';
 
 import { Box, Card, Text, Tiles } from '@marigold/components';
@@ -15,6 +15,7 @@ export interface IconListItemProps {
 const IconListItem = ({ icon }: IconListItemProps) => {
   const Component = Icons[icon];
 
+  const svgRef = useRef();
   const [, copyToClipboard] = useCopyToClipboard();
   const [isHovered, setHovered] = useState(false);
 
@@ -48,7 +49,7 @@ const IconListItem = ({ icon }: IconListItemProps) => {
           >
             COPY SVG
           </Box>
-          <Component size={48} />
+          <Component size={48} ref={svgRef} />
         </Box>
       </Card>
       <Text variant="caption" size="small" align="center">
