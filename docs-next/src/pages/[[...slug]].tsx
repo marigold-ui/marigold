@@ -4,6 +4,8 @@ import { Container, Header, Text } from '@marigold/components';
 import { GradientHeadline, Layout, NavigationTree } from '~/components';
 import { getMdxFromSlug, getMdxPaths, createNavigationTree } from '~/mdx/pages';
 import { serialize } from '~/mdx/serialize';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 export interface ContentPageProps {
   source: MDXRemoteSerializeResult;
@@ -11,6 +13,8 @@ export interface ContentPageProps {
 }
 
 const ContentPage = ({ source, navigation }: ContentPageProps) => {
+  const router = useRouter();
+  console.log(router);
   const frontmatter = source.frontmatter as { [key: string]: any } | undefined;
 
   return (
