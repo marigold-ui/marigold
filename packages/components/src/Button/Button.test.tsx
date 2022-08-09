@@ -217,8 +217,15 @@ test('supports disabled prop', () => {
 test('pass through native props', () => {
   const spy = jest.fn();
   render(<Button onMouseEnter={spy}>button</Button>);
-  const button = screen.getByText(/button/);
 
+  const button = screen.getByText(/button/);
   fireEvent.mouseEnter(button);
   expect(spy).toHaveBeenCalledTimes(1);
+});
+
+test('allows to take full width', () => {
+  render(<Button fullWidth>button</Button>);
+
+  const button = screen.getByText(/button/);
+  expect(button).toHaveStyle('width: 100%');
 });

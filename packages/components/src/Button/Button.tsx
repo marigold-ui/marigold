@@ -27,6 +27,7 @@ export interface ButtonOwnProps extends PressEvents, ComponentProps<'button'> {
   children?: ReactNode;
   variant?: string;
   size?: string;
+  fullWidth?: boolean;
 }
 
 export interface ButtonProps
@@ -49,6 +50,7 @@ export const Button: PolymorphicComponentWithRef<ButtonOwnProps, 'button'> =
         onPressEnd,
         onPressChange,
         onPressUp,
+        fullWidth,
         ...props
       }: Omit<ButtonProps, 'ref'>,
       ref
@@ -95,6 +97,7 @@ export const Button: PolymorphicComponentWithRef<ButtonOwnProps, 'button'> =
             alignItems: 'center',
             gap: '0.5ch',
             cursor: disabled ? 'not-allowed' : 'pointer',
+            width: fullWidth ? '100%' : undefined,
             '&:focus': {
               outline: 0,
             },

@@ -26,6 +26,13 @@ export default {
       },
       description: 'Size of the button',
     },
+    fullWidth: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Take availble width',
+      defaultValue: false,
+    },
     disabled: {
       control: {
         type: 'boolean',
