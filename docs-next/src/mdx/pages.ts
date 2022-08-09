@@ -51,7 +51,9 @@ export const getMdxPaths = async () => {
     .map(slug => ({ params: { slug: slug.split('/') } }));
 
   // Add path alias: "/index" -> "/"
-  const root = paths.find(path => path.params.slug === ['index']);
+  const root = paths.find(
+    path => path.params.slug.length === 1 && path.params.slug[0] === 'index'
+  );
   if (root) {
     paths.push({ params: { slug: [] } });
   }
