@@ -185,7 +185,7 @@ test('forwards ref', () => {
   const ref = React.createRef<SVGElement>();
   render(<SVG ref={ref} />);
 
-  expect(ref.current instanceof SVGElement).toBeTruthy();
+  expect(ref.current).toBeInstanceOf(SVGElement);
 });
 
 test('css prop', () => {

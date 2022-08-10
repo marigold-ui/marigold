@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { render, screen } from '@testing-library/react';
-import { Facebook } from './social/Facebook';
+import { Facebook } from './social';
+import { ArrowUp } from './ui';
 
 test('supports default fill color', () => {
   render(<Facebook title="svg" />);
@@ -30,4 +31,11 @@ test('supports fill prop', () => {
   const svg = screen.getByTitle(/svg/);
 
   expect(svg).toHaveStyle('fill: orange');
+});
+
+test('forwards ref', () => {
+  const ref = React.createRef<SVGElement>();
+  render(<ArrowUp ref={ref} />);
+
+  expect(ref.current).toBeInstanceOf(SVGElement);
 });
