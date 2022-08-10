@@ -19,7 +19,7 @@ export const Toc = ({ items, selector }: TocProps) => {
       ref.current = document.querySelector(selector) || undefined;
       setMounted(true);
     }
-  }, []);
+  }, [selector]);
 
   if (!ref.current || elements.length === 0) {
     return null;
