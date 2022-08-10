@@ -1,34 +1,34 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Facebook } from './social';
 import { ArrowUp } from './ui';
 
 test('supports default fill color', () => {
-  render(<Facebook title="svg" />);
-  const svg = screen.getByTitle(/svg/);
+  render(<Facebook data-testid="svg" />);
+  const svg = screen.getByTestId(/svg/);
 
   expect(svg).toHaveStyle('fill: currentcolor');
 });
 
 test('supports default size', () => {
-  render(<Facebook title="svg" />);
-  const svg = screen.getByTitle(/svg/);
+  render(<Facebook data-testid="svg" />);
+  const svg = screen.getByTestId(/svg/);
 
   expect(svg).toHaveStyle('width: 24px');
   expect(svg).toHaveStyle('height: 24px');
 });
 
 test('supports size prop', () => {
-  render(<Facebook title="svg" size={30} />);
-  const svg = screen.getByTitle(/svg/);
+  render(<Facebook data-testid="svg" size={30} />);
+  const svg = screen.getByTestId(/svg/);
 
   expect(svg).toHaveStyle('width: 30px');
   expect(svg).toHaveStyle('height: 30px');
 });
 
 test('supports fill prop', () => {
-  render(<Facebook title="svg" fill="orange" />);
-  const svg = screen.getByTitle(/svg/);
+  render(<Facebook data-testid="svg" fill="orange" />);
+  const svg = screen.getByTestId(/svg/);
 
   expect(svg).toHaveStyle('fill: orange');
 });
