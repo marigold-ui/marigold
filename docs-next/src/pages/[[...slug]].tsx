@@ -1,7 +1,12 @@
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { Container, Header, Text } from '@marigold/components';
 
-import { GradientHeadline, Layout, NavigationTree } from '~/components';
+import {
+  GradientHeadline,
+  Layout,
+  NavigationTree,
+  ThemeSelect,
+} from '~/components';
 import { getMdxFromSlug, getMdxPaths, createNavigationTree } from '~/mdx/pages';
 import { serialize } from '~/mdx/serialize';
 
@@ -20,6 +25,7 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
           {frontmatter.caption && (
             <Text variant="page-caption">{frontmatter.caption}</Text>
           )}
+          <ThemeSelect />
         </Header>
       )}
       <Container contentType="content" size="large">
