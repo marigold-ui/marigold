@@ -124,13 +124,13 @@ test('add icon in button works as expected', () => {
   render(
     <ThemeProvider theme={theme}>
       <Button>
-        <Facebook fill="red" size={30} title="facebook" />
+        <Facebook fill="red" size={30} data-testid="facebook" />
         iconbutton
       </Button>
     </ThemeProvider>
   );
   const button = screen.getByText(/iconbutton/);
-  const icon = screen.getByTitle(/facebook/);
+  const icon = screen.getByTestId(/facebook/);
 
   expect(button instanceof HTMLButtonElement).toBeTruthy();
   expect(button).toHaveStyle('display: inline-flex');
@@ -142,7 +142,7 @@ test('add space to button works as expected', () => {
   render(
     <ThemeProvider theme={theme}>
       <Button data-testid="iconbutton" space="small">
-        <Facebook fill="red" size={30} title="facebook" />
+        <Facebook fill="red" size={30} data-testid="facebook" />
         iconbutton
       </Button>
     </ThemeProvider>
