@@ -43,7 +43,7 @@ const theme: Theme = {
       margin: 0,
       padding: 0,
       fontFamily: 'body',
-      bg: 'gray00',
+      bg: '#e7e4e0',
     },
   },
   radii: {
