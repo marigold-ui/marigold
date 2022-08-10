@@ -10,6 +10,7 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <link rel="preconnect" href="https://fonts.bunny.net" />
+          <link rel="shortcut icon" href="/favicon.ico" />
           {urls.map(url => (
             <link key={url} href={url} rel="stylesheet" />
           ))}
