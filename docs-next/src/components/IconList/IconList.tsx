@@ -15,7 +15,7 @@ export interface IconListItemProps {
 const IconListItem = ({ icon }: IconListItemProps) => {
   const Component = Icons[icon];
 
-  const svgRef = useRef();
+  const svgRef = useRef<SVGElement>();
   const [isHovered, setHovered] = useState(false);
   const [isCopied, setCopied] = useState(false);
   const [, copyToClipboard] = useCopyToClipboard();
@@ -33,7 +33,11 @@ const IconListItem = ({ icon }: IconListItemProps) => {
       cancel();
     }
 
-    const svg = 'asd';
+    // Get SVG HTML and remove class attribute
+    const svg = svgRef.current!.outerHTML.replace(
+      / class="[a-zA-Z0-9:;.\s()\-,]*"/,
+      ''
+    );
     copyToClipboard(svg);
     setCopied(true);
   };
@@ -67,7 +71,7 @@ const IconListItem = ({ icon }: IconListItemProps) => {
           <Component
             width={48}
             height={48}
-            ref={svgRef}
+            ref={svgRef as any}
             css={{ display: isHovered || isCopied ? 'none' : 'block' }}
           />
         </Box>
