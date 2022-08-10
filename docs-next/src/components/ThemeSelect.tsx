@@ -5,7 +5,8 @@ import { useThemeSwitch } from '~/components';
 export const ThemeSelect = () => {
   const { current, themes, setTheme } = useThemeSwitch();
 
-  console.log(current);
+  console.log('Current ThemeSelect', current);
+
   return (
     <Select
       id="theme-select"
