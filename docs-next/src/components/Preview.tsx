@@ -24,7 +24,9 @@ export const Preview = ({ children }: Preview) => {
             ...theme.root?.body,
             width: '100%',
             p: 20,
-            borderRadius: '10px',
+            borderRadius: 10,
+            border: '1px solid',
+            borderColor: 'hsla(28, 100%, 3%, 0.1)',
           }}
           data-preview
         >
