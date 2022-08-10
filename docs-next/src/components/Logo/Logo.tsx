@@ -1,12 +1,13 @@
-export const Logo = (
-  props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
-) => (
+import { SVGProps } from '@marigold/system';
+import { forwardRef } from 'react';
+
+export const Logo = forwardRef<SVGElement, SVGProps>(props => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="180.281 180.257 139.593 139.762"
+    width={140}
+    height={60}
     {...props}
-    width="140px"
-    height="60px"
   >
     <circle
       cx={250.077}
@@ -141,4 +142,4 @@ export const Logo = (
       />
     </g>
   </svg>
-);
+));
