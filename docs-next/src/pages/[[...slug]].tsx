@@ -5,6 +5,7 @@ import {
   GradientHeadline,
   Layout,
   NavigationTree,
+  ThemeSelect,
   TocContainer,
 } from '~/components';
 import { getMdxFromSlug, getMdxPaths, createNavigationTree } from '~/mdx/pages';
@@ -25,6 +26,7 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
           {frontmatter.caption && (
             <Text variant="page-caption">{frontmatter.caption}</Text>
           )}
+          {frontmatter?.switch && <ThemeSelect />}
         </Header>
       )}
       <Aside side="right" space="large-2">
