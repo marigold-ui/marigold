@@ -9,7 +9,6 @@ export const ThemeSelect = () => {
     <Select
       id="theme-select"
       selectedKey={current}
-      value={current}
       onSelectionChange={current => setTheme(current)}
       aria-label="theme-select"
     >

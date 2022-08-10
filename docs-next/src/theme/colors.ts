@@ -14,4 +14,9 @@ export const colors = {
     light: '#b78c64',
     regular: '#0f0700',
   },
+  border: {
+    light: 'hsl(29, 37%, 90%)',
+    regular: 'hsl(29, 37%, 85%)',
+    dark: 'hsl(29, 37%, 80%)',
+  },
 };
