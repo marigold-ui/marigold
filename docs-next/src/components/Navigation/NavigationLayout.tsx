@@ -21,7 +21,7 @@ export const NavigationLayout = ({ navigation }: NavigationLayoutProps) => {
     <Box css={{ py: ['none', 'medium-1'] }}>
       {isSmallScreen && (
         <Columns space="small-1" columns={[2, 8, 2]} collapseAt="0px">
-          <Box>
+          <Box css={{ m: 'auto' }}>
             <Button
               variant="navigationSmall"
               onPress={() => setShowNavigation(!showNavigation)}
