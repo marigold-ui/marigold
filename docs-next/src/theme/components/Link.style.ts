@@ -23,5 +23,8 @@ export const Link: Theme['components']['Link'] = {
         transform: 'scale(1.1)',
       },
     },
+    toc: {
+      fontFamily: 'headline',
+    },
   },
 } as const;

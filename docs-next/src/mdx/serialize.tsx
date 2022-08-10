@@ -9,6 +9,7 @@ import remarkGfm from 'remark-gfm';
 
 import { DEMO_PATH } from '~/config';
 import { remarkCodeDemo } from '~/mdx/remark-code-demo';
+import { rehypeTableOfContents } from './rehype-toc';
 
 export const serialize = async (content: string) => {
   return await mdx(content, {
@@ -26,6 +27,7 @@ export const serialize = async (content: string) => {
       rehypePlugins: [
         rehypeSlug,
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+        [rehypeTableOfContents, { tocSelector: '#toc' }],
       ],
     },
     parseFrontmatter: true,
