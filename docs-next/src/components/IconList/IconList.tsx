@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useCopyToClipboard } from 'react-use';
+import { useCopyToClipboard, useDebounce } from 'react-use';
 
 import { Box, Card, Text, Tiles } from '@marigold/components';
 import * as Icons from '@marigold/icons';
@@ -16,19 +16,33 @@ const IconListItem = ({ icon }: IconListItemProps) => {
   const Component = Icons[icon];
 
   const svgRef = useRef();
-  const [, copyToClipboard] = useCopyToClipboard();
   const [isHovered, setHovered] = useState(false);
+  const [isCopied, setCopied] = useState(false);
+  const [, copyToClipboard] = useCopyToClipboard();
+  const [isReady, cancel] = useDebounce(() => setCopied(false), 2000, [
+    isCopied,
+  ]);
 
   if (!Component) {
     console.warn(`${icon} is not a valid icon!`);
     return null;
   }
 
+  const handleClick = () => {
+    if (isReady()) {
+      cancel();
+    }
+
+    const svg = 'asd';
+    copyToClipboard(svg);
+    setCopied(true);
+  };
+
   return (
     <div>
       <Card
         variant="icon"
-        onClick={() => copyToClipboard('hello!')}
+        onClick={handleClick}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
@@ -41,15 +55,21 @@ const IconListItem = ({ icon }: IconListItemProps) => {
         >
           <Box
             css={{
-              display: isHovered ? 'block' : 'none',
+              display: isCopied || isHovered ? 'block' : 'none',
               fontFamily: 'headline',
               fontWeight: 'medium',
               letterSpacing: '0.5px',
+              userSelect: 'none',
             }}
           >
-            COPY SVG
+            {isCopied ? 'COPIED!' : 'COPY SVG'}
           </Box>
-          <Component size={48} ref={svgRef} />
+          <Component
+            width={48}
+            height={48}
+            ref={svgRef}
+            css={{ display: isHovered || isCopied ? 'none' : 'block' }}
+          />
         </Box>
       </Card>
       <Text variant="caption" size="small" align="center">
