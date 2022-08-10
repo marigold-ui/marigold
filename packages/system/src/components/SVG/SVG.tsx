@@ -27,7 +27,7 @@ export const SVG = forwardRef<SVGElement, SVGProps>(
     return jsx(
       'svg',
       {
-        viewBox: '0 0 24 24',
+        ...props,
         css: css({
           ...styles,
           fill,
@@ -35,7 +35,6 @@ export const SVG = forwardRef<SVGElement, SVGProps>(
           height: toDimension(props.height || size),
         }),
         ref,
-        ...props,
       },
       children
     );
