@@ -25,7 +25,7 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
           {frontmatter.caption && (
             <Text variant="page-caption">{frontmatter.caption}</Text>
           )}
-          <ThemeSelect />
+          {frontmatter?.switch && <ThemeSelect />}
         </Header>
       )}
       <Container contentType="content" size="large">
