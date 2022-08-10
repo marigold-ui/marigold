@@ -9,6 +9,7 @@ const theme = {
     small: 16,
   },
   colors: {
+    red: '#ffa8a8',
     info: 'blue',
   },
 };
@@ -178,4 +179,22 @@ test('renders <svg> element', () => {
   const svg = screen.getByTestId(/svg/);
 
   expect(svg instanceof SVGElement).toBeTruthy();
+});
+
+test('forwards ref', () => {
+  const ref = React.createRef<SVGElement>();
+  render(<SVG ref={ref} />);
+
+  expect(ref.current).toBeInstanceOf(SVGElement);
+});
+
+test('css prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <SVG css={{ color: 'red' }} data-testid="svg" />
+    </ThemeProvider>
+  );
+  const svg = screen.getByTestId('svg');
+
+  expect(svg).toHaveStyle(`color: ${theme.colors.red}`);
 });
