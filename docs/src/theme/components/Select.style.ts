@@ -1,49 +1,33 @@
 import type { Theme } from '@marigold/components';
-import { colors } from '../colors';
 
 export const Select: Theme['components']['Select'] = {
   base: {
     button: {
       appearance: 'none',
+      fontFamily: 'headline',
+      width: '30%',
+      borderColor: 'background.light',
+      px: 'small-1',
+      color: 'text.regular',
+      lineHeight: 'large-2',
 
-      px: 'xsmall',
-
-      color: 'gray70',
-      lineHeight: 'large',
-
-      bg: 'gray20',
-      borderRadius: 'large',
-      border: '1px solid',
-      borderColor: 'gray20',
+      bg: 'background.page',
+      borderRadius: '10px',
+      my: 'small-1',
 
       outline: 'none',
       cursor: 'pointer',
 
       '&:hover': {
-        borderColor: 'gray50',
+        borderColor: 'brand.primary',
       },
 
-      '&:disabled': {
-        color: 'gray40',
-
-        bg: 'gray20',
-        borderColor: 'gray40',
-
-        cursor: 'not-allowed',
-      },
-
-      '&:focus-visible': {
-        borderColor: 'blue60',
-        boxShadow: `0 0 0 1px ${colors.blue60}`,
-      },
+      '&:focus-visible': { borderColor: 'brand.primary' },
 
       '&:expanded': {
-        bg: 'gray20',
-        borderColor: 'gray40',
-      },
-
-      '&:error': {
-        borderColor: 'error',
+        borderColor: 'brand.primary',
+        color: 'brand.primary',
+        borderRadius: '10px 10px 0px 0px',
       },
     },
   },

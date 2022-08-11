@@ -1,12 +1,9 @@
 ---
 title: Checkbox
 figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=467%3A159
+group: Forms
+switch: true
 ---
-
-import { FigmaLink } from '../../src/components/FigmaLink';
-import { DoAndDont } from '../../src/components/DoAndDont';
-
-# Checkbox
 
 The `Checkbox` component allows users to select one or more options from a set of options. In order to group multiple checkboxes, use the `CheckboxGroup` component.
 
@@ -81,98 +78,3 @@ Use indeterminate state when it represents both selected and not selected values
   );
 };
 ```
-
-## Dos & Don'ts
-
-<Stack space="small">
-  <Box
-    display="grid"
-    css={{
-      gridGap: 'small',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(min(500px, 100%), 1fr))',
-    }}
-  >
-    <DoAndDont
-      preview={
-        <Card>
-          <Stack>
-            <Checkbox id="blue" checked>
-              Blue
-            </Checkbox>
-            <Checkbox id="red" checked>
-              Red
-            </Checkbox>
-            <Checkbox id="yellow">Yellow</Checkbox>
-          </Stack>
-        </Card>
-      }
-    >
-      Use checkboxes to allow users to select one or more options from a list.
-    </DoAndDont>
-    <DoAndDont
-      preview={
-        <Card>
-          <Stack space="medium">
-            <Checkbox id="select" value="error" checked indeterminated>
-              Select all colors
-            </Checkbox>
-            <Stack>
-              <Checkbox id="blue" checked>
-                Blue
-              </Checkbox>
-              <Checkbox id="red" checked>
-                Red
-              </Checkbox>
-              <Checkbox id="yellow">Yellow</Checkbox>
-            </Stack>
-          </Stack>
-        </Card>
-      }
-    >
-      Use a checkbox to select all values. When multiple values that are not
-      identical are represented, the checkbox should appear in the indeterminate
-      state.
-    </DoAndDont>
-    <DoAndDont
-      dont
-      preview={
-        <Card>
-          <Stack space="xsmall">
-            <Checkbox id="option" checked aria-label="option">
-              Activate Option Number 1
-            </Checkbox>
-            <Checkbox id="option" checked aria-label="option">
-              Create a Backup
-            </Checkbox>
-            <Checkbox id="option" checked aria-label="option">
-              Allow password changing
-            </Checkbox>
-          </Stack>
-        </Card>
-      }
-    >
-      Do not use checkboxes to replace a switch.
-    </DoAndDont>
-    <DoAndDont
-      dont
-      preview={
-        <Card>
-          <Stack space="xsmall">
-            <Headline level="5">Select your answer</Headline>
-            <Checkbox id="yes" checked aria-label="yes">
-              Yes
-            </Checkbox>
-            <Checkbox id="no" checked aria-label="no">
-              No
-            </Checkbox>
-            <Checkbox id="not-sure" checked aria-label="not-sure">
-              I am not sure
-            </Checkbox>
-          </Stack>
-        </Card>
-      }
-    >
-      Do not use checkboxes to replace a radio.
-    </DoAndDont>
-  </Box>
-</Stack>

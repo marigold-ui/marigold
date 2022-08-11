@@ -1,17 +1,15 @@
 ---
 title: TextField
 figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=340%3A0
+group: Forms
+switch: true
 ---
-
-# TextField
-
-## Description
 
 The `TextField` component allows user so enter text with a keyboard. It consists of a label, an input field and a help text. The later also includes error messages.
 
-<MarigoldTheme>
+<Preview>
   <TextField label="Try me" description="You should really try this!" />
-</MarigoldTheme>
+</Preview>
 
 ```tsx onlyCode
 import { TextField } from '@marigold/components';
@@ -19,20 +17,85 @@ import { TextField } from '@marigold/components';
 
 ## Props
 
-| Name                      | Type        | Default | Description                                                                                                                              |
-| ------------------------- | ----------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `label` (optional)        | `ReactNode` |         | The label text. If you don't want to visually display a label, provide an `aria-label` or `aria-labelledby` attribute for accessibility. |
-| `description` (optional)  | `ReactNode` |         | A helpful text                                                                                                                           |
-| `errorMessage` (optional) | `ReactNode` |         | An error message                                                                                                                         |
-| `error` (optional)        | `boolean`   | `false` | If `true`, the field is considered invalid and if set the `errorMessage` is shown instead of the `description`.                          |
-| `value` (optional)        | `string`    |         | The value of the input field                                                                                                             |
-| `disabled` (optional)     | `boolean`   | `false` | If `true`, the input is disabled.                                                                                                        |
-| `required` (optional)     | `boolean`   | `false` | If `true`, the input is required.                                                                                                        |
-| `readOnly` (optional)     | `boolean`   | `false` | If `true`, the input is readOnly.                                                                                                        |
-| `type` (optional)         | `string`    | `text`  | The type of the input field.                                                                                                             |
-| `onChange` (optional)     | `function`  |         | A callback function that is called with the input's current `value` when the input value changes.                                        |
-| `width` (optional)        | `string`    | `100%`  | Control the width of the field.                                                                                                          |
-| ...                       |             |         | Yes you can use all regular attributes of `input`!                                                                                       |
+<PropsTable
+  props={[
+    {
+      property: 'label',
+      type: 'ReactNode',
+      description:
+        "The label text. If you don't want to visually display a label, provide an `aria-label` or `aria-labelledby` attribute for accessibility.",
+      default: 'none',
+    },
+    {
+      property: 'description',
+      type: 'ReactNode',
+      description: 'A helpful text.',
+      default: 'none',
+    },
+    {
+      property: 'errorMessage',
+      type: 'ReactNode',
+      description: 'An error message.',
+      default: 'none',
+    },
+    {
+      property: 'error',
+      type: 'boolean',
+      description:
+        'If `true`, the field is considered invalid and if set the `errorMessage` is shown instead of the `description`.',
+      default: 'false',
+    },
+    {
+      property: 'value',
+      type: 'string',
+      description: 'The value of the input field.',
+      default: 'none',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'If `true`, the input is disabled.',
+      default: 'false',
+    },
+    {
+      property: 'required',
+      type: 'boolean',
+      description: 'If `true`, the input is required',
+      default: 'false',
+    },
+    {
+      property: 'readOnly',
+      type: 'boolean',
+      description: 'If `true`, the input is readOnly.',
+      default: 'false',
+    },
+    {
+      property: 'type',
+      type: 'string',
+      description: 'The type of the input field.',
+      default: 'text',
+    },
+    {
+      property: 'onChange',
+      type: 'function',
+      description:
+        "A callback function that is called with the input's current value when the input `value` changes.",
+      default: 'none',
+    },
+    {
+      property: 'width',
+      type: 'string',
+      description: 'Control the `width` of the field.',
+      default: '100%',
+    },
+    {
+      property: '...',
+      type: '',
+      description: 'Yes you can use all regular attributes of `input!`',
+      default: '',
+    },
+  ]}
+></PropsTable>
 
 ## Examples
 
@@ -65,7 +128,7 @@ import { TextField } from '@marigold/components';
 [Just because the input contains numbers, it is not necessarily correctly to use `input[type=number]`!](https://www.coywolf.news/webmaster/accessible-number-input/)
 
 ```tsx
-() => {
+const FieldTextErrorNumberImput = () => {
   const [value, setValue] = React.useState('');
   const error = value.length > 0 && !/^\d+$/.test(value);
 
@@ -86,7 +149,7 @@ import { TextField } from '@marigold/components';
 
 ### Use different `input` methods
 
-```tsx
+```tsx preview
 <TextField label="EMail" type="email" />
 ```
 

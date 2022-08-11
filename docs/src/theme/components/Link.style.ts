@@ -2,33 +2,29 @@ import { Theme } from '@marigold/components';
 
 export const Link: Theme['components']['Link'] = {
   base: {
-    color: 'gray.20',
-    textDecoration: 'none',
-
+    position: 'relative',
     '&:hover': {
-      color: 'blue.70',
+      color: 'brand.secondary',
     },
-
-    '&:disabled': {
-      cursor: 'disabled',
-    },
-  },
-  variant: {
-    outline: {
-      display: 'inline-flex',
-      alignItems: 'center',
-      columnGap: 10,
-      borderRadius: 'medium',
-      border: 'solid',
-      lineHeight: 1,
-      color: 'gray.20',
-      textDecoration: 'none',
-      py: 'xsmall',
-      px: 'medium',
-
-      '&:hover': {
-        bg: 'gray.90',
+    'h2 &': {
+      '&:hover::before': {
+        content: '"#"',
+        position: 'absolute',
+        display: 'inline-block',
+        left: '-1em',
       },
     },
   },
-};
+  variant: {
+    navigation: {
+      '&:hover': {
+        color: 'brand.text',
+        fontWeight: 'medium',
+        transform: 'scale(1.1)',
+      },
+    },
+    toc: {
+      fontFamily: 'headline',
+    },
+  },
+} as const;
