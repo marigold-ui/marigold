@@ -2,13 +2,28 @@ import type { Theme } from '@marigold/components';
 
 export const Button: Theme['components']['Button'] = {
   base: {
-    display: 'inline-flex',
-    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center',
     lineHeight: 'medium-1',
     fontFamily: 'body',
     border: 'none',
+
+    '&:focus-visible': {
+      outlineColor: 'brand.primary',
+    },
   },
   variant: {
+    outline: {
+      background: 'transparent',
+      borderStyle: 'solid',
+      borderWidth: 'small-1',
+      borderRadius: 'small-2',
+      borderColor: 'background.light',
+
+      '&:hover': {
+        bg: 'hover.light',
+      },
+    },
     copy: {
       mb: 'medium-2',
       p: 'small-1',
@@ -22,6 +37,11 @@ export const Button: Theme['components']['Button'] = {
     navigationSmall: {
       border: 'none',
       outline: 'none',
+    },
+  },
+  size: {
+    full: {
+      width: '100%',
     },
   },
 };
