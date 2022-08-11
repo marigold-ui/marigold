@@ -1,28 +1,16 @@
 import React from 'react';
-import { StaticImage } from 'gatsby-plugin-image';
+import Image from 'next/image';
+import logo from './logo.svg';
 
 const Small = () => (
-  <StaticImage
-    src="./logo.png"
-    placeholder="none"
-    alt="Marigold Logo"
-    width={140}
-    height={60}
-  />
+  <Image src={logo} alt="Marigold Logo" width={140} height={60} />
 );
 
 const Large = () => (
-  <StaticImage
-    src="./logo.png"
-    placeholder="none"
-    alt="Marigold Logo"
-    width={750}
-  />
+  <Image src={logo} alt="Marigold Logo" width={750} height={325} />
 );
 
-const Fit = () => (
-  <StaticImage src="./logo.png" placeholder="none" alt="Marigold Logo" />
-);
+const Fit = () => <Image src={logo} layout="fill" alt="Marigold Logo" />;
 
 const sizes = {
   small: Small,
