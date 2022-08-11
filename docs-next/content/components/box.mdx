@@ -1,68 +1,285 @@
 ---
 title: Box
 group: Layout
+switch: true
 ---
 
 See [Box Primitive](../../foundation/box-primitive) for detailed description
 
-```tsx onlyCode
+```tsx
 import { Box } from '@marigold/components';
 ```
 
 ## Props
 
-| Property                    | Type                                  | Default |
-| :-------------------------- | :------------------------------------ | :------ |
-| `as` (optional)             | `HTMLElement`                         | `div`   |
-| `variant` (optional)        | `string⎮string[]`                     |         |
-| `__baseCSS` (optional)      | `CSSObject`                           |         |
-| `css` (optional)            | `CSSObject`                           |         |
-| `display` (optional)        | `ResponsiveStyleValue<string>`        |         |
-| `height` (optional)         | `ResponsiveStyleValue<number⎮string>` |         |
-| `width` (optional)          | `ResponsiveStyleValue<number⎮string>` |         |
-| `minWidth` (optional)       | `ResponsiveStyleValue<number⎮string>` |         |
-| `maxWidth` (optional)       | `ResponsiveStyleValue<number⎮string>` |         |
-| `position` (optional)       | `ResponsiveStyleValue<string>`        |         |
-| `top` (optional)            | `ResponsiveStyleValue<number⎮string>` |         |
-| `bottom` (optional)         | `ResponsiveStyleValue<number⎮string>` |         |
-| `right` (optional)          | `ResponsiveStyleValue<number⎮string>` |         |
-| `left` (optional)           | `ResponsiveStyleValue<number⎮string>` |         |
-| `zIndex` (optional)         | `ResponsiveStyleValue<number⎮string>` |         |
-| `p` (optional)              | `ResponsiveStyleValue<number⎮string>` |         |
-| `px` (optional)             | `ResponsiveStyleValue<number⎮string>` |         |
-| `py` (optional)             | `ResponsiveStyleValue<number⎮string>` |         |
-| `pt` (optional)             | `ResponsiveStyleValue<number⎮string>` |         |
-| `pb` (optional)             | `ResponsiveStyleValue<number⎮string>` |         |
-| `pl` (optional)             | `ResponsiveStyleValue<number⎮string>` |         |
-| `pr` (optional)             | `ResponsiveStyleValue<number⎮string>` |         |
-| `m` (optional)              | `ResponsiveStyleValue<number⎮string>` |         |
-| `mx` (optional)             | `ResponsiveStyleValue<number⎮string>` |         |
-| `my` (optional)             | `ResponsiveStyleValue<number⎮string>` |         |
-| `ml` (optional)             | `ResponsiveStyleValue<number⎮string>` |         |
-| `mr` (optional)             | `ResponsiveStyleValue<number⎮string>` |         |
-| `flexDirection` (optional)  | `ResponsiveStyleValue<string>`        |         |
-| `flexWrap` (optional)       | `ResponsiveStyleValue<string>`        |         |
-| `flexShrink` (optional)     | `ResponsiveStyleValue<number⎮string>` |         |
-| `flexGrow` (optional)       | `ResponsiveStyleValue<number⎮string>` |         |
-| `alignItems` (optional)     | `ResponsiveStyleValue<string>`        |         |
-| `justifyContent` (optional) | `ResponsiveStyleValue<string>`        |         |
-| `bg` (optional)             | `ResponsiveStyleValue<number⎮string>` |         |
-| `border` (optional)         | `ResponsiveStyleValue<number⎮string>` |         |
-| `borderRadius` (optional)   | `ResponsiveStyleValue<number⎮string>` |         |
-| `boxShadow` (optional)      | `ResponsiveStyleValue<number⎮string>` |         |
-| `opacity` (optional)        | `ResponsiveStyleValue<number⎮string>` |         |
-| `overflow` (optional)       | `ResponsiveStyleValue<string>`        |         |
-| `transition` (optional)     | `ResponsiveStyleValue<number⎮string>` |         |
+<PropsTable
+  props={[
+    {
+      property: 'as',
+      type: 'HTMLElement',
+      description: '',
+      default: 'div',
+    },
+    {
+      property: 'variant',
+      type: 'string⎮string[]',
+      description: '',
+      default: '',
+    },
+    {
+      property: '__baseCSS',
+      type: 'CSSObject',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'css',
+      type: 'CSSObject',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'display',
+      type: 'ResponsiveStyleValue<string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'height',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'width',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'minWidth',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'maxWidth',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'position',
+      type: 'ResponsiveStyleValue<string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'top',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'bottom',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'right',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'left',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'zIndex',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'p',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'px',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'py',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'pt',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'pr',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'pl',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'pb',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'm',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'mx',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'my',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'mt',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'mb',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'mr',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'ml',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'flexDirection',
+      type: 'ResponsiveStyleValue<string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'flexWrap',
+      type: 'ResponsiveStyleValue<string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'flexShrink',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'flexGrow',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'alignItems',
+      type: 'ResponsiveStyleValue<string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'justifyContent',
+      type: 'ResponsiveStyleValue<string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'bg',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'border',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'borderRadius',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'boxShadow',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'opacity',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'overflow',
+      type: 'ResponsiveStyleValue<string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'transition',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+  ]}
+/>
 
 ## Examples
 
-```tsx expandCode
+<Box>I am basic div box!</Box>
+
+```tsx
 <Box bg="success" p="8px" width="25%" display="flex" justifyContent="center">
   <Text color="white">Box Example</Text>
 </Box>
 ```
 
-```tsx
+```tsx preview
 <Box>I am basic div box!</Box>
 ```
 
