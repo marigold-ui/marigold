@@ -43,10 +43,9 @@
     "typescript": "4.7.4"
   },
   "scripts": {
-    "dev": "zx navigation.mjs && next dev",
+    "dev": "next dev",
     "watch": "next-remote-watch ./content",
-    "build": "zx navigation.mjs && next build && next export",
-    "start": "next start",
-    "nav": "zx navigation.ts"
+    "build": "next build && next export",
+    "start": "next start"
   }
 }

@@ -1,7 +1,6 @@
-#!/usr/bin/env zx
-
-// Set available globals for eslint
-/* global $, glob, chalk, fs, path */
+// @ts-check
+import path from 'node:path';
+import { globby } from 'globby';
 import { read } from 'to-vfile';
 import { matter } from 'vfile-matter';
 
@@ -58,11 +57,12 @@ const sortByOrder = items => {
 
 const createNavigationTree = async () => {
   // Get all information for MDX pages (their frontmatter)
-  const files = await glob([`${PAGES_PATH}/**/*.mdx`]);
+  const files = await globby([`${PAGES_PATH}/**/*.mdx`]);
   const items = await Promise.all(
     files.map(async filePath => {
       const frontmatter = await getFrontmatter(filePath);
       return {
+        // @ts-ignore
         ...frontmatter,
         slug: toSlug(filePath),
       };
@@ -141,7 +141,7 @@ const createNavigationTree = async () => {
     // Sort groups based on config
     const order = NAVIGATION_CONFIG.order.find(c => c.name === category.name);
 
-    if (!order.groups) {
+    if (!order?.groups) {
       return;
     }
 
@@ -158,6 +158,4 @@ const createNavigationTree = async () => {
   return [...topItems, ...categories];
 };
 
-const nav = await createNavigationTree();
-
-fs.outputJson('src/navigation.json', nav);
+export default createNavigationTree;
