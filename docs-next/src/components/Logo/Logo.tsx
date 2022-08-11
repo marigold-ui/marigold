@@ -1,12 +1,13 @@
 import { SVG, SVGProps } from '@marigold/system';
 import { forwardRef } from 'react';
 
-export const Logo = forwardRef<SVGElement, SVGProps>(props => (
+export const Logo = forwardRef<SVGElement, SVGProps>((props, ref) => (
   <SVG
     xmlns="http://www.w3.org/2000/svg"
     size={60}
     viewBox="0 0 139 139"
     {...props}
+    ref={ref}
   >
     <circle
       cx="69.08"
