@@ -6,12 +6,6 @@
   "browser": {
     "fs": false
   },
-  "scripts": {
-    "dev": "next dev",
-    "watch": "next-remote-watch ./content",
-    "build": "next build && next export",
-    "start": "next start"
-  },
   "dependencies": {
     "@marigold/components": "workspace:*",
     "@marigold/icons": "workspace:*",
@@ -36,15 +30,23 @@
     "rehype-slug": "5.0.1",
     "remark-gfm": "3.0.1",
     "remark-mdx-code-meta": "2.0.0",
+    "to-vfile": "7.2.3",
     "unified": "10.1.2",
     "unist-util-visit": "4.1.0",
-    "to-vfile": "7.2.3",
     "vfile-matter": "4.0.0"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
     "@types/react": "18.0.15",
     "next-remote-watch": "1.0.0",
+    "ts-node": "10.9.1",
     "typescript": "4.7.4"
+  },
+  "scripts": {
+    "dev": "zx navigation.mjs && next dev",
+    "watch": "next-remote-watch ./content",
+    "build": "zx navigation.mjs && next build && next export",
+    "start": "next start",
+    "nav": "zx navigation.ts"
   }
 }
