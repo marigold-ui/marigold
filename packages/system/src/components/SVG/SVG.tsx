@@ -28,7 +28,6 @@ export const SVG = forwardRef<SVGElement, SVGProps>(
       'svg',
       {
         ...props,
-        viewBox: '0 0 24 24',
         css: css({
           ...styles,
           fill,
