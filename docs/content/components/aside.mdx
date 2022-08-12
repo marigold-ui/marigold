@@ -7,17 +7,8 @@ The `<Aside>` layout is useful when you want to set two things next to each othe
 
 It is important to note that the `<Aside>` must have exactly too children, where none is a `<Fragment>`.
 
-Here you can switch the theme of the component.
+```tsx preview file=components/aside/simple-aside.demo.tsx
 
-```tsx preview
-<Aside space="medium-1">
-  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="50px" />
-  <Box border="1px solid #ced4da" bg="#e9ecef" />
-</Aside>
-```
-
-```tsx
-import { Aside } from '@marigold/components';
 ```
 
 ## Props
@@ -59,22 +50,14 @@ import { Aside } from '@marigold/components';
 
 ## Examples
 
-Space between elements
+### Space between elements
 
-```tsx preview
-<Aside space="medium">
-  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="50px" />
-  <Box border="1px solid #ced4da" bg="#e9ecef" />
-</Aside>
+```tsx preview file=components/aside/space.demo.tsx
+
 ```
 
-Aside on the right
+### Aside on the right
 
-```tsx preview
-<Aside space="medium" side="right">
-  <Box border="1px solid #ced4da" bg="#e9ecef" />
-  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="50px" />
-</Aside>
+```tsx preview file=components/aside/rightside.demo.tsx
+
 ```
-
-## Do and Don'ts

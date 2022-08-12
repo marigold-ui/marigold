@@ -43,7 +43,7 @@ export const NavigationLayout = ({ navigation }: NavigationLayoutProps) => {
           </Box>
           <Box />
           <Box>
-            <Link href="/index">
+            <Link href="/">
               <Center>
                 <Logo />
               </Center>
@@ -64,7 +64,7 @@ export const NavigationLayout = ({ navigation }: NavigationLayoutProps) => {
         }
       >
         {!isSmallScreen && (
-          <Link href="/index">
+          <Link href="/">
             <Center>
               <Logo />
             </Center>
