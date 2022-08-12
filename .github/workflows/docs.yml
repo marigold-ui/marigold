@@ -1,14 +1,14 @@
-name: Typecheck
+name: Deploy Docs
 
-on: ['push']
+on: workflow_dispatch
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  typecheck:
-    name: Typecheck
+  test:
+    name: Deploy Docs
     runs-on: ubuntu-latest
     env:
       CI: true
@@ -25,5 +25,9 @@ jobs:
         run: pnpm install
 
       # Action
-      - name: Typecheck
-        run: pnpm typecheck
+      - name: Build Docs
+        run: pnpm build:docs
+      - name: Deploy Docs to Github Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: docs/out

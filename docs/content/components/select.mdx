@@ -1,13 +1,20 @@
 ---
 title: Select
+group: Forms
 figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=2596%3A2348
+switch: true
 ---
 
-import { FigmaLink } from '../../src/components/FigmaLink';
-
-# Select
-
-## Description
+<Preview>
+  <Select label="Favorite character" placeholder="Select your character">
+    <Select.Option>Mario</Select.Option>
+    <Select.Option>Luigi</Select.Option>
+    <Select.Option>Toad</Select.Option>
+    <Select.Option>Yoshi</Select.Option>
+    <Select.Option>Bowser</Select.Option>
+    <Select.Option>Peach</Select.Option>
+  </Select>
+</Preview>
 
 Dropdown for selecting an Option among different options.
 
@@ -25,12 +32,6 @@ Dropdown for selecting an Option among different options.
 ```tsx onlyCode
 import { Select } from '@marigold/components';
 ```
-
-<FigmaLink
-  to={
-    'https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=2596%3A2348'
-  }
-/>
 
 ## Props
 

@@ -2,19 +2,23 @@ import type { Theme } from '@marigold/components';
 
 export const Card: Theme['components']['Card'] = {
   base: {
-    bg: 'gray00',
-    p: 'small',
-    boxShadow: '0px 4px 4px rgba(165, 165, 165, 0.25)',
-    borderRadius: 'large',
+    bg: 'background.foreground',
+    borderStyle: 'solid',
+    borderWidth: 'small-1',
+    borderColor: 'border.light',
+    borderRadius: 'small-2',
+
+    boxShadow: 'medium-1',
+    transition: 'all .3s cubic-bezier(.25, 0, .4, 1)',
   },
   variant: {
-    highlight: {
-      width: '100%',
-      p: 'xxlarge',
-      bg: 'gray20',
-      borderRadius: '10px',
-      display: 'flex',
-      justifyContent: 'center',
+    icon: {
+      cursor: 'pointer',
+
+      '&:hover': {
+        borderColor: 'border.regular',
+        boxShadow: 'medium-2',
+      },
     },
   },
 };

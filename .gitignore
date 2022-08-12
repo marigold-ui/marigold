@@ -9,10 +9,9 @@ coverage
 dist
 build
 
+.cache
 storybook-static
 build-storybook.log
-docs/.cache
-docs/public
 slack-notification.json
 
 .pnpm-debug.log*

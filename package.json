@@ -41,8 +41,7 @@
     "zx": "7.0.8"
   },
   "scripts": {
-    "start": "pnpm --filter @marigold/docs start",
-    "start:next": "pnpm --filter @marigold/docs-next watch",
+    "start": "pnpm --filter @marigold/docs watch",
     "dev": "FOLDERS=packages/components/src,packages/system/src pnpm --filter @marigold/storybook-config start",
     "build": "pnpm --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" build",
     "build:docs": "pnpm --filter @marigold/docs build",
@@ -57,11 +56,10 @@
     "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
     "lint": "eslint . --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern packages/types/src/index.ts --ignore-pattern \".cache\" --ignore-pattern public",
     "format": "prettier --write \"**/*\"",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit --project tsconfig.check.json",
     "contributor": "all-contributors",
     "changeset": "changeset",
     "release": "zx scripts/release.mjs --quiet",
-    "release:docs": "pnpm --filter @marigold/docs deploy",
     "release:notification": "zx scripts/create-slack-notification.mjs",
     "slack": "zx scripts/slack-release-notification.mjs --quiet",
     "prepare": "husky install"

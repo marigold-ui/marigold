@@ -55,7 +55,9 @@ export const remarkCodeDemo = ({
       const meta = parseMeta(node.meta);
 
       if (meta.file) {
-        node.value = fs.readFileSync(path.join(demoPath, meta.file), 'utf8');
+        node.value = fs
+          .readFileSync(path.join(demoPath, meta.file), 'utf8')
+          .trim();
       }
 
       const tree = meta.file
