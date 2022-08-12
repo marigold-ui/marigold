@@ -1,6 +1,9 @@
 name: Deploy Docs
 
-on: workflow_dispatch
+on:
+  workflow_run:
+    workflows: [Release]
+    types: [completed]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -30,5 +33,4 @@ jobs:
       - name: Deploy Docs to Github Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: docs-test
           folder: docs/out
