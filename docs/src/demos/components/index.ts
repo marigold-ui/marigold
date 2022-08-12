@@ -7,3 +7,4 @@ export * from './_test_hook_';
 // component previews
 export * from './Aside';
 export * from './Aspect';
+export * from './Header';
