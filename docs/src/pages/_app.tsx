@@ -13,9 +13,8 @@ import * as DocsComponents from '~/components';
 import * as MdxComponents from '~/mdx/components';
 import * as DemoComponents from '~/demos';
 
-import { Layout, MarigoldThemeSwitch } from '~/components';
+import { MarigoldThemeSwitch } from '~/components';
 import { theme } from '~/theme';
-import nav from '~/navigation.json';
 
 const themes = {
   unicornTheme,
@@ -60,9 +59,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
           <MDXProvider components={components as any}>
             <DevMode />
-            <Layout navigation={nav}>
-              <Component {...pageProps} />
-            </Layout>
+            <Component {...pageProps} />
           </MDXProvider>
         </MarigoldThemeSwitch>
       </MarigoldProvider>

@@ -21,9 +21,6 @@ slack-notification.json
 .next
 out
 .cache
-docs/src/navigation.json
-
-
 ## env
 local.env
 .env.local
