@@ -359,7 +359,9 @@ export default function NotFoundPage() {
       </svg>
 
       <small>
-        <Link to="https://storyset.com/web">Web illustrations by Storyset</Link>
+        <Link href="https://storyset.com/web">
+          Web illustrations by Storyset
+        </Link>
       </small>
     </>
   );

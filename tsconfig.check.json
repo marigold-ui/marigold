@@ -1,0 +1,22 @@
+/*
+ * This is only used for typechecking! The docs have their own tsconfig.
+ * Using this as root config will make it slow.
+ */
+{
+  "extends": "@marigold/tsconfig/react",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@marigold/*": ["./packages/*/src", "./themes/*/src"],
+      "~/*": ["docs/src/*"]
+    }
+  },
+  "exclude": [
+    "coverage/*",
+    "jest.config.js",
+    "**/node_modules/*",
+    "**/dist/**/*",
+    "**/scripts/template/*"
+  ]
+}

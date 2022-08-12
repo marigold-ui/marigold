@@ -1,20 +1,33 @@
+import { colors } from '../colors';
+
 export const Navigation = {
   base: {
-    list: {
-      p: 'none',
+    container: {
+      fontFamily: 'headline',
+      lineHeight: 'large-1',
+      p: 'medium-1',
     },
-    header: {
-      color: 'gray70',
-      fontSize: 'xxsmall',
-      fontWeight: 'bold',
-      pt: 'large',
-      pb: 'small',
+    category: {
+      fontSize: 'fixed.small-3',
+      color: 'brand.secondary',
+      fontWeight: 'regular',
+      textTransform: 'uppercase',
     },
     item: {
-      fontSize: 'xxsmall',
-      fontWeight: 'body',
-      lineHeight: 'xsmall',
-      pb: 'small',
+      pl: '10px',
+      fontSize: 'fixed.small-3',
+      '&:hover': {
+        pl: '8px',
+        borderLeft: `2px solid  ${colors.brand.primary}`,
+      },
+    },
+    list: {
+      p: '0',
+      pb: 'medium-1',
+    },
+    group: {
+      color: 'text.regular',
+      fontWeight: 'medium',
     },
   },
 } as const;

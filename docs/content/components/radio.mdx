@@ -1,34 +1,26 @@
 ---
 title: Radio
+group: Forms
 figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=467%3A332
+switch: true
 ---
-
-import { FigmaLink } from '../../src/components/FigmaLink';
-
-# Radio
 
 The `Radio` and `Radio.Group` components allow users to select one option from a set of options. They are useful for presenting a list of options to users and collecting their responses.
 
-```tsx
-<Radio.Group label="Choose desert" defaultValue="apple">
-  <Radio value="ice cream">🍨 Ice Cream</Radio>
-  <Radio value="cupcake">🧁 Cupcake</Radio>
-  <Radio value="cookie" disabled>
-    🍪 Cookie (sold out)
-  </Radio>
-  <Radio value="apple">🍎 Apple</Radio>
-</Radio.Group>
-```
+<Preview>
+  <Radio.Group label="Choose desert" defaultValue="apple">
+    <Radio value="ice cream">🍨 Ice Cream</Radio>
+    <Radio value="cupcake">🧁 Cupcake</Radio>
+    <Radio value="cookie" disabled>
+      🍪 Cookie (sold out)
+    </Radio>
+    <Radio value="apple">🍎 Apple</Radio>
+  </Radio.Group>
+</Preview>
 
 ```tsx onlyCode
 import { Radio } from '@marigold/components';
 ```
-
-<FigmaLink
-  to={
-    'https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=467%3A332'
-  }
-/>
 
 ## Props
 

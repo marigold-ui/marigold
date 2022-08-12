@@ -3,61 +3,31 @@ import type { Theme } from '@marigold/components';
 export const ListBox: Theme['components']['ListBox'] = {
   base: {
     container: {
-      mt: 'xxsmall',
-
-      bg: 'gray00',
+      bg: 'background.page',
+      outline: 'none',
       border: '1px solid',
-      borderColor: 'gray40',
-      borderRadius: 'large',
-
-      '&:error': {
-        borderColor: 'error',
-      },
+      borderColor: 'brand.primary',
+      borderRadius: '0px 0px 10px 10px ',
     },
 
     list: {
-      p: 'xxsmall',
       outline: 'none',
     },
 
     option: {
-      py: 'xxsmall',
-      px: 'xsmall',
+      p: 'small-1',
+      fontFamily: 'headline',
 
-      borderRadius: 'large',
-
+      borderRadius: '10px',
       outline: 'none',
       cursor: 'pointer',
 
       '&:focus': {
-        bg: 'orange20',
-      },
-
-      '&:selected': {
-        color: 'gray00',
-        bg: 'orange40',
-      },
-
-      '&:disabled': {
-        cursor: 'not-allowed',
-        color: 'gray40',
+        color: 'brand.primary',
       },
     },
-
-    sectionTitle: {
-      color: 'gray50',
-      fontSize: 'xxsmall',
-      pt: 'xsmall',
-      px: 'xsmall',
-    },
-
     section: {
       outline: 'none',
-
-      '&:nth-child(n+1)': {
-        borderTop: '1px solid',
-        borderColor: 'gray40',
-      },
     },
   },
 };

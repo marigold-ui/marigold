@@ -4,8 +4,7 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@marigold/*": ["./packages/*/src", "./themes/*/src"],
-      "~/*": ["docs-next/src/*"]
+      "@marigold/*": ["./packages/*/src", "./themes/*/src"]
     }
   },
   "exclude": [

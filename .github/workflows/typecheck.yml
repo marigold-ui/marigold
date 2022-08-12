@@ -26,4 +26,4 @@ jobs:
 
       # Action
       - name: Typecheck
-        run: pnpm tsc --noEmit
+        run: pnpm typecheck
