@@ -1,18 +1,25 @@
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { Aside, Container, Header, Text } from '@marigold/components';
 
-import { GradientHeadline, ThemeSelect, TocContainer } from '~/components';
-import { getMdxFromSlug, getMdxPaths } from '~/mdx/pages';
+import {
+  GradientHeadline,
+  Layout,
+  NavigationTree,
+  ThemeSelect,
+  TocContainer,
+} from '~/components';
+import { getMdxFromSlug, getMdxPaths, createNavigationTree } from '~/mdx/pages';
 import { serialize } from '~/mdx/serialize';
 
 export interface ContentPageProps {
   source: MDXRemoteSerializeResult;
+  navigation: NavigationTree;
 }
 
-const ContentPage = ({ source }: ContentPageProps) => {
+const ContentPage = ({ source, navigation }: ContentPageProps) => {
   const frontmatter = source.frontmatter as { [key: string]: any } | undefined;
   return (
-    <>
+    <Layout navigation={navigation}>
       {frontmatter?.title && (
         <Header>
           <GradientHeadline>{frontmatter.title}</GradientHeadline>
@@ -28,7 +35,7 @@ const ContentPage = ({ source }: ContentPageProps) => {
         </Container>
         <TocContainer />
       </Aside>
-    </>
+    </Layout>
   );
 };
 
@@ -37,10 +44,12 @@ export default ContentPage;
 export const getStaticProps = async ({ params }: any) => {
   const content = await getMdxFromSlug(params.slug || ['index']);
   const source = await serialize(content);
+  const navigation = await createNavigationTree();
 
   return {
     props: {
       source,
+      navigation,
     },
   };
 };
