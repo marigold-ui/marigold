@@ -1,11 +1,12 @@
 ---
 title: Box
 group: Layout
+switch: true
 ---
 
 See [Box Primitive](../../foundation/box-primitive) for detailed description
 
-```tsx onlyCode
+```tsx
 import { Box } from '@marigold/components';
 ```
 
@@ -270,24 +271,18 @@ import { Box } from '@marigold/components';
 
 ## Examples
 
-```tsx expandCode
-<Box bg="success" p="8px" width="25%" display="flex" justifyContent="center">
-  <Text color="white">Box Example</Text>
-</Box>
+```tsx preview file=components/Box/box-success.demo.tsx
+
 ```
 
-```tsx
-<Box>I am basic div box!</Box>
+```tsx preview file=components/Box/box-basic.demo.tsx
+
 ```
 
-```tsx
-<Box as="button" bg="primary" variant="button.primary" p="8px">
-  I am a button
-</Box>
+```tsx preview file=components/Box/button-box.demo.tsx
+
 ```
 
-```tsx
-<Box as="p" border="1px solid" p="8px">
-  I am a paragraph with a border!
-</Box>
+```tsx preview file=components/Box/box-text.demo.tsx
+
 ```
