@@ -60,7 +60,6 @@
     "contributor": "all-contributors",
     "changeset": "changeset",
     "release": "zx scripts/release.mjs --quiet",
-    "release:docs": "pnpm --filter @marigold/docs deploy",
     "release:notification": "zx scripts/create-slack-notification.mjs",
     "slack": "zx scripts/slack-release-notification.mjs --quiet",
     "prepare": "husky install"
