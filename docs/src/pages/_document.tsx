@@ -9,8 +9,9 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+          <link rel="icon" type="image/png" href="/favicon.png" />
           <link rel="preconnect" href="https://fonts.bunny.net" />
-          <link rel="shortcut icon" href="/favicon.ico" />
           {urls.map(url => (
             <link key={url} href={url} rel="stylesheet" />
           ))}
