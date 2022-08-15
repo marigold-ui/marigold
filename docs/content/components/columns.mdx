@@ -5,118 +5,62 @@ group: Layout
 
 Columns component with sized columns in one row. Add an array of numbers to set the size of the children. The columns array length and the count of children must be the same. You can add space between the columns und set a collapseAt prop to collapse the columns at a certain width.
 
-<Columns space="xsmall" columns={[2, 8, 2]}>
-  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-</Columns>
+```tsx preview file=components/Columns/basic-columns.demo.tsx
 
-```tsx onlyCode
-import { Columns } from '@marigold/components';
 ```
 
 ## Props
 
-| Property        | Type                           | Default  |
-| :-------------- | :----------------------------- | :------- |
-| `columns` (req) | `number[]`                     |          |
-| `space`         | `ResponsiveStyleValue<string>` | `none`   |
-| `collapseAt`    | `40em`                         | `string` |
+<PropsTable
+  props={[
+    {
+      property: 'columns (required)',
+      description:
+        'An array of numbers to set the size of the children. The columns array length and the count of children must be the same.',
+      type: 'number[]',
+      default: '',
+    },
+    {
+      property: 'space',
+      description: 'Space between the columns.',
+      type: 'ResponsiveStyleValue<string>',
+      default: 'none',
+    },
+    {
+      property: 'collapseAt',
+      description: 'Collapse the columns at a certain width.',
+      type: 'string',
+      default: '40em',
+    },
+  ]}
+/>
 
 ## Examples
 
 ### Columns and a space between them
 
-```tsx expandCode
-<Columns space="xsmall" columns={[2, 8, 2]}>
-  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-</Columns>
+```tsx preview file=components/Columns/space-columns.demo.tsx
+
 ```
 
 ### Columns collapsing at a certain width
 
-```tsx
-<Columns collapseAt="50em" space="xsmall" columns={[2, 10]}>
-  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-  <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-</Columns>
+```tsx preview file=components/Columns/collapse-columns.demo.tsx
+
 ```
 
 ### Page layout
 
 Create a page layout with three columns
 
-<Columns space="xsmall" columns={[2, 8, 2]}>
-  <Box border="1px solid #ced4da" bg="#e9ecef" height="250px" p="xsmall">
-    Left Sidebar
-  </Box>
-  <Box border="1px solid #ced4da" bg="#e9ecef" height="250px" p="xsmall">
-    Main Content
-  </Box>
-  <Box border="1px solid #ced4da" bg="#e9ecef" height="250px" p="xsmall">
-    Right Sidebar
-  </Box>
-</Columns>
+```tsx preview file=components/Columns/layout-columns.demo.tsx
+
+```
 
 ### Breadcrumb
 
 Create a Breadcrumb with different widths
 
-<Columns columns={[2, 2, 2, 1, 1, 1]}>
-  <Box
-    border="1px solid"
-    height="50px"
-    display="flex"
-    alignItems="center"
-    justifyContent="center"
-  >
-    Sport
-  </Box>
-  <Box
-    border="1px solid"
-    height="50px"
-    display="flex"
-    alignItems="center"
-    justifyContent="center"
-  >
-    Shows
-  </Box>
-  <Box
-    border="1px solid"
-    height="50px"
-    display="flex"
-    alignItems="center"
-    justifyContent="center"
-  >
-    Konzerte
-  </Box>
-  <Box
-    border="1px solid"
-    height="50px"
-    display="flex"
-    alignItems="center"
-    justifyContent="center"
-  >
-    Comedy
-  </Box>
-  <Box
-    border="1px solid"
-    height="50px"
-    display="flex"
-    alignItems="center"
-    justifyContent="center"
-  >
-    Theater
-  </Box>
-  <Box
-    border="1px solid"
-    height="50px"
-    display="flex"
-    alignItems="center"
-    justifyContent="center"
-  >
-    Klassik
-  </Box>
-</Columns>
+```tsx preview file=components/Columns/breadcrumb-columns.demo.tsx
+
+```
