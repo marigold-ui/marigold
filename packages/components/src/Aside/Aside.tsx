@@ -1,11 +1,11 @@
-import React, { ReactChild } from 'react';
+import React, { type ReactElement } from 'react';
 import { ResponsiveStyleValue } from '@marigold/system';
 import { NonZeroPercentage } from '@marigold/types';
 
 import { Box } from '../Box';
 
 export interface AsideProps {
-  children: [ReactChild, ReactChild];
+  children: [ReactElement, ReactElement];
   side?: 'left' | 'right';
   sideWidth?: ResponsiveStyleValue<string>;
   space?: ResponsiveStyleValue<string>;
