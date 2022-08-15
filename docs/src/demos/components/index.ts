@@ -8,7 +8,10 @@ export * from './_test_hook_';
 // component previews
 export * from './Aside';
 export * from './Aspect';
+export * from './Box';
+export * from './Breakout';
 export * from './Center';
 export * from './Columns';
 export * from './Container';
-
+export * from './Footer';
+export * from './Header';
