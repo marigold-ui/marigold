@@ -54,6 +54,7 @@ jobs:
         if: steps.changesets.outputs.published == 'true'
         run: pnpm build:docs
       - name: Deploy Docs to Github Pages
+        if: steps.changesets.outputs.published == 'true'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: docs/out
