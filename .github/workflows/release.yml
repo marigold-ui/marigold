@@ -39,7 +39,7 @@ jobs:
       # Send Slack Notification
       - name: Create release notification
         if: steps.changesets.outputs.published == 'true'
-        run: pnpm release:notification -- --packages '${{ steps.changesets.outputs.publishedPackages }}'
+        run: pnpm release:notification --packages '${{ steps.changesets.outputs.publishedPackages }}'
       - name: Slack Notification
         if: steps.changesets.outputs.published == 'true'
         uses: slackapi/slack-github-action@v1.21.0
