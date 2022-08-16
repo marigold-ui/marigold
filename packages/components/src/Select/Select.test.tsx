@@ -527,7 +527,9 @@ test('set width via props', () => {
   expect(container).toHaveStyle(`width: ${theme.sizes.huge}px`);
 });
 
-test('supports focus styling for button', () => {
+test('supports focus styling for button', async () => {
+  const user = userEvent.setup();
+
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
@@ -542,12 +544,14 @@ test('supports focus styling for button', () => {
   );
 
   const button = screen.getByTestId('select');
-  userEvent.tab();
+  await user.tab();
 
   expect(button).toHaveStyle(`border-color: ${theme.colors.blue}`);
 });
 
-test('supports styling when select is open', () => {
+test('supports styling when select is open', async () => {
+  const user = userEvent.setup();
+
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
@@ -562,8 +566,8 @@ test('supports styling when select is open', () => {
   );
 
   const button = screen.getByTestId('select');
-  userEvent.tab();
-  userEvent.keyboard('[ArrowDown]');
+  await user.tab();
+  await user.keyboard('[ArrowDown]');
 
   expect(button).toHaveStyle(`border-color: ${theme.colors.gray}`);
 });
