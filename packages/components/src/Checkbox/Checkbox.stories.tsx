@@ -27,6 +27,13 @@ export default {
       description: 'Option to define an indeterminate state',
       defaultValue: false,
     },
+    readOnly: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Read only',
+      defaultValue: false,
+    },
     width: {
       control: {
         type: 'text',
