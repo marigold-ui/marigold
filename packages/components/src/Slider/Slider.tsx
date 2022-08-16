@@ -110,13 +110,18 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
           {...trackProps}
           ref={trackRef}
           __baseCSS={{
-            position: 'relative',
             height: 32,
             width: '100%',
             cursor: props.disabled ? 'not-allowed' : 'pointer',
           }}
         >
-          <Box __baseCSS={styles.track} />
+          <Box
+            __baseCSS={{
+              top: '50%',
+              transform: 'translateY(-50%)',
+            }}
+            css={styles.track}
+          />
           <Thumb
             state={state}
             trackRef={trackRef}
