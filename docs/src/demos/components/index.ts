@@ -4,10 +4,10 @@ export * from './table';
 export * from './_test_';
 export * from './_test_hook_';
 
-
 // component previews
 export * from './Aside';
 export * from './Aspect';
+export * from './Badge';
 export * from './Box';
 export * from './Breakout';
 export * from './Center';
