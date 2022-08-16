@@ -1,5 +1,11 @@
 # @marigold/tokens
 
+## 3.1.0
+
+### Minor Changes
+
+- [#2281](https://github.com/marigold-ui/marigold/pull/2281) [`32353f56`](https://github.com/marigold-ui/marigold/commit/32353f56728ddc02e8b4ec848184b7dc5e5f9d19) Thanks [@sebald](https://github.com/sebald)! - fix: shadow tokens need to have a "none" value
+
 ## 3.0.0
 
 ### Major Changes

@@ -1,5 +1,30 @@
 # @marigold/components
 
+## 2.0.0
+
+### Minor Changes
+
+- [#2289](https://github.com/marigold-ui/marigold/pull/2289) [`13695db8`](https://github.com/marigold-ui/marigold/commit/13695db8db0d057afa68e1f93ad499c1096d969a) Thanks [@sebald](https://github.com/sebald)! - feat: `<SVG>` and Icons support refs and css prop
+
+* [#2255](https://github.com/marigold-ui/marigold/pull/2255) [`e6d18a82`](https://github.com/marigold-ui/marigold/commit/e6d18a82bc55a051b53108e5856d00a18002953d) Thanks [@sebald](https://github.com/sebald)! - feat: export `useAsyncList` and `useListData`
+
+- [#2247](https://github.com/marigold-ui/marigold/pull/2247) [`8e9ea3da`](https://github.com/marigold-ui/marigold/commit/8e9ea3daaa0b3ea666394badabcfc3e76eba5512) Thanks [@sebald](https://github.com/sebald)! - feat: improve theme type
+
+* [#2285](https://github.com/marigold-ui/marigold/pull/2285) [`6f3b6949`](https://github.com/marigold-ui/marigold/commit/6f3b69498f6c09506867b1f20ee3a2a77112efdc) Thanks [@sebald](https://github.com/sebald)! - feat: `<Button>` correctly pass through all native props and option to take full width
+
+### Patch Changes
+
+- [#2320](https://github.com/marigold-ui/marigold/pull/2320) [`6656342b`](https://github.com/marigold-ui/marigold/commit/6656342b3622e4ad7fda47d11d38035228c779bf) Thanks [@sebald](https://github.com/sebald)! - fix: remove deprecated type from `<Aside>`
+
+* [#2319](https://github.com/marigold-ui/marigold/pull/2319) [`7a43970e`](https://github.com/marigold-ui/marigold/commit/7a43970e4c32d74754722b8a8c24117ef4888a0e) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update react-aria
+
+- [#2272](https://github.com/marigold-ui/marigold/pull/2272) [`fb9df312`](https://github.com/marigold-ui/marigold/commit/fb9df312e50a5d4be27a528e339f0d2c5768324d) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update testing
+
+- Updated dependencies [[`13695db8`](https://github.com/marigold-ui/marigold/commit/13695db8db0d057afa68e1f93ad499c1096d969a), [`32353f56`](https://github.com/marigold-ui/marigold/commit/32353f56728ddc02e8b4ec848184b7dc5e5f9d19), [`4c63400f`](https://github.com/marigold-ui/marigold/commit/4c63400fef291181f29f994c7f8a8b020772cbee), [`f4f308e4`](https://github.com/marigold-ui/marigold/commit/f4f308e4ce390cf1a4f055042498fe6787dd6879), [`8e9ea3da`](https://github.com/marigold-ui/marigold/commit/8e9ea3daaa0b3ea666394badabcfc3e76eba5512), [`406f186c`](https://github.com/marigold-ui/marigold/commit/406f186c7f91cebbf3d17795361807e902a4dfab), [`88a3d4b0`](https://github.com/marigold-ui/marigold/commit/88a3d4b030e67e46a4af429b01a884195601b7a2), [`997ccfc1`](https://github.com/marigold-ui/marigold/commit/997ccfc1814a87b9f6b8b4f3716c88ec47554da2)]:
+  - @marigold/icons@1.0.0
+  - @marigold/tokens@3.1.0
+  - @marigold/system@2.0.0
+
 ## 1.3.0
 
 ### Minor Changes

@@ -1,5 +1,12 @@
 # @marigold/create-theme
 
+## 2.0.2
+
+### Patch Changes
+
+- Updated dependencies [[`32353f56`](https://github.com/marigold-ui/marigold/commit/32353f56728ddc02e8b4ec848184b7dc5e5f9d19)]:
+  - @marigold/tokens@3.1.0
+
 ## 2.0.1
 
 ### Patch Changes
