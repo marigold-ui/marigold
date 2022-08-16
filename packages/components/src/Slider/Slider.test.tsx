@@ -93,7 +93,6 @@ test('supports keyboard move right and left', async () => {
   const slider = screen.getByRole(/slider/);
 
   fireEvent.click(screen.getByText(/Example/));
-  await user.tab();
   await user.keyboard('{arrowright}');
   expect(slider).toHaveValue('1');
   await user.keyboard('{arrowleft}');
