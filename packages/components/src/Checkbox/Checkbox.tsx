@@ -156,6 +156,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           useToggleState({
             isSelected: checked,
             defaultSelected: defaultChecked,
+            isReadOnly: readOnly,
             ...props,
           }),
           inputRef
