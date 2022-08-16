@@ -10,6 +10,7 @@ export * from './Aspect';
 export * from './Badge';
 export * from './Box';
 export * from './Breakout';
+export * from './Button';
 export * from './Center';
 export * from './Columns';
 export * from './Container';
