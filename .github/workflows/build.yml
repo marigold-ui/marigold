@@ -23,10 +23,10 @@ jobs:
           node-version-file: '.node-version'
           cache: 'pnpm'
       - name: Install dependencies
-        run: pnpm build
+        run: pnpm install
       # Action
       - name: Check if Storybook builds
-        run: pnpm test:storybook
+        run: pnpm build
 
   # Test if storybook builds
   storybook:
