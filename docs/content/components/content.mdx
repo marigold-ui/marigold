@@ -8,9 +8,9 @@ group: Layout
 
 The `Content` component is used to help structure contents of components like a [`Card`](/components/card) or [`Dialog`](/components/dialog).
 
-<MarigoldTheme>
+<Preview>
   <Content>This is content!</Content>
-</MarigoldTheme>
+</Preview>
 
 ```tsx onlyCode
 import { Content } from '@marigold/components';
@@ -18,17 +18,17 @@ import { Content } from '@marigold/components';
 
 ## Props
 
-| Name      | Type     | Default | Description                          |
-| :-------- | :------- | :------ | :----------------------------------- |
-| `variant` | `string` |         | Use a different _variant_ from theme |
-| `size`    | `string` |         | Use a different _size_ from theme    |
-
-## Examples
-
-### Use case name
-
-```tsx
-<div>Hello there!</div>
-```
-
-## Dos & Don'ts
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'Variant of the component',
+    },
+    {
+      property: 'size',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'Size of the component',
+    },
+  ]}
+/>
