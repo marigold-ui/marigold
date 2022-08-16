@@ -44,7 +44,12 @@ export const Thumb = ({ state, trackRef, styles, ...props }: ThumbProps) => {
   }, [disabled, state]);
 
   return (
-    <Box css={styles} {...thumbProps} {...stateProps}>
+    <Box
+      __baseCSS={{ top: '50%' }}
+      css={styles}
+      {...thumbProps}
+      {...stateProps}
+    >
       <VisuallyHidden>
         <Box
           as="input"
