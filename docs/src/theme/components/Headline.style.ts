@@ -10,6 +10,20 @@ export const Headline: Theme['components']['Headline'] = {
     lineHeight: 'small-3',
     mt: 'large-1',
     mb: 'medium-1',
+
+    '> a': {
+      '&:hover': {
+        color: 'inherit',
+      },
+
+      '&:hover::before': {
+        content: '"#"',
+        position: 'absolute',
+        display: 'inline-block',
+        left: '-1em',
+        color: 'brand.secondary',
+      },
+    },
   },
 
   variant: {
