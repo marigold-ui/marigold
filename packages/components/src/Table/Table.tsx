@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { useTable, TableProps as AriaTableProps } from '@react-aria/table';
+import { useTable, AriaTableProps } from '@react-aria/table';
 import {
   Cell,
   Column,

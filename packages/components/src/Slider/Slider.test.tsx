@@ -117,10 +117,10 @@ test('supports defaultValue (uncontrolled)', () => {
 
 test('supports changing value (controlled)', () => {
   const TestComponent = () => {
-    const [value, setValue] = React.useState([75]);
+    const [value, setValue] = React.useState(75);
     return (
       <ThemeProvider theme={theme}>
-        <Slider value={value} onChange={setValue}>
+        <Slider value={value} onChange={(val: any) => setValue(val)}>
           Example
         </Slider>
       </ThemeProvider>
