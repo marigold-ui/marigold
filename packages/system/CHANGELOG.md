@@ -1,5 +1,17 @@
 # @marigold/system
 
+## 2.0.0
+
+### Minor Changes
+
+- [#2247](https://github.com/marigold-ui/marigold/pull/2247) [`8e9ea3da`](https://github.com/marigold-ui/marigold/commit/8e9ea3daaa0b3ea666394badabcfc3e76eba5512) Thanks [@sebald](https://github.com/sebald)! - feat: improve theme type
+
+### Patch Changes
+
+- [#2273](https://github.com/marigold-ui/marigold/pull/2273) [`4c63400f`](https://github.com/marigold-ui/marigold/commit/4c63400fef291181f29f994c7f8a8b020772cbee) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @emotion/react to v11.10.0
+
+* [#2265](https://github.com/marigold-ui/marigold/pull/2265) [`88a3d4b0`](https://github.com/marigold-ui/marigold/commit/88a3d4b030e67e46a4af429b01a884195601b7a2) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @babel/core to v7.18.10
+
 ## 1.3.0
 
 ### Patch Changes
