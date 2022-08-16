@@ -49,6 +49,7 @@
     "test": "jest --config jest.config.js",
     "test:coverage": "jest --config jest.config.js --coverage --coverageReporters html",
     "test:ci": "jest --config jest.config.js --coverage --ci",
+    "test:docs": "pnpm --filter @marigold/docs test",
     "test:storybook": "pnpm --filter @marigold/storybook-config test",
     "chromatic": "source .env.local && pnpm --filter @marigold/storybook-config chromatic",
     "chromatic:ci": "pnpm --filter @marigold/storybook-config ci",
