@@ -10,7 +10,8 @@
     "dev": "next dev",
     "watch": "next-remote-watch ./content",
     "build": "next build && next export",
-    "start": "next start"
+    "start": "next start",
+    "test": "next build"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
