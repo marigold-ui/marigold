@@ -65,7 +65,9 @@ test('supports mouse click on value on track', () => {
   expect(slider).toHaveValue('2');
 });
 
-test('supports keyboard mouse up and down', () => {
+test('supports keyboard move up and down', async () => {
+  const user = userEvent.setup();
+
   render(
     <ThemeProvider theme={theme}>
       <Slider maxValue={5}>Example</Slider>
@@ -74,13 +76,15 @@ test('supports keyboard mouse up and down', () => {
   const slider = screen.getByRole(/slider/);
 
   fireEvent.click(screen.getByText(/Example/));
-  userEvent.keyboard('{arrowup}');
+  await user.keyboard('{arrowup}');
   expect(slider).toHaveValue('1');
-  userEvent.keyboard('{arrowdown}');
+  await user.keyboard('{arrowdown}');
   expect(slider).toHaveValue('0');
 });
 
-test('supports keyboard mouse right and left', () => {
+test('supports keyboard move right and left', async () => {
+  const user = userEvent.setup();
+
   render(
     <ThemeProvider theme={theme}>
       <Slider maxValue={5}>Example</Slider>
@@ -89,9 +93,10 @@ test('supports keyboard mouse right and left', () => {
   const slider = screen.getByRole(/slider/);
 
   fireEvent.click(screen.getByText(/Example/));
-  userEvent.keyboard('{arrowright}');
+  await user.tab();
+  await user.keyboard('{arrowright}');
   expect(slider).toHaveValue('1');
-  userEvent.keyboard('{arrowleft}');
+  await user.keyboard('{arrowleft}');
   expect(slider).toHaveValue('0');
 });
 
