@@ -12,6 +12,7 @@ export * from './Box';
 export * from './Breakout';
 export * from './Button';
 export * from './Card';
+export * from './Checkbox';
 export * from './Center';
 export * from './Columns';
 export * from './Container';
