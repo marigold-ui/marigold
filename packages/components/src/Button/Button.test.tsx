@@ -49,6 +49,18 @@ const theme = {
   },
 };
 
+test('sets some base styles', () => {
+  render(<Button>button</Button>);
+  const button = screen.getByText(/button/);
+
+  expect(button).toHaveStyle({
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '0.5ch',
+  });
+});
+
 test('supports base style', () => {
   render(
     <ThemeProvider theme={theme}>

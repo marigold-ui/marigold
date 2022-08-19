@@ -64,6 +64,10 @@ export const AsProp: ComponentStory<typeof Button> = args => (
   <Button {...args} as="a" href="https://reservix.net" />
 );
 
+export const FullWidth: ComponentStory<typeof Button> = args => (
+  <Button {...args} fullWidth />
+);
+
 export const PassThroughProps: ComponentStory<typeof Button> = args => {
   const [isHovered, setHovered] = useState(false);
   return (
