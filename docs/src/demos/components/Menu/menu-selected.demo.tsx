@@ -1,5 +1,5 @@
-import { Button, Menu, Text } from '@marigold/components';
 import React, { useState } from 'react';
+import { Button, Menu, Text } from '@marigold/components';
 
 export const MenuSelected = () => {
   const [selected, setSelected] = useState<string | number>('');

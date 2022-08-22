@@ -57,23 +57,6 @@ The `Trigger`has also a prop for `disabled`
 
 ### Disabled Menu
 
-```tsx
-() => {
-  const [selected, setSelected] = React.useState('');
-  return (
-    <>
-      <Menu.Trigger disabled>
-        <Button variant="menu" size="small">
-          Choose Menu
-        </Button>
-        <Menu onSelect={setSelected}>
-          <Menu.Item key="burger">🍔 Burger</Menu.Item>
-          <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-          <Menu.Item key="salad">🥗 Salad</Menu.Item>
-          <Menu.Item key="fries">🍟 Fries</Menu.Item>
-        </Menu>
-      </Menu.Trigger>
-    </>
-  );
-};
+```tsx preview file=components/Menu/menu-disabled.demo.tsx
+
 ```
