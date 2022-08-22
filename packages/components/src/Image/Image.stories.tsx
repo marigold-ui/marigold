@@ -9,26 +9,46 @@ export default {
       control: {
         type: 'text',
       },
-      description: 'there is only one variant',
-      table: {
-        defaultValue: {
-          summary: 'fullWidth',
-        },
-      },
+      description: 'variant of the image',
     },
-    alt: {
+    size: {
       control: {
         type: 'text',
       },
-      description: 'Description text for screenreaders',
+      description: 'size of the image',
+    },
+    fit: {
+      control: {
+        type: 'select',
+      },
+      options: [
+        '',
+        'contain',
+        'cover',
+        'fill',
+        'none',
+        'scale-down',
+        'inherit',
+        'initial',
+        'revert',
+        'revert-layer',
+        'unset',
+      ],
+      description: 'object fit value',
+    },
+    position: {
+      control: {
+        type: 'text',
+      },
+      description: 'object position value',
     },
   },
 } as Meta;
 
 export const Basic: ComponentStory<typeof Image> = args => (
   <Image
+    {...args}
     src="https://www.reservix.net/_Resources/Persistent/0e8f5885125940fdb2bc2d54840f497782f56584/Reservix_Logo_dtp_web_rgb_font_black_180704.png"
     alt="marigold_logo"
-    {...args}
   />
 );
