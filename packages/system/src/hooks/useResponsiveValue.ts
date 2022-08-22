@@ -5,13 +5,6 @@ import { useEffect, useState } from 'react';
 import { useTheme } from './useTheme';
 
 /**
- * Hardcode fallback breakpoints, not make sure `useEffect`
- * doesn't trigger on every render. Since it is part of the
- * dependency array.
- */
-const emptyBreakpoints: string[] = ['40em', '52em', '64em'];
-
-/**
  * Hook that can be used to return values based on the current screen size,
  * using breakpoints from the theme (`theme.breakpoints`). Note that this
  * hook is client.side only.
@@ -21,7 +14,7 @@ export const useResponsiveValue = <T>(
   defaultIndex: number = 0
 ) => {
   const { theme } = useTheme();
-  const breakpoints: string[] = theme.breakpoints || emptyBreakpoints;
+  const breakpoints = theme.breakpoints;
 
   if (defaultIndex < 0 || defaultIndex >= breakpoints.length) {
     throw new RangeError(
