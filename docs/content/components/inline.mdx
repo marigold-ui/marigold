@@ -5,93 +5,59 @@ group: Layout
 
 Layout component to inline elements with space. This component uses the spaces from the given theme or a responsive string.
 
-<MarigoldTheme>
-  <Inline space="small">
-    <Check />
-    <Text>Check</Text>
-  </Inline>
-</MarigoldTheme>
+```tsx preview file=components/Inline/inline.demo.tsx
 
-```tsx onlyCode
-import { Inline } from '@marigold/components';
 ```
 
 ## Props
 
-| Property | Type                           | Default  |
-| :------- | :----------------------------- | :------- |
-| `space`  | `ResponsiveStyleValue<string>` | `none`   |
-| `alignY` | `top, center, bottom`          | `center` |
-| `alignX` | `left, center, right`          | `left`   |
+<PropsTable
+  props={[
+    {
+      property: 'space',
+      type: 'ResponsiveStyleValue<string>',
+      description: '',
+      default: 'none',
+    },
+    {
+      property: 'alignY',
+      type: '`top, center, bottom` ',
+      description: '',
+      default: 'center',
+    },
+    {
+      property: 'alignX',
+      type: '`left, center, right` ',
+      description: '',
+      default: 'left',
+    },
+  ]}
+/>
 
 ## Examples
 
 ### More than two elements
 
-```tsx expandCode
-<Inline space="small">
-  <Check />
-  <Text>Check</Text>
-  <Text>this</Text>
-  <Text>out</Text>
-</Inline>
+```tsx preview file=components/Inline/inline-elements.demo.tsx
+
 ```
 
 ### Spacing
 
-```tsx
-<Inline space="large">
-  <Text>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-    dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
-    massa nec ultricies efficitur, lectus ante consequat magna, a porttitor
-    massa ex ut quam.
-  </Text>
-  <Text>
-    Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
-    Vestibulum malesuada ante eu velit malesuada, nec ultricies sapien finibus.
-    Aenean rutrum in sem a ullamcorper. Integer ut euismod urna. Interdum et
-    malesuada fames ac ante ipsum primis in faucibus.
-  </Text>
-</Inline>
+```tsx preview file=components/Inline/inline-spacing.demo.tsx
+
 ```
 
 ### Nested Inline
 
-```tsx
-<Inline space="large">
-  <Inline space="xsmall">
-    <Headline level="2">Block #1</Headline>
-    <Text>Lorem ipsum dolor sit amet.</Text>
-  </Inline>
-  <Inline space="xsmall">
-    <Headline level="2">Bock #2</Headline>
-    <Text>Lorem ipsum dolor sit amet.</Text>
-  </Inline>
-</Inline>
+```tsx preview file=components/Inline/inline-nested.demo.tsx
+
 ```
 
 ### Different alignment
 
-```tsx
-<Inline space="medium" align="top">
-  <Headline level="2">Top</Headline>
-  <Text>Lorem ipsum dolor sit amet.</Text>
-</Inline>
-```
+```tsx preview file=components/Inline/inline-alignments.demo.tsx
 
-```tsx
-<Inline space="medium">
-  <Headline level="2">Center</Headline>
-  <Text>Lorem ipsum dolor sit amet.</Text>
-</Inline>
-```
-
-```tsx
-<Inline space="medium" align="bottom">
-  <Headline level="2">Bottom</Headline>
-  <Text>Lorem ipsum dolor sit amet.</Text>
-</Inline>
 ```
 
 ## Use cases
