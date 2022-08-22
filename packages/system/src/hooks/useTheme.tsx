@@ -15,7 +15,9 @@ import { StyleObject, Theme } from '../types';
 /**
  * @internal
  */
-export const __defaultTheme: Theme = {};
+export const __defaultTheme: Theme = {
+  breakpoints: [],
+};
 
 const InternalContext = createContext<Theme>(__defaultTheme);
 
