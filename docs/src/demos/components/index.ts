@@ -19,3 +19,4 @@ export * from './Container';
 export * from './Dialog';
 export * from './Footer';
 export * from './Header';
+export * from './VisuallyHidden';
