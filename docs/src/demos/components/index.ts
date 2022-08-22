@@ -20,4 +20,5 @@ export * from './Dialog';
 export * from './Footer';
 export * from './Header';
 export * from './List';
+export * from './Message';
 export * from './VisuallyHidden';
