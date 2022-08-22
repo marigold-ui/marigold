@@ -95,6 +95,7 @@ export const Button: PolymorphicComponentWithRef<ButtonOwnProps, 'button'> =
           __baseCSS={{
             display: 'inline-flex',
             alignItems: 'center',
+            justifyContent: 'center',
             gap: '0.5ch',
             cursor: disabled ? 'not-allowed' : 'pointer',
             width: fullWidth ? '100%' : undefined,
