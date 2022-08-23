@@ -1,4 +1,4 @@
-export * from './table';
+export * from './Table/table-basic.demo';
 
 // test files
 export * from './_test_';
@@ -34,5 +34,6 @@ export * from './Radio';
 export * from './Stack';
 export * from './Split';
 export * from './Switch';
+export * from './Table';
 export * from './Tiles';
 export * from './VisuallyHidden';

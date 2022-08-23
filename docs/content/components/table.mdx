@@ -7,367 +7,71 @@ switch: true
 
 The `Table` component allows to present data in a table format. It enhances the functionality of regular `<table>` elements with the possibility to interact and select the data, as well as, helps with accessibility by providing keyboard navigation.
 
-<Preview>
-  <TableDemo />
-</Preview>
+```tsx preview file=components/Table/table-basic.demo.tsx
 
-```tsx onlyCode
-import { Table } from '@marigold/components';
 ```
 
 ## Props
 
-| Property                       | Type                           | Default  | Description                                              |
-| :----------------------------- | :----------------------------- | :------- | :------------------------------------------------------- |
-| `selectionMode` (optional)     | `'none', 'single', 'multiple'` | `'none'` | The type of selection that is allowed in the collection. |
-| `onSelectionChange` (optional) | `(keys: Selection) => any`     |          | Handler that is called when the selection changes.       |
-| `stretch` (optional)           | `boolean`                      | `false`  | Stretch table to fill the container                      |
+<PropsTable
+  props={[
+    {
+      property: 'selectionMode',
+      type: 'none, single, multiple',
+      description: 'The type of selection that is allowed in the collection.',
+      default: 'none',
+    },
+    {
+      property: 'onSelectionChange',
+      type: '(keys: Selection) => any',
+      description: 'Handler that is called when the selection changes.',
+      default: 'none',
+    },
+    {
+      property: 'stretch',
+      type: 'boolean',
+      description: 'Stretch table to fill the container',
+      default: 'false',
+    },
+  ]}
+/>
 
 ## Examples
 
 ### Selection mode single
 
-```tsx
-<Table aria-label="Table with multiple selection" selectionMode="single">
-  <Table.Header>
-    <Table.Column>Name</Table.Column>
-    <Table.Column>Firstname</Table.Column>
-    <Table.Column>House</Table.Column>
-    <Table.Column>Year of birth</Table.Column>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row key={1}>
-      <Table.Cell>Potter</Table.Cell>
-      <Table.Cell>Harry</Table.Cell>
-      <Table.Cell>Gryffindor</Table.Cell>
-      <Table.Cell>1980</Table.Cell>
-    </Table.Row>
-    <Table.Row key={2}>
-      <Table.Cell>Malfoy</Table.Cell>
-      <Table.Cell>Draco</Table.Cell>
-      <Table.Cell>Slytherin</Table.Cell>
-      <Table.Cell>1980</Table.Cell>
-    </Table.Row>
-    <Table.Row key={3}>
-      <Table.Cell>Diggory</Table.Cell>
-      <Table.Cell>Cedric</Table.Cell>
-      <Table.Cell>Hufflepuff</Table.Cell>
-      <Table.Cell>1977</Table.Cell>
-    </Table.Row>
-    <Table.Row key={4}>
-      <Table.Cell>Lovegood</Table.Cell>
-      <Table.Cell>Luna</Table.Cell>
-      <Table.Cell>Ravenclaw</Table.Cell>
-      <Table.Cell>1981</Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
+```tsx preview file=components/Table/table-single-mode.demo.tsx
+
 ```
 
 ### Selection mode multiple
 
-```tsx
-<Table aria-label="Table with multiple selection" selectionMode="multiple">
-  <Table.Header>
-    <Table.Column>Name</Table.Column>
-    <Table.Column>Firstname</Table.Column>
-    <Table.Column>House</Table.Column>
-    <Table.Column>Year of birth</Table.Column>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row>
-      <Table.Cell>Potter</Table.Cell>
-      <Table.Cell>Harry</Table.Cell>
-      <Table.Cell>Gryffindor</Table.Cell>
-      <Table.Cell>1980</Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>Malfoy</Table.Cell>
-      <Table.Cell>Draco</Table.Cell>
-      <Table.Cell>Slytherin</Table.Cell>
-      <Table.Cell>1980</Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>Diggory</Table.Cell>
-      <Table.Cell>Cedric</Table.Cell>
-      <Table.Cell>Hufflepuff</Table.Cell>
-      <Table.Cell>1977</Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>Lovegood</Table.Cell>
-      <Table.Cell>Luna</Table.Cell>
-      <Table.Cell>Ravenclaw</Table.Cell>
-      <Table.Cell>1981</Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
+```tsx preview file=components/Table/table-multi-mode.demo.tsx
+
 ```
 
 ### Dynamic collections
 
-```tsx
-() => {
-  const columns = [
-    { name: 'Name', key: 'name' },
-    { name: 'Firstname', key: 'firstname' },
-    { name: 'House', key: 'house' },
-    { name: 'Year of birth', key: 'year' },
-  ];
-  const rows = [
-    {
-      id: '1',
-      name: 'Potter',
-      firstname: 'Harry',
-      house: 'Gryffindor',
-      year: '1980',
-    },
-    {
-      id: '2',
-      name: 'Malfoy',
-      firstname: 'Draco',
-      house: 'Slytherin',
-      year: '1980',
-    },
-    {
-      id: '3',
-      name: 'Diggory',
-      firstname: 'Cedric',
-      house: 'Hufflepuff',
-      year: '1977',
-    },
-    {
-      id: '4',
-      name: 'Lovegood',
-      firstname: 'Luna',
-      house: 'Ravenclaw',
-      year: '1981',
-    },
-  ];
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set());
-  return (
-    <Stack space="small">
-      <Table
-        aria-label="Example dynamic collection table"
-        selectionMode="multiple"
-        onSelectionChange={key => setSelectedKeys(new Set(key))}
-      >
-        <Table.Header columns={columns}>
-          {column => <Table.Column>{column.name}</Table.Column>}
-        </Table.Header>
-        <Table.Body items={rows}>
-          {item => (
-            <Table.Row>
-              {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table>
-      <Text>Selected rows: {selectedKeys}</Text>
-    </Stack>
-  );
-};
+```tsx preview file=components/Table/table-dynamic.demo.tsx
+
 ```
 
 ### Disabled Rows
 
-```tsx
-<Table
-  aria-label="Table with multiple selection"
-  selectionMode="multiple"
-  disabledKeys={['Malfoy']}
->
-  <Table.Header>
-    <Table.Column>Name</Table.Column>
-    <Table.Column>Firstname</Table.Column>
-    <Table.Column>House</Table.Column>
-    <Table.Column>Year of birth</Table.Column>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row key="Potter">
-      <Table.Cell>Potter</Table.Cell>
-      <Table.Cell>Harry</Table.Cell>
-      <Table.Cell>Gryffindor</Table.Cell>
-      <Table.Cell>1980</Table.Cell>
-    </Table.Row>
-    <Table.Row key="Malfoy">
-      <Table.Cell>Malfoy</Table.Cell>
-      <Table.Cell>Draco</Table.Cell>
-      <Table.Cell>Slytherin</Table.Cell>
-      <Table.Cell>1980</Table.Cell>
-    </Table.Row>
-    <Table.Row key="Diggory">
-      <Table.Cell>Diggory</Table.Cell>
-      <Table.Cell>Cedric</Table.Cell>
-      <Table.Cell>Hufflepuff</Table.Cell>
-      <Table.Cell>1977</Table.Cell>
-    </Table.Row>
-    <Table.Row key="Lovegood">
-      <Table.Cell>Lovegood</Table.Cell>
-      <Table.Cell>Luna</Table.Cell>
-      <Table.Cell>Ravenclaw</Table.Cell>
-      <Table.Cell>1981</Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
+```tsx preview file=components/Table/table-disabled.demo.tsx
+
 ```
 
 ### Sorting
 
-```tsx
-() => {
-  const data = [
-    {
-      name: 'Luke Skywalker',
-      height: '172',
-      mass: '77',
-      birth_year: '19BBY',
-    },
-    {
-      name: 'C-3PO',
-      height: '167',
-      mass: '75',
-      birth_year: '112BBY',
-    },
-    {
-      name: 'R2-D2',
-      height: '96',
-      mass: '32',
-      birth_year: '33BBY',
-    },
-    {
-      name: 'Darth Vader',
-      height: '202',
-      mass: '136',
-      birth_year: '41.9BBY',
-    },
-    {
-      name: 'Leia Organa',
-      height: '150',
-      mass: '49',
-      birth_year: '19BBY',
-    },
-    {
-      name: 'Owen Lars',
-      height: '178',
-      mass: '120',
-      birth_year: '52BBY',
-    },
-    {
-      name: 'Beru Whitesun lars',
-      height: '165',
-      mass: '75',
-      birth_year: '47BBY',
-    },
-    {
-      name: 'R5-D4',
-      height: '97',
-      mass: '32',
-      birth_year: 'unknown',
-    },
-    {
-      name: 'Biggs Darklighter',
-      height: '183',
-      mass: '84',
-      birth_year: '24BBY',
-    },
-    {
-      name: 'Obi-Wan Kenobi',
-      height: '182',
-      mass: '77',
-      birth_year: '57BBY',
-    },
-  ];
+```tsx preview file=components/Table/table-sorting.demo.tsx
 
-  const [list, setList] = React.useState(data);
-  const [descriptor, setDescriptor] = React.useState({});
-  const sort = ({ column, direction }) => {
-    const result = list.sort((a, b) => {
-      const first = a[column];
-      const second = b[column];
-      let cmp =
-        (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
-      if (direction === 'descending') {
-        cmp *= -1;
-      }
-      return cmp;
-    });
-    setDescriptor({ column, direction });
-    setList(result);
-  };
-
-  return (
-    <Table
-      aria-label="Example table with client side sorting"
-      sortDescriptor={descriptor}
-      onSortChange={sort}
-    >
-      <Table.Header>
-        <Table.Column key="name" allowsSorting>
-          Name
-        </Table.Column>
-        <Table.Column key="height" allowsSorting>
-          Height
-        </Table.Column>
-        <Table.Column key="mass" allowsSorting>
-          Mass
-        </Table.Column>
-        <Table.Column key="birth_year" allowsSorting>
-          Birth Year
-        </Table.Column>
-      </Table.Header>
-      <Table.Body items={list}>
-        {item => (
-          <Table.Row key={item.name}>
-            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
-          </Table.Row>
-        )}
-      </Table.Body>
-    </Table>
-  );
-};
 ```
 
 ### Nested Columns
 
 Columns can be nested, which will result in more than one header row to be created. Note the usage of `isRowHeader` in the example below. By default, only the first column is included in the accessibility name for each row.
 
-```tsx
-<Table aria-label="Example table for nested columns">
-  <Table.Header>
-    <Table.Column title="Name">
-      <Table.Column isRowHeader>First Name</Table.Column>
-      <Table.Column isRowHeader>Last Name</Table.Column>
-    </Table.Column>
-    <Table.Column title="Information">
-      <Table.Column>Age</Table.Column>
-      <Table.Column>Birthday</Table.Column>
-    </Table.Column>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row>
-      <Table.Cell>Sam</Table.Cell>
-      <Table.Cell>Smith</Table.Cell>
-      <Table.Cell>36</Table.Cell>
-      <Table.Cell>May 3</Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>Julia</Table.Cell>
-      <Table.Cell>Jones</Table.Cell>
-      <Table.Cell>24</Table.Cell>
-      <Table.Cell>February 10</Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>Peter</Table.Cell>
-      <Table.Cell>Parker</Table.Cell>
-      <Table.Cell>28</Table.Cell>
-      <Table.Cell>September 7</Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>Bruce</Table.Cell>
-      <Table.Cell>Wayne</Table.Cell>
-      <Table.Cell>32</Table.Cell>
-      <Table.Cell>December 18</Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
+```tsx preview file=components/Table/table-nested.demo.tsx
+
 ```
