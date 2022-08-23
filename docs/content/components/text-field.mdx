@@ -11,7 +11,7 @@ The `TextField` component allows user so enter text with a keyboard. It consists
   <TextField label="Try me" description="You should really try this!" />
 </Preview>
 
-```tsx onlyCode
+```tsx
 import { TextField } from '@marigold/components';
 ```
 
@@ -95,68 +95,44 @@ import { TextField } from '@marigold/components';
       default: '',
     },
   ]}
-></PropsTable>
+/>
 
 ## Examples
 
 ### Simple Text Field
 
-```tsx
-<TextField label="Firstname" />
+```tsx preview file=components/TextField/textfield-basic.demo.tsx
+
 ```
 
 ### Disabled Text Field
 
-```tsx
-<TextField label="Field disabled" disabled />
+```tsx preview file=components/TextField/textfield-disabled.demo.tsx
+
 ```
 
 ### Required Text Field
 
-```tsx
-<TextField label="Name" required />
+```tsx preview file=components/TextField/textfield-req.demo.tsx
+
 ```
 
 ### Text Field with an Error
 
-```tsx
-<TextField label="Name" error errorMessage="Something went wrong!" />
+```tsx preview file=components/TextField/textfield-error.demo.tsx
+
 ```
 
 ### Not every number is a `number`!
 
 [Just because the input contains numbers, it is not necessarily correctly to use `input[type=number]`!](https://www.coywolf.news/webmaster/accessible-number-input/)
 
-```tsx
-const FieldTextErrorNumberImput = () => {
-  const [value, setValue] = React.useState('');
-  const error = value.length > 0 && !/^\d+$/.test(value);
+```tsx preview file=components/TextField/textfield-number.demo.tsx
 
-  return (
-    <TextField
-      label="Promo Code"
-      description="You'll find your promo code on the back of your ticket."
-      errorMessage="Your promo code is not valid! Please review your input."
-      value={value}
-      onChange={setValue}
-      error={error}
-      inputmode="numeric"
-      pattern="[0-9]*"
-    />
-  );
-};
 ```
 
 ### Use different `input` methods
 
-```tsx preview
-<TextField label="EMail" type="email" />
-```
+```tsx preview file=components/TextField/textfield-types.demo.tsx
 
-```tsx
-<TextField label="Date" type="date" />
-```
-
-```tsx
-<TextField label="Phone Number" type="tel" />
 ```
