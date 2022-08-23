@@ -136,7 +136,7 @@ export interface Theme {
    * }
    * ```
    */
-  breakpoints: Array<string>;
+  breakpoints?: Array<string>;
 
   colors?: Scale<CSS.Property.Color | NestedScaleDict<CSS.Property.Color>>;
 
