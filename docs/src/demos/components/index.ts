@@ -34,4 +34,5 @@ export * from './Radio';
 export * from './Text';
 export * from './TextArea';
 export * from './TextField';
+export * from './Tooltip';
 export * from './VisuallyHidden';

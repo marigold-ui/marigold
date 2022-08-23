@@ -12,7 +12,7 @@ The `Tooltip` components allows to provide additional information to that user.
   </Tooltip.Trigger>
 </Preview>
 
-```tsx onlyCode
+```tsx
 import { Tooltip } from '@marigold/components';
 ```
 
@@ -20,44 +20,75 @@ import { Tooltip } from '@marigold/components';
 
 ### TooltipTrigger
 
-| Property                 | Type                                     | Default    |
-| :----------------------- | :--------------------------------------- | :--------- |
-| `variant` (optional)     | `string`                                 |            |
-| `size` (optional)        | `string`                                 |            |
-| `disabled` (optional)    | `boolean`                                | `false`    |
-| `offset` (optional)      | `number`                                 |            |
-| `crossOffset` (optional) | `number`                                 |            |
-| `delay` (optional)       | `number`                                 |            |
-| `trogger` (optional)     | `'focus''                                | undefined` |
-| `placement` (optional)   | `'top' \| 'bottom' \| 'left' \| 'right'` | `'top'`    |
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'string',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'size',
+      type: 'string',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: '',
+      default: 'false',
+    },
+    {
+      property: 'offset',
+      type: 'number',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'crossOffset',
+      type: 'number',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'delay',
+      type: 'number',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'trogger',
+      type: 'focus',
+      description: '',
+      default: 'undefined',
+    },
+    {
+      property: 'placement',
+      type: 'top, bottom, left, right',
+      description: '',
+      default: 'top',
+    },
+  ]}
+/>
 
 ## Examples
 
 ### Default Tooltip
 
-```tsx expandCode
-<Tooltip.Trigger>
-  <Button>
-    <Info fill="info" />
-  </Button>
-  <Tooltip>Tooltip</Tooltip>
-</Tooltip.Trigger>
+```tsx preview file=components/Tooltip/tooltip-basic.demo.tsx
+
 ```
 
 ### Tooltip with custom placement
 
-```tsx expandCode
-<Tooltip.Trigger placement="right">
-  <Button>Hover me!</Button>
-  <Tooltip>Tooltip</Tooltip>
-</Tooltip.Trigger>
+```tsx preview file=components/Tooltip/tooltip-custom.demo.tsx
+
 ```
 
 ### Tooltip only shows when focused
 
-```tsx expandCode
-<Tooltip.Trigger trigger="focus">
-  <Button>Hover me!</Button>
-  <Tooltip>Tooltip</Tooltip>
-</Tooltip.Trigger>
+```tsx preview file=components/Tooltip/tooltip-focus.demo.tsx
+
 ```
