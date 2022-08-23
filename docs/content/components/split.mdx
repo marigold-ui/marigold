@@ -16,7 +16,7 @@ Layout component that allows to split the content of `<Inline>` and `<Stack>` la
   </Box>
 </Preview>
 
-```tsx onlyCode
+```tsx
 import { Split } from '@marigold/components';
 ```
 
@@ -28,24 +28,12 @@ None!
 
 ### With Inline
 
-```tsx expandCode
-<Inline space="small">
-  <Text>Blog</Text>
-  <Text>About</Text>
-  <Split />
-  <Text>Login</Text>
-</Inline>
+```tsx preview file=components/Split/split-inline.demo.tsx
+
 ```
 
 ### With Stack
 
-```tsx expandCode
-<Box css={{ height: 200 }}>
-  <Stack space="xxsmall" stretch>
-    <Text>It's gonna be ...</Text>
-    <Text>wait for it!</Text>
-    <Split />
-    <Text>... legendary!</Text>
-  </Stack>
-</Box>
+```tsx preview file=components/Split/split-stack.demo.tsx
+
 ```
