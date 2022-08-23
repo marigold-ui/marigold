@@ -23,4 +23,7 @@ export const colors = {
   hover: {
     light: 'hsl(28, 100%, 53%, 0.1)',
   },
+  yellow: {
+    base: 'hsl(46, 81%, 63%)',
+  },
 };
