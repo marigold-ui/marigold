@@ -27,6 +27,10 @@ export const Message: Theme['components']['Message'] = {
     info: {
       container: {
         borderColor: 'info.base',
+        color: 'info.text',
+      },
+      title: {
+        color: 'info.text',
       },
       icon: {
         color: 'info.base',

@@ -29,5 +29,6 @@ export const colors = {
   info: {
     background: 'hsl(207.5,100%,98.3%)',
     base: 'hsl(208,100%,82.9%)',
+    text: 'hsl(208, 100%, 20.2%)',
   },
 };
