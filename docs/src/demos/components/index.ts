@@ -31,4 +31,5 @@ export * from './List';
 export * from './Menu';
 export * from './Message';
 export * from './Radio';
+export * from './Split';
 export * from './VisuallyHidden';
