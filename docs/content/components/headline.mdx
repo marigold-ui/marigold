@@ -1,33 +1,46 @@
 ---
 title: Headline
-caption: <short purpose of component> (optional)
 group: Content
 switch: true
 ---
 
 ## Description
 
-```tsx onlyCode
+<Preview>
+  <Headline>Simple Headline</Headline>
+</Preview>
+
+```tsx
 import { Headline } from '@marigold/components';
 ```
 
 ## Props
 
-| Name      | Type     | Default     | Description                                               |
-| :-------- | :------- | :---------- | :-------------------------------------------------------- |
-| `variant` | `string` |             | Use a different _variant_ from theme                      |
-| `size`    | `string` | `'level-1'` | Use a different _size_ from theme                         |
-| `level`   | `string` | `1`         | set a different _level_ from theme, values are from 1 - 6 |
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'string',
+      description: 'Use a different variant from theme',
+      default: 'none',
+    },
+    {
+      property: 'size',
+      type: 'string',
+      description: 'Use a different size from theme',
+      default: `'level-1'`,
+    },
+    {
+      property: 'level',
+      type: 'string',
+      description: 'set a different level from theme, values are from 1 - 6',
+      default: `1`,
+    },
+  ]}
+/>
 
 ## Examples
 
-```tsx
-<Content>
-  <Headline level="3">Lorem ipsum</Headline>
-  <Text>
-    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-    eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-    voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-  </Text>
-</Content>
+```tsx preview file=components/Headline/headline.demo.tsx
+
 ```
