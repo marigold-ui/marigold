@@ -21,5 +21,6 @@ export * from './Divider';
 export * from './Footer';
 export * from './Header';
 export * from './Headline';
+export * from './Icon';
 export * from './Image';
 export * from './Inline';
