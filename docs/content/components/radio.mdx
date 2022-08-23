@@ -24,51 +24,52 @@ import { Radio } from '@marigold/components';
 
 ## Props
 
-| Name                 | Type      | Default     | Description                                                                                                        |
-| :------------------- | :-------- | :---------- | :----------------------------------------------------------------------------------------------------------------- |
-| `variant` (optional) | `string`  |             | Use a different _variant_ from theme                                                                               |
-| `size` (optional)    | `string`  | `'level-1'` | Use a different _size_ from theme                                                                                  |
-| `error` (optional)   | `boolean` | `false`     | If `true`, the checkbox is considered invalid and if set the `errorMessage` is shown instead of the `description`. |
-| `width` (optional)   | `string`  | `100%`      | Control the width of the field.                                                                                    |
-| ...                  |           |             | Yes you can use all regular attributes of `input`!                                                                 |
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'string',
+      description: 'Use a different _variant_ from theme',
+      default: 'none',
+    },
+    {
+      property: 'size',
+      type: 'string',
+      description: 'Use a different _size_ from theme',
+      default: 'none',
+    },
+    {
+      property: 'error',
+      type: 'boolean',
+      description:
+        'If `true`, the checkbox is considered invalid and if set the `errorMessage` is shown instead of the `description`.',
+      default: 'false',
+    },
+    {
+      property: 'width',
+      type: 'string',
+      description: 'Control the width of the field',
+      default: '100%',
+    },
+  ]}
+/>
 
 ## Examples
 
 ### Simple Radio
 
-```tsx
-<Radio.Group label="Radio Group">
-  <Radio value="1">Option 1</Radio>
-  <Radio value="2">Option 2</Radio>
-  <Radio value="3" disabled>
-    Option 3
-  </Radio>
-  <Radio value="4">Option 4</Radio>
-</Radio.Group>
+```tsx preview file=components/Radio/radio.demo.tsx
+
 ```
 
 ### Disabed Radio
 
-```tsx
-<Radio.Group label="Radio Group" disabled>
-  <Radio value="1">Option 1</Radio>
-  <Radio value="2">Option 2</Radio>
-  <Radio value="3" disabled>
-    Option 3
-  </Radio>
-  <Radio value="4">Option 4</Radio>
-</Radio.Group>
+```tsx preview file=components/Radio/radio-disabled.demo.tsx
+
 ```
 
 ### Radio with required label
 
-```tsx
-<Radio.Group label="Radio Group" required>
-  <Radio value="1">Option 1</Radio>
-  <Radio value="2">Option 2</Radio>
-  <Radio value="3" disabled>
-    Option 3
-  </Radio>
-  <Radio value="4">Option 4</Radio>
-</Radio.Group>
+```tsx preview file=components/Radio/radio-required.demo.tsx
+
 ```

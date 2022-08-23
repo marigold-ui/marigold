@@ -15,40 +15,51 @@ This component should not be added on a dynymic way.
   </Message>
 </Preview>
 
-```tsx onlyCode
+```tsx
 import { Message } from '@marigold/components';
 ```
 
 ## Props
 
-| Property             | Type     | Default |
-| :------------------- | :------- | :------ |
-| `messageTitle`       | `string` |         |
-| `variant` (optional) | `string` |         |
-| `size` (optional)    | `string` |         |
+<PropsTable
+  props={[
+    {
+      property: 'messageTitle (required)',
+      type: 'string',
+      default: '',
+      description: '',
+    },
+    {
+      property: 'size',
+      type: 'string',
+      default: '',
+      description: '',
+    },
+    {
+      property: 'variant',
+      type: 'string',
+      default: '',
+      description: '',
+    },
+  ]}
+/>
 
 ## Types
 
 ### Info Message
 
-```tsx
-<Message messageTitle="There is an update available.">
-  <Text>Hello, I am a simple info message.</Text>
-</Message>
+```tsx preview file=components/Message/message-info.demo.tsx
+
 ```
 
 ### Warning Message
 
-```tsx
-<Message variant="warning" messageTitle="Danger Zone!">
-  <Text>Hello, I am a simple warning message.</Text>
-</Message>
+```tsx preview file=components/Message/message-warn.demo.tsx
+
 ```
 
 ### Error Message
 
-```tsx
-<Message variant="error" messageTitle="Wrong here.">
-  <Text>Hello, I am a simple error message.</Text>
-</Message>
+```tsx preview file=components/Message/message-error.demo.tsx
+
 ```
