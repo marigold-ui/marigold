@@ -34,4 +34,5 @@ export * from './Radio';
 export * from './Stack';
 export * from './Split';
 export * from './Switch';
+export * from './Tiles';
 export * from './VisuallyHidden';
