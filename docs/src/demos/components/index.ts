@@ -32,4 +32,6 @@ export * from './Menu';
 export * from './Message';
 export * from './NumberField';
 export * from './Radio';
+export * from './Select';
+export * from './Slider';
 export * from './VisuallyHidden';
