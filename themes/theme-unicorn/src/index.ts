@@ -8,6 +8,7 @@ export const webFontUrl = [
 ] as const;
 
 const theme: Theme = {
+  breakpoints: ['40em', '52em', '64em'],
   space: {
     none: 0,
     xxsmall: 3,
@@ -83,6 +84,6 @@ const theme: Theme = {
     xxlarge: 3,
   },
   components,
-} as const;
+};
 
 export default theme;
