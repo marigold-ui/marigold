@@ -1,5 +1,16 @@
 # @marigold/theme-b2b
 
+## 12.0.0
+
+### Minor Changes
+
+- [#2334](https://github.com/marigold-ui/marigold/pull/2334) [`1be70499`](https://github.com/marigold-ui/marigold/commit/1be704993ec6597c40099217e9c682b231cf4312) Thanks [@sebald](https://github.com/sebald)! - feat: add breakpoints to all themes
+
+### Patch Changes
+
+- Updated dependencies [[`92feeafe`](https://github.com/marigold-ui/marigold/commit/92feeafe7e9de8c4b685c9ed474f193cff747bf6), [`22350f02`](https://github.com/marigold-ui/marigold/commit/22350f025932c871028ea1292cb13fbb5492865e), [`6e236e78`](https://github.com/marigold-ui/marigold/commit/6e236e782b33a22c1fd1a8124ea8b6eb9be9ee6e)]:
+  - @marigold/components@2.1.0
+
 ## 11.0.0
 
 ### Patch Changes

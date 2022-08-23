@@ -6,38 +6,39 @@ group: Layout
 A divider is a visual separator between two groups of content,
 e.g. groups of menu items or sections of a page.
 
-<Divider />
+```tsx preview file=components/Divider/divider.demo.tsx
 
-```tsx onlyCode
-import { Divider } from '@marigold/components';
 ```
 
 ## Props
 
-| Property             | Type     | Default     |
-| :------------------- | :------- | :---------- |
-| `variant` (optional) | `string` | `__default` |
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'string',
+      description: 'Use a different variant from theme',
+      default: 'none',
+    },
+  ]}
+/>
 
 ## Examples
 
 ### Standard Divider
 
-```tsx
-<Divider />
+```tsx preview file=components/Divider/divider.demo.tsx
+
 ```
 
 ### Bold Divider
 
-```tsx
-<Divider variant="bold" />
+```tsx preview file=components/Divider/divider-bold.demo.tsx
+
 ```
 
 ### Divider between Text
 
-```tsx
-<>
-  <Text>Dark Side</Text>
-  <Divider />
-  <Text>Bright Side</Text>
-</>
+```tsx preview file=components/Divider/divider-text.demo.tsx
+
 ```

@@ -1,5 +1,19 @@
 # @marigold/docs
 
+## 2.1.0
+
+### Minor Changes
+
+- [#2328](https://github.com/marigold-ui/marigold/pull/2328) [`22350f02`](https://github.com/marigold-ui/marigold/commit/22350f025932c871028ea1292cb13fbb5492865e) Thanks [@sebald](https://github.com/sebald)! - feat: add `fit` and `potision` props to `<Image>`
+
+### Patch Changes
+
+- Updated dependencies [[`92feeafe`](https://github.com/marigold-ui/marigold/commit/92feeafe7e9de8c4b685c9ed474f193cff747bf6), [`22350f02`](https://github.com/marigold-ui/marigold/commit/22350f025932c871028ea1292cb13fbb5492865e), [`6e236e78`](https://github.com/marigold-ui/marigold/commit/6e236e782b33a22c1fd1a8124ea8b6eb9be9ee6e), [`1be70499`](https://github.com/marigold-ui/marigold/commit/1be704993ec6597c40099217e9c682b231cf4312)]:
+  - @marigold/components@2.1.0
+  - @marigold/theme-b2b@12.0.0
+  - @marigold/system@2.1.0
+  - @marigold/icons@1.0.1
+
 ## 2.0.0
 
 ### Major Changes
