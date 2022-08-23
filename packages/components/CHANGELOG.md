@@ -1,5 +1,21 @@
 # @marigold/components
 
+## 2.1.0
+
+### Minor Changes
+
+- [#2328](https://github.com/marigold-ui/marigold/pull/2328) [`22350f02`](https://github.com/marigold-ui/marigold/commit/22350f025932c871028ea1292cb13fbb5492865e) Thanks [@sebald](https://github.com/sebald)! - feat: add `fit` and `potision` props to `<Image>`
+
+### Patch Changes
+
+- [#2333](https://github.com/marigold-ui/marigold/pull/2333) [`92feeafe`](https://github.com/marigold-ui/marigold/commit/92feeafe7e9de8c4b685c9ed474f193cff747bf6) Thanks [@sebald](https://github.com/sebald)! - fix: justify content in `<Button>`
+
+* [#2326](https://github.com/marigold-ui/marigold/pull/2326) [`6e236e78`](https://github.com/marigold-ui/marigold/commit/6e236e782b33a22c1fd1a8124ea8b6eb9be9ee6e) Thanks [@sebald](https://github.com/sebald)! - fix: correctly apply read only state to `<Checkbox>`
+
+* Updated dependencies []:
+  - @marigold/system@2.1.0
+  - @marigold/icons@1.0.1
+
 ## 2.0.0
 
 ### Minor Changes
