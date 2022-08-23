@@ -4,6 +4,7 @@ import { colors } from './colors';
 import * as components from './components';
 
 const theme: Theme = {
+  breakpoints: ['40em', '52em', '64em'],
   space: {
     none: 0,
     xxsmall: 4,
@@ -79,6 +80,6 @@ const theme: Theme = {
     xxlarge: 3,
   },
   components,
-} as const;
+};
 
 export default theme;
