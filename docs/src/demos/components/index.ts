@@ -27,3 +27,4 @@ export * from './Inline';
 export * from './Input';
 export * from './Label';
 export * from './Link';
+export * from './Radio';
