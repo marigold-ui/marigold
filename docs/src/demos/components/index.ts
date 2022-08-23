@@ -32,4 +32,5 @@ export * from './Menu';
 export * from './Message';
 export * from './Radio';
 export * from './Text';
+export * from './TextArea';
 export * from './VisuallyHidden';
