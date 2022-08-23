@@ -22,64 +22,41 @@ The `Trigger`has also a prop for `disabled`
   </Menu.Trigger>
 </Preview>
 
-```tsx onlyCode
-import { Menu } from '@marigold/components';
-```
-
 ## Props
 
-| Property                      | Type      | Default |
-| :---------------------------- | :-------- | :------ |
-| `variant` (optional)          | `string`  |         |
-| `size` (optional)             | `string`  |         |
-| `disabled` (only for Trigger) | `boolean` |         |
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'string',
+      description: '',
+      default: 'none',
+    },
+    {
+      property: 'size',
+      type: 'string',
+      description: '',
+      default: 'none',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'only for trigger',
+      default: 'false',
+    },
+  ]}
+/>
 
 ## Examples
 
 ### Simple Menu
 
-```tsx
-() => {
-  const [selected, setSelected] = React.useState('');
-  return (
-    <>
-      <Menu.Trigger>
-        <Button variant="menu" size="small">
-          Choose Menu
-        </Button>
-        <Menu onSelect={setSelected}>
-          <Menu.Item key="burger">🍔 Burger</Menu.Item>
-          <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-          <Menu.Item key="salad">🥗 Salad</Menu.Item>
-          <Menu.Item key="fries">🍟 Fries</Menu.Item>
-        </Menu>
-      </Menu.Trigger>
-      <hr />
-      <Text>selected: {selected}</Text>
-    </>
-  );
-};
+```tsx preview file=components/Menu/menu-selected.demo.tsx
+
 ```
 
 ### Disabled Menu
 
-```tsx
-() => {
-  const [selected, setSelected] = React.useState('');
-  return (
-    <>
-      <Menu.Trigger disabled>
-        <Button variant="menu" size="small">
-          Choose Menu
-        </Button>
-        <Menu onSelect={setSelected}>
-          <Menu.Item key="burger">🍔 Burger</Menu.Item>
-          <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-          <Menu.Item key="salad">🥗 Salad</Menu.Item>
-          <Menu.Item key="fries">🍟 Fries</Menu.Item>
-        </Menu>
-      </Menu.Trigger>
-    </>
-  );
-};
+```tsx preview file=components/Menu/menu-disabled.demo.tsx
+
 ```
