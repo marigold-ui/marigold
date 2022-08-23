@@ -20,119 +20,155 @@ The `NumberField` components allows users to enter numbers with a keyboard. This
   />
 </Preview>
 
-```tsx onlyCode
+```tsx
 import { NumberField } from '@marigold/components';
 ```
 
-| Name                       | Type                       | Default | Description                                                                                                                                                                          |
-| -------------------------- | -------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `label` (optional)         | `ReactNode`                |         | The label text. If you don't want to visually display a label, provide an `aria-label` or `aria-labelledby` attribute for accessibility.                                             |
-| `description` (optional)   | `ReactNode`                |         | A helpful text                                                                                                                                                                       |
-| `errorMessage` (optional)  | `ReactNode`                |         | An error message                                                                                                                                                                     |
-| `error` (optional)         | `boolean`                  | `false` | If `true`, the field is considered invalid and if set the `errorMessage` is shown instead of the `description`.                                                                      |
-| `value` (optional)         | `number`                   |         | The value of the input field                                                                                                                                                         |
-| `disabled` (optional)      | `boolean`                  | `false` | If `true`, the input is disabled.                                                                                                                                                    |
-| `required` (optional)      | `boolean`                  | `false` | If `true`, the input is required.                                                                                                                                                    |
-| `readOnly` (optional)      | `boolean`                  | `false` | If `true`, the input is readOnly.                                                                                                                                                    |
-| `onChange` (optional)      | `function`                 |         | A callback function that is called with the input's current `value` when the input value changes.                                                                                    |
-| `formatOptions` (optional) | `Intl.NumberFormatOptions` |         | Apply formatting. See [`Intl.NumberFormatOptions`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for available options. |
-| `width` (optional)         | `string`                   | `100%`  | Control the width of the field.                                                                                                                                                      |
-| ...                        |                            |         | Yes you can use all regular attributes of `input`!                                                                                                                                   |
+## Props
 
+<PropsTable
+  props={[
+    {
+      property: 'label',
+      type: 'ReactNode',
+      description: 'The label text. ',
+      default: 'none',
+    },
+    {
+      property: 'description',
+      type: 'ReactNode',
+      description: '	A helpful text.',
+      default: 'none',
+    },
+    {
+      property: 'errorMessage',
+      type: 'ReactNode',
+      description: 'An error message.',
+      default: 'none',
+    },
+    {
+      property: 'error',
+      type: 'boolean',
+      description:
+        'If `true`, the field is considered invalid and if set the errorMessage is shown instead of the `description`.',
+      default: 'false',
+    },
+    {
+      property: 'value',
+      type: 'number',
+      description: 'The value of the input field.',
+      default: 'none',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'If `true`, the input is disabled.',
+      default: 'false',
+    },
+    {
+      property: 'required',
+      type: 'boolean',
+      description: 'If `true`, the input is required.',
+      default: 'false',
+    },
+    {
+      property: 'readOnly',
+      type: 'boolean',
+      description: 'If `true`, the input is readOnly.',
+      default: 'false',
+    },
+    {
+      property: 'onChange',
+      type: 'function',
+      description:
+        "A callback function that is called with the input's current value when the input value changes.",
+      default: '',
+    },
+    {
+      property: 'formatOptions',
+      type: 'Intl.NumberFormatOptions',
+      description:
+        'Apply formatting. See `Intl.NumberFormatOptions` for available options.',
+      default: '',
+    },
+    {
+      property: 'width',
+      type: 'string',
+      description: 'Control the width of the field.',
+      default: '100%',
+    },
+    {
+      property: '...',
+      type: '',
+      description: 'Yes you can use all regular attributes of input!',
+      default: '',
+    },
+  ]}
+/>
 ## Examples
 
 ### Simple Number Field
 
-```tsx
-<NumberField label="Numbers" />
+```tsx preview file=components/NumberField/number-field-simple.demo.tsx
+
 ```
 
 ### Disabled Number Field
 
-```tsx
-<NumberField label="Field disabled" disabled />
+```tsx preview file=components/NumberField/number-field-disabled.demo.tsx
+
 ```
 
 ### Required Number Field
 
-```tsx
-<NumberField label="Numbers" required />
+```tsx preview file=components/NumberField/number-field-required.demo.tsx
+
 ```
 
 ### Number Field with an Error
 
-```tsx
-<NumberField label="Amount" error errorMessage="Something went wrong!" />
+```tsx preview file=components/NumberField/number-field-error.demo.tsx
+
 ```
 
 ### Min and max Values
 
-```tsx
-<NumberField label="Length" defaultValue={55} minValue={0} maxValue={100} />
+```tsx preview file=components/NumberField/number-field-values.demo.tsx
+
 ```
 
 ### Step Amount
 
-```tsx
-<NumberField label="Length" defaultValue={10} step={10} />
+```tsx preview file=components/NumberField/number-field-amount.demo.tsx
+
 ```
 
 ### Hide Stepper
 
-```tsx
-<NumberField label="Numbers" hideStepper />
+```tsx preview file=components/NumberField/number-field-hide.demo.tsx
+
 ```
 
 ### Diplay a Decimals
 
-```tsx
-<NumberField
-  label="Decimals"
-  formatOptions={{
-    signDisplay: 'exceptZero',
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 2,
-  }}
-  defaultValue={0}
-/>
+```tsx preview file=components/NumberField/number-field-dec.demo.tsx
+
 ```
 
 ### Diplay a Currency
 
-```tsx
-<NumberField
-  label="Amount"
-  defaultValue={19.99}
-  formatOptions={{
-    style: 'currency',
-    currency: 'USD',
-  }}
-/>
+```tsx preview file=components/NumberField/number-field-cur.demo.tsx
+
 ```
 
 ### Diplay a Percentage
 
-```tsx
-<NumberField
-  label="Percentage"
-  defaultValue={0.42}
-  formatOptions={{
-    style: 'percent',
-  }}
-/>
+```tsx preview file=components/NumberField/number-field-per.demo.tsx
+
 ```
 
 ### Display a Unit
 
-```tsx
-<NumberField
-  label="Length"
-  defaultValue={150}
-  minValue={0}
-  formatOptions={{
-    style: 'unit',
-    unit: 'centimeter',
-    unitDisplay: 'short',
-  }}
-/>
+```tsx preview file=components/NumberField/number-field-unit.demo.tsx
+
 ```

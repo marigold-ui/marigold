@@ -1,4 +1,4 @@
-export * from './table';
+export * from './Table/table-basic.demo';
 
 // test files
 export * from './_test_';
@@ -30,5 +30,17 @@ export * from './Link';
 export * from './List';
 export * from './Menu';
 export * from './Message';
+export * from './NumberField';
 export * from './Radio';
+export * from './Stack';
+export * from './Select';
+export * from './Slider';
+export * from './Split';
+export * from './Switch';
+export * from './Table';
+export * from './Tiles';
+export * from './Text';
+export * from './TextArea';
+export * from './TextField';
+export * from './Tooltip';
 export * from './VisuallyHidden';
