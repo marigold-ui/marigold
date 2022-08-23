@@ -30,6 +30,7 @@ export * from './Link';
 export * from './List';
 export * from './Menu';
 export * from './Message';
+export * from './NumberField';
 export * from './Radio';
 export * from './Select';
 export * from './Slider';
