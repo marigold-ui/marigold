@@ -20,3 +20,4 @@ export * from './Dialog';
 export * from './Divider';
 export * from './Footer';
 export * from './Header';
+export * from './Headline';
