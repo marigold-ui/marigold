@@ -39,4 +39,8 @@ export * from './Split';
 export * from './Switch';
 export * from './Table';
 export * from './Tiles';
+export * from './Text';
+export * from './TextArea';
+export * from './TextField';
+export * from './Tooltip';
 export * from './VisuallyHidden';
