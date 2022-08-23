@@ -11,23 +11,41 @@ The `Label` component is used to accosiate and describe a form field.
   <Label>Some Label</Label>
 </Preview>
 
-```tsx onlyCode
-import { Label } from '@marigold/components';
-```
-
 ## Props
 
-| Property              | Type                | Default   |
-| :-------------------- | :------------------ | :-------- |
-| `variant` (optional)  | `string`            |           |
-| `size` (optional)     | `string`            |           |
-| `as` (optional)       | `'label' \| 'span'` | `'label'` |
-| `required` (optional) | `boolean`           |           |
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'string',
+      description: '',
+      default: 'none',
+    },
+    {
+      property: 'size',
+      type: 'string',
+      description: '',
+      default: 'none',
+    },
+    {
+      property: 'as',
+      type: 'label, span',
+      description: '',
+      default: 'label',
+    },
+    {
+      property: 'required',
+      type: 'boolean',
+      description: '',
+      default: 'false',
+    },
+  ]}
+/>
 
 ## Examples
 
 ### Label required
 
-```tsx
-<Label required>I am a required Label!</Label>
+```tsx preview file=components/Label/label-req.demo.tsx
+
 ```
