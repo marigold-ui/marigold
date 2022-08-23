@@ -5,7 +5,9 @@ export const Message: Theme['components']['Message'] = {
     container: {
       borderStyle: 'solid',
       borderWidth: '2px 2px 2px 16px',
-      padding: '8px 16px 16px',
+      px: 'medium-1',
+      py: 'small-1',
+      bg: 'info.background',
     },
     title: {
       lineHeight: 'medium-1',
@@ -24,10 +26,10 @@ export const Message: Theme['components']['Message'] = {
   variant: {
     info: {
       container: {
-        borderColor: 'yellow.base',
+        borderColor: 'info.base',
       },
       icon: {
-        color: 'yellow.base',
+        color: 'info.base',
       },
     },
   },

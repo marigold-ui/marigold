@@ -26,4 +26,8 @@ export const colors = {
   yellow: {
     base: 'hsl(46, 81%, 63%)',
   },
+  info: {
+    background: 'hsl(207.5,100%,98.3%)',
+    base: 'hsl(208,100%,82.9%)',
+  },
 };
