@@ -11,4 +11,5 @@ export * from './PropsTable';
 export * from './Toc';
 export * from './ThemeSelect';
 export * from './ThemeSwitch';
+export * from './Title';
 export * from './Version';
