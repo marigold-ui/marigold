@@ -95,7 +95,7 @@ const NavigationItem = ({
 const NavigationGroup = ({ name, items, css }: NavigationMenuGroupProps) => (
   <Box as="li" role="menuitem" __baseCSS={{ listStyle: 'none' }}>
     <Box as="ul" role="menubar" css={css?.list}>
-      <Box as="h4" css={css?.group}>
+      <Box as="h3" css={css?.group}>
         {name}
       </Box>
       {items.map(item => (
