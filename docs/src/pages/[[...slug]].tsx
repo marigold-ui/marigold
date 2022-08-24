@@ -22,23 +22,21 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
   return (
     <>
       <Title title={frontmatter?.title} />
-      <Layout navigation={navigation}>
-        {frontmatter?.title && (
-          <Header>
-            <GradientHeadline>{frontmatter.title}</GradientHeadline>
-            {frontmatter.caption && (
-              <Text variant="page-caption">{frontmatter.caption}</Text>
-            )}
-            {frontmatter?.switch && <ThemeSelect />}
-          </Header>
-        )}
-        <Aside side="right" space="large-2">
-          <Container contentType="content" size="large">
-            <MDXRemote {...source} />
-          </Container>
-          <TocContainer />
-        </Aside>
-      </Layout>
+      {frontmatter?.title && (
+        <Header>
+          <GradientHeadline>{frontmatter.title}</GradientHeadline>
+          {frontmatter.caption && (
+            <Text variant="page-caption">{frontmatter.caption}</Text>
+          )}
+          {frontmatter?.switch && <ThemeSelect />}
+        </Header>
+      )}
+      <Aside side="right" space="large-2">
+        <Container contentType="content" size="large">
+          <MDXRemote {...source} />
+        </Container>
+        <TocContainer />
+      </Aside>
     </>
   );
 };
