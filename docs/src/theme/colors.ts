@@ -1,7 +1,7 @@
 export const colors = {
   brand: {
     primary: 'hsl(28, 100%, 53%)',
-    secondary: 'hsl(167, 52%, 37%)',
+    secondary: 'hsl(167, 52%, 30%)',
     shade: 'hsl(28, 55%, 48%)',
   },
   background: {
