@@ -6,6 +6,7 @@ import {
   Layout,
   NavigationTree,
   ThemeSelect,
+  Title,
   TocContainer,
 } from '~/components';
 import { getMdxFromSlug, getMdxPaths, createNavigationTree } from '~/mdx/pages';
@@ -19,23 +20,26 @@ export interface ContentPageProps {
 const ContentPage = ({ source, navigation }: ContentPageProps) => {
   const frontmatter = source.frontmatter as { [key: string]: any } | undefined;
   return (
-    <Layout navigation={navigation}>
-      {frontmatter?.title && (
-        <Header>
-          <GradientHeadline>{frontmatter.title}</GradientHeadline>
-          {frontmatter.caption && (
-            <Text variant="page-caption">{frontmatter.caption}</Text>
-          )}
-          {frontmatter?.switch && <ThemeSelect />}
-        </Header>
-      )}
-      <Aside side="right" space="large-2">
-        <Container contentType="content" size="large">
-          <MDXRemote {...source} />
-        </Container>
-        <TocContainer />
-      </Aside>
-    </Layout>
+    <>
+      <Title title={frontmatter?.title} />
+      <Layout navigation={navigation}>
+        {frontmatter?.title && (
+          <Header>
+            <GradientHeadline>{frontmatter.title}</GradientHeadline>
+            {frontmatter.caption && (
+              <Text variant="page-caption">{frontmatter.caption}</Text>
+            )}
+            {frontmatter?.switch && <ThemeSelect />}
+          </Header>
+        )}
+        <Aside side="right" space="large-2">
+          <Container contentType="content" size="large">
+            <MDXRemote {...source} />
+          </Container>
+          <TocContainer />
+        </Aside>
+      </Layout>
+    </>
   );
 };
 
