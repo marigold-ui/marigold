@@ -3,13 +3,12 @@ import { Aside, Container, Header, Text } from '@marigold/components';
 
 import {
   GradientHeadline,
-  Layout,
   NavigationTree,
   ThemeSelect,
   Title,
   TocContainer,
 } from '~/components';
-import { getMdxFromSlug, getMdxPaths, createNavigationTree } from '~/mdx/pages';
+import { getMdxFromSlug, getMdxPaths } from '~/mdx/pages';
 import { serialize } from '~/mdx/serialize';
 
 export interface ContentPageProps {
@@ -17,7 +16,7 @@ export interface ContentPageProps {
   navigation: NavigationTree;
 }
 
-const ContentPage = ({ source, navigation }: ContentPageProps) => {
+const ContentPage = ({ source }: ContentPageProps) => {
   const frontmatter = source.frontmatter as { [key: string]: any } | undefined;
   return (
     <>
@@ -46,12 +45,10 @@ export default ContentPage;
 export const getStaticProps = async ({ params }: any) => {
   const content = await getMdxFromSlug(params.slug || ['index']);
   const source = await serialize(content);
-  const navigation = await createNavigationTree();
 
   return {
     props: {
       source,
-      navigation,
     },
   };
 };
