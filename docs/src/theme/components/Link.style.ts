@@ -6,13 +6,8 @@ export const Link: Theme['components']['Link'] = {
     '&:hover': {
       color: 'brand.secondary',
     },
-    'h2 &': {
-      '&:hover::before': {
-        content: '"#"',
-        position: 'absolute',
-        display: 'inline-block',
-        left: '-1em',
-      },
+    '&:focus': {
+      outline: 'none',
     },
   },
   variant: {

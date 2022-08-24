@@ -5,15 +5,40 @@ group: Application
 
 `MarigoldProvider` is the container for all Marigold applications. It defines the theme and other application level settings.
 
-```tsx onlyCode
+```tsx
 import { MarigoldProvider } from '@marigold/components';
 ```
 
 ## Props
 
-| Property              | Type        | Default | Description                                                                                                                                                                                                                                                           |
-| :-------------------- | :---------- | :------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `children`            | `ReactNode` |         | The children of the component.                                                                                                                                                                                                                                        |
-| `theme`               | `Theme`     |         | The use that should be used within the provider context.                                                                                                                                                                                                              |
-| `selector` (optional) | `string`    |         | By default normalization is applied globally. By specifying a selector you can scope normalization and other CSS from `theme.root` to a certain element in the DOM. This is useful if you want to run your app only on a portion of the page or are cascading themes. |
-| `normalizeDocument`   | `boolean`   | `true`  | Apply CSS normalization to the document (`html` and `body`).                                                                                                                                                                                                          |
+<PropsTable
+  props={[
+    {
+      property: 'children',
+      type: 'ReactNode',
+      default: '',
+      description: 'The children of the component.',
+    },
+    {
+      property: 'theme',
+      type: 'Theme',
+      default: '',
+      description: 'The use that should be used within the provider context.',
+    },
+    {
+      property: 'selector',
+      type: 'string',
+      default: '',
+      description:
+        'By default normalization is applied globally. By specifying a selector you can scope normalization and other CSS from `theme.root` to a certain element in the DOM. This is useful if you want to run your app only on a portion of the page or are cascading themes.',
+    },
+    {
+        property: 'normalizeDocument',
+        type: 'boolean',
+        default: 'true',
+        description:'Apply CSS normalization to the document (`html` and `body`)'
+
+    }
+
+]}
+/>

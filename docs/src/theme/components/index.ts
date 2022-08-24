@@ -7,6 +7,7 @@ export * from './Link.style';
 export * from './ListBox.style';
 export * from './List.style';
 export * from './Navigation.style';
+export * from './Message.style';
 export * from './Select.style';
 export * from './Text.style';
 export * from './Table.style';

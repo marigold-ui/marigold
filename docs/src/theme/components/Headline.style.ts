@@ -10,6 +10,20 @@ export const Headline: Theme['components']['Headline'] = {
     lineHeight: 'small-3',
     mt: 'large-1',
     mb: 'medium-1',
+
+    '> a': {
+      '&:hover': {
+        color: 'inherit',
+      },
+
+      '&:hover::before': {
+        content: '"#"',
+        position: 'absolute',
+        display: 'inline-block',
+        left: '-1em',
+        color: 'brand.secondary',
+      },
+    },
   },
 
   variant: {
@@ -17,7 +31,7 @@ export const Headline: Theme['components']['Headline'] = {
       '> span': {
         display: 'inline-block',
         color: 'transparent',
-        background: `linear-gradient(45deg, ${colors.brand.primary}, #edca55) 0 0 / 100% `,
+        background: `linear-gradient(45deg, ${colors.brand.primary}, ${colors.yellow.base}) 0 0 / 100% `,
         backgroundClip: 'text',
       },
     },

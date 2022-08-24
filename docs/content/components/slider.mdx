@@ -19,82 +19,112 @@ The Slider component allows users to quickly select a value within a range. They
   </Slider>
 </Preview>
 
-```tsx onlyCode
+```tsx
 import { Slider } from '@marigold/components';
 ```
 
 ## Props
 
-| Property                   | Type                                                                                                                                          | Default | Description                                                     |
-| :------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :-------------------------------------------------------------- |
-| `disabled` (optional)      | `boolean`                                                                                                                                     | `false` | If `true`, the slider is disabled.                              |
-| `value` (optional)         | `number[]`                                                                                                                                    |         | The slider's value (controlled).                                |
-| `defaultValue` (optional)  | `number[]`                                                                                                                                    |         | The slider's default value (uncontrolled).                      |
-| `maxValue` (optional)      | `number`                                                                                                                                      | `100`   | The slider's maximum value.                                     |
-| `step` (optional)          | `number`                                                                                                                                      |         | The slider's step value.                                        |
-| `formatOptions` (optional) | [`Intl.NumberFormatOptions`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) |         | The slider's step value.                                        |
-| `width` (optional)         | `string`                                                                                                                                      | `100%`  | Control the width of the field.                                 |
-| ...                        |                                                                                                                                               |         | Yes you can use all regular attributes of `input type = range`! |
+<PropsTable
+  props={[
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'If true, the slider is disabled.',
+      default: 'false',
+    },
+    {
+      property: 'value',
+      type: 'number[]',
+      description: "The slider's value (controlled).",
+      default: '',
+    },
+    {
+      property: 'defaultValue',
+      type: 'number[]',
+      description: "The slider's default value (uncontrolled).",
+      default: '',
+    },
+    {
+      property: 'maxValue',
+      type: 'number',
+      description: "The slider's maximum value.",
+      default: '100',
+    },
+    {
+      property: 'step',
+      type: 'number',
+      description: "The slider's step value.",
+      default: '',
+    },
+    {
+      property: 'formatOptions',
+      type: 'Intl.NumberFormatOptions	',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'width',
+      type: 'string',
+      description: 'Control the width of the field',
+      default: '100%',
+    },
+    {
+      property: '...',
+      type: '',
+      description:
+        'Yes you can use all regular attributes of input type = range!',
+      default: '',
+    },
+  ]}
+/>
 
 ## Examples
 
-## Width
+### Width
 
-```tsx
-<Slider width={180} aria-label="width">
-  Example
-</Slider>
+```tsx preview file=components/Slider/slider-width.demo.tsx
+
 ```
 
-## Disabled
+### Disabled
 
-```tsx
-<Slider disabled>Example</Slider>
+```tsx preview file=components/Slider/slider-disabled.demo.tsx
+
 ```
 
-## Step
+### Step
 
-```tsx
-<Slider step={10}>Example</Slider>
+```tsx preview file=components/Slider/slider-steps.demo.tsx
+
 ```
 
-## Max value
+### Max value
 
-```tsx
-<Slider aria-label="maxValue" maxValue={50}>
-  Example
-</Slider>
+```tsx preview file=components/Slider/slider-max.demo.tsx
+
 ```
 
-## Value (controlled)
+### Value (controlled)
 
-```tsx
-() => {
-  const [value, setValue] = React.useState([75]);
-  return (
-    <Slider value={value} onChange={setValue}>
-      Example
-    </Slider>
-  );
-};
+```tsx preview file=components/Slider/slider-controlled.demo.tsx
+
 ```
 
-## Default Value (uncontrolled)
+### Default Value (uncontrolled)
 
-```tsx
-<Slider defaultValue={[25]}>Example</Slider>
+```tsx preview file=components/Slider/slider-uncontrolled.demo.tsx
+
 ```
 
-## Currency
+### Currency
 
-```tsx
-<Slider formatOptions={{ style: 'currency', currency: 'EUR' }}>Price</Slider>
+```tsx preview file=components/Slider/slider-cur.demo.tsx
+
 ```
 
-## Percent
+### Percent
 
-```tsx
-<Slider formatOptions={{ style: 'percent' }} step={0.01} maxValue={1}>
-  Percent
-</Slider>
+```tsx preview file=components/Slider/slider-per.demo.tsx
+
 ```

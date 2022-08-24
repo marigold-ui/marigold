@@ -1,5 +1,66 @@
 # @marigold/docs
 
+## 2.1.1
+
+### Patch Changes
+
+- [#2351](https://github.com/marigold-ui/marigold/pull/2351) [`ebfc0e6c`](https://github.com/marigold-ui/marigold/commit/ebfc0e6ccf9d4524637bde3e8164ad496e651955) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: content for landingpage
+
+* [#2349](https://github.com/marigold-ui/marigold/pull/2349) [`69e3260e`](https://github.com/marigold-ui/marigold/commit/69e3260e45a9223016aac3f38d3574631c1aeed9) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: add message style to docs and yellow color
+
+* Updated dependencies []:
+  - @marigold/system@2.1.1
+  - @marigold/components@2.1.1
+  - @marigold/icons@1.0.2
+  - @marigold/theme-b2b@12.0.1
+
+## 2.1.0
+
+### Minor Changes
+
+- [#2328](https://github.com/marigold-ui/marigold/pull/2328) [`22350f02`](https://github.com/marigold-ui/marigold/commit/22350f025932c871028ea1292cb13fbb5492865e) Thanks [@sebald](https://github.com/sebald)! - feat: add `fit` and `potision` props to `<Image>`
+
+### Patch Changes
+
+- Updated dependencies [[`92feeafe`](https://github.com/marigold-ui/marigold/commit/92feeafe7e9de8c4b685c9ed474f193cff747bf6), [`22350f02`](https://github.com/marigold-ui/marigold/commit/22350f025932c871028ea1292cb13fbb5492865e), [`6e236e78`](https://github.com/marigold-ui/marigold/commit/6e236e782b33a22c1fd1a8124ea8b6eb9be9ee6e), [`1be70499`](https://github.com/marigold-ui/marigold/commit/1be704993ec6597c40099217e9c682b231cf4312)]:
+  - @marigold/components@2.1.0
+  - @marigold/theme-b2b@12.0.0
+  - @marigold/system@2.1.0
+  - @marigold/icons@1.0.1
+
+## 2.0.0
+
+### Major Changes
+
+- [#2280](https://github.com/marigold-ui/marigold/pull/2280) [`997ccfc1`](https://github.com/marigold-ui/marigold/commit/997ccfc1814a87b9f6b8b4f3716c88ec47554da2) Thanks [@sebald](https://github.com/sebald)! - feat: Improve naming of Arrow icons
+
+  BREAKING: Arrows are now correctly named "chevron" and we removed the trailing A from the Arrows. e.g. `ArrowDownA` -> `ArrowDown` and `ArrowUp` -> `ChevronUp`
+
+### Patch Changes
+
+- [#2275](https://github.com/marigold-ui/marigold/pull/2275) [`fbcbda63`](https://github.com/marigold-ui/marigold/commit/fbcbda63ba4ea240ea1b911ea25237d125a229d1) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update eslint
+
+* [#2256](https://github.com/marigold-ui/marigold/pull/2256) [`b2a1f152`](https://github.com/marigold-ui/marigold/commit/b2a1f152f135251eec6342a2756a4cf7227bb9e7) Thanks [@sarahgm](https://github.com/sarahgm)! - Chore: add a table of contents to docs
+
+- [#2253](https://github.com/marigold-ui/marigold/pull/2253) [`90ca9ced`](https://github.com/marigold-ui/marigold/commit/90ca9cede64b3ca41bca741c26ca6578c304c930) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: responsive navigation
+
+* [#2235](https://github.com/marigold-ui/marigold/pull/2235) [`0ad36ada`](https://github.com/marigold-ui/marigold/commit/0ad36ada149009c3eda9a9d6f26dfc749ac4c734) Thanks [@sarahgm](https://github.com/sarahgm)! - Chore: Table for Props
+
+- [#2290](https://github.com/marigold-ui/marigold/pull/2290) [`67ea1671`](https://github.com/marigold-ui/marigold/commit/67ea1671093e9b06a8800c574fa058e59cf691d6) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: Themeswitch on component mdx page
+
+* [#2279](https://github.com/marigold-ui/marigold/pull/2279) [`7b00179b`](https://github.com/marigold-ui/marigold/commit/7b00179b5433489777108bcff61a5b7d76aeb66e) Thanks [@sebald](https://github.com/sebald)! - feat: fix lang settings in nextjs
+
+- [#2265](https://github.com/marigold-ui/marigold/pull/2265) [`88a3d4b0`](https://github.com/marigold-ui/marigold/commit/88a3d4b030e67e46a4af429b01a884195601b7a2) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @babel/core to v7.18.10
+
+* [#2294](https://github.com/marigold-ui/marigold/pull/2294) [`6cfd4271`](https://github.com/marigold-ui/marigold/commit/6cfd4271ec7296b00cdbcb8688d728fb1c1ac813) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add favicon to documentation
+
+* Updated dependencies [[`6656342b`](https://github.com/marigold-ui/marigold/commit/6656342b3622e4ad7fda47d11d38035228c779bf), [`13695db8`](https://github.com/marigold-ui/marigold/commit/13695db8db0d057afa68e1f93ad499c1096d969a), [`32353f56`](https://github.com/marigold-ui/marigold/commit/32353f56728ddc02e8b4ec848184b7dc5e5f9d19), [`4c63400f`](https://github.com/marigold-ui/marigold/commit/4c63400fef291181f29f994c7f8a8b020772cbee), [`e6d18a82`](https://github.com/marigold-ui/marigold/commit/e6d18a82bc55a051b53108e5856d00a18002953d), [`f4f308e4`](https://github.com/marigold-ui/marigold/commit/f4f308e4ce390cf1a4f055042498fe6787dd6879), [`8e9ea3da`](https://github.com/marigold-ui/marigold/commit/8e9ea3daaa0b3ea666394badabcfc3e76eba5512), [`406f186c`](https://github.com/marigold-ui/marigold/commit/406f186c7f91cebbf3d17795361807e902a4dfab), [`7a43970e`](https://github.com/marigold-ui/marigold/commit/7a43970e4c32d74754722b8a8c24117ef4888a0e), [`88a3d4b0`](https://github.com/marigold-ui/marigold/commit/88a3d4b030e67e46a4af429b01a884195601b7a2), [`6f3b6949`](https://github.com/marigold-ui/marigold/commit/6f3b69498f6c09506867b1f20ee3a2a77112efdc), [`fb9df312`](https://github.com/marigold-ui/marigold/commit/fb9df312e50a5d4be27a528e339f0d2c5768324d), [`997ccfc1`](https://github.com/marigold-ui/marigold/commit/997ccfc1814a87b9f6b8b4f3716c88ec47554da2)]:
+  - @marigold/components@2.0.0
+  - @marigold/icons@1.0.0
+  - @marigold/tokens@3.1.0
+  - @marigold/system@2.0.0
+  - @marigold/theme-b2b@11.0.0
+
 ## 1.3.0
 
 ### Patch Changes

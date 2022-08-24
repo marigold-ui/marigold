@@ -1,29 +1,38 @@
 ---
 title: Footer
 group: Content
+switch: true
 ---
 
 ## Description
 
 The `Footer` component is used to help structure contents of components.
 
-<MarigoldTheme>
-  <Footer>This is a footer!</Footer>
-</MarigoldTheme>
+```tsx preview file=components/Footer/footer.demo.tsx
 
-```tsx onlyCode
-import { Footer } from '@marigold/components';
 ```
 
 ## Props
 
-| Name      | Type     | Default | Description                          |
-| :-------- | :------- | :------ | :----------------------------------- |
-| `variant` | `string` |         | Use a different _variant_ from theme |
-| `size`    | `string` |         | Use a different _size_ from theme    |
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'string',
+      description: 'Use a different _variant_ from theme',
+      default: 'none',
+    },
+    {
+      property: 'size',
+      type: 'string',
+      description: 'Use a different _size_ from theme',
+      default: 'none',
+    },
+  ]}
+/>
 
 ## Examples
 
-```tsx
-<Footer>This is a footer!</Footer>
+```tsx preview file=components/Footer/footer.demo.tsx
+
 ```

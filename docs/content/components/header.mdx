@@ -1,32 +1,38 @@
 ---
 title: Header
 group: Content
+switch: true
 ---
 
 ## Description
 
 The `Header` component is used to help structure content components. It's used like the HTML `<header>` tag.
 
-<MarigoldTheme>
-  <Header>This is a Header!</Header>
-</MarigoldTheme>
+```tsx preview file=components/Header/header.demo.tsx
 
-```tsx onlyCode
-import { Header } from '@marigold/components';
 ```
 
 ## Props
 
-| Name      | Type     | Default | Description                          |
-| :-------- | :------- | :------ | :----------------------------------- |
-| `variant` | `string` |         | Use a different _variant_ from theme |
-| `size`    | `string` |         | Use a different _size_ from theme    |
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'string',
+      description: 'Use a different _variant_ from theme',
+      default: 'none',
+    },
+    {
+      property: 'size',
+      type: 'string',
+      description: 'Use a different _size_ from theme',
+      default: 'none',
+    },
+  ]}
+/>
 
 ## Examples
 
-```tsx
-<Header>
-  <Headline level="3">Header!</Headline>
-  <Text>awesome</Text>
-</Header>
+```tsx preview file=components/Header/header.demo.tsx
+
 ```

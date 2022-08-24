@@ -1,5 +1,17 @@
 # @marigold/jest-config
 
+## 1.0.4
+
+### Patch Changes
+
+- [#2311](https://github.com/marigold-ui/marigold/pull/2311) [`ee16fb00`](https://github.com/marigold-ui/marigold/commit/ee16fb0036ee6e19e3d0a98e3ecc5f87db382cdf) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @swc/core to v1.2.226
+
+* [#2266](https://github.com/marigold-ui/marigold/pull/2266) [`8022dfba`](https://github.com/marigold-ui/marigold/commit/8022dfba77317d2fd0ff263942b92a57be276505) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @swc/core to v1.2.224
+
+- [#2265](https://github.com/marigold-ui/marigold/pull/2265) [`88a3d4b0`](https://github.com/marigold-ui/marigold/commit/88a3d4b030e67e46a4af429b01a884195601b7a2) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @babel/core to v7.18.10
+
+* [#2272](https://github.com/marigold-ui/marigold/pull/2272) [`fb9df312`](https://github.com/marigold-ui/marigold/commit/fb9df312e50a5d4be27a528e339f0d2c5768324d) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update testing
+
 ## 1.0.3
 
 ### Patch Changes

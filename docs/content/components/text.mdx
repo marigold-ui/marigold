@@ -6,123 +6,75 @@ switch: true
 
 With the Text component you can easily add different body text HTML elements.
 
-```tsx onlyCode
+```tsx
 import { Text } from '@marigold/components';
 ```
 
 ## Props
 
-| Property              | Type                | Default |
-| :-------------------- | :------------------ | :------ |
-| `variant` (optional)  | `string ⎮ string[]` |         |
-| `align` (optional)    | `string`            |         |
-| `color` (optional)    | `string`            |         |
-| `cursor` (optional)   | `string`            |         |
-| `outline` (optional)  | `string`            |         |
-| `size` (optional)     | `string`            |         |
-| `fontSize` (optional) | `string`            |         |
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'string ⎮ string[]',
+      description: 'Use a different variant from theme.',
+      default: '',
+    },
+    {
+      property: 'size',
+      type: 'string',
+      description: 'Use a different size from theme.',
+      default: '',
+    },
+    {
+      property: 'align',
+      type: 'string',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'color',
+      type: 'string',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'cursor',
+      type: 'string',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'outline',
+      type: 'string',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'fontSize',
+      type: 'string',
+      description: '',
+      default: '',
+    },
+  ]}
+/>
 
 ## Examples
 
-### Text
-
 ### Default paragraph Text
 
-```tsx
-<Text>
-  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-  eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-  voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
-  kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem
-  ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-  tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
-  vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
-  gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-</Text>
+```tsx preview file=components/Text/text-default.demo.tsx
+
 ```
 
 ### Colored Text
 
-```tsx
-<Text color="hotpink">Pink is awesome!</Text>
+```tsx preview file=components/Text/text-color.demo.tsx
+
 ```
 
-### Heading
+### Headline
 
-```tsx
-<>
-  <Headline level="1">H1 amazing heading</Headline>
-  <Text>
-    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-    eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-    voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-    clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
-    amet.
-  </Text>
-</>
-```
+```tsx preview file=components/Text/text-heading.demo.tsx
 
-```tsx
-<>
-  <Headline level="2">H2 amazing heading</Headline>
-  <Text>
-    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-    eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-    voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-    clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
-    amet.
-  </Text>
-</>
-```
-
-```tsx
-<>
-  <Headline level="3">H3 amazing heading</Headline>
-  <Text>
-    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-    eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-    voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-    clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
-    amet.
-  </Text>
-</>
-```
-
-```tsx
-<>
-  <Headline level="4">H4 amazing heading</Headline>
-  <Text>
-    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-    eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-    voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-    clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
-    amet.
-  </Text>
-</>
-```
-
-```tsx
-<>
-  <Headline level="5">H5 amazing heading</Headline>
-  <Text>
-    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-    eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-    voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-    clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
-    amet.
-  </Text>
-</>
-```
-
-```tsx
-<>
-  <Headline level="6">H6 amazing heading</Headline>
-  <Text>
-    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-    eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-    voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-    clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
-    amet.
-  </Text>
-</>
 ```

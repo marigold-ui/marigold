@@ -1,5 +1,32 @@
 # @marigold/theme-core
 
+## 12.0.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/components@2.1.1
+
+## 12.0.0
+
+### Minor Changes
+
+- [#2334](https://github.com/marigold-ui/marigold/pull/2334) [`1be70499`](https://github.com/marigold-ui/marigold/commit/1be704993ec6597c40099217e9c682b231cf4312) Thanks [@sebald](https://github.com/sebald)! - feat: add breakpoints to all themes
+
+### Patch Changes
+
+- Updated dependencies [[`92feeafe`](https://github.com/marigold-ui/marigold/commit/92feeafe7e9de8c4b685c9ed474f193cff747bf6), [`22350f02`](https://github.com/marigold-ui/marigold/commit/22350f025932c871028ea1292cb13fbb5492865e), [`6e236e78`](https://github.com/marigold-ui/marigold/commit/6e236e782b33a22c1fd1a8124ea8b6eb9be9ee6e)]:
+  - @marigold/components@2.1.0
+
+## 11.0.0
+
+### Patch Changes
+
+- [#2290](https://github.com/marigold-ui/marigold/pull/2290) [`67ea1671`](https://github.com/marigold-ui/marigold/commit/67ea1671093e9b06a8800c574fa058e59cf691d6) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: Themeswitch on component mdx page
+
+- Updated dependencies [[`6656342b`](https://github.com/marigold-ui/marigold/commit/6656342b3622e4ad7fda47d11d38035228c779bf), [`13695db8`](https://github.com/marigold-ui/marigold/commit/13695db8db0d057afa68e1f93ad499c1096d969a), [`e6d18a82`](https://github.com/marigold-ui/marigold/commit/e6d18a82bc55a051b53108e5856d00a18002953d), [`8e9ea3da`](https://github.com/marigold-ui/marigold/commit/8e9ea3daaa0b3ea666394badabcfc3e76eba5512), [`7a43970e`](https://github.com/marigold-ui/marigold/commit/7a43970e4c32d74754722b8a8c24117ef4888a0e), [`6f3b6949`](https://github.com/marigold-ui/marigold/commit/6f3b69498f6c09506867b1f20ee3a2a77112efdc), [`fb9df312`](https://github.com/marigold-ui/marigold/commit/fb9df312e50a5d4be27a528e339f0d2c5768324d)]:
+  - @marigold/components@2.0.0
+
 ## 10.0.0
 
 ### Minor Changes

@@ -45,23 +45,19 @@ export const Thumb = ({ state, trackRef, styles, ...props }: ThumbProps) => {
 
   return (
     <Box
-      __baseCSS={{
-        position: 'absolute',
-        top: 16,
-        transform: 'translateX(-50%)',
-        left: `${state.getThumbPercent(0) * 100}%`,
-      }}
+      __baseCSS={{ top: '50%' }}
+      css={styles}
+      {...thumbProps}
+      {...stateProps}
     >
-      <Box {...thumbProps} __baseCSS={styles} {...stateProps}>
-        <VisuallyHidden>
-          <Box
-            as="input"
-            type="range"
-            ref={inputRef}
-            {...mergeProps(inputProps, focusProps)}
-          />
-        </VisuallyHidden>
-      </Box>
+      <VisuallyHidden>
+        <Box
+          as="input"
+          type="range"
+          ref={inputRef}
+          {...mergeProps(inputProps, focusProps)}
+        />
+      </VisuallyHidden>
     </Box>
   );
 };

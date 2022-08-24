@@ -21,7 +21,6 @@ export const Slider: Theme['components']['Slider'] = {
       height: 16,
       bg: 'gray00',
       borderRadius: 'large',
-      marginTop: -4,
       '&:focus': {
         border: '4px solid',
         borderColor: 'primary',

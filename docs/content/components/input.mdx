@@ -14,41 +14,41 @@ The variant in your section can be added with the variant prop. The default vari
   </Label>
 </Preview>
 
-```tsx onlyCode
-import { Input } from '@marigold/components';
-```
-
 ## Props
 
-| Property             | Type     | Default     |
-| :------------------- | :------- | :---------- |
-| `variant` (optional) | `string` | `__default` |
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'string',
+      description: 'Use a different variant from theme',
+      default: 'none',
+    },
+    {
+      property: 'type',
+      type: "'date, datetime-local, email, month, number, password, search, submit, tel, text, time, url, week'",
+      description: '',
+      default: 'text',
+    },
+  ]}
+/>
 
 ## Examples
 
 ### Standard Input
 
-```tsx expandCode
-<Label htmlFor="input">
-  Give me your input:
-  <Input id="input" type="text" placeholder="Placeholder" />
-</Label>
+```tsx preview file=components/Input/input.demo.tsx
+
 ```
 
 ### Disabled Input
 
-```tsx
-<Label htmlFor="input2">
-  Disabled Input
-  <Input id="input2" placeholder="Disabled" disabled />
-</Label>
+```tsx preview file=components/Input/input-disabled.demo.tsx
+
 ```
 
 ### Type changend Input
 
-```tsx
-<Label htmlFor="input3">
-  Label
-  <Input id="input3" type="submit" />
-</Label>
+```tsx preview file=components/Input/input-type.demo.tsx
+
 ```

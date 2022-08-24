@@ -9,13 +9,7 @@ Component to display a Dialog as a reaction to an event. The Dialog could be sty
 You can also add a title via title prop.
 
 <Preview>
-  <Dialog.Trigger>
-    <Button variant="primary">Open me</Button>
-    <Dialog closeButton>
-      <Headline level="3">Information!</Headline>
-      <Text>This is a simple info Dialog.</Text>
-    </Dialog>
-  </Dialog.Trigger>
+  <DialogDemo />
 </Preview>
 
 ```tsx onlyCode
@@ -24,49 +18,64 @@ import { Dialog } from '@marigold/components';
 
 ## Props
 
-| Property             | Type                                       | Default |
-| :------------------- | :----------------------------------------- | :------ |
-| `isOpen `            | `boolean`                                  | `false` |
-| `close`              | `ComponentProps<typeof Button>['onClick']` |         |
-| `title (optional)`   | `string`                                   |         |
-| `variant (optional)` | `string`                                   |         |
-| `size (optional)`    | `string`                                   |         |
+### Dialog
+
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'Variant of the component',
+    },
+    {
+      property: 'size',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'Size of the component',
+    },
+    {
+      property: 'closeButton',
+      type: 'boolean',
+      description: 'Show the close button',
+      default: 'false',
+    },
+    {
+      property: 'children',
+      type: 'ReactNode',
+      description: 'Children of the component.',
+    },
+  ]}
+/>
+
+### Dialog.Trigger
+
+<PropsTable
+  props={[
+    {
+      property: 'dismissable',
+      type: 'boolean',
+      description:
+        'Whether to close the overlay when the user interacts outside it.',
+      default: 'true',
+    },
+    {
+      property: 'keyboardDismissable',
+      type: 'boolean',
+      description:
+        'Whether pressing the escape key to close the overlay should be disabled.',
+      default: 'true',
+    },
+    {
+      property: 'children',
+      type: 'ReactNode',
+      description: 'Children of the component.',
+    },
+  ]}
+/>
 
 ## Examples
 
-### Simple Dialog
-
-```tsx
-<Dialog.Trigger>
-  <Button variant="primary">Open me</Button>
-  <Dialog closeButton>
-    <Headline level="3">Information!</Headline>
-    <Text>This is a simple info Dialog.</Text>
-  </Dialog>
-</Dialog.Trigger>
-```
-
 ### Form Dialog
 
-```tsx
-<Dialog.Trigger>
-  <Button variant="primary">Login</Button>
-  <Dialog>
-    {({ close }) => (
-      <>
-        <Headline level="2">Please log into account</Headline>
-        <Stack space="small">
-          <TextField label="Username" />
-          <TextField label="Password" type="password" />
-          <Inline space="medium">
-            <Button variant="ghost" onPress={close}>
-              Cancel
-            </Button>
-            <Button variant="primary">Login</Button>
-          </Inline>
-        </Stack>
-      </>
-    )}
-  </Dialog>
-</Dialog.Trigger>
+```tsx preview file=components/Dialog/dialog-form.demo.tsx
+
 ```

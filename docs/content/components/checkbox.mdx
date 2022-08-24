@@ -7,9 +7,9 @@ switch: true
 
 The `Checkbox` component allows users to select one or more options from a set of options. In order to group multiple checkboxes, use the `CheckboxGroup` component.
 
-<MarigoldTheme>
-  <Checkbox defaultChecked>I will not talk about Fight Club</Checkbox>
-</MarigoldTheme>
+<Preview>
+  <CheckboxDemo />
+</Preview>
 
 ```tsx onlyCode
 import { Checkbox, CheckboxGroup } from '@marigold/components';
@@ -17,39 +17,52 @@ import { Checkbox, CheckboxGroup } from '@marigold/components';
 
 ## Props
 
-| Name                 | Type      | Default     | Description                                                                                                        |
-| :------------------- | :-------- | :---------- | :----------------------------------------------------------------------------------------------------------------- |
-| `variant` (optional) | `string`  |             | Use a different _variant_ from theme                                                                               |
-| `size` (optional)    | `string`  | `'level-1'` | Use a different _size_ from theme                                                                                  |
-| `error` (optional)   | `boolean` | `false`     | If `true`, the checkbox is considered invalid and if set the `errorMessage` is shown instead of the `description`. |
-| `width` (optional)   | `string`  | `100%`      | Control the width of the field.                                                                                    |
-| ...                  |           |             | Yes you can use all regular attributes of `input`!                                                                 |
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'Variant of the component',
+    },
+    {
+      property: 'size',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'Size of the component',
+    },
+    {
+      property: 'error',
+      type: 'boolean',
+      description:
+        'If `true`, the checkbox is considered invalid and if set the `errorMessage` is shown instead of the `description`.',
+      default: 'false',
+    },
+    {
+      property: 'width',
+      type: 'string',
+      description: 'Control the width of the field.',
+      default: '100%',
+    },
+    {
+      property: '...',
+      type: 'string',
+      description: 'You can use all native attributes of `input`',
+    },
+  ]}
+/>
 
 ## Examples
 
-### Simple Checkbox
-
-```tsx
-<Checkbox>Agree to business terms</Checkbox>
-```
-
 ### Checkbox disabled
 
-```tsx
-<>
-  <Checkbox disabled>Disabled</Checkbox>
-  <br />
-  <Checkbox checked disabled>
-    Checked and disabled
-  </Checkbox>
-</>
+```tsx preview file=components/Checkbox/checkbox-disabled.demo.tsx
+
 ```
 
 ### Indeterminate Checkbox
 
 Use indeterminate state when it represents both selected and not selected values.
 
-```tsx
+```tsx preview
 <Checkbox defaultChecked indeterminate>
   Select all
 </Checkbox>
@@ -57,24 +70,6 @@ Use indeterminate state when it represents both selected and not selected values
 
 ### Group checkboxes
 
-```tsx
-() => {
-  const [selected, setSelected] = React.useState([]);
-  return (
-    <>
-      <CheckboxGroup label="Choose your toppings:" onChange={setSelected}>
-        <Checkbox value="ham">🐖 Ham</Checkbox>
-        <Checkbox value="beef" disabled>
-          🐄 Beef (out of stock)
-        </Checkbox>
-        <Checkbox value="tuna">🐟 Tuna</Checkbox>
-        <Checkbox value="tomatos">🍅 Tomatos</Checkbox>
-        <Checkbox value="onions">🧅 Onions</Checkbox>
-        <Checkbox value="pineapple">🍍 Pineapple</Checkbox>
-      </CheckboxGroup>
-      <hr />
-      <pre>Selected values: {selected.join(', ')}</pre>
-    </>
-  );
-};
+```tsx preview file=components/Checkbox/checkbox-group.demo.tsx
+
 ```

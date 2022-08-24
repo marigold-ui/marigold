@@ -6,6 +6,7 @@ export const root = {
   body: {
     bg: 'background.page',
     fontFamily: 'body',
+    fontSize: 'fixed.medium-1',
     color: 'text.regular',
   },
   a: {
@@ -13,6 +14,7 @@ export const root = {
   },
   pre: {
     fontFamily: 'mono',
+    fontSize: 'fixed.small-3',
     py: 'small-1',
     px: 'small-1',
     borderRadius: '10px',

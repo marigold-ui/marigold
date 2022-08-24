@@ -1,6 +1,6 @@
 {
   "name": "@marigold/tokens",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Marigold Design Tokens",
   "license": "MIT",
   "keywords": [
@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "tsup": "6.2.1"
+    "tsup": "6.2.2"
   },
   "scripts": {
     "build": "tsup src/index.ts",

@@ -6,21 +6,49 @@ group: Content
 With the Image component you can render an image element.
 The variant can be added with the variant prop. You can also put the standard html image props like `alt` and `src`.
 
-```tsx onlyCode
+```tsx
 import { Image } from '@marigold/components';
 ```
 
 ## Props
 
-| Property             | Type     | Default |
-| :------------------- | :------- | :------ |
-| `variant` (optional) | `string` |         |
+<PropsTable
+  props={[
+    {
+      property: 'alt',
+      type: 'string',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'variant',
+      type: 'string',
+      description: 'Use a different variant from theme',
+      default: '',
+    },
+    {
+      property: 'size',
+      type: 'string',
+      description: 'Use a different size from theme',
+      default: '',
+    },
+    {
+      property: 'fit',
+      type: 'TODO!',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'position',
+      type: 'TODO!',
+      description: '',
+      default: '',
+    },
+  ]}
+/>
 
 ## Usage
 
-```tsx expandCode
-<Image
-  src="https://images.unsplash.com/photo-1603910234616-3b5f4a6be2b4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-  alt="event_image"
-/>
+```tsx preview file=components/Image/image.demo.tsx
+
 ```

@@ -6,44 +6,47 @@ switch: true
 
 Element to style links.
 
-<MarigoldTheme>
+<Preview>
   <Link href="http://www.reservix.de" target="_blank">
     reservix.de
   </Link>
-</MarigoldTheme>
-
-```tsx onlyCode
-import { Link } from '@marigold/components';
-```
+</Preview>
 
 ## Props
 
-| Property              | Type                 | Default |
-| :-------------------- | :------------------- | :------ |
-| `as` (optional)       | `string ⎮ Component` | `a`     |
-| `variant` (optional)  | `string ⎮ string[]`  | `link`  |
-| `disabled` (optional) | boolean              |         |
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'string',
+      description: '',
+      default: 'none',
+    },
+    {
+      property: 'as',
+      type: 'string, Component',
+      description: '',
+      default: 'a',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: '',
+      default: 'false',
+    },
+  ]}
+/>
 
 ## Examples
 
 ### Standard Link
 
-```tsx
-<Text>
-  Link something nice like
-  <Link href="#!" target="_blank">
-    Marigold
-  </Link>
-</Text>
+```tsx preview file=components/Link/link-standard.demo.tsx
+
 ```
 
 ### Link disabled
 
-```tsx
-<Text>
-  You can jump to
-  <Link href="http://www.reservix.de" target="_blank" disabled>
-    reservix.de
-  </Link>
-</Text>
+```tsx preview file=components/Link/link-disabled.demo.tsx
+
 ```

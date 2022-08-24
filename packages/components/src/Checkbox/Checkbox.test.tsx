@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 import { Checkbox } from './Checkbox';
 import { act } from 'react-dom/test-utils';
+
 const theme = {
   colors: {
     gray: '#868e96',
@@ -105,6 +106,20 @@ test('allows to render without label', () => {
   expect(checkbox).toHaveAttribute('type', 'checkbox');
 
   expect(checkbox).toHaveAttribute('aria-label', 'No Label');
+});
+
+test('supports read only state', () => {
+  render(
+    <Checkbox data-testid="checkbox" readOnly defaultChecked>
+      Read Only
+    </Checkbox>
+  );
+
+  const checkbox = screen.getByTestId<HTMLInputElement>('checkbox');
+  const component = screen.getByText('Read Only');
+
+  fireEvent.click(component);
+  expect(checkbox.checked).toBeTruthy();
 });
 
 test('allows styling via theme', () => {

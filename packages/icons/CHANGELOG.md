@@ -1,5 +1,40 @@
 # @marigold/icons
 
+## 1.0.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@2.1.1
+
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@2.1.0
+
+## 1.0.0
+
+### Major Changes
+
+- [#2280](https://github.com/marigold-ui/marigold/pull/2280) [`997ccfc1`](https://github.com/marigold-ui/marigold/commit/997ccfc1814a87b9f6b8b4f3716c88ec47554da2) Thanks [@sebald](https://github.com/sebald)! - feat: Improve naming of Arrow icons
+
+  BREAKING: Arrows are now correctly named "chevron" and we removed the trailing A from the Arrows. e.g. `ArrowDownA` -> `ArrowDown` and `ArrowUp` -> `ChevronUp`
+
+### Minor Changes
+
+- [#2289](https://github.com/marigold-ui/marigold/pull/2289) [`13695db8`](https://github.com/marigold-ui/marigold/commit/13695db8db0d057afa68e1f93ad499c1096d969a) Thanks [@sebald](https://github.com/sebald)! - feat: `<SVG>` and Icons support refs and css prop
+
+### Patch Changes
+
+- [#2297](https://github.com/marigold-ui/marigold/pull/2297) [`f4f308e4`](https://github.com/marigold-ui/marigold/commit/f4f308e4ce390cf1a4f055042498fe6787dd6879) Thanks [@sebald](https://github.com/sebald)! - fix: no fixed viewport for <SVG>
+
+* [#2322](https://github.com/marigold-ui/marigold/pull/2322) [`406f186c`](https://github.com/marigold-ui/marigold/commit/406f186c7f91cebbf3d17795361807e902a4dfab) Thanks [@sebald](https://github.com/sebald)! - fix: set viewbox for `<Exlamation>`
+
+* Updated dependencies [[`4c63400f`](https://github.com/marigold-ui/marigold/commit/4c63400fef291181f29f994c7f8a8b020772cbee), [`8e9ea3da`](https://github.com/marigold-ui/marigold/commit/8e9ea3daaa0b3ea666394badabcfc3e76eba5512), [`88a3d4b0`](https://github.com/marigold-ui/marigold/commit/88a3d4b030e67e46a4af429b01a884195601b7a2)]:
+  - @marigold/system@2.0.0
+
 ## 0.7.7
 
 ### Patch Changes

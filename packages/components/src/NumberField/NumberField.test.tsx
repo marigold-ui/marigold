@@ -116,8 +116,6 @@ const theme = {
   },
 };
 
-const user = userEvent.setup();
-
 // Tests
 // ---------------
 test('renders an input', () => {
@@ -267,6 +265,8 @@ test('can have default value', () => {
 });
 
 test('can be controlled', async () => {
+  const user = userEvent.setup();
+
   const Controlled = () => {
     const [value, setValue] = React.useState(0);
 
@@ -286,13 +286,15 @@ test('can be controlled', async () => {
   render(<Controlled />);
 
   const input = screen.getByTestId('number-field');
-  user.click(input);
+  await user.click(input);
   await user.type(input, '42');
-  user.tab();
+  await user.tab();
+
   expect(screen.getByTestId('output')).toHaveTextContent('42');
 });
 
 test('allows to specify min and max value', async () => {
+  const user = userEvent.setup();
   const onChange = jest.fn();
   render(
     <NumberField
@@ -306,15 +308,17 @@ test('allows to specify min and max value', async () => {
 
   const input: HTMLInputElement = screen.getByTestId('number-field');
 
-  user.click(input);
+  await user.click(input);
   await user.type(input, '100');
-  user.tab();
+  await user.tab();
 
   expect(input.value).toEqual('10');
   expect(onChange).toHaveBeenCalledWith(10);
 });
 
 test('increment and decrement value via stepper', async () => {
+  const user = userEvent.setup();
+
   render(
     <NumberField label="A Label" data-testid="number-field" defaultValue={50} />
   );
@@ -335,6 +339,8 @@ test('increment and decrement value via stepper', async () => {
 });
 
 test('increment and decrement value via stepper (with min and max)', async () => {
+  const user = userEvent.setup();
+
   render(
     <NumberField
       label="A Label"
@@ -368,6 +374,8 @@ test('increment and decrement value via stepper (with min and max)', async () =>
 });
 
 test('increment and decrement with custom steps', async () => {
+  const user = userEvent.setup();
+
   render(
     <NumberField
       label="A Label"
