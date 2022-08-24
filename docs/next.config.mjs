@@ -22,13 +22,14 @@ const withMdx = mdx({
   },
 });
 
-/** @type {import('next').NextConfig} */
-const config = async () => {
+export default async () => {
   const navigation = await createNavigationTree();
 
-  return {
+  /** @type {import('next').NextConfig} */
+  const config = {
     env: {
       version: pkg.version,
+      // @ts-ignore
       navigation,
     },
     reactStrictMode: true,
@@ -50,17 +51,12 @@ const config = async () => {
 
         use: [babel],
       });
-      console.log('###################', config.module.rules);
+
       config.resolve.alias.root = path.resolve(__dirname, '..');
 
       return config;
     },
   };
-};
 
-// TODO: withMdx odes not work with async function?
-export default async () => {
-  // Make navigation function sync?
-  const base = await config();
-  return withMdx(base);
+  return withMdx(config);
 };
