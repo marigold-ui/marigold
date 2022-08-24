@@ -13,7 +13,6 @@ export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
 
     visit(tree, 'element', (node: Element) => {
       if (node.tagName !== 'h2' && node.tagName !== 'h3') {
-        console.log(node.tagName);
         return;
       }
 
