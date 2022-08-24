@@ -1,5 +1,13 @@
 # @marigold/components
 
+## 2.1.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@2.1.1
+  - @marigold/icons@1.0.2
+
 ## 2.1.0
 
 ### Minor Changes

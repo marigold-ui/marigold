@@ -1,5 +1,12 @@
 # @marigold/theme-unicorn
 
+## 9.0.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/components@2.1.1
+
 ## 9.0.0
 
 ### Minor Changes

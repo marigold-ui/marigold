@@ -1,5 +1,19 @@
 # @marigold/docs
 
+## 2.1.1
+
+### Patch Changes
+
+- [#2351](https://github.com/marigold-ui/marigold/pull/2351) [`ebfc0e6c`](https://github.com/marigold-ui/marigold/commit/ebfc0e6ccf9d4524637bde3e8164ad496e651955) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: content for landingpage
+
+* [#2349](https://github.com/marigold-ui/marigold/pull/2349) [`69e3260e`](https://github.com/marigold-ui/marigold/commit/69e3260e45a9223016aac3f38d3574631c1aeed9) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: add message style to docs and yellow color
+
+* Updated dependencies []:
+  - @marigold/system@2.1.1
+  - @marigold/components@2.1.1
+  - @marigold/icons@1.0.2
+  - @marigold/theme-b2b@12.0.1
+
 ## 2.1.0
 
 ### Minor Changes
