@@ -10,15 +10,20 @@ export const Card: Theme['components']['Card'] = {
 
     boxShadow: 'medium-1',
     transition: 'all .3s cubic-bezier(.25, 0, .4, 1)',
+
+    '&:hover': {
+      borderColor: 'border.regular',
+      boxShadow: 'medium-2',
+    },
   },
   variant: {
     icon: {
       cursor: 'pointer',
-
-      '&:hover': {
-        borderColor: 'border.regular',
-        boxShadow: 'medium-2',
-      },
+    },
+    info: {
+      width: '350px',
+      px: 'medium-1',
+      pb: 'medium-2',
     },
   },
 };
