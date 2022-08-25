@@ -45,6 +45,7 @@ export const DynamicTable = () => {
     <Stack space="small">
       <Table
         aria-label="Example dynamic collection table"
+        selectionMode="multiple"
         onSelectionChange={key => setSelectedKeys(new Set(key))}
       >
         <Table.Header columns={columns}>

@@ -5,3 +5,4 @@ export * from './table-dynamic.demo';
 export * from './table-disabled.demo';
 export * from './table-sorting.demo';
 export * from './table-nested.demo';
+export * from './table-compact.demo';

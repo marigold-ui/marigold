@@ -30,6 +30,12 @@ export default {
       },
       description: 'Stretch to fill the container',
     },
+    variant: {
+      control: {
+        type: 'text',
+      },
+      description: 'variant for the table: for example: compact',
+    },
   },
 } as Meta;
 

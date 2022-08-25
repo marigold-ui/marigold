@@ -4,14 +4,13 @@ export const Table: Theme['components']['Table'] = {
   base: {
     table: { borderCollapse: 'collapse', fontSize: 'xxsmall' },
     header: {
-      py: 'xxsmall',
+      py: 'small',
       px: 'small',
       cursor: 'default',
-      color: 'gray00',
-      bg: 'gray50',
+      color: 'gray70',
       textAlign: 'left',
-
-      '&:nth-of-type(even)': { bg: 'gray60' },
+      borderBottom: '1px solid',
+      borderColor: 'gray50',
 
       '&:focus': {
         outlineColor: 'orange60',
@@ -29,13 +28,31 @@ export const Table: Theme['components']['Table'] = {
       },
     },
     cell: {
-      py: 'xxsmall',
+      py: 'small',
       px: 'small',
       cursor: 'default',
       borderBottom: '1px solid',
       borderColor: 'gray50',
       '&:focus': {
         outlineColor: 'orange60',
+      },
+    },
+  },
+  variant: {
+    compact: {
+      header: {
+        py: 'xsmall',
+      },
+      cell: {
+        py: 'xsmall',
+      },
+    },
+    expanded: {
+      header: {
+        py: 'medium',
+      },
+      cell: {
+        py: 'medium',
       },
     },
   },
