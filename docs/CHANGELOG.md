@@ -1,5 +1,25 @@
 # @marigold/docs
 
+## 2.1.2
+
+### Patch Changes
+
+- [#2359](https://github.com/marigold-ui/marigold/pull/2359) [`f03051d6`](https://github.com/marigold-ui/marigold/commit/f03051d681f78b3b8c507bd93fecd58ebd98a294) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: table of contents supports h3
+
+* [#2370](https://github.com/marigold-ui/marigold/pull/2370) [`630d8026`](https://github.com/marigold-ui/marigold/commit/630d80269e8bdff5c2900d6366c9fe5cbdaebe5d) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add eye icon
+
+- [#2354](https://github.com/marigold-ui/marigold/pull/2354) [`d3ab22bb`](https://github.com/marigold-ui/marigold/commit/d3ab22bb6594191ad86e08bef2aca53810c96063) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: add roles to navigation for accessibility
+
+* [#2362](https://github.com/marigold-ui/marigold/pull/2362) [`294e31e3`](https://github.com/marigold-ui/marigold/commit/294e31e3c023cebd64f17a6e8cca97d78151f674) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: new icon for logout
+
+- [#2361](https://github.com/marigold-ui/marigold/pull/2361) [`b84e6ff5`](https://github.com/marigold-ui/marigold/commit/b84e6ff56e124e2215278b11971269dba9a49bbe) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: update table with compact and expanded
+
+- Updated dependencies [[`630d8026`](https://github.com/marigold-ui/marigold/commit/630d80269e8bdff5c2900d6366c9fe5cbdaebe5d), [`294e31e3`](https://github.com/marigold-ui/marigold/commit/294e31e3c023cebd64f17a6e8cca97d78151f674), [`b84e6ff5`](https://github.com/marigold-ui/marigold/commit/b84e6ff56e124e2215278b11971269dba9a49bbe)]:
+  - @marigold/icons@1.0.3
+  - @marigold/components@2.1.2
+  - @marigold/theme-b2b@12.0.2
+  - @marigold/system@2.1.2
+
 ## 2.1.1
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @marigold/icons
 
+## 1.0.3
+
+### Patch Changes
+
+- [#2370](https://github.com/marigold-ui/marigold/pull/2370) [`630d8026`](https://github.com/marigold-ui/marigold/commit/630d80269e8bdff5c2900d6366c9fe5cbdaebe5d) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add eye icon
+
+* [#2362](https://github.com/marigold-ui/marigold/pull/2362) [`294e31e3`](https://github.com/marigold-ui/marigold/commit/294e31e3c023cebd64f17a6e8cca97d78151f674) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: new icon for logout
+
+* Updated dependencies []:
+  - @marigold/system@2.1.2
+
 ## 1.0.2
 
 ### Patch Changes
