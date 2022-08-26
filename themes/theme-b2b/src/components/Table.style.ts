@@ -8,6 +8,7 @@ export const Table: Theme['components']['Table'] = {
       px: 'small',
       cursor: 'default',
       color: 'gray70',
+      textAlign: 'left',
       borderBottom: '1px solid',
       borderColor: 'gray50',
 

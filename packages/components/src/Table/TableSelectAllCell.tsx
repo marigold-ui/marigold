@@ -52,7 +52,7 @@ export const TableSelectAllCell = ({ column }: TableSelectAllCell) => {
         verticalAlign: 'middle',
         lineHeight: 1,
       }}
-      css={{ ...styles.header }}
+      css={styles.header}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
     >

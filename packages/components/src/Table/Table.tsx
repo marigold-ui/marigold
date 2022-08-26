@@ -3,7 +3,6 @@ import { useTable, AriaTableProps } from '@react-aria/table';
 import {
   Cell,
   Column,
-  ColumnProps,
   Row,
   TableBody as Body,
   TableHeader as Header,
@@ -13,7 +12,6 @@ import {
 
 import {
   Box,
-  CSSObject,
   ThemeExtensionsWithParts,
   useComponentStyles,
 } from '@marigold/system';
@@ -27,7 +25,6 @@ import { TableHeader } from './TableHeader';
 import { TableHeaderRow } from './TableHeaderRow';
 import { TableRow } from './TableRow';
 import { TableSelectAllCell } from './TableSelectAllCell';
-import { element } from 'packages/system/src/components/Global/normalize';
 
 // Theme Extension
 // ---------------
@@ -48,15 +45,6 @@ export interface TableProps
   variant?: string;
   size?: string;
   stretch?: boolean;
-}
-
-export interface TableColumnProps<T> extends ColumnProps<T> {
-  /**
-   * The alignment of the column's contents relative to its allotted width.
-   * @default 'start'
-   */
-
-  align?: 'start' | 'center' | 'end';
 }
 
 // Table Component
@@ -84,17 +72,7 @@ export const Table: Table = ({
   );
 
   const { collection } = state;
-  //let { column } = props;
 
-  const columnProps = collection.headerRows.map(headerRow =>
-    [...headerRow.childNodes].map(
-      column => column.props as TableColumnProps<unknown>
-    )
-  );
-  //const columnProps = column.props as TableColumnProps<unknown>;
-
-  const abbb = columnProps.map(a => a.map(b => b.align));
-  console.log(abbb);
   return (
     <TableContext.Provider value={{ state, styles }}>
       <Box
@@ -104,7 +82,7 @@ export const Table: Table = ({
           borderCollapse: 'collapse',
           width: stretch ? '100%' : undefined,
         }}
-        css={{ textAlign: props.children.align, ...styles.table }}
+        css={styles.table}
         {...gridProps}
       >
         <TableHeader>
@@ -138,12 +116,10 @@ export const Table: Table = ({
   );
 };
 
-const MarigoldColumn = Column as <T>(props: TableColumnProps<T>) => JSX.Element;
-
 // Export collection components to conveniently have access to them.
 Table.Body = Body;
 Table.Cell = Cell;
-Table.Column = MarigoldColumn;
+Table.Column = Column;
 Table.Header = Header;
 Table.Row = Row;
 
@@ -155,7 +131,7 @@ interface Table {
   (props: TableProps): JSX.Element;
   Body: typeof Body;
   Cell: typeof Cell;
-  Column: typeof MarigoldColumn;
+  Column: typeof Column;
   Header: typeof Header;
   Row: typeof Row;
 }

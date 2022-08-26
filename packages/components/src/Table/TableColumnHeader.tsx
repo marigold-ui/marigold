@@ -6,7 +6,7 @@ import { useTableColumnHeader } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
 
-import { Box, CSSObject, useStateProps } from '@marigold/system';
+import { Box, useStateProps } from '@marigold/system';
 
 import { useTableContext } from './Context';
 

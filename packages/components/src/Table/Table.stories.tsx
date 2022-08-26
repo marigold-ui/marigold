@@ -36,13 +36,6 @@ export default {
       },
       description: 'variant for the table: for example: compact',
     },
-    align: {
-      control: {
-        type: 'select',
-      },
-      options: ['left', 'center', 'right'],
-      description: 'align for the table header: for example: compact',
-    },
   },
 } as Meta;
 
@@ -51,8 +44,8 @@ export const Basic: ComponentStory<typeof Table> = args => (
     <Table.Header>
       <Table.Column>Name</Table.Column>
       <Table.Column>Firstname</Table.Column>
-      <Table.Column align="end">House</Table.Column>
-      <Table.Column align="end">Year of birth</Table.Column>
+      <Table.Column>House</Table.Column>
+      <Table.Column>Year of birth</Table.Column>
     </Table.Header>
     <Table.Body>
       <Table.Row key={1}>
@@ -358,7 +351,7 @@ export const Expanded = () => (
       <Table.Column>Name</Table.Column>
       <Table.Column>Firstname</Table.Column>
       <Table.Column>House</Table.Column>
-      <Table.Column align="end">Year of birth</Table.Column>
+      <Table.Column>Year of birth</Table.Column>
     </Table.Header>
     <Table.Body>
       <Table.Row key={1}>
