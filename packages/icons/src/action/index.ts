@@ -9,6 +9,7 @@ export * from './Picture';
 export * from './Location';
 export * from './Lock';
 export * from './LockOpen';
+export * from './Logout';
 export * from './Pause';
 export * from './PauseAlt';
 export * from './Play';
