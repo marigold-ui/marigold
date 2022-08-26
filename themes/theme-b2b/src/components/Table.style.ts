@@ -17,7 +17,7 @@ export const Table: Theme['components']['Table'] = {
       },
     },
     row: {
-      '&:checked': {
+      '&:selected': {
         bg: 'orange10',
       },
       '&:hover': {
@@ -31,6 +31,7 @@ export const Table: Theme['components']['Table'] = {
       py: 'small',
       px: 'small',
       cursor: 'default',
+      color: 'gray70',
       borderBottom: '1px solid',
       borderColor: 'gray50',
       '&:focus': {
