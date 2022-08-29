@@ -1,24 +1,23 @@
 import { Box } from '@marigold/system';
 import { Link } from './Link';
-//import { Link, LinkProps } from '@marigold/components';
 
-export const FigmaLink = ({ href, ...props }: { href: URL }) => (
-  <>
-    <Box
-      css={{
-        border: '1px solid',
-        borderColor: 'border.dark',
-        borderRadius: '10px',
-        bg: '#FFF',
-        '&:hover': {
-          borderColor: 'brand.secondary',
-        },
-      }}
-      {...props}
-    >
-      <Link variant="figma" href={href}>
-        Figma
-      </Link>
-    </Box>
-  </>
+export const FigmaLink = ({ href }: { href: URL }) => (
+  <Box
+    css={{
+      border: '2px solid',
+      borderColor: 'background.light',
+      borderRadius: '10px',
+      textAlign: 'center',
+      justifySelf: 'end',
+      bg: '#FFF',
+      mb: 'small-1',
+      '&:hover': {
+        borderColor: 'brand.secondary',
+      },
+    }}
+  >
+    <Link variant="figma" href={href}>
+      View in Figma
+    </Link>
+  </Box>
 );

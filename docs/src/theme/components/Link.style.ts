@@ -23,7 +23,9 @@ export const Link: Theme['components']['Link'] = {
     },
     figma: {
       fontFamily: 'headline',
-      p: 'medium-1',
+      px: 'small-1',
+      lineHeight: 'large-2',
+      color: 'text.muted',
     },
   },
 } as const;
