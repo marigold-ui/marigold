@@ -11,12 +11,13 @@ export const FigmaLink = ({ href }: { href: URL }) => (
       justifySelf: 'end',
       bg: '#FFF',
       mb: 'small-1',
+      mt: '-2rem',
       '&:hover': {
         borderColor: 'brand.secondary',
       },
     }}
   >
-    <Link variant="figma" href={href}>
+    <Link variant="figma" target="blank" href={href}>
       View in Figma
     </Link>
   </Box>
