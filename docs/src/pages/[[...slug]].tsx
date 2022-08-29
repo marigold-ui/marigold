@@ -1,7 +1,15 @@
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
-import { Aside, Container, Header, Text } from '@marigold/components';
+import {
+  Aside,
+  Container,
+  Header,
+  Inline,
+  Split,
+  Text,
+} from '@marigold/components';
 
 import {
+  FigmaLink,
   GradientHeadline,
   Layout,
   NavigationTree,
@@ -29,7 +37,11 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
             {frontmatter.caption && (
               <Text variant="page-caption">{frontmatter.caption}</Text>
             )}
-            {frontmatter?.switch && <ThemeSelect />}
+            <Inline>
+              {frontmatter?.switch && <ThemeSelect />}
+              <Split></Split>
+              {frontmatter?.figma && <FigmaLink href={frontmatter.figma} />}
+            </Inline>
           </Header>
         )}
         <Aside side="right" space="large-2">

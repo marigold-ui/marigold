@@ -21,5 +21,9 @@ export const Link: Theme['components']['Link'] = {
     toc: {
       fontFamily: 'headline',
     },
+    figma: {
+      fontFamily: 'headline',
+      p: 'medium-1',
+    },
   },
 } as const;
