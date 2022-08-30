@@ -2,6 +2,7 @@ import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { Aside, Box, Container, Header, Text } from '@marigold/components';
 
 import {
+  FigmaLink,
   GradientHeadline,
   Layout,
   NavigationTree,
@@ -39,6 +40,7 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
             size="large"
             css={{ display: 'inline-block' }}
           >
+            {frontmatter?.figma && <FigmaLink href={frontmatter.figma} />}
             <MDXRemote {...source} />
           </Box>
           <TocContainer />

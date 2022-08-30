@@ -21,5 +21,11 @@ export const Link: Theme['components']['Link'] = {
     toc: {
       fontFamily: 'headline',
     },
+    figma: {
+      fontFamily: 'headline',
+      px: 'small-1',
+      lineHeight: 'large-2',
+      color: 'text.muted',
+    },
   },
 } as const;

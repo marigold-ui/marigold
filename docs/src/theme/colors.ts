@@ -12,6 +12,7 @@ export const colors = {
     foreground: 'hsl(36, 100%, 100%)',
   },
   text: {
+    muted: 'hsl(28deg 5% 57%)',
     light: 'hsl(29, 37%, 55%)',
     regular: 'hsl(28, 100%, 3%)',
   },
