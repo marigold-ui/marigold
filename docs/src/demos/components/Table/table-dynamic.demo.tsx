@@ -1,4 +1,4 @@
-import { Stack, Table } from '@marigold/components';
+import { Table } from '@marigold/components';
 import React from 'react';
 
 export const DynamicTable = () => {

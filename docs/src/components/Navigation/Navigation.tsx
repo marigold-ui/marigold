@@ -1,9 +1,4 @@
-import {
-  Box,
-  CSSObject,
-  useComponentStyles,
-  useResponsiveValue,
-} from '@marigold/system';
+import { Box, CSSObject, useComponentStyles } from '@marigold/system';
 import { NAVIGATION_CONFIG } from '~/config';
 import { Link, LinkProps } from '~/components/Link';
 import React from 'react';
@@ -85,25 +80,18 @@ const NavigationItem = ({
   css,
   variant,
   ...props
-}: NavigationItemProps) => {
-  const useIsSmallScreen = () => useResponsiveValue([true, false, false], 2);
-  const isSmallScreen = useIsSmallScreen();
-  const [showNavigation, setShowNavigation] = React.useState(false);
-  const show = isSmallScreen ? showNavigation : true;
-
-  return (
-    <Box
-      as="li"
-      role="menuitem"
-      __baseCSS={{ listStyle: 'none' }}
-      css={css?.item}
-    >
-      <Link variant="navigation" {...props}>
-        {title}
-      </Link>
-    </Box>
-  );
-};
+}: NavigationItemProps) => (
+  <Box
+    as="li"
+    role="menuitem"
+    __baseCSS={{ listStyle: 'none' }}
+    css={css?.item}
+  >
+    <Link variant="navigation" {...props}>
+      {title}
+    </Link>
+  </Box>
+);
 
 const NavigationGroup = ({ name, items, css }: NavigationMenuGroupProps) => (
   <Box as="li" role="menuitem" __baseCSS={{ listStyle: 'none' }}>
