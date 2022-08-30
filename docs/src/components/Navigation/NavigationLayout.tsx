@@ -59,6 +59,7 @@ export const NavigationLayout = ({ navigation }: NavigationLayoutProps) => {
                 bg: 'background.page',
                 width: '100%',
                 ml: '-1rem',
+                whiteSpace: 'nowrap',
                 zIndex: 1,
               }
             : {}
