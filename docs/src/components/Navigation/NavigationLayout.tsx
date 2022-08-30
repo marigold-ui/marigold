@@ -57,7 +57,8 @@ export const NavigationLayout = ({ navigation }: NavigationLayoutProps) => {
             ? {
                 position: ['absolute', 'static'],
                 bg: 'background.page',
-                width: ['100vw', '100%'],
+                width: '100%',
+                ml: '-1rem',
                 zIndex: 1,
               }
             : {}

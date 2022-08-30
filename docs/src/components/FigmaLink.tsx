@@ -8,10 +8,11 @@ export const FigmaLink = ({ href }: { href: URL }) => (
       borderColor: 'background.light',
       borderRadius: '10px',
       textAlign: 'center',
-      justifySelf: 'end',
+      width: 'max-content',
+      ml: ['none', 'auto'],
       bg: '#FFF',
       mb: 'small-1',
-      mt: '-2rem',
+      mt: '-1rem',
       '&:hover': {
         borderColor: 'brand.secondary',
       },

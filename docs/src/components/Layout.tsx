@@ -16,11 +16,13 @@ export const Layout = ({ navigation, children }: LayoutProps) => {
           display: 'flex',
           flexDirection: ['column', 'row'],
           gap: ['medium-1', 'large-1', 'large-2'],
-          p: ['small-1', 'none'],
+          p: ['medium-1', 'none'],
         }}
       >
         <NavigationLayout navigation={navigation}></NavigationLayout>
-        <main>{children}</main>
+        <Box as="main" css={{ width: ['100%', '70vw'] }}>
+          {children}
+        </Box>
       </Box>
       <Version />
     </>

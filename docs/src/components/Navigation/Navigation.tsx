@@ -1,6 +1,7 @@
 import { Box, CSSObject, useComponentStyles } from '@marigold/system';
 import { NAVIGATION_CONFIG } from '~/config';
 import { Link, LinkProps } from '~/components/Link';
+import React from 'react';
 
 // Props
 // ---------------
