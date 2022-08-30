@@ -1,4 +1,5 @@
 export * from './CopyButton';
+export * from './FigmaLink';
 export * from './GradientHeadline';
 export * from './IconList';
 export * from './Layout';
