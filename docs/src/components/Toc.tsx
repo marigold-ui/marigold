@@ -32,8 +32,9 @@ export const Toc = ({ items, selector }: TocProps) => {
         fontSize: 'fixed.small-2',
         display: ['none', 'none', 'block'],
         top: 20,
-        ml: 'large-2',
+        mx: 'large-2',
         pl: 'medium-2',
+
         borderLeft: '1px solid',
         borderColor: 'background.light',
       }}

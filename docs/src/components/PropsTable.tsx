@@ -1,4 +1,4 @@
-import { Table } from '@marigold/components';
+import { Box, Table } from '@marigold/components';
 
 export interface PropsTableProps {
   props: { [key: string]: string }[];

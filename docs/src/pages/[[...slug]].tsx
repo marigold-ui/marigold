@@ -37,7 +37,7 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
             as={Container}
             contentType="content"
             size="large"
-            css={{ display: 'flex', flexWrap: 'wrap' }}
+            css={{ display: 'inline-block' }}
           >
             <MDXRemote {...source} />
           </Box>
