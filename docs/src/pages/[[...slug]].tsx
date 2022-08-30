@@ -1,5 +1,5 @@
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
-import { Aside, Container, Header, Text } from '@marigold/components';
+import { Aside, Box, Container, Header, Text } from '@marigold/components';
 
 import {
   GradientHeadline,
@@ -33,9 +33,14 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
           </Header>
         )}
         <Aside side="right" space="large-2">
-          <Container contentType="content" size="large">
+          <Box
+            as={Container}
+            contentType="content"
+            size="large"
+            css={{ display: 'flex', flexWrap: 'wrap' }}
+          >
             <MDXRemote {...source} />
-          </Container>
+          </Box>
           <TocContainer />
         </Aside>
       </Layout>
