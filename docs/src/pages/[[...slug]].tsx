@@ -38,7 +38,7 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
             as={Container}
             contentType="content"
             size="large"
-            css={{ display: 'inline-block' }}
+            css={{ display: 'block' }}
           >
             {frontmatter?.figma && <FigmaLink href={frontmatter.figma} />}
             <MDXRemote {...source} />
