@@ -42,7 +42,7 @@ export const DynamicTable = () => {
   const [selectedKeys, setSelectedKeys] = React.useState(new Set());
   const selected = Array.from(selectedKeys);
   return (
-    <Stack space="small">
+    <>
       <Table
         aria-label="Example dynamic collection table"
         selectionMode="multiple"
@@ -60,6 +60,6 @@ export const DynamicTable = () => {
         </Table.Body>
       </Table>
       <div>Selected rows: {selected.join(', ')}</div>
-    </Stack>
+    </>
   );
 };
