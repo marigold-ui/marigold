@@ -63,7 +63,6 @@ const components = {
 };
 
 const App = ({ Component, pageProps }: AppProps) => {
-  console.log(pageProps);
   return (
     <SSRProvider>
       <MarigoldProvider theme={theme}>
