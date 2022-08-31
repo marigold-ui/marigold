@@ -12,9 +12,10 @@ export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
     const links: Element[] = [];
 
     visit(tree, 'element', (node: Element) => {
-      if (node.tagName !== 'h2') {
+      if (node.tagName !== 'h2' && node.tagName !== 'h3') {
         return;
       }
+
       const link = (node.children as Element[]).find(
         child => child.tagName === 'a'
       );

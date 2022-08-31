@@ -27,6 +27,7 @@ export const Navigation = {
     },
     group: {
       color: 'text.regular',
+      fontSize: 'fixed.medium-1',
       fontWeight: 'medium',
     },
   },

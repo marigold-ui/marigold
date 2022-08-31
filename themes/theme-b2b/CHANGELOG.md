@@ -1,5 +1,14 @@
 # @marigold/theme-b2b
 
+## 12.0.2
+
+### Patch Changes
+
+- [#2361](https://github.com/marigold-ui/marigold/pull/2361) [`b84e6ff5`](https://github.com/marigold-ui/marigold/commit/b84e6ff56e124e2215278b11971269dba9a49bbe) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: update table with compact and expanded
+
+- Updated dependencies [[`b84e6ff5`](https://github.com/marigold-ui/marigold/commit/b84e6ff56e124e2215278b11971269dba9a49bbe)]:
+  - @marigold/components@2.1.2
+
 ## 12.0.1
 
 ### Patch Changes

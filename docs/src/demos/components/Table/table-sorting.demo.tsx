@@ -88,6 +88,7 @@ export const SortedTable = () => {
         aria-label="Example table with client side sorting"
         sortDescriptor={descriptor}
         onSortChange={sort}
+        selectionMode="multiple"
       >
         <Table.Header>
           <Table.Column key="name" allowsSorting>

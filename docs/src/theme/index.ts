@@ -17,7 +17,7 @@ export interface Theme extends BaseTheme {
 }
 
 export const theme: Theme = {
-  breakpoints: ['40em', '75em', '100em'],
+  breakpoints: ['51em', '75em', '100em'],
   root,
   space,
   sizes,

@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 2.1.2
+
+### Patch Changes
+
+- [#2361](https://github.com/marigold-ui/marigold/pull/2361) [`b84e6ff5`](https://github.com/marigold-ui/marigold/commit/b84e6ff56e124e2215278b11971269dba9a49bbe) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: update table with compact and expanded
+
+- Updated dependencies [[`630d8026`](https://github.com/marigold-ui/marigold/commit/630d80269e8bdff5c2900d6366c9fe5cbdaebe5d), [`294e31e3`](https://github.com/marigold-ui/marigold/commit/294e31e3c023cebd64f17a6e8cca97d78151f674)]:
+  - @marigold/icons@1.0.3
+  - @marigold/system@2.1.2
+
 ## 2.1.1
 
 ### Patch Changes

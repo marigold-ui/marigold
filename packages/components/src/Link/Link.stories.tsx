@@ -30,6 +30,7 @@ export default {
 
 export const Basic: ComponentStory<typeof Link> = args => (
   <Text>
+    Zu den
     <Link target="_blank" {...args}>
       Marigold Docs
     </Link>

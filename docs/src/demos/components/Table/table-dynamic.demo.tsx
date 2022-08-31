@@ -1,4 +1,4 @@
-import { Stack, Table } from '@marigold/components';
+import { Table } from '@marigold/components';
 import React from 'react';
 
 export const DynamicTable = () => {
@@ -42,9 +42,10 @@ export const DynamicTable = () => {
   const [selectedKeys, setSelectedKeys] = React.useState(new Set());
   const selected = Array.from(selectedKeys);
   return (
-    <Stack space="small">
+    <>
       <Table
         aria-label="Example dynamic collection table"
+        selectionMode="multiple"
         onSelectionChange={key => setSelectedKeys(new Set(key))}
       >
         <Table.Header columns={columns}>
@@ -59,6 +60,6 @@ export const DynamicTable = () => {
         </Table.Body>
       </Table>
       <div>Selected rows: {selected.join(', ')}</div>
-    </Stack>
+    </>
   );
 };
