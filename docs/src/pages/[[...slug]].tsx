@@ -4,13 +4,12 @@ import { Aside, Box, Container, Header, Text } from '@marigold/components';
 import {
   FigmaLink,
   GradientHeadline,
-  Layout,
   NavigationTree,
   ThemeSelect,
   Title,
   TocContainer,
 } from '~/components';
-import { getMdxFromSlug, getMdxPaths, createNavigationTree } from '~/mdx/pages';
+import { getMdxFromSlug, getMdxPaths } from '~/mdx/pages';
 import { serialize } from '~/mdx/serialize';
 
 export interface ContentPageProps {
@@ -23,29 +22,27 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
   return (
     <>
       <Title title={frontmatter?.title} />
-      <Layout navigation={navigation}>
-        {frontmatter?.title && (
-          <Header>
-            <GradientHeadline>{frontmatter.title}</GradientHeadline>
-            {frontmatter.caption && (
-              <Text variant="page-caption">{frontmatter.caption}</Text>
-            )}
-            {frontmatter?.switch && <ThemeSelect />}
-          </Header>
-        )}
-        <Aside side="right" space="large-2">
-          <Box
-            as={Container}
-            contentType="content"
-            size="large"
-            css={{ display: 'block' }}
-          >
-            {frontmatter?.figma && <FigmaLink href={frontmatter.figma} />}
-            <MDXRemote {...source} />
-          </Box>
-          <TocContainer />
-        </Aside>
-      </Layout>
+      {frontmatter?.title && (
+        <Header>
+          <GradientHeadline>{frontmatter.title}</GradientHeadline>
+          {frontmatter.caption && (
+            <Text variant="page-caption">{frontmatter.caption}</Text>
+          )}
+          {frontmatter?.switch && <ThemeSelect />}
+        </Header>
+      )}
+      <Aside side="right" space="large-2">
+        <Box
+          as={Container}
+          contentType="content"
+          size="large"
+          css={{ display: 'block' }}
+        >
+          {frontmatter?.figma && <FigmaLink href={frontmatter.figma} />}
+          <MDXRemote {...source} />
+        </Box>
+        <TocContainer />
+      </Aside>
     </>
   );
 };
@@ -55,12 +52,10 @@ export default ContentPage;
 export const getStaticProps = async ({ params }: any) => {
   const content = await getMdxFromSlug(params.slug || ['index']);
   const source = await serialize(content);
-  const navigation = await createNavigationTree();
 
   return {
     props: {
       source,
-      navigation,
     },
   };
 };
