@@ -2,7 +2,7 @@ import { MDXProvider } from 'next-mdx-remote';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
-import { Box, MarigoldProvider, SSRProvider } from '@marigold/components';
+import { MarigoldProvider, SSRProvider } from '@marigold/components';
 import * as MarigoldComponents from '@marigold/components';
 import * as MarigoldIcons from '@marigold/icons';
 import unicornTheme from '@marigold/theme-unicorn';
@@ -15,6 +15,16 @@ import * as DemoComponents from '~/demos';
 
 import { Layout, MarigoldThemeSwitch } from '~/components';
 import { theme } from '~/theme';
+
+import { Aside, Box, Container, Header, Text } from '@marigold/components';
+
+import {
+  FigmaLink,
+  GradientHeadline,
+  ThemeSelect,
+  Title,
+  TocContainer,
+} from '~/components';
 
 const themes = {
   unicornTheme,
@@ -53,6 +63,7 @@ const components = {
 };
 
 const App = ({ Component, pageProps }: AppProps) => {
+  console.log(pageProps);
   return (
     <SSRProvider>
       <MarigoldProvider theme={theme}>
@@ -60,7 +71,28 @@ const App = ({ Component, pageProps }: AppProps) => {
           <MDXProvider components={components as any}>
             <DevMode />
             <Layout navigation={process.env.navigation}>
-              <Component {...pageProps} />
+              <Title title={pageProps?.title} />
+              {pageProps?.title && (
+                <Header>
+                  <GradientHeadline>{pageProps.title}</GradientHeadline>
+                  {pageProps.caption && (
+                    <Text variant="page-caption">{pageProps.caption}</Text>
+                  )}
+                  {pageProps?.switch && <ThemeSelect />}
+                </Header>
+              )}
+              <Aside side="right" space="large-2">
+                <Box
+                  as={Container}
+                  contentType="content"
+                  size="large"
+                  css={{ display: 'block' }}
+                >
+                  {pageProps?.figma && <FigmaLink href={pageProps.figma} />}
+                  <Component {...pageProps} />
+                </Box>
+                <TocContainer />
+              </Aside>
             </Layout>
           </MDXProvider>
         </MarigoldThemeSwitch>
