@@ -11,6 +11,9 @@ import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
+import { remarkCodeDemo } from './src/mdx/remark-code-demo.js';
+
+export const DEMO_PATH = path.join(process.cwd(), 'src', 'demos');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,7 +23,18 @@ const isProduction = process.env.NODE_ENV === 'production';
 const withMdx = mdx({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [remarkGfm, remarkFrontmatter, remarkMdxFrontmatter],
+    remarkPlugins: [
+      remarkGfm,
+      [
+        remarkCodeDemo,
+        {
+          demoPath: DEMO_PATH,
+          wrapperComponent: 'Preview',
+        },
+      ],
+      remarkFrontmatter,
+      remarkMdxFrontmatter,
+    ],
     rehypePlugins: [rehypeSlug],
     recmaPlugins: [recmaNextjsStaticProps],
     providerImportSource: '@mdx-js/react',

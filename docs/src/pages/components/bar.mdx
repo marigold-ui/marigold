@@ -1,0 +1,151 @@
+---
+title: Button
+group: Forms
+figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=11%3A269
+switchTheme: true
+---
+
+import { Button } from '@marigold/components';
+import { PropsTable } from '../../components/PropsTable';
+import { Preview } from '../../components/Preview';
+
+import {
+  ButtonVariantDemo,
+  ButtonIconDemo,
+  ButtonSizeDemo,
+} from '../../demos/components/Button/index.ts';
+
+The Button component renders a `<button>` element.
+Buttons allow users to perform an action.
+They have multiple styles for various needs, and are ideal for calling attention to where a user needs to do something in order to move forward in a flow.
+The style variant and size of the button can be added with the variant prop and is composed like `variant.size`.
+
+<Preview>
+  <ButtonVariantDemo />
+</Preview>
+
+```tsx onlyCode
+import { Button } from '@marigold/components';
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'Variant of the component',
+    },
+    {
+      property: 'size',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'Size of the component',
+    },
+    {
+      property: 'space',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'Spacing between child elements',
+    },
+    {
+      property: 'onPress',
+      type: '(e: PressEvent) => void',
+      description:
+        'Handler that is called when the press is released over the target',
+    },
+  ]}
+/>
+
+## Types
+
+### Primary Button
+
+The primary button function is to achieve the most common or most important goal of the user, it has more visual weight than the secondary options. There should not be more than one primary button in a screen at the time.
+
+#### Default
+
+```tsx preview
+<Button variant="primary">Primary</Button>
+```
+
+#### Disabled
+
+```tsx preview
+<Button variant="primary" disabled>
+  Primary
+</Button>
+```
+
+### Secondary Button
+
+Secondary buttons are an alternative to the user to the Primary option. They are used for actions like canceling, skipping, resetting, declining an offer etc.
+
+<br />
+
+#### Default
+
+```tsx preview
+<Button variant="secondary">Secondary</Button>
+```
+
+#### Disabled
+
+```tsx preview
+<Button variant="secondary" disabled>
+  Secondary
+</Button>
+```
+
+### Ghost Button
+
+They are used for miscellaneous actions, they are important but is not the ones where it is desired that the user focus at the moment.
+
+<br />
+
+#### Default
+
+```tsx preview
+<Button variant="ghost">Ghost</Button>
+```
+
+#### Disabled
+
+```tsx preview
+<Button variant="ghost" disabled>
+  Ghost
+</Button>
+```
+
+### Suplementary Text Button
+
+They can be used in a similar way of a secondary button, but they are meant to be less relevant to the user.
+
+#### Default
+
+```tsx preview
+<Button variant="text">Text Only</Button>
+```
+
+#### Disabled
+
+```tsx preview
+<Button variant="text" disabled>
+  Text Only
+</Button>
+```
+
+### Button with Icon
+
+Icons can be added in Order to make clearer what a button does. Buttons should not be made only with icons, because every user may understand them on a different way.
+
+```tsx preview file=components/Button/button-icon.demo.tsx
+
+```
+
+### Button Sizes
+
+If there are many actions in one page, is it possible to use small buttons instead of big ones. As well if the page is required to be open on mobile devices.
+
+```tsx preview file=components/Button/button-size.demo.tsx
+
+```

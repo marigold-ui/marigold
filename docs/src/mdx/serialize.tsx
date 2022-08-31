@@ -8,7 +8,7 @@ import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 
 import { DEMO_PATH } from '~/config';
-import { remarkCodeDemo } from '~/mdx/remark-code-demo';
+import { remarkCodeDemo } from '~/mdx/remark-code-demo.js';
 import { rehypeTableOfContents } from './rehype-toc';
 
 export const serialize = async (content: string) => {
