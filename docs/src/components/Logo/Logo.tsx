@@ -9,6 +9,7 @@ export const Logo = forwardRef<SVGElement, SVGProps>((props, ref) => (
     {...props}
     ref={ref}
   >
+    <title>Marigold Logo</title>
     <circle
       cx="69.08"
       cy="70.14"
