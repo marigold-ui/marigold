@@ -8,6 +8,7 @@ export interface Options {
 }
 
 export const rehypeTableOfContents = (options: Options): Transformer<Root> => {
+  console.log('test');
   return tree => {
     const links: Element[] = [];
 
