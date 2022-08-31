@@ -6,6 +6,11 @@ import mdx from '@next/mdx';
 import createNavigationTree from './src/navigation.mjs';
 
 import pkg from './package.json' assert { type: 'json' };
+import recmaNextjsStaticProps from 'recma-nextjs-static-props';
+import remarkGfm from 'remark-gfm';
+import rehypeSlug from 'rehype-slug';
+import remarkFrontmatter from 'remark-frontmatter';
+import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,9 +20,9 @@ const isProduction = process.env.NODE_ENV === 'production';
 const withMdx = mdx({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [],
-    rehypePlugins: [],
-    recmaPlugins: [],
+    remarkPlugins: [remarkGfm, remarkFrontmatter, remarkMdxFrontmatter],
+    rehypePlugins: [rehypeSlug],
+    recmaPlugins: [recmaNextjsStaticProps],
     providerImportSource: '@mdx-js/react',
   },
 });
@@ -40,7 +45,7 @@ export default async () => {
       ignoreBuildErrors: isProduction,
       tsconfigPath: './tsconfig.json',
     },
-    // pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+    pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
     webpack: (config, { defaultLoaders: { babel } }) => {
       config.module.rules.unshift({
         include: [
