@@ -78,7 +78,7 @@ const App = ({ Component, pageProps }: AppProps) => {
                   {pageProps.caption && (
                     <Text variant="page-caption">{pageProps.caption}</Text>
                   )}
-                  {pageProps?.switch && <ThemeSelect />}
+                  {pageProps?.switchTheme && <ThemeSelect />}
                 </Header>
               )}
               <Aside side="right" space="large-2">
