@@ -1,11 +1,7 @@
 import path from 'node:path';
 import fs from 'fs-extra';
 
-import {
-  flatMap,
-  getExportedComponent,
-  parseToMdAst,
-} from '../mdx/utils/ast.js';
+import { flatMap, getExportedComponent, parseToMdAst } from './utils/ast.js';
 
 /**
  * Very simple argument parser. Converts key=value pairs into

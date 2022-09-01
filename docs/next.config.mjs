@@ -11,8 +11,8 @@ import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
-import { remarkCodeDemo } from './src/pages/remark-code-demo.js';
-import { rehypeTableOfContents } from './src/pages/rehype-toc.js';
+import { remarkCodeDemo } from './src/mdx/remark-code-demo.js';
+import { rehypeTableOfContents } from './src/mdx/rehype-toc.js';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
 export const DEMO_PATH = path.join(process.cwd(), 'src', 'demos');
