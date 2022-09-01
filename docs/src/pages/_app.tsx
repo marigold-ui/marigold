@@ -26,6 +26,8 @@ import {
   Title,
   TocContainer,
 } from '~/components';
+import createNavigationTree from '~/navigation.mjs';
+import App from 'next/app';
 
 const themes = {
   unicornTheme,
@@ -63,7 +65,7 @@ const components = {
   ...MarigoldIcons,
 };
 
-const App = ({ Component, pageProps }: AppProps) => {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <SSRProvider>
       <MarigoldProvider theme={theme}>
@@ -101,4 +103,15 @@ const App = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-export default App;
+MyApp.getInitialProps = async (appContext: any) => {
+  // const navigation = await createNavigationTree();
+  // calls page's `getInitialProps` and fills `appProps.pageProps`
+  const appProps = await App.getInitialProps(appContext);
+
+  console.log('appProps', appProps);
+  return {
+    ...appProps,
+  };
+};
+
+export default MyApp;

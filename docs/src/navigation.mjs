@@ -4,7 +4,7 @@ import { globby } from 'globby';
 import { read } from 'to-vfile';
 import { matter } from 'vfile-matter';
 
-const PAGES_PATH = 'content';
+const PAGES_PATH = 'pages/content';
 const NAVIGATION_CONFIG = {
   order: [
     { name: 'introduction' },
@@ -56,8 +56,11 @@ const sortByOrder = items => {
 };
 
 const createNavigationTree = async () => {
+  console.log('NAVTREE');
   // Get all information for MDX pages (their frontmatter)
   const files = await globby([`${PAGES_PATH}/**/*.mdx`]);
+  console.log('FILES', files);
+  console.log(PAGES_PATH);
   const items = await Promise.all(
     files.map(async filePath => {
       const frontmatter = await getFrontmatter(filePath);
