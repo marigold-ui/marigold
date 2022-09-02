@@ -12,6 +12,7 @@ import {
 } from '~/components';
 import { getMdxFromSlug, getMdxPaths, createNavigationTree } from '~/mdx/pages';
 import { serialize } from '~/mdx/serialize';
+import { ScrollToTop } from '~/components/ScrollToTop';
 
 export interface ContentPageProps {
   source: MDXRemoteSerializeResult;
@@ -45,6 +46,7 @@ const ContentPage = ({ source, navigation }: ContentPageProps) => {
           </Box>
           <TocContainer />
         </Aside>
+        <ScrollToTop />
       </Layout>
     </>
   );
