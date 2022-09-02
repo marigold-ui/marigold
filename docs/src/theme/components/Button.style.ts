@@ -38,6 +38,10 @@ export const Button: Theme['components']['Button'] = {
       border: 'none',
       outline: 'none',
     },
+    scrollToTop: {
+      width: '100%',
+      height: '100%',
+    },
   },
   size: {
     full: {
