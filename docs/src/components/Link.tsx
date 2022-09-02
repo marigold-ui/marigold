@@ -8,15 +8,19 @@ import {
 
 export interface LinkProps
   extends NextLinkProps,
-    Pick<MarigoldLinkProps, 'variant' | 'target' | 'children'> {}
+    Pick<MarigoldLinkProps, 'variant' | 'target' | 'children'> {
+  ariaCurrent?: string;
+}
 
 // why the onPress not works: https://github.com/adobe/react-spectrum/issues/2525
 const InnerLink = forwardRef(
-  ({ onClick, ...props }: Omit<LinkProps, 'href' | 'as'>, ref) => (
-    <MarigoldLink onClick={onClick} {...props} ref={ref}>
-      {props.children}
-    </MarigoldLink>
-  )
+  ({ onClick, ...props }: Omit<LinkProps, 'href' | 'as'>, ref) => {
+    return (
+      <MarigoldLink onClick={onClick} {...props} ref={ref}>
+        {props.children}
+      </MarigoldLink>
+    );
+  }
 );
 
 export const Link = ({ variant, href, children, target }: LinkProps) => {
