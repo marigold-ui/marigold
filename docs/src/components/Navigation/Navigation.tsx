@@ -55,9 +55,8 @@ interface NavigationStyles {
 // Components
 // ---------------
 const NavigationLinks = ({ css }: NavigationLinksProps) => {
-  const [close, setClose] = React.useState(false);
-
   const { asPath } = useRouter();
+  const [close, setClose] = React.useState(false);
 
   return (
     <Box as="li" role="menuitem" __baseCSS={{ listStyle: 'none' }}>

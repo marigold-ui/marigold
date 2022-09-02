@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
+import { useRouter } from 'next/router';
 
 import {
   Link as MarigoldLink,
@@ -24,9 +25,16 @@ const InnerLink = forwardRef(
 );
 
 export const Link = ({ variant, href, children, target }: LinkProps) => {
+  const { asPath } = useRouter();
+  const link = href + '/';
+
   return (
     <NextLink href={href} passHref>
-      <InnerLink variant={variant} target={target}>
+      <InnerLink
+        variant={variant}
+        target={target}
+        ariaCurrent={link === asPath ? 'active' : undefined}
+      >
         {children}
       </InnerLink>
     </NextLink>
