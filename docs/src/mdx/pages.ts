@@ -8,7 +8,7 @@ import type {
   NavigationTree,
 } from '~/components';
 import { CONTENT_PATH, NAVIGATION_CONFIG } from '~/config';
-import { getFrontmatter } from './serialize';
+import { getFrontmatter } from './__serialize';
 
 /**
  * Get list of all mdx page files.

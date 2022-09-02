@@ -1,4 +1,3 @@
-import { serialize as mdx } from 'next-mdx-remote/serialize';
 import { read } from 'to-vfile';
 import { matter } from 'vfile-matter';
 

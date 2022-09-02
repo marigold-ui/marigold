@@ -66,6 +66,7 @@ const components = {
 };
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
+  console.log('PAGEPROPS', pageProps);
   return (
     <SSRProvider>
       <MarigoldProvider theme={theme}>
@@ -108,9 +109,10 @@ MyApp.getInitialProps = async (appContext: any) => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
 
-  console.log('appProps', appProps);
   return {
-    ...appProps,
+    pageProps: {
+      path: appContext.router.asPath,
+    },
   };
 };
 

@@ -1,4 +1,3 @@
-import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { Aside, Box, Container, Header, Text } from '@marigold/components';
 
 import {
@@ -10,7 +9,7 @@ import {
   TocContainer,
 } from '~/components';
 import { getMdxFromSlug, getMdxPaths } from '~/mdx/pages';
-import { serialize } from '~/mdx/serialize';
+import { serialize } from '~/mdx/__serialize';
 
 export interface ContentPageProps {
   source: MDXRemoteSerializeResult;
