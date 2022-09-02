@@ -1,9 +1,8 @@
 import { Box, CSSObject, useComponentStyles } from '@marigold/system';
 import { NAVIGATION_CONFIG } from '~/config';
 import { Link, LinkProps } from '~/components/Link';
-import React, { Key } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
-import { resolveHref } from 'next/dist/shared/lib/router/router';
 
 // Props
 // ---------------
@@ -56,8 +55,6 @@ interface NavigationStyles {
 // ---------------
 const NavigationLinks = ({ css }: NavigationLinksProps) => {
   const { asPath } = useRouter();
-  const [close, setClose] = React.useState(false);
-
   return (
     <Box as="li" role="menuitem" __baseCSS={{ listStyle: 'none' }}>
       <Box as="ul" role="menubar" css={css?.list}>
@@ -89,10 +86,6 @@ const NavigationItem = ({
   variant,
   ...props
 }: NavigationItemProps) => {
-  const router = useRouter();
-  // console.log('ASPATH', router.asPath);
-  // console.log('HREF', props.href);
-
   return (
     <Box
       as="li"
