@@ -20,8 +20,6 @@ export const ScrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
-      /* you can also use 'auto' behaviour
-           in place of 'smooth' */
     });
   };
 
@@ -34,11 +32,7 @@ export const ScrollToTop = () => {
   const styles = useComponentStyles('ScrollToTop');
 
   return (
-    <Box
-      id="scrollToTop"
-      css={styles}
-      style={{ display: visible ? 'inline' : 'none' }}
-    >
+    <Box css={styles} style={{ display: visible ? 'inline' : 'none' }}>
       <Button variant="scrollToTop" onClick={scrollToTop}>
         <ChevronUp fill={`${colors.brand.primary}`} />
       </Button>
