@@ -1,6 +1,6 @@
 import path from 'path';
 
-export const CONTENT_PATH = path.join(process.cwd(), 'content');
+export const CONTENT_PATH = path.join(process.cwd(), 'pages/content');
 
 export const DEMO_PATH = path.join(process.cwd(), 'src', 'demos');
 

@@ -1,0 +1,51 @@
+---
+title: Label
+group: Forms
+figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=92%3A0
+switchTheme: true
+---
+
+The `Label` component is used to accosiate and describe a form field.
+
+<Preview>
+  <Label>Some Label</Label>
+</Preview>
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      property: 'variant',
+      type: 'string',
+      description: '',
+      default: 'none',
+    },
+    {
+      property: 'size',
+      type: 'string',
+      description: '',
+      default: 'none',
+    },
+    {
+      property: 'as',
+      type: 'label, span',
+      description: '',
+      default: 'label',
+    },
+    {
+      property: 'required',
+      type: 'boolean',
+      description: '',
+      default: 'false',
+    },
+  ]}
+/>
+
+## Examples
+
+### Label required
+
+```tsx preview file=components/Label/label-req.demo.tsx
+
+```
