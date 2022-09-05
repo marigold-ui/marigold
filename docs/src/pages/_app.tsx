@@ -25,6 +25,7 @@ import {
   ThemeSelect,
   Title,
   TocContainer,
+  ScrollToTop,
 } from '~/components';
 
 const themes = {
@@ -93,6 +94,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                 </Box>
                 <TocContainer />
               </Aside>
+              <ScrollToTop />
             </Layout>
           </MDXProvider>
         </MarigoldThemeSwitch>
