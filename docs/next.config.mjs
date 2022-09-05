@@ -26,6 +26,8 @@ const withMdx = mdx({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [
+      remarkFrontmatter,
+      remarkMdxFrontmatter,
       remarkGfm,
       [
         remarkCodeDemo,
@@ -34,8 +36,6 @@ const withMdx = mdx({
           wrapperComponent: 'Preview',
         },
       ],
-      remarkFrontmatter,
-      remarkMdxFrontmatter,
     ],
     rehypePlugins: [
       rehypeSlug,
