@@ -17,6 +17,7 @@ export const NavigationLayout = ({ navigation }: NavigationLayoutProps) => {
   const [showNavigation, setShowNavigation] = React.useState(false);
   const show = isSmallScreen ? showNavigation : true;
 
+  console.log('NAV', showNavigation);
   return (
     <Box css={{ py: ['none', 'medium-1'] }}>
       {isSmallScreen && (

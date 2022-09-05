@@ -1,4 +1,9 @@
-import { Box, CSSObject, useComponentStyles } from '@marigold/system';
+import {
+  Box,
+  CSSObject,
+  useComponentStyles,
+  useResponsiveValue,
+} from '@marigold/system';
 import { NAVIGATION_CONFIG } from '~/config';
 import { Link, LinkProps } from '~/components/Link';
 import React from 'react';
@@ -51,10 +56,10 @@ interface NavigationStyles {
   };
 }
 
+const useIsSmallScreen = () => useResponsiveValue([true, false, false], 2);
 // Components
 // ---------------
 const NavigationLinks = ({ css }: NavigationLinksProps) => {
-  const { asPath } = useRouter();
   return (
     <Box as="li" role="menuitem" __baseCSS={{ listStyle: 'none' }}>
       <Box as="ul" role="menubar" css={css?.list}>
@@ -69,7 +74,6 @@ const NavigationLinks = ({ css }: NavigationLinksProps) => {
                 css={css}
                 title={title}
                 href={url}
-                ariaCurrent={url === asPath ? 'active' : undefined}
                 target="_blank"
               ></NavigationItem>
             ))}
@@ -86,6 +90,13 @@ const NavigationItem = ({
   variant,
   ...props
 }: NavigationItemProps) => {
+  const isSmallScreen = useIsSmallScreen();
+  const [hide, setHide] = React.useState(true);
+  const { asPath } = useRouter();
+  const link = props.href + '/';
+
+  const ariaCurrent = link === asPath ? 'active' : undefined;
+
   return (
     <Box
       as="li"
@@ -93,9 +104,20 @@ const NavigationItem = ({
       __baseCSS={{ listStyle: 'none' }}
       css={css?.item}
     >
-      <Link variant="navigation" {...props}>
-        {title}
-      </Link>
+      {ariaCurrent != undefined && isSmallScreen ? (
+        <Link
+          variant="navigation"
+          onClick={() => setHide(!hide)}
+          ariaCurrent={ariaCurrent}
+          {...props}
+        >
+          {title}
+        </Link>
+      ) : (
+        <Link variant="navigation" ariaCurrent={ariaCurrent} {...props}>
+          {title}
+        </Link>
+      )}
     </Box>
   );
 };
