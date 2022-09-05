@@ -6,7 +6,7 @@
   "files": [
     "README.md"
   ],
-  "imageSize": 100,
+  "imageSize": 120,
   "commit": true,
   "commitConvention": "none",
   "contributors": [
@@ -17,8 +17,33 @@
       "profile": "https://github.com/sebald",
       "contributions": [
         "code",
+        "design",
         "doc",
-        "infra"
+        "review"
+      ]
+    },
+    {
+      "login": "sarahgm",
+      "name": "sarahgm",
+      "avatar_url": "https://avatars.githubusercontent.com/u/38324334?v=4",
+      "profile": "https://github.com/sarahgm",
+      "contributions": [
+        "code",
+        "design",
+        "doc",
+        "review"
+      ]
+    },
+    {
+      "login": "benediktgrether",
+      "name": "Benedikt Grether",
+      "avatar_url": "https://avatars.githubusercontent.com/u/27921741?v=4",
+      "profile": "http://benediktgrether.de",
+      "contributions": [
+        "code",
+        "design",
+        "doc",
+        "review"
       ]
     },
     {
@@ -87,20 +112,7 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/34473133?v=4",
       "profile": "https://github.com/andres-dediego2",
       "contributions": [
-        "design",
-        "doc"
-      ]
-    },
-    {
-      "login": "sarahgm",
-      "name": "sarahgm",
-      "avatar_url": "https://avatars.githubusercontent.com/u/38324334?v=4",
-      "profile": "https://github.com/sarahgm",
-      "contributions": [
-        "code",
-        "design",
-        "doc",
-        "infra"
+        "design"
       ]
     },
     {
@@ -111,18 +123,8 @@
       "contributions": [
         "doc"
       ]
-    },
-    {
-      "login": "benediktgrether",
-      "name": "Benedikt Grether",
-      "avatar_url": "https://avatars.githubusercontent.com/u/27921741?v=4",
-      "profile": "http://benediktgrether.de",
-      "contributions": [
-        "code",
-        "infra"
-      ]
     }
   ],
-  "contributorsPerLine": 7,
+  "contributorsPerLine": 5,
   "skipCi": true
 }
