@@ -60,6 +60,15 @@ export const element = {
     maxWidth: '100%',
   },
 
+  /**
+   * No `maxWidth` for SVG since this makes them responsive
+   * and will cause icons to shrink.
+   */
+  svg: {
+    display: 'block',
+    fill: 'currentColor',
+  },
+
   button: {
     display: 'block',
     appearance: 'none',
