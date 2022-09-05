@@ -18,10 +18,7 @@ export interface SVGProps extends ComponentProps<'svg'> {
 }
 
 export const SVG = forwardRef<SVGElement, SVGProps>(
-  (
-    { size = 24, fill = 'currentcolor', children, css: styles, ...props },
-    ref
-  ) => {
+  ({ size = 24, fill, children, css: styles, ...props }, ref) => {
     const { css } = useTheme();
 
     return jsx(

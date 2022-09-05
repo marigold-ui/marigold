@@ -3,13 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { Facebook } from './social';
 import { ArrowUp } from './ui';
 
-test('supports default fill color', () => {
-  render(<Facebook data-testid="svg" />);
-  const svg = screen.getByTestId(/svg/);
-
-  expect(svg).toHaveStyle('fill: currentcolor');
-});
-
 test('supports default size', () => {
   render(<Facebook data-testid="svg" />);
   const svg = screen.getByTestId(/svg/);
