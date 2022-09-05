@@ -1,0 +1,173 @@
+---
+title: NumberField
+group: Forms
+figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=3540%3A4927
+switchTheme: true
+---
+
+The `NumberField` components allows users to enter numbers with a keyboard. This includes plain numbers as well as percentages, decimals and sums of money. It consists of a label, an input field and a help text. The later also includes error messages.
+
+<Preview>
+  <NumberField
+    label="Try me"
+    description="You should really try this!"
+    defaultValue={9.99}
+    formatOptions={{
+      style: 'currency',
+      currency: 'EUR',
+    }}
+  />
+</Preview>
+
+```tsx
+import { NumberField } from '@marigold/components';
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      property: 'label',
+      type: 'ReactNode',
+      description: 'The label text. ',
+      default: 'none',
+    },
+    {
+      property: 'description',
+      type: 'ReactNode',
+      description: '	A helpful text.',
+      default: 'none',
+    },
+    {
+      property: 'errorMessage',
+      type: 'ReactNode',
+      description: 'An error message.',
+      default: 'none',
+    },
+    {
+      property: 'error',
+      type: 'boolean',
+      description:
+        'If `true`, the field is considered invalid and if set the errorMessage is shown instead of the `description`.',
+      default: 'false',
+    },
+    {
+      property: 'value',
+      type: 'number',
+      description: 'The value of the input field.',
+      default: 'none',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'If `true`, the input is disabled.',
+      default: 'false',
+    },
+    {
+      property: 'required',
+      type: 'boolean',
+      description: 'If `true`, the input is required.',
+      default: 'false',
+    },
+    {
+      property: 'readOnly',
+      type: 'boolean',
+      description: 'If `true`, the input is readOnly.',
+      default: 'false',
+    },
+    {
+      property: 'onChange',
+      type: 'function',
+      description:
+        "A callback function that is called with the input's current value when the input value changes.",
+      default: '',
+    },
+    {
+      property: 'formatOptions',
+      type: 'Intl.NumberFormatOptions',
+      description:
+        'Apply formatting. See `Intl.NumberFormatOptions` for available options.',
+      default: '',
+    },
+    {
+      property: 'width',
+      type: 'string',
+      description: 'Control the width of the field.',
+      default: '100%',
+    },
+    {
+      property: '...',
+      type: '',
+      description: 'Yes you can use all regular attributes of input!',
+      default: '',
+    },
+  ]}
+/>
+## Examples
+
+### Simple Number Field
+
+```tsx preview file=components/NumberField/number-field-simple.demo.tsx
+
+```
+
+### Disabled Number Field
+
+```tsx preview file=components/NumberField/number-field-disabled.demo.tsx
+
+```
+
+### Required Number Field
+
+```tsx preview file=components/NumberField/number-field-required.demo.tsx
+
+```
+
+### Number Field with an Error
+
+```tsx preview file=components/NumberField/number-field-error.demo.tsx
+
+```
+
+### Min and max Values
+
+```tsx preview file=components/NumberField/number-field-values.demo.tsx
+
+```
+
+### Step Amount
+
+```tsx preview file=components/NumberField/number-field-amount.demo.tsx
+
+```
+
+### Hide Stepper
+
+```tsx preview file=components/NumberField/number-field-hide.demo.tsx
+
+```
+
+### Diplay a Decimals
+
+```tsx preview file=components/NumberField/number-field-dec.demo.tsx
+
+```
+
+### Diplay a Currency
+
+```tsx preview file=components/NumberField/number-field-cur.demo.tsx
+
+```
+
+### Diplay a Percentage
+
+```tsx preview file=components/NumberField/number-field-per.demo.tsx
+
+```
+
+### Display a Unit
+
+```tsx preview file=components/NumberField/number-field-unit.demo.tsx
+
+```
