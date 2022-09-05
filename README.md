@@ -91,6 +91,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/snragund"><img src="https://avatars.githubusercontent.com/u/62615094?v=4?s=120" width="120px;" alt=""/><br /><sub><b>snragund</b></sub></a><br /><a href="https://github.com/marigold-ui/marigold/commits?author=snragund" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/michael-p"><img src="https://avatars.githubusercontent.com/u/531872?v=4?s=120" width="120px;" alt=""/><br /><sub><b>Michael Partheil</b></sub></a><br /><a href="#ideas-michael-p" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
