@@ -9,9 +9,10 @@ import {
 
 export interface LinkProps
   extends NextLinkProps,
-    Pick<MarigoldLinkProps, 'variant' | 'target' | 'children'> {
-  ariaCurrent?: string;
-}
+    Pick<
+      MarigoldLinkProps,
+      'variant' | 'target' | 'children' | 'ariaCurrent'
+    > {}
 
 // why the onPress not works: https://github.com/adobe/react-spectrum/issues/2525
 const InnerLink = forwardRef(
@@ -28,13 +29,11 @@ export const Link = ({ variant, href, children, target }: LinkProps) => {
   const { asPath } = useRouter();
   const link = href + '/';
 
+  const ariaCurrent = link === asPath ? 'active' : undefined;
+
   return (
     <NextLink href={href} passHref>
-      <InnerLink
-        variant={variant}
-        target={target}
-        ariaCurrent={link === asPath ? 'active' : undefined}
-      >
+      <InnerLink variant={variant} target={target} ariaCurrent={ariaCurrent}>
         {children}
       </InnerLink>
     </NextLink>
