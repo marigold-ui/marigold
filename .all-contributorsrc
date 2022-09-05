@@ -123,6 +123,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "michael-p",
+      "name": "Michael Partheil",
+      "avatar_url": "https://avatars.githubusercontent.com/u/531872?v=4",
+      "profile": "https://github.com/michael-p",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 5,
