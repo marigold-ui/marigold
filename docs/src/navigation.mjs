@@ -4,7 +4,6 @@ import { globby } from 'globby';
 import { read } from 'to-vfile';
 import { matter } from 'vfile-matter';
 
-const PAGES_PATH = 'pages/content';
 const NAVIGATION_CONFIG = {
   order: [
     { name: 'introduction' },
@@ -42,7 +41,7 @@ const NAVIGATION_CONFIG = {
   ],
 };
 
-const toSlug = file => path.relative(PAGES_PATH, file.replace(/\.mdx?$/, ''));
+const toSlug = (file, from) => path.relative(from, file.replace(/\.mdx?$/, ''));
 
 const getFrontmatter = async filePath => {
   const file = await read(filePath);
@@ -55,16 +54,20 @@ const sortByOrder = items => {
   items.sort((a, b) => (a.order || 9999999999) - (b.order || 9999999999));
 };
 
-const createNavigationTree = async () => {
+/**
+ *
+ * @param {string} directory base path to look for MDX files
+ */
+const createNavigationTree = async directory => {
   // Get all information for MDX pages (their frontmatter)
-  const files = await globby([`${PAGES_PATH}/**/*.mdx`]);
+  const files = await globby([`${directory}/**/*.mdx`]);
   const items = await Promise.all(
     files.map(async filePath => {
       const frontmatter = await getFrontmatter(filePath);
       return {
         // @ts-ignore
         ...frontmatter,
-        slug: toSlug(filePath),
+        slug: toSlug(filePath, directory),
       };
     })
   );

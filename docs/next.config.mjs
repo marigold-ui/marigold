@@ -48,7 +48,9 @@ const withMdx = mdx({
 });
 
 export default async () => {
-  const navigation = await createNavigationTree();
+  const navigation = await createNavigationTree(
+    path.resolve(__dirname, 'src', 'pages')
+  );
 
   /** @type {import('next').NextConfig} */
   const config = {
