@@ -1,8 +1,9 @@
-import { MDXProvider } from 'next-mdx-remote';
+import { MDXProvider } from '@mdx-js/react';
+
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
-import { Box, MarigoldProvider, SSRProvider } from '@marigold/components';
+import { MarigoldProvider, SSRProvider } from '@marigold/components';
 import * as MarigoldComponents from '@marigold/components';
 import * as MarigoldIcons from '@marigold/icons';
 import unicornTheme from '@marigold/theme-unicorn';
@@ -13,8 +14,19 @@ import * as DocsComponents from '~/components';
 import * as MdxComponents from '~/mdx/components';
 import * as DemoComponents from '~/demos';
 
-import { MarigoldThemeSwitch } from '~/components';
+import { Layout, MarigoldThemeSwitch } from '~/components';
 import { theme } from '~/theme';
+
+import { Aside, Box, Container, Header, Text } from '@marigold/components';
+
+import {
+  FigmaLink,
+  GradientHeadline,
+  ThemeSelect,
+  Title,
+  TocContainer,
+  ScrollToTop,
+} from '~/components';
 
 const themes = {
   unicornTheme,
@@ -52,14 +64,38 @@ const components = {
   ...MarigoldIcons,
 };
 
-const App = ({ Component, pageProps }: AppProps) => {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <SSRProvider>
       <MarigoldProvider theme={theme}>
         <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
           <MDXProvider components={components as any}>
             <DevMode />
-            <Component {...pageProps} />
+            <Layout navigation={process.env.navigation}>
+              <Title title={pageProps?.title} />
+              {pageProps?.title && (
+                <Header>
+                  <GradientHeadline>{pageProps.title}</GradientHeadline>
+                  {pageProps.caption && (
+                    <Text variant="page-caption">{pageProps.caption}</Text>
+                  )}
+                  {pageProps?.switchTheme && <ThemeSelect />}
+                </Header>
+              )}
+              <Aside side="right" space="large-2">
+                <Box
+                  as={Container}
+                  contentType="content"
+                  size="large"
+                  css={{ display: 'block' }}
+                >
+                  {pageProps?.figma && <FigmaLink href={pageProps.figma} />}
+                  <Component {...pageProps} />
+                </Box>
+                <TocContainer />
+              </Aside>
+              <ScrollToTop />
+            </Layout>
           </MDXProvider>
         </MarigoldThemeSwitch>
       </MarigoldProvider>
@@ -67,4 +103,4 @@ const App = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-export default App;
+export default MyApp;

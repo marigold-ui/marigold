@@ -1,0 +1,288 @@
+---
+title: Box
+group: Layout
+switchTheme: true
+---
+
+See [Box Primitive](../../foundation/box-primitive) for detailed description
+
+```tsx
+import { Box } from '@marigold/components';
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      property: 'as',
+      type: 'HTMLElement',
+      description: '',
+      default: 'div',
+    },
+    {
+      property: 'variant',
+      type: 'string⎮string[]',
+      description: '',
+      default: '',
+    },
+    {
+      property: '__baseCSS',
+      type: 'CSSObject',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'css',
+      type: 'CSSObject',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'display',
+      type: 'ResponsiveStyleValue<string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'height',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'width',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'minWidth',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'maxWidth',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'position',
+      type: 'ResponsiveStyleValue<string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'top',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'bottom',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'right',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'left',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'zIndex',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'p',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'px',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'py',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'pt',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'pr',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'pl',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'pb',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'm',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'mx',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'my',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'mt',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'mb',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'mr',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'ml',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'flexDirection',
+      type: 'ResponsiveStyleValue<string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'flexWrap',
+      type: 'ResponsiveStyleValue<string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'flexShrink',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'flexGrow',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'alignItems',
+      type: 'ResponsiveStyleValue<string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'justifyContent',
+      type: 'ResponsiveStyleValue<string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'bg',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'border',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'borderRadius',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'boxShadow',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'opacity',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'overflow',
+      type: 'ResponsiveStyleValue<string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'transition',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+  ]}
+/>
+
+## Examples
+
+```tsx preview file=components/Box/box-success.demo.tsx
+
+```
+
+```tsx preview file=components/Box/box-basic.demo.tsx
+
+```
+
+```tsx preview file=components/Box/button-box.demo.tsx
+
+```
+
+```tsx preview file=components/Box/box-text.demo.tsx
+
+```

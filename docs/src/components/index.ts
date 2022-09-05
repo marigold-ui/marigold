@@ -14,3 +14,4 @@ export * from './ThemeSelect';
 export * from './ThemeSwitch';
 export * from './Title';
 export * from './Version';
+export * from './ScrollToTop';
