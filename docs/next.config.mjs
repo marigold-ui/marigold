@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import mdx from '@next/mdx';
 
-import createNavigationTree from './src/navigation.mjs';
+import createNavigationTree from './plugins/navigation.mjs';
 
 import pkg from './package.json' assert { type: 'json' };
 import recmaNextjsStaticProps from 'recma-nextjs-static-props';
@@ -48,9 +48,46 @@ const withMdx = mdx({
 });
 
 export default async () => {
-  const navigation = await createNavigationTree(
-    path.resolve(__dirname, 'src', 'pages')
-  );
+  /**
+   * Configure navigation
+   */
+  const navigation = await createNavigationTree({
+    directory: path.resolve(__dirname, 'src', 'pages'),
+    order: [
+      { name: 'introduction' },
+      { name: 'foundation' },
+      {
+        name: 'components',
+        groups: [
+          'Layout',
+          'Forms',
+          'Collections',
+          'Overlay',
+          'Content',
+          'Application',
+        ],
+      },
+      { name: 'develop' },
+    ],
+    links: [
+      {
+        title: 'Github',
+        url: 'https://github.com/marigold-ui/marigold/',
+      },
+      {
+        title: 'Issues',
+        url: 'https://github.com/marigold-ui/marigold/issues',
+      },
+      {
+        title: 'Changelog',
+        url: 'https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md',
+      },
+      {
+        title: 'Slack Channel',
+        url: 'https://reservix.slack.com/archives/C02727BNZ3J',
+      },
+    ],
+  });
 
   /** @type {import('next').NextConfig} */
   const config = {
