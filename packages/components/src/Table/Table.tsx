@@ -53,13 +53,16 @@ export const Table: Table = ({
   variant,
   size,
   stretch,
+  selectionMode = 'none',
   ...props
 }: TableProps) => {
+  const interactive = selectionMode !== 'none';
   const tableRef = useRef(null);
   const state = useTableState({
     ...props,
+    selectionMode,
     showSelectionCheckboxes:
-      props.selectionMode === 'multiple' &&
+      selectionMode === 'multiple' &&
       // TODO: It this necessary?
       props.selectionBehavior !== 'replace',
   });
@@ -74,7 +77,7 @@ export const Table: Table = ({
   const { collection } = state;
 
   return (
-    <TableContext.Provider value={{ state, styles }}>
+    <TableContext.Provider value={{ state, interactive, styles }}>
       <Box
         __baseCSS={{
           overflow: ['scroll', 'unset'],
