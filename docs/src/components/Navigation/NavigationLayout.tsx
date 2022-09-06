@@ -5,7 +5,6 @@ import { useResponsiveValue } from '@marigold/system';
 import { Link, Logo, NavigationTree } from '~/components';
 
 import { Navigation } from './Navigation';
-
 const useIsSmallScreen = () => useResponsiveValue([true, false, false], 2);
 
 export interface NavigationLayoutProps {

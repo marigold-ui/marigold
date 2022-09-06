@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
+import { useRouter } from 'next/router';
 
 import {
   Link as MarigoldLink,
@@ -12,17 +13,24 @@ export interface LinkProps
 
 // why the onPress not works: https://github.com/adobe/react-spectrum/issues/2525
 const InnerLink = forwardRef(
-  ({ onClick, ...props }: Omit<LinkProps, 'href' | 'as'>, ref) => (
-    <MarigoldLink onClick={onClick} {...props} ref={ref}>
-      {props.children}
-    </MarigoldLink>
-  )
+  ({ onClick, ...props }: Omit<LinkProps, 'href' | 'as'>, ref) => {
+    return (
+      <MarigoldLink onClick={onClick} {...props} ref={ref}>
+        {props.children}
+      </MarigoldLink>
+    );
+  }
 );
 
 export const Link = ({ variant, href, children, target }: LinkProps) => {
+  const { asPath } = useRouter();
+  const link = href + '/';
+
+  const active = link === asPath ? 'active' : undefined;
+
   return (
     <NextLink href={href} passHref>
-      <InnerLink variant={variant} target={target}>
+      <InnerLink variant={variant} target={target} data-active={active}>
         {children}
       </InnerLink>
     </NextLink>
