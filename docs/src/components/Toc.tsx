@@ -26,8 +26,6 @@ function useScrollSpy(ids: string[], options: IntersectionObserverInit) {
       entries.forEach(entry => {
         if (entry?.isIntersecting) {
           setActiveId(entry.target.id);
-          console.log('scroll into view');
-          console.log(entry.target.id);
         }
       });
     }, options);
