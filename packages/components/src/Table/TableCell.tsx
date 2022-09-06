@@ -14,7 +14,7 @@ export interface TableCellProps {
 
 export const TableCell = ({ cell }: TableCellProps) => {
   const ref = useRef(null);
-  const { state, styles } = useTableContext();
+  const { interactive, state, styles } = useTableContext();
   const disabled = state.disabledKeys.has(cell.parentKey!);
   const { gridCellProps } = useTableCell(
     {
@@ -24,6 +24,18 @@ export const TableCell = ({ cell }: TableCellProps) => {
     ref
   );
 
+  const cellProps = interactive
+    ? gridCellProps
+    : {
+        /**
+         * Override `react-aria` handler so users can select text.
+         * Solution from https://github.com/adobe/react-spectrum/issues/2585
+         */
+        ...gridCellProps,
+        onMouseDown: (e: MouseEvent) => e.stopPropagation(),
+        onPointerDown: (e: MouseEvent) => e.stopPropagation(),
+      };
+
   const { focusProps, isFocusVisible } = useFocusRing();
   const stateProps = useStateProps({ disabled, focusVisible: isFocusVisible });
 
@@ -32,7 +44,7 @@ export const TableCell = ({ cell }: TableCellProps) => {
       as="td"
       ref={ref}
       css={styles.cell}
-      {...mergeProps(gridCellProps, focusProps)}
+      {...mergeProps(cellProps, focusProps)}
       {...stateProps}
     >
       {cell.rendered}

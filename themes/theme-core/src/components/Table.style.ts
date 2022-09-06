@@ -17,7 +17,7 @@ export const Table: Theme['components']['Table'] = {
       '&:checked': {
         bg: 'orange10',
       },
-      '&:hover': {
+      '&[data-hover]': {
         bg: 'gray20',
       },
       '&:focus-visible': {
@@ -26,7 +26,6 @@ export const Table: Theme['components']['Table'] = {
     },
     cell: {
       p: 'xsmall',
-      cursor: 'default',
       borderBottom: '1px solid',
       borderColor: 'gray50',
       '&:focus': {
