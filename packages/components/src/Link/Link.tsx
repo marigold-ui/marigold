@@ -21,7 +21,6 @@ export interface LinkOwnProps extends PressEvents, BoxOwnProps {
   disabled?: boolean;
   variant?: string;
   size?: string;
-  ariaCurrent?: string;
   children?: ReactNode;
 }
 
