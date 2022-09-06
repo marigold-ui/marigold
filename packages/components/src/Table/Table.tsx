@@ -53,16 +53,13 @@ export const Table: Table = ({
   variant,
   size,
   stretch,
-  selectionMode = 'none',
   ...props
 }: TableProps) => {
-  const interactive = selectionMode === 'none';
   const tableRef = useRef(null);
   const state = useTableState({
     ...props,
-    selectionMode,
     showSelectionCheckboxes:
-      selectionMode === 'multiple' &&
+      props.selectionMode === 'multiple' &&
       // TODO: It this necessary?
       props.selectionBehavior !== 'replace',
   });
@@ -79,44 +76,49 @@ export const Table: Table = ({
   return (
     <TableContext.Provider value={{ state, styles }}>
       <Box
-        as="table"
-        ref={tableRef}
         __baseCSS={{
-          display: 'block',
-          borderCollapse: 'collapse',
-          overflow: 'auto',
-          whiteSpace: 'nowrap',
-          width: stretch ? '100%' : undefined,
+          overflow: ['scroll', 'unset'],
+          whiteSpace: ['nowrap', 'unset'],
         }}
-        css={styles.table}
-        {...gridProps}
       >
-        <TableHeader>
-          {collection.headerRows.map(headerRow => (
-            <TableHeaderRow key={headerRow.key} item={headerRow}>
-              {[...headerRow.childNodes].map(column =>
-                column.props?.isSelectionCell ? (
-                  <TableSelectAllCell key={column.key} column={column} />
-                ) : (
-                  <TableColumnHeader key={column.key} column={column} />
-                )
-              )}
-            </TableHeaderRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {[...collection.body.childNodes].map(row => (
-            <TableRow key={row.key} row={row}>
-              {[...row.childNodes].map(cell =>
-                cell.props?.isSelectionCell ? (
-                  <TableCheckboxCell key={cell.key} cell={cell} />
-                ) : (
-                  <TableCell key={cell.key} cell={cell} />
-                )
-              )}
-            </TableRow>
-          ))}
-        </TableBody>
+        <Box
+          as="table"
+          ref={tableRef}
+          __baseCSS={{
+            borderCollapse: 'collapse',
+            width: stretch ? '100%' : undefined,
+            overflow: ['scroll', 'unset'],
+          }}
+          css={styles.table}
+          {...gridProps}
+        >
+          <TableHeader>
+            {collection.headerRows.map(headerRow => (
+              <TableHeaderRow key={headerRow.key} item={headerRow}>
+                {[...headerRow.childNodes].map(column =>
+                  column.props?.isSelectionCell ? (
+                    <TableSelectAllCell key={column.key} column={column} />
+                  ) : (
+                    <TableColumnHeader key={column.key} column={column} />
+                  )
+                )}
+              </TableHeaderRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {[...collection.body.childNodes].map(row => (
+              <TableRow key={row.key} row={row}>
+                {[...row.childNodes].map(cell =>
+                  cell.props?.isSelectionCell ? (
+                    <TableCheckboxCell key={cell.key} cell={cell} />
+                  ) : (
+                    <TableCell key={cell.key} cell={cell} />
+                  )
+                )}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Box>
       </Box>
     </TableContext.Provider>
   );
