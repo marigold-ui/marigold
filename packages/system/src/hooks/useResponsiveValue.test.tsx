@@ -113,7 +113,7 @@ test('throws if default index is below 0', () => {
   );
 
   expect(result.error).toMatchInlineSnapshot(
-    `[RangeError: Default breakpoint index is out of bounds. Theme has 3 breakpoints, default is -1.]`
+    `[RangeError: Default breakpoint index is out of bounds. Theme has 4 breakpoints, default is -1.]`
   );
 });
 
@@ -128,6 +128,6 @@ test('throws if default index is out of bounds', () => {
   );
 
   expect(result.error).toMatchInlineSnapshot(
-    `[RangeError: Default breakpoint index is out of bounds. Theme has 3 breakpoints, default is 100.]`
+    `[RangeError: Default breakpoint index is out of bounds. Theme has 4 breakpoints, default is 100.]`
   );
 });
