@@ -292,3 +292,55 @@ test('allows to strecht to fit container', () => {
   const table = screen.getAllByRole(/grid/);
   expect(table[0]).toHaveStyle(`width: 100%`);
 });
+
+test('supports non-interactive table', async () => {
+  render(
+    <Table
+      aria-label="Non-interactive table"
+      selectionMode="none"
+      disabledKeys={['Jane']}
+    >
+      <Table.Header>
+        <Table.Column>Name</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row key="Alice">
+          <Table.Cell>Alice</Table.Cell>
+        </Table.Row>
+        <Table.Row key="Jane">
+          <Table.Cell>Jane</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  );
+
+  const rows = screen.getAllByRole('row');
+  expect(rows[1]).toHaveStyle('cursor: text');
+  expect(rows[2]).toHaveStyle('cursor: text'); // Disabled, but still selectable text
+});
+
+test('cursor indicates interactivity', async () => {
+  render(
+    <Table
+      aria-label="Interactive table"
+      selectionMode="single"
+      disabledKeys={['Jane']}
+    >
+      <Table.Header>
+        <Table.Column>Name</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row key="Alice">
+          <Table.Cell>Alice</Table.Cell>
+        </Table.Row>
+        <Table.Row key="Jane">
+          <Table.Cell>Jane</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  );
+
+  const rows = screen.getAllByRole('row');
+  expect(rows[1]).toHaveStyle('cursor: pointer');
+  expect(rows[2]).toHaveStyle('cursor: default');
+});
