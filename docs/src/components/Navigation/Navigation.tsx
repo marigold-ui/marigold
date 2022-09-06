@@ -1,7 +1,6 @@
 import { Box, CSSObject, useComponentStyles } from '@marigold/system';
 import { NAVIGATION_CONFIG } from '~/config';
 import { Link, LinkProps } from '~/components/Link';
-import React from 'react';
 
 // Props
 // ---------------
@@ -52,46 +51,50 @@ interface NavigationStyles {
 
 // Components
 // ---------------
-const NavigationLinks = ({ css }: NavigationLinksProps) => (
-  <Box as="li" role="menuitem" __baseCSS={{ listStyle: 'none' }}>
-    <Box as="ul" role="menubar" css={css?.list}>
-      <Box as="li" role="menuitem" __baseCSS={{ listStyle: 'none' }}>
-        <Box as="h2" css={css?.category}>
-          external links
-        </Box>
-        <Box as="ul" role="menubar" css={css?.list}>
-          {NAVIGATION_CONFIG.links.map(({ title, url }) => (
-            <NavigationItem
-              key={url}
-              css={css}
-              title={title}
-              href={url}
-              target="_blank"
-            ></NavigationItem>
-          ))}
+const NavigationLinks = ({ css }: NavigationLinksProps) => {
+  return (
+    <Box as="li" role="menuitem" __baseCSS={{ listStyle: 'none' }}>
+      <Box as="ul" role="menubar" css={css?.list}>
+        <Box as="li" role="menuitem" __baseCSS={{ listStyle: 'none' }}>
+          <Box as="h2" css={css?.category}>
+            external links
+          </Box>
+          <Box as="ul" role="menubar" css={css?.list}>
+            {NAVIGATION_CONFIG.links.map(({ title, url }) => (
+              <NavigationItem
+                key={url}
+                css={css}
+                title={title}
+                href={url}
+                target="_blank"
+              ></NavigationItem>
+            ))}
+          </Box>
         </Box>
       </Box>
     </Box>
-  </Box>
-);
+  );
+};
 
 const NavigationItem = ({
   title,
   css,
   variant,
   ...props
-}: NavigationItemProps) => (
-  <Box
-    as="li"
-    role="menuitem"
-    __baseCSS={{ listStyle: 'none' }}
-    css={css?.item}
-  >
-    <Link variant="navigation" {...props}>
-      {title}
-    </Link>
-  </Box>
-);
+}: NavigationItemProps) => {
+  return (
+    <Box
+      as="li"
+      role="menuitem"
+      __baseCSS={{ listStyle: 'none' }}
+      css={css?.item}
+    >
+      <Link variant="navigation" {...props}>
+        {title}
+      </Link>
+    </Box>
+  );
+};
 
 const NavigationGroup = ({ name, items, css }: NavigationMenuGroupProps) => (
   <Box as="li" role="menuitem" __baseCSS={{ listStyle: 'none' }}>
