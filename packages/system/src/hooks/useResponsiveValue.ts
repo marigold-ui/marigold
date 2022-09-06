@@ -23,9 +23,11 @@ export const useResponsiveValue = <T>(
   const { theme } = useTheme();
   const breakpoints: string[] = theme.breakpoints || emptyBreakpoints;
 
-  if (defaultIndex < 0 || defaultIndex >= breakpoints.length) {
+  if (defaultIndex < 0 || defaultIndex >= breakpoints.length + 1) {
     throw new RangeError(
-      `Default breakpoint index is out of bounds. Theme has ${breakpoints.length} breakpoints, default is ${defaultIndex}.`
+      `Default breakpoint index is out of bounds. Theme has ${
+        breakpoints.length + 1
+      } breakpoints, default is ${defaultIndex}.`
     );
   }
 
