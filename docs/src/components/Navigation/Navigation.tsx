@@ -1,13 +1,6 @@
-import {
-  Box,
-  CSSObject,
-  useComponentStyles,
-  useResponsiveValue,
-} from '@marigold/system';
+import { Box, CSSObject, useComponentStyles } from '@marigold/system';
 import { NAVIGATION_CONFIG } from '~/config';
 import { Link, LinkProps } from '~/components/Link';
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/router';
 
 // Props
 // ---------------
@@ -56,7 +49,6 @@ interface NavigationStyles {
   };
 }
 
-const useIsSmallScreen = () => useResponsiveValue([true, false, false], 2);
 // Components
 // ---------------
 const NavigationLinks = ({ css }: NavigationLinksProps) => {
@@ -90,9 +82,6 @@ const NavigationItem = ({
   variant,
   ...props
 }: NavigationItemProps) => {
-  const [close, setClose] = React.useState(true);
-  const { asPath } = useRouter();
-
   return (
     <Box
       as="li"
@@ -100,12 +89,7 @@ const NavigationItem = ({
       __baseCSS={{ listStyle: 'none' }}
       css={css?.item}
     >
-      <Link
-        variant="navigation"
-        // onClick={() => setClose(!close)}
-        key={asPath}
-        {...props}
-      >
+      <Link variant="navigation" {...props}>
         {title}
       </Link>
     </Box>

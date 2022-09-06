@@ -5,7 +5,6 @@ import { useResponsiveValue } from '@marigold/system';
 import { Link, Logo, NavigationTree } from '~/components';
 
 import { Navigation } from './Navigation';
-import { useRouter } from 'next/router';
 const useIsSmallScreen = () => useResponsiveValue([true, false, false], 2);
 
 export interface NavigationLayoutProps {
@@ -16,8 +15,6 @@ export const NavigationLayout = ({ navigation }: NavigationLayoutProps) => {
   const isSmallScreen = useIsSmallScreen();
   const [showNavigation, setShowNavigation] = React.useState(false);
   const show = isSmallScreen ? showNavigation : true;
-
-  const { asPath } = useRouter();
 
   return (
     <Box css={{ py: ['none', 'medium-1'] }}>
@@ -74,7 +71,7 @@ export const NavigationLayout = ({ navigation }: NavigationLayoutProps) => {
             </Center>
           </Link>
         )}
-        {show && <Navigation navigation={navigation} key={asPath} />}
+        {show && <Navigation navigation={navigation} />}
       </Box>
     </Box>
   );
