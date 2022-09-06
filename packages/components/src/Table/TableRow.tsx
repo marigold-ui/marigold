@@ -13,15 +13,14 @@ import { useTableContext } from './Context';
 // ---------------
 export interface TableRowProps {
   children?: ReactNode;
-  interactive?: boolean;
   row: GridNode<object>;
 }
 
 // Component
 // ---------------
-export const TableRow = ({ children, interactive, row }: TableRowProps) => {
+export const TableRow = ({ children, row }: TableRowProps) => {
   const ref = useRef(null);
-  const { state, styles } = useTableContext();
+  const { interactive, state, styles } = useTableContext();
   const { rowProps, isPressed } = useTableRow(
     {
       node: row,

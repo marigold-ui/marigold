@@ -77,7 +77,7 @@ export const Table: Table = ({
   const { collection } = state;
 
   return (
-    <TableContext.Provider value={{ state, styles }}>
+    <TableContext.Provider value={{ state, interactive, styles }}>
       <Box
         __baseCSS={{
           overflow: ['scroll', 'unset'],
@@ -110,7 +110,7 @@ export const Table: Table = ({
           </TableHeader>
           <TableBody>
             {[...collection.body.childNodes].map(row => (
-              <TableRow key={row.key} row={row} interactive={interactive}>
+              <TableRow key={row.key} row={row}>
                 {[...row.childNodes].map(cell =>
                   cell.props?.isSelectionCell ? (
                     <TableCheckboxCell key={cell.key} cell={cell} />
