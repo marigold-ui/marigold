@@ -30,7 +30,6 @@ export const Toc = ({ items, selector }: TocProps) => {
       css={{
         position: 'sticky',
         fontSize: 'fixed.small-2',
-        display: ['none', 'none', 'block'],
         top: 20,
         right: 0,
         mx: 'medium-1',
@@ -55,5 +54,5 @@ export const Toc = ({ items, selector }: TocProps) => {
 };
 
 export const TocContainer = () => {
-  return <div id="toc"></div>;
+  return <Box id="toc" css={{ display: ['none', 'none', 'block'] }}></Box>;
 };

@@ -20,15 +20,15 @@ test('renders svg', () => {
   expect(svg instanceof SVGElement).toBeTruthy();
 });
 
-test('supports default fill color', () => {
+test('supports fill color', () => {
   render(
-    <SVG data-testid="svg">
+    <SVG data-testid="svg" fill="red">
       <path d="M9.9 20.113V13.8415H14" />
     </SVG>
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg).toHaveStyle('fill: currentcolor');
+  expect(svg).toHaveStyle('fill: red');
 });
 
 test('supports default size', () => {
