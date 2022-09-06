@@ -4,6 +4,7 @@ import { ComponentStyleParts } from '@marigold/system';
 
 export interface TableContextProps {
   state: TableState<object>;
+  interactive: boolean;
   styles: ComponentStyleParts<['table', 'header', 'row', 'cell']>;
 }
 
