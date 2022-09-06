@@ -20,7 +20,7 @@ export const Table: Theme['components']['Table'] = {
       '&:selected': {
         bg: 'orange10',
       },
-      '&:hover': {
+      '&[data-hover]': {
         bg: 'gray30',
       },
       '&:focus-visible': {
@@ -30,7 +30,6 @@ export const Table: Theme['components']['Table'] = {
     cell: {
       py: 'small',
       px: 'small',
-      cursor: 'default',
       color: 'gray70',
       borderBottom: '1px solid',
       borderColor: 'gray50',

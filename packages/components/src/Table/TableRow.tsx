@@ -13,12 +13,13 @@ import { useTableContext } from './Context';
 // ---------------
 export interface TableRowProps {
   children?: ReactNode;
+  interactive?: boolean;
   row: GridNode<object>;
 }
 
 // Component
 // ---------------
-export const TableRow = ({ children, row }: TableRowProps) => {
+export const TableRow = ({ children, interactive, row }: TableRowProps) => {
   const ref = useRef(null);
   const { state, styles } = useTableContext();
   const { rowProps, isPressed } = useTableRow(
@@ -34,7 +35,9 @@ export const TableRow = ({ children, row }: TableRowProps) => {
 
   // Rows are focused if any cell inside it is focused
   const { focusProps, isFocusVisible } = useFocusRing({ within: true });
-  const { hoverProps, isHovered } = useHover({ isDisabled: disabled });
+  const { hoverProps, isHovered } = useHover({
+    isDisabled: disabled || !interactive,
+  });
 
   const stateProps = useStateProps({
     disabled,
@@ -48,6 +51,9 @@ export const TableRow = ({ children, row }: TableRowProps) => {
     <Box
       as="tr"
       ref={ref}
+      __baseCSS={{
+        cursor: !interactive ? 'text' : disabled ? 'default' : 'pointer',
+      }}
       css={styles.row}
       {...mergeProps(rowProps, focusProps, hoverProps)}
       {...stateProps}

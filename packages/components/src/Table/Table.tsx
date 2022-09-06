@@ -53,13 +53,16 @@ export const Table: Table = ({
   variant,
   size,
   stretch,
+  selectionMode = 'none',
   ...props
 }: TableProps) => {
+  const interactive = selectionMode !== 'none';
   const tableRef = useRef(null);
   const state = useTableState({
     ...props,
+    selectionMode,
     showSelectionCheckboxes:
-      props.selectionMode === 'multiple' &&
+      selectionMode === 'multiple' &&
       // TODO: It this necessary?
       props.selectionBehavior !== 'replace',
   });
@@ -107,7 +110,7 @@ export const Table: Table = ({
           </TableHeader>
           <TableBody>
             {[...collection.body.childNodes].map(row => (
-              <TableRow key={row.key} row={row}>
+              <TableRow key={row.key} row={row} interactive={interactive}>
                 {[...row.childNodes].map(cell =>
                   cell.props?.isSelectionCell ? (
                     <TableCheckboxCell key={cell.key} cell={cell} />
