@@ -6,7 +6,7 @@ import {
 } from '@marigold/system';
 import { NAVIGATION_CONFIG } from '~/config';
 import { Link, LinkProps } from '~/components/Link';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 // Props
@@ -90,12 +90,8 @@ const NavigationItem = ({
   variant,
   ...props
 }: NavigationItemProps) => {
-  const isSmallScreen = useIsSmallScreen();
-  const [hide, setHide] = React.useState(true);
+  const [close, setClose] = React.useState(true);
   const { asPath } = useRouter();
-  const link = props.href + '/';
-
-  const ariaCurrent = link === asPath ? 'active' : undefined;
 
   return (
     <Box
@@ -104,20 +100,14 @@ const NavigationItem = ({
       __baseCSS={{ listStyle: 'none' }}
       css={css?.item}
     >
-      {ariaCurrent != undefined && isSmallScreen ? (
-        <Link
-          variant="navigation"
-          onClick={() => setHide(!hide)}
-          ariaCurrent={ariaCurrent}
-          {...props}
-        >
-          {title}
-        </Link>
-      ) : (
-        <Link variant="navigation" ariaCurrent={ariaCurrent} {...props}>
-          {title}
-        </Link>
-      )}
+      <Link
+        variant="navigation"
+        // onClick={() => setClose(!close)}
+        key={asPath}
+        {...props}
+      >
+        {title}
+      </Link>
     </Box>
   );
 };
