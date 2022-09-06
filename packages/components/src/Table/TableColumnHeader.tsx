@@ -66,6 +66,7 @@ export const TableColumnHeader = ({ column }: TableColumnHeaderProps) => {
       as="th"
       colSpan={column.colspan}
       ref={ref}
+      __baseCSS={{ cursor: 'default' }}
       css={styles.header}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
