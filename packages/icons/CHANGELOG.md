@@ -1,5 +1,14 @@
 # @marigold/icons
 
+## 1.0.4
+
+### Patch Changes
+
+- [#2391](https://github.com/marigold-ui/marigold/pull/2391) [`d3143f65`](https://github.com/marigold-ui/marigold/commit/d3143f65fd4dc207d21006f21078b03c6123ff62) Thanks [@sebald](https://github.com/sebald)! - fix: remove responsivness from SVGs by default
+
+- Updated dependencies [[`d3143f65`](https://github.com/marigold-ui/marigold/commit/d3143f65fd4dc207d21006f21078b03c6123ff62), [`f6b49c37`](https://github.com/marigold-ui/marigold/commit/f6b49c37a0293e4d060db292d22a085fcf0bbc65)]:
+  - @marigold/system@2.1.3
+
 ## 1.0.3
 
 ### Patch Changes
