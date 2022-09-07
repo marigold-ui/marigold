@@ -17,7 +17,7 @@ import * as DemoComponents from '~/demos';
 import { Layout, MarigoldThemeSwitch } from '~/components';
 import { theme } from '~/theme';
 
-import { Aside, Box, Container, Header, Text } from '@marigold/components';
+import { Box, Container, Header, Text } from '@marigold/components';
 
 import {
   FigmaLink,
