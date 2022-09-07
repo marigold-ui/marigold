@@ -4,43 +4,6 @@ import { globby } from 'globby';
 import { read } from 'to-vfile';
 import { matter } from 'vfile-matter';
 
-const NAVIGATION_CONFIG = {
-  order: [
-    { name: 'introduction' },
-    { name: 'foundation' },
-    {
-      name: 'components',
-      groups: [
-        'Layout',
-        'Forms',
-        'Collections',
-        'Overlay',
-        'Content',
-        'Application',
-      ],
-    },
-    { name: 'develop' },
-  ],
-  links: [
-    {
-      title: 'Github',
-      url: 'https://github.com/marigold-ui/marigold/',
-    },
-    {
-      title: 'Issues',
-      url: 'https://github.com/marigold-ui/marigold/issues',
-    },
-    {
-      title: 'Changelog',
-      url: 'https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md',
-    },
-    {
-      title: 'Slack Channel',
-      url: 'https://reservix.slack.com/archives/C02727BNZ3J',
-    },
-  ],
-};
-
 const toSlug = (file, from) => path.relative(from, file.replace(/\.mdx?$/, ''));
 
 const getFrontmatter = async filePath => {
@@ -65,7 +28,7 @@ const sortByOrder = items => {
  *
  * @param {NavigationOptions} options
  */
-const createNavigationTree = async ({ directory }) => {
+const createNavigationTree = async ({ directory, order, links }) => {
   // Get all information for MDX pages (their frontmatter)
   const files = await globby([`${directory}/**/*.mdx`]);
   const items = await Promise.all(
@@ -95,14 +58,14 @@ const createNavigationTree = async ({ directory }) => {
     }
 
     // Assign to a navigation category
-    const [category] = slug.split('/');
+    const [categoryName] = slug.split('/');
     let itemCategory = categories.find(
-      item => 'name' in item && item.name === category
+      item => 'name' in item && item.name === categoryName
     );
 
     if (!itemCategory) {
       categories.push({
-        name: category,
+        name: categoryName,
         items: [],
         groups: [],
       });
@@ -128,12 +91,8 @@ const createNavigationTree = async ({ directory }) => {
 
   // Sort categories based on config
   categories.sort((a, b) => {
-    const aIndex = NAVIGATION_CONFIG.order.findIndex(
-      item => item.name === a.name
-    );
-    const bIndex = NAVIGATION_CONFIG.order.findIndex(
-      item => item.name === b.name
-    );
+    const aIndex = order.findIndex(item => item.name === a.name);
+    const bIndex = order.findIndex(item => item.name === b.name);
     return aIndex - bIndex;
   });
 
@@ -149,15 +108,17 @@ const createNavigationTree = async ({ directory }) => {
     });
 
     // Sort groups based on config
-    const order = NAVIGATION_CONFIG.order.find(c => c.name === category.name);
+    const config = order.find(c => c.name === category.name);
 
-    if (!order?.groups) {
+    if (config?.groups) {
       return;
     }
 
     groups.sort((a, b) => {
-      const aIndex = order.groups.indexOf(a.name);
-      const bIndex = order.groups.indexOf(b.name);
+      // @ts-ignore
+      const aIndex = config.groups.indexOf(a.name);
+      // @ts-ignore
+      const bIndex = config.groups.indexOf(b.name);
 
       return aIndex - bIndex;
     });
