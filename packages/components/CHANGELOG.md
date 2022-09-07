@@ -1,5 +1,19 @@
 # @marigold/components
 
+## 2.1.3
+
+### Patch Changes
+
+- [#2371](https://github.com/marigold-ui/marigold/pull/2371) [`7bb83042`](https://github.com/marigold-ui/marigold/commit/7bb83042e608fbff1f58498e76172174d54f8960) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: fix the links
+
+- [#2399](https://github.com/marigold-ui/marigold/pull/2399) [`beea5b0b`](https://github.com/marigold-ui/marigold/commit/beea5b0bc67fe4a4c43e5d900d1cf59095b9c2fd) Thanks [@sebald](https://github.com/sebald)! - feat: Make text in non-interactive tables selectable
+
+- [#2378](https://github.com/marigold-ui/marigold/pull/2378) [`d5fd75cb`](https://github.com/marigold-ui/marigold/commit/d5fd75cb0b83d76fece43f959fa4aa5bcdf3f4c1) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: fix responsive layout and responsive table
+
+- Updated dependencies [[`d3143f65`](https://github.com/marigold-ui/marigold/commit/d3143f65fd4dc207d21006f21078b03c6123ff62), [`f6b49c37`](https://github.com/marigold-ui/marigold/commit/f6b49c37a0293e4d060db292d22a085fcf0bbc65)]:
+  - @marigold/icons@1.0.4
+  - @marigold/system@2.1.3
+
 ## 2.1.2
 
 ### Patch Changes
