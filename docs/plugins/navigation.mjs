@@ -28,7 +28,7 @@ const sortByOrder = items => {
  *
  * @param {NavigationOptions} options
  */
-const createNavigationTree = async ({ directory, order, links }) => {
+const createNavigationTree = async ({ directory, order }) => {
   // Get all information for MDX pages (their frontmatter)
   const files = await globby([`${directory}/**/*.mdx`]);
   const items = await Promise.all(
