@@ -82,18 +82,13 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                   {pageProps?.switchTheme && <ThemeSelect />}
                 </Header>
               )}
-              <Aside side="right" space="large-2">
-                <Box
-                  as={Container}
-                  contentType="content"
-                  size="large"
-                  css={{ display: 'block' }}
-                >
+              <Box css={{ display: 'flex', gap: 'large-2' }}>
+                <Container contentType="content" size="large">
                   {pageProps?.figma && <FigmaLink href={pageProps.figma} />}
                   <Component {...pageProps} />
-                </Box>
+                </Container>
                 <TocContainer />
-              </Aside>
+              </Box>
               <ScrollToTop />
             </Layout>
           </MDXProvider>

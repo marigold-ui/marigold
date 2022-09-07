@@ -49,7 +49,7 @@ export const Headline: Theme['components']['Headline'] = {
     'level-3': {
       my: 'none',
       pb: 'medium-1',
-      fontSize: 'small-1',
+      fontSize: 'fixed.small-3',
       fontWeight: 'medium',
       lineHeight: 'small-1',
       textTransform: 'uppercase',
