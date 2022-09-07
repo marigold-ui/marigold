@@ -55,7 +55,7 @@ export default async () => {
     directory: path.resolve(__dirname, 'src', 'pages'),
     order: [
       { name: 'introduction' },
-      { name: 'foundation' },
+      { name: 'concepts' },
       {
         name: 'components',
         groups: [
