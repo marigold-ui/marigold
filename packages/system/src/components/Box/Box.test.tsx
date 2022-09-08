@@ -210,6 +210,18 @@ test('apply custom styling via css prop', () => {
   expect(element).toHaveStyle(`color: ${theme.colors.secondary}`);
 });
 
+test('apply custom styling via css prop (array)', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Box css={[{ color: 'secondary', padding: '1rem' }, { p: 10 }]}>Test</Box>
+    </ThemeProvider>
+  );
+  const element = screen.getByText('Test');
+
+  expect(element).toHaveStyle(`padding: 10px`);
+  expect(element).toHaveStyle(`color: ${theme.colors.secondary}`);
+});
+
 test('custom styling overrides normalization, defaults and style props', () => {
   render(
     <ThemeProvider theme={theme}>
