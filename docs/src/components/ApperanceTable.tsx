@@ -1,4 +1,11 @@
-import { Box, Card, Table, type Theme } from '@marigold/components';
+import {
+  Box,
+  Card,
+  Inline,
+  Table,
+  Text,
+  type Theme,
+} from '@marigold/components';
 import { BlankCanvas } from './BlankCanvas';
 import { useThemeSwitch } from './ThemeSwitch';
 
@@ -20,25 +27,21 @@ export const ApperanceTable = ({ component }: ApperanceTableProps) => {
   return (
     <Box css={{ mb: 'medium-2' }}>
       <Card px="medium-1" py="medium-2">
-        <Table aria-labelledby="apperance table" variant="propsTable">
-          <Table.Header>
-            <Table.Column key={'property'}>Property</Table.Column>
-            <Table.Column key={'type'}>Type</Table.Column>
-            <Table.Column key={'description'}>Description</Table.Column>
-          </Table.Header>
-          {!variants && !sizes ? (
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>
-                  <BlankCanvas />
-                </Table.Cell>
-                <Table.Cell>{'-'}</Table.Cell>
-                <Table.Cell>
-                  Sorry! There are currently no variants and sizes availible.
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          ) : (
+        {!variants && !sizes ? (
+          <Inline>
+            <BlankCanvas />
+            <Text variant="content">
+              Sorry! There are currently no variants and sizes availible.
+            </Text>
+          </Inline>
+        ) : (
+          <Table aria-labelledby="apperance table" variant="propsTable">
+            <Table.Header>
+              <Table.Column key={'property'}>Property</Table.Column>
+              <Table.Column key={'type'}>Type</Table.Column>
+              <Table.Column key={'description'}>Description</Table.Column>
+            </Table.Header>
+
             <Table.Body>
               <Table.Row>
                 <Table.Cell>
@@ -61,9 +64,11 @@ export const ApperanceTable = ({ component }: ApperanceTableProps) => {
                 <Table.Cell>The availible sizes of this component</Table.Cell>
               </Table.Row>
             </Table.Body>
-          )}
-        </Table>
+          </Table>
+        )}
       </Card>
     </Box>
   );
 };
+
+<Card></Card>;

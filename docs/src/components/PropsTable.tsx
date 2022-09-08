@@ -1,4 +1,4 @@
-import { Box, Card, Table } from '@marigold/components';
+import { Box, Card, Inline, Table, Text } from '@marigold/components';
 import { BlankCanvas } from './BlankCanvas';
 
 export interface PropsTableProps {
@@ -11,14 +11,14 @@ export const PropsTable = ({ props }: PropsTableProps) => {
       css={{ overflow: ['scroll', 'unset'], whiteSpace: ['nowrap', 'unset'] }}
     >
       <Card px="medium-1" py="medium-2">
-        <Table aria-label="Table with component props" variant="propsTable">
-          <Table.Header>
-            <Table.Column key="property">Property</Table.Column>
-            <Table.Column key="type">Type</Table.Column>
-            <Table.Column key="default">Default</Table.Column>
-            <Table.Column key="description">Description</Table.Column>
-          </Table.Header>
-          {props ? (
+        {props ? (
+          <Table aria-label="Table with component props" variant="propsTable">
+            <Table.Header>
+              <Table.Column key="property">Property</Table.Column>
+              <Table.Column key="type">Type</Table.Column>
+              <Table.Column key="default">Default</Table.Column>
+              <Table.Column key="description">Description</Table.Column>
+            </Table.Header>
             <Table.Body items={props}>
               {item => (
                 <Table.Row key={item.property}>
@@ -35,21 +35,15 @@ export const PropsTable = ({ props }: PropsTableProps) => {
                 </Table.Row>
               )}
             </Table.Body>
-          ) : (
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>
-                  <BlankCanvas />
-                </Table.Cell>
-                <Table.Cell>{'-'}</Table.Cell>
-                <Table.Cell>{'-'}</Table.Cell>
-                <Table.Cell>
-                  Sorry! There are currently no props availible.
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          )}
-        </Table>
+          </Table>
+        ) : (
+          <Inline>
+            <BlankCanvas />
+            <Text variant="content">
+              Sorry! There are currently no props availible.
+            </Text>
+          </Inline>
+        )}
       </Card>
     </Box>
   );
