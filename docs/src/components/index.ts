@@ -1,3 +1,5 @@
+export * from './ApperanceTable';
+export * from './BlankCanvas';
 export * from './CopyButton';
 export * from './FigmaLink';
 export * from './GradientHeadline';
@@ -9,9 +11,9 @@ export * from './MarigoldTheme';
 export * from './Navigation';
 export * from './Preview';
 export * from './PropsTable';
+export * from './ScrollToTop';
 export * from './Toc';
 export * from './ThemeSelect';
 export * from './ThemeSwitch';
 export * from './Title';
 export * from './Version';
-export * from './ScrollToTop';
