@@ -74,14 +74,13 @@ interface CreateStyleProps {
 const createThemedStyle =
   ({ __baseCSS, styles, css }: CreateStyleProps) =>
   (theme: Theme) => {
-    const allCSS = (Array.isArray(css) ? merge.all(css) : css) as CSSObject;
-
     const themedStyles = merge.all([
       transformStyleObject(__baseCSS)(theme),
       transformStyleObject(styles)(theme),
-      transformStyleObject(allCSS)(theme),
+      ...(Array.isArray(css)
+        ? css.map(c => transformStyleObject(c)(theme))
+        : [transformStyleObject(css)(theme)]),
     ]) as CSSObject;
-
     return transformPseudos(themedStyles);
   };
 

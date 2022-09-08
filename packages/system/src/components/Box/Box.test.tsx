@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import merge from 'deepmerge';
 
 import { ThemeProvider } from '../../hooks';
 
@@ -213,7 +214,11 @@ test('apply custom styling via css prop', () => {
 test('apply custom styling via css prop (array)', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Box css={[{ color: 'secondary', padding: '1rem' }, { p: 10 }]}>Test</Box>
+      <Box
+        css={[{ color: 'secondary', p: '1rem' }, { p: 10 }, { p: undefined }]}
+      >
+        Test
+      </Box>
     </ThemeProvider>
   );
   const element = screen.getByText('Test');
