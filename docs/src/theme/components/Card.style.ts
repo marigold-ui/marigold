@@ -17,10 +17,12 @@ export const Card: Theme['components']['Card'] = {
     },
   },
   variant: {
-    icon: {
+    hovering: {
       cursor: 'pointer',
     },
-    info: {
+  },
+  size: {
+    large: {
       width: '350px',
       px: 'medium-1',
       pb: 'medium-2',

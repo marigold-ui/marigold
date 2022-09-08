@@ -4,6 +4,7 @@ import {
   useComponentStyles,
   ThemeComponentProps,
   ThemeExtension,
+  ResponsiveStyleValue,
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
@@ -15,14 +16,33 @@ export interface CardThemeExtension extends ThemeExtension<'Card'> {}
 // ---------------
 export interface CardProps extends ThemeComponentProps, ComponentProps<'div'> {
   children?: ReactNode;
+  p?: ResponsiveStyleValue<string>;
+  px?: ResponsiveStyleValue<string>;
+  py?: ResponsiveStyleValue<string>;
+  pt?: ResponsiveStyleValue<string>;
+  pb?: ResponsiveStyleValue<string>;
+  pl?: ResponsiveStyleValue<string>;
+  pr?: ResponsiveStyleValue<string>;
 }
 
 // Component
 // ---------------
-export const Card = ({ children, variant, size, ...props }: CardProps) => {
+export const Card = ({
+  children,
+  variant,
+  size,
+  p,
+  px,
+  py,
+  pt,
+  pb,
+  pl,
+  pr,
+  ...props
+}: CardProps) => {
   const styles = useComponentStyles('Card', { variant, size });
   return (
-    <Box {...props} css={styles}>
+    <Box {...props} css={[styles, { p, px, py, pt, pb, pl, pr }]}>
       {children}
     </Box>
   );
