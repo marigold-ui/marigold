@@ -32,7 +32,7 @@ export const ApperanceTable = ({ component }: ApperanceTableProps) => {
             </Table.Cell>
             <Table.Cell>{'-'}</Table.Cell>
             <Table.Cell>
-              Sorry! We don't have any variants and sizes jet.
+              Sorry! There are currently no variants and sizes availible.
             </Table.Cell>
           </Table.Row>
         </Table.Body>
