@@ -99,3 +99,17 @@ test('supports padding as style prop', () => {
   expect(ptblr).toHaveStyle(`padding-left: ${theme.space['medium-1']}px`);
   expect(ptblr).toHaveStyle(`padding-right: ${theme.space['medium-2']}px`);
 });
+
+test('padding props override variant', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Card data-testid="card" size="medium" py="medium-2" />
+    </ThemeProvider>
+  );
+
+  const card = screen.getByTestId('card');
+  expect(card).toHaveStyle(`padding-top: ${theme.space['medium-2']}px`);
+  expect(card).toHaveStyle(`padding-bottom: ${theme.space['medium-2']}px`);
+  expect(card).toHaveStyle(`padding-left: ${theme.space['medium-1']}px`);
+  expect(card).toHaveStyle(`padding-right: ${theme.space['medium-1']}px`);
+});
