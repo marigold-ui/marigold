@@ -55,7 +55,7 @@ export interface StyleProps
   > {}
 
 export interface BoxOwnProps extends StyleProps {
-  css?: CSSObject;
+  css?: CSSObject | CSSObject[];
   /**
    * Use to set base styles for the component
    * @internal
@@ -66,21 +66,21 @@ export interface BoxOwnProps extends StyleProps {
 export interface BoxProps extends PolymorphicPropsWithRef<BoxOwnProps, 'div'> {}
 
 interface CreateStyleProps {
-  as?: BoxProps['as'];
-  __baseCSS?: BoxOwnProps['__baseCSS'];
-  css?: BoxOwnProps['css'];
+  __baseCSS?: CSSObject;
+  css?: CSSObject | CSSObject[];
   styles?: StyleProps;
 }
 
 const createThemedStyle =
-  ({ as, __baseCSS, styles, css }: CreateStyleProps) =>
+  ({ __baseCSS, styles, css }: CreateStyleProps) =>
   (theme: Theme) => {
     const themedStyles = merge.all([
       transformStyleObject(__baseCSS)(theme),
       transformStyleObject(styles)(theme),
-      transformStyleObject(css)(theme),
+      ...(Array.isArray(css)
+        ? css.map(c => transformStyleObject(c)(theme))
+        : [transformStyleObject(css)(theme)]),
     ]) as CSSObject;
-
     return transformPseudos(themedStyles);
   };
 
@@ -138,7 +138,6 @@ export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef(
       {
         ...props,
         css: createThemedStyle({
-          as,
           __baseCSS,
           css,
           styles: {

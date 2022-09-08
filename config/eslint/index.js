@@ -10,4 +10,12 @@ module.exports = {
     'no-redeclare': 'off',
     '@typescript-eslint/no-redeclare': 'off',
   },
+  parserOptions: {
+    babelOptions: {
+      parserOpts: {
+        // Allow imports like `import pkg from './package.json' assert { type: 'json' };`
+        plugins: ['importAssertions'],
+      },
+    },
+  },
 };
