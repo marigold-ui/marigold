@@ -45,7 +45,7 @@ const IconListItem = ({ icon }: IconListItemProps) => {
   return (
     <div>
       <Card
-        variant="icon"
+        variant="hovering"
         onClick={handleClick}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
