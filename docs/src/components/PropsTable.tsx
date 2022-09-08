@@ -6,7 +6,6 @@ export interface PropsTableProps {
 }
 
 export const PropsTable = ({ props }: PropsTableProps) => {
-  console.log(props);
   return (
     <Box
       css={{ overflow: ['scroll', 'unset'], whiteSpace: ['nowrap', 'unset'] }}
