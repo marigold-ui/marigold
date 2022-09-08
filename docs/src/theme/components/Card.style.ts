@@ -5,25 +5,25 @@ export const Card: Theme['components']['Card'] = {
     bg: 'background.foreground',
     borderStyle: 'solid',
     borderWidth: 'small-1',
-    borderColor: 'border.light',
-    borderRadius: 'small-2',
+    borderColor: 'border.muted',
+    borderRadius: 'medium-1',
 
     boxShadow: 'medium-1',
     transition: 'all .3s cubic-bezier(.25, 0, .4, 1)',
-
-    '&:hover': {
-      borderColor: 'border.regular',
-      boxShadow: 'medium-2',
-    },
   },
   variant: {
-    icon: {
+    hovering: {
       cursor: 'pointer',
+
+      '&:hover': {
+        borderColor: 'border.light',
+        boxShadow: 'medium-2',
+      },
     },
-    info: {
+  },
+  size: {
+    large: {
       width: '350px',
-      px: 'medium-1',
-      pb: 'medium-2',
     },
   },
 };

@@ -1,12 +1,17 @@
 import React, { ReactNode } from 'react';
 import { Box } from '@marigold/components';
 
-import { NavigationLayout, NavigationTree, Version } from '~/components';
+import {
+  NavigationLayout,
+  NavigationLinks,
+  NavigationTree,
+  Version,
+} from '~/components';
 import { useRouter } from 'next/router';
 
 export interface LayoutProps {
   children: ReactNode;
-  navigation: NavigationTree;
+  navigation: { tree: NavigationTree; links: NavigationLinks };
 }
 
 export const Layout = ({ navigation, children }: LayoutProps) => {
@@ -21,7 +26,7 @@ export const Layout = ({ navigation, children }: LayoutProps) => {
           p: ['medium-1', 'none'],
         }}
       >
-        <NavigationLayout navigation={navigation} key={asPath} />
+        <NavigationLayout {...navigation} key={asPath} />
         <Box as="main" css={{ width: ['100%', '70vw'] }}>
           {children}
         </Box>

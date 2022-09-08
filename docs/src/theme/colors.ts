@@ -17,6 +17,7 @@ export const colors = {
     regular: 'hsl(28, 100%, 3%)',
   },
   border: {
+    muted: 'hsla(29, 100%, 3%, 0.05)',
     light: 'hsl(29, 37%, 90%)',
     regular: 'hsl(29, 37%, 85%)',
     dark: 'hsl(29, 37%, 80%)',
