@@ -25,6 +25,7 @@ export const NavigationLayout = ({ tree, links }: NavigationLayoutProps) => {
             <Button
               variant="navigationSmall"
               onPress={() => setShowNavigation(!showNavigation)}
+              aria-label="Open the navigation"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
