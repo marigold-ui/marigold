@@ -15,8 +15,6 @@ import { remarkCodeDemo } from './plugins/remark-code-demo.js';
 import { rehypeTableOfContents } from './plugins/rehype-toc.js';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
-export const DEMO_PATH = path.join(process.cwd(), 'src', 'demos');
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -32,7 +30,7 @@ const withMdx = mdx({
       [
         remarkCodeDemo,
         {
-          demoPath: DEMO_PATH,
+          demoPath: path.join(__dirname, 'src', 'demos'),
           wrapperComponent: 'Preview',
         },
       ],
