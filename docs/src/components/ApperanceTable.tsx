@@ -40,7 +40,7 @@ export const ApperanceTable = ({ component }: ApperanceTableProps) => {
         <Table.Body>
           <Table.Row>
             <Table.Cell>
-              <code>variants</code>
+              <code>variant</code>
             </Table.Cell>
             <Table.Cell>
               <code>{variants ? variants.join(' | ') : '-'}</code>
