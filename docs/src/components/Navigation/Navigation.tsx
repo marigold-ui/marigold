@@ -1,10 +1,11 @@
 import { Box, CSSObject, useComponentStyles } from '@marigold/system';
-import { NAVIGATION_CONFIG } from '~/config';
 import { Link, LinkProps } from '~/components/Link';
 
 // Props
 // ---------------
 export type NavigationTree = (NavigationMenuCategory | NavigationMenuItem)[];
+
+export type NavigationLinks = { title: string; url: string }[];
 
 export interface NavigationMenuGroup {
   name: string;
@@ -24,7 +25,8 @@ export interface NavigationMenuItem {
 }
 
 export interface NavigationProps {
-  navigation: NavigationTree;
+  tree: NavigationTree;
+  links: NavigationLinks;
   css?: CSSObject;
 }
 
@@ -39,7 +41,10 @@ interface NavigationCategoryProps
   extends NavigationMenuCategory,
     NavigationStyles {}
 
-interface NavigationLinksProps extends NavigationStyles {}
+interface NavigationLinksProps extends NavigationStyles {
+  links: NavigationLinks;
+}
+
 interface NavigationStyles {
   css: {
     category: CSSObject;
@@ -51,7 +56,7 @@ interface NavigationStyles {
 
 // Components
 // ---------------
-const NavigationLinks = ({ css }: NavigationLinksProps) => {
+const NavigationLinks = ({ css, links }: NavigationLinksProps) => {
   return (
     <Box as="li" role="menuitem" __baseCSS={{ listStyle: 'none' }}>
       <Box as="ul" role="menubar" css={css?.list}>
@@ -60,7 +65,7 @@ const NavigationLinks = ({ css }: NavigationLinksProps) => {
             external links
           </Box>
           <Box as="ul" role="menubar" css={css?.list}>
-            {NAVIGATION_CONFIG.links.map(({ title, url }) => (
+            {links.map(({ title, url }) => (
               <NavigationItem
                 key={url}
                 css={css}
@@ -146,7 +151,7 @@ const NavigationCategory = ({
   );
 };
 
-export const Navigation = ({ navigation }: NavigationProps) => {
+export const Navigation = ({ tree, links }: NavigationProps) => {
   const styles = useComponentStyles(
     'Navigation',
     {},
@@ -159,12 +164,12 @@ export const Navigation = ({ navigation }: NavigationProps) => {
       aria-labelledby="marigold-navigation"
     >
       <Box as="ul" role="menubar">
-        {navigation.map(item =>
+        {tree.map(item =>
           'name' in item ? (
             <NavigationCategory key={item.name} css={styles} {...item} />
           ) : null
         )}
-        <NavigationLinks css={styles} />
+        <NavigationLinks links={links} css={styles} />
       </Box>
     </Box>
   );

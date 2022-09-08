@@ -15,8 +15,6 @@ import { remarkCodeDemo } from './plugins/remark-code-demo.js';
 import { rehypeTableOfContents } from './plugins/rehype-toc.js';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
-export const DEMO_PATH = path.join(process.cwd(), 'src', 'demos');
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -32,7 +30,7 @@ const withMdx = mdx({
       [
         remarkCodeDemo,
         {
-          demoPath: DEMO_PATH,
+          demoPath: path.join(__dirname, 'src', 'demos'),
           wrapperComponent: 'Preview',
         },
       ],
@@ -51,50 +49,57 @@ export default async function configuration() {
   /**
    * Configure navigation
    */
-  const navigation = await createNavigationTree({
-    directory: path.resolve(__dirname, 'src', 'pages'),
+  const tree = await createNavigationTree({
+    pages: path.resolve(__dirname, 'src', 'pages'),
     order: [
       { name: 'introduction' },
       { name: 'foundation' },
       {
         name: 'components',
         groups: [
+          'Application',
           'Layout',
           'Forms',
           'Collections',
           'Overlay',
           'Content',
-          'Application',
         ],
       },
       { name: 'develop' },
     ],
-    links: [
-      {
-        title: 'Github',
-        url: 'https://github.com/marigold-ui/marigold/',
-      },
-      {
-        title: 'Issues',
-        url: 'https://github.com/marigold-ui/marigold/issues',
-      },
-      {
-        title: 'Changelog',
-        url: 'https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md',
-      },
-      {
-        title: 'Slack Channel',
-        url: 'https://reservix.slack.com/archives/C02727BNZ3J',
-      },
-    ],
   });
+
+  /**
+   * Configure additional links
+   */
+  const links = [
+    {
+      title: 'Github',
+      url: 'https://github.com/marigold-ui/marigold/',
+    },
+    {
+      title: 'Issues',
+      url: 'https://github.com/marigold-ui/marigold/issues',
+    },
+    {
+      title: 'Changelog',
+      url: 'https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md',
+    },
+    {
+      title: 'Slack Channel',
+      url: 'https://reservix.slack.com/archives/C02727BNZ3J',
+    },
+  ];
 
   /** @type {import('next').NextConfig} */
   const config = {
     env: {
       version: pkg.version,
       // @ts-ignore
-      navigation,
+      navigation: {
+        tree,
+        links,
+      },
     },
     reactStrictMode: true,
     optimizeFonts: true,
