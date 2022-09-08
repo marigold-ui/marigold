@@ -11,7 +11,7 @@ export interface TocProps {
 
 function getId(children: string) {
   return children
-    .split(' ')
+    ?.split(' ')
     .map(word => word.toLowerCase())
     .join('-');
 }
@@ -42,12 +42,13 @@ function useScrollSpy(ids: string[], options: IntersectionObserverInit) {
 export const Toc = ({ items, selector }: TocProps) => {
   const elements = JSON.parse(items) as { anchor: string; title: string }[];
   const [, setMounted] = useState(false);
+  const isBottom = useRef(false);
 
   const ref = useRef<Element>();
 
   const activeId = useScrollSpy(
     elements.map((i: { title: string }) => getId(i.title)),
-    { rootMargin: '0% 0% -50% 0%' }
+    { rootMargin: '-10% -35% -80% -15%', threshold: 0 }
   );
 
   useEffect(() => {
@@ -56,6 +57,34 @@ export const Toc = ({ items, selector }: TocProps) => {
       setMounted(true);
     }
   }, [selector]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', function () {
+      const elements = document.querySelectorAll(
+        '[data-intersection-active]'
+      ) as any;
+      const elementsLenght = elements.length;
+      const activeElement =
+        elements[elementsLenght - 2]?.dataset.intersectionActive;
+      if (
+        window.innerHeight + window.scrollY >= document.body.scrollHeight &&
+        activeElement === 'true' &&
+        isBottom.current === false
+      ) {
+        elements[elementsLenght - 2].style.fontWeight = '400';
+        elements[elementsLenght - 1].style.fontWeight = '600';
+        isBottom.current = true;
+      } else if (
+        activeElement === 'true' &&
+        isBottom.current === true &&
+        window.innerHeight + window.scrollY <= document.body.scrollHeight - 100
+      ) {
+        elements[elementsLenght - 1].style.fontWeight = '400';
+        elements[elementsLenght - 2].style.fontWeight = '600';
+        isBottom.current = false;
+      }
+    });
+  });
 
   if (!ref.current || elements.length === 0) {
     return null;
@@ -77,17 +106,22 @@ export const Toc = ({ items, selector }: TocProps) => {
     >
       <Headline level="3">Table of Contents</Headline>
       {elements.map((i: { title: string; anchor: string }) => (
-        <List key={i.title}>
-          <Link
-            id={getId(i.title)}
-            variant="toc"
-            href={i.anchor}
-            style={{
-              fontWeight: activeId === getId(i.title) ? 'bold' : 'normal',
-            }}
-          >
-            {i.title}
-          </Link>
+        <List key={i.title} variant="toc">
+          <List.Item>
+            <Link
+              id={getId(i.title)}
+              variant="toc"
+              href={i.anchor}
+              style={{
+                fontWeight: activeId === getId(i.title) ? '600' : '400',
+              }}
+              data-intersection-active={
+                activeId === getId(i.title) ? 'true' : 'false'
+              }
+            >
+              {i.title}
+            </Link>
+          </List.Item>
         </List>
       ))}
     </Box>
