@@ -45,7 +45,7 @@ const withMdx = mdx({
   },
 });
 
-export default async () => {
+export default async function configuration() {
   /**
    * Configure navigation
    */
@@ -128,4 +128,4 @@ export default async () => {
   };
 
   return withMdx(config);
-};
+}
