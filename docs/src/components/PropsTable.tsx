@@ -1,4 +1,4 @@
-import { Box, Card, Inline, Table, Text } from '@marigold/components';
+import { Card, Inline, Table, Text } from '@marigold/components';
 import { BlankCanvas } from './BlankCanvas';
 
 export interface PropsTableProps {
