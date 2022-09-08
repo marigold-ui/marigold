@@ -1,5 +1,25 @@
 # @marigold/docs
 
+## 2.1.3
+
+### Patch Changes
+
+- [#2382](https://github.com/marigold-ui/marigold/pull/2382) [`bf5fccda`](https://github.com/marigold-ui/marigold/commit/bf5fccdaaa4a80bcf80336541abc1cdd9c90db4f) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: add title to logo for accessibility
+
+- [#2396](https://github.com/marigold-ui/marigold/pull/2396) [`99401897`](https://github.com/marigold-ui/marigold/commit/99401897e63428f9066b3c2e4101b729967195a3) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: navigation resets when clicked and active state
+
+- [#2376](https://github.com/marigold-ui/marigold/pull/2376) [`cbd29060`](https://github.com/marigold-ui/marigold/commit/cbd290606406089994ba20f697e934ce0e221a53) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: add Figma links to docs
+
+- [#2389](https://github.com/marigold-ui/marigold/pull/2389) [`5ed76827`](https://github.com/marigold-ui/marigold/commit/5ed76827faa91d0c4eef29f174e9295a320a43f0) Thanks [@benediktgrether](https://github.com/benediktgrether)! - feat: Add scroll to top button
+
+- [#2378](https://github.com/marigold-ui/marigold/pull/2378) [`d5fd75cb`](https://github.com/marigold-ui/marigold/commit/d5fd75cb0b83d76fece43f959fa4aa5bcdf3f4c1) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: fix responsive layout and responsive table
+
+- Updated dependencies [[`d3143f65`](https://github.com/marigold-ui/marigold/commit/d3143f65fd4dc207d21006f21078b03c6123ff62), [`7bb83042`](https://github.com/marigold-ui/marigold/commit/7bb83042e608fbff1f58498e76172174d54f8960), [`f6b49c37`](https://github.com/marigold-ui/marigold/commit/f6b49c37a0293e4d060db292d22a085fcf0bbc65), [`beea5b0b`](https://github.com/marigold-ui/marigold/commit/beea5b0bc67fe4a4c43e5d900d1cf59095b9c2fd), [`d5fd75cb`](https://github.com/marigold-ui/marigold/commit/d5fd75cb0b83d76fece43f959fa4aa5bcdf3f4c1)]:
+  - @marigold/icons@1.0.4
+  - @marigold/system@2.1.3
+  - @marigold/components@2.1.3
+  - @marigold/theme-b2b@12.0.3
+
 ## 2.1.2
 
 ### Patch Changes
