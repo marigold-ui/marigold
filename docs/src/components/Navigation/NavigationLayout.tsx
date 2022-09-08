@@ -4,14 +4,15 @@ import { useResponsiveValue } from '@marigold/system';
 
 import { Link, Logo, NavigationTree } from '~/components';
 
-import { Navigation } from './Navigation';
+import { Navigation, NavigationLinks } from './Navigation';
 const useIsSmallScreen = () => useResponsiveValue([true, false, false], 2);
 
 export interface NavigationLayoutProps {
-  navigation: NavigationTree;
+  tree: NavigationTree;
+  links: NavigationLinks;
 }
 
-export const NavigationLayout = ({ navigation }: NavigationLayoutProps) => {
+export const NavigationLayout = ({ tree, links }: NavigationLayoutProps) => {
   const isSmallScreen = useIsSmallScreen();
   const [showNavigation, setShowNavigation] = React.useState(false);
   const show = isSmallScreen ? showNavigation : true;
@@ -71,7 +72,7 @@ export const NavigationLayout = ({ navigation }: NavigationLayoutProps) => {
             </Center>
           </Link>
         )}
-        {show && <Navigation navigation={navigation} />}
+        {show && <Navigation tree={tree} links={links} />}
       </Box>
     </Box>
   );

@@ -19,25 +19,24 @@ const sortByOrder = items => {
 
 /**
  * @typedef {object} NavigationOptions
- * @prop {string} directory directory to look for MDX pages (should usually point to next's pages directory)
+ * @prop {string} pages directory to look for MDX pages (should usually point to next's pages directory)
  * @prop {{ name: string, groups?: string[] }[]} order ordering of the navigation
- * @prop {{ title: string, url: string }[]} links additional links to display
  */
 
 /**
  *
  * @param {NavigationOptions} options
  */
-const createNavigationTree = async ({ directory, order }) => {
+const createNavigationTree = async ({ pages, order }) => {
   // Get all information for MDX pages (their frontmatter)
-  const files = await globby([`${directory}/**/*.mdx`]);
+  const files = await globby([`${pages}/**/*.mdx`]);
   const items = await Promise.all(
     files.map(async filePath => {
       const frontmatter = await getFrontmatter(filePath);
       return {
         // @ts-ignore
         ...frontmatter,
-        slug: toSlug(filePath, directory),
+        slug: toSlug(filePath, pages),
       };
     })
   );
