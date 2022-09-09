@@ -14,6 +14,7 @@ export const Rectangle = ({ children, height }: RectangleProps) => (
       height: height || 'medium-1',
       width: '100%',
       background: `linear-gradient(135deg, ${fill.light}, ${fill.dark}) 0 0 / 100% `,
+      boxShadow: 'medium-1',
       ...border,
     }}
   >
