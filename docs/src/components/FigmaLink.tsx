@@ -1,25 +1,19 @@
+import { Inline } from '@marigold/components';
+import { Edit } from '@marigold/icons';
 import { Box } from '@marigold/system';
+import { FigmaIcon, GithubIcon } from './Icons';
 import { Link } from './Link';
 
-export const FigmaLink = ({ href }: { href: URL }) => (
-  <Box
-    css={{
-      border: '2px solid',
-      borderColor: 'background.light',
-      borderRadius: '10px',
-      textAlign: 'center',
-      width: 'max-content',
-      ml: ['none', 'auto'],
-      bg: '#FFF',
-      mb: 'small-1',
-      mt: '-1rem',
-      '&:hover': {
-        borderColor: 'brand.secondary',
-      },
-    }}
-  >
-    <Link variant="figma" target="blank" href={href}>
-      View in Figma
+export const IconLinksList = ({ href }: { href: URL }) => (
+  <Inline space="medium-1">
+    <Link target="blank" href={href}>
+      <FigmaIcon />
     </Link>
-  </Box>
+    <Link target="blank" href={href}>
+      <GithubIcon />
+    </Link>
+    <Link target="blank" href={href}>
+      <Edit />
+    </Link>
+  </Inline>
 );

@@ -6,7 +6,7 @@ import {
   Text,
   type Theme,
 } from '@marigold/components';
-import { BlankCanvas } from './BlankCanvas';
+import { BlankCanvas } from './Icons';
 import { useThemeSwitch } from './ThemeSwitch';
 
 export interface ApperanceTableProps {
