@@ -12,6 +12,7 @@ export interface ContainerProps extends ComponentProps<'div'> {
   alignItems?: 'left' | 'right' | 'center' | 'none';
 }
 
+// for the case that tables were used we needed to set the align-items to unset(it's now default behavior)
 const ALIGN_ITEMS = {
   left: 'start',
   center: 'center',
@@ -19,6 +20,7 @@ const ALIGN_ITEMS = {
   none: 'unset',
 };
 
+// for responsive reasons we needed to use the `minmax(0, 60ch)` value instead of `fit-content(60ch)`
 const ALIGN = {
   left: (maxWidth: string) => ({
     gridTemplateColumns: `minmax(0, ${maxWidth}) 1fr 1fr`,
