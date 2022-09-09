@@ -1,13 +1,7 @@
 import { Box, Container, Headline, Text } from '@marigold/components';
 
 export const TextBlockContainer = () => (
-  <Box
-    as={Container}
-    bg="blue10"
-    align="center"
-    alignContainer="center"
-    p="small"
-  >
+  <Box as={Container} bg="blue10" align="center" alignItems="center" p="small">
     <Headline level="2">Star Wars - The Empire Strikes Back</Headline>
     <Box pt="xsmall" width="100%">
       <Text>

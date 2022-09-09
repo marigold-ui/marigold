@@ -11,7 +11,9 @@ test('supports default contentType content', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`gridTemplateColumns: 45ch 1fr 1fr`);
+  expect(container).toHaveStyle(
+    `gridTemplateColumns: fit-content(45ch) 1fr 1fr`
+  );
 });
 
 test('supports contentType header', () => {
@@ -21,7 +23,9 @@ test('supports contentType header', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`gridTemplateColumns: 25ch 1fr 1fr`);
+  expect(container).toHaveStyle(
+    `gridTemplateColumns: fit-content(25ch) 1fr 1fr`
+  );
 });
 
 test('supports default size', () => {
@@ -31,7 +35,9 @@ test('supports default size', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`gridTemplateColumns: 45ch 1fr 1fr`);
+  expect(container).toHaveStyle(
+    `gridTemplateColumns: fit-content(45ch) 1fr 1fr`
+  );
 });
 
 test('supports size small', () => {
@@ -41,7 +47,9 @@ test('supports size small', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`gridTemplateColumns: 20ch 1fr 1fr`);
+  expect(container).toHaveStyle(
+    `gridTemplateColumns: fit-content(20ch) 1fr 1fr`
+  );
 });
 
 test('supports size large', () => {
@@ -51,7 +59,9 @@ test('supports size large', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`gridTemplateColumns: 60ch 1fr 1fr`);
+  expect(container).toHaveStyle(
+    `gridTemplateColumns: fit-content(60ch) 1fr 1fr`
+  );
 });
 
 test('supports size and contentType', () => {
@@ -61,22 +71,66 @@ test('supports size and contentType', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`gridTemplateColumns: 35ch 1fr 1fr`);
+  expect(container).toHaveStyle(
+    `gridTemplateColumns: fit-content(35ch) 1fr 1fr`
+  );
 });
 
-test('supports default align left', () => {
+test('supports default align container left', () => {
   render(
     <Container data-testid="container">
       <Text>sdf</Text>
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`placeItems: flex-start`);
+  expect(container).toHaveStyle(
+    `gridTemplateColumns: fit-content(45ch) 1fr 1fr`
+  );
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(container.firstChild).toHaveStyle(`gridColumn: 1`);
 });
 
-test('supports align center', () => {
+test('supports align container center', () => {
   render(
     <Container align="center" data-testid="container">
+      <Text>sdf</Text>
+    </Container>
+  );
+  const container = screen.getByTestId(/container/);
+  expect(container).toHaveStyle(
+    `gridTemplateColumns: 1fr fit-content(45ch) 1fr`
+  );
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(container.firstChild).toHaveStyle(`gridColumn: 2`);
+});
+
+test('supports align container right', () => {
+  render(
+    <Container align="right" data-testid="container">
+      <Text>sdf</Text>
+    </Container>
+  );
+  const container = screen.getByTestId(/container/);
+  expect(container).toHaveStyle(
+    `gridTemplateColumns: 1fr 1fr fit-content(45ch)`
+  );
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(container.firstChild).toHaveStyle(`gridColumn: 3`);
+});
+
+test('supports default align items left', () => {
+  render(
+    <Container data-testid="container">
+      <Text>sdf</Text>
+    </Container>
+  );
+  const container = screen.getByTestId(/container/);
+  expect(container).toHaveStyle(`placeItems: start`);
+});
+
+test('supports align items center', () => {
+  render(
+    <Container alignItems="center" data-testid="container">
       <Text>sdf</Text>
     </Container>
   );
@@ -84,58 +138,12 @@ test('supports align center', () => {
   expect(container).toHaveStyle(`placeItems: center`);
 });
 
-test('supports align right', () => {
+test('supports align items right', () => {
   render(
-    <Container align="right" data-testid="container">
+    <Container alignItems="right" data-testid="container">
       <Text>sdf</Text>
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`placeItems: flex-end`);
-});
-
-test('supports default alignContainer left', () => {
-  render(
-    <Container data-testid="container">
-      <Text>sdf</Text>
-    </Container>
-  );
-  const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`gridTemplateColumns: 45ch 1fr 1fr`);
-  // eslint-disable-next-line testing-library/no-node-access
-  expect(container.firstChild).toHaveStyle(`gridColumn: 1`);
-});
-
-test('supports alignContainer center', () => {
-  render(
-    <Container alignContainer="center" data-testid="container">
-      <Text>sdf</Text>
-    </Container>
-  );
-  const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`gridTemplateColumns: 1fr 45ch 1fr`);
-  // eslint-disable-next-line testing-library/no-node-access
-  expect(container.firstChild).toHaveStyle(`gridColumn: 2`);
-});
-
-test('supports alignContainer right', () => {
-  render(
-    <Container alignContainer="right" data-testid="container">
-      <Text>sdf</Text>
-    </Container>
-  );
-  const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`gridTemplateColumns: 1fr 1fr 45ch`);
-  // eslint-disable-next-line testing-library/no-node-access
-  expect(container.firstChild).toHaveStyle(`gridColumn: 3`);
-});
-
-test('renders correct HTML element', () => {
-  render(
-    <Container data-testid="container">
-      <Text>sdf</Text>
-    </Container>
-  );
-  const container = screen.getByTestId(/container/);
-  expect(container instanceof HTMLDivElement).toBeTruthy();
+  expect(container).toHaveStyle(`placeItems: end`);
 });
