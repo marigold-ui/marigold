@@ -72,6 +72,7 @@ const components = {
 };
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
+  console.log(pageProps);
   return (
     <SSRProvider>
       <MarigoldProvider theme={theme}>
@@ -93,8 +94,14 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                   <Inline>
                     {pageProps?.switchTheme && <ThemeSelect />}
                     <Split />
-                    {pageProps?.figma && (
-                      <IconLinksList href={pageProps.figma} />
+                    {(pageProps?.figma ||
+                      pageProps?.github ||
+                      pageProps?.edit) && (
+                      <IconLinksList
+                        figma={pageProps?.figma}
+                        github={pageProps?.github}
+                        edit={pageProps?.edit}
+                      />
                     )}
                   </Inline>
                   <Component {...pageProps} />
