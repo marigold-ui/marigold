@@ -36,11 +36,11 @@
     "jest": "28.x",
     "jest-environment-jsdom": "28.x",
     "react": "18.x",
-    "typescript": "4.7.4"
+    "typescript": "4.8.3"
   },
   "devDependencies": {
     "jest": "28.1.3",
     "react": "18.2.0",
-    "typescript": "4.7.4"
+    "typescript": "4.8.3"
   }
 }
