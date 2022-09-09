@@ -1,6 +1,6 @@
 export * from './ApperanceTable';
 export * from './CopyButton';
-export * from './FigmaLink';
+export * from './IconLinks';
 export * from './GradientHeadline';
 export * from './Icons';
 export * from './IconList';

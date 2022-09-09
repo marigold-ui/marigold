@@ -15,17 +15,17 @@ export const IconLinksList = ({ figma, github, edit }: IconLinksListProps) => {
   return (
     <Inline space="medium-1">
       {figma && (
-        <Link target="blank" href={figma}>
+        <Link variant="icon" target="blank" href={figma}>
           <FigmaIcon />
         </Link>
       )}
       {github && (
-        <Link target="blank" href={github}>
+        <Link variant="icon" target="blank" href={github}>
           <GithubIcon />
         </Link>
       )}
       {edit && (
-        <Link target="blank" href={edit}>
+        <Link variant="icon" target="blank" href={edit}>
           <Edit />
         </Link>
       )}
