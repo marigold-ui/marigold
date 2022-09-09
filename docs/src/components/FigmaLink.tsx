@@ -4,9 +4,9 @@ import { FigmaIcon, GithubIcon } from './Icons';
 import { Link } from './Link';
 
 interface IconLinksListProps {
-  figma: URL;
-  github: URL;
-  edit: URL;
+  figma?: URL;
+  github?: URL;
+  edit?: URL;
 }
 
 export const IconLinksList = ({ figma, github, edit }: IconLinksListProps) => {
