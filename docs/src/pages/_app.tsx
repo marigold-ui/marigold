@@ -98,9 +98,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                       pageProps?.github ||
                       pageProps?.edit) && (
                       <IconLinksList
-                        figma={pageProps?.figma}
-                        github={pageProps?.github}
-                        edit={pageProps?.edit}
+                        figma={pageProps?.figma ? pageProps?.figma : '#'}
+                        github={pageProps?.github ? pageProps?.github : '#'}
+                        edit={pageProps?.edit ? pageProps?.edit : '#'}
                       />
                     )}
                   </Inline>

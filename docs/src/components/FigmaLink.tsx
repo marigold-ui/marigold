@@ -11,20 +11,24 @@ interface IconLinksListProps {
 
 export const IconLinksList = ({ figma, github, edit }: IconLinksListProps) => {
   console.log(figma, github, edit);
-  if ((figma || github || edit) === undefined) {
-    return;
-  }
+
   return (
     <Inline space="medium-1">
-      <Link target="blank" href={figma}>
-        <FigmaIcon />
-      </Link>
-      <Link target="blank" href={github}>
-        <GithubIcon />
-      </Link>
-      <Link target="blank" href={edit}>
-        <Edit />
-      </Link>
+      {figma && (
+        <Link target="blank" href={figma}>
+          <FigmaIcon />
+        </Link>
+      )}
+      {github && (
+        <Link target="blank" href={github}>
+          <GithubIcon />
+        </Link>
+      )}
+      {edit && (
+        <Link target="blank" href={edit}>
+          <Edit />
+        </Link>
+      )}
     </Inline>
   );
 };
