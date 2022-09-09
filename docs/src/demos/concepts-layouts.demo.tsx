@@ -1,5 +1,5 @@
 import { Columns, Stack } from '@marigold/components';
-import { Rectangle } from '~/components';
+import { Rectangle, Squirecle } from '~/components';
 
 export const LayoutsDemo = () => (
   <Columns columns={[1, 1, 1]} space="medium-2" collapseAt="0em">
@@ -14,9 +14,9 @@ export const LayoutsDemo = () => (
       <Rectangle height="100%" />
     </Columns>
     <Stack>
-      <Rectangle />
-      <Rectangle />
-      <Rectangle />
+      <Squirecle />
+      <Squirecle />
+      <Squirecle />
     </Stack>
   </Columns>
 );

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Box } from '@marigold/system';
 
-import { border, fill } from './styles';
+import { border, fill, defaultSize } from './styles';
 
 export interface RectangleProps {
   height?: string;
@@ -11,7 +11,7 @@ export interface RectangleProps {
 export const Rectangle = ({ children, height }: RectangleProps) => (
   <Box
     css={{
-      height: height || 'medium-1',
+      height: height || defaultSize,
       width: '100%',
       background: `linear-gradient(135deg, ${fill.light}, ${fill.dark}) 0 0 / 100% `,
       boxShadow: 'medium-1',
