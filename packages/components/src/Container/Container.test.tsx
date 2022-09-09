@@ -107,7 +107,7 @@ test('supports default align items none', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveStyle(`placeItems: unset`);
+  expect(container).toHaveStyle(`placeItems: undefined`);
 });
 
 test('supports align items center', () => {
