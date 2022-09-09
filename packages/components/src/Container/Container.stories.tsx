@@ -15,11 +15,6 @@ export default {
       },
       options: ['content', 'header'],
       description: 'choose between content and header',
-      table: {
-        defaultValue: {
-          summary: 'content',
-        },
-      },
     },
     size: {
       control: {
@@ -27,35 +22,20 @@ export default {
       },
       options: ['small', 'medium', 'large'],
       description: 'choose between small, medium and large size',
-      table: {
-        defaultValue: {
-          summary: 'medium',
-        },
-      },
     },
     align: {
       control: {
         type: 'select',
       },
       options: ['left', 'center', 'right'],
-      description: 'choose between left, center and right items alignment',
-      table: {
-        defaultValue: {
-          summary: 'left',
-        },
-      },
+      description: 'set alignment the content inside the container',
     },
-    alignContainer: {
+    alignItems: {
       control: {
         type: 'select',
       },
       options: ['left', 'center', 'right'],
-      description: 'choose between left, center and right container alignment',
-      table: {
-        defaultValue: {
-          summary: 'left',
-        },
-      },
+      description: 'set alignment of the items inside the container',
     },
   },
 } as Meta;
