@@ -79,7 +79,7 @@
     "@marigold/tsconfig": "workspace:*",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "tsup": "6.2.2"
+    "tsup": "6.2.3"
   },
   "scripts": {
     "build": "tsup src/index.ts",
