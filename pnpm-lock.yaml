@@ -164,7 +164,7 @@ importers:
       find-up: 5.0.0
       react: 18.2.0
       react-dom: 18.2.0
-      tsconfig-paths-webpack-plugin: 3.5.2
+      tsconfig-paths-webpack-plugin: 4.0.0
       typescript: 4.8.3
       webpack: '4'
     dependencies:
@@ -185,7 +185,7 @@ importers:
       babel-loader: 8.2.5_li4tts7salxwv3rbqjnooz7t7e
       chromatic: 6.7.1
       find-up: 5.0.0
-      tsconfig-paths-webpack-plugin: 3.5.2
+      tsconfig-paths-webpack-plugin: 4.0.0
       webpack: 4.46.0
     devDependencies:
       react: 18.2.0
@@ -16829,12 +16829,13 @@ packages:
       typescript: 4.8.3
     dev: false
 
-  /tsconfig-paths-webpack-plugin/3.5.2:
-    resolution: {integrity: sha512-EhnfjHbzm5IYI9YPNVIxx1moxMI4bpHD2e0zTXeDNQcwjjRaGepP7IhTHJkyDBG0CAOoxRfe7jCG630Ou+C6Pw==}
+  /tsconfig-paths-webpack-plugin/4.0.0:
+    resolution: {integrity: sha512-fw/7265mIWukrSHd0i+wSwx64kYUSAKPfxRDksjKIYTxSAp9W9/xcZVBF4Kl0eqQd5eBpAQ/oQrc5RyM/0c1GQ==}
+    engines: {node: '>=10.13.0'}
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.10.0
-      tsconfig-paths: 3.14.1
+      tsconfig-paths: 4.1.0
     dev: false
 
   /tsconfig-paths/3.14.1:
@@ -16842,6 +16843,15 @@ packages:
     dependencies:
       '@types/json5': 0.0.29
       json5: 1.0.1
+      minimist: 1.2.6
+      strip-bom: 3.0.0
+    dev: false
+
+  /tsconfig-paths/4.1.0:
+    resolution: {integrity: sha512-AHx4Euop/dXFC+Vx589alFba8QItjF+8hf8LtmuiCwHyI4rHXQtOOENaM8kvYf5fR0dRChy3wzWIZ9WbB7FWow==}
+    engines: {node: '>=6'}
+    dependencies:
+      json5: 2.2.1
       minimist: 1.2.6
       strip-bom: 3.0.0
     dev: false
