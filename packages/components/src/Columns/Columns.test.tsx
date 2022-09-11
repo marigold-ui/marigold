@@ -9,6 +9,7 @@ const theme = {
   },
 };
 
+// eslint-disable-next-line testing-library/no-node-access
 const getColumnWrappers = (el: HTMLElement) => el.children!;
 
 test('supports default space prop', () => {
