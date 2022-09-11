@@ -37,7 +37,9 @@ export type CustomTextAreEvents =
   | 'onCompositionUpdate'
   | 'onCompositionEnd'
   | 'onBeforeInput'
-  | 'onInput';
+  | 'onInput'
+  | 'onKeyDown'
+  | 'onKeyUp';
 
 export interface TextAreaProps
   extends Omit<
