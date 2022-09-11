@@ -13,22 +13,27 @@ import { Input } from '../Input';
 
 // Props
 // ---------------
+/**
+ * `react-aria` has a slightly different API for the above events.
+ * Thus, we adjust our regular props to match them.
+ */
+export type CustomTextFieldEvents =
+  | 'onChange'
+  | 'onFocus'
+  | 'onBlur'
+  | 'onKeyDown'
+  | 'onKeyUp';
+
 export interface TextFieldProps
   extends Omit<
       ComponentProps<'input'>,
-      | 'value'
-      | 'defaultValue'
-      | 'onChange'
-      | 'onFocus'
-      | 'onBlur'
-      | 'size'
-      | 'width'
+      'value' | 'defaultValue' | 'size' | 'width' | CustomTextFieldEvents
     >,
     /**
      * `react-aria` has a slightly different API for `onChange`, `onFocus`
      * and `onBlur` events. Thus, we adjust our regular props to match them.
      */
-    Pick<AriaTextFieldProps, 'onChange' | 'onFocus' | 'onBlur'>,
+    Pick<AriaTextFieldProps, CustomTextFieldEvents>,
     Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
   variant?: string;
   size?: string;
