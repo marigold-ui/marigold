@@ -68,3 +68,14 @@ export const Basic: ComponentStory<typeof Columns> = args => (
     <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
   </Columns>
 );
+
+export const ComplexChildren: ComponentStory<typeof Columns> = args => (
+  <Columns {...args}>
+    <Box as="main" border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+    <>
+      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+    </>
+    <Box as="aside" border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+  </Columns>
+);
