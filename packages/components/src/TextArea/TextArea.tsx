@@ -25,7 +25,7 @@ export interface TextAreaThemeExtension extends ThemeExtension<'TextArea'> {}
  * `react-aria` has a slightly different API for the above events.
  * Thus, we adjust our regular props to match them.
  */
-export type CustomTextAreEvents =
+export type CustomTextAreaEvents =
   | 'onChange'
   | 'onFocus'
   | 'onBlur'
@@ -37,14 +37,16 @@ export type CustomTextAreEvents =
   | 'onCompositionUpdate'
   | 'onCompositionEnd'
   | 'onBeforeInput'
-  | 'onInput';
+  | 'onInput'
+  | 'onKeyDown'
+  | 'onKeyUp';
 
 export interface TextAreaProps
   extends Omit<
       ComponentProps<'textarea'>,
-      'value' | 'defaultValue' | 'size' | CustomTextAreEvents
+      'value' | 'defaultValue' | 'size' | CustomTextAreaEvents
     >,
-    Pick<AriaTextFieldProps, CustomTextAreEvents>,
+    Pick<AriaTextFieldProps, CustomTextAreaEvents>,
     Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
   variant?: string;
   size?: string;
