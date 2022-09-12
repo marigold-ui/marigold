@@ -19,7 +19,7 @@
     "directory": "config/prettier"
   },
   "dependencies": {
-    "@babel/core": "7.18.13",
+    "@babel/core": "7.19.0",
     "@emotion/react": "^11.0.0-rc.0",
     "@emotion/styled": "^11.8.1",
     "@marigold/components": "workspace:*",
@@ -36,19 +36,19 @@
     "babel-loader": "8.2.5",
     "chromatic": "^6.6.3",
     "find-up": "5.0.0",
-    "tsconfig-paths-webpack-plugin": "3.5.2",
+    "tsconfig-paths-webpack-plugin": "4.0.0",
     "webpack": "4"
   },
   "devDependencies": {
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "4.6.4"
+    "typescript": "4.8.3"
   },
   "peerDependencies": {
     "@storybook/react": "6.5.10",
     "react": "18.x",
     "react-dom": "18.x",
-    "typescript": "4.6.4"
+    "typescript": "4.8.3"
   },
   "scripts": {
     "start": "start-storybook -p 1337 -c .",

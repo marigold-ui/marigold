@@ -19,30 +19,30 @@
     "directory": "config/eslint"
   },
   "dependencies": {
-    "@babel/core": "7.18.13",
+    "@babel/core": "7.19.0",
     "@babel/eslint-parser": "^7.18.9",
     "@babel/plugin-syntax-flow": "^7.16.7",
     "@babel/plugin-transform-react-jsx": "^7.17.3",
-    "@typescript-eslint/eslint-plugin": "5.33.0",
-    "@typescript-eslint/parser": "5.33.0",
+    "@typescript-eslint/eslint-plugin": "5.36.2",
+    "@typescript-eslint/parser": "5.36.2",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-react-app": "7.0.1",
     "eslint-plugin-flowtype": "^8.0.3",
     "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-jest": "26.8.3",
+    "eslint-plugin-jest": "27.0.4",
     "eslint-plugin-jsx-a11y": "6.6.1",
     "eslint-plugin-prettier": "4.2.1",
-    "eslint-plugin-react": "7.30.1",
+    "eslint-plugin-react": "7.31.8",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "eslint-plugin-testing-library": "5.6.0",
+    "eslint-plugin-testing-library": "5.6.3",
     "prettier": "2.7.1"
   },
   "peerDependencies": {
     "eslint": "8.x.x",
-    "typescript": "4.7.x"
+    "typescript": "4.7.x || 4.8.x"
   },
   "devDependencies": {
-    "eslint": "8.21.0",
-    "typescript": "4.7.4"
+    "eslint": "8.23.0",
+    "typescript": "4.8.3"
   }
 }

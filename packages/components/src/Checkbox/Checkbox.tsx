@@ -82,7 +82,13 @@ const Icon = ({ css, checked, indeterminate, ...props }: IconProps) => (
  * `react-aria` has a slightly different API for the above events.
  * Thus, we adjust our regular props to match them.
  */
-export type CustomCheckboxProps = 'value' | 'onChange' | 'onFocus' | 'onBlur';
+export type CustomCheckboxProps =
+  | 'value'
+  | 'onChange'
+  | 'onFocus'
+  | 'onBlur'
+  | 'onKeyDown'
+  | 'onKeyUp';
 
 export interface CheckboxProps
   extends ThemeComponentProps,
