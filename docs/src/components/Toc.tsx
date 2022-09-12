@@ -3,6 +3,8 @@ import { createPortal } from 'react-dom';
 
 import { Box, Headline, Link, List } from '@marigold/components';
 import React from 'react';
+import { useStateProps } from '@marigold/system';
+import { useComponentStyles } from '@marigold/system';
 
 export interface TocProps {
   selector: string;
@@ -15,6 +17,13 @@ function getId(children: string) {
     .map(word => word.toLowerCase())
     .join('-');
 }
+
+/**
+ * To Do
+ * Inital toc -> Did we need a Overview because we almost started with the first component with props.
+ * Or should we take the Title as first element of the toc?
+ * Add active-state to the element and styling everything in a own styling file
+ */
 
 function useScrollSpy(ids: string[], options: IntersectionObserverInit) {
   const [activeId, setActiveId] = React.useState<string>();
@@ -36,6 +45,12 @@ function useScrollSpy(ids: string[], options: IntersectionObserverInit) {
     });
     return () => observer.current?.disconnect();
   }, [ids, options]);
+  React.useEffect(() => {
+    if (!activeId) {
+      const toc = document.querySelector('#toc');
+      toc?.querySelector(`#${ids[0]}`)?.setAttribute('data-active', 'true');
+    }
+  });
   return activeId;
 }
 
@@ -45,6 +60,14 @@ export const Toc = ({ items, selector }: TocProps) => {
   const isBottom = useRef(false);
 
   const ref = useRef<Element>();
+
+  const styles = useComponentStyles(
+    'Toc',
+    {},
+    {
+      parts: ['toc', 'item'],
+    }
+  );
 
   const activeId = useScrollSpy(
     elements.map((i: { title: string }) => getId(i.title)),
@@ -63,24 +86,24 @@ export const Toc = ({ items, selector }: TocProps) => {
       const elements = document.querySelectorAll(
         '[data-intersection-active]'
       ) as any;
-      const elementsLenght = elements.length;
+      const elementsLength = elements.length;
       const activeElement =
-        elements[elementsLenght - 2]?.dataset.intersectionActive;
+        elements[elementsLength - 2]?.dataset.intersectionActive;
       if (
         window.innerHeight + window.scrollY >= document.body.scrollHeight &&
         activeElement === 'true' &&
         isBottom.current === false
       ) {
-        elements[elementsLenght - 2].style.fontWeight = '400';
-        elements[elementsLenght - 1].style.fontWeight = '600';
+        elements[elementsLength - 2].setAttribute('data-active', 'false');
+        elements[elementsLength - 1].setAttribute('data-active', 'true');
         isBottom.current = true;
       } else if (
         activeElement === 'true' &&
         isBottom.current === true &&
         window.innerHeight + window.scrollY <= document.body.scrollHeight - 100
       ) {
-        elements[elementsLenght - 1].style.fontWeight = '400';
-        elements[elementsLenght - 2].style.fontWeight = '600';
+        elements[elementsLength - 1].setAttribute('data-active', 'false');
+        elements[elementsLength - 2].setAttribute('data-active', 'true');
         isBottom.current = false;
       }
     });
@@ -91,19 +114,7 @@ export const Toc = ({ items, selector }: TocProps) => {
   }
 
   const TocPortal = () => (
-    <Box
-      css={{
-        position: 'sticky',
-        fontSize: 'fixed.small-2',
-        top: 20,
-        right: 0,
-        mx: 'medium-1',
-        pl: 'medium-2',
-
-        borderLeft: '1px solid',
-        borderColor: 'background.light',
-      }}
-    >
+    <Box css={styles.toc}>
       <Headline level="3">Table of Contents</Headline>
       {elements.map((i: { title: string; anchor: string }) => (
         <List key={i.title} variant="toc">
@@ -112,9 +123,8 @@ export const Toc = ({ items, selector }: TocProps) => {
               id={getId(i.title)}
               variant="toc"
               href={i.anchor}
-              style={{
-                fontWeight: activeId === getId(i.title) ? '600' : '400',
-              }}
+              css={styles.item}
+              data-active={activeId === getId(i.title) ? 'true' : 'false'}
               data-intersection-active={
                 activeId === getId(i.title) ? 'true' : 'false'
               }
