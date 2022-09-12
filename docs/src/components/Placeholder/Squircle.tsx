@@ -19,8 +19,8 @@ export const Squirecle = ({ size, ...props }: SquirecleProps) => (
         spreadMethod="pad"
         gradientTransform="rotate(65)"
       >
-        <stop offset=".01" stop-color={fill.light} />
-        <stop offset="1" stop-color={fill.dark} />
+        <stop offset=".01" stopColor={fill.light} />
+        <stop offset="1" stopColor={fill.dark} />
       </linearGradient>
     </defs>
   </SVG>

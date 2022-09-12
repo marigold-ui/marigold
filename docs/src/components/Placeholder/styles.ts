@@ -2,8 +2,8 @@
 export const defaultSize = 'medium-1';
 
 export const fill = {
-  light: 'hsl(29, 37%, 60%)',
-  dark: 'hsl(29, 37%, 20%)',
+  light: 'hsl(29, 37%, 70%)',
+  dark: 'hsl(29, 37%, 40%)',
 };
 
 export const border = {
