@@ -1,5 +1,20 @@
 # @marigold/system
 
+## 2.2.0
+
+### Minor Changes
+
+- [#2411](https://github.com/marigold-ui/marigold/pull/2411) [`a4ccb92f`](https://github.com/marigold-ui/marigold/commit/a4ccb92f294129dce1dd050513044dbd7bd96e28) Thanks [@sebald](https://github.com/sebald)! - feat: `css` props supports array (again) + padding props for `<Card>`
+
+### Patch Changes
+
+- [#2416](https://github.com/marigold-ui/marigold/pull/2416) [`f76f4870`](https://github.com/marigold-ui/marigold/commit/f76f48703fc03f6ceae09ff5c0b8bd60ea811564) Thanks [@sebald](https://github.com/sebald)! - fix: correctly interpret design tokens in `<SVG>`
+
+- [#2437](https://github.com/marigold-ui/marigold/pull/2437) [`23a78264`](https://github.com/marigold-ui/marigold/commit/23a78264cf713ebf439c264a45ff946fd58472de) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update testing (major)
+
+- Updated dependencies [[`75128374`](https://github.com/marigold-ui/marigold/commit/75128374e5209a24bd2b0914c1d9455c02fcfc92)]:
+  - @marigold/types@0.5.3
+
 ## 2.1.3
 
 ### Patch Changes

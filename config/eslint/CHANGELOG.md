@@ -1,5 +1,19 @@
 # @marigold/eslint-config
 
+## 0.4.0
+
+### Minor Changes
+
+- [#2406](https://github.com/marigold-ui/marigold/pull/2406) [`32fb8417`](https://github.com/marigold-ui/marigold/commit/32fb8417c411166fece7d779b226ae5c536ea5f7) Thanks [@sebald](https://github.com/sebald)! - feat: eslint-config can handle import assertions
+
+### Patch Changes
+
+- [#2423](https://github.com/marigold-ui/marigold/pull/2423) [`7b46298f`](https://github.com/marigold-ui/marigold/commit/7b46298f0461fa07947768fe6caba0f9645a9ea9) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency typescript to v4.8.3
+
+- [#2424](https://github.com/marigold-ui/marigold/pull/2424) [`570e64ee`](https://github.com/marigold-ui/marigold/commit/570e64ee26bcf6b79a8f7f69a2d9621363056df0) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update eslint
+
+- [#2437](https://github.com/marigold-ui/marigold/pull/2437) [`23a78264`](https://github.com/marigold-ui/marigold/commit/23a78264cf713ebf439c264a45ff946fd58472de) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update testing (major)
+
 ## 0.3.4
 
 ### Patch Changes

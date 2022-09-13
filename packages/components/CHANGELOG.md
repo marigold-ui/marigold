@@ -1,5 +1,32 @@
 # @marigold/components
 
+## 2.2.0
+
+### Minor Changes
+
+- [#2411](https://github.com/marigold-ui/marigold/pull/2411) [`a4ccb92f`](https://github.com/marigold-ui/marigold/commit/a4ccb92f294129dce1dd050513044dbd7bd96e28) Thanks [@sebald](https://github.com/sebald)! - feat: `css` props supports array (again) + padding props for `<Card>`
+
+- [#2415](https://github.com/marigold-ui/marigold/pull/2415) [`d5116b5d`](https://github.com/marigold-ui/marigold/commit/d5116b5d452f337fd2873e1a514da1cd571dc72e) Thanks [@sebald](https://github.com/sebald)! - refa: Improve `<Container>` API and make it reponsive
+
+### Patch Changes
+
+- [#2313](https://github.com/marigold-ui/marigold/pull/2313) [`75128374`](https://github.com/marigold-ui/marigold/commit/75128374e5209a24bd2b0914c1d9455c02fcfc92) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @types/react to v18.0.19
+
+- [#2443](https://github.com/marigold-ui/marigold/pull/2443) [`fb76bbbe`](https://github.com/marigold-ui/marigold/commit/fb76bbbe5a7bdb2d124aac6c01be0db5434d589b) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: downgrade aria-focus version
+
+- [#2440](https://github.com/marigold-ui/marigold/pull/2440) [`515ea633`](https://github.com/marigold-ui/marigold/commit/515ea633312bf82a2f8446dd569d2765fcadaadd) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: use useLocalizedStringFormatter instead of depricated useMessage…
+
+- [#2437](https://github.com/marigold-ui/marigold/pull/2437) [`23a78264`](https://github.com/marigold-ui/marigold/commit/23a78264cf713ebf439c264a45ff946fd58472de) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update testing (major)
+
+- [#2412](https://github.com/marigold-ui/marigold/pull/2412) [`44723f1c`](https://github.com/marigold-ui/marigold/commit/44723f1c6123fcac429a485804b610108ce7b846) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: table scrollable
+
+- [#2438](https://github.com/marigold-ui/marigold/pull/2438) [`535f80da`](https://github.com/marigold-ui/marigold/commit/535f80daf738c60e92855310bb96ba6ca054c19b) Thanks [@sebald](https://github.com/sebald)! - fix: `Columns` work with complex and different children types
+
+- Updated dependencies [[`75128374`](https://github.com/marigold-ui/marigold/commit/75128374e5209a24bd2b0914c1d9455c02fcfc92), [`f76f4870`](https://github.com/marigold-ui/marigold/commit/f76f48703fc03f6ceae09ff5c0b8bd60ea811564), [`23a78264`](https://github.com/marigold-ui/marigold/commit/23a78264cf713ebf439c264a45ff946fd58472de), [`a4ccb92f`](https://github.com/marigold-ui/marigold/commit/a4ccb92f294129dce1dd050513044dbd7bd96e28)]:
+  - @marigold/types@0.5.3
+  - @marigold/system@2.2.0
+  - @marigold/icons@1.0.5
+
 ## 2.1.3
 
 ### Patch Changes
