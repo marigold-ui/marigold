@@ -281,7 +281,7 @@ importers:
       '@react-aria/button': 3.6.1
       '@react-aria/checkbox': 3.5.1
       '@react-aria/dialog': 3.3.1
-      '@react-aria/focus': 3.8.0
+      '@react-aria/focus': 3.7.0
       '@react-aria/i18n': 3.6.0
       '@react-aria/interactions': 3.11.0
       '@react-aria/link': 3.3.3
@@ -332,7 +332,7 @@ importers:
       '@react-aria/button': 3.6.1_react@18.2.0
       '@react-aria/checkbox': 3.5.1_react@18.2.0
       '@react-aria/dialog': 3.3.1_react@18.2.0
-      '@react-aria/focus': 3.8.0_react@18.2.0
+      '@react-aria/focus': 3.7.0_react@18.2.0
       '@react-aria/i18n': 3.6.0_react@18.2.0
       '@react-aria/interactions': 3.11.0_react@18.2.0
       '@react-aria/link': 3.3.3_react@18.2.0
@@ -3979,6 +3979,22 @@ packages:
       '@react-stately/overlays': 3.4.1_react@18.2.0
       '@react-types/dialog': 3.4.3_react@18.2.0
       '@react-types/shared': 3.14.1_react@18.2.0
+      react: 18.2.0
+    dev: false
+
+  /@react-aria/focus/3.7.0_react@18.2.0:
+    resolution:
+      {
+        integrity: sha512-LydZSLBLEUklakM0Ogdk17F3f/Uwaj5Nl1mfcK8HhrroGT8A8XH0KjA9D6gM6JGHgxZemx0ufOgxhQZeBGQMQw==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.19.0
+      '@react-aria/interactions': 3.11.0_react@18.2.0
+      '@react-aria/utils': 3.13.3_react@18.2.0
+      '@react-types/shared': 3.14.1_react@18.2.0
+      clsx: 1.2.1
       react: 18.2.0
     dev: false
 

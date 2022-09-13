@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import { useButton } from '@react-aria/button';
 import { FocusScope, useFocusRing } from '@react-aria/focus';
-import { useMessageFormatter } from '@react-aria/i18n';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { DismissButton, useOverlayPosition } from '@react-aria/overlays';
 import { HiddenSelect, useSelect } from '@react-aria/select';
 import { useSelectState } from '@react-stately/select';
@@ -84,7 +84,7 @@ export interface SelectProps
 export const Select = forwardRef<HTMLButtonElement, SelectProps>(
   ({ variant, size, width, open, disabled, required, error, ...rest }, ref) => {
     // Set up i18n
-    const formatMessage = useMessageFormatter(messages);
+    const formatMessage = useLocalizedStringFormatter(messages);
 
     const buttonRef = useObjectRef(ref);
     const props = {
@@ -92,7 +92,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       isDisabled: disabled,
       isRequired: required,
       validationState: error ? 'invalid' : 'valid',
-      placeholder: rest.placeholder || formatMessage('placeholder'),
+      placeholder: rest.placeholder || formatMessage.format('placeholder'),
       ...rest,
     } as const;
     const state = useSelectState(props);

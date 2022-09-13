@@ -1,7 +1,7 @@
 {
   "name": "@marigold/jest-config",
   "description": "Marigold's jest configuration",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "license": "MIT",
   "keywords": [
     "marigold",
