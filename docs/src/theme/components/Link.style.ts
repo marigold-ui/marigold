@@ -10,7 +10,7 @@ export const Link: Theme['components']['Link'] = {
     '&:focus': {
       outline: `2px solid ${colors.brand.secondary}`,
     },
-    '&[data-active]': {
+    '&:active': {
       pl: '8px',
       ml: '-10px',
       fontSize: 'fixed.small-3',
