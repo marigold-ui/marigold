@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import { SortDescriptor } from '@react-types/shared';
 import { Table } from '@marigold/components';
 
+export interface Data {
+  name: string;
+  height: string;
+  mass: string;
+  birth_year: string;
+}
+
 export const SortedTable = () => {
-  const data = [
+  const data: Data[] = [
     {
       name: 'Luke Skywalker',
       height: '172',
@@ -68,9 +75,9 @@ export const SortedTable = () => {
   const [list, setList] = useState(data);
   const [descriptor, setDescriptor] = useState<SortDescriptor>({});
   const sort = ({ column, direction }: SortDescriptor) => {
-    const result = list.sort((a: any, b: any) => {
-      const first = a[column!];
-      const second = b[column!];
+    const result = list.sort((a, b) => {
+      const first = a[column as keyof Data];
+      const second = b[column as keyof Data];
       let cmp =
         (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
       if (direction === 'descending') {
