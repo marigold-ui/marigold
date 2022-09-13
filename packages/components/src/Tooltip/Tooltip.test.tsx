@@ -4,7 +4,9 @@ import { ThemeProvider } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Tooltip } from './Tooltip';
+import userEvent from '@testing-library/user-event';
 
+const user = userEvent.setup();
 const theme = {
   fontSizes: {
     'small-1': '12px',
@@ -61,18 +63,20 @@ test('does not render tooltip by default', () => {
   expect(screen.queryByText('Look at this tooltip!')).toBeNull();
 });
 
-test('shows tooltip on focus', () => {
+test('shows tooltip on focus', async () => {
   render(
     <Tooltip.Trigger>
       <Button>Button!</Button>
-      <Tooltip>Look at this tooltip!</Tooltip>
+      <Tooltip data-testid="tooltip">Look at this tooltip!</Tooltip>
     </Tooltip.Trigger>
   );
 
   const button = screen.getByText('Button!');
   fireEvent.focus(button);
 
-  expect(screen.getByRole('tooltip')).toBeVisible();
+  waitFor(() => {
+    expect(screen.queryByTestId('tooltip')).toBeVisible();
+  });
 
   fireEvent.blur(button);
 
@@ -95,13 +99,11 @@ test('shows tooltip on hover', async () => {
   fireEvent.mouseEnter(button);
   fireEvent.mouseMove(button);
 
-  expect(screen.getByRole('tooltip')).toBeVisible();
+  waitFor(() => expect(screen.getByRole('tooltip')).toBeVisible());
 
   fireEvent.mouseLeave(button);
 
-  await waitFor(() =>
-    expect(screen.queryByText('Look at this tooltip!')).toBeNull()
-  );
+  waitFor(() => expect(screen.queryByText('Look at this tooltip!')).toBeNull());
 });
 
 test('can be disabled', () => {
@@ -128,7 +130,7 @@ test('can be opened programatically', () => {
   expect(screen.queryByText('Look at this tooltip!')).toBeVisible();
 });
 
-test('allows to change tooltip placement', () => {
+test('allows to change tooltip placement', async () => {
   // Note: There is no real way to test this without actually rendering the tooltip
   render(
     <Tooltip.Trigger placement="bottom">
@@ -137,10 +139,11 @@ test('allows to change tooltip placement', () => {
     </Tooltip.Trigger>
   );
 
-  const button = screen.getByText('Button!');
-  fireEvent.focus(button);
-
-  expect(screen.getByRole('tooltip')).toBeVisible();
+  user.tab();
+  const tooltip = screen.queryByRole(/tooltip/);
+  waitFor(() => {
+    expect(tooltip).toBeVisible();
+  });
 });
 
 test('styled via "Tooltip" from theme', () => {
@@ -190,5 +193,5 @@ test('sets placement as data attribute for styling', () => {
   );
 
   const tooltip = screen.getByRole('tooltip');
-  expect(tooltip).toHaveAttribute('data-placement', 'left');
+  waitFor(() => expect(tooltip).toHaveAttribute('data-placement', 'left'));
 });
