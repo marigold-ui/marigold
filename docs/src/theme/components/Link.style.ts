@@ -5,12 +5,12 @@ export const Link: Theme['components']['Link'] = {
   base: {
     position: 'relative',
     '&:hover': {
-      color: `brand.secondary`,
+      color: 'brand.secondary',
     },
     '&:focus': {
       outline: `2px solid ${colors.brand.secondary}`,
     },
-    '&:active': {
+    '&[data-active]': {
       pl: '8px',
       ml: '-10px',
       fontSize: 'fixed.small-3',
