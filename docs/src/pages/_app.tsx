@@ -3,7 +3,7 @@ import { MDXProvider } from '@mdx-js/react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
-import { MarigoldProvider, SSRProvider } from '@marigold/components';
+import { Badge, MarigoldProvider, SSRProvider } from '@marigold/components';
 import * as MarigoldComponents from '@marigold/components';
 import * as MarigoldIcons from '@marigold/icons';
 import unicornTheme from '@marigold/theme-unicorn';
@@ -64,6 +64,10 @@ const components = {
   ...MarigoldIcons,
 };
 
+const badgeNameToLowercase = (badge: string) => {
+  return badge.toLowerCase();
+};
+
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <SSRProvider>
@@ -75,6 +79,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
               <Title title={pageProps?.title} />
               {pageProps?.title && (
                 <Header>
+                  {pageProps?.badge && (
+                    <Badge variant={badgeNameToLowercase(pageProps.badge)}>
+                      {pageProps.badge}
+                    </Badge>
+                  )}
                   <GradientHeadline>{pageProps.title}</GradientHeadline>
                   {pageProps.caption && (
                     <Text variant="page-caption">{pageProps.caption}</Text>
