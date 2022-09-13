@@ -1,5 +1,5 @@
 import { Card, Inline, Table, Text } from '@marigold/components';
-import { BlankCanvas } from './BlankCanvas';
+import { BlankCanvas } from './Icons';
 
 export interface PropsTableProps {
   props?: { [key: string]: string }[];
