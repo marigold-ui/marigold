@@ -4,7 +4,9 @@ import { ThemeProvider } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Tooltip } from './Tooltip';
+import userEvent from '@testing-library/user-event';
 
+const user = userEvent.setup();
 const theme = {
   fontSizes: {
     'small-1': '12px',
@@ -65,21 +67,24 @@ test('shows tooltip on focus', () => {
   render(
     <Tooltip.Trigger>
       <Button>Button!</Button>
-      <Tooltip>Look at this tooltip!</Tooltip>
+      <Tooltip data-testid="tooltip">Look at this tooltip!</Tooltip>
     </Tooltip.Trigger>
   );
 
   const button = screen.getByText('Button!');
   fireEvent.focus(button);
 
-  expect(screen.getByRole('tooltip')).toBeVisible();
+  // eslint-disable-next-line testing-library/await-async-utils
+  waitFor(() => {
+    expect(screen.queryByTestId('tooltip')).toBeVisible();
+  });
 
   fireEvent.blur(button);
 
   expect(screen.queryByText('Look at this tooltip!')).toBeNull();
 });
 
-test('shows tooltip on hover', async () => {
+test('shows tooltip on hover', () => {
   render(
     <Tooltip.Trigger delay={0}>
       <Button>Button!</Button>
@@ -94,14 +99,12 @@ test('shows tooltip on hover', async () => {
 
   fireEvent.mouseEnter(button);
   fireEvent.mouseMove(button);
-
-  expect(screen.getByRole('tooltip')).toBeVisible();
+  // eslint-disable-next-line testing-library/await-async-utils
+  waitFor(() => expect(screen.getByRole('tooltip')).toBeVisible());
 
   fireEvent.mouseLeave(button);
-
-  await waitFor(() =>
-    expect(screen.queryByText('Look at this tooltip!')).toBeNull()
-  );
+  // eslint-disable-next-line testing-library/await-async-utils
+  waitFor(() => expect(screen.queryByText('Look at this tooltip!')).toBeNull());
 });
 
 test('can be disabled', () => {
@@ -137,10 +140,12 @@ test('allows to change tooltip placement', () => {
     </Tooltip.Trigger>
   );
 
-  const button = screen.getByText('Button!');
-  fireEvent.focus(button);
-
-  expect(screen.getByRole('tooltip')).toBeVisible();
+  user.tab();
+  const tooltip = screen.queryByRole(/tooltip/);
+  // eslint-disable-next-line testing-library/await-async-utils
+  waitFor(() => {
+    expect(tooltip).toBeVisible();
+  });
 });
 
 test('styled via "Tooltip" from theme', () => {
@@ -190,5 +195,6 @@ test('sets placement as data attribute for styling', () => {
   );
 
   const tooltip = screen.getByRole('tooltip');
-  expect(tooltip).toHaveAttribute('data-placement', 'left');
+  // eslint-disable-next-line testing-library/await-async-utils
+  waitFor(() => expect(tooltip).toHaveAttribute('data-placement', 'left'));
 });
