@@ -16,33 +16,33 @@ export const Badge: Theme['components']['Badge'] = {
   },
   variant: {
     new: {
-      color: 'white',
+      color: 'text.regular',
       borderColor: 'green.50',
       bg: 'green.50',
     },
     updated: {
-      color: 'white',
+      color: 'text.regular',
       borderColor: 'blue.50',
       bg: 'blue.50',
     },
     beta: {
-      color: 'white',
+      color: 'text.regular',
       borderColor: 'yellow.50',
       bg: 'yellow.50',
     },
     deprecated: {
-      color: 'white',
+      color: 'text.regular',
       borderColor: 'red.50',
       bg: 'red.50',
     },
   },
   size: {
     small: {
-      width: '1rem',
-      height: '1rem',
+      fontSize: '12px',
       mb: 0,
       py: 0,
-      px: 0,
+      px: 4,
+      ml: 16,
     },
   },
 };

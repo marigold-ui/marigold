@@ -109,7 +109,9 @@ const NavigationItem = ({
         {title}
       </Link>
       {badge && (
-        <Badge variant={badgeNameToLowerCase(badge)} size="small"></Badge>
+        <Badge variant={badgeNameToLowerCase(badge)} size="small">
+          {badge}
+        </Badge>
       )}
     </Box>
   );
