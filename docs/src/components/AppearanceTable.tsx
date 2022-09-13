@@ -9,11 +9,11 @@ import {
 import { BlankCanvas } from './Icons';
 import { useThemeSwitch } from './ThemeSwitch';
 
-export interface ApperanceTableProps {
+export interface AppearanceTableProps {
   component: keyof Theme['components'];
 }
 
-export const ApperanceTable = ({ component }: ApperanceTableProps) => {
+export const AppearanceTable = ({ component }: AppearanceTableProps) => {
   const { current, themes } = useThemeSwitch();
 
   if (!current) {
@@ -31,11 +31,11 @@ export const ApperanceTable = ({ component }: ApperanceTableProps) => {
           <Inline>
             <BlankCanvas />
             <Text variant="content">
-              Sorry! There are currently no variants and sizes availible.
+              Sorry! There are currently no variants and sizes available.
             </Text>
           </Inline>
         ) : (
-          <Table aria-labelledby="apperance table" variant="propsTable">
+          <Table aria-labelledby="appearance table" variant="propsTable">
             <Table.Header>
               <Table.Column key={'property'}>Property</Table.Column>
               <Table.Column key={'type'}>Type</Table.Column>
@@ -51,7 +51,7 @@ export const ApperanceTable = ({ component }: ApperanceTableProps) => {
                   <code>{variants ? variants.join(' | ') : '-'}</code>
                 </Table.Cell>
                 <Table.Cell>
-                  The availible variants of this component
+                  The available variants of this component.
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
@@ -61,7 +61,7 @@ export const ApperanceTable = ({ component }: ApperanceTableProps) => {
                 <Table.Cell>
                   <code>{sizes ? sizes.join(' | ') : '-'}</code>
                 </Table.Cell>
-                <Table.Cell>The availible sizes of this component</Table.Cell>
+                <Table.Cell>The available sizes of this component.</Table.Cell>
               </Table.Row>
             </Table.Body>
           </Table>
