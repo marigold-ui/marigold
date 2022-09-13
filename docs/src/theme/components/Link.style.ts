@@ -21,7 +21,7 @@ export const Link: Theme['components']['Link'] = {
   variant: {
     navigation: {
       '&:hover': {
-        color: 'brand.text',
+        color: 'text.regular',
         fontWeight: 'medium',
         transform: 'scale(1.1)',
       },
