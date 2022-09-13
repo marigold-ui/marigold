@@ -63,7 +63,7 @@ test('does not render tooltip by default', () => {
   expect(screen.queryByText('Look at this tooltip!')).toBeNull();
 });
 
-test('shows tooltip on focus', async () => {
+test('shows tooltip on focus', () => {
   render(
     <Tooltip.Trigger>
       <Button>Button!</Button>
@@ -74,6 +74,7 @@ test('shows tooltip on focus', async () => {
   const button = screen.getByText('Button!');
   fireEvent.focus(button);
 
+  // eslint-disable-next-line testing-library/await-async-utils
   waitFor(() => {
     expect(screen.queryByTestId('tooltip')).toBeVisible();
   });
@@ -83,7 +84,7 @@ test('shows tooltip on focus', async () => {
   expect(screen.queryByText('Look at this tooltip!')).toBeNull();
 });
 
-test('shows tooltip on hover', async () => {
+test('shows tooltip on hover', () => {
   render(
     <Tooltip.Trigger delay={0}>
       <Button>Button!</Button>
@@ -98,11 +99,11 @@ test('shows tooltip on hover', async () => {
 
   fireEvent.mouseEnter(button);
   fireEvent.mouseMove(button);
-
+  // eslint-disable-next-line testing-library/await-async-utils
   waitFor(() => expect(screen.getByRole('tooltip')).toBeVisible());
 
   fireEvent.mouseLeave(button);
-
+  // eslint-disable-next-line testing-library/await-async-utils
   waitFor(() => expect(screen.queryByText('Look at this tooltip!')).toBeNull());
 });
 
@@ -130,7 +131,7 @@ test('can be opened programatically', () => {
   expect(screen.queryByText('Look at this tooltip!')).toBeVisible();
 });
 
-test('allows to change tooltip placement', async () => {
+test('allows to change tooltip placement', () => {
   // Note: There is no real way to test this without actually rendering the tooltip
   render(
     <Tooltip.Trigger placement="bottom">
@@ -141,6 +142,7 @@ test('allows to change tooltip placement', async () => {
 
   user.tab();
   const tooltip = screen.queryByRole(/tooltip/);
+  // eslint-disable-next-line testing-library/await-async-utils
   waitFor(() => {
     expect(tooltip).toBeVisible();
   });
@@ -193,5 +195,6 @@ test('sets placement as data attribute for styling', () => {
   );
 
   const tooltip = screen.getByRole('tooltip');
+  // eslint-disable-next-line testing-library/await-async-utils
   waitFor(() => expect(tooltip).toHaveAttribute('data-placement', 'left'));
 });
