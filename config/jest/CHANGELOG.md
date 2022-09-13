@@ -1,5 +1,13 @@
 # @marigold/jest-config
 
+## 1.0.5
+
+### Patch Changes
+
+- [#2423](https://github.com/marigold-ui/marigold/pull/2423) [`7b46298f`](https://github.com/marigold-ui/marigold/commit/7b46298f0461fa07947768fe6caba0f9645a9ea9) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency typescript to v4.8.3
+
+- [#2437](https://github.com/marigold-ui/marigold/pull/2437) [`23a78264`](https://github.com/marigold-ui/marigold/commit/23a78264cf713ebf439c264a45ff946fd58472de) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update testing (major)
+
 ## 1.0.4
 
 ### Patch Changes
