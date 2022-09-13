@@ -1,4 +1,4 @@
-export * from './ApperanceTable';
+export * from './AppearanceTable';
 export * from './BlankCanvas';
 export * from './CopyButton';
 export * from './FigmaLink';
