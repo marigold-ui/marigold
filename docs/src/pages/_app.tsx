@@ -90,7 +90,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
               )}
               <Box css={{ display: 'flex', gap: 'large-2' }}>
                 <Container contentType="content" size="large">
-                  <Inline>
+                  <Box as={Inline} mb={'small-1'}>
                     {pageProps?.switchTheme && <ThemeSelect />}
                     <Split />
                     {(pageProps?.figma ||
@@ -104,7 +104,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                         edit={pageProps?.edit ? pageProps?.edit : undefined}
                       />
                     )}
-                  </Inline>
+                  </Box>
                   <Component {...pageProps} />
                 </Container>
                 <TocContainer />

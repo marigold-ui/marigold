@@ -10,8 +10,6 @@ interface IconLinksListProps {
 }
 
 export const IconLinksList = ({ figma, github, edit }: IconLinksListProps) => {
-  console.log(figma, github, edit);
-
   return (
     <Inline space="medium-1">
       {figma && (
