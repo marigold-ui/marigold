@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 
 import { Box, Headline, Link, List } from '@marigold/components';
 import React from 'react';
-import { useStateProps } from '@marigold/system';
 import { useComponentStyles } from '@marigold/system';
 
 export interface TocProps {
