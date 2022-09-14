@@ -39,25 +39,32 @@ export default {
   },
 } as Meta;
 
-export const Basic: ComponentStory<typeof Breakout> = args => (
-  <Container size="large" align="center">
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="100%" />
-    <Box
-      as={Breakout}
-      border="1px solid #ced4da"
-      bg="#e9ecef"
-      height="100px"
-      {...args}
-    >
-      BREAKOUT
-    </Box>
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="100%" />
-  </Container>
-);
-
+export const Basic: ComponentStory<typeof Breakout> = args => {
+  return (
+    <Container size="large" align="center">
+      <Box
+        border="1px solid #ced4da"
+        bg="#e9ecef"
+        height="100px"
+        width="100%"
+      />
+      <Breakout>
+        <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" {...args}>
+          BREAKOUT
+        </Box>
+      </Breakout>
+      <Box
+        border="1px solid #ced4da"
+        bg="#e9ecef"
+        height="100px"
+        width="100%"
+      />
+    </Container>
+  );
+};
 export const ExampleText: ComponentStory<typeof Breakout> = args => (
   <Container size="large" align="center">
-    <Box as={Text} p="small">
+    <Text>
       Lorem Ipsum is simply dummy text of the printing and typesetting industry.
       Lorem Ipsum has been the industry's standard dummy text ever since the
       1500s, when an unknown printer took a galley of type and scrambled it to
@@ -67,17 +74,13 @@ export const ExampleText: ComponentStory<typeof Breakout> = args => (
       sheets containing Lorem Ipsum passages, and more recently with desktop
       publishing software like Aldus PageMaker including versions of Lorem
       Ipsum.
-    </Box>
-    <Box
-      as={Breakout}
-      border="1px solid #ced4da"
-      bg="#e9ecef"
-      height="100px"
-      {...args}
-    >
-      BREAKOUT element inside a container
-    </Box>
-    <Box as={Text} p="small">
+    </Text>
+    <Breakout>
+      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" {...args}>
+        BREAKOUT element inside a container
+      </Box>
+    </Breakout>
+    <Text>
       Lorem Ipsum is simply dummy text of the printing and typesetting industry.
       Lorem Ipsum has been the industry's standard dummy text ever since the
       1500s, when an unknown printer took a galley of type and scrambled it to
@@ -87,18 +90,18 @@ export const ExampleText: ComponentStory<typeof Breakout> = args => (
       sheets containing Lorem Ipsum passages, and more recently with desktop
       publishing software like Aldus PageMaker including versions of Lorem
       Ipsum.
-    </Box>
+    </Text>
   </Container>
 );
 
 export const ExampleFrame: ComponentStory<typeof Breakout> = args => (
   <Container align="center">
-    <Box as={Text} pb="medium">
+    <Text>
       Lorem Ipsum is simply dummy text of the printing and typesetting industry.
       Lorem Ipsum has been the industry's standard dummy text ever since the
       1500s, when an unknown printer took a galley of type and scrambled it to
       make a type specimen book.
-    </Box>
+    </Text>
     <Breakout>
       <Aspect ratio="ultrawide">
         <Image
@@ -107,12 +110,12 @@ export const ExampleFrame: ComponentStory<typeof Breakout> = args => (
         />
       </Aspect>
     </Breakout>
-    <Box as={Text} pt="medium">
+    <Text>
       It has survived not only five centuries, but also the leap into electronic
       typesetting, remaining essentially unchanged. It was popularised in the
       1960s with the release of Letraset sheets containing Lorem Ipsum passages,
       and more recently with desktop publishing software like Aldus PageMaker
       including versions of Lorem Ipsum.
-    </Box>
+    </Text>
   </Container>
 );

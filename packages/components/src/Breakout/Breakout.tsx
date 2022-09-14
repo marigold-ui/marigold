@@ -35,7 +35,7 @@ export const Breakout = ({
       justifyContent={justifyContent}
       width="100%"
       display={verticalAlign || horizontalAlign ? 'flex' : 'block'}
-      css={{
+      __baseCSS={{
         gridColumn: '1 / -1',
       }}
       {...props}
