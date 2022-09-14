@@ -3,7 +3,7 @@ import { Box, Columns, Stack, Text, Tiles } from '@marigold/components';
 import { Rectangle, Squirecle } from '~/components';
 
 const Annotation = ({ children }: { children: ReactNode }) => (
-  <Text fontFamily="heading" align="center" m="none">
+  <Text variant="caption" align="center" m="none">
     {children}
   </Text>
 );
