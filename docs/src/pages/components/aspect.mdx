@@ -3,15 +3,26 @@ title: Aspect
 group: Layout
 github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Aspect/Aspect.tsx
 edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/aspect.mdx
+caption: Component to set responsive images, videos, maps
 ---
 
 The Aspect component is used to embed responsive images, videos, maps, etc. You can use a predefined ratio and maximum width.
 
 <Preview>
-  <BasicAside />
+  <BasicAspect />
 </Preview>
 
-## Props
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Aspect } from '@marigold/components';
+```
+
+### Props
 
 <PropsTable
   props={[
@@ -34,17 +45,31 @@ The Aspect component is used to embed responsive images, videos, maps, etc. You 
 
 ### Ratio Square and maximum width
 
+The example shows how the `ratio` and the `maxWidth` props with a image component inside is to use. The `ratio` has his default value `square`.
+
 ```tsx preview file=components/Aspect/ratio-square.demo.tsx
 
 ```
 
+### Ratio Widescreen
+
+An Example too show the `ratio` prop with the type `widescreen`.
+
+```tsx preview file=components/Aspect/widescreen-aspect.demo.tsx
+
+```
+
 ### Map
+
+This Example use a Iframe inside the Aspect Component. The `ratio` prop has the `landscape` type.
 
 ```tsx preview file=components/Aspect/map.demo.tsx
 
 ```
 
 ### Video
+
+Another Iframe example for a Video insider the Aspect Component. The `ratio` prop has the `widescreen` type.
 
 ```tsx preview file=components/Aspect/video.demo.tsx
 
