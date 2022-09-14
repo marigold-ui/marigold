@@ -2,6 +2,8 @@
 title: Dialog
 group: Overlay
 figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=845%3A1095
+github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Dialog/Dialog.tsx
+edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/dialog.mdx
 switchTheme: true
 ---
 
@@ -16,22 +18,16 @@ You can also add a title via title prop.
 import { Dialog } from '@marigold/components';
 ```
 
-## Props
+## Usage
 
-### Dialog
+### Apperance
+
+<AppearanceTable component={title} />
+
+### Props
 
 <PropsTable
   props={[
-    {
-      property: 'variant',
-      type: 'ResponsiveStyleValue<string>',
-      description: 'Variant of the component',
-    },
-    {
-      property: 'size',
-      type: 'ResponsiveStyleValue<string>',
-      description: 'Size of the component',
-    },
     {
       property: 'closeButton',
       type: 'boolean',

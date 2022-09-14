@@ -17,10 +17,17 @@ import * as DemoComponents from '~/demos';
 import { Layout, MarigoldThemeSwitch } from '~/components';
 import { theme } from '~/theme';
 
-import { Aside, Box, Container, Header, Text } from '@marigold/components';
+import {
+  Box,
+  Container,
+  Header,
+  Inline,
+  Split,
+  Text,
+} from '@marigold/components';
 
 import {
-  FigmaLink,
+  IconLinksList,
   GradientHeadline,
   ThemeSelect,
   Title,
@@ -79,21 +86,29 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                   {pageProps.caption && (
                     <Text variant="page-caption">{pageProps.caption}</Text>
                   )}
-                  {pageProps?.switchTheme && <ThemeSelect />}
                 </Header>
               )}
-              <Aside side="right" space="large-2">
-                <Box
-                  as={Container}
-                  contentType="content"
-                  size="large"
-                  css={{ display: 'block' }}
-                >
-                  {pageProps?.figma && <FigmaLink href={pageProps.figma} />}
+              <Box css={{ display: 'flex', gap: 'large-2' }}>
+                <Container contentType="content" size="large">
+                  <Box as={Inline} mb={'small-1'}>
+                    {pageProps?.switchTheme && <ThemeSelect />}
+                    <Split />
+                    {(pageProps?.figma ||
+                      pageProps?.github ||
+                      pageProps?.edit) && (
+                      <IconLinksList
+                        figma={pageProps?.figma ? pageProps?.figma : undefined}
+                        github={
+                          pageProps?.github ? pageProps?.github : undefined
+                        }
+                        edit={pageProps?.edit ? pageProps?.edit : undefined}
+                      />
+                    )}
+                  </Box>
                   <Component {...pageProps} />
-                </Box>
+                </Container>
                 <TocContainer />
-              </Aside>
+              </Box>
               <ScrollToTop />
             </Layout>
           </MDXProvider>

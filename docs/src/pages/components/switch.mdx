@@ -2,6 +2,8 @@
 title: Switch
 group: Forms
 figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=2458%3A2254
+github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Switch/Switch.tsx
+edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/switch.mdx
 switchTheme: true
 ---
 
@@ -16,16 +18,16 @@ It consists of a visual selection indicator and a label. Users may click or touc
 import { Switch } from '@marigold/components';
 ```
 
-## Props
+## Usage
+
+### Apperance
+
+<AppearanceTable component={title} />
+
+### Props
 
 <PropsTable
   props={[
-    {
-      property: 'variant',
-      type: 'string',
-      description: '',
-      default: '',
-    },
     {
       property: 'disabled',
       type: 'boolean',
@@ -39,18 +41,13 @@ import { Switch } from '@marigold/components';
       default: 'false',
     },
     {
-      property: 'size',
-      type: 'string',
-      description: '',
-      default: '',
-    },
-    {
       property: 'width',
       type: 'string',
       description: 'Control the width of the field.',
       default: '100%',
     },
-  ]}
+
+]}
 />
 
 ## Examples

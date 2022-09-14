@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-b2b",
-  "version": "12.0.3",
+  "version": "13.0.0",
   "description": "Marigold B2B Theme",
   "license": "MIT",
   "keywords": [
@@ -27,7 +27,7 @@
   "devDependencies": {
     "@marigold/components": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
-    "tsup": "6.2.2"
+    "tsup": "6.2.3"
   },
   "scripts": {
     "build": "tsup src/index.ts",

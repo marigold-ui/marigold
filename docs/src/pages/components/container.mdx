@@ -1,6 +1,8 @@
 ---
 title: Container
 group: Layout
+github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Container/Container.tsx
+edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/container.mdx
 ---
 
 Containers width is based on used font and is optimized for readability. You can use `header` or `content` as content type and set the `size` prop to `small`, `medium` or `large`.
@@ -27,15 +29,15 @@ Containers width is based on used font and is optimized for readability. You can
     },
     {
       property: 'align',
-      description: '',
+      description: 'set alignment the content inside the container',
       type: '"left", "center", "right"',
       default: '"left"',
     },
     {
-      property: 'alignContainer',
-      description: '',
-      type: '"left", "center", "right"',
-      default: '"left"',
+      property: 'alignItems',
+      description: 'set alignment of the items inside the container',
+      type: '"left", "center", "right", "none"',
+      default: '"none"',
     },
   ]}
 />

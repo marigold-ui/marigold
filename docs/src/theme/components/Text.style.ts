@@ -22,5 +22,8 @@ export const Text: Theme['components']['Text'] = {
       fontFamily: 'headline',
       color: 'brand.secondary',
     },
+    content: {
+      mb: 'none',
+    },
   },
 };

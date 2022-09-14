@@ -1,5 +1,11 @@
 # @marigold/types
 
+## 0.5.3
+
+### Patch Changes
+
+- [#2313](https://github.com/marigold-ui/marigold/pull/2313) [`75128374`](https://github.com/marigold-ui/marigold/commit/75128374e5209a24bd2b0914c1d9455c02fcfc92) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @types/react to v18.0.19
+
 ## 0.5.2
 
 ### Patch Changes

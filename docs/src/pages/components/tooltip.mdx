@@ -1,6 +1,8 @@
 ---
 title: Tooltip
 figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=2461%3A2378
+github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Tooltip/Tooltip.tsx
+edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/tooltip.mdx
 group: Overlay
 ---
 
@@ -19,24 +21,18 @@ The `Tooltip` components allows to provide additional information to that user.
 import { Tooltip } from '@marigold/components';
 ```
 
-## Props
+## Usage
 
 ### TooltipTrigger
 
+### Apperance
+
+<AppearanceTable component={title} />
+
+### Props
+
 <PropsTable
   props={[
-    {
-      property: 'variant',
-      type: 'string',
-      description: '',
-      default: '',
-    },
-    {
-      property: 'size',
-      type: 'string',
-      description: '',
-      default: '',
-    },
     {
       property: 'disabled',
       type: 'boolean',
@@ -62,7 +58,7 @@ import { Tooltip } from '@marigold/components';
       default: '',
     },
     {
-      property: 'trogger',
+      property: 'trigger',
       type: 'focus',
       description: '',
       default: 'undefined',

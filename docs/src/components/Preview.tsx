@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Box, MarigoldProvider } from '@marigold/components';
+import { Box, Card, MarigoldProvider } from '@marigold/components';
 import { useThemeSwitch } from './ThemeSwitch';
 import { useComponentStyles } from '@marigold/system';
 
@@ -14,25 +14,25 @@ export const Preview = ({ children }: Preview) => {
   const styles = useComponentStyles('Preview');
   return (
     <Box css={styles}>
-      <MarigoldProvider
-        theme={theme}
-        normalizeDocument
-        selector="[data-preview]"
-      >
-        <Box
-          css={{
-            ...theme.root?.body,
-            width: '100%',
-            p: 20,
-            borderRadius: 10,
-            border: '1px solid',
-            borderColor: 'hsla(28, 100%, 3%, 0.1)',
-          }}
-          data-preview
+      <Card>
+        <MarigoldProvider
+          theme={theme}
+          normalizeDocument
+          selector="[data-preview]"
         >
-          {children}
-        </Box>
-      </MarigoldProvider>
+          <Box
+            css={{
+              ...theme.root?.body,
+              width: '100%',
+              borderRadius: '1rem',
+              p: 20,
+            }}
+            data-preview
+          >
+            {children}
+          </Box>
+        </MarigoldProvider>
+      </Card>
     </Box>
   );
 };

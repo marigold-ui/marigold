@@ -10,7 +10,7 @@ const toDimension = (value: number | string | number[] | string[]) =>
     ? value.map(ensureNumberOrToken)
     : ensureNumberOrToken(value);
 const ensureNumberOrToken = (value: number | string) =>
-  typeof value === 'string' && /[0-9]+/.test(value) ? Number(value) : value;
+  typeof value === 'string' && /^[0-9]+$/.test(value) ? Number(value) : value;
 
 export interface SVGProps extends ComponentProps<'svg'> {
   size?: number | string | number[] | string[];
@@ -20,7 +20,6 @@ export interface SVGProps extends ComponentProps<'svg'> {
 export const SVG = forwardRef<SVGElement, SVGProps>(
   ({ size = 24, fill, children, css: styles, ...props }, ref) => {
     const { css } = useTheme();
-
     return jsx(
       'svg',
       {

@@ -1,5 +1,17 @@
 # @marigold/storybook-config
 
+## 0.7.7
+
+### Patch Changes
+
+- [#2423](https://github.com/marigold-ui/marigold/pull/2423) [`7b46298f`](https://github.com/marigold-ui/marigold/commit/7b46298f0461fa07947768fe6caba0f9645a9ea9) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency typescript to v4.8.3
+
+- Updated dependencies [[`75128374`](https://github.com/marigold-ui/marigold/commit/75128374e5209a24bd2b0914c1d9455c02fcfc92), [`fb76bbbe`](https://github.com/marigold-ui/marigold/commit/fb76bbbe5a7bdb2d124aac6c01be0db5434d589b), [`515ea633`](https://github.com/marigold-ui/marigold/commit/515ea633312bf82a2f8446dd569d2765fcadaadd), [`23a78264`](https://github.com/marigold-ui/marigold/commit/23a78264cf713ebf439c264a45ff946fd58472de), [`44723f1c`](https://github.com/marigold-ui/marigold/commit/44723f1c6123fcac429a485804b610108ce7b846), [`a4ccb92f`](https://github.com/marigold-ui/marigold/commit/a4ccb92f294129dce1dd050513044dbd7bd96e28), [`d5116b5d`](https://github.com/marigold-ui/marigold/commit/d5116b5d452f337fd2873e1a514da1cd571dc72e), [`535f80da`](https://github.com/marigold-ui/marigold/commit/535f80daf738c60e92855310bb96ba6ca054c19b)]:
+  - @marigold/components@2.2.0
+  - @marigold/theme-b2b@13.0.0
+  - @marigold/theme-core@13.0.0
+  - @marigold/theme-unicorn@10.0.0
+
 ## 0.7.6
 
 ### Patch Changes

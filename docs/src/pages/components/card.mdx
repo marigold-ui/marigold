@@ -2,6 +2,8 @@
 title: Card
 group: Content
 figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=3547%3A4992
+github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Card/Card.tsx
+edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/card.mdx
 switchTheme: true
 ---
 
@@ -15,19 +17,57 @@ The card component can be used for organizing information inside the UI, as well
 import { Card } from '@marigold/components';
 ```
 
-## Props
+## Usage
+
+### Apperance
+
+<AppearanceTable component={title} />
+
+### Props
 
 <PropsTable
   props={[
     {
-      property: 'variant',
-      type: 'ResponsiveStyleValue<string>',
-      description: 'Variant of the component',
+      property: 'p',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: 'none',
     },
     {
-      property: 'size',
-      type: 'ResponsiveStyleValue<string>',
-      description: 'Size of the component',
+      property: 'px',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'py',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'pt',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'pr',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'pl',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
+    },
+    {
+      property: 'pb',
+      type: 'ResponsiveStyleValue<number⎮string>',
+      description: '',
+      default: '',
     },
   ]}
 />

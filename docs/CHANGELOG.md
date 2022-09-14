@@ -1,5 +1,30 @@
 # @marigold/docs
 
+## 2.2.0
+
+### Minor Changes
+
+- [#2415](https://github.com/marigold-ui/marigold/pull/2415) [`d5116b5d`](https://github.com/marigold-ui/marigold/commit/d5116b5d452f337fd2873e1a514da1cd571dc72e) Thanks [@sebald](https://github.com/sebald)! - refa: Improve `<Container>` API and make it reponsive
+
+### Patch Changes
+
+- [#2313](https://github.com/marigold-ui/marigold/pull/2313) [`75128374`](https://github.com/marigold-ui/marigold/commit/75128374e5209a24bd2b0914c1d9455c02fcfc92) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @types/react to v18.0.19
+
+- [#2423](https://github.com/marigold-ui/marigold/pull/2423) [`7b46298f`](https://github.com/marigold-ui/marigold/commit/7b46298f0461fa07947768fe6caba0f9645a9ea9) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency typescript to v4.8.3
+
+- [#2412](https://github.com/marigold-ui/marigold/pull/2412) [`44723f1c`](https://github.com/marigold-ui/marigold/commit/44723f1c6123fcac429a485804b610108ce7b846) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: table scrollable
+
+- [#2406](https://github.com/marigold-ui/marigold/pull/2406) [`32fb8417`](https://github.com/marigold-ui/marigold/commit/32fb8417c411166fece7d779b226ae5c536ea5f7) Thanks [@sebald](https://github.com/sebald)! - feat: eslint-config can handle import assertions
+
+- [#2411](https://github.com/marigold-ui/marigold/pull/2411) [`a4ccb92f`](https://github.com/marigold-ui/marigold/commit/a4ccb92f294129dce1dd050513044dbd7bd96e28) Thanks [@sebald](https://github.com/sebald)! - feat: `css` props supports array (again) + padding props for `<Card>`
+
+- Updated dependencies [[`75128374`](https://github.com/marigold-ui/marigold/commit/75128374e5209a24bd2b0914c1d9455c02fcfc92), [`fb76bbbe`](https://github.com/marigold-ui/marigold/commit/fb76bbbe5a7bdb2d124aac6c01be0db5434d589b), [`515ea633`](https://github.com/marigold-ui/marigold/commit/515ea633312bf82a2f8446dd569d2765fcadaadd), [`f76f4870`](https://github.com/marigold-ui/marigold/commit/f76f48703fc03f6ceae09ff5c0b8bd60ea811564), [`23a78264`](https://github.com/marigold-ui/marigold/commit/23a78264cf713ebf439c264a45ff946fd58472de), [`44723f1c`](https://github.com/marigold-ui/marigold/commit/44723f1c6123fcac429a485804b610108ce7b846), [`a4ccb92f`](https://github.com/marigold-ui/marigold/commit/a4ccb92f294129dce1dd050513044dbd7bd96e28), [`d5116b5d`](https://github.com/marigold-ui/marigold/commit/d5116b5d452f337fd2873e1a514da1cd571dc72e), [`535f80da`](https://github.com/marigold-ui/marigold/commit/535f80daf738c60e92855310bb96ba6ca054c19b)]:
+  - @marigold/components@2.2.0
+  - @marigold/types@0.5.3
+  - @marigold/system@2.2.0
+  - @marigold/theme-b2b@13.0.0
+  - @marigold/icons@1.0.5
+
 ## 2.1.3
 
 ### Patch Changes
