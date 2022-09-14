@@ -1,7 +1,6 @@
-import { MDXProvider } from '@mdx-js/react';
-
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import { MDXProvider } from '@mdx-js/react';
 
 import { MarigoldProvider, SSRProvider } from '@marigold/components';
 import * as MarigoldComponents from '@marigold/components';
@@ -71,7 +70,16 @@ const components = {
   ...MarigoldIcons,
 };
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+export interface PageProps {
+  title?: string;
+  caption?: string;
+  switchTheme?: boolean;
+  figma?: string;
+  github?: string;
+  edit?: string;
+}
+
+const MyApp = ({ Component, pageProps }: AppProps<PageProps>) => {
   return (
     <SSRProvider>
       <MarigoldProvider theme={theme}>
