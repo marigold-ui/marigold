@@ -5,8 +5,8 @@ import { Box } from '../Box';
 
 export interface BreakoutProps extends ComponentProps<'div'> {
   children?: ReactNode;
-  horizontalAlign?: 'top' | 'bottom' | 'center';
-  verticalAlign?: 'left' | 'right' | 'center';
+  verticalAlign?: 'top' | 'bottom' | 'center';
+  horizontalAlign?: 'left' | 'right' | 'center';
 }
 
 const useAlignment = (direction?: string) => {
@@ -27,8 +27,14 @@ export const Breakout = ({
   children,
   ...props
 }: BreakoutProps) => {
-  const alignItems = useAlignment(horizontalAlign);
-  const justifyContent = useAlignment(verticalAlign);
+  const alignItems = useAlignment(verticalAlign);
+  const justifyContent = useAlignment(horizontalAlign);
+
+  console.log('Vertical align', verticalAlign);
+  console.log('Justify', justifyContent);
+
+  console.log('Horiziontal align', verticalAlign);
+  console.log('alignItems', alignItems);
   return (
     <Box
       alignItems={alignItems}
@@ -36,7 +42,7 @@ export const Breakout = ({
       width="100%"
       display={verticalAlign || horizontalAlign ? 'flex' : 'block'}
       __baseCSS={{
-        gridColumn: '1 / -1',
+        gridColumn: '1 / -1 !important',
       }}
       {...props}
     >

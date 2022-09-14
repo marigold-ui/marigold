@@ -12,24 +12,24 @@ import { Breakout } from './Breakout';
 export default {
   title: 'Components/Breakout',
   argTypes: {
-    horizontalAlign: {
+    verticalAlign: {
       control: {
         type: 'select',
       },
       options: ['top', 'center', 'bottom'],
-      description: 'horizontal alignment',
+      description: 'vertical alignment',
       table: {
         defaultValue: {
           summary: 'center',
         },
       },
     },
-    verticalAlign: {
+    horizontalAlign: {
       control: {
         type: 'select',
       },
       options: ['left', 'center', 'right'],
-      description: 'vertical alignment',
+      description: 'horizontal alignment',
       table: {
         defaultValue: {
           summary: 'center',
@@ -41,23 +41,25 @@ export default {
 
 export const Basic: ComponentStory<typeof Breakout> = args => {
   return (
-    <Container size="large" align="center">
+    <Container align="center">
       <Box
-        border="1px solid #ced4da"
-        bg="#e9ecef"
-        height="100px"
-        width="100%"
+        css={{
+          border: '1px solid #ced4da',
+          bg: '#e9ecef',
+          height: '80px',
+          width: '100%',
+        }}
       />
       <Breakout>
-        <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" {...args}>
-          BREAKOUT
-        </Box>
+        <Text bg="green">Breakout</Text>
       </Breakout>
       <Box
-        border="1px solid #ced4da"
-        bg="#e9ecef"
-        height="100px"
-        width="100%"
+        css={{
+          border: '1px solid #ced4da',
+          bg: '#e9ecef',
+          height: '80px',
+          width: '100%',
+        }}
       />
     </Container>
   );
@@ -76,7 +78,13 @@ export const ExampleText: ComponentStory<typeof Breakout> = args => (
       Ipsum.
     </Text>
     <Breakout>
-      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" {...args}>
+      <Box
+        border="1px solid #ced4da"
+        bg="#e9ecef"
+        height="100px"
+        width="100%"
+        {...args}
+      >
         BREAKOUT element inside a container
       </Box>
     </Breakout>
