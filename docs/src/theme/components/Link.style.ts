@@ -1,4 +1,5 @@
 import { Theme } from '@marigold/components';
+import { colors } from '../colors';
 
 export const Link: Theme['components']['Link'] = {
   base: {
@@ -7,13 +8,20 @@ export const Link: Theme['components']['Link'] = {
       color: 'brand.secondary',
     },
     '&:focus': {
-      outline: 'none',
+      outline: `2px solid ${colors.brand.secondary}`,
+    },
+    '&[data-active]': {
+      pl: '8px',
+      ml: '-10px',
+      fontSize: 'fixed.small-3',
+      borderLeft: `2px solid  ${colors.brand.primary}`,
+      fontWeight: 'medium',
     },
   },
   variant: {
     navigation: {
       '&:hover': {
-        color: 'brand.text',
+        color: 'text.regular',
         fontWeight: 'medium',
         transform: 'scale(1.1)',
       },
@@ -21,11 +29,10 @@ export const Link: Theme['components']['Link'] = {
     toc: {
       fontFamily: 'headline',
     },
-    figma: {
-      fontFamily: 'headline',
-      px: 'small-1',
-      lineHeight: 'large-2',
-      color: 'text.muted',
+    icon: {
+      '&:hover': {
+        transform: 'scale(1.1)',
+      },
     },
   },
 } as const;
