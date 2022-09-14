@@ -40,7 +40,7 @@ export default {
 } as Meta;
 
 export const Basic: ComponentStory<typeof Breakout> = args => (
-  <Container size="large" alignContainer="center">
+  <Container size="large" align="center">
     <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="100%" />
     <Box
       as={Breakout}
@@ -56,7 +56,7 @@ export const Basic: ComponentStory<typeof Breakout> = args => (
 );
 
 export const ExampleText: ComponentStory<typeof Breakout> = args => (
-  <Container size="large" alignContainer="center">
+  <Container size="large" align="center">
     <Box as={Text} p="small">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry.
       Lorem Ipsum has been the industry's standard dummy text ever since the
@@ -92,7 +92,7 @@ export const ExampleText: ComponentStory<typeof Breakout> = args => (
 );
 
 export const ExampleFrame: ComponentStory<typeof Breakout> = args => (
-  <Container alignContainer="center">
+  <Container align="center">
     <Box as={Text} pb="medium">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry.
       Lorem Ipsum has been the industry's standard dummy text ever since the

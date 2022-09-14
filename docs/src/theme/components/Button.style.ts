@@ -27,7 +27,7 @@ export const Button: Theme['components']['Button'] = {
     copy: {
       mb: 'medium-2',
       p: 'small-1',
-      color: 'text.rgular',
+      color: 'text.regular',
       bg: 'transparent',
       fontSize: '15px',
       '&:focus': {

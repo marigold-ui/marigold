@@ -68,15 +68,15 @@ test('support cascading themes', () => {
 
   expect(outer.innerHTML).toMatchInlineSnapshot(`
     "{
-      \\"colors\\": {
-        \\"primary\\": \\"coral\\"
+      "colors": {
+        "primary": "coral"
       }
     }"
   `);
   expect(inner.innerHTML).toMatchInlineSnapshot(`
     "{
-      \\"colors\\": {
-        \\"primary\\": \\"gainsboro\\"
+      "colors": {
+        "primary": "gainsboro"
       }
     }"
   `);

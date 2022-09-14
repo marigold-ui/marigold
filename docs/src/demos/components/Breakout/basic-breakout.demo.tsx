@@ -1,7 +1,7 @@
 import { Container, Breakout, Box } from '@marigold/components';
 
 export const BasicBreakout = () => (
-  <Container alignContainer="center">
+  <Container alignItems="center">
     <Box border="1px solid #ced4da" bg="#e9ecef" height="80px" width="100%" />
     <Breakout>
       <Box

@@ -1,4 +1,9 @@
-import React, { Children, ReactNode } from 'react';
+import React, {
+  Children,
+  cloneElement,
+  isValidElement,
+  ReactNode,
+} from 'react';
 
 import { ResponsiveStyleValue } from '@marigold/system';
 
@@ -27,32 +32,32 @@ export const Columns = ({
     );
   }
 
-  // create an array to get column widths
-  const getColumnWidths = columns.map((column, index) => {
-    return {
-      [`> :nth-of-type(${index + 1})`]: {
-        flexGrow: column,
-      },
-    };
-  });
-
   return (
     <Box
       display="flex"
-      css={Object.assign(
-        {
-          flexWrap: 'wrap',
-          gap: space,
-          '> *': {
-            // display breakpoint at collapseAt value
-            flexBasis: `calc(( ${collapseAt} - 100%) * 999)`,
-          },
+      css={{
+        flexWrap: 'wrap',
+        gap: space,
+        '> *': {
+          /**
+           * "Container Query": collapses at given width
+           * (https://heydonworks.com/article/the-flexbox-holy-albatross/)
+           */
+          flexBasis: `calc(( ${collapseAt} - 100%) * 999)`,
         },
-        ...getColumnWidths!
-      )}
+      }}
       {...props}
     >
-      {children}
+      {Children.map(children, (child, idx) => (
+        <Box
+          css={{
+            // Stretch each column to the given value
+            flexGrow: columns[idx],
+          }}
+        >
+          {isValidElement(child) ? cloneElement(child) : null}
+        </Box>
+      ))}
     </Box>
   );
 };
