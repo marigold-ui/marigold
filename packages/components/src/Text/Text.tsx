@@ -48,7 +48,7 @@ export const Text = ({
     <Box
       as="p"
       {...props}
-      css={{ color, cursor, outline, fontSize, textAlign: align, ...styles }}
+      css={[styles, { color, cursor, outline, fontSize, textAlign: align }]}
     >
       {children}
     </Box>

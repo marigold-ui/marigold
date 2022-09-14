@@ -24,7 +24,7 @@ const theme = {
       variant: {
         one: {
           fontFamily: 'Arial',
-          color: 'green',
+          color: 'blue',
         },
       },
     },
@@ -40,6 +40,18 @@ test('uses base as default variant', () => {
   const text = screen.getByText(/text/);
 
   expect(text).toHaveStyle(`font-family: Oswald Regular`);
+});
+
+test('uses theme styles', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Text variant="one">text</Text>
+    </ThemeProvider>
+  );
+  const text = screen.getByText(/text/);
+
+  expect(text).toHaveStyle(`font-family: Arial`);
+  expect(text).toHaveStyle(`color: ${theme.colors.blue}`);
 });
 
 test('renders a <p> element by default', () => {
@@ -74,4 +86,18 @@ test.each([
   args.forEach((style: any) => {
     expect(box).toHaveStyle(style);
   });
+});
+
+test('style props override theme styles', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Text variant="one" color="primary">
+        text
+      </Text>
+    </ThemeProvider>
+  );
+  const text = screen.getByText(/text/);
+
+  expect(text).toHaveStyle(`font-family: Arial`);
+  expect(text).toHaveStyle(`color: ${theme.colors.primary}`);
 });
