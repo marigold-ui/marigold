@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Box, Columns, Stack, Text, Tiles } from '@marigold/components';
+import { Box, Card, Columns, Stack, Text, Tiles } from '@marigold/components';
 import { Rectangle, Squirecle } from '~/components';
 
 const Annotation = ({ children }: { children: ReactNode }) => (
@@ -9,7 +9,7 @@ const Annotation = ({ children }: { children: ReactNode }) => (
 );
 
 export const LayoutsDemo = () => (
-  <Box p="small-1" bg="background.light" borderRadius="medium-1">
+  <Card p="small-1">
     <Columns columns={[1, 1, 1]} space="medium-2" collapseAt="0em">
       <>
         <Stack space="small-1">
@@ -42,5 +42,5 @@ export const LayoutsDemo = () => (
         <Annotation>Tiles</Annotation>
       </>
     </Columns>
-  </Box>
+  </Card>
 );
