@@ -20,7 +20,7 @@ You can use `horizontalAlign` or `verticalAlign` to place the items inside the `
         width: '100%',
       }}
     />
-    <Breakout horizontalAlign="center">
+    <Breakout horizontalAlign="center" height="150px" verticalAlign="center">
       <Box
         css={{
           bg: '#e9ecef',
@@ -58,17 +58,23 @@ import { Breakout } from '@marigold/components';
   props={[
     {
       property: 'horizontalAlign',
-      type: '"top" | "bottom" | "center"',
+      type: '"left" | "right" | "center"',
       description:
-        'Horizontal alignment of the items inside the breakout element',
-      default: 'center',
+        'Horizontal alignment of the items inside the breakout element.',
+      default: 'left',
     },
     {
       property: 'verticalAlign',
-      type: '"left" | "center" | "right"',
+      type: '"top" | "bottom" | "center"',
       description:
-        'Vertical alignment of the items inside the breakout element',
-      default: 'center',
+        'Vertical alignment of the items inside the breakout element.',
+      default: 'top',
+    },
+    {
+      property: 'height',
+      type: 'string',
+      description: 'Set the height of the breakout element.',
+      default: 'none',
     },
   ]}
 />
@@ -82,6 +88,8 @@ import { Breakout } from '@marigold/components';
 ```
 
 ### Horizontal alignment
+
+Example to show how the `horizontalAlign` prop is to set. Options are `"left" | "center" | "right"`. The default value is `left`
 
 ```tsx preview file=components/Breakout/horizontal-breakout.demo.tsx
 

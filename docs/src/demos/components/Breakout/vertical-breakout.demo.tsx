@@ -1,6 +1,6 @@
 import { Box, Breakout, Container } from '@marigold/components';
 
-export const LeftAlignment = () => (
+export const VerticalAlignment = () => (
   <Container align="center">
     <Box
       css={{
@@ -10,14 +10,14 @@ export const LeftAlignment = () => (
         width: '100%',
       }}
     />
-    <Breakout>
+    <Breakout height="100px" verticalAlign="bottom">
       <Box
         css={{
           bg: '#e9ecef',
           border: '1px solid #ced4da',
         }}
       >
-        BREAKOUT with left alignment
+        BREAKOUT with bottom alignment
       </Box>
     </Breakout>
     <Box
