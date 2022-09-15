@@ -10,6 +10,8 @@ caption: Component that breaks out of a grid layout context.
 
 You can use `horizontalAlign` or `verticalAlign` to place the items inside the `<Breakout>` element.
 
+It is also possible to put several components into the `<Breakout>`.
+
 <Preview>
   <Container align="center">
     <Box
@@ -83,25 +85,23 @@ import { Breakout } from '@marigold/components';
 
 ### Vertical alignment
 
+In this case the `height` prop is necessary, if you haven't set it, the `verticalAlign` has no impact.
+
 ```tsx preview file=components/Breakout/vertical-breakout.demo.tsx
 
 ```
 
 ### Horizontal alignment
 
-Example to show how the `horizontalAlign` prop is to set. Options are `"left" | "center" | "right"`. The default value is `left`
+Example to show how the `horizontalAlign` prop is to set. Options are `"left" | "center" | "right"`. The default value is `left`.
 
 ```tsx preview file=components/Breakout/horizontal-breakout.demo.tsx
 
 ```
 
-### Breakout Text inside Container
+### Breakout iframe
 
-```tsx preview file=components/Breakout/text-breakout.demo.tsx
-
-```
-
-### Breakout iframe inside Text Container
+This example shows how to use an `<iframe>` with a `<Breakout>`
 
 ```tsx preview file=components/Breakout/iframe-breakout.demo.tsx
 

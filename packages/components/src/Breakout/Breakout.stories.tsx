@@ -20,7 +20,7 @@ export default {
       description: 'vertical alignment',
       table: {
         defaultValue: {
-          summary: 'center',
+          summary: 'top',
         },
       },
     },
@@ -32,7 +32,7 @@ export default {
       description: 'horizontal alignment',
       table: {
         defaultValue: {
-          summary: 'center',
+          summary: 'left',
         },
       },
     },
@@ -50,8 +50,8 @@ export const Basic: ComponentStory<typeof Breakout> = args => {
           width: '100%',
         }}
       />
-      <Breakout>
-        <Text bg="green">Breakout</Text>
+      <Breakout {...args}>
+        <Text>Breakout</Text>
       </Breakout>
       <Box
         css={{
@@ -77,14 +77,8 @@ export const ExampleText: ComponentStory<typeof Breakout> = args => (
       publishing software like Aldus PageMaker including versions of Lorem
       Ipsum.
     </Text>
-    <Breakout>
-      <Box
-        border="1px solid #ced4da"
-        bg="#e9ecef"
-        height="100px"
-        width="100%"
-        {...args}
-      >
+    <Breakout {...args}>
+      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px">
         BREAKOUT element inside a container
       </Box>
     </Breakout>
@@ -110,7 +104,7 @@ export const ExampleFrame: ComponentStory<typeof Breakout> = args => (
       1500s, when an unknown printer took a galley of type and scrambled it to
       make a type specimen book.
     </Text>
-    <Breakout>
+    <Breakout {...args}>
       <Aspect ratio="ultrawide">
         <Image
           src="https://images.unsplash.com/photo-1511468102400-883d6ea28755?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80"
