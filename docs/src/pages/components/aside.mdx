@@ -3,17 +3,30 @@ title: Aside
 group: Layout
 github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Aside/Aside.tsx
 edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/aside.mdx
+caption: Component to seperate content from the main content.
 ---
 
-The `<Aside>` layout is useful when you want to set two things next to each other and the one has a fixed width (the aside) and the other can have a dynamic width (the content).
+The `<Aside>` is a responsive layout component. It should be used if you want to layout side content next to the main content. The side has a fixed width and the other one(the main content) can have a dynamic width.
 
-It is important to note that the `<Aside>` must have exactly too children, where none is a `<Fragment>`.
+If the screen becomes too small for the `<Aside>`, the content will automatically wrap.
+
+It is important to note that the `<Aside>` must have exactly two children, where none is a `<Fragment>`.
 
 <Preview>
   <BasicAside />
 </Preview>
 
-## Props
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Aside } from '@marigold/components';
+```
+
+### Props
 
 <PropsTable
   props={[
@@ -26,39 +39,43 @@ It is important to note that the `<Aside>` must have exactly too children, where
     {
       property: 'side',
       type: '"left" | "right"',
-      description: 'The side of the content.',
+      description: 'The side of the aside content.',
       default: 'left',
     },
     {
       property: 'sideWidth',
       type: 'ResponsiveStyleValue<string>',
-      description: 'The side with of the content.',
+      description: 'The side width of the aside content.',
       default: 'none',
     },
     {
       property: 'wrap',
       type: 'Non-zero Percentage',
-      description: 'The wrap of the content.',
+      description: 'At which percent the content should wrap.',
       default: '50%',
     },
     {
-      property: 'strech',
+      property: 'stretch',
       type: 'boolean',
-      description: 'strech the aside.',
+      description: 'Stretches the aside.',
       default: 'true',
     },
   ]}
-></PropsTable>
+/>
 
 ## Examples
 
 ### Space between elements
+
+The example shows how the `space` prop ist to use. It defines the gap between the contents.
 
 ```tsx preview file=components/Aside/space.demo.tsx
 
 ```
 
 ### Aside on the right
+
+A simple example on how to set the `side` prop.
 
 ```tsx preview file=components/Aside/rightside.demo.tsx
 
