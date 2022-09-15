@@ -6,11 +6,11 @@ edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/component
 caption: Component that breaks out of a grid layout context.
 ---
 
-`<Breakout>` is a layout component which lets you span the full row in a CSS grid context e.g. our [`<Container>`](container/) component. You need this component if you want to display something out of the context.
+`<Breakout>` is a layout component which lets you span the full row in a CSS grid context e.g. our [`<Container>`](container/) component.
+
+You need this component if you want to display something out of the context. It is also possible to put several components into the `<Breakout>`.
 
 You can use `horizontalAlign` or `verticalAlign` to place the items inside the `<Breakout>` element.
-
-It is also possible to put several components into the `<Breakout>`.
 
 <Preview>
   <Container align="center">
@@ -101,7 +101,7 @@ Example to show how the `horizontalAlign` prop is to set. Options are `"left" | 
 
 ### Breakout iframe
 
-This example shows how to use an `<iframe>` with a `<Breakout>`
+This example shows how to use an `<iframe>` within a `<Breakout>`.
 
 ```tsx preview file=components/Breakout/iframe-breakout.demo.tsx
 

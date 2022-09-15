@@ -32,7 +32,6 @@ export const Breakout = ({
   const alignItems = useAlignment(verticalAlign);
   const justifyContent = useAlignment(horizontalAlign);
 
-  console.log(height);
   return (
     <Box
       alignItems={alignItems}
