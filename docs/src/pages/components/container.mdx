@@ -3,40 +3,55 @@ title: Container
 group: Layout
 github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Container/Container.tsx
 edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/container.mdx
+caption: Component used to structure the content.
 ---
 
-Containers width is based on used font and is optimized for readability. You can use `header` or `content` as content type and set the `size` prop to `small`, `medium` or `large`.
+The `<Container>` component is a CSS grid layout component in which you can wrap child components. This component should be used if you want to structure content or form components. It is also useful when you want to use a [`<Breakout>`](/components/breakout/).
 
-```tsx preview file=components/Container/basic-container.demo.tsx
+`<Container>` width is based on used font and is optimized for readability. You can use `header` or `content` as content type and set the `size` prop to `small`, `medium` or `large`.
 
+It is also possible to set the alignment for the `<Container>` itself and for its children.
+
+<Preview>
+  <BasicContainer />
+</Preview>
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Container } from '@marigold/components';
 ```
 
-## Props
+### Props
 
 <PropsTable
   props={[
     {
       property: 'contentType',
-      description: 'The content type of the container',
-      type: '"header", "content"',
+      description: 'The content type of the container.',
+      type: '"header" | "content"',
       default: '"content"',
     },
     {
       property: 'size',
-      description: 'The size of the container',
-      type: '"small", "medium", "large"',
+      description: 'The size of the container.',
+      type: '"small" | "medium" | "large"',
       default: '"medium"',
     },
     {
       property: 'align',
-      description: 'set alignment the content inside the container',
-      type: '"left", "center", "right"',
+      description: 'Set alignment the content inside the container.',
+      type: '"left" | "center" | "right"',
       default: '"left"',
     },
     {
       property: 'alignItems',
-      description: 'set alignment of the items inside the container',
-      type: '"left", "center", "right", "none"',
+      description: 'Set alignment of the items inside the container.',
+      type: '"left" | "center" | "right" | "none"',
       default: '"none"',
     },
   ]}
@@ -44,33 +59,17 @@ Containers width is based on used font and is optimized for readability. You can
 
 ## Examples
 
-### Container header small, medium & large
+### Container sizes
 
-```tsx preview file=components/Container/small-header-container.demo.tsx
+In this example the `size` prop is set to small. You can also choose medium or large size. It sets the width of the content of the container.
 
-```
-
-```tsx preview file=components/Container/medium-header-container.demo.tsx
-
-```
-
-```tsx preview file=components/Container/large-header-container.demo.tsx
-
-```
-
-### Container content small, medium & large
-
-```tsx preview file=components/Container/small-content-container.demo.tsx
-
-```
-
-```tsx preview file=components/Container/large-content-container.demo.tsx
+```tsx preview file=components/Container/small-container.demo.tsx
 
 ```
 
 ## Text Container
 
-In some cases, the width of the content can be smaller than the container's width. You can use the align prop to align the content left, center or right.
+In some cases, the width of the content can be smaller than the container's width. You can use the `align` prop to align the container left, center or right. The `alignItems` props allows you to align the children left, center or right.
 
 ```tsx preview file=components/Container/full-container.demo.tsx
 
