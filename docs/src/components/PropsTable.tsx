@@ -1,5 +1,5 @@
 import { Card, Inline, Table, Text } from '@marigold/components';
-import { BlankCanvas } from './BlankCanvas';
+import { BlankCanvas } from './Icons';
 
 export interface PropsTableProps {
   props?: { [key: string]: string }[];
@@ -37,7 +37,7 @@ export const PropsTable = ({ props }: PropsTableProps) => {
         <Inline>
           <BlankCanvas />
           <Text variant="content">
-            Sorry! There are currently no props availible.
+            Sorry! There are currently no props available.
           </Text>
         </Inline>
       )}

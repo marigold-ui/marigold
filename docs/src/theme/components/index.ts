@@ -12,3 +12,4 @@ export * from './Select.style';
 export * from './Text.style';
 export * from './Table.style';
 export * from './ScrollToTop.style';
+export * from './Toc.style';

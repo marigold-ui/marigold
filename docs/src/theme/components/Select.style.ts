@@ -5,7 +5,6 @@ export const Select: Theme['components']['Select'] = {
     button: {
       appearance: 'none',
       fontFamily: 'headline',
-      width: '30%',
       borderColor: 'background.light',
       px: 'small-1',
       color: 'text.regular',

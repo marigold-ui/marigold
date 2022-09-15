@@ -12,4 +12,11 @@ export const List: Theme['components']['List'] = {
       lineHeight: 'large-1',
     },
   },
+  variant: {
+    toc: {
+      item: {
+        listStyle: 'none',
+      },
+    },
+  },
 };
