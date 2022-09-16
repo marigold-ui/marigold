@@ -103,7 +103,6 @@ const NavigationItem = ({
       display="flex"
       justifyContent="space-between"
       alignItems="center"
-      id="test"
     >
       <Link variant="navigation" {...props}>
         {title}
