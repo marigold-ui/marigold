@@ -3,22 +3,33 @@ title: Inline
 group: Layout
 github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Inline/Inline.tsx
 edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/inline.mdx
+caption: Component to inline elements.
 ---
 
-Layout component to inline elements with space. This component uses the spaces from the given theme or a responsive string.
+The `<Inline>` is a responsive layout component. It's inline element with space. This component uses the spaces from the given theme or a responsive string.
 
-```tsx preview file=components/Inline/inline.demo.tsx
+<Preview>
+  <BasicInline />
+</Preview>
 
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Inline } from '@marigold/components';
 ```
 
-## Props
+### Props
 
 <PropsTable
   props={[
     {
       property: 'space',
       type: 'ResponsiveStyleValue<string>',
-      description: '',
+      description: 'Space between the Inline elements.',
       default: 'none',
     },
     {
