@@ -6,7 +6,7 @@ edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/component
 caption: Component to set responsive images, videos, maps
 ---
 
-The Aspect component is used to embed responsive images, videos, maps, etc. You can use a predefined ratio and maximum width.
+The `<Aspect>` layout component dynamically modifies the height of an element based on its current width to match a width-to-height ratio. For example, a 4:3 ratio would make an element with a width of `400px` have a height of `300px`. This updates in real time when you resize the screen.
 
 <Preview>
   <BasicAspect />
@@ -51,11 +51,11 @@ The example shows how the `ratio` and the `maxWidth` props with a image componen
 
 ```
 
-### Ratio Widescreen
+### Ratio Golden
 
-An Example that shows the `ratio` prop set to `"widescreen"`.
+An Example that shows the `ratio` prop set to `"golden"`.
 
-```tsx preview file=components/Aspect/widescreen-aspect.demo.tsx
+```tsx preview file=components/Aspect/golden-aspect.demo.tsx
 
 ```
 
