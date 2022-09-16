@@ -4,13 +4,15 @@ caption: Learn how themes work and how to use them in your app.
 order: 4
 ---
 
+import { App } from '~/demos/theming-extend.demo.tsx';
+
 Themes are used to define the visual appearance of the application and adhere the coporate identity.
 
 In Marigold a theme is a plain object that defines [design tokens](https://www.lightningdesignsystem.com/design-tokens/) for the context in which it should be used (e.g. B2B or B2C), including a color palette, the typography, scales for white space and size related values. A theme also comes with styles for the app's components.
 
 Marigold's themes are based on the [Theme UI's Theme Specification](https://theme-ui.com/theme-spec/) with the addition of styles for all components (`theme.components.<component name>`).
 
-## Using an existing theme
+## Use an existing theme
 
 The following themes are currently available:
 
@@ -67,8 +69,59 @@ export default MyDocument;
 
 In other setup you might need to use [`react-helmet`](https://github.com/nfl/react-helmet) or can paste the fonts directly into the `<head>` of your HTML.
 
-## Extending an existing theme
+## Extend an existing theme
 
 Usually using one of the existing themes should be sufficient to build and style an application. But every now and then your app might need a variant that is not included in the theme or it is necessary to adjust existing variants and styles a bit. This is especially useful when designers want to [A/B test](https://en.wikipedia.org/wiki/A/B_testing) designs and user flows or if a certain domain logic requires a more individual solution.
 
-To extend a theme with custom or adjusted styles use the `extendsTheme` function as follows:
+To extend a theme with customized styles use the `extendsTheme` function as like this:
+
+```tsx
+import { extendTheme } from '@marigold/components';
+import theme from '@marigold/theme-b2b';
+
+const customTheme = extendTheme(theme, {
+  fonts: {
+    system: 'system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+  },
+  components: {
+    Button: {
+      variant: {
+        cta: {
+          // You can still use all the tokens from the theme extended theme
+          color: 'gray00',
+          fontSize: 'xsmall',
+          borderRadius: 'large',
+          // You can also use tokens defined in the theme extension
+          fontFamily: 'system',
+          // And if you really want to, even use hard coded values
+          background:
+            'linear-gradient(319deg, #663dff 0%, #aa00ff 37%, #cc4499 100%)',
+          textTransform: 'uppercase',
+          fontWeight: 600,
+          transition: 'transform 0.25s cubic-bezier(.5, -.1, .1, 1.5)',
+
+          '&:hover': {
+            transform: 'scale(1.5)',
+          },
+
+          '&:active': {
+            transform: 'scale(1.6)',
+          },
+        },
+      },
+    },
+  },
+});
+
+export const App = () => (
+  <MarigoldProvider theme={customTheme}>
+    {/** your app code */}
+  </MarigoldProvider>
+);
+```
+
+Afterwards you can use the customzed like you would do with any other styles from themes. Meaning, `<Button variant="cta">Buy now</Button>` will render our custom CTA button like shown below:
+
+<Preview>
+  <App />
+</Preview>
