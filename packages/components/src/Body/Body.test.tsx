@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 
-import { Content } from './Content';
+import { Body } from './Body';
 
 const theme = {
   space: {
@@ -38,7 +38,7 @@ const theme = {
 test('renders as a "section" element', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Content data-testid="content" />
+      <Body data-testid="content" />
     </ThemeProvider>
   );
 
@@ -49,7 +49,7 @@ test('renders as a "section" element', () => {
 test('uses base styling form "content" in theme', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Content data-testid="content" />
+      <Body data-testid="content" />
     </ThemeProvider>
   );
   const content = screen.getByTestId('content');
@@ -59,7 +59,7 @@ test('uses base styling form "content" in theme', () => {
 test('content accepts a variant and size', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Content data-testid="content" variant="yellow" size="medium" />
+      <Body data-testid="content" variant="yellow" size="medium" />
     </ThemeProvider>
   );
   const content = screen.getByTestId('content');
