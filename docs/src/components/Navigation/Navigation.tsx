@@ -1,3 +1,4 @@
+import { Badge } from '@marigold/components';
 import { Box, CSSObject, useComponentStyles } from '@marigold/system';
 import { Link, LinkProps } from '~/components/Link';
 
@@ -22,6 +23,7 @@ export interface NavigationMenuItem {
   slug: string;
   group?: string;
   order?: number;
+  badge?: string;
 }
 
 export interface NavigationProps {
@@ -32,6 +34,7 @@ export interface NavigationProps {
 
 interface NavigationItemProps extends LinkProps, NavigationStyles {
   title: string;
+  badge?: string;
 }
 
 interface NavigationMenuGroupProps
@@ -85,18 +88,30 @@ const NavigationItem = ({
   title,
   css,
   variant,
+  badge,
   ...props
 }: NavigationItemProps) => {
+  const badgeNameToLowerCase = (badge: string) => {
+    return badge.toLowerCase();
+  };
   return (
     <Box
       as="li"
       role="menuitem"
       __baseCSS={{ listStyle: 'none' }}
       css={css?.item}
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
     >
       <Link variant="navigation" {...props}>
         {title}
       </Link>
+      {badge && (
+        <Badge variant={badgeNameToLowerCase(badge)} size="small">
+          {badge}
+        </Badge>
+      )}
     </Box>
   );
 };
@@ -113,6 +128,7 @@ const NavigationGroup = ({ name, items, css }: NavigationMenuGroupProps) => (
           css={css}
           title={item.title}
           href={`/${item.slug}`}
+          badge={item.badge}
         />
       ))}
     </Box>

@@ -17,7 +17,7 @@ const ALIGN_ITEMS = {
   left: 'start',
   center: 'center',
   right: 'end',
-  none: 'undefined',
+  none: 'initial',
 };
 
 // for responsive reasons we needed to use the `minmax(0, 60ch)` value instead of `fit-content(60ch)`
