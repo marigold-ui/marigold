@@ -34,7 +34,7 @@ export default {
       control: {
         type: 'select',
       },
-      options: ['left', 'center', 'right'],
+      options: ['left', 'center', 'right', 'none'],
       description: 'set alignment of the items inside the container',
     },
   },
