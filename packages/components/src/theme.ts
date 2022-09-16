@@ -1,3 +1,4 @@
+import merge from 'deepmerge';
 import type { Theme as BaseTheme } from '@marigold/system';
 
 // Components
@@ -71,3 +72,14 @@ interface ComponentStyles
 export interface Theme extends BaseTheme {
   components: ComponentStyles;
 }
+
+export interface CustomizedTheme extends BaseTheme {
+  components?: Partial<ComponentStyles>;
+}
+
+// Helpers
+// ---------------
+export const extendTheme = (
+  baseTheme: Theme,
+  extendTheme: CustomizedTheme
+): Theme => merge(baseTheme, extendTheme);
