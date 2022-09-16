@@ -3,15 +3,27 @@ title: Columns
 group: Layout
 github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Columns/Columns.tsx
 edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/columns.mdx
+caption: Component with sized columns in one row.
 ---
 
-Columns component with sized columns in one row. Add an array of numbers to set the size of the children. The columns array length and the count of children must be the same. You can add space between the columns und set a collapseAt prop to collapse the columns at a certain width.
+The `<Columns>` is a responsive layout component, with sized columns in one row.
+Add an array of numbers to set the size of the children. The columns array length and the count of children must be the same. You can add space between the columns und set a collapseAt prop to collapse the columns at a certain width.
 
-```tsx preview file=components/Columns/basic-columns.demo.tsx
+<Preview>
+  <BasicColumns />
+</Preview>
 
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Columns } from '@marigold/components';
 ```
 
-## Props
+### Props
 
 <PropsTable
   props={[
@@ -41,11 +53,15 @@ Columns component with sized columns in one row. Add an array of numbers to set 
 
 ### Columns and a space between them
 
+The example shows how the `space` prop is to use. It defines the gap between the contents.
+
 ```tsx preview file=components/Columns/space-columns.demo.tsx
 
 ```
 
 ### Columns collapsing at a certain width
+
+The example show how the `collapseAt` prop is to use. If you resize the window of your browser you can see that the columns are collapsing or expanding. Please note that the collapsing or expanding starting in a small range of the `collapseAt` value.
 
 ```tsx preview file=components/Columns/collapse-columns.demo.tsx
 
@@ -53,16 +69,8 @@ Columns component with sized columns in one row. Add an array of numbers to set 
 
 ### Page layout
 
-Create a page layout with three columns
+Create a page layout with three columns and collapse or expanding at `25em`
 
 ```tsx preview file=components/Columns/layout-columns.demo.tsx
-
-```
-
-### Breadcrumb
-
-Create a Breadcrumb with different widths
-
-```tsx preview file=components/Columns/breadcrumb-columns.demo.tsx
 
 ```
