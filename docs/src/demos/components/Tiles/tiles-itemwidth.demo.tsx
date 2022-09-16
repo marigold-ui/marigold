@@ -1,4 +1,4 @@
-import { Box, Card, Image, Tiles } from '@marigold/components';
+import { Card, Image, Tiles } from '@marigold/components';
 
 export const ItemWidthTiles = () => (
   <Tiles space="xsmall" itemMinWidth="100px">
