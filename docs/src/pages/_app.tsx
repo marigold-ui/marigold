@@ -74,7 +74,6 @@ const badgeNameToLowercase = (badge: string) => {
   return badge.toLowerCase();
 };
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
 export interface PageProps {
   title?: string;
   caption?: string;
