@@ -1,6 +1,6 @@
 ---
 title: Theming
-caption: This page explains how themes workd and how to use them.
+caption: Learn how themes work and how to use them in your app.
 order: 4
 ---
 
@@ -8,14 +8,14 @@ Themes are used to define the visual appearance of the application and adhere th
 
 In Marigold a theme is a plain object that defines [design tokens](https://www.lightningdesignsystem.com/design-tokens/) for the context in which it should be used (e.g. B2B or B2C), including a color palette, the typography, scales for white space and size related values. A theme also comes with styles for the app's components.
 
-Marigold's themes are based on the [Theme UI's Theme Specification](https://theme-ui.com/theme-spec/) with the addition of styles for all components (`theme.<component name>`).
+Marigold's themes are based on the [Theme UI's Theme Specification](https://theme-ui.com/theme-spec/) with the addition of styles for all components (`theme.components.<component name>`).
 
 ## Using an existing theme
 
-There are currently two themes available:
+The following themes are currently available:
 
-- **B2B**: The default theme for B2B use cases.
-- **Core**: The theme for applications that life inside Reservix CORE application.
+- **B2B**: The default theme for B2B software.
+- **Core**: The theme for applications that life inside the Reservix CORE application.
 
 To install a theme you can use the following command:
 
@@ -41,7 +41,6 @@ The URL to load the fonts can be imported via the respective theme package. The 
 
 ```jsx onlyCode
 // pages/_document.js
-
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { webFontUrl } from '@marigold/theme-b2b';
 
@@ -67,3 +66,9 @@ export default MyDocument;
 ```
 
 In other setup you might need to use [`react-helmet`](https://github.com/nfl/react-helmet) or can paste the fonts directly into the `<head>` of your HTML.
+
+## Extending an existing theme
+
+Usually using one of the existing themes should be sufficient to build and style an application. But every now and then your app might need a variant that is not included in the theme or it is necessary to adjust existing variants and styles a bit. This is especially useful when designers want to [A/B test](https://en.wikipedia.org/wiki/A/B_testing) designs and user flows or if a certain domain logic requires a more individual solution.
+
+To extend a theme with custom or adjusted styles use the `extendsTheme` function as follows:
