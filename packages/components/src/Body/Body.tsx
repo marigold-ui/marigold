@@ -9,11 +9,11 @@ import { ComponentProps } from '@marigold/types';
 
 // Theme Extension
 // ---------------
-export interface ContentThemeExtension extends ThemeExtension<'Content'> {}
+export interface BodyThemeExtension extends ThemeExtension<'Body'> {}
 
 // Props
 // ---------------
-export interface ContentProps
+export interface BodyProps
   extends ThemeComponentProps,
     ComponentProps<'section'> {
   children?: ReactNode;
@@ -21,13 +21,8 @@ export interface ContentProps
 
 // Component
 // ---------------
-export const Content = ({
-  children,
-  variant,
-  size,
-  ...props
-}: ContentProps) => {
-  const styles = useComponentStyles('Content', { variant, size });
+export const Body = ({ children, variant, size, ...props }: BodyProps) => {
+  const styles = useComponentStyles('Body', { variant, size });
   return (
     <Box as="section" {...props} css={styles}>
       {children}
