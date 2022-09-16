@@ -10,13 +10,13 @@ export default {
       control: {
         type: 'text',
       },
-      description: 'The variant of the content',
+      description: 'The variant of the body',
     },
     size: {
       control: {
         type: 'text',
       },
-      description: 'The size of the content',
+      description: 'The size of the body',
     },
   },
 } as Meta;
