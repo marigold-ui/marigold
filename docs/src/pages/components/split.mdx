@@ -3,9 +3,13 @@ title: Split
 group: Layout
 github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Slider/Slider.tsx
 edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/slider.mdx
+caption: Component that creates spacing between two elements.
 ---
 
-`<Split>` is a layout component that allows to split the content of [`<Inline>`](/components/inline/) and [`<Stack>`](/component/stack/) layouts.
+`<Split>` is a layout component that allows to split the contents of [`<Inline>`](/components/inline/) and [`<Stack>`](/component/stack/) layouts.
+It should be used if you need to create spacing between elements.
+
+The component behaves like the common used `flex-grow` attribute.
 
 <Preview>
   <Box css={{ px: 'small', py: 'xsmall', bg: 'gray30', borderRadius: 'large' }}>
@@ -18,11 +22,15 @@ edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/component
   </Box>
 </Preview>
 
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
 ```tsx
 import { Split } from '@marigold/components';
 ```
-
-## Usage
 
 ### Props
 
@@ -32,11 +40,15 @@ import { Split } from '@marigold/components';
 
 ### With Inline
 
+You can see below how to use the `<Split>` within the `<Inline>`.
+
 ```tsx preview file=components/Split/split-inline.demo.tsx
 
 ```
 
 ### With Stack
+
+That example shows how to use the `<Split>` within the `<Stack>`.
 
 ```tsx preview file=components/Split/split-stack.demo.tsx
 
