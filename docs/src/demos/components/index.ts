@@ -8,6 +8,7 @@ export * from './_test_hook_';
 export * from './Aside';
 export * from './Aspect';
 export * from './Badge';
+export * from './Body';
 export * from './Box';
 export * from './Breakout';
 export * from './Button';
