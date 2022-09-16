@@ -23,7 +23,7 @@ describe('transform states', () => {
         '&:hover': {},
       },
       expected: {
-        '&:hover, &[data-hover]': {},
+        '&:hover:enabled, &[data-hover]': {},
       },
     },
     {
@@ -131,7 +131,7 @@ describe('transform states', () => {
         '&:hover-group': {},
       },
       expected: {
-        '[role=group]:hover &, [role=group][data-hover] &, [data-group]:hover &, [data-group][data-hover] &':
+        '[role=group]:hover:enabled &, [role=group][data-hover] &, [data-group]:hover:enabled &, [data-group][data-hover] &':
           {},
       },
     },
@@ -182,7 +182,7 @@ describe('transform states', () => {
       })
     ).toMatchInlineSnapshot(`
       {
-        "&:hover, &[data-hover]": {
+        "&:hover:enabled, &[data-hover]": {
           "&:focus, &[data-focus]": {
             "outline": "1px solid #228be6",
           },

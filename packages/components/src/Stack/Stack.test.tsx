@@ -30,7 +30,7 @@ test('default space is "none"', () => {
   expect(first).toHaveStyle(`gap: 0`);
 });
 
-test('accepts and uses spacing from theme', () => {
+test('uses spacing from theme', () => {
   render(
     <ThemeProvider theme={theme}>
       <Stack space="small">
@@ -43,9 +43,19 @@ test('accepts and uses spacing from theme', () => {
   expect(first).toHaveStyle(`gap: 2px`);
 });
 
-test('align children left by default', () => {
+test('children are not aligned by default', () => {
   render(
     <Stack data-testid="stack">
+      <Text>first</Text>
+    </Stack>
+  );
+  const stack = screen.getByTestId('stack');
+  expect(stack).toHaveStyle(`align-items: initial`);
+});
+
+test('allows to align children to the left', () => {
+  render(
+    <Stack alignX="left" data-testid="stack">
       <Text>first</Text>
     </Stack>
   );
@@ -73,9 +83,19 @@ test('allows to align children to the right', () => {
   expect(stack).toHaveStyle(`align-items: flex-end`);
 });
 
-test('children to the top by default', () => {
+test('children are not aligned vertically by default', () => {
   render(
     <Stack data-testid="stack">
+      <Text>first</Text>
+    </Stack>
+  );
+  const stack = screen.getByTestId('stack');
+  expect(stack).toHaveStyle(`justify-content: initial`);
+});
+
+test('allows to align children to the vertical top', () => {
+  render(
+    <Stack alignY="top" data-testid="stack">
       <Text>first</Text>
     </Stack>
   );
@@ -110,7 +130,7 @@ test('behaves as inline be default', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveStyle(`blockSize: auto`);
+  expect(stack).toHaveStyle(`blockSize: initial`);
 });
 
 test('allows to fill space', () => {
@@ -161,32 +181,4 @@ test('renders as div per default', () => {
 
   const stack = screen.getByTestId('stack');
   expect(stack instanceof HTMLDivElement).toBeTruthy();
-});
-
-test('can render as "ul"', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Stack as="ul" data-testid="stack">
-        <Text>first</Text>
-        <Text>second</Text>
-      </Stack>
-    </ThemeProvider>
-  );
-
-  const stack = screen.getByTestId('stack');
-  expect(stack instanceof HTMLUListElement).toBeTruthy();
-});
-
-test('can render as "ol"', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Stack as="ol" data-testid="stack">
-        <Text>first</Text>
-        <Text>second</Text>
-      </Stack>
-    </ThemeProvider>
-  );
-
-  const stack = screen.getByTestId('stack');
-  expect(stack instanceof HTMLOListElement).toBeTruthy();
 });

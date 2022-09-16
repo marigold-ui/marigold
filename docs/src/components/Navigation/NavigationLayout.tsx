@@ -58,7 +58,7 @@ export const NavigationLayout = ({ tree, links }: NavigationLayoutProps) => {
             ? {
                 position: ['absolute', 'static'],
                 bg: 'background.page',
-                width: '100%',
+                width: ['100%', 'auto'],
                 ml: '-1rem',
                 whiteSpace: 'nowrap',
                 zIndex: 1,

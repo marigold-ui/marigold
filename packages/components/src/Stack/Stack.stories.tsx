@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Box } from '@marigold/system';
-import { shadow } from '@marigold/tokens';
 
 import { Headline } from '../Headline';
 import { Text } from '../Text';
@@ -30,14 +29,14 @@ export default {
       control: {
         type: 'select',
       },
-      options: ['left', 'center', 'right'],
+      options: ['none', 'left', 'center', 'right'],
       description: 'Vertical Alignment',
     },
     alignY: {
       control: {
         type: 'select',
       },
-      options: ['top', 'center', 'bottom'],
+      options: ['none', 'top', 'center', 'bottom'],
       description: 'Vertical Alignment',
     },
     stretch: {
@@ -45,10 +44,23 @@ export default {
         type: 'boolean',
       },
       description:
-        'Stretch to fill space (useful if you want to change y alignment)',
+        'Stretch to fill space (vertical AND horizontal, useful if you want to change y alignment)',
     },
   },
 } as Meta;
+
+const Block = ({ children }: { children: ReactNode }) => (
+  <Box
+    css={{
+      background: 'hsla(218 16% 77% / 50%)',
+      border: '1px solid hsla(218 16% 70% / 50%)',
+      borderRadius: 12,
+      p: 12,
+    }}
+  >
+    {children}
+  </Box>
+);
 
 export const Basic: ComponentStory<typeof Stack> = args => (
   <Stack {...args}>
@@ -69,77 +81,62 @@ export const Basic: ComponentStory<typeof Stack> = args => (
 );
 
 export const Nested: ComponentStory<typeof Stack> = args => (
-  <Stack {...args}>
-    <Stack space="xsmall">
-      <Headline level="2">Heading</Headline>
-      <Text>
-        Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
-        malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a
-        porttitor massa ex ut quam.
-      </Text>
-      <Text>
-        Part 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
-        malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a
-        porttitor massa ex ut quam.
-      </Text>
+  <Block>
+    <Stack {...args}>
+      <Stack space="xsmall">
+        <Block>
+          <Headline level="2">With xsmall spacing</Headline>
+        </Block>
+        <Block>
+          <Text>
+            Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Suspendisse dignissim dapibus elit, vel egestas felis pharetra non.
+            Cras malesuada, massa nec ultricies efficitur, lectus ante consequat
+            magna, a porttitor massa ex ut quam.
+          </Text>
+        </Block>
+        <Block>
+          <Text>
+            Part 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Suspendisse dignissim dapibus elit, vel egestas felis pharetra non.
+            Cras malesuada, massa nec ultricies efficitur, lectus ante consequat
+            magna, a porttitor massa ex ut quam.
+          </Text>
+        </Block>
+      </Stack>
+      <Stack space="medium">
+        <Block>
+          <Headline level="2">With Medium Spacing</Headline>
+        </Block>
+        <Block>
+          <Text>
+            Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Suspendisse dignissim dapibus elit, vel egestas felis pharetra non.
+            Cras malesuada, massa nec ultricies efficitur, lectus ante consequat
+            magna, a porttitor massa ex ut quam.
+          </Text>
+        </Block>
+        <Block>
+          <Text>
+            Part 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Suspendisse dignissim dapibus elit, vel egestas felis pharetra non.
+            Cras malesuada, massa nec ultricies efficitur, lectus ante consequat
+            magna, a porttitor massa ex ut quam.
+          </Text>
+        </Block>
+      </Stack>
     </Stack>
-    <Stack space="xsmall">
-      <Headline level="2">Heading</Headline>
-      <Text>
-        Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
-        malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a
-        porttitor massa ex ut quam.
-      </Text>
-      <Text>
-        Part 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
-        malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a
-        porttitor massa ex ut quam.
-      </Text>
-    </Stack>
-  </Stack>
-);
-
-export const List: ComponentStory<typeof Stack> = args => (
-  <Stack space="large">
-    <Stack as="ol" {...args}>
-      <li>one</li>
-      <li>two</li>
-      <li>three</li>
-    </Stack>
-    <Stack as="ul" {...args}>
-      <li>one</li>
-      <li>two</li>
-      <li>three</li>
-    </Stack>
-  </Stack>
-);
-
-const Block = ({ children }: { children: ReactNode }) => (
-  <Box
-    css={{
-      border: '1px solid #364fc7',
-      borderRadius: 16,
-      bg: '#4263eb',
-      color: '#edf2ff',
-      px: 32,
-      py: 12,
-      boxShadow: shadow['medium-1'],
-    }}
-  >
-    {children}
-  </Box>
+  </Block>
 );
 
 export const Stretch: ComponentStory<typeof Stack> = args => (
-  <Box css={{ height: 300 }}>
-    <Stack {...args}>
-      <Block>Lirum</Block>
-      <Block>Larum</Block>
-      <Block>Löffelstiel!</Block>
-    </Stack>
-  </Box>
+  <Block>
+    <Box css={{ height: 300 }}>
+      <Stack {...args}>
+        <Block>Lirum</Block>
+        <Block>Larum</Block>
+        <Block>Löffelstiel!</Block>
+      </Stack>
+    </Box>
+  </Block>
 );
