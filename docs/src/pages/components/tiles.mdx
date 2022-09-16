@@ -3,14 +3,14 @@ title: Tiles
 group: Layout
 github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Tiles/Tiles.tsx
 edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/tiles.mdx
-caption: For structuring layout as a grid.
+caption: For structuring layout as a responsive grid.
 ---
 
 The `<Tiles>` component is related to the CSS grid context. Use the `<Tiles>` if you want to layout some items in a responsive way.
 
-You have to notice that `<Tiles>` is used for children with the same width. If you want to set different widths for the items use [`<Columns>`](/components/columns/) instead.
+It should be noted that `<Tiles>` is used for children with the same width. If you want to set different widths for the children use [`<Columns>`](/components/columns/) instead.
 
-It's possible to display the items with space or set a minimum width for all items inside Tiles.
+It's possible to display the children elements with some spacing or set a minimum width for all items inside `<Tiles>`.
 
 <Preview>
   <Tiles space="small" itemMinWidth="200px">
@@ -56,13 +56,15 @@ import { Tiles } from '@marigold/components';
 
 ### Spacing Tiles
 
+An example on how to use the `space` prop. The default is none. You can set it to any value.
+
 ```tsx preview file=components/Tiles/tiles-spacing.demo.tsx
 
 ```
 
-### Tiles with min Item width
+### Tiles with itemMinWidth
 
-This Example shows how to use the `itemMinWidth` property on `<Tiles>`.
+This Example shows how to use the `itemMinWidth` property on `<Tiles>`. The default value is `250px`.
 
 ```tsx preview file=components/Tiles/tiles-itemwidth.demo.tsx
 
@@ -70,7 +72,7 @@ This Example shows how to use the `itemMinWidth` property on `<Tiles>`.
 
 ### Complexe Tiles with Boxes and Stacks
 
-A full example of a use case with `<Tiles>` and `<Card>`.
+A full example of a use case with `<Tiles>` and `<Card>` inside it.
 
 ```tsx preview file=components/Tiles/tiles-complex.demo.tsx
 
