@@ -73,7 +73,7 @@ In other setup you might need to use [`react-helmet`](https://github.com/nfl/rea
 
 Usually using one of the existing themes should be sufficient to build and style an application. But every now and then your app might need a variant that is not included in the theme or it is necessary to adjust existing variants and styles a bit. This is especially useful when designers want to [A/B test](https://en.wikipedia.org/wiki/A/B_testing) designs and user flows or if a certain domain logic requires a more individual solution.
 
-To extend a theme with customized styles use the `extendsTheme` function as like this:
+Let's image you need a very flashy call to action button for your app, but the default theme for B2B applications does not have such a button. In order to customize the theme and add a CTA button you can extend the theme with customized styles using the `extendsTheme` helper like shown below:
 
 ```tsx
 import { extendTheme } from '@marigold/components';
@@ -120,7 +120,7 @@ export const App = () => (
 );
 ```
 
-Afterwards you can use the customzed like you would do with any other styles from themes. Meaning, `<Button variant="cta">Buy now</Button>` will render our custom CTA button like shown below:
+Afterwards you can use the added variant like you would do with any other variant from the theme. `<Button variant="cta">Buy now</Button>` will render our custom CTA button:
 
 <Preview>
   <App />
