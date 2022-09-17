@@ -126,4 +126,91 @@ Afterwards you can use the added variant like you would do with any other varian
   <App />
 </Preview>
 
-Of course you can do this not only with the `Button`, but with any of Marigold's components.
+Of course you can do this not only with the `Button`, but with any of Marigold's components. Styles for every component can be found under `theme.components.<component name>` and follows the following structure:
+
+```ts
+import type { Theme } from '@marigold/components';
+
+const theme: Theme = {
+  components: {
+    // Component name
+    Button: {
+      base: {
+        // Styles that are always applied
+      },
+      variant: {
+        'variant-name': {
+          // Styles that are applied when the `variant` prop is set to the key
+        },
+      },
+      size: {
+        'size-name': {
+          // Styles that are applied when the `size` prop is set to the key
+        },
+      },
+    },
+  },
+};
+```
+
+Styles of more complex components, like the `<Dialog>`, have their styles split into parts.
+
+```ts
+import type { Theme } from '@marigold/components';
+
+const theme: Theme = {
+  components: {
+    // Component name
+    Dialog: {
+      base: {
+        container: {
+          // Styles that are always applied to the dialog container
+        },
+        closeButton: {
+          // Styles that are always applied to the close button
+        },
+      },
+      variant: {
+        'variant-name': {
+          container: {
+            /**
+             * Styles that are applied to the container when
+             * the `variant` prop is set to the key
+             */
+          },
+          closeButton: {
+            /**
+             * Styles that are applied to the close button when
+             * the `variant` prop is set to the key
+             */
+          },
+        },
+      },
+      size: {
+        'size-name': {
+          container: {
+            /**
+             * Styles that are applied to the container when
+             * the `size` prop is set to the key
+             */
+          },
+          closeButton: {
+            /**
+             * Styles that are applied to the close button when
+             * the `size` prop is set to the key
+             */
+          },
+        },
+      },
+    },
+  },
+};
+```
+
+We recommend to use TypeScript for the styles so that you don't accidentially have a typo in a name or variant:
+
+```ts
+export const Dialog: Theme['components']['Dialog'] = {
+  // styles
+};
+```
