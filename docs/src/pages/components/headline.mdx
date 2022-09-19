@@ -5,19 +5,27 @@ figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMa
 github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Headline/Headline.tsx
 edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/headline.mdx
 switchTheme: true
+caption: Component for headlines.
 ---
+
+The main task of the `<Headline>` component is tot is to serve as a title of a content section.
+It should be used when you want to structure different parts of informations. That could be the page title, text headings or the title of different content parts.
+
+The component has a `level` property which behaves similar to the HTML Headings. There you can select a level from 1-6. Alternative you can set this with the `size` prop.
 
 <Preview>
   <Headline>Simple Headline</Headline>
 </Preview>
 
+## Usage
+
+### Import
+
 ```tsx
 import { Headline } from '@marigold/components';
 ```
 
-## Usage
-
-### Apperance
+### Appearance
 
 <AppearanceTable component={title} />
 
@@ -28,13 +36,17 @@ import { Headline } from '@marigold/components';
     {
       property: 'level',
       type: 'string',
-      description: 'set a different level from theme, values are from 1 - 6',
+      description: 'Set a different level from theme, values are from 1 - 6.',
       default: `1`,
     },
   ]}
 />
 
 ## Examples
+
+### Headline with Text
+
+In this example you see a simple headline with some text.
 
 ```tsx preview file=components/Headline/headline.demo.tsx
 
