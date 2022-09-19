@@ -6,10 +6,19 @@ import { matter } from 'vfile-matter';
 
 const toSlug = (file, from) => path.relative(from, file.replace(/\.mdx?$/, ''));
 
+/**
+ * @typedef {object} Frontmatter
+ * @prop [title] string
+ * @prop [group] string
+ */
+
+/**
+ * @param {string} filePath
+ * @return {Promise<Frontmatter>} frontmatter
+ */
 const getFrontmatter = async filePath => {
   const file = await read(filePath);
   matter(file);
-
   return file.data.matter || {};
 };
 
@@ -34,7 +43,6 @@ const createNavigationTree = async ({ pages, order }) => {
     files.map(async filePath => {
       const frontmatter = await getFrontmatter(filePath);
       return {
-        // @ts-ignore
         ...frontmatter,
         slug: toSlug(filePath, pages),
       };
@@ -70,7 +78,6 @@ const createNavigationTree = async ({ pages, order }) => {
       });
       itemCategory = categories[categories.length - 1];
     }
-
     if (!group) {
       itemCategory.items.push(item);
       return;
@@ -109,7 +116,7 @@ const createNavigationTree = async ({ pages, order }) => {
     // Sort groups based on config
     const config = order.find(c => c.name === category.name);
 
-    if (config?.groups) {
+    if (!config?.groups) {
       return;
     }
 

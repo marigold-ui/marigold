@@ -20,7 +20,7 @@ const selector = {
 
 const state = {
   none: [''],
-  hover: [':hover', '[data-hover]'],
+  hover: [':hover:not([disabled])', '[data-hover]'],
   focus: [':focus', '[data-focus]'],
   focusVisible: [':focus-visible', '[data-focus-visible]'],
   active: [':active', '[data-active]'],

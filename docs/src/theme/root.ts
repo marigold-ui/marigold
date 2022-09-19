@@ -20,5 +20,6 @@ export const root = {
     borderRadius: '10px',
     overflowX: 'auto',
     maxWidth: '100%',
+    maxHeight: '500px',
   },
 } as const;
