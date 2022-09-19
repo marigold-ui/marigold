@@ -1,8 +1,15 @@
-import { Box, Image, Headline, Stack, Text, Tiles } from '@marigold/components';
+import {
+  Image,
+  Headline,
+  Stack,
+  Text,
+  Tiles,
+  Card,
+} from '@marigold/components';
 
 export const ComplexTiles = () => (
-  <Tiles itemMinWidth="400px" space="small">
-    <Box border="1px solid #fa8005" bg="orange10" p="small">
+  <Tiles itemMinWidth="300px" space="small">
+    <Card p="small">
       <Stack space="medium" alignX="center">
         <Image
           src="https://www.pokewiki.de/images/6/63/Sugimori_004.png"
@@ -17,8 +24,8 @@ export const ComplexTiles = () => (
           Starter-Pokémon in Pokémon Rot, Blau, Feuerrot und Blattgrün.
         </Text>
       </Stack>
-    </Box>
-    <Box border="1px solid #fa8005" bg="orange10" p="small">
+    </Card>
+    <Card p="small">
       <Stack space="medium" alignX="center">
         <Image
           src="https://www.pokewiki.de/images/7/7a/Sugimori_005.png"
@@ -34,8 +41,8 @@ export const ComplexTiles = () => (
           Blau, Feuerrot, Blattgrün.
         </Text>
       </Stack>
-    </Box>
-    <Box border="1px solid #fa8005" bg="orange10" p="small">
+    </Card>
+    <Card p="small">
       <Stack space="medium" alignX="center">
         <Image
           src="https://www.pokewiki.de/images/9/96/Sugimori_006.png"
@@ -51,6 +58,6 @@ export const ComplexTiles = () => (
           der Endentwicklungen der Starter-Pokémon aus Kanto.
         </Text>
       </Stack>
-    </Box>
+    </Card>
   </Tiles>
 );
