@@ -2,7 +2,7 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { MDXProvider } from '@mdx-js/react';
 
-import { MarigoldProvider, SSRProvider } from '@marigold/components';
+import { Badge, MarigoldProvider, SSRProvider } from '@marigold/components';
 import * as MarigoldComponents from '@marigold/components';
 import * as MarigoldIcons from '@marigold/icons';
 import unicornTheme from '@marigold/theme-unicorn';
@@ -70,6 +70,10 @@ const components = {
   ...MarigoldIcons,
 };
 
+const badgeNameToLowercase = (badge: string) => {
+  return badge.toLowerCase();
+};
+
 export interface PageProps {
   title?: string;
   caption?: string;
@@ -77,6 +81,7 @@ export interface PageProps {
   figma?: string;
   github?: string;
   edit?: string;
+  badge?: string;
 }
 
 const MyApp = ({ Component, pageProps }: AppProps<PageProps>) => {
@@ -90,6 +95,11 @@ const MyApp = ({ Component, pageProps }: AppProps<PageProps>) => {
               <Title title={pageProps?.title} />
               {pageProps?.title && (
                 <Header>
+                  {pageProps?.badge && (
+                    <Badge variant={badgeNameToLowercase(pageProps.badge)}>
+                      {pageProps.badge}
+                    </Badge>
+                  )}
                   <GradientHeadline>{pageProps.title}</GradientHeadline>
                   {pageProps.caption && (
                     <Text variant="page-caption">{pageProps.caption}</Text>

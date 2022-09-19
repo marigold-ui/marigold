@@ -34,7 +34,7 @@ export default {
       control: {
         type: 'select',
       },
-      options: ['left', 'center', 'right'],
+      options: ['left', 'center', 'right', 'none'],
       description: 'set alignment of the items inside the container',
     },
   },
@@ -61,29 +61,32 @@ export const Header: ComponentStory<typeof Container> = args => (
 );
 
 export const InnerContent: ComponentStory<typeof Container> = args => (
-  <Box as={Container} bg="blue10" p="small" {...args}>
-    <Headline level="2">Star Wars - The Empire Strikes Back</Headline>
-    <Box pt="xsmall" width="100%">
-      <Text>
-        It is a dark time for the Rebellion. Although the Death Star has been
-        destroyed, Imperial troops have driven the Rebel forces from their
-        hidden base and pursued them across the galaxy. Evading the dreaded
-        Imperial Starfleet, a group of freedom fighters led by Luke Skywalker
-        has established a new secret base on the remote ice world of Hoth. The
-        evil lord Darth Vader, obsessed with finding young Skywalker, has
-        dispatched thousands of remote probes into the far reaches of space....
-      </Text>
-    </Box>
-    <Box width="20ch">
-      <ul>
-        <li>Luke</li>
-        <li>Leia</li>
-        <li>Han Solo</li>
-        <li>Chewbacca</li>
-        <li>R2D2</li>
-        <li>C3PO</li>
-        <li>Darth Vader</li>
-      </ul>
-    </Box>
+  <Box bg="blue10" p="small">
+    <Container {...args}>
+      <Headline level="2">Star Wars - The Empire Strikes Back</Headline>
+      <Box pt="xsmall" width="100%">
+        <Text>
+          It is a dark time for the Rebellion. Although the Death Star has been
+          destroyed, Imperial troops have driven the Rebel forces from their
+          hidden base and pursued them across the galaxy. Evading the dreaded
+          Imperial Starfleet, a group of freedom fighters led by Luke Skywalker
+          has established a new secret base on the remote ice world of Hoth. The
+          evil lord Darth Vader, obsessed with finding young Skywalker, has
+          dispatched thousands of remote probes into the far reaches of
+          space....
+        </Text>
+      </Box>
+      <Box width="20ch">
+        <ul>
+          <li>Luke</li>
+          <li>Leia</li>
+          <li>Han Solo</li>
+          <li>Chewbacca</li>
+          <li>R2D2</li>
+          <li>C3PO</li>
+          <li>Darth Vader</li>
+        </ul>
+      </Box>
+    </Container>
   </Box>
 );
