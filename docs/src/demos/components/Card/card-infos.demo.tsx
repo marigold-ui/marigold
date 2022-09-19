@@ -14,7 +14,10 @@ export const CardInformations = () => (
         extremely important role in both of the Wizarding Wars against
         Voldemort.
       </Text>
-      <Link href="https://harrypotter.fandom.com/wiki/Severus_Snape">
+      <Link
+        href="https://harrypotter.fandom.com/wiki/Severus_Snape"
+        target="blank"
+      >
         Source
       </Link>
     </Stack>
