@@ -14,7 +14,8 @@ function getId(children: string) {
   return children
     ?.split(' ')
     .map(word => word.toLowerCase())
-    .join('-');
+    .join('-')
+    .replace(/[?']/g, '');
 }
 
 /**
