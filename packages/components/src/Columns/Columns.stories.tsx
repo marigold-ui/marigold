@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 
-import { Box, Columns } from '@marigold/components';
+import { Box, Columns, Stack } from '@marigold/components';
 
 export default {
   title: 'Components/Columns',
@@ -19,11 +19,6 @@ export default {
       ],
       description: 'array of numbers to set width of every column',
       defaultValue: [2, 8, 2],
-      table: {
-        defaultValue: {
-          summary: [2, 8, 2],
-        },
-      },
     },
     space: {
       control: {
@@ -40,11 +35,6 @@ export default {
         'xxlarge',
       ],
       description: 'Responsive Style Value',
-      table: {
-        defaultValue: {
-          summary: 'none',
-        },
-      },
     },
     collapseAt: {
       control: {
@@ -52,20 +42,22 @@ export default {
       },
       defaultValue: '40em',
       description: 'Responsive Style Value',
-      table: {
-        defaultValue: {
-          summary: '40em',
-        },
+    },
+    stretch: {
+      control: {
+        type: 'boolean',
       },
+      defaultValue: false,
+      description: 'Let columns container fill height',
     },
   },
 } as Meta;
 
 export const Basic: ComponentStory<typeof Columns> = args => (
   <Columns {...args}>
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+    <Box border="1px solid #ced4da" bg="#e9ecef" height="150px" />
+    <Box border="1px solid #ced4da" bg="#e9ecef" height="150px" />
+    <Box border="1px solid #ced4da" bg="#e9ecef" height="150px" />
   </Columns>
 );
 
@@ -78,4 +70,42 @@ export const ComplexChildren: ComponentStory<typeof Columns> = args => (
     </>
     <Box as="aside" border="1px solid #ced4da" bg="#e9ecef" height="100px" />
   </Columns>
+);
+
+const Block = ({
+  children,
+  height,
+}: {
+  children: ReactNode;
+  height?: number | string;
+}) => (
+  <Box
+    css={{
+      height,
+      background: 'hsla(218 16% 77% / 50%)',
+      border: '1px solid hsla(218 16% 70% / 50%)',
+      borderRadius: 12,
+      p: 12,
+    }}
+  >
+    {children}
+  </Box>
+);
+
+export const MultiRow = () => (
+  <Block>
+    <Stack space="medium">
+      <Block height={500}>
+        <Columns columns={[4, 4, 4]} space="small" stretch>
+          <Block height="100%">one</Block>
+          <Block>two</Block>
+          <Block height={200}>three</Block>
+        </Columns>
+      </Block>
+      <Columns columns={[2, 1]} space="small">
+        <Block>four</Block>
+        <Block>five</Block>
+      </Columns>
+    </Stack>
+  </Block>
 );
