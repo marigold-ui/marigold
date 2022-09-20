@@ -1,15 +1,16 @@
+import merge from 'deepmerge';
 import type { Theme as BaseTheme } from '@marigold/system';
 
 // Components
 // ---------------
 import type { BadgeThemeExtension } from './Badge';
+import type { BodyThemeExtension } from './Body';
 import type { ButtonThemeExtension } from './Button';
 import type { CardThemeExtension } from './Card';
 import type {
   CheckboxThemeExtension,
   CheckboxGroupThemeExtension,
 } from './Checkbox';
-import type { ContentThemeExtension } from './Content';
 import type { DialogThemeExtension } from './Dialog';
 import type { DividerThemeExtension } from './Divider';
 import type { FooterThemeExtension } from './Footer';
@@ -41,7 +42,7 @@ interface ComponentStyles
     CardThemeExtension,
     CheckboxThemeExtension,
     CheckboxGroupThemeExtension,
-    ContentThemeExtension,
+    BodyThemeExtension,
     DialogThemeExtension,
     DividerThemeExtension,
     FooterThemeExtension,
@@ -71,3 +72,14 @@ interface ComponentStyles
 export interface Theme extends BaseTheme {
   components: ComponentStyles;
 }
+
+export interface CustomizedTheme extends BaseTheme {
+  components?: Partial<ComponentStyles>;
+}
+
+// Helpers
+// ---------------
+export const extendTheme = (
+  baseTheme: Theme,
+  extendTheme: CustomizedTheme
+): Theme => merge(baseTheme, extendTheme);
