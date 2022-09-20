@@ -10,7 +10,7 @@ export const HorizontalBreakout = () => (
         width: '100%',
       }}
     />
-    <Breakout horizontalAlign="right">
+    <Breakout alignX="right">
       <Box>BREAKOUT with right aligned content</Box>
     </Breakout>
     <Box
