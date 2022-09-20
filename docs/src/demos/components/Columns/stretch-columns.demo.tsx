@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Box, Columns, Stack } from '@marigold/components';
 
-const Block = ({
+export const Block = ({
   children,
   height,
 }: {
