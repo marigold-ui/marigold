@@ -17,6 +17,9 @@ export const Text: Theme['components']['Text'] = {
       fontFamily: 'headline',
       fontSize: 'fixed.small-2',
       letterSpacing: '0.5px',
+      lineHeight: 'small-1',
+      mt: 'small-1',
+      mb: 'none',
     },
     muted: {
       fontFamily: 'headline',
