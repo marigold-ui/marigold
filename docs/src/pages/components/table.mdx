@@ -10,9 +10,9 @@ caption: Component for building tables.
 
 The `<Table>` component allows to present data in a table format. It enhances the functionality of regular `<table>` elements with the possibility to interact and select the data, as well as, helps with accessibility by providing keyboard navigation.
 
-You can sort with the `<Table>` and add a `selectionMode` property with which you have the possibility to select whole rows.
+You can sort with the `<Table>` and add a `selectionMode` property with which you have the possibility to select entire rows.
 
-The component is divided into different parts. So there are the `<Table.Header>`, `<Table.Column>`, `<Table.Row>`, `<Table.Cell>` and `<Table.Body>`.
+The component is divided into several parts. So there are the `<Table.Header>`, `<Table.Body>`, `<Table.Column>`, `<Table.Row>` and `<Table.Cell>`.
 
 <Preview>
   <BasicTable />
@@ -79,7 +79,7 @@ import { Table } from '@marigold/components';
 
 ### Compact variant
 
-In this example you can see the variant `compact` from the theme b2b. It reduces the cell spacing. There is also another variant, which is called `expaned`.
+In this example you can see the variant `compact` from the theme b2b. It reduces the cell spacing. There is also another variant, which is called `expaned`, which enlarges the cells.
 
 ```tsx preview file=components/Table/table-compact.demo.tsx
 
@@ -95,7 +95,7 @@ If you have set the `selectionMode` to single, then you just can select only one
 
 ### Selection mode multiple
 
-This example shows how to use the `selectionMode` but with set to multiple. Checkboxes appear and you can select as much rows as you want.
+This example shows how to use the `selectionMode`, but with the setting that multiple checkboxes appear and you can select as many lines as you want.
 
 ```tsx preview file=components/Table/table-multi-mode.demo.tsx
 
@@ -119,7 +119,7 @@ You can also disable certain rows. For that all you have to do is add the proper
 
 ### Sorting
 
-The options to sort are ascending or descending. For that the properties (`onSortChange`, `sortDescriptor`) for sorting must be given. You can see below how it works.
+The options to sort are ascending or descending. For this purpose the properties (`onSortChange`, `sortDescriptor`) for sorting must be specified.
 
 ```tsx preview file=components/Table/table-sorting.demo.tsx
 
