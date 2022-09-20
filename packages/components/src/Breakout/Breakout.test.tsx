@@ -18,7 +18,7 @@ test('supports default horizontalAlign left', () => {
 
 test('supports horizontal center', () => {
   render(
-    <Breakout horizontalAlign="center" data-testid="breakout">
+    <Breakout alignX="center" data-testid="breakout">
       breakout
     </Breakout>
   );
@@ -28,7 +28,7 @@ test('supports horizontal center', () => {
 
 test('supports horizontalAlign right', () => {
   render(
-    <Breakout horizontalAlign="right" data-testid="breakout">
+    <Breakout alignX="right" data-testid="breakout">
       breakout
     </Breakout>
   );
@@ -44,7 +44,7 @@ test('supports default horizontalAlign top', () => {
 
 test('supports verticalAlign center', () => {
   render(
-    <Breakout verticalAlign="center" data-testid="breakout">
+    <Breakout alignY="center" data-testid="breakout">
       breakout
     </Breakout>
   );
@@ -54,7 +54,7 @@ test('supports verticalAlign center', () => {
 
 test('supports verticalAlign bottom', () => {
   render(
-    <Breakout verticalAlign="bottom" data-testid="breakout">
+    <Breakout alignY="bottom" data-testid="breakout">
       breakout
     </Breakout>
   );
