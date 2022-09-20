@@ -1,6 +1,6 @@
 import { Table, useAsyncList } from '@marigold/components';
 
-export interface Data {
+export interface asyncData {
   name: string;
   height: string;
   mass: string;
@@ -8,7 +8,7 @@ export interface Data {
 }
 
 export const AsyncTable = () => {
-  let list = useAsyncList<Data>({
+  let list = useAsyncList<asyncData>({
     async load({ signal }) {
       let res = await fetch(`https://swapi.py4e.com/api/people/?search`, {
         signal,
@@ -21,8 +21,8 @@ export const AsyncTable = () => {
     async sort({ items, sortDescriptor }) {
       return {
         items: items.sort((a, b) => {
-          let first = a[sortDescriptor.column as keyof Data];
-          let second = b[sortDescriptor.column as keyof Data];
+          let first = a[sortDescriptor.column as keyof asyncData];
+          let second = b[sortDescriptor.column as keyof asyncData];
           let cmp =
             (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
           if (sortDescriptor.direction === 'descending') {
