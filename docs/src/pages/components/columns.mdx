@@ -42,9 +42,16 @@ import { Columns } from '@marigold/components';
     },
     {
       property: 'collapseAt',
-      description: 'Collapse the columns at a certain width.',
-      type: 'string',
-      default: '40em',
+      description:
+        'Collapse children into a vertical layout at given width. Note that `collapseAt` is based on the total element width, and not the window width. With a default value of "0em" columns will not collapse by default.',
+      type: 'string | number',
+      default: '0em',
+    },
+    {
+      property: 'stretch',
+      description: 'Stretch to height of parent container.',
+      type: 'boolean',
+      default: 'false',
     },
   ]}
 />
@@ -72,5 +79,13 @@ The example show how the `collapseAt` prop is to use. If you resize the window o
 Create a page layout with three columns and collapse or expanding at `25em`
 
 ```tsx preview file=components/Columns/layout-columns.demo.tsx
+
+```
+
+### Stretch to Height of Parent
+
+By using the `stretch` prop you can make the container to take full width. Note that this is usually not necessary since the columns will expand with their children anyway.
+
+```tsx preview file=components/Columns/stretch-columns.demo.tsx
 
 ```
