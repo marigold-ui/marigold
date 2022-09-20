@@ -1,8 +1,20 @@
-import { Card, TextField } from '@marigold/components';
+import {
+  Button,
+  Card,
+  Headline,
+  Stack,
+  Split,
+  TextField,
+} from '@marigold/components';
 
 export const CardFieldDemo = () => (
   <Card>
-    <TextField label="Firstname" />
-    <TextField label="Lastname" />
+    <Stack space="medium">
+      <Headline level="3">Personal Settings</Headline>
+      <TextField label="Firstname" />
+      <TextField label="Lastname" />
+      <Split />
+      <Button variant="primary">Save</Button>
+    </Stack>
   </Card>
 );
