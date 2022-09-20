@@ -10,7 +10,7 @@ export const BasicBreakout = () => (
         width: '100%',
       }}
     />
-    <Breakout verticalAlign="center">
+    <Breakout alignY="center">
       <Box
         css={{
           bg: '#e9ecef',

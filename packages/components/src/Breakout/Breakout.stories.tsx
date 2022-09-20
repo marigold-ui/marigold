@@ -12,7 +12,7 @@ import { Breakout } from './Breakout';
 export default {
   title: 'Components/Breakout',
   argTypes: {
-    verticalAlign: {
+    alignY: {
       control: {
         type: 'select',
       },
@@ -24,7 +24,7 @@ export default {
         },
       },
     },
-    horizontalAlign: {
+    alignX: {
       control: {
         type: 'select',
       },
@@ -35,6 +35,12 @@ export default {
           summary: 'left',
         },
       },
+    },
+    height: {
+      control: {
+        type: 'text',
+      },
+      description: 'The height of the breakout',
     },
   },
 } as Meta;

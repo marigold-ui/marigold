@@ -10,7 +10,7 @@ export const VerticalAlignment = () => (
         width: '100%',
       }}
     />
-    <Breakout height="100px" verticalAlign="bottom">
+    <Breakout height="100px" alignY="bottom">
       <Box
         css={{
           bg: '#e9ecef',
