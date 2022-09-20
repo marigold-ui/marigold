@@ -3,34 +3,46 @@ title: Provider
 group: Application
 github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Provider/MarigoldProvider.tsx
 edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/provider.mdx
+caption: Provider which applies the theme.
 ---
 
 `MarigoldProvider` is the container for all Marigold applications. It defines the theme and other application level settings.
+Without the `MarigoldProvider` you can't get the theme on your components. So it is nessesary to use.
+
+<Preview>
+  <MarigoldProvider theme={theme}>
+    <Button variant="primary">Hello World</Button>
+  </MarigoldProvider>
+</Preview>
+
+## Usage
+
+### Import
 
 ```tsx
 import { MarigoldProvider } from '@marigold/components';
 ```
 
-## Props
+### Props
 
 <PropsTable
   props={[
     {
       property: 'children',
       type: 'ReactNode',
-      default: '',
+      default: 'none',
       description: 'The children of the component.',
     },
     {
       property: 'theme',
       type: 'Theme',
-      default: '',
+      default: 'none',
       description: 'The use that should be used within the provider context.',
     },
     {
       property: 'selector',
       type: 'string',
-      default: '',
+      default: 'none',
       description:
         'By default normalization is applied globally. By specifying a selector you can scope normalization and other CSS from `theme.root` to a certain element in the DOM. This is useful if you want to run your app only on a portion of the page or are cascading themes.',
     },
