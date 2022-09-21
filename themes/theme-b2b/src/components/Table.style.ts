@@ -21,7 +21,7 @@ export const Table: Theme['components']['Table'] = {
         bg: 'orange10',
       },
       '&[data-hover]': {
-        bg: 'gray30',
+        bg: 'gray20',
       },
       '&:focus-visible': {
         outlineColor: 'orange60',

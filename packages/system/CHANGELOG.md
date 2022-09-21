@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 3.0.0
+
+### Patch Changes
+
+- [#2478](https://github.com/marigold-ui/marigold/pull/2478) [`a795f29a`](https://github.com/marigold-ui/marigold/commit/a795f29ae0977ab5d386cba0e12be29457f748ff) Thanks [@sebald](https://github.com/sebald)! - feat: improve `&:hover` selector to adhere CSS specificity
+
 ## 2.2.0
 
 ### Minor Changes

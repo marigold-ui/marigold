@@ -45,7 +45,7 @@ test('supports default collapseAt prop', () => {
     </Columns>
   );
   const [columnOne] = getColumnWrappers(screen.getByTestId(/columns/));
-  expect(columnOne).toHaveStyle(`flexBasis : calc(( 40em - 100%) * 999)`);
+  expect(columnOne).toHaveStyle(`flexBasis : calc(( 0em - 100%) * 999)`);
 });
 
 test('supports custom collapseAt prop', () => {
@@ -119,4 +119,16 @@ test('throws error if columns length and children length are different', () => {
     )
   ).toThrow('Columns: expected 1 children, got 3');
   spy.mockRestore();
+});
+
+test('supports stretching to full height', () => {
+  render(
+    <Columns columns={[1, 1, 2]} stretch data-testid="columns">
+      <main>columnOne</main>
+      <div>columnTwo</div>
+      <aside>columnThree</aside>
+    </Columns>
+  );
+  const container = screen.getByTestId(/columns/);
+  expect(container).toHaveStyle(`height: 100%`);
 });
