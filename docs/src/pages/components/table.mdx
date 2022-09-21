@@ -125,6 +125,14 @@ The options to sort are ascending or descending. For this purpose the properties
 
 ```
 
+### Async sorting
+
+In this example the `<Table>` is also sortable but its build async. For that you must use the `useAsyncList` hook. The hook manages the async list data and provides convenience methods for updating the data.
+
+```tsx preview file=components/Table/table-async.demo.tsx
+
+```
+
 ### Nested Columns
 
 Columns can be nested, which will result in more than one header row to be created. Note the usage of `isRowHeader` in the example below. By default, only the first column is included in the accessibility name for each row.
