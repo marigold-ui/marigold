@@ -1,5 +1,28 @@
 # @marigold/docs
 
+## 3.0.0
+
+### Patch Changes
+
+- [#2460](https://github.com/marigold-ui/marigold/pull/2460) [`4495fcb1`](https://github.com/marigold-ui/marigold/commit/4495fcb12723261c61846d30ff09597e2da56f1f) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add height prop to Breakout and refactor docs page
+
+- [#2490](https://github.com/marigold-ui/marigold/pull/2490) [`baf5bb57`](https://github.com/marigold-ui/marigold/commit/baf5bb573b5e2f4ff273f9436657a5e38ee866ea) Thanks [@sebald](https://github.com/sebald)! - feat: `Columns` can stretch to available height via `stretch` prop + don't collapse by default
+
+- [#2463](https://github.com/marigold-ui/marigold/pull/2463) [`fcb15230`](https://github.com/marigold-ui/marigold/commit/fcb15230d4565eba65c7164ffaa042d59ad02e7a) Thanks [@sebald](https://github.com/sebald)! - refa: Improve behavior of `<Stack>` and remove option to render it as a list (use `<List>` instead)
+
+  - `<Stack>` will no longer align items by default, since this will cause children to not take all the available space
+  - `<Stack as="ul|ol">` will no longer work, we have a `<List>` comopnent for that
+
+- [#2496](https://github.com/marigold-ui/marigold/pull/2496) [`d10bb310`](https://github.com/marigold-ui/marigold/commit/d10bb310914deaa4a5b01ade1e783ad956483021) Thanks [@benediktgrether](https://github.com/benediktgrether)! - chore: change property names in breakout to alignX and AlignY
+
+- [#2439](https://github.com/marigold-ui/marigold/pull/2439) [`abd1c2c3`](https://github.com/marigold-ui/marigold/commit/abd1c2c304981b6cce63a1e798e01643636d899e) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: add links to github, figma to docs
+
+- Updated dependencies [[`20aeba63`](https://github.com/marigold-ui/marigold/commit/20aeba63b2bd7dceff3cb7324764dca2c4d8842b), [`a6fbc295`](https://github.com/marigold-ui/marigold/commit/a6fbc2954c4022e18dfecc8c85946b0ae1af5467), [`4495fcb1`](https://github.com/marigold-ui/marigold/commit/4495fcb12723261c61846d30ff09597e2da56f1f), [`87600058`](https://github.com/marigold-ui/marigold/commit/87600058a47831759fb5a55048ce07a33c173f1b), [`885e3ca4`](https://github.com/marigold-ui/marigold/commit/885e3ca477a6524855f7a62cb3568fec2b561cd4), [`ea7f5d0c`](https://github.com/marigold-ui/marigold/commit/ea7f5d0c0d94be2e9d1df14f212d75c82f311d18), [`baf5bb57`](https://github.com/marigold-ui/marigold/commit/baf5bb573b5e2f4ff273f9436657a5e38ee866ea), [`a795f29a`](https://github.com/marigold-ui/marigold/commit/a795f29ae0977ab5d386cba0e12be29457f748ff), [`7f1a9951`](https://github.com/marigold-ui/marigold/commit/7f1a9951dcb7647e40a98f22789da38b17a287da), [`fcb15230`](https://github.com/marigold-ui/marigold/commit/fcb15230d4565eba65c7164ffaa042d59ad02e7a), [`7b9c90ec`](https://github.com/marigold-ui/marigold/commit/7b9c90ecff94431a807d300015940e64fe240353), [`d10bb310`](https://github.com/marigold-ui/marigold/commit/d10bb310914deaa4a5b01ade1e783ad956483021)]:
+  - @marigold/components@3.0.0
+  - @marigold/theme-b2b@14.0.0
+  - @marigold/icons@1.1.0
+  - @marigold/system@3.0.0
+
 ## 2.2.0
 
 ### Minor Changes
