@@ -1,4 +1,5 @@
 export * from './AppearanceTable';
+export * from './Block';
 export * from './CopyButton';
 export * from './IconLinks';
 export * from './GradientHeadline';

@@ -1,5 +1,11 @@
 # @marigold/jest-config
 
+## 1.0.6
+
+### Patch Changes
+
+- [#2446](https://github.com/marigold-ui/marigold/pull/2446) [`bc13abed`](https://github.com/marigold-ui/marigold/commit/bc13abedb3abc56cf6e1cc9ea8725b99c9eb9468) Thanks [@sebald](https://github.com/sebald)! - feat: losen peer deps for usage with npm
+
 ## 1.0.5
 
 ### Patch Changes
