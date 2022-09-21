@@ -1,25 +1,5 @@
-import type { ReactNode } from 'react';
-import { Box, Columns, Stack } from '@marigold/components';
-
-export const Block = ({
-  children,
-  height,
-}: {
-  children: ReactNode;
-  height?: number | string;
-}) => (
-  <Box
-    css={{
-      height,
-      background: 'hsla(218 16% 77% / 50%)',
-      border: '1px solid hsla(218 16% 70% / 50%)',
-      borderRadius: 12,
-      p: 12,
-    }}
-  >
-    {children}
-  </Box>
-);
+import { Columns, Stack } from '@marigold/components';
+import { Block } from '~/components';
 
 export const StretchColumns = () => (
   <Block>
