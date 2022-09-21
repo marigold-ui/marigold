@@ -14,13 +14,15 @@ export interface ColumnsProps {
   columns: Array<number>;
   space?: ResponsiveStyleValue<string>;
   columnLimit?: number;
-  collapseAt?: string;
+  collapseAt?: string | 0;
+  stretch?: boolean;
 }
 
 export const Columns = ({
   space = 'none',
   columns,
-  collapseAt = '40em',
+  collapseAt = '0em',
+  stretch,
   children,
   ...props
 }: ColumnsProps) => {
@@ -34,9 +36,11 @@ export const Columns = ({
 
   return (
     <Box
-      display="flex"
       css={{
+        display: 'flex',
         flexWrap: 'wrap',
+        alignItems: 'stretch',
+        height: stretch ? '100%' : undefined,
         gap: space,
         '> *': {
           /**
