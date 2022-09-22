@@ -101,7 +101,7 @@ export default async function configuration() {
         links,
       },
     },
-    reactStrictMode: true,
+    reactStrictMode: false,
     optimizeFonts: true,
     trailingSlash: true,
     typescript: {

@@ -5,22 +5,30 @@ figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMa
 github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Dialog/Dialog.tsx
 edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/dialog.mdx
 switchTheme: true
+caption: Component for displaying dialogs.
 ---
 
-Component to display a Dialog as a reaction to an event. The Dialog could be styled via theme and should be filled with content.
-You can also add a title via title prop.
+The `<Dialog>` is a overlay component. This means it displays a modal as a reaction to an event. It appears in the middle of the display and blurs out the underlay.
+
+This component can be styled in different parts. It has as parts `closeButton` and `container`, which is the component itself, and these parts can be styled separately.
+
+A special thing is also that you can have props on the `<Dialog.Trigger>` and on the `<Dialog>` itself. The `closeButton` is an optionally property with which you can close the `<Dialog>`.
 
 <Preview>
   <DialogDemo />
 </Preview>
 
-```tsx onlyCode
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
 import { Dialog } from '@marigold/components';
 ```
 
-## Usage
-
-### Apperance
+### Appearance
 
 <AppearanceTable component={title} />
 
@@ -42,7 +50,7 @@ import { Dialog } from '@marigold/components';
   ]}
 />
 
-### Dialog.Trigger
+### Trigger props
 
 <PropsTable
   props={[
@@ -72,6 +80,16 @@ import { Dialog } from '@marigold/components';
 
 ### Form Dialog
 
+The example shows how to use a `<Dialog>` in a simple form context. You can see the `closeButton` is not present by default, you have to click on the buttons or on the underlay to exit the dialog.
+
 ```tsx preview file=components/Dialog/dialog-form.demo.tsx
+
+```
+
+### Dismiss Dialog
+
+If you choose to add `dismissable={false}` to your `<Dialog.Trigger>`, you can't exit the dialog with clicking on the underlay. Notice to add a action button or the `closeButton` property to the `<Dialog>` as shown in the example, without that you can't click out of the dialog. You just have the possibility to use the escape key on your keyboard. But that's also a property you can set to false.
+
+```tsx preview file=components/Dialog/dialog-dismiss.demo.tsx
 
 ```
