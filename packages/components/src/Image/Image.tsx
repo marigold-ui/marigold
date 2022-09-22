@@ -27,7 +27,6 @@ export const Image = ({
   position,
   ...props
 }: ImageProps) => {
-  console.log(fit);
   const styles = useComponentStyles('Image', { variant, size });
   const css: CSSObject = {
     ...styles,
@@ -38,7 +37,7 @@ export const Image = ({
     <Box
       {...props}
       as="img"
-      __baseCSS={{ width: ' 100%', height: '100%' }}
+      __baseCSS={fit ? { width: ' 100%', height: '100%' } : {}}
       css={css}
     />
   );

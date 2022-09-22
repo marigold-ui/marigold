@@ -36,21 +36,22 @@ import { Image } from '@marigold/components';
 <PropsTable
   props={[
     {
-      property: 'alt',
+      property: 'alt (required)',
       type: 'string',
-      description: '',
+      description:
+        'The alt tag contains descriptive text that is displayed when an image fails to load or is read aloud when a user interacts with a screen reader on the page.',
       default: '',
     },
     {
       property: 'fit',
-      type: 'TODO!',
-      description: '',
+      type: '"contain" | "cover" | "fill" | "none" | "scale-down"',
+      description: 'Resized the Image to fit its container',
       default: '',
     },
     {
       property: 'position',
-      type: 'TODO!',
-      description: '',
+      type: '"bottom" | "center" | "left" | "right" | "top"',
+      description: 'Position the Image inside the container when you use "fit"',
       default: '',
     },
   ]}
@@ -58,6 +59,18 @@ import { Image } from '@marigold/components';
 
 ## Usage
 
+### Simple Image
+
+In this example you can see a `<Image>` Component.
+
 ```tsx preview file=components/Image/image.demo.tsx
+
+```
+
+### Image with fit and position
+
+In this example, the `<Image>` gets the `<fit>` property and the `<position>` property is set to bottom. You also need to wrap the `<Image>` in a `<Ratio>` component so that the fit and position properties can be used.
+
+```tsx preview file=components/Image/image-fit-position.demo.tsx
 
 ```
