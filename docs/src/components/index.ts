@@ -10,6 +10,7 @@ export * from './Link';
 export * from './Logo';
 export * from './MarigoldTheme';
 export * from './Navigation';
+export * from './Placeholder';
 export * from './Preview';
 export * from './PropsTable';
 export * from './ScrollToTop';
