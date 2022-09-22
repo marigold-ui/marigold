@@ -6,3 +6,4 @@ export * from './table-disabled.demo';
 export * from './table-sorting.demo';
 export * from './table-nested.demo';
 export * from './table-compact.demo';
+export * from './table-async.demo';

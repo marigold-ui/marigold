@@ -10,7 +10,7 @@ caption: Component that breaks out of a grid layout context.
 
 You need this component if you want to display something out of the context. It is also possible to put several components into the `<Breakout>`.
 
-You can use `horizontalAlign` or `verticalAlign` to place the items inside the `<Breakout>` element.
+You can use `alignX` or `alignY` to place the items inside the `<Breakout>` element.
 
 <Preview>
   <Container align="center">
@@ -22,7 +22,7 @@ You can use `horizontalAlign` or `verticalAlign` to place the items inside the `
         width: '100%',
       }}
     />
-    <Breakout horizontalAlign="center" height="150px" verticalAlign="center">
+    <Breakout alignX="center" height="150px" alignY="center">
       <Box
         css={{
           bg: '#e9ecef',
@@ -59,14 +59,14 @@ import { Breakout } from '@marigold/components';
 <PropsTable
   props={[
     {
-      property: 'horizontalAlign',
+      property: 'alignX',
       type: '"left" | "right" | "center"',
       description:
         'Horizontal alignment of the items inside the breakout element.',
       default: 'left',
     },
     {
-      property: 'verticalAlign',
+      property: 'alignY',
       type: '"top" | "bottom" | "center"',
       description:
         'Vertical alignment of the items inside the breakout element.',
@@ -85,7 +85,7 @@ import { Breakout } from '@marigold/components';
 
 ### Vertical alignment
 
-In this case the `height` prop is necessary, if you haven't set it, the `verticalAlign` has no impact.
+In this case the `height` prop is necessary, if you haven't set it, the `alignY` has no impact.
 
 ```tsx preview file=components/Breakout/vertical-breakout.demo.tsx
 
@@ -93,7 +93,7 @@ In this case the `height` prop is necessary, if you haven't set it, the `vertica
 
 ### Horizontal alignment
 
-Example to show how the `horizontalAlign` prop is to set. Options are `"left" | "center" | "right"`. The default value is `left`.
+Example to show how the `alignX` prop is to set. Options are `"left" | "center" | "right"`. The default value is `left`.
 
 ```tsx preview file=components/Breakout/horizontal-breakout.demo.tsx
 
