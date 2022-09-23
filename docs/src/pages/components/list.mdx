@@ -4,19 +4,27 @@ group: Content
 switchTheme: true
 github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/List/List.tsx
 edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/list.mdx
+caption: Component for unordered or ordered list.
 ---
 
+The `<List>` component is used to display an unordered or ordered list.
+
+The list is divided into two parts: `<List>` and `<List.Item>`.
+By default, the application displays an unordered `(ul)` list. However, this list can also be displayed as an ordered `(ol)` list.
+
 <Preview>
-  <List>
-    <List.Item>Cheese</List.Item>
-    <List.Item>Milk</List.Item>
-    <List.Item>Bread</List.Item>
-  </List>
+  <SimpleList />
 </Preview>
 
-Component to list things. Renders a `ul` by default, but can also render an `ol`.
-
 ## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { List } from '@marigold/components';
+```
 
 ### Apperance
 
@@ -39,7 +47,7 @@ Component to list things. Renders a `ul` by default, but can also render an `ol`
 
 ### Unordered list
 
-```tsx preview file=components/List/list.demo.tsx
+```tsx preview file=components/List/simple-list.demo.tsx
 
 ```
 
