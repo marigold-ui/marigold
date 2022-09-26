@@ -18,7 +18,7 @@ export const Switch: Theme['components']['Switch'] = {
       },
       '&:focus': {
         outline: '2px solid',
-        outlineColor: 'blue60',
+        outlineColor: 'orange60',
         outlineOffset: 3,
       },
     },
