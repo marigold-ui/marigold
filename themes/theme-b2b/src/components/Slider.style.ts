@@ -23,7 +23,7 @@ export const Slider: Theme['components']['Slider'] = {
       borderRadius: 'large',
       '&:focus': {
         border: '4px solid',
-        borderColor: 'primary',
+        borderColor: 'orange60',
       },
       '&:disabled': {
         border: '4px solid',
