@@ -20,6 +20,9 @@ export const Card: Theme['components']['Card'] = {
         boxShadow: 'medium-2',
       },
     },
+    paragraph: {
+      mb: 'medium-1',
+    },
   },
   size: {
     large: {
