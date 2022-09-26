@@ -443,9 +443,9 @@ importers:
   packages/types:
     specifiers:
       '@types/react': 18.0.19
-      type-fest: ^2.12.2
+      type-fest: ^3.0.0
     dependencies:
-      type-fest: 2.19.0
+      type-fest: 3.0.0
     devDependencies:
       '@types/react': 18.0.19
 
@@ -16847,9 +16847,9 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /type-fest/2.19.0:
-    resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
-    engines: {node: '>=12.20'}
+  /type-fest/3.0.0:
+    resolution: {integrity: sha512-MINvUN5ug9u+0hJDzSZNSnuKXI8M4F5Yvb6SQZ2CYqe7SgKXKOosEcU5R7tRgo85I6eAVBbkVF7TCvB4AUK2xQ==}
+    engines: {node: '>=14.16'}
     dev: false
 
   /type-is/1.6.18:
