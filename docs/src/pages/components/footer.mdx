@@ -4,15 +4,30 @@ group: Content
 switchTheme: true
 github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Footer/Footer.tsx
 edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/footer.mdx
+caption: Structure for contents in a content context..
 ---
 
-The `Footer` component is used to help structure contents of components.
+The `<Footer>` is a content component, like the `<Header>` and `<Body>` and is used to help structure the contents of components.
 
-```tsx preview file=components/Footer/footer.demo.tsx
+It's used like the HTML `<footer>` tag.
 
-```
+The `<Footer>` typically contains information about the author of the section, copyright data or links to related documents.
+
+For additional information please read the [MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/footer) or [HMTL Living Standard Doucmentation](https://html.spec.whatwg.org/multipage/sections.html#the-footer-element)
+
+<Preview>
+  <BasicFooter />
+</Preview>
 
 ## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Footer } from '@marigold/components';
+```
 
 ### Apperance
 
@@ -24,6 +39,18 @@ The `Footer` component is used to help structure contents of components.
 
 ## Examples
 
-```tsx preview file=components/Footer/footer.demo.tsx
+### Simple Copyright Example
+
+Simple `<Footer>` example with a copyright notice.
+
+```tsx preview file=components/Footer/copyright-footer.demo.tsx
+
+```
+
+### Footer with Links
+
+The examples shows the `<Footer>` with a list of links inside.
+
+```tsx preview file=components/Footer/list-footer.demo.tsx
 
 ```
