@@ -12,6 +12,8 @@ The `<List>` component is used to display an unordered or ordered list.
 The list is divided into two parts: `<List>` and `<List.Item>`.
 By default, the application displays an unordered `(ul)` list. However, this list can also be displayed as an ordered `(ol)` list.
 
+The `<List.Items>` in unordered lists are marked with bullets and in an ordered list are marked with numbers.
+
 <Preview>
   <SimpleList />
 </Preview>
@@ -38,7 +40,8 @@ import { List } from '@marigold/components';
       property: 'as',
       type: 'ul ⎮ ol',
       default: 'ul',
-      description: '',
+      description:
+        'Displaying a unordered or ordered list for showing Information',
     },
   ]}
 />
@@ -47,12 +50,24 @@ import { List } from '@marigold/components';
 
 ### Unordered list
 
+In this example you can see how to use a unordered list.
+
 ```tsx preview file=components/List/simple-list.demo.tsx
 
 ```
 
 ### Ordered list
 
+In this example you can see how to use the `as` property for an ordered list.
+
 ```tsx preview file=components/List/list-ordered.demo.tsx
+
+```
+
+### Nested Unordered List
+
+It is also possible to create a unordered nested list. Here for the `<List>` is wrapped inside the `<List.Item>`.
+
+```tsx preview file=components/List/list-unorded-stacked.demo.tsx
 
 ```
