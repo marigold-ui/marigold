@@ -33,5 +33,12 @@ export const Image = ({
     objectFit: fit,
     objectPosition: position,
   };
-  return <Box {...props} as="img" css={css} />;
+  return (
+    <Box
+      {...props}
+      as="img"
+      __baseCSS={fit ? { width: ' 100%', height: '100%' } : {}}
+      css={css}
+    />
+  );
 };

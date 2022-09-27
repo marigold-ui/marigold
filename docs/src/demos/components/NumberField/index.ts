@@ -5,7 +5,4 @@ export * from './number-field-error.demo';
 export * from './number-field-values.demo';
 export * from './number-field-amount.demo';
 export * from './number-field-hide.demo';
-export * from './number-field-cur.demo';
-export * from './number-field-dec.demo';
-export * from './number-field-per.demo';
-export * from './number-field-unit.demo';
+export * from './number-field-format.demo';

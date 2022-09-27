@@ -3,16 +3,29 @@ title: Image
 group: Content
 github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Image/Image.tsx
 edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/image.mdx
+caption: Component to render images
 ---
 
-With the Image component you can render an image element.
-The variant can be added with the variant prop. You can also put the standard html image props like `alt` and `src`.
+The `<Image>` is a content component that renders an image on the page.
+
+The `src` property is always required. It can be used with a link or with an image from the server's file system.
+
+To improve accessibility, `alt` information should be provided whenever possible.
+The `alt` attribute holds a text description of the image and screen readers read this description out to their users so they know what the image means. The `alt` text is also displayed on the page if the image can't be loaded for some reason: for example, network errors, content blocking, or linkrot.
+
+For more information about accessibility please visit [w3.org](https://www.w3.org/WAI/tutorials/images/tips/) or [bitvtest.de](https://ergebnis.bitvtest.de/pruefschritt/bitv-20-web/9-1-1-1b-alternativtexte-fuer-grafiken-und-objekte)
+
+<Preview>
+  <BasicImage />
+</Preview>
+
+## Usage
+
+### Import
 
 ```tsx
 import { Image } from '@marigold/components';
 ```
-
-## Usage
 
 ### Apperance
 
@@ -23,21 +36,22 @@ import { Image } from '@marigold/components';
 <PropsTable
   props={[
     {
-      property: 'alt',
+      property: 'alt (required)',
       type: 'string',
-      description: '',
+      description:
+        'The alt tag contains descriptive text that is displayed when an image fails to load or is read aloud when a user interacts with a screen reader on the page.',
       default: '',
     },
     {
       property: 'fit',
-      type: 'TODO!',
-      description: '',
+      type: '"contain" | "cover" | "fill" | "none" | "scale-down"',
+      description: 'Resized the Image to fit its container',
       default: '',
     },
     {
       property: 'position',
-      type: 'TODO!',
-      description: '',
+      type: '"bottom" | "center" | "left" | "right" | "top"',
+      description: 'Position the Image inside the container when you use "fit"',
       default: '',
     },
   ]}
@@ -45,6 +59,18 @@ import { Image } from '@marigold/components';
 
 ## Usage
 
+### Simple Image
+
+In this example you can see a `<Image>` Component.
+
 ```tsx preview file=components/Image/image.demo.tsx
+
+```
+
+### Image with fit and position
+
+In this example, the `<Image>` gets the `<fit>` property and the `<position>` property is set to bottom. You also need to wrap the `<Image>` in a `<Ratio>` component so that the fit and position properties can be used.
+
+```tsx preview file=components/Image/image-fit-position.demo.tsx
 
 ```
