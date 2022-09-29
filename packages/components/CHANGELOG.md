@@ -1,5 +1,18 @@
 # @marigold/components
 
+## 3.0.1
+
+### Patch Changes
+
+- [#2510](https://github.com/marigold-ui/marigold/pull/2510) [`690191b2`](https://github.com/marigold-ui/marigold/commit/690191b2cd8cbc980f5ff54a2dbc82a726782f36) Thanks [@sebald](https://github.com/sebald)! - update: @react-aria/focus
+
+- [#2509](https://github.com/marigold-ui/marigold/pull/2509) [`fb7b1b9f`](https://github.com/marigold-ui/marigold/commit/fb7b1b9fb083f48b744c3873823865d63bf3dbd5) Thanks [@benediktgrether](https://github.com/benediktgrether)! - refa: improve usage of `fit` prop
+
+- Updated dependencies [[`4af6c016`](https://github.com/marigold-ui/marigold/commit/4af6c01618922473fa126786550fba74475bf7da), [`eb7e453c`](https://github.com/marigold-ui/marigold/commit/eb7e453c23f310d70d58514c24e8fe0d0cd375d4)]:
+  - @marigold/types@0.5.4
+  - @marigold/system@3.0.1
+  - @marigold/icons@1.1.1
+
 ## 3.0.0
 
 ### Major Changes

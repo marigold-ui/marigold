@@ -1,5 +1,14 @@
 # @marigold/theme-b2b
 
+## 14.0.1
+
+### Patch Changes
+
+- [#2527](https://github.com/marigold-ui/marigold/pull/2527) [`93cfb764`](https://github.com/marigold-ui/marigold/commit/93cfb764bc3d184fd3314b335af8f4877251357e) Thanks [@sebald](https://github.com/sebald)! - refa: change all focus colors to orange
+
+- Updated dependencies [[`690191b2`](https://github.com/marigold-ui/marigold/commit/690191b2cd8cbc980f5ff54a2dbc82a726782f36), [`fb7b1b9f`](https://github.com/marigold-ui/marigold/commit/fb7b1b9fb083f48b744c3873823865d63bf3dbd5)]:
+  - @marigold/components@3.0.1
+
 ## 14.0.0
 
 ### Minor Changes
