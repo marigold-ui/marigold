@@ -1,5 +1,11 @@
 # @marigold/eslint-config
 
+## 0.4.2
+
+### Patch Changes
+
+- [#2544](https://github.com/marigold-ui/marigold/pull/2544) [`db4cb323`](https://github.com/marigold-ui/marigold/commit/db4cb323ed6b58fac1ba424ca50349bdb981bc6b) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency typescript to v4.8.4
+
 ## 0.4.1
 
 ### Patch Changes
