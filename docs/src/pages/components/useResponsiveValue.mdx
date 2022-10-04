@@ -12,8 +12,8 @@ To add `breakpoints` to your theme you have to write them as an array.
 
 You can pass the following parameters to your `useResponsiveValue` hook:
 
-- **First:** the values which define the `breakpoints`
-- **Second:** the `defaultIndex` which points on the default `breakpoint`.
+- **First:** the values as array which defines the `breakpoints`
+- **Second:** the `defaultIndex` which points on the default `breakpoint`
 
 ```tsx
 const value = useResponsiveValue(
@@ -26,6 +26,16 @@ const value = useResponsiveValue(
   ],
   2
 );
+```
+
+## Usage
+
+### Import
+
+To import the hook you just have to use this code below.
+
+```tsx
+import { useResponsiveValue } from '@marigold/system';
 ```
 
 ## Examples
