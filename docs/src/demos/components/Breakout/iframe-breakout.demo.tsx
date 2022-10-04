@@ -1,7 +1,7 @@
 import { Aspect, Box, Breakout, Container, Text } from '@marigold/components';
 
 export const iframeBreakout = () => (
-  <Container alignItems="center">
+  <Container align="center">
     <Box as={Text} pb="medium">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry.
       Lorem Ipsum has been the industry's standard dummy text ever since the

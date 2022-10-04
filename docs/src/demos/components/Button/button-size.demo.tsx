@@ -5,7 +5,7 @@ export const ButtonSizeDemo = () => (
     <Button variant="primary" size="small">
       small
     </Button>
-    <Button variant="text" size="small">
+    <Button variant="primary" size="small" fullWidth>
       small
     </Button>
     <Button variant="primary" size="small" disabled>

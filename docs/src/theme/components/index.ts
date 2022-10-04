@@ -1,3 +1,4 @@
+export * from './Badge.style';
 export * from './Button.style';
 export * from './Card.style';
 export * from './Preview.style';
@@ -12,3 +13,4 @@ export * from './Select.style';
 export * from './Text.style';
 export * from './Table.style';
 export * from './ScrollToTop.style';
+export * from './Toc.style';

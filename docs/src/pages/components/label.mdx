@@ -2,10 +2,17 @@
 title: Label
 group: Forms
 figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=92%3A0
+github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Label/Label.tsx
+edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/label.mdx
 switchTheme: true
+caption: Component for labeling a form field.
 ---
 
 The `Label` component is used to accosiate and describe a form field.
+
+You need a `<Label>` for form components like [`<Radio>`](/components/radio/) or [`<Input>`](/components/input/). In some cases like for the [`<Select>`](/components/select/) is a property called `label` which behaves as `<Label>`. Usually you have to add a label also for accessibility reasons.
+
+A `<Label>` can be from type `label` or `span`. For that you have to set the `as` property.
 
 <Preview>
   <Label>Some Label</Label>
@@ -13,7 +20,15 @@ The `Label` component is used to accosiate and describe a form field.
 
 ## Usage
 
-### Apperance
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Label } from '@marigold/components';
+```
+
+### Appearance
 
 <AppearanceTable component={title} />
 
@@ -23,15 +38,21 @@ The `Label` component is used to accosiate and describe a form field.
   props={[
     {
       property: 'as',
-      type: 'label, span',
-      description: '',
+      type: 'label | span',
+      description: 'Behaves like a HTML label or span is used.',
       default: 'label',
     },
     {
       property: 'required',
       type: 'boolean',
-      description: '',
+      description: 'Sets the label required.',
       default: 'false',
+    },
+    {
+      property: '...',
+      type: '',
+      description: 'Yes you can use all regular attributes of `label!`',
+      default: '',
     },
   ]}
 />
@@ -40,6 +61,16 @@ The `Label` component is used to accosiate and describe a form field.
 
 ### Label required
 
+This example shows a required `<Label>`. You can see that the red icon appears next to it.
+
 ```tsx preview file=components/Label/label-req.demo.tsx
+
+```
+
+### Label with Input
+
+Here you can see how a `<Label>` is used with an [`<Input>`](/components/input/).
+
+```tsx preview file=components/Label/label-input.demo.tsx
 
 ```

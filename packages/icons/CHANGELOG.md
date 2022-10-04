@@ -1,5 +1,23 @@
 # @marigold/icons
 
+## 1.1.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@3.0.1
+
+## 1.1.0
+
+### Minor Changes
+
+- [#2493](https://github.com/marigold-ui/marigold/pull/2493) [`87600058`](https://github.com/marigold-ui/marigold/commit/87600058a47831759fb5a55048ce07a33c173f1b) Thanks [@sebald](https://github.com/sebald)! - feat: better `Logout` icon
+
+### Patch Changes
+
+- Updated dependencies [[`a795f29a`](https://github.com/marigold-ui/marigold/commit/a795f29ae0977ab5d386cba0e12be29457f748ff)]:
+  - @marigold/system@3.0.0
+
 ## 1.0.5
 
 ### Patch Changes

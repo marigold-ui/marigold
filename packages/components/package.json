@@ -1,6 +1,6 @@
 {
   "name": "@marigold/components",
-  "version": "2.2.0",
+  "version": "3.0.1",
   "description": "Components for the Marigold Design System",
   "license": "MIT",
   "keywords": [
@@ -30,7 +30,7 @@
     "@react-aria/button": "3.6.1",
     "@react-aria/checkbox": "3.5.1",
     "@react-aria/dialog": "3.3.1",
-    "@react-aria/focus": "3.7.0",
+    "@react-aria/focus": "3.8.0",
     "@react-aria/i18n": "3.6.0",
     "@react-aria/interactions": "3.11.0",
     "@react-aria/link": "3.3.3",
@@ -69,6 +69,7 @@
     "@react-types/radio": "3.2.3",
     "@react-types/shared": "3.14.1",
     "@react-types/tooltip": "3.2.3",
+    "deepmerge": "^4.2.2",
     "react-is": "18.2.0"
   },
   "peerDependencies": {

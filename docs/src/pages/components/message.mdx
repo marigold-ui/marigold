@@ -2,26 +2,33 @@
 title: Message
 group: Content
 figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=582%3A119
+github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Message/Message.tsx
+edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/message.mdx
 switchTheme: true
+caption: Display a short message with important informations.
 ---
 
-Message component to display a message with a title and icon based on a `div` element and styled with a theme.
-The message component is used to capture the user atention to provide information. It is meant to show only very relevant information. The title should contain the most relevant information about the message.
+The `<Message>` component is used to capture the users atention to provide information. It is meant to show only very relevant information. The title should contain the most relevant information about the message.
+
 This component should not be added on a dynymic way.
 
+There are currently three different variants of the `<Message>` component. The `info` variant is set as default. Inside the `<Message>` it lends itself to using the [`<Text>`](/componentss/text/) component.
+
 <Preview>
-  <Message messageTitle="There is an update available.">
-    <Text>Hello, I am a simple info message.</Text>
-  </Message>
+  <InfoMessage />
 </Preview>
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
 
 ```tsx
 import { Message } from '@marigold/components';
 ```
 
-## Usage
-
-### Apperance
+### Appearance
 
 <AppearanceTable component={title} />
 
@@ -32,15 +39,17 @@ import { Message } from '@marigold/components';
     {
       property: 'messageTitle (required)',
       type: 'string',
-      default: '',
-      description: '',
+      default: 'none',
+      description: 'Set a message title. This is required.',
     },
   ]}
 />
 
-## Types
+## Examples
 
 ### Info Message
+
+This is the default info `<Message>`. The color is in a blue tone and contains the [`<Info>`](/concepts/icons/#info) icon.
 
 ```tsx preview file=components/Message/message-info.demo.tsx
 
@@ -48,11 +57,15 @@ import { Message } from '@marigold/components';
 
 ### Warning Message
 
+Here you can see the warning `<Message>`. The color is in a yellow tone and contains the[`<Notification>`](/concepts/icons/#info) icon.
+
 ```tsx preview file=components/Message/message-warn.demo.tsx
 
 ```
 
 ### Error Message
+
+The error `<Message>` is colored in a red tone and contains the [`<Exclamation>`](/concepts/icons/#info) icon.
 
 ```tsx preview file=components/Message/message-error.demo.tsx
 

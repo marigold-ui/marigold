@@ -2,10 +2,14 @@
 title: Input
 group: Forms
 switchTheme: true
+github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Input/Input.tsx
+edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/Input.mdx
+caption: Simple input form for entering text.
 ---
 
-With the Input component you can add a HTML `<input>` field for different types of text to your form.
-The variant in your section can be added with the variant prop. The default variant is `default`.
+With the `<Input>` component you can add a HTML `<input>` field for different types of text to your form.
+
+It is a basic form of the [`<TextField>`](/component/text-field/). It hasn't error messages, help texts or label given. It is just the plain input element.
 
 <Preview>
   <Label htmlFor="input">
@@ -16,7 +20,13 @@ The variant in your section can be added with the variant prop. The default vari
 
 ## Usage
 
-### Apperance
+### Import
+
+```tsx
+import { Input } from '@marigold/components';
+```
+
+### Appearance
 
 <AppearanceTable component={title} />
 
@@ -27,8 +37,20 @@ The variant in your section can be added with the variant prop. The default vari
     {
       property: 'type',
       type: "'date, datetime-local, email, month, number, password, search, submit, tel, text, time, url, week'",
-      description: '',
+      description: 'Set the type for your input.',
       default: 'text',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'With this prop you can disable the input field.',
+      default: 'false',
+    },
+    {
+      property: '...',
+      type: '',
+      description: 'Yes you can use all regular attributes of `input!`',
+      default: '',
     },
   ]}
 />
@@ -37,17 +59,23 @@ The variant in your section can be added with the variant prop. The default vari
 
 ### Standard Input
 
+Here you can see how a simple `<Input>` would look like and how to use it.
+
 ```tsx preview file=components/Input/input.demo.tsx
 
 ```
 
 ### Disabled Input
 
+If you want that the user can't interact anymore with the `<Input>` you have to use the `disabled` prop.
+
 ```tsx preview file=components/Input/input-disabled.demo.tsx
 
 ```
 
-### Type changend Input
+### Input types
+
+Here you can see how different types of the input would look like.
 
 ```tsx preview file=components/Input/input-type.demo.tsx
 

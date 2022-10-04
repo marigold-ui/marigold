@@ -2,10 +2,17 @@
 title: NumberField
 group: Forms
 figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=3540%3A4927
+github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/NumberField/NumberField.tsx
+edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/number-field.mdx
 switchTheme: true
+caption: Component for entering numbers.
 ---
 
-The `NumberField` components allows users to enter numbers with a keyboard. This includes plain numbers as well as percentages, decimals and sums of money. It consists of a label, an input field and a help text. The later also includes error messages.
+The `<NumberField>` component allows users to enter numbers with a keyboard. This includes plain numbers as well as percentages, decimals and sums of money.
+
+It consists of a label, an input field and a help text. The latter also includes error messages.
+
+A special propertiy is the `hideStepper` prop, with that you can choose if you want to hide the buttons for adding/ removing values. You can also set all properties from the regular HTML input element.
 
 <Preview>
   <NumberField
@@ -19,13 +26,17 @@ The `NumberField` components allows users to enter numbers with a keyboard. This
   />
 </Preview>
 
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
 ```tsx
 import { NumberField } from '@marigold/components';
 ```
 
-## Usage
-
-### Apperance
+### Appearance
 
 <AppearanceTable component={title} />
 
@@ -42,7 +53,7 @@ import { NumberField } from '@marigold/components';
     {
       property: 'description',
       type: 'ReactNode',
-      description: '	A helpful text.',
+      description: 'A helpful text.',
       default: 'none',
     },
     {
@@ -87,20 +98,44 @@ import { NumberField } from '@marigold/components';
       type: 'function',
       description:
         "A callback function that is called with the input's current value when the input value changes.",
-      default: '',
+      default: 'none',
     },
     {
       property: 'formatOptions',
       type: 'Intl.NumberFormatOptions',
       description:
         'Apply formatting. See `Intl.NumberFormatOptions` for available options.',
-      default: '',
+      default: 'none',
     },
     {
       property: 'width',
       type: 'string',
       description: 'Control the width of the field.',
       default: '100%',
+    },
+    {
+      property: 'minValue',
+      type: 'number',
+      description: 'Sets the minimal value of the input.',
+      default: 'none',
+    },
+    {
+      property: 'maxValue',
+      type: 'number',
+      description: 'Sets the maximal value of the input.',
+      default: 'none',
+    },
+    {
+      property: 'hideStepper',
+      type: 'boolean',
+      description: 'Property for hiding the step buttons of the field.',
+      default: 'false',
+    },
+    {
+      property: 'step',
+      type: 'number',
+      description: 'Sets the amount of steps the input should take.',
+      default: '1',
     },
     {
       property: '...',
@@ -114,11 +149,15 @@ import { NumberField } from '@marigold/components';
 
 ### Simple Number Field
 
+This example shows a regular `<NumberField>` without any special props.
+
 ```tsx preview file=components/NumberField/number-field-simple.demo.tsx
 
 ```
 
 ### Disabled Number Field
+
+You can disable the `<NumberField>` so that the user can't interact with it anymore.
 
 ```tsx preview file=components/NumberField/number-field-disabled.demo.tsx
 
@@ -126,11 +165,15 @@ import { NumberField } from '@marigold/components';
 
 ### Required Number Field
 
+If you want a `<NumberField>` to be required, you just have to add the property `required`. With that the small required icon appears next to the label.
+
 ```tsx preview file=components/NumberField/number-field-required.demo.tsx
 
 ```
 
 ### Number Field with an Error
+
+This example shows how to use the `error` with the `errorMessage`.
 
 ```tsx preview file=components/NumberField/number-field-error.demo.tsx
 
@@ -138,11 +181,15 @@ import { NumberField } from '@marigold/components';
 
 ### Min and max Values
 
+The example shows how to use the `minValue` and the `maxValue`. You can see that you can't get under "0" or above "100". If you try to, the step buttons will be disabled.
+
 ```tsx preview file=components/NumberField/number-field-values.demo.tsx
 
 ```
 
 ### Step Amount
+
+The `step` property sets the amount of steps the input should use. Default is set to "1".
 
 ```tsx preview file=components/NumberField/number-field-amount.demo.tsx
 
@@ -150,30 +197,16 @@ import { NumberField } from '@marigold/components';
 
 ### Hide Stepper
 
+If you don't want the step buttons to appear, you can easily remove these with the `hideStepper` property.
+
 ```tsx preview file=components/NumberField/number-field-hide.demo.tsx
 
 ```
 
-### Diplay a Decimals
+### Display different Format Options
 
-```tsx preview file=components/NumberField/number-field-dec.demo.tsx
+In this example you can see how different `<NumberFields>` can look like. You can choose between all `Intl.NumberFormatOptions`. In this case you can see `percent`,`unit`, `decimal` and `currency`.
 
-```
-
-### Diplay a Currency
-
-```tsx preview file=components/NumberField/number-field-cur.demo.tsx
-
-```
-
-### Diplay a Percentage
-
-```tsx preview file=components/NumberField/number-field-per.demo.tsx
-
-```
-
-### Display a Unit
-
-```tsx preview file=components/NumberField/number-field-unit.demo.tsx
+```tsx preview file=components/NumberField/number-field-format.demo.tsx
 
 ```

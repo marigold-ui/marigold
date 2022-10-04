@@ -2,286 +2,314 @@
 title: Box
 group: Layout
 switchTheme: true
+github: https://github.com/marigold-ui/marigold/blob/main/packages/system/src/components/Box/Box.tsx
+edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/box.mdx
+caption: The all-rounder among the components.
 ---
 
-See [Box Primitive](../../foundation/box-primitive) for detailed description
+The `<Box>` is a basic component like the HTML div element. You can modify the component with different style props. It is also possible to write `__baseCSS` and `css` styles on the `<Box>`.
+
+You can use the `as` prop to let the `<Box>` behave as any Marigold component or HTML Element with all its properties.
+
+For a more detailed description, see [Box Primitive](../../foundation/box-primitive).
+
+<Preview>
+  <Box border="1px solid gray" p="small" borderRadius="5px">
+    I am basic div box!
+  </Box>
+</Preview>
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
 
 ```tsx
 import { Box } from '@marigold/components';
 ```
 
-## Props
+### Props
 
 <PropsTable
   props={[
     {
       property: 'as',
-      type: 'HTMLElement',
-      description: '',
+      type: 'HTMLElement | MarigoldComponent',
+      description:
+        'Behaves like a HTMLElement or a Marigold component if used.',
       default: 'div',
     },
     {
       property: 'variant',
       type: 'string⎮string[]',
-      description: '',
-      default: '',
+      description: 'The variant of the component.',
+      default: 'none',
     },
     {
       property: '__baseCSS',
       type: 'CSSObject',
-      description: '',
-      default: '',
+      description: 'Style the base CSS.',
+      default: 'none',
     },
     {
       property: 'css',
       type: 'CSSObject | CSSObject',
-      description: '',
+      description: 'Set CSS for the component.',
       default: '',
     },
     {
       property: 'display',
       type: 'ResponsiveStyleValue<string>',
-      description: '',
-      default: '',
+      description: 'Set the display value.',
+      default: 'none',
     },
     {
       property: 'height',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the height of the element.',
+      default: 'none',
     },
     {
       property: 'width',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the width of the element.',
+      default: 'none',
     },
     {
       property: 'minWidth',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the minWidth of the element.',
+      default: 'none',
     },
     {
       property: 'maxWidth',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the maxWidth of the element.',
+      default: 'none',
     },
     {
       property: 'position',
       type: 'ResponsiveStyleValue<string>',
-      description: '',
-      default: '',
+      description: 'Set the position value of the element.',
+      default: 'none',
     },
     {
       property: 'top',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the top value of the element.',
+      default: 'none',
     },
     {
       property: 'bottom',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the bottom value of the element.',
+      default: 'none',
     },
     {
       property: 'right',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the right value of the element.',
+      default: 'none',
     },
     {
       property: 'left',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the left value of the element.',
+      default: 'none',
     },
     {
       property: 'zIndex',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the zIndex of the element.',
+      default: 'none',
     },
     {
       property: 'p',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the padding of the element.',
+      default: 'none',
     },
     {
       property: 'px',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the horizontal padding of the element.',
+      default: 'none',
     },
     {
       property: 'py',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the vertical padding of the element.',
+      default: 'none',
     },
     {
       property: 'pt',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the top padding of the element.',
+      default: 'none',
     },
     {
       property: 'pr',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the right padding of the element.',
+      default: 'none',
     },
     {
       property: 'pl',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the left padding of the element.',
+      default: 'none',
     },
     {
       property: 'pb',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the bottom padding of the element.',
+      default: 'none',
     },
     {
       property: 'm',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the margin of the element.',
+      default: 'none',
     },
     {
       property: 'mx',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the horizontal margin of the element.',
+      default: 'none',
     },
     {
       property: 'my',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the vertical of the element.',
+      default: 'none',
     },
     {
       property: 'mt',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the top margin of the element.',
+      default: 'none',
     },
     {
       property: 'mb',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the bottom margin of the element.',
+      default: 'none',
     },
     {
       property: 'mr',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the right margin of the element.',
+      default: 'none',
     },
     {
       property: 'ml',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the left margin of the element.',
+      default: 'none',
     },
     {
       property: 'flexDirection',
       type: 'ResponsiveStyleValue<string>',
-      description: '',
-      default: '',
+      description: 'Set the flexDirection of the element.',
+      default: 'none',
     },
     {
       property: 'flexWrap',
       type: 'ResponsiveStyleValue<string>',
-      description: '',
-      default: '',
+      description: 'Set the flexWrap of the element.',
+      default: 'none',
     },
     {
       property: 'flexShrink',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the flexShrink of the element.',
+      default: 'none',
     },
     {
       property: 'flexGrow',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the flexGrow of the element.',
+      default: 'none',
     },
     {
       property: 'alignItems',
       type: 'ResponsiveStyleValue<string>',
-      description: '',
-      default: '',
+      description: 'Set the alignItems of the element.',
+      default: 'none',
     },
     {
       property: 'justifyContent',
       type: 'ResponsiveStyleValue<string>',
-      description: '',
-      default: '',
+      description: 'Set the justifyContent of the element.',
+      default: 'none',
     },
     {
       property: 'bg',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the background of the element.',
+      default: 'none',
     },
     {
       property: 'border',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the border of the element.',
+      default: 'none',
     },
     {
       property: 'borderRadius',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the borderRadius of the element.',
+      default: 'none',
     },
     {
       property: 'boxShadow',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the boxShadow of the element.',
+      default: 'none',
     },
     {
       property: 'opacity',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the opacity value of the element.',
+      default: 'none',
     },
     {
       property: 'overflow',
       type: 'ResponsiveStyleValue<string>',
-      description: '',
-      default: '',
+      description: 'Set the overflow of the element.',
+      default: 'none',
     },
     {
       property: 'transition',
       type: 'ResponsiveStyleValue<number⎮string>',
-      description: '',
-      default: '',
+      description: 'Set the transition of the element.',
+      default: 'none',
     },
   ]}
 />
 
 ## Examples
 
+### Basic Box
+
+In this example the `<Box>` is modified with several props.
+
 ```tsx preview file=components/Box/box-success.demo.tsx
 
 ```
 
-```tsx preview file=components/Box/box-basic.demo.tsx
+### Box as Button
 
-```
+The `as` prop is set to a button HTMLElement on the left side and to a Marigold button on the right.
 
 ```tsx preview file=components/Box/button-box.demo.tsx
 
 ```
+
+### Box with several props
+
+How to use different props and CSS on the `<Box>`.
 
 ```tsx preview file=components/Box/box-text.demo.tsx
 

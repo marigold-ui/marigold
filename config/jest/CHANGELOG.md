@@ -1,5 +1,17 @@
 # @marigold/jest-config
 
+## 1.0.7
+
+### Patch Changes
+
+- [#2544](https://github.com/marigold-ui/marigold/pull/2544) [`db4cb323`](https://github.com/marigold-ui/marigold/commit/db4cb323ed6b58fac1ba424ca50349bdb981bc6b) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency typescript to v4.8.4
+
+## 1.0.6
+
+### Patch Changes
+
+- [#2446](https://github.com/marigold-ui/marigold/pull/2446) [`bc13abed`](https://github.com/marigold-ui/marigold/commit/bc13abedb3abc56cf6e1cc9ea8725b99c9eb9468) Thanks [@sebald](https://github.com/sebald)! - feat: losen peer deps for usage with npm
+
 ## 1.0.5
 
 ### Patch Changes

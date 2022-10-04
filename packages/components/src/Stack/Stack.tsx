@@ -2,13 +2,16 @@ import React, { ReactNode } from 'react';
 import { ResponsiveStyleValue } from '@marigold/system';
 
 import { Box } from '../Box';
+
 const ALIGNMENT_X = {
+  none: 'initial',
   left: 'flex-start',
   center: 'center',
   right: 'flex-end',
 };
 
 const ALIGNMENT_Y = {
+  none: 'initial',
   top: 'flex-start',
   center: 'center',
   bottom: 'flex-end',
@@ -17,7 +20,6 @@ const ALIGNMENT_Y = {
 // Props
 // ---------------
 export interface StackProps {
-  as?: 'div' | 'ul' | 'ol';
   children?: ReactNode;
   space?: ResponsiveStyleValue<string>;
   alignX?: keyof typeof ALIGNMENT_X;
@@ -30,8 +32,8 @@ export interface StackProps {
 export const Stack = ({
   children,
   space = 'none',
-  alignX = 'left',
-  alignY = 'top',
+  alignX = 'none',
+  alignY = 'none',
   stretch = false,
   ...props
 }: StackProps) => (
@@ -43,7 +45,7 @@ export const Stack = ({
       gap: space,
       alignItems: ALIGNMENT_X[alignX],
       justifyContent: ALIGNMENT_Y[alignY],
-      blockSize: stretch ? '100%' : 'auto',
+      blockSize: stretch ? '100%' : 'initial',
     }}
     {...props}
   >

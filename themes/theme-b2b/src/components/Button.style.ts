@@ -43,7 +43,7 @@ export const Button: Theme['components']['Button'] = {
       outlineColor: 'gray70',
       '&:hover': {
         color: 'secondary',
-        bg: 'gray30',
+        bg: 'gray40',
       },
     },
     text: {
@@ -51,7 +51,7 @@ export const Button: Theme['components']['Button'] = {
       '&:hover': {
         color: 'secondary',
         outlineColor: 'gray70',
-        bg: 'gray30',
+        bg: 'gray40',
       },
     },
     menu: {

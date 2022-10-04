@@ -7,12 +7,12 @@ export const colors = {
   background: {
     // alternative
     //background: '#FFF8ED',
-    light: 'hsla(28, 100%, 2.9%, .2)',
+    light: 'hsla(28, 100%, 3%, .2)',
     page: 'hsl(36, 100%, 99%)',
     foreground: 'hsl(36, 100%, 100%)',
   },
   text: {
-    muted: 'hsl(28deg 5% 57%)',
+    muted: 'hsl(28, 5%, 57%)',
     light: 'hsl(29, 37%, 55%)',
     regular: 'hsl(28, 100%, 3%)',
   },
@@ -27,10 +27,25 @@ export const colors = {
   },
   yellow: {
     base: 'hsl(46, 81%, 63%)',
+    50: 'hsl(45, 97%, 54%)',
   },
   info: {
-    background: 'hsl(207.5,100%,98.3%)',
-    base: 'hsl(208,100%,82.9%)',
-    text: 'hsl(208, 100%, 20.2%)',
+    background: 'hsl(207, 100%, 98%)',
+    base: 'hsl(208, 100%, 83%)',
+    text: 'hsl(208, 100%, 20%)',
+  },
+  red: {
+    50: 'hsl(0, 100%, 71%)',
+  },
+
+  green: {
+    50: 'hsl(130, 57%, 56%)',
+  },
+
+  blue: {
+    50: 'hsl(207, 86%, 57%)',
+  },
+  orange: {
+    50: 'hsl(29, 100%, 58%)',
   },
 };

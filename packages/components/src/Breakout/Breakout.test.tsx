@@ -10,15 +10,15 @@ test('has gridColumn and default width', () => {
   expect(breakout).toHaveStyle(`width: 100%`);
 });
 
-test('supports default verticalAlign left', () => {
+test('supports default horizontalAlign left', () => {
   render(<Breakout data-testid="breakout">breakout</Breakout>);
   const breakout = screen.getByTestId(/breakout/);
   expect(breakout).toHaveStyle(`justifyContent: flex-start`);
 });
 
-test('supports verticalAlign center', () => {
+test('supports horizontal center', () => {
   render(
-    <Breakout verticalAlign="center" data-testid="breakout">
+    <Breakout alignX="center" data-testid="breakout">
       breakout
     </Breakout>
   );
@@ -26,9 +26,9 @@ test('supports verticalAlign center', () => {
   expect(breakout).toHaveStyle(`justifyContent: center`);
 });
 
-test('supports verticalAlign right', () => {
+test('supports horizontalAlign right', () => {
   render(
-    <Breakout verticalAlign="right" data-testid="breakout">
+    <Breakout alignX="right" data-testid="breakout">
       breakout
     </Breakout>
   );
@@ -42,9 +42,9 @@ test('supports default horizontalAlign top', () => {
   expect(breakout).toHaveStyle(`alignItems: flex-start`);
 });
 
-test('supports horizontalAlign center', () => {
+test('supports verticalAlign center', () => {
   render(
-    <Breakout horizontalAlign="center" data-testid="breakout">
+    <Breakout alignY="center" data-testid="breakout">
       breakout
     </Breakout>
   );
@@ -52,12 +52,22 @@ test('supports horizontalAlign center', () => {
   expect(breakout).toHaveStyle(`alignItems: center`);
 });
 
-test('supports horizontalAlign bottom', () => {
+test('supports verticalAlign bottom', () => {
   render(
-    <Breakout horizontalAlign="bottom" data-testid="breakout">
+    <Breakout alignY="bottom" data-testid="breakout">
       breakout
     </Breakout>
   );
   const breakout = screen.getByTestId(/breakout/);
   expect(breakout).toHaveStyle(`alignItems: flex-end`);
+});
+
+test('supports height prop', () => {
+  render(
+    <Breakout height="200px" data-testid="breakout">
+      breakout
+    </Breakout>
+  );
+  const breakout = screen.getByTestId(/breakout/);
+  expect(breakout).toHaveStyle(`height: 200px`);
 });

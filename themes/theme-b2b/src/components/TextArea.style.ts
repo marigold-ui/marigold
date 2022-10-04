@@ -19,8 +19,8 @@ export const TextArea: Theme['components']['TextArea'] = {
     },
 
     '&:focus': {
-      borderColor: 'blue60',
-      boxShadow: `0 0 0 1px ${colors.blue60}`,
+      borderColor: 'orange60',
+      boxShadow: `0 0 0 1px ${colors.orange60}`,
     },
 
     '&:disabled': {

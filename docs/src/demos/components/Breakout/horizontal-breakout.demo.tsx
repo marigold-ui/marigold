@@ -1,17 +1,25 @@
-import { Box, Breakout } from '@marigold/components';
+import { Box, Breakout, Container } from '@marigold/components';
 
 export const HorizontalBreakout = () => (
-  <Breakout>
+  <Container align="center">
     <Box
-      as={Breakout}
-      border="1px solid #ced4da"
-      bg="#e9ecef"
-      height="100px"
-      p="small"
-      horizontalAlign="bottom"
-      verticalAlign="center"
-    >
-      BREAKOUT with bottom aligned content
-    </Box>
-  </Breakout>
+      css={{
+        border: '1px solid #ced4da',
+        bg: '#e9ecef',
+        height: '80px',
+        width: '100%',
+      }}
+    />
+    <Breakout alignX="right">
+      <Box>BREAKOUT with right aligned content</Box>
+    </Breakout>
+    <Box
+      css={{
+        border: '1px solid #ced4da',
+        bg: '#e9ecef',
+        height: '80px',
+        width: '100%',
+      }}
+    />
+  </Container>
 );

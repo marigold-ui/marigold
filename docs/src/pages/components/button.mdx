@@ -2,25 +2,32 @@
 title: Button
 group: Forms
 figma: https://www.figma.com/file/DFKyTGHAoDxOsUBPszLLxP/%F0%9F%8F%B5%EF%B8%8FMarigold?node-id=11%3A269
+github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Button/Button.tsx
+edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/button.mdx
 switchTheme: true
+caption: Compomnent for button elements.
 ---
 
-The Button component renders a `<button>` element.
-Buttons allow users to perform an action.
+The `<Button>` is a common form component, that renders a button element, which allows users to perform an action.
 They have multiple styles for various needs, and are ideal for calling attention to where a user needs to do something in order to move forward in a flow.
-The style variant and size of the button can be added with the variant prop and is composed like `variant.size`.
+
+The variant and size of the `<Button>` can be added with the `variant` prop. Variants are `primary`, `secondary`, `ghost` and `text`. You can also set the `size`, currently there is just one size available.
 
 <Preview>
   <ButtonVariantDemo />
 </Preview>
 
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
 ```tsx onlyCode
 import { Button } from '@marigold/components';
 ```
 
-## Usage
-
-### Apperance
+### Appearance
 
 <AppearanceTable component={title} />
 
@@ -31,98 +38,74 @@ import { Button } from '@marigold/components';
     {
       property: 'space',
       type: 'ResponsiveStyleValue<string>',
-      description: 'Spacing between child elements',
+      description: 'Spacing between child element.',
+      default: 'none',
     },
     {
       property: 'onPress',
       type: '(e: PressEvent) => void',
       description:
-        'Handler that is called when the press is released over the target',
+        'Handler that is called when the press is released over the target.',
+      default: 'none',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'Disables the button.',
+      default: 'false',
+    },
+    {
+      property: 'fullWidth',
+      type: 'boolean',
+      description: 'Stretches the button width with full available space.',
+      default: 'false',
+    },
+    {
+      property: '...',
+      type: '',
+      description: 'Yes you can use all regular attributes of button!',
+      default: '',
     },
   ]}
 />
 
-## Types
+## Examples
 
 ### Primary Button
 
-The primary button function is to achieve the most common or most important goal of the user, it has more visual weight than the secondary options. There should not be more than one primary button in a screen at the time.
+The function of the primary `<Button>` is to achieve the most common or most important goal of the user, it has more visual weight than the secondary `<Button>`. There should not be more than one primary `<Button>` in a screen at the time.
 
-#### Default
+```tsx preview file=components/Button/button-primary.demo.tsx
 
-```tsx preview
-<Button variant="primary">Primary</Button>
-```
-
-#### Disabled
-
-```tsx preview
-<Button variant="primary" disabled>
-  Primary
-</Button>
 ```
 
 ### Secondary Button
 
-Secondary buttons are an alternative to the user to the Primary option. They are used for actions like canceling, skipping, resetting, declining an offer etc.
+The Secondary `<Button>` is an alternative to the user to the primary `<Button>`. They are used for actions like canceling, skipping, resetting, declining an offer etc.
 
-<br />
+```tsx preview file=components/Button/button-secondary.demo.tsx
 
-#### Default
-
-```tsx preview
-<Button variant="secondary">Secondary</Button>
-```
-
-#### Disabled
-
-```tsx preview
-<Button variant="secondary" disabled>
-  Secondary
-</Button>
 ```
 
 ### Ghost Button
 
-They are used for miscellaneous actions, they are important but is not the ones where it is desired that the user focus at the moment.
+Ghost `<Button>` are used for miscellaneous actions, they are important but is not the ones where it is desired that the user focus at the moment.
 
-<br />
+```tsx preview file=components/Button/button-ghost.demo.tsx
 
-#### Default
-
-```tsx preview
-<Button variant="ghost">Ghost</Button>
-```
-
-#### Disabled
-
-```tsx preview
-<Button variant="ghost" disabled>
-  Ghost
-</Button>
 ```
 
 ### Suplementary Text Button
 
-They can be used in a similar way of a secondary button, but they are meant to be less relevant to the user.
+The only text `<Button>` can be used in a similar way of a secondary `<Button>`, but they are meant to be less relevant to the user. It is also a good way if you want a `<Button>` that don't really look like one.
 
-#### Default
+```tsx preview file=components/Button/button-text.demo.tsx
 
-```tsx preview
-<Button variant="text">Text Only</Button>
-```
-
-#### Disabled
-
-```tsx preview
-<Button variant="text" disabled>
-  Text Only
-</Button>
 ```
 
 ### Button with Icon
 
-Icons can be added in Order to make clearer what a button does. Buttons should not be made only with icons, because every user may understand them on a different way.
+[Icons](/components/icon/) can be added in order to make clear, what a `<Button>` does. Buttons should not be made only with icons, because every user may understand them on a different way. If you want to have simple icon with a [`<Tooltip>`](/components/tooltip/) you can choose a `<Button>` with an icon.
 
 ```tsx preview file=components/Button/button-icon.demo.tsx
 
@@ -131,6 +114,7 @@ Icons can be added in Order to make clearer what a button does. Buttons should n
 ### Button Sizes
 
 If there are many actions in one page, is it possible to use small buttons instead of big ones. As well if the page is required to be open on mobile devices.
+Also there is the `fullWidth` property, with that one you can stretch the width of the `<Button>`.
 
 ```tsx preview file=components/Button/button-size.demo.tsx
 

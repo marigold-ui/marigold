@@ -1,5 +1,27 @@
 # @marigold/storybook-config
 
+## 0.7.9
+
+### Patch Changes
+
+- [#2544](https://github.com/marigold-ui/marigold/pull/2544) [`db4cb323`](https://github.com/marigold-ui/marigold/commit/db4cb323ed6b58fac1ba424ca50349bdb981bc6b) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency typescript to v4.8.4
+
+- Updated dependencies [[`690191b2`](https://github.com/marigold-ui/marigold/commit/690191b2cd8cbc980f5ff54a2dbc82a726782f36), [`fb7b1b9f`](https://github.com/marigold-ui/marigold/commit/fb7b1b9fb083f48b744c3873823865d63bf3dbd5), [`93cfb764`](https://github.com/marigold-ui/marigold/commit/93cfb764bc3d184fd3314b335af8f4877251357e)]:
+  - @marigold/components@3.0.1
+  - @marigold/theme-b2b@14.0.1
+  - @marigold/theme-core@14.0.1
+  - @marigold/theme-unicorn@11.0.1
+
+## 0.7.8
+
+### Patch Changes
+
+- Updated dependencies [[`20aeba63`](https://github.com/marigold-ui/marigold/commit/20aeba63b2bd7dceff3cb7324764dca2c4d8842b), [`a6fbc295`](https://github.com/marigold-ui/marigold/commit/a6fbc2954c4022e18dfecc8c85946b0ae1af5467), [`4495fcb1`](https://github.com/marigold-ui/marigold/commit/4495fcb12723261c61846d30ff09597e2da56f1f), [`885e3ca4`](https://github.com/marigold-ui/marigold/commit/885e3ca477a6524855f7a62cb3568fec2b561cd4), [`ea7f5d0c`](https://github.com/marigold-ui/marigold/commit/ea7f5d0c0d94be2e9d1df14f212d75c82f311d18), [`baf5bb57`](https://github.com/marigold-ui/marigold/commit/baf5bb573b5e2f4ff273f9436657a5e38ee866ea), [`7f1a9951`](https://github.com/marigold-ui/marigold/commit/7f1a9951dcb7647e40a98f22789da38b17a287da), [`fcb15230`](https://github.com/marigold-ui/marigold/commit/fcb15230d4565eba65c7164ffaa042d59ad02e7a), [`7b9c90ec`](https://github.com/marigold-ui/marigold/commit/7b9c90ecff94431a807d300015940e64fe240353), [`d10bb310`](https://github.com/marigold-ui/marigold/commit/d10bb310914deaa4a5b01ade1e783ad956483021)]:
+  - @marigold/components@3.0.0
+  - @marigold/theme-b2b@14.0.0
+  - @marigold/theme-core@14.0.0
+  - @marigold/theme-unicorn@11.0.0
+
 ## 0.7.7
 
 ### Patch Changes
