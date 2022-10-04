@@ -33,6 +33,8 @@ export const Headline: Theme['components']['Headline'] = {
         color: 'transparent',
         background: `linear-gradient(45deg, ${colors.brand.primary}, ${colors.yellow.base}) 0 0 / 100% `,
         backgroundClip: 'text',
+        hyphens: 'auto',
+        wordBreak: 'break-word',
       },
     },
   },
