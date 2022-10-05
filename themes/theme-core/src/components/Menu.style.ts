@@ -10,7 +10,7 @@ export const Menu: Theme['components']['Menu'] = {
     },
     item: {
       fontSize: 'xxsmall',
-      px: 'small',
+      px: 'xxsmall',
       py: 'xxsmall',
       cursor: 'pointer',
 
