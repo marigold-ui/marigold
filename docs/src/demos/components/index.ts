@@ -38,6 +38,7 @@ export * from './Select';
 export * from './Slider';
 export * from './Split';
 export * from './Switch';
+export * from './SVG';
 export * from './Table';
 export * from './Tiles';
 export * from './Text';
