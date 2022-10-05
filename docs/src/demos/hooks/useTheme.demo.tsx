@@ -1,7 +1,7 @@
 import { List } from '@marigold/components';
 import { Box, ThemeProvider, useTheme } from '@marigold/system';
 
-export const getTheme = () => {
+export const useCurrentTheme = () => {
   const { theme } = useTheme();
 
   return (
