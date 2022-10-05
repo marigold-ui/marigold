@@ -63,9 +63,9 @@ export default async function configuration() {
           'Collections',
           'Overlay',
           'Content',
-          'Hooks',
         ],
       },
+      { name: 'hooks' },
       { name: 'develop' },
     ],
   });
