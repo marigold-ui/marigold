@@ -29,7 +29,6 @@ export const Label = ({
 }: LabelProps) => {
   const styles = useComponentStyles('Label', { size, variant });
 
-  console.log(props);
   return (
     <Box
       {...props}
