@@ -3,7 +3,11 @@ import type { Theme } from '@marigold/components';
 export const ListBox: Theme['components']['ListBox'] = {
   base: {
     container: {
+      fontSize: 'xxsmall',
       background: 'gray00',
+
+      px: 'xxsmall',
+      pb: 'xxsmall',
 
       borderTop: 'none',
       borderRight: '1px solid',
@@ -30,8 +34,10 @@ export const ListBox: Theme['components']['ListBox'] = {
     },
 
     section: {
+      fontSize: 'xxsmall',
+      fontWeight: 'bold',
+      lineHeight: 'medium',
       px: 'xxsmall',
-      color: 'gray50',
     },
 
     option: {
@@ -42,8 +48,7 @@ export const ListBox: Theme['components']['ListBox'] = {
       outline: 'none',
       cursor: 'pointer',
 
-      px: 'xxsmall',
-      pb: 'xxsmall',
+      p: '0 6px 0 15px',
 
       '&:focus': {
         color: 'gray00',

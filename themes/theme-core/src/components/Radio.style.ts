@@ -3,7 +3,7 @@ import type { Theme } from '@marigold/components';
 export const Radio: Theme['components']['Radio'] = {
   base: {
     label: {
-      fontSize: 'xsmall',
+      fontSize: 'xxsmall',
 
       '&:disabled': {
         color: 'gray40',

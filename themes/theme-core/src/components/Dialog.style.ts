@@ -4,16 +4,21 @@ export const Dialog: Theme['components']['Dialog'] = {
   base: {
     container: {
       borderRadius: '2px',
-      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
       pl: 'large',
       pr: 'large',
       pb: 'large',
       pt: 'small',
+      bg: '#ecebe6',
     },
     closeButton: {
       position: 'relative',
       right: '-24px',
       top: '-8px',
+      backgroundColor: 'primary',
+      border: '1px solid ',
+      borderColor: 'primary',
+      borderRadius: 'small',
+      color: '#FFF',
     },
   },
 };
