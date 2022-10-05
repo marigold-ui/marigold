@@ -66,6 +66,9 @@ export const ListBox: Theme['components']['ListBox'] = {
         cursor: 'not-allowed',
         color: 'gray40',
       },
+      '&:hover': {
+        bg: 'blue60',
+      },
     },
   },
 };
