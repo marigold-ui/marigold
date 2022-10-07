@@ -4,7 +4,6 @@ export const Message: Theme['components']['Message'] = {
   base: {
     container: {
       borderStyle: 'solid',
-      borderWidth: '2px 2px 2px 16px',
       pt: 'xsmall',
       pb: 'small',
       px: 'small',
@@ -13,7 +12,6 @@ export const Message: Theme['components']['Message'] = {
     },
     title: {
       lineHeight: 'large',
-      fontWeight: 'bold',
     },
     content: {
       lineHeight: 'small',
@@ -32,6 +30,12 @@ export const Message: Theme['components']['Message'] = {
       icon: {
         color: 'warning',
       },
+      content: {
+        color: 'warning',
+      },
+      title: {
+        color: 'warning',
+      },
     },
     error: {
       container: {
@@ -40,12 +44,24 @@ export const Message: Theme['components']['Message'] = {
       icon: {
         color: 'error',
       },
+      content: {
+        color: 'error',
+      },
+      title: {
+        color: 'error',
+      },
     },
     info: {
       container: {
         borderColor: 'info',
       },
       icon: {
+        color: 'info',
+      },
+      content: {
+        color: 'info',
+      },
+      title: {
         color: 'info',
       },
     },

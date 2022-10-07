@@ -7,5 +7,8 @@ export const Label: Theme['components']['Label'] = {
     '&:disabled': {
       color: 'gray40',
     },
+    '&:required': {
+      fontWeight: 'bold',
+    },
   },
 };

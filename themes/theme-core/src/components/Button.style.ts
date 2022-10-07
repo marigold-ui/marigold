@@ -21,11 +21,11 @@ export const Button: Theme['components']['Button'] = {
     },
 
     '&:disabled': {
-      cursor: 'none',
+      cursor: 'not-allowed',
       color: 'gray40',
       bg: 'gray00',
       border: '1px solid',
-      borderColor: 'gray00',
+      borderColor: 'gray40',
     },
   },
   variant: {

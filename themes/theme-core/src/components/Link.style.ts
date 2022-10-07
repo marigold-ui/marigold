@@ -4,7 +4,7 @@ export const Link: Theme['components']['Link'] = {
   base: {
     color: '#900',
     '&:hover, &:visited': {
-      textDecoration: 'none',
+      textDecoration: 'underline',
       cursor: 'pointer',
     },
     '&:disabled': {

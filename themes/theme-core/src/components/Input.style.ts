@@ -1,5 +1,12 @@
 import type { Theme } from '@marigold/components';
 
 export const Input: Theme['components']['Input'] = {
-  base: {},
+  base: {
+    border: '1px solid',
+    borderColor: '#aaa',
+    borderRadius: 'small',
+    lineHeight: 'medium',
+    py: '0',
+    px: 'xxsmall',
+  },
 };
