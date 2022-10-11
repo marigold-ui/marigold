@@ -1,5 +1,13 @@
 # @marigold/system
 
+## 3.0.2
+
+### Patch Changes
+
+- [#2545](https://github.com/marigold-ui/marigold/pull/2545) [`e65171c6`](https://github.com/marigold-ui/marigold/commit/e65171c6b30f0091491a7e0394e5ddafc0d72bf4) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @babel/core to v7.19.3
+
+- [#2551](https://github.com/marigold-ui/marigold/pull/2551) [`d9974f91`](https://github.com/marigold-ui/marigold/commit/d9974f91b03531ac46715a4cf85965141ee64dfd) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: improve core theme
+
 ## 3.0.1
 
 ### Patch Changes

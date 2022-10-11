@@ -1,5 +1,17 @@
 # @marigold/components
 
+## 3.0.2
+
+### Patch Changes
+
+- [#2560](https://github.com/marigold-ui/marigold/pull/2560) [`7368d457`](https://github.com/marigold-ui/marigold/commit/7368d457bf62dcd3fd99a95123fb4229a078982a) Thanks [@sebald](https://github.com/sebald)! - fix: allow `<NumberField>` with little width
+
+- [#2551](https://github.com/marigold-ui/marigold/pull/2551) [`d9974f91`](https://github.com/marigold-ui/marigold/commit/d9974f91b03531ac46715a4cf85965141ee64dfd) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: improve core theme
+
+- Updated dependencies [[`e65171c6`](https://github.com/marigold-ui/marigold/commit/e65171c6b30f0091491a7e0394e5ddafc0d72bf4), [`d9974f91`](https://github.com/marigold-ui/marigold/commit/d9974f91b03531ac46715a4cf85965141ee64dfd)]:
+  - @marigold/system@3.0.2
+  - @marigold/icons@1.1.2
+
 ## 3.0.1
 
 ### Patch Changes
