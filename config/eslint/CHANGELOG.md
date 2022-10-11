@@ -1,5 +1,11 @@
 # @marigold/eslint-config
 
+## 0.4.3
+
+### Patch Changes
+
+- [#2545](https://github.com/marigold-ui/marigold/pull/2545) [`e65171c6`](https://github.com/marigold-ui/marigold/commit/e65171c6b30f0091491a7e0394e5ddafc0d72bf4) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @babel/core to v7.19.3
+
 ## 0.4.2
 
 ### Patch Changes

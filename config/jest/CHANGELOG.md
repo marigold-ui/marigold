@@ -1,5 +1,13 @@
 # @marigold/jest-config
 
+## 1.0.8
+
+### Patch Changes
+
+- [#2555](https://github.com/marigold-ui/marigold/pull/2555) [`e9eca20b`](https://github.com/marigold-ui/marigold/commit/e9eca20b13f087edf6897fd90c49460ec258f257) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @swc/core to v1.3.5
+
+- [#2545](https://github.com/marigold-ui/marigold/pull/2545) [`e65171c6`](https://github.com/marigold-ui/marigold/commit/e65171c6b30f0091491a7e0394e5ddafc0d72bf4) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @babel/core to v7.19.3
+
 ## 1.0.7
 
 ### Patch Changes
