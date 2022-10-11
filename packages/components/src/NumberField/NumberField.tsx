@@ -136,7 +136,8 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
             display: 'flex',
             alignItems: 'stretch',
             '> input': {
-              flexGrow: 1,
+              flex: 1,
+              minWidth: 0, // Override browser default
             },
           }}
           css={styles.group}
