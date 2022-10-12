@@ -9,9 +9,6 @@ import { Close, ExternalLink } from '@marigold/icons';
 import { Inline } from '../Inline';
 import { Split } from '../Split';
 import { Tiles } from '../Tiles';
-import { Stack } from '../Stack';
-import { Breakout } from '../Breakout';
-import { Box } from '@marigold/system';
 
 export default {
   title: 'Components/Card',
