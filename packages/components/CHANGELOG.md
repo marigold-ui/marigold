@@ -1,5 +1,17 @@
 # @marigold/components
 
+## 3.0.3
+
+### Patch Changes
+
+- [#2561](https://github.com/marigold-ui/marigold/pull/2561) [`04c7f2eb`](https://github.com/marigold-ui/marigold/commit/04c7f2eb3d52b3eebf755a58f6df2559c0acb3cd) Thanks [@sebald](https://github.com/sebald)! - fix: `<Table>` stretch works as expected
+
+- [#2562](https://github.com/marigold-ui/marigold/pull/2562) [`74d47ba2`](https://github.com/marigold-ui/marigold/commit/74d47ba2ac4d28147c5052ffff9c7a287c001f2c) Thanks [@sebald](https://github.com/sebald)! - fix: `<Select>` chevron
+
+- Updated dependencies []:
+  - @marigold/system@3.0.3
+  - @marigold/icons@1.1.3
+
 ## 3.0.2
 
 ### Patch Changes
