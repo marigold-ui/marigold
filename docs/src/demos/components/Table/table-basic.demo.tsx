@@ -1,7 +1,11 @@
 import { Table } from '@marigold/components';
 
 export const BasicTable = () => (
-  <Table aria-label="Table with multiple selection" selectionMode="multiple">
+  <Table
+    aria-label="Table with multiple selection"
+    selectionMode="multiple"
+    stretch
+  >
     <Table.Header>
       <Table.Column>Name</Table.Column>
       <Table.Column>Firstname</Table.Column>

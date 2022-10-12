@@ -82,11 +82,11 @@ export const Table: Table = ({
         as="table"
         ref={tableRef}
         __baseCSS={{
-          display: 'block',
+          display: stretch ? 'table' : 'block',
+          width: stretch ? '100%' : undefined,
           borderCollapse: 'collapse',
           overflow: 'auto',
           whiteSpace: 'nowrap',
-          width: stretch ? '100%' : undefined,
         }}
         css={styles.table}
         {...gridProps}
