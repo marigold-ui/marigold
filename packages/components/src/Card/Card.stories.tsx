@@ -3,6 +3,12 @@ import type { Meta, ComponentStory } from '@storybook/react';
 import { Link } from '../Link';
 import { Card } from './Card';
 import { Container } from '../Container';
+import { Center } from '../Center';
+import { Text } from '../Text';
+import { Close, ExternalLink } from '@marigold/icons';
+import { Inline } from '../Inline';
+import { Split } from '../Split';
+import { Tiles } from '../Tiles';
 
 export default {
   title: 'Components/Card',
@@ -43,4 +49,39 @@ export const Basic: ComponentStory<typeof Card> = args => (
       </section>
     </Card>
   </Container>
+);
+
+export const CoreCard: ComponentStory<typeof Card> = args => (
+  <Tiles itemMinWidth="300px" space="small">
+    <Card {...args} p="xsmall">
+      <Inline alignY="top">
+        <Link href={'#'} target="blank">
+          <ExternalLink size={26} fill="#990000" />
+        </Link>
+        <Split />
+        <Close />
+      </Inline>
+      <Center>
+        <Link variant="cardText" href={'#'}>
+          Reservix GmbH (1)
+        </Link>
+      </Center>
+    </Card>
+
+    <Card {...args} p="xsmall">
+      <Inline alignY="top">
+        <Link href={'#'} target="blank">
+          <ExternalLink size={26} fill="#990000" />
+        </Link>
+        <Split />
+        <Close />
+      </Inline>
+      <Center>
+        <Text variant="bold">Interne Verkaufsstelle</Text>
+        <Link variant="cardText" href={'#'}>
+          Kasse 2 (9)
+        </Link>
+      </Center>
+    </Card>
+  </Tiles>
 );
