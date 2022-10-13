@@ -61,6 +61,7 @@ export const Button: Theme['components']['Button'] = {
     },
     text: {
       color: 'secondary',
+      border: 'none',
       ':hover': {
         color: 'secondary',
         outlineColor: 'gray70',
