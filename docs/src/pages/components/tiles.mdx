@@ -49,6 +49,13 @@ import { Tiles } from '@marigold/components';
       description: 'Set minimum width for all items inside',
       default: '250px',
     },
+    {
+      property: 'gridAutoRows',
+      type: 'boolean',
+      description:
+        'If you set gridAutoRows, all items will have the size of the biggest item',
+      default: 'false',
+    },
   ]}
 />
 
@@ -67,6 +74,14 @@ An example on how to use the `space` prop. The default is none. You can set it t
 This Example shows how to use the `itemMinWidth` property on `<Tiles>`. The default value is `250px`.
 
 ```tsx preview file=components/Tiles/tiles-itemwidth.demo.tsx
+
+```
+
+### Tiles with gridAutoRows
+
+The Example shows how to use the `gidAutoRows` property, which is a boolean that can be used to size the items of the `<Tiles>`. You can see that all items have the size of the large Pikachu card. It is necessary if you want all items in the largest size of a child.
+
+```tsx preview file=components/Tiles/tiles-autorows.demo.tsx
 
 ```
 

@@ -62,3 +62,18 @@ test('supports other itemMinWidth prop than default', () => {
     `gridTemplateColumns: repeat(auto-fit, minmax(min(400px, 100%), 1fr))`
   );
 });
+
+test('supports gridAutoRows prop', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Tiles gridAutoRows data-testid="tiles">
+        <Box>tiles</Box>
+        <Box>tiles</Box>
+        <Box>tiles</Box>
+        <Box>tiles</Box>
+      </Tiles>
+    </MarigoldProvider>
+  );
+  const tiles = screen.getByTestId(/tiles/);
+  expect(tiles).toHaveStyle(`gridAutoRows: 1fr`);
+});
