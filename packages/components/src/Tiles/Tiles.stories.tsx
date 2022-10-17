@@ -38,6 +38,13 @@ export default {
         },
       },
     },
+    gridAutoRows: {
+      control: {
+        type: 'boolean',
+      },
+      description:
+        'Specifies the size of an implicitly-created grid row track or pattern of tracks.',
+    },
   },
 } as Meta;
 
@@ -51,7 +58,43 @@ export const Boxes: ComponentStory<typeof Tiles> = args => (
     <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
     <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
     <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+  </Tiles>
+);
+
+export const DifferentHights: ComponentStory<typeof Tiles> = args => (
+  <Tiles {...args}>
+    <Box border="1px solid #ced4da" bg="#e9ecef">
+      <Text align="center">I love Tiles!</Text>
+      <Text align="center">I love Tiles!</Text>
+      <Text align="center">I love Tiles!</Text>
+      <Text align="center">I love Tiles!</Text>
+      <Text align="center">I love Tiles!</Text>
+      <Text align="center">I love Tiles!</Text>
+      <Text align="center">I love Tiles!</Text>
+      <Text align="center">I love Tiles!</Text>
+    </Box>
+    <Box border="1px solid #ced4da" bg="#e9ecef">
+      <Text align="center">I love Tiles!</Text>
+      <Text align="center">I love Tiles!</Text>
+    </Box>
+    <Box border="1px solid #ced4da" bg="#e9ecef">
+      <Text align="center">I love Tiles!</Text>
+      <Text align="center">I love Tiles!</Text>
+      <Text align="center">I love Tiles!</Text>
+      <Text align="center">I love Tiles!</Text>
+    </Box>
+    <Box border="1px solid #ced4da" bg="#e9ecef">
+      <Text align="center">I love Tiles!</Text>
+      <Text align="center">I love Tiles!</Text>
+    </Box>
+    <Box border="1px solid #ced4da" bg="#e9ecef">
+      <Text align="center">I love Tiles!</Text>
+      <Text align="center">I love Tiles!</Text>
+    </Box>
+    <Box border="1px solid #ced4da" bg="#e9ecef">
+      <Text align="center">I love Tiles!</Text>
+      <Text align="center">I love Tiles!</Text>
+    </Box>
   </Tiles>
 );
 
