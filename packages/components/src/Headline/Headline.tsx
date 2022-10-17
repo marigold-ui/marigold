@@ -4,6 +4,7 @@ import {
   useComponentStyles,
   ThemeComponentProps,
   ThemeExtension,
+  CSSObject,
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
@@ -18,6 +19,8 @@ export interface HeadlineProps
     ComponentProps<'h1'> {
   children?: ReactNode;
   level?: '1' | '2' | '3' | '4' | '5' | '6';
+  align?: CSSObject['textAlign'];
+  color?: string;
 }
 
 // Component
@@ -26,6 +29,8 @@ export const Headline = ({
   children,
   variant,
   size,
+  align,
+  color,
   level = '1',
   ...props
 }: HeadlineProps) => {
@@ -34,7 +39,11 @@ export const Headline = ({
     size: size ?? `level-${level}`,
   });
   return (
-    <Box as={`h${level}`} {...props} css={styles}>
+    <Box
+      as={`h${level}`}
+      {...props}
+      css={[styles, { color, textAlign: align }]}
+    >
       {children}
     </Box>
   );
