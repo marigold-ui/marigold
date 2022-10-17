@@ -24,6 +24,23 @@ export default {
       },
       description: 'The size of the headline',
     },
+    align: {
+      control: {
+        type: 'text',
+      },
+      description: 'Set the text-align of the component',
+    },
+    color: {
+      control: {
+        type: 'text',
+      },
+      description: 'Text color',
+      table: {
+        defaultValue: {
+          summary: 'inherit',
+        },
+      },
+    },
   },
 } as Meta;
 

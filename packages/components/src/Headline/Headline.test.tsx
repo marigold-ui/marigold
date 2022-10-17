@@ -105,3 +105,23 @@ test('headline accepts a variant', () => {
   const headline = screen.getByTestId('headline');
   expect(headline).toHaveStyle(`color: white`);
 });
+
+test('headline accepts align property', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Headline data-testid="headline" align="center" />
+    </ThemeProvider>
+  );
+  const headline = screen.getByTestId('headline');
+  expect(headline).toHaveStyle(`textAlign: center`);
+});
+
+test('headline accepts color property', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Headline data-testid="headline" color="red" />
+    </ThemeProvider>
+  );
+  const headline = screen.getByTestId('headline');
+  expect(headline).toHaveStyle(`color: red`);
+});
