@@ -1,5 +1,14 @@
 # @marigold/theme-core
 
+## 14.0.4
+
+### Patch Changes
+
+- [#2564](https://github.com/marigold-ui/marigold/pull/2564) [`09745fca`](https://github.com/marigold-ui/marigold/commit/09745fca3b285b88c11e129a4a34d5efef71a703) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add card, text style for core
+
+- Updated dependencies [[`09745fca`](https://github.com/marigold-ui/marigold/commit/09745fca3b285b88c11e129a4a34d5efef71a703), [`b20b0111`](https://github.com/marigold-ui/marigold/commit/b20b0111d645939b6210fad8b43690964186cd9c), [`51a95328`](https://github.com/marigold-ui/marigold/commit/51a95328331aa5d3f6d334ef3b205d6b70bf8f0f)]:
+  - @marigold/components@3.0.4
+
 ## 14.0.3
 
 ### Patch Changes
