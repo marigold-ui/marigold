@@ -3,7 +3,7 @@ import type { Theme } from '@marigold/components';
 export const Message: Theme['components']['Message'] = {
   base: {
     container: {
-      borderStyle: 'solid',
+      border: '1px solid',
       pt: 'xsmall',
       pb: 'small',
       px: 'small',

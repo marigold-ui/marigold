@@ -62,10 +62,20 @@ export const Button: Theme['components']['Button'] = {
     text: {
       color: 'secondary',
       border: 'none',
-      ':hover': {
+      '&:hover': {
         color: 'secondary',
         outlineColor: 'gray70',
         bg: 'gray30',
+        cursor: 'pointer',
+      },
+    },
+    link: {
+      color: 'text',
+      border: 'none',
+      bg: 'none',
+      '&:hover': {
+        textDecoration: 'underline',
+        bg: 'none',
         cursor: 'pointer',
       },
     },

@@ -16,12 +16,5 @@ export const Link: Theme['components']['Link'] = {
       color: 'text',
       textDecoration: 'none',
     },
-    cardText: {
-      color: 'text',
-      fontWeight: 'bold',
-      '&:hover': {
-        textDecoration: 'none',
-      },
-    },
   },
 };

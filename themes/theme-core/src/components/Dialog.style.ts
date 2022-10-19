@@ -14,11 +14,14 @@ export const Dialog: Theme['components']['Dialog'] = {
       position: 'relative',
       right: '-24px',
       top: '-8px',
-      backgroundColor: 'primary',
+      bg: 'primary',
       border: '1px solid ',
       borderColor: 'primary',
       borderRadius: 'small',
       color: '#FFF',
+      '&:hover': {
+        bg: 'none',
+      },
     },
   },
 };
