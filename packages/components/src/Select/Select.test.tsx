@@ -686,6 +686,7 @@ test('allows to set side prop', () => {
     </OverlayProvider>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByTestId('select').parentElement?.parentElement;
   expect(container).toHaveStyle('flexDirection: row');
   expect(container).toHaveStyle('alignItems: baseline');

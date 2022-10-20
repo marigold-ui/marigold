@@ -318,6 +318,7 @@ test('allows to set side prop', () => {
     </ThemeProvider>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
   expect(container).toHaveStyle('flexDirection: row');
   expect(container).toHaveStyle('alignItems: baseline');
