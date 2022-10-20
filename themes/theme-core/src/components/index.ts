@@ -4,6 +4,7 @@ export * from './Card.style';
 export * from './Checkbox.style';
 export * from './Dialog.style';
 export * from './Divider.style';
+export * from './Footer.style';
 export * from './Headline.style';
 export * from './HelpText.style';
 export * from './Image.style';

@@ -8,4 +8,9 @@ export const Card: Theme['components']['Card'] = {
     borderRadius: 'large',
     maxWidth: '300px',
   },
+  size: {
+    medium: {
+      height: 100,
+    },
+  },
 };
