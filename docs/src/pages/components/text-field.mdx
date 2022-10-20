@@ -100,6 +100,12 @@ import { TextField } from '@marigold/components';
       default: '100%',
     },
     {
+      property: 'side',
+      type: '"right" | "left"',
+      description: 'Set the label on the right or left side.',
+      default: 'none%',
+    },
+    {
       property: '...',
       type: '',
       description: 'Yes you can use all regular attributes of `input!`',
@@ -155,5 +161,13 @@ The example shows how to set the `error` and `errorMessage` properties. If you f
 In this example you can see different types of inputs, like email, date or telephone number.
 
 ```tsx preview file=components/TextField/textfield-types.demo.tsx
+
+```
+
+### Use side property
+
+The Example shows how to use the `side` property. With that you can decide on which side you want your `label`.
+
+```tsx preview file=components/TextField/textfield-side.demo.tsx
 
 ```
