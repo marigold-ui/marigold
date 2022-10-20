@@ -673,3 +673,20 @@ test('forwards ref', () => {
 });
 
 // FIXME: We currently have no easy way to test the focus + hover styling
+
+test('allows to set side prop', () => {
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" side="left">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const container = screen.getByTestId('select').parentElement?.parentElement;
+  expect(container).toHaveStyle('flexDirection: row');
+  expect(container).toHaveStyle('alignItems: baseline');
+});
