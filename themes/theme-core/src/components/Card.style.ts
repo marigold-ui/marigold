@@ -14,4 +14,9 @@ export const Card: Theme['components']['Card'] = {
       minHeight: '100px',
     },
   },
+  size: {
+    medium: {
+      height: 100,
+    },
+  },
 };

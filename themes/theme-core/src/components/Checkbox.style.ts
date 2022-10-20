@@ -40,4 +40,11 @@ export const Checkbox: Theme['components']['Checkbox'] = {
       },
     },
   },
+  size: {
+    small: {
+      container: {
+        py: 'xxsmall',
+      },
+    },
+  },
 };

@@ -12,6 +12,8 @@ export const Dialog: Theme['components']['Dialog'] = {
     },
     closeButton: {
       position: 'relative',
+      height: 24,
+      width: 24,
       right: '-24px',
       top: '-8px',
       bg: 'primary',
@@ -21,6 +23,13 @@ export const Dialog: Theme['components']['Dialog'] = {
       color: '#FFF',
       '&:hover': {
         bg: 'none',
+      },
+    },
+  },
+  size: {
+    medium: {
+      container: {
+        width: '600px',
       },
     },
   },
