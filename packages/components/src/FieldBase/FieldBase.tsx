@@ -3,8 +3,6 @@ import { Box, StateAttrProps } from '@marigold/system';
 
 import { Label, LabelProps } from '../Label';
 import { HelpText } from '../HelpText';
-import { NONAME } from 'dns';
-
 // Props
 // ---------------
 export interface FieldBaseProps {
