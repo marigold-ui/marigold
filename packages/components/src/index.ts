@@ -42,3 +42,4 @@ export * from './TextField';
 export * from './Tiles';
 export * from './Tooltip';
 export * from './VisuallyHidden';
+export * from './XLoader';
