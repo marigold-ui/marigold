@@ -205,3 +205,17 @@ test('allows to set side prop', () => {
   expect(container).toHaveStyle('flexDirection: row');
   expect(container).toHaveStyle('alignItems: baseline');
 });
+
+test('allows to set side prop on the right', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <FieldBase label="Label" side="right">
+        <input type="text" />
+      </FieldBase>
+    </ThemeProvider>
+  );
+
+  const container = screen.getByText('Label').parentElement;
+  expect(container).toHaveStyle('flexDirection: row-reverse');
+  expect(container).toHaveStyle('alignItems: baseline');
+});

@@ -76,3 +76,31 @@ test('can render as <span>', () => {
   const label = screen.getByText(/label/);
   expect(label instanceof HTMLSpanElement).toBeTruthy();
 });
+
+test('allows to set side prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Label side="left" data-testid="label">
+        <input type="text" />
+      </Label>
+    </ThemeProvider>
+  );
+
+  const container = screen.getByTestId('label');
+  expect(container).toHaveStyle('flexDirection: row');
+  expect(container).toHaveStyle('alignItems: baseline');
+});
+
+test('allows to set side prop on the right', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Label side="right" data-testid="label">
+        <input type="text" />
+      </Label>
+    </ThemeProvider>
+  );
+
+  const container = screen.getByTestId('label');
+  expect(container).toHaveStyle('flexDirection: row-reverse');
+  expect(container).toHaveStyle('alignItems: baseline');
+});
