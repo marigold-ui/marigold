@@ -58,6 +58,13 @@ export default {
       },
       description: 'The width of the field',
     },
+    side: {
+      control: {
+        type: 'text',
+      },
+      description: 'The side of the label',
+      defaultValue: 'none',
+    },
   },
 } as Meta;
 

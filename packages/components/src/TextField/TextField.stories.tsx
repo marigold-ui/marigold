@@ -45,6 +45,13 @@ export default {
       },
       defaultValue: false,
     },
+    side: {
+      control: {
+        type: 'text',
+      },
+      description: 'The side of the label',
+      defaultValue: 'none',
+    },
     readOnly: {
       control: {
         type: 'boolean',
@@ -81,7 +88,7 @@ export default {
 } as Meta;
 
 export const Basic: ComponentStory<typeof TextField> = args => (
-  <TextField {...args} />
+  <TextField {...args} label="My label is great." side="left" />
 );
 
 export const Controlled: ComponentStory<typeof TextField> = args => {

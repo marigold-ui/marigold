@@ -3,6 +3,7 @@ import { Box, StateAttrProps } from '@marigold/system';
 
 import { Label, LabelProps } from '../Label';
 import { HelpText } from '../HelpText';
+import { NONAME } from 'dns';
 
 // Props
 // ---------------
@@ -21,6 +22,7 @@ export interface FieldBaseProps {
   errorMessage?: ReactNode;
   errorMessageProps?: HTMLAttributes<HTMLElement>;
   stateProps?: StateAttrProps;
+  side?: 'right' | 'left';
 }
 
 // Component
@@ -29,6 +31,7 @@ export const FieldBase = ({
   children,
   variant,
   size,
+  side,
   width = '100%',
   disabled,
   required,
@@ -43,7 +46,15 @@ export const FieldBase = ({
 }: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
   return (
-    <Box css={{ display: 'flex', flexDirection: 'column', width }}>
+    <Box
+      css={{
+        display: 'flex',
+        flexDirection:
+          side === 'right' ? 'row-reverse' : side === 'left' ? 'row' : 'column',
+        width,
+        gap: side ? 'xsmall' : 0,
+      }}
+    >
       {label && (
         <Label
           required={required}
@@ -55,20 +66,22 @@ export const FieldBase = ({
           {label}
         </Label>
       )}
-      {children}
-      {hasHelpText && (
-        <HelpText
-          {...stateProps}
-          variant={variant}
-          size={size}
-          disabled={disabled}
-          description={description}
-          descriptionProps={descriptionProps}
-          error={error}
-          errorMessage={errorMessage}
-          errorMessageProps={errorMessageProps}
-        />
-      )}
+      <div>
+        {children}
+        {hasHelpText && (
+          <HelpText
+            {...stateProps}
+            variant={variant}
+            size={size}
+            disabled={disabled}
+            description={description}
+            descriptionProps={descriptionProps}
+            error={error}
+            errorMessage={errorMessage}
+            errorMessageProps={errorMessageProps}
+          />
+        )}
+      </div>
     </Box>
   );
 };

@@ -33,6 +33,13 @@ export default {
       description: 'Error Message',
       defaultValue: 'Something went wrong',
     },
+    side: {
+      control: {
+        type: 'text',
+      },
+      description: 'The side of the label',
+      defaultValue: 'none',
+    },
     required: {
       control: {
         type: 'boolean',

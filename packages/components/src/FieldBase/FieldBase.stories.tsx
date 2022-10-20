@@ -26,6 +26,13 @@ export default {
       description: 'The label',
       defaultValue: 'Field Label',
     },
+    side: {
+      control: {
+        type: 'text',
+      },
+      description: 'The side of the label',
+      defaultValue: 'none',
+    },
     description: {
       control: {
         type: 'text',

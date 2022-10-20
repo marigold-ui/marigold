@@ -47,7 +47,10 @@ export interface TextAreaProps
       'value' | 'defaultValue' | 'size' | CustomTextAreaEvents
     >,
     Pick<AriaTextFieldProps, CustomTextAreaEvents>,
-    Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
+    Pick<
+      FieldBaseProps,
+      'label' | 'description' | 'error' | 'errorMessage' | 'side'
+    > {
   variant?: string;
   size?: string;
   width?: string;
@@ -68,6 +71,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       readOnly,
       error,
       rows,
+      side,
       ...props
     },
     ref
@@ -113,6 +117,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
         variant={variant}
         size={size}
         width={width}
+        side={side}
       >
         <Box
           as="textarea"
