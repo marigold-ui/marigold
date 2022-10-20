@@ -50,6 +50,7 @@ export const FieldBase = ({
         flexDirection:
           side === 'right' ? 'row-reverse' : side === 'left' ? 'row' : 'column',
         width,
+        alignItems: side ? 'baseline' : 'none',
         gap: side ? 'xsmall' : 0,
       }}
     >

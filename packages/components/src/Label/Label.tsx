@@ -27,7 +27,6 @@ export const Label = ({
   variant,
   size,
   side,
-  suppressContentEditableWarning,
   ...props
 }: LabelProps) => {
   const styles = useComponentStyles('Label', { size, variant });
@@ -41,8 +40,10 @@ export const Label = ({
       aria-required={required}
       __baseCSS={{
         display: 'flex',
-        alignItems: 'center',
-        gap: 4,
+        flexDirection:
+          side === 'right' ? 'row-reverse' : side === 'left' ? 'row' : 'unset',
+        alignItems: side ? 'baseline' : 'center',
+        gap: side ? 'xsmall' : 4,
       }}
       css={styles}
     >

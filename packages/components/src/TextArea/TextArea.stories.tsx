@@ -38,7 +38,7 @@ export default {
         type: 'text',
       },
       description: 'The side of the label',
-      defaultValue: 'none',
+      defaultValue: '',
     },
     required: {
       control: {
