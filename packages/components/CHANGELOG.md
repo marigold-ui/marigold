@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 3.0.5
+
+### Patch Changes
+
+- [#2575](https://github.com/marigold-ui/marigold/pull/2575) [`0441cd20`](https://github.com/marigold-ui/marigold/commit/0441cd20fcdfc1964b8854ae8910e52586b85a4a) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: <XLoader> component for loading states
+
+- Updated dependencies []:
+  - @marigold/system@3.0.5
+  - @marigold/icons@1.1.5
+
 ## 3.0.4
 
 ### Patch Changes

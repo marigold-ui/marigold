@@ -1,5 +1,14 @@
 # @marigold/theme-b2b
 
+## 14.0.5
+
+### Patch Changes
+
+- [#2574](https://github.com/marigold-ui/marigold/pull/2574) [`e73554ed`](https://github.com/marigold-ui/marigold/commit/e73554ed7a4d434335cc2fac5375686d0916658b) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: more Core theme styles
+
+- Updated dependencies [[`0441cd20`](https://github.com/marigold-ui/marigold/commit/0441cd20fcdfc1964b8854ae8910e52586b85a4a)]:
+  - @marigold/components@3.0.5
+
 ## 14.0.4
 
 ### Patch Changes
