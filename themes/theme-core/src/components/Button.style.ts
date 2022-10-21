@@ -61,6 +61,7 @@ export const Button: Theme['components']['Button'] = {
     },
     text: {
       color: 'secondary',
+      bg: 'none',
       border: 'none',
       '&:hover': {
         color: 'secondary',
@@ -78,6 +79,11 @@ export const Button: Theme['components']['Button'] = {
         bg: 'none',
         cursor: 'pointer',
       },
+    },
+  },
+  size: {
+    xxsmall: {
+      p: 'xxsmall',
     },
   },
 };

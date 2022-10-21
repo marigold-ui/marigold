@@ -16,5 +16,10 @@ export const Link: Theme['components']['Link'] = {
       color: 'text',
       textDecoration: 'none',
     },
+    content: {
+      '&:hover': {
+        textDecoration: 'none',
+      },
+    },
   },
 };
