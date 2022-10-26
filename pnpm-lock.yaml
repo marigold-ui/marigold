@@ -414,7 +414,7 @@ importers:
       '@marigold/tsconfig': workspace:*
       '@marigold/types': workspace:*
       '@theme-ui/css': 0.14.7
-      csstype: 3.1.0
+      csstype: 3.1.1
       deepmerge: ^4.2.2
       react: 18.2.0
       react-fast-compare: ^3.2.0
@@ -423,7 +423,7 @@ importers:
       '@emotion/react': 11.10.4_b6k74wvxdvqypha4emuv7fd2ke
       '@marigold/types': link:../types
       '@theme-ui/css': 0.14.7_@emotion+react@11.10.4
-      csstype: 3.1.0
+      csstype: 3.1.1
       deepmerge: 4.2.2
       react-fast-compare: 3.2.0
     devDependencies:
@@ -5682,7 +5682,7 @@ packages:
       '@emotion/react': ^11
     dependencies:
       '@emotion/react': 11.10.4_b6k74wvxdvqypha4emuv7fd2ke
-      csstype: 3.1.0
+      csstype: 3.1.1
     dev: false
 
   /@tootallnate/once/2.0.0:
@@ -8286,10 +8286,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       cssom: 0.3.8
-    dev: false
-
-  /csstype/3.1.0:
-    resolution: {integrity: sha512-uX1KG+x9h5hIJsaKR9xHUeUraxf8IODOwq9JLNPq6BwB04a/xgpq3rcx47l5BZu5zBPlgD342tdke3Hom/nJRA==}
     dev: false
 
   /csstype/3.1.1:
