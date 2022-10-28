@@ -1,5 +1,14 @@
 # @marigold/theme-core
 
+## 14.0.6
+
+### Patch Changes
+
+- [#2604](https://github.com/marigold-ui/marigold/pull/2604) [`0e923ccc`](https://github.com/marigold-ui/marigold/commit/0e923ccc22d2d2a8ad24e6a6193f5aa6b97d202a) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: more core style (Card/Button/Link)
+
+- Updated dependencies []:
+  - @marigold/components@3.0.6
+
 ## 14.0.5
 
 ### Patch Changes

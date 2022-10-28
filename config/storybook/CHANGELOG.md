@@ -1,5 +1,17 @@
 # @marigold/storybook-config
 
+## 0.7.14
+
+### Patch Changes
+
+- [#2594](https://github.com/marigold-ui/marigold/pull/2594) [`060db713`](https://github.com/marigold-ui/marigold/commit/060db713c17b6796a19a97790b8f3742f4573eb0) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update storybook monorepo to v6.5.13
+
+- Updated dependencies [[`0e923ccc`](https://github.com/marigold-ui/marigold/commit/0e923ccc22d2d2a8ad24e6a6193f5aa6b97d202a)]:
+  - @marigold/theme-core@14.0.6
+  - @marigold/components@3.0.6
+  - @marigold/theme-b2b@14.0.6
+  - @marigold/theme-unicorn@11.0.6
+
 ## 0.7.13
 
 ### Patch Changes
