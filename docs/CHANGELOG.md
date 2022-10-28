@@ -1,5 +1,15 @@
 # @marigold/docs
 
+## 3.0.6
+
+### Patch Changes
+
+- Updated dependencies [[`d8fc387d`](https://github.com/marigold-ui/marigold/commit/d8fc387df8ce1afef229bc421ed5cee114e24190)]:
+  - @marigold/system@3.0.6
+  - @marigold/components@3.0.6
+  - @marigold/icons@1.1.6
+  - @marigold/theme-b2b@14.0.6
+
 ## 3.0.5
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 3.0.6
+
+### Patch Changes
+
+- [#2593](https://github.com/marigold-ui/marigold/pull/2593) [`d8fc387d`](https://github.com/marigold-ui/marigold/commit/d8fc387df8ce1afef229bc421ed5cee114e24190) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency csstype to v3.1.1
+
 ## 3.0.5
 
 ## 3.0.4
