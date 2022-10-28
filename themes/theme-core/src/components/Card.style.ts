@@ -2,6 +2,7 @@ import type { Theme } from '@marigold/components';
 
 export const Card: Theme['components']['Card'] = {
   base: {
+    position: 'relative',
     bg: '#fafaf8',
     borderRadius: '5px',
     p: 'xsmall',
