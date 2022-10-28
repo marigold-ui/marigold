@@ -71,7 +71,7 @@ export const Button: Theme['components']['Button'] = {
       },
     },
     link: {
-      color: 'text',
+      color: '#990000',
       border: 'none',
       bg: 'none',
       '&:hover': {
