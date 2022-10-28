@@ -12,7 +12,7 @@ export interface FieldBaseProps {
   width?: string;
   disabled?: boolean;
   required?: boolean;
-  label?: ReactNode;
+  label?: ReactNode | { content: ReactNode; side: 'right' | 'left' };
   labelProps?: LabelHTMLAttributes<HTMLLabelElement> & Pick<LabelProps, 'as'>;
   description?: ReactNode;
   descriptionProps?: HTMLAttributes<HTMLElement>;
@@ -20,7 +20,6 @@ export interface FieldBaseProps {
   errorMessage?: ReactNode;
   errorMessageProps?: HTMLAttributes<HTMLElement>;
   stateProps?: StateAttrProps;
-  side?: 'right' | 'left';
 }
 
 // Component
@@ -29,7 +28,6 @@ export const FieldBase = ({
   children,
   variant,
   size,
-  side,
   width = '100%',
   disabled,
   required,
@@ -43,15 +41,22 @@ export const FieldBase = ({
   stateProps,
 }: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
+
+  const hasLabelSide = typeof label === 'object';
   return (
     <Box
       css={{
         display: 'flex',
-        flexDirection:
-          side === 'right' ? 'row-reverse' : side === 'left' ? 'row' : 'column',
+        flexDirection: hasLabelSide
+          ? label.side === 'right'
+            ? 'row-reverse'
+            : label?.side === 'left'
+            ? 'row'
+            : 'column'
+          : 'column',
         width,
-        alignItems: side ? 'baseline' : 'none',
-        gap: side ? 'xsmall' : 0,
+        alignItems: hasLabelSide ? 'baseline' : 'none',
+        gap: hasLabelSide ? 'xsmall' : 0,
       }}
     >
       {label && (
@@ -62,7 +67,7 @@ export const FieldBase = ({
           {...labelProps}
           {...stateProps}
         >
-          {label}
+          {hasLabelSide ? label.content : label}
         </Label>
       )}
       <div>
