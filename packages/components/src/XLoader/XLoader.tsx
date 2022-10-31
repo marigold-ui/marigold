@@ -19,7 +19,7 @@ export const XLoader = forwardRef<SVGElement, SVGProps>((props, ref) => (
         attributeName="opacity"
         attributeType="XML"
         values="1; .01; 1; 1; 1;"
-        begin="1.1s"
+        begin="1.0s"
         dur="2.5s"
         repeatCount="indefinite"
       />
@@ -57,7 +57,7 @@ export const XLoader = forwardRef<SVGElement, SVGProps>((props, ref) => (
       <animate
         attributeName="opacity"
         attributeType="XML"
-        values="1; .01; 1; 1;"
+        values="1; .01; 1; 1; 1;"
         begin="0.7s"
         dur="2.5s"
         repeatCount="indefinite"
@@ -149,7 +149,7 @@ export const XLoader = forwardRef<SVGElement, SVGProps>((props, ref) => (
         attributeName="opacity"
         attributeType="XML"
         values="1; .01; 1; 1; 1;"
-        begin="0.1s"
+        begin="0.0s"
         dur="2.5s"
         repeatCount="indefinite"
       />
