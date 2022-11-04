@@ -8,7 +8,7 @@ import {
 } from '@marigold/components';
 
 export const ComplexTiles = () => (
-  <Tiles itemMinWidth="300px" space="small">
+  <Tiles tilesWidth="300px" space="small">
     <Card p="small">
       <Stack space="medium" alignX="center">
         <Image

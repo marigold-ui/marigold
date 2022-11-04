@@ -13,7 +13,7 @@ It should be noted that `<Tiles>` is used for children with the same width. If y
 It's possible to display the children elements with some spacing or set a minimum width for all items inside `<Tiles>`.
 
 <Preview>
-  <Tiles space="small" itemMinWidth="200px">
+  <Tiles space="small" tilesWidth="200px">
     <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
     <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
     <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
@@ -44,16 +44,23 @@ import { Tiles } from '@marigold/components';
       default: 'none',
     },
     {
-      property: 'itemMinWidth',
+      property: 'tilesWidth',
       type: 'ResponsiveStyleValue<string>',
       description: 'Set minimum width for all items inside',
       default: '250px',
     },
     {
-      property: 'gridAutoRows',
+      property: 'equalHeight',
       type: 'boolean',
       description:
-        'If you set gridAutoRows, all items will have the size of the biggest item',
+        'If you set equalHeight, all items will have the size of the biggest item',
+      default: 'false',
+    },
+    {
+      property: 'stretch',
+      type: 'boolean',
+      description:
+        'Tiles will take stretch to available width and will distribute their width equally. Note that this can make them wider than the specified tiles width, but not smaller than the given "itemWidth". Basically this is full responsive mode.',
       default: 'false',
     },
   ]}
@@ -69,19 +76,27 @@ An example on how to use the `space` prop. The default is none. You can set it t
 
 ```
 
-### Tiles with itemMinWidth
+### Tiles with tilesWidth
 
-This Example shows how to use the `itemMinWidth` property on `<Tiles>`. The default value is `250px`.
+This Example shows how to use the `tilesWidth` property on `<Tiles>`.
 
 ```tsx preview file=components/Tiles/tiles-itemwidth.demo.tsx
 
 ```
 
-### Tiles with gridAutoRows
+### Tiles with equal Heights
 
-The Example shows how to use the `gidAutoRows` property, which is a boolean that can be used to size the items of the `<Tiles>`. You can see that all items have the size of the large Pikachu card. It is necessary if you want all items in the largest size of a child.
+The Example shows how to use the `equalHeight` property, which is a boolean that can be used to size the items of the `<Tiles>`. You can see that all items have the size of the large Pikachu card. It is necessary if you want all items in the largest size of a child.
 
 ```tsx preview file=components/Tiles/tiles-autoRows.demo.tsx
+
+```
+
+### Tiles with and without stretch
+
+Using the `stretch` property will make the tiles fully responsive. Meaning, they will distribute available width between them while not getting smaller then the given `tilesWidth`,
+
+```tsx preview file=components/Tiles/tiles-stretch.demo.tsx
 
 ```
 
