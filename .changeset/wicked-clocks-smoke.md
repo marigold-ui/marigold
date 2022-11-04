@@ -1,6 +1,6 @@
 ---
-"@marigold/docs": patch
-"@marigold/components": patch
+"@marigold/docs": major
+"@marigold/components": major
 ---
 
 feat: `<Tiles>` can now be used as a grid with fixed widths or fully respsonsive.
