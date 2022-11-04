@@ -1,0 +1,28 @@
+---
+title: Semantic Colors
+switchTheme: true
+---
+
+## Why do we introduce semantic colors?
+
+When developing UI elements, the definition of colors and their use plays a central role. For this purpose, the UX/UI designer defines a color palette and makes the information available to the developer.
+The developer then stores these colors in the code. As a rule, he uses color variables for this purpose. This has the advantage that when adjusting the blue tone, for example, only the value within the color variables needs to be adjusted and not within the CSS classes.
+Unfortunately it happens again and again that for reasons within the CSS not the color variables are used, but directly the HEX value is entered.
+(BSP -> ListBox | Link) this then sometimes leads to an increased maintenance effort.
+To avoid this and to provide a clear structure, the variables should always be used and semantic colors should be introduced.
+
+## Advantages of semantic colors?
+
+By defining semantic colors, designers and developers speak the same language. For this purpose, the elements, their color roles and interactivities are defined.
+Now, when talking about a particular element, everyone should also directly know its color role as well as its interactivity. This is to prevent an element from accidentally having a different hover color than all other elements with the same color role.
+Another advantage of semantic colors is that new designers and developers can more quickly understand the structure of components and how they are built.
+
+## How are the semantic colors composed?
+
+The semantic colors are composed as follows.
+
+The colors are composed as follows.
+
+<Preview>
+  <SemanticColorsDemo />
+</Preview>

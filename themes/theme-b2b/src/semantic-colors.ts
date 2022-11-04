@@ -1,3 +1,4 @@
+import theme from '.';
 import { colors } from './colors';
 
 export const themeColors = {
@@ -27,6 +28,7 @@ export const disabledColors = {
 export const primaryColors = {
   primary: {
     __default: themeColors.primary,
+
     text: {
       __default: themeColors.background,
     },
@@ -55,21 +57,36 @@ export const statusColors = {
   status: {
     info: {
       __default: themeColors.info,
+
       text: {
         __default: colors.blue10,
       },
+
       border: {
         __default: colors.blue80,
       },
     },
+
     success: {
       __default: themeColors.success,
     },
+
     warning: {
       __default: themeColors.warning,
     },
+
     error: {
       __default: themeColors.error,
+    },
+  },
+};
+
+export const textColors = {
+  text: {
+    __default: themeColors.text,
+
+    link: {
+      __default: colors.blue60,
     },
   },
 };
