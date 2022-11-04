@@ -26,19 +26,21 @@ export default {
         },
       },
     },
-    itemMinWidth: {
+    tilesWidth: {
       control: {
         type: 'text',
       },
       description: 'Responsive Style Value',
-      defaultValue: '250px',
-      table: {
-        defaultValue: {
-          summary: '250px',
-        },
-      },
+      defaultValue: '300px',
     },
-    gridAutoRows: {
+    stretch: {
+      control: {
+        type: 'boolean',
+      },
+      description:
+        'Makes tiles take available width, instead of sticking to the tiles width',
+    },
+    equalHeight: {
       control: {
         type: 'boolean',
       },
