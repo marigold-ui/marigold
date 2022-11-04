@@ -2,6 +2,13 @@ import type { Theme } from '@marigold/components';
 
 import { colors } from './colors';
 import * as components from './components';
+import {
+  themeColors,
+  primaryColors,
+  secondaryColors,
+  disabledColors,
+  statusColors,
+} from './semantic-colors';
 
 export const webFontUrl = [
   'https://fonts.bunny.net/css?family=inter:400,600,700',
@@ -33,15 +40,11 @@ const theme: Theme = {
   },
   colors: {
     ...colors,
-    text: colors.gray70,
-    background: colors.gray10,
-    primary: colors.orange60,
-    secondary: colors.gray70,
-    disabled: colors.gray40,
-    error: colors.red60,
-    warning: colors.yellow70,
-    info: colors.blue70,
-    success: colors.green70,
+    ...themeColors,
+    ...primaryColors,
+    ...secondaryColors,
+    ...disabledColors,
+    ...statusColors,
   },
   root: {
     body: {
