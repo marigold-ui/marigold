@@ -1,4 +1,3 @@
-import theme from '.';
 import { colors } from './colors';
 
 export const themeColors = {
