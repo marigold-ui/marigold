@@ -1,5 +1,16 @@
 # @marigold/theme-core
 
+## 15.0.0
+
+### Patch Changes
+
+- [#2615](https://github.com/marigold-ui/marigold/pull/2615) [`0c548546`](https://github.com/marigold-ui/marigold/commit/0c54854648e18244453a672ac555b224b64b6265) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add no padding to variant link in core theme
+
+- [#2612](https://github.com/marigold-ui/marigold/pull/2612) [`31e1219d`](https://github.com/marigold-ui/marigold/commit/31e1219dd684fde238aac17ef00c68cf7e458519) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add hover color and flex property
+
+- Updated dependencies [[`41f60e3d`](https://github.com/marigold-ui/marigold/commit/41f60e3d3c95a21e4a3a1a167905270d6f5dc966), [`31e1219d`](https://github.com/marigold-ui/marigold/commit/31e1219dd684fde238aac17ef00c68cf7e458519), [`eb35da96`](https://github.com/marigold-ui/marigold/commit/eb35da96a52dc4b2b47d57ea115897bd7ee3bc69)]:
+  - @marigold/components@4.0.0
+
 ## 14.0.6
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @marigold/storybook-config
 
+## 0.7.15
+
+### Patch Changes
+
+- [#2591](https://github.com/marigold-ui/marigold/pull/2591) [`be3f2060`](https://github.com/marigold-ui/marigold/commit/be3f20600b195f62d8d5bc1b784329d7bf152d9a) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @babel/core to v7.19.6
+
+- Updated dependencies [[`0c548546`](https://github.com/marigold-ui/marigold/commit/0c54854648e18244453a672ac555b224b64b6265), [`41f60e3d`](https://github.com/marigold-ui/marigold/commit/41f60e3d3c95a21e4a3a1a167905270d6f5dc966), [`31e1219d`](https://github.com/marigold-ui/marigold/commit/31e1219dd684fde238aac17ef00c68cf7e458519), [`eb35da96`](https://github.com/marigold-ui/marigold/commit/eb35da96a52dc4b2b47d57ea115897bd7ee3bc69)]:
+  - @marigold/theme-core@15.0.0
+  - @marigold/components@4.0.0
+  - @marigold/theme-b2b@15.0.0
+  - @marigold/theme-unicorn@12.0.0
+
 ## 0.7.14
 
 ### Patch Changes

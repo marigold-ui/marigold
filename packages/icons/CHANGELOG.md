@@ -1,5 +1,14 @@
 # @marigold/icons
 
+## 1.1.7
+
+### Patch Changes
+
+- [#2613](https://github.com/marigold-ui/marigold/pull/2613) [`02bd8efe`](https://github.com/marigold-ui/marigold/commit/02bd8efe1a5660910338a9f2cba39cc061588793) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: icons support stroke currentColor
+
+- Updated dependencies [[`be3f2060`](https://github.com/marigold-ui/marigold/commit/be3f20600b195f62d8d5bc1b784329d7bf152d9a), [`4554b26e`](https://github.com/marigold-ui/marigold/commit/4554b26ef49986d2ebf457cc000284db5d8d85e8)]:
+  - @marigold/system@4.0.0
+
 ## 1.1.6
 
 ### Patch Changes
