@@ -74,6 +74,7 @@ export const Button: Theme['components']['Button'] = {
       color: '#990000',
       border: 'none',
       bg: 'none',
+      p: 'none',
       '&:hover': {
         textDecoration: 'underline',
         bg: 'none',
