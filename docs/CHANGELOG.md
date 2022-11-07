@@ -1,5 +1,24 @@
 # @marigold/docs
 
+## 4.0.0
+
+### Major Changes
+
+- [#2610](https://github.com/marigold-ui/marigold/pull/2610) [`eb35da96`](https://github.com/marigold-ui/marigold/commit/eb35da96a52dc4b2b47d57ea115897bd7ee3bc69) Thanks [@sebald](https://github.com/sebald)! - feat: `<Tiles>` can now be used as a grid with fixed widths or fully respsonsive.
+
+  BREAKING CHANGE: Renamed the whole API. Please checkout the documentation at https://marigold-ui.io/components/tiles/#props
+
+### Patch Changes
+
+- [#2598](https://github.com/marigold-ui/marigold/pull/2598) [`f38ae20a`](https://github.com/marigold-ui/marigold/commit/f38ae20a23badf8cf141f582f0c20d85fdd6534b) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @types/react to v18.0.24
+
+- Updated dependencies [[`02bd8efe`](https://github.com/marigold-ui/marigold/commit/02bd8efe1a5660910338a9f2cba39cc061588793), [`be3f2060`](https://github.com/marigold-ui/marigold/commit/be3f20600b195f62d8d5bc1b784329d7bf152d9a), [`f38ae20a`](https://github.com/marigold-ui/marigold/commit/f38ae20a23badf8cf141f582f0c20d85fdd6534b), [`4554b26e`](https://github.com/marigold-ui/marigold/commit/4554b26ef49986d2ebf457cc000284db5d8d85e8), [`41f60e3d`](https://github.com/marigold-ui/marigold/commit/41f60e3d3c95a21e4a3a1a167905270d6f5dc966), [`31e1219d`](https://github.com/marigold-ui/marigold/commit/31e1219dd684fde238aac17ef00c68cf7e458519), [`eb35da96`](https://github.com/marigold-ui/marigold/commit/eb35da96a52dc4b2b47d57ea115897bd7ee3bc69)]:
+  - @marigold/icons@1.1.7
+  - @marigold/system@4.0.0
+  - @marigold/types@0.5.5
+  - @marigold/components@4.0.0
+  - @marigold/theme-b2b@15.0.0
+
 ## 3.0.6
 
 ### Patch Changes
