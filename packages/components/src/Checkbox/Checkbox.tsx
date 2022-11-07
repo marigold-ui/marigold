@@ -59,6 +59,7 @@ const Icon = ({ css, checked, indeterminate, ...props }: IconProps) => (
   <Box
     aria-hidden="true"
     __baseCSS={{
+      flex: '0 0 16px',
       width: 16,
       height: 16,
       bg: '#fff',
