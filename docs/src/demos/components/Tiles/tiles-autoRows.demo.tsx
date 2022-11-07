@@ -1,7 +1,7 @@
 import { Box, Card, Image, Tiles, Text } from '@marigold/components';
 
 export const AutoRows = () => (
-  <Tiles space="xsmall" gridAutoRows>
+  <Tiles space="xsmall" tilesWidth="250px" equalHeight>
     <Box as={Card}>
       <Image
         src="https://www.pokewiki.de/images/6/63/Sugimori_004.png"
