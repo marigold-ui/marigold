@@ -467,16 +467,3 @@ test('allows formatting of displayed value', () => {
   const unit: HTMLInputElement = screen.getByTestId('number-field-unit');
   expect(unit.value).toEqual('150 cm');
 });
-
-test('allows to set side prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <NumberField label="Label" side="left" />
-    </ThemeProvider>
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle('flexDirection: row');
-  expect(container).toHaveStyle('alignItems: baseline');
-});

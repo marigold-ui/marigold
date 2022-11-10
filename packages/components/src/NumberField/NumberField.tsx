@@ -48,10 +48,7 @@ type CustomProps =
 export interface NumberFieldProps
   extends Omit<ComponentProps<'input'>, CustomProps>,
     Omit<AriaNumberFieldProps, 'isDisabled' | 'isRequired' | 'isReadOnly'>,
-    Pick<
-      FieldBaseProps,
-      'label' | 'description' | 'error' | 'errorMessage' | 'side'
-    > {
+    Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
   variant?: string;
   size?: string;
   width?: string;
@@ -71,7 +68,6 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
       readOnly,
       error,
       hideStepper,
-      side,
       ...rest
     },
     ref
@@ -133,7 +129,6 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
         variant={variant}
         size={size}
         width={width}
-        side={side}
       >
         <Box
           data-group

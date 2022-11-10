@@ -1,10 +1,13 @@
 import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
-import { Box, StateAttrProps } from '@marigold/system';
+import {
+  Box,
+  StateAttrProps,
+  ThemeExtension,
+  useComponentStyles,
+} from '@marigold/system';
 
 import { Label, LabelProps } from '../Label';
 import { HelpText } from '../HelpText';
-// Props
-// ---------------
 export interface FieldBaseProps {
   children?: ReactNode;
   variant?: string;
@@ -12,7 +15,7 @@ export interface FieldBaseProps {
   width?: string;
   disabled?: boolean;
   required?: boolean;
-  label?: ReactNode | { content: ReactNode; side: 'right' | 'left' };
+  label?: ReactNode;
   labelProps?: LabelHTMLAttributes<HTMLLabelElement> & Pick<LabelProps, 'as'>;
   description?: ReactNode;
   descriptionProps?: HTMLAttributes<HTMLElement>;
@@ -21,6 +24,9 @@ export interface FieldBaseProps {
   errorMessageProps?: HTMLAttributes<HTMLElement>;
   stateProps?: StateAttrProps;
 }
+// Theme Extension
+// ---------------
+export interface FieldThemeExtension extends ThemeExtension<'Field'> {}
 
 // Component
 // ---------------
@@ -42,23 +48,10 @@ export const FieldBase = ({
 }: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
 
-  const hasLabelSide = typeof label === 'object';
+  const style = useComponentStyles('Field', { variant, size });
+
   return (
-    <Box
-      css={{
-        display: 'flex',
-        flexDirection: hasLabelSide
-          ? label.side === 'right'
-            ? 'row-reverse'
-            : label?.side === 'left'
-            ? 'row'
-            : 'column'
-          : 'column',
-        width,
-        alignItems: hasLabelSide ? 'baseline' : 'none',
-        gap: hasLabelSide ? 'xsmall' : 0,
-      }}
-    >
+    <Box css={style}>
       {label && (
         <Label
           required={required}
@@ -67,7 +60,7 @@ export const FieldBase = ({
           {...labelProps}
           {...stateProps}
         >
-          {hasLabelSide ? label.content : label}
+          {label}
         </Label>
       )}
       <div>

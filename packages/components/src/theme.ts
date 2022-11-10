@@ -13,6 +13,7 @@ import type {
 } from './Checkbox';
 import type { DialogThemeExtension } from './Dialog';
 import type { DividerThemeExtension } from './Divider';
+import type { FieldThemeExtension } from './FieldBase';
 import type { FooterThemeExtension } from './Footer';
 import type { HeaderThemeExtension } from './Header';
 import type { HeadlineThemeExtension } from './Headline';
@@ -45,6 +46,7 @@ interface ComponentStyles
     BodyThemeExtension,
     DialogThemeExtension,
     DividerThemeExtension,
+    FieldThemeExtension,
     FooterThemeExtension,
     HeaderThemeExtension,
     HeadlineThemeExtension,

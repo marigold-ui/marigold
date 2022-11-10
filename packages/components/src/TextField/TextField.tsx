@@ -34,10 +34,7 @@ export interface TextFieldProps
      * and `onBlur` events. Thus, we adjust our regular props to match them.
      */
     Pick<AriaTextFieldProps, CustomTextFieldEvents>,
-    Pick<
-      FieldBaseProps,
-      'label' | 'description' | 'error' | 'errorMessage' | 'side'
-    > {
+    Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
   variant?: string;
   size?: string;
   width?: string;
@@ -49,17 +46,7 @@ export interface TextFieldProps
 // ---------------
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   (
-    {
-      variant,
-      size,
-      width,
-      disabled,
-      required,
-      readOnly,
-      error,
-      side,
-      ...props
-    },
+    { variant, size, width, disabled, required, readOnly, error, ...props },
     ref
   ) => {
     const { label, description, errorMessage, autoFocus } = props;
@@ -104,7 +91,6 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
         variant={variant}
         size={size}
         width={width}
-        side={side}
       >
         <Input
           ref={inputRef}

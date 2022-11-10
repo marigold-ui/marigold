@@ -76,16 +76,12 @@ export interface SelectProps
   disabled?: boolean;
   required?: boolean;
   error?: boolean;
-  side?: 'right' | 'left';
 }
 
 // Component
 // ---------------
 export const Select = forwardRef<HTMLButtonElement, SelectProps>(
-  (
-    { variant, size, width, open, disabled, required, error, side, ...rest },
-    ref
-  ) => {
+  ({ variant, size, width, open, disabled, required, error, ...rest }, ref) => {
     // Set up i18n
     const formatMessage = useLocalizedStringFormatter(messages);
 
@@ -150,7 +146,6 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         stateProps={stateProps}
         disabled={disabled}
         required={required}
-        side={side}
       >
         <HiddenSelect
           state={state}

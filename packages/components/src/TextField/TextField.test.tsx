@@ -308,18 +308,3 @@ test('forwards ref', () => {
 
   expect(ref.current).toBeInstanceOf(HTMLInputElement);
 });
-
-test('allows to set side prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <TextField label="Label" side="left">
-        <input type="text" />
-      </TextField>
-    </ThemeProvider>
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle('flexDirection: row');
-  expect(container).toHaveStyle('alignItems: baseline');
-});
