@@ -51,7 +51,7 @@ export const FieldBase = ({
   const style = useComponentStyles('Field', { variant, size });
 
   return (
-    <Box css={style}>
+    <Box __baseCSS={{ width }} css={style}>
       {label && (
         <Label
           required={required}
