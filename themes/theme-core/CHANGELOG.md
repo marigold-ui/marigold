@@ -1,5 +1,38 @@
 # @marigold/theme-core
 
+## 15.0.0
+
+### Patch Changes
+
+- [#2615](https://github.com/marigold-ui/marigold/pull/2615) [`0c548546`](https://github.com/marigold-ui/marigold/commit/0c54854648e18244453a672ac555b224b64b6265) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add no padding to variant link in core theme
+
+- [#2612](https://github.com/marigold-ui/marigold/pull/2612) [`31e1219d`](https://github.com/marigold-ui/marigold/commit/31e1219dd684fde238aac17ef00c68cf7e458519) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add hover color and flex property
+
+- Updated dependencies [[`41f60e3d`](https://github.com/marigold-ui/marigold/commit/41f60e3d3c95a21e4a3a1a167905270d6f5dc966), [`31e1219d`](https://github.com/marigold-ui/marigold/commit/31e1219dd684fde238aac17ef00c68cf7e458519), [`eb35da96`](https://github.com/marigold-ui/marigold/commit/eb35da96a52dc4b2b47d57ea115897bd7ee3bc69)]:
+  - @marigold/components@4.0.0
+
+## 14.0.6
+
+### Patch Changes
+
+- [#2604](https://github.com/marigold-ui/marigold/pull/2604) [`0e923ccc`](https://github.com/marigold-ui/marigold/commit/0e923ccc22d2d2a8ad24e6a6193f5aa6b97d202a) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: more core style (Card/Button/Link)
+
+- Updated dependencies []:
+  - @marigold/components@3.0.6
+
+## 14.0.5
+
+### Patch Changes
+
+- [#2574](https://github.com/marigold-ui/marigold/pull/2574) [`e73554ed`](https://github.com/marigold-ui/marigold/commit/e73554ed7a4d434335cc2fac5375686d0916658b) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: more Core theme styles
+
+- [#2585](https://github.com/marigold-ui/marigold/pull/2585) [`c9f785e0`](https://github.com/marigold-ui/marigold/commit/c9f785e093efa6a8186a798a6d660d170167b5e9) Thanks [@sebald](https://github.com/sebald)! - fix: remove duplicated key in `Card` styles
+
+- [#2570](https://github.com/marigold-ui/marigold/pull/2570) [`bc604461`](https://github.com/marigold-ui/marigold/commit/bc60446149f2a5b50f0da36cbb79a4018d324199) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add more core theme styles
+
+- Updated dependencies [[`0441cd20`](https://github.com/marigold-ui/marigold/commit/0441cd20fcdfc1964b8854ae8910e52586b85a4a)]:
+  - @marigold/components@3.0.5
+
 ## 14.0.4
 
 ### Patch Changes

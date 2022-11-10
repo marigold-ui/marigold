@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Required to retrieve git history, do not delete!
-      - uses: pnpm/action-setup@v2.2.2 # Uses version from package.json#packageManager
+      - uses: pnpm/action-setup@v2.2.4 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v3
         with:

@@ -1,5 +1,42 @@
 # @marigold/components
 
+## 4.0.0
+
+### Major Changes
+
+- [#2610](https://github.com/marigold-ui/marigold/pull/2610) [`eb35da96`](https://github.com/marigold-ui/marigold/commit/eb35da96a52dc4b2b47d57ea115897bd7ee3bc69) Thanks [@sebald](https://github.com/sebald)! - feat: `<Tiles>` can now be used as a grid with fixed widths or fully respsonsive.
+
+  BREAKING CHANGE: Renamed the whole API. Please checkout the documentation at https://marigold-ui.io/components/tiles/#props
+
+### Patch Changes
+
+- [#2607](https://github.com/marigold-ui/marigold/pull/2607) [`41f60e3d`](https://github.com/marigold-ui/marigold/commit/41f60e3d3c95a21e4a3a1a167905270d6f5dc966) Thanks [@benediktgrether](https://github.com/benediktgrether)! - fix: add missing values for one point and set begin of first dot to 0.0s
+
+- [#2612](https://github.com/marigold-ui/marigold/pull/2612) [`31e1219d`](https://github.com/marigold-ui/marigold/commit/31e1219dd684fde238aac17ef00c68cf7e458519) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add hover color and flex property
+
+- Updated dependencies [[`02bd8efe`](https://github.com/marigold-ui/marigold/commit/02bd8efe1a5660910338a9f2cba39cc061588793), [`be3f2060`](https://github.com/marigold-ui/marigold/commit/be3f20600b195f62d8d5bc1b784329d7bf152d9a), [`f38ae20a`](https://github.com/marigold-ui/marigold/commit/f38ae20a23badf8cf141f582f0c20d85fdd6534b), [`4554b26e`](https://github.com/marigold-ui/marigold/commit/4554b26ef49986d2ebf457cc000284db5d8d85e8)]:
+  - @marigold/icons@1.1.7
+  - @marigold/system@4.0.0
+  - @marigold/types@0.5.5
+
+## 3.0.6
+
+### Patch Changes
+
+- Updated dependencies [[`d8fc387d`](https://github.com/marigold-ui/marigold/commit/d8fc387df8ce1afef229bc421ed5cee114e24190)]:
+  - @marigold/system@3.0.6
+  - @marigold/icons@1.1.6
+
+## 3.0.5
+
+### Patch Changes
+
+- [#2575](https://github.com/marigold-ui/marigold/pull/2575) [`0441cd20`](https://github.com/marigold-ui/marigold/commit/0441cd20fcdfc1964b8854ae8910e52586b85a4a) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: <XLoader> component for loading states
+
+- Updated dependencies []:
+  - @marigold/system@3.0.5
+  - @marigold/icons@1.1.5
+
 ## 3.0.4
 
 ### Patch Changes

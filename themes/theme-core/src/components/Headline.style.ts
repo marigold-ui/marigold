@@ -10,6 +10,7 @@ export const Headline: Theme['components']['Headline'] = {
     },
     'level-2': {
       fontSize: 'large',
+      mb: 'medium',
     },
     'level-3': {
       fontSize: 'medium',

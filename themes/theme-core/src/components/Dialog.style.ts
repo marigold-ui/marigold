@@ -22,7 +22,7 @@ export const Dialog: Theme['components']['Dialog'] = {
       borderRadius: 'small',
       color: '#FFF',
       '&:hover': {
-        bg: 'none',
+        bg: 'orange40',
       },
     },
   },

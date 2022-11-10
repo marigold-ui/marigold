@@ -1,5 +1,28 @@
 # @marigold/theme-b2b
 
+## 15.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`41f60e3d`](https://github.com/marigold-ui/marigold/commit/41f60e3d3c95a21e4a3a1a167905270d6f5dc966), [`31e1219d`](https://github.com/marigold-ui/marigold/commit/31e1219dd684fde238aac17ef00c68cf7e458519), [`eb35da96`](https://github.com/marigold-ui/marigold/commit/eb35da96a52dc4b2b47d57ea115897bd7ee3bc69)]:
+  - @marigold/components@4.0.0
+
+## 14.0.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/components@3.0.6
+
+## 14.0.5
+
+### Patch Changes
+
+- [#2574](https://github.com/marigold-ui/marigold/pull/2574) [`e73554ed`](https://github.com/marigold-ui/marigold/commit/e73554ed7a4d434335cc2fac5375686d0916658b) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: more Core theme styles
+
+- Updated dependencies [[`0441cd20`](https://github.com/marigold-ui/marigold/commit/0441cd20fcdfc1964b8854ae8910e52586b85a4a)]:
+  - @marigold/components@3.0.5
+
 ## 14.0.4
 
 ### Patch Changes

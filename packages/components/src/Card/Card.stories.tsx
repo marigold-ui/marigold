@@ -52,7 +52,7 @@ export const Basic: ComponentStory<typeof Card> = args => (
 );
 
 export const CoreCard: ComponentStory<typeof Card> = args => (
-  <Tiles itemMinWidth="300px" space="small">
+  <Tiles tilesWidth="300px" space="small">
     <Card {...args} p="xsmall">
       <Inline alignY="top">
         <Link href={'#'} target="blank">

@@ -29,6 +29,7 @@ const theme: Theme = {
   },
   colors: {
     ...colors,
+    none: 'transparent',
     text: '#511e04',
     background: colors.gray10,
     primary: colors.orange60,

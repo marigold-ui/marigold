@@ -3,70 +3,74 @@ import { render, screen } from '@testing-library/react';
 import { Box, Tiles, MarigoldProvider } from '@marigold/components';
 
 const theme = {
+  sizes: {
+    none: 0,
+    large: 340,
+  },
   space: {
     none: 0,
     large: 24,
   },
 };
 
-test('supports default space prop', () => {
+test('set tiles width via prop', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <Tiles data-testid="tiles">
-        <Box>tiles</Box>
-      </Tiles>
-    </MarigoldProvider>
-  );
-  const tiles = screen.getByTestId(/tiles/);
-  expect(tiles).toHaveStyle(`display: grid`);
-  expect(tiles).toHaveStyle(`gap: 0`);
-});
-
-test('supports other space prop than default', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Tiles space="large" data-testid="tiles">
-        <Box>tiles</Box>
-      </Tiles>
-    </MarigoldProvider>
-  );
-  const tiles = screen.getByTestId(/tiles/);
-  expect(tiles).toHaveStyle(`display: grid`);
-  expect(tiles).toHaveStyle(`gap: 24px`);
-});
-
-test('supports default itemMinWidth prop', () => {
-  render(
-    <MarigoldProvider theme={theme}>
-      <Tiles data-testid="tiles">
+      <Tiles tilesWidth="200px" data-testid="tiles">
         <Box>tiles</Box>
       </Tiles>
     </MarigoldProvider>
   );
   const tiles = screen.getByTestId(/tiles/);
   expect(tiles).toHaveStyle(
-    `gridTemplateColumns: repeat(auto-fit, minmax(min(250px, 100%), 1fr))`
+    `gridTemplateColumns: repeat(auto-fit, min(200px, 100%))`
   );
 });
 
-test('supports other itemMinWidth prop than default', () => {
+test('supports setting tiles width with design tokens', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <Tiles itemMinWidth="400px" data-testid="tiles">
+      <Tiles tilesWidth="large" data-testid="tiles">
         <Box>tiles</Box>
       </Tiles>
     </MarigoldProvider>
   );
   const tiles = screen.getByTestId(/tiles/);
   expect(tiles).toHaveStyle(
-    `gridTemplateColumns: repeat(auto-fit, minmax(min(400px, 100%), 1fr))`
+    `gridTemplateColumns: repeat(auto-fit, min(${theme.sizes.large}px, 100%))`
+  );
+});
+
+test('supports space prop', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Tiles tilesWidth="200px" space="large" data-testid="tiles">
+        <Box>tiles</Box>
+      </Tiles>
+    </MarigoldProvider>
+  );
+  const tiles = screen.getByTestId(/tiles/);
+  expect(tiles).toHaveStyle(`gap: ${theme.space.large}px`);
+});
+
+test('supports responsive grid via stretch prop', () => {
+  render(
+    <MarigoldProvider theme={theme}>
+      <Tiles tilesWidth="300px" stretch data-testid="tiles">
+        <Box>tiles</Box>
+      </Tiles>
+    </MarigoldProvider>
+  );
+  const tiles = screen.getByTestId(/tiles/);
+  expect(tiles).toHaveStyle(
+    `gridTemplateColumns: repeat(auto-fit, minmax(min(300px, 100%), 1fr))`
   );
 });
 
 test('supports gridAutoRows prop', () => {
   render(
     <MarigoldProvider theme={theme}>
-      <Tiles gridAutoRows data-testid="tiles">
+      <Tiles tilesWidth="400px" equalHeight data-testid="tiles">
         <Box>tiles</Box>
         <Box>tiles</Box>
         <Box>tiles</Box>

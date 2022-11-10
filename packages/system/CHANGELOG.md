@@ -1,5 +1,24 @@
 # @marigold/system
 
+## 4.0.0
+
+### Patch Changes
+
+- [#2591](https://github.com/marigold-ui/marigold/pull/2591) [`be3f2060`](https://github.com/marigold-ui/marigold/commit/be3f20600b195f62d8d5bc1b784329d7bf152d9a) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @babel/core to v7.19.6
+
+- [#2609](https://github.com/marigold-ui/marigold/pull/2609) [`4554b26e`](https://github.com/marigold-ui/marigold/commit/4554b26ef49986d2ebf457cc000284db5d8d85e8) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @emotion/react to v11.10.5
+
+- Updated dependencies [[`f38ae20a`](https://github.com/marigold-ui/marigold/commit/f38ae20a23badf8cf141f582f0c20d85fdd6534b)]:
+  - @marigold/types@0.5.5
+
+## 3.0.6
+
+### Patch Changes
+
+- [#2593](https://github.com/marigold-ui/marigold/pull/2593) [`d8fc387d`](https://github.com/marigold-ui/marigold/commit/d8fc387df8ce1afef229bc421ed5cee114e24190) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency csstype to v3.1.1
+
+## 3.0.5
+
 ## 3.0.4
 
 ## 3.0.3

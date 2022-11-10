@@ -4,7 +4,7 @@ export const Link: Theme['components']['Link'] = {
   base: {
     color: '#900',
     '&:hover, &:visited': {
-      textDecoration: 'underline',
+      textDecoration: 'none',
       cursor: 'pointer',
     },
     '&:disabled': {
@@ -15,6 +15,11 @@ export const Link: Theme['components']['Link'] = {
     menuItemLink: {
       color: 'text',
       textDecoration: 'none',
+    },
+    content: {
+      '&:hover': {
+        textDecoration: 'none',
+      },
     },
   },
 };

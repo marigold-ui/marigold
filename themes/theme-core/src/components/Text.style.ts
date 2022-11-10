@@ -9,5 +9,8 @@ export const Text: Theme['components']['Text'] = {
     bold: {
       fontWeight: 'bold',
     },
+    muted: {
+      color: 'gray40',
+    },
   },
 };

@@ -1,5 +1,26 @@
 # @marigold/theme-unicorn
 
+## 12.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`41f60e3d`](https://github.com/marigold-ui/marigold/commit/41f60e3d3c95a21e4a3a1a167905270d6f5dc966), [`31e1219d`](https://github.com/marigold-ui/marigold/commit/31e1219dd684fde238aac17ef00c68cf7e458519), [`eb35da96`](https://github.com/marigold-ui/marigold/commit/eb35da96a52dc4b2b47d57ea115897bd7ee3bc69)]:
+  - @marigold/components@4.0.0
+
+## 11.0.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/components@3.0.6
+
+## 11.0.5
+
+### Patch Changes
+
+- Updated dependencies [[`0441cd20`](https://github.com/marigold-ui/marigold/commit/0441cd20fcdfc1964b8854ae8910e52586b85a4a)]:
+  - @marigold/components@3.0.5
+
 ## 11.0.4
 
 ### Patch Changes

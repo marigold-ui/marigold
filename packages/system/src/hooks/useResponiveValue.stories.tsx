@@ -3,7 +3,7 @@ import type { Meta, ComponentStory } from '@storybook/react';
 import { Box, ThemeProvider, useResponsiveValue } from '@marigold/system';
 
 export default {
-  title: 'System/useResponsiveStyles',
+  title: 'System/useResponsiveValue',
   argTypes: {
     css: {
       control: {
