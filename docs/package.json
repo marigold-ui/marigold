@@ -39,7 +39,7 @@
     "remark-frontmatter": "4.0.1",
     "remark-gfm": "3.0.1",
     "remark-mdx-code-meta": "2.0.0",
-    "remark-mdx-frontmatter": "2.0.3",
+    "remark-mdx-frontmatter": "2.1.1",
     "to-vfile": "7.2.3",
     "unified": "10.1.2",
     "unist-util-visit": "4.1.1",
