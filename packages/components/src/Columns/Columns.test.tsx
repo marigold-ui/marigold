@@ -132,3 +132,13 @@ test('supports stretching to full height', () => {
   const container = screen.getByTestId(/columns/);
   expect(container).toHaveStyle(`height: 100%`);
 });
+
+test('does work with non react elements', () => {
+  render(
+    <Columns columns={[1]} data-testid="columns">
+      hello
+    </Columns>
+  );
+  const container = screen.getByTestId(/columns/);
+  expect(container).toHaveTextContent('hello');
+});
