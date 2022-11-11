@@ -30,7 +30,7 @@ importers:
       pretty-quick: 3.1.3
       react: 18.2.0
       react-dom: 18.2.0
-      slack-notify: 2.0.3
+      slack-notify: 2.0.4
       typescript: 4.8.4
       workspaces-run: 1.0.1
       zx: 7.0.8
@@ -61,7 +61,7 @@ importers:
       pretty-quick: 3.1.3_prettier@2.7.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      slack-notify: 2.0.3
+      slack-notify: 2.0.4
       typescript: 4.8.4
       workspaces-run: 1.0.1
       zx: 7.0.8
@@ -15966,8 +15966,8 @@ packages:
   /sisteransi/1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
 
-  /slack-notify/2.0.3:
-    resolution: {integrity: sha512-kRbXhgVnUoI93nIMaXprZyBixH3FfsMkybxppPU0r9yQm4RIoAw2E1QG3l15KRAce7S0mGPYYTIZ7rf6IbBAIQ==}
+  /slack-notify/2.0.4:
+    resolution: {integrity: sha512-eTJmRW7nuZUmcKobWVP4r2AiUrl6W3jWOLaPx/HczUfO/eJN2EyCNZAv8OIBQi70VOlIG6CX27xcdV1O2qc3/w==}
     engines: {node: '>=13.2.x'}
     dev: false
 
