@@ -19,7 +19,7 @@
     "directory": "config/eslint"
   },
   "dependencies": {
-    "@babel/core": "7.19.6",
+    "@babel/core": "7.20.2",
     "@babel/eslint-parser": "^7.18.9",
     "@babel/plugin-syntax-flow": "^7.16.7",
     "@babel/plugin-transform-react-jsx": "^7.17.3",
@@ -29,7 +29,7 @@
     "eslint-config-react-app": "7.0.1",
     "eslint-plugin-flowtype": "^8.0.3",
     "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-jest": "27.1.3",
+    "eslint-plugin-jest": "27.1.5",
     "eslint-plugin-jsx-a11y": "6.6.1",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-react": "7.31.10",

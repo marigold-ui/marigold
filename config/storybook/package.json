@@ -19,7 +19,7 @@
     "directory": "config/prettier"
   },
   "dependencies": {
-    "@babel/core": "7.19.6",
+    "@babel/core": "7.20.2",
     "@emotion/react": "^11.0.0-rc.0",
     "@emotion/styled": "^11.8.1",
     "@marigold/components": "workspace:*",
@@ -33,7 +33,7 @@
     "@storybook/jest": "0.0.10",
     "@storybook/testing-library": "0.0.13",
     "@types/react": "18",
-    "babel-loader": "8.2.5",
+    "babel-loader": "8.3.0",
     "chromatic": "^6.6.3",
     "find-up": "5.0.0",
     "tsconfig-paths-webpack-plugin": "4.0.0",
