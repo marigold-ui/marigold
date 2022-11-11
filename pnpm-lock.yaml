@@ -325,7 +325,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0
       react-is: 18.2.0
-      tsup: 6.3.0
+      tsup: 6.4.0
     dependencies:
       '@marigold/icons': link:../icons
       '@marigold/system': link:../system
@@ -379,7 +379,7 @@ importers:
       '@marigold/tsconfig': link:../../config/tsconfig
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      tsup: 6.3.0
+      tsup: 6.4.0
 
   packages/create-theme:
     specifiers:
@@ -387,25 +387,25 @@ importers:
       '@marigold/system': workspace:*
       '@marigold/tokens': workspace:*
       '@marigold/tsconfig': workspace:*
-      tsup: 6.3.0
+      tsup: 6.4.0
     dependencies:
       '@marigold/tokens': link:../tokens
     devDependencies:
       '@marigold/components': link:../components
       '@marigold/system': link:../system
       '@marigold/tsconfig': link:../../config/tsconfig
-      tsup: 6.3.0
+      tsup: 6.4.0
 
   packages/icons:
     specifiers:
       '@marigold/system': workspace:*
       '@marigold/tsconfig': workspace:*
-      tsup: 6.3.0
+      tsup: 6.4.0
     dependencies:
       '@marigold/system': link:../system
     devDependencies:
       '@marigold/tsconfig': link:../../config/tsconfig
-      tsup: 6.3.0
+      tsup: 6.4.0
 
   packages/system:
     specifiers:
@@ -418,7 +418,7 @@ importers:
       deepmerge: ^4.2.2
       react: 18.2.0
       react-fast-compare: ^3.2.0
-      tsup: 6.3.0
+      tsup: 6.4.0
     dependencies:
       '@emotion/react': 11.10.5_otspjrsspon4ofp37rshhlhp2y
       '@marigold/types': link:../types
@@ -430,15 +430,15 @@ importers:
       '@babel/core': 7.19.6
       '@marigold/tsconfig': link:../../config/tsconfig
       react: 18.2.0
-      tsup: 6.3.0
+      tsup: 6.4.0
 
   packages/tokens:
     specifiers:
       '@marigold/tsconfig': workspace:*
-      tsup: 6.3.0
+      tsup: 6.4.0
     devDependencies:
       '@marigold/tsconfig': link:../../config/tsconfig
-      tsup: 6.3.0
+      tsup: 6.4.0
 
   packages/types:
     specifiers:
@@ -453,31 +453,31 @@ importers:
     specifiers:
       '@marigold/components': workspace:*
       '@marigold/tsconfig': workspace:*
-      tsup: 6.3.0
+      tsup: 6.4.0
     devDependencies:
       '@marigold/components': link:../../packages/components
       '@marigold/tsconfig': link:../../config/tsconfig
-      tsup: 6.3.0
+      tsup: 6.4.0
 
   themes/theme-core:
     specifiers:
       '@marigold/components': workspace:*
       '@marigold/tsconfig': workspace:*
-      tsup: 6.3.0
+      tsup: 6.4.0
     devDependencies:
       '@marigold/components': link:../../packages/components
       '@marigold/tsconfig': link:../../config/tsconfig
-      tsup: 6.3.0
+      tsup: 6.4.0
 
   themes/theme-unicorn:
     specifiers:
       '@marigold/components': workspace:*
       '@marigold/tsconfig': workspace:*
-      tsup: 6.3.0
+      tsup: 6.4.0
     devDependencies:
       '@marigold/components': link:../../packages/components
       '@marigold/tsconfig': link:../../config/tsconfig
-      tsup: 6.3.0
+      tsup: 6.4.0
 
 packages:
 
@@ -7692,8 +7692,8 @@ packages:
     resolution: {integrity: sha512-HpGFw18DgFWlncDfjTa2rcQ4W88O1mC8e8yZ2AvQY5KDaktSTwo+KRf6nHK6FRI5FyRyb/5T6+TSxfP7QyGsmQ==}
     dev: false
 
-  /bundle-require/3.1.0_esbuild@0.15.9:
-    resolution: {integrity: sha512-IIXtAO7fKcwPHNPt9kY/WNVJqy7NDy6YqJvv6ENH0TOZoJ+yjpEsn1w40WKZbR2ibfu5g1rfgJTvmFHpm5aOMA==}
+  /bundle-require/3.1.2_esbuild@0.15.9:
+    resolution: {integrity: sha512-Of6l6JBAxiyQ5axFxUM6dYeP/W7X2Sozeo/4EYB9sJhL+dqL7TKjg+shwxp6jlu/6ZSERfsYtIpSJ1/x3XkAEA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     peerDependencies:
       esbuild: '>=0.13'
@@ -15646,9 +15646,9 @@ packages:
       inherits: 2.0.4
     dev: false
 
-  /rollup/2.79.1:
-    resolution: {integrity: sha512-uKxbd0IhMZOhjAiD5oAFp7BqvkA4Dv47qpOCtaNvng4HBwdbWtdOh8f5nZNuk2rp51PMGk3bzfWu5oayNEuYnw==}
-    engines: {node: '>=10.0.0'}
+  /rollup/3.2.5:
+    resolution: {integrity: sha512-/Ha7HhVVofduy+RKWOQJrxe4Qb3xyZo+chcpYiD8SoQa4AG7llhupUtyfKSSrdBM2mWJjhM8wZwmbY23NmlIYw==}
+    engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
       fsevents: 2.3.2
@@ -16943,8 +16943,8 @@ packages:
     resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
     dev: false
 
-  /tsup/6.3.0:
-    resolution: {integrity: sha512-IaNQO/o1rFgadLhNonVKNCT2cks+vvnWX3DnL8sB87lBDqRvJXHENr5lSPJlqwplUlDxSwZK8dSg87rgBu6Emw==}
+  /tsup/6.4.0:
+    resolution: {integrity: sha512-4OlbqIK/SF+cJp0mMqPM2pKULvgj/1S2Gm3I1aFoFGIryUOyIqPZBoqKkqVQT6uFtWJ5AHftIv0riXKfHox1zQ==}
     engines: {node: '>=14'}
     hasBin: true
     peerDependencies:
@@ -16959,7 +16959,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      bundle-require: 3.1.0_esbuild@0.15.9
+      bundle-require: 3.1.2_esbuild@0.15.9
       cac: 6.7.14
       chokidar: 3.5.3
       debug: 4.3.4
@@ -16969,7 +16969,7 @@ packages:
       joycon: 3.1.1
       postcss-load-config: 3.1.4
       resolve-from: 5.0.0
-      rollup: 2.79.1
+      rollup: 3.2.5
       source-map: 0.8.0-beta.0
       sucrase: 3.27.0
       tree-kill: 1.2.2
