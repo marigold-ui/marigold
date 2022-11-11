@@ -16,6 +16,10 @@
     {
       "matchPackagePatterns": ["jest", "testing-library"],
       "groupName": "testing"
+    },
+    {
+      "matchPackagePatterns": ["rehype", "remark", "mdx"],
+      "groupName": "mdx"
     }
   ],
   "schedule": ["before 3am on the first day of the month"],
