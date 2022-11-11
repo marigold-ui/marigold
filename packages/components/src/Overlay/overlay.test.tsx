@@ -5,7 +5,6 @@ import { ThemeProvider } from '@marigold/system';
 import { Overlay } from './Overlay';
 import { Popover } from './Popover';
 import { Underlay } from './Underlay';
-import { Modal } from './Modal';
 
 const theme = {
   colors: {
