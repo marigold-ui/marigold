@@ -100,12 +100,6 @@ import { Select } from '@marigold/components';
       description: 'Handler that is called when the selection changes.',
       default: 'none',
     },
-    {
-      property: 'side',
-      type: '"right" | "left"',
-      description: 'Set the label on the right or left side.',
-      default: 'none%',
-    },
   ]}
 />
 
@@ -148,13 +142,5 @@ You can also set some keys disabled, for that you have to use the `disabledKeys`
 In this example you can see how to use the `<Select.Section>` in the `<Select>` itself. A clear line appears to separate different options.
 
 ```tsx preview file=components/Select/select-section.demo.tsx
-
-```
-
-### Select with label side
-
-The example shows what it would look like if you have set the `label` to the left side. You have to use the `side` property for it.
-
-```tsx preview file=components/Select/select-side.demo.tsx
 
 ```
