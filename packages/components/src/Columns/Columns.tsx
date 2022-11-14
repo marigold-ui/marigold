@@ -59,7 +59,7 @@ export const Columns = ({
             flexGrow: columns[idx],
           }}
         >
-          {isValidElement(child) ? cloneElement(child) : null}
+          {isValidElement(child) ? cloneElement(child) : child}
         </Box>
       ))}
     </Box>
