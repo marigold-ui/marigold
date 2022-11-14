@@ -1,11 +1,13 @@
 import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
-import { Box, StateAttrProps } from '@marigold/system';
+import {
+  Box,
+  StateAttrProps,
+  ThemeExtension,
+  useComponentStyles,
+} from '@marigold/system';
 
 import { Label, LabelProps } from '../Label';
 import { HelpText } from '../HelpText';
-
-// Props
-// ---------------
 export interface FieldBaseProps {
   children?: ReactNode;
   variant?: string;
@@ -22,6 +24,9 @@ export interface FieldBaseProps {
   errorMessageProps?: HTMLAttributes<HTMLElement>;
   stateProps?: StateAttrProps;
 }
+// Theme Extension
+// ---------------
+export interface FieldThemeExtension extends ThemeExtension<'Field'> {}
 
 // Component
 // ---------------
@@ -42,8 +47,11 @@ export const FieldBase = ({
   stateProps,
 }: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
+
+  const style = useComponentStyles('Field', { variant, size });
+
   return (
-    <Box css={{ display: 'flex', flexDirection: 'column', width }}>
+    <Box __baseCSS={{ width }} css={style}>
       {label && (
         <Label
           required={required}
@@ -55,20 +63,22 @@ export const FieldBase = ({
           {label}
         </Label>
       )}
-      {children}
-      {hasHelpText && (
-        <HelpText
-          {...stateProps}
-          variant={variant}
-          size={size}
-          disabled={disabled}
-          description={description}
-          descriptionProps={descriptionProps}
-          error={error}
-          errorMessage={errorMessage}
-          errorMessageProps={errorMessageProps}
-        />
-      )}
+      <div>
+        {children}
+        {hasHelpText && (
+          <HelpText
+            {...stateProps}
+            variant={variant}
+            size={size}
+            disabled={disabled}
+            description={description}
+            descriptionProps={descriptionProps}
+            error={error}
+            errorMessage={errorMessage}
+            errorMessageProps={errorMessageProps}
+          />
+        )}
+      </div>
     </Box>
   );
 };

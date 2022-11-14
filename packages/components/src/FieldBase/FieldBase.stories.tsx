@@ -19,13 +19,6 @@ export default {
       description: 'Whether the field is disabled',
       defaultValue: false,
     },
-    label: {
-      control: {
-        type: 'text',
-      },
-      description: 'The label',
-      defaultValue: 'Field Label',
-    },
     description: {
       control: {
         type: 'text',
@@ -57,7 +50,7 @@ export default {
 } as Meta;
 
 export const Basic: ComponentStory<typeof FieldBase> = args => (
-  <FieldBase {...args}>
+  <FieldBase {...args} label="This is my Label">
     <input type="text" />
   </FieldBase>
 );

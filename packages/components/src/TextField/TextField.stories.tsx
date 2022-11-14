@@ -81,7 +81,7 @@ export default {
 } as Meta;
 
 export const Basic: ComponentStory<typeof TextField> = args => (
-  <TextField {...args} />
+  <TextField {...args} label="My label is great." />
 );
 
 export const Controlled: ComponentStory<typeof TextField> = args => {

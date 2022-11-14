@@ -33,6 +33,7 @@ export default {
       description: 'Error Message',
       defaultValue: 'Something went wrong',
     },
+
     required: {
       control: {
         type: 'boolean',
