@@ -455,7 +455,7 @@ const DataTable = ({ editable }: { editable: boolean }) => (
     </Table.Header>
     <Table.Body items={rows}>
       {rows.map(item => (
-        <Table.Row>
+        <Table.Row key={item.id}>
           <Table.Cell>{item.name}</Table.Cell>
           <Table.Cell>{item.firstname}</Table.Cell>
           <Table.Cell>{item.house}</Table.Cell>
