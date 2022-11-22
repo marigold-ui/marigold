@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { SortDescriptor } from '@react-types/shared';
 
+import { Button } from '../Button';
+import { Checkbox } from '../Checkbox';
 import { Stack } from '../Stack';
+
 import { Table } from './Table';
 
 export default {
@@ -419,3 +422,64 @@ export const Static = () => (
     </Table.Body>
   </Table>
 );
+
+const columns = [
+  { name: 'Name', key: 'name' },
+  { name: 'Firstname', key: 'firstname' },
+  { name: 'House', key: 'house' },
+  { name: 'Year of birth', key: 'year' },
+  { name: 'Bearbeiten', key: 'edit' },
+];
+
+const rows = [
+  {
+    id: '1',
+    name: 'Potter',
+    firstname: 'Harry',
+    house: 'Gryffindor',
+    year: '1980',
+  },
+  {
+    id: '2',
+    name: 'Malfoy',
+    firstname: 'Draco',
+    house: 'Slytherin',
+    year: '1980',
+  },
+] as const;
+
+const DataTable = ({ editable }: { editable: boolean }) => (
+  <Table aria-label="Data Table">
+    <Table.Header columns={columns}>
+      {col => <Table.Column>{col.name}</Table.Column>}
+    </Table.Header>
+    <Table.Body items={rows}>
+      {rows.map(item => (
+        <Table.Row>
+          <Table.Cell>{item.name}</Table.Cell>
+          <Table.Cell>{item.firstname}</Table.Cell>
+          <Table.Cell>{item.house}</Table.Cell>
+          <Table.Cell>{item.year}</Table.Cell>
+          <Table.Cell>
+            <Button variant="ghost" disabled={!editable}>
+              Bearbeiten
+            </Button>
+          </Table.Cell>
+        </Table.Row>
+      ))}
+    </Table.Body>
+  </Table>
+);
+
+export const WithParentProp = () => {
+  const [editable, setEditable] = React.useState(true);
+
+  return (
+    <Stack>
+      <Checkbox checked={editable} onChange={setEditable}>
+        Allow editing
+      </Checkbox>
+      <DataTable editable={editable} />
+    </Stack>
+  );
+};
