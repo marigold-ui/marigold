@@ -29,6 +29,7 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
     targetRef: menuTriggerRef,
     overlayRef,
     isOpen: state.isOpen,
+    placement: 'bottom left',
   });
 
   const menuContext: MenuContextProps = {
@@ -36,9 +37,6 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
     open: state.isOpen,
     onClose: state.close,
     autoFocus: state.focusStrategy,
-    triggerWidth: menuTriggerRef.current
-      ? menuTriggerRef.current.offsetWidth
-      : undefined,
   };
 
   return (
@@ -56,6 +54,11 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
         dismissable={true}
         shouldCloseOnBlur={true}
         ref={overlayRef}
+        minWidth={
+          menuTriggerRef.current
+            ? menuTriggerRef.current.offsetWidth
+            : undefined
+        }
         {...positionProps}
       >
         {menu}
