@@ -1,5 +1,14 @@
 # @marigold/theme-b2b
 
+## 16.0.1
+
+### Patch Changes
+
+- [#2654](https://github.com/marigold-ui/marigold/pull/2654) [`9673ba62`](https://github.com/marigold-ui/marigold/commit/9673ba622011cb3cc748dba14f3c533160c95eee) Thanks [@sebald](https://github.com/sebald)! - fix: Revert base `Text` size to 16px
+
+- Updated dependencies [[`0208fb01`](https://github.com/marigold-ui/marigold/commit/0208fb0111f44ed2de78098c1cf4757a55302048)]:
+  - @marigold/components@4.1.1
+
 ## 16.0.0
 
 ### Patch Changes
