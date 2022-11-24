@@ -13,10 +13,11 @@ export const Message: Theme['components']['Message'] = {
       bg: 'gray10',
     },
     title: {
-      lineHeight: 'large',
+      lineHeight: 'small',
       fontWeight: 'bold',
     },
     content: {
+      pt: 'xsmall',
       lineHeight: 'small',
     },
     icon: {
