@@ -1,5 +1,14 @@
 # @marigold/theme-b2b
 
+## 16.0.0
+
+### Patch Changes
+
+- [#2652](https://github.com/marigold-ui/marigold/pull/2652) [`40aeefd7`](https://github.com/marigold-ui/marigold/commit/40aeefd704e4ac23b36cb83ade928b19bdaf68c0) Thanks [@sebald](https://github.com/sebald)! - feat: Improve `<Message>` look
+
+- Updated dependencies [[`40aeefd7`](https://github.com/marigold-ui/marigold/commit/40aeefd704e4ac23b36cb83ade928b19bdaf68c0), [`2e98753d`](https://github.com/marigold-ui/marigold/commit/2e98753d80af8a00a2b8c9adb0d3e08ee631ea4b), [`f764d3a0`](https://github.com/marigold-ui/marigold/commit/f764d3a080f075fe4e9b0cea30ded53a460689b4), [`473ae72b`](https://github.com/marigold-ui/marigold/commit/473ae72bc5ea11c8092a613b76500140f78cd12f), [`7a9129c1`](https://github.com/marigold-ui/marigold/commit/7a9129c1c2d2ada75fa5cd793874ab0b7db8d48b), [`727460fc`](https://github.com/marigold-ui/marigold/commit/727460fcd2dce035b18a539512ecf89f1ab7a11b)]:
+  - @marigold/components@4.1.0
+
 ## 15.0.0
 
 ### Patch Changes
