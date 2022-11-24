@@ -1,5 +1,16 @@
 # @marigold/system
 
+## 4.1.0
+
+### Patch Changes
+
+- [#2628](https://github.com/marigold-ui/marigold/pull/2628) [`312a23cf`](https://github.com/marigold-ui/marigold/commit/312a23cf95352beba4b2798a479fa9e0cdbfa20a) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @theme-ui/css to v0.15.4
+
+- [#2627](https://github.com/marigold-ui/marigold/pull/2627) [`d250fc00`](https://github.com/marigold-ui/marigold/commit/d250fc0041f2beca498107d3e60e2d50e9ffb293) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update babel monorepo
+
+- Updated dependencies [[`080b1fed`](https://github.com/marigold-ui/marigold/commit/080b1fedc582511e0155a9199aa3b2b995cfb609)]:
+  - @marigold/types@0.5.6
+
 ## 4.0.0
 
 ### Patch Changes

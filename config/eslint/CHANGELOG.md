@@ -1,5 +1,13 @@
 # @marigold/eslint-config
 
+## 0.4.5
+
+### Patch Changes
+
+- [#2645](https://github.com/marigold-ui/marigold/pull/2645) [`65f87570`](https://github.com/marigold-ui/marigold/commit/65f87570f047e1af18280bccd80abef365ee25be) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update eslint
+
+- [#2627](https://github.com/marigold-ui/marigold/pull/2627) [`d250fc00`](https://github.com/marigold-ui/marigold/commit/d250fc0041f2beca498107d3e60e2d50e9ffb293) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update babel monorepo
+
 ## 0.4.4
 
 ### Patch Changes
