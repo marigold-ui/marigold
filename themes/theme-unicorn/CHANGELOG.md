@@ -1,5 +1,12 @@
 # @marigold/theme-unicorn
 
+## 13.0.1
+
+### Patch Changes
+
+- Updated dependencies [[`0208fb01`](https://github.com/marigold-ui/marigold/commit/0208fb0111f44ed2de78098c1cf4757a55302048)]:
+  - @marigold/components@4.1.1
+
 ## 13.0.0
 
 ### Patch Changes

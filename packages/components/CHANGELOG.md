@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 4.1.1
+
+### Patch Changes
+
+- [#2655](https://github.com/marigold-ui/marigold/pull/2655) [`0208fb01`](https://github.com/marigold-ui/marigold/commit/0208fb0111f44ed2de78098c1cf4757a55302048) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: fix fieldbase width
+
+- Updated dependencies []:
+  - @marigold/system@4.1.1
+  - @marigold/icons@1.1.9
+
 ## 4.1.0
 
 ### Minor Changes
