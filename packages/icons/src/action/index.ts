@@ -14,6 +14,7 @@ export * from './Pause';
 export * from './PauseAlt';
 export * from './Play';
 export * from './PlayAlt';
+export * from './Restart';
 export * from './ResaleEdit';
 export * from './RotateLeft';
 export * from './RotateRight';
