@@ -1,5 +1,15 @@
 # @marigold/storybook-config
 
+## 0.7.18
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/components@4.1.2
+  - @marigold/theme-b2b@16.0.2
+  - @marigold/theme-core@16.0.2
+  - @marigold/theme-unicorn@13.0.2
+
 ## 0.7.17
 
 ### Patch Changes
