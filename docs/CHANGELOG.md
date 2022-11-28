@@ -1,5 +1,17 @@
 # @marigold/docs
 
+## 4.1.2
+
+### Patch Changes
+
+- [#2657](https://github.com/marigold-ui/marigold/pull/2657) [`fcc320db`](https://github.com/marigold-ui/marigold/commit/fcc320dba298105f5afa11fba624ee7eb50a78c1) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add restart icon
+
+- Updated dependencies [[`fcc320db`](https://github.com/marigold-ui/marigold/commit/fcc320dba298105f5afa11fba624ee7eb50a78c1), [`de5df9b6`](https://github.com/marigold-ui/marigold/commit/de5df9b649d2b8ddc840846e83efa7a33d1d8a5e)]:
+  - @marigold/icons@1.1.10
+  - @marigold/system@4.1.2
+  - @marigold/components@4.1.2
+  - @marigold/theme-b2b@16.0.2
+
 ## 4.1.1
 
 ### Patch Changes

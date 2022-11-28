@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 4.1.2
+
+### Patch Changes
+
+- [#2659](https://github.com/marigold-ui/marigold/pull/2659) [`de5df9b6`](https://github.com/marigold-ui/marigold/commit/de5df9b649d2b8ddc840846e83efa7a33d1d8a5e) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: icon size in button
+
 ## 4.1.1
 
 ## 4.1.0

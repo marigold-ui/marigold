@@ -1,5 +1,12 @@
 # @marigold/theme-core
 
+## 16.0.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/components@4.1.2
+
 ## 16.0.1
 
 ### Patch Changes
