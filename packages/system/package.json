@@ -38,7 +38,7 @@
     "react-dom": "16.x || 17.x || 18.x"
   },
   "devDependencies": {
-    "@babel/core": "7.20.2",
+    "@babel/core": "7.20.5",
     "@marigold/tsconfig": "workspace:*",
     "react": "18.2.0",
     "tsup": "6.4.0"
