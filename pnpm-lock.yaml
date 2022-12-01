@@ -201,7 +201,7 @@ importers:
       '@marigold/types': workspace:*
       '@mdx-js/loader': 2.1.5
       '@mdx-js/react': 1.6.22
-      '@next/mdx': 12.3.3
+      '@next/mdx': 12.3.4
       '@types/mdx-js__react': 1.5.5
       '@types/node': 18.0.0
       '@types/react': 18.0.25
@@ -238,7 +238,7 @@ importers:
       '@marigold/types': link:../packages/types
       '@mdx-js/loader': 2.1.5
       '@mdx-js/react': 1.6.22_react@18.2.0
-      '@next/mdx': 12.3.3_s5za5mvdb4kecsb2jbyta4zhya
+      '@next/mdx': 12.3.4_s5za5mvdb4kecsb2jbyta4zhya
       estree-util-visit: 1.2.0
       fs-extra: 10.1.0
       globby: 13.1.2
@@ -2998,8 +2998,8 @@ packages:
     resolution: {integrity: sha512-H2pKuOasV9RgvVaWosB2rGSNeQShQpiDaF4EEjLyagIc3HwqdOw2/VAG/8Lq+adOwPv2P73O1hulTNad3k5MDw==}
     dev: false
 
-  /@next/mdx/12.3.3_s5za5mvdb4kecsb2jbyta4zhya:
-    resolution: {integrity: sha512-pmxhmj6Nkc2x9ZjDCa8gaBBvZOXvTXiQmMksN/5L5ELYXWU4P++lC6HQ9Rlmvfwifdg3Aj7WxEr3caZLTELsXA==}
+  /@next/mdx/12.3.4_s5za5mvdb4kecsb2jbyta4zhya:
+    resolution: {integrity: sha512-YTF/ph9NMKjmrNsr8O+y3IiZee9TaxSd6051qI0Fj/du75pKRRZ1DnOX6ZS7mMgswH7VMERVV7fBZxmJr9sN7Q==}
     peerDependencies:
       '@mdx-js/loader': '>=0.15.0'
       '@mdx-js/react': '*'
