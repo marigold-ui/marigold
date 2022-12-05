@@ -1,5 +1,14 @@
 # @marigold/theme-unicorn
 
+## 13.0.4
+
+### Patch Changes
+
+- [#2666](https://github.com/marigold-ui/marigold/pull/2666) [`1399a66b`](https://github.com/marigold-ui/marigold/commit/1399a66ba8cacb00fca6209d380a7b739ed94e7d) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: change menu/select height to 75vh
+
+- Updated dependencies []:
+  - @marigold/components@4.1.4
+
 ## 13.0.3
 
 ### Patch Changes
