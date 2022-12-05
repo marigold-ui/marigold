@@ -316,10 +316,12 @@ importers:
       '@react-types/radio': 3.3.1
       '@react-types/shared': 3.16.0
       '@react-types/tooltip': 3.2.5
+      '@types/react-transition-group': 4.4.5
       deepmerge: ^4.2.2
       react: 18.2.0
       react-dom: 18.2.0
       react-is: 18.2.0
+      react-transition-group: 4.4.5
       tsup: 6.4.0
     dependencies:
       '@marigold/icons': link:../icons
@@ -370,8 +372,10 @@ importers:
       '@react-types/tooltip': 3.2.5_react@18.2.0
       deepmerge: 4.2.2
       react-is: 18.2.0
+      react-transition-group: 4.4.5_biqbaboplfbrettd7655fr4n2y
     devDependencies:
       '@marigold/tsconfig': link:../../config/tsconfig
+      '@types/react-transition-group': 4.4.5
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       tsup: 6.4.0
@@ -7439,6 +7443,15 @@ packages:
       '@types/react': 18.0.25
     dev: false
 
+  /@types/react-transition-group/4.4.5:
+    resolution:
+      {
+        integrity: sha512-juKD/eiSM3/xZYzjuzH6ZwpP+/lejltmiS3QEzV/vmb/Q8+HfDmxu+Baga8UEMGBqV88Nbg4l2hY/K2DkyaLLA==,
+      }
+    dependencies:
+      '@types/react': 18.0.25
+    dev: true
+
   /@types/react/18.0.21:
     resolution:
       {
@@ -11386,6 +11399,16 @@ packages:
       }
     dependencies:
       utila: 0.4.0
+    dev: false
+
+  /dom-helpers/5.2.1:
+    resolution:
+      {
+        integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==,
+      }
+    dependencies:
+      '@babel/runtime': 7.19.0
+      csstype: 3.1.1
     dev: false
 
   /dom-serializer/1.4.1:
@@ -20107,6 +20130,23 @@ packages:
       react-is: 18.2.0
       react-shallow-renderer: 16.15.0_react@18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-transition-group/4.4.5_biqbaboplfbrettd7655fr4n2y:
+    resolution:
+      {
+        integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==,
+      }
+    peerDependencies:
+      react: '>=16.6.0'
+      react-dom: '>=16.6.0'
+    dependencies:
+      '@babel/runtime': 7.19.0
+      dom-helpers: 5.2.1
+      loose-envify: 1.4.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react-universal-interface/0.6.2_react@18.2.0+tslib@2.4.0:
