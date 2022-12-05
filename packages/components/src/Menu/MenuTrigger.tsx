@@ -24,16 +24,18 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
     menuTriggerRef
   );
 
-  // TODO: Should we passdown menuRef here? For what? Use as ref in the menu?
-  //        useSynRef is used in the menu to sync this ref and its own ref
+  const { overlayProps: positionProps } = useOverlayPosition({
+    targetRef: menuTriggerRef,
+    overlayRef,
+    isOpen: state.isOpen,
+    placement: 'bottom left',
+  });
+
   const menuContext: MenuContextProps = {
     ...menuProps,
     open: state.isOpen,
     onClose: state.close,
     autoFocus: state.focusStrategy,
-    triggerWidth: menuTriggerRef.current
-      ? menuTriggerRef.current.offsetWidth
-      : undefined,
   };
 
   // TODO: What about dismissable={true} and shouldCloseOnBlur={true}
@@ -49,7 +51,19 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
       >
         {menuTrigger}
       </PressResponder>
-      <Popover state={state} triggerRef={menuTriggerRef} scrollRef={menuRef}>
+      <Popover
+        open={state.isOpen}
+        onClose={state.close}
+        dismissable={true}
+        shouldCloseOnBlur={true}
+        ref={overlayRef}
+        minWidth={
+          menuTriggerRef.current
+            ? menuTriggerRef.current.offsetWidth
+            : undefined
+        }
+        {...positionProps}
+      >
         {menu}
       </Popover>
     </MenuContext.Provider>

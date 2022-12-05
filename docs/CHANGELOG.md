@@ -1,5 +1,64 @@
 # @marigold/docs
 
+## 4.1.4
+
+### Patch Changes
+
+- Updated dependencies [[`1399a66b`](https://github.com/marigold-ui/marigold/commit/1399a66ba8cacb00fca6209d380a7b739ed94e7d)]:
+  - @marigold/theme-b2b@16.0.4
+  - @marigold/system@4.1.4
+  - @marigold/components@4.1.4
+  - @marigold/icons@1.1.12
+
+## 4.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`9f12ffec`](https://github.com/marigold-ui/marigold/commit/9f12ffecb4e7fdf0bcc407a9a7867ff4c1263a99)]:
+  - @marigold/theme-b2b@16.0.3
+  - @marigold/system@4.1.3
+  - @marigold/components@4.1.3
+  - @marigold/icons@1.1.11
+
+## 4.1.2
+
+### Patch Changes
+
+- [#2657](https://github.com/marigold-ui/marigold/pull/2657) [`fcc320db`](https://github.com/marigold-ui/marigold/commit/fcc320dba298105f5afa11fba624ee7eb50a78c1) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add restart icon
+
+- Updated dependencies [[`fcc320db`](https://github.com/marigold-ui/marigold/commit/fcc320dba298105f5afa11fba624ee7eb50a78c1), [`de5df9b6`](https://github.com/marigold-ui/marigold/commit/de5df9b649d2b8ddc840846e83efa7a33d1d8a5e)]:
+  - @marigold/icons@1.1.10
+  - @marigold/system@4.1.2
+  - @marigold/components@4.1.2
+  - @marigold/theme-b2b@16.0.2
+
+## 4.1.1
+
+### Patch Changes
+
+- Updated dependencies [[`0208fb01`](https://github.com/marigold-ui/marigold/commit/0208fb0111f44ed2de78098c1cf4757a55302048), [`9673ba62`](https://github.com/marigold-ui/marigold/commit/9673ba622011cb3cc748dba14f3c533160c95eee)]:
+  - @marigold/components@4.1.1
+  - @marigold/theme-b2b@16.0.1
+  - @marigold/system@4.1.1
+  - @marigold/icons@1.1.9
+
+## 4.1.0
+
+### Minor Changes
+
+- [#2576](https://github.com/marigold-ui/marigold/pull/2576) [`7a9129c1`](https://github.com/marigold-ui/marigold/commit/7a9129c1c2d2ada75fa5cd793874ab0b7db8d48b) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add side property to label
+
+### Patch Changes
+
+- [#2621](https://github.com/marigold-ui/marigold/pull/2621) [`080b1fed`](https://github.com/marigold-ui/marigold/commit/080b1fedc582511e0155a9199aa3b2b995cfb609) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @types/react to v18.0.25
+
+- Updated dependencies [[`40aeefd7`](https://github.com/marigold-ui/marigold/commit/40aeefd704e4ac23b36cb83ade928b19bdaf68c0), [`2e98753d`](https://github.com/marigold-ui/marigold/commit/2e98753d80af8a00a2b8c9adb0d3e08ee631ea4b), [`f764d3a0`](https://github.com/marigold-ui/marigold/commit/f764d3a080f075fe4e9b0cea30ded53a460689b4), [`473ae72b`](https://github.com/marigold-ui/marigold/commit/473ae72bc5ea11c8092a613b76500140f78cd12f), [`312a23cf`](https://github.com/marigold-ui/marigold/commit/312a23cf95352beba4b2798a479fa9e0cdbfa20a), [`080b1fed`](https://github.com/marigold-ui/marigold/commit/080b1fedc582511e0155a9199aa3b2b995cfb609), [`7a9129c1`](https://github.com/marigold-ui/marigold/commit/7a9129c1c2d2ada75fa5cd793874ab0b7db8d48b), [`727460fc`](https://github.com/marigold-ui/marigold/commit/727460fcd2dce035b18a539512ecf89f1ab7a11b), [`d250fc00`](https://github.com/marigold-ui/marigold/commit/d250fc0041f2beca498107d3e60e2d50e9ffb293)]:
+  - @marigold/components@4.1.0
+  - @marigold/theme-b2b@16.0.0
+  - @marigold/system@4.1.0
+  - @marigold/types@0.5.6
+  - @marigold/icons@1.1.8
+
 ## 4.0.0
 
 ### Major Changes

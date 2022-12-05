@@ -35,7 +35,7 @@ export interface MenuProps
 // Component
 // ---------------
 export const Menu = ({ variant, size, ...props }: MenuProps) => {
-  const { triggerWidth, ...menuContext } = useMenuContext();
+  const menuContext = useMenuContext();
   const ownProps = { ...props, ...menuContext };
 
   const ref = useRef(null);
@@ -59,7 +59,6 @@ export const Menu = ({ variant, size, ...props }: MenuProps) => {
         <Box
           as="ul"
           ref={ref}
-          style={{ width: triggerWidth }}
           __baseCSS={{
             listStyle: 'none',
             p: 0,

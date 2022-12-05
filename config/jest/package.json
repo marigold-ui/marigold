@@ -1,7 +1,7 @@
 {
   "name": "@marigold/jest-config",
   "description": "Marigold's jest configuration",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "license": "MIT",
   "keywords": [
     "marigold",
@@ -21,7 +21,7 @@
     "directory": "config/jest"
   },
   "dependencies": {
-    "@babel/core": "7.20.2",
+    "@babel/core": "7.20.5",
     "@swc/core": "1.3.14",
     "@swc/jest": "0.2.23",
     "@types/jest": "29.2.2",

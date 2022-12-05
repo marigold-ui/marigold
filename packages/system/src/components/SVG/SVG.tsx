@@ -27,6 +27,7 @@ export const SVG = forwardRef<SVGElement, SVGProps>(
         css: css({
           ...styles,
           fill,
+          flex: '0 0 auto',
           width: toDimension(props.width || size),
           height: toDimension(props.height || size),
         }),

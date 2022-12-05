@@ -4,15 +4,12 @@
 /* global fs, argv */
 import { getPackagesSync } from '@manypkg/get-packages';
 
-/** @type {Array<{ name: string, version: string }>} */
-//const published = JSON.parse(process.argv[2] || '[]');
-
-console.log(argv.packages);
 if (!argv.packages) {
   console.log('No packages provided, use "--packages" the flag.');
   process.exit(1);
 }
 
+/** @type {Array<{ name: string, version: string }>} */
 const published = JSON.parse(argv.packages || {});
 
 if (published.length === 0) {

@@ -51,7 +51,10 @@ export const FieldBase = ({
   const style = useComponentStyles('Field', { variant, size });
 
   return (
-    <Box __baseCSS={{ width }} css={style}>
+    <Box
+      __baseCSS={{ display: 'flex', flexDirection: 'column', width }}
+      css={style}
+    >
       {label && (
         <Label
           required={required}
@@ -63,7 +66,7 @@ export const FieldBase = ({
           {label}
         </Label>
       )}
-      <div>
+      <Box __baseCSS={{ display: 'flex', flexDirection: 'column' }}>
         {children}
         {hasHelpText && (
           <HelpText
@@ -78,7 +81,7 @@ export const FieldBase = ({
             errorMessageProps={errorMessageProps}
           />
         )}
-      </div>
+      </Box>
     </Box>
   );
 };

@@ -48,8 +48,12 @@ export const Message = ({
 
   return (
     <Box css={styles.container} {...props}>
-      <Box __baseCSS={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-        <Box role="presentation" css={styles.icon}>
+      <Box __baseCSS={{ display: 'flex', alignItems: 'top', gap: 4 }}>
+        <Box
+          role="presentation"
+          __baseCSS={{ flex: '0 0 16px' }}
+          css={styles.icon}
+        >
           {icon}
         </Box>
         <Box css={styles.title}>{messageTitle}</Box>

@@ -1,5 +1,11 @@
 # @marigold/jest-config
 
+## 1.0.10
+
+### Patch Changes
+
+- [#2627](https://github.com/marigold-ui/marigold/pull/2627) [`d250fc00`](https://github.com/marigold-ui/marigold/commit/d250fc0041f2beca498107d3e60e2d50e9ffb293) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update babel monorepo
+
 ## 1.0.9
 
 ### Patch Changes

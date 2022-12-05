@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "4.0.0",
+  "version": "4.1.4",
   "private": true,
   "type": "module",
   "browser": {
@@ -20,7 +20,7 @@
     "@marigold/types": "workspace:*",
     "@mdx-js/loader": "2.1.5",
     "@mdx-js/react": "1.6.22",
-    "@next/mdx": "12.3.3",
+    "@next/mdx": "12.3.4",
     "estree-util-visit": "1.2.0",
     "fs-extra": "10.1.0",
     "globby": "13.1.2",
