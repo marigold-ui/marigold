@@ -8,7 +8,7 @@ export const Menu: Theme['components']['Menu'] = {
       borderColor: 'gray40',
       borderRadius: 'medium',
 
-      height: '25vh',
+      height: '75vh',
       overflow: 'hidden auto',
     },
     item: {
