@@ -38,6 +38,7 @@ export const TooltipTrigger = ({
   };
 
   const tooltipTriggerRef = useRef(null);
+  const overlayRef = useRef(null);
 
   const state = useTooltipTriggerState(props);
 
@@ -47,18 +48,18 @@ export const TooltipTrigger = ({
     tooltipTriggerRef
   );
 
-  // const {
-  //   overlayProps: positionProps,
-  //   placement: overlayPlacement,
-  //   arrowProps,
-  // } = useOverlayPosition({
-  //   placement: props.placement,
-  //   targetRef: tooltipTriggerRef,
-  //   offset: props.offset,
-  //   crossOffset: props.crossOffset,
-  //   isOpen: state.isOpen,
-  //   overlayRef,
-  // });
+  const {
+    overlayProps: positionProps,
+    placement: overlayPlacement,
+    arrowProps,
+  } = useOverlayPosition({
+    placement: props.placement,
+    targetRef: tooltipTriggerRef,
+    offset: props.offset,
+    crossOffset: props.crossOffset,
+    isOpen: state.isOpen,
+    overlayRef,
+  });
 
   return (
     <FocusableProvider ref={tooltipTriggerRef} {...triggerProps}>
@@ -66,7 +67,11 @@ export const TooltipTrigger = ({
       <TooltipContext.Provider
         value={{
           state,
+          overlayRef,
+          arrowProps,
+          placement: overlayPlacement,
           ...tooltipProps,
+          ...positionProps,
         }}
       >
         <Overlay open={state.isOpen}>{tooltip}</Overlay>
