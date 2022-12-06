@@ -4,7 +4,6 @@ import { useMenuTrigger } from '@react-aria/menu';
 import { MenuContext, MenuContextProps } from './Context';
 import { PressResponder } from '@react-aria/interactions';
 import { Popover } from '../_Overlay/Popover';
-import { usePopover } from '@react-aria/overlays';
 
 export interface MenuTriggerProps {
   children: [trigger: ReactNode, menu: ReactNode];
@@ -15,7 +14,6 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
   const [menuTrigger, menu] = React.Children.toArray(children);
 
   const menuTriggerRef = useRef<HTMLElement>(null);
-  const overlayRef = useRef(null);
 
   const state = useMenuTriggerState({});
 
@@ -25,15 +23,6 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
     menuTriggerRef
   );
 
-  // brauche ich hier noch usePopover?
-  // const { popoverProps } = usePopover(
-  //   {
-  //     triggerRef: menuTriggerRef,
-  //     popoverRef: overlayRef,
-  //     placement: 'bottom left',
-  //   },
-  //   state
-  // );
   const menuContext: MenuContextProps = {
     ...menuProps,
     open: state.isOpen,
