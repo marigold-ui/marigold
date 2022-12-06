@@ -8,6 +8,7 @@ import { OverlayTriggerState } from '@react-stately/overlays';
 import { Overlay } from './Overlay';
 import { Underlay } from './Underlay';
 import { useObjectRef } from '@react-aria/utils';
+import { FocusScope } from '@react-aria/focus';
 
 export interface PopoverProps
   extends Pick<AriaPopoverProps, 'triggerRef' | 'scrollRef' | 'isNonModal'> {
@@ -62,7 +63,7 @@ const PopoverWrapper = forwardRef(
     );
 
     return (
-      <>
+      <FocusScope restoreFocus>
         {!isNonModal && <Underlay {...underlayProps} />}
         <div
           {...popoverProps}
@@ -79,7 +80,7 @@ const PopoverWrapper = forwardRef(
           {children}
           <DismissButton onDismiss={state.close} />
         </div>
-      </>
+      </FocusScope>
     );
   }
 );

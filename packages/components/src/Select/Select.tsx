@@ -2,7 +2,6 @@ import React, {
   forwardRef,
   ForwardRefExoticComponent,
   RefAttributes,
-  RefObject,
   useRef,
 } from 'react';
 import { useButton } from '@react-aria/button';
@@ -27,7 +26,6 @@ import { FieldBase } from '../FieldBase';
 import { ListBox } from '../ListBox';
 import { messages } from './intl';
 import { Popover } from '../_Overlay/Popover';
-import { FocusableRefValue } from '@react-types/shared';
 
 // Select Icon
 // ---------------
@@ -179,15 +177,13 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           <Chevron css={styles.icon} />
         </Box>
         <Popover state={state} triggerRef={buttonRef} scrollRef={listboxRef}>
-          <FocusScope restoreFocus>
-            <ListBox
-              ref={listboxRef}
-              state={state}
-              variant={variant}
-              size={size}
-              {...menuProps}
-            />
-          </FocusScope>
+          <ListBox
+            ref={listboxRef}
+            state={state}
+            variant={variant}
+            size={size}
+            {...menuProps}
+          />
         </Popover>
       </FieldBase>
     );

@@ -56,33 +56,31 @@ export const Menu = ({ variant, size, ...props }: MenuProps) => {
    * - DismissButton: allow screen reader to easily dimiss menu
    */
   return (
-    <FocusScope restoreFocus>
-      <div>
-        <DismissButton onDismiss={ownProps.onClose} />
-        <Box
-          as="ul"
-          ref={ref}
-          __baseCSS={{
-            listStyle: 'none',
-            p: 0,
-            overflowWrap: 'break-word',
-          }}
-          css={styles.container}
-          {...menuProps}
-        >
-          {[...state.collection].map(item => (
-            <MenuItem
-              key={item.key}
-              item={item}
-              state={state}
-              onAction={props.onSelect}
-              css={styles.item}
-            />
-          ))}
-        </Box>
-        <DismissButton onDismiss={ownProps.onClose} />
-      </div>
-    </FocusScope>
+    <div>
+      <DismissButton onDismiss={ownProps.onClose} />
+      <Box
+        as="ul"
+        ref={ref}
+        __baseCSS={{
+          listStyle: 'none',
+          p: 0,
+          overflowWrap: 'break-word',
+        }}
+        css={styles.container}
+        {...menuProps}
+      >
+        {[...state.collection].map(item => (
+          <MenuItem
+            key={item.key}
+            item={item}
+            state={state}
+            onAction={props.onSelect}
+            css={styles.item}
+          />
+        ))}
+      </Box>
+      <DismissButton onDismiss={ownProps.onClose} />
+    </div>
   );
 };
 
