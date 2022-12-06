@@ -1,17 +1,16 @@
 import React, { forwardRef, ReactNode, RefObject, useRef } from 'react';
 import {
-  AriaOverlayProps,
+  AriaPopoverProps,
   DismissButton,
   usePopover,
 } from '@react-aria/overlays';
 import { OverlayTriggerState } from '@react-stately/overlays';
-import { DOMRef, StyleProps } from '@react-types/shared';
 import { Overlay } from './Overlay';
-import { Underlay } from '../Overlay';
+import { Underlay } from './Underlay';
 
 export interface PopoverProps
   extends Omit<
-    AriaOverlayProps,
+    AriaPopoverProps,
     | 'isOpen'
     | 'isDismissable'
     | 'isKeyboardDismissDisabled'
@@ -23,8 +22,8 @@ export interface PopoverProps
   open?: boolean;
   keyboardDismissDisabled?: boolean;
   hideArrow?: boolean;
-  state?: OverlayTriggerState;
-  ref: RefObject<HTMLDivElement>;
+  state: OverlayTriggerState;
+  shouldCloseOnBlur: boolean;
 
   /**
    * Adjust size of the popover. This is used to make the popover
@@ -35,14 +34,13 @@ export interface PopoverProps
 
 interface PopoverWrapperProps extends PopoverProps {
   isOpen?: boolean;
-  isNonModal?: boolean;
 }
 
-export const Popover = ({ children, state, ref, ...props }: PopoverProps) => {
-  const fallbackRef = useRef(null);
-  const popoverRef = ref || fallbackRef;
+export const Popover = ({ ...props }: PopoverProps) => {
+  const popoverRef = useRef(null);
+  let { children, state, ...otherProps } = props;
   return (
-    <Overlay open={state.isOpen}>
+    <Overlay open={state.isOpen} {...otherProps}>
       <PopoverWrapper ref={popoverRef as any} {...props}>
         {children}
       </PopoverWrapper>
@@ -51,24 +49,27 @@ export const Popover = ({ children, state, ref, ...props }: PopoverProps) => {
 };
 
 const PopoverWrapper = forwardRef(
-  ({
-    children,
-    isOpen,
-    hideArrow,
-    isNonModal,
-    state,
-    ref,
-    ...props
-  }: PopoverWrapperProps) => {
+  (
+    {
+      children,
+      isOpen,
+      hideArrow,
+      isNonModal,
+      state,
+      ...props
+    }: PopoverWrapperProps,
+    ref
+  ) => {
     let { popoverProps, underlayProps } = usePopover(
       {
         ...props,
-        popoverRef: ref,
-        triggerRef: ref,
+        popoverRef: ref as RefObject<HTMLDivElement>,
         placement: 'bottom left',
       },
       state
     );
+
+    // what is with maxHeight
 
     return (
       <>
@@ -78,9 +79,8 @@ const PopoverWrapper = forwardRef(
           style={{
             ...popoverProps.style,
           }}
-          ref={ref}
+          ref={ref as RefObject<HTMLDivElement>}
           role="presentation"
-          data-testid="popover"
         >
           {!isNonModal && <DismissButton onDismiss={state.close} />}
           {children}

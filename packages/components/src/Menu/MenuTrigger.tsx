@@ -1,10 +1,10 @@
 import React, { ReactNode, useRef } from 'react';
 import { useMenuTriggerState } from '@react-stately/menu';
 import { useMenuTrigger } from '@react-aria/menu';
-
-import { Popover } from '../Overlay';
 import { MenuContext, MenuContextProps } from './Context';
 import { PressResponder } from '@react-aria/interactions';
+import { Popover } from '../_Overlay/Popover';
+import { usePopover } from '@react-aria/overlays';
 
 export interface MenuTriggerProps {
   children: [trigger: ReactNode, menu: ReactNode];
@@ -15,22 +15,25 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
   const [menuTrigger, menu] = React.Children.toArray(children);
 
   const menuTriggerRef = useRef<HTMLElement>(null);
-  const menuRef = useRef(null);
+  const overlayRef = useRef(null);
 
   const state = useMenuTriggerState({});
+
   const { menuTriggerProps, menuProps } = useMenuTrigger(
     { trigger: 'press', isDisabled: disabled },
     state,
     menuTriggerRef
   );
 
-  const { overlayProps: positionProps } = useOverlayPosition({
-    targetRef: menuTriggerRef,
-    overlayRef,
-    isOpen: state.isOpen,
-    placement: 'bottom left',
-  });
-
+  // brauche ich hier noch usePopover?
+  // const { popoverProps } = usePopover(
+  //   {
+  //     triggerRef: menuTriggerRef,
+  //     popoverRef: overlayRef,
+  //     placement: 'bottom left',
+  //   },
+  //   state
+  // );
   const menuContext: MenuContextProps = {
     ...menuProps,
     open: state.isOpen,
@@ -53,16 +56,15 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
       </PressResponder>
       <Popover
         open={state.isOpen}
-        onClose={state.close}
         dismissable={true}
         shouldCloseOnBlur={true}
-        ref={overlayRef}
+        triggerRef={menuTriggerRef}
+        state={state}
         minWidth={
           menuTriggerRef.current
             ? menuTriggerRef.current.offsetWidth
             : undefined
         }
-        {...positionProps}
       >
         {menu}
       </Popover>
