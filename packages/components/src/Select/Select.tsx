@@ -5,7 +5,7 @@ import React, {
   useRef,
 } from 'react';
 import { useButton } from '@react-aria/button';
-import { FocusScope, useFocusRing } from '@react-aria/focus';
+import { useFocusRing } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { HiddenSelect, useSelect } from '@react-aria/select';
 import { useSelectState } from '@react-stately/select';

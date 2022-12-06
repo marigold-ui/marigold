@@ -1,5 +1,4 @@
 import React, { Key, useRef } from 'react';
-import { FocusScope } from '@react-aria/focus';
 import { useMenu } from '@react-aria/menu';
 import { DismissButton } from '@react-aria/overlays';
 import { Item } from '@react-stately/collections';

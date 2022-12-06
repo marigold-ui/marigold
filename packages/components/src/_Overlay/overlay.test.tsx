@@ -1,11 +1,12 @@
 /* eslint-disable testing-library/no-node-access */
-import React from 'react';
+import React, { createRef, useRef } from 'react';
 import { render, screen } from '@testing-library/react';
-import { OverlayProvider, useOverlayTrigger } from '@react-aria/overlays';
+import { OverlayProvider } from '@react-aria/overlays';
 import { ThemeProvider } from '@marigold/system';
 import { Overlay } from './Overlay';
 import { Popover } from './Popover';
 import { Underlay } from './Underlay';
+import { useOverlayTriggerState } from '@react-stately/overlays';
 
 const theme = {
   colors: {
@@ -92,18 +93,26 @@ test('overlay has container', () => {
 
 // Popover tests
 // ---------------
-const ref = React.useRef(null);
-const state = useOverlayTrigger({});
+
+const initialState = {
+  ref: React.createRef<Element>(),
+  state: useOverlayTriggerState({ isOpen: true }),
+};
+
+// const ref = React.createRef<Element>();
+
+// const state = useOverlayTriggerState({ isOpen: true });
+
 test('renders open popover', () => {
   render(
     <OverlayProvider>
-      <Popover open triggerRef={ref} state={state}>
+      <Popover triggerRef={initialState.ref} state={initialState.state}>
         <div>something</div>
       </Popover>
     </OverlayProvider>
   );
 
-  const popover = screen.getByTestId('something');
+  const popover = screen.getByRole('presentation');
   expect(popover).toBeInTheDocument();
 });
 
