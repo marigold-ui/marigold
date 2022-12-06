@@ -112,12 +112,6 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     const { focusProps, isFocusVisible } = useFocusRing();
 
     const overlayRef = useRef(null);
-    const { overlayProps: positionProps } = useOverlayPosition({
-      targetRef: buttonRef,
-      overlayRef,
-      isOpen: state.isOpen,
-      placement: 'bottom left',
-    });
 
     const styles = useComponentStyles(
       'Select',
@@ -189,19 +183,10 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           minWidth={
             buttonRef.current ? buttonRef.current.offsetWidth : undefined
           }
+          state={state}
           ref={overlayRef}
-          {...positionProps}
         >
-          <FocusScope restoreFocus>
-            <DismissButton onDismiss={state.close} />
-            <ListBox
-              state={state}
-              variant={variant}
-              size={size}
-              {...menuProps}
-            />
-            <DismissButton onDismiss={state.close} />
-          </FocusScope>
+          <ListBox state={state} variant={variant} size={size} {...menuProps} />
         </Popover>
       </FieldBase>
     );

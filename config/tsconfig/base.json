@@ -9,6 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "strict": true,
+    "strictFunctionTypes": false,
     "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": true,
     "inlineSources": false,

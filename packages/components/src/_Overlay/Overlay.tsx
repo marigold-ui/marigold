@@ -43,6 +43,7 @@ export const Overlay = ({ children, container, open }: OverlayProps) => {
         {state => (
           <div
             ref={nodeRef}
+            data-testid="overlay"
             style={{
               ...defaultStyle,
               ...transitionStyles[state],

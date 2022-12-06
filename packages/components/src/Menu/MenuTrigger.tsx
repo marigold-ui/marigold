@@ -14,6 +14,7 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
   const [menuTrigger, menu] = React.Children.toArray(children);
 
   const menuTriggerRef = useRef<HTMLElement>(null);
+  const menuRef = useRef<HTMLUListElement>();
 
   const state = useMenuTriggerState({});
 
@@ -25,13 +26,12 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
 
   const menuContext: MenuContextProps = {
     ...menuProps,
+    ref: menuRef,
     open: state.isOpen,
     onClose: state.close,
     autoFocus: state.focusStrategy,
   };
 
-  // TODO: What about dismissable={true} and shouldCloseOnBlur={true}
-  //       was on the popover before.
   // TODO: Rename scrollRef to "overlayRef"
 
   return (
@@ -43,18 +43,7 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
       >
         {menuTrigger}
       </PressResponder>
-      <Popover
-        open={state.isOpen}
-        dismissable={true}
-        shouldCloseOnBlur={true}
-        triggerRef={menuTriggerRef}
-        state={state}
-        minWidth={
-          menuTriggerRef.current
-            ? menuTriggerRef.current.offsetWidth
-            : undefined
-        }
-      >
+      <Popover triggerRef={menuTriggerRef} scrollRef={menuRef} state={state}>
         {menu}
       </Popover>
     </MenuContext.Provider>

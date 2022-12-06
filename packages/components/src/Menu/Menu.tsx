@@ -13,9 +13,10 @@ import {
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { useMenuContext } from './Context';
+import { MenuContext, useMenuContext } from './Context';
 import { MenuTrigger } from './MenuTrigger';
 import { MenuItem } from './MenuItem';
+import { useSyncRef } from '@react-aria/utils';
 
 // Theme Extension
 // ---------------
@@ -35,12 +36,14 @@ export interface MenuProps
 // Component
 // ---------------
 export const Menu = ({ variant, size, ...props }: MenuProps) => {
-  const menuContext = useMenuContext();
+  const { ref: scrollRef, ...menuContext } = useMenuContext();
   const ownProps = { ...props, ...menuContext };
 
   const ref = useRef(null);
   const state = useTreeState({ ...ownProps, selectionMode: 'none' });
   const { menuProps } = useMenu(ownProps, state, ref);
+
+  useSyncRef({ ref: scrollRef }, ref);
 
   const styles = useComponentStyles(
     'Menu',
