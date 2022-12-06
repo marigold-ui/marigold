@@ -13,7 +13,7 @@ import {
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { MenuContext, useMenuContext } from './Context';
+import { useMenuContext } from './Context';
 import { MenuTrigger } from './MenuTrigger';
 import { MenuItem } from './MenuItem';
 import { useSyncRef } from '@react-aria/utils';

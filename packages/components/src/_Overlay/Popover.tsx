@@ -15,17 +15,6 @@ export interface PopoverProps
   state: OverlayTriggerState;
   children: ReactNode;
 }
-//   extends Pick<
-//     AriaPopoverProps,
-
-//     | 'isOpen'
-//     | 'isDismissable'
-//     | 'isKeyboardDismissDisabled'
-//     | 'popoverRef'
-//     | 'maxHeight'
-//   > {
-//   keyboardDismissDisabled?: boolean;
-//   state: OverlayTriggerState;
 
 //   /**
 //    * Adjust size of the popover. This is used to make the popover
