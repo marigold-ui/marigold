@@ -1,12 +1,20 @@
 /* eslint-disable testing-library/no-node-access */
-import React, { createRef, useRef } from 'react';
-import { render, screen } from '@testing-library/react';
+import React, { createRef, forwardRef, useRef } from 'react';
+import {
+  fireEvent,
+  render,
+  renderHook,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { OverlayProvider } from '@react-aria/overlays';
 import { ThemeProvider } from '@marigold/system';
 import { Overlay } from './Overlay';
 import { Popover } from './Popover';
 import { Underlay } from './Underlay';
 import { useOverlayTriggerState } from '@react-stately/overlays';
+import { act } from 'react-dom/test-utils';
+import { useObjectRef } from '@react-aria/utils';
 
 const theme = {
   colors: {
@@ -93,67 +101,67 @@ test('overlay has container', () => {
 
 // Popover tests
 // ---------------
+interface TestPopoverProps {
+  open: boolean;
+}
+const TestPopover = forwardRef<HTMLDivElement, TestPopoverProps>(
+  ({ open }, ref) => {
+    const popoverRef = useObjectRef(ref);
+    const state = useOverlayTriggerState({ isOpen: open });
 
-const initialState = {
-  ref: React.createRef<Element>(),
-  state: useOverlayTriggerState({ isOpen: true }),
-};
-
-// const ref = React.createRef<Element>();
-
-// const state = useOverlayTriggerState({ isOpen: true });
+    return (
+      <OverlayProvider>
+        <Popover triggerRef={popoverRef} state={state}>
+          <div>something</div>
+        </Popover>
+      </OverlayProvider>
+    );
+  }
+);
 
 test('renders open popover', () => {
-  render(
-    <OverlayProvider>
-      <Popover triggerRef={initialState.ref} state={initialState.state}>
-        <div>something</div>
-      </Popover>
-    </OverlayProvider>
-  );
+  render(<TestPopover open={true} />);
 
   const popover = screen.getByRole('presentation');
   expect(popover).toBeInTheDocument();
 });
 
 test('popover is per default closed', () => {
-  render(
-    <OverlayProvider data-testid="popover">
-      <Popover triggerRef={ref} state={state}>
-        <div>something</div>
-      </Popover>
-    </OverlayProvider>
-  );
+  render(<TestPopover open={false} />);
 
-  const popover = screen.getByTestId('popover').firstChild;
+  const popover = screen.queryByRole('presentation');
   expect(popover).not.toBeInTheDocument();
 });
 
-test('forwards ref', () => {
-  const ref = React.createRef<HTMLInputElement>();
-  render(
-    <OverlayProvider>
-      <Popover data-testid="popover" open triggerRef={ref} state={state}>
-        <div>something</div>
-      </Popover>
-    </OverlayProvider>
-  );
+test('forwards ref', async () => {
+  const ref = React.createRef<HTMLDivElement>();
 
-  expect(ref.current).toBeInstanceOf(HTMLDivElement);
+  render(<TestPopover open={true} ref={ref} />);
+
+  waitFor(() => {
+    expect(ref.current).toBeInstanceOf(HTMLDivElement);
+  });
 });
 
 test('popover has children', () => {
-  render(
-    <OverlayProvider>
-      <Overlay data-testid="overlay" open>
-        <div>something</div>
-      </Overlay>
-    </OverlayProvider>
-  );
+  render(<TestPopover open={true} />);
 
-  const popover = screen.getByTestId('overlay');
+  const popover = screen.getByRole('presentation');
   expect(popover).toBeInTheDocument();
   expect(popover.firstChild).toBeInTheDocument();
+});
+
+test('minWidth is set', async () => {
+  const ref = React.createRef<HTMLDivElement>();
+  render(<TestPopover open={true} ref={ref} />);
+
+  const popover = screen.getByRole('presentation');
+
+  waitFor(() => {
+    expect(popover).toHaveStyle(
+      `min-width: ${(ref.current as HTMLElement).offsetWidth}`
+    );
+  });
 });
 
 // Underlay tests
