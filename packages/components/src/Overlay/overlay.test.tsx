@@ -131,6 +131,7 @@ test('forwards ref', async () => {
 
   render(<TestPopover open={true} ref={ref} />);
 
+  // eslint-disable-next-line testing-library/await-async-utils
   waitFor(() => {
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
   });
@@ -150,6 +151,7 @@ test('minWidth is set', async () => {
 
   const popover = screen.getByRole('presentation');
 
+  // eslint-disable-next-line testing-library/await-async-utils
   waitFor(() => {
     expect(popover).toHaveStyle(
       `min-width: ${(ref.current as HTMLElement).offsetWidth}`
