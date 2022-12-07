@@ -3,7 +3,7 @@ import { useMenuTriggerState } from '@react-stately/menu';
 import { useMenuTrigger } from '@react-aria/menu';
 import { MenuContext, MenuContextProps } from './Context';
 import { PressResponder } from '@react-aria/interactions';
-import { Popover } from '../_Overlay/Popover';
+import { Popover } from '../Overlay/Popover';
 import { useObjectRef } from '@react-aria/utils';
 
 export interface MenuTriggerProps {

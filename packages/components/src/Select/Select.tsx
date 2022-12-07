@@ -25,7 +25,7 @@ import { ComponentProps } from '@marigold/types';
 import { FieldBase } from '../FieldBase';
 import { ListBox } from '../ListBox';
 import { messages } from './intl';
-import { Popover } from '../_Overlay/Popover';
+import { Popover } from '../Overlay';
 
 // Select Icon
 // ---------------

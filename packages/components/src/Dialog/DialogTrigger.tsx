@@ -2,9 +2,8 @@ import React, { ReactNode, useRef } from 'react';
 import { PressResponder } from '@react-aria/interactions';
 import { useOverlayTriggerState } from '@react-stately/overlays';
 
-import { Modal } from '../Overlay/Modal';
 import { DialogContext } from './Context';
-import { Overlay } from '../Overlay';
+import { Modal, Overlay } from '../Overlay';
 
 export interface DialogTriggerProps {
   children: [trigger: ReactNode, menu: ReactNode];
