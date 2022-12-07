@@ -7,7 +7,7 @@ export const Menu: Theme['components']['Menu'] = {
       border: '1px solid',
       borderColor: 'gray40',
       borderRadius: 'small',
-      height: '75vh',
+      maxHeight: ['75vh', '75vh', '45vh'],
       overflow: 'hidden auto',
     },
     item: {
