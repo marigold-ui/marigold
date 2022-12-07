@@ -97,8 +97,6 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     const buttonRef = useObjectRef(ref);
     const listboxRef = useRef(null);
 
-    // why does it have so many refs? in spectrum
-
     const {
       labelProps,
       triggerProps,

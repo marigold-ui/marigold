@@ -39,7 +39,7 @@ export const Overlay = ({ children, container, open }: OverlayProps) => {
 
   return (
     <ReactAriaOverlay portalContainer={container}>
-      <Transition nodeRef={nodeRef} timeout={{ enter: 0, exit: 350 }} in={open}>
+      <Transition nodeRef={nodeRef} timeout={{ enter: 0, exit: 550 }} in={open}>
         {state => (
           <div
             ref={nodeRef}
