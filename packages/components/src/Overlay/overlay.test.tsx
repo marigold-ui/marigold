@@ -1,6 +1,6 @@
 /* eslint-disable testing-library/no-node-access */
 import React, { forwardRef } from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { OverlayProvider } from '@react-aria/overlays';
 import { useOverlayTriggerState } from '@react-stately/overlays';
 import { useObjectRef } from '@react-aria/utils';
