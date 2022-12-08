@@ -1,11 +1,10 @@
 import React, { ReactNode, useRef } from 'react';
 import { useMenuTriggerState } from '@react-stately/menu';
 import { useMenuTrigger } from '@react-aria/menu';
-
-import { Popover } from '../Overlay';
 import { MenuContext, MenuContextProps } from './Context';
-import { useOverlayPosition } from '@react-aria/overlays';
 import { PressResponder } from '@react-aria/interactions';
+import { Popover } from '../Overlay/Popover';
+import { useObjectRef } from '@react-aria/utils';
 
 export interface MenuTriggerProps {
   children: [trigger: ReactNode, menu: ReactNode];
@@ -16,24 +15,19 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
   const [menuTrigger, menu] = React.Children.toArray(children);
 
   const menuTriggerRef = useRef<HTMLElement>(null);
-  const overlayRef = useRef(null);
+  const menuRef = useObjectRef<HTMLUListElement>();
 
   const state = useMenuTriggerState({});
+
   const { menuTriggerProps, menuProps } = useMenuTrigger(
     { trigger: 'press', isDisabled: disabled },
     state,
     menuTriggerRef
   );
 
-  const { overlayProps: positionProps } = useOverlayPosition({
-    targetRef: menuTriggerRef,
-    overlayRef,
-    isOpen: state.isOpen,
-    placement: 'bottom left',
-  });
-
   const menuContext: MenuContextProps = {
     ...menuProps,
+    ref: menuRef,
     open: state.isOpen,
     onClose: state.close,
     autoFocus: state.focusStrategy,
@@ -48,19 +42,7 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
       >
         {menuTrigger}
       </PressResponder>
-      <Popover
-        open={state.isOpen}
-        onClose={state.close}
-        dismissable={true}
-        shouldCloseOnBlur={true}
-        ref={overlayRef}
-        minWidth={
-          menuTriggerRef.current
-            ? menuTriggerRef.current.offsetWidth
-            : undefined
-        }
-        {...positionProps}
-      >
+      <Popover triggerRef={menuTriggerRef} scrollRef={menuRef} state={state}>
         {menu}
       </Popover>
     </MenuContext.Provider>

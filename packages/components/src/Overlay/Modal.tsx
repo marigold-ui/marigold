@@ -53,7 +53,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
      */
     return (
       <FocusScope contain restoreFocus autoFocus>
-        <Underlay {...underlayProps} />
+        <Underlay {...underlayProps} variant="modal" />
         <div
           style={{
             display: 'flex',
