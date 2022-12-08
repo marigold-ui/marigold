@@ -17,13 +17,6 @@ export interface PopoverProps
   children: ReactNode;
 }
 
-//   /**
-//    * Adjust size of the popover. This is used to make the popover
-//    * at least the same width as its anchor element.
-//    */
-//   minWidth?: number | string;
-// }
-
 interface PopoverWrapperProps extends PopoverProps {}
 
 export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
