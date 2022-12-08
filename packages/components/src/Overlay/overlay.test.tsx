@@ -126,37 +126,12 @@ test('popover is per default closed', () => {
   expect(popover).not.toBeInTheDocument();
 });
 
-test('forwards ref', async () => {
-  const ref = React.createRef<HTMLDivElement>();
-
-  render(<TestPopover open={true} ref={ref} />);
-
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => {
-    expect(ref.current).toBeInstanceOf(HTMLDivElement);
-  });
-});
-
 test('popover has children', () => {
   render(<TestPopover open={true} />);
 
   const popover = screen.getByRole('presentation');
   expect(popover).toBeInTheDocument();
   expect(popover.firstChild).toBeInTheDocument();
-});
-
-test('minWidth is set', async () => {
-  const ref = React.createRef<HTMLDivElement>();
-  render(<TestPopover open={true} ref={ref} />);
-
-  const popover = screen.getByRole('presentation');
-
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => {
-    expect(popover).toHaveStyle(
-      `min-width: ${(ref.current as HTMLElement).offsetWidth}`
-    );
-  });
 });
 
 // Underlay tests
