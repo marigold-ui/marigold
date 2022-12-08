@@ -1,5 +1,17 @@
 # @marigold/components
 
+## 4.1.5
+
+### Patch Changes
+
+- [#2674](https://github.com/marigold-ui/marigold/pull/2674) [`832da2a6`](https://github.com/marigold-ui/marigold/commit/832da2a69f9bad5adcbcc57cba3cb215dfaa51e2) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: refactoring Popover with usePopover
+
+- Updated dependencies [[`832da2a6`](https://github.com/marigold-ui/marigold/commit/832da2a69f9bad5adcbcc57cba3cb215dfaa51e2)]:
+  - @marigold/types@0.5.7
+  - @marigold/icons@1.1.13
+  - @marigold/system@4.1.5
+  - @marigold/tokens@3.1.0
+
 ## 4.1.4
 
 ### Patch Changes

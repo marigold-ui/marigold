@@ -1,5 +1,18 @@
 # @marigold/theme-unicorn
 
+## 13.0.5
+
+### Patch Changes
+
+- [#2672](https://github.com/marigold-ui/marigold/pull/2672) [`098c0019`](https://github.com/marigold-ui/marigold/commit/098c00192d5fcad27a8b73670e1be5e494612a8e) Thanks [@benediktgrether](https://github.com/benediktgrether)! - change menu/select height to 75vh
+
+- [#2672](https://github.com/marigold-ui/marigold/pull/2672) [`098c0019`](https://github.com/marigold-ui/marigold/commit/098c00192d5fcad27a8b73670e1be5e494612a8e) Thanks [@benediktgrether](https://github.com/benediktgrether)! - chore: change menu/select height to 75vh
+
+- [#2674](https://github.com/marigold-ui/marigold/pull/2674) [`832da2a6`](https://github.com/marigold-ui/marigold/commit/832da2a69f9bad5adcbcc57cba3cb215dfaa51e2) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: refactoring Popover with usePopover
+
+- Updated dependencies [[`832da2a6`](https://github.com/marigold-ui/marigold/commit/832da2a69f9bad5adcbcc57cba3cb215dfaa51e2)]:
+  - @marigold/components@4.1.5
+
 ## 13.0.4
 
 ### Patch Changes

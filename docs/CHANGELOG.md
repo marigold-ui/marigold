@@ -1,5 +1,17 @@
 # @marigold/docs
 
+## 4.1.5
+
+### Patch Changes
+
+- Updated dependencies [[`098c0019`](https://github.com/marigold-ui/marigold/commit/098c00192d5fcad27a8b73670e1be5e494612a8e), [`098c0019`](https://github.com/marigold-ui/marigold/commit/098c00192d5fcad27a8b73670e1be5e494612a8e), [`832da2a6`](https://github.com/marigold-ui/marigold/commit/832da2a69f9bad5adcbcc57cba3cb215dfaa51e2)]:
+  - @marigold/theme-b2b@16.0.5
+  - @marigold/components@4.1.5
+  - @marigold/types@0.5.7
+  - @marigold/icons@1.1.13
+  - @marigold/system@4.1.5
+  - @marigold/tokens@3.1.0
+
 ## 4.1.4
 
 ### Patch Changes
