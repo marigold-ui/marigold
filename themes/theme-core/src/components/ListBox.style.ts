@@ -17,6 +17,9 @@ export const ListBox: Theme['components']['ListBox'] = {
       borderBottomLeftRadius: '2px',
       borderColor: '#aaa',
 
+      maxHeight: ['75vh', '75vh', '45vh'],
+      overflow: 'hidden auto',
+
       '&:error': {
         background: 'gray00',
         borderTop: 'none',

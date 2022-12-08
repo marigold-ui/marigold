@@ -9,6 +9,8 @@ export const ListBox: Theme['components']['ListBox'] = {
       border: '1px solid',
       borderColor: 'gray40',
       borderRadius: 'small',
+      maxHeight: ['75vh', '75vh', '45vh'],
+      overflow: 'hidden auto',
 
       '&:error': {
         borderColor: 'error',

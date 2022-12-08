@@ -1,5 +1,23 @@
 # @marigold/theme-b2b
 
+## 16.0.4
+
+### Patch Changes
+
+- [#2666](https://github.com/marigold-ui/marigold/pull/2666) [`1399a66b`](https://github.com/marigold-ui/marigold/commit/1399a66ba8cacb00fca6209d380a7b739ed94e7d) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: change menu/select height to 75vh
+
+- Updated dependencies []:
+  - @marigold/components@4.1.4
+
+## 16.0.3
+
+### Patch Changes
+
+- [#2663](https://github.com/marigold-ui/marigold/pull/2663) [`9f12ffec`](https://github.com/marigold-ui/marigold/commit/9f12ffecb4e7fdf0bcc407a9a7867ff4c1263a99) Thanks [@benediktgrether](https://github.com/benediktgrether)! - fix: set height to 25vh and overflow to auto for select box and menu
+
+- Updated dependencies []:
+  - @marigold/components@4.1.3
+
 ## 16.0.2
 
 ### Patch Changes
