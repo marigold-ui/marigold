@@ -3,6 +3,7 @@ import type { Theme } from '@marigold/components';
 export const Menu: Theme['components']['Menu'] = {
   base: {
     container: {
+      fontFamily: 'headline',
       bg: 'background.page',
       border: '1px solid',
       borderColor: 'background.light',

@@ -14,6 +14,7 @@ export const Button: Theme['components']['Button'] = {
   },
   variant: {
     outline: {
+      fontFamily: 'headline',
       background: 'transparent',
       px: 'small-1',
       color: 'text.regular',
