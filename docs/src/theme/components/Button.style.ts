@@ -15,6 +15,9 @@ export const Button: Theme['components']['Button'] = {
   variant: {
     outline: {
       background: 'transparent',
+      px: 'small-1',
+      color: 'text.regular',
+      lineHeight: 'large-2',
       borderStyle: 'solid',
       borderWidth: 'small-1',
       borderRadius: 'small-2',
@@ -41,6 +44,13 @@ export const Button: Theme['components']['Button'] = {
     scrollToTop: {
       width: '100%',
       height: '100%',
+    },
+    menu: {
+      bg: 'background.light',
+      borderRadius: 'small-2',
+      '&:hover': {
+        bg: 'gray60',
+      },
     },
   },
   size: {

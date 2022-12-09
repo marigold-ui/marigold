@@ -15,7 +15,7 @@ export * from './Preview';
 export * from './PropsTable';
 export * from './ScrollToTop';
 export * from './Toc';
-export * from './ThemeSelect';
+export * from './ThemeMenu';
 export * from './ThemeSwitch';
 export * from './Title';
 export * from './Version';
