@@ -22,11 +22,11 @@ export const Button: Theme['components']['Button'] = {
   },
   variant: {
     primary: {
-      color: 'background',
+      color: 'primary.text',
       bg: 'primary',
       '&:hover': {
         color: 'background',
-        bg: 'orange40',
+        bg: 'primary.hover',
       },
     },
     secondary: {
