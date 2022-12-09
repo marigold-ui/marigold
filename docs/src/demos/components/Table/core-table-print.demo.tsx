@@ -1,7 +1,6 @@
 import {
   Button,
   Inline,
-  Link,
   Select,
   Split,
   Stack,
@@ -97,22 +96,16 @@ export const CorePrintTable = () => {
                 <Table.Cell>{item.seat}</Table.Cell>
                 <Table.Cell>{item.code}</Table.Cell>
                 <Table.Cell>
-                  <Link href="https://www.reservix.de/" target="_blank">
-                    <Inline space="0.5ch">
-                      {item.ticketcode}
-                      <ExternalLink size={14} />
-                    </Inline>
-                  </Link>
+                  <Button variant="link">
+                    {item.ticketcode}
+                    <ExternalLink size={14} />
+                  </Button>
                 </Table.Cell>
                 <Table.Cell>
-                  <Link href="https://www.reservix.de/" target="_blank">
-                    {item.print}
-                  </Link>
+                  <Button variant="link">{item.print}</Button>
                 </Table.Cell>
                 <Table.Cell>
-                  <Link href="https://www.reservix.de/" target="_blank">
-                    {item.actions}
-                  </Link>
+                  <Button variant="link">{item.actions}</Button>
                 </Table.Cell>
               </Table.Row>
             ))}
