@@ -1,5 +1,12 @@
 # @marigold/system
 
+## 4.1.5
+
+### Patch Changes
+
+- Updated dependencies [[`832da2a6`](https://github.com/marigold-ui/marigold/commit/832da2a69f9bad5adcbcc57cba3cb215dfaa51e2)]:
+  - @marigold/types@0.5.7
+
 ## 4.1.4
 
 ## 4.1.3
