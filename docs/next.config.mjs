@@ -67,6 +67,7 @@ export default async function configuration() {
       },
       { name: 'hooks' },
       { name: 'develop' },
+      { name: 'recipes' },
     ],
   });
 
