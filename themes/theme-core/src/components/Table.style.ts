@@ -67,5 +67,8 @@ export const Table: Theme['components']['Table'] = {
         border: '1px solid #cfcfcf',
       },
     },
+    rowSection: {
+      row: { bg: 'gray20' },
+    },
   },
 };

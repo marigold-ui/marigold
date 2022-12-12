@@ -103,7 +103,10 @@ export const CorePrintTable = () => {
           </Table.Header>
           <Table.Body items={rows}>
             {rows.map(item => (
-              <Table.Row key={item.id}>
+              <Table.Row
+                key={item.id}
+                variant={item.id.includes('header') ? 'rowSection' : undefined}
+              >
                 <Table.Cell>
                   {item.id.includes('header') ? (
                     <strong>{item.event}</strong>
