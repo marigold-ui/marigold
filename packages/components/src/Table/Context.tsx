@@ -6,6 +6,9 @@ export interface TableContextProps {
   state: TableState<object>;
   interactive: boolean;
   styles: ComponentStyleParts<['table', 'header', 'row', 'cell']>;
+
+  variant?: string;
+  size?: string;
 }
 
 export const TableContext = createContext<TableContextProps>({} as any);
