@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Headline,
   Inline,
@@ -79,7 +78,6 @@ export const CorePrintTable = () => {
     }
     return state;
   };
-  console.log(rows.map(item => item.id.includes('header')) ? 'header' : '');
   return (
     <ThemeProvider theme={coreTheme}>
       <Stack space="xsmall">
