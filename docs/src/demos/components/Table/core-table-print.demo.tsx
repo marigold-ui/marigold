@@ -56,6 +56,16 @@ const rows: { [key: string]: any }[] = [
     actions: 'Einzelticket drucken',
   },
   {
+    id: '1-header',
+    event: '07.01.2022, 20:00 Uhr - Test Veranstaltung',
+    seat: '',
+    code: '',
+    ticketcode: '',
+    print: '',
+    type: '',
+    actions: 'Gruppenticket drucken',
+  },
+  {
     id: '3',
     event: 'Test Veranstaltung 2',
     seat: 'Mitte - Reihe 10 - Platz 7',
