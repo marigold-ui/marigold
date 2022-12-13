@@ -1,6 +1,5 @@
 import React, { Key, useRef } from 'react';
 import { useMenu } from '@react-aria/menu';
-import { DismissButton } from '@react-aria/overlays';
 import { Item } from '@react-stately/collections';
 import { useTreeState } from '@react-stately/tree';
 import { CollectionElement } from '@react-types/shared';
@@ -50,36 +49,28 @@ export const Menu = ({ variant, size, ...props }: MenuProps) => {
     { parts: ['container', 'item'] }
   );
 
-  /**
-   * - FocusScope: restore focus back to the trigger when menu is closed
-   * - DismissButton: allow screen reader to easily dimiss menu
-   */
   return (
-    <div>
-      <DismissButton onDismiss={ownProps.onClose} />
-      <Box
-        as="ul"
-        ref={ref}
-        __baseCSS={{
-          listStyle: 'none',
-          p: 0,
-          overflowWrap: 'break-word',
-        }}
-        css={styles.container}
-        {...menuProps}
-      >
-        {[...state.collection].map(item => (
-          <MenuItem
-            key={item.key}
-            item={item}
-            state={state}
-            onAction={props.onSelect}
-            css={styles.item}
-          />
-        ))}
-      </Box>
-      <DismissButton onDismiss={ownProps.onClose} />
-    </div>
+    <Box
+      as="ul"
+      ref={ref}
+      __baseCSS={{
+        listStyle: 'none',
+        p: 0,
+        overflowWrap: 'break-word',
+      }}
+      css={styles.container}
+      {...menuProps}
+    >
+      {[...state.collection].map(item => (
+        <MenuItem
+          key={item.key}
+          item={item}
+          state={state}
+          onAction={props.onSelect}
+          css={styles.item}
+        />
+      ))}
+    </Box>
   );
 };
 

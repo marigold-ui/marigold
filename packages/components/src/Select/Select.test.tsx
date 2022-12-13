@@ -1,9 +1,17 @@
 import React from 'react';
 import { OverlayProvider } from '@react-aria/overlays';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  renderHook,
+  screen,
+  within,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { cleanup } from '@testing-library/react';
 
-import { ThemeProvider } from '@marigold/system';
+import { ThemeProvider, useResponsiveValue } from '@marigold/system';
 
 import { Select } from './Select';
 
@@ -132,7 +140,23 @@ const theme = {
   },
 };
 
+/**
+ * We need to mock `matchMedia` because JSOM does not
+ * implements it.
+ */
+const mockMatchMedia = (matches: string[]) =>
+  jest.fn().mockImplementation(query => ({
+    matches: matches.includes(query),
+  }));
+afterEach(cleanup);
+
 test('renders a field (label, helptext, select)', () => {
+  window.matchMedia = mockMatchMedia([
+    'screen and (min-width: 40em)',
+    'screen and (min-width: 52em)',
+    'screen and (min-width: 64em)',
+  ]);
+
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
@@ -266,6 +290,11 @@ test('option list closes when button is clicked', () => {
 });
 
 test('supports to select an option and closes listbox afterwards', () => {
+  window.matchMedia = mockMatchMedia([
+    'screen and (min-width: 40em)',
+    'screen and (min-width: 52em)',
+    'screen and (min-width: 64em)',
+  ]);
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
@@ -670,6 +699,41 @@ test('forwards ref', () => {
   );
 
   expect(ref.current).toBeInstanceOf(HTMLButtonElement);
+});
+
+test('renders as tray', () => {
+  const ref = React.createRef<HTMLButtonElement>();
+
+  let resize: Function;
+  window.addEventListener = jest.fn().mockImplementation((event, cb) => {
+    if (event === 'resize') resize = cb;
+  });
+
+  const { result } = renderHook(() =>
+    useResponsiveValue(['one', 'two', 'three', 'four'])
+  );
+  window.matchMedia = mockMatchMedia([]);
+  act(() => resize());
+
+  expect(result.current).toEqual('one');
+
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Select label="Label" data-testid="select" ref={ref}>
+          <Select.Section title="Section 1">
+            <Select.Option key="one">one</Select.Option>
+            <Select.Option key="two">two</Select.Option>
+          </Select.Section>
+        </Select>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByTestId('select');
+  fireEvent.click(button);
+  const tray = screen.getByTestId('tray');
+  expect(tray).toBeInTheDocument();
 });
 
 // FIXME: We currently have no easy way to test the focus + hover styling

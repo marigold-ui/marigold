@@ -18,6 +18,7 @@ import {
   CSSObject,
   ThemeExtensionsWithParts,
   useComponentStyles,
+  useResponsiveValue,
   useStateProps,
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
@@ -25,7 +26,7 @@ import { ComponentProps } from '@marigold/types';
 import { FieldBase } from '../FieldBase';
 import { ListBox } from '../ListBox';
 import { messages } from './intl';
-import { Popover } from '../Overlay';
+import { Popover, Tray } from '../Overlay';
 
 // Select Icon
 // ---------------
@@ -96,6 +97,8 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     const state = useSelectState(props);
     const buttonRef = useObjectRef(ref);
     const listboxRef = useRef(null);
+
+    const isSmallScreen = useResponsiveValue([true, false, false], 2);
 
     const {
       labelProps,
@@ -174,15 +177,27 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           </Box>
           <Chevron css={styles.icon} />
         </Box>
-        <Popover state={state} triggerRef={buttonRef} scrollRef={listboxRef}>
-          <ListBox
-            ref={listboxRef}
-            state={state}
-            variant={variant}
-            size={size}
-            {...menuProps}
-          />
-        </Popover>
+        {isSmallScreen ? (
+          <Tray state={state}>
+            <ListBox
+              ref={listboxRef}
+              state={state}
+              variant={variant}
+              size={size}
+              {...menuProps}
+            />
+          </Tray>
+        ) : (
+          <Popover state={state} triggerRef={buttonRef} scrollRef={listboxRef}>
+            <ListBox
+              ref={listboxRef}
+              state={state}
+              variant={variant}
+              size={size}
+              {...menuProps}
+            />
+          </Popover>
+        )}
       </FieldBase>
     );
   }
