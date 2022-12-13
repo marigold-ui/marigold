@@ -1,7 +1,7 @@
 import React, { HTMLAttributes, ReactNode } from 'react';
-import { Exclamation } from '@marigold/icons';
 import {
   Box,
+  SVG,
   ThemeExtensionsWithParts,
   useComponentStyles,
 } from '@marigold/system';
@@ -54,10 +54,14 @@ export const HelpText = ({
     >
       {hasErrorMessage ? (
         <>
-          <Exclamation
+          <SVG
+            viewBox="0 0 24 24"
             role="presentation"
             size={(styles?.icon?.size as any) || 16}
-          />
+          >
+            <path d="M2.25 20.3097H21.75L12 3.46875L2.25 20.3097ZM12.8864 17.2606H11.1136V15.4879H12.8864V17.2606ZM12.8864 13.7151H11.1136V10.1697H12.8864V13.7151Z" />
+          </SVG>
+
           {errorMessage}
         </>
       ) : (
