@@ -3,7 +3,6 @@ import React from 'react';
 import { Required } from '@marigold/icons';
 import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
-import { Inline } from '../Inline';
 
 // Theme Extension
 // ---------------
