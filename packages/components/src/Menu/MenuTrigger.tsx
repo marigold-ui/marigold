@@ -5,6 +5,8 @@ import { MenuContext, MenuContextProps } from './Context';
 import { PressResponder } from '@react-aria/interactions';
 import { Popover } from '../Overlay/Popover';
 import { useObjectRef } from '@react-aria/utils';
+import { useResponsiveValue } from '@marigold/system';
+import { Tray } from '../Overlay';
 
 export interface MenuTriggerProps {
   children: [trigger: ReactNode, menu: ReactNode];
@@ -33,6 +35,8 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
     autoFocus: state.focusStrategy,
   };
 
+  const isSmallScreen = useResponsiveValue([true, false, false], 2);
+
   return (
     <MenuContext.Provider value={menuContext}>
       <PressResponder
@@ -42,9 +46,13 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
       >
         {menuTrigger}
       </PressResponder>
-      <Popover triggerRef={menuTriggerRef} scrollRef={menuRef} state={state}>
-        {menu}
-      </Popover>
+      {isSmallScreen ? (
+        <Tray state={state}>{menu}</Tray>
+      ) : (
+        <Popover triggerRef={menuTriggerRef} scrollRef={menuRef} state={state}>
+          {menu}
+        </Popover>
+      )}
     </MenuContext.Provider>
   );
 };

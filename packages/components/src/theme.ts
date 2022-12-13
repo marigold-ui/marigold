@@ -35,6 +35,7 @@ import type { SwitchThemeExtension } from './Switch';
 import type { TableThemeExtension } from './Table';
 import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
+import type { TrayThemeExtension } from './Overlay';
 import type { TooltipThemeExtension } from './Tooltip';
 
 interface ComponentStyles
@@ -69,6 +70,7 @@ interface ComponentStyles
     TextThemeExtension,
     TextAreaThemeExtension,
     TooltipThemeExtension,
+    TrayThemeExtension,
     UnderlayThemeExtension {}
 
 export interface Theme extends BaseTheme {
