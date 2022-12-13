@@ -27,7 +27,7 @@ import type { ListBoxThemeExtension } from './ListBox';
 import type { MenuThemeExtension } from './Menu';
 import type { MessageThemeExtension } from './Message';
 import type { NumberFieldThemeExtension } from './NumberField';
-import type { UnderlayThemeExtension, TrayThemeExtension } from './Overlay';
+import type { UnderlayThemeExtension } from './Overlay';
 import type { RadioThemeExtension, RadioGroupThemeExtension } from './Radio';
 import type { SelectThemeExtension } from './Select';
 import type { SliderThemeExtension } from './Slider';
@@ -69,7 +69,6 @@ interface ComponentStyles
     TextThemeExtension,
     TextAreaThemeExtension,
     TooltipThemeExtension,
-    TrayThemeExtension,
     UnderlayThemeExtension {}
 
 export interface Theme extends BaseTheme {

@@ -13,5 +13,4 @@ export * from './Text.style';
 export * from './Table.style';
 export * from './ScrollToTop.style';
 export * from './Toc.style';
-export * from './Tray.style';
 export * from './Underlay.style';

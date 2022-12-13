@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
+import { Box } from '@marigold/system';
 import { FocusScope } from '@react-aria/focus';
 import {
   AriaModalOverlayProps,
@@ -19,15 +19,9 @@ import { Underlay } from './Underlay';
 interface TrayProps extends AriaModalOverlayProps, StyleProps, OverlayProps {
   children: ReactNode;
   state: OverlayTriggerState;
-  size?: string;
-  variant?: string;
 }
 
 interface TrayWrapperProps extends TrayProps {}
-
-// Theme Extension
-// ---------------
-export interface TrayThemeExtension extends ThemeExtension<'Tray'> {}
 
 // Component
 // ---------------
@@ -45,11 +39,7 @@ export const Tray = forwardRef<HTMLDivElement, TrayProps>(
 );
 
 export const TrayWrapper = forwardRef<HTMLDivElement, TrayWrapperProps>(
-  (
-    { children, state, size, variant, ...props },
-    ref: RefObject<HTMLDivElement>
-  ) => {
-    const styles = useComponentStyles('Tray', { size, variant });
+  ({ children, state, ...props }, ref: RefObject<HTMLDivElement>) => {
     let { modalProps, underlayProps } = useModalOverlay(
       {
         ...props,
@@ -61,7 +51,12 @@ export const TrayWrapper = forwardRef<HTMLDivElement, TrayWrapperProps>(
     return (
       <FocusScope contain restoreFocus autoFocus>
         <Underlay {...underlayProps} variant="modal">
-          <Box {...modalProps} ref={ref} css={styles} data-testid="tray">
+          <Box
+            {...modalProps}
+            ref={ref}
+            __baseCSS={{ position: 'absolute', width: '100%', bottom: 0 }}
+            data-testid="tray"
+          >
             <DismissButton onDismiss={state.close} />
             {children}
             <DismissButton onDismiss={state.close} />
