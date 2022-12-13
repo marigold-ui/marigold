@@ -35,6 +35,7 @@ export const Label = ({
       // aria-required is set on the field and will already be announced,
       // so we don't need to add it here. BUT we need it for styling the required label, so this is needed.
       aria-required={required}
+      __baseCSS={{ display: 'flex' }}
       css={styles}
     >
       {children}
