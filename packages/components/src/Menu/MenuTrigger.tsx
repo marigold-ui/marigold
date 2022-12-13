@@ -1,12 +1,11 @@
 import React, { ReactNode, useRef } from 'react';
 import { useMenuTriggerState } from '@react-stately/menu';
-import { useMenuTrigger } from '@react-aria/menu';
-import { MenuContext, MenuContextProps } from './Context';
 import { PressResponder } from '@react-aria/interactions';
-import { Popover } from '../Overlay/Popover';
+import { useMenuTrigger } from '@react-aria/menu';
 import { useObjectRef } from '@react-aria/utils';
 import { useResponsiveValue } from '@marigold/system';
-import { Tray } from '../Overlay';
+import { MenuContext, MenuContextProps } from './Context';
+import { Popover, Tray } from '../Overlay';
 
 export interface MenuTriggerProps {
   children: [trigger: ReactNode, menu: ReactNode];
