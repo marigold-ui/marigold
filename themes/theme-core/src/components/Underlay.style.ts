@@ -4,8 +4,8 @@ export const Underlay: Theme['components']['Underlay'] = {
   base: {},
   variant: {
     modal: {
-      bg: 'gray70',
-      opacity: 0.33,
+      bg: 'rgba(206, 212, 218, 0.5)',
+      backdropFilter: 'blur(1px)',
     },
   },
 };
