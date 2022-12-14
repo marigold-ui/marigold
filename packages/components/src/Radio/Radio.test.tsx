@@ -138,14 +138,14 @@ test('allows styling via theme', () => {
 test('supports styling via variant and size', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label" variant="green" size="large">
-        <Radio value="1" data-testid="radio-1">
+      <Radio.Group label="With Label">
+        <Radio value="1" data-testid="radio-1" variant="green" size="large">
           Option 1
         </Radio>
-        <Radio value="2" data-testid="radio-2">
+        <Radio value="2" data-testid="radio-2" variant="green" size="large">
           Option 2
         </Radio>
-        <Radio value="3" data-testid="radio-3">
+        <Radio value="3" data-testid="radio-3" variant="green" size="large">
           Option 3
         </Radio>
       </Radio.Group>

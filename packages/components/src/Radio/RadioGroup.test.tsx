@@ -69,34 +69,6 @@ const theme = {
         },
       },
     },
-    RadioGroup: {
-      base: {
-        container: {
-          bg: 'gray',
-        },
-        group: {
-          fontStyle: 'italic',
-
-          '&[data-orientation="horizontal"]': {
-            gap: '3ch',
-          },
-        },
-      },
-      variant: {
-        green: {
-          container: {
-            bg: 'green',
-          },
-        },
-      },
-      size: {
-        large: {
-          group: {
-            fontSize: 'large-1',
-          },
-        },
-      },
-    },
   },
 };
 
@@ -172,30 +144,6 @@ test('allows styling via theme', () => {
 
   const group = screen.getByRole('presentation');
   expect(group).toHaveStyle(`font-style: italic`);
-});
-
-test('supports styling via variant and size', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label" variant="green" size="large">
-        <Radio value="1" data-testid="radio-1">
-          Option 1
-        </Radio>
-        <Radio value="2" data-testid="radio-2">
-          Option 2
-        </Radio>
-        <Radio value="3" data-testid="radio-3">
-          Option 3
-        </Radio>
-      </Radio.Group>
-    </ThemeProvider>
-  );
-
-  const container = screen.getByRole('radiogroup');
-  expect(container).toHaveStyle(`background: ${theme.colors.green}`);
-
-  const group = screen.getByRole('presentation');
-  expect(group).toHaveStyle(`font-size: ${theme.fontSizes['large-1']}px`);
 });
 
 test('support vertical orientation by default', () => {
