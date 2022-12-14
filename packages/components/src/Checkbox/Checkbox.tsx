@@ -173,8 +173,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     const styles = useComponentStyles(
       'Checkbox',
       {
-        variant: groupState?.variant || variant,
-        size: groupState?.size || size,
+        variant,
+        size,
       },
       { parts: ['container', 'label', 'checkbox'] }
     );
