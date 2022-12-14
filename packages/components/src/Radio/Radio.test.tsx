@@ -400,3 +400,39 @@ test('forwards ref', () => {
 
   expect(ref.current).toBeInstanceOf(HTMLInputElement);
 });
+
+test('radio accepts helptext', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label" description="This is my Helptext.">
+        <Radio value="1" data-testid="radio-1">
+          Option 1π
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+  expect(screen.getByText('This is my Helptext.')).toBeInTheDocument();
+});
+
+test('radio accepts error message', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group
+        label="With Label"
+        error
+        errorMessage="This is my error message"
+      >
+        <Radio value="1" data-testid="radio-1">
+          Option 1π
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+  expect(screen.getByText('This is my error message')).toBeInTheDocument();
+});

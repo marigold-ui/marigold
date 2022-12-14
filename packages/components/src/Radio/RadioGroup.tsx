@@ -7,10 +7,13 @@ import {
   Box,
   ThemeExtensionsWithParts,
   useComponentStyles,
+  useStateProps,
 } from '@marigold/system';
 
 import { Label } from '../Label';
 import { RadioGroupContext } from './Context';
+import { FieldBase } from '../FieldBase';
+import { isFocusVisible } from '@react-aria/interactions';
 
 // Theme Extension
 // ---------------
@@ -57,7 +60,14 @@ export const RadioGroup = ({
   };
 
   const state = useRadioGroupState(props);
-  const { radioGroupProps, labelProps } = useRadioGroup(props, state);
+  const { radioGroupProps, labelProps, errorMessageProps, descriptionProps } =
+    useRadioGroup(props, state);
+
+  const stateProps = useStateProps({
+    disabled,
+    readOnly,
+    error,
+  });
 
   const styles = useComponentStyles(
     'RadioGroup',
@@ -66,12 +76,22 @@ export const RadioGroup = ({
   );
 
   return (
-    <Box {...radioGroupProps} css={styles.container}>
-      {props.label && (
-        <Label as="span" required={required} {...labelProps}>
-          {props.label}
-        </Label>
-      )}
+    <FieldBase
+      variant={variant}
+      size={size}
+      width={width}
+      label={props.label}
+      labelProps={{ as: 'span', ...labelProps }}
+      description={props.description}
+      descriptionProps={descriptionProps}
+      error={error}
+      errorMessage={props.errorMessage}
+      errorMessageProps={errorMessageProps}
+      disabled={disabled}
+      stateProps={stateProps}
+      required={required}
+      {...radioGroupProps}
+    >
       <Box
         role="presentation"
         data-orientation={orientation}
@@ -89,6 +109,6 @@ export const RadioGroup = ({
           {children}
         </RadioGroupContext.Provider>
       </Box>
-    </Box>
+    </FieldBase>
   );
 };

@@ -117,6 +117,18 @@ import { Radio } from '@marigold/components';
       description: 'Set the radio group disabled.',
       default: 'false',
     },
+    {
+      property: 'description',
+      type: 'string',
+      description: 'Set the radio group helptext.',
+      default: 'none',
+    },
+    {
+      property: 'errorMessage',
+      type: 'string',
+      description: 'Set the radio group error message if an error occures.',
+      default: 'none',
+    },
   ]}
 />
 
@@ -138,10 +150,18 @@ Here you can see a complete disabled `<Radio.Group>`. You can also just disable 
 
 ```
 
-### Required radio with horizontal orientation
+### Required Radio with horizontal orientation
 
 In this example the `<Radio.Group>` is required and the `orientation` is set to `horizontal`. With these props you can determine the direction of the `<Radio>` options.
 
 ```tsx preview file=components/Radio/radio-required.demo.tsx
+
+```
+
+### Error Radio
+
+In this example you can see how an `errorMessage` would look on a `<RadioGroup>`.
+
+```tsx preview file=components/Radio/radio-error.demo.tsx
 
 ```
