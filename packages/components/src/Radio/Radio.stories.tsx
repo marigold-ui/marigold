@@ -60,3 +60,14 @@ export const Basic: ComponentStory<typeof Radio.Group> = args => (
     <Radio value="4">Option 4</Radio>
   </Radio.Group>
 );
+
+export const DefaultSelected: ComponentStory<typeof Radio.Group> = args => (
+  <Radio.Group {...args} defaultValue="4">
+    <Radio value="1">Option 1</Radio>
+    <Radio value="2">Option 2</Radio>
+    <Radio value="3" disabled>
+      Option 3
+    </Radio>
+    <Radio value="4">Option 4</Radio>
+  </Radio.Group>
+);

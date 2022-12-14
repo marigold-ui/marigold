@@ -1,12 +1,13 @@
 import React, {
   forwardRef,
+  useEffect,
   type ForwardRefExoticComponent,
   type RefAttributes,
 } from 'react';
 import { useHover } from '@react-aria/interactions';
 import { useFocusRing } from '@react-aria/focus';
 import { useRadio } from '@react-aria/radio';
-import { useObjectRef } from '@react-aria/utils';
+import { mergeProps, useObjectRef } from '@react-aria/utils';
 import type { AriaRadioProps } from '@react-types/radio';
 
 import {
@@ -95,6 +96,10 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
       ...state
     } = useRadioGroupContext();
 
+    useEffect(() => {
+      state.setLastFocusedValue(state.selectedValue || '');
+    }, [state]);
+
     const inputRef = useObjectRef(ref);
     const { inputProps } = useRadio(
       { isDisabled: disabled, ...props },
@@ -130,8 +135,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
           width: width || groupWidth || '100%',
         }}
         css={styles.container}
-        {...hoverProps}
-        {...stateProps}
+        {...mergeProps(hoverProps, stateProps)}
       >
         <Box
           as="input"
@@ -146,8 +150,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
             opacity: 0.0001,
             cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
           }}
-          {...inputProps}
-          {...focusProps}
+          {...mergeProps(inputProps, focusProps)}
         />
         <Icon checked={inputProps.checked} css={styles.radio} {...stateProps} />
         <Box css={styles.label} {...stateProps}>
