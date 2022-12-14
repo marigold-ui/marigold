@@ -53,6 +53,7 @@ export const Basic: ComponentStory<typeof CheckboxGroup> = args => {
         {...args}
         onChange={setSelected}
         description="Choose your Options"
+        errorMessage="Oh no"
       >
         <Checkbox value="ham">Ham</Checkbox>
         <Checkbox value="salami" disabled>
