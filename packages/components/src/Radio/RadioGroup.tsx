@@ -3,15 +3,10 @@ import { useRadioGroup } from '@react-aria/radio';
 import { useRadioGroupState } from '@react-stately/radio';
 import { AriaRadioGroupProps } from '@react-types/radio';
 
-import { Box, ThemeExtensionsWithParts, useStateProps } from '@marigold/system';
+import { Box, useStateProps } from '@marigold/system';
 
 import { RadioGroupContext } from './Context';
 import { FieldBase } from '../FieldBase';
-
-// Theme Extension
-// ---------------
-export interface RadioGroupThemeExtension
-  extends ThemeExtensionsWithParts<'RadioGroup', ['container', 'group']> {}
 
 // Props
 // ---------------

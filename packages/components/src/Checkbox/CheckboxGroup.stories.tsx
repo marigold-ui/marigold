@@ -49,7 +49,36 @@ export const Basic: ComponentStory<typeof CheckboxGroup> = args => {
   const [selected, setSelected] = React.useState<string[]>([]);
   return (
     <>
-      <CheckboxGroup {...args} onChange={setSelected}>
+      <CheckboxGroup
+        {...args}
+        onChange={setSelected}
+        description="Choose your Options"
+      >
+        <Checkbox value="ham">Ham</Checkbox>
+        <Checkbox value="salami" disabled>
+          Salami
+        </Checkbox>
+        <Checkbox value="cheese">Cheese</Checkbox>
+        <Checkbox value="tomato">Tomate</Checkbox>
+        <Checkbox value="cucumber">Cucumber</Checkbox>
+        <Checkbox value="onions">Onions</Checkbox>
+      </CheckboxGroup>
+      <hr />
+      <pre>Selected values: {selected.join(', ')}</pre>
+    </>
+  );
+};
+
+export const Error: ComponentStory<typeof CheckboxGroup> = args => {
+  const [selected, setSelected] = React.useState<string[]>([]);
+  return (
+    <>
+      <CheckboxGroup
+        onChange={setSelected}
+        error
+        errorMessage="This is an error"
+        {...args}
+      >
         <Checkbox value="ham">Ham</Checkbox>
         <Checkbox value="salami" disabled>
           Salami
