@@ -97,73 +97,6 @@ test('label is optional (can use aria-label instead)', () => {
   expect(screen.getByText('three')).toBeInTheDocument();
 });
 
-test('allows styling container via theme', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <CheckboxGroup label="Group of Checkboxes">
-        <Checkbox value="one" data-testid="one">
-          one
-        </Checkbox>
-        <Checkbox value="two" data-testid="two">
-          two
-        </Checkbox>
-      </CheckboxGroup>
-    </ThemeProvider>
-  );
-
-  const container = screen.getByRole('group');
-  expect(container).toHaveStyle(`background: ${theme.colors.gray}`);
-
-  const group = screen.getByRole('presentation');
-  expect(group).toHaveStyle(`font-style: italic`);
-});
-
-test('supports styling via variant and size', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <CheckboxGroup label="Group of Checkboxes" variant="teal" size="large">
-        <Checkbox value="one" data-testid="one">
-          one
-        </Checkbox>
-        <Checkbox value="two" data-testid="two">
-          two
-        </Checkbox>
-      </CheckboxGroup>
-    </ThemeProvider>
-  );
-
-  const container = screen.getByRole('group');
-  expect(container).toHaveStyle(`background: ${theme.colors.teal}`);
-
-  const group = screen.getByRole('presentation');
-  expect(group).toHaveStyle(`font-size: ${theme.fontSizes['large-1']}px`);
-});
-
-test('passed down variant and size to checkboxes', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <CheckboxGroup label="Group of Checkboxes" variant="teal" size="large">
-        <Checkbox value="one" data-testid="one">
-          one
-        </Checkbox>
-        <Checkbox value="two" data-testid="two">
-          two
-        </Checkbox>
-      </CheckboxGroup>
-    </ThemeProvider>
-  );
-
-  expect(screen.getByText('one')).toHaveStyle(`color: ${theme.colors.teal}`);
-  expect(screen.getByText('one')).toHaveStyle(
-    `font-size: ${theme.fontSizes['small-1']}px`
-  );
-
-  expect(screen.getByText('two')).toHaveStyle(`color: ${theme.colors.teal}`);
-  expect(screen.getByText('two')).toHaveStyle(
-    `font-size: ${theme.fontSizes['small-1']}px`
-  );
-});
-
 test('passes down "disabled" to checkboxes', () => {
   render(
     <CheckboxGroup label="Group of Checkboxes" disabled>
@@ -259,4 +192,40 @@ test('controlled', () => {
 
   fireEvent.click(screen.getByTestId('three'));
   expect(onChange).toHaveBeenCalledWith(['one', 'two']);
+});
+
+test('accepts description', () => {
+  render(
+    <CheckboxGroup label="Group of Checkboxes" description="My description">
+      <Checkbox value="one" data-testid="one">
+        one
+      </Checkbox>
+      <Checkbox value="two" data-testid="two">
+        two
+      </Checkbox>
+      <Checkbox value="three" data-testid="three">
+        three
+      </Checkbox>
+    </CheckboxGroup>
+  );
+
+  expect(screen.getByText('My description')).toBeInTheDocument();
+});
+
+test('accepts error message', () => {
+  render(
+    <CheckboxGroup label="Group of Checkboxes" error errorMessage="My Error">
+      <Checkbox value="one" data-testid="one">
+        one
+      </Checkbox>
+      <Checkbox value="two" data-testid="two">
+        two
+      </Checkbox>
+      <Checkbox value="three" data-testid="three">
+        three
+      </Checkbox>
+    </CheckboxGroup>
+  );
+
+  expect(screen.getByText('My Error')).toBeInTheDocument();
 });
