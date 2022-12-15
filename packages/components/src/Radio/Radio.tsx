@@ -93,12 +93,8 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
       size,
       error,
       width: groupWidth,
-      ...state
+      state,
     } = useRadioGroupContext();
-
-    useEffect(() => {
-      state.setLastFocusedValue(state.selectedValue || '');
-    }, [state]);
 
     const inputRef = useObjectRef(ref);
     const { inputProps } = useRadio(
@@ -113,7 +109,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
       { parts: ['container', 'label', 'radio'] }
     );
 
-    const { hoverProps, isHovered } = useHover({});
+    const { hoverProps, isHovered } = useHover({ isDisabled: disabled });
     const { isFocusVisible, focusProps } = useFocusRing();
     const stateProps = useStateProps({
       hover: isHovered,

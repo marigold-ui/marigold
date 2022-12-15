@@ -78,7 +78,7 @@ export const RadioGroup = ({
           gap: orientation === 'vertical' ? '0.5ch' : '1.5ch',
         }}
       >
-        <RadioGroupContext.Provider value={{ width, error, ...state }}>
+        <RadioGroupContext.Provider value={{ width, error, state }}>
           {children}
         </RadioGroupContext.Provider>
       </Box>

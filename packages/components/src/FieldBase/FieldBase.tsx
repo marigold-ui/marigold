@@ -45,6 +45,7 @@ export const FieldBase = ({
   errorMessage,
   errorMessageProps,
   stateProps,
+  ...props
 }: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
 
@@ -52,6 +53,7 @@ export const FieldBase = ({
 
   return (
     <Box
+      {...props}
       __baseCSS={{ display: 'flex', flexDirection: 'column', width }}
       css={style}
     >
