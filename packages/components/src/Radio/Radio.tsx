@@ -6,7 +6,7 @@ import React, {
 import { useHover } from '@react-aria/interactions';
 import { useFocusRing } from '@react-aria/focus';
 import { useRadio } from '@react-aria/radio';
-import { useObjectRef } from '@react-aria/utils';
+import { mergeProps, useObjectRef } from '@react-aria/utils';
 import type { AriaRadioProps } from '@react-types/radio';
 
 import {
@@ -92,7 +92,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
       size,
       error,
       width: groupWidth,
-      ...state
+      state,
     } = useRadioGroupContext();
 
     const inputRef = useObjectRef(ref);
@@ -108,7 +108,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
       { parts: ['container', 'label', 'radio'] }
     );
 
-    const { hoverProps, isHovered } = useHover({});
+    const { hoverProps, isHovered } = useHover({ isDisabled: disabled });
     const { isFocusVisible, focusProps } = useFocusRing();
     const stateProps = useStateProps({
       hover: isHovered,
@@ -130,8 +130,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
           width: width || groupWidth || '100%',
         }}
         css={styles.container}
-        {...hoverProps}
-        {...stateProps}
+        {...mergeProps(hoverProps, stateProps)}
       >
         <Box
           as="input"
@@ -146,8 +145,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
             opacity: 0.0001,
             cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
           }}
-          {...inputProps}
-          {...focusProps}
+          {...mergeProps(inputProps, focusProps)}
         />
         <Icon checked={inputProps.checked} css={styles.radio} {...stateProps} />
         <Box css={styles.label} {...stateProps}>
