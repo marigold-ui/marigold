@@ -7,6 +7,7 @@ import { Checkbox } from '../Checkbox';
 import { Stack } from '../Stack';
 
 import { Table } from './Table';
+import { Select } from '../Select';
 
 export default {
   title: 'Components/Table',
@@ -483,3 +484,32 @@ export const WithParentProp = () => {
     </Stack>
   );
 };
+
+export const SelectedTable = () => (
+  <Table aria-label="Data Table">
+    <Table.Header columns={columns}>
+      {col => <Table.Column>{col.name}</Table.Column>}
+    </Table.Header>
+    <Table.Body items={rows}>
+      {rows.map(item => (
+        <Table.Row key={item.id}>
+          <Table.Cell>{item.name}</Table.Cell>
+          <Table.Cell>{item.firstname}</Table.Cell>
+          <Table.Cell>{item.house}</Table.Cell>
+          <Table.Cell>{item.year}</Table.Cell>
+          <Table.Cell>
+            <Select disabledKeys={['Firefly']}>
+              <Select.Option key="Harry Potter">Harry Potter</Select.Option>
+              <Select.Option key="Lord of the Rings">
+                Lord of the Rings
+              </Select.Option>
+              <Select.Option key="Star Wars">Star Wars</Select.Option>
+              <Select.Option key="Star Trek">Star Trek</Select.Option>
+              <Select.Option key="Firefly">Firefly</Select.Option>
+            </Select>
+          </Table.Cell>
+        </Table.Row>
+      ))}
+    </Table.Body>
+  </Table>
+);
