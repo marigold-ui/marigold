@@ -6,7 +6,6 @@ export const Badge: Theme['components']['Badge'] = {
     alignItems: 'center',
     fontSize: 'xxsmall',
     borderRadius: 'large',
-    border: '2px solid transparent',
     whiteSpace: 'nowrap',
     py: 4,
     px: 12,
@@ -14,8 +13,12 @@ export const Badge: Theme['components']['Badge'] = {
   variant: {
     info: {
       color: 'purple10',
-      borderColor: 'purple80',
       bg: 'purple70',
+    },
+
+    dark: {
+      color: 'gray00',
+      bg: 'gray70',
     },
   },
 };
