@@ -1,14 +1,7 @@
 import { createContext, ReactNode, useContext } from 'react';
 
-const LABEL_SPACE = {
-  small: '0.2',
-  medium: '0.5',
-  large: '1',
-  none: 'auto',
-};
-
 export interface FieldBaseGroupContextProps {
-  space?: keyof typeof LABEL_SPACE;
+  space?: 'small' | 'none' | 'large' | 'medium' | undefined;
 }
 
 export const FieldBaseGroupContext = createContext<FieldBaseGroupContextProps>(
@@ -17,7 +10,7 @@ export const FieldBaseGroupContext = createContext<FieldBaseGroupContextProps>(
 export const useFieldBaseGroupContext = () => useContext(FieldBaseGroupContext);
 
 export interface FieldBaseGroupProps {
-  space?: keyof typeof LABEL_SPACE;
+  space?: 'small' | 'none' | 'large' | 'medium' | undefined;
   children: ReactNode;
 }
 export const FieldBaseGroup = ({ space, children }: FieldBaseGroupProps) => {

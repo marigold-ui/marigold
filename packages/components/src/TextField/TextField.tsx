@@ -10,6 +10,7 @@ import { ComponentProps } from '@marigold/types';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { Input } from '../Input';
+import { FieldBaseGroup } from '../FieldBase/FieldBaseGroup';
 
 // Props
 // ---------------

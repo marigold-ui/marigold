@@ -54,10 +54,8 @@ export const FieldBase = ({
 
   const { space } = useFieldBaseGroupContext();
 
-  console.log(space);
-
   return (
-    <FieldBaseGroup>
+    <FieldBaseGroup space={space}>
       <Box
         {...props}
         __baseCSS={{
