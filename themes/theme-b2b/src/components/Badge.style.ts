@@ -5,17 +5,19 @@ export const Badge: Theme['components']['Badge'] = {
     display: 'inline-flex',
     alignItems: 'center',
     fontSize: 'xxsmall',
-    borderRadius: 'large',
-    border: '2px solid transparent',
+    borderRadius: 20,
     whiteSpace: 'nowrap',
-    py: 4,
-    px: 12,
+    px: 8,
+    py: 2,
   },
   variant: {
     info: {
       color: 'blue10',
-      borderColor: 'blue80',
       bg: 'blue70',
+    },
+    dark: {
+      color: 'gray00',
+      bg: 'gray70',
     },
   },
 };
