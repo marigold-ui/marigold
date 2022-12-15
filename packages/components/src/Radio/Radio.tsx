@@ -1,6 +1,5 @@
 import React, {
   forwardRef,
-  useEffect,
   type ForwardRefExoticComponent,
   type RefAttributes,
 } from 'react';
