@@ -16,25 +16,25 @@ export const Button: Theme['components']['Button'] = {
     },
 
     '&:disabled': {
-      color: 'gray40',
-      bg: 'gray20',
+      color: 'disabled.text',
+      bg: 'disabled.background',
     },
   },
   variant: {
     primary: {
       color: 'primary.text',
-      bg: 'primary',
+      bg: 'primary.background',
       '&:hover': {
-        color: 'background',
+        color: 'primary.text',
         bg: 'primary.hover',
       },
     },
     secondary: {
-      color: 'background',
-      bg: 'secondary',
+      color: 'secondary.text',
+      bg: 'secondary.background',
       '&:hover': {
-        color: 'background',
-        bg: 'gray60',
+        color: 'secondary.text',
+        bg: 'secondary.hover',
       },
     },
     ghost: {

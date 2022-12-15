@@ -13,22 +13,16 @@ export const themeColors = {
 };
 
 export const disabledColors = {
-  disbaled: {
-    __default: themeColors.disabled,
-    text: {
-      __default: colors.gray40,
-    },
-    background: {
-      __default: colors.gray20,
-    },
+  disabled: {
+    text: colors.gray40,
+    background: colors.gray20,
   },
 };
 
 // color und dann hover
 export const primaryColors = {
   primary: {
-    __default: themeColors.primary,
-
+    background: themeColors.primary,
     text: themeColors.background,
     hover: colors.orange40,
   },
@@ -36,10 +30,8 @@ export const primaryColors = {
 
 export const secondaryColors = {
   secondary: {
-    __default: themeColors.secondary,
-
+    background: themeColors.secondary,
     text: themeColors.background,
-
     hover: colors.gray60,
   },
 };
@@ -47,10 +39,8 @@ export const secondaryColors = {
 export const statusColors = {
   status: {
     info: {
-      __default: themeColors.info,
-
+      background: themeColors.info,
       text: colors.blue10,
-
       border: colors.blue80,
     },
 
