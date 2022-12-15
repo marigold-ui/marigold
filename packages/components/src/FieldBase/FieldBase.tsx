@@ -54,7 +54,12 @@ export const FieldBase = ({
   return (
     <Box
       {...props}
-      __baseCSS={{ display: 'flex', flexDirection: 'column', width }}
+      __baseCSS={{
+        display: 'flex',
+        flexDirection: 'column',
+        width,
+        position: 'relative',
+      }}
       css={style}
     >
       {label && (
