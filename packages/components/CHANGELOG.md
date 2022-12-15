@@ -1,5 +1,27 @@
 # @marigold/components
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2688](https://github.com/marigold-ui/marigold/pull/2688) [`1bfe10cf`](https://github.com/marigold-ui/marigold/commit/1bfe10cf7ec08136ca67e23a2dc2e97f9c027e59) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add <Fieldbase> to <RadioGroup> and <CheckboxGroup> to support errorMessage and helptext
+
+### Patch Changes
+
+- [#2689](https://github.com/marigold-ui/marigold/pull/2689) [`8675c5f2`](https://github.com/marigold-ui/marigold/commit/8675c5f2d609cddceff7661c2e6d173655adc813) Thanks [@benediktgrether](https://github.com/benediktgrether)! - fix: add in FieldBase component position relative to fix position absolute bug in HiddenSelect component
+
+- [#2683](https://github.com/marigold-ui/marigold/pull/2683) [`7be11c1a`](https://github.com/marigold-ui/marigold/commit/7be11c1a8ba6bca9ac651da75569234b443fcae5) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add <Tray> for responsiveness in <Menu> and <Select>
+
+- [#2684](https://github.com/marigold-ui/marigold/pull/2684) [`14463546`](https://github.com/marigold-ui/marigold/commit/144635460ee4c0eb44e1ce9d2cf12709262dc6e6) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: removed icon dependency from @marigold/components
+
+- [#2686](https://github.com/marigold-ui/marigold/pull/2686) [`bb0dea93`](https://github.com/marigold-ui/marigold/commit/bb0dea93c6c24e5271f18ceddc3699d07a53b56a) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: required label
+
+- [#2687](https://github.com/marigold-ui/marigold/pull/2687) [`7954ba24`](https://github.com/marigold-ui/marigold/commit/7954ba241a8ca3bc048177aa32c1fb0f3dd77a9c) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: <Radio> tabs in default selected value instead of first
+
+- Updated dependencies []:
+  - @marigold/system@4.2.0
+  - @marigold/icons@1.1.14
+
 ## 4.1.5
 
 ### Patch Changes
