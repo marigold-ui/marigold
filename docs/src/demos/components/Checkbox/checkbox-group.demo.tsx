@@ -5,7 +5,11 @@ export const CheckboxGroupoDemo = () => {
   const [selected, setSelected] = useState<string[]>([]);
   return (
     <>
-      <CheckboxGroup label="Choose your toppings:" onChange={setSelected}>
+      <CheckboxGroup
+        label="Choose your toppings:"
+        onChange={setSelected}
+        description="Just click on the options"
+      >
         <Checkbox value="ham">🐖 Ham</Checkbox>
         <Checkbox value="beef" disabled>
           🐄 Beef (out of stock)

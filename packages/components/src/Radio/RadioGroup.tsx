@@ -3,19 +3,10 @@ import { useRadioGroup } from '@react-aria/radio';
 import { useRadioGroupState } from '@react-stately/radio';
 import { AriaRadioGroupProps } from '@react-types/radio';
 
-import {
-  Box,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-} from '@marigold/system';
+import { Box, useStateProps } from '@marigold/system';
 
-import { Label } from '../Label';
 import { RadioGroupContext } from './Context';
-
-// Theme Extension
-// ---------------
-export interface RadioGroupThemeExtension
-  extends ThemeExtensionsWithParts<'RadioGroup', ['container', 'group']> {}
+import { FieldBase } from '../FieldBase';
 
 // Props
 // ---------------
@@ -25,8 +16,6 @@ export interface RadioGroupProps
     'isDisabled' | 'isRquired' | 'isReadOnly ' | 'validationState'
   > {
   children: ReactNode[];
-  variant?: string;
-  size?: string;
   width?: string;
   required?: boolean;
   disabled?: boolean;
@@ -39,8 +28,6 @@ export interface RadioGroupProps
 export const RadioGroup = ({
   children,
   orientation = 'vertical',
-  size,
-  variant,
   width,
   required,
   disabled,
@@ -57,21 +44,30 @@ export const RadioGroup = ({
   };
 
   const state = useRadioGroupState(props);
-  const { radioGroupProps, labelProps } = useRadioGroup(props, state);
+  const { radioGroupProps, labelProps, errorMessageProps, descriptionProps } =
+    useRadioGroup(props, state);
 
-  const styles = useComponentStyles(
-    'RadioGroup',
-    { variant, size },
-    { parts: ['container', 'group'] }
-  );
+  const stateProps = useStateProps({
+    disabled,
+    readOnly,
+    error,
+  });
 
   return (
-    <Box {...radioGroupProps} css={styles.container}>
-      {props.label && (
-        <Label as="span" required={required} {...labelProps}>
-          {props.label}
-        </Label>
-      )}
+    <FieldBase
+      width={width}
+      label={props.label}
+      labelProps={{ as: 'span', ...labelProps }}
+      description={props.description}
+      descriptionProps={descriptionProps}
+      error={error}
+      errorMessage={props.errorMessage}
+      errorMessageProps={errorMessageProps}
+      disabled={disabled}
+      stateProps={stateProps}
+      required={required}
+      {...radioGroupProps}
+    >
       <Box
         role="presentation"
         data-orientation={orientation}
@@ -81,14 +77,11 @@ export const RadioGroup = ({
           alignItems: 'start',
           gap: orientation === 'vertical' ? '0.5ch' : '1.5ch',
         }}
-        css={styles.group}
       >
-        <RadioGroupContext.Provider
-          value={{ variant, size, width, error, ...state }}
-        >
+        <RadioGroupContext.Provider value={{ width, error, ...state }}>
           {children}
         </RadioGroupContext.Provider>
       </Box>
-    </Box>
+    </FieldBase>
   );
 };
