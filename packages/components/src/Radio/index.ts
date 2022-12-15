@@ -1,2 +1,2 @@
 export * from './Radio';
-export type { RadioGroupProps, RadioGroupThemeExtension } from './RadioGroup';
+export type { RadioGroupProps } from './RadioGroup';

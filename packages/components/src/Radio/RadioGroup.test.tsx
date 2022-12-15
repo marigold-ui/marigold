@@ -69,34 +69,6 @@ const theme = {
         },
       },
     },
-    RadioGroup: {
-      base: {
-        container: {
-          bg: 'gray',
-        },
-        group: {
-          fontStyle: 'italic',
-
-          '&[data-orientation="horizontal"]': {
-            gap: '3ch',
-          },
-        },
-      },
-      variant: {
-        green: {
-          container: {
-            bg: 'green',
-          },
-        },
-      },
-      size: {
-        large: {
-          group: {
-            fontSize: 'large-1',
-          },
-        },
-      },
-    },
   },
 };
 
@@ -150,54 +122,6 @@ test('label is optional (can use aria-label instead)', () => {
   expect(screen.queryByText('With Label')).not.toBeInTheDocument();
 });
 
-test('allows styling via theme', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label">
-        <Radio value="1" data-testid="radio-1">
-          Option 1
-        </Radio>
-        <Radio value="2" data-testid="radio-2">
-          Option 2
-        </Radio>
-        <Radio value="3" data-testid="radio-3">
-          Option 3
-        </Radio>
-      </Radio.Group>
-    </ThemeProvider>
-  );
-
-  const container = screen.getByRole('radiogroup');
-  expect(container).toHaveStyle(`background: ${theme.colors.gray}`);
-
-  const group = screen.getByRole('presentation');
-  expect(group).toHaveStyle(`font-style: italic`);
-});
-
-test('supports styling via variant and size', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label" variant="green" size="large">
-        <Radio value="1" data-testid="radio-1">
-          Option 1
-        </Radio>
-        <Radio value="2" data-testid="radio-2">
-          Option 2
-        </Radio>
-        <Radio value="3" data-testid="radio-3">
-          Option 3
-        </Radio>
-      </Radio.Group>
-    </ThemeProvider>
-  );
-
-  const container = screen.getByRole('radiogroup');
-  expect(container).toHaveStyle(`background: ${theme.colors.green}`);
-
-  const group = screen.getByRole('presentation');
-  expect(group).toHaveStyle(`font-size: ${theme.fontSizes['large-1']}px`);
-});
-
 test('support vertical orientation by default', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -238,8 +162,6 @@ test('support horizontal orientation', () => {
 
   const group = screen.getByRole('presentation');
   expect(group).toHaveAttribute('data-orientation', 'horizontal');
-
-  expect(group).toHaveStyle(`gap: 3ch;`);
 });
 
 test('supports error styling via theme & passes down error', () => {
@@ -312,5 +234,3 @@ test('controlled', () => {
   expect(onChange).toHaveBeenCalledTimes(1);
   expect(onChange).toHaveBeenCalledWith('1');
 });
-
-// orientation?

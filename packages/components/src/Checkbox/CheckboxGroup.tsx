@@ -6,21 +6,15 @@ import {
 } from '@react-stately/checkbox';
 import { AriaCheckboxGroupProps } from '@react-types/checkbox';
 
-import {
-  Box,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-} from '@marigold/system';
+import { Box, useStateProps } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
-import { Label } from '../Label';
+import { FieldBase } from '../FieldBase';
 
 // Context
 // ---------------
 export interface CheckboxGroupContextProps extends CheckboxGroupState {
   error?: boolean;
-  variant?: string;
-  size?: string;
 }
 
 /**
@@ -31,11 +25,6 @@ export const CheckboxGroupContext = createContext<CheckboxGroupContextProps>(
   null as any
 );
 export const useCheckboxGroupContext = () => useContext(CheckboxGroupContext);
-
-// Theme Extension
-// ---------------
-export interface CheckboxGroupThemeExtension
-  extends ThemeExtensionsWithParts<'CheckboxGroup', ['container', 'group']> {}
 
 // Props
 // ---------------
@@ -59,8 +48,6 @@ interface CheckboxGroupProps
 // ---------------
 export const CheckboxGroup = ({
   children,
-  variant,
-  size,
   required,
   disabled,
   readOnly,
@@ -76,21 +63,29 @@ export const CheckboxGroup = ({
   } as const;
 
   const state = useCheckboxGroupState(props);
-  const { groupProps, labelProps } = useCheckboxGroup(props, state);
+  const { groupProps, labelProps, descriptionProps, errorMessageProps } =
+    useCheckboxGroup(props, state);
 
-  const styles = useComponentStyles(
-    'CheckboxGroup',
-    { variant, size },
-    { parts: ['container', 'group'] }
-  );
+  const stateProps = useStateProps({
+    disabled,
+    readOnly,
+    error,
+  });
 
   return (
-    <Box {...groupProps} css={styles.container}>
-      {props.label && (
-        <Label as="span" required={required} {...labelProps}>
-          {props.label}
-        </Label>
-      )}
+    <FieldBase
+      label={props.label}
+      labelProps={{ as: 'span', ...labelProps }}
+      description={props.description}
+      descriptionProps={descriptionProps}
+      error={error}
+      errorMessage={props.errorMessage}
+      errorMessageProps={errorMessageProps}
+      disabled={disabled}
+      stateProps={stateProps}
+      required={required}
+      {...groupProps}
+    >
       <Box
         role="presentation"
         __baseCSS={{
@@ -98,14 +93,11 @@ export const CheckboxGroup = ({
           flexDirection: 'column',
           alignItems: 'start',
         }}
-        css={styles.group}
       >
-        <CheckboxGroupContext.Provider
-          value={{ variant, size, error, ...state }}
-        >
+        <CheckboxGroupContext.Provider value={{ error, ...state }}>
           {children}
         </CheckboxGroupContext.Provider>
       </Box>
-    </Box>
+    </FieldBase>
   );
 };

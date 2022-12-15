@@ -7,10 +7,7 @@ import type { BadgeThemeExtension } from './Badge';
 import type { BodyThemeExtension } from './Body';
 import type { ButtonThemeExtension } from './Button';
 import type { CardThemeExtension } from './Card';
-import type {
-  CheckboxThemeExtension,
-  CheckboxGroupThemeExtension,
-} from './Checkbox';
+import type { CheckboxThemeExtension } from './Checkbox';
 import type { DialogThemeExtension } from './Dialog';
 import type { DividerThemeExtension } from './Divider';
 import type { FieldThemeExtension } from './FieldBase';
@@ -28,7 +25,7 @@ import type { MenuThemeExtension } from './Menu';
 import type { MessageThemeExtension } from './Message';
 import type { NumberFieldThemeExtension } from './NumberField';
 import type { UnderlayThemeExtension } from './Overlay';
-import type { RadioThemeExtension, RadioGroupThemeExtension } from './Radio';
+import type { RadioThemeExtension } from './Radio';
 import type { SelectThemeExtension } from './Select';
 import type { SliderThemeExtension } from './Slider';
 import type { SwitchThemeExtension } from './Switch';
@@ -42,7 +39,6 @@ interface ComponentStyles
     ButtonThemeExtension,
     CardThemeExtension,
     CheckboxThemeExtension,
-    CheckboxGroupThemeExtension,
     BodyThemeExtension,
     DialogThemeExtension,
     DividerThemeExtension,
@@ -61,7 +57,6 @@ interface ComponentStyles
     MessageThemeExtension,
     NumberFieldThemeExtension,
     RadioThemeExtension,
-    RadioGroupThemeExtension,
     SelectThemeExtension,
     SliderThemeExtension,
     SwitchThemeExtension,
