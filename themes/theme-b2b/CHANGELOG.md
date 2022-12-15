@@ -1,5 +1,20 @@
 # @marigold/theme-b2b
 
+## 17.0.0
+
+### Minor Changes
+
+- [#2688](https://github.com/marigold-ui/marigold/pull/2688) [`1bfe10cf`](https://github.com/marigold-ui/marigold/commit/1bfe10cf7ec08136ca67e23a2dc2e97f9c027e59) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add <Fieldbase> to <RadioGroup> and <CheckboxGroup> to support errorMessage and helptext
+
+- [#2690](https://github.com/marigold-ui/marigold/pull/2690) [`258d939f`](https://github.com/marigold-ui/marigold/commit/258d939f39e110d140571ca3766acf281cb8a787) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add <Badge> variant dark.
+
+### Patch Changes
+
+- [#2683](https://github.com/marigold-ui/marigold/pull/2683) [`7be11c1a`](https://github.com/marigold-ui/marigold/commit/7be11c1a8ba6bca9ac651da75569234b443fcae5) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add <Tray> for responsiveness in <Menu> and <Select>
+
+- Updated dependencies [[`8675c5f2`](https://github.com/marigold-ui/marigold/commit/8675c5f2d609cddceff7661c2e6d173655adc813), [`7be11c1a`](https://github.com/marigold-ui/marigold/commit/7be11c1a8ba6bca9ac651da75569234b443fcae5), [`14463546`](https://github.com/marigold-ui/marigold/commit/144635460ee4c0eb44e1ce9d2cf12709262dc6e6), [`bb0dea93`](https://github.com/marigold-ui/marigold/commit/bb0dea93c6c24e5271f18ceddc3699d07a53b56a), [`7954ba24`](https://github.com/marigold-ui/marigold/commit/7954ba241a8ca3bc048177aa32c1fb0f3dd77a9c), [`1bfe10cf`](https://github.com/marigold-ui/marigold/commit/1bfe10cf7ec08136ca67e23a2dc2e97f9c027e59)]:
+  - @marigold/components@4.2.0
+
 ## 16.0.5
 
 ### Patch Changes

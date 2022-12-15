@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "4.1.5",
+  "version": "4.2.0",
   "private": true,
   "type": "module",
   "browser": {
