@@ -8,6 +8,7 @@ import {
 
 import { Label, LabelProps } from '../Label';
 import { HelpText } from '../HelpText';
+import { FieldBaseGroup, useFieldBaseGroupContext } from './FieldBaseGroup';
 export interface FieldBaseProps {
   children?: ReactNode;
   variant?: string;
@@ -51,44 +52,51 @@ export const FieldBase = ({
 
   const style = useComponentStyles('Field', { variant, size });
 
+  const { space } = useFieldBaseGroupContext();
+
+  console.log(space);
+
   return (
-    <Box
-      {...props}
-      __baseCSS={{
-        display: 'flex',
-        flexDirection: 'column',
-        width,
-        position: 'relative',
-      }}
-      css={style}
-    >
-      {label && (
-        <Label
-          required={required}
-          variant={variant}
-          size={size}
-          {...labelProps}
-          {...stateProps}
-        >
-          {label}
-        </Label>
-      )}
-      <Box __baseCSS={{ display: 'flex', flexDirection: 'column' }}>
-        {children}
-        {hasHelpText && (
-          <HelpText
-            {...stateProps}
+    <FieldBaseGroup>
+      <Box
+        {...props}
+        __baseCSS={{
+          display: 'flex',
+          flexDirection: 'column',
+          width,
+          position: 'relative',
+        }}
+        css={style}
+      >
+        {label && (
+          <Label
+            required={required}
             variant={variant}
             size={size}
-            disabled={disabled}
-            description={description}
-            descriptionProps={descriptionProps}
-            error={error}
-            errorMessage={errorMessage}
-            errorMessageProps={errorMessageProps}
-          />
+            space={space}
+            {...labelProps}
+            {...stateProps}
+          >
+            {label}
+          </Label>
         )}
+        <Box __baseCSS={{ display: 'flex', flexDirection: 'column' }}>
+          {children}
+          {hasHelpText && (
+            <HelpText
+              {...stateProps}
+              variant={variant}
+              size={size}
+              disabled={disabled}
+              description={description}
+              descriptionProps={descriptionProps}
+              error={error}
+              errorMessage={errorMessage}
+              errorMessageProps={errorMessageProps}
+            />
+          )}
+        </Box>
       </Box>
-    </Box>
+    </FieldBaseGroup>
   );
 };
