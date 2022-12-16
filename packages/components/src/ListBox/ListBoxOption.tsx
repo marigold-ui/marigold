@@ -29,7 +29,6 @@ export const ListBoxOption = ({ item, state }: ListBoxOptionProps) => {
   );
 
   const { onPointerUp, ...props } = optionProps;
-  console.log(optionProps);
   const { styles } = useListBoxContext();
   const stateProps = useStateProps({
     selected: isSelected,
