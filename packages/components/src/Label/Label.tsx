@@ -14,14 +14,8 @@ export interface LabelProps extends ComponentProps<'label'> {
   variant?: string;
   size?: string;
   required?: boolean;
-  space?: keyof typeof LABEL_SPACE;
+  labelWidth?: string;
 }
-const LABEL_SPACE = {
-  small: '10%',
-  medium: '20%',
-  large: '50%',
-  none: 'auto',
-};
 
 // Component
 // ---------------
@@ -31,12 +25,11 @@ export const Label = ({
   children,
   variant,
   size,
-  space = 'none',
+  labelWidth,
   ...props
 }: LabelProps) => {
   const styles = useComponentStyles('Label', { size, variant });
 
-  console.log(space);
   return (
     <Box
       {...props}
@@ -46,7 +39,8 @@ export const Label = ({
       aria-required={required}
       __baseCSS={{
         display: 'flex',
-        flexBasis: LABEL_SPACE[space],
+        flexDirection: 'row',
+        width: labelWidth,
       }}
       css={styles}
     >

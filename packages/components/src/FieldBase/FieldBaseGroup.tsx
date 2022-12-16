@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext } from 'react';
 
 export interface FieldBaseGroupContextProps {
-  space?: 'small' | 'none' | 'large' | 'medium' | undefined;
+  labelWidth?: string;
 }
 
 export const FieldBaseGroupContext = createContext<FieldBaseGroupContextProps>(
@@ -10,12 +10,15 @@ export const FieldBaseGroupContext = createContext<FieldBaseGroupContextProps>(
 export const useFieldBaseGroupContext = () => useContext(FieldBaseGroupContext);
 
 export interface FieldBaseGroupProps {
-  space?: 'small' | 'none' | 'large' | 'medium' | undefined;
+  labelWidth?: string;
   children: ReactNode;
 }
-export const FieldBaseGroup = ({ space, children }: FieldBaseGroupProps) => {
+export const FieldBaseGroup = ({
+  labelWidth,
+  children,
+}: FieldBaseGroupProps) => {
   return (
-    <FieldBaseGroupContext.Provider value={{ space }}>
+    <FieldBaseGroupContext.Provider value={{ labelWidth }}>
       {children}
     </FieldBaseGroupContext.Provider>
   );

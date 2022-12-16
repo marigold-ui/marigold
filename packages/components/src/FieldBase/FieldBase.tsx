@@ -8,7 +8,7 @@ import {
 
 import { Label, LabelProps } from '../Label';
 import { HelpText } from '../HelpText';
-import { FieldBaseGroup, useFieldBaseGroupContext } from './FieldBaseGroup';
+import { useFieldBaseGroupContext } from './FieldBaseGroup';
 export interface FieldBaseProps {
   children?: ReactNode;
   variant?: string;
@@ -52,49 +52,47 @@ export const FieldBase = ({
 
   const style = useComponentStyles('Field', { variant, size });
 
-  const { space } = useFieldBaseGroupContext();
+  const { labelWidth } = useFieldBaseGroupContext();
 
   return (
-    <>
-      <Box
-        {...props}
-        __baseCSS={{
-          display: 'flex',
-          flexDirection: 'column',
-          width,
-          position: 'relative',
-        }}
-        css={style}
-      >
-        {label && (
-          <Label
-            required={required}
+    <Box
+      {...props}
+      __baseCSS={{
+        display: 'flex',
+        flexDirection: 'column',
+        width,
+        position: 'relative',
+      }}
+      css={style}
+    >
+      {label && (
+        <Label
+          required={required}
+          variant={variant}
+          size={size}
+          labelWidth={labelWidth}
+          {...labelProps}
+          {...stateProps}
+        >
+          {label}
+        </Label>
+      )}
+      <Box __baseCSS={{ display: 'flex', flexDirection: 'column' }}>
+        {children}
+        {hasHelpText && (
+          <HelpText
+            {...stateProps}
             variant={variant}
             size={size}
-            space={space}
-            {...labelProps}
-            {...stateProps}
-          >
-            {label}
-          </Label>
+            disabled={disabled}
+            description={description}
+            descriptionProps={descriptionProps}
+            error={error}
+            errorMessage={errorMessage}
+            errorMessageProps={errorMessageProps}
+          />
         )}
-        <Box __baseCSS={{ display: 'flex', flexDirection: 'column' }}>
-          {children}
-          {hasHelpText && (
-            <HelpText
-              {...stateProps}
-              variant={variant}
-              size={size}
-              disabled={disabled}
-              description={description}
-              descriptionProps={descriptionProps}
-              error={error}
-              errorMessage={errorMessage}
-              errorMessageProps={errorMessageProps}
-            />
-          )}
-        </Box>
       </Box>
-    </>
+    </Box>
   );
 };
