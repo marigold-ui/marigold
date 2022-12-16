@@ -13,6 +13,7 @@ test('renders FieldBaseGroup', () => {
     </FieldBaseGroup>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   const group = screen.getByText('Label').parentElement;
   expect(group).toBeInTheDocument();
 });
