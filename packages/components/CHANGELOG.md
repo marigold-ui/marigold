@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 4.2.1
+
+### Patch Changes
+
+- [#2694](https://github.com/marigold-ui/marigold/pull/2694) [`c7b919a3`](https://github.com/marigold-ui/marigold/commit/c7b919a334f6f5b0240361a7e6ce805650ca8d01) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: fix on pointer event for menu and select
+
+- Updated dependencies []:
+  - @marigold/system@4.2.1
+  - @marigold/icons@1.1.15
+
 ## 4.2.0
 
 ### Minor Changes
