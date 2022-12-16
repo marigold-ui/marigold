@@ -63,7 +63,7 @@ export const Basic: ComponentStory<typeof FieldBase> = args => (
 );
 
 export const Complex: ComponentStory<typeof FieldBase> = args => (
-  <FieldBaseGroup space="small">
+  <FieldBaseGroup space="medium">
     <FieldBase {...args} label="This is my Label">
       <input type="text" />
     </FieldBase>

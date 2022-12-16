@@ -17,9 +17,9 @@ export interface LabelProps extends ComponentProps<'label'> {
   space?: keyof typeof LABEL_SPACE;
 }
 const LABEL_SPACE = {
-  small: '20%',
-  medium: '50%',
-  large: '100%',
+  small: '10%',
+  medium: '20%',
+  large: '50%',
   none: 'auto',
 };
 

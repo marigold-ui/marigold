@@ -55,7 +55,7 @@ export const FieldBase = ({
   const { space } = useFieldBaseGroupContext();
 
   return (
-    <FieldBaseGroup space={space}>
+    <>
       <Box
         {...props}
         __baseCSS={{
@@ -95,6 +95,6 @@ export const FieldBase = ({
           )}
         </Box>
       </Box>
-    </FieldBaseGroup>
+    </>
   );
 };

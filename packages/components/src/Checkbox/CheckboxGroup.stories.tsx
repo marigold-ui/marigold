@@ -3,6 +3,7 @@ import type { Meta, ComponentStory } from '@storybook/react';
 
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
+import { FieldBaseGroup } from '../FieldBase/FieldBaseGroup';
 
 export default {
   title: 'Components/CheckboxGroup',
