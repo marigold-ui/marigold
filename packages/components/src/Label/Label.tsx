@@ -39,7 +39,6 @@ export const Label = ({
       aria-required={required}
       __baseCSS={{
         display: 'flex',
-        flexDirection: 'row',
         width: labelWidth,
       }}
       css={styles}

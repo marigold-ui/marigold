@@ -12,6 +12,8 @@ The `<TextField>` is a form component which allows user to enter text with a key
 
 It has many properties that it brings with it. You can set label for labeling the `<TextField>` itself, a `description` which behaves as help text. It is also possible to add error messages by adding the `error` and `errorMessage` prop. Another often used property is the `required` prop. You can also write all other HTML input properties down.
 
+The `<FieldBaseGroup>` is a component to layout the label and the fieldbase itself. On that you can use `labelWidth` which is a string type to set the width of the label. Because the label is set to the left side in the core theme, it has only an impact on that.
+
 <Preview>
   <TextField label="Try me" description="You should really try this!" />
 </Preview>
@@ -150,10 +152,18 @@ The example shows how to set the `error` and `errorMessage` properties. If you f
 
 ```
 
-### Use different `input` methods
+### Use different input methods
 
 In this example you can see different types of inputs, like email, date or telephone number.
 
 ```tsx preview file=components/TextField/textfield-types.demo.tsx
+
+```
+
+### Using with FieldBaseGroup
+
+This example shows how to use the `<FieldBaseGroup>` together with some form components like the `<TextField>` and `<Radio>`. It is build for the Core and has only impact of that.
+
+```tsx preview file=components/TextField/textfield-group.demo.tsx
 
 ```

@@ -2,7 +2,6 @@ import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { FieldBase } from './FieldBase';
 import { Select } from '../Select';
-import { Box } from '@marigold/system';
 import { FieldBaseGroup } from './FieldBaseGroup';
 import { TextField } from '../TextField';
 import { RadioGroup } from '../Radio/RadioGroup';
