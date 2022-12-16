@@ -36,6 +36,8 @@ export const MenuItem = ({ item, state, onAction, css }: MenuItemProps) => {
     focus: isFocusVisible,
   });
 
+  const { onPointerUp, ...props } = menuItemProps;
+
   return (
     <Box
       as="li"
@@ -46,7 +48,7 @@ export const MenuItem = ({ item, state, onAction, css }: MenuItemProps) => {
         },
       }}
       css={css}
-      {...mergeProps(menuItemProps, focusProps)}
+      {...mergeProps(props, { onPointerDown: onPointerUp }, focusProps)}
       {...stateProps}
     >
       {item.rendered}
