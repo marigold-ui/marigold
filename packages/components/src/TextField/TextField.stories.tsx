@@ -1,7 +1,6 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { TextField } from './TextField';
-import { FieldBaseGroup } from '../FieldBase/FieldBaseGroup';
 
 export default {
   title: 'Components/TextField',
@@ -82,9 +81,7 @@ export default {
 } as Meta;
 
 export const Basic: ComponentStory<typeof TextField> = args => (
-  <FieldBaseGroup space="medium">
-    <TextField {...args} label="My label is great." />{' '}
-  </FieldBaseGroup>
+  <TextField {...args} label="My label is great." />
 );
 
 export const Controlled: ComponentStory<typeof TextField> = args => {
