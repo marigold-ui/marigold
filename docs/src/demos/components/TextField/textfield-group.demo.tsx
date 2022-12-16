@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Stack, TextField, FieldBaseGroup, Radio } from '@marigold/components';
+import { Stack, TextField, FieldGroup, Radio } from '@marigold/components';
 
 export const GroupTextField = () => {
   const [value, setValue] = useState<string>('');
   const error = value.length > 0 && !/^\d+$/.test(value);
 
   return (
-    <FieldBaseGroup labelWidth="20%">
+    <FieldGroup labelWidth="20%">
       <Stack space="small">
         <TextField label="Name" />
         <TextField
@@ -26,6 +26,6 @@ export const GroupTextField = () => {
           <Radio value="4">Four</Radio>
         </Radio.Group>
       </Stack>
-    </FieldBaseGroup>
+    </FieldGroup>
   );
 };

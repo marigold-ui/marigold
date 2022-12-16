@@ -8,7 +8,7 @@ import {
 
 import { Label, LabelProps } from '../Label';
 import { HelpText } from '../HelpText';
-import { useFieldBaseGroupContext } from './FieldBaseGroup';
+import { useFieldGroupContext } from './FieldGroup';
 export interface FieldBaseProps {
   children?: ReactNode;
   variant?: string;
@@ -52,7 +52,7 @@ export const FieldBase = ({
 
   const style = useComponentStyles('Field', { variant, size });
 
-  const { labelWidth } = useFieldBaseGroupContext();
+  const { labelWidth } = useFieldGroupContext();
 
   return (
     <Box

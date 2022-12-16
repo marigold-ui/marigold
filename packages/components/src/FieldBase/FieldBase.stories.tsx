@@ -2,7 +2,7 @@ import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { FieldBase } from './FieldBase';
 import { Select } from '../Select';
-import { FieldBaseGroup } from './FieldBaseGroup';
+import { FieldGroup } from './FieldGroup';
 import { TextField } from '../TextField';
 import { RadioGroup } from '../Radio/RadioGroup';
 import { Radio } from '../Radio';
@@ -62,7 +62,7 @@ export const Basic: ComponentStory<typeof FieldBase> = args => (
 );
 
 export const Complex: ComponentStory<typeof FieldBase> = args => (
-  <FieldBaseGroup labelWidth="30%">
+  <FieldGroup labelWidth="30%">
     <FieldBase {...args} label="This is my Label">
       <input type="text" />
     </FieldBase>
@@ -83,5 +83,5 @@ export const Complex: ComponentStory<typeof FieldBase> = args => (
       <Checkbox value="1">One</Checkbox>
       <Checkbox value="2">Two</Checkbox>
     </CheckboxGroup>
-  </FieldBaseGroup>
+  </FieldGroup>
 );

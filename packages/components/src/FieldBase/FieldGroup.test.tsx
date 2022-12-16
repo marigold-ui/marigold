@@ -2,15 +2,15 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 
 import { FieldBase } from './FieldBase';
-import { FieldBaseGroup } from './FieldBaseGroup';
+import { FieldGroup } from './FieldGroup';
 
-test('renders FieldBaseGroup', () => {
+test('renders FieldGroup', () => {
   render(
-    <FieldBaseGroup>
+    <FieldGroup>
       <FieldBase label="Label" description="Description">
         <input type="text" />
       </FieldBase>
-    </FieldBaseGroup>
+    </FieldGroup>
   );
 
   // eslint-disable-next-line testing-library/no-node-access
@@ -18,39 +18,39 @@ test('renders FieldBaseGroup', () => {
   expect(group).toBeInTheDocument();
 });
 
-test('renders FieldBaseGroup by default without label width', () => {
+test('renders FieldGroup by default without label width', () => {
   render(
-    <FieldBaseGroup>
+    <FieldGroup>
       <FieldBase label="Label" description="Description">
         <input type="text" />
       </FieldBase>
-    </FieldBaseGroup>
+    </FieldGroup>
   );
 
   const label = screen.getByText('Label');
   expect(label).not.toHaveAttribute('labelWidth');
 });
 
-test('renders FieldBaseGroup  with label width', () => {
+test('renders FieldGroup  with label width', () => {
   render(
-    <FieldBaseGroup labelWidth="20px">
+    <FieldGroup labelWidth="20px">
       <FieldBase label="Label" description="Description">
         <input type="text" />
       </FieldBase>
-    </FieldBaseGroup>
+    </FieldGroup>
   );
 
   const label = screen.getByText('Label');
   expect(label).toHaveStyle('width: 20px');
 });
 
-test('renders FieldBaseGroups children', () => {
+test('renders FieldGroups children', () => {
   render(
-    <FieldBaseGroup labelWidth="20px">
+    <FieldGroup labelWidth="20px">
       <FieldBase label="Label" description="Description">
         <input type="text" />
       </FieldBase>
-    </FieldBaseGroup>
+    </FieldGroup>
   );
 
   expect(screen.getByText('Label')).toBeInTheDocument();
