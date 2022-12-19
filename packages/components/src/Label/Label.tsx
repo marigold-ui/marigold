@@ -14,6 +14,7 @@ export interface LabelProps extends ComponentProps<'label'> {
   variant?: string;
   size?: string;
   required?: boolean;
+  labelWidth?: string;
 }
 
 // Component
@@ -24,6 +25,7 @@ export const Label = ({
   children,
   variant,
   size,
+  labelWidth,
   ...props
 }: LabelProps) => {
   const styles = useComponentStyles('Label', { size, variant });
@@ -35,7 +37,10 @@ export const Label = ({
       // aria-required is set on the field and will already be announced,
       // so we don't need to add it here. BUT we need it for styling the required label, so this is needed.
       aria-required={required}
-      __baseCSS={{ display: 'flex' }}
+      __baseCSS={{
+        display: 'flex',
+        width: labelWidth,
+      }}
       css={styles}
     >
       {children}

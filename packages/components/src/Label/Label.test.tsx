@@ -76,3 +76,15 @@ test('can render as <span>', () => {
   const label = screen.getByText(/label/);
   expect(label instanceof HTMLSpanElement).toBeTruthy();
 });
+
+test('accepts labelwidth', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Label as="span" labelWidth="100px">
+        label
+      </Label>
+    </ThemeProvider>
+  );
+  const label = screen.getByText(/label/);
+  expect(label).toHaveStyle('width: 100px');
+});
