@@ -199,7 +199,7 @@ importers:
       '@marigold/theme-b2b': workspace:*
       '@marigold/tokens': workspace:*
       '@marigold/types': workspace:*
-      '@mdx-js/loader': 2.1.5
+      '@mdx-js/loader': 2.2.1
       '@mdx-js/react': 1.6.22
       '@next/mdx': 12.3.4
       '@types/mdx-js__react': 1.5.5
@@ -236,9 +236,9 @@ importers:
       '@marigold/theme-b2b': link:../themes/theme-b2b
       '@marigold/tokens': link:../packages/tokens
       '@marigold/types': link:../packages/types
-      '@mdx-js/loader': 2.1.5
+      '@mdx-js/loader': 2.2.1
       '@mdx-js/react': 1.6.22_react@18.2.0
-      '@next/mdx': 12.3.4_s5za5mvdb4kecsb2jbyta4zhya
+      '@next/mdx': 12.3.4_xdrlhyd33fgfg4zfhrbkbnavrq
       estree-util-visit: 1.2.0
       fs-extra: 10.1.0
       globby: 13.1.2
@@ -2927,8 +2927,8 @@ packages:
       read-yaml-file: 1.1.0
     dev: false
 
-  /@mdx-js/loader/2.1.5:
-    resolution: {integrity: sha512-oXjfTa/iAcMmW8DdQ+hQFodPCLqw5VKT2yoZkLwrZfPVVpUgKrI+5/ZePYq328xxtAUStZmR3ed0PWJrwd5Pkg==}
+  /@mdx-js/loader/2.2.1:
+    resolution: {integrity: sha512-J4E8A5H+xtk4otZiEZ5AXl61Tj04Avm5MqLQazITdI3+puVXVnTTuZUKM1oNHTtfDIfOl0uMt+o/Ij+x6Fvf+g==}
     peerDependencies:
       webpack: '>=4'
     dependencies:
@@ -3012,13 +3012,13 @@ packages:
     resolution: {integrity: sha512-H2pKuOasV9RgvVaWosB2rGSNeQShQpiDaF4EEjLyagIc3HwqdOw2/VAG/8Lq+adOwPv2P73O1hulTNad3k5MDw==}
     dev: false
 
-  /@next/mdx/12.3.4_s5za5mvdb4kecsb2jbyta4zhya:
+  /@next/mdx/12.3.4_xdrlhyd33fgfg4zfhrbkbnavrq:
     resolution: {integrity: sha512-YTF/ph9NMKjmrNsr8O+y3IiZee9TaxSd6051qI0Fj/du75pKRRZ1DnOX6ZS7mMgswH7VMERVV7fBZxmJr9sN7Q==}
     peerDependencies:
       '@mdx-js/loader': '>=0.15.0'
       '@mdx-js/react': '*'
     dependencies:
-      '@mdx-js/loader': 2.1.5
+      '@mdx-js/loader': 2.2.1
       '@mdx-js/react': 1.6.22_react@18.2.0
     dev: false
 
