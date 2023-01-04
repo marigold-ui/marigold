@@ -19,7 +19,6 @@ export const disabledColors = {
   },
 };
 
-// color und dann hover
 export const primaryColors = {
   primary: {
     background: themeColors.primary,
