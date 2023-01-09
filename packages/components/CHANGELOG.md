@@ -1,5 +1,18 @@
 # @marigold/components
 
+## 4.2.2
+
+### Patch Changes
+
+- [#2714](https://github.com/marigold-ui/marigold/pull/2714) [`55c7cd7e`](https://github.com/marigold-ui/marigold/commit/55c7cd7e3a5397f8845f9928c15d85e1bc418d10) Thanks [@benediktgrether](https://github.com/benediktgrether)! - fix: set max-height to ul instead of div
+
+- [#2699](https://github.com/marigold-ui/marigold/pull/2699) [`c9725e77`](https://github.com/marigold-ui/marigold/commit/c9725e77025f8b2d750f0ecd71b4088e5db98691) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update react-aria
+
+- Updated dependencies []:
+  - @marigold/icons@1.1.16
+  - @marigold/system@4.2.2
+  - @marigold/tokens@3.1.0
+
 ## 4.2.1
 
 ### Patch Changes
