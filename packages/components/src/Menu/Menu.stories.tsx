@@ -55,7 +55,7 @@ export const DotMenu: ComponentStory<typeof Menu> = args => (
     <Menu>
       <Menu.Item key="edit">Edit</Menu.Item>
       <Menu.Item key="duplicate">Duplicate</Menu.Item>
-      <Menu.Item key="delete">Delte</Menu.Item>
+      <Menu.Item key="delete">Delete</Menu.Item>
     </Menu>
   </Menu.Trigger>
 );
