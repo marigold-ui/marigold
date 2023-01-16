@@ -51,7 +51,29 @@ export default {
 } as Meta;
 
 export const Basic: ComponentStory<typeof Radio.Group> = args => (
-  <Radio.Group {...args}>
+  <Radio.Group {...args} description="Hier steht ein HelpText">
+    <Radio value="1">Option 1</Radio>
+    <Radio value="2">Option 2</Radio>
+    <Radio value="3" disabled>
+      Option 3
+    </Radio>
+    <Radio value="4">Option 4</Radio>
+  </Radio.Group>
+);
+
+export const Error: ComponentStory<typeof Radio.Group> = args => (
+  <Radio.Group errorMessage="Das ist ein Error" error {...args}>
+    <Radio value="1">Option 1</Radio>
+    <Radio value="2">Option 2</Radio>
+    <Radio value="3" disabled>
+      Option 3
+    </Radio>
+    <Radio value="4">Option 4</Radio>
+  </Radio.Group>
+);
+
+export const DefaultSelected: ComponentStory<typeof Radio.Group> = args => (
+  <Radio.Group {...args} defaultValue="2">
     <Radio value="1">Option 1</Radio>
     <Radio value="2">Option 2</Radio>
     <Radio value="3" disabled>

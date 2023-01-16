@@ -2,7 +2,7 @@ import type { Theme } from '@marigold/components';
 
 export const Table: Theme['components']['Table'] = {
   base: {
-    table: { borderCollapse: 'collapse' },
+    table: { borderCollapse: 'collapse', fontSize: 'xxsmall' },
     header: {
       py: 'xxsmall',
       px: 'xsmall',
@@ -66,6 +66,9 @@ export const Table: Theme['components']['Table'] = {
       cell: {
         border: '1px solid #cfcfcf',
       },
+    },
+    rowSection: {
+      row: { bg: 'gray20' },
     },
   },
 };

@@ -4,13 +4,20 @@ export const Badge: Theme['components']['Badge'] = {
   base: {
     display: 'inline-flex',
     alignItems: 'center',
-    fontFamily: 'body',
-    fontSize: 'xsmall',
-    fontWeight: 'body',
-    borderRadius: 'large',
-    border: '2px solid transparent',
+    fontSize: 'xxsmall',
+    borderRadius: 20,
     whiteSpace: 'nowrap',
-    padding: '0.25rem 0.75rem',
-    mx: '0.5rem',
+    px: 8,
+    py: 2,
+  },
+  variant: {
+    info: {
+      color: 'blue10',
+      bg: 'blue70',
+    },
+    dark: {
+      color: 'gray00',
+      bg: 'gray70',
+    },
   },
 };

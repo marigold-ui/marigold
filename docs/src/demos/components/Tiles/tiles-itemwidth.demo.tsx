@@ -1,7 +1,7 @@
 import { Card, Image, Tiles } from '@marigold/components';
 
 export const ItemWidthTiles = () => (
-  <Tiles space="xsmall" itemMinWidth="100px">
+  <Tiles space="xsmall" tilesWidth="200px" stretch>
     <Card>
       <Image
         src="https://www.pokewiki.de/images/6/63/Sugimori_004.png"

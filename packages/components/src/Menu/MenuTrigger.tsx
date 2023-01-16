@@ -1,11 +1,11 @@
 import React, { ReactNode, useRef } from 'react';
 import { useMenuTriggerState } from '@react-stately/menu';
-import { useMenuTrigger } from '@react-aria/menu';
-
-import { Popover } from '../Overlay';
-import { MenuContext, MenuContextProps } from './Context';
-import { useOverlayPosition } from '@react-aria/overlays';
 import { PressResponder } from '@react-aria/interactions';
+import { useMenuTrigger } from '@react-aria/menu';
+import { useObjectRef } from '@react-aria/utils';
+import { useResponsiveValue } from '@marigold/system';
+import { MenuContext, MenuContextProps } from './Context';
+import { Popover, Tray } from '../Overlay';
 
 export interface MenuTriggerProps {
   children: [trigger: ReactNode, menu: ReactNode];
@@ -16,30 +16,25 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
   const [menuTrigger, menu] = React.Children.toArray(children);
 
   const menuTriggerRef = useRef<HTMLElement>(null);
-  const overlayRef = useRef(null);
+  const menuRef = useObjectRef<HTMLUListElement>();
 
   const state = useMenuTriggerState({});
+
   const { menuTriggerProps, menuProps } = useMenuTrigger(
     { trigger: 'press', isDisabled: disabled },
     state,
     menuTriggerRef
   );
 
-  const { overlayProps: positionProps } = useOverlayPosition({
-    targetRef: menuTriggerRef,
-    overlayRef,
-    isOpen: state.isOpen,
-  });
-
   const menuContext: MenuContextProps = {
     ...menuProps,
+    ref: menuRef,
     open: state.isOpen,
     onClose: state.close,
     autoFocus: state.focusStrategy,
-    triggerWidth: menuTriggerRef.current
-      ? menuTriggerRef.current.offsetWidth
-      : undefined,
   };
+
+  const isSmallScreen = useResponsiveValue([true, false, false], 2);
 
   return (
     <MenuContext.Provider value={menuContext}>
@@ -50,16 +45,13 @@ export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
       >
         {menuTrigger}
       </PressResponder>
-      <Popover
-        open={state.isOpen}
-        onClose={state.close}
-        dismissable={true}
-        shouldCloseOnBlur={true}
-        ref={overlayRef}
-        {...positionProps}
-      >
-        {menu}
-      </Popover>
+      {isSmallScreen ? (
+        <Tray state={state}>{menu}</Tray>
+      ) : (
+        <Popover triggerRef={menuTriggerRef} scrollRef={menuRef} state={state}>
+          {menu}
+        </Popover>
+      )}
     </MenuContext.Provider>
   );
 };

@@ -1,6 +1,12 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { FieldBase } from './FieldBase';
+import { Select } from '../Select';
+import { FieldGroup } from './FieldGroup';
+import { TextField } from '../TextField';
+import { RadioGroup } from '../Radio/RadioGroup';
+import { Radio } from '../Radio';
+import { Checkbox, CheckboxGroup } from '../Checkbox';
 
 export default {
   title: 'Components/FieldBase',
@@ -18,13 +24,6 @@ export default {
       },
       description: 'Whether the field is disabled',
       defaultValue: false,
-    },
-    label: {
-      control: {
-        type: 'text',
-      },
-      description: 'The label',
-      defaultValue: 'Field Label',
     },
     description: {
       control: {
@@ -57,7 +56,32 @@ export default {
 } as Meta;
 
 export const Basic: ComponentStory<typeof FieldBase> = args => (
-  <FieldBase {...args}>
+  <FieldBase {...args} label="This is my Label">
     <input type="text" />
   </FieldBase>
+);
+
+export const Complex: ComponentStory<typeof FieldBase> = args => (
+  <FieldGroup labelWidth="30%">
+    <FieldBase {...args} label="This is my Label">
+      <input type="text" />
+    </FieldBase>
+    <FieldBase {...args} label="This is my Label">
+      <input type="text" />
+    </FieldBase>
+    <TextField label="Hello TextField" />
+    <TextField label="Hello" description="my description" />
+    <Select label="Select me">
+      <Select.Option key="one">One</Select.Option>
+      <Select.Option key="two">Two</Select.Option>
+    </Select>
+    <RadioGroup label="Radios">
+      <Radio value="1">One</Radio>
+      <Radio value="2">Two</Radio>
+    </RadioGroup>
+    <CheckboxGroup label="Checkboxes">
+      <Checkbox value="1">One</Checkbox>
+      <Checkbox value="2">Two</Checkbox>
+    </CheckboxGroup>
+  </FieldGroup>
 );

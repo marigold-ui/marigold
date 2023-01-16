@@ -15,6 +15,10 @@ const theme = {
     body: '1rem',
     medium: '1.25rem',
   },
+  fontWeights: {
+    light: 100,
+    bold: 700,
+  },
 
   components: {
     Text: {
@@ -73,6 +77,8 @@ test.each([
   [{ outline: 'dashed red' }, 'outline: dashed red'],
   [{ fontSize: 'body' }, `font-size: ${theme.fontSizes.body}`],
   [{ fontSize: 'medium' }, `font-size: ${theme.fontSizes.medium}`],
+  [{ fontWeight: 'light' }, `font-size: ${theme.fontWeights.light}`],
+  [{ fontWeight: 'bold' }, `font-size: ${theme.fontWeights.bold}`],
 ])('test style prop %o', (...args) => {
   const props = args.shift();
 

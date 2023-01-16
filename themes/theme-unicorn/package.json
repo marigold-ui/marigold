@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-unicorn",
-  "version": "11.0.6",
+  "version": "14.0.2",
   "description": "Marigold's Developer Theme",
   "license": "MIT",
   "keywords": [
@@ -27,7 +27,7 @@
   "devDependencies": {
     "@marigold/components": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
-    "tsup": "6.3.0"
+    "tsup": "6.5.0"
   },
   "scripts": {
     "build": "tsup src/index.ts",

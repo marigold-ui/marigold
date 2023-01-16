@@ -209,8 +209,9 @@ test('support default checked', () => {
       </Checkbox>
     </ThemeProvider>
   );
-  const input = screen.getByTestId('checkbox');
-  expect(input).toHaveAttribute('aria-checked', 'true');
+
+  const input: HTMLInputElement = screen.getByTestId('checkbox');
+  expect(input.checked).toBeTruthy();
 
   // Visible checkbox looks checked
   const checkbox = getVisibleCheckbox();

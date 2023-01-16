@@ -23,6 +23,7 @@ export interface TextProps
   color?: string;
   cursor?: string;
   fontSize?: string;
+  fontWeight?: string;
   outline?: string;
   children?: React.ReactNode;
 }
@@ -35,6 +36,7 @@ export const Text = ({
   align,
   color,
   fontSize,
+  fontWeight,
   cursor,
   outline,
   children,
@@ -48,7 +50,10 @@ export const Text = ({
     <Box
       as="p"
       {...props}
-      css={[styles, { color, cursor, outline, fontSize, textAlign: align }]}
+      css={[
+        styles,
+        { color, cursor, outline, fontSize, fontWeight, textAlign: align },
+      ]}
     >
       {children}
     </Box>

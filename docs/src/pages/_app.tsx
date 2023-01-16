@@ -28,7 +28,7 @@ import {
 import {
   IconLinksList,
   GradientHeadline,
-  ThemeSelect,
+  ThemeMenu,
   Title,
   TocContainer,
   ScrollToTop,
@@ -109,7 +109,7 @@ const MyApp = ({ Component, pageProps }: AppProps<PageProps>) => {
               <Box css={{ display: 'flex', gap: 'large-2' }}>
                 <Container contentType="content" size="large">
                   <Box as={Inline} mb={'small-1'}>
-                    {pageProps?.switchTheme && <ThemeSelect />}
+                    {pageProps?.switchTheme && <ThemeMenu />}
                     <Split />
                     {(pageProps?.figma ||
                       pageProps?.github ||

@@ -4,6 +4,7 @@ group: Overlay
 github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Menu/Menu.tsx
 edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/menu.mdx
 caption: Component for building a menu.
+switchTheme: true
 ---
 
 The `<Menu>` component allows you to define a menu element. It's useful when you want a list with options or actions.
@@ -73,5 +74,14 @@ In this example you can see a simple `<Menu>` with some items to select.
 In this example the `<Menu.Trigger>` has set its prop `disabled`. So you can't interact with the `<Menu>` anymore.
 
 ```tsx preview file=components/Menu/menu-disabled.demo.tsx
+
+```
+
+### Menu with a Icon as Kebab Menu
+
+In this example, an `Icon` has been inserted into the `Button` to serve as a kebab menu.
+As shown here, any type of icon can be used within the menu and there are no restrictions.
+
+```tsx preview file=components/Menu/menu-kebab-icon.demo.tsx
 
 ```

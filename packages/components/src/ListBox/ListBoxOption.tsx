@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useOption } from '@react-aria/listbox';
 import type { ListState } from '@react-stately/list';
+import { mergeProps } from '@react-aria/utils';
 import type { Node } from '@react-types/shared';
 
 import { Box, useStateProps } from '@marigold/system';
@@ -18,6 +19,7 @@ export interface ListBoxOptionProps {
 // ---------------
 export const ListBoxOption = ({ item, state }: ListBoxOptionProps) => {
   const ref = useRef<HTMLLIElement>(null);
+
   const { optionProps, isSelected, isDisabled, isFocused } = useOption(
     {
       key: item.key,
@@ -26,6 +28,7 @@ export const ListBoxOption = ({ item, state }: ListBoxOptionProps) => {
     ref
   );
 
+  const { onPointerUp, ...props } = optionProps;
   const { styles } = useListBoxContext();
   const stateProps = useStateProps({
     selected: isSelected,
@@ -34,7 +37,12 @@ export const ListBoxOption = ({ item, state }: ListBoxOptionProps) => {
   });
 
   return (
-    <Box as="li" ref={ref} css={styles.option} {...optionProps} {...stateProps}>
+    <Box
+      as="li"
+      ref={ref}
+      css={styles.option}
+      {...mergeProps(props, { onPointerDown: onPointerUp }, { ...stateProps })}
+    >
       {item.rendered}
     </Box>
   );

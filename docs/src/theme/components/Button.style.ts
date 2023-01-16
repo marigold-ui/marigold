@@ -14,7 +14,11 @@ export const Button: Theme['components']['Button'] = {
   },
   variant: {
     outline: {
+      fontFamily: 'headline',
       background: 'transparent',
+      px: 'small-1',
+      color: 'text.regular',
+      lineHeight: 'large-2',
       borderStyle: 'solid',
       borderWidth: 'small-1',
       borderRadius: 'small-2',

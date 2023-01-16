@@ -150,6 +150,18 @@ import { Checkbox, CheckboxGroup } from '@marigold/components';
       type: '(value: string[]) => void',
       description: 'Handler that is called when the checkbox value changes.',
       default: 'none',
+    },
+    {
+      property: 'description',
+      type: 'string',
+      description: 'Sets a helptext for the group.',
+      default: 'none',
+    },
+    {
+      property: 'errorMessage',
+      type: 'string',
+      description: 'Sets a error message for the group if a error occured.',
+      default: 'none',
     }
 
 ]}
@@ -175,7 +187,7 @@ Use indeterminate state when it represents both selected and not selected values
 
 ### Group checkboxes
 
-In this example the `<Checkbox>` are wrapped within the `<CheckboxGroup>`. You see that the `onChange` property is also set.
+In this example the `<Checkbox>` are wrapped within the `<CheckboxGroup>`. You see that the `onChange` property is also set. It has also a helptext within which you can set with the `description` property for the `<CheckboxGroup>`.
 
 ```tsx preview file=components/Checkbox/checkbox-group.demo.tsx
 

@@ -1,5 +1,21 @@
 # @marigold/eslint-config
 
+## 0.4.5
+
+### Patch Changes
+
+- [#2645](https://github.com/marigold-ui/marigold/pull/2645) [`65f87570`](https://github.com/marigold-ui/marigold/commit/65f87570f047e1af18280bccd80abef365ee25be) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update eslint
+
+- [#2627](https://github.com/marigold-ui/marigold/pull/2627) [`d250fc00`](https://github.com/marigold-ui/marigold/commit/d250fc0041f2beca498107d3e60e2d50e9ffb293) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update babel monorepo
+
+## 0.4.4
+
+### Patch Changes
+
+- [#2591](https://github.com/marigold-ui/marigold/pull/2591) [`be3f2060`](https://github.com/marigold-ui/marigold/commit/be3f20600b195f62d8d5bc1b784329d7bf152d9a) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @babel/core to v7.19.6
+
+- [#2600](https://github.com/marigold-ui/marigold/pull/2600) [`7056cb3d`](https://github.com/marigold-ui/marigold/commit/7056cb3d820531b905813a5888a6876ed82db7e3) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update eslint
+
 ## 0.4.3
 
 ### Patch Changes

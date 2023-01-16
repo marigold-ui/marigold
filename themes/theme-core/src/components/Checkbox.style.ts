@@ -16,6 +16,10 @@ export const Checkbox: Theme['components']['Checkbox'] = {
       bg: 'gray00',
       p: 2,
 
+      '&:hover': {
+        borderColor: 'gray50',
+      },
+
       '&:focus': {
         outline: '2px solid',
         outlineColor: 'blue60',

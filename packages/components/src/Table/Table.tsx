@@ -4,6 +4,7 @@ import {
   Cell,
   Column,
   Row,
+  RowProps as ReactAiaRowProps,
   TableBody as Body,
   TableHeader as Header,
   TableStateProps,
@@ -129,6 +130,11 @@ Table.Column = Column;
 Table.Header = Header;
 Table.Row = Row;
 
+export interface RowProps extends ReactAiaRowProps {
+  variant?: string;
+  size?: string;
+}
+
 /**
  * Necessary since TypeScript can not infer the
  * types of the @react-stately components.
@@ -139,5 +145,5 @@ interface Table {
   Cell: typeof Cell;
   Column: typeof Column;
   Header: typeof Header;
-  Row: typeof Row;
+  Row: (props: RowProps) => JSX.Element;
 }

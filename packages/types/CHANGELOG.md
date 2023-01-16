@@ -1,5 +1,23 @@
 # @marigold/types
 
+## 0.5.7
+
+### Patch Changes
+
+- [#2674](https://github.com/marigold-ui/marigold/pull/2674) [`832da2a6`](https://github.com/marigold-ui/marigold/commit/832da2a69f9bad5adcbcc57cba3cb215dfaa51e2) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: refactoring Popover with usePopover
+
+## 0.5.6
+
+### Patch Changes
+
+- [#2621](https://github.com/marigold-ui/marigold/pull/2621) [`080b1fed`](https://github.com/marigold-ui/marigold/commit/080b1fedc582511e0155a9199aa3b2b995cfb609) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @types/react to v18.0.25
+
+## 0.5.5
+
+### Patch Changes
+
+- [#2598](https://github.com/marigold-ui/marigold/pull/2598) [`f38ae20a`](https://github.com/marigold-ui/marigold/commit/f38ae20a23badf8cf141f582f0c20d85fdd6534b) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @types/react to v18.0.24
+
 ## 0.5.4
 
 ### Patch Changes

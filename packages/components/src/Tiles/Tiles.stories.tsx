@@ -26,19 +26,21 @@ export default {
         },
       },
     },
-    itemMinWidth: {
+    tilesWidth: {
       control: {
         type: 'text',
       },
       description: 'Responsive Style Value',
-      defaultValue: '250px',
-      table: {
-        defaultValue: {
-          summary: '250px',
-        },
-      },
+      defaultValue: '300px',
     },
-    gridAutoRows: {
+    stretch: {
+      control: {
+        type: 'boolean',
+      },
+      description:
+        'Makes tiles take available width, instead of sticking to the tiles width',
+    },
+    equalHeight: {
       control: {
         type: 'boolean',
       },
@@ -49,16 +51,23 @@ export default {
 } as Meta;
 
 export const Boxes: ComponentStory<typeof Tiles> = args => (
-  <Tiles {...args}>
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-  </Tiles>
+  <>
+    <Tiles {...args}>
+      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+    </Tiles>
+    <br />
+    <Tiles {...args}>
+      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+    </Tiles>
+  </>
 );
 
 export const DifferentHights: ComponentStory<typeof Tiles> = args => (

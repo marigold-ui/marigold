@@ -17,6 +17,8 @@ export const ListBox: Theme['components']['ListBox'] = {
 
     list: {
       outline: 'none',
+      maxHeight: ['75vh', '75vh', '45vh'],
+      overflow: 'auto',
     },
 
     option: {

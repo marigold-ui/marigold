@@ -86,7 +86,7 @@ const IconListItem = ({ icon }: IconListItemProps) => {
 export const IconList = ({ icons }: IconListProps) => {
   return (
     <Box css={{ width: '100%' }}>
-      <Tiles space="medium-1" itemMinWidth="7.5rem">
+      <Tiles space="medium-1" tilesWidth="7.5rem">
         {icons.map(icon => (
           <IconListItem key={icon} icon={icon} />
         ))}

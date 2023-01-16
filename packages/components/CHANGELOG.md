@@ -1,5 +1,138 @@
 # @marigold/components
 
+## 4.2.2
+
+### Patch Changes
+
+- [#2714](https://github.com/marigold-ui/marigold/pull/2714) [`55c7cd7e`](https://github.com/marigold-ui/marigold/commit/55c7cd7e3a5397f8845f9928c15d85e1bc418d10) Thanks [@benediktgrether](https://github.com/benediktgrether)! - fix: set max-height to ul instead of div
+
+- [#2699](https://github.com/marigold-ui/marigold/pull/2699) [`c9725e77`](https://github.com/marigold-ui/marigold/commit/c9725e77025f8b2d750f0ecd71b4088e5db98691) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update react-aria
+
+- Updated dependencies []:
+  - @marigold/icons@1.1.16
+  - @marigold/system@4.2.2
+  - @marigold/tokens@3.1.0
+
+## 4.2.1
+
+### Patch Changes
+
+- [#2694](https://github.com/marigold-ui/marigold/pull/2694) [`c7b919a3`](https://github.com/marigold-ui/marigold/commit/c7b919a334f6f5b0240361a7e6ce805650ca8d01) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: fix on pointer event for menu and select
+
+- Updated dependencies []:
+  - @marigold/system@4.2.1
+  - @marigold/icons@1.1.15
+
+## 4.2.0
+
+### Minor Changes
+
+- [#2688](https://github.com/marigold-ui/marigold/pull/2688) [`1bfe10cf`](https://github.com/marigold-ui/marigold/commit/1bfe10cf7ec08136ca67e23a2dc2e97f9c027e59) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add <Fieldbase> to <RadioGroup> and <CheckboxGroup> to support errorMessage and helptext
+
+### Patch Changes
+
+- [#2689](https://github.com/marigold-ui/marigold/pull/2689) [`8675c5f2`](https://github.com/marigold-ui/marigold/commit/8675c5f2d609cddceff7661c2e6d173655adc813) Thanks [@benediktgrether](https://github.com/benediktgrether)! - fix: add in FieldBase component position relative to fix position absolute bug in HiddenSelect component
+
+- [#2683](https://github.com/marigold-ui/marigold/pull/2683) [`7be11c1a`](https://github.com/marigold-ui/marigold/commit/7be11c1a8ba6bca9ac651da75569234b443fcae5) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add <Tray> for responsiveness in <Menu> and <Select>
+
+- [#2684](https://github.com/marigold-ui/marigold/pull/2684) [`14463546`](https://github.com/marigold-ui/marigold/commit/144635460ee4c0eb44e1ce9d2cf12709262dc6e6) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: removed icon dependency from @marigold/components
+
+- [#2686](https://github.com/marigold-ui/marigold/pull/2686) [`bb0dea93`](https://github.com/marigold-ui/marigold/commit/bb0dea93c6c24e5271f18ceddc3699d07a53b56a) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: required label
+
+- [#2687](https://github.com/marigold-ui/marigold/pull/2687) [`7954ba24`](https://github.com/marigold-ui/marigold/commit/7954ba241a8ca3bc048177aa32c1fb0f3dd77a9c) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: <Radio> tabs in default selected value instead of first
+
+- Updated dependencies []:
+  - @marigold/system@4.2.0
+  - @marigold/icons@1.1.14
+
+## 4.1.5
+
+### Patch Changes
+
+- [#2674](https://github.com/marigold-ui/marigold/pull/2674) [`832da2a6`](https://github.com/marigold-ui/marigold/commit/832da2a69f9bad5adcbcc57cba3cb215dfaa51e2) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: refactoring Popover with usePopover
+
+- Updated dependencies [[`832da2a6`](https://github.com/marigold-ui/marigold/commit/832da2a69f9bad5adcbcc57cba3cb215dfaa51e2)]:
+  - @marigold/types@0.5.7
+  - @marigold/icons@1.1.13
+  - @marigold/system@4.1.5
+  - @marigold/tokens@3.1.0
+
+## 4.1.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@4.1.4
+  - @marigold/icons@1.1.12
+
+## 4.1.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@4.1.3
+  - @marigold/icons@1.1.11
+
+## 4.1.2
+
+### Patch Changes
+
+- Updated dependencies [[`fcc320db`](https://github.com/marigold-ui/marigold/commit/fcc320dba298105f5afa11fba624ee7eb50a78c1), [`de5df9b6`](https://github.com/marigold-ui/marigold/commit/de5df9b649d2b8ddc840846e83efa7a33d1d8a5e)]:
+  - @marigold/icons@1.1.10
+  - @marigold/system@4.1.2
+
+## 4.1.1
+
+### Patch Changes
+
+- [#2655](https://github.com/marigold-ui/marigold/pull/2655) [`0208fb01`](https://github.com/marigold-ui/marigold/commit/0208fb0111f44ed2de78098c1cf4757a55302048) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: fix fieldbase width
+
+- Updated dependencies []:
+  - @marigold/system@4.1.1
+  - @marigold/icons@1.1.9
+
+## 4.1.0
+
+### Minor Changes
+
+- [#2647](https://github.com/marigold-ui/marigold/pull/2647) [`f764d3a0`](https://github.com/marigold-ui/marigold/commit/f764d3a080f075fe4e9b0cea30ded53a460689b4) Thanks [@sebald](https://github.com/sebald)! - feat: add `fontWeight` style prop to `<Text>` component
+
+- [#2576](https://github.com/marigold-ui/marigold/pull/2576) [`7a9129c1`](https://github.com/marigold-ui/marigold/commit/7a9129c1c2d2ada75fa5cd793874ab0b7db8d48b) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add side property to label
+
+### Patch Changes
+
+- [#2652](https://github.com/marigold-ui/marigold/pull/2652) [`40aeefd7`](https://github.com/marigold-ui/marigold/commit/40aeefd704e4ac23b36cb83ade928b19bdaf68c0) Thanks [@sebald](https://github.com/sebald)! - feat: Improve `<Message>` look
+
+- [#2651](https://github.com/marigold-ui/marigold/pull/2651) [`2e98753d`](https://github.com/marigold-ui/marigold/commit/2e98753d80af8a00a2b8c9adb0d3e08ee631ea4b) Thanks [@sebald](https://github.com/sebald)! - fix: `<Menu>` width is adjusted by its content not the trigger
+
+- [#2643](https://github.com/marigold-ui/marigold/pull/2643) [`473ae72b`](https://github.com/marigold-ui/marigold/commit/473ae72bc5ea11c8092a613b76500140f78cd12f) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update react-aria
+
+- [#2619](https://github.com/marigold-ui/marigold/pull/2619) [`727460fc`](https://github.com/marigold-ui/marigold/commit/727460fcd2dce035b18a539512ecf89f1ab7a11b) Thanks [@sebald](https://github.com/sebald)! - fix: set `<Switch>` width in flex so it doesn't shrink below a certain threshold
+
+- Updated dependencies [[`312a23cf`](https://github.com/marigold-ui/marigold/commit/312a23cf95352beba4b2798a479fa9e0cdbfa20a), [`080b1fed`](https://github.com/marigold-ui/marigold/commit/080b1fedc582511e0155a9199aa3b2b995cfb609), [`d250fc00`](https://github.com/marigold-ui/marigold/commit/d250fc0041f2beca498107d3e60e2d50e9ffb293)]:
+  - @marigold/system@4.1.0
+  - @marigold/types@0.5.6
+  - @marigold/icons@1.1.8
+
+## 4.0.0
+
+### Major Changes
+
+- [#2610](https://github.com/marigold-ui/marigold/pull/2610) [`eb35da96`](https://github.com/marigold-ui/marigold/commit/eb35da96a52dc4b2b47d57ea115897bd7ee3bc69) Thanks [@sebald](https://github.com/sebald)! - feat: `<Tiles>` can now be used as a grid with fixed widths or fully respsonsive.
+
+  BREAKING CHANGE: Renamed the whole API. Please checkout the documentation at https://marigold-ui.io/components/tiles/#props
+
+### Patch Changes
+
+- [#2607](https://github.com/marigold-ui/marigold/pull/2607) [`41f60e3d`](https://github.com/marigold-ui/marigold/commit/41f60e3d3c95a21e4a3a1a167905270d6f5dc966) Thanks [@benediktgrether](https://github.com/benediktgrether)! - fix: add missing values for one point and set begin of first dot to 0.0s
+
+- [#2612](https://github.com/marigold-ui/marigold/pull/2612) [`31e1219d`](https://github.com/marigold-ui/marigold/commit/31e1219dd684fde238aac17ef00c68cf7e458519) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add hover color and flex property
+
+- Updated dependencies [[`02bd8efe`](https://github.com/marigold-ui/marigold/commit/02bd8efe1a5660910338a9f2cba39cc061588793), [`be3f2060`](https://github.com/marigold-ui/marigold/commit/be3f20600b195f62d8d5bc1b784329d7bf152d9a), [`f38ae20a`](https://github.com/marigold-ui/marigold/commit/f38ae20a23badf8cf141f582f0c20d85fdd6534b), [`4554b26e`](https://github.com/marigold-ui/marigold/commit/4554b26ef49986d2ebf457cc000284db5d8d85e8)]:
+  - @marigold/icons@1.1.7
+  - @marigold/system@4.0.0
+  - @marigold/types@0.5.5
+
 ## 3.0.6
 
 ### Patch Changes

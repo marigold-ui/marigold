@@ -5,7 +5,7 @@ import { useTableRow } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
 
-import { Box, useStateProps } from '@marigold/system';
+import { Box, useComponentStyles, useStateProps } from '@marigold/system';
 
 import { useTableContext } from './Context';
 
@@ -20,7 +20,14 @@ export interface TableRowProps {
 // ---------------
 export const TableRow = ({ children, row }: TableRowProps) => {
   const ref = useRef(null);
-  const { interactive, state, styles } = useTableContext();
+  const { interactive, state, ...ctx } = useTableContext();
+  const { variant, size } = row.props;
+
+  const { row: styles } = useComponentStyles(
+    'Table',
+    { variant: variant || ctx.variant, size: size || ctx.size },
+    { parts: ['row'] }
+  );
   const { rowProps, isPressed } = useTableRow(
     {
       node: row,
@@ -53,7 +60,7 @@ export const TableRow = ({ children, row }: TableRowProps) => {
       __baseCSS={{
         cursor: !interactive ? 'text' : disabled ? 'default' : 'pointer',
       }}
-      css={styles.row}
+      css={styles}
       {...mergeProps(rowProps, focusProps, hoverProps)}
       {...stateProps}
     >

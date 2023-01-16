@@ -28,7 +28,7 @@ export const LayoutsDemo = () => (
         <Annotation>Columns</Annotation>
       </>
       <>
-        <Tiles space="small-1" itemMinWidth="32px">
+        <Tiles space="small-1" tilesWidth="32px">
           <Squirecle />
           <Squirecle />
           <Squirecle />

@@ -78,7 +78,7 @@ const getSwitchParts = () => {
   // eslint-disable-next-line testing-library/no-node-access
   const thumb = track.lastChild!;
 
-  const input = screen.getByRole('switch');
+  const input: HTMLInputElement = screen.getByRole('switch');
 
   return { label, input, container, track, thumb };
 };
@@ -175,11 +175,11 @@ test('toggle switch per click', () => {
 
   fireEvent.click(input);
   expect(track).toHaveStyle(`background-color: orange`);
-  expect(input).toHaveAttribute('aria-checked', 'true');
+  expect(input.checked).toBeTruthy();
 
   fireEvent.click(input);
   expect(track).toHaveStyle(`background-color: blue`);
-  expect(input).toHaveAttribute('aria-checked', 'false');
+  expect(input.checked).toBeFalsy();
 });
 
 test('focus element and toggle switch per keyboard space', async () => {
@@ -198,13 +198,13 @@ test('focus element and toggle switch per keyboard space', async () => {
   // eslint-disable-next-line testing-library/await-async-utils
   waitFor(() => expect(track).toHaveStyle(`background-color: orange`));
   // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => expect(input).toHaveAttribute('aria-checked', 'true'));
+  waitFor(() => expect(input.checked).toBeTruthy());
 
   user.keyboard('{space}');
   // eslint-disable-next-line testing-library/await-async-utils
   waitFor(() => expect(track).toHaveStyle(`background-color: blue`));
   // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => expect(input).toHaveAttribute('aria-checked', 'false'));
+  waitFor(() => expect(input.checked).toBeFalsy());
 });
 
 test('supports default checked', () => {
@@ -216,9 +216,9 @@ test('supports default checked', () => {
 
   const { input } = getSwitchParts();
 
-  expect(input).toHaveAttribute('aria-checked', 'true');
+  expect(input.checked).toBeTruthy();
   fireEvent.click(input);
-  expect(input).toHaveAttribute('aria-checked', 'false');
+  expect(input.checked).toBeFalsy();
 });
 
 test('supports controlled component usage', () => {
@@ -233,11 +233,11 @@ test('supports controlled component usage', () => {
 
   fireEvent.click(input);
   expect(onChange).toHaveBeenCalledWith(true);
-  expect(input).toHaveAttribute('aria-checked', 'true');
+  expect(input.checked).toBeTruthy();
 
   fireEvent.click(input);
   expect(onChange).toHaveBeenCalledWith(false);
-  expect(input).toHaveAttribute('aria-checked', 'false');
+  expect(input.checked).toBeFalsy();
 });
 
 test('forwards ref', () => {

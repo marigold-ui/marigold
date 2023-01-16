@@ -1,5 +1,109 @@
 # @marigold/storybook-config
 
+## 0.7.24
+
+### Patch Changes
+
+- Updated dependencies [[`55c7cd7e`](https://github.com/marigold-ui/marigold/commit/55c7cd7e3a5397f8845f9928c15d85e1bc418d10), [`c9725e77`](https://github.com/marigold-ui/marigold/commit/c9725e77025f8b2d750f0ecd71b4088e5db98691)]:
+  - @marigold/components@4.2.2
+  - @marigold/theme-b2b@17.0.2
+  - @marigold/theme-core@17.0.2
+  - @marigold/theme-unicorn@14.0.2
+
+## 0.7.23
+
+### Patch Changes
+
+- Updated dependencies [[`c7b919a3`](https://github.com/marigold-ui/marigold/commit/c7b919a334f6f5b0240361a7e6ce805650ca8d01)]:
+  - @marigold/components@4.2.1
+  - @marigold/theme-b2b@17.0.1
+  - @marigold/theme-core@17.0.1
+  - @marigold/theme-unicorn@14.0.1
+
+## 0.7.22
+
+### Patch Changes
+
+- Updated dependencies [[`8675c5f2`](https://github.com/marigold-ui/marigold/commit/8675c5f2d609cddceff7661c2e6d173655adc813), [`7be11c1a`](https://github.com/marigold-ui/marigold/commit/7be11c1a8ba6bca9ac651da75569234b443fcae5), [`14463546`](https://github.com/marigold-ui/marigold/commit/144635460ee4c0eb44e1ce9d2cf12709262dc6e6), [`bb0dea93`](https://github.com/marigold-ui/marigold/commit/bb0dea93c6c24e5271f18ceddc3699d07a53b56a), [`7954ba24`](https://github.com/marigold-ui/marigold/commit/7954ba241a8ca3bc048177aa32c1fb0f3dd77a9c), [`1bfe10cf`](https://github.com/marigold-ui/marigold/commit/1bfe10cf7ec08136ca67e23a2dc2e97f9c027e59), [`258d939f`](https://github.com/marigold-ui/marigold/commit/258d939f39e110d140571ca3766acf281cb8a787)]:
+  - @marigold/components@4.2.0
+  - @marigold/theme-b2b@17.0.0
+  - @marigold/theme-unicorn@14.0.0
+  - @marigold/theme-core@17.0.0
+
+## 0.7.21
+
+### Patch Changes
+
+- Updated dependencies [[`098c0019`](https://github.com/marigold-ui/marigold/commit/098c00192d5fcad27a8b73670e1be5e494612a8e), [`098c0019`](https://github.com/marigold-ui/marigold/commit/098c00192d5fcad27a8b73670e1be5e494612a8e), [`832da2a6`](https://github.com/marigold-ui/marigold/commit/832da2a69f9bad5adcbcc57cba3cb215dfaa51e2)]:
+  - @marigold/theme-b2b@16.0.5
+  - @marigold/theme-core@16.0.5
+  - @marigold/theme-unicorn@13.0.5
+  - @marigold/components@4.1.5
+
+## 0.7.20
+
+### Patch Changes
+
+- Updated dependencies [[`1399a66b`](https://github.com/marigold-ui/marigold/commit/1399a66ba8cacb00fca6209d380a7b739ed94e7d)]:
+  - @marigold/theme-b2b@16.0.4
+  - @marigold/theme-core@16.0.4
+  - @marigold/theme-unicorn@13.0.4
+  - @marigold/components@4.1.4
+
+## 0.7.19
+
+### Patch Changes
+
+- Updated dependencies [[`9f12ffec`](https://github.com/marigold-ui/marigold/commit/9f12ffecb4e7fdf0bcc407a9a7867ff4c1263a99)]:
+  - @marigold/theme-b2b@16.0.3
+  - @marigold/theme-core@16.0.3
+  - @marigold/theme-unicorn@13.0.3
+  - @marigold/components@4.1.3
+
+## 0.7.18
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/components@4.1.2
+  - @marigold/theme-b2b@16.0.2
+  - @marigold/theme-core@16.0.2
+  - @marigold/theme-unicorn@13.0.2
+
+## 0.7.17
+
+### Patch Changes
+
+- Updated dependencies [[`0208fb01`](https://github.com/marigold-ui/marigold/commit/0208fb0111f44ed2de78098c1cf4757a55302048), [`9673ba62`](https://github.com/marigold-ui/marigold/commit/9673ba622011cb3cc748dba14f3c533160c95eee)]:
+  - @marigold/components@4.1.1
+  - @marigold/theme-b2b@16.0.1
+  - @marigold/theme-core@16.0.1
+  - @marigold/theme-unicorn@13.0.1
+
+## 0.7.16
+
+### Patch Changes
+
+- [#2627](https://github.com/marigold-ui/marigold/pull/2627) [`d250fc00`](https://github.com/marigold-ui/marigold/commit/d250fc0041f2beca498107d3e60e2d50e9ffb293) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update babel monorepo
+
+- Updated dependencies [[`40aeefd7`](https://github.com/marigold-ui/marigold/commit/40aeefd704e4ac23b36cb83ade928b19bdaf68c0), [`2e98753d`](https://github.com/marigold-ui/marigold/commit/2e98753d80af8a00a2b8c9adb0d3e08ee631ea4b), [`f764d3a0`](https://github.com/marigold-ui/marigold/commit/f764d3a080f075fe4e9b0cea30ded53a460689b4), [`473ae72b`](https://github.com/marigold-ui/marigold/commit/473ae72bc5ea11c8092a613b76500140f78cd12f), [`7a9129c1`](https://github.com/marigold-ui/marigold/commit/7a9129c1c2d2ada75fa5cd793874ab0b7db8d48b), [`727460fc`](https://github.com/marigold-ui/marigold/commit/727460fcd2dce035b18a539512ecf89f1ab7a11b)]:
+  - @marigold/components@4.1.0
+  - @marigold/theme-b2b@16.0.0
+  - @marigold/theme-core@16.0.0
+  - @marigold/theme-unicorn@13.0.0
+
+## 0.7.15
+
+### Patch Changes
+
+- [#2591](https://github.com/marigold-ui/marigold/pull/2591) [`be3f2060`](https://github.com/marigold-ui/marigold/commit/be3f20600b195f62d8d5bc1b784329d7bf152d9a) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @babel/core to v7.19.6
+
+- Updated dependencies [[`0c548546`](https://github.com/marigold-ui/marigold/commit/0c54854648e18244453a672ac555b224b64b6265), [`41f60e3d`](https://github.com/marigold-ui/marigold/commit/41f60e3d3c95a21e4a3a1a167905270d6f5dc966), [`31e1219d`](https://github.com/marigold-ui/marigold/commit/31e1219dd684fde238aac17ef00c68cf7e458519), [`eb35da96`](https://github.com/marigold-ui/marigold/commit/eb35da96a52dc4b2b47d57ea115897bd7ee3bc69)]:
+  - @marigold/theme-core@15.0.0
+  - @marigold/components@4.0.0
+  - @marigold/theme-b2b@15.0.0
+  - @marigold/theme-unicorn@12.0.0
+
 ## 0.7.14
 
 ### Patch Changes

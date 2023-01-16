@@ -1,7 +1,14 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  renderHook,
+  screen,
+} from '@testing-library/react';
 import { OverlayProvider } from '@react-aria/overlays';
-import { ThemeProvider } from '@marigold/system';
+import { ThemeProvider, useResponsiveValue } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Menu } from './Menu';
@@ -58,7 +65,22 @@ const theme = {
   },
 };
 
+/**
+ * We need to mock `matchMedia` because JSOM does not
+ * implements it.
+ */
+const mockMatchMedia = (matches: string[]) =>
+  jest.fn().mockImplementation(query => ({
+    matches: matches.includes(query),
+  }));
+afterEach(cleanup);
+
 test('renders the button but no menu by default', () => {
+  window.matchMedia = mockMatchMedia([
+    'screen and (min-width: 40em)',
+    'screen and (min-width: 52em)',
+    'screen and (min-width: 64em)',
+  ]);
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
@@ -328,4 +350,38 @@ test('apply focus style on focus', () => {
   const item = screen.getByText('Burger');
   fireEvent.focus(item);
   expect(item).toHaveStyle(`background: ${theme.colors.pink}`);
+});
+
+test('renders as tray', () => {
+  let resize: Function;
+  window.addEventListener = jest.fn().mockImplementation((event, cb) => {
+    if (event === 'resize') resize = cb;
+  });
+
+  const { result } = renderHook(() =>
+    useResponsiveValue(['one', 'two', 'three', 'four'])
+  );
+  window.matchMedia = mockMatchMedia([]);
+  act(() => resize());
+
+  expect(result.current).toEqual('one');
+
+  render(
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Menu.Trigger>
+          <Button>Choose</Button>
+          <Menu data-testid="menu">
+            <Menu.Item key="burger">Burger</Menu.Item>
+            <Menu.Item key="pizza">Pizza</Menu.Item>
+          </Menu>
+        </Menu.Trigger>
+      </ThemeProvider>
+    </OverlayProvider>
+  );
+
+  const button = screen.getByText('Choose');
+  fireEvent.click(button);
+  const tray = screen.getByTestId('tray');
+  expect(tray).toBeInTheDocument();
 });

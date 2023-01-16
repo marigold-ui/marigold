@@ -59,6 +59,7 @@ const Icon = ({ css, checked, indeterminate, ...props }: IconProps) => (
   <Box
     aria-hidden="true"
     __baseCSS={{
+      flex: '0 0 16px',
       width: 16,
       height: 16,
       bg: '#fff',
@@ -172,8 +173,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     const styles = useComponentStyles(
       'Checkbox',
       {
-        variant: groupState?.variant || variant,
-        size: groupState?.size || size,
+        variant,
+        size,
       },
       { parts: ['container', 'label', 'checkbox'] }
     );

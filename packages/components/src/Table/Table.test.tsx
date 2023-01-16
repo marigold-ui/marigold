@@ -344,3 +344,51 @@ test('cursor indicates interactivity', async () => {
   expect(rows[1]).toHaveStyle('cursor: pointer');
   expect(rows[2]).toHaveStyle('cursor: default');
 });
+
+test('Table cell mouse down will not be selectable', () => {
+  render(
+    <Table aria-label="table" selectionMode="none">
+      <Table.Header>
+        <Table.Column>Name</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row key="Alice">
+          <Table.Cell key="cell">Alice</Table.Cell>
+        </Table.Row>
+        <Table.Row key="Jane">
+          <Table.Cell>Jane</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  );
+
+  const cell = screen.getByText('Alice');
+  fireEvent.mouseDown(cell);
+
+  const row = screen.getAllByRole('row');
+  expect(row[0]).not.toHaveAttribute('aria-selected');
+});
+
+test('Table cell pointer down will not be selectable', () => {
+  render(
+    <Table aria-label="table" selectionMode="none">
+      <Table.Header>
+        <Table.Column>Name</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row key="Alice">
+          <Table.Cell key="cell">Alice</Table.Cell>
+        </Table.Row>
+        <Table.Row key="Jane">
+          <Table.Cell>Jane</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  );
+
+  const cell = screen.getByText('Alice');
+  fireEvent.pointerDown(cell);
+
+  const row = screen.getAllByRole('row');
+  expect(row[0]).not.toHaveAttribute('aria-selected');
+});

@@ -5,9 +5,8 @@ import React, {
   useRef,
 } from 'react';
 import { useButton } from '@react-aria/button';
-import { FocusScope, useFocusRing } from '@react-aria/focus';
+import { useFocusRing } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { DismissButton, useOverlayPosition } from '@react-aria/overlays';
 import { HiddenSelect, useSelect } from '@react-aria/select';
 import { useSelectState } from '@react-stately/select';
 import { Item, Section } from '@react-stately/collections';
@@ -19,14 +18,15 @@ import {
   CSSObject,
   ThemeExtensionsWithParts,
   useComponentStyles,
+  useResponsiveValue,
   useStateProps,
 } from '@marigold/system';
 import { ComponentProps } from '@marigold/types';
 
 import { FieldBase } from '../FieldBase';
 import { ListBox } from '../ListBox';
-import { Popover } from '../Overlay';
 import { messages } from './intl';
+import { Popover, Tray } from '../Overlay';
 
 // Select Icon
 // ---------------
@@ -85,7 +85,6 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     // Set up i18n
     const formatMessage = useLocalizedStringFormatter(messages);
 
-    const buttonRef = useObjectRef(ref);
     const props = {
       isOpen: open,
       isDisabled: disabled,
@@ -94,7 +93,12 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       placeholder: rest.placeholder || formatMessage.format('placeholder'),
       ...rest,
     } as const;
+
     const state = useSelectState(props);
+    const buttonRef = useObjectRef(ref);
+    const listboxRef = useRef(null);
+
+    const isSmallScreen = useResponsiveValue([true, false, false], 2);
 
     const {
       labelProps,
@@ -110,14 +114,6 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       buttonRef
     );
     const { focusProps, isFocusVisible } = useFocusRing();
-
-    const overlayRef = useRef(null);
-    const { overlayProps: positionProps } = useOverlayPosition({
-      targetRef: buttonRef,
-      overlayRef,
-      isOpen: state.isOpen,
-      placement: 'bottom left',
-    });
 
     const styles = useComponentStyles(
       'Select',
@@ -181,28 +177,27 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           </Box>
           <Chevron css={styles.icon} />
         </Box>
-        <Popover
-          open={state.isOpen}
-          onClose={state.close}
-          dismissable
-          shouldCloseOnBlur
-          minWidth={
-            buttonRef.current ? buttonRef.current.offsetWidth : undefined
-          }
-          ref={overlayRef}
-          {...positionProps}
-        >
-          <FocusScope restoreFocus>
-            <DismissButton onDismiss={state.close} />
+        {isSmallScreen ? (
+          <Tray state={state}>
             <ListBox
+              ref={listboxRef}
               state={state}
               variant={variant}
               size={size}
               {...menuProps}
             />
-            <DismissButton onDismiss={state.close} />
-          </FocusScope>
-        </Popover>
+          </Tray>
+        ) : (
+          <Popover state={state} triggerRef={buttonRef} scrollRef={listboxRef}>
+            <ListBox
+              ref={listboxRef}
+              state={state}
+              variant={variant}
+              size={size}
+              {...menuProps}
+            />
+          </Popover>
+        )}
       </FieldBase>
     );
   }

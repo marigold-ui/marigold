@@ -121,6 +121,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
             height: 24,
             bg: '#dee2e6',
             borderRadius: 20,
+            flex: '0 0 48px',
           }}
           css={styles.track}
           {...stateProps}
