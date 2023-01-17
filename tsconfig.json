@@ -7,7 +7,6 @@
       "@marigold/*": ["./packages/*/src", "./themes/*/src"]
     }
   },
-  "include": ["**/*.spec.js"],
   "exclude": [
     "coverage/*",
     "jest.config.js",

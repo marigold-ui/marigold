@@ -17,6 +17,7 @@ slack-notification.json
 .pnpm-debug.log*
 # playwright
 playwright-report
+test-results
 *.tsx-snapshots
 
 # next.js
