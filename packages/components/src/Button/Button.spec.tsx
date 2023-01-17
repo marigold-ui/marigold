@@ -13,6 +13,6 @@ test('example test', async ({ page }) => {
 });
 
 cttest('render props', async ({ mount }) => {
-  const component = await mount(<Button title="Submit" />);
+  const component = await mount(<Button variant="primary">Submit</Button>);
   await ctexpect(component).toContainText('Submit');
 });
