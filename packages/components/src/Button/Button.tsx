@@ -10,7 +10,7 @@ import {
   ThemeExtension,
   useComponentStyles,
   useStateProps,
-} from '@marigold/system';
+} from '../../../system/src';
 import {
   ComponentProps,
   PolymorphicComponentWithRef,

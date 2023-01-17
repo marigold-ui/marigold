@@ -17,6 +17,7 @@
     "@marigold/jest-config": "workspace:*",
     "@marigold/prettier-config": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
+    "@playwright/experimental-ct-react": "1.29.2",
     "@storybook/react": "6.5.15",
     "@testing-library/dom": "8.19.0",
     "@testing-library/jest-dom": "5.16.5",
@@ -49,6 +50,7 @@
     "test:ci": "jest --config jest.config.js --coverage --ci",
     "test:docs": "pnpm --filter @marigold/docs test",
     "test:storybook": "pnpm --filter @marigold/storybook-config test",
+    "test:pw": "pnpx playwright test --config=./playwright-ct.config.ts",
     "chromatic": "source .env.local && pnpm --filter @marigold/storybook-config chromatic",
     "chromatic:ci": "pnpm --filter @marigold/storybook-config ci",
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'`",
@@ -62,5 +64,8 @@
     "release:notification": "zx scripts/create-slack-notification.mjs",
     "slack": "zx scripts/slack-release-notification.mjs --quiet",
     "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.29.2"
   }
 }

@@ -15,11 +15,15 @@ build-storybook.log
 slack-notification.json
 
 .pnpm-debug.log*
+# playwright
+playwright-report
+*.tsx-snapshots
 
 # next.js
 .next
 out
 .cache
+
 ## env
 local.env
 .env.local
