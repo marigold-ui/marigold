@@ -2,7 +2,7 @@ import { colors } from './colors';
 
 export const themeColors = {
   text: colors.gray70,
-  background: colors.gray10,
+  background: colors.gray00,
   primary: colors.orange60,
   secondary: colors.gray70,
   disabled: colors.gray40,
@@ -43,6 +43,7 @@ export const statusColors = {
       border: colors.blue80,
     },
 
+    // To Do? Naming changes?
     success: themeColors.success,
 
     warning: themeColors.warning,
