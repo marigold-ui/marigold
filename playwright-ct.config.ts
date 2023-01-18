@@ -25,8 +25,15 @@ const config: PlaywrightTestConfig = {
   retries: process.env.CI ? 2 : 0,
   reporter: 'html',
   testMatch: /.\**\.spec\.ts/,
+  webServer: {
+    command: 'pnpm dev',
+    url: 'http://localhost:1337/',
+    timeout: 200 * 1000,
+    reuseExistingServer: !process.env.CI,
+  },
   use: {
     trace: 'on-first-retry',
+    baseURL: 'http://localhost:1337/',
   },
   projects: [
     {

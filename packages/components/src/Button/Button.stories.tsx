@@ -18,7 +18,6 @@ export default {
         type: 'text',
       },
       description: 'Variant of the button',
-      defaultValue: 'primary',
     },
     size: {
       control: {
@@ -44,7 +43,7 @@ export default {
 } as Meta;
 
 export const Basic: ComponentStory<typeof Button> = args => (
-  <Button {...args} />
+  <Button variant="ghost" {...args} />
 );
 
 export const WithIcon: ComponentStory<typeof Button> = ({

@@ -5,13 +5,21 @@ import {
 } from '@playwright/experimental-ct-react';
 import { Button } from './Button';
 
-test('example test', async ({ page }) => {
+// visual test
+test('test if story matches screenshot', async ({ page }) => {
   await page.goto(
-    'http://localhost:1337/?path=/story/components-button--basic&globals=theme:stacked'
-  ); // The baseURL here is the webServer URL
-  await expect(page).toHaveScreenshot();
+    'iframe.html?globals=theme:stacked&args=&id=components-button--basic&viewMode=story'
+  );
+
+  console.log(page.url());
+  const button = page.getByText('Click me');
+
+  await expect(button.first()).toHaveScreenshot({
+    maxDiffPixelRatio: 0.2,
+  });
 });
 
+// component test
 cttest('render props', async ({ mount }) => {
   const component = await mount(<Button variant="primary">Submit</Button>);
   await ctexpect(component).toContainText('Submit');
