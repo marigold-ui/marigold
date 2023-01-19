@@ -12,6 +12,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  name: Playwright
+  runs-on: ubuntu-latest
   env:
     CI: true
   steps:
