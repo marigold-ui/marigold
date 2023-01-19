@@ -7,7 +7,7 @@ export const Badge: Theme['components']['Badge'] = {
     fontSize: 'xxsmall',
     borderRadius: 'large',
     whiteSpace: 'nowrap',
-    py: 4,
+    py: 8,
     px: 12,
   },
   variant: {
