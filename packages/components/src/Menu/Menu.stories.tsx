@@ -59,8 +59,3 @@ export const DotMenu: ComponentStory<typeof Menu> = args => (
     </Menu>
   </Menu.Trigger>
 );
-
-MenuOnly.parameters = {
-  // Set the viewports in Chromatic at a story level.
-  chromatic: { viewports: [320, 1200] },
-};
