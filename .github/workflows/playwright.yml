@@ -22,11 +22,11 @@ jobs:
       run: pnpm install
     # Playwright action
     - name: Install Playwright Browsers
-      run: pnpx add playwright --with-deps
+      run: pnpm add playwright --with-deps
     - name: Run Playwright tests
-      run: pnpx playwright test
-    - name: Run Playwright components
-      run: pnpx run ct
+      run: pnpm test:pw
+    - name: Show report
+      run: pnpm test:report
     - uses: actions/upload-artifact@v3
       if: failure()
       with:
