@@ -1,0 +1,35 @@
+name: Playwright Tests
+on:
+  pull_request:
+    branches: [main]
+  workflow_run:
+    workflows: ['Update Snapshots']
+    types:
+      - completed
+jobs:
+  env:
+    CI: true
+  steps:
+    # Setup
+    - uses: actions/checkout@v3
+    - uses: pnpm/action-setup@v2.2.4 # Uses version from package.json#packageManager
+    - name: Setup Node (using .node-version)
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: '.node-version'
+        cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install
+    # Playwright action
+    - name: Install Playwright Browsers
+      run: pnpx add playwright --with-deps
+    - name: Run Playwright tests
+      run: pnpx playwright test
+    - name: Run Playwright components
+      run: pnpx run ct
+    - uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
