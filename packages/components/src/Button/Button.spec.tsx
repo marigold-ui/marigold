@@ -11,10 +11,15 @@ test('test if story matches screenshot', async ({ page }) => {
     'iframe.html?globals=theme:stacked&args=&id=components-button--basic&viewMode=story'
   );
 
-  console.log(page.url());
   const button = page.getByText('Click me');
 
   await expect(button.first()).toHaveScreenshot({
+    maxDiffPixelRatio: 0.2,
+  });
+  await expect(button.nth(1)).toHaveScreenshot({
+    maxDiffPixelRatio: 0.2,
+  });
+  await expect(button.last()).toHaveScreenshot({
     maxDiffPixelRatio: 0.2,
   });
 });
