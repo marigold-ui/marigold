@@ -7,7 +7,7 @@ import isChromatic from 'chromatic/isChromatic';
 
 export default {
   title: 'Components/Select',
-  chromatic: { delay: 300 },
+  chromatic: { delay: 60000 },
   argTypes: {
     label: {
       control: {
