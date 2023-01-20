@@ -1,7 +1,7 @@
 import React from 'react';
 
 import isChromatic from 'chromatic/isChromatic';
-import type { StoryFn } from '@storybook/react';
+import { composeStory, getStorybook, StoryFn } from '@storybook/react';
 
 import { Box, MarigoldProvider } from '@marigold/components';
 import b2bTheme from '@marigold/theme-b2b';
@@ -48,10 +48,10 @@ export const parameters = {
 export const decorators = [
   (Story: StoryFn, { globals, parameters }: any) => {
     const theme = isChromatic()
-      ? 'stacked'
+      ? parameters.theme || 'stacked'
       : globals.theme || parameters.theme || 'b2b';
 
-    console.log(theme);
+    console.log(parameters);
     switch (theme) {
       case 'stacked': {
         return (

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import { Meta, ComponentStory, composeStory } from '@storybook/react';
 import { Select } from './Select';
 import { Container } from '../Container';
 
 import isChromatic from 'chromatic/isChromatic';
+import { parameters } from 'config/storybook/preview';
 
 export default {
   title: 'Components/Select',
@@ -147,7 +148,7 @@ export const SelectedScroll = () => {
 };
 
 export const SelectOpen: ComponentStory<typeof Select> = args => (
-  <Select open={true} {...args}>
+  <Select open {...args}>
     <Select.Section title="Fantasy">
       <Select.Option>Harry Potter</Select.Option>
       <Select.Option>Lord of the Rings</Select.Option>
@@ -162,5 +163,5 @@ export const SelectOpen: ComponentStory<typeof Select> = args => (
 SelectOpen.parameters = {
   // Set the viewports in Chromatic at a story level.
   chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'core' : 'unicorn',
+  theme: isChromatic() ? 'b2b' : 'stacked',
 };
