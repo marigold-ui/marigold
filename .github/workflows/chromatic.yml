@@ -36,6 +36,7 @@ jobs:
           buildScriptName: build:storybook
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          onlyChanged: true
           # Option to prevent the workflow from failing (https://www.chromatic.com/docs/github-actions#command-exit-code-for-required-checks)
           exitZeroOnChanges: true
           exitOnceUploaded: true
