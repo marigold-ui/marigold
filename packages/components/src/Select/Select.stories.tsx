@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Meta, ComponentStory, composeStory } from '@storybook/react';
+import { Meta, ComponentStory } from '@storybook/react';
 import { Select } from './Select';
 import { Container } from '../Container';
 
 import isChromatic from 'chromatic/isChromatic';
-import { parameters } from 'config/storybook/preview';
 
 export default {
   title: 'Components/Select',
@@ -148,7 +147,7 @@ export const SelectedScroll = () => {
 };
 
 export const SelectOpen: ComponentStory<typeof Select> = args => (
-  <Select open {...args}>
+  <Select open={true} {...args}>
     <Select.Section title="Fantasy">
       <Select.Option>Harry Potter</Select.Option>
       <Select.Option>Lord of the Rings</Select.Option>
