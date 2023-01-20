@@ -7,6 +7,7 @@ import isChromatic from 'chromatic/isChromatic';
 
 export default {
   title: 'Components/Select',
+  chromatic: { delay: 300 },
   argTypes: {
     label: {
       control: {
@@ -161,7 +162,7 @@ export const SelectOpen: ComponentStory<typeof Select> = args => (
 
 SelectOpen.parameters = {
   // Set the viewports in Chromatic at a story level.
-  chromatic: { viewports: [320, 1200], delay: 300 },
+  chromatic: { viewports: [320, 1200] },
 
   theme: isChromatic() ? 'b2b' : 'stacked',
 };
