@@ -163,7 +163,8 @@ export const SelectOpen: ComponentStory<typeof Select> = args => (
 
 SelectOpen.parameters = {
   // Set the viewports in Chromatic at a story level.
-  chromatic: { viewports: [320, 1200], delay: 10000 },
+  chromatic: { viewports: [320, 1200] },
+  delay: isChromatic() ? 10000 : 0,
   decorators: [
     (Story: StoryFn) => (
       <div style={{ height: '800px' }}>
