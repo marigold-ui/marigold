@@ -69,7 +69,7 @@ export const decorators = [
       default: {
         return (
           <MarigoldProvider theme={THEME[theme as ThemeNames]}>
-            <div style={{ height: '900px', width: '500px' }}>
+            <div style={{ height: '900px', width: '500px', margin: '2rem' }}>
               <Story />
             </div>
           </MarigoldProvider>
