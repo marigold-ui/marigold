@@ -159,6 +159,5 @@ export const SelectOpen: ComponentStory<typeof Select> = args => (
 
 SelectOpen.parameters = {
   // Set the viewports in Chromatic at a story level.
-  chromatic: { viewports: [320, 1200] },
-  theme: 'b2b',
+  chromatic: { viewports: [320, 1200], theme: 'core' },
 };
