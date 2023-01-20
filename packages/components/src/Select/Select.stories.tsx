@@ -3,6 +3,8 @@ import type { Meta, ComponentStory } from '@storybook/react';
 import { Select } from './Select';
 import { Container } from '../Container';
 
+import isChromatic from 'chromatic/isChromatic';
+
 export default {
   title: 'Components/Select',
   argTypes: {
@@ -159,5 +161,5 @@ export const SelectOpen: ComponentStory<typeof Select> = args => (
 
 SelectOpen.parameters = {
   // Set the viewports in Chromatic at a story level.
-  chromatic: { viewports: [320, 1200], theme: 'core' },
+  chromatic: { viewports: [320, 1200], theme: isChromatic() ? 'core' : 'core' },
 };
