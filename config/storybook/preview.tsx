@@ -69,6 +69,7 @@ export const decorators = [
       case parameters.theme: {
         <MarigoldProvider theme={THEME[theme as ThemeNames]}>
           <div style={{ height: '500px' }}>
+            hallo
             <Story />
           </div>
         </MarigoldProvider>;
