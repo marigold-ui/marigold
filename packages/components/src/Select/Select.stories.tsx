@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import { Meta, ComponentStory } from '@storybook/react';
 import { Select } from './Select';
 import { Container } from '../Container';
-import { StoryFn } from '@storybook/react';
-
 import isChromatic from 'chromatic/isChromatic';
-import { decorators } from 'config/storybook/preview';
 
 export default {
   title: 'Components/Select',
