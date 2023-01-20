@@ -204,7 +204,7 @@ importers:
       '@next/mdx': 12.3.4
       '@types/mdx-js__react': 1.5.5
       '@types/node': 18.0.0
-      '@types/react': 18.0.25
+      '@types/react': 18.0.27
       estree-util-visit: 1.2.0
       fs-extra: 10.1.0
       globby: 13.1.2
@@ -265,7 +265,7 @@ importers:
     devDependencies:
       '@types/mdx-js__react': 1.5.5
       '@types/node': 18.0.0
-      '@types/react': 18.0.25
+      '@types/react': 18.0.27
       typescript: 4.9.4
 
   packages/components:
@@ -317,7 +317,7 @@ importers:
       '@react-types/radio': 3.3.1
       '@react-types/shared': 3.16.0
       '@react-types/tooltip': 3.2.5
-      '@types/react': 18.0.26
+      '@types/react': 18.0.27
       '@types/react-transition-group': 4.4.5
       deepmerge: ^4.2.2
       react: 18.2.0
@@ -377,7 +377,7 @@ importers:
       react-transition-group: 4.4.5_biqbaboplfbrettd7655fr4n2y
     devDependencies:
       '@marigold/tsconfig': link:../../config/tsconfig
-      '@types/react': 18.0.26
+      '@types/react': 18.0.27
       '@types/react-transition-group': 4.4.5
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -444,12 +444,12 @@ importers:
 
   packages/types:
     specifiers:
-      '@types/react': 18.0.25
+      '@types/react': 18.0.27
       type-fest: ^3.0.0
     dependencies:
       type-fest: 3.0.0
     devDependencies:
-      '@types/react': 18.0.25
+      '@types/react': 18.0.27
 
   themes/theme-b2b:
     specifiers:
@@ -5980,7 +5980,7 @@ packages:
   /@types/mdx-js__react/1.5.5:
     resolution: {integrity: sha512-k8pnaP6JXVlQh18HgL5X6sYFNC/qZnzO7R2+HsmwrwUd+JnnsU0d9lyyT0RQrHg1anxDU36S98TI/fsGtmYqqg==}
     dependencies:
-      '@types/react': 18.0.25
+      '@types/react': 18.0.27
     dev: true
 
   /@types/mdx/2.0.2:
@@ -6062,13 +6062,13 @@ packages:
   /@types/react-dom/18.0.6:
     resolution: {integrity: sha512-/5OFZgfIPSwy+YuIBP/FgJnQnsxhZhjjrnxudMddeblOouIodEQ75X14Rr4wGSG/bknL+Omy9iWlLo1u/9GzAA==}
     dependencies:
-      '@types/react': 18.0.25
+      '@types/react': 18.0.27
     dev: false
 
   /@types/react-transition-group/4.4.5:
     resolution: {integrity: sha512-juKD/eiSM3/xZYzjuzH6ZwpP+/lejltmiS3QEzV/vmb/Q8+HfDmxu+Baga8UEMGBqV88Nbg4l2hY/K2DkyaLLA==}
     dependencies:
-      '@types/react': 18.0.26
+      '@types/react': 18.0.27
     dev: true
 
   /@types/react/18.0.21:
@@ -6079,20 +6079,12 @@ packages:
       csstype: 3.1.1
     dev: false
 
-  /@types/react/18.0.25:
-    resolution: {integrity: sha512-xD6c0KDT4m7n9uD4ZHi02lzskaiqcBxf4zi+tXZY98a04wvc0hi/TcCPC2FOESZi51Nd7tlUeOJY8RofL799/g==}
+  /@types/react/18.0.27:
+    resolution: {integrity: sha512-3vtRKHgVxu3Jp9t718R9BuzoD4NcQ8YJ5XRzsSKxNDiDonD2MXIT1TmSkenxuCycZJoQT5d2vE8LwWJxBC1gmA==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
       csstype: 3.1.1
-
-  /@types/react/18.0.26:
-    resolution: {integrity: sha512-hCR3PJQsAIXyxhTNSiDFY//LhnMZWpNNr5etoCqx/iUfGc5gXWtQR2Phl908jVR6uPXacojQWTg4qRpkxTuGug==}
-    dependencies:
-      '@types/prop-types': 15.7.5
-      '@types/scheduler': 0.16.2
-      csstype: 3.1.1
-    dev: true
 
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
