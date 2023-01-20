@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Meta, ComponentStory } from '@storybook/react';
 import { Select } from './Select';
 import { Container } from '../Container';
+import { StoryFn } from '@storybook/react';
 
 import isChromatic from 'chromatic/isChromatic';
 
@@ -162,6 +163,13 @@ export const SelectOpen: ComponentStory<typeof Select> = args => (
 SelectOpen.parameters = {
   // Set the viewports in Chromatic at a story level.
   chromatic: { viewports: [320, 1200], delay: 10000 },
+  decorators: [
+    (Story: StoryFn) => (
+      <div style={{ height: '300px' }}>
+        <Story />
+      </div>
+    ),
+  ],
 
   theme: isChromatic() ? 'b2b' : 'stacked',
 };

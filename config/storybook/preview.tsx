@@ -1,7 +1,7 @@
 import React from 'react';
 
 import isChromatic from 'chromatic/isChromatic';
-import { composeStory, getStorybook, StoryFn } from '@storybook/react';
+import { StoryFn } from '@storybook/react';
 
 import { Box, MarigoldProvider } from '@marigold/components';
 import b2bTheme from '@marigold/theme-b2b';
