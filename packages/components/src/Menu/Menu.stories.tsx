@@ -49,7 +49,7 @@ export const MenuOnly: ComponentStory<typeof Menu> = () => (
 
 export const DotMenu: ComponentStory<typeof Menu> = args => (
   <Menu.Trigger {...args}>
-    <Button variant="menu" size="small">
+    <Button variant="secondary" size="small">
       <SettingDots />
     </Button>
     <Menu>
