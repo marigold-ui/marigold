@@ -51,7 +51,6 @@ export const decorators = [
       ? parameters.theme || 'stacked'
       : globals.theme || parameters.theme || 'b2b';
 
-    console.log(parameters);
     switch (theme) {
       case 'stacked': {
         return (
