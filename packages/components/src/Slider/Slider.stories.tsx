@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Slider } from './Slider';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/Slider',
@@ -56,3 +57,8 @@ export const Basic: ComponentStory<typeof Slider> = args => (
 export const Currency: ComponentStory<typeof Slider> = args => (
   <Slider formatOptions={{ style: 'currency', currency: 'EUR' }} {...args} />
 );
+
+Basic.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
+};

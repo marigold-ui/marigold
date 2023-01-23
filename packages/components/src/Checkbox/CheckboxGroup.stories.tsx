@@ -3,6 +3,7 @@ import type { Meta, ComponentStory } from '@storybook/react';
 
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/CheckboxGroup',
@@ -93,4 +94,9 @@ export const Error: ComponentStory<typeof CheckboxGroup> = args => {
       <pre>Selected values: {selected.join(', ')}</pre>
     </>
   );
+};
+
+Basic.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
 };

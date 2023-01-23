@@ -8,6 +8,7 @@ import { Headline } from '../Headline';
 import { Stack } from '../Stack';
 import { Text } from '../Text';
 import { Button } from '../Button';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/Center',
@@ -99,3 +100,8 @@ export const Complex: ComponentStory<typeof Center> = args => (
     </Text>
   </Stack>
 );
+
+Complex.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
+};

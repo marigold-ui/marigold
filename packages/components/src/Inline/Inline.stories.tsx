@@ -4,6 +4,7 @@ import { Box } from '@marigold/system';
 import { shadow } from '@marigold/tokens';
 
 import { Inline } from './Inline';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/Inline',
@@ -70,3 +71,8 @@ export const Basic: ComponentStory<typeof Inline> = args => (
     <Block>Löffelstiel!</Block>
   </Inline>
 );
+
+Basic.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
+};

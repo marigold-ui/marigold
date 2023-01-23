@@ -2,6 +2,7 @@ import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 
 import { Radio } from '@marigold/components';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/Radio',
@@ -82,3 +83,8 @@ export const DefaultSelected: ComponentStory<typeof Radio.Group> = args => (
     <Radio value="4">Option 4</Radio>
   </Radio.Group>
 );
+
+DefaultSelected.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
+};

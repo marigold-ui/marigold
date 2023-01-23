@@ -65,5 +65,6 @@ export const OverlayModal: ComponentStory<typeof Modal> = args => {
 };
 
 OverlayModal.parameters = {
+  chromatic: { viewports: [320, 1200] },
   theme: 'b2b',
 };
