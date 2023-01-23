@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Switch } from './Switch';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/Switch',
@@ -43,3 +44,7 @@ export default {
 export const Basic: ComponentStory<typeof Switch> = args => (
   <Switch {...args} />
 );
+Basic.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
+};

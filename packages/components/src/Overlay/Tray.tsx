@@ -16,7 +16,10 @@ import { Underlay } from './Underlay';
 
 // Props
 // ---------------
-interface TrayProps extends AriaModalOverlayProps, StyleProps, OverlayProps {
+export interface TrayProps
+  extends AriaModalOverlayProps,
+    StyleProps,
+    OverlayProps {
   children: ReactNode;
   state: OverlayTriggerState;
 }

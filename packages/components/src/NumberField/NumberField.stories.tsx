@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { NumberField } from './NumberField';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/NumberField',
@@ -99,4 +100,9 @@ export const Controlled: ComponentStory<typeof NumberField> = args => {
       </pre>
     </>
   );
+};
+
+WithFormatting.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
 };
