@@ -1,0 +1,39 @@
+---
+title: Building Forms
+caption: This page should introduce you on how to build forms with Marigold.
+switchTheme: true
+edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/building-forms.mdx
+---
+
+How to compose multiple form inputs into one larger form
+How to do validation and error signaling
+How to handle state over multiple elements (input, label, message)
+How to handle user interaction with forms
+(Preferred practices, like using react-hook-form)
+Link
+
+In this example we build a simple form with [react-hook-form](https://react-hook-form.com/get-started#IntegratingwithUIlibraries).
+
+## Why react-hook-form?
+
+We decided to use react-form-hook because its reducing rendering, has Typescript support and supports UI libraries
+For the later we use the `<Controller>` component from react-hook-form, which must be wrapped around each Marigold component that should submit data.
+
+## Example of building forms
+
+We tried to find a simple but common use case for testing this library and decided that a formular where the data would be submitted is a good case.
+
+In the formular we have used `<TextField>` components and a `<Select>` component.
+
+```tsx preview file=building-forms.demo.tsx
+
+```
+
+### How to do validation and error signaling
+
+Some fields are required and throw error messages if you don't fill them out.
+For this to work, react-hook-form has a property `formState`, which contains the boolean `isValid`. This prop is set to `true` if the form doesn't have errors. `isValid` will always observe the entire form to validate.
+
+We don't explicit need to use a `onChange` event, we set a `defaultValue` for each field we want to submit in the `useForm` hook. With that the component is a [controlled component](https://www.joshwcomeau.com/react/data-binding/#introduction-to-controlled-fields-1), it never gets undefined or null.
+
+There are `rules` that can be applied on the components to trigger the validation, e.g. `required: true`. Our Marigold form componets already have error properties and error messages build in. Now it should be combined.
