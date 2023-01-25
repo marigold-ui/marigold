@@ -15,7 +15,9 @@ export const Form = () => {
     control,
     handleSubmit,
     formState: { isValid },
+    setValue,
   } = useForm({
+    mode: 'onChange',
     defaultValues: {
       firstName: '',
       name: '',
@@ -25,12 +27,13 @@ export const Form = () => {
     },
   });
   const [selected, setSelected] = useState<string | number>('');
+
   const onSubmit: SubmitHandler<IFormInputs> = data => {
     console.log(data);
     alert(JSON.stringify(data));
   };
 
-  console.log(selected);
+  console.log(isValid);
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -82,12 +85,11 @@ export const Form = () => {
                 required
                 description="Please enter your phone number"
                 error={
-                  field.value.length <= 6 && /^\d+$/.test(field.value)
+                  field.value.length <= 5 && /^[0-9]*$/.test(field.value)
                     ? true
                     : false
                 }
                 errorMessage="The field is required. Please enter a valid phone number."
-                pattern="[0-9]*"
               />
             )}
           />
@@ -120,14 +122,11 @@ export const Form = () => {
               <Select
                 {...field}
                 label="Country:"
-                name="country"
+                onChange={field.onChange}
+                value={field.value}
                 description="Please select your country."
                 onSelectionChange={setSelected}
                 selectedKey={selected}
-                onChange={e => {
-                  field.onChange(e);
-                  console.log('log', e.target.value); // let's say this is the additional processing
-                }}
               >
                 <Select.Option key={'germany'} textValue={'germany'}>
                   Germany
@@ -147,6 +146,7 @@ export const Form = () => {
             size="small"
             type="submit"
             disabled={!isValid}
+            onPress={() => setValue('country', selected)}
           >
             Submit
           </Button>
