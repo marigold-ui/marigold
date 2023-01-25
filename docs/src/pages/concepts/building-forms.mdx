@@ -34,6 +34,8 @@ In the formular we have used `<TextField>` components and a `<Select>` component
 Some fields are required and throw error messages if you don't fill them out.
 For this to work, react-hook-form has a property `formState`, which contains the boolean `isValid`. This prop is set to `true` if the form doesn't have errors. `isValid` will always observe the entire form to validate.
 
-We don't explicit need to use a `onChange` event, we set a `defaultValue` for each field we want to submit in the `useForm` hook. With that the component is a [controlled component](https://www.joshwcomeau.com/react/data-binding/#introduction-to-controlled-fields-1), it never gets undefined or null.
+We don't explicit need to use a `onChange` event, we set a `defaultValue` for each field we want to submit in the `useForm` hook. With that the component is a uncontrolled component, it never gets undefined or null. Instead of using useState and set a value we used directly defaultValue.
 
-There are `rules` that can be applied on the components to trigger the validation, e.g. `required: true`. Our Marigold form componets already have error properties and error messages build in. Now it should be combined.
+There are `rules` that can be applied on the components to trigger the validation, e.g. `required: true`. Our Marigold form components already have error properties and error messages build in. Now it should be combined.
+
+-submithandler
