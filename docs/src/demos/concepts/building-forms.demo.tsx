@@ -34,7 +34,6 @@ export const Form = () => {
       country: '',
     },
   });
-  const [selected, setSelected] = useState<string | number>('');
 
   const onSubmit: SubmitHandler<IFormInputs> = data => {
     alert(JSON.stringify(data));

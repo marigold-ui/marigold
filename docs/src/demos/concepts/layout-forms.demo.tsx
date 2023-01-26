@@ -1,7 +1,6 @@
 import {
   Button,
   Checkbox,
-  CheckboxGroup,
   Columns,
   FieldGroup,
   Headline,
