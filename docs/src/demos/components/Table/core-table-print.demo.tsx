@@ -177,7 +177,7 @@ export const CorePrintTable = () => {
             label="Sammelaktion"
             placeholder="Bitte wählen"
             width="unset"
-            onSelectionChange={handleSelect}
+            onChange={handleSelect}
           >
             <Select.Option key="choose">Bitte wählen</Select.Option>
             <Select.Option key="ticketprint">Ticket drucken</Select.Option>
