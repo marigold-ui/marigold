@@ -2,6 +2,7 @@ import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Link } from './Link';
 import { Text } from '../Text';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/Link',
@@ -36,3 +37,8 @@ export const Basic: ComponentStory<typeof Link> = args => (
     </Link>
   </Text>
 );
+
+Basic.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
+};

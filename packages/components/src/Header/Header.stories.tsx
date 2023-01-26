@@ -2,6 +2,7 @@ import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Container } from '../Container';
 import { Header } from './Header';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/Header',
@@ -26,3 +27,8 @@ export const Basic: ComponentStory<typeof Header> = args => (
     <Header {...args}>Awsome Header</Header>
   </Container>
 );
+
+Basic.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
+};

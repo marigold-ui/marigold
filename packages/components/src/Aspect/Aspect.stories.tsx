@@ -3,6 +3,7 @@ import type { Meta, ComponentStory } from '@storybook/react';
 
 import { Aspect } from './Aspect';
 import { Image } from '../Image';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/Aspect',
@@ -49,3 +50,8 @@ export const CutImage: ComponentStory<typeof Aspect> = args => (
     />
   </Aspect>
 );
+
+CutImage.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
+};

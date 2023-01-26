@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Image } from './Image';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/Image',
@@ -52,3 +53,9 @@ export const Basic: ComponentStory<typeof Image> = args => (
     alt="marigold_logo"
   />
 );
+
+Basic.parameters = {
+  // Set the viewports in Chromatic at a story level.
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
+};

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Text } from './Text';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/Text',
@@ -48,3 +49,8 @@ export const Basic: ComponentStory<typeof Text> = args => (
     massa ex ut quam.
   </Text>
 );
+
+Basic.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
+};
