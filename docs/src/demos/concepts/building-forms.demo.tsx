@@ -9,7 +9,6 @@ import {
   Headline,
   Columns,
 } from '@marigold/components';
-import { useState } from 'react';
 
 interface IFormInputs {
   firstName: string;
