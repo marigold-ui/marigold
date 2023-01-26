@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/Button',
@@ -81,4 +82,9 @@ export const PassThroughProps: ComponentStory<typeof Button> = args => {
       state: {isHovered ? 'hovered' : 'not hovered'}
     </>
   );
+};
+
+WithIcon.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
 };

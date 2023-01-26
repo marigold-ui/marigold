@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Label } from './Label';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/Label',
@@ -25,3 +26,8 @@ export default {
 export const Basic: ComponentStory<typeof Label> = ({ children, ...args }) => (
   <Label {...args}>{children}</Label>
 );
+
+Basic.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
+};

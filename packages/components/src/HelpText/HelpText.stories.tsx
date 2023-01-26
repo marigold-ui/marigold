@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { HelpText } from '../HelpText';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/HelpText',
@@ -39,3 +40,8 @@ export default {
 export const Basic: ComponentStory<typeof HelpText> = args => (
   <HelpText {...args} />
 );
+
+Basic.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
+};

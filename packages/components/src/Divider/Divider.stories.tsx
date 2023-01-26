@@ -2,6 +2,7 @@ import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { Divider } from './Divider';
 import { Text } from '../Text';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/Divider',
@@ -28,3 +29,8 @@ export const Basic: ComponentStory<typeof Divider> = args => (
     <Text>Below</Text>
   </>
 );
+
+Basic.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
+};

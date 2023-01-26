@@ -3,6 +3,7 @@ import type { Meta, ComponentStory } from '@storybook/react';
 import { Box } from '../Box';
 
 import { Aside } from './Aside';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/Aside',
@@ -85,3 +86,9 @@ export const InheritWidth: ComponentStory<typeof Aside> = () => (
     </Box>
   </Aside>
 );
+
+Basic.parameters = {
+  // Set the viewports in Chromatic at a story level.
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
+};

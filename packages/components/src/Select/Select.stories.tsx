@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import { Meta, ComponentStory } from '@storybook/react';
 import { Select } from './Select';
 import { Container } from '../Container';
 
