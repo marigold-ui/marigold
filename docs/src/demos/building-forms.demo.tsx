@@ -1,4 +1,5 @@
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { DevTool } from '@hookform/devtools';
 import {
   Button,
   Aside,
@@ -130,7 +131,6 @@ export const Form = () => {
                   {...field}
                   label="Country:"
                   description="Please select your country."
-                  onSelectionChange={setSelected}
                 >
                   <Select.Option key={'germany'} textValue={'germany'}>
                     Germany
@@ -152,11 +152,11 @@ export const Form = () => {
             size="small"
             type="submit"
             disabled={!isValid}
-            onPress={() => setValue('country', selected)}
           >
             Submit
           </Button>
         </Stack>
+        <DevTool control={control} />
       </form>
     </FieldGroup>
   );

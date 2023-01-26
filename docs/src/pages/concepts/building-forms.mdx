@@ -16,7 +16,7 @@ In this example we build a simple form with [react-hook-form](https://react-hook
 
 ## Why react-hook-form?
 
-We decided to use react-form-hook because its reducing rendering, has Typescript support and supports UI libraries
+We decided to use react-form-hook because its reducing re-renders caused by state updates, you don't have much to configurate and supports integrating UI libraries.
 For the later we use the `<Controller>` component from react-hook-form, which must be wrapped around each Marigold component that should submit data.
 
 ## Example of building forms
@@ -39,3 +39,5 @@ We don't explicit need to use a `onChange` event, we set a `defaultValue` for ea
 There are `rules` that can be applied on the components to trigger the validation, e.g. `required: true`. Our Marigold form components already have error properties and error messages build in. Now it should be combined.
 
 -submithandler
+
+The `<Controller>` component provides an `onChange` event, so it
