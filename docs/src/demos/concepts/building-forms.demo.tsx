@@ -2,7 +2,6 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import {
   Button,
-  Aside,
   FieldGroup,
   Select,
   Stack,
@@ -25,7 +24,6 @@ export const Form = () => {
     control,
     handleSubmit,
     formState: { isValid },
-    setValue,
   } = useForm({
     mode: 'onChange',
     defaultValues: {
