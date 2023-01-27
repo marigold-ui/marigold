@@ -12,7 +12,8 @@ import {
 
 export const InteractionDemo = () => {
   const [value, setValue] = useState('');
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState<string | number>('');
+  console.log(setSelected, selected);
   return (
     <FieldGroup labelWidth="medium">
       <Headline level="2">Example Form</Headline>
@@ -46,7 +47,7 @@ export const InteractionDemo = () => {
             description="Please enter your E-Mail adress"
             placeholder="E-Mail"
             required
-            onChange={e => setValue(e)}
+            disabled
             error={
               value.length > 0 && !/^\S+@\S+\.\S+$/.test(value) ? true : false
             }
@@ -55,19 +56,16 @@ export const InteractionDemo = () => {
           <Select
             label="Country:"
             description="Please select your country."
-            onChange={() => setSelected}
+            onSelectionChange={setSelected}
           >
-            <Select.Option key={'germany'} textValue={'germany'}>
-              Germany
-            </Select.Option>
-            <Select.Option key={'austria'} textValue={'austria'}>
-              Austria
-            </Select.Option>
-            <Select.Option key={'switzerland'} textValue={'switzerland'}>
-              Switzerland
-            </Select.Option>
+            <Select.Option key={'none'}>Select an option...</Select.Option>
+            <Select.Option key={'germany'}>Germany</Select.Option>
+            <Select.Option key={'austria'}>Austria</Select.Option>
+            <Select.Option key={'switzerland'}>Switzerland</Select.Option>
           </Select>
-          {selected !== '' && <Checkbox>Agree to the terms</Checkbox>}
+          {selected !== '' && selected !== 'none' && (
+            <Checkbox>Agree to the terms</Checkbox>
+          )}
         </Stack>
       </Stack>
       <Stack alignX="right">
