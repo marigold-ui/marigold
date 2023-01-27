@@ -11,9 +11,8 @@ import {
 } from '@marigold/components';
 
 export const InteractionDemo = () => {
-  const [value, setValue] = useState('');
+  const [value] = useState('');
   const [selected, setSelected] = useState<string | number>('');
-  console.log(setSelected, selected);
   return (
     <FieldGroup labelWidth="medium">
       <Headline level="2">Example Form</Headline>
