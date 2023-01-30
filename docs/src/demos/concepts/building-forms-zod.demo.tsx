@@ -1,5 +1,5 @@
 import { FormEventHandler, useState } from 'react';
-import { z } from 'zod';
+import { isValid, z } from 'zod';
 import {
   Button,
   Checkbox,
@@ -11,29 +11,37 @@ import {
   TextField,
 } from '@marigold/components';
 
-const schema = z.object({
-  firstname: z.string(),
-  name: z.string(),
+const schemaData = z.object({
+  firstname: z.string().min(1),
+  name: z.string().min(1),
   phone: z.string().min(6),
   mail: z.string().email(),
   country: z.string(),
-  terms: z.boolean(),
+  terms: z.string(),
 });
 
-export const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
-  e.preventDefault();
-  const formData = new FormData(e.target as HTMLFormElement);
-  const data = Object.fromEntries(formData);
-  try {
-    const validatedForm = schema.parse(data);
-    console.log(validatedForm);
-  } catch (err) {
-    console.log(err);
-  }
-  console.log(data);
-};
-
 export const SubmitForm = () => {
+  const [error, setError] = useState(Array<string>);
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const data = Object.fromEntries(formData);
+    const validatedForm = schemaData.safeParse(data);
+
+    if (!validatedForm.success) {
+      const { error } = validatedForm;
+      const err = error.issues;
+      const errorList: Array<string> = [];
+      err.map(e => {
+        const errorName = e.path[0].toString();
+        errorList.push(errorName);
+      });
+      setError(errorList);
+      return { err };
+    }
+  };
+
   return (
     <FieldGroup labelWidth="medium">
       <Headline level="2">Example Form</Headline>
@@ -46,6 +54,8 @@ export const SubmitForm = () => {
               required
               description="Please enter your firstname"
               placeholder="Firstname"
+              error={error.includes('firstname') ? true : false}
+              errorMessage="The field is required. Please enter your firstname."
             />
             <TextField
               name="name"
@@ -53,6 +63,8 @@ export const SubmitForm = () => {
               required
               description="Please enter your name"
               placeholder="Name"
+              error={error.includes('name') ? true : false}
+              errorMessage="The field is required. Please enter your name."
             />
           </Columns>
           <Stack space="medium">
@@ -62,6 +74,7 @@ export const SubmitForm = () => {
               required
               placeholder="Phone"
               type="tel"
+              errorMessage="The field is required. Please enter a valid phone number."
             />
             <TextField
               label="E-Mail:"
@@ -69,6 +82,7 @@ export const SubmitForm = () => {
               placeholder="E-Mail"
               name="mail"
               required
+              errorMessage="The field is required. Please enter a valid E-Mail adress."
             />
             <Select
               name="country"
