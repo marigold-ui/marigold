@@ -8,7 +8,7 @@ import {
   secondaryColors,
   disabledColors,
   statusColors,
-} from './semantic-colors';
+} from './design-token';
 
 export const webFontUrl = [
   'https://fonts.bunny.net/css?family=inter:400,600,700',

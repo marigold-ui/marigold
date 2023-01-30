@@ -59,3 +59,17 @@ export const textColors = {
     link: colors.blue60,
   },
 };
+
+export const uiColors = {
+  page: {
+    background: colors.gray10,
+    foreground: colors.gray00,
+  },
+};
+
+export const boxShadows = {
+  boxShadow: {
+    soft: '0 4px 4px rgba(210, 210, 210, .25)',
+    medium: '0 4px 4px rgba(165, 165, 165, .25)',
+  },
+};
