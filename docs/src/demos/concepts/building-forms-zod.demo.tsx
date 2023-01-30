@@ -1,5 +1,5 @@
 import { FormEventHandler, useState } from 'react';
-import { isValid, z } from 'zod';
+import { z } from 'zod';
 import {
   Button,
   Checkbox,
@@ -25,20 +25,16 @@ export const SubmitForm = () => {
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
+    const errorList: Array<string> = [];
     const formData = new FormData(e.target as HTMLFormElement);
     const data = Object.fromEntries(formData);
     const validatedForm = schemaData.safeParse(data);
 
     if (!validatedForm.success) {
-      const { error } = validatedForm;
-      const err = error.issues;
-      const errorList: Array<string> = [];
-      err.map(e => {
-        const errorName = e.path[0].toString();
-        errorList.push(errorName);
+      validatedForm.error.issues.map(e => {
+        errorList.push(e.path.toString());
       });
       setError(errorList);
-      return { err };
     }
   };
 
@@ -54,7 +50,7 @@ export const SubmitForm = () => {
               required
               description="Please enter your firstname"
               placeholder="Firstname"
-              error={error.includes('firstname') ? true : false}
+              error={error.includes('firstname')}
               errorMessage="The field is required. Please enter your firstname."
             />
             <TextField
@@ -63,7 +59,7 @@ export const SubmitForm = () => {
               required
               description="Please enter your name"
               placeholder="Name"
-              error={error.includes('name') ? true : false}
+              error={error.includes('name')}
               errorMessage="The field is required. Please enter your name."
             />
           </Columns>
@@ -74,6 +70,7 @@ export const SubmitForm = () => {
               required
               placeholder="Phone"
               type="tel"
+              error={error.includes('phone')}
               errorMessage="The field is required. Please enter a valid phone number."
             />
             <TextField
@@ -82,6 +79,7 @@ export const SubmitForm = () => {
               placeholder="E-Mail"
               name="mail"
               required
+              error={error.includes('mail')}
               errorMessage="The field is required. Please enter a valid E-Mail adress."
             />
             <Select
