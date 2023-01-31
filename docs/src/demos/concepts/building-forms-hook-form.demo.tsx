@@ -148,7 +148,6 @@ export const SubmitFormWithReactHookForm = () => {
             Submit
           </Button>
         </Stack>
-        <DevTool control={control} />
       </form>
     </FieldGroup>
   );
