@@ -11,7 +11,7 @@ import {
   TextField,
 } from '@marigold/components';
 
-const schemaData = z.object({
+export const schemaData = z.object({
   firstname: z.string().min(1),
   name: z.string().min(1),
   phone: z.string().min(6),
@@ -32,7 +32,7 @@ export const SubmitForm = () => {
 
     if (!validatedForm.success) {
       validatedForm.error.issues.map(e => {
-        errorList.push(e.path.toString());
+        return errorList.push(e.path.toString());
       });
       setError(errorList);
     } else {
