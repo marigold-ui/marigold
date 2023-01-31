@@ -35,6 +35,8 @@ export const SubmitForm = () => {
         errorList.push(e.path.toString());
       });
       setError(errorList);
+    } else {
+      alert(JSON.stringify(data));
     }
   };
 
