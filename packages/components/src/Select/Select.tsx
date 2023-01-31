@@ -64,10 +64,17 @@ export interface SelectProps
       | 'isDisabled'
       | 'isRequired'
       | 'validationState'
+      | 'onSelectionChange'
     >,
     Omit<
       ComponentProps<'select'>,
-      'onKeyUp' | 'onKeyDown' | 'onFocus' | 'onBlur' | 'children' | 'size'
+      | 'onKeyUp'
+      | 'onKeyDown'
+      | 'onFocus'
+      | 'onBlur'
+      | 'children'
+      | 'size'
+      | 'onChange'
     > {
   variant?: string;
   size?: string;
@@ -76,12 +83,26 @@ export interface SelectProps
   disabled?: boolean;
   required?: boolean;
   error?: boolean;
+  onChange?: AriaSelectProps<object>['onSelectionChange'];
 }
 
 // Component
 // ---------------
 export const Select = forwardRef<HTMLButtonElement, SelectProps>(
-  ({ variant, size, width, open, disabled, required, error, ...rest }, ref) => {
+  (
+    {
+      variant,
+      size,
+      width,
+      open,
+      disabled,
+      required,
+      error,
+      onChange,
+      ...rest
+    },
+    ref
+  ) => {
     // Set up i18n
     const formatMessage = useLocalizedStringFormatter(messages);
 
@@ -91,6 +112,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       isRequired: required,
       validationState: error ? 'invalid' : 'valid',
       placeholder: rest.placeholder || formatMessage.format('placeholder'),
+      onSelectionChange: onChange,
       ...rest,
     } as const;
 

@@ -65,11 +65,7 @@ export const Basic: ComponentStory<typeof Select> = args => {
   const [selected, setSelected] = useState<string | number>('');
   return (
     <Container size="small">
-      <Select
-        {...args}
-        onSelectionChange={setSelected}
-        disabledKeys={['Firefly']}
-      >
+      <Select {...args} onChange={setSelected} disabledKeys={['Firefly']}>
         <Select.Option key="Harry Potter">Harry Potter</Select.Option>
         <Select.Option key="Lord of the Rings">Lord of the Rings</Select.Option>
         <Select.Option key="Star Wars">Star Wars</Select.Option>
