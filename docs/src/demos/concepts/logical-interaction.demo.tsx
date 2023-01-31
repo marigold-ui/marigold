@@ -21,14 +21,14 @@ export const InteractionDemo = () => {
           <TextField
             label="Firstname:"
             required
-            description="Please enter your firstname"
+            description="Please enter your first name."
             placeholder="Firstname"
             disabled
           />
           <TextField
             label="Name:"
             required
-            description="Please enter your name"
+            description="Please enter your name."
             placeholder="Name"
             disabled
           />
@@ -39,11 +39,12 @@ export const InteractionDemo = () => {
             required
             disabled
             placeholder="Phone"
+            description="Please enter your phone number."
             type="tel"
           />
           <TextField
             label="E-Mail:"
-            description="Please enter your E-Mail adress"
+            description="Please enter your E-Mail adress."
             placeholder="E-Mail"
             required
             disabled

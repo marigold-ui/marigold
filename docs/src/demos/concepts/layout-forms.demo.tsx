@@ -17,21 +17,27 @@ export const LayoutForms = () => (
         <TextField
           label="Firstname:"
           required
-          description="Please enter your firstname"
+          description="Please enter your first name."
           placeholder="Firstname"
         />
         <TextField
           label="Name:"
           required
-          description="Please enter your name"
+          description="Please enter your name."
           placeholder="Name"
         />
       </Columns>
       <Stack space="medium">
-        <TextField label="Phone:" required placeholder="Phone" type="tel" />
+        <TextField
+          label="Phone:"
+          required
+          placeholder="Phone"
+          type="tel"
+          description="Please enter your phone number."
+        />
         <TextField
           label="E-Mail:"
-          description="Please enter your E-Mail adress"
+          description="Please enter your E-Mail adress."
           placeholder="E-Mail"
           required
         />

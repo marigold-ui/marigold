@@ -49,7 +49,7 @@ export const SubmitForm = () => {
               name="firstname"
               label="Firstname:"
               required
-              description="Please enter your firstname"
+              description="Please enter your first name."
               placeholder="Firstname"
               error={error.includes('firstname')}
               errorMessage="The field is required. Please enter your firstname."
@@ -58,7 +58,7 @@ export const SubmitForm = () => {
               name="name"
               label="Name:"
               required
-              description="Please enter your name"
+              description="Please enter your name."
               placeholder="Name"
               error={error.includes('name')}
               errorMessage="The field is required. Please enter your name."
@@ -71,6 +71,7 @@ export const SubmitForm = () => {
               required
               placeholder="Phone"
               type="tel"
+              description="Please enter your phone number."
               error={error.includes('phone')}
               errorMessage="The field is required. Please enter a valid phone number."
             />

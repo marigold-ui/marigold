@@ -55,7 +55,7 @@ export const SubmitFormWithReactHookForm = () => {
                   {...field}
                   label="Firstname:"
                   required
-                  description="Please enter your firstname"
+                  description="Please enter your first name."
                   placeholder="Firstname"
                   error={field.value.length < 0 ? true : false}
                   errorMessage="The field is required. Please enter your firstname."
@@ -71,7 +71,7 @@ export const SubmitFormWithReactHookForm = () => {
                   {...field}
                   label="Name:"
                   required
-                  description="Please enter your name"
+                  description="Please enter your name."
                   placeholder="Name"
                   error={field.value.length < 0 ? true : false}
                   errorMessage="The field is required. Please enter your name."
@@ -94,7 +94,7 @@ export const SubmitFormWithReactHookForm = () => {
                   required
                   placeholder="Phone"
                   type="tel"
-                  description="Please enter your phone number"
+                  description="Please enter your phone number."
                   error={!/^[0-9]*$/.test(field.value) ? true : false}
                   errorMessage="The field is required. Please enter a valid phone number."
                 />
@@ -108,7 +108,7 @@ export const SubmitFormWithReactHookForm = () => {
                 <TextField
                   {...field}
                   label="E-Mail:"
-                  description="Please enter your E-Mail adress"
+                  description="Please enter your E-Mail adress."
                   placeholder="E-Mail"
                   required
                   error={

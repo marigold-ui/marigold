@@ -2,7 +2,6 @@
 title: Building Forms
 caption: This page should introduce you on how to build forms with Marigold.
 switchTheme: true
-edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/building-forms.mdx
 ---
 
 ## Marigold Form Components
@@ -29,11 +28,11 @@ Accessibility best practices should be followed, such as providing clear, descri
 
 Here you can see how to layout a classic form with Marigold's `<TextField>` and `<Select>` could be defined.
 
+If you want to see more examples of forms with Marigold, check out our recipes: [ Marigold Form Recipes](/recipes/form-recipes)
+
 ```tsx preview file=concepts/layout-forms.demo.tsx
 
 ```
-
-If you want to see more examples of forms with Marigold, check out our recipes: [ Marigold Form Recipes](/recipes/form-recipes)
 
 ## Controlled or uncontrolled Components?
 
@@ -67,9 +66,9 @@ You can have interactive forms which contains logical aspects. In this example y
 
 ```
 
-### Submitting a form
+## Submitting a form
 
-In this example you can see how a form with all its fields can be submitted. The submitted data will be displayed in a alert.
+In this example you can see how a form with all its fields can be submitted. The submitted data will be displayed in an alert message.
 
 For validate the errors we have used [`Zod`](https://zod.dev/). It is a simple tool for building schemas, which can be validated.
 
@@ -77,26 +76,23 @@ For validate the errors we have used [`Zod`](https://zod.dev/). It is a simple t
 
 ```
 
-## Full example of a form submitting data with React Hook Form
+## Full example of submit a form with React Hook Form
 
 We decided to use react-form-hook because its reducing re-renders caused by state updates, you don't have much to configurate and supports integrating UI libraries.
 For the later we use the `<Controller>` component from react-hook-form, which must be wrapped around each Marigold component that should submit data.
+By using React-form-hook, you can simplify form handling in your React components and avoid repetitive tasks such as manually updating the form state, validating user inputs, and handling form submissions.
 
-### Example of a form
-
-We tried to find a simple but common use case for testing this library and decided that a formular where the data would be submitted is a good case.
+In the formular we have used `<TextField>`, `<Select>` and `<Checkbox>` components. These components are wrapped around with the `<Controller>` component from react-hook-form. The `<Controller>` component acts as a bridge between the form element and the "React-hook-form" state management. It updates the "React-hook-form" state whenever the value of the form element changes.
 
 ```tsx preview file=concepts/building-forms-hook-form.demo.tsx
 
 ```
-
-In the formular we have used `<TextField>` components and a `<Select>` component.
 
 ### How to do validation and error signaling
 
 Some fields are required and throw error messages if you don't fill them out.
 For this to work, react-hook-form has a property `formState`, which contains the boolean `isValid`. This prop is set to `true` if the form doesn't have errors. `isValid` will always observe the entire form to validate.
 
-We don't explicit need to use a `onChange` event, we set a `defaultValue` for each field we want to submit in the `useForm` hook. With that the component is a uncontrolled component, it never gets undefined or null. Instead of using useState and set a value we used directly defaultValue.
+We don't explicit need to use a `onChange` event, instead of using useState and set a value we used directly `defaultValue`. With that the component is a uncontrolled component, it never gets undefined or null.
 
-There are `rules` that can be applied on the components to trigger the validation, e.g. `required: true`. Our Marigold form components already have error properties and error messages build in. Now it should be combined.
+There are `rules` that can be applied on the components to trigger the validation, e.g. `required: true`. Our Marigold form components already have error properties and error messages build in. Now it should be combined. In the `handleSubmit` function we check if the recived data is valid, if that isn't the case we give the error value to the component and display the error message.

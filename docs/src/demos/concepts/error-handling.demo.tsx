@@ -20,14 +20,14 @@ export const ErrorValidation = () => {
           <TextField
             label="Firstname:"
             required
-            description="Please enter your firstname"
+            description="Please enter your first name."
             placeholder="Firstname"
             disabled
           />
           <TextField
             label="Name:"
             required
-            description="Please enter your name"
+            description="Please enter your name."
             placeholder="Name"
             disabled
           />
@@ -39,10 +39,11 @@ export const ErrorValidation = () => {
             disabled
             placeholder="Phone"
             type="tel"
+            description="Please enter your phone number."
           />
           <TextField
             label="E-Mail:"
-            description="Please enter your E-Mail adress"
+            description="Please enter your E-Mail adress."
             placeholder="E-Mail"
             required
             onChange={e => setValue(e)}
