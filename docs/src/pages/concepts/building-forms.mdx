@@ -77,18 +77,20 @@ For validate the errors we have used [`Zod`](https://zod.dev/). It is a simple t
   <SubmitForm />
 </Preview>
 
-## Why react-hook-form?
+## Full example of a form submitting data with React Hook Form
 
 We decided to use react-form-hook because its reducing re-renders caused by state updates, you don't have much to configurate and supports integrating UI libraries.
 For the later we use the `<Controller>` component from react-hook-form, which must be wrapped around each Marigold component that should submit data.
 
-## Example of building forms
+### Example of a form
 
 We tried to find a simple but common use case for testing this library and decided that a formular where the data would be submitted is a good case.
 
 In the formular we have used `<TextField>` components and a `<Select>` component.
 
-### Full example of a form submitting data
+<Preview>
+  <SubmitFormWithReactHookForm />
+</Preview>
 
 ### How to do validation and error signaling
 
@@ -98,14 +100,3 @@ For this to work, react-hook-form has a property `formState`, which contains the
 We don't explicit need to use a `onChange` event, we set a `defaultValue` for each field we want to submit in the `useForm` hook. With that the component is a uncontrolled component, it never gets undefined or null. Instead of using useState and set a value we used directly defaultValue.
 
 There are `rules` that can be applied on the components to trigger the validation, e.g. `required: true`. Our Marigold form components already have error properties and error messages build in. Now it should be combined.
-
--submithandler
-
-The `<Controller>` component provides an `onChange` event, so it
-
-- Wo finde ich denn die Form Komponenten? -> auflisten aller unserer Form Komponenten
-- Wie baue (layoute) ich ein Formular? -> wie benutze ich Layout Komponenten um ein "komplexes" Formular zu bauen
-- Controlled vs Uncontrolled in React -> [joshwcomeau.com/react/data-binding](https://www.joshwcomeau.com/react/data-binding/)[joshwcomeau.com/react/data-binding](https://www.joshwcomeau.com/react/data-binding/) + https://beta.reactjs.org/learn/sharing-state-between-components#controlled-and-uncontrolled-components (erklären was controlled und uncontrolled ist)
-- "Interaktive Form" -> errros anzeigen, abschicken (onSubmit), ...
-- oben nur mit Schema Validierung -> Zod (https://blog.theashishmaurya.me/validating-your-react-forms-with-zod-and-no-hooks)
-- Endgame Formular -> "native" ist nicht genug, gib mir eine Library! -> react-hook-forms

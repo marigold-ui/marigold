@@ -18,7 +18,7 @@ interface IFormInputs {
   country: string | number;
 }
 
-export const Form = () => {
+export const SubmitFormWithReactHookForm = () => {
   const {
     control,
     handleSubmit,
