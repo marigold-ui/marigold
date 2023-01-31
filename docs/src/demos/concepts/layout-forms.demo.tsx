@@ -36,15 +36,9 @@ export const LayoutForms = () => (
           required
         />
         <Select label="Country:" description="Please select your country.">
-          <Select.Option key={'germany'} textValue={'germany'}>
-            Germany
-          </Select.Option>
-          <Select.Option key={'austria'} textValue={'austria'}>
-            Austria
-          </Select.Option>
-          <Select.Option key={'switzerland'} textValue={'switzerland'}>
-            Switzerland
-          </Select.Option>
+          <Select.Option key={'germany'}>Germany</Select.Option>
+          <Select.Option key={'austria'}>Austria</Select.Option>
+          <Select.Option key={'switzerland'}>Switzerland</Select.Option>
         </Select>
         <Checkbox>Agree to the terms</Checkbox>
       </Stack>
