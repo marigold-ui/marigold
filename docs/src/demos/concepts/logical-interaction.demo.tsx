@@ -55,7 +55,7 @@ export const InteractionDemo = () => {
           <Select
             label="Country:"
             description="Please select your country."
-            onSelectionChange={setSelected}
+            onChange={setSelected}
           >
             <Select.Option key={'none'}>Select an option...</Select.Option>
             <Select.Option key={'germany'}>Germany</Select.Option>

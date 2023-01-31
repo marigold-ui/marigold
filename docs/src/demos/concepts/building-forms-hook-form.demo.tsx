@@ -8,6 +8,7 @@ import {
   TextField,
   Headline,
   Columns,
+  Checkbox,
 } from '@marigold/components';
 
 interface IFormInputs {
@@ -16,6 +17,7 @@ interface IFormInputs {
   phone: string;
   mail: string;
   country: string | number;
+  terms: boolean;
 }
 export const SubmitFormWithReactHookForm = () => {
   const {
@@ -30,6 +32,7 @@ export const SubmitFormWithReactHookForm = () => {
       phone: '',
       mail: '',
       country: '',
+      terms: false,
     },
   });
 
@@ -134,6 +137,15 @@ export const SubmitFormWithReactHookForm = () => {
                   <Select.Option key={'austria'}>Austria</Select.Option>
                   <Select.Option key={'switzerland'}>Switzerland</Select.Option>
                 </Select>
+              )}
+            />
+            <Controller
+              name="terms"
+              control={control}
+              render={({ field }) => (
+                <Checkbox defaultChecked={field.value}>
+                  Agree to the terms
+                </Checkbox>
               )}
             />
           </Stack>
