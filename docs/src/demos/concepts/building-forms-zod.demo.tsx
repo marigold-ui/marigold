@@ -31,9 +31,7 @@ export const SubmitForm = () => {
     const validatedForm = schemaData.safeParse(data);
 
     if (!validatedForm.success) {
-      console.log(validatedForm.error.issues);
       validatedForm.error.issues.map(e => {
-        console.log(e.path);
         return errorList.push(e.path.toString());
       });
       setError(errorList);
