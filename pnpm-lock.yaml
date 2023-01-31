@@ -32,7 +32,7 @@ importers:
       react-dom: 18.2.0
       typescript: 4.9.4
       workspaces-run: 1.0.1
-      zx: 7.0.8
+      zx: 7.1.1
     dependencies:
       '@babel/core': 7.20.12
       '@changesets/changelog-github': 0.4.8
@@ -62,7 +62,7 @@ importers:
       react-dom: 18.2.0_react@18.2.0
       typescript: 4.9.4
       workspaces-run: 1.0.1
-      zx: 7.0.8
+      zx: 7.1.1
 
   config/eslint:
     specifiers:
@@ -13997,8 +13997,8 @@ packages:
       whatwg-url: 5.0.0
     dev: false
 
-  /node-fetch/3.2.8:
-    resolution: {integrity: sha512-KtpD1YhGszhntMpBDyp5lyagk8KIMopC1LEb7cQUAh7zcosaX5uK8HnbNb2i3NTQK3sIawCItS0uFC3QzcLHdg==}
+  /node-fetch/3.2.10:
+    resolution: {integrity: sha512-MhuzNwdURnZ1Cp4XTazr69K0BTizsBroX7Zx3UgDSVcZYKF/6p0CBe4EUb/hLqmzVhl0UpYfgRljQ4yxE+iCxA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       data-uri-to-buffer: 4.0.0
@@ -18185,8 +18185,8 @@ packages:
     resolution: {integrity: sha512-JZxotl7SxAJH0j7dN4pxsTV6ZLXoLdGME+PsjkL/DaBrVryK9kTGq06GfKrwcSOqypP+fdXGoCHE36b99fWVoA==}
     dev: false
 
-  /zx/7.0.8:
-    resolution: {integrity: sha512-sNjfDHzskqrSkWNj0TVhaowVK5AbpvuyuO1RBU4+LrFcgYI5u9CtyWWgUBRtRZl3bgGEF31zByszoBmwS47d1w==}
+  /zx/7.1.1:
+    resolution: {integrity: sha512-5YlTO2AJ+Ku2YuZKSSSqnUKuagcM/f/j4LmHs15O84Ch80Z9gzR09ZK3gR7GV+rc8IFpz2H/XNFtFVmj31yrZA==}
     engines: {node: '>= 16.0.0'}
     hasBin: true
     dependencies:
@@ -18199,7 +18199,7 @@ packages:
       fs-extra: 10.1.0
       globby: 13.1.2
       minimist: 1.2.6
-      node-fetch: 3.2.8
+      node-fetch: 3.2.10
       ps-tree: 1.2.0
       which: 2.0.2
       yaml: 2.1.1
