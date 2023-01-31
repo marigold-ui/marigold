@@ -22,7 +22,6 @@ export const schemaData = z.object({
 
 export const SubmitForm = () => {
   const [error, setError] = useState(Array<string>);
-
   const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
     const errorList: Array<string> = [];
