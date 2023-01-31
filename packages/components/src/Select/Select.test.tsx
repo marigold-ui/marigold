@@ -432,7 +432,7 @@ test('controlled', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" onSelectionChange={spy}>
+        <Select label="Label" data-testid="select" onChange={spy}>
           <Select.Option key="one">one</Select.Option>
           <Select.Option key="two">two</Select.Option>
           <Select.Option key="three">three</Select.Option>
