@@ -73,9 +73,9 @@ In this example you can see how a form with all its fields can be submitted. The
 
 For validate the errors we have used [`Zod`](https://zod.dev/). It is a simple tool for building schemas, which can be validated.
 
-<Preview>
-  <SubmitForm />
-</Preview>
+```tsx preview file=concepts/building-forms-zod.demo.tsx
+
+```
 
 ## Full example of a form submitting data with React Hook Form
 
@@ -86,11 +86,11 @@ For the later we use the `<Controller>` component from react-hook-form, which mu
 
 We tried to find a simple but common use case for testing this library and decided that a formular where the data would be submitted is a good case.
 
-In the formular we have used `<TextField>` components and a `<Select>` component.
+```tsx preview file=concepts/building-forms-hook-form.demo.tsx
 
-<Preview>
-  <SubmitFormWithReactHookForm />
-</Preview>
+```
+
+In the formular we have used `<TextField>` components and a `<Select>` component.
 
 ### How to do validation and error signaling
 

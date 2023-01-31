@@ -11,17 +11,17 @@ import {
   TextField,
 } from '@marigold/components';
 
-export const schemaData = z.object({
-  firstname: z.string().min(1),
-  name: z.string().min(1),
-  phone: z.string().min(6),
-  mail: z.string().email(),
-  country: z.string(),
-  terms: z.string(),
-});
-
 export const SubmitForm = () => {
-  const [error, setError] = useState(Array<string>);
+  const schemaData = z.object({
+    firstname: z.string().min(1),
+    name: z.string().min(1),
+    phone: z.string().min(6),
+    mail: z.string().email(),
+    country: z.string(),
+    terms: z.string(),
+  });
+
+  const [error, setError] = useState<string[]>([]);
   const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
     const errorList: Array<string> = [];

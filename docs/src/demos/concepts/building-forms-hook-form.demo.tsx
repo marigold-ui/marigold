@@ -17,7 +17,6 @@ interface IFormInputs {
   mail: string;
   country: string | number;
 }
-
 export const SubmitFormWithReactHookForm = () => {
   const {
     control,
