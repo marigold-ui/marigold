@@ -45,7 +45,8 @@
     "unified": "10.1.2",
     "unist-util-visit": "4.1.1",
     "vfile-matter": "4.0.0",
-    "zod": "3.20.2"
+    "zod": "3.20.2",
+    "zod-form-data": "1.2.4"
   },
   "devDependencies": {
     "@hookform/devtools": "4.3.0",

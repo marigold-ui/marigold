@@ -233,6 +233,7 @@ importers:
       unist-util-visit: 4.1.1
       vfile-matter: 4.0.0
       zod: 3.20.2
+      zod-form-data: 1.2.4
     dependencies:
       '@marigold/components': link:../packages/components
       '@marigold/icons': link:../packages/icons
@@ -268,6 +269,7 @@ importers:
       unist-util-visit: 4.1.1
       vfile-matter: 4.0.0
       zod: 3.20.2
+      zod-form-data: 1.2.4_zod@3.20.2
     devDependencies:
       '@hookform/devtools': 4.3.0_5ndqzdd6t4rivxsukjv3i3ak2q
       '@types/mdx-js__react': 1.5.5
@@ -24524,6 +24526,17 @@ packages:
         integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==,
       }
     engines: { node: '>=10' }
+
+  /zod-form-data/1.2.4_zod@3.20.2:
+    resolution:
+      {
+        integrity: sha512-mI/rgItfvYQpvzEqGuBda/nuTHrMNoFZJ5cpiGLC5O3ZaVwI0XVo3/yTY2RreVMu57wGcDrfQcTRe5aMq2ijYA==,
+      }
+    peerDependencies:
+      zod: ^3.11.x
+    dependencies:
+      zod: 3.20.2
+    dev: false
 
   /zod/3.20.2:
     resolution:

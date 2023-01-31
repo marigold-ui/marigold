@@ -1,5 +1,6 @@
 import { FormEventHandler, useState } from 'react';
 import { z } from 'zod';
+import { zfd } from 'zod-form-data';
 import {
   Button,
   Checkbox,
@@ -18,19 +19,21 @@ export const SubmitForm = () => {
     phone: z.string().min(6),
     mail: z.string().email(),
     country: z.string(),
-    terms: z.string(),
+    terms: zfd.checkbox(),
   });
 
   const [error, setError] = useState<string[]>([]);
   const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
-    const errorList: Array<string> = [];
+    const errorList: Array<any> = [];
     const formData = new FormData(e.target as HTMLFormElement);
     const data = Object.fromEntries(formData);
     const validatedForm = schemaData.safeParse(data);
 
     if (!validatedForm.success) {
+      console.log(validatedForm.error.issues);
       validatedForm.error.issues.map(e => {
+        console.log(e.path);
         return errorList.push(e.path.toString());
       });
       setError(errorList);
