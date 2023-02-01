@@ -3,9 +3,9 @@ import type { Meta, ComponentStory } from '@storybook/react';
 
 import { Button } from '../Button';
 import { Menu } from './Menu';
-import { Text } from '../Text';
-import { Inline } from '../Inline';
-import { Edit, SettingDots } from '@marigold/icons';
+import { Dialog } from '../Dialog';
+import { SettingDots } from '@marigold/icons';
+import { Modal } from '../Overlay';
 
 export default {
   title: 'Components/Menu',
@@ -64,17 +64,15 @@ export const DotMenu: ComponentStory<typeof Menu> = args => (
 
 export const ActionMenu: ComponentStory<typeof Menu> = args => {
   return (
-    <>
-      <Menu.Trigger {...args}>
-        <Button variant="menu" size="small">
-          Menu
-        </Button>
-        <Menu>
-          <Menu.Item key="edit">Open in editor</Menu.Item>
-          <Menu.Item key="settings">Settings</Menu.Item>
-          <Menu.Item key="delete">Delete</Menu.Item>
-        </Menu>
-      </Menu.Trigger>
-    </>
+    <Menu.Trigger {...args}>
+      <Button variant="menu" size="small">
+        Menu
+      </Button>
+      <Menu onAction={action => alert(`Action: ${action}`)}>
+        <Menu.Item key="edit">Open in editor</Menu.Item>
+        <Menu.Item key="settings">Settings</Menu.Item>
+        <Menu.Item key="delete">Delete</Menu.Item>
+      </Menu>
+    </Menu.Trigger>
   );
 };
