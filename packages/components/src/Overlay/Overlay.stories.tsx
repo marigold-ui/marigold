@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import { OverlayProvider } from '@react-aria/overlays';
 import { useObjectRef } from '@react-aria/utils';
 import { useOverlayTriggerState } from '@react-stately/overlays';
-import { ComponentStory } from '@storybook/react';
+import { ComponentStory, Meta } from '@storybook/react';
 import { Tray } from './Tray';
 import { Menu } from '../Menu';
 import { Dialog } from '../Dialog';
@@ -12,7 +12,8 @@ import { Text } from '../Text';
 
 export default {
   title: 'Components/Overlay',
-};
+} as Meta;
+
 const TestTray = forwardRef<HTMLDivElement, { open: boolean }>(
   ({ open }, ref) => {
     const trayRef = useObjectRef(ref);
