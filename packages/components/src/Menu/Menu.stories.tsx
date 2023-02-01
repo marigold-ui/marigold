@@ -3,9 +3,7 @@ import type { Meta, ComponentStory } from '@storybook/react';
 
 import { Button } from '../Button';
 import { Menu } from './Menu';
-import { Dialog } from '../Dialog';
 import { SettingDots } from '@marigold/icons';
-import { Modal } from '../Overlay';
 
 export default {
   title: 'Components/Menu',
