@@ -3,7 +3,9 @@ import type { Meta, ComponentStory } from '@storybook/react';
 
 import { Button } from '../Button';
 import { Menu } from './Menu';
-import { SettingDots } from '@marigold/icons';
+import { Text } from '../Text';
+import { Inline } from '../Inline';
+import { Edit, SettingDots } from '@marigold/icons';
 
 export default {
   title: 'Components/Menu',
@@ -25,7 +27,7 @@ export const Basic: ComponentStory<typeof Menu.Trigger> = args => {
         <Button variant="menu" size="small">
           Choose Menu
         </Button>
-        <Menu onSelect={setSelected}>
+        <Menu onAction={setSelected}>
           <Menu.Item key="burger">🍔 Burger</Menu.Item>
           <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
           <Menu.Item key="salad">🥗 Salad</Menu.Item>
@@ -59,3 +61,20 @@ export const DotMenu: ComponentStory<typeof Menu> = args => (
     </Menu>
   </Menu.Trigger>
 );
+
+export const ActionMenu: ComponentStory<typeof Menu> = args => {
+  return (
+    <>
+      <Menu.Trigger {...args}>
+        <Button variant="menu" size="small">
+          Menu
+        </Button>
+        <Menu>
+          <Menu.Item key="edit">Open in editor</Menu.Item>
+          <Menu.Item key="settings">Settings</Menu.Item>
+          <Menu.Item key="delete">Delete</Menu.Item>
+        </Menu>
+      </Menu.Trigger>
+    </>
+  );
+};
