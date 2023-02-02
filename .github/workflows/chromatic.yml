@@ -31,6 +31,7 @@ jobs:
 
       # Action
       - name: Publish to Chromatic
+        if: github.ref != 'refs/heads/main'
         uses: chromaui/action@v1
         with:
           buildScriptName: build:storybook
@@ -41,3 +42,9 @@ jobs:
           exitZeroOnChanges: true
           exitOnceUploaded: true
           skip: 'renovate/**'
+      - name: Publish to Chromatic and auto accept changes
+        if: github.ref == 'refs/heads/main'
+        uses: chromaui/action@v1
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          autoAcceptChanges: true
