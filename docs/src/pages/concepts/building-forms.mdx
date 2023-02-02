@@ -92,7 +92,7 @@ In the formular we have used `<TextField>`, `<Select>` and `<Checkbox>` componen
 ### How to do validation and error signaling
 
 Some fields are required and throw error messages if you don't fill them out.
-For this to work, react-hook-form has a property `formState`, which contains the boolean `isValid`. This prop is set to `true` if the form doesn't have errors. `isValid` will always observe the entire form to validate.
+For this to work, `react-hook-form` has a property `formState`, which contains the boolean `isValid`. This prop is set to `true` if the form doesn't have errors. `isValid` will always observe the entire form to validate.
 
 We don't explicit need to use a `onChange` event, instead of using useState and set a value we used directly `defaultValue`. With that the component is a uncontrolled component, it never gets undefined or null.
 
