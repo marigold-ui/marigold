@@ -28,7 +28,7 @@ export interface MenuProps
   children: CollectionElement<object> | CollectionElement<object>[];
   variant?: string;
   size?: string;
-  onSelect?: (key: Key) => void;
+  onAction?: (key: Key) => void;
 }
 
 // Component
@@ -66,7 +66,7 @@ export const Menu = ({ variant, size, ...props }: MenuProps) => {
           key={item.key}
           item={item}
           state={state}
-          onAction={props.onSelect}
+          onAction={props.onAction}
           css={styles.item}
         />
       ))}

@@ -244,7 +244,7 @@ test('return selected item', () => {
       <ThemeProvider theme={theme}>
         <Menu.Trigger>
           <Button>Choose</Button>
-          <Menu onSelect={spy}>
+          <Menu onAction={spy}>
             <Menu.Item key="burger">Burger</Menu.Item>
             <Menu.Item key="pizza">Pizza</Menu.Item>
           </Menu>

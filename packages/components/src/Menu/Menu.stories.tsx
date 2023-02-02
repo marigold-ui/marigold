@@ -25,7 +25,7 @@ export const Basic: ComponentStory<typeof Menu.Trigger> = args => {
         <Button variant="menu" size="small">
           Choose Menu
         </Button>
-        <Menu onSelect={setSelected}>
+        <Menu onAction={setSelected}>
           <Menu.Item key="burger">🍔 Burger</Menu.Item>
           <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
           <Menu.Item key="salad">🥗 Salad</Menu.Item>
@@ -54,3 +54,18 @@ export const BasicActionMenu: ComponentStory<typeof Menu> = args => (
     <Menu.Item key="delete">Delete</Menu.Item>
   </ActionMenu>
 );
+
+export const ActionMenu: ComponentStory<typeof Menu> = args => {
+  return (
+    <Menu.Trigger {...args}>
+      <Button variant="menu" size="small">
+        Menu
+      </Button>
+      <Menu onAction={action => alert(`Action: ${action}`)}>
+        <Menu.Item key="edit">Open in editor</Menu.Item>
+        <Menu.Item key="settings">Settings</Menu.Item>
+        <Menu.Item key="delete">Delete</Menu.Item>
+      </Menu>
+    </Menu.Trigger>
+  );
+};
