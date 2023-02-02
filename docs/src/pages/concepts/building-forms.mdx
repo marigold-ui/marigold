@@ -38,7 +38,7 @@ If you want to see more examples of forms with Marigold, check out our recipes: 
 ## Controlled or uncontrolled Components?
 
 In React, there are two main types of form components: controlled and uncontrolled.
-Controlled components are components which are controlled by the React state. Any changes to the value will be updated via the state variable. This happens when the user interacts with a component and the `onChange` event handler is called.
+Controlled components are controlled via React state (e.g. `useState`). Any changes to the value will update the state variable. This happens when the user interacts with a component and an event handler is called, `onChange` for example.
 Uncontrolled components don't need the state to update, because you can give them a `defaultValue` or `defaultChecked` property.
 
 When the state or props change, React will automatically re-render the component with its new data. This is called [data-binding](https://www.joshwcomeau.com/react/data-binding/). Components recive data from its parents component and update their output in response to changes in that data by using state and props, this allows to have a dynamic and reactive user interface.
