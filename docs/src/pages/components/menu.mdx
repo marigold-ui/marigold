@@ -38,9 +38,9 @@ If you want create a variant, you can style different parts of the `<Menu>` sepa
 <PropsTable
   props={[
     {
-      property: 'onSelect',
+      property: 'onAction',
       type: '(key: Key) => void',
-      description: 'Handler that is called when the selection changes.',
+      description: 'Handler that should call an action.',
       default: 'none',
     },
   ]}
@@ -61,11 +61,11 @@ If you want create a variant, you can style different parts of the `<Menu>` sepa
 
 ## Examples
 
-### Simple Menu
+### Simple Menu with Action
 
-In this example you can see a simple `<Menu>` with some items to select.
+In this example you can see a simple `<Menu>` with some items to select. After selection an action can be applied.
 
-```tsx preview file=components/Menu/menu-selected.demo.tsx
+```tsx preview file=components/Menu/menu-action.demo.tsx
 
 ```
 

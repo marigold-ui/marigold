@@ -9,7 +9,7 @@ export const ThemeMenu = () => {
       <Button variant="outline">
         {current} <ChevronDown />
       </Button>
-      <Menu onSelect={current => setTheme(current)}>
+      <Menu onAction={current => setTheme(current)}>
         {Object.keys(themes).map(name => (
           <Menu.Item key={name}>{name}</Menu.Item>
         ))}
