@@ -13,6 +13,8 @@ It is structured in three parts: `<Menu.Trigger>`, `<Menu>` and `<Menu.Item>`. A
 
 If you want create a variant, you can style different parts of the `<Menu>` separate, there is the `container` part and the `item`.
 
+There is also a new Component called `<ActionMenu>` which you can use if you want to take some actions. You can have a look on how it works in the examples. It works quiet similar to the normal `<Menu>` component. All you have to add are the `<Menu.Item>`s.
+
 <Preview>
   <Menu.Trigger>
     <Button variant="menu" size="small">
@@ -77,11 +79,12 @@ In this example the `<Menu.Trigger>` has set its prop `disabled`. So you can't i
 
 ```
 
-### Menu with a Icon as Kebab Menu
+### ActionMenu
 
 In this example, an `Icon` has been inserted into the `Button` to serve as a kebab menu.
 As shown here, any type of icon can be used within the menu and there are no restrictions.
+It is very similar to the normal `<Menu>` component.
 
-```tsx preview file=components/Menu/menu-kebab-icon.demo.tsx
+```tsx preview file=components/Menu/kebab-menu.demo.tsx
 
 ```
