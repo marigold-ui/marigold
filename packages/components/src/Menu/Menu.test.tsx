@@ -12,6 +12,7 @@ import { ThemeProvider, useResponsiveValue } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Menu } from './Menu';
+import { ActionMenu } from './ActionMenu';
 
 const theme = {
   colors: {
@@ -384,4 +385,20 @@ test('renders as tray', () => {
   fireEvent.click(button);
   const tray = screen.getByTestId('tray');
   expect(tray).toBeInTheDocument();
+});
+
+test('renders action menu', () => {
+  render(
+    <OverlayProvider>
+      <ActionMenu>
+        <Menu.Item key="one">Settings</Menu.Item>
+        <Menu.Item key="two">Delete</Menu.Item>
+      </ActionMenu>
+    </OverlayProvider>
+  );
+  const button = screen.getByRole('button');
+  expect(button).toBeInTheDocument();
+  fireEvent.click(button);
+  const item = screen.getByText('Settings');
+  expect(item).toBeInTheDocument();
 });
