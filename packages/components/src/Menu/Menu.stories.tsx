@@ -47,25 +47,12 @@ export const MenuOnly: ComponentStory<typeof Menu> = () => (
   </Menu>
 );
 
-export const BasicActionMenu: ComponentStory<typeof Menu> = args => (
-  <ActionMenu onSelect={action => alert(action)} {...args}>
-    <Menu.Item key="edit">Edit</Menu.Item>
-    <Menu.Item key="duplicate">Duplicate</Menu.Item>
-    <Menu.Item key="delete">Delete</Menu.Item>
-  </ActionMenu>
-);
-
-export const ActionMenu: ComponentStory<typeof Menu> = args => {
+export const BasicActionMenu: ComponentStory<typeof Menu> = args => {
   return (
-    <Menu.Trigger {...args}>
-      <Button variant="menu" size="small">
-        Menu
-      </Button>
-      <Menu onAction={action => alert(`Action: ${action}`)}>
-        <Menu.Item key="edit">Open in editor</Menu.Item>
-        <Menu.Item key="settings">Settings</Menu.Item>
-        <Menu.Item key="delete">Delete</Menu.Item>
-      </Menu>
-    </Menu.Trigger>
+    <ActionMenu onAction={action => alert(`Action: ${action}`)}>
+      <Menu.Item key="edit">Open in editor</Menu.Item>
+      <Menu.Item key="settings">Settings</Menu.Item>
+      <Menu.Item key="delete">Delete</Menu.Item>
+    </ActionMenu>
   );
 };
