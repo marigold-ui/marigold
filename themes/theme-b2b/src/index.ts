@@ -56,6 +56,7 @@ const theme: Theme = {
     small: 2,
     medium: 4,
     large: 8,
+    round: '1e5px',
   },
   fonts: {
     body: 'Inter',
