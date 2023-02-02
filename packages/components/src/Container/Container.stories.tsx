@@ -5,6 +5,7 @@ import { Box } from '../Box';
 import { Container } from './Container';
 import { Headline } from '../Headline';
 import { Text } from '../Text';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/Container',
@@ -90,3 +91,8 @@ export const InnerContent: ComponentStory<typeof Container> = args => (
     </Container>
   </Box>
 );
+
+InnerContent.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
+};

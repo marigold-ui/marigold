@@ -8,6 +8,7 @@ import { Image } from '../Image';
 import { Text } from '../Text';
 
 import { Breakout } from './Breakout';
+import isChromatic from 'chromatic';
 
 export default {
   title: 'Components/Breakout',
@@ -127,3 +128,8 @@ export const ExampleFrame: ComponentStory<typeof Breakout> = args => (
     </Text>
   </Container>
 );
+
+ExampleFrame.parameters = {
+  chromatic: { viewports: [320, 1200] },
+  theme: isChromatic() ? 'b2b' : 'stacked',
+};

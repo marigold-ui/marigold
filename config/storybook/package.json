@@ -54,7 +54,7 @@
     "start": "start-storybook -p 1337 -c .",
     "build": "build-storybook --disable-telemetry -c . -o ../../storybook-static",
     "test": "start-storybook --smoke-test --ci -c .",
-    "chromatic": "pnpm dlx chromatic --force-rebuild --exit-zero-on-changes",
+    "chromatic": "pnpm dlx chromatic --force-rebuild --only-changed --exit-zero-on-changes",
     "ci": "pnpm dlx chromatic"
   }
 }
