@@ -77,11 +77,11 @@ For validating the form we are using [`zod`](https://zod.dev/). It is a library 
 
 ```
 
-## Full example of submit a form with React Hook Form
+## Handling complex forms and form state
 
-We decided to use `react-form-hook` because its reducing re-renders caused by state updates, you don't have much to configure and supports integrating UI libraries.
+You can simplify form handling in your React components and avoid repetitive tasks such as manually updating the form state, validating user inputs, and handling form submissions.
+We decided to use `react-form-hook` for this because its reducing re-renders caused by state updates, you don't have much to configure and supports integrating UI libraries.
 For the later we use the `<Controller>` component from `react-hook-form`, which must be wrapped around each Marigold component that should submits data.
-By using `react-form-hook`, you can simplify form handling in your React components and avoid repetitive tasks such as manually updating the form state, validating user inputs, and handling form submissions.
 
 In the formular we have used `<TextField>`, `<Select>` and `<Checkbox>` components. These components are wrapped around with the `<Controller>` component from `react-hook-form`. The `<Controller>` component acts as a bridge between the form element and the `react-hook-form` state management. It updates the `react-hook-form` state whenever the value of the form element changes.
 
