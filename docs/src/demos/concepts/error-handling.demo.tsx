@@ -14,7 +14,7 @@ export const ErrorValidation = () => {
   const [value, setValue] = useState('');
   return (
     <FieldGroup labelWidth="medium">
-      <Headline level="2">Example Form</Headline>
+      <Headline level="2">Account Registration</Headline>
       <Stack space="medium">
         <Columns columns={[2, 2]} space="medium">
           <TextField
