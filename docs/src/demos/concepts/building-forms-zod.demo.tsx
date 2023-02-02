@@ -42,7 +42,7 @@ export const SubmitForm = () => {
 
   return (
     <FieldGroup labelWidth="medium">
-      <Headline level="2">Example Form</Headline>
+      <Headline level="2">Account Registration</Headline>
       <form onSubmit={handleSubmit}>
         <Stack space="medium">
           <Columns columns={[2, 2]} space="medium">
