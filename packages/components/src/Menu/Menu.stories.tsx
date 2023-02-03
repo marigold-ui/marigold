@@ -3,7 +3,7 @@ import type { Meta, ComponentStory } from '@storybook/react';
 
 import { Button } from '../Button';
 import { Menu } from './Menu';
-import { SettingDots } from '@marigold/icons';
+import { ActionMenu } from './ActionMenu';
 
 export default {
   title: 'Components/Menu',
@@ -47,30 +47,12 @@ export const MenuOnly: ComponentStory<typeof Menu> = () => (
   </Menu>
 );
 
-export const DotMenu: ComponentStory<typeof Menu> = args => (
-  <Menu.Trigger {...args}>
-    <Button variant="menu" size="small">
-      <SettingDots />
-    </Button>
-    <Menu>
-      <Menu.Item key="edit">Edit</Menu.Item>
-      <Menu.Item key="duplicate">Duplicate</Menu.Item>
-      <Menu.Item key="delete">Delete</Menu.Item>
-    </Menu>
-  </Menu.Trigger>
-);
-
-export const ActionMenu: ComponentStory<typeof Menu> = args => {
+export const BasicActionMenu: ComponentStory<typeof Menu> = args => {
   return (
-    <Menu.Trigger {...args}>
-      <Button variant="menu" size="small">
-        Menu
-      </Button>
-      <Menu onAction={action => alert(`Action: ${action}`)}>
-        <Menu.Item key="edit">Open in editor</Menu.Item>
-        <Menu.Item key="settings">Settings</Menu.Item>
-        <Menu.Item key="delete">Delete</Menu.Item>
-      </Menu>
-    </Menu.Trigger>
+    <ActionMenu onAction={action => alert(`Action: ${action}`)}>
+      <Menu.Item key="edit">Open in editor</Menu.Item>
+      <Menu.Item key="settings">Settings</Menu.Item>
+      <Menu.Item key="delete">Delete</Menu.Item>
+    </ActionMenu>
   );
 };
