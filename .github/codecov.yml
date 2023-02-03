@@ -15,22 +15,3 @@ coverage:
         target: 80%
         flags:
           - Tokens
-
-comment:
-  layout: 'reach, diff, flags, files'
-  behavior: default
-  require_changes: false
-  require_base: yes
-  require_head: yes
-  branches: null
-
-flags:
-  Components:
-    paths:
-      - packages/components/src
-  System:
-    paths:
-      - packages/system/src
-  Tokens:
-    paths:
-      - packages/tokens/src
