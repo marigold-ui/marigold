@@ -112,4 +112,4 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [package]: https://www.npmjs.com/package/@marigold/components
 [version-badge]: https://img.shields.io/npm/v/@marigold/components?style=flat-square
 [coverage]: https://codecov.io/github/marigold-ui/marigold/branch/main
-[coverage-badge]: https://codecov.io/github/marigold-ui/marigold/branch/master/graph/badge.svg?token=YIIcKX7TZu
+[coverage-badge]: https://codecov.io/github/marigold-ui/marigold/branch/main/graph/badge.svg?token=YIIcKX7TZu
