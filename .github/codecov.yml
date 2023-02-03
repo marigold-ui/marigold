@@ -2,35 +2,31 @@ coverage:
   status:
     project:
       default:
-        target: 90% #overall project/ repo coverage
-      Components:
+        target: 90%
+    patch:
+      components:
         target: 90%
         flags:
-          - Components
-      System:
-        target: 100%
+          - components
+      system:
+        target: 90%
         flags:
-          - System
-      Tokens:
-        target: 80%
+          - system
+      tokens:
+        target: 90%
         flags:
-          - Tokens
+          - tokens
 
 comment:
   layout: 'reach, diff, flags, files'
-  behavior: default
-  require_changes: false
-  require_base: yes
-  require_head: yes
-  branches: null
 
 flags:
-  Components:
+  - name: components
     paths:
-      - packages/components/src
-  System:
+      - /packages/components/src/
+  - name: system
     paths:
-      - packages/system/src
-  Tokens:
+      - /packages/system/src/
+  - name: tokens
     paths:
-      - packages/tokens/src
+      - /packages/tokens/src/
