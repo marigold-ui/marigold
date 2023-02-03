@@ -1,0 +1,14 @@
+coverage:
+  precision: 2
+  round: down
+  range: '90...100'
+  flags:
+    Components:
+      paths:
+        - packages/components/src
+    System:
+      paths:
+        - packages/system/src
+    Tokens:
+      paths:
+        - packages/tokens/src
