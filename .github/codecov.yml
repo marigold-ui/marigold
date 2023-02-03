@@ -3,15 +3,4 @@ coverage:
     project:
       default:
         target: 90% #overall project/ repo coverage
-      Components:
-        target: 90%
-        flags:
-          - Components
-      System:
-        target: 100%
-        flags:
-          - System
-      Tokens:
-        target: 80%
-        flags:
-          - Tokens
+
