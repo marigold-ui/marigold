@@ -4,7 +4,7 @@
 <br>
 <br>
 
-[![ci][ci-badge]][ci] [![coverage][coverage-badge]][coverage] [![MIT License][license-badge]][license] [![version][version-badge]][package]
+[![ci][ci-badge]][ci] [![coverage][codecov-badge]][codecov] [![MIT License][license-badge]][license] [![version][version-badge]][package]
 
 [![Open in Visual Studio Code](https://shields.io/badge/-Open%20in%20Visual%20Studio%20Code-blue?logo=visualstudiocode&style=for-the-badge)](https://open.vscode.dev/marigold-ui/marigold)
 
@@ -111,5 +111,5 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [license-badge]: https://img.shields.io/github/license/marigold-ui/marigold?style=flat-square
 [package]: https://www.npmjs.com/package/@marigold/components
 [version-badge]: https://img.shields.io/npm/v/@marigold/components?style=flat-square
-
-[![codecov](https://codecov.io/github/marigold-ui/marigold/branch/master/graph/badge.svg?token=YIIcKX7TZu)](https://codecov.io/github/marigold-ui/marigold)
+[codecov-badge]: https://codecov.io/github/marigold-ui/marigold/branch/master/graph/badge.svg?token=YIIcKX7TZu)
+[codecov]: https://codecov.io/github/marigold-ui/marigold
