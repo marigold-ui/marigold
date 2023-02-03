@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Menu } from '@marigold/components';
 
-export const ActionMenu = () => {
+export const BasicActionMenu = () => {
   return (
     <Menu.Trigger>
       <Button variant="menu" size="small">
