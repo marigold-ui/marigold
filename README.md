@@ -111,5 +111,5 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [license-badge]: https://img.shields.io/github/license/marigold-ui/marigold?style=flat-square
 [package]: https://www.npmjs.com/package/@marigold/components
 [version-badge]: https://img.shields.io/npm/v/@marigold/components?style=flat-square
-[coverage]: https://coveralls.io/github/marigold-ui/marigold?branch=master
-[coverage-badge]: https://img.shields.io/coveralls/github/marigold-ui/marigold/master?style=flat-square
+
+[![codecov](https://codecov.io/github/marigold-ui/marigold/branch/master/graph/badge.svg?token=YIIcKX7TZu)](https://codecov.io/github/marigold-ui/marigold)
