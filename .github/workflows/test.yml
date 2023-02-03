@@ -27,9 +27,7 @@ jobs:
       # Action
       - name: Run Test Coverage
         run: pnpm test:ci
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
       - name: Upload coverage flags to Codecov
         uses: codecov/codecov-action@v3
         with:
-          - flags: components, system, tokens
+          - flags: (components, system, tokens)
