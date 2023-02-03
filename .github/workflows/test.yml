@@ -25,9 +25,7 @@ jobs:
         run: pnpm install
 
       # Action
-      - name: Run Test Suite with Coverage (as lcov file)
+      - name: Run Test Coverage
         run: pnpm test:ci
-      - name: Upload Coverage to coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
