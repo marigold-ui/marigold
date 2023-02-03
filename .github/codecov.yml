@@ -4,22 +4,29 @@ coverage:
       default:
         target: 90%
     patch:
-      default:
+      components:
         target: 90%
-flag_management:
-  individual_flags:
-    - name: components
-      paths:
-        - /packages/components/src/
-      statuses:
-        target: 100%
-    - name: system
-      paths:
-        - /packages/system/src/
-      statuses:
-        target: 100%
-    - name: tokens
-      paths:
-        - /packages/tokens/src/
-      statuses:
-        target: 100%
+        flags:
+          - components
+      system:
+        target: 90%
+        flags:
+          - system
+      tokens:
+        target: 90%
+        flags:
+          - tokens
+
+comment:
+  layout: 'reach, diff, flags, files'
+
+flags:
+  - name: components
+    paths:
+      - /packages/components/src/
+  - name: system
+    paths:
+      - /packages/system/src/
+  - name: tokens
+    paths:
+      - /packages/tokens/src/
