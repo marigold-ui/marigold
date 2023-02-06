@@ -11,50 +11,7 @@ import {
 import { transformPseudos } from './selector';
 import { CSSObject } from '../../types';
 
-export interface StyleProps
-  extends Pick<
-    CSSObject,
-    | 'display'
-    | 'height'
-    | 'width'
-    | 'minWidth'
-    | 'maxWidth'
-    | 'position'
-    | 'top'
-    | 'bottom'
-    | 'right'
-    | 'left'
-    | 'zIndex'
-    | 'p'
-    | 'px'
-    | 'py'
-    | 'pt'
-    | 'pb'
-    | 'pl'
-    | 'pr'
-    | 'm'
-    | 'mx'
-    | 'my'
-    | 'mt'
-    | 'mb'
-    | 'ml'
-    | 'mr'
-    | 'flexDirection'
-    | 'flexWrap'
-    | 'flexShrink'
-    | 'flexGrow'
-    | 'alignItems'
-    | 'justifyContent'
-    | 'bg'
-    | 'border'
-    | 'borderRadius'
-    | 'boxShadow'
-    | 'opacity'
-    | 'overflow'
-    | 'transition'
-  > {}
-
-export interface BoxOwnProps extends StyleProps {
+export interface BoxOwnProps {
   css?: CSSObject | CSSObject[];
   /**
    * Use to set base styles for the component
@@ -68,15 +25,13 @@ export interface BoxProps extends PolymorphicPropsWithRef<BoxOwnProps, 'div'> {}
 interface CreateStyleProps {
   __baseCSS?: CSSObject;
   css?: CSSObject | CSSObject[];
-  styles?: StyleProps;
 }
 
 const createThemedStyle =
-  ({ __baseCSS, styles, css }: CreateStyleProps) =>
+  ({ __baseCSS, css }: CreateStyleProps) =>
   (theme: Theme) => {
     const themedStyles = merge.all([
       transformStyleObject(__baseCSS)(theme),
-      transformStyleObject(styles)(theme),
       ...(Array.isArray(css)
         ? css.map(c => transformStyleObject(c)(theme))
         : [transformStyleObject(css)(theme)]),
@@ -85,54 +40,7 @@ const createThemedStyle =
   };
 
 export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef(
-  (
-    {
-      as = 'div',
-      children,
-      __baseCSS,
-      css,
-      display,
-      height,
-      width,
-      minWidth,
-      maxWidth,
-      position,
-      top,
-      bottom,
-      right,
-      left,
-      zIndex,
-      p,
-      px,
-      py,
-      pt,
-      pb,
-      pl,
-      pr,
-      m,
-      mx,
-      my,
-      mt,
-      mb,
-      ml,
-      mr,
-      flexDirection,
-      flexWrap,
-      flexShrink,
-      flexGrow,
-      alignItems,
-      justifyContent,
-      bg,
-      border,
-      borderRadius,
-      boxShadow,
-      opacity,
-      overflow,
-      transition,
-      ...props
-    },
-    ref
-  ) =>
+  ({ as = 'div', children, __baseCSS, css, ...props }, ref) =>
     jsx(
       as,
       {
@@ -140,46 +48,6 @@ export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef(
         css: createThemedStyle({
           __baseCSS,
           css,
-          styles: {
-            display,
-            height,
-            width,
-            minWidth,
-            maxWidth,
-            position,
-            top,
-            bottom,
-            right,
-            left,
-            zIndex,
-            p,
-            px,
-            py,
-            pt,
-            pb,
-            pl,
-            pr,
-            m,
-            mx,
-            my,
-            mt,
-            mb,
-            ml,
-            mr,
-            flexDirection,
-            flexWrap,
-            flexShrink,
-            flexGrow,
-            alignItems,
-            justifyContent,
-            bg,
-            border,
-            borderRadius,
-            boxShadow,
-            opacity,
-            overflow,
-            transition,
-          },
         }),
         ref,
       },
