@@ -56,20 +56,26 @@ export default {
 
 export const Basic: ComponentStory<typeof Columns> = args => (
   <Columns {...args}>
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="150px" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="150px" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="150px" />
+    <Box css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 150 }} />
+    <Box css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 150 }} />
+    <Box css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 150 }} />
   </Columns>
 );
 
 export const ComplexChildren: ComponentStory<typeof Columns> = args => (
   <Columns {...args}>
-    <Box as="main" border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+    <Box
+      as="main"
+      css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 100 }}
+    />
     <>
-      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+      <Box css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 100 }} />
+      <Box css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 100 }} />
     </>
-    <Box as="aside" border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+    <Box
+      as="aside"
+      css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 100 }}
+    />
   </Columns>
 );
 
@@ -114,9 +120,16 @@ export const MultiRow = () => (
 export const FullHeight: ComponentStory<typeof Columns> = args => (
   <Box css={{ height: 300, bg: '#adb5bd' }}>
     <Columns {...args}>
-      <Box border="1px solid #495057" bg="#e9ecef" height="150px" />
-      <Box border="1px solid #495057" bg="#e9ecef" height="150px" />
-      <Box border="1px solid #495057" bg="#e9ecef" height="100%" p={8}>
+      <Box css={{ border: '1px solid #495057', bg: '#e9ecef', height: 150 }} />
+      <Box css={{ border: '1px solid #495057', bg: '#e9ecef', height: 150 }} />
+      <Box
+        css={{
+          border: '1px solid #495057',
+          bg: '#e9ecef',
+          height: '100%',
+          p: 8,
+        }}
+      >
         I will grow, if you set <code>stretch</code> prop on the{' '}
         <code>Columns</code>!
       </Box>
