@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface BaseProps {}
 
 export type As<Props = any> = React.ElementType<Props>;
@@ -61,6 +63,10 @@ export const Box: PolymorpshicComponent<'div', BoxOwnProps> = props => (
 );
 
 export const SimpleBox = () => <Box>Hello</Box>;
+export const RefBox = () => {
+  const ref = React.useRef(null);
+  return <Box ref={ref}>Hello</Box>;
+};
 // @ts-expect-error
 export const NotAPropBox = () => <Box foo="bar"></Box>;
 export const HrefBox = () => <Box as="a" href="http://example.com"></Box>;

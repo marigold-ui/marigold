@@ -1,6 +1,14 @@
 export type ComponentType<P = any> = React.ElementType<P>;
 
 /**
+ * Extract the props of a React element or component
+ */
+export type PropsOf<T extends ComponentType> =
+  React.ComponentPropsWithoutRef<T> & {
+    as?: ComponentType;
+  };
+
+/**
  * Merge two objects into one, second one will override properties of the
  * first one.
  *
