@@ -1,20 +1,16 @@
 import React, { createElement, forwardRef, ReactNode, useRef } from 'react';
-import {
-  PolymorphicProps,
-  PolymorphicComponentWithRef,
-  PolymorphicComponent,
-} from '.';
+import { PolymorphicProps, PolymorphicComponentWithRef } from '.';
+import { PolymorphicComponent } from './polymorphic-component';
 
 // Polymorpic Component with Ref
 // ---------------
 export type BoxOwnProps = { className?: string };
 
-export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef<
-  HTMLDivElement,
-  PolymorphicProps<BoxOwnProps, 'div'>
->(({ as = 'div', children, ...props }, ref) => {
-  return createElement(as, { ...props, ref }, children);
-});
+export const Box: PolymorphicComponent<'div', BoxOwnProps> = forwardRef(
+  ({ as = 'div', children, ...props }, ref) => {
+    return createElement(as, { ...props, ref }, children);
+  }
+);
 
 export const SimpleBox = () => <Box>Hello</Box>;
 export const HrefBox = () => <Box as="a" href="http://example.com"></Box>;
@@ -26,12 +22,12 @@ export const BrokenBox = () => <Box as="span" href="http://example.com"></Box>;
 export type LinkOwnProps = { disabled?: boolean } & BoxOwnProps;
 export type LinkProps = PolymorphicProps<LinkOwnProps, 'a'>;
 
-export const Link = (({
+export const Link: PolymorphicComponent<'a', LinkOwnProps> = ({
   as = 'a',
   disabled,
   children,
   ...props
-}: LinkProps) => {
+}) => {
   const ref = useRef<any>();
   const disabledProps = disabled ? { ariaDisabled: 'true' } : {};
   return (
@@ -39,7 +35,7 @@ export const Link = (({
       {children}
     </Box>
   );
-}) as PolymorphicComponent<LinkOwnProps, 'a'>;
+};
 
 export const SimpleLink = () => (
   <Link href="https://github.com/marigold-ui/marigold">Click me!</Link>
