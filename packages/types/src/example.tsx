@@ -31,7 +31,7 @@ export type LinkOwnProps = { disabled?: boolean } & BoxOwnProps;
 export type LinkProps = PolymorphicProps<LinkOwnProps, 'a'>;
 
 export const Link: PolymorphicComponent<'a', LinkOwnProps> = ({
-  as = 'a',
+  as = 'a' as const,
   disabled,
   children,
   ...props
@@ -39,7 +39,13 @@ export const Link: PolymorphicComponent<'a', LinkOwnProps> = ({
   const ref = useRef<any>();
   const disabledProps = disabled ? { ariaDisabled: 'true' } : {};
   return (
-    <Box {...props} {...disabledProps} as={as} ref={ref}>
+    <Box
+      {...props}
+      {...disabledProps}
+      as={as}
+      ref={ref}
+      onClick={e => alert(e.target)}
+    >
       {children}
     </Box>
   );

@@ -1,12 +1,17 @@
-export type ComponentType<P = any> = React.ElementType<P>;
+export type ElementType<P = any> = React.ElementType<P>;
 
 /**
  * Extract the props of a React element or component
  */
-export type PropsOf<T extends ComponentType> =
+export type PropsOf<T extends ElementType> =
   React.ComponentPropsWithoutRef<T> & {
-    as?: ComponentType;
+    as?: ElementType;
   };
+
+export type PolymorphicProps<
+  T extends ElementType,
+  Props extends object = {}
+> = PropsOf<T> & Props;
 
 /**
  * Merge two objects into one, second one will override properties of the
@@ -25,15 +30,15 @@ type MergeWithAs<
   ComponentProps extends object,
   AsProps extends object,
   Props extends object = {},
-  AsComponent extends ComponentType = ComponentType
+  AsComponent extends ElementType = ElementType
 > = SimpleMerge<ComponentProps, Props> &
   SimpleMerge<AsProps, Props> & { as?: AsComponent };
 
-export type ComponentWithAs<
-  Component extends ComponentType,
+export type PolymorphicComponent<
+  Component extends ElementType,
   Props extends object = {}
 > = {
-  <AsComponent extends ComponentType = Component>(
+  <AsComponent extends ElementType = Component>(
     props: MergeWithAs<
       React.ComponentProps<Component>,
       React.ComponentProps<AsComponent>,
@@ -48,8 +53,3 @@ export type ComponentWithAs<
   defaultProps?: Partial<any>;
   id?: string;
 };
-
-export interface PolymorphicComponent<
-  T extends ComponentType,
-  P extends object = {}
-> extends ComponentWithAs<T, P> {}
