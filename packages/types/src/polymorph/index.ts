@@ -1,8 +1,23 @@
+import * as React from 'react';
+
+/**
+ * Infer the props of a component `C`.
+ */
+export type PropsOf<C> = C extends React.FC<infer P>
+  ? P
+  : C extends React.Component<infer Props>
+  ? Props
+  : never;
+
+/**********************************************/
+/*                                            */
+/*            POLYMORPIC COMPONENT            */
+/*                                            */
+/**********************************************/
 /**
  * Polymorphic types are based on Radix's (now deprecated) types.
  * They can be found here: https://github.com/radix-ui/primitives/blob/2f139a832ba0cdfd445c937ebf63c2e79e0ef7ed/packages/react/polymorphic/src/polymorphic.ts
  */
-import * as React from 'react';
 
 /**
  * Merge two objects into one. Second one will override properties of the
@@ -35,12 +50,8 @@ type NarrowIntrinsic<E> = E extends keyof JSX.IntrinsicElements ? E : never;
  * This not include any properties added to a polymorphic component based on its
  * instrinstic element type.
  */
-export type PropsOf<C> = C extends PolymorphicComponent<any, infer P> ? P : {};
+export type Own<C> = C extends PolymorphicComponent<any, infer P> ? P : never;
 
-/**
- * Infert the instrinsic elemen type (HTML tab basicall) if the passed component `C`
- * if it a `PolymorphicComponent`.
- */
 export type IntrinsicElement<C> = C extends PolymorphicComponent<infer I, any>
   ? I
   : never;
@@ -58,7 +69,8 @@ export interface PolymorphicComponent<
    */
 > extends React.ForwardRefExoticComponent<MergeProps<T, P & { as?: T }>> {
   /**
-   * When passing an `as` prop as a string, use this overload.
+   * USE CASE: `as` porp is a string:
+   *
    * Merges original own props (without DOM props) and the inferred props
    * from `as` element with the own props taking precendence.
    *
@@ -70,7 +82,8 @@ export interface PolymorphicComponent<
   ): React.ReactElement | null;
 
   /**
-   * When passing an `as` prop as a component, use this overload.
+   * USE CASE: `as` porp is a component:
+   *
    * Merges original own props (without DOM props) and the inferred props
    * from `as` element with the own props taking precendence.
    *
