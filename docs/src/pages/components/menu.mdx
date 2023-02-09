@@ -59,6 +59,19 @@ There is also a new Component called `<ActionMenu>` which you can use if you wan
       description: 'Disables the complete menu.',
       default: 'false',
     },
+    {
+      property: 'open',
+      type: 'boolean',
+      description: 'Set the open state of the menu.',
+      default: 'false',
+    },
+    {
+      property: 'onOpenChange',
+      type: '() => void',
+      description:
+        "Handler that is called when the overlay's open state changes.",
+      default: 'none',
+    },
   ]}
 />
 
@@ -87,5 +100,14 @@ As shown here, any type of icon can be used within the menu and there are no res
 It is very similar to the normal `<Menu>` component.
 
 ```tsx preview file=components/Menu/kebab-menu.demo.tsx
+
+```
+
+### Menu with onOpenChange property
+
+Here you can see how the properties `open` and `onOpenChange` are used together with a `<Button>`. A function handles the state for the menu. You just can open the `<Menu>` with the external `<Button>` component, not with the menu button.
+A common use Case is also to open the `<Menu>` with the keyboard.
+
+```tsx preview file=components/Menu/menu-open.demo.tsx
 
 ```

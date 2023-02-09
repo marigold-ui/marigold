@@ -10,15 +10,25 @@ import { Popover, Tray } from '../Overlay';
 export interface MenuTriggerProps {
   children: [trigger: ReactNode, menu: ReactNode];
   disabled?: boolean;
+  open?: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
 }
 
-export const MenuTrigger = ({ disabled, children }: MenuTriggerProps) => {
+export const MenuTrigger = ({
+  disabled,
+  open,
+  onOpenChange,
+  children,
+}: MenuTriggerProps) => {
   const [menuTrigger, menu] = React.Children.toArray(children);
 
   const menuTriggerRef = useRef<HTMLElement>(null);
   const menuRef = useObjectRef<HTMLUListElement>();
 
-  const state = useMenuTriggerState({});
+  const state = useMenuTriggerState({
+    isOpen: open,
+    onOpenChange,
+  });
 
   const { menuTriggerProps, menuProps } = useMenuTrigger(
     { trigger: 'press', isDisabled: disabled },

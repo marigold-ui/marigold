@@ -56,3 +56,28 @@ export const BasicActionMenu: ComponentStory<typeof Menu> = args => {
     </ActionMenu>
   );
 };
+
+export const OpenMenuRemotely: ComponentStory<typeof Menu.Trigger> = args => {
+  const [open, setOpen] = useState(false);
+  const handleAction = () => {
+    setOpen(!open);
+  };
+
+  return (
+    <>
+      <Button variant="primary" onPress={() => setOpen(!open)}>
+        Open the menu remotly!
+      </Button>
+      <hr />
+      <Menu.Trigger open={open}>
+        <Button variant="menu" size="small">
+          Choose Menu
+        </Button>
+        <Menu onAction={handleAction}>
+          <Menu.Item key="one">One</Menu.Item>
+          <Menu.Item key="two">Two</Menu.Item>
+        </Menu>
+      </Menu.Trigger>
+    </>
+  );
+};
