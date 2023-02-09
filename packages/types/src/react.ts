@@ -92,10 +92,10 @@ export interface PolymorphicComponent<P, T extends React.ElementType>
  */
 export interface PolymorphicComponentWithRef<P, T extends React.ElementType>
   extends ForwardRefComponent<any> {
-  (
-    props: P & React.ComponentPropsWithRef<T> & { as?: never }
-  ): React.ReactElement<P> | null;
   <As extends React.ElementType>(
     props: PolymorphicPropsWithRef<P, As>
+  ): React.ReactElement<P> | null;
+  (
+    props: P & React.ComponentPropsWithRef<T> & { as?: never }
   ): React.ReactElement<P> | null;
 }

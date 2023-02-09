@@ -1,5 +1,5 @@
 import React, { createElement, forwardRef, ReactNode, useRef } from 'react';
-import { PolymorphicProps } from '.';
+import { PolymorphicProps, PolymorphicComponentWithRef } from '.';
 import { PolymorphicComponent, PropsOf } from './polymorphic-component';
 
 // Polymorpic Component with Ref
@@ -7,20 +7,22 @@ import { PolymorphicComponent, PropsOf } from './polymorphic-component';
 export type BoxOwnProps = { className?: string };
 export type BoxProps = PropsOf<'div'> & BoxOwnProps;
 
-// export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef<
-//   HTMLDivElement,
-//   PolymorphicProps<BoxOwnProps, 'div'>
-// >(({ as = 'div', children, ...props }, ref) => {
-//   return createElement(as, { ...props, ref }, children);
-// });
+export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef<
+  HTMLDivElement,
+  PolymorphicProps<BoxOwnProps, 'div'>
+>(({ as = 'div', children, ...props }, ref) => {
+  return createElement(as, { ...props, ref }, children);
+});
 
-export const Box = forwardRef(
-  ({ as = 'div', children, ...props }: BoxProps, ref) => {
-    return createElement(as, { ...props, ref }, children);
-  }
-) as PolymorphicComponent<'div', BoxOwnProps>;
+// export const Box = forwardRef(
+//   ({ as = 'div', children, ...props }: BoxProps, ref) => {
+//     return createElement(as, { ...props, ref }, children);
+//   }
+// ) as PolymorphicComponent<'div', BoxOwnProps>;
 
 export const SimpleBox = () => <Box>Hello</Box>;
+// @ts-expect-error
+export const NotAPropBox = () => <Box foo="bar">Hello</Box>;
 export const HrefBox = () => <Box as="a" href="http://example.com"></Box>;
 // @ts-expect-error
 export const BrokenBox = () => <Box as="span" href="http://example.com"></Box>;

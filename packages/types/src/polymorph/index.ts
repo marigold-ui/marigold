@@ -1,0 +1,83 @@
+/**
+ * Polymorphic types are based on Radix's (now deprecated) types.
+ * They can be found here: https://github.com/radix-ui/primitives/blob/2f139a832ba0cdfd445c937ebf63c2e79e0ef7ed/packages/react/polymorphic/src/polymorphic.ts
+ */
+import * as React from 'react';
+
+/**
+ * Merge two objects into one. Second one will override properties of the
+ * first one.
+ *
+ * Note: We can not use `Merge` from type-fest here, because for whatever reasons
+ * the optional modifier will be removed.
+ *
+ * @internal
+ */
+type Merge<P1 = {}, P2 = {}> = Omit<P1, keyof P2> & P2;
+
+/**
+ * Used to merge properties of an HTML element with additional props defined in a component.
+ *
+ * @internal
+ */
+type MergeProps<T, P = {}> = P &
+  Merge<T extends React.ElementType ? React.ComponentPropsWithRef<T> : {}, P>;
+
+/**
+ * Narrow down instrinsic elements to the keys (HTML tags).
+ *
+ * @internal
+ */
+type NarrowIntrinsic<E> = E extends keyof JSX.IntrinsicElements ? E : never;
+
+/**
+ * Infer the (additional) props of the component `C` if it a `PolymorphicComponent`.
+ * This not include any properties added to a polymorphic component based on its
+ * instrinstic element type.
+ */
+export type PropsOf<C> = C extends PolymorphicComponent<any, infer P> ? P : {};
+
+/**
+ * Infert the instrinsic elemen type (HTML tab basicall) if the passed component `C`
+ * if it a `PolymorphicComponent`.
+ */
+export type IntrinsicElement<C> = C extends PolymorphicComponent<infer I, any>
+  ? I
+  : never;
+
+/* -------------------------------------------------------------------------------------------------
+ * ForwardRefComponent
+ * -----------------------------------------------------------------------------------------------*/
+
+export interface PolymorphicComponent<
+  T,
+  P = {}
+  /**
+   * Extends original type to ensure built in React types play nice
+   * with polymorphic components still e.g. `React.ElementRef` etc.
+   */
+> extends React.ForwardRefExoticComponent<MergeProps<T, P & { as?: T }>> {
+  /**
+   * When passing an `as` prop as a string, use this overload.
+   * Merges original own props (without DOM props) and the inferred props
+   * from `as` element with the own props taking precendence.
+   *
+   * We explicitly define a `JSX.IntrinsicElements` overload so that
+   * events are typed for consumers.
+   */
+  <As extends keyof JSX.IntrinsicElements = NarrowIntrinsic<T>>(
+    props: MergeProps<As, P & { as: As }>
+  ): React.ReactElement | null;
+
+  /**
+   * When passing an `as` prop as a component, use this overload.
+   * Merges original own props (without DOM props) and the inferred props
+   * from `as` element with the own props taking precendence.
+   *
+   * We don't use `React.ComponentType` here as we get type errors
+   * when consumers try to do inline `as` components.
+   */
+  <As extends React.ElementType>(
+    props: MergeProps<As, P & { as: As }>
+  ): React.ReactElement | null;
+}
