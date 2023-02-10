@@ -70,10 +70,6 @@ const components = {
   ...MarigoldIcons,
 };
 
-const badgeNameToLowercase = (badge: string) => {
-  return badge.toLowerCase();
-};
-
 export interface PageProps {
   title?: string;
   caption?: string;
