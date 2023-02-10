@@ -2,7 +2,13 @@ import { Box, Button, Inline } from '@marigold/components';
 
 export const ButtonBox = () => (
   <Inline space="medium">
-    <Box as="button" bg="primary" p="8px">
+    <Box
+      as="button"
+      css={{
+        bg: 'primary',
+        p: 8,
+      }}
+    >
       I am a button
     </Box>
     <Box as={Button} variant="primary">
