@@ -5,7 +5,7 @@ import {
   useComponentStyles,
 } from '@marigold/system';
 import { Box } from '../Box';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 // Theme Extension
 // ---------------
@@ -13,9 +13,7 @@ export interface FooterThemeExtension extends ThemeExtension<'Footer'> {}
 
 // Props
 // ---------------
-export interface FooterProps
-  extends ThemeComponentProps,
-    ComponentProps<'footer'> {
+export interface FooterProps extends ThemeComponentProps, HtmlProps<'footer'> {
   children?: ReactNode;
 }
 

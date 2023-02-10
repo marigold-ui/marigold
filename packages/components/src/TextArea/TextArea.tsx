@@ -11,7 +11,7 @@ import {
   useComponentStyles,
   useStateProps,
 } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 
@@ -43,7 +43,7 @@ export type CustomTextAreaEvents =
 
 export interface TextAreaProps
   extends Omit<
-      ComponentProps<'textarea'>,
+      HtmlProps<'textarea'>,
       'value' | 'defaultValue' | 'size' | CustomTextAreaEvents
     >,
     Pick<AriaTextFieldProps, CustomTextAreaEvents>,

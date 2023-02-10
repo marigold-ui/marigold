@@ -5,7 +5,7 @@ import {
   ThemeExtensionsWithParts,
   useComponentStyles,
 } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 import { ListContext } from './Context';
 import { ListItem } from './ListItem';
@@ -13,7 +13,7 @@ import { ListItem } from './ListItem';
 export interface ListThemeExtension
   extends ThemeExtensionsWithParts<'List', ['ul', 'ol', 'item']> {}
 
-export interface ListProps extends ComponentProps<'ul'> {
+export interface ListProps extends HtmlProps<'ul'> {
   variant?: string;
   size?: string;
   as?: 'ul' | 'ol';

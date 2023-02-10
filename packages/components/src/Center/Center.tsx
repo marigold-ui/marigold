@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react';
 
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 import { ResponsiveStyleValue } from '@marigold/system';
 
 import { Box } from '../Box';
 
-export interface CenterProps extends ComponentProps<'div'> {
+export interface CenterProps extends HtmlProps<'div'> {
   children?: ReactNode;
   maxWidth?: string;
   space?: ResponsiveStyleValue<string>;

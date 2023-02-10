@@ -12,7 +12,7 @@ import {
   useStateProps,
 } from '@marigold/system';
 import {
-  ComponentProps,
+  HtmlProps,
   PolymorphicComponentWithRef,
   PolymorphicPropsWithRef,
 } from '@marigold/types';
@@ -23,7 +23,7 @@ export interface ButtonThemeExtension extends ThemeExtension<'Button'> {}
 
 // Props
 // ---------------
-export interface ButtonOwnProps extends PressEvents, ComponentProps<'button'> {
+export interface ButtonOwnProps extends PressEvents, HtmlProps<'button'> {
   children?: ReactNode;
   variant?: string;
   size?: string;

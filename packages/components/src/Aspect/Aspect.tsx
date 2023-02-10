@@ -4,11 +4,11 @@
 import React, { ReactNode } from 'react';
 
 import { aspect } from '@marigold/tokens';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 import { Box } from '../Box';
 
-export interface AspectProps extends ComponentProps<'div'> {
+export interface AspectProps extends HtmlProps<'div'> {
   children?: ReactNode;
   ratio?: keyof typeof aspect;
   maxWidth?: string;

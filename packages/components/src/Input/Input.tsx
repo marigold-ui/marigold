@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
 
 // Theme Extension
@@ -8,7 +8,7 @@ export interface InputThemeExtension extends ThemeExtension<'Input'> {}
 
 // Props
 // ---------------
-export interface InputOwnProps extends Omit<ComponentProps<'input'>, 'size'> {
+export interface InputOwnProps extends Omit<HtmlProps<'input'>, 'size'> {
   size?: string;
   variant?: string;
 }

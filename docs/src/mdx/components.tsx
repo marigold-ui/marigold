@@ -1,5 +1,5 @@
 import { Box, Headline, List, Text } from '@marigold/components';
-import type { ComponentProps } from '@marigold/types';
+import type { HtmlProps } from '@marigold/types';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/nightOwl';
 
@@ -7,37 +7,37 @@ import { CopyButton, Link } from '~/components';
 
 // Typography
 // ---------------
-export const h1 = ({ children, ...props }: ComponentProps<'h1'>) => (
+export const h1 = ({ children, ...props }: HtmlProps<'h1'>) => (
   <Headline level="1" {...props}>
     {children}
   </Headline>
 );
 
-export const h2 = ({ children, ...props }: ComponentProps<'h2'>) => (
+export const h2 = ({ children, ...props }: HtmlProps<'h2'>) => (
   <Headline level="2" {...props}>
     {children}
   </Headline>
 );
 
-export const h3 = ({ children, ...props }: ComponentProps<'h3'>) => (
+export const h3 = ({ children, ...props }: HtmlProps<'h3'>) => (
   <Headline level="3" {...props}>
     {children}
   </Headline>
 );
 
-export const h4 = ({ children, ...props }: ComponentProps<'h4'>) => (
+export const h4 = ({ children, ...props }: HtmlProps<'h4'>) => (
   <Headline level="4" {...props}>
     {children}
   </Headline>
 );
 
-export const h5 = ({ children, ...props }: ComponentProps<'h5'>) => (
+export const h5 = ({ children, ...props }: HtmlProps<'h5'>) => (
   <Headline level="5" {...props}>
     {children}
   </Headline>
 );
 
-export const h6 = ({ children, ...props }: ComponentProps<'h6'>) => (
+export const h6 = ({ children, ...props }: HtmlProps<'h6'>) => (
   <Headline level="6" {...props}>
     {children}
   </Headline>
@@ -45,22 +45,22 @@ export const h6 = ({ children, ...props }: ComponentProps<'h6'>) => (
 
 export const p = Text;
 
-export const a = ({ children, href = '#', ...props }: ComponentProps<'a'>) => (
+export const a = ({ children, href = '#', ...props }: HtmlProps<'a'>) => (
   <Link href={href} {...props}>
     {children}
   </Link>
 );
 
-export const ul = ({ children, ...props }: ComponentProps<'ul'>) => (
+export const ul = ({ children, ...props }: HtmlProps<'ul'>) => (
   <List {...props}>{children}</List>
 );
 
-export const ol = ({ children, ...props }: ComponentProps<'ol'>) => (
+export const ol = ({ children, ...props }: HtmlProps<'ol'>) => (
   <List as="ol" {...props}>
     {children}
   </List>
 );
-export const li = ({ children, ...props }: ComponentProps<'li'>) => (
+export const li = ({ children, ...props }: HtmlProps<'li'>) => (
   <List.Item {...props}>{children}</List.Item>
 );
 
@@ -101,7 +101,7 @@ export const pre = ({ children, ...props }: PreProps) => {
   );
 };
 
-export const code = ({ children, ...props }: ComponentProps<'code'>) => (
+export const code = ({ children, ...props }: HtmlProps<'code'>) => (
   <Box
     as="code"
     {...props}

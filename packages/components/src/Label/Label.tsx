@@ -1,7 +1,7 @@
 // TODO: But this back into the root, when we realease all the new fields!
 import React from 'react';
 import { Box, SVG, ThemeExtension, useComponentStyles } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 // Theme Extension
 // ---------------
@@ -9,7 +9,7 @@ export interface LabelThemeExtension extends ThemeExtension<'Label'> {}
 
 // Props
 // ---------------
-export interface LabelProps extends ComponentProps<'label'> {
+export interface LabelProps extends HtmlProps<'label'> {
   as?: 'label' | 'span';
   variant?: string;
   size?: string;

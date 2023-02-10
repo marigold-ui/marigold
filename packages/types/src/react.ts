@@ -1,6 +1,28 @@
 import * as React from 'react';
 
 /**
+ * Get props from a HTML element without `ref` and strip the `style` prop.
+ *
+ * @example <caption>Will contain all HTML attributes of a regular button element, minus "style"</caption>
+ * type ButtonProps = ComponentProps<'button'>
+ */
+export type HtmlProps<T extends React.ElementType> = Omit<
+  React.ComponentPropsWithoutRef<T>,
+  'style'
+>;
+
+/**
+ * Get props from a HTML element with `ref` and strip the `style` prop.
+ *
+ * @example <caption>Will contain all HTML attributes of a regular button element, minus "style"</caption>
+ * type ButtonProps = ComponentProps<'button'>
+ */
+export type HtmlPropsWithRef<T extends React.ElementType> = Omit<
+  React.ComponentPropsWithRef<T>,
+  'style'
+>;
+
+/**
  * Infer the props of a component `C`.
  */
 export type PropsOf<C> = C extends React.FC<infer P>

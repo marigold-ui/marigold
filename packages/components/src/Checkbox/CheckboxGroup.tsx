@@ -7,7 +7,7 @@ import {
 import { AriaCheckboxGroupProps } from '@react-types/checkbox';
 
 import { Box, useStateProps } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 import { FieldBase } from '../FieldBase';
 
@@ -29,7 +29,7 @@ export const useCheckboxGroupContext = () => useContext(CheckboxGroupContext);
 // Props
 // ---------------
 interface CheckboxGroupProps
-  extends Omit<ComponentProps<'div'>, 'onChange'>,
+  extends Omit<HtmlProps<'div'>, 'onChange'>,
     AriaCheckboxGroupProps {
   children: ReactNode;
   variant?: string;

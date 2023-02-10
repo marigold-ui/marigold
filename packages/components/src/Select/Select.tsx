@@ -21,7 +21,7 @@ import {
   useResponsiveValue,
   useStateProps,
 } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 import { FieldBase } from '../FieldBase';
 import { ListBox } from '../ListBox';
@@ -67,7 +67,7 @@ export interface SelectProps
       | 'onSelectionChange'
     >,
     Omit<
-      ComponentProps<'select'>,
+      HtmlProps<'select'>,
       | 'onKeyUp'
       | 'onKeyDown'
       | 'onFocus'

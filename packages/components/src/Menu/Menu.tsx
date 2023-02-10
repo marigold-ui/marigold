@@ -9,7 +9,7 @@ import {
   ThemeExtensionsWithParts,
   useComponentStyles,
 } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 import { useMenuContext } from './Context';
 import { MenuTrigger } from './MenuTrigger';
@@ -23,8 +23,7 @@ export interface MenuThemeExtension
 
 // Props
 // ---------------
-export interface MenuProps
-  extends Omit<ComponentProps<'ul'>, 'onSelect' | 'size'> {
+export interface MenuProps extends Omit<HtmlProps<'ul'>, 'onSelect' | 'size'> {
   children: CollectionElement<object> | CollectionElement<object>[];
   variant?: string;
   size?: string;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 import { Box, CSSObject } from '@marigold/system';
 import { ThemeExtension, useComponentStyles } from '@marigold/system';
 
@@ -9,7 +9,7 @@ export interface ImageThemeExtension extends ThemeExtension<'Image'> {}
 
 // Props
 // ---------------
-export interface ImageProps extends ComponentProps<'img'> {
+export interface ImageProps extends HtmlProps<'img'> {
   variant?: string;
   size?: string;
   fit?: CSSObject['objectFit'];

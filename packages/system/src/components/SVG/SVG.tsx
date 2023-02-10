@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import { jsx } from '@emotion/react';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 import { useTheme } from '../../hooks';
 import { CSSObject } from '../../types';
 
@@ -12,7 +12,7 @@ const toDimension = (value: number | string | number[] | string[]) =>
 const ensureNumberOrToken = (value: number | string) =>
   typeof value === 'string' && /^[0-9]+$/.test(value) ? Number(value) : value;
 
-export interface SVGProps extends ComponentProps<'svg'> {
+export interface SVGProps extends HtmlProps<'svg'> {
   size?: number | string | number[] | string[];
   css?: CSSObject;
 }

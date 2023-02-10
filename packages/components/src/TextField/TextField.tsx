@@ -6,7 +6,7 @@ import { useObjectRef } from '@react-aria/utils';
 import { AriaTextFieldProps } from '@react-types/textfield';
 
 import { useStateProps } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { Input } from '../Input';
@@ -26,7 +26,7 @@ export type CustomTextFieldEvents =
 
 export interface TextFieldProps
   extends Omit<
-      ComponentProps<'input'>,
+      HtmlProps<'input'>,
       'value' | 'defaultValue' | 'size' | 'width' | CustomTextFieldEvents
     >,
     /**

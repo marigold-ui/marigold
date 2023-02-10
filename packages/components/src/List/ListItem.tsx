@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react';
 
 import { Box } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 import { useListContext } from './Context';
 
-export interface ListItemProps extends ComponentProps<'li'> {
+export interface ListItemProps extends HtmlProps<'li'> {
   children?: ReactNode;
 }
 

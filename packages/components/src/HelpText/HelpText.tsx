@@ -5,7 +5,7 @@ import {
   ThemeExtensionsWithParts,
   useComponentStyles,
 } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 // Theme Extension
 // ---------------
@@ -14,7 +14,7 @@ export interface HelpTextThemeExtension
 
 // Props
 // ---------------
-export interface HelpTextProps extends ComponentProps<'div'> {
+export interface HelpTextProps extends HtmlProps<'div'> {
   variant?: string;
   size?: string;
   disabled?: boolean;

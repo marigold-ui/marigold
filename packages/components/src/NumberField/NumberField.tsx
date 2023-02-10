@@ -7,7 +7,7 @@ import { mergeProps, useObjectRef } from '@react-aria/utils';
 import { useNumberFieldState } from '@react-stately/numberfield';
 import { AriaNumberFieldProps } from '@react-types/numberfield';
 
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 import {
   Box,
   ThemeExtensionsWithParts,
@@ -46,7 +46,7 @@ type CustomProps =
   | 'max';
 
 export interface NumberFieldProps
-  extends Omit<ComponentProps<'input'>, CustomProps>,
+  extends Omit<HtmlProps<'input'>, CustomProps>,
     Omit<AriaNumberFieldProps, 'isDisabled' | 'isRequired' | 'isReadOnly'>,
     Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
   variant?: string;

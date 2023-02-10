@@ -5,7 +5,7 @@ import {
   ThemeComponentProps,
   ThemeExtension,
 } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 // Theme Extension
 // ---------------
@@ -13,9 +13,7 @@ export interface BodyThemeExtension extends ThemeExtension<'Body'> {}
 
 // Props
 // ---------------
-export interface BodyProps
-  extends ThemeComponentProps,
-    ComponentProps<'section'> {
+export interface BodyProps extends ThemeComponentProps, HtmlProps<'section'> {
   children?: ReactNode;
 }
 

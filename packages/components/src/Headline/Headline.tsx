@@ -6,7 +6,7 @@ import {
   ThemeExtension,
   CSSObject,
 } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 // Theme Extension
 // ---------------
@@ -14,9 +14,7 @@ export interface HeadlineThemeExtension extends ThemeExtension<'Headline'> {}
 
 // Props
 // ---------------
-export interface HeadlineProps
-  extends ThemeComponentProps,
-    ComponentProps<'h1'> {
+export interface HeadlineProps extends ThemeComponentProps, HtmlProps<'h1'> {
   children?: ReactNode;
   level?: '1' | '2' | '3' | '4' | '5' | '6';
   align?: CSSObject['textAlign'];
