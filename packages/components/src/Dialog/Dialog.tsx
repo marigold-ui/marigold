@@ -14,6 +14,7 @@ import { Header } from '../Header';
 import { Headline } from '../Headline';
 import { DialogContextProps, useDialogContext } from './Context';
 import { DialogTrigger } from './DialogTrigger';
+import { DialogController } from './DialogController';
 
 // Close Button
 // ---------------
@@ -145,3 +146,4 @@ export const Dialog = ({
 };
 
 Dialog.Trigger = DialogTrigger;
+Dialog.Controller = DialogController;
