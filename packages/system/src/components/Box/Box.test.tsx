@@ -90,13 +90,13 @@ test('supports custom className', () => {
 
 test('passes down HTML attributes', () => {
   render(
-    <Box className="my-custom-class" id="element-id">
+    <Box title="my-custom-title" id="element-id">
       Test
     </Box>
   );
   const element = screen.getByText('Test');
 
-  expect(element.getAttribute('className')).toMatch('my-custom-class');
+  expect(element.getAttribute('title')).toMatch('my-custom-title');
   expect(element.getAttribute('id')).toEqual('element-id');
 });
 
