@@ -2,13 +2,9 @@ import React, { forwardRef, ReactNode } from 'react';
 import { useLink } from '@react-aria/link';
 import { PressEvents } from '@react-types/shared';
 import { ThemeExtension, useComponentStyles } from '@marigold/system';
-import {
-  PolymorphicComponentWithRef,
-  PolymorphicProps,
-  PolymorphicPropsWithRef,
-} from '@marigold/types';
+import { PolymorphicComponent, PropsOf } from '@marigold/types';
 
-import { Box, BoxOwnProps } from '../Box';
+import { Box } from '../Box';
 import { useObjectRef } from '@react-aria/utils';
 
 // Theme Extension
@@ -17,18 +13,18 @@ export interface LinkThemeExtension extends ThemeExtension<'Link'> {}
 
 // Props
 // ---------------
-export interface LinkOwnProps extends PressEvents, BoxOwnProps {
+export interface LinkOwnProps extends PressEvents {
   disabled?: boolean;
   variant?: string;
   size?: string;
   children?: ReactNode;
 }
 
-export interface LinkProps extends PolymorphicPropsWithRef<LinkOwnProps, 'a'> {}
+export interface LinkProps extends PropsOf<typeof Link> {}
 
 // Component
 // ---------------
-export const Link: PolymorphicComponentWithRef<LinkOwnProps, 'a'> = forwardRef(
+export const Link = forwardRef(
   (
     {
       as = 'a',
@@ -39,14 +35,13 @@ export const Link: PolymorphicComponentWithRef<LinkOwnProps, 'a'> = forwardRef(
       onPress,
       onPressStart,
       ...props
-    }: Omit<LinkProps, 'ref'>,
+    },
     ref
   ) => {
     const linkRef = useObjectRef<HTMLAnchorElement>(ref as any);
     const { linkProps } = useLink(
       {
-        // We typecast here because the element could very well be a `span`
-        ...(props as PolymorphicProps<LinkOwnProps, any>),
+        ...props,
         elementType: typeof as === 'string' ? as : 'span',
         isDisabled: disabled,
       },
@@ -68,4 +63,4 @@ export const Link: PolymorphicComponentWithRef<LinkOwnProps, 'a'> = forwardRef(
       </Box>
     );
   }
-);
+) as PolymorphicComponent<'a', LinkOwnProps>;

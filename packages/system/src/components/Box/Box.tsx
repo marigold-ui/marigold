@@ -17,7 +17,7 @@ export interface BoxOwnProps {
   __baseCSS?: CSSObject;
 }
 
-export type BoxProps = PropsOf<typeof Box>;
+export interface BoxProps extends PropsOf<typeof Box> {}
 
 interface CreateStyleProps {
   __baseCSS?: CSSObject;
