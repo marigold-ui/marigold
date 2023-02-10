@@ -445,3 +445,20 @@ test('onOpenChange has been called in dialog controller', () => {
 
   expect(setState).toHaveBeenCalled();
 });
+
+test('dialog controller accepts only one child', () => {
+  render(
+    <OverlayProvider>
+      <Dialog.Controller>
+        <Dialog>Content</Dialog>
+      </Dialog.Controller>
+    </OverlayProvider>
+  );
+
+  const dialog = screen.getByRole('dialog');
+  expect(dialog).toBeVisible();
+
+  const parent = dialog.parentElement;
+  expect(parent?.children).toHaveLength(1);
+  expect(parent?.children).not.toHaveLength(2);
+});
