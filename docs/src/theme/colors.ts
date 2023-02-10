@@ -25,27 +25,27 @@ export const colors = {
   hover: {
     light: 'hsl(28, 100%, 53%, 0.1)',
   },
-  yellow: {
-    base: 'hsl(46, 81%, 63%)',
-    50: 'hsl(45, 97%, 54%)',
-  },
   info: {
     background: 'hsl(207, 100%, 98%)',
     base: 'hsl(208, 100%, 83%)',
     text: 'hsl(208, 100%, 20%)',
   },
-  red: {
-    50: 'hsl(0, 100%, 71%)',
+  success: {
+    background: 'hsl(79 81% 94%)',
+    base: 'hsl(84 69% 51%)',
+    text: 'hsl(85 84% 15%)',
   },
-
-  green: {
-    50: 'hsl(130, 57%, 56%)',
+  error: {
+    background: 'hsl(0 100% 95%)',
+    base: 'hsl(0 94% 65%)',
+    text: 'hsl(0 65% 36%)',
   },
-
-  blue: {
-    50: 'hsl(207, 86%, 57%)',
+  warning: {
+    background: 'hsl(50 100% 93%)',
+    base: 'hsl(45 97% 54%)',
+    text: 'hsl(31 100% 25%)',
   },
-  orange: {
-    50: 'hsl(29, 100%, 58%)',
+  yellow: {
+    base: 'hsl(46, 81%, 63%)',
   },
 };

@@ -90,31 +90,25 @@ const NavigationItem = ({
   variant,
   badge,
   ...props
-}: NavigationItemProps) => {
-  const badgeNameToLowerCase = (badge: string) => {
-    return badge.toLowerCase();
-  };
-  return (
-    <Box
-      as="li"
-      role="menuitem"
-      __baseCSS={{ listStyle: 'none' }}
-      css={css?.item}
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-    >
-      <Link variant="navigation" {...props}>
-        {title}
-      </Link>
-      {badge && (
-        <Badge variant={badgeNameToLowerCase(badge)} size="small">
-          {badge}
-        </Badge>
-      )}
-    </Box>
-  );
-};
+}: NavigationItemProps) => (
+  <Box
+    as="li"
+    role="menuitem"
+    css={[
+      css?.item,
+      {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 'small-1',
+      },
+    ]}
+  >
+    <Link variant="navigation" {...props}>
+      {title}
+    </Link>
+    {badge && <Badge variant={badge.toLowerCase()}>{badge}</Badge>}
+  </Box>
+);
 
 const NavigationGroup = ({ name, items, css }: NavigationMenuGroupProps) => (
   <Box as="li" role="menuitem" __baseCSS={{ listStyle: 'none' }}>
