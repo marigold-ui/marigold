@@ -69,7 +69,7 @@ export const OpenMenuRemotely: ComponentStory<typeof Menu.Trigger> = args => {
         Open the menu remotly!
       </Button>
       <hr />
-      <Menu.Trigger open={open}>
+      <Menu.Trigger open={true}>
         <Button variant="menu" size="small">
           Choose Menu
         </Button>

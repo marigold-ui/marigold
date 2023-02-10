@@ -402,3 +402,38 @@ test('renders action menu', () => {
   const item = screen.getByText('Settings');
   expect(item).toBeInTheDocument();
 });
+
+test('supports open property', () => {
+  render(
+    <OverlayProvider>
+      <Menu.Trigger open={true}>
+        <Button>Choose</Button>
+        <Menu data-testid="menu">
+          <Menu.Item key="burger">Burger</Menu.Item>
+          <Menu.Item key="pizza">Pizza</Menu.Item>
+        </Menu>
+      </Menu.Trigger>
+    </OverlayProvider>
+  );
+
+  const item = screen.getByText('Burger');
+  expect(item).toBeInTheDocument();
+});
+
+test('supports onOpenChange property', () => {
+  const onOpenChange = jest.fn();
+  render(
+    <OverlayProvider>
+      <Menu.Trigger onOpenChange={() => onOpenChange()}>
+        <Button>Choose</Button>
+        <Menu data-testid="menu">
+          <Menu.Item key="burger">Burger</Menu.Item>
+          <Menu.Item key="pizza">Pizza</Menu.Item>
+        </Menu>
+      </Menu.Trigger>
+    </OverlayProvider>
+  );
+  expect(onOpenChange).toBeCalledTimes(0);
+  fireEvent.click(screen.getByRole('button'));
+  expect(onOpenChange).toBeCalledTimes(1);
+});
