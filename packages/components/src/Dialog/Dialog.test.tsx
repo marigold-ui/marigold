@@ -1,14 +1,15 @@
 /* eslint-disable testing-library/no-node-access */
+/* eslint-disable testing-library/no-container */
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { OverlayProvider } from '@react-aria/overlays';
 import { ThemeProvider } from '@marigold/system';
 
 import { Dialog } from './Dialog';
 import { Button } from '../Button';
 import { Headline } from '../Headline';
-import { OverlayProvider } from '@react-aria/overlays';
 
 const theme = {
   colors: {
@@ -52,6 +53,17 @@ const theme = {
 };
 
 const user = userEvent.setup();
+
+let errorMock: jest.SpyInstance;
+
+beforeEach(() => {
+  errorMock = jest.spyOn(console, 'error').mockImplementation();
+});
+
+afterEach(() => {
+  errorMock.mockRestore();
+});
+
 test('renders children correctly', () => {
   render(
     <OverlayProvider>
@@ -415,4 +427,90 @@ test('dialog supports size', () => {
   const dialog = screen.getByRole('dialog');
   expect(dialog).toBeVisible();
   expect(dialog).toHaveStyle('width: 400px');
+});
+
+test('renders with dialog controller', () => {
+  render(
+    <OverlayProvider>
+      <Dialog.Controller>
+        <Dialog>
+          <Headline>Headline</Headline>Content
+        </Dialog>
+      </Dialog.Controller>
+    </OverlayProvider>
+  );
+
+  const dialog = screen.getByRole('dialog');
+  expect(dialog).toBeVisible();
+});
+
+test('onOpenChange has been called in dialog controller', () => {
+  const setState = jest.fn();
+  const useStateSpy = jest.spyOn(React, 'useState');
+  // eslint-disable-next-line no-sparse-arrays
+  useStateSpy.mockImplementation(() => [, setState]);
+  render(
+    <OverlayProvider>
+      <Dialog.Controller onOpenChange={a => setState(a)}>
+        <Dialog>
+          <Headline>Headline</Headline>Content
+        </Dialog>
+      </Dialog.Controller>
+    </OverlayProvider>
+  );
+
+  expect(setState).toHaveBeenCalled();
+});
+
+test('dialog controller accepts only one child', () => {
+  render(
+    <OverlayProvider>
+      <Dialog.Controller>
+        <Dialog>
+          <Headline>Headline</Headline>Content
+        </Dialog>
+      </Dialog.Controller>
+    </OverlayProvider>
+  );
+
+  const dialog = screen.getByRole('dialog');
+  expect(dialog).toBeVisible();
+
+  const parent = dialog.parentElement;
+  expect(parent?.children).toHaveLength(1);
+  expect(parent?.children).not.toHaveLength(2);
+
+  expect(parent).toBeValid();
+  expect(dialog).toBeValid();
+});
+
+test('dialog controller throw errof if not one child', () => {
+  expect(() => {
+    render(
+      <OverlayProvider>
+        <Dialog.Controller>
+          <Dialog>Content</Dialog>
+          <div>something</div>
+        </Dialog.Controller>
+      </OverlayProvider>
+    );
+  }).toThrow(Error);
+  expect(errorMock).toHaveBeenCalled();
+});
+
+test('dialog controller expect no valid child', () => {
+  const children = null;
+  const { container } = render(
+    <OverlayProvider>
+      <Dialog.Controller data-testid="dialog">{children}</Dialog.Controller>
+    </OverlayProvider>
+  );
+
+  expect(
+    container.querySelector(`div[data-overlay-container="true"]`)?.childNodes
+  ).toHaveLength(0);
+
+  expect(
+    container.querySelector(`div[data-overlay-container="true"]`)?.lastChild
+  ).toBeNull();
 });
