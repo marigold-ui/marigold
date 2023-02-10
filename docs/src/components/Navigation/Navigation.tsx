@@ -98,20 +98,19 @@ const NavigationItem = ({
     <Box
       as="li"
       role="menuitem"
-      __baseCSS={{ listStyle: 'none' }}
-      css={css?.item}
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
+      css={[
+        css?.item,
+        {
+          display: 'flex',
+          alignItems: 'center',
+          gap: 'small-1',
+        },
+      ]}
     >
       <Link variant="navigation" {...props}>
         {title}
       </Link>
-      {badge && (
-        <Badge variant={badgeNameToLowerCase(badge)} size="small">
-          {badge}
-        </Badge>
-      )}
+      {badge && <Badge variant={badgeNameToLowerCase(badge)}>{badge}</Badge>}
     </Box>
   );
 };
