@@ -7,7 +7,7 @@ import {
 } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
-import { Box, BoxOwnProps } from '@marigold/system';
+import { Box } from '@marigold/system';
 
 // Theme Extension
 // ---------------
@@ -15,10 +15,7 @@ export interface TextThemeExtension extends ThemeExtension<'Text'> {}
 
 // Props
 // ---------------
-export interface TextProps
-  extends ThemeComponentProps,
-    HtmlProps<'p'>,
-    Omit<BoxOwnProps, 'variant'> {
+export interface TextProps extends ThemeComponentProps, HtmlProps<'p'> {
   align?: CSSObject['textAlign'];
   color?: string;
   cursor?: string;

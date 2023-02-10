@@ -4,7 +4,7 @@ import { PressEvents } from '@react-types/shared';
 import { ThemeExtension, useComponentStyles } from '@marigold/system';
 import { PolymorphicComponent, PropsOf } from '@marigold/types';
 
-import { Box } from '../Box';
+import { Box, BoxOwnProps } from '../Box';
 import { useObjectRef } from '@react-aria/utils';
 
 // Theme Extension
@@ -13,7 +13,7 @@ export interface LinkThemeExtension extends ThemeExtension<'Link'> {}
 
 // Props
 // ---------------
-export interface LinkOwnProps extends PressEvents {
+export interface LinkOwnProps extends PressEvents, BoxOwnProps {
   disabled?: boolean;
   variant?: string;
   size?: string;
