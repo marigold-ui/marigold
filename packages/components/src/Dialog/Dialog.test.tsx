@@ -1,4 +1,5 @@
 /* eslint-disable testing-library/no-node-access */
+/* eslint-disable testing-library/no-container */
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -495,4 +496,21 @@ test('dialog controller throw errof if not one child', () => {
     );
   }).toThrow(Error);
   expect(errorMock).toHaveBeenCalled();
+});
+
+test('dialog controller expect no valid child', () => {
+  const children = null;
+  const { container } = render(
+    <OverlayProvider>
+      <Dialog.Controller data-testid="dialog">{children}</Dialog.Controller>
+    </OverlayProvider>
+  );
+
+  expect(
+    container.querySelector(`div[data-overlay-container="true"]`)?.childNodes
+  ).toHaveLength(0);
+
+  expect(
+    container.querySelector(`div[data-overlay-container="true"]`)?.lastChild
+  ).toBeNull();
 });
