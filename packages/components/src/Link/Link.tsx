@@ -56,19 +56,16 @@ export const Link: PolymorphicComponentWithRef<LinkOwnProps, 'a'> = forwardRef(
     const styles = useComponentStyles('Link', { variant, size });
 
     return (
-      <>
-        {' '}
-        <Box
-          as={as}
-          role="link"
-          css={styles}
-          ref={linkRef}
-          {...props}
-          {...linkProps}
-        >
-          {children}
-        </Box>{' '}
-      </>
+      <Box
+        as={as}
+        role="link"
+        css={styles}
+        ref={linkRef}
+        {...props}
+        {...linkProps}
+      >
+        {children}
+      </Box>
     );
   }
 );
