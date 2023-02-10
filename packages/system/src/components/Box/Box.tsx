@@ -3,10 +3,7 @@ import { jsx, Theme } from '@emotion/react';
 import { css as transformStyleObject } from '@theme-ui/css';
 import merge from 'deepmerge';
 
-import {
-  PolymorphicPropsWithRef,
-  PolymorphicComponentWithRef,
-} from '@marigold/types';
+import type { PolymorphicComponent, PropsOf } from '@marigold/types';
 
 import { transformPseudos } from './selector';
 import { CSSObject } from '../../types';
@@ -20,7 +17,7 @@ export interface BoxOwnProps {
   __baseCSS?: CSSObject;
 }
 
-export interface BoxProps extends PolymorphicPropsWithRef<BoxOwnProps, 'div'> {}
+export type BoxProps = PropsOf<typeof Box>;
 
 interface CreateStyleProps {
   __baseCSS?: CSSObject;
@@ -39,7 +36,7 @@ const createThemedStyle =
     return transformPseudos(themedStyles);
   };
 
-export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef(
+export const Box = forwardRef(
   ({ as = 'div', children, __baseCSS, css, ...props }, ref) =>
     jsx(
       as,
@@ -53,4 +50,4 @@ export const Box: PolymorphicComponentWithRef<BoxOwnProps, 'div'> = forwardRef(
       },
       children
     )
-);
+) as PolymorphicComponent<'div', BoxOwnProps>;

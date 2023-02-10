@@ -90,14 +90,14 @@ test('supports custom className', () => {
 
 test('passes down HTML attributes', () => {
   render(
-    <Box className="my-custom-class" id="element-id" disabled>
+    <Box className="my-custom-class" id="element-id">
       Test
     </Box>
   );
   const element = screen.getByText('Test');
 
+  expect(element.getAttribute('className')).toMatch('my-custom-class');
   expect(element.getAttribute('id')).toEqual('element-id');
-  expect(element.getAttribute('disabled')).toMatch('');
 });
 
 test('forwards ref', () => {
