@@ -52,6 +52,17 @@ const theme = {
 };
 
 const user = userEvent.setup();
+
+let errorMock: jest.SpyInstance;
+
+beforeEach(() => {
+  errorMock = jest.spyOn(console, 'error').mockImplementation();
+});
+
+afterEach(() => {
+  errorMock.mockRestore();
+});
+
 test('renders children correctly', () => {
   render(
     <OverlayProvider>
@@ -421,7 +432,9 @@ test('renders with dialog controller', () => {
   render(
     <OverlayProvider>
       <Dialog.Controller>
-        <Dialog>Content</Dialog>
+        <Dialog>
+          <Headline>Headline</Headline>Content
+        </Dialog>
       </Dialog.Controller>
     </OverlayProvider>
   );
@@ -438,7 +451,9 @@ test('onOpenChange has been called in dialog controller', () => {
   render(
     <OverlayProvider>
       <Dialog.Controller onOpenChange={a => setState(a)}>
-        <Dialog>Content</Dialog>
+        <Dialog>
+          <Headline>Headline</Headline>Content
+        </Dialog>
       </Dialog.Controller>
     </OverlayProvider>
   );
@@ -450,7 +465,9 @@ test('dialog controller accepts only one child', () => {
   render(
     <OverlayProvider>
       <Dialog.Controller>
-        <Dialog>Content</Dialog>
+        <Dialog>
+          <Headline>Headline</Headline>Content
+        </Dialog>
       </Dialog.Controller>
     </OverlayProvider>
   );
@@ -461,4 +478,21 @@ test('dialog controller accepts only one child', () => {
   const parent = dialog.parentElement;
   expect(parent?.children).toHaveLength(1);
   expect(parent?.children).not.toHaveLength(2);
+
+  expect(parent).toBeValid();
+  expect(dialog).toBeValid();
+});
+
+test('dialog controller throw errof if not one child', () => {
+  expect(() => {
+    render(
+      <OverlayProvider>
+        <Dialog.Controller>
+          <Dialog>Content</Dialog>
+          <div>something</div>
+        </Dialog.Controller>
+      </OverlayProvider>
+    );
+  }).toThrow(Error);
+  expect(errorMock).toHaveBeenCalled();
 });
