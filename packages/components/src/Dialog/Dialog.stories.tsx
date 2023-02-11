@@ -97,9 +97,12 @@ export const ScrollableContent: ComponentStory<
           <Stack space="small">
             <Text>This is some not so very long text.</Text>
             <Box
-              pl="small"
-              pb="xsmall"
-              css={{ maxHeight: '200px', overflowY: 'auto' }}
+              css={{
+                pl: 'small',
+                pb: 'xsmall',
+                maxHeight: '200px',
+                overflowY: 'auto',
+              }}
             >
               <CheckboxGroup>
                 <Checkbox>One</Checkbox>

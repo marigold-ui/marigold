@@ -54,26 +54,91 @@ export default {
 export const Boxes: ComponentStory<typeof Tiles> = args => (
   <>
     <Tiles {...args}>
-      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+      <Box
+        css={{
+          border: '1px solid #ced4da',
+          bg: '#e9ecef',
+          height: '100px',
+        }}
+      />
+      <Box
+        css={{
+          border: '1px solid #ced4da',
+          bg: '#e9ecef',
+          height: '100px',
+        }}
+      />
+      <Box
+        css={{
+          border: '1px solid #ced4da',
+          bg: '#e9ecef',
+          height: '100px',
+        }}
+      />
+      <Box
+        css={{
+          border: '1px solid #ced4da',
+          bg: '#e9ecef',
+          height: '100px',
+        }}
+      />
+      <Box
+        css={{
+          border: '1px solid #ced4da',
+          bg: '#e9ecef',
+          height: '100px',
+        }}
+      />
+      <Box
+        css={{
+          border: '1px solid #ced4da',
+          bg: '#e9ecef',
+          height: '100px',
+        }}
+      />
+      <Box
+        css={{
+          border: '1px solid #ced4da',
+          bg: '#e9ecef',
+          height: '100px',
+        }}
+      />
+      <Box
+        css={{
+          border: '1px solid #ced4da',
+          bg: '#e9ecef',
+          height: '100px',
+        }}
+      />
     </Tiles>
     <br />
     <Tiles {...args}>
-      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
-      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" />
+      <Box
+        css={{
+          border: '1px solid #ced4da',
+          bg: '#e9ecef',
+          height: '100px',
+        }}
+      />
+      <Box
+        css={{
+          border: '1px solid #ced4da',
+          bg: '#e9ecef',
+          height: '100px',
+        }}
+      />
     </Tiles>
   </>
 );
 
 export const DifferentHights: ComponentStory<typeof Tiles> = args => (
   <Tiles {...args}>
-    <Box border="1px solid #ced4da" bg="#e9ecef">
+    <Box
+      css={{
+        border: '1px solid #ced4da',
+        bg: '#e9ecef',
+      }}
+    >
       <Text align="center">I love Tiles!</Text>
       <Text align="center">I love Tiles!</Text>
       <Text align="center">I love Tiles!</Text>
@@ -83,25 +148,50 @@ export const DifferentHights: ComponentStory<typeof Tiles> = args => (
       <Text align="center">I love Tiles!</Text>
       <Text align="center">I love Tiles!</Text>
     </Box>
-    <Box border="1px solid #ced4da" bg="#e9ecef">
+    <Box
+      css={{
+        border: '1px solid #ced4da',
+        bg: '#e9ecef',
+      }}
+    >
       <Text align="center">I love Tiles!</Text>
       <Text align="center">I love Tiles!</Text>
     </Box>
-    <Box border="1px solid #ced4da" bg="#e9ecef">
+    <Box
+      css={{
+        border: '1px solid #ced4da',
+        bg: '#e9ecef',
+      }}
+    >
       <Text align="center">I love Tiles!</Text>
       <Text align="center">I love Tiles!</Text>
       <Text align="center">I love Tiles!</Text>
       <Text align="center">I love Tiles!</Text>
     </Box>
-    <Box border="1px solid #ced4da" bg="#e9ecef">
+    <Box
+      css={{
+        border: '1px solid #ced4da',
+        bg: '#e9ecef',
+      }}
+    >
       <Text align="center">I love Tiles!</Text>
       <Text align="center">I love Tiles!</Text>
     </Box>
-    <Box border="1px solid #ced4da" bg="#e9ecef">
+    <Box
+      css={{
+        border: '1px solid #ced4da',
+        bg: '#e9ecef',
+      }}
+    >
       <Text align="center">I love Tiles!</Text>
       <Text align="center">I love Tiles!</Text>
     </Box>
-    <Box border="1px solid #ced4da" bg="#e9ecef">
+    <Box
+      css={{
+        border: '1px solid #ced4da',
+        bg: '#e9ecef',
+      }}
+    >
       <Text align="center">I love Tiles!</Text>
       <Text align="center">I love Tiles!</Text>
     </Box>
@@ -110,7 +200,13 @@ export const DifferentHights: ComponentStory<typeof Tiles> = args => (
 
 export const Stacks: ComponentStory<typeof Tiles> = args => (
   <Tiles {...args}>
-    <Box border="1px solid #fa8005" bg="orange10" p="small">
+    <Box
+      css={{
+        border: '1px solid #fa8005',
+        bg: 'orange10',
+        p: 'small',
+      }}
+    >
       <Stack space="medium" alignX="center">
         <Image
           src="https://www.pokewiki.de/images/6/63/Sugimori_004.png"
@@ -126,7 +222,13 @@ export const Stacks: ComponentStory<typeof Tiles> = args => (
         </Text>
       </Stack>
     </Box>
-    <Box border="1px solid #fa8005" bg="orange10" p="small">
+    <Box
+      css={{
+        border: '1px solid #fa8005',
+        bg: 'orange10',
+        p: 'small',
+      }}
+    >
       <Stack space="medium" alignX="center">
         <Image
           src="https://www.pokewiki.de/images/7/7a/Sugimori_005.png"
@@ -143,7 +245,13 @@ export const Stacks: ComponentStory<typeof Tiles> = args => (
         </Text>
       </Stack>
     </Box>
-    <Box border="1px solid #fa8005" bg="orange10" p="small">
+    <Box
+      css={{
+        border: '1px solid #fa8005',
+        bg: 'orange10',
+        p: 'small',
+      }}
+    >
       <Stack space="medium" alignX="center">
         <Image
           src="https://www.pokewiki.de/images/9/96/Sugimori_006.png"

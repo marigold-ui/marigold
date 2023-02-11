@@ -22,7 +22,12 @@ export const Shadows = () => {
 
   const shadow = Token.shadow;
   return (
-    <Box bg={Token.color.gray['30']} p={40}>
+    <Box
+      css={{
+        bg: Token.color.gray['30'],
+        p: 40,
+      }}
+    >
       <Stack space="32px" alignX="center">
         {Object.values(shadow).map(value => (
           <Shadow key={value} value={value} />

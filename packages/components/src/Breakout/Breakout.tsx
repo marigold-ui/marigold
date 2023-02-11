@@ -34,12 +34,12 @@ export const Breakout = ({
 
   return (
     <Box
-      alignItems={alignItems}
-      justifyContent={justifyContent}
-      width="100%"
-      height={height}
-      display={alignY || alignX ? 'flex' : 'block'}
-      __baseCSS={{
+      css={{
+        alignItems,
+        justifyContent,
+        height,
+        width: '100%',
+        display: alignY || alignX ? 'flex' : 'block',
         gridColumn: '1 / -1 !important',
       }}
       {...props}

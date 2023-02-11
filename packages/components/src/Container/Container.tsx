@@ -48,8 +48,8 @@ export const Container = ({
 
   return (
     <Box
-      display="grid"
       css={{
+        display: 'grid',
         gridTemplateColumns: ALIGN[align](maxWidth).gridTemplateColumns,
         placeItems: ALIGN_ITEMS[alignItems],
         '> *': {

@@ -62,10 +62,20 @@ export const Header: ComponentStory<typeof Container> = args => (
 );
 
 export const InnerContent: ComponentStory<typeof Container> = args => (
-  <Box bg="blue10" p="small">
+  <Box
+    css={{
+      bg: 'blue10',
+      p: 'small',
+    }}
+  >
     <Container {...args}>
       <Headline level="2">Star Wars - The Empire Strikes Back</Headline>
-      <Box pt="xsmall" width="100%">
+      <Box
+        css={{
+          pt: 'xsmall',
+          width: '100%',
+        }}
+      >
         <Text>
           It is a dark time for the Rebellion. Although the Death Star has been
           destroyed, Imperial troops have driven the Rebel forces from their
@@ -77,7 +87,7 @@ export const InnerContent: ComponentStory<typeof Container> = args => (
           space....
         </Text>
       </Box>
-      <Box width="20ch">
+      <Box css={{ width: '20ch' }}>
         <ul>
           <li>Luke</li>
           <li>Leia</li>
