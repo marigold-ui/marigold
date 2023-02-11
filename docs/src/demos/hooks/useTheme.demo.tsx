@@ -6,7 +6,12 @@ export const useCurrentTheme = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box overflow="scroll" width="100%">
+      <Box
+        css={{
+          overflow: 'scroll',
+          width: '100%',
+        }}
+      >
         {Object.entries(theme).map(([key, value]) => (
           <List key={key}>
             <strong>{key}</strong>

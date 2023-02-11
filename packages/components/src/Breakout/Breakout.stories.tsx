@@ -85,7 +85,13 @@ export const ExampleText: ComponentStory<typeof Breakout> = args => (
       Ipsum.
     </Text>
     <Breakout {...args}>
-      <Box border="1px solid #ced4da" bg="#e9ecef" height="100px">
+      <Box
+        css={{
+          border: '1px solid #ced4da',
+          bg: '#e9ecef',
+          height: '100px',
+        }}
+      >
         BREAKOUT element inside a container
       </Box>
     </Breakout>

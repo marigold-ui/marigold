@@ -11,9 +11,28 @@ export const StretchColumnsSwitch = () => {
       </Box>
       <Box css={{ height: 300, bg: '#adb5bd' }}>
         <Columns columns={[1, 1, 1]} stretch={stretch}>
-          <Box border="1px solid #495057" bg="#e9ecef" height="150px" />
-          <Box border="1px solid #495057" bg="#e9ecef" height="150px" />
-          <Box border="1px solid #495057" bg="#e9ecef" height="100%" p={8}>
+          <Box
+            css={{
+              border: '1px solid #495057',
+              bg: '#e9ecef',
+              height: '150px',
+            }}
+          />
+          <Box
+            css={{
+              border: '1px solid #495057',
+              bg: '#e9ecef',
+              height: '150px',
+            }}
+          />
+          <Box
+            css={{
+              border: '1px solid #495057',
+              bg: '#e9ecef',
+              height: '100%',
+              p: 8,
+            }}
+          >
             I will grow, if you set <code>stretch</code> prop on the{' '}
             <code>Columns</code>!
           </Box>
