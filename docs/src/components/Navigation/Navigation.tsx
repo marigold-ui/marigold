@@ -152,6 +152,7 @@ const NavigationCategory = ({
                 key={i.slug}
                 title={i.title}
                 href={`/${i.slug}`}
+                badge={i.badge}
               />
             ))}
           </Box>
