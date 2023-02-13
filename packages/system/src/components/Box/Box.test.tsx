@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 import { ThemeProvider } from '../../hooks';
 
-import { Box, StyleProps } from './Box';
+import { Box } from './Box';
 
 const theme = {
   colors: {
@@ -90,14 +90,14 @@ test('supports custom className', () => {
 
 test('passes down HTML attributes', () => {
   render(
-    <Box className="my-custom-class" id="element-id" disabled>
+    <Box title="my-custom-title" id="element-id">
       Test
     </Box>
   );
   const element = screen.getByText('Test');
 
+  expect(element.getAttribute('title')).toMatch('my-custom-title');
   expect(element.getAttribute('id')).toEqual('element-id');
-  expect(element.getAttribute('disabled')).toMatch('');
 });
 
 test('forwards ref', () => {
@@ -129,75 +129,6 @@ test('default styling overrides (global) normalization', () => {
   expect(element).toHaveStyle(`margin: ${theme.space.medium}px`);
 });
 
-test.each([
-  [{ display: 'flex' }, 'display: flex'],
-  [{ height: 'small' }, 'height: 8px'],
-  [{ width: 'medium' }, 'width: 16px'],
-  [{ minWidth: 'small' }, 'min-width: 8px'],
-  [{ maxWidth: 'large' }, 'max-width: 32px'],
-  [{ position: 'absolute' }, 'position: absolute'],
-  [{ top: 'none' }, 'top: 0px'],
-  [{ bottom: 'xsmall' }, 'bottom: 2px'],
-  [{ right: 'medium' }, 'right: 8px'],
-  [{ left: 'small' }, 'left: 4px'],
-  [{ zIndex: 1000 }, 'z-index: 1000'],
-  [{ p: 'xsmall' }, 'padding: 2px'],
-  [{ px: 'xsmall' }, 'padding-left: 2px', 'padding-right: 2px'],
-  [{ py: 'small' }, 'padding-top: 4px', 'padding-bottom: 4px'],
-  [{ pt: 'xsmall' }, 'padding-top: 2px'],
-  [{ pb: 'xsmall' }, 'padding-bottom: 2px'],
-  [{ pl: 'xsmall' }, 'padding-left: 2px'],
-  [{ pr: 'xsmall' }, 'padding-right: 2px'],
-  [{ m: 'xsmall' }, 'margin: 2px'],
-  [{ mx: 'xsmall' }, 'margin-left: 2px', 'margin-right: 2px'],
-  [{ my: 'small' }, 'margin-top: 4px', 'margin-bottom: 4px'],
-  [{ mt: 'xsmall' }, 'margin-top: 2px'],
-  [{ mb: 'xsmall' }, 'margin-bottom: 2px'],
-  [{ ml: 'xsmall' }, 'margin-left: 2px'],
-  [{ mr: 'xsmall' }, 'margin-right: 2px'],
-  [{ flexDirection: 'column' }, 'flex-direction: column'],
-  [{ flexWrap: 'wrap' }, 'flex-wrap: wrap'],
-  [{ flexShrink: 5 }, 'flex-shrink: 5'],
-  [{ flexGrow: 1 }, 'flex-grow: 1'],
-  [{ alignItems: 'baseline' }, 'align-items: baseline'],
-  [{ justifyContent: 'space-between' }, 'justify-content: space-between'],
-  [{ bg: 'secondary' }, 'background-color: hotpink'],
-  [{ border: 'regular' }, 'border: 1px solid black'],
-  [{ borderRadius: 'medium' }, 'border-radius: 4px'],
-  [{ boxShadow: 'regular' }, 'box-shadow: 3px 3px 5px 6px #ccc'],
-  [{ opacity: 'faded' }, 'opacity: 0.5'],
-  [{ overflow: 'hidden' }, 'overflow: hidden'],
-  [{ transition: 'regular' }, 'transition: 1s opacity'],
-])('supports style prop (%o)', (...args) => {
-  const props = args.shift() as StyleProps;
-
-  render(
-    <ThemeProvider theme={theme}>
-      <Box {...props}>What's in the box!</Box>
-    </ThemeProvider>
-  );
-
-  const box = screen.getByText(`What's in the box!`);
-  args.forEach((style: any) => {
-    expect(box).toHaveStyle(style);
-  });
-});
-
-test('style props override normalization and defaults', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Box __baseCSS={{ p: 'small' }} bg="blue" m="medium" p="large">
-        Test
-      </Box>
-    </ThemeProvider>
-  );
-  const element = screen.getByText('Test');
-
-  expect(element).toHaveStyle(`margin: ${theme.space.medium}px`); // overrides normalization
-  expect(element).toHaveStyle(`padding: ${theme.space.large}px`); // overrides default
-  expect(element).toHaveStyle(`background: ${theme.colors.blue}`); // overrides variant
-});
-
 test('apply custom styling via css prop', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -226,12 +157,11 @@ test('apply custom styling via css prop (array)', () => {
   expect(element).toHaveStyle(`color: ${theme.colors.secondary}`);
 });
 
-test('custom styling overrides normalization, defaults and style props', () => {
+test('custom styling overrides normalization and defaults', () => {
   render(
     <ThemeProvider theme={theme}>
       <Box
         __baseCSS={{ p: 'small' }}
-        bg="black"
         css={{ fontSize: 'large', m: 'small', p: 'large', bg: 'blue' }}
       >
         Test
@@ -243,7 +173,6 @@ test('custom styling overrides normalization, defaults and style props', () => {
   expect(element).toHaveStyle(`margin: ${theme.space.small}px`); // overrides normalization
   expect(element).toHaveStyle(`padding: ${theme.space.large}px`); // overrides default
   expect(element).toHaveStyle(`font-size: ${theme.fontSizes.large}px`); // overrides variant
-  expect(element).toHaveStyle(`background: ${theme.colors.blue}`); // overrides style prop
 });
 
 test('transforms states selectors', async () => {

@@ -5,7 +5,7 @@ import { useObjectRef } from '@react-aria/utils';
 import { useToggleState } from '@react-stately/toggle';
 import { AriaSwitchProps } from '@react-types/switch';
 
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 import {
   ThemeExtensionsWithParts,
   useComponentStyles,
@@ -35,7 +35,7 @@ export type CustomSwitchProps =
 
 export interface SwitchProps
   extends Omit<AriaSwitchProps, 'isSelected'>,
-    Omit<ComponentProps<'input'>, CustomSwitchProps> {
+    Omit<HtmlProps<'input'>, CustomSwitchProps> {
   checked?: boolean;
   variant?: string;
   size?: string;

@@ -455,7 +455,7 @@ importers:
   packages/types:
     specifiers:
       '@types/react': 18.0.27
-      type-fest: ^3.0.0
+      type-fest: 3.0.0
     dependencies:
       type-fest: 3.0.0
     devDependencies:

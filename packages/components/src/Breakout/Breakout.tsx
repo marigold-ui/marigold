@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 import { Box } from '../Box';
 
-export interface BreakoutProps extends ComponentProps<'div'> {
+export interface BreakoutProps extends HtmlProps<'div'> {
   children?: ReactNode;
   alignY?: 'top' | 'bottom' | 'center';
   alignX?: 'left' | 'right' | 'center';
@@ -34,12 +34,12 @@ export const Breakout = ({
 
   return (
     <Box
-      alignItems={alignItems}
-      justifyContent={justifyContent}
-      width="100%"
-      height={height}
-      display={alignY || alignX ? 'flex' : 'block'}
-      __baseCSS={{
+      css={{
+        alignItems,
+        justifyContent,
+        height,
+        width: '100%',
+        display: alignY || alignX ? 'flex' : 'block',
         gridColumn: '1 / -1 !important',
       }}
       {...props}

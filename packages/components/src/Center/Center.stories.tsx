@@ -62,22 +62,58 @@ export default {
 
 export const Basic: ComponentStory<typeof Center> = args => (
   <Center {...args}>
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="100%" />
+    <Box
+      css={{
+        border: '1px solid #ced4da',
+        bg: '#e9ecef',
+        height: '100px',
+        width: '100%',
+      }}
+    />
   </Center>
 );
 
 export const Children: ComponentStory<typeof Center> = args => (
   <Center {...args}>
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="100%" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="100%" />
-    <Box border="1px solid #ced4da" bg="#e9ecef" height="100px" width="100%" />
+    <Box
+      css={{
+        border: '1px solid #ced4da',
+        bg: '#e9ecef',
+        height: '100px',
+        width: '100%',
+      }}
+    />
+    <Box
+      css={{
+        border: '1px solid #ced4da',
+        bg: '#e9ecef',
+        height: '100px',
+        width: '100%',
+      }}
+    />
+    <Box
+      css={{
+        border: '1px solid #ced4da',
+        bg: '#e9ecef',
+        height: '100px',
+        width: '100%',
+      }}
+    />
   </Center>
 );
 
 export const Icon: ComponentStory<typeof Center> = args => (
-  <Box as={Center} bg="blue70" width="40px" height="40px" {...args}>
-    <Ticket fill="white" />
-  </Box>
+  <Center {...args}>
+    <Box
+      css={{
+        bg: 'blue70',
+        width: '40px',
+        height: '40px',
+      }}
+    >
+      <Ticket fill="white" />
+    </Box>
+  </Center>
 );
 
 export const Complex: ComponentStory<typeof Center> = args => (

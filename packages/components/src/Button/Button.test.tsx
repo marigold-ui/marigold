@@ -150,21 +150,6 @@ test('add icon in button works as expected', () => {
   expect(icon).toHaveStyle('width: 30px');
 });
 
-test('add space to button works as expected', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Button data-testid="iconbutton" space="small">
-        <Facebook fill="red" size={30} data-testid="facebook" />
-        iconbutton
-      </Button>
-    </ThemeProvider>
-  );
-  const button = screen.getByTestId('iconbutton');
-
-  const style = window.getComputedStyle(button);
-  expect(style.gap).toBe(`0.5ch`);
-});
-
 test('can be used as a "link button"', () => {
   render(
     <ThemeProvider theme={theme}>

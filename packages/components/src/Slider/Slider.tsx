@@ -9,7 +9,7 @@ import { useObjectRef } from '@react-aria/utils';
 import { AriaSliderProps } from '@react-types/slider';
 
 import { ThemeExtensionsWithParts, useComponentStyles } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 import { Box } from '../Box';
 import { Thumb } from './Thumb';
@@ -26,7 +26,7 @@ export interface SliderThemeExtension
 // ---------------
 export interface SliderProps
   extends Omit<
-      ComponentProps<'input'>,
+      HtmlProps<'input'>,
       | 'step'
       | 'value'
       | 'defaultValue'

@@ -2,7 +2,12 @@ import { Aspect, Box, Breakout, Container, Text } from '@marigold/components';
 
 export const iframeBreakout = () => (
   <Container align="center">
-    <Box as={Text} pb="medium">
+    <Box
+      as={Text}
+      css={{
+        pb: 'medium',
+      }}
+    >
       Lorem Ipsum is simply dummy text of the printing and typesetting industry.
       Lorem Ipsum has been the industry's standard dummy text ever since the
       1500s, when an unknown printer took a galley of type and scrambled it to
@@ -18,7 +23,7 @@ export const iframeBreakout = () => (
         />
       </Aspect>
     </Breakout>
-    <Box as={Text} pt="medium">
+    <Box as={Text} css={{ pt: 'medium' }}>
       It has survived not only five centuries, but also the leap into electronic
       typesetting, remaining essentially unchanged. It was popularised in the
       1960s with the release of Letraset sheets containing Lorem Ipsum passages,

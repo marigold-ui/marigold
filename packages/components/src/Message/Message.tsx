@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { ThemeExtensionsWithParts, useComponentStyles } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 import { Box } from '../Box';
 
@@ -14,7 +14,7 @@ export interface MessageThemeExtension
 
 // Props
 // ---------------
-export interface MessageProps extends ComponentProps<'div'> {
+export interface MessageProps extends HtmlProps<'div'> {
   messageTitle: ReactNode;
   variant?: string;
   size?: string;

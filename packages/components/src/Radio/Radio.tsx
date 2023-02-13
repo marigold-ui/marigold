@@ -18,7 +18,7 @@ import {
   useComponentStyles,
   useStateProps,
 } from '@marigold/system';
-import type { ComponentProps } from '@marigold/types';
+import type { HtmlProps } from '@marigold/types';
 
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
@@ -77,7 +77,7 @@ export type CustomRadioProps =
 
 export interface RadioProps
   extends ThemeComponentProps,
-    Omit<ComponentProps<'input'>, CustomRadioProps>,
+    Omit<HtmlProps<'input'>, CustomRadioProps>,
     AriaRadioProps {
   width?: string;
   disabled?: boolean;

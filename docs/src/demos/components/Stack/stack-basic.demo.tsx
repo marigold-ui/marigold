@@ -1,7 +1,13 @@
 import { Box, Headline, Stack, Text } from '@marigold/components';
 
 export const BasicStack = () => (
-  <Box border="1px solid #ced4da" bg="#e9ecef" p="small">
+  <Box
+    css={{
+      border: '1px solid #ced4da',
+      bg: '#e9ecef',
+      p: 'small',
+    }}
+  >
     <Stack space="small">
       <Headline level="2">Header</Headline>
       <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>

@@ -45,11 +45,11 @@ const DevMode = () => {
   if (devMode) {
     return (
       <Box
-        bg="#f3f3f3"
         css={{
           textAlign: 'center',
           textTransform: 'uppercase',
           fontFamily: 'headline',
+          bg: '#f3f3f3',
         }}
       >
         <Box as="span" color="#1d67b6">
@@ -99,7 +99,7 @@ const MyApp = ({ Component, pageProps }: AppProps<PageProps>) => {
               )}
               <Box css={{ display: 'flex', gap: 'large-2' }}>
                 <Container contentType="content" size="large">
-                  <Box as={Inline} mb={'small-1'}>
+                  <Box as={Inline} css={{ mb: 'small-1' }}>
                     {pageProps?.switchTheme && <ThemeMenu />}
                     <Split />
                     {(pageProps?.figma ||

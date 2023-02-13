@@ -5,9 +5,9 @@ import {
   ThemeExtension,
   useComponentStyles,
 } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
-import { Box, BoxOwnProps } from '@marigold/system';
+import { Box } from '@marigold/system';
 
 // Theme Extension
 // ---------------
@@ -15,10 +15,8 @@ export interface TextThemeExtension extends ThemeExtension<'Text'> {}
 
 // Props
 // ---------------
-export interface TextProps
-  extends ThemeComponentProps,
-    ComponentProps<'p'>,
-    Omit<BoxOwnProps, 'variant'> {
+export interface TextProps extends ThemeComponentProps, HtmlProps<'p'> {
+  display?: CSSObject['display'];
   align?: CSSObject['textAlign'];
   color?: string;
   cursor?: string;
@@ -33,6 +31,7 @@ export interface TextProps
 export const Text = ({
   variant,
   size,
+  display,
   align,
   color,
   fontSize,
@@ -52,7 +51,15 @@ export const Text = ({
       {...props}
       css={[
         styles,
-        { color, cursor, outline, fontSize, fontWeight, textAlign: align },
+        {
+          display,
+          color,
+          cursor,
+          outline,
+          fontSize,
+          fontWeight,
+          textAlign: align,
+        },
       ]}
     >
       {children}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 import { useComponentStyles, ThemeExtension } from '@marigold/system';
 
 import { Box } from '../Box';
@@ -10,7 +10,7 @@ export interface BadgeThemeExtension extends ThemeExtension<'Badge'> {}
 
 // Props
 // ---------------
-export interface BadgeProps extends ComponentProps<'div'> {
+export interface BadgeProps extends HtmlProps<'div'> {
   children?: React.ReactNode;
   variant?: string;
   size?: string;

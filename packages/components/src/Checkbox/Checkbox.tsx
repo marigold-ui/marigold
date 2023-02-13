@@ -15,7 +15,7 @@ import {
   useComponentStyles,
   useStateProps,
 } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 import { useCheckboxGroupContext } from './CheckboxGroup';
 
@@ -94,7 +94,7 @@ export type CustomCheckboxProps =
 export interface CheckboxProps
   extends ThemeComponentProps,
     Omit<
-      ComponentProps<'input'>,
+      HtmlProps<'input'>,
       'size' | 'type' | 'defaultValue' | CustomCheckboxProps
     >,
     Pick<AriaCheckboxProps, CustomCheckboxProps> {

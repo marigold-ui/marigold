@@ -12,8 +12,8 @@ export interface LinkProps
     Pick<MarigoldLinkProps, 'variant' | 'target' | 'children'> {}
 
 // why the onPress not works: https://github.com/adobe/react-spectrum/issues/2525
-const InnerLink = forwardRef(
-  ({ onClick, ...props }: Omit<LinkProps, 'href' | 'as'>, ref) => {
+const InnerLink = forwardRef<HTMLAnchorElement, Omit<LinkProps, 'href' | 'as'>>(
+  ({ onClick, ...props }, ref) => {
     return (
       <MarigoldLink onClick={onClick} {...props} ref={ref}>
         {props.children}

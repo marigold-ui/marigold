@@ -3,7 +3,7 @@ import { useSliderThumb } from '@react-aria/slider';
 import { mergeProps } from '@react-aria/utils';
 import { SliderState } from '@react-stately/slider';
 
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 import { CSSObject, useStateProps } from '@marigold/system';
 
 import { Box } from '../Box';
@@ -12,7 +12,7 @@ import { useFocusRing } from '@react-aria/focus';
 
 // Props
 // ---------------
-export interface ThumbProps extends Pick<ComponentProps<'input'>, 'disabled'> {
+export interface ThumbProps extends Pick<HtmlProps<'input'>, 'disabled'> {
   state: SliderState;
   trackRef: RefObject<HTMLElement>;
   styles: CSSObject;

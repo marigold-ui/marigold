@@ -6,7 +6,7 @@ import {
   ThemeExtension,
   ResponsiveStyleValue,
 } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 // Theme Extension
 // ---------------
@@ -14,7 +14,7 @@ export interface CardThemeExtension extends ThemeExtension<'Card'> {}
 
 // Props
 // ---------------
-export interface CardProps extends ThemeComponentProps, ComponentProps<'div'> {
+export interface CardProps extends ThemeComponentProps, HtmlProps<'div'> {
   children?: ReactNode;
   p?: ResponsiveStyleValue<string>;
   px?: ResponsiveStyleValue<string>;

@@ -20,7 +20,7 @@ export const ResponsiveValue = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box bg={['red', 'blue', 'green', 'yellow', 'hotpink']}>
+      <Box css={{ bg: ['red', 'blue', 'green', 'yellow', 'hotpink'] }}>
         <SomeComponent />
       </Box>
     </ThemeProvider>

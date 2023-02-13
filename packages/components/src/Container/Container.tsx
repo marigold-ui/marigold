@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 import { size as tokenSize } from '@marigold/tokens';
 
 import { Box } from '../Box';
 
-export interface ContainerProps extends ComponentProps<'div'> {
+export interface ContainerProps extends HtmlProps<'div'> {
   children?: ReactNode;
   contentType?: 'content' | 'header';
   size?: keyof typeof tokenSize.content | keyof typeof tokenSize.header;
@@ -48,8 +48,8 @@ export const Container = ({
 
   return (
     <Box
-      display="grid"
       css={{
+        display: 'grid',
         gridTemplateColumns: ALIGN[align](maxWidth).gridTemplateColumns,
         placeItems: ALIGN_ITEMS[alignItems],
         '> *': {

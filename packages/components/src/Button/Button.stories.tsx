@@ -61,7 +61,7 @@ export const OnPress: ComponentStory<typeof Button> = args => (
   <Button {...args} onPress={(e: any) => console.log(e)} />
 );
 
-export const AsProp: ComponentStory<typeof Button> = args => (
+export const AsProp: ComponentStory<typeof Button> = (args: any) => (
   <Button {...args} as="a" href="https://reservix.net" />
 );
 

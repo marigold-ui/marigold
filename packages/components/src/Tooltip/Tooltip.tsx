@@ -6,7 +6,7 @@ import {
   ThemeExtensionsWithParts,
   useComponentStyles,
 } from '@marigold/system';
-import { ComponentProps } from '@marigold/types';
+import { HtmlProps } from '@marigold/types';
 
 import { useTooltipContext } from './Context';
 import { TooltipTrigger } from './TooltipTrigger';
@@ -18,7 +18,7 @@ export interface TooltipThemeExtension
 
 // Props
 // ---------------
-export interface TooltipProps extends ComponentProps<'div'> {
+export interface TooltipProps extends HtmlProps<'div'> {
   children?: ReactNode;
   variant?: string;
   size?: string;
