@@ -46,7 +46,7 @@ export const Button = forwardRef(
       onPressUp,
       fullWidth,
       ...props
-    }: Omit<ButtonProps, 'ref'>,
+    },
     ref
   ) => {
     const buttonRef = useObjectRef<HTMLButtonElement>(ref as any);
