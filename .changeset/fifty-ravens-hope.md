@@ -3,4 +3,4 @@
 "@marigold/components": minor
 ---
 
-feat: Allow `<Dialog>` to be controlled via `<Dialog.Container>`
+feat: Allow `<Dialog>` to be controlled via `<Dialog.Controller‚>`
