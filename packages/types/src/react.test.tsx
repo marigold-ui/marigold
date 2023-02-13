@@ -1,4 +1,6 @@
 import React from 'react';
+import { render, screen } from '@testing-library/react';
+
 import { IntrinsicElement, OwnProps, PolymorphicComponent, PropsOf } from '.';
 
 /**********************************************/
@@ -118,7 +120,7 @@ export const Anchor = React.forwardRef((props, forwardedRef) => {
 /*                                            */
 /**********************************************/
 export const Test = () => (
-  <>
+  <div data-testid="test-wrapper">
     {/* Link accepts onToggle prop */}
     <Link onToggle={open => console.log(open)} />
 
@@ -213,5 +215,16 @@ export const Test = () => (
 
     {/* Button as Anchor (Polymorphic.ForwardRefComponent) accepts requiredProp */}
     <Button as={Anchor} requiredProp />
-  </>
+  </div>
 );
+
+// Make jest happy since this files ends with *.test.tsx
+it('should render', async () => {
+  render(<Test />);
+
+  const wrapper = screen.getByTestId('test-wrapper');
+
+  expect(wrapper).toBeInTheDocument();
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(wrapper.children.length).toBeGreaterThan(0);
+});
