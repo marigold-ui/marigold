@@ -1,5 +1,11 @@
 # @marigold/eslint-config
 
+## 0.4.6
+
+### Patch Changes
+
+- [#2723](https://github.com/marigold-ui/marigold/pull/2723) [`44379e863`](https://github.com/marigold-ui/marigold/commit/44379e8639e4197939cfe20416f1c63163b495a8) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update eslint
+
 ## 0.4.5
 
 ### Patch Changes

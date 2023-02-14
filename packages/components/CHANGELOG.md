@@ -1,5 +1,42 @@
 # @marigold/components
 
+## 5.0.0
+
+### Major Changes
+
+- [#2764](https://github.com/marigold-ui/marigold/pull/2764) [`1ff29cc0c`](https://github.com/marigold-ui/marigold/commit/1ff29cc0ca5416eed14b54d0dda8ec1aad762cda) Thanks [@sebald](https://github.com/sebald)! - refa: fix polymorph types + remove style props from `<Box>`
+
+  **BREAKING CHANGE:**
+
+  We deprecated the available short hands for styling on the `<Box>` component (also known as style props), for example `<Box p="small">`. This way it is more clear what to use when -> always the `css` prop.
+
+  _How to update your code:_ Basically move all style props to the `css` prop. E.g. `<Box p="small" bg="primary">` becomes `<Box css={{ p: "small, bg; "primary" }}>`.
+
+- [#2740](https://github.com/marigold-ui/marigold/pull/2740) [`7a61d39f4`](https://github.com/marigold-ui/marigold/commit/7a61d39f4c34981cc57b13fdaef2bc73f201dc5c) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: rename onSelect to onAction in Menu component
+
+- [#2733](https://github.com/marigold-ui/marigold/pull/2733) [`9cb030c11`](https://github.com/marigold-ui/marigold/commit/9cb030c111f05f4dadc339f4f9fafe6591d2cd0b) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: change prop onSelectionChange to onChange for select component
+
+### Minor Changes
+
+- [#2766](https://github.com/marigold-ui/marigold/pull/2766) [`6d9b36b6a`](https://github.com/marigold-ui/marigold/commit/6d9b36b6af7f8a82072485216612a9500da3ba33) Thanks [@sebald](https://github.com/sebald)! - feat: add `open` prop to `Dialog.Controller`
+
+- [#2760](https://github.com/marigold-ui/marigold/pull/2760) [`fafc52cbb`](https://github.com/marigold-ui/marigold/commit/fafc52cbbbc48613a7bec52727664414c3f6b9d1) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: Allow `<Dialog>` to be controlled via `<Dialog.Controller‚>`
+
+- [#2759](https://github.com/marigold-ui/marigold/pull/2759) [`596b7b901`](https://github.com/marigold-ui/marigold/commit/596b7b9015dd32cd19a78ef2bc5e39fefa3e26ff) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: update Menu.Trigger with open and onOpenChange property
+
+### Patch Changes
+
+- [#2741](https://github.com/marigold-ui/marigold/pull/2741) [`f65487486`](https://github.com/marigold-ui/marigold/commit/f65487486ef6849bc9850f5c13bc56ae7fe02b1f) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add <ActionMenu> Component with dots
+
+- [#2756](https://github.com/marigold-ui/marigold/pull/2756) [`f9f71ed9d`](https://github.com/marigold-ui/marigold/commit/f9f71ed9d252f046e2c54d2614c683f62eb83afc) Thanks [@sebald](https://github.com/sebald)! - fix: <Link> whitespace
+
+- [#2726](https://github.com/marigold-ui/marigold/pull/2726) [`0f539b788`](https://github.com/marigold-ui/marigold/commit/0f539b788a72654e834c374810ef677c307fdadb) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @types/react to v18.0.27
+
+- Updated dependencies [[`1ff29cc0c`](https://github.com/marigold-ui/marigold/commit/1ff29cc0ca5416eed14b54d0dda8ec1aad762cda), [`0f539b788`](https://github.com/marigold-ui/marigold/commit/0f539b788a72654e834c374810ef677c307fdadb)]:
+  - @marigold/system@5.0.0
+  - @marigold/types@1.0.0
+  - @marigold/icons@1.1.17
+
 ## 4.2.2
 
 ### Patch Changes
