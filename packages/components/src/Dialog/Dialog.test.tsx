@@ -1,6 +1,6 @@
 /* eslint-disable testing-library/no-node-access */
 /* eslint-disable testing-library/no-container */
-import React from 'react';
+import React, { useState } from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -432,7 +432,7 @@ test('dialog supports size', () => {
 test('renders with dialog controller', () => {
   render(
     <OverlayProvider>
-      <Dialog.Controller>
+      <Dialog.Controller open>
         <Dialog>
           <Headline>Headline</Headline>Content
         </Dialog>
@@ -441,28 +441,10 @@ test('renders with dialog controller', () => {
   );
 
   const dialog = screen.getByRole('dialog');
-  expect(dialog).toBeVisible();
+  expect(dialog).toBeInTheDocument();
 });
 
-test('onOpenChange has been called in dialog controller', () => {
-  const setState = jest.fn();
-  const useStateSpy = jest.spyOn(React, 'useState');
-  // eslint-disable-next-line no-sparse-arrays
-  useStateSpy.mockImplementation(() => [, setState]);
-  render(
-    <OverlayProvider>
-      <Dialog.Controller onOpenChange={a => setState(a)}>
-        <Dialog>
-          <Headline>Headline</Headline>Content
-        </Dialog>
-      </Dialog.Controller>
-    </OverlayProvider>
-  );
-
-  expect(setState).toHaveBeenCalled();
-});
-
-test('dialog controller accepts only one child', () => {
+test('renders nothing by default', () => {
   render(
     <OverlayProvider>
       <Dialog.Controller>
@@ -473,44 +455,93 @@ test('dialog controller accepts only one child', () => {
     </OverlayProvider>
   );
 
-  const dialog = screen.getByRole('dialog');
-  expect(dialog).toBeVisible();
-
-  const parent = dialog.parentElement;
-  expect(parent?.children).toHaveLength(1);
-  expect(parent?.children).not.toHaveLength(2);
-
-  expect(parent).toBeValid();
-  expect(dialog).toBeValid();
+  const dialog = screen.queryByRole('dialog');
+  expect(dialog).not.toBeInTheDocument();
 });
 
-test('dialog controller throw errof if not one child', () => {
-  expect(() => {
-    render(
+test('dialog can be controlled', async () => {
+  const Component = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
       <OverlayProvider>
-        <Dialog.Controller>
-          <Dialog>Content</Dialog>
-          <div>something</div>
+        <Button data-testid="button" onPress={() => setOpen(true)}>
+          Open Dialog
+        </Button>
+        <Dialog.Controller open={open}>
+          <Dialog>
+            <Headline>Headline</Headline>
+            <Button data-testid="close" onPress={() => setOpen(false)}>
+              Close
+            </Button>
+          </Dialog>
         </Dialog.Controller>
       </OverlayProvider>
     );
-  }).toThrow(Error);
-  expect(errorMock).toHaveBeenCalled();
+  };
+
+  render(<Component />);
+
+  let dialog = screen.queryByRole('dialog');
+  expect(dialog).not.toBeInTheDocument();
+
+  const button = screen.getByTestId('button');
+  await user.click(button);
+
+  dialog = screen.queryByRole('dialog');
+  expect(dialog).toBeInTheDocument();
+
+  const close = screen.getByTestId('close');
+  await user.click(close);
+
+  dialog = screen.queryByRole('dialog');
+  expect(dialog).not.toBeInTheDocument();
 });
 
-test('dialog controller expect no valid child', () => {
-  const children = null;
-  const { container } = render(
-    <OverlayProvider>
-      <Dialog.Controller data-testid="dialog">{children}</Dialog.Controller>
-    </OverlayProvider>
-  );
+test('close state has a listener', async () => {
+  const spy = jest.fn();
 
-  expect(
-    container.querySelector(`div[data-overlay-container="true"]`)?.childNodes
-  ).toHaveLength(0);
+  const Component = () => {
+    const [open, setOpen] = useState(false);
 
-  expect(
-    container.querySelector(`div[data-overlay-container="true"]`)?.lastChild
-  ).toBeNull();
+    return (
+      <OverlayProvider>
+        <Button data-testid="button" onPress={() => setOpen(true)}>
+          Open Dialog
+        </Button>
+        <Dialog.Controller open={open} onOpenChange={spy}>
+          <Dialog>
+            {({ close }) => (
+              <>
+                <Headline>Headline</Headline>
+                <Button data-testid="close" onPress={close}>
+                  Close
+                </Button>
+              </>
+            )}
+          </Dialog>
+        </Dialog.Controller>
+      </OverlayProvider>
+    );
+  };
+
+  render(<Component />);
+
+  expect(spy.mock.calls).toMatchInlineSnapshot(`[]`);
+
+  const button = screen.getByTestId('button');
+  await user.click(button);
+
+  expect(spy.mock.calls).toMatchInlineSnapshot(`[]`);
+
+  const close = screen.getByTestId('close');
+  await user.click(close);
+
+  expect(spy.mock.calls).toMatchInlineSnapshot(`
+    [
+      [
+        false,
+      ],
+    ]
+  `);
 });
