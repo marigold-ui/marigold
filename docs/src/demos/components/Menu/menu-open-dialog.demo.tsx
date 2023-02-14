@@ -13,18 +13,20 @@ import {
 } from '@marigold/components';
 
 export const OpenDialogFromMenu = () => {
-  const [open, setOpen] = useState(false);
-  const handleAction = (action: string) => {
+  const [open, setDialogOpen] = useState(false);
+  const handleAction = (action: 'save' | 'delete') => {
     switch (action) {
-      case 'two':
-        setOpen(!open);
+      case 'save':
+        alert('saved!');
         break;
-      case 'one':
+      case 'delete':
+        setDialogOpen(true);
         break;
       default:
         throw new Error(`Unhandled action "${action}"!`);
     }
   };
+
   return (
     <>
       <Menu.Trigger>
@@ -32,35 +34,33 @@ export const OpenDialogFromMenu = () => {
           Settings
         </Button>
         <Menu onAction={handleAction}>
-          <Menu.Item key="one">Save</Menu.Item>
-          <Menu.Item key="two">Delete</Menu.Item>
+          <Menu.Item key="save">Save</Menu.Item>
+          <Menu.Item key="delete">Delete</Menu.Item>
         </Menu>
       </Menu.Trigger>
-      <Dialog.Controller onOpenChange={o => setOpen(o)}>
-        {open && (
-          <Dialog closeButton>
-            {({ close, titleProps }) => (
-              <Stack space="medium">
-                <Header>
-                  <Headline {...titleProps}>Confirm delete</Headline>
-                </Header>
-                <Body>
-                  <Text>Do you really wanna delete this?</Text>
-                </Body>
-                <Footer>
-                  <Inline space="medium">
-                    <Button size="small" variant="ghost" onPress={close}>
-                      Abbrechen
-                    </Button>
-                    <Button size="small" variant="primary">
-                      Delete
-                    </Button>
-                  </Inline>
-                </Footer>
-              </Stack>
-            )}
-          </Dialog>
-        )}
+      <Dialog.Controller open={open} onOpenChange={setDialogOpen}>
+        <Dialog closeButton>
+          {({ close, titleProps }) => (
+            <Stack space="medium">
+              <Header>
+                <Headline {...titleProps}>Confirm delete</Headline>
+              </Header>
+              <Body>
+                <Text>Do you really wanna delete this?</Text>
+              </Body>
+              <Footer>
+                <Inline space="medium">
+                  <Button size="small" variant="ghost" onPress={close}>
+                    Cancel
+                  </Button>
+                  <Button size="small" variant="primary" onPress={close}>
+                    Delete
+                  </Button>
+                </Inline>
+              </Footer>
+            </Stack>
+          )}
+        </Dialog>
       </Dialog.Controller>
     </>
   );
