@@ -427,6 +427,7 @@ importers:
       '@theme-ui/css': 0.15.4
       csstype: 3.1.1
       deepmerge: ^4.2.2
+      postcss: 8.4.21
       react: 18.2.0
       react-fast-compare: ^3.2.0
       tailwindcss: 3.2.6
@@ -441,9 +442,10 @@ importers:
     devDependencies:
       '@babel/core': 7.20.12
       '@marigold/tsconfig': link:../../config/tsconfig
+      postcss: 8.4.21
       react: 18.2.0
-      tailwindcss: 3.2.6
-      tsup: 6.5.0
+      tailwindcss: 3.2.6_postcss@8.4.21
+      tsup: 6.5.0_postcss@8.4.21
 
   packages/tokens:
     specifiers:
@@ -486,10 +488,12 @@ importers:
     specifiers:
       '@marigold/components': workspace:*
       '@marigold/tsconfig': workspace:*
+      tailwindcss: 3.2.6
       tsup: 6.5.0
     devDependencies:
       '@marigold/components': link:../../packages/components
       '@marigold/tsconfig': link:../../config/tsconfig
+      tailwindcss: 3.2.6
       tsup: 6.5.0
 
 packages:
@@ -19597,7 +19601,7 @@ packages:
       postcss: 7.0.39
     dev: false
 
-  /postcss-import/14.1.0_postcss@8.4.14:
+  /postcss-import/14.1.0_postcss@8.4.21:
     resolution:
       {
         integrity: sha512-flwI+Vgm4SElObFVPpTIT7SU7R3qk2L7PyduMcokiaVKuWv9d/U+Gm/QAd8NDLuykTWTkcrjOeD2Pp1rMeBTGw==,
@@ -19606,13 +19610,13 @@ packages:
     peerDependencies:
       postcss: ^8.0.0
     dependencies:
-      postcss: 8.4.14
+      postcss: 8.4.21
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.1
     dev: true
 
-  /postcss-js/4.0.1_postcss@8.4.14:
+  /postcss-js/4.0.1_postcss@8.4.21:
     resolution:
       {
         integrity: sha512-dDLF8pEO191hJMtlHFPRa8xsizHaM82MLfNkUHdUtVEV3tgTp5oj+8qbEqYM57SLfc74KSbw//4SeJma2LRVIw==,
@@ -19622,7 +19626,7 @@ packages:
       postcss: ^8.4.21
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.4.14
+      postcss: 8.4.21
     dev: true
 
   /postcss-load-config/3.1.4:
@@ -19644,7 +19648,7 @@ packages:
       yaml: 1.10.2
     dev: true
 
-  /postcss-load-config/3.1.4_postcss@8.4.14:
+  /postcss-load-config/3.1.4_postcss@8.4.21:
     resolution:
       {
         integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==,
@@ -19660,7 +19664,7 @@ packages:
         optional: true
     dependencies:
       lilconfig: 2.0.6
-      postcss: 8.4.14
+      postcss: 8.4.21
       yaml: 1.10.2
     dev: true
 
@@ -19727,7 +19731,7 @@ packages:
       postcss: 7.0.39
     dev: false
 
-  /postcss-nested/6.0.0_postcss@8.4.14:
+  /postcss-nested/6.0.0_postcss@8.4.21:
     resolution:
       {
         integrity: sha512-0DkamqrPcmkBDsLn+vQDIrtkSbNkv5AD/M322ySo9kqFkCIYklym2xEmWkwo+Y3/qZo34tzEPNUw4y7yMCdv5w==,
@@ -19736,7 +19740,7 @@ packages:
     peerDependencies:
       postcss: ^8.2.14
     dependencies:
-      postcss: 8.4.14
+      postcss: 8.4.21
       postcss-selector-parser: 6.0.11
     dev: true
 
@@ -19777,6 +19781,19 @@ packages:
       nanoid: 3.3.4
       picocolors: 1.0.0
       source-map-js: 1.0.2
+    dev: false
+
+  /postcss/8.4.21:
+    resolution:
+      {
+        integrity: sha512-tP7u/Sn/dVxK2NnruI4H9BG+x+Wxz6oeZ1cJ8P6G/PZY0IKk4k/63TDsQf2kQq3+qoJeLm2kIBUNlZe3zgb4Zg==,
+      }
+    engines: { node: ^10 || ^12 || >=14 }
+    dependencies:
+      nanoid: 3.3.4
+      picocolors: 1.0.0
+      source-map-js: 1.0.2
+    dev: true
 
   /preferred-pm/3.0.3:
     resolution:
@@ -22487,11 +22504,48 @@ packages:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.0.0
-      postcss: 8.4.14
-      postcss-import: 14.1.0_postcss@8.4.14
-      postcss-js: 4.0.1_postcss@8.4.14
-      postcss-load-config: 3.1.4_postcss@8.4.14
-      postcss-nested: 6.0.0_postcss@8.4.14
+      postcss: 8.4.21
+      postcss-import: 14.1.0_postcss@8.4.21
+      postcss-js: 4.0.1_postcss@8.4.21
+      postcss-load-config: 3.1.4_postcss@8.4.21
+      postcss-nested: 6.0.0_postcss@8.4.21
+      postcss-selector-parser: 6.0.11
+      postcss-value-parser: 4.2.0
+      quick-lru: 5.1.1
+      resolve: 1.22.1
+    transitivePeerDependencies:
+      - ts-node
+    dev: true
+
+  /tailwindcss/3.2.6_postcss@8.4.21:
+    resolution:
+      {
+        integrity: sha512-BfgQWZrtqowOQMC2bwaSNe7xcIjdDEgixWGYOd6AL0CbKHJlvhfdbINeAW76l1sO+1ov/MJ93ODJ9yluRituIw==,
+      }
+    engines: { node: '>=12.13.0' }
+    hasBin: true
+    peerDependencies:
+      postcss: ^8.0.9
+    dependencies:
+      arg: 5.0.2
+      chokidar: 3.5.3
+      color-name: 1.1.4
+      detective: 5.2.1
+      didyoumean: 1.2.2
+      dlv: 1.1.3
+      fast-glob: 3.2.12
+      glob-parent: 6.0.2
+      is-glob: 4.0.3
+      lilconfig: 2.0.6
+      micromatch: 4.0.5
+      normalize-path: 3.0.0
+      object-hash: 3.0.0
+      picocolors: 1.0.0
+      postcss: 8.4.21
+      postcss-import: 14.1.0_postcss@8.4.21
+      postcss-js: 4.0.1_postcss@8.4.21
+      postcss-load-config: 3.1.4_postcss@8.4.21
+      postcss-nested: 6.0.0_postcss@8.4.21
       postcss-selector-parser: 6.0.11
       postcss-value-parser: 4.2.0
       quick-lru: 5.1.1
@@ -23111,6 +23165,45 @@ packages:
       globby: 11.1.0
       joycon: 3.1.1
       postcss-load-config: 3.1.4
+      resolve-from: 5.0.0
+      rollup: 3.2.5
+      source-map: 0.8.0-beta.0
+      sucrase: 3.27.0
+      tree-kill: 1.2.2
+    transitivePeerDependencies:
+      - supports-color
+      - ts-node
+    dev: true
+
+  /tsup/6.5.0_postcss@8.4.21:
+    resolution:
+      {
+        integrity: sha512-36u82r7rYqRHFkD15R20Cd4ercPkbYmuvRkz3Q1LCm5BsiFNUgpo36zbjVhCOgvjyxNBWNKHsaD5Rl8SykfzNA==,
+      }
+    engines: { node: '>=14' }
+    hasBin: true
+    peerDependencies:
+      '@swc/core': ^1
+      postcss: ^8.4.12
+      typescript: ^4.1.0
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      postcss:
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      bundle-require: 3.1.2_esbuild@0.15.9
+      cac: 6.7.14
+      chokidar: 3.5.3
+      debug: 4.3.4
+      esbuild: 0.15.9
+      execa: 5.1.1
+      globby: 11.1.0
+      joycon: 3.1.1
+      postcss: 8.4.21
+      postcss-load-config: 3.1.4_postcss@8.4.21
       resolve-from: 5.0.0
       rollup: 3.2.5
       source-map: 0.8.0-beta.0

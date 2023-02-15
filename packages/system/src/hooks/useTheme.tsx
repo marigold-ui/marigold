@@ -23,6 +23,7 @@ export function ThemeProvider<T extends Theme>({
   theme,
   children,
 }: ThemeProviderProps<T>) {
+  console.log(theme);
   return (
     <InternalContext.Provider value={theme}>
       {children}

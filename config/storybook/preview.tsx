@@ -8,6 +8,12 @@ import b2bTheme from '@marigold/theme-b2b';
 import coreTheme from '@marigold/theme-core';
 import unicornTheme from '@marigold/theme-unicorn';
 
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import '!style-loader!css-loader!postcss-loader!tailwindcss/tailwind.css';
+import 'tailwindcss/tailwind.css';
+import '../src/index.css';
+import '../../themes/theme-unicorn/src/index.css';
+
 // Helpers
 // ---------------
 const THEME = {
