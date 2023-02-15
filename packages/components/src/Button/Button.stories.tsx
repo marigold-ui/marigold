@@ -19,7 +19,7 @@ export default {
         type: 'text',
       },
       description: 'Variant of the button',
-      defaultValue: 'primary',
+      defaultValue: 'secondary',
     },
     size: {
       control: {
