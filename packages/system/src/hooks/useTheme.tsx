@@ -1,16 +1,5 @@
-import React, {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-} from 'react';
-import {
-  css as transformStyleObject,
-  get as getfromTheme,
-} from '@theme-ui/css';
-import { ThemeProvider as EmotionProvider } from '@emotion/react';
-
-import { StyleObject, Theme } from '../types';
+import React, { createContext, ReactNode, useContext } from 'react';
+import { Theme } from '../types';
 
 /**
  * @internal
@@ -21,20 +10,8 @@ const InternalContext = createContext<Theme>(__defaultTheme);
 
 export const useTheme = () => {
   const theme = useContext(InternalContext);
-  /**
-   * We cast the theme here to `any` since our subset is not
-   * compatible with the typings of `theme-ui`. They support
-   * arrays as scale values, we don't.
-   */
-  const css = useCallback(
-    (style: StyleObject) => transformStyleObject(style)(theme as any),
-    [theme]
-  );
-  /**
-   * Get value from theme by pasing a path (e.g. "colors.primary").
-   */
-  const get = useCallback((path: string) => getfromTheme(theme, path), [theme]);
-  return { theme, css, get };
+
+  return theme;
 };
 
 export interface ThemeProviderProps<T extends Theme> {
@@ -47,10 +24,8 @@ export function ThemeProvider<T extends Theme>({
   children,
 }: ThemeProviderProps<T>) {
   return (
-    <EmotionProvider theme={theme}>
-      <InternalContext.Provider value={theme}>
-        {children}
-      </InternalContext.Provider>
-    </EmotionProvider>
+    <InternalContext.Provider value={theme}>
+      {children}
+    </InternalContext.Provider>
   );
 }

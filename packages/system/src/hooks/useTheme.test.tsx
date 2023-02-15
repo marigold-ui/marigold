@@ -3,7 +3,7 @@ import { jsx } from '@emotion/react';
 import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 
-import { ThemeProvider, useTheme } from './useTheme';
+import { ThemeProvider, useTheme } from './_useTheme';
 
 // Setup
 // ---------------

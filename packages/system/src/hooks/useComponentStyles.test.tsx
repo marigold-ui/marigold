@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
-import { ThemeProvider } from './useTheme';
+import { ThemeProvider } from './_useTheme';
 
 import { useComponentStyles } from './useComponentStyles';
 import { Box } from '../components';

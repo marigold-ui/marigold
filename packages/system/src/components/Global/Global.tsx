@@ -1,7 +1,7 @@
 import React from 'react';
 import { Global as EmotionGlobal } from '@emotion/react';
 
-import { useTheme } from '../../hooks/useTheme';
+import { useTheme } from '../../hooks/_useTheme';
 import * as normalize from './normalize';
 
 export type GlobalProps = {
