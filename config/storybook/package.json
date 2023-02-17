@@ -27,11 +27,11 @@
     "@marigold/theme-core": "workspace:*",
     "@marigold/theme-unicorn": "workspace:*",
     "@mdx-js/react": "1.6.22",
-    "@storybook/addon-a11y": "6.5.15",
-    "@storybook/addon-essentials": "6.5.15",
-    "@storybook/addon-interactions": "6.5.15",
-    "@storybook/jest": "0.0.10",
-    "@storybook/testing-library": "0.0.13",
+    "@storybook/addon-a11y": "7.0.0-beta.49",
+    "@storybook/addon-essentials": "7.0.0-beta.49",
+    "@storybook/addon-interactions": "7.0.0-beta.49",
+    "@storybook/jest": "0.0.11-next.0",
+    "@storybook/testing-library": "0.0.14-next.1",
     "@types/react": "18",
     "babel-loader": "8.3.0",
     "chromatic": "^6.6.3",
@@ -42,7 +42,8 @@
   "devDependencies": {
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "4.9.4"
+    "typescript": "4.9.4",
+    "storybook": "next"
   },
   "peerDependencies": {
     "@storybook/react": "6.5.15",
@@ -51,8 +52,8 @@
     "typescript": "4.9.4"
   },
   "scripts": {
-    "start": "start-storybook -p 1337 -c .",
-    "build": "build-storybook --disable-telemetry -c . -o ../../storybook-static",
+    "start": "storybook dev -p 1337 -c .",
+    "build": "storybook build --disable-telemetry -c . -o ../../storybook-static",
     "test": "start-storybook --smoke-test --ci -c .",
     "chromatic": "pnpm dlx chromatic --force-rebuild --only-changed --exit-zero-on-changes",
     "ci": "pnpm dlx chromatic"

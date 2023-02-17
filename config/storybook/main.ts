@@ -39,7 +39,7 @@ const config: StorybookConfig = {
     postcss: false,
     interactionsDebugger: true,
   },
-  framework: '@storybook/react',
+  framework: '@storybook/react-vite',
   webpackFinal: async config => {
     // Add support for TS path mapping
     config.resolve!.plugins = [new TsconfigPathsPlugin({ configFile })];
@@ -48,4 +48,4 @@ const config: StorybookConfig = {
   staticDirs: [{ from: './assets', to: '/assets' }],
 };
 
-module.exports = config;
+export default config;
