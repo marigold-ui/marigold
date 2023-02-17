@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, ComponentStory } from '@storybook/react-vite';
 import { Box, ThemeProvider, useResponsiveValue } from '@marigold/system';
 
 export default {

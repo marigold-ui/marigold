@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Inline, Stack } from '@marigold/components';
-import type { Meta } from '@storybook/react';
+import { Meta } from '@storybook/blocks';
 
 import * as Token from '.';
 

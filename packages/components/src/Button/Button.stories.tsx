@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
 import isChromatic from 'chromatic';
 
-export default {
+import type { Meta, StoryObj } from '@storybook/react';
+
+const meta: Meta<typeof Button> = {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/7.0/react/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
   title: 'Components/Button',
+  component: Button,
   argTypes: {
     children: {
       control: {
@@ -42,11 +48,14 @@ export default {
       defaultValue: false,
     },
   },
-} as Meta;
+};
 
-export const Basic: ComponentStory<typeof Button> = args => (
-  <Button {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof Button>;
+
+export const Primary: Story = {
+  render: args => <Button {...args} />,
+};
 
 export const WithIcon: ComponentStory<typeof Button> = ({
   children,
