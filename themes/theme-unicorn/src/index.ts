@@ -1,3 +1,4 @@
+import type { Theme } from '@marigold/components';
 import { colors } from './colors';
 import * as components from './components';
 
@@ -5,7 +6,7 @@ export const webFontUrl = [
   'https://fonts.bunny.net/css?family=inter:400,600,700',
 ] as const;
 
-const theme = {
+const theme: Theme = {
   breakpoints: ['40em', '52em', '64em'],
   space: {
     none: 0,

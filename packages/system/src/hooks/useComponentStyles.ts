@@ -3,7 +3,9 @@ import { useRef } from 'react';
 import isEqual from 'react-fast-compare';
 
 import { CSSObject } from '../types';
-import { useTheme } from './_useTheme';
+import { useTheme } from './useTheme';
+
+import { tv } from 'tailwind-variants';
 
 // Types
 // ---------------
@@ -39,6 +41,28 @@ export interface ComponentStylesProps {
 
 export type ComponentStyleParts<Parts extends string[]> = {
   [P in Parts[number]]: CSSObject;
+};
+
+export const useComponentStylesNEW = (
+  component: string,
+  options: { variant: any; size: any }
+) => {
+  const theme = useTheme();
+
+  console.log('THEME', theme);
+  let { variants, ...styles } = tv(theme.components[component]);
+
+  const baseStyle = styles.base as any;
+  if (variants) {
+    let classes = {
+      baseStyle,
+      variant: (variants as any)['variant'][options.variant],
+      size: (variants as any)['size'][options.size],
+    };
+
+    return classes;
+  }
+  return baseStyle;
 };
 
 export function useComponentStyles(

@@ -333,6 +333,7 @@ importers:
       react-dom: 18.2.0
       react-is: 18.2.0
       react-transition-group: 4.4.5
+      tailwind-merge: 1.9.1
       tsup: 6.5.0
     dependencies:
       '@marigold/icons': link:../icons
@@ -384,6 +385,7 @@ importers:
       deepmerge: 4.2.2
       react-is: 18.2.0
       react-transition-group: 4.4.5_biqbaboplfbrettd7655fr4n2y
+      tailwind-merge: 1.9.1
     devDependencies:
       '@marigold/tsconfig': link:../../config/tsconfig
       '@types/react': 18.0.27
@@ -430,6 +432,7 @@ importers:
       postcss: 8.4.21
       react: 18.2.0
       react-fast-compare: ^3.2.0
+      tailwind-variants: 0.0.30
       tailwindcss: 3.2.6
       tsup: 6.5.0
     dependencies:
@@ -439,6 +442,7 @@ importers:
       csstype: 3.1.1
       deepmerge: 4.2.2
       react-fast-compare: 3.2.0
+      tailwind-variants: 0.0.30_tailwindcss@3.2.6
     devDependencies:
       '@babel/core': 7.20.12
       '@marigold/tsconfig': link:../../config/tsconfig
@@ -488,8 +492,11 @@ importers:
     specifiers:
       '@marigold/components': workspace:*
       '@marigold/tsconfig': workspace:*
+      tailwind-variants: 0.0.30
       tailwindcss: 3.2.6
       tsup: 6.5.0
+    dependencies:
+      tailwind-variants: 0.0.30_tailwindcss@3.2.6
     devDependencies:
       '@marigold/components': link:../../packages/components
       '@marigold/tsconfig': link:../../config/tsconfig
@@ -8570,7 +8577,6 @@ packages:
       acorn: 7.4.1
       acorn-walk: 7.2.0
       xtend: 4.0.2
-    dev: true
 
   /acorn-walk/7.2.0:
     resolution:
@@ -8893,7 +8899,6 @@ packages:
       {
         integrity: sha512-PYjyFOLKQ9y57JvQ6QLo8dAgNqswh8M1RMJYdQduT6xbWSgK36P/Z/v+p888pM69jMMfS8Xd8F6I1kQ/I9HUGg==,
       }
-    dev: true
 
   /argparse/1.0.10:
     resolution:
@@ -11407,7 +11412,6 @@ packages:
       {
         integrity: sha512-hsBd2qSVCRE+5PmNdHt1uzyrFu5d3RwmFDKzyNZMFq/EwDNJF7Ee5+D5oEKF0hU6LhtoUF1macFvOe4AskQC1Q==,
       }
-    dev: true
 
   /delayed-stream/1.0.0:
     resolution:
@@ -11515,7 +11519,6 @@ packages:
       acorn-node: 1.8.2
       defined: 1.0.1
       minimist: 1.2.6
-    dev: true
 
   /didyoumean/1.2.2:
     resolution:
@@ -11573,7 +11576,6 @@ packages:
       {
         integrity: sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==,
       }
-    dev: true
 
   /doctrine/2.1.0:
     resolution:
@@ -16810,7 +16812,6 @@ packages:
         integrity: sha512-9JROoBW7pobfsx+Sq2JsASvCo6Pfo6WWoUW79HuB1BCoBXD4PLWJPqDF6fNj67pqBYTbAHkE57M1kS/+L1neOg==,
       }
     engines: { node: '>=10' }
-    dev: true
 
   /lines-and-columns/1.2.4:
     resolution:
@@ -18775,7 +18776,6 @@ packages:
         integrity: sha512-RSn9F68PjH9HqtltsSnqYC1XXoWe9Bju5+213R98cNGttag9q9yAOTzdbsqvIa7aNm5WffBZFpWYr2aWrklWAw==,
       }
     engines: { node: '>= 6' }
-    dev: true
 
   /object-inspect/1.12.2:
     resolution:
@@ -19614,7 +19614,6 @@ packages:
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.1
-    dev: true
 
   /postcss-js/4.0.1_postcss@8.4.21:
     resolution:
@@ -19627,7 +19626,6 @@ packages:
     dependencies:
       camelcase-css: 2.0.1
       postcss: 8.4.21
-    dev: true
 
   /postcss-load-config/3.1.4:
     resolution:
@@ -19666,7 +19664,6 @@ packages:
       lilconfig: 2.0.6
       postcss: 8.4.21
       yaml: 1.10.2
-    dev: true
 
   /postcss-loader/4.3.0_gzaxsinx64nntyd3vmdqwl7coe:
     resolution:
@@ -19742,7 +19739,6 @@ packages:
     dependencies:
       postcss: 8.4.21
       postcss-selector-parser: 6.0.11
-    dev: true
 
   /postcss-selector-parser/6.0.11:
     resolution:
@@ -19793,7 +19789,6 @@ packages:
       nanoid: 3.3.4
       picocolors: 1.0.0
       source-map-js: 1.0.2
-    dev: true
 
   /preferred-pm/3.0.3:
     resolution:
@@ -20200,7 +20195,6 @@ packages:
         integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==,
       }
     engines: { node: '>=10' }
-    dev: true
 
   /ramda/0.28.0:
     resolution:
@@ -20527,7 +20521,6 @@ packages:
       }
     dependencies:
       pify: 2.3.0
-    dev: true
 
   /read-pkg-up/1.0.1:
     resolution:
@@ -22482,6 +22475,26 @@ packages:
       }
     dev: false
 
+  /tailwind-merge/1.9.1:
+    resolution:
+      {
+        integrity: sha512-ED9MkiUHlmfh58EC1xHRqXcH1IQyRtmDP0AmXlugYkP2tvfu7ejtjFEHJLJt93mQ7ZJkcqSIgm9M394bq5vOJg==,
+      }
+    dev: false
+
+  /tailwind-variants/0.0.30_tailwindcss@3.2.6:
+    resolution:
+      {
+        integrity: sha512-i19FBuvyy1IibNhOHaAyEv/ZgeWlH3RwABUrjRyZSJUd53yscMv2F/Ffl6TRGya0C/phHYcBiaiGlWl1AZ/vdA==,
+      }
+    engines: { node: '>=16.x', pnpm: '>=7.x' }
+    peerDependencies:
+      tailwindcss: '*'
+    dependencies:
+      tailwind-merge: 1.9.1
+      tailwindcss: 3.2.6_postcss@8.4.21
+    dev: false
+
   /tailwindcss/3.2.6:
     resolution:
       {
@@ -22552,7 +22565,6 @@ packages:
       resolve: 1.22.1
     transitivePeerDependencies:
       - ts-node
-    dev: true
 
   /tapable/1.1.3:
     resolution:

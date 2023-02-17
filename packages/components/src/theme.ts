@@ -67,7 +67,7 @@ interface ComponentStyles
     UnderlayThemeExtension {}
 
 export interface Theme extends BaseTheme {
-  components: ComponentStyles;
+  components: any;
 }
 
 export interface CustomizedTheme extends BaseTheme {

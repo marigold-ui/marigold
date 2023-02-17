@@ -4,11 +4,12 @@ import { useFocusRing } from '@react-aria/focus';
 import { useHover } from '@react-aria/interactions';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import { PressEvents } from '@react-types/shared';
+import { twMerge } from 'tailwind-merge';
 
 import {
   Box,
   ThemeExtension,
-  useComponentStyles,
+  useComponentStylesNEW,
   useStateProps,
 } from '@marigold/system';
 import { HtmlProps, PolymorphicComponent, PropsOf } from '@marigold/types';
@@ -73,7 +74,17 @@ export const Button = forwardRef(
       buttonRef
     );
 
-    const styles = useComponentStyles('Button', { variant, size });
+    //  const styles = useComponentStyles('Button', { variant, size });
+
+    const { ...classes } = useComponentStylesNEW('Button', {
+      variant: variant,
+      size: size,
+    });
+
+    // use TailwindMerge to merge the classnames
+    const classNames = twMerge(classes.baseStyle, classes.variant);
+    console.log(classNames);
+
     const stateProps = useStateProps({
       active: isPressed,
       focusVisible: isFocusVisible,
@@ -97,7 +108,7 @@ export const Button = forwardRef(
             outline: 0,
           },
         }}
-        css={styles}
+        className={classNames}
       >
         {children}
       </Box>

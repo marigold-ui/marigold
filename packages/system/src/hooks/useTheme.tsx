@@ -6,7 +6,7 @@ import { Theme } from '../types';
  */
 export const __defaultTheme: Theme = {};
 
-const InternalContext = createContext<Theme>(__defaultTheme);
+const InternalContext = createContext<any>(__defaultTheme);
 
 export const useTheme = () => {
   const theme = useContext(InternalContext);

@@ -9,6 +9,7 @@ const path = require('path');
 const tailwindConfig = require('../themes/theme-unicorn/tailwind.config.js');
 
 const { theme } = resolveConfig(tailwindConfig);
+console.log(theme);
 const themeStr = JSON.stringify(theme);
 const js = `
 const theme  = ${themeStr}
@@ -17,8 +18,12 @@ export default theme
 `;
 
 try {
+  // not sure what a path
   fs.writeFileSync(
-    path.resolve(process.cwd(), './src/theme.js'),
+    path.resolve(
+      process.cwd(),
+      '../marigold/themes/theme-unicorn/src/index.js'
+    ),
     prettier.format(js, { parser: 'babel' }),
     'utf-8'
   );

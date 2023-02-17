@@ -71,7 +71,8 @@
     "@react-types/tooltip": "3.2.5",
     "deepmerge": "^4.2.2",
     "react-is": "18.2.0",
-    "react-transition-group": "4.4.5"
+    "react-transition-group": "4.4.5",
+    "tailwind-merge": "1.9.1"
   },
   "peerDependencies": {
     "react": "17.x || 18.x",

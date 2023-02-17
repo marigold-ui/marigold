@@ -34,5 +34,8 @@
     "build": "tsup src/index.ts",
     "watch": "tsup src/index.ts --watch",
     "clean": "rm -rf node_modules && rm -rf dist"
+  },
+  "dependencies": {
+    "tailwind-variants": "0.0.30"
   }
 }
