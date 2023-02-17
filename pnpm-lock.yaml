@@ -455,9 +455,9 @@ importers:
   packages/types:
     specifiers:
       '@types/react': 18.0.28
-      type-fest: 3.5.7
+      type-fest: 3.6.0
     dependencies:
-      type-fest: 3.5.7
+      type-fest: 3.6.0
     devDependencies:
       '@types/react': 18.0.28
 
@@ -7205,7 +7205,7 @@ packages:
     resolution: {integrity: sha512-IG23inYII3dWlU2EyiAiGj6Bwal5GzsgPMwjYGvc1HPE2dgbj4ZB5ToWBKSquKw74nB3TIuOwaI6/jSULzfgrw==}
     engines: {node: '>=14.16'}
     dependencies:
-      type-fest: 3.5.7
+      type-fest: 3.6.0
     dev: false
 
   /ansi-html-community/0.0.8:
@@ -17269,8 +17269,8 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
-  /type-fest/3.5.7:
-    resolution: {integrity: sha512-6J4bYzb4sdkcLBty4XW7F18VPI66M4boXNE+CY40532oq2OJe6AVMB5NmjOp6skt/jw5mRjz/hLRpuglz0U+FA==}
+  /type-fest/3.6.0:
+    resolution: {integrity: sha512-RqTRtKTzvPpNdDUp1dVkKQRunlPITk4mXeqFlAZoJsS+fLRn8AdPK0TcQDumGayhU7fjlBfiBjsq3pe3rIfXZQ==}
     engines: {node: '>=14.16'}
     dev: false
 
