@@ -1,5 +1,13 @@
 # @marigold/components
 
+## 5.1.0
+
+### Patch Changes
+
+- Updated dependencies [[`f5ec10d93`](https://github.com/marigold-ui/marigold/commit/f5ec10d93112677b9a5b1c6f41a4b334591f8544), [`6d7d6f621`](https://github.com/marigold-ui/marigold/commit/6d7d6f621788dc42aadd2f38aa90abfdb9438364)]:
+  - @marigold/icons@1.2.0
+  - @marigold/system@5.1.0
+
 ## 5.0.0
 
 ### Major Changes

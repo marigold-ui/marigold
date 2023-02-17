@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 5.1.0
+
+### Patch Changes
+
+- [#2773](https://github.com/marigold-ui/marigold/pull/2773) [`6d7d6f621`](https://github.com/marigold-ui/marigold/commit/6d7d6f621788dc42aadd2f38aa90abfdb9438364) Thanks [@sebald](https://github.com/sebald)! - fix: `<Global>` selector prop applies styles from `body`
+
 ## 5.0.0
 
 ### Major Changes
