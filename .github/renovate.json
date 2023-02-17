@@ -1,9 +1,5 @@
 {
   "extends": ["config:base", ":semanticCommitTypeAll(chore)"],
-  "lockFileMaintenance": {
-    "enabled": true,
-    "schedule": ["before 3am on Sunday"]
-  },
   "packageRules": [
     {
       "matchPackagePatterns": ["@react-aria", "@react-stately", "@react-types"],
@@ -18,10 +14,16 @@
       "groupName": "testing"
     },
     {
-      "matchPackagePatterns": ["rehype", "remark", "mdx"],
+      "matchPackagePatterns": [
+        "rehype",
+        "remark",
+        "mdx",
+        "mdast",
+        "vfile",
+        "unist"
+      ],
       "groupName": "mdx"
     }
   ],
-  "schedule": ["before 3am on the first day of the month"],
   "timezone": "Europe/Berlin"
 }

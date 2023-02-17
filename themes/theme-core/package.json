@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-core",
-  "version": "18.0.0",
+  "version": "19.0.0",
   "description": "Marigold Core Theme",
   "license": "MIT",
   "keywords": [
@@ -27,7 +27,7 @@
   "devDependencies": {
     "@marigold/components": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
-    "tsup": "6.5.0"
+    "tsup": "6.6.3"
   },
   "scripts": {
     "build": "tsup src/index.ts",

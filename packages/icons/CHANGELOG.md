@@ -1,5 +1,16 @@
 # @marigold/icons
 
+## 1.2.0
+
+### Minor Changes
+
+- [#2788](https://github.com/marigold-ui/marigold/pull/2788) [`f5ec10d93`](https://github.com/marigold-ui/marigold/commit/f5ec10d93112677b9a5b1c6f41a4b334591f8544) Thanks [@sebald](https://github.com/sebald)! - feat: add new icons for battery status and wifi/mobile signal
+
+### Patch Changes
+
+- Updated dependencies [[`6d7d6f621`](https://github.com/marigold-ui/marigold/commit/6d7d6f621788dc42aadd2f38aa90abfdb9438364)]:
+  - @marigold/system@5.1.0
+
 ## 1.1.17
 
 ### Patch Changes
