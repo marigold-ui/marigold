@@ -1,9 +1,29 @@
 import React from 'react';
-import { Global as EmotionGlobal } from '@emotion/react';
+import { CSSObject, Global as EmotionGlobal } from '@emotion/react';
 
 import { useTheme } from '../../hooks/useTheme';
 import * as normalize from './normalize';
 
+// Helper
+// ---------------
+
+/**
+ * Make sure that the relevant `body` rules are applied to the
+ * `selector` element(s).
+ */
+const mergeRoot = ({ body, ...rest }: CSSObject) =>
+  typeof body === 'object'
+    ? {
+        ...(body as CSSObject),
+        ...rest,
+      }
+    : {
+        body,
+        ...rest,
+      };
+
+// Props
+// ---------------
 export type GlobalProps = {
   /**
    * CSS Selector to change the element that the styles will be applied to.
@@ -16,6 +36,8 @@ export type GlobalProps = {
   normalizeDocument?: boolean;
 };
 
+// Component
+// ---------------
 export const Global = ({ normalizeDocument = true, selector }: GlobalProps) => {
   const { css, theme } = useTheme();
   const rootStyles = css(theme?.root || {});
@@ -26,7 +48,7 @@ export const Global = ({ normalizeDocument = true, selector }: GlobalProps) => {
     selector
       ? { [`:where(${selector})`]: normalize.element }
       : normalize.element,
-    selector ? { [`:where(${selector})`]: rootStyles } : rootStyles,
+    selector ? { [`:where(${selector})`]: mergeRoot(rootStyles) } : rootStyles,
   ];
 
   return <EmotionGlobal styles={styles} />;
