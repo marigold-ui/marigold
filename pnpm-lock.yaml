@@ -422,7 +422,7 @@ importers:
   packages/system:
     specifiers:
       '@babel/core': 7.20.12
-      '@emotion/react': 11.10.5
+      '@emotion/react': 11.10.6
       '@marigold/tsconfig': workspace:*
       '@marigold/types': workspace:*
       '@theme-ui/css': 0.15.4
@@ -432,9 +432,9 @@ importers:
       react-fast-compare: ^3.2.0
       tsup: 6.5.0
     dependencies:
-      '@emotion/react': 11.10.5_2exiyaescjxorpwwmy4ejghgte
+      '@emotion/react': 11.10.6_react@18.2.0
       '@marigold/types': link:../types
-      '@theme-ui/css': 0.15.4_@emotion+react@11.10.5
+      '@theme-ui/css': 0.15.4_@emotion+react@11.10.6
       csstype: 3.1.1
       deepmerge: 4.2.2
       react-fast-compare: 3.2.0
@@ -2303,7 +2303,7 @@ packages:
       '@babel/runtime': 7.20.7
       '@emotion/hash': 0.9.0
       '@emotion/memoize': 0.8.0
-      '@emotion/serialize': 1.1.0
+      '@emotion/serialize': 1.1.1
       babel-plugin-macros: 3.1.0
       convert-source-map: 1.8.0
       escape-string-regexp: 4.0.0
@@ -2323,7 +2323,7 @@ packages:
       '@babel/runtime': 7.20.7
       '@emotion/hash': 0.9.0
       '@emotion/memoize': 0.8.0
-      '@emotion/serialize': 1.1.0
+      '@emotion/serialize': 1.1.1
       babel-plugin-macros: 3.1.0
       convert-source-map: 1.8.0
       escape-string-regexp: 4.0.0
@@ -2351,14 +2351,10 @@ packages:
       stylis: 4.1.3
     dev: true
 
-  /@emotion/babel-plugin/11.10.5_@babel+core@7.20.12:
-    resolution: {integrity: sha512-xE7/hyLHJac7D2Ve9dKroBBZqBT7WuPQmWcq7HSGb84sUuP4mlOWoB8dvVfD9yk5DHkU1m6RW7xSoDtnQHNQeA==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
+  /@emotion/babel-plugin/11.10.6:
+    resolution: {integrity: sha512-p2dAqtVrkhSa7xz1u/m9eHYdLi+en8NowrmXeF/dKtJpU8lCWli8RUAati7NcSl0afsBott48pdnANuD0wh9QQ==}
     dependencies:
-      '@babel/core': 7.20.12
       '@babel/helper-module-imports': 7.18.6
-      '@babel/plugin-syntax-jsx': 7.18.6_@babel+core@7.20.12
       '@babel/runtime': 7.20.7
       '@emotion/hash': 0.9.0
       '@emotion/memoize': 0.8.0
@@ -2426,30 +2422,6 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@emotion/react/11.10.5_2exiyaescjxorpwwmy4ejghgte:
-    resolution: {integrity: sha512-TZs6235tCJ/7iF6/rvTaOH4oxQg2gMAcdHemjwLKIjKz4rRuYe1HJ2TQJKnAcRAfOUDdU8XoDadCe1rl72iv8A==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-      '@types/react': '*'
-      react: '>=16.8.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/core': 7.20.12
-      '@babel/runtime': 7.19.0
-      '@emotion/babel-plugin': 11.10.5_@babel+core@7.20.12
-      '@emotion/cache': 11.10.5
-      '@emotion/serialize': 1.1.1
-      '@emotion/use-insertion-effect-with-fallbacks': 1.0.0_react@18.2.0
-      '@emotion/utils': 1.2.0
-      '@emotion/weak-memoize': 0.3.0
-      hoist-non-react-statics: 3.3.2
-      react: 18.2.0
-    dev: false
-
   /@emotion/react/11.10.5_pmekkgnqduwlme35zpnqhenc34:
     resolution: {integrity: sha512-TZs6235tCJ/7iF6/rvTaOH4oxQg2gMAcdHemjwLKIjKz4rRuYe1HJ2TQJKnAcRAfOUDdU8XoDadCe1rl72iv8A==}
     peerDependencies:
@@ -2473,6 +2445,26 @@ packages:
       hoist-non-react-statics: 3.3.2
       react: 18.2.0
     dev: true
+
+  /@emotion/react/11.10.6_react@18.2.0:
+    resolution: {integrity: sha512-6HT8jBmcSkfzO7mc+N1L9uwvOnlcGoix8Zn7srt+9ga0MjREo6lRpuVX0kzo6Jp6oTqDhREOFsygN6Ew4fEQbw==}
+    peerDependencies:
+      '@types/react': '*'
+      react: '>=16.8.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.7
+      '@emotion/babel-plugin': 11.10.6
+      '@emotion/cache': 11.10.5
+      '@emotion/serialize': 1.1.1
+      '@emotion/use-insertion-effect-with-fallbacks': 1.0.0_react@18.2.0
+      '@emotion/utils': 1.2.0
+      '@emotion/weak-memoize': 0.3.0
+      hoist-non-react-statics: 3.3.2
+      react: 18.2.0
+    dev: false
 
   /@emotion/serialize/1.1.0:
     resolution: {integrity: sha512-F1ZZZW51T/fx+wKbVlwsfchr5q97iW8brAnXmsskz4d0hVB4O3M/SiA3SaeH06x02lSNzkkQv+n3AX3kCXKSFA==}
@@ -5899,12 +5891,12 @@ packages:
       '@testing-library/dom': 8.19.0
     dev: false
 
-  /@theme-ui/css/0.15.4_@emotion+react@11.10.5:
+  /@theme-ui/css/0.15.4_@emotion+react@11.10.6:
     resolution: {integrity: sha512-6BBC2QAlS4vCSWqJc4KD4ORD2wJ6NS1aOxbI85Z+3nKzEsYaT/ihDtIvlXzPwHTd4tFTmeJqeoBVNLZrJ8L8CA==}
     peerDependencies:
       '@emotion/react': ^11
     dependencies:
-      '@emotion/react': 11.10.5_2exiyaescjxorpwwmy4ejghgte
+      '@emotion/react': 11.10.6_react@18.2.0
       csstype: 3.1.1
     dev: false
 
