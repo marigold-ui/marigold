@@ -1,10 +1,11 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Footer } from './Footer';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/Footer',
+  component: Footer,
   argTypes: {
     variant: {
       control: {
@@ -19,11 +20,14 @@ export default {
       description: 'The size of the footer',
     },
   },
-} as Meta;
+} satisfies Meta<typeof Footer>;
 
-export const Basic: ComponentStory<typeof Footer> = args => (
-  <Footer>This is a Footer.</Footer>
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Basic: Story = {
+  render: args => <Footer>This is a Footer.</Footer>,
+};
 
 Basic.parameters = {
   chromatic: { viewports: [320, 1200] },

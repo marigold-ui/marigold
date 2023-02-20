@@ -1,10 +1,10 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Input } from './Input';
 import isChromatic from 'chromatic';
-
-export default {
+const meta = {
   title: 'Components/Input',
+  component: Input,
   argTypes: {
     variant: {
       control: {
@@ -40,11 +40,14 @@ export default {
       description: 'Pattern for the input',
     },
   },
-} as Meta;
+} satisfies Meta<typeof Input>;
 
-export const Basic: ComponentStory<typeof Input> = args => (
-  <Input placeholder="Placeholder..." {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Basic: Story = {
+  render: args => <Input placeholder="Placeholder..." {...args} />,
+};
 
 Basic.parameters = {
   chromatic: { viewports: [320, 1200] },

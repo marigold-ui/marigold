@@ -75,6 +75,9 @@ const meta = {
   args: {
     side: 'left',
     space: 'medium',
+    wrap: '50%',
+    stretch: true,
+    sideWidth: 'xxlarges',
   },
 } satisfies Meta<typeof Aside>;
 
