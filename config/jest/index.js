@@ -1,7 +1,5 @@
-const findUp = require('find-up').sync;
 const path = require('path');
 const merge = require('merge-deep');
-const { pathsToModuleNameMapper } = require('ts-jest');
 
 /**
  * Base configuration for jest
@@ -48,28 +46,9 @@ const base = {
     require.resolve('jest-watch-typeahead/filename'),
     require.resolve('jest-watch-typeahead/testname'),
   ],
-
-  globals: {
-    'ts-jest': {
-      diagnostics: false,
-    },
-  },
 };
 
 /**
  * Create jest configuration wit optional overrides.
  */
-module.exports = (overrides = {}) => {
-  const config = merge(base, overrides);
-
-  // Support monorepo by mapping paths from tsconfig.
-  if (!config.moduleNameMapper) {
-    const configFile = findUp('tsconfig.json');
-    const { compilerOptions } = require(configFile);
-    config.moduleNameMapper = pathsToModuleNameMapper(compilerOptions.paths, {
-      prefix: '<rootDir>/',
-    });
-  }
-
-  return config;
-};
+module.exports = (overrides = {}) => merge(base, overrides);
