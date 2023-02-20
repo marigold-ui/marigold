@@ -7,34 +7,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Components/Button',
+  component: Button,
   argTypes: {
-    children: {
-      control: 'text',
-      defaultValue: 'Click me',
-      description: 'Children of the button',
-      table: {
-        type: { summary: 'text' },
-        defaultValue: { summary: 'Click me' },
-      },
-    },
-    variant: {
-      description: 'Variant of the button',
-      defaultValue: { summary: 'primary' },
-
-      table: {
-        type: { summary: 'text' },
-        defaultValue: { summary: 'primary' },
-      },
+    disabled: {
       control: {
-        type: 'text',
+        type: 'boolean',
       },
-    },
-
-    size: {
-      control: {
-        type: 'text',
-      },
-      description: 'Size of the button',
+      description: 'Disable the button',
+      defaultValue: false,
     },
     fullWidth: {
       control: {
@@ -43,13 +23,35 @@ const meta = {
       description: 'Take availble width',
       defaultValue: false,
     },
-    disabled: {
+    size: {
       control: {
-        type: 'boolean',
+        type: 'text',
       },
-      description: 'Disable the button',
-      defaultValue: false,
+      description: 'Size of the button',
     },
+    variant: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'primary' },
+      },
+      description: 'Variant of the button',
+    },
+    children: {
+      control: 'text',
+      defaultValue: { summary: 'Click me!' },
+      description: 'Children of the button',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Click me!' },
+      },
+    },
+  },
+  args: {
+    variant: 'primary',
+    children: 'Click me!',
   },
 } satisfies Meta<typeof Button>;
 
@@ -63,7 +65,8 @@ export const Primary: Story = {
 export const WithIcon: Story = {
   render: ({ children, ...args }) => (
     <Button {...args}>
-      <Facebook /> {children}
+      <Facebook />
+      {children}
     </Button>
   ),
 };
