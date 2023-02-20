@@ -1,62 +1,87 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { NumberField } from './NumberField';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/NumberField',
+  component: NumberField,
   argTypes: {
     label: {
       control: {
         type: 'text',
       },
       description: 'The label',
-      defaultValue: 'Label',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Label' },
+      },
     },
     description: {
       control: {
         type: 'text',
       },
       description: 'Help Text',
-      defaultValue: 'This is a help text description',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'This is a help text description' },
+      },
     },
     error: {
       control: {
         type: 'boolean',
       },
       description: 'Is the input invalid?',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     errorMessage: {
       control: {
         type: 'text',
       },
       description: 'Error Message',
-      defaultValue: 'Something went wrong',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Something went wrong' },
+      },
     },
     required: {
       control: {
         type: 'boolean',
       },
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     disabled: {
       control: {
         type: 'boolean',
       },
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     readOnly: {
       control: {
         type: 'boolean',
       },
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     hideStepper: {
       control: {
         type: 'boolean',
       },
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     width: {
       control: {
@@ -65,41 +90,57 @@ export default {
       description: 'The width of the field',
     },
   },
-} as Meta;
+  args: {
+    description: 'This is a help text description',
+    label: 'Label',
+    hideStepper: false,
+    readOnly: false,
+    disabled: false,
+    errorMessage: 'Something went wrong',
+    error: false,
+  },
+} satisfies Meta<typeof NumberField>;
 
-export const Basic: ComponentStory<typeof NumberField> = args => (
-  <NumberField {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const WithFormatting: ComponentStory<typeof NumberField> = args => (
-  <NumberField
-    defaultValue={10}
-    formatOptions={{
-      style: 'currency',
-      currency: 'EUR',
-    }}
-    {...args}
-  />
-);
+export const Basic: Story = { render: args => <NumberField {...args} /> };
 
-export const MinMax: ComponentStory<typeof NumberField> = args => (
-  <>
-    <NumberField minValue={0} maxValue={100} step={10} {...args} />
-    <small>min: 0, max: 100</small>
-  </>
-);
+export const WithFormatting: Story = {
+  render: args => (
+    <NumberField
+      defaultValue={10}
+      formatOptions={{
+        style: 'currency',
+        currency: 'EUR',
+      }}
+      {...args}
+    />
+  ),
+};
 
-export const Controlled: ComponentStory<typeof NumberField> = args => {
-  const [value, setValue] = React.useState(0);
-  return (
+export const MinMax: Story = {
+  render: args => (
     <>
-      <NumberField {...args} value={value} onChange={setValue} />
-      <pre>
-        <strong>Input Value:</strong>
-        {value}
-      </pre>
+      <NumberField minValue={0} maxValue={100} step={10} {...args} />
+      <small>min: 0, max: 100</small>
     </>
-  );
+  ),
+};
+
+export const Controlled: Story = {
+  render: args => {
+    const [value, setValue] = React.useState(0);
+    return (
+      <>
+        <NumberField {...args} value={value} onChange={setValue} />
+        <pre>
+          <strong>Input Value:</strong>
+          {value}
+        </pre>
+      </>
+    );
+  },
 };
 
 WithFormatting.parameters = {
