@@ -1,10 +1,11 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { List } from './List';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/List',
+  component: List,
   argTypes: {
     variant: {
       control: {
@@ -19,23 +20,30 @@ export default {
       description: 'The size of the list',
     },
   },
-} as Meta;
+} satisfies Meta<typeof List>;
 
-export const Basic: ComponentStory<typeof List> = args => (
-  <List {...args}>
-    <List.Item>Käse</List.Item>
-    <List.Item>Milch</List.Item>
-    <List.Item>Brot</List.Item>
-  </List>
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Ordered: ComponentStory<typeof List> = args => (
-  <List as="ol" {...args}>
-    <List.Item>Käse</List.Item>
-    <List.Item>Milch</List.Item>
-    <List.Item>Brot</List.Item>
-  </List>
-);
+export const Basic: Story = {
+  render: args => (
+    <List {...args}>
+      <List.Item>Käse</List.Item>
+      <List.Item>Milch</List.Item>
+      <List.Item>Brot</List.Item>
+    </List>
+  ),
+};
+
+export const Ordered: Story = {
+  render: args => (
+    <List as="ol" {...args}>
+      <List.Item>Käse</List.Item>
+      <List.Item>Milch</List.Item>
+      <List.Item>Brot</List.Item>
+    </List>
+  ),
+};
 
 Basic.parameters = {
   chromatic: { viewports: [320, 1200] },
