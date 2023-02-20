@@ -59,7 +59,7 @@ test('supports mouse click on value on track', () => {
       <Slider aria-label="slider" maxValue={5} />
     </ThemeProvider>
   );
-  const slider = screen.getByRole(/slider/);
+  const slider = screen.getByRole('slider');
 
   fireEvent.change(slider, { target: { value: '2' } });
   expect(slider).toHaveValue('2');
@@ -73,7 +73,7 @@ test('supports keyboard move up and down', async () => {
       <Slider maxValue={5}>Example</Slider>
     </ThemeProvider>
   );
-  const slider = screen.getByRole(/slider/);
+  const slider = screen.getByRole('slider');
 
   fireEvent.click(screen.getByText(/Example/));
   await user.keyboard('{arrowup}');
@@ -90,7 +90,7 @@ test('supports keyboard move right and left', async () => {
       <Slider maxValue={5}>Example</Slider>
     </ThemeProvider>
   );
-  const slider = screen.getByRole(/slider/);
+  const slider = screen.getByRole('slider');
 
   fireEvent.click(screen.getByText(/Example/));
   await user.keyboard('{arrowright}');
@@ -105,7 +105,7 @@ test('supports disabled prop', () => {
       <Slider disabled>Example</Slider>
     </ThemeProvider>
   );
-  const inputElement = screen.getByRole(/slider/);
+  const inputElement = screen.getByRole('slider');
   expect(inputElement).toHaveAttribute(`disabled`);
 });
 
@@ -115,7 +115,7 @@ test('supports defaultValue (uncontrolled)', () => {
       <Slider defaultValue={[25]}>Example</Slider>
     </ThemeProvider>
   );
-  const slider = screen.getByRole(/slider/);
+  const slider = screen.getByRole('slider');
   expect(slider).toHaveValue('25');
 });
 
@@ -132,7 +132,7 @@ test('supports changing value (controlled)', () => {
   };
   render(<TestComponent />);
 
-  const slider = screen.getByRole(/slider/);
+  const slider = screen.getByRole('slider');
   expect(slider).toHaveValue('75');
   fireEvent.change(slider, { target: { value: '25' } });
   expect(slider).toHaveValue('25');
@@ -147,11 +147,11 @@ test('supports formatOptions prop', () => {
     </ThemeProvider>
   );
 
-  expect(screen.getByRole(/status/)).toContainHTML('0%');
-  const slider = screen.getByRole(/slider/);
+  expect(screen.getByRole('status')).toContainHTML('0%');
+  const slider = screen.getByRole('slider');
   fireEvent.change(slider, { target: { value: '0.5' } });
   expect(slider).toHaveValue('0.5');
-  expect(screen.getByRole(/status/)).toContainHTML('50%');
+  expect(screen.getByRole('status')).toContainHTML('50%');
 });
 
 test('takes full width by default', () => {
