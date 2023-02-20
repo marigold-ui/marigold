@@ -41,7 +41,6 @@ const meta = {
     },
     children: {
       control: 'text',
-      defaultValue: { summary: 'Click me!' },
       description: 'Children of the button',
       table: {
         type: { summary: 'string' },
