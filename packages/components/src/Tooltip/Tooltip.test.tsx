@@ -141,7 +141,7 @@ test('allows to change tooltip placement', () => {
   );
 
   user.tab();
-  const tooltip = screen.queryByRole(/tooltip/);
+  const tooltip = screen.queryByRole('tooltip');
   // eslint-disable-next-line testing-library/await-async-utils
   waitFor(() => {
     expect(tooltip).toBeVisible();

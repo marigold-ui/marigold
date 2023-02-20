@@ -68,7 +68,7 @@ test('message container supports base styling and themeSection', () => {
     </ThemeProvider>
   );
 
-  const message = screen.getByTestId(/messages/);
+  const message = screen.getByTestId('messages');
   expect(message).toHaveStyle(`color: ${theme.colors.primary}`);
 });
 
@@ -83,7 +83,7 @@ test('accepts a variant with parts and an icon', () => {
   const container = screen.getByTestId('messages');
   const title = screen.getByText('info');
   const content = screen.getByText('Danger');
-  const icon = within(container).getByRole(/presentation/);
+  const icon = within(container).getByRole('presentation');
 
   expect(container).toHaveStyle(`color: orange`);
   expect(content).toHaveStyle(`align-items: right`);
