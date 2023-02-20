@@ -5,28 +5,31 @@ import isChromatic from 'chromatic';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-const meta: Meta<typeof Button> = {
-  /* 👇 The title prop is optional.
-   * See https://storybook.js.org/docs/7.0/react/configure/overview#configure-story-loading
-   * to learn how to generate automatic titles
-   */
+const meta = {
   title: 'Components/Button',
-  component: Button,
   argTypes: {
     children: {
-      control: {
-        type: 'text',
+      control: 'text',
+      defaultValue: 'Click me',
+      description: 'Children of the button',
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: 'Click me' },
       },
-      description: 'Contents of the button',
-      defaultValue: 'Click me!',
     },
     variant: {
+      description: 'Variant of the button',
+      defaultValue: { summary: 'primary' },
+
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: 'primary' },
+      },
       control: {
         type: 'text',
       },
-      description: 'Variant of the button',
-      defaultValue: 'primary',
     },
+
     size: {
       control: {
         type: 'text',
@@ -48,49 +51,52 @@ const meta: Meta<typeof Button> = {
       defaultValue: false,
     },
   },
-};
+} satisfies Meta<typeof Button>;
 
 export default meta;
-type Story = StoryObj<typeof Button>;
+type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   render: args => <Button {...args} />,
 };
 
-export const WithIcon: ComponentStory<typeof Button> = ({
-  children,
-  ...args
-}) => (
-  <Button {...args}>
-    <Facebook /> {children}
-  </Button>
-);
+export const WithIcon: Story = {
+  render: ({ children, ...args }) => (
+    <Button {...args}>
+      <Facebook /> {children}
+    </Button>
+  ),
+};
 
-export const OnPress: ComponentStory<typeof Button> = args => (
-  <Button {...args} onPress={(e: any) => console.log(e)} />
-);
+export const OnPress: Story = {
+  render: args => <Button {...args} onPress={(e: any) => console.log(e)} />,
+};
 
-export const AsProp: ComponentStory<typeof Button> = (args: any) => (
-  <Button {...args} as="a" href="https://reservix.net" />
-);
+export const AsProp: Story = {
+  render: (args: any) => (
+    <Button as="a" href="https://reservix.net" {...args} />
+  ),
+};
 
-export const FullWidth: ComponentStory<typeof Button> = args => (
-  <Button {...args} fullWidth />
-);
+export const FullWidth: Story = {
+  render: args => <Button {...args} fullWidth />,
+};
 
-export const PassThroughProps: ComponentStory<typeof Button> = args => {
-  const [isHovered, setHovered] = useState(false);
-  return (
-    <>
-      <Button
-        {...args}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-      />
-      <br />
-      state: {isHovered ? 'hovered' : 'not hovered'}
-    </>
-  );
+export const PassThroughProps: Story = {
+  render: args => {
+    const [isHovered, setHovered] = useState(false);
+    return (
+      <>
+        <Button
+          {...args}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        />
+        <br />
+        state: {isHovered ? 'hovered' : 'not hovered'}
+      </>
+    );
+  },
 };
 
 WithIcon.parameters = {

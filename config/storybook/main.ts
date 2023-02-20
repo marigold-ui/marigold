@@ -34,7 +34,7 @@ const config: StorybookConfig = {
     check: false,
   },
   features: {
-    storyStoreV7: true,
+    storyStoreV7: false,
   },
   framework: '@storybook/react-vite',
   async viteFinal(config) {
@@ -44,9 +44,14 @@ const config: StorybookConfig = {
           root: '../../',
         }),
       ],
+      use: [
+        {
+          loader: require.resolve('@storybook/source-loader'),
+          options: {} /* your sourceLoaderOptions here */,
+        },
+      ],
     });
   },
-
   staticDirs: [{ from: './assets', to: '/assets' }],
 };
 
