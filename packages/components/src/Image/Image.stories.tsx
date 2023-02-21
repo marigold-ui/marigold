@@ -52,12 +52,11 @@ const meta = {
   args: {
     fit: 'contain',
   },
-} satisfies Meta<typeof Image>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = {
+export const Basic: StoryObj<typeof Image> = {
   render: args => (
     <Image
       {...args}

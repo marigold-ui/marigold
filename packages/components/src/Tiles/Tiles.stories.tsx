@@ -55,12 +55,11 @@ const meta = {
   args: {
     tilesWidth: '300px',
   },
-} satisfies Meta<typeof Tiles>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Boxes: Story = {
+export const Boxes: StoryObj<typeof Tiles> = {
   render: args => (
     <>
       <Tiles {...args}>
@@ -142,7 +141,7 @@ export const Boxes: Story = {
   ),
 };
 
-export const DifferentHights: Story = {
+export const DifferentHights: StoryObj<typeof Tiles> = {
   render: args => (
     <Tiles {...args}>
       <Box
@@ -211,7 +210,7 @@ export const DifferentHights: Story = {
   ),
 };
 
-export const Stacks: Story = {
+export const Stacks: StoryObj<typeof Tiles> = {
   render: args => (
     <Tiles {...args}>
       <Box

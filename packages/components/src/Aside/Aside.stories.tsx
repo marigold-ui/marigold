@@ -79,12 +79,11 @@ const meta = {
     stretch: true,
     sideWidth: 'xxlarges',
   },
-} satisfies Meta<typeof Aside>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = {
+export const Basic: StoryObj<typeof Aside> = {
   render: args => (
     <Aside {...args}>
       <Box css={{ bg: '#f1f3f5' }}>
@@ -100,7 +99,7 @@ export const Basic: Story = {
   ),
 };
 
-export const InheritWidth: Story = {
+export const InheritWidth: StoryObj<typeof Aside> = {
   render: args => (
     <Aside space="large" {...args}>
       <img

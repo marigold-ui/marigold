@@ -75,12 +75,11 @@ const meta = {
   args: {
     label: 'Select for favorite:',
   },
-} satisfies Meta<typeof Select>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = {
+export const Basic: StoryObj<typeof Select> = {
   render: args => {
     const [selected, setSelected] = useState<string | number>('');
     return (
@@ -101,7 +100,7 @@ export const Basic: Story = {
   },
 };
 
-export const Sections: Story = {
+export const Sections: StoryObj<typeof Select> = {
   render: args => (
     <Select {...args}>
       <Select.Section title="Fantasy">
@@ -116,7 +115,7 @@ export const Sections: Story = {
   ),
 };
 
-export const SelectedScroll: Story = {
+export const SelectedScroll: StoryObj<typeof Select> = {
   render: args => {
     return (
       <Select disabledKeys={['Firefly']} {...args}>
