@@ -21,12 +21,12 @@ comment:
   layout: 'reach, diff, flags, files'
 
 flags:
-  - name: components
+  components:
     paths:
       - /packages/components/src/
-  - name: system
+  system:
     paths:
       - /packages/system/src/
-  - name: tokens
+  tokens:
     paths:
       - /packages/tokens/src/
