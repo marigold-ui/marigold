@@ -1,57 +1,79 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { TextArea } from './TextArea';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/TextArea',
+  component: TextArea,
   argTypes: {
     label: {
       control: {
         type: 'text',
       },
       description: 'The label',
-      defaultValue: 'Label',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Label' },
+      },
     },
     description: {
       control: {
         type: 'text',
       },
       description: 'Help Text',
-      defaultValue: 'This is a help text description',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'This is a help text description' },
+      },
     },
     error: {
       control: {
         type: 'boolean',
       },
       description: 'Is the input invalid?',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     errorMessage: {
       control: {
         type: 'text',
       },
       description: 'Error Message',
-      defaultValue: 'Something went wrong',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Something went wrong' },
+      },
     },
 
     required: {
       control: {
         type: 'boolean',
       },
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     disabled: {
       control: {
         type: 'boolean',
       },
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     readOnly: {
       control: {
         type: 'boolean',
       },
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     width: {
       control: {
@@ -66,23 +88,32 @@ export default {
       description: 'The number of rows',
     },
   },
-} as Meta;
+  args: {
+    label: 'Label',
+    description: 'This is a help text description',
+    errorMessage: 'Something went wrong',
+    error: false,
+  },
+} satisfies Meta<typeof TextArea>;
 
-export const Basic: ComponentStory<typeof TextArea> = args => (
-  <TextArea {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Controlled: ComponentStory<typeof TextArea> = args => {
-  const [value, setValue] = React.useState('');
-  return (
-    <>
-      <TextArea {...args} value={value} onChange={setValue} />
-      <pre>
-        <strong>Input Value:</strong>
-        {value}
-      </pre>
-    </>
-  );
+export const Basic: Story = { render: args => <TextArea {...args} /> };
+
+export const Controlled: Story = {
+  render: args => {
+    const [value, setValue] = React.useState('');
+    return (
+      <>
+        <TextArea {...args} value={value} onChange={setValue} />
+        <pre>
+          <strong>Input Value:</strong>
+          {value}
+        </pre>
+      </>
+    );
+  },
 };
 
 Basic.parameters = {

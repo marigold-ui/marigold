@@ -1,56 +1,78 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { TextField } from './TextField';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/TextField',
+  component: TextField,
   argTypes: {
     label: {
       control: {
         type: 'text',
       },
       description: 'The label',
-      defaultValue: 'Label',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Label' },
+      },
     },
     description: {
       control: {
         type: 'text',
       },
       description: 'Help Text',
-      defaultValue: 'This is a help text description',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'This is a help text description' },
+      },
     },
     error: {
       control: {
         type: 'boolean',
       },
       description: 'Is the input invalid?',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     errorMessage: {
       control: {
         type: 'text',
       },
       description: 'Error Message',
-      defaultValue: 'Something went wrong',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Something went wrong' },
+      },
     },
     required: {
       control: {
         type: 'boolean',
       },
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     disabled: {
       control: {
         type: 'boolean',
       },
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     readOnly: {
       control: {
         type: 'boolean',
       },
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     type: {
       control: {
@@ -70,7 +92,10 @@ export default {
         'url',
         'week',
       ],
-      defaultValue: 'text',
+      table: {
+        type: { summary: 'select' },
+        defaultValue: { summary: 'text' },
+      },
     },
     width: {
       control: {
@@ -79,23 +104,35 @@ export default {
       description: 'The width of the field',
     },
   },
-} as Meta;
+  args: {
+    label: 'Label',
+    description: 'This is a help text description',
+    error: false,
+    errorMessage: 'Something went wrong',
+    type: 'text',
+  },
+} satisfies Meta<typeof TextField>;
 
-export const Basic: ComponentStory<typeof TextField> = args => (
-  <TextField {...args} label="My label is great." />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Controlled: ComponentStory<typeof TextField> = args => {
-  const [value, setValue] = React.useState('');
-  return (
-    <>
-      <TextField {...args} value={value} onChange={setValue} />
-      <pre>
-        <strong>Input Value:</strong>
-        {value}
-      </pre>
-    </>
-  );
+export const Basic: Story = {
+  render: args => <TextField {...args} label="My label is great." />,
+};
+
+export const Controlled: Story = {
+  render: args => {
+    const [value, setValue] = React.useState('');
+    return (
+      <>
+        <TextField {...args} value={value} onChange={setValue} />
+        <pre>
+          <strong>Input Value:</strong>
+          {value}
+        </pre>
+      </>
+    );
+  },
 };
 
 Basic.parameters = {
