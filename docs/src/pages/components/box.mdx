@@ -4,20 +4,16 @@ group: Layout
 switchTheme: true
 github: https://github.com/marigold-ui/marigold/blob/main/packages/system/src/components/Box/Box.tsx
 edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/box.mdx
-caption: The all-rounder among the components.
+caption: Learn about the foundation component of Marigold.
 badge: updated
 ---
 
-The `<Box>` is a basic component like the HTML div element. You can modify the component with different style props. It is also possible to write `__baseCSS` and `css` styles on the `<Box>`.
+The `<Box>` component serves as the foundation of Marigold, acting as the bridge that connects the logic of components with their visual design. Through the use of `<Box>`, theme-based values can be bound to components and utilized for styling. Every component in Marigold is composed of `<Box>` components.
 
-You can use the `as` prop to let the `<Box>` behave as any Marigold component or HTML Element with all its properties.
-
-For a more detailed description, see [Box Primitive](../../foundation/box-primitive).
+Ideally, you should not need this component frequently, unless you are building a design system component or a custom component that is specific to your app and you want to use the design tokens.
 
 <Preview>
-  <Box border="1px solid gray" p="small" borderRadius="5px">
-    I am basic div box!
-  </Box>
+  <BasicBoxDemo />
 </Preview>
 
 ## Usage
@@ -42,21 +38,15 @@ import { Box } from '@marigold/components';
       default: 'div',
     },
     {
-      property: 'variant',
-      type: 'string⎮string[]',
-      description: 'The variant of the component.',
-      default: 'none',
-    },
-    {
-      property: '__baseCSS',
-      type: 'CSSObject',
-      description: 'Style the base CSS.',
-      default: 'none',
-    },
-    {
       property: 'css',
       type: 'CSSObject | CSSObject',
       description: 'Set CSS for the component.',
+      default: '',
+    },
+    {
+      property: '...',
+      type: '',
+      description: 'HTML attributes based on the rendered element.',
       default: '',
     },
   ]}
@@ -64,9 +54,9 @@ import { Box } from '@marigold/components';
 
 ## Examples
 
-### Basic Box
+### Polymorphic Component
 
-In this example the `<Box>` is modified with several props.
+When using the `<Box>` component, it will render a div element by default. However, you have the option to customize this by using the `as` prop. All regular HTML props will be forwarded to the underlying element. Typescript will ensure that only correct HTML attributes are used by limiting the props based on the `as` prop. This polymorphic type inference will work not only with HTML elements, but also with any React component.
 
 ```tsx preview file=components/Box/box-success.demo.tsx
 
