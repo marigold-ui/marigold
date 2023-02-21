@@ -12,10 +12,6 @@ coverage:
         target: 90%
         flags:
           - system
-      tokens:
-        target: 90%
-        flags:
-          - tokens
 
 comment:
   layout: 'reach, diff, flags, files'
