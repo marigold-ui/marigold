@@ -58,22 +58,22 @@ import { Box } from '@marigold/components';
 
 When using the `<Box>` component, it will render a div element by default. However, you have the option to customize this by using the `as` prop. All regular HTML props will be forwarded to the underlying element. Typescript will ensure that only correct HTML attributes are used by limiting the props based on the `as` prop. This polymorphic type inference will work not only with HTML elements, but also with any React component.
 
-```tsx preview file=components/Box/box-success.demo.tsx
+Using the `<Box>` element to render an element will also apply CSS normalization, ensuring that the element is displayed consistently across all browsers.
+
+```tsx preview file=components/Box/box-as-button.demo.tsx
 
 ```
 
-### Box as Button
+Passing another React component to the `<Box>` component can help with styling and integrating third-party components seamlessly into the design system. To achieve this, you can pass the third-party component into the `as` prop (ensure that it forwards the `className`). By defining styles in the css prop, these styles will apply to the third-party component. The `<Box>` component will inherit props from the third-party component in addition to its own props.
 
-The `as` prop is set to a button HTMLElement on the left side and to a Marigold button on the right.
-
-```tsx preview file=components/Box/button-box.demo.tsx
+```tsx preview file=components/Box/box-as-component.demo.tsx
 
 ```
 
-### Box with several props
+### The `css` Prop
 
-How to use different props and CSS on the `<Box>`.
+Arbitrary styles can be applied to the underlying element via the css prop. All CSS rules are supported. Values for the rules are extended with the design tokens from the theme. When a design token is used the corresponding value will be applied.
 
-```tsx preview file=components/Box/box-text.demo.tsx
+```tsx preview file=components/Box/box-css-prop.demo.tsx
 
 ```
