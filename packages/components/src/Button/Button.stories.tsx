@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from 'react';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
