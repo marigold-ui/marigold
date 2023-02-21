@@ -27,6 +27,7 @@ export * from './Icon';
 export * from './Image';
 export * from './Inline';
 export * from './Input';
+export * from './Inset';
 export * from './Label';
 export * from './Link';
 export * from './List';
