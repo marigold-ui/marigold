@@ -1,7 +1,5 @@
 import React, { ReactNode } from 'react';
-import { ResponsiveStyleValue } from '@marigold/system';
-
-import { Box } from '../Box';
+import { Box, ResponsiveStyleValue } from '@marigold/system';
 
 const ALIGNMENT_X = {
   none: 'initial',

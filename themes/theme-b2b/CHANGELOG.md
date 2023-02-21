@@ -1,5 +1,12 @@
 # @marigold/theme-b2b
 
+## 19.0.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/components@5.1.0
+
 ## 18.0.0
 
 ### Minor Changes

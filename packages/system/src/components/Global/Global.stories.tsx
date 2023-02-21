@@ -23,6 +23,11 @@ export default {
 
 const theme = {
   root: {
+    body: {
+      m: 0,
+      p: 0,
+      fontFamily: 'Webdings',
+    },
     button: {
       color: '#fff0f6',
       border: '1px solid #a61e4d',

@@ -1,6 +1,6 @@
 {
   "name": "@marigold/system",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "description": "Marigold System Library",
   "license": "MIT",
   "keywords": [
@@ -26,9 +26,9 @@
     "directory": "packages/system"
   },
   "dependencies": {
-    "@emotion/react": "11.10.5",
+    "@emotion/react": "11.10.6",
     "@marigold/types": "workspace:*",
-    "@theme-ui/css": "0.15.4",
+    "@theme-ui/css": "0.15.5",
     "csstype": "3.1.1",
     "deepmerge": "^4.2.2",
     "react-fast-compare": "^3.2.0",
@@ -44,7 +44,7 @@
     "postcss": "8.4.21",
     "react": "18.2.0",
     "tailwindcss": "3.2.6",
-    "tsup": "6.5.0"
+    "tsup": "6.6.3"
   },
   "scripts": {
     "build": "tsup src/index.ts",

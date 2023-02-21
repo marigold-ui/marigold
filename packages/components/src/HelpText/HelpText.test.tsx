@@ -113,7 +113,7 @@ test('renders icon when when error message is shown', () => {
   );
 
   const element = screen.getByTestId('help-text');
-  const icon = within(element).getByRole(/presentation/);
+  const icon = within(element).getByRole('presentation');
   expect(icon).toBeInTheDocument();
 });
 
@@ -128,7 +128,7 @@ test('icon has a default size', () => {
   );
 
   const element = screen.getByTestId('help-text');
-  const icon = within(element).getByRole(/presentation/);
+  const icon = within(element).getByRole('presentation');
   expect(icon).toHaveStyle(`width: 16px`);
 });
 
@@ -145,7 +145,7 @@ test('icon can be sized via theme', () => {
   );
 
   const element = screen.getByTestId('help-text');
-  const icon = within(element).getByRole(/presentation/);
+  const icon = within(element).getByRole('presentation');
   expect(icon).toHaveStyle(`width: ${theme.sizes.small}px`);
 });
 

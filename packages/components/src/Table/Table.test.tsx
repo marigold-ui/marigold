@@ -94,17 +94,17 @@ test('supports theme with parts', () => {
       </Table>
     </ThemeProvider>
   );
-  const table = screen.getAllByRole(/grid/);
+  const table = screen.getAllByRole('grid');
   expect(table[0]).toHaveStyle(`border-collapse: collapse`);
 
-  const tableHeader = screen.getAllByRole(/columnheader/);
+  const tableHeader = screen.getAllByRole('columnheader');
   expect(tableHeader[0]).toHaveStyle(`padding: 4px`);
 
   const tableRows = screen.getAllByRole('row');
   fireEvent.click(tableRows[1]);
   expect(tableRows[1]).toHaveStyle(`background-color: blue`);
 
-  const tableCells = screen.getAllByRole(/gridcell/);
+  const tableCells = screen.getAllByRole('gridcell');
   expect(tableCells[0]).toHaveStyle(`padding: 16px`);
 });
 
@@ -289,7 +289,7 @@ test('allows to strecht to fit container', () => {
     </ThemeProvider>
   );
 
-  const table = screen.getAllByRole(/grid/);
+  const table = screen.getAllByRole('grid');
   expect(table[0]).toHaveStyle(`width: 100%`);
 });
 
