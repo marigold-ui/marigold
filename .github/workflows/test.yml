@@ -30,4 +30,4 @@ jobs:
       - name: Upload coverage flags to Codecov
         uses: codecov/codecov-action@v3
         with:
-          files: /coverage/clover.xml
+          files: /coverage/lcov.info
