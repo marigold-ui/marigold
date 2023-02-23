@@ -2,10 +2,10 @@ import type { StorybookConfig } from '@storybook/react-vite';
 import path from 'node:path';
 import { sync as findUpSync } from 'find-up';
 import { mergeConfig } from 'vite';
+import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 const parent = path.resolve(__dirname, '..');
 const root = path.dirname(findUpSync('package.json', { cwd: parent }) || '.');
-const viteTsConfigPaths = require('vite-tsconfig-paths').default;
 
 let paths = [path.resolve(root, '**/*.stories.tsx')];
 if (process.env.FOLDERS) {
