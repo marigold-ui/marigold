@@ -29,3 +29,5 @@ jobs:
         run: pnpm test:ci
       - name: Upload coverage flags to Codecov
         uses: codecov/codecov-action@v3
+        with:
+          flags: components,system,tokens
