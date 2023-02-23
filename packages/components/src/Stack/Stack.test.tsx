@@ -26,7 +26,7 @@ test('default space is "none"', () => {
       </Stack>
     </ThemeProvider>
   );
-  const first = screen.getByText(/first/).parentElement;
+  const first = screen.getByText('first').parentElement;
   expect(first).toHaveStyle(`gap: 0`);
 });
 
