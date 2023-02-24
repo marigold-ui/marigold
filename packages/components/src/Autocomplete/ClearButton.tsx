@@ -1,14 +1,16 @@
 import React, { useRef } from 'react';
-import { PressEvents } from '@react-types/shared';
-import { HtmlProps } from '@marigold/types';
-import { useButton } from '@react-aria/button';
-import { useFocusRing } from '@react-aria/focus';
 import { useHover } from '@react-aria/interactions';
-import { Box, useStateProps } from '@marigold/system';
+import { useFocusRing } from '@react-aria/focus';
+import { useButton } from '@react-aria/button';
+import { PressEvents } from '@react-types/shared';
 import { mergeProps } from '@react-aria/utils';
+import { HtmlProps } from '@marigold/types';
+import { Box, useStateProps } from '@marigold/system';
 
 export interface ClearButtonProps extends PressEvents, HtmlProps<'button'> {
+  excludeFromTabOrder?: boolean;
   preventFocus?: boolean;
+  preventFocusOnPress?: boolean;
 }
 
 export const ClearButton = ({
@@ -20,6 +22,8 @@ export const ClearButton = ({
   onPressEnd,
   onPressChange,
   onPressUp,
+  excludeFromTabOrder,
+  preventFocusOnPress,
   ...props
 }: ClearButtonProps) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -36,6 +40,8 @@ export const ClearButton = ({
       onPressEnd,
       onPressChange,
       onPressUp,
+      excludeFromTabOrder,
+      preventFocusOnPress,
       isDisabled: disabled,
     },
     buttonRef
