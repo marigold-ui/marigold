@@ -28,7 +28,7 @@ export const ListBox: Theme['components']['ListBox'] = {
       outline: 'none',
       cursor: 'pointer',
 
-      '&:focus': {
+      '&:focus-visible': {
         bg: 'orange20',
       },
 
