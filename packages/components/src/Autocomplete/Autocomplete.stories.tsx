@@ -4,6 +4,7 @@ import { Meta, ComponentStory } from '@storybook/react';
 import { Container } from '../Container';
 import { Stack } from '../Stack';
 import { Autocomplete } from './Autocomplete';
+import { useAsyncList } from '@react-stately/data';
 
 export default {
   title: 'Components/Autocomplete',
@@ -68,5 +69,34 @@ export const Controlled: ComponentStory<typeof Autocomplete> = args => {
         </pre>
       </Stack>
     </Container>
+  );
+};
+
+export const Async: ComponentStory<typeof Autocomplete> = args => {
+  const list = useAsyncList<{ name: string }>({
+    async load({ signal, filterText }) {
+      const res = await fetch(
+        `https://swapi.py4e.com/api/people/?search=${filterText}`,
+        { signal }
+      );
+      const json = await res.json();
+
+      return {
+        items: json.results,
+      };
+    },
+  });
+
+  return (
+    <Autocomplete
+      label="Search Star Wars Characters"
+      items={list.items}
+      value={list.filterText}
+      onChange={list.setFilterText}
+    >
+      {(item: any) => (
+        <Autocomplete.Item key={item.name}>{item.name}</Autocomplete.Item>
+      )}
+    </Autocomplete>
   );
 };
