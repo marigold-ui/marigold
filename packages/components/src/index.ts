@@ -3,6 +3,7 @@ export * from './theme';
 
 export * from './Aside';
 export * from './Aspect';
+export * from './Autocomplete';
 export * from './Badge';
 export * from './Box';
 export * from './Breakout';
