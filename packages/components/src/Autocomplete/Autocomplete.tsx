@@ -22,8 +22,10 @@ export interface AutocompleteProps
     | 'validationState'
     | 'icon'
     | 'onInputChange'
+    | 'inputValue'
   > {
   onChange?: SearchAutocompleteProps<object>['onInputChange'];
+  value?: SearchAutocompleteProps<object>['inputValue'];
   disabled?: boolean;
   required?: boolean;
   readOnly?: boolean;
@@ -36,12 +38,14 @@ export const Autocomplete = ({
   readOnly,
   error,
   onChange,
+  value,
   ...rest
 }: AutocompleteProps) => {
   const { contains } = useFilter({ sensitivity: 'base' });
   const props = {
     ...rest,
     onInputChange: onChange,
+    inputValue: value,
     isDisabled: disabled,
     isRequired: required,
     isReadOnly: readOnly,
