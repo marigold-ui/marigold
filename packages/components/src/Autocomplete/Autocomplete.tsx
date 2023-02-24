@@ -29,6 +29,9 @@ export interface AutocompleteProps
   readOnly?: boolean;
   error?: boolean;
   value?: SearchAutocompleteProps<object>['inputValue'];
+  /**
+   * Handler that is called when the input value changes.
+   */
   onChange?: SearchAutocompleteProps<object>['onInputChange'];
   /**
    * Handler that is called when the SearchAutocomplete is submitted.
