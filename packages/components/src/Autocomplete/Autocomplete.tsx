@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { Key, useRef } from 'react';
 
 import { useSearchAutocomplete } from '@react-aria/autocomplete';
 import { useFilter } from '@react-aria/i18n';
@@ -24,12 +24,22 @@ export interface AutocompleteProps
     | 'onInputChange'
     | 'inputValue'
   > {
-  onChange?: SearchAutocompleteProps<object>['onInputChange'];
-  value?: SearchAutocompleteProps<object>['inputValue'];
   disabled?: boolean;
   required?: boolean;
   readOnly?: boolean;
   error?: boolean;
+  value?: SearchAutocompleteProps<object>['inputValue'];
+  onChange?: SearchAutocompleteProps<object>['onInputChange'];
+  /**
+   * Handler that is called when the SearchAutocomplete is submitted.
+   *
+   * A `key` will be passed if the submission is a selected item (e.g. a user
+   * clicks or presses enter on an option). If the input is a custom `value`, `key` will be `null`.
+   *
+   * A `value` will be passed if the submission is a custom value (e.g. a user
+   * types then presses enter). If the input is a selected item, `value` will be `null`.
+   */
+  onSubmit?: (key: Key | null, value: string | null) => void;
 }
 
 export const Autocomplete = ({
@@ -54,8 +64,11 @@ export const Autocomplete = ({
 
   const state = useComboBoxState({
     ...props,
-    allowsCustomValue: true,
     defaultFilter: contains,
+    allowsCustomValue: true,
+    onSelectionChange: key => key !== null && props.onSubmit?.(key, null),
+    selectedKey: undefined,
+    defaultSelectedKey: undefined,
   });
 
   const inputRef = useRef(null);
@@ -66,6 +79,8 @@ export const Autocomplete = ({
     useSearchAutocomplete(
       {
         ...props,
+        onSubmit: (value: string | null, key: Key | null) =>
+          props.onSubmit?.(key, value),
         popoverRef,
         listBoxRef,
         inputRef,

@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { Key, useState } from 'react';
 import { Meta, ComponentStory } from '@storybook/react';
 
 import { Container } from '../Container';
-import { Autocomplete } from './Autocomplete';
-import { Divider } from '../Divider';
 import { Stack } from '../Stack';
+import { Autocomplete } from './Autocomplete';
 
 export default {
   title: 'Components/Autocomplete',
@@ -40,7 +39,10 @@ export const Basic: ComponentStory<typeof Autocomplete> = args => (
 );
 
 export const Controlled: ComponentStory<typeof Autocomplete> = args => {
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<[Key | null, string | null]>([
+    '',
+    '',
+  ]);
   const [current, setCurrent] = useState<string>('');
   return (
     <Container size="small">
@@ -49,7 +51,7 @@ export const Controlled: ComponentStory<typeof Autocomplete> = args => {
           {...args}
           value={current}
           onChange={setCurrent}
-          onSubmit={setSelected}
+          onSubmit={(key, val) => setSelected([key, val])}
           disabledKeys={['star-trek']}
         >
           <Autocomplete.Item key="harry-potter">Harry Potter</Autocomplete.Item>
@@ -60,8 +62,10 @@ export const Controlled: ComponentStory<typeof Autocomplete> = args => {
           <Autocomplete.Item key="star-trek">Star Trek</Autocomplete.Item>
           <Autocomplete.Item key="firefly">Firefly</Autocomplete.Item>
         </Autocomplete>
-        <pre>selected: {selected}</pre>
-        <pre>input value: {current}</pre>
+        <pre>current: {current}</pre>
+        <pre>
+          submitted: (key: {selected[0]}, value: {selected[1]})
+        </pre>
       </Stack>
     </Container>
   );
