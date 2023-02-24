@@ -16,7 +16,7 @@ import type { HeaderThemeExtension } from './Header';
 import type { HeadlineThemeExtension } from './Headline';
 import type { HelpTextThemeExtension } from './HelpText';
 import type { ImageThemeExtension } from './Image';
-import type { InputContainerThemeExtension } from './Input';
+import type { InputThemeExtension } from './Input';
 import type { LabelThemeExtension } from './Label';
 import type { LinkThemeExtension } from './Link';
 import type { ListThemeExtension } from './List';
@@ -48,7 +48,7 @@ interface ComponentStyles
     HeadlineThemeExtension,
     HelpTextThemeExtension,
     ImageThemeExtension,
-    InputContainerThemeExtension,
+    InputThemeExtension,
     LabelThemeExtension,
     LinkThemeExtension,
     ListThemeExtension,
