@@ -94,6 +94,7 @@ export const Autocomplete = ({
         ref={popoverRef}
         triggerRef={inputRef}
         scrollRef={listBoxRef}
+        isNonModal
       >
         <ListBox ref={listBoxRef} state={state} {...listBoxProps} />
       </Popover>
