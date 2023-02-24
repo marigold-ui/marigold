@@ -16,7 +16,7 @@ import {
 } from '@marigold/system';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase';
-import { Input } from '../Input';
+import { Input, InputContainer } from '../Input';
 import { StepButton } from './StepButton';
 
 // Theme Extension
@@ -151,17 +151,17 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
               {...decrementButtonProps}
             />
           )}
-          <Input
-            ref={inputRef}
-            variant={variant}
-            size={size}
-            /**
-             * We use `size` for styles which is a string, not like
-             * the regular HTML attribute, which is a number
-             */
-            {...(inputProps as any)}
-            {...stateProps}
-          />
+          <InputContainer variant={variant} size={size}>
+            <Input
+              ref={inputRef}
+              /**
+               * We use `size` for styles which is a string, not like
+               * the regular HTML attribute, which is a number
+               */
+              {...(inputProps as any)}
+              {...stateProps}
+            />
+          </InputContainer>
           {showStepper && (
             <StepButton
               direction="up"

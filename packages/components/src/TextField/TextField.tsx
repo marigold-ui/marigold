@@ -9,7 +9,7 @@ import { useStateProps } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase';
-import { Input } from '../Input';
+import { Input, InputContainer } from '../Input';
 
 // Props
 // ---------------
@@ -92,19 +92,21 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
         size={size}
         width={width}
       >
-        <Input
-          ref={inputRef}
-          variant={variant}
-          size={size}
-          /**
-           * We use `size` for styles which is a string, not like
-           * the regular HTML attribute, which is a number
-           */
-          {...(inputProps as any)}
-          {...focusProps}
-          {...hoverProps}
-          {...stateProps}
-        />
+        <InputContainer>
+          <Input
+            ref={inputRef}
+            variant={variant}
+            size={size}
+            /**
+             * We use `size` for styles which is a string, not like
+             * the regular HTML attribute, which is a number
+             */
+            {...(inputProps as any)}
+            {...focusProps}
+            {...hoverProps}
+            {...stateProps}
+          />
+        </InputContainer>
       </FieldBase>
     );
   }
