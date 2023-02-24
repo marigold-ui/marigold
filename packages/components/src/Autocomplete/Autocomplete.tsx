@@ -23,11 +23,13 @@ export interface AutocompleteProps
     | 'icon'
     | 'onInputChange'
     | 'inputValue'
+    | 'defaultInputValue'
   > {
   disabled?: boolean;
   required?: boolean;
   readOnly?: boolean;
   error?: boolean;
+  defaultValue?: SearchAutocompleteProps<object>['defaultInputValue'];
   value?: SearchAutocompleteProps<object>['inputValue'];
   /**
    * Handler that is called when the input value changes.
@@ -52,6 +54,7 @@ export const Autocomplete = ({
   error,
   onChange,
   value,
+  defaultValue,
   ...rest
 }: AutocompleteProps) => {
   const { contains } = useFilter({ sensitivity: 'base' });
@@ -59,6 +62,7 @@ export const Autocomplete = ({
     ...rest,
     onInputChange: onChange,
     inputValue: value,
+    defaultInputValue: defaultValue,
     isDisabled: disabled,
     isRequired: required,
     isReadOnly: readOnly,
