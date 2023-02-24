@@ -2,8 +2,6 @@ import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
 import { TextField } from './TextField';
 import isChromatic from 'chromatic';
-import { InputContainer } from '../Input';
-import { Search } from '@marigold/icons';
 
 export default {
   title: 'Components/TextField',
@@ -92,7 +90,6 @@ export const Controlled: ComponentStory<typeof TextField> = args => {
   return (
     <>
       <TextField {...args} value={value} onChange={setValue} />
-
       <pre>
         <strong>Input Value:</strong>
         {value}
