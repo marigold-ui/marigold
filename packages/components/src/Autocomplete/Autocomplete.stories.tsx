@@ -22,6 +22,13 @@ export default {
       },
       description: 'Set the placeholder text',
     },
+    menuTrigger: {
+      control: {
+        type: 'select',
+      },
+      options: ['focus', 'input', 'manual'],
+      description: 'Set which interaction shows the menu',
+    },
   },
 } as Meta;
 

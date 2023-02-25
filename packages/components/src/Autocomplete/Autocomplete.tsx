@@ -45,6 +45,7 @@ export interface AutocompleteProps
    * types then presses enter). If the input is a selected item, `value` will be `null`.
    */
   onSubmit?: (key: Key | null, value: string | null) => void;
+  width?: string;
 }
 
 export const Autocomplete = ({
@@ -55,6 +56,7 @@ export const Autocomplete = ({
   onChange,
   value,
   defaultValue,
+  width,
   ...rest
 }: AutocompleteProps) => {
   const { contains } = useFilter({ sensitivity: 'base' });
@@ -105,6 +107,7 @@ export const Autocomplete = ({
         error={error}
         errorMessage={props.errorMessage}
         disabled={disabled}
+        width={width}
       >
         <Box>
           <Box as="input" {...inputProps} ref={inputRef} />
