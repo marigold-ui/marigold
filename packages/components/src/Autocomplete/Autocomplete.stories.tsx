@@ -16,6 +16,27 @@ export default {
       description: 'Set the label',
       defaultValue: 'Select for favorite:',
     },
+    description: {
+      control: {
+        type: 'text',
+      },
+      description: 'Help Text',
+      defaultValue: 'This is a help text description',
+    },
+    error: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Is the input invalid?',
+      defaultValue: false,
+    },
+    errorMessage: {
+      control: {
+        type: 'text',
+      },
+      description: 'Error Message',
+      defaultValue: 'Something went wrong',
+    },
     placeholder: {
       control: {
         type: 'text',
@@ -28,6 +49,12 @@ export default {
       },
       options: ['focus', 'input', 'manual'],
       description: 'Set which interaction shows the menu',
+    },
+    width: {
+      control: {
+        type: 'text',
+      },
+      description: 'The width of the field',
     },
   },
 } as Meta;
