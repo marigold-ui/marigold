@@ -20,9 +20,9 @@ export const AutocompleteAsyncDemo = () => {
     null
   );
   const list = useAsyncList<{ [key: string]: string }>({
-    async load({ signal, filterText }) {
+    async load({ signal, filterText: value }) {
       const res = await fetch(
-        `https://swapi.py4e.com/api/people/?search=${filterText}`,
+        `https://swapi.py4e.com/api/people/?search=${value}`,
         { signal }
       );
       const json = await res.json();
