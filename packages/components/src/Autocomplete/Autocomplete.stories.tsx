@@ -74,7 +74,7 @@ export const Basic: ComponentStory<typeof Autocomplete> = args => (
 );
 
 export const Controlled: ComponentStory<typeof Autocomplete> = args => {
-  const [selected, setSelected] = useState<[Key | null, string | null]>([
+  const [submitted, setSubmitted] = useState<[Key | null, string | null]>([
     '',
     '',
   ]);
@@ -86,7 +86,7 @@ export const Controlled: ComponentStory<typeof Autocomplete> = args => {
           {...args}
           value={current}
           onChange={setCurrent}
-          onSubmit={(key, val) => setSelected([key, val])}
+          onSubmit={(key, val) => setSubmitted([key, val])}
           disabledKeys={['star-trek']}
         >
           <Autocomplete.Item key="harry-potter">Harry Potter</Autocomplete.Item>
@@ -99,7 +99,7 @@ export const Controlled: ComponentStory<typeof Autocomplete> = args => {
         </Autocomplete>
         <pre>current: {current}</pre>
         <pre>
-          submitted: (key: {selected[0]}, value: {selected[1]})
+          submitted: (key: {submitted[0]}, value: {submitted[1]})
         </pre>
       </Stack>
     </Container>
