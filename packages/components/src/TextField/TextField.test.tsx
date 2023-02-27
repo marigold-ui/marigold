@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-node-access */
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
@@ -50,16 +51,6 @@ const theme = {
       base: {
         borderColor: 'blue',
       },
-      variant: {
-        lime: {
-          color: 'lime',
-        },
-      },
-      size: {
-        small: {
-          fontSize: 'small-1',
-        },
-      },
     },
   },
 };
@@ -89,33 +80,9 @@ test('input can be styled via "Input" styles', () => {
     </ThemeProvider>
   );
   const textField = screen.getByTestId('text-field');
-  expect(textField).toHaveStyle(`border-color: ${theme.colors.blue}`);
-});
-
-test('passes down variant and size', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <TextField
-        data-testid="text-field"
-        label="Label"
-        description="Description"
-        variant="lime"
-        size="small"
-      />
-    </ThemeProvider>
+  expect(textField.parentElement).toHaveStyle(
+    `border-color: ${theme.colors.blue}`
   );
-
-  const textField = screen.getByTestId('text-field');
-  expect(textField).toHaveStyle(`color: ${theme.colors.lime}`);
-  expect(textField).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
-
-  const label = screen.getByText('Label');
-  expect(label).toHaveStyle(`color: ${theme.colors.lime}`);
-  expect(label).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
-
-  const description = screen.getByText('Description');
-  expect(description).toHaveStyle(`color: ${theme.colors.lime}`);
-  expect(description).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
 });
 
 test('takes full width by default', () => {
