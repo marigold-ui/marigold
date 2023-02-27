@@ -1,5 +1,5 @@
 import React from 'react';
-import { prettyDOM, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 
 import { Autocomplete } from './Autocomplete';
@@ -149,7 +149,7 @@ test('uses field structure', () => {
   expect(error).not.toBeInTheDocument();
 });
 
-test('opens the suggestions', async () => {
+test('opens the suggestions on user input', async () => {
   render(
     <Autocomplete label="Label" data-testid="input-field">
       <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
@@ -161,6 +161,40 @@ test('opens the suggestions', async () => {
 
   const input = screen.getByTestId('input-field');
   await user.type(input, 'br');
+
+  const suggestions = screen.getByRole('listbox');
+  expect(suggestions).toBeVisible();
+});
+
+test('opens the suggestions on focus', async () => {
+  render(
+    <Autocomplete label="Label" data-testid="input-field" menuTrigger="focus">
+      <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
+      <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
+      <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
+      <Autocomplete.Item key="garlic">Garlic</Autocomplete.Item>
+    </Autocomplete>
+  );
+
+  const input = screen.getByTestId('input-field');
+  await user.click(input);
+
+  const suggestions = screen.getByRole('listbox');
+  expect(suggestions).toBeVisible();
+});
+
+test('opens the suggestions on arrow down (manual)', async () => {
+  render(
+    <Autocomplete label="Label" data-testid="input-field" menuTrigger="manual">
+      <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
+      <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
+      <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
+      <Autocomplete.Item key="garlic">Garlic</Autocomplete.Item>
+    </Autocomplete>
+  );
+
+  const input = screen.getByTestId('input-field');
+  await user.type(input, '{arrowdown}');
 
   const suggestions = screen.getByRole('listbox');
   expect(suggestions).toBeVisible();
@@ -242,7 +276,7 @@ test('supporst showing an error', () => {
   expect(screen.getByText('Error!')).toBeInTheDocument();
 });
 
-test('supporst default value', () => {
+test('supports default value', () => {
   render(
     <Autocomplete label="Label" data-testid="input-field" defaultValue="garlic">
       <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
@@ -344,8 +378,3 @@ test('supports submit handler', async () => {
     ]
   `);
 });
-
-// submit
-// controlled
-// menutrigger? (focus, manual)
-// async

@@ -60,7 +60,7 @@ export default {
 } as Meta;
 
 export const Basic: ComponentStory<typeof Autocomplete> = args => (
-  <Container size="small">
+  <Container size="large">
     <Autocomplete {...args}>
       <Autocomplete.Item key="Harry Potter">Harry Potter</Autocomplete.Item>
       <Autocomplete.Item key="Lord of the Rings">
@@ -80,7 +80,7 @@ export const Controlled: ComponentStory<typeof Autocomplete> = args => {
   ]);
   const [current, setCurrent] = useState<string>('');
   return (
-    <Container size="small">
+    <Container size="large">
       <Stack space="medium">
         <Autocomplete
           {...args}
