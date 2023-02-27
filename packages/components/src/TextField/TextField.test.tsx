@@ -65,6 +65,7 @@ const theme = {
 };
 
 const user = userEvent.setup();
+
 test('renders an text input', () => {
   render(<TextField label="Label" data-testid="text-field" />);
 
