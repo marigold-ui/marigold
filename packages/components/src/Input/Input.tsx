@@ -4,10 +4,10 @@ import {
   ThemeExtension,
   useComponentStyles,
 } from '@marigold/system';
-import { Label } from '@marigold/components';
 import { HtmlProps } from '@marigold/types';
 import React, { ReactNode } from 'react';
 import { InputField } from './InputField';
+import { Label } from '../Label';
 
 // Theme Extension
 // ---------------

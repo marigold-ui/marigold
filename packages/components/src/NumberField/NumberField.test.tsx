@@ -135,7 +135,7 @@ test('input can be styled via "Input" styles', () => {
   );
   const numberField = screen.getByTestId('number-field');
   // eslint-disable-next-line testing-library/no-node-access
-  expect(numberField.parentElement).toHaveStyle(
+  expect(numberField.parentElement.parentElement).toHaveStyle(
     `border-color: ${theme.colors.blue}`
   );
 });
