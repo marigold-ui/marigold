@@ -1,10 +1,9 @@
 import React from 'react';
 import type { Meta, ComponentStory } from '@storybook/react';
-import { Input } from './Input';
 import isChromatic from 'chromatic';
 import { Delete, Search } from '@marigold/icons';
 import { Button } from '../Button';
-import { InputContainer } from './InputContainer';
+import { Input } from './Input';
 
 export default {
   title: 'Components/Input',
@@ -46,9 +45,9 @@ export default {
 } as Meta;
 
 export const Basic: ComponentStory<typeof Input> = args => (
-  <InputContainer>
-    <Input placeholder="Placeholder..." {...args} />
-  </InputContainer>
+  <Input>
+    <Input.Field placeholder="Placeholder..." {...args} />
+  </Input>
 );
 
 Basic.parameters = {
@@ -56,12 +55,12 @@ Basic.parameters = {
   theme: isChromatic() ? 'b2b' : 'stacked',
 };
 
-export const Container: ComponentStory<typeof Input> = args => (
-  <InputContainer disabled>
+export const WithIcons: ComponentStory<typeof Input> = args => (
+  <Input disabled>
     <Search />
-    <Input placeholder="Placeholder..." />
+    <Input.Field placeholder="Placeholder..." />
     <Button size="small" variant="text">
       <Delete />
     </Button>
-  </InputContainer>
+  </Input>
 );

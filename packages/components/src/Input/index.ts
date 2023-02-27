@@ -1,2 +1,2 @@
+export * from './InputField';
 export * from './Input';
-export * from './InputContainer';

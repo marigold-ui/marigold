@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
-import { Input } from './Input';
+import { Input } from './InputField';
 
 const theme = {
   fonts: {
