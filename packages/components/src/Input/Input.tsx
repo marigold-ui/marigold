@@ -8,19 +8,18 @@ import {
 import { HtmlProps } from '@marigold/types';
 import React, { ReactNode } from 'react';
 import { InputField } from './InputField';
+
 // Theme Extension
 // ---------------
 export interface InputThemeExtension extends ThemeExtension<'Input'> {}
 
 // Props
 // ---------------
-export interface InputProps extends Omit<HtmlProps<'input'>, 'size'> {
+export interface InputProps extends Omit<HtmlProps<'div'>, 'size'> {
   children: ReactNode;
   space?: ResponsiveStyleValue<string>;
   variant?: string;
   size?: string;
-  disabled?: boolean;
-  stateProps?: StateAttrProps;
 }
 
 // Component
@@ -30,7 +29,7 @@ export const Input = ({
   children,
   variant,
   size,
-  stateProps,
+  ...props
 }: InputProps) => {
   const [leading, input, trailing] = React.Children.toArray(children);
 
@@ -38,9 +37,14 @@ export const Input = ({
 
   return (
     <Box
-      __baseCSS={{ display: 'flex', alignItems: 'center', gap: space }}
+      __baseCSS={{
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        gap: space,
+      }}
       css={styles}
-      {...stateProps}
+      {...props}
     >
       {leading}
       {input}

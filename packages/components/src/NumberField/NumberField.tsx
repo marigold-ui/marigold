@@ -151,7 +151,7 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
               {...decrementButtonProps}
             />
           )}
-          <Input variant={variant} size={size}>
+          <Input variant={variant} size={size} {...stateProps}>
             <Input.Field
               ref={inputRef}
               /**

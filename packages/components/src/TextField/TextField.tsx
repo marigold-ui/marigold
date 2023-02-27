@@ -65,18 +65,18 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       );
 
     const { hoverProps, isHovered } = useHover({});
-    const { focusProps, isFocusVisible } = useFocusRing({
+    const { focusProps, isFocused } = useFocusRing({
       isTextInput: true,
       autoFocus,
     });
     const stateProps = useStateProps({
       hover: isHovered,
-      focus: isFocusVisible,
+      focus: isFocused,
       disabled,
       readOnly,
       error,
     });
-
+    console.log(stateProps);
     return (
       <FieldBase
         label={label}
@@ -92,7 +92,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
         size={size}
         width={width}
       >
-        <Input>
+        <Input {...stateProps}>
           <Input.Field
             ref={inputRef}
             variant={variant}

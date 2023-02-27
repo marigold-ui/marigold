@@ -46,7 +46,7 @@ export default {
 
 export const Basic: ComponentStory<typeof Input> = args => (
   <Input>
-    <Input.Field placeholder="Placeholder..." {...args} />
+    <Input.Field placeholder="Placeholder..." {...args} disabled />
   </Input>
 );
 
@@ -56,7 +56,7 @@ Basic.parameters = {
 };
 
 export const WithIcons: ComponentStory<typeof Input> = args => (
-  <Input disabled>
+  <Input>
     <Search />
     <Input.Field placeholder="Placeholder..." />
     <Button size="small" variant="text">
