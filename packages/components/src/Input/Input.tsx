@@ -46,7 +46,7 @@ export const Input = ({
       css={styles}
       {...props}
     >
-      <Label aria-label="leading icon" for="input">
+      <Label aria-label="leading icon" htmlFor="input">
         {leading}
       </Label>
       {input}
