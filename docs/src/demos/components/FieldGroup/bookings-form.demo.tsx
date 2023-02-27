@@ -7,7 +7,6 @@ import {
   ThemeProvider,
   Stack,
   FieldBase,
-  Input,
   Select,
   TextArea,
 } from '@marigold/components';

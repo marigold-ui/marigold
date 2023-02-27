@@ -1,7 +1,6 @@
 import {
   Box,
   ResponsiveStyleValue,
-  StateAttrProps,
   ThemeExtension,
   useComponentStyles,
 } from '@marigold/system';
