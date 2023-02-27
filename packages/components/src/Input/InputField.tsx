@@ -20,6 +20,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldOwnProps>(
         {...props}
         ref={ref}
         as="input"
+        id="input"
         type={type}
       />
     );

@@ -4,6 +4,7 @@ import {
   ThemeExtension,
   useComponentStyles,
 } from '@marigold/system';
+import { Label } from '@marigold/components';
 import { HtmlProps } from '@marigold/types';
 import React, { ReactNode } from 'react';
 import { InputField } from './InputField';
@@ -45,7 +46,9 @@ export const Input = ({
       css={styles}
       {...props}
     >
-      {leading}
+      <Label aria-label="leading icon" for="input">
+        {leading}
+      </Label>
       {input}
       {trailing}
     </Box>
