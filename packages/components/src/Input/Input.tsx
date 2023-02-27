@@ -1,6 +1,12 @@
-import React, { forwardRef } from 'react';
+import {
+  Box,
+  ResponsiveStyleValue,
+  ThemeExtension,
+  useComponentStyles,
+} from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
-import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
+import React, { ReactNode } from 'react';
+import { InputField } from './InputField';
 
 // Theme Extension
 // ---------------
@@ -8,20 +14,42 @@ export interface InputThemeExtension extends ThemeExtension<'Input'> {}
 
 // Props
 // ---------------
-export interface InputOwnProps extends Omit<HtmlProps<'input'>, 'size'> {
-  size?: string;
+export interface InputProps extends Omit<HtmlProps<'div'>, 'size'> {
+  children: ReactNode;
+  space?: ResponsiveStyleValue<string>;
   variant?: string;
+  size?: string;
 }
-
-export interface InputProps
-  extends Omit<React.ComponentPropsWithRef<'input'>, 'size'>,
-    InputOwnProps {}
 
 // Component
 // ---------------
-export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
-  ({ variant, size, type = 'text', ...props }: InputOwnProps, ref) => {
-    const styles = useComponentStyles('Input', { variant, size });
-    return <Box {...props} ref={ref} as="input" type={type} css={styles} />;
-  }
-);
+export const Input = ({
+  space = 'xsmall',
+  children,
+  variant,
+  size,
+  ...props
+}: InputProps) => {
+  const [leading, input, trailing] = React.Children.toArray(children);
+
+  const styles = useComponentStyles('Input', { variant, size });
+
+  return (
+    <Box
+      __baseCSS={{
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        gap: space,
+      }}
+      css={styles}
+      {...props}
+    >
+      {leading}
+      {input}
+      {trailing}
+    </Box>
+  );
+};
+
+Input.Field = InputField;
