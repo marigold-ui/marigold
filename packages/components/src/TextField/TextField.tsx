@@ -76,7 +76,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       readOnly,
       error,
     });
-    console.log(stateProps);
+
     return (
       <FieldBase
         label={label}
