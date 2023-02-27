@@ -36,7 +36,6 @@
     "babel-loader": "9.1.2",
     "chromatic": "^6.6.3",
     "find-up": "5.0.0",
-    "tsconfig-paths-webpack-plugin": "4.0.0",
     "vite-tsconfig-paths": "4.0.5",
     "webpack": "4"
   },
@@ -51,7 +50,7 @@
     "vite": "4.1.2"
   },
   "peerDependencies": {
-    "@storybook/react": "6.5.16",
+    "@storybook/react": "7.0.0-beta.49",
     "react": "18.x",
     "react-dom": "18.x",
     "typescript": "4.9.5"
