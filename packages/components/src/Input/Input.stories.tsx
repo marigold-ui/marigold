@@ -2,16 +2,12 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Input } from './Input';
 import isChromatic from 'chromatic';
+import { Search, Delete } from '@marigold/icons';
+import { Button } from '../Button';
+import { InputField } from './InputField';
 const meta = {
   title: 'Components/Input',
-  component: Input,
   argTypes: {
-    variant: {
-      control: {
-        type: 'text',
-      },
-      description: 'Input variant',
-    },
     type: {
       control: {
         type: 'select',
@@ -40,16 +36,32 @@ const meta = {
       description: 'Pattern for the input',
     },
   },
-} satisfies Meta<typeof Input>;
+} satisfies Meta<typeof InputField>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <Input placeholder="Placeholder..." {...args} />,
+  render: args => (
+    <Input>
+      <Input.Field placeholder="Placeholder..." {...args} />
+    </Input>
+  ),
 };
 
 Basic.parameters = {
   chromatic: { viewports: [320, 1200] },
   theme: isChromatic() ? 'b2b' : 'stacked',
+};
+
+export const WithIcons: Story = {
+  render: args => (
+    <Input>
+      <Search />
+      <Input.Field placeholder="Placeholder..." />
+      <Button size="small" variant="text">
+        <Delete />
+      </Button>
+    </Input>
+  ),
 };
