@@ -30,14 +30,15 @@
     "@storybook/addon-a11y": "7.0.0-beta.55",
     "@storybook/addon-essentials": "7.0.0-beta.55",
     "@storybook/addon-interactions": "7.0.0-beta.55",
-    "@storybook/jest": "0.0.10",
-    "@storybook/testing-library": "0.0.13",
+    "@storybook/jest": "0.0.11-next.0",
+    "@storybook/testing-library": "0.0.14-next.1",
     "@types/react": "18",
     "addon-a11y:latest": "link:@storybook/addon-a11y:latest",
     "babel-loader": "9.1.2",
     "chromatic": "^6.6.3",
     "find-up": "5.0.0",
     "tsconfig-paths-webpack-plugin": "4.0.0",
+    "vite": "4.1.4",
     "webpack": "4"
   },
   "devDependencies": {
