@@ -1,8 +1,8 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { SVG } from './SVG';
 
-export default {
+const meta = {
   title: 'Components/SVG',
   argTypes: {
     variant: {
@@ -39,10 +39,14 @@ export default {
       },
     },
   },
-} as Meta;
+} satisfies Meta;
 
-export const Basic: ComponentStory<typeof SVG> = args => (
-  <SVG {...args} viewBox="0 0 24 24">
-    <path d="M9.9 20.113V13.8415H14.1V20.113H19.35V11.751H22.5L12 2.34375L1.5 11.751H4.65V20.113H9.9Z" />
-  </SVG>
-);
+export default meta;
+
+export const Basic: StoryObj<typeof SVG> = {
+  render: args => (
+    <SVG {...args} viewBox="0 0 24 24">
+      <path d="M9.9 20.113V13.8415H14.1V20.113H19.35V11.751H22.5L12 2.34375L1.5 11.751H4.65V20.113H9.9Z" />
+    </SVG>
+  ),
+};

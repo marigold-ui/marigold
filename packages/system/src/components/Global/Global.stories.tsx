@@ -1,10 +1,11 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Global } from './Global';
 import { ThemeProvider } from '../../hooks';
 
-export default {
+const meta = {
   title: 'System/Global',
+  component: Global,
   argTypes: {
     selector: {
       control: {
@@ -19,7 +20,10 @@ export default {
       description: 'Normalize the document?',
     },
   },
-} as Meta;
+} satisfies Meta<typeof Global>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 const theme = {
   root: {
@@ -36,27 +40,31 @@ const theme = {
   },
 };
 
-export const Basic: ComponentStory<typeof Global> = args => (
-  <ThemeProvider theme={theme}>
-    <Global {...args} />
-    <div>
-      <button>Button</button>
-    </div>
-  </ThemeProvider>
-);
+export const Basic: Story = {
+  render: args => (
+    <ThemeProvider theme={theme}>
+      <Global {...args} />
+      <div>
+        <button>Button</button>
+      </div>
+    </ThemeProvider>
+  ),
+};
 
-export const Custom: ComponentStory<typeof Global> = () => (
-  <ThemeProvider theme={theme}>
-    <Global selector="#custom" />
-    <p>
-      Element normalization and globals styles are only applied to the "Inside
-      Button"
-    </p>
-    <div style={{ paddingBottom: 10 }}>
-      <button>Outside Button</button>
-    </div>
-    <div id="custom">
-      <button>Inside Button</button>
-    </div>
-  </ThemeProvider>
-);
+export const Custom: Story = {
+  render: () => (
+    <ThemeProvider theme={theme}>
+      <Global selector="#custom" />
+      <p>
+        Element normalization and globals styles are only applied to the "Inside
+        Button"
+      </p>
+      <div style={{ paddingBottom: 10 }}>
+        <button>Outside Button</button>
+      </div>
+      <div id="custom">
+        <button>Inside Button</button>
+      </div>
+    </ThemeProvider>
+  ),
+};

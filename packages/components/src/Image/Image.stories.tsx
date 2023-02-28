@@ -1,10 +1,11 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Image } from './Image';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/Image',
+  component: Image,
   argTypes: {
     variant: {
       control: {
@@ -36,6 +37,10 @@ export default {
         'unset',
       ],
       description: 'object fit value',
+      table: {
+        type: { summary: 'select' },
+        defaultValue: { summary: 'contain' },
+      },
     },
     position: {
       control: {
@@ -44,18 +49,24 @@ export default {
       description: 'object position value',
     },
   },
-} as Meta;
+  args: {
+    fit: 'contain',
+  },
+} satisfies Meta;
 
-export const Basic: ComponentStory<typeof Image> = args => (
-  <Image
-    {...args}
-    src="https://www.reservix.net/_Resources/Persistent/0e8f5885125940fdb2bc2d54840f497782f56584/Reservix_Logo_dtp_web_rgb_font_black_180704.png"
-    alt="marigold_logo"
-  />
-);
+export default meta;
+
+export const Basic: StoryObj<typeof Image> = {
+  render: args => (
+    <Image
+      {...args}
+      src="https://www.reservix.net/_Resources/Persistent/0e8f5885125940fdb2bc2d54840f497782f56584/Reservix_Logo_dtp_web_rgb_font_black_180704.png"
+      alt="marigold_logo"
+    />
+  ),
+};
 
 Basic.parameters = {
-  // Set the viewports in Chromatic at a story level.
   chromatic: { viewports: [320, 1200] },
   theme: isChromatic() ? 'b2b' : 'stacked',
 };

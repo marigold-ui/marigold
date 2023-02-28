@@ -28,7 +28,7 @@ export const useCheckboxGroupContext = () => useContext(CheckboxGroupContext);
 
 // Props
 // ---------------
-interface CheckboxGroupProps
+export interface CheckboxGroupProps
   extends Omit<HtmlProps<'div'>, 'onChange'>,
     AriaCheckboxGroupProps {
   children: ReactNode;

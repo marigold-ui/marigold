@@ -1,26 +1,40 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { Badge } from './Badge';
 
-export default {
+const meta = {
   title: 'Components/Badge',
+  component: Badge,
   argTypes: {
     variant: {
       description: 'badge variant',
       control: {
         type: 'text',
       },
-      defaultValue: '',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'info' },
+      },
     },
     children: {
       control: {
         type: 'text',
       },
       description: 'Contents of the badge',
-      defaultValue: 'new',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'new' },
+      },
     },
   },
-} as Meta;
+  args: {
+    children: 'new',
+    variant: 'info',
+  },
+} satisfies Meta<typeof Badge>;
 
-export const Basic: ComponentStory<typeof Badge> = args => <Badge {...args} />;
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Basic: Story = { render: args => <Badge {...args} /> };

@@ -1,15 +1,19 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Slider } from './Slider';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/Slider',
+  component: Slider,
   argTypes: {
     children: {
       control: 'text',
       description: 'The label of the slider',
-      defaultValue: 'Example Slider',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Example Slider' },
+      },
     },
     variant: {
       control: {
@@ -22,13 +26,19 @@ export default {
         type: 'boolean',
       },
       description: 'Whether the Slider is disabled',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     maxValue: {
       control: {
-        type: 'text',
+        type: 'number',
       },
-      defaultValue: '500',
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: 500 },
+      },
       description: 'The maximum value of the slider',
     },
     step: {
@@ -38,7 +48,10 @@ export default {
         max: 100,
         step: 1,
       },
-      defaultValue: 10,
+      table: {
+        type: { summary: 'range' },
+        defaultValue: { summary: 10 },
+      },
       description: 'The step size of the slider',
     },
     width: {
@@ -48,15 +61,23 @@ export default {
       description: 'The width of the field',
     },
   },
-} as Meta;
+  args: {
+    children: 'Example Slider',
+    step: 10,
+    maxValue: 500,
+  },
+} satisfies Meta<typeof Slider>;
 
-export const Basic: ComponentStory<typeof Slider> = args => (
-  <Slider {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Currency: ComponentStory<typeof Slider> = args => (
-  <Slider formatOptions={{ style: 'currency', currency: 'EUR' }} {...args} />
-);
+export const Basic: Story = { render: args => <Slider {...args} /> };
+
+export const Currency: Story = {
+  render: args => (
+    <Slider formatOptions={{ style: 'currency', currency: 'EUR' }} {...args} />
+  ),
+};
 
 Basic.parameters = {
   chromatic: { viewports: [320, 1200] },
