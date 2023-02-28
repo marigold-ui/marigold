@@ -35,9 +35,11 @@ export const Input = ({
 
   const styles = useComponentStyles('Input', { variant, size });
 
+  console.log(props);
   return (
     <Box
       __baseCSS={{
+        position: 'relativ',
         display: 'flex',
         alignItems: 'center',
         width: '100%',
@@ -46,9 +48,8 @@ export const Input = ({
       css={styles}
       {...props}
     >
-      <Label aria-label="leading icon" htmlFor="input">
-        {leading}
-      </Label>
+      <Box __baseCSS={{ position: 'absolute' }}>{leading}</Box>
+
       {input}
       {trailing}
     </Box>
