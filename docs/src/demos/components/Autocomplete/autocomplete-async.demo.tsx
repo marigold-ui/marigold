@@ -32,6 +32,15 @@ export const AutocompleteAsyncDemo = () => {
       };
     },
   });
+  const handleSubmit = (key: Key | null, value: string | null) => {
+    if (key) {
+      const result = list.items.find(c => c.name === key);
+      setResult(result ? [result] : null);
+    }
+    if (value) {
+      setResult(list.items);
+    }
+  };
 
   return (
     <Stack space="large">
@@ -41,7 +50,7 @@ export const AutocompleteAsyncDemo = () => {
         items={list.items}
         value={list.filterText}
         onChange={list.setFilterText}
-        onSubmit={() => setResult(list.items)}
+        onSubmit={handleSubmit}
       >
         {(item: any) => (
           <Autocomplete.Item key={item.name}>{item.name}</Autocomplete.Item>
