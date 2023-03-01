@@ -117,6 +117,8 @@ export const Autocomplete = ({
       },
       state
     );
+  // Fix until `react-aria` gives us error and description props.
+  const errorMessageProps = { 'aria-invalid': error };
   const { isDisabled, ...restClearButtonProps } = clearButtonProps;
 
   return (
@@ -127,6 +129,7 @@ export const Autocomplete = ({
         description={props.description}
         error={error}
         errorMessage={props.errorMessage}
+        errorMessageProps={errorMessageProps}
         disabled={disabled}
         width={width}
       >
