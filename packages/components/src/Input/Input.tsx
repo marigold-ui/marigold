@@ -32,9 +32,6 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
     { type = 'text', icon, action, variant, size, ...props }: InputOwnProps,
     ref
   ) => {
-    if (icon) {
-    }
-
     const styles = useComponentStyles(
       'Input',
       { variant, size },
@@ -45,7 +42,6 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
       hasIcon: icon ? true : false,
     });
 
-    console.log(icon ? true : false, stateProps);
     return (
       <Box
         __baseCSS={{
