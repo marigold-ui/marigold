@@ -42,7 +42,7 @@
     "typescript": "4.8.x || 4.9.x"
   },
   "devDependencies": {
-    "eslint": "8.34.0",
+    "eslint": "8.35.0",
     "typescript": "4.9.5"
   }
 }
