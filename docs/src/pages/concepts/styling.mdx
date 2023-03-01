@@ -9,4 +9,173 @@ To give components a certain appearance, we use what are called "themes." Themes
 
 This separation enables styling of components to extend beyond just changing design tokens. With Marigold themes, full control over the CSS of each component is allowed, enabling them to be perfectly adjusted and fitted to a corporate identity.
 
-To learn more about theming in Marigold, visit the [theming page](/introduction/theming/).
+The upcoming sections will explain how themes are constructed, and how design tokens can be used to style components. To learn more about how to apply an existing theme in Marigold, visit the [theming page](/introduction/theming/).
+
+## Theme Specification
+
+Marigold's themes are based on the [Styled System Theme Specification](https://styled-system.com/theme-specification/). This ensures that themes created for Marigold are suitable for white-label applications and general-purpose theming.
+
+The theme is represented as a plain object (JSON) and consists of the following data types:
+
+- _Tokens:_ plain objects or arrays of values that for related CSS properties
+- _Breakpoints:_ array of values (preferably using the `em` unit) that define the breakpoints for responsvie style values
+- _Root:_ plain object that contains styles with are applied to the root of an app using Marigold
+- _Components:_ a collections of styles for Marigold components
+
+### Tokens
+
+The theme object is made up of the following tokens (i.e. property-specific objects) for use in CSS styles.
+
+<Table variant="lines">
+  <Table.Header>
+    <Table.Column>Token Name</Table.Column>
+    <Table.Column>CSS Properties</Table.Column>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        <strong>colors</strong>
+      </Table.Cell>
+      <Table.Cell>
+        color, background, background-color, border-color, caret-color,
+        column-rule-color, outline-color, text-decoration-color,
+        border-top-color, border-bottom-color, border-left-color,
+        border-right-color, border-block-color, border-block-end-color,
+        border-block-start-color, border-inline-color, border-inline-end-color,
+        border-inline-start-color, fill, stroke
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <strong>space</strong>
+      </Table.Cell>
+      <Table.Cell>
+        margin, margin-top, margin-right, margin-bottom, margin-left,
+        margin-block, margin-block-end, margin-block-start, margin-inline,
+        margin-inline-end, margin-inline-start, padding, padding-top,
+        padding-right, padding-bottom, padding-left, padding-block,
+        padding-block-end, padding-block-start, padding-inline,
+        padding-inline-end, padding-inline-start, scroll-margin,
+        scroll-margin-top, scroll-margin-right, scroll-margin-bottom,
+        scroll-margin-left, scroll-padding, scroll-padding-top,
+        scroll-padding-right, scroll-padding-bottom, scroll-padding-left, inset,
+        inset-block, inset-block-end, inset-block-start, inset-inline,
+        inset-inline-end, inset-inline-start, top, right, bottom, left,
+        grid-gap, grid-column-gap, grid-row-gap, gap, column-gap, row-gap
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <strong>fonts</strong>
+      </Table.Cell>
+      <Table.Cell>font-family</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <strong>fontSizes</strong>
+      </Table.Cell>
+      <Table.Cell>font-size</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <strong>fontWeights</strong>
+      </Table.Cell>
+      <Table.Cell>font-weight</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <strong>letterSpacings</strong>
+      </Table.Cell>
+      <Table.Cell>letter-spacing</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <strong>lineHeights</strong>
+      </Table.Cell>
+      <Table.Cell>line-height</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <strong>sizes</strong>
+      </Table.Cell>
+      <Table.Cell>
+        width, min-width, max-width, height, min-height, max-height, flex-basis,
+        block-size, inline-size, max-block-size, max-inline-size,
+        min-block-size, min-inline-size, column-width
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <strong>borders</strong>
+      </Table.Cell>
+      <Table.Cell>
+        border, border-top, border-right, border-bottom, border-left,
+        border-block, border-block-end, border-block-start, border-inline,
+        border-inline-end, border-inline-start
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <strong>borderStyles</strong>
+      </Table.Cell>
+      <Table.Cell>
+        border-style, border-top-style, border-bottom-style, border-left-style,
+        border-right-style, border-block-end-style, border-block-start-style,
+        border-block-style, border-inline-end-style, border-inline-start-style,
+        border-inline-style
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <strong>borderWidths</strong>
+      </Table.Cell>
+      <Table.Cell>
+        border-width, border-top-width, border-bottom-width, border-left-width,
+        border-right-width, border-block-end-width, border-block-start-width,
+        border-block-width, border-inline-end-width, border-inline-start-width,
+        border-inline-width, column-rule-width
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <strong>radii</strong>
+      </Table.Cell>
+      <Table.Cell>
+        border-radius, border-top-right-radius, border-top-left-radius,
+        border-bottom-right-radius, border-bottom-left-radius,
+        border-end-end-radius, border-end-start-radius, border-start-end-radius,
+        border-start-start-radius
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <strong>shadows</strong>
+      </Table.Cell>
+      <Table.Cell>box-shadow, text-shadow</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <strong>zIndices</strong>
+      </Table.Cell>
+      <Table.Cell>z-index</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <strong>opacities</strong>
+      </Table.Cell>
+      <Table.Cell>opacity</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <strong>transitions</strong>
+      </Table.Cell>
+      <Table.Cell>transition</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+In the following example you can see how tokens can be used to style components:
+
+```tsx preview file=concepts/tokens.demo.tsx
+
+```
