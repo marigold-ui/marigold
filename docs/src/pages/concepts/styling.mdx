@@ -1,5 +1,6 @@
 ---
 title: Styling
+caption: Learn about the theme object and styling in Marigold.
 badge: new
 ---
 
@@ -20,7 +21,7 @@ The theme is represented as a plain object (JSON) and consists of the following 
 - _Tokens:_ plain objects or arrays of values that for related CSS properties
 - _Breakpoints:_ array of values (preferably using the `em` unit) that define the breakpoints for responsvie style values
 - _Root:_ plain object that contains styles with are applied to the root of an app using Marigold
-- _Components:_ a collections of styles for Marigold components
+- _Variants:_ a collection of styles for each Marigold components
 
 ### Tokens
 
@@ -174,8 +175,91 @@ The theme object is made up of the following tokens (i.e. property-specific obje
   </Table.Body>
 </Table>
 
-In the following example you can see how tokens can be used to style components:
+Tokens should be preferred when writing CSS styles. Below you can see how tokens from a theme are used to style a component. The `<Box>` uses the token values and Marigold will take care to replace the tokens with their corresponding value.
 
 ```tsx preview file=concepts/tokens.demo.tsx
 
 ```
+
+### Breakpoints
+
+Breakpoints can be used to apply [responsive styles](#responsive-styles). Each breakpoint should be a string that includes a CSS length unit, or a string that includes a CSS media query. String values that include a CSS length unit will be used to generate a mobile-first media query (i.e. a `min-width` media query).
+
+```ts
+const theme = {
+  breakpoints: [
+    '40em',
+    '@media (min-width: 56em) and (orientation: landscape)',
+    '64em',
+  ],
+};
+```
+
+### Root (Styles)
+
+The `root` property of the theme object can be used when global styles have to be applied, including normalization of `body` and `html`. Styles can use tokens from the theme and arbitrary CSS selectors can be used.
+
+```ts
+const theme = {
+  colors: {
+    background: '#e2e8f0',
+    text: '#0f172a',
+  },
+  fonts: {
+    body: ' ui-sans-serif, system-ui, "Segoe UI", Roboto, Arial, sans-serif',
+  },
+  root: {
+    body: {
+      margin: 0,
+      padding: 0,
+      fontFamily: 'body',
+      color: 'text',
+      bg: 'background',
+    },
+  },
+};
+```
+
+### Variants
+
+Writing component styles in a maintainable way, especially when over the life of a growing and changing project is a challenging task.
+
+## Responsive Styles
+
+Marigold, like Styled System, includes a shorthand syntax for writing mobile-first responsive styles using arrays as values. This is useful when you want to change a single property across multiple breakpoints without needing to write verbose media query syntax. Responsive styles can be used whenever you specify a CSS rule and, of course, tokens can be used too.
+
+The `Component` in the following example uses responsive styles for its `width`. With responsive arrays, the 0-th element maps to all breakpoints, and the n-th element maps to the (n - 1)-th breakpoint. This means:
+
+- The default width is 100%
+- At the 0th breakpoint & larger, width is `large` (`theme.sizes.large`)
+- At the 1st breakpoint & larger, width is `small` (`theme.sizes.small`)
+
+```tsx
+export const Component = () => (
+  <Box
+    css={{
+      width: ['100%', 'large', 'small'],
+    }}
+  >
+    I am a reposnsive Box!
+  </Box>
+);
+```
+
+If you want to skip a breakpoint, you can use `null` as placeholder value. This is useful if you want to set a value for only the largest breakpoint, for example.
+
+```tsx
+export const Component = () => (
+  <Box
+    css={{
+      width: ['100%', null, 'small'],
+    }}
+  >
+    I am a reposnsive Box!
+  </Box>
+);
+```
+
+## Component Variants
+
+TODO: how styling is applied via hook etc.

@@ -40,7 +40,9 @@ export const TokensDemo = () => {
         onChange={setColor}
       >
         {Object.entries(theme.colors).map(([color, value]) => (
-          <Radio value={value}>{color}</Radio>
+          <Radio key={value} value={value}>
+            {color}
+          </Radio>
         ))}
       </Radio.Group>
       <Inset space="none">
