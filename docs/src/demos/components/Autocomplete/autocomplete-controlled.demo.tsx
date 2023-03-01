@@ -29,7 +29,7 @@ export const AutocompleteControlledDemo = () => {
       ),
     [vegetables, input]
   );
-  console.log(filteredVeggies);
+
   return (
     <Stack space="large">
       <Autocomplete
