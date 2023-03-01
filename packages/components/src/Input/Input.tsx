@@ -58,7 +58,6 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
           {...stateProps}
           ref={ref}
           as="input"
-          id="input"
           css={styles.input}
           type={type}
         />

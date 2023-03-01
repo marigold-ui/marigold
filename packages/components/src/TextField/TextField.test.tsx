@@ -49,7 +49,9 @@ const theme = {
     },
     Input: {
       base: {
-        borderColor: 'blue',
+        input: {
+          borderColor: 'blue',
+        },
       },
     },
   },
@@ -80,9 +82,7 @@ test('input can be styled via "Input" styles', () => {
     </ThemeProvider>
   );
   const textField = screen.getByTestId('text-field');
-  expect(textField.parentElement.parentElement).toHaveStyle(
-    `border-color: ${theme.colors.blue}`
-  );
+  expect(textField).toHaveStyle(`border-color: ${theme.colors.blue}`);
 });
 
 test('takes full width by default', () => {
@@ -188,9 +188,6 @@ test('correctly sets up aria attributes', () => {
   const labelId = label.getAttribute('id');
   const inputId = input.getAttribute('id');
 
-  console.log(inputId);
-  console.log(labelId);
-  console.log(label);
   expect(label).toHaveAttribute('for', inputId);
   expect(htmlFor).toEqual(inputId);
   expect(input).toHaveAttribute('aria-labelledby', labelId);
