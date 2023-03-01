@@ -35,9 +35,9 @@ const meta = {
       },
       description: 'Pattern for the input',
     },
-    args: {
-      type: 'text',
-    },
+  },
+  args: {
+    type: 'text',
   },
 } satisfies Meta<typeof InputField>;
 
