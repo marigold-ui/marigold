@@ -21,13 +21,13 @@ The theme is represented as a plain object (JSON) and consists of the following 
 - _Tokens:_ plain objects or arrays of values that for related CSS properties
 - _Breakpoints:_ array of values (preferably using the `em` unit) that define the breakpoints for responsvie style values
 - _Root:_ plain object that contains styles with are applied to the root of an app using Marigold
-- _Variants:_ a collection of styles for each Marigold components
+- _Component styles:_ a collection of styles for each Marigold component
 
 ### Tokens
 
 The theme object is made up of the following tokens (i.e. property-specific objects) for use in CSS styles.
 
-<Table variant="lines">
+<Table variant="lines" aria-label="List of theme tokens">
   <Table.Header>
     <Table.Column>Token Name</Table.Column>
     <Table.Column>CSS Properties</Table.Column>
@@ -220,9 +220,13 @@ const theme = {
 };
 ```
 
-### Variants
+### Component Styles
 
-Writing component styles in a maintainable way, especially when over the life of a growing and changing project is a challenging task.
+Writing component styles in a maintainable way, especially over the life of a growing and changing project is a challenging task. To adress this, we use a approach inspired by [Chakra UI](https://chakra-ui.com/) that allows us to use a consistent API to describe component styling, while beeing easy to understand and maintain.
+
+Each component style consists of the following parts:
+
+- `base`:
 
 ## Responsive Styles
 
@@ -260,6 +264,6 @@ export const Component = () => (
 );
 ```
 
-## Component Variants
+## Theming a Component
 
 TODO: how styling is applied via hook etc.
