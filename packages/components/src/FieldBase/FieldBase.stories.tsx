@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { FieldBase } from './FieldBase';
 import { Select } from '../Select';
 import { FieldGroup } from './FieldGroup';
@@ -8,44 +8,59 @@ import { RadioGroup } from '../Radio/RadioGroup';
 import { Radio } from '../Radio';
 import { Checkbox, CheckboxGroup } from '../Checkbox';
 import isChromatic from 'chromatic';
-
-export default {
+const meta = {
   title: 'Components/FieldBase',
+  component: FieldBase,
   argTypes: {
     required: {
       control: {
         type: 'boolean',
       },
       description: 'Whether the field is required',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     disabled: {
       control: {
         type: 'boolean',
       },
       description: 'Whether the field is disabled',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     description: {
       control: {
         type: 'text',
       },
       description: 'The description',
-      defaultValue: 'This is a help text description',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'This is a help text description' },
+      },
     },
     errorMessage: {
       control: {
         type: 'text',
       },
       description: 'The error message',
-      defaultValue: 'Something went wrong',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'Something went wrong' },
+      },
     },
     error: {
       control: {
         type: 'boolean',
       },
       description: 'Whether the help text is an error',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     width: {
       control: {
@@ -54,38 +69,51 @@ export default {
       description: 'The width of the field',
     },
   },
-} as Meta;
+  args: {
+    errorMessage: 'Something went wrong',
+    description: 'This is a help text description',
+    disabled: false,
+    error: false,
+  },
+} satisfies Meta<typeof FieldBase>;
 
-export const Basic: ComponentStory<typeof FieldBase> = args => (
-  <FieldBase {...args} label="This is my Label">
-    <input type="text" />
-  </FieldBase>
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Complex: ComponentStory<typeof FieldBase> = args => (
-  <FieldGroup labelWidth="30%">
+export const Basic: Story = {
+  render: args => (
     <FieldBase {...args} label="This is my Label">
       <input type="text" />
     </FieldBase>
-    <FieldBase {...args} label="This is my Label">
-      <input type="text" />
-    </FieldBase>
-    <TextField label="Hello TextField" />
-    <TextField label="Hello" description="my description" />
-    <Select label="Select me">
-      <Select.Option key="one">One</Select.Option>
-      <Select.Option key="two">Two</Select.Option>
-    </Select>
-    <RadioGroup label="Radios">
-      <Radio value="1">One</Radio>
-      <Radio value="2">Two</Radio>
-    </RadioGroup>
-    <CheckboxGroup label="Checkboxes">
-      <Checkbox value="1">One</Checkbox>
-      <Checkbox value="2">Two</Checkbox>
-    </CheckboxGroup>
-  </FieldGroup>
-);
+  ),
+};
+
+export const Complex: Story = {
+  render: args => (
+    <FieldGroup labelWidth="30%">
+      <FieldBase {...args} label="This is my Label">
+        <input type="text" />
+      </FieldBase>
+      <FieldBase {...args} label="This is my Label">
+        <input type="text" />
+      </FieldBase>
+      <TextField label="Hello TextField" />
+      <TextField label="Hello" description="my description" />
+      <Select label="Select me">
+        <Select.Option key="one">One</Select.Option>
+        <Select.Option key="two">Two</Select.Option>
+      </Select>
+      <RadioGroup label="Radios">
+        <Radio value="1">One</Radio>
+        <Radio value="2">Two</Radio>
+      </RadioGroup>
+      <CheckboxGroup label="Checkboxes">
+        <Checkbox value="1">One</Checkbox>
+        <Checkbox value="2">Two</Checkbox>
+      </CheckboxGroup>
+    </FieldGroup>
+  ),
+};
 
 Complex.parameters = {
   chromatic: { viewports: [320, 1200] },

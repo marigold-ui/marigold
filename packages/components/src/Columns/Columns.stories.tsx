@@ -1,11 +1,12 @@
 import React, { ReactNode } from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { Box, Columns, Stack } from '@marigold/components';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/Columns',
+  component: Columns,
   argTypes: {
     columns: {
       control: {
@@ -19,7 +20,11 @@ export default {
         [8, 2, 2],
       ],
       description: 'array of numbers to set width of every column',
-      defaultValue: [2, 8, 2],
+
+      table: {
+        type: { summary: 'select' },
+        defaultValue: { summary: [2, 8, 2] },
+      },
     },
     space: {
       control: {
@@ -41,43 +46,65 @@ export default {
       control: {
         type: 'text',
       },
-      defaultValue: '40em',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '40em' },
+      },
       description: 'Responsive Style Value',
     },
     stretch: {
       control: {
         type: 'boolean',
       },
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
       description: 'Let columns container fill height',
     },
   },
-} as Meta;
+  args: {
+    collapseAt: '40em',
+    stretch: false,
+    columns: [2, 8, 2],
+  },
+} satisfies Meta<typeof Columns>;
 
-export const Basic: ComponentStory<typeof Columns> = args => (
-  <Columns {...args}>
-    <Box css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 150 }} />
-    <Box css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 150 }} />
-    <Box css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 150 }} />
-  </Columns>
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const ComplexChildren: ComponentStory<typeof Columns> = args => (
-  <Columns {...args}>
-    <Box
-      as="main"
-      css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 100 }}
-    />
-    <>
-      <Box css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 100 }} />
-      <Box css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 100 }} />
-    </>
-    <Box
-      as="aside"
-      css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 100 }}
-    />
-  </Columns>
-);
+export const Basic: Story = {
+  render: args => (
+    <Columns {...args}>
+      <Box css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 150 }} />
+      <Box css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 150 }} />
+      <Box css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 150 }} />
+    </Columns>
+  ),
+};
+
+export const ComplexChildren: Story = {
+  render: args => (
+    <Columns {...args}>
+      <Box
+        as="main"
+        css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 100 }}
+      />
+      <>
+        <Box
+          css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 100 }}
+        />
+        <Box
+          css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 100 }}
+        />
+      </>
+      <Box
+        as="aside"
+        css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 100 }}
+      />
+    </Columns>
+  ),
+};
 
 const Block = ({
   children,
@@ -117,25 +144,31 @@ export const MultiRow = () => (
   </Block>
 );
 
-export const FullHeight: ComponentStory<typeof Columns> = args => (
-  <Box css={{ height: 300, bg: '#adb5bd' }}>
-    <Columns {...args}>
-      <Box css={{ border: '1px solid #495057', bg: '#e9ecef', height: 150 }} />
-      <Box css={{ border: '1px solid #495057', bg: '#e9ecef', height: 150 }} />
-      <Box
-        css={{
-          border: '1px solid #495057',
-          bg: '#e9ecef',
-          height: '100%',
-          p: 8,
-        }}
-      >
-        I will grow, if you set <code>stretch</code> prop on the{' '}
-        <code>Columns</code>!
-      </Box>
-    </Columns>
-  </Box>
-);
+export const FullHeight: Story = {
+  render: args => (
+    <Box css={{ height: 300, bg: '#adb5bd' }}>
+      <Columns {...args}>
+        <Box
+          css={{ border: '1px solid #495057', bg: '#e9ecef', height: 150 }}
+        />
+        <Box
+          css={{ border: '1px solid #495057', bg: '#e9ecef', height: 150 }}
+        />
+        <Box
+          css={{
+            border: '1px solid #495057',
+            bg: '#e9ecef',
+            height: '100%',
+            p: 8,
+          }}
+        >
+          I will grow, if you set <code>stretch</code> prop on the{' '}
+          <code>Columns</code>!
+        </Box>
+      </Columns>
+    </Box>
+  ),
+};
 
 MultiRow.parameters = {
   chromatic: { viewports: [320, 1200] },

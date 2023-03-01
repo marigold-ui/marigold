@@ -1,11 +1,12 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Link } from './Link';
 import { Text } from '../Text';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/Link',
+  component: Link,
   argTypes: {
     variant: {
       control: {
@@ -17,26 +18,41 @@ export default {
       control: {
         type: 'text',
       },
-      defaultValue: 'https://marigold-ui.io',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'https://marigold-ui.io' },
+      },
       description: 'The URL to direct to',
     },
     disabled: {
       control: {
         type: 'boolean',
       },
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
   },
-} as Meta;
+  args: {
+    disabled: false,
+    href: 'https://marigold-ui.io',
+  },
+} satisfies Meta<typeof Link>;
 
-export const Basic: ComponentStory<typeof Link> = args => (
-  <Text>
-    Zu den
-    <Link target="_blank" {...args}>
-      Marigold Docs
-    </Link>
-  </Text>
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Basic: Story = {
+  render: args => (
+    <Text>
+      Zu den{' '}
+      <Link target="_blank" {...args}>
+        Marigold Docs
+      </Link>
+    </Text>
+  ),
+};
 
 Basic.parameters = {
   chromatic: { viewports: [320, 1200] },

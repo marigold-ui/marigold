@@ -1,31 +1,21 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
 import isChromatic from 'chromatic';
 
-export default {
+import type { Meta, StoryObj } from '@storybook/react';
+
+const meta = {
   title: 'Components/Button',
+  component: Button,
   argTypes: {
-    children: {
+    disabled: {
       control: {
-        type: 'text',
+        type: 'boolean',
       },
-      description: 'Contents of the button',
-      defaultValue: 'Click me!',
-    },
-    variant: {
-      control: {
-        type: 'text',
-      },
-      description: 'Variant of the button',
-      defaultValue: 'primary',
-    },
-    size: {
-      control: {
-        type: 'text',
-      },
-      description: 'Size of the button',
+      description: 'Disable the button',
+      defaultValue: false,
     },
     fullWidth: {
       control: {
@@ -34,54 +24,82 @@ export default {
       description: 'Take availble width',
       defaultValue: false,
     },
-    disabled: {
+    size: {
       control: {
-        type: 'boolean',
+        type: 'text',
       },
-      description: 'Disable the button',
-      defaultValue: false,
+      description: 'Size of the button',
+    },
+    variant: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'primary' },
+      },
+      description: 'Variant of the button',
+    },
+    children: {
+      control: 'text',
+      description: 'Children of the button',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Click me!' },
+      },
     },
   },
-} as Meta;
+  args: {
+    variant: 'primary',
+    children: 'Click me!',
+  },
+} satisfies Meta<typeof Button>;
 
-export const Basic: ComponentStory<typeof Button> = args => (
-  <Button {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const WithIcon: ComponentStory<typeof Button> = ({
-  children,
-  ...args
-}) => (
-  <Button {...args}>
-    <Facebook /> {children}
-  </Button>
-);
+export const Primary: Story = {
+  render: args => <Button {...args} />,
+};
 
-export const OnPress: ComponentStory<typeof Button> = args => (
-  <Button {...args} onPress={(e: any) => console.log(e)} />
-);
+export const WithIcon: Story = {
+  render: ({ children, ...args }) => (
+    <Button {...args}>
+      <Facebook />
+      {children}
+    </Button>
+  ),
+};
 
-export const AsProp: ComponentStory<typeof Button> = (args: any) => (
-  <Button {...args} as="a" href="https://reservix.net" />
-);
+export const OnPress: Story = {
+  render: args => <Button {...args} onPress={(e: any) => console.log(e)} />,
+};
 
-export const FullWidth: ComponentStory<typeof Button> = args => (
-  <Button {...args} fullWidth />
-);
+export const AsProp: Story = {
+  render: (args: any) => (
+    <Button as="a" href="https://reservix.net" {...args} />
+  ),
+};
 
-export const PassThroughProps: ComponentStory<typeof Button> = args => {
-  const [isHovered, setHovered] = useState(false);
-  return (
-    <>
-      <Button
-        {...args}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-      />
-      <br />
-      state: {isHovered ? 'hovered' : 'not hovered'}
-    </>
-  );
+export const FullWidth: Story = {
+  render: args => <Button {...args} fullWidth />,
+};
+
+export const PassThroughProps: Story = {
+  render: args => {
+    const [isHovered, setHovered] = useState(false);
+    return (
+      <>
+        <Button
+          {...args}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        />
+        <br />
+        state: {isHovered ? 'hovered' : 'not hovered'}
+      </>
+    );
+  },
 };
 
 WithIcon.parameters = {

@@ -1,6 +1,15 @@
 {
-  "extends": ["config:base", ":semanticCommitTypeAll(chore)"],
+  "extends": [
+    "config:base",
+    ":semanticCommitTypeAll(chore)",
+    ":rebaseStalePrs"
+  ],
+  "schedule": ["after 10pm and before 5am every weekday", "every weekend"],
   "packageRules": [
+    {
+      "matchDatasources": ["npm"],
+      "stabilityDays": 3
+    },
     {
       "matchPackagePatterns": ["@react-aria", "@react-stately", "@react-types"],
       "groupName": "react-aria"
@@ -10,8 +19,12 @@
       "groupName": "eslint"
     },
     {
-      "matchPackagePatterns": ["jest", "testing-library"],
+      "matchPackagePatterns": ["jest", "testing-library", "swc"],
       "groupName": "testing"
+    },
+    {
+      "matchPackagePatterns": ["storybook", "vite"],
+      "groupName": "storybook"
     },
     {
       "matchPackagePatterns": [
@@ -23,6 +36,10 @@
         "unist"
       ],
       "groupName": "mdx"
+    },
+    {
+      "matchPackagePatterns": ["react-hook-form", "zod"],
+      "groupName": "docs-demos"
     }
   ],
   "timezone": "Europe/Berlin"

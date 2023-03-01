@@ -1,38 +1,51 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { Checkbox } from './Checkbox';
 
-export default {
+const meta = {
   title: 'Components/Checkbox',
+  component: Checkbox,
   argTypes: {
     children: {
       control: {
         type: 'text',
       },
       description: 'Label text',
-      defaultValue: 'This is a Checkbox',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'This is a Checkbox' },
+      },
     },
     disabled: {
       control: {
         type: 'boolean',
       },
       description: 'Disabled',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     indeterminate: {
       control: {
         type: 'boolean',
       },
       description: 'Option to define an indeterminate state',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     readOnly: {
       control: {
         type: 'boolean',
       },
       description: 'Read only',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     width: {
       control: {
@@ -41,8 +54,15 @@ export default {
       description: 'The width of the field',
     },
   },
-} as Meta;
+  args: {
+    readOnly: false,
+    indeterminate: false,
+    disabled: false,
+    children: 'This is a Checkbox',
+  },
+} satisfies Meta<typeof Checkbox>;
 
-export const Basic: ComponentStory<typeof Checkbox> = args => (
-  <Checkbox {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Basic: Story = { render: args => <Checkbox {...args} /> };

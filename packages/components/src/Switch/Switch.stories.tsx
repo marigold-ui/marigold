@@ -1,10 +1,11 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Switch } from './Switch';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/Switch',
+  component: Switch,
   argTypes: {
     variant: {
       control: {
@@ -17,7 +18,10 @@ export default {
         type: 'text',
       },
       description: 'Switch label',
-      defaultValue: 'Default Switch',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Default Switch' },
+      },
     },
     size: {
       control: {
@@ -36,14 +40,22 @@ export default {
         type: 'boolean',
       },
       description: 'Switch disabled state',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
   },
-} as Meta;
+  args: {
+    children: 'Default Switch',
+  },
+} satisfies Meta<typeof Switch>;
 
-export const Basic: ComponentStory<typeof Switch> = args => (
-  <Switch {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Basic: Story = { render: args => <Switch {...args} /> };
+
 Basic.parameters = {
   chromatic: { viewports: [320, 1200] },
   theme: isChromatic() ? 'b2b' : 'stacked',

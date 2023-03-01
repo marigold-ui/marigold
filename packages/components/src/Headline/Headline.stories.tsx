@@ -1,9 +1,10 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Headline } from './Headline';
 
-export default {
+const meta = {
   title: 'Components/Headline',
+  component: Headline,
   argTypes: {
     level: {
       control: {
@@ -42,8 +43,11 @@ export default {
       },
     },
   },
-} as Meta;
+} satisfies Meta<typeof Headline>;
 
-export const Basic: ComponentStory<typeof Headline> = args => (
-  <Headline {...args}>This is a Headline!!</Headline>
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Basic: Story = {
+  render: args => <Headline {...args}>This is a Headline!!</Headline>,
+};

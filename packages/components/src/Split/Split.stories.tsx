@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Box } from '@marigold/system';
 import { shadow } from '@marigold/tokens';
 
@@ -25,12 +25,15 @@ const Block = ({ children }: { children: ReactNode }) => (
   </Box>
 );
 
-export default {
+const meta = {
   title: 'Components/Split',
-  argTypes: {},
-} as Meta;
+  component: Split,
+} satisfies Meta<typeof Split>;
 
-export const WithInline: ComponentStory<typeof Split> = () => (
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const WithInline: Story = () => (
   <Inline space="medium">
     <Block>First</Block>
     <Block>Second</Block>
@@ -39,16 +42,18 @@ export const WithInline: ComponentStory<typeof Split> = () => (
   </Inline>
 );
 
-export const WithStack: ComponentStory<typeof Split> = () => (
-  <Box css={{ height: 400 }}>
-    <Stack space="xsmall" stretch>
-      <Block>First</Block>
-      <Split />
-      <Block>Second</Block>
-      <Block>Third</Block>
-    </Stack>
-  </Box>
-);
+export const WithStack: Story = {
+  render: () => (
+    <Box css={{ height: 400 }}>
+      <Stack space="xsmall" stretch>
+        <Block>First</Block>
+        <Split />
+        <Block>Second</Block>
+        <Block>Third</Block>
+      </Stack>
+    </Box>
+  ),
+};
 
 WithInline.parameters = {
   chromatic: { viewports: [320, 1200] },
