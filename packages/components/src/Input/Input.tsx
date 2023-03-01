@@ -51,7 +51,6 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
           width: '100%',
         }}
         css={styles.container}
-        {...props}
       >
         <Box
           __baseCSS={{ border: 0, width: '100%', outline: 'none', pl: 'large' }}

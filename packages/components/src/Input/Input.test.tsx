@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
-import { Input } from './_Input';
+import { Input } from './Input';
 import { Delete, Search } from '@marigold/icons';
 
 const theme = {
@@ -26,12 +26,11 @@ const theme = {
 test('supports default variant and themeSection', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Input data-testid="input">
-        <Input.Field title="input" />
-      </Input>
+      <Input title="input" data-testid="input" />
     </ThemeProvider>
   );
-  const input = screen.getByTestId('input');
+
+  const input = screen.getByTitle(input);
 
   expect(input).toHaveStyle(`font-family: Inter`);
 });
@@ -39,12 +38,10 @@ test('supports default variant and themeSection', () => {
 test('accepts other variant than default', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Input data-testid="input" variant="robo">
-        <Input.Field title="input" />
-      </Input>
+      <Input data-testid="input" variant="robo" title="input" />
     </ThemeProvider>
   );
-  const input = screen.getByTestId('input');
+  const input = screen.getByTitle('input');
 
   expect(input).toHaveStyle(`font-family: Roboto`);
 });
@@ -52,9 +49,7 @@ test('accepts other variant than default', () => {
 test('renders correct HTML element', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Input data-testid="input">
-        <Input.Field title="input" />
-      </Input>
+      <Input title="input" />
     </ThemeProvider>
   );
   const input = screen.getByTitle('input');
