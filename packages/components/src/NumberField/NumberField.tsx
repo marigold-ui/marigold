@@ -151,17 +151,17 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
               {...decrementButtonProps}
             />
           )}
-          <Input variant={variant} size={size} {...stateProps}>
-            <Input.Field
-              ref={inputRef}
-              /**
-               * We use `size` for styles which is a string, not like
-               * the regular HTML attribute, which is a number
-               */
-              {...(inputProps as any)}
-              {...stateProps}
-            />
-          </Input>
+          <Input
+            ref={inputRef}
+            /**
+             * We use `size` for styles which is a string, not like
+             * the regular HTML attribute, which is a number
+             */
+            variant={variant}
+            size={size}
+            {...(inputProps as any)}
+            {...stateProps}
+          />
           {showStepper && (
             <StepButton
               direction="up"
