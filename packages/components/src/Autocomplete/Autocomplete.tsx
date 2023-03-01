@@ -133,17 +133,20 @@ export const Autocomplete = ({
         disabled={disabled}
         width={width}
       >
-        <Input>
-          <SearchIcon />
-          <Input.Field {...inputProps} ref={inputRef} />
-          {state.inputValue !== '' && (
-            <ClearButton
-              preventFocus
-              disabled={isDisabled}
-              {...restClearButtonProps}
-            />
-          )}
-        </Input>
+        <Input
+          {...inputProps}
+          ref={inputRef}
+          icon={<SearchIcon />}
+          action={
+            state.inputValue !== '' && (
+              <ClearButton
+                preventFocus
+                disabled={isDisabled}
+                {...restClearButtonProps}
+              />
+            )
+          }
+        />
       </FieldBase>
       <Popover
         state={state}
