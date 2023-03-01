@@ -37,22 +37,31 @@ export const Input = ({
 
   console.log(props);
   return (
-    <Box
-      __baseCSS={{
-        position: 'relativ',
-        display: 'flex',
-        alignItems: 'center',
-        width: '100%',
-        gap: space,
-      }}
-      css={styles}
-      {...props}
-    >
-      <Box __baseCSS={{ position: 'absolute' }}>{leading}</Box>
-
-      {input}
-      {trailing}
-    </Box>
+    <>
+      <Box
+        __baseCSS={{
+          position: 'relative',
+          display: 'flex',
+          alignItems: 'center',
+          width: '100%',
+          gap: space,
+        }}
+        css={styles}
+        {...props}
+      >
+        <Box
+          __baseCSS={{
+            position: 'absolute',
+            pointerEvents: 'none',
+            left: 'xxsmall',
+          }}
+        >
+          {leading}
+        </Box>
+        {input}
+        {trailing}
+      </Box>
+    </>
   );
 };
 

@@ -11,9 +11,6 @@ export const Input: Theme['components']['Input'] = {
     borderRadius: 'small',
     outline: 'none',
 
-    py: 'none',
-    px: 'xsmall',
-
     '&:hover': {
       borderColor: 'purple40',
     },

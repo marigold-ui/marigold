@@ -16,7 +16,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldOwnProps>(
   ({ type = 'text', ...props }: InputFieldOwnProps, ref) => {
     return (
       <Box
-        __baseCSS={{ border: 0, width: '100%', outline: 'none' }}
+        __baseCSS={{ border: 0, width: '100%', outline: 'none', pl: 'large' }}
         {...props}
         ref={ref}
         as="input"
