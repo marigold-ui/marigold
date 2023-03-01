@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactNode, RefObject } from 'react';
+import React, { forwardRef, ReactNode, RefObject, useRef } from 'react';
 import {
   AriaPopoverProps,
   DismissButton,
@@ -7,7 +7,6 @@ import {
 import { OverlayTriggerState } from '@react-stately/overlays';
 import { Overlay } from './Overlay';
 import { Underlay } from './Underlay';
-import { useObjectRef } from '@react-aria/utils';
 import { FocusScope } from '@react-aria/focus';
 
 export interface PopoverProps
@@ -21,7 +20,8 @@ interface PopoverWrapperProps extends PopoverProps {}
 
 export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
   (props, ref) => {
-    const popoverRef = useObjectRef(ref);
+    const fallbackRef = useRef(null);
+    const popoverRef = ref || fallbackRef;
     let { children, state, ...otherProps } = props;
     return (
       <Overlay open={state.isOpen} {...otherProps}>
