@@ -1,24 +1,29 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Box, useTheme, ThemeProvider } from '@marigold/system';
 import { List } from '@marigold/components';
 
-export default {
+const meta = {
   title: 'System/useTheme',
-  argTypes: {},
-} as Meta;
+} satisfies Meta<typeof Box>;
 
-export const Basic: ComponentStory<typeof Box> = args => {
-  const { theme } = useTheme();
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-  return (
-    <ThemeProvider theme={theme}>
-      {Object.entries(theme).map(([key, value]) => (
-        <List key={key}>
-          <strong>{key}</strong>
-          <List.Item>{Object.keys(value) + ','}</List.Item>
-        </List>
-      ))}
-    </ThemeProvider>
-  );
+export const Basic: Story = {
+  render: () => {
+    const { theme } = useTheme();
+
+    return (
+      <ThemeProvider theme={theme}>
+        {Object.entries(theme).map(([key, value]) => (
+          <List key={key}>
+            <strong>{key}</strong>
+            <List.Item>{Object.keys(value) + ','}</List.Item>
+          </List>
+        ))}
+      </ThemeProvider>
+    );
+  },
 };

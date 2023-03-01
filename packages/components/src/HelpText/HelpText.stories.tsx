@@ -1,45 +1,65 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { HelpText } from '../HelpText';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/HelpText',
+  component: HelpText,
   argTypes: {
     description: {
       control: {
         type: 'text',
       },
       description: 'The description',
-      defaultValue: 'This is a help text description',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'This is a help text description' },
+      },
     },
     errorMessage: {
       control: {
         type: 'text',
       },
       description: 'The error message',
-      defaultValue: 'Something went wrong',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Something went wrong' },
+      },
     },
     error: {
       control: {
         type: 'boolean',
       },
       description: 'Whether the help text is an error',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     disabled: {
       control: {
         type: 'boolean',
       },
       description: 'Whether the help text is disabled',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
   },
-} as Meta;
+  args: {
+    errorMessage: 'Something went wrong',
+    description: 'This is a help text description',
+    disabled: false,
+    error: false,
+  },
+} satisfies Meta<typeof HelpText>;
 
-export const Basic: ComponentStory<typeof HelpText> = args => (
-  <HelpText {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Basic: Story = { render: args => <HelpText {...args} /> };
 
 Basic.parameters = {
   chromatic: { viewports: [320, 1200] },

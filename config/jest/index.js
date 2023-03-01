@@ -17,7 +17,7 @@ const base = {
       '@swc/jest',
       {
         jsc: {
-          target: 'es2021',
+          target: 'es2022',
         },
         sourceMaps: true,
       },
@@ -26,6 +26,7 @@ const base = {
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
 
   // coverage
+  coverageProvider: 'v8',
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
     '**/*.{ts,tsx}',
@@ -37,6 +38,7 @@ const base = {
     '!**/node_modules/**',
   ],
 
+  clearMocks: true,
   snapshotFormat: {
     printBasicPrototype: false,
   },

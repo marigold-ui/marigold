@@ -1,11 +1,11 @@
-import type { StorybookConfig } from '@storybook/react/types';
+import type { StorybookConfig } from '@storybook/react-vite';
 import path from 'node:path';
 import { sync as findUpSync } from 'find-up';
-import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import { mergeConfig } from 'vite';
+import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 const parent = path.resolve(__dirname, '..');
 const root = path.dirname(findUpSync('package.json', { cwd: parent }) || '.');
-const configFile = findUpSync('tsconfig.json', { cwd: root });
 
 let paths = [path.resolve(root, '**/*.stories.tsx')];
 if (process.env.FOLDERS) {
@@ -32,20 +32,27 @@ const config: StorybookConfig = {
   ],
   typescript: {
     check: false,
-    checkOptions: {},
-    reactDocgen: false,
   },
   features: {
-    postcss: false,
-    interactionsDebugger: true,
+    storyStoreV7: false,
   },
-  framework: '@storybook/react',
-  webpackFinal: async config => {
-    // Add support for TS path mapping
-    config.resolve!.plugins = [new TsconfigPathsPlugin({ configFile })];
-    return config;
+  framework: '@storybook/react-vite',
+  async viteFinal(config) {
+    return mergeConfig(config, {
+      plugins: [
+        viteTsConfigPaths({
+          root: '../../',
+        }),
+      ],
+      use: [
+        {
+          loader: require.resolve('@storybook/source-loader'),
+          options: {} /* your sourceLoaderOptions here */,
+        },
+      ],
+    });
   },
   staticDirs: [{ from: './assets', to: '/assets' }],
 };
 
-module.exports = config;
+export default config;

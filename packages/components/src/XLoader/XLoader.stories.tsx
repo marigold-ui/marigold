@@ -1,10 +1,11 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { XLoader } from './XLoader';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/XLoader',
+  component: XLoader,
   argTypes: {
     size: {
       control: {
@@ -25,11 +26,12 @@ export default {
       },
     },
   },
-} as Meta;
+} satisfies Meta<typeof XLoader>;
 
-export const Basic: ComponentStory<typeof XLoader> = args => (
-  <XLoader {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Basic: Story = { render: args => <XLoader {...args} /> };
 
 Basic.parameters = {
   chromatic: { viewports: [320, 1200] },

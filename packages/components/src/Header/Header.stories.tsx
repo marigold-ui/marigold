@@ -1,10 +1,10 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Container } from '../Container';
 import { Header } from './Header';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/Header',
   argTypes: {
     variant: {
@@ -20,13 +20,18 @@ export default {
       description: 'The size of the header',
     },
   },
-} as Meta;
+} satisfies Meta<typeof Header>;
 
-export const Basic: ComponentStory<typeof Header> = args => (
-  <Container contentType="content" size="medium">
-    <Header {...args}>Awsome Header</Header>
-  </Container>
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Basic: Story = {
+  render: args => (
+    <Container contentType="content" size="medium">
+      <Header {...args}>Awsome Header</Header>
+    </Container>
+  ),
+};
 
 Basic.parameters = {
   chromatic: { viewports: [320, 1200] },

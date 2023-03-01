@@ -1,13 +1,14 @@
 import React, { ReactNode } from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Box } from '@marigold/system';
 import { shadow } from '@marigold/tokens';
 
 import { Inline } from './Inline';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/Inline',
+  component: Inline,
   argTypes: {
     space: {
       control: {
@@ -40,7 +41,10 @@ export default {
       description: 'Vertical Alignment',
     },
   },
-} as Meta;
+} satisfies Meta<typeof Inline>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 const Block = ({ children }: { children: ReactNode }) => (
   <Box
@@ -58,19 +62,21 @@ const Block = ({ children }: { children: ReactNode }) => (
   </Box>
 );
 
-export const Basic: ComponentStory<typeof Inline> = args => (
-  <Inline {...args}>
-    <Block>Lirum</Block>
-    <Block>
-      Larum
-      <br />
-      Larum
-      <br />
-      Larum
-    </Block>
-    <Block>Löffelstiel!</Block>
-  </Inline>
-);
+export const Basic: Story = {
+  render: args => (
+    <Inline {...args}>
+      <Block>Lirum</Block>
+      <Block>
+        Larum
+        <br />
+        Larum
+        <br />
+        Larum
+      </Block>
+      <Block>Löffelstiel!</Block>
+    </Inline>
+  ),
+};
 
 Basic.parameters = {
   chromatic: { viewports: [320, 1200] },

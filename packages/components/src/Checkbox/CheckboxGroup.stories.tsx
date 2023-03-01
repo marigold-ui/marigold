@@ -1,99 +1,128 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/CheckboxGroup',
+  component: CheckboxGroup,
   argTypes: {
     label: {
       control: {
         type: 'text',
       },
       description: 'Label text',
-      defaultValue: 'Make a Sandwhich',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Make a Sandwich' },
+      },
     },
     disabled: {
       control: {
         type: 'boolean',
       },
       description: 'Disabled',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     required: {
       control: {
         type: 'boolean',
       },
       description: 'Required',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     readOnly: {
       control: {
         type: 'boolean',
       },
       description: 'Read only',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     error: {
       control: {
         type: 'boolean',
       },
       description: 'Error state',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
   },
-} as Meta;
+  args: {
+    readOnly: false,
+    disabled: false,
+    children: 'This is a Checkbox',
+  },
+} satisfies Meta<typeof CheckboxGroup>;
 
-export const Basic: ComponentStory<typeof CheckboxGroup> = args => {
-  const [selected, setSelected] = React.useState<string[]>([]);
-  return (
-    <>
-      <CheckboxGroup
-        {...args}
-        onChange={setSelected}
-        description="Choose your Options"
-        errorMessage="Oh no"
-      >
-        <Checkbox value="ham">Ham</Checkbox>
-        <Checkbox value="salami" disabled>
-          Salami
-        </Checkbox>
-        <Checkbox value="cheese">Cheese</Checkbox>
-        <Checkbox value="tomato">Tomate</Checkbox>
-        <Checkbox value="cucumber">Cucumber</Checkbox>
-        <Checkbox value="onions">Onions</Checkbox>
-      </CheckboxGroup>
-      <hr />
-      <pre>Selected values: {selected.join(', ')}</pre>
-    </>
-  );
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Basic: Story = {
+  render: args => {
+    const [selected, setSelected] = React.useState<string[]>([]);
+    return (
+      <>
+        <CheckboxGroup
+          {...args}
+          onChange={setSelected}
+          description="Choose your Options"
+          errorMessage="Oh no"
+        >
+          <Checkbox value="ham">Ham</Checkbox>
+          <Checkbox value="salami" disabled>
+            Salami
+          </Checkbox>
+          <Checkbox value="cheese">Cheese</Checkbox>
+          <Checkbox value="tomato">Tomate</Checkbox>
+          <Checkbox value="cucumber">Cucumber</Checkbox>
+          <Checkbox value="onions">Onions</Checkbox>
+        </CheckboxGroup>
+        <hr />
+        <pre>Selected values: {selected.join(', ')}</pre>
+      </>
+    );
+  },
 };
 
-export const Error: ComponentStory<typeof CheckboxGroup> = args => {
-  const [selected, setSelected] = React.useState<string[]>([]);
-  return (
-    <>
-      <CheckboxGroup
-        onChange={setSelected}
-        error
-        errorMessage="This is an error"
-        {...args}
-      >
-        <Checkbox value="ham">Ham</Checkbox>
-        <Checkbox value="salami" disabled>
-          Salami
-        </Checkbox>
-        <Checkbox value="cheese">Cheese</Checkbox>
-        <Checkbox value="tomato">Tomate</Checkbox>
-        <Checkbox value="cucumber">Cucumber</Checkbox>
-        <Checkbox value="onions">Onions</Checkbox>
-      </CheckboxGroup>
-      <hr />
-      <pre>Selected values: {selected.join(', ')}</pre>
-    </>
-  );
+export const Error: Story = {
+  render: args => {
+    const [selected, setSelected] = React.useState<string[]>([]);
+    return (
+      <>
+        <CheckboxGroup
+          onChange={setSelected}
+          error
+          errorMessage="This is an error"
+          {...args}
+        >
+          <Checkbox value="ham">Ham</Checkbox>
+          <Checkbox value="salami" disabled>
+            Salami
+          </Checkbox>
+          <Checkbox value="cheese">Cheese</Checkbox>
+          <Checkbox value="tomato">Tomate</Checkbox>
+          <Checkbox value="cucumber">Cucumber</Checkbox>
+          <Checkbox value="onions">Onions</Checkbox>
+        </CheckboxGroup>
+        <hr />
+        <pre>Selected values: {selected.join(', ')}</pre>
+      </>
+    );
+  },
 };
 
 Basic.parameters = {
