@@ -1,10 +1,10 @@
 ---
-"@marigold/docs": patch
-"@marigold/components": patch
-"@marigold/system": patch
-"@marigold/theme-b2b": patch
-"@marigold/theme-core": patch
-"@marigold/theme-unicorn": patch
+"@marigold/docs": minor
+"@marigold/components": minor
+"@marigold/system": minor
+"@marigold/theme-b2b": minor
+"@marigold/theme-core": minor
+"@marigold/theme-unicorn": minor
 ---
 
-fix: clicking on icon and focus input
+refa: Improved `<Input>` with icons/actions
