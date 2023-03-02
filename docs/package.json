@@ -20,7 +20,7 @@
     "@marigold/types": "workspace:*",
     "@mdx-js/loader": "2.3.0",
     "@mdx-js/react": "2.3.0",
-    "@next/mdx": "13.1.6",
+    "@next/mdx": "13.2.1",
     "estree-util-visit": "1.2.1",
     "fs-extra": "11.1.0",
     "globby": "13.1.3",
