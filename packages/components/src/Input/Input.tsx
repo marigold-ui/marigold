@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactNode } from 'react';
+import React, { forwardRef, ReactElement } from 'react';
 import { HtmlProps } from '@marigold/types';
 import {
   Box,
@@ -15,8 +15,8 @@ export interface InputThemeExtension
 // Props
 // ---------------
 export interface InputOwnProps extends Omit<HtmlProps<'input'>, 'size'> {
-  icon?: ReactNode;
-  action?: ReactNode;
+  icon?: ReactElement;
+  action?: ReactElement;
   variant?: string;
   size?: string;
 }
