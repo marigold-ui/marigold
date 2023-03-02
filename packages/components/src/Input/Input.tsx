@@ -75,6 +75,7 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
         )}
         <Box
           __baseCSS={{
+            display: 'inline-flex',
             position: 'absolute',
             right: 8,
           }}
