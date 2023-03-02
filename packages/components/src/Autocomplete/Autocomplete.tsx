@@ -134,19 +134,21 @@ export const Autocomplete = ({
         width={width}
       >
         <Input
-          {...inputProps}
+          /**
+           * We use `size` for styles which is a string, not like
+           * the regular HTML attribute, which is a number
+           */
+          {...(inputProps as any)}
           ref={inputRef}
           icon={<SearchIcon />}
           action={
-            <>
-              {state.inputValue !== '' && (
-                <ClearButton
-                  preventFocus
-                  disabled={isDisabled}
-                  {...restClearButtonProps}
-                />
-              )}
-            </>
+            state.inputValue !== '' ? (
+              <ClearButton
+                preventFocus
+                disabled={isDisabled}
+                {...restClearButtonProps}
+              />
+            ) : undefined
           }
         />
       </FieldBase>

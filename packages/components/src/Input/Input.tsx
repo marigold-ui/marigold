@@ -53,11 +53,11 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
         css={styles.container}
       >
         <Box
-          __baseCSS={{ border: 0, width: '100%', outline: 'none', pl: 'large' }}
+          __baseCSS={{ border: 0, width: '100%', outline: 'none', pl: 16 }}
           {...props}
           {...stateProps}
-          ref={ref}
           as="input"
+          ref={ref}
           css={styles.input}
           type={type}
         />
@@ -66,14 +66,21 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
             __baseCSS={{
               position: 'absolute',
               pointerEvents: 'none',
-              left: 'xxsmall',
+              left: 8,
             }}
             css={styles.icon}
           >
             {icon}
           </Box>
         )}
-        {action}
+        <Box
+          __baseCSS={{
+            position: 'absolute',
+            right: 8,
+          }}
+        >
+          {action}
+        </Box>
       </Box>
     );
   }

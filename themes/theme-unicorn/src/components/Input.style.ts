@@ -3,7 +3,7 @@ import { colors } from '../colors';
 
 export const Input: Theme['components']['Input'] = {
   base: {
-    container: {
+    input: {
       color: 'text',
       lineHeight: 'large',
 
@@ -11,6 +11,8 @@ export const Input: Theme['components']['Input'] = {
       borderColor: 'gray40',
       borderRadius: 'small',
       outline: 'none',
+      pl: 'xsmall',
+      pr: 'xsmall',
 
       '&:hover': {
         borderColor: 'purple40',
@@ -18,7 +20,7 @@ export const Input: Theme['components']['Input'] = {
 
       '&:focus': {
         borderColor: 'purple60',
-        boxShadow: `0 0 0 1px ${colors.purple60}`,
+        outline: `1px solid ${colors.purple60}`,
       },
 
       '&:disabled': {
@@ -29,24 +31,19 @@ export const Input: Theme['components']['Input'] = {
 
       '&:error': {
         borderColor: 'red60',
-        boxShadow: `0 0 0 1px ${colors.red60}`,
+        outline: `1px solid ${colors.red60}`,
       },
 
       '&:in-group': {
         border: 'none',
         boxShadow: 'none',
       },
-    },
-    icon: {
-      left: 'xxsmall',
-    },
-    input: {
-      pl: 'xsmall',
-      pr: 'xsmall',
-
       '&:has-icon': {
         pl: 'large',
       },
+    },
+    icon: {
+      left: 'xxsmall',
     },
   },
 };

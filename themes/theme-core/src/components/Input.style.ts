@@ -2,22 +2,20 @@ import type { Theme } from '@marigold/components';
 
 export const Input: Theme['components']['Input'] = {
   base: {
-    container: {
+    input: {
       border: '1px solid',
       borderColor: '#aaa',
       borderRadius: 'small',
       lineHeight: 'medium',
-    },
-    icon: {
-      left: 'xxsmall',
-    },
-    input: {
       pl: 'xsmall',
       pr: 'xsmall',
 
       '&:has-icon': {
         pl: 'large',
       },
+    },
+    icon: {
+      left: 'xxsmall',
     },
   },
 };

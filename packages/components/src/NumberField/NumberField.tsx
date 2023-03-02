@@ -153,12 +153,12 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
           )}
           <Input
             ref={inputRef}
+            variant={variant}
+            size={size}
             /**
              * We use `size` for styles which is a string, not like
              * the regular HTML attribute, which is a number
              */
-            variant={variant}
-            size={size}
             {...(inputProps as any)}
             {...stateProps}
           />
