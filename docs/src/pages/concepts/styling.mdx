@@ -224,9 +224,19 @@ const theme = {
 
 Writing component styles in a maintainable way, especially over the life of a growing and changing project is a challenging task. To adress this, we use a approach inspired by [Chakra UI](https://chakra-ui.com/) that allows us to use a consistent API to describe component styling, while beeing easy to understand and maintain.
 
-Each component style consists of the following parts:
+Each component style consists of the following sections:
 
-- `base`:
+- `base`: A default style for the component that is always applied.
+- `variant`: A component can have different visual appearances (e.g. primary, secondary, ...) that will override the `base` styles.
+- `size`: A component can have differenz sizes (e.g. small, medium, large) that will override the `base` styles.
+
+Some components only consist of one functional unit to fulfill their purpose. For example, to create a button you only need a `<button>` element. However, there are component that are composed of multiple parts. Using a cell (`<td>`) outside of a table (`<table>`) does neither make any sense nor is it valid HTML.
+
+This means that even [atomic components](https://atomicdesign.bradfrost.com/chapter-2) can be made up of multiple (smaller) parts. An atom only describes the smallest possible functional unit that can not be broken down further without losing its meaning. In React this is commonly referred to as a composite component. For this reason, Marigold's component styles allow to specify the appearance of each part inside the `base`, `variant` and `size` sections.
+
+TODO: -> hint how to easily style component based on the theme.
+
+The full breakdown of how theming a component works can be found in the "[Theming Components](#theming-components)" section down below.
 
 ## Responsive Styles
 
@@ -264,6 +274,6 @@ export const Component = () => (
 );
 ```
 
-## Theming a Component
+## Theming Components
 
 TODO: how styling is applied via hook etc.
