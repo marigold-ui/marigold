@@ -232,7 +232,30 @@ Each component style consists of the following sections:
 
 Some components only consist of one functional unit to fulfill their purpose. For example, to create a button you only need a `<button>` element. However, there are component that are composed of multiple parts. Using a cell (`<td>`) outside of a table (`<table>`) does neither make any sense nor is it valid HTML.
 
+```tsx
+<Button>Click me!</Button>
+```
+
 This means that even [atomic components](https://atomicdesign.bradfrost.com/chapter-2) can be made up of multiple (smaller) parts. An atom only describes the smallest possible functional unit that can not be broken down further without losing its meaning. In React this is commonly referred to as a composite component. For this reason, Marigold's component styles allow to specify the appearance of each part inside the `base`, `variant` and `size` sections.
+
+```tsx
+<Table>
+  <Table.Header>
+    <Table.Column>Name</Table.Column>
+    <Table.Column>Firstname</Table.Column>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>Potter</Table.Cell>
+      <Table.Cell>Harry</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Malfoy</Table.Cell>
+      <Table.Cell>Draco</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+```
 
 TODO: -> hint how to easily style component based on the theme.
 
