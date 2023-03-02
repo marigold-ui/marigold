@@ -32,6 +32,7 @@ const state = {
   error: [':invalid', '[aria-invalid=true]', '[data-error]'],
   expanded: ['[aria-expanded=true]', '[data-expanded]'],
   required: [':required', '[aria-required]'],
+  hasIcon: ['[data-has-icon]'],
 };
 
 const pseudos = {
@@ -47,6 +48,7 @@ const pseudos = {
   '&:error': createteSelector([selector.self], state.error),
   '&:expanded': createteSelector([selector.self], state.expanded),
   '&:required': createteSelector([selector.self], state.required),
+  '&:has-icon': createteSelector([selector.self], state.hasIcon),
 
   // Selector for elements that are part of a group
   '&:in-group': createteSelector(selector.grouped, state.none, selector.self),
