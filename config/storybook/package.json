@@ -48,10 +48,10 @@
     "react-dom": "18.2.0",
     "storybook": "next",
     "typescript": "4.9.4",
-    "vite": "4.1.2"
+    "vite": "4.1.4"
   },
   "peerDependencies": {
-    "@storybook/react": "7.0.0-beta.49",
+    "@storybook/react": "7.0.0-beta.54",
     "react": "18.x",
     "react-dom": "18.x",
     "typescript": "4.9.5"
