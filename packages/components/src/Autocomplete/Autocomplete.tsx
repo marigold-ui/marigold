@@ -138,13 +138,15 @@ export const Autocomplete = ({
           ref={inputRef}
           icon={<SearchIcon />}
           action={
-            state.inputValue !== '' && (
-              <ClearButton
-                preventFocus
-                disabled={isDisabled}
-                {...restClearButtonProps}
-              />
-            )
+            <>
+              {state.inputValue !== '' && (
+                <ClearButton
+                  preventFocus
+                  disabled={isDisabled}
+                  {...restClearButtonProps}
+                />
+              )}
+            </>
           }
         />
       </FieldBase>
