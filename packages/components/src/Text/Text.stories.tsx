@@ -1,10 +1,11 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Text } from './Text';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/Text',
+  component: Text,
   argTypes: {
     variant: {
       control: {
@@ -39,16 +40,21 @@ export default {
       description: 'Text size',
     },
   },
-} as Meta;
+} satisfies Meta<typeof Text>;
 
-export const Basic: ComponentStory<typeof Text> = args => (
-  <Text {...args}>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-    dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
-    massa nec ultricies efficitur, lectus ante consequat magna, a porttitor
-    massa ex ut quam.
-  </Text>
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Basic: Story = {
+  render: args => (
+    <Text {...args}>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+      dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
+      massa nec ultricies efficitur, lectus ante consequat magna, a porttitor
+      massa ex ut quam.
+    </Text>
+  ),
+};
 
 Basic.parameters = {
   chromatic: { viewports: [320, 1200] },

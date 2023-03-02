@@ -1,12 +1,13 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Message } from './Message';
 import { Text } from '../Text';
 import { Box } from '@marigold/system';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/Message',
+  component: Message,
   argTypes: {
     variant: {
       control: {
@@ -19,27 +20,40 @@ export default {
         type: 'text',
       },
       description: 'Content',
-      defaultValue: 'Danger Zone!',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Danger Zone!' },
+      },
     },
   },
-} as Meta;
+  args: {
+    messageTitle: 'Danger Zone!',
+  },
+} satisfies Meta<typeof Message>;
 
-export const Basic: ComponentStory<typeof Message> = args => (
-  <Message {...args}>
-    <Text>Hello, I am a simple message.</Text>
-  </Message>
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const MultiLineTitle: ComponentStory<typeof Message> = () => (
-  <Box css={{ width: 250 }}>
-    <Message
-      messageTitle="Hey! You! I am an info box! Please notice me, it might help you!"
-      variant="info"
-    >
-      <Text>I am really not that good at righting copy texts, sorry.</Text>
+export const Basic: Story = {
+  render: args => (
+    <Message {...args}>
+      <Text>Hello, I am a simple message.</Text>
     </Message>
-  </Box>
-);
+  ),
+};
+
+export const MultiLineTitle: Story = {
+  render: () => (
+    <Box css={{ width: 250 }}>
+      <Message
+        messageTitle="Hey! You! I am an info box! Please notice me, it might help you!"
+        variant="info"
+      >
+        <Text>I am really not that good at righting copy texts, sorry.</Text>
+      </Message>
+    </Box>
+  ),
+};
 
 Basic.parameters = {
   chromatic: { viewports: [320, 1200] },

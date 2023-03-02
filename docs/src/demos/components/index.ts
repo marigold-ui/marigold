@@ -7,6 +7,7 @@ export * from './_test_hook_';
 // component previews
 export * from './Aside';
 export * from './Aspect';
+export * from './Autocomplete';
 export * from './Badge';
 export * from './Body';
 export * from './Box';
@@ -26,7 +27,6 @@ export * from './Headline';
 export * from './Icon';
 export * from './Image';
 export * from './Inline';
-export * from './Input';
 export * from './Inset';
 export * from './Label';
 export * from './Link';

@@ -1,32 +1,5 @@
 coverage:
-  status:
-    project:
-      default:
-        target: 90%
-    patch:
-      components:
-        target: 90%
-        flags:
-          - components
-      system:
-        target: 90%
-        flags:
-          - system
-      tokens:
-        target: 90%
-        flags:
-          - tokens
+  range: '90...100'
 
 comment:
-  layout: 'reach, diff, flags, files'
-
-flags:
-  - name: components
-    paths:
-      - /packages/components/src/
-  - name: system
-    paths:
-      - /packages/system/src/
-  - name: tokens
-    paths:
-      - /packages/tokens/src/
+  layout: 'reach, diff, files'

@@ -7,7 +7,6 @@ import {
   ThemeProvider,
   Stack,
   FieldBase,
-  Input,
   Select,
   TextArea,
 } from '@marigold/components';
@@ -31,11 +30,10 @@ export const BookingForm = () => (
         </Stack>
         <Stack space="xsmall">
           <TextField label="Straße" />
-          {/* This shouldn't be used, we need to fix it */}
           <FieldBase label="PLZ / Ort">
             <Inline space="xsmall">
-              <Input width="50px" />
-              <Input />
+              <TextField arial-label="PLZ" width="50px" />
+              <TextField arial-label="Ort" width="100px" />
             </Inline>
           </FieldBase>
           <TextField label="Adresszusatz" />
@@ -54,7 +52,7 @@ export const BookingForm = () => (
           {/* This shouldn't be used, we need to fix it */}
           <FieldBase label="nach Kundennummern suchen">
             <Inline space="xsmall">
-              <Input type="search" width="150px" />
+              <TextField arial-label="Search" type="search" width="150px" />
               <Button variant="secondary" size="small">
                 Suchen
               </Button>

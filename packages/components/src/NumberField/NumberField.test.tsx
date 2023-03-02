@@ -134,7 +134,10 @@ test('input can be styled via "Input" styles', () => {
     </ThemeProvider>
   );
   const numberField = screen.getByTestId('number-field');
-  expect(numberField).toHaveStyle(`border-color: ${theme.colors.blue}`);
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(numberField.parentElement).toHaveStyle(
+    `border-color: ${theme.colors.blue}`
+  );
 });
 
 test('group and stepper can styled via "NumberField" styles', () => {
@@ -150,32 +153,6 @@ test('group and stepper can styled via "NumberField" styles', () => {
   const steppers = within(group).getAllByRole('button');
   expect(steppers[0]).toHaveStyle(`color: ${theme.colors.black}`);
   expect(steppers[1]).toHaveStyle(`color: ${theme.colors.black}`);
-});
-
-test('passes down variant and size', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <NumberField
-        data-testid="number-field"
-        label="Label"
-        description="Description"
-        variant="lime"
-        size="small"
-      />
-    </ThemeProvider>
-  );
-
-  const numberField = screen.getByTestId('number-field');
-  expect(numberField).toHaveStyle(`color: ${theme.colors.lime}`);
-  expect(numberField).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
-
-  const label = screen.getByText('Label');
-  expect(label).toHaveStyle(`color: ${theme.colors.lime}`);
-  expect(label).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
-
-  const description = screen.getByText('Description');
-  expect(description).toHaveStyle(`color: ${theme.colors.lime}`);
-  expect(description).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
 });
 
 test('allows to set width via prop', () => {

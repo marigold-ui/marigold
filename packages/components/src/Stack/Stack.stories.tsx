@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Box } from '@marigold/system';
 
 import { Headline } from '../Headline';
@@ -7,8 +7,9 @@ import { Text } from '../Text';
 import { Stack } from './Stack';
 import isChromatic from 'chromatic';
 
-export default {
+const meta = {
   title: 'Components/Stack',
+  component: Stack,
   argTypes: {
     space: {
       control: {
@@ -48,7 +49,10 @@ export default {
         'Stretch to fill space (vertical AND horizontal, useful if you want to change y alignment)',
     },
   },
-} as Meta;
+} satisfies Meta<typeof Stack>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 const Block = ({ children }: { children: ReactNode }) => (
   <Box
@@ -63,84 +67,90 @@ const Block = ({ children }: { children: ReactNode }) => (
   </Box>
 );
 
-export const Basic: ComponentStory<typeof Stack> = args => (
-  <Stack {...args}>
-    <Headline level="2">Heading</Headline>
-    <Text>
-      Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
-      malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a
-      porttitor massa ex ut quam.
-    </Text>
-    <Text>
-      Part 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
-      malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a
-      porttitor massa ex ut quam.
-    </Text>
-  </Stack>
-);
-
-export const Nested: ComponentStory<typeof Stack> = args => (
-  <Block>
+export const Basic: Story = {
+  render: args => (
     <Stack {...args}>
-      <Stack space="xsmall">
-        <Block>
-          <Headline level="2">With xsmall spacing</Headline>
-        </Block>
-        <Block>
-          <Text>
-            Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Suspendisse dignissim dapibus elit, vel egestas felis pharetra non.
-            Cras malesuada, massa nec ultricies efficitur, lectus ante consequat
-            magna, a porttitor massa ex ut quam.
-          </Text>
-        </Block>
-        <Block>
-          <Text>
-            Part 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Suspendisse dignissim dapibus elit, vel egestas felis pharetra non.
-            Cras malesuada, massa nec ultricies efficitur, lectus ante consequat
-            magna, a porttitor massa ex ut quam.
-          </Text>
-        </Block>
-      </Stack>
-      <Stack space="medium">
-        <Block>
-          <Headline level="2">With Medium Spacing</Headline>
-        </Block>
-        <Block>
-          <Text>
-            Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Suspendisse dignissim dapibus elit, vel egestas felis pharetra non.
-            Cras malesuada, massa nec ultricies efficitur, lectus ante consequat
-            magna, a porttitor massa ex ut quam.
-          </Text>
-        </Block>
-        <Block>
-          <Text>
-            Part 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Suspendisse dignissim dapibus elit, vel egestas felis pharetra non.
-            Cras malesuada, massa nec ultricies efficitur, lectus ante consequat
-            magna, a porttitor massa ex ut quam.
-          </Text>
-        </Block>
-      </Stack>
+      <Headline level="2">Heading</Headline>
+      <Text>
+        Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
+        malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a
+        porttitor massa ex ut quam.
+      </Text>
+      <Text>
+        Part 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
+        malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a
+        porttitor massa ex ut quam.
+      </Text>
     </Stack>
-  </Block>
-);
+  ),
+};
 
-export const Stretch: ComponentStory<typeof Stack> = args => (
-  <Block>
-    <Box css={{ height: 300 }}>
+export const Nested: Story = {
+  render: args => (
+    <Block>
       <Stack {...args}>
-        <Block>Lirum</Block>
-        <Block>Larum</Block>
-        <Block>Löffelstiel!</Block>
+        <Stack space="xsmall">
+          <Block>
+            <Headline level="2">With xsmall spacing</Headline>
+          </Block>
+          <Block>
+            <Text>
+              Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Suspendisse dignissim dapibus elit, vel egestas felis pharetra
+              non. Cras malesuada, massa nec ultricies efficitur, lectus ante
+              consequat magna, a porttitor massa ex ut quam.
+            </Text>
+          </Block>
+          <Block>
+            <Text>
+              Part 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Suspendisse dignissim dapibus elit, vel egestas felis pharetra
+              non. Cras malesuada, massa nec ultricies efficitur, lectus ante
+              consequat magna, a porttitor massa ex ut quam.
+            </Text>
+          </Block>
+        </Stack>
+        <Stack space="medium">
+          <Block>
+            <Headline level="2">With Medium Spacing</Headline>
+          </Block>
+          <Block>
+            <Text>
+              Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Suspendisse dignissim dapibus elit, vel egestas felis pharetra
+              non. Cras malesuada, massa nec ultricies efficitur, lectus ante
+              consequat magna, a porttitor massa ex ut quam.
+            </Text>
+          </Block>
+          <Block>
+            <Text>
+              Part 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Suspendisse dignissim dapibus elit, vel egestas felis pharetra
+              non. Cras malesuada, massa nec ultricies efficitur, lectus ante
+              consequat magna, a porttitor massa ex ut quam.
+            </Text>
+          </Block>
+        </Stack>
       </Stack>
-    </Box>
-  </Block>
-);
+    </Block>
+  ),
+};
+
+export const Stretch: Story = {
+  render: args => (
+    <Block>
+      <Box css={{ height: 300 }}>
+        <Stack {...args}>
+          <Block>Lirum</Block>
+          <Block>Larum</Block>
+          <Block>Löffelstiel!</Block>
+        </Stack>
+      </Box>
+    </Block>
+  ),
+};
 
 Stretch.parameters = {
   chromatic: { viewports: [320, 1200] },

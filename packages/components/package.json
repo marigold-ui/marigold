@@ -1,6 +1,6 @@
 {
   "name": "@marigold/components",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "Components for the Marigold Design System",
   "license": "MIT",
   "keywords": [
@@ -27,6 +27,7 @@
     "@marigold/system": "workspace:*",
     "@marigold/tokens": "workspace:*",
     "@marigold/types": "workspace:*",
+    "@react-aria/autocomplete": "3.0.0-alpha.14",
     "@react-aria/button": "3.6.4",
     "@react-aria/checkbox": "3.7.1",
     "@react-aria/dialog": "3.4.2",
@@ -51,6 +52,7 @@
     "@react-aria/visually-hidden": "3.6.1",
     "@react-stately/checkbox": "3.3.2",
     "@react-stately/collections": "3.5.1",
+    "@react-stately/combobox": "3.4.0",
     "@react-stately/data": "^3.6.0",
     "@react-stately/list": "3.6.1",
     "@react-stately/menu": "3.4.4",
@@ -63,6 +65,7 @@
     "@react-stately/toggle": "3.4.4",
     "@react-stately/tooltip": "3.2.4",
     "@react-stately/tree": "3.4.1",
+    "@react-types/autocomplete": "3.0.0-alpha.12",
     "@react-types/checkbox": "3.4.1",
     "@react-types/dialog": "3.4.5",
     "@react-types/numberfield": "3.3.5",

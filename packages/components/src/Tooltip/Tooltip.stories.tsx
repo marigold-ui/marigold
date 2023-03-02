@@ -1,11 +1,11 @@
 import React from 'react';
-import type { Meta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Box } from '@marigold/system';
 
 import { Tooltip } from './Tooltip';
 import { Button } from '../Button';
 
-export default {
+const meta = {
   title: 'Components/Tooltip',
   argTypes: {
     disabled: {
@@ -47,7 +47,6 @@ export default {
         type: 'select',
       },
       options: ['top', 'bottom', 'left', 'right'],
-      defaultValue: undefined,
       description: 'The placement of the tooltip',
     },
     containerPadding: {
@@ -63,30 +62,35 @@ export default {
       description: 'Should the tooltip be automatically be flipped',
     },
   },
-} as Meta;
+} satisfies Meta<typeof Tooltip.Trigger>;
 
-export const Basic: ComponentStory<typeof Tooltip> = args => {
-  return (
-    <Box
-      css={{
-        display: 'flex',
-        gap: 10,
-        pt: 120,
-        width: 'min(100% - 3rem, 60ch)',
-        marginInline: 'auto',
-      }}
-    >
-      <Tooltip.Trigger {...args}>
-        <Button variant="primary">Hover me!</Button>
-        <Tooltip>Look at this tooltip!</Tooltip>
-      </Tooltip.Trigger>
-      <Tooltip.Trigger {...args}>
-        <Button variant="primary">Hover no! Me!</Button>
-        <Tooltip>
-          <div>I am a much more longer tooltip you know!</div>
-          <div>I even have two lines!</div>
-        </Tooltip>
-      </Tooltip.Trigger>
-    </Box>
-  );
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Basic: Story = {
+  render: args => {
+    return (
+      <Box
+        css={{
+          display: 'flex',
+          gap: 10,
+          pt: 120,
+          width: 'min(100% - 3rem, 60ch)',
+          marginInline: 'auto',
+        }}
+      >
+        <Tooltip.Trigger {...args}>
+          <Button variant="primary">Hover me!</Button>
+          <Tooltip>Look at this tooltip!</Tooltip>
+        </Tooltip.Trigger>
+        <Tooltip.Trigger {...args}>
+          <Button variant="primary">Hover no! Me!</Button>
+          <Tooltip>
+            <div>I am a much more longer tooltip you know!</div>
+            <div>I even have two lines!</div>
+          </Tooltip>
+        </Tooltip.Trigger>
+      </Box>
+    );
+  },
 };
