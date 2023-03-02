@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 5.2.0
+
+### Minor Changes
+
+- [#2806](https://github.com/marigold-ui/marigold/pull/2806) [`f11e2d7db`](https://github.com/marigold-ui/marigold/commit/f11e2d7dbb3d6b4ee4b8651f48b52736f64fd778) Thanks [@sebald](https://github.com/sebald)! - feat: expose `keyframes` helper
+
 ## 5.1.0
 
 ### Patch Changes
