@@ -1,7 +1,7 @@
 import React from 'react';
 import { CSSObject, Global as EmotionGlobal } from '@emotion/react';
 
-import { useTheme } from '../../hooks/_useTheme';
+import { useTheme } from '../../hooks/__useTheme';
 import * as normalize from './normalize';
 
 // Helper

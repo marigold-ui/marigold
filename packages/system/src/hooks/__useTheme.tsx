@@ -21,6 +21,7 @@ const InternalContext = createContext<Theme>(__defaultTheme);
 
 export const useTheme = () => {
   const theme = useContext(InternalContext);
+
   /**
    * We cast the theme here to `any` since our subset is not
    * compatible with the typings of `theme-ui`. They support

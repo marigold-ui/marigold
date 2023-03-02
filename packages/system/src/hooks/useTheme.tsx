@@ -1,3 +1,4 @@
+import theme from '@marigold/theme-unicorn';
 import React, { createContext, ReactNode, useContext } from 'react';
 import { Theme } from '../types';
 
@@ -6,27 +7,40 @@ import { Theme } from '../types';
  */
 export const __defaultTheme: Theme = {};
 
-const InternalContext = createContext<any>(__defaultTheme);
+const Context = React.createContext<any>(__defaultTheme);
 
+export interface ThemeProviderProps {
+  theme: any;
+  children: ReactNode;
+}
 export const useTheme = () => {
-  const theme = useContext(InternalContext);
+  const theme = useContext(Context);
 
+  console.log('buuuuuuu', theme);
   return theme;
 };
 
-export interface ThemeProviderProps<T extends Theme> {
-  theme: T;
-  children: ReactNode;
-}
+export const ThemeProvider = ({ children }: any) => {
+  return <Context.Provider value={theme}>{children}</Context.Provider>;
+};
 
-export function ThemeProvider<T extends Theme>({
-  theme,
-  children,
-}: ThemeProviderProps<T>) {
-  console.log(theme);
-  return (
-    <InternalContext.Provider value={theme}>
-      {children}
-    </InternalContext.Provider>
-  );
-}
+// const InternalContext = createContext<any>(__defaultTheme);
+
+// export const useTheme = () => {
+//   const theme = useContext(InternalContext);
+
+//   console.log('usetheme', theme);
+//   return theme;
+// };
+
+// export function ThemeProvider<T extends Theme>({
+//   theme,
+//   children,
+// }: ThemeProviderProps<T>) {
+//   console.log('themeprovider', theme);
+//   return (
+//     <InternalContext.Provider value={theme}>
+//       {children}
+//     </InternalContext.Provider>
+//   );
+// }

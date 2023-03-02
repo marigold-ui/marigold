@@ -2,7 +2,7 @@
  * Based on https://theme-ui.com/packages/match-media/
  */
 import { useEffect, useState } from 'react';
-import { useTheme } from './_useTheme';
+import { useTheme } from './__useTheme';
 
 /**
  * Hardcode fallback breakpoints, not make sure `useEffect`

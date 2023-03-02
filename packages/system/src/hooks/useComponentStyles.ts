@@ -45,24 +45,24 @@ export type ComponentStyleParts<Parts extends string[]> = {
 
 export const useComponentStylesNEW = (
   component: string,
-  options: { variant: any; size: any }
+  options: { variant: any }
 ) => {
-  const theme = useTheme();
+  const { theme } = useTheme();
 
-  console.log('THEME', theme);
-  let { variants, ...styles } = tv(theme.components[component]);
+  console.log(theme);
+  // let { variants, ...styles } = tv(theme.components[component]);
 
-  const baseStyle = styles.base as any;
-  if (variants) {
-    let classes = {
-      baseStyle,
-      variant: (variants as any)['variant'][options.variant],
-      size: (variants as any)['size'][options.size],
-    };
+  // const baseStyle = styles.base as any;
+  // if (variants) {
+  //   let classes = {
+  //     baseStyle,
+  //     variant: (variants as any)['variant'][options.variant],
+  //     //size: (variants as any)['size'][options.size],
+  //   };
 
-    return classes;
-  }
-  return baseStyle;
+  //   return classes;
+  // }
+  // return baseStyle;
 };
 
 export function useComponentStyles(

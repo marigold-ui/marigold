@@ -3,7 +3,7 @@ import { cleanup } from '@testing-library/react';
 import { act, renderHook } from '@testing-library/react-hooks';
 
 import { useResponsiveValue } from './useResponsiveValue';
-import { ThemeProvider } from './_useTheme';
+import { ThemeProvider } from './__useTheme';
 
 /**
  * We need to mock `matchMedia` because JSOM does not
