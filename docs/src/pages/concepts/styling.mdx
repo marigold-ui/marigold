@@ -226,17 +226,15 @@ Writing component styles in a maintainable way, especially over the life of a gr
 
 Each component style consists of the following sections:
 
-- `base`: A default style for the component that is always applied.
-- `variant`: A component can have different visual appearances (e.g. primary, secondary, ...) that will override the `base` styles.
-- `size`: A component can have differenz sizes (e.g. small, medium, large) that will override the `base` styles.
+- `base`: a default style for the component that is always applied
+- `variant`: a component can have different visual appearances (e.g. primary, secondary, ...) that will override the `base` styles
+- `size`: a component can have differenz sizes (e.g. small, medium, large) that will override the `base` styles
 
 Some components only consist of one functional unit to fulfill their purpose. For example, to create a button you only need a `<button>` element. However, there are component that are composed of multiple parts. Using a cell (`<td>`) outside of a table (`<table>`) does neither make any sense nor is it valid HTML.
 
 ```tsx
 <Button>Click me!</Button>
 ```
-
-This means that even [atomic components](https://atomicdesign.bradfrost.com/chapter-2) can be made up of multiple (smaller) parts. An atom only describes the smallest possible functional unit that can not be broken down further without losing its meaning. In React this is commonly referred to as a composite component. For this reason, Marigold's component styles allow to specify the appearance of each part inside the `base`, `variant` and `size` sections.
 
 ```tsx
 <Table>
@@ -257,9 +255,9 @@ This means that even [atomic components](https://atomicdesign.bradfrost.com/chap
 </Table>
 ```
 
-TODO: -> hint how to easily style component based on the theme.
+This means that even [atomic components](https://atomicdesign.bradfrost.com/chapter-2) can be made up of multiple (smaller) parts. An atom only describes the smallest possible functional unit that can not be broken down further without losing its meaning. In React this is commonly referred to as a composite component. For this reason, Marigold's component styles allow to specify the appearance of each part inside the `base`, `variant` and `size` sections.
 
-The full breakdown of how theming a component works can be found in the "[Theming Components](#theming-components)" section down below.
+The full breakdown of how styling a component works and how they work together with themes, can be found in the "[Theming Components](#theming-components)" section down below.
 
 ## Responsive Styles
 
@@ -300,3 +298,15 @@ export const Component = () => (
 ## Theming Components
 
 TODO: how styling is applied via hook etc.
+
+```ts
+// Single part styles for a <Button>
+export const Button = {
+  // Styles for the default appearance
+  base: {},
+  // Styles for the visual style variations
+  variant: {},
+  // Styles for the size variations
+  size: {},
+};
+```
