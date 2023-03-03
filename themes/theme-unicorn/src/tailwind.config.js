@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 
-export const content = ['./src/**/*.{js,jsx,ts,tsx}'];
+import colors from './colors';
+import components from './components';
+
+export const content = ['./**/*.{ts,tsx}'];
 export const theme = {
   breakpoints: ['40em', '52em', '64em'],
   space: {
@@ -27,8 +30,6 @@ export const theme = {
   },
   colors: {
     ...colors,
-    text: colors.gray90,
-    background: colors.gray00,
     primary: '#673ab7',
     secondary: '#9575cd',
     disabled: '#e9e7eb',

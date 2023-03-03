@@ -1,5 +1,6 @@
+// @ts-ignore
 import theme from '@marigold/theme-unicorn';
-import React, { createContext, ReactNode, useContext } from 'react';
+import React, { ReactNode, useContext } from 'react';
 import { Theme } from '../types';
 
 /**

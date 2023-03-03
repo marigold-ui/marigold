@@ -40,3 +40,5 @@ export const colors = {
   purple70: '#512da8',
   purple80: '#311b92',
 } as const;
+
+export default colors;
