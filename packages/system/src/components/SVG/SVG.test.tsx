@@ -198,3 +198,15 @@ test('css prop', () => {
 
   expect(svg).toHaveStyle(`color: ${theme.colors.red}`);
 });
+
+test('css prop overrides size prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <SVG size={30} css={{ height: 8 }} data-testid="svg" />
+    </ThemeProvider>
+  );
+  const svg = screen.getByTestId('svg');
+
+  expect(svg).toHaveStyle(`height: 8px`);
+  expect(svg).toHaveStyle(`width: 30px`);
+});

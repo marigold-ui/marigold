@@ -1,10 +1,9 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Input } from './Input';
 import isChromatic from 'chromatic';
 import { Search, Delete } from '@marigold/icons';
 import { Button } from '../Button';
-import { InputField } from './InputField';
+import { Input } from './Input';
 const meta = {
   title: 'Components/Input',
   argTypes: {
@@ -36,17 +35,16 @@ const meta = {
       description: 'Pattern for the input',
     },
   },
-} satisfies Meta<typeof InputField>;
+  args: {
+    type: 'text',
+  },
+} satisfies Meta<typeof Input>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => (
-    <Input>
-      <Input.Field placeholder="Placeholder..." {...args} />
-    </Input>
-  ),
+  render: args => <Input placeholder="Placeholder..." {...args} />,
 };
 
 Basic.parameters = {
@@ -54,14 +52,33 @@ Basic.parameters = {
   theme: isChromatic() ? 'b2b' : 'stacked',
 };
 
+export const WithLeadingIcons: Story = {
+  render: () => <Input placeholder="Placeholder..." icon={<Search />} />,
+};
+
+export const WithAction: Story = {
+  render: () => (
+    <Input
+      placeholder="Placeholder..."
+      action={
+        <Button size="small" variant="text">
+          <Delete />
+        </Button>
+      }
+    />
+  ),
+};
+
 export const WithIcons: Story = {
-  render: args => (
-    <Input>
-      <Search />
-      <Input.Field placeholder="Placeholder..." />
-      <Button size="small" variant="text">
-        <Delete />
-      </Button>
-    </Input>
+  render: () => (
+    <Input
+      placeholder="Placeholder..."
+      icon={<Search />}
+      action={
+        <Button size="small" variant="text">
+          <Delete />
+        </Button>
+      }
+    />
   ),
 };
