@@ -1,6 +1,6 @@
-export * from './Badge.style';
-export * from './Button.style';
-export * from './Card.style';
+import * as Badge from './Badge.style';
+import * as Button from './Button.style';
+import * as Card from './Card.style';
 export * from './Checkbox.style';
 export * from './Dialog.style';
 export * from './Divider.style';
@@ -25,5 +25,10 @@ export * from './TextArea.style';
 export * from './Tooltip.style';
 export * from './Underlay.style';
 
-const base = {};
-export default base;
+const components = {
+  Badge,
+  Button,
+  Card,
+};
+
+export default components;

@@ -17,7 +17,6 @@ export interface ThemeProviderProps {
 export const useTheme = () => {
   const theme = useContext(Context);
 
-  console.log('buuuuuuu', theme);
   return theme;
 };
 

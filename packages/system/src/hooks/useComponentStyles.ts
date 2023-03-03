@@ -47,11 +47,12 @@ export const useComponentStylesNEW = (
   component: string,
   options: { variant: any }
 ) => {
-  const { theme } = useTheme();
+  const theme = useTheme();
 
-  console.log(theme);
+  console.log('grrrr', theme.components[component].component);
   let { variants, ...styles } = tv(theme.components[component]);
 
+  console.log(variants);
   const baseStyle = styles.base as any;
   if (variants) {
     let classes = {
