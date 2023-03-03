@@ -25,11 +25,11 @@ export const SVG = forwardRef<SVGElement, SVGProps>(
       {
         ...props,
         css: css({
+          width: toDimension(props.width || size),
+          height: toDimension(props.height || size),
           ...styles,
           fill,
           flex: '0 0 auto',
-          width: toDimension(props.width || size),
-          height: toDimension(props.height || size),
         }),
         ref,
       },
