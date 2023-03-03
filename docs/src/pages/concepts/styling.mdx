@@ -295,9 +295,9 @@ export const Component = () => (
 );
 ```
 
-## Theming Components
+## Styling Components
 
-TODO: how styling is applied via hook etc.
+As mentioned before, Marigold uses a certain format to define the appearancesce of components. It consists of the `base`, `variant` and `size` (see [Component Styles](#component-styles)). The most basic API for styling a component looks like this:
 
 ```ts
 // Single part styles for a <Button>
@@ -310,3 +310,33 @@ export const Button = {
   size: {},
 };
 ```
+
+```tsx preview file=concepts/simple-styling.demo.tsx
+
+```
+
+```ts
+// Single part styles for a <Button>
+export const Table = {
+  // Styles for the default appearance
+  base: {
+    head: {},
+    row: {},
+    cell: {},
+  },
+  // Styles for the visual style variations
+  variant: {
+    head: {},
+    row: {},
+    cell: {},
+  },
+  // Styles for the size variations
+  size: {
+    head: {},
+    row: {},
+    cell: {},
+  },
+};
+```
+
+    TODO: how styling is applied via hook etc.
