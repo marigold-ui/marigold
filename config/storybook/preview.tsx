@@ -18,14 +18,31 @@ const THEME = {
 
 type ThemeNames = keyof typeof THEME;
 
-const Frame = ({ children, title }: any) => (
+const Frame = ({ children, title, id }: any) => (
   <Box css={{ p: '16px' }}>
-    <Box css={{ color: '#495057', fontSize: '0.75rem' }}>{title}</Box>
     <Box
+      css={{
+        fontFamily:
+          'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
+        display: 'inline-block',
+        color: '#7c2d12',
+        fontSize: '0.75rem',
+        bg: '#fed7aa',
+        borderRadius: 8,
+        border: '1px solid #fed7aa',
+        py: 1,
+        px: 2,
+        mb: 1,
+      }}
+    >
+      {title}
+    </Box>
+    <Box
+      id={id}
       css={{
         p: '16px',
         border: '1px solid #dee2e6',
-        borderRadius: 'clamp(0px, calc(100vw - 100%) * 1e5, 5px)',
+        borderRadius: 8,
         boxShadow: 'inset 0 1px 4px 0 hsl(220 3% 15% / 10%);',
       }}
     >
@@ -56,8 +73,11 @@ export const decorators = [
         return (
           <>
             {Object.keys(THEME).map(key => (
-              <Frame key={key} title={`Theme "${key}"`}>
-                <MarigoldProvider theme={THEME[key as ThemeNames]}>
+              <Frame key={key} id={key} title={`Theme "${key}"`}>
+                <MarigoldProvider
+                  theme={THEME[key as ThemeNames]}
+                  selector={`#${key}`}
+                >
                   <Story />
                 </MarigoldProvider>
               </Frame>
