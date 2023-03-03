@@ -3,40 +3,47 @@ import { colors } from '../colors';
 
 export const Input: Theme['components']['Input'] = {
   base: {
-    color: 'text',
-    lineHeight: 'large',
+    input: {
+      color: 'text',
+      lineHeight: 'large',
 
-    border: '1px solid',
-    borderColor: 'gray40',
-    borderRadius: 'small',
-    outline: 'none',
+      border: '1px solid',
+      borderColor: 'gray40',
+      borderRadius: 'small',
+      outline: 'none',
+      pl: 'xsmall',
+      pr: 'xsmall',
 
-    py: 'none',
-    px: 'xsmall',
+      '&:hover': {
+        borderColor: 'purple40',
+      },
 
-    '&:hover': {
-      borderColor: 'purple40',
+      '&:focus': {
+        borderColor: 'purple60',
+        outline: `1px solid ${colors.purple60}`,
+      },
+
+      '&:disabled': {
+        bg: 'gray20',
+        color: 'gray40',
+        cursor: 'not-allowed',
+      },
+
+      '&:error': {
+        borderColor: 'red60',
+        outline: `1px solid ${colors.red60}`,
+      },
+
+      '&:in-group': {
+        border: 'none',
+        boxShadow: 'none',
+      },
+      '&:has-icon': {
+        pl: 'large',
+      },
     },
-
-    '&:focus': {
-      borderColor: 'purple60',
-      boxShadow: `0 0 0 1px ${colors.purple60}`,
-    },
-
-    '&:disabled': {
-      bg: 'gray20',
-      color: 'gray40',
-      cursor: 'not-allowed',
-    },
-
-    '&:error': {
-      borderColor: 'red60',
-      boxShadow: `0 0 0 1px ${colors.red60}`,
-    },
-
-    '&:in-group': {
-      border: 'none',
-      boxShadow: 'none',
+    icon: {
+      left: 'xxsmall',
     },
   },
 };

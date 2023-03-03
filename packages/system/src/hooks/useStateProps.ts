@@ -14,7 +14,8 @@ export type ComponentState =
   | 'selected'
   | 'indeterminate'
   | 'expanded'
-  | 'error';
+  | 'error'
+  | 'hasIcon';
 
 export type StateAttrKeyProps = `data-${KebabCase<ComponentState>}`;
 

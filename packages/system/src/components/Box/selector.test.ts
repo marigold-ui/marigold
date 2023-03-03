@@ -165,6 +165,15 @@ describe('transform states', () => {
           {},
       },
     },
+    {
+      name: ':has-icon',
+      input: {
+        '&:has-icon': {},
+      },
+      expected: {
+        '&[data-has-icon]': {},
+      },
+    },
   ])('tramsform "$name" to selector', ({ input, expected }) => {
     expect(transformPseudos(input)).toEqual(expected);
   });
