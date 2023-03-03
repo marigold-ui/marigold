@@ -76,7 +76,7 @@ export const Button = forwardRef(
 
     //  const styles = useComponentStyles('Button', { variant, size });
 
-    const { ...classes } = useComponentStylesNEW('Button', {
+    const classes = useComponentStylesNEW('Button', {
       variant: variant,
       // size: size,
     });

@@ -1,15 +1,7 @@
 import type { Theme } from '@marigold/components';
 
 export const Badge: Theme['components']['Badge'] = {
-  base: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    fontSize: 'xxsmall',
-    borderRadius: 'large',
-    whiteSpace: 'nowrap',
-    py: 4,
-    px: 12,
-  },
+  base: 'border-none borderRadius-8px lineHeight-48px px-large',
   variant: {
     info: {
       color: 'purple10',

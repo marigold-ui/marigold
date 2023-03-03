@@ -49,15 +49,14 @@ export const useComponentStylesNEW = (
 ) => {
   const theme = useTheme();
 
-  console.log('grrrr', theme.components[component].component);
+  console.log('grrrr', theme.components[component]);
   let { variants, ...styles } = tv(theme.components[component]);
-
-  console.log(variants);
   const baseStyle = styles.base as any;
+
   if (variants) {
     let classes = {
       baseStyle,
-      variant: (variants as any)['variant'][options.variant],
+      // variant: (variants as any)['variant'][options.variant],
       //size: (variants as any)['size'][options.size],
     };
 
