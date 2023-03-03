@@ -64,6 +64,15 @@ export const parameters = {
 // ---------------
 export const decorators = [
   (Story: StoryFn, { globals, parameters }: any) => {
+    // We do this since in a stacked context there is no global normalization otherwhise
+    const globalTheme = {
+      root: {
+        body: {
+          fontFamily: 'Inter',
+        },
+      },
+    };
+
     const theme = isChromatic()
       ? parameters.theme || 'stacked'
       : globals.theme || parameters.theme || 'b2b';
@@ -71,7 +80,7 @@ export const decorators = [
     switch (theme) {
       case 'stacked': {
         return (
-          <>
+          <MarigoldProvider theme={globalTheme}>
             {Object.keys(THEME).map(key => (
               <Frame key={key} id={key} title={`Theme "${key}"`}>
                 <MarigoldProvider
@@ -82,7 +91,7 @@ export const decorators = [
                 </MarigoldProvider>
               </Frame>
             ))}
-          </>
+          </MarigoldProvider>
         );
       }
       default: {
