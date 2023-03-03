@@ -79,11 +79,7 @@
 // },
 
 /** @type {import('tailwindcss').Config} */
-export const content = [
-  './**/*.{ts,tsx}',
-  './components/**/*.{js,ts,jsx,tsx}',
-  './colors.ts',
-];
+export const content = ['./components/**/*.{ts,tsx}', './colors.ts'];
 export const theme = {
   breakpoints: ['40em', '52em', '64em'],
   space: {
@@ -158,3 +154,7 @@ export const theme = {
     xxlarge: 3,
   },
 };
+
+export const webFontUrl = [
+  'https://fonts.bunny.net/css?family=inter:400,600,700',
+];

@@ -1,5 +1,3 @@
-// @ts-ignore
-import theme from '@marigold/theme-unicorn';
 import React, { ReactNode, useContext } from 'react';
 import { Theme } from '../types';
 
@@ -20,7 +18,7 @@ export const useTheme = () => {
   return theme;
 };
 
-export const ThemeProvider = ({ children }: any) => {
+export const ThemeProvider = ({ children, theme }: any) => {
   return <Context.Provider value={theme}>{children}</Context.Provider>;
 };
 

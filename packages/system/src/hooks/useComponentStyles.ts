@@ -49,7 +49,7 @@ export const useComponentStylesNEW = (
 ) => {
   const theme = useTheme();
 
-  console.log('grrrr', theme.components[component]);
+  console.log('grrrr', theme);
   let { variants, ...styles } = tv(theme.components[component]);
   const baseStyle = styles.base as any;
 
