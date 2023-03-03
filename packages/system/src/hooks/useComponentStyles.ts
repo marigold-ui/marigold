@@ -6,6 +6,11 @@ import { CSSObject } from '../types';
 import { useTheme } from './useTheme';
 
 import { tv } from 'tailwind-variants';
+import { twMerge } from 'tailwind-merge';
+import path from 'path';
+
+import badge from '../themes/theme-unicorn/src/components/';
+import * as com from '../../../../themes/theme-unicorn/src/components';
 
 // Types
 // ---------------
@@ -47,10 +52,13 @@ export const useComponentStylesNEW = (
   component: string,
   options: { variant: any }
 ) => {
-  const theme = useTheme();
+  // const theme => in b2b gibt es die theme so wie früher aus, in unicorn aber ganze config
+  // const { theme } => in unicorm correct but without the content part
+  const { theme } = useTheme();
 
   console.log('grrrr', theme);
   let { variants, ...styles } = tv(theme.components[component]);
+
   const baseStyle = styles.base as any;
 
   if (variants) {
@@ -65,6 +73,7 @@ export const useComponentStylesNEW = (
   return baseStyle;
 };
 
+export function useStyles(componentName: string): any;
 export function useComponentStyles(
   componentName: string,
   props?: ComponentStylesProps,
@@ -91,8 +100,13 @@ export function useComponentStyles(
   props: ComponentStylesProps = {},
   options: any = {}
 ) {
-  const { theme } = useTheme();
-  const componentStyles = get(theme, `components.${componentName}`);
+  const { theme, content } = useTheme();
+
+  const getPath = path.resolve(process.cwd(), '../themes/**/src/index.js');
+
+  console.log(getPath);
+  const componentStyles = get(componentName, content.files[0]);
+  console.log('Hallo hier', content.files[0], componentStyles);
 
   // Store styles in ref to prevent re-computation
   const stylesRef = useRef({});
@@ -120,3 +134,14 @@ export function useComponentStyles(
 
   return stylesRef.current;
 }
+
+// wie krieg ich hier die den ganzen bums rein
+
+export const useComponentStylessss = () => {
+  const baseStyle = com.badge.base;
+  const variants = com.badge.variants;
+  console.log(baseStyle, variants);
+  const classNames = twMerge(baseStyle, variants.info);
+  console.log(classNames);
+  return classNames;
+};

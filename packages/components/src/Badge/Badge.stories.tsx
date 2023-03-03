@@ -30,6 +30,7 @@ const meta = {
   },
   args: {
     children: 'new',
+    variant: 'info',
   },
 } satisfies Meta<typeof Badge>;
 

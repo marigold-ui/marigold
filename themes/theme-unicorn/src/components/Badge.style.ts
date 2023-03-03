@@ -1,16 +1,9 @@
-import type { Theme } from '@marigold/components';
+import { tv } from 'tailwind-variants';
 
-export const Badge: Theme['components']['Badge'] = {
+export const badge = tv({
   base: 'border-none borderRadius-8px lineHeight-48px px-large',
-  variant: {
-    info: {
-      color: 'purple10',
-      bg: 'purple70',
-    },
-
-    dark: {
-      color: 'gray00',
-      bg: 'gray70',
-    },
+  variants: {
+    info: 'purple10 bg-purple70',
+    dark: 'gray00 bg-gray70',
   },
-};
+});

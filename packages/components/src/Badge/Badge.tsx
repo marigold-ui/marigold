@@ -1,13 +1,8 @@
 import React from 'react';
 import { HtmlProps } from '@marigold/types';
-import {
-  useComponentStyles,
-  ThemeExtension,
-  useComponentStylesNEW,
-} from '@marigold/system';
+import { ThemeExtension, useComponentStylessss } from '@marigold/system';
 
 import { Box } from '../Box';
-import { twMerge } from 'tailwind-merge';
 
 // Theme Extension
 // ---------------
@@ -24,9 +19,8 @@ export interface BadgeProps extends HtmlProps<'div'> {
 // Component
 // ---------------
 export const Badge = ({ variant, size, children, ...props }: BadgeProps) => {
-  const classes = useComponentStylesNEW('Badge', { variant: variant });
-  const classNames = twMerge(classes.baseStyle, classes.variant);
-  console.log('classNames', classNames);
+  const classNames = useComponentStylessss();
+
   return (
     <Box {...props} className={classNames}>
       {children}

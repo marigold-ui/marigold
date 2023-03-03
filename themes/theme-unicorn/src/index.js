@@ -5,4 +5,4 @@ import * as tailwindConfig from './tailwind.config.js';
 
 const config = resolveConfig(tailwindConfig);
 const theme = config.theme;
-export default config;
+export default theme;
