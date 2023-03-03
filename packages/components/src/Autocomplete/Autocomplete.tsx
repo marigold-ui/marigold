@@ -22,7 +22,7 @@ import { ClearButton } from './ClearButton';
 // Theme Extension
 // ---------------
 export interface AutocompleteThemeExtension
-  extends ThemeExtensionsWithParts<'Autocomplete', ['icon', 'action']> {}
+  extends ThemeExtensionsWithParts<'Autocomplete', ['icon', 'clear']> {}
 
 // Search Icon
 // ---------------
@@ -133,7 +133,7 @@ export const Autocomplete = ({
   const styles = useComponentStyles(
     'Autocomplete',
     { variant, size },
-    { parts: ['icon', 'action'] }
+    { parts: ['icon', 'clear'] }
   );
 
   return (
@@ -155,12 +155,13 @@ export const Autocomplete = ({
            */
           {...(inputProps as any)}
           ref={inputRef}
-          icon={<SearchIcon css={{ height: 8, width: 8, ...styles.icon }} />}
+          icon={<SearchIcon css={{ height: 16, width: 16, ...styles.icon }} />}
           action={
             state.inputValue !== '' ? (
               <ClearButton
                 preventFocus
                 disabled={isDisabled}
+                css={styles.clear}
                 {...restClearButtonProps}
               />
             ) : undefined
