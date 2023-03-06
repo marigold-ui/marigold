@@ -297,7 +297,7 @@ export const Component = () => (
 
 ## Styling Components
 
-As mentioned before, Marigold uses a certain format to define the appearancesce of components. It consists of the `base`, `variant` and `size` (see [Component Styles](#component-styles)). The most basic API for styling a component looks like this:
+As mentioned before, Marigold uses a specific format to define the appearancesce of components. It consists of the `base`, `variant` and `size` (see [Component Styles](#component-styles)). The most basic API for styling a component looks like this:
 
 ```ts
 // Single part styles for a <Button>
@@ -311,32 +311,89 @@ export const Button = {
 };
 ```
 
+Following this format you can style Marigold's component (with the exception of [layout components](/concepts/layouts/)). Styles will be scoped to the component. They will not leak into any other component.
+
+As you can see in the following example styling the `<Button>` component, the `base` styles are always applied. `variant` and `size` can be added via the corresponding props of the `<Button>`. Adding these two props is optional, since every component has at least one base appearance.
+
 ```tsx preview file=concepts/simple-styling.demo.tsx
 
 ```
 
+There are components which are more complex than a button, a table for example. They consist of more than one part. Every table has cells, rows, a body for example. With some additional parts like a header.
+
+Marigold's styling solution also allows to handle styling of complex component, which internally have more than one part. Similar to a single part component, the format uses `base`, `variant` and `size`. The parts of a component (`header`, `row`, `cell`) are the child props of `base`, `variant` and `size`. Styling is then applied like with a single component. The parts will always have their base style and in addition, can have a `variant` and/or a `size`.
+
+The `variant` and `size` props are usually added on the top most component (`<Table>`) and will then be passed down to their children. For example, if you want collapsed rows add the variant to the table, `<Table variant="collapse">`. These composite components usually share variants and sizes between parts so that the different parts work well together.
+
 ```ts
-// Single part styles for a <Button>
+// Single multi part styles for a <Table>
 export const Table = {
   // Styles for the default appearance
   base: {
-    head: {},
+    // <Table.Header>
+    header: {},
+    // <Table.Row>
     row: {},
+    // <Table.Cell>
     cell: {},
   },
   // Styles for the visual style variations
   variant: {
     head: {},
     row: {},
-    cell: {},
+    cell: {
+      // <Table.Cell variant="collapsed">
+      collapsed: {},
+    },
   },
   // Styles for the size variations
   size: {
-    head: {},
+    head: {
+      // <Table.Header size="large">
+      large: {},
+    },
     row: {},
     cell: {},
   },
 };
 ```
 
-    TODO: how styling is applied via hook etc.
+### Using the `useComponentStyles` hook
+
+Since we use a unified API, Marigold has a hook to simplify the consumption and application of component styles called `useComponentStyles`. Passing in the component name, variant and size will return the computed styles for the specified component. For applying the styles the `<Box>` in conjunction with its `css` prop can be used.
+
+```tsx
+import { ReactNode } from 'react';
+import { Box, useComponentStyles } from '@marigold/system';
+
+interface CardProps {
+  variant?: string;
+  size?: string;
+  children?: ReactNode;
+}
+
+const Card = ({ variant, size, children }: CardProps) => {
+  // Get styles for a component based on component name, variant + size.
+  const styles = useComponentStyles('Card', { variant, size });
+  // Pass the computed styles into the `css` prop
+  return <Box css={styles}>{children}</Box>;
+};
+```
+
+Components with multiple parts can be handled by the `useComponentStyles` too. Parts can be specified in the third parameter, like shown in the example below. Insteas of a single styles object, the `useComponentStyles` hook will return an object with all parts which then can be passed to the composite component parts.
+
+```tsx
+/**
+ *  styles = {
+ *    table: CSSObject,
+ *    header: CSSObject,
+ *    row: CSSObject,
+ *    cell: CSSObject,
+ *  }
+ */
+const styles = useComponentStyles(
+  'Card',
+  { variant, size },
+  { parts: ['table', 'header', 'row', 'cell'] }
+);
+```
