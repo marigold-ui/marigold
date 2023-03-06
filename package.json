@@ -63,5 +63,11 @@
     "slack": "zx scripts/slack-release-notification.mjs --quiet",
     "prepare": "husky install",
     "theme": "zx scripts/generate-theme.js"
+  },
+  "devDependencies": {
+    "autoprefixer": "10.4.13",
+    "postcss-import": "15.1.0",
+    "postcss-loader": "7.0.2",
+    "tailwindcss": "3.2.6"
   }
 }

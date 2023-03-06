@@ -7,6 +7,8 @@ import { Box, MarigoldProvider } from '@marigold/components';
 import b2bTheme from '@marigold/theme-b2b';
 import coreTheme from '@marigold/theme-core';
 
+//import unicornTheme from '@marigold/theme-unicorn';
+
 import '../../themes/theme-unicorn/src/index.css';
 
 // Helpers
