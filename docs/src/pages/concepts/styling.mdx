@@ -397,3 +397,5 @@ const styles = useComponentStyles(
   { parts: ['table', 'header', 'row', 'cell'] }
 );
 ```
+
+Generating these styles once will lead to ress runtime overhead. They can be passed down via context or prop drilling.
