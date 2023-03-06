@@ -6,7 +6,6 @@ import { StoryFn } from '@storybook/react';
 import { Box, MarigoldProvider } from '@marigold/components';
 import b2bTheme from '@marigold/theme-b2b';
 import coreTheme from '@marigold/theme-core';
-import unicornTheme from '@marigold/theme-unicorn';
 
 import '../../themes/theme-unicorn/src/index.css';
 
@@ -15,7 +14,7 @@ import '../../themes/theme-unicorn/src/index.css';
 const THEME = {
   b2b: b2bTheme,
   core: coreTheme,
-  unicorn: unicornTheme,
+  unicorn: coreTheme,
 };
 
 type ThemeNames = keyof typeof THEME;

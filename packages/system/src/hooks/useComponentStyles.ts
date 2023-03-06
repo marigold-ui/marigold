@@ -105,8 +105,7 @@ export function useComponentStyles(
   const getPath = path.resolve(process.cwd(), '../themes/**/src/index.js');
 
   console.log(getPath);
-  const componentStyles = get(componentName, content.files[0]);
-  console.log('Hallo hier', content.files[0], componentStyles);
+  const componentStyles = get(theme, componentName);
 
   // Store styles in ref to prevent re-computation
   const stylesRef = useRef({});
