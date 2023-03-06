@@ -3,28 +3,18 @@ import type { Theme } from '@marigold/components';
 export const ListBox: Theme['components']['ListBox'] = {
   base: {
     container: {
+      mt: 1,
+
       fontSize: 'xxsmall',
       background: 'gray00',
 
-      px: 'xxsmall',
-      pb: 'xxsmall',
-
-      borderTop: 'none',
-      borderRight: '1px solid',
-      borderLeft: '1px solid',
-      borderBottom: '1px solid',
-      borderBottomRightRadius: '2px',
-      borderBottomLeftRadius: '2px',
+      border: '1px solid',
+      borderRadius: 2,
       borderColor: '#aaa',
 
       '&:error': {
         background: 'gray00',
-        borderTop: 'none',
-        borderRight: '1px solid',
-        borderLeft: '1px solid',
-        borderBottom: '1px solid',
-        borderBottomRightRadius: '2px',
-        borderBottomLeftRadius: '2px',
+        border: '1px solid',
         borderColor: 'error',
       },
     },
@@ -69,7 +59,10 @@ export const ListBox: Theme['components']['ListBox'] = {
         color: 'gray40',
       },
       '&:hover': {
-        bg: 'blue60',
+        color: 'gray00',
+        bg: '	hsl(217, 67%, 56%)',
+        backgroundImage:
+          'linear-gradient(hsl(217, 67%, 65%) 20%, hsl(217, 67%, 75%) 90%)',
       },
     },
   },

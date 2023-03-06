@@ -1,6 +1,7 @@
 import * as Badge from './Badge.style';
 import * as Button from './Button.style';
 import * as Card from './Card.style';
+export * from './Autocomplete.style';
 export * from './Badge.style';
 export * from './Checkbox.style';
 export * from './Dialog.style';
