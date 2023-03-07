@@ -9,7 +9,7 @@ import { twMerge } from 'tailwind-merge';
 import {
   Box,
   ThemeExtension,
-  useComponentStylesNEW,
+  useComponentStyles,
   useStateProps,
 } from '@marigold/system';
 import { HtmlProps, PolymorphicComponent, PropsOf } from '@marigold/types';
@@ -76,7 +76,7 @@ export const Button = forwardRef(
 
     //  const styles = useComponentStyles('Button', { variant, size });
 
-    const classes = useComponentStylesNEW('Button', {
+    const classes = useComponentStyles('Button', {
       variant: variant,
       // size: size,
     });

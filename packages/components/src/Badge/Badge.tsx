@@ -19,7 +19,9 @@ export interface BadgeProps extends HtmlProps<'div'> {
 // Component
 // ---------------
 export const Badge = ({ variant, size, children, ...props }: BadgeProps) => {
-  const classNames = useComponentStylessss();
+  const classNames = useComponentStylessss('Badge');
+
+  console.log(classNames);
 
   return (
     <Box {...props} className={classNames}>

@@ -5,12 +5,10 @@ import isEqual from 'react-fast-compare';
 import { CSSObject } from '../types';
 import { useTheme } from './useTheme';
 
-import { tv } from 'tailwind-variants';
 import { twMerge } from 'tailwind-merge';
 import path from 'path';
 
-import badge from '../themes/theme-unicorn/src/components/';
-import * as com from '../../../../themes/theme-unicorn/src/components';
+import * as theme from 'themes/theme-unicorn/src/index';
 
 // Types
 // ---------------
@@ -46,31 +44,6 @@ export interface ComponentStylesProps {
 
 export type ComponentStyleParts<Parts extends string[]> = {
   [P in Parts[number]]: CSSObject;
-};
-
-export const useComponentStylesNEW = (
-  component: string,
-  options: { variant: any }
-) => {
-  // const theme => in b2b gibt es die theme so wie früher aus, in unicorn aber ganze config
-  // const { theme } => in unicorm correct but without the content part
-  const { theme } = useTheme();
-
-  console.log('grrrr', theme);
-  let { variants, ...styles } = tv(theme.components[component]);
-
-  const baseStyle = styles.base as any;
-
-  if (variants) {
-    let classes = {
-      baseStyle,
-      // variant: (variants as any)['variant'][options.variant],
-      //size: (variants as any)['size'][options.size],
-    };
-
-    return classes;
-  }
-  return baseStyle;
 };
 
 export function useStyles(componentName: string): any;
@@ -136,11 +109,14 @@ export function useComponentStyles(
 
 // wie krieg ich hier die den ganzen bums rein
 
-export const useComponentStylessss = () => {
-  const baseStyle = com.badge.base;
-  const variants = com.badge.variants;
-  console.log(baseStyle, variants);
+export const useComponentStylessss = (componentName: string) => {
+  //const theme = useTheme();
+  //console.log(theme);
+
+  console.log(theme);
+  const baseStyle = theme.Badge.base;
+  const variants = theme.Badge.variants;
+
   const classNames = twMerge(baseStyle, variants.info);
-  console.log(classNames);
   return classNames;
 };

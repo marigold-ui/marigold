@@ -1,24 +1,31 @@
 import React, { ReactNode, useContext } from 'react';
 import { Theme } from '../types';
 
+import * as unicorn from 'themes/theme-unicorn/src/index';
+
+const themes = {
+  unicorn: unicorn,
+};
+
 /**
  * @internal
  */
-export const __defaultTheme: Theme = {};
+export const __defaultTheme = {};
 
-const Context = React.createContext<any>(__defaultTheme);
+const Context = React.createContext(themes);
 
 export interface ThemeProviderProps {
-  theme: any;
+  theme: typeof themes;
   children: ReactNode;
 }
 export const useTheme = () => {
   const theme = useContext(Context);
 
+  console.log('context', theme);
   return theme;
 };
 
-export const ThemeProvider = ({ children, theme }: any) => {
+export const ThemeProvider = ({ children, theme }: ThemeProviderProps) => {
   return <Context.Provider value={theme}>{children}</Context.Provider>;
 };
 
