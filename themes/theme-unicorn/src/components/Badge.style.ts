@@ -1,6 +1,6 @@
 import { tv } from 'tailwind-variants';
 
-export const badge = tv({
+export const Badge = tv({
   base: 'border-none borderRadius-8px lineHeight-48px px-large',
   variants: {
     info: 'purple10 bg-purple70',

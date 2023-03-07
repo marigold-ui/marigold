@@ -9,7 +9,8 @@ import coreTheme from '@marigold/theme-core';
 
 //import unicornTheme from '@marigold/theme-unicorn';
 
-import '../../themes/theme-unicorn/dist/index.css';
+import '@marigold/theme-unicorn/dist/index.css';
+//import '../../themes/theme-unicorn/dist/index.css';
 
 // Helpers
 // ---------------
