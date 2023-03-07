@@ -1,7 +1,7 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import path from 'node:path';
 import { sync as findUpSync } from 'find-up';
-import { mergeConfig } from 'vite';
+import { mergeConfig, optimizeDeps } from 'vite';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 const parent = path.resolve(__dirname, '..');
