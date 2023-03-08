@@ -9,7 +9,7 @@ import coreTheme from '@marigold/theme-core';
 
 //import unicornTheme from '@marigold/theme-unicorn';
 
-import '@marigold/theme-unicorn/dist/index.css';
+import '@marigold/theme-unicorn/index.css';
 //import '../../themes/theme-unicorn/dist/index.css';
 
 // Helpers
@@ -71,69 +71,69 @@ export const parameters = {
   },
 };
 
-// // Decorators
-// // ---------------
-// export const decorators = [
-//   (Story: StoryFn, { globals, parameters }: any) => {
-//     // We do this since in a stacked context there is no global normalization otherwhise
-//     const globalTheme = {
-//       root: {
-//         body: {
-//           fontFamily: 'Inter',
-//         },
-//       },
-//     };
+// Decorators
+// ---------------
+export const decorators = [
+  (Story: StoryFn, { globals, parameters }: any) => {
+    // We do this since in a stacked context there is no global normalization otherwhise
+    const globalTheme = {
+      root: {
+        body: {
+          fontFamily: 'Inter',
+        },
+      },
+    };
 
-//     const theme = isChromatic()
-//       ? parameters.theme || 'stacked'
-//       : globals.theme || parameters.theme || 'b2b';
+    const theme = isChromatic()
+      ? parameters.theme || 'stacked'
+      : globals.theme || parameters.theme || 'b2b';
 
-//     switch (theme) {
-//       case 'stacked': {
-//         return (
-//           <MarigoldProvider theme={globalTheme}>
-//             {Object.keys(THEME).map(key => (
-//               <Frame key={key} id={key} title={`Theme "${key}"`}>
-//                 <MarigoldProvider
-//                   theme={THEME[key as ThemeNames]}
-//                   selector={`#${key}`}
-//                 >
-//                   <Story />
-//                 </MarigoldProvider>
-//               </Frame>
-//             ))}
-//           </MarigoldProvider>
-//         );
-//       }
-//       default: {
-//         return (
-//           <MarigoldProvider theme={THEME[theme as ThemeNames]}>
-//             <div style={{ height: '900px' }}>
-//               <Story />
-//             </div>
-//           </MarigoldProvider>
-//         );
-//       }
-//     }
-//   },
-// ];
+    switch (theme) {
+      case 'stacked': {
+        return (
+          <MarigoldProvider theme={globalTheme}>
+            {Object.keys(THEME).map(key => (
+              <Frame key={key} id={key} title={`Theme "${key}"`}>
+                <MarigoldProvider
+                  theme={THEME[key as ThemeNames]}
+                  selector={`#${key}`}
+                >
+                  <Story />
+                </MarigoldProvider>
+              </Frame>
+            ))}
+          </MarigoldProvider>
+        );
+      }
+      default: {
+        return (
+          <MarigoldProvider theme={THEME[theme as ThemeNames]}>
+            <div style={{ height: '900px' }}>
+              <Story />
+            </div>
+          </MarigoldProvider>
+        );
+      }
+    }
+  },
+];
 
-// // Global Types
-// // ---------------
-// export const globalTypes = {
-//   // Add theme selector to toolbar
-//   theme: {
-//     name: 'Theme',
-//     description: 'Global theme for components',
-//     toolbar: {
-//       icon: 'paintbrush',
-//       items: [
-//         ...Object.keys(THEME).map(key => ({
-//           value: key,
-//           title: key,
-//         })),
-//         { value: 'stacked', title: 'stacked' },
-//       ],
-//     },
-//   },
-// };
+// Global Types
+// ---------------
+export const globalTypes = {
+  // Add theme selector to toolbar
+  theme: {
+    name: 'Theme',
+    description: 'Global theme for components',
+    toolbar: {
+      icon: 'paintbrush',
+      items: [
+        ...Object.keys(THEME).map(key => ({
+          value: key,
+          title: key,
+        })),
+        { value: 'stacked', title: 'stacked' },
+      ],
+    },
+  },
+};

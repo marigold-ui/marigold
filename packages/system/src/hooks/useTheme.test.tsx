@@ -1,38 +1,32 @@
 import React, { ReactNode } from 'react';
-import { jsx } from '@emotion/react';
 import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 
-import { ThemeProvider, useTheme } from './__useTheme';
+import { ThemeProvider, useTheme } from './useTheme';
+import { tv } from 'tailwind-variants';
 
 // Setup
 // ---------------
+const button = tv({
+  base: 'border-none p-1',
+  variants: {
+    variant: {
+      primary: 'bg-primary-700',
+    },
+  },
+});
+
 const theme = {
-  colors: {
-    primary: 'hotpink',
-    black: '#000',
-  },
-  space: {
-    none: 0,
-    small: 16,
-    medium: 24,
-    large: 32,
-  },
-  text: {
-    body: {
-      fontSize: 1,
-      color: 'black',
-    },
-    heading: {
-      fontSize: 3,
-      color: 'primary',
-    },
-  },
-  button: {
-    __default: {
-      fontSize: 16,
-      border: 'none',
-    },
+  name: 'test',
+  components: {
+    button: tv({
+      base: 'border-none p-1',
+      variants: {
+        variant: {
+          primary: 'bg-primary-700',
+        },
+      },
+    }),
   },
 };
 
@@ -42,35 +36,7 @@ const wrapper = ({ children }: { children?: ReactNode }) => (
 
 test('returns the theme', () => {
   const { result } = renderHook(() => useTheme(), { wrapper });
-  expect(result.current.theme).toEqual(theme);
-});
-
-test('returns a "css" function', () => {
-  const { result } = renderHook(() => useTheme(), { wrapper });
-  expect(result.current.css).toEqual(expect.any(Function));
-});
-
-test('transpile style object to css object', () => {
-  const { result } = renderHook(() => useTheme(), { wrapper });
-  const css = result.current.css;
-
-  expect(css({ p: 'small' })).toMatchInlineSnapshot(`
-    {
-      "padding": 16,
-    }
-  `);
-  expect(css({ color: 'primary', p: 'large' })).toMatchInlineSnapshot(`
-    {
-      "color": "hotpink",
-      "padding": 32,
-    }
-  `);
-  expect(css({ variant: 'text.body' })).toMatchInlineSnapshot(`
-    {
-      "color": "#000",
-      "fontSize": 14,
-    }
-  `);
+  expect(result.current).toEqual(theme.components);
 });
 
 test('get value from theme', () => {
@@ -89,20 +55,30 @@ test('get value from theme', () => {
 
 test('themes can be cascaded', () => {
   const outerTheme = {
-    colors: {
-      primary: 'coral',
+    components: {
+      button,
+    },
+    color: {
+      primary: 'bg-blue-700',
     },
   };
 
   const innerTheme = {
-    colors: {
-      primary: 'gainsboro',
+    components: {
+      button,
+    },
+    color: {
+      primary: 'bg-blue-500',
     },
   };
 
   const Theme = ({ testId }: { testId: string }) => {
-    const { theme } = useTheme();
-    return <div data-testid={testId}>{JSON.stringify(theme, null, 2)}</div>;
+    const { components, color } = useTheme();
+    return (
+      <div data-testid={testId}>
+        {JSON.stringify({ components, color }, null, 2)}
+      </div>
+    );
   };
 
   render(
@@ -133,11 +109,4 @@ test('themes can be cascaded', () => {
       }
     }"
   `);
-});
-
-test('theme is passed down to emotion', () => {
-  const css = jest.fn().mockReturnValue({});
-  render(<ThemeProvider theme={theme}>{jsx('div', { css })}</ThemeProvider>);
-
-  expect(css).toHaveBeenCalledWith(theme);
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { CSSObject, Global as EmotionGlobal } from '@emotion/react';
 
-import { useTheme } from '../../hooks/__useTheme';
+import { useTheme } from '../../hooks/useTheme';
 import * as normalize from './normalize';
 
 // Helper
@@ -39,8 +39,8 @@ export type GlobalProps = {
 // Component
 // ---------------
 export const Global = ({ normalizeDocument = true, selector }: GlobalProps) => {
-  const { css, theme } = useTheme();
-  const rootStyles = css(theme?.root || {});
+  const { theme } = useTheme();
+  const rootStyles = theme?.root || {};
 
   const styles = [
     normalizeDocument ? normalize.document : {},

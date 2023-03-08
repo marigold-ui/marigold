@@ -13,7 +13,7 @@ import {
 // Props
 // ---------------
 export interface MarigoldProviderProps<T extends Theme>
-  extends ThemeProviderProps,
+  extends ThemeProviderProps<T>,
     GlobalProps {}
 
 // Provider
@@ -34,6 +34,7 @@ export function MarigoldProvider<T extends Theme>({
     );
   }
 
+  console.log('provider', theme);
   return (
     <ThemeProvider theme={theme}>
       <Global

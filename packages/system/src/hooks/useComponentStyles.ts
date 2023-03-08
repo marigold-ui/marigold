@@ -8,7 +8,7 @@ import { useTheme } from './useTheme';
 import { twMerge } from 'tailwind-merge';
 import path from 'path';
 
-import * as theme from 'themes/theme-unicorn/src/index';
+import theme from 'themes/theme-unicorn/src/index';
 
 // Types
 // ---------------
@@ -107,16 +107,24 @@ export function useComponentStyles(
   return stylesRef.current;
 }
 
-// wie krieg ich hier die den ganzen bums rein
+/**
+ * useComponentStyles({ component: 'Button', variant, size, slots: ['table', 'cell'] })
+ */
 
-export const useComponentStylessss = (componentName: string) => {
-  //const theme = useTheme();
-  //console.log(theme);
+export const useComponentStylessss = (
+  componentName: string,
+  vas: any,
+  slots?: string[]
+) => {
+  // const ctx = useTheme();
+  console.log(theme.components[componentName]);
+  const classNames = theme.components[componentName]?.({ variant: 'dark' });
 
-  console.log(theme);
-  const baseStyle = theme.Badge.base;
-  const variants = theme.Badge.variants;
+  // console.log('themes', themes);
 
-  const classNames = twMerge(baseStyle, variants.info);
-  return classNames;
+  // const baseStyle = theme.Badge.base;
+  // const variants = theme.Badge.variants;
+
+  // const classNames = twMerge(baseStyle, variants.info);
+  return classNames as string;
 };

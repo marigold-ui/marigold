@@ -1,51 +1,37 @@
-import React, { ReactNode, useContext } from 'react';
+import React, { createContext, ReactNode, useContext } from 'react';
+
 import { Theme } from '../types';
-
-import * as unicorn from 'themes/theme-unicorn/src/index';
-
-const themes = {
-  unicorn: unicorn,
-};
 
 /**
  * @internal
  */
-export const __defaultTheme = {};
+export const __defaultTheme: Theme = {
+  name: '',
+  components: {},
+};
 
-const Context = React.createContext(themes);
+const InternalContext = createContext<Theme>(__defaultTheme);
 
-export interface ThemeProviderProps {
-  theme: typeof themes;
-  children: ReactNode;
-}
 export const useTheme = () => {
-  const theme = useContext(Context);
+  const theme = useContext(InternalContext);
 
-  console.log('context', theme);
   return theme;
 };
 
-export const ThemeProvider = ({ children, theme }: ThemeProviderProps) => {
-  return <Context.Provider value={theme}>{children}</Context.Provider>;
-};
+export interface ThemeProviderProps<T extends Theme> {
+  theme: T;
+  children: ReactNode;
+}
 
-// const InternalContext = createContext<any>(__defaultTheme);
-
-// export const useTheme = () => {
-//   const theme = useContext(InternalContext);
-
-//   console.log('usetheme', theme);
-//   return theme;
-// };
-
-// export function ThemeProvider<T extends Theme>({
-//   theme,
-//   children,
-// }: ThemeProviderProps<T>) {
-//   console.log('themeprovider', theme);
-//   return (
-//     <InternalContext.Provider value={theme}>
-//       {children}
-//     </InternalContext.Provider>
-//   );
-// }
+export function ThemeProvider<T extends Theme>({
+  theme,
+  children,
+}: ThemeProviderProps<T>) {
+  return (
+    <div data-theme="unicorn">
+      <InternalContext.Provider value={theme}>
+        {children}
+      </InternalContext.Provider>
+    </div>
+  );
+}
