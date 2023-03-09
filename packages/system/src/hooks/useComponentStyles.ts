@@ -5,9 +5,6 @@ import isEqual from 'react-fast-compare';
 import { CSSObject } from '../types';
 import { useTheme } from './useTheme';
 
-import { twMerge } from 'tailwind-merge';
-import path from 'path';
-
 import theme from 'themes/theme-unicorn/src/index';
 
 // Types
@@ -46,7 +43,41 @@ export type ComponentStyleParts<Parts extends string[]> = {
   [P in Parts[number]]: CSSObject;
 };
 
-export function useStyles(componentName: string): any;
+export const useComponentStylesFromTV = (
+  componentName: string,
+  variant?: string,
+  size?: string,
+  slots?: string[]
+) => {
+  console.log(theme.components);
+
+  const classNames = theme.components[componentName];
+  console.log('classNAMES', classNames);
+  return classNames as string;
+};
+
+/**
+ * useComponentStyles({ component: 'Button', variant, size, slots: ['table', 'cell'] })
+ */
+
+export const useComponentStylessss = (
+  componentName: string,
+  vas: any,
+  slots?: string[]
+) => {
+  // const ctx = useTheme();
+  console.log(theme.components[componentName]);
+  const classNames = theme.components[componentName]?.({ variant: 'dark' });
+
+  // console.log('themes', themes);
+
+  // const baseStyle = theme.Badge.base;
+  // const variants = theme.Badge.variants;
+
+  // const classNames = twMerge(baseStyle, variants.info);
+  return classNames as string;
+};
+
 export function useComponentStyles(
   componentName: string,
   props?: ComponentStylesProps,
@@ -73,12 +104,8 @@ export function useComponentStyles(
   props: ComponentStylesProps = {},
   options: any = {}
 ) {
-  const { theme, content } = useTheme();
-
-  const getPath = path.resolve(process.cwd(), '../themes/**/src/index.js');
-
-  console.log(getPath);
-  const componentStyles = get(theme, componentName);
+  const { theme } = useTheme();
+  const componentStyles = get(theme, `components.${componentName}`);
 
   // Store styles in ref to prevent re-computation
   const stylesRef = useRef({});
@@ -106,25 +133,3 @@ export function useComponentStyles(
 
   return stylesRef.current;
 }
-
-/**
- * useComponentStyles({ component: 'Button', variant, size, slots: ['table', 'cell'] })
- */
-
-export const useComponentStylessss = (
-  componentName: string,
-  vas: any,
-  slots?: string[]
-) => {
-  // const ctx = useTheme();
-  console.log(theme.components[componentName]);
-  const classNames = theme.components[componentName]?.({ variant: 'dark' });
-
-  // console.log('themes', themes);
-
-  // const baseStyle = theme.Badge.base;
-  // const variants = theme.Badge.variants;
-
-  // const classNames = twMerge(baseStyle, variants.info);
-  return classNames as string;
-};
