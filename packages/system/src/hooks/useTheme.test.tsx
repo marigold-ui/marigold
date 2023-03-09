@@ -76,11 +76,10 @@ test('themes can be cascaded', () => {
   const Theme = ({ testId }: { testId: string }) => {
     const theme = useTheme();
     const button = theme.components.button;
-    const className = button();
-    console.log('####', className);
+    const className = button({ variant: 'primary' });
 
     return (
-      <div data-testid={testId} className={button()}>
+      <div data-testid={testId} className={className}>
         {JSON.stringify({ theme }, null, 2)}
       </div>
     );
@@ -100,22 +99,10 @@ test('themes can be cascaded', () => {
   const outer = screen.getByTestId('outer');
   const inner = screen.getByTestId('inner');
 
-  console.log(outerTheme, outer);
+  console.log(outer.className);
 
-  expect(outer.innerHTML).toMatchInlineSnapshot(`
-    "{
-      "theme": {
-        "name": "outer",
-        "components": {}
-      }
-    }"
-  `);
-  expect(inner.innerHTML).toMatchInlineSnapshot(`
-    "{
-      "theme": {
-        "name": "inner",
-        "components": {}
-      }
-    }"
-  `);
+  expect(outer.className).toMatchInlineSnapshot(
+    `"border-none p-1 bg-primary-700"`
+  );
+  expect(inner.className).toMatchInlineSnapshot(`"p-3 bg-blue-500"`);
 });
