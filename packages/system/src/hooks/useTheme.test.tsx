@@ -3,18 +3,11 @@ import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 
 import { ThemeProvider, useTheme } from './useTheme';
-import { tv } from 'tailwind-variants';
+import { tv, VariantProps } from 'tailwind-variants';
+import { Theme } from '../types';
 
 // Setup
 // ---------------
-const button = tv({
-  base: 'border-none p-1',
-  variants: {
-    variant: {
-      primary: 'bg-primary-700',
-    },
-  },
-});
 
 const theme = {
   name: 'test',
@@ -24,6 +17,7 @@ const theme = {
       variants: {
         variant: {
           primary: 'bg-primary-700',
+          secondary: 'bg-secondary-700',
         },
       },
     }),
@@ -36,47 +30,58 @@ const wrapper = ({ children }: { children?: ReactNode }) => (
 
 test('returns the theme', () => {
   const { result } = renderHook(() => useTheme(), { wrapper });
-  expect(result.current).toEqual(theme.components);
+  expect(result.current).toEqual(theme);
 });
 
-test('get value from theme', () => {
+test('values from theme are given correctly', () => {
   const { result } = renderHook(() => useTheme(), { wrapper });
-  const get = result.current.get;
 
-  expect(get('colors.primary')).toEqual('hotpink');
-  expect(get('space.small')).toEqual(16);
-  expect(get('button')).toMatchInlineSnapshot(`
-    {
-      "border": "none",
-      "fontSize": 16,
-    }
-  `);
+  const button = result.current.components.button;
+
+  expect(button()).toEqual('border-none p-1');
+  expect(button({ variant: 'primary' })).toEqual(
+    'border-none p-1 bg-primary-700'
+  );
 });
 
 test('themes can be cascaded', () => {
   const outerTheme = {
+    name: 'outer',
     components: {
-      button,
-    },
-    color: {
-      primary: 'bg-blue-700',
+      button: tv({
+        base: 'border-none p-1 bg-blue-100',
+        variants: {
+          variant: {
+            primary: 'bg-primary-700',
+          },
+        },
+      }),
     },
   };
 
   const innerTheme = {
+    name: 'inner',
     components: {
-      button,
-    },
-    color: {
-      primary: 'bg-blue-500',
+      button: tv({
+        base: 'p-3 bg-blue-500',
+        variants: {
+          variant: {
+            secondary: 'bg-secondary-700',
+          },
+        },
+      }),
     },
   };
 
   const Theme = ({ testId }: { testId: string }) => {
-    const { components, color } = useTheme();
+    const theme = useTheme();
+    const button = theme.components.button;
+    const className = button();
+    console.log('####', className);
+
     return (
-      <div data-testid={testId}>
-        {JSON.stringify({ components, color }, null, 2)}
+      <div data-testid={testId} className={button()}>
+        {JSON.stringify({ theme }, null, 2)}
       </div>
     );
   };
@@ -95,17 +100,21 @@ test('themes can be cascaded', () => {
   const outer = screen.getByTestId('outer');
   const inner = screen.getByTestId('inner');
 
+  console.log(outerTheme, outer);
+
   expect(outer.innerHTML).toMatchInlineSnapshot(`
     "{
-      "colors": {
-        "primary": "coral"
+      "theme": {
+        "name": "outer",
+        "components": {}
       }
     }"
   `);
   expect(inner.innerHTML).toMatchInlineSnapshot(`
     "{
-      "colors": {
-        "primary": "gainsboro"
+      "theme": {
+        "name": "inner",
+        "components": {}
       }
     }"
   `);
