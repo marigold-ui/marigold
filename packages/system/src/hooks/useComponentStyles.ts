@@ -50,24 +50,6 @@ export const useComponentStylesFromTV = (
  * useComponentStyles({ component: 'Button', variant, size, slots: ['table', 'cell'] })
  */
 
-export const useComponentStylessss = (
-  componentName: string,
-  vas: any,
-  slots?: string[]
-) => {
-  // const ctx = useTheme();
-  console.log(theme.components[componentName]);
-  const classNames = theme.components[componentName]?.({ variant: 'dark' });
-
-  // console.log('themes', themes);
-
-  // const baseStyle = theme.Badge.base;
-  // const variants = theme.Badge.variants;
-
-  // const classNames = twMerge(baseStyle, variants.info);
-  return classNames as string;
-};
-
 export function useComponentStyles(
   componentName: string,
   props?: ComponentStylesProps,
