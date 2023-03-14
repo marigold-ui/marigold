@@ -1,10 +1,6 @@
 import React from 'react';
 import { HtmlProps } from '@marigold/types';
-import {
-  ThemeExtension,
-  useComponentStylesFromTV,
-  useComponentStylessss,
-} from '@marigold/system';
+import { ThemeExtension, useComponentStylesFromTV } from '@marigold/system';
 
 import { Box } from '../Box';
 
@@ -23,10 +19,7 @@ export interface BadgeProps extends HtmlProps<'div'> {
 // Component
 // ---------------
 export const Badge = ({ variant, size, children, ...props }: BadgeProps) => {
-  const classNames = useComponentStylesFromTV('Badge', variant);
-
-  console.log('variant', variant);
-  console.log(classNames);
+  const classNames = useComponentStylesFromTV('Badge', variant, size);
 
   return (
     <Box {...props} className={classNames}>

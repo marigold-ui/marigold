@@ -1,8 +1,3 @@
-import merge from 'deepmerge';
-import { useRef } from 'react';
-import isEqual from 'react-fast-compare';
-
-import { CSSObject } from '../types';
 import { useTheme } from './useTheme';
 
 import theme from 'themes/theme-unicorn/src/index';
@@ -34,25 +29,20 @@ const get = (obj: object, path: string, fallback?: any): any => {
 
 // Hook
 // ---------------
-export interface ComponentStylesProps {
-  variant?: string;
-  size?: string;
-}
 
-export type ComponentStyleParts<Parts extends string[]> = {
-  [P in Parts[number]]: CSSObject;
-};
-
+// this is the new hook
 export const useComponentStylesFromTV = (
   componentName: string,
   variant?: string,
   size?: string,
   slots?: string[]
 ) => {
-  console.log(theme.components);
+  const classNames = (theme.components as IndexObject)[componentName]?.({
+    variant: variant,
+    size: size,
+    slots: slots,
+  });
 
-  const classNames = theme.components[componentName];
-  console.log('classNAMES', classNames);
   return classNames as string;
 };
 

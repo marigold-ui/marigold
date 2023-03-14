@@ -30,11 +30,12 @@ const meta = {
   },
   args: {
     children: 'new',
-    variant: 'dark',
+    variant: 'info',
+    size: 'md',
   },
 } satisfies Meta<typeof Badge>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = { render: args => <Badge {...args} /> };
+export const Basic: Story = { render: args => <Badge {...args} size="lg" /> };

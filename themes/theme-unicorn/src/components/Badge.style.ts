@@ -7,5 +7,10 @@ export const Badge = tv({
       info: 'bg-blue-500 hover:bg-blue-700',
       dark: 'bg-red-500 hover:bg-red-700',
     },
+    size: {
+      sm: 'text-sm',
+      md: 'text-base',
+      lg: 'px-4 py-3 text-lg',
+    },
   },
 });
