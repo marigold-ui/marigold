@@ -1,12 +1,8 @@
 import React from 'react';
 import { HtmlProps } from '@marigold/types';
-import { ThemeExtension, useComponentStylesFromTV } from '@marigold/system';
+import { useComponentStylesFromTV } from '@marigold/system';
 
 import { Box } from '../Box';
-
-// Theme Extension
-// ---------------
-export interface BadgeThemeExtension extends ThemeExtension<'Badge'> {}
 
 // Props
 // ---------------
