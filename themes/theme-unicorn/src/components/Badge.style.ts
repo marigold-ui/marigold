@@ -1,16 +1,11 @@
 import { tv } from 'tailwind-variants';
 
 export const Badge = tv({
-  base: 'border-none borderRadius-8px lineHeight-48px px-large ',
+  base: 'inline-flex align-middle text-base rounded-3xl whitespace-nowrap py-4 px-12',
   variants: {
     variant: {
-      info: 'bg-blue-500 hover:bg-blue-700',
-      dark: 'bg-red-500 hover:bg-red-700',
-    },
-    size: {
-      sm: 'text-sm',
-      md: 'text-base',
-      lg: 'px-4 py-3 text-lg',
+      info: 'text-purple-100 bg-purple-700 hover:bg-purple-800',
+      dark: 'text-gray-100 bg-gray-700 hover:bg-gray-800',
     },
   },
 });

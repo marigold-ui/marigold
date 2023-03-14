@@ -1,6 +1,7 @@
 import { useTheme } from './useTheme';
 
 import theme from 'themes/theme-unicorn/src/index';
+import { CSSObject } from '@theme-ui/css';
 
 // Types
 // ---------------
@@ -52,7 +53,7 @@ export const useComponentStylesFromTV = (
 
 export function useComponentStyles(
   componentName: string,
-  props?: ComponentStylesProps,
+  props?: any,
   options?: {
     parts: never;
   }
@@ -63,7 +64,7 @@ export function useComponentStyles<
   Parts extends ReadonlyArray<Part>
 >(
   componentName: string,
-  props?: ComponentStylesProps,
+  props?: any,
   options?: {
     parts: Parts;
   }
@@ -71,9 +72,11 @@ export function useComponentStyles<
   [P in Parts[number]]: CSSObject;
 };
 
+// if I remove this - all breaks
+
 export function useComponentStyles(
   componentName: string,
-  props: ComponentStylesProps = {},
+  props: any = {},
   options: any = {}
 ) {
   const { theme } = useTheme();
