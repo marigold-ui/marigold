@@ -406,7 +406,7 @@ test('radio accepts helptext', () => {
     <ThemeProvider theme={theme}>
       <Radio.Group label="With Label" description="This is my Helptext.">
         <Radio value="1" data-testid="radio-1">
-          Option 1π
+          Option 1
         </Radio>
         <Radio value="2" data-testid="radio-2">
           Option 2
@@ -426,7 +426,7 @@ test('radio accepts error message', () => {
         errorMessage="This is my error message"
       >
         <Radio value="1" data-testid="radio-1">
-          Option 1π
+          Option 1
         </Radio>
         <Radio value="2" data-testid="radio-2">
           Option 2

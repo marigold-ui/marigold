@@ -23,7 +23,7 @@ export interface BadgeProps extends HtmlProps<'div'> {
 // Component
 // ---------------
 export const Badge = ({ variant, size, children, ...props }: BadgeProps) => {
-  const classNames = useComponentStylesFromTV('Badge', { variant, size });
+  const classNames = useComponentStylesFromTV('Badge', variant);
 
   console.log('variant', variant);
   console.log(classNames);
