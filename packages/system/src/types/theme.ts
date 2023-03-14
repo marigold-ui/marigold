@@ -1,11 +1,4 @@
-import {
-  TVProps,
-  VariantProps,
-  TVReturnType,
-  TV,
-  CxReturn,
-  ClassProp,
-} from 'tailwind-variants';
+import { TVReturnType } from 'tailwind-variants';
 
 /**
  * This Typescript utility transform a list of slots into a list of {slot: classes}
@@ -24,8 +17,6 @@ export type ThemeClass = Record<string, ClassValue>;
 export type Theme = {
   name: string;
   components: {
-    // [key: string]: TVReturnType<any, any, any, any, any>;
-
     [key: string]: TVReturnType<any, any, any, any, any>;
   };
 };

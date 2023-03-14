@@ -3,132 +3,30 @@ import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { ThemeProvider } from './useTheme';
 
-import { useComponentStyles } from './useComponentStyles';
+import { useComponentStylesFromTV } from './useComponentStyles';
+import { tv } from 'tailwind-variants';
 import { Box } from '../components';
 
 // Setup
 // ---------------
+
 const theme = {
-  /**
-   * Design tokens will not applied in most tests!
-   */
-  colors: {
-    primary: '#0070f3',
-    secondary: '#ff4081',
-    white: '#f8f9fa',
-    black: '#212529',
-    grey: '#adb5bd',
-    blue: '#228be6',
-    red: '#c92a2a',
-    pink: '#d6336c',
-  },
-  fontSizes: {
-    'small-1': '12px',
-    'small-2': '14px',
-    'medium-1': '16px',
-    'medium-2': '18px',
-    'large-1': '20px',
-  },
-  space: {
-    none: 0,
-    'small-1': 4,
-    'medium-1': 8,
-    'large-1': 16,
-  },
-  sizes: {
-    none: 0,
-    'small-1': 16,
-    'medium-1': 32,
-    'large-1': 48,
-  },
+  name: 'test',
   components: {
-    // Component without parts
-    Button: {
-      base: {
-        appearance: 'none',
-        bg: 'white',
-      },
-      size: {
-        small: {
-          height: 'small-1',
-        },
-        medium: {
-          height: 'medium-1',
-        },
-        large: {
-          height: 'large-1',
+    button: tv({
+      base: 'border-none p-1',
+      variants: {
+        variant: {
+          primary: 'bg-primary-700',
+          secondary: 'bg-secondary-700',
         },
       },
-      variant: {
-        primary: {
-          color: 'primary',
-        },
-        secondary: {
-          color: 'secondary',
-        },
+    }),
+    checkbox: tv({
+      slots: {
+        base: 'inline align-middle gap-4',
       },
-    },
-    // Component with multiple parts
-    Checkbox: {
-      base: {
-        container: {
-          display: 'flex',
-          alignItems: 'center',
-          gap: 'small-1',
-        },
-        icon: {
-          height: 'small-1',
-          width: 'small-1',
-        },
-        label: {
-          color: 'black',
-          fontSize: 'small-2',
-        },
-      },
-      size: {
-        small: {
-          container: {
-            p: 'small-1',
-          },
-          icon: {
-            height: 'small-1',
-            width: 'small-1',
-          },
-        },
-        medium: {
-          container: {
-            p: 'medium-1',
-          },
-          icon: {
-            height: 'medium-1',
-            width: 'medium-1',
-          },
-          label: {
-            fontSize: 'medium-2',
-          },
-        },
-        large: {
-          container: {
-            p: 'large-1',
-          },
-          icon: {
-            height: 'large-1',
-            width: 'large-1',
-          },
-          label: {
-            fontSize: 'large-1',
-          },
-        },
-      },
-      variant: {
-        pink: {
-          label: {
-            color: 'pink',
-          },
-        },
-      },
-    },
-    GotNoBase: {},
+    }),
   },
 };
 
@@ -140,7 +38,9 @@ const wrapper = ({ children }: { children?: ReactNode }) => (
 // ---------------
 describe('smoketests', () => {
   test('works without a theme', () => {
-    const { result } = renderHook(() => useComponentStyles('NotExisting'));
+    const { result } = renderHook(() =>
+      useComponentStylesFromTV('NotExisting')
+    );
     expect(result.current).toEqual({});
   });
 

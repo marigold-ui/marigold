@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useContext } from 'react';
 
-import { Theme, Themes } from '../types';
+import { Theme } from '../types';
 
 /**
  * @internal
