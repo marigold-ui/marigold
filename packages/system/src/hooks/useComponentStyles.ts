@@ -1,7 +1,6 @@
 import { useTheme } from './useTheme';
 
-import theme from 'themes/theme-unicorn/src/index';
-import { CSSObject } from '@theme-ui/css';
+import theme from '@marigold/theme-unicorn';
 
 // Types
 // ---------------
