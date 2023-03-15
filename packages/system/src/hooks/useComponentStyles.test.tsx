@@ -218,14 +218,16 @@ describe('useComponentStyles (complex)', () => {
         wrapper,
       }
     );
-    expect(result.current).toMatchInlineSnapshot(`
-      {
-        "base": [Function],
-        "container": [Function],
-        "icon": [Function],
-        "label": [Function],
-      }
-    `);
+    expect(result.current.base()).toMatchInlineSnapshot(
+      `"inline align-middle gap-4"`
+    );
+    expect(result.current.container()).toMatchInlineSnapshot(
+      `"flex p-2 align-middle"`
+    );
+    expect(result.current.icon()).toMatchInlineSnapshot(`"p-8 w-1"`);
+    expect(result.current.label()).toMatchInlineSnapshot(
+      `"text-sm text-pink-500"`
+    );
   });
 
   test('get size styles for a component (with parts)', () => {
