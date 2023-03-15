@@ -39,10 +39,7 @@ export const useComponentStylesFromTV = (
     slots?: string[];
   }
 ) => {
-  // don't know if this is necessary
-  // if (!(theme.components as IndexObject)[componentName]) {
-  //   return {};
-  // }
+  // if we use alle themes
   const theme = useTheme();
 
   if (!(componentName in (theme.components as IndexObject))) {
@@ -55,7 +52,10 @@ export const useComponentStylesFromTV = (
     slots: options?.slots,
   });
 
-  return classNames as string;
+  console.log(options?.slots);
+  // this gives the slot class
+
+  return classNames;
 };
 
 /**

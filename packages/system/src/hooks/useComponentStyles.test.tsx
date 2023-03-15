@@ -14,7 +14,7 @@ const theme = {
   name: 'test',
   components: {
     Button: tv({
-      base: 'border-none p-1',
+      base: 'border-none p-1 text-black',
       variants: {
         variant: {
           primary: 'bg-primary-700',
@@ -27,9 +27,20 @@ const theme = {
       },
     }),
     Checkbox: tv({
+      base: 'inline align-middle gap-4',
       slots: {
-        base: 'inline align-middle gap-4',
-        container: '',
+        container: 'flex p-2 align-middle',
+        icon: 'p-8 w-1',
+        label: 'text-sm text-pink-500',
+      },
+      variants: {
+        variant: {
+          pink: {
+            container: 'bg-pink-700',
+            label: 'text-white',
+            icon: 'bg-pink-200',
+          },
+        },
       },
     }),
   },
@@ -66,8 +77,10 @@ describe('useComponentStyles (simple)', () => {
     const { result } = renderHook(() => useComponentStylesFromTV('Button'), {
       wrapper,
     });
-    console.log('result', result.current, theme);
-    expect(result.current).toMatchInlineSnapshot(`"border-none p-1"`);
+
+    expect(result.current).toMatchInlineSnapshot(
+      `"border-none p-1 text-black"`
+    );
   });
 
   test('returns empty string if component has no base styles', () => {
@@ -85,7 +98,7 @@ describe('useComponentStyles (simple)', () => {
       }
     );
     expect(view.result.current).toMatchInlineSnapshot(
-      `"border-none p-1 bg-primary-700"`
+      `"border-none p-1 text-black bg-primary-700"`
     );
 
     view = renderHook(
@@ -95,7 +108,7 @@ describe('useComponentStyles (simple)', () => {
       }
     );
     expect(view.result.current).toMatchInlineSnapshot(
-      `"border-none p-1 bg-secondary-700"`
+      `"border-none p-1 text-black bg-secondary-700"`
     );
   });
 
@@ -107,7 +120,9 @@ describe('useComponentStyles (simple)', () => {
         wrapper,
       }
     );
-    expect(result.current).toMatchInlineSnapshot(`"border-none p-1"`);
+    expect(result.current).toMatchInlineSnapshot(
+      `"border-none p-1 text-black"`
+    );
   });
 
   test('base styles are applied together with variant', () => {
@@ -118,7 +133,7 @@ describe('useComponentStyles (simple)', () => {
       }
     );
     expect(result.current).toMatchInlineSnapshot(
-      `"border-none p-1 bg-primary-700"`
+      `"border-none p-1 text-black bg-primary-700"`
     );
   });
 
@@ -129,7 +144,9 @@ describe('useComponentStyles (simple)', () => {
         wrapper,
       }
     );
-    expect(view.result.current).toMatchInlineSnapshot(`"border-none p-4"`);
+    expect(view.result.current).toMatchInlineSnapshot(
+      `"border-none text-black p-4"`
+    );
 
     view = renderHook(
       () => useComponentStylesFromTV('Button', { size: 'medium' }),
@@ -137,7 +154,9 @@ describe('useComponentStyles (simple)', () => {
         wrapper,
       }
     );
-    expect(view.result.current).toMatchInlineSnapshot(`"border-none p-8"`);
+    expect(view.result.current).toMatchInlineSnapshot(
+      `"border-none text-black p-8"`
+    );
   });
 
   test('works if size does not exist', () => {
@@ -147,7 +166,9 @@ describe('useComponentStyles (simple)', () => {
         wrapper,
       }
     );
-    expect(result.current).toMatchInlineSnapshot(`"border-none p-1"`);
+    expect(result.current).toMatchInlineSnapshot(
+      `"border-none p-1 text-black"`
+    );
   });
 
   test('base styles are applied together with size', () => {
@@ -157,7 +178,9 @@ describe('useComponentStyles (simple)', () => {
         wrapper,
       }
     );
-    expect(result.current).toMatchInlineSnapshot(`"border-none p-4"`);
+    expect(result.current).toMatchInlineSnapshot(
+      `"border-none text-black p-4"`
+    );
   });
 });
 
@@ -172,52 +195,35 @@ describe('useComponentStyles (complex)', () => {
         wrapper,
       }
     );
-    expect(result.current).toMatchInlineSnapshot(`
-      {
-        "container": {
-          "alignItems": "center",
-          "display": "flex",
-          "gap": "small-1",
-        },
-        "icon": {
-          "height": "small-1",
-          "width": "small-1",
-        },
-        "label": {
-          "color": "black",
-          "fontSize": "small-2",
-        },
-      }
-    `);
+    expect(result.current.base()).toMatchInlineSnapshot(
+      `"inline align-middle gap-4"`
+    );
+    expect(result.current.container()).toMatchInlineSnapshot(
+      `"flex p-2 align-middle"`
+    );
+    expect(result.current.icon()).toMatchInlineSnapshot(`"p-8 w-1"`);
+    expect(result.current.label()).toMatchInlineSnapshot(
+      `"text-sm text-pink-500"`
+    );
   });
 
   test('get variant styles for a component (with parts)', () => {
     const { result } = renderHook(
       () =>
-        useComponentStyles(
-          'Checkbox',
-          { variant: 'pink' },
-          { parts: ['container', 'icon', 'label'] }
-        ),
+        useComponentStylesFromTV('Checkbox', {
+          variant: 'primary',
+          slots: ['container', 'icon', 'label'],
+        }),
       {
         wrapper,
       }
     );
     expect(result.current).toMatchInlineSnapshot(`
       {
-        "container": {
-          "alignItems": "center",
-          "display": "flex",
-          "gap": "small-1",
-        },
-        "icon": {
-          "height": "small-1",
-          "width": "small-1",
-        },
-        "label": {
-          "color": "pink",
-          "fontSize": "small-2",
-        },
+        "base": [Function],
+        "container": [Function],
+        "icon": [Function],
+        "label": [Function],
       }
     `);
   });
@@ -225,201 +231,162 @@ describe('useComponentStyles (complex)', () => {
   test('get size styles for a component (with parts)', () => {
     const { result } = renderHook(
       () =>
-        useComponentStyles(
-          'Checkbox',
-          { size: 'small' },
-          { parts: ['container', 'icon', 'label'] }
-        ),
+        useComponentStylesFromTV('Checkbox', {
+          size: 'small',
+          slots: ['container', 'icon', 'label'],
+        }),
       {
         wrapper,
       }
     );
-    expect(result.current).toMatchInlineSnapshot(`
-      {
-        "container": {
-          "alignItems": "center",
-          "display": "flex",
-          "gap": "small-1",
-          "p": "small-1",
-        },
-        "icon": {
-          "height": "small-1",
-          "width": "small-1",
-        },
-        "label": {
-          "color": "black",
-          "fontSize": "small-2",
-        },
-      }
-    `);
-  });
 
-  test('returns empty objects if part does not exist', () => {
-    const { result } = renderHook(
-      () =>
-        useComponentStyles(
-          'Checkbox',
-          {},
-          { parts: ['container', 'non-existing-part'] }
-        ),
-      {
-        wrapper,
-      }
+    expect(result.current.base()).toMatchInlineSnapshot(
+      `"inline align-middle gap-4"`
     );
-    expect(result.current['non-existing-part']).toMatchInlineSnapshot(`{}`);
+
+    expect(result.current.container()).toMatchInlineSnapshot(
+      `"flex p-2 align-middle"`
+    );
+
+    expect(result.current.icon()).toMatchInlineSnapshot(`"p-8 w-1"`);
+
+    expect(result.current.label()).toMatchInlineSnapshot(
+      `"text-sm text-pink-500"`
+    );
   });
 
   test('returns only requested parts', () => {
     const { result } = renderHook(
-      () => useComponentStyles('Checkbox', {}, { parts: ['label'] }),
+      () => useComponentStylesFromTV('Checkbox', { slots: ['label'] }),
       {
         wrapper,
       }
     );
-    expect(result.current).toMatchInlineSnapshot(`
-      {
-        "label": {
-          "color": "black",
-          "fontSize": "small-2",
-        },
-      }
-    `);
+    expect(result.current.label()).toMatchInlineSnapshot(
+      `"text-sm text-pink-500"`
+    );
   });
 });
 
-// describe('style superiority', () => {
-//   test('override order: base < size < variant', () => {
-//     const { result } = renderHook(
-//       () =>
-//         useComponentStyles('Button', {
-//           size: 'small',
-//           variant: 'pink',
-//         }),
-//       {
-//         wrapper,
-//       }
-//     );
-//     expect(result.current).toMatchInlineSnapshot(`
-//       {
-//         "appearance": "none",
-//         "bg": "white",
-//         "height": "small-1",
-//       }
-//     `);
-//   });
+describe('style superiority', () => {
+  test('override order: base < size < variant', () => {
+    const { result } = renderHook(
+      () =>
+        useComponentStylesFromTV('Button', {
+          size: 'small',
+          variant: 'primary',
+        }),
+      {
+        wrapper,
+      }
+    );
+    expect(result.current).toMatchInlineSnapshot(
+      `"border-none text-black bg-primary-700 p-4"`
+    );
+  });
 
-//   test('override order: base < size < variant (with parts)', () => {
-//     const { result } = renderHook(
-//       () =>
-//         useComponentStyles(
-//           'Checkbox',
-//           {
-//             size: 'small',
-//             variant: 'pink',
-//           },
-//           { parts: ['container', 'icon', 'label'] }
-//         ),
-//       {
-//         wrapper,
-//       }
-//     );
-//     expect(result.current).toMatchInlineSnapshot(`
-//       {
-//         "container": {
-//           "alignItems": "center",
-//           "display": "flex",
-//           "gap": "small-1",
-//           "p": "small-1",
-//         },
-//         "icon": {
-//           "height": "small-1",
-//           "width": "small-1",
-//         },
-//         "label": {
-//           "color": "pink",
-//           "fontSize": "small-2",
-//         },
-//       }
-//     `);
-//   });
-// });
+  test('override order: base < size < variant (with parts)', () => {
+    const { result } = renderHook(
+      () =>
+        useComponentStylesFromTV('Checkbox', {
+          size: 'small',
+          variant: 'primary',
+          slots: ['container', 'icon', 'label'],
+        }),
+      {
+        wrapper,
+      }
+    );
+    expect(result.current.base()).toMatchInlineSnapshot(
+      `"inline align-middle gap-4"`
+    );
+    expect(result.current.container()).toMatchInlineSnapshot(
+      `"flex p-2 align-middle"`
+    );
+    expect(result.current.icon()).toMatchInlineSnapshot(`"p-8 w-1"`);
+    expect(result.current.label()).toMatchInlineSnapshot(
+      `"text-sm text-pink-500"`
+    );
+  });
+});
 
-// describe('style usage', () => {
-//   test('styles are not transpiled with tokens', () => {
-//     const { result } = renderHook(
-//       () =>
-//         useComponentStyles('Button', {
-//           size: 'small',
-//           variant: 'pink',
-//         }),
-//       {
-//         wrapper,
-//       }
-//     );
-//     expect(result.current).toMatchInlineSnapshot(`
-//       {
-//         "appearance": "none",
-//         "bg": "white",
-//         "height": "small-1",
-//       }
-//     `);
-//   });
+describe('style usage', () => {
+  test('styles are not transpiled with tokens', () => {
+    const { result } = renderHook(
+      () =>
+        useComponentStylesFromTV('Button', {
+          size: 'small',
+          variant: 'primary',
+        }),
+      {
+        wrapper,
+      }
+    );
+    expect(result.current).toMatchInlineSnapshot(
+      `"border-none text-black bg-primary-700 p-4"`
+    );
+  });
 
-//   test('usage with <Box>', () => {
-//     const Button = ({ children }: { children?: ReactNode }) => {
-//       const styles = useComponentStyles('Button');
-//       return (
-//         <Box __baseCSS={styles} data-testid="button">
-//           {children}
-//         </Box>
-//       );
-//     };
+  test('usage with <Box>', () => {
+    const Button = ({ children }: { children?: ReactNode }) => {
+      const styles = useComponentStylesFromTV('Button');
+      return (
+        <Box className={styles} data-testid="button">
+          {children}
+        </Box>
+      );
+    };
 
-//     render(
-//       <ThemeProvider theme={theme}>
-//         <Button>Click me!</Button>
-//       </ThemeProvider>
-//     );
+    render(
+      <ThemeProvider theme={theme}>
+        <Button>Click me!</Button>
+      </ThemeProvider>
+    );
 
-//     const element = screen.getByTestId('button');
-//     expect(element).toHaveStyle('appearance: none');
-//     expect(element).toHaveStyle(`background: ${theme.colors.white}`);
-//   });
+    const element = screen.getByTestId('button');
+    expect(element).toHaveStyle('border: none');
+    expect(element).toHaveStyle('color:  rgb(0 0 0)');
+  });
 
-//   test('usage with <Box> (with parts)', () => {
-//     const Checkbox = ({ children }: { children?: ReactNode }) => {
-//       const styles = useComponentStyles(
-//         'Checkbox',
-//         {},
-//         { parts: ['container', 'icon', 'label'] }
-//       );
-//       return (
-//         <Box data-testid="container" __baseCSS={styles.container}>
-//           <Box data-testid="label" as="label" __baseCSS={styles.label}>
-//             {children}
-//             <Box data-testid="icon" __baseCSS={styles.icon} />
-//           </Box>
-//         </Box>
-//       );
-//     };
+  test('usage with <Box> (with slots)', () => {
+    const Checkbox = ({ children }: { children?: ReactNode }) => {
+      const styles = useComponentStylesFromTV('Checkbox', {
+        slots: ['container', 'icon', 'label'],
+      });
 
-//     render(
-//       <ThemeProvider theme={theme}>
-//         <Checkbox>Click me!</Checkbox>
-//       </ThemeProvider>
-//     );
+      console.log(styles.container());
 
-//     const container = screen.getByTestId('container');
-//     expect(container).toHaveStyle('display: flex');
-//     expect(container).toHaveStyle('align-items: center');
-//     expect(container).toHaveStyle(`gap: ${theme.space['small-1']}px`);
+      return (
+        <Box data-testid="container" className={styles.container()}>
+          <Box data-testid="label" as="label" className={styles.label()}>
+            {children}
+            <Box data-testid="icon" className={styles.icon()} />
+          </Box>
+        </Box>
+      );
+    };
 
-//     const label = screen.getByTestId('label');
-//     expect(label).toHaveStyle(`color: ${theme.colors.black}`);
-//     expect(label).toHaveStyle(`font-size: ${theme.fontSizes['small-2']}`);
+    render(
+      <ThemeProvider theme={theme}>
+        <Checkbox>Click me!</Checkbox>
+      </ThemeProvider>
+    );
 
-//     const icon = screen.getByTestId('icon');
-//     expect(icon).toHaveStyle(`height: ${theme.sizes['small-1']}px`);
-//     expect(icon).toHaveStyle(`width: ${theme.sizes['small-1']}px`);
-//   });
-// });
+    console.log('currentThme', theme.components.Checkbox);
+    const container = screen.getByTestId('container');
+    console.log(container);
+
+    expect(container).toHaveStyle('align-items: center');
+    expect(container).toHaveStyle(`gap: 1rem`);
+    expect(container).toHaveStyle('display: flex');
+
+    const label = screen.getByTestId('label');
+    expect(label).toHaveStyle('fontSize: 0.875rem');
+    expect(label).toHaveStyle('lineHeight: 1.25rem');
+    expect(label).toHaveStyle('color: rgb(236 72 153)');
+
+    const icon = screen.getByTestId('icon');
+    expect(icon).toHaveStyle('padding: 2rem');
+    expect(icon).toHaveStyle('width: 0.25rem');
+  });
+});

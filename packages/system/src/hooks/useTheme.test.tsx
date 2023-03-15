@@ -4,7 +4,6 @@ import { renderHook } from '@testing-library/react-hooks';
 
 import { ThemeProvider, useTheme } from './useTheme';
 import { tv } from 'tailwind-variants';
-import { Theme } from '../types';
 
 // Setup
 // ---------------
