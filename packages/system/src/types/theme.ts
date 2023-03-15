@@ -17,7 +17,7 @@ export type ThemeClass = Record<string, ClassValue>;
 export type Theme = {
   name: string;
   components: {
-    [key: string]: TVReturnType<any, any, any, any, any>;
+    [key: string]: TVReturnType<any, any, any, any, any, any>;
   };
 };
 

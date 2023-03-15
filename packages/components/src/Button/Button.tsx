@@ -83,7 +83,6 @@ export const Button = forwardRef(
 
     // use TailwindMerge to merge the classnames
     const classNames = twMerge(classes.baseStyle, classes.variant);
-    console.log('classNames', classNames);
 
     const stateProps = useStateProps({
       active: isPressed,

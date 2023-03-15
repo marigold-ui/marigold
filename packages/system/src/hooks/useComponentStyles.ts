@@ -33,14 +33,26 @@ const get = (obj: object, path: string, fallback?: any): any => {
 // this is the new hook
 export const useComponentStylesFromTV = (
   componentName: string,
-  variant?: string,
-  size?: string,
-  slots?: string[]
+  options?: {
+    variant?: string;
+    size?: string;
+    slots?: string[];
+  }
 ) => {
+  // don't know if this is necessary
+  // if (!(theme.components as IndexObject)[componentName]) {
+  //   return {};
+  // }
+  const theme = useTheme();
+
+  if (!(componentName in (theme.components as IndexObject))) {
+    return '';
+  }
+
   const classNames = (theme.components as IndexObject)[componentName]?.({
-    variant: variant,
-    size: size,
-    slots: slots,
+    variant: options?.variant,
+    size: options?.size,
+    slots: options?.slots,
   });
 
   return classNames as string;

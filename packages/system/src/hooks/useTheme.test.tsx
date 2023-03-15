@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 
 import { ThemeProvider, useTheme } from './useTheme';
-import { tv, VariantProps } from 'tailwind-variants';
+import { tv } from 'tailwind-variants';
 import { Theme } from '../types';
 
 // Setup
@@ -99,8 +99,6 @@ test('themes can be cascaded', () => {
 
   const outer = screen.getByTestId('outer');
   const inner = screen.getByTestId('inner');
-
-  console.log(outer.className);
 
   expect(outer.className).toMatchInlineSnapshot(
     `"border-none p-1 bg-primary-700"`
