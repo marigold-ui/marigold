@@ -199,7 +199,7 @@ importers:
 
   docs:
     specifiers:
-      '@hookform/devtools': 4.3.0
+      '@hookform/devtools': 4.3.1
       '@marigold/components': workspace:*
       '@marigold/icons': workspace:*
       '@marigold/system': workspace:*
@@ -276,7 +276,7 @@ importers:
       zod: 3.21.4
       zod-form-data: 2.0.0_zod@3.21.4
     devDependencies:
-      '@hookform/devtools': 4.3.0_zula6vjvt3wdocc4mwcxqa6nzi
+      '@hookform/devtools': 4.3.1_zula6vjvt3wdocc4mwcxqa6nzi
       '@types/mdx-js__react': 1.5.5
       '@types/node': 18.0.0
       '@types/react': 18.0.28
@@ -2631,8 +2631,8 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /@hookform/devtools/4.3.0_zula6vjvt3wdocc4mwcxqa6nzi:
-    resolution: {integrity: sha512-DTTTYJ9j+L4Nd/qj0k41WNbRF/qNQfZxbHwUupFeQWu6JOJ5Ak5ksxuoCbfSWrsXV5EPSmcfhpsDos0IOlwhsg==}
+  /@hookform/devtools/4.3.1_zula6vjvt3wdocc4mwcxqa6nzi:
+    resolution: {integrity: sha512-CrWxEoHQZaOXJZVQ8KBgOuAa8p2LI8M0DAN5GTRTmdCieRwFVjVDEmuTAVazWVRRkpEQSgSt3KYp7VmmqXdEnw==}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
       react-dom: ^16.8.0 || ^17 || ^18
