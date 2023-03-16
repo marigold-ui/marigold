@@ -356,8 +356,6 @@ describe('style usage', () => {
         slots: ['container', 'icon', 'label'],
       });
 
-      console.log(styles.container());
-
       return (
         <Box data-testid="container" className={styles.container()}>
           <Box data-testid="label" as="label" className={styles.label()}>
@@ -378,17 +376,12 @@ describe('style usage', () => {
     const container = screen.getByTestId('container');
     console.log(container);
 
-    expect(container).toHaveStyle('align-items: center');
-    expect(container).toHaveStyle(`gap: 1rem`);
-    expect(container).toHaveStyle('display: flex');
+    expect(container).toHaveClass('flex p-2 align-middle');
 
     const label = screen.getByTestId('label');
-    expect(label).toHaveStyle('fontSize: 0.875rem');
-    expect(label).toHaveStyle('lineHeight: 1.25rem');
-    expect(label).toHaveStyle('color: rgb(236 72 153)');
+    expect(label).toHaveClass('text-sm text-pink-500');
 
     const icon = screen.getByTestId('icon');
-    expect(icon).toHaveStyle('padding: 2rem');
-    expect(icon).toHaveStyle('width: 0.25rem');
+    expect(icon).toHaveClass('p-8 w-1');
   });
 });
