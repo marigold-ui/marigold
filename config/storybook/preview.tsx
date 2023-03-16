@@ -3,13 +3,15 @@ import React from 'react';
 import isChromatic from 'chromatic/isChromatic';
 import { StoryFn } from '@storybook/react';
 
-import { Box, MarigoldProvider } from '@marigold/components';
+import { Box, MarigoldProvider, useTheme } from '@marigold/components';
 import b2bTheme from '@marigold/theme-b2b';
 import coreTheme from '@marigold/theme-core';
 
+import '@marigold/theme-unicorn/index.css';
+
 //import unicornTheme from '@marigold/theme-unicorn';
 
-import '@marigold/theme-unicorn/index.css';
+import unicornTheme from '@marigold/theme-unicorn';
 //import '../../themes/theme-unicorn/dist/index.css';
 
 // Helpers
@@ -17,10 +19,11 @@ import '@marigold/theme-unicorn/index.css';
 const THEME = {
   b2b: b2bTheme,
   core: coreTheme,
-  unicorn: coreTheme,
+  unicorn: unicornTheme,
 };
 
 type ThemeNames = keyof typeof THEME;
+console.log(unicornTheme.name);
 
 const Frame = ({ children, title, id }: any) => (
   <Box css={{ p: '16px' }}>
@@ -84,9 +87,11 @@ export const decorators = [
       },
     };
 
-    const theme = isChromatic()
-      ? parameters.theme || 'stacked'
-      : globals.theme || parameters.theme || 'b2b';
+    const theme = useTheme();
+    console.log('usetHeme', theme, parameters.theme);
+    // const theme = isChromatic()
+    //   ? parameters.theme || 'stacked'
+    //   : globals.theme || parameters.theme || 'b2b';
 
     switch (theme) {
       case 'stacked': {

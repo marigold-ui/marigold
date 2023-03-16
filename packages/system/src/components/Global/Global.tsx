@@ -39,7 +39,7 @@ export type GlobalProps = {
 // Component
 // ---------------
 export const Global = ({ normalizeDocument = true, selector }: GlobalProps) => {
-  const { theme } = useTheme();
+  const theme = useTheme();
   const rootStyles = theme?.root || {};
 
   const styles = [

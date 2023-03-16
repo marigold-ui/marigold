@@ -20,10 +20,11 @@ export interface MarigoldProviderProps<T extends Theme>
 // ---------------
 export function MarigoldProvider<T extends Theme>({
   children,
-  theme,
   selector,
+  theme,
   normalizeDocument = true,
 }: MarigoldProviderProps<T>) {
+  console.log('theme', theme);
   const outer = useTheme();
   const isTopLevel = outer.theme === __defaultTheme;
 

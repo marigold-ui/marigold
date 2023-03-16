@@ -52,9 +52,6 @@ export const useComponentStylesFromTV = (
     slots: options?.slots,
   });
 
-  console.log(options?.slots);
-  // this gives the slot class
-
   return classNames;
 };
 

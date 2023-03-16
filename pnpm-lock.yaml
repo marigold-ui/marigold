@@ -519,7 +519,6 @@ importers:
     specifiers:
       '@marigold/components': workspace:*
       '@marigold/tsconfig': workspace:*
-      postcss-nesting: 11.2.1
       postcss-prefix-selector: 1.16.0
       tailwind-variants: 0.1.1
       tailwindcss: 3.2.6
@@ -527,7 +526,6 @@ importers:
     devDependencies:
       '@marigold/components': link:../../packages/components
       '@marigold/tsconfig': link:../../config/tsconfig
-      postcss-nesting: 11.2.1
       postcss-prefix-selector: 1.16.0
       tailwind-variants: 0.1.1_tailwindcss@3.2.6
       tailwindcss: 3.2.6
@@ -2507,19 +2505,6 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
-
-  /@csstools/selector-specificity/2.1.1_laljekdltgzr3kfi7r4exvsr5a:
-    resolution:
-      {
-        integrity: sha512-jwx+WCqszn53YHOfvFMJJRd/B2GqkCBt+1MJSG6o5/s8+ytHMvDZXsJgUEWLk12UnLd7HYKac4BYU5i/Ron1Cw==,
-      }
-    engines: { node: ^14 || ^16 || >=18 }
-    peerDependencies:
-      postcss: ^8.4
-      postcss-selector-parser: ^6.0.10
-    dependencies:
-      postcss-selector-parser: 6.0.11
-    dev: true
 
   /@discoveryjs/json-ext/0.5.7:
     resolution:
@@ -19539,19 +19524,6 @@ packages:
       postcss: ^8.2.14
     dependencies:
       postcss: 8.4.21
-      postcss-selector-parser: 6.0.11
-    dev: true
-
-  /postcss-nesting/11.2.1:
-    resolution:
-      {
-        integrity: sha512-E6Jq74Jo/PbRAtZioON54NPhUNJYxVWhwxbweYl1vAoBYuGlDIts5yhtKiZFLvkvwT73e/9nFrW3oMqAtgG+GQ==,
-      }
-    engines: { node: ^14 || ^16 || >=18 }
-    peerDependencies:
-      postcss: ^8.4
-    dependencies:
-      '@csstools/selector-specificity': 2.1.1_laljekdltgzr3kfi7r4exvsr5a
       postcss-selector-parser: 6.0.11
     dev: true
 
