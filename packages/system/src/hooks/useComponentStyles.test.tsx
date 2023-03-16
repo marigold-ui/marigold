@@ -372,10 +372,7 @@ describe('style usage', () => {
       </ThemeProvider>
     );
 
-    console.log('currentThme', theme.components.Checkbox);
     const container = screen.getByTestId('container');
-    console.log(container);
-
     expect(container).toHaveClass('flex p-2 align-middle');
 
     const label = screen.getByTestId('label');
