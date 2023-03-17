@@ -7,12 +7,10 @@ import { Box, MarigoldProvider, useTheme } from '@marigold/components';
 import b2bTheme from '@marigold/theme-b2b';
 import coreTheme from '@marigold/theme-core';
 
+// import css file and theme
 import '@marigold/theme-unicorn/index.css';
 
-//import unicornTheme from '@marigold/theme-unicorn';
-
 import unicornTheme from '@marigold/theme-unicorn';
-//import '../../themes/theme-unicorn/dist/index.css';
 
 // Helpers
 // ---------------

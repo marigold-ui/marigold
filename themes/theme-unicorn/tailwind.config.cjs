@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
@@ -26,6 +27,7 @@ module.exports = {
         huge: 320,
         epic: 480,
       },
+      // don't know how to hand over
       colors: {
         primary: '#673ab7',
         secondary: '#9575cd',
@@ -34,6 +36,7 @@ module.exports = {
         warning: '#fff3ad',
         info: '#a2edff',
         success: '#bcffbc',
+        purple10: '#ede7f6',
       },
       root: {
         body: {
