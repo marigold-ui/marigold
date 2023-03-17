@@ -24,10 +24,7 @@ export function MarigoldProvider<T extends Theme>({
   theme,
   normalizeDocument = true,
 }: MarigoldProviderProps<T>) {
-  console.log('theme', theme);
   const outerTheme = useTheme();
-
-  console.log('outer', outerTheme);
   const isTopLevel = outerTheme.name === '';
 
   if (outerTheme.root && !isTopLevel && !selector) {
@@ -37,7 +34,6 @@ export function MarigoldProvider<T extends Theme>({
     );
   }
 
-  console.log('provider', theme);
   return (
     <ThemeProvider theme={theme}>
       <Global

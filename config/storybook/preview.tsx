@@ -23,7 +23,6 @@ const THEME = {
 };
 
 type ThemeNames = keyof typeof THEME;
-console.log(unicornTheme.name);
 
 const Frame = ({ children, title, id }: any) => (
   <Box css={{ p: '16px' }}>
@@ -87,12 +86,14 @@ export const decorators = [
       },
     };
 
-    const theme = useTheme();
-    console.log('usetHeme', theme, parameters.theme);
-    // const theme = isChromatic()
-    //   ? parameters.theme || 'stacked'
-    //   : globals.theme || parameters.theme || 'b2b';
+    //set to unicorn to make it work
+    const theme = isChromatic()
+      ? parameters.theme || 'stacked'
+      : globals.theme || parameters.theme || 'unicorn';
 
+    //undefined undefined 'unicorn'
+
+    console.log(parameters.theme, globals.theme, theme);
     switch (theme) {
       case 'stacked': {
         return (
