@@ -40,7 +40,7 @@ export const useComponentStylesFromTV = (
   }
 ) => {
   // if we use alle themes
-  const theme = useTheme();
+  //const theme = useTheme();
 
   if (!(componentName in (theme.components as IndexObject))) {
     return '';

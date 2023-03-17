@@ -14,7 +14,7 @@ type ClassValue = string | string[] | null | undefined | ClassValue[];
 
 export type Theme = {
   name: string;
-  components: {
+  components?: {
     [key: string]: TVReturnType<any, any, any, any, any, any>;
   };
 };

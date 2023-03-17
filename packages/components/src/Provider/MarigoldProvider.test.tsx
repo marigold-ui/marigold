@@ -9,6 +9,7 @@ import { MarigoldProvider } from './MarigoldProvider';
 // Setup
 // ---------------
 const theme = {
+  name: 'test',
   colors: {
     black: '#000',
   },
@@ -36,19 +37,21 @@ afterEach(() => {
 
 test('support cascading themes', () => {
   const outerTheme = {
+    name: 'outer',
     colors: {
       primary: 'coral',
     },
   };
 
   const innerTheme = {
+    name: 'inner',
     colors: {
       primary: 'gainsboro',
     },
   };
 
   const Theme = ({ testId }: { testId: string }) => {
-    const { theme } = useTheme();
+    const theme = useTheme();
     return <div data-testid={testId}>{JSON.stringify(theme, null, 2)}</div>;
   };
 
@@ -68,6 +71,7 @@ test('support cascading themes', () => {
 
   expect(outer.innerHTML).toMatchInlineSnapshot(`
     "{
+      "name": "outer",
       "colors": {
         "primary": "coral"
       }
@@ -75,6 +79,7 @@ test('support cascading themes', () => {
   `);
   expect(inner.innerHTML).toMatchInlineSnapshot(`
     "{
+      "name": "inner",
       "colors": {
         "primary": "gainsboro"
       }
@@ -93,7 +98,7 @@ test('add OverlayProvider from `react-aria`', () => {
 });
 
 test('OverlayProvider is added only once', () => {
-  const innerTheme = { colors: { primary: 'red' } };
+  const innerTheme = { name: 'inner', colors: { primary: 'red' } };
   const { container } = render(
     <MarigoldProvider theme={theme}>
       <MarigoldProvider theme={innerTheme}>Test</MarigoldProvider>
@@ -107,6 +112,7 @@ test('OverlayProvider is added only once', () => {
 
 test('apply styles base on theme (`theme.root`)', () => {
   const theme = {
+    name: 'test',
     fonts: {
       body: 'Inter',
       html: 'Roboto',
@@ -139,6 +145,7 @@ test('apply styles base on theme (`theme.root`)', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const html = view.baseElement.parentElement;
+
   expect(html).toHaveStyle(`font-family: ${theme.fonts.html}`);
   expect(html).toHaveStyle(`font-weight: ${theme.fontWeights.html}`);
 
@@ -176,6 +183,7 @@ test('opt out of document normalization', () => {
 
 test('cascading fails if inner theme has root styles', () => {
   const outerTheme = {
+    name: 'outer',
     root: {
       body: {
         background: 'coral',
@@ -184,6 +192,7 @@ test('cascading fails if inner theme has root styles', () => {
   };
 
   const innerTheme = {
+    name: 'inner',
     root: {
       body: {
         background: 'gainsboro',
@@ -203,12 +212,14 @@ test('cascading fails if inner theme has root styles', () => {
 
 test('cascading without a selector is allowed when inner theme has not root styles', () => {
   const outerTheme = {
+    name: 'outer',
     colors: {
       primary: 'coral',
     },
   };
 
   const innerTheme = {
+    name: 'inner',
     colors: {
       primary: 'gainsboro',
     },
@@ -225,6 +236,7 @@ test('cascading without a selector is allowed when inner theme has not root styl
 
 test('cascading with a selector is allowed when inner theme has specified a selector', () => {
   const outerTheme = {
+    name: 'outer',
     root: {
       body: {
         background: 'coral',
@@ -233,6 +245,7 @@ test('cascading with a selector is allowed when inner theme has specified a sele
   };
 
   const innerTheme = {
+    name: 'inner',
     root: {
       body: {
         background: 'gainsboro',
