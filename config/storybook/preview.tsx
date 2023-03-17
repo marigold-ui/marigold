@@ -87,14 +87,10 @@ export const decorators = [
       },
     };
 
-    //set to unicorn to make it work
     const theme = isChromatic()
       ? parameters.theme || 'stacked'
       : globals.theme || parameters.theme || 'b2b';
 
-    //undefined undefined 'unicorn'
-
-    console.log(parameters.theme, globals.theme, theme);
     switch (theme) {
       case 'stacked': {
         return (
