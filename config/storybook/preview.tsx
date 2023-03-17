@@ -79,6 +79,7 @@ export const decorators = [
   (Story: StoryFn, { globals, parameters }: any) => {
     // We do this since in a stacked context there is no global normalization otherwhise
     const globalTheme = {
+      name: 'global',
       root: {
         body: {
           fontFamily: 'Inter',
@@ -89,7 +90,7 @@ export const decorators = [
     //set to unicorn to make it work
     const theme = isChromatic()
       ? parameters.theme || 'stacked'
-      : globals.theme || parameters.theme || 'unicorn';
+      : globals.theme || parameters.theme || 'b2b';
 
     //undefined undefined 'unicorn'
 

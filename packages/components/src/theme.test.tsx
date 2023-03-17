@@ -6,6 +6,7 @@ import { Button } from './Button';
 import { extendTheme, Theme } from './theme';
 
 const baseTheme: Theme = {
+  name: 'base',
   colors: {
     primary: '#d6336c',
     red: '#fa5252',
