@@ -35,7 +35,7 @@ test('returns the theme', () => {
 test('values from theme are given correctly', () => {
   const { result } = renderHook(() => useTheme(), { wrapper });
 
-  const button = result.current.components.button;
+  const button = result.current.components!.button;
 
   expect(button()).toEqual('border-none p-1');
   expect(button({ variant: 'primary' })).toEqual(
@@ -75,7 +75,7 @@ test('themes can be cascaded', () => {
   // don't know how to solve this
   const Theme = ({ testId }: { testId: string }) => {
     const theme = useTheme();
-    const button = theme.components.button;
+    const button = theme.components!.button;
     const className = button({ variant: 'primary' });
 
     return (
