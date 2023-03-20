@@ -2,45 +2,44 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 
-import { Button } from './Button';
 import { extendTheme, Theme } from './theme';
+import { tv } from 'tailwind-variants';
+import { Badge } from './Badge';
 
 const baseTheme: Theme = {
   name: 'base',
   colors: {
-    primary: '#d6336c',
+    primary: '#22c55e',
     red: '#fa5252',
     white: '#fff',
     black: '#111',
   },
   components: {
-    Button: {
-      base: {
-        color: 'white',
-        bg: 'black',
-      },
-      variant: {
-        primary: {
-          bg: 'primary',
+    Badge: tv({
+      base: 'bg-black text-white',
+      variants: {
+        variant: {
+          primary: 'bg-primary',
         },
       },
-    },
+    }),
   },
 } as const;
 
 test('allows to extend a theme with custom styles', () => {
   const result = extendTheme(baseTheme, {
+    name: 'extension',
     colors: {
       secondary: '#862e9c',
     },
     components: {
-      Button: {
-        variant: {
-          secondary: {
-            bg: 'secondary',
+      Badge: tv({
+        variants: {
+          variant: {
+            secondary: 'bg-secondary',
           },
         },
-      },
+      }),
     },
   });
 
@@ -48,54 +47,45 @@ test('allows to extend a theme with custom styles', () => {
     {
       "colors": {
         "black": "#111",
-        "primary": "#d6336c",
+        "primary": "#22c55e",
         "red": "#fa5252",
         "secondary": "#862e9c",
         "white": "#fff",
       },
       "components": {
-        "Button": {
-          "base": {
-            "bg": "black",
-            "color": "white",
-          },
-          "variant": {
-            "primary": {
-              "bg": "primary",
-            },
-            "secondary": {
-              "bg": "secondary",
-            },
-          },
-        },
+        "Badge": [Function],
       },
+      "name": "extension",
     }
   `);
 });
 
 test('works with the <ThemeProvider>', () => {
   const extension = {
+    name: 'extension',
     colors: {
       secondary: '#862e9c',
     },
     components: {
-      Button: {
-        variant: {
-          secondary: {
-            bg: 'secondary',
+      Badge: tv({
+        variants: {
+          variant: {
+            secondary: 'bg-secondary',
           },
         },
-      },
+      }),
     },
   };
   const custom = extendTheme(baseTheme, extension);
 
   render(
     <ThemeProvider theme={custom}>
-      <Button variant="secondary">Button</Button>
+      <Badge variant="secondary">Badge</Badge>
     </ThemeProvider>
   );
 
-  const button = screen.getByText('Button');
-  expect(button).toHaveStyle(`background: ${extension.colors.secondary}`);
+  const badge = custom.components.Badge;
+
+  console.log(custom.components.Badge({ variant: 'secondary' }));
+  expect(badge({ variant: 'secondary' })).toEqual(`bg-secondary`);
 });
