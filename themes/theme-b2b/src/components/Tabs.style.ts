@@ -3,7 +3,7 @@ import { colors } from '../colors';
 
 export const Tabs: Theme['components']['Tabs'] = {
   base: {
-    tabs: { marginBottom: '0.5rem' },
+    tabs: { marginBottom: '1rem' },
     tab: {
       minHeight: '40px',
       '&[aria-selected=false]:not([aria-disabled=true]):hover': {
