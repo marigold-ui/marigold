@@ -14,15 +14,13 @@ export type ComponentState =
   | 'selected'
   | 'indeterminate'
   | 'expanded'
-  | 'error'
-  | 'hasIcon';
+  | 'error';
 
 export type StateAttrKeyProps = `data-${KebabCase<ComponentState>}`;
 
 export type StateAttrProps = {
   [key in StateAttrKeyProps]?: '';
 };
-
 export type UseStateProps = {
   [key in ComponentState]?: boolean;
 };

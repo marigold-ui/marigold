@@ -44,8 +44,7 @@ test('accepts other variants', () => {
     </ThemeProvider>
   );
   const divider = screen.getByTestId(/divider/);
-
-  expect(divider).toHaveStyle(`margin: 4px`);
+  expect(divider).toHaveStyle(`margin: 2xp`);
 });
 
 test('renders correct HTML element', () => {

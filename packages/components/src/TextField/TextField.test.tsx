@@ -49,9 +49,7 @@ const theme = {
     },
     Input: {
       base: {
-        input: {
-          borderColor: 'blue',
-        },
+        borderColor: 'blue',
       },
     },
   },
@@ -82,7 +80,9 @@ test('input can be styled via "Input" styles', () => {
     </ThemeProvider>
   );
   const textField = screen.getByTestId('text-field');
-  expect(textField).toHaveStyle(`border-color: ${theme.colors.blue}`);
+  expect(textField.parentElement).toHaveStyle(
+    `border-color: ${theme.colors.blue}`
+  );
 });
 
 test('takes full width by default', () => {

@@ -92,19 +92,21 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
         size={size}
         width={width}
       >
-        <Input
-          ref={inputRef}
-          variant={variant}
-          size={size}
-          /**
-           * We use `size` for styles which is a string, not like
-           * the regular HTML attribute, which is a number
-           */
-          {...(inputProps as any)}
-          {...focusProps}
-          {...hoverProps}
-          {...stateProps}
-        />
+        <Input {...stateProps}>
+          <Input.Field
+            ref={inputRef}
+            variant={variant}
+            size={size}
+            /**
+             * We use `size` for styles which is a string, not like
+             * the regular HTML attribute, which is a number
+             */
+            {...(inputProps as any)}
+            {...focusProps}
+            {...hoverProps}
+            {...stateProps}
+          />
+        </Input>
       </FieldBase>
     );
   }

@@ -111,6 +111,7 @@ export interface ZeroSizeScale<T> extends SizeScale<T> {
 /**
  * Base theme with typings for available scales properties.
  */
+
 export interface Theme {
   /**
    * Styles that applied to the root of the app, where the root can be either the document

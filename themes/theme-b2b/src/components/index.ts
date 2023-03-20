@@ -1,4 +1,3 @@
-export * from './Autocomplete.style';
 export * from './Badge.style';
 export * from './Button.style';
 export * from './Card.style';
@@ -26,3 +25,4 @@ export * from './Text.style';
 export * from './TextArea.style';
 export * from './Tooltip.style';
 export * from './Underlay.style';
+export * from './Tabs.style';

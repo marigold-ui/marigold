@@ -41,14 +41,6 @@ export type ComponentStyleParts<Parts extends string[]> = {
   [P in Parts[number]]: CSSObject;
 };
 
-export function useComponentStyles(
-  componentName: string,
-  props?: ComponentStylesProps,
-  options?: {
-    parts: never;
-  }
-): CSSObject;
-
 export function useComponentStyles<
   Part extends string,
   Parts extends ReadonlyArray<Part>
@@ -61,6 +53,13 @@ export function useComponentStyles<
 ): {
   [P in Parts[number]]: CSSObject;
 };
+export function useComponentStyles(
+  componentName: string,
+  props?: ComponentStylesProps,
+  options?: {
+    parts: never;
+  }
+): CSSObject;
 
 export function useComponentStyles(
   componentName: string,
@@ -69,10 +68,8 @@ export function useComponentStyles(
 ) {
   const { theme } = useTheme();
   const componentStyles = get(theme, `components.${componentName}`);
-
   // Store styles in ref to prevent re-computation
   const stylesRef = useRef({});
-
   if (componentStyles) {
     const base = componentStyles.base || {};
     const size = componentStyles.size?.[props.size as any] || {};
@@ -80,7 +77,6 @@ export function useComponentStyles(
 
     // We deep merge so that parts (if they exists) also get put together
     let styles = merge.all([base, size, variant]) as IndexObject;
-
     // Only return requested parts. If they don't exist, set them as empty object
     if (options.parts) {
       styles = options.parts.reduce((result: IndexObject, part: string) => {

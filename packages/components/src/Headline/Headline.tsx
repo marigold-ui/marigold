@@ -10,7 +10,7 @@ import { HtmlProps } from '@marigold/types';
 
 // Theme Extension
 // ---------------
-export interface HeadlineThemeExtension extends ThemeExtension<'Headline'> {}
+export interface HeadlineThemeExtension extends ThemeExtension<'Headline'> { }
 
 // Props
 // ---------------

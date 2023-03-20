@@ -1,4 +1,3 @@
-export * from './Autocomplete.style';
 export * from './Badge.style';
 export * from './Button.style';
 export * from './Card.style';

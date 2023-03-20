@@ -1,21 +1,5 @@
 # @marigold/components
 
-## 5.2.0
-
-### Minor Changes
-
-- [#2807](https://github.com/marigold-ui/marigold/pull/2807) [`f9175829d`](https://github.com/marigold-ui/marigold/commit/f9175829db6ab268a6c9620430a99a69d0d57c7c) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: update storybook to version 7 + fix coverage
-
-- [#2824](https://github.com/marigold-ui/marigold/pull/2824) [`33329ace2`](https://github.com/marigold-ui/marigold/commit/33329ace2711b139938af05006ed6f00a65f6b99) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: refa <Input> and <Input.Field> components and support icons
-
-- [#2805](https://github.com/marigold-ui/marigold/pull/2805) [`c0609c0b3`](https://github.com/marigold-ui/marigold/commit/c0609c0b32bb8075fdeacf88f9c6ce5d8fdf781e) Thanks [@sebald](https://github.com/sebald)! - feat: introduce `<Inset>` component
-
-### Patch Changes
-
-- Updated dependencies [[`f11e2d7db`](https://github.com/marigold-ui/marigold/commit/f11e2d7dbb3d6b4ee4b8651f48b52736f64fd778)]:
-  - @marigold/system@5.2.0
-  - @marigold/icons@1.2.1
-
 ## 5.1.0
 
 ### Patch Changes

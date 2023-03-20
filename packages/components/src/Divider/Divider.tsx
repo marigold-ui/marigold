@@ -5,8 +5,7 @@ import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
 
 // Theme Extension
 // ---------------
-export interface DividerThemeExtension extends ThemeExtension<'Divider'> {}
-
+export interface DividerThemeExtension extends ThemeExtension<'Divider'> { }
 // Props
 // ---------------
 export interface DividerProps extends SeparatorProps {
@@ -17,6 +16,7 @@ export interface DividerProps extends SeparatorProps {
 // ---------------
 export const Divider = ({ variant, ...props }: DividerProps) => {
   const { separatorProps } = useSeparator(props);
-  const styles = useComponentStyles('Divider', { variant });
+  const styles = useComponentStyles('Divider', {});
+
   return <Box css={styles} {...props} {...separatorProps} />;
 };

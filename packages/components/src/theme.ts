@@ -3,7 +3,6 @@ import type { Theme as BaseTheme } from '@marigold/system';
 
 // Components
 // ---------------
-import type { AutocompleteThemeExtension } from './Autocomplete';
 import type { BadgeThemeExtension } from './Badge';
 import type { BodyThemeExtension } from './Body';
 import type { ButtonThemeExtension } from './Button';
@@ -34,10 +33,10 @@ import type { TableThemeExtension } from './Table';
 import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
 import type { TooltipThemeExtension } from './Tooltip';
+import type { TabsThemeExtension } from './Tabs';
 
 interface ComponentStyles
-  extends AutocompleteThemeExtension,
-    BadgeThemeExtension,
+  extends BadgeThemeExtension,
     ButtonThemeExtension,
     CardThemeExtension,
     CheckboxThemeExtension,
@@ -66,7 +65,8 @@ interface ComponentStyles
     TextThemeExtension,
     TextAreaThemeExtension,
     TooltipThemeExtension,
-    UnderlayThemeExtension {}
+    UnderlayThemeExtension,
+    TabsThemeExtension {}
 
 export interface Theme extends BaseTheme {
   components: ComponentStyles;

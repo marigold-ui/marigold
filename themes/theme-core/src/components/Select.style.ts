@@ -28,17 +28,17 @@ export const Select: Theme['components']['Select'] = {
         borderColor: 'error',
       },
 
-      // '&:expanded': {
-      //   borderTop: '1px solid',
-      //   borderRight: '1px solid',
-      //   borderLeft: '1px solid',
-      //   borderBottom: 'none',
-      //   borderColor: '#aaa',
-      //   borderTopRightRadius: '2px',
-      //   borderTopLeftRadius: '2px',
-      //   boxShadow: '0 1px 0 #fff inset',
-      //   backgroundImage: 'linear-gradient(#eee 20%, #fff 80%)',
-      // },
+      '&:expanded': {
+        borderTop: '1px solid',
+        borderRight: '1px solid',
+        borderLeft: '1px solid',
+        borderBottom: 'none',
+        borderColor: '#aaa',
+        borderTopRightRadius: '2px',
+        borderTopLeftRadius: '2px',
+        boxShadow: '0 1px 0 #fff inset',
+        backgroundImage: 'linear-gradient(#eee 20%, #fff 80%)',
+      },
     },
   },
 };

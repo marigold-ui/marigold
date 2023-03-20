@@ -27,7 +27,7 @@ export interface FieldBaseProps {
 }
 // Theme Extension
 // ---------------
-export interface FieldThemeExtension extends ThemeExtension<'Field'> {}
+export interface FieldThemeExtension extends ThemeExtension<'Field'> { }
 
 // Component
 // ---------------

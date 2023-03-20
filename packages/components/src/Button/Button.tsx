@@ -15,7 +15,7 @@ import { HtmlProps, PolymorphicComponent, PropsOf } from '@marigold/types';
 
 // Theme Extension
 // ---------------
-export interface ButtonThemeExtension extends ThemeExtension<'Button'> {}
+export interface ButtonThemeExtension extends ThemeExtension<'Button'> { }
 
 // Props
 // ---------------
@@ -26,7 +26,7 @@ export interface ButtonOwnProps extends PressEvents, HtmlProps<'button'> {
   fullWidth?: boolean;
 }
 
-export interface ButtonProps extends PropsOf<typeof Button> {}
+export interface ButtonProps extends PropsOf<typeof Button> { }
 
 // Component
 // ---------------
@@ -79,7 +79,6 @@ export const Button = forwardRef(
       focusVisible: isFocusVisible,
       hover: isHovered,
     });
-
     return (
       <Box
         {...mergeProps(buttonProps, focusProps, hoverProps, props)}

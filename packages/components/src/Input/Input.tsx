@@ -1,88 +1,55 @@
-import React, { forwardRef, ReactElement } from 'react';
-import { HtmlProps } from '@marigold/types';
 import {
   Box,
-  ThemeExtensionsWithParts,
+  ResponsiveStyleValue,
+  ThemeExtension,
   useComponentStyles,
-  useStateProps,
 } from '@marigold/system';
+import { HtmlProps } from '@marigold/types';
+import React, { ReactNode } from 'react';
+import { InputField } from './InputField';
 
 // Theme Extension
 // ---------------
-export interface InputThemeExtension
-  extends ThemeExtensionsWithParts<'Input', ['input', 'icon', 'container']> {}
+export interface InputThemeExtension extends ThemeExtension<'Input'> { }
 
 // Props
 // ---------------
-export interface InputOwnProps extends Omit<HtmlProps<'input'>, 'size'> {
-  icon?: ReactElement;
-  action?: ReactElement;
+export interface InputProps extends Omit<HtmlProps<'div'>, 'size'> {
+  children: ReactNode;
+  space?: ResponsiveStyleValue<string>;
   variant?: string;
   size?: string;
 }
 
-export interface InputProps
-  extends Omit<React.ComponentPropsWithRef<'input'>, 'size'>,
-    InputOwnProps {}
-
 // Component
 // ---------------
-export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
-  (
-    { type = 'text', icon, action, variant, size, ...props }: InputOwnProps,
-    ref
-  ) => {
-    const styles = useComponentStyles(
-      'Input',
-      { variant, size },
-      { parts: ['input', 'icon', 'container'] }
-    );
+export const Input = ({
+  space = 'xsmall',
+  children,
+  variant,
+  size,
+  ...props
+}: InputProps) => {
+  const [leading, input, trailing] = React.Children.toArray(children);
 
-    const stateProps = useStateProps({
-      hasIcon: icon ? true : false,
-    });
+  const styles = useComponentStyles('Input', { variant, size });
 
-    return (
-      <Box
-        __baseCSS={{
-          position: 'relative',
-          display: 'flex',
-          alignItems: 'center',
-          width: '100%',
-        }}
-        css={styles.container}
-      >
-        <Box
-          __baseCSS={{ border: 0, width: '100%', outline: 'none', pl: 16 }}
-          {...props}
-          {...stateProps}
-          as="input"
-          ref={ref}
-          css={styles.input}
-          type={type}
-        />
-        {icon && (
-          <Box
-            __baseCSS={{
-              position: 'absolute',
-              pointerEvents: 'none',
-              left: 8,
-            }}
-            css={styles.icon}
-          >
-            {icon}
-          </Box>
-        )}
-        <Box
-          __baseCSS={{
-            display: 'inline-flex',
-            position: 'absolute',
-            right: 8,
-          }}
-        >
-          {action}
-        </Box>
-      </Box>
-    );
-  }
-);
+  return (
+    <Box
+      __baseCSS={{
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        gap: space,
+      }}
+      css={styles}
+      {...props}
+    >
+      {leading}
+      {input}
+      {trailing}
+    </Box>
+  );
+};
+
+Input.Field = InputField;

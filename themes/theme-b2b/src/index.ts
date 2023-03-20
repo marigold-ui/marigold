@@ -6,7 +6,6 @@ import * as components from './components';
 export const webFontUrl = [
   'https://fonts.bunny.net/css?family=inter:400,600,700',
 ] as const;
-
 const theme: Theme = {
   breakpoints: ['40em', '52em', '64em'],
   space: {
