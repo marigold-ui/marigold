@@ -28,7 +28,7 @@ export function ThemeProvider<T extends Theme>({
   children,
 }: ThemeProviderProps<T>) {
   return (
-    <div data-theme="unicorn">
+    <div data-theme={theme.name}>
       <InternalContext.Provider value={theme}>
         {children}
       </InternalContext.Provider>
