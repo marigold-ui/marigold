@@ -146,6 +146,8 @@ test('apply styles base on theme (`theme.root`)', () => {
   // eslint-disable-next-line testing-library/no-node-access
   const html = view.baseElement.parentElement;
 
+  // styles are not in StyleValue
+
   expect(html).toHaveStyle(`font-family: ${theme.fonts.html}`);
   expect(html).toHaveStyle(`font-weight: ${theme.fontWeights.html}`);
 
