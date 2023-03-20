@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 
 import { extendTheme, Theme } from './theme';
@@ -85,7 +85,5 @@ test('works with the <ThemeProvider>', () => {
   );
 
   const badge = custom.components.Badge;
-
-  console.log(custom.components.Badge({ variant: 'secondary' }));
   expect(badge({ variant: 'secondary' })).toEqual(`bg-secondary`);
 });

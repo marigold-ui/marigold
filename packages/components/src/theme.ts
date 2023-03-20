@@ -72,8 +72,9 @@ export interface Theme extends BaseTheme {
   components: any;
 }
 
+// what kind should be here? Partial<ComponentStyles> turn to any
 export interface CustomizedTheme extends BaseTheme {
-  components?: Partial<ComponentStyles>;
+  components?: any;
 }
 
 // Helpers

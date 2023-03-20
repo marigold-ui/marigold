@@ -21,3 +21,15 @@ export type Theme = {
   colors?: { [key: string]: string };
   root?: { [key: string]: Object };
 };
+
+/**
+ * Structure for component styles in a theme.
+ */
+export type ThemeExtension<ComponentName extends string> = {
+  [P in ComponentName]?: {
+    name: string;
+    components?: {
+      [key: string]: TVReturnType<any, any, any, any, any, any>;
+    };
+  };
+};
