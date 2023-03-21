@@ -1,5 +1,13 @@
 # @marigold/system
 
+## 5.3.0
+
+### Minor Changes
+
+- [#2826](https://github.com/marigold-ui/marigold/pull/2826) [`aaf6b55c6`](https://github.com/marigold-ui/marigold/commit/aaf6b55c6c2b07f7baea9e7af1cab69e70c333e8) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: Improved `<Input>` with icons/actions
+
+- [#2845](https://github.com/marigold-ui/marigold/pull/2845) [`80cdbe062`](https://github.com/marigold-ui/marigold/commit/80cdbe062445b6c4b8073cb72976ce9ce4bcefb1) Thanks [@sebald](https://github.com/sebald)! - refa: `<SVG>` css prop can overrde size (height/width)
+
 ## 5.2.0
 
 ### Minor Changes

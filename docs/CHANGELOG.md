@@ -1,5 +1,23 @@
 # @marigold/docs
 
+## 5.3.0
+
+### Minor Changes
+
+- [#2826](https://github.com/marigold-ui/marigold/pull/2826) [`aaf6b55c6`](https://github.com/marigold-ui/marigold/commit/aaf6b55c6c2b07f7baea9e7af1cab69e70c333e8) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: Improved `<Input>` with icons/actions
+
+- [#2851](https://github.com/marigold-ui/marigold/pull/2851) [`fc36e8af4`](https://github.com/marigold-ui/marigold/commit/fc36e8af415e12ecd5a71c65e3eb34494ce2e423) Thanks [@sebald](https://github.com/sebald)! - docs: Introduce "Styling" docs. Some addition text that is not necessary...
+
+### Patch Changes
+
+- [#2833](https://github.com/marigold-ui/marigold/pull/2833) [`650a8b2fe`](https://github.com/marigold-ui/marigold/commit/650a8b2fed9c8783a8e2b427c1117236c8982356) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @next/mdx to v13.2.1
+
+- Updated dependencies [[`aaf6b55c6`](https://github.com/marigold-ui/marigold/commit/aaf6b55c6c2b07f7baea9e7af1cab69e70c333e8), [`80cdbe062`](https://github.com/marigold-ui/marigold/commit/80cdbe062445b6c4b8073cb72976ce9ce4bcefb1), [`3a766be9d`](https://github.com/marigold-ui/marigold/commit/3a766be9d83219e3295962cfc08d43c0e2556101), [`cda6ac809`](https://github.com/marigold-ui/marigold/commit/cda6ac80984059035ec315481685dce1dbc6cc79)]:
+  - @marigold/components@5.3.0
+  - @marigold/system@5.3.0
+  - @marigold/theme-b2b@21.0.0
+  - @marigold/icons@1.2.2
+
 ## 5.2.0
 
 ### Minor Changes
