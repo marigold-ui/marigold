@@ -9,6 +9,7 @@ import coreTheme from '@marigold/theme-core';
 
 // import css file and theme
 import '@marigold/theme-unicorn/index.css';
+import './index.css';
 
 import unicornTheme from '@marigold/theme-unicorn';
 
@@ -23,32 +24,13 @@ const THEME = {
 type ThemeNames = keyof typeof THEME;
 
 const Frame = ({ children, title, id }: any) => (
-  <Box css={{ p: '16px' }}>
-    <Box
-      css={{
-        fontFamily:
-          'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
-        display: 'inline-block',
-        color: '#7c2d12',
-        fontSize: '0.75rem',
-        bg: '#fed7aa',
-        borderRadius: 8,
-        border: '1px solid #fed7aa',
-        py: 1,
-        px: 2,
-        mb: 1,
-      }}
-    >
+  <Box className="p-4">
+    <Box className="p-0.5 mb-0.5 inline-block border rounded-lg border-solid border-orange-200 bg-orange-200 text-xs font-sans text-orange-900">
       {title}
     </Box>
     <Box
       id={id}
-      css={{
-        p: '16px',
-        border: '1px solid #dee2e6',
-        borderRadius: 8,
-        boxShadow: 'inset 0 1px 4px 0 hsl(220 3% 15% / 10%);',
-      }}
+      className="p-4 border border-solid border-[#dee2e6] rounded-lg shadow"
     >
       {children}
     </Box>
@@ -110,7 +92,9 @@ export const decorators = [
         return (
           <MarigoldProvider theme={THEME[theme as ThemeNames]}>
             <div style={{ height: '900px' }}>
-              <Story />
+              <Frame id={'345'} title={`Theme "${THEME.unicorn}"`}>
+                <Story />
+              </Frame>
             </div>
           </MarigoldProvider>
         );
