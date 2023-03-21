@@ -358,7 +358,7 @@ export const Table = {
 };
 ```
 
-### Using the `useComponentStyles` hook
+### Using the "useComponentStyles" hook
 
 Since we use a unified API, Marigold has a hook to simplify the consumption and application of component styles called `useComponentStyles`. Passing in the component name, variant and size will return the computed styles for the specified component. For applying the styles the `<Box>` in conjunction with its `css` prop can be used.
 
@@ -398,4 +398,4 @@ const styles = useComponentStyles(
 );
 ```
 
-Generating these styles once will lead to ress runtime overhead. They can be passed down via context or prop drilling.
+Generating these styles once will lead to less runtime overhead. They can be passed down via context or prop drilling.
