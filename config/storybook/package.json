@@ -27,11 +27,11 @@
     "@marigold/theme-core": "workspace:*",
     "@marigold/theme-unicorn": "workspace:*",
     "@mdx-js/react": "2.3.0",
-    "@storybook/addon-a11y": "7.0.0-beta.55",
-    "@storybook/addon-essentials": "7.0.0-beta.55",
-    "@storybook/addon-interactions": "7.0.0-beta.55",
+    "@storybook/addon-a11y": "7.0.0-rc.3",
+    "@storybook/addon-essentials": "7.0.0-rc.3",
+    "@storybook/addon-interactions": "7.0.0-rc.3",
     "@storybook/jest": "0.0.11-next.0",
-    "@storybook/source-loader": "7.0.0-beta.55",
+    "@storybook/source-loader": "7.0.0-rc.3",
     "@storybook/testing-library": "0.0.14-next.1",
     "@types/react": "18",
     "babel-loader": "9.1.2",
@@ -41,9 +41,9 @@
     "webpack": "4"
   },
   "devDependencies": {
-    "@storybook/builder-vite": "7.0.0-beta.55",
-    "@storybook/cli": "7.0.0-beta.55",
-    "@storybook/react-vite": "7.0.0-beta.55",
+    "@storybook/builder-vite": "7.0.0-rc.3",
+    "@storybook/cli": "7.0.0-rc.3",
+    "@storybook/react-vite": "7.0.0-rc.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "storybook": "next",
@@ -51,7 +51,7 @@
     "vite": "4.1.4"
   },
   "peerDependencies": {
-    "@storybook/react": "7.0.0-beta.54",
+    "@storybook/react": "7.0.0-rc.3",
     "react": "18.x",
     "react-dom": "18.x",
     "typescript": "4.9.5"
