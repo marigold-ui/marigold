@@ -1,6 +1,6 @@
 import React, { Key, useRef } from 'react';
 import { useMenu } from '@react-aria/menu';
-import { Item } from '@react-stately/collections';
+import { Item, Section } from '@react-stately/collections';
 import { useTreeState } from '@react-stately/tree';
 import { CollectionElement } from '@react-types/shared';
 
@@ -15,6 +15,7 @@ import { useMenuContext } from './Context';
 import { MenuTrigger } from './MenuTrigger';
 import { MenuItem } from './MenuItem';
 import { useSyncRef } from '@react-aria/utils';
+import MenuSection from './MenuSection';
 
 // Theme Extension
 // ---------------
@@ -60,18 +61,31 @@ export const Menu = ({ variant, size, ...props }: MenuProps) => {
       css={styles.container}
       {...menuProps}
     >
-      {[...state.collection].map(item => (
-        <MenuItem
-          key={item.key}
-          item={item}
-          state={state}
-          onAction={props.onAction}
-          css={styles.item}
-        />
-      ))}
+      {[...state.collection].map(item => {
+        if (item.type === 'section') {
+          return (
+            <MenuSection
+              key={item.key}
+              item={item}
+              state={state}
+              onAction={props.onAction}
+            />
+          );
+        }
+        return (
+          <MenuItem
+            key={item.key}
+            item={item}
+            state={state}
+            onAction={props.onAction}
+            css={styles.item}
+          />
+        );
+      })}
     </Box>
   );
 };
 
 Menu.Trigger = MenuTrigger;
 Menu.Item = Item;
+Menu.Section = Section;
