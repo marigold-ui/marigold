@@ -5,14 +5,16 @@ import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 const projectRoot = path.resolve(__dirname, '../../../');
 
-console.log('projectRoot', projectRoot);
-console.log('dirname', __dirname);
 const config: StorybookConfig = {
   stories: [
     path.resolve(projectRoot, 'packages/components/src/**/*.stories.tsx'),
     path.resolve(projectRoot, 'packages/system/src/**/*.stories.tsx'),
   ],
-  addons: ['@storybook/addon-essentials', '@storybook/addon-interactions'],
+  addons: [
+    '@storybook/addon-essentials',
+    '@storybook/addon-interactions',
+    '@storybook/addon-styling',
+  ],
   framework: {
     name: '@storybook/react-vite',
     options: {},
