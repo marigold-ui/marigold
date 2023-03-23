@@ -102,6 +102,19 @@ export const PassThroughProps: Story = {
   },
 };
 
+export const AsLink: Story = {
+  render: () => (
+    <Button
+      as="a"
+      variant="primary"
+      href="https://cdn.reservix.com/webshop/config/398/portal-logo-dark.62488549.png"
+      download
+    >
+      Download Logo
+    </Button>
+  ),
+};
+
 WithIcon.parameters = {
   chromatic: { viewports: [320, 1200] },
   theme: isChromatic() ? 'b2b' : 'stacked',
