@@ -18,11 +18,26 @@
     "directory": "config/prettier"
   },
   "dependencies": {
+    "@babel/core": "7.21.0",
+    "@emotion/react": "^11.0.0-rc.0",
+    "@emotion/styled": "^11.8.1",
     "@marigold/components": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
     "@marigold/theme-unicorn": "workspace:*",
-    "vite-tsconfig-paths": "4.0.5"
+    "@mdx-js/react": "2.3.0",
+    "@storybook/addon-a11y": "7.0.0-rc.3",
+    "@storybook/addon-essentials": "7.0.0-rc.3",
+    "@storybook/addon-interactions": "7.0.0-rc.3",
+    "@storybook/jest": "0.0.11-next.0",
+    "@storybook/source-loader": "7.0.0-rc.3",
+    "@storybook/testing-library": "0.0.14-next.1",
+    "@types/react": "18",
+    "babel-loader": "9.1.2",
+    "chromatic": "^6.6.3",
+    "find-up": "5.0.0",
+    "vite-tsconfig-paths": "4.0.5",
+    "webpack": "4"
   },
   "devDependencies": {
     "@storybook/addon-postcss": "2.0.0",
@@ -47,7 +62,11 @@
     "typescript": "4.9.5"
   },
   "scripts": {
-    "dev": "storybook dev -p 6006",
-    "build": "storybook build --disable-telemetry -c ./.storybook -o ../../storybook-static"
+    "start": "storybook dev -p 1337 -c .",
+    "build:tw": "pnpm dlx tailwindcss -i ./index.css -o ./dist/index.css",
+    "build": "storybook build --disable-telemetry -c . -o ../../storybook-static",
+    "test": "storybook dev --smoke-test --ci -c .",
+    "chromatic": "pnpm dlx chromatic --force-rebuild --only-changed --exit-zero-on-changes",
+    "ci": "pnpm dlx chromatic"
   }
 }
