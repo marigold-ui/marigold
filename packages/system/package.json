@@ -41,7 +41,7 @@
     "@babel/core": "7.21.3",
     "@marigold/tsconfig": "workspace:*",
     "react": "18.2.0",
-    "tsup": "6.6.3"
+    "tsup": "6.7.0"
   },
   "scripts": {
     "build": "tsup src/index.ts",
