@@ -20,7 +20,7 @@ import MenuSection from './MenuSection';
 // Theme Extension
 // ---------------
 export interface MenuThemeExtension
-  extends ThemeExtensionsWithParts<'Menu', ['container', 'item']> {}
+  extends ThemeExtensionsWithParts<'Menu', ['container', 'item', 'section']> {}
 
 // Props
 // ---------------

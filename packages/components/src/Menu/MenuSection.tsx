@@ -5,16 +5,21 @@ import { Key } from 'react';
 import { MenuItem } from './MenuItem';
 import { Node } from '@react-types/shared';
 import { useSeparator } from '@react-aria/separator';
-import { Box, useComponentStyles } from '@marigold/system';
+import { Box, CSSObject, useComponentStyles } from '@marigold/system';
 
 interface MenuSectionProps<T> {
   item: Node<T>;
   state: TreeState<T>;
   onAction?: (key: Key) => void;
+  css?: CSSObject;
 }
 
-const MenuSection = (props: MenuSectionProps<object>) => {
-  const { item, state, onAction } = props;
+const MenuSection = ({
+  onAction,
+  item,
+  state,
+  css,
+}: MenuSectionProps<object>) => {
   let { itemProps, headingProps, groupProps } = useMenuSection({
     heading: item.rendered,
     'aria-label': item['aria-label'],
@@ -24,7 +29,6 @@ const MenuSection = (props: MenuSectionProps<object>) => {
   });
 
   const styles = useComponentStyles('Menu', {}, { parts: ['item'] });
-
   return (
     <>
       {item.key !== state.collection.getFirstKey() && (
@@ -42,10 +46,11 @@ const MenuSection = (props: MenuSectionProps<object>) => {
           <Box
             as="span"
             {...headingProps}
-            style={{
-              fontWeight: 'bold',
-              fontSize: '1.1em',
-              padding: '2px 5px',
+            __baseCSS={{
+              fontWeight: 'normal',
+              padding: '4px 16px',
+              fontSize: 'xxsmall',
+              color: 'gray50',
             }}
           >
             {item.rendered}
@@ -58,6 +63,7 @@ const MenuSection = (props: MenuSectionProps<object>) => {
             padding: 0,
             listStyle: 'none',
           }}
+          css={css}
         >
           {[...item.childNodes].map(node => {
             let item = (
