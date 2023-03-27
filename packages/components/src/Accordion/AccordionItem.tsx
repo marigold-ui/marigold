@@ -1,23 +1,27 @@
-import { useStateProps } from '@marigold/system';
+import { Box, CSSObject, SVG, useStateProps } from '@marigold/system';
 import { useAccordionItem } from '@react-aria/accordion';
 import { FocusRing, useFocusRing } from '@react-aria/focus';
-import { useLocale } from '@react-aria/i18n';
 import { mergeProps } from '@react-aria/utils';
 import { TreeState } from '@react-stately/tree';
 import { Node } from '@react-types/shared';
 import React, { useRef } from 'react';
+import { Button } from '../Button';
 
 export interface AccordionItemProps {
   item: Node<object>;
   state: TreeState<object>;
+  css?: CSSObject;
+  title: string;
 }
 export const AccordionItem = ({
   state,
   item,
+  css,
+  title,
   ...props
 }: AccordionItemProps) => {
   const ref = useRef<HTMLButtonElement>(null);
-  const isOpen = state.expandedKeys.has(item.key);
+  const open = state.expandedKeys.has(item.key);
 
   const { buttonProps, regionProps } = useAccordionItem(
     {
@@ -27,51 +31,32 @@ export const AccordionItem = ({
     ref
   );
 
-  // Handles focus AND hover state
   const { isFocusVisible, focusProps } = useFocusRing();
   const stateProps = useStateProps({
     focus: isFocusVisible,
+    expanded: open,
   });
-  let { direction } = useLocale();
 
   return (
-    <div>
-      <h3>
-        <FocusRing within>
-          <button
-            {...mergeProps(buttonProps, hoverProps)}
-            ref={ref}
-            className={classNames(styles, 'spectrum-Accordion-itemHeader', {
-              'is-hovered': isHovered,
-            })}
-          >
-            {direction === 'ltr' ? (
-              <ChevronRightMedium
-                aria-hidden="true"
-                UNSAFE_className={classNames(
-                  styles,
-                  'spectrum-Accordion-itemIndicator'
-                )}
-              />
-            ) : (
-              <ChevronLeftMedium
-                aria-hidden="true"
-                UNSAFE_className={classNames(
-                  styles,
-                  'spectrum-Accordion-itemIndicator'
-                )}
-              />
-            )}
-            {item.props.title}
-          </button>
-        </FocusRing>
-      </h3>
-      <div
-        {...regionProps}
-        className={classNames(styles, 'spectrum-Accordion-itemContent')}
-      >
-        {item.props.children}
-      </div>
-    </div>
+    <Box {...focusProps}>
+      <FocusRing within>
+        <Box
+          as={Button}
+          {...mergeProps(buttonProps, stateProps)}
+          ref={ref}
+          __baseCSS={{ p: 0 }}
+        >
+          {title}
+          <SVG viewBox="0 0 24 24" aria-hidden={true}>
+            <path d="M5.97563 7.125L12 13.1363L18.0244 7.125L19.875 8.97563L12 16.8506L4.125 8.97563L5.97563 7.125Z" />
+          </SVG>
+        </Box>
+      </FocusRing>
+      {open && (
+        <Box {...regionProps} css={css}>
+          {item.props.children}
+        </Box>
+      )}
+    </Box>
   );
 };
