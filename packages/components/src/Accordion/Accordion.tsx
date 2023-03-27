@@ -15,17 +15,11 @@ export interface AccordionThemeExtension
 export interface AccordionProps
   extends Pick<AriaAccordionProps<object>, 'disabledKeys' | 'expandedKeys'> {
   children: CollectionElement<object> | CollectionElement<object>[];
-  variant: string;
-  size: string;
-  stretch: boolean;
+  variant?: string;
+  size?: string;
 }
 
-export const Accordion = ({
-  variant,
-  size,
-  stretch,
-  ...props
-}: AccordionProps) => {
+export const Accordion = ({ variant, size, ...props }: AccordionProps) => {
   const ownProps = { ...props } as const;
   const ref = useRef(null);
   const state = useTreeState({
@@ -39,6 +33,7 @@ export const Accordion = ({
     { parts: ['icon', 'item', 'button'] }
   );
 
+  console.log(state.collection);
   return (
     <div {...filterDOMProps(accordionProps)} {...ownProps} ref={ref}>
       {[...state.collection].map(item => (
@@ -47,8 +42,8 @@ export const Accordion = ({
           title={item.props.title}
           item={item}
           state={state}
-          stretch={stretch}
           css={styles}
+          stretch={item.props.stretch}
         />
       ))}
     </div>

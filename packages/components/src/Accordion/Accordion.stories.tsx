@@ -16,7 +16,6 @@ const meta = {
   },
   args: {
     variant: '',
-    stretch: false,
   },
 } satisfies Meta;
 
@@ -25,8 +24,8 @@ type Story = StoryObj<typeof Accordion>;
 
 export const Basic: Story = {
   render: args => (
-    <Accordion stretch disabledKeys={[2]} {...args}>
-      <Accordion.Item key={1} title="Informations">
+    <Accordion disabledKeys={[2]} {...args}>
+      <Accordion.Item key={1} title="Informations" stretch>
         one
       </Accordion.Item>
       <Accordion.Item key={2} title="Personal Settings">

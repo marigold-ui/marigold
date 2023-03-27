@@ -6,8 +6,6 @@ import { TreeState } from '@react-stately/tree';
 import { Node } from '@react-types/shared';
 import React, { useRef } from 'react';
 import { Button } from '../Button';
-import { Inline } from '../Inline';
-import { Split } from '../Split';
 
 export interface AccordionItemProps {
   item: Node<object>;
@@ -21,6 +19,7 @@ export const AccordionItem = ({
   css,
   state,
   title,
+  stretch,
   ...props
 }: AccordionItemProps) => {
   const ref = useRef<HTMLButtonElement>(null);
@@ -43,6 +42,7 @@ export const AccordionItem = ({
     disabled,
   });
 
+  console.log(item.props);
   return (
     <Box {...focusProps} {...stateProps} {...props} css={css}>
       <FocusRing within>
@@ -52,8 +52,9 @@ export const AccordionItem = ({
           ref={ref}
           __baseCSS={{
             p: 0,
-            width: props.stretch ? '100%' : undefined,
-            justifyContent: props.stretch ? 'space-between' : 'left',
+            border: 'none',
+            width: stretch ? '100%' : undefined,
+            justifyContent: stretch ? 'space-between' : 'left',
           }}
         >
           {title}
