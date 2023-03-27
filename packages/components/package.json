@@ -27,6 +27,7 @@
     "@marigold/system": "workspace:*",
     "@marigold/tokens": "workspace:*",
     "@marigold/types": "workspace:*",
+    "@react-aria/accordion": "3.0.0-alpha.16",
     "@react-aria/autocomplete": "3.0.0-alpha.15",
     "@react-aria/button": "3.7.0",
     "@react-aria/checkbox": "3.8.0",
