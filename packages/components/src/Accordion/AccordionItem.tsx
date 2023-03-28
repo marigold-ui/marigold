@@ -1,4 +1,11 @@
-import { Box, CSSObject, SVG, useStateProps } from '@marigold/system';
+import {
+  Box,
+  CSSObject,
+  SVG,
+  ThemeExtensionsWithParts,
+  useComponentStyles,
+  useStateProps,
+} from '@marigold/system';
 import { useAccordionItem } from '@react-aria/accordion';
 import { FocusRing, useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
@@ -7,18 +14,25 @@ import { Node } from '@react-types/shared';
 import React, { useRef } from 'react';
 import { Button } from '../Button';
 
+export interface AccordionThemeExtension
+  extends ThemeExtensionsWithParts<'Accordion', ['button', 'item']> {}
+
 export interface AccordionItemProps {
   item: Node<object>;
   state: TreeState<object>;
   css?: CSSObject;
   title: string;
   stretch?: boolean;
+  variant?: string;
+  size?: string;
 }
 export const AccordionItem = ({
   item,
   css,
   state,
   title,
+  variant,
+  size,
   stretch,
   ...props
 }: AccordionItemProps) => {
@@ -42,20 +56,27 @@ export const AccordionItem = ({
     disabled,
   });
 
-  console.log(item.props);
+  const styles = useComponentStyles(
+    'Accordion',
+    { variant, size },
+    { parts: ['item', 'button'] }
+  );
+
   return (
-    <Box {...focusProps} {...stateProps} {...props} css={css}>
+    <Box {...mergeProps(stateProps, props)}>
       <FocusRing within>
         <Box
           as={Button}
           {...mergeProps(buttonProps, stateProps)}
           ref={ref}
           __baseCSS={{
-            p: 0,
+            px: 12,
+            py: 16,
             border: 'none',
             width: stretch ? '100%' : undefined,
             justifyContent: stretch ? 'space-between' : 'left',
           }}
+          css={styles.button}
         >
           {title}
           {!open ? (
@@ -69,8 +90,9 @@ export const AccordionItem = ({
           )}
         </Box>
       </FocusRing>
+
       {open && (
-        <Box {...regionProps} css={css}>
+        <Box {...regionProps} {...focusProps} css={styles.item}>
           {item.props.children}
         </Box>
       )}

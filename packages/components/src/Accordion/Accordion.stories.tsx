@@ -2,6 +2,8 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Accordion } from './Accordion';
+import { Headline } from '../Headline';
+import { Text } from '../Text';
 
 const meta = {
   title: 'Components/Accordion',
@@ -26,13 +28,14 @@ export const Basic: Story = {
   render: args => (
     <Accordion disabledKeys={[2]} {...args}>
       <Accordion.Item key={1} title="Informations" stretch>
-        one
+        <Headline level="1">Some Imformations</Headline>
+        <Text>info</Text>
       </Accordion.Item>
       <Accordion.Item key={2} title="Personal Settings">
         two
       </Accordion.Item>
       <Accordion.Item key={3} title="Billing Adress">
-        three
+        <Headline level="1">Some Imformations</Headline>
       </Accordion.Item>
     </Accordion>
   ),
