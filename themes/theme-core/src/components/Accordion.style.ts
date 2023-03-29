@@ -3,13 +3,12 @@ import type { Theme } from '@marigold/components';
 export const Accordion: Theme['components']['Accordion'] = {
   base: {
     item: {
-      px: 12,
-      py: 8,
+      px: 'small',
+      py: 'xsmall',
     },
     button: {
       bg: '#F0EFEB',
-      fontWeight: 500,
-      lineHeight: 18,
+      fontWeight: 700,
     },
   },
 };

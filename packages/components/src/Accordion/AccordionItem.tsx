@@ -10,7 +10,7 @@ import { useAccordionItem } from '@react-aria/accordion';
 import { FocusRing, useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
 import { TreeState } from '@react-stately/tree';
-import { Node } from '@react-types/shared';
+import { ItemProps, Node } from '@react-types/shared';
 import React, { useRef } from 'react';
 import { Button } from '../Button';
 
@@ -67,11 +67,9 @@ export const AccordionItem = ({
       <FocusRing within>
         <Box
           as={Button}
-          {...mergeProps(buttonProps, stateProps)}
+          {...mergeProps(buttonProps, stateProps, props)}
           ref={ref}
           __baseCSS={{
-            px: 12,
-            py: 16,
             border: 'none',
             width: stretch ? '100%' : undefined,
             justifyContent: stretch ? 'space-between' : 'left',
