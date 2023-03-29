@@ -1,19 +1,14 @@
-import React, { useRef } from 'react';
+import React, { Children, useRef } from 'react';
 import { AriaAccordionProps, useAccordion } from '@react-aria/accordion';
-import { useTreeState } from '@react-stately/tree';
-import { AccordionItem } from './AccordionItem';
+import { useTreeState } from './useTreeState';
 import { Item } from '@react-stately/collections';
 import { Box } from '@marigold/system';
 import { ItemElement, ItemProps } from '@react-types/shared';
-
-// Theme Extension
-// ---------------
-// export interface AccordionThemeExtension
-//   extends ThemeExtensionsWithParts<'Accordion', ['button', 'icon', 'item']> {}
+import { AccordionItem } from './AccordionItem';
 
 export interface AccordionProps
   extends Omit<AriaAccordionProps<object>, 'children'> {
-  children: ItemElement<object>[];
+  children: ItemElement<object>[] | ItemElement<object>;
   variant?: string;
   size?: string;
 }
@@ -27,11 +22,10 @@ export const Accordion = ({
   const ownProps = {
     ...props,
     // we have to do this because JSX childs are not supported
-    children: children.map(child => {
+    children: Children.toArray(children).map(child => {
       if (!React.isValidElement(child)) {
         return child;
       }
-
       return React.cloneElement(child, {
         hasChildItems: false,
         ...child.props,
@@ -39,13 +33,15 @@ export const Accordion = ({
     }),
   };
   const ref = useRef(null);
-
   const state = useTreeState({
-    ...ownProps,
+    selectionMode: 'single',
+    ...(ownProps as any),
   });
+
+  console.log(state.expandedKeys);
+
   const { accordionProps } = useAccordion(ownProps, state, ref);
 
-  console.log(ownProps.children);
   return (
     <Box {...accordionProps} ref={ref} {...ownProps}>
       {[...state.collection].map(item => (

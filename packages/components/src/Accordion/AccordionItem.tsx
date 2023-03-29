@@ -10,7 +10,7 @@ import { useAccordionItem } from '@react-aria/accordion';
 import { FocusRing, useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
 import { TreeState } from '@react-stately/tree';
-import { ItemProps, Node } from '@react-types/shared';
+import { Node } from '@react-types/shared';
 import React, { useRef } from 'react';
 import { Button } from '../Button';
 

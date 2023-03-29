@@ -4,9 +4,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 import { Accordion } from './Accordion';
 import { Headline } from '../Headline';
-import userEvent from '@testing-library/user-event';
-
-const user = userEvent.setup();
 
 const theme = {
   colors: {
@@ -28,11 +25,30 @@ let items = [
   { key: 'three', title: 'three title', children: 'three children' },
 ];
 
-test('render Accordion and Item', () => {
+test('render Accordion and more than one Item', () => {
   render(
     <Accordion data-testid="accordion">
       <Accordion.Item title="Information">
-        <Headline>item</Headline>
+        <Headline>infos</Headline>
+      </Accordion.Item>
+      <Accordion.Item title="Settings">
+        <Headline>settings</Headline>
+      </Accordion.Item>
+    </Accordion>
+  );
+
+  const accordion = screen.getByTestId('accordion');
+  expect(accordion).toBeInTheDocument();
+
+  const item = accordion.firstChild;
+  expect(item).toBeInTheDocument();
+});
+
+test('render Accordion and just one Item', () => {
+  render(
+    <Accordion data-testid="accordion">
+      <Accordion.Item title="Information">
+        <Headline>infos</Headline>
       </Accordion.Item>
     </Accordion>
   );
@@ -50,6 +66,9 @@ test('item opens content by click', () => {
       <Accordion.Item title="Information">
         <Headline>item</Headline>
       </Accordion.Item>
+      <Accordion.Item title="Settings">
+        <Headline>settings</Headline>
+      </Accordion.Item>
     </Accordion>
   );
 
@@ -64,7 +83,7 @@ test('item opens content by click', () => {
 test('render dynamically accordion items', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Accordion children={items} data-testid="accordion">
+      <Accordion data-testid="accordion">
         {items.map(item => (
           <Accordion.Item key={item.key} title={item.title}>
             {item.children}
