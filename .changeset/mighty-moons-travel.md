@@ -1,6 +1,6 @@
 ---
-"@marigold/docs": patch
-"@marigold/components": patch
+"@marigold/docs": minor
+"@marigold/components": minor
 ---
 
 chore: add fontStyle to <Text> component
