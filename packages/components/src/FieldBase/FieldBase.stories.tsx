@@ -9,6 +9,7 @@ import { Radio } from '../Radio';
 import { Checkbox, CheckboxGroup } from '../Checkbox';
 import isChromatic from 'chromatic';
 import { Box } from '@marigold/system';
+import { Input } from '../Input';
 const meta = {
   title: 'Components/FieldBase',
   component: FieldBase,
@@ -91,12 +92,12 @@ export const Basic: Story = {
 
 export const Complex: Story = {
   render: args => (
-    <FieldGroup labelWidth="100%" labelPosition="top">
+    <FieldGroup labelWidth="100px" labelPosition="left">
       <Box style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <FieldBase {...args} label="This is my Label">
-          <input type="text" />
+          <Input type="text" />
         </FieldBase>
-        <FieldBase {...args} label="This is my Label">
+        <FieldBase {...args} label="name">
           <input type="text" />
         </FieldBase>
         <TextField label="Hello TextField" />

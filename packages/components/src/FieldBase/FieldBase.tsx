@@ -56,10 +56,12 @@ export const FieldBase = ({
 
   return (
     <Box
+      css={style}
       {...props}
       __baseCSS={{
         display: 'grid',
-        gridTemplateColumns: 'auto-fit 2fr',
+        gap: '0.3rem',
+        gridTemplateColumns: 'auto 2fr',
         gridTemplateAreas: `${
           labelPosition === 'left'
             ? '"labelLeft input"'
@@ -68,7 +70,6 @@ export const FieldBase = ({
         width,
         position: 'relative',
       }}
-      css={style}
     >
       {label && (
         <Box
@@ -76,6 +77,7 @@ export const FieldBase = ({
             gridArea: labelPosition === 'left' ? 'labelLeft' : 'labelTop',
             display: 'flex',
             alignItems: 'center',
+            '& label': { whiteSpace: 'nowrap' },
           }}
         >
           <Label
@@ -97,7 +99,14 @@ export const FieldBase = ({
           gridArea: 'input',
         }}
       >
-        {children}
+        <Box
+          __baseCSS={{
+            width: '100%',
+            '& input': { width: '100%' },
+          }}
+        >
+          {children}
+        </Box>
         {hasHelpText && (
           <HelpText
             {...stateProps}

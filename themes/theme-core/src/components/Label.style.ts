@@ -2,7 +2,7 @@ import { Theme } from '@marigold/components';
 
 export const Label: Theme['components']['Label'] = {
   base: {
-    justifyContent: 'flex-end',
+    // justifyContent: 'flex-end',
     fontSize: 'xxsmall',
     color: 'text',
     '&:disabled': {
