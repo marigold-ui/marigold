@@ -13,9 +13,30 @@ const theme = {
   fontSizes: {
     'small-1': 12,
   },
-  sizes: {
+  space: {
     none: 0,
-    large: 200,
+    large: 12,
+  },
+  components: {
+    Accordion: {
+      variant: {
+        one: {
+          item: {
+            bg: 'teal',
+          },
+          button: {
+            bg: 'blue',
+          },
+        },
+      },
+      size: {
+        large: {
+          button: {
+            p: 'large',
+          },
+        },
+      },
+    },
   },
 };
 
@@ -96,4 +117,27 @@ test('render dynamically accordion items', () => {
 
   const content = screen.getByText('one children');
   expect(content).toBeInTheDocument();
+});
+
+test('accepts variant and size', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Accordion data-testid="accordion">
+        <Accordion.Item title="Information" variant="one" size="large">
+          <Headline>infos</Headline>
+        </Accordion.Item>
+      </Accordion>
+    </ThemeProvider>
+  );
+
+  const button = screen.getByText('Information');
+
+  expect(button).toHaveAttribute('aria-expanded', 'false');
+  expect(button).toHaveStyle(`background-color: ${theme.colors.blue}`);
+  expect(button).toHaveStyle(`padding: ${theme.space.large}px`);
+  fireEvent.click(button);
+  expect(button).toHaveAttribute('aria-expanded', 'true');
+
+  const item = screen.getByText('infos');
+  expect(item).toHaveStyle(`background-color: ${theme.colors.teal})`);
 });

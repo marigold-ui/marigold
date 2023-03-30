@@ -4,24 +4,14 @@ import { Item } from '@react-stately/collections';
 import { Box } from '@marigold/system';
 import { ItemElement, ItemProps } from '@react-types/shared';
 import { AccordionItem } from './AccordionItem';
-import { useTabListState } from '@react-stately/tabs';
-import { mergeProps } from '@react-aria/utils';
-import { useMenu } from '@react-aria/menu';
 import { useTreeState } from '@react-stately/tree';
 
 export interface AccordionProps
   extends Omit<AriaAccordionProps<object>, 'children'> {
-  children: ItemElement<object>[] | ItemElement<object> | any;
-  variant?: string;
-  size?: string;
+  children: ItemElement<object>[] | ItemElement<object>;
 }
 
-export const Accordion = ({
-  variant,
-  size,
-  children,
-  ...props
-}: AccordionProps) => {
+export const Accordion = ({ children, ...props }: AccordionProps) => {
   const ownProps = {
     ...props,
     // we have to do this because JSX childs are not supported
@@ -37,7 +27,6 @@ export const Accordion = ({
   };
   const ref = useRef(null);
 
-  //const state = useTabListState({ ...ownProps, children });
   const state = useTreeState({
     selectionMode: 'single',
     ...(ownProps as any),
@@ -49,9 +38,8 @@ export const Accordion = ({
     ref
   );
 
-  console.log(accordionProps);
   return (
-    <Box {...accordionProps} ref={ref}>
+    <Box {...accordionProps} ref={ref} {...ownProps}>
       {[...state.collection].map(item => (
         <AccordionItem
           key={item.key}
@@ -59,6 +47,8 @@ export const Accordion = ({
           item={item}
           state={state}
           stretch={item.props.stretch}
+          variant={item.props.variant}
+          size={item.props.size}
         />
       ))}
     </Box>
@@ -67,6 +57,9 @@ export const Accordion = ({
 
 export interface AccordionOwnItemProps<T> extends ItemProps<T> {
   stretch?: boolean;
+  variant?: string;
+  size?: string;
+  title: string | ReactNode;
 }
 
 Accordion.Item = Item as <T>(props: AccordionOwnItemProps<T>) => JSX.Element;

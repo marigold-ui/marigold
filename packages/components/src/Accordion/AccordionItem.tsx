@@ -11,9 +11,8 @@ import { FocusRing, useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
 import { TreeState } from '@react-stately/tree';
 import { Node } from '@react-types/shared';
-import React, { useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
 import { Button } from '../Button';
-import { Item } from '@react-stately/collections';
 
 export interface AccordionThemeExtension
   extends ThemeExtensionsWithParts<'Accordion', ['button', 'item']> {}
@@ -22,7 +21,7 @@ export interface AccordionItemProps {
   item: Node<object>;
   state: TreeState<object>;
   css?: CSSObject;
-  title: string;
+  title: string | ReactNode;
   stretch?: boolean;
   variant?: string;
   size?: string;
@@ -65,6 +64,7 @@ export const AccordionItem = ({
           ref={ref}
           __baseCSS={{
             border: 'none',
+            p: 0,
             width: stretch ? '100%' : undefined,
             justifyContent: stretch ? 'space-between' : 'left',
           }}
