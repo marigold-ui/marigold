@@ -52,9 +52,7 @@ test('render Accordion and more than one Item', () => {
       <Accordion.Item title="Information">
         <Headline>infos</Headline>
       </Accordion.Item>
-      <Accordion.Item title="Settings">
-        <Headline>settings</Headline>
-      </Accordion.Item>
+      <Accordion.Item title="Settings">settings</Accordion.Item>
     </Accordion>
   );
 
@@ -62,6 +60,8 @@ test('render Accordion and more than one Item', () => {
   expect(item).toBeInTheDocument();
   const itemtwo = screen.getByText('Settings');
   expect(itemtwo).toBeInTheDocument();
+  expect(item).toBeValid();
+  expect(itemtwo).toBeValid();
 });
 
 test('render Accordion and just one Item', () => {
@@ -140,4 +140,38 @@ test('accepts variant and size', () => {
 
   const item = screen.getByText('infos');
   expect(item).toHaveStyle(`background-color: ${theme.colors.teal})`);
+});
+
+test('default stretched', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Accordion data-testid="accordion">
+        <Accordion.Item title="Information">
+          <Headline>infos</Headline>
+        </Accordion.Item>
+      </Accordion>
+    </ThemeProvider>
+  );
+
+  const button = screen.getByText('Information');
+
+  expect(button).toHaveStyle(`width: 100%`);
+  expect(button).toHaveStyle(`justify-content: space-between`);
+});
+
+test('not stretched', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Accordion data-testid="accordion">
+        <Accordion.Item title="Information" stretch={false}>
+          <Headline>infos</Headline>
+        </Accordion.Item>
+      </Accordion>
+    </ThemeProvider>
+  );
+
+  const button = screen.getByText('Information');
+
+  expect(button).toHaveStyle(`width: undefined`);
+  expect(button).toHaveStyle(`justify-content: left`);
 });

@@ -1,4 +1,4 @@
-import React, { Children, ReactNode, useRef } from 'react';
+import React, { Children, ReactElement, ReactNode, useRef } from 'react';
 import { AriaAccordionProps, useAccordion } from '@react-aria/accordion';
 import { Item } from '@react-stately/collections';
 import { Box } from '@marigold/system';
@@ -61,7 +61,7 @@ export interface AccordionOwnItemProps<T> extends ItemProps<T> {
   stretch?: boolean;
   variant?: string;
   size?: string;
-  title: string | ReactNode;
+  title: string | ReactElement;
 }
 
 Accordion.Item = Item as <T>(props: AccordionOwnItemProps<T>) => JSX.Element;

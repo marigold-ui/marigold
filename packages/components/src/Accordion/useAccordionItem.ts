@@ -71,16 +71,12 @@ export function useAccordionItem<T>(
       }
 
       if (manager.selectionMode === 'single') {
-        console.log('selection mode', manager.selectionMode);
         if (manager.isSelected(key) && !manager.disallowEmptySelection) {
-          console.log('toggleSelection', key);
           manager.toggleSelection(key);
         } else {
-          console.log('replaceSelection', key);
           manager.replaceSelection(key);
         }
       } else if (e && e.shiftKey) {
-        console.log('extendSelection', key);
         manager.extendSelection(key);
       } else if (
         manager.selectionBehavior === 'toggle' ||
