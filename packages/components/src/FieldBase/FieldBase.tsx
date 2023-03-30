@@ -49,9 +49,7 @@ export const FieldBase = ({
   ...props
 }: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
-
   const style = useComponentStyles('Field', { variant, size });
-
   const { labelWidth, labelPosition } = useFieldGroupContext();
 
   return (
@@ -59,14 +57,9 @@ export const FieldBase = ({
       css={style}
       {...props}
       __baseCSS={{
-        display: 'grid',
-        gap: '0.3rem',
-        gridTemplateColumns: 'auto 2fr',
-        gridTemplateAreas: `${
-          labelPosition === 'left'
-            ? '"labelLeft input"'
-            : `"labelTop labelTop"  "input input"`
-        }`,
+        display: 'flex',
+        flexDirection: labelPosition === 'left' ? 'row' : 'column',
+        flexWrap: 'wrap',
         width,
         position: 'relative',
       }}
@@ -74,7 +67,6 @@ export const FieldBase = ({
       {label && (
         <Box
           __baseCSS={{
-            gridArea: labelPosition === 'left' ? 'labelLeft' : 'labelTop',
             display: 'flex',
             alignItems: 'center',
             '& label': { whiteSpace: 'nowrap' },
