@@ -38,15 +38,14 @@ export const AccordionItem = ({
 }: AccordionItemProps) => {
   const ref = useRef<HTMLButtonElement>(null);
   const open = state.selectionManager.isSelected(item.key);
-  const disabled = state.disabledKeys.has(item.key);
 
+  // we have to use or own hook because it's in react-aria still issues
   const { buttonProps, regionProps } = useAccordionItem({ item }, state, ref);
   const { isFocusVisible, focusProps } = useFocusRing();
 
   const stateProps = useStateProps({
     focus: isFocusVisible,
     expanded: open,
-    disabled,
   });
 
   const styles = useComponentStyles(

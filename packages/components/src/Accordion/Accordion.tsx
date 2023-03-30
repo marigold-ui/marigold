@@ -9,6 +9,7 @@ import { useTreeState } from '@react-stately/tree';
 export interface AccordionProps
   extends Omit<AriaAccordionProps<object>, 'children'> {
   children: ItemElement<object>[] | ItemElement<object>;
+  selectionMode?: string;
 }
 
 export const Accordion = ({ children, ...props }: AccordionProps) => {
@@ -39,9 +40,10 @@ export const Accordion = ({ children, ...props }: AccordionProps) => {
   );
 
   return (
-    <Box {...accordionProps} ref={ref} {...ownProps}>
+    <Box {...accordionProps} ref={ref}>
       {[...state.collection].map(item => (
         <AccordionItem
+          {...ownProps}
           key={item.key}
           title={item.props.title}
           item={item}
