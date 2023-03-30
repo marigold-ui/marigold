@@ -13,6 +13,10 @@ export const Accordion: Theme['components']['Accordion'] = {
       px: 'xsmall',
       fontWeight: 700,
       lineHeight: 'small',
+
+      '&:disabled': {
+        bg: 'disabled',
+      },
     },
   },
 };

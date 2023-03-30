@@ -33,7 +33,7 @@ export const AccordionItem = ({
   title,
   variant,
   size,
-  stretch,
+  stretch = true,
   ...props
 }: AccordionItemProps) => {
   const ref = useRef<HTMLButtonElement>(null);
