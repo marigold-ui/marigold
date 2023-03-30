@@ -73,20 +73,24 @@ export const MenuOnly: Story = {
 
 export const MenuSection: Story = {
   render: () => (
-    <Menu aria-label="Menu with sections">
-      <Menu.Section title="Food">
-        <Menu.Item key="burger">🍔 Burger</Menu.Item>
-        <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-        <Menu.Item key="salad">🥗 Salad</Menu.Item>
-        <Menu.Item key="fries">🍟 Fries</Menu.Item>
-      </Menu.Section>
-      <Menu.Section title="Fruits">
-        <Menu.Item key="apple">🍎 Apple</Menu.Item>
-        <Menu.Item key="banana">🍌 Banana</Menu.Item>
-        <Menu.Item key="mango">🥭 Mango</Menu.Item>
-        <Menu.Item key="strawberry">🍓 Strawberry</Menu.Item>
-      </Menu.Section>
-    </Menu>
+    <Menu.Trigger>
+      <Button variant="menu" size="small">
+        open menu
+      </Button>
+      <Menu aria-label="Menu with sections">
+        <Menu.Section title="Food">
+          <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+          <Menu.Item key="salad">🥗 Salad</Menu.Item>
+          <Menu.Item key="fries">🍟 Fries</Menu.Item>
+        </Menu.Section>
+        <Menu.Section title="Fruits">
+          <Menu.Item key="apple">🍎 Apple</Menu.Item>
+          <Menu.Item key="banana">🍌 Banana</Menu.Item>
+          <Menu.Item key="mango">🥭 Mango</Menu.Item>
+          <Menu.Item key="strawberry">🍓 Strawberry</Menu.Item>
+        </Menu.Section>
+      </Menu>
+    </Menu.Trigger>
   ),
 };
 

@@ -75,11 +75,6 @@ const MenuSection = ({
                 css={styles.item}
               />
             );
-
-            if (node.wrapper) {
-              item = node.wrapper(item);
-            }
-
             return item;
           })}
         </Box>
