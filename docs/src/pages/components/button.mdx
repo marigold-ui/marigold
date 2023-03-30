@@ -119,3 +119,13 @@ Also there is the `fullWidth` property, with that one you can stretch the width 
 ```tsx preview file=components/Button/button-size.demo.tsx
 
 ```
+
+### Button as a Link
+
+Sometimes you want to use an `<a>` tag, instead of a `<button>`, but you still want it to look and behave like a button. This might be the case when you want the user to enable to download a file that is already available via URL. Instead of loading the file on click, you can make use of the [`[download]` attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement/download).
+
+To make this possible, Marigold's `<Button>` component allows to change the rendered element by using the `as` prop, similiar to the [`<Box>`](/components/box/#polymorphic-component) component.
+
+```tsx preview file=components/Button/button-link.demo.tsx
+
+```
