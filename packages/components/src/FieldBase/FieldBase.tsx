@@ -52,32 +52,51 @@ export const FieldBase = ({
 
   const style = useComponentStyles('Field', { variant, size });
 
-  const { labelWidth } = useFieldGroupContext();
+  const { labelWidth, labelPosition } = useFieldGroupContext();
 
   return (
     <Box
       {...props}
       __baseCSS={{
-        display: 'flex',
-        flexDirection: 'column',
+        display: 'grid',
+        gridTemplateColumns: 'auto-fit 2fr',
+        gridTemplateAreas: `${
+          labelPosition === 'left'
+            ? '"labelLeft input"'
+            : `"labelTop labelTop"  "input input"`
+        }`,
         width,
         position: 'relative',
       }}
       css={style}
     >
       {label && (
-        <Label
-          required={required}
-          variant={variant}
-          size={size}
-          labelWidth={labelWidth}
-          {...labelProps}
-          {...stateProps}
+        <Box
+          __baseCSS={{
+            gridArea: labelPosition === 'left' ? 'labelLeft' : 'labelTop',
+            display: 'flex',
+            alignItems: 'center',
+          }}
         >
-          {label}
-        </Label>
+          <Label
+            required={required}
+            variant={variant}
+            size={size}
+            labelWidth={labelWidth}
+            {...labelProps}
+            {...stateProps}
+          >
+            {label}
+          </Label>
+        </Box>
       )}
-      <Box __baseCSS={{ display: 'flex', flexDirection: 'column' }}>
+      <Box
+        __baseCSS={{
+          display: 'flex',
+          flexDirection: 'column',
+          gridArea: 'input',
+        }}
+      >
         {children}
         {hasHelpText && (
           <HelpText

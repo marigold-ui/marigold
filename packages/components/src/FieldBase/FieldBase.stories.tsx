@@ -8,6 +8,7 @@ import { RadioGroup } from '../Radio/RadioGroup';
 import { Radio } from '../Radio';
 import { Checkbox, CheckboxGroup } from '../Checkbox';
 import isChromatic from 'chromatic';
+import { Box } from '@marigold/system';
 const meta = {
   title: 'Components/FieldBase',
   component: FieldBase,
@@ -90,27 +91,29 @@ export const Basic: Story = {
 
 export const Complex: Story = {
   render: args => (
-    <FieldGroup labelWidth="30%">
-      <FieldBase {...args} label="This is my Label">
-        <input type="text" />
-      </FieldBase>
-      <FieldBase {...args} label="This is my Label">
-        <input type="text" />
-      </FieldBase>
-      <TextField label="Hello TextField" />
-      <TextField label="Hello" description="my description" />
-      <Select label="Select me">
-        <Select.Option key="one">One</Select.Option>
-        <Select.Option key="two">Two</Select.Option>
-      </Select>
-      <RadioGroup label="Radios">
-        <Radio value="1">One</Radio>
-        <Radio value="2">Two</Radio>
-      </RadioGroup>
-      <CheckboxGroup label="Checkboxes">
-        <Checkbox value="1">One</Checkbox>
-        <Checkbox value="2">Two</Checkbox>
-      </CheckboxGroup>
+    <FieldGroup labelWidth="100%" labelPosition="top">
+      <Box style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <FieldBase {...args} label="This is my Label">
+          <input type="text" />
+        </FieldBase>
+        <FieldBase {...args} label="This is my Label">
+          <input type="text" />
+        </FieldBase>
+        <TextField label="Hello TextField" />
+        <TextField label="Hello" description="my description" />
+        <Select label="Select me">
+          <Select.Option key="one">One</Select.Option>
+          <Select.Option key="two">Two</Select.Option>
+        </Select>
+        <RadioGroup label="Radios">
+          <Radio value="1">One</Radio>
+          <Radio value="2">Two</Radio>
+        </RadioGroup>
+        <CheckboxGroup label="Checkboxes">
+          <Checkbox value="1">One</Checkbox>
+          <Checkbox value="2">Two</Checkbox>
+        </CheckboxGroup>
+      </Box>
     </FieldGroup>
   ),
 };

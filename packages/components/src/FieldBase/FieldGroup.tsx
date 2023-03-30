@@ -3,6 +3,7 @@ import { createContext, ReactNode, useContext } from 'react';
 
 export interface FieldGroupContextProps {
   labelWidth?: string;
+  labelPosition?: 'top' | 'left';
 }
 
 export const FieldGroupContext = createContext<FieldGroupContextProps>({});
@@ -10,11 +11,16 @@ export const useFieldGroupContext = () => useContext(FieldGroupContext);
 
 export interface FieldGroupProps {
   labelWidth?: string;
+  labelPosition?: 'top' | 'left';
   children: ReactNode;
 }
-export const FieldGroup = ({ labelWidth, children }: FieldGroupProps) => {
+export const FieldGroup = ({
+  labelWidth,
+  labelPosition = 'top',
+  children,
+}: FieldGroupProps) => {
   return (
-    <FieldGroupContext.Provider value={{ labelWidth }}>
+    <FieldGroupContext.Provider value={{ labelWidth, labelPosition }}>
       {children}
     </FieldGroupContext.Provider>
   );
