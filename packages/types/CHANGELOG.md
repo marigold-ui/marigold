@@ -1,5 +1,13 @@
 # @marigold/types
 
+## 1.0.1
+
+### Patch Changes
+
+- [#2894](https://github.com/marigold-ui/marigold/pull/2894) [`b3d577339`](https://github.com/marigold-ui/marigold/commit/b3d577339e16e73185d2fb80707479ce689e7f7f) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @types/react to v18.0.29
+
+- [#2891](https://github.com/marigold-ui/marigold/pull/2891) [`8972cbaca`](https://github.com/marigold-ui/marigold/commit/8972cbaca29ccce9c17a15b772ab0c7a3e921d20) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency type-fest to v3.7.0
+
 ## 1.0.0
 
 ### Major Changes

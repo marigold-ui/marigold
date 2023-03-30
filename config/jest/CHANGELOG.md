@@ -1,5 +1,11 @@
 # @marigold/jest-config
 
+## 1.1.1
+
+### Patch Changes
+
+- [#2887](https://github.com/marigold-ui/marigold/pull/2887) [`539544841`](https://github.com/marigold-ui/marigold/commit/53954484120a34460ddb5bb6f3b3bc7106f2ce63) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update testing
+
 ## 1.1.0
 
 ### Minor Changes
