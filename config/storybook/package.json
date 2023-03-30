@@ -1,7 +1,7 @@
 {
   "name": "@marigold/storybook-config",
   "description": "Marigold's storybook configuration",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "type": "module",
   "exports": "./main.js",
@@ -27,11 +27,11 @@
     "@marigold/theme-core": "workspace:*",
     "@marigold/theme-unicorn": "workspace:*",
     "@mdx-js/react": "2.3.0",
-    "@storybook/addon-a11y": "7.0.0-rc.5",
-    "@storybook/addon-essentials": "7.0.0-rc.5",
-    "@storybook/addon-interactions": "7.0.0-rc.5",
-    "@storybook/jest": "0.0.11-next.0",
-    "@storybook/source-loader": "7.0.0-rc.5",
+    "@storybook/addon-a11y": "7.0.0-rc.8",
+    "@storybook/addon-essentials": "7.0.0-rc.8",
+    "@storybook/addon-interactions": "7.0.0-rc.8",
+    "@storybook/jest": "0.0.11-next.1",
+    "@storybook/source-loader": "7.0.0-rc.8",
     "@storybook/testing-library": "0.0.14-next.1",
     "@types/react": "18",
     "babel-loader": "9.1.2",
@@ -41,20 +41,20 @@
     "webpack": "4"
   },
   "devDependencies": {
-    "@storybook/builder-vite": "7.0.0-rc.5",
-    "@storybook/cli": "7.0.0-rc.5",
-    "@storybook/react-vite": "7.0.0-rc.5",
+    "@storybook/builder-vite": "7.0.0-rc.8",
+    "@storybook/cli": "7.0.0-rc.8",
+    "@storybook/react-vite": "7.0.0-rc.8",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "storybook": "next",
-    "typescript": "4.9.4",
+    "typescript": "5.0.2",
     "vite": "4.2.1"
   },
   "peerDependencies": {
-    "@storybook/react": "7.0.0-rc.5",
+    "@storybook/react": "7.0.0-rc.8",
     "react": "18.x",
     "react-dom": "18.x",
-    "typescript": "4.9.5"
+    "typescript": "5.0.2"
   },
   "scripts": {
     "start": "storybook dev -p 1337 -c .",

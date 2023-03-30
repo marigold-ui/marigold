@@ -36,7 +36,7 @@ export const NumberField: Theme['components']['NumberField'] = {
         borderRight: '1px solid',
         borderColor: 'gray40',
       },
-      '&:nth-of-type(2)': {
+      '&:nth-of-type(3)': {
         borderLeft: '1px solid',
         borderColor: 'gray40',
       },

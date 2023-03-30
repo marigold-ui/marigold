@@ -141,6 +141,19 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "OsamaAbdellateef",
+      "name": "Osama Abdul Latif ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/62595605?v=4",
+      "profile": "https://osama-abdellatef.vercel.app/",
+      "contributions": [
+        "code",
+        "design",
+        "maintenance",
+        "test",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 5,
