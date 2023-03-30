@@ -1,4 +1,4 @@
-import React, { Children, ReactElement, ReactNode, useRef } from 'react';
+import React, { Children, ReactElement, useRef } from 'react';
 import { AriaAccordionProps, useAccordion } from '@react-aria/accordion';
 import { Item } from '@react-stately/collections';
 import { Box } from '@marigold/system';
