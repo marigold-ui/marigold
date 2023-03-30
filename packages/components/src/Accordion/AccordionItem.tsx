@@ -6,13 +6,14 @@ import {
   useComponentStyles,
   useStateProps,
 } from '@marigold/system';
-import { useAccordionItem } from '@react-aria/accordion';
+import { useAccordionItem } from './useAccordionItem';
 import { FocusRing, useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
 import { TreeState } from '@react-stately/tree';
 import { Node } from '@react-types/shared';
 import React, { useRef } from 'react';
 import { Button } from '../Button';
+import { Item } from '@react-stately/collections';
 
 export interface AccordionThemeExtension
   extends ThemeExtensionsWithParts<'Accordion', ['button', 'item']> {}
@@ -28,8 +29,8 @@ export interface AccordionItemProps {
 }
 export const AccordionItem = ({
   item,
-  css,
   state,
+  css,
   title,
   variant,
   size,
@@ -37,17 +38,10 @@ export const AccordionItem = ({
   ...props
 }: AccordionItemProps) => {
   const ref = useRef<HTMLButtonElement>(null);
-  const open = state.expandedKeys.has(item.key);
+  const open = state.selectionManager.isSelected(item.key);
   const disabled = state.disabledKeys.has(item.key);
 
-  const { buttonProps, regionProps } = useAccordionItem(
-    {
-      item: item,
-    },
-    state,
-    ref
-  );
-
+  const { buttonProps, regionProps } = useAccordionItem({ item }, state, ref);
   const { isFocusVisible, focusProps } = useFocusRing();
 
   const stateProps = useStateProps({
@@ -63,7 +57,7 @@ export const AccordionItem = ({
   );
 
   return (
-    <Box {...mergeProps(stateProps, props)}>
+    <Box {...props}>
       <FocusRing within>
         <Box
           as={Button}

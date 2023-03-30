@@ -30,7 +30,6 @@ const meta = {
   },
   args: {
     disabled: false,
-    open: false,
   },
 } satisfies Meta<typeof Menu.Trigger>;
 

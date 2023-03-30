@@ -4,6 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Accordion } from './Accordion';
 import { Headline } from '../Headline';
 import { Text } from '../Text';
+import { TextField } from '../TextField';
 
 const meta = {
   title: 'Components/Accordion',
@@ -29,7 +30,7 @@ export const Basic: Story = {
     <Accordion disabledKeys={[2]} {...args}>
       <Accordion.Item key={1} title="Informations" stretch>
         <Headline level="1">Some Imformations</Headline>
-        <Text>info</Text>
+        <TextField label="Name" />
       </Accordion.Item>
       <Accordion.Item key={2} title="Personal Settings">
         two

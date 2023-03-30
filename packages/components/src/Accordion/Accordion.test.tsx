@@ -37,26 +37,22 @@ test('render Accordion and more than one Item', () => {
     </Accordion>
   );
 
-  const accordion = screen.getByTestId('accordion');
-  expect(accordion).toBeInTheDocument();
-
-  const item = accordion.firstChild;
+  const item = screen.getByText('Information');
   expect(item).toBeInTheDocument();
+  const itemtwo = screen.getByText('Settings');
+  expect(itemtwo).toBeInTheDocument();
 });
 
 test('render Accordion and just one Item', () => {
   render(
-    <Accordion data-testid="accordion">
+    <Accordion>
       <Accordion.Item title="Information">
         <Headline>infos</Headline>
       </Accordion.Item>
     </Accordion>
   );
 
-  const accordion = screen.getByTestId('accordion');
-  expect(accordion).toBeInTheDocument();
-
-  const item = accordion.firstChild;
+  const item = screen.getByText('Information');
   expect(item).toBeInTheDocument();
 });
 
@@ -73,8 +69,6 @@ test('item opens content by click', () => {
   );
 
   const button = screen.getByText('Information');
-
-  console.log(button);
   expect(button).toHaveAttribute('aria-expanded', 'false');
   fireEvent.click(button);
   expect(button).toHaveAttribute('aria-expanded', 'true');
@@ -95,7 +89,6 @@ test('render dynamically accordion items', () => {
 
   const button = screen.getByText('one title');
 
-  console.log(button);
   expect(button).toHaveAttribute('aria-expanded', 'false');
 
   fireEvent.click(button);

@@ -1,14 +1,17 @@
-import React, { Children, useRef } from 'react';
+import React, { Children, ReactNode, useRef } from 'react';
 import { AriaAccordionProps, useAccordion } from '@react-aria/accordion';
-import { useTreeState } from './useTreeState';
 import { Item } from '@react-stately/collections';
 import { Box } from '@marigold/system';
 import { ItemElement, ItemProps } from '@react-types/shared';
 import { AccordionItem } from './AccordionItem';
+import { useTabListState } from '@react-stately/tabs';
+import { mergeProps } from '@react-aria/utils';
+import { useMenu } from '@react-aria/menu';
+import { useTreeState } from '@react-stately/tree';
 
 export interface AccordionProps
   extends Omit<AriaAccordionProps<object>, 'children'> {
-  children: ItemElement<object>[] | ItemElement<object>;
+  children: ItemElement<object>[] | ItemElement<object> | any;
   variant?: string;
   size?: string;
 }
@@ -33,17 +36,22 @@ export const Accordion = ({
     }),
   };
   const ref = useRef(null);
+
+  //const state = useTabListState({ ...ownProps, children });
   const state = useTreeState({
     selectionMode: 'single',
     ...(ownProps as any),
   });
 
-  console.log(state.expandedKeys);
+  const { accordionProps } = useAccordion(
+    { ...ownProps, children },
+    state,
+    ref
+  );
 
-  const { accordionProps } = useAccordion(ownProps, state, ref);
-
+  console.log(accordionProps);
   return (
-    <Box {...accordionProps} ref={ref} {...ownProps}>
+    <Box {...accordionProps} ref={ref}>
       {[...state.collection].map(item => (
         <AccordionItem
           key={item.key}

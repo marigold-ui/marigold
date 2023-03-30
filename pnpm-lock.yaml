@@ -303,6 +303,7 @@ importers:
       '@react-aria/overlays': 3.13.0
       '@react-aria/radio': 3.5.0
       '@react-aria/select': 3.9.1
+      '@react-aria/selection': 3.13.1
       '@react-aria/separator': 3.3.0
       '@react-aria/slider': 3.3.0
       '@react-aria/ssr': 3.5.0
@@ -325,6 +326,7 @@ importers:
       '@react-stately/selection': 3.12.0
       '@react-stately/slider': 3.3.0
       '@react-stately/table': 3.8.0
+      '@react-stately/tabs': 3.3.0
       '@react-stately/toggle': 3.5.0
       '@react-stately/tooltip': 3.3.0
       '@react-stately/tree': 3.5.0
@@ -364,6 +366,7 @@ importers:
       '@react-aria/overlays': 3.13.0_biqbaboplfbrettd7655fr4n2y
       '@react-aria/radio': 3.5.0_react@18.2.0
       '@react-aria/select': 3.9.1_biqbaboplfbrettd7655fr4n2y
+      '@react-aria/selection': 3.13.1_react@18.2.0
       '@react-aria/separator': 3.3.0_react@18.2.0
       '@react-aria/slider': 3.3.0_react@18.2.0
       '@react-aria/ssr': 3.5.0_react@18.2.0
@@ -386,6 +389,7 @@ importers:
       '@react-stately/selection': 3.12.0_react@18.2.0
       '@react-stately/slider': 3.3.0_react@18.2.0
       '@react-stately/table': 3.8.0_react@18.2.0
+      '@react-stately/tabs': 3.3.0_react@18.2.0
       '@react-stately/toggle': 3.5.0_react@18.2.0
       '@react-stately/tooltip': 3.3.0_react@18.2.0
       '@react-stately/tree': 3.5.0_react@18.2.0
@@ -4757,6 +4761,21 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@react-stately/tabs/3.3.0_react@18.2.0:
+    resolution:
+      {
+        integrity: sha512-Kf47+aXGf4NvnREMDqH+uuTa0QsYCxOp0poywR8lRPmYsL7V8yrTS2wXQnDL7cq8PXbL5v+ew0xmrV+BiUlNRg==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@react-stately/list': 3.7.0_react@18.2.0
+      '@react-stately/utils': 3.6.0_react@18.2.0
+      '@react-types/tabs': 3.2.0_react@18.2.0
+      '@swc/helpers': 0.4.14
+      react: 18.2.0
+    dev: false
+
   /@react-stately/toggle/3.5.0_react@18.2.0:
     resolution:
       {
@@ -5072,6 +5091,18 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
       '@react-types/grid': 3.1.6_react@18.2.0
+      '@react-types/shared': 3.17.0_react@18.2.0
+      react: 18.2.0
+    dev: false
+
+  /@react-types/tabs/3.2.0_react@18.2.0:
+    resolution:
+      {
+        integrity: sha512-rOQm+JDYcGV+HE/EQ23vr6J3tqvXjFiDA107rU7n4B4mNjJ46k5gOhPdGTosv6wr1+Tp7XD5XMaFfqk+O0/ZZw==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
       '@react-types/shared': 3.17.0_react@18.2.0
       react: 18.2.0
     dev: false
