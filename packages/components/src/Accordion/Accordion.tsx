@@ -41,7 +41,7 @@ export const Accordion = ({ children, ...props }: AccordionProps) => {
   );
 
   return (
-    <Box {...accordionProps} ref={ref} {...ownProps}>
+    <Box {...accordionProps} ref={ref}>
       {[...state.collection].map(item => (
         <AccordionItem
           key={item.key}
