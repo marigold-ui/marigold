@@ -175,3 +175,27 @@ test('not stretched', () => {
   expect(button).toHaveStyle(`width: undefined`);
   expect(button).toHaveStyle(`justify-content: left`);
 });
+
+test('support default expanded keys', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Accordion data-testid="accordion" defaultExpandedKeys={['one']}>
+        <Accordion.Item key={'one'} title="Information" stretch={false}>
+          <Headline>infos</Headline>
+        </Accordion.Item>
+        <Accordion.Item key={'two'} title="settings" stretch={false}>
+          <Headline>settings</Headline>
+        </Accordion.Item>
+      </Accordion>
+    </ThemeProvider>
+  );
+
+  const button = screen.getByText('Information');
+
+  expect(button).toHaveAttribute('aria-expanded', 'true');
+  const item = screen.getByText('infos');
+  expect(item).toBeInTheDocument();
+
+  const buttontwo = screen.getByText('settings');
+  expect(buttontwo).toHaveAttribute('aria-expanded', 'false');
+});

@@ -1,3 +1,9 @@
+import React, { ReactNode, useRef } from 'react';
+import { FocusRing, useFocusRing } from '@react-aria/focus';
+import { mergeProps } from '@react-aria/utils';
+import { TreeState } from '@react-stately/tree';
+import { Node } from '@react-types/shared';
+
 import {
   Box,
   CSSObject,
@@ -6,12 +12,8 @@ import {
   useComponentStyles,
   useStateProps,
 } from '@marigold/system';
+
 import { useAccordionItem } from './useAccordionItem';
-import { FocusRing, useFocusRing } from '@react-aria/focus';
-import { mergeProps } from '@react-aria/utils';
-import { TreeState } from '@react-stately/tree';
-import { Node } from '@react-types/shared';
-import React, { ReactNode, useEffect, useRef } from 'react';
 import { Button } from '../Button';
 
 export interface AccordionThemeExtension
@@ -68,8 +70,6 @@ export const AccordionItem = ({
     { parts: ['item', 'button'] }
   );
 
-  console.log('default:', defaultExpanded);
-  console.log('expandedOpen:', expanded);
   return (
     <Box {...props}>
       <FocusRing within>
