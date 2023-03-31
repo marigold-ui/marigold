@@ -35,7 +35,7 @@ export const Accordion = ({ children, ...props }: AccordionProps) => {
   });
 
   const { accordionProps } = useAccordion(
-    { ...ownProps, defaultExpandedKeys: state.expandedKeys, children },
+    { ...ownProps, children },
     state,
     ref
   );

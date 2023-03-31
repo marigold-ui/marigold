@@ -13,7 +13,6 @@ import { FieldGroup } from '../FieldBase';
 
 const meta = {
   title: 'Components/Accordion',
-  component: Accordion,
   argTypes: {
     variant: {
       description: 'Accordion variant',
@@ -123,7 +122,7 @@ let items = [
   },
 ];
 
-export const Complex: Story = {
+export const ComplexSingleSelect: Story = {
   render: args => (
     <Accordion {...args}>
       {items.map(item => (
