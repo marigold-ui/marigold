@@ -45,20 +45,13 @@ export const AccordionItem = ({
   );
 
   const expanded = state.selectionManager.isSelected(item.key);
-  // const [defaultExpanded, setDefaultExpanded] = React.useState(expandedKeys);
 
-  // const [open, setOpen] = React.useState(false);
+  // clear both default values and expanded
+  if (defaultExpanded) {
+    state.expandedKeys.clear();
+    state.selectionManager.toggleSelection(item.key);
+  }
 
-  // useEffect(() => {
-  //   if (expandedKeys) {
-  //     setDefaultExpanded(false);
-  //     setOpen(expandedKeys);
-  //   } else {
-  //     console.log('expanded', expanded);
-  //     setOpen(expanded);
-  //   }
-  //   console.log('Open:', open, 'default:', defaultExpanded);
-  // }, [expanded, defaultExpanded, expandedKeys]);
   // we have to use or own hook because it's in react-aria still issues
   const { buttonProps, regionProps } = useAccordionItem({ item }, state, ref);
 
@@ -93,7 +86,7 @@ export const AccordionItem = ({
           css={styles.button}
         >
           {title}
-          {!expanded ? (
+          {!expanded || !defaultExpanded ? (
             <SVG viewBox="0 0 24 24" aria-hidden={true}>
               <path d="M5.97563 7.125L12 13.1363L18.0244 7.125L19.875 8.97563L12 16.8506L4.125 8.97563L5.97563 7.125Z" />
             </SVG>
