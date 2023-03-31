@@ -48,11 +48,13 @@ export const AccordionItem = ({
 
   const expanded = state.selectionManager.isSelected(item.key);
 
-  // clear both default values and expanded
-  if (defaultExpanded) {
-    state.expandedKeys.clear();
-    state.selectionManager.toggleSelection(item.key);
-  }
+  React.useEffect(() => {
+    // clear both default values and expanded
+    if (defaultExpanded) {
+      state.expandedKeys.clear();
+      state.selectionManager.toggleSelection(item.key);
+    }
+  }, [defaultExpanded, item.key, state.expandedKeys, state.selectionManager]);
 
   // we have to use or own hook because it's in react-aria still issues
   const { buttonProps, regionProps } = useAccordionItem({ item }, state, ref);
