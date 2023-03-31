@@ -32,7 +32,7 @@ type Story = StoryObj<typeof Accordion>;
 
 export const Basic: Story = {
   render: args => (
-    <Accordion {...args}>
+    <Accordion defaultExpandedKeys={['1']} {...args}>
       <Accordion.Item key={1} title="Informations">
         <Headline level="3">Some Imformations</Headline>
         <TextField label="Name" />
@@ -160,7 +160,7 @@ export const AccordionInsideAccordion: Story = {
 
 export const MultiSelect: Story = {
   render: args => (
-    <Accordion selectionMode="multiple" {...args}>
+    <Accordion selectionMode="multiple" defaultExpandedKeys={['two']} {...args}>
       {items.map(item => (
         <Accordion.Item key={item.key} title={item.title}>
           {item.children}

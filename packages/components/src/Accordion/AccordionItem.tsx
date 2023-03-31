@@ -11,7 +11,7 @@ import { FocusRing, useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
 import { TreeState } from '@react-stately/tree';
 import { Node } from '@react-types/shared';
-import React, { ReactNode, useRef } from 'react';
+import React, { ReactNode, useEffect, useRef } from 'react';
 import { Button } from '../Button';
 
 export interface AccordionThemeExtension
@@ -25,7 +25,9 @@ export interface AccordionItemProps {
   stretch?: boolean;
   variant?: string;
   size?: string;
+  defaultExpandedKeys?: any;
 }
+
 export const AccordionItem = ({
   item,
   state,
@@ -37,15 +39,34 @@ export const AccordionItem = ({
   ...props
 }: AccordionItemProps) => {
   const ref = useRef<HTMLButtonElement>(null);
-  const open = state.selectionManager.isSelected(item.key);
 
+  const defaultExpanded = state.expandedKeys.has(
+    item.key.toString().replace('.$', '')
+  );
+
+  const expanded = state.selectionManager.isSelected(item.key);
+  // const [defaultExpanded, setDefaultExpanded] = React.useState(expandedKeys);
+
+  // const [open, setOpen] = React.useState(false);
+
+  // useEffect(() => {
+  //   if (expandedKeys) {
+  //     setDefaultExpanded(false);
+  //     setOpen(expandedKeys);
+  //   } else {
+  //     console.log('expanded', expanded);
+  //     setOpen(expanded);
+  //   }
+  //   console.log('Open:', open, 'default:', defaultExpanded);
+  // }, [expanded, defaultExpanded, expandedKeys]);
   // we have to use or own hook because it's in react-aria still issues
   const { buttonProps, regionProps } = useAccordionItem({ item }, state, ref);
+
   const { isFocusVisible, focusProps } = useFocusRing();
 
   const stateProps = useStateProps({
     focus: isFocusVisible,
-    expanded: open,
+    expanded: expanded || defaultExpanded,
   });
 
   const styles = useComponentStyles(
@@ -54,6 +75,8 @@ export const AccordionItem = ({
     { parts: ['item', 'button'] }
   );
 
+  console.log('default:', defaultExpanded);
+  console.log('expandedOpen:', expanded);
   return (
     <Box {...props}>
       <FocusRing within>
@@ -70,7 +93,7 @@ export const AccordionItem = ({
           css={styles.button}
         >
           {title}
-          {!open ? (
+          {!expanded ? (
             <SVG viewBox="0 0 24 24" aria-hidden={true}>
               <path d="M5.97563 7.125L12 13.1363L18.0244 7.125L19.875 8.97563L12 16.8506L4.125 8.97563L5.97563 7.125Z" />
             </SVG>
@@ -82,11 +105,14 @@ export const AccordionItem = ({
         </Box>
       </FocusRing>
 
-      {open && (
-        <Box {...regionProps} {...focusProps} css={styles.item}>
+      {expanded || defaultExpanded ? (
+        <Box
+          {...mergeProps(regionProps, focusProps, stateProps)}
+          css={styles.item}
+        >
           {item.props.children}
         </Box>
-      )}
+      ) : null}
     </Box>
   );
 };

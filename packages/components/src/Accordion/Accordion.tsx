@@ -10,6 +10,7 @@ export interface AccordionProps
   extends Omit<AriaAccordionProps<object>, 'children'> {
   children: ItemElement<object>[] | ItemElement<object>;
   selectionMode?: string;
+  defaultExpandedKeys?: string[] | number[];
 }
 
 export const Accordion = ({ children, ...props }: AccordionProps) => {
@@ -34,16 +35,15 @@ export const Accordion = ({ children, ...props }: AccordionProps) => {
   });
 
   const { accordionProps } = useAccordion(
-    { ...ownProps, children },
+    { ...ownProps, defaultExpandedKeys: state.expandedKeys, children },
     state,
     ref
   );
 
   return (
-    <Box {...accordionProps} ref={ref}>
+    <Box {...accordionProps} ref={ref} {...ownProps}>
       {[...state.collection].map(item => (
         <AccordionItem
-          {...ownProps}
           key={item.key}
           title={item.props.title}
           item={item}

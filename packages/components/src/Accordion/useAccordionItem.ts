@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   DOMAttributes,
   Node,
@@ -62,8 +63,18 @@ export function useAccordionItem<T>(
     ref,
   });
 
+  // maybe there is another simpler solution
+  // before it was `manager.isSelected(key)`
+  // but this doesn't support defaultExpandedKeys
+  const isDefaultExpanded = state.expandedKeys.has(
+    item.key.toString().replace('.$', '')
+  );
+
   let onSelect = (e: PressEvent | LongPressEvent | PointerEvent) => {
     if (e.pointerType === 'keyboard' && isNonContiguousSelectionModifier(e)) {
+      if (isDefaultExpanded) {
+        state.expandedKeys.clear();
+      }
       manager.toggleSelection(key);
     } else {
       if (manager.selectionMode === 'none') {
@@ -72,11 +83,20 @@ export function useAccordionItem<T>(
 
       if (manager.selectionMode === 'single') {
         if (manager.isSelected(key) && !manager.disallowEmptySelection) {
+          if (isDefaultExpanded) {
+            state.expandedKeys.clear();
+          }
           manager.toggleSelection(key);
         } else {
+          if (isDefaultExpanded) {
+            state.expandedKeys.clear();
+          }
           manager.replaceSelection(key);
         }
       } else if (e && e.shiftKey) {
+        if (isDefaultExpanded) {
+          state.expandedKeys.clear();
+        }
         manager.extendSelection(key);
       } else if (
         manager.selectionBehavior === 'toggle' ||
@@ -86,8 +106,15 @@ export function useAccordionItem<T>(
             e.pointerType === 'virtual'))
       ) {
         // if touch or virtual (VO) then we just want to toggle, otherwise it's impossible to multi select because they don't have modifier keys
+        if (isDefaultExpanded) {
+          state.expandedKeys.clear();
+          manager.toggleSelection(key);
+        }
         manager.toggleSelection(key);
       } else {
+        if (isDefaultExpanded) {
+          state.expandedKeys.clear();
+        }
         manager.replaceSelection(key);
       }
     }
@@ -103,13 +130,12 @@ export function useAccordionItem<T>(
     ref
   );
 
-  const isExpanded = manager.isSelected(key);
   return {
     buttonProps: {
       ...buttonProps,
       role: 'button',
-      'aria-expanded': isExpanded,
-      'aria-controls': isExpanded ? regionId : undefined,
+      'aria-expanded': manager.isSelected(key),
+      'aria-controls': manager.isSelected(key) ? regionId : undefined,
     },
     regionProps: {
       id: regionId,
