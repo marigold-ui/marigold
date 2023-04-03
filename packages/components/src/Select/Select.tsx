@@ -50,32 +50,32 @@ const Chevron = ({ css }: ChevronProps) => (
 // Theme Extension
 // ---------------
 export interface SelectThemeExtension
-  extends ThemeExtensionsWithParts<'Select', ['container', 'button', 'icon']> { }
+  extends ThemeExtensionsWithParts<'Select', ['container', 'button', 'icon']> {}
 
 // Props
 // ---------------
 export interface SelectProps
   extends Omit<
-    AriaSelectProps<object>,
-    | 'autoComplete'
-    | 'isOpen'
-    | 'isLoading'
-    | 'onLoadMore'
-    | 'isDisabled'
-    | 'isRequired'
-    | 'validationState'
-    | 'onSelectionChange'
-  >,
-  Omit<
-    HtmlProps<'select'>,
-    | 'onKeyUp'
-    | 'onKeyDown'
-    | 'onFocus'
-    | 'onBlur'
-    | 'children'
-    | 'size'
-    | 'onChange'
-  > {
+      AriaSelectProps<object>,
+      | 'autoComplete'
+      | 'isOpen'
+      | 'isLoading'
+      | 'onLoadMore'
+      | 'isDisabled'
+      | 'isRequired'
+      | 'validationState'
+      | 'onSelectionChange'
+    >,
+    Omit<
+      HtmlProps<'select'>,
+      | 'onKeyUp'
+      | 'onKeyDown'
+      | 'onFocus'
+      | 'onBlur'
+      | 'children'
+      | 'size'
+      | 'onChange'
+    > {
   variant?: string;
   size?: string;
   width?: string;

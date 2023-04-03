@@ -33,16 +33,16 @@ export interface TableThemeExtension
   extends ThemeExtensionsWithParts<
     'Table',
     ['table', 'header', 'row', 'cell']
-  > { }
+  > {}
 
 // Props
 // ---------------
 export interface TableProps
   extends Pick<
-    AriaTableProps<object>,
-    'focusMode' | 'onRowAction' | 'onCellAction'
-  >,
-  Omit<TableStateProps<object>, 'showSelectionCheckboxes'> {
+      AriaTableProps<object>,
+      'focusMode' | 'onRowAction' | 'onCellAction'
+    >,
+    Omit<TableStateProps<object>, 'showSelectionCheckboxes'> {
   variant?: string;
   size?: string;
   stretch?: boolean;

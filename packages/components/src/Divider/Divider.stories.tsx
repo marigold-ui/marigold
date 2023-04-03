@@ -21,11 +21,11 @@ const meta = {
       },
     },
     elementType: {
-      defaultValue: "default",
-      type: "string",
-      description: "This is to handle element type",
-      name: "name"
-    }
+      defaultValue: 'default',
+      type: 'string',
+      description: 'This is to handle element type',
+      name: 'name',
+    },
   },
   args: {
     variant: 'section',

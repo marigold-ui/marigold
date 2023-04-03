@@ -10,7 +10,7 @@ import { InputField } from './InputField';
 
 // Theme Extension
 // ---------------
-export interface InputThemeExtension extends ThemeExtension<'Input'> { }
+export interface InputThemeExtension extends ThemeExtension<'Input'> {}
 
 // Props
 // ---------------

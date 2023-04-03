@@ -7,6 +7,6 @@
     "skipLibCheck": true,
     "strict": true,
     "esModuleInterop": true,
-    "jsx": "react",
+    "jsx": "react"
   }
 }

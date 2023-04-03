@@ -13,5 +13,3 @@ export interface TableContextProps {
 
 export const TableContext = createContext<TableContextProps>({} as any);
 export const useTableContext = () => useContext(TableContext);
-
-

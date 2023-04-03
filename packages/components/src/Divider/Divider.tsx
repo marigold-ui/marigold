@@ -5,7 +5,7 @@ import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
 
 // Theme Extension
 // ---------------
-export interface DividerThemeExtension extends ThemeExtension<'Divider'> { }
+export interface DividerThemeExtension extends ThemeExtension<'Divider'> {}
 // Props
 // ---------------
 export interface DividerProps extends SeparatorProps {
