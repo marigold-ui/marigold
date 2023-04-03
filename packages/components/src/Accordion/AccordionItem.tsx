@@ -49,10 +49,16 @@ export const AccordionItem = ({
   const expanded = state.selectionManager.isSelected(item.key);
 
   React.useEffect(() => {
-    // clear both default values and expanded
+    // clear both default values and expanded also check if multiple or single mode
     if (defaultExpanded) {
-      state.expandedKeys.clear();
-      state.selectionManager.toggleSelection(item.key);
+      if (state.selectionManager.selectionMode === 'multiple') {
+        state.expandedKeys.forEach(key => {
+          state.selectionManager.select(key);
+        });
+      } else {
+        state.expandedKeys.clear();
+        state.selectionManager.toggleSelection(item.key);
+      }
     }
   }, [defaultExpanded, item.key, state.expandedKeys, state.selectionManager]);
 
@@ -99,14 +105,14 @@ export const AccordionItem = ({
           )}
         </Box>
       </FocusRing>
-      {expanded && (
+      {expanded || defaultExpanded ? (
         <Box
           {...mergeProps(regionProps, focusProps, stateProps)}
           css={styles.item}
         >
           {item.props.children}
         </Box>
-      )}
+      ) : null}
     </Box>
   );
 };

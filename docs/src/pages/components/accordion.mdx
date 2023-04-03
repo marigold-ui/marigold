@@ -8,6 +8,11 @@ switchTheme: true
 badge: 'new'
 ---
 
+An `<Accordion>` is a component that allows you to organizing content into collapsible sections. It consists of a series of vertically stacked items. Accordions are commonly used in website and application designs to present information in a compact and organized way, allowing users to focus on the specific information they are interested in without being overwhelmed by excessive content.
+
+The `<Accordion.Item>` can be expanded by default using the `defaultExpandedKeys` property or collapsed.
+You can also switch the `selectionMode` for `<Accordion>` by passing its property. The default behavior is set to single mode.
+
 <Preview>
   <NoStretchAccordion />
 </Preview>
@@ -58,11 +63,38 @@ import { Accordion } from '@marigold/components';
 ]}
 />
 
+### Props Accordion.Item
+
+<PropsTable
+  props={[
+    {
+      property: 'key',
+      type: 'React.Key',
+      description: 'The key of the item.',
+      default: 'none',
+    },
+    {
+      property: 'title',
+      type: 'string | ReactElement',
+      description:
+        'Sets title of the accordion item which will be displayed to the button. ',
+      default: 'none',
+    },
+    {
+      property: 'stretch',
+      type: 'boolean',
+      description:
+        'Sets the width to fullsize per default. If not wanted change to false ',
+      default: 'true',
+    },
+  ]}
+/>
+
 ## Examples
 
 ### Singleselect Accordion
 
-This component shows how an `<Accordion>` is default working.
+This component shows how a single selection `<Accordion>` is working. It is possible to have just one item open and the other ones hidden. You can also see that the items are fullwidth, which is true by default. Notice that you can't expand two or more items per default.
 
 ```tsx preview file=components/Accordion/single-select-accordion.demo.tsx
 
@@ -70,11 +102,15 @@ This component shows how an `<Accordion>` is default working.
 
 ### Multiselect Accordion
 
+With the multiselection mode you can collapse and hide the items as you want. For sure you can set one or more defaultExpandedKeys.
+
 ```tsx preview file=components/Accordion/multi-select-accordion.demo.tsx
 
 ```
 
 ### No stretch Accordion
+
+In this example you can see how an `<Accordion>` would look like with stretch property set to false.
 
 ```tsx preview file=components/Accordion/no-stretch-accordion.demo.tsx
 

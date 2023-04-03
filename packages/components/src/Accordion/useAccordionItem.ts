@@ -114,6 +114,7 @@ export function useAccordionItem<T>(
         if (isDefaultExpanded) {
           state.expandedKeys.clear();
         }
+
         manager.replaceSelection(key);
       }
     }

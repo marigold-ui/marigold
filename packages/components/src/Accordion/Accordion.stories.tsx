@@ -159,7 +159,11 @@ export const AccordionInsideAccordion: Story = {
 
 export const MultiSelect: Story = {
   render: args => (
-    <Accordion selectionMode="multiple" defaultExpandedKeys={['two']} {...args}>
+    <Accordion
+      selectionMode="multiple"
+      defaultExpandedKeys={['two', 'one']}
+      {...args}
+    >
       {items.map(item => (
         <Accordion.Item key={item.key} title={item.title}>
           {item.children}
