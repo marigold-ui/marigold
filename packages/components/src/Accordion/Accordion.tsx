@@ -7,7 +7,10 @@ import { AccordionItem } from './AccordionItem';
 import { useTreeState } from '@react-stately/tree';
 
 export interface AccordionProps
-  extends Omit<AriaAccordionProps<object>, 'children'> {
+  extends Omit<
+    AriaAccordionProps<object>,
+    'children' | 'expandedKeys' | 'disabledKeys' | 'onExpandedChange'
+  > {
   children: ItemElement<object>[] | ItemElement<object>;
   selectionMode?: string;
 }

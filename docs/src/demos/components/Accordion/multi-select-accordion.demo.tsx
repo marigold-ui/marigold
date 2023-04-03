@@ -1,11 +1,10 @@
 import {
   Accordion,
   Inline,
-  FieldGroup,
-  Columns,
   Text,
   TextField,
   NumberField,
+  Stack,
 } from '@marigold/components';
 import { Parking, SettingDots, Accessible } from '@marigold/icons';
 
@@ -20,35 +19,7 @@ export const MultiSelect = () => {
         </Inline>
       ),
       children: (
-        <FieldGroup labelWidth="medium">
-          <Columns columns={[2, 2]} space="medium">
-            <TextField
-              label="Parking Slots"
-              description="Available parking passes"
-            />
-            <NumberField
-              label="Costs"
-              description="Amount in euros"
-              defaultValue={5}
-              formatOptions={{
-                style: 'currency',
-                currency: 'EUR',
-              }}
-            />
-          </Columns>
-        </FieldGroup>
-      ),
-    },
-    {
-      key: 'two',
-      title: (
-        <Inline space="medium">
-          <Accessible />
-          <Text fontStyle="bold">Handicapped parking spaces</Text>
-        </Inline>
-      ),
-      children: (
-        <Inline space="medium">
+        <Stack space="medium">
           <TextField
             label="Parking Slots"
             description="Available parking passes"
@@ -62,7 +33,33 @@ export const MultiSelect = () => {
               currency: 'EUR',
             }}
           />
+        </Stack>
+      ),
+    },
+    {
+      key: 'two',
+      title: (
+        <Inline space="medium">
+          <Accessible />
+          <Text fontStyle="bold">Handicapped parking spaces</Text>
         </Inline>
+      ),
+      children: (
+        <Stack space="medium">
+          <TextField
+            label="Parking Slots"
+            description="Available parking passes"
+          />
+          <NumberField
+            label="Costs"
+            description="Amount in euros"
+            defaultValue={5}
+            formatOptions={{
+              style: 'currency',
+              currency: 'EUR',
+            }}
+          />
+        </Stack>
       ),
     },
     {
@@ -86,7 +83,7 @@ export const MultiSelect = () => {
     <Accordion selectionMode="multiple" defaultExpandedKeys={['two']}>
       {items.map(item => (
         <Accordion.Item key={item.key} title={item.title}>
-          <FieldGroup labelWidth="medium">{item.children}</FieldGroup>
+          {item.children}
         </Accordion.Item>
       ))}
     </Accordion>
