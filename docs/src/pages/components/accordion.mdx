@@ -1,0 +1,57 @@
+---
+title: Accordion
+group: Collections
+github: https://github.com/marigold-ui/marigold/blob/main/packages/components/src/Accordion/Accordion.tsx
+edit: https://github.com/marigold-ui/marigold/blob/main/docs/src/pages/components/accordion.mdx
+caption: Component to show and hide related content from the main page.
+switchTheme: true
+badge: 'beta'
+---
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx onlyCode
+import { Accordion } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props Accordion
+
+<PropsTable
+  props={[
+    {
+      property: 'defaultExpandedKeys',
+      type: 'Iterable<Key>',
+      description:
+        'The initial expanded keys in the collection (uncontrolled).',
+      default: 'none',
+    },
+    {
+      property: 'selectionMode',
+      type: 'none, single, multiple',
+      description: 'Sets the mode of items open at the same time. ',
+      default: 'single',
+    },{
+      property: 'children',
+      type: 'ItemElement<object>[] | ItemElement<object>',
+      description: 'Items of the Accordion',
+      default: 'none',
+    },
+
+]}
+/>
+
+## Examples
+
+### Multiselect Accordion
+
+```tsx preview file=components/Accordion/multi-select-accordion.demo.tsx
+
+```

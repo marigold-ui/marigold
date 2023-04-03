@@ -10,7 +10,6 @@ export interface AccordionProps
   extends Omit<AriaAccordionProps<object>, 'children'> {
   children: ItemElement<object>[] | ItemElement<object>;
   selectionMode?: string;
-  defaultExpandedKeys?: string[] | number[];
 }
 
 export const Accordion = ({ children, ...props }: AccordionProps) => {
