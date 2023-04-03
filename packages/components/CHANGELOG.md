@@ -1,5 +1,52 @@
 # @marigold/components
 
+## 5.4.0
+
+### Minor Changes
+
+- [#2892](https://github.com/marigold-ui/marigold/pull/2892) [`aaff48559`](https://github.com/marigold-ui/marigold/commit/aaff485594d34f878217f5906f7ee69e7f66c8f2) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add fontStyle to <Text> component
+
+### Patch Changes
+
+- [#2894](https://github.com/marigold-ui/marigold/pull/2894) [`b3d577339`](https://github.com/marigold-ui/marigold/commit/b3d577339e16e73185d2fb80707479ce689e7f7f) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @types/react to v18.0.29
+
+- Updated dependencies [[`b3d577339`](https://github.com/marigold-ui/marigold/commit/b3d577339e16e73185d2fb80707479ce689e7f7f), [`8972cbaca`](https://github.com/marigold-ui/marigold/commit/8972cbaca29ccce9c17a15b772ab0c7a3e921d20)]:
+  - @marigold/types@1.0.1
+  - @marigold/system@5.4.0
+  - @marigold/icons@1.2.3
+
+## 5.3.0
+
+### Minor Changes
+
+- [#2826](https://github.com/marigold-ui/marigold/pull/2826) [`aaf6b55c6`](https://github.com/marigold-ui/marigold/commit/aaf6b55c6c2b07f7baea9e7af1cab69e70c333e8) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: Improved `<Input>` with icons/actions
+
+- [#2846](https://github.com/marigold-ui/marigold/pull/2846) [`3a766be9d`](https://github.com/marigold-ui/marigold/commit/3a766be9d83219e3295962cfc08d43c0e2556101) Thanks [@sebald](https://github.com/sebald)! - feat: Styles for `<Autocomplete>`
+
+### Patch Changes
+
+- [#2816](https://github.com/marigold-ui/marigold/pull/2816) [`cda6ac809`](https://github.com/marigold-ui/marigold/commit/cda6ac80984059035ec315481685dce1dbc6cc79) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update react-aria
+
+- Updated dependencies [[`aaf6b55c6`](https://github.com/marigold-ui/marigold/commit/aaf6b55c6c2b07f7baea9e7af1cab69e70c333e8), [`80cdbe062`](https://github.com/marigold-ui/marigold/commit/80cdbe062445b6c4b8073cb72976ce9ce4bcefb1)]:
+  - @marigold/system@5.3.0
+  - @marigold/icons@1.2.2
+
+## 5.2.0
+
+### Minor Changes
+
+- [#2807](https://github.com/marigold-ui/marigold/pull/2807) [`f9175829d`](https://github.com/marigold-ui/marigold/commit/f9175829db6ab268a6c9620430a99a69d0d57c7c) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: update storybook to version 7 + fix coverage
+
+- [#2824](https://github.com/marigold-ui/marigold/pull/2824) [`33329ace2`](https://github.com/marigold-ui/marigold/commit/33329ace2711b139938af05006ed6f00a65f6b99) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: refa <Input> and <Input.Field> components and support icons
+
+- [#2805](https://github.com/marigold-ui/marigold/pull/2805) [`c0609c0b3`](https://github.com/marigold-ui/marigold/commit/c0609c0b32bb8075fdeacf88f9c6ce5d8fdf781e) Thanks [@sebald](https://github.com/sebald)! - feat: introduce `<Inset>` component
+
+### Patch Changes
+
+- Updated dependencies [[`f11e2d7db`](https://github.com/marigold-ui/marigold/commit/f11e2d7dbb3d6b4ee4b8651f48b52736f64fd778)]:
+  - @marigold/system@5.2.0
+  - @marigold/icons@1.2.1
+
 ## 5.1.0
 
 ### Patch Changes

@@ -1,5 +1,34 @@
 # @marigold/theme-b2b
 
+## 22.0.0
+
+### Patch Changes
+
+- [#2885](https://github.com/marigold-ui/marigold/pull/2885) [`4a8948d41`](https://github.com/marigold-ui/marigold/commit/4a8948d4191ec382f7c387ae04d770bdbdb5fcac) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - fixing border of NumberField component
+
+- Updated dependencies [[`b3d577339`](https://github.com/marigold-ui/marigold/commit/b3d577339e16e73185d2fb80707479ce689e7f7f), [`aaff48559`](https://github.com/marigold-ui/marigold/commit/aaff485594d34f878217f5906f7ee69e7f66c8f2)]:
+  - @marigold/components@5.4.0
+
+## 21.0.0
+
+### Minor Changes
+
+- [#2826](https://github.com/marigold-ui/marigold/pull/2826) [`aaf6b55c6`](https://github.com/marigold-ui/marigold/commit/aaf6b55c6c2b07f7baea9e7af1cab69e70c333e8) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: Improved `<Input>` with icons/actions
+
+- [#2846](https://github.com/marigold-ui/marigold/pull/2846) [`3a766be9d`](https://github.com/marigold-ui/marigold/commit/3a766be9d83219e3295962cfc08d43c0e2556101) Thanks [@sebald](https://github.com/sebald)! - feat: Styles for `<Autocomplete>`
+
+### Patch Changes
+
+- Updated dependencies [[`aaf6b55c6`](https://github.com/marigold-ui/marigold/commit/aaf6b55c6c2b07f7baea9e7af1cab69e70c333e8), [`3a766be9d`](https://github.com/marigold-ui/marigold/commit/3a766be9d83219e3295962cfc08d43c0e2556101), [`cda6ac809`](https://github.com/marigold-ui/marigold/commit/cda6ac80984059035ec315481685dce1dbc6cc79)]:
+  - @marigold/components@5.3.0
+
+## 20.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`f9175829d`](https://github.com/marigold-ui/marigold/commit/f9175829db6ab268a6c9620430a99a69d0d57c7c), [`33329ace2`](https://github.com/marigold-ui/marigold/commit/33329ace2711b139938af05006ed6f00a65f6b99), [`c0609c0b3`](https://github.com/marigold-ui/marigold/commit/c0609c0b32bb8075fdeacf88f9c6ce5d8fdf781e)]:
+  - @marigold/components@5.2.0
+
 ## 19.0.0
 
 ### Patch Changes

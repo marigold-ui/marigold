@@ -1,5 +1,19 @@
 # @marigold/jest-config
 
+## 1.1.1
+
+### Patch Changes
+
+- [#2887](https://github.com/marigold-ui/marigold/pull/2887) [`539544841`](https://github.com/marigold-ui/marigold/commit/53954484120a34460ddb5bb6f3b3bc7106f2ce63) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update testing
+
+## 1.1.0
+
+### Minor Changes
+
+- [#2807](https://github.com/marigold-ui/marigold/pull/2807) [`f9175829d`](https://github.com/marigold-ui/marigold/commit/f9175829db6ab268a6c9620430a99a69d0d57c7c) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: update storybook to version 7 + fix coverage
+
+- [#2801](https://github.com/marigold-ui/marigold/pull/2801) [`9e682b73d`](https://github.com/marigold-ui/marigold/commit/9e682b73dafd03ca59df1f4aba71cc284a7df296) Thanks [@sebald](https://github.com/sebald)! - refa: remove ts-jest dependency
+
 ## 1.0.10
 
 ### Patch Changes

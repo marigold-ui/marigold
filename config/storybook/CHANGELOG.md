@@ -1,5 +1,39 @@
 # @marigold/storybook-config
 
+## 1.0.2
+
+### Patch Changes
+
+- Updated dependencies [[`b3d577339`](https://github.com/marigold-ui/marigold/commit/b3d577339e16e73185d2fb80707479ce689e7f7f), [`aaff48559`](https://github.com/marigold-ui/marigold/commit/aaff485594d34f878217f5906f7ee69e7f66c8f2), [`4a8948d41`](https://github.com/marigold-ui/marigold/commit/4a8948d4191ec382f7c387ae04d770bdbdb5fcac)]:
+  - @marigold/components@5.4.0
+  - @marigold/theme-b2b@22.0.0
+  - @marigold/theme-unicorn@19.0.0
+  - @marigold/theme-core@22.0.0
+
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies [[`aaf6b55c6`](https://github.com/marigold-ui/marigold/commit/aaf6b55c6c2b07f7baea9e7af1cab69e70c333e8), [`3a766be9d`](https://github.com/marigold-ui/marigold/commit/3a766be9d83219e3295962cfc08d43c0e2556101), [`cda6ac809`](https://github.com/marigold-ui/marigold/commit/cda6ac80984059035ec315481685dce1dbc6cc79)]:
+  - @marigold/components@5.3.0
+  - @marigold/theme-b2b@21.0.0
+  - @marigold/theme-core@21.0.0
+  - @marigold/theme-unicorn@18.0.0
+
+## 1.0.0
+
+### Major Changes
+
+- [#2807](https://github.com/marigold-ui/marigold/pull/2807) [`f9175829d`](https://github.com/marigold-ui/marigold/commit/f9175829db6ab268a6c9620430a99a69d0d57c7c) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: update storybook to version 7 + fix coverage
+
+### Patch Changes
+
+- Updated dependencies [[`f9175829d`](https://github.com/marigold-ui/marigold/commit/f9175829db6ab268a6c9620430a99a69d0d57c7c), [`33329ace2`](https://github.com/marigold-ui/marigold/commit/33329ace2711b139938af05006ed6f00a65f6b99), [`c0609c0b3`](https://github.com/marigold-ui/marigold/commit/c0609c0b32bb8075fdeacf88f9c6ce5d8fdf781e)]:
+  - @marigold/components@5.2.0
+  - @marigold/theme-b2b@20.0.0
+  - @marigold/theme-core@20.0.0
+  - @marigold/theme-unicorn@17.0.0
+
 ## 0.7.26
 
 ### Patch Changes

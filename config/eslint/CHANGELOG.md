@@ -1,5 +1,21 @@
 # @marigold/eslint-config
 
+## 0.4.8
+
+### Patch Changes
+
+- [#2856](https://github.com/marigold-ui/marigold/pull/2856) [`003d291b3`](https://github.com/marigold-ui/marigold/commit/003d291b39ed51ffb33cc56bccbfcfa9fd374c2f) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update eslint to v5.54.1
+
+- [#2863](https://github.com/marigold-ui/marigold/pull/2863) [`9494d692d`](https://github.com/marigold-ui/marigold/commit/9494d692d0f82220c972fb46e941e67923416fa8) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update eslint
+
+- [#2839](https://github.com/marigold-ui/marigold/pull/2839) [`c93c67a2c`](https://github.com/marigold-ui/marigold/commit/c93c67a2c9132baeda0d35c252ac553cd574ec58) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update eslint to v5.54.0
+
+## 0.4.7
+
+### Patch Changes
+
+- [#2822](https://github.com/marigold-ui/marigold/pull/2822) [`fb21bde37`](https://github.com/marigold-ui/marigold/commit/fb21bde377d32695c81368e665e461ad5173e0f8) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update eslint
+
 ## 0.4.6
 
 ### Patch Changes

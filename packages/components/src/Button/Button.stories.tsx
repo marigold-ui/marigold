@@ -55,7 +55,6 @@ const meta = {
   },
 } satisfies Meta<typeof Button>;
 
-
 export default meta;
 
 type Story = StoryObj<typeof meta>;
@@ -102,6 +101,19 @@ export const PassThroughProps: Story = {
       </>
     );
   },
+};
+
+export const AsLink: Story = {
+  render: () => (
+    <Button
+      as="a"
+      variant="primary"
+      href="https://cdn.reservix.com/webshop/config/398/portal-logo-dark.62488549.png"
+      download
+    >
+      Download Logo
+    </Button>
+  ),
 };
 
 WithIcon.parameters = {

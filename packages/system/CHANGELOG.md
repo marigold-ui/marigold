@@ -1,5 +1,26 @@
 # @marigold/system
 
+## 5.4.0
+
+### Patch Changes
+
+- Updated dependencies [[`b3d577339`](https://github.com/marigold-ui/marigold/commit/b3d577339e16e73185d2fb80707479ce689e7f7f), [`8972cbaca`](https://github.com/marigold-ui/marigold/commit/8972cbaca29ccce9c17a15b772ab0c7a3e921d20)]:
+  - @marigold/types@1.0.1
+
+## 5.3.0
+
+### Minor Changes
+
+- [#2826](https://github.com/marigold-ui/marigold/pull/2826) [`aaf6b55c6`](https://github.com/marigold-ui/marigold/commit/aaf6b55c6c2b07f7baea9e7af1cab69e70c333e8) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: Improved `<Input>` with icons/actions
+
+- [#2845](https://github.com/marigold-ui/marigold/pull/2845) [`80cdbe062`](https://github.com/marigold-ui/marigold/commit/80cdbe062445b6c4b8073cb72976ce9ce4bcefb1) Thanks [@sebald](https://github.com/sebald)! - refa: `<SVG>` css prop can overrde size (height/width)
+
+## 5.2.0
+
+### Minor Changes
+
+- [#2806](https://github.com/marigold-ui/marigold/pull/2806) [`f11e2d7db`](https://github.com/marigold-ui/marigold/commit/f11e2d7dbb3d6b4ee4b8651f48b52736f64fd778) Thanks [@sebald](https://github.com/sebald)! - feat: expose `keyframes` helper
+
 ## 5.1.0
 
 ### Patch Changes

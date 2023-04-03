@@ -22,6 +22,7 @@ export interface TextProps extends ThemeComponentProps, HtmlProps<'p'> {
   cursor?: string;
   fontSize?: string;
   fontWeight?: string;
+  fontStyle?: string;
   outline?: string;
   children?: React.ReactNode;
 }
@@ -35,6 +36,7 @@ export const Text = ({
   align,
   color,
   fontSize,
+  fontStyle,
   fontWeight,
   cursor,
   outline,
@@ -57,6 +59,7 @@ export const Text = ({
           cursor,
           outline,
           fontSize,
+          fontStyle,
           fontWeight,
           textAlign: align,
         },
