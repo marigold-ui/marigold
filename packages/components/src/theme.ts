@@ -34,6 +34,7 @@ import type { TableThemeExtension } from './Table';
 import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
 import type { TooltipThemeExtension } from './Tooltip';
+import type { TabsThemeExtension } from './Tabs';
 
 interface ComponentStyles
   extends AutocompleteThemeExtension,
@@ -66,7 +67,8 @@ interface ComponentStyles
     TextThemeExtension,
     TextAreaThemeExtension,
     TooltipThemeExtension,
-    UnderlayThemeExtension {}
+    UnderlayThemeExtension,
+    TabsThemeExtension {}
 
 export interface Theme extends BaseTheme {
   components: ComponentStyles;
