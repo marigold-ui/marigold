@@ -199,3 +199,28 @@ test('support default expanded keys', () => {
   const buttontwo = screen.getByText('settings');
   expect(buttontwo).toHaveAttribute('aria-expanded', 'false');
 });
+
+test('support default expanded keys (more than one)', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Accordion
+        data-testid="accordion"
+        selectionMode="multiple"
+        defaultExpandedKeys={['two', 'one']}
+      >
+        <Accordion.Item key={'one'} title="Information" stretch={false}>
+          <Headline>infos</Headline>
+        </Accordion.Item>
+        <Accordion.Item key={'two'} title="Settings" stretch={false}>
+          <Headline>settings</Headline>
+        </Accordion.Item>
+      </Accordion>
+    </ThemeProvider>
+  );
+
+  const item = screen.getByText('infos');
+  expect(item).toBeInTheDocument();
+
+  const itemtwo = screen.getByText('settings');
+  expect(itemtwo).toBeInTheDocument();
+});
