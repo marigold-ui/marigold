@@ -14,7 +14,6 @@ export const Menu: Theme['components']['Menu'] = {
     item: {
       p: 'small-1',
       cursor: 'pointer',
-
       '&:hover': {
         color: 'brand.primary',
       },
