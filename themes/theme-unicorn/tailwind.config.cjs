@@ -2,7 +2,6 @@
 
 module.exports = {
   content: ['./src/**/*.{ts,tsx}'],
-  presets: [require('./src/colors')],
   theme: {
     extend: {
       breakpoints: ['40em', '52em', '64em'],
