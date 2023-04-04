@@ -49,20 +49,18 @@ export const FieldBase = ({
   ...props
 }: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
-
   const style = useComponentStyles('Field', { variant, size });
-
   const { labelWidth, labelPosition } = useFieldGroupContext();
-  console.log(labelPosition);
+  const topPlacement = labelPosition === 'top';
   return (
     <Box
       {...props}
       __baseCSS={{
         display: 'flex',
-        flexDirection: labelPosition === 'top' ? 'column' : 'row',
+        flexDirection: topPlacement ? 'column' : 'row',
         width,
         position: 'relative',
-        alignItems: labelPosition === 'left' ? 'center' : 'normal',
+        alignItems: !topPlacement ? 'center' : 'normal',
       }}
       css={style}
     >
