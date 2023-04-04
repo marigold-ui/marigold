@@ -1,6 +1,6 @@
 {
   "name": "@marigold/components",
-  "version": "5.2.0",
+  "version": "5.4.0",
   "description": "Components for the Marigold Design System",
   "license": "MIT",
   "keywords": [
@@ -83,12 +83,12 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "@types/react": "18.0.28",
+    "@types/react": "18.0.29",
     "@types/react-transition-group": "4.4.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwind-variants": "0.1.1",
-    "tsup": "6.6.3"
+    "tsup": "6.7.0"
   },
   "scripts": {
     "build": "tsup src/index.ts",

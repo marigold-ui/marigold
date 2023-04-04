@@ -1,5 +1,27 @@
 # @marigold/theme-core
 
+## 22.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`b3d577339`](https://github.com/marigold-ui/marigold/commit/b3d577339e16e73185d2fb80707479ce689e7f7f), [`aaff48559`](https://github.com/marigold-ui/marigold/commit/aaff485594d34f878217f5906f7ee69e7f66c8f2)]:
+  - @marigold/components@5.4.0
+
+## 21.0.0
+
+### Major Changes
+
+- [#2846](https://github.com/marigold-ui/marigold/pull/2846) [`3a766be9d`](https://github.com/marigold-ui/marigold/commit/3a766be9d83219e3295962cfc08d43c0e2556101) Thanks [@sebald](https://github.com/sebald)! - feat: Styles for `<Autocomplete>`
+
+### Minor Changes
+
+- [#2826](https://github.com/marigold-ui/marigold/pull/2826) [`aaf6b55c6`](https://github.com/marigold-ui/marigold/commit/aaf6b55c6c2b07f7baea9e7af1cab69e70c333e8) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: Improved `<Input>` with icons/actions
+
+### Patch Changes
+
+- Updated dependencies [[`aaf6b55c6`](https://github.com/marigold-ui/marigold/commit/aaf6b55c6c2b07f7baea9e7af1cab69e70c333e8), [`3a766be9d`](https://github.com/marigold-ui/marigold/commit/3a766be9d83219e3295962cfc08d43c0e2556101), [`cda6ac809`](https://github.com/marigold-ui/marigold/commit/cda6ac80984059035ec315481685dce1dbc6cc79)]:
+  - @marigold/components@5.3.0
+
 ## 20.0.0
 
 ### Patch Changes
