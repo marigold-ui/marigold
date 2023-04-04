@@ -1,5 +1,5 @@
 import type { Theme } from '@marigold/components';
-import { colors } from '../colors';
+import { colors } from '../colors.js';
 
 export const Select: Theme['components']['Select'] = {
   base: {

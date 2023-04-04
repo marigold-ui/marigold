@@ -2,6 +2,7 @@
 
 module.exports = {
   content: ['./src/**/*.{ts,tsx}'],
+  presets: [require('./src/colors.ts')],
   theme: {
     extend: {
       breakpoints: ['40em', '52em', '64em'],
@@ -26,17 +27,6 @@ module.exports = {
         xxlarge: 240,
         huge: 320,
         epic: 480,
-      },
-      // don't know how to hand over
-      colors: {
-        primary: '#673ab7',
-        secondary: '#9575cd',
-        disabled: '#e9e7eb',
-        error: '#ffb2b1',
-        warning: '#fff3ad',
-        info: '#a2edff',
-        success: '#bcffbc',
-        purple10: '#ede7f6',
       },
       root: {
         body: {

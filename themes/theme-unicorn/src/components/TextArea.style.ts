@@ -1,5 +1,5 @@
 import { Theme } from '@marigold/components';
-import { colors } from '../colors';
+import { colors } from '../colors.js';
 
 export const TextArea: Theme['components']['TextArea'] = {
   base: {
