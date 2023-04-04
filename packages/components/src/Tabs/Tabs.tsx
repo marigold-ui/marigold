@@ -17,13 +17,23 @@ import { Item } from '@react-stately/collections';
 export interface TabsThemeExtension
   extends ThemeExtensionsWithParts<'Tabs', ['tabs', 'tab', 'tabPanel']> {}
 export interface TabsProps
-  extends Omit<AriaTabListProps<object>, 'orientation'> {
+  extends Omit<AriaTabListProps<object>, 'orientation' | 'isDisabled'> {
   gap?: number;
   size?: 'small' | 'medium' | 'large';
+  disabled?: boolean;
 }
-export const Tabs = ({ gap = 1, size = 'medium', ...props }: TabsProps) => {
-  const state = useTabListState(props);
+export const Tabs = ({
+  gap = 1,
+  size = 'medium',
+  disabled,
+  ...res
+}: TabsProps) => {
   const ref = useRef(null);
+  const props: AriaTabListProps<object> = {
+    isDisabled: disabled,
+    ...res,
+  };
+  const state = useTabListState(props);
   const { tabListProps } = useTabList(props, state, ref);
   const styles = useComponentStyles(
     'Tabs',
@@ -32,7 +42,7 @@ export const Tabs = ({ gap = 1, size = 'medium', ...props }: TabsProps) => {
   );
   return (
     <TabContext.Provider value={{ styles }}>
-      <Box>
+      <div>
         <Box
           css={styles.tabs}
           __baseCSS={{ display: 'flex', gap: `${gap}rem` }}
@@ -44,7 +54,7 @@ export const Tabs = ({ gap = 1, size = 'medium', ...props }: TabsProps) => {
           })}
         </Box>
         <TabPanel key={state.selectedItem?.key} state={state} />
-      </Box>
+      </div>
     </TabContext.Provider>
   );
 };

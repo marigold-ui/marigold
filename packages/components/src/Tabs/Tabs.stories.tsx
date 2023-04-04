@@ -4,7 +4,7 @@ import { Tabs } from './Tabs';
 const meta = {
   title: 'Components/Tabs',
   argTypes: {
-    isDisabled: {
+    disabled: {
       control: { type: 'boolean' },
       description: 'Disable all the tabs',
     },

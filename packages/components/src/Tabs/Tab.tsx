@@ -24,9 +24,9 @@ export const Tab = ({ item, state }: TabProps) => {
   const { focusProps } = useFocus({});
   const stateProps = useStateProps({ active: isSelected, hover: isHovered });
   const { styles } = useTabContext();
+
   return (
     <Box
-      className={disabled ? 'disabled' : ''}
       __baseCSS={{
         cursor: disabled ? 'not-allowed' : 'pointer',
         display: 'flex',
