@@ -92,7 +92,7 @@ export const Basic: Story = {
 
 export const Complex: Story = {
   render: args => (
-    <FieldGroup labelWidth="115px" labelPosition="left">
+    <FieldGroup labelWidth="115px" labelPosition="top">
       <Box style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <FieldBase {...args} label="This is my Label">
           <Input type="text" />

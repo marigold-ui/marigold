@@ -49,56 +49,37 @@ export const FieldBase = ({
   ...props
 }: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
-  const style = useComponentStyles('Field', { variant, size });
-  const { labelWidth, labelPosition } = useFieldGroupContext();
 
+  const style = useComponentStyles('Field', { variant, size });
+
+  const { labelWidth, labelPosition } = useFieldGroupContext();
+  console.log(labelPosition);
   return (
     <Box
-      css={style}
       {...props}
       __baseCSS={{
         display: 'flex',
-        flexDirection: labelPosition === 'left' ? 'row' : 'column',
-        flexWrap: 'wrap',
+        flexDirection: labelPosition === 'top' ? 'column' : 'row',
         width,
         position: 'relative',
+        alignItems: labelPosition === 'left' ? 'center' : 'normal',
       }}
+      css={style}
     >
       {label && (
-        <Box
-          __baseCSS={{
-            display: 'flex',
-            alignItems: 'center',
-            '& label': { whiteSpace: 'nowrap' },
-          }}
+        <Label
+          required={required}
+          variant={variant}
+          size={size}
+          labelWidth={labelWidth}
+          {...labelProps}
+          {...stateProps}
         >
-          <Label
-            required={required}
-            variant={variant}
-            size={size}
-            labelWidth={labelWidth}
-            {...labelProps}
-            {...stateProps}
-          >
-            {label}
-          </Label>
-        </Box>
+          {label}
+        </Label>
       )}
-      <Box
-        __baseCSS={{
-          display: 'flex',
-          flexDirection: 'column',
-          gridArea: 'input',
-        }}
-      >
-        <Box
-          __baseCSS={{
-            width: '100%',
-            '& input': { width: '100%' },
-          }}
-        >
-          {children}
-        </Box>
+      <Box __baseCSS={{ display: 'flex', flexDirection: 'column' }}>
+        {children}
         {hasHelpText && (
           <HelpText
             {...stateProps}
