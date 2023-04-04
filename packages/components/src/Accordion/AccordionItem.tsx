@@ -64,12 +64,11 @@ export const AccordionItem = ({
 
   // we have to use or own hook because it's in react-aria still issues
   const { buttonProps, regionProps } = useAccordionItem({ item }, state, ref);
-
   const { isFocusVisible, focusProps } = useFocusRing();
 
   const stateProps = useStateProps({
     focus: isFocusVisible,
-    expanded: expanded || defaultExpanded,
+    expanded: defaultExpanded || expanded,
   });
 
   const styles = useComponentStyles(

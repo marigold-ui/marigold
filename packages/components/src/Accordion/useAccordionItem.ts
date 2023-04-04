@@ -134,8 +134,9 @@ export function useAccordionItem<T>(
     buttonProps: {
       ...buttonProps,
       role: 'button',
-      'aria-expanded': manager.isSelected(key),
-      'aria-controls': manager.isSelected(key) ? regionId : undefined,
+      'aria-expanded': manager.isSelected(key) || isDefaultExpanded,
+      'aria-controls':
+        manager.isSelected(key) || isDefaultExpanded ? regionId : undefined,
     },
     regionProps: {
       id: regionId,
