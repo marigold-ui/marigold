@@ -12,6 +12,7 @@ export const MultiSelect = () => {
   const items = [
     {
       key: 'one',
+      textValue: 'Parking passes',
       title: (
         <Inline space="medium">
           <Parking />
@@ -38,6 +39,7 @@ export const MultiSelect = () => {
     },
     {
       key: 'two',
+      textValue: 'Handicapped parking spaces',
       title: (
         <Inline space="medium">
           <Accessible />
@@ -64,6 +66,7 @@ export const MultiSelect = () => {
     },
     {
       key: 'tree',
+      textValue: 'Settings',
       title: (
         <Inline space="medium">
           <SettingDots />
@@ -82,7 +85,11 @@ export const MultiSelect = () => {
   return (
     <Accordion selectionMode="multiple" defaultExpandedKeys={['two']}>
       {items.map(item => (
-        <Accordion.Item key={item.key} title={item.title}>
+        <Accordion.Item
+          key={item.key}
+          title={item.title}
+          textValue={item.textValue}
+        >
           {item.children}
         </Accordion.Item>
       ))}
