@@ -1,10 +1,9 @@
 /* eslint-disable testing-library/no-node-access */
-import React, { Children } from 'react';
+import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 import { Accordion } from './Accordion';
 import { Headline } from '../Headline';
-import { Item } from '@react-stately/collections';
 
 const theme = {
   colors: {
