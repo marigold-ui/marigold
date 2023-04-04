@@ -1,5 +1,4 @@
 import type { Theme } from '@marigold/components';
-
 export const Menu: Theme['components']['Menu'] = {
   base: {
     container: {
