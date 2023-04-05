@@ -10,6 +10,7 @@ export * from './Headline.style';
 export * from './HelpText.style';
 export * from './Image.style';
 export * from './Input.style';
+export * from './DateField.style';
 export * from './Label.style';
 export * from './Link.style';
 export * from './List.style';
