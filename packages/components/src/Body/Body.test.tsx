@@ -46,6 +46,13 @@ test('renders as a "section" element', () => {
   expect(body.tagName).toEqual('SECTION');
 });
 
+test('takes available space by default', () => {
+  render(<Body data-testid="body" />);
+
+  const body = screen.getByTestId('body');
+  expect(body).toHaveStyle(`flex: 1`);
+});
+
 test('uses base styling form "body" in theme', () => {
   render(
     <ThemeProvider theme={theme}>
