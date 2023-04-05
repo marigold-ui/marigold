@@ -16,7 +16,7 @@ import { Item } from '@react-stately/collections';
 
 export interface TabsThemeExtension
   extends ThemeExtensionsWithParts<'Tabs', ['tabs', 'tab', 'tabPanel']> {}
-export interface TabsProps
+interface TabsProps
   extends Omit<AriaTabListProps<object>, 'orientation' | 'isDisabled'> {
   gap?: number;
   size?: 'small' | 'medium' | 'large';
