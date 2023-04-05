@@ -5,7 +5,7 @@ export const Badge = tv({
   variants: {
     variant: {
       info: 'text-purple10 bg-purple70',
-      dark: 'text-gray-100 bg-gray-700 hover:bg-gray-800',
+      dark: 'text-gray10 bg-gray70 hover:bg-gray80',
     },
   },
 });

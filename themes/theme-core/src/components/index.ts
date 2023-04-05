@@ -1,4 +1,3 @@
-export * from './Badge.style';
 export * from './Body.style';
 export * from './Button.style';
 export * from './Card.style';

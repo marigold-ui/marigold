@@ -1,6 +1,10 @@
 import React, { ReactNode } from 'react';
 import { Box, ResponsiveStyleValue } from '@marigold/system';
 
+import { theme } from 'themes/theme-unicorn/src/spaces';
+
+const space = theme.space;
+
 const ALIGNMENT_X = {
   none: 'initial',
   left: 'flex-start',
@@ -19,7 +23,7 @@ const ALIGNMENT_Y = {
 // ---------------
 export interface StackProps {
   children?: ReactNode;
-  space?: ResponsiveStyleValue<string>;
+  space?: typeof space;
   alignX?: keyof typeof ALIGNMENT_X;
   alignY?: keyof typeof ALIGNMENT_Y;
   stretch?: boolean;

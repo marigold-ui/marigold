@@ -6,6 +6,16 @@ module.exports = {
   theme: {
     extend: {
       breakpoints: ['40em', '52em', '64em'],
+      space: {
+        none: 0,
+        xxsmall: 4,
+        xsmall: 8,
+        small: 16,
+        medium: 24,
+        large: 32,
+        xlarge: 40,
+        xxlarge: 48,
+      },
       sizes: {
         none: 0,
         xxsmall: 16,
@@ -23,7 +33,7 @@ module.exports = {
           margin: 0,
           padding: 0,
           fontFamily: 'body',
-          bg: 'gray00',
+          bg: '#e7e4e0',
         },
       },
       radii: {
@@ -31,24 +41,24 @@ module.exports = {
         small: 2,
         medium: 4,
         large: 8,
-        huge: 16,
+        xlarge: 10,
       },
       fonts: {
-        body: 'Arial',
-        heading: 'Roboto',
+        body: 'Arial, Helvetica, sans-serif',
+        heading: 'Arial, Helvetica, sans-serif',
       },
       fontSizes: {
-        xxsmall: '0.66rem',
+        xxsmall: '0.875rem',
         xsmall: '1rem',
-        small: '1.33rem',
-        medium: '1.66rem',
-        large: '2rem',
-        xlarge: '2.33rem',
+        small: '1.125rem',
+        medium: '1.25rem',
+        large: '1.5rem',
+        xlarge: '2rem',
       },
       fontWeights: {
-        body: 300,
-        heading: 800,
-        bold: 600,
+        body: 400,
+        heading: 900,
+        bold: 700,
       },
       lineHeights: {
         xsmall: 1,
@@ -61,8 +71,3 @@ module.exports = {
     },
   },
 };
-
-//const tailwindConfig = require('./tailwind.config.js');
-// import * as tailwindConfig from './src/tailwind.config.cjs';
-
-// export default tailwindConfig;

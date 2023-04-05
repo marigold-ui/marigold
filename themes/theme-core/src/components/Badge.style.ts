@@ -1,23 +1,11 @@
-import type { Theme } from '@marigold/components';
+import { tv } from 'tailwind-variants';
 
-export const Badge: Theme['components']['Badge'] = {
-  base: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    fontSize: 'xxsmall',
-    borderRadius: 20,
-    whiteSpace: 'nowrap',
-    px: 8,
-    py: 2,
-  },
-  variant: {
-    info: {
-      color: 'blue10',
-      bg: 'blue70',
-    },
-    dark: {
-      color: 'gray00',
-      bg: 'gray70',
+export const Badge = tv({
+  base: 'inline-flex align-middle text-xxsmall rounded-3xl whitespace-nowrap px-2 py-0.5',
+  variants: {
+    variant: {
+      info: 'text-blue10 bg-blue70',
+      dark: 'text-gray00 bg-gray70',
     },
   },
-};
+});
