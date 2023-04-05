@@ -107,9 +107,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
 <!-- LINKS + BADGES -->
-
-[ci]: https://github.com/marigold-ui/marigold/actions
-[ci-badge]: https://img.shields.io/github/workflow/status/marigold-ui/marigold/Validate?style=flat-square
+[ci]: https://github.com/marigold-ui/marigold/actions/workflows/build.yml
+[ci-badge]: https://github.com/marigold-ui/marigold/actions/workflows/build.yml/badge.svg
 [license]: https://github.com/marigold-ui/marigold/blob/master/LICENSE
 [license-badge]: https://img.shields.io/github/license/marigold-ui/marigold?style=flat-square
 [package]: https://www.npmjs.com/package/@marigold/components
