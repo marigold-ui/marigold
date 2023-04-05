@@ -437,3 +437,23 @@ test('supports onOpenChange property', () => {
   fireEvent.click(screen.getByRole('button'));
   expect(onOpenChange).toBeCalledTimes(1);
 });
+
+test('supports Menu with sections', () => {
+  render(
+    <OverlayProvider>
+      <Menu aria-label="Menu with sections">
+        <Menu.Section title="Food">
+          <Menu.Item key="burger">🍔 Burger</Menu.Item>
+          <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+        </Menu.Section>
+        <Menu.Section title="Fruits">
+          <Menu.Item key="apple">🍎 Apple</Menu.Item>
+          <Menu.Item key="banana">🍌 Banana</Menu.Item>
+        </Menu.Section>
+      </Menu>
+    </OverlayProvider>
+  );
+  expect(screen.getByText('Food')).toBeInTheDocument();
+  expect(screen.getByText('Fruits')).toBeInTheDocument();
+  expect(screen.getByRole('separator')).toBeInTheDocument();
+});
