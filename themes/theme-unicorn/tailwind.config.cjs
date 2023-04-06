@@ -2,7 +2,12 @@
 
 module.exports = {
   content: ['./src/**/*.{ts,tsx}'],
-  presets: [require('./src/colors.ts')],
+  presets: [require('./src/colors.ts'), require('./src/spaces.ts')],
+  // safelist: [
+  //   {
+  //     pattern: /./,
+  //   },
+  // ],
   theme: {
     extend: {
       breakpoints: ['40em', '52em', '64em'],
@@ -66,3 +71,38 @@ module.exports = {
 // import * as tailwindConfig from './src/tailwind.config.cjs';
 
 // export default tailwindConfig;
+
+// const { createTheme } = require('@marigold/b2b-theme')
+
+// module.exports = {
+//   // ...your tailwind config
+//   plugins: [createTheme({
+//     Card: {
+//       base: 'classnames ...'
+//     }
+//   })],
+// };
+
+// ACC tailwind.config.js -> Configraiton inside an app
+// const { createThemePreset, content } = require('@marigold/b2b-theme')
+
+// /** @type {import('tailwindcss').Config} */
+// module.exports = {
+//   // optional, needed when additional classes are required
+//   content: ['./tailwind.config.js', ...content()],
+//   theme: {
+//     extend: {
+//       color: {
+//         hot: 'hotpink'
+//       }
+//     }
+//   },
+//   // required!
+//   preset: [createThemePreset({
+//     Card: {
+//       variant: {
+//         'fancy-shancy': 'text-color-hot'
+//       }
+//     }
+//   })],
+// }

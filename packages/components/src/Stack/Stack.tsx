@@ -1,9 +1,10 @@
 import React, { ReactNode } from 'react';
-import { Box, ResponsiveStyleValue } from '@marigold/system';
+import { Box } from '@marigold/system';
 
 import { theme } from 'themes/theme-unicorn/src/spaces';
 
-const space = theme.space;
+console.log(theme.extend.space);
+const space = theme.extend.space;
 
 const ALIGNMENT_X = {
   none: 'initial',
@@ -23,7 +24,7 @@ const ALIGNMENT_Y = {
 // ---------------
 export interface StackProps {
   children?: ReactNode;
-  space?: typeof space;
+  space?: keyof typeof space;
   alignX?: keyof typeof ALIGNMENT_X;
   alignY?: keyof typeof ALIGNMENT_Y;
   stretch?: boolean;
@@ -40,6 +41,7 @@ export const Stack = ({
   ...props
 }: StackProps) => (
   <Box
+    className="flex flex-col p-0 "
     css={{
       display: 'flex',
       flexDirection: 'column',
