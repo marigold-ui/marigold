@@ -46,3 +46,4 @@ export * from './Tiles';
 export * from './Tooltip';
 export * from './VisuallyHidden';
 export * from './XLoader';
+export * from './Calendar';
