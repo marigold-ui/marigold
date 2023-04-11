@@ -1,7 +1,7 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { DateSegment as DateSegmentInterface } from '@react-stately/datepicker';
 import { DateFieldState } from '@react-stately/datepicker';
-import { useComponentStyles } from '@marigold/system';
+import { useComponentStyles, useStateProps } from '@marigold/system';
 import { useDateSegment } from '@react-aria/datepicker';
 import { Box } from '@marigold/system';
 
@@ -14,16 +14,16 @@ export const DateSegment = ({ segment, state }: DateSegmentProps) => {
   const ref = useRef(null);
   const { segmentProps } = useDateSegment(segment, state, ref);
   const styles = useComponentStyles('DateField', {}, { parts: ['segment'] });
+  const stateProps = useStateProps({ disabled: state.isDisabled });
+  const { maxValue, isPlaceholder, placeholder, text, type } = segment;
   return (
     <Box
       {...segmentProps}
+      {...stateProps}
       ref={ref}
       __baseCSS={{
         ...segmentProps.style,
-        minWidth:
-          segment.maxValue != null
-            ? String(segment.maxValue).length + 'ch'
-            : '',
+        minWidth: maxValue != null ? String(maxValue).length + 'ch' : '',
         paddingX: '0.125rem',
         boxSizing: 'content-box',
         fontVariantNumeric: 'lining-nums',
@@ -32,29 +32,30 @@ export const DateSegment = ({ segment, state }: DateSegmentProps) => {
         borderRadius: '2px',
       }}
       css={styles.segment}
-      className={state.isDisabled ? 'disabled' : undefined}
     >
       <Box
         as="span"
         aria-hidden="true"
         __baseCSS={{
-          visibility: segment.isPlaceholder ? 'visible' : 'hidden',
-          height: segment.isPlaceholder ? '' : 0,
+          visibility: isPlaceholder ? 'visible' : 'hidden',
+          height: isPlaceholder ? '' : 0,
           pointerEvents: 'none',
           display: 'block',
           width: '100%',
           textAlign: 'center',
         }}
       >
-        {segment.placeholder}
+        {placeholder}
       </Box>
-      {segment.isPlaceholder
+
+      {isPlaceholder
         ? ''
-        : segment.text === '/'
-        ? '.'
-        : Number(segment.text) < 10
-        ? '0' + segment.text
-        : segment.text}
+        : type === 'month' || type === 'day'
+        ? Number(text) < 10
+          ? '0' + text
+          : text
+        : text}
+      {/* {isPlaceholder ? "" : text} */}
     </Box>
   );
 };

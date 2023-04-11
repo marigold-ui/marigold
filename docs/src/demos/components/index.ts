@@ -34,6 +34,7 @@ export * from './List';
 export * from './Menu';
 export * from './Message';
 export * from './NumberField';
+export * from './DateField';
 export * from './Radio';
 export * from './Stack';
 export * from './Select';

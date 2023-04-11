@@ -12,7 +12,7 @@ export const DateField: Theme['components']['DateField'] = {
         borderColor: 'orange60',
       },
       '&[data-disabled]': {
-        backgroundColor: '#F1F1F1',
+        bg: '#F1F1F1',
         cursor: 'not-allowed',
       },
       '&:error': {
@@ -21,27 +21,13 @@ export const DateField: Theme['components']['DateField'] = {
     },
     segment: {
       '&:focus': {
-        background: 'gray60',
-        color: 'white',
-        '& span': {
+        bg: 'gray60',
+        '&, & span': {
           color: 'white',
         },
       },
-      '&.disabled': {
+      '&[data-disabled]': {
         color: 'gray40',
-      },
-    },
-    calendarButton: {
-      '& button:not(:disabled):hover': {
-        backgroundColor: 'gray50',
-      },
-      '& button:not(:disabled):hover, & button:focus, &.isPressed': {
-        '& svg': {
-          color: 'white',
-        },
-      },
-      '& button:focus, &.isPressed': {
-        background: 'gray80',
       },
     },
   },
