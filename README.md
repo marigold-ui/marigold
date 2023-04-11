@@ -108,8 +108,8 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 
 <!-- LINKS + BADGES -->
 
-[ci]: https://github.com/marigold-ui/marigold/actions
-[ci-badge]: https://img.shields.io/github/workflow/status/marigold-ui/marigold/Validate?style=flat-square
+[ci]: https://github.com/marigold-ui/marigold/actions/workflows/build.yml
+[ci-badge]: https://github.com/marigold-ui/marigold/actions/workflows/build.yml/badge.svg
 [license]: https://github.com/marigold-ui/marigold/blob/master/LICENSE
 [license-badge]: https://img.shields.io/github/license/marigold-ui/marigold?style=flat-square
 [package]: https://www.npmjs.com/package/@marigold/components
