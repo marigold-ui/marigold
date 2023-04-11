@@ -32,7 +32,7 @@ const meta = {
         type: 'select',
       },
       options: ['none', 'left', 'center', 'right'],
-      description: 'Vertical Alignment',
+      description: 'Horizontal Alignment',
     },
     alignY: {
       control: {

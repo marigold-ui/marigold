@@ -1,21 +1,31 @@
 /** @type {import('tailwindcss').Config} */
 
 module.exports = {
-  content: ['./src/**/*.{ts,tsx}'],
+  content: ['./src/**/*.{ts,tsx}', 'packages/components/src/**/**.tsx'],
   presets: [require('./src/colors.ts')],
+  safelist: [
+    'items-start',
+    'items-center',
+    'items-end',
+    'justify-start',
+    'justify-center',
+    'justify-end',
+    'flex-col',
+    'p-0',
+    'w-full',
+    'h-full',
+    'gap-4',
+    'gap-8',
+    'gap-16',
+    'gap-24',
+    'gap-32',
+    'gap-40',
+    'gap-48',
+  ],
   theme: {
     extend: {
       breakpoints: ['40em', '52em', '64em'],
-      space: {
-        none: 0,
-        xxsmall: 4,
-        xsmall: 8,
-        small: 16,
-        medium: 24,
-        large: 32,
-        xlarge: 40,
-        xxlarge: 48,
-      },
+
       sizes: {
         none: 0,
         xxsmall: 16,
