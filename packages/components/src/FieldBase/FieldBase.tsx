@@ -58,9 +58,11 @@ export const FieldBase = ({
       __baseCSS={{
         display: 'flex',
         flexDirection: topPlacement ? 'column' : 'row',
+        alignItems: !topPlacement ? 'baseline' : 'normal',
+        columnGap: '1rem',
+        flexWrap: 'wrap',
         width,
         position: 'relative',
-        alignItems: !topPlacement ? 'center' : 'normal',
       }}
       css={style}
     >

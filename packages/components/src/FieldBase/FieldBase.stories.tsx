@@ -98,7 +98,7 @@ export const Complex: Story = {
           <Input type="text" />
         </FieldBase>
         <FieldBase {...args} label="name">
-          <input type="text" />
+          <Input type="text" />
         </FieldBase>
         <TextField label="Hello TextField" />
         <TextField label="Hello" description="my description" />
