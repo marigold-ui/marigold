@@ -12,8 +12,6 @@ export const theme = {
   },
 };
 
-export let spaceclass = '';
-
 export const useSpace = (space: keyof typeof theme.extend.space) => {
   if (space === 'xxsmall') {
     return 'gap-4';
