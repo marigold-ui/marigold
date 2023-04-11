@@ -142,7 +142,7 @@ test('accepts variant and size', () => {
   expect(item).toHaveStyle(`background-color: ${theme.colors.teal})`);
 });
 
-test('default stretched', () => {
+test('default full width', () => {
   render(
     <ThemeProvider theme={theme}>
       <Accordion data-testid="accordion">
@@ -159,31 +159,14 @@ test('default stretched', () => {
   expect(button).toHaveStyle(`justify-content: space-between`);
 });
 
-test('not stretched', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Accordion data-testid="accordion">
-        <Accordion.Item title="Information" stretch={false}>
-          <Headline>infos</Headline>
-        </Accordion.Item>
-      </Accordion>
-    </ThemeProvider>
-  );
-
-  const button = screen.getByText('Information');
-
-  expect(button).toHaveStyle(`width: undefined`);
-  expect(button).toHaveStyle(`justify-content: left`);
-});
-
 test('support default expanded keys', () => {
   render(
     <ThemeProvider theme={theme}>
       <Accordion data-testid="accordion" defaultExpandedKeys={['one']}>
-        <Accordion.Item key={'one'} title="Information" stretch={false}>
+        <Accordion.Item key={'one'} title="Information">
           <Headline>infos</Headline>
         </Accordion.Item>
-        <Accordion.Item key={'two'} title="settings" stretch={false}>
+        <Accordion.Item key={'two'} title="settings">
           <Headline>settings</Headline>
         </Accordion.Item>
       </Accordion>
@@ -208,10 +191,10 @@ test('support default expanded keys (more than one)', () => {
         selectionMode="multiple"
         defaultExpandedKeys={['two', 'one']}
       >
-        <Accordion.Item key={'one'} title="Information" stretch={false}>
+        <Accordion.Item key={'one'} title="Information">
           <Headline>infos</Headline>
         </Accordion.Item>
-        <Accordion.Item key={'two'} title="Settings" stretch={false}>
+        <Accordion.Item key={'two'} title="Settings">
           <Headline>settings</Headline>
         </Accordion.Item>
       </Accordion>

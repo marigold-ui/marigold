@@ -24,7 +24,6 @@ export interface AccordionItemProps {
   state: TreeState<object>;
   css?: CSSObject;
   title: string | ReactNode;
-  stretch?: boolean;
   variant?: string;
   size?: string;
 }
@@ -36,7 +35,6 @@ export const AccordionItem = ({
   title,
   variant,
   size,
-  stretch = true,
   ...props
 }: AccordionItemProps) => {
   const ref = useRef<HTMLButtonElement>(null);
@@ -86,8 +84,8 @@ export const AccordionItem = ({
           __baseCSS={{
             border: 'none',
             p: 0,
-            width: stretch ? '100%' : undefined,
-            justifyContent: stretch ? 'space-between' : 'left',
+            width: '100%',
+            justifyContent: 'space-between',
           }}
           css={styles.button}
           aria-label={item.textValue}

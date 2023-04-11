@@ -1,13 +1,9 @@
 import { Accordion, Text } from '@marigold/components';
 
-export const NoStretchAccordion = () => {
+export const BasicAccordion = () => {
   return (
     <Accordion defaultExpandedKeys={[1]}>
-      <Accordion.Item
-        key={1}
-        title="Harry Potter and the Philosopher's Stone"
-        stretch={false}
-      >
+      <Accordion.Item key={1} title="Harry Potter and the Philosopher's Stone">
         <Text>
           Harry Potter and the Philosopher's Stone is a 1997 fantasy novel
           written by British author J. K. Rowling. The first novel in the Harry
@@ -21,11 +17,7 @@ export const NoStretchAccordion = () => {
           parents, but failed to kill Harry when he was just 15 months old.
         </Text>
       </Accordion.Item>
-      <Accordion.Item
-        key={2}
-        title="Harry Potter and the Chamber of Secrets"
-        stretch={false}
-      >
+      <Accordion.Item key={2} title="Harry Potter and the Chamber of Secrets">
         <Text>
           Harry Potter and the Chamber of Secrets is a fantasy novel written by
           British author J. K. Rowling and the second novel in the Harry Potter
@@ -38,11 +30,7 @@ export const NoStretchAccordion = () => {
           year, Harry and his friends Ron and Hermione investigate the attacks.
         </Text>
       </Accordion.Item>
-      <Accordion.Item
-        key={3}
-        title="Harry Potter and the Prisoner of Azkaban"
-        stretch={false}
-      >
+      <Accordion.Item key={3} title="Harry Potter and the Prisoner of Azkaban">
         <Text>
           Harry Potter and the Prisoner of Azkaban is a fantasy novel written by
           British author J. K. Rowling and is the third in the Harry Potter

@@ -50,7 +50,6 @@ export const Accordion = ({ children, ...props }: AccordionProps) => {
           title={item.props.title}
           item={item}
           state={state}
-          stretch={item.props.stretch}
           variant={item.props.variant}
           size={item.props.size}
         />
@@ -60,7 +59,6 @@ export const Accordion = ({ children, ...props }: AccordionProps) => {
 };
 
 export interface AccordionOwnItemProps<T> extends ItemProps<T> {
-  stretch?: boolean;
   variant?: string;
   size?: string;
   title: string | ReactElement;

@@ -14,7 +14,7 @@ The `<Accordion.Item>` can be expanded by default using the `defaultExpandedKeys
 You can also switch the `selectionMode` for `<Accordion>` by passing its property. The default behavior is set to single mode.
 
 <Preview>
-  <NoStretchAccordion />
+  <BasicAccordion />
 </Preview>
 
 ## Usage
@@ -81,13 +81,6 @@ import { Accordion } from '@marigold/components';
       default: 'none',
     },
     {
-      property: 'stretch',
-      type: 'boolean',
-      description:
-        'Sets the width to fullsize per default. If not wanted change to false.',
-      default: 'true',
-    },
-    {
       property: 'textValue',
       type: 'string',
       description:
@@ -112,13 +105,5 @@ This component shows how a single selection `<Accordion>` is working. It is poss
 With the multiselection mode you can collapse and hide the items as you want. For sure you can set one or more defaultExpandedKeys.
 
 ```tsx preview file=components/Accordion/multi-select-accordion.demo.tsx
-
-```
-
-### No stretch Accordion
-
-In this example you can see how an `<Accordion>` would look like with stretch property set to false.
-
-```tsx preview file=components/Accordion/no-stretch-accordion.demo.tsx
 
 ```

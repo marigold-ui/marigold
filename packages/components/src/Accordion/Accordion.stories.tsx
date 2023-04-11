@@ -39,7 +39,7 @@ export const Basic: Story = {
       <Accordion.Item key={2} title="Personal Settings">
         two
       </Accordion.Item>
-      <Accordion.Item key={3} title="Billing Adress" stretch={false}>
+      <Accordion.Item key={3} title="Billing Adress">
         <Headline level="3">Some Imformations</Headline>
       </Accordion.Item>
     </Accordion>
