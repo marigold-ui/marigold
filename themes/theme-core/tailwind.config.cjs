@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 module.exports = {
-  content: ['./src/**/*.{ts,tsx}', 'packages/components/src/**/**.tsx'],
+  content: ['./src/**/*.{ts,tsx}', 'packages/components/src/**/**.{ts,tsx}'],
   presets: [require('./src/colors.ts')],
   safelist: [
     'items-start',

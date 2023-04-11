@@ -1,7 +1,9 @@
 module.exports = {
   plugins: [
     require('tailwindcss')(),
-    require('autoprefixer')(),
+    require('autoprefixer')({
+      ...(process.env.NODE_ENV === 'production' ? { cssnano: {} } : {}),
+    }),
     require('postcss-prefix-selector')({
       prefix: '[data-theme="core"]',
       transform: (prefix, selector, prefixedSelector) => {

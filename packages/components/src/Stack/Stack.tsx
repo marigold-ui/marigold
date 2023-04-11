@@ -1,9 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Box } from '@marigold/system';
+import { theme, useSpace } from '../layoutTokens';
 
-import { theme } from 'themes/theme-unicorn/src/spaces';
-
-const space = theme.extend.space;
 // works with safelist
 const ALIGNMENT_X = {
   none: 'initial',
@@ -23,7 +21,7 @@ const ALIGNMENT_Y = {
 // ---------------
 export interface StackProps {
   children?: ReactNode;
-  space?: keyof typeof space;
+  space?: keyof typeof theme.extend.space | undefined;
   alignX?: keyof typeof ALIGNMENT_X;
   alignY?: keyof typeof ALIGNMENT_Y;
   stretch?: boolean;
@@ -33,29 +31,13 @@ export interface StackProps {
 // ---------------
 export const Stack = ({
   children,
-  space = 'none',
+  space = 'small',
   alignX = 'none',
   alignY = 'none',
   stretch = false,
   ...props
 }: StackProps) => {
-  let spaceclass = '';
-  if (space === 'xxsmall') {
-    spaceclass = 'gap-4';
-  } else if (space === 'xsmall') {
-    spaceclass = 'gap-8';
-  } else if (space === 'small') {
-    spaceclass = 'gap-16';
-  } else if (space === 'medium') {
-    spaceclass = 'gap-24';
-  } else if (space === 'large') {
-    spaceclass = 'gap-32';
-  } else if (space === 'xlarge') {
-    spaceclass = 'gap-40';
-  } else if (space === 'xxlarge') {
-    spaceclass = 'gap-48';
-  }
-
+  const spaceclass = useSpace(space);
   return (
     <Box
       className={`flex flex-col ${ALIGNMENT_X[alignX]} ${ALIGNMENT_Y[alignY]} ${
