@@ -59,7 +59,7 @@ export const FieldBase = ({
         display: 'flex',
         flexDirection: topPlacement ? 'column' : 'row',
         alignItems: !topPlacement ? 'baseline' : 'normal',
-        columnGap: '1rem',
+        columnGap: '8px',
         flexWrap: 'wrap',
         width,
         position: 'relative',
