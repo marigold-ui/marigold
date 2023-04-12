@@ -120,8 +120,6 @@ export const ControlledDateField: Story = {
 
 export const DateFieldWithIcons: Story = {
   render: args => {
-    return (
-      <DateField iconRight={<SmilieSatisfied />} iconLeft={<Calendar />} />
-    );
+    return <DateField icon={<SmilieSatisfied />} action={<Calendar />} />;
   },
 };

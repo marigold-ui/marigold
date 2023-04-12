@@ -31,8 +31,8 @@ export interface DateFieldProps
   value?: DateValue;
   defaultValue?: DateValue;
   ref?: React.RefObject<unknown> | undefined;
-  iconRight?: ReactElement;
-  iconLeft?: ReactElement;
+  icon?: ReactElement;
+  action?: ReactElement;
   buttonProps?: AriaButtonProps<'button'>;
   isPressed?: boolean;
   error?: boolean;
@@ -58,8 +58,8 @@ export const DateField = ({
   buttonProps,
   variant,
   size,
-  iconLeft,
-  iconRight,
+  icon,
+  action,
   ...res
 }: DateFieldProps) => {
   const { locale } = useLocale();
@@ -125,19 +125,20 @@ export const DateField = ({
             display: 'flex',
             alignItems: 'center',
             flexBasis: '100%',
-            gap: '11px',
-            paddingX: '7px',
+            gap: '5px',
+            paddingLeft: '8px',
+            marginRight: '16px',
           }}
         >
-          {iconLeft && (
+          {icon && (
             <Box
-              data-testid="iconLeft"
+              data-testid="icon"
               __baseCSS={{
                 display: 'flex',
                 alignItems: 'center',
               }}
             >
-              {iconLeft}
+              {icon}
             </Box>
           )}
           <Box
@@ -161,16 +162,15 @@ export const DateField = ({
           </Box>
         </Box>
 
-        {iconRight && (
+        {action && (
           <Box
-            data-testid="iconRight"
+            data-testid="action"
             style={{
               display: 'flex',
               alignItems: 'center',
-              paddingRight: '7px',
             }}
           >
-            {iconRight}
+            {action}
           </Box>
         )}
       </Box>

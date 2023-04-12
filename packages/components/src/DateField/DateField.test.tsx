@@ -166,20 +166,20 @@ test('renders with icon', () => {
   render(
     <DateField
       label="date field"
-      iconLeft={<SmilieSatisfied />}
-      iconRight={<Calendar />}
+      icon={<SmilieSatisfied />}
+      action={<Calendar />}
     />
   );
-  const iconLeft = screen.getByTestId('iconLeft');
-  const iconRight = screen.getByTestId('iconRight');
-  expect(iconLeft).toBeInTheDocument();
-  expect(iconRight).toBeInTheDocument();
+  const icon = screen.getByTestId('icon');
+  const action = screen.getByTestId('action');
+  expect(icon).toBeInTheDocument();
+  expect(action).toBeInTheDocument();
 });
 
 test('renders without icons', () => {
   render(<DateField label="date field" />);
-  const iconLeft = screen.queryByRole('iconLeft');
-  const iconRight = screen.queryByRole('iconRight');
-  expect(iconLeft).not.toBeInTheDocument();
-  expect(iconRight).not.toBeInTheDocument();
+  const icon = screen.queryByRole('icon');
+  const action = screen.queryByRole('action');
+  expect(icon).not.toBeInTheDocument();
+  expect(action).not.toBeInTheDocument();
 });
