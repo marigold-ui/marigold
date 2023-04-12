@@ -52,14 +52,14 @@
     "react-dom": "18.2.0",
     "storybook": "7.0.2",
     "tailwindcss": "3.3.1",
-    "typescript": "5.0.3",
+    "typescript": "5.0.4",
     "vite": "4.2.1"
   },
   "peerDependencies": {
     "@storybook/react": "7.0.2",
     "react": "18.x",
     "react-dom": "18.x",
-    "typescript": "5.0.3"
+    "typescript": "5.0.4"
   },
   "scripts": {
     "dev": "storybook dev -p 6006",
