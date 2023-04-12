@@ -860,6 +860,24 @@ importers:
         specifier: 18.0.33
         version: 18.0.33
 
+  themes/tailwind:
+    devDependencies:
+      '@marigold/tsconfig':
+        specifier: workspace:*
+        version: link:../../config/tsconfig
+      autoprefixer:
+        specifier: 10.4.14
+        version: 10.4.14(postcss@8.4.21)
+      postcss:
+        specifier: 8.4.21
+        version: 8.4.21
+      tailwindcss:
+        specifier: 3.3.1
+        version: 3.3.1(postcss@8.4.21)
+      tsup:
+        specifier: 6.7.0
+        version: 6.7.0(postcss@8.4.21)
+
   themes/theme-b2b:
     devDependencies:
       '@marigold/components':
@@ -13139,7 +13157,7 @@ packages:
     engines: { node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7 }
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001457
+      caniuse-lite: 1.0.30001477
       electron-to-chromium: 1.4.308
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10(browserslist@4.21.5)
@@ -13388,7 +13406,6 @@ packages:
       {
         integrity: sha512-lZim4iUHhGcy5p+Ri/G7m84hJwncj+Kz7S5aD4hoQfslKZJgt0tHc/hafVbqHC5bbhHb+mrW2JOUHkI5KH7toQ==,
       }
-    dev: true
 
   /ccount@2.0.1:
     resolution:
@@ -22378,6 +22395,26 @@ packages:
       postcss: 8.4.21
     dev: true
 
+  /postcss-load-config@3.1.4(postcss@8.4.21):
+    resolution:
+      {
+        integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==,
+      }
+    engines: { node: '>= 10' }
+    peerDependencies:
+      postcss: '>=8.0.9'
+      ts-node: '>=9.0.0'
+    peerDependenciesMeta:
+      postcss:
+        optional: true
+      ts-node:
+        optional: true
+    dependencies:
+      lilconfig: 2.1.0
+      postcss: 8.4.21
+      yaml: 1.10.2
+    dev: true
+
   /postcss-load-config@3.1.4(postcss@8.4.21)(ts-node@10.9.1):
     resolution:
       {
@@ -22393,7 +22430,7 @@ packages:
       ts-node:
         optional: true
     dependencies:
-      lilconfig: 2.0.6
+      lilconfig: 2.1.0
       postcss: 8.4.21
       ts-node: 10.9.1(@types/node@18.0.0)(typescript@5.0.4)
       yaml: 1.10.2
@@ -22414,7 +22451,7 @@ packages:
       ts-node:
         optional: true
     dependencies:
-      lilconfig: 2.0.6
+      lilconfig: 2.1.0
       postcss: 8.4.21
       yaml: 2.2.1
     dev: true
@@ -24255,17 +24292,6 @@ packages:
       hash-base: 3.1.0
       inherits: 2.0.4
 
-  /rollup@3.17.2:
-    resolution:
-      {
-        integrity: sha512-qMNZdlQPCkWodrAZ3qnJtvCAl4vpQ8q77uEujVCCbC/6CLB7Lcmvjq7HyiOSnf4fxTT9XgsE36oLHJBH49xjqA==,
-      }
-    engines: { node: '>=14.18.0', npm: '>=8.0.0' }
-    hasBin: true
-    optionalDependencies:
-      fsevents: 2.3.2
-    dev: true
-
   /rollup@3.20.1:
     resolution:
       {
@@ -25565,6 +25591,44 @@ packages:
       - ts-node
     dev: true
 
+  /tailwindcss@3.3.1(postcss@8.4.21):
+    resolution:
+      {
+        integrity: sha512-Vkiouc41d4CEq0ujXl6oiGFQ7bA3WEhUZdTgXAhtKxSy49OmKs8rEfQmupsfF0IGW8fv2iQkp1EVUuapCFrZ9g==,
+      }
+    engines: { node: '>=12.13.0' }
+    hasBin: true
+    peerDependencies:
+      postcss: ^8.0.9
+    dependencies:
+      arg: 5.0.2
+      chokidar: 3.5.3
+      color-name: 1.1.4
+      didyoumean: 1.2.2
+      dlv: 1.1.3
+      fast-glob: 3.2.12
+      glob-parent: 6.0.2
+      is-glob: 4.0.3
+      jiti: 1.18.2
+      lilconfig: 2.0.6
+      micromatch: 4.0.5
+      normalize-path: 3.0.0
+      object-hash: 3.0.0
+      picocolors: 1.0.0
+      postcss: 8.4.21
+      postcss-import: 14.1.0(postcss@8.4.21)
+      postcss-js: 4.0.1(postcss@8.4.21)
+      postcss-load-config: 3.1.4(postcss@8.4.21)
+      postcss-nested: 6.0.0(postcss@8.4.21)
+      postcss-selector-parser: 6.0.11
+      postcss-value-parser: 4.2.0
+      quick-lru: 5.1.1
+      resolve: 1.22.1
+      sucrase: 3.29.0
+    transitivePeerDependencies:
+      - ts-node
+    dev: true
+
   /tailwindcss@3.3.1(postcss@8.4.21)(ts-node@10.9.1):
     resolution:
       {
@@ -26153,6 +26217,45 @@ packages:
         integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==,
       }
 
+  /tsup@6.7.0(postcss@8.4.21):
+    resolution:
+      {
+        integrity: sha512-L3o8hGkaHnu5TdJns+mCqFsDBo83bJ44rlK7e6VdanIvpea4ArPcU3swWGsLVbXak1PqQx/V+SSmFPujBK+zEQ==,
+      }
+    engines: { node: '>=14.18' }
+    hasBin: true
+    peerDependencies:
+      '@swc/core': ^1
+      postcss: ^8.4.12
+      typescript: '>=4.1.0'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      postcss:
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      bundle-require: 4.0.1(esbuild@0.17.10)
+      cac: 6.7.14
+      chokidar: 3.5.3
+      debug: 4.3.4
+      esbuild: 0.17.10
+      execa: 5.1.1
+      globby: 11.1.0
+      joycon: 3.1.1
+      postcss: 8.4.21
+      postcss-load-config: 3.1.4(postcss@8.4.21)
+      resolve-from: 5.0.0
+      rollup: 3.20.1
+      source-map: 0.8.0-beta.0
+      sucrase: 3.29.0
+      tree-kill: 1.2.2
+    transitivePeerDependencies:
+      - supports-color
+      - ts-node
+    dev: true
+
   /tsup@6.7.0(postcss@8.4.21)(typescript@5.0.4):
     resolution:
       {
@@ -26183,7 +26286,7 @@ packages:
       postcss: 8.4.21
       postcss-load-config: 3.1.4(postcss@8.4.21)(ts-node@10.9.1)
       resolve-from: 5.0.0
-      rollup: 3.17.2
+      rollup: 3.20.1
       source-map: 0.8.0-beta.0
       sucrase: 3.29.0
       tree-kill: 1.2.2

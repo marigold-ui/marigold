@@ -1,0 +1,29 @@
+{
+  "name": "@marigold/tailwind",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "license": "MIT",
+  "keywords": [],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "github:marigold-ui/marigold",
+    "directory": "packages/tailwind"
+  },
+  "devDependencies": {
+    "@marigold/tsconfig": "workspace:*",
+    "autoprefixer": "10.4.14",
+    "postcss": "8.4.21",
+    "tailwindcss": "3.3.1",
+    "tsup": "6.7.0"
+  },
+  "scripts": {
+    "build": "tsup"
+  }
+}
