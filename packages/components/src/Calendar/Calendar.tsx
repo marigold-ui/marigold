@@ -58,7 +58,6 @@ export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
       }}
       {...calendarProps}
       ref={ref}
-      className="inline-block text-gray-800"
     >
       <Box
         __baseCSS={{

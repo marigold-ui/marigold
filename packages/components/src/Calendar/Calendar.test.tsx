@@ -211,7 +211,7 @@ describe('Selection', () => {
     expect(onChange.mock.calls[0][0]).toEqual(new CalendarDate(2019, 6, 17));
   });
 
-  test('does not select a date on click if isDisabled', () => {
+  test('does not select a date on click if disabled', () => {
     let onChange = jest.fn();
     render(
       <Calendar
