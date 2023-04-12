@@ -25,5 +25,8 @@
   },
   "scripts": {
     "build": "tsup"
+  },
+  "dependencies": {
+    "tailwind-variants": "0.1.2"
   }
 }

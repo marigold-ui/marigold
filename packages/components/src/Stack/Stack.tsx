@@ -41,7 +41,7 @@ export const Stack = ({
   return (
     <Box
       className={`flex flex-col ${ALIGNMENT_X[alignX]} ${ALIGNMENT_Y[alignY]} ${
-        stretch && 'w-full h-full'
+        stretch && 'h-full w-full'
       } ${spaceclass}`}
       {...props}
     >

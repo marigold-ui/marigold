@@ -20,12 +20,12 @@ export const decorators = [
 ];
 const Frame = ({ children, title, id }: any) => (
   <div className="p-4">
-    <div className="p-0.5 mb-0.5 inline-block border rounded-lg border-solid border-orange-200 bg-orange-200 text-xs font-sans text-orange-900">
+    <div className="mb-0.5 inline-block rounded-lg border border-solid border-orange-200 bg-orange-200 p-0.5 font-sans text-xs text-orange-900">
       hahaha
     </div>
     <div
       id={id}
-      className="p-4 border border-solid border-[#dee2e6] rounded-lg shadow"
+      className="rounded-lg border border-solid border-[#dee2e6] p-4 shadow"
     >
       {children}
     </div>
