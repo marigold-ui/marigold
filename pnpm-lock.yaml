@@ -396,7 +396,7 @@ importers:
     devDependencies:
       '@hookform/devtools':
         specifier: 4.3.1
-        version: 4.3.1(@types/react@18.0.29)(react-dom@18.2.0)(react@18.2.0)
+        version: 4.3.1(@types/react@18.0.33)(react-dom@18.2.0)(react@18.2.0)
       '@types/mdx-js__react':
         specifier: 1.5.5
         version: 1.5.5
@@ -404,8 +404,8 @@ importers:
         specifier: 18.0.0
         version: 18.0.0
       '@types/react':
-        specifier: 18.0.29
-        version: 18.0.29
+        specifier: 18.0.33
+        version: 18.0.33
       typescript:
         specifier: 5.0.4
         version: 5.0.4
@@ -588,8 +588,8 @@ importers:
         specifier: workspace:*
         version: link:../../config/tsconfig
       '@types/react':
-        specifier: 18.0.29
-        version: 18.0.29
+        specifier: 18.0.33
+        version: 18.0.33
       '@types/react-transition-group':
         specifier: 4.4.5
         version: 4.4.5
@@ -642,7 +642,7 @@ importers:
     dependencies:
       '@emotion/react':
         specifier: 11.10.6
-        version: 11.10.6(@types/react@18.0.29)(react@18.2.0)
+        version: 11.10.6(@types/react@18.0.33)(react@18.2.0)
       '@marigold/types':
         specifier: workspace:*
         version: link:../types
@@ -691,8 +691,8 @@ importers:
         version: 3.8.0
     devDependencies:
       '@types/react':
-        specifier: 18.0.29
-        version: 18.0.29
+        specifier: 18.0.33
+        version: 18.0.33
 
   themes/theme-b2b:
     devDependencies:
@@ -2342,7 +2342,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@emotion/react@11.10.6(@types/react@18.0.29)(react@18.2.0):
+  /@emotion/react@11.10.6(@types/react@18.0.33)(react@18.2.0):
     resolution: {integrity: sha512-6HT8jBmcSkfzO7mc+N1L9uwvOnlcGoix8Zn7srt+9ga0MjREo6lRpuVX0kzo6Jp6oTqDhREOFsygN6Ew4fEQbw==}
     peerDependencies:
       '@types/react': '*'
@@ -2358,7 +2358,7 @@ packages:
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.0(react@18.2.0)
       '@emotion/utils': 1.2.0
       '@emotion/weak-memoize': 0.3.0
-      '@types/react': 18.0.29
+      '@types/react': 18.0.33
       hoist-non-react-statics: 3.3.2
       react: 18.2.0
 
@@ -2395,7 +2395,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@emotion/styled@11.10.6(@emotion/react@11.10.6)(@types/react@18.0.29)(react@18.2.0):
+  /@emotion/styled@11.10.6(@emotion/react@11.10.6)(@types/react@18.0.33)(react@18.2.0):
     resolution: {integrity: sha512-OXtBzOmDSJo5Q0AFemHCfl+bUueT8BIcPSxu0EGTpGk6DmI5dnhSzQANm1e1ze0YZL7TDyAyy6s/b/zmGOS3Og==}
     peerDependencies:
       '@emotion/react': ^11.0.0-rc.0
@@ -2408,11 +2408,11 @@ packages:
       '@babel/runtime': 7.21.0
       '@emotion/babel-plugin': 11.10.6
       '@emotion/is-prop-valid': 1.2.0
-      '@emotion/react': 11.10.6(@types/react@18.0.29)(react@18.2.0)
+      '@emotion/react': 11.10.6(@types/react@18.0.33)(react@18.2.0)
       '@emotion/serialize': 1.1.1
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.0(react@18.2.0)
       '@emotion/utils': 1.2.0
-      '@types/react': 18.0.29
+      '@types/react': 18.0.33
       react: 18.2.0
     dev: true
 
@@ -2679,14 +2679,14 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /@hookform/devtools@4.3.1(@types/react@18.0.29)(react-dom@18.2.0)(react@18.2.0):
+  /@hookform/devtools@4.3.1(@types/react@18.0.33)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-CrWxEoHQZaOXJZVQ8KBgOuAa8p2LI8M0DAN5GTRTmdCieRwFVjVDEmuTAVazWVRRkpEQSgSt3KYp7VmmqXdEnw==}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
       react-dom: ^16.8.0 || ^17 || ^18
     dependencies:
-      '@emotion/react': 11.10.6(@types/react@18.0.29)(react@18.2.0)
-      '@emotion/styled': 11.10.6(@emotion/react@11.10.6)(@types/react@18.0.29)(react@18.2.0)
+      '@emotion/react': 11.10.6(@types/react@18.0.33)(react@18.2.0)
+      '@emotion/styled': 11.10.6(@emotion/react@11.10.6)(@types/react@18.0.33)(react@18.2.0)
       '@types/lodash': 4.14.191
       little-state-machine: 4.8.0(react@18.2.0)
       lodash: 4.17.21
@@ -5809,7 +5809,7 @@ packages:
     peerDependencies:
       '@emotion/react': ^11
     dependencies:
-      '@emotion/react': 11.10.6(@types/react@18.0.29)(react@18.2.0)
+      '@emotion/react': 11.10.6(@types/react@18.0.33)(react@18.2.0)
       csstype: 3.1.2
     dev: false
 
@@ -6038,7 +6038,7 @@ packages:
   /@types/mdx-js__react@1.5.5:
     resolution: {integrity: sha512-k8pnaP6JXVlQh18HgL5X6sYFNC/qZnzO7R2+HsmwrwUd+JnnsU0d9lyyT0RQrHg1anxDU36S98TI/fsGtmYqqg==}
     dependencies:
-      '@types/react': 18.0.29
+      '@types/react': 18.0.33
     dev: true
 
   /@types/mdx@2.0.3:
@@ -6123,13 +6123,13 @@ packages:
   /@types/react-dom@18.0.11:
     resolution: {integrity: sha512-O38bPbI2CWtgw/OoQoY+BRelw7uysmXbWvw3nLWO21H1HSh+GOlqPuXshJfjmpNlKiiSDG9cc1JZAaMmVdcTlw==}
     dependencies:
-      '@types/react': 18.0.29
+      '@types/react': 18.0.33
     dev: false
 
   /@types/react-transition-group@4.4.5:
     resolution: {integrity: sha512-juKD/eiSM3/xZYzjuzH6ZwpP+/lejltmiS3QEzV/vmb/Q8+HfDmxu+Baga8UEMGBqV88Nbg4l2hY/K2DkyaLLA==}
     dependencies:
-      '@types/react': 18.0.29
+      '@types/react': 18.0.33
     dev: true
 
   /@types/react@18.0.28:
@@ -6140,12 +6140,12 @@ packages:
       csstype: 3.1.1
     dev: false
 
-  /@types/react@18.0.29:
-    resolution: {integrity: sha512-wXHktgUABxplw1+UnljseDq4+uztQyp2tlWZRIxHlpchsCFqiYkvaDS8JR7eKOQm8wziTH/el5qL7D6gYNkYcw==}
+  /@types/react@18.0.33:
+    resolution: {integrity: sha512-sHxzVxeanvQyQ1lr8NSHaj0kDzcNiGpILEVt69g9S31/7PfMvNCKLKcsHw4lYKjs3cGNJjXSP4mYzX43QlnjNA==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
-      csstype: 3.1.1
+      csstype: 3.1.2
 
   /@types/responselike@1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
@@ -8365,6 +8365,7 @@ packages:
 
   /csstype@3.1.1:
     resolution: {integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==}
+    dev: false
 
   /csstype@3.1.2:
     resolution: {integrity: sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==}
