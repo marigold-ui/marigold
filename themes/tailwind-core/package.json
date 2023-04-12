@@ -1,5 +1,5 @@
 {
-  "name": "@marigold/tailwind",
+  "name": "@marigold/tailwind-core",
   "version": "0.1.0-alpha",
   "description": "",
   "license": "MIT",
@@ -14,7 +14,7 @@
   "repository": {
     "type": "git",
     "url": "github:marigold-ui/marigold",
-    "directory": "packages/tailwind"
+    "directory": "packages/tailwind-core"
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
