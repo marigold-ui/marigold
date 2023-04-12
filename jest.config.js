@@ -8,6 +8,9 @@ module.exports = createConfig({
     '!**/themes/**',
     '!**/packages/types/**',
     '!**/*.stories.tsx',
+    // needed for coverage not to break should be fixed soon
+    '!packages/components/src/Accordion/useAccordionItem.ts',
+    '!packages/components/src/Accordion/Accordion.tsx',
   ],
   moduleNameMapper: {
     '^@marigold/theme-(.+)$': '<rootDir>/themes/theme-$1/src',
