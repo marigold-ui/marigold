@@ -35,6 +35,7 @@ import type { TableThemeExtension } from './Table';
 import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
 import type { TooltipThemeExtension } from './Tooltip';
+import { DateFieldThemeExtension } from './DateField';
 
 interface ComponentStyles
   extends AccordionThemeExtension,
@@ -53,6 +54,7 @@ interface ComponentStyles
     HelpTextThemeExtension,
     ImageThemeExtension,
     InputThemeExtension,
+    DateFieldThemeExtension,
     LabelThemeExtension,
     LinkThemeExtension,
     ListThemeExtension,

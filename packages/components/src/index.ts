@@ -24,6 +24,7 @@ export * from './Headline';
 export * from './Image';
 export * from './Inline';
 export * from './Input';
+export * from './DateField';
 export * from './Inset';
 export * from './Label';
 export * from './Link';
