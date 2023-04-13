@@ -1,7 +1,10 @@
-import { button } from './components/Button.styles';
+import { button as Button } from './components/Button.styles';
 
-export const theme = {
+const theme = {
+  name: 'core',
   components: {
-    button,
+    Button,
   },
 };
+
+export default theme;

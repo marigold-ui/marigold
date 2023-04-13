@@ -25,6 +25,7 @@
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
     "@marigold/theme-unicorn": "workspace:*",
+    "@marigold/tailwind-core": "workspace:*",
     "@mdx-js/react": "2.3.0",
     "@storybook/addon-a11y": "7.0.2",
     "@storybook/addon-essentials": "7.0.2",

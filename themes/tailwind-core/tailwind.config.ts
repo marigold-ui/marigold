@@ -36,6 +36,13 @@ export default {
             text: '#ffffff',
             background: '#fa8005',
             border: '#fa8005',
+            hover: '#f8ac67',
+          },
+          link: {
+            text: '#990000',
+          },
+          text: {
+            hover: '#e3e3e3',
           },
           disabled: {
             text: '#cccccc',
@@ -48,7 +55,8 @@ export default {
           500: '#f8ac67',
           600: '#fa8005',
           700: '#a50000',
-          800: '#511e04',
+          800: '#990000',
+          900: '#511e04',
         },
         // Grays
         secondary: {

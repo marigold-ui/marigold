@@ -10,6 +10,7 @@ import {
   Box,
   ThemeExtension,
   useComponentStyles,
+  useComponentStylesFromTV,
   useStateProps,
 } from '@marigold/system';
 import { HtmlProps, PolymorphicComponent, PropsOf } from '@marigold/types';
@@ -74,16 +75,9 @@ export const Button = forwardRef(
       buttonRef
     );
 
-    //  const styles = useComponentStyles('Button', { variant, size });
+    const classNames = useComponentStylesFromTV('Button', { variant, size });
 
-    const classes = useComponentStyles('Button', {
-      variant: variant,
-      // size: size,
-    });
-
-    // use TailwindMerge to merge the classnames
-    const classNames = twMerge(classes.baseStyle, classes.variant);
-
+    console.log(classNames);
     const stateProps = useStateProps({
       active: isPressed,
       focusVisible: isFocusVisible,

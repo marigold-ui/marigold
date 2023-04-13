@@ -340,6 +340,9 @@ importers:
       '@marigold/components':
         specifier: workspace:*
         version: link:../../packages/components
+      '@marigold/tailwind-core':
+        specifier: workspace:*
+        version: link:../../themes/tailwind-core
       '@marigold/theme-b2b':
         specifier: workspace:*
         version: link:../../themes/theme-b2b
@@ -863,7 +866,7 @@ importers:
         specifier: 18.0.33
         version: 18.0.33
 
-  themes/tailwind:
+  themes/tailwind-core:
     dependencies:
       tailwind-variants:
         specifier: 0.1.2

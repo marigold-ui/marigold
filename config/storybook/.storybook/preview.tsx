@@ -10,6 +10,8 @@ import 'tailwindcss/tailwind.css';
 import '@marigold/theme-unicorn/index.css';
 import '@marigold/theme-core/index.css';
 
+import '../../../themes/tailwind-core/dist/index.css';
+import tailwindCore from '@marigold/tailwind-core';
 // .storybook/preview.js
 import { withThemeByDataAttribute } from '@storybook/addon-styling';
 
@@ -17,7 +19,7 @@ import { withThemeByDataAttribute } from '@storybook/addon-styling';
 // ---------------
 const THEME = {
   unicorn: unicornTheme,
-  core: coreTheme,
+  core: tailwindCore,
 };
 
 type ThemeNames = keyof typeof THEME;
@@ -45,6 +47,7 @@ export const decorators = [
       ? parameters.theme || 'stacked'
       : globals.theme || parameters.theme || 'b2b';
 
+    console.log(theme);
     switch (theme) {
       case 'stacked': {
         return (
