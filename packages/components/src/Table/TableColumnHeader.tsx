@@ -45,7 +45,7 @@ interface TableColumnHeaderProps {
 // ---------------
 export const TableColumnHeader = ({ column }: TableColumnHeaderProps) => {
   const ref = useRef(null);
-  const { state, styles } = useTableContext();
+  const { state, classNames } = useTableContext();
   const { columnHeaderProps } = useTableColumnHeader(
     {
       node: column,
@@ -67,7 +67,7 @@ export const TableColumnHeader = ({ column }: TableColumnHeaderProps) => {
       colSpan={column.colspan}
       ref={ref}
       __baseCSS={{ cursor: 'default' }}
-      css={styles.header}
+      className={classNames.header()}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
     >

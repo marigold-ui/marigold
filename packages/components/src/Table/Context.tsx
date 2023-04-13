@@ -1,11 +1,12 @@
 import { createContext, useContext } from 'react';
 import { TableState } from '@react-stately/table';
-import { ComponentStyleParts } from '@marigold/system';
+import { TVReturnType } from 'tailwind-variants';
+//import { ComponentStyleParts } from '@marigold/system';
 
 export interface TableContextProps {
   state: TableState<object>;
   interactive: boolean;
-  styles: ComponentStyleParts<['table', 'header', 'row', 'cell']>;
+  classNames?: any;
 
   variant?: string;
   size?: string;

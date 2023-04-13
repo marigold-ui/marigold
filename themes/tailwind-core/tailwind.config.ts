@@ -57,15 +57,19 @@ export default {
             alternativeBackground: '#a9a9a9',
             border: '#ffffff',
             focus: '#fa8005',
+            alternativText: '#511e04',
+            alternativBorder: '#cfcfcf',
           },
           row: {
             hover: '#f7f5f2',
             checked: '#f8ac67',
             focus: '#fa8005',
+            border: '#cfcfcf',
           },
           cell: {
-            text: '#ffffff',
+            text: '#511e04',
             focus: '#fa8005',
+            border: '#cfcfcf',
           },
         },
         // "Reds"
@@ -82,6 +86,7 @@ export default {
           100: '#f7f5f2',
           200: '#e3e3e3',
           300: '#e7e4e0',
+          350: '#cfcfcf',
           400: '#cecac3',
           500: '#a9a9a9',
           600: '#8a8782',

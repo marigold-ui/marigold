@@ -5,7 +5,12 @@ import { useTableRow } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
 
-import { Box, useComponentStyles, useStateProps } from '@marigold/system';
+import {
+  Box,
+  useComponentStyles,
+  useComponentStylesFromTV,
+  useStateProps,
+} from '@marigold/system';
 
 import { useTableContext } from './Context';
 
@@ -20,14 +25,17 @@ export interface TableRowProps {
 // ---------------
 export const TableRow = ({ children, row }: TableRowProps) => {
   const ref = useRef(null);
-  const { interactive, state, ...ctx } = useTableContext();
-  const { variant, size } = row.props;
+  const { interactive, state, classNames, ...ctx } = useTableContext();
 
-  const { row: styles } = useComponentStyles(
-    'Table',
-    { variant: variant || ctx.variant, size: size || ctx.size },
-    { parts: ['row'] }
-  );
+  // TODO: handle this
+  //const { variant, size } = row.props;
+
+  // const { row: classNames } = useComponentStylesFromTV('Table', {
+  //   variant: variant || ctx.variant,
+  //   size: size || ctx.size,
+  //   slots: ['row'],
+  // });
+
   const { rowProps, isPressed } = useTableRow(
     {
       node: row,
@@ -53,6 +61,7 @@ export const TableRow = ({ children, row }: TableRowProps) => {
     active: isPressed,
   });
 
+  console.log('####', classNames);
   return (
     <Box
       as="tr"
@@ -60,7 +69,7 @@ export const TableRow = ({ children, row }: TableRowProps) => {
       __baseCSS={{
         cursor: !interactive ? 'text' : disabled ? 'default' : 'pointer',
       }}
-      css={styles}
+      className={classNames.row()}
       {...mergeProps(rowProps, focusProps, hoverProps)}
       {...stateProps}
     >

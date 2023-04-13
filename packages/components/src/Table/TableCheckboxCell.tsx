@@ -16,7 +16,7 @@ export interface TableCheckboxCellProps {
 
 export const TableCheckboxCell = ({ cell }: TableCheckboxCellProps) => {
   const ref = useRef(null);
-  const { state, styles } = useTableContext();
+  const { state, classNames } = useTableContext();
   const disabled = state.disabledKeys.has(cell.parentKey!);
   const { gridCellProps } = useTableCell(
     {
@@ -42,7 +42,7 @@ export const TableCheckboxCell = ({ cell }: TableCheckboxCellProps) => {
         verticalAlign: 'middle',
         lineHeight: 1,
       }}
-      css={styles.cell}
+      className={classNames.cell()}
       {...mergeProps(gridCellProps, focusProps)}
       {...stateProps}
     >

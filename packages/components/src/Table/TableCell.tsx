@@ -14,7 +14,7 @@ export interface TableCellProps {
 
 export const TableCell = ({ cell }: TableCellProps) => {
   const ref = useRef(null);
-  const { interactive, state, styles } = useTableContext();
+  const { interactive, state, classNames } = useTableContext();
   const disabled = state.disabledKeys.has(cell.parentKey!);
   const { gridCellProps } = useTableCell(
     {
@@ -24,6 +24,7 @@ export const TableCell = ({ cell }: TableCellProps) => {
     ref
   );
 
+  console.log(classNames);
   const cellProps = interactive
     ? gridCellProps
     : {
@@ -43,7 +44,7 @@ export const TableCell = ({ cell }: TableCellProps) => {
     <Box
       as="td"
       ref={ref}
-      css={styles.cell}
+      className={classNames.cell()}
       {...mergeProps(cellProps, focusProps)}
       {...stateProps}
     >

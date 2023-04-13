@@ -25,7 +25,7 @@ export interface TableSelectAllCell {
 // ---------------
 export const TableSelectAllCell = ({ column }: TableSelectAllCell) => {
   const ref = useRef(null);
-  const { state, styles } = useTableContext();
+  const { state, classNames } = useTableContext();
   const { columnHeaderProps } = useTableColumnHeader(
     {
       node: column,
@@ -52,7 +52,7 @@ export const TableSelectAllCell = ({ column }: TableSelectAllCell) => {
         verticalAlign: 'middle',
         lineHeight: 1,
       }}
-      css={styles.header}
+      className={classNames.header()}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
     >

@@ -13,8 +13,8 @@ import {
 
 import {
   Box,
-  ThemeExtensionsWithParts,
   useComponentStyles,
+  useComponentStylesFromTV,
 } from '@marigold/system';
 
 import { TableContext } from './Context';
@@ -29,11 +29,11 @@ import { TableSelectAllCell } from './TableSelectAllCell';
 
 // Theme Extension
 // ---------------
-export interface TableThemeExtension
-  extends ThemeExtensionsWithParts<
-    'Table',
-    ['table', 'header', 'row', 'cell']
-  > {}
+// export interface TableThemeExtension
+//   extends ThemeExtensionsWithParts<
+//     'Table',
+//     ['table', 'header', 'row', 'cell']
+//   > {}
 
 // Props
 // ---------------
@@ -69,16 +69,22 @@ export const Table: Table = ({
   });
   const { gridProps } = useTable(props, state, tableRef);
 
-  const styles = useComponentStyles(
-    'Table',
-    { variant, size },
-    { parts: ['table', 'header', 'row', 'cell'] }
-  );
+  // const styles = useComponentStyles(
+  //   'Table',
+  //   { variant, size },
+  //   { parts: ['table', 'header', 'row', 'cell'] }
+  // );
+
+  const classNames = useComponentStylesFromTV('Table', {
+    variant,
+    size,
+    slots: ['table', 'header', 'row', 'cell'],
+  });
 
   const { collection } = state;
 
   return (
-    <TableContext.Provider value={{ state, interactive, styles }}>
+    <TableContext.Provider value={{ state, interactive, classNames }}>
       <Box
         as="table"
         ref={tableRef}
@@ -89,7 +95,7 @@ export const Table: Table = ({
           overflow: 'auto',
           whiteSpace: 'nowrap',
         }}
-        css={styles.table}
+        className={classNames.table()}
         {...gridProps}
       >
         <TableHeader>
