@@ -63,6 +63,10 @@ export default {
             checked: '#f8ac67',
             focus: '#fa8005',
           },
+          cell: {
+            text: '#ffffff',
+            focus: '#fa8005',
+          },
         },
         // "Reds"
         primary: {

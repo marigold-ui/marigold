@@ -12,6 +12,6 @@ export const table = tv({
     row: [
       'hover:bg-table-row-hover checked:bg-table-row-checked focus:outline-table-row-focus',
     ],
-    cell: ['p-2'],
+    cell: ['p-2 text-table-cell-text', 'focus:outline-table-cell-focus'],
   },
 });
