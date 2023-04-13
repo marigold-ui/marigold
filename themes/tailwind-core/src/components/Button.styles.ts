@@ -20,9 +20,9 @@ export const button = tv({
         'hover:bg-transparent hover:underline',
       ],
       text: ['bg-transparent border-none', 'hover:bg-button-text-hover'],
-      size: {
-        small: 'p-1',
-      },
+    },
+    size: {
+      small: 'p-1',
     },
   },
 });

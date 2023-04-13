@@ -77,7 +77,6 @@ export const Button = forwardRef(
 
     const classNames = useComponentStylesFromTV('Button', { variant, size });
 
-    console.log(classNames);
     const stateProps = useStateProps({
       active: isPressed,
       focusVisible: isFocusVisible,
