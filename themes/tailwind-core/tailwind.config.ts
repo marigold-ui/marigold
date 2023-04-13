@@ -50,6 +50,20 @@ export default {
             border: '#cccccc',
           },
         },
+        table: {
+          header: {
+            background: '#808080',
+            text: '#ffffff',
+            alternativeBackground: '#a9a9a9',
+            border: '#ffffff',
+            focus: '#fa8005',
+          },
+          row: {
+            hover: '#f7f5f2',
+            checked: '#f8ac67',
+            focus: '#fa8005',
+          },
+        },
         // "Reds"
         primary: {
           500: '#f8ac67',
@@ -65,10 +79,12 @@ export default {
           200: '#e3e3e3',
           300: '#e7e4e0',
           400: '#cecac3',
-          500: '#8a8782',
-          600: '#6f6b64',
-          700: '#4b4b4b',
-          800: '#3d3d3d',
+          500: '#a9a9a9',
+          600: '#8a8782',
+          650: '#808080',
+          700: '#6f6b64',
+          800: '#4b4b4b',
+          900: '#3d3d3d',
         },
       },
       transitionTimingFunction: {
