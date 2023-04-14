@@ -56,16 +56,14 @@ import unicornTheme from '@marigold/theme-unicorn'
 
 ### Setup & Usage
 
-Open a terminal and navigate to a folder of your choice. Clone the project `git clone https://github.com/marigold-ui/marigold.git` and navigate to the new folder `cd marigold`. Install the yarn packages using `yarn` command in the root and use `yarn start` to start storybook. Open [localhost:6005](http://localhost:6005) to see the components in storybook.
-Navigate to the documentation `cd docs` and start the development server `gatsby develop`, which opens the documentation site on [localhost:8000](http://localhost:8000).
+Open a terminal and navigate to a folder of your choice. Clone the project `git clone https://github.com/marigold-ui/marigold.git` and navigate to the new folder `cd marigold`. Install the packages using `pnpm install` command in the root and use `pnpm dev` to start storybook. Open [localhost:1337](http://localhost:1337) to see the components in storybook.
+Navigate to the documentation `cd docs` and start the development server `pnpm start`, which opens the documentation site on [localhost:3000](http://localhost:3000).
 When working on the components, use the following commands for development.
 
-- Coverage: `yarn coverage`
-- Linting: `yarn lint`
-- Test: `yarn test` (with optional `--watch`)
-- Type checking: `yarn typecheck`
-
-For a release on NPM, change the version numbers and use `yarn release` and check all the packages you want to publish.
+- Coverage: `pnpm test:coverage`
+- Linting: `pnpm lint`
+- Test: `pnpm test` (with optional `--watch`)
+- Type checking: `pnpm typecheck`
 
 ## Contributors ✨
 
