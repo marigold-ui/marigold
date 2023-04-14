@@ -9,6 +9,7 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
   const parent = path.resolve(__dirname, '..');
   const root = path.dirname(findUpSync('package.json', { cwd: parent }) || '.');
 
+  console.log(__dirname, root);
   return deepmerge<Partial<OptionalConfig> & { content: string[] }>(
     {
       important: `[data-theme="${name}"]`,
