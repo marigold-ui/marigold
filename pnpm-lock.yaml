@@ -802,7 +802,7 @@ importers:
     dependencies:
       '@emotion/react':
         specifier: 11.10.6
-        version: 11.10.6(@types/react@18.0.33)(react@18.2.0)
+        version: 11.10.6(@types/react@18.0.29)(react@18.2.0)
       '@marigold/types':
         specifier: workspace:*
         version: link:../types
@@ -847,6 +847,28 @@ importers:
         specifier: 6.7.0
         version: 6.7.0(postcss@8.4.21)(typescript@5.0.4)
 
+  packages/theme-preset:
+    dependencies:
+      deepmerge:
+        specifier: ^4.2.2
+        version: 4.3.0
+      find-up:
+        specifier: 5.0.0
+        version: 5.0.0
+    devDependencies:
+      '@marigold/tsconfig':
+        specifier: workspace:*
+        version: link:../../config/tsconfig
+      postcss:
+        specifier: 8.4.21
+        version: 8.4.21
+      tailwindcss:
+        specifier: 3.3.1
+        version: 3.3.1(postcss@8.4.21)(ts-node@10.9.1)
+      tsup:
+        specifier: 6.7.0
+        version: 6.7.0(postcss@8.4.21)(typescript@5.0.4)
+
   packages/tokens:
     devDependencies:
       '@marigold/tsconfig':
@@ -875,6 +897,9 @@ importers:
         specifier: 0.1.2
         version: 0.1.2(tailwindcss@3.3.1)
     devDependencies:
+      '@marigold/theme-preset':
+        specifier: workspace:*
+        version: link:../../packages/theme-preset
       '@marigold/tsconfig':
         specifier: workspace:*
         version: link:../../config/tsconfig
@@ -4303,6 +4328,7 @@ packages:
       '@types/react': 18.0.33
       hoist-non-react-statics: 3.3.2
       react: 18.2.0
+    dev: true
 
   /@emotion/serialize@1.1.1:
     resolution:
@@ -10281,7 +10307,7 @@ packages:
     peerDependencies:
       '@emotion/react': ^11
     dependencies:
-      '@emotion/react': 11.10.6(@types/react@18.0.33)(react@18.2.0)
+      '@emotion/react': 11.10.6(@types/react@18.0.29)(react@18.2.0)
       csstype: 3.1.2
     dev: false
 
