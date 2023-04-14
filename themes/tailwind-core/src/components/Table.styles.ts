@@ -19,9 +19,9 @@ export const table = tv({
       lines: {
         table: ['border-collapse'],
         header: [
-          'text-table-header-alternativText px-2 bg-transparent odd:bg-transparent',
+          'text-table-header-alternativText px-2 bg-transparent odd:bg-transparent border-x-0 border-b border-table-header-alternativBorder',
         ],
-        row: ['border-b'],
+        row: ['border-b border-table-row-border'],
       },
       borders: {
         table: ['border-collapse'],
