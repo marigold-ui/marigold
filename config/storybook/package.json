@@ -37,7 +37,7 @@
     "babel-loader": "9.1.2",
     "chromatic": "^6.6.3",
     "find-up": "5.0.0",
-    "vite-tsconfig-paths": "4.0.8",
+    "vite-tsconfig-paths": "4.1.0",
     "webpack": "4"
   },
   "devDependencies": {

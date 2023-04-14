@@ -253,8 +253,8 @@ importers:
         specifier: 5.0.0
         version: 5.0.0
       vite-tsconfig-paths:
-        specifier: 4.0.8
-        version: 4.0.8(typescript@5.0.4)(vite@4.2.1)
+        specifier: 4.1.0
+        version: 4.1.0(typescript@5.0.4)(vite@4.2.1)
       webpack:
         specifier: '4'
         version: 4.46.0
@@ -16310,8 +16310,8 @@ packages:
       vfile-message: 3.1.4
     dev: false
 
-  /vite-tsconfig-paths@4.0.8(typescript@5.0.4)(vite@4.2.1):
-    resolution: {integrity: sha512-p04zH+Ey+NT78571x0pdX7nVRIJSlmKVvYryFglSWOK3Hc72eDL0+JJfbyQiugaIBApJkaEqbBQvqpsFZOSVGg==}
+  /vite-tsconfig-paths@4.1.0(typescript@5.0.4)(vite@4.2.1):
+    resolution: {integrity: sha512-Ps275He1fF6Wpm/3tvyokIfXd3lcmk4KsdCG4yduSTRVt+htaxIoEor88M1h3soOeXg5fn77ZiupVRwGeB/XNQ==}
     peerDependencies:
       vite: '*'
     peerDependenciesMeta:
