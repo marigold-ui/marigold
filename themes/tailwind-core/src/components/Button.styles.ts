@@ -1,5 +1,4 @@
 import { tv } from 'tailwind-variants';
-
 export const button = tv({
   base: [
     'border px-4 py-0 rounded-sm border-button-base-border h-6 bg-button-base-background',

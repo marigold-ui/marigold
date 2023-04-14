@@ -1,3 +1,5 @@
+import path from 'node:path';
+import { sync as findUpSync } from 'find-up';
 import { Config } from 'tailwindcss/types/config';
 
 export interface PresetConfig {
@@ -6,9 +8,16 @@ export interface PresetConfig {
 }
 
 export const createPreset = ({ preflight = true }: PresetConfig) => {
+  const parent = path.resolve(__dirname, '..');
+  const root = path.dirname(findUpSync('package.json', { cwd: parent }) || '.');
+
+  let paths = [
+    path.resolve(root, 'node_modules/@marigold/components/**/**/*.tsx'),
+  ];
+
   const preset: Config = {
     important: '[data-theme="core"]',
-    content: [],
+    content: paths,
     corePlugins: {
       preflight,
     },

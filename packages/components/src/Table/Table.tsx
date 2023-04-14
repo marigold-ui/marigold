@@ -11,11 +11,7 @@ import {
   useTableState,
 } from '@react-stately/table';
 
-import {
-  Box,
-  useComponentStyles,
-  useComponentStylesFromTV,
-} from '@marigold/system';
+import { Box, useComponentStylesFromTV } from '@marigold/system';
 
 import { TableContext } from './Context';
 import { TableBody } from './TableBody';

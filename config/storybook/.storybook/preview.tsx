@@ -3,12 +3,10 @@ import { StoryFn } from '@storybook/react';
 import isChromatic from 'chromatic/isChromatic';
 
 import unicornTheme from '@marigold/theme-unicorn';
-import coreTheme from '@marigold/theme-core';
 import { MarigoldProvider } from '@marigold/components';
 
 import 'tailwindcss/tailwind.css';
 import '@marigold/theme-unicorn/index.css';
-import '@marigold/theme-core/index.css';
 
 import '../../../themes/tailwind-core/dist/index.css';
 import tailwindCore from '@marigold/tailwind-core';

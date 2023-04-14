@@ -1,5 +1,4 @@
 import type { Config } from 'tailwindcss';
-
 import { createPreset } from './src/preset';
 
 const preset = createPreset({ name: 'core', preflight: false });
@@ -8,6 +7,7 @@ const preset = createPreset({ name: 'core', preflight: false });
 
 export default {
   content: [
+    preset.content.toString(),
     'src/root.ts',
     'src/**/*.styles.ts',
     '../../packages/components/**/**.{tsx,ts}',
