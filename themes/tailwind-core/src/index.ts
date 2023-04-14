@@ -1,5 +1,5 @@
-import { button as Button } from './components/Button.styles';
-import { table as Table } from './components/Table.styles';
+import { button as Button } from './components';
+import { table as Table } from './components';
 
 const theme = {
   name: 'core',
