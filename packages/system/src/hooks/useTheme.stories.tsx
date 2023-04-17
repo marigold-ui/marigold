@@ -13,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: () => {
-    const { theme } = useTheme();
+    const theme = useTheme();
 
     return (
       <ThemeProvider theme={theme}>
