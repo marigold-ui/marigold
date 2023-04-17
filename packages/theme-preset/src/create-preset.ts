@@ -7,7 +7,12 @@ import { defaultTheme } from '@marigold/system';
 
 export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
   const parent = path.resolve(__dirname, '..');
-  const root = path.dirname(findUpSync('package.json', { cwd: parent }) || '.');
+
+  const packageDir = findUpSync('package.json', { cwd: parent });
+  if (!packageDir) {
+    throw new Error('Package not found.');
+  }
+  const root = path.dirname(packageDir);
 
   return deepmerge<Partial<OptionalConfig> & { content: string[] }>(
     {

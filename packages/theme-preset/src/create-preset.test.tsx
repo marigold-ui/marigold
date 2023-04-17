@@ -1,5 +1,6 @@
 import { defaultTheme } from '@marigold/system';
 import { createPreset } from './create-preset';
+import path from 'path';
 
 test('create preset and merge it with defaultTheme', () => {
   const preset = createPreset('test', {
@@ -14,8 +15,8 @@ test('create preset and merge it with defaultTheme', () => {
     },
   });
 
+  expect(preset.important).toBe('[data-theme="test"]');
   expect(preset.theme?.extends.defaultTheme).toEqual(defaultTheme);
-
   expect(preset.theme).toMatchInlineSnapshot(`
     {
       "extends": {
@@ -35,4 +36,13 @@ test('create preset and merge it with defaultTheme', () => {
       },
     }
   `);
+});
+
+test('content path is found in preset', () => {
+  const root = path.resolve(__dirname, '..');
+  const preset = createPreset('test', {
+    content: [],
+  });
+  const contentPath = preset.content[0].replace(root, '');
+  expect(preset.content.toString()).toMatch(contentPath.toString());
 });
