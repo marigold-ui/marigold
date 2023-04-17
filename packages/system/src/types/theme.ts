@@ -3,10 +3,11 @@ import { TVReturnType } from 'tailwind-variants';
 export type Theme = {
   // name to identify theme
   name: string;
-  screens: { [key: string]: string };
+  screens?: { [key: string]: any };
   components?: {
     [key: string]: TVReturnType<any, any, any, any, any, any>;
   };
+  root?: { [key: string]: string[] };
 };
 
 /**

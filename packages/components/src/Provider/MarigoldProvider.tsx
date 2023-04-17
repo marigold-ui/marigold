@@ -7,7 +7,6 @@ import {
   ThemeProvider,
   ThemeProviderProps,
   useTheme,
-  __defaultTheme,
 } from '@marigold/system';
 
 // Props
@@ -26,6 +25,8 @@ export function MarigoldProvider<T extends Theme>({
 }: MarigoldProviderProps<T>) {
   const outerTheme = useTheme();
   const isTopLevel = outerTheme.name === '';
+
+  console.log(outerTheme);
 
   if (outerTheme.root && !isTopLevel && !selector) {
     throw new Error(
