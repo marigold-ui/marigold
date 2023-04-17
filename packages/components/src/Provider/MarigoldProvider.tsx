@@ -26,8 +26,6 @@ export function MarigoldProvider<T extends Theme>({
   const outerTheme = useTheme();
   const isTopLevel = outerTheme.name === '';
 
-  console.log(outerTheme);
-
   if (outerTheme.root && !isTopLevel && !selector) {
     throw new Error(
       `[MarigoldProvider] You cannot nest a MarigoldProvider inside another MarigoldProvider without a "selector"! 
