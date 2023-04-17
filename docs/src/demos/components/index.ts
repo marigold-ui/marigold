@@ -51,3 +51,4 @@ export * from './TextField';
 export * from './Tooltip';
 export * from './VisuallyHidden';
 export * from './XLoader';
+export * from './Calendar';

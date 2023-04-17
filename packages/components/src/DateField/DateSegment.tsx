@@ -4,27 +4,44 @@ import { DateFieldState } from '@react-stately/datepicker';
 import { useComponentStyles, useStateProps } from '@marigold/system';
 import { useDateSegment } from '@react-aria/datepicker';
 import { Box } from '@marigold/system';
+import { useFocusRing } from '@react-aria/focus';
 
 interface DateSegmentProps {
   segment: DateSegmentInterface;
   state: DateFieldState;
+  isPrevPlaceholder?: boolean;
 }
 
-export const DateSegment = ({ segment, state }: DateSegmentProps) => {
+export const DateSegment = ({
+  segment,
+  state,
+  isPrevPlaceholder,
+}: DateSegmentProps) => {
   const ref = useRef(null);
   const { segmentProps } = useDateSegment(segment, state, ref);
-  const styles = useComponentStyles('DateField', {}, { parts: ['segment'] });
-  const stateProps = useStateProps({ disabled: state.isDisabled });
-  const { maxValue, isPlaceholder, placeholder, text, type } = segment;
+  const styles = useComponentStyles(
+    'DateField',
+    {},
+    { parts: ['segment', 'placeholder', 'segmentValue'] }
+  );
+  const { focusProps, isFocused } = useFocusRing({
+    within: true,
+    isTextInput: true,
+  });
+  const stateProps = useStateProps({
+    disabled: state.isDisabled,
+    focusVisible: isFocused,
+  });
+  const { isPlaceholder, placeholder, text, type, maxValue } = segment;
   return (
     <Box
       {...segmentProps}
       {...stateProps}
+      {...focusProps}
       ref={ref}
       __baseCSS={{
         ...segmentProps.style,
         minWidth: maxValue != null ? String(maxValue).length + 'ch' : '',
-        paddingX: '0.125rem',
         boxSizing: 'content-box',
         fontVariantNumeric: 'lining-nums',
         textAlign: 'center',
@@ -38,24 +55,33 @@ export const DateSegment = ({ segment, state }: DateSegmentProps) => {
         aria-hidden="true"
         __baseCSS={{
           visibility: isPlaceholder ? 'visible' : 'hidden',
-          height: isPlaceholder ? '' : 0,
           pointerEvents: 'none',
-          display: 'block',
+          display: isPlaceholder ? 'block' : 'none',
           width: '100%',
           textAlign: 'center',
         }}
       >
-        {placeholder}
+        {isPlaceholder && placeholder?.toUpperCase()}
       </Box>
 
-      {isPlaceholder
-        ? ''
-        : type === 'month' || type === 'day'
-        ? Number(text) < 10
-          ? '0' + text
-          : text
-        : text}
-      {/* {isPlaceholder ? "" : text} */}
+      <Box
+        css={styles.segmentValue}
+        as="span"
+        className={
+          type === 'literal'
+            ? `literal  ${!isPrevPlaceholder && 'activeLiteral'}`
+            : ''
+        }
+      >
+        {isPlaceholder
+          ? ''
+          : type === 'month' || type === 'day'
+          ? Number(text) < 10
+            ? '0' + text
+            : text
+          : text}
+        {/* {isPlaceholder ? "" : text} */}
+      </Box>
     </Box>
   );
 };

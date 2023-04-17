@@ -11,6 +11,8 @@ export * from './HelpText.style';
 export * from './Image.style';
 export * from './Input.style';
 export * from './DateField.style';
+export * from './Calendar.style';
+export * from './DatePicker.style';
 export * from './Label.style';
 export * from './Link.style';
 export * from './List.style';

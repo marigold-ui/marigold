@@ -6,13 +6,16 @@ importers:
       '@babel/core': 7.21.4
       '@changesets/changelog-github': 0.4.8
       '@changesets/cli': 2.26.1
-      '@internationalized/date': 3.1.0
+      '@internationalized/date': 3.2.0
       '@manypkg/get-packages': 2.1.0
       '@marigold/eslint-config': workspace:*
       '@marigold/jest-config': workspace:*
       '@marigold/prettier-config': workspace:*
       '@marigold/tsconfig': workspace:*
+      '@react-aria/calendar': 3.2.0
       '@react-aria/datepicker': 3.3.0
+      '@react-aria/live-announcer': 3.3.0
+      '@react-stately/calendar': 3.2.0
       '@react-stately/datepicker': 3.3.0
       '@testing-library/dom': 9.2.0
       '@testing-library/jest-dom': 5.16.5
@@ -37,13 +40,16 @@ importers:
       '@babel/core': 7.21.4
       '@changesets/changelog-github': 0.4.8
       '@changesets/cli': 2.26.1
-      '@internationalized/date': 3.1.0
+      '@internationalized/date': 3.2.0
       '@manypkg/get-packages': 2.1.0
       '@marigold/eslint-config': link:config/eslint
       '@marigold/jest-config': link:config/jest
       '@marigold/prettier-config': link:config/prettier
       '@marigold/tsconfig': link:config/tsconfig
+      '@react-aria/calendar': 3.2.0_biqbaboplfbrettd7655fr4n2y
       '@react-aria/datepicker': 3.3.0_biqbaboplfbrettd7655fr4n2y
+      '@react-aria/live-announcer': 3.3.0
+      '@react-stately/calendar': 3.2.0_react@18.2.0
       '@react-stately/datepicker': 3.3.0_react@18.2.0
       '@testing-library/dom': 9.2.0
       '@testing-library/jest-dom': 5.16.5
@@ -3974,6 +3980,29 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@react-aria/calendar/3.2.0_biqbaboplfbrettd7655fr4n2y:
+    resolution:
+      {
+        integrity: sha512-3wnCusOi7mU9kRMDxspAL81SXAsEVzWuPILOl6OXQHbVtDvRWqkhlqWkjDDoStKD9uwDDB9rfcCsfOQBJnj63A==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@internationalized/date': 3.2.0
+      '@react-aria/i18n': 3.7.1_react@18.2.0
+      '@react-aria/interactions': 3.15.0_react@18.2.0
+      '@react-aria/live-announcer': 3.3.0
+      '@react-aria/utils': 3.16.0_react@18.2.0
+      '@react-stately/calendar': 3.2.0_react@18.2.0
+      '@react-types/button': 3.7.2_react@18.2.0
+      '@react-types/calendar': 3.2.0_react@18.2.0
+      '@react-types/shared': 3.18.0_react@18.2.0
+      '@swc/helpers': 0.4.14
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
   /@react-aria/checkbox/3.8.0_react@18.2.0:
     resolution:
       {
@@ -4005,7 +4034,7 @@ packages:
       '@react-aria/i18n': 3.7.0_react@18.2.0
       '@react-aria/interactions': 3.14.0_react@18.2.0
       '@react-aria/listbox': 3.8.1_react@18.2.0
-      '@react-aria/live-announcer': 3.2.0
+      '@react-aria/live-announcer': 3.3.0
       '@react-aria/menu': 3.8.1_biqbaboplfbrettd7655fr4n2y
       '@react-aria/overlays': 3.13.0_biqbaboplfbrettd7655fr4n2y
       '@react-aria/selection': 3.13.1_react@18.2.0
@@ -4031,7 +4060,7 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@internationalized/date': 3.1.0
+      '@internationalized/date': 3.2.0
       '@internationalized/number': 3.2.0
       '@internationalized/string': 3.1.0
       '@react-aria/focus': 3.11.0_react@18.2.0
@@ -4099,7 +4128,7 @@ packages:
       '@react-aria/focus': 3.11.0_react@18.2.0
       '@react-aria/i18n': 3.7.0_react@18.2.0
       '@react-aria/interactions': 3.14.0_react@18.2.0
-      '@react-aria/live-announcer': 3.2.0
+      '@react-aria/live-announcer': 3.3.0
       '@react-aria/selection': 3.13.1_react@18.2.0
       '@react-aria/utils': 3.15.0_react@18.2.0
       '@react-stately/grid': 3.5.0_react@18.2.0
@@ -4132,6 +4161,25 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@react-aria/i18n/3.7.1_react@18.2.0:
+    resolution:
+      {
+        integrity: sha512-2fu1cv8yD3V+rlhOqstTdGAubadoMFuPE7lA1FfYdaJNxXa09iWqvpipUPlxYJrahW0eazkesOPDKFwOEMF1iA==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@internationalized/date': 3.2.0
+      '@internationalized/message': 3.1.0
+      '@internationalized/number': 3.2.0
+      '@internationalized/string': 3.1.0
+      '@react-aria/ssr': 3.6.0_react@18.2.0
+      '@react-aria/utils': 3.16.0_react@18.2.0
+      '@react-types/shared': 3.18.0_react@18.2.0
+      '@swc/helpers': 0.4.14
+      react: 18.2.0
+    dev: false
+
   /@react-aria/interactions/3.14.0_react@18.2.0:
     resolution:
       {
@@ -4142,6 +4190,21 @@ packages:
     dependencies:
       '@react-aria/utils': 3.15.0_react@18.2.0
       '@react-types/shared': 3.17.0_react@18.2.0
+      '@swc/helpers': 0.4.14
+      react: 18.2.0
+    dev: false
+
+  /@react-aria/interactions/3.15.0_react@18.2.0:
+    resolution:
+      {
+        integrity: sha512-8br5uatPDISEWMINKGs7RhNPtqLhRsgwQsooaH7Jgxjs0LBlylODa8l7D3NA1uzVzlvfnZm/t2YN/y8ieRSDcQ==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@react-aria/ssr': 3.6.0_react@18.2.0
+      '@react-aria/utils': 3.16.0_react@18.2.0
+      '@react-types/shared': 3.18.0_react@18.2.0
       '@swc/helpers': 0.4.14
       react: 18.2.0
     dev: false
@@ -4203,6 +4266,15 @@ packages:
     resolution:
       {
         integrity: sha512-uSqDDy+9CbmNTZh0Roi4dvWKWcbuMTYKh3RnUw3XBPw0aYxSkcFQeWGfxFoOwXCDcXez02cFJtAxpR2bShkrsw==,
+      }
+    dependencies:
+      '@swc/helpers': 0.4.14
+    dev: false
+
+  /@react-aria/live-announcer/3.3.0:
+    resolution:
+      {
+        integrity: sha512-6diTS6mIf70KdxfGqiDxHV+9Qv8a9A88EqBllzXGF6HWPdcwde/GIEmfpTwj8g1ImNGZYUwDkv4Hd9lFj0MXEg==,
       }
     dependencies:
       '@swc/helpers': 0.4.14
@@ -4413,7 +4485,7 @@ packages:
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
       '@react-aria/i18n': 3.7.0_react@18.2.0
-      '@react-aria/live-announcer': 3.2.0
+      '@react-aria/live-announcer': 3.3.0
       '@react-aria/utils': 3.15.0_react@18.2.0
       '@react-types/button': 3.7.1_react@18.2.0
       '@react-types/shared': 3.17.0_react@18.2.0
@@ -4426,6 +4498,18 @@ packages:
     resolution:
       {
         integrity: sha512-h0MJdSWOd1qObLnJ8mprU31wI8tmKFJMuwT22MpWq6psisOOZaga6Ml4u6Ee6M6duWWISjXvqO4Sb/J0PBA+nQ==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@swc/helpers': 0.4.14
+      react: 18.2.0
+    dev: false
+
+  /@react-aria/ssr/3.6.0_react@18.2.0:
+    resolution:
+      {
+        integrity: sha512-OFiYQdv+Yk7AO7IsQu/fAEPijbeTwrrEYvdNoJ3sblBBedD5j5fBTNWrUPNVlwC4XWWnWTCMaRIVsJujsFiWXg==,
       }
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
@@ -4546,6 +4630,22 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@react-aria/utils/3.16.0_react@18.2.0:
+    resolution:
+      {
+        integrity: sha512-BumpgENDlXuoRPQm1OfVUYRcxY9vwuXw1AmUpwF61v55gAZT3LvJWsfF8jgfQNzLJr5jtr7xvUx7pXuEyFpJMA==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@react-aria/ssr': 3.6.0_react@18.2.0
+      '@react-stately/utils': 3.6.0_react@18.2.0
+      '@react-types/shared': 3.18.0_react@18.2.0
+      '@swc/helpers': 0.4.14
+      clsx: 1.2.1
+      react: 18.2.0
+    dev: false
+
   /@react-aria/visually-hidden/3.7.0_react@18.2.0:
     resolution:
       {
@@ -4559,6 +4659,23 @@ packages:
       '@react-types/shared': 3.17.0_react@18.2.0
       '@swc/helpers': 0.4.14
       clsx: 1.2.1
+      react: 18.2.0
+    dev: false
+
+  /@react-stately/calendar/3.2.0_react@18.2.0:
+    resolution:
+      {
+        integrity: sha512-A13QSmlzLI5rtpIu2QIkij4ST29MWkCJd1kM6WFDS/1if8lSzfPL3kI4tdFDaFzFCwmv2Hb2cIfv9soIG8KASQ==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@internationalized/date': 3.2.0
+      '@react-stately/utils': 3.6.0_react@18.2.0
+      '@react-types/calendar': 3.2.0_react@18.2.0
+      '@react-types/datepicker': 3.3.0_react@18.2.0
+      '@react-types/shared': 3.18.0_react@18.2.0
+      '@swc/helpers': 0.4.14
       react: 18.2.0
     dev: false
 
@@ -4630,7 +4747,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@internationalized/date': 3.1.0
+      '@internationalized/date': 3.2.0
       '@internationalized/string': 3.1.0
       '@react-stately/overlays': 3.5.0_react@18.2.0
       '@react-stately/utils': 3.6.0_react@18.2.0

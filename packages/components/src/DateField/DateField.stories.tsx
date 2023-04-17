@@ -2,8 +2,9 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { DateField, DateFieldProps } from './DateField';
-import { DateValue, getLocalTimeZone, now } from '@internationalized/date';
+import { DateValue } from '@internationalized/date';
 import { Calendar, SmilieSatisfied } from '@marigold/icons';
+import { I18nProvider } from '@react-aria/i18n';
 
 const meta = {
   title: 'Components/DateField',
@@ -88,20 +89,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => (
-    <DateField
-      {...args}
-      label="date field"
-      defaultValue={now(getLocalTimeZone())}
-    />
-  ),
+  render: args => <DateField {...args} label="date field" />,
 };
 
 export const ControlledDateField: Story = {
   render: args => {
     const [value, setValue] = useState<DateValue>();
     return (
-      <>
+      <I18nProvider locale="de-DE">
         <DateField label="Date Field" value={value} onChange={setValue} />
         <pre>
           <strong>DateField Value: </strong>
@@ -113,13 +108,15 @@ export const ControlledDateField: Story = {
               ' year:' +
               value?.year}
         </pre>
-      </>
+      </I18nProvider>
     );
   },
 };
 
 export const DateFieldWithIcons: Story = {
-  render: args => {
-    return <DateField icon={<SmilieSatisfied />} action={<Calendar />} />;
-  },
+  render: args => (
+    <I18nProvider locale="de-DE">
+      <DateField icon={<SmilieSatisfied />} action={<Calendar />} {...args} />
+    </I18nProvider>
+  ),
 };
