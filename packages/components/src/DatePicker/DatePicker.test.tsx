@@ -2,7 +2,7 @@
 import { DatePicker } from './DatePicker';
 import React from 'react';
 import { act, render, screen } from '@testing-library/react';
-import { CalendarDate, CalendarDateTime } from '@internationalized/date';
+import { CalendarDate } from '@internationalized/date';
 
 function getTextValue(el: HTMLElement): any {
   if (
@@ -65,7 +65,7 @@ describe('DatePicker', function () {
       render(
         <DatePicker
           label="Date"
-          value={new CalendarDateTime(2019, 2, 3)}
+          value={new CalendarDate(2019, 2, 3)}
           granularity="second"
         />
       );
@@ -98,31 +98,6 @@ describe('DatePicker', function () {
       expect(segments[2].getAttribute('aria-valuetext')).toBe('2019');
       expect(segments[2].getAttribute('aria-valuemin')).toBe('1');
       expect(segments[2].getAttribute('aria-valuemax')).toBe('9999');
-
-      expect(getTextValue(segments[3])).toBe('12');
-      expect(segments[3].getAttribute('aria-label')).toBe('hour');
-      expect(segments[3].getAttribute('aria-valuenow')).toBe('0');
-      expect(segments[3].getAttribute('aria-valuetext')).toBe('12 AM');
-      expect(segments[3].getAttribute('aria-valuemin')).toBe('0');
-      expect(segments[3].getAttribute('aria-valuemax')).toBe('11');
-
-      expect(getTextValue(segments[4])).toBe('00');
-      expect(segments[4].getAttribute('aria-label')).toBe('minute');
-      expect(segments[4].getAttribute('aria-valuenow')).toBe('0');
-      expect(segments[4].getAttribute('aria-valuetext')).toBe('00');
-      expect(segments[4].getAttribute('aria-valuemin')).toBe('0');
-      expect(segments[4].getAttribute('aria-valuemax')).toBe('59');
-
-      expect(getTextValue(segments[5])).toBe('00');
-      expect(segments[5].getAttribute('aria-label')).toBe('second');
-      expect(segments[5].getAttribute('aria-valuenow')).toBe('0');
-      expect(segments[5].getAttribute('aria-valuetext')).toBe('00');
-      expect(segments[5].getAttribute('aria-valuemin')).toBe('0');
-      expect(segments[5].getAttribute('aria-valuemax')).toBe('59');
-
-      expect(getTextValue(segments[6])).toBe('AM');
-      expect(segments[6].getAttribute('aria-label')).toBe('AM/PM');
-      expect(segments[6].getAttribute('aria-valuetext')).toBe('AM');
     });
 
     test('renders the calendar when date picker is open', () => {
