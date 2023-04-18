@@ -6,11 +6,12 @@ import React, {
 import { useTagGroup, AriaTagGroupProps } from '@react-aria/tag';
 import { useListState } from '@react-stately/list';
 import { LabelableProps, HelpTextProps } from '@react-types/shared';
+import { useObjectRef } from '@react-aria/utils';
 
 import { Box, useStateProps } from '@marigold/system';
 import { FieldBase } from '../FieldBase';
 import { Tag } from './Tag';
-import { useObjectRef } from '@react-aria/utils';
+import { Item } from '@react-stately/collections';
 
 // Props
 // ---------------
@@ -48,7 +49,8 @@ export const TagGroup = forwardRef<HTMLInputElement, TagGroupProps>(
       <div ref={inputRef}>
         <FieldBase
           width={width}
-          labelProps={{ as: 'span', ...labelProps }}
+          label={props.label}
+          labelProps={labelProps}
           description={props.description}
           descriptionProps={descriptionProps}
           error={error}
@@ -62,7 +64,6 @@ export const TagGroup = forwardRef<HTMLInputElement, TagGroupProps>(
             role="presentation"
             __baseCSS={{
               display: 'flex',
-              flexDirection: 'column',
               alignItems: 'start',
             }}
           >
@@ -85,7 +86,7 @@ export const TagGroup = forwardRef<HTMLInputElement, TagGroupProps>(
   }
 ) as TagGroupComponent;
 
-TagGroup.Tag = Tag;
+TagGroup.Tag = Item;
 
 /**
  * We need this so that TypeScripts allows us to add
@@ -95,5 +96,5 @@ export interface TagGroupComponent
   extends ForwardRefExoticComponent<
     TagGroupProps & RefAttributes<HTMLInputElement>
   > {
-  Tag: typeof Tag;
+  Tag: typeof Item;
 }

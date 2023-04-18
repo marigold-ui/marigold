@@ -35,6 +35,7 @@ import type { TableThemeExtension } from './Table';
 import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
 import type { TooltipThemeExtension } from './Tooltip';
+import type { TagThemeExtension } from './TagGroup/Tag';
 
 interface ComponentStyles
   extends AccordionThemeExtension,
@@ -68,6 +69,7 @@ interface ComponentStyles
     TextThemeExtension,
     TextAreaThemeExtension,
     TooltipThemeExtension,
+    TagThemeExtension,
     UnderlayThemeExtension {}
 
 export interface Theme extends BaseTheme {
