@@ -29,14 +29,9 @@ export const SVG = forwardRef<SVGSVGElement, SVGProps>(
     });
 
     return (
-      <Box
-        as={'svg'}
-        {...props}
-        ref={ref}
-        className={twMerge(styledSVG(), className)}
-      >
+      <svg {...props} ref={ref} className={twMerge(styledSVG(), className)}>
         {children}
-      </Box>
+      </svg>
     );
   }
 );
