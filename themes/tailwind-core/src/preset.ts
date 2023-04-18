@@ -1,4 +1,3 @@
-import { Config } from 'tailwindcss/types/config';
 import { createPreset } from '@marigold/theme-preset';
 
 import { theme } from './theme';

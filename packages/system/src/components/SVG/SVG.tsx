@@ -1,8 +1,9 @@
-import { forwardRef } from 'react';
-import { jsx } from '@emotion/react';
+import React, { forwardRef } from 'react';
 import { HtmlProps } from '@marigold/types';
-import { useTheme } from '../../hooks';
-import { CSSObject } from '../../types';
+
+import { twMerge } from 'tailwind-merge';
+import { tv } from 'tailwind-variants';
+import { Box } from '../Box';
 
 // Make sure that numbered values are converted to px.
 const toDimension = (value: number | string | number[] | string[]) =>
@@ -12,28 +13,31 @@ const toDimension = (value: number | string | number[] | string[]) =>
 const ensureNumberOrToken = (value: number | string) =>
   typeof value === 'string' && /^[0-9]+$/.test(value) ? Number(value) : value;
 
-export interface SVGProps extends HtmlProps<'svg'> {
+export interface SVGProps extends Omit<HtmlProps<'svg'>, 'fill'> {
   size?: number | string | number[] | string[];
-  css?: CSSObject;
+  className?: string;
 }
 
-export const SVG = forwardRef<SVGElement, SVGProps>(
-  ({ size = 24, fill, children, css: styles, ...props }, ref) => {
-    const { css } = useTheme();
-    return jsx(
-      'svg',
-      {
-        ...props,
-        css: css({
-          width: toDimension(props.width || size),
-          height: toDimension(props.height || size),
-          ...styles,
-          fill,
-          flex: '0 0 auto',
-        }),
-        ref,
-      },
-      children
+export const SVG = forwardRef<SVGSVGElement, SVGProps>(
+  ({ size = 24, children, className, ...props }, ref) => {
+    const styledSVG = tv({
+      base: [
+        `flex-auto w-[${toDimension(props.width || size)}px] h-[${toDimension(
+          props.height || size
+        )}px]`,
+      ],
+    });
+
+    console.log(styledSVG());
+    return (
+      <Box
+        as={'svg'}
+        {...props}
+        ref={ref}
+        className={twMerge(styledSVG(), className)}
+      >
+        {children}
+      </Box>
     );
   }
 );
