@@ -3,7 +3,6 @@ import { HtmlProps } from '@marigold/types';
 
 import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
-import { Box } from '../Box';
 
 // Make sure that numbered values are converted to px.
 const toDimension = (value: number | string | number[] | string[]) =>
