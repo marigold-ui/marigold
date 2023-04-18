@@ -11,7 +11,7 @@ import {
   useComponentStyles,
   useStateProps,
 } from '@marigold/system';
-import { CalendarDate } from '@internationalized/date';
+import { CalendarDate, CalendarDateTime } from '@internationalized/date';
 import { Button } from '../Button';
 import { useHover } from '@react-aria/interactions';
 export interface DatePickerThemeExtension
@@ -19,7 +19,7 @@ export interface DatePickerThemeExtension
 
 export interface DatePickerProps
   extends Omit<
-    AriaDatePickerProps<CalendarDate>,
+    AriaDatePickerProps<CalendarDate | CalendarDateTime>,
     'isDisabled' | 'isRequired' | 'isReadOnly' | 'isOpen'
   > {
   disabled?: boolean;
@@ -37,7 +37,7 @@ export const DatePicker = ({
   error,
   ...rest
 }: DatePickerProps) => {
-  const props: AriaDatePickerProps<CalendarDate> = {
+  const props: AriaDatePickerProps<CalendarDate | CalendarDateTime> = {
     isDisabled: disabled,
     isReadOnly: readonly,
     isRequired: required,
