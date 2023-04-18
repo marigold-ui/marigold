@@ -28,7 +28,6 @@ export const SVG = forwardRef<SVGSVGElement, SVGProps>(
       ],
     });
 
-    console.log(styledSVG());
     return (
       <Box
         as={'svg'}
