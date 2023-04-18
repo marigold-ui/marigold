@@ -3,6 +3,7 @@ import { HtmlProps } from '@marigold/types';
 
 import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
+import { Box } from '../Box';
 
 // Make sure that numbered values are converted to px.
 const toDimension = (value: number | string | number[] | string[]) =>
@@ -28,9 +29,14 @@ export const SVG = forwardRef<SVGSVGElement, SVGProps>(
     });
 
     return (
-      <svg {...props} ref={ref} className={twMerge(styledSVG(), className)}>
+      <Box
+        as={'svg'}
+        {...props}
+        ref={ref}
+        className={twMerge(styledSVG(), className)}
+      >
         {children}
-      </svg>
+      </Box>
     );
   }
 );
