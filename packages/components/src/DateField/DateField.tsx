@@ -118,7 +118,7 @@ export const DateField = ({
       errorMessage={errorMessage}
       errorMessageProps={errorMessageProps}
       label={label}
-      labelProps={{ as: 'span', ...labelProps }}
+      labelProps={labelProps}
       description={description}
       descriptionProps={descriptionProps}
       disabled={disabled}
@@ -138,6 +138,7 @@ export const DateField = ({
         }}
         {...mergeProps(fieldProps, stateProps, focusProps, hoverProps)}
         css={styles.field}
+        data-testid="date-field"
       >
         <Box
           __baseCSS={{

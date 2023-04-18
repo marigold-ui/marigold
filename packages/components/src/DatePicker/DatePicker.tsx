@@ -46,7 +46,6 @@ export const DatePicker = ({
   };
   const state = useDatePickerState({
     ...props,
-    shouldCloseOnSelect: false,
   });
 
   const ref = useRef(null);
