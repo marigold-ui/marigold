@@ -31,7 +31,7 @@ test('supports classNames', () => {
 
   expect(svg).toMatchInlineSnapshot(`
     <svg
-      class="flex-auto w-[24px] h-[24px] fill-info css-0"
+      class="flex-auto w-[24px] h-[24px] fill-info"
       data-testid="svg"
     >
       <path
@@ -84,7 +84,7 @@ test('supports responsive sizing', () => {
 
   expect(svg).toMatchInlineSnapshot(`
     <svg
-      class="flex-auto h-[24px] w-[24px] sm:w-[32px] md:w-[64px] css-0"
+      class="flex-auto h-[24px] w-[24px] sm:w-[32px] md:w-[64px]"
       data-testid="svg"
     >
       <path
