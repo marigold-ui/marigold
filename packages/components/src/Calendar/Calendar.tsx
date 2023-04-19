@@ -50,6 +50,7 @@ export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
   );
   return (
     <Box
+      tabIndex={-1}
       __baseCSS={{
         boxShadow: '0px 4px 4px rgba(165, 165, 165, 0.25)',
         borderRadius: '16px',

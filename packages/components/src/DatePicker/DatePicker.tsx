@@ -27,6 +27,7 @@ export interface DatePickerProps
   readonly?: boolean;
   open?: boolean;
   error?: boolean;
+  shouldCloseOnSelect?: boolean;
 }
 
 export const DatePicker = ({
@@ -35,6 +36,7 @@ export const DatePicker = ({
   readonly,
   open,
   error,
+  shouldCloseOnSelect = false,
   ...rest
 }: DatePickerProps) => {
   const props: AriaDatePickerProps<CalendarDate> = {
@@ -45,6 +47,7 @@ export const DatePicker = ({
     ...rest,
   };
   const state = useDatePickerState({
+    shouldCloseOnSelect,
     ...props,
   });
 
