@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { SVG, SVGProps } from '@marigold/system';
 
-export const CreditCard = forwardRef<SVGElement, SVGProps>((props, ref) => (
+export const CreditCard = forwardRef<SVGSVGElement, SVGProps>((props, ref) => (
   <SVG {...props} viewBox="0 0 24 24" ref={ref}>
     <path d="M2.79867 12.6224H14.5914V13.7706H2.79867V12.6224Z" />
     <path d="M2.79867 14.9109H7.8299V16.0591H2.79867V14.9109Z" />
