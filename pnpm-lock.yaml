@@ -602,25 +602,6 @@ importers:
         specifier: 6.7.0
         version: 6.7.0(postcss@8.4.21)(typescript@5.0.4)
 
-  packages/create-theme:
-    dependencies:
-      '@marigold/tokens':
-        specifier: workspace:*
-        version: link:../tokens
-    devDependencies:
-      '@marigold/components':
-        specifier: workspace:*
-        version: link:../components
-      '@marigold/system':
-        specifier: workspace:*
-        version: link:../system
-      '@marigold/tsconfig':
-        specifier: workspace:*
-        version: link:../../config/tsconfig
-      tsup:
-        specifier: 6.7.0
-        version: 6.7.0(postcss@8.4.21)(typescript@5.0.4)
-
   packages/icons:
     dependencies:
       '@marigold/system':
