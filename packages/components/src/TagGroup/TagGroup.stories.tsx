@@ -1,12 +1,12 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { TagGroup } from './TagGroup';
-import { Item } from '@react-stately/collections';
+import { Tag } from '.';
 import isChromatic from 'chromatic';
 
 const meta = {
-  title: 'Components/TagGroup',
+  title: 'Components/Tag',
   argTypes: {
     label: {
       control: {
@@ -45,41 +45,46 @@ const meta = {
       description: 'The width of the field',
     },
   },
-} satisfies Meta<typeof TagGroup>;
+} satisfies Meta<typeof Tag>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <TagGroup {...args} aria-label="Static TagGroup items example">
-      <Item key="news">News</Item>
-      <Item key="travel">Travel</Item>
-      <Item key="gaming">Gaming</Item>
-      <Item key="shopping">Shopping</Item>
-    </TagGroup>
+    <Tag.Group {...args} aria-label="Static TagGroup items example">
+      <Tag key="news">News</Tag>
+      <Tag key="travel">Travel</Tag>
+      <Tag key="gaming">Gaming</Tag>
+      <Tag key="shopping">Shopping</Tag>
+    </Tag.Group>
   ),
 };
 
 export const Error: Story = {
   render: args => (
-    <TagGroup errorMessage="Das ist ein Error" error {...args}>
-      <TagGroup.Tag key="news">News</TagGroup.Tag>
-      <TagGroup.Tag key="travel">Travel</TagGroup.Tag>
-      <TagGroup.Tag key="gaming">Gaming</TagGroup.Tag>
-      <TagGroup.Tag key="shopping">Shopping</TagGroup.Tag>
-    </TagGroup>
+    <Tag.Group
+      errorMessage="Das ist ein Error"
+      error
+      {...args}
+      aria-label="Error message example"
+    >
+      <Tag key="news">News</Tag>
+      <Tag key="travel">Travel</Tag>
+      <Tag key="gaming">Gaming</Tag>
+      <Tag key="shopping">Shopping</Tag>
+    </Tag.Group>
   ),
 };
 
 export const WithLabel: Story = {
   render: args => (
-    <TagGroup {...args} label="Categories">
-      <TagGroup.Tag key="news">News</TagGroup.Tag>
-      <TagGroup.Tag key="travel">Travel</TagGroup.Tag>
-      <TagGroup.Tag key="gaming">Gaming</TagGroup.Tag>
-      <TagGroup.Tag key="shopping">Shopping</TagGroup.Tag>
-    </TagGroup>
+    <Tag.Group {...args} label="Categories">
+      <Tag key="news">News</Tag>
+      <Tag key="travel">Travel</Tag>
+      <Tag key="gaming">Gaming</Tag>
+      <Tag key="shopping">Shopping</Tag>
+    </Tag.Group>
   ),
 };
 
@@ -100,15 +105,15 @@ export const RemovableTags: Story = {
     };
 
     return (
-      <TagGroup
+      <Tag.Group
         {...args}
         items={items}
         aria-label="TagGrooup removing example"
         allowsRemoving
         onRemove={removeItem}
       >
-        {item => <Item>{item.name}</Item>}
-      </TagGroup>
+        {(item: { id: number; name: string }) => <Tag>{item.name}</Tag>}
+      </Tag.Group>
     );
   },
 };

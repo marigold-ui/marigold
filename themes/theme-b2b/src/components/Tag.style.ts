@@ -2,23 +2,15 @@ import type { Theme } from '@marigold/components';
 
 export const Tag: Theme['components']['Tag'] = {
   base: {
-    row: {
+    tag: {
       display: 'flex',
       alignItems: 'center',
       border: '1px solid gray',
       borderRadius: '4px',
       padding: '2px 5px',
       margin: '2px',
-
-      '&:button': {
-        background: 'none',
-        border: 'none',
-        paddingRight: '0',
-      },
     },
-    gridCell: {
-      margin: '0 5px',
-    },
+    gridCell: {},
     closeButton: {
       outline: 'none',
       border: 'none',

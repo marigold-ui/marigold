@@ -14,7 +14,7 @@ import { mergeProps } from '@react-aria/utils';
 // Theme Extension
 // ---------------
 export interface TagThemeExtension
-  extends ThemeExtensionsWithParts<'Tag', ['row', 'gridCell', 'closeButton']> {}
+  extends ThemeExtensionsWithParts<'Tag', ['tag', 'gridCell', 'closeButton']> {}
 
 // Props
 // ---------------
@@ -37,7 +37,6 @@ export const Tag = ({
 }: TagProps) => {
   const props = {
     item,
-    //state,
     allowsRemoving,
     onRemove,
     ...rest,
@@ -60,7 +59,7 @@ export const Tag = ({
   const styles = useComponentStyles(
     'Tag',
     { variant, size },
-    { parts: ['row', 'gridCell', 'closeButton'] }
+    { parts: ['tag', 'gridCell', 'closeButton'] }
   );
 
   return (
@@ -68,7 +67,7 @@ export const Tag = ({
       as="span"
       ref={ref}
       {...mergeProps(rowProps, focusProps)}
-      css={styles.row}
+      css={styles.tag}
     >
       <Box as="div" {...gridCellProps} css={styles.gridCell}>
         <span {...labelProps}>{item.rendered}</span>
@@ -76,8 +75,8 @@ export const Tag = ({
           <Box as={Button} {...removeButtonProps} css={styles.closeButton}>
             <svg viewBox="0 0 20 20" fill="currentColor">
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               ></path>
             </svg>
