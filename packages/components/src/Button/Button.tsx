@@ -5,6 +5,7 @@ import { useHover } from '@react-aria/interactions';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import { PressEvents } from '@react-types/shared';
 import { twMerge } from 'tailwind-merge';
+import { tv } from 'tailwind-variants';
 
 import {
   Box,
@@ -83,24 +84,22 @@ export const Button = forwardRef(
       hover: isHovered,
     });
 
+    const styledButton = tv({
+      base: [
+        'inline-flex items-center justify-center gap-[0.5ch]',
+        'cursor-pointer disabled:cursor-not-allowed ',
+        fullWidth ? 'w-full' : undefined,
+        'focus:outline-0',
+      ],
+    });
+
     return (
       <Box
         {...mergeProps(buttonProps, focusProps, hoverProps, props)}
         {...stateProps}
         as={as}
         ref={buttonRef}
-        __baseCSS={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '0.5ch',
-          cursor: disabled ? 'not-allowed' : 'pointer',
-          width: fullWidth ? '100%' : undefined,
-          '&:focus': {
-            outline: 0,
-          },
-        }}
-        className={classNames}
+        className={twMerge(styledButton(), classNames)}
       >
         {children}
       </Box>

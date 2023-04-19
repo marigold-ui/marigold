@@ -31,8 +31,10 @@ test('supports classNames', () => {
 
   expect(svg).toMatchInlineSnapshot(`
     <svg
-      class="flex-auto w-[24px] h-[24px] fill-info"
+      class="flex-none fill-info"
       data-testid="svg"
+      height="24px"
+      width="24px"
     >
       <path
         d="M9.9 20.113V13.8415H14"
@@ -49,7 +51,8 @@ test('supports default size', () => {
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg).toHaveClass('w-[24px] h-[24px]');
+  expect(svg).toHaveAttribute('width', '24px');
+  expect(svg).toHaveAttribute('height', '24px');
 });
 
 test('supports size prop', () => {
@@ -60,7 +63,8 @@ test('supports size prop', () => {
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg).toHaveClass('w-[30px] h-[30px]');
+  expect(svg).toHaveAttribute('width', '30px');
+  expect(svg).toHaveAttribute('height', '30px');
 });
 
 test('supports size prop with string', () => {
@@ -71,7 +75,8 @@ test('supports size prop with string', () => {
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg).toHaveClass('w-[30px] h-[30px]');
+  expect(svg).toHaveAttribute('width', '30px');
+  expect(svg).toHaveAttribute('height', '30px');
 });
 
 test('supports responsive sizing', () => {
@@ -84,8 +89,10 @@ test('supports responsive sizing', () => {
 
   expect(svg).toMatchInlineSnapshot(`
     <svg
-      class="flex-auto h-[24px] w-[24px] sm:w-[32px] md:w-[64px]"
+      class="flex-none fill-current w-[24px] sm:w-[32px] md:w-[64px]"
       data-testid="svg"
+      height="24px"
+      width="24px"
     >
       <path
         d="M9.9 20.113V13.8415H14"
@@ -104,7 +111,8 @@ test('supports custom width instead of default size', () => {
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg).toHaveClass('w-[16px] h-[24px]');
+  expect(svg).toHaveAttribute('width', '16px');
+  expect(svg).toHaveAttribute('height', '24px');
 });
 
 test('supports custom height instead of default size', () => {
@@ -117,7 +125,8 @@ test('supports custom height instead of default size', () => {
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg).toHaveClass('w-[24px] h-[16px]');
+  expect(svg).toHaveAttribute('width', '24px');
+  expect(svg).toHaveAttribute('height', '16px');
 });
 
 test('accepts custom styles prop className', () => {

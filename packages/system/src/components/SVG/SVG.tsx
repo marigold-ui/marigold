@@ -21,22 +21,20 @@ export interface SVGProps extends Omit<HtmlProps<'svg'>, 'fill'> {
 export const SVG = forwardRef<SVGSVGElement, SVGProps>(
   ({ size = 24, children, className, ...props }, ref) => {
     const styledSVG = tv({
-      base: [
-        `flex-auto w-[${toDimension(props.width || size)}px] h-[${toDimension(
-          props.height || size
-        )}px]`,
-      ],
+      base: [`flex-none fill-current`],
     });
 
+    console.log(toDimension(props.width || size));
     return (
-      <Box
-        as={'svg'}
+      <svg
         {...props}
         ref={ref}
+        width={`${toDimension(props.width || size)}px`}
+        height={`${toDimension(props.height || size)}px`}
         className={twMerge(styledSVG(), className)}
       >
         {children}
-      </Box>
+      </svg>
     );
   }
 );
