@@ -17,7 +17,7 @@ test('supports size prop', () => {
   expect(svg).toHaveClass('w-[30px] h-[30px]');
 });
 
-test('supports fill prop', () => {
+test('supports className', () => {
   render(<Facebook data-testid="svg" className="fill-primary-500" />);
   const svg = screen.getByTestId(/svg/);
 
