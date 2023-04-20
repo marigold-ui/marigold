@@ -10,7 +10,6 @@ import { tv } from 'tailwind-variants';
 import {
   Box,
   ThemeExtension,
-  useComponentStyles,
   useComponentStylesFromTV,
   useStateProps,
 } from '@marigold/system';
