@@ -6,6 +6,9 @@ import { GridNode } from '@react-types/grid';
 
 import { Box, useStateProps } from '@marigold/system';
 
+import { tv } from 'tailwind-variants';
+import { twMerge } from 'tailwind-merge';
+
 import { Checkbox } from '../Checkbox';
 import { useTableContext } from './Context';
 import { mapCheckboxProps } from './utils';
@@ -33,20 +36,18 @@ export const TableCheckboxCell = ({ cell }: TableCheckboxCellProps) => {
   const { focusProps, isFocusVisible } = useFocusRing();
   const stateProps = useStateProps({ disabled, focusVisible: isFocusVisible });
 
+  const styledTableCheckboxCell = tv({
+    base: ['text-center align-middle leading-none'],
+  });
+
   return (
-    <Box
-      as="td"
+    <td
       ref={ref}
-      __baseCSS={{
-        textAlign: 'center',
-        verticalAlign: 'middle',
-        lineHeight: 1,
-      }}
-      className={classNames.cell()}
+      className={twMerge(styledTableCheckboxCell(), classNames.cell())}
       {...mergeProps(gridCellProps, focusProps)}
       {...stateProps}
     >
       <Checkbox {...checkboxProps} />
-    </Box>
+    </td>
   );
 };

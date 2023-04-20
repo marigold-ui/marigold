@@ -1,3 +1,4 @@
+import { Theme } from '../types';
 import { useTheme } from './useTheme';
 
 import theme from '@marigold/theme-unicorn';
@@ -45,12 +46,15 @@ export const useComponentStylesFromTV = (
     return '';
   }
 
-  const classNames = (theme.components as IndexObject)[componentName]?.({
+  const classNames: Theme['components'] = (theme.components as IndexObject)[
+    componentName
+  ]?.({
     variant: options?.variant,
     size: options?.size,
     slots: options?.slots,
   });
 
+  console.log(classNames);
   return classNames;
 };
 

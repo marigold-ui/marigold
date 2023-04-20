@@ -4,7 +4,7 @@ import { useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
 
-import { Box, useStateProps } from '@marigold/system';
+import { useStateProps } from '@marigold/system';
 
 import { useTableContext } from './Context';
 
@@ -24,7 +24,6 @@ export const TableCell = ({ cell }: TableCellProps) => {
     ref
   );
 
-  console.log(classNames);
   const cellProps = interactive
     ? gridCellProps
     : {
@@ -41,14 +40,13 @@ export const TableCell = ({ cell }: TableCellProps) => {
   const stateProps = useStateProps({ disabled, focusVisible: isFocusVisible });
 
   return (
-    <Box
-      as="td"
+    <td
       ref={ref}
       className={classNames.cell()}
       {...mergeProps(cellProps, focusProps)}
       {...stateProps}
     >
       {cell.rendered}
-    </Box>
+    </td>
   );
 };

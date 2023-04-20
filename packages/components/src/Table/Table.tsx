@@ -11,7 +11,10 @@ import {
   useTableState,
 } from '@react-stately/table';
 
-import { Box, useComponentStylesFromTV } from '@marigold/system';
+import { tv } from 'tailwind-variants';
+import { twMerge } from 'tailwind-merge';
+
+import { useComponentStylesFromTV } from '@marigold/system';
 
 import { TableContext } from './Context';
 import { TableBody } from './TableBody';
@@ -22,14 +25,6 @@ import { TableHeader } from './TableHeader';
 import { TableHeaderRow } from './TableHeaderRow';
 import { TableRow } from './TableRow';
 import { TableSelectAllCell } from './TableSelectAllCell';
-
-// Theme Extension
-// ---------------
-// export interface TableThemeExtension
-//   extends ThemeExtensionsWithParts<
-//     'Table',
-//     ['table', 'header', 'row', 'cell']
-//   > {}
 
 // Props
 // ---------------
@@ -65,33 +60,29 @@ export const Table: Table = ({
   });
   const { gridProps } = useTable(props, state, tableRef);
 
-  // const styles = useComponentStyles(
-  //   'Table',
-  //   { variant, size },
-  //   { parts: ['table', 'header', 'row', 'cell'] }
-  // );
-
   const classNames = useComponentStylesFromTV('Table', {
     variant,
     size,
     slots: ['table', 'header', 'row', 'cell'],
   });
 
+  console.log(classNames.row());
   const { collection } = state;
 
+  const styledTable = tv({
+    base: [
+      stretch ? 'table' : 'block',
+      stretch ? 'w-full' : undefined,
+      'border-collapse overflow-auto whitespace-nowrap',
+    ],
+  });
+
+  console.log(classNames);
   return (
     <TableContext.Provider value={{ state, interactive, classNames }}>
-      <Box
-        as="table"
+      <table
         ref={tableRef}
-        __baseCSS={{
-          display: stretch ? 'table' : 'block',
-          width: stretch ? '100%' : undefined,
-          borderCollapse: 'collapse',
-          overflow: 'auto',
-          whiteSpace: 'nowrap',
-        }}
-        className={classNames.table()}
+        className={twMerge(styledTable(), classNames.table())}
         {...gridProps}
       >
         <TableHeader>
@@ -120,7 +111,7 @@ export const Table: Table = ({
             </TableRow>
           ))}
         </TableBody>
-      </Box>
+      </table>
     </TableContext.Provider>
   );
 };

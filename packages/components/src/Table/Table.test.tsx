@@ -4,28 +4,20 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 
 import { Table } from './Table';
+import { Theme } from '../theme';
 
 // Setup
 // ---------------
-const theme = {
-  space: {
-    none: 'none',
-    small: '4px',
-    large: '16px',
-  },
-  ...{
-    components: {
-      Table: {
-        base: {
-          table: { borderCollapse: 'collapse' },
-          header: {
-            p: 'small',
-          },
-          row: { backgroundColor: 'blue' },
-          cell: {
-            p: 'large',
-          },
-        },
+const theme: Theme = {
+  name: 'test',
+  components: {
+    Table: {
+      base: {
+        table: ['border-collapse'],
+        header: ['p-4'],
+
+        row: ['bg-blue-700'],
+        cell: ['p-10'],
       },
     },
   },
@@ -49,7 +41,7 @@ const rows: { [key: string]: string }[] = [
   },
 ];
 
-test('renders contens correctly', () => {
+test.only('renders contens correctly', () => {
   render(
     <Table aria-label="Example table">
       <Table.Header columns={columns}>

@@ -11,6 +11,9 @@ import { GridNode } from '@react-types/grid';
 
 import { Box, useStateProps } from '@marigold/system';
 
+import { tv } from 'tailwind-variants';
+import { twMerge } from 'tailwind-merge';
+
 import { Checkbox } from '../Checkbox';
 import { useTableContext } from './Context';
 import { mapCheckboxProps } from './utils';
@@ -43,16 +46,15 @@ export const TableSelectAllCell = ({ column }: TableSelectAllCell) => {
     focusVisible: isFocusVisible,
   });
 
+  const styledTableHeaderSelectAll = tv({
+    base: ['text-center align-middle leading-none'],
+  });
+
   return (
     <Box
       as="th"
       ref={ref}
-      __baseCSS={{
-        textAlign: 'center',
-        verticalAlign: 'middle',
-        lineHeight: 1,
-      }}
-      className={classNames.header()}
+      className={twMerge(styledTableHeaderSelectAll(), classNames.header())}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
     >
