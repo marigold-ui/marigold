@@ -26,6 +26,16 @@ export const preset = createPreset('core', {
           body: '#511e04',
           current: 'currentColor',
         },
+        badge: {
+          info: {
+            background: '#1d67b6',
+            text: '#e8f4fa',
+          },
+          dark: {
+            background: '#4b4b4b',
+            text: '#ffffff',
+          },
+        },
         button: {
           base: {
             text: '#4b4b4b',

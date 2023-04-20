@@ -1,3 +1,4 @@
+import { badge as Badge } from './components';
 import { button as Button } from './components';
 import { table as Table } from './components';
 
@@ -11,6 +12,7 @@ export const theme = {
     '2xl': '1536px',
   },
   components: {
+    Badge,
     Button,
     Table,
   },

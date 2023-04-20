@@ -1,32 +1,21 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider } from '@marigold/system';
 import { Badge } from './Badge';
+import { tv } from 'tailwind-variants';
 
-const theme = {
-  radii: {
-    none: 0,
-    'small-1': 8,
-    'medium-1': 16,
-  },
-  space: {
-    none: 0,
-    'small-1': 4,
-  },
+const theme: Theme = {
+  name: 'test',
   components: {
-    Badge: {
-      base: {
-        padding: 'small-1',
-      },
-      variant: {
-        one: {
-          borderRadius: 'small-1',
-        },
-        two: {
-          borderRadius: 'medium-1',
+    Badge: tv({
+      base: ['p-2'],
+      variants: {
+        variant: {
+          one: ['rounded-sm'],
+          two: ['rounded-md'],
         },
       },
-    },
+    }),
   },
 };
 
@@ -41,14 +30,14 @@ test('renders as a "div" element', () => {
   expect(badge instanceof HTMLDivElement).toBeTruthy();
 });
 
-test('uses base styling form "Badge" in theme', () => {
+test('uses base styling classes form "Badge" in theme', () => {
   render(
     <ThemeProvider theme={theme}>
       <Badge data-testid="badge" />
     </ThemeProvider>
   );
   const badge = screen.getByTestId('badge');
-  expect(badge).toHaveStyle(`padding: ${theme.space['small-1']}px`);
+  expect(badge).toHaveClass('p-2');
 });
 
 test('supports "Badge" variants from theme', () => {
@@ -59,7 +48,7 @@ test('supports "Badge" variants from theme', () => {
   );
 
   let badge = screen.getByTestId('badge');
-  expect(badge).toHaveStyle(`border-radius: ${theme.radii['small-1']}px`);
+  expect(badge).toHaveClass('rounded-sm');
 
   rerender(
     <ThemeProvider theme={theme}>
@@ -68,5 +57,5 @@ test('supports "Badge" variants from theme', () => {
   );
 
   badge = screen.getByTestId('badge');
-  expect(badge).toHaveStyle(`border-radius: ${theme.radii['medium-1']}px`);
+  expect(badge).toHaveClass('rounded-md');
 });
