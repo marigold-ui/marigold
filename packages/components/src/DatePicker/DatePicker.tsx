@@ -106,7 +106,7 @@ export const DatePicker = ({
                   {...hoverProps}
                   style={{
                     padding: 0,
-                    width: '40px',
+                    width: '48px',
                     height: '100%',
                   }}
                   disabled={isDisabled}

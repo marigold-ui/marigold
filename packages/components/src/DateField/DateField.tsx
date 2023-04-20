@@ -134,6 +134,7 @@ export const DateField = ({
           justifyContent: 'space-between',
           flexWrap: 'nowrap',
           borderRadius: '10px',
+          height: '40px',
           overflow: 'hidden',
         }}
         {...mergeProps(fieldProps, stateProps, focusProps, hoverProps)}
@@ -192,11 +193,11 @@ export const DateField = ({
         {action && (
           <Box
             data-testid="action"
-            style={{
+            __baseCSS={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '40px',
+              width: '48px',
               overflow: 'hidden',
             }}
           >

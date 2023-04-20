@@ -26,7 +26,7 @@ export interface CalendarProps
 export interface CalendarThemeExtension
   extends ThemeExtensionsWithParts<
     'Calendar',
-    ['calendar', 'calendarCell', 'calendarHeader']
+    ['calendar', 'calendarCell', 'calendarControllers']
   > {}
 
 export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
@@ -49,7 +49,7 @@ export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
   const styles = useComponentStyles(
     'Calendar',
     {},
-    { parts: ['calendar', 'calendarHeader'] }
+    { parts: ['calendar', 'calendarControllers'] }
   );
   return (
     <Box
@@ -84,7 +84,7 @@ export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
             justifyContent: 'flex-end',
             gap: '20px',
           }}
-          css={styles.calendarHeader}
+          css={styles.calendarControllers}
         >
           <Button disabled={disabled} {...prevButtonProps}>
             <ChevronLeft />

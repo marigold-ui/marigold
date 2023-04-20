@@ -5,7 +5,7 @@ export const Calendar: Theme['components']['Calendar'] = {
     calendar: {
       bg: 'white',
     },
-    calendarHeader: {
+    calendarControllers: {
       color: 'gray80',
       '& button': {
         padding: '4px 8px',
