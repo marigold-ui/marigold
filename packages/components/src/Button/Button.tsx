@@ -7,17 +7,8 @@ import { PressEvents } from '@react-types/shared';
 import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
 
-import {
-  Box,
-  ThemeExtension,
-  useComponentStylesFromTV,
-  useStateProps,
-} from '@marigold/system';
+import { Box, useComponentStylesFromTV, useStateProps } from '@marigold/system';
 import { HtmlProps, PolymorphicComponent, PropsOf } from '@marigold/types';
-
-// Theme Extension
-// ---------------
-export interface ButtonThemeExtension extends ThemeExtension<'Button'> {}
 
 // Props
 // ---------------
