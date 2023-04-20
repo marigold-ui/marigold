@@ -24,6 +24,7 @@ export const preset = createPreset('core', {
         root: {
           background: '#8c887d', // Note: not in `secondary`
           body: '#511e04',
+          current: 'currentColor',
         },
         button: {
           base: {

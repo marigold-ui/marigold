@@ -23,7 +23,6 @@ export const SVG = forwardRef<SVGSVGElement, SVGProps>(
       base: [`flex-none fill-current`],
     });
 
-    console.log(toDimension(props.width || size));
     return (
       <svg
         {...props}
