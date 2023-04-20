@@ -16,6 +16,7 @@ export interface CardThemeExtension extends ThemeExtension<'Card'> {}
 // ---------------
 export interface CardProps extends ThemeComponentProps, HtmlProps<'div'> {
   children?: ReactNode;
+  space?: ResponsiveStyleValue<string>;
   p?: ResponsiveStyleValue<string>;
   px?: ResponsiveStyleValue<string>;
   py?: ResponsiveStyleValue<string>;
@@ -31,6 +32,7 @@ export const Card = ({
   children,
   variant,
   size,
+  space = 'none',
   p,
   px,
   py,
@@ -42,7 +44,15 @@ export const Card = ({
 }: CardProps) => {
   const styles = useComponentStyles('Card', { variant, size });
   return (
-    <Box {...props} css={[styles, { p, px, py, pt, pb, pl, pr }]}>
+    <Box
+      {...props}
+      __baseCSS={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: space,
+      }}
+      css={[styles, { p, px, py, pt, pb, pl, pr }]}
+    >
       {children}
     </Box>
   );
