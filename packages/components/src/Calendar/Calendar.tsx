@@ -15,7 +15,8 @@ import {
   ThemeExtensionsWithParts,
   useComponentStyles,
 } from '@marigold/system';
-import { Headline } from '../Headline';
+import MonthDropdown from './MonthDropdown';
+import YearDropdown from './YearDropdown';
 
 export interface CalendarProps
   extends Omit<AriaCalendarProps<DateValue>, 'isDisabled' | 'isReadOnly'> {
@@ -41,8 +42,10 @@ export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
     createCalendar,
   });
   const ref = useRef(null);
-  const { calendarProps, prevButtonProps, nextButtonProps, title } =
-    useCalendar(props, state);
+  const { calendarProps, prevButtonProps, nextButtonProps } = useCalendar(
+    props,
+    state
+  );
   const styles = useComponentStyles(
     'Calendar',
     {},
@@ -61,33 +64,37 @@ export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
       ref={ref}
       css={styles.calendar}
     >
-      <Box
-        __baseCSS={{
-          display: 'flex',
-          flexWrap: 'nowrap',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '18px',
-        }}
-      >
+      <Box style={{ display: 'flex', marginBottom: '18px', gap: '60px' }}>
         <Box
           __baseCSS={{
             display: 'flex',
-            justifyContent: 'space-between',
+            minWidth: '170px',
+            gap: '9px',
+            '& button': { borderRadius: '10px', height: '40px' },
+          }}
+        >
+          <YearDropdown state={state} />
+          <MonthDropdown state={state} />
+        </Box>
+        <Box
+          __baseCSS={{
+            display: 'flex',
             flexWrap: 'nowrap',
             width: '100%',
+            justifyContent: 'flex-end',
+            gap: '20px',
           }}
           css={styles.calendarHeader}
         >
           <Button disabled={disabled} {...prevButtonProps}>
             <ChevronLeft />
           </Button>
-          <Headline size="level-3">{title}</Headline>
           <Button disabled={disabled} {...nextButtonProps}>
             <ChevronRight fontSize={'1'} />
           </Button>
         </Box>
       </Box>
+
       <CalendarGrid state={state} />
     </Box>
   );
