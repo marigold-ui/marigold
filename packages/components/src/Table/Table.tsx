@@ -66,7 +66,6 @@ export const Table: Table = ({
     slots: ['table', 'header', 'row', 'cell'],
   });
 
-  console.log(classNames.row());
   const { collection } = state;
 
   const styledTable = tv({
@@ -77,7 +76,6 @@ export const Table: Table = ({
     ],
   });
 
-  console.log(classNames);
   return (
     <TableContext.Provider value={{ state, interactive, classNames }}>
       <table

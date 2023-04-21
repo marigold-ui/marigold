@@ -25,12 +25,10 @@ type ThemeNames = keyof typeof THEME;
 export const decorators: any = [
   withThemeByDataAttribute({
     themes: {
-      b2b: 'b2b',
       core: 'core',
       unicorn: 'unicorn',
-      stacked: 'stacked',
     },
-    defaultTheme: 'b2b',
+    defaultTheme: 'core',
     attributeName: 'data-theme',
   }),
   (Story: StoryFn, { globals, parameters }: any) => {

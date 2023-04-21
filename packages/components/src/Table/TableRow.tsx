@@ -60,7 +60,13 @@ export const TableRow = ({ children, row }: TableRowProps) => {
   });
 
   const styledTableRow = tv({
-    base: [!interactive ? 'text' : disabled ? 'default' : 'pointer'],
+    base: [
+      !interactive
+        ? 'cursor-text'
+        : disabled
+        ? 'cursor-default'
+        : 'cursor-pointer',
+    ],
   });
 
   return (

@@ -52,7 +52,6 @@ export const useComponentStylesFromTV = (
         return acc;
       }, {} as any);
     }
-
     return '';
   }
 
