@@ -35,12 +35,12 @@ export const Tag = ({
   onRemove,
   ...rest
 }: TagProps) => {
-  const props = {
+  const props: AriaTagProps<object> = {
     item,
     allowsRemoving,
     onRemove,
     ...rest,
-  } satisfies AriaTagProps<object>;
+  };
 
   let ref = React.useRef(null);
   let { focusProps } = useFocusRing({ within: true });

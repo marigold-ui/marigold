@@ -45,7 +45,7 @@ const meta = {
       description: 'The width of the field',
     },
   },
-} satisfies Meta<typeof Tag>;
+} satisfies Meta<typeof Tag.Group>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

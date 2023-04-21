@@ -26,11 +26,11 @@ export const TagGroup = ({
   error,
   ...rest
 }: TagGroupProps) => {
-  const props = {
+  const props: AriaTagGroupProps<object> = {
     isRequired: required,
     validationState: error ? 'invalid' : 'valid',
     ...rest,
-  } satisfies AriaTagGroupProps<object>;
+  };
 
   const inputRef = useRef(null);
 
