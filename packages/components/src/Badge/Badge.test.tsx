@@ -20,11 +20,7 @@ const theme: Theme = {
 };
 
 test('renders as a "div" element', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Badge data-testid="badge" />
-    </ThemeProvider>
-  );
+  render(<Badge data-testid="badge" />);
 
   const badge = screen.getByTestId('badge');
   expect(badge instanceof HTMLDivElement).toBeTruthy();

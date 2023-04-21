@@ -28,6 +28,9 @@ const get = (obj: object, path: string, fallback?: any): any => {
   return result === undefined ? fallback : result;
 };
 
+const notFound = (val: string) => () =>
+  console.warn(`No styling found for "${val}".`);
+
 // Hook
 // ---------------
 
@@ -43,18 +46,22 @@ export const useComponentStylesFromTV = (
   const theme = useTheme();
 
   if (!(componentName in (theme.components as IndexObject))) {
+    if (options?.slots) {
+      return options.slots.reduce((acc, slot) => {
+        acc[slot] = notFound(`${componentName}.${slot}`);
+        return acc;
+      }, {} as any);
+    }
+
     return '';
   }
 
-  const classNames: Theme['components'] = (theme.components as IndexObject)[
-    componentName
-  ]?.({
+  const classNames = (theme.components as IndexObject)[componentName]?.({
     variant: options?.variant,
     size: options?.size,
     slots: options?.slots,
   });
 
-  console.log(classNames);
   return classNames;
 };
 
