@@ -4,19 +4,6 @@ import { Box, ThemeProvider, useResponsiveValue } from '@marigold/system';
 
 const meta = {
   title: 'System/useResponsiveValue',
-
-  args: {
-    css: {
-      width: 100,
-      borderRadius: 5,
-      px: 8,
-      py: 2,
-      marginInline: 'auto',
-      color: '#FFF',
-      bg: ['red', 'blue', 'green', 'black', 'hotpink'],
-      cursor: 'pointer',
-    },
-  },
 } satisfies Meta<typeof Box>;
 
 export default meta;
