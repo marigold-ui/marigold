@@ -1,5 +1,6 @@
 export const theme = {
   space: {
+    none: 0,
     xxsmall: 4,
     xsmall: 8,
     small: 16,
@@ -25,5 +26,7 @@ export const useSpace = (space: keyof typeof theme.space) => {
     return 'gap-40';
   } else if (space === 'xxlarge') {
     return 'gap-48';
+  } else if (space === 'none') {
+    return 'gap-0';
   }
 };

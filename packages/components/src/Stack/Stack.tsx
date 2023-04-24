@@ -31,7 +31,7 @@ export interface StackProps {
 // ---------------
 export const Stack = ({
   children,
-  space = 'small',
+  space = 'none',
   alignX = 'none',
   alignY = 'none',
   stretch = false,
