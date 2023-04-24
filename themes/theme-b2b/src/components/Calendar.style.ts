@@ -28,7 +28,7 @@ export const Calendar: Theme['components']['Calendar'] = {
         color: 'gray40',
         cursor: 'default',
       },
-      '&:hover': {
+      '&[data-hover]': {
         backgroundColor: 'orange10',
       },
       '&[aria-label*=selected]': {
