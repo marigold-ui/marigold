@@ -13,13 +13,15 @@ import { DateSegment } from './DateSegment';
 import { AriaButtonProps } from '@react-aria/button';
 import { FieldBase } from '../FieldBase';
 import { mergeProps } from '@react-aria/utils';
+import { useHover } from '@react-aria/interactions';
+import { useFocusRing } from '@react-aria/focus';
 
 // Props
 // ----------------
 export interface DateFieldThemeExtension
   extends ThemeExtensionsWithParts<
     'DateField',
-    ['segment', 'placeholder', 'field', 'calendarButton']
+    ['segment', 'placeholder', 'field', 'calendarButton', 'segmentsContainer']
   > {}
 
 export interface DateFieldProps
@@ -28,8 +30,8 @@ export interface DateFieldProps
     'isDisabled' | 'isReadOnly' | 'isRequired'
   > {
   onChange?: (value: DateValue) => void;
-  value?: DateValue;
-  defaultValue?: DateValue;
+  value?: DateValue | null;
+  defaultValue?: DateValue | null;
   ref?: React.RefObject<unknown> | undefined;
   icon?: ReactElement;
   action?: ReactElement;
@@ -46,12 +48,10 @@ export interface DateFieldProps
 
 // Component
 // ----------------
-
 export const DateField = ({
   disabled,
   readOnly,
   required,
-  isPressed,
   error,
   errorMessage,
   errorMessageProps,
@@ -60,6 +60,7 @@ export const DateField = ({
   size,
   icon,
   action,
+  isPressed,
   ...res
 }: DateFieldProps) => {
   const { locale } = useLocale();
@@ -82,15 +83,33 @@ export const DateField = ({
     state,
     ref
   );
+
   const styles = useComponentStyles(
     'DateField',
-    {},
-    { parts: ['segment', 'field', 'calendarButton'] }
+    { variant, size },
+    {
+      parts: [
+        'segment',
+        'field',
+        'calendarButton',
+        'icon',
+        'segmentsContainer',
+        'segmentValue',
+      ],
+    }
   );
 
+  const { focusProps, isFocused } = useFocusRing({
+    within: true,
+    isTextInput: true,
+    autoFocus: props.autoFocus,
+  });
+  const { hoverProps, isHovered } = useHover({ isDisabled: disabled });
   const stateProps = useStateProps({
+    hover: isHovered,
     error,
     disabled,
+    focus: isFocused || isPressed,
   });
 
   return (
@@ -99,7 +118,7 @@ export const DateField = ({
       errorMessage={errorMessage}
       errorMessageProps={errorMessageProps}
       label={label}
-      labelProps={{ as: 'span', ...labelProps }}
+      labelProps={labelProps}
       description={description}
       descriptionProps={descriptionProps}
       disabled={disabled}
@@ -115,10 +134,12 @@ export const DateField = ({
           justifyContent: 'space-between',
           flexWrap: 'nowrap',
           borderRadius: '10px',
+          height: '40px',
           overflow: 'hidden',
         }}
-        {...mergeProps(fieldProps, stateProps)}
+        {...mergeProps(fieldProps, stateProps, focusProps, hoverProps)}
         css={styles.field}
+        data-testid="date-field"
       >
         <Box
           __baseCSS={{
@@ -127,7 +148,6 @@ export const DateField = ({
             flexBasis: '100%',
             gap: '5px',
             paddingLeft: '8px',
-            marginRight: '16px',
           }}
         >
           {icon && (
@@ -147,6 +167,8 @@ export const DateField = ({
               display: 'flex',
               flexBasis: '100%',
             }}
+            className="segments-container"
+            css={styles.segmentsContainer}
           >
             <Box
               __baseCSS={{
@@ -154,9 +176,15 @@ export const DateField = ({
                 alignItems: 'center',
                 paddingY: '5px',
               }}
+              {...stateProps}
             >
               {state.segments.map((segment, i) => (
-                <DateSegment key={i} segment={segment} state={state} />
+                <DateSegment
+                  isPrevPlaceholder={state.segments[i - 1]?.isPlaceholder}
+                  key={i}
+                  segment={segment}
+                  state={state}
+                />
               ))}
             </Box>
           </Box>
@@ -165,9 +193,11 @@ export const DateField = ({
         {action && (
           <Box
             data-testid="action"
-            style={{
+            __baseCSS={{
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'center',
+              marginRight: '8px',
             }}
           >
             {action}
