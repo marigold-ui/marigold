@@ -16,7 +16,7 @@ export const Calendar: Theme['components']['Calendar'] = {
           bg: 'gray50',
           color: 'white',
         },
-        '&:hover:active:not(:disabled)': {
+        '&[data-hover][data-active]': {
           bg: 'gray80',
         },
       },
