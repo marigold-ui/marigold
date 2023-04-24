@@ -11,6 +11,7 @@ export const checkbox = tv({
       'indeterminate:text-white indeterminate:border-checkbox-base-indeterminate indeterminate:bg-checkbox-base-indeterminateBackground',
       'disabled:border-checkbox-base-disabled disabled:bg-checkbox-base-disabledBackground',
     ],
+    container: '',
   },
   variants: {
     size: {

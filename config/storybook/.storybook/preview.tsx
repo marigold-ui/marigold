@@ -28,7 +28,7 @@ export const decorators: any = [
       core: 'core',
       unicorn: 'unicorn',
     },
-    defaultTheme: 'core',
+    defaultTheme: tailwindCore.name,
     attributeName: 'data-theme',
   }),
   (Story: StoryFn, { globals, parameters }: any) => {
@@ -41,7 +41,7 @@ export const decorators: any = [
 
     const theme = isChromatic()
       ? parameters.theme || 'stacked'
-      : globals.theme || parameters.theme || 'b2b';
+      : globals.theme || parameters.theme || 'core';
 
     switch (theme) {
       case 'stacked': {

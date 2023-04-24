@@ -7,14 +7,6 @@ import { twMerge } from 'tailwind-merge';
 // Props
 // ---------------
 export interface TextProps extends HtmlProps<'p'> {
-  display?: string;
-  align?: string;
-  color?: string;
-  cursor?: string;
-  fontSize?: string;
-  fontWeight?: string;
-  fontStyle?: string;
-  outline?: string;
   children?: React.ReactNode;
   variant?: string;
   size?: string;
@@ -26,14 +18,6 @@ export interface TextProps extends HtmlProps<'p'> {
 export const Text = ({
   variant,
   size,
-  display,
-  align,
-  color,
-  fontSize,
-  fontStyle,
-  fontWeight,
-  cursor,
-  outline,
   className,
   children,
   ...props

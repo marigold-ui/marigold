@@ -181,7 +181,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     });
 
     const styledLabel = tv({
-      base: ['flex item-center justify-center gap-[1ch] relative'],
+      base: ['flex item-center gap-[1ch] relative'],
     });
 
     const styledInput = tv({
@@ -194,7 +194,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     return (
       <Box
         as="label"
-        className={twMerge(styledLabel(), classNames.container)}
+        className={twMerge(styledLabel(), classNames.container())}
         {...hoverProps}
         {...stateProps}
       >
@@ -212,7 +212,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           {...stateProps}
         />
         {props.children && (
-          <Box className={classNames.label} {...stateProps}>
+          <Box className={classNames.label()} {...stateProps}>
             {props.children}
           </Box>
         )}
