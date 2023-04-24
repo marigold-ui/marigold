@@ -34,14 +34,16 @@ export const CalendarGrid = ({ state, ...props }: CalendarGridProps) => {
   }, [locale, state.timeZone, dayFormatter]);
 
   return (
-    <Box as="table" {...gridProps} cellPadding="5" style={{ width: '100%' }}>
+    <Box
+      as="table"
+      {...gridProps}
+      cellPadding="5"
+      style={{ width: '100%', borderSpacing: '8px' }}
+    >
       <Box as="thead" {...headerProps}>
         <Box as="tr">
           {weekDays.map((day, index) => (
-            <th
-              style={{ fontWeight: 'bolder', fontFamily: 'Inter' }}
-              key={index}
-            >
+            <th style={{ fontWeight: 'bolder' }} key={index}>
               {day.substring(0, 2)}
             </th>
           ))}

@@ -15,8 +15,8 @@ import {
   ThemeExtensionsWithParts,
   useComponentStyles,
 } from '@marigold/system';
-import { Headline } from '../Headline';
-
+import MonthDropdown from './MonthDropdown';
+import YearDropdown from './YearDropdown';
 export interface CalendarProps
   extends Omit<AriaCalendarProps<DateValue>, 'isDisabled' | 'isReadOnly'> {
   disabled?: boolean;
@@ -25,7 +25,7 @@ export interface CalendarProps
 export interface CalendarThemeExtension
   extends ThemeExtensionsWithParts<
     'Calendar',
-    ['calendarGrid', 'calendarCell', 'calendarHeader']
+    ['calendar', 'calendarCell', 'calendarControllers']
   > {}
 
 export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
@@ -41,15 +41,18 @@ export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
     createCalendar,
   });
   const ref = useRef(null);
-  const { calendarProps, prevButtonProps, nextButtonProps, title } =
-    useCalendar(props, state);
+  const { calendarProps, prevButtonProps, nextButtonProps } = useCalendar(
+    props,
+    state
+  );
   const styles = useComponentStyles(
     'Calendar',
     {},
-    { parts: ['calendarHeader'] }
+    { parts: ['calendar', 'calendarControllers'] }
   );
   return (
     <Box
+      tabIndex={-1}
       __baseCSS={{
         boxShadow: '0px 4px 4px rgba(165, 165, 165, 0.25)',
         borderRadius: '16px',
@@ -58,34 +61,39 @@ export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
       }}
       {...calendarProps}
       ref={ref}
+      css={styles.calendar}
     >
-      <Box
-        __baseCSS={{
-          display: 'flex',
-          flexWrap: 'nowrap',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '18px',
-        }}
-      >
+      <Box style={{ display: 'flex', marginBottom: '16px', gap: '60px' }}>
         <Box
           __baseCSS={{
             display: 'flex',
-            justifyContent: 'space-between',
+            minWidth: '170px',
+            gap: '9px',
+            '& button': { borderRadius: '10px', height: '40px' },
+          }}
+        >
+          <MonthDropdown state={state} />
+          <YearDropdown state={state} />
+        </Box>
+        <Box
+          __baseCSS={{
+            display: 'flex',
             flexWrap: 'nowrap',
             width: '100%',
+            justifyContent: 'flex-end',
+            gap: '10px',
           }}
-          css={styles.calendarHeader}
+          css={styles.calendarControllers}
         >
           <Button disabled={disabled} {...prevButtonProps}>
             <ChevronLeft />
           </Button>
-          <Headline size="level-3">{title}</Headline>
           <Button disabled={disabled} {...nextButtonProps}>
             <ChevronRight fontSize={'1'} />
           </Button>
         </Box>
       </Box>
+
       <CalendarGrid state={state} />
     </Box>
   );

@@ -1,23 +1,31 @@
 import React, { useRef } from 'react';
 import { AriaCalendarCellProps, useCalendarCell } from '@react-aria/calendar';
 import { mergeProps } from '@react-aria/utils';
-import { useFocusRing } from '@react-aria/focus';
 import { CalendarState } from '@react-stately/calendar';
-import { Box, useComponentStyles } from '@marigold/system';
+import { Box, useComponentStyles, useStateProps } from '@marigold/system';
+import { useHover } from '@react-aria/interactions';
 
 export interface CalendarCellProps extends AriaCalendarCellProps {
   state: CalendarState;
 }
 export const CalendarCell = (props: CalendarCellProps) => {
   const ref = useRef(null);
+  const { state } = props;
   let { cellProps, buttonProps, formattedDate, isOutsideVisibleRange } =
-    useCalendarCell(props, props.state, ref);
-  const { focusProps } = useFocusRing();
+    useCalendarCell(props, state, ref);
   const styles = useComponentStyles(
     'Calendar',
     {},
     { parts: ['calendarCell'] }
   );
+  const isDisabled = cellProps['aria-disabled'] as boolean;
+  const { hoverProps, isHovered } = useHover({
+    isDisabled,
+  });
+  const stateProps = useStateProps({
+    disabled: isDisabled,
+    hover: isHovered,
+  });
   return (
     <Box as="td" {...cellProps}>
       <Box
@@ -28,18 +36,14 @@ export const CalendarCell = (props: CalendarCellProps) => {
           padding: '0',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center',
+          alignItems: 'baseline',
           width: '30px',
           height: '30px',
-          '&[aria-disabled=true]': {
-            color: 'gray40',
-            cursor: 'default',
-          },
         }}
         css={styles.calendarCell}
         hidden={isOutsideVisibleRange}
         ref={ref}
-        {...mergeProps(buttonProps, focusProps)}
+        {...mergeProps(buttonProps, stateProps, hoverProps)}
       >
         {formattedDate}
       </Box>
