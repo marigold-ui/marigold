@@ -21,7 +21,7 @@ const ALIGNMENT_Y = {
 // ---------------
 export interface StackProps {
   children?: ReactNode;
-  space?: keyof typeof theme.extend.space | undefined;
+  space?: keyof typeof theme.space | undefined;
   alignX?: keyof typeof ALIGNMENT_X;
   alignY?: keyof typeof ALIGNMENT_Y;
   stretch?: boolean;

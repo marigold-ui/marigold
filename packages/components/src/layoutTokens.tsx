@@ -1,18 +1,16 @@
 export const theme = {
-  extend: {
-    space: {
-      xxsmall: 4,
-      xsmall: 8,
-      small: 16,
-      medium: 24,
-      large: 32,
-      xlarge: 40,
-      xxlarge: 48,
-    },
+  space: {
+    xxsmall: 4,
+    xsmall: 8,
+    small: 16,
+    medium: 24,
+    large: 32,
+    xlarge: 40,
+    xxlarge: 48,
   },
 };
 
-export const useSpace = (space: keyof typeof theme.extend.space) => {
+export const useSpace = (space: keyof typeof theme.space) => {
   if (space === 'xxsmall') {
     return 'gap-4';
   } else if (space === 'xsmall') {

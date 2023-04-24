@@ -55,14 +55,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const Block = ({ children }: { children: ReactNode }) => (
-  <Box
-    css={{
-      background: 'hsla(218 16% 77% / 50%)',
-      border: '1px solid hsla(218 16% 70% / 50%)',
-      borderRadius: 12,
-      p: 12,
-    }}
-  >
+  <Box className="rounded-xl border border-solid border-gray-200 bg-gray-100 p-3 ">
     {children}
   </Box>
 );
@@ -141,13 +134,13 @@ export const Nested: Story = {
 export const Stretch: Story = {
   render: args => (
     <Block>
-      <Box css={{ height: 300 }}>
+      <div style={{ height: '300px' }}>
         <Stack {...args}>
           <Block>Lirum</Block>
           <Block>Larum</Block>
           <Block>Löffelstiel!</Block>
         </Stack>
-      </Box>
+      </div>
     </Block>
   ),
 };
