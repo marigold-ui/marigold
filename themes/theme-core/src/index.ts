@@ -45,6 +45,7 @@ const theme: Theme = {
       margin: 0,
       padding: 0,
       fontFamily: 'body',
+      fontSize: '13px',
       bg: '#e7e4e0',
     },
   },
@@ -60,7 +61,7 @@ const theme: Theme = {
     heading: 'Arial, Helvetica, sans-serif',
   },
   fontSizes: {
-    xxsmall: '0.875rem',
+    xxsmall: '13px',
     xsmall: '1rem',
     small: '1.125rem',
     medium: '1.25rem',
