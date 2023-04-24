@@ -4,6 +4,9 @@ export const Calendar: Theme['components']['Calendar'] = {
   base: {
     calendar: {
       bg: 'white',
+      '&:disabled': {
+        color: 'gray40',
+      },
     },
     calendarControllers: {
       color: 'gray80',
@@ -13,7 +16,7 @@ export const Calendar: Theme['components']['Calendar'] = {
           bg: 'gray50',
           color: 'white',
         },
-        '&:hover:active': {
+        '&:hover:active:not(:disabled)': {
           bg: 'gray80',
         },
       },
@@ -21,11 +24,11 @@ export const Calendar: Theme['components']['Calendar'] = {
     calendarCell: {
       padding: '0.3rem',
       borderRadius: '50%',
-      '&[aria-disabled=true]': {
+      '&:disabled': {
         color: 'gray40',
         cursor: 'default',
       },
-      '&[data-hover]': {
+      '&:hover': {
         backgroundColor: 'orange10',
       },
       '&[aria-label*=selected]': {

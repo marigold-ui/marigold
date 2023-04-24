@@ -24,12 +24,14 @@ const MonthDropdown = ({ state }: MonthDropdownProps) => {
     let date = state.focusedDate.set({ month: value });
     state.setFocusedDate(date);
   };
+
   return (
     <Select
       aria-label="Month"
       onChange={onChange}
       selectedKey={String(state.focusedDate.month)}
       data-testid="month"
+      disabled={state.isDisabled}
     >
       {months.map((month, i) => (
         <Select.Option key={i + 1}>{month.substring(0, 3)}</Select.Option>

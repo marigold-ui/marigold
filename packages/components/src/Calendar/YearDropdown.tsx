@@ -35,6 +35,7 @@ const YearDropdown = ({ state }: YearDropdownProps) => {
       selectedKey={'20'}
       onChange={onChange}
       data-testid="year"
+      disabled={state.isDisabled}
     >
       {years.map((year, i) => (
         <Select.Option key={i}>{year.formatted}</Select.Option>
