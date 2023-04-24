@@ -9,20 +9,15 @@ import { AriaCheckboxProps } from '@react-types/checkbox';
 import {
   Box,
   StateAttrProps,
-  useComponentStyles,
+  useComponentStylesFromTV,
   useStateProps,
 } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
 import { useCheckboxGroupContext } from './CheckboxGroup';
 
-// Theme Extension
-// ---------------
-// export interface CheckboxThemeExtension
-//   extends ThemeExtensionsWithParts<
-//     'Checkbox',
-//     ['container', 'label', 'checkbox']
-//   > {}
+import { tv } from 'tailwind-variants';
+import { twMerge } from 'tailwind-merge';
 
 // SVG Icon
 // ---------------
@@ -49,26 +44,29 @@ const IndeterminateMark = () => (
 interface IconProps extends StateAttrProps {
   checked?: boolean;
   indeterminate?: boolean;
+  className?: string;
 }
 
-const Icon = ({ checked, indeterminate, ...props }: IconProps) => (
-  <Box
-    aria-hidden="true"
-    // flex: '0 0 16px',
-    // width: 16,
-    // height: 16,
-    // bg: '#fff',
-    // border: '1px solid #000',
-    // borderRadius: 3,
-    // display: 'flex',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // p: 1,
-    {...props}
-  >
-    {indeterminate ? <IndeterminateMark /> : checked ? <CheckMark /> : null}
-  </Box>
-);
+const Icon = ({ className, checked, indeterminate, ...props }: IconProps) => {
+  const styledIcon = tv({
+    base: [
+      'flex item-center justify-center grow-0 shrink-0 basis-4',
+      'w-4 h-4 p-px',
+      'bg-white',
+      'border border-solid border-black rounded-[3px]',
+    ],
+  });
+
+  return (
+    <Box
+      aria-hidden="true"
+      className={twMerge(styledIcon(), className)}
+      {...props}
+    >
+      {indeterminate ? <IndeterminateMark /> : checked ? <CheckMark /> : null}
+    </Box>
+  );
+};
 
 // Props
 // ---------------
@@ -93,6 +91,8 @@ export interface CheckboxProps
   children?: ReactNode;
   indeterminate?: boolean;
   error?: boolean;
+  variant?: string;
+  size?: string;
 }
 
 // Component
@@ -100,8 +100,8 @@ export interface CheckboxProps
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   (
     {
-      // size,
-      // variant,
+      size,
+      variant,
       disabled,
       checked,
       defaultChecked,
@@ -162,14 +162,11 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         );
     /* eslint-enable react-hooks/rules-of-hooks */
 
-    // const styles = useComponentStyles(
-    //   'Checkbox',
-    //   {
-    //     variant,
-    //     size,
-    //   },
-    //   { parts: ['container', 'label', 'checkbox'] }
-    // );
+    const classNames = useComponentStylesFromTV('Checkbox', {
+      variant,
+      size,
+      slots: ['container', 'label', 'checkbox'],
+    });
 
     const { hoverProps, isHovered } = useHover({});
     const { isFocusVisible, focusProps } = useFocusRing();
@@ -183,39 +180,39 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       indeterminate,
     });
 
+    const styledLabel = tv({
+      base: ['flex item-center justify-center gap-[1ch] relative'],
+    });
+
+    const styledInput = tv({
+      base: [
+        'absolute w-full h-full top-0 left-0 z-1 opacity-[0.0001]',
+        inputProps.disabled ? 'cursor-not-allowed' : 'cursor-pointer',
+      ],
+    });
+
     return (
       <Box
         as="label"
-        // display: 'flex',
-        // alignItems: 'center',
-        // gap: '1ch',
-        // position: 'relative',
+        className={twMerge(styledLabel(), classNames.container)}
         {...hoverProps}
         {...stateProps}
       >
         <Box
           as="input"
           ref={inputRef}
-          //   position: 'absolute',
-          //   width: '100%',
-          //   height: '100%',
-          //   top: 0,
-          //   left: 0,
-          //   zIndex: 1,
-          //   opacity: 0.0001,
-          //   cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
-          // }}
+          className={styledInput()}
           {...inputProps}
           {...focusProps}
         />
         <Icon
           checked={inputProps.checked}
           indeterminate={indeterminate}
-          // css={styles.checkbox}
+          className={classNames.checkbox}
           {...stateProps}
         />
         {props.children && (
-          <Box css={styles.label} {...stateProps}>
+          <Box className={classNames.label} {...stateProps}>
             {props.children}
           </Box>
         )}

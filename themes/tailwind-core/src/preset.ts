@@ -82,6 +82,23 @@ export const preset = createPreset('core', {
             border: '#cfcfcf',
           },
         },
+        checkbox: {
+          base: {
+            border: '#cccccc',
+            background: '#ffffff',
+            hover: '#8d8d8d',
+            focus: '#3ab3d5',
+            checked: '#1d67b6',
+            checkedBackground: '#3ab3d5',
+            indeterminate: '#1d67b6',
+            indeterminateBackground: '#3ab3d5',
+            disabled: '#cccccc',
+            disabledBackground: '#e3e3e3',
+          },
+          label: {
+            disabled: '#e3e3e3',
+          },
+        },
         // "Reds"
         primary: {
           500: '#f8ac67',

@@ -1,23 +1,14 @@
 import React from 'react';
-import {
-  CSSObject,
-  ThemeComponentProps,
-  ThemeExtension,
-  useComponentStyles,
-} from '@marigold/system';
+import { useComponentStylesFromTV } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
-import { Box } from '@marigold/system';
-
-// Theme Extension
-// ---------------
-export interface TextThemeExtension extends ThemeExtension<'Text'> {}
+import { twMerge } from 'tailwind-merge';
 
 // Props
 // ---------------
-export interface TextProps extends ThemeComponentProps, HtmlProps<'p'> {
-  display?: CSSObject['display'];
-  align?: CSSObject['textAlign'];
+export interface TextProps extends HtmlProps<'p'> {
+  display?: string;
+  align?: string;
   color?: string;
   cursor?: string;
   fontSize?: string;
@@ -25,6 +16,9 @@ export interface TextProps extends ThemeComponentProps, HtmlProps<'p'> {
   fontStyle?: string;
   outline?: string;
   children?: React.ReactNode;
+  variant?: string;
+  size?: string;
+  className?: string;
 }
 
 // Component
@@ -40,32 +34,18 @@ export const Text = ({
   fontWeight,
   cursor,
   outline,
+  className,
   children,
   ...props
 }: TextProps) => {
-  const styles = useComponentStyles('Text', {
+  const classNames = useComponentStylesFromTV('Text', {
     variant,
     size,
   });
+
   return (
-    <Box
-      as="p"
-      {...props}
-      css={[
-        styles,
-        {
-          display,
-          color,
-          cursor,
-          outline,
-          fontSize,
-          fontStyle,
-          fontWeight,
-          textAlign: align,
-        },
-      ]}
-    >
+    <p {...props} className={twMerge(classNames, className)}>
       {children}
-    </Box>
+    </p>
   );
 };

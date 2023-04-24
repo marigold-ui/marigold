@@ -7,37 +7,17 @@ const meta = {
   title: 'Components/Text',
   component: Text,
   argTypes: {
+    className: {
+      control: {
+        type: 'text',
+      },
+      description: 'set classNames with tailwind',
+    },
     variant: {
       control: {
         type: 'text',
       },
       description: 'The variant of the text',
-    },
-    color: {
-      control: {
-        type: 'text',
-      },
-      description: 'Text color',
-      table: {
-        defaultValue: {
-          summary: 'inherit',
-        },
-      },
-    },
-    size: {
-      control: {
-        type: 'select',
-      },
-      options: [
-        undefined,
-        'xxsmall',
-        'xsmall',
-        'small',
-        'medium',
-        'large',
-        'xlarge',
-      ],
-      description: 'Text size',
     },
   },
 } satisfies Meta<typeof Text>;

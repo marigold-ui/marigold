@@ -1,6 +1,7 @@
 import { badge as Badge } from './components';
 import { button as Button } from './components';
 import { table as Table } from './components';
+import { checkbox as Checkbox } from './components';
 
 export const theme = {
   name: 'core',
@@ -15,5 +16,6 @@ export const theme = {
     Badge,
     Button,
     Table,
+    Checkbox,
   },
 };
