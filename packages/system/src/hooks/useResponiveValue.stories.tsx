@@ -4,29 +4,7 @@ import { Box, ThemeProvider, useResponsiveValue } from '@marigold/system';
 
 const meta = {
   title: 'System/useResponsiveValue',
-  argTypes: {
-    css: {
-      control: {
-        type: 'object',
-      },
-      description: 'The css object to apply to the box',
-      table: {
-        type: { summary: 'object' },
-        defaultValue: {
-          summary: {
-            width: 100,
-            borderRadius: 5,
-            px: 8,
-            py: 2,
-            marginInline: 'auto',
-            color: '#FFF',
-            bg: ['red', 'blue', 'green', 'black', 'hotpink'],
-            cursor: 'pointer',
-          },
-        },
-      },
-    },
-  },
+
   args: {
     css: {
       width: 100,
@@ -45,6 +23,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const theme = {
+  name: 'test',
   breakpoints: ['40em', '50em', '60em', '70em'],
 };
 
@@ -66,7 +45,10 @@ export const Basic: Story = {
   render: args => {
     return (
       <ThemeProvider theme={theme}>
-        <Box {...args}>
+        <Box
+          {...args}
+          className="w-full cursor-pointer bg-yellow-500 text-[#ffffff] sm:bg-red-500 md:bg-green-500 lg:bg-blue-500 xl:bg-gray-500"
+        >
           <Component />
         </Box>
       </ThemeProvider>

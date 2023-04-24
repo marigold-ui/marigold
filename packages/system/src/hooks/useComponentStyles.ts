@@ -1,8 +1,6 @@
 import { Theme } from '../types';
 import { useTheme } from './useTheme';
 
-import theme from '@marigold/theme-unicorn';
-
 // Types
 // ---------------
 type IndexObject = { [key: string]: any };

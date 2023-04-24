@@ -49,10 +49,7 @@ export const decorators: any = [
           <MarigoldProvider theme={globalTheme}>
             {Object.keys(THEME).map(key => (
               <Frame key={key} id={key} title={`Theme "${key}"`}>
-                <MarigoldProvider
-                  theme={THEME[key as ThemeNames]}
-                  selector={`#${key}`}
-                >
+                <MarigoldProvider theme={THEME[key as ThemeNames]}>
                   <Story />
                 </MarigoldProvider>
               </Frame>
