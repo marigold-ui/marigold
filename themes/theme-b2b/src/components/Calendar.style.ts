@@ -12,7 +12,7 @@ export const Calendar: Theme['components']['Calendar'] = {
       color: 'gray80',
       '& button': {
         padding: '4px 8px',
-        '&:hover': {
+        '&[data-hover]': {
           bg: 'gray50',
           color: 'white',
         },
