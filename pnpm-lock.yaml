@@ -12,6 +12,9 @@ importers:
       '@changesets/cli':
         specifier: 2.26.1
         version: 2.26.1
+      '@internationalized/date':
+        specifier: 3.2.0
+        version: 3.2.0
       '@manypkg/get-packages':
         specifier: 2.1.0
         version: 2.1.0
@@ -27,6 +30,12 @@ importers:
       '@marigold/tsconfig':
         specifier: workspace:*
         version: link:config/tsconfig
+      '@react-aria/datepicker':
+        specifier: 3.4.0
+        version: 3.4.0(react-dom@18.2.0)(react@18.2.0)
+      '@react-stately/datepicker':
+        specifier: 3.4.0
+        version: 3.4.0(react@18.2.0)
       '@testing-library/dom':
         specifier: 9.2.0
         version: 9.2.0
@@ -4220,6 +4229,35 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
+  /@react-aria/datepicker@3.4.0(react-dom@18.2.0)(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-KhyyeLgWU5eJ+LqpfgOXFm/QBS6SIsX60zOgcQmst+LstsyuYjGQD7oqZX3UIMRWWgWj6urkYHk1yrZtam6doQ==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@internationalized/date': 3.2.0
+      '@internationalized/number': 3.2.0
+      '@internationalized/string': 3.1.0
+      '@react-aria/focus': 3.12.0(react@18.2.0)
+      '@react-aria/i18n': 3.7.1(react@18.2.0)
+      '@react-aria/interactions': 3.15.0(react@18.2.0)
+      '@react-aria/label': 3.5.1(react@18.2.0)
+      '@react-aria/spinbutton': 3.4.0(react-dom@18.2.0)(react@18.2.0)
+      '@react-aria/utils': 3.16.0(react@18.2.0)
+      '@react-stately/datepicker': 3.4.0(react@18.2.0)
+      '@react-types/button': 3.7.2(react@18.2.0)
+      '@react-types/calendar': 3.2.0(react@18.2.0)
+      '@react-types/datepicker': 3.3.0(react@18.2.0)
+      '@react-types/dialog': 3.5.1(react@18.2.0)
+      '@react-types/shared': 3.18.0(react@18.2.0)
+      '@swc/helpers': 0.4.14
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@react-aria/dialog@3.5.0(react-dom@18.2.0)(react@18.2.0):
     resolution:
       {
@@ -4734,6 +4772,25 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
+  /@react-aria/spinbutton@3.4.0(react-dom@18.2.0)(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-8JEHw3pnosEYOQSZol0QpXMRhdb3z4FtaSovUdCPo7x7A7BtGCVsy3lAt31+WvQAknzZIDwxSBaNAcOj0cYhWQ==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@react-aria/i18n': 3.7.1(react@18.2.0)
+      '@react-aria/live-announcer': 3.3.0
+      '@react-aria/utils': 3.16.0(react@18.2.0)
+      '@react-types/button': 3.7.2(react@18.2.0)
+      '@react-types/shared': 3.18.0(react@18.2.0)
+      '@swc/helpers': 0.4.14
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@react-aria/ssr@3.5.0(react@18.2.0):
     resolution:
       {
@@ -4999,6 +5056,24 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@react-stately/datepicker@3.4.0(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-JiRQBQYDXOQDdJl5YUGob10aVYp2N/F5rSSkRt7MrBJhC87bkDW0ARfs83gnl398WOJ6d9rJp0f+CJa1mjtzUw==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@internationalized/date': 3.2.0
+      '@internationalized/string': 3.1.0
+      '@react-stately/overlays': 3.5.1(react@18.2.0)
+      '@react-stately/utils': 3.6.0(react@18.2.0)
+      '@react-types/datepicker': 3.3.0(react@18.2.0)
+      '@react-types/shared': 3.18.0(react@18.2.0)
+      '@swc/helpers': 0.4.14
+      react: 18.2.0
+    dev: false
+
   /@react-stately/grid@3.5.0(react@18.2.0):
     resolution:
       {
@@ -5121,6 +5196,20 @@ packages:
     dependencies:
       '@react-stately/utils': 3.6.0(react@18.2.0)
       '@react-types/overlays': 3.7.0(react@18.2.0)
+      '@swc/helpers': 0.4.14
+      react: 18.2.0
+    dev: false
+
+  /@react-stately/overlays@3.5.1(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-lDKqqpdaIQdJb8DS4+tT7p0TLyCeaUaFpEtWZNjyv1/nguoqYtSeRwnyPR4p/YM4AW7SJspNiTJSLQxkTMIa8w==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@react-stately/utils': 3.6.0(react@18.2.0)
+      '@react-types/overlays': 3.7.1(react@18.2.0)
       '@swc/helpers': 0.4.14
       react: 18.2.0
     dev: false
@@ -5405,6 +5494,19 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@react-types/calendar@3.2.0(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-MunGx/lQgf/Lf9v2MrWoqKTZhJJcyAhUno2MewytdMQNXwtY2FB1X4fUufMMrKHwhVnFVkGfEQJCh4FAm5P9JA==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@internationalized/date': 3.2.0
+      '@react-types/shared': 3.18.0(react@18.2.0)
+      react: 18.2.0
+    dev: false
+
   /@react-types/checkbox@3.4.2(react@18.2.0):
     resolution:
       {
@@ -5441,6 +5543,20 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@react-types/datepicker@3.3.0(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-dKhkpG3UhdwYqdpVjg5dCQgMefpr7sa4a6Ep6fvbyD/q7gv9+h0/1J5F3FJynW+CBL6uYhcZjNev2vjYVTDbEg==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@internationalized/date': 3.2.0
+      '@react-types/overlays': 3.7.1(react@18.2.0)
+      '@react-types/shared': 3.18.0(react@18.2.0)
+      react: 18.2.0
+    dev: false
+
   /@react-types/dialog@3.5.0(react@18.2.0):
     resolution:
       {
@@ -5451,6 +5567,19 @@ packages:
     dependencies:
       '@react-types/overlays': 3.7.0(react@18.2.0)
       '@react-types/shared': 3.17.0(react@18.2.0)
+      react: 18.2.0
+    dev: false
+
+  /@react-types/dialog@3.5.1(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-a0eeGIITFuOxY2fIL1WkJT5yWIMIQ+VM4vE5MtS59zV9JynDaiL4uNL4yg08kJZm8oyzxIWwrov4gAbEVVWbDQ==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@react-types/overlays': 3.7.1(react@18.2.0)
+      '@react-types/shared': 3.18.0(react@18.2.0)
       react: 18.2.0
     dev: false
 
@@ -5561,6 +5690,18 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
       '@react-types/shared': 3.17.0(react@18.2.0)
+      react: 18.2.0
+    dev: false
+
+  /@react-types/overlays@3.7.1(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-2AwYQkelr4p1uXR1KJIGQEbubOumzM853Hsyup2y/TaMbjvBWOVyzYWSrQURex667JZmpwUb0qjkEH+4z3Q74g==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@react-types/shared': 3.18.0(react@18.2.0)
       react: 18.2.0
     dev: false
 
