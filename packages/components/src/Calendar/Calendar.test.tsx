@@ -276,6 +276,7 @@ describe('Calendar', () => {
     render(<Calendar />);
     const monthButton = screen.getByTestId('month');
     expect(monthButton).toBeInTheDocument();
+    fireEvent.click(monthButton);
     const monthOptions = screen.getByRole('listbox');
     const mar = within(monthOptions).getByText('Mar');
     fireEvent.click(mar);

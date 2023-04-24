@@ -74,7 +74,8 @@ interface ComponentStyles
     TextThemeExtension,
     TextAreaThemeExtension,
     TooltipThemeExtension,
-    UnderlayThemeExtension {}
+    UnderlayThemeExtension,
+    CalendarThemeExtension {}
 
 export interface Theme extends BaseTheme {
   components: ComponentStyles;

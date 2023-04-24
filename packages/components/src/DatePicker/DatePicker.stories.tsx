@@ -53,12 +53,13 @@ export const Basic: Story = {
   render: args => {
     return (
       <I18nProvider locale="de-DE">
-        <DatePicker
-          open
-          label="Date Picker"
-          {...args}
-          description="This is description"
-        />
+        <div style={{ maxWidth: '300px' }}>
+          <DatePicker
+            label="Date Picker"
+            description="This is description"
+            {...args}
+          />
+        </div>
       </I18nProvider>
     );
   },

@@ -123,7 +123,7 @@ export const DatePicker = ({
       </Box>
       {state.isOpen && (
         <Popover triggerRef={ref} state={state}>
-          <Calendar {...calendarProps} />
+          <Calendar disabled={disabled} {...calendarProps} />
         </Popover>
       )}
     </>

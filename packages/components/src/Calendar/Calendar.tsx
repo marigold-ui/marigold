@@ -14,10 +14,10 @@ import {
   Box,
   ThemeExtensionsWithParts,
   useComponentStyles,
+  useStateProps,
 } from '@marigold/system';
 import MonthDropdown from './MonthDropdown';
 import YearDropdown from './YearDropdown';
-
 export interface CalendarProps
   extends Omit<AriaCalendarProps<DateValue>, 'isDisabled' | 'isReadOnly'> {
   disabled?: boolean;
@@ -51,6 +51,9 @@ export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
     {},
     { parts: ['calendar', 'calendarControllers'] }
   );
+  const calendarState = useStateProps({
+    disabled: state.isDisabled,
+  });
   return (
     <Box
       tabIndex={-1}
@@ -61,6 +64,7 @@ export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
         width: '360px',
       }}
       {...calendarProps}
+      {...calendarState}
       ref={ref}
       css={styles.calendar}
     >
