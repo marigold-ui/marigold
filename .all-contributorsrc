@@ -161,7 +161,11 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/77496890?v=4",
       "profile": "https://github.com/aromko",
       "contributions": [
-        "doc"
+        "doc",
+        "code",
+        "design",
+        "example",
+        "test"
       ]
     }
   ],
