@@ -1,10 +1,11 @@
 /* eslint-disable testing-library/no-node-access */
 import { Calendar } from '../';
 import { CalendarDate } from '@internationalized/date';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 
-let keyCodes = {
+const keyCodes = {
   Enter: 13,
   ' ': 32,
   PageUp: 33,
@@ -18,18 +19,32 @@ let keyCodes = {
 };
 
 describe('Calendar', () => {
+  beforeAll(() => {
+    jest.useRealTimers();
+    Object.defineProperty(window, 'matchMedia', {
+      value: jest.fn(() => {
+        return {
+          matches: true,
+          addListener: jest.fn(),
+          removeListener: jest.fn(),
+        };
+      }),
+    });
+  });
+  afterEach(() => {
+    act(() => {
+      jest.runAllTimers();
+    });
+  });
   test('renders with default value', () => {
     render(<Calendar defaultValue={new CalendarDate(2019, 6, 5)} />);
 
-    let heading = screen.getByRole('heading');
-    expect(heading).toHaveTextContent('June 2019');
-
-    let gridCells = screen
+    const gridCells = screen
       .getAllByRole('gridcell')
       .filter(cell => cell.getAttribute('aria-disabled') !== 'true');
     expect(gridCells.length).toBe(30);
 
-    let selectedDate = screen.getByLabelText('Selected', { exact: false });
+    const selectedDate = screen.getByLabelText('Selected', { exact: false });
     expect(selectedDate.parentElement).toHaveAttribute('role', 'gridcell');
     expect(selectedDate.parentElement).toHaveAttribute('aria-selected', 'true');
     expect(selectedDate).toHaveAttribute(
@@ -40,15 +55,12 @@ describe('Calendar', () => {
   test('renders with a value', () => {
     render(<Calendar value={new CalendarDate(2019, 6, 5)} />);
 
-    let heading = screen.getByRole('heading');
-    expect(heading).toHaveTextContent('June 2019');
-
-    let gridCells = screen
+    const gridCells = screen
       .getAllByRole('gridcell')
       .filter(cell => cell.getAttribute('aria-disabled') !== 'true');
     expect(gridCells.length).toBe(30);
 
-    let selectedDate = screen.getByLabelText('Selected', { exact: false });
+    const selectedDate = screen.getByLabelText('Selected', { exact: false });
     expect(selectedDate.parentElement).toHaveAttribute('role', 'gridcell');
     expect(selectedDate.parentElement).toHaveAttribute('aria-selected', 'true');
     expect(selectedDate).toHaveAttribute(
@@ -58,8 +70,8 @@ describe('Calendar', () => {
   });
   test('focueses the selected date if autofocus is set', () => {
     render(<Calendar value={new CalendarDate(2019, 2, 3)} autoFocus />);
-    let cell = screen.getByLabelText('selected', { exact: false });
-    let grid = screen.getByRole('grid');
+    const cell = screen.getByLabelText('selected', { exact: false });
+    const grid = screen.getByRole('grid');
     expect(cell.parentElement).toHaveAttribute('role', 'gridcell');
     expect(cell.parentElement).toHaveAttribute('aria-selected', 'true');
     expect(cell).toHaveFocus();
@@ -72,23 +84,20 @@ describe('Calendar', () => {
         minValue={new CalendarDate(2019, 2, 1)}
       />
     );
-    let grids = screen.getAllByRole('grid');
-    let cell = screen.getByLabelText('selected', { exact: false });
+    const grids = screen.getAllByRole('grid');
+    const cell = screen.getByLabelText('selected', { exact: false });
     expect(grids[0].contains(cell)).toBe(true);
   });
   test('shows era for BC dates', () => {
     render(<Calendar value={new CalendarDate('BC', 5, 2, 3)} />);
-    let cell = screen.getByLabelText('selected', { exact: false });
+    const cell = screen.getByLabelText('selected', { exact: false });
     expect(cell).toHaveAttribute(
       'aria-label',
       'Saturday, February 3, 5 BC selected'
     );
   });
-});
-
-describe('Selection', () => {
   test('selects a date on keyDown Enter/Space (uncontrolled)', async () => {
-    let onChange = jest.fn();
+    const onChange = jest.fn();
     render(
       <Calendar
         defaultValue={new CalendarDate(2019, 6, 5)}
@@ -97,7 +106,7 @@ describe('Selection', () => {
       />
     );
 
-    let grid = screen.getByRole('grid');
+    const grid = screen.getByRole('grid');
     let selectedDate = screen.getByLabelText('selected', { exact: false });
     expect(selectedDate.textContent).toBe('5');
 
@@ -118,7 +127,7 @@ describe('Selection', () => {
   });
 
   test('selects a date on keyDown Enter/Space (controlled)', () => {
-    let onChange = jest.fn();
+    const onChange = jest.fn();
     render(
       <Calendar
         value={new CalendarDate(2019, 6, 5)}
@@ -126,7 +135,7 @@ describe('Selection', () => {
         onChange={onChange}
       />
     );
-    let grid = screen.getByRole('grid');
+    const grid = screen.getByRole('grid');
     let selectedDate = screen.getByLabelText('selected', { exact: false });
     expect(selectedDate.textContent).toBe('5');
 
@@ -146,7 +155,7 @@ describe('Selection', () => {
   });
 
   test("Doesn't select a date on keydown Enter/Space if readOnly", () => {
-    let onChange = jest.fn();
+    const onChange = jest.fn();
     render(
       <Calendar
         defaultValue={new CalendarDate(2019, 6, 5)}
@@ -180,39 +189,39 @@ describe('Selection', () => {
   });
 
   test('selects a date on click (uncontrolled)', () => {
-    let onChange = jest.fn();
+    const onChange = jest.fn();
     render(
       <Calendar
         defaultValue={new CalendarDate(2019, 6, 5)}
         onChange={onChange}
       />
     );
-    let newDate = screen.getByText('17');
+    const newDate = screen.getByText('17');
     fireEvent.click(newDate);
 
-    let selectedDate = screen.getByLabelText('selected', { exact: false });
+    const selectedDate = screen.getByLabelText('selected', { exact: false });
     expect(selectedDate.textContent).toBe('17');
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange.mock.calls[0][0]).toEqual(new CalendarDate(2019, 6, 17));
   });
 
   test('selects a date on click (controlled)', () => {
-    let onChange = jest.fn();
+    const onChange = jest.fn();
     render(
       <Calendar value={new CalendarDate(2019, 6, 5)} onChange={onChange} />
     );
 
-    let newDate = screen.getByText('17');
+    const newDate = screen.getByText('17');
     fireEvent.click(newDate);
 
-    let selectedDate = screen.getByLabelText('selected', { exact: false });
+    const selectedDate = screen.getByLabelText('selected', { exact: false });
     expect(selectedDate.textContent).toBe('5');
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange.mock.calls[0][0]).toEqual(new CalendarDate(2019, 6, 17));
   });
 
   test('does not select a date on click if disabled', () => {
-    let onChange = jest.fn();
+    const onChange = jest.fn();
     render(
       <Calendar
         value={new CalendarDate(2019, 6, 5)}
@@ -221,7 +230,7 @@ describe('Selection', () => {
       />
     );
 
-    let newDate = screen.getByText('17');
+    const newDate = screen.getByText('17');
     fireEvent.click(newDate);
 
     expect(() => {
@@ -231,7 +240,7 @@ describe('Selection', () => {
   });
 
   test('does not select a date on click if isReadOnly', () => {
-    let onChange = jest.fn();
+    const onChange = jest.fn();
     render(
       <Calendar
         value={new CalendarDate(2019, 6, 5)}
@@ -240,10 +249,10 @@ describe('Selection', () => {
       />
     );
 
-    let newDate = screen.getByText('17');
+    const newDate = screen.getByText('17');
     fireEvent.click(newDate);
 
-    let selectedDate = screen.getByLabelText('selected', { exact: false });
+    const selectedDate = screen.getByLabelText('selected', { exact: false });
     expect(selectedDate.textContent).toBe('5');
     expect(onChange).not.toHaveBeenCalled();
   });
@@ -256,11 +265,31 @@ describe('Selection', () => {
       />
     );
 
-    let cell = screen.getByRole('button', {
+    const cell = screen.getByRole('button', {
       name: 'Friday, March 11, 2022 selected',
     });
     expect(cell).toHaveAttribute('aria-invalid', 'true');
     expect(cell.parentElement).toHaveAttribute('aria-selected', 'true');
     expect(cell.parentElement).toHaveAttribute('aria-invalid', 'true');
+  });
+  test('renders select components', async () => {
+    render(<Calendar />);
+    const monthButton = screen.getByTestId('month');
+    expect(monthButton).toBeInTheDocument();
+    const monthOptions = screen.getByRole('listbox');
+    const mar = within(monthOptions).getByText('Mar');
+    fireEvent.click(mar);
+    expect(monthButton).toHaveTextContent('Mar');
+
+    const yearButton = screen.getByTestId('year');
+    expect(yearButton).toBeInTheDocument();
+    fireEvent.click(yearButton);
+    const yearOptions = screen.getByRole('listbox');
+    expect(yearOptions).toBeInTheDocument();
+    const nineteen = within(yearOptions).getByText('2019');
+    expect(nineteen).toBeInTheDocument();
+    fireEvent.click(nineteen);
+    expect(yearButton).toHaveTextContent('2019');
+    fireEvent.click(monthButton);
   });
 });

@@ -30,7 +30,12 @@ const YearDropdown = ({ state }: YearDropdownProps) => {
   };
 
   return (
-    <Select aria-label="Year" selectedKey={'20'} onChange={onChange}>
+    <Select
+      aria-label="Year"
+      selectedKey={'20'}
+      onChange={onChange}
+      data-testid="year"
+    >
       {years.map((year, i) => (
         <Select.Option key={i}>{year.formatted}</Select.Option>
       ))}

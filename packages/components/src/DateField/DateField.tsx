@@ -197,8 +197,7 @@ export const DateField = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '48px',
-              overflow: 'hidden',
+              marginRight: '8px',
             }}
           >
             {action}

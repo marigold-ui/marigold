@@ -14,6 +14,7 @@ import {
 import { CalendarDate } from '@internationalized/date';
 import { Button } from '../Button';
 import { useHover } from '@react-aria/interactions';
+
 export interface DatePickerThemeExtension
   extends ThemeExtensionsWithParts<'DatePicker', ['field', 'actionButton']> {}
 
@@ -97,6 +98,8 @@ export const DatePicker = ({
                   display: 'flex',
                   alignItems: 'center',
                   height: '100%',
+                  overflow: 'hidden',
+                  transform: 'translateX(8px)',
                 }}
                 css={styles.actionButton}
                 {...stateProps}

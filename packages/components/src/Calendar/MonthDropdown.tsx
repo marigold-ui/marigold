@@ -28,7 +28,8 @@ const MonthDropdown = ({ state }: MonthDropdownProps) => {
     <Select
       aria-label="Month"
       onChange={onChange}
-      selectedKey={state.focusedDate.month + ''}
+      selectedKey={String(state.focusedDate.month)}
+      data-testid="month"
     >
       {months.map((month, i) => (
         <Select.Option key={i + 1}>{month.substring(0, 3)}</Select.Option>

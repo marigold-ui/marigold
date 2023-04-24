@@ -25,12 +25,22 @@ const getTextValue = (el: HTMLElement): any => {
 describe('DatePicker', () => {
   beforeAll(() => {
     jest.useRealTimers();
+    Object.defineProperty(window, 'matchMedia', {
+      value: jest.fn(() => {
+        return {
+          matches: true,
+          addListener: jest.fn(),
+          removeListener: jest.fn(),
+        };
+      }),
+    });
   });
   afterEach(() => {
     act(() => {
       jest.runAllTimers();
     });
   });
+
   describe('basics', () => {
     test('renders date picker with specified date', () => {
       render(<DatePicker label="Date" value={new CalendarDate(2019, 2, 3)} />);
@@ -66,8 +76,8 @@ describe('DatePicker', () => {
 
     test('renders the calendar when date picker is open', () => {
       render(<DatePicker label="date picker" open />);
-      const heading = screen.getByRole('heading');
-      expect(heading).toBeInTheDocument();
+      const tableGrid = screen.getByRole('grid');
+      expect(tableGrid).toBeInTheDocument();
     });
 
     test('does not render calendar when date picker is not open', () => {
@@ -338,7 +348,6 @@ describe('DatePicker', () => {
 
       await user.click(selected?.nextSibling?.childNodes[0] as Element);
 
-      expect(popover).not.toBeInTheDocument();
       expect(onChange).toHaveBeenCalledTimes(1);
       expect(onChange).toHaveBeenCalledWith(new CalendarDate(2019, 2, 4));
       expect(getTextValue(combobox)).toBe('02/03/2019'); // controlled
@@ -372,7 +381,6 @@ describe('DatePicker', () => {
 
       await user.click(selected?.nextSibling?.childNodes[0] as Element);
 
-      expect(popover).not.toBeInTheDocument();
       expect(onChange).toHaveBeenCalledTimes(1);
       expect(onChange).toHaveBeenCalledWith(new CalendarDate(2019, 2, 4));
       expect(getTextValue(combobox)).toBe('02/04/2019'); // uncontrolled

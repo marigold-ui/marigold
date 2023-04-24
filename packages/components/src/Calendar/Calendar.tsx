@@ -64,7 +64,7 @@ export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
       ref={ref}
       css={styles.calendar}
     >
-      <Box style={{ display: 'flex', marginBottom: '18px', gap: '60px' }}>
+      <Box style={{ display: 'flex', marginBottom: '16px', gap: '60px' }}>
         <Box
           __baseCSS={{
             display: 'flex',
@@ -73,8 +73,8 @@ export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
             '& button': { borderRadius: '10px', height: '40px' },
           }}
         >
-          <YearDropdown state={state} />
           <MonthDropdown state={state} />
+          <YearDropdown state={state} />
         </Box>
         <Box
           __baseCSS={{
@@ -82,7 +82,7 @@ export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
             flexWrap: 'nowrap',
             width: '100%',
             justifyContent: 'flex-end',
-            gap: '20px',
+            gap: '10px',
           }}
           css={styles.calendarControllers}
         >
