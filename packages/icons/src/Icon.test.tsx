@@ -7,14 +7,16 @@ test('supports default size', () => {
   render(<Facebook data-testid="svg" />);
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg).toHaveClass('w-[24px] h-[24px]');
+  expect(svg).toHaveAttribute('width', '24px');
+  expect(svg).toHaveAttribute('height', '24px');
 });
 
 test('supports size prop', () => {
   render(<Facebook data-testid="svg" size={30} />);
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg).toHaveClass('w-[30px] h-[30px]');
+  expect(svg).toHaveAttribute('width', '30px');
+  expect(svg).toHaveAttribute('height', '30px');
 });
 
 test('supports className', () => {
