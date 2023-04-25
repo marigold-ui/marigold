@@ -35,11 +35,6 @@ describe('DatePicker', () => {
       }),
     });
   });
-  afterEach(() => {
-    act(() => {
-      jest.runAllTimers();
-    });
-  });
 
   describe('basics', () => {
     test('renders date picker with specified date', () => {
@@ -234,10 +229,6 @@ describe('DatePicker', () => {
 
       await waitFor(() => {
         expect(popover).not.toBeInTheDocument();
-      });
-
-      act(() => {
-        jest.runAllTimers();
       });
 
       expect(popover).not.toBeInTheDocument();

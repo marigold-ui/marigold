@@ -31,11 +31,7 @@ describe('Calendar', () => {
       }),
     });
   });
-  afterEach(() => {
-    act(() => {
-      jest.runAllTimers();
-    });
-  });
+
   test('renders with default value', () => {
     render(<Calendar defaultValue={new CalendarDate(2019, 6, 5)} />);
 
