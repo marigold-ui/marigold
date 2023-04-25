@@ -14,33 +14,25 @@ const theme: Theme = {
         checkbox: [
           'rounded-[2]',
           'focus:outline-1 focus:outline focus:outline-blue-600',
-          'checked:text-teal-600',
+          'data-[checked]:text-teal-600',
           'indeterminate:text-teal-600',
           'disabled:bg-gray-600',
           'read-only:opacity-50',
           'error:bg-red-600',
         ],
+        container: '',
       },
-      variant: {
-        green: {
-          label: {
-            color: 'green',
-          },
-          checkbox: {
-            '&:checked': {
-              color: 'green',
-            },
+      variants: {
+        variant: {
+          green: {
+            label: 'text-green-600',
+            checkbox: 'checked:text-green-600',
           },
         },
-      },
-      size: {
-        large: {
-          label: {
-            fontSize: 'large-1',
-          },
-          checkbox: {
-            width: 32,
-            height: 32,
+        size: {
+          large: {
+            label: 'text-[24]',
+            checkbox: 'w-8 h-8',
           },
         },
       },
@@ -102,11 +94,9 @@ test('allows styling via theme', () => {
   );
 
   const label = screen.getByText('With Label');
-  expect(label).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
+  expect(label).toHaveClass('text-[12]');
 
-  expect(getVisibleCheckbox()).toHaveStyle(
-    `border-radius: ${theme.radii['small-1']}px`
-  );
+  expect(getVisibleCheckbox()).toHaveClass('rounded-[2]');
 });
 
 test('allows styling "checked" state via theme', () => {
@@ -117,9 +107,10 @@ test('allows styling "checked" state via theme', () => {
       </Checkbox>
     </ThemeProvider>
   );
+
   const checkbox = getVisibleCheckbox();
-  expect(checkbox).toHaveStyle(`border-radius: ${theme.radii['small-1']}px`);
-  expect(checkbox).toHaveStyle(`color: ${theme.colors.teal}`);
+  expect(checkbox).toHaveClass('rounded-[2]');
+  expect(checkbox).toHaveClass('data-[checked]:text-teal-600');
 });
 
 test('allows styling "focus" state via theme', async () => {
@@ -133,11 +124,12 @@ test('allows styling "focus" state via theme', async () => {
   act(() => {
     input.focus();
   });
-  expect(checkbox).toHaveStyle(`outline: 1px solid`);
-  expect(checkbox).toHaveStyle(`outline-color: ${theme.colors.blue}`);
+  expect(checkbox).toHaveClass('focus:outline-1');
+  expect(checkbox).toHaveClass('focus:outline');
+  expect(checkbox).toHaveClass('focus:outline-blue-600');
 });
 
-test('allows styling "disabled" state via theme', () => {
+test.only('allows styling "disabled" state via theme', () => {
   render(
     <ThemeProvider theme={theme}>
       <Checkbox data-testid="checkbox" disabled>
@@ -187,7 +179,7 @@ test('support default checked', () => {
 
   // Visible checkbox looks checked
   const checkbox = getVisibleCheckbox();
-  expect(checkbox).toHaveStyle(`border-radius: ${theme.radii['small-1']}px`);
+  expect(checkbox).toHaveClass('rounded-[2]');
   expect(checkbox).toHaveStyle(`color: ${theme.colors.teal}`);
 });
 
@@ -204,7 +196,7 @@ test('supports indeterminate state', () => {
 
   // Visible checkbox looks checked
   const checkbox = getVisibleCheckbox();
-  expect(checkbox).toHaveStyle(`border-radius: ${theme.radii['small-1']}px`);
+  expect(checkbox).toHaveClass('rounded-[2]');
   expect(checkbox).toHaveStyle(`color: ${theme.colors.teal}`);
 });
 

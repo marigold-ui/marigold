@@ -5,11 +5,8 @@ import type { Theme as BaseTheme } from '@marigold/system';
 // ---------------
 import type { AccordionThemeExtension } from './Accordion';
 import type { AutocompleteThemeExtension } from './Autocomplete';
-import type { BadgeThemeExtension } from './Badge';
 import type { BodyThemeExtension } from './Body';
-import type { ButtonThemeExtension } from './Button';
 import type { CardThemeExtension } from './Card';
-import type { CheckboxThemeExtension } from './Checkbox';
 import type { DialogThemeExtension } from './Dialog';
 import type { DividerThemeExtension } from './Divider';
 import type { FieldThemeExtension } from './FieldBase';
@@ -31,8 +28,6 @@ import type { RadioThemeExtension } from './Radio';
 import type { SelectThemeExtension } from './Select';
 import type { SliderThemeExtension } from './Slider';
 import type { SwitchThemeExtension } from './Switch';
-import type { TableThemeExtension } from './Table';
-import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
 import type { TooltipThemeExtension } from './Tooltip';
 import type { TagThemeExtension } from './TagGroup/Tag';
@@ -40,10 +35,7 @@ import type { TagThemeExtension } from './TagGroup/Tag';
 interface ComponentStyles
   extends AccordionThemeExtension,
     AutocompleteThemeExtension,
-    BadgeThemeExtension,
-    ButtonThemeExtension,
     CardThemeExtension,
-    CheckboxThemeExtension,
     BodyThemeExtension,
     DialogThemeExtension,
     DividerThemeExtension,
@@ -65,10 +57,6 @@ interface ComponentStyles
     SelectThemeExtension,
     SliderThemeExtension,
     SwitchThemeExtension,
-    TableThemeExtension,
-    TextThemeExtension,
-    TextAreaThemeExtension,
-    TooltipThemeExtension,
     TagThemeExtension,
     UnderlayThemeExtension {}
 

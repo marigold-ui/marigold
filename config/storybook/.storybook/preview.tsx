@@ -5,6 +5,8 @@ import isChromatic from 'chromatic/isChromatic';
 import unicornTheme from '@marigold/theme-unicorn';
 import { MarigoldProvider } from '@marigold/components';
 
+import { tv } from 'tailwind-variants';
+
 import 'tailwindcss/tailwind.css';
 import '@marigold/theme-unicorn/index.css';
 
@@ -27,6 +29,7 @@ export const decorators: any = [
     themes: {
       core: 'core',
       unicorn: 'unicorn',
+      stacked: 'stacked',
     },
     defaultTheme: tailwindCore.name,
     attributeName: 'data-theme',
@@ -34,16 +37,13 @@ export const decorators: any = [
   (Story: StoryFn, { globals, parameters }: any) => {
     const globalTheme = {
       name: 'global',
-      root: {
-        body: 'Inter',
-      },
+      root: tv({ base: 'font-["Inter"]' }),
     };
 
     const theme = isChromatic()
       ? parameters.theme || 'stacked'
       : globals.theme || parameters.theme || 'core';
 
-    console.log(theme);
     switch (theme) {
       case 'stacked': {
         return (
