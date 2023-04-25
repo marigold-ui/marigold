@@ -22,8 +22,7 @@ export const useResponsiveValue = <T>(
   defaultIndex: number = 0
 ) => {
   const theme = useTheme();
-  const screens: { [key: string]: string[] } =
-    theme.screens || defaultTheme.screens;
+  const screens: { [key: string]: any } = theme.screens || defaultTheme.screens;
 
   if (defaultIndex < 0 || defaultIndex >= Object.keys(screens).length + 1) {
     throw new RangeError(

@@ -22,7 +22,7 @@ export const preset = createPreset('core', {
       },
       colors: {
         root: {
-          background: '#8c887d', // Note: not in `secondary`
+          background: '#f7f5f2', // Note: not in `secondary`
           body: '#511e04',
           current: 'currentColor',
         },

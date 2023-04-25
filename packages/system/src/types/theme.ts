@@ -7,7 +7,7 @@ export type Theme = {
   components?: {
     [key: string]: TVReturnType<any, any, any, any, any, any>;
   };
-  root?: { [key: string]: string[] };
+  root?: { [key: string]: TVReturnType<any, any, any, any, any, any> };
 };
 
 /**

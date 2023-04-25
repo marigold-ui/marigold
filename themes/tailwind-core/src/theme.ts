@@ -3,6 +3,8 @@ import { button as Button } from './components';
 import { table as Table } from './components';
 import { checkbox as Checkbox } from './components';
 
+import { root } from './root';
+
 export const theme = {
   name: 'core',
   screens: {
@@ -12,6 +14,7 @@ export const theme = {
     xl: '1280px',
     '2xl': '1536px',
   },
+  root,
   components: {
     Badge,
     Button,

@@ -10,7 +10,9 @@ import {
 // Props
 // ---------------
 export interface MarigoldProviderProps<T extends Theme>
-  extends ThemeProviderProps<T> {}
+  extends ThemeProviderProps<T> {
+  className?: string;
+}
 
 // Provider
 // ---------------

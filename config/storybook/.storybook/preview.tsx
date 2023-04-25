@@ -43,12 +43,18 @@ export const decorators: any = [
       ? parameters.theme || 'stacked'
       : globals.theme || parameters.theme || 'core';
 
+    console.log(theme);
     switch (theme) {
       case 'stacked': {
         return (
           <MarigoldProvider theme={globalTheme}>
             {Object.keys(THEME).map(key => (
-              <Frame key={key} id={key} title={`Theme "${key}"`}>
+              <Frame
+                className={tailwindCore.root()}
+                key={key}
+                id={key}
+                title={`Theme "${key}"`}
+              >
                 <MarigoldProvider theme={THEME[key as ThemeNames]}>
                   <Story />
                 </MarigoldProvider>

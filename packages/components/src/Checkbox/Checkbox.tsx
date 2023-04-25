@@ -50,7 +50,7 @@ interface IconProps extends StateAttrProps {
 const Icon = ({ className, checked, indeterminate, ...props }: IconProps) => {
   const styledIcon = tv({
     base: [
-      'flex item-center justify-center grow-0 shrink-0 basis-4',
+      'flex items-center justify-center grow-0 shrink-0 basis-4',
       'w-4 h-4 p-px',
       'bg-white',
       'border border-solid border-black rounded-[3px]',
@@ -208,7 +208,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         <Icon
           checked={inputProps.checked}
           indeterminate={indeterminate}
-          className={classNames.checkbox}
+          className={classNames.checkbox()}
           {...stateProps}
         />
         {props.children && (
