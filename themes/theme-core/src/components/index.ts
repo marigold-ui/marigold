@@ -1,3 +1,4 @@
+export * from './Accordion.style';
 export * from './Badge.style';
 export * from './Body.style';
 export * from './Button.style';
@@ -23,4 +24,5 @@ export * from './Switch.style';
 export * from './Table.style';
 export * from './Text.style';
 export * from './TextArea.style';
+export * from './Tag.style';
 export * from './Underlay.style';

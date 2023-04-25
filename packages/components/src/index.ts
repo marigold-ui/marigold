@@ -1,6 +1,7 @@
 export * from './hooks';
 export * from './theme';
 
+export * from './Accordion';
 export * from './Aside';
 export * from './Aspect';
 export * from './Autocomplete';
@@ -44,6 +45,7 @@ export * from './TextArea';
 export * from './TextField';
 export * from './Tiles';
 export * from './Tooltip';
+export * from './TagGroup';
 export * from './VisuallyHidden';
 export * from './XLoader';
 export * from './Calendar';

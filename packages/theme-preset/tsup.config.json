@@ -3,6 +3,6 @@
   "format": ["esm", "cjs"],
   "tsconfig": "./tsconfig.build.json",
   "dts": true,
-  "external": "react",
+  "sourcemap": true,
   "clean": true
 }

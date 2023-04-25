@@ -7,7 +7,7 @@ import {
 import { FocusStrategy } from '@react-types/shared';
 
 export interface MenuContextProps
-  extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
+  extends Omit<HTMLAttributes<HTMLElement>, 'children' | 'autoFocus'> {
   ref?: MutableRefObject<HTMLUListElement | undefined>;
   autoFocus?: boolean | FocusStrategy;
   open?: boolean;

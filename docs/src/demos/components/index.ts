@@ -5,6 +5,7 @@ export * from './_test_';
 export * from './_test_hook_';
 
 // component previews
+export * from './Accordion';
 export * from './Aside';
 export * from './Aspect';
 export * from './Autocomplete';
@@ -50,3 +51,4 @@ export * from './Tooltip';
 export * from './VisuallyHidden';
 export * from './XLoader';
 export * from './Calendar';
+export * from './Tag';
