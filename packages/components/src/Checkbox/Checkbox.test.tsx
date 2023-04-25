@@ -4,39 +4,12 @@ import { Theme, ThemeProvider } from '@marigold/system';
 import { Checkbox } from './Checkbox';
 import { act } from 'react-dom/test-utils';
 import { tv } from 'tailwind-variants';
+import { checkbox } from './../../../../themes/tailwind-core/src/components/Checkbox.styles';
 
 const theme: Theme = {
   name: 'test',
   components: {
-    Checkbox: tv({
-      slots: {
-        label: 'text-[12]',
-        checkbox: [
-          'rounded-[2]',
-          'focus:outline-1 focus:outline focus:outline-blue-600',
-          'data-[checked]:text-teal-600',
-          'indeterminate:text-teal-600',
-          'disabled:bg-gray-600',
-          'read-only:opacity-50',
-          'error:bg-red-600',
-        ],
-        container: '',
-      },
-      variants: {
-        variant: {
-          green: {
-            label: 'text-green-600',
-            checkbox: 'checked:text-green-600',
-          },
-        },
-        size: {
-          large: {
-            label: 'text-[24]',
-            checkbox: 'w-8 h-8',
-          },
-        },
-      },
-    }),
+    Checkbox: checkbox,
   },
 };
 
@@ -86,17 +59,26 @@ test('supports read only state', () => {
   expect(checkbox.checked).toBeTruthy();
 });
 
-test('allows styling via theme', () => {
+test.only('check if all slot class names are applied correctly', () => {
   render(
     <ThemeProvider theme={theme}>
       <Checkbox data-testid="checkbox">With Label</Checkbox>
     </ThemeProvider>
   );
 
-  const label = screen.getByText('With Label');
-  expect(label).toHaveClass('text-[12]');
+  const label = screen.getByLabelText('With Label');
+  // // eslint-disable-next-line testing-library/no-node-access
+  // const input = label.firstChild;
 
-  expect(getVisibleCheckbox()).toHaveClass('rounded-[2]');
+  expect(label).toHaveClass('flex item-center gap-[1ch] relative', {
+    exact: true,
+  });
+
+  // expect(input).toHaveClass('leading-[1.125]');
+  expect(getVisibleCheckbox()).toHaveClass(
+    'flex items-center justify-center grow-0 shrink-0 basis-4 w-4 h-4 border border-solid rounded-[3px] rounded-[2] border-checkbox-base-border bg-checkbox-base-background p-0.5 data-[hover]:border-checkbox-base-hover data-[focus]:outline-2 data-[focus]:outline data-[focus]:outline-offset[3] data-[checked]:text-white data-[checked]:border-checkbox-base-checked data-[checked]:bg-checkbox-base-checkedBackground data-[indeterminate]:text-white data-[indeterminate]:border-checkbox-base-indeterminate data-[indeterminate]:bg-checkbox-base-indeterminateBackground data-[disabled]:border-checkbox-base-disabled data-[disabled]:bg-checkbox-base-disabledBackground',
+    { exact: true }
+  );
 });
 
 test('allows styling "checked" state via theme', () => {
@@ -129,7 +111,7 @@ test('allows styling "focus" state via theme', async () => {
   expect(checkbox).toHaveClass('focus:outline-blue-600');
 });
 
-test.only('allows styling "disabled" state via theme', () => {
+test('allows styling "disabled" state via theme', () => {
   render(
     <ThemeProvider theme={theme}>
       <Checkbox data-testid="checkbox" disabled>
@@ -138,7 +120,10 @@ test.only('allows styling "disabled" state via theme', () => {
     </ThemeProvider>
   );
   const checkbox = getVisibleCheckbox();
-  expect(checkbox).toHaveStyle(`background: ${theme.colors.gray}`);
+  expect(checkbox).toHaveClass(
+    ' flex items-center justify-center grow-0 shrink-0 basis-4 w-4 h-4 border border-solid rounded-[3px] rounded-[2] border-checkbox-base-border bg-checkbox-base-background p-0.5 data-[hover]:border-checkbox-base-hover data-[focus]:outline-2 data-[focus]:outline data-[focus]:outline-offset[3] data-[checked]:text-white data-[checked]:border-checkbox-base-checked data-[checked]:bg-checkbox-base-checkedBackground data-[indeterminate]:text-white data-[indeterminate]:border-checkbox-base-indeterminate data-[indeterminate]:bg-checkbox-base-indeterminateBackground data-[disabled]:border-checkbox-base-disabled data-[disabled]:bg-checkbox-base-disabledBackground',
+    { exact: true }
+  );
 });
 
 test('allows styling "read-only" state via theme', () => {

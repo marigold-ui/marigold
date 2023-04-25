@@ -1,4 +1,10 @@
-import React, { createContext, ReactNode, useContext } from 'react';
+import React, {
+  createContext,
+  DetailedHTMLProps,
+  HTMLAttributes,
+  ReactNode,
+  useContext,
+} from 'react';
 import { VariantProps } from 'tailwind-variants';
 import { Theme } from '../types';
 import { Box } from '../components';
@@ -19,7 +25,12 @@ export const useTheme = () => {
   return theme;
 };
 
-export interface ThemeProviderProps<T extends Theme> extends VariantProps<any> {
+export interface ThemeProviderProps<T extends Theme>
+  extends VariantProps<typeof Box>,
+    Omit<
+      DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
+      'className'
+    > {
   theme: T;
   children: ReactNode;
 }
@@ -28,15 +39,12 @@ export function ThemeProvider<T extends Theme>({
   theme,
   children,
 }: ThemeProviderProps<T>) {
+  const classNamess = theme?.root ? theme.root() : '';
   return (
-    <Box
-      as="div"
-      data-theme={theme.name}
-      className={theme?.root ? theme.root() : ''}
-    >
+    <div data-theme={theme.name} classNames={classNamess}>
       <InternalContext.Provider value={theme}>
         {children}
       </InternalContext.Provider>
-    </Box>
+    </div>
   );
 }
