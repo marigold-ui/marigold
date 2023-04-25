@@ -3,7 +3,7 @@ import { useButton } from '@react-aria/button';
 import { useFocusRing } from '@react-aria/focus';
 import { useHover } from '@react-aria/interactions';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
-import { PressEvents } from '@react-types/shared';
+import { FocusableDOMProps, PressEvents } from '@react-types/shared';
 import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
 
@@ -12,7 +12,10 @@ import { HtmlProps, PolymorphicComponent, PropsOf } from '@marigold/types';
 
 // Props
 // ---------------
-export interface ButtonOwnProps extends PressEvents, HtmlProps<'button'> {
+export interface ButtonOwnProps
+  extends PressEvents,
+    FocusableDOMProps,
+    HtmlProps<'button'> {
   children?: ReactNode;
   variant?: string;
   size?: string;
@@ -38,6 +41,7 @@ export const Button = forwardRef(
       onPressChange,
       onPressUp,
       fullWidth,
+      excludeFromTabOrder,
       ...props
     },
     ref
@@ -62,6 +66,7 @@ export const Button = forwardRef(
         onPressUp,
         elementType: typeof as === 'string' ? as : 'span',
         isDisabled: disabled,
+        excludeFromTabOrder,
       },
       buttonRef
     );
