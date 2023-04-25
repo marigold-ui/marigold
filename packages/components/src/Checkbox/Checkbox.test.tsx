@@ -1,53 +1,25 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider } from '@marigold/system';
 import { Checkbox } from './Checkbox';
 import { act } from 'react-dom/test-utils';
+import { tv } from 'tailwind-variants';
 
-const theme = {
-  colors: {
-    gray: '#868e96',
-    blue: '#a5d8ff',
-    teal: '#099268',
-    green: '#2b8a3e',
-    red: '#c92a2a',
-  },
-  fontSizes: {
-    'small-1': 12,
-    'large-1': 24,
-  },
-  radii: {
-    none: 0,
-    'small-1': 2,
-  },
+const theme: Theme = {
+  name: 'test',
   components: {
-    Checkbox: {
-      base: {
-        label: {
-          fontSize: 'small-1',
-        },
-        checkbox: {
-          borderRadius: 'small-1',
-          '&:focus': {
-            outline: '1px solid',
-            outlineColor: 'blue',
-          },
-          '&:checked': {
-            color: 'teal',
-          },
-          '&:indeterminate': {
-            color: 'teal',
-          },
-          '&:disabled': {
-            bg: 'gray',
-          },
-          '&:read-only': {
-            opacity: 0.5,
-          },
-          '&:error': {
-            bg: 'red',
-          },
-        },
+    Checkbox: tv({
+      slots: {
+        label: 'text-[12]',
+        checkbox: [
+          'rounded-[2]',
+          'focus:outline-1 focus:outline focus:outline-blue-600',
+          'checked:text-teal-600',
+          'indeterminate:text-teal-600',
+          'disabled:bg-gray-600',
+          'read-only:opacity-50',
+          'error:bg-red-600',
+        ],
       },
       variant: {
         green: {
@@ -72,7 +44,7 @@ const theme = {
           },
         },
       },
-    },
+    }),
   },
 };
 

@@ -1,7 +1,8 @@
 import { badge as Badge } from './components';
 import { button as Button } from './components';
-import { table as Table } from './components';
 import { checkbox as Checkbox } from './components';
+import { table as Table } from './components';
+import { text as Text } from './components';
 
 import { root } from './root';
 
@@ -18,7 +19,8 @@ export const theme = {
   components: {
     Badge,
     Button,
-    Table,
     Checkbox,
+    Table,
+    Text,
   },
 };

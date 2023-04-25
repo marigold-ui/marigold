@@ -99,6 +99,11 @@ export const preset = createPreset('core', {
             disabled: '#e3e3e3',
           },
         },
+        text: {
+          muted: {
+            text: '#cccccc',
+          },
+        },
         // "Reds"
         primary: {
           500: '#f8ac67',
