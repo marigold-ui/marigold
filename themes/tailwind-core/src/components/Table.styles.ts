@@ -9,9 +9,8 @@ export const table = tv({
       'odd:bg-table-header-alternativeBackground',
       'focus:outline-table-header-focus',
     ],
-    row: [
-      'hover:bg-table-row-hover checked:bg-table-row-checked focus:outline-table-row-focus',
-    ],
+    row: 'hover:bg-table-row-hover selected:bg-table-row-checked focus:outline-table-row-focus',
+
     cell: ['p-2 text-table-cell-text', 'focus:outline-table-cell-focus'],
   },
   variants: {
