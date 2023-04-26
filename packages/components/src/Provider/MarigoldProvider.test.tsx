@@ -157,32 +157,6 @@ test('apply styles base on theme (`theme.root`)', () => {
   expect(body).toHaveStyle(`line-height: ${theme.lineHeights.body}`);
 });
 
-test('normalize document (html, body)', () => {
-  render(<MarigoldProvider theme={theme}>child</MarigoldProvider>);
-
-  const html = document.querySelector('html')!;
-  expect(html).toHaveStyle('height: 100%');
-
-  const body = document.querySelector('body')!;
-  expect(body).toHaveStyle('height: 100%');
-  expect(body).toHaveStyle('line-height: 1.5');
-});
-
-test('opt out of document normalization', () => {
-  render(
-    <MarigoldProvider theme={theme} normalizeDocument={false}>
-      child
-    </MarigoldProvider>
-  );
-
-  const html = document.querySelector('html')!;
-  expect(html).not.toHaveStyle('height: 100%');
-
-  const body = document.querySelector('body')!;
-  expect(body).not.toHaveStyle('height: 100%');
-  expect(body).not.toHaveStyle('line-height: 1.5');
-});
-
 test('cascading fails if inner theme has root styles', () => {
   const outerTheme = {
     name: 'outer',

@@ -44,7 +44,9 @@ export const decorators: any = [
             {Object.keys(THEME).map(key => (
               <Frame key={key} id={key} title={`Theme "${key}"`}>
                 <MarigoldProvider theme={THEME[key as ThemeNames]}>
-                  <Story />
+                  <div className="p-4">
+                    <Story />
+                  </div>
                 </MarigoldProvider>
               </Frame>
             ))}
@@ -64,12 +66,12 @@ export const decorators: any = [
   },
 ];
 
-const Frame = ({ children, title, id }: any) => (
+const Frame = ({ children, title }: any) => (
   <div className="p-4">
     <div className="mb-0.5 inline-block rounded-lg border border-solid border-orange-200 bg-orange-200 p-0.5 font-sans text-xs text-orange-900">
       {title}
     </div>
-    <div className="rounded-lg border border-solid border-[#dee2e6] p-4 shadow-sm">
+    <div className="rounded-lg border border-solid border-[#dee2e6] shadow-sm">
       {children}
     </div>
   </div>
