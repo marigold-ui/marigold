@@ -17,8 +17,8 @@ import { withThemeByDataAttribute } from '@storybook/addon-styling';
 // Helpers
 // ---------------
 const THEME = {
-  unicorn: unicornTheme,
   core: tailwindCore,
+  unicorn: unicornTheme,
 };
 
 type ThemeNames = keyof typeof THEME;
@@ -48,7 +48,7 @@ export const decorators: any = [
     switch (theme) {
       case 'stacked': {
         return (
-          <MarigoldProvider theme={globalTheme}>
+          <MarigoldProvider theme={tailwindCore}>
             {Object.keys(THEME).map(key => (
               <Frame key={key} id={key} title={`Theme "${key}"`}>
                 <MarigoldProvider

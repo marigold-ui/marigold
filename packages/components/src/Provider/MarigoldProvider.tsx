@@ -23,7 +23,7 @@ export function MarigoldProvider<T extends Theme>({
   const isTopLevel = outerTheme === __defaultTheme;
 
   // ToDo: fix this :S
-  if (outerTheme && !isTopLevel && !theme) {
+  if (outerTheme.root && !isTopLevel && ![`data-theme=${theme.name}`]) {
     throw new Error(
       `[MarigoldProvider] You cannot nest a MarigoldProvider inside another MarigoldProvider without a "selector"!
       Nested themes with a "root" property must specify a "selector" to prevent accidentally overriding global CSS`
