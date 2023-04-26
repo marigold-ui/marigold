@@ -1,3 +1,4 @@
+import { colors } from './colors';
 import { badge as Badge } from './components';
 import { button as Button } from './components';
 import { checkbox as Checkbox } from './components';
@@ -19,6 +20,7 @@ export const theme = {
     '2xl': '1536px',
   },
   root,
+  colors: colors,
   components: {
     Badge,
     Button,
