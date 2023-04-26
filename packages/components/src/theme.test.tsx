@@ -43,8 +43,6 @@ test('allows to extend a theme with custom styles', () => {
     },
   });
 
-  console.log(result.components.Badge({ variant: 'primary' }));
-  console.log(result.components.Badge({ variant: 'secondary' }));
   expect(result).toMatchInlineSnapshot(`
     {
       "colors": {

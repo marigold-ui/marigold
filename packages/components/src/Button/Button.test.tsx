@@ -59,7 +59,6 @@ test('supports default size', () => {
   );
   const button = screen.getByText(/button/);
 
-  console.log(button);
   expect(button).toHaveClass(`p-[8-px]`);
 });
 
