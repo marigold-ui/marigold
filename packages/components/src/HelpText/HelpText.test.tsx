@@ -81,7 +81,7 @@ test('renders icon when when error message is shown', () => {
   expect(icon).toBeInTheDocument();
 });
 
-//TODO: should work
+//TODO: didn't work, but should work
 test.skip('icon has a default size', () => {
   render(
     <HelpText
@@ -98,7 +98,7 @@ test.skip('icon has a default size', () => {
   expect(icon).toHaveStyle('width: 16px');
 });
 
-//TODO: I'm not sure icon can be sized via theme anymore?
+//TODO: I'm not sure can icon be sized via theme anymore?
 test.skip('icon can be sized via theme', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -116,7 +116,7 @@ test.skip('icon can be sized via theme', () => {
   expect(icon).toHaveStyle(`width: ${theme.sizes.small}px`);
 });
 
-//TODO: I'm not sure color can be set via theme anymore?
+//TODO: I'm not sure can color be set via theme anymore?
 test.skip('uses disabled variant when disabled is set', () => {
   render(
     <ThemeProvider theme={theme}>
