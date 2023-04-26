@@ -37,6 +37,7 @@ export const decorators: any = [
   (Story: StoryFn, { globals, parameters }: any) => {
     const globalTheme = {
       name: 'global',
+      components: {},
       root: tv({ base: 'font-["Inter"]' }),
     };
 
@@ -49,13 +50,11 @@ export const decorators: any = [
         return (
           <MarigoldProvider theme={globalTheme}>
             {Object.keys(THEME).map(key => (
-              <Frame
-                className={tailwindCore.root()}
-                key={key}
-                id={key}
-                title={`Theme "${key}"`}
-              >
-                <MarigoldProvider theme={THEME[key as ThemeNames]}>
+              <Frame key={key} id={key} title={`Theme "${key}"`}>
+                <MarigoldProvider
+                  theme={THEME[key as ThemeNames]}
+                  data-theme={`#${key}`}
+                >
                   <Story />
                 </MarigoldProvider>
               </Frame>
@@ -82,7 +81,7 @@ const Frame = ({ children, title, id }: any) => (
       {title}
     </div>
     <div className="rounded-lg border border-solid border-[#dee2e6] p-4 shadow-sm">
-      <div id={id}>{children}</div>
+      {children}
     </div>
   </div>
 );

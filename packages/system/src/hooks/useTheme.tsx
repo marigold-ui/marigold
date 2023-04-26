@@ -30,13 +30,14 @@ export const useTheme = () => {
 export interface ThemeProviderProps<T extends Theme> {
   theme: T;
   children: ReactNode;
+  selector?: string;
 }
 
 export function ThemeProvider<T extends Theme>({
   theme,
   children,
 }: ThemeProviderProps<T>) {
-  console.log(theme.name);
+  console.log('theme name', theme.name);
   return (
     <div data-theme={theme.name} className={theme?.root ? theme.root() : ''}>
       <InternalContext.Provider value={theme}>

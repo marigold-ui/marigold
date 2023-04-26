@@ -11,9 +11,7 @@ import {
 // Props
 // ---------------
 export interface MarigoldProviderProps<T extends Theme>
-  extends ThemeProviderProps<T> {
-  className?: string;
-}
+  extends ThemeProviderProps<T> {}
 
 // Provider
 // ---------------
@@ -22,12 +20,10 @@ export function MarigoldProvider<T extends Theme>({
   theme,
 }: MarigoldProviderProps<T>) {
   const outerTheme = useTheme();
-  const isTopLevel = outerTheme.name === __defaultTheme.name;
-  //const isTopLevel = outerTheme === __defaultTheme;
+  const isTopLevel = outerTheme === __defaultTheme;
 
-  console.log(outerTheme.name, isTopLevel);
-
-  if (outerTheme.name && !isTopLevel) {
+  // ToDo: fix this :S
+  if (outerTheme && !isTopLevel && !theme) {
     throw new Error(
       `[MarigoldProvider] You cannot nest a MarigoldProvider inside another MarigoldProvider without a "selector"!
       Nested themes with a "root" property must specify a "selector" to prevent accidentally overriding global CSS`
