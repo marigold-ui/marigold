@@ -98,12 +98,20 @@ export const preset = createPreset('core', {
           label: {
             disabled: '#e3e3e3',
           },
+          helptext: {
+            container: {
+              textColor: '#511e04',
+            },
+          },
         },
         text: {
           muted: {
             text: '#cccccc',
           },
         },
+        // status
+        error: '#f33',
+        disabled: '#cccccc',
         // "Reds"
         primary: {
           500: '#f8ac67',

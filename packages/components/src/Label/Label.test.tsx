@@ -1,23 +1,16 @@
 import React from 'react';
 import { render, screen, within } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider } from '@marigold/system';
 import { Label } from './Label';
 
-const theme = {
-  fonts: {
-    body: 'Inter Regular',
-    label: 'Oswald',
-  },
-  colors: {
-    text: 'black',
-  },
+import { tv } from 'tailwind-variants';
+
+const theme: Theme = {
+  name: 'test',
   components: {
-    Label: {
-      base: {
-        fontFamily: 'body',
-        color: 'text',
-      },
-    },
+    Label: tv({
+      base: ['font-["Inter_Regular"] text-black'],
+    }),
   },
 };
 
@@ -29,8 +22,7 @@ test('uses base styles from theme', () => {
   );
   const label = screen.getByText(/label/);
 
-  expect(label).toHaveStyle(`font-family: Inter Regular`);
-  expect(label).toHaveStyle(`color: black`);
+  expect(label).toHaveClass(`font-["Inter_Regular"] text-black`);
 });
 
 test('supports htmlFor prop', () => {
@@ -77,7 +69,7 @@ test('can render as <span>', () => {
   expect(label instanceof HTMLSpanElement).toBeTruthy();
 });
 
-test('accepts labelwidth', () => {
+test('accepts labelwidth as css variable and set the style', () => {
   render(
     <ThemeProvider theme={theme}>
       <Label as="span" labelWidth="100px">
@@ -86,5 +78,12 @@ test('accepts labelwidth', () => {
     </ThemeProvider>
   );
   const label = screen.getByText(/label/);
-  expect(label).toHaveStyle('width: 100px');
+  expect(label).toMatchInlineSnapshot(`
+    <span
+      class="flex w-[var(--labelWidth)] font-["Inter_Regular"] text-black"
+      style="--labelWidth: 100px;"
+    >
+      label
+    </span>
+  `);
 });

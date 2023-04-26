@@ -27,6 +27,15 @@ const meta = {
         defaultValue: { summary: false },
       },
     },
+    labelWidth: {
+      control: {
+        type: 'text',
+      },
+      description: 'change width of label',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
   },
   args: {
     required: false,
@@ -38,7 +47,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: ({ children, ...args }) => <Label {...args}>{children}</Label>,
+  render: ({ children, ...args }) => (
+    <Label labelWidth="500px" {...args}>
+      {children}
+    </Label>
+  ),
 };
 
 Basic.parameters = {

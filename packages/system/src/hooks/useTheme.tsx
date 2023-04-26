@@ -8,13 +8,15 @@ import React, {
 import { VariantProps } from 'tailwind-variants';
 import { Theme } from '../types';
 import { Box } from '../components';
+import { HtmlProps } from '@marigold/types';
 
 /**
  * @internal
  */
 export const __defaultTheme: Theme = {
-  name: '',
+  name: 'default',
   components: {},
+  root: '',
 };
 
 const InternalContext = createContext<Theme>(__defaultTheme);
@@ -25,12 +27,7 @@ export const useTheme = () => {
   return theme;
 };
 
-export interface ThemeProviderProps<T extends Theme>
-  extends VariantProps<typeof Box>,
-    Omit<
-      DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
-      'className'
-    > {
+export interface ThemeProviderProps<T extends Theme> {
   theme: T;
   children: ReactNode;
 }
@@ -39,9 +36,9 @@ export function ThemeProvider<T extends Theme>({
   theme,
   children,
 }: ThemeProviderProps<T>) {
-  const classNamess = theme?.root ? theme.root() : '';
+  console.log(theme.name);
   return (
-    <div data-theme={theme.name} classNames={classNamess}>
+    <div data-theme={theme.name} className={theme?.root ? theme.root() : ''}>
       <InternalContext.Provider value={theme}>
         {children}
       </InternalContext.Provider>

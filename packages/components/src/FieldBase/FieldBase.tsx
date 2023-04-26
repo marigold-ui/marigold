@@ -2,13 +2,14 @@ import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
 import {
   Box,
   StateAttrProps,
-  ThemeExtension,
-  useComponentStyles,
+  useComponentStylesFromTV,
 } from '@marigold/system';
-
 import { Label, LabelProps } from '../Label';
 import { HelpText } from '../HelpText';
 import { useFieldGroupContext } from './FieldGroup';
+import { tv } from 'tailwind-variants';
+import { twMerge } from 'tailwind-merge';
+
 export interface FieldBaseProps {
   children?: ReactNode;
   variant?: string;
@@ -25,9 +26,6 @@ export interface FieldBaseProps {
   errorMessageProps?: HTMLAttributes<HTMLElement>;
   stateProps?: StateAttrProps;
 }
-// Theme Extension
-// ---------------
-export interface FieldThemeExtension extends ThemeExtension<'Field'> {}
 
 // Component
 // ---------------
@@ -50,21 +48,24 @@ export const FieldBase = ({
 }: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
 
-  const style = useComponentStyles('Field', { variant, size });
+  const classNames = useComponentStylesFromTV('Field', {
+    variant,
+    size,
+  });
 
   const { labelWidth } = useFieldGroupContext();
 
+  //TODO: width is a dynmic prop, so w-full isn't correct
+  const styledDiv = tv({
+    base: ['flex flex-col w-full relative'],
+  });
+
+  const styledDivColumn = tv({
+    base: ['flex flex-col'],
+  });
+
   return (
-    <Box
-      {...props}
-      __baseCSS={{
-        display: 'flex',
-        flexDirection: 'column',
-        width,
-        position: 'relative',
-      }}
-      css={style}
-    >
+    <Box {...props} className={twMerge(styledDiv(), classNames)}>
       {label && (
         <Label
           required={required}
@@ -77,7 +78,7 @@ export const FieldBase = ({
           {label}
         </Label>
       )}
-      <Box __baseCSS={{ display: 'flex', flexDirection: 'column' }}>
+      <Box className={styledDivColumn()}>
         {children}
         {hasHelpText && (
           <HelpText

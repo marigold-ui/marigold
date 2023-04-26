@@ -5,7 +5,6 @@ import { useHover } from '@react-aria/interactions';
 import { useObjectRef } from '@react-aria/utils';
 import { useToggleState } from '@react-stately/toggle';
 import { AriaCheckboxProps } from '@react-types/checkbox';
-
 import {
   Box,
   StateAttrProps,
@@ -13,9 +12,7 @@ import {
   useStateProps,
 } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
-
 import { useCheckboxGroupContext } from './CheckboxGroup';
-
 import { tv } from 'tailwind-variants';
 import { twMerge } from 'tailwind-merge';
 
