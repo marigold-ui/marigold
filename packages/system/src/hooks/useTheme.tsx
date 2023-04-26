@@ -1,14 +1,5 @@
-import React, {
-  createContext,
-  DetailedHTMLProps,
-  HTMLAttributes,
-  ReactNode,
-  useContext,
-} from 'react';
-import { VariantProps } from 'tailwind-variants';
+import React, { createContext, ReactNode, useContext } from 'react';
 import { Theme } from '../types';
-import { Box } from '../components';
-import { HtmlProps } from '@marigold/types';
 
 /**
  * @internal

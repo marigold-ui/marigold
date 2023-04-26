@@ -41,7 +41,14 @@ test('renders FieldGroup  with label width', () => {
   );
 
   const label = screen.getByText('Label');
-  expect(label).toHaveStyle('width: 20px');
+  expect(label).toMatchInlineSnapshot(`
+    <label
+      class="flex w-[var(--labelWidth)]"
+      style="--labelWidth: 20px;"
+    >
+      Label
+    </label>
+  `);
 });
 
 test('renders FieldGroups children', () => {
