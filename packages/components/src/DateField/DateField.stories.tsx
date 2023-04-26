@@ -89,7 +89,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <DateField {...args} label="date field" />,
+  render: args => (
+    <I18nProvider locale="de-DE">
+      <DateField {...args} label="date field" />
+    </I18nProvider>
+  ),
 };
 
 export const ControlledDateField: Story = {

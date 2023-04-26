@@ -138,6 +138,7 @@ export const DateField = ({
           borderRadius: '10px',
           height: '40px',
           overflow: 'hidden',
+          bg: '#fff',
         }}
         {...mergeProps(fieldProps, stateProps, focusProps, hoverProps)}
         css={styles.field}
