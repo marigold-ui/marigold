@@ -30,6 +30,9 @@ importers:
       '@marigold/tsconfig':
         specifier: workspace:*
         version: link:config/tsconfig
+      '@react-aria/combobox':
+        specifier: 3.6.0
+        version: 3.6.0(react-dom@18.2.0)(react@18.2.0)
       '@react-aria/datepicker':
         specifier: 3.4.0
         version: 3.4.0(react-dom@18.2.0)(react@18.2.0)

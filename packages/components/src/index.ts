@@ -5,6 +5,7 @@ export * from './Accordion';
 export * from './Aside';
 export * from './Aspect';
 export * from './Autocomplete';
+export * from './ComboBox';
 export * from './Badge';
 export * from './Box';
 export * from './Breakout';
