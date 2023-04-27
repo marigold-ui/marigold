@@ -10,6 +10,7 @@ import type { CardThemeExtension } from './Card';
 import type { DialogThemeExtension } from './Dialog';
 import type { DividerThemeExtension } from './Divider';
 import type { FieldThemeExtension } from './FieldBase';
+import type { DateFieldThemeExtension } from './DateField';
 import type { FooterThemeExtension } from './Footer';
 import type { HeaderThemeExtension } from './Header';
 import type { HeadlineThemeExtension } from './Headline';
@@ -39,6 +40,7 @@ interface ComponentStyles
     BodyThemeExtension,
     DialogThemeExtension,
     DividerThemeExtension,
+    DateFieldThemeExtension,
     FieldThemeExtension,
     FooterThemeExtension,
     HeaderThemeExtension,
