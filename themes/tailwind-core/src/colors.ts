@@ -75,7 +75,7 @@ export const colors = {
       },
     },
   },
-  // status colors
+  // Status colors
   error: '#f33',
   disabled: '#cccccc',
   info: {

@@ -21,6 +21,15 @@ const THEME = {
 
 type ThemeNames = keyof typeof THEME;
 
+// Parameters
+// ---------------
+export const parameters = {
+  a11y: {
+    element: '#root',
+  },
+  controls: { expanded: true },
+};
+
 // fix type any
 export const decorators: any = [
   withThemeByDataAttribute({

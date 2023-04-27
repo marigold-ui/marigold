@@ -2,10 +2,7 @@ import { tv } from 'tailwind-variants';
 
 export const helpText = tv({
   slots: {
-    container: [
-      `data-[error]:text-error [&:error]:text-error`,
-      'text-helptext-container-textColor',
-    ],
+    container: [`data-[error]:text-error`],
     icon: ['16'],
   },
 });
