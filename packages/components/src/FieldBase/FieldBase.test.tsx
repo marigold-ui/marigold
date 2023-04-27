@@ -175,14 +175,14 @@ test('takes full width by default', () => {
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
   expect(container).toHaveClass(
-    'flex flex-col w-[var(--fieldWidth)] relative',
+    ' w-[var(--fieldWidth)] relative flex flex-row gap-2 items-baseline',
     {
       exact: true,
     }
   );
   expect(container).toMatchInlineSnapshot(`
     <div
-      class="flex flex-col w-[var(--fieldWidth)] relative"
+      class="w-[var(--fieldWidth)] relative flex flex-row gap-2 items-baseline"
       style="--fieldWidth: 100%;"
     >
       <label
