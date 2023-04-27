@@ -33,7 +33,7 @@ export const FieldBase = ({
   children,
   variant,
   size,
-  width = '100%',
+  width = 'full',
   disabled,
   required,
   label,
@@ -55,6 +55,7 @@ export const FieldBase = ({
 
   const { labelWidth } = useFieldGroupContext();
 
+  // width is only in b2b/unicorn relevant
   const styles = {
     '--fieldWidth': width,
   } as React.CSSProperties;
@@ -68,7 +69,7 @@ export const FieldBase = ({
   });
 
   return (
-    <Box {...props} className={twMerge(styledDiv(), classNames)} style={styles}>
+    <div {...props} style={styles} className={twMerge(styledDiv(), classNames)}>
       {label && (
         <Label
           required={required}
@@ -97,6 +98,6 @@ export const FieldBase = ({
           />
         )}
       </Box>
-    </Box>
+    </div>
   );
 };

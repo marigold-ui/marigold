@@ -183,7 +183,7 @@ test('takes full width by default', () => {
   expect(container).toMatchInlineSnapshot(`
     <div
       class="w-[var(--fieldWidth)] relative flex flex-row gap-2 items-baseline"
-      style="--fieldWidth: 100%;"
+      style="--fieldWidth: full;"
     >
       <label
         class="flex w-[var(--labelWidth)]"
