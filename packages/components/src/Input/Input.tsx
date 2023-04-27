@@ -4,6 +4,7 @@ import { Box, useComponentStylesFromTV, useStateProps } from '@marigold/system';
 
 import { tv } from 'tailwind-variants';
 import { twMerge } from 'tailwind-merge';
+import { mergeProps } from '@react-aria/utils';
 
 // Props
 // ---------------
@@ -36,9 +37,9 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
 
     const styledInput = tv({
       slots: {
-        input: ['w-full border-0 outline-0 pl-4'],
+        input: ['w-full border-0 outline-0 '],
         container: ['flex relative w-full items-center'],
-        icon: ['absolute left-2 pointer-events-none'],
+        icon: ['absolute pointer-events-none'],
       },
     });
 
@@ -48,8 +49,7 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
       >
         <Box
           as="input"
-          {...props}
-          {...stateProps}
+          {...mergeProps(props, stateProps)}
           className={twMerge(styledInput().input(), classNames.input())}
           ref={ref}
           type={type}

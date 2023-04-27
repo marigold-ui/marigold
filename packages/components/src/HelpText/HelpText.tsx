@@ -41,8 +41,10 @@ export const HelpText = ({
     base: ['flex items-center gap-1'],
   });
 
+  console.log(props);
+
   return (
-    <Box
+    <div
       {...(hasErrorMessage ? errorMessageProps : descriptionProps)}
       {...props}
       className={twMerge(styledDiv(), classNames.container())}
@@ -62,6 +64,6 @@ export const HelpText = ({
       ) : (
         <>{description}</>
       )}
-    </Box>
+    </div>
   );
 };

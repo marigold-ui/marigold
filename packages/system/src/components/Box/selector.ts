@@ -1,5 +1,3 @@
-import { StyleObject } from '../../types';
-
 const createteSelector = (
   selectors: string[],
   states: string[],
@@ -80,11 +78,11 @@ const pseudos = {
  *
  * We stole this idea from https://chakra-ui.com/.
  */
-export const transformPseudos = (styles: StyleObject) => {
-  let result: StyleObject = {};
+export const transformPseudos = (styles: any) => {
+  let result: any = {};
 
   for (let key in styles) {
-    const value = styles[key as keyof StyleObject];
+    const value = styles[key as keyof any];
 
     if (key in pseudos) {
       key = pseudos[key as keyof typeof pseudos];
