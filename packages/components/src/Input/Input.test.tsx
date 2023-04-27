@@ -37,7 +37,7 @@ test('supports default variant and themeSection', () => {
 
   const input = screen.getByTitle('input');
 
-  expect(input).toHaveClass(`w-full border-0 outline-0 pl-4 font-["Inter"]`);
+  expect(input).toHaveClass(`w-full border-0 outline-0 font-["Inter"]`);
 });
 
 test('accepts other variant than default', () => {
@@ -48,7 +48,7 @@ test('accepts other variant than default', () => {
   );
   const input = screen.getByTitle('input');
 
-  expect(input).toHaveClass(`w-full border-0 outline-0 pl-4 font-["Roboto"]`);
+  expect(input).toHaveClass(`w-full border-0 outline-0 font-["Roboto"]`);
 });
 
 test('renders correct HTML element', () => {
