@@ -9,7 +9,6 @@ import { Box, useStateProps } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 import { FieldBase } from '../FieldBase';
 import { tv } from 'tailwind-variants';
-import { twMerge } from 'tailwind-merge';
 
 // Context
 // ---------------

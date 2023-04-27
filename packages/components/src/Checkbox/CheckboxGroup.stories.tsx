@@ -6,6 +6,8 @@ import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
 import isChromatic from 'chromatic';
 
+import { useState } from '@storybook/addons';
+
 const meta = {
   title: 'Components/CheckboxGroup',
   component: CheckboxGroup,
@@ -73,7 +75,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => {
-    const [selected, setSelected] = React.useState<string[]>([]);
+    const [selected, setSelected] = useState<string[]>([]);
     return (
       <>
         <CheckboxGroup
@@ -100,7 +102,7 @@ export const Basic: Story = {
 
 export const Error: Story = {
   render: args => {
-    const [selected, setSelected] = React.useState<string[]>([]);
+    const [selected, setSelected] = useState<string[]>([]);
     return (
       <>
         <CheckboxGroup

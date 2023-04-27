@@ -45,7 +45,7 @@ test('uses description base styles', () => {
 
   const element = screen.getByTestId('help-text');
   expect(element).toHaveClass(
-    'flex items-center gap-1 text-[13px] text-helptext-container-textColor data-[invalid]:text-[13px] data-[invalid]:text-error',
+    'flex items-center gap-1 text-helptext-container-textColor data-[invalid]:text-error',
     { exact: true }
   );
 });

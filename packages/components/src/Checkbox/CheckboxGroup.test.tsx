@@ -1,69 +1,52 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider } from '@marigold/system';
 
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
 
-const theme = {
-  colors: {
-    gray: '#868e96',
-    white: '#f8f9fa',
-    teal: '#099268',
-    red: '#c92a2a',
-  },
-  fontSizes: {
-    'small-1': 12,
-    'large-1': 24,
-  },
+import { tv } from 'tailwind-variants';
+
+const theme: Theme = {
+  name: 'test',
   components: {
-    Checkbox: {
-      base: {
-        label: {
-          '&:error': {
-            bg: 'red',
+    Checkbox: tv({
+      slots: {
+        label: ['data-[error]:bg-red-500'],
+        container: [''],
+        checkbox: [''],
+      },
+      variants: {
+        variant: {
+          teal: {
+            label: ['text-teal-500'],
+          },
+        },
+        size: {
+          large: {
+            label: ['font-[18px]'],
           },
         },
       },
-      variant: {
-        teal: {
-          label: {
-            color: 'teal',
+    }),
+    CheckboxGroup: tv({
+      slots: {
+        container: ['bg-gray-600'],
+        group: ['italic	'],
+      },
+      variants: {
+        variant: {
+          teal: {
+            container: ['bg-teal-600'],
+          },
+        },
+        size: {
+          large: {
+            group: ['font-[18px]'],
           },
         },
       },
-      size: {
-        large: {
-          label: {
-            fontSize: 'small-1',
-          },
-        },
-      },
-    },
-    CheckboxGroup: {
-      base: {
-        container: {
-          bg: 'gray',
-        },
-        group: {
-          fontStyle: 'italic',
-        },
-      },
-      variant: {
-        teal: {
-          container: {
-            bg: 'teal',
-          },
-        },
-      },
-      size: {
-        large: {
-          group: {
-            fontSize: 'large-1',
-          },
-        },
-      },
-    },
+    }),
   },
 };
 
@@ -154,15 +137,9 @@ test('passes down "error" to checkboxes', () => {
     </ThemeProvider>
   );
 
-  expect(screen.getByText('one')).toHaveStyle(
-    `background: ${theme.colors.red}`
-  );
-  expect(screen.getByText('two')).toHaveStyle(
-    `background: ${theme.colors.red}`
-  );
-  expect(screen.getByText('three')).toHaveStyle(
-    `background: ${theme.colors.red}`
-  );
+  expect(screen.getByText('one')).toHaveClass(`data-[error]:bg-red-500`);
+  expect(screen.getByText('two')).toHaveClass(`data-[error]:bg-red-500`);
+  expect(screen.getByText('three')).toHaveClass(`data-[error]:bg-red-500`);
 });
 
 test('controlled', () => {
