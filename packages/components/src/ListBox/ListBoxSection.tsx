@@ -25,25 +25,20 @@ export const ListBoxSection = ({ section, state }: ListSectionProps) => {
 
   // TODO: Separate style for heading/section and childs
 
-  const { styles } = useListBoxContext();
+  const { classNames } = useListBoxContext();
 
   return (
-    <Box as="li" css={styles.section} {...itemProps}>
+    <li className={classNames.section()} {...itemProps}>
       {section.rendered && (
-        <Box css={styles.sectionTitle} {...headingProps}>
+        <div className={classNames.sectionTitle()} {...headingProps}>
           {section.rendered}
-        </Box>
+        </div>
       )}
-      <Box
-        as="ul"
-        __baseCSS={{ listStyle: 'none', p: 0 }}
-        css={styles.list}
-        {...groupProps}
-      >
+      <ul className={classNames.list} {...groupProps}>
         {[...section.childNodes].map(node => (
           <ListBoxOption key={node.key} item={node} state={state} />
         ))}
-      </Box>
-    </Box>
+      </ul>
+    </li>
   );
 };

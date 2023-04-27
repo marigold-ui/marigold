@@ -1,10 +1,6 @@
 import React, { forwardRef, ReactNode } from 'react';
 import { useObjectRef } from '@react-aria/utils';
-import {
-  Box,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-} from '@marigold/system';
+import { Box, useComponentStylesFromTV } from '@marigold/system';
 import { useListBox } from '@react-aria/listbox';
 import type { ListState } from '@react-stately/list';
 
@@ -12,13 +8,8 @@ import { ListBoxContext } from './Context';
 import { ListBoxSection } from './ListBoxSection';
 import { ListBoxOption } from './ListBoxOption';
 
-// Theme Extension
-// ---------------
-export interface ListBoxThemeExtension
-  extends ThemeExtensionsWithParts<
-    'ListBox',
-    ['container', 'list', 'option', 'section', 'sectionTitle']
-  > {}
+import { tv } from 'tailwind-variants';
+import { twMerge } from 'tailwind-merge';
 
 // Props
 // ---------------
@@ -36,20 +27,28 @@ export const ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
     const innerRef = useObjectRef<HTMLUListElement>(ref);
     const { listBoxProps } = useListBox(props, state, innerRef);
 
-    const styles = useComponentStyles(
-      'ListBox',
-      { variant, size },
-      { parts: ['container', 'list', 'option', 'section', 'sectionTitle'] }
-    );
+    const classNames = useComponentStylesFromTV('ListBox', {
+      variant,
+      size,
+      slots: ['container', 'list', 'option', 'section', 'sectionTitle'],
+    });
 
+    const styledListBox = tv({
+      slots: {
+        container: [],
+        list: ['p-0 list-none'],
+        option: [],
+        section: [],
+        sectionTitle: [],
+      },
+    });
     return (
-      <ListBoxContext.Provider value={{ styles }}>
-        <Box css={styles.container}>
+      <ListBoxContext.Provider value={{ classNames }}>
+        <div className={classNames.container()}>
           <Box
             as="ul"
             ref={innerRef}
-            __baseCSS={{ listStyle: 'none', p: 0 }}
-            css={styles.list}
+            className={twMerge(styledListBox().list(), classNames.list())}
             {...listBoxProps}
           >
             {[...state.collection].map(item =>
@@ -60,7 +59,7 @@ export const ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
               )
             )}
           </Box>
-        </Box>
+        </div>
       </ListBoxContext.Provider>
     );
   }

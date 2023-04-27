@@ -15,9 +15,7 @@ import { mergeProps, useObjectRef } from '@react-aria/utils';
 
 import {
   Box,
-  CSSObject,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
+  useComponentStylesFromTV,
   useResponsiveValue,
   useStateProps,
 } from '@marigold/system';
@@ -28,29 +26,32 @@ import { ListBox } from '../ListBox';
 import { messages } from './intl';
 import { Popover, Tray } from '../Overlay';
 
+import { tv } from 'tailwind-variants';
+import { twMerge } from 'tailwind-merge';
+
 // Select Icon
 // ---------------
 interface ChevronProps {
-  css: CSSObject;
+  className: string;
 }
 
-const Chevron = ({ css }: ChevronProps) => (
-  <Box
-    as="svg"
-    __baseCSS={{ width: 16, height: 16, fill: 'none' }}
-    css={css}
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-  </Box>
-);
-
-// Theme Extension
-// ---------------
-export interface SelectThemeExtension
-  extends ThemeExtensionsWithParts<'Select', ['container', 'button', 'icon']> {}
+const Chevron = ({ className }: ChevronProps) => {
+  const styledChevron = tv({
+    base: ['fill-none'],
+  });
+  return (
+    <svg
+      className={twMerge(styledChevron(), className)}
+      width={16}
+      height={16}
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+    </svg>
+  );
+};
 
 // Props
 // ---------------
@@ -137,16 +138,24 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     );
     const { focusProps, isFocusVisible } = useFocusRing();
 
-    const styles = useComponentStyles(
-      'Select',
-      { variant, size },
-      { parts: ['container', 'button', 'icon'] }
-    );
+    const classNames = useComponentStylesFromTV('Select', {
+      variant,
+      size,
+      slots: ['container', 'button', 'icon'],
+    });
     const stateProps = useStateProps({
       disabled,
       error,
       focusVisible: isFocusVisible,
       expanded: state.isOpen,
+    });
+
+    const styledSelect = tv({
+      slots: {
+        container: [''],
+        button: ['flex relative items-center justify-between w-full'],
+        icon: [''],
+      },
     });
 
     return (
@@ -174,30 +183,17 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         />
         <Box
           as="button"
-          __baseCSS={{
-            display: 'flex',
-            position: 'relative',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-          }}
-          css={styles.button}
+          className={twMerge(styledSelect().button(), classNames.button())}
           ref={buttonRef}
           {...mergeProps(buttonProps, focusProps)}
           {...stateProps}
         >
-          <Box
-            css={{
-              overflow: 'hidden',
-              whiteSpace: 'nowrap',
-            }}
-            {...valueProps}
-          >
+          <div className="overflow-hidden whitespace-nowrap" {...valueProps}>
             {state.selectedItem
               ? state.selectedItem.rendered
               : props.placeholder}
-          </Box>
-          <Chevron css={styles.icon} />
+          </div>
+          <Chevron className={classNames.icon()} />
         </Box>
         {isSmallScreen ? (
           <Tray state={state}>
