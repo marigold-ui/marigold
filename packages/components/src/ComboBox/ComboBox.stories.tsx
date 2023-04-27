@@ -23,6 +23,12 @@ const meta = {
       description: 'Help Text',
       defaultValue: 'This is a help text description',
     },
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Disable ComboBox',
+    },
     error: {
       control: {
         type: 'boolean',
@@ -63,7 +69,7 @@ export default meta;
 export const Basic: StoryObj<typeof ComboBox> = {
   render: args => {
     return (
-      <ComboBox defaultSelectedKey={3} label="combo box label" {...args}>
+      <ComboBox defaultSelectedKey={'dog'} label="combo box label" {...args}>
         <ComboBox.Item key="red panda">Red Panda</ComboBox.Item>
         <ComboBox.Item key="cat">Cat</ComboBox.Item>
         <ComboBox.Item key="dog">Dog</ComboBox.Item>

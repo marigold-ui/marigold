@@ -24,6 +24,8 @@ export interface ComboBoxProps
     | 'inputValue'
     | 'onInputChange'
   > {
+  variant?: string;
+  size?: string;
   error?: boolean;
   width?: string;
   disabled?: boolean;
@@ -67,11 +69,13 @@ export const ComboBox = ({
     inputProps,
     listBoxProps,
     labelProps,
-    errorMessageProps,
   } = useComboBox(
     { ...props, inputRef, buttonRef, listBoxRef, popoverRef },
     state
   );
+
+  // TODO: until `react-aria` gives us error and description props.
+  const errorMessageProps = { 'aria-invalid': error };
   const { buttonProps } = useButton(triggerProps, buttonRef);
   const { label, description, errorMessage } = props;
   return (
