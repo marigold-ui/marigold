@@ -82,7 +82,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <FieldBase {...args} label="This is my Label" error errorMessage="errör">
+    <FieldBase {...args} label="This is my Label">
       <input type="text" />
     </FieldBase>
   ),
