@@ -1,31 +1,30 @@
 /* eslint-disable testing-library/no-node-access */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider } from '@marigold/system';
 import { Input } from './Input';
 import { Delete, Search } from '@marigold/icons';
 import { Button } from '../Button';
 
-const theme = {
-  fonts: {
-    body: 'Inter',
-    forms: 'Roboto',
-  },
+import { tv } from 'tailwind-variants';
+
+const theme: Theme = {
+  name: 'test',
   components: {
-    Input: {
-      base: {
-        input: {
-          fontFamily: 'body',
-        },
+    Input: tv({
+      slots: {
+        input: ['font-["Inter"]'],
+        container: ['bg-blue-600'],
+        icon: ['pl-4'],
       },
-      variant: {
-        robo: {
-          input: {
-            fontFamily: 'forms',
+      variants: {
+        variant: {
+          robo: {
+            input: ['font-["Roboto"]'],
           },
         },
       },
-    },
+    }),
   },
 };
 
@@ -38,7 +37,7 @@ test('supports default variant and themeSection', () => {
 
   const input = screen.getByTitle('input');
 
-  expect(input).toHaveStyle(`font-family: Inter`);
+  expect(input).toHaveClass(`w-full border-0 outline-0 pl-4 font-["Inter"]`);
 });
 
 test('accepts other variant than default', () => {
@@ -49,7 +48,7 @@ test('accepts other variant than default', () => {
   );
   const input = screen.getByTitle('input');
 
-  expect(input).toHaveStyle(`font-family: Roboto`);
+  expect(input).toHaveClass(`w-full border-0 outline-0 pl-4 font-["Roboto"]`);
 });
 
 test('renders correct HTML element', () => {

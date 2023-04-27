@@ -219,7 +219,7 @@ test('allows to set custom width', () => {
   const container = screen.getByText('Label').parentElement;
   expect(container).toMatchInlineSnapshot(`
     <div
-      class="flex flex-col w-[var(--fieldWidth)] relative"
+      class="w-[var(--fieldWidth)] relative flex flex-row gap-2 items-baseline"
       style="--fieldWidth: 60px;"
     >
       <label
