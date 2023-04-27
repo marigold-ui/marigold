@@ -47,7 +47,6 @@ export const ComboBox = ({
   onChange,
   ...rest
 }: ComboBoxProps) => {
-  const { contains } = useFilter({ sensitivity: 'base' });
   const props: ComboBoxPropsI<object> = {
     isDisabled: disabled,
     isRequired: required,
@@ -58,11 +57,12 @@ export const ComboBox = ({
     ...rest,
   };
 
-  let state = useComboBoxState({ ...props, defaultFilter: contains });
-  let buttonRef = React.useRef(null);
-  let inputRef = React.useRef(null);
-  let listBoxRef = React.useRef(null);
-  let popoverRef = React.useRef(null);
+  const { contains } = useFilter({ sensitivity: 'base' });
+  const state = useComboBoxState({ ...props, defaultFilter: contains });
+  const buttonRef = React.useRef(null);
+  const inputRef = React.useRef(null);
+  const listBoxRef = React.useRef(null);
+  const popoverRef = React.useRef(null);
 
   const {
     buttonProps: triggerProps,

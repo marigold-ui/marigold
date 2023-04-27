@@ -69,7 +69,7 @@ export default meta;
 export const Basic: StoryObj<typeof ComboBox> = {
   render: args => {
     return (
-      <ComboBox defaultSelectedKey={'dog'} label="combo box label" {...args}>
+      <ComboBox label="Animals" {...args}>
         <ComboBox.Item key="red panda">Red Panda</ComboBox.Item>
         <ComboBox.Item key="cat">Cat</ComboBox.Item>
         <ComboBox.Item key="dog">Dog</ComboBox.Item>
@@ -92,7 +92,7 @@ export const Controlled: StoryObj<typeof ComboBox> = {
           value={current}
           onChange={setCurrent}
           defaultSelectedKey={3}
-          label="combo box label"
+          label="Animals"
           {...args}
         >
           <ComboBox.Item key="red panda">Red Panda</ComboBox.Item>
@@ -127,7 +127,7 @@ export const AsyncLoading: StoryObj<typeof ComboBox> = {
         value={list.filterText}
         onChange={list.setFilterText}
         items={list.items}
-        label="combo box label"
+        label="Star Wars Character Lookup"
         {...args}
       >
         {(item: { name: string }) => (
