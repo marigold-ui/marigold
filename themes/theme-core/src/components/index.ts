@@ -26,3 +26,4 @@ export * from './Text.style';
 export * from './TextArea.style';
 export * from './Tag.style';
 export * from './Underlay.style';
+export * from './Calendar.style';

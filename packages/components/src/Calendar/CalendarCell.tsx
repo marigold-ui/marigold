@@ -30,15 +30,16 @@ export const CalendarCell = (props: CalendarCellProps) => {
     <Box as="td" {...cellProps}>
       <Box
         __baseCSS={{
-          fontSize: 'xxsmall',
+          fontSize: '0.875rem',
           fontWeight: '400',
           cursor: 'pointer',
-          padding: '0',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'baseline',
+          alignItems: 'center',
           width: '30px',
           height: '30px',
+          padding: '0.3rem',
+          borderRadius: '50%',
         }}
         css={styles.calendarCell}
         hidden={isOutsideVisibleRange}

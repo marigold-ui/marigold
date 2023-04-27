@@ -22,6 +22,8 @@ export interface CalendarProps
   extends Omit<AriaCalendarProps<DateValue>, 'isDisabled' | 'isReadOnly'> {
   disabled?: boolean;
   readOnly?: boolean;
+  variant?: string;
+  size?: string;
 }
 export interface CalendarThemeExtension
   extends ThemeExtensionsWithParts<
@@ -29,7 +31,13 @@ export interface CalendarThemeExtension
     ['calendar', 'calendarCell', 'calendarControllers']
   > {}
 
-export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
+export const Calendar = ({
+  disabled,
+  readOnly,
+  size,
+  variant,
+  ...rest
+}: CalendarProps) => {
   const { locale } = useLocale();
   const props: AriaCalendarProps<DateValue> = {
     isDisabled: disabled,
@@ -48,7 +56,7 @@ export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
   );
   const styles = useComponentStyles(
     'Calendar',
-    {},
+    { size, variant },
     { parts: ['calendar', 'calendarControllers'] }
   );
   const calendarState = useStateProps({
@@ -68,7 +76,14 @@ export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
       ref={ref}
       css={styles.calendar}
     >
-      <Box style={{ display: 'flex', marginBottom: '16px', gap: '60px' }}>
+      <Box
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: '16px',
+          gap: '60px',
+        }}
+      >
         <Box
           __baseCSS={{
             display: 'flex',
@@ -84,9 +99,12 @@ export const Calendar = ({ disabled, readOnly, ...rest }: CalendarProps) => {
           __baseCSS={{
             display: 'flex',
             flexWrap: 'nowrap',
-            width: '100%',
             justifyContent: 'flex-end',
+            width: '100%',
             gap: '10px',
+            '& button': {
+              padding: '4px 8px',
+            },
           }}
           css={styles.calendarControllers}
         >

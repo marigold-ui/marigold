@@ -26,12 +26,12 @@ export const Calendar: Theme['components']['Calendar'] = {
         cursor: 'default',
       },
       '&[data-hover]': {
-        backgroundColor: 'orange10',
+        backgroundColor: 'purple10',
       },
       '&[aria-label*=selected]': {
         color: '#fff',
         fontWeight: '600',
-        backgroundColor: 'orange60',
+        backgroundColor: 'purple60',
         outline: 'none',
       },
     },
