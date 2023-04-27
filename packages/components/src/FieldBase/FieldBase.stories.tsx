@@ -88,6 +88,7 @@ export const Basic: Story = {
   ),
 };
 
+//TODO: change other components: TextField, Select, RadioGroup
 export const Complex: Story = {
   render: args => (
     <FieldGroup labelWidth="30%">

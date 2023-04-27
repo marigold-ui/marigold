@@ -136,7 +136,7 @@ test('field label shows requried indicator', () => {
   expect(requiredIcon).toBeInTheDocument();
 });
 
-test.only('passes down variant and size', () => {
+test('passes down variant and size', () => {
   render(
     <ThemeProvider theme={theme}>
       <FieldBase
@@ -156,9 +156,11 @@ test.only('passes down variant and size', () => {
     { exact: true }
   );
 
-  // const helptext = screen.getByText('Description');
-  // console.log(helptext);
-  // expect(helptext).toHaveStyle(`color: `);
+  const helptext = screen.getByText('Description');
+  expect(helptext).toHaveClass(
+    'flex items-center gap-1 text-blue-900 text-base',
+    { exact: true }
+  );
 });
 
 test('takes full width by default', () => {
@@ -172,13 +174,42 @@ test('takes full width by default', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle('width: 100%');
+  expect(container).toHaveClass(
+    'flex flex-col w-[var(--fieldWidth)] relative',
+    {
+      exact: true,
+    }
+  );
+  expect(container).toMatchInlineSnapshot(`
+    <div
+      class="flex flex-col w-[var(--fieldWidth)] relative"
+      style="--fieldWidth: 100%;"
+    >
+      <label
+        class="flex w-[var(--labelWidth)]"
+      >
+        Label
+      </label>
+      <div
+        class="flex flex-col"
+      >
+        <input
+          type="text"
+        />
+        <div
+          class="flex items-center gap-1"
+        >
+          Description
+        </div>
+      </div>
+    </div>
+  `);
 });
 
 test('allows to set custom width', () => {
   render(
     <ThemeProvider theme={theme}>
-      <FieldBase label="Label" description="Description" width="large">
+      <FieldBase label="Label" description="Description" width="60px">
         <input type="text" />
       </FieldBase>
     </ThemeProvider>
@@ -186,5 +217,28 @@ test('allows to set custom width', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
+  expect(container).toMatchInlineSnapshot(`
+    <div
+      class="flex flex-col w-[var(--fieldWidth)] relative"
+      style="--fieldWidth: 60px;"
+    >
+      <label
+        class="flex w-[var(--labelWidth)]"
+      >
+        Label
+      </label>
+      <div
+        class="flex flex-col"
+      >
+        <input
+          type="text"
+        />
+        <div
+          class="flex items-center gap-1"
+        >
+          Description
+        </div>
+      </div>
+    </div>
+  `);
 });

@@ -1,16 +1,9 @@
 import React, { forwardRef, ReactElement } from 'react';
 import { HtmlProps } from '@marigold/types';
-import {
-  Box,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-  useStateProps,
-} from '@marigold/system';
+import { Box, useComponentStylesFromTV, useStateProps } from '@marigold/system';
 
-// Theme Extension
-// ---------------
-export interface InputThemeExtension
-  extends ThemeExtensionsWithParts<'Input', ['input', 'icon', 'container']> {}
+import { tv } from 'tailwind-variants';
+import { twMerge } from 'tailwind-merge';
 
 // Props
 // ---------------
@@ -32,57 +25,42 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
     { type = 'text', icon, action, variant, size, ...props }: InputOwnProps,
     ref
   ) => {
-    const styles = useComponentStyles(
-      'Input',
-      { variant, size },
-      { parts: ['input', 'icon', 'container'] }
-    );
-
+    const classNames = useComponentStylesFromTV('Input', {
+      variant,
+      size,
+      slots: ['container', 'input', 'icon'],
+    });
     const stateProps = useStateProps({
       hasIcon: icon ? true : false,
     });
 
+    const styledInput = tv({
+      slots: {
+        input: ['w-full border-0 outline-0 pl-4'],
+        container: ['flex relative w-full items-center'],
+        icon: ['absolute left-2 pointer-events-none'],
+      },
+    });
+
     return (
-      <Box
-        __baseCSS={{
-          position: 'relative',
-          display: 'flex',
-          alignItems: 'center',
-          width: '100%',
-        }}
-        css={styles.container}
+      <div
+        className={twMerge(styledInput().container(), classNames.container())}
       >
         <Box
-          __baseCSS={{ border: 0, width: '100%', outline: 'none', pl: 16 }}
+          as="input"
           {...props}
           {...stateProps}
-          as="input"
+          className={twMerge(styledInput().input(), classNames.input())}
           ref={ref}
-          css={styles.input}
           type={type}
         />
         {icon && (
-          <Box
-            __baseCSS={{
-              position: 'absolute',
-              pointerEvents: 'none',
-              left: 8,
-            }}
-            css={styles.icon}
-          >
+          <div className={twMerge(styledInput().icon(), classNames.icon())}>
             {icon}
-          </Box>
+          </div>
         )}
-        <Box
-          __baseCSS={{
-            display: 'inline-flex',
-            position: 'absolute',
-            right: 8,
-          }}
-        >
-          {action}
-        </Box>
-      </Box>
+        <div className="absolute right-8 inline-flex">{action}</div>
+      </div>
     );
   }
 );

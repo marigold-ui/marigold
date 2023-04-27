@@ -55,9 +55,12 @@ export const FieldBase = ({
 
   const { labelWidth } = useFieldGroupContext();
 
-  //TODO: width is a dynmic prop, so w-full isn't correct
+  const styles = {
+    '--fieldWidth': width,
+  } as React.CSSProperties;
+
   const styledDiv = tv({
-    base: ['flex flex-col w-full relative'],
+    base: ['flex flex-col w-[var(--fieldWidth)] relative'],
   });
 
   const styledDivColumn = tv({
@@ -65,7 +68,7 @@ export const FieldBase = ({
   });
 
   return (
-    <Box {...props} className={twMerge(styledDiv(), classNames)}>
+    <Box {...props} className={twMerge(styledDiv(), classNames)} style={styles}>
       {label && (
         <Label
           required={required}

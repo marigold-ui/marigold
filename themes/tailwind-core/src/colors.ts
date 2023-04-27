@@ -4,6 +4,9 @@ export const colors = {
     body: '#511e04',
     current: 'currentColor',
   },
+  input: {
+    border: '#aaa',
+  },
   button: {
     base: {
       text: '#4b4b4b',
