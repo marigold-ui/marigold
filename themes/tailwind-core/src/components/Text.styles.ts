@@ -4,7 +4,7 @@ export const text = tv({
   variants: {
     variant: {
       bold: ['font-bold'],
-      muted: ['text-disabled'],
+      muted: ['text-disabled-text'],
     },
   },
 });

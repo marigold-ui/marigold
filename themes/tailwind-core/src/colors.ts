@@ -4,6 +4,12 @@ export const colors = {
     body: '#511e04',
     current: 'currentColor',
   },
+  listbox: {
+    border: '#aaa',
+  },
+  underlay: {
+    background: 'rgba(206, 212, 218, 0.5)',
+  },
   input: {
     border: '#aaa',
   },
@@ -76,16 +82,29 @@ export const colors = {
     },
   },
   // Status colors
-  error: '#f33',
-  disabled: '#cccccc',
-  info: {
-    background: '#1d67b6',
-    text: '#e8f4fa',
+  error: {
+    text: '#f33',
+    bg: '#f33',
   },
+  disabled: {
+    text: '#cccccc',
+    bg: '#e3e3e3',
+  },
+  info: {
+    text: '#e8f4fa',
+    bg: '#1d67b6',
+  },
+  focus: {
+    bg: '#3875d7',
+    bgImage: 'linear-gradient(#3875d7 20%, #2a62bc 90%)',
+  },
+
+  // other
   dark: {
-    background: '#4b4b4b',
+    bg: '#4b4b4b',
     text: '#ffffff',
   },
+
   // "Reds"
   primary: {
     500: '#f8ac67',

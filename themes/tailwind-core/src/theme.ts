@@ -8,6 +8,7 @@ import { input as Input } from './components';
 import { label as Label } from './components';
 import { table as Table } from './components';
 import { text as Text } from './components';
+import { underlay as Underlay } from './components';
 
 import { root } from './root';
 
@@ -32,5 +33,6 @@ export const theme = {
     Label,
     Table,
     Text,
+    Underlay,
   },
 };

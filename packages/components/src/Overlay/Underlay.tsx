@@ -1,9 +1,8 @@
 import React, { HTMLAttributes } from 'react';
-import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
+import { useComponentStylesFromTV } from '@marigold/system';
 
-// Theme Extension
-// ---------------
-export interface UnderlayThemeExtension extends ThemeExtension<'Underlay'> {}
+import { tv } from 'tailwind-variants';
+import { twMerge } from 'tailwind-merge';
 
 // Props
 // ---------------
@@ -15,16 +14,9 @@ export interface UnderlayProps extends HTMLAttributes<HTMLElement> {
 // Component
 // ---------------
 export const Underlay = ({ size, variant, ...props }: UnderlayProps) => {
-  const styles = useComponentStyles('Underlay', { size, variant });
-  return (
-    <Box
-      __baseCSS={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 1,
-      }}
-      css={styles}
-      {...props}
-    />
-  );
+  const styledUnderlay = tv({
+    base: ['fixed inset-0 z-[1]'],
+  });
+  const classNames = useComponentStylesFromTV('Underlay', { size, variant });
+  return <div className={twMerge(styledUnderlay(), classNames)} {...props} />;
 };

@@ -1,9 +1,9 @@
 import { createContext, useContext } from 'react';
-import { ClassValue } from 'tailwind-variants';
+import { TVReturnType } from 'tailwind-variants';
 
 // TVSlots or SlotsClassValue oder ClassValue ????
 export interface ListBoxContextProps {
-  classNames: Record<string, ClassValue>;
+  classNames: TVReturnType<any, any, any, any, any, any>;
 }
 
 export const ListBoxContext = createContext<ListBoxContextProps>({} as any);

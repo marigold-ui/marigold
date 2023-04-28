@@ -29,7 +29,7 @@ export const ListBoxOption = ({ item, state }: ListBoxOptionProps) => {
   );
 
   const { onPointerUp, ...props } = optionProps;
-  const { styles } = useListBoxContext();
+  const { classNames } = useListBoxContext();
   const stateProps = useStateProps({
     selected: isSelected,
     disabled: isDisabled,
@@ -40,7 +40,7 @@ export const ListBoxOption = ({ item, state }: ListBoxOptionProps) => {
     <Box
       as="li"
       ref={ref}
-      css={styles.option}
+      className={classNames.option()}
       {...mergeProps(props, { onPointerDown: onPointerUp }, { ...stateProps })}
     >
       {item.rendered}
