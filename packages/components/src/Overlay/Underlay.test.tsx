@@ -4,30 +4,21 @@ import { OverlayProvider } from '@react-aria/overlays';
 import { render, screen } from '@testing-library/react';
 import { Underlay } from './Underlay';
 
+import { tv } from 'tailwind-variants';
+
 const theme = {
-  colors: {
-    black: '#212529',
-    white: '#f8f9fa',
-    pink: '#fcc2d7',
-  },
-  space: {
-    none: 0,
-    small: 4,
-    large: 10,
-  },
+  name: 'test',
   components: {
-    Underlay: {
-      variant: {
-        one: {
-          bg: 'pink',
+    Underlay: tv({
+      variants: {
+        variant: {
+          one: 'bg-pink-600',
+        },
+        size: {
+          small: 'p-4',
         },
       },
-      size: {
-        small: {
-          p: 'small',
-        },
-      },
-    },
+    }),
   },
 };
 
@@ -56,7 +47,7 @@ test('underlay supports variant', () => {
   );
 
   const underlay = screen.getByTestId('underlay');
-  expect(underlay).toHaveStyle(`background-color: ${theme.colors.pink}`);
+  expect(underlay).toHaveClass(`bg-pink-600`);
 });
 
 test('underlay supports size', () => {
@@ -71,5 +62,5 @@ test('underlay supports size', () => {
   );
 
   const underlay = screen.getByTestId('underlay');
-  expect(underlay).toHaveStyle(`padding: ${theme.space.small}px`);
+  expect(underlay).toHaveClass(`p-4`);
 });
