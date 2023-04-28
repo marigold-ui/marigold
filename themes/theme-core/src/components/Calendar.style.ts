@@ -3,6 +3,7 @@ import type { Theme } from '@marigold/components';
 export const Calendar: Theme['components']['Calendar'] = {
   base: {
     calendar: {
+      bg: 'white',
       '&:disabled': {
         color: 'gray40',
       },
@@ -13,11 +14,12 @@ export const Calendar: Theme['components']['Calendar'] = {
         cursor: 'default',
       },
       '&[data-hover]': {
-        bg: 'gray10',
+        bg: 'gray40',
       },
       '&[aria-label*=selected]': {
         fontWeight: '600',
-        bg: 'gray10',
+        bg: 'gray60',
+        color: '#fff',
         outline: 'none',
       },
     },
