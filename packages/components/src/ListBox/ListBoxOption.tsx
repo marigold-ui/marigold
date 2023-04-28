@@ -36,6 +36,7 @@ export const ListBoxOption = ({ item, state }: ListBoxOptionProps) => {
     focusVisible: isFocused,
   });
 
+  console.log(classNames.option());
   return (
     <Box
       as="li"

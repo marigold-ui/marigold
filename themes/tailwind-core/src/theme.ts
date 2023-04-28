@@ -6,6 +6,8 @@ import { field as Field } from './components';
 import { helpText as HelpText } from './components';
 import { input as Input } from './components';
 import { label as Label } from './components';
+import { listbox as ListBox } from './components';
+import { select as Select } from './components';
 import { table as Table } from './components';
 import { text as Text } from './components';
 import { underlay as Underlay } from './components';
@@ -31,6 +33,8 @@ export const theme = {
     HelpText,
     Input,
     Label,
+    ListBox,
+    Select,
     Table,
     Text,
     Underlay,

@@ -99,6 +99,9 @@ export const colors = {
     bgImage: 'linear-gradient(#3875d7 20%, #2a62bc 90%)',
   },
 
+  border: {
+    color: '#aaa',
+  },
   // other
   dark: {
     bg: '#4b4b4b',

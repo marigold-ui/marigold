@@ -12,20 +12,14 @@ import { HtmlProps } from '@marigold/types';
 
 // Props
 // ---------------
-export interface ListSectionProps
-  extends Omit<HTMLAttributes<any>, 'className'> {
+export interface ListSectionProps {
   section: Node<unknown>;
   state: ListState<unknown>;
-  className?: { [key: string]: TVReturnType<any, any, any, any, any, any> };
 }
 
 // Component
 // ---------------
-export const ListBoxSection = ({
-  section,
-  state,
-  className,
-}: ListSectionProps) => {
+export const ListBoxSection = ({ section, state }: ListSectionProps) => {
   const { itemProps, headingProps, groupProps } = useListBoxSection({
     heading: section.rendered,
     'aria-label': section['aria-label'],
