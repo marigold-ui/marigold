@@ -25,21 +25,5 @@ export const DateField: Theme['components']['DateField'] = {
         borderColor: 'gray50',
       },
     },
-    segmentsContainer: {
-      color: 'gray40',
-    },
-    segment: {
-      '&[data-focus-visible]': {
-        bg: 'gray60',
-        color: 'white',
-      },
-      '&:not([data-disabled]):not([data-focus-visible])': {
-        '& span:nth-of-type(2)': {
-          '&:not(.literal), &.activeLiteral': {
-            color: 'gray60',
-          },
-        },
-      },
-    },
   },
 };

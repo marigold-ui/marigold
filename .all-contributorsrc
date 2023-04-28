@@ -154,6 +154,19 @@
         "test",
         "doc"
       ]
+    },
+    {
+      "login": "aromko",
+      "name": "Marcel Köhler",
+      "avatar_url": "https://avatars.githubusercontent.com/u/77496890?v=4",
+      "profile": "https://github.com/aromko",
+      "contributions": [
+        "doc",
+        "code",
+        "design",
+        "example",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 5,

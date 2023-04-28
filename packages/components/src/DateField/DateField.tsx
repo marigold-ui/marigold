@@ -15,6 +15,7 @@ import { FieldBase } from '../FieldBase';
 import { mergeProps } from '@react-aria/utils';
 import { useHover } from '@react-aria/interactions';
 import { useFocusRing } from '@react-aria/focus';
+import { Calendar } from '@marigold/icons';
 
 // Props
 // ----------------
@@ -86,7 +87,7 @@ export const DateField = ({
 
   const styles = useComponentStyles(
     'DateField',
-    {},
+    { variant, size },
     {
       parts: [
         'segment',
@@ -130,12 +131,14 @@ export const DateField = ({
       <Box
         __baseCSS={{
           display: 'flex',
+          border: '1px solid',
           flexDirection: 'row',
           justifyContent: 'space-between',
           flexWrap: 'nowrap',
           borderRadius: '10px',
           height: '40px',
           overflow: 'hidden',
+          bg: '#fff',
         }}
         {...mergeProps(fieldProps, stateProps, focusProps, hoverProps)}
         css={styles.field}
@@ -166,9 +169,9 @@ export const DateField = ({
             __baseCSS={{
               display: 'flex',
               flexBasis: '100%',
+              color: 'gray40',
             }}
             className="segments-container"
-            css={styles.segmentsContainer}
           >
             <Box
               __baseCSS={{
@@ -189,20 +192,17 @@ export const DateField = ({
             </Box>
           </Box>
         </Box>
-
-        {action && (
-          <Box
-            data-testid="action"
-            __baseCSS={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginRight: '8px',
-            }}
-          >
-            {action}
-          </Box>
-        )}
+        <Box
+          data-testid="action"
+          __baseCSS={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginRight: '8px',
+          }}
+        >
+          {action ? action : <Calendar />}
+        </Box>
       </Box>
     </FieldBase>
   );

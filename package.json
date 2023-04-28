@@ -7,7 +7,7 @@
   "engines": {
     "node": ">=16.x"
   },
-  "packageManager": "pnpm@8.1.1",
+  "packageManager": "pnpm@8.2.0",
   "dependencies": {
     "@babel/core": "7.21.4",
     "@changesets/changelog-github": "0.4.8",
@@ -63,9 +63,7 @@
     "typecheck": "tsc --noEmit --project tsconfig.check.json",
     "contributor": "all-contributors",
     "changeset": "changeset",
-    "release": "zx scripts/release.mjs --quiet",
     "release:notification": "zx scripts/create-slack-notification.mjs",
-    "slack": "zx scripts/slack-release-notification.mjs --quiet",
     "prepare": "husky install"
   }
 }

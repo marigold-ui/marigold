@@ -56,16 +56,14 @@ import unicornTheme from '@marigold/theme-unicorn'
 
 ### Setup & Usage
 
-Open a terminal and navigate to a folder of your choice. Clone the project `git clone https://github.com/marigold-ui/marigold.git` and navigate to the new folder `cd marigold`. Install the yarn packages using `yarn` command in the root and use `yarn start` to start storybook. Open [localhost:6005](http://localhost:6005) to see the components in storybook.
-Navigate to the documentation `cd docs` and start the development server `gatsby develop`, which opens the documentation site on [localhost:8000](http://localhost:8000).
+Open a terminal and navigate to a folder of your choice. Clone the project `git clone https://github.com/marigold-ui/marigold.git` and navigate to the new folder `cd marigold`. Install the packages using `pnpm install` command in the root and use `pnpm dev` to start storybook. Open [localhost:1337](http://localhost:1337) to see the components in storybook.
+Navigate to the documentation `cd docs` and start the development server `pnpm start`, which opens the documentation site on [localhost:3000](http://localhost:3000).
 When working on the components, use the following commands for development.
 
-- Coverage: `yarn coverage`
-- Linting: `yarn lint`
-- Test: `yarn test` (with optional `--watch`)
-- Type checking: `yarn typecheck`
-
-For a release on NPM, change the version numbers and use `yarn release` and check all the packages you want to publish.
+- Coverage: `pnpm test:coverage`
+- Linting: `pnpm lint`
+- Test: `pnpm test` (with optional `--watch`)
+- Type checking: `pnpm typecheck`
 
 ## Contributors ✨
 
@@ -95,6 +93,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="20%"><a href="https://github.com/michael-p"><img src="https://avatars.githubusercontent.com/u/531872?v=4?s=120" width="120px;" alt="Michael Partheil"/><br /><sub><b>Michael Partheil</b></sub></a><br /><a href="#ideas-michael-p" title="Ideas, Planning, & Feedback">🤔</a></td>
       <td align="center" valign="top" width="20%"><a href="https://github.com/lauraNawrotzki"><img src="https://avatars.githubusercontent.com/u/104084537?v=4?s=120" width="120px;" alt="lauraNawrotzki"/><br /><sub><b>lauraNawrotzki</b></sub></a><br /><a href="#ideas-lauraNawrotzki" title="Ideas, Planning, & Feedback">🤔</a></td>
       <td align="center" valign="top" width="20%"><a href="https://osama-abdellatef.vercel.app/"><img src="https://avatars.githubusercontent.com/u/62595605?v=4?s=120" width="120px;" alt="Osama Abdul Latif "/><br /><sub><b>Osama Abdul Latif </b></sub></a><br /><a href="https://github.com/marigold-ui/marigold/commits?author=OsamaAbdellateef" title="Code">💻</a> <a href="#design-OsamaAbdellateef" title="Design">🎨</a> <a href="#maintenance-OsamaAbdellateef" title="Maintenance">🚧</a> <a href="https://github.com/marigold-ui/marigold/commits?author=OsamaAbdellateef" title="Tests">⚠️</a> <a href="https://github.com/marigold-ui/marigold/commits?author=OsamaAbdellateef" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="20%"><a href="https://github.com/aromko"><img src="https://avatars.githubusercontent.com/u/77496890?v=4?s=120" width="120px;" alt="Marcel Köhler"/><br /><sub><b>Marcel Köhler</b></sub></a><br /><a href="https://github.com/marigold-ui/marigold/commits?author=aromko" title="Documentation">📖</a> <a href="https://github.com/marigold-ui/marigold/commits?author=aromko" title="Code">💻</a> <a href="#design-aromko" title="Design">🎨</a> <a href="#example-aromko" title="Examples">💡</a> <a href="https://github.com/marigold-ui/marigold/commits?author=aromko" title="Tests">⚠️</a></td>
     </tr>
   </tbody>
 </table>

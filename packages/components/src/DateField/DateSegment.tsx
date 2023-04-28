@@ -47,6 +47,17 @@ export const DateSegment = ({
         textAlign: 'center',
         outline: '0',
         borderRadius: '2px',
+        '&[data-focus-visible]': {
+          bg: 'gray60',
+          color: 'white',
+        },
+        '&:not([data-disabled]):not([data-focus-visible])': {
+          '& span:nth-of-type(2)': {
+            '&:not(.literal), &.activeLiteral': {
+              color: 'gray60',
+            },
+          },
+        },
       }}
       css={styles.segment}
     >
@@ -80,7 +91,6 @@ export const DateSegment = ({
             ? '0' + text
             : text
           : text}
-        {/* {isPlaceholder ? "" : text} */}
       </Box>
     </Box>
   );

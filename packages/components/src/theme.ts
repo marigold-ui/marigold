@@ -13,6 +13,7 @@ import type { CheckboxThemeExtension } from './Checkbox';
 import type { DialogThemeExtension } from './Dialog';
 import type { DividerThemeExtension } from './Divider';
 import type { FieldThemeExtension } from './FieldBase';
+import type { DateFieldThemeExtension } from './DateField';
 import type { FooterThemeExtension } from './Footer';
 import type { HeaderThemeExtension } from './Header';
 import type { HeadlineThemeExtension } from './Headline';
@@ -35,9 +36,9 @@ import type { TableThemeExtension } from './Table';
 import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
 import type { TooltipThemeExtension } from './Tooltip';
-import { DateFieldThemeExtension } from './DateField';
-import { CalendarThemeExtension } from './Calendar';
-import { DatePickerThemeExtension } from './DatePicker';
+import type { CalendarThemeExtension } from './Calendar';
+import type { DatePickerThemeExtension } from './DatePicker';
+import type { TagThemeExtension } from './TagGroup/Tag';
 
 interface ComponentStyles
   extends AccordionThemeExtension,
@@ -49,6 +50,7 @@ interface ComponentStyles
     BodyThemeExtension,
     DialogThemeExtension,
     DividerThemeExtension,
+    DateFieldThemeExtension,
     FieldThemeExtension,
     FooterThemeExtension,
     HeaderThemeExtension,
@@ -74,8 +76,8 @@ interface ComponentStyles
     TextThemeExtension,
     TextAreaThemeExtension,
     TooltipThemeExtension,
-    UnderlayThemeExtension,
-    CalendarThemeExtension {}
+    TagThemeExtension,
+    UnderlayThemeExtension {}
 
 export interface Theme extends BaseTheme {
   components: ComponentStyles;
