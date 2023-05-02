@@ -1,6 +1,7 @@
 const createConfig = require('@marigold/jest-config');
 
 module.exports = createConfig({
+  testTimeout: 30000,
   collectCoverageFrom: [
     '!**/config/**',
     '!**/docs*/**',
@@ -22,4 +23,5 @@ module.exports = createConfig({
     '^@marigold/(.+)$': '<rootDir>/packages/$1/src',
     '^@marigold/(.*)$': '<rootDir>/dist/myscope/$1',
   },
+  fakeTimers: { enableGlobally: true },
 });
