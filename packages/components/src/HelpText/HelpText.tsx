@@ -44,8 +44,8 @@ export const HelpText = ({
   return (
     <Box
       {...(hasErrorMessage ? errorMessageProps : descriptionProps)}
-      {...props}
       className={twMerge(styledDiv(), classNames.container())}
+      {...props}
     >
       {hasErrorMessage ? (
         <>

@@ -18,6 +18,6 @@ export const listbox = tv({
       'mg-selected:text-secondary-50 mg-selected:bg-focus-bg',
       'mg-disabled:cursor-not-allowed mg-disabled:text-disabled-text',
     ],
-    sectionTitle: [],
+    sectionTitle: [''],
   },
 });

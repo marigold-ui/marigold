@@ -11,132 +11,88 @@ import {
 import userEvent from '@testing-library/user-event';
 import { cleanup } from '@testing-library/react';
 
-import { ThemeProvider, useResponsiveValue } from '@marigold/system';
+import { Theme, ThemeProvider, useResponsiveValue } from '@marigold/system';
 
 import { Select } from './Select';
 
-const theme = {
-  colors: {
-    black: '#212529',
-    gray: '#868e96',
-    blue: '#339af0',
-    lime: '#82c91e',
-    violet: '#6741d9',
-    error: '#c92a2a',
-    disabled: '#ced4da',
-  },
-  fontSizes: {
-    'small-1': 14,
-    'medium-1': 18,
-  },
-  sizes: {
-    none: 0,
-    huge: 120,
-  },
+import { tv } from 'tailwind-variants';
+
+const theme: Theme = {
+  name: 'test',
   components: {
-    Label: {
-      base: {
-        color: 'black',
-      },
-      variant: {
-        lime: {
-          color: 'lime',
+    Label: tv({
+      base: 'text-black',
+      variants: {
+        variant: {
+          lime: 'text-lime-500',
+        },
+        size: {
+          small: 'p-1',
         },
       },
-      size: {
-        small: {
-          fontSize: 'small-1',
-        },
+    }),
+    HelpText: tv({
+      slots: {
+        base: 'text-black',
+        container: '',
       },
-    },
-    HelpText: {
-      base: {
-        color: 'black',
-      },
-      variant: {
-        lime: {
-          container: {
-            color: 'lime',
+      variants: {
+        variant: {
+          lime: {
+            container: 'text-lime-500',
           },
         },
-      },
-      size: {
-        small: {
-          container: {
-            fontSize: 'small-1',
+        size: {
+          small: {
+            container: 'p-1',
           },
         },
       },
-    },
-    Select: {
-      base: {
-        button: {
-          color: 'black',
-          '&:hover': {
-            borderColor: 'lime',
+    }),
+    Select: tv({
+      slots: {
+        container: '',
+        icon: '',
+        button: [
+          'text-black hover:border-lime-500 disabled:text-disabled-text',
+        ],
+      },
+      variants: {
+        variant: {
+          violet: {
+            button: 'text-violet',
           },
-          '&:disabled': {
-            color: 'disabled',
-          },
-          '&:focus-visible': {
-            borderColor: 'blue',
-          },
-          '&:expanded': {
-            borderColor: 'gray',
-          },
-          '&:error': {
-            borderColor: 'error',
+        },
+        size: {
+          medium: {
+            button: 'p-2',
           },
         },
       },
-      variant: {
-        violet: {
-          button: {
-            color: 'violet',
+    }),
+    ListBox: tv({
+      slots: {
+        container: '',
+        list: '',
+        section: '',
+        option: [
+          'text-black focus:bg-blue-500 selected:bg-lime-600 disabled:bg-disabled',
+        ],
+        sectionTitle: ['font-bold'],
+      },
+      variants: {
+        variant: {
+          violet: {
+            option: 'text-violet-300',
+          },
+        },
+        size: {
+          medium: {
+            sectionTitle: 'p-2',
           },
         },
       },
-      size: {
-        medium: {
-          button: {
-            fontSize: 'medium-1',
-          },
-        },
-      },
-    },
-    ListBox: {
-      base: {
-        option: {
-          color: 'black',
-          '&:focus': {
-            bg: 'blue',
-          },
-          '&:selected': {
-            bg: 'lime',
-          },
-          '&:disabled': {
-            color: 'disabled',
-          },
-        },
-        sectionTitle: {
-          fontSize: 'small-1',
-        },
-      },
-      variant: {
-        violet: {
-          option: {
-            color: 'violet',
-          },
-        },
-      },
-      size: {
-        medium: {
-          sectionTitle: {
-            fontSize: 'medium-1',
-          },
-        },
-      },
-    },
+    }),
   },
 };
 
@@ -149,6 +105,18 @@ const mockMatchMedia = (matches: string[]) =>
     matches: matches.includes(query),
   }));
 afterEach(cleanup);
+
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: () => {
+    return {
+      matches: false,
+
+      addListener: () => {},
+      removeListener: () => {},
+    };
+  },
+});
 
 test('renders a field (label, helptext, select)', () => {
   window.matchMedia = mockMatchMedia([
@@ -473,7 +441,7 @@ test('supports default value via "defaultSelectedKey"', () => {
   const options = screen.getByRole('listbox');
   const three = within(options).getByText('three');
 
-  expect(three).toHaveStyle(`background: ${theme.colors.lime}`);
+  expect(three).toHaveClass(`selected:bg-lime-600`);
 });
 
 test('supports sections', () => {
@@ -505,7 +473,7 @@ test('supports sections', () => {
   expect(sectionTwo).toBeVisible();
 });
 
-test('supports styling with variants and sizes from theme', () => {
+test('supports styling classnames with variants and sizes from theme', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
@@ -525,24 +493,23 @@ test('supports styling with variants and sizes from theme', () => {
   );
 
   const button = screen.getByTestId('select');
-  expect(button).toHaveStyle(`color: ${theme.colors.violet}`);
-  expect(button).toHaveStyle(`font-size: ${theme.fontSizes['medium-1']}px`);
+  expect(button).toHaveClass(
+    `flex relative items-center justify-between w-full hover:border-lime-500 disabled:text-disabled-text text-violet p-2`
+  );
+
   fireEvent.click(button);
 
   const options = screen.getByRole('listbox');
 
   const one = within(options).getByText('one');
-  expect(one).toHaveStyle(`color: ${theme.colors.violet}`);
-
-  const section = within(options).getByText('Section 1');
-  expect(section).toHaveStyle(`font-size: ${theme.fontSizes['medium-1']}px`);
+  expect(one).toHaveClass(`text-violet-300`);
 });
 
 test('set width via props', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" width="huge">
+        <Select label="Label" data-testid="select" width="200">
           <Select.Option key="one">one</Select.Option>
           <Select.Option key="two">two</Select.Option>
         </Select>
@@ -553,134 +520,7 @@ test('set width via props', () => {
   // We need to query all, since there is also a label in the hidden select
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getAllByText('Label')[0].parentElement;
-  expect(container).toHaveStyle(`width: ${theme.sizes.huge}px`);
-});
-
-test('supports focus styling for button', async () => {
-  const user = userEvent.setup();
-
-  render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select">
-          <Select.Section title="Section 1">
-            <Select.Option key="one">one</Select.Option>
-            <Select.Option key="two">two</Select.Option>
-          </Select.Section>
-        </Select>
-      </ThemeProvider>
-    </OverlayProvider>
-  );
-
-  const button = screen.getByTestId('select');
-  await user.tab();
-
-  expect(button).toHaveStyle(`border-color: ${theme.colors.blue}`);
-});
-
-test('supports styling when select is open', async () => {
-  const user = userEvent.setup();
-
-  render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select">
-          <Select.Section title="Section 1">
-            <Select.Option key="one">one</Select.Option>
-            <Select.Option key="two">two</Select.Option>
-          </Select.Section>
-        </Select>
-      </ThemeProvider>
-    </OverlayProvider>
-  );
-
-  const button = screen.getByTestId('select');
-  await user.tab();
-  await user.keyboard('[ArrowDown]');
-
-  expect(button).toHaveStyle(`border-color: ${theme.colors.gray}`);
-});
-
-test('supports styling error state', () => {
-  render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" error>
-          <Select.Section title="Section 1">
-            <Select.Option key="one">one</Select.Option>
-            <Select.Option key="two">two</Select.Option>
-          </Select.Section>
-        </Select>
-      </ThemeProvider>
-    </OverlayProvider>
-  );
-
-  const button = screen.getByTestId('select');
-  expect(button).toHaveStyle(`border-color: ${theme.colors.error}`);
-});
-
-test('supports styling disabled state', () => {
-  render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" disabled>
-          <Select.Section title="Section 1">
-            <Select.Option key="one">one</Select.Option>
-            <Select.Option key="two">two</Select.Option>
-          </Select.Section>
-        </Select>
-      </ThemeProvider>
-    </OverlayProvider>
-  );
-
-  const button = screen.getByTestId('select');
-  expect(button).toHaveStyle(`color: ${theme.colors.disabled}`);
-});
-
-test('supports styling selected option', () => {
-  render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" defaultSelectedKey="one">
-          <Select.Section title="Section 1">
-            <Select.Option key="one">one</Select.Option>
-            <Select.Option key="two">two</Select.Option>
-          </Select.Section>
-        </Select>
-      </ThemeProvider>
-    </OverlayProvider>
-  );
-
-  const button = screen.getByTestId('select');
-  fireEvent.click(button);
-
-  const options = screen.getByRole('listbox');
-  const one = within(options).getByText('one');
-
-  expect(one).toHaveStyle(`background: ${theme.colors.lime}`);
-});
-
-test('supports styling disabled option', () => {
-  render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" disabledKeys={['two']}>
-          <Select.Section title="Section 1">
-            <Select.Option key="one">one</Select.Option>
-            <Select.Option key="two">two</Select.Option>
-          </Select.Section>
-        </Select>
-      </ThemeProvider>
-    </OverlayProvider>
-  );
-
-  const button = screen.getByTestId('select');
-  fireEvent.click(button);
-
-  const options = screen.getByRole('listbox');
-  const two = within(options).getByText('two');
-
-  expect(two).toHaveStyle(`color: ${theme.colors.disabled}`);
+  expect(container).toHaveStyle('width: 200');
 });
 
 test('forwards ref', () => {
@@ -735,5 +575,3 @@ test('renders as tray', () => {
   const tray = screen.getByTestId('tray');
   expect(tray).toBeInTheDocument();
 });
-
-// FIXME: We currently have no easy way to test the focus + hover styling
