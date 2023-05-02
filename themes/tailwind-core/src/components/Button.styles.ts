@@ -4,7 +4,7 @@ export const button = tv({
     'border px-4 py-0 rounded-sm border-button-base-border h-6 bg-button-base-background',
     'text-sm leading-6 text-button-base-text',
     'cursor-pointer transition-all duration-200 ease-ease-out',
-    'disabled:cursor-none disabled:border-button-disabled-border disabled:bg-button-disabled-background disabled:text-button-disabled-text',
+    'mg-disabled:cursor-none mg-disabled:border-button-disabled-border mg-disabled:bg-button-disabled-background mg-disabled:text-button-disabled-text',
     'hover:bg-secondary-50',
   ],
   variants: {

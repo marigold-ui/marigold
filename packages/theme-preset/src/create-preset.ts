@@ -2,6 +2,7 @@ import path from 'node:path';
 import deepmerge from 'deepmerge';
 import { sync as findUpSync } from 'find-up';
 import type { Config, OptionalConfig } from 'tailwindcss/types/config';
+import plugin from 'tailwindcss/plugin';
 
 import { defaultTheme } from '@marigold/system';
 
@@ -25,6 +26,24 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
           defaultTheme,
         },
       },
+      plugins: [
+        plugin(({ addVariant }) => {
+          addVariant('mg-disabled', [
+            '&[disabled]',
+            '&[aria-disabled=true]',
+            '&[data-disabled]',
+          ]);
+          addVariant('mg-selected', [
+            '&[aria-selected=true]',
+            '&[data-selected]',
+          ]);
+          addVariant('mg-error', [
+            '&:invalid',
+            '&[aria-invalid=true]',
+            '&[data-error]',
+          ]);
+        }),
+      ],
     },
     config
   ) satisfies Config;

@@ -37,7 +37,7 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
 
     const styledInput = tv({
       slots: {
-        input: ['w-full border-0 outline-0 '],
+        input: ['w-full border-0 outline-0'],
         container: ['flex relative w-full items-center'],
         icon: ['absolute pointer-events-none'],
       },
