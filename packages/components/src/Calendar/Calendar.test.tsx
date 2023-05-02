@@ -2,8 +2,9 @@
 import { Calendar } from '../';
 import { CalendarDate } from '@internationalized/date';
 import { render, screen, fireEvent, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 
 const keyCodes = {
   Enter: 13,
@@ -31,11 +32,9 @@ describe('Calendar', () => {
       }),
     });
   });
-  afterEach(() => {
-    act(() => {
-      jest.runAllTimers();
-    });
-  });
+
+  const user = userEvent.setup();
+
   test('renders with default value', () => {
     render(<Calendar defaultValue={new CalendarDate(2019, 6, 5)} />);
 
@@ -188,7 +187,7 @@ describe('Calendar', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
-  test('selects a date on click (uncontrolled)', () => {
+  test('selects a date on click (uncontrolled)', async () => {
     const onChange = jest.fn();
     render(
       <Calendar
@@ -197,7 +196,7 @@ describe('Calendar', () => {
       />
     );
     const newDate = screen.getByText('17');
-    fireEvent.click(newDate);
+    await user.click(newDate);
 
     const selectedDate = screen.getByLabelText('selected', { exact: false });
     expect(selectedDate.textContent).toBe('17');
@@ -205,14 +204,14 @@ describe('Calendar', () => {
     expect(onChange.mock.calls[0][0]).toEqual(new CalendarDate(2019, 6, 17));
   });
 
-  test('selects a date on click (controlled)', () => {
+  test('selects a date on click (controlled)', async () => {
     const onChange = jest.fn();
     render(
       <Calendar value={new CalendarDate(2019, 6, 5)} onChange={onChange} />
     );
 
     const newDate = screen.getByText('17');
-    fireEvent.click(newDate);
+    await user.click(newDate);
 
     const selectedDate = screen.getByLabelText('selected', { exact: false });
     expect(selectedDate.textContent).toBe('5');
@@ -220,7 +219,7 @@ describe('Calendar', () => {
     expect(onChange.mock.calls[0][0]).toEqual(new CalendarDate(2019, 6, 17));
   });
 
-  test('does not select a date on click if disabled', () => {
+  test('does not select a date on click if disabled', async () => {
     const onChange = jest.fn();
     render(
       <Calendar
@@ -231,7 +230,7 @@ describe('Calendar', () => {
     );
 
     const newDate = screen.getByText('17');
-    fireEvent.click(newDate);
+    await user.click(newDate);
 
     expect(() => {
       screen.getAllByLabelText('selected', { exact: false });
@@ -239,7 +238,7 @@ describe('Calendar', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
-  test('does not select a date on click if isReadOnly', () => {
+  test('does not select a date on click if isReadOnly', async () => {
     const onChange = jest.fn();
     render(
       <Calendar
@@ -250,7 +249,7 @@ describe('Calendar', () => {
     );
 
     const newDate = screen.getByText('17');
-    fireEvent.click(newDate);
+    await user.click(newDate);
 
     const selectedDate = screen.getByLabelText('selected', { exact: false });
     expect(selectedDate.textContent).toBe('5');
@@ -276,21 +275,21 @@ describe('Calendar', () => {
     render(<Calendar />);
     const monthButton = screen.getByTestId('month');
     expect(monthButton).toBeInTheDocument();
-    fireEvent.click(monthButton);
+    await user.click(monthButton);
     const monthOptions = screen.getByRole('listbox');
     const mar = within(monthOptions).getByText('Mar');
-    fireEvent.click(mar);
+    await user.click(mar);
     expect(monthButton).toHaveTextContent('Mar');
 
     const yearButton = screen.getByTestId('year');
     expect(yearButton).toBeInTheDocument();
-    fireEvent.click(yearButton);
+    await user.click(yearButton);
     const yearOptions = screen.getByRole('listbox');
     expect(yearOptions).toBeInTheDocument();
     const nineteen = within(yearOptions).getByText('2019');
     expect(nineteen).toBeInTheDocument();
-    fireEvent.click(nineteen);
+    await user.click(nineteen);
     expect(yearButton).toHaveTextContent('2019');
-    fireEvent.click(monthButton);
+    await user.click(monthButton);
   });
 });
