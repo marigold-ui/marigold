@@ -54,6 +54,9 @@ export const Calendar = ({
     props,
     state
   );
+  // destructure isDisabled to avoid passing it to the component and being used on dom element
+  const { isDisabled: prevIsDisabled, ...prevPropsRest } = prevButtonProps;
+  const { isDisabled: nextIsDisabled, ...nextPropsRest } = nextButtonProps;
   const styles = useComponentStyles(
     'Calendar',
     { size, variant },
@@ -108,11 +111,11 @@ export const Calendar = ({
           }}
           css={styles.calendarControllers}
         >
-          <Button disabled={disabled} {...prevButtonProps}>
+          <Button {...prevPropsRest} disabled={prevIsDisabled}>
             <ChevronLeft />
           </Button>
-          <Button disabled={disabled} {...nextButtonProps}>
-            <ChevronRight fontSize={'1'} />
+          <Button {...nextPropsRest} disabled={nextIsDisabled}>
+            <ChevronRight />
           </Button>
         </Box>
       </Box>
