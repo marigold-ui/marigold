@@ -114,7 +114,6 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       validationState: error ? 'invalid' : 'valid',
       placeholder: rest.placeholder || formatMessage.format('placeholder'),
       onSelectionChange: onChange,
-      isOpen: true,
       ...rest,
     } as const;
 
