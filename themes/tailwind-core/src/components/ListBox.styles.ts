@@ -5,7 +5,7 @@ export const listbox = tv({
     container: [
       'mt-[1] bg-secondary-50 text-[13px]',
       'border border-solid rounded-sm border-listbox-border',
-      'error:border-error',
+      'mg-error:border-error-text',
     ],
     list: [
       'outline-none overflow-auto',
@@ -13,9 +13,10 @@ export const listbox = tv({
     ],
     section: ['font-bold px-1'],
     option: [
-      'outline-none py-0 pl-[6px] pr-4',
-      'focus-visible:text-secondary-50 focus-visible:bg-focus-bg focus-visible:bg-gradient-to-r:[(#3875d7 20%),(#2a62bc, 90%)]',
-      'data-[selected]:text-secondary-50 data-[selected]:bg-focus-bg aria-selected:bg-gradient-[focus-bgImage]',
+      'outline-none py-0 pl-[6px] pr-4 font-normal',
+      'focus-visible:text-secondary-50 focus-visible:bg-focus-bg',
+      'mg-selected:text-secondary-50 mg-selected:bg-focus-bg',
+      'mg-disabled:cursor-not-allowed mg-disabled:text-disabled-text',
     ],
     sectionTitle: [],
   },
