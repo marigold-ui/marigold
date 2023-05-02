@@ -76,7 +76,7 @@ describe('DatePicker', () => {
     });
 
     test('does not render calendar when date picker is not open', () => {
-      render(<DatePicker />);
+      render(<DatePicker aria-label="date picker" />);
       const heading = screen.queryByRole('heading');
       expect(heading).not.toBeInTheDocument();
     });
@@ -314,7 +314,11 @@ describe('DatePicker', () => {
     test('emits onChange when selecting a date in the calendar in controlled mode', async () => {
       const onChange = jest.fn();
       render(
-        <DatePicker value={new CalendarDate(2019, 2, 3)} onChange={onChange} />
+        <DatePicker
+          aria-label="date picker"
+          value={new CalendarDate(2019, 2, 3)}
+          onChange={onChange}
+        />
       );
 
       const combobox = screen.getAllByRole('group')[0];
@@ -347,6 +351,7 @@ describe('DatePicker', () => {
       let onChange = jest.fn();
       render(
         <DatePicker
+          aria-label="date picker"
           defaultValue={new CalendarDate(2019, 2, 3)}
           onChange={onChange}
         />
