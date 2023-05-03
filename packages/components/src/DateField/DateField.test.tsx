@@ -89,7 +89,9 @@ test('render DateField with label and helper text', () => {
 });
 
 test('supports error message', () => {
-  render(<DateField error errorMessage="something went wrong" />);
+  render(
+    <DateField label="date field" error errorMessage="something went wrong" />
+  );
   const error = screen.getByText('something went wrong');
   expect(error).toBeInTheDocument();
 });
@@ -97,6 +99,7 @@ test('supports error message', () => {
 test('render DateField with error messaege however description is set', () => {
   render(
     <DateField
+      label="date field"
       error
       errorMessage="something went wrong"
       description="this is description"
@@ -111,8 +114,8 @@ test('render DateField with error messaege however description is set', () => {
 test('events', async () => {
   render(
     <DateField
-      defaultValue={parseAbsoluteToLocal('2021-11-07T07:45:00Z')}
       label="date"
+      defaultValue={parseAbsoluteToLocal('2021-11-07T07:45:00Z')}
       onBlur={onBlurSpy}
       onFocus={onFocusSpy}
       onFocusChange={onFocusChangeSpy}
