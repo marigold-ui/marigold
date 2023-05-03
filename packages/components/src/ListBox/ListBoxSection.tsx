@@ -29,8 +29,6 @@ export const ListBoxSection = ({ section, state }: ListSectionProps) => {
 
   const { classNames } = useListBoxContext();
 
-  console.log(classNames);
-
   return (
     <li className={twMerge(classNames.section())} {...itemProps}>
       {section.rendered && (

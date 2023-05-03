@@ -158,7 +158,6 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       },
     });
 
-    console.log(width);
     return (
       <FieldBase
         variant={variant}

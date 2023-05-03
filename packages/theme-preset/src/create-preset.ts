@@ -42,6 +42,7 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
             '&[aria-invalid=true]',
             '&[data-error]',
           ]);
+          addVariant('mg-hover', ['&:hover:not([disabled])', '&[data-hover]']);
         }),
       ],
     },
