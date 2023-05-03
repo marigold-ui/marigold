@@ -26,6 +26,7 @@
   "devDependencies": {
     "@marigold/system": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
+    "@marigold/types": "workspace:*",
     "postcss": "8.4.21",
     "tailwindcss": "3.3.2",
     "tsup": "6.7.0"

@@ -1,3 +1,4 @@
+import { Theme } from '@marigold/system';
 import { colors } from './colors';
 import { badge as Badge } from './components';
 import { button as Button } from './components';
@@ -14,7 +15,7 @@ import { underlay as Underlay } from './components';
 
 import { root } from './root';
 
-export const theme = {
+export const theme: Theme = {
   name: 'core',
   screens: {
     sm: '640px',

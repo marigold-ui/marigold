@@ -8,6 +8,7 @@ export type Theme = {
     [key: string]: TVReturnType<any, any, any, any, any, any>;
   };
   root?: TVReturnType<any, any, any, any, any, any> | string;
+  colors?: any;
 };
 
 /**
