@@ -7,7 +7,6 @@ import { Theme } from '../types';
 export const __defaultTheme: Theme = {
   name: 'default',
   components: {},
-  root: '',
 };
 
 const InternalContext = createContext<Theme>(__defaultTheme);
