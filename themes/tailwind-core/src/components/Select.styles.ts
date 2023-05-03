@@ -1,6 +1,5 @@
-import { tv } from 'tailwind-variants';
-
-export const select = tv({
+import { tv, type TVReturnType } from 'tailwind-variants';
+export const select: TVReturnType<any, any, any, any, any, any> = tv({
   slots: {
     container: [],
     button: [

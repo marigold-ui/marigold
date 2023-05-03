@@ -1,6 +1,5 @@
-import { tv } from 'tailwind-variants';
-
-export const input = tv({
+import { tv, type TVReturnType } from 'tailwind-variants';
+export const input: TVReturnType<any, any, any, any, any, any> = tv({
   slots: {
     input: [
       'border border-solid rounded-sm border-input-border',

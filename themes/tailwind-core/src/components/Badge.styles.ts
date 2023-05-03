@@ -1,6 +1,6 @@
-import { tv } from 'tailwind-variants';
+import { tv, type TVReturnType } from 'tailwind-variants';
 
-export const badge = tv({
+export const badge: TVReturnType<any, any, any, any, any, any> = tv({
   base: 'inline-flex align-middle text-xxsmall rounded-3xl whitespace-nowrap px-2 py-0.5',
   variants: {
     variant: {

@@ -1,6 +1,5 @@
-import { tv } from 'tailwind-variants';
-
-export const checkbox = tv({
+import { tv, type TVReturnType } from 'tailwind-variants';
+export const checkbox: TVReturnType<any, any, any, any, any, any> = tv({
   slots: {
     label: 'leading-[1.125] data-[disabled]:text-checkbox-label-disabled',
     checkbox: [

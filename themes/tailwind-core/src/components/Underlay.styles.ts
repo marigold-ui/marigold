@@ -1,6 +1,5 @@
-import { tv } from 'tailwind-variants';
-
-export const underlay = tv({
+import { tv, type TVReturnType } from 'tailwind-variants';
+export const underlay: TVReturnType<any, any, any, any, any, any> = tv({
   base: [''],
   variants: {
     variant: {

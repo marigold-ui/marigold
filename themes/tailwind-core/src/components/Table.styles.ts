@@ -1,6 +1,5 @@
-import { tv } from 'tailwind-variants';
-
-export const table = tv({
+import { tv, type TVReturnType } from 'tailwind-variants';
+export const table: TVReturnType<any, any, any, any, any, any> = tv({
   slots: {
     table: ['border-collapse'],
     header: [

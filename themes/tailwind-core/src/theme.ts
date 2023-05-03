@@ -4,7 +4,7 @@ import { badge as Badge } from './components';
 import { button as Button } from './components';
 import { checkbox as Checkbox } from './components';
 import { field as Field } from './components';
-import { helpText as HelpText } from './components';
+import { helptext as HelpText } from './components';
 import { input as Input } from './components';
 import { label as Label } from './components';
 import { listbox as ListBox } from './components';

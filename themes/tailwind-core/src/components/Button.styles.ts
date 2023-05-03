@@ -1,5 +1,5 @@
-import { tv } from 'tailwind-variants';
-export const button = tv({
+import { tv, type TVReturnType } from 'tailwind-variants';
+export const button: TVReturnType<any, any, any, any, any, any> = tv({
   base: [
     'border px-4 py-0 rounded-sm border-button-base-border h-6 bg-button-base-background',
     'text-sm leading-6 text-button-base-text',

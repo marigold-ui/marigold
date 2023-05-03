@@ -1,6 +1,5 @@
-import { tv } from 'tailwind-variants';
-
-export const listbox = tv({
+import { tv, type TVReturnType } from 'tailwind-variants';
+export const listbox: TVReturnType<any, any, any, any, any, any> = tv({
   slots: {
     container: [
       'mt-[1] bg-secondary-50 text-[13px]',
