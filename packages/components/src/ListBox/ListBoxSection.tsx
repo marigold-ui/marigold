@@ -1,14 +1,12 @@
-import React, { DetailedHTMLProps, HTMLAttributes } from 'react';
+import React from 'react';
 import { useListBoxSection } from '@react-aria/listbox';
 import type { ListState } from '@react-stately/list';
 import type { Node } from '@react-types/shared';
 
-import { TVReturnType } from 'tailwind-variants';
 import { twMerge } from 'tailwind-merge';
 
 import { useListBoxContext } from './Context';
 import { ListBoxOption } from './ListBoxOption';
-import { HtmlProps } from '@marigold/types';
 
 // Props
 // ---------------
