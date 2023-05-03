@@ -42,7 +42,7 @@
   },
   "scripts": {
     "start": "pnpm --filter @marigold/docs dev",
-    "dev": "storybook dev -p 6006",
+    "dev": "FOLDERS=packages/components/src,packages/system/src pnpm --filter @marigold/storybook-config start",
     "build": "pnpm --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" --filter \"@marigold/theme-preset\" build",
     "build:docs": "pnpm --filter @marigold/docs build",
     "build:storybook": "pnpm --filter @marigold/storybook-config build",

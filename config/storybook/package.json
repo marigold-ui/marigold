@@ -64,7 +64,7 @@
     "typescript": "5.0.4"
   },
   "scripts": {
-    "dev": "storybook dev -p 6006",
+    "start": "storybook dev -p 6006 -c .storybook/",
     "build": "storybook build --disable-telemetry -c ./.storybook -o ../../storybook-static"
   }
 }
