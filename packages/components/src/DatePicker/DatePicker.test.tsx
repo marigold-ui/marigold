@@ -1,8 +1,10 @@
 /* eslint-disable testing-library/no-node-access */
 import { DatePicker } from './DatePicker';
 import React from 'react';
-import { act, render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { CalendarDate } from '@internationalized/date';
+import userEvent from '@testing-library/user-event';
+import { fireEvent } from '@testing-library/react';
 
 const getTextValue = (el: HTMLElement): any => {
   if (
@@ -30,14 +32,7 @@ describe('DatePicker', () => {
       }),
     });
   });
-  beforeEach(() => {
-    jest.useFakeTimers();
-  });
-  afterEach(() => {
-    act(() => {
-      jest.runAllTimers();
-    });
-  });
+
   describe('basics', () => {
     test('renders date picker with specified date', () => {
       render(<DatePicker label="Date" value={new CalendarDate(2019, 2, 3)} />);
@@ -161,6 +156,225 @@ describe('DatePicker', () => {
 
       const error = screen.queryByText('Whoopsie');
       expect(error).toBeInTheDocument();
+    });
+  });
+
+  describe('events', function () {
+    const onBlurSpy = jest.fn();
+    const onFocusChangeSpy = jest.fn();
+    const onFocusSpy = jest.fn();
+    const onKeyDownSpy = jest.fn();
+    const onKeyUpSpy = jest.fn();
+
+    afterEach(() => {
+      onBlurSpy.mockClear();
+      onFocusChangeSpy.mockClear();
+      onFocusSpy.mockClear();
+      onKeyDownSpy.mockClear();
+      onKeyUpSpy.mockClear();
+    });
+
+    test('focuses field, move a segment, and open popover and does not blur', async () => {
+      const user = userEvent.setup();
+      render(
+        <DatePicker
+          label="Date"
+          onBlur={onBlurSpy}
+          onFocus={onFocusSpy}
+          onFocusChange={onFocusChangeSpy}
+        />
+      );
+      const segments = screen.getAllByRole('spinbutton');
+      const button = screen.getByRole('button');
+
+      screen.getAllByRole('spinbutton');
+      screen.getByRole('button');
+
+      expect(onBlurSpy).not.toHaveBeenCalled();
+      expect(onFocusChangeSpy).not.toHaveBeenCalled();
+      expect(onFocusSpy).not.toHaveBeenCalled();
+
+      await userEvent.tab();
+      expect(segments[0]).toHaveFocus();
+      expect(onBlurSpy).not.toHaveBeenCalled();
+      expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
+      expect(onFocusSpy).toHaveBeenCalledTimes(1);
+
+      await userEvent.tab();
+      expect(segments[1]).toHaveFocus();
+      expect(onBlurSpy).not.toHaveBeenCalled();
+      expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
+      expect(onFocusSpy).toHaveBeenCalledTimes(1);
+
+      user.click(button);
+      // act(() => jest.runAllTimers());
+
+      const popover = screen.getByRole('presentation');
+      expect(popover).toBeVisible();
+      expect(onBlurSpy).not.toHaveBeenCalled();
+      expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
+      expect(onFocusSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('should focus field and leave to blur', async () => {
+      render(
+        <DatePicker
+          label="Date"
+          onBlur={onBlurSpy}
+          onFocus={onFocusSpy}
+          onFocusChange={onFocusChangeSpy}
+        />
+      );
+      const segments = screen.getAllByRole('spinbutton');
+
+      expect(onBlurSpy).not.toHaveBeenCalled();
+      expect(onFocusChangeSpy).not.toHaveBeenCalled();
+      expect(onFocusSpy).not.toHaveBeenCalled();
+
+      await userEvent.tab();
+      expect(segments[0]).toHaveFocus();
+      expect(onBlurSpy).not.toHaveBeenCalled();
+      expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
+      expect(onFocusSpy).toHaveBeenCalledTimes(1);
+
+      await userEvent.click(document.body);
+      expect(document.body).toHaveFocus();
+      expect(onBlurSpy).toHaveBeenCalledTimes(1);
+      expect(onFocusChangeSpy).toHaveBeenCalledTimes(2);
+      expect(onFocusSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('should open popover and call picker onFocus', async () => {
+      const user = userEvent.setup();
+      render(
+        <DatePicker
+          label="Date"
+          onBlur={onBlurSpy}
+          onFocus={onFocusSpy}
+          onFocusChange={onFocusChangeSpy}
+        />
+      );
+      const button = screen.getByRole('button');
+
+      expect(onBlurSpy).not.toHaveBeenCalled();
+      expect(onFocusChangeSpy).not.toHaveBeenCalled();
+      expect(onFocusSpy).not.toHaveBeenCalled();
+
+      await user.click(button);
+      // act(() => jest.runAllTimers());
+
+      const popover = screen.getByRole('presentation');
+      expect(popover).toBeVisible();
+      expect(onBlurSpy).not.toHaveBeenCalled();
+      expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
+      expect(onFocusSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('should open and close popover and only call blur when focus leaves picker', async () => {
+      const user = userEvent.setup();
+      render(
+        <DatePicker
+          label="Date"
+          onBlur={onBlurSpy}
+          onFocus={onFocusSpy}
+          onFocusChange={onFocusChangeSpy}
+        />
+      );
+      const button = screen.getByRole('button');
+
+      expect(onBlurSpy).not.toHaveBeenCalled();
+      expect(onFocusChangeSpy).not.toHaveBeenCalled();
+      expect(onFocusSpy).not.toHaveBeenCalled();
+
+      await user.click(button);
+
+      const popover = screen.getByRole('presentation');
+      expect(popover).toBeVisible();
+      expect(onBlurSpy).not.toHaveBeenCalled();
+      expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
+      expect(onFocusSpy).toHaveBeenCalledTimes(1);
+
+      fireEvent.keyDown(document.activeElement as Element, { key: 'Escape' });
+      fireEvent.keyUp(document.activeElement as Element, { key: 'Escape' });
+      await waitFor(() => {
+        expect(popover).not.toBeInTheDocument();
+      });
+
+      expect(popover).not.toBeInTheDocument();
+      expect(onBlurSpy).not.toHaveBeenCalled();
+      expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
+      expect(onFocusSpy).toHaveBeenCalledTimes(1);
+
+      await userEvent.tab();
+      expect(document.body).toHaveFocus();
+      expect(onBlurSpy).toHaveBeenCalledTimes(1);
+      expect(onFocusChangeSpy).toHaveBeenCalledTimes(2);
+      expect(onFocusSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('should trigger right arrow key event for segment navigation', async () => {
+      render(
+        <DatePicker
+          label="Date"
+          onKeyDown={onKeyDownSpy}
+          onKeyUp={onKeyUpSpy}
+        />
+      );
+      const segments = screen.getAllByRole('spinbutton');
+
+      expect(onKeyDownSpy).not.toHaveBeenCalled();
+      expect(onKeyUpSpy).not.toHaveBeenCalled();
+
+      await userEvent.tab();
+      expect(segments[0]).toHaveFocus();
+      expect(onKeyDownSpy).not.toHaveBeenCalled();
+      expect(onKeyUpSpy).toHaveBeenCalledTimes(1);
+
+      fireEvent.keyDown(document.activeElement as Element, {
+        key: 'ArrowRight',
+      });
+      fireEvent.keyUp(document.activeElement as Element, { key: 'ArrowRight' });
+      expect(segments[1]).toHaveFocus();
+      expect(onKeyDownSpy).toHaveBeenCalledTimes(1);
+      expect(onKeyUpSpy).toHaveBeenCalledTimes(2);
+    });
+
+    test('should trigger key event in popover and focus/blur/key events are not called', async () => {
+      const user = userEvent.setup();
+      render(
+        <DatePicker
+          label="Date"
+          onBlur={onBlurSpy}
+          onFocus={onFocusSpy}
+          onFocusChange={onFocusChangeSpy}
+          onKeyDown={onKeyDownSpy}
+          onKeyUp={onKeyUpSpy}
+        />
+      );
+      let button = screen.getByRole('button');
+
+      expect(onKeyDownSpy).not.toHaveBeenCalled();
+      expect(onKeyUpSpy).not.toHaveBeenCalled();
+      expect(onBlurSpy).not.toHaveBeenCalled();
+      expect(onFocusChangeSpy).not.toHaveBeenCalled();
+      expect(onFocusSpy).not.toHaveBeenCalled();
+
+      await user.click(button);
+      let popover = screen.getByRole('presentation');
+      expect(popover).toBeVisible();
+      expect(onBlurSpy).not.toHaveBeenCalled();
+      expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
+      expect(onFocusSpy).toHaveBeenCalledTimes(1);
+
+      fireEvent.keyDown(document.activeElement as Element, {
+        key: 'ArrowRight',
+      });
+      fireEvent.keyUp(document.activeElement as Element, { key: 'ArrowRight' });
+      expect(onKeyDownSpy).toHaveBeenCalledTimes(0);
+      expect(onKeyUpSpy).toHaveBeenCalledTimes(0);
+      expect(onBlurSpy).not.toHaveBeenCalled();
+      expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
+      expect(onFocusSpy).toHaveBeenCalledTimes(1);
     });
   });
 });

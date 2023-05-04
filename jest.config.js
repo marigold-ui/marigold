@@ -23,5 +23,4 @@ module.exports = createConfig({
     '^@marigold/(.+)$': '<rootDir>/packages/$1/src',
     '^@marigold/(.*)$': '<rootDir>/dist/myscope/$1',
   },
-  fakeTimers: { enableGlobally: true },
 });
