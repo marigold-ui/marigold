@@ -1,59 +1,50 @@
 /* eslint-disable testing-library/no-node-access */
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
-
-import { TextField } from './TextField';
 import userEvent from '@testing-library/user-event';
 
-const theme = {
-  colors: {
-    blue: '#00f',
-    lime: '#82c91e',
-  },
-  fontSizes: {
-    'small-1': 12,
-  },
-  sizes: {
-    none: 0,
-    large: 140,
-  },
+import { tv } from 'tailwind-variants';
+import { Theme, ThemeProvider } from '@marigold/system';
+
+import { TextField } from './TextField';
+
+const theme: Theme = {
+  name: 'test',
   components: {
-    Label: {
-      variant: {
-        lime: {
-          color: 'lime',
+    Label: tv({
+      variants: {
+        variant: {
+          lime: 'text-lime-600',
+        },
+        size: {
+          small: 'p-1',
         },
       },
-      size: {
-        small: {
-          fontSize: 'small-1',
-        },
+    }),
+    HelpText: tv({
+      slots: {
+        container: '',
+        icon: '',
       },
-    },
-    HelpText: {
-      variant: {
-        lime: {
-          container: {
-            color: 'lime',
+      variants: {
+        variant: {
+          lime: {
+            container: 'text-lime-600',
+          },
+        },
+        size: {
+          small: {
+            container: 'p-2',
           },
         },
       },
-      size: {
-        small: {
-          container: {
-            fontSize: 'small-1',
-          },
-        },
+    }),
+    Input: tv({
+      slots: {
+        container: '',
+        input: 'border-blue-700',
       },
-    },
-    Input: {
-      base: {
-        input: {
-          borderColor: 'blue',
-        },
-      },
-    },
+    }),
   },
 };
 
@@ -75,14 +66,14 @@ test('allows to change the input type', () => {
   expect(textField).toHaveAttribute('type', 'email');
 });
 
-test('input can be styled via "Input" styles', () => {
+test('classnames are applied', () => {
   render(
     <ThemeProvider theme={theme}>
       <TextField label="A Label" data-testid="text-field" />
     </ThemeProvider>
   );
   const textField = screen.getByTestId('text-field');
-  expect(textField).toHaveStyle(`border-color: ${theme.colors.blue}`);
+  expect(textField).toHaveClass('w-full border-0 outline-0 border-blue-700');
 });
 
 test('takes full width by default', () => {
@@ -94,19 +85,19 @@ test('takes full width by default', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle('width: 100%');
+  expect(container).toHaveStyle('width: full');
 });
 
 test('allows to set custom width', () => {
   render(
     <ThemeProvider theme={theme}>
-      <TextField label="Label" width="large" />
+      <TextField label="Label" width="200px" />
     </ThemeProvider>
   );
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
+  expect(container).toHaveStyle(`width: 200`);
 });
 
 test('supports disabled', () => {
