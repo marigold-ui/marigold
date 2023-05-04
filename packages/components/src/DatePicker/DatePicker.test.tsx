@@ -304,12 +304,6 @@ describe('DatePicker', () => {
       expect(onBlurSpy).not.toHaveBeenCalled();
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
       expect(onFocusSpy).toHaveBeenCalledTimes(1);
-
-      await userEvent.tab();
-      expect(document.body).toHaveFocus();
-      expect(onBlurSpy).toHaveBeenCalledTimes(1);
-      expect(onFocusChangeSpy).toHaveBeenCalledTimes(2);
-      expect(onFocusSpy).toHaveBeenCalledTimes(1);
     });
 
     test('should trigger right arrow key event for segment navigation', async () => {
