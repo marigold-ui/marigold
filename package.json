@@ -21,6 +21,8 @@
     "@react-aria/calendar": "3.2.0",
     "@react-aria/live-announcer": "3.3.0",
     "@react-stately/calendar": "3.2.0",
+    "@react-aria/datepicker": "3.4.0",
+    "@react-stately/datepicker": "3.4.0",
     "@testing-library/dom": "9.2.0",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "14.0.0",
