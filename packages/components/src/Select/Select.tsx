@@ -108,7 +108,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     const formatMessage = useLocalizedStringFormatter(messages);
 
     const props = {
-      isOpen: open,
+      isOpen: true,
       isDisabled: disabled,
       isRequired: required,
       validationState: error ? 'invalid' : 'valid',

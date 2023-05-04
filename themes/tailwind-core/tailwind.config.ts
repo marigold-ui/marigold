@@ -8,7 +8,7 @@ export default {
     ...preset.content,
     'src/root.ts',
     'src/colors.ts',
-    'src/**/*.styles.ts',
+    'src/**/*.*.ts',
     '../../packages/{components,system}/**/**.{tsx,ts}',
   ],
   presets: [preset],
