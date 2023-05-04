@@ -1,10 +1,10 @@
 import './theme.css';
 import { Badge } from './components/Badge.style';
-import { root } from './root';
+import { Theme } from '@marigold/system';
 
 export { Badge };
 
-const theme = {
+const theme: Theme = {
   name: 'unicorn',
   screens: {
     sm: '640px',
@@ -14,7 +14,6 @@ const theme = {
     '2xl': '1536px',
   },
   components: { Badge },
-  root,
 };
 
 export default theme;

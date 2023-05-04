@@ -118,7 +118,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <TextField {...args} label="My label is great." error />,
+  render: args => <TextField {...args} label="My label is great." />,
 };
 
 export const Controlled: Story = {

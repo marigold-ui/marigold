@@ -1,4 +1,3 @@
-import { Theme } from '../types';
 import { useTheme } from './useTheme';
 
 // Types

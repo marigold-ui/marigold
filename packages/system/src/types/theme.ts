@@ -1,24 +1,12 @@
 import { TVReturnType } from 'tailwind-variants';
 
 export type Theme = {
-  // name to identify theme
   name: string;
   screens?: { [key: string]: any };
   components?: {
     [key: string]: TVReturnType<any, any, any, any, any, any>;
   };
-  root?: TVReturnType<any, any, any, any, any, any>;
-  colors?: any;
-};
-
-/**
- * Structure for component styles in a theme.
- */
-export type ThemeExtension<ComponentName extends string> = {
-  [P in ComponentName]?: {
-    name: string;
-    components?: {
-      [key: string]: TVReturnType<any, any, any, any, any, any>;
-    };
-  };
+  // ClassValue or TVReturnType or string ???
+  root?: TVReturnType<any, any, never, never, any, any>;
+  colors?: { [key: string]: any };
 };

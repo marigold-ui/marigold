@@ -3,7 +3,7 @@ import { AriaTextFieldOptions, useTextField } from '@react-aria/textfield';
 import { render, screen, within } from '@testing-library/react';
 import { FieldBase } from './FieldBase';
 import { Theme, ThemeProvider } from '@marigold/system';
-import { field } from './../../../../themes/tailwind-core/src/components/Field.style';
+import { field } from '../../../../themes/tailwind-core/src/components/Field.styles';
 import { tv } from 'tailwind-variants';
 
 // Setup

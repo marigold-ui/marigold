@@ -37,14 +37,17 @@ export const HelpText = ({
     slots: ['container', 'icon'],
   });
 
-  const styledDiv = tv({
-    base: ['flex items-center gap-1'],
+  const styledHelptext = tv({
+    slots: {
+      container: ['flex items-center gap-1'],
+      icon: [''],
+    },
   });
 
   return (
     <Box
       {...(hasErrorMessage ? errorMessageProps : descriptionProps)}
-      className={twMerge(styledDiv(), classNames.container())}
+      className={twMerge(styledHelptext().container(), classNames.container())}
       {...props}
     >
       {hasErrorMessage ? (
