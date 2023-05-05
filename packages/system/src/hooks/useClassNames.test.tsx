@@ -9,7 +9,7 @@ import { useClassNames } from './useClassNames';
 const theme: Theme = {
   name: 'test-theme',
   components: {
-    Component: tv({
+    Button: tv({
       base: 'flex align-center',
       variants: {
         variant: {
@@ -22,22 +22,22 @@ const theme: Theme = {
         },
       },
     }),
-    Slotty: tv({
+    HelpText: tv({
       slots: {
         container: 'block',
-        item: 'inline',
+        icon: 'inline',
       },
       variants: {
         variant: {
           primary: {
             container: 'text-primary-500',
-            item: 'text-secondary-800',
+            icon: 'text-secondary-800',
           },
         },
         size: {
           small: {
             container: 'w-10 h-10',
-            item: 'w-50 h-50',
+            icon: 'w-50 h-50',
           },
         },
       },

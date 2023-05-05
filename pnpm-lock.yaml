@@ -696,6 +696,9 @@ importers:
       '@theme-ui/css':
         specifier: 0.15.7
         version: 0.15.7(@emotion/react@11.10.6)
+      class-variance-authority:
+        specifier: 0.6.0
+        version: 0.6.0(typescript@5.0.4)
       csstype:
         specifier: 3.1.2
         version: 3.1.2
@@ -11323,6 +11326,21 @@ packages:
       define-property: 0.2.5
       isobject: 3.0.1
       static-extend: 0.1.2
+
+  /class-variance-authority@0.6.0(typescript@5.0.4):
+    resolution:
+      {
+        integrity: sha512-qdRDgfjx3GRb9fpwpSvn+YaidnT7IUJNe4wt5/SWwM+PmUwJUhQRk/8zAyNro0PmVfmen2635UboTjIBXXxy5A==,
+      }
+    peerDependencies:
+      typescript: '>= 4.5.5 < 6'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      clsx: 1.2.1
+      typescript: 5.0.4
+    dev: false
 
   /clean-stack@2.2.0:
     resolution:

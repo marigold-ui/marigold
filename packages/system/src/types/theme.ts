@@ -1,47 +1,52 @@
-import { TVReturnType, tv } from 'tailwind-variants';
+import {
+  ClassValue,
+  TVProps,
+  TVReturnType,
+  TVSlots,
+  tv,
+} from 'tailwind-variants';
 
-const Component = tv({
-  base: 'flex align-center',
-  variants: {
-    variant: {
-      primary: 'text-primary-500',
-      secondary: 'text-secondary-800',
-    },
-    size: {
-      small: 'w-10 h-10',
-      large: 'w-50 h-50',
-    },
-  },
-});
+export interface ComponentStyleFunction<
+  Variants extends string = string,
+  Sizes extends string = string,
+  Additional extends { [name: string]: { [key: string]: string } } = {}
+> extends TVReturnType<
+    {
+      variant: { [key in Variants]: string };
+      size: { [key in Sizes]: string };
+    } & Additional,
+    unknown,
+    undefined, // remove slots
+    undefined, // remove slots
+    string,
+    any
+  > {}
 
-const Slotty = tv({
-  slots: {
-    container: 'block',
-    item: 'inline',
-  },
-  variants: {
-    variant: {
-      primary: {
-        container: 'text-primary-500',
-        item: 'text-secondary-800',
-      },
-    },
-    size: {
-      small: {
-        container: 'w-10 h-10',
-        item: 'w-50 h-50',
-      },
-    },
-  },
-});
+export interface ComponentStyleFunctionWithSlots<
+  Slots extends string,
+  Variants extends string = string,
+  Sizes extends string = string,
+  Additional extends {
+    [name: string]: { [key: string]: { [slot in Slots]: string } };
+  } = {}
+> extends TVReturnType<
+    {
+      variant: { [key in Variants]: { [slot in Slots]: string } };
+      size: { [key in Sizes]: { [slot in Slots]: string } };
+    } & Additional,
+    unknown,
+    Record<Slots, ClassValue>,
+    undefined, // remove slots
+    string,
+    any
+  > {}
 
 export type Theme = {
   name: string;
   screens?: { [key: string]: any };
   components: {
-    Component?: typeof Component;
-    Slotty?: TVReturnType<any, any, any, any, any, any>;
-    // [key: string]: TVReturnType<any, any, any, any, any, any> | undefined;
+    Button?: ComponentStyleFunction;
+    HelpText?: ComponentStyleFunctionWithSlots<'container' | 'icon'>;
   };
   // ClassValue or TVReturnType or string ???
   root?: TVReturnType<any, any, never, never, any, any>;

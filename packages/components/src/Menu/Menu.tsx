@@ -44,7 +44,6 @@ export const Menu = ({ variant, size, ...props }: MenuProps) => {
   useSyncRef({ ref: scrollRef }, ref);
 
   const styles = useComponentStyles(
-    'Menu',
     { variant, size },
     { parts: ['container', 'item'] }
   );
