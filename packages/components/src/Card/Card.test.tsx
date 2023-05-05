@@ -3,6 +3,9 @@ import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@marigold/system';
 
 import { Card } from './Card';
+import { Header } from '../Header';
+import { Body } from '../Body';
+import { Footer } from '../Footer';
 
 const theme = {
   space: {
@@ -112,4 +115,34 @@ test('padding props override variant', () => {
   expect(card).toHaveStyle(`padding-bottom: ${theme.space['medium-2']}px`);
   expect(card).toHaveStyle(`padding-left: ${theme.space['medium-1']}px`);
   expect(card).toHaveStyle(`padding-right: ${theme.space['medium-1']}px`);
+});
+
+test('has no default spacing', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Card data-testid="card">
+        <Header>Header</Header>
+        <Body>This is the body</Body>
+        <Footer>Footer!</Footer>
+      </Card>
+    </ThemeProvider>
+  );
+
+  const card = screen.getByTestId('card');
+  expect(card).toHaveStyle(`gap: ${theme.space['none']}`);
+});
+
+test('allows to set spacing between children', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Card data-testid="card" space="small-2">
+        <Header>Header</Header>
+        <Body>This is the body</Body>
+        <Footer>Footer!</Footer>
+      </Card>
+    </ThemeProvider>
+  );
+
+  const card = screen.getByTestId('card');
+  expect(card).toHaveStyle(`gap: ${theme.space['small-2']}px`);
 });

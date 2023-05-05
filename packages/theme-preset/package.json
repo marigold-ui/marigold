@@ -1,32 +1,33 @@
 {
-  "name": "@marigold/create-theme",
-  "version": "2.0.2",
-  "description": "Marigold helper to kickoff Themes",
+  "name": "@marigold/theme-preset",
+  "version": "0.0.1",
+  "description": "Create a tailwind Preset for Marigold",
   "license": "MIT",
   "keywords": [
     "marigold",
-    "theme",
-    "styles"
+    "library",
+    "styling",
+    "css",
+    "tailwind"
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
-  "files": [
-    "dist"
-  ],
   "repository": {
     "type": "git",
-    "url": "github:marigold-ui/marigold",
-    "directory": "themes/create-theme"
+    "url": "https://github.com/marigold-ui/marigold",
+    "directory": "packages/theme-preset"
   },
   "dependencies": {
-    "@marigold/tokens": "workspace:*"
+    "deepmerge": "^4.2.2",
+    "find-up": "5.0.0"
   },
   "devDependencies": {
-    "@marigold/components": "workspace:*",
-    "@marigold/system": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
+    "@marigold/system": "workspace:*",
+    "postcss": "8.4.21",
+    "tailwindcss": "3.3.1",
     "tsup": "6.7.0"
   },
   "scripts": {

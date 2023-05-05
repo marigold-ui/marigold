@@ -3,6 +3,7 @@ import type { Theme as BaseTheme } from '@marigold/system';
 
 // Components
 // ---------------
+import type { AccordionThemeExtension } from './Accordion';
 import type { AutocompleteThemeExtension } from './Autocomplete';
 import type { BadgeThemeExtension } from './Badge';
 import type { BodyThemeExtension } from './Body';
@@ -12,6 +13,7 @@ import type { CheckboxThemeExtension } from './Checkbox';
 import type { DialogThemeExtension } from './Dialog';
 import type { DividerThemeExtension } from './Divider';
 import type { FieldThemeExtension } from './FieldBase';
+import type { DateFieldThemeExtension } from './DateField';
 import type { FooterThemeExtension } from './Footer';
 import type { HeaderThemeExtension } from './Header';
 import type { HeadlineThemeExtension } from './Headline';
@@ -31,13 +33,15 @@ import type { SelectThemeExtension } from './Select';
 import type { SliderThemeExtension } from './Slider';
 import type { SwitchThemeExtension } from './Switch';
 import type { TableThemeExtension } from './Table';
-import type { TextThemeExtension } from './Text';
-import type { TextAreaThemeExtension } from './TextArea';
-import type { TooltipThemeExtension } from './Tooltip';
 import type { TabsThemeExtension } from './Tabs';
+import type { TagThemeExtension } from './TagGroup/Tag';
+import type { TextAreaThemeExtension } from './TextArea';
+import type { TextThemeExtension } from './Text';
+import type { TooltipThemeExtension } from './Tooltip';
 
 interface ComponentStyles
-  extends AutocompleteThemeExtension,
+  extends AccordionThemeExtension,
+    AutocompleteThemeExtension,
     BadgeThemeExtension,
     ButtonThemeExtension,
     CardThemeExtension,
@@ -45,6 +49,7 @@ interface ComponentStyles
     BodyThemeExtension,
     DialogThemeExtension,
     DividerThemeExtension,
+    DateFieldThemeExtension,
     FieldThemeExtension,
     FooterThemeExtension,
     HeaderThemeExtension,
@@ -64,11 +69,12 @@ interface ComponentStyles
     SliderThemeExtension,
     SwitchThemeExtension,
     TableThemeExtension,
-    TextThemeExtension,
+    TabsThemeExtension,
+    TagThemeExtension,
     TextAreaThemeExtension,
+    TextThemeExtension,
     TooltipThemeExtension,
-    UnderlayThemeExtension,
-    TabsThemeExtension {}
+    UnderlayThemeExtension {}
 
 export interface Theme extends BaseTheme {
   components: ComponentStyles;

@@ -22,7 +22,7 @@ export interface BodyProps extends ThemeComponentProps, HtmlProps<'section'> {
 export const Body = ({ children, variant, size, ...props }: BodyProps) => {
   const styles = useComponentStyles('Body', { variant, size });
   return (
-    <Box as="section" {...props} css={styles}>
+    <Box as="section" {...props} __baseCSS={{ flex: '1' }} css={styles}>
       {children}
     </Box>
   );

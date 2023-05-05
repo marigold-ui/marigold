@@ -1,5 +1,21 @@
 # @marigold/docs
 
+## 5.5.0
+
+### Minor Changes
+
+- [#2915](https://github.com/marigold-ui/marigold/pull/2915) [`4c2cd1b45`](https://github.com/marigold-ui/marigold/commit/4c2cd1b451a7987813e8e65ad6fa118a73359285) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: new Accordion Component
+
+### Patch Changes
+
+- [#2877](https://github.com/marigold-ui/marigold/pull/2877) [`862963f54`](https://github.com/marigold-ui/marigold/commit/862963f541fd57d2eaab03b1e9111c59241ffda6) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - feat: added menu section
+
+- Updated dependencies [[`4c2cd1b45`](https://github.com/marigold-ui/marigold/commit/4c2cd1b451a7987813e8e65ad6fa118a73359285), [`b07dab50c`](https://github.com/marigold-ui/marigold/commit/b07dab50c134a612061ccf8ef51f9aa332437e53), [`862963f54`](https://github.com/marigold-ui/marigold/commit/862963f541fd57d2eaab03b1e9111c59241ffda6), [`a56d83788`](https://github.com/marigold-ui/marigold/commit/a56d8378858cd75b42babc280ba19a446acfa2c0)]:
+  - @marigold/components@5.5.0
+  - @marigold/theme-b2b@23.0.0
+  - @marigold/system@5.5.0
+  - @marigold/icons@1.2.4
+
 ## 5.4.0
 
 ### Minor Changes
