@@ -82,6 +82,8 @@ test('function throws error if variant and size not exist', () => {
   fn({ variant: 'primary', sizes: 'small', classNames: 'bg-blue' });
 });
 
+// Component Function
+// ---------------
 const ComponentFn: ComponentStyleFunction<string, string> = cva(
   'flex align-center',
   {
@@ -128,6 +130,8 @@ test('components have variants and sizes through theme', () => {
   ).toMatchInlineSnapshot(`"flex align-center text-primary-500 w-10 h-10"`);
 });
 
+// Component Function with Slots
+// ---------------
 const ComponentFnWithSlots: WithSlots<'container' | 'icon', string, string> = {
   container: cva('inline', {
     variants: {
