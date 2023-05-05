@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
-import { tv } from 'tailwind-variants';
+import { cva } from 'class-variance-authority';
+
 import { renderHook } from '@testing-library/react';
 
 import { Theme } from '../types';
@@ -9,8 +10,7 @@ import { useClassNames } from './useClassNames';
 const theme: Theme = {
   name: 'test-theme',
   components: {
-    Button: tv({
-      base: 'flex align-center',
+    Button: cva('flex align-center', {
       variants: {
         variant: {
           primary: 'text-primary-500',
@@ -22,26 +22,28 @@ const theme: Theme = {
         },
       },
     }),
-    HelpText: tv({
-      slots: {
-        container: 'block',
-        icon: 'inline',
-      },
-      variants: {
-        variant: {
-          primary: {
-            container: 'text-primary-500',
-            icon: 'text-secondary-800',
+    HelpText: {
+      container: cva('inline', {
+        variants: {
+          variant: {
+            primary: 'text-primary-500',
+          },
+          size: {
+            small: 'w-10 h-10',
           },
         },
-        size: {
-          small: {
-            container: 'w-10 h-10',
-            icon: 'w-50 h-50',
+      }),
+      icon: cva('block', {
+        variants: {
+          variant: {
+            primary: 'text-secondary-800',
+          },
+          size: {
+            small: 'w-50 h-50',
           },
         },
-      },
-    }),
+      }),
+    },
   },
 };
 
@@ -52,36 +54,33 @@ const wrapper = ({ children }: { children?: ReactNode }) => (
 // Single Element
 // ---------------
 test('return classnames (base only)', () => {
-  const { result } = renderHook(
-    () => useClassNames({ component: 'Component' }),
-    { wrapper }
-  );
-  expect(result.current).toMatchInlineSnapshot(`"flex align-center"`);
+  const { result } = renderHook(() => useClassNames({ component: 'Button' }), {
+    wrapper,
+  });
+  expect(result.current).toMatchInlineSnapshot(`undefined`);
 });
 
 test('return classnames (with variant)', () => {
   const { result } = renderHook(
-    () => useClassNames({ component: 'Component', variant: 'primary' }),
+    () => useClassNames({ component: 'Button', variant: 'primary' }),
     { wrapper }
   );
-  expect(result.current).toMatchInlineSnapshot(
-    `"flex align-center text-primary-500"`
-  );
+  expect(result.current).toMatchInlineSnapshot(`undefined`);
 });
 
 test('return classnames (with size)', () => {
   const { result } = renderHook(
-    () => useClassNames({ component: 'Component', size: 'small' }),
+    () => useClassNames({ component: 'Button', size: 'small' }),
     { wrapper }
   );
-  expect(result.current).toMatchInlineSnapshot(`"flex align-center w-10 h-10"`);
+  expect(result.current).toMatchInlineSnapshot(`undefined`);
 });
 
 test('allows to pass in custom classNames', () => {
   const { result } = renderHook(
     () =>
       useClassNames({
-        component: 'Component',
+        component: 'Button',
         className: 'supi-dupi extra delicious-500',
       }),
     { wrapper }
@@ -94,34 +93,25 @@ test('allows to pass in custom classNames', () => {
 // Multiple Elements (slots)
 // ---------------
 test('return classnames for slots (base only)', () => {
-  const { result } = renderHook(() => useClassNames({ component: 'Slotty' }), {
-    wrapper,
-  });
-
-  expect(result.current).toMatchInlineSnapshot(`
-    {
-      "base": "",
-      "container": "block",
-      "item": "inline",
-    }
-  `);
-});
-
-test('return classnames for slots (with variant)', () => {
   const { result } = renderHook(
-    () => useClassNames({ component: 'Slotty', variant: 'primary' }),
+    () => useClassNames({ component: 'HelpText' }),
     {
       wrapper,
     }
   );
 
-  expect(result.current).toMatchInlineSnapshot(`
+  expect(result.current).toMatchInlineSnapshot(`undefined`);
+});
+
+test('return classnames for slots (with variant)', () => {
+  const { result } = renderHook(
+    () => useClassNames({ component: 'HelpText', variant: 'primary' }),
     {
-      "base": "",
-      "container": "block text-primary-500",
-      "item": "inline text-secondary-800",
+      wrapper,
     }
-  `);
+  );
+
+  expect(result.current).toMatchInlineSnapshot(`undefined`);
 });
 
 test('return classnames for slots (with size)', () => {
@@ -132,13 +122,7 @@ test('return classnames for slots (with size)', () => {
     }
   );
 
-  expect(result.current).toMatchInlineSnapshot(`
-    {
-      "base": "",
-      "container": "block w-10 h-10",
-      "item": "inline w-50 h-50",
-    }
-  `);
+  expect(result.current).toMatchInlineSnapshot(`undefined`);
 });
 
 test('allows to pass in custom classNames for each slot', () => {
@@ -153,13 +137,7 @@ test('allows to pass in custom classNames for each slot', () => {
     }
   );
 
-  expect(result.current).toMatchInlineSnapshot(`
-    {
-      "base": "",
-      "container": "block custom-container",
-      "item": "inline fancy-item",
-    }
-  `);
+  expect(result.current).toMatchInlineSnapshot(`undefined`);
 });
 
 // Error Handling

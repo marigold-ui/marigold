@@ -1,54 +1,35 @@
-import {
-  ClassValue,
-  TVProps,
-  TVReturnType,
-  TVSlots,
-  tv,
-} from 'tailwind-variants';
+import { ClassValue } from '../utils';
 
 export interface ComponentStyleFunction<
-  Variants extends string = string,
-  Sizes extends string = string,
-  Additional extends { [name: string]: { [key: string]: string } } = {}
-> extends TVReturnType<
-    {
-      variant: { [key in Variants]: string };
-      size: { [key in Sizes]: string };
-    } & Additional,
-    unknown,
-    undefined, // remove slots
-    undefined, // remove slots
-    string,
-    any
-  > {}
+  Variants extends string = never,
+  Sizes extends string = never,
+  Additional extends { [name: string]: any } = {}
+> {
+  (
+    props?: {
+      variant?: Variants | null;
+      size?: Sizes | null;
+      className?: ClassValue;
+    } & Partial<Additional>
+  ): string;
+}
 
-export interface ComponentStyleFunctionWithSlots<
+export type WithSlots<
   Slots extends string,
-  Variants extends string = string,
-  Sizes extends string = string,
-  Additional extends {
-    [name: string]: { [key: string]: { [slot in Slots]: string } };
-  } = {}
-> extends TVReturnType<
-    {
-      variant: { [key in Variants]: { [slot in Slots]: string } };
-      size: { [key in Sizes]: { [slot in Slots]: string } };
-    } & Additional,
-    unknown,
-    Record<Slots, ClassValue>,
-    undefined, // remove slots
-    string,
-    any
-  > {}
+  Variants extends string = never,
+  Sizes extends string = never,
+  Additional extends { [name: string]: any } = {}
+> = {
+  [slot in Slots]: ComponentStyleFunction<Variants, Sizes, Additional>;
+};
 
 export type Theme = {
   name: string;
   screens?: { [key: string]: any };
-  components: {
-    Button?: ComponentStyleFunction;
-    HelpText?: ComponentStyleFunctionWithSlots<'container' | 'icon'>;
-  };
-  // ClassValue or TVReturnType or string ???
-  root?: TVReturnType<any, any, never, never, any, any>;
   colors?: { [key: string]: any };
+  root?: ComponentStyleFunction;
+  components: {
+    Button?: ComponentStyleFunction<string, string>;
+    HelpText?: WithSlots<'container' | 'icon', string, string>;
+  };
 };

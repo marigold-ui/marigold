@@ -1,9 +1,10 @@
+import { Theme } from '../types';
 import { useTheme } from './useTheme';
 
 export type ClassNames = string | string[];
 
 export interface UseClassNamesProps {
-  component: string;
+  component: keyof Theme['components'];
   variant?: string;
   size?: string;
   className?: string | { [slot: string]: string };
@@ -26,8 +27,13 @@ export const useClassNames = ({
   }
 
   // No slots -> return a string
-  if (Object.keys(styles.slots).length === 0) {
-    return styles({ variant, size, className }) as string;
+  if (typeof styles === 'function') {
+    if (typeof className !== 'string') {
+      // TODO handle className is obj
+      return;
+    }
+
+    return styles({ variant, size, className });
   }
 
   return Object.fromEntries(
