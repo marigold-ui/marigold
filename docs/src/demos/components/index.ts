@@ -53,3 +53,4 @@ export * from './XLoader';
 export * from './Calendar';
 export * from './Tag';
 export * from './DateField';
+export * from './Tabs';
