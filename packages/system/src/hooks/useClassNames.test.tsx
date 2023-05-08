@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { cva } from 'class-variance-authority';
 
-import { renderHook } from '@testing-library/react';
+import { renderHook } from '@testing-library/react-hooks';
 
 import { Theme } from '../types';
 import { ThemeProvider } from './useTheme';
@@ -57,7 +57,7 @@ test('return classnames (base only)', () => {
   const { result } = renderHook(() => useClassNames({ component: 'Button' }), {
     wrapper,
   });
-  expect(result.current).toMatchInlineSnapshot(`undefined`);
+  expect(result.current).toMatchInlineSnapshot(`"flex align-center"`);
 });
 
 test('return classnames (with variant)', () => {
@@ -65,7 +65,9 @@ test('return classnames (with variant)', () => {
     () => useClassNames({ component: 'Button', variant: 'primary' }),
     { wrapper }
   );
-  expect(result.current).toMatchInlineSnapshot(`undefined`);
+  expect(result.current).toMatchInlineSnapshot(
+    `"flex align-center text-primary-500"`
+  );
 });
 
 test('return classnames (with size)', () => {
@@ -73,7 +75,7 @@ test('return classnames (with size)', () => {
     () => useClassNames({ component: 'Button', size: 'small' }),
     { wrapper }
   );
-  expect(result.current).toMatchInlineSnapshot(`undefined`);
+  expect(result.current).toMatchInlineSnapshot(`"flex align-center w-10 h-10"`);
 });
 
 test('allows to pass in custom classNames', () => {
@@ -90,6 +92,19 @@ test('allows to pass in custom classNames', () => {
   );
 });
 
+test('handles conflicting classnames', () => {
+  const { result } = renderHook(
+    () =>
+      useClassNames({
+        component: 'Button',
+        size: 'small',
+        className: 'w-22',
+      }),
+    { wrapper }
+  );
+  expect(result.current).toMatchInlineSnapshot(`"flex align-center h-10 w-22"`);
+});
+
 // Multiple Elements (slots)
 // ---------------
 test('return classnames for slots (base only)', () => {
@@ -100,7 +115,12 @@ test('return classnames for slots (base only)', () => {
     }
   );
 
-  expect(result.current).toMatchInlineSnapshot(`undefined`);
+  expect(result.current).toMatchInlineSnapshot(`
+    {
+      "container": "inline",
+      "icon": "block",
+    }
+  `);
 });
 
 test('return classnames for slots (with variant)', () => {
@@ -111,37 +131,82 @@ test('return classnames for slots (with variant)', () => {
     }
   );
 
-  expect(result.current).toMatchInlineSnapshot(`undefined`);
+  expect(result.current).toMatchInlineSnapshot(`
+    {
+      "container": "inline text-primary-500",
+      "icon": "block text-secondary-800",
+    }
+  `);
 });
 
 test('return classnames for slots (with size)', () => {
   const { result } = renderHook(
-    () => useClassNames({ component: 'Slotty', size: 'small' }),
+    () => useClassNames({ component: 'HelpText', size: 'small' }),
     {
       wrapper,
     }
   );
 
-  expect(result.current).toMatchInlineSnapshot(`undefined`);
+  expect(result.current).toMatchInlineSnapshot(`
+    {
+      "container": "inline w-10 h-10",
+      "icon": "block w-50 h-50",
+    }
+  `);
 });
 
 test('allows to pass in custom classNames for each slot', () => {
   const { result } = renderHook(
     () =>
       useClassNames({
-        component: 'Slotty',
-        className: { container: 'custom-container', item: 'fancy-item' },
+        component: 'HelpText',
+        className: { container: 'custom-container', icon: 'fancy-item' },
       }),
     {
       wrapper,
     }
   );
 
-  expect(result.current).toMatchInlineSnapshot(`undefined`);
+  expect(result.current).toMatchInlineSnapshot(`
+    {
+      "container": "inline custom-container",
+      "icon": "block fancy-item",
+    }
+  `);
 });
+
+// TODO: Handle conflicting classNames
 
 // Error Handling
 // ---------------
 test('gracefully handles missing styles', () => {
-  // TODO
+  const { result } = renderHook(
+    () =>
+      useClassNames({
+        component: 'Button',
+        className: { slot: 'foo-bar' },
+      }),
+    {
+      wrapper,
+    }
+  );
+
+  expect(result.error).toMatchInlineSnapshot(
+    `[Error: "className" must be a string, when using a component without slots]`
+  );
+});
+
+// Additional Style Props
+test('add', () => {
+  const { result } = renderHook(
+    () =>
+      useClassNames({
+        component: 'Button',
+        className: ['gap-8', 'custom-classname'],
+      }),
+    {
+      wrapper,
+    }
+  );
+  console.log(result.current);
 });

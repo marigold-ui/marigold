@@ -30,6 +30,10 @@ export type Theme = {
   root?: ComponentStyleFunction;
   components: {
     Button?: ComponentStyleFunction<string, string>;
-    HelpText?: WithSlots<'container' | 'icon', string, string>;
+    HelpText?: {
+      container?: ComponentStyleFunction<string, string>;
+      icon?: ComponentStyleFunction<string, string>;
+    };
+    // HelpText?: WithSlots<'container' | 'icon', string, string>;
   };
 };

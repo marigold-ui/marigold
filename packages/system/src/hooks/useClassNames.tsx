@@ -1,21 +1,22 @@
 import { Theme } from '../types';
+import { ClassValue, cn } from '../utils';
 import { useTheme } from './useTheme';
 
-export type ClassNames = string | string[];
+type Components = keyof Theme['components'];
 
-export interface UseClassNamesProps {
-  component: keyof Theme['components'];
+export interface UseClassNamesProps<C extends Components> {
+  component: C;
   variant?: string;
   size?: string;
-  className?: string | { [slot: string]: string };
+  className?: ClassValue | { [slot: string]: ClassValue };
 }
 
-export const useClassNames = ({
+export const useClassNames = <C extends Components>({
   component,
   className,
   variant,
   size,
-}: UseClassNamesProps) => {
+}: UseClassNamesProps<C>) => {
   const theme = useTheme();
 
   // Get component styles
@@ -28,18 +29,33 @@ export const useClassNames = ({
 
   // No slots -> return a string
   if (typeof styles === 'function') {
-    if (typeof className !== 'string') {
-      // TODO handle className is obj
-      return;
+    if (className !== undefined && typeof className !== 'string') {
+      throw Error(
+        '"className" must be a string, when using a component without slots'
+      );
     }
 
-    return styles({ variant, size, className });
+    return cn(styles({ variant, size, className }));
+  }
+
+  if (className !== undefined && typeof className === 'string') {
+    throw Error(
+      '"className" must be a object, when using a component with slots'
+    );
   }
 
   return Object.fromEntries(
-    Object.entries(styles({ variant, size })).map(([slot, fn]) => [
-      slot,
-      fn({ className: className?.[slot] }),
-    ])
+    Object.entries(styles).map(([slot, style]) => {
+      return [
+        slot,
+        cn(
+          style({
+            variant,
+            size,
+            className: className && className[slot],
+          })
+        ),
+      ];
+    })
   );
 };
