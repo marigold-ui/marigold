@@ -49,3 +49,4 @@ export * from './Tooltip';
 export * from './TagGroup';
 export * from './VisuallyHidden';
 export * from './XLoader';
+export * from './Calendar';

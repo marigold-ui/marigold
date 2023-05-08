@@ -77,7 +77,7 @@ export const FieldBase = ({
           {label}
         </Label>
       )}
-      <Box __baseCSS={{ display: 'flex', flexDirection: 'column' }}>
+      <Box __baseCSS={{ display: 'flex', flexDirection: 'column', width }}>
         {children}
         {hasHelpText && (
           <HelpText

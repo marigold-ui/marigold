@@ -28,3 +28,4 @@ export * from './TextArea.style';
 export * from './Tooltip.style';
 export * from './Tag.style';
 export * from './Underlay.style';
+export * from './Calendar.style';
