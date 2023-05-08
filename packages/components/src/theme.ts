@@ -38,7 +38,7 @@ import type { TextAreaThemeExtension } from './TextArea';
 import type { TooltipThemeExtension } from './Tooltip';
 import { CalendarThemeExtension } from './Calendar';
 import type { TagThemeExtension } from './TagGroup/Tag';
-
+import { TabsThemeExtension } from './Tabs';
 interface ComponentStyles
   extends AccordionThemeExtension,
     AutocompleteThemeExtension,
@@ -74,7 +74,8 @@ interface ComponentStyles
     TooltipThemeExtension,
     UnderlayThemeExtension,
     TagThemeExtension,
-    CalendarThemeExtension {}
+    CalendarThemeExtension,
+    TabsThemeExtension {}
 
 export interface Theme extends BaseTheme {
   components: ComponentStyles;
