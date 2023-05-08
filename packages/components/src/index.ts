@@ -50,3 +50,4 @@ export * from './TagGroup';
 export * from './VisuallyHidden';
 export * from './XLoader';
 export * from './Tabs';
+export * from './Calendar';

@@ -33,11 +33,11 @@ import type { SelectThemeExtension } from './Select';
 import type { SliderThemeExtension } from './Slider';
 import type { SwitchThemeExtension } from './Switch';
 import type { TableThemeExtension } from './Table';
-import type { TabsThemeExtension } from './Tabs';
-import type { TagThemeExtension } from './TagGroup/Tag';
-import type { TextAreaThemeExtension } from './TextArea';
 import type { TextThemeExtension } from './Text';
+import type { TextAreaThemeExtension } from './TextArea';
 import type { TooltipThemeExtension } from './Tooltip';
+import { CalendarThemeExtension } from './Calendar';
+import type { TagThemeExtension } from './TagGroup/Tag';
 
 interface ComponentStyles
   extends AccordionThemeExtension,
@@ -69,12 +69,12 @@ interface ComponentStyles
     SliderThemeExtension,
     SwitchThemeExtension,
     TableThemeExtension,
-    TabsThemeExtension,
-    TagThemeExtension,
-    TextAreaThemeExtension,
     TextThemeExtension,
+    TextAreaThemeExtension,
     TooltipThemeExtension,
-    UnderlayThemeExtension {}
+    UnderlayThemeExtension,
+    TagThemeExtension,
+    CalendarThemeExtension {}
 
 export interface Theme extends BaseTheme {
   components: ComponentStyles;

@@ -29,3 +29,4 @@ export * from './Tooltip.style';
 export * from './Tag.style';
 export * from './Underlay.style';
 export * from './Tabs.style';
+export * from './Calendar.style';
