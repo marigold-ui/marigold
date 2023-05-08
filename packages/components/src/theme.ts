@@ -36,7 +36,7 @@ import type { TableThemeExtension } from './Table';
 import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
 import type { TooltipThemeExtension } from './Tooltip';
-import type { CalendarThemeExtension } from './Calendar';
+import { CalendarThemeExtension } from './Calendar';
 import type { DatePickerThemeExtension } from './DatePicker';
 import type { TagThemeExtension } from './TagGroup/Tag';
 
@@ -76,8 +76,9 @@ interface ComponentStyles
     TextThemeExtension,
     TextAreaThemeExtension,
     TooltipThemeExtension,
+    UnderlayThemeExtension,
     TagThemeExtension,
-    UnderlayThemeExtension {}
+    CalendarThemeExtension {}
 
 export interface Theme extends BaseTheme {
   components: ComponentStyles;
