@@ -230,3 +230,31 @@ test('additional style props are supported', () => {
     `"flex align-center gap-8 custom-classname text-center"`
   );
 });
+
+test('additional style props are supported for slots', () => {
+  const alignment = {
+    left: 'text-left',
+    center: 'text-center',
+    right: 'text-right',
+  };
+
+  const { result } = renderHook(
+    () =>
+      useClassNames({
+        component: 'HelpText',
+        className: {
+          container: `custom-container ${alignment['center']}`,
+          icon: `fancy-item ${alignment['right']}`,
+        },
+      }),
+    {
+      wrapper,
+    }
+  );
+  expect(result.current).toMatchInlineSnapshot(`
+    {
+      "container": "inline custom-container text-center",
+      "icon": "block fancy-item text-right",
+    }
+  `);
+});
