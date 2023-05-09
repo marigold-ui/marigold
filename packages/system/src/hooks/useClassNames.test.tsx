@@ -67,6 +67,8 @@ test('returns a string', () => {
   });
 
   const classNames: string | undefined = result.current;
+
+  expect(classNames).toBeTruthy();
 });
 
 test('return classnames (with variant)', () => {
