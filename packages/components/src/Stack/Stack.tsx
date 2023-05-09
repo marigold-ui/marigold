@@ -1,29 +1,20 @@
 import React, { ReactNode } from 'react';
-import { Box } from '@marigold/system';
+import { Box, cn } from '@marigold/system';
 import { theme, useSpace } from '../layoutTokens';
-
-// works with safelist
-const ALIGNMENT_X = {
-  none: 'initial',
-  left: 'items-start',
-  center: 'items-center',
-  right: 'items-end',
-};
-
-const ALIGNMENT_Y = {
-  none: 'initial',
-  top: 'justify-start',
-  center: 'justify-center',
-  bottom: 'justify-end',
-};
+import {
+  gapSpace,
+  AlignmentXProp,
+  AlignmentYProp,
+  GapSpaceProp,
+} from 'packages/system/src/style-props';
 
 // Props
 // ---------------
-export interface StackProps {
+export interface StackProps
+  extends AlignmentXProp,
+    AlignmentYProp,
+    GapSpaceProp {
   children?: ReactNode;
-  space?: keyof typeof theme.space | undefined;
-  alignX?: keyof typeof ALIGNMENT_X;
-  alignY?: keyof typeof ALIGNMENT_Y;
   stretch?: boolean;
 }
 
@@ -31,18 +22,21 @@ export interface StackProps {
 // ---------------
 export const Stack = ({
   children,
-  space = 'none',
-  alignX = 'none',
-  alignY = 'none',
+  alignX,
+  alignY,
+  space = 0,
   stretch = false,
   ...props
 }: StackProps) => {
-  const spaceclass = useSpace(space);
+  // const spaceclass = useSpace(space);
+
   return (
     <Box
-      className={`flex flex-col ${ALIGNMENT_X[alignX]} ${ALIGNMENT_Y[alignY]} ${
+      className={cn(
+        'flex flex-col',
+        gapSpace[space],
         stretch && 'h-full w-full'
-      } ${spaceclass}`}
+      )}
       {...props}
     >
       {children}

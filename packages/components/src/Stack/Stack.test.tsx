@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 
 import { Stack } from './Stack';
 
-test('default space is "none"', () => {
+test.only('default space is "0"', () => {
   render(
     <Stack>
       <p>first</p>
