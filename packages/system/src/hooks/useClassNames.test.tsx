@@ -6,6 +6,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { Theme } from '../types';
 import { ThemeProvider } from './useTheme';
 import { useClassNames } from './useClassNames';
+import { cn } from '../utils';
 
 const theme: Theme = {
   name: 'test-theme',
@@ -206,16 +207,24 @@ test('gracefully handles missing styles', () => {
 });
 
 // Additional Style Props
-test('add', () => {
+test('additional style props are supported', () => {
+  const alignment = {
+    left: 'text-left',
+    center: 'text-center',
+    right: 'text-right',
+  };
+
   const { result } = renderHook(
     () =>
       useClassNames({
         component: 'Button',
-        className: 'gap-8 custom-classname',
+        className: cn(['gap-8 custom-classname', alignment['center']]),
       }),
     {
       wrapper,
     }
   );
-  console.log(result.current);
+  expect(result.current).toMatchInlineSnapshot(
+    `"flex align-center gap-8 custom-classname text-center"`
+  );
 });
