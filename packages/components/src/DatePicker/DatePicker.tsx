@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { useDatePickerState } from '@react-stately/datepicker';
 import { AriaDatePickerProps, useDatePicker } from '@react-aria/datepicker';
 import { Calendar } from '../Calendar/Calendar';
-import { SmilieSatisfied } from '@marigold/icons';
 import { DateField } from '../DateField';
 import { Popover } from '../Overlay';
 import {
@@ -91,7 +90,6 @@ export const DatePicker = ({
             errorMessage={errorMessage}
             error={error}
             description={description}
-            icon={<SmilieSatisfied />}
             action={
               <Box
                 style={{
