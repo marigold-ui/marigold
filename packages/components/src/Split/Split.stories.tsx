@@ -1,7 +1,5 @@
 import React, { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Box } from '@marigold/system';
-import { shadow } from '@marigold/tokens';
 
 import { Inline } from '../Inline';
 import { Stack } from '../Stack';
@@ -10,19 +8,9 @@ import { Split } from './Split';
 import isChromatic from 'chromatic';
 
 const Block = ({ children }: { children: ReactNode }) => (
-  <Box
-    css={{
-      border: '1px solid #364fc7',
-      borderRadius: 16,
-      bg: '#4263eb',
-      color: '#edf2ff',
-      px: 32,
-      py: 12,
-      boxShadow: shadow['medium-1'],
-    }}
-  >
+  <div className="rounded border border-solid border-[#364fc7] bg-[#4263eb] px-8 py-3 text-[#edf2ff] shadow-md">
     {children}
-  </Box>
+  </div>
 );
 
 const meta = {
@@ -34,7 +22,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const WithInline: Story = () => (
-  <Inline space="medium">
+  <Inline space={4}>
     <Block>First</Block>
     <Block>Second</Block>
     <Split />
@@ -44,14 +32,14 @@ export const WithInline: Story = () => (
 
 export const WithStack: Story = {
   render: () => (
-    <Box css={{ height: 400 }}>
-      <Stack space="xsmall" stretch>
+    <div className="h-[400]">
+      <Stack space={2} stretch>
         <Block>First</Block>
         <Split />
         <Block>Second</Block>
         <Block>Third</Block>
       </Stack>
-    </Box>
+    </div>
   ),
 };
 

@@ -1,7 +1,5 @@
 import React, { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Box } from '@marigold/system';
-import { shadow } from '@marigold/tokens';
 
 import { Inline } from './Inline';
 import isChromatic from 'chromatic';

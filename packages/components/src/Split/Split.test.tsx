@@ -2,20 +2,18 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 
 import { Stack } from '../Stack';
-import { Text } from '../Text';
-
 import { Split } from '../Split';
 
-test('we can not reall test this ... but anyway', () => {
+test('we can not really test this ... but anyway', () => {
   render(
     <Stack>
-      <Text>first</Text>
+      <p>first</p>
       <Split />
-      <Text>second</Text>
+      <p>second</p>
     </Stack>
   );
 
   const split = screen.getByRole('separator');
-  expect(split).toHaveStyle(`flex-grow: 1`);
+  expect(split).toHaveClass(`grow`);
   expect(split).toBeVisible();
 });
