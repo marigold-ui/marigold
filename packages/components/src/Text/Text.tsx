@@ -1,16 +1,15 @@
 import React from 'react';
-import { useComponentStylesFromTV } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
-
-import { twMerge } from 'tailwind-merge';
 
 // Props
 // ---------------
 export interface TextProps extends HtmlProps<'p'> {
   children?: React.ReactNode;
   variant?: string;
+  align?: string;
+  color?: string;
   size?: string;
-  className?: string;
 }
 
 // Component
@@ -18,17 +17,21 @@ export interface TextProps extends HtmlProps<'p'> {
 export const Text = ({
   variant,
   size,
+  color,
+  align,
   className,
   children,
   ...props
 }: TextProps) => {
-  const classNames = useComponentStylesFromTV('Text', {
+  const classNames = useClassNames({
+    component: 'Text',
     variant,
     size,
+    className: cn([color, align]),
   });
 
   return (
-    <p {...props} className={twMerge(classNames, className)}>
+    <p {...props} className={classNames}>
       {children}
     </p>
   );

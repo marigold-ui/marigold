@@ -60,6 +60,14 @@ test('return classnames (base only)', () => {
   expect(result.current).toMatchInlineSnapshot(`"flex align-center"`);
 });
 
+test('returns a string', () => {
+  const { result } = renderHook(() => useClassNames({ component: 'Button' }), {
+    wrapper,
+  });
+
+  const classNames: string | undefined = result.current;
+});
+
 test('return classnames (with variant)', () => {
   const { result } = renderHook(
     () => useClassNames({ component: 'Button', variant: 'primary' }),
@@ -184,6 +192,7 @@ test('gracefully handles missing styles', () => {
     () =>
       useClassNames({
         component: 'Button',
+        // @ts-expect-error
         className: { slot: 'foo-bar' },
       }),
     {
@@ -202,7 +211,7 @@ test('add', () => {
     () =>
       useClassNames({
         component: 'Button',
-        className: ['gap-8', 'custom-classname'],
+        className: 'gap-8 custom-classname',
       }),
     {
       wrapper,

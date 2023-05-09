@@ -14,15 +14,6 @@ export interface ComponentStyleFunction<
   ): string;
 }
 
-export type WithSlots<
-  Slots extends string,
-  Variants extends string = never,
-  Sizes extends string = never,
-  Additional extends { [name: string]: any } = {}
-> = {
-  [slot in Slots]: ComponentStyleFunction<Variants, Sizes, Additional>;
-};
-
 export type Theme = {
   name: string;
   screens?: { [key: string]: any };
@@ -30,10 +21,15 @@ export type Theme = {
   root?: ComponentStyleFunction;
   components: {
     Button?: ComponentStyleFunction<string, string>;
-    HelpText?: {
-      container?: ComponentStyleFunction<string, string>;
-      icon?: ComponentStyleFunction<string, string>;
-    };
-    // HelpText?: WithSlots<'container' | 'icon', string, string>;
+    HelpText?: Record<
+      'container' | 'icon',
+      ComponentStyleFunction<string, string>
+    >;
+    Text?: ComponentStyleFunction<string, string>;
   };
 };
+
+export type ComponentNames = keyof Theme['components'];
+export type ThemeComponent<C extends ComponentNames> = NonNullable<
+  Theme['components'][C]
+>;

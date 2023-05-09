@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 
 import { Stack } from './Stack';
 
-test.only('default space is "0"', () => {
+test('default space is "0"', () => {
   render(
     <Stack>
       <p>first</p>
@@ -18,13 +18,24 @@ test.only('default space is "0"', () => {
 
 test('uses spacing from theme', () => {
   render(
-    <Stack space="small">
+    <Stack space={2}>
       <p>first</p>
       <p>second</p>
     </Stack>
   );
   const first = screen.getByText(/first/).parentElement;
-  expect(first).toHaveClass(`gap-16`);
+  expect(first).toMatchInlineSnapshot(`
+    <div
+      class="flex flex-col gap-2"
+    >
+      <p>
+        first
+      </p>
+      <p>
+        second
+      </p>
+    </div>
+  `);
 });
 
 test('children are not aligned by default', () => {
@@ -34,7 +45,7 @@ test('children are not aligned by default', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`initial`);
+  expect(stack).not.toHaveClass('justify-start items-start');
 });
 
 test('allows to align children to the left', () => {
@@ -65,16 +76,6 @@ test('allows to align children to the right', () => {
   );
   const stack = screen.getByTestId('stack');
   expect(stack).toHaveClass(`items-end`);
-});
-
-test('children are not aligned vertically by default', () => {
-  render(
-    <Stack data-testid="stack">
-      <p>first</p>
-    </Stack>
-  );
-  const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`initial`);
 });
 
 test('allows to align children to the vertical top', () => {
@@ -119,12 +120,12 @@ test('allows to fill space with stretch prop', () => {
 
 test('supports nesting', () => {
   render(
-    <Stack space="large">
-      <Stack space="small" data-testid="upperStack">
+    <Stack space={4}>
+      <Stack space={3} data-testid="upperStack">
         <p>first</p>
         <p>second</p>
       </Stack>
-      <Stack space="small" data-testid="lowerStack">
+      <Stack space={3} data-testid="lowerStack">
         <p>third</p>
         <p>fourth</p>
       </Stack>
@@ -132,13 +133,13 @@ test('supports nesting', () => {
   );
   const first = screen.getByText(/first/).parentElement;
   const upperStack = screen.getByTestId('upperStack').parentElement;
-  expect(first).toHaveClass(`gap-16`);
-  expect(upperStack).toHaveClass(`gap-32`);
+  expect(first).toHaveClass(`gap-3`);
+  expect(upperStack).toHaveClass(`gap-4`);
 
   const third = screen.getByText(/third/).parentElement;
   const lowerStack = screen.getByTestId('lowerStack').parentElement;
-  expect(third).toHaveClass(`gap-16`);
-  expect(lowerStack).toHaveClass(`gap-32`);
+  expect(third).toHaveClass(`gap-3`);
+  expect(lowerStack).toHaveClass(`gap-4`);
 });
 
 test('renders as div per default', () => {

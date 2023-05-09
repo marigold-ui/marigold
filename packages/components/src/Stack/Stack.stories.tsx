@@ -13,18 +13,8 @@ const meta = {
   argTypes: {
     space: {
       control: {
-        type: 'select',
+        type: 'text',
       },
-      options: [
-        'none',
-        'xxsmall',
-        'xsmall',
-        'small',
-        'medium',
-        'large',
-        'xlarge',
-        'xxlarge',
-      ],
       description: 'Responsive Style Value',
     },
     alignX: {
@@ -84,7 +74,7 @@ export const Nested: Story = {
   render: args => (
     <Block>
       <Stack {...args}>
-        <Stack space="xsmall">
+        <Stack space={2}>
           <Block>
             <Headline level="2">With xsmall spacing</Headline>
           </Block>
@@ -105,7 +95,7 @@ export const Nested: Story = {
             </Text>
           </Block>
         </Stack>
-        <Stack space="medium">
+        <Stack space={4}>
           <Block>
             <Headline level="2">With Medium Spacing</Headline>
           </Block>

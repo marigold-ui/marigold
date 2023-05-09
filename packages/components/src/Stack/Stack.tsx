@@ -1,12 +1,13 @@
 import React, { ReactNode } from 'react';
 import { Box, cn } from '@marigold/system';
-import { theme, useSpace } from '../layoutTokens';
 import {
   gapSpace,
+  alignmentX,
+  alignmentY,
   AlignmentXProp,
   AlignmentYProp,
   GapSpaceProp,
-} from 'packages/system/src/style-props';
+} from '@marigold/system';
 
 // Props
 // ---------------
@@ -22,9 +23,9 @@ export interface StackProps
 // ---------------
 export const Stack = ({
   children,
-  alignX,
-  alignY,
   space = 0,
+  alignX = 'none',
+  alignY = 'none',
   stretch = false,
   ...props
 }: StackProps) => {
@@ -35,6 +36,8 @@ export const Stack = ({
       className={cn(
         'flex flex-col',
         gapSpace[space],
+        alignmentX[alignX],
+        alignmentY[alignY],
         stretch && 'h-full w-full'
       )}
       {...props}

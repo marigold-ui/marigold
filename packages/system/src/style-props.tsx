@@ -12,42 +12,42 @@ export const fontWeight = {
 
 export const gapSpace = {
   0: 'gap-0',
+  1: 'gap-1',
+  2: 'gap-2',
+  3: 'gap-3',
   4: 'gap-4',
-  8: 'gap-8',
-  16: 'gap-16',
-  24: 'gap-24',
-  32: 'gap-32',
-  40: 'gap-40',
-  48: 'gap-48',
+  5: 'gap-5',
+  6: 'gap-6',
+  7: 'gap-7',
 };
 
 export const paddingSpace = {
   0: 'p-0',
+  1: 'p-1',
+  2: 'p-2',
+  3: 'p-3',
   4: 'p-4',
-  8: 'p-8',
-  16: 'p-16',
-  24: 'p-24',
-  32: 'p-32',
-  40: 'p-40',
-  48: 'p-48',
+  5: 'p-5',
+  6: 'p-6',
+  7: 'p-7',
 };
 
-export const alignX = {
-  none: 'initial',
+export const alignmentX = {
+  none: undefined,
   left: 'items-start',
   center: 'items-center',
   right: 'items-end',
 };
 
-export const alignY = {
-  none: 'initial',
+export const alignmentY = {
+  none: undefined,
   top: 'justify-start',
   center: 'justify-center',
   bottom: 'justify-end',
 };
 
-export type AlignmentXProp = { alignX?: keyof typeof alignX };
-export type AlignmentYProp = { alignY?: keyof typeof alignY };
-export type FontWeightProp = { fontWeight: keyof typeof fontWeight };
+export type AlignmentXProp = { alignX?: keyof typeof alignmentX };
+export type AlignmentYProp = { alignY?: keyof typeof alignmentY };
+export type FontWeightProp = { fontWeight?: keyof typeof fontWeight };
 export type GapSpaceProp = { space?: keyof typeof gapSpace };
-export type PaddingSpaceProp = { paddingSpace: keyof typeof paddingSpace };
+export type PaddingSpaceProp = { paddingSpace?: keyof typeof paddingSpace };
