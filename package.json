@@ -7,6 +7,7 @@
   "engines": {
     "node": ">=16.x"
   },
+  "type": "module",
   "packageManager": "pnpm@8.2.0",
   "dependencies": {
     "@babel/core": "7.21.4",
@@ -43,10 +44,10 @@
   "scripts": {
     "start": "pnpm --filter @marigold/docs dev",
     "dev": "FOLDERS=packages/components/src,packages/system/src pnpm --filter @marigold/storybook-config start",
+    "watch": "zx scripts/watch-tailwind.mjs",
     "build": "pnpm --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" --filter \"@marigold/theme-preset\" build",
     "build:docs": "pnpm --filter @marigold/docs build",
     "build:storybook": "pnpm --filter @marigold/storybook-config build",
-    "build:tailwind": "pnpm dlx tailwindcss -i ./themes/**/src/index.css -o ./dist/output.css --watch",
     "test": "jest --config jest.config.js",
     "test:coverage": "jest --config jest.config.js --coverage --coverageReporters html",
     "test:ci": "jest --config jest.config.js --coverage --ci --no-cache",
@@ -63,10 +64,10 @@
     "changeset": "changeset",
     "release:notification": "zx scripts/create-slack-notification.mjs",
     "slack": "zx scripts/slack-release-notification.mjs --quiet",
-    "prepare": "husky install",
-    "theme": "zx scripts/generate-theme.js"
+    "prepare": "husky install"
   },
   "devDependencies": {
+    "@parcel/watcher": "2.1.0",
     "autoprefixer": "10.4.13",
     "postcss-import": "15.1.0",
     "postcss-loader": "7.0.2",

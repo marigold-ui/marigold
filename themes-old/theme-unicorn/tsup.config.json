@@ -1,8 +1,9 @@
 {
-  "entry": ["src/index.ts", "src/index.css"],
+  "entry": ["src/index.ts"],
   "format": ["esm", "cjs"],
   "tsconfig": "./tsconfig.build.json",
   "dts": true,
+  "external": "react",
   "sourcemap": true,
   "clean": true
 }

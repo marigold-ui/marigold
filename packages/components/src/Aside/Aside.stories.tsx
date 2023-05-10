@@ -75,7 +75,7 @@ export default meta;
 export const Basic: StoryObj<typeof Aside> = {
   render: args => (
     <Aside {...args}>
-      <div className="bg-yellow-400">
+      <div className="text-primary-700 bg-yellow-400">
         Ketchup was once sold as medicine. The condiment was prescribed and sold
         to people suffering with indigestion back in 1834.
       </div>

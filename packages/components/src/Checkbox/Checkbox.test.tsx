@@ -3,7 +3,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Theme, ThemeProvider } from '@marigold/system';
 import { Checkbox } from './Checkbox';
-import { checkbox } from './../../../../themes/tailwind-core/src/components/Checkbox.styles';
+import { checkbox } from '../../../../themes/theme-core/src/components/Checkbox.styles';
 
 const theme: Theme = {
   name: 'test',
