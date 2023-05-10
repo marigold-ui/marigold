@@ -37,6 +37,7 @@ import type { TextThemeExtension } from './Text';
 import type { TextAreaThemeExtension } from './TextArea';
 import type { TooltipThemeExtension } from './Tooltip';
 import { CalendarThemeExtension } from './Calendar';
+import type { DatePickerThemeExtension } from './DatePicker';
 import type { TagThemeExtension } from './TagGroup/Tag';
 import { TabsThemeExtension } from './Tabs';
 interface ComponentStyles
@@ -57,6 +58,9 @@ interface ComponentStyles
     HelpTextThemeExtension,
     ImageThemeExtension,
     InputThemeExtension,
+    DateFieldThemeExtension,
+    CalendarThemeExtension,
+    DatePickerThemeExtension,
     LabelThemeExtension,
     LinkThemeExtension,
     ListThemeExtension,

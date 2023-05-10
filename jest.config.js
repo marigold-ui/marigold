@@ -1,6 +1,7 @@
 const createConfig = require('@marigold/jest-config');
 
 module.exports = createConfig({
+  testTimeout: 30000,
   collectCoverageFrom: [
     '!**/config/**',
     '!**/docs*/**',

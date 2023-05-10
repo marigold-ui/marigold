@@ -8,6 +8,8 @@ export * from './Dialog.style';
 export * from './Divider.style';
 export * from './Field.style';
 export * from './DateField.style';
+export * from './Calendar.style';
+export * from './DatePicker.style';
 export * from './Footer.style';
 export * from './Headline.style';
 export * from './HelpText.style';
