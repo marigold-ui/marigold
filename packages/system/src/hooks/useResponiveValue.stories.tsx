@@ -12,6 +12,7 @@ type Story = StoryObj<typeof meta>;
 const theme = {
   name: 'test',
   breakpoints: ['40em', '50em', '60em', '70em'],
+  components: {},
 };
 
 const Component = () => {
