@@ -334,8 +334,8 @@ importers:
         specifier: 2.3.0
         version: 2.3.0(react@18.2.0)
       '@next/mdx':
-        specifier: 13.3.0
-        version: 13.3.0(@mdx-js/loader@2.3.0)(@mdx-js/react@2.3.0)
+        specifier: 13.4.1
+        version: 13.4.1(@mdx-js/loader@2.3.0)(@mdx-js/react@2.3.0)
       estree-util-visit:
         specifier: 1.2.1
         version: 1.2.1
@@ -3120,8 +3120,8 @@ packages:
     resolution: {integrity: sha512-H/69Lc5Q02dq3o+dxxy5O/oNxFsZpdL6WREtOOtOM1B/weonIwDXkekr1KV5DPVPr12IHFPrMrcJQ6bgPMfn7A==}
     dev: false
 
-  /@next/mdx@13.3.0(@mdx-js/loader@2.3.0)(@mdx-js/react@2.3.0):
-    resolution: {integrity: sha512-qrf1K/dTzC9LLPFyacNJBqmnT7BQphrvRDlXb6sfjgMK1iBaKpTmR1PETBT4CSaHzjRY9JjuRftZeYzWGJq3TQ==}
+  /@next/mdx@13.4.1(@mdx-js/loader@2.3.0)(@mdx-js/react@2.3.0):
+    resolution: {integrity: sha512-jYhj/23/zamwgaZhYHnLc6B6lM/YnTkW5g/L6AClkZ3/o/Kups0Jq5TdYRXQ85vpaGYCNTnLr4kxdtCNWxuYzA==}
     peerDependencies:
       '@mdx-js/loader': '>=0.15.0'
       '@mdx-js/react': '>=0.15.0'
@@ -3927,10 +3927,7 @@ packages:
     dev: false
 
   /@react-aria/tabs@3.4.1(react@18.2.0):
-    resolution:
-      {
-        integrity: sha512-0dS26zcmNq1ERKy3kHOD465UegOBCZEHsM3+jxrMBONyG76tACyNNRyMOm0sk5h3XLravBJR/uySRhAtvBEi0w==,
-      }
+    resolution: {integrity: sha512-0dS26zcmNq1ERKy3kHOD465UegOBCZEHsM3+jxrMBONyG76tACyNNRyMOm0sk5h3XLravBJR/uySRhAtvBEi0w==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
