@@ -3,6 +3,7 @@ import { Theme } from '@marigold/components';
 export const DateField: Theme['components']['DateField'] = {
   base: {
     field: {
+      border: '1px solid',
       borderColor: 'gray40',
       '&[data-error]': {
         borderColor: 'red60',
