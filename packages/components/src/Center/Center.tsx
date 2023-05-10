@@ -9,7 +9,7 @@ export interface CenterProps extends HtmlProps<'div'>, GapSpaceProp {
 }
 
 export const Center = ({
-  maxWidth,
+  maxWidth = '100%',
   space = 0,
   children,
   ...props

@@ -20,6 +20,10 @@ export type Theme = {
   colors?: { [key: string]: any };
   root?: ComponentStyleFunction;
   components: {
+    Accordion?: Record<
+      'button' | 'item',
+      ComponentStyleFunction<string, string>
+    >;
     Button?: ComponentStyleFunction<string, string>;
     HelpText?: Record<
       'container' | 'icon',

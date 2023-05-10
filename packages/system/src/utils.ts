@@ -14,7 +14,7 @@ export type ClassValue =
 
 export const cn = (...inputs: ClassValue[]) => twMerge(cx(inputs));
 
-export const createVar = (name: any) =>
-  Object.entries(name)
-    .map(([name, val]) => ({ [`--${name}`]: val } as React.CSSProperties))
-    .shift();
+export const createVar = (o: { [key: string]: string | number | undefined }) =>
+  Object.fromEntries(
+    Object.entries(o).map(([name, val]) => [`--${name}`, val])
+  ) as React.CSSProperties;

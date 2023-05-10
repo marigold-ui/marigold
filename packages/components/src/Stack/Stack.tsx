@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
-import { Box, cn } from '@marigold/system';
 import {
+  cn,
   gapSpace,
   alignmentX,
   alignmentY,
@@ -28,21 +28,17 @@ export const Stack = ({
   alignY = 'none',
   stretch = false,
   ...props
-}: StackProps) => {
-  // const spaceclass = useSpace(space);
-
-  return (
-    <Box
-      className={cn(
-        'flex flex-col',
-        gapSpace[space],
-        alignmentX[alignX],
-        alignmentY[alignY],
-        stretch && 'h-full w-full'
-      )}
-      {...props}
-    >
-      {children}
-    </Box>
-  );
-};
+}: StackProps) => (
+  <div
+    className={cn(
+      'flex flex-col',
+      gapSpace[space],
+      alignmentX[alignX],
+      alignmentY[alignY],
+      stretch && 'h-full w-full'
+    )}
+    {...props}
+  >
+    {children}
+  </div>
+);

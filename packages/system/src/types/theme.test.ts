@@ -1,6 +1,6 @@
 import { cva } from 'class-variance-authority';
 
-import { ComponentStyleFunction, Theme, WithSlots } from '.';
+import { ComponentStyleFunction, Theme } from '.';
 
 const theme: Theme = {
   name: 'test',

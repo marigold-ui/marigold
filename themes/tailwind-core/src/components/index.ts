@@ -1,3 +1,4 @@
+export * from './Accordion.styles';
 export * from './Badge.styles';
 export * from './Button.styles';
 export * from './Checkbox.styles';
