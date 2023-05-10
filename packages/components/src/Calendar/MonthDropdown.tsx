@@ -24,7 +24,6 @@ const MonthDropdown = ({ state }: MonthDropdownProps) => {
     let date = state.focusedDate.set({ month: value });
     state.setFocusedDate(date);
   };
-
   return (
     <Select
       aria-label="Month"
