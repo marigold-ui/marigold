@@ -42,8 +42,13 @@ const subscription = await watcher.subscribe(
         ev.path.includes('packages/system')
       ) {
         log(`👀 Change detected in "components" or "system". Building...`);
-        const themes = getAllThemes();
-        console.log(themes);
+        await Promise.all(
+          getAllThemes().map(pkg => {
+            cd(pkg.dir);
+            return $`pnpm build`;
+          })
+        );
+        log(`✅ Done building all themes!`);
       }
     });
   },
