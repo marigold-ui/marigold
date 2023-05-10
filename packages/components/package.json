@@ -48,6 +48,7 @@
     "@react-aria/ssr": "3.5.0",
     "@react-aria/switch": "3.4.0",
     "@react-aria/table": "3.8.1",
+    "@react-aria/tabs": "3.4.1",
     "@react-aria/tag": "3.0.0-rc.0",
     "@react-aria/textfield": "3.9.0",
     "@react-aria/tooltip": "3.4.0",

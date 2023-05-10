@@ -508,6 +508,9 @@ importers:
       '@react-aria/table':
         specifier: 3.8.1
         version: 3.8.1(react-dom@18.2.0)(react@18.2.0)
+      '@react-aria/tabs':
+        specifier: 3.4.1
+        version: 3.4.1(react@18.2.0)
       '@react-aria/tag':
         specifier: 3.0.0-rc.0
         version: 3.0.0-rc.0(react-dom@18.2.0)(react@18.2.0)
@@ -3921,6 +3924,27 @@ packages:
       '@swc/helpers': 0.4.14
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@react-aria/tabs@3.4.1(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-0dS26zcmNq1ERKy3kHOD465UegOBCZEHsM3+jxrMBONyG76tACyNNRyMOm0sk5h3XLravBJR/uySRhAtvBEi0w==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@react-aria/focus': 3.11.0(react@18.2.0)
+      '@react-aria/i18n': 3.7.0(react@18.2.0)
+      '@react-aria/interactions': 3.14.0(react@18.2.0)
+      '@react-aria/selection': 3.13.1(react@18.2.0)
+      '@react-aria/utils': 3.15.0(react@18.2.0)
+      '@react-stately/list': 3.7.0(react@18.2.0)
+      '@react-stately/tabs': 3.3.0(react@18.2.0)
+      '@react-types/shared': 3.17.0(react@18.2.0)
+      '@react-types/tabs': 3.2.1(react@18.2.0)
+      '@swc/helpers': 0.4.14
+      react: 18.2.0
     dev: false
 
   /@react-aria/tag@3.0.0-rc.0(react-dom@18.2.0)(react@18.2.0):
