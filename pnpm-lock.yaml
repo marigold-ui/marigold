@@ -34,6 +34,9 @@ importers:
       '@react-aria/calendar':
         specifier: 3.2.0
         version: 3.2.0(react-dom@18.2.0)(react@18.2.0)
+      '@react-aria/combobox':
+        specifier: 3.6.0
+        version: 3.6.0(react-dom@18.2.0)(react@18.2.0)
       '@react-aria/datepicker':
         specifier: 3.4.0
         version: 3.4.0(react-dom@18.2.0)(react@18.2.0)
