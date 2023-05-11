@@ -115,6 +115,9 @@ export const aspect = {
   golden: 'aspect-[1.6180/1]',
 };
 
+export type AspectProp = { ratio?: keyof typeof aspect };
+export type AlignmentXProp = { alignX?: keyof typeof alignmentX };
+export type AlignmentYProp = { alignY?: keyof typeof alignmentY };
 export type FontWeightProp = { fontWeight?: keyof typeof fontWeight };
 export type GridColsAlignProp = { align?: keyof typeof gridColsAlign };
 export type GridColumn = { align?: keyof typeof gridColumn };
