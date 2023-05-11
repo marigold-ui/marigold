@@ -2,21 +2,18 @@ import React from 'react';
 import { StoryFn } from '@storybook/react';
 import isChromatic from 'chromatic/isChromatic';
 
-import unicornTheme from '@marigold/theme-unicorn';
 import { MarigoldProvider } from '@marigold/components';
 
 import 'tailwindcss/tailwind.css';
-import '@marigold/theme-unicorn/index.css';
 
-import '../../../themes/tailwind-core/dist/index.css';
-import tailwindCore from '@marigold/tailwind-core';
+import '../../../themes/theme-core/dist/index.css';
+import tailwindCore from '@marigold/theme-core';
 
 import { withThemeByDataAttribute } from '@storybook/addon-styling';
 // Helpers
 // ---------------
 const THEME = {
   core: tailwindCore,
-  unicorn: unicornTheme,
 };
 
 type ThemeNames = keyof typeof THEME;

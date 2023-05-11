@@ -45,7 +45,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const Block = ({ children }: { children: ReactNode }) => (
-  <Box className="rounded-xl border border-solid border-gray-200 bg-gray-100 p-3 ">
+  <Box className="rounded-xl border border-solid border-gray-200 bg-gray-100 p-3">
     {children}
   </Box>
 );
