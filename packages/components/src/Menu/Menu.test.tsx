@@ -7,12 +7,17 @@ import {
   renderHook,
   screen,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { OverlayProvider } from '@react-aria/overlays';
 import { ThemeProvider, useResponsiveValue } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Menu } from './Menu';
 import { ActionMenu } from './ActionMenu';
+
+// Setup
+// ---------------
+const user = userEvent.setup();
 
 const theme = {
   colors: {
@@ -183,10 +188,11 @@ test('closes menu when trigger is clicked', () => {
   expect(pizza).not.toBeInTheDocument();
 });
 
-test('closes menu when clicked outside', () => {
+test('closes menu when clicked outside', async () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
+        <Button>outside</Button>
         <Menu.Trigger>
           <Button>Choose</Button>
           <Menu>
@@ -199,13 +205,13 @@ test('closes menu when clicked outside', () => {
   );
 
   const button = screen.getByText('Choose');
-  fireEvent.click(button);
+  await user.click(button);
 
   const burger = screen.getByText('Burger');
-  fireEvent.focus(burger);
-  fireEvent.blur(burger);
-
   const pizza = screen.queryByText('Pizza');
+
+  const outside = screen.getByText('outside');
+  await user.click(outside);
 
   expect(burger).not.toBeInTheDocument();
   expect(pizza).not.toBeInTheDocument();
@@ -331,7 +337,7 @@ test('supports "Menu" sizes from theme', () => {
   expect(item).toHaveStyle(`padding: ${theme.space.small}px`);
 });
 
-test('apply focus style on focus', () => {
+test('apply focus style on focus', async () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
@@ -345,11 +351,11 @@ test('apply focus style on focus', () => {
       </ThemeProvider>
     </OverlayProvider>
   );
-  const button = screen.getByText('Choose');
-  fireEvent.click(button);
+
+  await user.tab();
+  await user.keyboard('[Enter]');
 
   const item = screen.getByText('Burger');
-  fireEvent.focus(item);
   expect(item).toHaveStyle(`background: ${theme.colors.pink}`);
 });
 
