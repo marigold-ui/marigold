@@ -2,7 +2,6 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Aspect } from '../Aspect';
-import { Box } from '../Box';
 import { Container } from '../Container';
 import { Image } from '../Image';
 import { Text } from '../Text';

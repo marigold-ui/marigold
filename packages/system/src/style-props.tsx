@@ -65,4 +65,4 @@ export type AlignmentXProp = { alignX?: keyof typeof alignmentX };
 export type AlignmentYProp = { alignY?: keyof typeof alignmentY };
 export type FontWeightProp = { fontWeight?: keyof typeof fontWeight };
 export type GapSpaceProp = { space?: keyof typeof gapSpace };
-export type PaddingSpaceProp = { paddingSpace?: keyof typeof paddingSpace };
+export type PaddingSpaceProp = { space?: keyof typeof paddingSpace };

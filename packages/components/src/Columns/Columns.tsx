@@ -5,21 +5,17 @@ import React, {
   ReactNode,
 } from 'react';
 
-import { ResponsiveStyleValue } from '@marigold/system';
+import { cn, createVar, gapSpace, GapSpaceProp } from '@marigold/system';
 
-import { Box } from '../Box';
-
-export interface ColumnsProps {
+export interface ColumnsProps extends GapSpaceProp {
   children?: ReactNode;
   columns: Array<number>;
-  space?: ResponsiveStyleValue<string>;
-  columnLimit?: number;
   collapseAt?: string | 0;
   stretch?: boolean;
 }
 
 export const Columns = ({
-  space = 'none',
+  space = 0,
   columns,
   collapseAt = '0em',
   stretch,
@@ -35,33 +31,22 @@ export const Columns = ({
   }
 
   return (
-    <Box
-      css={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'stretch',
-        height: stretch ? '100%' : undefined,
-        gap: space,
-        '> *': {
-          /**
-           * "Container Query": collapses at given width
-           * (https://heydonworks.com/article/the-flexbox-holy-albatross/)
-           */
-          flexBasis: `calc(( ${collapseAt} - 100%) * 999)`,
-        },
-      }}
+    <div
+      className={cn(
+        'flex flex-wrap items-stretch',
+        stretch && 'h-full',
+        gapSpace[space]
+      )}
       {...props}
     >
       {Children.map(children, (child, idx) => (
-        <Box
-          css={{
-            // Stretch each column to the given value
-            flexGrow: columns[idx],
-          }}
+        <div
+          className="grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+          style={createVar({ collapseAt, columnSize: columns[idx] })}
         >
           {isValidElement(child) ? cloneElement(child) : child}
-        </Box>
+        </div>
       ))}
-    </Box>
+    </div>
   );
 };

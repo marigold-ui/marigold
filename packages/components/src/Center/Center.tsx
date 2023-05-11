@@ -19,7 +19,7 @@ export const Center = ({
       className={cn(
         'me-[auto] ms-[auto] box-content flex flex-col items-center justify-center',
         gapSpace[space],
-        'max-w-[var(--maxWidth)]'
+        'max-w-[--maxWidth]'
       )}
       style={createVar({ maxWidth })}
       {...props}
