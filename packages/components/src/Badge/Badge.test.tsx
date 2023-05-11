@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Theme, ThemeProvider } from '@marigold/system';
 import { Badge } from './Badge';

@@ -82,7 +82,7 @@ export const FieldBase = ({
           {label}
         </Label>
       )}
-      <Box className={styledDivColumn()}>
+      <Box __baseCSS={{ display: 'flex', flexDirection: 'column', width }}>
         {children}
         {hasHelpText && (
           <HelpText

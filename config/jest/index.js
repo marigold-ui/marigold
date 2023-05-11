@@ -19,6 +19,11 @@ const base = {
       {
         jsc: {
           target: 'es2022',
+          transform: {
+            react: {
+              runtime: 'automatic',
+            },
+          },
         },
         sourceMaps: true,
       },
