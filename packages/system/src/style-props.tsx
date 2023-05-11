@@ -51,6 +51,16 @@ export const alignmentY = {
   bottom: 'justify-end',
 };
 
+export const aspect = {
+  square: 'aspect-[1]',
+  landscape: 'aspect-[4/3]',
+  portrait: 'aspect-[3/4]',
+  widescreen: 'aspect-[16/9]',
+  ultrawide: 'aspect-[18/5]',
+  golden: 'aspect-[1.6180/1]',
+};
+
+export type AspectProp = { ratio?: keyof typeof aspect };
 export type AlignmentXProp = { alignX?: keyof typeof alignmentX };
 export type AlignmentYProp = { alignY?: keyof typeof alignmentY };
 export type FontWeightProp = { fontWeight?: keyof typeof fontWeight };
