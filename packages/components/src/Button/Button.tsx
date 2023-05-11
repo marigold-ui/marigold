@@ -7,7 +7,13 @@ import { FocusableDOMProps, PressEvents } from '@react-types/shared';
 import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
 
-import { Box, useComponentStylesFromTV, useStateProps } from '@marigold/system';
+import {
+  Box,
+  cn,
+  useClassNames,
+  useComponentStylesFromTV,
+  useStateProps,
+} from '@marigold/system';
 import { HtmlProps, PolymorphicComponent, PropsOf } from '@marigold/types';
 
 // Props
@@ -71,7 +77,7 @@ export const Button = forwardRef(
       buttonRef
     );
 
-    const classNames = useComponentStylesFromTV('Button', { variant, size });
+    const classNames = useClassNames({ component: 'Button', variant, size });
 
     const stateProps = useStateProps({
       active: isPressed,
@@ -79,22 +85,14 @@ export const Button = forwardRef(
       hover: isHovered,
     });
 
-    const styledButton = tv({
-      base: [
-        'inline-flex items-center justify-center gap-[0.5ch]',
-        'cursor-pointer disabled:cursor-not-allowed ',
-        fullWidth ? 'w-full' : undefined,
-        'focus:outline-0',
-      ],
-    });
-
+    console.log(classNames);
     return (
       <Box
         {...mergeProps(buttonProps, focusProps, hoverProps, props)}
         {...stateProps}
         as={as}
         ref={buttonRef}
-        className={twMerge(styledButton(), classNames)}
+        className={cn(classNames, fullWidth ? 'w-full' : undefined)}
       >
         {children}
       </Box>

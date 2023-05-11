@@ -665,6 +665,9 @@ importers:
       '@types/react-transition-group':
         specifier: 4.4.5
         version: 4.4.5
+      class-variance-authority:
+        specifier: 0.6.0
+        version: 0.6.0(typescript@5.0.4)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -10937,7 +10940,6 @@ packages:
     dependencies:
       clsx: 1.2.1
       typescript: 5.0.4
-    dev: false
 
   /clean-stack@2.2.0:
     resolution:
@@ -11073,7 +11075,6 @@ packages:
         integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==,
       }
     engines: { node: '>=6' }
-    dev: false
 
   /co@4.6.0:
     resolution:

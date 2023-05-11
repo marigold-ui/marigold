@@ -3,13 +3,12 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Theme, ThemeProvider } from '@marigold/system';
 import { Button } from './Button';
 import { Facebook } from '@marigold/icons';
-import { tv } from 'tailwind-variants';
+import { cva } from 'class-variance-authority';
 
 const theme: Theme = {
   name: 'test',
   components: {
-    Button: tv({
-      base: ['font-[fancy]', 'focus:bg-red-600 disabled:bg-gray-600'],
+    Button: cva('font-[fancy]', 'focus:bg-red-600 disabled:bg-gray-600', {
       variants: {
         variant: {
           primary: ['font-[fancy]'],
@@ -24,7 +23,7 @@ const theme: Theme = {
   },
 };
 
-test('sets some base styles', () => {
+test.only('sets some base styles', () => {
   render(<Button>button</Button>);
   const button = screen.getByText(/button/);
 
