@@ -3,19 +3,18 @@ import { render, screen } from '@testing-library/react';
 
 import { Breakout } from './Breakout';
 
-test('has gridColumn and default width', () => {
+test('has gridColumn, alignment and default width via classname', () => {
   render(<Breakout data-testid="breakout">breakout</Breakout>);
   const breakout = screen.getByTestId(/breakout/);
-  expect(breakout).toHaveStyle(`grid-column: 1/-1`);
-  expect(breakout).toHaveStyle(`width: 100%`);
+  expect(breakout).toMatchInlineSnapshot(`
+    <div
+      class="col-[\`1_/_-1_!important\`] w-full justify-start items-start flex h-[--height]"
+      data-testid="breakout"
+    >
+      breakout
+    </div>
+  `);
 });
-
-test('supports default horizontalAlign left', () => {
-  render(<Breakout data-testid="breakout">breakout</Breakout>);
-  const breakout = screen.getByTestId(/breakout/);
-  expect(breakout).toHaveStyle(`justifyContent: flex-start`);
-});
-
 test('supports horizontal center', () => {
   render(
     <Breakout alignX="center" data-testid="breakout">
@@ -23,7 +22,7 @@ test('supports horizontal center', () => {
     </Breakout>
   );
   const breakout = screen.getByTestId(/breakout/);
-  expect(breakout).toHaveStyle(`justifyContent: center`);
+  expect(breakout).toHaveClass(`justify-center`);
 });
 
 test('supports horizontalAlign right', () => {
@@ -33,13 +32,13 @@ test('supports horizontalAlign right', () => {
     </Breakout>
   );
   const breakout = screen.getByTestId(/breakout/);
-  expect(breakout).toHaveStyle(`justifyContent: flex-end`);
+  expect(breakout).toHaveClass(`justify-end`);
 });
 
-test('supports default horizontalAlign top', () => {
+test('supports default vertical align top', () => {
   render(<Breakout data-testid="breakout">breakout</Breakout>);
   const breakout = screen.getByTestId(/breakout/);
-  expect(breakout).toHaveStyle(`alignItems: flex-start`);
+  expect(breakout).toHaveClass(`items-start`);
 });
 
 test('supports verticalAlign center', () => {
@@ -49,7 +48,7 @@ test('supports verticalAlign center', () => {
     </Breakout>
   );
   const breakout = screen.getByTestId(/breakout/);
-  expect(breakout).toHaveStyle(`alignItems: center`);
+  expect(breakout).toHaveClass(`items-center`);
 });
 
 test('supports verticalAlign bottom', () => {
@@ -59,7 +58,7 @@ test('supports verticalAlign bottom', () => {
     </Breakout>
   );
   const breakout = screen.getByTestId(/breakout/);
-  expect(breakout).toHaveStyle(`alignItems: flex-end`);
+  expect(breakout).toHaveClass(`items-end`);
 });
 
 test('supports height prop', () => {
@@ -69,5 +68,13 @@ test('supports height prop', () => {
     </Breakout>
   );
   const breakout = screen.getByTestId(/breakout/);
-  expect(breakout).toHaveStyle(`height: 200px`);
+  expect(breakout).toMatchInlineSnapshot(`
+    <div
+      class="col-[\`1_/_-1_!important\`] w-full justify-start items-start flex h-[--height]"
+      data-testid="breakout"
+      style="--height: 200px;"
+    >
+      breakout
+    </div>
+  `);
 });

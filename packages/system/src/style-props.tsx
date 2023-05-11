@@ -37,18 +37,18 @@ export const paddingSpace = {
   7: 'p-7',
 };
 
-export const alignmentX = {
-  none: undefined,
-  left: 'items-start',
-  center: 'items-center',
-  right: 'items-end',
-};
-
 export const alignmentY = {
   none: undefined,
-  top: 'justify-start',
+  top: 'items-start',
+  center: 'items-center',
+  bottom: 'items-end',
+};
+
+export const alignmentX = {
+  none: undefined,
+  left: 'justify-start',
   center: 'justify-center',
-  bottom: 'justify-end',
+  right: 'justify-end',
 };
 
 export const aspect = {

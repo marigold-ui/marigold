@@ -55,7 +55,7 @@ test('allows to align children to the left', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`items-start`);
+  expect(stack).toHaveClass(`justify-start`);
 });
 
 test('allows to align children to the center', () => {
@@ -65,7 +65,7 @@ test('allows to align children to the center', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`items-center`);
+  expect(stack).toHaveClass(`justify-center`);
 });
 
 test('allows to align children to the right', () => {
@@ -75,7 +75,7 @@ test('allows to align children to the right', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`items-end`);
+  expect(stack).toHaveClass(`justify-end`);
 });
 
 test('allows to align children to the vertical top', () => {
@@ -85,7 +85,7 @@ test('allows to align children to the vertical top', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`justify-start`);
+  expect(stack).toHaveClass(`items-start`);
 });
 
 test('allows to align children to the vertical center', () => {
@@ -95,7 +95,7 @@ test('allows to align children to the vertical center', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`justify-center`);
+  expect(stack).toHaveClass(`items-center`);
 });
 
 test('allows to align children to the bottom', () => {
@@ -105,7 +105,7 @@ test('allows to align children to the bottom', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`justify-end`);
+  expect(stack).toHaveClass(`items-end`);
 });
 
 test('allows to fill space with stretch prop', () => {

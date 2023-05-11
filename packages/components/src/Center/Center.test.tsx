@@ -1,21 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { ThemeProvider } from '@marigold/system';
-
 import { Box } from '../Box';
 import { Center } from './Center';
-
-const theme = {
-  sizes: {
-    none: 0,
-    large: 120,
-  },
-  space: {
-    none: 0,
-    medium: 16,
-  },
-};
 
 test('supports classnames per default and maxWidth prop', () => {
   render(
