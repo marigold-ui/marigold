@@ -1,7 +1,7 @@
 ---
-'@marigold/components': major
-'@marigold/theme-b2b': major
-'@marigold/docs': major
+'@marigold/components': minor
+'@marigold/theme-b2b': minor
+'@marigold/docs': minor
 ---
 
 Releasing DateField component
