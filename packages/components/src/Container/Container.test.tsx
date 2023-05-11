@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 
 import { Container } from './Container';
-import { Text } from '../Text';
 
 test('supports default contentType content', () => {
   render(
