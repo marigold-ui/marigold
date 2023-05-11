@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from '@marigold/system';
 
 import { Autocomplete } from './Autocomplete';
-import userEvent from '@testing-library/user-event';
 
 // Setup
 // ---------------
