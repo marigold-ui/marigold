@@ -1,7 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { List } from './List';
-import isChromatic from 'chromatic';
 
 const meta = {
   title: 'Components/List',
@@ -43,9 +42,4 @@ export const Ordered: Story = {
       <List.Item>Brot</List.Item>
     </List>
   ),
-};
-
-Basic.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

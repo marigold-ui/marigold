@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Message } from './Message';
 import { Text } from '../Text';
 import { Box } from '@marigold/system';
-import isChromatic from 'chromatic';
 
 const meta = {
   title: 'Components/Message',
@@ -53,9 +52,4 @@ export const MultiLineTitle: Story = {
       </Message>
     </Box>
   ),
-};
-
-Basic.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Tag } from '.';
-import isChromatic from 'chromatic';
 
 const meta = {
   title: 'Components/Tag',
@@ -116,9 +115,4 @@ export const RemovableTags: Story = {
       </Tag.Group>
     );
   },
-};
-
-Basic.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

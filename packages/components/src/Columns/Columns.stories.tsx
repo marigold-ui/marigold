@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Box, Columns, Stack } from '@marigold/components';
-import isChromatic from 'chromatic';
 
 const meta = {
   title: 'Components/Columns',
@@ -168,9 +167,4 @@ export const FullHeight: Story = {
       </Columns>
     </Box>
   ),
-};
-
-MultiRow.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

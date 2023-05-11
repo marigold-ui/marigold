@@ -4,7 +4,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
-import isChromatic from 'chromatic';
 
 const meta = {
   title: 'Components/CheckboxGroup',
@@ -123,9 +122,4 @@ export const Error: Story = {
       </>
     );
   },
-};
-
-Basic.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

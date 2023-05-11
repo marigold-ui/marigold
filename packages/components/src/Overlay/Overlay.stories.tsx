@@ -70,8 +70,3 @@ export const OverlayModal: StoryObj<typeof Modal> = {
     );
   },
 };
-
-OverlayModal.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: 'b2b',
-};
