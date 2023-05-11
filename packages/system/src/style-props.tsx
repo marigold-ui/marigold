@@ -35,6 +35,41 @@ export const paddingSpace = {
   5: 'p-5',
   6: 'p-6',
   7: 'p-7',
+  8: 'p-8',
+  9: 'p-9',
+  10: 'p-10',
+  11: 'p-11',
+  12: 'p-12',
+};
+export const paddingSpaceX = {
+  0: 'px-0',
+  1: 'px-1',
+  2: 'px-2',
+  3: 'px-3',
+  4: 'px-4',
+  5: 'px-5',
+  6: 'px-6',
+  7: 'px-7',
+  8: 'px-8',
+  9: 'px-9',
+  10: 'px-10',
+  11: 'px-11',
+  12: 'px-12',
+};
+export const paddingSpaceY = {
+  0: 'py-0',
+  1: 'py-1',
+  2: 'py-2',
+  3: 'py-3',
+  4: 'py-4',
+  5: 'py-5',
+  6: 'py-6',
+  7: 'py-7',
+  8: 'py-8',
+  9: 'py-9',
+  10: 'py-10',
+  11: 'py-11',
+  12: 'py-12',
 };
 
 export const alignmentY = {
@@ -66,3 +101,5 @@ export type AlignmentYProp = { alignY?: keyof typeof alignmentY };
 export type FontWeightProp = { fontWeight?: keyof typeof fontWeight };
 export type GapSpaceProp = { space?: keyof typeof gapSpace };
 export type PaddingSpaceProp = { space?: keyof typeof paddingSpace };
+export type PaddingSpacePropX = { spaceX?: keyof typeof paddingSpaceX };
+export type PaddingSpacePropY = { spaceY?: keyof typeof paddingSpaceY };

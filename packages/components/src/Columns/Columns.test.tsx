@@ -1,13 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Box, Columns, MarigoldProvider } from '@marigold/components';
-
-const theme = {
-  space: {
-    none: 0,
-    large: 24,
-  },
-};
+import { Box, Columns } from '@marigold/components';
 
 // eslint-disable-next-line testing-library/no-node-access
 const getColumnWrappers = (el: HTMLElement) => el.children!;
