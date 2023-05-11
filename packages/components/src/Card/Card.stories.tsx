@@ -9,7 +9,6 @@ import { Close, ExternalLink } from '@marigold/icons';
 import { Inline } from '../Inline';
 import { Split } from '../Split';
 import { Tiles } from '../Tiles';
-import isChromatic from 'chromatic';
 
 const meta = {
   title: 'Components/Card',
@@ -92,9 +91,4 @@ export const CoreCard: Story = {
       </Card>
     </Tiles>
   ),
-};
-
-CoreCard.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

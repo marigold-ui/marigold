@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
-import isChromatic from 'chromatic';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -113,9 +112,4 @@ export const AsLink: Story = {
       Download Logo
     </Button>
   ),
-};
-
-WithIcon.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

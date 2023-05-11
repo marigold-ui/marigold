@@ -35,7 +35,6 @@
     "@storybook/testing-library": "0.1.0",
     "@types/react": "18",
     "babel-loader": "9.1.2",
-    "chromatic": "^6.6.3",
     "find-up": "5.0.0",
     "vite-tsconfig-paths": "4.2.0",
     "webpack": "4"
@@ -59,8 +58,6 @@
   "scripts": {
     "start": "storybook dev -p 1337 -c .",
     "build": "storybook build --disable-telemetry -c . -o ../../storybook-static",
-    "test": "storybook dev --smoke-test --ci -c .",
-    "chromatic": "pnpm dlx chromatic --force-rebuild --only-changed --exit-zero-on-changes",
-    "ci": "pnpm dlx chromatic"
+    "test": "storybook dev --smoke-test --ci -c ."
   }
 }

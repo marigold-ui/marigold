@@ -1,9 +1,10 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import isChromatic from 'chromatic';
+
 import { Search, Delete } from '@marigold/icons';
 import { Button } from '../Button';
 import { Input } from './Input';
+
 const meta = {
   title: 'Components/Input',
   argTypes: {
@@ -45,11 +46,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => <Input placeholder="Placeholder..." {...args} />,
-};
-
-Basic.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };
 
 export const WithLeadingIcons: Story = {

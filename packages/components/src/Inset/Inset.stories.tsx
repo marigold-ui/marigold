@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Inset } from '../Inset';
 import { Text } from '../Text';
-import isChromatic from 'chromatic';
 
 const meta = {
   title: 'Components/Inset',
@@ -49,9 +48,4 @@ export const Basic: Story = {
       </Text>
     </Inset>
   ),
-};
-
-Basic.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

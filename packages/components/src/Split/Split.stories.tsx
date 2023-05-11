@@ -7,7 +7,6 @@ import { Inline } from '../Inline';
 import { Stack } from '../Stack';
 
 import { Split } from './Split';
-import isChromatic from 'chromatic';
 
 const Block = ({ children }: { children: ReactNode }) => (
   <Box
@@ -33,14 +32,16 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const WithInline: Story = () => (
-  <Inline space="medium">
-    <Block>First</Block>
-    <Block>Second</Block>
-    <Split />
-    <Block>Third</Block>
-  </Inline>
-);
+export const WithInline: Story = {
+  render: () => (
+    <Inline space="medium">
+      <Block>First</Block>
+      <Block>Second</Block>
+      <Split />
+      <Block>Third</Block>
+    </Inline>
+  ),
+};
 
 export const WithStack: Story = {
   render: () => (
@@ -53,9 +54,4 @@ export const WithStack: Story = {
       </Stack>
     </Box>
   ),
-};
-
-WithInline.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };
