@@ -1,12 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Box } from '../Box';
-import {
-  GapSpaceProp,
-  gapSpace,
-  cn,
-  useTheme,
-  createVar,
-} from '@marigold/system';
+import { GapSpaceProp, gapSpace, cn, createVar } from '@marigold/system';
 
 export interface TilesProps extends GapSpaceProp {
   children: ReactNode;
