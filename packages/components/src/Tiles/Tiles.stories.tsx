@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Box, Headline, Image, Stack, Text, Tiles } from '@marigold/components';
+import { Headline, Image, Stack, Text, Tiles } from '@marigold/components';
 import isChromatic from 'chromatic';
 
 const meta = {
@@ -8,18 +8,8 @@ const meta = {
   argTypes: {
     space: {
       control: {
-        type: 'select',
+        type: 'text',
       },
-      options: [
-        'none',
-        'xxsmall',
-        'xsmall',
-        'small',
-        'medium',
-        'large',
-        'xlarge',
-        'xxlarge',
-      ],
       description: 'Responsive Style Value',
       table: {
         defaultValue: {
@@ -63,79 +53,20 @@ export const Boxes: StoryObj<typeof Tiles> = {
   render: args => (
     <>
       <Tiles {...args}>
-        <Box
-          css={{
-            border: '1px solid #ced4da',
-            bg: '#e9ecef',
-            height: '100px',
-          }}
-        />
-        <Box
-          css={{
-            border: '1px solid #ced4da',
-            bg: '#e9ecef',
-            height: '100px',
-          }}
-        />
-        <Box
-          css={{
-            border: '1px solid #ced4da',
-            bg: '#e9ecef',
-            height: '100px',
-          }}
-        />
-        <Box
-          css={{
-            border: '1px solid #ced4da',
-            bg: '#e9ecef',
-            height: '100px',
-          }}
-        />
-        <Box
-          css={{
-            border: '1px solid #ced4da',
-            bg: '#e9ecef',
-            height: '100px',
-          }}
-        />
-        <Box
-          css={{
-            border: '1px solid #ced4da',
-            bg: '#e9ecef',
-            height: '100px',
-          }}
-        />
-        <Box
-          css={{
-            border: '1px solid #ced4da',
-            bg: '#e9ecef',
-            height: '100px',
-          }}
-        />
-        <Box
-          css={{
-            border: '1px solid #ced4da',
-            bg: '#e9ecef',
-            height: '100px',
-          }}
-        />
+        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
+        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
+        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
+        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
+        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
+        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
+        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
+        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
+        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
       </Tiles>
       <br />
       <Tiles {...args}>
-        <Box
-          css={{
-            border: '1px solid #ced4da',
-            bg: '#e9ecef',
-            height: '100px',
-          }}
-        />
-        <Box
-          css={{
-            border: '1px solid #ced4da',
-            bg: '#e9ecef',
-            height: '100px',
-          }}
-        />
+        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
+        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
       </Tiles>
     </>
   ),
@@ -144,12 +75,7 @@ export const Boxes: StoryObj<typeof Tiles> = {
 export const DifferentHights: StoryObj<typeof Tiles> = {
   render: args => (
     <Tiles {...args}>
-      <Box
-        css={{
-          border: '1px solid #ced4da',
-          bg: '#e9ecef',
-        }}
-      >
+      <div className=" border border-[#ced4da] bg-[#e9ecef]">
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
@@ -158,54 +84,28 @@ export const DifferentHights: StoryObj<typeof Tiles> = {
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
-      </Box>
-      <Box
-        css={{
-          border: '1px solid #ced4da',
-          bg: '#e9ecef',
-        }}
-      >
+      </div>
+      <div className=" border border-[#ced4da] bg-[#e9ecef]">
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
-      </Box>
-      <Box
-        css={{
-          border: '1px solid #ced4da',
-          bg: '#e9ecef',
-        }}
-      >
+      </div>
+      <div className=" border border-[#ced4da] bg-[#e9ecef]">
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
-      </Box>
-      <Box
-        css={{
-          border: '1px solid #ced4da',
-          bg: '#e9ecef',
-        }}
-      >
+      </div>
+      <div className=" border border-[#ced4da] bg-[#e9ecef]">
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
-      </Box>
-      <Box
-        css={{
-          border: '1px solid #ced4da',
-          bg: '#e9ecef',
-        }}
-      >
+      </div>
+      <div className=" border border-[#ced4da] bg-[#e9ecef]">
+        <Text align="center">I love Tiles!</Text>
+      </div>
+      <div className=" border border-[#ced4da] bg-[#e9ecef]">
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
-      </Box>
-      <Box
-        css={{
-          border: '1px solid #ced4da',
-          bg: '#e9ecef',
-        }}
-      >
-        <Text align="center">I love Tiles!</Text>
-        <Text align="center">I love Tiles!</Text>
-      </Box>
+      </div>
     </Tiles>
   ),
 };
@@ -213,14 +113,8 @@ export const DifferentHights: StoryObj<typeof Tiles> = {
 export const Stacks: StoryObj<typeof Tiles> = {
   render: args => (
     <Tiles {...args}>
-      <Box
-        css={{
-          border: '1px solid #fa8005',
-          bg: 'orange10',
-          p: 'small',
-        }}
-      >
-        <Stack space="medium" alignX="center">
+      <div className="border border-[#fa8005] bg-orange-100 p-1">
+        <Stack space={4} alignX="center">
           <Image
             src="https://www.pokewiki.de/images/6/63/Sugimori_004.png"
             alt="glumanda"
@@ -234,15 +128,9 @@ export const Stacks: StoryObj<typeof Tiles> = {
             Starter-Pokémon in Pokémon Rot, Blau, Feuerrot und Blattgrün.
           </Text>
         </Stack>
-      </Box>
-      <Box
-        css={{
-          border: '1px solid #fa8005',
-          bg: 'orange10',
-          p: 'small',
-        }}
-      >
-        <Stack space="medium" alignX="center">
+      </div>
+      <div className="border border-[#fa8005] bg-orange-100 p-1">
+        <Stack space={4} alignX="center">
           <Image
             src="https://www.pokewiki.de/images/7/7a/Sugimori_005.png"
             alt="glutexo"
@@ -257,15 +145,9 @@ export const Stacks: StoryObj<typeof Tiles> = {
             Blau, Feuerrot, Blattgrün.
           </Text>
         </Stack>
-      </Box>
-      <Box
-        css={{
-          border: '1px solid #fa8005',
-          bg: 'orange10',
-          p: 'small',
-        }}
-      >
-        <Stack space="medium" alignX="center">
+      </div>
+      <div className="border border-[#fa8005] bg-orange-100 p-1">
+        <Stack space={4} alignX="center">
           <Image
             src="https://www.pokewiki.de/images/9/96/Sugimori_006.png"
             alt="glurak"
@@ -281,7 +163,7 @@ export const Stacks: StoryObj<typeof Tiles> = {
             aus Kanto.
           </Text>
         </Stack>
-      </Box>
+      </div>
     </Tiles>
   ),
 };

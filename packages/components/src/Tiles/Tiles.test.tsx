@@ -1,83 +1,86 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Box, Tiles, MarigoldProvider } from '@marigold/components';
-
-const theme = {
-  sizes: {
-    none: 0,
-    large: 340,
-  },
-  space: {
-    none: 0,
-    large: 24,
-  },
-};
+import { Tiles } from '@marigold/components';
 
 test('set tiles width via prop', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Tiles tilesWidth="200px" data-testid="tiles">
-        <Box>tiles</Box>
-      </Tiles>
-    </MarigoldProvider>
+    <Tiles tilesWidth="200px" data-testid="tiles">
+      <div>tiles</div>
+    </Tiles>
   );
   const tiles = screen.getByTestId(/tiles/);
-  expect(tiles).toHaveStyle(
-    `gridTemplateColumns: repeat(auto-fit, min(200px, 100%))`
-  );
+  expect(tiles).toMatchInlineSnapshot(`
+    <div
+      class="grid gap-0 grid-cols-[repeat(auto-fit,var(--column))]"
+      data-testid="tiles"
+      style="--column: min(200px, 100%); --tilesWidth: 200px;"
+    >
+      <div>
+        tiles
+      </div>
+    </div>
+  `);
 });
 
 test('supports setting tiles width with design tokens', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Tiles tilesWidth="large" data-testid="tiles">
-        <Box>tiles</Box>
-      </Tiles>
-    </MarigoldProvider>
+    <Tiles tilesWidth="large" data-testid="tiles">
+      <div>tiles</div>
+    </Tiles>
   );
   const tiles = screen.getByTestId(/tiles/);
-  expect(tiles).toHaveStyle(
-    `gridTemplateColumns: repeat(auto-fit, min(${theme.sizes.large}px, 100%))`
-  );
+  expect(tiles).toMatchInlineSnapshot(`
+    <div
+      class="grid gap-0 grid-cols-[repeat(auto-fit,var(--column))]"
+      data-testid="tiles"
+      style="--column: min(large, 100%); --tilesWidth: large;"
+    >
+      <div>
+        tiles
+      </div>
+    </div>
+  `);
 });
 
 test('supports space prop', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Tiles tilesWidth="200px" space="large" data-testid="tiles">
-        <Box>tiles</Box>
-      </Tiles>
-    </MarigoldProvider>
+    <Tiles tilesWidth="200px" space={7} data-testid="tiles">
+      <div>tiles</div>
+    </Tiles>
   );
   const tiles = screen.getByTestId(/tiles/);
-  expect(tiles).toHaveStyle(`gap: ${theme.space.large}px`);
+  expect(tiles).toHaveClass(`gap-7`);
 });
 
 test('supports responsive grid via stretch prop', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Tiles tilesWidth="300px" stretch data-testid="tiles">
-        <Box>tiles</Box>
-      </Tiles>
-    </MarigoldProvider>
+    <Tiles tilesWidth="300px" stretch data-testid="tiles">
+      <div>tiles</div>
+    </Tiles>
   );
   const tiles = screen.getByTestId(/tiles/);
-  expect(tiles).toHaveStyle(
-    `gridTemplateColumns: repeat(auto-fit, minmax(min(300px, 100%), 1fr))`
-  );
+  expect(tiles).toMatchInlineSnapshot(`
+    <div
+      class="grid gap-0 grid-cols-[repeat(auto-fit,var(--column))]"
+      data-testid="tiles"
+      style="--column: minmax(min(300px, 100%), 1fr); --tilesWidth: 300px;"
+    >
+      <div>
+        tiles
+      </div>
+    </div>
+  `);
 });
 
 test('supports gridAutoRows prop', () => {
   render(
-    <MarigoldProvider theme={theme}>
-      <Tiles tilesWidth="400px" equalHeight data-testid="tiles">
-        <Box>tiles</Box>
-        <Box>tiles</Box>
-        <Box>tiles</Box>
-        <Box>tiles</Box>
-      </Tiles>
-    </MarigoldProvider>
+    <Tiles tilesWidth="400px" equalHeight data-testid="tiles">
+      <div>tiles</div>
+      <div>tiles</div>
+      <div>tiles</div>
+      <div>tiles</div>
+    </Tiles>
   );
   const tiles = screen.getByTestId(/tiles/);
-  expect(tiles).toHaveStyle(`gridAutoRows: 1fr`);
+  expect(tiles).toHaveClass(`auto-rows-[1fr]`);
 });
