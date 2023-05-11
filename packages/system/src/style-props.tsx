@@ -86,6 +86,26 @@ export const alignmentX = {
   right: 'justify-end',
 };
 
+export const placeItems = {
+  none: undefined,
+  left: 'place-items-start',
+  center: 'place-items-center',
+  right: 'place-items-end',
+};
+
+// for responsive reasons we needed to use the `minmax(0, 60ch)` value instead of `fit-content(60ch)`
+export const gridColsAlign = {
+  left: 'grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr]',
+  center: 'grid-cols-[1fr_minmax(0,_var(--maxWidth))_1fr]',
+  right: ' grid-cols-[1fr_1fr_minmax(0,_var(--maxWidth))]',
+};
+
+export const gridColumn = {
+  left: '[&>*]:col-[1]',
+  center: '[&>*]:col-[2]',
+  right: '[&>*]:col-[3]',
+};
+
 export const aspect = {
   square: 'aspect-[1]',
   landscape: 'aspect-[4/3]',
@@ -95,11 +115,11 @@ export const aspect = {
   golden: 'aspect-[1.6180/1]',
 };
 
-export type AspectProp = { ratio?: keyof typeof aspect };
-export type AlignmentXProp = { alignX?: keyof typeof alignmentX };
-export type AlignmentYProp = { alignY?: keyof typeof alignmentY };
 export type FontWeightProp = { fontWeight?: keyof typeof fontWeight };
+export type GridColsAlignProp = { align?: keyof typeof gridColsAlign };
+export type GridColumn = { align?: keyof typeof gridColumn };
 export type GapSpaceProp = { space?: keyof typeof gapSpace };
 export type PaddingSpaceProp = { space?: keyof typeof paddingSpace };
 export type PaddingSpacePropX = { spaceX?: keyof typeof paddingSpaceX };
 export type PaddingSpacePropY = { spaceY?: keyof typeof paddingSpaceY };
+export type PlaceItemsProp = { align?: keyof typeof placeItems };

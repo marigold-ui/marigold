@@ -33,21 +33,7 @@ const fluid = {
   'large-3': 'clamp(20rem, 40vw, 30rem)',
 } as const;
 
-const content = {
-  small: '20ch',
-  medium: '45ch',
-  large: '60ch',
-} as const;
-
-const header = {
-  small: '20ch',
-  medium: '25ch',
-  large: '35ch',
-} as const;
-
 export const size = {
   fixed,
   fluid,
-  content,
-  header,
 };
