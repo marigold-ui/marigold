@@ -1,5 +1,5 @@
 ---
-'@marigold/components': major
+'@marigold/components': minor
 '@marigold/theme-b2b': minor
 ---
 
