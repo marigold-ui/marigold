@@ -4,16 +4,8 @@ import { useFocusRing } from '@react-aria/focus';
 import { useHover } from '@react-aria/interactions';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import { FocusableDOMProps, PressEvents } from '@react-types/shared';
-import { twMerge } from 'tailwind-merge';
-import { tv } from 'tailwind-variants';
 
-import {
-  Box,
-  cn,
-  useClassNames,
-  useComponentStylesFromTV,
-  useStateProps,
-} from '@marigold/system';
+import { Box, cn, useClassNames, useStateProps } from '@marigold/system';
 import { HtmlProps, PolymorphicComponent, PropsOf } from '@marigold/types';
 
 // Props

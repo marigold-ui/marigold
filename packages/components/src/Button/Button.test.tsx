@@ -8,28 +8,30 @@ import { cva } from 'class-variance-authority';
 const theme: Theme = {
   name: 'test',
   components: {
-    Button: cva('font-[fancy]', 'focus:bg-red-600 disabled:bg-gray-600', {
+    Button: cva('flex align-center disabled:bg-gray-600', {
       variants: {
         variant: {
-          primary: ['font-[fancy]'],
-          secondary: ['font-body'],
+          primary: 'text-primary-500',
+          secondary: 'text-secondary-800',
         },
         size: {
-          large: ['p-[16px]'],
-          small: ['p-[8-px]'],
+          small: 'w-10 h-10',
+          large: 'w-50 h-50',
         },
       },
     }),
   },
 };
 
-test.only('sets some base styles', () => {
-  render(<Button>button</Button>);
+test('sets some base styles', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Button>button</Button>
+    </ThemeProvider>
+  );
   const button = screen.getByText(/button/);
 
-  expect(button).toHaveClass(
-    'inline-flex items-center justify-center gap-[0.5ch]'
-  );
+  expect(button).toHaveClass('flex align-center');
 });
 
 test('supports base styling classes', () => {
@@ -42,7 +44,7 @@ test('supports base styling classes', () => {
 
   expect(button).toMatchInlineSnapshot(`
     <button
-      class="inline-flex items-center justify-center gap-[0.5ch] cursor-pointer disabled:cursor-not-allowed focus:outline-0 font-[fancy] focus:bg-red-600 disabled:bg-gray-600"
+      class="flex align-center disabled:bg-gray-600"
       type="button"
     >
       button
@@ -58,7 +60,7 @@ test('supports default size', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button).toHaveClass(`p-[8-px]`);
+  expect(button).toHaveClass(`w-10 h-10`);
 });
 
 test('accepts other variants', () => {
@@ -69,10 +71,10 @@ test('accepts other variants', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button).toHaveClass('font-body');
+  expect(button).toHaveClass('text-secondary-800');
   expect(button).toMatchInlineSnapshot(`
     <button
-      class="inline-flex items-center justify-center gap-[0.5ch] cursor-pointer disabled:cursor-not-allowed focus:outline-0 focus:bg-red-600 disabled:bg-gray-600 font-body"
+      class="flex align-center disabled:bg-gray-600 text-secondary-800"
       type="button"
     >
       button
@@ -120,7 +122,7 @@ test('add icon in button works as expected', () => {
   const icon = screen.getByTestId(/facebook/);
 
   expect(button instanceof HTMLButtonElement).toBeTruthy();
-  expect(button).toHaveClass('inline-flex');
+  expect(button).toHaveClass('flex align-center');
   expect(icon).toHaveAttribute('width', '30px');
 });
 
@@ -156,9 +158,11 @@ test('can be used as a "link button" and has button styling', () => {
 test('supports onPress', () => {
   const onPress = jest.fn();
   render(
-    <Button onPress={onPress} data-testid="button">
-      Some Button
-    </Button>
+    <ThemeProvider theme={theme}>
+      <Button onPress={onPress} data-testid="button">
+        Some Button
+      </Button>
+    </ThemeProvider>
   );
 
   const button = screen.getByTestId('button');
@@ -169,7 +173,11 @@ test('supports onPress', () => {
 
 test('forwards ref', () => {
   const ref = React.createRef<HTMLButtonElement>();
-  render(<Button ref={ref}>button</Button>);
+  render(
+    <ThemeProvider theme={theme}>
+      <Button ref={ref}>button</Button>
+    </ThemeProvider>
+  );
 
   expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
 });
@@ -187,7 +195,11 @@ test('supports disabled prop', () => {
 
 test('pass through native props', () => {
   const spy = jest.fn();
-  render(<Button onMouseEnter={spy}>button</Button>);
+  render(
+    <ThemeProvider theme={theme}>
+      <Button onMouseEnter={spy}>button</Button>
+    </ThemeProvider>
+  );
 
   const button = screen.getByText(/button/);
   fireEvent.mouseEnter(button);
@@ -195,7 +207,11 @@ test('pass through native props', () => {
 });
 
 test('allows to take full width', () => {
-  render(<Button fullWidth>button</Button>);
+  render(
+    <ThemeProvider theme={theme}>
+      <Button fullWidth>button</Button>
+    </ThemeProvider>
+  );
 
   const button = screen.getByText(/button/);
   expect(button).toHaveClass('w-full');

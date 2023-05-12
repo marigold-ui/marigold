@@ -42,7 +42,12 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
             '&[aria-invalid=true]',
             '&[data-error]',
           ]);
-          addVariant('mg-hover', ['&:hover:not([disabled])', '&[data-hover]']);
+          addVariant('mg-focus', ['&:focus', '&[data-focus]']);
+          addVariant('mg-hover', [
+            '&:hover:not([disabled])',
+            '&[data-hover]',
+            '&:hover',
+          ]);
         }),
       ],
     },
