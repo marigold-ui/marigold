@@ -1,15 +1,15 @@
 import React from 'react';
-import { ThemeProvider } from '@marigold/system';
+import { ThemeProvider, Theme } from '@marigold/system';
 import { OverlayProvider } from '@react-aria/overlays';
 import { render, screen } from '@testing-library/react';
 import { Underlay } from './Underlay';
 
-import { tv } from 'tailwind-variants';
+import { cva } from 'class-variance-authority';
 
-const theme = {
+const theme: Theme = {
   name: 'test',
   components: {
-    Underlay: tv({
+    Underlay: cva('flex', {
       variants: {
         variant: {
           one: 'bg-pink-600',
@@ -24,11 +24,13 @@ const theme = {
 
 test('renders underlay', () => {
   render(
-    <OverlayProvider>
-      <Underlay data-testid="underlay">
-        <div>something</div>
-      </Underlay>
-    </OverlayProvider>
+    <ThemeProvider theme={theme}>
+      <OverlayProvider>
+        <Underlay data-testid="underlay">
+          <div>something</div>
+        </Underlay>
+      </OverlayProvider>
+    </ThemeProvider>
   );
 
   const underlay = screen.getByTestId('underlay');
