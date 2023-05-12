@@ -61,11 +61,11 @@ export const decorators: any = [
       }
       default: {
         return (
-          <MarigoldProvider theme={THEME[theme as ThemeNames]}>
-            <div style={{ height: '900px' }}>
+          <div className="m-6">
+            <MarigoldProvider theme={THEME[theme as ThemeNames]}>
               <Story />
-            </div>
-          </MarigoldProvider>
+            </MarigoldProvider>
+          </div>
         );
       }
     }
