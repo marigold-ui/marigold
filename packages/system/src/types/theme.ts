@@ -30,6 +30,7 @@ export type Theme = {
       'container' | 'icon',
       ComponentStyleFunction<string, string>
     >;
+    Image?: ComponentStyleFunction<string, string>;
     Text?: ComponentStyleFunction<string, string>;
   };
 };

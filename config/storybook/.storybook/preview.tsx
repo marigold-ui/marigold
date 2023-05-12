@@ -7,13 +7,13 @@ import { MarigoldProvider } from '@marigold/components';
 import 'tailwindcss/tailwind.css';
 
 import '../../../themes/theme-core/dist/index.css';
-import tailwindCore from '@marigold/theme-core';
+import core from '@marigold/theme-core';
 
 import { withThemeByDataAttribute } from '@storybook/addon-styling';
 // Helpers
 // ---------------
 const THEME = {
-  core: tailwindCore,
+  core: core,
 };
 
 type ThemeNames = keyof typeof THEME;
@@ -33,10 +33,9 @@ export const decorators: any = [
   withThemeByDataAttribute({
     themes: {
       core: 'core',
-      unicorn: 'unicorn',
       stacked: 'stacked',
     },
-    defaultTheme: tailwindCore.name,
+    defaultTheme: core.name,
     attributeName: 'data-theme',
   }),
   (Story: StoryFn, { globals, parameters }: any) => {
@@ -47,7 +46,7 @@ export const decorators: any = [
     switch (theme) {
       case 'stacked': {
         return (
-          <MarigoldProvider theme={tailwindCore}>
+          <MarigoldProvider theme={core}>
             {Object.keys(THEME).map(key => (
               <Frame key={key} id={key} title={`Theme "${key}"`}>
                 <MarigoldProvider theme={THEME[key as ThemeNames]}>

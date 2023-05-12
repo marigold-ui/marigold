@@ -115,6 +115,27 @@ export const aspect = {
   golden: 'aspect-[1.6180/1]',
 };
 
+export const objectFit = {
+  contain: 'object-contain',
+  cover: 'object-cover',
+  fill: 'object-fill',
+  none: 'object-none',
+  scaleDown: 'object-scale-down',
+};
+
+export const objectPosition = {
+  none: undefined,
+  bottom: 'object-bottom',
+  center: 'object-center',
+  left: 'object-left',
+  leftBottom: 'object-left-bottom',
+  leftTop: 'object-left-top',
+  right: 'object-right',
+  rightBottom: 'object-right-bottom',
+  rightTop: 'object-right-top',
+  top: 'object-top',
+};
+
 export type AspectProp = { ratio?: keyof typeof aspect };
 export type AlignmentXProp = { alignX?: keyof typeof alignmentX };
 export type AlignmentYProp = { alignY?: keyof typeof alignmentY };
@@ -122,6 +143,8 @@ export type FontWeightProp = { fontWeight?: keyof typeof fontWeight };
 export type GridColsAlignProp = { align?: keyof typeof gridColsAlign };
 export type GridColumn = { align?: keyof typeof gridColumn };
 export type GapSpaceProp = { space?: keyof typeof gapSpace };
+export type ObjectFitProp = { fit?: keyof typeof objectFit };
+export type ObjectPositionProp = { position?: keyof typeof objectPosition };
 export type PaddingSpaceProp = { space?: keyof typeof paddingSpace };
 export type PaddingSpacePropX = { spaceX?: keyof typeof paddingSpaceX };
 export type PaddingSpacePropY = { spaceY?: keyof typeof paddingSpaceY };
