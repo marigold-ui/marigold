@@ -1,13 +1,13 @@
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Theme, ThemeProvider } from '@marigold/system';
 import { Badge } from './Badge';
-import { tv } from 'tailwind-variants';
+import { cva } from 'class-variance-authority';
 
 const theme: Theme = {
   name: 'test',
   components: {
-    Badge: tv({
-      base: ['p-2'],
+    Badge: cva('p-2', {
       variants: {
         variant: {
           one: ['rounded-sm'],
@@ -19,7 +19,11 @@ const theme: Theme = {
 };
 
 test('renders as a "div" element', () => {
-  render(<Badge data-testid="badge" />);
+  render(
+    <ThemeProvider theme={theme}>
+      <Badge data-testid="badge" />
+    </ThemeProvider>
+  );
 
   const badge = screen.getByTestId('badge');
   expect(badge instanceof HTMLDivElement).toBeTruthy();

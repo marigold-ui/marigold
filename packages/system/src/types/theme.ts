@@ -24,6 +24,7 @@ export type Theme = {
       'button' | 'item',
       ComponentStyleFunction<string, string>
     >;
+    Badge?: ComponentStyleFunction<string, string>;
     Button?: ComponentStyleFunction<string, string>;
     HelpText?: Record<
       'container' | 'icon',
