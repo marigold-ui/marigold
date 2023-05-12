@@ -4,7 +4,16 @@ import { render, screen } from '@testing-library/react';
 import { Tray } from './Tray';
 import { useOverlayTriggerState } from '@react-stately/overlays';
 import { useObjectRef } from '@react-aria/utils';
+import { Theme, ThemeProvider } from '@marigold/system';
 
+import { cva } from 'class-variance-authority';
+
+const theme: Theme = {
+  name: 'test',
+  components: {
+    Underlay: cva('bg-gray-100'),
+  },
+};
 interface TestTrayProps {
   open: boolean;
   variant?: string;
@@ -16,11 +25,13 @@ const TestTray = forwardRef<HTMLDivElement, TestTrayProps>(
     const state = useOverlayTriggerState({ isOpen: open });
 
     return (
-      <OverlayProvider>
-        <Tray state={state} ref={trayRef}>
-          <div>something</div>
-        </Tray>
-      </OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <OverlayProvider>
+          <Tray state={state} ref={trayRef}>
+            <div>something</div>
+          </Tray>
+        </OverlayProvider>
+      </ThemeProvider>
     );
   }
 );
