@@ -4,11 +4,10 @@ import {
   StateAttrProps,
   useComponentStylesFromTV,
 } from '@marigold/system';
+
 import { Label, LabelProps } from '../Label';
 import { HelpText } from '../HelpText';
 import { useFieldGroupContext } from './FieldGroup';
-import { tv } from 'tailwind-variants';
-import { twMerge } from 'tailwind-merge';
 
 export interface FieldBaseProps {
   children?: ReactNode;

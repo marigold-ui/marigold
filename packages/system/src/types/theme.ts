@@ -31,6 +31,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Image?: ComponentStyleFunction<string, string>;
+    Label?: ComponentStyleFunction<string, string>;
     Text?: ComponentStyleFunction<string, string>;
   };
 };

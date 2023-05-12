@@ -6,7 +6,7 @@ import { MarigoldProvider } from '@marigold/components';
 
 import 'tailwindcss/tailwind.css';
 
-import '../../../themes/theme-core/dist/index.css';
+import '@marigold/theme-core/index.css';
 import core from '@marigold/theme-core';
 
 import { withThemeByDataAttribute } from '@storybook/addon-styling';

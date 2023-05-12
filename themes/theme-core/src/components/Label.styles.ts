@@ -1,7 +1,6 @@
-import { tv, type TVReturnType } from 'tailwind-variants';
-export const label: TVReturnType<any, any, any, any, any, any> = tv({
-  base: [
-    'justify-end',
-    'mg-disabled:text-disabled-text aria-required:font-bold',
-  ],
-});
+import { Theme } from '@marigold/system';
+import { cva } from 'class-variance-authority';
+
+export const Label: Theme['components']['Label'] = cva(
+  'justify-end mg-disabled:text-disabled-text aria-required:font-bold'
+);
