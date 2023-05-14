@@ -26,12 +26,10 @@ export const Label = ({
   const Component = as;
   const classNames = useClassNames({ component: 'Label', size, variant });
 
-  // TODO: state props?
-
   return (
     <Component
       {...props}
-      className={cn('flex w-[var(--labelWidth)]', classNames)}
+      className={cn(classNames, 'flex w-[var(--labelWidth)]')}
       style={createVar({ labelWidth })}
       // aria-required is set on the field and will already be announced,
       // so we don't need to add it here. BUT we need it for styling the required label, so this is needed.

@@ -1,9 +1,5 @@
 import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
-import {
-  Box,
-  StateAttrProps,
-  useComponentStylesFromTV,
-} from '@marigold/system';
+import { StateAttrProps, createVar, useClassNames } from '@marigold/system';
 
 import { Label, LabelProps } from '../Label';
 import { HelpText } from '../HelpText';
@@ -32,7 +28,7 @@ export const FieldBase = ({
   children,
   variant,
   size,
-  width = 'full',
+  width = '100%',
   disabled,
   required,
   label,
@@ -47,28 +43,20 @@ export const FieldBase = ({
 }: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
 
-  const classNames = useComponentStylesFromTV('Field', {
+  const { labelWidth } = useFieldGroupContext();
+  const classNames = useClassNames({
+    component: 'Field',
     variant,
     size,
-  });
-
-  const { labelWidth } = useFieldGroupContext();
-
-  // width is only in b2b/unicorn relevant
-  const styles = {
-    '--fieldWidth': width,
-  } as React.CSSProperties;
-
-  const styledDiv = tv({
-    base: ['flex flex-col w-[var(--fieldWidth)] relative'],
-  });
-
-  const styledDivColumn = tv({
-    base: ['flex flex-col'],
+    className: 'w-[--fieldWidth]',
   });
 
   return (
-    <div {...props} style={styles} className={twMerge(styledDiv(), classNames)}>
+    <div
+      {...props}
+      className={classNames}
+      style={createVar({ fieldWidth: width })}
+    >
       {label && (
         <Label
           required={required}
@@ -81,22 +69,21 @@ export const FieldBase = ({
           {label}
         </Label>
       )}
-      <Box __baseCSS={{ display: 'flex', flexDirection: 'column', width }}>
-        {children}
-        {hasHelpText && (
-          <HelpText
-            {...stateProps}
-            variant={variant}
-            size={size}
-            disabled={disabled}
-            description={description}
-            descriptionProps={descriptionProps}
-            error={error}
-            errorMessage={errorMessage}
-            errorMessageProps={errorMessageProps}
-          />
-        )}
-      </Box>
+
+      {children}
+      {hasHelpText && (
+        <HelpText
+          {...stateProps}
+          variant={variant}
+          size={size}
+          disabled={disabled}
+          description={description}
+          descriptionProps={descriptionProps}
+          error={error}
+          errorMessage={errorMessage}
+          errorMessageProps={errorMessageProps}
+        />
+      )}
     </div>
   );
 };

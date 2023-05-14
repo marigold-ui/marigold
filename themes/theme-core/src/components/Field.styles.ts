@@ -1,4 +1,6 @@
-import { tv, type TVReturnType } from 'tailwind-variants';
-export const field: TVReturnType<any, any, any, any, any, any> = tv({
-  base: ['flex flex-row gap-2 items-baseline'],
-});
+import { ThemeComponent } from '@marigold/system';
+import { cva } from 'class-variance-authority';
+
+export const Field: ThemeComponent<'Field'> = cva(
+  'grid grid-cols-[min-content_1fr] grid-rows-2 gap-2'
+);
