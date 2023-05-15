@@ -6,6 +6,7 @@ import { Theme } from '../types';
  */
 export const __defaultTheme: Theme = {
   name: 'default',
+  screens: {},
   components: {},
 };
 

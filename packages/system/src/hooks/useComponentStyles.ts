@@ -13,17 +13,17 @@ type IndexObject = { [key: string]: any };
  *
  * Based on: https://github.com/developit/dlv
  */
-const get = (obj: object, path: string, fallback?: any): any => {
-  const key = path.split('.');
+// const get = (obj: object, path: string, fallback?: any): any => {
+//   const key = path.split('.');
 
-  let result = obj;
-  for (let i = 0, length = key.length; i < length; i++) {
-    if (!result) break;
-    result = (result as any)[key[i]];
-  }
+//   let result = obj;
+//   for (let i = 0, length = key.length; i < length; i++) {
+//     if (!result) break;
+//     result = (result as any)[key[i]];
+//   }
 
-  return result === undefined ? fallback : result;
-};
+//   return result === undefined ? fallback : result;
+// };
 
 const notFound = (val: string) => () =>
   console.warn(`No styling found for "${val}".`);
@@ -71,7 +71,7 @@ export function useComponentStyles(
   options?: {
     parts: never;
   }
-): CSSObject;
+): any;
 
 export function useComponentStyles<
   Part extends string,
@@ -83,42 +83,9 @@ export function useComponentStyles<
     parts: Parts;
   }
 ): {
-  [P in Parts[number]]: CSSObject;
+  [P in Parts[number]]: any;
 };
 
-// if I remove this - all breaks
-
-export function useComponentStyles(
-  componentName: string,
-  props: any = {},
-  options: any = {}
-) {
-  const { theme } = useTheme();
-  const componentStyles = get(theme, `components.${componentName}`);
-
-  // Store styles in ref to prevent re-computation
-  const stylesRef = useRef({});
-
-  if (componentStyles) {
-    const base = componentStyles.base || {};
-    const size = componentStyles.size?.[props.size as any] || {};
-    const variant = componentStyles.variant?.[props.variant as any] || {};
-
-    // We deep merge so that parts (if they exists) also get put together
-    let styles = merge.all([base, size, variant]) as IndexObject;
-
-    // Only return requested parts. If they don't exist, set them as empty object
-    if (options.parts) {
-      styles = options.parts.reduce((result: IndexObject, part: string) => {
-        result[part] = styles[part] || {};
-        return result;
-      }, {});
-    }
-
-    if (!isEqual(stylesRef.current, styles)) {
-      stylesRef.current = styles;
-    }
-  }
-
-  return stylesRef.current;
+export function useComponentStyles() {
+  return {};
 }

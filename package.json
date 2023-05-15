@@ -49,7 +49,7 @@
     "watch": "concurrently pnpm:watch:tailwind pnpm:watch:storybook",
     "watch:storybook": "FOLDERS=packages/components/src,packages/system/src pnpm --filter @marigold/storybook-config start",
     "watch:tailwind": "zx scripts/watch-tailwind.mjs",
-    "build": "pnpm --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" --filter \"@marigold/theme-preset\" build",
+    "build": "pnpm --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" --filter \"@marigold/theme-preset...\" build",
     "build:docs": "pnpm --filter @marigold/docs build",
     "build:storybook": "pnpm --filter @marigold/storybook-config build",
     "test": "jest --config jest.config.js",
