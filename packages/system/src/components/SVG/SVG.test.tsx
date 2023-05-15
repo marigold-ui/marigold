@@ -13,6 +13,7 @@ const theme = {
     red: '#ffa8a8',
     info: 'blue',
   },
+  components: {},
 };
 
 test('renders svg', () => {
