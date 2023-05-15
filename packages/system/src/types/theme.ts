@@ -27,6 +27,7 @@ export type Theme = {
     Badge?: ComponentStyleFunction<string, string>;
     Body?: ComponentStyleFunction<string, string>;
     Button?: ComponentStyleFunction<string, string>;
+    Divider?: ComponentStyleFunction<string, string>;
     Field?: ComponentStyleFunction<string, string>;
     Footer?: ComponentStyleFunction<string, string>;
     Header?: ComponentStyleFunction<string, string>;
