@@ -16,33 +16,32 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/marigold-ui/marigold",
-    "directory": "config/prettier"
+    "directory": "config/storybook"
   },
   "dependencies": {
     "@babel/core": "7.21.4",
-    "@emotion/react": "^11.0.0-rc.0",
-    "@emotion/styled": "^11.8.1",
+    "@emotion/react": "11.8.1",
+    "@emotion/styled": "11.8.1",
     "@marigold/components": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
     "@marigold/theme-unicorn": "workspace:*",
     "@mdx-js/react": "2.3.0",
-    "@storybook/addon-a11y": "7.0.10",
-    "@storybook/addon-essentials": "7.0.10",
-    "@storybook/addon-interactions": "7.0.10",
+    "@storybook/addon-a11y": "7.0.6",
+    "@storybook/addon-essentials": "7.0.6",
+    "@storybook/addon-interactions": "7.0.6",
     "@storybook/jest": "0.1.0",
-    "@storybook/source-loader": "7.0.10",
+    "@storybook/source-loader": "7.0.6",
     "@storybook/testing-library": "0.1.0",
     "@types/react": "18",
     "babel-loader": "9.1.2",
     "find-up": "5.0.0",
-    "vite-tsconfig-paths": "4.2.0",
-    "webpack": "4"
+    "vite-tsconfig-paths": "4.2.0"
   },
   "devDependencies": {
-    "@storybook/builder-vite": "7.0.10",
-    "@storybook/cli": "7.0.10",
-    "@storybook/react-vite": "7.0.10",
+    "@storybook/builder-vite": "7.0.6",
+    "@storybook/cli": "7.0.6",
+    "@storybook/react-vite": "7.0.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "storybook": "next",
@@ -50,7 +49,7 @@
     "vite": "4.3.5"
   },
   "peerDependencies": {
-    "@storybook/react": "7.0.10",
+    "@storybook/react": "7.0.6",
     "react": "18.x",
     "react-dom": "18.x",
     "typescript": "5.0.4"
