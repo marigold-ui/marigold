@@ -1,6 +1,6 @@
 import { Theme } from './types';
 
-export const defaultTheme: Theme = {
+export const defaultTheme = {
   name: 'default',
   screens: {
     sm: '640px',
@@ -10,4 +10,4 @@ export const defaultTheme: Theme = {
     '2xl': '1536px',
   },
   components: {},
-};
+} satisfies Theme;

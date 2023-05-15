@@ -16,7 +16,7 @@ export interface ComponentStyleFunction<
 
 export type Theme = {
   name: string;
-  screens: { [key: string]: any };
+  screens?: { [key: string]: any };
   colors?: { [key: string]: any };
   root?: ComponentStyleFunction;
   components: {

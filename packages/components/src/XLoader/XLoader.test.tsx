@@ -1,16 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { XLoader } from './XLoader';
-import { ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider } from '@marigold/system';
 
-const theme = {
-  sizes: {
-    none: 0,
-    small: 100,
-  },
-  colors: {
-    red: '#ffa8a8',
-  },
+const theme: Theme = {
+  name: 'test',
+  components: {},
 };
 
 test('renders loader', () => {
@@ -26,20 +21,22 @@ test('renders loader', () => {
 test('renders loader with differnet size', () => {
   render(
     <ThemeProvider theme={theme}>
-      <XLoader data-testid="loader" size="small" />
+      <XLoader data-testid="loader" size={24} />
     </ThemeProvider>
   );
   const loader = screen.getByTestId('loader');
-  expect(loader).toHaveStyle(`width: ${theme.sizes['small']}px`);
-  expect(loader).toHaveStyle(`height: ${theme.sizes['small']}px`);
+
+  expect(loader).toHaveClass('flex-none fill-current');
+  expect(loader).toHaveAttribute('width', '24px');
+  expect(loader).toHaveAttribute('height', '24px');
 });
 
-test('renders loader with differnet color', () => {
+test('renders loader with differnet color through classname', () => {
   render(
     <ThemeProvider theme={theme}>
-      <XLoader data-testid="loader" fill="red" />
+      <XLoader data-testid="loader" className="fill-red-500" />
     </ThemeProvider>
   );
   const loader = screen.getByTestId('loader');
-  expect(loader).toHaveStyle(`fill: ${theme.colors.red}`);
+  expect(loader).toHaveClass(`fill-red-500`);
 });

@@ -28,16 +28,6 @@ const meta = {
         },
       },
     },
-    fill: {
-      control: {
-        type: 'text',
-      },
-      table: {
-        defaultValue: {
-          summary: 'currentColor',
-        },
-      },
-    },
   },
 } satisfies Meta;
 

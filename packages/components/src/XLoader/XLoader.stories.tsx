@@ -17,14 +17,6 @@ const meta = {
         },
       },
     },
-    fill: {
-      control: {
-        type: 'text',
-      },
-      table: {
-        defaultValue: {},
-      },
-    },
   },
 } satisfies Meta<typeof XLoader>;
 
