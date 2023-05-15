@@ -27,6 +27,12 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
         },
       },
       plugins: [
+        // Grouping
+        plugin(({ addVariant }) => {
+          addVariant('group-disabled', ':merge(.group)[data-disabled] &');
+          addVariant('group-error', ':merge(.group)[data-error] &');
+        }),
+
         plugin(({ addVariant }) => {
           addVariant('mg-disabled', [
             '&[disabled]',

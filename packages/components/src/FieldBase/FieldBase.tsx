@@ -54,6 +54,8 @@ export const FieldBase = ({
   return (
     <div
       {...props}
+      {...stateProps}
+      data-error=""
       className={classNames}
       style={createVar({ fieldWidth: width })}
     >
@@ -64,7 +66,6 @@ export const FieldBase = ({
           size={size}
           labelWidth={labelWidth}
           {...labelProps}
-          {...stateProps}
         >
           {label}
         </Label>
@@ -73,7 +74,6 @@ export const FieldBase = ({
       {children}
       {hasHelpText && (
         <HelpText
-          {...stateProps}
           variant={variant}
           size={size}
           disabled={disabled}
