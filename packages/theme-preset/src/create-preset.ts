@@ -28,11 +28,28 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
       },
       plugins: [
         // Grouping
-        plugin(({ addVariant }) => {
-          addVariant('group-disabled', ':merge(.group)[data-disabled] &');
-          addVariant('group-error', ':merge(.group)[data-error] &');
+        plugin(({ matchVariant, e }) => {
+          matchVariant(
+            'group',
+            (value, { modifier }) => {
+              if (!modifier) {
+                return `:merge(.group)[data-${value}] &`;
+              }
+
+              return `:merge(.group\\/${e(modifier)})[data-${value}] &`;
+            },
+            {
+              values: {
+                disabled: 'disabled',
+                hover: 'hover',
+                error: 'error',
+                selected: 'selected',
+              },
+            }
+          );
         }),
 
+        // TODO: deprecate
         plugin(({ addVariant }) => {
           addVariant('mg-disabled', [
             '&[disabled]',
