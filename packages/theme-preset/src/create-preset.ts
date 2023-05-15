@@ -31,13 +31,10 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
         plugin(({ matchVariant, e }) => {
           matchVariant(
             'group',
-            (value, { modifier }) => {
-              if (!modifier) {
-                return `:merge(.group)[data-${value}] &`;
-              }
-
-              return `:merge(.group\\/${e(modifier)})[data-${value}] &`;
-            },
+            (value, { modifier }) =>
+              modifier
+                ? `:merge(.group\\/${e(modifier)})[data-${value}] &`
+                : `:merge(.group)[data-${value}] &`,
             {
               values: {
                 disabled: 'disabled',
