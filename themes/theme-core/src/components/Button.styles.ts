@@ -1,6 +1,7 @@
+import { ThemeComponent } from '@marigold/system';
 import { cva } from 'class-variance-authority';
 
-export const Button = cva(
+export const Button: ThemeComponent<'Button'> = cva(
   [
     'inline-flex items-center justify-center gap-[0.5ch]',
     'mg-disabled:cursor-not-allowed mg-disabled:border-button-disabled-border mg-disabled:bg-button-disabled-background mg-disabled:text-button-disabled-text',
