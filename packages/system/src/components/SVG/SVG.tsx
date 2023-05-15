@@ -1,8 +1,6 @@
 import React, { forwardRef } from 'react';
 import { HtmlProps } from '@marigold/types';
-
-import { twMerge } from 'tailwind-merge';
-import { tv } from 'tailwind-variants';
+import { cn } from '../../utils';
 
 // Make sure that numbered values are converted to px.
 const toDimension = (value: number | string | number[] | string[]) =>
@@ -19,17 +17,13 @@ export interface SVGProps extends Omit<HtmlProps<'svg'>, 'fill'> {
 
 export const SVG = forwardRef<SVGSVGElement, SVGProps>(
   ({ size = 24, children, className, ...props }, ref) => {
-    const styledSVG = tv({
-      base: [`flex-none fill-current`],
-    });
-
     return (
       <svg
         {...props}
         ref={ref}
         width={`${toDimension(props.width || size)}px`}
         height={`${toDimension(props.height || size)}px`}
-        className={twMerge(styledSVG(), className)}
+        className={cn('flex-none fill-current', className)}
       >
         {children}
       </svg>
