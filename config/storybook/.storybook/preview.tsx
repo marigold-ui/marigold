@@ -1,5 +1,5 @@
 import React from 'react';
-import { StoryFn } from '@storybook/react';
+import { Preview, StoryFn } from '@storybook/react';
 import isChromatic from 'chromatic/isChromatic';
 
 import { MarigoldProvider } from '@marigold/components';
@@ -20,7 +20,8 @@ type ThemeNames = keyof typeof THEME;
 
 // Parameters
 // ---------------
-export const parameters = {
+
+export const parameters: Preview['parameters'] = {
   layout: 'fullscreen',
   a11y: {
     element: '#root',
@@ -61,11 +62,11 @@ export const decorators: any = [
       }
       default: {
         return (
-          <div className="m-6">
-            <MarigoldProvider theme={THEME[theme as ThemeNames]}>
+          <MarigoldProvider theme={THEME[theme as ThemeNames]}>
+            <div className="h-screen p-6">
               <Story />
-            </MarigoldProvider>
-          </div>
+            </div>
+          </MarigoldProvider>
         );
       }
     }
