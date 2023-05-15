@@ -3,6 +3,7 @@ export * from './Badge.styles';
 export * from './Body.styles';
 export * from './Button.styles';
 export * from './Checkbox.styles';
+export * from './Divider.styles';
 export * from './Field.styles';
 export * from './Footer.styles';
 export * from './Header.styles';

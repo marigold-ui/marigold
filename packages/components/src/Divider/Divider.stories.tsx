@@ -1,7 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Divider } from './Divider';
-import { Text } from '../Text';
 import isChromatic from 'chromatic';
 
 const meta = {
@@ -32,9 +31,9 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <>
-      <Text>Above</Text>
+      <p>Above</p>
       <Divider {...args} />
-      <Text>Below</Text>
+      <p>Below</p>
     </>
   ),
 };

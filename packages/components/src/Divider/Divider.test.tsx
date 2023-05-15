@@ -1,28 +1,20 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider } from '@marigold/system';
 import { Divider } from './Divider';
 
-const theme = {
-  space: {
-    none: 0,
-    small: 2,
-    medium: 4,
-  },
-  colors: {
-    text: 'hotpink',
-  },
+import { cva } from 'class-variance-authority';
+
+const theme: Theme = {
+  name: 'test',
   components: {
-    Divider: {
-      base: {
-        margin: 'small',
-      },
-      variant: {
-        bold: {
-          margin: 'medium',
+    Divider: cva('m-1', {
+      variants: {
+        variant: {
+          bold: 'm-2',
         },
       },
-    },
+    }),
   },
 };
 
@@ -34,7 +26,7 @@ test('supports base styles', () => {
   );
   const divider = screen.getByTestId(/divider/);
 
-  expect(divider).toHaveStyle(`margin: 2px`);
+  expect(divider).toHaveClass('m-1');
 });
 
 test('accepts other variants', () => {
@@ -45,7 +37,7 @@ test('accepts other variants', () => {
   );
   const divider = screen.getByTestId(/divider/);
 
-  expect(divider).toHaveStyle(`margin: 4px`);
+  expect(divider).toHaveClass(`m-2`);
 });
 
 test('renders correct HTML element', () => {
