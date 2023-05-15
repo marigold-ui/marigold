@@ -21,7 +21,7 @@ type ThemeNames = keyof typeof THEME;
 // Parameters
 // ---------------
 export const parameters = {
-  layout: 'fullscreen',
+  // layout: 'fullscreen',
   a11y: {
     element: '#root',
   },
