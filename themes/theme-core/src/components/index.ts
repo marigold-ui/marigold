@@ -4,6 +4,8 @@ export * from './Body.styles';
 export * from './Button.styles';
 export * from './Checkbox.styles';
 export * from './Field.styles';
+export * from './Footer.styles';
+export * from './Header.styles';
 export * from './HelpText.styles';
 export * from './Input.styles';
 export * from './Image.styles';

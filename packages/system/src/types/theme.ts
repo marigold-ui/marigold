@@ -28,6 +28,8 @@ export type Theme = {
     Body?: ComponentStyleFunction<string, string>;
     Button?: ComponentStyleFunction<string, string>;
     Field?: ComponentStyleFunction<string, string>;
+    Footer?: ComponentStyleFunction<string, string>;
+    Header?: ComponentStyleFunction<string, string>;
     HelpText?: Record<
       'container' | 'icon',
       ComponentStyleFunction<string, string>
