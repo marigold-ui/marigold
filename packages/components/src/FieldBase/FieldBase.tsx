@@ -55,7 +55,6 @@ export const FieldBase = ({
     <div
       {...props}
       {...stateProps}
-      data-error=""
       className={classNames}
       style={createVar({ fieldWidth: width })}
     >
