@@ -3,19 +3,20 @@ import isEqual from 'react-fast-compare';
 import { KebabCase } from '@marigold/types';
 
 export type ComponentState =
-  | 'hover'
+  | 'active'
+  | 'checked'
+  | 'disabled'
+  | 'error'
+  | 'expanded'
   | 'focus'
   | 'focusVisible'
-  | 'active'
-  | 'visited'
-  | 'disabled'
-  | 'readOnly'
-  | 'checked'
-  | 'selected'
+  | 'hasIcon'
+  | 'hover'
   | 'indeterminate'
-  | 'expanded'
-  | 'error'
-  | 'hasIcon';
+  | 'readOnly'
+  | 'required'
+  | 'selected'
+  | 'visited';
 
 export type StateAttrKeyProps = `data-${KebabCase<ComponentState>}`;
 

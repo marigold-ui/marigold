@@ -38,7 +38,10 @@ export type Theme = {
       'container' | 'input' | 'icon',
       ComponentStyleFunction<string, string>
     >;
-    Label?: ComponentStyleFunction<string, string>;
+    Label?: Record<
+      'container' | 'indicator',
+      ComponentStyleFunction<string, string>
+    >;
     Text?: ComponentStyleFunction<string, string>;
     Underlay?: ComponentStyleFunction<string, string>;
   };

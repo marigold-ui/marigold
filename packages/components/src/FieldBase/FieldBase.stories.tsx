@@ -15,16 +15,6 @@ const meta = {
   title: 'Components/FieldBase',
   component: FieldBase,
   argTypes: {
-    required: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'Whether the field is required',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
-    },
     disabled: {
       control: {
         type: 'boolean',

@@ -1,5 +1,5 @@
 import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
-import { StateAttrProps, createVar, useClassNames } from '@marigold/system';
+import { StateAttrProps, cn, createVar, useClassNames } from '@marigold/system';
 
 import { Label, LabelProps } from '../Label';
 import { HelpText } from '../HelpText';
@@ -11,7 +11,6 @@ export interface FieldBaseProps {
   size?: string;
   width?: string;
   disabled?: boolean;
-  required?: boolean;
   label?: ReactNode;
   labelProps?: LabelHTMLAttributes<HTMLLabelElement> & Pick<LabelProps, 'as'>;
   description?: ReactNode;
@@ -30,7 +29,6 @@ export const FieldBase = ({
   size,
   width = '100%',
   disabled,
-  required,
   label,
   labelProps,
   description,
@@ -55,12 +53,11 @@ export const FieldBase = ({
     <div
       {...props}
       {...stateProps}
-      className={classNames}
+      className={cn('group/field', classNames)}
       style={createVar({ fieldWidth: width })}
     >
       {label && (
         <Label
-          required={required}
           variant={variant}
           size={size}
           labelWidth={labelWidth}

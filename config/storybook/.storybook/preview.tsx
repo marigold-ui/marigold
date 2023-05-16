@@ -1,7 +1,7 @@
 import React from 'react';
 import { Preview, StoryFn } from '@storybook/react';
 
-import { MarigoldProvider } from '@marigold/components';
+import { FieldGroup, MarigoldProvider } from '@marigold/components';
 
 import 'tailwindcss/tailwind.css';
 
@@ -61,7 +61,9 @@ export const decorators: any = [
         return (
           <MarigoldProvider theme={THEME[theme as ThemeNames]}>
             <div className="h-screen p-6">
-              <Story />
+              <FieldGroup labelWidth="200px">
+                <Story />
+              </FieldGroup>
             </div>
           </MarigoldProvider>
         );

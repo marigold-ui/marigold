@@ -75,13 +75,13 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       disabled,
       readOnly,
       error,
+      required,
     });
 
     return (
       <FieldBase
         label={label}
         labelProps={labelProps}
-        required={required}
         description={description}
         descriptionProps={descriptionProps}
         error={error}
