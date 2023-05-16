@@ -1,5 +1,15 @@
 # @marigold/storybook-config
 
+## 1.0.4
+
+### Patch Changes
+
+- Updated dependencies [[`a35f82a13`](https://github.com/marigold-ui/marigold/commit/a35f82a13cbdf278cca526904ba0baaf87c30442), [`992d76d1b`](https://github.com/marigold-ui/marigold/commit/992d76d1b343bf8bb0be4919b0a26f9f71d0307b), [`dc791efab`](https://github.com/marigold-ui/marigold/commit/dc791efabc696c7fdf1e3cd336860962b150c0df), [`3fbeb7b17`](https://github.com/marigold-ui/marigold/commit/3fbeb7b17b704813bb1218b04d781773e1d1dc92), [`b3f3dbdc0`](https://github.com/marigold-ui/marigold/commit/b3f3dbdc04ec1035af0dff28d6240bdf2f458969), [`fc5411f39`](https://github.com/marigold-ui/marigold/commit/fc5411f39449664f375ea68526ccecc396c4a6ed), [`85039a29c`](https://github.com/marigold-ui/marigold/commit/85039a29c59ba178005bed6e3c8f2b53753feecb), [`e285e0c94`](https://github.com/marigold-ui/marigold/commit/e285e0c942622b34d58c32799647ec2707c712d5)]:
+  - @marigold/components@5.6.0
+  - @marigold/theme-b2b@24.0.0
+  - @marigold/theme-core@24.0.0
+  - @marigold/theme-unicorn@21.0.0
+
 ## 1.0.3
 
 ### Patch Changes

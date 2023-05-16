@@ -1,5 +1,12 @@
 # @marigold/icons
 
+## 1.2.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@5.6.0
+
 ## 1.2.4
 
 ### Patch Changes
