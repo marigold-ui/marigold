@@ -1,5 +1,6 @@
-import { tv, type TVReturnType } from 'tailwind-variants';
-export const text: TVReturnType<any, any, any, any, any, any> = tv({
+import { cva } from 'class-variance-authority';
+
+export const Text = cva('', {
   variants: {
     variant: {
       bold: ['font-bold'],

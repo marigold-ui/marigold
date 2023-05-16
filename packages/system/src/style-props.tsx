@@ -10,6 +10,23 @@ export const fontWeight = {
   black: 'font-black',
 };
 
+export const textSize = {
+  xs: 'text-[13px]',
+  sm: 'text-sm',
+  base: 'text-base',
+  lg: 'text-lg',
+  xl: 'text-xl',
+  '2xl': 'text-2xl',
+  '3xl': 'text-3xl',
+  '4xl': 'text-4xl',
+  '5xl': 'text-5xl',
+};
+
+export const fontStyle = {
+  italic: 'italic',
+  normal: 'not-italic',
+};
+
 export const gapSpace = {
   0: 'gap-0',
   1: 'gap-1',
@@ -143,10 +160,41 @@ export const objectPosition = {
   top: 'object-top',
 };
 
+export const cursorStyle = {
+  auto: 'cursor-auto',
+  default: 'cursor-default',
+  pointer: 'cursor-pointer',
+  wait: 'cursor-wait',
+  text: 'cursor-text',
+  move: 'cursor-move',
+  help: 'cursor-help',
+  notAllowed: 'cursor-not-allowed',
+  none: 'cursor-none',
+  progress: 'cursor-progress',
+  cell: 'cursor-cell',
+  crosshair: 'cursor-crosshair',
+  vertical: 'cursor-vertical-text',
+  alias: 'cursor-alias',
+  copy: 'cursor-copy',
+  noDrop: 'cursor-no-drop',
+  grap: 'cursor-grab',
+  grapping: 'cursor-grapping',
+  scroll: 'cursor-all-scroll',
+  colResize: 'cursor-col-resize',
+  rowResize: 'cursor-row-resize',
+  ewResize: 'cursor-ew-resize',
+  nsResize: 'cursor-ns-resize',
+  zoomIn: 'cursor-zoom-in',
+  zoomOut: 'cursor-zoom-out',
+};
+
 export type AspectProp = { ratio?: keyof typeof aspect };
 export type AlignmentXProp = { alignX?: keyof typeof alignmentX };
 export type AlignmentYProp = { alignY?: keyof typeof alignmentY };
-export type FontWeightProp = { fontWeight?: keyof typeof fontWeight };
+export type CursorProp = { cursor?: keyof typeof cursorStyle };
+export type FontStyleProp = { fontStyle?: keyof typeof fontStyle };
+export type FontWeightProp = { weight?: keyof typeof fontWeight };
+export type FontSizeProp = { fontSize?: keyof typeof textSize };
 export type GridColsAlignProp = { align?: keyof typeof gridColsAlign };
 export type GridColumn = { align?: keyof typeof gridColumn };
 export type GapSpaceProp = { space?: keyof typeof gapSpace };

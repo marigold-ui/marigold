@@ -2,17 +2,16 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Theme, ThemeProvider } from '@marigold/system';
 
-import { tv } from 'tailwind-variants';
+import { cva } from 'class-variance-authority';
 import { Text } from './Text';
 
 const theme: Theme = {
   name: 'test',
   components: {
-    Text: tv({
-      base: "font-['Oswald_Regular']",
+    Text: cva("font-['Oswald_Regular']", {
       variants: {
         variant: {
-          one: ['font-["Arial"] text-blue-600'],
+          one: 'font-["Arial]"',
         },
       },
     }),
@@ -37,8 +36,13 @@ test('uses theme styles', () => {
   );
   const text = screen.getByText(/text/);
 
-  expect(text).toHaveClass(`font-["Arial"]`);
-  expect(text).toHaveClass(`text-blue-600`);
+  expect(text).toMatchInlineSnapshot(`
+    <p
+      class="font-["Arial]" text-[--color] outline-[--outline] italic normal cursor-default font-normal text-[13px]"
+    >
+      text
+    </p>
+  `);
 });
 
 test('renders a <p> element by default', () => {
@@ -55,13 +59,18 @@ test('renders a <p> element by default', () => {
 test('style props override theme styles', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Text variant="one" className="text-red-700">
+      <Text variant="one" color="red-700">
         text
       </Text>
     </ThemeProvider>
   );
   const text = screen.getByText(/text/);
 
-  expect(text).toHaveClass(`font-["Arial"]`);
-  expect(text).toHaveClass(`text-red-700`);
+  expect(text).toMatchInlineSnapshot(`
+    <p
+      class="font-["Arial]" text-[--color] outline-[--outline] italic normal cursor-default font-normal text-[13px]"
+    >
+      text
+    </p>
+  `);
 });

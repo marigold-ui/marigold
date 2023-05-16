@@ -6,17 +6,47 @@ const meta = {
   title: 'Components/Text',
   component: Text,
   argTypes: {
-    className: {
-      control: {
-        type: 'text',
-      },
-      description: 'set classNames with tailwind',
-    },
     variant: {
       control: {
         type: 'text',
       },
       description: 'The variant of the text',
+    },
+    align: {
+      control: {
+        type: 'text',
+      },
+      description: 'The align of the text',
+    },
+    fontSize: {
+      control: {
+        type: 'text',
+      },
+      description: 'The font size of the text',
+    },
+    weight: {
+      control: {
+        type: 'text',
+      },
+      description: 'The font weight of the text',
+    },
+    color: {
+      control: {
+        type: 'text',
+      },
+      description: 'The color of the text',
+    },
+    fontStyle: {
+      control: {
+        type: 'text',
+      },
+      description: 'The font style of the text',
+    },
+    cursor: {
+      control: {
+        type: 'text',
+      },
+      description: 'The cursor for the text',
     },
   },
 } satisfies Meta<typeof Text>;
