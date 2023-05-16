@@ -7,7 +7,7 @@ import { TextField } from '../TextField';
 import { RadioGroup } from '../Radio/RadioGroup';
 import { Radio } from '../Radio';
 import { Checkbox, CheckboxGroup } from '../Checkbox';
-import isChromatic from 'chromatic';
+
 const meta = {
   title: 'Components/FieldBase',
   component: FieldBase,
@@ -116,9 +116,4 @@ export const Complex: Story = {
       </CheckboxGroup>
     </FieldGroup>
   ),
-};
-
-Complex.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

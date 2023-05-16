@@ -2,8 +2,6 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Aside } from './Aside';
-import isChromatic from 'chromatic';
-import { Stack } from '../Stack';
 
 const meta = {
   title: 'Components/Aside',
@@ -116,9 +114,4 @@ export const InheritWidth: StoryObj<typeof Aside> = {
       </div>
     </Aside>
   ),
-};
-
-Basic.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

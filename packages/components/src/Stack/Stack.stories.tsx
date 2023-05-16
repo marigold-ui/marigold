@@ -5,7 +5,6 @@ import { Box } from '@marigold/system';
 import { Headline } from '../Headline';
 import { Text } from '../Text';
 import { Stack } from './Stack';
-import isChromatic from 'chromatic';
 
 const meta = {
   title: 'Components/Stack',
@@ -133,9 +132,4 @@ export const Stretch: Story = {
       </div>
     </Block>
   ),
-};
-
-Stretch.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

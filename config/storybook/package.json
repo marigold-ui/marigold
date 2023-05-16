@@ -18,7 +18,7 @@
     "directory": "config/prettier"
   },
   "dependencies": {
-    "@babel/core": "7.21.4",
+    "@babel/core": "7.21.8",
     "@emotion/react": "^11.0.0-rc.0",
     "@emotion/styled": "^11.8.1",
     "@marigold/components": "workspace:*",
@@ -32,7 +32,6 @@
     "@storybook/testing-library": "0.1.0",
     "@types/react": "18",
     "babel-loader": "9.1.2",
-    "chromatic": "^6.6.3",
     "find-up": "5.0.0",
     "vite-tsconfig-paths": "4.2.0",
     "webpack": "4"

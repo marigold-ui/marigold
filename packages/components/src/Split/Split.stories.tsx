@@ -5,7 +5,6 @@ import { Inline } from '../Inline';
 import { Stack } from '../Stack';
 
 import { Split } from './Split';
-import isChromatic from 'chromatic';
 
 const Block = ({ children }: { children: ReactNode }) => (
   <div className="rounded border border-solid border-[#364fc7] bg-[#4263eb] px-8 py-3 text-[#edf2ff] shadow-md">
@@ -41,9 +40,4 @@ export const WithStack: Story = {
       </Stack>
     </div>
   ),
-};
-
-WithInline.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

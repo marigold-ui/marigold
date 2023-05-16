@@ -1,7 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Headline, Image, Stack, Text, Tiles } from '@marigold/components';
-import isChromatic from 'chromatic';
 
 const meta = {
   title: 'Components/Tiles',
@@ -166,10 +165,4 @@ export const Stacks: StoryObj<typeof Tiles> = {
       </div>
     </Tiles>
   ),
-};
-
-Stacks.parameters = {
-  // Set the viewports in Chromatic at a story level.
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

@@ -2,7 +2,6 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Container } from '../Container';
 import { Header } from './Header';
-import isChromatic from 'chromatic';
 
 const meta = {
   title: 'Components/Header',
@@ -31,9 +30,4 @@ export const Basic: Story = {
       <Header {...args}>Awsome Header</Header>
     </Container>
   ),
-};
-
-Basic.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

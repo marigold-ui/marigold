@@ -1,7 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Image } from './Image';
-import isChromatic from 'chromatic';
 
 const meta = {
   title: 'Components/Image',
@@ -61,9 +60,4 @@ export const Basic: StoryObj<typeof Image> = {
       alt="marigold_logo"
     />
   ),
-};
-
-Basic.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

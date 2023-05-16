@@ -1,7 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Footer } from './Footer';
-import isChromatic from 'chromatic';
 
 const meta = {
   title: 'Components/Footer',
@@ -27,9 +26,4 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => <Footer {...args}>This is a Footer.</Footer>,
-};
-
-Basic.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

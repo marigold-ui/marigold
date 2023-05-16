@@ -10,7 +10,6 @@ import { Stack } from '../Stack';
 
 import { Table } from './Table';
 import { Select } from '../Select';
-import isChromatic from 'chromatic';
 
 const meta = {
   title: 'Components/Table',
@@ -542,10 +541,4 @@ export const SelectedTable: Story = {
       </Table.Body>
     </Table>
   ),
-};
-
-DataTable.parameters = {
-  // Set the viewports in Chromatic at a story level.
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };

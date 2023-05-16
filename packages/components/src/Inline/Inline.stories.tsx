@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Inline } from './Inline';
-import isChromatic from 'chromatic';
 
 const meta = {
   title: 'Components/Inline',
@@ -55,9 +54,4 @@ export const Basic: Story = {
       <Block>Löffelstiel!</Block>
     </Inline>
   ),
-};
-
-Basic.parameters = {
-  chromatic: { viewports: [320, 1200] },
-  theme: isChromatic() ? 'b2b' : 'stacked',
 };
