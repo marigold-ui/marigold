@@ -20,14 +20,16 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const WithInline: Story = () => (
-  <Inline space={4}>
-    <Block>First</Block>
-    <Block>Second</Block>
-    <Split />
-    <Block>Third</Block>
-  </Inline>
-);
+export const WithInline: Story = {
+  render: () => (
+    <Inline space={4}>
+      <Block>First</Block>
+      <Block>Second</Block>
+      <Split />
+      <Block>Third</Block>
+    </Inline>
+  ),
+};
 
 export const WithStack: Story = {
   render: () => (
