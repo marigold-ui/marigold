@@ -40,7 +40,7 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
                 disabled: 'disabled',
                 hover: 'hover',
                 error: 'error',
-                'read-only': 'read-only',
+                readonly: 'read-only',
                 required: 'required',
                 selected: 'selected',
               },
