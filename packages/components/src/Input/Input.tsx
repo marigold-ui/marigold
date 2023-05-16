@@ -1,65 +1,73 @@
 import React, { forwardRef, ReactElement } from 'react';
 import { HtmlProps } from '@marigold/types';
-import { Box, useComponentStylesFromTV, useStateProps } from '@marigold/system';
-
-import { tv } from 'tailwind-variants';
-import { twMerge } from 'tailwind-merge';
-import { mergeProps } from '@react-aria/utils';
+import { cn, useClassNames } from '@marigold/system';
 
 // Props
 // ---------------
-export interface InputOwnProps extends Omit<HtmlProps<'input'>, 'size'> {
+export interface InputOwnProps
+  extends Omit<HtmlProps<'input'>, 'size' | 'className'> {
   icon?: ReactElement;
   action?: ReactElement;
   variant?: string;
   size?: string;
+  className?: {
+    container?: string;
+    input?: string;
+    icon?: string;
+  };
 }
 
 export interface InputProps
-  extends Omit<React.ComponentPropsWithRef<'input'>, 'size'>,
+  extends Omit<React.ComponentPropsWithRef<'input'>, 'size' | 'className'>,
     InputOwnProps {}
 
 // Component
 // ---------------
 export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
   (
-    { type = 'text', icon, action, variant, size, ...props }: InputOwnProps,
-    ref
-  ) => {
-    const classNames = useComponentStylesFromTV('Input', {
+    {
+      type = 'text',
+      icon,
+      action,
       variant,
       size,
-      slots: ['container', 'input', 'icon'],
-    });
-    const stateProps = useStateProps({
-      hasIcon: icon ? true : false,
-    });
-
-    const styledInput = tv({
-      slots: {
-        input: ['w-full border-0 outline-0'],
-        container: ['flex relative w-full items-center'],
-        icon: ['absolute pointer-events-none'],
-      },
+      className,
+      ...props
+    }: InputOwnProps,
+    ref
+  ) => {
+    const classNames = useClassNames({
+      component: 'Input',
+      variant,
+      size,
+      className,
     });
 
     return (
-      <div
-        className={twMerge(styledInput().container(), classNames.container())}
-      >
-        <Box
-          as="input"
-          {...mergeProps(props, stateProps)}
-          className={twMerge(styledInput().input(), classNames.input())}
-          ref={ref}
-          type={type}
-        />
+      <div className={cn('relative flex items-center', classNames.container)}>
         {icon && (
-          <div className={twMerge(styledInput().icon(), classNames.icon())}>
+          <div
+            data-icon=""
+            className={cn(
+              'peer',
+              'pointer-events-none absolute',
+              classNames.icon
+            )}
+          >
             {icon}
           </div>
         )}
-        <div className="absolute right-8 inline-flex">{action}</div>
+        <input
+          {...props}
+          className={cn(
+            // Make the input disappear
+            'flex-1 appearance-none border-none bg-transparent outline-none',
+            classNames.input
+          )}
+          ref={ref}
+          type={type}
+        />
+        {action ? action : null}
       </div>
     );
   }

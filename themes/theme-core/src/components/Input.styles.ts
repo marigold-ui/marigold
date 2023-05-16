@@ -1,15 +1,12 @@
 import { cva } from 'class-variance-authority';
 
+const inputHeight = 'h-[22px]';
+
 export const Input = {
-  input: cva(
-    [
-      'border border-solid rounded-sm border-input-border',
-      'leading-normal pl-2 pr-2',
-      'data-[has-icon]:pl-8',
-      'mg-error:border-error-text',
-    ],
-    {}
-  ),
-  icon: cva('left-1', {}),
-  container: cva({}),
+  container: cva([
+    'border rounded-sm border-input-border bg-white',
+    inputHeight, // makes sure that container will not grow larger than input.
+  ]),
+  input: cva([`${inputHeight} leading-[22px]`, 'px-2 peer-data-[icon]:pl-6']),
+  icon: cva('left-0.5 [&>*]:h-[18px] [&>*]:w-[18px]'),
 };

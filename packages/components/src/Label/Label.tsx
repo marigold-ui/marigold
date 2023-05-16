@@ -12,6 +12,9 @@ export interface LabelProps extends HtmlProps<'label'> {
   labelWidth?: string;
 }
 
+// TODO: remove required and use data-required instead?
+// TODO: core does not hat * as required indicator (wtf?)
+
 // Component
 // ---------------
 export const Label = ({

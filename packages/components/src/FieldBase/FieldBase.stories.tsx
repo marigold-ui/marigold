@@ -1,12 +1,15 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { FieldBase } from './FieldBase';
+
 import { Select } from '../Select';
-import { FieldGroup } from './FieldGroup';
 import { TextField } from '../TextField';
 import { RadioGroup } from '../Radio/RadioGroup';
 import { Radio } from '../Radio';
 import { Checkbox, CheckboxGroup } from '../Checkbox';
+import { Input } from '../Input';
+
+import { FieldBase } from './FieldBase';
+import { FieldGroup } from './FieldGroup';
 
 const meta = {
   title: 'Components/FieldBase',
@@ -52,16 +55,6 @@ const meta = {
         defaultValue: { summary: 'Something went wrong' },
       },
     },
-    error: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'Whether the help text is an error',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
-    },
     width: {
       control: {
         type: 'text',
@@ -84,7 +77,7 @@ export const Basic: Story = {
   render: args => (
     <FieldGroup labelWidth="200px">
       <FieldBase {...args} label="This is my Label">
-        <input type="text" />
+        <Input />
       </FieldBase>
     </FieldGroup>
   ),
@@ -95,7 +88,7 @@ export const Complex: Story = {
   render: args => (
     <FieldGroup labelWidth="30%">
       <FieldBase {...args} label="This is my Label">
-        <input type="text" />
+        <Input />
       </FieldBase>
       <FieldBase {...args} label="This is my Label">
         <input type="text" />
