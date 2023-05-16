@@ -31,6 +31,7 @@ export type Theme = {
     Field?: ComponentStyleFunction<string, string>;
     Footer?: ComponentStyleFunction<string, string>;
     Header?: ComponentStyleFunction<string, string>;
+    Headline?: ComponentStyleFunction<string, string>;
     HelpText?: Record<
       'container' | 'icon',
       ComponentStyleFunction<string, string>

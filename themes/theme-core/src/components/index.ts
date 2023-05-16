@@ -7,6 +7,7 @@ export * from './Divider.styles';
 export * from './Field.styles';
 export * from './Footer.styles';
 export * from './Header.styles';
+export * from './Headline.styles';
 export * from './HelpText.styles';
 export * from './Input.styles';
 export * from './Image.styles';

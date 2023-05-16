@@ -1,6 +1,5 @@
 import React from 'react';
 import { Preview, StoryFn } from '@storybook/react';
-import isChromatic from 'chromatic/isChromatic';
 
 import { MarigoldProvider } from '@marigold/components';
 
@@ -40,9 +39,7 @@ export const decorators: any = [
     attributeName: 'data-theme',
   }),
   (Story: StoryFn, { globals, parameters }: any) => {
-    const theme = isChromatic()
-      ? parameters.theme || 'stacked'
-      : globals.theme || parameters.theme || 'core';
+    const theme = globals.theme || parameters.theme || 'core';
 
     switch (theme) {
       case 'stacked': {

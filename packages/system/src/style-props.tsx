@@ -93,6 +93,13 @@ export const placeItems = {
   right: 'place-items-end',
 };
 
+export const textAlign = {
+  none: undefined,
+  left: 'text-left',
+  center: 'text-center',
+  right: 'text-right',
+};
+
 // for responsive reasons we needed to use the `minmax(0, 60ch)` value instead of `fit-content(60ch)`
 export const gridColsAlign = {
   left: 'grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr]',
@@ -149,3 +156,4 @@ export type PaddingSpaceProp = { space?: keyof typeof paddingSpace };
 export type PaddingSpacePropX = { spaceX?: keyof typeof paddingSpaceX };
 export type PaddingSpacePropY = { spaceY?: keyof typeof paddingSpaceY };
 export type PlaceItemsProp = { align?: keyof typeof placeItems };
+export type TextAlignProp = { align?: keyof typeof textAlign };
