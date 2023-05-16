@@ -36,6 +36,10 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Image?: ComponentStyleFunction<string, string>;
+    Input?: Record<
+      'container' | 'input' | 'icon',
+      ComponentStyleFunction<string, string>
+    >;
     Label?: ComponentStyleFunction<string, string>;
     Text?: ComponentStyleFunction<string, string>;
     Underlay?: ComponentStyleFunction<string, string>;

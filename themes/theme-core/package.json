@@ -37,7 +37,8 @@
     "@marigold/components": "workspace:*"
   },
   "scripts": {
-    "build": "tsup"
+    "build": "NODE_ENV=production tsup",
+    "dev": "tsup"
   },
   "dependencies": {
     "class-variance-authority": "0.6.0",
