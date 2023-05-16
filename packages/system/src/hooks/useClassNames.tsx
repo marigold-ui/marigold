@@ -8,7 +8,7 @@ export interface UseClassNamesProps<C extends ComponentNames> {
   size?: string;
   className?: ThemeComponent<C> extends (...args: any) => any
     ? string
-    : { [slot in keyof ThemeComponent<C>]: string };
+    : { [slot in keyof ThemeComponent<C>]?: string };
 }
 
 export type ComponentClassNames<C extends ComponentNames> =
