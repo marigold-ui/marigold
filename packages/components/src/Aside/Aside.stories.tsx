@@ -2,6 +2,7 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Aside } from './Aside';
+import { Stack } from '../Stack';
 
 const meta = {
   title: 'Components/Aside',
@@ -73,11 +74,11 @@ export default meta;
 export const Basic: StoryObj<typeof Aside> = {
   render: args => (
     <Aside {...args}>
-      <div className="text-primary-700 bg-yellow-400">
+      <div>
         Ketchup was once sold as medicine. The condiment was prescribed and sold
         to people suffering with indigestion back in 1834.
       </div>
-      <div className="bg-yellow-400">
+      <div>
         There is actually a word for someone giving an opinion on something they
         know nothing about. An 'ultracrepidarian' is someone who voices thoughts
         beyond their expertise.
@@ -94,7 +95,7 @@ export const InheritWidth: StoryObj<typeof Aside> = {
         alt="Pug"
         width="250px"
       />
-      <div className="h-full bg-yellow-400">
+      <div className="h-full">
         <Stack stretch>
           <p>
             Pugs were originally bred to be lapdogs for Chinese royalty. They
