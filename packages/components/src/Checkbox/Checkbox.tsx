@@ -156,7 +156,6 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     /* eslint-enable react-hooks/rules-of-hooks */
 
     const classNames = useClassNames({ component: 'Checkbox', variant, size });
-    console.log('classNames', classNames.container);
     const { hoverProps, isHovered } = useHover({});
     const { isFocusVisible, focusProps } = useFocusRing();
     const stateProps = useStateProps({
