@@ -5,19 +5,10 @@ import { useTextField } from '@react-aria/textfield';
 import { useObjectRef } from '@react-aria/utils';
 import { AriaTextFieldProps } from '@react-types/textfield';
 
-import {
-  Box,
-  ThemeExtension,
-  useComponentStyles,
-  useStateProps,
-} from '@marigold/system';
+import { useClassNames, useStateProps } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase';
-
-// Theme Extension
-// ---------------
-export interface TextAreaThemeExtension extends ThemeExtension<'TextArea'> {}
 
 // Props
 // ---------------
@@ -99,7 +90,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       error,
     });
 
-    const styles = useComponentStyles('TextArea', { variant, size });
+    const classNames = useClassNames({ component: 'TextArea', variant, size });
     return (
       <FieldBase
         label={label}
@@ -114,15 +105,13 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
         size={size}
         width={width}
       >
-        <Box
-          as="textarea"
-          css={styles}
+        <textarea
+          className={classNames}
           ref={textAreaRef}
           rows={rows}
           {...inputProps}
           {...focusProps}
           {...hoverProps}
-          {...stateProps}
         />
       </FieldBase>
     );
