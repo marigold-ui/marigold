@@ -1,16 +1,8 @@
 import React, { ReactNode } from 'react';
-import { ThemeExtensionsWithParts, useComponentStyles } from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
 import { Box } from '../Box';
-
-// Theme Extension
-// ---------------
-export interface MessageThemeExtension
-  extends ThemeExtensionsWithParts<
-    'Message',
-    ['container', 'icon', 'title', 'content']
-  > {}
 
 // Props
 // ---------------
@@ -29,12 +21,8 @@ export const Message = ({
   children,
   ...props
 }: MessageProps) => {
-  const styles = useComponentStyles(
-    'Message',
-    {
-      variant,
-      size,
-    },
+  const classNames = useClassNames(
+    { component: 'Message', variant, size },
     { parts: ['container', 'icon', 'title', 'content'] }
   );
   var icon = (
