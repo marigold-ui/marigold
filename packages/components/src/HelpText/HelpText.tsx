@@ -1,14 +1,6 @@
 import React, { HTMLAttributes, ReactNode } from 'react';
-import {
-  Box,
-  SVG,
-  cn,
-  useClassNames,
-  useComponentStylesFromTV,
-} from '@marigold/system';
+import { Box, SVG, cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
-import { tv } from 'tailwind-variants';
-import { twMerge } from 'tailwind-merge';
 
 // Props
 // ---------------

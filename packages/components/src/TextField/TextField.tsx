@@ -100,7 +100,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
            * We use `size` for styles which is a string, not like
            * the regular HTML attribute, which is a number
            */
-          {...mergeProps(focusProps, inputProps as any, hoverProps, stateProps)}
+          {...mergeProps(focusProps, inputProps as any, hoverProps)}
         />
       </FieldBase>
     );
