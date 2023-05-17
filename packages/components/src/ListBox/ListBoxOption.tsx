@@ -40,7 +40,7 @@ export const ListBoxOption = ({ item, state }: ListBoxOptionProps) => {
     <Box
       as="li"
       ref={ref}
-      className={classNames.option()}
+      className={classNames.option}
       {...mergeProps(props, { onPointerDown: onPointerUp }, { ...stateProps })}
     >
       {item.rendered}
