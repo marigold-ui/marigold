@@ -16,10 +16,6 @@ export const ListBox: ThemeComponent<'ListBox'> = {
 
 // section: ['font-bold px-1'],
 // option: [
-//   'outline-none py-0 pl-[6px] pr-4 font-normal',
-//   'focus-visible:text-secondary-50 focus-visible:bg-focus-bg',
 //   'mg-selected:text-secondary-50 mg-selected:bg-focus-bg',
-//   'mg-hover:text-secondary-50 mg-hover:bg-focus-bg',
-//   'mg-disabled:cursor-not-allowed mg-disabled:text-disabled-text',
 // ],
 // sectionTitle: [''],

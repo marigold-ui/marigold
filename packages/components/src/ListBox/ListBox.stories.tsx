@@ -20,7 +20,7 @@ const List = (props: ListProps<any>) => {
 
 export const Basic: Story = {
   render: args => (
-    <List disabledKeys={['four']} {...args}>
+    <List disabledKeys={['four']} defaultSelectedKeys={['one']} {...args}>
       <Item key="one">One</Item>
       <Item key="two">Two</Item>
       <Item key="three">Three</Item>

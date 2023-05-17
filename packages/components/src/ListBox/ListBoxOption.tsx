@@ -4,7 +4,7 @@ import type { ListState } from '@react-stately/list';
 import { mergeProps } from '@react-aria/utils';
 import type { Node } from '@react-types/shared';
 
-import { Box, useStateProps } from '@marigold/system';
+import { useStateProps } from '@marigold/system';
 
 import { useListBoxContext } from './Context';
 
@@ -37,13 +37,12 @@ export const ListBoxOption = ({ item, state }: ListBoxOptionProps) => {
   });
 
   return (
-    <Box
-      as="li"
+    <li
       ref={ref}
       className={classNames.option}
       {...mergeProps(props, { onPointerDown: onPointerUp }, { ...stateProps })}
     >
       {item.rendered}
-    </Box>
+    </li>
   );
 };
