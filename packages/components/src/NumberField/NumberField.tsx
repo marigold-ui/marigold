@@ -111,15 +111,15 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
       hover: isHovered,
       focus: isFocused,
       disabled,
-      readOnly,
       error,
+      readOnly,
+      required,
     });
 
     return (
       <FieldBase
         label={props.label}
         labelProps={labelProps}
-        required={required}
         description={props.description}
         descriptionProps={descriptionProps}
         error={error}
