@@ -5,7 +5,7 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
   container: cva([], {
     variants: {
       size: {
-        small: 'underline',
+        small: 'py-1',
       },
     },
   }),
