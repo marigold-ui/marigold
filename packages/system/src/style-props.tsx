@@ -44,7 +44,7 @@ export const gapSpace = {
 };
 
 export const paddingSpace = {
-  0: undefined,
+  0: 'p-0',
   1: 'p-1',
   2: 'p-2',
   3: 'p-3',
@@ -59,7 +59,7 @@ export const paddingSpace = {
   12: 'p-12',
 };
 export const paddingSpaceX = {
-  0: undefined,
+  0: 'px-0',
   1: 'px-1',
   2: 'px-2',
   3: 'px-3',
@@ -74,7 +74,7 @@ export const paddingSpaceX = {
   12: 'px-12',
 };
 export const paddingSpaceY = {
-  0: undefined,
+  0: 'py-0',
   1: 'py-1',
   2: 'py-2',
   3: 'py-3',
@@ -90,7 +90,7 @@ export const paddingSpaceY = {
 };
 
 export const paddingRight = {
-  0: undefined,
+  0: 'pr-0',
   1: 'pr-1',
   2: 'pr-2',
   3: 'pr-3',
@@ -106,7 +106,7 @@ export const paddingRight = {
 };
 
 export const paddingLeft = {
-  0: undefined,
+  0: 'pl-0',
   1: 'pl-1',
   2: 'pl-2',
   3: 'pl-3',
@@ -122,7 +122,7 @@ export const paddingLeft = {
 };
 
 export const paddingTop = {
-  0: undefined,
+  0: 'pt-0',
   1: 'pt-1',
   2: 'pt-2',
   3: 'pt-3',
@@ -138,7 +138,7 @@ export const paddingTop = {
 };
 
 export const paddingBottom = {
-  0: undefined,
+  0: 'pb-0',
   1: 'pb-1',
   2: 'pb-2',
   3: 'pb-3',
