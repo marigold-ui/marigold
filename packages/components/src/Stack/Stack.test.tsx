@@ -24,18 +24,7 @@ test('uses spacing from theme', () => {
     </Stack>
   );
   const first = screen.getByText(/first/).parentElement;
-  expect(first).toMatchInlineSnapshot(`
-    <div
-      class="flex flex-col gap-2"
-    >
-      <p>
-        first
-      </p>
-      <p>
-        second
-      </p>
-    </div>
-  `);
+  expect(first?.className).toMatchInlineSnapshot(`"flex flex-col gap-2"`);
 });
 
 test('children are not aligned by default', () => {
