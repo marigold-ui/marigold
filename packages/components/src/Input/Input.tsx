@@ -60,6 +60,7 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
         <input
           {...props}
           className={cn(
+            'disabled:cursor-not-allowed',
             // Make the input disappear
             'flex-1 appearance-none border-none bg-transparent outline-none',
             classNames.input

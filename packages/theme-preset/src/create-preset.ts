@@ -27,8 +27,8 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
         },
       },
       plugins: [
-        // Grouping
         plugin(({ matchVariant, e }) => {
+          // Grouping
           matchVariant(
             'group',
             (value, { modifier }) =>
