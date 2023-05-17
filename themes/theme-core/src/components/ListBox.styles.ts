@@ -8,6 +8,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     'outline-none px-1.5 py-0.5 cursor-pointer',
     'focus-visible:text-secondary-50 focus-visible:bg-highlight',
     'aria-enabled:hover:text-secondary-50 aria-enabled:hover:bg-highlight',
+    'aria-selected:text-secondary-50 aria-selected:bg-highlight',
     'aria-disabled:cursor-not-allowed aria-disabled:text-disabled-text',
   ]),
   section: cva(),
@@ -15,7 +16,4 @@ export const ListBox: ThemeComponent<'ListBox'> = {
 };
 
 // section: ['font-bold px-1'],
-// option: [
-//   'mg-selected:text-secondary-50 mg-selected:bg-focus-bg',
-// ],
 // sectionTitle: [''],

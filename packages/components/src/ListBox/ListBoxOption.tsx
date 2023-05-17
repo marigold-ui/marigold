@@ -35,7 +35,7 @@ export const ListBoxOption = ({ item, state }: ListBoxOptionProps) => {
     disabled: isDisabled,
     focusVisible: isFocused,
   });
-
+  console.log(item.key, isSelected);
   return (
     <li
       ref={ref}
