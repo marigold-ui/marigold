@@ -95,6 +95,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       focus: isFocusVisible,
       disabled,
       readOnly,
+      required,
       error,
     });
 
@@ -103,7 +104,6 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       <FieldBase
         label={label}
         labelProps={labelProps}
-        required={required}
         description={description}
         descriptionProps={descriptionProps}
         error={error}
