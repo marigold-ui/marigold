@@ -42,6 +42,10 @@ export type Theme = {
       'container' | 'indicator',
       ComponentStyleFunction<string, string>
     >;
+    Message?: Record<
+      'container' | 'icon' | 'title' | 'content',
+      ComponentStyleFunction<string, string>
+    >;
     Text?: ComponentStyleFunction<string, string>;
     Underlay?: ComponentStyleFunction<string, string>;
   };

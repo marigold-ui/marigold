@@ -85,6 +85,7 @@ export const colors = {
   error: {
     text: '#f33',
     bg: '#f33',
+    border: '#f33',
   },
   disabled: {
     text: '#cccccc',
@@ -92,13 +93,23 @@ export const colors = {
   },
   info: {
     text: '#e8f4fa',
+    alternativText: '#008',
+    border: '#008',
     bg: '#1d67b6',
   },
   focus: {
     bg: '#3875d7',
     bgImage: 'linear-gradient(#3875d7 20%, #2a62bc 90%)',
   },
-
+  warning: {
+    text: '#d80',
+    border: '#d80',
+  },
+  message: {
+    container: {
+      background: '#fafafa',
+    },
+  },
   border: {
     color: '#aaa',
   },

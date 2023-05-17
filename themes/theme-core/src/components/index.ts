@@ -13,6 +13,7 @@ export * from './Input.styles';
 export * from './Image.styles';
 export * from './Label.styles';
 export * from './ListBox.styles';
+export * from './Message.styles';
 export * from './Select.styles';
 export * from './Table.styles';
 export * from './Text.styles';
