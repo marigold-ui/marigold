@@ -73,8 +73,8 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       hover: isHovered,
       focus: isFocused,
       disabled,
-      readOnly,
       error,
+      readOnly,
       required,
     });
 
