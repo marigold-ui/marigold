@@ -5,16 +5,12 @@ import { useHover } from '@react-aria/interactions';
 import { useObjectRef } from '@react-aria/utils';
 import { useToggleState } from '@react-stately/toggle';
 import { AriaCheckboxProps } from '@react-types/checkbox';
-import {
-  Box,
-  StateAttrProps,
-  useComponentStylesFromTV,
-  useStateProps,
-} from '@marigold/system';
+import { Box, StateAttrProps, useStateProps } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 import { useCheckboxGroupContext } from './CheckboxGroup';
 import { tv } from 'tailwind-variants';
 import { twMerge } from 'tailwind-merge';
+import { useClassNames, cn } from '@marigold/system';
 
 // SVG Icon
 // ---------------
@@ -159,12 +155,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         );
     /* eslint-enable react-hooks/rules-of-hooks */
 
-    const classNames = useComponentStylesFromTV('Checkbox', {
-      variant,
-      size,
-      slots: ['container', 'label', 'checkbox'],
-    });
-
+    const classNames = useClassNames({ component: 'Checkbox', variant, size });
+    console.log('classNames', classNames.container);
     const { hoverProps, isHovered } = useHover({});
     const { isFocusVisible, focusProps } = useFocusRing();
     const stateProps = useStateProps({
@@ -177,39 +169,33 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       indeterminate,
     });
 
-    const styledLabel = tv({
-      base: ['flex item-center gap-[1ch] relative'],
-    });
-
-    const styledInput = tv({
-      base: [
-        'absolute w-full h-full top-0 left-0 z-1 opacity-[0.0001]',
-        inputProps.disabled ? 'cursor-not-allowed' : 'cursor-pointer',
-      ],
-    });
-
     return (
       <Box
         as="label"
-        className={twMerge(styledLabel(), classNames.container())}
+        className={cn(
+          'relative flex items-center gap-[1ch]',
+          classNames.container
+        )}
         {...hoverProps}
         {...stateProps}
       >
         <Box
           as="input"
           ref={inputRef}
-          className={styledInput()}
+          className={`z-1 absolute left-0 top-0 h-full w-full opacity-[0.0001] ${
+            inputProps.disabled ? 'cursor-not-allowed' : 'cursor-pointer'
+          }`}
           {...inputProps}
           {...focusProps}
         />
         <Icon
           checked={inputProps.checked}
           indeterminate={indeterminate}
-          className={classNames.checkbox()}
+          className={classNames.checkbox}
           {...stateProps}
         />
         {props.children && (
-          <Box className={classNames.label()} {...stateProps}>
+          <Box className={classNames.label} {...stateProps}>
             {props.children}
           </Box>
         )}

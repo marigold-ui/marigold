@@ -35,6 +35,10 @@ export type Theme = {
     Headline?: ComponentStyleFunction<string, string>;
     HelpText?: ComponentStyleFunction<string, string>;
     Image?: ComponentStyleFunction<string, string>;
+    Checkbox?: Record<
+      'container' | 'label' | 'checkbox',
+      ComponentStyleFunction<string, string>
+    >;
     Input?: Record<
       'container' | 'input' | 'icon',
       ComponentStyleFunction<string, string>
