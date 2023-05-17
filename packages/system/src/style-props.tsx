@@ -44,7 +44,7 @@ export const gapSpace = {
 };
 
 export const paddingSpace = {
-  0: 'p-0',
+  0: undefined,
   1: 'p-1',
   2: 'p-2',
   3: 'p-3',
@@ -59,7 +59,7 @@ export const paddingSpace = {
   12: 'p-12',
 };
 export const paddingSpaceX = {
-  0: 'px-0',
+  0: undefined,
   1: 'px-1',
   2: 'px-2',
   3: 'px-3',
@@ -74,7 +74,7 @@ export const paddingSpaceX = {
   12: 'px-12',
 };
 export const paddingSpaceY = {
-  0: 'py-0',
+  0: undefined,
   1: 'py-1',
   2: 'py-2',
   3: 'py-3',
@@ -87,6 +87,70 @@ export const paddingSpaceY = {
   10: 'py-10',
   11: 'py-11',
   12: 'py-12',
+};
+
+export const paddingRight = {
+  0: undefined,
+  1: 'pr-1',
+  2: 'pr-2',
+  3: 'pr-3',
+  4: 'pr-4',
+  5: 'pr-5',
+  6: 'pr-6',
+  7: 'pr-7',
+  8: 'pr-8',
+  9: 'pr-9',
+  10: 'pr-10',
+  11: 'pr-11',
+  12: 'pr-12',
+};
+
+export const paddingLeft = {
+  0: undefined,
+  1: 'pl-1',
+  2: 'pl-2',
+  3: 'pl-3',
+  4: 'pl-4',
+  5: 'pl-5',
+  6: 'pl-6',
+  7: 'pl-7',
+  8: 'pl-8',
+  9: 'pl-9',
+  10: 'pl-10',
+  11: 'pl-11',
+  12: 'pl-12',
+};
+
+export const paddingTop = {
+  0: undefined,
+  1: 'pt-1',
+  2: 'pt-2',
+  3: 'pt-3',
+  4: 'pt-4',
+  5: 'pt-5',
+  6: 'pt-6',
+  7: 'pt-7',
+  8: 'pt-8',
+  9: 'pt-9',
+  10: 'pt-10',
+  11: 'pt-11',
+  12: 'pt-12',
+};
+
+export const paddingBottom = {
+  0: undefined,
+  1: 'pb-1',
+  2: 'pb-2',
+  3: 'pb-3',
+  4: 'pb-4',
+  5: 'pb-5',
+  6: 'pb-6',
+  7: 'pb-7',
+  8: 'pb-8',
+  9: 'pb-9',
+  10: 'pb-10',
+  11: 'pb-11',
+  12: 'pb-12',
 };
 
 export const alignmentY = {
@@ -203,5 +267,9 @@ export type ObjectPositionProp = { position?: keyof typeof objectPosition };
 export type PaddingSpaceProp = { space?: keyof typeof paddingSpace };
 export type PaddingSpacePropX = { spaceX?: keyof typeof paddingSpaceX };
 export type PaddingSpacePropY = { spaceY?: keyof typeof paddingSpaceY };
+export type PaddingRightProp = { pr?: keyof typeof paddingRight };
+export type PaddingLeftProp = { pl?: keyof typeof paddingLeft };
+export type PaddingTopProp = { pt?: keyof typeof paddingTop };
+export type PaddingBottomProp = { pb?: keyof typeof paddingBottom };
 export type PlaceItemsProp = { align?: keyof typeof placeItems };
 export type TextAlignProp = { align?: keyof typeof textAlign };

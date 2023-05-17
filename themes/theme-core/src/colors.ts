@@ -37,6 +37,9 @@ export const colors = {
       border: '#cccccc',
     },
   },
+  card: {
+    background: '#fafaf8',
+  },
   table: {
     header: {
       background: '#808080',

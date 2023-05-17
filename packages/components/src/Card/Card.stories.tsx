@@ -25,6 +25,48 @@ const meta = {
       },
       description: 'The size of the card',
     },
+    p: {
+      control: {
+        type: 'text',
+      },
+      description: 'The padding of the card',
+    },
+    px: {
+      control: {
+        type: 'text',
+      },
+      description: 'The x padding of the card',
+    },
+    py: {
+      control: {
+        type: 'text',
+      },
+      description: 'The y padding of the card',
+    },
+    pr: {
+      control: {
+        type: 'text',
+      },
+      description: 'The right padding of the card',
+    },
+    pt: {
+      control: {
+        type: 'text',
+      },
+      description: 'The top padding of the card',
+    },
+    pb: {
+      control: {
+        type: 'text',
+      },
+      description: 'The bottom padding of the card',
+    },
+    pl: {
+      control: {
+        type: 'text',
+      },
+      description: 'The left padding of the card',
+    },
   },
 } satisfies Meta<typeof Card>;
 
@@ -47,9 +89,6 @@ export const Basic: Story = {
             double life played an extremely important role in both of the
             Wizarding Wars against Voldemort.
           </p>
-          <Link href="https://harrypotter.fandom.com/wiki/Severus_Snape">
-            Source
-          </Link>
         </section>
       </Card>
     </Container>
@@ -58,11 +97,11 @@ export const Basic: Story = {
 
 export const CoreCard: Story = {
   render: args => (
-    <Tiles tilesWidth="300px" space="small">
-      <Card {...args} p="xsmall">
+    <Tiles tilesWidth="300px" space={5}>
+      <Card {...args} p={3}>
         <Inline alignY="top">
           <Link href={'#'} target="blank">
-            <ExternalLink size={26} fill="#990000" />
+            <ExternalLink size={26} className="fill-[#990000]" />
           </Link>
           <Split />
           <Close />
@@ -74,10 +113,10 @@ export const CoreCard: Story = {
         </Center>
       </Card>
 
-      <Card {...args} p="xsmall">
+      <Card {...args} p={3}>
         <Inline alignY="top">
           <Link href={'#'} target="blank">
-            <ExternalLink size={26} fill="#990000" />
+            <ExternalLink size={26} className="fill-[#990000]" />
           </Link>
           <Split />
           <Close />
