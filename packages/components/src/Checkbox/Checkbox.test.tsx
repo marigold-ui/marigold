@@ -1,7 +1,7 @@
 /* eslint-disable testing-library/no-node-access */
 import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
-import { Theme, ThemeProvider } from '@marigold/system';
+import { Theme } from '@marigold/system';
 import { Checkbox } from './Checkbox';
 import { Checkbox as checkboxStyle } from '../../../../themes/theme-core/src/components/Checkbox.styles';
 import { setup } from '../test.utils';
@@ -62,11 +62,7 @@ test('supports read only state', () => {
 });
 
 test('check if all slot class names are applied correctly', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Checkbox data-testid="checkbox">With Label</Checkbox>
-    </ThemeProvider>
-  );
+  render(<Checkbox data-testid="checkbox">With Label</Checkbox>);
 
   const label = screen.getByText('With Label');
 
@@ -92,11 +88,9 @@ test('check if all slot class names are applied correctly', () => {
 
 test('allows styling "error" state via theme', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Checkbox data-testid="checkbox" error>
-        With Label
-      </Checkbox>
-    </ThemeProvider>
+    <Checkbox data-testid="checkbox" error>
+      With Label
+    </Checkbox>
   );
   //TODO: fix test after Helptext component is migrated to tailwind
   //const checkbox = getVisibleCheckbox();
@@ -105,11 +99,9 @@ test('allows styling "error" state via theme', () => {
 
 test('correct class name is set on size small', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Checkbox data-testid="checkbox" size="small">
-        With Label
-      </Checkbox>
-    </ThemeProvider>
+    <Checkbox data-testid="checkbox" size="small">
+      With Label
+    </Checkbox>
   );
 
   const label = screen.getByText('With Label');
@@ -122,11 +114,9 @@ test('correct class name is set on size small', () => {
 
 test('support default checked', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Checkbox data-testid="checkbox" defaultChecked>
-        With Label
-      </Checkbox>
-    </ThemeProvider>
+    <Checkbox data-testid="checkbox" defaultChecked>
+      With Label
+    </Checkbox>
   );
 
   const input: HTMLInputElement = screen.getByTestId('checkbox');
@@ -135,11 +125,9 @@ test('support default checked', () => {
 
 test('supports indeterminate state', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Checkbox data-testid="checkbox" indeterminate>
-        With Label
-      </Checkbox>
-    </ThemeProvider>
+    <Checkbox data-testid="checkbox" indeterminate>
+      With Label
+    </Checkbox>
   );
   const input: HTMLInputElement = screen.getByTestId('checkbox');
   expect(input.indeterminate).toBeTruthy();
@@ -164,11 +152,9 @@ test('controlled', () => {
 test('forwards ref', () => {
   const ref = React.createRef<HTMLInputElement>();
   render(
-    <ThemeProvider theme={theme}>
-      <Checkbox data-testid="checkbox" ref={ref}>
-        Check it
-      </Checkbox>
-    </ThemeProvider>
+    <Checkbox data-testid="checkbox" ref={ref}>
+      Check it
+    </Checkbox>
   );
 
   expect(ref.current).toBeInstanceOf(HTMLInputElement);
