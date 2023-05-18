@@ -1,6 +1,6 @@
 import React, { forwardRef, ReactNode } from 'react';
 import { useObjectRef } from '@react-aria/utils';
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { useListBox } from '@react-aria/listbox';
 import type { ListState } from '@react-stately/list';
 
@@ -29,7 +29,14 @@ export const ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
     return (
       <ListBoxContext.Provider value={{ classNames }}>
         <div className={classNames.container}>
-          <ul className={classNames.list} ref={innerRef} {...listBoxProps}>
+          <ul
+            className={cn(
+              'overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh]',
+              classNames.list
+            )}
+            ref={innerRef}
+            {...listBoxProps}
+          >
             {[...state.collection].map(item =>
               item.type === 'section' ? (
                 <ListBoxSection key={item.key} section={item} state={state} />

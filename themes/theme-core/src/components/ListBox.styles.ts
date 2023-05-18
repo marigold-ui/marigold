@@ -3,7 +3,7 @@ import { cva } from 'class-variance-authority';
 
 export const ListBox: ThemeComponent<'ListBox'> = {
   container: cva('border rounded-sm border-input-border bg-white'),
-  list: cva('sm:max-h-[75vh] lg:max-h-[45vh]'),
+  list: cva(''),
   option: cva([
     'outline-none px-1.5 [li_&]:px-5 py-0.5 cursor-pointer',
     'focus-visible:text-secondary-50 focus-visible:bg-highlight',
