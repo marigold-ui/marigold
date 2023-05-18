@@ -1,14 +1,15 @@
 /* eslint-disable testing-library/no-node-access */
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import { Theme, ThemeProvider } from '@marigold/system';
 import { Checkbox } from './Checkbox';
-import { checkbox } from '../../../../themes/theme-core/src/components/Checkbox.styles';
+import { Checkbox as checkboxStyle } from '../../../../themes/theme-core/src/components/Checkbox.styles';
+import { setup } from '../test.utils';
 
 const theme: Theme = {
   name: 'test',
   components: {
-    Checkbox: checkbox,
+    Checkbox: checkboxStyle,
   },
 };
 
@@ -18,6 +19,8 @@ const getVisibleCheckbox = () => {
   // eslint-disable-next-line testing-library/no-node-access
   return label.parentElement?.querySelector('[aria-hidden="true"]');
 };
+
+const { render } = setup({ theme });
 
 // Tests
 // ---------------
@@ -68,7 +71,7 @@ test('check if all slot class names are applied correctly', () => {
   const label = screen.getByText('With Label');
 
   expect(label.parentElement).toHaveClass(
-    'flex item-center gap-[1ch] relative',
+    'relative flex items-center gap-[1ch]',
     { exact: true }
   );
   expect(label.parentElement?.childNodes[0]).toHaveClass(
@@ -112,7 +115,7 @@ test('correct class name is set on size small', () => {
   const label = screen.getByText('With Label');
 
   expect(label.parentElement).toHaveClass(
-    'flex item-center gap-[1ch] relative py-1',
+    'relative flex items-center gap-[1ch] py-1',
     { exact: true }
   );
 });
