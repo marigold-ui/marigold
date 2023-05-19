@@ -1,4 +1,5 @@
 import React from 'react';
+import { cva } from 'class-variance-authority';
 import { OverlayProvider } from '@react-aria/overlays';
 import {
   act,
@@ -15,84 +16,27 @@ import { Theme, ThemeProvider, useResponsiveValue } from '@marigold/system';
 
 import { Select } from './Select';
 
-import { tv } from 'tailwind-variants';
-
 const theme: Theme = {
   name: 'test',
   components: {
-    Label: tv({
-      base: 'text-black',
+    Field: cva(''),
+    Label: {
+      container: cva('', {
+        variants: {
+          variant: { lime: 'text-lime-500' },
+          size: { small: 'text-sm' },
+        },
+      }),
+      indicator: cva(),
+    },
+    HelpText: cva('', {
       variants: {
-        variant: {
-          lime: 'text-lime-500',
-        },
-        size: {
-          small: 'p-1',
-        },
+        variant: { lime: 'text-lime-500' },
+        size: { small: 'text-sm' },
       },
     }),
-    HelpText: tv({
-      slots: {
-        base: 'text-black',
-        container: '',
-      },
-      variants: {
-        variant: {
-          lime: {
-            container: 'text-lime-500',
-          },
-        },
-        size: {
-          small: {
-            container: 'p-1',
-          },
-        },
-      },
-    }),
-    Select: tv({
-      slots: {
-        container: '',
-        icon: '',
-        button: [
-          'text-black hover:border-lime-500 disabled:text-disabled-text',
-        ],
-      },
-      variants: {
-        variant: {
-          violet: {
-            button: 'text-violet',
-          },
-        },
-        size: {
-          medium: {
-            button: 'p-2',
-          },
-        },
-      },
-    }),
-    ListBox: tv({
-      slots: {
-        container: '',
-        list: '',
-        section: '',
-        option: [
-          'text-black focus:bg-blue-500 selected:bg-lime-600 disabled:bg-disabled',
-        ],
-        sectionTitle: ['font-bold'],
-      },
-      variants: {
-        variant: {
-          violet: {
-            option: 'text-violet-300',
-          },
-        },
-        size: {
-          medium: {
-            sectionTitle: 'p-2',
-          },
-        },
-      },
-    }),
+    Select: { select: cva('text-blue-500'), icon: cva() },
+    Underlay: cva(''),
   },
 };
 

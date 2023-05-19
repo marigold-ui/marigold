@@ -14,10 +14,8 @@ import type { AriaSelectProps } from '@react-types/select';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 
 import {
-  Box,
   cn,
   useClassNames,
-  useComponentStylesFromTV,
   useResponsiveValue,
   useStateProps,
 } from '@marigold/system';
@@ -39,10 +37,11 @@ interface ChevronProps {
 
 const Chevron = ({ className }: ChevronProps) => (
   <svg
-    className={cn('fill-none', className)}
+    className={className}
     width={16}
     height={16}
     viewBox="0 0 24 24"
+    fill="none"
     stroke="currentColor"
     strokeWidth={2}
   >
@@ -114,12 +113,10 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       ...rest,
     } as const;
 
-    const state = useSelectState(props);
     const buttonRef = useObjectRef(ref);
     const listboxRef = useRef(null);
 
-    const isSmallScreen = useResponsiveValue([true, false, false], 2);
-
+    const state = useSelectState(props);
     const {
       labelProps,
       triggerProps,
@@ -136,20 +133,13 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     const { focusProps, isFocusVisible } = useFocusRing();
 
     const classNames = useClassNames({ component: 'Select', variant, size });
+    const isSmallScreen = useResponsiveValue([true, false, false], 2);
     const stateProps = useStateProps({
       disabled,
       error,
       focusVisible: isFocusVisible,
       expanded: state.isOpen,
       required,
-    });
-
-    const styledSelect = tv({
-      slots: {
-        container: [''],
-        button: ['flex relative items-center justify-between w-full'],
-        icon: [''],
-      },
     });
 
     return (
@@ -174,9 +164,11 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           name={props.name}
           isDisabled={disabled}
         />
-        <Box
-          as="button"
-          className={twMerge(styledSelect().button(), classNames.button())}
+        <button
+          className={cn(
+            'flex w-full items-center justify-between gap-1',
+            classNames.select
+          )}
           ref={buttonRef}
           {...mergeProps(buttonProps, focusProps)}
           {...stateProps}
@@ -186,8 +178,8 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
               ? state.selectedItem.rendered
               : props.placeholder}
           </div>
-          <Chevron className={classNames.icon()} />
-        </Box>
+          <Chevron className={classNames.icon} />
+        </button>
         {isSmallScreen ? (
           <Tray state={state}>
             <ListBox

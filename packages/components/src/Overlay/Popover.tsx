@@ -60,6 +60,7 @@ const PopoverWrapper = forwardRef(
         {!isNonModal && <Underlay {...underlayProps} />}
         <div
           {...popoverProps}
+          className="mt-0.5"
           style={{
             ...popoverProps.style,
             minWidth: props.triggerRef.current
