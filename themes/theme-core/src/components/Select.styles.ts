@@ -1,3 +1,6 @@
+import { ThemeComponent } from '@marigold/system';
+import { cva } from 'class-variance-authority';
+
 import { tv, type TVReturnType } from 'tailwind-variants';
 export const select: TVReturnType<any, any, any, any, any, any> = tv({
   slots: {
@@ -12,3 +15,9 @@ export const select: TVReturnType<any, any, any, any, any, any> = tv({
     icon: [],
   },
 });
+
+export const Select: ThemeComponent<'Select'> = {
+  container: cva(),
+  button: cva(),
+  icon: cva(),
+};

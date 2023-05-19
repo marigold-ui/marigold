@@ -4,9 +4,6 @@ export const colors = {
     body: '#511e04',
     current: 'currentColor',
   },
-  listbox: {
-    border: '#aaa',
-  },
   underlay: {
     background: 'rgba(206, 212, 218, 0.5)',
   },
