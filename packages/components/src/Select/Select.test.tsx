@@ -4,7 +4,6 @@ import { OverlayProvider } from '@react-aria/overlays';
 import {
   act,
   fireEvent,
-  render,
   renderHook,
   screen,
   within,
@@ -13,6 +12,7 @@ import userEvent from '@testing-library/user-event';
 import { cleanup } from '@testing-library/react';
 
 import { Theme, ThemeProvider, useResponsiveValue } from '@marigold/system';
+import { setup } from '../test.utils';
 
 import { Select } from './Select';
 
@@ -55,6 +55,8 @@ const theme: Theme = {
   },
 };
 
+const { render } = setup({ theme });
+
 /**
  * We need to mock `matchMedia` because JSOM does not
  * implements it.
@@ -86,18 +88,16 @@ test('renders a field (label, helptext, select)', () => {
 
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select
-          label="Label"
-          description="Description"
-          errorMessage="ERRR!"
-          data-testid="select"
-        >
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select
+        label="Label"
+        description="Description"
+        errorMessage="ERRR!"
+        data-testid="select"
+      >
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -118,13 +118,11 @@ test('renders a field (label, helptext, select)', () => {
 test('visible label is not a <label> element (for a11y)', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -138,13 +136,11 @@ test('visible label is not a <label> element (for a11y)', () => {
 test('default placeholder is rendered', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" placeholder="placeholder" data-testid="select">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" placeholder="placeholder" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -155,13 +151,11 @@ test('default placeholder is rendered', () => {
 test('custom placeholder is rendered', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" placeholder="Select me" data-testid="select">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" placeholder="Select me" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -172,13 +166,11 @@ test('custom placeholder is rendered', () => {
 test('option list opens when button is clicked', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
   const button = screen.getByTestId('select');
@@ -195,13 +187,11 @@ test('option list opens when button is clicked', () => {
 test('option list closes when button is clicked', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
   const button = screen.getByTestId('select');
@@ -224,13 +214,11 @@ test('supports to select an option and closes listbox afterwards', () => {
   ]);
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
   const button = screen.getByTestId('select');
@@ -250,13 +238,11 @@ test('supports to select an option and closes listbox afterwards', () => {
 test('selected option is displayed in button', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
   const button = screen.getByTestId('select');
@@ -276,13 +262,11 @@ test('selected option is displayed in button', () => {
 test('dismiss when clicking escape', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
   const button = screen.getByTestId('select');
@@ -297,13 +281,11 @@ test('dismiss when clicking escape', () => {
 test('allows to disable select', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" disabled>
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" disabled>
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
   const button = screen.getByTestId('select');
@@ -316,13 +298,11 @@ test('allows to disable select', () => {
 test('allows to disable options', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" disabledKeys={['two']}>
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" disabledKeys={['two']}>
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -338,13 +318,11 @@ test('allows to disable options', () => {
 test('allows select to be required', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" required>
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" required>
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -358,13 +336,11 @@ test('controlled', () => {
   const spy = jest.fn();
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" onChange={spy}>
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" onChange={spy}>
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -382,13 +358,11 @@ test('controlled', () => {
 test('supports default value via "defaultSelectedKey"', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" defaultSelectedKey="three">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" defaultSelectedKey="three">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -406,18 +380,16 @@ test('supports default value via "defaultSelectedKey"', () => {
 test('supports sections', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select">
-          <Select.Section title="Section 1">
-            <Select.Option key="one">one</Select.Option>
-            <Select.Option key="two">two</Select.Option>
-          </Select.Section>
-          <Select.Section title="Section 2">
-            <Select.Option key="three">three</Select.Option>
-            <Select.Option key="four">four</Select.Option>
-          </Select.Section>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select">
+        <Select.Section title="Section 1">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+        </Select.Section>
+        <Select.Section title="Section 2">
+          <Select.Option key="three">three</Select.Option>
+          <Select.Option key="four">four</Select.Option>
+        </Select.Section>
+      </Select>
     </OverlayProvider>
   );
 
@@ -435,19 +407,12 @@ test('supports sections', () => {
 test('supports styling classnames with variants and sizes from theme', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select
-          label="Label"
-          data-testid="select"
-          variant="violet"
-          size="small"
-        >
-          <Select.Section title="Section 1">
-            <Select.Option key="one">one</Select.Option>
-            <Select.Option key="two">two</Select.Option>
-          </Select.Section>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" variant="violet" size="small">
+        <Select.Section title="Section 1">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+        </Select.Section>
+      </Select>
     </OverlayProvider>
   );
 
@@ -460,12 +425,10 @@ test('supports styling classnames with variants and sizes from theme', () => {
 test('set width via props', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" width="200">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" width="200">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -479,14 +442,12 @@ test('forwards ref', () => {
   const ref = React.createRef<HTMLButtonElement>();
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" ref={ref}>
-          <Select.Section title="Section 1">
-            <Select.Option key="one">one</Select.Option>
-            <Select.Option key="two">two</Select.Option>
-          </Select.Section>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" ref={ref}>
+        <Select.Section title="Section 1">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+        </Select.Section>
+      </Select>
     </OverlayProvider>
   );
 
@@ -511,14 +472,12 @@ test('renders as tray', () => {
 
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" ref={ref}>
-          <Select.Section title="Section 1">
-            <Select.Option key="one">one</Select.Option>
-            <Select.Option key="two">two</Select.Option>
-          </Select.Section>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" ref={ref}>
+        <Select.Section title="Section 1">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+        </Select.Section>
+      </Select>
     </OverlayProvider>
   );
 
