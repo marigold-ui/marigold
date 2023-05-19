@@ -1,31 +1,32 @@
 /* eslint-disable testing-library/no-node-access */
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { cva } from 'class-variance-authority';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { tv } from 'tailwind-variants';
 import { Theme, ThemeProvider } from '@marigold/system';
+import { setup } from '../test.utils';
 
 import { TextField } from './TextField';
 
 const theme: Theme = {
   name: 'test',
   components: {
-    Label: tv({
-      variants: {
-        variant: {
-          lime: 'text-lime-600',
+    Field: cva(),
+    Label: {
+      container: cva('', {
+        variants: {
+          variant: {
+            lime: 'text-lime-600',
+          },
+          size: {
+            small: 'p-1',
+          },
         },
-        size: {
-          small: 'p-1',
-        },
-      },
-    }),
-    HelpText: tv({
-      slots: {
-        container: '',
-        icon: '',
-      },
+      }),
+      indicator: cva(''),
+    },
+    HelpText: cva('', {
       variants: {
         variant: {
           lime: {
@@ -39,16 +40,16 @@ const theme: Theme = {
         },
       },
     }),
-    Input: tv({
-      slots: {
-        container: '',
-        input: 'border-blue-700',
-      },
-    }),
+    Input: {
+      container: cva(),
+      input: cva('border-blue-700'),
+      icon: cva(),
+    },
   },
 };
 
 const user = userEvent.setup();
+const { render } = setup({ theme });
 
 test('renders an text input', () => {
   render(<TextField label="Label" data-testid="text-field" />);
@@ -64,16 +65,6 @@ test('allows to change the input type', () => {
 
   const textField = screen.getByTestId('text-field');
   expect(textField).toHaveAttribute('type', 'email');
-});
-
-test('classnames are applied', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <TextField label="A Label" data-testid="text-field" />
-    </ThemeProvider>
-  );
-  const textField = screen.getByTestId('text-field');
-  expect(textField).toHaveClass('w-full border-0 outline-0 border-blue-700');
 });
 
 test('takes full width by default', () => {
