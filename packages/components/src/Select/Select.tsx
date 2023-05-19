@@ -15,6 +15,8 @@ import { mergeProps, useObjectRef } from '@react-aria/utils';
 
 import {
   Box,
+  cn,
+  useClassNames,
   useComponentStylesFromTV,
   useResponsiveValue,
   useStateProps,
@@ -35,23 +37,18 @@ interface ChevronProps {
   className: string;
 }
 
-const Chevron = ({ className }: ChevronProps) => {
-  const styledChevron = tv({
-    base: ['fill-none'],
-  });
-  return (
-    <svg
-      className={twMerge(styledChevron(), className)}
-      width={16}
-      height={16}
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-    </svg>
-  );
-};
+const Chevron = ({ className }: ChevronProps) => (
+  <svg
+    className={cn('fill-none', className)}
+    width={16}
+    height={16}
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+  </svg>
+);
 
 // Props
 // ---------------
@@ -108,7 +105,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     const formatMessage = useLocalizedStringFormatter(messages);
 
     const props = {
-      isOpen: true,
+      isOpen: open,
       isDisabled: disabled,
       isRequired: required,
       validationState: error ? 'invalid' : 'valid',
@@ -138,16 +135,13 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     );
     const { focusProps, isFocusVisible } = useFocusRing();
 
-    const classNames = useComponentStylesFromTV('Select', {
-      variant,
-      size,
-      slots: ['container', 'button', 'icon'],
-    });
+    const classNames = useClassNames({ component: 'Select', variant, size });
     const stateProps = useStateProps({
       disabled,
       error,
       focusVisible: isFocusVisible,
       expanded: state.isOpen,
+      required,
     });
 
     const styledSelect = tv({
@@ -172,7 +166,6 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         errorMessageProps={errorMessageProps}
         stateProps={stateProps}
         disabled={disabled}
-        required={required}
       >
         <HiddenSelect
           state={state}

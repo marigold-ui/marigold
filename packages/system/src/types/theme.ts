@@ -47,6 +47,10 @@ export type Theme = {
       'container' | 'list' | 'option' | 'section' | 'sectionTitle',
       ComponentStyleFunction<string, string>
     >;
+    Select?: Record<
+      'container' | 'button' | 'icon',
+      ComponentStyleFunction<string, string>
+    >;
     Text?: ComponentStyleFunction<string, string>;
     TextArea?: ComponentStyleFunction<string, string>;
     Underlay?: ComponentStyleFunction<string, string>;
