@@ -35,8 +35,23 @@ const theme: Theme = {
         size: { small: 'text-sm' },
       },
     }),
-    Select: { select: cva('text-blue-500'), icon: cva() },
-    Underlay: cva(''),
+    Select: {
+      select: cva('text-blue-500', {
+        variants: {
+          variant: { violet: 'text-violet-500' },
+          size: { small: 'text-sm' },
+        },
+      }),
+      icon: cva(),
+    },
+    Underlay: cva(),
+    ListBox: {
+      container: cva(),
+      list: cva(),
+      option: cva(),
+      section: cva(),
+      sectionTitle: cva(),
+    },
   },
 };
 
@@ -385,7 +400,7 @@ test('supports default value via "defaultSelectedKey"', () => {
   const options = screen.getByRole('listbox');
   const three = within(options).getByText('three');
 
-  expect(three).toHaveClass(`selected:bg-lime-600`);
+  expect(three).toHaveAttribute('aria-selected', 'true');
 });
 
 test('supports sections', () => {
@@ -425,7 +440,7 @@ test('supports styling classnames with variants and sizes from theme', () => {
           label="Label"
           data-testid="select"
           variant="violet"
-          size="medium"
+          size="small"
         >
           <Select.Section title="Section 1">
             <Select.Option key="one">one</Select.Option>
@@ -437,16 +452,9 @@ test('supports styling classnames with variants and sizes from theme', () => {
   );
 
   const button = screen.getByTestId('select');
-  expect(button).toHaveClass(
-    `flex relative items-center justify-between w-full hover:border-lime-500 disabled:text-disabled-text text-violet p-2`
-  );
 
-  fireEvent.click(button);
-
-  const options = screen.getByRole('listbox');
-
-  const one = within(options).getByText('one');
-  expect(one).toHaveClass(`text-violet-300`);
+  expect(button.className).toContain('text-violet-500');
+  expect(button.className).toContain('text-sm');
 });
 
 test('set width via props', () => {
