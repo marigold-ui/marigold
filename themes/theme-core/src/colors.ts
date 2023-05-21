@@ -81,6 +81,22 @@ export const colors = {
       },
     },
   },
+  switch: {
+    base: {},
+    track: {
+      bg: '#f3f3f3',
+      checked: '#ae440a',
+      shadow: '#cccccc',
+      primary: '#fa8005',
+      outline: {
+        focus: '#3ab3d5',
+      },
+    },
+    thumb: {
+      shadow: 'rgba(0, 0, 0, 0.25)',
+      disabled: '#f3f3f3',
+    },
+  },
   // Status colors
   error: {
     text: '#f33',
