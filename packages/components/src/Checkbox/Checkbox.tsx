@@ -5,11 +5,9 @@ import { useHover } from '@react-aria/interactions';
 import { useObjectRef } from '@react-aria/utils';
 import { useToggleState } from '@react-stately/toggle';
 import { AriaCheckboxProps } from '@react-types/checkbox';
-import { Box, StateAttrProps, useStateProps } from '@marigold/system';
+import { StateAttrProps, useStateProps } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 import { useCheckboxGroupContext } from './CheckboxGroup';
-import { tv } from 'tailwind-variants';
-import { twMerge } from 'tailwind-merge';
 import { useClassNames, cn } from '@marigold/system';
 
 // SVG Icon
@@ -41,23 +39,20 @@ interface IconProps extends StateAttrProps {
 }
 
 const Icon = ({ className, checked, indeterminate, ...props }: IconProps) => {
-  const styledIcon = tv({
-    base: [
-      'flex items-center justify-center grow-0 shrink-0 basis-4',
-      'w-4 h-4 p-px',
-      'bg-white',
-      'border border-solid border-black rounded-[3px]',
-    ],
-  });
-
   return (
-    <Box
+    <div
       aria-hidden="true"
-      className={twMerge(styledIcon(), className)}
+      className={cn(
+        'flex shrink-0 grow-0 basis-4 items-center justify-center',
+        'h-4 w-4 p-px',
+        'bg-white',
+        'rounded-[3px] border border-solid border-black',
+        className
+      )}
       {...props}
     >
       {indeterminate ? <IndeterminateMark /> : checked ? <CheckMark /> : null}
-    </Box>
+    </div>
   );
 };
 
@@ -169,8 +164,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     });
 
     return (
-      <Box
-        as="label"
+      <label
         className={cn(
           'relative flex items-center gap-[1ch]',
           classNames.container
@@ -178,8 +172,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         {...hoverProps}
         {...stateProps}
       >
-        <Box
-          as="input"
+        <input
           ref={inputRef}
           className={`z-1 absolute left-0 top-0 h-full w-full opacity-[0.0001] ${
             inputProps.disabled ? 'cursor-not-allowed' : 'cursor-pointer'
@@ -194,11 +187,11 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           {...stateProps}
         />
         {props.children && (
-          <Box className={classNames.label} {...stateProps}>
+          <div className={classNames.label} {...stateProps}>
             {props.children}
-          </Box>
+          </div>
         )}
-      </Box>
+      </label>
     );
   }
 );
