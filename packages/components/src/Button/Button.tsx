@@ -77,7 +77,6 @@ export const Button = forwardRef(
       hover: isHovered,
     });
 
-    console.log(classNames);
     return (
       <Box
         {...mergeProps(buttonProps, focusProps, hoverProps, props)}

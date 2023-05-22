@@ -12,6 +12,7 @@ export interface MenuContextProps
   autoFocus?: boolean | FocusStrategy;
   open?: boolean;
   onClose?: () => void;
+  className?: any;
 }
 
 export const MenuContext = createContext<MenuContextProps>({});
