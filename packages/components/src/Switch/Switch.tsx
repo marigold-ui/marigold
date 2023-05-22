@@ -99,7 +99,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
         >
           <div
             className={cn(
-              'transition-[all 0.1s cubic-bezier(.7, 0, .3, 1)] checked:translate-x-[calc(47px - 100%)] absolute left-0 top-0 block translate-x-[1px] rounded-full will-change-transform',
+              'cubic-bezier(.7, 0, .3, 1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-0 block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform',
               'group-selected/switch:translate-x-[calc(47px_-_100%)]',
               classNames.thumb
             )}
