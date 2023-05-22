@@ -11,7 +11,7 @@ const meta = {
       control: {
         type: 'text',
       },
-      description: '?',
+      description: 'Variants of the link.',
     },
     href: {
       control: {
