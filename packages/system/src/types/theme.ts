@@ -43,6 +43,7 @@ export type Theme = {
       'container' | 'indicator',
       ComponentStyleFunction<string, string>
     >;
+    Link?: ComponentStyleFunction<string, string>;
     ListBox?: Record<
       'container' | 'list' | 'option' | 'section' | 'sectionTitle',
       ComponentStyleFunction<string, string>
