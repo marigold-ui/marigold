@@ -18,7 +18,7 @@ export const Switch: ThemeComponent<'Switch'> = {
     {
       variants: {
         size: {
-          large: 'top-2 w-[44] h-[44] checked:translate-x-[calc(95px - 44px)]',
+          large: 'top-2 w-[44] h-[44] checked:translate-x-[calc(95px_-_44px)]',
         },
       },
     }

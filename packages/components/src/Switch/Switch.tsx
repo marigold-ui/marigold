@@ -75,10 +75,8 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
     //   { parts: ['container', 'label', 'track', 'thumb'] }
     // );
     const classNames = useClassNames({ component: 'Switch', size, variant });
-    console.log('classNames', classNames);
     return (
-      <Box
-        as="label"
+      <label
         className={cn('relative flex items-center justify-between gap-[1ch]')}
         style={createVar({ fieldWidth: width })}
 
@@ -92,8 +90,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
         // }}
         // css={styles.container}
       >
-        <Box
-          as="input"
+        <input
           ref={inputRef}
           className="absolute left-0 top-0 z-[1] h-full w-full opacity-[0.0001] disabled:cursor-not-allowed"
           // css={{
@@ -110,13 +107,14 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           {...focusProps}
         />
         {props.children && (
-          <Box
-          // css={styles.label}
+          <div
+            className={classNames.label}
+            // css={styles.label}
           >
             {props.children}
-          </Box>
+          </div>
         )}
-        <Box
+        <div
           className={cn(
             'relative h-[24px] w-[48px] flex-shrink-0 flex-grow-0 basis-[48] rounded-[20] bg-[#dee2e6]',
             classNames.track
@@ -132,7 +130,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           // css={styles.track}
           {...stateProps}
         >
-          <Box
+          <div
             className={cn(
               'transition-[all 0.1s cubic-bezier(.7, 0, .3, 1)] checked: translate-x-[calc(47px - 100%)] absolute left-0 top-0 block h-[22px] w-[22px] translate-x-[1px] rounded-[9999] bg-white will-change-transform',
               classNames.thumb
@@ -161,8 +159,8 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
 
             {...stateProps}
           />
-        </Box>
-      </Box>
+        </div>
+      </label>
     );
   }
 );
