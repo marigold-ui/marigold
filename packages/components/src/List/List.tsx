@@ -5,7 +5,6 @@ import { HtmlProps } from '@marigold/types';
 
 import { ListContext } from './Context';
 import { ListItem } from './ListItem';
-// ['ul', 'ol', 'item']
 
 export interface ListProps extends HtmlProps<'ul'> {
   variant?: string;

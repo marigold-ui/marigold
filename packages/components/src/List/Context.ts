@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 
 export interface ListContextProps {
-  classNames: any;
+  classNames: string;
 }
 
 export const ListContext = createContext<ListContextProps>({} as any);
