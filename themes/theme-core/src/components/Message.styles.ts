@@ -14,7 +14,7 @@ export const Message: ThemeComponent<'Message'> = {
       },
     }
   ),
-  title: cva('leading-8 font-bold', {
+  title: cva('leading-8 font-bold col-span-full', {
     variants: {
       variant: {
         warning: 'text-warning-text',
@@ -23,8 +23,7 @@ export const Message: ThemeComponent<'Message'> = {
       },
     },
   }),
-  // todo: icon with grid
-  icon: cva('block w-5 h-5'),
+  icon: cva(''),
   content: cva('leading-4', {
     variants: {
       variant: {

@@ -11,7 +11,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { cleanup } from '@testing-library/react';
 
-import { Theme, ThemeProvider, useResponsiveValue } from '@marigold/system';
+import { Theme, useResponsiveValue } from '@marigold/system';
 import { setup } from '../test.utils';
 
 import { Select } from './Select';

@@ -1,122 +1,144 @@
 import React from 'react';
-import { render, screen, within } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { screen } from '@testing-library/react';
+import { Theme, ThemeProvider } from '@marigold/system';
 import { Message } from './Message';
 
-const theme = {
-  colors: {
-    primary: 'hotpink',
-  },
-  spaces: {
-    small: '10px',
-    medium: '20px',
-  },
-  fonts: {
-    body: 'Oswald',
-  },
+import { cva } from 'class-variance-authority';
+import { setup } from '../test.utils';
+
+const theme: Theme = {
+  name: 'test',
   components: {
     Message: {
-      base: {
-        container: {
-          color: 'primary',
+      container: cva('text-blue-500', {
+        variants: {
+          variant: {
+            info: 'items-start',
+            warning: 'text-orange-700',
+            error: 'text-error-text',
+          },
+          size: { small: 'p-1' },
         },
-      },
-      variant: {
-        info: {
-          container: {
-            alignItems: 'center',
+      }),
+      content: cva('', {
+        variants: {
+          variant: {
+            info: 'text-black',
+            warning: 'items-end',
+            error: 'items-start',
           },
-          content: {
-            color: 'black',
-          },
+          size: { small: 'p-1' },
         },
-        warning: {
-          container: {
-            color: 'orange',
+      }),
+      title: cva('', {
+        variants: {
+          variant: {
+            warning: 'font-bold',
           },
-          content: {
-            alignItems: 'right',
-          },
-          title: {
-            fontFamily: 'body',
-          },
+          size: { small: 'p-1' },
         },
-        error: {
-          container: {
-            color: 'red',
-          },
-          content: {
-            alignItems: 'left',
-          },
+      }),
+      icon: cva('', {
+        variants: {
+          size: { small: 'p-1' },
         },
-      },
-      size: {
-        small: {
-          p: 'small',
-        },
-      },
+      }),
     },
   },
 };
 
+const { render } = setup({ theme });
+
 test('message container supports base styling and themeSection', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Message data-testid="messages" messageTitle="Default">
-        Default
-      </Message>
-    </ThemeProvider>
+    <Message data-testid="messages" messageTitle="Default">
+      Default
+    </Message>
   );
 
   const message = screen.getByTestId('messages');
-  expect(message).toHaveStyle(`color: ${theme.colors.primary}`);
+  expect(message).toHaveClass(`text-blue-500`);
 });
 
 test('accepts a variant with parts and an icon', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Message data-testid="messages" messageTitle="info" variant="warning">
-        Danger
-      </Message>
-    </ThemeProvider>
+    <Message data-testid="messages" messageTitle="info" variant="warning">
+      Danger
+    </Message>
   );
   const container = screen.getByTestId('messages');
   const title = screen.getByText('info');
   const content = screen.getByText('Danger');
-  const icon = within(container).getByRole('presentation');
+  // eslint-disable-next-line testing-library/no-node-access
+  const icon = container.firstChild;
 
-  expect(container).toHaveStyle(`color: orange`);
-  expect(content).toHaveStyle(`align-items: right`);
-  expect(title).toHaveStyle(`font-family: Oswald`);
+  expect(container).toMatchInlineSnapshot(`
+    <div
+      class="grid grid-cols-[min-content_1fr] grid-rows-2 text-orange-700"
+      data-testid="messages"
+    >
+      <div
+        class="hidden"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M19.2 3H4.8C3.81 3 3.009 3.81 3.009 4.8L3 21L6.6 17.4H19.2C20.19 17.4 21 16.59 21 15.6V4.8C21 3.81 20.19 3 19.2 3ZM12.9 13.8H11.1V12H12.9V13.8ZM12.9 10.2001H11.1V6.60008H12.9V10.2001Z"
+          />
+        </svg>
+      </div>
+      <div
+        class="font-bold"
+      >
+        info
+      </div>
+      <div
+        class="col-span-full items-end"
+      >
+        Danger
+      </div>
+    </div>
+  `);
+  expect(content).toMatchInlineSnapshot(`
+    <div
+      class="col-span-full items-end"
+    >
+      Danger
+    </div>
+  `);
+  expect(title).toMatchInlineSnapshot(`
+    <div
+      class="font-bold"
+    >
+      info
+    </div>
+  `);
 
   expect(icon).toBeInTheDocument();
 });
 
 test('accepts error variant', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Message data-testid="messages" messageTitle="error" variant="error">
-        Error
-      </Message>
-    </ThemeProvider>
+    <Message data-testid="messages" messageTitle="error" variant="error">
+      Error
+    </Message>
   );
 
   const content = screen.getByText('Error');
 
-  expect(content).toHaveStyle(`alignItems: left`);
+  expect(content).toHaveClass(`items-start`);
 });
 
 test('accepts size', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Message data-testid="messages" messageTitle="error" size="small">
-        error
-      </Message>
-    </ThemeProvider>
+    <Message data-testid="messages" messageTitle="error" size="small">
+      error
+    </Message>
   );
   const message = screen.getByTestId(/messages/);
 
-  expect(message).toHaveStyle(`padding: ${theme.spaces.small}px`);
+  expect(message).toHaveClass(`p-1`);
 });
 
 test('renders correct HTML element', () => {
