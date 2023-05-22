@@ -73,7 +73,7 @@ test('supports base styling', () => {
     `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl border-input-border border bg-white shadow-[inset_0px_0px_1px checked:bg-switch-track-primary checked:shadow-switch-track-checked disabled:opacity-[0.5] disabled:shadow-switch-track-shadow disabled:bg-switch-track-shadow focus:outline-none focus:outline-switch-track-outline-focus"`
   );
   expect(thumb.className).toMatchInlineSnapshot(
-    `"transition-all duration-100 ease-in-out cubic-bezier(.7, 0, .3, 1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-0 block translate-x-[1px] rounded-full will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-root-body h-4 w-4"`
+    `"cubic-bezier(.7, 0, .3, 1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-0 block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-root-body h-4 w-4"`
   );
 });
 
@@ -86,7 +86,7 @@ test('supports a custom variant', () => {
     `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl border-input-border border bg-white shadow-[inset_0px_0px_1px checked:bg-switch-track-primary checked:shadow-switch-track-checked disabled:opacity-[0.5] disabled:shadow-switch-track-shadow disabled:bg-switch-track-shadow focus:outline-none focus:outline-switch-track-outline-focus"`
   );
   expect(thumb.className).toMatchInlineSnapshot(
-    `"transition-all duration-100 ease-in-out cubic-bezier(.7, 0, .3, 1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-0 block translate-x-[1px] rounded-full will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-root-body h-4 w-4"`
+    `"cubic-bezier(.7, 0, .3, 1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-0 block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-root-body h-4 w-4"`
   );
 });
 
@@ -122,7 +122,7 @@ test('supports disabled prop', () => {
     `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl border-input-border border bg-white shadow-[inset_0px_0px_1px checked:bg-switch-track-primary checked:shadow-switch-track-checked disabled:opacity-[0.5] disabled:shadow-switch-track-shadow disabled:bg-switch-track-shadow focus:outline-none focus:outline-switch-track-outline-focus"`
   );
   expect(thumb.className).toMatchInlineSnapshot(
-    `"transition-all duration-100 ease-in-out cubic-bezier(.7, 0, .3, 1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-0 block translate-x-[1px] rounded-full will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-root-body h-4 w-4"`
+    `"cubic-bezier(.7, 0, .3, 1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-0 block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-root-body h-4 w-4"`
   );
 });
 
