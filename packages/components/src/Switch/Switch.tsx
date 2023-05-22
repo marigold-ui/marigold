@@ -8,8 +8,6 @@ import { AriaSwitchProps } from '@react-types/switch';
 import { HtmlProps } from '@marigold/types';
 import { cn, createVar, useStateProps, useClassNames } from '@marigold/system';
 
-import { Box } from '../Box';
-
 // Theme Extension
 // ---------------
 
@@ -69,11 +67,6 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
       focus: isFocusVisible,
     });
 
-    // const styles = useComponentStyles(
-    //   'Switch',
-    //   { variant, size },
-    //   { parts: ['container', 'label', 'track', 'thumb'] }
-    // );
     const classNames = useClassNames({ component: 'Switch', size, variant });
     return (
       <label
@@ -83,30 +76,10 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
         )}
         style={createVar({ fieldWidth: width })}
         {...stateProps}
-
-        // __baseCSS={{
-        //   display: 'flex',
-        //   alignItems: 'center',
-        //   justifyContent: 'space-between',
-        //   gap: '1ch',
-        //   position: 'relative',
-        //   width,
-        // }}
-        // css={styles.container}
       >
         <input
           ref={inputRef}
           className="absolute left-0 top-0 z-[1] h-full w-full opacity-[0.0001] disabled:cursor-not-allowed"
-          // css={{
-          //   position: 'absolute',
-          //   width: '100%',
-          //   height: '100%',
-          //   top: 0,
-          //   left: 0,
-          //   zIndex: 1,
-          //   opacity: 0.0001,
-          //   cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
-          // }}
           {...inputProps}
           {...focusProps}
         />
@@ -123,15 +96,6 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
             'relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl',
             classNames.track
           )}
-          // __baseCSS={{
-          //   position: 'relative',
-          //   width: 48,
-          //   height: 24,
-          //   bg: '#dee2e6',
-          //   borderRadius: 20,
-          //   flex: '0 0 48px',
-          // }}
-          // css={styles.track}
         >
           <div
             className={cn(
@@ -139,28 +103,6 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
               'group-selected/switch:translate-x-[calc(47px_-_100%)]',
               classNames.thumb
             )}
-            // __baseCSS={{
-            //   display: 'block',
-            //   position: 'absolute',
-            //   top: 1,
-            //   left: 0,
-
-            //   willChange: 'transform',
-            //   transform: 'translateX(1px)',
-            //   transition: 'all 0.1s cubic-bezier(.7, 0, .3, 1)',
-
-            //   height: 22,
-            //   width: 22,
-
-            //   borderRadius: 9999,
-            //   bg: '#fff',
-
-            //   '&:checked': {
-            //     transform: 'translateX(calc(47px - 100%))',
-            //   },
-            // }}
-            // css={styles.thumb}
-
             {...stateProps}
           />
         </div>
