@@ -63,7 +63,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
     const { inputProps } = useSwitch(props, state, inputRef);
     const { isFocusVisible, focusProps } = useFocusRing();
     const stateProps = useStateProps({
-      checked: state.isSelected,
+      selected: state.isSelected,
       disabled: disabled,
       readOnly: readOnly,
       focus: isFocusVisible,
@@ -77,8 +77,12 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
     const classNames = useClassNames({ component: 'Switch', size, variant });
     return (
       <label
-        className={cn('relative flex items-center justify-between gap-[1ch]')}
+        className={cn(
+          'group/switch',
+          'relative flex items-center justify-between gap-[1ch]'
+        )}
         style={createVar({ fieldWidth: width })}
+        {...stateProps}
 
         // __baseCSS={{
         //   display: 'flex',
@@ -128,11 +132,11 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           //   flex: '0 0 48px',
           // }}
           // css={styles.track}
-          {...stateProps}
         >
           <div
             className={cn(
               'transition-[all 0.1s cubic-bezier(.7, 0, .3, 1)] checked:translate-x-[calc(47px - 100%)] absolute left-0 top-0 block translate-x-[1px] rounded-full will-change-transform',
+              'group-selected/switch:translate-x-[calc(47px_-_100%)]',
               classNames.thumb
             )}
             // __baseCSS={{
