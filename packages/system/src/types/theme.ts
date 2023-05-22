@@ -36,7 +36,7 @@ export type Theme = {
     HelpText?: ComponentStyleFunction<string, string>;
     Image?: ComponentStyleFunction<string, string>;
     Input?: Record<
-      'container' | 'input' | 'icon',
+      'input' | 'icon' | 'action',
       ComponentStyleFunction<string, string>
     >;
     Label?: Record<

@@ -44,7 +44,7 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
     });
 
     return (
-      <div className={cn('relative flex items-center', classNames.container)}>
+      <div className="relative flex items-center">
         {icon && (
           <div
             data-icon=""
@@ -60,15 +60,20 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
         <input
           {...props}
           className={cn(
+            'flex-1',
             'disabled:cursor-not-allowed',
-            // Make the input disappear
-            'flex-1 appearance-none border-none bg-transparent outline-none',
             classNames.input
           )}
           ref={ref}
           type={type}
         />
-        {action ? action : null}
+        {action && (
+          <div
+            className={cn('absolute bottom-0 right-0 top-0', classNames.action)}
+          >
+            {action}
+          </div>
+        )}
       </div>
     );
   }
