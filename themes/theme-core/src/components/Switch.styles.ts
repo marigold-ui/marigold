@@ -4,7 +4,12 @@ import { cva } from 'class-variance-authority';
 export const Switch: ThemeComponent<'Switch'> = {
   container: cva(),
   track: cva(
-    'bg-switch-track-bg shadow-[inset_0px_0px_1px] shadow-switch-track-shadow checked:bg-switch-track-primary checked:shadow-switch-track-checked disabled:opacity-[0.5] disabled:shadow-switch-track-shadow disabled:bg-switch-track-shadow focus:outline-none focus:outline-offset[3] focus:outline-switch-track-outline-focus',
+    [
+      'border-input-border border bg-white shadow-[inset_0px_0px_1px',
+      'checked:bg-switch-track-primary checked:shadow-switch-track-checked',
+      'disabled:opacity-[0.5] disabled:shadow-switch-track-shadow disabled:bg-switch-track-shadow focus:outline-none focus:outline-offset[3]',
+      'focus:outline-switch-track-outline-focus',
+    ],
     {
       variants: {
         size: {
@@ -14,7 +19,9 @@ export const Switch: ThemeComponent<'Switch'> = {
     }
   ),
   thumb: cva(
-    'shadow-[inset_1px_1px_4px] shadow-switch-thumb-shadow disabled:bg-switch-thumb-disabled',
+    ['bg-root-body', 'h-4 w-4'],
+
+    // 'shadow-[inset_1px_1px_4px] shadow-switch-thumb-shadow disabled:bg-switch-thumb-disabled',
     {
       variants: {
         size: {

@@ -116,7 +116,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
         )}
         <div
           className={cn(
-            'relative h-[24px] w-[48px] flex-shrink-0 flex-grow-0 basis-[48] rounded-[20] bg-[#dee2e6]',
+            'relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl',
             classNames.track
           )}
           // __baseCSS={{
@@ -132,7 +132,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
         >
           <div
             className={cn(
-              'transition-[all 0.1s cubic-bezier(.7, 0, .3, 1)] checked: translate-x-[calc(47px - 100%)] absolute left-0 top-0 block h-[22px] w-[22px] translate-x-[1px] rounded-[9999] bg-white will-change-transform',
+              'transition-[all 0.1s cubic-bezier(.7, 0, .3, 1)] checked:translate-x-[calc(47px - 100%)] absolute left-0 top-0 block translate-x-[1px] rounded-full will-change-transform',
               classNames.thumb
             )}
             // __baseCSS={{
