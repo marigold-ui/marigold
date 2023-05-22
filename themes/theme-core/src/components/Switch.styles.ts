@@ -19,7 +19,7 @@ export const Switch: ThemeComponent<'Switch'> = {
     }
   ),
   thumb: cva(
-    ['bg-root-body', 'h-4 w-4'],
+    ['bg-root-body', 'h-5 w-5'],
 
     // 'shadow-[inset_1px_1px_4px] shadow-switch-thumb-shadow disabled:bg-switch-thumb-disabled',
     {
