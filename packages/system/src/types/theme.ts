@@ -27,6 +27,7 @@ export type Theme = {
     Badge?: ComponentStyleFunction<string, string>;
     Body?: ComponentStyleFunction<string, string>;
     Button?: ComponentStyleFunction<string, string>;
+    Card?: ComponentStyleFunction<string, string>;
     Divider?: ComponentStyleFunction<string, string>;
     Field?: ComponentStyleFunction<string, string>;
     Footer?: ComponentStyleFunction<string, string>;
@@ -42,11 +43,17 @@ export type Theme = {
       'container' | 'indicator',
       ComponentStyleFunction<string, string>
     >;
+    ListBox?: Record<
+      'container' | 'list' | 'option' | 'section' | 'sectionTitle',
+      ComponentStyleFunction<string, string>
+    >;
+    Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
     Message?: Record<
       'container' | 'icon' | 'title' | 'content',
       ComponentStyleFunction<string, string>
     >;
     Text?: ComponentStyleFunction<string, string>;
+    TextArea?: ComponentStyleFunction<string, string>;
     Underlay?: ComponentStyleFunction<string, string>;
   };
 };

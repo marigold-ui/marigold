@@ -24,6 +24,9 @@ export const preset = createPreset('core', {
       transitionTimingFunction: {
         'ease-out': 'ease-out',
       },
+      backgroundImage: {
+        highlight: 'linear-gradient(#3875d7 20%, #2a62bc 90%)',
+      },
     },
   },
 });

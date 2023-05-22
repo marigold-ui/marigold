@@ -14,8 +14,8 @@ import type { AriaSelectProps } from '@react-types/select';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 
 import {
-  Box,
-  useComponentStylesFromTV,
+  cn,
+  useClassNames,
   useResponsiveValue,
   useStateProps,
 } from '@marigold/system';
@@ -35,23 +35,19 @@ interface ChevronProps {
   className: string;
 }
 
-const Chevron = ({ className }: ChevronProps) => {
-  const styledChevron = tv({
-    base: ['fill-none'],
-  });
-  return (
-    <svg
-      className={twMerge(styledChevron(), className)}
-      width={16}
-      height={16}
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-    </svg>
-  );
-};
+const Chevron = ({ className }: ChevronProps) => (
+  <svg
+    className={className}
+    width={16}
+    height={16}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+  </svg>
+);
 
 // Props
 // ---------------
@@ -108,7 +104,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     const formatMessage = useLocalizedStringFormatter(messages);
 
     const props = {
-      isOpen: true,
+      isOpen: open,
       isDisabled: disabled,
       isRequired: required,
       validationState: error ? 'invalid' : 'valid',
@@ -117,12 +113,10 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       ...rest,
     } as const;
 
-    const state = useSelectState(props);
     const buttonRef = useObjectRef(ref);
     const listboxRef = useRef(null);
 
-    const isSmallScreen = useResponsiveValue([true, false, false], 2);
-
+    const state = useSelectState(props);
     const {
       labelProps,
       triggerProps,
@@ -138,24 +132,14 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     );
     const { focusProps, isFocusVisible } = useFocusRing();
 
-    const classNames = useComponentStylesFromTV('Select', {
-      variant,
-      size,
-      slots: ['container', 'button', 'icon'],
-    });
+    const classNames = useClassNames({ component: 'Select', variant, size });
+    const isSmallScreen = useResponsiveValue([true, false, false], 2);
     const stateProps = useStateProps({
       disabled,
       error,
       focusVisible: isFocusVisible,
       expanded: state.isOpen,
-    });
-
-    const styledSelect = tv({
-      slots: {
-        container: [''],
-        button: ['flex relative items-center justify-between w-full'],
-        icon: [''],
-      },
+      required,
     });
 
     return (
@@ -172,7 +156,6 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         errorMessageProps={errorMessageProps}
         stateProps={stateProps}
         disabled={disabled}
-        required={required}
       >
         <HiddenSelect
           state={state}
@@ -181,9 +164,11 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           name={props.name}
           isDisabled={disabled}
         />
-        <Box
-          as="button"
-          className={twMerge(styledSelect().button(), classNames.button())}
+        <button
+          className={cn(
+            'flex w-full items-center justify-between gap-1',
+            classNames.select
+          )}
           ref={buttonRef}
           {...mergeProps(buttonProps, focusProps)}
           {...stateProps}
@@ -193,8 +178,8 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
               ? state.selectedItem.rendered
               : props.placeholder}
           </div>
-          <Chevron className={classNames.icon()} />
-        </Box>
+          <Chevron className={classNames.icon} />
+        </button>
         {isSmallScreen ? (
           <Tray state={state}>
             <ListBox
