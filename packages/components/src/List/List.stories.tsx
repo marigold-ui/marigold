@@ -27,9 +27,9 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <List {...args}>
-      <List.Item>Käse</List.Item>
-      <List.Item>Milch</List.Item>
-      <List.Item>Brot</List.Item>
+      <List.Item>Cheese</List.Item>
+      <List.Item>Milk</List.Item>
+      <List.Item>Bread</List.Item>
     </List>
   ),
 };
@@ -37,9 +37,9 @@ export const Basic: Story = {
 export const Ordered: Story = {
   render: args => (
     <List as="ol" {...args}>
-      <List.Item>Käse</List.Item>
-      <List.Item>Milch</List.Item>
-      <List.Item>Brot</List.Item>
+      <List.Item>Cheese</List.Item>
+      <List.Item>Milk</List.Item>
+      <List.Item>Bread</List.Item>
     </List>
   ),
 };
