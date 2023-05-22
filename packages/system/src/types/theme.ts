@@ -48,6 +48,10 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
+    NumberField?: Record<
+      'label' | 'helpText' | 'input' | 'numberField' | 'group',
+      ComponentStyleFunction<string, string>
+    >;
     Text?: ComponentStyleFunction<string, string>;
     TextArea?: ComponentStyleFunction<string, string>;
     Underlay?: ComponentStyleFunction<string, string>;

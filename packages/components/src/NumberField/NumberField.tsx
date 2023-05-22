@@ -8,21 +8,14 @@ import { useNumberFieldState } from '@react-stately/numberfield';
 import { AriaNumberFieldProps } from '@react-types/numberfield';
 
 import { HtmlProps } from '@marigold/types';
-import {
-  Box,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-  useStateProps,
-} from '@marigold/system';
+import { useStateProps } from '@marigold/system';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase';
-import { Input } from '../Input';
 import { StepButton } from './StepButton';
+import { Input } from '../Input';
 
 // Theme Extension
 // ---------------
-export interface NumberFieldThemeExtension
-  extends ThemeExtensionsWithParts<'NumberField', ['group', 'stepper']> {}
 
 // Props
 // ---------------
@@ -101,12 +94,6 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
       isTextInput: true,
       autoFocus: props.autoFocus,
     });
-
-    const styles = useComponentStyles(
-      'NumberField',
-      { variant, size },
-      { parts: ['group', 'stepper'] }
-    );
     const stateProps = useStateProps({
       hover: isHovered,
       focus: isFocused,
@@ -130,26 +117,15 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
         size={size}
         width={width}
       >
-        <Box
+        <div
           data-group
-          __baseCSS={{
-            display: 'flex',
-            alignItems: 'stretch',
-            '> input': {
-              flex: 1,
-              minWidth: 0, // Override browser default
-            },
-          }}
-          css={styles.group}
+          className="[>input]:flex-1 [>input]:min-w-0 flex items-stretch"
+          data-testid="number-field-container"
           {...mergeProps(groupProps, focusProps, hoverProps)}
           {...stateProps}
         >
           {showStepper && (
-            <StepButton
-              direction="down"
-              css={styles.stepper}
-              {...decrementButtonProps}
-            />
+            <StepButton direction="down" {...decrementButtonProps} />
           )}
           <Input
             ref={inputRef}
@@ -163,13 +139,9 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
             {...stateProps}
           />
           {showStepper && (
-            <StepButton
-              direction="up"
-              css={styles.stepper}
-              {...incrementButtonProps}
-            />
+            <StepButton direction="up" {...incrementButtonProps} />
           )}
-        </Box>
+        </div>
       </FieldBase>
     );
   }
