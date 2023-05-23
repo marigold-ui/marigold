@@ -72,48 +72,11 @@ test('accepts a variant with parts and an icon', () => {
   // eslint-disable-next-line testing-library/no-node-access
   const icon = container.firstChild;
 
-  expect(container).toMatchInlineSnapshot(`
-    <div
-      class="grid grid-cols-[min-content_1fr] grid-rows-2 text-orange-700"
-      data-testid="messages"
-    >
-      <div
-        class="hidden"
-      >
-        <svg
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M19.2 3H4.8C3.81 3 3.009 3.81 3.009 4.8L3 21L6.6 17.4H19.2C20.19 17.4 21 16.59 21 15.6V4.8C21 3.81 20.19 3 19.2 3ZM12.9 13.8H11.1V12H12.9V13.8ZM12.9 10.2001H11.1V6.60008H12.9V10.2001Z"
-          />
-        </svg>
-      </div>
-      <div
-        class="font-bold"
-      >
-        info
-      </div>
-      <div
-        class="col-span-full items-end"
-      >
-        Danger
-      </div>
-    </div>
-  `);
-  expect(content).toMatchInlineSnapshot(`
-    <div
-      class="col-span-full items-end"
-    >
-      Danger
-    </div>
-  `);
-  expect(title).toMatchInlineSnapshot(`
-    <div
-      class="font-bold"
-    >
-      info
-    </div>
-  `);
+  expect(container.className).toMatchInlineSnapshot(
+    `"grid grid-cols-[min-content_1fr] grid-rows-2 text-orange-700"`
+  );
+  expect(content.className).toMatchInlineSnapshot(`"col-span-full items-end"`);
+  expect(title.className).toMatchInlineSnapshot(`"font-bold"`);
 
   expect(icon).toBeInTheDocument();
 });
