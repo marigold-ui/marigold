@@ -56,6 +56,18 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
         })
       : null;
 
+    const inputAction =
+      action && !props.readOnly
+        ? cloneElement(action, {
+            className: cn(
+              'absolute bottom-0 right-0 top-0',
+              classNames.icon,
+              action.props.className
+            ),
+            ...action.props,
+          })
+        : null;
+
     return (
       <div className="relative flex items-center">
         {inputIcon}
@@ -69,13 +81,7 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
           ref={ref}
           type={type}
         />
-        {action && !props.readOnly && (
-          <div
-            className={cn('absolute bottom-0 right-0 top-0', classNames.action)}
-          >
-            {action}
-          </div>
-        )}
+        {inputAction}
       </div>
     );
   }

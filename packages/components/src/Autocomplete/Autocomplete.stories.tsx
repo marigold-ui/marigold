@@ -9,13 +9,17 @@ import { useAsyncList } from '@react-stately/data';
 
 const meta = {
   title: 'Components/Autocomplete',
+  component: Autocomplete,
   argTypes: {
     label: {
       control: {
         type: 'text',
       },
-      description: 'Set the label',
-      defaultValue: 'Select for favorite:',
+      description: 'The label',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Select your favorite:' },
+      },
     },
     description: {
       control: {
@@ -58,27 +62,29 @@ const meta = {
       description: 'The width of the field',
     },
   },
-} satisfies Meta;
+} satisfies Meta<typeof Autocomplete>;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Basic: StoryObj<typeof Autocomplete> = {
-  render: args => (
-    <Container size="large">
-      <Autocomplete {...args}>
-        <Autocomplete.Item key="Harry Potter">Harry Potter</Autocomplete.Item>
-        <Autocomplete.Item key="Lord of the Rings">
-          Lord of the Rings
-        </Autocomplete.Item>
-        <Autocomplete.Item key="Star Wars">Star Wars</Autocomplete.Item>
-        <Autocomplete.Item key="Star Trek">Star Trek</Autocomplete.Item>
-        <Autocomplete.Item key="Firefly">Firefly</Autocomplete.Item>
-      </Autocomplete>
-    </Container>
-  ),
+export const Basic: Story = {
+  render: args =>
+    console.log(args) || (
+      <Container size="large">
+        <Autocomplete {...args}>
+          <Autocomplete.Item key="Harry Potter">Harry Potter</Autocomplete.Item>
+          <Autocomplete.Item key="Lord of the Rings">
+            Lord of the Rings
+          </Autocomplete.Item>
+          <Autocomplete.Item key="Star Wars">Star Wars</Autocomplete.Item>
+          <Autocomplete.Item key="Star Trek">Star Trek</Autocomplete.Item>
+          <Autocomplete.Item key="Firefly">Firefly</Autocomplete.Item>
+        </Autocomplete>
+      </Container>
+    ),
 };
 
-export const Controlled: StoryObj<typeof Autocomplete> = {
+export const Controlled: Story = {
   render: args => {
     const [submitted, setSubmitted] = useState<[Key | null, string | null]>([
       '',
@@ -115,7 +121,7 @@ export const Controlled: StoryObj<typeof Autocomplete> = {
   },
 };
 
-export const Async: StoryObj<typeof Autocomplete> = {
+export const Async: Story = {
   render: () => {
     const list = useAsyncList<{ name: string }>({
       async load({ signal, filterText }) {
