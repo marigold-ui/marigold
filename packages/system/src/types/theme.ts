@@ -28,6 +28,10 @@ export type Theme = {
     Body?: ComponentStyleFunction<string, string>;
     Button?: ComponentStyleFunction<string, string>;
     Card?: ComponentStyleFunction<string, string>;
+    Dialog?: Record<
+      'closeButton' | 'container',
+      ComponentStyleFunction<string, string>
+    >;
     Divider?: ComponentStyleFunction<string, string>;
     Field?: ComponentStyleFunction<string, string>;
     Footer?: ComponentStyleFunction<string, string>;

@@ -5,50 +5,39 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { OverlayProvider } from '@react-aria/overlays';
-import { ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider } from '@marigold/system';
+
+import { cva } from 'class-variance-authority';
 
 import { Dialog } from './Dialog';
 import { Button } from '../Button';
 import { Headline } from '../Headline';
 
-const theme = {
-  colors: {
-    green: '#2f9e44',
-    black: '#212529',
-  },
-  space: {
-    none: 'none',
-    'small-1': '4px',
-    'large-1': '16px',
-  },
+const theme: Theme = {
+  name: 'test',
   components: {
+    Button: cva(''),
     Dialog: {
-      base: {
-        container: {
-          p: 'large-1',
-        },
-        closeButton: {
-          p: 'small-1',
-        },
-      },
-      variant: {
-        custom: {
-          container: {
-            bg: 'green',
+      container: cva('p-5', {
+        variants: {
+          variant: {
+            custom: 'bg-green-400',
           },
-          closeButton: {
-            bg: 'black',
+          size: {
+            large: 'w-[400px]',
           },
         },
-      },
-      size: {
-        large: {
-          container: {
-            width: '400px',
+      }),
+      closeButton: cva('p-1', {
+        variants: {
+          variant: {
+            custom: 'bg-black',
           },
         },
-      },
+      }),
     },
+    Headline: cva(''),
+    Underlay: cva('bg-black opacity-5'),
   },
 };
 
@@ -355,7 +344,7 @@ test('supports focus and open dialog with keyboard', async () => {
   });
 });
 
-test('dialog has base style', () => {
+test('dialog has base classnames', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
@@ -377,11 +366,14 @@ test('dialog has base style', () => {
 
   const closeButton = dialog.firstChild?.lastChild;
 
-  expect(closeButton).toHaveStyle(`padding: ${theme.space['small-1']}`);
-  expect(dialog).toHaveStyle(`padding: ${theme.space['large-1']}`);
+  expect(closeButton).toHaveClass(
+    'h-4 w-4 cursor-pointer border-none leading-normal outline-0 p-1'
+  );
+
+  expect(dialog).toHaveClass(`p-5`);
 });
 
-test('dialog has variant style', () => {
+test('dialog has variant classnames', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
@@ -403,8 +395,10 @@ test('dialog has variant style', () => {
 
   const closeButton = dialog.firstChild?.lastChild;
 
-  expect(closeButton).toHaveStyle(`background-color: ${theme.colors.black}`);
-  expect(dialog).toHaveStyle(`background-color: ${theme.colors.green}`);
+  expect(closeButton).toHaveClass(
+    'h-4 w-4 cursor-pointer border-none leading-normal outline-0 p-1 bg-black'
+  );
+  expect(dialog.className).toMatchInlineSnapshot(`"p-5 bg-green-400"`);
 });
 
 test('dialog supports size', () => {
@@ -426,17 +420,19 @@ test('dialog supports size', () => {
 
   const dialog = screen.getByRole('dialog');
   expect(dialog).toBeVisible();
-  expect(dialog).toHaveStyle('width: 400px');
+  expect(dialog).toHaveClass('w-[400px]');
 });
 
 test('renders with dialog controller', () => {
   render(
     <OverlayProvider>
-      <Dialog.Controller open>
-        <Dialog>
-          <Headline>Headline</Headline>Content
-        </Dialog>
-      </Dialog.Controller>
+      <ThemeProvider theme={theme}>
+        <Dialog.Controller open>
+          <Dialog>
+            <Headline>Headline</Headline>Content
+          </Dialog>
+        </Dialog.Controller>
+      </ThemeProvider>
     </OverlayProvider>
   );
 
@@ -447,11 +443,13 @@ test('renders with dialog controller', () => {
 test('renders nothing by default', () => {
   render(
     <OverlayProvider>
-      <Dialog.Controller>
-        <Dialog>
-          <Headline>Headline</Headline>Content
-        </Dialog>
-      </Dialog.Controller>
+      <ThemeProvider theme={theme}>
+        <Dialog.Controller>
+          <Dialog>
+            <Headline>Headline</Headline>Content
+          </Dialog>
+        </Dialog.Controller>
+      </ThemeProvider>
     </OverlayProvider>
   );
 
@@ -465,17 +463,19 @@ test('dialog can be controlled', async () => {
 
     return (
       <OverlayProvider>
-        <Button data-testid="button" onPress={() => setOpen(true)}>
-          Open Dialog
-        </Button>
-        <Dialog.Controller open={open}>
-          <Dialog>
-            <Headline>Headline</Headline>
-            <Button data-testid="close" onPress={() => setOpen(false)}>
-              Close
-            </Button>
-          </Dialog>
-        </Dialog.Controller>
+        <ThemeProvider theme={theme}>
+          <Button data-testid="button" onPress={() => setOpen(true)}>
+            Open Dialog
+          </Button>
+          <Dialog.Controller open={open}>
+            <Dialog>
+              <Headline>Headline</Headline>
+              <Button data-testid="close" onPress={() => setOpen(false)}>
+                Close
+              </Button>
+            </Dialog>
+          </Dialog.Controller>
+        </ThemeProvider>
       </OverlayProvider>
     );
   };
@@ -506,21 +506,23 @@ test('close state has a listener', async () => {
 
     return (
       <OverlayProvider>
-        <Button data-testid="button" onPress={() => setOpen(true)}>
-          Open Dialog
-        </Button>
-        <Dialog.Controller open={open} onOpenChange={spy}>
-          <Dialog>
-            {({ close }) => (
-              <>
-                <Headline>Headline</Headline>
-                <Button data-testid="close" onPress={close}>
-                  Close
-                </Button>
-              </>
-            )}
-          </Dialog>
-        </Dialog.Controller>
+        <ThemeProvider theme={theme}>
+          <Button data-testid="button" onPress={() => setOpen(true)}>
+            Open Dialog
+          </Button>
+          <Dialog.Controller open={open} onOpenChange={spy}>
+            <Dialog>
+              {({ close }) => (
+                <>
+                  <Headline>Headline</Headline>
+                  <Button data-testid="close" onPress={close}>
+                    Close
+                  </Button>
+                </>
+              )}
+            </Dialog>
+          </Dialog.Controller>
+        </ThemeProvider>
       </OverlayProvider>
     );
   };
