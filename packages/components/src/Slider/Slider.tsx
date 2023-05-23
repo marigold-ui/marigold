@@ -8,19 +8,10 @@ import { useNumberFormatter } from '@react-aria/i18n';
 import { useObjectRef } from '@react-aria/utils';
 import { AriaSliderProps } from '@react-types/slider';
 
-import { ThemeExtensionsWithParts, useComponentStyles } from '@marigold/system';
+import { cn, createVar, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
-import { Box } from '../Box';
 import { Thumb } from './Thumb';
-
-// Theme Extension
-// ---------------
-export interface SliderThemeExtension
-  extends ThemeExtensionsWithParts<
-    'Slider',
-    ['track', 'thumb', 'label', 'output']
-  > {}
 
 // Props
 // ---------------
@@ -73,63 +64,79 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
       trackRef
     );
 
-    const styles = useComponentStyles(
-      'Slider',
-      { variant, size },
-      { parts: ['track', 'thumb', 'label', 'output'] }
-    );
+    // const styles = useComponentStyles(
+    //   'Slider',
+    //   { variant, size },
+    //   { parts: ['track', 'thumb', 'label', 'output'] }
+    // );
 
+    const classNames = useClassNames({ component: 'Slider', variant, size });
+    console.log('classNames', classNames);
     return (
-      <Box
-        __baseCSS={{
-          display: 'flex',
-          flexDirection: 'column',
-          touchAction: 'none',
-          width,
-        }}
+      <div
+        className="flex touch-none flex-col"
+        style={createVar({ fieldWidth: width })}
+        // __baseCSS={{
+        //   display: 'flex',
+        //   flexDirection: 'column',
+        //   touchAction: 'none',
+        //   width,
+        // }}
         {...groupProps}
       >
         {/* Flex container for the label and output element. */}
-        <Box __baseCSS={{ display: 'flex', alignSelf: 'stretch' }}>
+        <div
+          className="flex self-stretch"
+          //  __baseCSS={{ display: 'flex', alignSelf: 'stretch' }}
+        >
           {props.children && (
-            <Box as="label" __baseCSS={styles.label} {...labelProps}>
+            <label
+              className={classNames.label}
+              // __baseCSS={styles.label}
+              {...labelProps}
+            >
               {props.children}
-            </Box>
+            </label>
           )}
-          <Box
-            as="output"
+          <output
+            className={cn(
+              'flex flex-shrink-0 flex-grow basis-auto',
+              classNames.output
+            )}
             {...outputProps}
-            __baseCSS={{ flex: '1 0 auto', textAlign: 'end' }}
-            css={styles.output}
+            // __baseCSS={{ flex: '1 0 auto', textAlign: 'end' }}
+            // css={styles.output}
           >
             {state.getThumbValueLabel(0)}
-          </Box>
-        </Box>
+          </output>
+        </div>
         {/* The track element holds the visible track line and the thumb. */}
-        <Box
+        <div
+          className="h-8 w-full cursor-pointer disabled:cursor-not-allowed"
           {...trackProps}
           ref={trackRef}
-          __baseCSS={{
-            height: 32,
-            width: '100%',
-            cursor: props.disabled ? 'not-allowed' : 'pointer',
-          }}
+          // __baseCSS={{
+          //   height: 32,
+          //   width: '100%',
+          //   cursor: props.disabled ? 'not-allowed' : 'pointer',
+          // }}
         >
-          <Box
-            __baseCSS={{
-              top: '50%',
-              transform: 'translateY(-50%)',
-            }}
-            css={styles.track}
+          <div
+            className={cn('top-2/4 -translate-y-1/2', classNames.track)}
+            // __baseCSS={{
+            //   top: '50%',
+            //   transform: 'translateY(-50%)',
+            // }}
+            // css={styles.track}
           />
           <Thumb
             state={state}
             trackRef={trackRef}
             disabled={props.disabled}
-            styles={styles.thumb}
+            className={classNames.thumb}
           />
-        </Box>
-      </Box>
+        </div>
+      </div>
     );
   }
 );

@@ -47,6 +47,10 @@ export type Theme = {
       'container' | 'list' | 'option' | 'section' | 'sectionTitle',
       ComponentStyleFunction<string, string>
     >;
+    Slider?: Record<
+      'track' | 'thumb' | 'label' | 'output',
+      ComponentStyleFunction<string, string>
+    >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
     Text?: ComponentStyleFunction<string, string>;
     TextArea?: ComponentStyleFunction<string, string>;
