@@ -44,6 +44,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     List?: Record<'ol' | 'ul' | 'item', ComponentStyleFunction<string, string>>;
+    Link?: ComponentStyleFunction<string, string>;
     ListBox?: Record<
       'container' | 'list' | 'option' | 'section' | 'sectionTitle',
       ComponentStyleFunction<string, string>
