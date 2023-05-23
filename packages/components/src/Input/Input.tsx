@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactElement } from 'react';
+import React, { cloneElement, forwardRef, ReactElement } from 'react';
 import { HtmlProps } from '@marigold/types';
 import { cn, useClassNames } from '@marigold/system';
 
@@ -45,18 +45,17 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
 
     return (
       <div className="relative flex items-center">
-        {icon && (
-          <div
-            data-icon=""
-            className={cn(
+        {icon &&
+          cloneElement(icon, {
+            'data-icon': '',
+            className: cn(
               'peer',
               'pointer-events-none absolute',
-              classNames.icon
-            )}
-          >
-            {icon}
-          </div>
-        )}
+              classNames.icon,
+              icon.props.className
+            ),
+            ...icon.props,
+          })}
         <input
           {...props}
           className={cn(

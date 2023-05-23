@@ -15,6 +15,6 @@ export const Input: ThemeComponent<'Input'> = {
     'disabled:bg-disabled-bg',
     'peer-data-[icon]:pl-6',
   ]),
-  icon: cva('left-0.5 [&>*]:h-[16px] [&>*]:w-[16px]'),
+  icon: cva('left-0.5 h-4 w-4'),
   action: cva(),
 };
