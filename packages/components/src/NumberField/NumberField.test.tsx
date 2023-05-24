@@ -43,7 +43,7 @@ test('input can be styled via "Input" styles', () => {
   const numberFieldContainer = screen.getByTestId('number-field-container');
   expect(numberFieldContainer).toBeInTheDocument();
   expect(numberFieldContainer.className).toMatchInlineSnapshot(
-    `"flex items-stretch [>input]:flex-1 [>input]:min-w-0"`
+    `"[>input]:flex-1 [>input]:min-w-0 flex items-stretch"`
   );
 });
 
@@ -52,15 +52,15 @@ test('group and stepper can styled via "NumberField" styles', () => {
 
   const group = screen.getByRole('group');
   expect(group.className).toMatchInlineSnapshot(
-    `"flex items-stretch [>input]:flex-1 [>input]:min-w-0"`
+    `"[>input]:flex-1 [>input]:min-w-0 flex items-stretch"`
   );
 
   const steppers = within(group).getAllByRole('button');
   expect(steppers[0].className).toMatchInlineSnapshot(
-    `"flex items-center justify-center cursor-pointer disabled:cursor-not-allowed"`
+    `"flex cursor-pointer items-center justify-center disabled:cursor-not-allowed"`
   );
   expect(steppers[1].className).toMatchInlineSnapshot(
-    `"flex items-center justify-center cursor-pointer disabled:cursor-not-allowed"`
+    `"flex cursor-pointer items-center justify-center disabled:cursor-not-allowed"`
   );
 });
 
