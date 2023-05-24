@@ -14,8 +14,7 @@ const meta = {
       control: {
         type: 'text',
       },
-      description: 'Set the label',
-      defaultValue: 'Select for favorite:',
+      description: 'The label',
     },
     description: {
       control: {
@@ -29,7 +28,6 @@ const meta = {
         type: 'boolean',
       },
       description: 'Is the input invalid?',
-      defaultValue: false,
     },
     errorMessage: {
       control: {
@@ -37,12 +35,6 @@ const meta = {
       },
       description: 'Error Message',
       defaultValue: 'Something went wrong',
-    },
-    placeholder: {
-      control: {
-        type: 'text',
-      },
-      description: 'Set the placeholder text',
     },
     menuTrigger: {
       control: {
@@ -58,27 +50,31 @@ const meta = {
       description: 'The width of the field',
     },
   },
-} satisfies Meta;
+  args: {
+    label: 'Select Favorite:',
+    description: 'This is a help text description',
+    errorMessage: 'Something went wrong',
+  },
+} satisfies Meta<typeof Autocomplete>;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Basic: StoryObj<typeof Autocomplete> = {
+export const Basic: Story = {
   render: args => (
-    <Container size="large">
-      <Autocomplete {...args}>
-        <Autocomplete.Item key="Harry Potter">Harry Potter</Autocomplete.Item>
-        <Autocomplete.Item key="Lord of the Rings">
-          Lord of the Rings
-        </Autocomplete.Item>
-        <Autocomplete.Item key="Star Wars">Star Wars</Autocomplete.Item>
-        <Autocomplete.Item key="Star Trek">Star Trek</Autocomplete.Item>
-        <Autocomplete.Item key="Firefly">Firefly</Autocomplete.Item>
-      </Autocomplete>
-    </Container>
+    <Autocomplete {...args}>
+      <Autocomplete.Item key="Harry Potter">Harry Potter</Autocomplete.Item>
+      <Autocomplete.Item key="Lord of the Rings">
+        Lord of the Rings
+      </Autocomplete.Item>
+      <Autocomplete.Item key="Star Wars">Star Wars</Autocomplete.Item>
+      <Autocomplete.Item key="Star Trek">Star Trek</Autocomplete.Item>
+      <Autocomplete.Item key="Firefly">Firefly</Autocomplete.Item>
+    </Autocomplete>
   ),
 };
 
-export const Controlled: StoryObj<typeof Autocomplete> = {
+export const Controlled: Story = {
   render: args => {
     const [submitted, setSubmitted] = useState<[Key | null, string | null]>([
       '',
@@ -115,7 +111,7 @@ export const Controlled: StoryObj<typeof Autocomplete> = {
   },
 };
 
-export const Async: StoryObj<typeof Autocomplete> = {
+export const Async: Story = {
   render: () => {
     const list = useAsyncList<{ name: string }>({
       async load({ signal, filterText }) {
