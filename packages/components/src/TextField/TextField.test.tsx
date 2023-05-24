@@ -41,9 +41,9 @@ const theme: Theme = {
       },
     }),
     Input: {
-      container: cva(),
       input: cva('border-blue-700'),
       icon: cva(),
+      action: cva(),
     },
   },
 };
