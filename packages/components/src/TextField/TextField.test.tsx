@@ -26,20 +26,19 @@ const theme: Theme = {
       }),
       indicator: cva(''),
     },
-    HelpText: cva('', {
-      variants: {
-        variant: {
-          lime: {
-            container: 'text-lime-600',
+    HelpText: {
+      container: cva('', {
+        variants: {
+          variant: {
+            lime: 'text-lime-600',
+          },
+          size: {
+            small: 'p-2',
           },
         },
-        size: {
-          small: {
-            container: 'p-2',
-          },
-        },
-      },
-    }),
+      }),
+      icon: cva(''),
+    },
     Input: {
       input: cva('border-blue-700'),
       icon: cva(),
