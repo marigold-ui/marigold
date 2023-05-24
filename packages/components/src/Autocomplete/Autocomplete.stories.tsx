@@ -9,17 +9,12 @@ import { useAsyncList } from '@react-stately/data';
 
 const meta = {
   title: 'Components/Autocomplete',
-  component: Autocomplete,
   argTypes: {
     label: {
       control: {
         type: 'text',
       },
       description: 'The label',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'Select your favorite:' },
-      },
     },
     description: {
       control: {
@@ -33,7 +28,6 @@ const meta = {
         type: 'boolean',
       },
       description: 'Is the input invalid?',
-      defaultValue: false,
     },
     errorMessage: {
       control: {
@@ -41,12 +35,6 @@ const meta = {
       },
       description: 'Error Message',
       defaultValue: 'Something went wrong',
-    },
-    placeholder: {
-      control: {
-        type: 'text',
-      },
-      description: 'Set the placeholder text',
     },
     menuTrigger: {
       control: {
@@ -62,26 +50,28 @@ const meta = {
       description: 'The width of the field',
     },
   },
+  args: {
+    label: 'Select Favorite:',
+    description: 'This is a help text description',
+    errorMessage: 'Something went wrong',
+  },
 } satisfies Meta<typeof Autocomplete>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args =>
-    console.log(args) || (
-      <Container size="large">
-        <Autocomplete {...args}>
-          <Autocomplete.Item key="Harry Potter">Harry Potter</Autocomplete.Item>
-          <Autocomplete.Item key="Lord of the Rings">
-            Lord of the Rings
-          </Autocomplete.Item>
-          <Autocomplete.Item key="Star Wars">Star Wars</Autocomplete.Item>
-          <Autocomplete.Item key="Star Trek">Star Trek</Autocomplete.Item>
-          <Autocomplete.Item key="Firefly">Firefly</Autocomplete.Item>
-        </Autocomplete>
-      </Container>
-    ),
+  render: args => (
+    <Autocomplete {...args}>
+      <Autocomplete.Item key="Harry Potter">Harry Potter</Autocomplete.Item>
+      <Autocomplete.Item key="Lord of the Rings">
+        Lord of the Rings
+      </Autocomplete.Item>
+      <Autocomplete.Item key="Star Wars">Star Wars</Autocomplete.Item>
+      <Autocomplete.Item key="Star Trek">Star Trek</Autocomplete.Item>
+      <Autocomplete.Item key="Firefly">Firefly</Autocomplete.Item>
+    </Autocomplete>
+  ),
 };
 
 export const Controlled: Story = {
