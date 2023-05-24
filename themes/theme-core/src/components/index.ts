@@ -16,6 +16,7 @@ export * from './Label.styles';
 export * from './Link.styles';
 export * from './List.styles';
 export * from './ListBox.styles';
+export * from './Message.styles';
 export * from './Select.styles';
 export * from './Table.styles';
 export * from './Text.styles';

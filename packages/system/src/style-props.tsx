@@ -22,7 +22,7 @@ export const textSize = {
   '5xl': 'text-5xl',
 };
 
-export const fontStyle = {
+export const textStyle = {
   italic: 'italic',
   normal: 'not-italic',
 };
@@ -256,7 +256,7 @@ export type AspectProp = { ratio?: keyof typeof aspect };
 export type AlignmentXProp = { alignX?: keyof typeof alignmentX };
 export type AlignmentYProp = { alignY?: keyof typeof alignmentY };
 export type CursorProp = { cursor?: keyof typeof cursorStyle };
-export type FontStyleProp = { fontStyle?: keyof typeof fontStyle };
+export type FontStyleProp = { fontStyle?: keyof typeof textStyle };
 export type FontWeightProp = { weight?: keyof typeof fontWeight };
 export type FontSizeProp = { fontSize?: keyof typeof textSize };
 export type GridColsAlignProp = { align?: keyof typeof gridColsAlign };
