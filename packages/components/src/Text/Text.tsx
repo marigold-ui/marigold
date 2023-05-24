@@ -14,7 +14,7 @@ import {
   useClassNames,
   useTheme,
   textSize,
-  fontStyle,
+  textStyle,
 } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
@@ -43,6 +43,7 @@ export const Text = ({
   cursor = 'default',
   weight = 'normal',
   fontSize = 'xs',
+  fontStyle = 'normal',
   children,
   ...props
 }: TextProps) => {
@@ -59,7 +60,7 @@ export const Text = ({
       className={cn(
         classNames,
         'text-[--color] outline-[--outline]',
-        fontStyle,
+        textStyle[fontStyle],
         textAlign[align],
         cursorStyle[cursor],
         fontWeight[weight],
