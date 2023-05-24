@@ -60,8 +60,8 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
       action && !props.readOnly
         ? cloneElement(action, {
             className: cn(
-              'absolute bottom-0 right-0 top-0',
-              classNames.icon,
+              'absolute right-0',
+              classNames.action,
               action.props.className
             ),
             ...action.props,

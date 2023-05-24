@@ -6,7 +6,7 @@ import { PressEvents } from '@react-types/shared';
 import { mergeProps } from '@react-aria/utils';
 
 import { HtmlProps } from '@marigold/types';
-import { useStateProps } from '@marigold/system';
+import { cn, useStateProps } from '@marigold/system';
 
 export interface ClearButtonProps extends PressEvents, HtmlProps<'button'> {
   excludeFromTabOrder?: boolean;
@@ -25,6 +25,7 @@ export const ClearButton = ({
   onPressUp,
   excludeFromTabOrder,
   preventFocusOnPress,
+  className,
   ...props
 }: ClearButtonProps) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -68,7 +69,10 @@ export const ClearButton = ({
       {...mergeProps(buttonProps, focusProps, hoverProps, props)}
       {...stateProps}
       ref={buttonRef}
-      className="h-4 w-4 cursor-pointer appearance-none border-none p-0"
+      className={cn(
+        'cursor-pointer appearance-none border-none p-0',
+        className
+      )}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
