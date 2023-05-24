@@ -70,15 +70,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => {
     return (
-      <Box
-        css={{
-          display: 'flex',
-          gap: 10,
-          pt: 120,
-          width: 'min(100% - 3rem, 60ch)',
-          marginInline: 'auto',
-        }}
-      >
+      <div className="me-auto ms-auto flex w-[min(100%_-_3rem,60ch)] gap-2 pt-32">
         <Tooltip.Trigger {...args}>
           <Button variant="primary">Hover me!</Button>
           <Tooltip>Look at this tooltip!</Tooltip>
@@ -90,7 +82,7 @@ export const Basic: Story = {
             <div>I even have two lines!</div>
           </Tooltip>
         </Tooltip.Trigger>
-      </Box>
+      </div>
     );
   },
 };

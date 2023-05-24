@@ -20,4 +20,5 @@ export * from './Select.styles';
 export * from './Table.styles';
 export * from './Text.styles';
 export * from './TextArea.styles';
+export * from './Tooltip.styles';
 export * from './Underlay.styles';

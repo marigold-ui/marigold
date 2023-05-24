@@ -52,6 +52,10 @@ export type Theme = {
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
     Text?: ComponentStyleFunction<string, string>;
     TextArea?: ComponentStyleFunction<string, string>;
+    Tooltip?: Record<
+      'container' | 'arrow',
+      ComponentStyleFunction<string, string>
+    >;
     Underlay?: ComponentStyleFunction<string, string>;
   };
 };
