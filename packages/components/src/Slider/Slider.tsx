@@ -8,7 +8,7 @@ import { useNumberFormatter } from '@react-aria/i18n';
 import { useObjectRef } from '@react-aria/utils';
 import { AriaSliderProps } from '@react-types/slider';
 
-import { cn, createVar, useClassNames } from '@marigold/system';
+import { cn, createVar, useClassNames, useStateProps } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
 import { Thumb } from './Thumb';
@@ -63,38 +63,24 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
       state,
       trackRef
     );
-
-    // const styles = useComponentStyles(
-    //   'Slider',
-    //   { variant, size },
-    //   { parts: ['track', 'thumb', 'label', 'output'] }
-    // );
-
-    const classNames = useClassNames({ component: 'Slider', variant, size });
-    console.log('classNames', classNames);
+    const classNames = useClassNames({
+      component: 'Slider',
+      variant,
+      size,
+    });
+    const sliderState = useStateProps({
+      disabled: props.disabled,
+    });
     return (
       <div
-        className="flex touch-none flex-col"
-        style={createVar({ fieldWidth: width })}
-        // __baseCSS={{
-        //   display: 'flex',
-        //   flexDirection: 'column',
-        //   touchAction: 'none',
-        //   width,
-        // }}
+        className="flex w-[var(--slideWidth)] touch-none flex-col"
+        style={createVar({ slideWidth: width })}
         {...groupProps}
       >
         {/* Flex container for the label and output element. */}
-        <div
-          className="flex self-stretch"
-          //  __baseCSS={{ display: 'flex', alignSelf: 'stretch' }}
-        >
+        <div className="flex self-stretch">
           {props.children && (
-            <label
-              className={classNames.label}
-              // __baseCSS={styles.label}
-              {...labelProps}
-            >
+            <label className={classNames.label} {...labelProps}>
               {props.children}
             </label>
           )}
@@ -104,31 +90,18 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
               classNames.output
             )}
             {...outputProps}
-            // __baseCSS={{ flex: '1 0 auto', textAlign: 'end' }}
-            // css={styles.output}
           >
             {state.getThumbValueLabel(0)}
           </output>
         </div>
         {/* The track element holds the visible track line and the thumb. */}
         <div
-          className="h-8 w-full cursor-pointer disabled:cursor-not-allowed"
+          className="mg-disabled:cursor-not-allowed h-8 w-full cursor-pointer"
           {...trackProps}
+          {...sliderState}
           ref={trackRef}
-          // __baseCSS={{
-          //   height: 32,
-          //   width: '100%',
-          //   cursor: props.disabled ? 'not-allowed' : 'pointer',
-          // }}
         >
-          <div
-            className={cn('top-2/4 -translate-y-1/2', classNames.track)}
-            // __baseCSS={{
-            //   top: '50%',
-            //   transform: 'translateY(-50%)',
-            // }}
-            // css={styles.track}
-          />
+          <div className={cn('top-2/4 -translate-y-1/2', classNames.track)} />
           <Thumb
             state={state}
             trackRef={trackRef}

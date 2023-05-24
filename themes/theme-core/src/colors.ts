@@ -109,6 +109,7 @@ export const colors = {
   disabled: {
     text: '#cccccc',
     bg: '#e3e3e3',
+    border: '#cccccc',
   },
   info: {
     text: '#e8f4fa',

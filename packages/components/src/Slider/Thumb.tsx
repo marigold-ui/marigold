@@ -41,14 +41,8 @@ export const Thumb = ({ state, trackRef, className, ...props }: ThumbProps) => {
   useEffect(() => {
     state.setThumbEditable(0, !disabled);
   }, [disabled, state]);
-
   return (
-    <div
-      className={cn('top-1/2', className)}
-      // __baseCSS={{ top: '50%' }}
-      {...thumbProps}
-      {...stateProps}
-    >
+    <div className={cn('top-1/2', className)} {...thumbProps} {...stateProps}>
       <VisuallyHidden>
         <input
           type="range"

@@ -12,9 +12,8 @@ export const Slider: ThemeComponent<'Slider'> = {
     'border-4 border-solid rounded-lg border-slider-thumb-border',
     'w-4 h-4',
     'bg-slider-thumb-background',
-    // there is duplication here
-    'focus:border-4 focus:border-solid focus:border-slider-thumb-focus',
-    'disabled:border-4 disabled:border-solid border-slider-thumb-disabled-border disabled: bg-slider-thumb-disabled-background',
+    'mg-focus:border-slider-thumb-focus',
+    'mg-disabled:bg-slider-thumb-disabled-background mg-disabled:border-slider-thumb-disabled-border',
   ]),
   label: cva('text-slider-label-text text-base font-normal'),
   output: cva('text-slider-ouput-text text-base font-normal'),
