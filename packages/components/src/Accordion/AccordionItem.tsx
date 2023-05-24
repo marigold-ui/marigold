@@ -4,7 +4,7 @@ import { mergeProps } from '@react-aria/utils';
 import { TreeState } from '@react-stately/tree';
 import { Node } from '@react-types/shared';
 
-import { SVG, useClassNames, useStateProps } from '@marigold/system';
+import { SVG, cn, useClassNames, useStateProps } from '@marigold/system';
 
 import { useAccordionItem } from './useAccordionItem';
 import { Button } from '../Button';
@@ -58,17 +58,17 @@ export const AccordionItem = ({
 
   const classNames = useClassNames({ component: 'Accordion', variant, size });
 
+  console.log(Button);
   return (
     <div {...props}>
       <FocusRing within>
         <Button
-          className={classNames.button}
+          className={cn(classNames.button)}
           {...mergeProps(buttonProps, stateProps, props)}
           ref={ref}
           aria-label={item.textValue}
         >
           {title}
-
           {!expanded ? (
             <SVG viewBox="0 0 24 24" aria-hidden={true}>
               <path d="M5.97563 7.125L12 13.1363L18.0244 7.125L19.875 8.97563L12 16.8506L4.125 8.97563L5.97563 7.125Z" />
