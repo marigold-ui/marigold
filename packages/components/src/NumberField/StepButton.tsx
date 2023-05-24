@@ -65,7 +65,10 @@ export const StepButton = ({
   return (
     <div
       className={cn(
-        'flex cursor-pointer items-center justify-center disabled:cursor-not-allowed',
+        [
+          'flex items-center justify-center',
+          'mg-disabled:cursor-not-allowed cursor-pointer',
+        ],
         className
       )}
       {...mergeProps(buttonProps, hoverProps)}
