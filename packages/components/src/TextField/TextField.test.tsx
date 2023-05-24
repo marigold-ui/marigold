@@ -4,7 +4,7 @@ import { cva } from 'class-variance-authority';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { Theme, ThemeProvider } from '@marigold/system';
+import { Theme } from '@marigold/system';
 import { setup } from '../test.utils';
 
 import { TextField } from './TextField';
@@ -67,11 +67,7 @@ test('allows to change the input type', () => {
 });
 
 test('takes full width by default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <TextField label="Label" />
-    </ThemeProvider>
-  );
+  render(<TextField label="Label" />);
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
@@ -79,11 +75,7 @@ test('takes full width by default', () => {
 });
 
 test('allows to set custom width', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <TextField label="Label" width="200px" />
-    </ThemeProvider>
-  );
+  render(<TextField label="Label" width="200px" />);
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
@@ -249,11 +241,7 @@ test('can be controlled', async () => {
 
 test('forwards ref', () => {
   const ref = React.createRef<HTMLInputElement>();
-  render(
-    <ThemeProvider theme={theme}>
-      <TextField data-testid="text-field" label="A Label" ref={ref} />
-    </ThemeProvider>
-  );
+  render(<TextField data-testid="text-field" label="A Label" ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLInputElement);
 });
