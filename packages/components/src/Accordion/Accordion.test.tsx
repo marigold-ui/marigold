@@ -1,44 +1,42 @@
 /* eslint-disable testing-library/no-node-access */
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { fireEvent, screen } from '@testing-library/react';
+import { Theme, ThemeProvider } from '@marigold/system';
 import { Accordion } from './Accordion';
 import { Headline } from '../Headline';
 
-const theme = {
-  colors: {
-    blue: '#0ea5e9',
-    teal: '#5eead4',
-  },
-  fontSizes: {
-    'small-1': 12,
-  },
-  space: {
-    none: 0,
-    large: 12,
-  },
+import { cva } from 'class-variance-authority';
+
+import { setup } from '../test.utils';
+
+const theme: Theme = {
+  name: 'test',
   components: {
     Accordion: {
-      variant: {
-        one: {
-          item: {
-            bg: 'teal',
+      button: cva('', {
+        variants: {
+          variant: {
+            one: 'bg-blue-600',
           },
-          button: {
-            bg: 'blue',
-          },
-        },
-      },
-      size: {
-        large: {
-          button: {
-            p: 'large',
+          size: {
+            large: 'p-8',
           },
         },
-      },
+      }),
+      item: cva('', {
+        variants: {
+          variant: {
+            one: 'bg-blue-100',
+          },
+        },
+      }),
     },
+    Button: cva('w-full'),
+    Headline: cva(),
   },
 };
+
+const { render } = setup({ theme });
 
 let items = [
   { key: 'one', title: 'one title', children: 'one children' },
@@ -119,7 +117,7 @@ test('render dynamically accordion items', () => {
   expect(content).toBeInTheDocument();
 });
 
-test('accepts variant and size', () => {
+test('accepts variant and size classnames', () => {
   render(
     <ThemeProvider theme={theme}>
       <Accordion data-testid="accordion">
@@ -133,13 +131,12 @@ test('accepts variant and size', () => {
   const button = screen.getByText('Information');
 
   expect(button).toHaveAttribute('aria-expanded', 'false');
-  expect(button).toHaveStyle(`background-color: ${theme.colors.blue}`);
-  expect(button).toHaveStyle(`padding: ${theme.space.large}px`);
+  expect(button.className).toMatchInlineSnapshot(`"w-full bg-blue-600 p-8"`);
   fireEvent.click(button);
   expect(button).toHaveAttribute('aria-expanded', 'true');
 
   const item = screen.getByText('infos');
-  expect(item).toHaveStyle(`background-color: ${theme.colors.teal})`);
+  expect(item.className).toMatchInlineSnapshot(`"text-[--color] text-left"`);
 });
 
 test('default full width', () => {
@@ -155,8 +152,7 @@ test('default full width', () => {
 
   const button = screen.getByText('Information');
 
-  expect(button).toHaveStyle(`width: 100%`);
-  expect(button).toHaveStyle(`justify-content: space-between`);
+  expect(button.className).toMatchInlineSnapshot(`"w-full"`);
 });
 
 test('support default expanded keys', () => {
