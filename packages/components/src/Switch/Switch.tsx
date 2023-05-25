@@ -66,12 +66,12 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
       readOnly: readOnly,
       focus: isFocusVisible,
     });
-
     const classNames = useClassNames({ component: 'Switch', size, variant });
     return (
       <label
         className={cn(
           'group/switch',
+          'w-[var(--fieldWidth)]',
           'relative flex items-center justify-between gap-[1ch]'
         )}
         style={createVar({ fieldWidth: width })}
@@ -84,12 +84,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           {...focusProps}
         />
         {props.children && (
-          <div
-            className={classNames.label}
-            // css={styles.label}
-          >
-            {props.children}
-          </div>
+          <div className={classNames.label}>{props.children}</div>
         )}
         <div
           className={cn(
@@ -99,6 +94,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
         >
           <div
             className={cn(
+              'h-[22px] w-[22px]',
               'cubic-bezier(.7, 0, .3, 1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-0 block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform',
               'group-selected/switch:translate-x-[calc(47px_-_100%)]',
               classNames.thumb

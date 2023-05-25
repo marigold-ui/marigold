@@ -82,9 +82,8 @@ export const colors = {
     },
   },
   switch: {
-    base: {},
     track: {
-      bg: '#f3f3f3',
+      background: '#f3f3f3',
       checked: '#ae440a',
       shadow: '#cccccc',
       primary: '#fa8005',
