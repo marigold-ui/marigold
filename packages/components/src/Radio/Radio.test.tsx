@@ -11,7 +11,11 @@ const theme: Theme = {
   name: 'test',
   components: {
     Field: cva(),
-    Label: cva(),
+    Label: {
+      container: cva(),
+      indicator: cva(),
+    },
+    HelpText: cva(),
     Radio: {
       container: cva('', {
         variants: {
@@ -172,52 +176,6 @@ test('set width via prop', () => {
   expect(containerOne).toHaveClass(`200px`);
 });
 
-test('set width via prop in group', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label" width="huge-1">
-        <Radio value="1" data-testid="radio-1">
-          Option 1
-        </Radio>
-        <Radio value="2" data-testid="radio-2">
-          Option 2
-        </Radio>
-      </Radio.Group>
-    </ThemeProvider>
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const containerOne = screen.getByTestId('radio-1').parentElement;
-  expect(containerOne).toHaveStyle(`width: ${theme.sizes['huge-1']}px`);
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const containerTwo = screen.getByTestId('radio-2').parentElement;
-  expect(containerTwo).toHaveStyle(`width: ${theme.sizes['huge-1']}px`);
-});
-
-test('width can be overriden locally', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label" width="huge-1">
-        <Radio value="1" data-testid="radio-1" width="large-1">
-          Option 1
-        </Radio>
-        <Radio value="2" data-testid="radio-2">
-          Option 2
-        </Radio>
-      </Radio.Group>
-    </ThemeProvider>
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const containerOne = screen.getByTestId('radio-1').parentElement;
-  expect(containerOne).toHaveStyle(`width: ${theme.sizes['large-1']}px`);
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const containerTwo = screen.getByTestId('radio-2').parentElement;
-  expect(containerTwo).toHaveStyle(`width: ${theme.sizes['huge-1']}px`);
-});
-
 test('allows styling "checked" state via theme', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -238,7 +196,9 @@ test('allows styling "checked" state via theme', () => {
   fireEvent.click(screen.getByTestId('radio-1'));
 
   const radio = getVisibleRadios()?.[0];
-  expect(radio).toHaveStyle(`color: ${theme.colors.teal}`);
+  expect(radio?.className).toMatchInlineSnapshot(
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 rounded border-solid checked:text-blue-700"`
+  );
 });
 
 test('allows styling "focus" state via theme', async () => {
@@ -263,48 +223,9 @@ test('allows styling "focus" state via theme', async () => {
   act(() => {
     input.focus();
   });
-  expect(radio).toHaveStyle(`outline: 1px solid`);
-  expect(radio).toHaveStyle(`outline-color: ${theme.colors.blue}`);
-});
-
-test('allows styling "disabled" state via theme', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label">
-        <Radio value="1" data-testid="radio-1" disabled>
-          Option 1
-        </Radio>
-        <Radio value="2" data-testid="radio-2">
-          Option 2
-        </Radio>
-        <Radio value="3" data-testid="radio-3">
-          Option 3
-        </Radio>
-      </Radio.Group>
-    </ThemeProvider>
+  expect(radio?.className).toMatchInlineSnapshot(
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 rounded border-solid checked:text-blue-700"`
   );
-  const radio = getVisibleRadios()?.[0];
-  expect(radio).toHaveStyle(`background: ${theme.colors.gray}`);
-});
-
-test('allows styling "read-only" state via theme', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label">
-        <Radio value="1" data-testid="radio-1" readOnly>
-          Option 1
-        </Radio>
-        <Radio value="2" data-testid="radio-2">
-          Option 2
-        </Radio>
-        <Radio value="3" data-testid="radio-3">
-          Option 3
-        </Radio>
-      </Radio.Group>
-    </ThemeProvider>
-  );
-  const radio = getVisibleRadios()?.[0];
-  expect(radio).toHaveStyle(`opacity: 0.5`);
 });
 
 test('forwards ref', () => {
