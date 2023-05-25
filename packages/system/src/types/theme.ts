@@ -60,6 +60,10 @@ export type Theme = {
     >;
     Text?: ComponentStyleFunction<string, string>;
     TextArea?: ComponentStyleFunction<string, string>;
+    Tooltip?: Record<
+      'container' | 'arrow',
+      ComponentStyleFunction<string, string>
+    >;
     Underlay?: ComponentStyleFunction<string, string>;
   };
 };
