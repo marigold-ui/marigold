@@ -36,13 +36,15 @@ export type Theme = {
     HelpText?: ComponentStyleFunction<string, string>;
     Image?: ComponentStyleFunction<string, string>;
     Input?: Record<
-      'container' | 'input' | 'icon',
+      'input' | 'icon' | 'action',
       ComponentStyleFunction<string, string>
     >;
     Label?: Record<
       'container' | 'indicator',
       ComponentStyleFunction<string, string>
     >;
+    List?: Record<'ol' | 'ul' | 'item', ComponentStyleFunction<string, string>>;
+    Link?: ComponentStyleFunction<string, string>;
     ListBox?: Record<
       'container' | 'list' | 'option' | 'section' | 'sectionTitle',
       ComponentStyleFunction<string, string>
@@ -51,7 +53,15 @@ export type Theme = {
       'container' | 'section' | 'item',
       ComponentStyleFunction<string, string>
     >;
+    Slider?: Record<
+      'track' | 'thumb' | 'label' | 'output',
+      ComponentStyleFunction<string, string>
+    >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
+    Message?: Record<
+      'container' | 'icon' | 'title' | 'content',
+      ComponentStyleFunction<string, string>
+    >;
     Text?: ComponentStyleFunction<string, string>;
     TextArea?: ComponentStyleFunction<string, string>;
     Underlay?: ComponentStyleFunction<string, string>;

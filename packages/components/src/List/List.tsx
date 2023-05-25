@@ -1,17 +1,10 @@
 import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-} from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
 import { ListContext } from './Context';
 import { ListItem } from './ListItem';
-
-export interface ListThemeExtension
-  extends ThemeExtensionsWithParts<'List', ['ul', 'ol', 'item']> {}
 
 export interface ListProps extends HtmlProps<'ul'> {
   variant?: string;
@@ -27,17 +20,15 @@ export const List = ({
   size,
   ...props
 }: ListProps) => {
-  const styles = useComponentStyles(
-    'List',
-    { variant, size },
-    { parts: ['ul', 'ol', 'item'] }
-  );
+  const Component = as;
+  const classNames = useClassNames({ component: 'List', variant, size });
+
   return (
-    <Box {...props} as={as} css={styles[as]}>
-      <ListContext.Provider value={{ styles: styles.item }}>
+    <Component {...props} className={classNames[as]}>
+      <ListContext.Provider value={{ classNames: classNames.item }}>
         {children}
       </ListContext.Provider>
-    </Box>
+    </Component>
   );
 };
 

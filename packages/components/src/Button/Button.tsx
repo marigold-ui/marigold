@@ -5,7 +5,7 @@ import { useHover } from '@react-aria/interactions';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import { FocusableDOMProps, PressEvents } from '@react-types/shared';
 
-import { Box, cn, useClassNames, useStateProps } from '@marigold/system';
+import { cn, useClassNames, useStateProps } from '@marigold/system';
 import { HtmlProps, PolymorphicComponent, PropsOf } from '@marigold/types';
 
 // Props
@@ -40,10 +40,12 @@ export const Button = forwardRef(
       onPressUp,
       fullWidth,
       excludeFromTabOrder,
+      className,
       ...props
     },
     ref
   ) => {
+    const Component = as;
     const buttonRef = useObjectRef<HTMLButtonElement>(ref as any);
     const { hoverProps, isHovered } = useHover({ isDisabled: disabled });
     const { isFocusVisible, focusProps } = useFocusRing({
@@ -69,7 +71,12 @@ export const Button = forwardRef(
       buttonRef
     );
 
-    const classNames = useClassNames({ component: 'Button', variant, size });
+    const classNames = useClassNames({
+      component: 'Button',
+      variant,
+      size,
+      className,
+    });
 
     const stateProps = useStateProps({
       active: isPressed,
@@ -78,15 +85,14 @@ export const Button = forwardRef(
     });
 
     return (
-      <Box
+      <Component
         {...mergeProps(buttonProps, focusProps, hoverProps, props)}
         {...stateProps}
-        as={as}
         ref={buttonRef}
         className={cn(classNames, fullWidth ? 'w-full' : undefined)}
       >
         {children}
-      </Box>
+      </Component>
     );
   }
 ) as PolymorphicComponent<'button', ButtonOwnProps>;
