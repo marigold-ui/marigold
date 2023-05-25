@@ -104,8 +104,6 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
       error,
     });
 
-    console.log(stateProps);
-
     return (
       <label
         className={cn(
@@ -124,14 +122,8 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
           )}
           {...mergeProps(inputProps, focusProps)}
         />
-        <Icon
-          checked={inputProps.checked}
-          className={classNames.radio}
-          {...stateProps}
-        />
-        <div className={classNames.label} {...stateProps}>
-          {props.children}
-        </div>
+        <Icon checked={inputProps.checked} className={classNames.radio} />
+        <div className={classNames.label}>{props.children}</div>
       </label>
     );
   }
