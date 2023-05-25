@@ -151,7 +151,9 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     /* eslint-enable react-hooks/rules-of-hooks */
 
     const classNames = useClassNames({ component: 'Checkbox', variant, size });
-    const { hoverProps, isHovered } = useHover({});
+    const { hoverProps, isHovered } = useHover({
+      isDisabled: inputProps.disabled,
+    });
     const { isFocusVisible, focusProps } = useFocusRing();
     const stateProps = useStateProps({
       hover: isHovered,
@@ -166,7 +168,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     return (
       <label
         className={cn(
-          'relative flex items-center gap-[1ch]',
+          'group/checkbox relative flex items-center gap-[1ch]',
           classNames.container
         )}
         {...hoverProps}
@@ -174,9 +176,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       >
         <input
           ref={inputRef}
-          className={`z-1 absolute left-0 top-0 h-full w-full opacity-[0.0001] ${
-            inputProps.disabled ? 'cursor-not-allowed' : 'cursor-pointer'
-          }`}
+          className="z-1 absolute left-0 top-0 h-full w-full cursor-pointer opacity-[0.0001] group-disabled/checkbox:cursor-not-allowed"
           {...inputProps}
           {...focusProps}
         />
@@ -184,12 +184,9 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           checked={inputProps.checked}
           indeterminate={indeterminate}
           className={classNames.checkbox}
-          {...stateProps}
         />
         {props.children && (
-          <div className={classNames.label} {...stateProps}>
-            {props.children}
-          </div>
+          <div className={classNames.label}>{props.children}</div>
         )}
       </label>
     );
