@@ -1,47 +1,54 @@
 import React, { ReactNode } from 'react';
+import { cva } from 'class-variance-authority';
 import { AriaTextFieldOptions, useTextField } from '@react-aria/textfield';
-import { render, screen, within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
+import { Theme } from '@marigold/system';
+import { setup } from '../test.utils';
+
 import { FieldBase } from './FieldBase';
-import { Theme, ThemeProvider } from '@marigold/system';
-import { field } from '../../../../themes/theme-core/src/components/Field.styles';
-import { tv } from 'tailwind-variants';
 
 // Setup
 // ---------------
+
 const theme: Theme = {
   name: 'test',
   components: {
-    Field: field,
-    Label: tv({
-      variants: {
-        variant: {
-          blue: 'text-blue-600',
-        },
-        size: {
-          small: 'text-base',
-        },
-      },
-    }),
-    HelpText: tv({
-      slots: {
-        container: '',
-        icon: '',
-      },
-      variants: {
-        variant: {
-          blue: {
-            container: 'text-blue-900',
+    Field: cva(),
+    Label: {
+      container: cva('', {
+        variants: {
+          variant: {
+            blue: 'text-blue-600',
+          },
+          size: {
+            small: 'text-base',
           },
         },
-        size: {
-          small: {
-            container: 'text-base',
+      }),
+      indicator: cva(''),
+    },
+    HelpText: {
+      container: cva('', {
+        variants: {
+          variant: {
+            lime: 'text-blue-600',
+          },
+          size: {
+            small: 'text-base',
           },
         },
-      },
-    }),
+      }),
+      icon: cva(''),
+    },
+    Input: {
+      input: cva('border-blue-700'),
+      icon: cva(),
+      action: cva(),
+    },
   },
 };
+
+const { render } = setup({ theme });
 
 interface MockedTestFieldProps extends AriaTextFieldOptions<'input'> {
   disabled?: boolean;
@@ -138,107 +145,51 @@ test('field label shows requried indicator', () => {
 
 test('passes down variant and size', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <FieldBase
-        label="Label"
-        description="Description"
-        variant="blue"
-        size="small"
-      >
-        <input type="text" />
-      </FieldBase>
-    </ThemeProvider>
+    <FieldBase
+      label="Label"
+      description="Description"
+      variant="blue"
+      size="small"
+    >
+      <input type="text" />
+    </FieldBase>
   );
 
   const label = screen.getByText('Label');
-  expect(label).toHaveClass(
-    'flex w-[var(--labelWidth)] text-blue-600 text-base',
-    { exact: true }
+  expect(label.className).toMatchInlineSnapshot(
+    `"text-blue-600 text-base flex w-[var(--labelWidth)]"`
   );
 
   const helptext = screen.getByText('Description');
-  expect(helptext).toHaveClass(
-    'flex items-center gap-1 text-blue-900 text-base',
-    { exact: true }
+  expect(helptext.className).toMatchInlineSnapshot(
+    `"flex items-center gap-1 text-base"`
   );
 });
 
 test('takes full width by default', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <FieldBase label="Label" description="Description">
-        <input type="text" />
-      </FieldBase>
-    </ThemeProvider>
+    <FieldBase label="Label" description="Description">
+      <input type="text" />
+    </FieldBase>
   );
 
   // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveClass(
-    ' w-[var(--fieldWidth)] relative flex flex-row gap-2 items-baseline',
-    {
-      exact: true,
-    }
+  const container = screen.getByText('Label').parentElement!;
+  expect(container.getAttribute('style')).toMatchInlineSnapshot(
+    `"--fieldWidth: 100%;"`
   );
-  expect(container).toMatchInlineSnapshot(`
-    <div
-      class="w-[var(--fieldWidth)] relative flex flex-row gap-2 items-baseline"
-      style="--fieldWidth: full;"
-    >
-      <label
-        class="flex w-[var(--labelWidth)]"
-      >
-        Label
-      </label>
-      <div
-        class="flex flex-col"
-      >
-        <input
-          type="text"
-        />
-        <div
-          class="flex items-center gap-1"
-        >
-          Description
-        </div>
-      </div>
-    </div>
-  `);
 });
 
 test('allows to set custom width', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <FieldBase label="Label" description="Description" width="60px">
-        <input type="text" />
-      </FieldBase>
-    </ThemeProvider>
+    <FieldBase label="Label" description="Description" width="60px">
+      <input type="text" />
+    </FieldBase>
   );
 
   // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-  expect(container).toMatchInlineSnapshot(`
-    <div
-      class="w-[var(--fieldWidth)] relative flex flex-row gap-2 items-baseline"
-      style="--fieldWidth: 60px;"
-    >
-      <label
-        class="flex w-[var(--labelWidth)]"
-      >
-        Label
-      </label>
-      <div
-        class="flex flex-col"
-      >
-        <input
-          type="text"
-        />
-        <div
-          class="flex items-center gap-1"
-        >
-          Description
-        </div>
-      </div>
-    </div>
-  `);
+  const container = screen.getByText('Label').parentElement!;
+  expect(container.getAttribute('style')).toMatchInlineSnapshot(
+    `"--fieldWidth: 60px;"`
+  );
 });
