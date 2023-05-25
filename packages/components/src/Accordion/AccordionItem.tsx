@@ -59,7 +59,7 @@ export const AccordionItem = ({
   const classNames = useClassNames({ component: 'Accordion', variant, size });
 
   return (
-    <div {...props}>
+    <div className="flex flex-col" {...props}>
       <FocusRing within>
         <Button
           className={classNames.button}
@@ -68,7 +68,6 @@ export const AccordionItem = ({
           aria-label={item.textValue}
         >
           {title}
-
           {!expanded ? (
             <SVG viewBox="0 0 24 24" aria-hidden={true}>
               <path d="M5.97563 7.125L12 13.1363L18.0244 7.125L19.875 8.97563L12 16.8506L4.125 8.97563L5.97563 7.125Z" />

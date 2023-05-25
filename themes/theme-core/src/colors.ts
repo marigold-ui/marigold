@@ -10,6 +10,10 @@ export const colors = {
   input: {
     border: '#aaa',
   },
+  accordion: {
+    button: '#F0EFEB',
+    item: '#E6E5E2',
+  },
   button: {
     base: {
       text: '#4b4b4b',
