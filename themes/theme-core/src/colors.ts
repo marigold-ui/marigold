@@ -59,6 +59,26 @@ export const colors = {
       border: '#cfcfcf',
     },
   },
+  slider: {
+    track: {
+      background: '#e3e3e3',
+    },
+    thumb: {
+      border: '#4b4b4b',
+      background: '#ffffff',
+      focus: '#fa8005',
+      disabled: {
+        border: '#cccccc',
+        background: '#cccccc',
+      },
+    },
+    label: {
+      text: '#511e04',
+    },
+    ouput: {
+      text: '#511e04',
+    },
+  },
   checkbox: {
     base: {
       border: '#cccccc',
@@ -90,6 +110,7 @@ export const colors = {
   disabled: {
     text: '#cccccc',
     bg: '#e3e3e3',
+    border: '#cccccc',
   },
   info: {
     text: '#e8f4fa',
