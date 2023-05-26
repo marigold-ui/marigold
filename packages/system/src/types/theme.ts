@@ -49,6 +49,10 @@ export type Theme = {
       'container' | 'list' | 'option' | 'section' | 'sectionTitle',
       ComponentStyleFunction<string, string>
     >;
+    Radio?: Record<
+      'container' | 'label' | 'radio',
+      ComponentStyleFunction<string, string>
+    >;
     Slider?: Record<
       'track' | 'thumb' | 'label' | 'output',
       ComponentStyleFunction<string, string>

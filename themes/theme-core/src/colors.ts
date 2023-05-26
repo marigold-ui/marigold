@@ -105,6 +105,13 @@ export const colors = {
       },
     },
   },
+  radio: {
+    hover: '#8d8d8d',
+    border: '#cccccc',
+    focus: '#3ab3d5',
+    checked: '#3ab3d5',
+    checkedBorder: '#1d67b6',
+  },
   // Status colors
   error: {
     text: '#f33',
