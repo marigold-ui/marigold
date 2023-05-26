@@ -79,7 +79,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
       >
         <input
           ref={inputRef}
-          className="absolute left-0 top-0 z-[1] h-full w-full opacity-[0.0001] disabled:cursor-not-allowed"
+          className="absolute left-0 top-0 z-[1] h-full w-full cursor-pointer opacity-[0.0001] disabled:cursor-not-allowed"
           {...inputProps}
           {...focusProps}
         />
@@ -95,7 +95,9 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           <div
             className={cn(
               'h-[22px] w-[22px]',
-              'cubic-bezier(.7, 0, .3, 1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-0 block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform',
+              'cubic-bezier(.7,0,.3,1) checked:translate-x-[calc(47px - 100%)]',
+              'absolute left-0 top-px',
+              'block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform',
               'group-selected/switch:translate-x-[calc(47px_-_100%)]',
               classNames.thumb
             )}

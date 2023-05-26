@@ -5,8 +5,8 @@ export const Switch: ThemeComponent<'Switch'> = {
   container: cva(),
   track: cva(
     [
-      'bg-white shadow-[inset_0_0_0_1px] shadow-switch-track-shadow',
-      'mg-selected:bg-switch-track-primary mg-selected:shadow-switch-track-checked',
+      'bg-switch-track-background shadow-[0_0_0_1px] shadow-switch-track-shadow',
+      'group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked',
       'mg-disabled:opacity-[0.5] disabled:bg-dis',
       'focus:outline-none focus:outline-offset[3]',
       'focus:outline-switch-track-outline-focus',
@@ -19,15 +19,12 @@ export const Switch: ThemeComponent<'Switch'> = {
       },
     }
   ),
-  thumb: cva(
-    ['bg-root-body', 'shadow-[inset_1_1px_4px] shadow-switch-thumb-shadow'],
-    {
-      variants: {
-        size: {
-          large: 'top-2 w-[44] h-[44] checked:translate-x-[calc(95px_-_44px)]',
-        },
+  thumb: cva(['bg-switch-track-background', 'shadow-[1px_1px_4px]'], {
+    variants: {
+      size: {
+        large: 'top-2 w-[44] h-[44] ',
       },
-    }
-  ),
+    },
+  }),
   label: cva(''),
 };
