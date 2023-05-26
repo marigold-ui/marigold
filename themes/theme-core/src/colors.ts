@@ -86,6 +86,7 @@ export const colors = {
       background: '#f3f3f3',
       checked: '#ae440a',
       shadow: '#cccccc',
+      disabled: '#e3e3e3',
       primary: '#fa8005',
       outline: {
         focus: '#3ab3d5',

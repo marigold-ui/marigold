@@ -101,7 +101,6 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
               'group-selected/switch:translate-x-[calc(47px_-_100%)]',
               classNames.thumb
             )}
-            {...stateProps}
           />
         </div>
       </label>

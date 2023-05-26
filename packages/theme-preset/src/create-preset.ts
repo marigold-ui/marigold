@@ -37,13 +37,13 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
                 : `:merge(.group)[data-${value}] &`,
             {
               values: {
-                disabled: 'disabled',
                 focus: 'focus',
                 hover: 'hover',
                 error: 'error',
                 readonly: 'read-only',
                 required: 'required',
                 selected: 'selected',
+                disabled: 'disabled',
               },
             }
           );

@@ -13,9 +13,10 @@ const theme: Theme = {
       container: cva(),
       track: cva(
         [
-          'border-input-border border bg-white shadow-[inset_0px_0px_1px',
-          'checked:bg-switch-track-primary checked:shadow-switch-track-checked',
-          'disabled:opacity-[0.5] disabled:shadow-switch-track-shadow disabled:bg-switch-track-shadow focus:outline-none focus:outline-offset[3]',
+          'bg-switch-track-background shadow-[0_0_0_1px] shadow-switch-track-shadow',
+          'group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked',
+          'mg-disabled:opacity-[0.5] disabled:bg-dis',
+          'focus:outline-none focus:outline-offset[3]',
           'focus:outline-switch-track-outline-focus',
         ],
         {
@@ -26,19 +27,13 @@ const theme: Theme = {
           },
         }
       ),
-      thumb: cva(
-        ['bg-root-body', 'h-4 w-4'],
-
-        // 'shadow-[inset_1px_1px_4px] shadow-switch-thumb-shadow disabled:bg-switch-thumb-disabled',
-        {
-          variants: {
-            size: {
-              large:
-                'top-2 w-[44] h-[44] checked:translate-x-[calc(95px_-_44px)]',
-            },
+      thumb: cva(['bg-switch-track-background', 'shadow-[1px_1px_4px]'], {
+        variants: {
+          size: {
+            large: 'top-2 w-[44] h-[44] ',
           },
-        }
-      ),
+        },
+      }),
       label: cva(''),
     },
   },
