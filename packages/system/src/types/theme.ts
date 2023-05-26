@@ -56,6 +56,10 @@ export type Theme = {
       'container' | 'list' | 'option' | 'section' | 'sectionTitle',
       ComponentStyleFunction<string, string>
     >;
+    Menu?: Record<
+      'container' | 'section' | 'item',
+      ComponentStyleFunction<string, string>
+    >;
     Radio?: Record<
       'container' | 'label' | 'radio',
       ComponentStyleFunction<string, string>

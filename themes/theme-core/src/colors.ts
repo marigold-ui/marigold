@@ -136,6 +136,9 @@ export const colors = {
     bg: '#3875d7',
     bgImage: 'linear-gradient(#3875d7 20%, #2a62bc 90%)',
   },
+  hover: {
+    bg: '#3ab3d5',
+  },
   warning: {
     text: '#d80',
     border: '#d80',
