@@ -4,7 +4,7 @@ import { useMenuSection } from '@react-aria/menu';
 import { Key } from 'react';
 import { MenuItem } from './MenuItem';
 import { Node } from '@react-types/shared';
-import { useClassNames, cn } from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 import { Divider } from '../Divider';
 
 interface MenuSectionProps<T> {
