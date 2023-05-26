@@ -33,7 +33,10 @@ export type Theme = {
     Footer?: ComponentStyleFunction<string, string>;
     Header?: ComponentStyleFunction<string, string>;
     Headline?: ComponentStyleFunction<string, string>;
-    HelpText?: ComponentStyleFunction<string, string>;
+    HelpText?: Record<
+      'container' | 'icon',
+      ComponentStyleFunction<string, string>
+    >;
     Image?: ComponentStyleFunction<string, string>;
     Input?: Record<
       'input' | 'icon' | 'action',
@@ -47,6 +50,10 @@ export type Theme = {
     Link?: ComponentStyleFunction<string, string>;
     ListBox?: Record<
       'container' | 'list' | 'option' | 'section' | 'sectionTitle',
+      ComponentStyleFunction<string, string>
+    >;
+    Radio?: Record<
+      'container' | 'label' | 'radio',
       ComponentStyleFunction<string, string>
     >;
     Slider?: Record<
@@ -64,6 +71,10 @@ export type Theme = {
     >;
     Text?: ComponentStyleFunction<string, string>;
     TextArea?: ComponentStyleFunction<string, string>;
+    Tooltip?: Record<
+      'container' | 'arrow',
+      ComponentStyleFunction<string, string>
+    >;
     Underlay?: ComponentStyleFunction<string, string>;
   };
 };

@@ -10,6 +10,10 @@ export const colors = {
   input: {
     border: '#aaa',
   },
+  accordion: {
+    button: '#F0EFEB',
+    item: '#E6E5E2',
+  },
   button: {
     base: {
       text: '#4b4b4b',
@@ -100,6 +104,13 @@ export const colors = {
         textColor: '#511e04',
       },
     },
+  },
+  radio: {
+    hover: '#8d8d8d',
+    border: '#cccccc',
+    focus: '#3ab3d5',
+    checked: '#3ab3d5',
+    checkedBorder: '#1d67b6',
   },
   // Status colors
   error: {
