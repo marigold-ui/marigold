@@ -105,6 +105,22 @@ export const colors = {
       },
     },
   },
+  switch: {
+    track: {
+      background: '#f3f3f3',
+      checked: '#ae440a',
+      shadow: '#cccccc',
+      disabled: '#e3e3e3',
+      primary: '#fa8005',
+      outline: {
+        focus: '#3ab3d5',
+      },
+    },
+    thumb: {
+      shadow: 'rgba(0, 0, 0, 0.25)',
+      disabled: '#f3f3f3',
+    },
+  },
   dialog: {
     bg: '#ecebe6',
   },

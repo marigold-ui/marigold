@@ -37,7 +37,6 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
                 : `:merge(.group)[data-${value}] &`,
             {
               values: {
-                disabled: 'disabled',
                 focus: 'focus',
                 hover: 'hover',
                 error: 'error',
@@ -45,6 +44,7 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
                 required: 'required',
                 selected: 'selected',
                 checked: 'checked',
+                disabled: 'disabled',
               },
             }
           );
