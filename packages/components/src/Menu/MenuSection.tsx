@@ -4,67 +4,36 @@ import { useMenuSection } from '@react-aria/menu';
 import { Key } from 'react';
 import { MenuItem } from './MenuItem';
 import { Node } from '@react-types/shared';
-import { useSeparator } from '@react-aria/separator';
-import { Box, CSSObject, useComponentStyles } from '@marigold/system';
+import { useClassNames } from '@marigold/system';
+import { Divider } from '../Divider';
 
 interface MenuSectionProps<T> {
   item: Node<T>;
   state: TreeState<T>;
   onAction?: (key: Key) => void;
-  css?: CSSObject;
 }
 
-const MenuSection = ({
-  onAction,
-  item,
-  state,
-  css,
-}: MenuSectionProps<object>) => {
+const MenuSection = ({ onAction, item, state }: MenuSectionProps<object>) => {
   let { itemProps, headingProps, groupProps } = useMenuSection({
     heading: item.rendered,
     'aria-label': item['aria-label'],
   });
-  let { separatorProps } = useSeparator({
-    elementType: 'li',
-  });
 
-  const styles = useComponentStyles('Menu', {}, { parts: ['item'] });
+  const className = useClassNames({ component: 'Menu' });
   return (
     <>
       {item.key !== state.collection.getFirstKey() && (
-        <Box
-          as="li"
-          {...separatorProps}
-          __baseCSS={{
-            borderTop: '1px solid gray',
-            margin: '2px 5px',
-          }}
-        />
+        <li>
+          <Divider />
+        </li>
       )}
-      <Box as="li" {...itemProps}>
+      <li {...itemProps}>
         {item.rendered && (
-          <Box
-            as="span"
-            {...headingProps}
-            __baseCSS={{
-              fontWeight: 'normal',
-              padding: '4px 16px',
-              fontSize: 'xxsmall',
-              color: 'gray50',
-            }}
-          >
+          <span {...headingProps} className={className.section}>
             {item.rendered}
-          </Box>
+          </span>
         )}
-        <Box
-          as="ul"
-          {...groupProps}
-          style={{
-            padding: 0,
-            listStyle: 'none',
-          }}
-          css={css}
-        >
+        <ul {...groupProps} className="pb-1">
           {[...item.childNodes].map(node => {
             let item = (
               <MenuItem
@@ -72,13 +41,13 @@ const MenuSection = ({
                 item={node}
                 state={state}
                 onAction={onAction}
-                css={styles.item}
+                className={className.item}
               />
             );
             return item;
           })}
-        </Box>
-      </Box>
+        </ul>
+      </li>
     </>
   );
 };

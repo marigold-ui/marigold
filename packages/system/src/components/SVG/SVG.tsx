@@ -16,17 +16,15 @@ export interface SVGProps extends Omit<HtmlProps<'svg'>, 'fill'> {
 }
 
 export const SVG = forwardRef<SVGSVGElement, SVGProps>(
-  ({ size = 24, children, className, ...props }, ref) => {
-    return (
-      <svg
-        {...props}
-        ref={ref}
-        width={`${toDimension(props.width || size)}px`}
-        height={`${toDimension(props.height || size)}px`}
-        className={cn('flex-none fill-current', className)}
-      >
-        {children}
-      </svg>
-    );
-  }
+  ({ size = 24, children, className, ...props }, ref) => (
+    <svg
+      {...props}
+      ref={ref}
+      width={`${toDimension(props.width || size)}px`}
+      height={`${toDimension(props.height || size)}px`}
+      className={cn('flex-none fill-current', className)}
+    >
+      {children}
+    </svg>
+  )
 );

@@ -19,9 +19,13 @@ const meta = {
     orientation: {
       control: {
         type: 'select',
-        options: ['horizontal', 'vertical'],
       },
+      options: ['horizontal', 'vertical'],
       description: 'Orientation',
+      table: {
+        type: { summary: 'select' },
+        defaultValue: { summary: 'vertical' },
+      },
     },
     required: {
       control: {
