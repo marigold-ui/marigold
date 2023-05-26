@@ -1,5 +1,5 @@
 import React from 'react';
-import { Preview, StoryFn } from '@storybook/react';
+import { Preview } from '@storybook/react';
 
 import { FieldGroup, MarigoldProvider } from '@marigold/components';
 
@@ -38,7 +38,7 @@ export const decorators: any = [
     defaultTheme: core.name,
     attributeName: 'data-theme',
   }),
-  (Story: StoryFn, { globals, parameters }: any) => {
+  (Story: any, { globals, parameters }: any) => {
     const theme = globals.theme || parameters.theme || 'core';
 
     switch (theme) {
@@ -48,9 +48,7 @@ export const decorators: any = [
             {Object.keys(THEME).map(key => (
               <Frame key={key} id={key} title={`Theme "${key}"`}>
                 <MarigoldProvider theme={THEME[key as ThemeNames]}>
-                  <div className="p-4">
-                    <Story />
-                  </div>
+                  <div className="p-4">{Story()}</div>
                 </MarigoldProvider>
               </Frame>
             ))}
@@ -61,9 +59,7 @@ export const decorators: any = [
         return (
           <MarigoldProvider theme={THEME[theme as ThemeNames]}>
             <div className="h-screen p-6">
-              <FieldGroup labelWidth="200px">
-                <Story />
-              </FieldGroup>
+              <FieldGroup labelWidth="200px">{Story()}</FieldGroup>
             </div>
           </MarigoldProvider>
         );

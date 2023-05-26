@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactElement } from 'react';
+import React, { cloneElement, forwardRef, ReactElement } from 'react';
 import { HtmlProps } from '@marigold/types';
 import { cn, useClassNames } from '@marigold/system';
 
@@ -43,32 +43,47 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
       className,
     });
 
+    const inputIcon = icon
+      ? cloneElement(icon, {
+          className: cn(
+            'pointer-events-none absolute',
+            classNames.icon,
+            icon.props.className
+          ),
+          ...icon.props,
+        })
+      : null;
+
+    const inputAction =
+      action && !props.readOnly
+        ? cloneElement(action, {
+            className: cn(
+              'absolute',
+              classNames.action,
+              action.props.className
+            ),
+            ...action.props,
+          })
+        : null;
+
     return (
-      <div className={cn('relative flex items-center', classNames.container)}>
-        {icon && (
-          <div
-            data-icon=""
-            className={cn(
-              'peer',
-              'pointer-events-none absolute',
-              classNames.icon
-            )}
-          >
-            {icon}
-          </div>
-        )}
+      <div
+        className="group/input relative flex items-center"
+        data-icon={icon && ''}
+        data-action={action && ''}
+      >
+        {inputIcon}
         <input
           {...props}
           className={cn(
+            'flex-1',
             'disabled:cursor-not-allowed',
-            // Make the input disappear
-            'flex-1 appearance-none border-none bg-transparent outline-none',
             classNames.input
           )}
           ref={ref}
           type={type}
         />
-        {action ? action : null}
+        {inputAction}
       </div>
     );
   }

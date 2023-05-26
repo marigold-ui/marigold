@@ -5,10 +5,14 @@ export const colors = {
     current: 'currentColor',
   },
   underlay: {
-    background: 'rgba(206, 212, 218, 0.5)',
+    background: 'rgba(61, 61, 61, .3)',
   },
   input: {
     border: '#aaa',
+  },
+  accordion: {
+    button: '#F0EFEB',
+    item: '#E6E5E2',
   },
   button: {
     base: {
@@ -59,6 +63,26 @@ export const colors = {
       border: '#cfcfcf',
     },
   },
+  slider: {
+    track: {
+      background: '#e3e3e3',
+    },
+    thumb: {
+      border: '#4b4b4b',
+      background: '#ffffff',
+      focus: '#fa8005',
+      disabled: {
+        border: '#cccccc',
+        background: '#cccccc',
+      },
+    },
+    label: {
+      text: '#511e04',
+    },
+    ouput: {
+      text: '#511e04',
+    },
+  },
   checkbox: {
     base: {
       border: '#cccccc',
@@ -97,24 +121,49 @@ export const colors = {
       disabled: '#f3f3f3',
     },
   },
+  dialog: {
+    bg: '#ecebe6',
+  },
+  radio: {
+    hover: '#8d8d8d',
+    border: '#cccccc',
+    focus: '#3ab3d5',
+    checked: '#3ab3d5',
+    checkedBorder: '#1d67b6',
+  },
   // Status colors
   error: {
     text: '#f33',
     bg: '#f33',
+    border: '#f33',
   },
   disabled: {
     text: '#cccccc',
     bg: '#e3e3e3',
+    border: '#cccccc',
   },
   info: {
     text: '#e8f4fa',
+    alternativText: '#008',
+    border: '#008',
     bg: '#1d67b6',
   },
   focus: {
     bg: '#3875d7',
     bgImage: 'linear-gradient(#3875d7 20%, #2a62bc 90%)',
   },
-
+  hover: {
+    bg: '#3ab3d5',
+  },
+  warning: {
+    text: '#d80',
+    border: '#d80',
+  },
+  message: {
+    container: {
+      background: '#fafafa',
+    },
+  },
   border: {
     color: '#aaa',
   },
