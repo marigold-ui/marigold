@@ -44,6 +44,7 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
                 readonly: 'read-only',
                 required: 'required',
                 selected: 'selected',
+                checked: 'checked',
               },
             }
           );

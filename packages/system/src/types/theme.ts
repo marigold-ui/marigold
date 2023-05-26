@@ -46,13 +46,31 @@ export type Theme = {
       'container' | 'indicator',
       ComponentStyleFunction<string, string>
     >;
+    List?: Record<'ol' | 'ul' | 'item', ComponentStyleFunction<string, string>>;
+    Link?: ComponentStyleFunction<string, string>;
     ListBox?: Record<
       'container' | 'list' | 'option' | 'section' | 'sectionTitle',
       ComponentStyleFunction<string, string>
     >;
+    Radio?: Record<
+      'container' | 'label' | 'radio',
+      ComponentStyleFunction<string, string>
+    >;
+    Slider?: Record<
+      'track' | 'thumb' | 'label' | 'output',
+      ComponentStyleFunction<string, string>
+    >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
+    Message?: Record<
+      'container' | 'icon' | 'title' | 'content',
+      ComponentStyleFunction<string, string>
+    >;
     Text?: ComponentStyleFunction<string, string>;
     TextArea?: ComponentStyleFunction<string, string>;
+    Tooltip?: Record<
+      'container' | 'arrow',
+      ComponentStyleFunction<string, string>
+    >;
     Underlay?: ComponentStyleFunction<string, string>;
   };
 };
