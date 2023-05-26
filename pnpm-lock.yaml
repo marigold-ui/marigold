@@ -640,14 +640,14 @@ importers:
   packages/system:
     dependencies:
       '@emotion/react':
-        specifier: 11.10.6
-        version: 11.10.6(@types/react@18.0.33)(react@18.2.0)
+        specifier: 11.11.0
+        version: 11.11.0(react@18.2.0)
       '@marigold/types':
         specifier: workspace:*
         version: link:../types
       '@theme-ui/css':
         specifier: 0.15.7
-        version: 0.15.7(@emotion/react@11.10.6)
+        version: 0.15.7(@emotion/react@11.11.0)
       csstype:
         specifier: 3.1.2
         version: 3.1.2
@@ -2363,6 +2363,26 @@ packages:
       '@types/react': 18.0.33
       hoist-non-react-statics: 3.3.2
       react: 18.2.0
+
+  /@emotion/react@11.11.0(react@18.2.0):
+    resolution: {integrity: sha512-ZSK3ZJsNkwfjT3JpDAWJZlrGD81Z3ytNDsxw1LKq1o+xkmO5pnWfr6gmCC8gHEFf3nSSX/09YrG67jybNPxSUw==}
+    peerDependencies:
+      '@types/react': '*'
+      react: '>=16.8.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.21.5
+      '@emotion/babel-plugin': 11.11.0
+      '@emotion/cache': 11.11.0
+      '@emotion/serialize': 1.1.2
+      '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
+      '@emotion/utils': 1.2.1
+      '@emotion/weak-memoize': 0.3.1
+      hoist-non-react-statics: 3.3.2
+      react: 18.2.0
+    dev: false
 
   /@emotion/serialize@1.1.2:
     resolution: {integrity: sha512-zR6a/fkFP4EAcCMQtLOhIgpprZOwNmCldtpaISpvz348+DP4Mz8ZoKaGGCQpbzepNIUWbq4w6hNZkwDyKoS+HA==}
@@ -5966,12 +5986,12 @@ packages:
       '@testing-library/dom': 9.2.0
     dev: false
 
-  /@theme-ui/css@0.15.7(@emotion/react@11.10.6):
+  /@theme-ui/css@0.15.7(@emotion/react@11.11.0):
     resolution: {integrity: sha512-RBCoA3ElO3+DrMPeBKcwbP668Kjj/d5z9SSxJFnfVnawKQfYK0ZNWqMnyV89XO3rZm342rCNG0uVhc19jVQifg==}
     peerDependencies:
       '@emotion/react': ^11
     dependencies:
-      '@emotion/react': 11.10.6(@types/react@18.0.33)(react@18.2.0)
+      '@emotion/react': 11.11.0(react@18.2.0)
       csstype: 3.1.2
     dev: false
 
