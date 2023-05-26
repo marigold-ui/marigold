@@ -64,17 +64,15 @@ export default meta;
 
 export const Basic: StoryObj<typeof Autocomplete> = {
   render: args => (
-    <Container size="large">
-      <Autocomplete {...args}>
-        <Autocomplete.Item key="Harry Potter">Harry Potter</Autocomplete.Item>
-        <Autocomplete.Item key="Lord of the Rings">
-          Lord of the Rings
-        </Autocomplete.Item>
-        <Autocomplete.Item key="Star Wars">Star Wars</Autocomplete.Item>
-        <Autocomplete.Item key="Star Trek">Star Trek</Autocomplete.Item>
-        <Autocomplete.Item key="Firefly">Firefly</Autocomplete.Item>
-      </Autocomplete>
-    </Container>
+    <Autocomplete {...args}>
+      <Autocomplete.Item key="Harry Potter">Harry Potter</Autocomplete.Item>
+      <Autocomplete.Item key="Lord of the Rings">
+        Lord of the Rings
+      </Autocomplete.Item>
+      <Autocomplete.Item key="Star Wars">Star Wars</Autocomplete.Item>
+      <Autocomplete.Item key="Star Trek">Star Trek</Autocomplete.Item>
+      <Autocomplete.Item key="Firefly">Firefly</Autocomplete.Item>
+    </Autocomplete>
   ),
 };
 
