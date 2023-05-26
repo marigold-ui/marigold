@@ -5,7 +5,7 @@ export const colors = {
     current: 'currentColor',
   },
   underlay: {
-    background: 'rgba(206, 212, 218, 0.5)',
+    background: 'rgba(61, 61, 61, .3)',
   },
   input: {
     border: '#aaa',
@@ -104,6 +104,9 @@ export const colors = {
         textColor: '#511e04',
       },
     },
+  },
+  dialog: {
+    bg: '#ecebe6',
   },
   radio: {
     hover: '#8d8d8d',
