@@ -51,7 +51,7 @@ export type Theme = {
     >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
     NumberField?: Record<
-      'label' | 'helpText' | 'input' | 'numberField' | 'group',
+      'group' | 'stepper',
       ComponentStyleFunction<string, string>
     >;
     Message?: Record<

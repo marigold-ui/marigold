@@ -8,7 +8,7 @@ import { useNumberFieldState } from '@react-stately/numberfield';
 import { AriaNumberFieldProps } from '@react-types/numberfield';
 
 import { HtmlProps } from '@marigold/types';
-import { useStateProps } from '@marigold/system';
+import { cn, useClassNames, useStateProps } from '@marigold/system';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { StepButton } from './StepButton';
@@ -102,7 +102,11 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
       readOnly,
       required,
     });
-
+    const classNames = useClassNames({
+      component: 'NumberField',
+      size,
+      variant,
+    });
     return (
       <FieldBase
         label={props.label}
@@ -119,13 +123,20 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
       >
         <div
           data-group
-          className="[>input]:flex-1 [>input]:min-w-0 flex items-stretch"
+          className={cn(
+            '[>input]:flex-1 [>input]:min-w-0 flex items-stretch',
+            classNames.group
+          )}
           data-testid="number-field-container"
           {...mergeProps(groupProps, focusProps, hoverProps)}
           {...stateProps}
         >
           {showStepper && (
-            <StepButton direction="down" {...decrementButtonProps} />
+            <StepButton
+              className={classNames.stepper}
+              direction="down"
+              {...decrementButtonProps}
+            />
           )}
           <Input
             ref={inputRef}
@@ -139,7 +150,11 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
             {...stateProps}
           />
           {showStepper && (
-            <StepButton direction="up" {...incrementButtonProps} />
+            <StepButton
+              className={classNames.stepper}
+              direction="up"
+              {...incrementButtonProps}
+            />
           )}
         </div>
       </FieldBase>

@@ -12,11 +12,8 @@ const theme: Theme = {
   name: 'NumberField testing',
   components: {
     NumberField: {
-      group: cva(),
-      label: cva(),
-      helpText: cva(),
-      input: cva(),
-      numberField: cva(),
+      group: cva('border border-solid rounded-sm border-black'),
+      stepper: cva('text-green-600 w-3.5'),
     },
     Field: cva(),
     Label: { container: cva(), indicator: cva() },
@@ -43,7 +40,7 @@ test('input can be styled via "Input" styles', () => {
   const numberFieldContainer = screen.getByTestId('number-field-container');
   expect(numberFieldContainer).toBeInTheDocument();
   expect(numberFieldContainer.className).toMatchInlineSnapshot(
-    `"[>input]:flex-1 [>input]:min-w-0 flex items-stretch"`
+    `"[>input]:flex-1 [>input]:min-w-0 flex items-stretch border border-solid rounded-sm border-black"`
   );
 });
 
@@ -52,15 +49,15 @@ test('group and stepper can styled via "NumberField" styles', () => {
 
   const group = screen.getByRole('group');
   expect(group.className).toMatchInlineSnapshot(
-    `"[>input]:flex-1 [>input]:min-w-0 flex items-stretch"`
+    `"[>input]:flex-1 [>input]:min-w-0 flex items-stretch border border-solid rounded-sm border-black"`
   );
 
   const steppers = within(group).getAllByRole('button');
   expect(steppers[0].className).toMatchInlineSnapshot(
-    `"flex cursor-pointer items-center justify-center disabled:cursor-not-allowed"`
+    `"flex items-center justify-center mg-disabled:cursor-not-allowed cursor-pointer text-green-600 w-3.5"`
   );
   expect(steppers[1].className).toMatchInlineSnapshot(
-    `"flex cursor-pointer items-center justify-center disabled:cursor-not-allowed"`
+    `"flex items-center justify-center mg-disabled:cursor-not-allowed cursor-pointer text-green-600 w-3.5"`
   );
 });
 
