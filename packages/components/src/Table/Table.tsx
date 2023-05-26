@@ -11,10 +11,7 @@ import {
   useTableState,
 } from '@react-stately/table';
 
-import { tv } from 'tailwind-variants';
-import { twMerge } from 'tailwind-merge';
-
-import { useComponentStylesFromTV } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 
 import { TableContext } from './Context';
 import { TableBody } from './TableBody';
@@ -60,27 +57,23 @@ export const Table: Table = ({
   });
   const { gridProps } = useTable(props, state, tableRef);
 
-  const classNames = useComponentStylesFromTV('Table', {
+  const classNames = useClassNames({
+    component: 'Table',
     variant,
     size,
-    slots: ['table', 'header', 'row', 'cell'],
   });
 
   const { collection } = state;
-
-  const styledTable = tv({
-    base: [
-      stretch ? 'table' : 'block',
-      stretch ? 'w-full' : undefined,
-      'border-collapse overflow-auto whitespace-nowrap',
-    ],
-  });
 
   return (
     <TableContext.Provider value={{ state, interactive, classNames }}>
       <table
         ref={tableRef}
-        className={twMerge(styledTable(), classNames.table())}
+        className={cn(
+          'border-collapse overflow-auto whitespace-nowrap',
+          stretch ? 'table w-full' : 'block',
+          classNames.table
+        )}
         {...gridProps}
       >
         <TableHeader>
