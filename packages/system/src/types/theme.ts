@@ -33,7 +33,10 @@ export type Theme = {
     Footer?: ComponentStyleFunction<string, string>;
     Header?: ComponentStyleFunction<string, string>;
     Headline?: ComponentStyleFunction<string, string>;
-    HelpText?: ComponentStyleFunction<string, string>;
+    HelpText?: Record<
+      'container' | 'icon',
+      ComponentStyleFunction<string, string>
+    >;
     Image?: ComponentStyleFunction<string, string>;
     Input?: Record<
       'input' | 'icon' | 'action',
