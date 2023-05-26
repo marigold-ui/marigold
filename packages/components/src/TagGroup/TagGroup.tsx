@@ -3,7 +3,7 @@ import { useTagGroup, AriaTagGroupProps } from '@react-aria/tag';
 import { useListState } from '@react-stately/list';
 import { LabelableProps, HelpTextProps } from '@react-types/shared';
 
-import { Box, useStateProps } from '@marigold/system';
+import { useStateProps } from '@marigold/system';
 import { FieldBase } from '../FieldBase';
 import { Tag } from './Tag';
 
@@ -41,45 +41,40 @@ export const TagGroup = ({
 
   const stateProps = useStateProps({
     error,
+    required,
   });
 
   return (
-    <div ref={inputRef}>
-      <FieldBase
-        width={width}
-        label={props.label}
-        labelProps={labelProps}
-        description={props.description}
-        descriptionProps={descriptionProps}
-        error={error}
-        errorMessage={props.errorMessage}
-        errorMessageProps={errorMessageProps}
-        stateProps={stateProps}
-        required={required}
-        {...gridProps}
+    <FieldBase
+      width={width}
+      label={props.label}
+      labelProps={labelProps}
+      description={props.description}
+      descriptionProps={descriptionProps}
+      error={error}
+      errorMessage={props.errorMessage}
+      errorMessageProps={errorMessageProps}
+      stateProps={stateProps}
+      {...gridProps}
+    >
+      <div
+        role="presentation"
+        ref={inputRef}
+        className="flex flex-wrap items-start gap-1"
       >
-        <Box
-          role="presentation"
-          __baseCSS={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'start',
-          }}
-        >
-          {[...state.collection].map(item => (
-            <Tag
-              {...item.props}
-              key={item.key}
-              item={item}
-              state={state}
-              allowsRemoving={props.allowsRemoving}
-              onRemove={props.onRemove}
-            >
-              {item.rendered}
-            </Tag>
-          ))}
-        </Box>
-      </FieldBase>
-    </div>
+        {[...state.collection].map(item => (
+          <Tag
+            {...item.props}
+            key={item.key}
+            item={item}
+            state={state}
+            allowsRemoving={props.allowsRemoving}
+            onRemove={props.onRemove}
+          >
+            {item.rendered}
+          </Tag>
+        ))}
+      </div>
+    </FieldBase>
   );
 };

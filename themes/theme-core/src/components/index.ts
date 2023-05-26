@@ -23,6 +23,7 @@ export * from './Radio.styles';
 export * from './Select.styles';
 export * from './Slider.style';
 export * from './Table.styles';
+export * from './Tag.styles';
 export * from './Text.styles';
 export * from './TextArea.styles';
 export * from './Tooltip.styles';

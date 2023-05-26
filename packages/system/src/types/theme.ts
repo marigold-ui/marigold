@@ -77,6 +77,10 @@ export type Theme = {
       'container' | 'icon' | 'title' | 'content',
       ComponentStyleFunction<string, string>
     >;
+    Tag?: Record<
+      'tag' | 'gridCell' | 'closeButton',
+      ComponentStyleFunction<string, string>
+    >;
     Text?: ComponentStyleFunction<string, string>;
     TextArea?: ComponentStyleFunction<string, string>;
     Tooltip?: Record<

@@ -4,17 +4,8 @@ import { useFocusRing } from '@react-aria/focus';
 
 import { Button } from '../Button';
 import { ListState } from '@react-stately/list';
-import {
-  Box,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-} from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 import { mergeProps } from '@react-aria/utils';
-
-// Theme Extension
-// ---------------
-export interface TagThemeExtension
-  extends ThemeExtensionsWithParts<'Tag', ['tag', 'gridCell', 'closeButton']> {}
 
 // Props
 // ---------------
@@ -56,23 +47,22 @@ export const Tag = ({
     ref
   );
 
-  const styles = useComponentStyles(
-    'Tag',
-    { variant, size },
-    { parts: ['tag', 'gridCell', 'closeButton'] }
-  );
+  const classNames = useClassNames({ component: 'Tag', variant, size });
 
   return (
-    <Box
-      as="span"
+    <span
       ref={ref}
       {...mergeProps(rowProps, focusProps)}
-      css={styles.tag}
+      className={classNames.tag}
     >
-      <Box as="div" {...gridCellProps} css={styles.gridCell}>
+      <div {...gridCellProps} className={classNames.gridCell}>
         <span {...labelProps}>{item.rendered}</span>
         {allowsRemoving && (
-          <Box as={Button} {...removeButtonProps} css={styles.closeButton}>
+          <Button
+            {...removeButtonProps}
+            className={classNames.closeButton}
+            role="button"
+          >
             <svg viewBox="0 0 20 20" fill="currentColor">
               <path
                 fillRule="evenodd"
@@ -80,9 +70,9 @@ export const Tag = ({
                 d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               ></path>
             </svg>
-          </Box>
+          </Button>
         )}
-      </Box>
-    </Box>
+      </div>
+    </span>
   );
 };
