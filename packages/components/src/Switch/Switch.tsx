@@ -71,10 +71,10 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
       <label
         className={cn(
           'group/switch',
-          'w-[var(--fieldWidth)]',
+          'w-[var(--switchWidth)]',
           'relative flex items-center justify-between gap-[1ch]'
         )}
-        style={createVar({ fieldWidth: width })}
+        style={createVar({ switchWidth: width })}
         {...stateProps}
       >
         <input

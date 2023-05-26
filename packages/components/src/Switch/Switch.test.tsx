@@ -62,26 +62,25 @@ test('supports base styling', () => {
 
   expect(label.className).toMatchInlineSnapshot(`""`);
   expect(container.className).toMatchInlineSnapshot(
-    `"group/switch relative flex items-center justify-between gap-[1ch]"`
+    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
   );
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl border-input-border border bg-white shadow-[inset_0px_0px_1px checked:bg-switch-track-primary checked:shadow-switch-track-checked disabled:opacity-[0.5] disabled:shadow-switch-track-shadow disabled:bg-switch-track-shadow focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-[0_0_0_1px] shadow-switch-track-shadow group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
   );
   expect(thumb.className).toMatchInlineSnapshot(
-    `"cubic-bezier(.7, 0, .3, 1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-0 block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-root-body h-4 w-4"`
+    `"h-[22px] w-[22px] cubic-bezier(.7,0,.3,1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-px block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-switch-track-background shadow-[1px_1px_4px]"`
   );
 });
 
 test('supports a custom variant', () => {
   render(<Switch variant="custom">Label</Switch>);
-  const { container, track, thumb } = getSwitchParts();
+  const { track, thumb } = getSwitchParts();
 
-  expect(container.className).toMatchSnapshot();
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl border-input-border border bg-white shadow-[inset_0px_0px_1px checked:bg-switch-track-primary checked:shadow-switch-track-checked disabled:opacity-[0.5] disabled:shadow-switch-track-shadow disabled:bg-switch-track-shadow focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-[0_0_0_1px] shadow-switch-track-shadow group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
   );
   expect(thumb.className).toMatchInlineSnapshot(
-    `"cubic-bezier(.7, 0, .3, 1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-0 block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-root-body h-4 w-4"`
+    `"h-[22px] w-[22px] cubic-bezier(.7,0,.3,1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-px block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-switch-track-background shadow-[1px_1px_4px]"`
   );
 });
 
@@ -90,7 +89,7 @@ test('supports a size', () => {
   const { track } = getSwitchParts();
 
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl border-input-border border bg-white shadow-[inset_0px_0px_1px checked:bg-switch-track-primary checked:shadow-switch-track-checked disabled:opacity-[0.5] disabled:shadow-switch-track-shadow disabled:bg-switch-track-shadow focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-[0_0_0_1px] shadow-switch-track-shadow group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
   );
 });
 
@@ -98,14 +97,14 @@ test('takes full width by default', () => {
   render(<Switch>Label</Switch>);
   const { container } = getSwitchParts();
   expect(container.className).toMatchInlineSnapshot(
-    `"group/switch relative flex items-center justify-between gap-[1ch]"`
+    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
   );
 });
 
 test('allows to set width via prop', () => {
-  render(<Switch width="large">Label</Switch>);
+  render(<Switch width="500px">Label</Switch>);
   const { container } = getSwitchParts();
-  expect(container.className).toMatchSnapshot();
+  expect(container).toHaveAttribute('style', '--switchWidth: 500px;');
 });
 
 test('supports disabled prop', () => {
@@ -114,10 +113,10 @@ test('supports disabled prop', () => {
 
   expect(input).toBeDisabled();
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl border-input-border border bg-white shadow-[inset_0px_0px_1px checked:bg-switch-track-primary checked:shadow-switch-track-checked disabled:opacity-[0.5] disabled:shadow-switch-track-shadow disabled:bg-switch-track-shadow focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-[0_0_0_1px] shadow-switch-track-shadow group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
   );
   expect(thumb.className).toMatchInlineSnapshot(
-    `"cubic-bezier(.7, 0, .3, 1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-0 block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-root-body h-4 w-4"`
+    `"h-[22px] w-[22px] cubic-bezier(.7,0,.3,1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-px block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-switch-track-background shadow-[1px_1px_4px]"`
   );
 });
 
@@ -134,13 +133,13 @@ test('toggle switch per click', () => {
 
   fireEvent.click(input);
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl border-input-border border bg-white shadow-[inset_0px_0px_1px checked:bg-switch-track-primary checked:shadow-switch-track-checked disabled:opacity-[0.5] disabled:shadow-switch-track-shadow disabled:bg-switch-track-shadow focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-[0_0_0_1px] shadow-switch-track-shadow group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
   );
   expect(input.checked).toBeTruthy();
 
   fireEvent.click(input);
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl border-input-border border bg-white shadow-[inset_0px_0px_1px checked:bg-switch-track-primary checked:shadow-switch-track-checked disabled:opacity-[0.5] disabled:shadow-switch-track-shadow disabled:bg-switch-track-shadow focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-[0_0_0_1px] shadow-switch-track-shadow group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
   );
   expect(input.checked).toBeFalsy();
 });

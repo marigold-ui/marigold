@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`allows to set width via prop 1`] = `"group/switch relative flex items-center justify-between gap-[1ch]"`;
-
-exports[`supports a custom variant 1`] = `"group/switch relative flex items-center justify-between gap-[1ch]"`;
