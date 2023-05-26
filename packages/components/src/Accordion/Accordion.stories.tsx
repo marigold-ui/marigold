@@ -50,14 +50,14 @@ let items = [
   {
     key: 'one',
     title: (
-      <Inline space="medium">
+      <Inline space={3}>
         <Parking />
-        <Text fontStyle="bold">Parking passes</Text>
+        <Text weight="bold">Parking passes</Text>
       </Inline>
     ),
     children: (
-      <FieldGroup labelWidth="medium">
-        <Columns columns={[2, 2]} space="medium">
+      <FieldGroup labelWidth="100px">
+        <Columns columns={[2, 2]} space={3}>
           <TextField
             label="Parking Slots"
             description="Available parking passes"
@@ -78,13 +78,13 @@ let items = [
   {
     key: 'two',
     title: (
-      <Inline space="medium">
+      <Inline space={3}>
         <SettingDots />
-        <Text fontStyle="bold">Settings</Text>
+        <Text weight="bold">Settings</Text>
       </Inline>
     ),
     children: (
-      <FieldGroup labelWidth="medium">
+      <FieldGroup labelWidth="100px">
         <TextField
           label="Parking Stations"
           description="Available parking stations"
@@ -95,14 +95,14 @@ let items = [
   {
     key: 'three',
     title: (
-      <Inline space="medium">
+      <Inline space={3}>
         <Accessible />
-        <Text fontStyle="bold">Handicapped parking spaces</Text>
+        <Text weight="bold">Handicapped parking spaces</Text>
       </Inline>
     ),
     children: (
-      <FieldGroup labelWidth="medium">
-        <Columns columns={[2, 2]} space="medium">
+      <FieldGroup labelWidth="100px">
+        <Columns columns={[2, 2]} space={3}>
           <TextField
             label="Parking Slots"
             description="Available parking passes"

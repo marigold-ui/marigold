@@ -5,10 +5,14 @@ export const colors = {
     current: 'currentColor',
   },
   underlay: {
-    background: 'rgba(206, 212, 218, 0.5)',
+    background: 'rgba(61, 61, 61, .3)',
   },
   input: {
     border: '#aaa',
+  },
+  accordion: {
+    button: '#F0EFEB',
+    item: '#E6E5E2',
   },
   button: {
     base: {
@@ -100,6 +104,16 @@ export const colors = {
         textColor: '#511e04',
       },
     },
+  },
+  dialog: {
+    bg: '#ecebe6',
+  },
+  radio: {
+    hover: '#8d8d8d',
+    border: '#cccccc',
+    focus: '#3ab3d5',
+    checked: '#3ab3d5',
+    checkedBorder: '#1d67b6',
   },
   // Status colors
   error: {

@@ -28,12 +28,19 @@ export type Theme = {
     Body?: ComponentStyleFunction<string, string>;
     Button?: ComponentStyleFunction<string, string>;
     Card?: ComponentStyleFunction<string, string>;
+    Dialog?: Record<
+      'closeButton' | 'container',
+      ComponentStyleFunction<string, string>
+    >;
     Divider?: ComponentStyleFunction<string, string>;
     Field?: ComponentStyleFunction<string, string>;
     Footer?: ComponentStyleFunction<string, string>;
     Header?: ComponentStyleFunction<string, string>;
     Headline?: ComponentStyleFunction<string, string>;
-    HelpText?: ComponentStyleFunction<string, string>;
+    HelpText?: Record<
+      'container' | 'icon',
+      ComponentStyleFunction<string, string>
+    >;
     Image?: ComponentStyleFunction<string, string>;
     Input?: Record<
       'input' | 'icon' | 'action',
@@ -53,6 +60,10 @@ export type Theme = {
       'container' | 'section' | 'item',
       ComponentStyleFunction<string, string>
     >;
+    Radio?: Record<
+      'container' | 'label' | 'radio',
+      ComponentStyleFunction<string, string>
+    >;
     Slider?: Record<
       'track' | 'thumb' | 'label' | 'output',
       ComponentStyleFunction<string, string>
@@ -64,6 +75,10 @@ export type Theme = {
     >;
     Text?: ComponentStyleFunction<string, string>;
     TextArea?: ComponentStyleFunction<string, string>;
+    Tooltip?: Record<
+      'container' | 'arrow',
+      ComponentStyleFunction<string, string>
+    >;
     Underlay?: ComponentStyleFunction<string, string>;
   };
 };
