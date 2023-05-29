@@ -83,6 +83,7 @@ export type Theme = {
       'container' | 'arrow',
       ComponentStyleFunction<string, string>
     >;
+    Tabs?: Record<'tabs' | 'tab', ComponentStyleFunction<string, string>>;
     Underlay?: ComponentStyleFunction<string, string>;
   };
 };

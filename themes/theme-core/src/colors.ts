@@ -131,6 +131,13 @@ export const colors = {
     checked: '#3ab3d5',
     checkedBorder: '#1d67b6',
   },
+  tabs: {
+    tab: {
+      hover: '#8d8d8d',
+      text: '#8d8d8d',
+      disabled: '#cccccc',
+    },
+  },
   // Status colors
   error: {
     text: '#f33',
