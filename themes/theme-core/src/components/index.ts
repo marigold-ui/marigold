@@ -27,4 +27,5 @@ export * from './Text.styles';
 export * from './TextArea.styles';
 export * from './Tooltip.styles';
 export * from './Underlay.styles';
+export * from './NumberField';
 export * from './Switch.styles';

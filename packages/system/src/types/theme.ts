@@ -73,6 +73,10 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
+    NumberField?: Record<
+      'group' | 'stepper',
+      ComponentStyleFunction<string, string>
+    >;
     Message?: Record<
       'container' | 'icon' | 'title' | 'content',
       ComponentStyleFunction<string, string>
