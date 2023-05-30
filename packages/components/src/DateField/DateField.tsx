@@ -102,14 +102,17 @@ export const DateField = ({
       size={size}
     >
       <div
-        {...mergeProps(fieldProps, focusProps, hoverProps)}
+        {...mergeProps(fieldProps, focusProps, stateProps, hoverProps)}
         className={cn(
           'flex h-10 flex-row flex-nowrap justify-between overflow-hidden rounded-[10px]',
           classNames.field
         )}
         data-testid="date-field"
       >
-        <div className="flex basis-full items-center pl-2">
+        <div
+          ref={ref}
+          className="text-datefield-segmentText flex basis-full items-center gap-[2px] pl-2"
+        >
           {state.segments.map((segment, i) => (
             <DateSegment
               isPrevPlaceholder={state.segments[i - 1]?.isPlaceholder}

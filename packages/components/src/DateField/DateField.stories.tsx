@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { DateField, DateFieldProps } from './DateField';
 import { DateValue } from '@internationalized/date';
-import { Calendar } from '@marigold/icons';
 import { I18nProvider } from '@react-aria/i18n';
 
 const meta = {
@@ -120,12 +119,4 @@ export const ControlledDateField: Story = {
       </I18nProvider>
     );
   },
-};
-
-export const DateFieldWithIcons: Story = {
-  render: args => (
-    <I18nProvider locale="de-DE">
-      <DateField action={<Calendar />} {...args} />
-    </I18nProvider>
-  ),
 };

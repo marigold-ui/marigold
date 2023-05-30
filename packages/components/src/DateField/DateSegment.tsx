@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { DateSegment as DateSegmentInterface } from '@react-stately/datepicker';
 import { DateFieldState } from '@react-stately/datepicker';
-import { cn, useClassNames, useStateProps } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { useDateSegment } from '@react-aria/datepicker';
 import { useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
@@ -26,19 +26,25 @@ export const DateSegment = ({
 
   const classNames = useClassNames({ component: 'DateField', variant, size });
 
-  const { focusProps, isFocused } = useFocusRing({
+  const { focusProps } = useFocusRing({
     within: true,
     isTextInput: true,
   });
-  const stateProps = useStateProps({
-    disabled: state.isDisabled,
-    focusVisible: isFocused,
-  });
+
   const { isPlaceholder, placeholder, text, type, maxValue } = segment;
 
+  console.log(
+    type === 'literal'
+      ? `literal ${
+          !isPrevPlaceholder && 'activeLiteral text-datefield-segment'
+        }`
+      : '',
+    !isPrevPlaceholder,
+    type
+  );
   return (
     <div
-      {...mergeProps(segmentProps, stateProps, focusProps)}
+      {...mergeProps(segmentProps, focusProps)}
       ref={ref}
       className={cn(
         maxValue != null && `min-w-[${String(maxValue).length}ch]`,
@@ -75,11 +81,13 @@ export const DateSegment = ({
         {isPlaceholder && placeholder?.toUpperCase()}
       </span>
       <span
-        className={
+        className={cn(
           type === 'literal'
-            ? `literal  ${!isPrevPlaceholder && 'activeLiteral'}`
-            : ''
-        }
+            ? `literal ${
+                !isPrevPlaceholder && 'activeLiteral text-datefield-segment'
+              }`
+            : '[&>*:not([data-focus-visible])]:text-datefield-segment'
+        )}
       >
         {isPlaceholder
           ? ''
