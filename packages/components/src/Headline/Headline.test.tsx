@@ -13,7 +13,7 @@ const theme: Theme = {
       variants: {
         size: {
           'level-1': 'text-[2rem]',
-          'level-2': 'text-2xl mb-6',
+          'level-2': 'mb-6 text-2xl',
           'level-3': 'text-xl',
           'level-4': 'text-lg',
           'level-5': 'text-base',

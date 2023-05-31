@@ -1,9 +1,9 @@
 import { tv, type TVReturnType } from 'tailwind-variants';
 export const button: TVReturnType<any, any, any, any, any, any> = tv({
   base: [
-    'border px-4 py-0 rounded-sm border-button-base-border h-6 bg-button-base-background',
-    'text-sm leading-6 text-button-base-text',
-    'cursor-pointer transition-all duration-200 ease-ease-out',
+    'border-button-base-border bg-button-base-background h-6 rounded-sm border px-4 py-0',
+    'text-button-base-text text-sm leading-6',
+    'ease-ease-out cursor-pointer transition-all duration-200',
     'mg-disabled:cursor-none mg-disabled:border-button-disabled-border mg-disabled:bg-button-disabled-background mg-disabled:text-button-disabled-text',
     'hover:bg-secondary-50',
   ],
@@ -18,7 +18,7 @@ export const button: TVReturnType<any, any, any, any, any, any> = tv({
         'text-button-link-text',
         'hover:bg-transparent hover:underline',
       ],
-      text: ['bg-transparent border-none', 'hover:bg-button-text-hover'],
+      text: ['border-none bg-transparent', 'hover:bg-button-text-hover'],
     },
     size: {
       small: 'p-1',

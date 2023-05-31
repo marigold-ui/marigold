@@ -13,16 +13,16 @@ const theme: Theme = {
       container: cva(),
       track: cva(
         [
-          'bg-switch-track-background shadow-[0_0_0_1px] shadow-switch-track-shadow',
+          'bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px]',
           'group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked',
           'mg-disabled:opacity-[0.5] disabled:bg-dis',
-          'focus:outline-none focus:outline-offset[3]',
+          'focus:outline-offset[3] focus:outline-none',
           'focus:outline-switch-track-outline-focus',
         ],
         {
           variants: {
             size: {
-              large: 'w-[96] h-[48] rounded-[40]',
+              large: 'h-[48] w-[96] rounded-[40]',
             },
           },
         }
@@ -30,7 +30,7 @@ const theme: Theme = {
       thumb: cva(['bg-switch-track-background', 'shadow-[1px_1px_4px]'], {
         variants: {
           size: {
-            large: 'top-2 w-[44] h-[44] ',
+            large: 'top-2 h-[44] w-[44] ',
           },
         },
       }),

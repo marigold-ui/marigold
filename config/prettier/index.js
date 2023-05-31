@@ -4,6 +4,6 @@ module.exports = {
   trailingComma: 'es5',
   useTabs: false,
   tabWidth: 2,
-  // plugins: [require.resolve('prettier-plugin-tailwindcss')],
+  plugins: [require.resolve('prettier-plugin-tailwindcss')],
   pluginSearchDirs: ['.'],
 };

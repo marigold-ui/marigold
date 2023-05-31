@@ -20,9 +20,9 @@ const theme: Theme = {
         {
           variants: {
             size: {
-              small: 'pb-1 px-1',
-              medium: 'pb-2 px-2 text-lg',
-              large: 'pb-4 px-4 text-2xl',
+              small: 'px-1 pb-1',
+              medium: 'px-2 pb-2 text-lg',
+              large: 'px-4 pb-4 text-2xl',
             },
           },
         }
