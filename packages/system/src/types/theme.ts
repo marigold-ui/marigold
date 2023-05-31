@@ -42,6 +42,10 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Image?: ComponentStyleFunction<string, string>;
+    Checkbox?: Record<
+      'container' | 'label' | 'checkbox',
+      ComponentStyleFunction<string, string>
+    >;
     Switch?: Record<
       'container' | 'label' | 'track' | 'thumb',
       ComponentStyleFunction<string, string>
@@ -73,6 +77,10 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
+    NumberField?: Record<
+      'group' | 'stepper',
+      ComponentStyleFunction<string, string>
+    >;
     Message?: Record<
       'container' | 'icon' | 'title' | 'content',
       ComponentStyleFunction<string, string>
