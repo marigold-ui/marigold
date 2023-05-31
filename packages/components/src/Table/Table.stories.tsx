@@ -503,9 +503,9 @@ export const WithParentProp: Story = {
 
     return (
       <Stack>
-        {/* <Checkbox checked={editable} onChange={setEditable}>
+        <Checkbox checked={editable} onChange={setEditable}>
           Allow editing
-        </Checkbox>   */}
+        </Checkbox>
         <DataTable editable={editable} />
       </Stack>
     );
