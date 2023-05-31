@@ -3,7 +3,7 @@ import { cva } from 'class-variance-authority';
 
 export const DateField: ThemeComponent<'DateField'> = {
   segment: cva(
-    'text-datefield-segmentText group-focus/field:peer-focus-visible:text-datefield-segment focus-visible:bg-datefield-segment focus-visible:text-secondary-50'
+    'text-datefield-segmentText group-focus/field:peer-focus-visible:text-datefield-segment focus-visible:bg-datefield-segment focus-visible:text-secondary-50 '
   ),
 
   field: cva([

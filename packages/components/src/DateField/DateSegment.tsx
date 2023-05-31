@@ -61,9 +61,10 @@ export const DateSegment = ({
         className={cn(
           type === 'literal'
             ? `literal ${
-                !isPrevPlaceholder && 'activeLiteral text-datefield-segment'
+                !isPrevPlaceholder &&
+                'activeLiteral text-datefield-segment group-disabled/field:text-disabled-text'
               }`
-            : 'group-focus-visible/segment:text-secondary-50 text-datefield-segment'
+            : 'group-focus-visible/segment:text-secondary-50 text-datefield-segment group-disabled/field:text-disabled-text'
         )}
       >
         {isPlaceholder
