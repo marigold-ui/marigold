@@ -4,9 +4,8 @@ import { mergeProps } from '@react-aria/utils';
 import { SliderState } from '@react-stately/slider';
 
 import { HtmlProps } from '@marigold/types';
-import { CSSObject, useStateProps } from '@marigold/system';
+import { cn, useStateProps } from '@marigold/system';
 
-import { Box } from '../Box';
 import { VisuallyHidden } from '../VisuallyHidden';
 import { useFocusRing } from '@react-aria/focus';
 
@@ -15,12 +14,12 @@ import { useFocusRing } from '@react-aria/focus';
 export interface ThumbProps extends Pick<HtmlProps<'input'>, 'disabled'> {
   state: SliderState;
   trackRef: RefObject<HTMLElement>;
-  styles: CSSObject;
+  className: string;
 }
 
 // Component
 // ---------------
-export const Thumb = ({ state, trackRef, styles, ...props }: ThumbProps) => {
+export const Thumb = ({ state, trackRef, className, ...props }: ThumbProps) => {
   const { disabled } = props;
   const inputRef = React.useRef(null);
   const { isFocusVisible, focusProps, isFocused } = useFocusRing();
@@ -42,22 +41,15 @@ export const Thumb = ({ state, trackRef, styles, ...props }: ThumbProps) => {
   useEffect(() => {
     state.setThumbEditable(0, !disabled);
   }, [disabled, state]);
-
   return (
-    <Box
-      __baseCSS={{ top: '50%' }}
-      css={styles}
-      {...thumbProps}
-      {...stateProps}
-    >
+    <div className={cn('top-1/2', className)} {...thumbProps} {...stateProps}>
       <VisuallyHidden>
-        <Box
-          as="input"
+        <input
           type="range"
           ref={inputRef}
           {...mergeProps(inputProps, focusProps)}
         />
       </VisuallyHidden>
-    </Box>
+    </div>
   );
 };

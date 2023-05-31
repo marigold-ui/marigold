@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react';
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-
+import { useState } from '@storybook/addons';
 import { Button } from '../Button';
 import { Menu } from './Menu';
 import { ActionMenu } from './ActionMenu';

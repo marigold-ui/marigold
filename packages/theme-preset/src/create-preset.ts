@@ -27,8 +27,8 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
         },
       },
       plugins: [
+        // Grouping
         plugin(({ matchVariant, e }) => {
-          // Grouping
           matchVariant(
             'group',
             (value, { modifier }) =>
@@ -49,6 +49,11 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
               },
             }
           );
+        }),
+
+        // Aria Variants
+        plugin(({ addVariant }) => {
+          addVariant('aria-enabled', ['&:not([aria-disabled=true])']);
         }),
 
         // TODO: deprecate

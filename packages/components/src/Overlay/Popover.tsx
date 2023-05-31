@@ -44,7 +44,7 @@ const PopoverWrapper = forwardRef(
     }: PopoverWrapperProps,
     ref: RefObject<HTMLDivElement>
   ) => {
-    const { popoverProps, underlayProps } = usePopover(
+    const { popoverProps, underlayProps, placement } = usePopover(
       {
         ...props,
         isNonModal,
@@ -60,6 +60,7 @@ const PopoverWrapper = forwardRef(
         {!isNonModal && <Underlay {...underlayProps} />}
         <div
           {...popoverProps}
+          className={placement === 'top' ? 'mb-0.5' : 'mt-0.5'}
           style={{
             ...popoverProps.style,
             minWidth: props.triggerRef.current

@@ -1,15 +1,12 @@
 import React, { forwardRef, ReactNode } from 'react';
 import { useObjectRef } from '@react-aria/utils';
-import { Box, useComponentStylesFromTV } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { useListBox } from '@react-aria/listbox';
 import type { ListState } from '@react-stately/list';
 
 import { ListBoxContext } from './Context';
 import { ListBoxSection } from './ListBoxSection';
 import { ListBoxOption } from './ListBoxOption';
-
-import { tv } from 'tailwind-variants';
-import { twMerge } from 'tailwind-merge';
 
 // Props
 // ---------------
@@ -27,28 +24,17 @@ export const ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
     const innerRef = useObjectRef<HTMLUListElement>(ref);
     const { listBoxProps } = useListBox(props, state, innerRef);
 
-    const classNames = useComponentStylesFromTV('ListBox', {
-      variant,
-      size,
-      slots: ['container', 'list', 'option', 'section', 'sectionTitle'],
-    });
+    const classNames = useClassNames({ component: 'ListBox', variant, size });
 
-    const styledListBox = tv({
-      slots: {
-        container: [],
-        list: ['p-0 list-none'],
-        option: [],
-        section: [],
-        sectionTitle: [],
-      },
-    });
     return (
       <ListBoxContext.Provider value={{ classNames }}>
-        <div className={classNames.container()}>
-          <Box
-            as="ul"
+        <div className={classNames.container}>
+          <ul
+            className={cn(
+              'overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh]',
+              classNames.list
+            )}
             ref={innerRef}
-            className={twMerge(styledListBox().list(), classNames.list())}
             {...listBoxProps}
           >
             {[...state.collection].map(item =>
@@ -58,7 +44,7 @@ export const ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
                 <ListBoxOption key={item.key} item={item} state={state} />
               )
             )}
-          </Box>
+          </ul>
         </div>
       </ListBoxContext.Provider>
     );

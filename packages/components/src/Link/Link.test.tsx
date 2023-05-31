@@ -1,32 +1,24 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { fireEvent, screen } from '@testing-library/react';
+import { Theme, ThemeProvider } from '@marigold/system';
 import { Link } from './Link';
+import { cva } from 'class-variance-authority';
+import { setup } from '../test.utils';
 
-const theme = {
-  fonts: {
-    link: 'Inter',
-    body: 'Oswald',
-  },
-
+const theme: Theme = {
+  name: 'test',
   components: {
-    Link: {
-      base: {
-        fontFamily: 'link',
-        color: 'blue',
-        '&:disabled': {
-          color: 'grey',
+    Link: cva('font-link text-blue-700 disabled:text-gray-500', {
+      variants: {
+        variant: {
+          second: 'font-body text-green-700',
         },
       },
-      variant: {
-        second: {
-          fontFamily: 'body',
-          color: 'green',
-        },
-      },
-    },
+    }),
   },
 };
+
+const { render } = setup({ theme });
 
 let warnMock: jest.SpyInstance;
 
@@ -38,28 +30,22 @@ afterEach(() => {
   warnMock.mockRestore();
 });
 
-test('uses base variant', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Link href="#!">Link</Link>
-    </ThemeProvider>
-  );
+test('uses base classnames', () => {
+  render(<Link href="#!">Link</Link>);
   const link = screen.getByText(/Link/);
 
-  expect(link).toHaveStyle(`font-family: Inter`);
+  expect(link).toHaveClass('font-link text-blue-700 disabled:text-gray-500');
 });
 
 test('allows to change variants via `variant` prop (with "text" prefix)', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Link href="#!" variant="second">
-        Link
-      </Link>
-    </ThemeProvider>
+    <Link href="#!" variant="second">
+      Link
+    </Link>
   );
   const link = screen.getByText(/Link/);
 
-  expect(link).toHaveStyle(`font-family: Oswald`);
+  expect(link).toHaveClass(`font-body`);
 });
 
 test('renders a <a> element by default', () => {
@@ -93,11 +79,9 @@ test('accepts other routing components', () => {
   >(() => <span>I am a Router Link!</span>);
 
   render(
-    <ThemeProvider theme={theme}>
-      <Link as={RouterLink} to="/Home">
-        Link
-      </Link>
-    </ThemeProvider>
+    <Link as={RouterLink} to="/Home">
+      Link
+    </Link>
   );
 
   const link = screen.getByText('I am a Router Link!');
@@ -106,11 +90,9 @@ test('accepts other routing components', () => {
 
 test('a link can be disabled via aria attributes', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Link href="#!" disabled={true}>
-        Link
-      </Link>
-    </ThemeProvider>
+    <Link href="#!" disabled={true}>
+      Link
+    </Link>
   );
   const link = screen.getByText(/Link/);
   expect(link.getAttribute('aria-disabled')).toEqual('true');
@@ -118,15 +100,13 @@ test('a link can be disabled via aria attributes', () => {
 
 test('link supports disabled variant', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Link href="#!" disabled={true}>
-        Link
-      </Link>
-    </ThemeProvider>
+    <Link href="#!" disabled={true}>
+      Link
+    </Link>
   );
 
   const link = screen.getByText(/Link/);
-  expect(link).toHaveStyle(`color: grey`);
+  expect(link).toHaveClass(`disabled:text-gray-500`);
 });
 
 test('forwards ref', () => {

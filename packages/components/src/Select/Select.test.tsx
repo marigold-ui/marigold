@@ -1,9 +1,9 @@
 import React from 'react';
+import { cva } from 'class-variance-authority';
 import { OverlayProvider } from '@react-aria/overlays';
 import {
   act,
   fireEvent,
-  render,
   renderHook,
   screen,
   within,
@@ -11,90 +11,51 @@ import {
 import userEvent from '@testing-library/user-event';
 import { cleanup } from '@testing-library/react';
 
-import { Theme, ThemeProvider, useResponsiveValue } from '@marigold/system';
+import { Theme, useResponsiveValue } from '@marigold/system';
+import { setup } from '../test.utils';
 
 import { Select } from './Select';
-
-import { tv } from 'tailwind-variants';
 
 const theme: Theme = {
   name: 'test',
   components: {
-    Label: tv({
-      base: 'text-black',
+    Field: cva(''),
+    Label: {
+      container: cva('', {
+        variants: {
+          variant: { lime: 'text-lime-500' },
+          size: { small: 'text-sm' },
+        },
+      }),
+      indicator: cva(),
+    },
+    HelpText: cva('', {
       variants: {
-        variant: {
-          lime: 'text-lime-500',
-        },
-        size: {
-          small: 'p-1',
-        },
+        variant: { lime: 'text-lime-500' },
+        size: { small: 'text-sm' },
       },
     }),
-    HelpText: tv({
-      slots: {
-        base: 'text-black',
-        container: '',
-      },
-      variants: {
-        variant: {
-          lime: {
-            container: 'text-lime-500',
-          },
+    Select: {
+      select: cva('text-blue-500', {
+        variants: {
+          variant: { violet: 'text-violet-500' },
+          size: { small: 'text-sm' },
         },
-        size: {
-          small: {
-            container: 'p-1',
-          },
-        },
-      },
-    }),
-    Select: tv({
-      slots: {
-        container: '',
-        icon: '',
-        button: [
-          'text-black hover:border-lime-500 disabled:text-disabled-text',
-        ],
-      },
-      variants: {
-        variant: {
-          violet: {
-            button: 'text-violet',
-          },
-        },
-        size: {
-          medium: {
-            button: 'p-2',
-          },
-        },
-      },
-    }),
-    ListBox: tv({
-      slots: {
-        container: '',
-        list: '',
-        section: '',
-        option: [
-          'text-black focus:bg-blue-500 selected:bg-lime-600 disabled:bg-disabled',
-        ],
-        sectionTitle: ['font-bold'],
-      },
-      variants: {
-        variant: {
-          violet: {
-            option: 'text-violet-300',
-          },
-        },
-        size: {
-          medium: {
-            sectionTitle: 'p-2',
-          },
-        },
-      },
-    }),
+      }),
+      icon: cva(),
+    },
+    Underlay: cva(),
+    ListBox: {
+      container: cva(),
+      list: cva(),
+      option: cva(),
+      section: cva(),
+      sectionTitle: cva(),
+    },
   },
 };
+
+const { render } = setup({ theme });
 
 /**
  * We need to mock `matchMedia` because JSOM does not
@@ -127,18 +88,16 @@ test('renders a field (label, helptext, select)', () => {
 
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select
-          label="Label"
-          description="Description"
-          errorMessage="ERRR!"
-          data-testid="select"
-        >
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select
+        label="Label"
+        description="Description"
+        errorMessage="ERRR!"
+        data-testid="select"
+      >
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -159,13 +118,11 @@ test('renders a field (label, helptext, select)', () => {
 test('visible label is not a <label> element (for a11y)', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -179,13 +136,11 @@ test('visible label is not a <label> element (for a11y)', () => {
 test('default placeholder is rendered', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" placeholder="placeholder" data-testid="select">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" placeholder="placeholder" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -196,13 +151,11 @@ test('default placeholder is rendered', () => {
 test('custom placeholder is rendered', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" placeholder="Select me" data-testid="select">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" placeholder="Select me" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -213,13 +166,11 @@ test('custom placeholder is rendered', () => {
 test('option list opens when button is clicked', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
   const button = screen.getByTestId('select');
@@ -236,13 +187,11 @@ test('option list opens when button is clicked', () => {
 test('option list closes when button is clicked', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
   const button = screen.getByTestId('select');
@@ -265,13 +214,11 @@ test('supports to select an option and closes listbox afterwards', () => {
   ]);
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
   const button = screen.getByTestId('select');
@@ -291,13 +238,11 @@ test('supports to select an option and closes listbox afterwards', () => {
 test('selected option is displayed in button', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
   const button = screen.getByTestId('select');
@@ -317,13 +262,11 @@ test('selected option is displayed in button', () => {
 test('dismiss when clicking escape', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
   const button = screen.getByTestId('select');
@@ -338,13 +281,11 @@ test('dismiss when clicking escape', () => {
 test('allows to disable select', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" disabled>
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" disabled>
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
   const button = screen.getByTestId('select');
@@ -357,13 +298,11 @@ test('allows to disable select', () => {
 test('allows to disable options', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" disabledKeys={['two']}>
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" disabledKeys={['two']}>
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -379,13 +318,11 @@ test('allows to disable options', () => {
 test('allows select to be required', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" required>
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" required>
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -399,13 +336,11 @@ test('controlled', () => {
   const spy = jest.fn();
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" onChange={spy}>
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" onChange={spy}>
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -423,13 +358,11 @@ test('controlled', () => {
 test('supports default value via "defaultSelectedKey"', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" defaultSelectedKey="three">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-          <Select.Option key="three">three</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" defaultSelectedKey="three">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -441,24 +374,22 @@ test('supports default value via "defaultSelectedKey"', () => {
   const options = screen.getByRole('listbox');
   const three = within(options).getByText('three');
 
-  expect(three).toHaveClass(`selected:bg-lime-600`);
+  expect(three).toHaveAttribute('aria-selected', 'true');
 });
 
 test('supports sections', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select">
-          <Select.Section title="Section 1">
-            <Select.Option key="one">one</Select.Option>
-            <Select.Option key="two">two</Select.Option>
-          </Select.Section>
-          <Select.Section title="Section 2">
-            <Select.Option key="three">three</Select.Option>
-            <Select.Option key="four">four</Select.Option>
-          </Select.Section>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select">
+        <Select.Section title="Section 1">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+        </Select.Section>
+        <Select.Section title="Section 2">
+          <Select.Option key="three">three</Select.Option>
+          <Select.Option key="four">four</Select.Option>
+        </Select.Section>
+      </Select>
     </OverlayProvider>
   );
 
@@ -476,44 +407,28 @@ test('supports sections', () => {
 test('supports styling classnames with variants and sizes from theme', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select
-          label="Label"
-          data-testid="select"
-          variant="violet"
-          size="medium"
-        >
-          <Select.Section title="Section 1">
-            <Select.Option key="one">one</Select.Option>
-            <Select.Option key="two">two</Select.Option>
-          </Select.Section>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" variant="violet" size="small">
+        <Select.Section title="Section 1">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+        </Select.Section>
+      </Select>
     </OverlayProvider>
   );
 
   const button = screen.getByTestId('select');
-  expect(button).toHaveClass(
-    `flex relative items-center justify-between w-full hover:border-lime-500 disabled:text-disabled-text text-violet p-2`
-  );
 
-  fireEvent.click(button);
-
-  const options = screen.getByRole('listbox');
-
-  const one = within(options).getByText('one');
-  expect(one).toHaveClass(`text-violet-300`);
+  expect(button.className).toContain('text-violet-500');
+  expect(button.className).toContain('text-sm');
 });
 
 test('set width via props', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" width="200">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" width="200">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+      </Select>
     </OverlayProvider>
   );
 
@@ -527,14 +442,12 @@ test('forwards ref', () => {
   const ref = React.createRef<HTMLButtonElement>();
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" ref={ref}>
-          <Select.Section title="Section 1">
-            <Select.Option key="one">one</Select.Option>
-            <Select.Option key="two">two</Select.Option>
-          </Select.Section>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" ref={ref}>
+        <Select.Section title="Section 1">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+        </Select.Section>
+      </Select>
     </OverlayProvider>
   );
 
@@ -559,14 +472,12 @@ test('renders as tray', () => {
 
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Select label="Label" data-testid="select" ref={ref}>
-          <Select.Section title="Section 1">
-            <Select.Option key="one">one</Select.Option>
-            <Select.Option key="two">two</Select.Option>
-          </Select.Section>
-        </Select>
-      </ThemeProvider>
+      <Select label="Label" data-testid="select" ref={ref}>
+        <Select.Section title="Section 1">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+        </Select.Section>
+      </Select>
     </OverlayProvider>
   );
 

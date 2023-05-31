@@ -8,7 +8,7 @@ import { TextArea } from './TextArea';
 import { setup } from '../test.utils';
 
 const theme = {
-  name: 'test-theme',
+  name: 'test',
   components: {
     Field: cva(''),
     Label: {
