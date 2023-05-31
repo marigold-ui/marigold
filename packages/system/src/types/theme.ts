@@ -28,6 +28,10 @@ export type Theme = {
     Body?: ComponentStyleFunction<string, string>;
     Button?: ComponentStyleFunction<string, string>;
     Card?: ComponentStyleFunction<string, string>;
+    Dialog?: Record<
+      'closeButton' | 'container',
+      ComponentStyleFunction<string, string>
+    >;
     Divider?: ComponentStyleFunction<string, string>;
     Field?: ComponentStyleFunction<string, string>;
     Footer?: ComponentStyleFunction<string, string>;
@@ -38,6 +42,14 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Image?: ComponentStyleFunction<string, string>;
+    Checkbox?: Record<
+      'container' | 'label' | 'checkbox',
+      ComponentStyleFunction<string, string>
+    >;
+    Switch?: Record<
+      'container' | 'label' | 'track' | 'thumb',
+      ComponentStyleFunction<string, string>
+    >;
     Input?: Record<
       'input' | 'icon' | 'action',
       ComponentStyleFunction<string, string>
@@ -52,6 +64,10 @@ export type Theme = {
       'container' | 'list' | 'option' | 'section' | 'sectionTitle',
       ComponentStyleFunction<string, string>
     >;
+    Menu?: Record<
+      'container' | 'section' | 'item',
+      ComponentStyleFunction<string, string>
+    >;
     Radio?: Record<
       'container' | 'label' | 'radio',
       ComponentStyleFunction<string, string>
@@ -61,6 +77,10 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
+    NumberField?: Record<
+      'group' | 'stepper',
+      ComponentStyleFunction<string, string>
+    >;
     Message?: Record<
       'container' | 'icon' | 'title' | 'content',
       ComponentStyleFunction<string, string>

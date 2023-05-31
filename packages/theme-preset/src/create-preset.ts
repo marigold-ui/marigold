@@ -37,7 +37,6 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
                 : `:merge(.group)[data-${value}] &`,
             {
               values: {
-                disabled: 'disabled',
                 focus: 'focus',
                 hover: 'hover',
                 error: 'error',
@@ -45,6 +44,8 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
                 required: 'required',
                 selected: 'selected',
                 checked: 'checked',
+                indeterminate: 'indeterminate',
+                disabled: 'disabled',
               },
             }
           );
@@ -56,6 +57,7 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
         }),
 
         // TODO: deprecate
+
         plugin(({ addVariant }) => {
           addVariant('mg-disabled', [
             '&[disabled]',
@@ -65,6 +67,11 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
           addVariant('mg-selected', [
             '&[aria-selected=true]',
             '&[data-selected]',
+          ]);
+          addVariant('mg-checked', ['&[aria-checked=true]', '&[data-checked]']);
+          addVariant('mg-indeterminate', [
+            '&[aria-indeterminate=true]',
+            '&[data-indeterminate]',
           ]);
           addVariant('mg-error', [
             '&:invalid',

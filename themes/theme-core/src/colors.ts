@@ -5,7 +5,7 @@ export const colors = {
     current: 'currentColor',
   },
   underlay: {
-    background: 'rgba(206, 212, 218, 0.5)',
+    background: 'rgba(61, 61, 61, .3)',
   },
   input: {
     border: '#aaa',
@@ -105,6 +105,25 @@ export const colors = {
       },
     },
   },
+  switch: {
+    track: {
+      background: '#f3f3f3',
+      checked: '#ae440a',
+      shadow: '#cccccc',
+      disabled: '#e3e3e3',
+      primary: '#fa8005',
+      outline: {
+        focus: '#3ab3d5',
+      },
+    },
+    thumb: {
+      shadow: 'rgba(0, 0, 0, 0.25)',
+      disabled: '#f3f3f3',
+    },
+  },
+  dialog: {
+    bg: '#ecebe6',
+  },
   radio: {
     hover: '#8d8d8d',
     border: '#cccccc',
@@ -132,6 +151,9 @@ export const colors = {
   focus: {
     bg: '#3875d7',
     bgImage: 'linear-gradient(#3875d7 20%, #2a62bc 90%)',
+  },
+  hover: {
+    bg: '#3ab3d5',
   },
   warning: {
     text: '#d80',

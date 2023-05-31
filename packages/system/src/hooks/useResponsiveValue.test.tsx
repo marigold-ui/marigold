@@ -65,6 +65,7 @@ test('uses breakpoints from theme', () => {
       md: '768px',
       lg: '1024px',
     },
+    components: {},
   };
   const wrapper = ({ children }: { children?: ReactNode }) => (
     <ThemeProvider theme={theme}>{children}</ThemeProvider>

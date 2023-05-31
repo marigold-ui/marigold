@@ -5,10 +5,9 @@ import {
   useCheckboxGroupState,
 } from '@react-stately/checkbox';
 import { AriaCheckboxGroupProps } from '@react-types/checkbox';
-import { Box, useStateProps } from '@marigold/system';
+import { useStateProps } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 import { FieldBase } from '../FieldBase';
-import { tv } from 'tailwind-variants';
 
 // Context
 // ---------------
@@ -71,10 +70,6 @@ export const CheckboxGroup = ({
     error,
   });
 
-  const styledDiv = tv({
-    base: ['flex flex-col items-start'],
-  });
-
   return (
     <FieldBase
       label={props.label}
@@ -86,14 +81,13 @@ export const CheckboxGroup = ({
       errorMessageProps={errorMessageProps}
       disabled={disabled}
       stateProps={stateProps}
-      required={required}
       {...groupProps}
     >
-      <Box role="presentation" className={styledDiv()}>
+      <div role="presentation" className={'flex flex-col items-start'}>
         <CheckboxGroupContext.Provider value={{ error, ...state }}>
           {children}
         </CheckboxGroupContext.Provider>
-      </Box>
+      </div>
     </FieldBase>
   );
 };
