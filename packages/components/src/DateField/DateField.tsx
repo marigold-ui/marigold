@@ -111,7 +111,7 @@ export const DateField = ({
         )}
         data-testid="date-field"
       >
-        <div ref={ref} className=" flex basis-full items-center gap-[2px] pl-2">
+        <div ref={ref} className=" flex basis-full items-center pl-2">
           {state.segments.map((segment, i) => (
             <DateSegment
               isPrevPlaceholder={state.segments[i - 1]?.isPlaceholder}
