@@ -134,7 +134,7 @@ export const ControlledTable: Story = {
     const [selectedKeys, setSelectedKeys] = useState(new Set());
     const selected = Array.from(selectedKeys);
     return (
-      <Stack space="small">
+      <Stack space={3}>
         <Table
           aria-label="Example dynamic collection table"
           selectionMode="multiple"
