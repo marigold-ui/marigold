@@ -138,6 +138,13 @@ export const colors = {
       disabled: '#cccccc',
     },
   },
+  calendar: {
+    disabled: '#cccccc',
+    background: '#cccccc',
+    calendarCell: {
+      selected: '#6d6d6d',
+    },
+  },
   // Status colors
   error: {
     text: '#f33',

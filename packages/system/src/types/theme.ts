@@ -93,6 +93,10 @@ export type Theme = {
     >;
     Tabs?: Record<'tabs' | 'tab', ComponentStyleFunction<string, string>>;
     Underlay?: ComponentStyleFunction<string, string>;
+    Calendar?: Record<
+      'calendar' | 'calendarCell' | 'calendarControllers',
+      ComponentStyleFunction<string, string>
+    >;
   };
 };
 
