@@ -42,6 +42,10 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Image?: ComponentStyleFunction<string, string>;
+    Checkbox?: Record<
+      'container' | 'label' | 'checkbox',
+      ComponentStyleFunction<string, string>
+    >;
     Switch?: Record<
       'container' | 'label' | 'track' | 'thumb',
       ComponentStyleFunction<string, string>

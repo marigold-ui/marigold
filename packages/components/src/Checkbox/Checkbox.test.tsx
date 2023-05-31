@@ -1,14 +1,34 @@
 /* eslint-disable testing-library/no-node-access */
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { Theme, ThemeProvider } from '@marigold/system';
+import { fireEvent, screen } from '@testing-library/react';
+import { Theme } from '@marigold/system';
 import { Checkbox } from './Checkbox';
-import { checkbox } from '../../../../themes/theme-core/src/components/Checkbox.styles';
+import { cva } from 'class-variance-authority';
+import { setup } from '../test.utils';
 
 const theme: Theme = {
   name: 'test',
   components: {
-    Checkbox: checkbox,
+    Checkbox: {
+      container: cva([], {
+        variants: {
+          size: {
+            small: 'py-1',
+          },
+        },
+      }),
+      label: cva(
+        'leading-[1.125] data-[disabled]:text-checkbox-label-disabled'
+      ),
+      checkbox: cva([
+        'rounded-[2] border-checkbox-base-border bg-checkbox-base-background p-0.5',
+        'data-[hover]:border-checkbox-base-hover',
+        'data-[focus]:outline-2 data-[focus]:outline data-[focus]:outline-checkbox-base-focus data-[focus]:outline-offset[3]',
+        'data-[checked]:text-white data-[checked]:border-checkbox-base-checked data-[checked]:bg-checkbox-base-checkedBackground',
+        'data-[indeterminate]:text-white data-[indeterminate]:border-checkbox-base-indeterminate data-[indeterminate]:bg-checkbox-base-indeterminateBackground',
+        'data-[disabled]:border-checkbox-base-disabled data-[disabled]:bg-checkbox-base-disabledBackground',
+      ]),
+    },
   },
 };
 
@@ -18,6 +38,8 @@ const getVisibleCheckbox = () => {
   // eslint-disable-next-line testing-library/no-node-access
   return label.parentElement?.querySelector('[aria-hidden="true"]');
 };
+
+const { render } = setup({ theme });
 
 // Tests
 // ---------------
@@ -59,41 +81,30 @@ test('supports read only state', () => {
 });
 
 test('check if all slot class names are applied correctly', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Checkbox data-testid="checkbox">With Label</Checkbox>
-    </ThemeProvider>
-  );
+  render(<Checkbox data-testid="checkbox">With Label</Checkbox>);
 
   const label = screen.getByText('With Label');
 
-  expect(label.parentElement).toHaveClass(
-    'flex item-center gap-[1ch] relative',
-    { exact: true }
+  expect(label.parentElement?.className).toMatchInlineSnapshot(
+    `"group/checkbox relative flex items-center gap-[1ch]"`
   );
-  expect(label.parentElement?.childNodes[0]).toHaveClass(
-    'absolute w-full h-full top-0 left-0 z-1 opacity-[0.0001] cursor-pointer',
-    {
-      exact: true,
-    }
+  expect(
+    (label.parentElement?.childNodes[0] as HTMLElement).className
+  ).toMatchInlineSnapshot(
+    `"z-1 absolute left-0 top-0 h-full w-full cursor-pointer opacity-[0.0001] group-disabled/checkbox:cursor-not-allowed"`
   );
-  expect(getVisibleCheckbox()).toHaveClass(
-    'flex items-center justify-center grow-0 shrink-0 basis-4 w-4 h-4 border border-solid rounded-[3px] rounded-[2] border-checkbox-base-border bg-checkbox-base-background p-0.5 data-[hover]:border-checkbox-base-hover data-[focus]:outline-2 data-[focus]:outline data-[focus]:outline-offset[3] data-[checked]:text-white data-[checked]:border-checkbox-base-checked data-[checked]:bg-checkbox-base-checkedBackground data-[indeterminate]:text-white data-[indeterminate]:border-checkbox-base-indeterminate data-[indeterminate]:bg-checkbox-base-indeterminateBackground data-[disabled]:border-checkbox-base-disabled data-[disabled]:bg-checkbox-base-disabledBackground',
-    { exact: true }
+  expect(getVisibleCheckbox()?.className).toMatchInlineSnapshot(
+    `"flex shrink-0 grow-0 basis-4 items-center justify-center h-4 w-4 rounded-[3px] border border-solid rounded-[2] border-checkbox-base-border bg-checkbox-base-background p-0.5 data-[hover]:border-checkbox-base-hover data-[focus]:outline-2 data-[focus]:outline data-[focus]:outline-offset[3] data-[checked]:text-white data-[checked]:border-checkbox-base-checked data-[checked]:bg-checkbox-base-checkedBackground data-[indeterminate]:text-white data-[indeterminate]:border-checkbox-base-indeterminate data-[indeterminate]:bg-checkbox-base-indeterminateBackground data-[disabled]:border-checkbox-base-disabled data-[disabled]:bg-checkbox-base-disabledBackground"`
   );
-  expect(label).toHaveClass(
-    'leading-[1.125] data-[disabled]:text-checkbox-label-disabled',
-    { exact: true }
+  expect(label.className).toMatchInlineSnapshot(
+    `"leading-[1.125] data-[disabled]:text-checkbox-label-disabled"`
   );
 });
-
 test('allows styling "error" state via theme', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Checkbox data-testid="checkbox" error>
-        With Label
-      </Checkbox>
-    </ThemeProvider>
+    <Checkbox data-testid="checkbox" error>
+      With Label
+    </Checkbox>
   );
   //TODO: fix test after Helptext component is migrated to tailwind
   //const checkbox = getVisibleCheckbox();
@@ -102,28 +113,23 @@ test('allows styling "error" state via theme', () => {
 
 test('correct class name is set on size small', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Checkbox data-testid="checkbox" size="small">
-        With Label
-      </Checkbox>
-    </ThemeProvider>
+    <Checkbox data-testid="checkbox" size="small">
+      With Label
+    </Checkbox>
   );
 
   const label = screen.getByText('With Label');
 
-  expect(label.parentElement).toHaveClass(
-    'flex item-center gap-[1ch] relative py-1',
-    { exact: true }
+  expect(label.parentElement?.className).toMatchInlineSnapshot(
+    `"group/checkbox relative flex items-center gap-[1ch] py-1"`
   );
 });
 
 test('support default checked', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Checkbox data-testid="checkbox" defaultChecked>
-        With Label
-      </Checkbox>
-    </ThemeProvider>
+    <Checkbox data-testid="checkbox" defaultChecked>
+      With Label
+    </Checkbox>
   );
 
   const input: HTMLInputElement = screen.getByTestId('checkbox');
@@ -132,11 +138,9 @@ test('support default checked', () => {
 
 test('supports indeterminate state', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Checkbox data-testid="checkbox" indeterminate>
-        With Label
-      </Checkbox>
-    </ThemeProvider>
+    <Checkbox data-testid="checkbox" indeterminate>
+      With Label
+    </Checkbox>
   );
   const input: HTMLInputElement = screen.getByTestId('checkbox');
   expect(input.indeterminate).toBeTruthy();
@@ -161,11 +165,9 @@ test('controlled', () => {
 test('forwards ref', () => {
   const ref = React.createRef<HTMLInputElement>();
   render(
-    <ThemeProvider theme={theme}>
-      <Checkbox data-testid="checkbox" ref={ref}>
-        Check it
-      </Checkbox>
-    </ThemeProvider>
+    <Checkbox data-testid="checkbox" ref={ref}>
+      Check it
+    </Checkbox>
   );
 
   expect(ref.current).toBeInstanceOf(HTMLInputElement);
