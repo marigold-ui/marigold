@@ -29,7 +29,7 @@ export type Theme = {
     Button?: ComponentStyleFunction<string, string>;
     Card?: ComponentStyleFunction<string, string>;
     DateField?: Record<
-      'segment' | 'placeholder' | 'field' | 'action',
+      'segment' | 'field' | 'action',
       ComponentStyleFunction<string, string>
     >;
     Dialog?: Record<

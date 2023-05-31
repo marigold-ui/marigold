@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { DateSegment as DateSegmentInterface } from '@react-stately/datepicker';
 import { DateFieldState } from '@react-stately/datepicker';
-import { cn, useClassNames } from '@marigold/system';
+import { cn, useClassNames, useStateProps } from '@marigold/system';
 import { useDateSegment } from '@react-aria/datepicker';
 import { useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
@@ -26,50 +26,27 @@ export const DateSegment = ({
 
   const classNames = useClassNames({ component: 'DateField', variant, size });
 
-  const { focusProps } = useFocusRing({
+  const { focusProps, isFocused } = useFocusRing({
     within: true,
     isTextInput: true,
+  });
+  const stateProps = useStateProps({
+    disabled: state.isDisabled,
+    focusVisible: isFocused,
   });
 
   const { isPlaceholder, placeholder, text, type, maxValue } = segment;
 
-  console.log(
-    type === 'literal'
-      ? `literal ${
-          !isPrevPlaceholder && 'activeLiteral text-datefield-segment'
-        }`
-      : '',
-    !isPrevPlaceholder,
-    type
-  );
   return (
     <div
-      {...mergeProps(segmentProps, focusProps)}
+      {...mergeProps(segmentProps, stateProps, focusProps)}
       ref={ref}
       className={cn(
+        'group/segment',
         maxValue != null && `min-w-[${String(maxValue).length}ch]`,
         'box-content rounded-sm text-center outline-0',
         classNames.segment
       )}
-      // __baseCSS={{
-      //   ...segmentProps.style,
-      //   minWidth: maxValue != null ? String(maxValue).length + 'ch' : '',
-      //   boxSizing: 'content-box',
-      //   //fontVariantNumeric: 'lining-nums',
-      //   textAlign: 'center',
-      //   outline: '0',
-      //   borderRadius: '2px',
-      //   '&[data-focus-visible]': {
-      //     bg: 'gray60',
-      //     color: 'white',
-      //   },
-      //   '&:not([data-disabled]):not([data-focus-visible])': {
-      //     '& span:nth-of-type(2)': {
-      //       '&:not(.literal), &.activeLiteral': {
-      //         color: 'gray60',
-      //       },
-      //     },
-      //   },
     >
       <span
         aria-hidden="true"
@@ -86,7 +63,7 @@ export const DateSegment = ({
             ? `literal ${
                 !isPrevPlaceholder && 'activeLiteral text-datefield-segment'
               }`
-            : '[&>*:not([data-focus-visible])]:text-datefield-segment'
+            : 'group-focus-visible/segment:text-secondary-50 text-datefield-segment'
         )}
       >
         {isPlaceholder
