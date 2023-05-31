@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTabList } from '@react-aria/tabs';
-import { cn, createVar, useClassNames } from '@marigold/system';
+import { GapSpaceProp, cn, useClassNames, gapSpace } from '@marigold/system';
 import { useTabListState } from '@react-stately/tabs';
 import { useRef } from 'react';
 import { AriaTabListProps } from '@react-types/tabs';
@@ -11,14 +11,14 @@ import { Item } from '@react-stately/collections';
 import { TabContext } from './Context';
 
 interface TabsProps
-  extends Omit<AriaTabListProps<object>, 'orientation' | 'isDisabled'> {
-  gap?: string;
+  extends Omit<AriaTabListProps<object>, 'orientation' | 'isDisabled'>,
+    GapSpaceProp {
   size?: 'small' | 'medium' | 'large';
   disabled?: boolean;
   variant?: string;
 }
 export const Tabs = ({
-  gap: tabsGap = '1rem',
+  space = 2,
   size = 'medium',
   disabled,
   variant,
@@ -42,8 +42,7 @@ export const Tabs = ({
   return (
     <TabContext.Provider value={{ classNames }}>
       <div
-        className={cn('flex gap-[var(--tabsGap)]', classNames.tabs)}
-        style={createVar({ tabsGap })}
+        className={cn('flex', gapSpace[space], classNames.tabs)}
         {...tabListProps}
         ref={ref}
       >
