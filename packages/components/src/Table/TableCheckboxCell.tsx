@@ -4,10 +4,7 @@ import { useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
 
-import { useStateProps } from '@marigold/system';
-
-import { tv } from 'tailwind-variants';
-import { twMerge } from 'tailwind-merge';
+import { cn, useStateProps } from '@marigold/system';
 
 import { Checkbox } from '../Checkbox';
 import { useTableContext } from './Context';
@@ -36,14 +33,10 @@ export const TableCheckboxCell = ({ cell }: TableCheckboxCellProps) => {
   const { focusProps, isFocusVisible } = useFocusRing();
   const stateProps = useStateProps({ disabled, focusVisible: isFocusVisible });
 
-  const styledTableCheckboxCell = tv({
-    base: ['text-center align-middle leading-none'],
-  });
-
   return (
     <td
       ref={ref}
-      className={twMerge(styledTableCheckboxCell(), classNames.cell())}
+      className={cn('text-center align-middle leading-none', classNames?.cell)}
       {...mergeProps(gridCellProps, focusProps)}
       {...stateProps}
     >

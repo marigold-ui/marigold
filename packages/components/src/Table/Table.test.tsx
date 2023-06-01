@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { SortDescriptor } from '@react-types/shared';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { fireEvent, screen } from '@testing-library/react';
 
-import { tv } from 'tailwind-variants';
+import { cva } from 'class-variance-authority';
+
+import { setup } from '../test.utils';
 
 import { Table } from './Table';
 import { Theme } from '../theme';
@@ -13,16 +14,16 @@ import { Theme } from '../theme';
 const theme: Theme = {
   name: 'test',
   components: {
-    Table: tv({
-      slots: {
-        table: ['border-collapse'],
-        header: ['p-4'],
-        row: ['bg-blue-700'],
-        cell: ['p-10'],
-      },
-    }),
+    Table: {
+      table: cva('border-collapse'),
+      header: cva('p-4'),
+      row: cva('bg-blue-700'),
+      cell: cva('p-10'),
+    },
   },
 };
+
+const { render } = setup({ theme });
 
 const columns = [
   { name: 'Name', key: 'name' },
@@ -72,20 +73,18 @@ test('renders contens correctly', () => {
 
 test('supports theme with parts', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Table aria-label="Example table" selectionMode="single">
-        <Table.Header columns={columns}>
-          {column => <Table.Column>{column.name}</Table.Column>}
-        </Table.Header>
-        <Table.Body items={rows}>
-          {item => (
-            <Table.Row>
-              {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table>
-    </ThemeProvider>
+    <Table aria-label="Example table" selectionMode="single">
+      <Table.Header columns={columns}>
+        {column => <Table.Column>{column.name}</Table.Column>}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {item => (
+          <Table.Row>
+            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          </Table.Row>
+        )}
+      </Table.Body>
+    </Table>
   );
   const table = screen.getAllByRole('grid');
   expect(table[0]).toHaveClass(`border-collapse`);
@@ -103,20 +102,18 @@ test('supports theme with parts', () => {
 
 test('supports selectionMode single', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Table aria-label="Example table" selectionMode="single">
-        <Table.Header columns={columns}>
-          {column => <Table.Column>{column.name}</Table.Column>}
-        </Table.Header>
-        <Table.Body items={rows}>
-          {item => (
-            <Table.Row>
-              {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table>
-    </ThemeProvider>
+    <Table aria-label="Example table" selectionMode="single">
+      <Table.Header columns={columns}>
+        {column => <Table.Column>{column.name}</Table.Column>}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {item => (
+          <Table.Row>
+            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          </Table.Row>
+        )}
+      </Table.Body>
+    </Table>
   );
   const firstRow = screen.getAllByRole('row')[1];
   fireEvent.click(firstRow);
@@ -126,20 +123,18 @@ test('supports selectionMode single', () => {
 
 test('supports selectionMode multiple', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Table aria-label="Example table" selectionMode="multiple">
-        <Table.Header columns={columns}>
-          {column => <Table.Column>{column.name}</Table.Column>}
-        </Table.Header>
-        <Table.Body items={rows}>
-          {item => (
-            <Table.Row>
-              {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table>
-    </ThemeProvider>
+    <Table aria-label="Example table" selectionMode="multiple">
+      <Table.Header columns={columns}>
+        {column => <Table.Column>{column.name}</Table.Column>}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {item => (
+          <Table.Row>
+            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          </Table.Row>
+        )}
+      </Table.Body>
+    </Table>
   );
 
   // select two rows
@@ -156,28 +151,26 @@ test('supports selectionMode multiple', () => {
 
 test('supports colspans', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Table aria-label="Example table for nested columns">
-        <Table.Header>
-          <Table.Column title="Name">
-            <Table.Column isRowHeader>First Name</Table.Column>
-            <Table.Column isRowHeader>Last Name</Table.Column>
-          </Table.Column>
-          <Table.Column title="Information">
-            <Table.Column>Age</Table.Column>
-            <Table.Column>Birthday</Table.Column>
-          </Table.Column>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>Sam</Table.Cell>
-            <Table.Cell>Smith</Table.Cell>
-            <Table.Cell>36</Table.Cell>
-            <Table.Cell>May 3</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
-    </ThemeProvider>
+    <Table aria-label="Example table for nested columns">
+      <Table.Header>
+        <Table.Column title="Name">
+          <Table.Column isRowHeader>First Name</Table.Column>
+          <Table.Column isRowHeader>Last Name</Table.Column>
+        </Table.Column>
+        <Table.Column title="Information">
+          <Table.Column>Age</Table.Column>
+          <Table.Column>Birthday</Table.Column>
+        </Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>Sam</Table.Cell>
+          <Table.Cell>Smith</Table.Cell>
+          <Table.Cell>36</Table.Cell>
+          <Table.Cell>May 3</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
   );
 
   const nameHeader = screen.getByText('Name');
@@ -266,18 +259,16 @@ test('sorting', () => {
 
 test('allows to stretch to fit container', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Table aria-label="Streched table" stretch>
-        <Table.Header>
-          <Table.Column>Name</Table.Column>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>Alice</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
-    </ThemeProvider>
+    <Table aria-label="Streched table" stretch>
+      <Table.Header>
+        <Table.Column>Name</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>Alice</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
   );
 
   const table = screen.getAllByRole('grid');

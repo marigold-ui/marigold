@@ -5,10 +5,7 @@ import { useTableRow } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
 
-import { useComponentStylesFromTV, useStateProps } from '@marigold/system';
-
-import { tv } from 'tailwind-variants';
-import { twMerge } from 'tailwind-merge';
+import { cn, useClassNames, useStateProps } from '@marigold/system';
 
 import { useTableContext } from './Context';
 
@@ -28,10 +25,10 @@ export const TableRow = ({ children, row }: TableRowProps) => {
   const { variant, size } = row.props;
 
   // question: why we need this?
-  const classNames = useComponentStylesFromTV('Table', {
+  const classNames = useClassNames({
+    component: 'Table',
     variant: variant || ctx.variant,
     size: size || ctx.size,
-    slots: ['row'],
   });
 
   const { rowProps, isPressed } = useTableRow(
@@ -59,20 +56,19 @@ export const TableRow = ({ children, row }: TableRowProps) => {
     active: isPressed,
   });
 
-  const styledTableRow = tv({
-    base: [
-      !interactive
-        ? 'cursor-text'
-        : disabled
-        ? 'cursor-default'
-        : 'cursor-pointer',
-    ],
-  });
-
   return (
     <tr
       ref={ref}
-      className={twMerge(styledTableRow(), classNames.row())}
+      className={cn(
+        [
+          !interactive
+            ? 'cursor-text'
+            : disabled
+            ? 'cursor-default'
+            : 'cursor-pointer',
+        ],
+        classNames?.row
+      )}
       {...mergeProps(rowProps, focusProps, hoverProps)}
       {...stateProps}
     >

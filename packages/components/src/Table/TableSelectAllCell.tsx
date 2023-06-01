@@ -9,10 +9,7 @@ import {
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
 
-import { Box, useStateProps } from '@marigold/system';
-
-import { tv } from 'tailwind-variants';
-import { twMerge } from 'tailwind-merge';
+import { cn, useStateProps } from '@marigold/system';
 
 import { Checkbox } from '../Checkbox';
 import { useTableContext } from './Context';
@@ -46,19 +43,17 @@ export const TableSelectAllCell = ({ column }: TableSelectAllCell) => {
     focusVisible: isFocusVisible,
   });
 
-  const styledTableHeaderSelectAll = tv({
-    base: ['text-center align-middle leading-none'],
-  });
-
   return (
-    <Box
-      as="th"
+    <th
       ref={ref}
-      className={twMerge(styledTableHeaderSelectAll(), classNames.header())}
+      className={cn(
+        ['text-center align-middle leading-none'],
+        classNames?.header
+      )}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
     >
       <Checkbox {...checkboxProps} />
-    </Box>
+    </th>
   );
 };

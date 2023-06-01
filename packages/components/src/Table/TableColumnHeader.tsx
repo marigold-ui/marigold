@@ -6,10 +6,7 @@ import { useTableColumnHeader } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
 
-import { useStateProps } from '@marigold/system';
-
-import { tv } from 'tailwind-variants';
-import { twMerge } from 'tailwind-merge';
+import { cn, useStateProps } from '@marigold/system';
 
 import { useTableContext } from './Context';
 
@@ -24,12 +21,15 @@ const SortIndicator = ({
   direction = 'ascending',
   visible,
 }: SortIndicatorProps) => {
-  const styledSpan = tv({
-    base: ['ps-[0.5ch] text-current', visible ? 'visible' : 'invisible'],
-  });
-
   return (
-    <span role="presentation" aria-hidden="true" className={styledSpan()}>
+    <span
+      role="presentation"
+      aria-hidden="true"
+      className={cn(
+        'ps-[0.5ch] text-current',
+        visible ? 'visible' : 'invisible'
+      )}
+    >
       {direction === 'ascending' ? '▲' : '▼'}
     </span>
   );
@@ -61,14 +61,11 @@ export const TableColumnHeader = ({ column }: TableColumnHeaderProps) => {
     focusVisible: isFocusVisible,
   });
 
-  const styledTableHeader = tv({
-    base: ['cursor-default'],
-  });
   return (
     <th
       colSpan={column.colspan}
       ref={ref}
-      className={twMerge(styledTableHeader(), classNames.header())}
+      className={cn('cursor-default', classNames?.header)}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
     >
