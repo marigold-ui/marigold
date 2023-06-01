@@ -25,11 +25,11 @@ const theme: Theme = {
   name: 'Calendar Test',
   components: {
     Calendar: {
-      calendar: cva('bg-white mg-disabled:text-calendar-disabled'),
+      calendar: cva('mg-disabled:text-calendar-disabled bg-white'),
       calendarCell: cva([
         'mg-disabled:text-calendar-disabled',
         'data-[hover]:bg-calendar-background',
-        'group-aria-selected/cell:font-semibold group-aria-selected/cell:bg-calendar-calendarCell-selected group-aria-selected/cell:text-white outline-none',
+        'group-aria-selected/cell:bg-calendar-calendarCell-selected outline-none group-aria-selected/cell:font-semibold group-aria-selected/cell:text-white',
       ]),
       calendarControllers: cva(),
     },
