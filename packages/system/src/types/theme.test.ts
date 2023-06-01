@@ -5,14 +5,14 @@ import { ComponentStyleFunction, Theme } from '.';
 const theme: Theme = {
   name: 'test',
   components: {
-    Button: cva('flex align-center', {
+    Button: cva('align-center flex', {
       variants: {
         variant: {
           primary: 'text-primary-500',
           secondary: 'text-secondary-800',
         },
         size: {
-          small: 'w-10 h-10',
+          small: 'h-10 w-10',
           large: 'w-50 h-50',
         },
       },
@@ -24,7 +24,7 @@ const theme: Theme = {
             primary: 'text-primary-500',
           },
           size: {
-            small: 'w-10 h-10',
+            small: 'h-10 w-10',
           },
         },
       }),
@@ -85,7 +85,7 @@ test('function throws error if variant and size not exist', () => {
 // Component Function
 // ---------------
 const ComponentFn: ComponentStyleFunction<string, string> = cva(
-  'flex align-center',
+  'align-center flex',
   {
     variants: {
       variant: {
@@ -93,7 +93,7 @@ const ComponentFn: ComponentStyleFunction<string, string> = cva(
         secondary: 'text-secondary-800',
       },
       size: {
-        small: 'w-10 h-10',
+        small: 'h-10 w-10',
         large: 'w-50 h-50',
       },
     },
@@ -139,7 +139,7 @@ const ComponentFnWithSlots: WithSlots<'container' | 'icon', string, string> = {
         primary: 'text-primary-500',
       },
       size: {
-        small: 'w-10 h-10',
+        small: 'h-10 w-10',
       },
     },
   }),

@@ -9,7 +9,7 @@ import { Header } from './Header';
 const theme: Theme = {
   name: 'test',
   components: {
-    Header: cva('p-1 border border-gray-500', {
+    Header: cva('border border-gray-500 p-1', {
       variants: {
         variant: {
           yellow: 'bg-yellow-500',

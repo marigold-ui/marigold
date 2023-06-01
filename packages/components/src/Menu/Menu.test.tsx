@@ -24,7 +24,7 @@ const user = userEvent.setup();
 const theme: Theme = {
   name: 'test',
   components: {
-    Button: cva('p-3 disabled:bg-disabled-bg'),
+    Button: cva('disabled:bg-disabled-bg p-3'),
     Divider: cva(),
     Menu: {
       container: cva('bg-white focus:text-pink-600', {

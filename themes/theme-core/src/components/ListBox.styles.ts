@@ -5,17 +5,17 @@ import { cva } from 'class-variance-authority';
 const font = 'font-body text-[13px] text-root-body';
 
 export const ListBox: ThemeComponent<'ListBox'> = {
-  container: cva('border rounded-sm border-input-border bg-white'),
+  container: cva('border-input-border rounded-sm border bg-white'),
   list: cva(''),
   option: cva([
     font,
-    'outline-none px-1.5 [li_&]:px-5 py-0.5 cursor-pointer',
+    'cursor-pointer px-1.5 py-0.5 outline-none [li_&]:px-5',
     // Need to use data attributes here because `focus-visible` only works with <Select>
     'data-[focus-visible]:text-secondary-50 data-[focus-visible]:bg-highlight',
     'aria-enabled:hover:text-secondary-50 aria-enabled:hover:bg-highlight',
     'aria-selected:text-secondary-50 aria-selected:bg-highlight',
-    'aria-disabled:cursor-not-allowed aria-disabled:text-disabled-text',
+    'aria-disabled:text-disabled-text aria-disabled:cursor-not-allowed',
   ]),
   section: cva('[&:nth-child(n+2)]:pt-2'),
-  sectionTitle: cva([font, 'font-bold px-1.5']),
+  sectionTitle: cva([font, 'px-1.5 font-bold']),
 };

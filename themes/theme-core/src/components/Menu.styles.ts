@@ -3,13 +3,13 @@ import { cva } from 'class-variance-authority';
 
 export const Menu: ThemeComponent<'Menu'> = {
   container: cva([
-    'list-none p-0 break-words bg-secondary-50 border rounded-[2pxs]',
+    'bg-secondary-50 list-none break-words rounded-[2pxs] border p-0',
     'sm:max-h-[75ch] md:max-h-[75vh] lg:max-h-[45vh]',
-    'overflow-x-hidden overflow-y-auto',
+    'overflow-y-auto overflow-x-hidden',
   ]),
   item: cva([
-    'focus:outline-0 px-1 p-1 cursor-pointer',
+    'cursor-pointer p-1 focus:outline-0',
     'hover:text-secondary-50 hover:bg-hover-bg',
   ]),
-  section: cva('text-xs px-1 py-4 font-normal text-secondary-400'),
+  section: cva('text-secondary-400 px-1 py-4 text-xs font-normal'),
 };

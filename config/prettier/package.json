@@ -20,7 +20,7 @@
   "peerDependencies": {
     "prettier": "2.x"
   },
-  "dependencies": {
-    "prettier-plugin-tailwindcss": "0.2.7"
+  "devDependencies": {
+    "prettier-plugin-tailwindcss": "0.3.0"
   }
 }
