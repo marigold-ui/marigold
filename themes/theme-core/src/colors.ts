@@ -2,7 +2,7 @@ export const colors = {
   root: {
     background: '#f7f5f2', // Note: not in `secondary`
     body: '#511e04',
-    current: 'currentColor',
+    // current: 'currentColor',
   },
   underlay: {
     background: 'rgba(61, 61, 61, .3)',
@@ -69,7 +69,7 @@ export const colors = {
   },
   slider: {
     track: {
-      background: '#e3e3e3',
+      background: '#e3e3e3', // surface.raised?
     },
     thumb: {
       border: '#4b4b4b',
@@ -111,7 +111,7 @@ export const colors = {
   },
   switch: {
     track: {
-      background: '#f3f3f3',
+      background: '#f3f3f3', // surface.raised?
       checked: '#ae440a',
       shadow: '#cccccc',
       disabled: '#e3e3e3',
@@ -144,9 +144,9 @@ export const colors = {
   },
   calendar: {
     disabled: '#cccccc',
-    background: '#cccccc',
+    background: '#cccccc', // hover(.DEFAULT)
     calendarCell: {
-      selected: '#6d6d6d',
+      selected: '#6d6d6d', // selected
     },
   },
   // Status colors
@@ -189,6 +189,12 @@ export const colors = {
   dark: {
     bg: '#4b4b4b',
     text: '#ffffff',
+  },
+
+  bg: {
+    primary: '#fa8005',
+    secondary: '#fafafa',
+    disabled: '#ccc',
   },
 
   // "Reds"
