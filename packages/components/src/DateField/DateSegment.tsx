@@ -42,7 +42,7 @@ export const DateSegment = ({
       {...mergeProps(segmentProps, stateProps, focusProps)}
       ref={ref}
       className={cn(
-        'group/segment peer',
+        'group/segment',
         maxValue != null && `min-w-[${String(maxValue).length}ch]`,
         'box-content rounded-sm text-center outline-0',
         classNames.segment
