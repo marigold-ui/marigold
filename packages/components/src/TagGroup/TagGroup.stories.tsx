@@ -107,7 +107,7 @@ export const RemovableTags: Story = {
       <Tag.Group
         {...args}
         items={items}
-        aria-label="TagGrooup removing example"
+        aria-label="TagGroup removing example"
         allowsRemoving
         onRemove={removeItem}
       >
