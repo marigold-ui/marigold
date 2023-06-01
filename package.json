@@ -49,7 +49,7 @@
     "watch:tailwind": "zx scripts/watch-tailwind.mjs",
     "build": "pnpm --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" --filter \"@marigold/theme-preset...\" build",
     "build:docs": "pnpm --filter @marigold/docs build",
-    "build:storybook": "pnpm --filter @marigold/storybook-config build",
+    "build:storybook": "pnpm --filter @marigold/storybook-config... build",
     "build:themes": "pnpm --filter \"@marigold/theme*...\" build",
     "test": "jest --config jest.config.js",
     "test:coverage": "jest --config jest.config.js --coverage --coverageReporters html",
