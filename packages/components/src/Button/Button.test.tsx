@@ -8,14 +8,14 @@ import { cva } from 'class-variance-authority';
 const theme: Theme = {
   name: 'test',
   components: {
-    Button: cva('flex align-center disabled:bg-gray-600', {
+    Button: cva('align-center flex disabled:bg-gray-600', {
       variants: {
         variant: {
           primary: 'text-primary-500',
           secondary: 'text-secondary-800',
         },
         size: {
-          small: 'w-10 h-10',
+          small: 'h-10 w-10',
           large: 'w-50 h-50',
         },
       },

@@ -12,8 +12,8 @@ const theme: Theme = {
   name: 'NumberField testing',
   components: {
     NumberField: {
-      group: cva('border border-solid rounded-sm border-black'),
-      stepper: cva('text-green-600 w-3.5'),
+      group: cva('rounded-sm border border-solid border-black'),
+      stepper: cva('w-3.5 text-green-600'),
     },
     Field: cva(),
     Label: { container: cva(), indicator: cva() },

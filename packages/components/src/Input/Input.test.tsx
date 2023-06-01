@@ -22,7 +22,7 @@ const theme: Theme = {
           },
         },
       }),
-      icon: cva('w-4 h-4'),
+      icon: cva('h-4 w-4'),
       action: cva('bg-slate-400'),
     },
   },

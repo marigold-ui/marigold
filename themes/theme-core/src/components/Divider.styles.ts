@@ -2,7 +2,7 @@ import { ThemeComponent } from '@marigold/system';
 import { cva } from 'class-variance-authority';
 
 export const Divider: ThemeComponent<'Divider'> = cva(
-  'w-full h-px bg-root-body',
+  'bg-root-body h-px w-full',
   {
     variants: {
       variant: {

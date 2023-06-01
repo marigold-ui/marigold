@@ -11,14 +11,14 @@ import { cn } from '../utils';
 const theme: Theme = {
   name: 'test-theme',
   components: {
-    Button: cva('flex align-center', {
+    Button: cva('align-center flex', {
       variants: {
         variant: {
           primary: 'text-primary-500',
           secondary: 'text-secondary-800',
         },
         size: {
-          small: 'w-10 h-10',
+          small: 'h-10 w-10',
           large: 'w-50 h-50',
         },
       },
@@ -30,7 +30,7 @@ const theme: Theme = {
             primary: 'text-primary-500',
           },
           size: {
-            small: 'w-10 h-10',
+            small: 'h-10 w-10',
           },
         },
       }),

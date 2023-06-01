@@ -25,7 +25,7 @@ const SortIndicator = ({
   visible,
 }: SortIndicatorProps) => {
   const styledSpan = tv({
-    base: ['text-current ps-[0.5ch]', visible ? 'visible' : 'invisible'],
+    base: ['ps-[0.5ch] text-current', visible ? 'visible' : 'invisible'],
   });
 
   return (

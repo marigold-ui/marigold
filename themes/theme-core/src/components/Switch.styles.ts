@@ -5,14 +5,14 @@ export const Switch: ThemeComponent<'Switch'> = {
   container: cva(),
   track: cva(
     [
-      'bg-switch-track-background shadow-[0_0_0_1px] shadow-switch-track-shadow',
+      'bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px]',
       'group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked',
-      'group-disabled/switch:opacity-[0.5] group-disabled/switch:bg-switch-track-disabled group-disabled/switch:shadow-[0_0_0_1px] group-disabled/switch:shadow-switch-track-shadow',
+      'group-disabled/switch:bg-switch-track-disabled group-disabled/switch:shadow-switch-track-shadow group-disabled/switch:opacity-[0.5] group-disabled/switch:shadow-[0_0_0_1px]',
     ],
     {
       variants: {
         size: {
-          large: 'w-[96] h-[48] rounded-[40]',
+          large: 'h-[48] w-[96] rounded-[40]',
         },
       },
     }
@@ -26,7 +26,7 @@ export const Switch: ThemeComponent<'Switch'> = {
     {
       variants: {
         size: {
-          large: 'top-2 w-[44] h-[44]',
+          large: 'top-2 h-[44] w-[44]',
         },
       },
     }

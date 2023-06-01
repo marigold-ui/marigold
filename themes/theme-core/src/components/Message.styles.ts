@@ -3,7 +3,7 @@ import { cva } from 'class-variance-authority';
 
 export const Message: ThemeComponent<'Message'> = {
   container: cva(
-    'border border-solid py-2 px-4 text-[13px] bg-message-container-background',
+    'bg-message-container-background border border-solid px-4 py-2 text-[13px]',
     {
       variants: {
         variant: {
@@ -14,7 +14,7 @@ export const Message: ThemeComponent<'Message'> = {
       },
     }
   ),
-  title: cva('leading-8 font-bold col-span-full', {
+  title: cva('col-span-full font-bold leading-8', {
     variants: {
       variant: {
         warning: 'text-warning-text',

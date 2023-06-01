@@ -9,7 +9,7 @@ import { cva } from 'class-variance-authority';
 const theme: Theme = {
   name: 'test',
   components: {
-    Body: cva('p-1 flex-1', {
+    Body: cva('flex-1 p-1', {
       variants: {
         variant: {
           yellow: 'bg-yellow-200',
