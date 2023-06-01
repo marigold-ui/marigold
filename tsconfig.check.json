@@ -17,6 +17,7 @@
     "jest.config.js",
     "**/node_modules/*",
     "**/dist/**/*",
-    "**/scripts/template/*"
+    "**/scripts/template/*",
+    "__trash_bin__"
   ]
 }
