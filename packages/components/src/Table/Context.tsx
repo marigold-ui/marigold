@@ -4,8 +4,12 @@ import { TableState } from '@react-stately/table';
 export interface TableContextProps {
   state: TableState<object>;
   interactive: boolean;
-  // how to type I thought of TVReturnType but no ? :/
-  classNames?: any;
+  classNames?: {
+    table?: string;
+    header?: string;
+    row?: string;
+    cell?: string;
+  };
   variant?: string;
   size?: string;
 }

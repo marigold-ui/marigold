@@ -11,9 +11,9 @@ export const Input: ThemeComponent<'Input'> = {
     inputHeight,
     inputSpacing,
     'leading-[22px]',
-    'focus:outline-focus-bg focus:outline-2 focus:outline -outline-offset-1',
+    'focus:outline-focus-bg -outline-offset-1 focus:outline focus:outline-2',
     'disabled:bg-disabled-bg',
-    'read-only:bg-transparent read-only:border-transparent',
+    'read-only:border-transparent read-only:bg-transparent',
     // Extra padding for when an icon/action is present
     'group-data-[icon]/input:pl-5',
     'group-data-[action]/input:pr-4',

@@ -38,6 +38,10 @@ export const colors = {
       border: '#cccccc',
     },
   },
+  datefield: {
+    segment: '#6d6d6d',
+    segmentText: '#cccccc',
+  },
   card: {
     background: '#fafaf8',
   },
@@ -130,6 +134,20 @@ export const colors = {
     focus: '#3ab3d5',
     checked: '#3ab3d5',
     checkedBorder: '#1d67b6',
+  },
+  tabs: {
+    tab: {
+      hover: '#8d8d8d',
+      text: '#8d8d8d',
+      disabled: '#cccccc',
+    },
+  },
+  calendar: {
+    disabled: '#cccccc',
+    background: '#cccccc',
+    calendarCell: {
+      selected: '#6d6d6d',
+    },
   },
   // Status colors
   error: {

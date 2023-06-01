@@ -1,22 +1,22 @@
-import { tv, type TVReturnType } from 'tailwind-variants';
-export const checkbox: TVReturnType<any, any, any, any, any, any> = tv({
-  slots: {
-    label: 'leading-[1.125] data-[disabled]:text-checkbox-label-disabled',
-    checkbox: [
-      'rounded-[2] border-checkbox-base-border bg-checkbox-base-background p-0.5',
-      'data-[hover]:border-checkbox-base-hover',
-      'data-[focus]:outline-2 data-[focus]:outline data-[focus]:outline-checkbox-base-focus data-[focus]:outline-offset[3]',
-      'data-[checked]:text-white data-[checked]:border-checkbox-base-checked data-[checked]:bg-checkbox-base-checkedBackground',
-      'data-[indeterminate]:text-white data-[indeterminate]:border-checkbox-base-indeterminate data-[indeterminate]:bg-checkbox-base-indeterminateBackground',
-      'data-[disabled]:border-checkbox-base-disabled data-[disabled]:bg-checkbox-base-disabledBackground',
-    ],
-    container: '',
-  },
-  variants: {
-    size: {
-      small: {
-        container: 'py-1',
+import { ThemeComponent } from '@marigold/system';
+import { cva } from 'class-variance-authority';
+
+export const Checkbox: ThemeComponent<'Checkbox'> = {
+  container: cva([], {
+    variants: {
+      size: {
+        small: 'py-1',
       },
     },
-  },
-});
+  }),
+  label: cva(
+    'group-disabled/checkbox:text-checkbox-label-disabled leading-[1.125]'
+  ),
+  checkbox: cva([
+    'border-checkbox-base-border bg-checkbox-base-background rounded-[2] p-0.5',
+    'group-hover/checkbox:border-checkbox-base-hover',
+    'group-checked/checkbox:border-checkbox-base-checked group-checked/checkbox:bg-checkbox-base-checkedBackground group-checked/checkbox:text-white',
+    'group-disabled/checkbox:border-checkbox-base-disabled group-disabled/checkbox:bg-checkbox-base-disabled',
+    'group-indeterminate/checkbox:border-checkbox-base-indeterminate group-indeterminate/checkbox:bg-checkbox-base-indeterminateBackground group-indeterminate/checkbox:text-white',
+  ]),
+};

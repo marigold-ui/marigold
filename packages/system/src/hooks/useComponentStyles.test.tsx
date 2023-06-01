@@ -27,10 +27,10 @@ const theme = {
       },
     }),
     Checkbox: tv({
-      base: 'inline align-middle gap-4',
+      base: 'inline gap-4 align-middle',
       slots: {
         container: 'flex p-2 align-middle',
-        icon: 'p-8 w-1',
+        icon: 'w-1 p-8',
         label: 'text-sm text-pink-500',
       },
       variants: {

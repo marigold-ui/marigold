@@ -44,7 +44,7 @@ export default meta;
 export const Basic: StoryObj<typeof Box> = {
   render: args => (
     <Box
-      className="ms-auto me-auto w-6/12 rounded bg-[#99e9f2] px-2 py-1 text-[#0b7285] hover:scale-150 hover:bg-[#c5f6fa]"
+      className="me-auto ms-auto w-6/12 rounded bg-[#99e9f2] px-2 py-1 text-[#0b7285] hover:scale-150 hover:bg-[#c5f6fa]"
       {...args}
     />
   ),

@@ -16,7 +16,7 @@ export interface ComponentStyleFunction<
 
 export type Theme = {
   name: string;
-  screens?: { [key: string]: any };
+  screens?: { [key: string]: string };
   colors?: { [key: string]: any };
   root?: ComponentStyleFunction;
   components: {
@@ -28,6 +28,10 @@ export type Theme = {
     Body?: ComponentStyleFunction<string, string>;
     Button?: ComponentStyleFunction<string, string>;
     Card?: ComponentStyleFunction<string, string>;
+    DateField?: Record<
+      'segment' | 'field' | 'action',
+      ComponentStyleFunction<string, string>
+    >;
     Dialog?: Record<
       'closeButton' | 'container',
       ComponentStyleFunction<string, string>
@@ -42,6 +46,10 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Image?: ComponentStyleFunction<string, string>;
+    Checkbox?: Record<
+      'container' | 'label' | 'checkbox',
+      ComponentStyleFunction<string, string>
+    >;
     Switch?: Record<
       'container' | 'label' | 'track' | 'thumb',
       ComponentStyleFunction<string, string>
@@ -73,8 +81,16 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
+    NumberField?: Record<
+      'group' | 'stepper',
+      ComponentStyleFunction<string, string>
+    >;
     Message?: Record<
       'container' | 'icon' | 'title' | 'content',
+      ComponentStyleFunction<string, string>
+    >;
+    Table?: Record<
+      'table' | 'header' | 'row' | 'cell',
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<
@@ -87,7 +103,12 @@ export type Theme = {
       'container' | 'arrow',
       ComponentStyleFunction<string, string>
     >;
+    Tabs?: Record<'tabs' | 'tab', ComponentStyleFunction<string, string>>;
     Underlay?: ComponentStyleFunction<string, string>;
+    Calendar?: Record<
+      'calendar' | 'calendarCell' | 'calendarControllers',
+      ComponentStyleFunction<string, string>
+    >;
   };
 };
 

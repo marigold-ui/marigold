@@ -48,7 +48,7 @@ test('themes can be cascaded', () => {
     name: 'outer',
     components: {
       button: tv({
-        base: 'border-none p-1 bg-blue-100',
+        base: 'border-none bg-blue-100 p-1',
         variants: {
           variant: {
             primary: 'bg-primary-700',
@@ -62,7 +62,7 @@ test('themes can be cascaded', () => {
     name: 'inner',
     components: {
       button: tv({
-        base: 'p-3 bg-blue-500',
+        base: 'bg-blue-500 p-3',
         variants: {
           variant: {
             secondary: 'bg-secondary-700',

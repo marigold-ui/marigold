@@ -42,7 +42,7 @@ export const TableCell = ({ cell }: TableCellProps) => {
   return (
     <td
       ref={ref}
-      className={classNames.cell()}
+      className={classNames?.cell}
       {...mergeProps(cellProps, focusProps)}
       {...stateProps}
     >

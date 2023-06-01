@@ -15,7 +15,7 @@ const theme: Theme = {
     Header: cva(),
     Footer: cva(),
     Body: cva(),
-    Card: cva('p-1 border-solid border border-gray-700', {
+    Card: cva('border border-solid border-gray-700 p-1', {
       variants: {
         variant: {
           yellow: 'bg-yellow-300',

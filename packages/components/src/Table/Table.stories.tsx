@@ -134,7 +134,7 @@ export const ControlledTable: Story = {
     const [selectedKeys, setSelectedKeys] = useState(new Set());
     const selected = Array.from(selectedKeys);
     return (
-      <Stack space="small">
+      <Stack space={3}>
         <Table
           aria-label="Example dynamic collection table"
           selectionMode="multiple"
@@ -503,9 +503,9 @@ export const WithParentProp: Story = {
 
     return (
       <Stack>
-        {/* <Checkbox checked={editable} onChange={setEditable}>
+        <Checkbox checked={editable} onChange={setEditable}>
           Allow editing
-        </Checkbox>   */}
+        </Checkbox>
         <DataTable editable={editable} />
       </Stack>
     );

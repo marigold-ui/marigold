@@ -4,7 +4,7 @@ import { cva } from 'class-variance-authority';
 export const Link: ThemeComponent<'Link'> = cva(
   [
     'text-primary-800',
-    'hover:visited:cursor-pointer  hover:underline aria-disabled:cursor-not-allowed',
+    'hover:underline  hover:visited:cursor-pointer aria-disabled:cursor-not-allowed',
   ],
   {
     variants: {

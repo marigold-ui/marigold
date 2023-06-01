@@ -36,13 +36,9 @@ test('uses theme styles', () => {
   );
   const text = screen.getByText(/text/);
 
-  expect(text).toMatchInlineSnapshot(`
-    <p
-      class="font-["Arial]" text-[--color] outline-[--outline] italic normal cursor-default font-normal text-[13px]"
-    >
-      text
-    </p>
-  `);
+  expect(text.className).toMatchInlineSnapshot(
+    `"font-["Arial]" text-[--color] outline-[--outline] not-italic cursor-default font-normal text-[13px]"`
+  );
 });
 
 test('renders a <p> element by default', () => {
@@ -66,11 +62,7 @@ test('style props override theme styles', () => {
   );
   const text = screen.getByText(/text/);
 
-  expect(text).toMatchInlineSnapshot(`
-    <p
-      class="font-["Arial]" text-[--color] outline-[--outline] italic normal cursor-default font-normal text-[13px]"
-    >
-      text
-    </p>
-  `);
+  expect(text.className).toMatchInlineSnapshot(
+    `"font-["Arial]" text-[--color] outline-[--outline] not-italic cursor-default font-normal text-[13px]"`
+  );
 });

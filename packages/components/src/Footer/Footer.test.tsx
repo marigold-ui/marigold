@@ -9,7 +9,7 @@ import { Footer } from './Footer';
 const theme: Theme = {
   name: 'test',
   components: {
-    Footer: cva('p-1 border border-gray-500', {
+    Footer: cva('border border-gray-500 p-1', {
       variants: {
         variant: {
           yellow: 'bg-yellow-500',
