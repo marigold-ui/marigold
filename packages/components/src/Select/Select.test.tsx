@@ -29,12 +29,19 @@ const theme: Theme = {
       }),
       indicator: cva(),
     },
-    HelpText: cva('', {
-      variants: {
-        variant: { lime: 'text-lime-500' },
-        size: { small: 'text-sm' },
-      },
-    }),
+    HelpText: {
+      container: cva('', {
+        variants: {
+          variant: {
+            lime: 'text-lime-600',
+          },
+          size: {
+            small: 'text-sm',
+          },
+        },
+      }),
+      icon: cva(''),
+    },
     Select: {
       select: cva('text-blue-500', {
         variants: {
