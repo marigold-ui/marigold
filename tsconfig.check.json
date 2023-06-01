@@ -17,6 +17,8 @@
     "jest.config.js",
     "**/node_modules/*",
     "**/dist/**/*",
-    "**/scripts/template/*"
+    "**/scripts/template/*",
+    "docs",
+    "themes-old"
   ]
 }
