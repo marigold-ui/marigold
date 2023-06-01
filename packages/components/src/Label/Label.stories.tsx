@@ -16,16 +16,6 @@ const meta = {
         defaultValue: { summary: 'Label' },
       },
     },
-    required: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'Hint that the related control required',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
-    },
     labelWidth: {
       control: {
         type: 'text',
@@ -37,7 +27,6 @@ const meta = {
     },
   },
   args: {
-    required: false,
     children: 'Label',
   },
 } satisfies Meta<typeof Label>;
