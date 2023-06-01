@@ -45,6 +45,7 @@ export const DateSegment = ({
         'group/segment',
         maxValue != null && `min-w-[${String(maxValue).length}ch]`,
         'box-content rounded-sm text-center outline-0',
+        'group-disabled/field:cursor-not-allowed',
         classNames.segment
       )}
     >
@@ -62,7 +63,7 @@ export const DateSegment = ({
           type === 'literal'
             ? `literal ${
                 !isPrevPlaceholder &&
-                'activeLiteral text-datefield-segment group-disabled/field:text-disabled-text'
+                'text-datefield-segment group-disabled/field:text-disabled-text'
               }`
             : 'group-focus-visible/segment:text-secondary-50 text-datefield-segment group-disabled/field:text-disabled-text'
         )}
