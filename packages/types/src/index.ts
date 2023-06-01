@@ -19,11 +19,10 @@ export type Percentage = `${ZeroToNine}%` | `${OneToNine}${ZeroToNine}%`;
 export type NonZeroPercentage = `${OneToNine}%` | `${OneToNine}${ZeroToNine}%`;
 
 /**
- * To use for color tokens. TODO
+ * To use for color tokens.
  * https://stackoverflow.com/questions/58434389/typescript-deep-keyof-of-a-nested-object
  */
-
-type DeepKeys<T> = T extends object
+export type DeepKeys<T> = T extends object
   ? {
       [K in keyof T]-?: K extends string | number
         ? `${K}` | `${K}.${DeepKeys<T[K]>}`
@@ -63,7 +62,7 @@ type Join<K, P> = K extends string | number
     : never
   : never;
 
-type Paths<T, D extends number = 10> = [D] extends [never]
+export type Paths<T, D extends number = 10> = [D] extends [never]
   ? never
   : T extends object
   ? {
@@ -73,7 +72,7 @@ type Paths<T, D extends number = 10> = [D] extends [never]
     }[keyof T]
   : '';
 
-type Leaves<T, D extends number = 10> = [D] extends [never]
+export type Leaves<T, D extends number = 10> = [D] extends [never]
   ? never
   : T extends object
   ? { [K in keyof T]-?: Join<K, Leaves<T[K], Prev[D]>> }[keyof T]
