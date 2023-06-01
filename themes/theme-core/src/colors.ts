@@ -38,6 +38,10 @@ export const colors = {
       border: '#cccccc',
     },
   },
+  datefield: {
+    segment: '#6d6d6d',
+    segmentText: '#cccccc',
+  },
   card: {
     background: '#fafaf8',
   },
