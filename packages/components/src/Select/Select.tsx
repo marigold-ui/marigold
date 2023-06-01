@@ -26,9 +26,6 @@ import { ListBox } from '../ListBox';
 import { messages } from './intl';
 import { Popover, Tray } from '../Overlay';
 
-import { tv } from 'tailwind-variants';
-import { twMerge } from 'tailwind-merge';
-
 // Select Icon
 // ---------------
 interface ChevronProps {
