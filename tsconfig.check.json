@@ -18,6 +18,7 @@
     "**/node_modules/*",
     "**/dist/**/*",
     "**/scripts/template/*",
-    "__trash_bin__"
+    "docs",
+    "themes-old"
   ]
 }
