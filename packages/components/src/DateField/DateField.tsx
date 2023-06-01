@@ -89,6 +89,8 @@ export const DateField = ({
     focus: isFocused || isPressed,
   });
 
+  console.log(state.segments);
+
   return (
     <FieldBase
       error={error}
@@ -111,7 +113,14 @@ export const DateField = ({
         )}
         data-testid="date-field"
       >
-        <div ref={ref} className=" flex basis-full items-center pl-2">
+        <div
+          ref={ref}
+          className={cn(
+            'group-focus/field:[&>*:focus-visible]:text-secondary-50',
+            'group-focus/field:[&>*]:text-datefield-segment',
+            ' flex basis-full items-center pl-2'
+          )}
+        >
           {state.segments.map((segment, i) => (
             <DateSegment
               isPrevPlaceholder={state.segments[i - 1]?.isPlaceholder}
