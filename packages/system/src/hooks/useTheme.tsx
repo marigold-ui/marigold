@@ -1,16 +1,8 @@
 import React, { createContext, ReactNode, useContext } from 'react';
 import { Theme } from '../types';
+import { defaultTheme } from '../defaultTheme';
 
-/**
- * @internal
- */
-export const __defaultTheme: Theme = {
-  name: 'default',
-  screens: {},
-  components: {},
-};
-
-const InternalContext = createContext<Theme>(__defaultTheme);
+const InternalContext = createContext<Theme>(defaultTheme);
 
 export const useTheme = () => {
   const theme = useContext(InternalContext);
