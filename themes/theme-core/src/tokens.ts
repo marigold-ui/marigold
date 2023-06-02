@@ -118,6 +118,7 @@ export const colors = {
     // ---------------
     disabled: '#cccccc',
     selected: '#3ab3d5',
+    hover: '#8d8d8d',
 
     // Status
     error: '#f33',
