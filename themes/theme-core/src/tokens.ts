@@ -103,7 +103,11 @@ export const colors = {
   // Border
   // ---------------
   border: {
-    primary: brand.primary[800],
+    primary: {
+      DEFAULT: brand.primary[600],
+      // Use this hover when a primary border is hovered
+      hover: brand.primary[500],
+    },
 
     dark: '#4b4b4b',
     neutral: '#aaa',
