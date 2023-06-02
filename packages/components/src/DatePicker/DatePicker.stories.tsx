@@ -53,7 +53,7 @@ export const Basic: Story = {
   render: args => {
     return (
       <I18nProvider locale="de-DE">
-        <div style={{ maxWidth: '300px' }}>
+        <div className="w-[900px]">
           <DatePicker
             label="Date Picker"
             description="This is description"
@@ -71,14 +71,16 @@ export const Controlled: Story = {
 
     return (
       <I18nProvider locale="de-DE">
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <DatePicker
-            label="Date Picker"
-            value={value}
-            onChange={setValue}
-            description="Controlled date field"
-            {...args}
-          />
+        <div className="flex w-[800px] items-center gap-4">
+          <div className="flex-1">
+            <DatePicker
+              label="Date Picker"
+              value={value}
+              onChange={setValue}
+              description="Controlled date field"
+              {...args}
+            />
+          </div>
           <pre style={{ marginTop: '1rem' }}>
             <strong>DateField Value:</strong>
             {'Day:' +
@@ -97,13 +99,15 @@ export const Controlled: Story = {
 export const MinMax: Story = {
   render: args => (
     <I18nProvider locale="de-DE">
-      <DatePicker
-        label="Date Picker"
-        description="Determine min and max value for date picker"
-        minValue={new CalendarDate(2019, 6, 5)}
-        maxValue={new CalendarDate(2019, 6, 20)}
-        {...args}
-      />
+      <div className="w-[900px]">
+        <DatePicker
+          label="Date Picker"
+          description="Determine min and max value for date picker"
+          minValue={new CalendarDate(2019, 6, 5)}
+          maxValue={new CalendarDate(2019, 6, 20)}
+          {...args}
+        />
+      </div>
     </I18nProvider>
   ),
 };

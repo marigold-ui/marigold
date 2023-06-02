@@ -101,6 +101,7 @@ export type Theme = {
       'calendar' | 'calendarCell' | 'calendarControllers',
       ComponentStyleFunction<string, string>
     >;
+    DatePicker?: Record<'actionButton', ComponentStyleFunction<string, string>>;
   };
 };
 

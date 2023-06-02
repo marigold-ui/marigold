@@ -22,6 +22,7 @@ export interface DateFieldProps
   value?: DateValue | null;
   defaultValue?: DateValue | null;
   ref?: React.RefObject<unknown> | undefined;
+  triggerRef?: React.RefObject<HTMLDivElement> | undefined;
   action?: ReactElement;
   buttonProps?: AriaButtonProps<'button'>;
   isPressed?: boolean;
@@ -48,6 +49,7 @@ export const DateField = ({
   size,
   action,
   isPressed,
+  triggerRef,
   ...res
 }: DateFieldProps) => {
   const { locale } = useLocale();
@@ -112,6 +114,7 @@ export const DateField = ({
           classNames.field
         )}
         data-testid="date-field"
+        ref={triggerRef}
       >
         <div
           ref={ref}
