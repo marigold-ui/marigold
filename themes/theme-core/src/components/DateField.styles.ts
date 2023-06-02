@@ -7,7 +7,7 @@ export const DateField: ThemeComponent<'DateField'> = {
   ]),
 
   field: cva([
-    'border border-solid border-border-color bg-secondary-50',
+    'border-border-color bg-secondary-50 border border-solid',
     ' group-disabled/field:bg-disabled-bg group-disabled/field:text-disabled-text',
   ]),
   action: cva('pr-2 '),

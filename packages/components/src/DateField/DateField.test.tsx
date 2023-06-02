@@ -31,7 +31,7 @@ const theme: Theme = {
       icon: cva(),
     },
     DateField: {
-      segment: cva('text-gray-700 bg-white'),
+      segment: cva('bg-white text-gray-700'),
       field: cva('p-2', {
         variants: {
           variant: {
