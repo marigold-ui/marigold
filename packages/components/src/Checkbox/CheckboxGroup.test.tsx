@@ -33,7 +33,10 @@ const theme: Theme = {
     },
     Field: cva(),
     Label: { container: cva(), indicator: cva() },
-    HelpText: cva(),
+    HelpText: {
+      container: cva(''),
+      icon: cva(''),
+    },
   },
 };
 

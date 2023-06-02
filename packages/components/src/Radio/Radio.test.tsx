@@ -15,7 +15,19 @@ const theme: Theme = {
       container: cva(),
       indicator: cva(),
     },
-    HelpText: cva(),
+    HelpText: {
+      container: cva('', {
+        variants: {
+          variant: {
+            lime: 'text-lime-600',
+          },
+          size: {
+            small: 'p-2',
+          },
+        },
+      }),
+      icon: cva(''),
+    },
     Radio: {
       container: cva('', {
         variants: {

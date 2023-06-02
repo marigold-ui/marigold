@@ -1,5 +1,4 @@
 export * from './hooks';
-export * from './theme';
 
 export * from './Accordion';
 export * from './Aside';

@@ -1,9 +1,8 @@
 import React, { ReactNode } from 'react';
-import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
+import { cva } from 'class-variance-authority';
 
 import { ThemeProvider, useTheme } from './useTheme';
-import { tv } from 'tailwind-variants';
 
 // Setup
 // ---------------
@@ -11,8 +10,7 @@ import { tv } from 'tailwind-variants';
 const theme = {
   name: 'test',
   components: {
-    button: tv({
-      base: 'border-none p-1',
+    Button: cva('border-none p-1', {
       variants: {
         variant: {
           primary: 'bg-primary-700',
@@ -32,66 +30,13 @@ test('returns the theme', () => {
   expect(result.current).toEqual(theme);
 });
 
-test('values from theme are given correctly', () => {
+test('return classnames from theme', () => {
   const { result } = renderHook(() => useTheme(), { wrapper });
 
-  const button = result.current.components!.button;
+  const button = result.current.components!.Button;
 
-  expect(button()).toEqual('border-none p-1');
-  expect(button({ variant: 'primary' })).toEqual(
+  expect(button?.()).toEqual('border-none p-1');
+  expect(button?.({ variant: 'primary' })).toEqual(
     'border-none p-1 bg-primary-700'
   );
-});
-
-test('themes can be cascaded', () => {
-  const outerTheme = {
-    name: 'outer',
-    components: {
-      button: tv({
-        base: 'border-none bg-blue-100 p-1',
-        variants: {
-          variant: {
-            primary: 'bg-primary-700',
-          },
-        },
-      }),
-    },
-  };
-
-  const innerTheme = {
-    name: 'inner',
-    components: {
-      button: tv({
-        base: 'bg-blue-500 p-3',
-        variants: {
-          variant: {
-            secondary: 'bg-secondary-700',
-          },
-        },
-      }),
-    },
-  };
-
-  const Theme = ({ testId }: { testId: string }) => {
-    const theme = useTheme();
-
-    return <div data-testid={testId}>{JSON.stringify({ theme }, null, 2)}</div>;
-  };
-
-  render(
-    <ThemeProvider theme={outerTheme}>
-      <>
-        <Theme testId="outer" />
-        <ThemeProvider theme={innerTheme}>
-          <Theme testId="inner" />
-        </ThemeProvider>
-      </>
-    </ThemeProvider>
-  );
-
-  const outer = screen.getByTestId('outer');
-  const inner = screen.getByTestId('inner');
-
-  expect(outer.className).toMatchInlineSnapshot(`""`);
-  expect(inner.className).toMatchInlineSnapshot(`""`);
 });

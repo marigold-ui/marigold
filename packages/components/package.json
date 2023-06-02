@@ -79,10 +79,8 @@
     "@react-types/radio": "3.4.1",
     "@react-types/shared": "3.18.0",
     "@react-types/tooltip": "3.4.0",
-    "deepmerge": "^4.2.2",
     "react-is": "18.2.0",
-    "react-transition-group": "4.4.5",
-    "tailwind-merge": "1.11.0"
+    "react-transition-group": "4.4.5"
   },
   "peerDependencies": {
     "react": "17.x || 18.x",

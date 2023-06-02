@@ -17,7 +17,19 @@ const theme: Theme = {
     },
     Field: cva(),
     Label: { container: cva(), indicator: cva() },
-    HelpText: cva(),
+    HelpText: {
+      container: cva('', {
+        variants: {
+          variant: {
+            lime: 'text-lime-600',
+          },
+          size: {
+            small: 'p-2',
+          },
+        },
+      }),
+      icon: cva(''),
+    },
     Input: cva() as any,
   },
 };

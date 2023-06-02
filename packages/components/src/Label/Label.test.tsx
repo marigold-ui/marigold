@@ -1,16 +1,25 @@
 import React from 'react';
-import { render, screen, within } from '@testing-library/react';
+import { cva } from 'class-variance-authority';
+import { render, screen } from '@testing-library/react';
 import { Theme, ThemeProvider } from '@marigold/system';
 import { Label } from './Label';
-
-import { tv } from 'tailwind-variants';
 
 const theme: Theme = {
   name: 'test',
   components: {
-    Label: tv({
-      base: ['font-["Inter_Regular"] text-black'],
-    }),
+    Label: {
+      container: cva('', {
+        variants: {
+          variant: {
+            lime: 'text-lime-600',
+          },
+          size: {
+            small: 'p-1',
+          },
+        },
+      }),
+      indicator: cva(''),
+    },
   },
 };
 
@@ -22,7 +31,7 @@ test('uses base styles from theme', () => {
   );
   const label = screen.getByText(/label/);
 
-  expect(label).toHaveClass(`font-["Inter_Regular"] text-black`);
+  expect(label.className).toMatchInlineSnapshot(`"flex w-[var(--labelWidth)]"`);
 });
 
 test('supports htmlFor prop', () => {
@@ -34,19 +43,6 @@ test('supports htmlFor prop', () => {
   const label = screen.getByText(/label/);
 
   expect(label).toHaveAttribute('for');
-});
-
-test('supports required prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Label data-testid="label" required>
-        label
-      </Label>
-    </ThemeProvider>
-  );
-  const label = screen.getByTestId(/label/);
-  const requiredIcon = within(label).getByRole('presentation');
-  expect(requiredIcon).toBeInTheDocument();
 });
 
 test('renders <label> element by default', () => {
@@ -78,12 +74,5 @@ test('accepts labelwidth as css variable and set the style', () => {
     </ThemeProvider>
   );
   const label = screen.getByText(/label/);
-  expect(label).toMatchInlineSnapshot(`
-    <span
-      class="flex w-[var(--labelWidth)] font-["Inter_Regular"] text-black"
-      style="--labelWidth: 100px;"
-    >
-      label
-    </span>
-  `);
+  expect(label.className).toMatchInlineSnapshot(`"flex w-[var(--labelWidth)]"`);
 });

@@ -83,7 +83,7 @@ export const Controlled: Story = {
     const [current, setCurrent] = useState<string>('');
     return (
       <Container size="large">
-        <Stack space="medium">
+        <Stack space={4}>
           <Autocomplete
             {...args}
             value={current}
