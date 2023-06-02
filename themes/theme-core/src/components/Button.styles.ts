@@ -17,7 +17,7 @@ export const Button: ThemeComponent<'Button'> = cva(
           'mg-hover:bg-bg-primary-hover mg-hover:border-border-primary-hover',
         ],
         link: [
-          'text-text-primary border-none bg-transparent',
+          'text-text-primary-light border-none bg-transparent',
           'mg-hover:bg-transparent mg-hover:underline',
         ],
         text: [' border-none bg-transparent', 'mg-hover:bg-bg-hover-light'],
