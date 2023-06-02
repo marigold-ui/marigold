@@ -95,6 +95,9 @@ export const colors = {
     },
     disabled: brand.secondary[50],
     selected: '#3ab3d5',
+
+    // Status
+    info: '#008',
   },
 
   // Border
