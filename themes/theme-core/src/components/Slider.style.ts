@@ -5,16 +5,16 @@ export const Slider: ThemeComponent<'Slider'> = {
   track: cva([
     'absolute top-4 h-2 w-full',
     'rounded-lg border-none border-transparent',
-    'bg-slider-track-background text-transparent',
+    'bg-bg-surface-raised text-transparent',
   ]),
   thumb: cva([
     'align-middle',
-    'border-slider-thumb-border rounded-lg border-4 border-solid',
+    'border-border-dark rounded-lg border-4 border-solid',
     'h-4 w-4',
-    'bg-slider-thumb-background',
-    'mg-focus:border-slider-thumb-focus',
-    'mg-disabled:bg-slider-thumb-disabled-background mg-disabled:border-slider-thumb-disabled-border',
+    'bg-bg-surface',
+    'mg-focus:border-border-focus',
+    'mg-disabled:bg-bg-disabled mg-disabled:border-border-disabled',
   ]),
-  label: cva('text-slider-label-text text-base font-normal'),
-  output: cva('text-slider-ouput-text text-base font-normal'),
+  label: cva('text-text-primary text-base font-normal'),
+  output: cva('text-text-primary text-base font-normal'),
 };
