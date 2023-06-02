@@ -12,39 +12,39 @@ export const Table: ThemeComponent<'Table'> = {
   }),
   header: cva(
     [
-      'border-table-header-border border-x px-2',
-      'bg-table-header-background text-table-header-text',
-      'odd:bg-table-header-alternativeBackground',
-      'focus:outline-table-header-focus',
+      'border-border-white border-x px-2',
+      'bg-bg-surface-lowered text-text-light',
+      'odd:bg-bg-surface-raised',
+      'focus:outline-outline-focus',
     ],
     {
       variants: {
         variant: {
           linedTable:
-            'text-table-header-alternativText border-table-header-alternativBorder border-x-0 border-b bg-transparent px-2 odd:bg-transparent',
+            'text-text-primary border-border-neutral border-x-0 border-b bg-transparent px-2 odd:bg-transparent',
           borderedTable: [
-            'border-table-header-alternativBorder border',
-            'text-table-header-alternativText bg-transparent px-2 odd:bg-transparent',
+            'border-border-neutral border',
+            'text-text-primary bg-transparent px-2 odd:bg-transparent',
           ],
         },
       },
     }
   ),
   row: cva(
-    'hover:bg-table-row-hover selected:bg-table-row-checked focus:outline-table-row-focus',
+    'hover:bg-bg-hover-neutral selected:bg-bg-selected focus:outline-outline-focus',
     {
       variants: {
         variant: {
-          linedTable: ['border-table-row-border border-b'],
-          borderedTable: ['border-table-row-border border'],
+          linedTable: ['border-border-neutral border-b'],
+          borderedTable: ['border-border-neutral border'],
         },
       },
     }
   ),
-  cell: cva(['text-table-cell-text p-2', 'focus:outline-table-cell-focus'], {
+  cell: cva(['text-text-primary p-2', 'focus:outline-outline-focus'], {
     variants: {
       variant: {
-        borderedTable: ['border-table-cell-border border'],
+        borderedTable: ['border-border-neutral border'],
       },
     },
   }),
