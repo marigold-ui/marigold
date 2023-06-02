@@ -1,5 +1,5 @@
 import { Theme } from '@marigold/system';
-import { colors } from './colors';
+import { colors } from './tokens';
 import * as components from './components';
 
 import { root } from './root';
