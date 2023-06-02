@@ -22,7 +22,7 @@ const brand = {
   },
 } as const;
 
-const colors = {
+export const colors = {
   // Brand
   // ---------------
   brand,
@@ -31,14 +31,14 @@ const colors = {
   // ---------------
   text: {
     primary: {
-      DEFAULT: brand.primary[900], // Is this specific to the core?,
+      DEFAULT: brand.primary[900],
       light: brand.primary[800],
     },
 
     dark: '#111',
     light: brand.secondary[50],
 
-    // States
+    // State
     focus: brand.secondary[50],
     hover: {
       DEFAULT: brand.secondary[50],
@@ -46,7 +46,7 @@ const colors = {
     },
     disabled: '#cccccc',
 
-    // Statuses
+    // Status
     error: '#f33',
     info: '#008',
     warning: '#d80',
@@ -99,16 +99,29 @@ const colors = {
 
   // Border
   // ---------------
-  border: {},
-};
+  border: {
+    primary: brand.primary[800],
 
-// colors
-// radii
-// shadows
-// font size
-// font
-// line height
-// size
-// space
-// transition
-// zIndex
+    dark: '#4b4b4b',
+    neutral: '#aaa',
+    light: '#cfcfcf',
+    white: '#fff',
+
+    // State
+    // ---------------
+    disabled: '#cccccc',
+    selected: '#3ab3d5',
+
+    // Status
+    error: '#f33',
+    info: '#008',
+    warning: '#d80',
+  },
+
+  // Outline
+  // ---------------
+  outline: {
+    primary: brand.primary[600],
+    focus: '#3875d7',
+  },
+};
