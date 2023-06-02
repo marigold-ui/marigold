@@ -63,7 +63,7 @@ test('Supporting default size', () => {
     </Tabs>
   );
   expect(screen.getByText('tab').className).toMatchInlineSnapshot(
-    `"mg-disabled:cursor-not-allowed flex cursor-pointer justify-center min-h-[40px] data-[hover]:text-tabs-tab-text data-[hover]:border-b-tabs-tab-hover data-[hover]:border-b-8 data-[hover]:border-solid mg-disabled:text-tabs-tab-disabled mg-selected:border-b-primary-600 mg-selected:border-b-8 mg-selected:border-solid pb-2 px-2 text-lg"`
+    `"mg-disabled:cursor-not-allowed flex cursor-pointer justify-center min-h-[40px] data-[hover]:text-tabs-tab-text data-[hover]:border-b-tabs-tab-hover data-[hover]:border-b-8 data-[hover]:border-solid mg-disabled:text-tabs-tab-disabled mg-selected:border-b-primary-600 mg-selected:border-b-8 mg-selected:border-solid px-2 pb-2 text-lg"`
   );
 });
 
@@ -111,10 +111,10 @@ test('cursor indicates interactivity', () => {
   );
   const tabs = screen.getAllByRole('tab');
   expect(tabs[0].className).toMatchInlineSnapshot(
-    `"mg-disabled:cursor-not-allowed flex cursor-pointer justify-center min-h-[40px] data-[hover]:text-tabs-tab-text data-[hover]:border-b-tabs-tab-hover data-[hover]:border-b-8 data-[hover]:border-solid mg-disabled:text-tabs-tab-disabled mg-selected:border-b-primary-600 mg-selected:border-b-8 mg-selected:border-solid pb-2 px-2 text-lg"`
+    `"mg-disabled:cursor-not-allowed flex cursor-pointer justify-center min-h-[40px] data-[hover]:text-tabs-tab-text data-[hover]:border-b-tabs-tab-hover data-[hover]:border-b-8 data-[hover]:border-solid mg-disabled:text-tabs-tab-disabled mg-selected:border-b-primary-600 mg-selected:border-b-8 mg-selected:border-solid px-2 pb-2 text-lg"`
   );
   expect(tabs[1].className).toMatchInlineSnapshot(
-    `"mg-disabled:cursor-not-allowed flex cursor-pointer justify-center min-h-[40px] data-[hover]:text-tabs-tab-text data-[hover]:border-b-tabs-tab-hover data-[hover]:border-b-8 data-[hover]:border-solid mg-disabled:text-tabs-tab-disabled mg-selected:border-b-primary-600 mg-selected:border-b-8 mg-selected:border-solid pb-2 px-2 text-lg"`
+    `"mg-disabled:cursor-not-allowed flex cursor-pointer justify-center min-h-[40px] data-[hover]:text-tabs-tab-text data-[hover]:border-b-tabs-tab-hover data-[hover]:border-b-8 data-[hover]:border-solid mg-disabled:text-tabs-tab-disabled mg-selected:border-b-primary-600 mg-selected:border-b-8 mg-selected:border-solid px-2 pb-2 text-lg"`
   );
 });
 
@@ -132,7 +132,7 @@ test('open tabpanel when its tab controller is clicked', () => {
   const tab = screen.getByText('tab2');
   fireEvent.click(tab);
   expect(tab.className).toMatchInlineSnapshot(
-    `"mg-disabled:cursor-not-allowed flex cursor-pointer justify-center min-h-[40px] data-[hover]:text-tabs-tab-text data-[hover]:border-b-tabs-tab-hover data-[hover]:border-b-8 data-[hover]:border-solid mg-disabled:text-tabs-tab-disabled mg-selected:border-b-primary-600 mg-selected:border-b-8 mg-selected:border-solid pb-2 px-2 text-lg"`
+    `"mg-disabled:cursor-not-allowed flex cursor-pointer justify-center min-h-[40px] data-[hover]:text-tabs-tab-text data-[hover]:border-b-tabs-tab-hover data-[hover]:border-b-8 data-[hover]:border-solid mg-disabled:text-tabs-tab-disabled mg-selected:border-b-primary-600 mg-selected:border-b-8 mg-selected:border-solid px-2 pb-2 text-lg"`
   );
   expect(screen.getByText('tab-2 content')).toBeVisible();
 });

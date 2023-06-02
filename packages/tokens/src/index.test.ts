@@ -243,11 +243,6 @@ test('smoketest', () => {
         0 7px 14px -5px hsl(220 3% 15% / calc(1% + 5%))",
       },
       "size": {
-        "content": {
-          "large": "60ch",
-          "medium": "45ch",
-          "small": "20ch",
-        },
         "fixed": {
           "large-1": "7.5rem",
           "large-2": "10rem",
@@ -275,11 +270,6 @@ test('smoketest', () => {
           "small-1": "clamp(1rem, 2vw, 1.5rem)",
           "small-2": "clamp(1.5rem, 3vw, 2rem)",
           "small-3": "clamp(2rem, 4vw, 3rem)",
-        },
-        "header": {
-          "large": "35ch",
-          "medium": "25ch",
-          "small": "20ch",
         },
       },
       "space": {

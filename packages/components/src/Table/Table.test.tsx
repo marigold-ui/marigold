@@ -13,6 +13,11 @@ import { Table } from './Table';
 const theme: Theme = {
   name: 'test',
   components: {
+    Checkbox: {
+      checkbox: cva(),
+      container: cva(),
+      label: cva(),
+    },
     Table: {
       table: cva('border-collapse'),
       header: cva('p-4'),

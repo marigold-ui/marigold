@@ -65,7 +65,7 @@ test('supports base styling', () => {
     `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
   );
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-[0_0_0_1px] shadow-switch-track-shadow group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
   );
   expect(thumb.className).toMatchInlineSnapshot(
     `"h-[22px] w-[22px] cubic-bezier(.7,0,.3,1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-px block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-switch-track-background shadow-[1px_1px_4px]"`
@@ -77,7 +77,7 @@ test('supports a custom variant', () => {
   const { track, thumb } = getSwitchParts();
 
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-[0_0_0_1px] shadow-switch-track-shadow group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
   );
   expect(thumb.className).toMatchInlineSnapshot(
     `"h-[22px] w-[22px] cubic-bezier(.7,0,.3,1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-px block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-switch-track-background shadow-[1px_1px_4px]"`
@@ -89,7 +89,7 @@ test('supports a size', () => {
   const { track } = getSwitchParts();
 
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-[0_0_0_1px] shadow-switch-track-shadow group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
   );
 });
 
@@ -113,7 +113,7 @@ test('supports disabled prop', () => {
 
   expect(input).toBeDisabled();
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-[0_0_0_1px] shadow-switch-track-shadow group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
   );
   expect(thumb.className).toMatchInlineSnapshot(
     `"h-[22px] w-[22px] cubic-bezier(.7,0,.3,1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-px block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-switch-track-background shadow-[1px_1px_4px]"`
@@ -133,13 +133,13 @@ test('toggle switch per click', () => {
 
   fireEvent.click(input);
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-[0_0_0_1px] shadow-switch-track-shadow group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
   );
   expect(input.checked).toBeTruthy();
 
   fireEvent.click(input);
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-[0_0_0_1px] shadow-switch-track-shadow group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked mg-disabled:opacity-[0.5] disabled:bg-dis focus:outline-none focus:outline-switch-track-outline-focus"`
   );
   expect(input.checked).toBeFalsy();
 });

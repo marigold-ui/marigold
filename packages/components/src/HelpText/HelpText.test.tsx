@@ -107,6 +107,6 @@ test('icon styles via theme', () => {
   const icon = within(element).getByRole('presentation');
 
   expect(icon.getAttribute('class')).toMatchInlineSnapshot(
-    `"flex-none fill-current w-3 h-3"`
+    `"flex-none fill-current h-3 w-3"`
   );
 });

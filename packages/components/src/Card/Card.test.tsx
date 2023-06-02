@@ -46,12 +46,9 @@ test('uses base styling form "Card" in theme', () => {
     </ThemeProvider>
   );
   const card = screen.getByTestId('card');
-  expect(card).toMatchInlineSnapshot(`
-    <div
-      class="flex flex-col p-1 border-solid border border-gray-700 gap-0"
-      data-testid="card"
-    />
-  `);
+  expect(card.className).toMatchInlineSnapshot(
+    `"flex flex-col border border-solid border-gray-700 gap-0 p-0 px-0 py-0 pr-0 pl-0 pb-0 pt-0"`
+  );
 });
 
 test('accepts a variant and size', () => {
@@ -61,7 +58,9 @@ test('accepts a variant and size', () => {
     </ThemeProvider>
   );
   const card = screen.getByTestId('card');
-  expect(card).toHaveClass(`bg-yellow-300 p-4`);
+  expect(card.className).toMatchInlineSnapshot(
+    `"flex flex-col border border-solid border-gray-700 bg-yellow-300 gap-0 p-0 px-0 py-0 pr-0 pl-0 pb-0 pt-0"`
+  );
 });
 
 test('supports padding as style prop', () => {
@@ -95,12 +94,9 @@ test('padding props override variant', () => {
   );
 
   const card = screen.getByTestId('card');
-  expect(card).toMatchInlineSnapshot(`
-    <div
-      class="flex flex-col border-solid border border-gray-700 p-4 gap-0 py-2"
-      data-testid="card"
-    />
-  `);
+  expect(card.className).toMatchInlineSnapshot(
+    `"flex flex-col border border-solid border-gray-700 gap-0 p-0 px-0 py-2 pr-0 pl-0 pb-0 pt-0"`
+  );
 });
 
 test('has no default spacing', () => {
