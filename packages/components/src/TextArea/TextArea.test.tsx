@@ -80,7 +80,7 @@ test('passes down variant and size', () => {
 
   const description = screen.getByText('Description');
   expect(description.className).toMatchInlineSnapshot(
-    `"flex items-center gap-1 text-lime-500 text-sm"`
+    `"flex items-center gap-1 text-lime-600 text-sm"`
   );
 });
 

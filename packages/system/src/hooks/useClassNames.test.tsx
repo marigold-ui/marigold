@@ -58,7 +58,7 @@ test('return classnames (base only)', () => {
   const { result } = renderHook(() => useClassNames({ component: 'Button' }), {
     wrapper,
   });
-  expect(result.current).toMatchInlineSnapshot(`"flex align-center"`);
+  expect(result.current).toMatchInlineSnapshot(`"align-center flex"`);
 });
 
 test('returns a string', () => {
@@ -77,7 +77,7 @@ test('return classnames (with variant)', () => {
     { wrapper }
   );
   expect(result.current).toMatchInlineSnapshot(
-    `"flex align-center text-primary-500"`
+    `"align-center flex text-primary-500"`
   );
 });
 
@@ -86,7 +86,7 @@ test('return classnames (with size)', () => {
     () => useClassNames({ component: 'Button', size: 'small' }),
     { wrapper }
   );
-  expect(result.current).toMatchInlineSnapshot(`"flex align-center w-10 h-10"`);
+  expect(result.current).toMatchInlineSnapshot(`"align-center flex h-10 w-10"`);
 });
 
 test('allows to pass in custom classNames', () => {
@@ -99,7 +99,7 @@ test('allows to pass in custom classNames', () => {
     { wrapper }
   );
   expect(result.current).toMatchInlineSnapshot(
-    `"flex align-center supi-dupi extra delicious-500"`
+    `"align-center flex supi-dupi extra delicious-500"`
   );
 });
 
@@ -113,7 +113,7 @@ test('handles conflicting classnames', () => {
       }),
     { wrapper }
   );
-  expect(result.current).toMatchInlineSnapshot(`"flex align-center h-10 w-22"`);
+  expect(result.current).toMatchInlineSnapshot(`"align-center flex h-10 w-22"`);
 });
 
 // Multiple Elements (slots)
@@ -160,7 +160,7 @@ test('return classnames for slots (with size)', () => {
 
   expect(result.current).toMatchInlineSnapshot(`
     {
-      "container": "inline w-10 h-10",
+      "container": "inline h-10 w-10",
       "icon": "block w-50 h-50",
     }
   `);
@@ -227,7 +227,7 @@ test('additional style props are supported', () => {
     }
   );
   expect(result.current).toMatchInlineSnapshot(
-    `"flex align-center gap-8 custom-classname text-center"`
+    `"align-center flex gap-8 custom-classname text-center"`
   );
 });
 

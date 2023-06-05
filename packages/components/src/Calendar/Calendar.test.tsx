@@ -320,7 +320,7 @@ describe('Calendar', () => {
     render(<Calendar value={new CalendarDate(2019, 6, 5)} disabled />);
     const cellButton = screen.getByText('17');
     expect(cellButton.className).toMatchInlineSnapshot(
-      `"text-sm font-normal cursor-pointer mg-disabled:cursor-default flex justify-center items-center w-[30px] h-[30px] p-[5.3px] rounded-full mg-disabled:text-calendar-disabled data-[hover]:bg-calendar-background group-aria-selected/cell:font-semibold group-aria-selected/cell:bg-calendar-calendarCell-selected group-aria-selected/cell:text-white outline-none"`
+      `"mg-disabled:cursor-default flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full p-[5.3px] text-sm font-normal mg-disabled:text-calendar-disabled data-[hover]:bg-calendar-background group-aria-selected/cell:bg-calendar-calendarCell-selected outline-none group-aria-selected/cell:font-semibold group-aria-selected/cell:text-white"`
     );
   });
 

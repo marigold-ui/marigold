@@ -52,7 +52,7 @@ test('input can be styled via "Input" styles', () => {
   const numberFieldContainer = screen.getByTestId('number-field-container');
   expect(numberFieldContainer).toBeInTheDocument();
   expect(numberFieldContainer.className).toMatchInlineSnapshot(
-    `"[>input]:flex-1 [>input]:min-w-0 flex items-stretch border border-solid rounded-sm border-black"`
+    `"[>input]:flex-1 [>input]:min-w-0 flex items-stretch rounded-sm border border-solid border-black"`
   );
 });
 
@@ -61,15 +61,15 @@ test('group and stepper can styled via "NumberField" styles', () => {
 
   const group = screen.getByRole('group');
   expect(group.className).toMatchInlineSnapshot(
-    `"[>input]:flex-1 [>input]:min-w-0 flex items-stretch border border-solid rounded-sm border-black"`
+    `"[>input]:flex-1 [>input]:min-w-0 flex items-stretch rounded-sm border border-solid border-black"`
   );
 
   const steppers = within(group).getAllByRole('button');
   expect(steppers[0].className).toMatchInlineSnapshot(
-    `"flex items-center justify-center mg-disabled:cursor-not-allowed cursor-pointer text-green-600 w-3.5"`
+    `"flex items-center justify-center mg-disabled:cursor-not-allowed cursor-pointer w-3.5 text-green-600"`
   );
   expect(steppers[1].className).toMatchInlineSnapshot(
-    `"flex items-center justify-center mg-disabled:cursor-not-allowed cursor-pointer text-green-600 w-3.5"`
+    `"flex items-center justify-center mg-disabled:cursor-not-allowed cursor-pointer w-3.5 text-green-600"`
   );
 });
 

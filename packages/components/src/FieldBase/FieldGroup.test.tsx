@@ -1,8 +1,30 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 
 import { FieldBase } from './FieldBase';
 import { FieldGroup } from './FieldGroup';
+
+import { Theme } from '@marigold/system';
+import { setup } from '../test.utils';
+
+import { cva } from 'class-variance-authority';
+
+const theme: Theme = {
+  name: 'test',
+  components: {
+    Field: cva(),
+    Label: {
+      container: cva(),
+      indicator: cva(),
+    },
+    HelpText: {
+      container: cva(),
+      icon: cva(),
+    },
+  },
+};
+
+const { render } = setup({ theme });
 
 test('renders FieldGroup', () => {
   render(
@@ -41,14 +63,7 @@ test('renders FieldGroup  with label width', () => {
   );
 
   const label = screen.getByText('Label');
-  expect(label).toMatchInlineSnapshot(`
-    <label
-      class="flex w-[var(--labelWidth)]"
-      style="--labelWidth: 20px;"
-    >
-      Label
-    </label>
-  `);
+  expect(label.className).toMatchInlineSnapshot(`"flex w-[var(--labelWidth)]"`);
 });
 
 test('renders FieldGroups children', () => {
