@@ -69,7 +69,7 @@ export const Calendar = ({
         </div>
         <div
           className={cn(
-            'flex w-full flex-nowrap justify-end gap-[10px] [&_button]:px-2 [&_button]:py-1',
+            'flex w-full flex-nowrap justify-end gap-[10px] [&_button:disabled]:cursor-not-allowed [&_button]:px-2 [&_button]:py-1',
             classNames.calendarControllers
           )}
         >

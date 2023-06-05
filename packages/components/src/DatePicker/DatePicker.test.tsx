@@ -1,10 +1,13 @@
 /* eslint-disable testing-library/no-node-access */
 import { DatePicker } from './DatePicker';
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { CalendarDate } from '@internationalized/date';
 import userEvent from '@testing-library/user-event';
 import { fireEvent } from '@testing-library/react';
+import { setup } from '../test.utils';
+import { Theme } from '@marigold/system';
+import { cva } from 'class-variance-authority';
 
 const getTextValue = (el: HTMLElement): any => {
   if (
@@ -19,6 +22,43 @@ const getTextValue = (el: HTMLElement): any => {
     )
     .join('');
 };
+
+const theme: Theme = {
+  name: 'date picker test',
+  components: {
+    DatePicker: {
+      button: cva(''),
+      container: cva(''),
+    },
+    DateField: {
+      action: cva(''),
+      field: cva(''),
+      segment: cva(''),
+    },
+    Field: cva(''),
+    Label: {
+      container: cva(''),
+      indicator: cva(''),
+    },
+    Button: cva(''),
+    Underlay: cva(''),
+    Calendar: {
+      calendar: cva(''),
+      calendarCell: cva(''),
+      calendarControllers: cva(''),
+    },
+    Select: {
+      icon: cva(''),
+      select: cva(''),
+    },
+    HelpText: {
+      container: cva(),
+      icon: cva(),
+    },
+  },
+};
+
+const { render } = setup({ theme });
 
 describe('DatePicker', () => {
   beforeAll(() => {
@@ -209,8 +249,8 @@ describe('DatePicker', () => {
       user.click(button);
       // act(() => jest.runAllTimers());
 
-      const popover = screen.getByRole('presentation');
-      expect(popover).toBeVisible();
+      const popovers = screen.getAllByRole('presentation');
+      expect(popovers[0]).toBeVisible();
       expect(onBlurSpy).not.toHaveBeenCalled();
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
       expect(onFocusSpy).toHaveBeenCalledTimes(1);
