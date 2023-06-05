@@ -16,7 +16,7 @@ export const Calendar: Theme['components']['Calendar'] = {
       '&[data-hover]': {
         bg: 'gray40',
       },
-      '&[aria-label*=selected]': {
+      '&[data-selected]': {
         fontWeight: '600',
         bg: 'gray60',
         color: '#fff',
