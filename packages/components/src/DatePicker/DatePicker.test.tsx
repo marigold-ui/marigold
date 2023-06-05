@@ -27,7 +27,8 @@ const theme: Theme = {
   name: 'date picker test',
   components: {
     DatePicker: {
-      actionButton: cva('bg-gray-500'),
+      button: cva(''),
+      container: cva(''),
     },
     DateField: {
       action: cva(''),

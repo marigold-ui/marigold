@@ -149,6 +149,10 @@ export const colors = {
       selected: '#6d6d6d',
     },
   },
+  datepicker: {
+    hover: '#8d8d8d',
+    focus: '#2b2b2b',
+  },
   // Status colors
   error: {
     text: '#f33',
