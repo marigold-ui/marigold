@@ -3,7 +3,7 @@ import { cva } from 'class-variance-authority';
 
 export const Tag: ThemeComponent<'Tag'> = {
   tag: cva([
-    'border-primary-500 bg-secondary-50 flex items-center rounded border',
+    'border-border-primary bg-bg-surface flex items-center rounded border',
     'px-1 py-[2px]',
   ]),
   gridCell: cva('flex items-center gap-1'),

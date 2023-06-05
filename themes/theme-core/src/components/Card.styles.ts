@@ -2,7 +2,7 @@ import { ThemeComponent } from '@marigold/system';
 import { cva } from 'class-variance-authority';
 
 export const Card: ThemeComponent<'Card'> = cva(
-  'bg-card-background relative max-w-[270px] rounded p-1 shadow-[1px_2px_3px]',
+  'bg-bg-surface relative max-w-[270px] rounded p-1 shadow-[1px_2px_3px]',
   {
     variants: {
       variant: {

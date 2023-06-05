@@ -95,12 +95,19 @@ export const colors = {
     },
     disabled: brand.secondary[50],
     selected: '#3ab3d5',
+
+    // Status
+    info: '#008',
   },
 
   // Border
   // ---------------
   border: {
-    primary: brand.primary[800],
+    primary: {
+      DEFAULT: brand.primary[600],
+      // Use this hover when a primary border is hovered
+      hover: brand.primary[500],
+    },
 
     dark: '#4b4b4b',
     neutral: '#aaa',
@@ -111,6 +118,8 @@ export const colors = {
     // ---------------
     disabled: '#cccccc',
     selected: '#3ab3d5',
+    focus: '#3875d7',
+    hover: '#8d8d8d',
 
     // Status
     error: '#f33',
