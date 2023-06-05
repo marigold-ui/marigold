@@ -4,12 +4,7 @@ import { AriaDatePickerProps, useDatePicker } from '@react-aria/datepicker';
 import { Calendar } from '../Calendar/Calendar';
 import { DateField } from '../DateField';
 import { Popover } from '../Overlay';
-import {
-  Box,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-  useStateProps,
-} from '@marigold/system';
+import { Box, useStateProps } from '@marigold/system';
 import { CalendarDate } from '@internationalized/date';
 import { Button } from '../Button';
 import { useHover } from '@react-aria/interactions';

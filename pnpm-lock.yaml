@@ -260,6 +260,9 @@ importers:
       '@marigold/components':
         specifier: workspace:*
         version: link:../../packages/components
+      '@marigold/theme-b2b':
+        specifier: workspace:*
+        version: link:../../themes/theme-b2b
       '@marigold/theme-core':
         specifier: workspace:*
         version: link:../../themes/theme-core
@@ -667,6 +670,40 @@ importers:
       '@types/react':
         specifier: 18.0.33
         version: 18.0.33
+
+  themes/theme-b2b:
+    dependencies:
+      '@marigold/components':
+        specifier: workspace:*
+        version: link:../../packages/components
+      class-variance-authority:
+        specifier: 0.6.0
+        version: 0.6.0(typescript@5.0.4)
+      tailwind-variants:
+        specifier: 0.1.2
+        version: 0.1.2(tailwindcss@3.3.2)
+    devDependencies:
+      '@marigold/theme-preset':
+        specifier: workspace:*
+        version: link:../../packages/theme-preset
+      '@marigold/tsconfig':
+        specifier: workspace:*
+        version: link:../../config/tsconfig
+      autoprefixer:
+        specifier: 10.4.14
+        version: 10.4.14(postcss@8.4.21)
+      cssnano:
+        specifier: 6.0.1
+        version: 6.0.1(postcss@8.4.21)
+      postcss:
+        specifier: 8.4.21
+        version: 8.4.21
+      tailwindcss:
+        specifier: 3.3.2
+        version: 3.3.2(ts-node@10.9.1)
+      tsup:
+        specifier: 6.7.0
+        version: 6.7.0(postcss@8.4.21)(typescript@5.0.4)
 
   themes/theme-core:
     dependencies:

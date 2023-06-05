@@ -23,6 +23,7 @@
     "@emotion/styled": "^11.8.1",
     "@marigold/components": "workspace:*",
     "@marigold/theme-core": "workspace:*",
+    "@marigold/theme-b2b": "workspace:*",
     "@mdx-js/react": "2.3.0",
     "@storybook/addon-a11y": "7.0.5",
     "@storybook/addon-essentials": "7.0.5",

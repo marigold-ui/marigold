@@ -8,11 +8,15 @@ import 'tailwindcss/tailwind.css';
 import '@marigold/theme-core/index.css';
 import core from '@marigold/theme-core';
 
+import '@marigold/theme-b2b/index.css';
+import b2b from '@marigold/theme-b2b';
+
 import { withThemeByDataAttribute } from '@storybook/addon-styling';
 // Helpers
 // ---------------
 const THEME = {
   core: core,
+  b2b: b2b,
 };
 
 type ThemeNames = keyof typeof THEME;
@@ -33,6 +37,7 @@ export const decorators: any = [
   withThemeByDataAttribute({
     themes: {
       core: 'core',
+      b2b: 'b2b',
       stacked: 'stacked',
     },
     defaultTheme: core.name,
