@@ -25,6 +25,7 @@ export const CalendarCell = (props: CalendarCellProps) => {
   const stateProps = useStateProps({
     disabled: isDisabled,
     hover: isHovered,
+    selected: cellProps['aria-selected'] as boolean,
   });
   return (
     <Box as="td" {...cellProps}>
