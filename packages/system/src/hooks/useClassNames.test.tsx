@@ -258,3 +258,31 @@ test('additional style props are supported for slots', () => {
     }
   `);
 });
+
+test('component not found throw error', () => {
+  const { result } = renderHook(() =>
+    // @ts-expect-error
+    useClassNames({ component: 'Component' })
+  );
+
+  console.log(result.error);
+  expect(result.error).toMatchInlineSnapshot(
+    `[Error: Component "Component" is missing styles in the current theme.]`
+  );
+});
+
+test('component error if classname no object when using slots', () => {
+  const { result } = renderHook(
+    () =>
+      useClassNames({
+        component: 'HelpText',
+        // @ts-expect-error
+        className: 'bg-blue-800',
+      }),
+    { wrapper }
+  );
+
+  expect(result.error).toMatchInlineSnapshot(
+    `[Error: "className" must be a object, when using a component with slots]`
+  );
+});
