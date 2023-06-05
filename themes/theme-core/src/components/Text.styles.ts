@@ -5,7 +5,7 @@ export const Text: ThemeComponent<'Text'> = cva('', {
   variants: {
     variant: {
       bold: ['font-bold'],
-      muted: ['text-disabled-text'],
+      muted: ['text-text-disabled'],
     },
   },
 });

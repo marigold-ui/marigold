@@ -9,14 +9,12 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
       },
     },
   }),
-  label: cva(
-    'group-disabled/checkbox:text-checkbox-label-disabled leading-[1.125]'
-  ),
+  label: cva('group-disabled/checkbox:text-text-disabled leading-[1.125]'),
   checkbox: cva([
-    'border-checkbox-base-border bg-checkbox-base-background rounded-[2] p-0.5',
-    'group-hover/checkbox:border-checkbox-base-hover',
-    'group-checked/checkbox:border-checkbox-base-checked group-checked/checkbox:bg-checkbox-base-checkedBackground group-checked/checkbox:text-white',
-    'group-disabled/checkbox:border-checkbox-base-disabled group-disabled/checkbox:bg-checkbox-base-disabled',
-    'group-indeterminate/checkbox:border-checkbox-base-indeterminate group-indeterminate/checkbox:bg-checkbox-base-indeterminateBackground group-indeterminate/checkbox:text-white',
+    'border-border-light rounded-[2] bg-white p-0.5',
+    'group-hover/checkbox:border-border-hover',
+    'group-checked/checkbox:border-border-selected group-checked/checkbox:bg-bg-selected group-checked/checkbox:text-text-light',
+    'group-disabled/checkbox:border-border-disabled group-disabled/checkbox:bg-bg-disabled',
+    'group-indeterminate/checkbox:border-border-selected group-indeterminate/checkbox:bg-bg-selected group-indeterminate/checkbox:text-text-light',
   ]),
 };
