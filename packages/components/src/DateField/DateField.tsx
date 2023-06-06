@@ -5,7 +5,6 @@ import { AriaDateFieldProps, useDateField } from '@react-aria/datepicker';
 import { createCalendar, DateValue } from '@internationalized/date';
 import { cn, useClassNames, useStateProps } from '@marigold/system';
 import { DateSegment } from './DateSegment';
-import { AriaButtonProps } from '@react-aria/button';
 import { FieldBase } from '../FieldBase';
 import { mergeProps } from '@react-aria/utils';
 import { useHover } from '@react-aria/interactions';
@@ -24,7 +23,6 @@ export interface DateFieldProps
   ref?: React.RefObject<unknown> | undefined;
   triggerRef?: React.RefObject<HTMLDivElement> | undefined;
   action?: ReactElement;
-  buttonProps?: AriaButtonProps<'button'>;
   isPressed?: boolean;
   error?: boolean;
   errorMessageProps?: HTMLAttributes<HTMLElement>;
@@ -44,7 +42,6 @@ export const DateField = ({
   error,
   errorMessage,
   errorMessageProps,
-  buttonProps,
   variant,
   size,
   action,
@@ -108,7 +105,7 @@ export const DateField = ({
       <div
         {...mergeProps(fieldProps, focusProps, stateProps, hoverProps)}
         className={cn(
-          'flex flex-row flex-nowrap overflow-hidden',
+          'relative flex flex-row flex-nowrap',
           'cursor-text aria-disabled:cursor-not-allowed',
           classNames.field
         )}
