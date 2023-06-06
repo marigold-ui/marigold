@@ -12,13 +12,7 @@ export const DateField: ThemeComponent<'DateField'> = {
     ' group-readonly/field:bg-bg-transparent group-readonly/field:text-text-disabled',
   ]),
 
-  segment: cva([
-    'rounded-sm',
-
-    'focus:bg-bg-focus focus:text-text-focus',
-
-    // 'text-datefield-segmentText focus-visible:bg-datefield-segment focus-visible:text-secondary-50 ',
-  ]),
+  segment: cva(['rounded-sm', 'focus:bg-bg-focus focus:text-text-focus']),
 
   action: cva('pr-2'),
 };

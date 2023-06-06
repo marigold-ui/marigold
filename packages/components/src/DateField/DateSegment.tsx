@@ -37,7 +37,12 @@ export const DateSegment = ({
     <div
       {...mergeProps(segmentProps, stateProps, focusProps)}
       ref={ref}
-      className={cn('group/segment', 'text-center outline-0', className)}
+      className={cn(
+        'group/segment',
+        'text-center leading-none outline-0',
+        type !== 'literal' && 'p-0.5',
+        className
+      )}
       style={{
         ...segmentProps.style,
         minWidth: maxValue != null ? String(maxValue).length + 'ch' : undefined,
@@ -52,16 +57,7 @@ export const DateSegment = ({
       >
         {isPlaceholder && placeholder?.toUpperCase()}
       </span>
-      <span
-        className={cn(
-          type === 'literal'
-            ? `literal ${
-                !isPrevPlaceholder &&
-                'text-datefield-segment group-disabled/field:text-disabled-text'
-              }`
-            : 'group-focus-visible/segment:text-secondary-50 text-datefield-segment group-disabled/field:text-disabled-text'
-        )}
-      >
+      <span>
         {isPlaceholder
           ? ''
           : type === 'month' || type === 'day'
