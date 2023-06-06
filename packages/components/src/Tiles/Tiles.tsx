@@ -16,9 +16,7 @@ export const Tiles = ({
   children,
   ...props
 }: TilesProps) => {
-  let column = `min(${
-    typeof tilesWidth === 'number' ? `${tilesWidth}px` : tilesWidth
-  }, 100%)`;
+  let column = `min(${tilesWidth}, 100%)`;
   /**
    * Adding `minmax` with `1fr` will make the tiles distribute the
    * availble width between each other and use the `tilesWidth` as
