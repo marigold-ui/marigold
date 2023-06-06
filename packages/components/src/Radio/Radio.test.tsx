@@ -293,3 +293,26 @@ test('radio accepts error message', () => {
   );
   expect(screen.getByText('This is my error message')).toBeInTheDocument();
 });
+
+test('disabled prop and styles', () => {
+  const ref = React.createRef<HTMLInputElement>();
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label">
+        <Radio value="1" data-testid="radio-1" ref={ref} disabled>
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+
+  const radio1 = screen.getByTestId('radio-1');
+
+  expect(radio1).toHaveAttribute('disabled');
+  expect(radio1.className).toMatchInlineSnapshot(
+    `"absolute left-0 top-0 z-[1] h-full w-full opacity-[0.0001] cursor-not-allowed"`
+  );
+});
