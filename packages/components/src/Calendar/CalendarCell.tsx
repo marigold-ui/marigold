@@ -23,6 +23,7 @@ export const CalendarCell = (props: CalendarCellProps) => {
   const stateProps = useStateProps({
     disabled: isDisabled,
     hover: isHovered,
+    selected: cellProps['aria-selected'] as boolean,
   });
   return (
     <td className="group/cell" {...cellProps}>
