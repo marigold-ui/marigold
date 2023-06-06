@@ -6,9 +6,9 @@ export const Tabs: ThemeComponent<'Tabs'> = {
   tab: cva(
     [
       'min-h-[40px]',
-      'data-[hover]:text-text-hover-light data-[hover]:border-b-border-hover data-[hover]:border-b-8 data-[hover]:border-solid',
-      'mg-disabled:text-text-disabled',
-      'mg-selected:border-b-border-primary mg-selected:border-b-8 mg-selected:border-solid ',
+      'hover:text-text-hover-light hover:border-b-border-hover hover:border-b-8 hover:border-solid',
+      'aria-disabled:text-text-disabled aria-disabled:hover:border-none',
+      'aria-selected:border-b-border-primary aria-selected:border-b-8 aria-selected:border-solid ',
     ],
     {
       variants: {
