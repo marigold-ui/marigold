@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { DateSegment as DateSegmentInterface } from '@react-stately/datepicker';
 import { DateFieldState } from '@react-stately/datepicker';
-import { cn, useClassNames, useStateProps } from '@marigold/system';
+import { cn, createVar, useStateProps } from '@marigold/system';
 import { useDateSegment } from '@react-aria/datepicker';
 import { useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
@@ -10,21 +10,17 @@ interface DateSegmentProps {
   segment: DateSegmentInterface;
   state: DateFieldState;
   isPrevPlaceholder?: boolean;
-  variant?: string;
-  size?: string;
+  className?: string;
 }
 
 export const DateSegment = ({
+  className,
   segment,
-  variant,
-  size,
   state,
   isPrevPlaceholder,
 }: DateSegmentProps) => {
   const ref = useRef(null);
   const { segmentProps } = useDateSegment(segment, state, ref);
-
-  const classNames = useClassNames({ component: 'DateField', variant, size });
 
   const { focusProps, isFocused } = useFocusRing({
     within: true,
@@ -41,13 +37,11 @@ export const DateSegment = ({
     <div
       {...mergeProps(segmentProps, stateProps, focusProps)}
       ref={ref}
-      className={cn(
-        'group/segment',
-        maxValue != null && `min-w-[${String(maxValue).length}ch]`,
-        'box-content rounded-sm text-center outline-0',
-        'group-disabled/field:cursor-not-allowed',
-        classNames.segment
-      )}
+      className={cn('group/segment', 'text-center outline-0', className)}
+      style={{
+        ...segmentProps.style,
+        minWidth: maxValue != null ? String(maxValue).length + 'ch' : undefined,
+      }}
     >
       <span
         aria-hidden="true"

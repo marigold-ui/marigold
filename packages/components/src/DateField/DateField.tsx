@@ -108,7 +108,8 @@ export const DateField = ({
       <div
         {...mergeProps(fieldProps, focusProps, stateProps, hoverProps)}
         className={cn(
-          'flex h-10 flex-row flex-nowrap justify-between overflow-hidden rounded-[10px]',
+          'flex flex-row flex-nowrap overflow-hidden',
+          'aria-disabled:cursor-not-allowed',
           classNames.field
         )}
         data-testid="date-field"
@@ -117,13 +118,14 @@ export const DateField = ({
         <div
           ref={ref}
           className={cn(
-            'group-focus/field:[&>*:focus-visible]:text-secondary-50',
-            'group-focus/field:[&>*]:text-datefield-segment',
-            ' flex basis-full items-center pl-2'
+            // 'group-focus/field:[&>*:focus-visible]:text-secondary-50',
+            // 'group-focus/field:[&>*]:text-datefield-segment',
+            'flex basis-full items-center pl-2'
           )}
         >
           {state.segments.map((segment, i) => (
             <DateSegment
+              className={classNames.segment}
               isPrevPlaceholder={state.segments[i - 1]?.isPlaceholder}
               key={i}
               segment={segment}
