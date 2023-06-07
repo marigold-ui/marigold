@@ -22,7 +22,6 @@
     "@emotion/react": "^11.0.0-rc.0",
     "@emotion/styled": "^11.8.1",
     "@marigold/components": "workspace:*",
-    "@marigold/system": "workspace:*",
     "@marigold/theme-core": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@mdx-js/react": "2.3.0",
