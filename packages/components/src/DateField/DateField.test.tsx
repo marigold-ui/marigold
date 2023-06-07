@@ -155,7 +155,7 @@ test('passes down variant and size', () => {
 
   const datefield = screen.getByTestId('date-field');
   expect(datefield.className).toMatchInlineSnapshot(
-    `"flex h-10 flex-row flex-nowrap justify-between overflow-hidden rounded-[10px] p-2 text-lime-300"`
+    `"relative flex flex-row flex-nowrap cursor-text aria-disabled:cursor-not-allowed p-2 text-lime-300"`
   );
 });
 
