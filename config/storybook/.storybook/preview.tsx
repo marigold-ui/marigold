@@ -36,28 +36,31 @@ export const parameters: Preview['parameters'] = {
 export const decorators: any = [
   withThemeByDataAttribute({
     themes: {
-      core: 'core',
-      b2b: 'b2b',
+      core: core.name,
+      b2b: b2b.name,
       stacked: 'stacked',
     },
     defaultTheme: core.name,
     attributeName: 'data-theme',
   }),
+
   (Story: any, { globals, parameters }: any) => {
     const theme = globals.theme || parameters.theme || 'core';
 
     switch (theme) {
       case 'stacked': {
         return (
-          <MarigoldProvider theme={core}>
+          <>
             {Object.keys(THEME).map(key => (
-              <Frame key={key} id={key} title={`Theme "${key}"`}>
-                <MarigoldProvider theme={THEME[key as ThemeNames]}>
-                  <div className="p-4">{Story()}</div>
-                </MarigoldProvider>
-              </Frame>
+              <MarigoldProvider theme={THEME[key as ThemeNames]}>
+                <Frame key={key} id={key} title={`Theme "${key}"`}>
+                  <MarigoldProvider theme={THEME[key as ThemeNames]}>
+                    <div className="p-4">{Story()}</div>
+                  </MarigoldProvider>
+                </Frame>
+              </MarigoldProvider>
             ))}
-          </MarigoldProvider>
+          </>
         );
       }
       default: {
