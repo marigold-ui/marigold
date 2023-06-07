@@ -6,14 +6,9 @@ import { Breakout } from './Breakout';
 test('has gridColumn, alignment and default width via classname', () => {
   render(<Breakout data-testid="breakout">breakout</Breakout>);
   const breakout = screen.getByTestId(/breakout/);
-  expect(breakout).toMatchInlineSnapshot(`
-    <div
-      class="col-[\`1_/_-1_!important\`] w-full justify-start items-start flex h-[--height]"
-      data-testid="breakout"
-    >
-      breakout
-    </div>
-  `);
+  expect(breakout.className).toMatchInlineSnapshot(
+    `"col-[\`1_/_-1_!important\`] w-full justify-start items-start flex h-[--height]"`
+  );
 });
 test('supports horizontal center', () => {
   render(
@@ -22,7 +17,9 @@ test('supports horizontal center', () => {
     </Breakout>
   );
   const breakout = screen.getByTestId(/breakout/);
-  expect(breakout).toHaveClass(`justify-center`);
+  expect(breakout.className).toMatchInlineSnapshot(
+    `"col-[\`1_/_-1_!important\`] w-full justify-center items-start flex h-[--height]"`
+  );
 });
 
 test('supports horizontalAlign right', () => {
@@ -58,7 +55,9 @@ test('supports verticalAlign bottom', () => {
     </Breakout>
   );
   const breakout = screen.getByTestId(/breakout/);
-  expect(breakout).toHaveClass(`items-end`);
+  expect(breakout.className).toMatchInlineSnapshot(
+    `"col-[\`1_/_-1_!important\`] w-full justify-start items-end flex h-[--height]"`
+  );
 });
 
 test('supports height prop', () => {
@@ -68,13 +67,19 @@ test('supports height prop', () => {
     </Breakout>
   );
   const breakout = screen.getByTestId(/breakout/);
-  expect(breakout).toMatchInlineSnapshot(`
-    <div
-      class="col-[\`1_/_-1_!important\`] w-full justify-start items-start flex h-[--height]"
-      data-testid="breakout"
-      style="--height: 200px;"
-    >
+  expect(breakout.className).toMatchInlineSnapshot(
+    `"col-[\`1_/_-1_!important\`] w-full justify-start items-start flex h-[--height]"`
+  );
+});
+
+test('no align set', () => {
+  render(
+    <Breakout alignY="none" alignX="none" height="200px" data-testid="breakout">
       breakout
-    </div>
-  `);
+    </Breakout>
+  );
+  const breakout = screen.getByTestId(/breakout/);
+  expect(breakout.className).toMatchInlineSnapshot(
+    `"col-[\`1_/_-1_!important\`] w-full block h-[--height]"`
+  );
 });
