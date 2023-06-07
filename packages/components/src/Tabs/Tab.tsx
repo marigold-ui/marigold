@@ -28,7 +28,7 @@ export const Tab = ({ item, state }: TabProps) => {
   return (
     <div
       className={cn(
-        'mg-disabled:cursor-not-allowed flex cursor-pointer justify-center',
+        'flex cursor-pointer justify-center aria-disabled:cursor-not-allowed',
         classNames.tab
       )}
       {...mergeProps(tabProps, stateProps, focusProps, hoverProps)}
