@@ -29,7 +29,7 @@ export const CalendarCell = (props: CalendarCellProps) => {
     <td className="group/cell" {...cellProps}>
       <div
         className={cn(
-          'mg-disabled:cursor-default flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full p-[5.3px] text-sm font-normal',
+          'flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full p-[5.3px] text-sm font-normal aria-disabled:cursor-default',
           classNames.calendarCell
         )}
         hidden={isOutsideVisibleRange}

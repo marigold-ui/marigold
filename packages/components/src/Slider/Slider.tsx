@@ -96,7 +96,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
         </div>
         {/* The track element holds the visible track line and the thumb. */}
         <div
-          className="mg-disabled:cursor-not-allowed h-8 w-full cursor-pointer"
+          className="h-8 w-full cursor-pointer data-[disabled]:cursor-not-allowed"
           {...trackProps}
           {...sliderState}
           ref={trackRef}

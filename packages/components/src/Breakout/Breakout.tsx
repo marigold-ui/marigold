@@ -30,7 +30,7 @@ export const Breakout = ({
         'col-[`1_/_-1_!important`] w-full',
         alignmentX[alignX],
         alignmentY[alignY],
-        alignX || alignY ? 'flex' : 'block',
+        alignmentX[alignX] || alignmentY[alignY] ? 'flex' : 'block',
         'h-[--height]'
       )}
       style={createVar({ height })}

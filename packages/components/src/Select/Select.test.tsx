@@ -493,3 +493,25 @@ test('renders as tray', () => {
   const tray = screen.getByTestId('tray');
   expect(tray).toBeInTheDocument();
 });
+
+test('error is there', () => {
+  render(
+    <OverlayProvider>
+      <Select
+        label="Label"
+        data-testid="select"
+        width="200"
+        error
+        errorMessage="Error"
+      >
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+      </Select>
+    </OverlayProvider>
+  );
+
+  // We need to query all, since there is also a label in the hidden select
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getAllByText('Label')[0].parentElement;
+  expect(container).toHaveAttribute('data-error');
+});

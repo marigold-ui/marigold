@@ -25,9 +25,9 @@ const theme: Theme = {
   name: 'Calendar Test',
   components: {
     Calendar: {
-      calendar: cva('mg-disabled:text-calendar-disabled bg-white'),
+      calendar: cva(' disabled:text-calendar-disabled bg-white'),
       calendarCell: cva([
-        'mg-disabled:text-calendar-disabled',
+        ' disabled:text-calendar-disabled',
         'data-[hover]:bg-calendar-background',
         'group-aria-selected/cell:bg-calendar-calendarCell-selected outline-none group-aria-selected/cell:font-semibold group-aria-selected/cell:text-white',
       ]),
@@ -320,7 +320,7 @@ describe('Calendar', () => {
     render(<Calendar value={new CalendarDate(2019, 6, 5)} disabled />);
     const cellButton = screen.getByText('17');
     expect(cellButton.className).toMatchInlineSnapshot(
-      `"mg-disabled:cursor-default flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full p-[5.3px] text-sm font-normal mg-disabled:text-calendar-disabled data-[hover]:bg-calendar-background group-aria-selected/cell:bg-calendar-calendarCell-selected outline-none group-aria-selected/cell:font-semibold group-aria-selected/cell:text-white"`
+      `"flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full p-[5.3px] text-sm font-normal aria-disabled:cursor-default disabled:text-calendar-disabled data-[hover]:bg-calendar-background group-aria-selected/cell:bg-calendar-calendarCell-selected outline-none group-aria-selected/cell:font-semibold group-aria-selected/cell:text-white"`
     );
   });
 

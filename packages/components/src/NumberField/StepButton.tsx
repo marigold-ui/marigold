@@ -67,7 +67,7 @@ export const StepButton = ({
       className={cn(
         [
           'flex items-center justify-center',
-          'mg-disabled:cursor-not-allowed cursor-pointer',
+          'cursor-pointer data-[disabled]:cursor-not-allowed',
         ],
         className
       )}

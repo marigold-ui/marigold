@@ -55,36 +55,6 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
         plugin(({ addVariant }) => {
           addVariant('aria-enabled', ['&:not([aria-disabled=true])']);
         }),
-
-        // TODO: deprecate
-
-        plugin(({ addVariant }) => {
-          addVariant('mg-disabled', [
-            '&[disabled]',
-            '&[aria-disabled=true]',
-            '&[data-disabled]',
-          ]);
-          addVariant('mg-selected', [
-            '&[aria-selected=true]',
-            '&[data-selected]',
-          ]);
-          addVariant('mg-checked', ['&[aria-checked=true]', '&[data-checked]']);
-          addVariant('mg-indeterminate', [
-            '&[aria-indeterminate=true]',
-            '&[data-indeterminate]',
-          ]);
-          addVariant('mg-error', [
-            '&:invalid',
-            '&[aria-invalid=true]',
-            '&[data-error]',
-          ]);
-          addVariant('mg-focus', ['&:focus', '&[data-focus]']);
-          addVariant('mg-hover', [
-            '&:hover:not([disabled])',
-            '&[data-hover]',
-            '&:hover',
-          ]);
-        }),
       ],
     },
     config
