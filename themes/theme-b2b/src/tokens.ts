@@ -32,6 +32,9 @@ export const colors = {
     primary: {
       DEFAULT: brand.secondary[700],
     },
+
+    // State
+    disabled: brand.secondary[400],
   },
 
   // Background
@@ -41,5 +44,38 @@ export const colors = {
      * Should be set to either html or body element.
      */
     body: brand.secondary[50],
+
+    surface: {
+      /**
+       * Use this for e.g. card backgrounds.
+       */
+      DEFAULT: brand.secondary[50],
+    },
+
+    // State
+    disabled: brand.secondary[200],
+  },
+
+  // Border
+  // ---------------
+  border: {
+    light: brand.secondary[400],
+
+    // State
+    hover: brand.secondary[500],
+    focus: brand.primary[600],
+
+    // Status
+    error: '#dd4142',
+  },
+
+  // Outline
+  // ---------------
+  outline: {
+    // State
+    focus: brand.primary[600],
+
+    // Status
+    error: '#dd4142',
   },
 };
