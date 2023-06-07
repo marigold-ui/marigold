@@ -3,17 +3,17 @@ import { cva } from 'class-variance-authority';
 
 export const Button: ThemeComponent<'Button'> = cva(
   [
-    'inline-flex items-center justify-center gap-[0.5ch]',
+    'inline-flex items-center justify-center gap-1',
     'border-border-dark bg-bg-neutral text-text-dark ease-ease-out h-6 cursor-pointer rounded-sm border px-4 py-0 text-sm leading-6 transition-all duration-200 disabled:cursor-none',
     'disabled:border-border-disabled disabled:bg-bg-disabled disabled:text-text-disabled disabled:cursor-not-allowed',
-    'focus-visible:outline outline-outline-focus outline-2 outline-offset-1',
+    'outline-outline-focus outline-2 outline-offset-1 focus-visible:outline',
     'hover:bg-bg-hover-light',
   ],
   {
     variants: {
       variant: {
         primary: [
-          'border-border-primary bg-bg-primary text-text-light',
+          'border-border-primary bg-bg-primary  text-text-light',
           'hover:bg-bg-primary-hover hover:border-border-primary-hover ',
         ],
         link: [
