@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { DateSegment as DateSegmentInterface } from '@react-stately/datepicker';
 import { DateFieldState } from '@react-stately/datepicker';
-import { cn, createVar, useStateProps } from '@marigold/system';
+import { cn, useStateProps } from '@marigold/system';
 import { useDateSegment } from '@react-aria/datepicker';
 import { useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
