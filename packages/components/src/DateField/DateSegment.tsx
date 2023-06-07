@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { DateSegment as DateSegmentInterface } from '@react-stately/datepicker';
 import { DateFieldState } from '@react-stately/datepicker';
-import { cn, useClassNames, useStateProps } from '@marigold/system';
+import { cn, useStateProps } from '@marigold/system';
 import { useDateSegment } from '@react-aria/datepicker';
 import { useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
@@ -10,21 +10,17 @@ interface DateSegmentProps {
   segment: DateSegmentInterface;
   state: DateFieldState;
   isPrevPlaceholder?: boolean;
-  variant?: string;
-  size?: string;
+  className?: string;
 }
 
 export const DateSegment = ({
+  className,
   segment,
-  variant,
-  size,
   state,
   isPrevPlaceholder,
 }: DateSegmentProps) => {
   const ref = useRef(null);
   const { segmentProps } = useDateSegment(segment, state, ref);
-
-  const classNames = useClassNames({ component: 'DateField', variant, size });
 
   const { focusProps, isFocused } = useFocusRing({
     within: true,
@@ -43,11 +39,14 @@ export const DateSegment = ({
       ref={ref}
       className={cn(
         'group/segment',
-        maxValue != null && `min-w-[${String(maxValue).length}ch]`,
-        'box-content rounded-sm text-center outline-0',
-        'group-disabled/field:cursor-not-allowed',
-        classNames.segment
+        'text-center leading-none outline-0',
+        type !== 'literal' && 'p-0.5',
+        className
       )}
+      style={{
+        ...segmentProps.style,
+        minWidth: maxValue != null ? String(maxValue).length + 'ch' : undefined,
+      }}
     >
       <span
         aria-hidden="true"
@@ -58,16 +57,7 @@ export const DateSegment = ({
       >
         {isPlaceholder && placeholder?.toUpperCase()}
       </span>
-      <span
-        className={cn(
-          type === 'literal'
-            ? `literal ${
-                !isPrevPlaceholder &&
-                'text-datefield-segment group-disabled/field:text-disabled-text'
-              }`
-            : 'group-focus-visible/segment:text-secondary-50 text-datefield-segment group-disabled/field:text-disabled-text'
-        )}
-      >
+      <span>
         {isPlaceholder
           ? ''
           : type === 'month' || type === 'day'
