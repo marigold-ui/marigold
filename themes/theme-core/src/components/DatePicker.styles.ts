@@ -4,9 +4,9 @@ import { cva } from 'class-variance-authority';
 export const DatePicker: ThemeComponent<'DatePicker'> = {
   container: cva(),
   button: cva([
-    `h-5 w-5 right-1`,
+    `right-1 h-5 w-5`,
     'p-0 pb-0.5',
-    'border-none bg-transparent text-text-primary/80 hover:text-text-primary',
+    'text-text-primary/80 hover:text-text-primary border-none bg-transparent',
 
     'disabled:hidden',
     '-outline-offset-1',
