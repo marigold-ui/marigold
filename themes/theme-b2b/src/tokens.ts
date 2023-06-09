@@ -67,6 +67,8 @@ export const colors = {
 
     // Status
     error: '#dd4142',
+    info: '#1d67b6',
+    warning: '#eac500',
   },
 
   // Outline
@@ -77,5 +79,14 @@ export const colors = {
 
     // Status
     error: '#dd4142',
+  },
+
+  // Fill
+  // ---------------
+  fill: {
+    // Status
+    error: '#dd4142',
+    info: '#1d67b6',
+    warning: '#eac500',
   },
 };
