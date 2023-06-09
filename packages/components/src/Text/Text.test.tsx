@@ -7,6 +7,9 @@ import { Text } from './Text';
 
 const theme: Theme = {
   name: 'test',
+  colors: {
+    emerald: 'rgb(5 150 105);',
+  },
   components: {
     Text: cva("font-['Oswald_Regular']", {
       variants: {
@@ -65,4 +68,21 @@ test('style props override theme styles', () => {
   expect(text.className).toMatchInlineSnapshot(
     `"font-["Arial]" text-[--color] outline-[--outline] not-italic cursor-default font-normal text-[13px]"`
   );
+});
+
+test('get theme color', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Text data-testid="text" color="emerald" />
+    </ThemeProvider>
+  );
+
+  const text = screen.getByTestId('text');
+  expect(text).toMatchInlineSnapshot(`
+    <p
+      class="font-['Oswald_Regular'] text-[--color] outline-[--outline] not-italic cursor-default font-normal text-[13px]"
+      data-testid="text"
+      style="--color: rgb(5 150 105);;"
+    />
+  `);
 });
