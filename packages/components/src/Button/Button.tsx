@@ -89,7 +89,11 @@ export const Button = forwardRef(
         {...mergeProps(buttonProps, focusProps, hoverProps, props)}
         {...stateProps}
         ref={buttonRef}
-        className={cn(classNames, fullWidth ? 'w-full' : undefined)}
+        className={cn(
+          'inline-flex items-center justify-center gap-[0.5ch]',
+          classNames,
+          fullWidth ? 'w-full' : undefined
+        )}
       >
         {children}
       </Component>
