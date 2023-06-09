@@ -51,6 +51,8 @@ export const colors = {
        * Use this for e.g. card backgrounds.
        */
       DEFAULT: brand.secondary[50],
+
+      underlay: 'rgba(206, 212, 218, 0.5)',
     },
 
     // State
