@@ -3,6 +3,8 @@ import { Theme } from '@marigold/system';
 import { root } from './root';
 import { colors } from './tokens';
 
+import * as components from './components';
+
 export const theme: Theme = {
   name: 'b2b',
   screens: {
@@ -14,5 +16,5 @@ export const theme: Theme = {
   },
   root,
   colors,
-  components: {},
+  components,
 };
