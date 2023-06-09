@@ -70,6 +70,8 @@ export const colors = {
 
     // Status
     error: '#dd4142',
+    info: '#1d67b6',
+    warning: '#eac500',
   },
 
   // Outline
@@ -87,5 +89,8 @@ export const colors = {
   fill: {
     // Status
     required: 'rgb(221, 65, 66)',
+    error: '#dd4142',
+    info: '#1d67b6',
+    warning: '#eac500',
   },
 };
