@@ -35,6 +35,7 @@ export const colors = {
 
     // State
     disabled: brand.secondary[400],
+    error: '#dd4142',
   },
 
   // Background
@@ -77,5 +78,12 @@ export const colors = {
 
     // Status
     error: '#dd4142',
+  },
+
+  // Fill
+  // ---------------
+  fill: {
+    // Status
+    required: 'rgb(221, 65, 66)',
   },
 };
