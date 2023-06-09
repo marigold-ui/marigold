@@ -63,7 +63,6 @@ export const Card = ({
       {...props}
       className={cn(
         'flex flex-col',
-        classNames,
         gapSpace[space],
         paddingSpace[p],
         paddingSpaceX[px],
@@ -71,7 +70,8 @@ export const Card = ({
         paddingRight[pr],
         paddingLeft[pl],
         paddingBottom[pb],
-        paddingTop[pt]
+        paddingTop[pt],
+        classNames
       )}
     >
       {children}
