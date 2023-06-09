@@ -8,6 +8,9 @@ import { Headline } from './Headline';
 
 const theme: Theme = {
   name: 'test',
+  colors: {
+    emerald: 'rgb(5 150 105);',
+  },
   components: {
     Headline: cva('m-0 font-black', {
       variants: {
@@ -93,4 +96,21 @@ test('headline accepts align property', () => {
   );
   const headline = screen.getByTestId('headline');
   expect(headline).toHaveClass(`text-center`);
+});
+
+test('get theme color', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Headline data-testid="headline" color="emerald" />
+    </ThemeProvider>
+  );
+
+  const headline = screen.getByTestId('headline');
+  expect(headline).toMatchInlineSnapshot(`
+    <h1
+      class="m-0 font-black text-[2rem] text-[--color] text-left"
+      data-testid="headline"
+      style="--color: rgb(5 150 105);;"
+    />
+  `);
 });

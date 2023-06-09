@@ -55,7 +55,6 @@ const meta = {
   args: {
     errorMessage: 'Something went wrong',
     description: 'This is a help text description',
-    disabled: false,
   },
 } satisfies Meta<typeof FieldBase>;
 
