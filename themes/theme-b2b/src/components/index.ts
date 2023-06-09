@@ -1,3 +1,4 @@
+export * from './Badge.styles';
 export * from './Body.styles';
 export * from './Footer.styles';
 export * from './Header.styles';
