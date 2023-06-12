@@ -123,10 +123,7 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
       >
         <div
           data-group
-          className={cn(
-            '[>input]:flex-1 [>input]:min-w-0 flex items-stretch',
-            classNames.group
-          )}
+          className={cn('flex items-stretch', classNames.group)}
           data-testid="number-field-container"
           {...mergeProps(groupProps, focusProps, hoverProps)}
           {...stateProps}
@@ -138,17 +135,22 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
               {...decrementButtonProps}
             />
           )}
-          <Input
-            ref={inputRef}
-            variant={variant}
-            size={size}
-            /**
-             * We use `size` for styles which is a string, not like
-             * the regular HTML attribute, which is a number
-             */
-            {...(inputProps as any)}
-            {...stateProps}
-          />
+          <div className="flex-1">
+            <Input
+              ref={inputRef}
+              variant={variant}
+              size={size}
+              className={{
+                input: 'min-w-0 items-stretch  border-none',
+              }}
+              /**
+               * We use `size` for styles which is a string, not like
+               * the regular HTML attribute, which is a number
+               */
+              {...(inputProps as any)}
+              {...stateProps}
+            />
+          </div>
           {showStepper && (
             <StepButton
               className={classNames.stepper}
