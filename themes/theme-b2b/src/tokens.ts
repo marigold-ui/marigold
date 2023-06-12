@@ -32,6 +32,7 @@ export const colors = {
     primary: {
       DEFAULT: brand.secondary[700],
     },
+    link: '#3ab3d5',
 
     light: brand.secondary[100],
 
