@@ -14,7 +14,6 @@ export * from './Input.styles';
 export * from './Label.styles';
 export * from './List.styles';
 export * from './ListBox.styles';
-export * from './Select.styles';
 export * from './Text.styles';
 export * from './TextArea.styles';
 export * from './Message.styles';
