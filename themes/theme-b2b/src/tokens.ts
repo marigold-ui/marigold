@@ -31,6 +31,7 @@ export const colors = {
   text: {
     primary: {
       DEFAULT: brand.secondary[700],
+      light: brand.secondary[500],
     },
     link: '#3ab3d5',
 
@@ -65,6 +66,8 @@ export const colors = {
 
     // State
     disabled: brand.secondary[200],
+    focus: brand.primary[200],
+    selected: brand.primary[600],
 
     // Status
     info: '#1d67b6',
