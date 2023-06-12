@@ -47,7 +47,7 @@ test('uses base styling form "Card" in theme', () => {
   );
   const card = screen.getByTestId('card');
   expect(card.className).toMatchInlineSnapshot(
-    `"flex flex-col border border-solid border-gray-700 gap-0 p-0 px-0 py-0 pr-0 pl-0 pb-0 pt-0"`
+    `"flex flex-col border border-solid border-gray-700 p-1 gap-0"`
   );
 });
 
@@ -59,7 +59,7 @@ test('accepts a variant and size', () => {
   );
   const card = screen.getByTestId('card');
   expect(card.className).toMatchInlineSnapshot(
-    `"flex flex-col border border-solid border-gray-700 bg-yellow-300 gap-0 p-0 px-0 py-0 pr-0 pl-0 pb-0 pt-0"`
+    `"flex flex-col border border-solid border-gray-700 bg-yellow-300 p-4 gap-0"`
   );
 });
 
@@ -95,7 +95,7 @@ test('padding props override variant', () => {
 
   const card = screen.getByTestId('card');
   expect(card.className).toMatchInlineSnapshot(
-    `"flex flex-col border border-solid border-gray-700 gap-0 p-0 px-0 py-2 pr-0 pl-0 pb-0 pt-0"`
+    `"flex flex-col border border-solid border-gray-700 p-4 gap-0 py-2"`
   );
 });
 
