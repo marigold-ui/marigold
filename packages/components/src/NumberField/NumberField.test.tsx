@@ -15,7 +15,8 @@ const theme: Theme = {
       group: cva('rounded-sm border border-solid border-black'),
       stepper: cva('w-3.5 text-green-600'),
     },
-    Field: cva(),
+
+    Field: cva(''),
     Label: { container: cva(), indicator: cva() },
     HelpText: {
       container: cva('', {
@@ -30,7 +31,11 @@ const theme: Theme = {
       }),
       icon: cva(''),
     },
-    Input: cva() as any,
+    Input: {
+      action: cva(),
+      icon: cva(),
+      input: cva(),
+    },
   },
 };
 
@@ -52,7 +57,7 @@ test('input can be styled via "Input" styles', () => {
   const numberFieldContainer = screen.getByTestId('number-field-container');
   expect(numberFieldContainer).toBeInTheDocument();
   expect(numberFieldContainer.className).toMatchInlineSnapshot(
-    `"[>input]:flex-1 [>input]:min-w-0 flex items-stretch rounded-sm border border-solid border-black"`
+    `"flex items-stretch rounded-sm border border-solid border-black"`
   );
 });
 
@@ -61,7 +66,7 @@ test('group and stepper can styled via "NumberField" styles', () => {
 
   const group = screen.getByRole('group');
   expect(group.className).toMatchInlineSnapshot(
-    `"[>input]:flex-1 [>input]:min-w-0 flex items-stretch rounded-sm border border-solid border-black"`
+    `"flex items-stretch rounded-sm border border-solid border-black"`
   );
 
   const steppers = within(group).getAllByRole('button');

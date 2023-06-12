@@ -69,7 +69,13 @@ export const colors = {
     // Status
     info: '#1d67b6',
   },
+  shadow: {
+    // state
+    focus: brand.primary[600],
 
+    // status
+    error: '#dd4142',
+  },
   // Border
   // ---------------
   border: {
