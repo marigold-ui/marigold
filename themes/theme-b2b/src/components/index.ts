@@ -18,5 +18,6 @@ export * from './Text.styles';
 export * from './TextArea.styles';
 export * from './Message.styles';
 export * from './Underlay.styles';
+export * from './Tabs.styles';
 export * from './Link.styles';
 export * from './NumberField.styles';
