@@ -14,3 +14,4 @@ export * from './List.styles';
 export * from './Text.styles';
 export * from './Message.styles';
 export * from './Underlay.styles';
+export * from './Tabs.styles';
