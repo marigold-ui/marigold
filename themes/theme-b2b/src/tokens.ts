@@ -32,7 +32,7 @@ export const colors = {
     primary: {
       DEFAULT: brand.secondary[700],
     },
-
+    blue: '#3ab3d5',
     // State
     disabled: brand.secondary[400],
     error: '#dd4142',
