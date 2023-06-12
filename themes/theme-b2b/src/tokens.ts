@@ -50,6 +50,8 @@ export const colors = {
      */
     body: brand.secondary[50],
 
+    neutral: brand.secondary[200],
+
     surface: {
       /**
        * Use this for e.g. card backgrounds.
