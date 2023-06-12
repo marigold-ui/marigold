@@ -48,13 +48,13 @@ export const Card = ({
   variant,
   size,
   space = 0,
-  p = 0,
-  px = 0,
-  py = 0,
-  pt = 0,
-  pb = 0,
-  pl = 0,
-  pr = 0,
+  p,
+  px,
+  py,
+  pt,
+  pb,
+  pl,
+  pr,
   ...props
 }: CardProps) => {
   const classNames = useClassNames({ component: 'Card', variant, size });
@@ -63,15 +63,15 @@ export const Card = ({
       {...props}
       className={cn(
         'flex flex-col',
+        classNames,
         gapSpace[space],
-        paddingSpace[p],
-        paddingSpaceX[px],
-        paddingSpaceY[py],
-        paddingRight[pr],
-        paddingLeft[pl],
-        paddingBottom[pb],
-        paddingTop[pt],
-        classNames
+        paddingSpace !== undefined && paddingSpace[p!],
+        paddingSpaceX !== undefined && paddingSpaceX[px!],
+        paddingSpaceY !== undefined && paddingSpaceY[py!],
+        paddingRight !== undefined && paddingRight[pr!],
+        paddingLeft !== undefined && paddingLeft[pl!],
+        paddingBottom !== undefined && paddingBottom[pb!],
+        paddingTop !== undefined && paddingTop[pt!]
       )}
     >
       {children}
