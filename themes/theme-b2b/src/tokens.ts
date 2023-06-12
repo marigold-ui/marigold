@@ -58,6 +58,11 @@ export const colors = {
        */
       DEFAULT: brand.secondary[50],
       /**
+       * Use this when you need to separate a specific layer from
+       * the surface color, e.g. table headers.
+       */
+      raised: brand.secondary[500],
+      /**
        * Use this when you need to make a specific layer
        * to appear lower than the surface color, e.g. progress bar.
        */
@@ -84,14 +89,17 @@ export const colors = {
     // status
     error: '#dd4142',
   },
+
   // Border
   // ---------------
   border: {
     light: brand.secondary[400],
 
     // State
+    disabled: brand.secondary[400],
     hover: brand.secondary[500],
     focus: brand.primary[600],
+    selected: brand.primary[800],
 
     // Status
     error: '#dd4142',
