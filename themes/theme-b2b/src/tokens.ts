@@ -78,6 +78,7 @@ export const colors = {
     // State
     hover: brand.secondary[500],
     focus: brand.primary[600],
+    disabled: brand.secondary[400],
 
     // Status
     error: '#dd4142',
