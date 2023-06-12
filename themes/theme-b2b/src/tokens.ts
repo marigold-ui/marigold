@@ -58,7 +58,13 @@ export const colors = {
     // State
     disabled: brand.secondary[200],
   },
+  shadow: {
+    // state
+    focus: brand.primary[600],
 
+    // status
+    error: '#dd4142',
+  },
   // Border
   // ---------------
   border: {
