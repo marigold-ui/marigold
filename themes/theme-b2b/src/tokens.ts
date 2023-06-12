@@ -33,6 +33,8 @@ export const colors = {
       DEFAULT: brand.secondary[700],
     },
 
+    light: brand.secondary[100],
+
     // State
     disabled: brand.secondary[400],
     error: '#dd4142',
@@ -67,6 +69,9 @@ export const colors = {
 
     // State
     disabled: brand.secondary[200],
+
+    // Status
+    info: '#1d67b6',
   },
 
   // Border
