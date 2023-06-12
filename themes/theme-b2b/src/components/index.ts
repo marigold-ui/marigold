@@ -3,6 +3,7 @@ export * from './Footer.styles';
 export * from './Header.styles';
 export * from './Image.styles';
 export * from './Dialog.styles';
+export * from './Divider.styles';
 export * from './Field.styles';
 export * from './HelpText.styles';
 export * from './Headline.styles';
