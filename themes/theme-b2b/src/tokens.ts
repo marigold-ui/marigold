@@ -33,6 +33,8 @@ export const colors = {
       DEFAULT: brand.secondary[700],
     },
 
+    light: brand.secondary[100],
+
     // State
     disabled: brand.secondary[400],
   },
@@ -44,6 +46,8 @@ export const colors = {
      * Should be set to either html or body element.
      */
     body: brand.secondary[50],
+    primary: brand.primary[600],
+    dark: brand.secondary[700],
 
     surface: {
       /**
@@ -54,6 +58,7 @@ export const colors = {
 
     // State
     disabled: brand.secondary[200],
+    hover: brand.secondary[400],
   },
 
   // Border
@@ -72,6 +77,7 @@ export const colors = {
   // Outline
   // ---------------
   outline: {
+    dark: brand.secondary[700],
     // State
     focus: brand.primary[600],
 
