@@ -85,8 +85,10 @@ export const colors = {
     light: brand.secondary[400],
 
     // State
+    disabled: brand.secondary[400],
     hover: brand.secondary[500],
     focus: brand.primary[600],
+    selected: brand.primary[800],
 
     // Status
     error: '#dd4142',
