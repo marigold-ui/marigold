@@ -31,7 +31,10 @@ export const colors = {
   text: {
     primary: {
       DEFAULT: brand.secondary[700],
+      light: brand.secondary[500],
     },
+
+    light: brand.secondary[50],
 
     // State
     disabled: brand.secondary[400],
@@ -57,6 +60,8 @@ export const colors = {
 
     // State
     disabled: brand.secondary[200],
+    focus: brand.primary[200],
+    selected: brand.primary[600],
   },
 
   // Border
