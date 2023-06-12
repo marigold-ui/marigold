@@ -1,4 +1,6 @@
+export * from './Badge.styles';
 export * from './Body.styles';
+export * from './Card.styles';
 export * from './Footer.styles';
 export * from './Header.styles';
 export * from './Image.styles';
@@ -12,4 +14,5 @@ export * from './List.styles';
 export * from './Text.styles';
 export * from './Message.styles';
 export * from './Underlay.styles';
+export * from './Link.styles';
 export * from './NumberField.styles';
