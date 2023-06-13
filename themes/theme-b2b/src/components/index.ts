@@ -22,3 +22,4 @@ export * from './Tabs.styles';
 export * from './Text.styles';
 export * from './TextArea.styles';
 export * from './Underlay.styles';
+export * from './Button.styles';
