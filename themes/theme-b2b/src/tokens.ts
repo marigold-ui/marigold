@@ -46,8 +46,14 @@ export const colors = {
      * Should be set to either html or body element.
      */
     body: brand.secondary[50],
-    primary: brand.primary[600],
-    dark: brand.secondary[700],
+    primary: {
+      DEFAULT: brand.primary[600],
+      hover: brand.primary[400],
+    },
+    dark: {
+      DEFAULT: brand.secondary[700],
+      hover: brand.secondary[600],
+    },
 
     surface: {
       /**
@@ -65,6 +71,7 @@ export const colors = {
   // ---------------
   border: {
     light: brand.secondary[400],
+    dark: brand.secondary[700],
 
     // State
     hover: brand.secondary[500],

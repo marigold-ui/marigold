@@ -4,8 +4,8 @@ import { cva } from 'class-variance-authority';
 
 export const Button: ThemeComponent<'Button'> = cva(
   [
-    'rounded-sm border-none px-8 leading-[48px] outline-0',
-    'outline-outline-focus outline-[1px] focus-visible:outline',
+    'rounded-sm border-none px-8 leading-[48px] outline-none',
+    'focus-visible:outline-outline-focus focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-1',
     'disabled:text-text-disabled disabled:bg-bg-disabled',
   ],
   {
@@ -13,22 +13,23 @@ export const Button: ThemeComponent<'Button'> = cva(
       variant: {
         primary: [
           'text-text-light bg-bg-primary',
-          'data-[hover]:text-text-light data-[hover]:bg-bg-hover',
+          'data-[hover]:text-text-light data-[hover]:bg-bg-primary-hover',
         ],
         secondary: [
-          'text-text-light bg-bg-dark data-[hover]:text-text-light data-[hover]:bg-brand-secondary-600',
+          'text-text-light bg-bg-dark data-[hover]:text-text-light data-[hover]:bg-bg-dark-hover',
         ],
-        // ghost: [
-        //   'border-brand-secondary-700 border border-solid',
-        //   'text-text-primary',
-        //   'data-[hover]:bg-bg-hover',
-        // ],
-        text: [
-          'text-text-primary data-[hover]:text-text-primary data-[hover]:outline-outline-dark data-[hover]:bg-bg-hover',
+        ghost: [
+          'border-border-dark border border-solid',
+          'text-text-primary',
+          'hover:bg-bg-hover',
+        ],
+        text: ['text-text-primary data-[hover]:bg-bg-hover'],
+        menu: [
+          'text-text-primary bg-bg-body hover:text-text-light hover:bg-bg-dark-hover',
         ],
       },
       size: {
-        small: 'p-1',
+        small: 'px-4 leading-8',
       },
     },
   }
