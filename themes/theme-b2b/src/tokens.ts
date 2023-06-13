@@ -48,9 +48,6 @@ export const colors = {
     /**
      * Should be set to either html or body element.
      */
-    primary: {
-      DEFAULT: brand.primary[600],
-    },
 
     body: brand.secondary[50],
 
