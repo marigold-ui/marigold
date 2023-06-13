@@ -50,6 +50,16 @@ export const colors = {
      */
     body: brand.secondary[50],
 
+    primary: {
+      DEFAULT: brand.primary[600],
+      hover: brand.primary[400],
+    },
+
+    dark: {
+      DEFAULT: brand.secondary[700],
+      hover: brand.secondary[600],
+    },
+
     surface: {
       /**
        * Use this for e.g. card backgrounds.
@@ -71,6 +81,7 @@ export const colors = {
 
     // State
     disabled: brand.secondary[200],
+    hover: brand.secondary[400],
     focus: brand.primary[200],
     selected: brand.primary[600],
 
@@ -88,6 +99,7 @@ export const colors = {
   // ---------------
   border: {
     light: brand.secondary[400],
+    dark: brand.secondary[700],
 
     // State
     disabled: brand.secondary[400],
@@ -104,6 +116,8 @@ export const colors = {
   // Outline
   // ---------------
   outline: {
+    dark: brand.secondary[700],
+
     // State
     focus: brand.primary[600],
 
