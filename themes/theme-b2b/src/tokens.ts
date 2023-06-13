@@ -49,6 +49,7 @@ export const colors = {
      * Should be set to either html or body element.
      */
     body: brand.secondary[50],
+    neutral: brand.secondary[200],
 
     primary: {
       DEFAULT: brand.primary[600],
@@ -88,6 +89,9 @@ export const colors = {
     // Status
     info: '#1d67b6',
   },
+
+  // Shadow
+  // ---------------
   shadow: {
     // state
     focus: brand.primary[600],
@@ -95,6 +99,7 @@ export const colors = {
     // status
     error: '#dd4142',
   },
+
   // Border
   // ---------------
   border: {
