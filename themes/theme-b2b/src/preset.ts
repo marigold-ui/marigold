@@ -15,8 +15,8 @@ export const preset = createPreset('b2b', {
     extend: {
       screens: theme.screens,
       fontFamily: {
-        body: 'Inter, sans-serif',
-        heading: '"Inter Black, sans-serif"',
+        body: ['Inter, sans-serif'],
+        heading: ['"Inter Black, sans-serif"'],
       },
       colors: theme.colors,
       transitionTimingFunction: {
