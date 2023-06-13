@@ -48,6 +48,10 @@ export const colors = {
     /**
      * Should be set to either html or body element.
      */
+    primary: {
+      DEFAULT: brand.primary[600],
+    },
+
     body: brand.secondary[50],
 
     surface: {
@@ -78,11 +82,14 @@ export const colors = {
     info: '#1d67b6',
   },
   shadow: {
+    light: brand.secondary[400],
+
     // state
     focus: brand.primary[600],
 
     // status
     error: '#dd4142',
+    selected: '#ae440a',
   },
   // Border
   // ---------------

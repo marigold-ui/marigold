@@ -34,7 +34,6 @@ const theme: Theme = {
           },
         },
       }),
-      label: cva(''),
     },
   },
 };
@@ -60,15 +59,15 @@ test('supports base styling', () => {
   render(<Switch>Label</Switch>);
   const { label, container, track, thumb } = getSwitchParts();
 
-  expect(label.className).toMatchInlineSnapshot(`""`);
-  expect(container.className).toMatchInlineSnapshot(
+  expect(label.className).toMatchInlineSnapshot(
     `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
   );
+  expect(container.className).toMatchInlineSnapshot(`""`);
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
   );
   expect(thumb.className).toMatchInlineSnapshot(
-    `"h-[22px] w-[22px] cubic-bezier(.7,0,.3,1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-px block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-switch-track-background shadow-[1px_1px_4px]"`
+    `"relative h-6 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
   );
 });
 
@@ -77,10 +76,10 @@ test('supports a custom variant', () => {
   const { track, thumb } = getSwitchParts();
 
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
   );
   expect(thumb.className).toMatchInlineSnapshot(
-    `"h-[22px] w-[22px] cubic-bezier(.7,0,.3,1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-px block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-switch-track-background shadow-[1px_1px_4px]"`
+    `"relative h-6 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
   );
 });
 
@@ -89,22 +88,20 @@ test('supports a size', () => {
   const { track } = getSwitchParts();
 
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
   );
 });
 
 test('takes full width by default', () => {
   render(<Switch>Label</Switch>);
   const { container } = getSwitchParts();
-  expect(container.className).toMatchInlineSnapshot(
-    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
-  );
+  expect(container.className).toMatchInlineSnapshot(`""`);
 });
 
 test('allows to set width via prop', () => {
   render(<Switch width="500px">Label</Switch>);
-  const { container } = getSwitchParts();
-  expect(container).toHaveAttribute('style', '--switchWidth: 500px;');
+  const { label } = getSwitchParts();
+  expect(label).toHaveAttribute('style', '--switchWidth: 500px;');
 });
 
 test('supports disabled prop', () => {
@@ -113,10 +110,10 @@ test('supports disabled prop', () => {
 
   expect(input).toBeDisabled();
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
   );
   expect(thumb.className).toMatchInlineSnapshot(
-    `"h-[22px] w-[22px] cubic-bezier(.7,0,.3,1) checked:translate-x-[calc(47px - 100%)] absolute left-0 top-px block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform group-selected/switch:translate-x-[calc(47px_-_100%)] bg-switch-track-background shadow-[1px_1px_4px]"`
+    `"relative h-6 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
   );
 });
 
@@ -133,13 +130,13 @@ test('toggle switch per click', () => {
 
   fireEvent.click(input);
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
   );
   expect(input.checked).toBeTruthy();
 
   fireEvent.click(input);
   expect(track.className).toMatchInlineSnapshot(
-    `"relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
   );
   expect(input.checked).toBeFalsy();
 });
