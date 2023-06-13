@@ -90,6 +90,7 @@ export const colors = {
     // status
     error: '#dd4142',
     selected: '#ae440a',
+    disabled: brand.secondary[400],
   },
   // Border
   // ---------------
