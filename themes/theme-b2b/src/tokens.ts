@@ -53,6 +53,7 @@ export const colors = {
 
     primary: {
       DEFAULT: brand.primary[600],
+      light: brand.primary[100],
       hover: brand.primary[400],
     },
 
