@@ -46,6 +46,22 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
                 checked: 'checked',
                 indeterminate: 'indeterminate',
                 disabled: 'disabled',
+                placementL: 'placement="left"',
+                placementR: 'placement="right"',
+              },
+            }
+          );
+          matchVariant(
+            'placement',
+            value => {
+              return `&[data-placement=${value}]`;
+            },
+            {
+              values: {
+                t: 'top',
+                r: 'right',
+                b: 'bottom',
+                l: 'left',
               },
             }
           );
@@ -58,5 +74,5 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
       ],
     },
     config
-  ) satisfies Config;
+  );
 };
