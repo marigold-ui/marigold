@@ -37,6 +37,7 @@ export * from './Select.styles';
 export * from './Switch.styles';
 export * from './Tabs.styles';
 export * from './Switch.styles';
+export * from './Tag.styles';
 export * from './Table.styles';
 export * from './Tabs.styles';
 export * from './Text.styles';
