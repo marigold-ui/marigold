@@ -83,9 +83,12 @@ export const colors = {
 
     // State
     disabled: brand.secondary[200],
-    hover: brand.secondary[400],
+    hover: { DEFAULT: brand.secondary[400], light: brand.secondary[200] },
     focus: brand.primary[200],
-    selected: brand.primary[600],
+    selected: {
+      DEFAULT: brand.primary[600],
+      light: brand.primary[100],
+    },
 
     // Status
     info: '#1d67b6',
