@@ -66,7 +66,6 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
             }
           );
         }),
-
         // Aria Variants
         plugin(({ addVariant }) => {
           addVariant('aria-enabled', ['&:not([aria-disabled=true])']);
@@ -74,5 +73,5 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
       ],
     },
     config
-  );
+  ) satisfies Config;
 };
