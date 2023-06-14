@@ -24,3 +24,4 @@ export * from './Link.styles';
 export * from './NumberField.styles';
 export * from './Switch.styles';
 export * from './Button.styles';
+export * from './DateField.styles';
