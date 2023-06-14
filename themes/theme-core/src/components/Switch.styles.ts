@@ -31,5 +31,4 @@ export const Switch: ThemeComponent<'Switch'> = {
       },
     }
   ),
-  label: cva(''),
 };

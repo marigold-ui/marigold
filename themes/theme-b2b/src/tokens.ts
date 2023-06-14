@@ -48,7 +48,19 @@ export const colors = {
     /**
      * Should be set to either html or body element.
      */
+
     body: brand.secondary[50],
+    neutral: brand.secondary[200],
+
+    primary: {
+      DEFAULT: brand.primary[600],
+      hover: brand.primary[400],
+    },
+
+    dark: {
+      DEFAULT: brand.secondary[700],
+      hover: brand.secondary[600],
+    },
 
     surface: {
       /**
@@ -71,23 +83,33 @@ export const colors = {
 
     // State
     disabled: brand.secondary[200],
+    hover: brand.secondary[400],
     focus: brand.primary[200],
     selected: brand.primary[600],
 
     // Status
     info: '#1d67b6',
   },
+
+  // Shadow
+  // ---------------
   shadow: {
+    light: brand.secondary[400],
+
     // state
     focus: brand.primary[600],
 
     // status
     error: '#dd4142',
+    selected: '#ae440a',
+    disabled: brand.secondary[400],
   },
+
   // Border
   // ---------------
   border: {
     light: brand.secondary[400],
+    dark: brand.secondary[700],
 
     // State
     disabled: brand.secondary[400],
@@ -104,6 +126,8 @@ export const colors = {
   // Outline
   // ---------------
   outline: {
+    dark: brand.secondary[700],
+
     // State
     focus: brand.primary[600],
 
