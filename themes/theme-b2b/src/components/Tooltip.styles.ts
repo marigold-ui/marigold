@@ -14,21 +14,25 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
   ]),
 
   arrow: cva([
-    'border-t-border-info',
-    ' after:border-[7px] after:border-solid after:content-[""]',
+    'border-t-border-info border-[7px] border-x-transparent border-b-transparent',
+    'after:border-t-bg-neutral after:border-[7px] after:border-x-transparent after:border-b-transparent',
+
+    // after
+    'after:absolute after:h-0 after:w-0',
+    'after:left-[-7px] after:right-[-8.5px] after:border-solid after:border-x-transparent after:border-b-transparent after:content-[""]',
+
     // right
-    'group-placementR/tooltip:after:border-x-transparent group-placementR/tooltip:after:border-t-transparent group-placementR/tooltip:after:border-b-border-info',
-    // '[&[data-placement="right"]]:right-[100%] [&[data-placement="right"]]:top-[50%] [&[data-placement="right"]]:mt-[-8px] [&[data-placement="right"]]:rotate-90 [&[data-placement="right"]]:after:top-[-8.5px]',
-    'group-placementR/tooltip:left-[-7.5px] group-placementR/tooltip:top-[50%] group-placementR/tooltip:rotate-[-90deg]',
+    'group-placementR/tooltip:top-1/2 group-placementR/tooltip:mt-[-7px] group-placementR/tooltip:after:mt-[-8.5px]',
+    'group-placementR/tooltip:right-full group-placementR/tooltip:rotate-90',
 
-    // left border colors
-    'group-placementL/tooltip:after:border-x-transparent group-placementL/tooltip:after:border-b-transparent group-placementL/tooltip:after:border-t-border-info',
     // left
-    'group-placementL/tooltip:right-[-7.5px] group-placementL/tooltip:top-[50%] group-placementL/tooltip:rotate-[270deg]',
+    'group-placementL/tooltip:top-1/2 group-placementL/tooltip:mt-[-7px] group-placementL/tooltip:after:mt-[-8.5px]',
+    'group-placementL/tooltip:left-full group-placementL/tooltip:rotate-[270deg]',
 
-    // // top
-    // '[&[data-placement="top"]]:top-[100%] [&[data-placement="top"]]:ml-[-8px]',
-    // // bottom
-    // '[&[data-placement="bottom"]]:bottom-[100%] [&[data-placement="bottom"]]:ml-[-8px] [&[data-placement="bottom"]]:rotate-180',
+    // top
+    'group-placementT/tooltip:ml-[-8px] group-placementT/tooltip:top-full  group-placementT/tooltip:after:mt-[-8.5px]',
+
+    // bottom
+    'group-placementB/tooltip:ml-[-8px] group-placementB/tooltip:bottom-full  group-placementB/tooltip:after:mt-[-8.5px] group-placementB/tooltip:rotate-180',
   ]),
 };

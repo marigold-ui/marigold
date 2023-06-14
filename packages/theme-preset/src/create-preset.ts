@@ -48,6 +48,8 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
                 disabled: 'disabled',
                 placementL: 'placement="left"',
                 placementR: 'placement="right"',
+                placementT: 'placement="top"',
+                placementB: 'placement="bottom"',
               },
             }
           );
