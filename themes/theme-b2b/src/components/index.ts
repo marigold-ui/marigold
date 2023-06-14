@@ -21,6 +21,7 @@ export * from './Message.styles';
 export * from './NumberField.styles';
 export * from './Select.styles';
 export * from './Switch.styles';
+export * from './Table.styles';
 export * from './Tabs.styles';
 export * from './Text.styles';
 export * from './TextArea.styles';
