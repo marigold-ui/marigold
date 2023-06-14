@@ -82,7 +82,10 @@ export const colors = {
     },
 
     // State
-    disabled: brand.secondary[200],
+    disabled: {
+      DEFAULT: brand.secondary[200],
+      dark: brand.secondary[400],
+    },
     hover: brand.secondary[400],
     focus: brand.primary[200],
     selected: brand.primary[600],

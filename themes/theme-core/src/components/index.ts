@@ -22,7 +22,7 @@ export * from './Menu.styles';
 export * from './Message.styles';
 export * from './Radio.styles';
 export * from './Select.styles';
-export * from './Slider.style';
+export * from './Slider.styles';
 export * from './Table.styles';
 export * from './Tag.styles';
 export * from './Text.styles';
