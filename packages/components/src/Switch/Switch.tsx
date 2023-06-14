@@ -83,19 +83,17 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           {...inputProps}
           {...focusProps}
         />
-        {props.children && (
-          <div className={classNames.label}>{props.children}</div>
-        )}
+        {props.children && <>{props.children}</>}
         <div
           className={cn(
-            'relative h-6 w-12 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl',
+            'relative h-6 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl',
             classNames.track
           )}
         >
           <div
             className={cn(
               'h-[22px] w-[22px]',
-              'cubic-bezier(.7,0,.3,1) checked:translate-x-[calc(47px - 100%)]',
+              'cubic-bezier(.7,0,.3,1)',
               'absolute left-0 top-px',
               'block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform',
               'group-selected/switch:translate-x-[calc(47px_-_100%)]',

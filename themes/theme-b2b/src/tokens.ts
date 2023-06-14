@@ -33,8 +33,9 @@ export const colors = {
       DEFAULT: brand.secondary[700],
       light: brand.secondary[500],
     },
+    link: '#3ab3d5',
 
-    light: brand.secondary[50],
+    light: brand.secondary[100],
 
     // State
     disabled: brand.secondary[400],
@@ -47,31 +48,74 @@ export const colors = {
     /**
      * Should be set to either html or body element.
      */
+
     body: brand.secondary[50],
+    neutral: brand.secondary[200],
+
+    primary: {
+      DEFAULT: brand.primary[600],
+      hover: brand.primary[400],
+    },
+
+    dark: {
+      DEFAULT: brand.secondary[700],
+      hover: brand.secondary[600],
+    },
 
     surface: {
       /**
        * Use this for e.g. card backgrounds.
        */
       DEFAULT: brand.secondary[50],
+      /**
+       * Use this when you need to separate a specific layer from
+       * the surface color, e.g. table headers.
+       */
+      raised: brand.secondary[500],
+      /**
+       * Use this when you need to make a specific layer
+       * to appear lower than the surface color, e.g. progress bar.
+       */
+      lowered: brand.secondary[700],
 
       underlay: 'rgba(206, 212, 218, 0.5)',
     },
 
     // State
     disabled: brand.secondary[200],
+    hover: brand.secondary[400],
     focus: brand.primary[200],
     selected: brand.primary[600],
+
+    // Status
+    info: '#1d67b6',
+  },
+
+  // Shadow
+  // ---------------
+  shadow: {
+    light: brand.secondary[400],
+
+    // state
+    focus: brand.primary[600],
+
+    // status
+    error: '#dd4142',
+    selected: '#ae440a',
+    disabled: brand.secondary[400],
   },
 
   // Border
   // ---------------
   border: {
     light: brand.secondary[400],
+    dark: brand.secondary[700],
 
     // State
+    disabled: brand.secondary[400],
     hover: brand.secondary[500],
     focus: brand.primary[600],
+    selected: brand.primary[800],
 
     // Status
     error: '#dd4142',
@@ -82,6 +126,8 @@ export const colors = {
   // Outline
   // ---------------
   outline: {
+    dark: brand.secondary[700],
+
     // State
     focus: brand.primary[600],
 
