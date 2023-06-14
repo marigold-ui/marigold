@@ -48,6 +48,7 @@ export const colors = {
     /**
      * Should be set to either html or body element.
      */
+
     body: brand.secondary[50],
     neutral: brand.secondary[200],
 
@@ -96,11 +97,15 @@ export const colors = {
   // Shadow
   // ---------------
   shadow: {
+    light: brand.secondary[400],
+
     // state
     focus: brand.primary[600],
 
     // status
     error: '#dd4142',
+    selected: '#ae440a',
+    disabled: brand.secondary[400],
   },
 
   // Border
