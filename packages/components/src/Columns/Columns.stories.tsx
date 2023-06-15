@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Box, Columns, Stack } from '@marigold/components';
+import { Columns, Stack } from '@marigold/components';
 
 const meta = {
   title: 'Components/Columns',
