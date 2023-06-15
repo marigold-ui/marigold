@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Box, useTheme, ThemeProvider } from '@marigold/system';
+import type { StoryObj } from '@storybook/react';
+import { useTheme, ThemeProvider } from '@marigold/system';
 import { List } from '@marigold/components';
 
 const meta = {
   title: 'System/useTheme',
-} satisfies Meta<typeof Box>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
