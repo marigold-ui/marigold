@@ -9,9 +9,6 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     'group-aria-selected/cell:bg-bg-selected outline-none group-aria-selected/cell:font-semibold group-aria-selected/cell:text-white',
   ]),
   calendarControllers: cva([
-    // should fix this
-    'data-[active]:bg-red-600',
-    // used #2b2b2b directly because it is used only here
-    ' data-[hover]:bg-bg-hover data-[hover]:text-[#2b2b2b]',
+    ' data-[hover]:bg-bg-hover data-[hover]:text-text-hover',
   ]),
 };
