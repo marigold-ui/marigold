@@ -25,7 +25,7 @@ export * from './Message.styles';
 export * from './NumberField';
 export * from './Radio.styles';
 export * from './Select.styles';
-export * from './Slider.style';
+export * from './Slider.styles';
 export * from './Switch.styles';
 export * from './Table.styles';
 export * from './Tabs.styles';
