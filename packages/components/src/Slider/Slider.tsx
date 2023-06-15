@@ -101,7 +101,12 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
           {...sliderState}
           ref={trackRef}
         >
-          <div className={cn('top-2/4 -translate-y-1/2', classNames.track)} />
+          <div
+            className={cn(
+              'absolute top-2/4 h-2 w-full -translate-y-1/2',
+              classNames.track
+            )}
+          />
           <Thumb
             state={state}
             trackRef={trackRef}

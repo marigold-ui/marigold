@@ -69,7 +69,7 @@ export const colors = {
        * Use this when you need to separate a specific layer from
        * the surface color, e.g. table headers.
        */
-      raised: '#a9a9a9',
+      raised: brand.secondary[500],
       /**
        * Use this when you need to make a specific layer
        * to appear lower than the surface color, e.g. progress bar.
@@ -93,7 +93,10 @@ export const colors = {
       DEFAULT: brand.secondary[900],
       light: brand.secondary[100],
     },
-    disabled: brand.secondary[50],
+    disabled: {
+      DEFAULT: brand.secondary[50],
+      dark: '#cccccc',
+    },
     selected: '#3ab3d5',
 
     // Status

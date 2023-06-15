@@ -49,6 +49,7 @@ export const colors = {
     /**
      * Should be set to either html or body element.
      */
+
     body: brand.secondary[50],
     neutral: brand.secondary[200],
 
@@ -84,9 +85,12 @@ export const colors = {
 
     // State
     disabled: brand.secondary[200],
-    hover: brand.secondary[400],
+    hover: { DEFAULT: brand.secondary[400], light: brand.secondary[200] },
     focus: brand.primary[200],
-    selected: brand.primary[600],
+    selected: {
+      DEFAULT: brand.primary[600],
+      light: brand.primary[100],
+    },
 
     // Status
     info: '#1d67b6',
@@ -95,11 +99,15 @@ export const colors = {
   // Shadow
   // ---------------
   shadow: {
+    light: brand.secondary[400],
+
     // state
     focus: brand.primary[600],
 
     // status
     error: '#dd4142',
+    selected: '#ae440a',
+    disabled: brand.secondary[400],
   },
 
   // Border
