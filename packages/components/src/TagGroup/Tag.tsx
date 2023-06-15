@@ -4,7 +4,7 @@ import { useFocusRing } from '@react-aria/focus';
 
 import { Button } from '../Button';
 import { ListState } from '@react-stately/list';
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { mergeProps } from '@react-aria/utils';
 
 // Props
@@ -60,7 +60,7 @@ export const Tag = ({
         {allowsRemoving && (
           <Button
             {...removeButtonProps}
-            className={classNames.closeButton}
+            className={cn('flex items-center', classNames.closeButton)}
             role="button"
           >
             <svg viewBox="0 0 20 20" fill="currentColor" width={20} height={20}>
