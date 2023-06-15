@@ -30,3 +30,4 @@ export * from './Text.styles';
 export * from './TextArea.styles';
 export * from './Underlay.styles';
 export * from './Slider.styles';
+export * from './Calendar.styles';
