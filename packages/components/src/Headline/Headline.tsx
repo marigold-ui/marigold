@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 import {
-  Box,
   useClassNames,
   cn,
   createVar,
@@ -19,6 +18,7 @@ export interface HeadlineProps extends HtmlProps<'h1'>, TextAlignProp {
   color?: string;
   variant?: string;
   size?: string;
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }
 
 // Component
@@ -30,6 +30,7 @@ export const Headline = ({
   align = 'left',
   color,
   level = '1',
+  as = `h${level}`,
   ...props
 }: HeadlineProps) => {
   const theme = useTheme();
@@ -39,9 +40,10 @@ export const Headline = ({
     size: size ?? `level-${level}`,
   });
 
+  const Component = as;
+
   return (
-    <Box
-      as={`h${level}`}
+    <Component
       {...props}
       className={cn(classNames, 'text-[--color]', textAlign[align])}
       style={createVar({
@@ -52,6 +54,6 @@ export const Headline = ({
       })}
     >
       {children}
-    </Box>
+    </Component>
   );
 };

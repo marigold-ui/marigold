@@ -1,10 +1,10 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Box, ThemeProvider, useResponsiveValue } from '@marigold/system';
+import type { StoryObj } from '@storybook/react';
+import { ThemeProvider, useResponsiveValue } from '@marigold/system';
 
 const meta = {
   title: 'System/useResponsiveValue',
-} satisfies Meta<typeof Box>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -33,12 +33,12 @@ export const Basic: Story = {
   render: args => {
     return (
       <ThemeProvider theme={theme}>
-        <Box
+        <div
           {...args}
           className="w-full cursor-pointer bg-yellow-500 text-[#ffffff] sm:bg-red-500 md:bg-green-500 lg:bg-blue-500 xl:bg-gray-500"
         >
           <Component />
-        </Box>
+        </div>
       </ThemeProvider>
     );
   },

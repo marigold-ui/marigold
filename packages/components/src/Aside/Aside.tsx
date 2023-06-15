@@ -55,29 +55,3 @@ export const Aside = ({
     </div>
   );
 };
-
-/**
-  return (
-    <Box
-      css={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: space,
-        alignItems: stretch ? undefined : 'flex-start',
-
-        [`> ${aside}`]: {
-          flexBasis: sideWidth,
-          flexGrow: 1,
-        },
-
-        [`> ${content}`]: {
-          flexBasis: 0,
-          flexGrow: 999,
-          minInlineSize: wrap,
-        },
-      }}
-    >
-      {children}
-    </Box>
-  );
- */

@@ -2,7 +2,6 @@ import React from 'react';
 import { HtmlProps } from '@marigold/types';
 import {
   cn,
-  Box,
   useClassNames,
   ObjectFitProp,
   objectFit,
@@ -34,9 +33,9 @@ export const Image = ({
   const classNames = useClassNames({ component: 'Image', variant, size });
 
   return (
-    <Box
+    <img
       {...props}
-      as="img"
+      alt={props.alt}
       className={cn(
         fit !== 'none' && 'h-full w-full',
         classNames,

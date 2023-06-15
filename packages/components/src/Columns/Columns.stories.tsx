@@ -66,9 +66,9 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <Columns {...args}>
-      <Box className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
-      <Box className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
-      <Box className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
+      <div className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
+      <div className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
+      <div className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
     </Columns>
   ),
 };
@@ -76,18 +76,12 @@ export const Basic: Story = {
 export const ComplexChildren: Story = {
   render: args => (
     <Columns {...args}>
-      <Box
-        as="main"
-        className="h-[150px] border border-[#ced4da] bg-[#e9ecef]"
-      />
+      <main className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
       <>
         <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
         <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
       </>
-      <Box
-        as="aside"
-        className="h-[150px] border border-[#ced4da] bg-[#e9ecef]"
-      />
+      <aside className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
     </Columns>
   ),
 };
