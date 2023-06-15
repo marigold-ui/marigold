@@ -12,7 +12,6 @@ export const Tooltip: Theme['components']['Tooltip'] = {
       borderColor: 'blue70',
       borderRadius: 'large',
       bg: 'blue10',
-
       p: 'xsmall',
 
       '&[data-placement="top"]': {
