@@ -78,7 +78,8 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
           className={cn(
             'flex-1',
             'disabled:cursor-not-allowed',
-            classNames.input
+            classNames.input,
+            className
           )}
           ref={ref}
           type={type}
