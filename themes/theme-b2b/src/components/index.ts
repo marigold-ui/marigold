@@ -35,3 +35,5 @@ export * from './NumberField.styles';
 export * from './Switch.styles';
 export * from './Button.styles';
 export * from './Tooltip.styles';
+export * from './Slider.styles';
+export * from './Calendar.styles';

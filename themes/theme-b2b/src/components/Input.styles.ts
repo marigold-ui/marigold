@@ -4,7 +4,7 @@ import { cva } from 'class-variance-authority';
 
 export const Input: ThemeComponent<'Input'> = {
   icon: cva('left-2'),
-  action: cva(),
+  action: cva('right-0'),
   input: cva([
     'bg-bg-surface',
     'border-border-light rounded-sm border  outline-none',

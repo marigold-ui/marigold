@@ -67,16 +67,19 @@ export const Calendar = ({
           <MonthDropdown state={state} />
           <YearDropdown state={state} />
         </div>
-        <div
-          className={cn(
-            'flex w-full flex-nowrap justify-end gap-[10px] [&_button:disabled]:cursor-not-allowed [&_button]:px-2 [&_button]:py-1',
-            classNames.calendarControllers
-          )}
-        >
-          <Button {...prevPropsRest} disabled={prevIsDisabled}>
+        <div className="flex w-full flex-nowrap justify-end gap-[10px] [&_button:disabled]:cursor-not-allowed [&_button]:px-2 [&_button]:py-1">
+          <Button
+            className={classNames.calendarControllers}
+            {...prevPropsRest}
+            disabled={prevIsDisabled}
+          >
             <ChevronLeft />
           </Button>
-          <Button {...nextPropsRest} disabled={nextIsDisabled}>
+          <Button
+            className={classNames.calendarControllers}
+            {...nextPropsRest}
+            disabled={nextIsDisabled}
+          >
             <ChevronRight />
           </Button>
         </div>
