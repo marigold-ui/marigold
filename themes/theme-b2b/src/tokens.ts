@@ -40,6 +40,7 @@ export const colors = {
     // State
     disabled: brand.secondary[400],
     error: '#dd4142',
+    hover: brand.secondary[800],
   },
 
   // Background
@@ -54,6 +55,7 @@ export const colors = {
 
     primary: {
       DEFAULT: brand.primary[600],
+      light: brand.primary[100],
       hover: brand.primary[400],
     },
 

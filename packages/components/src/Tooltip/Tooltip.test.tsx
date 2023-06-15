@@ -153,7 +153,9 @@ test('styled via "Tooltip" from theme', () => {
   );
 
   const tooltip = screen.getByRole('tooltip');
-  expect(tooltip.className).toMatchInlineSnapshot(`"text-body bg-green-500"`);
+  expect(tooltip.className).toMatchInlineSnapshot(
+    `"group/tooltip text-body bg-green-500"`
+  );
 });
 
 test('accepts variant and size', () => {
@@ -170,7 +172,7 @@ test('accepts variant and size', () => {
 
   const tooltip = screen.getByRole('tooltip');
   expect(tooltip.className).toMatchInlineSnapshot(
-    `"text-body bg-lime-300 p-5"`
+    `"group/tooltip text-body bg-lime-300 p-5"`
   );
 });
 

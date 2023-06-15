@@ -46,11 +46,28 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) => {
                 checked: 'checked',
                 indeterminate: 'indeterminate',
                 disabled: 'disabled',
+                placementL: 'placement="left"',
+                placementR: 'placement="right"',
+                placementT: 'placement="top"',
+                placementB: 'placement="bottom"',
+              },
+            }
+          );
+          matchVariant(
+            'placement',
+            value => {
+              return `&[data-placement=${value}]`;
+            },
+            {
+              values: {
+                t: 'top',
+                r: 'right',
+                b: 'bottom',
+                l: 'left',
               },
             }
           );
         }),
-
         // Aria Variants
         plugin(({ addVariant }) => {
           addVariant('aria-enabled', ['&:not([aria-disabled=true])']);

@@ -29,7 +29,7 @@ export const Tooltip = ({ children, variant, size }: TooltipProps) => {
       {...tooltipProps}
       {...rest}
       ref={overlayRef}
-      className={classNames.container}
+      className={cn('group/tooltip', classNames.container)}
       data-placement={placement}
     >
       <div>{children}</div>
