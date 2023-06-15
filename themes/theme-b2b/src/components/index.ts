@@ -5,7 +5,6 @@ export * from './Button.styles';
 export * from './Card.styles';
 export * from './Checkbox.styles';
 export * from './DateField.styles';
-export * from './DateField.styles';
 export * from './Dialog.styles';
 export * from './Divider.styles';
 export * from './Field.styles';
