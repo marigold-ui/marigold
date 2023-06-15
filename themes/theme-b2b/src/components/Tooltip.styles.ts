@@ -15,9 +15,9 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
 
   arrow: cva([
     'border-t-border-info border-[7px] border-x-transparent border-b-transparent',
-    'after:border-t-bg-neutral after:border-[7px] after:border-x-transparent after:border-b-transparent',
 
     // after
+    'after:border-t-bg-neutral after:border-[7px] after:border-x-transparent after:border-b-transparent',
     'after:absolute after:h-0 after:w-0',
     'after:left-[-7px] after:right-[-8.5px] after:border-solid after:border-x-transparent after:border-b-transparent after:content-[""]',
 
