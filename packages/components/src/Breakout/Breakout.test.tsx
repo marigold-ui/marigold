@@ -7,7 +7,7 @@ test('has gridColumn, alignment and default width via classname', () => {
   render(<Breakout data-testid="breakout">breakout</Breakout>);
   const breakout = screen.getByTestId(/breakout/);
   expect(breakout.className).toMatchInlineSnapshot(
-    `"col-[\`1_/_-1_!important\`] w-full justify-start items-start flex h-[--height]"`
+    `"col-start-[1_!important] col-end-[-1_!important] w-full justify-start items-start flex h-[--height]"`
   );
 });
 test('supports horizontal center', () => {
@@ -18,7 +18,7 @@ test('supports horizontal center', () => {
   );
   const breakout = screen.getByTestId(/breakout/);
   expect(breakout.className).toMatchInlineSnapshot(
-    `"col-[\`1_/_-1_!important\`] w-full justify-center items-start flex h-[--height]"`
+    `"col-start-[1_!important] col-end-[-1_!important] w-full justify-center items-start flex h-[--height]"`
   );
 });
 
@@ -56,7 +56,7 @@ test('supports verticalAlign bottom', () => {
   );
   const breakout = screen.getByTestId(/breakout/);
   expect(breakout.className).toMatchInlineSnapshot(
-    `"col-[\`1_/_-1_!important\`] w-full justify-start items-end flex h-[--height]"`
+    `"col-start-[1_!important] col-end-[-1_!important] w-full justify-start items-end flex h-[--height]"`
   );
 });
 
@@ -68,7 +68,7 @@ test('supports height prop', () => {
   );
   const breakout = screen.getByTestId(/breakout/);
   expect(breakout.className).toMatchInlineSnapshot(
-    `"col-[\`1_/_-1_!important\`] w-full justify-start items-start flex h-[--height]"`
+    `"col-start-[1_!important] col-end-[-1_!important] w-full justify-start items-start flex h-[--height]"`
   );
 });
 
@@ -80,6 +80,6 @@ test('no align set', () => {
   );
   const breakout = screen.getByTestId(/breakout/);
   expect(breakout.className).toMatchInlineSnapshot(
-    `"col-[\`1_/_-1_!important\`] w-full block h-[--height]"`
+    `"col-start-[1_!important] col-end-[-1_!important] w-full block h-[--height]"`
   );
 });
