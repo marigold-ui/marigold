@@ -27,7 +27,7 @@ export const Breakout = ({
   return (
     <div
       className={cn(
-        'col-[`1_/_-1_!important`] w-full',
+        'col-start-[1_!important] col-end-[-1_!important] w-full',
         alignmentX[alignX],
         alignmentY[alignY],
         alignmentX[alignX] || alignmentY[alignY] ? 'flex' : 'block',
