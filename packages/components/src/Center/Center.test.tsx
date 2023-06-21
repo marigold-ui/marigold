@@ -1,13 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { Box } from '../Box';
 import { Center } from './Center';
 
 test('supports classnames per default and maxWidth prop', () => {
   render(
     <Center maxWidth="50ch" data-testid="center">
-      <Box>content</Box>
+      <div>content</div>
     </Center>
   );
   const center = screen.getByTestId(/center/);
@@ -27,7 +26,7 @@ test('supports classnames per default and maxWidth prop', () => {
 test('supports maxWidth from theme sizes', () => {
   render(
     <Center maxWidth="300px" data-testid="center">
-      <Box>content</Box>
+      <div>content</div>
     </Center>
   );
   const center = screen.getByTestId(/center/);
@@ -47,8 +46,8 @@ test('supports maxWidth from theme sizes', () => {
 test('supports space prop', () => {
   render(
     <Center space={3} data-testid="center">
-      <Box>content</Box>
-      <Box>content2</Box>
+      <div>content</div>
+      <div>content2</div>
     </Center>
   );
   const center = screen.getByTestId(/center/);
