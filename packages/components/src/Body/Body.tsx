@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Box, useClassNames } from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
 // Props
@@ -15,8 +15,8 @@ export interface BodyProps extends HtmlProps<'section'> {
 export const Body = ({ children, variant, size, ...props }: BodyProps) => {
   const classNames = useClassNames({ component: 'Body', variant, size });
   return (
-    <Box as="section" {...props} className={classNames}>
+    <section {...props} className={classNames}>
       {children}
-    </Box>
+    </section>
   );
 };

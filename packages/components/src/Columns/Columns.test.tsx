@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Box, Columns } from '@marigold/components';
+import { Columns } from '@marigold/components';
 
 // eslint-disable-next-line testing-library/no-node-access
 const getColumnWrappers = (el: HTMLElement) => el.children!;
@@ -8,8 +8,8 @@ const getColumnWrappers = (el: HTMLElement) => el.children!;
 test('supports default space prop', () => {
   render(
     <Columns columns={[6, 6]} data-testid="columns">
-      <Box>column</Box>
-      <Box>column</Box>
+      <div>column</div>
+      <div>column</div>
     </Columns>
   );
   const column = screen.getByTestId(/columns/);
@@ -41,8 +41,8 @@ test('supports default space prop', () => {
 test('supports custom space prop', () => {
   render(
     <Columns columns={[6, 6]} space={5} data-testid="columns">
-      <Box>column</Box>
-      <Box>column</Box>
+      <div>column</div>
+      <div>column</div>
     </Columns>
   );
   const column = screen.getByTestId(/columns/);
@@ -52,7 +52,7 @@ test('supports custom space prop', () => {
 test('supports default collapseAt prop', () => {
   render(
     <Columns columns={[12]} data-testid="columns">
-      <Box>columnOne</Box>
+      <div>columnOne</div>
     </Columns>
   );
   const [columnOne] = getColumnWrappers(screen.getByTestId(/columns/));
@@ -62,7 +62,7 @@ test('supports default collapseAt prop', () => {
 test('supports custom collapseAt prop', () => {
   render(
     <Columns columns={[12]} collapseAt="50em" data-testid="columns">
-      <Box>columnOne</Box>
+      <div>columnOne</div>
     </Columns>
   );
   const [columnOne] = getColumnWrappers(screen.getByTestId(/columns/));
@@ -72,8 +72,8 @@ test('supports custom collapseAt prop', () => {
 test('supports columns with two values', () => {
   render(
     <Columns columns={[2, 10]} data-testid="columns">
-      <Box>columnOne</Box>
-      <Box>columnTwo</Box>
+      <div>columnOne</div>
+      <div>columnTwo</div>
     </Columns>
   );
   const [columnOne, columnTwo] = getColumnWrappers(
@@ -104,9 +104,9 @@ test('supports columns with two values', () => {
 test('supports columns with three values', () => {
   render(
     <Columns columns={[2, 4, 6]} data-testid="columns">
-      <Box>columnOne</Box>
-      <Box>columnTwo</Box>
-      <Box>columnThree</Box>
+      <div>columnOne</div>
+      <div>columnTwo</div>
+      <div>columnThree</div>
     </Columns>
   );
   const [columnOne, columnTwo, columnThree] = getColumnWrappers(
@@ -195,9 +195,9 @@ test('throws error if columns length and children length are different', () => {
   expect(() =>
     render(
       <Columns columns={[12]}>
-        <Box>columnOne</Box>
-        <Box>columnTwo</Box>
-        <Box>columnThree</Box>
+        <div>columnOne</div>
+        <div>columnTwo</div>
+        <div>columnThree</div>
       </Columns>
     )
   ).toThrow('Columns: expected 1 children, got 3');
