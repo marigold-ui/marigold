@@ -365,9 +365,6 @@ importers:
       '@marigold/system':
         specifier: workspace:*
         version: link:../system
-      '@marigold/tokens':
-        specifier: workspace:*
-        version: link:../tokens
       '@marigold/types':
         specifier: workspace:*
         version: link:../types
@@ -651,15 +648,6 @@ importers:
       tailwindcss:
         specifier: 3.3.2
         version: 3.3.2(ts-node@10.9.1)
-      tsup:
-        specifier: 6.7.0
-        version: 6.7.0(postcss@8.4.24)(typescript@5.0.4)
-
-  packages/tokens:
-    devDependencies:
-      '@marigold/tsconfig':
-        specifier: workspace:*
-        version: link:../../config/tsconfig
       tsup:
         specifier: 6.7.0
         version: 6.7.0(postcss@8.4.24)(typescript@5.0.4)
