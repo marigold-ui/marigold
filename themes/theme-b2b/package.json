@@ -41,7 +41,6 @@
     "dev": "tsup"
   },
   "dependencies": {
-    "class-variance-authority": "0.6.0",
-    "tailwind-variants": "0.1.2"
+    "class-variance-authority": "0.6.0"
   }
 }

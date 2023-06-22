@@ -92,7 +92,6 @@
     "class-variance-authority": "0.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "tailwind-variants": "0.1.2",
     "tsup": "6.7.0"
   },
   "scripts": {
