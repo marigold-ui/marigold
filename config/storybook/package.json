@@ -19,8 +19,6 @@
   },
   "dependencies": {
     "@babel/core": "7.21.8",
-    "@emotion/react": "^11.0.0-rc.0",
-    "@emotion/styled": "^11.8.1",
     "@marigold/components": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
