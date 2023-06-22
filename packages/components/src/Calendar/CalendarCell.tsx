@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { AriaCalendarCellProps, useCalendarCell } from '@react-aria/calendar';
 import { mergeProps } from '@react-aria/utils';
 import { CalendarState } from '@react-stately/calendar';
-import { Box, useComponentStyles, useStateProps } from '@marigold/system';
+import { cn, useClassNames, useStateProps } from '@marigold/system';
 import { useHover } from '@react-aria/interactions';
 
 export interface CalendarCellProps extends AriaCalendarCellProps {
@@ -13,14 +13,12 @@ export const CalendarCell = (props: CalendarCellProps) => {
   const { state } = props;
   let { cellProps, buttonProps, formattedDate, isOutsideVisibleRange } =
     useCalendarCell(props, state, ref);
-  const styles = useComponentStyles(
-    'Calendar',
-    {},
-    { parts: ['calendarCell'] }
-  );
+  const classNames = useClassNames({
+    component: 'Calendar',
+  });
   const isDisabled = cellProps['aria-disabled'] as boolean;
   const { hoverProps, isHovered } = useHover({
-    isDisabled,
+    isDisabled: isDisabled || (cellProps['aria-selected'] as boolean),
   });
   const stateProps = useStateProps({
     disabled: isDisabled,
@@ -28,27 +26,18 @@ export const CalendarCell = (props: CalendarCellProps) => {
     selected: cellProps['aria-selected'] as boolean,
   });
   return (
-    <Box as="td" {...cellProps}>
-      <Box
-        __baseCSS={{
-          fontSize: '0.875rem',
-          fontWeight: '400',
-          cursor: 'pointer',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '30px',
-          height: '30px',
-          padding: '0.3rem',
-          borderRadius: '50%',
-        }}
-        css={styles.calendarCell}
+    <td className="group/cell" {...cellProps}>
+      <div
+        className={cn(
+          'flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full p-[5.3px] text-sm font-normal aria-disabled:cursor-default',
+          classNames.calendarCell
+        )}
         hidden={isOutsideVisibleRange}
         ref={ref}
         {...mergeProps(buttonProps, stateProps, hoverProps)}
       >
         {formattedDate}
-      </Box>
-    </Box>
+      </div>
+    </td>
   );
 };

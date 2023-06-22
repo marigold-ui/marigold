@@ -1,30 +1,30 @@
 import React from 'react';
-import { act, render, screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import { Tag } from '.';
 import { Button } from '../Button';
 import userEvent from '@testing-library/user-event';
-import { ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider } from '@marigold/system';
 
+import { setup } from '../test.utils';
+
+import { cva } from 'class-variance-authority';
 //TODO: use user.keyboard, use them for style tests, refactoring
-const theme = {
-  space: {
-    none: 'none',
-  },
+const theme: Theme = {
+  name: 'test',
   components: {
+    Button: cva(),
+    Field: cva(),
+    HelpText: { container: cva(), icon: cva() },
+    Label: { container: cva(), indicator: cva() },
     Tag: {
-      base: {
-        tag: {
-          display: 'flex',
-          alignItems: 'center',
-          border: '1px solid gray',
-          borderRadius: '4px',
-          padding: '2px 5px',
-          margin: '2px',
-        },
-      },
+      tag: cva('border border-slate-600'),
+      closeButton: cva('bg-transparent'),
+      gridCell: cva('flex gap-1'),
     },
   },
 };
+
+const { render } = setup({ theme });
 
 test('render tag group', () => {
   render(
@@ -198,8 +198,10 @@ test('renders label', () => {
 test('render same styles for each tag', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Tag.Group aria-label="static tag group items">
-        <Tag key="news">News</Tag>
+      <Tag.Group aria-label="static tag group items" allowsRemoving>
+        <Tag key="news" data-testid="news">
+          News
+        </Tag>
         <Tag key="travel">Travel</Tag>
         <Tag key="gaming">Gaming</Tag>
         <Tag key="shopping">Shopping</Tag>
@@ -207,26 +209,23 @@ test('render same styles for each tag', () => {
     </ThemeProvider>
   );
 
-  const tags = screen.getAllByRole('row');
-  tags.forEach(tag => {
-    expect(tag).toBeVisible();
-    expect(tag).toHaveStyle(
-      `display: ${theme.components.Tag.base.tag['display']}`
-    );
-    expect(tag).toHaveStyle(
-      `alignItems: ${theme.components.Tag.base.tag['alignItems']}`
-    );
-    expect(tag).toHaveStyle(
-      `border: ${theme.components.Tag.base.tag['border']}`
-    );
-    expect(tag).toHaveStyle(
-      `borderRadius: ${theme.components.Tag.base.tag['borderRadius']}`
-    );
-    expect(tag).toHaveStyle(
-      `padding: ${theme.components.Tag.base.tag['padding']}`
-    );
-    expect(tag).toHaveStyle(
-      `margin: ${theme.components.Tag.base.tag['margin']}`
-    );
-  });
+  const taggroup = screen.getByRole('presentation');
+  expect(taggroup).toBeVisible();
+  expect(taggroup.className).toMatchInlineSnapshot(
+    `"flex flex-wrap items-start gap-1"`
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const tag = screen.getByTestId('news').parentElement;
+  expect(tag).toBeVisible();
+  expect(tag).toHaveClass(`border border-slate-600`);
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const gridCell = tag!.firstChild;
+  expect(gridCell).toHaveClass(`flex gap-1`);
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const closeButton = gridCell?.lastChild;
+
+  expect(closeButton).toHaveClass('bg-transparent');
 });

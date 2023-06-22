@@ -1,70 +1,57 @@
 /* eslint-disable testing-library/no-node-access */
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { screen } from '@testing-library/react';
+import { Theme, ThemeProvider } from '@marigold/system';
 import userEvent from '@testing-library/user-event';
 import { DateField } from './DateField';
-import { Calendar, SmilieSatisfied } from '@marigold/icons';
 import { parseAbsoluteToLocal } from '@internationalized/date';
 
-const theme = {
-  colors: {
-    blue: '#00f',
-    lime: '#82c91e',
-  },
-  fontSizes: {
-    'small-1': 12,
-  },
-  sizes: {
-    none: 0,
-    large: 60,
-  },
+import { setup } from '../test.utils';
+
+import { cva } from 'class-variance-authority';
+
+const theme: Theme = {
+  name: 'test',
   components: {
     Label: {
-      variant: {
-        lime: {
-          color: 'lime',
+      container: cva('', {
+        variants: {
+          variant: {
+            lime: 'text-lime-300',
+          },
+          size: {
+            small: 'p-1',
+          },
         },
-      },
-      size: {
-        small: {
-          fontSize: 'small-1',
-        },
-      },
+      }),
+      indicator: cva(),
     },
     HelpText: {
-      variant: {
-        lime: {
-          container: {
-            color: 'lime',
-          },
-        },
-      },
-      size: {
-        small: {
-          container: {
-            fontSize: 'small-1',
-          },
-        },
-      },
+      container: cva(),
+      icon: cva(),
     },
     DateField: {
-      base: {
-        borderColor: 'blue',
-      },
-      variant: {
-        lime: {
-          color: 'lime',
+      segment: cva('bg-white text-gray-700'),
+      field: cva('p-2', {
+        variants: {
+          variant: {
+            lime: 'text-lime-300',
+          },
         },
-      },
-      size: {
-        small: {
-          fontSize: 'small-1',
+      }),
+      action: cva('p-3', {
+        variants: {
+          size: {
+            small: 'p-1',
+          },
         },
-      },
+      }),
     },
+    Field: cva(),
   },
 };
+
+const { render } = setup({ theme });
 
 let onBlurSpy = jest.fn();
 let onFocusChangeSpy = jest.fn();
@@ -157,26 +144,19 @@ test('passes down variant and size', () => {
   );
 
   const label = screen.getByText('Label');
-  expect(label).toHaveStyle(`color: ${theme.colors.lime}`);
-  expect(label).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
+  expect(label.className).toMatchInlineSnapshot(
+    `"text-lime-300 p-1 flex w-[var(--labelWidth)]"`
+  );
 
   const description = screen.getByText('Description');
-  expect(description).toHaveStyle(`color: ${theme.colors.lime}`);
-  expect(description).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
-});
-
-test('renders with icon', () => {
-  render(
-    <DateField
-      label="date field"
-      icon={<SmilieSatisfied />}
-      action={<Calendar />}
-    />
+  expect(description.className).toMatchInlineSnapshot(
+    `"flex items-center gap-1"`
   );
-  const icon = screen.getByTestId('icon');
-  const action = screen.getByTestId('action');
-  expect(icon).toBeInTheDocument();
-  expect(action).toBeInTheDocument();
+
+  const datefield = screen.getByTestId('date-field');
+  expect(datefield.className).toMatchInlineSnapshot(
+    `"relative flex flex-row flex-nowrap cursor-text aria-disabled:cursor-not-allowed p-2 text-lime-300"`
+  );
 });
 
 test('renders without icons', () => {

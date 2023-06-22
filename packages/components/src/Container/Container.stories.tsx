@@ -1,10 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Box } from '../Box';
 import { Container } from './Container';
-import { Headline } from '../Headline';
-import { Text } from '../Text';
 
 const meta = {
   title: 'Components/Container',
@@ -47,7 +44,7 @@ type Story = StoryObj<typeof meta>;
 export const Content: Story = {
   render: args => (
     <Container {...args}>
-      <Text>
+      <p>
         It is a dark time for the Rebellion. Although the Death Star has been
         destroyed, Imperial troops have driven the Rebel forces from their
         hidden base and pursued them across the galaxy. Evading the dreaded
@@ -55,7 +52,7 @@ export const Content: Story = {
         has established a new secret base on the remote ice world of Hoth. The
         evil lord Darth Vader, obsessed with finding young Skywalker, has
         dispatched thousands of remote probes into the far reaches of space....
-      </Text>
+      </p>
     </Container>
   ),
 };
@@ -63,28 +60,18 @@ export const Content: Story = {
 export const Header: Story = {
   render: args => (
     <Container contentType="header" {...args}>
-      <Headline level="2">Star Wars - The Empire Strikes Back</Headline>
+      <h1>Star Wars - The Empire Strikes Back</h1>
     </Container>
   ),
 };
 
 export const InnerContent: Story = {
   render: args => (
-    <Box
-      css={{
-        bg: 'blue10',
-        p: 'small',
-      }}
-    >
+    <div className="bg-blue-100 p-1">
       <Container {...args}>
-        <Headline level="2">Star Wars - The Empire Strikes Back</Headline>
-        <Box
-          css={{
-            pt: 'xsmall',
-            width: '100%',
-          }}
-        >
-          <Text>
+        <h2>Star Wars - The Empire Strikes Back</h2>
+        <div className="w-full pt-1">
+          <p>
             It is a dark time for the Rebellion. Although the Death Star has
             been destroyed, Imperial troops have driven the Rebel forces from
             their hidden base and pursued them across the galaxy. Evading the
@@ -93,9 +80,9 @@ export const InnerContent: Story = {
             of Hoth. The evil lord Darth Vader, obsessed with finding young
             Skywalker, has dispatched thousands of remote probes into the far
             reaches of space....
-          </Text>
-        </Box>
-        <Box css={{ width: '20ch' }}>
+          </p>
+        </div>
+        <div className="width-[20ch]">
           <ul>
             <li>Luke</li>
             <li>Leia</li>
@@ -105,8 +92,8 @@ export const InnerContent: Story = {
             <li>C3PO</li>
             <li>Darth Vader</li>
           </ul>
-        </Box>
+        </div>
       </Container>
-    </Box>
+    </div>
   ),
 };

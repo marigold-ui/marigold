@@ -4,7 +4,7 @@ import { useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
 
-import { Box, useStateProps } from '@marigold/system';
+import { cn, useStateProps } from '@marigold/system';
 
 import { Checkbox } from '../Checkbox';
 import { useTableContext } from './Context';
@@ -16,7 +16,7 @@ export interface TableCheckboxCellProps {
 
 export const TableCheckboxCell = ({ cell }: TableCheckboxCellProps) => {
   const ref = useRef(null);
-  const { state, styles } = useTableContext();
+  const { state, classNames } = useTableContext();
   const disabled = state.disabledKeys.has(cell.parentKey!);
   const { gridCellProps } = useTableCell(
     {
@@ -34,19 +34,13 @@ export const TableCheckboxCell = ({ cell }: TableCheckboxCellProps) => {
   const stateProps = useStateProps({ disabled, focusVisible: isFocusVisible });
 
   return (
-    <Box
-      as="td"
+    <td
       ref={ref}
-      __baseCSS={{
-        textAlign: 'center',
-        verticalAlign: 'middle',
-        lineHeight: 1,
-      }}
-      css={styles.cell}
+      className={cn('text-center align-middle leading-none', classNames?.cell)}
       {...mergeProps(gridCellProps, focusProps)}
       {...stateProps}
     >
       <Checkbox {...checkboxProps} />
-    </Box>
+    </td>
   );
 };

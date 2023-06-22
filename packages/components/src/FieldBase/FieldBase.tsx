@@ -1,21 +1,16 @@
 import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
-import {
-  Box,
-  StateAttrProps,
-  ThemeExtension,
-  useComponentStyles,
-} from '@marigold/system';
+import { StateAttrProps, cn, createVar, useClassNames } from '@marigold/system';
 
 import { Label, LabelProps } from '../Label';
 import { HelpText } from '../HelpText';
 import { useFieldGroupContext } from './FieldGroup';
+
 export interface FieldBaseProps {
   children?: ReactNode;
   variant?: string;
   size?: string;
   width?: string;
   disabled?: boolean;
-  required?: boolean;
   label?: ReactNode;
   labelProps?: LabelHTMLAttributes<HTMLLabelElement> & Pick<LabelProps, 'as'>;
   description?: ReactNode;
@@ -25,9 +20,6 @@ export interface FieldBaseProps {
   errorMessageProps?: HTMLAttributes<HTMLElement>;
   stateProps?: StateAttrProps;
 }
-// Theme Extension
-// ---------------
-export interface FieldThemeExtension extends ThemeExtension<'Field'> {}
 
 // Component
 // ---------------
@@ -37,7 +29,6 @@ export const FieldBase = ({
   size,
   width = '100%',
   disabled,
-  required,
   label,
   labelProps,
   description,
@@ -50,49 +41,45 @@ export const FieldBase = ({
 }: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
 
-  const style = useComponentStyles('Field', { variant, size });
-
   const { labelWidth } = useFieldGroupContext();
+  const classNames = useClassNames({
+    component: 'Field',
+    variant,
+    size,
+    className: 'w-[--fieldWidth]',
+  });
 
   return (
-    <Box
+    <div
       {...props}
-      __baseCSS={{
-        display: 'flex',
-        flexDirection: 'column',
-        width,
-        position: 'relative',
-      }}
-      css={style}
+      {...stateProps}
+      className={cn('group/field', classNames)}
+      style={createVar({ fieldWidth: width })}
     >
       {label && (
         <Label
-          required={required}
           variant={variant}
           size={size}
           labelWidth={labelWidth}
           {...labelProps}
-          {...stateProps}
         >
           {label}
         </Label>
       )}
-      <Box __baseCSS={{ display: 'flex', flexDirection: 'column', width }}>
-        {children}
-        {hasHelpText && (
-          <HelpText
-            {...stateProps}
-            variant={variant}
-            size={size}
-            disabled={disabled}
-            description={description}
-            descriptionProps={descriptionProps}
-            error={error}
-            errorMessage={errorMessage}
-            errorMessageProps={errorMessageProps}
-          />
-        )}
-      </Box>
-    </Box>
+
+      {children}
+      {hasHelpText && (
+        <HelpText
+          variant={variant}
+          size={size}
+          disabled={disabled}
+          description={description}
+          descriptionProps={descriptionProps}
+          error={error}
+          errorMessage={errorMessage}
+          errorMessageProps={errorMessageProps}
+        />
+      )}
+    </div>
   );
 };

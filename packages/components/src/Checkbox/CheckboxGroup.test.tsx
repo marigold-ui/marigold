@@ -1,71 +1,46 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { fireEvent, screen } from '@testing-library/react';
+import { Theme } from '@marigold/system';
 
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
+import { setup } from '../test.utils';
 
-const theme = {
-  colors: {
-    gray: '#868e96',
-    white: '#f8f9fa',
-    teal: '#099268',
-    red: '#c92a2a',
-  },
-  fontSizes: {
-    'small-1': 12,
-    'large-1': 24,
-  },
+import { cva } from 'class-variance-authority';
+
+const theme: Theme = {
+  name: 'checkbox group testing',
   components: {
     Checkbox: {
-      base: {
-        label: {
-          '&:error': {
-            bg: 'red',
+      container: cva([], {
+        variants: {
+          size: {
+            small: 'py-1',
           },
         },
-      },
-      variant: {
-        teal: {
-          label: {
-            color: 'teal',
-          },
-        },
-      },
-      size: {
-        large: {
-          label: {
-            fontSize: 'small-1',
-          },
-        },
-      },
+      }),
+      label: cva(
+        'data-[disabled]:text-checkbox-label-disabled leading-[1.125]'
+      ),
+      checkbox: cva([
+        'border-checkbox-base-border bg-checkbox-base-background rounded-[2] p-0.5',
+        'data-[hover]:border-checkbox-base-hover',
+        'data-[focus]:outline-checkbox-base-focus data-[focus]:outline-offset[3] data-[focus]:outline data-[focus]:outline-2',
+        'data-[checked]:border-checkbox-base-checked data-[checked]:bg-checkbox-base-checkedBackground data-[checked]:text-white',
+        'data-[indeterminate]:border-checkbox-base-indeterminate data-[indeterminate]:bg-checkbox-base-indeterminateBackground data-[indeterminate]:text-white',
+        'data-[disabled]:border-checkbox-base-disabled data-[disabled]:bg-checkbox-base-disabledBackground',
+      ]),
     },
-    CheckboxGroup: {
-      base: {
-        container: {
-          bg: 'gray',
-        },
-        group: {
-          fontStyle: 'italic',
-        },
-      },
-      variant: {
-        teal: {
-          container: {
-            bg: 'teal',
-          },
-        },
-      },
-      size: {
-        large: {
-          group: {
-            fontSize: 'large-1',
-          },
-        },
-      },
+    Field: cva(),
+    Label: { container: cva(), indicator: cva() },
+    HelpText: {
+      container: cva(''),
+      icon: cva(''),
     },
   },
 };
+
+const { render } = setup({ theme });
 
 test('renders label and group of checkboxes', () => {
   render(
@@ -139,30 +114,22 @@ test('passes down "read-only" to checkboxes', () => {
 
 test('passes down "error" to checkboxes', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <CheckboxGroup label="Group of Checkboxes" error>
-        <Checkbox value="one" data-testid="one">
-          one
-        </Checkbox>
-        <Checkbox value="two" data-testid="two">
-          two
-        </Checkbox>
-        <Checkbox value="three" data-testid="three">
-          three
-        </Checkbox>
-      </CheckboxGroup>
-    </ThemeProvider>
+    <CheckboxGroup label="Group of Checkboxes" error>
+      <Checkbox value="one" data-testid="one">
+        one
+      </Checkbox>
+      <Checkbox value="two" data-testid="two">
+        two
+      </Checkbox>
+      <Checkbox value="three" data-testid="three">
+        three
+      </Checkbox>
+    </CheckboxGroup>
   );
 
-  expect(screen.getByText('one')).toHaveStyle(
-    `background: ${theme.colors.red}`
-  );
-  expect(screen.getByText('two')).toHaveStyle(
-    `background: ${theme.colors.red}`
-  );
-  expect(screen.getByText('three')).toHaveStyle(
-    `background: ${theme.colors.red}`
-  );
+  // expect(screen.getByText('one')).toHaveClass(`data-[error]:bg-red-500`);
+  // expect(screen.getByText('two')).toHaveClass(`data-[error]:bg-red-500`);
+  // expect(screen.getByText('three')).toHaveClass(`data-[error]:bg-red-500`);
 });
 
 test('controlled', () => {

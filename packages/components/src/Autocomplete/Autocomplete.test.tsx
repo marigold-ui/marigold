@@ -1,7 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { cva } from 'class-variance-authority';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ThemeProvider } from '@marigold/system';
+
+import { Theme } from '@marigold/system';
+import { setup } from '../test.utils';
 
 import { Autocomplete } from './Autocomplete';
 
@@ -9,19 +12,53 @@ import { Autocomplete } from './Autocomplete';
 // ---------------
 const user = userEvent.setup();
 
-const theme = {
-  colors: {
-    blue: '#0ea5e9',
-    teal: '#5eead4',
-  },
-  fontSizes: {
-    'small-1': 12,
-  },
-  sizes: {
-    none: 0,
-    large: 200,
+const theme: Theme = {
+  name: 'test',
+  components: {
+    Field: cva(),
+    Label: {
+      container: cva('', {
+        variants: {
+          variant: {
+            lime: 'text-lime-600',
+          },
+          size: {
+            small: 'p-1',
+          },
+        },
+      }),
+      indicator: cva(''),
+    },
+    HelpText: {
+      container: cva('', {
+        variants: {
+          variant: {
+            lime: 'text-lime-600',
+          },
+          size: {
+            small: 'p-2',
+          },
+        },
+      }),
+      icon: cva(''),
+    },
+    Input: {
+      input: cva('border-blue-700'),
+      icon: cva(),
+      action: cva(),
+    },
+    Underlay: cva(),
+    ListBox: {
+      container: cva(),
+      list: cva(),
+      option: cva(),
+      section: cva(),
+      sectionTitle: cva(),
+    },
   },
 };
+
+const { render } = setup({ theme });
 
 // Tests
 // ---------------
@@ -54,40 +91,6 @@ test('renders a label', () => {
   const label = screen.getByText('Label');
   expect(label).toBeInTheDocument();
   expect(label instanceof HTMLLabelElement).toBeTruthy();
-});
-
-test('takes full width by default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Autocomplete label="Label" data-testid="input-field">
-        <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
-        <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
-        <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
-        <Autocomplete.Item key="garlic">Garlic</Autocomplete.Item>
-      </Autocomplete>
-    </ThemeProvider>
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle('width: 100%');
-});
-
-test('allows to set custom width', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Autocomplete label="Label" data-testid="input-field" width="large">
-        <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
-        <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
-        <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
-        <Autocomplete.Item key="garlic">Garlic</Autocomplete.Item>
-      </Autocomplete>
-    </ThemeProvider>
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
 });
 
 test('supports disabled', () => {

@@ -1,32 +1,23 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider } from '@marigold/system';
+import { cva } from 'class-variance-authority';
 import { Image } from './Image';
 
-const theme = {
-  colors: {
-    primary: 'hotpink',
-  },
+const theme: Theme = {
+  name: 'test',
   components: {
-    Image: {
-      base: {
-        alignItems: 'center',
-      },
-      variant: {
-        fullWidth: {
-          alignItems: 'center',
+    Image: cva('items-center', {
+      variants: {
+        variant: {
+          fullWidth: 'items-center',
+          cover: 'object-cover object-center',
         },
-        cover: {
-          objectFit: 'cover',
-          position: 'center',
+        size: {
+          large: 'w-[1000px]',
         },
       },
-      size: {
-        large: {
-          width: 1000,
-        },
-      },
-    },
+    }),
   },
 };
 
@@ -49,7 +40,7 @@ test('supports variant from theme', () => {
   );
   const img = screen.getByTestId(/images/);
 
-  expect(img).toHaveStyle(`align-items: center`);
+  expect(img).toHaveClass(`items-center`);
 });
 
 test('supports size from theme', () => {
@@ -60,25 +51,31 @@ test('supports size from theme', () => {
   );
   const img = screen.getByTestId(/images/);
 
-  expect(img).toHaveStyle(`width: 1000px`);
+  expect(img).toHaveClass(`w-[1000px]`);
 });
 
 test('set object fit via prop', () => {
-  render(<Image data-testid="images" alt="test image" fit="cover" />);
-
-  const img = screen.getByTestId(/images/);
-
-  expect(img).toHaveStyle(`object-fit: cover`);
-});
-
-test('set object position via prop', () => {
   render(
-    <Image data-testid="images" alt="test image" position="left bottom" />
+    <ThemeProvider theme={theme}>
+      <Image data-testid="images" alt="test image" fit="cover" />
+    </ThemeProvider>
   );
 
   const img = screen.getByTestId(/images/);
 
-  expect(img).toHaveStyle(`object-position: left bottom`);
+  expect(img).toHaveClass(`object-cover`);
+});
+
+test('set object position via prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Image data-testid="images" alt="test image" position="leftBottom" />
+    </ThemeProvider>
+  );
+
+  const img = screen.getByTestId(/images/);
+
+  expect(img).toHaveClass(`object-left-bottom`);
 });
 
 test('setting object position and fit via props overrides theme values', () => {
@@ -95,8 +92,8 @@ test('setting object position and fit via props overrides theme values', () => {
   );
   const img = screen.getByTestId(/images/);
 
-  expect(img).toHaveStyle(`object-fit: fill`);
-  expect(img).toHaveStyle(`object-position: bottom`);
+  expect(img).toHaveClass(`object-fill`);
+  expect(img).toHaveClass(`object-bottom`);
 });
 
 test('accept alt', () => {

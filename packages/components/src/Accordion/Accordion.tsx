@@ -1,7 +1,6 @@
 import React, { Children, ReactElement, useRef } from 'react';
 import { AriaAccordionProps, useAccordion } from '@react-aria/accordion';
 import { Item } from '@react-stately/collections';
-import { Box } from '@marigold/system';
 import { ItemElement, ItemProps } from '@react-types/shared';
 import { AccordionItem } from './AccordionItem';
 import { useTreeState } from '@react-stately/tree';
@@ -43,7 +42,7 @@ export const Accordion = ({ children, ...props }: AccordionProps) => {
   );
 
   return (
-    <Box {...accordionProps} ref={ref}>
+    <div {...accordionProps} ref={ref}>
       {[...state.collection].map(item => (
         <AccordionItem
           key={item.key}
@@ -54,7 +53,7 @@ export const Accordion = ({ children, ...props }: AccordionProps) => {
           size={item.props.size}
         />
       ))}
-    </Box>
+    </div>
   );
 };
 

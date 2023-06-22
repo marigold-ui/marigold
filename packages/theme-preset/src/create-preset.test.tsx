@@ -25,6 +25,8 @@ test('create preset and merge it with defaultTheme', () => {
           "secondary": "#808080",
         },
         "defaultTheme": {
+          "components": {},
+          "name": "default",
           "screens": {
             "2xl": "1536px",
             "lg": "1024px",

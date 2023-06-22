@@ -6,7 +6,7 @@ import { useTableColumnHeader } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
 
-import { Box, useStateProps } from '@marigold/system';
+import { cn, useStateProps } from '@marigold/system';
 
 import { useTableContext } from './Context';
 
@@ -20,20 +20,20 @@ interface SortIndicatorProps {
 const SortIndicator = ({
   direction = 'ascending',
   visible,
-}: SortIndicatorProps) => (
-  <Box
-    as="span"
-    role="presentation"
-    aria-hidden="true"
-    css={{
-      color: 'currentColor',
-      paddingInlineStart: '0.5ch',
-      visibility: visible ? 'visible' : 'hidden',
-    }}
-  >
-    {direction === 'ascending' ? '▲' : '▼'}
-  </Box>
-);
+}: SortIndicatorProps) => {
+  return (
+    <span
+      role="presentation"
+      aria-hidden="true"
+      className={cn(
+        'ps-[0.5ch] text-current',
+        visible ? 'visible' : 'invisible'
+      )}
+    >
+      {direction === 'ascending' ? '▲' : '▼'}
+    </span>
+  );
+};
 
 // Props
 // ---------------
@@ -45,7 +45,7 @@ interface TableColumnHeaderProps {
 // ---------------
 export const TableColumnHeader = ({ column }: TableColumnHeaderProps) => {
   const ref = useRef(null);
-  const { state, styles } = useTableContext();
+  const { state, classNames } = useTableContext();
   const { columnHeaderProps } = useTableColumnHeader(
     {
       node: column,
@@ -62,12 +62,10 @@ export const TableColumnHeader = ({ column }: TableColumnHeaderProps) => {
   });
 
   return (
-    <Box
-      as="th"
+    <th
       colSpan={column.colspan}
       ref={ref}
-      __baseCSS={{ cursor: 'default' }}
-      css={styles.header}
+      className={cn('cursor-default', classNames?.header)}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
     >
@@ -78,6 +76,6 @@ export const TableColumnHeader = ({ column }: TableColumnHeaderProps) => {
           visible={state.sortDescriptor?.column === column.key}
         />
       )}
-    </Box>
+    </th>
   );
 };

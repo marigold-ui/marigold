@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Box, Columns, Stack } from '@marigold/components';
+import { Columns, Stack } from '@marigold/components';
 
 const meta = {
   title: 'Components/Columns',
@@ -27,18 +27,9 @@ const meta = {
     },
     space: {
       control: {
-        type: 'select',
+        type: 'text',
       },
-      options: [
-        'none',
-        'xxsmall',
-        'xsmall',
-        'small',
-        'medium',
-        'large',
-        'xlarge',
-        'xxlarge',
-      ],
+
       description: 'Responsive Style Value',
     },
     collapseAt: {
@@ -75,9 +66,9 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <Columns {...args}>
-      <Box css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 150 }} />
-      <Box css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 150 }} />
-      <Box css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 150 }} />
+      <div className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
+      <div className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
+      <div className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
     </Columns>
   ),
 };
@@ -85,22 +76,12 @@ export const Basic: Story = {
 export const ComplexChildren: Story = {
   render: args => (
     <Columns {...args}>
-      <Box
-        as="main"
-        css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 100 }}
-      />
+      <main className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
       <>
-        <Box
-          css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 100 }}
-        />
-        <Box
-          css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 100 }}
-        />
+        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
+        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
       </>
-      <Box
-        as="aside"
-        css={{ border: '1px solid #ced4da', bg: '#e9ecef', height: 100 }}
-      />
+      <aside className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
     </Columns>
   ),
 };
@@ -112,30 +93,26 @@ const Block = ({
   children: ReactNode;
   height?: number | string;
 }) => (
-  <Box
-    css={{
-      height,
-      background: 'hsla(218 16% 77% / 50%)',
-      border: '1px solid hsla(218 16% 70% / 50%)',
-      borderRadius: 12,
-      p: 12,
-    }}
+  <div
+    style={{ height }}
+    className=" h-[--height] rounded border border-solid border-[#67686c] bg-[#858cab] p-3 text-[#edf2ff]
+     "
   >
     {children}
-  </Box>
+  </div>
 );
 
 export const MultiRow = () => (
   <Block>
-    <Stack space="medium">
+    <Stack space={4}>
       <Block height={500}>
-        <Columns columns={[4, 4, 4]} space="small" stretch>
+        <Columns columns={[4, 4, 4]} space={2} stretch>
           <Block height="100%">one</Block>
           <Block>two</Block>
           <Block height={200}>three</Block>
         </Columns>
       </Block>
-      <Columns columns={[2, 1]} space="small">
+      <Columns columns={[2, 1]} space={2}>
         <Block>four</Block>
         <Block>five</Block>
       </Columns>
@@ -145,26 +122,15 @@ export const MultiRow = () => (
 
 export const FullHeight: Story = {
   render: args => (
-    <Box css={{ height: 300, bg: '#adb5bd' }}>
+    <div className="h-[300px] bg-[#adb5bd]">
       <Columns {...args}>
-        <Box
-          css={{ border: '1px solid #495057', bg: '#e9ecef', height: 150 }}
-        />
-        <Box
-          css={{ border: '1px solid #495057', bg: '#e9ecef', height: 150 }}
-        />
-        <Box
-          css={{
-            border: '1px solid #495057',
-            bg: '#e9ecef',
-            height: '100%',
-            p: 8,
-          }}
-        >
+        <div className="h-[150px] border border-[#495057] bg-[#e9ecef]" />
+        <div className="h-[150px] border border-[#495057] bg-[#e9ecef]" />
+        <div className="h-[150px] border border-[#495057] bg-[#e9ecef] p-2">
           I will grow, if you set <code>stretch</code> prop on the{' '}
           <code>Columns</code>!
-        </Box>
+        </div>
       </Columns>
-    </Box>
+    </div>
   ),
 };

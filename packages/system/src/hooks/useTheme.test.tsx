@@ -1,38 +1,23 @@
 import React, { ReactNode } from 'react';
-import { jsx } from '@emotion/react';
-import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
+import { cva } from 'class-variance-authority';
 
 import { ThemeProvider, useTheme } from './useTheme';
 
 // Setup
 // ---------------
+
 const theme = {
-  colors: {
-    primary: 'hotpink',
-    black: '#000',
-  },
-  space: {
-    none: 0,
-    small: 16,
-    medium: 24,
-    large: 32,
-  },
-  text: {
-    body: {
-      fontSize: 1,
-      color: 'black',
-    },
-    heading: {
-      fontSize: 3,
-      color: 'primary',
-    },
-  },
-  button: {
-    __default: {
-      fontSize: 16,
-      border: 'none',
-    },
+  name: 'test',
+  components: {
+    Button: cva('border-none p-1', {
+      variants: {
+        variant: {
+          primary: 'bg-primary-700',
+          secondary: 'bg-secondary-700',
+        },
+      },
+    }),
   },
 };
 
@@ -42,102 +27,16 @@ const wrapper = ({ children }: { children?: ReactNode }) => (
 
 test('returns the theme', () => {
   const { result } = renderHook(() => useTheme(), { wrapper });
-  expect(result.current.theme).toEqual(theme);
+  expect(result.current).toEqual(theme);
 });
 
-test('returns a "css" function', () => {
+test('return classnames from theme', () => {
   const { result } = renderHook(() => useTheme(), { wrapper });
-  expect(result.current.css).toEqual(expect.any(Function));
-});
 
-test('transpile style object to css object', () => {
-  const { result } = renderHook(() => useTheme(), { wrapper });
-  const css = result.current.css;
+  const button = result.current.components!.Button;
 
-  expect(css({ p: 'small' })).toMatchInlineSnapshot(`
-    {
-      "padding": 16,
-    }
-  `);
-  expect(css({ color: 'primary', p: 'large' })).toMatchInlineSnapshot(`
-    {
-      "color": "hotpink",
-      "padding": 32,
-    }
-  `);
-  expect(css({ variant: 'text.body' })).toMatchInlineSnapshot(`
-    {
-      "color": "#000",
-      "fontSize": 14,
-    }
-  `);
-});
-
-test('get value from theme', () => {
-  const { result } = renderHook(() => useTheme(), { wrapper });
-  const get = result.current.get;
-
-  expect(get('colors.primary')).toEqual('hotpink');
-  expect(get('space.small')).toEqual(16);
-  expect(get('button')).toMatchInlineSnapshot(`
-    {
-      "border": "none",
-      "fontSize": 16,
-    }
-  `);
-});
-
-test('themes can be cascaded', () => {
-  const outerTheme = {
-    colors: {
-      primary: 'coral',
-    },
-  };
-
-  const innerTheme = {
-    colors: {
-      primary: 'gainsboro',
-    },
-  };
-
-  const Theme = ({ testId }: { testId: string }) => {
-    const { theme } = useTheme();
-    return <div data-testid={testId}>{JSON.stringify(theme, null, 2)}</div>;
-  };
-
-  render(
-    <ThemeProvider theme={outerTheme}>
-      <>
-        <Theme testId="outer" />
-        <ThemeProvider theme={innerTheme}>
-          <Theme testId="inner" />
-        </ThemeProvider>
-      </>
-    </ThemeProvider>
+  expect(button?.()).toEqual('border-none p-1');
+  expect(button?.({ variant: 'primary' })).toEqual(
+    'border-none p-1 bg-primary-700'
   );
-
-  const outer = screen.getByTestId('outer');
-  const inner = screen.getByTestId('inner');
-
-  expect(outer.innerHTML).toMatchInlineSnapshot(`
-    "{
-      "colors": {
-        "primary": "coral"
-      }
-    }"
-  `);
-  expect(inner.innerHTML).toMatchInlineSnapshot(`
-    "{
-      "colors": {
-        "primary": "gainsboro"
-      }
-    }"
-  `);
-});
-
-test('theme is passed down to emotion', () => {
-  const css = jest.fn().mockReturnValue({});
-  render(<ThemeProvider theme={theme}>{jsx('div', { css })}</ThemeProvider>);
-
-  expect(css).toHaveBeenCalledWith(theme);
 });

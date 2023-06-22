@@ -3,10 +3,21 @@ import React from 'react';
 import { OverlayProvider } from '@react-aria/overlays';
 import { useObjectRef } from '@react-aria/utils';
 import { useOverlayTriggerState } from '@react-stately/overlays';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { forwardRef } from 'react';
 import { Popover } from './Popover';
+import { Theme } from '@marigold/system';
 
+import { cva } from 'class-variance-authority';
+
+import { setup } from '../test.utils';
+
+const theme: Theme = {
+  name: 'test',
+  components: {
+    Underlay: cva(),
+  },
+};
 interface TestPopoverProps {
   open: boolean;
 }
@@ -24,6 +35,8 @@ const TestPopover = forwardRef<HTMLDivElement, TestPopoverProps>(
     );
   }
 );
+
+const { render } = setup({ theme });
 
 test('renders open popover', () => {
   render(<TestPopover open={true} />);

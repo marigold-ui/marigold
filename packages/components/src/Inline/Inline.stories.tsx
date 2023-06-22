@@ -1,7 +1,5 @@
 import React, { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Box } from '@marigold/system';
-import { shadow } from '@marigold/tokens';
 
 import { Inline } from './Inline';
 
@@ -11,18 +9,9 @@ const meta = {
   argTypes: {
     space: {
       control: {
-        type: 'select',
+        type: 'text',
       },
-      options: [
-        'none',
-        'xxsmall',
-        'xsmall',
-        'small',
-        'medium',
-        'large',
-        'xlarge',
-        'xxlarge',
-      ],
+
       description: 'Responsive Style Value',
     },
     alignX: {
@@ -46,19 +35,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const Block = ({ children }: { children: ReactNode }) => (
-  <Box
-    css={{
-      border: '1px solid #364fc7',
-      borderRadius: 16,
-      bg: '#4263eb',
-      color: '#edf2ff',
-      px: 32,
-      py: 12,
-      boxShadow: shadow['medium-1'],
-    }}
-  >
+  <div className="rounded border border-solid border-[#364fc7] bg-[#4263eb] px-8 py-3 text-[#edf2ff] shadow-md">
     {children}
-  </Box>
+  </div>
 );
 
 export const Basic: Story = {

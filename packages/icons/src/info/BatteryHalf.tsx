@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { SVG, SVGProps } from '@marigold/system';
 
-export const BatteryHalf = forwardRef<SVGElement, SVGProps>((props, ref) => (
+export const BatteryHalf = forwardRef<SVGSVGElement, SVGProps>((props, ref) => (
   <SVG {...props} viewBox="0 0 10 20" ref={ref}>
     <path
       fill="currentColor"

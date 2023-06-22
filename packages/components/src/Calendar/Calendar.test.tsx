@@ -1,10 +1,12 @@
 /* eslint-disable testing-library/no-node-access */
+import React from 'react';
+import { Theme } from '@marigold/system';
 import { Calendar } from '../';
 import { CalendarDate } from '@internationalized/date';
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { screen, fireEvent, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
-import React from 'react';
+import { cva } from 'class-variance-authority';
+import { setup } from '../test.utils';
 
 const keyCodes = {
   Enter: 13,
@@ -18,6 +20,28 @@ const keyCodes = {
   ArrowRight: 39,
   ArrowDown: 40,
 };
+
+const theme: Theme = {
+  name: 'Calendar Test',
+  components: {
+    Calendar: {
+      calendar: cva(' disabled:text-calendar-disabled bg-white'),
+      calendarCell: cva([
+        ' disabled:text-calendar-disabled',
+        'data-[hover]:bg-calendar-background',
+        'group-aria-selected/cell:bg-calendar-calendarCell-selected outline-none group-aria-selected/cell:font-semibold group-aria-selected/cell:text-white',
+      ]),
+      calendarControllers: cva(),
+    },
+    Select: cva() as any,
+    ListBox: cva() as any,
+    Field: cva(),
+    Button: cva(),
+    Underlay: cva(),
+  },
+};
+
+const { render } = setup({ theme });
 
 describe('Calendar', () => {
   beforeAll(() => {
@@ -291,5 +315,21 @@ describe('Calendar', () => {
     await user.click(nineteen);
     expect(yearButton).toHaveTextContent('2019');
     await user.click(monthButton);
+  });
+  test('supports disabled styles for calenar button', () => {
+    render(<Calendar value={new CalendarDate(2019, 6, 5)} disabled />);
+    const cellButton = screen.getByText('17');
+    expect(cellButton.className).toMatchInlineSnapshot(
+      `"flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full p-[5.3px] text-sm font-normal aria-disabled:cursor-default disabled:text-calendar-disabled data-[hover]:bg-calendar-background group-aria-selected/cell:bg-calendar-calendarCell-selected outline-none group-aria-selected/cell:font-semibold group-aria-selected/cell:text-white"`
+    );
+  });
+
+  test('supports styles for focus cell button', async () => {
+    render(<Calendar value={new CalendarDate(2019, 6, 5)} disabled />);
+    const cellButton = screen.getByText('17');
+    await user.click(cellButton);
+    expect(cellButton).toHaveClass(
+      'group-aria-selected/cell:font-semibold group-aria-selected/cell:bg-calendar-calendarCell-selected group-aria-selected/cell:text-white'
+    );
   });
 });

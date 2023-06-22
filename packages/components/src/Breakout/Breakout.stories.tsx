@@ -2,7 +2,6 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Aspect } from '../Aspect';
-import { Box } from '../Box';
 import { Container } from '../Container';
 import { Image } from '../Image';
 import { Text } from '../Text';
@@ -13,24 +12,25 @@ const meta = {
   title: 'Components/Breakout',
   component: Breakout,
   argTypes: {
-    alignY: {
+    alignX: {
       control: {
         type: 'select',
       },
-      options: ['top', 'center', 'bottom'],
-      description: 'vertical alignment',
+      options: ['left', 'center', 'right'],
+
+      description: 'horizontal alignment',
       table: {
         defaultValue: {
           summary: 'top',
         },
       },
     },
-    alignX: {
+    alignY: {
       control: {
         type: 'select',
       },
-      options: ['left', 'center', 'right'],
-      description: 'horizontal alignment',
+      options: ['top', 'center', 'bottom'],
+      description: 'vertical alignment',
       table: {
         defaultValue: {
           summary: 'left',
@@ -57,25 +57,11 @@ export const Basic: Story = {
   render: args => {
     return (
       <Container align="center">
-        <Box
-          css={{
-            border: '1px solid #ced4da',
-            bg: '#e9ecef',
-            height: '80px',
-            width: '100%',
-          }}
-        />
+        <div className="h-[80px] w-full border border-[#ced4da]" />
         <Breakout {...args}>
-          <Text>Breakout</Text>
+          <p>Breakout</p>
         </Breakout>
-        <Box
-          css={{
-            border: '1px solid #ced4da',
-            bg: '#e9ecef',
-            height: '80px',
-            width: '100%',
-          }}
-        />
+        <div className="h-[80px] w-full border border-[#ced4da]" />
       </Container>
     );
   },
@@ -96,15 +82,9 @@ export const ExampleText: Story = {
         of Lorem Ipsum.
       </Text>
       <Breakout {...args}>
-        <Box
-          css={{
-            border: '1px solid #ced4da',
-            bg: '#e9ecef',
-            height: '100px',
-          }}
-        >
+        <div className="h-[100px] border border-[#ced4da]">
           BREAKOUT element inside a container
-        </Box>
+        </div>
       </Breakout>
       <Text>
         Lorem Ipsum is simply dummy text of the printing and typesetting

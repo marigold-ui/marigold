@@ -22,34 +22,31 @@ const meta = {
       control: {
         type: 'select',
       },
-      options: [
-        '',
-        'contain',
-        'cover',
-        'fill',
-        'none',
-        'scale-down',
-        'inherit',
-        'initial',
-        'revert',
-        'revert-layer',
-        'unset',
-      ],
+      options: ['none', 'contain', 'cover', 'fill', 'scaleDown'],
       description: 'object fit value',
       table: {
         type: { summary: 'select' },
-        defaultValue: { summary: 'contain' },
+        defaultValue: { summary: 'none' },
       },
     },
     position: {
       control: {
-        type: 'text',
+        type: 'select',
       },
+      options: [
+        'none',
+        'bottom',
+        'center',
+        'right',
+        'rightBottom',
+        'rightTop',
+        'left',
+        'leftBottom',
+        'leftTop',
+        'top',
+      ],
       description: 'object position value',
     },
-  },
-  args: {
-    fit: 'contain',
   },
 } satisfies Meta;
 

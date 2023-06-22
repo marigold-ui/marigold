@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { SVG, SVGProps } from '@marigold/system';
 
-export const Wifi = forwardRef<SVGElement, SVGProps>((props, ref) => (
+export const Wifi = forwardRef<SVGSVGElement, SVGProps>((props, ref) => (
   <SVG {...props} viewBox="0 0 22 16" ref={ref}>
     <path
       fill="currentColor"

@@ -49,5 +49,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <Headline {...args}>This is a Headline!!</Headline>,
+  render: args => (
+    <Headline color="red-300" {...args}>
+      This is a Headline!!
+    </Headline>
+  ),
 };

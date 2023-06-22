@@ -23,3 +23,6 @@ out
 ## env
 local.env
 .env.local
+
+# remove this afterwards
+examples

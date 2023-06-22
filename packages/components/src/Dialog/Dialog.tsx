@@ -3,12 +3,7 @@ import { useButton } from '@react-aria/button';
 import { useDialog } from '@react-aria/dialog';
 import type { AriaDialogProps } from '@react-types/dialog';
 
-import {
-  Box,
-  CSSObject,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-} from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 
 import { Header } from '../Header';
 import { Headline } from '../Headline';
@@ -19,10 +14,10 @@ import { DialogController } from './DialogController';
 // Close Button
 // ---------------
 interface CloseButtonProps {
-  css?: CSSObject;
+  className?: string;
 }
 
-const CloseButton = ({ css }: CloseButtonProps) => {
+const CloseButton = ({ className }: CloseButtonProps) => {
   const ref = useRef<HTMLButtonElement>(null);
   const { close } = useDialogContext();
 
@@ -34,19 +29,12 @@ const CloseButton = ({ css }: CloseButtonProps) => {
   );
 
   return (
-    <Box css={{ display: 'flex', justifyContent: 'flex-end' }}>
-      <Box
-        as="button"
-        __baseCSS={{
-          outline: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          height: 16,
-          width: 16,
-          lineHeight: 1,
-          p: 0,
-        }}
-        css={css}
+    <div className="flex justify-end">
+      <button
+        className={cn(
+          'h-4 w-4 cursor-pointer border-none p-0 leading-normal outline-0',
+          className
+        )}
         ref={ref}
         {...buttonProps}
       >
@@ -57,8 +45,8 @@ const CloseButton = ({ css }: CloseButtonProps) => {
             d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
           />
         </svg>
-      </Box>
-    </Box>
+      </button>
+    </div>
   );
 };
 
@@ -95,11 +83,6 @@ const addTitleProps = (
   return childs;
 };
 
-// Theme Extension
-// ---------------
-export interface DialogThemeExtension
-  extends ThemeExtensionsWithParts<'Dialog', ['container', 'closeButton']> {}
-
 // Props
 // ---------------
 export interface DialogChildProps {
@@ -127,21 +110,17 @@ export const Dialog = ({
   const { close } = useDialogContext();
   const { dialogProps, titleProps } = useDialog(props, ref);
 
-  const styles = useComponentStyles(
-    'Dialog',
-    { variant, size },
-    { parts: ['container', 'closeButton'] }
-  );
+  const classNames = useClassNames({ component: 'Dialog', variant, size });
 
   return (
-    <Box __baseCSS={{ bg: '#fff' }} css={styles.container} {...dialogProps}>
-      {closeButton && <CloseButton css={styles.closeButton} />}
+    <div className={classNames.container} {...dialogProps}>
+      {closeButton && <CloseButton className={classNames.closeButton} />}
       {typeof children === 'function'
         ? children({ close, titleProps })
         : props['aria-labelledby']
         ? children
         : addTitleProps(children, titleProps)}
-    </Box>
+    </div>
   );
 };
 

@@ -3,7 +3,7 @@ import { useRadioGroup } from '@react-aria/radio';
 import { useRadioGroupState } from '@react-stately/radio';
 import { AriaRadioGroupProps } from '@react-types/radio';
 
-import { Box, useStateProps } from '@marigold/system';
+import { cn, useStateProps } from '@marigold/system';
 
 import { RadioGroupContext } from './Context';
 import { FieldBase } from '../FieldBase';
@@ -51,6 +51,7 @@ export const RadioGroup = ({
     disabled,
     readOnly,
     error,
+    required,
   });
 
   return (
@@ -65,23 +66,22 @@ export const RadioGroup = ({
       errorMessageProps={errorMessageProps}
       disabled={disabled}
       stateProps={stateProps}
-      required={required}
       {...radioGroupProps}
     >
-      <Box
+      <div
         role="presentation"
         data-orientation={orientation}
-        __baseCSS={{
-          display: 'flex',
-          flexDirection: orientation === 'vertical' ? 'column' : 'row',
-          alignItems: 'start',
-          gap: orientation === 'vertical' ? '0.5ch' : '1.5ch',
-        }}
+        className={cn(
+          'flex items-start',
+          orientation === 'vertical'
+            ? 'flex-col gap-[0.5ch]'
+            : 'flex-row gap-[1.5ch]'
+        )}
       >
         <RadioGroupContext.Provider value={{ width, error, state }}>
           {children}
         </RadioGroupContext.Provider>
-      </Box>
+      </div>
     </FieldBase>
   );
 };

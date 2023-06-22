@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react';
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { SortDescriptor } from '@react-types/shared';
 
+import { useState } from '@storybook/addons';
 import { Button } from '../Button';
 import { Checkbox } from '../Checkbox';
 import { Stack } from '../Stack';
@@ -130,10 +131,10 @@ export const ControlledTable: Story = {
         year: '1981',
       },
     ];
-    const [selectedKeys, setSelectedKeys] = React.useState(new Set());
+    const [selectedKeys, setSelectedKeys] = useState(new Set());
     const selected = Array.from(selectedKeys);
     return (
-      <Stack space="small">
+      <Stack space={3}>
         <Table
           aria-label="Example dynamic collection table"
           selectionMode="multiple"
@@ -201,71 +202,70 @@ export const NestedColumns: Story = {
   ),
 };
 
-const data = [
-  {
-    name: 'Luke Skywalker',
-    height: '172',
-    mass: '77',
-    birth_year: '19BBY',
-  },
-  {
-    name: 'C-3PO',
-    height: '167',
-    mass: '75',
-    birth_year: '112BBY',
-  },
-  {
-    name: 'R2-D2',
-    height: '96',
-    mass: '32',
-    birth_year: '33BBY',
-  },
-  {
-    name: 'Darth Vader',
-    height: '202',
-    mass: '136',
-    birth_year: '41.9BBY',
-  },
-  {
-    name: 'Leia Organa',
-    height: '150',
-    mass: '49',
-    birth_year: '19BBY',
-  },
-  {
-    name: 'Owen Lars',
-    height: '178',
-    mass: '120',
-    birth_year: '52BBY',
-  },
-  {
-    name: 'Beru Whitesun lars',
-    height: '165',
-    mass: '75',
-    birth_year: '47BBY',
-  },
-  {
-    name: 'R5-D4',
-    height: '97',
-    mass: '32',
-    birth_year: 'unknown',
-  },
-  {
-    name: 'Biggs Darklighter',
-    height: '183',
-    mass: '84',
-    birth_year: '24BBY',
-  },
-  {
-    name: 'Obi-Wan Kenobi',
-    height: '182',
-    mass: '77',
-    birth_year: '57BBY',
-  },
-];
-
 export const Sorting: Story = {
   render: () => {
+    const data = [
+      {
+        name: 'Luke Skywalker',
+        height: '172',
+        mass: '77',
+        birth_year: '19BBY',
+      },
+      {
+        name: 'C-3PO',
+        height: '167',
+        mass: '75',
+        birth_year: '112BBY',
+      },
+      {
+        name: 'R2-D2',
+        height: '96',
+        mass: '32',
+        birth_year: '33BBY',
+      },
+      {
+        name: 'Darth Vader',
+        height: '202',
+        mass: '136',
+        birth_year: '41.9BBY',
+      },
+      {
+        name: 'Leia Organa',
+        height: '150',
+        mass: '49',
+        birth_year: '19BBY',
+      },
+      {
+        name: 'Owen Lars',
+        height: '178',
+        mass: '120',
+        birth_year: '52BBY',
+      },
+      {
+        name: 'Beru Whitesun lars',
+        height: '165',
+        mass: '75',
+        birth_year: '47BBY',
+      },
+      {
+        name: 'R5-D4',
+        height: '97',
+        mass: '32',
+        birth_year: 'unknown',
+      },
+      {
+        name: 'Biggs Darklighter',
+        height: '183',
+        mass: '84',
+        birth_year: '24BBY',
+      },
+      {
+        name: 'Obi-Wan Kenobi',
+        height: '182',
+        mass: '77',
+        birth_year: '57BBY',
+      },
+    ];
     const [list, setList] = useState(data);
     const [descriptor, setDescriptor] = useState<SortDescriptor>({});
     const sort = ({ column, direction }: SortDescriptor) => {

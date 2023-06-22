@@ -1,29 +1,22 @@
 import React, { ReactNode } from 'react';
-import {
-  ThemeComponentProps,
-  ThemeExtension,
-  useComponentStyles,
-} from '@marigold/system';
-import { Box } from '../Box';
+import { useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
-
-// Theme Extension
-// ---------------
-export interface FooterThemeExtension extends ThemeExtension<'Footer'> {}
 
 // Props
 // ---------------
-export interface FooterProps extends ThemeComponentProps, HtmlProps<'footer'> {
+export interface FooterProps extends HtmlProps<'footer'> {
   children?: ReactNode;
+  variant?: string;
+  size?: string;
 }
 
 // Component
 // ---------------
 export const Footer = ({ children, variant, size, ...props }: FooterProps) => {
-  const styles = useComponentStyles('Footer', { variant, size });
+  const classNames = useClassNames({ component: 'Footer', variant, size });
   return (
-    <Box as="footer" {...props} css={styles}>
+    <footer {...props} className={classNames}>
       {children}
-    </Box>
+    </footer>
   );
 };

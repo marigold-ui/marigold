@@ -6,21 +6,10 @@ import { useToggleState } from '@react-stately/toggle';
 import { AriaSwitchProps } from '@react-types/switch';
 
 import { HtmlProps } from '@marigold/types';
-import {
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-  useStateProps,
-} from '@marigold/system';
-
-import { Box } from '../Box';
+import { cn, createVar, useStateProps, useClassNames } from '@marigold/system';
 
 // Theme Extension
 // ---------------
-export interface SwitchThemeExtension
-  extends ThemeExtensionsWithParts<
-    'Switch',
-    ['container', 'label', 'track', 'thumb']
-  > {}
 
 // Props
 // ---------------
@@ -72,86 +61,47 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
     const { inputProps } = useSwitch(props, state, inputRef);
     const { isFocusVisible, focusProps } = useFocusRing();
     const stateProps = useStateProps({
-      checked: state.isSelected,
+      selected: state.isSelected,
       disabled: disabled,
       readOnly: readOnly,
       focus: isFocusVisible,
     });
-
-    const styles = useComponentStyles(
-      'Switch',
-      { variant, size },
-      { parts: ['container', 'label', 'track', 'thumb'] }
-    );
-
+    const classNames = useClassNames({ component: 'Switch', size, variant });
     return (
-      <Box
-        as="label"
-        __baseCSS={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '1ch',
-          position: 'relative',
-          width,
-        }}
-        css={styles.container}
+      <label
+        className={cn(
+          'group/switch',
+          'w-[var(--switchWidth)]',
+          'relative flex items-center justify-between gap-[1ch]'
+        )}
+        style={createVar({ switchWidth: width })}
+        {...stateProps}
       >
-        <Box
-          as="input"
+        <input
           ref={inputRef}
-          css={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            top: 0,
-            left: 0,
-            zIndex: 1,
-            opacity: 0.0001,
-            cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
-          }}
+          className="absolute left-0 top-0 z-[1] h-full w-full cursor-pointer opacity-[0.0001] disabled:cursor-not-allowed"
           {...inputProps}
           {...focusProps}
         />
-        {props.children && <Box css={styles.label}>{props.children}</Box>}
-        <Box
-          __baseCSS={{
-            position: 'relative',
-            width: 48,
-            height: 24,
-            bg: '#dee2e6',
-            borderRadius: 20,
-            flex: '0 0 48px',
-          }}
-          css={styles.track}
-          {...stateProps}
+        {props.children && <>{props.children}</>}
+        <div
+          className={cn(
+            'relative h-6 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl',
+            classNames.track
+          )}
         >
-          <Box
-            __baseCSS={{
-              display: 'block',
-              position: 'absolute',
-              top: 1,
-              left: 0,
-
-              willChange: 'transform',
-              transform: 'translateX(1px)',
-              transition: 'all 0.1s cubic-bezier(.7, 0, .3, 1)',
-
-              height: 22,
-              width: 22,
-
-              borderRadius: 9999,
-              bg: '#fff',
-
-              '&:checked': {
-                transform: 'translateX(calc(47px - 100%))',
-              },
-            }}
-            css={styles.thumb}
-            {...stateProps}
+          <div
+            className={cn(
+              'h-[22px] w-[22px]',
+              'cubic-bezier(.7,0,.3,1)',
+              'absolute left-0 top-px',
+              'block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform',
+              'group-selected/switch:translate-x-[calc(47px_-_100%)]',
+              classNames.thumb
+            )}
           />
-        </Box>
-      </Box>
+        </div>
+      </label>
     );
   }
 );

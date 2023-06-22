@@ -5,17 +5,8 @@ import { useHover } from '@react-aria/interactions';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import { FocusableDOMProps, PressEvents } from '@react-types/shared';
 
-import {
-  Box,
-  ThemeExtension,
-  useComponentStyles,
-  useStateProps,
-} from '@marigold/system';
+import { cn, useClassNames, useStateProps } from '@marigold/system';
 import { HtmlProps, PolymorphicComponent, PropsOf } from '@marigold/types';
-
-// Theme Extension
-// ---------------
-export interface ButtonThemeExtension extends ThemeExtension<'Button'> {}
 
 // Props
 // ---------------
@@ -49,10 +40,12 @@ export const Button = forwardRef(
       onPressUp,
       fullWidth,
       excludeFromTabOrder,
+      className,
       ...props
     },
     ref
   ) => {
+    const Component = as;
     const buttonRef = useObjectRef<HTMLButtonElement>(ref as any);
     const { hoverProps, isHovered } = useHover({ isDisabled: disabled });
     const { isFocusVisible, focusProps } = useFocusRing({
@@ -78,7 +71,13 @@ export const Button = forwardRef(
       buttonRef
     );
 
-    const styles = useComponentStyles('Button', { variant, size });
+    const classNames = useClassNames({
+      component: 'Button',
+      variant,
+      size,
+      className,
+    });
+
     const stateProps = useStateProps({
       active: isPressed,
       focusVisible: isFocusVisible,
@@ -86,26 +85,14 @@ export const Button = forwardRef(
     });
 
     return (
-      <Box
+      <Component
         {...mergeProps(buttonProps, focusProps, hoverProps, props)}
         {...stateProps}
-        as={as}
         ref={buttonRef}
-        __baseCSS={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '0.5ch',
-          cursor: disabled ? 'not-allowed' : 'pointer',
-          width: fullWidth ? '100%' : undefined,
-          '&:focus': {
-            outline: 0,
-          },
-        }}
-        css={styles}
+        className={cn(classNames, fullWidth ? 'w-full' : undefined)}
       >
         {children}
-      </Box>
+      </Component>
     );
   }
 ) as PolymorphicComponent<'button', ButtonOwnProps>;

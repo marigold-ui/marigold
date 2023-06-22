@@ -1,37 +1,23 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider } from '@marigold/system';
 
+import { cva } from 'class-variance-authority';
 import { Text } from './Text';
 
-const theme = {
+const theme: Theme = {
+  name: 'test',
   colors: {
-    primary: 'hotpink',
-    black: '#000',
-    white: '#FFF',
-    blue: '#2980b9',
+    emerald: 'rgb(5 150 105);',
   },
-  fontSizes: {
-    body: '1rem',
-    medium: '1.25rem',
-  },
-  fontWeights: {
-    light: 100,
-    bold: 700,
-  },
-
   components: {
-    Text: {
-      base: {
-        fontFamily: 'Oswald Regular',
-      },
-      variant: {
-        one: {
-          fontFamily: 'Arial',
-          color: 'blue',
+    Text: cva("font-['Oswald_Regular']", {
+      variants: {
+        variant: {
+          one: 'font-["Arial]"',
         },
       },
-    },
+    }),
   },
 };
 
@@ -42,8 +28,7 @@ test('uses base as default variant', () => {
     </ThemeProvider>
   );
   const text = screen.getByText(/text/);
-
-  expect(text).toHaveStyle(`font-family: Oswald Regular`);
+  expect(text).toHaveClass(`font-['Oswald_Regular']`);
 });
 
 test('uses theme styles', () => {
@@ -54,8 +39,9 @@ test('uses theme styles', () => {
   );
   const text = screen.getByText(/text/);
 
-  expect(text).toHaveStyle(`font-family: Arial`);
-  expect(text).toHaveStyle(`color: ${theme.colors.blue}`);
+  expect(text.className).toMatchInlineSnapshot(
+    `"font-["Arial]" text-[--color] outline-[--outline] not-italic cursor-default font-normal text-[13px]"`
+  );
 });
 
 test('renders a <p> element by default', () => {
@@ -69,41 +55,34 @@ test('renders a <p> element by default', () => {
   expect(text instanceof HTMLParagraphElement).toBeTruthy();
 });
 
-test.each([
-  [{ color: 'primary' }, `color: ${theme.colors.primary}`],
-  [{ color: 'blue' }, `color: ${theme.colors.blue}`],
-  [{ align: 'center' }, 'text-align: center'],
-  [{ cursor: 'pointer' }, 'cursor: pointer'],
-  [{ outline: 'dashed red' }, 'outline: dashed red'],
-  [{ fontSize: 'body' }, `font-size: ${theme.fontSizes.body}`],
-  [{ fontSize: 'medium' }, `font-size: ${theme.fontSizes.medium}`],
-  [{ fontWeight: 'light' }, `font-size: ${theme.fontWeights.light}`],
-  [{ fontWeight: 'bold' }, `font-size: ${theme.fontWeights.bold}`],
-])('test style prop %o', (...args) => {
-  const props = args.shift();
-
-  render(
-    <ThemeProvider theme={theme}>
-      <Text {...(props as any)}>This is the Text!</Text>
-    </ThemeProvider>
-  );
-
-  const box = screen.getByText('This is the Text!');
-  args.forEach((style: any) => {
-    expect(box).toHaveStyle(style);
-  });
-});
-
 test('style props override theme styles', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Text variant="one" color="primary">
+      <Text variant="one" color="red-700">
         text
       </Text>
     </ThemeProvider>
   );
   const text = screen.getByText(/text/);
 
-  expect(text).toHaveStyle(`font-family: Arial`);
-  expect(text).toHaveStyle(`color: ${theme.colors.primary}`);
+  expect(text.className).toMatchInlineSnapshot(
+    `"font-["Arial]" text-[--color] outline-[--outline] not-italic cursor-default font-normal text-[13px]"`
+  );
+});
+
+test('get theme color', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Text data-testid="text" color="emerald" />
+    </ThemeProvider>
+  );
+
+  const text = screen.getByTestId('text');
+  expect(text).toMatchInlineSnapshot(`
+    <p
+      class="font-['Oswald_Regular'] text-[--color] outline-[--outline] not-italic cursor-default font-normal text-[13px]"
+      data-testid="text"
+      style="--color: rgb(5 150 105);;"
+    />
+  `);
 });

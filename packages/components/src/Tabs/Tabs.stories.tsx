@@ -24,11 +24,6 @@ const meta = {
       description:
         'Select whether tabs are activated automatically on focus or manually.',
     },
-    gap: {
-      defaultValue: 1,
-      control: { type: 'number' },
-      description: 'the space between the tabs',
-    },
   },
 } satisfies Meta<typeof Tabs>;
 

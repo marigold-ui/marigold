@@ -14,10 +14,8 @@ import type { AriaSelectProps } from '@react-types/select';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 
 import {
-  Box,
-  CSSObject,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
+  cn,
+  useClassNames,
   useResponsiveValue,
   useStateProps,
 } from '@marigold/system';
@@ -31,26 +29,22 @@ import { Popover, Tray } from '../Overlay';
 // Select Icon
 // ---------------
 interface ChevronProps {
-  css: CSSObject;
+  className: string;
 }
 
-const Chevron = ({ css }: ChevronProps) => (
-  <Box
-    as="svg"
-    __baseCSS={{ width: 16, height: 16, fill: 'none' }}
-    css={css}
+const Chevron = ({ className }: ChevronProps) => (
+  <svg
+    className={className}
+    width={16}
+    height={16}
     viewBox="0 0 24 24"
+    fill="none"
     stroke="currentColor"
     strokeWidth={2}
   >
     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-  </Box>
+  </svg>
 );
-
-// Theme Extension
-// ---------------
-export interface SelectThemeExtension
-  extends ThemeExtensionsWithParts<'Select', ['container', 'button', 'icon']> {}
 
 // Props
 // ---------------
@@ -116,12 +110,10 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       ...rest,
     } as const;
 
-    const state = useSelectState(props);
     const buttonRef = useObjectRef(ref);
     const listboxRef = useRef(null);
 
-    const isSmallScreen = useResponsiveValue([true, false, false], 2);
-
+    const state = useSelectState(props);
     const {
       labelProps,
       triggerProps,
@@ -137,16 +129,14 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     );
     const { focusProps, isFocusVisible } = useFocusRing();
 
-    const styles = useComponentStyles(
-      'Select',
-      { variant, size },
-      { parts: ['container', 'button', 'icon'] }
-    );
+    const classNames = useClassNames({ component: 'Select', variant, size });
+    const isSmallScreen = useResponsiveValue([true, false, false], 2);
     const stateProps = useStateProps({
       disabled,
       error,
       focusVisible: isFocusVisible,
       expanded: state.isOpen,
+      required,
     });
 
     return (
@@ -163,7 +153,6 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         errorMessageProps={errorMessageProps}
         stateProps={stateProps}
         disabled={disabled}
-        required={required}
       >
         <HiddenSelect
           state={state}
@@ -172,33 +161,22 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           name={props.name}
           isDisabled={disabled}
         />
-        <Box
-          as="button"
-          __baseCSS={{
-            display: 'flex',
-            position: 'relative',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-          }}
-          css={styles.button}
+        <button
+          className={cn(
+            'flex w-full items-center justify-between gap-1',
+            classNames.select
+          )}
           ref={buttonRef}
           {...mergeProps(buttonProps, focusProps)}
           {...stateProps}
         >
-          <Box
-            css={{
-              overflow: 'hidden',
-              whiteSpace: 'nowrap',
-            }}
-            {...valueProps}
-          >
+          <div className="overflow-hidden whitespace-nowrap" {...valueProps}>
             {state.selectedItem
               ? state.selectedItem.rendered
               : props.placeholder}
-          </Box>
-          <Chevron css={styles.icon} />
-        </Box>
+          </div>
+          <Chevron className={classNames.icon} />
+        </button>
         {isSmallScreen ? (
           <Tray state={state}>
             <ListBox

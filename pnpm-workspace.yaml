@@ -1,5 +1,4 @@
 packages:
   - config/*
-  - docs
   - packages/*
   - themes/*

@@ -1,25 +1,59 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { screen } from '@testing-library/react';
+import { Theme } from '@marigold/system';
 
 import { ComboBox } from './ComboBox';
 import userEvent from '@testing-library/user-event';
+import { setup } from '../test.utils';
+
+import { cva } from 'class-variance-authority';
 
 const user = userEvent.setup();
 
-const theme = {
-  colors: {
-    blue: '#0ea5e9',
-    teal: '#5eead4',
-  },
-  fontSizes: {
-    'small-1': 12,
-  },
-  sizes: {
-    none: 0,
-    large: 200,
+const theme: Theme = {
+  name: 'test',
+  components: {
+    Button: cva(),
+    Field: cva(),
+    Label: {
+      container: cva('text-teal-300', {
+        variants: {
+          size: {
+            small: 'p-2',
+          },
+        },
+      }),
+      indicator: cva(),
+    },
+    HelpText: {
+      container: cva('', {
+        variants: {
+          variant: {
+            one: 'text-blue-900',
+          },
+          size: {
+            small: 'p-2',
+          },
+        },
+      }),
+      icon: cva(),
+    },
+    Input: {
+      input: cva(),
+      icon: cva(),
+      action: cva('p-0'),
+    },
+    ListBox: {
+      container: cva(),
+      list: cva(),
+      option: cva(),
+      section: cva(),
+      sectionTitle: cva(),
+    },
   },
 };
+
+const { render } = setup({ theme });
 
 test('renders an input', () => {
   render(
@@ -37,38 +71,51 @@ test('renders an input', () => {
   expect(textField instanceof HTMLInputElement).toBeTruthy();
 });
 
-test('takes full width by default', () => {
+test('supports width classname', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <ComboBox label="Label" data-testid="input-field">
-        <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-        <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
-        <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
-        <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
-      </ComboBox>
-    </ThemeProvider>
+    <ComboBox label="Label" data-testid="input-field">
+      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
+      <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
+    </ComboBox>
   );
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle('width: 100%');
+  expect(container?.className).toMatchInlineSnapshot(
+    `"group/field w-[--fieldWidth]"`
+  );
 });
 
-test('allows to set custom width', () => {
+test('supports classnames', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <ComboBox label="Label" data-testid="input-field" width="large">
-        <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-        <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
-        <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
-        <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
-      </ComboBox>
-    </ThemeProvider>
+    <ComboBox
+      label="Label"
+      data-testid="input-field"
+      variant="one"
+      size="small"
+    >
+      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
+      <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
+    </ComboBox>
   );
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
+  const label = screen.getByText('Label');
+  const button = screen.getByRole('button');
+  expect(button.className).toMatchInlineSnapshot(
+    `"absolute right-1 h-4 w-4 border-none bg-transparent p-0"`
+  );
+  expect(container?.className).toMatchInlineSnapshot(
+    `"group/field w-[--fieldWidth]"`
+  );
+  expect(label.className).toMatchInlineSnapshot(
+    `"text-teal-300 flex w-[var(--labelWidth)]"`
+  );
 });
 
 test('supports disabled', () => {

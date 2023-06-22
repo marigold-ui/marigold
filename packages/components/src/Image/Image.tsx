@@ -1,19 +1,22 @@
 import React from 'react';
 import { HtmlProps } from '@marigold/types';
-import { Box, CSSObject } from '@marigold/system';
-import { ThemeExtension, useComponentStyles } from '@marigold/system';
-
-// Theme Extension
-// ---------------
-export interface ImageThemeExtension extends ThemeExtension<'Image'> {}
+import {
+  cn,
+  useClassNames,
+  ObjectFitProp,
+  objectFit,
+  ObjectPositionProp,
+  objectPosition,
+} from '@marigold/system';
 
 // Props
 // ---------------
-export interface ImageProps extends HtmlProps<'img'> {
+export interface ImageProps
+  extends HtmlProps<'img'>,
+    ObjectFitProp,
+    ObjectPositionProp {
   variant?: string;
   size?: string;
-  fit?: CSSObject['objectFit'];
-  position?: CSSObject['objectPosition'];
   children?: never;
   alt: string;
 }
@@ -23,22 +26,22 @@ export interface ImageProps extends HtmlProps<'img'> {
 export const Image = ({
   variant,
   size,
-  fit,
-  position,
+  fit = 'none',
+  position = 'none',
   ...props
 }: ImageProps) => {
-  const styles = useComponentStyles('Image', { variant, size });
-  const css: CSSObject = {
-    ...styles,
-    objectFit: fit,
-    objectPosition: position,
-  };
+  const classNames = useClassNames({ component: 'Image', variant, size });
+
   return (
-    <Box
+    <img
       {...props}
-      as="img"
-      __baseCSS={fit ? { width: ' 100%', height: '100%' } : {}}
-      css={css}
+      alt={props.alt}
+      className={cn(
+        fit !== 'none' && 'h-full w-full',
+        classNames,
+        objectFit[fit],
+        objectPosition[position]
+      )}
     />
   );
 };

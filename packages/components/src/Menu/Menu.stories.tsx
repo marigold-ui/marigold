@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react';
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-
+import { useState } from '@storybook/addons';
 import { Button } from '../Button';
 import { Menu } from './Menu';
 import { ActionMenu } from './ActionMenu';
@@ -63,9 +63,11 @@ export const MenuOnly: Story = {
   render: () => (
     <Menu aria-label="Only a Menu">
       <Menu.Item key="burger">🍔 Burger</Menu.Item>
-      <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-      <Menu.Item key="salad">🥗 Salad</Menu.Item>
-      <Menu.Item key="fries">🍟 Fries</Menu.Item>
+      <Menu.Section title="Fruits">
+        <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+        <Menu.Item key="salad">🥗 Salad</Menu.Item>
+        <Menu.Item key="fries">🍟 Fries</Menu.Item>
+      </Menu.Section>
     </Menu>
   ),
 };

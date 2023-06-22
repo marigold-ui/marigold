@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react';
+import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { Select } from './Select';
 import { Container } from '../Container';
+
+import { useState } from '@storybook/addons';
 
 const meta = {
   title: 'Components/Select',

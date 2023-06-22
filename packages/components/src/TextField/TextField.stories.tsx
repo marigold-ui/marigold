@@ -107,7 +107,6 @@ const meta = {
   args: {
     label: 'Label',
     description: 'This is a help text description',
-    error: false,
     errorMessage: 'Something went wrong',
     type: 'text',
   },

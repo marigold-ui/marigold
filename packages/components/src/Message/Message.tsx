@@ -1,16 +1,6 @@
 import React, { ReactNode } from 'react';
-import { ThemeExtensionsWithParts, useComponentStyles } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
-
-import { Box } from '../Box';
-
-// Theme Extension
-// ---------------
-export interface MessageThemeExtension
-  extends ThemeExtensionsWithParts<
-    'Message',
-    ['container', 'icon', 'title', 'content']
-  > {}
 
 // Props
 // ---------------
@@ -29,14 +19,7 @@ export const Message = ({
   children,
   ...props
 }: MessageProps) => {
-  const styles = useComponentStyles(
-    'Message',
-    {
-      variant,
-      size,
-    },
-    { parts: ['container', 'icon', 'title', 'content'] }
-  );
+  const classNames = useClassNames({ component: 'Message', variant, size });
   var icon = (
     <svg viewBox="0 0 24 24">
       <path d="M12 2.85938C6.95437 2.85938 2.85938 6.95437 2.85938 12C2.85938 17.0456 6.95437 21.1406 12 21.1406C17.0456 21.1406 21.1406 17.0456 21.1406 12C21.1406 6.95437 17.0456 2.85938 12 2.85938ZM12.7875 15.9374H11.2125V11.2124H12.7875V15.9374ZM12.7875 9.6375H11.2125V8.0625H12.7875V9.6375Z" />
@@ -58,18 +41,16 @@ export const Message = ({
   }
 
   return (
-    <Box css={styles.container} {...props}>
-      <Box __baseCSS={{ display: 'flex', alignItems: 'top', gap: 4 }}>
-        <Box
-          role="presentation"
-          __baseCSS={{ flex: '0 0 16px' }}
-          css={styles.icon}
-        >
-          {icon}
-        </Box>
-        <Box css={styles.title}>{messageTitle}</Box>
-      </Box>
-      <Box css={styles.content}>{children}</Box>
-    </Box>
+    <div
+      className={cn(
+        'grid grid-cols-[min-content_1fr] grid-rows-2',
+        classNames.container
+      )}
+      {...props}
+    >
+      <div className={cn('hidden', classNames.icon)}>{icon}</div>
+      <div className={classNames.title}>{messageTitle}</div>
+      <div className={cn('col-span-full', classNames.content)}>{children}</div>
+    </div>
   );
 };

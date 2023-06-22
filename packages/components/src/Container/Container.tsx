@@ -1,39 +1,39 @@
 import React, { ReactNode } from 'react';
 import { HtmlProps } from '@marigold/types';
-import { size as tokenSize } from '@marigold/tokens';
 
-import { Box } from '../Box';
+import {
+  PlaceItemsProp,
+  cn,
+  createVar,
+  placeItems,
+  gridColsAlign,
+  GridColsAlignProp,
+  GridColumn,
+  gridColumn,
+} from '@marigold/system';
 
-export interface ContainerProps extends HtmlProps<'div'> {
+export interface ContainerProps
+  extends HtmlProps<'div'>,
+    PlaceItemsProp,
+    GridColumn,
+    GridColsAlignProp {
   children?: ReactNode;
   contentType?: 'content' | 'header';
-  size?: keyof typeof tokenSize.content | keyof typeof tokenSize.header;
+  size?: keyof typeof content | keyof typeof header;
   align?: 'left' | 'right' | 'center';
-  alignItems?: 'left' | 'right' | 'center' | 'none';
+  alignItems?: PlaceItemsProp['align'];
 }
 
-// for the case that elements whit overflow were used we needed to set the align-items to undefined(it's now default behavior)
-const ALIGN_ITEMS = {
-  left: 'start',
-  center: 'center',
-  right: 'end',
-  none: 'initial',
+const content = {
+  small: '20ch',
+  medium: '45ch',
+  large: '60ch',
 };
 
-// for responsive reasons we needed to use the `minmax(0, 60ch)` value instead of `fit-content(60ch)`
-const ALIGN = {
-  left: (maxWidth: string) => ({
-    gridTemplateColumns: `minmax(0, ${maxWidth}) 1fr 1fr`,
-    gridColumn: 1,
-  }),
-  center: (maxWidth: string) => ({
-    gridTemplateColumns: `1fr minmax(0, ${maxWidth}) 1fr`,
-    gridColumn: 2,
-  }),
-  right: (maxWidth: string) => ({
-    gridTemplateColumns: `1fr 1fr minmax(0, ${maxWidth})`,
-    gridColumn: 3,
-  }),
+const header = {
+  small: '20ch',
+  medium: '25ch',
+  large: '35ch',
 };
 
 export const Container = ({
@@ -44,21 +44,19 @@ export const Container = ({
   children,
   ...props
 }: ContainerProps) => {
-  const maxWidth = tokenSize[contentType][size];
-
+  const maxWidth = contentType === 'content' ? content[size] : header[size];
   return (
-    <Box
-      css={{
-        display: 'grid',
-        gridTemplateColumns: ALIGN[align](maxWidth).gridTemplateColumns,
-        placeItems: ALIGN_ITEMS[alignItems],
-        '> *': {
-          gridColumn: ALIGN[align](maxWidth).gridColumn,
-        },
-      }}
+    <div
+      className={cn(
+        'grid',
+        placeItems[alignItems],
+        gridColsAlign[align],
+        gridColumn[align]
+      )}
+      style={createVar({ maxWidth })}
       {...props}
     >
       {children}
-    </Box>
+    </div>
   );
 };

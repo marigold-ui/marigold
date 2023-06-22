@@ -1,30 +1,22 @@
 import React, { ReactNode } from 'react';
-import { Box } from '../Box';
-import { ResponsiveStyleValue, useTheme } from '@marigold/system';
+import { GapSpaceProp, gapSpace, cn, createVar } from '@marigold/system';
 
-export interface TilesProps {
+export interface TilesProps extends GapSpaceProp {
   children: ReactNode;
   tilesWidth: string;
-  space?: ResponsiveStyleValue<string>;
   stretch?: boolean;
   equalHeight?: boolean;
 }
 
 export const Tiles = ({
-  space = 'none',
+  space = 0,
   stretch = false,
   equalHeight = false,
   tilesWidth,
   children,
   ...props
 }: TilesProps) => {
-  /**
-   * Allow to use design tokens for the tiles width.
-   */
-  const { css } = useTheme();
-  const { width } = css({ width: tilesWidth });
-
-  let column = `min(${typeof width === 'number' ? `${width}px` : width}, 100%)`;
+  let column = `min(${tilesWidth}, 100%)`;
   /**
    * Adding `minmax` with `1fr` will make the tiles distribute the
    * availble width between each other and use the `tilesWidth` as
@@ -35,20 +27,17 @@ export const Tiles = ({
   }
 
   return (
-    <Box
+    <div
       {...props}
-      css={{
-        display: 'grid',
-        gap: space,
-        gridTemplateColumns: `repeat(auto-fit, ${column})`,
-        /**
-         * Make height of all tiles in each row
-         * match the heighest tile.
-         */
-        gridAutoRows: equalHeight ? '1fr' : undefined,
-      }}
+      className={cn(
+        'grid',
+        gapSpace[space],
+        'grid-cols-[repeat(auto-fit,var(--column))]',
+        equalHeight && 'auto-rows-[1fr]'
+      )}
+      style={createVar({ column, tilesWidth })}
     >
       {children}
-    </Box>
+    </div>
   );
 };

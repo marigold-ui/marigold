@@ -1,12 +1,15 @@
 import { createContext, useContext } from 'react';
 import { TableState } from '@react-stately/table';
-import { ComponentStyleParts } from '@marigold/system';
 
 export interface TableContextProps {
   state: TableState<object>;
   interactive: boolean;
-  styles: ComponentStyleParts<['table', 'header', 'row', 'cell']>;
-
+  classNames?: {
+    table?: string;
+    header?: string;
+    row?: string;
+    cell?: string;
+  };
   variant?: string;
   size?: string;
 }

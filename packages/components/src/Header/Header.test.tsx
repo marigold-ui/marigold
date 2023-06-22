@@ -1,37 +1,24 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider } from '@marigold/system';
+
+import { cva } from 'class-variance-authority';
 
 import { Header } from './Header';
 
-const theme = {
-  space: {
-    none: 0,
-    'small-1': 4,
-    'medium-1': 16,
-  },
-  colors: {
-    grey: '#dee2e6',
-    yellow: '#fff9db',
-  },
+const theme: Theme = {
+  name: 'test',
   components: {
-    Header: {
-      base: {
-        p: 'small-1',
-        border: '1px solid',
-        borderColor: 'grey',
-      },
-      variant: {
-        yellow: {
-          bg: 'yellow',
+    Header: cva('border border-gray-500 p-1', {
+      variants: {
+        variant: {
+          yellow: 'bg-yellow-500',
+        },
+        size: {
+          medium: 'p-5',
         },
       },
-      size: {
-        medium: {
-          p: 'medium-1',
-        },
-      },
-    },
+    }),
   },
 };
 
@@ -53,7 +40,7 @@ test('uses base styling form "header" in theme', () => {
     </ThemeProvider>
   );
   const header = screen.getByTestId('header');
-  expect(header).toHaveStyle(`padding: ${theme.space['small-1']}px`);
+  expect(header).toHaveClass('p-1 border border-gray-500');
 });
 
 test('header accepts a variant and size', () => {
@@ -63,6 +50,10 @@ test('header accepts a variant and size', () => {
     </ThemeProvider>
   );
   const header = screen.getByTestId('header');
-  expect(header).toHaveStyle(`background: ${theme.colors.yellow}`);
-  expect(header).toHaveStyle(`padding: ${theme.space['medium-1']}px`);
+  expect(header).toMatchInlineSnapshot(`
+    <header
+      class="border border-gray-500 bg-yellow-500 p-5"
+      data-testid="header"
+    />
+  `);
 });

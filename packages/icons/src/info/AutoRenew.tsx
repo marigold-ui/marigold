@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { SVG, SVGProps } from '@marigold/system';
 
-export const AutoRenew = forwardRef<SVGElement, SVGProps>((props, ref) => (
+export const AutoRenew = forwardRef<SVGSVGElement, SVGProps>((props, ref) => (
   <SVG {...props} viewBox="0 0 24 24" ref={ref}>
     <path
       stroke="currentColor"

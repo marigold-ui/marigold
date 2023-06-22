@@ -9,6 +9,7 @@ module.exports = createConfig({
     '!**/themes/**',
     '!**/packages/types/**',
     '!**/*.stories.tsx',
+    '!**/theme-preset/**',
     // needed for coverage not to break should be fixed soon
     '!packages/components/src/Accordion/useAccordionItem.ts',
     '!packages/components/src/Accordion/Accordion.tsx',

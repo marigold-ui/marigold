@@ -5,7 +5,6 @@ import { useLocale } from '@react-aria/i18n';
 import { CalendarState } from '@react-stately/calendar';
 import { getWeeksInMonth, startOfWeek, today } from '@internationalized/date';
 import { CalendarCell } from './CalendarCell';
-import { Box } from '@marigold/system';
 import { useDateFormatter } from '@react-aria/i18n';
 export interface CalendarGridProps extends AriaCalendarGridProps {
   state: CalendarState;
@@ -34,24 +33,23 @@ export const CalendarGrid = ({ state, ...props }: CalendarGridProps) => {
   }, [locale, state.timeZone, dayFormatter]);
 
   return (
-    <Box
-      as="table"
+    <table
+      className="w-full border-spacing-[6px]"
       {...gridProps}
-      cellPadding="5"
-      style={{ width: '100%', borderSpacing: '8px' }}
+      cellPadding="8"
     >
-      <Box as="thead" {...headerProps}>
-        <Box as="tr">
+      <thead {...headerProps}>
+        <tr>
           {weekDays.map((day, index) => (
             <th style={{ fontWeight: 'bolder' }} key={index}>
               {day.substring(0, 2)}
             </th>
           ))}
-        </Box>
-      </Box>
-      <Box as="tbody">
+        </tr>
+      </thead>
+      <tbody>
         {[...new Array(numberOfWeeksInMonth).keys()].map(weekIndex => (
-          <Box as="tr" key={weekIndex}>
+          <tr key={weekIndex}>
             {state
               .getDatesInWeek(weekIndex)
               .map((date, i) =>
@@ -62,12 +60,12 @@ export const CalendarGrid = ({ state, ...props }: CalendarGridProps) => {
                     state={state as CalendarState}
                   />
                 ) : (
-                  <Box as="td" key={i} />
+                  <td key={i} />
                 )
               )}
-          </Box>
+          </tr>
         ))}
-      </Box>
-    </Box>
+      </tbody>
+    </table>
   );
 };

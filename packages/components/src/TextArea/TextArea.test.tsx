@@ -1,70 +1,50 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { cva } from 'class-variance-authority';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ThemeProvider } from '@marigold/system';
+import { Theme } from '@marigold/system';
 
 import { TextArea } from './TextArea';
+import { setup } from '../test.utils';
 
 const theme = {
-  colors: {
-    blue: '#00f',
-    lime: '#82c91e',
-  },
-  fontSizes: {
-    'small-1': 12,
-  },
-  sizes: {
-    none: 0,
-    large: 60,
-  },
+  name: 'test',
   components: {
+    Field: cva(''),
     Label: {
-      variant: {
-        lime: {
-          color: 'lime',
+      container: cva('', {
+        variants: {
+          variant: { lime: 'text-lime-500' },
+          size: { small: 'text-sm' },
         },
-      },
-      size: {
-        small: {
-          fontSize: 'small-1',
-        },
-      },
+      }),
+      indicator: cva(),
     },
     HelpText: {
-      variant: {
-        lime: {
-          container: {
-            color: 'lime',
+      container: cva('', {
+        variants: {
+          variant: {
+            lime: 'text-lime-600',
+          },
+          size: {
+            small: 'text-sm',
           },
         },
-      },
-      size: {
-        small: {
-          container: {
-            fontSize: 'small-1',
-          },
-        },
-      },
+      }),
+      icon: cva(''),
     },
-    TextArea: {
-      base: {
-        borderColor: 'blue',
+    TextArea: cva('text-blue-500', {
+      variants: {
+        variant: { lime: 'text-lime-500' },
+        size: { small: 'text-sm' },
       },
-      variant: {
-        lime: {
-          color: 'lime',
-        },
-      },
-      size: {
-        small: {
-          fontSize: 'small-1',
-        },
-      },
-    },
+    }),
   },
-};
+} satisfies Theme;
 
 const user = userEvent.setup();
+const { render } = setup({ theme });
+
 test('renders an textarea', () => {
   render(<TextArea label="Label" data-testid="textarea" />);
 
@@ -74,63 +54,34 @@ test('renders an textarea', () => {
 });
 
 test('textarea can be styled via "TextArea" styles', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <TextArea label="Label" data-testid="text-area" />
-    </ThemeProvider>
-  );
+  render(<TextArea label="Label" data-testid="text-area" />);
   const textArea = screen.getByTestId('text-area');
-  expect(textArea).toHaveStyle(`border-color: ${theme.colors.blue}`);
+  expect(textArea.className).toMatchInlineSnapshot(`"text-blue-500"`);
 });
 
 test('passes down variant and size', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <TextArea
-        data-testid="text-area"
-        label="Label"
-        description="Description"
-        variant="lime"
-        size="small"
-      />
-    </ThemeProvider>
+    <TextArea
+      data-testid="text-area"
+      label="Label"
+      description="Description"
+      variant="lime"
+      size="small"
+    />
   );
 
   const textArea = screen.getByTestId('text-area');
-  expect(textArea).toHaveStyle(`color: ${theme.colors.lime}`);
-  expect(textArea).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
+  expect(textArea.className).toMatchInlineSnapshot(`"text-lime-500 text-sm"`);
 
   const label = screen.getByText('Label');
-  expect(label).toHaveStyle(`color: ${theme.colors.lime}`);
-  expect(label).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
+  expect(label.className).toMatchInlineSnapshot(
+    `"text-lime-500 text-sm flex w-[var(--labelWidth)]"`
+  );
 
   const description = screen.getByText('Description');
-  expect(description).toHaveStyle(`color: ${theme.colors.lime}`);
-  expect(description).toHaveStyle(`font-size: ${theme.fontSizes['small-1']}px`);
-});
-
-test('takes full width by default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <TextArea data-testid="text-area" label="Label" />
-    </ThemeProvider>
+  expect(description.className).toMatchInlineSnapshot(
+    `"flex items-center gap-1 text-lime-600 text-sm"`
   );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle('width: 100%');
-});
-
-test('allows to set custom width', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <TextArea data-testid="text-area" label="Label" width="large" />
-    </ThemeProvider>
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
 });
 
 test('supports disabled', () => {
@@ -305,11 +256,7 @@ test('can be controlled', async () => {
 
 test('forwards ref', () => {
   const ref = React.createRef<HTMLTextAreaElement>();
-  render(
-    <ThemeProvider theme={theme}>
-      <TextArea data-testid="text-area" label="A Label" ref={ref} />
-    </ThemeProvider>
-  );
+  render(<TextArea data-testid="text-area" label="A Label" ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLTextAreaElement);
 });

@@ -29,9 +29,11 @@
     "@emotion/react": "11.11.0",
     "@marigold/types": "workspace:*",
     "@theme-ui/css": "0.15.7",
+    "class-variance-authority": "0.6.0",
     "csstype": "3.1.2",
     "deepmerge": "^4.2.2",
-    "react-fast-compare": "^3.2.0"
+    "react-fast-compare": "^3.2.0",
+    "tailwind-merge": "1.11.0"
   },
   "peerDependencies": {
     "react": "16.x || 17.x || 18.x",
@@ -40,7 +42,10 @@
   "devDependencies": {
     "@babel/core": "7.21.8",
     "@marigold/tsconfig": "workspace:*",
+    "postcss": "8.4.21",
     "react": "18.2.0",
+    "tailwind-variants": "0.1.2",
+    "tailwindcss": "3.3.1",
     "tsup": "6.7.0"
   },
   "scripts": {

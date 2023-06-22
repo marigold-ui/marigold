@@ -1,43 +1,36 @@
 import React from 'react';
-import { ThemeProvider } from '@marigold/system';
+import { ThemeProvider, Theme } from '@marigold/system';
 import { OverlayProvider } from '@react-aria/overlays';
 import { render, screen } from '@testing-library/react';
 import { Underlay } from './Underlay';
 
-const theme = {
-  colors: {
-    black: '#212529',
-    white: '#f8f9fa',
-    pink: '#fcc2d7',
-  },
-  space: {
-    none: 0,
-    small: 4,
-    large: 10,
-  },
+import { cva } from 'class-variance-authority';
+
+const theme: Theme = {
+  name: 'test',
   components: {
-    Underlay: {
-      variant: {
-        one: {
-          bg: 'pink',
+    Underlay: cva('flex', {
+      variants: {
+        variant: {
+          one: 'bg-pink-600',
+        },
+        size: {
+          small: 'p-4',
         },
       },
-      size: {
-        small: {
-          p: 'small',
-        },
-      },
-    },
+    }),
   },
 };
 
 test('renders underlay', () => {
   render(
-    <OverlayProvider>
-      <Underlay data-testid="underlay">
-        <div>something</div>
-      </Underlay>
-    </OverlayProvider>
+    <ThemeProvider theme={theme}>
+      <OverlayProvider>
+        <Underlay data-testid="underlay">
+          <div>something</div>
+        </Underlay>
+      </OverlayProvider>
+    </ThemeProvider>
   );
 
   const underlay = screen.getByTestId('underlay');
@@ -56,7 +49,7 @@ test('underlay supports variant', () => {
   );
 
   const underlay = screen.getByTestId('underlay');
-  expect(underlay).toHaveStyle(`background-color: ${theme.colors.pink}`);
+  expect(underlay).toHaveClass(`bg-pink-600`);
 });
 
 test('underlay supports size', () => {
@@ -71,5 +64,5 @@ test('underlay supports size', () => {
   );
 
   const underlay = screen.getByTestId('underlay');
-  expect(underlay).toHaveStyle(`padding: ${theme.space.small}px`);
+  expect(underlay).toHaveClass(`p-4`);
 });

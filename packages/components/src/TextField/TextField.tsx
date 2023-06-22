@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import { useHover } from '@react-aria/interactions';
 import { useFocusRing } from '@react-aria/focus';
 import { useTextField } from '@react-aria/textfield';
-import { useObjectRef } from '@react-aria/utils';
+import { mergeProps, useObjectRef } from '@react-aria/utils';
 import { AriaTextFieldProps } from '@react-types/textfield';
 
 import { useStateProps } from '@marigold/system';
@@ -73,15 +73,15 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       hover: isHovered,
       focus: isFocused,
       disabled,
-      readOnly,
       error,
+      readOnly,
+      required,
     });
 
     return (
       <FieldBase
         label={label}
         labelProps={labelProps}
-        required={required}
         description={description}
         descriptionProps={descriptionProps}
         error={error}
@@ -100,10 +100,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
            * We use `size` for styles which is a string, not like
            * the regular HTML attribute, which is a number
            */
-          {...(inputProps as any)}
-          {...focusProps}
-          {...hoverProps}
-          {...stateProps}
+          {...mergeProps(focusProps, inputProps as any, hoverProps)}
         />
       </FieldBase>
     );

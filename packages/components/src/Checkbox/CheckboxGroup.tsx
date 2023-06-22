@@ -5,10 +5,8 @@ import {
   useCheckboxGroupState,
 } from '@react-stately/checkbox';
 import { AriaCheckboxGroupProps } from '@react-types/checkbox';
-
-import { Box, useStateProps } from '@marigold/system';
+import { useStateProps } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
-
 import { FieldBase } from '../FieldBase';
 
 // Context
@@ -83,21 +81,13 @@ export const CheckboxGroup = ({
       errorMessageProps={errorMessageProps}
       disabled={disabled}
       stateProps={stateProps}
-      required={required}
       {...groupProps}
     >
-      <Box
-        role="presentation"
-        __baseCSS={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'start',
-        }}
-      >
+      <div role="presentation" className={'flex flex-col items-start'}>
         <CheckboxGroupContext.Provider value={{ error, ...state }}>
           {children}
         </CheckboxGroupContext.Provider>
-      </Box>
+      </div>
     </FieldBase>
   );
 };

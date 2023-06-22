@@ -25,5 +25,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: () => <Footer>This is a Footer.</Footer>,
+  render: args => <Footer {...args}>This is a Footer.</Footer>,
 };

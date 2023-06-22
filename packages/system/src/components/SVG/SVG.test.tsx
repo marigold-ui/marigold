@@ -4,6 +4,7 @@ import { SVG } from './SVG';
 import { ThemeProvider } from '../../hooks';
 
 const theme = {
+  name: 'test',
   sizes: {
     none: 0,
     small: 16,
@@ -12,6 +13,7 @@ const theme = {
     red: '#ffa8a8',
     info: 'blue',
   },
+  components: {},
 };
 
 test('renders svg', () => {
@@ -20,15 +22,26 @@ test('renders svg', () => {
   expect(svg instanceof SVGElement).toBeTruthy();
 });
 
-test('supports fill color', () => {
+test('supports classNames', () => {
   render(
-    <SVG data-testid="svg" fill="red">
+    <SVG data-testid="svg" className="fill-info">
       <path d="M9.9 20.113V13.8415H14" />
     </SVG>
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg).toHaveStyle('fill: red');
+  expect(svg).toMatchInlineSnapshot(`
+    <svg
+      class="flex-none fill-info"
+      data-testid="svg"
+      height="24px"
+      width="24px"
+    >
+      <path
+        d="M9.9 20.113V13.8415H14"
+      />
+    </svg>
+  `);
 });
 
 test('supports default size', () => {
@@ -39,8 +52,8 @@ test('supports default size', () => {
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg).toHaveStyle('width: 24px');
-  expect(svg).toHaveStyle('height: 24px');
+  expect(svg).toHaveAttribute('width', '24px');
+  expect(svg).toHaveAttribute('height', '24px');
 });
 
 test('supports size prop', () => {
@@ -51,8 +64,8 @@ test('supports size prop', () => {
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg).toHaveStyle('width: 30px');
-  expect(svg).toHaveStyle('height: 30px');
+  expect(svg).toHaveAttribute('width', '30px');
+  expect(svg).toHaveAttribute('height', '30px');
 });
 
 test('supports size prop with string', () => {
@@ -63,34 +76,30 @@ test('supports size prop with string', () => {
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg).toHaveStyle('width: 30px');
-  expect(svg).toHaveStyle('height: 30px');
+  expect(svg).toHaveAttribute('width', '30px');
+  expect(svg).toHaveAttribute('height', '30px');
 });
 
 test('supports responsive sizing', () => {
   render(
-    <SVG data-testid="svg" size={[32, 64]}>
+    <SVG data-testid="svg" className="w-[24px] sm:w-[32px] md:w-[64px]">
       <path d="M9.9 20.113V13.8415H14" />
     </SVG>
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg).toHaveStyle('width: 32px');
-  expect(svg).toHaveStyle('height: 32px');
-});
-
-test('supports size from theme', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <SVG data-testid="svg" size="small">
-        <path d="M9.9 20.113V13.8415H14" />
-      </SVG>
-    </ThemeProvider>
-  );
-  const svg = screen.getByTestId(/svg/);
-
-  expect(svg).toHaveStyle('width: 16px');
-  expect(svg).toHaveStyle('height: 16px');
+  expect(svg).toMatchInlineSnapshot(`
+    <svg
+      class="flex-none fill-current w-[24px] sm:w-[32px] md:w-[64px]"
+      data-testid="svg"
+      height="24px"
+      width="24px"
+    >
+      <path
+        d="M9.9 20.113V13.8415H14"
+      />
+    </svg>
+  `);
 });
 
 test('supports custom width instead of default size', () => {
@@ -103,8 +112,8 @@ test('supports custom width instead of default size', () => {
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg).toHaveStyle('width: 16px');
-  expect(svg).toHaveStyle('height: 24px');
+  expect(svg).toHaveAttribute('width', '16px');
+  expect(svg).toHaveAttribute('height', '24px');
 });
 
 test('supports custom height instead of default size', () => {
@@ -117,46 +126,8 @@ test('supports custom height instead of default size', () => {
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg).toHaveStyle('width: 24px');
-  expect(svg).toHaveStyle('height: 16px');
-});
-
-test('supports width and height from theme', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <SVG data-testid="svg" width="small" height="small">
-        <path d="M9.9 20.113V13.8415H14" />
-      </SVG>
-    </ThemeProvider>
-  );
-  const svg = screen.getByTestId(/svg/);
-
-  expect(svg).toHaveStyle('width: 16px');
-  expect(svg).toHaveStyle('height: 16px');
-});
-
-test('supports fill prop', () => {
-  render(
-    <SVG data-testid="svg" fill="#fafafa">
-      <path d="M9.9 20.113V13.8415H14" />
-    </SVG>
-  );
-  const svg = screen.getByTestId(/svg/);
-
-  expect(svg).toHaveStyle('fill: #fafafa');
-});
-
-test('supports fill from theme', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <SVG data-testid="svg" fill="info">
-        <path d="M9.9 20.113V13.8415H14" />
-      </SVG>
-    </ThemeProvider>
-  );
-  const svg = screen.getByTestId(/svg/);
-
-  expect(svg).toHaveStyle('fill: blue');
+  expect(svg).toHaveAttribute('width', '24px');
+  expect(svg).toHaveAttribute('height', '16px');
 });
 
 test('accepts custom styles prop className', () => {
@@ -170,43 +141,9 @@ test('accepts custom styles prop className', () => {
   expect(svg.getAttribute('class')).toMatch(/custom-class-name/);
 });
 
-test('renders <svg> element', () => {
-  render(
-    <SVG data-testid="svg">
-      <path d="M9.9 20.113V13.8415H14" />
-    </SVG>
-  );
-  const svg = screen.getByTestId(/svg/);
-
-  expect(svg instanceof SVGElement).toBeTruthy();
-});
-
 test('forwards ref', () => {
-  const ref = React.createRef<SVGElement>();
+  const ref = React.createRef<SVGSVGElement>();
   render(<SVG ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(SVGElement);
-});
-
-test('css prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <SVG css={{ color: 'red' }} data-testid="svg" />
-    </ThemeProvider>
-  );
-  const svg = screen.getByTestId('svg');
-
-  expect(svg).toHaveStyle(`color: ${theme.colors.red}`);
-});
-
-test('css prop overrides size prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <SVG size={30} css={{ height: 8 }} data-testid="svg" />
-    </ThemeProvider>
-  );
-  const svg = screen.getByTestId('svg');
-
-  expect(svg).toHaveStyle(`height: 8px`);
-  expect(svg).toHaveStyle(`width: 30px`);
 });

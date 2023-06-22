@@ -10,12 +10,7 @@ import { createCalendar } from '@internationalized/date';
 import { Button } from '../Button';
 import { CalendarGrid } from './CalendarGrid';
 import { ChevronRight, ChevronLeft } from '@marigold/icons';
-import {
-  Box,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-  useStateProps,
-} from '@marigold/system';
+import { cn, useClassNames, useStateProps } from '@marigold/system';
 import MonthDropdown from './MonthDropdown';
 import YearDropdown from './YearDropdown';
 export interface CalendarProps
@@ -25,11 +20,6 @@ export interface CalendarProps
   variant?: string;
   size?: string;
 }
-export interface CalendarThemeExtension
-  extends ThemeExtensionsWithParts<
-    'Calendar',
-    ['calendar', 'calendarCell', 'calendarControllers']
-  > {}
 
 export const Calendar = ({
   disabled,
@@ -57,70 +47,45 @@ export const Calendar = ({
   // destructure isDisabled to avoid passing it to the component and being used on dom element
   const { isDisabled: prevIsDisabled, ...prevPropsRest } = prevButtonProps;
   const { isDisabled: nextIsDisabled, ...nextPropsRest } = nextButtonProps;
-  const styles = useComponentStyles(
-    'Calendar',
-    { size, variant },
-    { parts: ['calendar', 'calendarControllers'] }
-  );
   const calendarState = useStateProps({
     disabled: state.isDisabled,
   });
+  const classNames = useClassNames({ component: 'Calendar' });
   return (
-    <Box
+    <div
       tabIndex={-1}
-      __baseCSS={{
-        boxShadow: '0px 4px 4px rgba(165, 165, 165, 0.25)',
-        borderRadius: '16px',
-        padding: '16px',
-        width: '360px',
-      }}
+      className={cn(
+        'flex w-[360px] flex-col rounded-2xl p-4 shadow-[0_4px_4px_rgba(165,165,165,0.25)]',
+        classNames.calendar
+      )}
       {...calendarProps}
       {...calendarState}
       ref={ref}
-      css={styles.calendar}
     >
-      <Box
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          marginBottom: '16px',
-          gap: '60px',
-        }}
-      >
-        <Box
-          __baseCSS={{
-            display: 'flex',
-            minWidth: '170px',
-            gap: '9px',
-            '& button': { borderRadius: '10px', height: '40px' },
-          }}
-        >
+      <div className="mb-4 flex items-center gap-[60px]">
+        <div className="flex min-w-[170px] gap-[9px] [&_button]:h-10 [&_button]:rounded-[10px] [&_div]:flex">
           <MonthDropdown state={state} />
           <YearDropdown state={state} />
-        </Box>
-        <Box
-          __baseCSS={{
-            display: 'flex',
-            flexWrap: 'nowrap',
-            justifyContent: 'flex-end',
-            width: '100%',
-            gap: '10px',
-            '& button': {
-              padding: '4px 8px',
-            },
-          }}
-          css={styles.calendarControllers}
-        >
-          <Button {...prevPropsRest} disabled={prevIsDisabled}>
+        </div>
+        <div className="flex w-full flex-nowrap justify-end gap-[10px] [&_button:disabled]:cursor-not-allowed [&_button]:px-2 [&_button]:py-1">
+          <Button
+            className={classNames.calendarControllers}
+            {...prevPropsRest}
+            disabled={prevIsDisabled}
+          >
             <ChevronLeft />
           </Button>
-          <Button {...nextPropsRest} disabled={nextIsDisabled}>
+          <Button
+            className={classNames.calendarControllers}
+            {...nextPropsRest}
+            disabled={nextIsDisabled}
+          >
             <ChevronRight />
           </Button>
-        </Box>
-      </Box>
+        </div>
+      </div>
 
       <CalendarGrid state={state} />
-    </Box>
+    </div>
   );
 };

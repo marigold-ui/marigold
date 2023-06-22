@@ -1,8 +1,5 @@
 import React, { ReactNode } from 'react';
-
-import { Box } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
-
 import { useListContext } from './Context';
 
 export interface ListItemProps extends HtmlProps<'li'> {
@@ -10,10 +7,11 @@ export interface ListItemProps extends HtmlProps<'li'> {
 }
 
 export const ListItem = ({ children, ...props }: ListItemProps) => {
-  const { styles } = useListContext();
+  const { classNames } = useListContext();
+
   return (
-    <Box {...props} as="li" css={styles}>
+    <li {...props} className={classNames}>
       {children}
-    </Box>
+    </li>
   );
 };

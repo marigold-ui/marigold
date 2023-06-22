@@ -29,6 +29,20 @@ const meta = {
       ],
       defaultValue: 'text',
     },
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Disable the input',
+      defaultValue: false,
+    },
+    readOnly: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Make input read only',
+      defaultValue: false,
+    },
     pattern: {
       control: {
         type: 'text',
@@ -49,11 +63,13 @@ export const Basic: Story = {
 };
 
 export const WithLeadingIcons: Story = {
-  render: () => <Input placeholder="Placeholder..." icon={<Search />} />,
+  render: args => (
+    <Input placeholder="Placeholder..." icon={<Search />} {...args} />
+  ),
 };
 
 export const WithAction: Story = {
-  render: () => (
+  render: args => (
     <Input
       placeholder="Placeholder..."
       action={
@@ -61,12 +77,13 @@ export const WithAction: Story = {
           <Delete />
         </Button>
       }
+      {...args}
     />
   ),
 };
 
 export const WithIcons: Story = {
-  render: () => (
+  render: args => (
     <Input
       placeholder="Placeholder..."
       icon={<Search />}
@@ -75,6 +92,7 @@ export const WithIcons: Story = {
           <Delete />
         </Button>
       }
+      {...args}
     />
   ),
 };

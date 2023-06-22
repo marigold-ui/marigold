@@ -3,24 +3,15 @@ import { useMenu } from '@react-aria/menu';
 import { Item, Section } from '@react-stately/collections';
 import { useTreeState } from '@react-stately/tree';
 import { CollectionElement } from '@react-types/shared';
+import { useSyncRef } from '@react-aria/utils';
 
-import {
-  Box,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-} from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
 import { useMenuContext } from './Context';
 import { MenuTrigger } from './MenuTrigger';
 import { MenuItem } from './MenuItem';
-import { useSyncRef } from '@react-aria/utils';
 import MenuSection from './MenuSection';
-
-// Theme Extension
-// ---------------
-export interface MenuThemeExtension
-  extends ThemeExtensionsWithParts<'Menu', ['container', 'item', 'section']> {}
 
 // Props
 // ---------------
@@ -43,24 +34,10 @@ export const Menu = ({ variant, size, ...props }: MenuProps) => {
 
   useSyncRef({ ref: scrollRef }, ref);
 
-  const styles = useComponentStyles(
-    'Menu',
-    { variant, size },
-    { parts: ['container', 'item'] }
-  );
+  const classNames = useClassNames({ component: 'Menu', variant, size });
 
   return (
-    <Box
-      as="ul"
-      ref={ref}
-      __baseCSS={{
-        listStyle: 'none',
-        p: 0,
-        overflowWrap: 'break-word',
-      }}
-      css={styles.container}
-      {...menuProps}
-    >
+    <ul ref={ref} className={classNames.container} {...menuProps}>
       {[...state.collection].map(item => {
         if (item.type === 'section') {
           return (
@@ -78,11 +55,11 @@ export const Menu = ({ variant, size, ...props }: MenuProps) => {
             item={item}
             state={state}
             onAction={props.onAction}
-            css={styles.item}
+            className={classNames.item}
           />
         );
       })}
-    </Box>
+    </ul>
   );
 };
 

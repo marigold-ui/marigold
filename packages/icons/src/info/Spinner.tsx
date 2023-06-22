@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { SVG, SVGProps } from '@marigold/system';
 
-export const Spinner = forwardRef<SVGElement, SVGProps>((props, ref) => (
+export const Spinner = forwardRef<SVGSVGElement, SVGProps>((props, ref) => (
   <SVG {...props} viewBox="0 0 24 24" ref={ref}>
     <path d="M13.6045 4.71587C13.6045 3.826 12.8831 3.10461 11.9932 3.10461C11.1034 3.10461 10.382 3.826 10.382 4.71587C10.382 5.60574 11.1034 6.32712 11.9932 6.32712C12.8831 6.32712 13.6045 5.60574 13.6045 4.71587Z" />
     <path d="M8.40944 7.49855C8.98143 6.81685 8.89254 5.80056 8.21084 5.22857C7.52914 4.65657 6.51286 4.74547 5.94086 5.42716C5.36887 6.10882 5.45776 7.12515 6.13946 7.69715C6.82111 8.26914 7.83744 8.18025 8.40944 7.49855Z" />

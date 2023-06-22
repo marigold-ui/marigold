@@ -10,23 +10,15 @@ import { mergeProps, useObjectRef } from '@react-aria/utils';
 import type { AriaRadioProps } from '@react-types/radio';
 
 import {
-  Box,
-  CSSObject,
+  cn,
   StateAttrProps,
-  ThemeComponentProps,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
+  useClassNames,
   useStateProps,
 } from '@marigold/system';
 import type { HtmlProps } from '@marigold/types';
 
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
-
-// Theme Extension
-// ---------------
-export interface RadioThemeExtension
-  extends ThemeExtensionsWithParts<'Radio', ['container', 'label', 'radio']> {}
 
 // SVG Icon
 // ---------------
@@ -37,29 +29,21 @@ const Dot = () => (
 );
 
 interface IconProps extends StateAttrProps {
-  css?: CSSObject;
+  className?: string;
   checked?: boolean;
 }
 
-const Icon = ({ checked, css, ...props }: IconProps) => (
-  <Box
+const Icon = ({ checked, className, ...props }: IconProps) => (
+  <div
+    className={cn(
+      'bg-secondary-50 flex h-4 w-4 items-center justify-center rounded-[50%] border p-1',
+      className
+    )}
     aria-hidden="true"
-    __baseCSS={{
-      width: 16,
-      height: 16,
-      bg: '#fff',
-      border: '1px solid #000',
-      borderRadius: '50%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      p: 4,
-    }}
-    css={css}
     {...props}
   >
     {checked ? <Dot /> : null}
-  </Box>
+  </div>
 );
 
 // Props
@@ -76,10 +60,11 @@ export type CustomRadioProps =
   | 'onKeyDown';
 
 export interface RadioProps
-  extends ThemeComponentProps,
-    Omit<HtmlProps<'input'>, CustomRadioProps>,
+  extends Omit<HtmlProps<'input'>, CustomRadioProps>,
     AriaRadioProps {
   width?: string;
+  variant?: string;
+  size?: string;
   disabled?: boolean;
 }
 
@@ -102,11 +87,11 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
       inputRef
     );
 
-    const styles = useComponentStyles(
-      'Radio',
-      { variant: variant || props.variant, size: size || props.size },
-      { parts: ['container', 'label', 'radio'] }
-    );
+    const classNames = useClassNames({
+      component: 'Radio',
+      variant: variant || props.variant,
+      size: size || props.size,
+    });
 
     const { hoverProps, isHovered } = useHover({ isDisabled: disabled });
     const { isFocusVisible, focusProps } = useFocusRing();
@@ -120,38 +105,26 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
     });
 
     return (
-      <Box
-        as="label"
-        __baseCSS={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '1ch',
-          position: 'relative',
-          width: width || groupWidth || '100%',
-        }}
-        css={styles.container}
+      <label
+        className={cn(
+          'group/radio',
+          'relative flex items-center gap-[1ch]',
+          width || groupWidth || 'w-full',
+          classNames.container
+        )}
         {...mergeProps(hoverProps, stateProps)}
       >
-        <Box
-          as="input"
+        <input
           ref={inputRef}
-          css={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            top: 0,
-            left: 0,
-            zIndex: 1,
-            opacity: 0.0001,
-            cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
-          }}
+          className={cn(
+            'absolute left-0 top-0 z-[1] h-full w-full opacity-[0.0001]',
+            inputProps.disabled ? 'cursor-not-allowed' : 'cursor-pointer'
+          )}
           {...mergeProps(inputProps, focusProps)}
         />
-        <Icon checked={inputProps.checked} css={styles.radio} {...stateProps} />
-        <Box css={styles.label} {...stateProps}>
-          {props.children}
-        </Box>
-      </Box>
+        <Icon checked={inputProps.checked} className={classNames.radio} />
+        <div className={classNames.label}>{props.children}</div>
+      </label>
     );
   }
 ) as RadioComponent;

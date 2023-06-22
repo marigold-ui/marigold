@@ -1,29 +1,27 @@
 import React, { useRef } from 'react';
 import { DateSegment as DateSegmentInterface } from '@react-stately/datepicker';
 import { DateFieldState } from '@react-stately/datepicker';
-import { useComponentStyles, useStateProps } from '@marigold/system';
+import { cn, useStateProps } from '@marigold/system';
 import { useDateSegment } from '@react-aria/datepicker';
-import { Box } from '@marigold/system';
 import { useFocusRing } from '@react-aria/focus';
+import { mergeProps } from '@react-aria/utils';
 
 interface DateSegmentProps {
   segment: DateSegmentInterface;
   state: DateFieldState;
   isPrevPlaceholder?: boolean;
+  className?: string;
 }
 
 export const DateSegment = ({
+  className,
   segment,
   state,
   isPrevPlaceholder,
 }: DateSegmentProps) => {
   const ref = useRef(null);
   const { segmentProps } = useDateSegment(segment, state, ref);
-  const styles = useComponentStyles(
-    'DateField',
-    {},
-    { parts: ['segment', 'placeholder', 'segmentValue'] }
-  );
+
   const { focusProps, isFocused } = useFocusRing({
     within: true,
     isTextInput: true,
@@ -32,58 +30,34 @@ export const DateSegment = ({
     disabled: state.isDisabled,
     focusVisible: isFocused,
   });
+
   const { isPlaceholder, placeholder, text, type, maxValue } = segment;
+
   return (
-    <Box
-      {...segmentProps}
-      {...stateProps}
-      {...focusProps}
+    <div
+      {...mergeProps(segmentProps, stateProps, focusProps)}
       ref={ref}
-      __baseCSS={{
+      className={cn(
+        'group/segment',
+        'text-center leading-none outline-0',
+        type !== 'literal' && 'p-0.5',
+        className
+      )}
+      style={{
         ...segmentProps.style,
-        minWidth: maxValue != null ? String(maxValue).length + 'ch' : '',
-        boxSizing: 'content-box',
-        fontVariantNumeric: 'lining-nums',
-        textAlign: 'center',
-        outline: '0',
-        borderRadius: '2px',
-        '&[data-focus-visible]': {
-          bg: 'gray60',
-          color: 'white',
-        },
-        '&:not([data-disabled]):not([data-focus-visible])': {
-          '& span:nth-of-type(2)': {
-            '&:not(.literal), &.activeLiteral': {
-              color: 'gray60',
-            },
-          },
-        },
+        minWidth: maxValue != null ? String(maxValue).length + 'ch' : undefined,
       }}
-      css={styles.segment}
     >
-      <Box
-        as="span"
+      <span
         aria-hidden="true"
-        __baseCSS={{
-          visibility: isPlaceholder ? 'visible' : 'hidden',
-          pointerEvents: 'none',
-          display: isPlaceholder ? 'block' : 'none',
-          width: '100%',
-          textAlign: 'center',
-        }}
+        className={cn(
+          isPlaceholder ? 'visible block' : 'invisible hidden',
+          'pointer-events-none w-full text-center'
+        )}
       >
         {isPlaceholder && placeholder?.toUpperCase()}
-      </Box>
-
-      <Box
-        css={styles.segmentValue}
-        as="span"
-        className={
-          type === 'literal'
-            ? `literal  ${!isPrevPlaceholder && 'activeLiteral'}`
-            : ''
-        }
-      >
+      </span>
+      <span>
         {isPlaceholder
           ? ''
           : type === 'month' || type === 'day'
@@ -91,7 +65,7 @@ export const DateSegment = ({
             ? '0' + text
             : text
           : text}
-      </Box>
-    </Box>
+      </span>
+    </div>
   );
 };

@@ -1,52 +1,37 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
-
+import { screen } from '@testing-library/react';
+import { Theme, ThemeProvider } from '@marigold/system';
+import { cva } from 'class-variance-authority';
 import { List } from './List';
 
-const theme = {
-  space: {
-    none: 0,
-    'small-1': 4,
-    'medium-1': 16,
-  },
-  colors: {
-    grey: '#dee2e6',
-    yellow: '#fff9db',
-  },
+import { setup } from '../test.utils';
+const theme: Theme = {
+  name: 'test',
   components: {
     List: {
-      base: {
-        ul: {
-          listStyle: 'none',
-        },
-        ol: {
-          listStyle: 'none',
-        },
-        item: {
-          p: 'medium-1',
-        },
-      },
-      variant: {
-        yellow: {
-          ul: {
-            bg: 'yellow',
+      ul: cva('list-disc', {
+        variants: {
+          variant: {
+            yellow: 'bg-yellow-200',
           },
-          item: {
-            bg: 'grey',
+          size: {
+            small: 'p-1',
           },
         },
-      },
-      size: {
-        small: {
-          ul: {
-            p: 'small-1',
+      }),
+      ol: cva('list-decimal', {
+        variants: {
+          variant: {
+            yellow: 'bg-yellow-200',
           },
         },
-      },
+      }),
+      item: cva('p-4'),
     },
   },
 };
+
+const { render } = setup({ theme });
 
 test('renders an "ul" with "li"s by default', () => {
   render(
@@ -95,19 +80,17 @@ test('renders all children', async () => {
 
 test('use base styling from "List" in theme', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <List data-testid="list">
-        <List.Item data-testid="one">one</List.Item>
-        <List.Item data-testid="two">two</List.Item>
-        <List.Item data-testid="three">three</List.Item>
-      </List>
-    </ThemeProvider>
+    <List data-testid="list">
+      <List.Item data-testid="one">one</List.Item>
+      <List.Item data-testid="two">two</List.Item>
+      <List.Item data-testid="three">three</List.Item>
+    </List>
   );
   const list = screen.getByTestId('list');
-  expect(list).toHaveStyle('list-style: none');
+  expect(list).toHaveClass('list-disc');
 
   const item = screen.getByTestId('one');
-  expect(item).toHaveStyle(`padding: ${theme.space['medium-1']}px`);
+  expect(item).toHaveClass(`p-4`);
 });
 
 test('accepts a variant and size', () => {
@@ -121,9 +104,8 @@ test('accepts a variant and size', () => {
     </ThemeProvider>
   );
   const list = screen.getByTestId('list');
-  expect(list).toHaveStyle(`background: ${theme.colors.yellow}`);
-  expect(list).toHaveStyle(`padding: ${theme.space['small-1']}px`);
+  expect(list).toHaveClass(`bg-yellow-200 p-1`);
 
   const item = screen.getByTestId('one');
-  expect(item).toHaveStyle(`background-color: ${theme.colors.grey}`);
+  expect(item).toHaveClass(`p-4`);
 });

@@ -1,49 +1,43 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { Theme, ThemeProvider } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Tooltip } from './Tooltip';
 import userEvent from '@testing-library/user-event';
 
+import { cva } from 'class-variance-authority';
+
+import { setup } from '../test.utils';
+
 const user = userEvent.setup();
-const theme = {
-  fontSizes: {
-    'small-1': '12px',
-    'medium-1': '16px',
-  },
-  colors: {
-    green: '#69db7c',
-    lime: '#94d82d',
-  },
+const theme: Theme = {
+  name: 'test',
   components: {
+    Button: cva(''),
     Tooltip: {
-      base: {
-        container: {
-          fontSize: 'small-1',
-          bg: 'green',
-        },
-        arrow: {
-          borderTopColor: 'green',
-        },
-      },
-      variant: {
-        lime: {
-          container: {
-            bg: 'lime',
+      container: cva('text-body bg-green-500', {
+        variants: {
+          variant: {
+            lime: 'bg-lime-300',
+          },
+          size: {
+            medium: 'p-5',
           },
         },
-      },
-      size: {
-        medium: {
-          container: {
-            fontSize: 'medium-1',
+      }),
+      arrow: cva('border-gray-700', {
+        variants: {
+          variant: {
+            lime: 'border-lime-400',
           },
         },
-      },
+      }),
     },
   },
 };
+
+const { render } = setup({ theme });
 
 beforeEach(() => {
   // by firing an event at the beginning of each test, we can put ourselves into
@@ -159,10 +153,9 @@ test('styled via "Tooltip" from theme', () => {
   );
 
   const tooltip = screen.getByRole('tooltip');
-  expect(tooltip).toHaveStyle({
-    fontSize: theme.fontSizes['small-1'],
-    backgroundColor: theme.colors.green,
-  });
+  expect(tooltip.className).toMatchInlineSnapshot(
+    `"group/tooltip text-body bg-green-500"`
+  );
 });
 
 test('accepts variant and size', () => {
@@ -178,10 +171,9 @@ test('accepts variant and size', () => {
   );
 
   const tooltip = screen.getByRole('tooltip');
-  expect(tooltip).toHaveStyle({
-    fontSize: theme.fontSizes['medium-1'],
-    backgroundColor: theme.colors.lime,
-  });
+  expect(tooltip.className).toMatchInlineSnapshot(
+    `"group/tooltip text-body bg-lime-300 p-5"`
+  );
 });
 
 test('sets placement as data attribute for styling', () => {

@@ -1,67 +1,29 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider } from '@marigold/system';
 import { Button } from './Button';
 import { Facebook } from '@marigold/icons';
+import { cva } from 'class-variance-authority';
 
-const theme = {
-  fonts: {
-    body: 'Arial',
-    fancy: 'Inter',
-  },
-  colors: {
-    red: '#ffa8a8',
-    gray: '#e3e3e3',
-  },
-  space: {
-    none: 0,
-    small: 2,
-    large: 16,
-  },
+const theme: Theme = {
+  name: 'test',
   components: {
-    Button: {
-      base: {
-        fontFamily: 'fancy',
-        '&[data-focus]': {
-          bg: 'red',
+    Button: cva('align-center flex disabled:bg-gray-600', {
+      variants: {
+        variant: {
+          primary: 'text-primary-500',
+          secondary: 'text-secondary-800',
         },
-        '&:disabled': {
-          bg: 'gray',
-        },
-      },
-      size: {
-        large: {
-          p: '16px',
-        },
-        small: {
-          p: 'large',
+        size: {
+          small: 'h-10 w-10',
+          large: 'w-50 h-50',
         },
       },
-      variant: {
-        primary: {
-          fontFamily: 'fancy',
-        },
-        secondary: {
-          fontFamily: 'body',
-        },
-      },
-    },
+    }),
   },
 };
 
 test('sets some base styles', () => {
-  render(<Button>button</Button>);
-  const button = screen.getByText(/button/);
-
-  expect(button).toHaveStyle({
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '0.5ch',
-  });
-});
-
-test('supports base style', () => {
   render(
     <ThemeProvider theme={theme}>
       <Button>button</Button>
@@ -69,18 +31,36 @@ test('supports base style', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button).toHaveStyle(`font-family: Inter`);
+  expect(button).toHaveClass('flex align-center');
+});
+
+test('supports base styling classes', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Button>button</Button>
+    </ThemeProvider>
+  );
+  const button = screen.getByText(/button/);
+
+  expect(button).toMatchInlineSnapshot(`
+    <button
+      class="align-center flex disabled:bg-gray-600"
+      type="button"
+    >
+      button
+    </button>
+  `);
 });
 
 test('supports default size', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Button size="large">button</Button>
+      <Button size="small">button</Button>
     </ThemeProvider>
   );
   const button = screen.getByText(/button/);
 
-  expect(button).toHaveStyle(`padding: 16px`);
+  expect(button).toHaveClass(`w-10 h-10`);
 });
 
 test('accepts other variants', () => {
@@ -91,18 +71,15 @@ test('accepts other variants', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button).toHaveStyle(`font-family: Arial`);
-});
-
-test('accepts other size than default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Button size="small">button</Button>
-    </ThemeProvider>
-  );
-  const button = screen.getByText(/button/);
-
-  expect(button).toHaveStyle(`padding: 16px`);
+  expect(button).toHaveClass('text-secondary-800');
+  expect(button).toMatchInlineSnapshot(`
+    <button
+      class="align-center flex disabled:bg-gray-600 text-secondary-800"
+      type="button"
+    >
+      button
+    </button>
+  `);
 });
 
 test('renders <button> element', () => {
@@ -136,7 +113,7 @@ test('add icon in button works as expected', () => {
   render(
     <ThemeProvider theme={theme}>
       <Button>
-        <Facebook fill="red" size={30} data-testid="facebook" />
+        <Facebook size={30} data-testid="facebook" />
         iconbutton
       </Button>
     </ThemeProvider>
@@ -145,9 +122,8 @@ test('add icon in button works as expected', () => {
   const icon = screen.getByTestId(/facebook/);
 
   expect(button instanceof HTMLButtonElement).toBeTruthy();
-  expect(button).toHaveStyle('display: inline-flex');
-  expect(icon).toHaveStyle(`fill: ${theme.colors.red}`);
-  expect(icon).toHaveStyle('width: 30px');
+  expect(button).toHaveClass('flex align-center');
+  expect(icon).toHaveAttribute('width', '30px');
 });
 
 test('can be used as a "link button"', () => {
@@ -182,9 +158,11 @@ test('can be used as a "link button" and has button styling', () => {
 test('supports onPress', () => {
   const onPress = jest.fn();
   render(
-    <Button onPress={onPress} data-testid="button">
-      Some Button
-    </Button>
+    <ThemeProvider theme={theme}>
+      <Button onPress={onPress} data-testid="button">
+        Some Button
+      </Button>
+    </ThemeProvider>
   );
 
   const button = screen.getByTestId('button');
@@ -195,7 +173,11 @@ test('supports onPress', () => {
 
 test('forwards ref', () => {
   const ref = React.createRef<HTMLButtonElement>();
-  render(<Button ref={ref}>button</Button>);
+  render(
+    <ThemeProvider theme={theme}>
+      <Button ref={ref}>button</Button>
+    </ThemeProvider>
+  );
 
   expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
 });
@@ -208,12 +190,16 @@ test('supports disabled prop', () => {
   );
   const button = screen.getByText(/button/);
   expect(button).toHaveAttribute('disabled');
-  expect(button).toHaveStyle('backgroundColor: #e3e3e3');
+  expect(button).toHaveClass('disabled:bg-gray-600');
 });
 
 test('pass through native props', () => {
   const spy = jest.fn();
-  render(<Button onMouseEnter={spy}>button</Button>);
+  render(
+    <ThemeProvider theme={theme}>
+      <Button onMouseEnter={spy}>button</Button>
+    </ThemeProvider>
+  );
 
   const button = screen.getByText(/button/);
   fireEvent.mouseEnter(button);
@@ -221,8 +207,12 @@ test('pass through native props', () => {
 });
 
 test('allows to take full width', () => {
-  render(<Button fullWidth>button</Button>);
+  render(
+    <ThemeProvider theme={theme}>
+      <Button fullWidth>button</Button>
+    </ThemeProvider>
+  );
 
   const button = screen.getByText(/button/);
-  expect(button).toHaveStyle('width: 100%');
+  expect(button).toHaveClass('w-full');
 });

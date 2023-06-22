@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { SVG, SVGProps } from '@marigold/system';
 
-export const Price = forwardRef<SVGElement, SVGProps>((props, ref) => (
+export const Price = forwardRef<SVGSVGElement, SVGProps>((props, ref) => (
   <SVG {...props} viewBox="0 0 24 24" ref={ref}>
     <circle cx="11.9766" cy="12.0234" r="9.35156" fill="currentColor" />
     <path

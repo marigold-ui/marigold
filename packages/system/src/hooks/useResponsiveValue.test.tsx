@@ -6,7 +6,7 @@ import { useResponsiveValue } from './useResponsiveValue';
 import { ThemeProvider } from './useTheme';
 
 /**
- * We need to mock `matchMedia` because JSOM does not
+ * We need to mock `matchMedia` because JSON does not
  * implements it.
  */
 const mockMatchMedia = (matches: string[]) =>
@@ -28,9 +28,9 @@ test('return first value if no breakpoint matches', () => {
 
 test('return last if all breakpoints match', () => {
   window.matchMedia = mockMatchMedia([
-    'screen and (min-width: 40em)',
-    'screen and (min-width: 52em)',
-    'screen and (min-width: 64em)',
+    'screen and (min-width: 640px)',
+    'screen and (min-width: 768px)',
+    'screen and (min-width: 1024px)',
   ]);
 
   const { result } = renderHook(() =>
@@ -43,8 +43,8 @@ test('return last if all breakpoints match', () => {
 test('return last provided value even if larger breakpoints match', () => {
   // This would result in the third array value being returned
   window.matchMedia = mockMatchMedia([
-    'screen and (min-width: 40em)',
-    'screen and (min-width: 52em)',
+    'screen and (min-width: 640px)',
+    'screen and (min-width: 768px)',
   ]);
 
   const { result } = renderHook(() => useResponsiveValue(['one', 'two']));
@@ -54,11 +54,19 @@ test('return last provided value even if larger breakpoints match', () => {
 
 test('uses breakpoints from theme', () => {
   window.matchMedia = mockMatchMedia([
-    'screen and (min-width: 25em)',
-    'screen and (min-width: 50em)',
+    'screen and (min-width: 640px)',
+    'screen and (min-width: 768px)',
   ]);
 
-  const theme = { breakpoints: ['25em', '50em', '65em'] };
+  const theme = {
+    name: 'test',
+    screens: {
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+    },
+    components: {},
+  };
   const wrapper = ({ children }: { children?: ReactNode }) => (
     <ThemeProvider theme={theme}>{children}</ThemeProvider>
   );
@@ -71,9 +79,9 @@ test('uses breakpoints from theme', () => {
 
 test('responds to resize event', () => {
   window.matchMedia = mockMatchMedia([
-    'screen and (min-width: 40em)',
-    'screen and (min-width: 52em)',
-    'screen and (min-width: 64em)',
+    'screen and (min-width: 640px)',
+    'screen and (min-width: 768px)',
+    'screen and (min-width: 1024px)',
   ]);
 
   let resize: Function;
@@ -87,13 +95,13 @@ test('responds to resize event', () => {
   expect(result.current).toEqual('four');
 
   window.matchMedia = mockMatchMedia([
-    'screen and (min-width: 40em)',
-    'screen and (min-width: 52em)',
+    'screen and (min-width: 640px)',
+    'screen and (min-width: 768px)',
   ]);
   act(() => resize());
   expect(result.current).toEqual('three');
 
-  window.matchMedia = mockMatchMedia(['screen and (min-width: 40em)']);
+  window.matchMedia = mockMatchMedia(['screen and (min-width: 640px)']);
   act(() => resize());
   expect(result.current).toEqual('two');
 
@@ -113,7 +121,7 @@ test('throws if default index is below 0', () => {
   );
 
   expect(result.error).toMatchInlineSnapshot(
-    `[RangeError: Default breakpoint index is out of bounds. Theme has 4 breakpoints, default is -1.]`
+    `[RangeError: Default breakpoint index is out of bounds. Theme has 6 breakpoints, default is -1.]`
   );
 });
 
@@ -128,6 +136,6 @@ test('throws if default index is out of bounds', () => {
   );
 
   expect(result.error).toMatchInlineSnapshot(
-    `[RangeError: Default breakpoint index is out of bounds. Theme has 4 breakpoints, default is 100.]`
+    `[RangeError: Default breakpoint index is out of bounds. Theme has 6 breakpoints, default is 100.]`
   );
 });

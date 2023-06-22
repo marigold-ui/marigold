@@ -1,24 +1,24 @@
 import React, { ReactNode } from 'react';
 import {
-  Box,
-  useComponentStyles,
-  ThemeComponentProps,
-  ThemeExtension,
-  CSSObject,
+  useClassNames,
+  cn,
+  createVar,
+  TextAlignProp,
+  textAlign,
+  useTheme,
+  get,
 } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
-// Theme Extension
-// ---------------
-export interface HeadlineThemeExtension extends ThemeExtension<'Headline'> {}
-
 // Props
 // ---------------
-export interface HeadlineProps extends ThemeComponentProps, HtmlProps<'h1'> {
+export interface HeadlineProps extends HtmlProps<'h1'>, TextAlignProp {
   children?: ReactNode;
   level?: '1' | '2' | '3' | '4' | '5' | '6';
-  align?: CSSObject['textAlign'];
   color?: string;
+  variant?: string;
+  size?: string;
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }
 
 // Component
@@ -27,22 +27,33 @@ export const Headline = ({
   children,
   variant,
   size,
-  align,
+  align = 'left',
   color,
   level = '1',
+  as = `h${level}`,
   ...props
 }: HeadlineProps) => {
-  const styles = useComponentStyles('Headline', {
+  const theme = useTheme();
+  const classNames = useClassNames({
+    component: 'Headline',
     variant,
     size: size ?? `level-${level}`,
   });
+
+  const Component = as;
+
   return (
-    <Box
-      as={`h${level}`}
+    <Component
       {...props}
-      css={[styles, { color, textAlign: align }]}
+      className={cn(classNames, 'text-[--color]', textAlign[align])}
+      style={createVar({
+        color:
+          color &&
+          theme.colors &&
+          get(theme.colors, color.replace('-', '.'), color /* fallback */),
+      })}
     >
       {children}
-    </Box>
+    </Component>
   );
 };

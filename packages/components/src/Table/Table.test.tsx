@@ -1,35 +1,33 @@
 import React, { useState } from 'react';
 import { SortDescriptor } from '@react-types/shared';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { fireEvent, screen } from '@testing-library/react';
 
+import { cva } from 'class-variance-authority';
+import { Theme } from '@marigold/system';
+
+import { setup } from '../test.utils';
 import { Table } from './Table';
 
 // Setup
 // ---------------
-const theme = {
-  space: {
-    none: 'none',
-    small: '4px',
-    large: '16px',
-  },
-  ...{
-    components: {
-      Table: {
-        base: {
-          table: { borderCollapse: 'collapse' },
-          header: {
-            p: 'small',
-          },
-          row: { backgroundColor: 'blue' },
-          cell: {
-            p: 'large',
-          },
-        },
-      },
+const theme: Theme = {
+  name: 'test',
+  components: {
+    Checkbox: {
+      checkbox: cva(),
+      container: cva(),
+      label: cva(),
+    },
+    Table: {
+      table: cva('border-collapse'),
+      header: cva('p-4'),
+      row: cva('bg-blue-700'),
+      cell: cva('p-10'),
     },
   },
 };
+
+const { render } = setup({ theme });
 
 const columns = [
   { name: 'Name', key: 'name' },
@@ -79,74 +77,68 @@ test('renders contens correctly', () => {
 
 test('supports theme with parts', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Table aria-label="Example table" selectionMode="single">
-        <Table.Header columns={columns}>
-          {column => <Table.Column>{column.name}</Table.Column>}
-        </Table.Header>
-        <Table.Body items={rows}>
-          {item => (
-            <Table.Row>
-              {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table>
-    </ThemeProvider>
+    <Table aria-label="Example table" selectionMode="single">
+      <Table.Header columns={columns}>
+        {column => <Table.Column>{column.name}</Table.Column>}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {item => (
+          <Table.Row>
+            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          </Table.Row>
+        )}
+      </Table.Body>
+    </Table>
   );
   const table = screen.getAllByRole('grid');
-  expect(table[0]).toHaveStyle(`border-collapse: collapse`);
+  expect(table[0]).toHaveClass(`border-collapse`);
 
   const tableHeader = screen.getAllByRole('columnheader');
-  expect(tableHeader[0]).toHaveStyle(`padding: 4px`);
+  expect(tableHeader[0]).toHaveClass(`p-4`);
 
   const tableRows = screen.getAllByRole('row');
   fireEvent.click(tableRows[1]);
-  expect(tableRows[1]).toHaveStyle(`background-color: blue`);
+  expect(tableRows[1]).toHaveClass(`bg-blue-700`);
 
   const tableCells = screen.getAllByRole('gridcell');
-  expect(tableCells[0]).toHaveStyle(`padding: 16px`);
+  expect(tableCells[0]).toHaveClass(`p-10`);
 });
 
 test('supports selectionMode single', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Table aria-label="Example table" selectionMode="single">
-        <Table.Header columns={columns}>
-          {column => <Table.Column>{column.name}</Table.Column>}
-        </Table.Header>
-        <Table.Body items={rows}>
-          {item => (
-            <Table.Row>
-              {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table>
-    </ThemeProvider>
+    <Table aria-label="Example table" selectionMode="single">
+      <Table.Header columns={columns}>
+        {column => <Table.Column>{column.name}</Table.Column>}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {item => (
+          <Table.Row>
+            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          </Table.Row>
+        )}
+      </Table.Body>
+    </Table>
   );
   const firstRow = screen.getAllByRole('row')[1];
   fireEvent.click(firstRow);
   expect(firstRow).toHaveAttribute('aria-selected', 'true');
-  expect(firstRow).toHaveStyle(`background-color: blue`);
+  expect(firstRow).toHaveClass(`bg-blue-700`);
 });
 
 test('supports selectionMode multiple', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Table aria-label="Example table" selectionMode="multiple">
-        <Table.Header columns={columns}>
-          {column => <Table.Column>{column.name}</Table.Column>}
-        </Table.Header>
-        <Table.Body items={rows}>
-          {item => (
-            <Table.Row>
-              {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table>
-    </ThemeProvider>
+    <Table aria-label="Example table" selectionMode="multiple">
+      <Table.Header columns={columns}>
+        {column => <Table.Column>{column.name}</Table.Column>}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {item => (
+          <Table.Row>
+            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          </Table.Row>
+        )}
+      </Table.Body>
+    </Table>
   );
 
   // select two rows
@@ -163,28 +155,26 @@ test('supports selectionMode multiple', () => {
 
 test('supports colspans', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Table aria-label="Example table for nested columns">
-        <Table.Header>
-          <Table.Column title="Name">
-            <Table.Column isRowHeader>First Name</Table.Column>
-            <Table.Column isRowHeader>Last Name</Table.Column>
-          </Table.Column>
-          <Table.Column title="Information">
-            <Table.Column>Age</Table.Column>
-            <Table.Column>Birthday</Table.Column>
-          </Table.Column>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>Sam</Table.Cell>
-            <Table.Cell>Smith</Table.Cell>
-            <Table.Cell>36</Table.Cell>
-            <Table.Cell>May 3</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
-    </ThemeProvider>
+    <Table aria-label="Example table for nested columns">
+      <Table.Header>
+        <Table.Column title="Name">
+          <Table.Column isRowHeader>First Name</Table.Column>
+          <Table.Column isRowHeader>Last Name</Table.Column>
+        </Table.Column>
+        <Table.Column title="Information">
+          <Table.Column>Age</Table.Column>
+          <Table.Column>Birthday</Table.Column>
+        </Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>Sam</Table.Cell>
+          <Table.Cell>Smith</Table.Cell>
+          <Table.Cell>36</Table.Cell>
+          <Table.Cell>May 3</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
   );
 
   const nameHeader = screen.getByText('Name');
@@ -195,16 +185,15 @@ test('supports colspans', () => {
 });
 
 test('sorting', () => {
-  const data = [
-    {
-      name: 'Apple',
-      amount: 32,
-    },
-    { name: 'Orange', amount: 11 },
-    { name: 'Banana', amount: 24 },
-  ];
-
   const SortingTable = () => {
+    const data = [
+      {
+        name: 'Apple',
+        amount: 32,
+      },
+      { name: 'Orange', amount: 11 },
+      { name: 'Banana', amount: 24 },
+    ];
     const [list, setList] = useState(data);
     const [descriptor, setDescriptor] = useState<SortDescriptor>({});
     const sort = ({ column, direction }: SortDescriptor) => {
@@ -246,7 +235,6 @@ test('sorting', () => {
       </Table>
     );
   };
-
   render(<SortingTable />);
 
   const rows = screen.getAllByRole('row');
@@ -273,24 +261,22 @@ test('sorting', () => {
   expect(sortedRows[3].textContent).toContain('Apple');
 });
 
-test('allows to strecht to fit container', () => {
+test('allows to stretch to fit container', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Table aria-label="Streched table" stretch>
-        <Table.Header>
-          <Table.Column>Name</Table.Column>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>Alice</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
-    </ThemeProvider>
+    <Table aria-label="Streched table" stretch>
+      <Table.Header>
+        <Table.Column>Name</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>Alice</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
   );
 
   const table = screen.getAllByRole('grid');
-  expect(table[0]).toHaveStyle(`width: 100%`);
+  expect(table[0]).toHaveClass(`w-full`);
 });
 
 test('supports non-interactive table', async () => {
@@ -315,8 +301,9 @@ test('supports non-interactive table', async () => {
   );
 
   const rows = screen.getAllByRole('row');
-  expect(rows[1]).toHaveStyle('cursor: text');
-  expect(rows[2]).toHaveStyle('cursor: text'); // Disabled, but still selectable text
+
+  expect(rows[1]).toHaveClass('cursor-text');
+  expect(rows[2]).toHaveClass('cursor-text'); // Disabled, but still selectable text
 });
 
 test('cursor indicates interactivity', async () => {
@@ -341,8 +328,8 @@ test('cursor indicates interactivity', async () => {
   );
 
   const rows = screen.getAllByRole('row');
-  expect(rows[1]).toHaveStyle('cursor: pointer');
-  expect(rows[2]).toHaveStyle('cursor: default');
+  expect(rows[1]).toHaveClass('cursor-pointer');
+  expect(rows[2]).toHaveClass('cursor-default');
 });
 
 test('Table cell mouse down will not be selectable', () => {

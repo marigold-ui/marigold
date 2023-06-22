@@ -13,6 +13,7 @@ const base = {
 
   // transform
   transform: {
+    '^.+\\.css$': ['jest-transform-css', { modules: true }],
     '^.+\\.(t|j)sx?$': [
       '@swc/jest',
       {
@@ -44,6 +45,7 @@ const base = {
   ],
 
   clearMocks: true,
+
   snapshotFormat: {
     printBasicPrototype: false,
   },

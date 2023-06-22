@@ -1,20 +1,40 @@
 import React, { ReactNode } from 'react';
-import { Box, ResponsiveStyleValue } from '@marigold/system';
+import {
+  PaddingSpacePropX,
+  PaddingSpacePropY,
+  PaddingSpaceProp,
+  paddingSpace,
+  paddingSpaceX,
+  paddingSpaceY,
+  cn,
+} from '@marigold/system';
 
 export type InsetProps =
   | {
       children: ReactNode;
       space?: never;
-      spaceX?: ResponsiveStyleValue<string>;
-      spaceY?: ResponsiveStyleValue<string>;
+      spaceX?: PaddingSpacePropX['spaceX'];
+      spaceY?: PaddingSpacePropY['spaceY'];
     }
   | {
       children: ReactNode;
-      space?: ResponsiveStyleValue<string>;
+      space?: PaddingSpaceProp['space'];
       spaceX?: never;
       spaceY?: never;
     };
 
-export const Inset = ({ space, spaceX, spaceY, children }: InsetProps) => (
-  <Box css={space ? { p: space } : { px: spaceX, py: spaceY }}>{children}</Box>
+export const Inset = ({
+  space = 0,
+  spaceX = 0,
+  spaceY = 0,
+  children,
+}: InsetProps) => (
+  <div
+    className={cn(
+      space ? paddingSpace[space] : paddingSpaceX[spaceX],
+      paddingSpaceY[spaceY]
+    )}
+  >
+    {children}
+  </div>
 );

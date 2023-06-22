@@ -14,7 +14,6 @@ import { Container } from '../Container';
 import { Footer } from '../Footer';
 import { Header } from '../Header';
 import { Checkbox, CheckboxGroup } from '../Checkbox';
-import { Box } from '@marigold/system';
 import { Menu } from '../Menu';
 
 const meta = {
@@ -72,10 +71,10 @@ export const Form: Story = {
             {({ close, titleProps }) => (
               <>
                 <Headline {...titleProps}>Please log into account</Headline>
-                <Stack space="small">
+                <Stack space={4}>
                   <TextField label="Username" />
                   <TextField label="Password" type="password" />
-                  <Inline space="medium">
+                  <Inline space={4}>
                     <Button variant="ghost" onPress={close}>
                       Cancel
                     </Button>
@@ -113,16 +112,9 @@ export const ScrollableContent: Story = {
             <Headline id="my-cool-headline">This is a headline!</Headline>
           </Header>
           <Body>
-            <Stack space="small">
+            <Stack space={2}>
               <Text>This is some not so very long text.</Text>
-              <Box
-                css={{
-                  pl: 'small',
-                  pb: 'xsmall',
-                  maxHeight: '200px',
-                  overflowY: 'auto',
-                }}
-              >
+              <div className="max-h-[200px] overflow-y-auto pb-2 pl-2">
                 <CheckboxGroup>
                   <Checkbox>One</Checkbox>
                   <Checkbox>Two</Checkbox>
@@ -135,7 +127,7 @@ export const ScrollableContent: Story = {
                   <Checkbox>Nine</Checkbox>
                   <Checkbox>Ten</Checkbox>
                 </CheckboxGroup>
-              </Box>
+              </div>
             </Stack>
           </Body>
           <Footer>
@@ -152,12 +144,12 @@ export const StickyFooter: Story = {
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
       <Dialog closeButton aria-labelledby="my-cool-headline">
-        <Box css={{ display: 'flex', flexDirection: 'column', maxHeight: 400 }}>
+        <div className="flex max-h-[400px] flex-col">
           <Header>
             <Headline id="my-cool-headline">This is a headline!</Headline>
             <Text>This is some additional text that is always visible!</Text>
           </Header>
-          <Box css={{ flex: 1, overflowY: 'auto', maxWidth: 400 }}>
+          <div className="max-w-[400px] flex-1 overflow-y-auto">
             <Body>
               <Text>
                 Pellentesque habitant morbi tristique senectus et netus et
@@ -175,11 +167,11 @@ export const StickyFooter: Story = {
                 accumsan porttitor, facilisis luctus, metus
               </Text>
             </Body>
-          </Box>
+          </div>
           <Footer>
             <Button variant="primary">Ok</Button>
           </Footer>
-        </Box>
+        </div>
       </Dialog>
     </Dialog.Trigger>
   ),
@@ -215,7 +207,7 @@ export const WithDialogController: Story = {
         <Dialog.Controller open={open} onOpenChange={setDialogOpen}>
           <Dialog closeButton>
             {({ close, titleProps }) => (
-              <Stack space="medium">
+              <Stack space={5}>
                 <Header>
                   <Headline {...titleProps}>Confirm delete</Headline>
                 </Header>
@@ -223,7 +215,7 @@ export const WithDialogController: Story = {
                   <Text>Do you really wanna delete this?</Text>
                 </Body>
                 <Footer>
-                  <Inline space="medium">
+                  <Inline space={5}>
                     <Button size="small" variant="ghost" onPress={close}>
                       Cancel
                     </Button>

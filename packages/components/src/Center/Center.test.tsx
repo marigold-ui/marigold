@@ -1,55 +1,55 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { ThemeProvider } from '@marigold/system';
-
-import { Box } from '../Box';
 import { Center } from './Center';
 
-const theme = {
-  sizes: {
-    none: 0,
-    large: 120,
-  },
-  space: {
-    none: 0,
-    medium: 16,
-  },
-};
-
-test('supports maxWidth', () => {
+test('supports classnames per default and maxWidth prop', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Center maxWidth="50ch" data-testid="center">
-        <Box>content</Box>
-      </Center>
-    </ThemeProvider>
+    <Center maxWidth="50ch" data-testid="center">
+      <div>content</div>
+    </Center>
   );
   const center = screen.getByTestId(/center/);
-  expect(center).toHaveStyle(`maxInlineSize: 50ch`);
+  expect(center).toMatchInlineSnapshot(`
+    <div
+      class="me-[auto] ms-[auto] box-content flex flex-col items-center justify-center gap-0 max-w-[--maxWidth]"
+      data-testid="center"
+      style="--maxWidth: 50ch;"
+    >
+      <div>
+        content
+      </div>
+    </div>
+  `);
 });
 
 test('supports maxWidth from theme sizes', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Center maxWidth="large" data-testid="center">
-        <Box>content</Box>
-      </Center>
-    </ThemeProvider>
+    <Center maxWidth="300px" data-testid="center">
+      <div>content</div>
+    </Center>
   );
   const center = screen.getByTestId(/center/);
-  expect(center).toHaveStyle(`maxInlineSize: 120px`);
+  expect(center).toMatchInlineSnapshot(`
+    <div
+      class="me-[auto] ms-[auto] box-content flex flex-col items-center justify-center gap-0 max-w-[--maxWidth]"
+      data-testid="center"
+      style="--maxWidth: 300px;"
+    >
+      <div>
+        content
+      </div>
+    </div>
+  `);
 });
 
 test('supports space prop', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Center space="medium" data-testid="center">
-        <Box>content</Box>
-        <Box>content2</Box>
-      </Center>
-    </ThemeProvider>
+    <Center space={3} data-testid="center">
+      <div>content</div>
+      <div>content2</div>
+    </Center>
   );
   const center = screen.getByTestId(/center/);
-  expect(center).toHaveStyle(`gap: 16px`);
+  expect(center).toHaveClass(`gap-3`);
 });

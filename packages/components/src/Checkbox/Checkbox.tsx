@@ -5,27 +5,10 @@ import { useHover } from '@react-aria/interactions';
 import { useObjectRef } from '@react-aria/utils';
 import { useToggleState } from '@react-stately/toggle';
 import { AriaCheckboxProps } from '@react-types/checkbox';
-
-import {
-  Box,
-  CSSObject,
-  StateAttrProps,
-  ThemeComponentProps,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-  useStateProps,
-} from '@marigold/system';
+import { StateAttrProps, useStateProps } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
-
 import { useCheckboxGroupContext } from './CheckboxGroup';
-
-// Theme Extension
-// ---------------
-export interface CheckboxThemeExtension
-  extends ThemeExtensionsWithParts<
-    'Checkbox',
-    ['container', 'label', 'checkbox']
-  > {}
+import { useClassNames, cn } from '@marigold/system';
 
 // SVG Icon
 // ---------------
@@ -50,32 +33,28 @@ const IndeterminateMark = () => (
 );
 
 interface IconProps extends StateAttrProps {
-  css?: CSSObject;
   checked?: boolean;
   indeterminate?: boolean;
+  className?: string;
 }
 
-const Icon = ({ css, checked, indeterminate, ...props }: IconProps) => (
-  <Box
-    aria-hidden="true"
-    __baseCSS={{
-      flex: '0 0 16px',
-      width: 16,
-      height: 16,
-      bg: '#fff',
-      border: '1px solid #000',
-      borderRadius: 3,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      p: 1,
-    }}
-    css={css}
-    {...props}
-  >
-    {indeterminate ? <IndeterminateMark /> : checked ? <CheckMark /> : null}
-  </Box>
-);
+const Icon = ({ className, checked, indeterminate, ...props }: IconProps) => {
+  return (
+    <div
+      aria-hidden="true"
+      className={cn(
+        'flex shrink-0 grow-0 basis-4 items-center justify-center',
+        'h-4 w-4 p-px',
+        'bg-white',
+        'rounded-[3px] border border-solid border-black',
+        className
+      )}
+      {...props}
+    >
+      {indeterminate ? <IndeterminateMark /> : checked ? <CheckMark /> : null}
+    </div>
+  );
+};
 
 // Props
 // ---------------
@@ -92,8 +71,7 @@ export type CustomCheckboxProps =
   | 'onKeyUp';
 
 export interface CheckboxProps
-  extends ThemeComponentProps,
-    Omit<
+  extends Omit<
       HtmlProps<'input'>,
       'size' | 'type' | 'defaultValue' | CustomCheckboxProps
     >,
@@ -101,6 +79,8 @@ export interface CheckboxProps
   children?: ReactNode;
   indeterminate?: boolean;
   error?: boolean;
+  variant?: string;
+  size?: string;
 }
 
 // Component
@@ -170,16 +150,10 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         );
     /* eslint-enable react-hooks/rules-of-hooks */
 
-    const styles = useComponentStyles(
-      'Checkbox',
-      {
-        variant,
-        size,
-      },
-      { parts: ['container', 'label', 'checkbox'] }
-    );
-
-    const { hoverProps, isHovered } = useHover({});
+    const classNames = useClassNames({ component: 'Checkbox', variant, size });
+    const { hoverProps, isHovered } = useHover({
+      isDisabled: inputProps.disabled,
+    });
     const { isFocusVisible, focusProps } = useFocusRing();
     const stateProps = useStateProps({
       hover: isHovered,
@@ -192,46 +166,29 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     });
 
     return (
-      <Box
-        as="label"
-        __baseCSS={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '1ch',
-          position: 'relative',
-        }}
-        css={styles.container}
+      <label
+        className={cn(
+          'group/checkbox relative flex items-center gap-[1ch]',
+          classNames.container
+        )}
         {...hoverProps}
         {...stateProps}
       >
-        <Box
-          as="input"
+        <input
           ref={inputRef}
-          css={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            top: 0,
-            left: 0,
-            zIndex: 1,
-            opacity: 0.0001,
-            cursor: inputProps.disabled ? 'not-allowed' : 'pointer',
-          }}
+          className="z-1 absolute left-0 top-0 h-full w-full cursor-pointer opacity-[0.0001] group-disabled/checkbox:cursor-not-allowed"
           {...inputProps}
           {...focusProps}
         />
         <Icon
           checked={inputProps.checked}
           indeterminate={indeterminate}
-          css={styles.checkbox}
-          {...stateProps}
+          className={classNames.checkbox}
         />
         {props.children && (
-          <Box css={styles.label} {...stateProps}>
-            {props.children}
-          </Box>
+          <div className={classNames.label}>{props.children}</div>
         )}
-      </Box>
+      </label>
     );
   }
 );

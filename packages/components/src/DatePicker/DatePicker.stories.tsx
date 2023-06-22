@@ -53,13 +53,11 @@ export const Basic: Story = {
   render: args => {
     return (
       <I18nProvider locale="de-DE">
-        <div style={{ maxWidth: '300px' }}>
-          <DatePicker
-            label="Date Picker"
-            description="This is description"
-            {...args}
-          />
-        </div>
+        <DatePicker
+          label="Date Picker"
+          description="This is description"
+          {...args}
+        />
       </I18nProvider>
     );
   },
@@ -71,7 +69,7 @@ export const Controlled: Story = {
 
     return (
       <I18nProvider locale="de-DE">
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        <div className="flex items-center gap-4">
           <DatePicker
             label="Date Picker"
             value={value}

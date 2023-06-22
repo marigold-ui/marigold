@@ -1,12 +1,6 @@
 import React from 'react';
 import { HtmlProps } from '@marigold/types';
-import { useComponentStyles, ThemeExtension } from '@marigold/system';
-
-import { Box } from '../Box';
-
-// Theme Extension
-// ---------------
-export interface BadgeThemeExtension extends ThemeExtension<'Badge'> {}
+import { useClassNames } from '@marigold/system';
 
 // Props
 // ---------------
@@ -19,10 +13,11 @@ export interface BadgeProps extends HtmlProps<'div'> {
 // Component
 // ---------------
 export const Badge = ({ variant, size, children, ...props }: BadgeProps) => {
-  const styles = useComponentStyles('Badge', { variant, size });
+  const classNames = useClassNames({ component: 'Badge', variant, size });
+
   return (
-    <Box {...props} css={styles}>
+    <div {...props} className={classNames}>
       {children}
-    </Box>
+    </div>
   );
 };

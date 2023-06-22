@@ -5,12 +5,6 @@ import { useFilter } from '@react-aria/i18n';
 import { useComboBoxState } from '@react-stately/combobox';
 import { Item } from '@react-stately/collections';
 import { SearchAutocompleteProps } from '@react-types/autocomplete';
-import {
-  CSSObject,
-  SVG,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-} from '@marigold/system';
 
 import { FieldBase } from '../FieldBase';
 import { Input } from '../Input';
@@ -19,22 +13,19 @@ import { Popover } from '../Overlay';
 
 import { ClearButton } from './ClearButton';
 
-// Theme Extension
-// ---------------
-export interface AutocompleteThemeExtension
-  extends ThemeExtensionsWithParts<'Autocomplete', ['icon', 'clear']> {}
-
 // Search Icon
 // ---------------
-const SearchIcon = ({ css }: { css: CSSObject }) => (
-  <SVG
+const SearchIcon = (props: { className?: string }) => (
+  <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="currentColor"
-    css={css}
+    width={24}
+    height={24}
+    {...props}
   >
     <path d="M16.1865 14.5142H15.3057L14.9936 14.2131C16.0862 12.9421 16.744 11.292 16.744 9.497C16.744 5.49443 13.4996 2.25 9.497 2.25C5.49443 2.25 2.25 5.49443 2.25 9.497C2.25 13.4996 5.49443 16.744 9.497 16.744C11.292 16.744 12.9421 16.0862 14.2131 14.9936L14.5142 15.3057V16.1865L20.0888 21.75L21.75 20.0888L16.1865 14.5142ZM9.49701 14.5142C6.72085 14.5142 4.47986 12.2732 4.47986 9.49701C4.47986 6.72085 6.72085 4.47986 9.49701 4.47986C12.2732 4.47986 14.5142 6.72085 14.5142 9.49701C14.5142 12.2732 12.2732 14.5142 9.49701 14.5142Z" />
-  </SVG>
+  </svg>
 );
 
 // Props
@@ -130,12 +121,6 @@ export const Autocomplete = ({
   const errorMessageProps = { 'aria-invalid': error };
   const { isDisabled, ...restClearButtonProps } = clearButtonProps;
 
-  const styles = useComponentStyles(
-    'Autocomplete',
-    { variant, size },
-    { parts: ['icon', 'clear'] }
-  );
-
   return (
     <>
       <FieldBase
@@ -155,16 +140,15 @@ export const Autocomplete = ({
            */
           {...(inputProps as any)}
           ref={inputRef}
-          icon={<SearchIcon css={{ height: 16, width: 16, ...styles.icon }} />}
+          icon={<SearchIcon />}
           action={
             state.inputValue !== '' ? (
               <ClearButton
                 preventFocus
                 disabled={isDisabled}
-                css={styles.clear}
                 {...restClearButtonProps}
               />
-            ) : undefined
+            ) : null
           }
         />
       </FieldBase>

@@ -5,7 +5,7 @@ import { mergeProps } from '@react-aria/utils';
 import { TreeState } from '@react-stately/tree';
 import { Node } from '@react-types/shared';
 
-import { Box, CSSObject, useStateProps } from '@marigold/system';
+import { useStateProps } from '@marigold/system';
 
 import { useMenuContext } from './Context';
 
@@ -13,10 +13,15 @@ export interface MenuItemProps {
   item: Node<object>;
   state: TreeState<object>;
   onAction?: (key: Key) => void;
-  css?: CSSObject;
+  className?: string;
 }
 
-export const MenuItem = ({ item, state, onAction, css }: MenuItemProps) => {
+export const MenuItem = ({
+  item,
+  state,
+  onAction,
+  className,
+}: MenuItemProps) => {
   const ref = useRef(null);
   const { onClose } = useMenuContext();
 
@@ -35,20 +40,19 @@ export const MenuItem = ({ item, state, onAction, css }: MenuItemProps) => {
     focus: isFocusVisible,
   });
   const { onPointerUp, ...props } = menuItemProps;
+
   return (
-    <Box
-      as="li"
+    <li
       ref={ref}
-      __baseCSS={{
-        '&:focus': {
-          outline: 0,
-        },
-      }}
-      css={css}
-      {...mergeProps(props, { onPointerDown: onPointerUp }, focusProps)}
-      {...stateProps}
+      className={className}
+      {...mergeProps(
+        props,
+        { onPointerDown: onPointerUp },
+        stateProps,
+        focusProps
+      )}
     >
       {item.rendered}
-    </Box>
+    </li>
   );
 };

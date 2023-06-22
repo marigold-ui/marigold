@@ -12,31 +12,41 @@ const meta = {
       },
       description: 'The variant of the text',
     },
+    align: {
+      control: {
+        type: 'text',
+      },
+      description: 'The align of the text',
+    },
+    fontSize: {
+      control: {
+        type: 'text',
+      },
+      description: 'The font size of the text',
+    },
+    weight: {
+      control: {
+        type: 'text',
+      },
+      description: 'The font weight of the text',
+    },
     color: {
       control: {
         type: 'text',
       },
-      description: 'Text color',
-      table: {
-        defaultValue: {
-          summary: 'inherit',
-        },
-      },
+      description: 'The color of the text',
     },
-    size: {
+    fontStyle: {
       control: {
-        type: 'select',
+        type: 'text',
       },
-      options: [
-        undefined,
-        'xxsmall',
-        'xsmall',
-        'small',
-        'medium',
-        'large',
-        'xlarge',
-      ],
-      description: 'Text size',
+      description: 'The font style of the text',
+    },
+    cursor: {
+      control: {
+        type: 'text',
+      },
+      description: 'The cursor for the text',
     },
   },
 } satisfies Meta<typeof Text>;

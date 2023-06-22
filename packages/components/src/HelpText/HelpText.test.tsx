@@ -1,37 +1,31 @@
 import React from 'react';
-import { render, screen, within } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { cva } from 'class-variance-authority';
+import { screen, within } from '@testing-library/react';
+import { Theme } from '@marigold/system';
 import { HelpText } from './HelpText';
 
-const theme = {
-  sizes: {
-    none: 0,
-    small: 20,
-  },
-  colors: {
-    text: 'black',
-    error: 'red',
-    disabled: 'grey',
-  },
+import { setup } from '../test.utils';
+
+const theme: Theme = {
+  name: 'test',
   components: {
     HelpText: {
-      base: {
-        container: {
-          color: 'text',
-          '&:disabled': {
-            color: 'disabled',
+      container: cva('', {
+        variants: {
+          variant: {
+            lime: 'text-lime-600',
           },
-          '&:error': {
-            color: 'red',
+          size: {
+            small: 'p-2',
           },
         },
-        icon: {
-          size: 'small',
-        },
-      },
+      }),
+      icon: cva('h-3 w-3'),
     },
   },
 };
+
+const { render } = setup({ theme });
 
 test('render description', () => {
   render(<HelpText description="This is a help text description" />);
@@ -57,16 +51,14 @@ test('render description even if error message is defined', () => {
 
 test('uses description base styles', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <HelpText
-        data-testid="help-text"
-        description="This is a help text description"
-      />
-    </ThemeProvider>
+    <HelpText
+      data-testid="help-text"
+      description="This is a help text description"
+    />
   );
 
   const element = screen.getByTestId('help-text');
-  expect(element).toHaveStyle(`color: ${theme.colors.text}`);
+  expect(element.className).toMatchInlineSnapshot(`"flex items-center gap-1"`);
 });
 
 test('renders error message when error is set', () => {
@@ -85,23 +77,6 @@ test('renders error message when error is set', () => {
   expect(descrption).not.toBeInTheDocument();
 });
 
-test('uses &:error styles when error state is set', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <HelpText
-        data-testid="help-text"
-        data-error
-        error={true}
-        description="This is a help text description"
-        errorMessage="Something went wrong"
-      />
-    </ThemeProvider>
-  );
-
-  const element = screen.getByTestId('help-text');
-  expect(element).toHaveStyle(`color: ${theme.colors.error}`);
-});
-
 test('renders icon when when error message is shown', () => {
   render(
     <HelpText
@@ -117,11 +92,12 @@ test('renders icon when when error message is shown', () => {
   expect(icon).toBeInTheDocument();
 });
 
-test('icon has a default size', () => {
+test('icon styles via theme', () => {
   render(
     <HelpText
       data-testid="help-text"
       error={true}
+      size="small"
       description="This is a help text description"
       errorMessage="Something went wrong"
     />
@@ -129,38 +105,8 @@ test('icon has a default size', () => {
 
   const element = screen.getByTestId('help-text');
   const icon = within(element).getByRole('presentation');
-  expect(icon).toHaveStyle(`width: 16px`);
-});
 
-test('icon can be sized via theme', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <HelpText
-        data-testid="help-text"
-        error={true}
-        description="This is a help text description"
-        errorMessage="Something went wrong"
-      />
-    </ThemeProvider>
+  expect(icon.getAttribute('class')).toMatchInlineSnapshot(
+    `"flex-none fill-current h-3 w-3"`
   );
-
-  const element = screen.getByTestId('help-text');
-  const icon = within(element).getByRole('presentation');
-  expect(icon).toHaveStyle(`width: ${theme.sizes.small}px`);
-});
-
-test('uses disabled variant when disabled is set', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <HelpText
-        data-testid="help-text"
-        data-disabled
-        disabled={true}
-        description="This is a help text description"
-      />
-    </ThemeProvider>
-  );
-
-  const element = screen.getByTestId('help-text');
-  expect(element).toHaveStyle(`color: ${theme.colors.disabled}`);
 });

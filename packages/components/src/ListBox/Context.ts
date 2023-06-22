@@ -1,10 +1,8 @@
 import { createContext, useContext } from 'react';
-import { ComponentStyleParts } from '@marigold/system';
 
+// TVSlots or SlotsClassValue oder ClassValue ????
 export interface ListBoxContextProps {
-  styles: ComponentStyleParts<
-    ['container', 'list', 'option', 'section', 'sectionTitle']
-  >;
+  classNames: any;
 }
 
 export const ListBoxContext = createContext<ListBoxContextProps>({} as any);

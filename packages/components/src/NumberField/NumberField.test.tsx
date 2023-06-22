@@ -1,120 +1,45 @@
 import React from 'react';
-import { render, screen, within } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { screen, within } from '@testing-library/react';
+import { Theme } from '@marigold/system';
 
 import { NumberField } from './NumberField';
 import userEvent from '@testing-library/user-event';
 
-const theme = {
-  colors: {
-    black: '#111',
-    gray: '#868e96',
-    blue: '#00f',
-    lime: '#82c91e',
-    red: '#c92a2a',
-  },
-  fontSizes: {
-    'small-1': 12,
-    'large-1': 24,
-  },
-  sizes: {
-    none: 0,
-    huge: 120,
-  },
+import { cva } from 'class-variance-authority';
+import { setup } from '../test.utils';
+
+const theme: Theme = {
+  name: 'NumberField testing',
   components: {
-    Label: {
-      variant: {
-        lime: {
-          color: 'lime',
-        },
-      },
-      size: {
-        small: {
-          fontSize: 'small-1',
-        },
-      },
+    NumberField: {
+      group: cva('rounded-sm border border-solid border-black'),
+      stepper: cva('w-3.5 text-green-600'),
     },
+
+    Field: cva(''),
+    Label: { container: cva(), indicator: cva() },
     HelpText: {
-      variant: {
-        lime: {
-          container: {
-            color: 'lime',
+      container: cva('', {
+        variants: {
+          variant: {
+            lime: 'text-lime-600',
+          },
+          size: {
+            small: 'p-2',
           },
         },
-      },
-      size: {
-        small: {
-          container: {
-            fontSize: 'small-1',
-          },
-        },
-      },
+      }),
+      icon: cva(''),
     },
     Input: {
-      base: {
-        borderColor: 'blue',
-      },
-      variant: {
-        lime: {
-          color: 'lime',
-        },
-      },
-      size: {
-        small: {
-          fontSize: 'small-1',
-        },
-      },
-    },
-    NumberField: {
-      base: {
-        group: {
-          borderColor: 'blue',
-
-          '&:hover': {
-            borderColor: 'lime',
-          },
-
-          '&:focus': {
-            outline: '1px solid',
-            outlineColor: 'blue',
-          },
-
-          '&:disabled': {
-            bg: 'gray',
-          },
-
-          '&:error': {
-            borderColor: 'red',
-          },
-        },
-        stepper: {
-          color: 'black',
-          border: '1px solid transparent',
-
-          '&:hover': {
-            color: 'lime',
-          },
-
-          '&:disabled': {
-            color: 'gray',
-          },
-
-          '&:hover-group': {
-            borderColor: 'lime',
-          },
-
-          '&:focus-group': {
-            borderColor: 'blue',
-          },
-
-          '&:error-group': {
-            borderColor: 'red',
-          },
-        },
-      },
+      action: cva(),
+      icon: cva(),
+      input: cva(),
     },
   },
 };
+
+const { render } = setup({ theme });
 
 // Tests
 // ---------------
@@ -128,43 +53,39 @@ test('renders an input', () => {
 });
 
 test('input can be styled via "Input" styles', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <NumberField label="A Label" data-testid="number-field" />
-    </ThemeProvider>
-  );
-  const numberField = screen.getByTestId('number-field');
-  // eslint-disable-next-line testing-library/no-node-access
-  expect(numberField.parentElement?.parentElement).toHaveStyle(
-    `border-color: ${theme.colors.blue}`
+  render(<NumberField label="A Label" data-testid="number-field" />);
+  const numberFieldContainer = screen.getByTestId('number-field-container');
+  expect(numberFieldContainer).toBeInTheDocument();
+  expect(numberFieldContainer.className).toMatchInlineSnapshot(
+    `"flex items-stretch rounded-sm border border-solid border-black"`
   );
 });
 
 test('group and stepper can styled via "NumberField" styles', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <NumberField label="A Label" data-testid="number-field" />
-    </ThemeProvider>
-  );
+  render(<NumberField label="A Label" data-testid="number-field" />);
 
   const group = screen.getByRole('group');
-  expect(group).toHaveStyle(`border-color: ${theme.colors.blue}`);
+  expect(group.className).toMatchInlineSnapshot(
+    `"flex items-stretch rounded-sm border border-solid border-black"`
+  );
 
   const steppers = within(group).getAllByRole('button');
-  expect(steppers[0]).toHaveStyle(`color: ${theme.colors.black}`);
-  expect(steppers[1]).toHaveStyle(`color: ${theme.colors.black}`);
+  expect(steppers[0].className).toMatchInlineSnapshot(
+    `"flex items-center justify-center cursor-pointer data-[disabled]:cursor-not-allowed w-3.5 text-green-600"`
+  );
+  expect(steppers[1].className).toMatchInlineSnapshot(
+    `"flex items-center justify-center cursor-pointer data-[disabled]:cursor-not-allowed w-3.5 text-green-600"`
+  );
 });
 
 test('allows to set width via prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <NumberField data-testid="number-field" label="Label" width="huge" />
-    </ThemeProvider>
-  );
+  render(<NumberField data-testid="number-field" label="Label" width="huge" />);
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle(`width: ${theme.sizes.huge}px`);
+  expect(container?.className).toMatchInlineSnapshot(
+    `"group/field w-[--fieldWidth]"`
+  );
 });
 
 test('supports disabled', () => {

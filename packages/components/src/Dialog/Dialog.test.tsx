@@ -1,58 +1,50 @@
 /* eslint-disable testing-library/no-node-access */
 /* eslint-disable testing-library/no-container */
 import React, { useState } from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { OverlayProvider } from '@react-aria/overlays';
-import { ThemeProvider } from '@marigold/system';
+import { Theme } from '@marigold/system';
+
+import { cva } from 'class-variance-authority';
+
+import { setup } from '../test.utils';
 
 import { Dialog } from './Dialog';
 import { Button } from '../Button';
 import { Headline } from '../Headline';
 
-const theme = {
-  colors: {
-    green: '#2f9e44',
-    black: '#212529',
-  },
-  space: {
-    none: 'none',
-    'small-1': '4px',
-    'large-1': '16px',
-  },
+const theme: Theme = {
+  name: 'test',
   components: {
+    Button: cva(''),
     Dialog: {
-      base: {
-        container: {
-          p: 'large-1',
-        },
-        closeButton: {
-          p: 'small-1',
-        },
-      },
-      variant: {
-        custom: {
-          container: {
-            bg: 'green',
+      container: cva('p-5', {
+        variants: {
+          variant: {
+            custom: 'bg-green-400',
           },
-          closeButton: {
-            bg: 'black',
+          size: {
+            large: 'w-[400px]',
           },
         },
-      },
-      size: {
-        large: {
-          container: {
-            width: '400px',
+      }),
+      closeButton: cva('p-1', {
+        variants: {
+          variant: {
+            custom: 'bg-black',
           },
         },
-      },
+      }),
     },
+    Headline: cva(''),
+    Underlay: cva('bg-black opacity-5'),
   },
 };
 
 const user = userEvent.setup();
+const { render } = setup({ theme });
 
 let errorMock: jest.SpyInstance;
 
@@ -67,15 +59,13 @@ afterEach(() => {
 test('renders children correctly', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Dialog.Trigger>
-          <Button>Open</Button>
-          <Dialog>
-            <Headline>Headline</Headline>
-            Content
-          </Dialog>
-        </Dialog.Trigger>
-      </ThemeProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog>
+          <Headline>Headline</Headline>
+          Content
+        </Dialog>
+      </Dialog.Trigger>
     </OverlayProvider>
   );
   const button = screen.getByText('Open');
@@ -94,12 +84,10 @@ test('supports children as function', () => {
   const spy = jest.fn().mockReturnValue(<div>I am a spy!</div>);
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Dialog.Trigger>
-          <Button>Open</Button>
-          <Dialog>{spy}</Dialog>
-        </Dialog.Trigger>
-      </ThemeProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog>{spy}</Dialog>
+      </Dialog.Trigger>
     </OverlayProvider>
   );
   const button = screen.getByText('Open');
@@ -111,15 +99,13 @@ test('supports children as function', () => {
 test('dialog can be opened by button', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Dialog.Trigger>
-          <Button>Open</Button>
-          <Dialog>
-            <Headline>Headline</Headline>
-            Content
-          </Dialog>
-        </Dialog.Trigger>
-      </ThemeProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog>
+          <Headline>Headline</Headline>
+          Content
+        </Dialog>
+      </Dialog.Trigger>
     </OverlayProvider>
   );
   const button = screen.getByText('Open');
@@ -132,15 +118,13 @@ test('dialog can be opened by button', () => {
 test('optionally renders a close button', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Dialog.Trigger>
-          <Button>Open</Button>
-          <Dialog closeButton>
-            <Headline>Headline</Headline>
-            Content
-          </Dialog>
-        </Dialog.Trigger>
-      </ThemeProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog closeButton>
+          <Headline>Headline</Headline>
+          Content
+        </Dialog>
+      </Dialog.Trigger>
     </OverlayProvider>
   );
   const button = screen.getByText('Open');
@@ -158,15 +142,13 @@ test('optionally renders a close button', () => {
 test('supoorts closing the dialog with escape key', async () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Dialog.Trigger>
-          <Button>Open</Button>
-          <Dialog closeButton>
-            <Headline>Headline</Headline>
-            Content
-          </Dialog>
-        </Dialog.Trigger>
-      </ThemeProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog closeButton>
+          <Headline>Headline</Headline>
+          Content
+        </Dialog>
+      </Dialog.Trigger>
     </OverlayProvider>
   );
   const button = screen.getByText('Open');
@@ -182,15 +164,13 @@ test('supoorts closing the dialog with escape key', async () => {
 test('close Dialog by clicking on the Underlay', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Dialog.Trigger>
-          <Button>Open</Button>
-          <Dialog closeButton>
-            <Headline>Headline</Headline>
-            Content
-          </Dialog>
-        </Dialog.Trigger>
-      </ThemeProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog closeButton>
+          <Headline>Headline</Headline>
+          Content
+        </Dialog>
+      </Dialog.Trigger>
     </OverlayProvider>
   );
   const button = screen.getByText('Open');
@@ -207,14 +187,12 @@ test('close Dialog by clicking on the Underlay', () => {
 test('child function is passed a close function', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Dialog.Trigger>
-          <Button>Open</Button>
-          <Dialog>
-            {({ close }) => <button onClick={close}>Custom Close</button>}
-          </Dialog>
-        </Dialog.Trigger>
-      </ThemeProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog>
+          {({ close }) => <button onClick={close}>Custom Close</button>}
+        </Dialog>
+      </Dialog.Trigger>
     </OverlayProvider>
   );
   const button = screen.getByText('Open');
@@ -230,15 +208,13 @@ test('child function is passed a close function', () => {
 test('supports title for accessability reasons', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Dialog.Trigger>
-          <Button>Open</Button>
-          <Dialog closeButton>
-            <Headline>Headline</Headline>
-            Content
-          </Dialog>
-        </Dialog.Trigger>
-      </ThemeProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog closeButton>
+          <Headline>Headline</Headline>
+          Content
+        </Dialog>
+      </Dialog.Trigger>
     </OverlayProvider>
   );
   const button = screen.getByText('Open');
@@ -256,15 +232,13 @@ test('supports title for accessability reasons', () => {
 test('supports custom title for accessability reasons', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Dialog.Trigger>
-          <Button>Open</Button>
-          <Dialog closeButton aria-labelledby="myTitle">
-            <Headline id="myTitle">Headline</Headline>
-            Content
-          </Dialog>
-        </Dialog.Trigger>
-      </ThemeProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog closeButton aria-labelledby="myTitle">
+          <Headline id="myTitle">Headline</Headline>
+          Content
+        </Dialog>
+      </Dialog.Trigger>
     </OverlayProvider>
   );
   const button = screen.getByText('Open');
@@ -282,14 +256,12 @@ test('supports custom title for accessability reasons', () => {
 test('child function is passed an id for the dialog title (a11y)', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Dialog.Trigger>
-          <Button>Open</Button>
-          <Dialog>
-            {({ titleProps }) => <div {...titleProps}>Custom Headline</div>}
-          </Dialog>
-        </Dialog.Trigger>
-      </ThemeProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog>
+          {({ titleProps }) => <div {...titleProps}>Custom Headline</div>}
+        </Dialog>
+      </Dialog.Trigger>
     </OverlayProvider>
   );
   const button = screen.getByText('Open');
@@ -309,12 +281,10 @@ test('warns if no element to attach the title can be found', () => {
 
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Dialog.Trigger>
-          <Button>Open</Button>
-          <Dialog closeButton>Content</Dialog>
-        </Dialog.Trigger>
-      </ThemeProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog closeButton>Content</Dialog>
+      </Dialog.Trigger>
     </OverlayProvider>
   );
   const button = screen.getByText('Open');
@@ -334,15 +304,13 @@ test('warns if no element to attach the title can be found', () => {
 test('supports focus and open dialog with keyboard', async () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Dialog.Trigger>
-          <Button>Open</Button>
-          <Dialog closeButton>
-            <Headline>Headline</Headline>
-            Content
-          </Dialog>
-        </Dialog.Trigger>
-      </ThemeProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog closeButton>
+          <Headline>Headline</Headline>
+          Content
+        </Dialog>
+      </Dialog.Trigger>
     </OverlayProvider>
   );
 
@@ -355,18 +323,16 @@ test('supports focus and open dialog with keyboard', async () => {
   });
 });
 
-test('dialog has base style', () => {
+test('dialog has base classnames', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Dialog.Trigger>
-          <Button>Open</Button>
-          <Dialog closeButton>
-            <Headline>Headline</Headline>
-            Content
-          </Dialog>
-        </Dialog.Trigger>
-      </ThemeProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog closeButton>
+          <Headline>Headline</Headline>
+          Content
+        </Dialog>
+      </Dialog.Trigger>
     </OverlayProvider>
   );
   const button = screen.getByText('Open');
@@ -377,22 +343,23 @@ test('dialog has base style', () => {
 
   const closeButton = dialog.firstChild?.lastChild;
 
-  expect(closeButton).toHaveStyle(`padding: ${theme.space['small-1']}`);
-  expect(dialog).toHaveStyle(`padding: ${theme.space['large-1']}`);
+  expect(closeButton).toHaveClass(
+    'h-4 w-4 cursor-pointer border-none leading-normal outline-0 p-1'
+  );
+
+  expect(dialog).toHaveClass(`p-5`);
 });
 
-test('dialog has variant style', () => {
+test('dialog has variant classnames', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Dialog.Trigger>
-          <Button>Open</Button>
-          <Dialog variant="custom" closeButton>
-            <Headline>Headline</Headline>
-            Content
-          </Dialog>
-        </Dialog.Trigger>
-      </ThemeProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog variant="custom" closeButton>
+          <Headline>Headline</Headline>
+          Content
+        </Dialog>
+      </Dialog.Trigger>
     </OverlayProvider>
   );
   const button = screen.getByText('Open');
@@ -403,22 +370,22 @@ test('dialog has variant style', () => {
 
   const closeButton = dialog.firstChild?.lastChild;
 
-  expect(closeButton).toHaveStyle(`background-color: ${theme.colors.black}`);
-  expect(dialog).toHaveStyle(`background-color: ${theme.colors.green}`);
+  expect(closeButton).toHaveClass(
+    'h-4 w-4 cursor-pointer border-none leading-normal outline-0 p-1 bg-black'
+  );
+  expect(dialog.className).toMatchInlineSnapshot(`"p-5 bg-green-400"`);
 });
 
 test('dialog supports size', () => {
   render(
     <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Dialog.Trigger>
-          <Button>Open</Button>
-          <Dialog size="large" closeButton>
-            <Headline>Headline</Headline>
-            Content
-          </Dialog>
-        </Dialog.Trigger>
-      </ThemeProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog size="large" closeButton>
+          <Headline>Headline</Headline>
+          Content
+        </Dialog>
+      </Dialog.Trigger>
     </OverlayProvider>
   );
   const button = screen.getByText('Open');
@@ -426,7 +393,7 @@ test('dialog supports size', () => {
 
   const dialog = screen.getByRole('dialog');
   expect(dialog).toBeVisible();
-  expect(dialog).toHaveStyle('width: 400px');
+  expect(dialog).toHaveClass('w-[400px]');
 });
 
 test('renders with dialog controller', () => {

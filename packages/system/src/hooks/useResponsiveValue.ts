@@ -9,7 +9,8 @@ import { useTheme } from './useTheme';
  * doesn't trigger on every render. Since it is part of the
  * dependency array.
  */
-const emptyBreakpoints: string[] = ['40em', '52em', '64em'];
+
+import { defaultTheme } from '../defaultTheme';
 
 /**
  * Hook that can be used to return values based on the current screen size,
@@ -20,13 +21,13 @@ export const useResponsiveValue = <T>(
   values: T[],
   defaultIndex: number = 0
 ) => {
-  const { theme } = useTheme();
-  const breakpoints: string[] = theme.breakpoints || emptyBreakpoints;
+  const theme = useTheme();
+  const screens = theme.screens || defaultTheme.screens;
 
-  if (defaultIndex < 0 || defaultIndex >= breakpoints.length + 1) {
+  if (defaultIndex < 0 || defaultIndex >= Object.keys(screens).length + 1) {
     throw new RangeError(
       `Default breakpoint index is out of bounds. Theme has ${
-        breakpoints.length + 1
+        Object.keys(screens).length + 1
       } breakpoints, default is ${defaultIndex}.`
     );
   }
@@ -34,7 +35,7 @@ export const useResponsiveValue = <T>(
   const [index, setIndex] = useState(defaultIndex);
   useEffect(() => {
     const getIndex = () =>
-      breakpoints.filter(
+      Object.values(screens).filter(
         breakpoint =>
           window.matchMedia(`screen and (min-width: ${breakpoint})`).matches
       ).length;
@@ -50,7 +51,7 @@ export const useResponsiveValue = <T>(
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [breakpoints, index]);
+  }, [screens, index]);
 
   // Return the index or last existing index of given values
   return values[index >= values.length ? values.length - 1 : index];

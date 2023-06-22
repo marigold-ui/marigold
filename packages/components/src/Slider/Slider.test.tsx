@@ -1,64 +1,38 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { fireEvent, screen } from '@testing-library/react';
 import { Slider } from './Slider';
 import userEvent from '@testing-library/user-event';
-
-const theme = {
-  colors: {
-    primary: 'orange',
-    secondary: 'blue',
-    disabled: 'gray',
-  },
-  sizes: {
-    none: 0,
-    large: 120,
-  },
+import { Theme } from '@marigold/system';
+import { cva } from 'class-variance-authority';
+import { setup } from '../test.utils';
+const theme: Theme = {
+  name: 'slider testing',
   components: {
+    Field: cva(),
     Slider: {
-      base: {
-        track: {
-          color: 'green',
-          '&:focus': {
-            bg: 'primary',
-          },
-          '&:checked': {
-            bg: 'secondary',
-          },
-          '&:disabled': {
-            bg: 'disabled',
-          },
-        },
-        thumb: {
-          color: 'green',
-          '&:focus': {
-            bg: 'primary',
-          },
-          '&:disabled': {
-            bg: 'disabled',
-          },
-        },
-        label: {
-          color: 'text',
-          fontSize: 'xxsmall',
-          fontWeight: 'body',
-        },
-        output: {
-          color: 'text',
-          fontSize: 'xxsmall',
-          fontWeight: 'body',
-        },
-      },
+      track: cva([
+        'absolute top-4 h-2 w-full',
+        'rounded-lg border-none border-transparent',
+        'bg-slider-track-background text-transparent',
+      ]),
+      thumb: cva([
+        'align-middle',
+        'border-slider-thumb-border rounded-lg border-4 border-solid',
+        'h-4 w-4',
+        'bg-slider-thumb-background',
+        ' focus:border-slider-thumb-focus',
+        ' disabled:bg-slider-thumb-disabled-background  disabled:border-slider-thumb-disabled-border',
+      ]),
+      label: cva('text-slider-label-text text-base font-normal'),
+      output: cva('text-slider-ouput-text text-base font-normal'),
     },
   },
 };
 
+const { render } = setup({ theme });
+
 test('supports mouse click on value on track', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Slider aria-label="slider" maxValue={5} />
-    </ThemeProvider>
-  );
+  render(<Slider aria-label="slider" maxValue={5} />);
   const slider = screen.getByRole('slider');
 
   fireEvent.change(slider, { target: { value: '2' } });
@@ -68,11 +42,7 @@ test('supports mouse click on value on track', () => {
 test('supports keyboard move up and down', async () => {
   const user = userEvent.setup();
 
-  render(
-    <ThemeProvider theme={theme}>
-      <Slider maxValue={5}>Example</Slider>
-    </ThemeProvider>
-  );
+  render(<Slider maxValue={5}>Example</Slider>);
   const slider = screen.getByRole('slider');
 
   fireEvent.click(screen.getByText(/Example/));
@@ -85,11 +55,7 @@ test('supports keyboard move up and down', async () => {
 test('supports keyboard move right and left', async () => {
   const user = userEvent.setup();
 
-  render(
-    <ThemeProvider theme={theme}>
-      <Slider maxValue={5}>Example</Slider>
-    </ThemeProvider>
-  );
+  render(<Slider maxValue={5}>Example</Slider>);
   const slider = screen.getByRole('slider');
 
   fireEvent.click(screen.getByText(/Example/));
@@ -100,21 +66,13 @@ test('supports keyboard move right and left', async () => {
 });
 
 test('supports disabled prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Slider disabled>Example</Slider>
-    </ThemeProvider>
-  );
+  render(<Slider disabled>Example</Slider>);
   const inputElement = screen.getByRole('slider');
   expect(inputElement).toHaveAttribute(`disabled`);
 });
 
 test('supports defaultValue (uncontrolled)', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Slider defaultValue={[25]}>Example</Slider>
-    </ThemeProvider>
-  );
+  render(<Slider defaultValue={[25]}>Example</Slider>);
   const slider = screen.getByRole('slider');
   expect(slider).toHaveValue('25');
 });
@@ -123,11 +81,9 @@ test('supports changing value (controlled)', () => {
   const TestComponent = () => {
     const [value, setValue] = React.useState(75);
     return (
-      <ThemeProvider theme={theme}>
-        <Slider value={value} onChange={(val: any) => setValue(val)}>
-          Example
-        </Slider>
-      </ThemeProvider>
+      <Slider value={value} onChange={(val: any) => setValue(val)}>
+        Example
+      </Slider>
     );
   };
   render(<TestComponent />);
@@ -140,11 +96,9 @@ test('supports changing value (controlled)', () => {
 
 test('supports formatOptions prop', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Slider formatOptions={{ style: 'percent' }} step={0.01} maxValue={1}>
-        Percent
-      </Slider>
-    </ThemeProvider>
+    <Slider formatOptions={{ style: 'percent' }} step={0.01} maxValue={1}>
+      Percent
+    </Slider>
   );
 
   expect(screen.getByRole('status')).toContainHTML('0%');
@@ -155,34 +109,22 @@ test('supports formatOptions prop', () => {
 });
 
 test('takes full width by default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Slider>Percent</Slider>
-    </ThemeProvider>
-  );
+  render(<Slider>Percent</Slider>);
 
   const container = screen.getByRole('group');
-  expect(container).toHaveStyle('width: 100%');
+  expect(container).toHaveAttribute('style', '--slideWidth: 100%;');
 });
 
 test('allows to set width via prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Slider width="large">Percent</Slider>
-    </ThemeProvider>
-  );
+  render(<Slider width="200px">Percent</Slider>);
 
   const container = screen.getByRole('group');
-  expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
+  expect(container).toHaveAttribute('style', '--slideWidth: 200px;');
 });
 
 test('forwards ref', () => {
   const ref = React.createRef<HTMLDivElement>();
-  render(
-    <ThemeProvider theme={theme}>
-      <Slider ref={ref}>Percent</Slider>
-    </ThemeProvider>
-  );
+  render(<Slider ref={ref}>Percent</Slider>);
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
 });

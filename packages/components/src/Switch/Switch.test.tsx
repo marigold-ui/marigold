@@ -1,193 +1,148 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { Theme } from '@marigold/system';
 import { Switch } from './Switch';
+import { cva } from 'class-variance-authority';
 import userEvent from '@testing-library/user-event';
+import { setup } from '../test.utils';
 
-const theme = {
-  fonts: {
-    regular: 'Oswald Regular',
-    body: 'Inter',
-  },
-  spaces: {
-    medium: '16px',
-    small: '8px',
-  },
-  sizes: {
-    none: 0,
-    large: 120,
-  },
+const theme: Theme = {
+  name: 'switch test',
   components: {
     Switch: {
-      base: {
-        container: {
-          p: 'medium',
-        },
-        label: {
-          fontFamily: 'body',
-        },
-        track: {
-          bg: 'blue',
-          '&:checked': {
-            bg: 'orange',
+      container: cva(),
+      track: cva(
+        [
+          'bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px]',
+          'group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked',
+          ' disabled:bg-dis disabled:opacity-[0.5]',
+          'focus:outline-offset[3] focus:outline-none',
+          'focus:outline-switch-track-outline-focus',
+        ],
+        {
+          variants: {
+            size: {
+              large: 'h-[48] w-[96] rounded-[40]',
+            },
           },
-          '&:disabled': {
-            bg: 'gray',
-          },
-          '&:focus': {
-            borderColor: 'gray',
-          },
-        },
-        thumb: {
-          bg: 'white',
-          '&:disabled': {
-            bg: 'black',
+        }
+      ),
+      thumb: cva(['bg-switch-track-background', 'shadow-[1px_1px_4px]'], {
+        variants: {
+          size: {
+            large: 'top-2 h-[44] w-[44] ',
           },
         },
-      },
-      variant: {
-        custom: {
-          container: {
-            p: 'small',
-          },
-          track: {
-            bg: 'green',
-          },
-          thumb: {
-            bg: 'hotpink',
-          },
-        },
-      },
-      size: {
-        medium: {
-          track: {
-            p: 'medium',
-          },
-        },
-      },
+      }),
     },
   },
 };
+
 const user = userEvent.setup();
 const getSwitchParts = () => {
-  const label = screen.getByText('Label');
+  const label: HTMLLabelElement = screen.getByText('Label');
   // eslint-disable-next-line testing-library/no-node-access
-  const container = label.parentElement!;
+  const container: HTMLElement = label.parentElement!;
   // eslint-disable-next-line testing-library/no-node-access
-  const track = container.lastChild!;
+  const track = container.lastChild! as HTMLElement;
   // eslint-disable-next-line testing-library/no-node-access
-  const thumb = track.lastChild!;
+  const thumb = track.lastChild! as HTMLElement;
 
   const input: HTMLInputElement = screen.getByRole('switch');
 
   return { label, input, container, track, thumb };
 };
 
+const { render } = setup({ theme });
+
 test('supports base styling', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Switch>Label</Switch>
-    </ThemeProvider>
-  );
+  render(<Switch>Label</Switch>);
   const { label, container, track, thumb } = getSwitchParts();
 
-  expect(label).toHaveStyle('font-family: Inter');
-  expect(container).toHaveStyle(`padding: ${theme.spaces.medium}px`);
-  expect(track).toHaveStyle('background-color: blue');
-  expect(thumb).toHaveStyle('background-color: white');
+  expect(label.className).toMatchInlineSnapshot(
+    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
+  );
+  expect(container.className).toMatchInlineSnapshot(`""`);
+  expect(track.className).toMatchInlineSnapshot(
+    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
+  );
+  expect(thumb.className).toMatchInlineSnapshot(
+    `"relative h-6 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
+  );
 });
 
 test('supports a custom variant', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Switch variant="custom">Label</Switch>
-    </ThemeProvider>
-  );
-  const { container, track, thumb } = getSwitchParts();
+  render(<Switch variant="custom">Label</Switch>);
+  const { track, thumb } = getSwitchParts();
 
-  expect(container).toHaveStyle(`padding: ${theme.spaces.small}px`);
-  expect(track).toHaveStyle('background-color: green');
-  expect(thumb).toHaveStyle('background-color: hotpink');
+  expect(track.className).toMatchInlineSnapshot(
+    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
+  );
+  expect(thumb.className).toMatchInlineSnapshot(
+    `"relative h-6 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
+  );
 });
 
 test('supports a size', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Switch size="medium">Label</Switch>
-    </ThemeProvider>
-  );
+  render(<Switch size="medium">Label</Switch>);
   const { track } = getSwitchParts();
 
-  expect(track).toHaveStyle(`padding: ${theme.spaces.medium}px`);
+  expect(track.className).toMatchInlineSnapshot(
+    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
+  );
 });
 
 test('takes full width by default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Switch>Label</Switch>
-    </ThemeProvider>
-  );
+  render(<Switch>Label</Switch>);
   const { container } = getSwitchParts();
-  expect(container).toHaveStyle('width: 100%');
+  expect(container.className).toMatchInlineSnapshot(`""`);
 });
 
 test('allows to set width via prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Switch width="large">Label</Switch>
-    </ThemeProvider>
-  );
-  const { container } = getSwitchParts();
-  expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
+  render(<Switch width="500px">Label</Switch>);
+  const { label } = getSwitchParts();
+  expect(label).toHaveAttribute('style', '--switchWidth: 500px;');
 });
 
 test('supports disabled prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Switch disabled>Label</Switch>
-    </ThemeProvider>
-  );
+  render(<Switch disabled>Label</Switch>);
   const { input, thumb, track } = getSwitchParts();
 
   expect(input).toBeDisabled();
-  expect(track).toHaveStyle('background-color: gray');
-  expect(thumb).toHaveStyle('background-color: black');
+  expect(track.className).toMatchInlineSnapshot(
+    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
+  );
+  expect(thumb.className).toMatchInlineSnapshot(
+    `"relative h-6 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
+  );
 });
 
 test('renders hidden <input> element', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Switch>Label</Switch>
-    </ThemeProvider>
-  );
+  render(<Switch>Label</Switch>);
   const { input } = getSwitchParts();
   expect(input instanceof HTMLInputElement).toBeTruthy();
 });
 
 test('toggle switch per click', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Switch>Label</Switch>
-    </ThemeProvider>
-  );
+  render(<Switch>Label</Switch>);
 
   const { input, track } = getSwitchParts();
 
   fireEvent.click(input);
-  expect(track).toHaveStyle(`background-color: orange`);
+  expect(track.className).toMatchInlineSnapshot(
+    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
+  );
   expect(input.checked).toBeTruthy();
 
   fireEvent.click(input);
-  expect(track).toHaveStyle(`background-color: blue`);
+  expect(track.className).toMatchInlineSnapshot(
+    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
+  );
   expect(input.checked).toBeFalsy();
 });
 
 test('focus element and toggle switch per keyboard space', async () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Switch>Label</Switch>
-    </ThemeProvider>
-  );
+  render(<Switch>Label</Switch>);
 
   const { input, track } = getSwitchParts();
   user.tab();
@@ -208,11 +163,7 @@ test('focus element and toggle switch per keyboard space', async () => {
 });
 
 test('supports default checked', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Switch defaultChecked>Label</Switch>
-    </ThemeProvider>
-  );
+  render(<Switch defaultChecked>Label</Switch>);
 
   const { input } = getSwitchParts();
 
@@ -223,11 +174,7 @@ test('supports default checked', () => {
 
 test('supports controlled component usage', () => {
   const onChange = jest.fn();
-  render(
-    <ThemeProvider theme={theme}>
-      <Switch onChange={onChange}>Label</Switch>
-    </ThemeProvider>
-  );
+  render(<Switch onChange={onChange}>Label</Switch>);
 
   const { input } = getSwitchParts();
 
@@ -242,11 +189,7 @@ test('supports controlled component usage', () => {
 
 test('forwards ref', () => {
   const ref = React.createRef<HTMLInputElement>();
-  render(
-    <ThemeProvider theme={theme}>
-      <Switch ref={ref}>Label</Switch>
-    </ThemeProvider>
-  );
+  render(<Switch ref={ref}>Label</Switch>);
 
   expect(ref.current).toBeInstanceOf(HTMLInputElement);
 });

@@ -1,42 +1,30 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider } from '@marigold/system';
 
 import { Card } from './Card';
 import { Header } from '../Header';
 import { Body } from '../Body';
 import { Footer } from '../Footer';
 
-const theme = {
-  space: {
-    none: 0,
-    'small-1': 4,
-    'small-2': 8,
-    'medium-1': 16,
-    'medium-2': 24,
-  },
-  colors: {
-    grey: '#dee2e6',
-    yellow: '#fff9db',
-  },
+import { cva } from 'class-variance-authority';
+
+const theme: Theme = {
+  name: 'test',
   components: {
-    Card: {
-      base: {
-        p: 'small-1',
-        border: '1px solid',
-        borderColor: 'grey',
-      },
-      variant: {
-        yellow: {
-          bg: 'yellow',
+    Header: cva(),
+    Footer: cva(),
+    Body: cva(),
+    Card: cva('border border-solid border-gray-700 p-1', {
+      variants: {
+        variant: {
+          yellow: 'bg-yellow-300',
+        },
+        size: {
+          medium: 'p-4',
         },
       },
-      size: {
-        medium: {
-          p: 'medium-1',
-        },
-      },
-    },
+    }),
   },
 };
 
@@ -58,7 +46,9 @@ test('uses base styling form "Card" in theme', () => {
     </ThemeProvider>
   );
   const card = screen.getByTestId('card');
-  expect(card).toHaveStyle(`padding: ${theme.space['small-1']}px`);
+  expect(card.className).toMatchInlineSnapshot(
+    `"flex flex-col border border-solid border-gray-700 p-1 gap-0"`
+  );
 });
 
 test('accepts a variant and size', () => {
@@ -68,53 +58,45 @@ test('accepts a variant and size', () => {
     </ThemeProvider>
   );
   const card = screen.getByTestId('card');
-  expect(card).toHaveStyle(`background: ${theme.colors.yellow}`);
-  expect(card).toHaveStyle(`padding: ${theme.space['medium-1']}px`);
+  expect(card.className).toMatchInlineSnapshot(
+    `"flex flex-col border border-solid border-gray-700 bg-yellow-300 p-4 gap-0"`
+  );
 });
 
 test('supports padding as style prop', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Card data-testid="p" p="small-1" />
-      <Card data-testid="pxy" px="small-1" py="medium-1" />
-      <Card
-        data-testid="ptblr"
-        pt="small-2"
-        pb="small-1"
-        pl="medium-1"
-        pr="medium-2"
-      />
+      <Card data-testid="p" p={3} />
+      <Card data-testid="pxy" px={2} py={1} />
+      <Card data-testid="ptblr" pt={3} pb={2} pl={3} pr={3} />
     </ThemeProvider>
   );
 
   const p = screen.getByTestId('p');
-  expect(p).toHaveStyle(`padding: ${theme.space['small-1']}px`);
+  expect(p).toHaveClass(`p-3`);
 
   const pxy = screen.getByTestId('pxy');
-  expect(pxy).toHaveStyle(`padding-left: ${theme.space['small-1']}px`);
-  expect(pxy).toHaveStyle(`padding-right: ${theme.space['small-1']}px`);
-  expect(pxy).toHaveStyle(`padding-top: ${theme.space['medium-1']}px`);
-  expect(pxy).toHaveStyle(`padding-bottom: ${theme.space['medium-1']}px`);
+  expect(pxy).toHaveClass(`px-2`);
+  expect(pxy).toHaveClass(`py-1`);
 
   const ptblr = screen.getByTestId('ptblr');
-  expect(ptblr).toHaveStyle(`padding-top: ${theme.space['small-2']}px`);
-  expect(ptblr).toHaveStyle(`padding-bottom: ${theme.space['small-1']}px`);
-  expect(ptblr).toHaveStyle(`padding-left: ${theme.space['medium-1']}px`);
-  expect(ptblr).toHaveStyle(`padding-right: ${theme.space['medium-2']}px`);
+  expect(ptblr).toHaveClass(`pt-3`);
+  expect(ptblr).toHaveClass(`pb-2`);
+  expect(ptblr).toHaveClass(`pr-3`);
+  expect(ptblr).toHaveClass(`pl-3`);
 });
 
 test('padding props override variant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Card data-testid="card" size="medium" py="medium-2" />
+      <Card data-testid="card" size="medium" py={2} />
     </ThemeProvider>
   );
 
   const card = screen.getByTestId('card');
-  expect(card).toHaveStyle(`padding-top: ${theme.space['medium-2']}px`);
-  expect(card).toHaveStyle(`padding-bottom: ${theme.space['medium-2']}px`);
-  expect(card).toHaveStyle(`padding-left: ${theme.space['medium-1']}px`);
-  expect(card).toHaveStyle(`padding-right: ${theme.space['medium-1']}px`);
+  expect(card.className).toMatchInlineSnapshot(
+    `"flex flex-col border border-solid border-gray-700 p-4 gap-0 py-2"`
+  );
 });
 
 test('has no default spacing', () => {
@@ -129,13 +111,13 @@ test('has no default spacing', () => {
   );
 
   const card = screen.getByTestId('card');
-  expect(card).toHaveStyle(`gap: ${theme.space['none']}`);
+  expect(card).toHaveClass(`gap-0`);
 });
 
 test('allows to set spacing between children', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Card data-testid="card" space="small-2">
+      <Card data-testid="card" space={5}>
         <Header>Header</Header>
         <Body>This is the body</Body>
         <Footer>Footer!</Footer>
@@ -144,5 +126,5 @@ test('allows to set spacing between children', () => {
   );
 
   const card = screen.getByTestId('card');
-  expect(card).toHaveStyle(`gap: ${theme.space['small-2']}px`);
+  expect(card).toHaveClass(`gap-5`);
 });

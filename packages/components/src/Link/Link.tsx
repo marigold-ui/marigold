@@ -1,19 +1,14 @@
 import React, { forwardRef, ReactNode } from 'react';
 import { useLink } from '@react-aria/link';
 import { PressEvents } from '@react-types/shared';
-import { ThemeExtension, useComponentStyles } from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 import { PolymorphicComponent, PropsOf } from '@marigold/types';
 
-import { Box, BoxOwnProps } from '../Box';
 import { useObjectRef } from '@react-aria/utils';
-
-// Theme Extension
-// ---------------
-export interface LinkThemeExtension extends ThemeExtension<'Link'> {}
 
 // Props
 // ---------------
-export interface LinkOwnProps extends PressEvents, BoxOwnProps {
+export interface LinkOwnProps extends PressEvents {
   disabled?: boolean;
   variant?: string;
   size?: string;
@@ -34,6 +29,7 @@ export const Link = forwardRef(
       disabled,
       onPress,
       onPressStart,
+      className,
       ...props
     },
     ref
@@ -48,19 +44,24 @@ export const Link = forwardRef(
       linkRef
     );
 
-    const styles = useComponentStyles('Link', { variant, size });
+    const Component = as;
+    const classNames = useClassNames({
+      component: 'Link',
+      variant,
+      size,
+      className,
+    });
 
     return (
-      <Box
-        as={as}
-        role="link"
-        css={styles}
-        ref={linkRef}
+      <Component
         {...props}
+        role="link"
+        className={classNames}
+        ref={linkRef}
         {...linkProps}
       >
         {children}
-      </Box>
+      </Component>
     );
   }
 ) as PolymorphicComponent<'a', LinkOwnProps>;

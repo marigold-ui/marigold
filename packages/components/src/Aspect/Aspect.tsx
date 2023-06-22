@@ -3,14 +3,11 @@
  */
 import React, { ReactNode } from 'react';
 
-import { aspect } from '@marigold/tokens';
 import { HtmlProps } from '@marigold/types';
+import { cn, createVar, aspect, AspectProp } from '@marigold/system';
 
-import { Box } from '../Box';
-
-export interface AspectProps extends HtmlProps<'div'> {
+export interface AspectProps extends HtmlProps<'div'>, AspectProp {
   children?: ReactNode;
-  ratio?: keyof typeof aspect;
   maxWidth?: string;
 }
 
@@ -19,13 +16,10 @@ export const Aspect = ({
   maxWidth,
   children,
 }: AspectProps) => (
-  <Box
-    css={{
-      aspectRatio: aspect[ratio],
-      overflow: 'hidden',
-      maxWidth,
-    }}
+  <div
+    className={cn('overflow-hidden', aspect[ratio], 'max-w-[var(--maxWidth)]')}
+    style={createVar({ maxWidth })}
   >
     {children}
-  </Box>
+  </div>
 );

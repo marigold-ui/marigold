@@ -9,7 +9,9 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { OverlayProvider } from '@react-aria/overlays';
-import { ThemeProvider, useResponsiveValue } from '@marigold/system';
+import { Theme, ThemeProvider, useResponsiveValue } from '@marigold/system';
+
+import { cva } from 'class-variance-authority';
 
 import { Button } from '../Button';
 import { Menu } from './Menu';
@@ -19,55 +21,41 @@ import { ActionMenu } from './ActionMenu';
 // ---------------
 const user = userEvent.setup();
 
-const theme = {
-  colors: {
-    black: '#212529',
-    white: '#f8f9fa',
-    pink: '#fcc2d7',
-  },
-  space: {
-    none: 0,
-    small: 4,
-    large: 10,
-  },
+const theme: Theme = {
+  name: 'test',
   components: {
+    Button: cva('disabled:bg-disabled-bg p-3'),
+    Divider: cva(),
     Menu: {
-      base: {
-        container: {
-          bg: 'white',
-          '&:focus': {
-            color: 'pink',
+      container: cva('bg-white focus:text-pink-600', {
+        variants: {
+          variant: {
+            one: 'bg-pink-900',
+          },
+          size: {
+            large: 'p-5',
           },
         },
-        item: {
-          color: 'black',
-
-          '&:focus': {
-            bg: 'pink',
+      }),
+      item: cva('text-black focus:text-pink-600', {
+        variants: {
+          variant: {
+            one: 'text-white',
+          },
+          size: {
+            large: 'p-2',
           },
         },
-      },
-      variant: {
-        one: {
-          container: {
-            bg: 'pink',
-          },
-          item: {
-            color: 'white',
+      }),
+      section: cva('text-pink-300', {
+        variants: {
+          variant: {
+            one: 'text-black',
           },
         },
-      },
-      size: {
-        large: {
-          container: {
-            p: 'large',
-          },
-          item: {
-            p: 'small',
-          },
-        },
-      },
+      }),
     },
+    Underlay: cva(),
   },
 };
 
@@ -75,18 +63,21 @@ const theme = {
  * We need to mock `matchMedia` because JSOM does not
  * implements it.
  */
+
 const mockMatchMedia = (matches: string[]) =>
   jest.fn().mockImplementation(query => ({
     matches: matches.includes(query),
   }));
+
+window.matchMedia = mockMatchMedia([
+  'screen and (min-width: 40em)',
+  'screen and (min-width: 52em)',
+  'screen and (min-width: 64em)',
+]);
+
 afterEach(cleanup);
 
 test('renders the button but no menu by default', () => {
-  window.matchMedia = mockMatchMedia([
-    'screen and (min-width: 40em)',
-    'screen and (min-width: 52em)',
-    'screen and (min-width: 64em)',
-  ]);
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
@@ -136,6 +127,11 @@ test('opens menu when trigger is clicked', () => {
 });
 
 test('closes menu when item is selected', () => {
+  window.matchMedia = mockMatchMedia([
+    'screen and (min-width: 40em)',
+    'screen and (min-width: 52em)',
+    'screen and (min-width: 64em)',
+  ]);
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
@@ -268,7 +264,7 @@ test('return selected item', () => {
   expect(spy).not.toHaveBeenCalledWith('pizza');
 });
 
-test('uses base styling from "Menu" in theme', () => {
+test('uses base classes from "Menu" in theme', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
@@ -286,10 +282,10 @@ test('uses base styling from "Menu" in theme', () => {
   fireEvent.click(button);
 
   const menu = screen.getByTestId('menu');
-  expect(menu).toHaveStyle(`background-color: ${theme.colors.white}`);
+  expect(menu).toHaveClass(`bg-white`);
 });
 
-test('supports "Menu" variants from theme', () => {
+test('supports "Menu" variant classnames from theme', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
@@ -309,8 +305,8 @@ test('supports "Menu" variants from theme', () => {
   const menu = screen.getByTestId('menu');
   const item = screen.getByText('Burger');
 
-  expect(menu).toHaveStyle(`background-color: ${theme.colors.pink}`);
-  expect(item).toHaveStyle(`color: ${theme.colors.white}`);
+  expect(menu).toHaveClass(`bg-pink-900`);
+  expect(item).toHaveClass(`text-white`);
 });
 
 test('supports "Menu" sizes from theme', () => {
@@ -331,32 +327,10 @@ test('supports "Menu" sizes from theme', () => {
   fireEvent.click(button);
 
   const menu = screen.getByTestId('menu');
-  expect(menu).toHaveStyle(`padding: ${theme.space.large}px`);
+  expect(menu).toHaveClass(`bg-white focus:text-pink-600 p-5`);
 
   const item = screen.getByText('Burger');
-  expect(item).toHaveStyle(`padding: ${theme.space.small}px`);
-});
-
-test('apply focus style on focus', async () => {
-  render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Menu.Trigger>
-          <Button>Choose</Button>
-          <Menu data-testid="menu">
-            <Menu.Item key="burger">Burger</Menu.Item>
-            <Menu.Item key="pizza">Pizza</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
-      </ThemeProvider>
-    </OverlayProvider>
-  );
-
-  await user.tab();
-  await user.keyboard('[Enter]');
-
-  const item = screen.getByText('Burger');
-  expect(item).toHaveStyle(`background: ${theme.colors.pink}`);
+  expect(item).toHaveClass(`text-black focus:text-pink-600 p-2`);
 });
 
 test('renders as tray', () => {
@@ -396,10 +370,12 @@ test('renders as tray', () => {
 test('renders action menu', () => {
   render(
     <OverlayProvider>
-      <ActionMenu>
-        <Menu.Item key="one">Settings</Menu.Item>
-        <Menu.Item key="two">Delete</Menu.Item>
-      </ActionMenu>
+      <ThemeProvider theme={theme}>
+        <ActionMenu>
+          <Menu.Item key="one">Settings</Menu.Item>
+          <Menu.Item key="two">Delete</Menu.Item>
+        </ActionMenu>
+      </ThemeProvider>
     </OverlayProvider>
   );
   const button = screen.getByRole('button');
@@ -412,13 +388,15 @@ test('renders action menu', () => {
 test('supports open property', () => {
   render(
     <OverlayProvider>
-      <Menu.Trigger open={true}>
-        <Button>Choose</Button>
-        <Menu data-testid="menu">
-          <Menu.Item key="burger">Burger</Menu.Item>
-          <Menu.Item key="pizza">Pizza</Menu.Item>
-        </Menu>
-      </Menu.Trigger>
+      <ThemeProvider theme={theme}>
+        <Menu.Trigger open={true}>
+          <Button>Choose</Button>
+          <Menu data-testid="menu">
+            <Menu.Item key="burger">Burger</Menu.Item>
+            <Menu.Item key="pizza">Pizza</Menu.Item>
+          </Menu>
+        </Menu.Trigger>
+      </ThemeProvider>
     </OverlayProvider>
   );
 
@@ -430,13 +408,15 @@ test('supports onOpenChange property', () => {
   const onOpenChange = jest.fn();
   render(
     <OverlayProvider>
-      <Menu.Trigger onOpenChange={() => onOpenChange()}>
-        <Button>Choose</Button>
-        <Menu data-testid="menu">
-          <Menu.Item key="burger">Burger</Menu.Item>
-          <Menu.Item key="pizza">Pizza</Menu.Item>
-        </Menu>
-      </Menu.Trigger>
+      <ThemeProvider theme={theme}>
+        <Menu.Trigger onOpenChange={() => onOpenChange()}>
+          <Button>Choose</Button>
+          <Menu data-testid="menu">
+            <Menu.Item key="burger">Burger</Menu.Item>
+            <Menu.Item key="pizza">Pizza</Menu.Item>
+          </Menu>
+        </Menu.Trigger>
+      </ThemeProvider>
     </OverlayProvider>
   );
   expect(onOpenChange).toBeCalledTimes(0);
@@ -447,16 +427,18 @@ test('supports onOpenChange property', () => {
 test('supports Menu with sections', () => {
   render(
     <OverlayProvider>
-      <Menu aria-label="Menu with sections">
-        <Menu.Section title="Food">
-          <Menu.Item key="burger">🍔 Burger</Menu.Item>
-          <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-        </Menu.Section>
-        <Menu.Section title="Fruits">
-          <Menu.Item key="apple">🍎 Apple</Menu.Item>
-          <Menu.Item key="banana">🍌 Banana</Menu.Item>
-        </Menu.Section>
-      </Menu>
+      <ThemeProvider theme={theme}>
+        <Menu aria-label="Menu with sections">
+          <Menu.Section title="Food">
+            <Menu.Item key="burger">🍔 Burger</Menu.Item>
+            <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+          </Menu.Section>
+          <Menu.Section title="Fruits">
+            <Menu.Item key="apple">🍎 Apple</Menu.Item>
+            <Menu.Item key="banana">🍌 Banana</Menu.Item>
+          </Menu.Section>
+        </Menu>
+      </ThemeProvider>
     </OverlayProvider>
   );
   expect(screen.getByText('Food')).toBeInTheDocument();

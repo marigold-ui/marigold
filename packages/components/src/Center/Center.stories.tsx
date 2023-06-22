@@ -2,7 +2,6 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Ticket } from '@marigold/icons';
 
-import { Box } from '../Box';
 import { Center } from './Center';
 import { Headline } from '../Headline';
 import { Stack } from '../Stack';
@@ -15,7 +14,7 @@ const meta = {
   argTypes: {
     maxWidth: {
       control: {
-        type: 'select',
+        type: 'text',
       },
       description: 'Center maximum width',
       table: {
@@ -23,33 +22,11 @@ const meta = {
           summary: 'none',
         },
       },
-      options: [
-        'none',
-        'xxsmall',
-        'xsmall',
-        'small',
-        'medium',
-        'large',
-        'xlarge',
-        'xxlarge',
-        'huge',
-        'epic',
-      ],
     },
     space: {
       control: {
-        type: 'select',
+        type: 'text',
       },
-      options: [
-        'none',
-        'xxsmall',
-        'xsmall',
-        'small',
-        'medium',
-        'large',
-        'xlarge',
-        'xxlarge',
-      ],
       description: 'Responsive Style Value',
       table: {
         defaultValue: {
@@ -66,14 +43,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <Center {...args}>
-      <Box
-        css={{
-          border: '1px solid #ced4da',
-          bg: '#e9ecef',
-          height: '100px',
-          width: '100%',
-        }}
-      />
+      <div className="h-[100px] w-full border border-solid border-[#ced4da] bg-[#ced4da]" />
     </Center>
   ),
 };
@@ -81,30 +51,9 @@ export const Basic: Story = {
 export const Children: Story = {
   render: args => (
     <Center {...args}>
-      <Box
-        css={{
-          border: '1px solid #ced4da',
-          bg: '#e9ecef',
-          height: '100px',
-          width: '100%',
-        }}
-      />
-      <Box
-        css={{
-          border: '1px solid #ced4da',
-          bg: '#e9ecef',
-          height: '100px',
-          width: '100%',
-        }}
-      />
-      <Box
-        css={{
-          border: '1px solid #ced4da',
-          bg: '#e9ecef',
-          height: '100px',
-          width: '100%',
-        }}
-      />
+      <div className="h-[100px] w-full border border-solid border-[#ced4da] bg-[#ced4da]" />
+      <div className="h-[100px] w-full border border-solid border-[#ced4da] bg-[#ced4da]" />
+      <div className="h-[100px] w-full border border-solid border-[#ced4da] bg-[#ced4da]" />
     </Center>
   ),
 };
@@ -112,22 +61,16 @@ export const Children: Story = {
 export const Icon: Story = {
   render: args => (
     <Center {...args}>
-      <Box
-        css={{
-          bg: 'blue70',
-          width: '40px',
-          height: '40px',
-        }}
-      >
-        <Ticket fill="white" />
-      </Box>
+      <div className="h-[40px] w-[40px] bg-blue-700">
+        <Ticket className="fill-white" />
+      </div>
     </Center>
   ),
 };
 
 export const Complex: Story = {
   render: args => (
-    <Stack space="medium">
+    <Stack space={3}>
       <Headline level="2">Star Wars - The Empire Strikes Back</Headline>
       <Text>
         It is a dark time for the Rebellion. Although the Death Star has been

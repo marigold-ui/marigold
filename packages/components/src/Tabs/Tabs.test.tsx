@@ -1,39 +1,37 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { fireEvent, screen } from '@testing-library/react';
+import { Theme } from '@marigold/system';
 import { Tabs } from './Tabs';
+import { cva } from 'class-variance-authority';
+import { setup } from '../test.utils';
 
-const theme = {
-  colors: {
-    orange: '#fa8005',
-    gray: '#8d8d8d',
-  },
-  space: {
-    none: 0,
-    small: 0.25,
-    medium: '0 0.5rem 0.5rem',
-    large: 1,
-  },
+const theme: Theme = {
+  name: 'tabs test',
   components: {
     Tabs: {
-      base: {
-        tab: {
-          borderBottom: '8px solid orange',
-          '&[aria-selected=false]:not([aria-disabled=true]):hover': {
-            color: 'orange',
+      tabs: cva('mb-[10px]'),
+      tab: cva(
+        [
+          'min-h-[40px]',
+          'data-[hover]:text-tabs-tab-text data-[hover]:border-b-tabs-tab-hover data-[hover]:border-b-8 data-[hover]:border-solid',
+          ' disabled:text-tabs-tab-disabled',
+          ' selected:border-b-primary-600  selected:border-b-8  selected:border-solid ',
+        ],
+        {
+          variants: {
+            size: {
+              small: 'px-1 pb-1',
+              medium: 'px-2 pb-2 text-lg',
+              large: 'px-4 pb-4 text-2xl',
+            },
           },
-        },
-      },
-      size: {
-        medium: {
-          tab: {
-            padding: 'medium',
-          },
-        },
-      },
+        }
+      ),
     },
   },
 };
+
+const { render } = setup({ theme });
 
 test('rendering content correctly', () => {
   render(
@@ -58,15 +56,15 @@ test('rendering content correctly', () => {
 
 test('Supporting default size', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Tabs>
-        <Tabs.Item key={1} title="tab">
-          tab content
-        </Tabs.Item>
-      </Tabs>
-    </ThemeProvider>
+    <Tabs>
+      <Tabs.Item key={1} title="tab">
+        tab content
+      </Tabs.Item>
+    </Tabs>
   );
-  expect(screen.getByText('tab')).toHaveStyle(`padding:0 0.5rem 0.5rem`);
+  expect(screen.getByText('tab').className).toMatchInlineSnapshot(
+    `"flex cursor-pointer justify-center aria-disabled:cursor-not-allowed min-h-[40px] data-[hover]:text-tabs-tab-text data-[hover]:border-b-tabs-tab-hover data-[hover]:border-b-8 data-[hover]:border-solid disabled:text-tabs-tab-disabled selected:border-b-primary-600 selected:border-b-8 selected:border-solid px-2 pb-2 text-lg"`
+  );
 });
 
 test('supports disabled prop', () => {
@@ -112,25 +110,29 @@ test('cursor indicates interactivity', () => {
     </Tabs>
   );
   const tabs = screen.getAllByRole('tab');
-  expect(tabs[0]).toHaveStyle('cursor: pointer');
-  expect(tabs[1]).toHaveStyle('cursor: not-allowed');
+  expect(tabs[0].className).toMatchInlineSnapshot(
+    `"flex cursor-pointer justify-center aria-disabled:cursor-not-allowed min-h-[40px] data-[hover]:text-tabs-tab-text data-[hover]:border-b-tabs-tab-hover data-[hover]:border-b-8 data-[hover]:border-solid disabled:text-tabs-tab-disabled selected:border-b-primary-600 selected:border-b-8 selected:border-solid px-2 pb-2 text-lg"`
+  );
+  expect(tabs[1].className).toMatchInlineSnapshot(
+    `"flex cursor-pointer justify-center aria-disabled:cursor-not-allowed min-h-[40px] data-[hover]:text-tabs-tab-text data-[hover]:border-b-tabs-tab-hover data-[hover]:border-b-8 data-[hover]:border-solid disabled:text-tabs-tab-disabled selected:border-b-primary-600 selected:border-b-8 selected:border-solid px-2 pb-2 text-lg"`
+  );
 });
 
 test('open tabpanel when its tab controller is clicked', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Tabs>
-        <Tabs.Item title="tab1" key="1">
-          tab-1 content
-        </Tabs.Item>
-        <Tabs.Item title="tab2" key="2">
-          tab-2 content
-        </Tabs.Item>
-      </Tabs>
-    </ThemeProvider>
+    <Tabs>
+      <Tabs.Item title="tab1" key="1">
+        tab-1 content
+      </Tabs.Item>
+      <Tabs.Item title="tab2" key="2">
+        tab-2 content
+      </Tabs.Item>
+    </Tabs>
   );
   const tab = screen.getByText('tab2');
   fireEvent.click(tab);
-  expect(tab).toHaveStyle('border-bottom: 8px solid orange');
+  expect(tab.className).toMatchInlineSnapshot(
+    `"flex cursor-pointer justify-center aria-disabled:cursor-not-allowed min-h-[40px] data-[hover]:text-tabs-tab-text data-[hover]:border-b-tabs-tab-hover data-[hover]:border-b-8 data-[hover]:border-solid disabled:text-tabs-tab-disabled selected:border-b-primary-600 selected:border-b-8 selected:border-solid px-2 pb-2 text-lg"`
+  );
   expect(screen.getByText('tab-2 content')).toBeVisible();
 });

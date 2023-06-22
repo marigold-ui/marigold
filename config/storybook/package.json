@@ -3,7 +3,6 @@
   "description": "Marigold's storybook configuration",
   "version": "1.0.4",
   "license": "MIT",
-  "type": "module",
   "exports": "./main.js",
   "keywords": [
     "marigold",
@@ -25,7 +24,6 @@
     "@marigold/components": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
-    "@marigold/theme-unicorn": "workspace:*",
     "@mdx-js/react": "2.3.0",
     "@storybook/addon-a11y": "7.0.21",
     "@storybook/addon-essentials": "7.0.21",
@@ -40,12 +38,20 @@
     "webpack": "4"
   },
   "devDependencies": {
+    "@storybook/addon-postcss": "2.0.0",
+    "@storybook/addon-styling": "0.3.2",
     "@storybook/builder-vite": "7.0.21",
     "@storybook/cli": "7.0.21",
+    "@storybook/core-events": "7.0.21",
     "@storybook/react-vite": "7.0.21",
+    "autoprefixer": "10.4.14",
+    "postcss": "8.4.21",
+    "postcss-loader": "7.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "storybook": "next",
+    "storybook": "7.0.21",
+    "tailwind-variants": "0.1.2",
+    "tailwindcss": "3.3.2",
     "typescript": "5.0.4",
     "vite": "4.3.9"
   },
@@ -56,8 +62,7 @@
     "typescript": "5.0.4"
   },
   "scripts": {
-    "start": "storybook dev -p 1337 -c .",
-    "build": "storybook build --disable-telemetry -c . -o ../../storybook-static",
-    "test": "storybook dev --smoke-test --ci -c ."
+    "start": "storybook dev -p 6006 -c .storybook/",
+    "build": "storybook build --disable-telemetry -c ./.storybook -o ../../storybook-static"
   }
 }

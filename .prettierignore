@@ -13,4 +13,4 @@ coverage
 
 docs/.cache
 docs/public/render-page.js.map
-*.png
+*.png 

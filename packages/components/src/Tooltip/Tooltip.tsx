@@ -1,20 +1,11 @@
 import React, { ReactNode } from 'react';
 import { useTooltip } from '@react-aria/tooltip';
 
-import {
-  Box,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-} from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
 import { useTooltipContext } from './Context';
 import { TooltipTrigger } from './TooltipTrigger';
-
-// Theme Extension
-// ---------------
-export interface TooltipThemeExtension
-  extends ThemeExtensionsWithParts<'Tooltip', ['container', 'arrow']> {}
 
 // Props
 // ---------------
@@ -31,35 +22,22 @@ export const Tooltip = ({ children, variant, size }: TooltipProps) => {
     useTooltipContext();
   const { tooltipProps } = useTooltip({}, state);
 
-  const styles = useComponentStyles(
-    'Tooltip',
-    { variant, size },
-    { parts: ['container', 'arrow'] }
-  );
+  const classNames = useClassNames({ component: 'Tooltip', variant, size });
 
   return (
-    <Box
+    <div
       {...tooltipProps}
       {...rest}
       ref={overlayRef}
-      css={styles.container}
+      className={cn('group/tooltip', classNames.container)}
       data-placement={placement}
     >
       <div>{children}</div>
-      <Box
+      <div
         {...arrowProps}
-        __baseCSS={{
-          position: 'absolute',
-          height: 0,
-          width: 0,
-          borderStyle: 'solid',
-          borderLeftColor: 'transparent',
-          borderRightColor: 'transparent',
-          borderBottomColor: 'transparent',
-        }}
-        css={styles.arrow}
+        className={cn('absolute h-0 w-0', classNames.arrow)}
       />
-    </Box>
+    </div>
   );
 };
 

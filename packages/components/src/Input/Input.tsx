@@ -1,88 +1,91 @@
-import React, { forwardRef, ReactElement } from 'react';
+import React, { cloneElement, forwardRef, ReactElement } from 'react';
 import { HtmlProps } from '@marigold/types';
-import {
-  Box,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-  useStateProps,
-} from '@marigold/system';
-
-// Theme Extension
-// ---------------
-export interface InputThemeExtension
-  extends ThemeExtensionsWithParts<'Input', ['input', 'icon', 'container']> {}
+import { cn, useClassNames } from '@marigold/system';
 
 // Props
 // ---------------
-export interface InputOwnProps extends Omit<HtmlProps<'input'>, 'size'> {
+export interface InputOwnProps
+  extends Omit<HtmlProps<'input'>, 'size' | 'className'> {
   icon?: ReactElement;
   action?: ReactElement;
   variant?: string;
   size?: string;
+  className?: {
+    container?: string;
+    input?: string;
+    icon?: string;
+  };
 }
 
 export interface InputProps
-  extends Omit<React.ComponentPropsWithRef<'input'>, 'size'>,
+  extends Omit<React.ComponentPropsWithRef<'input'>, 'size' | 'className'>,
     InputOwnProps {}
 
 // Component
 // ---------------
 export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
   (
-    { type = 'text', icon, action, variant, size, ...props }: InputOwnProps,
+    {
+      type = 'text',
+      icon,
+      action,
+      variant,
+      size,
+      className,
+      ...props
+    }: InputOwnProps,
     ref
   ) => {
-    const styles = useComponentStyles(
-      'Input',
-      { variant, size },
-      { parts: ['input', 'icon', 'container'] }
-    );
-
-    const stateProps = useStateProps({
-      hasIcon: icon ? true : false,
+    const classNames = useClassNames({
+      component: 'Input',
+      variant,
+      size,
+      className,
     });
 
+    const inputIcon = icon
+      ? cloneElement(icon, {
+          className: cn(
+            'pointer-events-none absolute',
+            classNames.icon,
+            icon.props.className
+          ),
+          ...icon.props,
+        })
+      : null;
+
+    const inputAction =
+      action && !props.readOnly
+        ? cloneElement(action, {
+            className: cn(
+              'absolute',
+              classNames.action,
+              action.props.className
+            ),
+            ...action.props,
+          })
+        : null;
+
     return (
-      <Box
-        __baseCSS={{
-          position: 'relative',
-          display: 'flex',
-          alignItems: 'center',
-          width: '100%',
-        }}
-        css={styles.container}
+      <div
+        className="group/input relative flex items-center"
+        data-icon={icon && ''}
+        data-action={action && ''}
       >
-        <Box
-          __baseCSS={{ border: 0, width: '100%', outline: 'none', pl: 16 }}
+        {inputIcon}
+        <input
           {...props}
-          {...stateProps}
-          as="input"
+          className={cn(
+            'flex-1',
+            'disabled:cursor-not-allowed',
+            classNames.input,
+            className
+          )}
           ref={ref}
-          css={styles.input}
           type={type}
         />
-        {icon && (
-          <Box
-            __baseCSS={{
-              position: 'absolute',
-              pointerEvents: 'none',
-              left: 8,
-            }}
-            css={styles.icon}
-          >
-            {icon}
-          </Box>
-        )}
-        <Box
-          __baseCSS={{
-            display: 'inline-flex',
-            position: 'absolute',
-            right: 8,
-          }}
-        >
-          {action}
-        </Box>
-      </Box>
+        {inputAction}
+      </div>
     );
   }
 );

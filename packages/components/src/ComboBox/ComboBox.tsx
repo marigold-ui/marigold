@@ -3,7 +3,6 @@ import { useComboBoxState } from '@react-stately/combobox';
 import { useComboBox } from '@react-aria/combobox';
 import { ComboBoxProps as ComboBoxPropsI } from '@react-types/combobox';
 import { useFilter } from '@react-aria/i18n';
-import { ChevronDown } from '@marigold/icons';
 import { useButton } from '@react-aria/button';
 
 import { ListBox } from '../ListBox';
@@ -45,6 +44,8 @@ export const ComboBox = ({
   defaultValue,
   value,
   onChange,
+  variant,
+  size,
   ...rest
 }: ComboBoxProps) => {
   const props: ComboBoxPropsI<object> = {
@@ -78,6 +79,7 @@ export const ComboBox = ({
   const errorMessageProps = { 'aria-invalid': error };
   const { buttonProps } = useButton(triggerProps, buttonRef);
   const { label, description, errorMessage } = props;
+
   return (
     <>
       <FieldBase
@@ -93,8 +95,14 @@ export const ComboBox = ({
           {...(inputProps as any)}
           ref={inputRef}
           action={
-            <Button style={{ padding: '0' }} ref={buttonRef} {...buttonProps}>
-              <ChevronDown fontSize={'small'} />
+            <Button
+              className="absolute right-1 h-4 w-4 border-none bg-transparent p-0"
+              ref={buttonRef}
+              {...buttonProps}
+            >
+              <svg viewBox="0 0 20 20" fill="currentColor">
+                <path d="M5.97563 7.125L12 13.1363L18.0244 7.125L19.875 8.97563L12 16.8506L4.125 8.97563L5.97563 7.125Z" />
+              </svg>
             </Button>
           }
         />

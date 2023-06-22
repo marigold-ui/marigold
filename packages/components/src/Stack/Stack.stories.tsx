@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Box } from '@marigold/system';
 
 import { Headline } from '../Headline';
 import { Text } from '../Text';
@@ -12,18 +11,8 @@ const meta = {
   argTypes: {
     space: {
       control: {
-        type: 'select',
+        type: 'text',
       },
-      options: [
-        'none',
-        'xxsmall',
-        'xsmall',
-        'small',
-        'medium',
-        'large',
-        'xlarge',
-        'xxlarge',
-      ],
       description: 'Responsive Style Value',
     },
     alignX: {
@@ -31,7 +20,7 @@ const meta = {
         type: 'select',
       },
       options: ['none', 'left', 'center', 'right'],
-      description: 'Vertical Alignment',
+      description: 'Horizontal Alignment',
     },
     alignY: {
       control: {
@@ -54,21 +43,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const Block = ({ children }: { children: ReactNode }) => (
-  <Box
-    css={{
-      background: 'hsla(218 16% 77% / 50%)',
-      border: '1px solid hsla(218 16% 70% / 50%)',
-      borderRadius: 12,
-      p: 12,
-    }}
-  >
+  <div className="rounded-xl border border-solid border-gray-200 bg-gray-100 p-3">
     {children}
-  </Box>
+  </div>
 );
 
 export const Basic: Story = {
   render: args => (
-    <Stack {...args}>
+    <Stack {...args} space={4}>
       <Headline level="2">Heading</Headline>
       <Text>
         Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -90,7 +72,7 @@ export const Nested: Story = {
   render: args => (
     <Block>
       <Stack {...args}>
-        <Stack space="xsmall">
+        <Stack space={2}>
           <Block>
             <Headline level="2">With xsmall spacing</Headline>
           </Block>
@@ -111,7 +93,7 @@ export const Nested: Story = {
             </Text>
           </Block>
         </Stack>
-        <Stack space="medium">
+        <Stack space={4}>
           <Block>
             <Headline level="2">With Medium Spacing</Headline>
           </Block>
@@ -140,13 +122,13 @@ export const Nested: Story = {
 export const Stretch: Story = {
   render: args => (
     <Block>
-      <Box css={{ height: 300 }}>
+      <div style={{ height: '300px' }}>
         <Stack {...args}>
           <Block>Lirum</Block>
           <Block>Larum</Block>
           <Block>Löffelstiel!</Block>
         </Stack>
-      </Box>
+      </div>
     </Block>
   ),
 };

@@ -1,30 +1,36 @@
 import React from 'react';
 import {
-  CSSObject,
-  ThemeComponentProps,
-  ThemeExtension,
-  useComponentStyles,
+  CursorProp,
+  FontSizeProp,
+  FontWeightProp,
+  TextAlignProp,
+  cn,
+  createVar,
+  cursorStyle,
+  FontStyleProp,
+  fontWeight,
+  get,
+  textAlign,
+  useClassNames,
+  useTheme,
+  textSize,
+  textStyle,
 } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
-import { Box } from '@marigold/system';
-
-// Theme Extension
-// ---------------
-export interface TextThemeExtension extends ThemeExtension<'Text'> {}
-
 // Props
 // ---------------
-export interface TextProps extends ThemeComponentProps, HtmlProps<'p'> {
-  display?: CSSObject['display'];
-  align?: CSSObject['textAlign'];
-  color?: string;
-  cursor?: string;
-  fontSize?: string;
-  fontWeight?: string;
-  fontStyle?: string;
-  outline?: string;
+export interface TextProps
+  extends HtmlProps<'p'>,
+    TextAlignProp,
+    FontSizeProp,
+    FontWeightProp,
+    FontStyleProp,
+    CursorProp {
   children?: React.ReactNode;
+  variant?: string;
+  color?: string;
+  size?: string;
 }
 
 // Component
@@ -32,40 +38,42 @@ export interface TextProps extends ThemeComponentProps, HtmlProps<'p'> {
 export const Text = ({
   variant,
   size,
-  display,
-  align,
   color,
-  fontSize,
-  fontStyle,
-  fontWeight,
-  cursor,
-  outline,
+  align = 'none',
+  cursor = 'default',
+  weight = 'normal',
+  fontSize = 'xs',
+  fontStyle = 'normal',
   children,
   ...props
 }: TextProps) => {
-  const styles = useComponentStyles('Text', {
+  const theme = useTheme();
+  const classNames = useClassNames({
+    component: 'Text',
     variant,
     size,
   });
+
   return (
-    <Box
-      as="p"
+    <p
       {...props}
-      css={[
-        styles,
-        {
-          display,
-          color,
-          cursor,
-          outline,
-          fontSize,
-          fontStyle,
-          fontWeight,
-          textAlign: align,
-        },
-      ]}
+      className={cn(
+        classNames,
+        'text-[--color] outline-[--outline]',
+        textStyle[fontStyle],
+        textAlign[align],
+        cursorStyle[cursor],
+        fontWeight[weight],
+        textSize[fontSize]
+      )}
+      style={createVar({
+        color:
+          color &&
+          theme.colors &&
+          get(theme.colors, color.replace('-', '.'), color /* fallback */),
+      })}
     >
       {children}
-    </Box>
+    </p>
   );
 };

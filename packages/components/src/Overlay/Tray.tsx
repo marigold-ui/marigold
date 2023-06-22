@@ -1,5 +1,4 @@
 import React from 'react';
-import { Box } from '@marigold/system';
 import { FocusScope } from '@react-aria/focus';
 import {
   AriaModalOverlayProps,
@@ -54,16 +53,16 @@ export const TrayWrapper = forwardRef<HTMLDivElement, TrayWrapperProps>(
     return (
       <FocusScope contain restoreFocus autoFocus>
         <Underlay {...underlayProps} variant="modal">
-          <Box
+          <div
             {...modalProps}
             ref={ref}
-            __baseCSS={{ position: 'absolute', width: '100%', bottom: 0 }}
+            className="absolute bottom-0 w-full"
             data-testid="tray"
           >
             <DismissButton onDismiss={state.close} />
             {children}
             <DismissButton onDismiss={state.close} />
-          </Box>
+          </div>
         </Underlay>
       </FocusScope>
     );

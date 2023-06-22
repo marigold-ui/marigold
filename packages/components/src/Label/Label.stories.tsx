@@ -16,19 +16,17 @@ const meta = {
         defaultValue: { summary: 'Label' },
       },
     },
-    required: {
+    labelWidth: {
       control: {
-        type: 'boolean',
+        type: 'text',
       },
-      description: 'Hint that the related control required',
+      description: 'change width of label',
       table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        type: { summary: 'string' },
       },
     },
   },
   args: {
-    required: false,
     children: 'Label',
   },
 } satisfies Meta<typeof Label>;
@@ -37,5 +35,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: ({ children, ...args }) => <Label {...args}>{children}</Label>,
+  render: ({ children, ...args }) => (
+    <Label labelWidth="500px" {...args}>
+      {children}
+    </Label>
+  ),
 };

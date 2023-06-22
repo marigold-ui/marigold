@@ -1,37 +1,24 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider } from '@marigold/system';
 
 import { Body } from './Body';
 
-const theme = {
-  space: {
-    none: 0,
-    'small-1': 4,
-    'medium-1': 16,
-  },
-  colors: {
-    grey: '#dee2e6',
-    yellow: '#fff9db',
-  },
+import { cva } from 'class-variance-authority';
+
+const theme: Theme = {
+  name: 'test',
   components: {
-    Body: {
-      base: {
-        p: 'small-1',
-        border: '1px solid',
-        borderColor: 'grey',
-      },
-      variant: {
-        yellow: {
-          bg: 'yellow',
+    Body: cva('flex-1 p-1', {
+      variants: {
+        variant: {
+          yellow: 'bg-yellow-200',
+        },
+        size: {
+          medium: 'p-2',
         },
       },
-      size: {
-        medium: {
-          p: 'medium-1',
-        },
-      },
-    },
+    }),
   },
 };
 
@@ -46,30 +33,28 @@ test('renders as a "section" element', () => {
   expect(body.tagName).toEqual('SECTION');
 });
 
-test('takes available space by default', () => {
-  render(<Body data-testid="body" />);
-
-  const body = screen.getByTestId('body');
-  expect(body).toHaveStyle(`flex: 1`);
-});
-
-test('uses base styling form "body" in theme', () => {
+test('has base classnames', () => {
   render(
     <ThemeProvider theme={theme}>
       <Body data-testid="body" />
     </ThemeProvider>
   );
+
   const body = screen.getByTestId('body');
-  expect(body).toHaveStyle(`padding: ${theme.space['small-1']}px`);
+  expect(body).toHaveClass(`p-1 flex-1`);
 });
 
-test('body accepts a variant and size', () => {
+test('body accepts a variant and size classnames', () => {
   render(
     <ThemeProvider theme={theme}>
       <Body data-testid="body" variant="yellow" size="medium" />
     </ThemeProvider>
   );
   const body = screen.getByTestId('body');
-  expect(body).toHaveStyle(`background: ${theme.colors.yellow}`);
-  expect(body).toHaveStyle(`padding: ${theme.space['medium-1']}px`);
+  expect(body).toMatchInlineSnapshot(`
+    <section
+      class="flex-1 bg-yellow-200 p-2"
+      data-testid="body"
+    />
+  `);
 });

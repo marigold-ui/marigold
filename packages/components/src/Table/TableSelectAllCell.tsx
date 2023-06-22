@@ -9,7 +9,7 @@ import {
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
 
-import { Box, useStateProps } from '@marigold/system';
+import { cn, useStateProps } from '@marigold/system';
 
 import { Checkbox } from '../Checkbox';
 import { useTableContext } from './Context';
@@ -25,7 +25,7 @@ export interface TableSelectAllCell {
 // ---------------
 export const TableSelectAllCell = ({ column }: TableSelectAllCell) => {
   const ref = useRef(null);
-  const { state, styles } = useTableContext();
+  const { state, classNames } = useTableContext();
   const { columnHeaderProps } = useTableColumnHeader(
     {
       node: column,
@@ -44,19 +44,16 @@ export const TableSelectAllCell = ({ column }: TableSelectAllCell) => {
   });
 
   return (
-    <Box
-      as="th"
+    <th
       ref={ref}
-      __baseCSS={{
-        textAlign: 'center',
-        verticalAlign: 'middle',
-        lineHeight: 1,
-      }}
-      css={styles.header}
+      className={cn(
+        ['text-center align-middle leading-none'],
+        classNames?.header
+      )}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
     >
       <Checkbox {...checkboxProps} />
-    </Box>
+    </th>
   );
 };

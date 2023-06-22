@@ -13,5 +13,16 @@
   },
 
   "npm.packageManager": "pnpm",
-  "eslint.packageManager": "pnpm"
+  "eslint.packageManager": "pnpm",
+
+  "tailwindCSS.experimental.classRegex": [
+    [
+      // "cn\\(([^)]*)\\)",
+      // "[\"'`]([^\"'`]*).*?[\"'`]",
+      "cva\\(([^)]*)\\)",
+      "[\"'`]([^\"'`]*).*?[\"'`]",
+      "tv\\(([^)]*)\\)",
+      "[\"'`]([^\"'`]*).*?[\"'`]"
+    ]
+  ]
 }

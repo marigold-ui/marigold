@@ -1,57 +1,32 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider } from '@marigold/system';
+
+import { cva } from 'class-variance-authority';
 
 import { Headline } from './Headline';
 
-const theme = {
-  space: {
-    none: 0,
-    'small-1': 4,
-    'medium-1': 16,
-  },
-  color: { white: '#FFF' },
-  fontSizes: {
-    xxsmall: '0.875rem',
-    xsmall: '1rem',
-    small: '1.125rem',
-    medium: '1.25rem',
-    large: '1.5rem',
-    xlarge: '2rem',
+const theme: Theme = {
+  name: 'test',
+  colors: {
+    emerald: 'rgb(5 150 105);',
   },
   components: {
-    Headline: {
-      base: {
-        m: 'none',
-        fontWeight: 'heading',
-      },
-      size: {
-        'level-1': {
-          fontSize: 'xlarge',
+    Headline: cva('m-0 font-black', {
+      variants: {
+        size: {
+          'level-1': 'text-[2rem]',
+          'level-2': 'mb-6 text-2xl',
+          'level-3': 'text-xl',
+          'level-4': 'text-lg',
+          'level-5': 'text-base',
+          'level-6': 'text-[13px] uppercase',
         },
-        'level-2': {
-          fontSize: 'large',
-        },
-        'level-3': {
-          fontSize: 'medium',
-        },
-        'level-4': {
-          fontSize: 'small',
-        },
-        'level-5': {
-          fontSize: 'xsmall',
-        },
-        'level-6': {
-          fontSize: 'xsmall',
-          textTransform: 'uppercase',
+        variant: {
+          one: 'font-small',
         },
       },
-      variant: {
-        one: {
-          color: 'white',
-        },
-      },
-    },
+    }),
   },
 };
 
@@ -75,11 +50,9 @@ test.each(['1', '2', '3', '4', '5', '6'])(
       </ThemeProvider>
     );
 
-    const headline = screen.getByTestId('headline');
     // @ts-expect-error
-    const token = theme.components.Headline.size[`level-${lvl}`].fontSize;
-    // @ts-expect-error
-    expect(headline).toHaveStyle(`font-size: ${theme.fontSizes[token]}`);
+    const token = theme.components.Headline({ size: `level-${lvl}` });
+    expect(token).toMatchSnapshot();
   }
 );
 
@@ -91,9 +64,13 @@ test('uses "level-1" by default', () => {
   );
 
   const headline = screen.getByTestId('headline');
-  const token = theme.components.Headline.size[`level-1`].fontSize;
-  // @ts-expect-error
-  expect(headline).toHaveStyle(`font-size: ${theme.fontSizes[token]}`);
+
+  expect(headline).toMatchInlineSnapshot(`
+    <h1
+      class="m-0 font-black text-[2rem] text-[--color] text-left"
+      data-testid="headline"
+    />
+  `);
 });
 
 test('headline accepts a variant', () => {
@@ -103,7 +80,12 @@ test('headline accepts a variant', () => {
     </ThemeProvider>
   );
   const headline = screen.getByTestId('headline');
-  expect(headline).toHaveStyle(`color: white`);
+  expect(headline).toMatchInlineSnapshot(`
+    <h1
+      class="m-0 font-black text-[2rem] font-small text-[--color] text-left"
+      data-testid="headline"
+    />
+  `);
 });
 
 test('headline accepts align property', () => {
@@ -113,15 +95,22 @@ test('headline accepts align property', () => {
     </ThemeProvider>
   );
   const headline = screen.getByTestId('headline');
-  expect(headline).toHaveStyle(`textAlign: center`);
+  expect(headline).toHaveClass(`text-center`);
 });
 
-test('headline accepts color property', () => {
+test('get theme color', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Headline data-testid="headline" color="red" />
+      <Headline data-testid="headline" color="emerald" />
     </ThemeProvider>
   );
+
   const headline = screen.getByTestId('headline');
-  expect(headline).toHaveStyle(`color: red`);
+  expect(headline).toMatchInlineSnapshot(`
+    <h1
+      class="m-0 font-black text-[2rem] text-[--color] text-left"
+      data-testid="headline"
+      style="--color: rgb(5 150 105);;"
+    />
+  `);
 });

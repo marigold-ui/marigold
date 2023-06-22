@@ -11,11 +11,7 @@ import {
   useTableState,
 } from '@react-stately/table';
 
-import {
-  Box,
-  ThemeExtensionsWithParts,
-  useComponentStyles,
-} from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 
 import { TableContext } from './Context';
 import { TableBody } from './TableBody';
@@ -26,14 +22,6 @@ import { TableHeader } from './TableHeader';
 import { TableHeaderRow } from './TableHeaderRow';
 import { TableRow } from './TableRow';
 import { TableSelectAllCell } from './TableSelectAllCell';
-
-// Theme Extension
-// ---------------
-export interface TableThemeExtension
-  extends ThemeExtensionsWithParts<
-    'Table',
-    ['table', 'header', 'row', 'cell']
-  > {}
 
 // Props
 // ---------------
@@ -69,27 +57,23 @@ export const Table: Table = ({
   });
   const { gridProps } = useTable(props, state, tableRef);
 
-  const styles = useComponentStyles(
-    'Table',
-    { variant, size },
-    { parts: ['table', 'header', 'row', 'cell'] }
-  );
+  const classNames = useClassNames({
+    component: 'Table',
+    variant,
+    size,
+  });
 
   const { collection } = state;
 
   return (
-    <TableContext.Provider value={{ state, interactive, styles }}>
-      <Box
-        as="table"
+    <TableContext.Provider value={{ state, interactive, classNames }}>
+      <table
         ref={tableRef}
-        __baseCSS={{
-          display: stretch ? 'table' : 'block',
-          width: stretch ? '100%' : undefined,
-          borderCollapse: 'collapse',
-          overflow: 'auto',
-          whiteSpace: 'nowrap',
-        }}
-        css={styles.table}
+        className={cn(
+          'border-collapse overflow-auto whitespace-nowrap',
+          stretch ? 'table w-full' : 'block',
+          classNames.table
+        )}
         {...gridProps}
       >
         <TableHeader>
@@ -118,7 +102,7 @@ export const Table: Table = ({
             </TableRow>
           ))}
         </TableBody>
-      </Box>
+      </table>
     </TableContext.Provider>
   );
 };

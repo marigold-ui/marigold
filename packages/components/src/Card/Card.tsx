@@ -1,29 +1,44 @@
 import React, { ReactNode } from 'react';
 import {
-  Box,
-  useComponentStyles,
-  ThemeComponentProps,
-  ThemeExtension,
-  ResponsiveStyleValue,
+  GapSpaceProp,
+  PaddingBottomProp,
+  PaddingLeftProp,
+  PaddingRightProp,
+  PaddingSpaceProp,
+  PaddingSpacePropX,
+  PaddingSpacePropY,
+  PaddingTopProp,
+  cn,
+  gapSpace,
+  paddingBottom,
+  paddingLeft,
+  paddingRight,
+  paddingSpace,
+  paddingSpaceX,
+  paddingSpaceY,
+  paddingTop,
+  useClassNames,
 } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
-// Theme Extension
-// ---------------
-export interface CardThemeExtension extends ThemeExtension<'Card'> {}
-
 // Props
 // ---------------
-export interface CardProps extends ThemeComponentProps, HtmlProps<'div'> {
+export interface CardProps
+  extends HtmlProps<'div'>,
+    GapSpaceProp,
+    PaddingSpaceProp,
+    PaddingSpacePropX,
+    PaddingSpacePropY,
+    PaddingRightProp,
+    PaddingLeftProp,
+    PaddingBottomProp,
+    PaddingTopProp {
   children?: ReactNode;
-  space?: ResponsiveStyleValue<string>;
-  p?: ResponsiveStyleValue<string>;
-  px?: ResponsiveStyleValue<string>;
-  py?: ResponsiveStyleValue<string>;
-  pt?: ResponsiveStyleValue<string>;
-  pb?: ResponsiveStyleValue<string>;
-  pl?: ResponsiveStyleValue<string>;
-  pr?: ResponsiveStyleValue<string>;
+  variant?: string;
+  size?: string;
+  p?: PaddingSpaceProp['space'];
+  px?: PaddingSpacePropX['spaceX'];
+  py?: PaddingSpacePropY['spaceY'];
 }
 
 // Component
@@ -32,7 +47,7 @@ export const Card = ({
   children,
   variant,
   size,
-  space = 'none',
+  space = 0,
   p,
   px,
   py,
@@ -42,18 +57,24 @@ export const Card = ({
   pr,
   ...props
 }: CardProps) => {
-  const styles = useComponentStyles('Card', { variant, size });
+  const classNames = useClassNames({ component: 'Card', variant, size });
   return (
-    <Box
+    <div
       {...props}
-      __baseCSS={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: space,
-      }}
-      css={[styles, { p, px, py, pt, pb, pl, pr }]}
+      className={cn(
+        'flex flex-col',
+        classNames,
+        gapSpace[space],
+        paddingSpace !== undefined && paddingSpace[p!],
+        paddingSpaceX !== undefined && paddingSpaceX[px!],
+        paddingSpaceY !== undefined && paddingSpaceY[py!],
+        paddingRight !== undefined && paddingRight[pr!],
+        paddingLeft !== undefined && paddingLeft[pl!],
+        paddingBottom !== undefined && paddingBottom[pb!],
+        paddingTop !== undefined && paddingTop[pt!]
+      )}
     >
       {children}
-    </Box>
+    </div>
   );
 };

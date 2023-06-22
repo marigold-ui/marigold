@@ -24,8 +24,9 @@
     "find-up": "5.0.0"
   },
   "devDependencies": {
-    "@marigold/tsconfig": "workspace:*",
     "@marigold/system": "workspace:*",
+    "@marigold/tsconfig": "workspace:*",
+    "@marigold/types": "workspace:*",
     "postcss": "8.4.24",
     "tailwindcss": "3.3.2",
     "tsup": "6.7.0"

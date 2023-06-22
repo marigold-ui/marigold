@@ -1,54 +1,54 @@
 import React, { ReactNode } from 'react';
+import { cva } from 'class-variance-authority';
 import { AriaTextFieldOptions, useTextField } from '@react-aria/textfield';
-import { render, screen, within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
+import { Theme } from '@marigold/system';
+import { setup } from '../test.utils';
 
 import { FieldBase } from './FieldBase';
-import { ThemeProvider } from '@marigold/system';
 
 // Setup
 // ---------------
-const theme = {
-  colors: {
-    blue: '#1c7ed6',
-  },
-  fontSizes: {
-    'small-1': 12,
-  },
-  sizes: {
-    none: 0,
-    large: 60,
-  },
+
+const theme: Theme = {
+  name: 'test',
   components: {
+    Field: cva(),
     Label: {
-      variant: {
-        blue: {
-          color: 'blue',
+      container: cva('', {
+        variants: {
+          variant: {
+            blue: 'text-blue-600',
+          },
+          size: {
+            small: 'text-base',
+          },
         },
-      },
-      size: {
-        small: {
-          fontSize: 'small-1',
-        },
-      },
+      }),
+      indicator: cva(''),
     },
     HelpText: {
-      variant: {
-        blue: {
-          container: {
-            color: 'blue',
+      container: cva('', {
+        variants: {
+          variant: {
+            lime: 'text-blue-600',
+          },
+          size: {
+            small: 'text-base',
           },
         },
-      },
-      size: {
-        small: {
-          container: {
-            fontSize: 'small-1',
-          },
-        },
-      },
+      }),
+      icon: cva(''),
+    },
+    Input: {
+      input: cva('border-blue-700'),
+      icon: cva(),
+      action: cva(),
     },
   },
 };
+
+const { render } = setup({ theme });
 
 interface MockedTestFieldProps extends AriaTextFieldOptions<'input'> {
   disabled?: boolean;
@@ -145,49 +145,51 @@ test('field label shows requried indicator', () => {
 
 test('passes down variant and size', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <FieldBase
-        label="Label"
-        description="Description"
-        variant="blue"
-        size="small"
-      >
-        <input type="text" />
-      </FieldBase>
-    </ThemeProvider>
+    <FieldBase
+      label="Label"
+      description="Description"
+      variant="blue"
+      size="small"
+    >
+      <input type="text" />
+    </FieldBase>
   );
 
   const label = screen.getByText('Label');
-  expect(label).toHaveStyle(`color: ${theme.colors.blue}`);
+  expect(label.className).toMatchInlineSnapshot(
+    `"text-blue-600 text-base flex w-[var(--labelWidth)]"`
+  );
 
   const helptext = screen.getByText('Description');
-  expect(helptext).toHaveStyle(`color: ${theme.colors.blue}`);
+  expect(helptext.className).toMatchInlineSnapshot(
+    `"flex items-center gap-1 text-base"`
+  );
 });
 
 test('takes full width by default', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <FieldBase label="Label" description="Description">
-        <input type="text" />
-      </FieldBase>
-    </ThemeProvider>
+    <FieldBase label="Label" description="Description">
+      <input type="text" />
+    </FieldBase>
   );
 
   // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle('width: 100%');
+  const container = screen.getByText('Label').parentElement!;
+  expect(container.getAttribute('style')).toMatchInlineSnapshot(
+    `"--fieldWidth: 100%;"`
+  );
 });
 
 test('allows to set custom width', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <FieldBase label="Label" description="Description" width="large">
-        <input type="text" />
-      </FieldBase>
-    </ThemeProvider>
+    <FieldBase label="Label" description="Description" width="60px">
+      <input type="text" />
+    </FieldBase>
   );
 
   // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle(`width: ${theme.sizes.large}px`);
+  const container = screen.getByText('Label').parentElement!;
+  expect(container.getAttribute('style')).toMatchInlineSnapshot(
+    `"--fieldWidth: 60px;"`
+  );
 });

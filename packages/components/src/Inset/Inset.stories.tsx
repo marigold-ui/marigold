@@ -2,30 +2,26 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Inset } from '../Inset';
-import { Text } from '../Text';
 
 const meta = {
   title: 'Components/Inset',
   argTypes: {
     space: {
       control: {
-        type: 'select',
+        type: 'text',
       },
-      options: ['small', 'medium', 'large'],
       description: 'set padding on all sides',
     },
     spaceX: {
       control: {
-        type: 'select',
+        type: 'text',
       },
-      options: ['small', 'medium', 'large'],
       description: 'set padding on left and right side',
     },
     spaceY: {
       control: {
-        type: 'select',
+        type: 'text',
       },
-      options: ['small', 'medium', 'large'],
       description: 'set padding on top and bottom side',
     },
   },
@@ -37,7 +33,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <Inset {...args}>
-      <Text>
+      <p>
         It is a dark time for the Rebellion. Although the Death Star has been
         destroyed, Imperial troops have driven the Rebel forces from their
         hidden base and pursued them across the galaxy. Evading the dreaded
@@ -45,7 +41,7 @@ export const Basic: Story = {
         has established a new secret base on the remote ice world of Hoth. The
         evil lord Darth Vader, obsessed with finding young Skywalker, has
         dispatched thousands of remote probes into the far reaches of space....
-      </Text>
+      </p>
     </Inset>
   ),
 };

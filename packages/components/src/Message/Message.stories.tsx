@@ -2,7 +2,6 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Message } from './Message';
 import { Text } from '../Text';
-import { Box } from '@marigold/system';
 
 const meta = {
   title: 'Components/Message',
@@ -43,13 +42,13 @@ export const Basic: Story = {
 
 export const MultiLineTitle: Story = {
   render: () => (
-    <Box css={{ width: 250 }}>
+    <div className="w-60">
       <Message
         messageTitle="Hey! You! I am an info box! Please notice me, it might help you!"
         variant="info"
       >
         <Text>I am really not that good at righting copy texts, sorry.</Text>
       </Message>
-    </Box>
+    </div>
   ),
 };

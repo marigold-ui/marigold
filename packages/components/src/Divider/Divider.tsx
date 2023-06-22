@@ -1,11 +1,7 @@
 import React from 'react';
 import { SeparatorProps, useSeparator } from '@react-aria/separator';
 
-import { Box, ThemeExtension, useComponentStyles } from '@marigold/system';
-
-// Theme Extension
-// ---------------
-export interface DividerThemeExtension extends ThemeExtension<'Divider'> {}
+import { useClassNames } from '@marigold/system';
 
 // Props
 // ---------------
@@ -17,6 +13,6 @@ export interface DividerProps extends SeparatorProps {
 // ---------------
 export const Divider = ({ variant, ...props }: DividerProps) => {
   const { separatorProps } = useSeparator(props);
-  const styles = useComponentStyles('Divider', { variant });
-  return <Box css={styles} {...props} {...separatorProps} />;
+  const classNames = useClassNames({ component: 'Divider', variant });
+  return <div className={classNames} {...props} {...separatorProps} />;
 };

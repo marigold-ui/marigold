@@ -1,50 +1,42 @@
 import React, { ReactNode } from 'react';
 import { HtmlProps } from '@marigold/types';
+import {
+  cn,
+  createVar,
+  alignmentX,
+  alignmentY,
+  AlignmentXProp,
+  AlignmentYProp,
+} from '@marigold/system';
 
-import { Box } from '../Box';
-
-export interface BreakoutProps extends HtmlProps<'div'> {
+export interface BreakoutProps
+  extends HtmlProps<'div'>,
+    AlignmentXProp,
+    AlignmentYProp {
   children?: ReactNode;
-  alignY?: 'top' | 'bottom' | 'center';
-  alignX?: 'left' | 'right' | 'center';
   height?: string;
 }
 
-const useAlignment = (direction?: string) => {
-  switch (direction) {
-    case 'right':
-      return 'flex-end';
-    case 'bottom':
-      return 'flex-end';
-    case 'center':
-      return 'center';
-  }
-  return 'flex-start';
-};
-
 export const Breakout = ({
-  alignX,
-  alignY,
   height,
   children,
+  alignX = 'left',
+  alignY = 'top',
   ...props
 }: BreakoutProps) => {
-  const alignItems = useAlignment(alignY);
-  const justifyContent = useAlignment(alignX);
-
   return (
-    <Box
-      css={{
-        alignItems,
-        justifyContent,
-        height,
-        width: '100%',
-        display: alignY || alignX ? 'flex' : 'block',
-        gridColumn: '1 / -1 !important',
-      }}
+    <div
+      className={cn(
+        'col-start-[1_!important] col-end-[-1_!important] w-full',
+        alignmentX[alignX],
+        alignmentY[alignY],
+        alignmentX[alignX] || alignmentY[alignY] ? 'flex' : 'block',
+        'h-[--height]'
+      )}
+      style={createVar({ height })}
       {...props}
     >
       {children}
-    </Box>
+    </div>
   );
 };

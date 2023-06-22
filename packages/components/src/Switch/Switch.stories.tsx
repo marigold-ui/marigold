@@ -53,4 +53,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = { render: args => <Switch {...args} /> };
+export const Basic: Story = {
+  render: args => <Switch {...args} />,
+};

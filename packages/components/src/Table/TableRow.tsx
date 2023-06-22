@@ -5,7 +5,7 @@ import { useTableRow } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
 
-import { Box, useComponentStyles, useStateProps } from '@marigold/system';
+import { cn, useClassNames, useStateProps } from '@marigold/system';
 
 import { useTableContext } from './Context';
 
@@ -21,13 +21,16 @@ export interface TableRowProps {
 export const TableRow = ({ children, row }: TableRowProps) => {
   const ref = useRef(null);
   const { interactive, state, ...ctx } = useTableContext();
+
   const { variant, size } = row.props;
 
-  const { row: styles } = useComponentStyles(
-    'Table',
-    { variant: variant || ctx.variant, size: size || ctx.size },
-    { parts: ['row'] }
-  );
+  // question: why we need this?
+  const classNames = useClassNames({
+    component: 'Table',
+    variant: variant || ctx.variant,
+    size: size || ctx.size,
+  });
+
   const { rowProps, isPressed } = useTableRow(
     {
       node: row,
@@ -54,17 +57,22 @@ export const TableRow = ({ children, row }: TableRowProps) => {
   });
 
   return (
-    <Box
-      as="tr"
+    <tr
       ref={ref}
-      __baseCSS={{
-        cursor: !interactive ? 'text' : disabled ? 'default' : 'pointer',
-      }}
-      css={styles}
+      className={cn(
+        [
+          !interactive
+            ? 'cursor-text'
+            : disabled
+            ? 'cursor-default'
+            : 'cursor-pointer',
+        ],
+        classNames?.row
+      )}
       {...mergeProps(rowProps, focusProps, hoverProps)}
       {...stateProps}
     >
       {children}
-    </Box>
+    </tr>
   );
 };
