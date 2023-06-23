@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { ThemeProvider, defaultTheme } from '@marigold/system';
+import { ThemeProvider, __defaultTheme } from '@marigold/system';
 import { useThemeSwitch } from './ThemeSwitch';
 
 export interface MarigoldThemeProps {
@@ -13,7 +13,7 @@ export const MarigoldTheme = ({ children }: MarigoldThemeProps) => {
   const { current, themes } = useThemeSwitch();
 
   return (
-    <ThemeProvider theme={(current && themes[current]) || defaultTheme}>
+    <ThemeProvider theme={(current && themes[current]) || __defaultTheme}>
       {children}
     </ThemeProvider>
   );

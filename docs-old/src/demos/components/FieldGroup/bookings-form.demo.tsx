@@ -11,7 +11,7 @@ import {
   TextArea,
 } from '@marigold/components';
 
-import coreTheme from '@marigold/theme-core22';
+import coreTheme from '@marigold/theme-core';
 
 export const BookingForm = () => (
   <ThemeProvider theme={coreTheme}>

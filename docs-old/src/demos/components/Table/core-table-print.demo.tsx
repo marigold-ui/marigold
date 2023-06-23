@@ -11,7 +11,7 @@ import {
 } from '@marigold/components';
 import React from 'react';
 
-import coreTheme from '@marigold/theme-core22';
+import coreTheme from '@marigold/theme-core';
 import { ResaleLogbook, AutoRenew, ExternalLink, Lock } from '@marigold/icons';
 
 const columns = [

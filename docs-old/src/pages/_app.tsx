@@ -7,7 +7,7 @@ import * as MarigoldComponents from '@marigold/components';
 import * as MarigoldIcons from '@marigold/icons';
 import unicornTheme from '@marigold/theme-unicorn';
 import b2bTheme from '@marigold/theme-b2b';
-import coreTheme from '@marigold/theme-core22';
+import coreTheme from '@marigold/theme-core';
 
 import * as DocsComponents from '~/components';
 import * as MdxComponents from '~/mdx/components';
