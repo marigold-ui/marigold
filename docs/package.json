@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@marigold/components": "workspace:*",
     "@marigold/theme-preset": "workspace:*",
     "@types/node": "16.18.23",
     "@types/react": "18.2.13",
