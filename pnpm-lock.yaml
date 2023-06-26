@@ -285,8 +285,8 @@ importers:
         specifier: 0.1.0
         version: 0.1.0
       '@types/react':
-        specifier: '18'
-        version: 18.0.33
+        specifier: 18.x
+        version: 18.2.13
       babel-loader:
         specifier: 9.1.2
         version: 9.1.2(@babel/core@7.21.8)(webpack@4.0.0)
@@ -571,8 +571,8 @@ importers:
         specifier: workspace:*
         version: link:../../config/tsconfig
       '@types/react':
-        specifier: 18.0.33
-        version: 18.0.33
+        specifier: 18.2.13
+        version: 18.2.13
       '@types/react-transition-group':
         specifier: 4.4.6
         version: 4.4.6
@@ -680,8 +680,8 @@ importers:
         version: 3.8.0
     devDependencies:
       '@types/react':
-        specifier: 18.0.33
-        version: 18.0.33
+        specifier: 18.2.13
+        version: 18.2.13
 
   themes/theme-b2b:
     dependencies:
@@ -4069,7 +4069,7 @@ packages:
       react: '>=16'
     dependencies:
       '@types/mdx': 2.0.5
-      '@types/react': 18.0.33
+      '@types/react': 18.2.13
       react: 18.2.0
     dev: false
 
@@ -8157,16 +8157,6 @@ packages:
     dependencies:
       '@types/react': 18.2.13
     dev: true
-
-  /@types/react@18.0.33:
-    resolution:
-      {
-        integrity: sha512-sHxzVxeanvQyQ1lr8NSHaj0kDzcNiGpILEVt69g9S31/7PfMvNCKLKcsHw4lYKjs3cGNJjXSP4mYzX43QlnjNA==,
-      }
-    dependencies:
-      '@types/prop-types': 15.7.5
-      '@types/scheduler': 0.16.3
-      csstype: 3.1.2
 
   /@types/react@18.2.13:
     resolution:
