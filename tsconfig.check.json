@@ -19,6 +19,6 @@
     "**/dist/**/*",
     "**/scripts/template/*",
     "docs",
-    "themes-old"
+    "docs-old"
   ]
 }

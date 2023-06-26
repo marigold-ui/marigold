@@ -1,7 +1,6 @@
-import { Theme } from '@marigold/system';
+'use client';
 
-import { root } from './root';
-import { colors } from './tokens';
+import { Theme } from '@marigold/system';
 
 import * as components from './components';
 
@@ -14,7 +13,5 @@ export const theme: Theme = {
     xl: '1280px',
     '2xl': '1536px',
   },
-  root,
-  colors,
   components,
 };
