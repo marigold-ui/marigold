@@ -29,7 +29,7 @@
     "@storybook/jest": "0.1.0",
     "@storybook/source-loader": "7.0.22",
     "@storybook/testing-library": "0.1.0",
-    "@types/react": "18",
+    "@types/react": "18.x",
     "babel-loader": "9.1.2",
     "find-up": "5.0.0",
     "vite-tsconfig-paths": "4.2.0",

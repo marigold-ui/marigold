@@ -87,7 +87,7 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "@types/react": "18.0.33",
+    "@types/react": "18.2.13",
     "@types/react-transition-group": "4.4.6",
     "class-variance-authority": "0.6.0",
     "react": "18.2.0",
