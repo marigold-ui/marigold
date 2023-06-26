@@ -93,6 +93,9 @@ importers:
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
+      react-live:
+        specifier: 4.1.3
+        version: 4.1.3(react-dom@18.2.0)(react@18.2.0)
       typescript:
         specifier: 5.0.4
         version: 5.0.4
@@ -346,6 +349,9 @@ importers:
 
   docs:
     dependencies:
+      '@marigold/components':
+        specifier: workspace:*
+        version: link:../packages/components
       '@marigold/theme-preset':
         specifier: workspace:*
         version: link:../packages/theme-preset
@@ -8107,6 +8113,13 @@ packages:
       {
         integrity: sha512-VjID5MJb1eGKthz2qUerWT8+R4b9N+CHvGCzg9fn4kWZgaF9AhdYikQio3R7wV8YY1NsQKPaCwKz1Yff+aHNUQ==,
       }
+
+  /@types/prismjs@1.26.0:
+    resolution:
+      {
+        integrity: sha512-ZTaqn/qSqUuAq1YwvOFQfVW1AR/oQJlLSZVustdjwI+GZ8kr0MSHBj0tsXPW1EqHubx50gtBEjbPGsdZwQwCjQ==,
+      }
+    dev: false
 
   /@types/prop-types@15.7.5:
     resolution:
@@ -18582,6 +18595,19 @@ packages:
       prettier: 2.8.8
     dev: false
 
+  /prism-react-renderer@2.0.5(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-VHTC2ZhOImeC3/mu/3TkEuRCa1K+kTCZQeCkwvWzQa01/ahU3dibyxWf3XiPLuO4k/rGjSTea1lEsfza6fMofw==,
+      }
+    peerDependencies:
+      react: '>=16.0.0'
+    dependencies:
+      '@types/prismjs': 1.26.0
+      clsx: 1.2.1
+      react: 18.2.0
+    dev: false
+
   /process-nextick-args@2.0.1:
     resolution:
       {
@@ -18994,6 +19020,23 @@ packages:
       {
         integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==,
       }
+
+  /react-live@4.1.3(react-dom@18.2.0)(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-D8mX8iFICW7KSYzy//AepC1svCLiXBuxO6bQVzcIjz6BP3EdrMZbyyC7lKg07Ou0fRWi1NYdOhigzeMlzAVg5Q==,
+      }
+    engines: { node: '>= 0.12.0', npm: '>= 2.0.0' }
+    peerDependencies:
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
+    dependencies:
+      prism-react-renderer: 2.0.5(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      sucrase: 3.32.0
+      use-editable: 2.3.3(react@18.2.0)
+    dev: false
 
   /react-refresh@0.14.0:
     resolution:
@@ -21612,6 +21655,17 @@ packages:
     dependencies:
       punycode: 1.4.1
       qs: 6.11.2
+
+  /use-editable@2.3.3(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-7wVD2JbfAFJ3DK0vITvXBdpd9JAz5BcKAAolsnLBuBn6UDDwBGuCIAGvR3yA2BNKm578vAMVHFCWaOcA+BhhiA==,
+      }
+    peerDependencies:
+      react: '>= 16.8.0'
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /use-resize-observer@9.1.0(react-dom@18.2.0)(react@18.2.0):
     resolution:
