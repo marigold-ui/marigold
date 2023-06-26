@@ -1,6 +1,7 @@
 # OS
 .DS_Store
 .history
+*.pem
 
 # generated files
 node_modules
@@ -20,9 +21,12 @@ slack-notification.json
 .next
 out
 .cache
-## env
-local.env
-.env.local
+build
 
-# remove this afterwards
-examples
+## env
+.env*.local
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts

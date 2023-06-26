@@ -1,4 +1,5 @@
 {
+  "extends": "@marigold/tsconfig/react",
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -14,16 +15,12 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@marigold/*": ["../packages/*/src", "../themes/*/src"]
+      "@marigold/*": ["../packages/*/src", "../themes/*/src"],
+      "~/*": ["src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "globals.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

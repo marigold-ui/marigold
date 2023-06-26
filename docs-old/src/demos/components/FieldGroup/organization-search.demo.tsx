@@ -9,7 +9,7 @@ import {
   Button,
 } from '@marigold/components';
 
-import coreTheme from '@marigold/theme-core22';
+import coreTheme from '@marigold/theme-core';
 
 export const OrganizationSearch = () => {
   return (
