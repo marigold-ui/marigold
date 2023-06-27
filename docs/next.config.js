@@ -1,5 +1,8 @@
+const { withContentlayer } = require('next-contentlayer');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  swcMinify: true,
   transpilePackages: [
     '@marigold/components',
     '@marigold/theme-preset',
@@ -7,4 +10,4 @@ const nextConfig = {
   ],
 };
 
-module.exports = nextConfig;
+module.exports = withContentlayer(nextConfig);
