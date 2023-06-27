@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react';
+import React, { Key, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Tag } from '.';
@@ -99,8 +99,8 @@ export const RemovableTags: Story = {
     let [items, setItems] =
       useState<{ id: number; name: string }[]>(defaultItems);
 
-    let removeItem = (key: number) => {
-      setItems(prevItems => prevItems.filter(item => key !== item.id));
+    let onRemove = (keys: Set<Key>) => {
+      setItems(prevItems => prevItems.filter(item => !keys.has(item.id)));
     };
 
     return (
@@ -109,7 +109,7 @@ export const RemovableTags: Story = {
         items={items}
         aria-label="TagGroup removing example"
         allowsRemoving
-        onRemove={removeItem}
+        onRemove={onRemove}
       >
         {(item: { id: number; name: string }) => <Tag>{item.name}</Tag>}
       </Tag.Group>

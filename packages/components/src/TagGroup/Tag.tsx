@@ -17,31 +17,19 @@ export interface TagProps extends AriaTagProps<object> {
 
 // Component
 // ---------------
-export const Tag = ({
-  variant,
-  size,
-  item,
-  state,
-  allowsRemoving,
-  onRemove,
-  ...rest
-}: TagProps) => {
+export const Tag = ({ variant, size, item, state, ...rest }: TagProps) => {
   const props: AriaTagProps<object> = {
     item,
-    allowsRemoving,
-    onRemove,
     ...rest,
   };
 
   let ref = React.useRef(null);
   let { focusProps } = useFocusRing({ within: true });
 
-  const { rowProps, gridCellProps, labelProps, removeButtonProps } = useTag(
+  const { rowProps, gridCellProps, allowsRemoving, removeButtonProps } = useTag(
     {
       ...props,
       item,
-      allowsRemoving,
-      onRemove,
     },
     state,
     ref
@@ -56,7 +44,7 @@ export const Tag = ({
       className={classNames.tag}
     >
       <div {...gridCellProps} className={classNames.gridCell}>
-        <span {...labelProps}>{item.rendered}</span>
+        <span>{item.rendered}</span>
         {allowsRemoving && (
           <Button
             {...removeButtonProps}

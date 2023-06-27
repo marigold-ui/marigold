@@ -16,6 +16,7 @@ export interface TagGroupProps
   width?: string;
   required?: boolean;
   error?: boolean;
+  allowsRemoving?: boolean;
 }
 
 // Component
@@ -24,6 +25,7 @@ export const TagGroup = ({
   width,
   required,
   error,
+  allowsRemoving,
   ...rest
 }: TagGroupProps) => {
   const props = {
@@ -68,7 +70,7 @@ export const TagGroup = ({
             key={item.key}
             item={item}
             state={state}
-            allowsRemoving={props.allowsRemoving}
+            allowsRemoving={allowsRemoving}
             onRemove={props.onRemove}
           >
             {item.rendered}
