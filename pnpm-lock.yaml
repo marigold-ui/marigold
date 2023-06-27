@@ -16,9 +16,6 @@ importers:
       '@changesets/cli':
         specifier: 2.26.1
         version: 2.26.1
-      '@internationalized/date':
-        specifier: 3.2.0
-        version: 3.2.0
       '@manypkg/get-packages':
         specifier: 2.1.0
         version: 2.1.0
@@ -34,24 +31,6 @@ importers:
       '@marigold/tsconfig':
         specifier: workspace:*
         version: link:config/tsconfig
-      '@react-aria/calendar':
-        specifier: 3.2.0
-        version: 3.2.0(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/combobox':
-        specifier: 3.6.0
-        version: 3.6.0(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/datepicker':
-        specifier: 3.4.0
-        version: 3.4.0(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/live-announcer':
-        specifier: 3.3.0
-        version: 3.3.0
-      '@react-stately/calendar':
-        specifier: 3.2.0
-        version: 3.2.0(react@18.2.0)
-      '@react-stately/datepicker':
-        specifier: 3.4.0
-        version: 3.4.0(react@18.2.0)
       '@testing-library/dom':
         specifier: 9.2.0
         version: 9.2.0
@@ -395,6 +374,9 @@ importers:
 
   packages/components:
     dependencies:
+      '@internationalized/date':
+        specifier: 3.2.0
+        version: 3.2.0
       '@marigold/icons':
         specifier: workspace:*
         version: link:../icons
@@ -413,9 +395,18 @@ importers:
       '@react-aria/button':
         specifier: 3.7.1
         version: 3.7.1(react@18.2.0)
+      '@react-aria/calendar':
+        specifier: 3.2.0
+        version: 3.2.0(react-dom@18.2.0)(react@18.2.0)
       '@react-aria/checkbox':
         specifier: 3.9.0
         version: 3.9.0(react@18.2.0)
+      '@react-aria/combobox':
+        specifier: 3.6.0
+        version: 3.6.0(react-dom@18.2.0)(react@18.2.0)
+      '@react-aria/datepicker':
+        specifier: 3.4.0
+        version: 3.4.0(react-dom@18.2.0)(react@18.2.0)
       '@react-aria/dialog':
         specifier: 3.5.1
         version: 3.5.1(react-dom@18.2.0)(react@18.2.0)
@@ -434,6 +425,9 @@ importers:
       '@react-aria/listbox':
         specifier: 3.9.0
         version: 3.9.0(react@18.2.0)
+      '@react-aria/live-announcer':
+        specifier: 3.3.0
+        version: 3.3.0
       '@react-aria/menu':
         specifier: 3.9.0
         version: 3.9.0(react-dom@18.2.0)(react@18.2.0)
@@ -485,6 +479,9 @@ importers:
       '@react-aria/visually-hidden':
         specifier: 3.8.0
         version: 3.8.0(react@18.2.0)
+      '@react-stately/calendar':
+        specifier: 3.2.0
+        version: 3.2.0(react@18.2.0)
       '@react-stately/checkbox':
         specifier: 3.4.1
         version: 3.4.1(react@18.2.0)
@@ -497,6 +494,9 @@ importers:
       '@react-stately/data':
         specifier: ^3.6.0
         version: 3.6.0(react@18.2.0)
+      '@react-stately/datepicker':
+        specifier: 3.4.0
+        version: 3.4.0(react@18.2.0)
       '@react-stately/list':
         specifier: 3.8.0
         version: 3.8.0(react@18.2.0)
