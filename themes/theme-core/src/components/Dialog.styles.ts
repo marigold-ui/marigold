@@ -1,5 +1,4 @@
-import { ThemeComponent } from '@marigold/system';
-import { cva } from 'class-variance-authority';
+import { ThemeComponent, cva } from '@marigold/system';
 
 export const Dialog: ThemeComponent<'Dialog'> = {
   container: cva('bg-bg-surface rounded-sm px-8 pb-8 pt-4', {

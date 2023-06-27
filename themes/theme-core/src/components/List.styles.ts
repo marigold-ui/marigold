@@ -1,5 +1,4 @@
-import { ThemeComponent } from '@marigold/system';
-import { cva } from 'class-variance-authority';
+import { ThemeComponent, cva } from '@marigold/system';
 
 export const List: ThemeComponent<'List'> = {
   ol: cva('list-decimal'),
