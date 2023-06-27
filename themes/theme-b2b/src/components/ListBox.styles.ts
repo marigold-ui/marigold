@@ -1,5 +1,4 @@
-import { ThemeComponent } from '@marigold/system';
-import { cva } from 'class-variance-authority';
+import { ThemeComponent, cva } from '@marigold/system';
 
 // Make sure ListBox looks correct if is in an overlay
 const font = 'font-body text-text-primary';

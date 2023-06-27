@@ -685,9 +685,9 @@ importers:
       '@marigold/components':
         specifier: workspace:*
         version: link:../../packages/components
-      class-variance-authority:
-        specifier: 0.6.0
-        version: 0.6.0(typescript@5.0.4)
+      '@marigold/system':
+        specifier: workspace:*
+        version: link:../../packages/system
     devDependencies:
       '@marigold/theme-preset':
         specifier: workspace:*
