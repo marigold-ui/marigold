@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { Partial } from './something';
 
 export default function Home() {
