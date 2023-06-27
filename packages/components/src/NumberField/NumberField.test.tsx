@@ -1,11 +1,9 @@
 import React from 'react';
 import { screen, within } from '@testing-library/react';
-import { Theme } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 
 import { NumberField } from './NumberField';
 import userEvent from '@testing-library/user-event';
-
-import { cva } from 'class-variance-authority';
 import { setup } from '../test.utils';
 
 const theme: Theme = {
