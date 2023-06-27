@@ -356,15 +356,6 @@ importers:
       '@marigold/theme-preset':
         specifier: workspace:*
         version: link:../packages/theme-preset
-      '@types/node':
-        specifier: 16.18.23
-        version: 16.18.23
-      '@types/react':
-        specifier: 18.2.13
-        version: 18.2.13
-      '@types/react-dom':
-        specifier: 18.2.6
-        version: 18.2.6
       autoprefixer:
         specifier: 10.4.14
         version: 10.4.14(postcss@8.4.24)
@@ -389,6 +380,16 @@ importers:
       tailwindcss:
         specifier: 3.3.2
         version: 3.3.2(ts-node@10.9.1)
+    devDependencies:
+      '@types/node':
+        specifier: 16.18.23
+        version: 16.18.23
+      '@types/react':
+        specifier: 18.2.13
+        version: 18.2.13
+      '@types/react-dom':
+        specifier: 18.2.6
+        version: 18.2.6
       typescript:
         specifier: 5.0.4
         version: 5.0.4
@@ -7917,7 +7918,6 @@ packages:
       }
     dependencies:
       '@types/react': 18.2.13
-    dev: false
 
   /@types/react-transition-group@4.4.6:
     resolution:

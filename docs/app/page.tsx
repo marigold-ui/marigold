@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import React from 'react';
 import { Partial } from './something';
 
 export default function Home() {
