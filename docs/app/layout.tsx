@@ -1,5 +1,4 @@
 import './globals.css';
-//import React from 'react';
 import { Inter } from 'next/font/google';
 
 import { MarigoldProvider } from '@/components';
