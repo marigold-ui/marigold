@@ -1,7 +1,7 @@
 import { Config } from 'tailwindcss/types/config';
 import { preset } from './theme/preset';
 
-export default {
+const config: Config = {
   content: [
     ...preset.content,
 
@@ -17,4 +17,6 @@ export default {
     '!../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}',
   ],
   presets: [preset],
-} satisfies Config;
+};
+
+export default config;

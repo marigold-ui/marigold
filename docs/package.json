@@ -24,6 +24,7 @@
     "@types/node": "16.18.23",
     "@types/react": "18.2.13",
     "@types/react-dom": "18.2.6",
+    "@typescript-eslint/parser": "5.58.0",
     "typescript": "5.0.4"
   }
 }

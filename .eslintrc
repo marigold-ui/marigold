@@ -1,3 +1,4 @@
 {
-  "extends": ["@marigold/eslint-config"]
+  "root": true,
+  "extends": ["@marigold/eslint-config", "next/core-web-vitals"]
 }

@@ -1,7 +1,7 @@
 {
   "extends": "@marigold/tsconfig/react",
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ES5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -22,16 +22,17 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@marigold/*": ["../packages/*/src", "../themes/*/src"]
+      "@marigold/*": ["../packages/*/src", "../themes/*/src"],
+      "@/*": ["./*"]
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "tailwind.config.ts"
+    "../packages/**/*.ts",
+    "../packages/**/*.tsx",
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }
