@@ -5,15 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
     "@marigold/theme-preset": "workspace:*",
     "autoprefixer": "10.4.14",
-    "eslint": "8.38.0",
-    "eslint-config-next": "13.4.7",
     "next": "13.4.7",
     "postcss": "8.4.24",
     "react": "18.2.0",
