@@ -1,7 +1,6 @@
 import React from 'react';
-import { cva } from 'class-variance-authority';
 import { screen, within } from '@testing-library/react';
-import { Theme } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 import { HelpText } from './HelpText';
 
 import { setup } from '../test.utils';

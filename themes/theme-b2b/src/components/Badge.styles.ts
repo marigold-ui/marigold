@@ -1,6 +1,4 @@
-import { ThemeComponent } from '@marigold/system';
-
-import { cva } from 'class-variance-authority';
+import { ThemeComponent, cva } from '@marigold/system';
 
 export const Badge: ThemeComponent<'Badge'> = cva(
   'inline-flex items-center whitespace-nowrap rounded-[20px] px-2 py-[2px] text-sm',

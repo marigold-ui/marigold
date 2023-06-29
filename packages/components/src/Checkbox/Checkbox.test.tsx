@@ -1,9 +1,8 @@
 /* eslint-disable testing-library/no-node-access */
 import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
-import { Theme } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 import { Checkbox } from './Checkbox';
-import { cva } from 'class-variance-authority';
 import { setup } from '../test.utils';
 
 const theme: Theme = {

@@ -1,8 +1,7 @@
 /* eslint-disable testing-library/no-node-access */
 import React from 'react';
-import { cva } from 'class-variance-authority';
 import { screen } from '@testing-library/react';
-import { Theme } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 
 import { Input } from './Input';
 

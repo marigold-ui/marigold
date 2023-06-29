@@ -1,10 +1,8 @@
 import React from 'react';
-import { ThemeProvider, Theme } from '@marigold/system';
+import { ThemeProvider, Theme, cva } from '@marigold/system';
 import { OverlayProvider } from '@react-aria/overlays';
 import { render, screen } from '@testing-library/react';
 import { Underlay } from './Underlay';
-
-import { cva } from 'class-variance-authority';
 
 const theme: Theme = {
   name: 'test',

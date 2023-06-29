@@ -1,6 +1,7 @@
 {
+  "extends": "@marigold/tsconfig/react",
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -9,7 +10,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -19,11 +20,20 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@marigold/*": ["../packages/*/src", "../themes/*/src"]
+      "@marigold/*": ["../packages/*/src", "../themes/*/src"],
+      "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "../packages/**/*.ts",
+    "../packages/**/*.tsx",
+    ".next/types/**/*.ts",
+    "../.next/types/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }

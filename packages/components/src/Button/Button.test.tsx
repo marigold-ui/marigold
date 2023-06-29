@@ -1,9 +1,8 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Theme, ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { Button } from './Button';
 import { Facebook } from '@marigold/icons';
-import { cva } from 'class-variance-authority';
 
 const theme: Theme = {
   name: 'test',

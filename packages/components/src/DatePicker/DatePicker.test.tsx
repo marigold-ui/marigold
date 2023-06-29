@@ -6,8 +6,7 @@ import { CalendarDate } from '@internationalized/date';
 import userEvent from '@testing-library/user-event';
 import { fireEvent } from '@testing-library/react';
 import { setup } from '../test.utils';
-import { Theme } from '@marigold/system';
-import { cva } from 'class-variance-authority';
+import { Theme, cva } from '@marigold/system';
 
 const getTextValue = (el: HTMLElement): any => {
   if (

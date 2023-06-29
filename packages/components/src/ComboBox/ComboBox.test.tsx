@@ -1,12 +1,10 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
-import { Theme } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 
 import { ComboBox } from './ComboBox';
 import userEvent from '@testing-library/user-event';
 import { setup } from '../test.utils';
-
-import { cva } from 'class-variance-authority';
 
 const user = userEvent.setup();
 
