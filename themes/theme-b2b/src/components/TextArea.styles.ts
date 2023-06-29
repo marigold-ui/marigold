@@ -1,5 +1,4 @@
-import { ThemeComponent } from '@marigold/system';
-import { cva } from 'class-variance-authority';
+import { ThemeComponent, cva } from '@marigold/system';
 
 export const TextArea: ThemeComponent<'TextArea'> = cva([
   'text-text-primary font-body leading-8',

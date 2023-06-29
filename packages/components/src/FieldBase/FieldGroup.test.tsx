@@ -4,10 +4,8 @@ import { screen } from '@testing-library/react';
 import { FieldBase } from './FieldBase';
 import { FieldGroup } from './FieldGroup';
 
-import { Theme } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
-
-import { cva } from 'class-variance-authority';
 
 const theme: Theme = {
   name: 'test',

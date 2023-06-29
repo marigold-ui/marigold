@@ -1,6 +1,4 @@
-import { ThemeComponent } from '@marigold/system';
-
-import { cva } from 'class-variance-authority';
+import { ThemeComponent, cva } from '@marigold/system';
 
 export const Underlay: ThemeComponent<'Underlay'> = cva('fixed inset-0 z-[1]', {
   variants: {

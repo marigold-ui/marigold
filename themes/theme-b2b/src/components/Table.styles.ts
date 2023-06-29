@@ -1,6 +1,4 @@
-import { ThemeComponent } from '@marigold/system';
-
-import { cva } from 'class-variance-authority';
+import { ThemeComponent, cva } from '@marigold/system';
 
 export const Table: ThemeComponent<'Table'> = {
   table: cva('border-collapse text-sm'),

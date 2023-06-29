@@ -1,5 +1,4 @@
-import { ThemeComponent } from '@marigold/system';
-import { cva } from 'class-variance-authority';
+import { ThemeComponent, cva } from '@marigold/system';
 
 export const inputHeight = 'h-[22px]';
 export const inputBox = 'border rounded-sm border-input-border bg-white';

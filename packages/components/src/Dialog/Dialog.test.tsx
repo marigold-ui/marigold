@@ -5,9 +5,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { OverlayProvider } from '@react-aria/overlays';
-import { Theme } from '@marigold/system';
-
-import { cva } from 'class-variance-authority';
+import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
 

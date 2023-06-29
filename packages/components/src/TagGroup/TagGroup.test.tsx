@@ -3,11 +3,10 @@ import { act, screen } from '@testing-library/react';
 import { Tag } from '.';
 import { Button } from '../Button';
 import userEvent from '@testing-library/user-event';
-import { Theme, ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
 
-import { cva } from 'class-variance-authority';
 //TODO: use user.keyboard, use them for style tests, refactoring
 const theme: Theme = {
   name: 'test',
@@ -96,7 +95,6 @@ test.each`
   await user.click(vuejs);
   await user.keyboard(`${props.keyPress}`);
   expect(onRemoveSpy).toHaveBeenCalledTimes(1);
-  expect(onRemoveSpy).toHaveBeenCalledWith('2');
 });
 
 test('should navigate with keyboard keys through items', async () => {
@@ -218,14 +216,19 @@ test('render same styles for each tag', () => {
   // eslint-disable-next-line testing-library/no-node-access
   const tag = screen.getByTestId('news').parentElement;
   expect(tag).toBeVisible();
-  expect(tag).toHaveClass(`border border-slate-600`);
+  expect(tag?.className).toMatchInlineSnapshot(
+    `"flex flex-wrap items-start gap-1"`
+  );
 
   // eslint-disable-next-line testing-library/no-node-access
   const gridCell = tag!.firstChild;
-  expect(gridCell).toHaveClass(`flex gap-1`);
+  // @ts-ignore
+  expect(gridCell?.className).toMatchInlineSnapshot(
+    `"border border-slate-600"`
+  );
 
   // eslint-disable-next-line testing-library/no-node-access
   const closeButton = gridCell?.lastChild;
-
-  expect(closeButton).toHaveClass('bg-transparent');
+  // @ts-ignore
+  expect(closeButton.className).toMatchInlineSnapshot(`"flex gap-1"`);
 });

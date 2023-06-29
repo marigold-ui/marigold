@@ -1,5 +1,4 @@
-import { ThemeComponent } from '@marigold/system';
-import { cva } from 'class-variance-authority';
+import { ThemeComponent, cva } from '@marigold/system';
 
 export const Link: ThemeComponent<'Link'> = cva(
   ['text-text-link', 'hover:no-underline aria-[disabled]:cursor-not-allowed'],

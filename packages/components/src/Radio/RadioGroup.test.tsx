@@ -1,10 +1,8 @@
 import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
 import { Radio } from '.';
-import { Theme, ThemeProvider } from '@marigold/system';
-
+import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { setup } from '../test.utils';
-import { cva } from 'class-variance-authority';
 
 const theme: Theme = {
   name: 'test',

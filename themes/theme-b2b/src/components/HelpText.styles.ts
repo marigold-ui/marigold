@@ -1,6 +1,4 @@
-import { ThemeComponent } from '@marigold/system';
-
-import { cva } from 'class-variance-authority';
+import { ThemeComponent, cva } from '@marigold/system';
 
 export const HelpText: ThemeComponent<'HelpText'> = {
   container: cva('group-error/field:text-text-error text-sm'),

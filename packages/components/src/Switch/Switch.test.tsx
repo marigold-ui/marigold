@@ -1,8 +1,7 @@
 import React from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { Theme } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 import { Switch } from './Switch';
-import { cva } from 'class-variance-authority';
 import userEvent from '@testing-library/user-event';
 import { setup } from '../test.utils';
 

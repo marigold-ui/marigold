@@ -1,12 +1,10 @@
 import React from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { Theme, ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider, cva } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Tooltip } from './Tooltip';
 import userEvent from '@testing-library/user-event';
-
-import { cva } from 'class-variance-authority';
 
 import { setup } from '../test.utils';
 

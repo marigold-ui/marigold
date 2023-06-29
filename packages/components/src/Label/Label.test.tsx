@@ -1,7 +1,6 @@
 import React from 'react';
-import { cva } from 'class-variance-authority';
 import { render, screen } from '@testing-library/react';
-import { Theme, ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { Label } from './Label';
 
 const theme: Theme = {

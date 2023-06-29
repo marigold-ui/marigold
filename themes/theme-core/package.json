@@ -34,13 +34,11 @@
     "tsup": "6.7.0"
   },
   "peerDependencies": {
-    "@marigold/components": "workspace:*"
+    "@marigold/components": "workspace:*",
+    "@marigold/system": "workspace:*"
   },
   "scripts": {
     "build": "NODE_ENV=production tsup",
     "dev": "tsup"
-  },
-  "dependencies": {
-    "class-variance-authority": "0.6.0"
   }
 }

@@ -1,8 +1,7 @@
 import React from 'react';
-import { cva } from 'class-variance-authority';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Theme } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 
 import { TextArea } from './TextArea';
 import { setup } from '../test.utils';
