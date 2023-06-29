@@ -3,11 +3,10 @@ import { act, screen } from '@testing-library/react';
 import { Tag } from '.';
 import { Button } from '../Button';
 import userEvent from '@testing-library/user-event';
-import { Theme, ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
 
-import { cva } from 'class-variance-authority';
 //TODO: use user.keyboard, use them for style tests, refactoring
 const theme: Theme = {
   name: 'test',

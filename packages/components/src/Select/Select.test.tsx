@@ -1,5 +1,4 @@
 import React from 'react';
-import { cva } from 'class-variance-authority';
 import { OverlayProvider } from '@react-aria/overlays';
 import {
   act,
@@ -11,7 +10,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { cleanup } from '@testing-library/react';
 
-import { Theme, useResponsiveValue } from '@marigold/system';
+import { Theme, useResponsiveValue, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 
 import { Select } from './Select';

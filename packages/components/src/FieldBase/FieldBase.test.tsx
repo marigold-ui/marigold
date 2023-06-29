@@ -1,8 +1,7 @@
 import React, { ReactNode } from 'react';
-import { cva } from 'class-variance-authority';
 import { AriaTextFieldOptions, useTextField } from '@react-aria/textfield';
 import { screen, within } from '@testing-library/react';
-import { Theme } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 
 import { FieldBase } from './FieldBase';

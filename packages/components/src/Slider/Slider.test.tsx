@@ -2,9 +2,9 @@ import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
 import { Slider } from './Slider';
 import userEvent from '@testing-library/user-event';
-import { Theme } from '@marigold/system';
-import { cva } from 'class-variance-authority';
+import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
+
 const theme: Theme = {
   name: 'slider testing',
   components: {

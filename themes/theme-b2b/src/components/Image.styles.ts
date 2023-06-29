@@ -1,5 +1,3 @@
-import { ThemeComponent } from '@marigold/system';
-
-import { cva } from 'class-variance-authority';
+import { ThemeComponent, cva } from '@marigold/system';
 
 export const Image: ThemeComponent<'Image'> = cva();

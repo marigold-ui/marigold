@@ -1,5 +1,4 @@
-import { ThemeComponent } from '@marigold/system';
-import { cva } from 'class-variance-authority';
+import { ThemeComponent, cva } from '@marigold/system';
 
 export const Message: ThemeComponent<'Message'> = {
   container: cva('bg-bg-surface border border-solid px-4 py-2 text-[13px]', {

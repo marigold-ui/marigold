@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { SortDescriptor } from '@react-types/shared';
 import { fireEvent, screen } from '@testing-library/react';
-
-import { cva } from 'class-variance-authority';
-import { Theme } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
 import { Table } from './Table';

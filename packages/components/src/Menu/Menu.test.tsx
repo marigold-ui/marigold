@@ -9,9 +9,12 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { OverlayProvider } from '@react-aria/overlays';
-import { Theme, ThemeProvider, useResponsiveValue } from '@marigold/system';
-
-import { cva } from 'class-variance-authority';
+import {
+  Theme,
+  ThemeProvider,
+  useResponsiveValue,
+  cva,
+} from '@marigold/system';
 
 import { Button } from '../Button';
 import { Menu } from './Menu';

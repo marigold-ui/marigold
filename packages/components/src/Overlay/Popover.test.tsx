@@ -6,9 +6,7 @@ import { useOverlayTriggerState } from '@react-stately/overlays';
 import { screen } from '@testing-library/react';
 import { forwardRef } from 'react';
 import { Popover } from './Popover';
-import { Theme } from '@marigold/system';
-
-import { cva } from 'class-variance-authority';
+import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
 

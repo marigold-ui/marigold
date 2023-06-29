@@ -1,9 +1,8 @@
 import React from 'react';
-import { cva } from 'class-variance-authority';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { Theme } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 
 import { Autocomplete } from './Autocomplete';

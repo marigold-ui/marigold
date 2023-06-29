@@ -1,5 +1,4 @@
-import { ThemeComponent } from '@marigold/system';
-import { cva } from 'class-variance-authority';
+import { ThemeComponent, cva } from '@marigold/system';
 
 export const Calendar: ThemeComponent<'Calendar'> = {
   calendar: cva('disabled:text-text-disabled bg-white'),
