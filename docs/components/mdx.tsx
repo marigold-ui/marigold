@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 
 const components = {
-  Image,
+  Image, // TODO: wrap Marigold's Image with next/image (Link too!)
 };
 
 interface MdxProps {
