@@ -1,5 +1,8 @@
+const { withContentlayer } = require('next-contentlayer');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  swcMinify: true,
   distDir: '../.next',
   typescript: {
     ignoreBuildErrors: true,
@@ -11,4 +14,4 @@ const nextConfig = {
   ],
 };
 
-module.exports = nextConfig;
+module.exports = withContentlayer(nextConfig);
