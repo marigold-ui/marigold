@@ -17,6 +17,7 @@
     "@marigold/system": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/tokens": "workspace:*",
+    "@marigold/tsconfig": "workspace:*",
     "@marigold/types": "workspace:*",
     "@mdx-js/loader": "2.3.0",
     "@mdx-js/react": "2.3.0",
