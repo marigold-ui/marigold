@@ -15,9 +15,9 @@ const computedFields: ComputedFields = {
   },
 };
 
-export const Page = defineDocumentType(() => ({
-  name: 'Page',
-  filePathPattern: 'content/**/*.mdx',
+export const ComponentPage = defineDocumentType(() => ({
+  name: 'ComponentPage',
+  filePathPattern: 'components/*.mdx',
   contentType: 'mdx',
   fields: {
     title: {
@@ -29,6 +29,6 @@ export const Page = defineDocumentType(() => ({
 }));
 
 export default makeSource({
-  contentDirPath: './',
-  documentTypes: [Page],
+  contentDirPath: './content',
+  documentTypes: [ComponentPage],
 });

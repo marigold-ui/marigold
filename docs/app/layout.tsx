@@ -1,7 +1,7 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
 
-import { MarigoldProvider } from '@/components';
+import { MarigoldProvider } from '@/ui';
 import { theme } from '@/theme';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -19,9 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <MarigoldProvider theme={theme}>
-          <div className="bg-slate-500 p-5">{children}</div>
-        </MarigoldProvider>
+        <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
       </body>
     </html>
   );
