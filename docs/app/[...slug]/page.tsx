@@ -16,7 +16,7 @@ async function getPageFromParams(params: PageProps['params']) {
   const page = allPages.find(page => page.slugAsParams === slug);
 
   if (!page) {
-    null;
+    return null;
   }
 
   return page;
@@ -52,6 +52,7 @@ export default async function PagePage({ params }: PageProps) {
   return (
     <article className="prose dark:prose-invert py-6">
       <h1>{page.title}</h1>
+      <h2>{page.caption}</h2>
       <hr />
       <Mdx code={page.body.code} />
     </article>
