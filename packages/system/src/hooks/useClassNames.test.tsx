@@ -1,12 +1,11 @@
 import React, { ReactNode } from 'react';
-import { cva } from 'class-variance-authority';
 
 import { renderHook } from '@testing-library/react-hooks';
 
 import { Theme } from '../types';
 import { ThemeProvider } from './useTheme';
 import { useClassNames } from './useClassNames';
-import { cn } from '../utils';
+import { cn, cva } from '../utils';
 
 const theme: Theme = {
   name: 'test-theme',

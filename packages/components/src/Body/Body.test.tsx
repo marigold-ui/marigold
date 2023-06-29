@@ -1,10 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Theme, ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider, cva } from '@marigold/system';
 
 import { Body } from './Body';
-
-import { cva } from 'class-variance-authority';
 
 const theme: Theme = {
   name: 'test',

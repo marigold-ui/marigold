@@ -1,6 +1,8 @@
 import { cx } from 'class-variance-authority';
 import { twMerge } from 'tailwind-merge';
 
+export { cva } from 'class-variance-authority';
+
 export type ClassDictionary = Record<string, any>;
 export type ClassArray = ClassValue[];
 export type ClassValue =

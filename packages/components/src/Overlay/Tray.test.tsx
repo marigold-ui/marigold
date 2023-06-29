@@ -4,9 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { Tray } from './Tray';
 import { useOverlayTriggerState } from '@react-stately/overlays';
 import { useObjectRef } from '@react-aria/utils';
-import { Theme, ThemeProvider } from '@marigold/system';
-
-import { cva } from 'class-variance-authority';
+import { Theme, ThemeProvider, cva } from '@marigold/system';
 
 const theme: Theme = {
   name: 'test',

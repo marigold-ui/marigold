@@ -1,12 +1,10 @@
 import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
-import { Theme } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
 import { setup } from '../test.utils';
-
-import { cva } from 'class-variance-authority';
 
 const theme: Theme = {
   name: 'checkbox group testing',

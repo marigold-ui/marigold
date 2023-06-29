@@ -1,9 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Theme, ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { Divider } from './Divider';
-
-import { cva } from 'class-variance-authority';
 
 const theme: Theme = {
   name: 'test',
