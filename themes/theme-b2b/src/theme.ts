@@ -6,7 +6,7 @@ import { colors } from './tokens';
 import * as components from './components';
 
 export const theme: Theme = {
-  name: 'docs',
+  name: 'b2b',
   screens: {
     sm: '640px',
     md: '768px',
