@@ -16,7 +16,6 @@ export const useSmallScreen = (): boolean => {
   const handleChange = useCallback(() => {
     setMatches(getMatches());
   }, []);
-
   useEffect(() => {
     const matchMedia = window.matchMedia(smallScreenSize);
 
@@ -24,15 +23,15 @@ export const useSmallScreen = (): boolean => {
     handleChange();
 
     // Listen matchMedia
-    if (matchMedia.addListener) {
-      matchMedia.addListener(handleChange);
+    if (matchMedia.addEventListener) {
+      matchMedia.addEventListener('change', handleChange);
     } else {
       matchMedia.addEventListener('change', handleChange);
     }
 
     return () => {
-      if (matchMedia.removeListener) {
-        matchMedia.removeListener(handleChange);
+      if (matchMedia.removeEventListener) {
+        matchMedia.removeEventListener('change', handleChange);
       } else {
         matchMedia.removeEventListener('change', handleChange);
       }

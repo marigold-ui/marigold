@@ -1,7 +1,7 @@
 import { cleanup } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
-
-import { useSmallScreen } from '@marigold/system';
+import { useResponsiveValue } from './useResponsiveValue';
+import { useSmallScreen } from './useSmallScreen';
 
 /**
  * We need to mock `matchMedia` because JSON does not
@@ -15,8 +15,19 @@ const mockMatchMedia = (matches: string[]) =>
 afterEach(cleanup);
 
 test('return first value if no breakpoint matches', () => {
-  window.matchMedia = mockMatchMedia(['screen and (min-width: 768px)']);
-  const { result } = renderHook(() => useSmallScreen());
+  window.matchMedia = mockMatchMedia([]);
 
-  expect(result.current).toEqual(true);
+  const { result } = renderHook(() =>
+    useResponsiveValue(['one', 'two', 'three'])
+  );
+
+  expect(result.current).toEqual('one');
+});
+
+test('return last if all breakpoints match', () => {
+  window.matchMedia = mockMatchMedia(['screen and (max-width: 400px)']);
+
+  const { result } = renderHook(() => useSmallScreen());
+  console.log('result -----------', result);
+  expect(result.current).toBeTruthy();
 });
