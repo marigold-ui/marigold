@@ -2,11 +2,11 @@
 
 import { useMDXComponent } from 'next-contentlayer/hooks';
 
-import { Button } from './marigold';
+import * as Components from './';
 
 const components = {
   // TODO: wrap Marigold's Image/Link with next's image/link component
-  Button,
+  ...Components,
 };
 
 interface MdxProps {
@@ -15,5 +15,6 @@ interface MdxProps {
 
 export const Mdx = ({ code }: MdxProps) => {
   const Component = useMDXComponent(code);
+  // @ts-expect-error (Marigold exports includes some hooks)
   return <Component components={components} />;
 };
