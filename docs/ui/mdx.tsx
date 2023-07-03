@@ -1,16 +1,17 @@
-import Image from 'next/image';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 
+import { Message } from '@/ui';
+
 const components = {
-  Image, // TODO: wrap Marigold's Image with next/image (Link too!)
+  // TODO: wrap Marigold's Image/Link with next's image/link component
+  Message,
 };
 
 interface MdxProps {
   code: string;
 }
 
-export function Mdx({ code }: MdxProps) {
+export const Mdx = ({ code }: MdxProps) => {
   const Component = useMDXComponent(code);
-
-  return <Component components={components} />;
-}
+  return <Component components={components as any} />;
+};
