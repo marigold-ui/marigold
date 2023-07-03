@@ -4,41 +4,21 @@ const smallScreenSize = '(max-width: 768px)';
 
 export const useSmallScreen = (): boolean => {
   const getMatches = (): boolean => {
-    // Prevents SSR issues
-    if (typeof window !== 'undefined') {
-      return window.matchMedia(smallScreenSize).matches;
-    }
-    return false;
+    return window.matchMedia(smallScreenSize).matches;
   };
 
   const [matches, setMatches] = useState<boolean>(getMatches());
 
-  const handleChange = useCallback(() => {
+  const handleResize = useCallback(() => {
     setMatches(getMatches());
   }, []);
   useEffect(() => {
-    const matchMedia = window.matchMedia(smallScreenSize);
     // Triggered at the first client-side load and if query changes
-    handleChange();
-
-    // Listen matchMedia
-    if (matchMedia.addListener) {
-      matchMedia.addListener(handleChange);
-    } else {
-      if (typeof matchMedia.addEventListener != 'function') return;
-      matchMedia.addEventListener('change', handleChange);
-    }
-
-    return () => {
-      if (matchMedia.removeEventListener) {
-        matchMedia.removeEventListener('change', handleChange);
-      } else {
-        if (typeof matchMedia.removeEventListener != 'function') return;
-        matchMedia.removeEventListener('change', handleChange);
-      }
-    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [handleChange]);
+  }, [handleResize]);
 
   return matches;
 };
