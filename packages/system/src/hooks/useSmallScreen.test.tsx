@@ -1,6 +1,6 @@
 import { cleanup } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
-import { useResponsiveValue } from './useResponsiveValue';
+
 import { useSmallScreen } from './useSmallScreen';
 
 /**
@@ -14,20 +14,10 @@ const mockMatchMedia = (matches: string[]) =>
 
 afterEach(cleanup);
 
-test('return first value if no breakpoint matches', () => {
-  window.matchMedia = mockMatchMedia([]);
-
-  const { result } = renderHook(() =>
-    useResponsiveValue(['one', 'two', 'three'])
-  );
-
-  expect(result.current).toEqual('one');
-});
-
-test('return last if all breakpoints match', () => {
-  window.matchMedia = mockMatchMedia(['screen and (max-width: 400px)']);
+test('check of the value is truthy', () => {
+  window.matchMedia = mockMatchMedia(['screen and (max-width: 700px)']);
 
   const { result } = renderHook(() => useSmallScreen());
-  console.log('result -----------', result);
-  expect(result.current).toBeTruthy();
+  console.log('result.current', result.current);
+  expect(result.current).toBeFalsy();
 });

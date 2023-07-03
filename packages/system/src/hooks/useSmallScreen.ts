@@ -18,14 +18,14 @@ export const useSmallScreen = (): boolean => {
   }, []);
   useEffect(() => {
     const matchMedia = window.matchMedia(smallScreenSize);
-
     // Triggered at the first client-side load and if query changes
     handleChange();
 
     // Listen matchMedia
-    if (matchMedia.addEventListener) {
-      matchMedia.addEventListener('change', handleChange);
+    if (matchMedia.addListener) {
+      matchMedia.addListener(handleChange);
     } else {
+      if (typeof matchMedia.addEventListener != 'function') return;
       matchMedia.addEventListener('change', handleChange);
     }
 
@@ -33,6 +33,7 @@ export const useSmallScreen = (): boolean => {
       if (matchMedia.removeEventListener) {
         matchMedia.removeEventListener('change', handleChange);
       } else {
+        if (typeof matchMedia.removeEventListener != 'function') return;
         matchMedia.removeEventListener('change', handleChange);
       }
     };
