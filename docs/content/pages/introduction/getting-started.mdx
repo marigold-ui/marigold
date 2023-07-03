@@ -28,11 +28,11 @@ pnpm add @marigold/components
 
 In addition to the components, you usually want to install an existing [theme](/introduction/theming).
 
-<Message messageTitle="Note" variant="info">
-  Please note that [react](https://www.npmjs.com/package/react) >= 17.0.0 and
-  [react-dom](https://www.npmjs.com/package/react-dom) >= 17.0.0 are peer
-  dependencies for `@marigold/components`.
-</Message>
+<Button>asd</Button>
+
+Please note that [react](https://www.npmjs.com/package/react) >= 17.0.0 and
+[react-dom](https://www.npmjs.com/package/react-dom) >= 17.0.0 are peer
+dependencies for `@marigold/components`.
 
 ## Tooling
 
@@ -44,7 +44,7 @@ If you are using [TypeScript](https://www.typescriptlang.org/) to build your app
 
 For _Marigold_ to work correctly, you need to wrap your app with the `MarigoldProvider`. This way _Marigold_ components will be able to access styles and SSR will work out of the box.
 
-```jsx onlyCode
+```jsx
 import React from 'react';
 import { Button, MarigoldProvider } from '@marigold/components';
 import theme from '@marigold/theme-unicorn';
