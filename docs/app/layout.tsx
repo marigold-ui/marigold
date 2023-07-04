@@ -18,8 +18,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
+      <body className={`${inter.className} min-h-screen`}>
+        <MarigoldProvider theme={theme}>
+          <div className="flex min-h-screen flex-col">
+            <header className="sticky top-0 z-40 w-full bg-white">
+              <div className="container">Marigold Docs</div>
+            </header>
+            <div className="flex-1">
+              <div className="container">{children}</div>
+            </div>
+            <footer className="container">Marigold Footer</footer>
+          </div>
+        </MarigoldProvider>
       </body>
     </html>
   );
