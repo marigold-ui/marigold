@@ -3,6 +3,8 @@
 import { Theme } from '@marigold/system';
 
 import * as components from './components';
+import { root } from './root';
+import { colors } from './tokens';
 
 export const theme: Theme = {
   name: 'docs',
@@ -13,5 +15,7 @@ export const theme: Theme = {
     xl: '1280px',
     '2xl': '1536px',
   },
+  root,
+  colors,
   components,
 };

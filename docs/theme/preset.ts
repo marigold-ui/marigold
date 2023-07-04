@@ -9,11 +9,12 @@ export interface PresetConfig {
 }
 
 export const preset = createPreset('docs', {
+  // FIXME: should we allow the global namespace?
+  important: undefined,
   theme: {
     extend: {
       fontFamily: {
         body: ['var(--font-sans)', ...fontFamily.sans],
-        heading: ['"Inter Black, sans-serif"'],
       },
       colors,
     },
