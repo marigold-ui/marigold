@@ -24,6 +24,7 @@ test('switches the theme', async () => {
   act(() => {
     result.current.setTheme(coreTheme);
   });
+
   // @ts-ignore
   expect(result.current.current?.name).toMatchInlineSnapshot(`"core"`);
 });

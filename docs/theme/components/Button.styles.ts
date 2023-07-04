@@ -1,5 +1,5 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Button: ThemeComponent<'Button'> = cva(
-  'rounded-sm border border-solid p-2'
+  'flex gap-2 rounded-sm border border-solid p-2'
 );

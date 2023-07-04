@@ -7,7 +7,7 @@ const config: Config = {
 
     // From docs
     './theme/root.ts',
-    './theme/colors.ts',
+    './theme/*.ts',
     './theme/**/*.ts',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',

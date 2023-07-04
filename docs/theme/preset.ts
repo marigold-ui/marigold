@@ -5,4 +5,6 @@ export interface PresetConfig {
   preflight?: boolean;
 }
 
-export const preset = createPreset('docs', {});
+export const preset = createPreset('docs', {
+  important: undefined,
+});

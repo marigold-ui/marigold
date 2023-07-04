@@ -1,19 +1,18 @@
 'use client';
 
-import { Button, Inline, Menu } from '@marigold/components';
+import { Button, Menu } from '@marigold/components';
 import { ChevronDown } from '@marigold/icons';
 import { useThemeSwitch } from './ThemeSwitch';
 
 export const ThemeMenu = () => {
   const { current, themes, setTheme } = useThemeSwitch();
+
   return (
     <Menu.Trigger>
       <Button>
-        <Inline space={7}>
-          {current} <ChevronDown />
-        </Inline>
+        {current} <ChevronDown />
       </Button>
-      <Menu onAction={current => setTheme(current)} className="bg-black">
+      <Menu onAction={current => setTheme(current)}>
         {Object.keys(themes).map(name => (
           <Menu.Item key={name}>{name}</Menu.Item>
         ))}
