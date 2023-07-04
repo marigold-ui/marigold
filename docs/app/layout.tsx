@@ -1,10 +1,8 @@
 import './globals.css';
-import { Inter } from 'next/font/google';
 
 import { MarigoldProvider } from '@/ui';
 import { theme } from '@/theme';
-
-const inter = Inter({ subsets: ['latin'] });
+import { fontSans } from '@/theme/fonts';
 
 export const metadata = {
   title: 'Marigold Documentation',
@@ -18,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={fontSans.variable}>
         <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
       </body>
     </html>
