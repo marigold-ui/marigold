@@ -18,6 +18,5 @@ test('check of the value is truthy', () => {
   window.matchMedia = mockMatchMedia(['screen and (max-width: 700px)']);
 
   const { result } = renderHook(() => useSmallScreen());
-  console.log('result.current', result.current);
   expect(result.current).toBeFalsy();
 });
