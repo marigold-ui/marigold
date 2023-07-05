@@ -1,9 +1,13 @@
 'use client';
-import Image from 'next/image';
 import { AppearanceTable } from '@/app/components/components';
+
 import { useMDXComponent } from 'next-contentlayer/hooks';
 
+import * as Components from './';
+
 const components = {
+  // TODO: wrap Marigold's Image/Link with next's image/link component
+  ...Components,
   // TODO: wrap Marigold's Image with next/image (Link too!)
   AppearanceTable,
 };
@@ -13,8 +17,8 @@ interface MdxProps {
   code: string;
 }
 
-export function Mdx({ title, code }: MdxProps) {
+export const Mdx = ({ title, code }: MdxProps) => {
   const Component = useMDXComponent(code, { title: title });
-
+  // @ts-expect-error (Marigold exports includes some hooks)
   return <Component components={components} />;
-}
+};

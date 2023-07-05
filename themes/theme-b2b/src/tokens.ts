@@ -49,7 +49,6 @@ export const colors = {
     /**
      * Should be set to either html or body element.
      */
-
     body: brand.secondary[50],
     neutral: brand.secondary[200],
 

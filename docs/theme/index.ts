@@ -5,6 +5,8 @@ import b2bTheme from '@marigold/theme-b2b';
 import coreTheme from '@marigold/theme-core';
 
 import * as components from './components';
+import { root } from './root';
+import { colors } from './tokens';
 
 export const theme: Theme = {
   name: 'docs',
@@ -15,6 +17,8 @@ export const theme: Theme = {
     xl: '1280px',
     '2xl': '1536px',
   },
+  root,
+  colors,
   components,
 };
 
