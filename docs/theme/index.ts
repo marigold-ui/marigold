@@ -1,6 +1,8 @@
 'use client';
 
 import { Theme } from '@marigold/system';
+import b2bTheme from '@marigold/theme-b2b';
+import coreTheme from '@marigold/theme-core';
 
 import * as components from './components';
 import { root } from './root';
@@ -19,3 +21,5 @@ export const theme: Theme = {
   colors,
   components,
 };
+
+export { b2bTheme, coreTheme };
