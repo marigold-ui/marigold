@@ -2,37 +2,60 @@ import {
   defineDocumentType,
   makeSource,
   type ComputedFields,
+  type FieldDefs,
 } from 'contentlayer/source-files';
 
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
+// Helpers
+// ---------------
+const commonFields: FieldDefs = {
+  title: {
+    type: 'string',
+    required: true,
+  },
+  caption: {
+    type: 'string',
+    required: true,
+  },
+};
+
 const computedFields: ComputedFields = {
   slug: {
     type: 'string',
     resolve: doc => `/${doc._raw.flattenedPath}`,
   },
-  slugAsParams: {
-    type: 'string',
-    // Slugs are matched agains the name of the component or rather the file name
-    resolve: doc => doc._raw.sourceFileName.split('.')[0],
-  },
 };
+
+// Page Types
+// ---------------
+export const ContentPage = defineDocumentType(() => ({
+  name: 'ContentPage',
+  filePathPattern: 'pages/**/*.mdx',
+  contentType: 'mdx',
+  fields: {
+    ...commonFields,
+    order: {
+      type: 'number',
+    },
+  },
+  computedFields: {
+    ...computedFields,
+    slugAsParams: {
+      type: 'string',
+      resolve: doc => doc._raw.flattenedPath.split('/').slice(1).join('/'),
+    },
+  },
+}));
 
 export const ComponentPage = defineDocumentType(() => ({
   name: 'ComponentPage',
   filePathPattern: 'components/**/*.mdx',
   contentType: 'mdx',
   fields: {
-    title: {
-      type: 'string',
-      required: true,
-    },
-    caption: {
-      type: 'string',
-      required: true,
-    },
+    ...commonFields,
     group: {
       type: 'enum',
       options: [
@@ -47,14 +70,23 @@ export const ComponentPage = defineDocumentType(() => ({
       required: true,
     },
   },
-  computedFields,
+  computedFields: {
+    ...computedFields,
+    slugAsParams: {
+      type: 'string',
+      // Slugs are matched agains the name of the component or rather the file name
+      resolve: doc => doc._raw.sourceFileName.split('.')[0],
+    },
+  },
 }));
 
+// Config
+// ---------------
 export default makeSource({
   contentDirPath: './content',
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: 'wrap' }]],
   },
-  documentTypes: [ComponentPage],
+  documentTypes: [ContentPage, ComponentPage],
 });
