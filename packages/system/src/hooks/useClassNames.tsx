@@ -37,7 +37,7 @@ export const useClassNames = <C extends ComponentNames>({
 
   // No slots -> return a string
   if (typeof styles === 'function') {
-    if (className !== undefined && typeof className !== 'string') {
+    if (className != undefined && typeof className !== 'string') {
       throw new Error(
         '"className" must be a string, when using a component without slots'
       );
