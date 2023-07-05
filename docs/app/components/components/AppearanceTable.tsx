@@ -45,7 +45,7 @@ export const AppearanceTable = ({ component }: AppearanceTableProps) => {
   return (
     <Card px={3} py={4}>
       {appearances.variant.length === 0 && appearances.size.length === 0 ? (
-        <Inline>
+        <Inline space={2}>
           <BlankCanvas />
           <Text>
             Sorry! There are currently no variants and sizes available.
