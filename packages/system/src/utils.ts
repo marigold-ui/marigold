@@ -1,7 +1,44 @@
 import { cx } from 'class-variance-authority';
 import { twMerge } from 'tailwind-merge';
 
-export { cva } from 'class-variance-authority';
+import { cva as _cva } from 'class-variance-authority';
+import {
+  ClassProp,
+  StringToBoolean,
+} from 'class-variance-authority/dist/types';
+
+export type ConfigSchema = Record<string, Record<string, ClassValue>>;
+export type ConfigVariants<T extends ConfigSchema> = {
+  [Variant in keyof T]?: StringToBoolean<keyof T[Variant]> | null | undefined;
+};
+export type ConfigVariantsMulti<T extends ConfigSchema> = {
+  [Variant in keyof T]?:
+    | StringToBoolean<keyof T[Variant]>
+    | StringToBoolean<keyof T[Variant]>[]
+    | undefined;
+};
+export type Config<T> = T extends ConfigSchema
+  ? {
+      variants?: T;
+      defaultVariants?: ConfigVariants<T>;
+      compoundVariants?: (T extends ConfigSchema
+        ? (ConfigVariants<T> | ConfigVariantsMulti<T>) & ClassProp
+        : ClassProp)[];
+    }
+  : never;
+
+export type Props<T> = T extends ConfigSchema
+  ? ConfigVariants<T> & ClassProp
+  : ClassProp;
+
+export const cva = <T>(base?: ClassValue, config?: Config<T>) => {
+  function styles(props?: Props<T>) {
+    return _cva(base, config)(props);
+  }
+  styles.variants = config?.variants;
+
+  return styles;
+};
 
 export type ClassDictionary = Record<string, any>;
 export type ClassArray = ClassValue[];
