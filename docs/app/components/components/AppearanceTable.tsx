@@ -44,7 +44,7 @@ export const AppearanceTable = ({ component }: AppearanceTableProps) => {
 
   return (
     <Card px={3} py={4}>
-      {!appearances.variant && !appearances.size ? (
+      {appearances.variant.length === 0 && appearances.size.length === 0 ? (
         <Inline>
           <BlankCanvas />
           <Text>

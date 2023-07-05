@@ -6,7 +6,6 @@ import {
   ClassProp,
   StringToBoolean,
 } from 'class-variance-authority/dist/types';
-import { ComponentStyleFunction } from './types';
 
 export type ConfigSchema = Record<string, Record<string, ClassValue>>;
 export type ConfigVariants<T extends ConfigSchema> = {
@@ -33,28 +32,13 @@ export type Props<T> = T extends ConfigSchema
   : ClassProp;
 
 export const cva = <T>(base?: ClassValue, config?: Config<T>) => {
-  function fn(props?: Props<T>) {
+  function styles(props?: Props<T>) {
     return _cva(base, config)(props);
   }
-  fn.variants = config?.variants;
+  styles.variants = config?.variants;
 
-  return fn;
+  return styles;
 };
-
-// export const cva = <T extends string>(
-//   base?: ClassValue,
-//   config?: Config<T> | undefined
-// ) => {
-//   // Sarah
-//   const variants = config?.variants;
-//   const styles = _cva(base, config);
-
-//   if (variants !== undefined) {
-//     styles.variants = variants;
-//   }
-
-//   return styles;
-// };
 
 export type ClassDictionary = Record<string, any>;
 export type ClassArray = ClassValue[];

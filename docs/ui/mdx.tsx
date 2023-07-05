@@ -1,15 +1,14 @@
 'use client';
-import { AppearanceTable } from '@/app/components/components';
+import * as DocComponents from '@/app/components/components';
 
 import { useMDXComponent } from 'next-contentlayer/hooks';
 
-import * as Components from './';
+import * as MarigoldComponents from './';
 
 const components = {
   // TODO: wrap Marigold's Image/Link with next's image/link component
-  ...Components,
-  // TODO: wrap Marigold's Image with next/image (Link too!)
-  AppearanceTable,
+  ...MarigoldComponents,
+  ...DocComponents,
 };
 
 interface MdxProps {
