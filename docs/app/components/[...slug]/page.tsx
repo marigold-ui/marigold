@@ -65,7 +65,7 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
         <h1>{page.title}</h1>
         <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
           <ThemeMenu />
-          <Mdx code={page.body.code} />
+          <Mdx title={page.title} code={page.body.code} />
         </MarigoldThemeSwitch>
       </SSRProvider>
     </article>
