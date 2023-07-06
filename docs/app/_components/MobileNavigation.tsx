@@ -2,9 +2,14 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import { Dialog, Button, Headline } from '@/ui';
-import { allContentPages, allComponentPages } from '@/.contentlayer/generated';
+import {
+  allContentPages,
+  allComponentPages,
+  ComponentPage,
+} from '@/.contentlayer/generated';
 
 // Helpers
 // ---------------
@@ -25,19 +30,46 @@ const MenuIcon = () => (
   </svg>
 );
 
-const renderContentPages = () => {
+const renderContentPages = (pathname: string) => {
   const pages = [...allContentPages].sort(
     (a, b) => (a.order || 1000) - (b.order || 1000)
   );
 
   return pages.map(({ title, slugAsParams }) => (
-    <Link href={slugAsParams}>{title}</Link>
+    <Link href={`${pathname}${slugAsParams}`}>{title}</Link>
   ));
+};
+
+const renderComponentPages = (pathname: string) => {
+  const pages: { [group in ComponentPage['group']]?: ComponentPage[] } = {};
+
+  allComponentPages.forEach(page => {
+    const group = pages[page.group] || [];
+    return (pages[page.group] = [...group, page]);
+  });
+
+  return Object.entries(pages).map(([group, list]) => {
+    return (
+      <>
+        <Headline level="2">{group}</Headline>
+        {list.map(({ title, slugAsParams }) => (
+          <Link
+            className="text-secondary-700"
+            href={`${pathname}${slugAsParams}`}
+          >
+            {title}
+          </Link>
+        ))}
+      </>
+    );
+  });
 };
 
 // Component
 // ---------------
 export const MobileNavigation = () => {
+  const pathname = usePathname();
+
   return (
     <Dialog.Trigger>
       <Button>
@@ -48,18 +80,13 @@ export const MobileNavigation = () => {
           <Image src="/logo.svg" alt="Marigold Logo" width={64} height={64} />
           Marigold Docs
         </div>
-        <nav className="flex flex-col gap-4 pl-4 pt-8">
-          {renderContentPages()}
+        <nav className="flex flex-col gap-6 pl-4 pt-8">
           <div className="flex flex-col gap-4">
-            <div className="font-bold">Components</div>
-            {allComponentPages.map(({ title, slugAsParams, group }) => (
-              <div>
-                <Headline level="2">{group}</Headline>
-                <Link className="text-secondary-700" href={slugAsParams}>
-                  {title}
-                </Link>
-              </div>
-            ))}
+            {renderContentPages(pathname)}
+          </div>
+          <div className="text-lg font-bold">Components</div>
+          <div className="flex flex-col gap-4">
+            {renderComponentPages(pathname)}
           </div>
         </nav>
       </Dialog>
