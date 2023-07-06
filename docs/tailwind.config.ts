@@ -9,7 +9,7 @@ const config: Config = {
     './theme/root.ts',
     './theme/*.ts',
     './theme/**/*.ts',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './ui/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
 
     // Marigold components

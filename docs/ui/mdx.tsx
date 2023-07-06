@@ -1,5 +1,5 @@
 'use client';
-import * as DocComponents from '@/app/components/components';
+import * as DocComponents from '@/app/components/[...slug]/_components';
 
 import { useMDXComponent } from 'next-contentlayer/hooks';
 

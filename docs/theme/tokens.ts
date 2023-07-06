@@ -20,6 +20,7 @@ export const colors = {
   // Brand
   // ---------------
   ...brand,
+  secondary: tw.slate,
 
   // Text
   // ---------------
@@ -38,6 +39,10 @@ export const colors = {
   bg: {
     body: '#fff',
     hover: tw.neutral[100],
+
+    surface: {
+      DEFAULT: tw.white,
+    },
 
     // Status
     info: tw.sky[100],
