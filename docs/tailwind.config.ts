@@ -13,8 +13,8 @@ const config: Config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
 
     // Marigold components
-    '../../packages/{components,system}/**/*.{tsx,ts}',
-    '!../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}',
+    '../packages/{components,system}/**/*.{tsx,ts}',
+    '!../packages/{components,system}/**/*.{stories,test}.{tsx,ts}',
   ],
   presets: [preset],
 };
