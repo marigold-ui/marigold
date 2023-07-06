@@ -55,7 +55,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
       <FocusScope contain restoreFocus autoFocus>
         <Underlay {...underlayProps} variant="modal" />
         <div
-          className="pointer-none fixed inset-0 z-[2] flex items-center justify-center"
+          className="pointer-none fixed inset-0 z-50 flex items-center justify-center"
           ref={modalRef}
           {...mergeProps(props, overlayProps, modalProps)}
         >
