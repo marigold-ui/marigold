@@ -1,6 +1,6 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-export const Underlay: ThemeComponent<'Underlay'> = cva('fixed inset-0 z-[1]', {
+export const Underlay: ThemeComponent<'Underlay'> = cva('', {
   variants: {
     variant: {
       modal: ' bg-bg-surface-underlay blur-[1]',
