@@ -10,6 +10,7 @@ import {
   allComponentPages,
   ComponentPage,
 } from '@/.contentlayer/generated';
+import { siteConfig } from '@/lib/config';
 
 // Helpers
 // ---------------
@@ -41,6 +42,7 @@ const renderContentPages = (pathname: string) => {
 };
 
 const renderComponentPages = (pathname: string) => {
+  const groups = siteConfig.navaigation.componentGroups;
   const pages: { [group in ComponentPage['group']]?: ComponentPage[] } = {};
 
   allComponentPages.forEach(page => {
@@ -48,19 +50,24 @@ const renderComponentPages = (pathname: string) => {
     return (pages[page.group] = [...group, page]);
   });
 
-  return Object.entries(pages).map(([group, list]) => {
+  const list = Object.entries(pages);
+  list.sort(([a], [b]) => groups.indexOf(a) - groups.indexOf(b));
+
+  return list.map(([group, list]) => {
     return (
-      <>
-        <Headline level="2">{group}</Headline>
-        {list.map(({ title, slugAsParams }) => (
-          <Link
-            className="text-secondary-700"
-            href={`${pathname}${slugAsParams}`}
-          >
-            {title}
-          </Link>
-        ))}
-      </>
+      <div className="flex flex-col gap-2">
+        <div className="text-secondary-700 font-semibold">{group}</div>
+        <div className="border-secondary-300 ml-0.5 border-l">
+          {list.map(({ title, slugAsParams }) => (
+            <Link
+              className="text-secondary-500 block py-1.5 pl-4 text-sm"
+              href={`${pathname}${slugAsParams}`}
+            >
+              {title}
+            </Link>
+          ))}
+        </div>
+      </div>
     );
   });
 };
@@ -80,12 +87,13 @@ export const MobileNavigation = () => {
           <Image src="/logo.svg" alt="Marigold Logo" width={64} height={64} />
           Marigold Docs
         </div>
-        <nav className="flex flex-col gap-6 pl-4 pt-8">
+        <nav className="flex flex-col gap-10 pl-4 pt-8">
           <div className="flex flex-col gap-4">
             {renderContentPages(pathname)}
           </div>
-          <div className="text-lg font-bold">Components</div>
+
           <div className="flex flex-col gap-4">
+            <div className="text-lg font-bold">Components</div>
             {renderComponentPages(pathname)}
           </div>
         </nav>

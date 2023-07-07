@@ -9,6 +9,8 @@ import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
+import { siteConfig } from './lib/config';
+
 // Helpers
 // ---------------
 const commonFields: FieldDefs = {
@@ -58,15 +60,7 @@ export const ComponentPage = defineDocumentType(() => ({
     ...commonFields,
     group: {
       type: 'enum',
-      options: [
-        'applicaiton',
-        'collection',
-        'content',
-        'form',
-        'layout',
-        'navigation',
-        'overlay',
-      ],
+      options: siteConfig.navaigation.componentGroups,
       required: true,
     },
   },
