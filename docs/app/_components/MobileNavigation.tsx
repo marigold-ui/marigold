@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Dialog, Button } from '@/ui';
+import { Dialog, Button, Header } from '@/ui';
 import {
   allContentPages,
   allComponentPages,
@@ -81,10 +81,10 @@ export const MobileNavigation = () => {
         <MenuIcon />
       </Button>
       <Dialog variant="fullpage" closeButton>
-        <div className="flex items-center text-3xl font-bold uppercase text-[#46505a]">
+        <Header className="flex items-center text-3xl font-bold uppercase text-[#46505a]">
           <Image src="/logo.svg" alt="Marigold Logo" width={64} height={64} />
           Marigold Docs
-        </div>
+        </Header>
         <nav className="flex flex-col gap-10 pl-4 pt-8">
           <div className="flex flex-col gap-4">{renderContentPages()}</div>
 
