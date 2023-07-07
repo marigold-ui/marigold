@@ -45,7 +45,7 @@ const renderContentPages = ({ close, current }: RenderProps) => {
     <Link
       key={slug}
       className={cn(
-        'text-secondary-700',
+        'text-secondary-600',
         current === slug
           ? 'text-primary-500 font-medium'
           : 'hover:text-secondary-900 border-transparent'
