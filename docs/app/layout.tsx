@@ -4,8 +4,7 @@ import { MarigoldProvider } from '@/ui';
 import { theme } from '@/theme';
 import { fontSans } from '@/theme/fonts';
 
-import { MobileNavigation } from './_components/MobileNavigation';
-import { SiteNavigation } from './_components/SiteNavigation';
+import { SiteHeader } from './_components/SiteHeader';
 
 // Metadata
 // ---------------
@@ -26,12 +25,7 @@ export default function RootLayout({
       <body className={`${fontSans.className} min-h-screen`}>
         <MarigoldProvider theme={theme}>
           <div className="flex min-h-screen flex-col">
-            <header className="sticky top-0 z-10 w-full bg-white">
-              <div className="container">
-                <MobileNavigation />
-                <SiteNavigation />
-              </div>
-            </header>
+            <SiteHeader />
             <div className="flex-1">
               <div className="container">{children}</div>
             </div>
