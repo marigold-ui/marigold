@@ -24,13 +24,6 @@ const commonFields: FieldDefs = {
   },
 };
 
-const computedFields: ComputedFields = {
-  slug: {
-    type: 'string',
-    resolve: doc => `/${doc._raw.flattenedPath}`,
-  },
-};
-
 // Page Types
 // ---------------
 export const ContentPage = defineDocumentType(() => ({
@@ -44,7 +37,10 @@ export const ContentPage = defineDocumentType(() => ({
     },
   },
   computedFields: {
-    ...computedFields,
+    slug: {
+      type: 'string',
+      resolve: doc => doc._raw.flattenedPath.replace('pages', ''),
+    },
     slugAsParams: {
       type: 'string',
       resolve: doc => doc._raw.flattenedPath.split('/').slice(1).join('/'),
@@ -60,12 +56,19 @@ export const ComponentPage = defineDocumentType(() => ({
     ...commonFields,
     group: {
       type: 'enum',
-      options: siteConfig.navaigation.componentGroups,
+      options: siteConfig.navigation.componentGroups,
       required: true,
     },
   },
   computedFields: {
-    ...computedFields,
+    slug: {
+      type: 'string',
+      resolve: doc =>
+        `/${doc._raw.flattenedPath.substring(
+          0,
+          doc._raw.flattenedPath.lastIndexOf('/')
+        )}`,
+    },
     slugAsParams: {
       type: 'string',
       // Slugs are matched agains the name of the component or rather the file name

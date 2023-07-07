@@ -1,5 +1,5 @@
 export const siteConfig = {
-  navaigation: {
+  navigation: {
     componentGroups: [
       'Applicaiton',
       'Layout',
