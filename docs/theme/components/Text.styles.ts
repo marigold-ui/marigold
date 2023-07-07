@@ -5,10 +5,10 @@ export const Text: ThemeComponent<'Text'> = cva(
   {
     variants: {
       variant: {
-        lead: 'text-xl text-muted-foreground',
+        lead: 'text-muted-foreground text-xl',
         large: 'text-lg font-semibold',
         small: 'text-sm font-medium leading-none',
-        muted: 'text-sm text-muted-foreground',
+        muted: 'text-muted-foreground text-sm',
       },
     },
   }
