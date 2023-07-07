@@ -34,7 +34,7 @@ const renderContentPages = () => {
   const pages = [...allContentPages].sort(
     (a, b) => (a.order || 1000) - (b.order || 1000)
   );
-  console.log(pages);
+
   return pages.map(({ title, slug }) => (
     <Link key={slug} href={slug}>
       {title}
@@ -53,7 +53,7 @@ const renderComponentPages = () => {
 
   const list = Object.entries(pages);
   list.sort(([a], [b]) => groups.indexOf(a) - groups.indexOf(b));
-  console.log(pages);
+
   return list.map(([group, list]) => (
     <div key={group} className="flex flex-col gap-2">
       <div className="text-secondary-700 font-semibold">{group}</div>
