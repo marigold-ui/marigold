@@ -155,7 +155,7 @@ export const colors = {
     },
 
     // Status
-    info: '#1d67b6',
+    info: brand.blue[500],
   },
 
   // Shadow
@@ -186,7 +186,7 @@ export const colors = {
 
     // Status
     error: brand.red[500],
-    info: '#1d67b6',
+    info: brand.blue[500],
     warning: brand.yellow[500],
   },
 
@@ -208,7 +208,7 @@ export const colors = {
     // Status
     required: brand.red[500],
     error: brand.red[500],
-    info: '#1d67b6',
+    info: brand.blue[500],
     warning: brand.yellow[500],
   },
 };
