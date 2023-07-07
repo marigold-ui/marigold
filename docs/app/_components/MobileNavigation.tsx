@@ -77,7 +77,7 @@ const renderComponentPages = () => {
 export const MobileNavigation = () => {
   return (
     <Dialog.Trigger>
-      <Button>
+      <Button className="md:hidden">
         <MenuIcon />
       </Button>
       <Dialog variant="fullpage" closeButton>

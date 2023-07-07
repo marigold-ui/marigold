@@ -5,6 +5,7 @@ import { theme } from '@/theme';
 import { fontSans } from '@/theme/fonts';
 
 import { MobileNavigation } from './_components/MobileNavigation';
+import { SiteNavigation } from './_components/SiteNavigation';
 
 // Metadata
 // ---------------
@@ -28,6 +29,7 @@ export default function RootLayout({
             <header className="sticky top-0 z-10 w-full bg-white">
               <div className="container">
                 <MobileNavigation />
+                <SiteNavigation />
               </div>
             </header>
             <div className="flex-1">
