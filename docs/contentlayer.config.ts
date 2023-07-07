@@ -1,7 +1,6 @@
 import {
   defineDocumentType,
   makeSource,
-  type ComputedFields,
   type FieldDefs,
 } from 'contentlayer/source-files';
 
