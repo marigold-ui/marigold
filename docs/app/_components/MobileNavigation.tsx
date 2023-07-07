@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import { Dialog, Button, Header, cn } from '@/ui';
 import {
@@ -30,19 +31,34 @@ const MenuIcon = () => (
   </svg>
 );
 
-const renderContentPages = ({ close }: { close?: () => void }) => {
+interface RenderProps {
+  close?: () => void;
+  current: string;
+}
+
+const renderContentPages = ({ close, current }: RenderProps) => {
   const pages = [...allContentPages].sort(
     (a, b) => (a.order || 1000) - (b.order || 1000)
   );
 
   return pages.map(({ title, slug }) => (
-    <Link key={slug} href={slug} onClick={close}>
+    <Link
+      key={slug}
+      className={cn(
+        'text-secondary-700',
+        current === slug
+          ? 'text-primary-500 font-medium'
+          : 'hover:text-secondary-900 border-transparent'
+      )}
+      href={slug}
+      onClick={close}
+    >
       {title}
     </Link>
   ));
 };
 
-const renderComponentPages = ({ close }: { close?: () => void }) => {
+const renderComponentPages = ({ close, current }: RenderProps) => {
   const groups = siteConfig.navigation.componentGroups;
   const pages: { [group in ComponentPage['group']]?: ComponentPage[] } = {};
 
@@ -63,7 +79,10 @@ const renderComponentPages = ({ close }: { close?: () => void }) => {
             key={slug}
             className={cn(
               'text-secondary-500 block py-1.5 pl-4 text-sm',
-              'hover:border-primary-500 hover:text-secondary-800 -ml-px border-l border-transparent'
+              '-ml-px border-l',
+              current === slug
+                ? 'border-primary-500 text-primary-500 font-medium'
+                : 'hover:border-secondary-800 hover:text-secondary-800 border-transparent'
             )}
             href={slug}
             onClick={close}
@@ -78,30 +97,39 @@ const renderComponentPages = ({ close }: { close?: () => void }) => {
 
 // Component
 // ---------------
-export const MobileNavigation = () => (
-  <Dialog.Trigger>
-    <Button className="md:hidden">
-      <MenuIcon />
-    </Button>
-    <Dialog variant="fullpage" closeButton>
-      {({ close }) => (
-        <>
-          <Header className="flex items-center text-3xl font-bold uppercase tracking-tight text-[#46505a]">
-            <Image src="/logo.svg" alt="Marigold Logo" width={64} height={64} />
-            Marigold
-          </Header>
-          <nav className="flex flex-col gap-10 pl-4 pt-8">
-            <div className="flex flex-col gap-4">
-              {renderContentPages({ close })}
-            </div>
+export const MobileNavigation = () => {
+  const pathname = usePathname();
 
-            <div className="flex flex-col gap-4">
-              <div className="text-lg font-bold">Components</div>
-              {renderComponentPages({ close })}
-            </div>
-          </nav>
-        </>
-      )}
-    </Dialog>
-  </Dialog.Trigger>
-);
+  return (
+    <Dialog.Trigger>
+      <Button className="md:hidden">
+        <MenuIcon />
+      </Button>
+      <Dialog variant="fullpage" closeButton>
+        {({ close }) => (
+          <>
+            <Header className="flex items-center text-3xl font-bold uppercase tracking-tight text-[#46505a]">
+              <Image
+                src="/logo.svg"
+                alt="Marigold Logo"
+                width={64}
+                height={64}
+              />
+              Marigold
+            </Header>
+            <nav className="flex flex-col gap-10 pl-4 pt-8">
+              <div className="flex flex-col gap-4">
+                {renderContentPages({ close, current: pathname })}
+              </div>
+
+              <div className="flex flex-col gap-4">
+                <div className="text-lg font-bold">Components</div>
+                {renderComponentPages({ close, current: pathname })}
+              </div>
+            </nav>
+          </>
+        )}
+      </Dialog>
+    </Dialog.Trigger>
+  );
+};
