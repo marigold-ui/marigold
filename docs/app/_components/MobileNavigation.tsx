@@ -30,19 +30,19 @@ const MenuIcon = () => (
   </svg>
 );
 
-const renderContentPages = () => {
+const renderContentPages = ({ close }: { close?: () => void }) => {
   const pages = [...allContentPages].sort(
     (a, b) => (a.order || 1000) - (b.order || 1000)
   );
 
   return pages.map(({ title, slug }) => (
-    <Link key={slug} href={slug}>
+    <Link key={slug} href={slug} onClick={close}>
       {title}
     </Link>
   ));
 };
 
-const renderComponentPages = () => {
+const renderComponentPages = ({ close }: { close?: () => void }) => {
   const groups = siteConfig.navigation.componentGroups;
   const pages: { [group in ComponentPage['group']]?: ComponentPage[] } = {};
 
@@ -63,6 +63,7 @@ const renderComponentPages = () => {
             key={slug}
             className="text-secondary-500 block py-1.5 pl-4 text-sm"
             href={slug}
+            onClick={close}
           >
             {title}
           </Link>
@@ -74,26 +75,30 @@ const renderComponentPages = () => {
 
 // Component
 // ---------------
-export const MobileNavigation = () => {
-  return (
-    <Dialog.Trigger>
-      <Button className="md:hidden">
-        <MenuIcon />
-      </Button>
-      <Dialog variant="fullpage" closeButton>
-        <Header className="flex items-center text-3xl font-bold uppercase text-[#46505a]">
-          <Image src="/logo.svg" alt="Marigold Logo" width={64} height={64} />
-          Marigold Docs
-        </Header>
-        <nav className="flex flex-col gap-10 pl-4 pt-8">
-          <div className="flex flex-col gap-4">{renderContentPages()}</div>
+export const MobileNavigation = () => (
+  <Dialog.Trigger>
+    <Button className="md:hidden">
+      <MenuIcon />
+    </Button>
+    <Dialog variant="fullpage" closeButton>
+      {({ close }) => (
+        <>
+          <Header className="flex items-center text-3xl font-bold uppercase text-[#46505a]">
+            <Image src="/logo.svg" alt="Marigold Logo" width={64} height={64} />
+            Marigold Docs
+          </Header>
+          <nav className="flex flex-col gap-10 pl-4 pt-8">
+            <div className="flex flex-col gap-4">
+              {renderContentPages({ close })}
+            </div>
 
-          <div className="flex flex-col gap-4">
-            <div className="text-lg font-bold">Components</div>
-            {renderComponentPages()}
-          </div>
-        </nav>
-      </Dialog>
-    </Dialog.Trigger>
-  );
-};
+            <div className="flex flex-col gap-4">
+              <div className="text-lg font-bold">Components</div>
+              {renderComponentPages({ close })}
+            </div>
+          </nav>
+        </>
+      )}
+    </Dialog>
+  </Dialog.Trigger>
+);
