@@ -5,8 +5,6 @@ import {
   forwardRef,
   useRef,
 } from 'react';
-// import { classNames, useSlotProps } from '@react-spectrum/utils';
-
 import { useSearchField } from '@react-aria/searchfield';
 import { useSearchFieldState } from '@react-stately/searchfield';
 import { SpectrumSearchFieldProps } from '@react-types/searchfield';
@@ -49,8 +47,6 @@ const SearchField = (
     required,
     parentProps,
     parentLabelProps,
-    UNSAFE_className,
-    placeholder,
     width,
     error,
     action,
@@ -71,12 +67,11 @@ const SearchField = (
     errorMessageProps,
     inputProps: searchInputProps,
   } = useSearchField(props, state, inputRef);
-  const inputProps = parentProps;
-
+  const inputProps = parentProps ? parentProps : searchInputProps;
   return (
     <FieldBase
       label={props.label}
-      labelProps={parentLabelProps}
+      labelProps={parentLabelProps ? parentLabelProps : labelProps}
       description={props.description}
       descriptionProps={descriptionProps}
       error={error}
