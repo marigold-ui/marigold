@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Dialog, Button, Header } from '@/ui';
+import { Dialog, Button, Header, cn } from '@/ui';
 import {
   allContentPages,
   allComponentPages,
@@ -61,7 +61,10 @@ const renderComponentPages = ({ close }: { close?: () => void }) => {
         {list.map(({ title, slug }) => (
           <Link
             key={slug}
-            className="text-secondary-500 block py-1.5 pl-4 text-sm"
+            className={cn(
+              'text-secondary-500 block py-1.5 pl-4 text-sm',
+              'hover:border-primary-500 hover:text-secondary-800 -ml-px border-l border-transparent'
+            )}
             href={slug}
             onClick={close}
           >
@@ -83,9 +86,9 @@ export const MobileNavigation = () => (
     <Dialog variant="fullpage" closeButton>
       {({ close }) => (
         <>
-          <Header className="flex items-center text-3xl font-bold uppercase text-[#46505a]">
+          <Header className="flex items-center text-3xl font-bold uppercase tracking-tight text-[#46505a]">
             <Image src="/logo.svg" alt="Marigold Logo" width={64} height={64} />
-            Marigold Docs
+            Marigold
           </Header>
           <nav className="flex flex-col gap-10 pl-4 pt-8">
             <div className="flex flex-col gap-4">
