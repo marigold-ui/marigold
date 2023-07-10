@@ -1,11 +1,18 @@
 import { LiveEditor, LiveError, LivePreview, LiveProvider } from 'react-live';
+import * as components from '@marigold/components';
+import React from 'react';
+
 type Props = {
   noInline?: boolean;
   code: string;
-  scope?: Record<string, unknown>;
 };
 
-const LiveDemoEditor = ({ noInline = false, code, scope }: Props) => {
+const scope = {
+  ...React,
+  ...components,
+};
+
+const LiveDemoEditor = ({ noInline = false, code }: Props) => {
   return (
     <LiveProvider scope={scope} code={code.trim()} noInline={noInline}>
       <div className="flex">
