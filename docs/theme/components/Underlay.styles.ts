@@ -1,5 +1,5 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Underlay: ThemeComponent<'Underlay'> = cva(
-  'bg-secondary-500 blur-sm'
+  'bg-bg-underlay/50 backdrop-blur-sm'
 );
