@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
-const smallScreenSize = '(max-width: 768px)';
-
 export const useSmallScreen = (): boolean => {
   const getMatches = (): boolean => {
-    return window.matchMedia(smallScreenSize).matches;
+    return window.matchMedia('(max-width: 600px)').matches;
   };
 
   const [matches, setMatches] = useState<boolean>(getMatches());

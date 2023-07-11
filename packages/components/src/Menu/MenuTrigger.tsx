@@ -45,7 +45,6 @@ export const MenuTrigger = ({
   };
 
   const isSmallScreen = useSmallScreen();
-
   return (
     <MenuContext.Provider value={menuContext}>
       <PressResponder
