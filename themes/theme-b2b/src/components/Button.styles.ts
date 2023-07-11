@@ -14,7 +14,7 @@ export const Button: ThemeComponent<'Button'> = cva(
           'data-[hover]:text-text-light data-[hover]:bg-bg-primary-hover',
         ],
         secondary: [
-          'text-text-light bg-bg-dark data-[hover]:text-text-light data-[hover]:bg-bg-dark-hover',
+          'text-text-light bg-bg-secondary data-[hover]:text-text-light data-[hover]:bg-bg-secondary-hover',
         ],
         ghost: [
           'border-border-dark border border-solid',
@@ -23,7 +23,7 @@ export const Button: ThemeComponent<'Button'> = cva(
         ],
         text: ['text-text-primary data-[hover]:bg-bg-hover'],
         menu: [
-          'text-text-primary bg-bg-body hover:text-text-light hover:bg-bg-dark-hover',
+          'text-text-primary bg-bg-body hover:text-text-light hover:bg-bg-secondary-hover',
         ],
       },
       size: {

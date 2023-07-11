@@ -84,21 +84,21 @@ describe('DatePicker', () => {
       const segments = screen.getAllByRole('spinbutton');
       expect(segments.length).toBe(3);
       expect(getTextValue(segments[0])).toBe('02');
-      expect(segments[0].getAttribute('aria-label')).toBe('month');
+      expect(segments[0].getAttribute('aria-label')).toBe('month, ');
       expect(segments[0].getAttribute('aria-valuenow')).toBe('2');
       expect(segments[0].getAttribute('aria-valuetext')).toBe('2 – February');
       expect(segments[0].getAttribute('aria-valuemin')).toBe('1');
       expect(segments[0].getAttribute('aria-valuemax')).toBe('12');
 
       expect(getTextValue(segments[1])).toBe('03');
-      expect(segments[1].getAttribute('aria-label')).toBe('day');
+      expect(segments[1].getAttribute('aria-label')).toBe('day, ');
       expect(segments[1].getAttribute('aria-valuenow')).toBe('3');
       expect(segments[1].getAttribute('aria-valuetext')).toBe('3');
       expect(segments[1].getAttribute('aria-valuemin')).toBe('1');
       expect(segments[1].getAttribute('aria-valuemax')).toBe('28');
 
       expect(getTextValue(segments[2])).toBe('2019');
-      expect(segments[2].getAttribute('aria-label')).toBe('year');
+      expect(segments[2].getAttribute('aria-label')).toBe('year, ');
       expect(segments[2].getAttribute('aria-valuenow')).toBe('2019');
       expect(segments[2].getAttribute('aria-valuetext')).toBe('2019');
       expect(segments[2].getAttribute('aria-valuemin')).toBe('1');
@@ -145,14 +145,14 @@ describe('DatePicker', () => {
       const buttonId = button.getAttribute('id');
       expect(button).toHaveAttribute(
         'aria-labelledby',
-        `${comboboxId} ${buttonId}`
+        `${buttonId} ${comboboxId}`
       );
 
       const segments = screen.getAllByRole('spinbutton');
       for (let segment of segments) {
         expect(segment).toHaveAttribute('id');
         expect(
-          segment?.getAttribute('aria-label')?.startsWith('Birth date ')
+          segment?.getAttribute('aria-label')?.endsWith('Birth date')
         ).toBe(true);
         expect(segment).not.toHaveAttribute('aria-labelledby');
       }
