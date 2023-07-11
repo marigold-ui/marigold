@@ -3,6 +3,7 @@
 import { HTMLAttributes } from 'react';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 
+import * as DocComponents from '@/app/components/[...slug]/_components';
 import { Headline, Message, Link, Text } from './';
 
 // Typography
@@ -49,6 +50,7 @@ const components = {
   Headline,
   Message,
   Text,
+  ...DocComponents,
   ...typography,
 };
 

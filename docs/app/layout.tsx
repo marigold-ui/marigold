@@ -16,11 +16,7 @@ export const metadata = {
 
 // Layout
 // ---------------
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
       <body className={`${fontSans.className} min-h-screen`}>
@@ -31,7 +27,9 @@ export default function RootLayout({
               <aside className="fixed top-14 z-20 -ml-2 hidden w-60 overflow-y-auto md:block">
                 <Navigation />
               </aside>
-              <div className="md:pl-60">{children}</div>
+              <div className="md:pl-60">
+                <main className="max-w-3xl">{children}</main>
+              </div>
             </div>
             <footer className="container">Marigold Footer</footer>
           </div>
@@ -39,4 +37,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default Layout;

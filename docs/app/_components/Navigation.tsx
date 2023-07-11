@@ -51,7 +51,7 @@ export const renderComponentPages = ({ onClick, current }: RenderProps) => {
   return list.map(([group, list]) => (
     <div key={group} className="flex flex-col gap-2">
       <div className="text-secondary-700 font-semibold">{group}</div>
-      <div className="border-secondary-300 ml-0.5 border-l">
+      <div className="border-secondary-300 ml-0.5 flex flex-col gap-2 border-l">
         {list.map(({ title, slug }) => (
           <NavLink
             key={slug}

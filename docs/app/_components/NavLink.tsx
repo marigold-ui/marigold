@@ -6,7 +6,7 @@ const styles = cva([], {
   variants: {
     variant: {
       default: [
-        'text-secondary-500 block py-1.5 pl-4 text-sm',
+        'text-secondary-500 block py-1 pl-4 text-sm',
         '-ml-px border-l border-transparent',
       ],
       main: ['text-secondary-600'],
@@ -25,7 +25,7 @@ const styles = cva([], {
     {
       variant: 'default',
       current: false,
-      className: 'hover:border-secondary-800 hover:text-secondary-800',
+      className: 'hover:border-secondary-600 hover:text-secondary-800',
     },
     {
       variant: 'main',
