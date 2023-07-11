@@ -1,16 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { Dialog, Button, Header } from '@/ui';
 
-import { Dialog, Button, Header, cn } from '@/ui';
-import {
-  allContentPages,
-  allComponentPages,
-  ComponentPage,
-} from '@/.contentlayer/generated';
-import { siteConfig } from '@/lib/config';
+import { Navigation } from './Navigation';
 
 // Helpers
 // ---------------
@@ -31,105 +24,23 @@ const MenuIcon = () => (
   </svg>
 );
 
-interface RenderProps {
-  close?: () => void;
-  current: string;
-}
-
-const renderContentPages = ({ close, current }: RenderProps) => {
-  const pages = [...allContentPages].sort(
-    (a, b) => (a.order || 1000) - (b.order || 1000)
-  );
-
-  return pages.map(({ title, slug }) => (
-    <Link
-      key={slug}
-      className={cn(
-        'text-secondary-600',
-        current === slug
-          ? 'text-primary-500 font-medium'
-          : 'hover:text-secondary-900 border-transparent'
-      )}
-      href={slug}
-      onClick={close}
-    >
-      {title}
-    </Link>
-  ));
-};
-
-const renderComponentPages = ({ close, current }: RenderProps) => {
-  const groups = siteConfig.navigation.componentGroups;
-  const pages: { [group in ComponentPage['group']]?: ComponentPage[] } = {};
-
-  allComponentPages.forEach(page => {
-    const group = pages[page.group] || [];
-    return (pages[page.group] = [...group, page]);
-  });
-
-  const list = Object.entries(pages);
-  list.sort(([a], [b]) => groups.indexOf(a) - groups.indexOf(b));
-
-  return list.map(([group, list]) => (
-    <div key={group} className="flex flex-col gap-2">
-      <div className="text-secondary-700 font-semibold">{group}</div>
-      <div className="border-secondary-300 ml-0.5 border-l">
-        {list.map(({ title, slug }) => (
-          <Link
-            key={slug}
-            className={cn(
-              'text-secondary-500 block py-1.5 pl-4 text-sm',
-              '-ml-px border-l',
-              current === slug
-                ? 'border-primary-500 text-primary-500 font-medium'
-                : 'hover:border-secondary-800 hover:text-secondary-800 border-transparent'
-            )}
-            href={slug}
-            onClick={close}
-          >
-            {title}
-          </Link>
-        ))}
-      </div>
-    </div>
-  ));
-};
-
 // Component
 // ---------------
-export const MobileNavigation = () => {
-  const pathname = usePathname();
-
-  return (
-    <Dialog.Trigger>
-      <Button variant="ghost" className="md:hidden">
-        <MenuIcon />
-      </Button>
-      <Dialog variant="fullpage" closeButton>
-        {({ close }) => (
-          <>
-            <Header className="flex items-center text-3xl font-bold uppercase tracking-tight text-[#46505a]">
-              <Image
-                src="/logo.svg"
-                alt="Marigold Logo"
-                width={64}
-                height={64}
-              />
-              Marigold
-            </Header>
-            <nav className="flex flex-col gap-10 pl-4 pt-8">
-              <div className="flex flex-col gap-4">
-                {renderContentPages({ close, current: pathname })}
-              </div>
-
-              <div className="flex flex-col gap-4">
-                <div className="text-lg font-bold">Components</div>
-                {renderComponentPages({ close, current: pathname })}
-              </div>
-            </nav>
-          </>
-        )}
-      </Dialog>
-    </Dialog.Trigger>
-  );
-};
+export const MobileNavigation = () => (
+  <Dialog.Trigger>
+    <Button variant="ghost" className="md:hidden">
+      <MenuIcon />
+    </Button>
+    <Dialog variant="fullpage" closeButton>
+      {({ close }) => (
+        <>
+          <Header className="flex items-center text-3xl font-bold uppercase tracking-tight text-[#46505a]">
+            <Image src="/logo.svg" alt="Marigold Logo" width={64} height={64} />
+            Marigold
+          </Header>
+          <Navigation onClick={close} />
+        </>
+      )}
+    </Dialog>
+  </Dialog.Trigger>
+);
