@@ -10,12 +10,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { cleanup } from '@testing-library/react';
 
-import {
-  Theme,
-  useResponsiveValue,
-  cva,
-  useSmallScreen,
-} from '@marigold/system';
+import { Theme, cva, useSmallScreen } from '@marigold/system';
 import { setup } from '../test.utils';
 
 import { Select } from './Select';
