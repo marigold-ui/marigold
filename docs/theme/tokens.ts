@@ -40,6 +40,8 @@ export const colors = {
     hover: tw.neutral[100],
     muted: tw.slate[100],
 
+    underlay: tw.slate[500],
+
     // Status
     info: tw.sky[100],
     warning: tw.amber[100],
