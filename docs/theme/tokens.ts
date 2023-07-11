@@ -39,6 +39,8 @@ export const colors = {
     body: '#fff',
     hover: tw.neutral[100],
 
+    underlay: tw.slate[500],
+
     // Status
     info: tw.sky[100],
     warning: tw.amber[100],
