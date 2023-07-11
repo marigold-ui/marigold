@@ -12,7 +12,6 @@ import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay';
 
 import { ClearButton } from './ClearButton';
-import { SearchField } from '../SearchField/SearchField';
 
 // Props
 // ---------------
@@ -108,25 +107,6 @@ export const Autocomplete = ({
   const { isDisabled, ...restClearButtonProps } = clearButtonProps;
   return (
     <>
-      {/* <SearchField
-        label={props.label}
-        parentLabelProps={labelProps}
-        ref={inputRef}
-        description={props.description}
-        error={error}
-        errorMessage={props.errorMessage}
-        parentProps={inputProps}
-        disabled={disabled}
-        action={
-          state.inputValue !== '' ? (
-            <ClearButton
-              preventFocus
-              disabled={isDisabled}
-              {...restClearButtonProps}
-            />
-          ) : null
-        }
-      /> */}
       <FieldBase
         label={props.label}
         labelProps={labelProps}

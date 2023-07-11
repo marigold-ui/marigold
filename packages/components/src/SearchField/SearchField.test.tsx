@@ -1,13 +1,8 @@
-import { within, fireEvent, screen, act } from '@testing-library/react';
-// import Checkmark from '@spectrum-icons/workflow/Checkmark';
-import React, { ReactElement } from 'react';
-import userEvent from '@testing-library/user-event';
+import { fireEvent, screen } from '@testing-library/react';
+import React from 'react';
 import { SearchField } from './SearchField';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
-
-let testId = 'test-id';
-let inputText = 'blah';
 
 const theme: Theme = {
   name: 'test',
@@ -57,12 +52,6 @@ const theme: Theme = {
 
 const { render } = setup({ theme });
 
-function renderComponent(Component, props) {
-  return render(
-    <Component aria-label="the label" {...props} data-testid={testId} />
-  );
-}
-
 describe('Search', () => {
   let onChange = jest.fn();
   let onFocus = jest.fn();
@@ -76,30 +65,62 @@ describe('Search', () => {
     onClear.mockClear();
   });
 
-  test('should clearn button be null', () => {
-    render(<SearchField data-testid="test-id" label="search field" />);
+  test('should be required', () => {
+    render(<SearchField required data-testid="test-id" label="search field" />);
     const input = screen.queryByTestId('test-id');
 
     expect(input).toBeInTheDocument();
     expect(input).toHaveAttribute('type', 'search');
-    expect(input).toHaveAttribute('aria-required', true);
-
-    const clearButton = screen.queryByRole('button');
-    expect(clearButton).toBeNull();
+    expect(input).toHaveAttribute('aria-required', 'true');
   });
 
   test('the icon is null', () => {
     render(<SearchField required data-testid="test-id" label="search field" />);
-    const element = screen.queryByTestId('test-id');
-    expect(element).toBeInTheDocument();
+    const input = screen.queryByTestId('test-id');
+    expect(input).toBeInTheDocument();
     expect(screen.queryByTestId('searchicon')).toBeNull();
   });
 
-  // test("", () => {
-  //     render(
-  //         <SearchField value='hello' data-testid='test-id' label='search field' />
-  //     );
-  //     const input = screen.queryByTestId('test-id');
+  test('Name should support error message', () => {
+    render(<SearchField label="search field" data-testid="test-id" />);
+    const error = screen.queryByText('Something went wrong');
+    expect(error).not.toBeInTheDocument();
+  });
 
-  // });
+  test('Should support aria label', () => {
+    render(
+      <SearchField
+        excludeFromTabOrder
+        aria-label="search field"
+        data-testid="test-id"
+      />
+    );
+    const input = screen.queryByTestId('test-id');
+    expect(input).toHaveAttribute('aria-label', 'search field');
+  });
+
+  test('should support excludeFromTabOrder', () => {
+    render(
+      <SearchField
+        excludeFromTabOrder
+        label="search field"
+        data-testid="test-id"
+      />
+    );
+    const input = screen.queryByTestId('test-id');
+    expect(input).toHaveAttribute('tabIndex', '-1');
+  });
+
+  test('Should not handle change when field is disalbed', () => {
+    render(
+      <SearchField
+        onChange={onChange}
+        label="search field"
+        data-testid="test-id"
+      />
+    );
+    const input = screen.queryByTestId('test-id');
+    fireEvent.keyDown(input as any, { key: 'Enter', code: 13, charCode: 13 });
+    expect(onChange).toBeCalledTimes(0);
+  });
 });

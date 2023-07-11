@@ -1,17 +1,10 @@
-import {
-  LabelHTMLAttributes,
-  ReactElement,
-  RefObject,
-  forwardRef,
-  useRef,
-} from 'react';
+import { ReactElement, RefObject, forwardRef, useRef } from 'react';
 import { useSearchField } from '@react-aria/searchfield';
 import { useSearchFieldState } from '@react-stately/searchfield';
 import { SpectrumSearchFieldProps } from '@react-types/searchfield';
 import { TextFieldRef } from '@react-types/textfield';
 import { FieldBase } from '../FieldBase';
 import { Input } from '../Input';
-import { LabelProps } from '../Label';
 
 const SearchIcon = (props: { className?: string }) => (
   <svg
@@ -30,10 +23,6 @@ export interface SearchFieldInterface
   extends Omit<SpectrumSearchFieldProps, 'isDisabled' | 'isRequired'> {
   action?: ReactElement | null;
   error?: boolean;
-  parentProps?: React.InputHTMLAttributes<HTMLInputElement>;
-  parentLabelProps?:
-    | (LabelHTMLAttributes<HTMLLabelElement> & Pick<LabelProps, 'as'>)
-    | undefined;
   disabled?: boolean;
   required?: boolean;
   variant?: string;
@@ -42,16 +31,7 @@ export interface SearchFieldInterface
 }
 
 const SearchField = (
-  {
-    disabled,
-    required,
-    parentProps,
-    parentLabelProps,
-    width,
-    error,
-    action,
-    ...rest
-  }: SearchFieldInterface,
+  { disabled, required, width, error, action, ...rest }: SearchFieldInterface,
   ref: RefObject<TextFieldRef>
 ) => {
   const props = {
@@ -61,17 +41,12 @@ const SearchField = (
   };
   const state = useSearchFieldState(props);
   const inputRef = useRef(null);
-  const {
-    labelProps,
-    descriptionProps,
-    errorMessageProps,
-    inputProps: searchInputProps,
-  } = useSearchField(props, state, inputRef);
-  const inputProps = parentProps ? parentProps : searchInputProps;
+  const { labelProps, descriptionProps, errorMessageProps, inputProps } =
+    useSearchField(props, state, inputRef);
   return (
     <FieldBase
       label={props.label}
-      labelProps={parentLabelProps ? parentLabelProps : labelProps}
+      labelProps={labelProps}
       description={props.description}
       descriptionProps={descriptionProps}
       error={error}
