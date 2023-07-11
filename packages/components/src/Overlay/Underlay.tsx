@@ -1,5 +1,5 @@
 import React, { HTMLAttributes } from 'react';
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 
 // Props
 // ---------------
@@ -12,5 +12,5 @@ export interface UnderlayProps extends HTMLAttributes<HTMLElement> {
 // ---------------
 export const Underlay = ({ size, variant, ...props }: UnderlayProps) => {
   const classNames = useClassNames({ component: 'Underlay', size, variant });
-  return <div className={classNames} {...props} />;
+  return <div className={cn('fixed inset-0 z-40', classNames)} {...props} />;
 };

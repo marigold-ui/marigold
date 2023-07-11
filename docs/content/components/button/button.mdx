@@ -1,0 +1,65 @@
+---
+title: Button
+caption: Whenever you need that clicky thing.
+group: form
+---
+
+The `<Button>` is a common form component, that renders a button element, which allows users to perform an action.
+They have multiple styles for various needs, and are ideal for calling attention to where a user needs to do something in order to move forward in a flow.
+
+The variant and size of the `<Button>` can be added with the `variant` prop. Variants are `primary`, `secondary`, `ghost` and `text`. You can also set the `size`, currently there is just one size available.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Button } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'as',
+      type: 'HTMLElement | MarigoldComponent',
+      description:
+        'Behaves like a HTMLElement or a Marigold component if used.',
+      default: 'none',
+    },
+    {
+      property: 'onPress',
+      type: '(e: PressEvent) => void',
+      description:
+        'Handler that is called when the press is released over the target.',
+      default: 'none',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'Disables the button.',
+      default: 'false',
+    },
+    {
+      property: 'fullWidth',
+      type: 'boolean',
+      description: 'Stretches the button width with full available space.',
+      default: 'false',
+    },
+    {
+      property: '...',
+      type: '',
+      description: 'Yes you can use all regular attributes of button!',
+      default: '',
+    },
+  ]}
+/>
+
+## Examples

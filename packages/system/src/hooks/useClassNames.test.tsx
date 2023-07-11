@@ -264,7 +264,6 @@ test('component not found throw error', () => {
     useClassNames({ component: 'Component' })
   );
 
-  console.log(result.error);
   expect(result.error).toMatchInlineSnapshot(
     `[Error: Component "Component" is missing styles in the current theme.]`
   );
