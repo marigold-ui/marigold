@@ -85,7 +85,7 @@ export const Navigation = ({ onClick }: NavigationProps) => {
       </div>
 
       <div className="flex flex-col gap-4">
-        <div className="text-lg font-bold">Components</div>
+        <div className="text-lg font-semibold">Components</div>
         {renderComponentPages({ onClick, current: pathname })}
       </div>
     </nav>
