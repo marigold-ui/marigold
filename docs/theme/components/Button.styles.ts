@@ -1,3 +1,5 @@
-import { ThemeComponent } from '@marigold/system';
+import { ThemeComponent, cva } from '@marigold/system';
 
-export const Button: ThemeComponent<'Button'> = () => 'bg-red-500';
+export const Button: ThemeComponent<'Button'> = cva(
+  'flex gap-2 rounded-sm border border-solid p-2'
+);

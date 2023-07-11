@@ -1,19 +1,18 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { allPages } from 'contentlayer/generated';
+import { allContentPages } from 'contentlayer/generated';
 
-import { Mdx } from '@/components/mdx';
+import { Mdx } from '@/ui/mdx';
 
-interface PageProps {
+interface ContentPageProps {
   params: {
     slug: string[];
   };
 }
 
-async function getPageFromParams(params: PageProps['params']) {
+async function getPageFromParams(params: ContentPageProps['params']) {
   const slug = params?.slug?.join('/');
-
-  const page = allPages.find(page => page.slugAsParams === slug);
+  const page = allContentPages.find(page => page.slugAsParams === slug);
 
   if (!page) {
     return null;
@@ -24,7 +23,7 @@ async function getPageFromParams(params: PageProps['params']) {
 
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
+}: ContentPageProps): Promise<Metadata> {
   const page = await getPageFromParams(params);
 
   if (!page) {
@@ -36,13 +35,15 @@ export async function generateMetadata({
   };
 }
 
-export async function generateStaticParams(): Promise<PageProps['params'][]> {
-  return allPages.map(page => ({
+export async function generateStaticParams(): Promise<
+  ContentPageProps['params'][]
+> {
+  return allContentPages.map(page => ({
     slug: page.slugAsParams.split('/'),
   }));
 }
 
-export default async function PagePage({ params }: PageProps) {
+export default async function ContentPage({ params }: ContentPageProps) {
   const page = await getPageFromParams(params);
 
   if (!page) {
@@ -52,8 +53,6 @@ export default async function PagePage({ params }: PageProps) {
   return (
     <article className="prose dark:prose-invert py-6">
       <h1>{page.title}</h1>
-      <h2>{page.caption}</h2>
-      <hr />
       <Mdx code={page.body.code} />
     </article>
   );

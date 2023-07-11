@@ -38,6 +38,10 @@
       "groupName": "mdx"
     },
     {
+      "matchPackagePatterns": ["next", "contentlayer"],
+      "groupName": "docs"
+    },
+    {
       "matchPackagePatterns": ["react-hook-form", "zod"],
       "groupName": "docs-demos"
     }

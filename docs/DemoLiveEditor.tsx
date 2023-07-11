@@ -15,10 +15,8 @@ const scope = {
 const LiveDemoEditor = ({ noInline = false, code }: Props) => {
   return (
     <LiveProvider scope={scope} code={code.trim()} noInline={noInline}>
-      <div className="flex">
-        <LiveEditor />
-        <LivePreview />
-      </div>
+      <LiveEditor className="w-2/4" />
+      <LivePreview />
       <LiveError />
     </LiveProvider>
   );

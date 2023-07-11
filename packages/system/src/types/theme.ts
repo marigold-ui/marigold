@@ -1,4 +1,4 @@
-import { ClassValue } from '../utils';
+import { ClassValue, ConfigSchema } from '../utils';
 
 export interface ComponentStyleFunction<
   Variants extends string = never,
@@ -12,6 +12,7 @@ export interface ComponentStyleFunction<
       className?: ClassValue;
     } & Partial<Additional>
   ): string;
+  variants: ConfigSchema | undefined;
 }
 
 export type Theme = {
