@@ -71,7 +71,7 @@ const IconListItem = ({ icon }: IconListItemProps) => {
           />
         </div>
       </Card>
-      <Text size="small" align="center" className="m-0">
+      <Text size="small" align="center">
         {icon}
       </Text>
     </div>
