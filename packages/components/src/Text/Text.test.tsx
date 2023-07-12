@@ -6,7 +6,7 @@ import { Text } from './Text';
 const theme: Theme = {
   name: 'test',
   colors: {
-    emerald: 'rgb(5 150 105);',
+    emerald: 'rgb(5 150 105)',
   },
   components: {
     Text: cva("font-['Oswald_Regular']", {
@@ -80,7 +80,7 @@ test('get theme color', () => {
     <p
       class="font-['Oswald_Regular'] text-[--color] outline-[--outline] not-italic cursor-default font-normal text-[13px]"
       data-testid="text"
-      style="--color: rgb(5 150 105);;"
+      style="--color: rgb(5 150 105);"
     />
   `);
 });
