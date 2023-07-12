@@ -9,10 +9,10 @@ const theme: Theme = {
     emerald: 'rgb(5 150 105)',
   },
   components: {
-    Text: cva("font-['Oswald_Regular']", {
+    Text: cva('font-["Oswald_Regular"]', {
       variants: {
         variant: {
-          one: 'font-["Arial]"',
+          one: 'font-["Arial"]',
         },
       },
     }),
@@ -26,7 +26,7 @@ test('uses base as default variant', () => {
     </ThemeProvider>
   );
   const text = screen.getByText(/text/);
-  expect(text).toHaveClass(`font-['Oswald_Regular']`);
+  expect(text).toHaveClass(`font-["Oswald_Regular"]`);
 });
 
 test('uses theme styles', () => {
@@ -38,7 +38,7 @@ test('uses theme styles', () => {
   const text = screen.getByText(/text/);
 
   expect(text.className).toMatchInlineSnapshot(
-    `"font-["Arial]" text-[--color] outline-[--outline] not-italic cursor-default font-normal text-[13px]"`
+    `"font-["Arial"] text-[--color] outline-[--outline]"`
   );
 });
 
@@ -63,9 +63,10 @@ test('style props override theme styles', () => {
   );
   const text = screen.getByText(/text/);
 
-  expect(text.className).toMatchInlineSnapshot(
-    `"font-["Arial]" text-[--color] outline-[--outline] not-italic cursor-default font-normal text-[13px]"`
+  expect(text.className).toHaveClass(
+    `"font-["Arial"] text-[--color] outline-[--outline]"`
   );
+  expect(text.style.cssText).toMatchInlineSnapshot(`"--color: red-700;"`);
 });
 
 test('get theme color', () => {
@@ -78,7 +79,7 @@ test('get theme color', () => {
   const text = screen.getByTestId('text');
   expect(text).toMatchInlineSnapshot(`
     <p
-      class="font-['Oswald_Regular'] text-[--color] outline-[--outline] not-italic cursor-default font-normal text-[13px]"
+      class="font-["Oswald_Regular"] text-[--color] outline-[--outline]"
       data-testid="text"
       style="--color: rgb(5 150 105);"
     />
