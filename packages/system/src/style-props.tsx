@@ -253,8 +253,18 @@ export const cursorStyle = {
 };
 
 export type AspectProp = { ratio?: keyof typeof aspect };
-export type AlignmentXProp = { alignX?: keyof typeof alignmentX };
-export type AlignmentYProp = { alignY?: keyof typeof alignmentY };
+export type Orientation = { orientation: 'horizontal' | 'vertical' };
+export type AlignmentProp =
+  // | { orientation: 'horizontal' | 'vertical' }
+  {
+    alignX?: keyof typeof alignmentY;
+    alignY?: keyof typeof alignmentX;
+  };
+// | {
+//     alignY?: keyof typeof alignmentX;
+//     alignX?: keyof typeof alignmentY;
+//   };
+//export type AlignmentYProp = { alignY?: keyof typeof alignmentY };
 export type CursorProp = { cursor?: keyof typeof cursorStyle };
 export type FontStyleProp = { fontStyle?: keyof typeof textStyle };
 export type FontWeightProp = { weight?: keyof typeof fontWeight };

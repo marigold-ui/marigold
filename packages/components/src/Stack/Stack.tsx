@@ -4,17 +4,13 @@ import {
   gapSpace,
   alignmentX,
   alignmentY,
-  AlignmentXProp,
-  AlignmentYProp,
+  AlignmentProp,
   GapSpaceProp,
 } from '@marigold/system';
 
 // Props
 // ---------------
-export interface StackProps
-  extends AlignmentXProp,
-    AlignmentYProp,
-    GapSpaceProp {
+export interface StackProps extends AlignmentProp, GapSpaceProp {
   children?: ReactNode;
   stretch?: boolean;
 }
@@ -24,8 +20,8 @@ export interface StackProps
 export const Stack = ({
   children,
   space = 0,
-  alignX = 'none',
   alignY = 'none',
+  alignX = 'none',
   stretch = false,
   ...props
 }: StackProps) => (
@@ -33,8 +29,8 @@ export const Stack = ({
     className={cn(
       'flex flex-col',
       gapSpace[space],
-      alignmentX[alignX],
-      alignmentY[alignY],
+      alignmentX[alignY],
+      alignmentY[alignX],
       stretch && 'h-full w-full'
     )}
     {...props}
