@@ -153,18 +153,35 @@ export const paddingBottom = {
   12: 'pb-12',
 };
 
-export const alignmentY = {
-  none: undefined,
-  top: 'items-start',
-  center: 'items-center',
-  bottom: 'items-end',
-};
-
-export const alignmentX = {
-  none: undefined,
-  left: 'justify-start',
-  center: 'justify-center',
-  right: 'justify-end',
+export const alignment = {
+  vertical: {
+    alignmentX: {
+      none: undefined,
+      top: 'items-start',
+      center: 'items-center',
+      bottom: 'items-end',
+    },
+    alignmentY: {
+      none: undefined,
+      left: 'justify-start',
+      center: 'justify-center',
+      right: 'justify-end',
+    },
+  },
+  horizontal: {
+    alignmentY: {
+      none: undefined,
+      top: 'items-start',
+      center: 'items-center',
+      bottom: 'items-end',
+    },
+    alignmentX: {
+      none: undefined,
+      left: 'justify-start',
+      center: 'justify-center',
+      right: 'justify-end',
+    },
+  },
 };
 
 export const placeItems = {
@@ -254,17 +271,19 @@ export const cursorStyle = {
 
 export type AspectProp = { ratio?: keyof typeof aspect };
 export type Orientation = { orientation: 'horizontal' | 'vertical' };
-export type AlignmentProp =
-  // | { orientation: 'horizontal' | 'vertical' }
-  {
-    alignX?: keyof typeof alignmentY;
-    alignY?: keyof typeof alignmentX;
+
+export type AlignmentProp = {
+  orientation: {
+    vertical?: {
+      alignY?: keyof typeof alignment.vertical.alignmentY;
+      alignX?: keyof typeof alignment.vertical.alignmentX;
+    };
+    horizontal?: {
+      alignX?: keyof typeof alignment.horizontal.alignmentX;
+      alignY?: keyof typeof alignment.horizontal.alignmentY;
+    };
   };
-// | {
-//     alignY?: keyof typeof alignmentX;
-//     alignX?: keyof typeof alignmentY;
-//   };
-//export type AlignmentYProp = { alignY?: keyof typeof alignmentY };
+};
 export type CursorProp = { cursor?: keyof typeof cursorStyle };
 export type FontStyleProp = { fontStyle?: keyof typeof textStyle };
 export type FontWeightProp = { weight?: keyof typeof fontWeight };

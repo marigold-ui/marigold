@@ -10,31 +10,41 @@ import {
 
 // Props
 // ---------------
-export interface StackProps extends AlignmentProp, GapSpaceProp {
+export interface StackProps
+  extends Pick<AlignmentProp['orientation']['vertical'], 'alignX' | ' alignY'>,
+    GapSpaceProp {
   children?: ReactNode;
   stretch?: boolean;
 }
+
+// alignX -> bottom, center, top
+// alignY -> right,left, center
 
 // Component
 // ---------------
 export const Stack = ({
   children,
   space = 0,
-  alignY = 'none',
-  alignX = 'none',
   stretch = false,
+  alignX,
+  alignY,
   ...props
-}: StackProps) => (
-  <div
-    className={cn(
-      'flex flex-col',
-      gapSpace[space],
-      alignmentX[alignY],
-      alignmentY[alignX],
-      stretch && 'h-full w-full'
-    )}
-    {...props}
-  >
-    {children}
-  </div>
-);
+}: StackProps) => {
+  console.log(alignmentX[alignX], alignX);
+  return (
+    <div
+      className={cn(
+        'flex flex-col',
+        gapSpace[space],
+        alignY && alignmentX[alignX],
+        alignX && alignmentY[alignY],
+        // orientation?.verticalalignmentX[orientation?.vertical?.alignY],
+        // alignmentY[orientation?.vertical?.alignX],
+        stretch && 'h-full w-full'
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};
