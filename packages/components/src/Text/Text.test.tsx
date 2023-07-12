@@ -63,7 +63,7 @@ test('style props override theme styles', () => {
   );
   const text = screen.getByText(/text/);
 
-  expect(text.className).toHaveClass(
+  expect(text.className).toMatchInlineSnapshot(
     `"font-["Arial"] text-[--color] outline-[--outline]"`
   );
   expect(text.style.cssText).toMatchInlineSnapshot(`"--color: red-700;"`);
