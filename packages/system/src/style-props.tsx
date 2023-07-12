@@ -157,15 +157,15 @@ export const alignment = {
   vertical: {
     alignmentX: {
       none: undefined,
-      top: 'items-start',
+      left: 'items-start',
       center: 'items-center',
-      bottom: 'items-end',
+      right: 'items-end',
     },
     alignmentY: {
       none: undefined,
-      left: 'justify-start',
+      top: 'justify-start',
       center: 'justify-center',
-      right: 'justify-end',
+      bottom: 'justify-end',
     },
   },
   horizontal: {
@@ -284,6 +284,9 @@ export type AlignmentProp = {
     };
   };
 };
+
+export interface AlignmentProps extends AlignmentProp {}
+
 export type CursorProp = { cursor?: keyof typeof cursorStyle };
 export type FontStyleProp = { fontStyle?: keyof typeof textStyle };
 export type FontWeightProp = { weight?: keyof typeof fontWeight };

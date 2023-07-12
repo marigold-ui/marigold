@@ -3,10 +3,10 @@ import { HtmlProps } from '@marigold/types';
 import {
   cn,
   createVar,
-  alignmentX,
-  alignmentY,
-  AlignmentXProp,
-  AlignmentYProp,
+  // alignmentX,
+  // alignmentY,
+  // AlignmentXProp,
+  // AlignmentYProp,
 } from '@marigold/system';
 
 export interface BreakoutProps

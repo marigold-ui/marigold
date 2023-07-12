@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
 import {
   gapSpace,
-  alignmentX,
-  alignmentY,
-  AlignmentXProp,
-  AlignmentYProp,
+  // alignmentX,
+  // alignmentY,
+  // AlignmentXProp,
+  // AlignmentYProp,
   GapSpaceProp,
   cn,
 } from '@marigold/system';
