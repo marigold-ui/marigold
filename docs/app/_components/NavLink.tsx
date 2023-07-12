@@ -6,8 +6,7 @@ const styles = cva([], {
   variants: {
     variant: {
       default: [
-        'text-secondary-500 block py-1 pl-4 text-sm',
-        '-ml-px border-l border-transparent',
+        'text-secondary-500 -ml-px block border-l border-transparent py-1 pl-4 text-sm',
       ],
       main: ['text-secondary-600'],
     },

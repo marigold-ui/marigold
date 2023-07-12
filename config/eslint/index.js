@@ -2,8 +2,8 @@ module.exports = {
   extends: [
     'react-app',
     'react-app/jest',
-    'prettier',
     'plugin:tailwindcss/recommended',
+    'prettier',
   ],
   settings: {
     react: {
