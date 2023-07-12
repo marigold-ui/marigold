@@ -50,7 +50,7 @@ export const renderComponentPages = ({ onClick, current }: RenderProps) => {
 
   return list.map(([group, list]) => (
     <div key={group} className="flex flex-col gap-2">
-      <div className="text-secondary-700 font-semibold">{group}</div>
+      <div className="text-secondary-700 text-sm font-semibold">{group}</div>
       <div className="border-secondary-300 ml-0.5 flex flex-col gap-2 border-l">
         {list.map(({ title, slug }) => (
           <NavLink
@@ -79,13 +79,13 @@ export const Navigation = ({ onClick }: NavigationProps) => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-col gap-10 pl-4 pt-8">
+    <nav className="flex flex-col gap-8 pl-4 pt-8">
       <div className="flex flex-col gap-4">
         {renderContentPages({ onClick, current: pathname })}
       </div>
 
       <div className="flex flex-col gap-4">
-        <div className="text-lg font-semibold">Components</div>
+        <div className="font-semibold">Components</div>
         {renderComponentPages({ onClick, current: pathname })}
       </div>
     </nav>
