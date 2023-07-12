@@ -207,7 +207,7 @@ export const objectFit = {
   contain: 'object-contain',
   cover: 'object-cover',
   fill: 'object-fill',
-  none: 'object-none',
+  none: 'unset',
   scaleDown: 'object-scale-down',
 };
 
