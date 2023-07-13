@@ -4,17 +4,15 @@ import {
   // alignmentX,
   // alignmentY,
   // AlignmentXProp,
-  // AlignmentYProp,
+  // AlignmentYProp,#
+  AlignmentProp,
   GapSpaceProp,
   cn,
 } from '@marigold/system';
 
 // Props
 // ---------------
-export interface InlineProps
-  extends AlignmentXProp,
-    AlignmentYProp,
-    GapSpaceProp {
+export interface InlineProps extends AlignmentProp, GapSpaceProp {
   children?: ReactNode;
 }
 
@@ -22,17 +20,17 @@ export interface InlineProps
 // ---------------
 export const Inline = ({
   space = 0,
-  alignX = 'left',
-  alignY = 'center',
+  // alignX = 'left',
+  // alignY = 'center',
   children,
   ...props
 }: InlineProps) => (
   <div
     className={cn(
       'flex flex-wrap',
-      gapSpace[space],
-      alignmentX[alignX],
-      alignmentY[alignY]
+      gapSpace[space]
+      // alignmentX[alignX],
+      // alignmentY[alignY]
     )}
     {...props}
   >

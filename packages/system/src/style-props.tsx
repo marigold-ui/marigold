@@ -270,7 +270,6 @@ export const cursorStyle = {
 };
 
 export type AspectProp = { ratio?: keyof typeof aspect };
-export type Orientation = { orientation: 'horizontal' | 'vertical' };
 
 export type AlignmentProp = {
   orientation: {
