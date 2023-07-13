@@ -20,6 +20,7 @@ export const colors = {
   // Brand
   // ---------------
   ...brand,
+  secondary: tw.slate,
 
   // Text
   // ---------------
@@ -41,6 +42,10 @@ export const colors = {
     muted: tw.slate[100],
 
     underlay: tw.slate[500],
+
+    surface: {
+      DEFAULT: tw.white,
+    },
 
     // Status
     info: tw.sky[100],
