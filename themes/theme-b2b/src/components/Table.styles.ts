@@ -19,7 +19,7 @@ export const Table: ThemeComponent<'Table'> = {
   ),
   row: cva([
     'data-[hover]:bg-bg-hover-light',
-    'aria-selected:bg-bg-selected-light',
+    'aria-selected:bg-bg-selected',
     'focus-visible:outline-outline-focus',
   ]),
   cell: cva(
