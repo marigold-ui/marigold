@@ -86,13 +86,21 @@ export const rehypeComponentDemo = ({
             demoPath
           );
           const source = fs.readFileSync(filePath, 'utf-8');
+          const name = path.basename(demoPath, '.demo.tsx');
 
-          // 4. Add the source code (as string) to the component props
-          node.attributes?.push({
-            type: 'mdxJsxAttribute',
-            name: 'source',
-            value: source,
-          });
+          // 4. Add the name and source code (as string) to the component props
+          node.attributes?.push(
+            {
+              type: 'mdxJsxAttribute',
+              name: 'name',
+              value: name,
+            },
+            {
+              type: 'mdxJsxAttribute',
+              name: 'source',
+              value: source,
+            }
+          );
 
           // 5. Render the code as children
           node.children?.push(

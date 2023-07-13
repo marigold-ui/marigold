@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { registry } from '@/lib/registry';
 
 export interface ComponentDemoProps {
   name: string;
@@ -6,7 +7,13 @@ export interface ComponentDemoProps {
   children?: ReactNode;
 }
 
-export const ComponentDemo = ({ source, children }: ComponentDemoProps) => {
+export const ComponentDemo = ({
+  name,
+  source,
+  children,
+}: ComponentDemoProps) => {
+  const Demo = registry[name];
+
   return (
     <div className="bg-cyan-800 p-10 text-cyan-100">
       <pre>
@@ -14,6 +21,9 @@ export const ComponentDemo = ({ source, children }: ComponentDemoProps) => {
       </pre>
       <hr />
       <div>{children}</div>
+      <div>
+        <Demo />
+      </div>
     </div>
   );
 };
