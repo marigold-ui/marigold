@@ -8,6 +8,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
+import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
 import { siteConfig } from './lib/config';
 
 // Helpers
@@ -78,11 +79,17 @@ export const ComponentPage = defineDocumentType(() => ({
 
 // Config
 // ---------------
+const contentDirPath = './content';
+
 export default makeSource({
-  contentDirPath: './content',
+  contentDirPath,
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: 'wrap' }]],
+    rehypePlugins: [
+      [rehypeComponentDemo, { contentDirPath }],
+      rehypeSlug,
+      [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+    ],
   },
   documentTypes: [ContentPage, ComponentPage],
 });
