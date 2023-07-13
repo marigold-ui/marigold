@@ -43,7 +43,7 @@ test('supports base styling classes', () => {
 
   expect(button).toMatchInlineSnapshot(`
     <button
-      class="align-center flex disabled:bg-gray-600"
+      class="items-center justify-center gap-[0.5ch] align-center flex disabled:bg-gray-600"
       type="button"
     >
       button
@@ -73,7 +73,7 @@ test('accepts other variants', () => {
   expect(button).toHaveClass('text-secondary-800');
   expect(button).toMatchInlineSnapshot(`
     <button
-      class="align-center flex disabled:bg-gray-600 text-secondary-800"
+      class="items-center justify-center gap-[0.5ch] align-center flex disabled:bg-gray-600 text-secondary-800"
       type="button"
     >
       button
