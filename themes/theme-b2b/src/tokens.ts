@@ -196,7 +196,7 @@ export const colors = {
     dark: brand.secondary[700],
 
     // State
-    focus: brand.primary[600],
+    focus: brand.blue[400],
 
     // Status
     error: brand.red[500],
