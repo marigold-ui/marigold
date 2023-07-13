@@ -1,8 +1,9 @@
 'use client';
+
 import { HTMLAttributes } from 'react';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 
-import * as DocComponents from '@/app/components/components';
+import * as DocComponents from '@/app/components/[...slug]/_components';
 import { Headline, Message, Link, Text } from './';
 import { IconList } from '@/app/components';
 // Typography

@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { allComponentPages } from 'contentlayer/generated';
 
 import { Mdx } from '@/ui/mdx';
-import { MarigoldThemeSwitch, ThemeMenu } from '../components';
+import { MarigoldThemeSwitch, ThemeMenu } from './_components';
 
 import { b2bTheme, coreTheme } from '@/theme';
 import { SSRProvider } from '@/ui';
