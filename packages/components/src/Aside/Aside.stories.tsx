@@ -89,7 +89,7 @@ export const Basic: StoryObj<typeof Aside> = {
 
 export const InheritWidth: StoryObj<typeof Aside> = {
   render: args => (
-    <Aside space={8} {...args}>
+    <Aside {...args} space={8}>
       <img
         src="https://images.dog.ceo/breeds/pug/n02110958_13993.jpg"
         alt="Pug"
