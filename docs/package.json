@@ -31,6 +31,8 @@
     "@types/node": "18.16.19",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "unist-builder": "4.0.0",
+    "unist-util-visit": "5.0.0"
   }
 }
