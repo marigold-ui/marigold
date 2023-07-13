@@ -1,8 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import { Dialog, Button, Header } from '@/ui';
 
+import { Logo } from './Logo';
 import { Navigation } from './Navigation';
 
 // Helpers
@@ -34,8 +34,8 @@ export const MobileNavigation = () => (
     <Dialog variant="fullpage" closeButton>
       {({ close }) => (
         <>
-          <Header className="flex items-center text-3xl font-bold uppercase tracking-tight text-[#46505a]">
-            <Image src="/logo.svg" alt="Marigold Logo" width={64} height={64} />
+          <Header className="flex items-center gap-2 pl-4 text-3xl font-bold uppercase tracking-tight text-[#46505a]">
+            <Logo className="h-10 w-10" />
             Marigold
           </Header>
           <Navigation onClick={close} />
