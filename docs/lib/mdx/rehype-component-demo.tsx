@@ -77,16 +77,24 @@ export const rehypeComponentDemo = ({
         if (!demoPath) return;
         if (typeof demoPath !== 'string') return;
 
-        // 3. Load the demo source from the file system
-        const filePath = path.join(
-          file.cwd,
-          contentDirPath,
-          file.data.rawDocumentData.sourceFileDir,
-          demoPath
-        );
         try {
+          // 3. Load the demo source from the file system
+          const filePath = path.join(
+            file.cwd,
+            contentDirPath,
+            file.data.rawDocumentData.sourceFileDir,
+            demoPath
+          );
           const source = fs.readFileSync(filePath, 'utf-8');
 
+          // 4. Add the source code (as string) to the component props
+          node.attributes?.push({
+            type: 'mdxJsxAttribute',
+            name: 'source',
+            value: source,
+          });
+
+          // 5. Render the code as children
           node.children?.push(
             u('element', {
               tagName: 'pre',
