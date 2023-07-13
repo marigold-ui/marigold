@@ -96,7 +96,7 @@ export const ComboBox = ({
           ref={inputRef}
           action={
             <Button
-              className="absolute right-1 h-4 w-4 border-none bg-transparent p-0"
+              className="absolute right-2 h-4 w-4 border-none bg-transparent p-0"
               ref={buttonRef}
               {...buttonProps}
             >
