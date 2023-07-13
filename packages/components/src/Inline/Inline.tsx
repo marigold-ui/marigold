@@ -1,10 +1,7 @@
 import React, { ReactNode } from 'react';
 import {
   gapSpace,
-  // alignmentX,
-  // alignmentY,
-  // AlignmentXProp,
-  // AlignmentYProp,#
+  alignment,
   AlignmentProp,
   GapSpaceProp,
   cn,
@@ -14,23 +11,26 @@ import {
 // ---------------
 export interface InlineProps extends AlignmentProp, GapSpaceProp {
   children?: ReactNode;
+  alignX?: keyof typeof alignment.horizontal.alignmentX;
+  alignY?: keyof typeof alignment.horizontal.alignmentY;
 }
 
 // Component
 // ---------------
 export const Inline = ({
   space = 0,
-  // alignX = 'left',
-  // alignY = 'center',
+  orientation,
+  alignX = orientation?.horizontal?.alignX,
+  alignY = orientation?.horizontal?.alignY,
   children,
   ...props
 }: InlineProps) => (
   <div
     className={cn(
       'flex flex-wrap',
-      gapSpace[space]
-      // alignmentX[alignX],
-      // alignmentY[alignY]
+      gapSpace[space],
+      alignX && alignment?.horizontal?.alignmentX[alignX],
+      alignY && alignment?.horizontal?.alignmentY[alignY]
     )}
     {...props}
   >

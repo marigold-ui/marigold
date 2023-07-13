@@ -272,7 +272,7 @@ export const cursorStyle = {
 export type AspectProp = { ratio?: keyof typeof aspect };
 
 export type AlignmentProp = {
-  orientation: {
+  orientation?: {
     vertical?: {
       alignY?: keyof typeof alignment.vertical.alignmentY;
       alignX?: keyof typeof alignment.vertical.alignmentX;

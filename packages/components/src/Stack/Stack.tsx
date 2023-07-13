@@ -12,8 +12,8 @@ import {
 export interface StackProps extends AlignmentProp, GapSpaceProp {
   children?: ReactNode;
   stretch?: boolean;
-  alignX?: string;
-  alignY?: string | undefined;
+  alignX?: keyof typeof alignment.vertical.alignmentX;
+  alignY?: keyof typeof alignment.vertical.alignmentY;
 }
 
 // Component
@@ -23,8 +23,8 @@ export const Stack = ({
   space = 0,
   stretch = false,
   orientation,
-  alignX = orientation?.vertical?.alignX,
-  alignY = orientation?.vertical?.alignY,
+  alignX = 'left',
+  alignY = 'center',
   ...props
 }: StackProps) => {
   return (
@@ -32,8 +32,8 @@ export const Stack = ({
       className={cn(
         'flex flex-col',
         gapSpace[space],
-        alignX && (alignment?.vertical?.alignmentX as any)[alignX],
-        alignY && (alignment?.vertical?.alignmentY as any)[alignY],
+        alignX && alignment?.vertical?.alignmentX[alignX],
+        alignY && alignment?.vertical?.alignmentY[alignY],
         stretch && 'h-full w-full'
       )}
       {...props}

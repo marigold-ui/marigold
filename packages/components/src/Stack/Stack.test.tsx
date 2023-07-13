@@ -24,7 +24,9 @@ test('uses spacing from theme', () => {
     </Stack>
   );
   const first = screen.getByText(/first/).parentElement;
-  expect(first?.className).toMatchInlineSnapshot(`"flex flex-col gap-2"`);
+  expect(first?.className).toMatchInlineSnapshot(
+    `"flex flex-col gap-2 items-start justify-center"`
+  );
 });
 
 test('children are not aligned by default', () => {
@@ -44,7 +46,9 @@ test('allows to align children to the left', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`justify-start`);
+  expect(stack.className).toMatchInlineSnapshot(
+    `"flex flex-col gap-0 items-start justify-center"`
+  );
 });
 
 test('allows to align children to the center', () => {
@@ -64,7 +68,9 @@ test('allows to align children to the right', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`justify-end`);
+  expect(stack.className).toMatchInlineSnapshot(
+    `"flex flex-col gap-0 items-end justify-center"`
+  );
 });
 
 test('allows to align children to the vertical top', () => {
@@ -84,7 +90,9 @@ test('allows to align children to the vertical center', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`items-center`);
+  expect(stack.className).toMatchInlineSnapshot(
+    `"flex flex-col gap-0 items-start justify-center"`
+  );
 });
 
 test('allows to align children to the bottom', () => {
@@ -94,7 +102,9 @@ test('allows to align children to the bottom', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`items-end`);
+  expect(stack.className).toMatchInlineSnapshot(
+    `"flex flex-col gap-0 items-start justify-end"`
+  );
 });
 
 test('allows to fill space with stretch prop', () => {
