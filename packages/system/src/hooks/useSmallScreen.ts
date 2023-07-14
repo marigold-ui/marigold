@@ -13,6 +13,7 @@ export const useSmallScreen = (): boolean => {
   useEffect(() => {
     // Triggered at the first client-side load and if query changes
     handleResize();
+    if (!window) return;
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
     // eslint-disable-next-line react-hooks/exhaustive-deps
