@@ -92,10 +92,11 @@ export const colors = {
   // Text
   // ---------------
   text: {
-    primary: {
+    body: {
       DEFAULT: brand.secondary[700],
-      light: brand.secondary[500],
+      accent: brand.secondary[500],
     },
+
     link: brand.blue[400],
 
     light: brand.secondary[100],

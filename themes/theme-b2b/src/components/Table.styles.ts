@@ -5,7 +5,7 @@ export const Table: ThemeComponent<'Table'> = {
   header: cva(
     [
       'cursor-default border-b-[1px] p-4 text-left',
-      'text-text-primary border-border-light',
+      'text-text-body border-border-light',
       'focus:outline-outline-focus',
     ],
     {
@@ -24,7 +24,7 @@ export const Table: ThemeComponent<'Table'> = {
   ]),
   cell: cva(
     [
-      'text-text-primary border-border-light border-b-[1px] p-4',
+      'text-text-body border-border-light border-b-[1px] p-4',
       'focus:outline-outline-focus',
     ],
     {
