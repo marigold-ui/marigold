@@ -22,3 +22,12 @@ test('check of the value is truthy', () => {
   const { result } = renderHook(() => useSmallScreen());
   expect(result.current).toBeTruthy();
 });
+
+it('should verify if window exist', () => {
+  // mocking if there's no window
+  Object.defineProperty(global, 'window', {
+    value: undefined,
+  });
+  const { result } = renderHook(() => useSmallScreen());
+  expect(result.current).toBeFalsy();
+});
