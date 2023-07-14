@@ -2,11 +2,11 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { allComponentPages } from 'contentlayer/generated';
 
+import { Headline, SSRProvider } from '@/ui';
 import { Mdx } from '@/ui/mdx';
-import { MarigoldThemeSwitch, ThemeMenu } from './_components';
-
 import { b2bTheme, coreTheme } from '@/theme';
-import { SSRProvider } from '@/ui';
+
+import { MarigoldThemeSwitch, ThemeMenu } from './_components';
 
 interface ComponentPageProps {
   params: {
@@ -60,9 +60,9 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
   }
 
   return (
-    <article className="prose dark:prose-invert py-6">
+    <article className="prose py-6">
       <SSRProvider>
-        <h1>{page.title}</h1>
+        <Headline level="1">{page.title}</Headline>
         <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
           <ThemeMenu />
           <Mdx title={page.title} code={page.body.code} />

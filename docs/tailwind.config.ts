@@ -17,6 +17,7 @@ const config: Config = {
     '!../packages/{components,system}/**/*.{stories,test}.{tsx,ts}',
   ],
   presets: [preset],
+  plugins: [require('@tailwindcss/typography')],
 };
 
 export default config;

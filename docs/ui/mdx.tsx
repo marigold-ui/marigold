@@ -48,14 +48,14 @@ const typography = {
 // MDX Components
 // ---------------
 const components = {
+  ...DocComponents,
+  ...typography,
   // TODO: wrap Marigold's Image/Link with next's image/link component
   ComponentDemo,
   Headline,
   Message,
   Text,
   IconList,
-  ...DocComponents,
-  ...typography,
 };
 
 // Props
