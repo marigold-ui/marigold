@@ -9,7 +9,7 @@ export const NumberField: ThemeComponent<'NumberField'> = {
     'data-[error]:border-border-error data-[error]:shadow-shadow-error data-[error]:shadow-[0_0_0_1px]',
   ]),
   stepper: cva([
-    'text-text-primary w-7',
+    'text-text-body w-7',
     'border-border-light border-solid first-of-type:border-r',
     'border-border-light border-solid last-of-type:border-l ',
     'data-[disabled]:text-text-disabled',

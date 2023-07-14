@@ -1,36 +1,29 @@
 import React, { ReactNode } from 'react';
 import { HtmlProps } from '@marigold/types';
-import {
-  cn,
-  createVar,
-  alignmentX,
-  alignmentY,
-  AlignmentXProp,
-  AlignmentYProp,
-} from '@marigold/system';
+import { cn, createVar, alignment, AlignmentProp } from '@marigold/system';
 
-export interface BreakoutProps
-  extends HtmlProps<'div'>,
-    AlignmentXProp,
-    AlignmentYProp {
+export interface BreakoutProps extends HtmlProps<'div'>, AlignmentProp {
   children?: ReactNode;
   height?: string;
+  alignX?: keyof typeof alignment.horizontal.alignmentX;
+  alignY?: keyof typeof alignment.horizontal.alignmentY;
 }
 
 export const Breakout = ({
   height,
   children,
+  orientation,
   alignX = 'left',
-  alignY = 'top',
+  alignY = 'center',
   ...props
 }: BreakoutProps) => {
   return (
     <div
       className={cn(
         'col-start-[1_!important] col-end-[-1_!important] w-full',
-        alignmentX[alignX],
-        alignmentY[alignY],
-        alignmentX[alignX] || alignmentY[alignY] ? 'flex' : 'block',
+        alignX && alignment?.horizontal?.alignmentX[alignX],
+        alignY && alignment?.horizontal?.alignmentY[alignY],
+        alignX || alignY ? 'flex' : 'block',
         'h-[--height]'
       )}
       style={createVar({ height })}

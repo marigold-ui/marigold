@@ -1,13 +1,15 @@
 import {
   defineDocumentType,
   makeSource,
-  type ComputedFields,
   type FieldDefs,
 } from 'contentlayer/source-files';
 
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+
+import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
+import { siteConfig } from './lib/config';
 
 // Helpers
 // ---------------
@@ -19,13 +21,6 @@ const commonFields: FieldDefs = {
   caption: {
     type: 'string',
     required: true,
-  },
-};
-
-const computedFields: ComputedFields = {
-  slug: {
-    type: 'string',
-    resolve: doc => `/${doc._raw.flattenedPath}`,
   },
 };
 
@@ -42,7 +37,10 @@ export const ContentPage = defineDocumentType(() => ({
     },
   },
   computedFields: {
-    ...computedFields,
+    slug: {
+      type: 'string',
+      resolve: doc => doc._raw.flattenedPath.replace('pages', ''),
+    },
     slugAsParams: {
       type: 'string',
       resolve: doc => doc._raw.flattenedPath.split('/').slice(1).join('/'),
@@ -58,20 +56,19 @@ export const ComponentPage = defineDocumentType(() => ({
     ...commonFields,
     group: {
       type: 'enum',
-      options: [
-        'applicaiton',
-        'collection',
-        'content',
-        'form',
-        'layout',
-        'navigation',
-        'overlay',
-      ],
+      options: siteConfig.navigation.componentGroups,
       required: true,
     },
   },
   computedFields: {
-    ...computedFields,
+    slug: {
+      type: 'string',
+      resolve: doc =>
+        `/${doc._raw.flattenedPath.substring(
+          0,
+          doc._raw.flattenedPath.lastIndexOf('/')
+        )}`,
+    },
     slugAsParams: {
       type: 'string',
       // Slugs are matched agains the name of the component or rather the file name
@@ -82,11 +79,17 @@ export const ComponentPage = defineDocumentType(() => ({
 
 // Config
 // ---------------
+const contentDirPath = './content';
+
 export default makeSource({
-  contentDirPath: './content',
+  contentDirPath,
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: 'wrap' }]],
+    rehypePlugins: [
+      [rehypeComponentDemo, { contentDirPath }],
+      rehypeSlug,
+      [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+    ],
   },
   documentTypes: [ContentPage, ComponentPage],
 });

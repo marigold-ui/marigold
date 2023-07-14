@@ -92,10 +92,11 @@ export const colors = {
   // Text
   // ---------------
   text: {
-    primary: {
+    body: {
       DEFAULT: brand.secondary[700],
-      light: brand.secondary[500],
+      accent: brand.secondary[500],
     },
+
     link: brand.blue[400],
 
     light: brand.secondary[100],
@@ -150,8 +151,8 @@ export const colors = {
     hover: { DEFAULT: brand.secondary[400], light: brand.secondary[200] },
     focus: brand.primary[200],
     selected: {
-      DEFAULT: brand.primary[600],
-      light: brand.primary[100],
+      DEFAULT: brand.primary[100],
+      input: brand.primary[600],
     },
 
     // Status
@@ -196,7 +197,7 @@ export const colors = {
     dark: brand.secondary[700],
 
     // State
-    focus: brand.primary[600],
+    focus: brand.blue[400],
 
     // Status
     error: brand.red[500],
