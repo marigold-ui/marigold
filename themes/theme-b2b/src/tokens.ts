@@ -163,14 +163,6 @@ export const colors = {
   // ---------------
   shadow: {
     light: brand.secondary[400],
-
-    // state
-    focus: brand.primary[600],
-
-    // status
-    error: brand.red[500],
-    selected: brand.red[700],
-    disabled: brand.secondary[400],
   },
 
   // Border

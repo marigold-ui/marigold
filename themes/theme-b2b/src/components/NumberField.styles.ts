@@ -4,9 +4,9 @@ export const NumberField: ThemeComponent<'NumberField'> = {
   group: cva([
     'border-border-light rounded-sm border border-solid',
     'data-[hover]:border-border-hover',
-    'data-[focus]:border-border-focus data-[focus]:shadow-shadow-focus data-[focus]:shadow-[0_0_0_1px]',
+    'data-[focus]:border-border-focus ',
     'data-[disabled]:bg-bg-disabled data-[disabled]:text-text-disabled data-[disabled]:cursor-not-allowed ',
-    'data-[error]:border-border-error data-[error]:shadow-shadow-error data-[error]:shadow-[0_0_0_1px]',
+    'data-[error]:border-border-error',
   ]),
   stepper: cva([
     'text-text-body w-7',
