@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const TextArea: ThemeComponent<'TextArea'> = cva([
-  'text-text-primary font-body leading-8',
+  'text-text-body font-body leading-8',
   'border-border-light rounded-sm border outline-none',
   'px-2 py-0',
   'hover:border-border-hover',
