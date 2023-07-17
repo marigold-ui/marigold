@@ -12,6 +12,7 @@
     "@marigold/eslint-config": "workspace:*",
     "@marigold/icons": "workspace:*",
     "@marigold/theme-preset": "workspace:*",
+    "@vercel/analytics": "1.0.1",
     "autoprefixer": "10.4.14",
     "contentlayer": "0.3.4",
     "eslint": "8.44.0",
