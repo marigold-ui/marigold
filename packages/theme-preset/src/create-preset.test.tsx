@@ -1,6 +1,7 @@
+import path from 'node:path';
 import { defaultTheme } from '@marigold/system';
+
 import { createPreset } from './create-preset';
-import path from 'path';
 
 test('create preset and merge it with defaultTheme', () => {
   const preset = createPreset('test', {
