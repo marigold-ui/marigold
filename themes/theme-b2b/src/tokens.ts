@@ -26,84 +26,75 @@ const brand = {
     '900': '#111827',
     '950': '#030712',
   },
-
-  white: '#ffff',
-
-  grey: {
-    '50': '#f7f7f7',
-    '100': '#e3e3e3',
-    '200': '#c8c8c8',
-    '300': '#a4a4a4',
-    '400': '#818181',
-    '500': '#666666',
-    '600': '#525252',
-    '700': '#434343',
-    '800': '#383838',
-    '900': '#313131',
-    '950': '#1a1a1a',
-  },
-
-  blue: {
-    '50': '#eefbfd',
-    '100': '#d5f2f8',
-    '200': '#b0e5f1',
-    '300': '#79d0e7',
-    '400': '#3ab3d5',
-    '500': '#1f96bb',
-    '600': '#1d799d',
-    '700': '#1e6280',
-    '800': '#215269',
-    '900': '#1f455a',
-    '950': '#0f2c3d',
-  },
-
-  red: {
-    '50': '#fdf3f3',
-    '100': '#fce4e4',
-    '200': '#f9cfcf',
-    '300': '#f4adad',
-    '400': '#ec7d7e',
-    '500': '#dd4142',
-    '600': '#cc3637',
-    '700': '#ab2a2b',
-    '800': '#8e2627',
-    '900': '#772526',
-    '950': '#400f0f',
-  },
-
-  yellow: {
-    '50': '#ffffe7',
-    '100': '#feffc1',
-    '200': '#fffd86',
-    '300': '#fff441',
-    '400': '#ffe60d',
-    '500': '#eac500',
-    '600': '#d19e00',
-    '700': '#a67102',
-    '800': '#89580a',
-    '900': '#74480f',
-    '950': '#442504',
-  },
-
-  green: {
-    '50': '#f7fce9',
-    '100': '#eef8cf',
-    '200': '#dcf1a5',
-    '300': '#c3e670',
-    '400': '#a8d744',
-    '500': '#8bbd26',
-    '600': '#6b961a',
-    '700': '#527318',
-    '800': '#425b19',
-    '900': '#394e19',
-    '950': '#1c2a09',
-  },
 } as const;
 
+const green = {
+  '50': '#f7fce9',
+  '100': '#eef8cf',
+  '200': '#dcf1a5',
+  '300': '#c3e670',
+  '400': '#a8d744',
+  '500': '#8bbd26',
+  '600': '#6b961a',
+  '700': '#527318',
+  '800': '#425b19',
+  '900': '#394e19',
+  '950': '#1c2a09',
+};
+
+const yellow = {
+  '50': '#ffffe7',
+  '100': '#feffc1',
+  '200': '#fffd86',
+  '300': '#fff441',
+  '400': '#ffe60d',
+  '500': '#eac500',
+  '600': '#d19e00',
+  '700': '#a67102',
+  '800': '#89580a',
+  '900': '#74480f',
+  '950': '#442504',
+};
+
+const red = {
+  '50': '#fdf3f3',
+  '100': '#fce4e4',
+  '200': '#f9cfcf',
+  '300': '#f4adad',
+  '400': '#ec7d7e',
+  '500': '#dd4142',
+  '600': '#cc3637',
+  '700': '#ab2a2b',
+  '800': '#8e2627',
+  '900': '#772526',
+  '950': '#400f0f',
+};
+
+const blue = {
+  '50': '#eefbfd',
+  '100': '#d5f2f8',
+  '200': '#b0e5f1',
+  '300': '#79d0e7',
+  '400': '#3ab3d5',
+  '500': '#1f96bb',
+  '600': '#1d799d',
+  '700': '#1e6280',
+  '800': '#215269',
+  '900': '#1f455a',
+  '950': '#0f2c3d',
+};
+const white = '#ffff';
+const black = '#000000';
 export const colors = {
   // Brand
   // ---------------
   brand,
+  blue,
+  yellow,
+  green,
+  red,
+  white,
+  black,
 
   // Text
   // ---------------
@@ -113,13 +104,13 @@ export const colors = {
       accent: brand.secondary[500],
     },
 
-    link: brand.blue[400],
+    link: blue[400],
 
     light: brand.secondary[100],
 
     // State
     disabled: brand.secondary[400],
-    error: brand.red[500],
+    error: red[500],
     hover: brand.secondary[800],
   },
 
@@ -129,7 +120,7 @@ export const colors = {
     /**
      * Should be set to either html or body element.
      */
-    body: brand.white,
+    body: white,
     neutral: brand.secondary[200],
 
     primary: {
@@ -147,7 +138,7 @@ export const colors = {
       /**
        * Use this for e.g. card backgrounds.
        */
-      DEFAULT: brand.white,
+      DEFAULT: white,
       /**
        * Use this when you need to separate a specific layer from
        * the surface color, e.g. table headers.
@@ -172,7 +163,7 @@ export const colors = {
     },
 
     // Status
-    info: brand.blue[500],
+    info: blue[500],
   },
 
   // Shadow
@@ -184,8 +175,8 @@ export const colors = {
     focus: brand.primary[600],
 
     // status
-    error: brand.red[500],
-    selected: brand.red[700],
+    error: red[500],
+    selected: red[700],
     disabled: brand.secondary[400],
   },
 
@@ -202,9 +193,9 @@ export const colors = {
     selected: brand.primary[800],
 
     // Status
-    error: brand.red[500],
-    info: brand.blue[500],
-    warning: brand.yellow[500],
+    error: red[500],
+    info: blue[500],
+    warning: yellow[500],
   },
 
   // Outline
@@ -213,19 +204,19 @@ export const colors = {
     dark: brand.secondary[700],
 
     // State
-    focus: brand.blue[400],
+    focus: blue[400],
 
     // Status
-    error: brand.red[500],
+    error: red[500],
   },
 
   // Fill
   // ---------------
   fill: {
     // Status
-    required: brand.red[500],
-    error: brand.red[500],
-    info: brand.blue[500],
-    warning: brand.yellow[500],
+    required: red[500],
+    error: red[500],
+    info: blue[500],
+    warning: yellow[500],
   },
 };
