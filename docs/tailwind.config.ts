@@ -12,11 +12,15 @@ const config: Config = {
     './ui/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
 
+    // Used for the anchor links
+    './contentlayer.config.ts',
+
     // Marigold components
     '../packages/{components,system}/**/*.{tsx,ts}',
     '!../packages/{components,system}/**/*.{stories,test}.{tsx,ts}',
   ],
   presets: [preset],
+  plugins: [require('@tailwindcss/typography')],
 };
 
 export default config;
