@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Index } from '@/__registry__';
+import { Index } from '../__registry__';
 
 export interface ComponentDemoProps {
   name: string;
