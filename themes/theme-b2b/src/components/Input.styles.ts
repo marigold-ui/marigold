@@ -8,6 +8,7 @@ export const Input: ThemeComponent<'Input'> = {
     'border-border-light rounded-sm border  outline-none',
     'px-2 leading-[2]',
     'hover:border-border-hover',
+    'read-only:focus:border-border-light read-only:focus:outline-none',
     'focus:border-border-focus focus:outline-outline-focus focus:-outline-offset-1',
     'disabled:bg-bg-disabled disabled:text-text-disabled disabled:cursor-not-allowed ',
     'data-[error]:border-border-error data-[error]:outline-outline-error data-[error]:-outline-offset-1',
