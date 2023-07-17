@@ -13,8 +13,8 @@ const nextConfig = {
   },
   transpilePackages: [
     '@marigold/components',
-    '@marigold/theme-preset',
     '@marigold/system',
+    '@marigold/theme-preset',
   ],
 };
 

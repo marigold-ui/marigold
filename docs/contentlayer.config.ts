@@ -88,7 +88,26 @@ export default makeSource({
     rehypePlugins: [
       [rehypeComponentDemo, { contentDirPath }],
       rehypeSlug,
-      [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: 'wrap',
+          properties: {
+            class: [
+              'relative',
+              'no-underline',
+              'before:absolute',
+              'before:-left-6',
+              'before:inset-y-0',
+              'before:flex',
+              'before:items-center',
+              'before:text-secondary-400',
+              'before:text-2xl',
+              `hover:before:content-['#']`,
+            ].join(' '),
+          },
+        },
+      ],
     ],
   },
   documentTypes: [ContentPage, ComponentPage],

@@ -16,7 +16,7 @@ import { mergeProps, useObjectRef } from '@react-aria/utils';
 import {
   cn,
   useClassNames,
-  useResponsiveValue,
+  useSmallScreen,
   useStateProps,
 } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
@@ -130,7 +130,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     const { focusProps, isFocusVisible } = useFocusRing();
 
     const classNames = useClassNames({ component: 'Select', variant, size });
-    const isSmallScreen = useResponsiveValue([true, false, false], 2);
+    const isSmallScreen = useSmallScreen();
     const stateProps = useStateProps({
       disabled,
       error,
