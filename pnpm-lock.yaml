@@ -678,6 +678,9 @@ importers:
 
   packages/theme-preset:
     dependencies:
+      '@marigold/system':
+        specifier: workspace:*
+        version: link:../system
       deepmerge:
         specifier: ^4.2.2
         version: 4.2.2
@@ -685,15 +688,9 @@ importers:
         specifier: 5.0.0
         version: 5.0.0
     devDependencies:
-      '@marigold/system':
-        specifier: workspace:*
-        version: link:../system
       '@marigold/tsconfig':
         specifier: workspace:*
         version: link:../../config/tsconfig
-      '@marigold/types':
-        specifier: workspace:*
-        version: link:../types
       postcss:
         specifier: 8.4.24
         version: 8.4.24
