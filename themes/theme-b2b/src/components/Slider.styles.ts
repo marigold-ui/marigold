@@ -13,6 +13,6 @@ export const Slider: ThemeComponent<'Slider'> = {
     'data-[focus]:border-border-focus',
     'data-[disabled]:bg-bg-disabled data-[disabled]:border-border-disabled',
   ]),
-  label: cva('text-text-primary text-base font-normal'),
-  output: cva('text-text-primary text-base font-normal'),
+  label: cva('text-text-body text-base font-normal'),
+  output: cva('text-text-body text-base font-normal'),
 };

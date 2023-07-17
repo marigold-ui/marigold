@@ -4,8 +4,10 @@ import { HTMLAttributes } from 'react';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 
 import * as DocComponents from '@/app/components/[...slug]/_components';
-import { Headline, Message, Link, Text } from './';
 import { IconList } from '@/app/components';
+import { ComponentDemo } from './ComponentDemo';
+import { Headline, Message, Link, Text } from './';
+
 // Typography
 // ---------------
 const typography = {
@@ -47,6 +49,7 @@ const typography = {
 // ---------------
 const components = {
   // TODO: wrap Marigold's Image/Link with next's image/link component
+  ComponentDemo,
   Headline,
   Message,
   Text,

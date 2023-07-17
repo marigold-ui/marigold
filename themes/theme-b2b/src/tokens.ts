@@ -108,10 +108,11 @@ export const colors = {
   // Text
   // ---------------
   text: {
-    primary: {
+    body: {
       DEFAULT: brand.secondary[700],
-      light: brand.secondary[500],
+      accent: brand.secondary[500],
     },
+
     link: brand.blue[400],
 
     light: brand.secondary[100],
@@ -151,7 +152,7 @@ export const colors = {
        * Use this when you need to separate a specific layer from
        * the surface color, e.g. table headers.
        */
-      raised: brand.secondary[500],
+      raised: brand.secondary[400],
       /**
        * Use this when you need to make a specific layer
        * to appear lower than the surface color, e.g. progress bar.
@@ -164,10 +165,10 @@ export const colors = {
     // State
     disabled: brand.secondary[200],
     hover: { DEFAULT: brand.secondary[400], light: brand.secondary[200] },
-    focus: brand.primary[200],
+    focus: brand.secondary[200],
     selected: {
-      DEFAULT: brand.primary[600],
-      light: brand.primary[100],
+      DEFAULT: brand.primary[100],
+      input: brand.primary[600],
     },
 
     // Status
@@ -212,7 +213,7 @@ export const colors = {
     dark: brand.secondary[700],
 
     // State
-    focus: brand.primary[600],
+    focus: brand.blue[400],
 
     // Status
     error: brand.red[500],
