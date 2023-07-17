@@ -39,11 +39,11 @@ export const Text = ({
   variant,
   size,
   color,
-  align = 'none',
-  cursor = 'default',
-  weight = 'normal',
-  fontSize = 'xs',
-  fontStyle = 'normal',
+  align,
+  cursor,
+  weight,
+  fontSize,
+  fontStyle,
   children,
   ...props
 }: TextProps) => {
@@ -60,11 +60,11 @@ export const Text = ({
       className={cn(
         classNames,
         'text-[--color] outline-[--outline]',
-        textStyle[fontStyle],
-        textAlign[align],
-        cursorStyle[cursor],
-        fontWeight[weight],
-        textSize[fontSize]
+        fontStyle && textStyle[fontStyle],
+        align && textAlign[align],
+        cursor && cursorStyle[cursor],
+        weight && fontWeight[weight],
+        fontSize && textSize[fontSize]
       )}
       style={createVar({
         color:

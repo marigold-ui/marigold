@@ -83,11 +83,13 @@ export const DateField = ({
   const stateProps = useStateProps({
     hover: isHovered,
     error,
+    readOnly,
     disabled,
     required,
     focus: isFocused || isPressed,
   });
 
+  console.log(readOnly);
   return (
     <FieldBase
       error={error}
@@ -128,8 +130,7 @@ export const DateField = ({
         ) : (
           <div className="flex items-center justify-center">
             <svg
-              data-testid="a
-              ction"
+              data-testid="action"
               className={cn(classNames.action)}
               viewBox="0 0 24 24"
               width={24}

@@ -140,7 +140,7 @@ export const colors = {
        * Use this when you need to separate a specific layer from
        * the surface color, e.g. table headers.
        */
-      raised: brand.secondary[500],
+      raised: brand.secondary[400],
       /**
        * Use this when you need to make a specific layer
        * to appear lower than the surface color, e.g. progress bar.
@@ -153,7 +153,7 @@ export const colors = {
     // State
     disabled: brand.secondary[200],
     hover: { DEFAULT: brand.secondary[400], light: brand.secondary[200] },
-    focus: brand.primary[200],
+    focus: brand.secondary[200],
     selected: {
       DEFAULT: brand.primary[100],
       input: brand.primary[600],
