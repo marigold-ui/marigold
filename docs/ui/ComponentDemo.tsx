@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { registry } from '@/lib/registry';
+import { Index } from '@/__registry__';
 
 export interface ComponentDemoProps {
   name: string;
@@ -12,7 +12,7 @@ export const ComponentDemo = ({
   source,
   children,
 }: ComponentDemoProps) => {
-  const Demo = registry[name];
+  const Demo = Index[name].demo;
 
   return (
     <div className="bg-cyan-800 p-10 text-cyan-100">
@@ -20,7 +20,6 @@ export const ComponentDemo = ({
         <code className="language-tsx">{source}</code>
       </pre>
       <hr />
-      <div>{children}</div>
       <div>
         <Demo />
       </div>

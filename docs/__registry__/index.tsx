@@ -4,16 +4,18 @@
 import dynamic from 'next/dynamic';
 
 export const Index: Record<string, any> = {
+  'basic-accordion': {
+    name: 'basic-accordion',
+    demo: dynamic(
+      () => import('@/content/components/accordion/basic-accordion.demo')
+    ),
+    file: 'content/components/accordion/basic-accordion.demo.tsx',
+  },
   'button-variant': {
     name: 'button-variant',
     demo: dynamic(
       () => import('@/content/components/button/button-variant.demo')
     ),
     file: 'content/components/button/button-variant.demo.tsx',
-  },
-  button: {
-    name: 'button',
-    demo: dynamic(() => import('@/content/components/button/button.demo')),
-    file: '',
   },
 };
