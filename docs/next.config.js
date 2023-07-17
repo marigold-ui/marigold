@@ -16,6 +16,15 @@ const nextConfig = {
     '@marigold/theme-preset',
     '@marigold/system',
   ],
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/introduction/getting-started',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = withContentlayer(nextConfig);
