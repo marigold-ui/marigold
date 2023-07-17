@@ -24,7 +24,7 @@ const MenuSection = ({ onAction, item, state }: MenuSectionProps<object>) => {
     <>
       {item.key !== state.collection.getFirstKey() && (
         <li>
-          <Divider />
+          <Divider variant="section" />
         </li>
       )}
       <li {...itemProps}>

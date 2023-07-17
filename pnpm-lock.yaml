@@ -489,9 +489,6 @@ importers:
       '@react-aria/slider':
         specifier: 3.5.0
         version: 3.5.0(react@18.2.0)
-      '@react-aria/ssr':
-        specifier: 3.7.0
-        version: 3.7.0(react@18.2.0)
       '@react-aria/switch':
         specifier: 3.5.2
         version: 3.5.2(react@18.2.0)

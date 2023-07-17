@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { allComponentPages } from 'contentlayer/generated';
 
-import { Headline, SSRProvider } from '@/ui';
+import { Headline } from '@/ui';
 import { Mdx } from '@/ui/mdx';
 import { b2bTheme, coreTheme } from '@/theme';
 
@@ -61,13 +61,11 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
 
   return (
     <article className="prose py-6">
-      <SSRProvider>
-        <Headline level="1">{page.title}</Headline>
-        <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
-          <ThemeMenu />
-          <Mdx title={page.title} code={page.body.code} />
-        </MarigoldThemeSwitch>
-      </SSRProvider>
+      <Headline level="1">{page.title}</Headline>
+      <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
+        <ThemeMenu />
+        <Mdx title={page.title} code={page.body.code} />
+      </MarigoldThemeSwitch>
     </article>
   );
 }
