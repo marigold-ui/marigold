@@ -6,7 +6,6 @@ import { Mdx } from '@/ui/mdx';
 import { MarigoldThemeSwitch, ThemeMenu } from './_components';
 
 import { b2bTheme, coreTheme } from '@/theme';
-import { SSRProvider } from '@/ui';
 
 interface ComponentPageProps {
   params: {
@@ -61,13 +60,11 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
 
   return (
     <article className="prose dark:prose-invert py-6">
-      <SSRProvider>
-        <h1>{page.title}</h1>
-        <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
-          <ThemeMenu />
-          <Mdx title={page.title} code={page.body.code} />
-        </MarigoldThemeSwitch>
-      </SSRProvider>
+      <h1>{page.title}</h1>
+      <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
+        <ThemeMenu />
+        <Mdx title={page.title} code={page.body.code} />
+      </MarigoldThemeSwitch>
     </article>
   );
 }

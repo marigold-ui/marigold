@@ -49,7 +49,6 @@
     "@react-aria/selection": "3.16.0",
     "@react-aria/separator": "3.3.3",
     "@react-aria/slider": "3.5.0",
-    "@react-aria/ssr": "3.7.0",
     "@react-aria/switch": "3.5.2",
     "@react-aria/table": "3.10.0",
     "@react-aria/tabs": "3.6.1",
