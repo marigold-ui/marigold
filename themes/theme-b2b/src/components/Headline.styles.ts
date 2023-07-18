@@ -1,6 +1,6 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-export const Headline: ThemeComponent<'Headline'> = cva('text-text-body', {
+export const Headline: ThemeComponent<'Headline'> = cva('', {
   variants: {
     size: {
       'level-1': 'mb-6 text-5xl font-black',
