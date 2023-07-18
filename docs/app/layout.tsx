@@ -4,8 +4,9 @@ import { MarigoldProvider } from '@/ui';
 import { theme } from '@/theme';
 import { fontSans } from '@/theme/fonts';
 
-import { SiteHeader } from './_components/SiteHeader';
+import { Analytics } from './_components/Analytics';
 import { Navigation } from './_components/Navigation';
+import { SiteHeader } from './_components/SiteHeader';
 
 // Metadata
 // ---------------
@@ -34,6 +35,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <footer className="container">Marigold Footer</footer>
           </div>
         </MarigoldProvider>
+        <Analytics />
       </body>
     </html>
   );
