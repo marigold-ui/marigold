@@ -4,7 +4,11 @@
 import dynamic from 'next/dynamic';
 
 interface Registery {
-  [key: string]: any;
+  [key: string]: {
+    name: string;
+    demo: any;
+    file: string;
+  };
 }
 
 export const registry: Registery = {
