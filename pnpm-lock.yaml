@@ -389,6 +389,9 @@ importers:
       tailwindcss:
         specifier: 3.3.2
         version: 3.3.2(ts-node@10.9.1)
+      zx:
+        specifier: 7.2.2
+        version: 7.2.2
     devDependencies:
       '@types/node':
         specifier: 18.16.19
@@ -13481,10 +13484,7 @@ packages:
     dev: true
 
   /event-stream@3.3.4:
-    resolution:
-      {
-        integrity: sha512-QHpkERcGsR0T7Qm3HNJSyXKEEj8AHNxkY3PK8TS2KJvQ7NiSHe3DDpwVKKtoYprL/AreyzFBeIkBIWChAqn60g==,
-      }
+    resolution: { integrity: sha1-SrTJoPWlTbkzi0w02Gv86PSzVXE= }
     dependencies:
       duplexer: 0.1.2
       from: 0.1.7
@@ -19526,10 +19526,7 @@ packages:
     dev: true
 
   /pause-stream@0.0.11:
-    resolution:
-      {
-        integrity: sha512-e3FBlXLmN/D1S+zHzanP4E/4Z60oFAa3O051qt1pxa7DEJWKAyil6upYVXCWadEnuoqa4Pkc9oUx9zsxYeRv8A==,
-      }
+    resolution: { integrity: sha1-/lo0sMvOErWqaitAPuLnO2AvFEU= }
     dependencies:
       through: 2.3.8
     dev: false
