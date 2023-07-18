@@ -11,6 +11,21 @@ export const registry = {
     ),
     file: 'content/components/accordion/basic-accordion.demo.tsx',
   },
+  'multi-select-accordion': {
+    name: 'multi-select-accordion',
+    demo: dynamic(
+      () => import('@/content/components/accordion/multi-select-accordion.demo')
+    ),
+    file: 'content/components/accordion/multi-select-accordion.demo.tsx',
+  },
+  'single-select-accordion': {
+    name: 'single-select-accordion',
+    demo: dynamic(
+      () =>
+        import('@/content/components/accordion/single-select-accordion.demo')
+    ),
+    file: 'content/components/accordion/single-select-accordion.demo.tsx',
+  },
   'button-variant': {
     name: 'button-variant',
     demo: dynamic(
