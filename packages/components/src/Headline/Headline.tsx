@@ -42,7 +42,6 @@ export const Headline = ({
 
   const Component = as;
 
-  console.log(color);
   return (
     <Component
       {...props}
