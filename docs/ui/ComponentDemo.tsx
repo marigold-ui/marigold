@@ -1,8 +1,8 @@
 import { ReactNode, useState } from 'react';
-import { registry } from '@/lib/registry';
 import { Button, MarigoldProvider } from './marigold';
 import { useThemeSwitch } from '@/app/components/[...slug]/_components';
 import { Theme } from '../../packages/system/src';
+import { registry } from '@/registry';
 export interface ComponentDemoProps {
   name: string;
   children?: ReactNode;
