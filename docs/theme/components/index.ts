@@ -1,5 +1,7 @@
 export * from './Button.styles';
 export * from './Card.styles';
+export * from './Dialog.styles';
+export * from './Header.styles';
 export * from './Headline.styles';
 export * from './Link.styles';
 export * from './Menu.styles';

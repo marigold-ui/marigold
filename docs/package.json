@@ -3,15 +3,18 @@
   "version": "5.6.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "pnpm registry && next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "registry": "zx ./scripts/build-registry.mjs"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
     "@marigold/eslint-config": "workspace:*",
     "@marigold/icons": "workspace:*",
     "@marigold/theme-preset": "workspace:*",
+    "@tailwindcss/typography": "0.5.9",
+    "@vercel/analytics": "1.0.1",
     "autoprefixer": "10.4.14",
     "contentlayer": "0.3.4",
     "eslint": "8.44.0",
@@ -27,7 +30,8 @@
     "rehype-slug": "5.1.0",
     "remark-gfm": "3.0.1",
     "shiki": "0.14.3",
-    "tailwindcss": "3.3.2"
+    "tailwindcss": "3.3.2",
+    "zx": "7.2.2"
   },
   "devDependencies": {
     "@types/node": "18.16.19",

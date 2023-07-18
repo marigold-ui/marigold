@@ -18,12 +18,12 @@ export const Button: ThemeComponent<'Button'> = cva(
         ],
         ghost: [
           'border-border-dark border border-solid',
-          'text-text-primary',
+          'text-text-body',
           'hover:bg-bg-hover',
         ],
-        text: ['text-text-primary data-[hover]:bg-bg-hover'],
+        text: ['text-text-body data-[hover]:bg-bg-hover'],
         menu: [
-          'text-text-primary bg-bg-body hover:text-text-light hover:bg-bg-secondary-hover',
+          'text-text-body bg-bg-body hover:text-text-light hover:bg-bg-secondary-hover',
         ],
       },
       size: {

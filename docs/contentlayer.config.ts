@@ -1,7 +1,6 @@
 import {
   defineDocumentType,
   makeSource,
-  type ComputedFields,
   type FieldDefs,
 } from 'contentlayer/source-files';
 
@@ -16,6 +15,8 @@ import path from 'node:path';
 
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
 
+import { siteConfig } from './lib/config';
+
 // Helpers
 // ---------------
 const commonFields: FieldDefs = {
@@ -26,13 +27,6 @@ const commonFields: FieldDefs = {
   caption: {
     type: 'string',
     required: true,
-  },
-};
-
-const computedFields: ComputedFields = {
-  slug: {
-    type: 'string',
-    resolve: doc => `/${doc._raw.flattenedPath}`,
   },
 };
 
@@ -49,7 +43,10 @@ export const ContentPage = defineDocumentType(() => ({
     },
   },
   computedFields: {
-    ...computedFields,
+    slug: {
+      type: 'string',
+      resolve: doc => doc._raw.flattenedPath.replace('pages', ''),
+    },
     slugAsParams: {
       type: 'string',
       resolve: doc => doc._raw.flattenedPath.split('/').slice(1).join('/'),
@@ -65,20 +62,19 @@ export const ComponentPage = defineDocumentType(() => ({
     ...commonFields,
     group: {
       type: 'enum',
-      options: [
-        'applicaiton',
-        'collection',
-        'content',
-        'form',
-        'layout',
-        'navigation',
-        'overlay',
-      ],
+      options: siteConfig.navigation.componentGroups,
       required: true,
     },
   },
   computedFields: {
-    ...computedFields,
+    slug: {
+      type: 'string',
+      resolve: doc =>
+        `/${doc._raw.flattenedPath.substring(
+          0,
+          doc._raw.flattenedPath.lastIndexOf('/')
+        )}`,
+    },
     slugAsParams: {
       type: 'string',
       // Slugs are matched agains the name of the component or rather the file name
@@ -158,6 +154,26 @@ export default makeSource({
           }
         });
       },
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: 'wrap',
+          properties: {
+            class: [
+              'relative',
+              'no-underline',
+              'before:absolute',
+              'before:-left-6',
+              'before:inset-y-0',
+              'before:flex',
+              'before:items-center',
+              'before:text-secondary-400',
+              'before:text-2xl',
+              `hover:before:content-['#']`,
+            ].join(' '),
+          },
+        },
+      ],
     ],
   },
   documentTypes: [ContentPage, ComponentPage],

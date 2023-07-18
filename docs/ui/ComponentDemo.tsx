@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { registry } from '@/lib/registry';
 import { Button, MarigoldProvider } from './marigold';
-import { useThemeSwitch } from '@/app/components/components';
+import { useThemeSwitch } from '@/app/components/[...slug]/_components';
 import { Theme } from '../../packages/system/src';
 export interface ComponentDemoProps {
   name: string;
@@ -16,7 +16,7 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
     'rounded-none border-solid  border-transparent border-b-slate-800 p-2';
   return (
     <MarigoldProvider theme={(current && themes[current]) as Theme}>
-      <div className="max-h-[650px] max-w-[800px] overflow-x-auto">
+      <div className="max-h-[650px] max-w-[800px]">
         <div className="mb-4 mt-10 border-b border-b-slate-200">
           <Button
             className={`${buttonStyles} ${showCode && 'border-b-[3px]'}`}
@@ -31,8 +31,8 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
             Preview
           </Button>
         </div>
-        <div className={showCode ? 'hidden' : ''}>{children}</div>
-        <div className={!showCode ? 'hidden' : ''}>
+        <div className={!showCode ? 'hidden' : ''}>{children}</div>
+        <div className={showCode ? 'hidden' : ''}>
           <Demo />
         </div>
       </div>

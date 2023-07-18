@@ -5,7 +5,7 @@
   "private": true,
   "license": "MIT",
   "engines": {
-    "node": ">=16.x"
+    "node": "18.x"
   },
   "packageManager": "pnpm@8.6.6",
   "dependencies": {
@@ -44,6 +44,7 @@
     "build:docs": "pnpm --filter @marigold/docs... build",
     "build:storybook": "pnpm --filter @marigold/storybook-config... build",
     "build:themes": "pnpm --filter \"@marigold/theme*...\" build",
+    "registry": "pnpm --filter @marigold/docs registry",
     "test": "jest --config jest.config.js",
     "test:coverage": "jest --config jest.config.js --coverage --coverageReporters html",
     "test:ci": "jest --config jest.config.js --coverage --ci --no-cache",

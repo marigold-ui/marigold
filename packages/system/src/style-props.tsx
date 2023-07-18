@@ -153,18 +153,35 @@ export const paddingBottom = {
   12: 'pb-12',
 };
 
-export const alignmentY = {
-  none: undefined,
-  top: 'items-start',
-  center: 'items-center',
-  bottom: 'items-end',
-};
-
-export const alignmentX = {
-  none: undefined,
-  left: 'justify-start',
-  center: 'justify-center',
-  right: 'justify-end',
+export const alignment = {
+  vertical: {
+    alignmentX: {
+      none: undefined,
+      left: 'items-start',
+      center: 'items-center',
+      right: 'items-end',
+    },
+    alignmentY: {
+      none: undefined,
+      top: 'justify-start',
+      center: 'justify-center',
+      bottom: 'justify-end',
+    },
+  },
+  horizontal: {
+    alignmentY: {
+      none: undefined,
+      top: 'items-start',
+      center: 'items-center',
+      bottom: 'items-end',
+    },
+    alignmentX: {
+      none: undefined,
+      left: 'justify-start',
+      center: 'justify-center',
+      right: 'justify-end',
+    },
+  },
 };
 
 export const placeItems = {
@@ -253,8 +270,22 @@ export const cursorStyle = {
 };
 
 export type AspectProp = { ratio?: keyof typeof aspect };
-export type AlignmentXProp = { alignX?: keyof typeof alignmentX };
-export type AlignmentYProp = { alignY?: keyof typeof alignmentY };
+
+export type AlignmentProp = {
+  orientation?: {
+    vertical?: {
+      alignY?: keyof typeof alignment.vertical.alignmentY;
+      alignX?: keyof typeof alignment.vertical.alignmentX;
+    };
+    horizontal?: {
+      alignX?: keyof typeof alignment.horizontal.alignmentX;
+      alignY?: keyof typeof alignment.horizontal.alignmentY;
+    };
+  };
+};
+
+export interface AlignmentProps extends AlignmentProp {}
+
 export type CursorProp = { cursor?: keyof typeof cursorStyle };
 export type FontStyleProp = { fontStyle?: keyof typeof textStyle };
 export type FontWeightProp = { weight?: keyof typeof fontWeight };
