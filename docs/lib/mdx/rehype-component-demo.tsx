@@ -67,7 +67,6 @@ export const rehypeComponentDemo = ({
 }: RehypeComponentDemoConfig) => {
   return async (tree: RehypeTree, f: any) => {
     const file = f as VFile;
-
     visit(tree, (node: RehypeNode) => {
       // 1. Find our demo component component
       if (node.name === 'ComponentDemo') {
