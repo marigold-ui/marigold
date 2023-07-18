@@ -13,9 +13,18 @@ const nextConfig = {
   },
   transpilePackages: [
     '@marigold/components',
-    '@marigold/theme-preset',
     '@marigold/system',
+    '@marigold/theme-preset',
   ],
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/introduction/getting-started',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = withContentlayer(nextConfig);

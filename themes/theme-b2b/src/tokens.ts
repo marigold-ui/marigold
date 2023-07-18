@@ -83,7 +83,8 @@ const blue = {
   '900': '#1f455a',
   '950': '#0f2c3d',
 };
-
+const white = '#ffff';
+const black = '#000000';
 export const colors = {
   // Brand
   // ---------------
@@ -92,6 +93,8 @@ export const colors = {
   yellow,
   green,
   red,
+  white,
+  black,
 
   // Text
   // ---------------
@@ -117,7 +120,7 @@ export const colors = {
     /**
      * Should be set to either html or body element.
      */
-    body: brand.secondary[50],
+    body: white,
     neutral: brand.secondary[200],
 
     primary: {
@@ -135,7 +138,7 @@ export const colors = {
       /**
        * Use this for e.g. card backgrounds.
        */
-      DEFAULT: brand.secondary[50],
+      DEFAULT: white,
       /**
        * Use this when you need to separate a specific layer from
        * the surface color, e.g. table headers.

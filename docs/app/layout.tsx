@@ -28,7 +28,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               <aside className="fixed top-14 z-20 -ml-2 hidden w-60 overflow-y-auto md:block">
                 <Navigation />
               </aside>
-              <div className="md:pl-60">
+              <div className="md:pl-60 lg:pl-72">
                 <main className="max-w-3xl">{children}</main>
               </div>
             </div>

@@ -344,6 +344,9 @@ importers:
       '@marigold/theme-preset':
         specifier: workspace:*
         version: link:../packages/theme-preset
+      '@tailwindcss/typography':
+        specifier: 0.5.9
+        version: 0.5.9(tailwindcss@3.3.2)
       '@vercel/analytics':
         specifier: 1.0.1
         version: 1.0.1
@@ -389,6 +392,9 @@ importers:
       tailwindcss:
         specifier: 3.3.2
         version: 3.3.2(ts-node@10.9.1)
+      zx:
+        specifier: 7.2.2
+        version: 7.2.2
     devDependencies:
       '@types/node':
         specifier: 18.16.19
@@ -678,6 +684,9 @@ importers:
 
   packages/theme-preset:
     dependencies:
+      '@marigold/system':
+        specifier: workspace:*
+        version: link:../system
       deepmerge:
         specifier: ^4.2.2
         version: 4.2.2
@@ -685,15 +694,9 @@ importers:
         specifier: 5.0.0
         version: 5.0.0
     devDependencies:
-      '@marigold/system':
-        specifier: workspace:*
-        version: link:../system
       '@marigold/tsconfig':
         specifier: workspace:*
         version: link:../../config/tsconfig
-      '@marigold/types':
-        specifier: workspace:*
-        version: link:../types
       postcss:
         specifier: 8.4.24
         version: 8.4.24
@@ -8134,6 +8137,21 @@ packages:
       jsonc-parser: 3.2.0
     dev: false
 
+  /@tailwindcss/typography@0.5.9(tailwindcss@3.3.2):
+    resolution:
+      {
+        integrity: sha512-t8Sg3DyynFysV9f4JDOVISGsjazNb48AeIYQwcL+Bsq5uf4RYL75C1giZ43KISjeDGBaTN3Kxh7Xj/vRSMJUUg==,
+      }
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || insiders'
+    dependencies:
+      lodash.castarray: 4.4.0
+      lodash.isplainobject: 4.0.6
+      lodash.merge: 4.6.2
+      postcss-selector-parser: 6.0.10
+      tailwindcss: 3.3.2(ts-node@10.9.1)
+    dev: false
+
   /@testing-library/dom@9.2.0:
     resolution:
       {
@@ -13476,10 +13494,7 @@ packages:
     dev: true
 
   /event-stream@3.3.4:
-    resolution:
-      {
-        integrity: sha512-QHpkERcGsR0T7Qm3HNJSyXKEEj8AHNxkY3PK8TS2KJvQ7NiSHe3DDpwVKKtoYprL/AreyzFBeIkBIWChAqn60g==,
-      }
+    resolution: { integrity: sha1-SrTJoPWlTbkzi0w02Gv86PSzVXE= }
     dependencies:
       duplexer: 0.1.2
       from: 0.1.7
@@ -17131,11 +17146,25 @@ packages:
         integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==,
       }
 
+  /lodash.castarray@4.4.0:
+    resolution:
+      {
+        integrity: sha512-aVx8ztPv7/2ULbArGJ2Y42bG1mEQ5mGjpdvrbJcJFU3TbYybe+QlLS4pst9zV52ymy2in1KpFPiZnAOATxD4+Q==,
+      }
+    dev: false
+
   /lodash.debounce@4.0.8:
     resolution:
       {
         integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==,
       }
+
+  /lodash.isplainobject@4.0.6:
+    resolution:
+      {
+        integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==,
+      }
+    dev: false
 
   /lodash.memoize@4.1.2:
     resolution:
@@ -19507,10 +19536,7 @@ packages:
     dev: true
 
   /pause-stream@0.0.11:
-    resolution:
-      {
-        integrity: sha512-e3FBlXLmN/D1S+zHzanP4E/4Z60oFAa3O051qt1pxa7DEJWKAyil6upYVXCWadEnuoqa4Pkc9oUx9zsxYeRv8A==,
-      }
+    resolution: { integrity: sha1-/lo0sMvOErWqaitAPuLnO2AvFEU= }
     dependencies:
       through: 2.3.8
     dev: false
@@ -20270,6 +20296,17 @@ packages:
       postcss: 8.4.24
       postcss-value-parser: 4.2.0
     dev: true
+
+  /postcss-selector-parser@6.0.10:
+    resolution:
+      {
+        integrity: sha512-IQ7TZdoaqbT+LCpShg46jnZVlhWD2w6iQYAcYXfHARZ7X1t/UGhhceQDs5X0cGqKvYlHNOuv7Oa1xmb0oQuA3w==,
+      }
+    engines: { node: '>=4' }
+    dependencies:
+      cssesc: 3.0.0
+      util-deprecate: 1.0.2
+    dev: false
 
   /postcss-selector-parser@6.0.13:
     resolution:

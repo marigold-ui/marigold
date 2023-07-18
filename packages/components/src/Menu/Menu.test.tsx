@@ -9,12 +9,7 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { OverlayProvider } from '@react-aria/overlays';
-import {
-  Theme,
-  ThemeProvider,
-  useResponsiveValue,
-  cva,
-} from '@marigold/system';
+import { Theme, ThemeProvider, cva, useSmallScreen } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Menu } from './Menu';
@@ -72,11 +67,7 @@ const mockMatchMedia = (matches: string[]) =>
     matches: matches.includes(query),
   }));
 
-window.matchMedia = mockMatchMedia([
-  'screen and (min-width: 40em)',
-  'screen and (min-width: 52em)',
-  'screen and (min-width: 64em)',
-]);
+window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
 
 afterEach(cleanup);
 
@@ -342,13 +333,10 @@ test('renders as tray', () => {
     if (event === 'resize') resize = cb;
   });
 
-  const { result } = renderHook(() =>
-    useResponsiveValue(['one', 'two', 'three', 'four'])
-  );
-  window.matchMedia = mockMatchMedia([]);
+  const { result } = renderHook(() => useSmallScreen());
+  window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
   act(() => resize());
-
-  expect(result.current).toEqual('one');
+  expect(result.current).toBeTruthy();
 
   render(
     <OverlayProvider>
