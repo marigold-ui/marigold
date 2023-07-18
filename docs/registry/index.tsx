@@ -18,4 +18,28 @@ export const registry = {
     ),
     file: 'content/components/button/button-variant.demo.tsx',
   },
+  'golden-aspect': {
+    name: 'golden-aspect',
+    demo: dynamic(
+      () => import('@/content/components/aspect/golden-aspect.demo')
+    ),
+    file: 'content/components/aspect/golden-aspect.demo.tsx',
+  },
+  map: {
+    name: 'map',
+    demo: dynamic(() => import('@/content/components/aspect/map.demo')),
+    file: 'content/components/aspect/map.demo.tsx',
+  },
+  'ratio-square': {
+    name: 'ratio-square',
+    demo: dynamic(
+      () => import('@/content/components/aspect/ratio-square.demo')
+    ),
+    file: 'content/components/aspect/ratio-square.demo.tsx',
+  },
+  video: {
+    name: 'video',
+    demo: dynamic(() => import('@/content/components/aspect/video.demo')),
+    file: 'content/components/aspect/video.demo.tsx',
+  },
 } as const;
