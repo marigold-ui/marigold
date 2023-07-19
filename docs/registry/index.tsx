@@ -4,6 +4,20 @@
 import dynamic from 'next/dynamic';
 
 export const registry = {
+  'basic-accordion': {
+    name: 'basic-accordion',
+    demo: dynamic(
+      () => import('@/content/components/accordion/basic-accordion.demo')
+    ),
+    file: 'content/components/accordion/basic-accordion.demo.tsx',
+  },
+  'button-variant': {
+    name: 'button-variant',
+    demo: dynamic(
+      () => import('@/content/components/button/button-variant.demo')
+    ),
+    file: 'content/components/button/button-variant.demo.tsx',
+  },
   rightside: {
     name: 'rightside',
     demo: dynamic(() => import('@/content/components/aside/rightside.demo')),
@@ -13,13 +27,6 @@ export const registry = {
     name: 'space',
     demo: dynamic(() => import('@/content/components/aside/space.demo')),
     file: 'content/components/aside/space.demo.tsx',
-  },
-  'basic-accordion': {
-    name: 'basic-accordion',
-    demo: dynamic(
-      () => import('@/content/components/accordion/basic-accordion.demo')
-    ),
-    file: 'content/components/accordion/basic-accordion.demo.tsx',
   },
   'horizontal-breakout': {
     name: 'horizontal-breakout',
@@ -42,11 +49,30 @@ export const registry = {
     ),
     file: 'content/components/breakout/vertical-breakout.demo.tsx',
   },
-  'button-variant': {
-    name: 'button-variant',
+  'stack-horizontal': {
+    name: 'stack-horizontal',
     demo: dynamic(
-      () => import('@/content/components/button/button-variant.demo')
+      () => import('@/content/components/stack/stack-horizontal.demo')
     ),
-    file: 'content/components/button/button-variant.demo.tsx',
+    file: 'content/components/stack/stack-horizontal.demo.tsx',
+  },
+  'stack-nested': {
+    name: 'stack-nested',
+    demo: dynamic(() => import('@/content/components/stack/stack-nested.demo')),
+    file: 'content/components/stack/stack-nested.demo.tsx',
+  },
+  'stack-spacing': {
+    name: 'stack-spacing',
+    demo: dynamic(
+      () => import('@/content/components/stack/stack-spacing.demo')
+    ),
+    file: 'content/components/stack/stack-spacing.demo.tsx',
+  },
+  'stack-vertical': {
+    name: 'stack-vertical',
+    demo: dynamic(
+      () => import('@/content/components/stack/stack-vertical.demo')
+    ),
+    file: 'content/components/stack/stack-vertical.demo.tsx',
   },
 } as const;
