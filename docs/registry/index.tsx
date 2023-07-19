@@ -4,22 +4,19 @@
 import dynamic from 'next/dynamic';
 
 export const registry = {
-  rightside: {
-    name: 'rightside',
-    demo: dynamic(() => import('@/content/components/aside/rightside.demo')),
-    file: 'content/components/aside/rightside.demo.tsx',
-  },
-  space: {
-    name: 'space',
-    demo: dynamic(() => import('@/content/components/aside/space.demo')),
-    file: 'content/components/aside/space.demo.tsx',
-  },
   'basic-accordion': {
     name: 'basic-accordion',
     demo: dynamic(
       () => import('@/content/components/accordion/basic-accordion.demo')
     ),
     file: 'content/components/accordion/basic-accordion.demo.tsx',
+  },
+  'button-variant': {
+    name: 'button-variant',
+    demo: dynamic(
+      () => import('@/content/components/button/button-variant.demo')
+    ),
+    file: 'content/components/button/button-variant.demo.tsx',
   },
   'horizontal-breakout': {
     name: 'horizontal-breakout',
@@ -42,11 +39,49 @@ export const registry = {
     ),
     file: 'content/components/breakout/vertical-breakout.demo.tsx',
   },
-  'button-variant': {
-    name: 'button-variant',
+  rightside: {
+    name: 'rightside',
+    demo: dynamic(() => import('@/content/components/aside/rightside.demo')),
+    file: 'content/components/aside/rightside.demo.tsx',
+  },
+  space: {
+    name: 'space',
+    demo: dynamic(() => import('@/content/components/aside/space.demo')),
+    file: 'content/components/aside/space.demo.tsx',
+  },
+  'tiles-autoRows': {
+    name: 'tiles-autoRows',
     demo: dynamic(
-      () => import('@/content/components/button/button-variant.demo')
+      () => import('@/content/components/tiles/tiles-autoRows.demo')
     ),
-    file: 'content/components/button/button-variant.demo.tsx',
+    file: 'content/components/tiles/tiles-autoRows.demo.tsx',
+  },
+  'tiles-complex': {
+    name: 'tiles-complex',
+    demo: dynamic(
+      () => import('@/content/components/tiles/tiles-complex.demo')
+    ),
+    file: 'content/components/tiles/tiles-complex.demo.tsx',
+  },
+  'tiles-itemwidth': {
+    name: 'tiles-itemwidth',
+    demo: dynamic(
+      () => import('@/content/components/tiles/tiles-itemwidth.demo')
+    ),
+    file: 'content/components/tiles/tiles-itemwidth.demo.tsx',
+  },
+  'tiles-spacing': {
+    name: 'tiles-spacing',
+    demo: dynamic(
+      () => import('@/content/components/tiles/tiles-spacing.demo')
+    ),
+    file: 'content/components/tiles/tiles-spacing.demo.tsx',
+  },
+  'tiles-stretch': {
+    name: 'tiles-stretch',
+    demo: dynamic(
+      () => import('@/content/components/tiles/tiles-stretch.demo')
+    ),
+    file: 'content/components/tiles/tiles-stretch.demo.tsx',
   },
 } as const;
