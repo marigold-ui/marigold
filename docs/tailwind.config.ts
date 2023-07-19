@@ -12,6 +12,9 @@ const config: Config = {
     './ui/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
 
+    // Demos
+    './content/**/*.{js,ts,jsx,tsx,mdx}',
+
     // Used for the anchor links
     './contentlayer.config.ts',
 
