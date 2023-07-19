@@ -9,7 +9,7 @@ export interface ComponentDemoProps {
 }
 
 export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
-  const Demo = registry[name].demo;
+  const Demo = (registry as any)[name].demo;
   const { current, themes } = useThemeSwitch();
   const [showCode, setShowCode] = useState(true);
   const buttonStyles =

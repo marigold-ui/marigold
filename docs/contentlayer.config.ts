@@ -8,10 +8,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import { getHighlighter, loadTheme } from 'shiki';
 import { visit } from 'unist-util-visit';
-
-import path from 'node:path';
 
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
 
@@ -120,13 +117,6 @@ export default makeSource({
       [
         rehypePrettyCode,
         {
-          getHighlighter: async () => {
-            const theme = await loadTheme(
-              // loading theme file
-              path.join(process.cwd(), './light.json')
-            );
-            return await getHighlighter({ theme });
-          },
           onVisitLine(node: any) {
             if (node.children.length === 0) {
               node.children = [{ type: 'text', value: ' ' }];

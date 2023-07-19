@@ -1,20 +1,19 @@
 import React from 'react';
 import { Button } from '@marigold/components';
+import useClipboard from 'react-use-clipboard';
 
 interface CopyProps {
   codeString: string;
 }
 
 export const CopyButton = ({ codeString }: CopyProps) => {
-  const [isCopied, setIsCopied] = React.useState(false);
+  const [isCopied, setCopied] = useClipboard(codeString, {
+    successDuration: 1000,
+  });
   return (
     <Button
       variant="copy"
-      onPress={() => {
-        copyToClipboard(codeString);
-        setIsCopied(true);
-        setTimeout(() => setIsCopied(false), 3000);
-      }}
+      onPress={setCopied}
       className="border-none p-0 outline-0"
     >
       {isCopied ? (
@@ -40,8 +39,4 @@ export const CopyButton = ({ codeString }: CopyProps) => {
       )}
     </Button>
   );
-};
-
-export const copyToClipboard = (codeString: string) => {
-  navigator.clipboard.writeText(codeString);
 };

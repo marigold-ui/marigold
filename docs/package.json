@@ -25,6 +25,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-use": "17.4.0",
+    "react-use-clipboard": "1.0.9",
     "rehype-autolink-headings": "6.1.1",
     "rehype-pretty-code": "0.10.0",
     "rehype-slug": "5.1.0",
