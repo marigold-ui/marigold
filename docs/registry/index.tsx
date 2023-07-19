@@ -14,13 +14,6 @@ export const registry = {
     demo: dynamic(() => import('@/content/components/aside/space.demo')),
     file: 'content/components/aside/space.demo.tsx',
   },
-  'basic-accordion': {
-    name: 'basic-accordion',
-    demo: dynamic(
-      () => import('@/content/components/accordion/basic-accordion.demo')
-    ),
-    file: 'content/components/accordion/basic-accordion.demo.tsx',
-  },
   'horizontal-breakout': {
     name: 'horizontal-breakout',
     demo: dynamic(
@@ -42,11 +35,28 @@ export const registry = {
     ),
     file: 'content/components/breakout/vertical-breakout.demo.tsx',
   },
+  'basic-accordion': {
+    name: 'basic-accordion',
+    demo: dynamic(
+      () => import('@/content/components/accordion/basic-accordion.demo')
+    ),
+    file: 'content/components/accordion/basic-accordion.demo.tsx',
+  },
   'button-variant': {
     name: 'button-variant',
     demo: dynamic(
       () => import('@/content/components/button/button-variant.demo')
     ),
     file: 'content/components/button/button-variant.demo.tsx',
+  },
+  'split-inline': {
+    name: 'split-inline',
+    demo: dynamic(() => import('@/content/components/split/split-inline.demo')),
+    file: 'content/components/split/split-inline.demo.tsx',
+  },
+  'split-stack': {
+    name: 'split-stack',
+    demo: dynamic(() => import('@/content/components/split/split-stack.demo')),
+    file: 'content/components/split/split-stack.demo.tsx',
   },
 } as const;
