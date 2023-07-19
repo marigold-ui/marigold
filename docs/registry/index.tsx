@@ -4,6 +4,30 @@
 import dynamic from 'next/dynamic';
 
 export const registry = {
+  'basic-accordion': {
+    name: 'basic-accordion',
+    demo: dynamic(
+      () => import('@/content/components/accordion/basic-accordion.demo')
+    ),
+    file: 'content/components/accordion/basic-accordion.demo.tsx',
+  },
+  'button-variant': {
+    name: 'button-variant',
+    demo: dynamic(
+      () => import('@/content/components/button/button-variant.demo')
+    ),
+    file: 'content/components/button/button-variant.demo.tsx',
+  },
+  'inset-equal': {
+    name: 'inset-equal',
+    demo: dynamic(() => import('@/content/components/inset/inset-equal.demo')),
+    file: 'content/components/inset/inset-equal.demo.tsx',
+  },
+  'inset-hv': {
+    name: 'inset-hv',
+    demo: dynamic(() => import('@/content/components/inset/inset-hv.demo')),
+    file: 'content/components/inset/inset-hv.demo.tsx',
+  },
   rightside: {
     name: 'rightside',
     demo: dynamic(() => import('@/content/components/aside/rightside.demo')),
@@ -13,13 +37,6 @@ export const registry = {
     name: 'space',
     demo: dynamic(() => import('@/content/components/aside/space.demo')),
     file: 'content/components/aside/space.demo.tsx',
-  },
-  'basic-accordion': {
-    name: 'basic-accordion',
-    demo: dynamic(
-      () => import('@/content/components/accordion/basic-accordion.demo')
-    ),
-    file: 'content/components/accordion/basic-accordion.demo.tsx',
   },
   'horizontal-breakout': {
     name: 'horizontal-breakout',
@@ -41,12 +58,5 @@ export const registry = {
       () => import('@/content/components/breakout/vertical-breakout.demo')
     ),
     file: 'content/components/breakout/vertical-breakout.demo.tsx',
-  },
-  'button-variant': {
-    name: 'button-variant',
-    demo: dynamic(
-      () => import('@/content/components/button/button-variant.demo')
-    ),
-    file: 'content/components/button/button-variant.demo.tsx',
   },
 } as const;

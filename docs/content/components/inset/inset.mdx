@@ -1,0 +1,58 @@
+---
+title: Inset
+group: Layout
+caption: Component to add spacing to children.
+---
+
+The `<Inset>` component is a layout component that acts as a container which adds spacing around its children. It can either add equal spacing to all sides (`space`) or add horizontal (`spaceX`) and vertical (`spaceY`) spacing sepretaly.
+
+The component should be used whenever you need to add some whitespace around elements. For example, around a form or inside a [`<Card>`](/components/card/).
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Inset } from '@marigold/components';
+```
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'space',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'Space on all sides',
+      default: 'none',
+    },
+    {
+      property: 'spaceX',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'Horizontal space',
+      default: 'none',
+    },
+    {
+      property: 'spaceY',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'Vertical space',
+      default: 'none',
+    },
+  ]}
+/>
+
+## Examples
+
+### Equal Spacing
+
+In order to add equal spacing to all sides use the `space` property like shown below.
+
+<ComponentDemo file="./inset-equal.demo.tsx" />
+
+### Horzintal and vertical Spacing
+
+If you need to only set horizontal or vertical spacing, or want a different horizontal and vertical spacing, use the `spaceX` and `spaceY` respectively.
+
+<ComponentDemo file="./inset-hv.demo.tsx" />
