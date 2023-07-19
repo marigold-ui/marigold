@@ -1,6 +1,6 @@
 import { Breakout, Container } from '@marigold/components';
 
-export const HorizontalBreakout = () => (
+export default () => (
   <Container align="center">
     <div className="h-20 w-full border border-slate-300 bg-slate-200" />
     <Breakout alignX="right">
