@@ -11,16 +11,6 @@ export const registry = {
     ),
     file: 'content/components/accordion/basic-accordion.demo.tsx',
   },
-  rightside: {
-    name: 'rightside',
-    demo: dynamic(() => import('@/content/components/aside/rightside.demo')),
-    file: 'content/components/aside/rightside.demo.tsx',
-  },
-  space: {
-    name: 'space',
-    demo: dynamic(() => import('@/content/components/aside/space.demo')),
-    file: 'content/components/aside/space.demo.tsx',
-  },
   'button-variant': {
     name: 'button-variant',
     demo: dynamic(
@@ -48,5 +38,43 @@ export const registry = {
       () => import('@/content/components/breakout/vertical-breakout.demo')
     ),
     file: 'content/components/breakout/vertical-breakout.demo.tsx',
+  },
+  rightside: {
+    name: 'rightside',
+    demo: dynamic(() => import('@/content/components/aside/rightside.demo')),
+    file: 'content/components/aside/rightside.demo.tsx',
+  },
+  space: {
+    name: 'space',
+    demo: dynamic(() => import('@/content/components/aside/space.demo')),
+    file: 'content/components/aside/space.demo.tsx',
+  },
+  'inline-alignments': {
+    name: 'inline-alignments',
+    demo: dynamic(
+      () => import('@/content/components/inline/inline-alignments.demo')
+    ),
+    file: 'content/components/inline/inline-alignments.demo.tsx',
+  },
+  'inline-elements': {
+    name: 'inline-elements',
+    demo: dynamic(
+      () => import('@/content/components/inline/inline-elements.demo')
+    ),
+    file: 'content/components/inline/inline-elements.demo.tsx',
+  },
+  'inline-nested': {
+    name: 'inline-nested',
+    demo: dynamic(
+      () => import('@/content/components/inline/inline-nested.demo')
+    ),
+    file: 'content/components/inline/inline-nested.demo.tsx',
+  },
+  'inline-spacing': {
+    name: 'inline-spacing',
+    demo: dynamic(
+      () => import('@/content/components/inline/inline-spacing.demo')
+    ),
+    file: 'content/components/inline/inline-spacing.demo.tsx',
   },
 } as const;
