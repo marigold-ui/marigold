@@ -11,42 +11,6 @@ export const registry = {
     ),
     file: 'content/components/accordion/basic-accordion.demo.tsx',
   },
-  rightside: {
-    name: 'rightside',
-    demo: dynamic(() => import('@/content/components/aside/rightside.demo')),
-    file: 'content/components/aside/rightside.demo.tsx',
-  },
-  space: {
-    name: 'space',
-    demo: dynamic(() => import('@/content/components/aside/space.demo')),
-    file: 'content/components/aside/space.demo.tsx',
-  },
-  'space-center': {
-    name: 'space-center',
-    demo: dynamic(
-      () => import('@/content/components/center/space-center.demo')
-    ),
-    file: 'content/components/center/space-center.demo.tsx',
-  },
-  'text-center': {
-    name: 'text-center',
-    demo: dynamic(() => import('@/content/components/center/text-center.demo')),
-    file: 'content/components/center/text-center.demo.tsx',
-  },
-  'width-center': {
-    name: 'width-center',
-    demo: dynamic(
-      () => import('@/content/components/center/width-center.demo')
-    ),
-    file: 'content/components/center/width-center.demo.tsx',
-  },
-  'button-variant': {
-    name: 'button-variant',
-    demo: dynamic(
-      () => import('@/content/components/button/button-variant.demo')
-    ),
-    file: 'content/components/button/button-variant.demo.tsx',
-  },
   'horizontal-breakout': {
     name: 'horizontal-breakout',
     demo: dynamic(
@@ -67,5 +31,41 @@ export const registry = {
       () => import('@/content/components/breakout/vertical-breakout.demo')
     ),
     file: 'content/components/breakout/vertical-breakout.demo.tsx',
+  },
+  rightside: {
+    name: 'rightside',
+    demo: dynamic(() => import('@/content/components/aside/rightside.demo')),
+    file: 'content/components/aside/rightside.demo.tsx',
+  },
+  space: {
+    name: 'space',
+    demo: dynamic(() => import('@/content/components/aside/space.demo')),
+    file: 'content/components/aside/space.demo.tsx',
+  },
+  'button-variant': {
+    name: 'button-variant',
+    demo: dynamic(
+      () => import('@/content/components/button/button-variant.demo')
+    ),
+    file: 'content/components/button/button-variant.demo.tsx',
+  },
+  'space-center': {
+    name: 'space-center',
+    demo: dynamic(
+      () => import('@/content/components/center/space-center.demo')
+    ),
+    file: 'content/components/center/space-center.demo.tsx',
+  },
+  'text-center': {
+    name: 'text-center',
+    demo: dynamic(() => import('@/content/components/center/text-center.demo')),
+    file: 'content/components/center/text-center.demo.tsx',
+  },
+  'width-center': {
+    name: 'width-center',
+    demo: dynamic(
+      () => import('@/content/components/center/width-center.demo')
+    ),
+    file: 'content/components/center/width-center.demo.tsx',
   },
 } as const;
