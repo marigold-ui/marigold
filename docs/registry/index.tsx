@@ -49,4 +49,39 @@ export const registry = {
     ),
     file: 'content/components/breakout/vertical-breakout.demo.tsx',
   },
+  'collapse-columns': {
+    name: 'collapse-columns',
+    demo: dynamic(
+      () => import('@/content/components/columns/collapse-columns.demo')
+    ),
+    file: 'content/components/columns/collapse-columns.demo.tsx',
+  },
+  'layout-columns': {
+    name: 'layout-columns',
+    demo: dynamic(
+      () => import('@/content/components/columns/layout-columns.demo')
+    ),
+    file: 'content/components/columns/layout-columns.demo.tsx',
+  },
+  'space-columns': {
+    name: 'space-columns',
+    demo: dynamic(
+      () => import('@/content/components/columns/space-columns.demo')
+    ),
+    file: 'content/components/columns/space-columns.demo.tsx',
+  },
+  'stretch-columns-switch': {
+    name: 'stretch-columns-switch',
+    demo: dynamic(
+      () => import('@/content/components/columns/stretch-columns-switch.demo')
+    ),
+    file: 'content/components/columns/stretch-columns-switch.demo.tsx',
+  },
+  'stretch-columns': {
+    name: 'stretch-columns',
+    demo: dynamic(
+      () => import('@/content/components/columns/stretch-columns.demo')
+    ),
+    file: 'content/components/columns/stretch-columns.demo.tsx',
+  },
 } as const;
