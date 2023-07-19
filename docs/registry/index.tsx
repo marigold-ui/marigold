@@ -11,6 +11,13 @@ export const registry = {
     ),
     file: 'content/components/accordion/basic-accordion.demo.tsx',
   },
+  'button-variant': {
+    name: 'button-variant',
+    demo: dynamic(
+      () => import('@/content/components/button/button-variant.demo')
+    ),
+    file: 'content/components/button/button-variant.demo.tsx',
+  },
   rightside: {
     name: 'rightside',
     demo: dynamic(() => import('@/content/components/aside/rightside.demo')),
@@ -20,13 +27,6 @@ export const registry = {
     name: 'space',
     demo: dynamic(() => import('@/content/components/aside/space.demo')),
     file: 'content/components/aside/space.demo.tsx',
-  },
-  'button-variant': {
-    name: 'button-variant',
-    demo: dynamic(
-      () => import('@/content/components/button/button-variant.demo')
-    ),
-    file: 'content/components/button/button-variant.demo.tsx',
   },
   'horizontal-breakout': {
     name: 'horizontal-breakout',
@@ -48,5 +48,19 @@ export const registry = {
       () => import('@/content/components/breakout/vertical-breakout.demo')
     ),
     file: 'content/components/breakout/vertical-breakout.demo.tsx',
+  },
+  'full-container': {
+    name: 'full-container',
+    demo: dynamic(
+      () => import('@/content/components/container/full-container.demo')
+    ),
+    file: 'content/components/container/full-container.demo.tsx',
+  },
+  'small-container': {
+    name: 'small-container',
+    demo: dynamic(
+      () => import('@/content/components/container/small-container.demo')
+    ),
+    file: 'content/components/container/small-container.demo.tsx',
   },
 } as const;
