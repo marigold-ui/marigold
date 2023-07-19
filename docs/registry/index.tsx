@@ -4,6 +4,16 @@
 import dynamic from 'next/dynamic';
 
 export const registry = {
+  rightside: {
+    name: 'rightside',
+    demo: dynamic(() => import('@/content/components/aside/rightside.demo')),
+    file: 'content/components/aside/rightside.demo.tsx',
+  },
+  space: {
+    name: 'space',
+    demo: dynamic(() => import('@/content/components/aside/space.demo')),
+    file: 'content/components/aside/space.demo.tsx',
+  },
   'basic-accordion': {
     name: 'basic-accordion',
     demo: dynamic(
@@ -31,16 +41,6 @@ export const registry = {
       () => import('@/content/components/breakout/vertical-breakout.demo')
     ),
     file: 'content/components/breakout/vertical-breakout.demo.tsx',
-  },
-  rightside: {
-    name: 'rightside',
-    demo: dynamic(() => import('@/content/components/aside/rightside.demo')),
-    file: 'content/components/aside/rightside.demo.tsx',
-  },
-  space: {
-    name: 'space',
-    demo: dynamic(() => import('@/content/components/aside/space.demo')),
-    file: 'content/components/aside/space.demo.tsx',
   },
   'button-variant': {
     name: 'button-variant',

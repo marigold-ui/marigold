@@ -26,18 +26,18 @@ export const colors = {
   // ---------------
   text: {
     primary: {
-      DEFAULT: brand.primary[950],
+      DEFAULT: tw.slate[950],
     },
 
     // State
-    info: tw.sky[950],
-    warning: tw.amber[950],
+    info: tw.blue[950],
+    warning: tw.amber[800],
   },
 
   // Background
   // ---------------
   bg: {
-    body: tw.white,
+    body: tw.slate[50],
     hover: tw.neutral[100],
     muted: tw.slate[100],
 
@@ -48,14 +48,11 @@ export const colors = {
     },
 
     // Status
-    info: tw.sky[100],
-    warning: tw.amber[100],
+    info: tw.blue[100],
+    warning: tw.amber[50],
   },
 
   // Border
   // ---------------
-  border: {
-    info: tw.sky[950],
-    warning: tw.amber[950],
-  },
+  border: {},
 };
