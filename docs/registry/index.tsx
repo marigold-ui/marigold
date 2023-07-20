@@ -4,6 +4,13 @@
 import dynamic from 'next/dynamic';
 
 export const registry = {
+  'accordion-basic': {
+    name: 'accordion-basic',
+    demo: dynamic(
+      () => import('@/content/components/accordion/accordion-basic.demo')
+    ),
+    file: 'content/components/accordion/accordion-basic.demo.tsx',
+  },
   'basic-accordion': {
     name: 'basic-accordion',
     demo: dynamic(
@@ -32,5 +39,36 @@ export const registry = {
       () => import('@/content/components/button/button-variant.demo')
     ),
     file: 'content/components/button/button-variant.demo.tsx',
+  },
+  'horizontal-breakout': {
+    name: 'horizontal-breakout',
+    demo: dynamic(
+      () => import('@/content/components/breakout/horizontal-breakout.demo')
+    ),
+    file: 'content/components/breakout/horizontal-breakout.demo.tsx',
+  },
+  'iframe-breakout': {
+    name: 'iframe-breakout',
+    demo: dynamic(
+      () => import('@/content/components/breakout/iframe-breakout.demo')
+    ),
+    file: 'content/components/breakout/iframe-breakout.demo.tsx',
+  },
+  'vertical-breakout': {
+    name: 'vertical-breakout',
+    demo: dynamic(
+      () => import('@/content/components/breakout/vertical-breakout.demo')
+    ),
+    file: 'content/components/breakout/vertical-breakout.demo.tsx',
+  },
+  rightside: {
+    name: 'rightside',
+    demo: dynamic(() => import('@/content/components/aside/rightside.demo')),
+    file: 'content/components/aside/rightside.demo.tsx',
+  },
+  space: {
+    name: 'space',
+    demo: dynamic(() => import('@/content/components/aside/space.demo')),
+    file: 'content/components/aside/space.demo.tsx',
   },
 } as const;

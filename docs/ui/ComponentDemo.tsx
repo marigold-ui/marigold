@@ -1,28 +1,36 @@
 import { ReactNode } from 'react';
-import { registry } from '../registry';
+import { MarigoldProvider, Tabs } from './marigold';
+import { type Theme } from '@marigold/system';
 
+import { registry } from '@/registry';
+import { useThemeSwitch } from '@/app/_components/ThemeSwitch';
 export interface ComponentDemoProps {
   name: keyof typeof registry;
   source: string;
   children?: ReactNode;
 }
 
-export const ComponentDemo = ({
-  name,
-  source,
-  children,
-}: ComponentDemoProps) => {
+export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
   const Demo = registry[name].demo;
+  const { current, themes } = useThemeSwitch();
 
   return (
-    <div className="bg-cyan-800 p-10 text-cyan-100">
-      <pre>
-        <code className="language-tsx">{source}</code>
-      </pre>
-      <hr />
-      <div>
-        <Demo />
-      </div>
-    </div>
+    <Tabs defaultSelectedKey="preview">
+      <Tabs.Item key="preview" title="Preview">
+        <div
+          data-theme={current}
+          className="flex min-h-[150px] flex-col [&>*:first-child]:grid [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl [&>*:first-child]:border"
+        >
+          <MarigoldProvider theme={(current && themes[current]) as Theme}>
+            <div className="w-full p-4">
+              <Demo />
+            </div>
+          </MarigoldProvider>
+        </div>
+      </Tabs.Item>
+      <Tabs.Item key="code" title="Code">
+        {children}
+      </Tabs.Item>
+    </Tabs>
   );
 };
