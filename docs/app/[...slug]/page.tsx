@@ -46,7 +46,6 @@ export async function generateStaticParams(): Promise<
 
 export default async function ContentPage({ params }: ContentPageProps) {
   const page = await getPageFromParams(params);
-
   if (!page) {
     notFound();
   }
