@@ -25,9 +25,11 @@ export const ComponentDemo = ({
         <code className="language-tsx">{source}</code>
       </pre>
       <hr />
-      <div>
+      <div data-theme={current}>
         <MarigoldProvider theme={(current && themes[current]) as Theme}>
-          <Demo />
+          <div className="px-4 py-6">
+            <Demo />
+          </div>
         </MarigoldProvider>
       </div>
     </div>
