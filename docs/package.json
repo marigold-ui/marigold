@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "pnpm registry && next dev",
-    "build": "next build",
+    "build": "pnpm registry && next build",
     "start": "next start",
     "registry": "zx ./scripts/build-registry.mjs"
   },
