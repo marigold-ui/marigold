@@ -52,19 +52,3 @@ export const MultiLineTitle: Story = {
     </div>
   ),
 };
-
-export const LongMessage: Story = {
-  render: args => (
-    <Message {...args}>
-      <Text>
-        In up so discovery my middleton eagerness dejection explained.
-        Estimating excellence ye contrasted insensible as. Oh up unsatiable
-        advantages decisively as at interested. Present suppose in esteems in
-        demesne colonel it to. End horrible she landlord screened stanhill.
-        Repeated offended you opinions off dissuade ask packages screened. She
-        alteration everything sympathize impossible his get compliment.
-        Collected few extremity suffering met had sportsman.
-      </Text>
-    </Message>
-  ),
-};

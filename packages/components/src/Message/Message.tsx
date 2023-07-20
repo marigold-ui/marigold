@@ -43,20 +43,14 @@ export const Message = ({
   return (
     <div
       className={cn(
-        'grid auto-rows-min grid-cols-[min-content_auto] gap-1',
+        'grid grid-cols-[min-content_1fr] grid-rows-2',
         classNames.container
       )}
       {...props}
     >
-      <div className={cn('col-span-1 h-6 w-6 self-center', classNames.icon)}>
-        {icon}
-      </div>
-      <div
-        className={cn('col-start-2 row-start-1 self-center', classNames.title)}
-      >
-        {messageTitle}
-      </div>
-      <div className={cn('col-start-2', classNames.content)}>{children}</div>
+      <div className={cn('hidden', classNames.icon)}>{icon}</div>
+      <div className={classNames.title}>{messageTitle}</div>
+      <div className={cn('col-span-full', classNames.content)}>{children}</div>
     </div>
   );
 };
