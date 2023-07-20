@@ -1,6 +1,6 @@
 import { Card, Image, Tiles, Text } from '@marigold/components';
 
-export const AutoRows = () => (
+export default () => (
   <Tiles space={1} tilesWidth="250px" equalHeight>
     <Card>
       <Image
