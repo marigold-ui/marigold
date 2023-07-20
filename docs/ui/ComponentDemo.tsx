@@ -1,6 +1,10 @@
 import { ReactNode } from 'react';
-import { registry } from '../registry';
+import { type Theme } from '@marigold/system';
 
+import { registry } from '../registry';
+import { MarigoldProvider } from './marigold';
+
+import { useThemeSwitch } from '@/app/_components/ThemeSwitch';
 export interface ComponentDemoProps {
   name: keyof typeof registry;
   source: string;
@@ -13,6 +17,7 @@ export const ComponentDemo = ({
   children,
 }: ComponentDemoProps) => {
   const Demo = registry[name].demo;
+  const { current, themes } = useThemeSwitch();
 
   return (
     <div className="bg-cyan-800 p-10 text-cyan-100">
@@ -21,7 +26,9 @@ export const ComponentDemo = ({
       </pre>
       <hr />
       <div>
-        <Demo />
+        <MarigoldProvider theme={(current && themes[current]) as Theme}>
+          <Demo />
+        </MarigoldProvider>
       </div>
     </div>
   );
