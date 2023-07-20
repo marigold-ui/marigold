@@ -4,12 +4,17 @@ import { type Theme } from '@marigold/system';
 
 import { registry } from '@/registry';
 import { useThemeSwitch } from '@/app/_components/ThemeSwitch';
+
+// Props
+// ---------------
 export interface ComponentDemoProps {
   name: keyof typeof registry;
   source: string;
   children?: ReactNode;
 }
 
+// Component
+// ---------------
 export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
   const Demo = registry[name].demo;
   const { current, themes } = useThemeSwitch();
@@ -22,7 +27,7 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
           className="flex min-h-[150px] flex-col [&>*:first-child]:grid [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl [&>*:first-child]:border"
         >
           <MarigoldProvider theme={(current && themes[current]) as Theme}>
-            <div className="w-full p-4">
+            <div className="not-prose w-full p-4">
               <Demo />
             </div>
           </MarigoldProvider>
