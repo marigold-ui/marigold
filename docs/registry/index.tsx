@@ -18,6 +18,21 @@ export const registry = {
     ),
     file: 'content/components/accordion/basic-accordion.demo.tsx',
   },
+  'multi-select-accordion': {
+    name: 'multi-select-accordion',
+    demo: dynamic(
+      () => import('@/content/components/accordion/multi-select-accordion.demo')
+    ),
+    file: 'content/components/accordion/multi-select-accordion.demo.tsx',
+  },
+  'single-select-accordion': {
+    name: 'single-select-accordion',
+    demo: dynamic(
+      () =>
+        import('@/content/components/accordion/single-select-accordion.demo')
+    ),
+    file: 'content/components/accordion/single-select-accordion.demo.tsx',
+  },
   'horizontal-breakout': {
     name: 'horizontal-breakout',
     demo: dynamic(
@@ -39,13 +54,6 @@ export const registry = {
     ),
     file: 'content/components/breakout/vertical-breakout.demo.tsx',
   },
-  'button-variant': {
-    name: 'button-variant',
-    demo: dynamic(
-      () => import('@/content/components/button/button-variant.demo')
-    ),
-    file: 'content/components/button/button-variant.demo.tsx',
-  },
   'full-container': {
     name: 'full-container',
     demo: dynamic(
@@ -59,6 +67,13 @@ export const registry = {
       () => import('@/content/components/container/small-container.demo')
     ),
     file: 'content/components/container/small-container.demo.tsx',
+  },
+  'button-variant': {
+    name: 'button-variant',
+    demo: dynamic(
+      () => import('@/content/components/button/button-variant.demo')
+    ),
+    file: 'content/components/button/button-variant.demo.tsx',
   },
   rightside: {
     name: 'rightside',
