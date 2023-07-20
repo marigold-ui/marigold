@@ -6,6 +6,7 @@ export * from './Headline.styles';
 export * from './Link.styles';
 export * from './Menu.styles';
 export * from './Message.styles';
+export * from './Tabs.styles';
 export * from './Table.styles';
 export * from './Text.styles';
 export * from './Underlay.styles';

@@ -23,6 +23,7 @@ out
 .cache
 build
 .contentlayer
+.registry
 
 ## env
 .env*.local
