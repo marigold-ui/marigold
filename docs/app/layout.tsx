@@ -1,14 +1,15 @@
 import './globals.css';
+import '@marigold/theme-b2b/index.css';
+import '@marigold/theme-core/index.css';
 
 import { MarigoldProvider } from '@/ui';
-import { theme } from '@/theme';
+import { theme, b2bTheme, coreTheme } from '@/theme';
 import { fontSans } from '@/theme/fonts';
 
 import { Analytics } from './_components/Analytics';
 import { Navigation } from './_components/Navigation';
 import { SiteHeader } from './_components/SiteHeader';
 import { MarigoldThemeSwitch } from './_components/ThemeSwitch';
-import { b2bTheme, coreTheme } from '@/theme';
 
 // Metadata
 // ---------------
@@ -16,6 +17,9 @@ export const metadata = {
   title: 'Marigold Documentation',
   description: "Documentation of Reservix' Design System",
 };
+
+// Themes
+// ---------------
 const themes = {
   b2b: b2bTheme,
   core: coreTheme,
@@ -27,7 +31,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
       <body className={`${fontSans.className} min-h-screen`}>
-        <MarigoldThemeSwitch themes={themes}>
+        <MarigoldThemeSwitch themes={themes} initial="b2b">
           <MarigoldProvider theme={theme}>
             <div className="flex min-h-screen flex-col">
               <SiteHeader />
