@@ -4,12 +4,17 @@ import { type Theme } from '@marigold/system';
 
 import { registry } from '@/registry';
 import { useThemeSwitch } from '@/app/_components/ThemeSwitch';
+
+// Props
+// ---------------
 export interface ComponentDemoProps {
   name: keyof typeof registry;
   source: string;
   children?: ReactNode;
 }
 
+// Component
+// ---------------
 export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
   const Demo = registry[name].demo;
   const { current, themes } = useThemeSwitch();
