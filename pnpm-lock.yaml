@@ -341,6 +341,12 @@ importers:
       '@marigold/icons':
         specifier: workspace:*
         version: link:../packages/icons
+      '@marigold/theme-b2b':
+        specifier: workspace:*
+        version: link:../themes/theme-b2b
+      '@marigold/theme-core':
+        specifier: workspace:*
+        version: link:../themes/theme-core
       '@marigold/theme-preset':
         specifier: workspace:*
         version: link:../packages/theme-preset
