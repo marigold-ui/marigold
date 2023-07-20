@@ -1,4 +1,6 @@
+import { Split } from '@/ui';
 import { Logo } from './Logo';
+import { ThemeMenu } from './ThemeMenu';
 
 export const SiteNavigation = () => (
   <div className="hidden w-full md:flex">
@@ -6,5 +8,7 @@ export const SiteNavigation = () => (
       <Logo className="h-6 w-6" />
       Marigold
     </div>
+    <Split />
+    <ThemeMenu />
   </div>
 );

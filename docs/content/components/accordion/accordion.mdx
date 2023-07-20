@@ -25,6 +25,72 @@ import { Accordion } from '@marigold/components';
 
 ### Props Accordion
 
+<PropsTable
+  props={[
+    {
+      property: 'defaultExpandedKeys',
+      type: 'Iterable<Key>',
+      description:
+        'The initial expanded keys in the collection (uncontrolled).',
+      default: 'none',
+    },
+    {
+      property: 'selectionMode',
+      type: 'none, single, multiple',
+      description: 'Sets the mode of items open at the same time. ',
+      default: 'single',
+    },{
+      property: 'children',
+      type: 'ItemElement<object>[] | ItemElement<object>',
+      description: 'Children of the Accordion.',
+      default: 'none',
+    },
+    {
+      property: 'items',
+      type: 'Iterable<object>',
+      description: 'Item objects in the collection.',
+      default: 'none',
+    },
+
+]}
+/>
+
 ### Props Accordion.Item
 
+<PropsTable
+  props={[
+    {
+      property: 'key',
+      type: 'React.Key',
+      description: 'The key of the item.',
+      default: 'none',
+    },
+    {
+      property: 'title',
+      type: 'string | ReactElement',
+      description:
+        'Sets title of the accordion item which will be displayed to the button. ',
+      default: 'none',
+    },
+    {
+      property: 'textValue',
+      type: 'string',
+      description:
+        'Add a textValue if you use JSX-Elements for the title to supported accessibility.',
+      default: 'true',
+    },
+  ]}
+/>
 ## Examples
+
+### Singleselect Accordion
+
+This component shows how a single selection `<Accordion>` is working. It is possible to have just one item open and the other ones hidden. You can also see that the items are fullwidth, which is true by default. Notice that you can't expand two or more items per default.
+
+<ComponentDemo file="./single-select-accordion.demo.tsx" />
+
+### Multiselect Accordion
+
+With the multiselection mode you can collapse and hide the items as you want. For sure you can set one or more defaultExpandedKeys.
+
+<ComponentDemo file="./multi-select-accordion.demo.tsx" />
