@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "pnpm registry && next dev",
-    "build": "next build",
+    "build": "pnpm registry && next build",
     "start": "next start",
     "registry": "zx ./scripts/build-registry.mjs"
   },
@@ -12,6 +12,8 @@
     "@marigold/components": "workspace:*",
     "@marigold/eslint-config": "workspace:*",
     "@marigold/icons": "workspace:*",
+    "@marigold/theme-b2b": "workspace:*",
+    "@marigold/theme-core": "workspace:*",
     "@marigold/theme-preset": "workspace:*",
     "@tailwindcss/typography": "0.5.9",
     "@vercel/analytics": "1.0.1",
@@ -25,9 +27,12 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-use": "17.4.0",
+    "react-use-clipboard": "1.0.9",
     "rehype-autolink-headings": "6.1.1",
+    "rehype-pretty-code": "0.10.0",
     "rehype-slug": "5.1.0",
     "remark-gfm": "3.0.1",
+    "shiki": "0.14.3",
     "tailwindcss": "3.3.2",
     "zx": "7.2.2"
   },
