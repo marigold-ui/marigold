@@ -1,4 +1,4 @@
 export * from './AppearanceTable';
 export * from './PropsTable';
-export * from './ThemeMenu';
-export * from './ThemeSwitch';
+export * from '../../../_components/ThemeMenu';
+export * from '../../../_components/ThemeSwitch';

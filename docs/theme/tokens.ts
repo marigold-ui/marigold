@@ -27,6 +27,7 @@ export const colors = {
   text: {
     primary: {
       DEFAULT: tw.slate[950],
+      muted: tw.slate[500],
     },
 
     // State
@@ -54,5 +55,7 @@ export const colors = {
 
   // Border
   // ---------------
-  border: {},
+  border: {
+    DEFAULT: tw.slate[900],
+  },
 };
