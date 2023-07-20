@@ -1,7 +1,7 @@
 #!/usr/bin/env zx
 // Registry of demos ideas is based on https://github.com/shadcn/ui !
 
-import fs from 'fs';
+/* global fs */
 import path, { basename } from 'path';
 import { glob } from 'zx';
 
@@ -30,5 +30,5 @@ for (const item of demoPath) {
 index += `
 } as const;`;
 
-fs.writeFileSync(path.join(process.cwd(), 'registry/index.tsx'), index);
+fs.outputFileSync(path.join(process.cwd(), '.registry/index.tsx'), index);
 console.log('✅ Registry build successfully!');

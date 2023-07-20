@@ -9,7 +9,7 @@ export const Select: ThemeComponent<'Select'> = {
     'cursor-pointer outline-none',
     'hover:border-border-hover',
     'disabled:border-border-disabled disabled:text-text-disabled disabled:bg-bg-disabled disabled:cursor-not-allowed',
-    'focus:border-border-focus focus:shadow-shadow-focus focus:shadow-[0px_0px_0px_1px]',
+    'focus:border-border-focus',
     'aria-expanded:bg-bg-neutral aria-expanded:border-border-light',
     'data-[error]:border-border-error data-[error]:shadow-none',
   ]),
