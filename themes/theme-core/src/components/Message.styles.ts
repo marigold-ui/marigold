@@ -10,7 +10,7 @@ export const Message: ThemeComponent<'Message'> = {
       },
     },
   }),
-  title: cva('font-bold', {
+  title: cva('col-span-full font-bold leading-8', {
     variants: {
       variant: {
         warning: 'text-text-warning',
@@ -19,7 +19,7 @@ export const Message: ThemeComponent<'Message'> = {
       },
     },
   }),
-  icon: cva('hidden'),
+  icon: cva(''),
   content: cva('leading-4', {
     variants: {
       variant: {
