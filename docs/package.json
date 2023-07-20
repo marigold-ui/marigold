@@ -12,6 +12,8 @@
     "@marigold/components": "workspace:*",
     "@marigold/eslint-config": "workspace:*",
     "@marigold/icons": "workspace:*",
+    "@marigold/theme-b2b": "workspace:*",
+    "@marigold/theme-core": "workspace:*",
     "@marigold/theme-preset": "workspace:*",
     "@tailwindcss/typography": "0.5.9",
     "@vercel/analytics": "1.0.1",
