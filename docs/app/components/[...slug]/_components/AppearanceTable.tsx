@@ -2,7 +2,7 @@
 
 import { Card, Inline, Table, Text, Theme, ConfigSchema } from '@/ui';
 import { BlankCanvas } from './icons';
-import { useThemeSwitch } from './ThemeSwitch';
+import { useThemeSwitch } from '../../../_components/ThemeSwitch';
 
 export interface AppearanceTableProps {
   component: keyof Theme['components'];

@@ -25,7 +25,7 @@ export const useThemeSwitch = () => useContext(Context);
 export interface MarigoldThemeSwitchProps {
   children?: ReactNode;
   themes: { [name: string]: Theme };
-  initial?: string;
+  initial: string;
 }
 
 export const MarigoldThemeSwitch = ({
