@@ -17,8 +17,8 @@ export const metadata = {
   description: "Documentation of Reservix' Design System",
 };
 const themes = {
-  b2bTheme,
-  coreTheme,
+  b2b: b2bTheme,
+  core: coreTheme,
 };
 
 // Layout

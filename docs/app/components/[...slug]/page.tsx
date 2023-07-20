@@ -4,20 +4,12 @@ import { allComponentPages } from 'contentlayer/generated';
 
 import { Headline } from '@/ui';
 import { Mdx } from '@/ui/mdx';
-import { b2bTheme, coreTheme } from '@/theme';
-
-import { MarigoldThemeSwitch, ThemeMenu } from './_components';
 
 interface ComponentPageProps {
   params: {
     slug: string[];
   };
 }
-
-const themes = {
-  b2bTheme,
-  coreTheme,
-};
 
 async function getPageFromParams(params: ComponentPageProps['params']) {
   const slug = params?.slug?.join('/');

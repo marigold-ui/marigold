@@ -28,26 +28,24 @@ const MenuIcon = () => (
 // Component
 // ---------------
 export const MobileNavigation = () => (
-  <div className="md:hidden">
-    <div className="flex">
-      <Dialog.Trigger>
-        <Button variant="ghost">
-          <MenuIcon />
-        </Button>
-        <Dialog variant="fullpage" closeButton>
-          {({ close }) => (
-            <>
-              <Header className="flex items-center gap-2 pl-4 text-3xl font-bold uppercase tracking-tight text-[#46505a]">
-                <Logo className="h-10 w-10" />
-                Marigold
-              </Header>
-              <Navigation onClick={close} />
-            </>
-          )}
-        </Dialog>
-      </Dialog.Trigger>
-      <Split />
-      <ThemeMenu />
-    </div>
+  <div className="flex w-full md:hidden">
+    <Dialog.Trigger>
+      <Button variant="ghost">
+        <MenuIcon />
+      </Button>
+      <Dialog variant="fullpage" closeButton>
+        {({ close }) => (
+          <>
+            <Header className="flex items-center gap-2 pl-4 text-3xl font-bold uppercase tracking-tight text-[#46505a]">
+              <Logo className="h-10 w-10" />
+              Marigold
+            </Header>
+            <Navigation onClick={close} />
+          </>
+        )}
+      </Dialog>
+    </Dialog.Trigger>
+    <Split />
+    <ThemeMenu />
   </div>
 );
