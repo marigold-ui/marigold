@@ -113,7 +113,6 @@ export default makeSource({
           }
         });
       },
-      [rehypeAutolinkHeadings, { behavior: 'wrap' }],
       [
         rehypePrettyCode,
         {
