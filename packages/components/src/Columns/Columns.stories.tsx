@@ -126,7 +126,7 @@ export const FullHeight: Story = {
       <Columns {...args}>
         <div className="h-[150px] border border-[#495057] bg-[#e9ecef]" />
         <div className="h-[150px] border border-[#495057] bg-[#e9ecef]" />
-        <div className="h-[150px] border border-[#495057] bg-[#e9ecef] p-2">
+        <div className="h-full border border-[#495057] bg-[#e9ecef] p-2">
           I will grow, if you set <code>stretch</code> prop on the{' '}
           <code>Columns</code>!
         </div>

@@ -13,7 +13,7 @@ export default () => {
         <Columns columns={[1, 1, 1]} stretch={stretch}>
           <div className="h-40 border border-slate-400 bg-slate-200" />
           <div className="h-40 border border-slate-400 bg-slate-200" />
-          <div className="h-40 border border-slate-400 bg-slate-200">
+          <div className="h-full border border-slate-400 bg-slate-200">
             I will grow, if you set <code>stretch</code> prop on the{' '}
             <code>Columns</code>!
           </div>
