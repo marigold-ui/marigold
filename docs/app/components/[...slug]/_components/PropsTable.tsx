@@ -13,9 +13,7 @@ export const PropsTable = ({ props }: PropsTableProps) => {
       {!props ? (
         <Inline space={2}>
           <BlankCanvas />
-          <Text>
-            Sorry! There are currently no variants and sizes available.
-          </Text>
+          <Text>Sorry! There are currently no props available.</Text>
         </Inline>
       ) : (
         <Table aria-label="Table with component props" variant="propsTable">
