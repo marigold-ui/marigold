@@ -1,0 +1,81 @@
+---
+title: Columns
+group: Layout
+caption: Component with sized columns in one row.
+---
+
+The `<Columns>` is a responsive layout component, with sized columns in one row.
+With the `<Columns>` component you can set an array of numbers the size of the children. The columns array length and the count of children must be the same. You can add space between the columns und set a `collapseAt` prop to collapse the columns at a certain width.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Columns } from '@marigold/components';
+```
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'columns (required)',
+      description:
+        'An array of numbers to set the size of the children. The columns array length and the count of children must be the same.',
+      type: 'number[]',
+      default: '',
+    },
+    {
+      property: 'space',
+      description: 'Space between the columns.',
+      type: 'ResponsiveStyleValue<string>',
+      default: 'none',
+    },
+    {
+      property: 'collapseAt',
+      description:
+        'Collapse children into a vertical layout at given width. Note that `collapseAt` is based on the total element width, and not the window width. With a default value of "0em" columns will not collapse by default.',
+      type: 'string | number',
+      default: '0em',
+    },
+    {
+      property: 'stretch',
+      description: 'Stretch to height of parent container.',
+      type: 'boolean',
+      default: 'false',
+    },
+  ]}
+/>
+
+## Examples
+
+### Columns and a space between them
+
+The example shows how to use the `space` prop. It defines the gap between the contents.
+
+<ComponentDemo file="./space-columns.demo.tsx" />
+
+### Columns collapsing at a certain width
+
+The example show how the `collapseAt` prop is to use. If you resize the window of your browser you can see that the columns are collapsing or expanding. Please note that the collapsing or expanding starting in a small range of the `collapseAt` value.
+
+<ComponentDemo file="./collapse-columns.demo.tsx" />
+
+### Page layout
+
+Create a page layout with three columns and collapse or expanding at `25em`
+
+<ComponentDemo file="./layout-columns.demo.tsx" />
+
+### Stretch to Height of Parent
+
+By using the `stretch` prop you can make the container to take full width. Note that this is usually not necessary since the columns will expand with their children anyway.
+
+<ComponentDemo file="./stretch-columns.demo.tsx" />
+
+Here is another interactive example on how to use the `stretch` prop. Note that there has to be a parent of the columns that sets a `height`. Otherwhise setting the height in a column to `100%` will not have any effect.
+
+<ComponentDemo file="./stretch-columns-switch.demo.tsx" />
