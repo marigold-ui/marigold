@@ -40,7 +40,7 @@ export const Overlay = ({ children, container, open }: OverlayProps) => {
 
   const portalDiv = document.getElementById('provider')!;
   return (
-    <ReactAriaOverlay portalContainer={portalDiv}>
+    <ReactAriaOverlay portalContainer={portalDiv ? portalDiv : container}>
       <Transition nodeRef={nodeRef} timeout={duration} in={open} appear>
         {state => (
           <div
