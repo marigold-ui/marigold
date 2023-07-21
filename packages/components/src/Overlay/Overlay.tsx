@@ -5,11 +5,12 @@ import {
   Overlay as ReactAriaOverlay,
   OverlayProps as ReactAriaOverlayProps,
 } from '@react-aria/overlays';
+import { createPortal } from 'react-dom';
 
 export interface OverlayProps {
   open: boolean;
   children: ReactAriaOverlayProps['children'];
-  container?: ReactAriaOverlayProps['portalContainer'];
+  container?: any;
 }
 
 const duration = 300;
@@ -37,8 +38,9 @@ export const Overlay = ({ children, container, open }: OverlayProps) => {
     return null;
   }
 
+  const portalDiv = document.getElementById('provider')!;
   return (
-    <ReactAriaOverlay portalContainer={container}>
+    <ReactAriaOverlay portalContainer={portalDiv}>
       <Transition nodeRef={nodeRef} timeout={duration} in={open} appear>
         {state => (
           <div
