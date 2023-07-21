@@ -1,0 +1,86 @@
+---
+title: Tiles
+group: Layout
+caption: For structuring layout as a responsive grid.
+---
+
+The `<Tiles>` component is related to the CSS grid context. Use the `<Tiles>` if you want to layout some items in a responsive way.
+
+It should be noted that `<Tiles>` is used for children with the same width. If you want to set different widths for the children use [`<Columns>`](/components/columns/) instead.
+
+It's possible to display the children elements with some spacing or set a minimum width for all items inside `<Tiles>`.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Tiles } from '@marigold/components';
+```
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'space',
+      type: 'number',
+      description: 'Set space between items',
+      default: 'none',
+    },
+    {
+      property: 'tilesWidth',
+      type: 'string',
+      description: 'Set minimum width for all items inside',
+      default: '250px',
+    },
+    {
+      property: 'equalHeight',
+      type: 'boolean',
+      description:
+        'If you set equalHeight, all items will have the size of the biggest item',
+      default: 'false',
+    },
+    {
+      property: 'stretch',
+      type: 'boolean',
+      description:
+        'Tiles will take stretch to available width and will distribute their width equally. Note that this can make them wider than the specified tiles width, but not smaller than the given "itemWidth". Basically this is full responsive mode.',
+      default: 'false',
+    },
+  ]}
+/>
+
+## Examples
+
+### Spacing Tiles
+
+An example on how to use the `space` prop. The default is none. You can set it to any value.
+
+<ComponentDemo file="./tiles-spacing.demo.tsx" />
+
+### Tiles with tilesWidth
+
+This Example shows how to use the `tilesWidth` property on `<Tiles>`.
+
+<ComponentDemo file="./tiles-itemwidth.demo.tsx" />
+
+### Tiles with equal Heights
+
+The Example shows how to use the `equalHeight` property, which is a boolean that can be used to size the items of the `<Tiles>`. You can see that all items have the size of the large Pikachu card. It is necessary if you want all items in the largest size of a child.
+
+<ComponentDemo file="./tiles-autoRows.demo.tsx" />
+
+### Tiles with and without stretch
+
+Using the `stretch` property will make the tiles fully responsive. Meaning, they will distribute available width between them while not getting smaller then the given `tilesWidth`,
+
+<ComponentDemo file="./tiles-stretch.demo.tsx" />
+
+### Complexe Tiles with Boxes and Stacks
+
+A full example of a use case with `<Tiles>` and `<Card>` inside it.
+
+<ComponentDemo file="./tiles-complex.demo.tsx" />
