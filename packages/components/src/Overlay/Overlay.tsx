@@ -5,7 +5,6 @@ import {
   Overlay as ReactAriaOverlay,
   OverlayProps as ReactAriaOverlayProps,
 } from '@react-aria/overlays';
-import { createPortal } from 'react-dom';
 
 export interface OverlayProps {
   open: boolean;
