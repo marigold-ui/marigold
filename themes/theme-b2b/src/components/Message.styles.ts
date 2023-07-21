@@ -21,9 +21,9 @@ export const Message: ThemeComponent<'Message'> = {
   icon: cva('', {
     variants: {
       variant: {
-        warning: 'fill-fill-warning',
-        info: 'fill-fill-info',
-        error: 'fill-fill-error',
+        warning: 'text-fill-warning',
+        info: 'text-fill-info',
+        error: 'text-fill-error',
       },
     },
   }),
