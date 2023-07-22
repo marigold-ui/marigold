@@ -23,8 +23,8 @@ export const Stack = ({
   space = 0,
   stretch = false,
   orientation,
-  alignX = 'left',
-  alignY = 'center',
+  alignX,
+  alignY,
   ...props
 }: StackProps) => {
   return (
