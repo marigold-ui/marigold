@@ -17,8 +17,8 @@ export const Message: ThemeComponent<'Message'> = {
     }
   ),
   title: cva('font-bold'),
-  content: cva(''),
-  icon: cva('', {
+  content: cva('col-span-2 col-start-1'),
+  icon: cva('h-4 w-4', {
     variants: {
       variant: {
         warning: 'text-fill-warning',
