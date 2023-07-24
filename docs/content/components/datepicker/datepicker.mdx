@@ -1,0 +1,138 @@
+---
+title: DatePicker
+group: Forms
+caption: Component used to pick date value .
+---
+
+The `<DatePicker>` component is a user interface element that allows users to select a date from a calendar.
+
+The typical practice is to provide a date picker and when you click on date picker button it pops up a calendar below the date picker, allowing the user to populate the field with an appropriate date.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { DatePicker } from '@marigold/components';
+```
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'label',
+      type: 'ReactNode',
+      description: 'The label text. ',
+      default: 'none',
+    },
+    {
+      property: 'description',
+      type: 'ReactNode',
+      description: 'A helpful text.',
+      default: 'none',
+    },
+    {
+      property: 'errorMessage',
+      type: 'ReactNode',
+      description: 'An error message.',
+      default: 'none',
+    },
+    {
+      property: 'error',
+      type: 'boolean',
+      description:
+        'If `true`, the field is considered invalid and if set the errorMessage is shown instead of the `description`.',
+      default: 'false',
+    },
+    {
+      property: 'defaultValue',
+      type: 'DateValue',
+      description: 'The default value of the date picker.',
+      default: 'none',
+    },
+    {
+      property: 'value',
+      type: 'DateValue',
+      description: 'The value of the date picker.',
+      default: 'none',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'If `true`, the date picker is disabled.',
+      default: 'false',
+    },
+    {
+      property: 'required',
+      type: 'boolean',
+      description: 'If `true`, the date picker is required.',
+      default: 'false',
+    },
+    {
+      property: 'readOnly',
+      type: 'boolean',
+      description: 'If `true`, the date picker is readOnly.',
+      default: 'false',
+    },
+    {
+      property: 'onChange',
+      type: 'function',
+      description:
+        "A callback function that is called with the date picker's current value changes",
+      default: 'none',
+    },
+    {
+      property: 'open',
+      type: 'boolean',
+      description: 'Whether the calendar is open by default (controlled).',
+      default: 'false',
+    },
+    {
+      property: 'minValue',
+      type: 'DateValue',
+      description: 'The minimum allowed date that a user may select.',
+      default: 'none',
+    },
+    {
+      property: 'maxValue',
+      type: 'DateValue',
+      description: 'The maximum allowed date that a user may select.',
+      default: 'none',
+    },
+  ]}
+/>
+
+## Examples
+
+### Simple DatePicker
+
+This example shows a regular `<DatePicker>` without any special props.
+
+<ComponentDemo file="./date-picker-basic.demo.tsx" />
+
+### Disabled DatePicker
+
+You can disable the `<DatePicker>` so that the user can't interact with it anymo re.
+
+<ComponentDemo file="./date-picker-disabled.demo.tsx" />
+
+### Required DatePicker
+
+If you want a `<DatePicker>` to be required, you just have to add the property `required`. With that the small required icon appears next to the label.
+
+<ComponentDemo file="./date-picker-required.demo.tsx" />
+
+### DatePicker With an Error
+
+This example shows how to use the `error` with the `errorMessage`.
+
+<ComponentDemo file="./date-picker-error.demo.tsx" />
+
+### DatePicker With Minimum and maximum values
+
+The `minValue` and `maxValue` props can also be used to perform builtin validation. This prevents the user from selecting dates outside the valid range in the calendar .
+
+<ComponentDemo file="./date-picker-min-max.demo.tsx" />
