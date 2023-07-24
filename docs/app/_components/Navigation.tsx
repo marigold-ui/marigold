@@ -79,7 +79,7 @@ export const Navigation = ({ onClick }: NavigationProps) => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-col gap-8 pl-4 pt-8">
+    <nav className="fixed bottom-0 left-8 right-0 flex h-[calc(100vh-90px)] flex-col gap-8 overflow-y-auto pt-8">
       <div className="flex flex-col gap-4">
         {renderContentPages({ onClick, current: pathname })}
       </div>

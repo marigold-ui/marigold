@@ -33,7 +33,7 @@ export const MobileNavigation = () => (
       <Button variant="ghost">
         <MenuIcon />
       </Button>
-      <Dialog variant="fullpage" closeButton>
+      <Dialog variant="fullscreen" closeButton>
         {({ close }) => (
           <>
             <Header className="flex items-center gap-2 pl-4 text-3xl font-bold uppercase tracking-tight text-[#46505a]">
