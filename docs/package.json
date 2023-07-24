@@ -9,6 +9,7 @@
     "registry": "zx ./scripts/build-registry.mjs"
   },
   "dependencies": {
+    "@internationalized/date": "3.3.0",
     "@marigold/components": "workspace:*",
     "@marigold/eslint-config": "workspace:*",
     "@marigold/icons": "workspace:*",
