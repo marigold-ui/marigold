@@ -1,12 +1,18 @@
 {
-  "extends": "@marigold/tsconfig/react",
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ES6",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strictNullChecks": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": false,
+    "strictPropertyInitialization": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "useUnknownInCatchVariables": true,
     "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -23,9 +29,12 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
+      "@marigold/*/index.css": ["../themes/*/dist/index.css"],
       "@marigold/*": ["../packages/*/src", "../themes/*/src"],
+      "@/registry": ["./.registry"],
       "contentlayer/generated": ["./.contentlayer/generated"]
-    }
+    },
+    "strict": false
   },
   "include": [
     "**/*.ts",
@@ -35,7 +44,8 @@
     "../packages/**/*.ts",
     "../packages/**/*.tsx",
     "../.next/types/**/*.ts",
-    "contentlayer.config.ts"
+    "contentlayer.config.ts",
+    "scripts/build-registry.mjs"
   ],
   "exclude": ["node_modules"]
 }

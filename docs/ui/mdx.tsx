@@ -1,9 +1,14 @@
 'use client';
+
 import { HTMLAttributes } from 'react';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 
-import * as DocComponents from '@/app/components/components';
+import { IconList } from '@/app/components';
+
 import { Headline, Message, Link, Text } from './';
+import { ComponentDemo } from './ComponentDemo';
+import { CopyButton } from './CopyButton';
+import * as DocComponents from '@/app/components/[...slug]/_components';
 
 // Typography
 // ---------------
@@ -32,25 +37,43 @@ const typography = {
     <blockquote className="mt-6 border-l-2 pl-6 italic" {...props} />
   ),
   code: (props: HTMLAttributes<HTMLElement>) => (
-    <code
-      className="bg-bg-muted rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold"
-      {...props}
-    />
+    <code className="rounded  font-mono text-sm" {...props} />
   ),
   hr: ({ ...props }: HTMLAttributes<HTMLHRElement>) => (
     <hr className="my-4 md:my-8" {...props} />
   ),
+  // `__rawString__` is source code to be copied
+  pre: ({
+    __rawString__,
+    ...props
+  }: HTMLAttributes<HTMLPreElement> & { __rawString__: string }) => {
+    return (
+      <div className="relative ">
+        <pre
+          className="max-h-[650px] overflow-x-auto rounded-lg px-3 py-4"
+          {...props}
+        >
+          <div className="absolute right-4 top-4">
+            <CopyButton codeString={__rawString__} />
+          </div>
+          {props.children}
+        </pre>
+      </div>
+    );
+  },
 };
 
 // MDX Components
 // ---------------
 const components = {
+  ...DocComponents,
+  ...typography,
   // TODO: wrap Marigold's Image/Link with next's image/link component
+  ComponentDemo,
   Headline,
   Message,
   Text,
-  ...DocComponents,
-  ...typography,
+  IconList,
 };
 
 // Props

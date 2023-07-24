@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { allContentPages } from 'contentlayer/generated';
 
+import { Headline } from '@/ui';
 import { Mdx } from '@/ui/mdx';
 
 interface ContentPageProps {
@@ -45,14 +46,13 @@ export async function generateStaticParams(): Promise<
 
 export default async function ContentPage({ params }: ContentPageProps) {
   const page = await getPageFromParams(params);
-
   if (!page) {
     notFound();
   }
 
   return (
-    <article className="prose dark:prose-invert py-6">
-      <h1>{page.title}</h1>
+    <article className="prose py-6">
+      <Headline level="1">{page.title}</Headline>
       <Mdx code={page.body.code} />
     </article>
   );

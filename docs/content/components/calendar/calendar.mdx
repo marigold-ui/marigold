@@ -1,0 +1,113 @@
+---
+title: Calendar
+group: Form
+caption: Component for displaying and selecting date .
+---
+
+The `<Calendar>` is a date selection interface that allows you to choose date using calendar view .
+
+A `<Calendar>` consists of a grouping element containing one or more date grids (e.g. months), and a previous and next button for navigating between date ranges. Each calendar grid consists of cells containing button elements that can be pressed and navigated to using the arrow keys to select a date.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx onlyCode
+import { Calendar } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'value',
+      type: 'DateValue',
+      description: 'The current calendar value.',
+      default: 'none',
+    },
+    {
+      property: 'defaultValue',
+      type: 'DateValue',
+      description: 'The default value of calendar.',
+      default: 'none',
+    },
+    {
+      property: 'focusedValue',
+      type: 'DateValue',
+      description: 'Controls the currently focused date within the calendar.',
+      default: 'none',
+    },
+    {
+      property: 'maxValue',
+      type: 'DateValue',
+      description: 'The maximum allowed date that a user may select.',
+      default: 'none',
+    },
+    {
+      property: 'minValue',
+      type: 'DateValue',
+      description: 'The minimum allowed date that a user may select.',
+      default: 'none',
+    },
+    {
+      property: 'validationState',
+      type: 'ValidationState `valid | invalid`',
+      description:
+        'Whether the current selection is valid or invalid according to application logic.',
+      default: 'none',
+    },
+    {
+      property: 'onChange',
+      type: 'function',
+      description:
+        'a callback function that is called when the the date field value changes.',
+      default: 'none',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'Disables the Calendar.',
+      default: 'false',
+    },
+    {
+      property: 'readOnly',
+      type: 'boolean',
+      description: 'Whether the calendar value is immutable.',
+      default: 'false',
+    },
+    {
+      property: 'autoFocus',
+      type: 'boolean',
+      description:
+        'Whether to automatically focus the calendar when it mounts.',
+      default: 'false',
+    },
+  ]}
+/>
+
+## Examples
+
+### Simple Calendar
+
+In this example you can see a simple `<Calendar> component and you can select the date`.
+
+<ComponentDemo file="./basic-calendar.demo.tsx" />
+
+### Disabled Calendar
+
+In this example the `<Calendar>` has its prop `disabled`. So you can't interact with the `<Calendar>`.
+
+<ComponentDemo file="./disabled-calendar.demo.tsx" />
+
+### Determine the max and min value for Calendar
+
+You can set the range for `<Calendar>` by setting `minValue` and `maxValue` properties
+
+<ComponentDemo file="./range-calendar.demo.tsx" />

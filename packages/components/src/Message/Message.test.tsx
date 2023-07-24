@@ -71,10 +71,12 @@ test('accepts a variant with parts and an icon', () => {
   const icon = container.firstChild;
 
   expect(container.className).toMatchInlineSnapshot(
-    `"grid grid-cols-[min-content_1fr] grid-rows-2 text-orange-700"`
+    `"grid auto-rows-min grid-cols-[min-content_auto] gap-1 text-orange-700"`
   );
-  expect(content.className).toMatchInlineSnapshot(`"col-span-full items-end"`);
-  expect(title.className).toMatchInlineSnapshot(`"font-bold"`);
+  expect(content.className).toMatchInlineSnapshot(`"col-start-2 items-end"`);
+  expect(title.className).toMatchInlineSnapshot(
+    `"col-start-2 row-start-1 self-center font-bold"`
+  );
 
   expect(icon).toBeInTheDocument();
 });

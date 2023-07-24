@@ -44,7 +44,9 @@ test('allows to align children to the left', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`justify-start`);
+  expect(stack.className).toMatchInlineSnapshot(
+    `"flex flex-col gap-0 items-start"`
+  );
 });
 
 test('allows to align children to the center', () => {
@@ -54,7 +56,9 @@ test('allows to align children to the center', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`justify-center`);
+  expect(stack.className).toMatchInlineSnapshot(
+    `"flex flex-col gap-0 items-center"`
+  );
 });
 
 test('allows to align children to the right', () => {
@@ -64,7 +68,9 @@ test('allows to align children to the right', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`justify-end`);
+  expect(stack.className).toMatchInlineSnapshot(
+    `"flex flex-col gap-0 items-end"`
+  );
 });
 
 test('allows to align children to the vertical top', () => {
@@ -74,7 +80,9 @@ test('allows to align children to the vertical top', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`items-start`);
+  expect(stack.className).toMatchInlineSnapshot(
+    `"flex flex-col gap-0 justify-start"`
+  );
 });
 
 test('allows to align children to the vertical center', () => {
@@ -84,7 +92,9 @@ test('allows to align children to the vertical center', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`items-center`);
+  expect(stack.className).toMatchInlineSnapshot(
+    `"flex flex-col gap-0 justify-center"`
+  );
 });
 
 test('allows to align children to the bottom', () => {
@@ -94,7 +104,9 @@ test('allows to align children to the bottom', () => {
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`items-end`);
+  expect(stack.className).toMatchInlineSnapshot(
+    `"flex flex-col gap-0 justify-end"`
+  );
 });
 
 test('allows to fill space with stretch prop', () => {

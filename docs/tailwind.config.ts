@@ -9,14 +9,24 @@ const config: Config = {
     './theme/root.ts',
     './theme/*.ts',
     './theme/**/*.ts',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './ui/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
+
+    // Demos
+    './content/**/*.{js,ts,jsx,tsx,mdx}',
+
+    // Used for the anchor links
+    './contentlayer.config.ts',
 
     // Marigold components
     '../packages/{components,system}/**/*.{tsx,ts}',
     '!../packages/{components,system}/**/*.{stories,test}.{tsx,ts}',
   ],
   presets: [preset],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('tailwind-scrollbar')({ nocompatible: true }),
+  ],
 };
 
 export default config;

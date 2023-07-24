@@ -5,6 +5,7 @@ import {
   Overlay as ReactAriaOverlay,
   OverlayProps as ReactAriaOverlayProps,
 } from '@react-aria/overlays';
+import { useTheme } from '@marigold/system';
 
 export interface OverlayProps {
   open: boolean;
@@ -29,6 +30,7 @@ const transitionStyles = {
 
 export const Overlay = ({ children, container, open }: OverlayProps) => {
   const nodeRef = useRef(null);
+  const theme = useTheme();
 
   // Don't un-render the overlay while it's transitioning out.
   let mountOverlay = open;
@@ -44,6 +46,7 @@ export const Overlay = ({ children, container, open }: OverlayProps) => {
           <div
             ref={nodeRef}
             data-testid="overlay"
+            data-theme={theme.name}
             style={{
               ...defaultStyle,
               ...transitionStyles[state],

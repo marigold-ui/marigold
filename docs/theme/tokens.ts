@@ -20,37 +20,42 @@ export const colors = {
   // Brand
   // ---------------
   ...brand,
+  secondary: tw.slate,
 
   // Text
   // ---------------
   text: {
     primary: {
-      DEFAULT: brand.primary[950],
+      DEFAULT: tw.slate[950],
+      muted: tw.slate[500],
     },
 
     // State
-    info: tw.sky[950],
-    warning: tw.amber[950],
+    info: tw.blue[800],
+    warning: tw.amber[800],
   },
 
   // Background
   // ---------------
   bg: {
-    body: tw.white,
+    body: tw.slate[50],
     hover: tw.neutral[100],
     muted: tw.slate[100],
 
     underlay: tw.slate[500],
 
+    surface: {
+      DEFAULT: tw.white,
+    },
+
     // Status
-    info: tw.sky[100],
-    warning: tw.amber[100],
+    info: tw.blue[100],
+    warning: tw.amber[50],
   },
 
   // Border
   // ---------------
   border: {
-    info: tw.sky[950],
-    warning: tw.amber[950],
+    DEFAULT: tw.slate[300],
   },
 };

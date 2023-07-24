@@ -1,0 +1,131 @@
+---
+title: Dialog
+group: Overlay
+caption: Component for displaying dialogs.
+---
+
+The `<Dialog>` is a overlay component. This means it displays a modal as a reaction to an event. It appears in the middle of the display and blurs out the underlay.
+
+This component can be styled in different parts. It has as parts `closeButton` and `container`, which is the component itself, and these parts can be styled separately.
+
+A special thing is also that you can have props on the `<Dialog.Trigger>` and on the `<Dialog>` itself. The `closeButton` is an optionally property with which you can close the `<Dialog>`.
+
+The `<Dialog.Controller>` should be used if you want to use the `<Dialog>` without a trigger. For example if you want to open it within a `<Menu>`.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Dialog } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'closeButton',
+      type: 'boolean',
+      description: 'Show the close button',
+      default: 'false',
+    },
+    {
+      property: 'children',
+      type: 'ReactNode',
+      description: 'Children of the component.',
+    },
+  ]}
+/>
+
+### Trigger props
+
+<PropsTable
+  props={[
+    {
+      property: 'dismissable',
+      type: 'boolean',
+      description:
+        'Whether to close the overlay when the user interacts outside it.',
+      default: 'true',
+    },
+    {
+      property: 'keyboardDismissable',
+      type: 'boolean',
+      description:
+        'Whether pressing the escape key to close the overlay should be disabled.',
+      default: 'true',
+    },
+    {
+      property: 'children',
+      type: 'ReactNode',
+      description: 'Children of the component.',
+    },
+  ]}
+/>
+
+### Controller props
+
+<PropsTable
+  props={[
+    {
+      property: 'open',
+      type: 'boolean',
+      description: 'Whether the overlay is open by default (controlled).',
+      default: 'false',
+    },
+    {
+      property: 'onOpenChange',
+      type: '(isOpen: boolean) => void',
+      description:
+        "Handler that is called when the overlay's open state changes.",
+      default: 'none',
+    },
+    {
+      property: 'dismissable',
+      type: 'boolean',
+      description:
+        'Whether to close the overlay when the user interacts outside it.',
+      default: 'true',
+    },
+    {
+      property: 'keyboardDismissable',
+      type: 'boolean',
+      description:
+        'Whether pressing the escape key to close the overlay should be disabled.',
+      default: 'true',
+    },
+    {
+      property: 'children',
+      type: 'ReactNode',
+      description: 'Children of the component.',
+    },
+  ]}
+/>
+
+## Examples
+
+### Form Dialog
+
+The example shows how to use a `<Dialog>` in a simple form context. You can see the `closeButton` is not present by default, you have to click on the buttons or on the underlay to exit the dialog.
+
+<ComponentDemo file="./dialog-form.demo.tsx" />
+
+### Dismiss Dialog
+
+If you choose to add `dismissable={false}` to your `<Dialog.Trigger>`, you can't exit the dialog with clicking on the underlay. Notice to add a action button or the `closeButton` property to the `<Dialog>` as shown in the example, without that you can't click out of the dialog. You just have the possibility to use the escape key on your keyboard. But that's also a property you can set to false.
+
+<ComponentDemo file="./dialog-dismiss.demo.tsx" />
+
+### Dialog opend from Menu
+
+This Example shows how to open a [`<Dialog>`](/components/dialog/) from a `<Menu.Item>`.
+For that you have not to use a `<Dialog.Trigger>`, instead use our `<Dialog.Controller>`. With that you don't have to use a `<Button>` to trigger the dialog.
+
+<ComponentDemo file="./menu-open-dialog.demo.tsx" />

@@ -2,21 +2,18 @@ import React, { ReactNode } from 'react';
 import {
   cn,
   gapSpace,
-  alignmentX,
-  alignmentY,
-  AlignmentXProp,
-  AlignmentYProp,
+  alignment,
+  AlignmentProp,
   GapSpaceProp,
 } from '@marigold/system';
 
 // Props
 // ---------------
-export interface StackProps
-  extends AlignmentXProp,
-    AlignmentYProp,
-    GapSpaceProp {
+export interface StackProps extends AlignmentProp, GapSpaceProp {
   children?: ReactNode;
   stretch?: boolean;
+  alignX?: keyof typeof alignment.vertical.alignmentX;
+  alignY?: keyof typeof alignment.vertical.alignmentY;
 }
 
 // Component
@@ -24,21 +21,24 @@ export interface StackProps
 export const Stack = ({
   children,
   space = 0,
-  alignX = 'none',
-  alignY = 'none',
   stretch = false,
+  orientation,
+  alignX,
+  alignY,
   ...props
-}: StackProps) => (
-  <div
-    className={cn(
-      'flex flex-col',
-      gapSpace[space],
-      alignmentX[alignX],
-      alignmentY[alignY],
-      stretch && 'h-full w-full'
-    )}
-    {...props}
-  >
-    {children}
-  </div>
-);
+}: StackProps) => {
+  return (
+    <div
+      className={cn(
+        'flex flex-col',
+        gapSpace[space],
+        alignX && alignment?.vertical?.alignmentX[alignX],
+        alignY && alignment?.vertical?.alignmentY[alignY],
+        stretch && 'h-full w-full'
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};
