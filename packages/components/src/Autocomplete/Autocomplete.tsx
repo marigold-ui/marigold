@@ -109,6 +109,7 @@ export const Autocomplete = ({
     useSearchAutocomplete(
       {
         ...props,
+
         onSubmit: (value: string | null, key: Key | null) =>
           props.onSubmit?.(key, value),
         popoverRef,
