@@ -30,7 +30,6 @@ export const Columns = ({
     );
   }
 
-  console.log(stretch);
   return (
     <div
       className={cn(

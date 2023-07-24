@@ -10,8 +10,8 @@ export interface AppearanceTableProps {
 
 const getKeys = (schema: ConfigSchema) => {
   return {
-    variant: Object.keys(schema.variant),
-    size: Object.keys(schema.size),
+    variant: schema.variant && Object.keys(schema?.variant),
+    size: schema.size && Object.keys(schema?.size),
   };
 };
 
