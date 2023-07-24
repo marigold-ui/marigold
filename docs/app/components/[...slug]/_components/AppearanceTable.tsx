@@ -10,8 +10,8 @@ export interface AppearanceTableProps {
 
 const getKeys = (schema: ConfigSchema) => {
   return {
-    variant: schema.variant && Object.keys(schema?.variant),
-    size: schema.size && Object.keys(schema?.size),
+    variant: schema?.variant && Object.keys(schema?.variant),
+    size: schema?.size && Object.keys(schema?.size),
   };
 };
 
@@ -44,7 +44,7 @@ export const AppearanceTable = ({ component }: AppearanceTableProps) => {
 
   return (
     <Card px={3} py={4}>
-      {appearances.variant.length === 0 && appearances.size.length === 0 ? (
+      {appearances?.variant?.length === 0 && appearances?.size?.length === 0 ? (
         <Inline space={2}>
           <BlankCanvas />
           <Text>
