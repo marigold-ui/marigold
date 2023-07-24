@@ -1,0 +1,59 @@
+---
+title: Center
+group: Layout
+caption: Component to center its children horizontally.
+---
+
+The `<Center>` is a layout component that centers its children horizontally.
+You can use it to center a single child or a list of children. The `<Center>` component has also the property maxWidth.
+
+The `<Center>` component can also be a child from the [`<Stack>`](/components/stack/) or [`<Inline>`](/components/inline/) component.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Center } from '@marigold/components';
+```
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'space',
+      description: 'The space between the children',
+      type: 'ResponsiveStyleValue<string>',
+      default: 'none',
+    },
+    {
+      property: 'maxWidth',
+      description: 'The maximum width of the container.',
+      type: 'string',
+      default: '',
+    },
+  ]}
+/>
+
+## Examples
+
+### Center element with maximum width
+
+To center an element you must give the element a `maxWidth` prop.
+
+<ComponentDemo file="./width-center.demo.tsx" />
+
+### Center more than one element with space
+
+To add spaces between each child you can use the prop `space`.
+
+<ComponentDemo file="./space-center.demo.tsx" />
+
+### Center inside Text Block
+
+If you want to center something like a `<Button>` you must only wrap your component with a `<Center>` component.
+
+<ComponentDemo file="./text-center.demo.tsx" />

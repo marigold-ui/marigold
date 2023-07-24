@@ -1,0 +1,58 @@
+---
+title: Message
+group: Content
+caption: Display a short message with important informations.
+---
+
+The `<Message>` component is used to capture the users atention to provide information. It is meant to show only very relevant information. The title should contain the most relevant information about the message.
+
+This component should not be added on a dynymic way.
+
+There are currently three different variants of the `<Message>` component. The `info` variant is set as default. Inside the `<Message>` it lends itself to using the [`<Text>`](/componentss/text/) component.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Message } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'messageTitle (required)',
+      type: 'string',
+      default: 'none',
+      description: 'Set a message title. This is required.',
+    },
+  ]}
+/>
+
+## Examples
+
+### Info Message
+
+This is the default info `<Message>`. The color is in a blue tone and contains the [`<Info>`](/concepts/icons/#info) icon.
+
+<ComponentDemo file="./message-info.demo.tsx" />
+
+### Warning Message
+
+Here you can see the warning `<Message>`. The color is in a yellow tone and contains the[`<Notification>`](/concepts/icons/#info) icon.
+
+<ComponentDemo file="./message-warn.demo.tsx" />
+
+### Error Message
+
+The error `<Message>` is colored in a red tone and contains the [`<Exclamation>`](/concepts/icons/#info) icon.
+
+<ComponentDemo file="./message-error.demo.tsx" />

@@ -31,7 +31,7 @@ export const colors = {
     },
 
     // State
-    info: tw.blue[950],
+    info: tw.blue[800],
     warning: tw.amber[800],
   },
 
@@ -56,6 +56,6 @@ export const colors = {
   // Border
   // ---------------
   border: {
-    DEFAULT: tw.slate[900],
+    DEFAULT: tw.slate[300],
   },
 };
