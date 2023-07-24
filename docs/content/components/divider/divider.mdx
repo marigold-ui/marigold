@@ -1,0 +1,48 @@
+---
+title: Divider
+group: Content
+caption: Component to seperate content.
+---
+
+A `<Divider>` is a visual separator between two groups of content,
+e.g. groups of menu items or sections of a page.
+
+It has two specific variants given, `bold` and `section`. You can view some examples further down the page.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Divider } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable />
+
+## Examples
+
+### Divider between Text
+
+This shows the default behavior of the `<Divider>`.
+
+<ComponentDemo file="./divider-text.demo.tsx" />
+
+### Section Divider variant
+
+The Example shows the `variant="section"` of the `<Divider>` component. It can be used when you want to seperate some sections like e.g. `<Menu.Items>`. It has a lighter color than the default.
+
+<ComponentDemo file="./divider-section.demo.tsx" />
+
+### Bold Divider variant
+
+The other variant which you can use is the `bold` one. This is a stronger line than the other variant and should be used if you want a striking seperator.
+
+<ComponentDemo file="./divider-bold.demo.tsx" />
