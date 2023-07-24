@@ -36,14 +36,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <div className="flex min-h-screen flex-col">
               <SiteHeader />
               <div className="container flex-1">
-                <aside className="fixed top-14 z-20 -ml-2 hidden w-60 overflow-y-auto md:block">
+                <aside className="fixed top-14 z-20 -ml-2 hidden h-[calc(100vh-56px)] w-60 overflow-y-auto md:block ">
                   <Navigation />
                 </aside>
                 <div className="md:pl-60 lg:pl-72">
                   <main className="max-w-3xl">{children}</main>
+                  <footer>Marigold Footer</footer>
                 </div>
               </div>
-              <footer className="container">Marigold Footer</footer>
             </div>
           </MarigoldProvider>
         </MarigoldThemeSwitch>

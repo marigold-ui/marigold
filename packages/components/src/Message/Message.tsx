@@ -2,11 +2,55 @@ import React, { ReactNode } from 'react';
 import { cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
+// Icons
+// ---------------
+const icons = {
+  info: () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path
+        fillRule="evenodd"
+        d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z"
+        clipRule="evenodd"
+      />
+    </svg>
+  ),
+  warning: () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path
+        fillRule="evenodd"
+        d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
+        clipRule="evenodd"
+      />
+    </svg>
+  ),
+  error: () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path
+        fillRule="evenodd"
+        d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
+        clipRule="evenodd"
+      />
+    </svg>
+  ),
+};
+
 // Props
 // ---------------
 export interface MessageProps extends HtmlProps<'div'> {
   messageTitle: ReactNode;
-  variant?: string;
+  variant?: keyof typeof icons;
   size?: string;
 }
 
@@ -20,37 +64,25 @@ export const Message = ({
   ...props
 }: MessageProps) => {
   const classNames = useClassNames({ component: 'Message', variant, size });
-  var icon = (
-    <svg viewBox="0 0 24 24">
-      <path d="M12 2.85938C6.95437 2.85938 2.85938 6.95437 2.85938 12C2.85938 17.0456 6.95437 21.1406 12 21.1406C17.0456 21.1406 21.1406 17.0456 21.1406 12C21.1406 6.95437 17.0456 2.85938 12 2.85938ZM12.7875 15.9374H11.2125V11.2124H12.7875V15.9374ZM12.7875 9.6375H11.2125V8.0625H12.7875V9.6375Z" />
-    </svg>
-  );
-  if (variant === 'warning') {
-    icon = (
-      <svg viewBox="0 0 24 24">
-        <path d="M19.2 3H4.8C3.81 3 3.009 3.81 3.009 4.8L3 21L6.6 17.4H19.2C20.19 17.4 21 16.59 21 15.6V4.8C21 3.81 20.19 3 19.2 3ZM12.9 13.8H11.1V12H12.9V13.8ZM12.9 10.2001H11.1V6.60008H12.9V10.2001Z" />
-      </svg>
-    );
-  }
-  if (variant === 'error') {
-    icon = (
-      <svg viewBox="0 0 24 24">
-        <path d="M2.25 20.3097H21.75L12 3.46875L2.25 20.3097ZM12.8864 17.2606H11.1136V15.4879H12.8864V17.2606ZM12.8864 13.7151H11.1136V10.1697H12.8864V13.7151Z" />
-      </svg>
-    );
-  }
+  const Icon = icons[variant];
 
   return (
     <div
       className={cn(
-        'grid grid-cols-[min-content_1fr] grid-rows-2',
+        'grid auto-rows-min grid-cols-[min-content_auto] gap-1',
         classNames.container
       )}
       {...props}
     >
-      <div className={cn('hidden', classNames.icon)}>{icon}</div>
-      <div className={classNames.title}>{messageTitle}</div>
-      <div className={cn('col-span-full', classNames.content)}>{children}</div>
+      <div className={cn('col-span-1 h-5 w-5 self-center', classNames.icon)}>
+        <Icon />
+      </div>
+      <div
+        className={cn('col-start-2 row-start-1 self-center', classNames.title)}
+      >
+        {messageTitle}
+      </div>
+      <div className={cn('col-start-2', classNames.content)}>{children}</div>
     </div>
   );
 };

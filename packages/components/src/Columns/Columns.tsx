@@ -41,7 +41,9 @@ export const Columns = ({
     >
       {Children.map(children, (child, idx) => (
         <div
-          className="grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+          className={cn(
+            'grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]'
+          )}
           style={createVar({ collapseAt, columnSize: columns[idx] })}
         >
           {isValidElement(child) ? cloneElement(child) : child}

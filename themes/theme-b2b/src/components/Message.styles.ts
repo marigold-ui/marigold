@@ -16,15 +16,15 @@ export const Message: ThemeComponent<'Message'> = {
       },
     }
   ),
-  content: cva('pt-1 leading-[1.125]'),
-  icon: cva('flex h-4 w-4', {
+  title: cva('font-bold'),
+  content: cva('col-span-2 col-start-1'),
+  icon: cva('h-4 w-4', {
     variants: {
       variant: {
-        warning: 'fill-fill-warning',
-        info: 'fill-fill-info',
-        error: 'fill-fill-error',
+        warning: 'text-fill-warning',
+        info: 'text-fill-info',
+        error: 'text-fill-error',
       },
     },
   }),
-  title: cva('pl-1 font-bold leading-[1.125]'),
 };
