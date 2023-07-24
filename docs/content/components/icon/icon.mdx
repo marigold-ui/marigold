@@ -1,0 +1,72 @@
+---
+title: Icon
+group: Content
+caption: Component to render Icons.
+---
+
+On this page you can learn how [Marigold Icons](/concepts/icons/) should be used.
+Icons itself can be used to improve visual interest and get users attention.
+
+The size of the icon can be change via the `size` prop. The default size is `24px`.
+The `fill` prop is the second attribute and defaults `currentcolor`.
+
+For a full list of the available Icons go to the [Marigold Icons](/concepts/icons/).
+
+## Usage
+
+### Import
+
+Marigold Icons have a separate package to install.
+You have to install the package and use the Icons like other React components.
+
+```bash
+# with npm
+npm install @marigold/icons --save
+
+# with yarn
+yarn add @marigold/icons
+
+# with pnpm
+pnpm add @marigold/icons
+```
+
+To import a specific component you just have to use the name of the icon directly between the `< />` brackets. E.g.:
+
+```tsx
+import { DesignTicket } from '@marigold/icons';
+```
+
+Alternatively you can go to [Marigold Icons](/foundation/icons/) and click on an Icon in the list to copy them as `<svg>` Element.
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'size',
+      type: 'number',
+      description: 'Size of the icon.',
+      default: '24',
+    },
+    {
+      property: 'className',
+      type: 'string',
+      description: 'add classnames to the component.',
+      default: '',
+    },
+  ]}
+/>
+
+## Examples
+
+### Icon size
+
+You can set the size of the icon as shown below.
+
+<ComponentDemo file="./icon-size.demo.tsx" />
+
+### Icon className property
+
+To fill in the color you can use the `className` propery. You can also add other classNames.
+
+<ComponentDemo file="./icon-fill.demo.tsx" />
