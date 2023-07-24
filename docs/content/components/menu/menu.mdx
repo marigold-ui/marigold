@@ -1,0 +1,108 @@
+---
+title: Menu
+group: Overlay
+caption: Component for building a menu.
+---
+
+The `<Menu>` component allows you to define a menu element. It's useful when you want a list with options or actions.
+
+It is structured in three parts: `<Menu.Trigger>`, `<Menu>` and `<Menu.Item>`. And there is a simple `<Button>` necessary for handling the menu trigger.
+
+If you want create a variant, you can style different parts of the `<Menu>` separate, there is the `container` part and the `item`.
+
+There is also a companion component called `<ActionMenu>` which you can use if you want to take some actions. You can have a look on how it works in the examples. It works quiet similar to the normal `<Menu>` component. All you have to add are the `<Menu.Item>`s.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Menu } from '@marigold/components';
+```
+
+### Apperance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'onAction',
+      type: '(key: Key) => void',
+      description: 'Handler that should call an action.',
+      default: 'none',
+    },
+  ]}
+/>
+
+### Trigger props
+
+<PropsTable
+  props={[
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'Disables the complete menu.',
+      default: 'false',
+    },
+    {
+      property: 'open',
+      type: 'boolean',
+      description: 'Set the open state of the menu.',
+      default: 'false',
+    },
+    {
+      property: 'onOpenChange',
+      type: '() => void',
+      description:
+        "Handler that is called when the overlay's open state changes.",
+      default: 'none',
+    },
+  ]}
+/>
+
+## Examples
+
+### Simple Menu with Action
+
+In this example you can see a simple `<Menu>` with some items to select. After selection an action can be applied.
+
+<ComponentDemo file="./menu-action.demo.tsx" />
+
+### Menu with Sections
+
+To group related MenuItems, you can use `<Menu.Section>` and pass `title` for the group name.
+
+<ComponentDemo file="./menu-section.demo.tsx" />
+
+### Disabled Menu
+
+In this example the `<Menu.Trigger>` has set its prop `disabled`. So you can't interact with the `<Menu>` anymore.
+
+<ComponentDemo file="./menu-disabled.demo.tsx" />
+
+### ActionMenu
+
+In this example, an `Icon` has been inserted into the `Button` to serve as a kebab menu.
+As shown here, any type of icon can be used within the menu and there are no restrictions.
+It is very similar to the normal `<Menu>` component.
+
+<ComponentDemo file="./kebab-menu.demo.tsx" />
+
+### Menu with onOpenChange property
+
+Here you can see how the properties `open` and `onOpenChange` are used together with a `<Button>`. A function handles the state for the menu. You just can open the `<Menu>` with the external `<Button>` component, not with the menu button.
+A common use Case is also to open the `<Menu>` with the keyboard.
+
+<ComponentDemo file="./menu-open.demo.tsx" />
+
+### Menu item opens Dialog
+
+This Example shows how to open a [`<Dialog>`](/components/dialog/) from a `<Menu.Item>`.
+For that you have not to use a `<Dialog.Trigger>`, instead use our `<Dialog.Controller>`. With that you don't have to use a `<Button>` to trigger the dialog.
+
+<ComponentDemo file="./menu-open-dialog.demo.tsx" />
