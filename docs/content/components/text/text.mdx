@@ -1,0 +1,80 @@
+---
+title: Text
+group: Content
+caption: Component for paragraphs.
+---
+
+With the `<Text>` component you can easily add different HTML paragraph elements. It should be used when you want to write long text paragraphs.
+
+You can add properties like `align`, `color` or `fontSize` to the `<Text>`. You also have the opportunity to add sizes and custom variants to the component.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Text } from '@marigold/components';
+```
+
+### AppearanceTable
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'align',
+      type: '"left" | "cenetr" | "right"',
+      description: 'Aligns the text.',
+      default: 'none',
+    },
+    {
+      property: 'color',
+      type: 'string',
+      description: 'Set the text color.',
+      default: 'currentColor',
+    },
+    {
+      property: 'cursor',
+      type: 'string',
+      description: 'Set the cursor for the text element.',
+      default: 'text',
+    },
+    {
+      property: 'fontSize',
+      type: '"xs" | "sm" | "base" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl"',
+      description: 'Set the font size for the text element.',
+      default: 'none',
+    },
+    {
+      property: 'weight',
+      type: '"thin" | "extralight" | "light" | "normal" | "medium" | "semibold" | "bold" | "extrabold" | "black"',
+      description: 'Set the font weight for the text element.',
+      default: 'none',
+    },
+    {
+      property: 'fontStyle',
+      type: '"italic" | "normal"',
+      description: 'Set the font style for the text element.',
+      default: 'none',
+    },
+  ]}
+/>
+
+## Examples
+
+### Default paragraph Text
+
+Here you can see a typical text section.
+
+<ComponentDemo file="./text-default.demo.tsx" />
+
+### Colored Text
+
+This `<Text>` element has the property `color` with it.
+
+<ComponentDemo file="./text-color.demo.tsx" />
