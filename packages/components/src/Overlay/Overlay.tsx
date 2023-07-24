@@ -10,7 +10,7 @@ import { useTheme } from '@marigold/system';
 export interface OverlayProps {
   open: boolean;
   children: ReactAriaOverlayProps['children'];
-  container?: any;
+  container?: ReactAriaOverlayProps['portalContainer'];
 }
 
 const duration = 300;
