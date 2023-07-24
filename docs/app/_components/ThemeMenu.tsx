@@ -11,12 +11,12 @@ export const ThemeMenu = () => {
     <Menu.Trigger>
       <Button variant="ghost" size="small">
         <strong>Current Theme:</strong>
-        {current ? current : themes.b2b.name}
+        <span className="uppercase">{current ? current : themes.b2b.name}</span>
         <ChevronDown className="h-4 w-4" />
       </Button>
       <Menu onAction={current => setTheme(current)}>
         {Object.keys(themes).map(name => (
-          <Menu.Item key={name}>{name}</Menu.Item>
+          <Menu.Item key={name}>{name.toUpperCase()}</Menu.Item>
         ))}
       </Menu>
     </Menu.Trigger>
