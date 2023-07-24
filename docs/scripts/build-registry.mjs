@@ -5,7 +5,7 @@
 import path, { basename } from 'path';
 import { glob } from 'zx';
 
-let demoPath = await glob([`content/components/**/**.demo.tsx`]);
+let demoPath = await glob([`content/**/**/**.demo.tsx`]);
 
 console.log('📑 Building registry...');
 
@@ -17,6 +17,7 @@ import dynamic from 'next/dynamic';
 export const registry = {`;
 
 for (const item of demoPath) {
+  console.log(item);
   const name = basename(item, '.demo.tsx');
   index += `
   '${name}': {
