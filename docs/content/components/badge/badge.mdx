@@ -1,0 +1,45 @@
+---
+title: Badge
+group: Content
+caption: Component for short notes with one color as status messages
+---
+
+A `<Badge>` is a content component. This component can be used to reflect status messages via a short note and a color. The content of a badge can be arbitrary, but it is preferred to use a string and/or a icon.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Badge } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable />
+
+## Examples
+
+### Info Badge
+
+In this example we have the `<Badge>` component that has been given the `variant` info and a string.
+
+<ComponentDemo file="./basic-badge.demo.tsx" />
+
+### Badge with an Icon
+
+In this example, the `<Badge>` component gets an icon component.
+
+<ComponentDemo file="./icon-badge.demo.tsx" />
+
+### Badge with variant
+
+Here you can see the `<Badge>` component with variant dark.
+
+<ComponentDemo file="./badge-dark.demo.tsx" />

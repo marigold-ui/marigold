@@ -8,6 +8,9 @@ export const Button: ThemeComponent<'Button'> = cva(
         ghost:
           'text-secondary-700 hover:text-secondary-900 border-transparent p-0',
       },
+      size: {
+        small: 'text-sm',
+      },
     },
   }
 );
