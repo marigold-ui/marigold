@@ -9,9 +9,10 @@ export const ThemeMenu = () => {
 
   return (
     <Menu.Trigger>
-      <Button>
-        {current ? current : themes.b2b.name} theme
-        <ChevronDown />
+      <Button variant="ghost" size="small">
+        <strong>Current Theme:</strong>
+        {current ? current : themes.b2b.name}
+        <ChevronDown className="h-4 w-4" />
       </Button>
       <Menu onAction={current => setTheme(current)}>
         {Object.keys(themes).map(name => (
