@@ -40,7 +40,9 @@ export const MobileNavigation = () => (
               <Logo className="h-10 w-10" />
               Marigold
             </Header>
-            <Navigation onClick={close} />
+            <div className="bottom-0 right-0 -mr-4 h-[calc(100vh-90px)] overflow-auto">
+              <Navigation onClick={close} />
+            </div>
           </>
         )}
       </Dialog>
