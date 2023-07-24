@@ -79,7 +79,7 @@ export const Navigation = ({ onClick }: NavigationProps) => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-col gap-8 pl-4 pt-8">
+    <nav className="flex flex-col gap-8 pl-4 pr-11 pt-8">
       <div className="flex flex-col gap-4">
         {renderContentPages({ onClick, current: pathname })}
       </div>

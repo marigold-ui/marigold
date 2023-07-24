@@ -33,26 +33,20 @@ export const registry = {
     ),
     file: 'content/components/accordion/single-select-accordion.demo.tsx',
   },
-  'horizontal-breakout': {
-    name: 'horizontal-breakout',
-    demo: dynamic(
-      () => import('@/content/components/breakout/horizontal-breakout.demo')
-    ),
-    file: 'content/components/breakout/horizontal-breakout.demo.tsx',
+  'badge-dark': {
+    name: 'badge-dark',
+    demo: dynamic(() => import('@/content/components/badge/badge-dark.demo')),
+    file: 'content/components/badge/badge-dark.demo.tsx',
   },
-  'iframe-breakout': {
-    name: 'iframe-breakout',
-    demo: dynamic(
-      () => import('@/content/components/breakout/iframe-breakout.demo')
-    ),
-    file: 'content/components/breakout/iframe-breakout.demo.tsx',
+  'basic-badge': {
+    name: 'basic-badge',
+    demo: dynamic(() => import('@/content/components/badge/basic-badge.demo')),
+    file: 'content/components/badge/basic-badge.demo.tsx',
   },
-  'vertical-breakout': {
-    name: 'vertical-breakout',
-    demo: dynamic(
-      () => import('@/content/components/breakout/vertical-breakout.demo')
-    ),
-    file: 'content/components/breakout/vertical-breakout.demo.tsx',
+  'icon-badge': {
+    name: 'icon-badge',
+    demo: dynamic(() => import('@/content/components/badge/icon-badge.demo')),
+    file: 'content/components/badge/icon-badge.demo.tsx',
   },
   'golden-aspect': {
     name: 'golden-aspect',
@@ -78,6 +72,11 @@ export const registry = {
     demo: dynamic(() => import('@/content/components/aspect/video.demo')),
     file: 'content/components/aspect/video.demo.tsx',
   },
+  'simple-body': {
+    name: 'simple-body',
+    demo: dynamic(() => import('@/content/components/body/simple-body.demo')),
+    file: 'content/components/body/simple-body.demo.tsx',
+  },
   rightside: {
     name: 'rightside',
     demo: dynamic(() => import('@/content/components/aside/rightside.demo')),
@@ -87,6 +86,27 @@ export const registry = {
     name: 'space',
     demo: dynamic(() => import('@/content/components/aside/space.demo')),
     file: 'content/components/aside/space.demo.tsx',
+  },
+  'horizontal-breakout': {
+    name: 'horizontal-breakout',
+    demo: dynamic(
+      () => import('@/content/components/breakout/horizontal-breakout.demo')
+    ),
+    file: 'content/components/breakout/horizontal-breakout.demo.tsx',
+  },
+  'iframe-breakout': {
+    name: 'iframe-breakout',
+    demo: dynamic(
+      () => import('@/content/components/breakout/iframe-breakout.demo')
+    ),
+    file: 'content/components/breakout/iframe-breakout.demo.tsx',
+  },
+  'vertical-breakout': {
+    name: 'vertical-breakout',
+    demo: dynamic(
+      () => import('@/content/components/breakout/vertical-breakout.demo')
+    ),
+    file: 'content/components/breakout/vertical-breakout.demo.tsx',
   },
   'button-ghost': {
     name: 'button-ghost',
@@ -149,6 +169,35 @@ export const registry = {
       () => import('@/content/components/calendar/range-calendar.demo')
     ),
     file: 'content/components/calendar/range-calendar.demo.tsx',
+  },
+  'card-form': {
+    name: 'card-form',
+    demo: dynamic(() => import('@/content/components/card/card-form.demo')),
+    file: 'content/components/card/card-form.demo.tsx',
+  },
+  'card-infos': {
+    name: 'card-infos',
+    demo: dynamic(() => import('@/content/components/card/card-infos.demo')),
+    file: 'content/components/card/card-infos.demo.tsx',
+  },
+  'space-center': {
+    name: 'space-center',
+    demo: dynamic(
+      () => import('@/content/components/center/space-center.demo')
+    ),
+    file: 'content/components/center/space-center.demo.tsx',
+  },
+  'text-center': {
+    name: 'text-center',
+    demo: dynamic(() => import('@/content/components/center/text-center.demo')),
+    file: 'content/components/center/text-center.demo.tsx',
+  },
+  'width-center': {
+    name: 'width-center',
+    demo: dynamic(
+      () => import('@/content/components/center/width-center.demo')
+    ),
+    file: 'content/components/center/width-center.demo.tsx',
   },
   'checkbox-disabled': {
     name: 'checkbox-disabled',
@@ -220,6 +269,79 @@ export const registry = {
     ),
     file: 'content/components/container/small-container.demo.tsx',
   },
+  'date-field-basic': {
+    name: 'date-field-basic',
+    demo: dynamic(
+      () => import('@/content/components/datefield/date-field-basic.demo')
+    ),
+    file: 'content/components/datefield/date-field-basic.demo.tsx',
+  },
+  'date-field-disabled': {
+    name: 'date-field-disabled',
+    demo: dynamic(
+      () => import('@/content/components/datefield/date-field-disabled.demo')
+    ),
+    file: 'content/components/datefield/date-field-disabled.demo.tsx',
+  },
+  'date-field-error': {
+    name: 'date-field-error',
+    demo: dynamic(
+      () => import('@/content/components/datefield/date-field-error.demo')
+    ),
+    file: 'content/components/datefield/date-field-error.demo.tsx',
+  },
+  'date-field-required': {
+    name: 'date-field-required',
+    demo: dynamic(
+      () => import('@/content/components/datefield/date-field-required.demo')
+    ),
+    file: 'content/components/datefield/date-field-required.demo.tsx',
+  },
+  'divider-bold': {
+    name: 'divider-bold',
+    demo: dynamic(
+      () => import('@/content/components/divider/divider-bold.demo')
+    ),
+    file: 'content/components/divider/divider-bold.demo.tsx',
+  },
+  'divider-section': {
+    name: 'divider-section',
+    demo: dynamic(
+      () => import('@/content/components/divider/divider-section.demo')
+    ),
+    file: 'content/components/divider/divider-section.demo.tsx',
+  },
+  'divider-text': {
+    name: 'divider-text',
+    demo: dynamic(
+      () => import('@/content/components/divider/divider-text.demo')
+    ),
+    file: 'content/components/divider/divider-text.demo.tsx',
+  },
+  'copyright-footer': {
+    name: 'copyright-footer',
+    demo: dynamic(
+      () => import('@/content/components/footer/copyright-footer.demo')
+    ),
+    file: 'content/components/footer/copyright-footer.demo.tsx',
+  },
+  'list-footer': {
+    name: 'list-footer',
+    demo: dynamic(() => import('@/content/components/footer/list-footer.demo')),
+    file: 'content/components/footer/list-footer.demo.tsx',
+  },
+  'simple-header': {
+    name: 'simple-header',
+    demo: dynamic(
+      () => import('@/content/components/header/simple-header.demo')
+    ),
+    file: 'content/components/header/simple-header.demo.tsx',
+  },
+  headline: {
+    name: 'headline',
+    demo: dynamic(() => import('@/content/components/headline/headline.demo')),
+    file: 'content/components/headline/headline.demo.tsx',
+  },
   'inline-alignments': {
     name: 'inline-alignments',
     demo: dynamic(
@@ -257,6 +379,30 @@ export const registry = {
     name: 'inset-hv',
     demo: dynamic(() => import('@/content/components/inset/inset-hv.demo')),
     file: 'content/components/inset/inset-hv.demo.tsx',
+  },
+  'radio-disabled': {
+    name: 'radio-disabled',
+    demo: dynamic(
+      () => import('@/content/components/radio/radio-disabled.demo')
+    ),
+    file: 'content/components/radio/radio-disabled.demo.tsx',
+  },
+  'radio-error': {
+    name: 'radio-error',
+    demo: dynamic(() => import('@/content/components/radio/radio-error.demo')),
+    file: 'content/components/radio/radio-error.demo.tsx',
+  },
+  'radio-required': {
+    name: 'radio-required',
+    demo: dynamic(
+      () => import('@/content/components/radio/radio-required.demo')
+    ),
+    file: 'content/components/radio/radio-required.demo.tsx',
+  },
+  radio: {
+    name: 'radio',
+    demo: dynamic(() => import('@/content/components/radio/radio.demo')),
+    file: 'content/components/radio/radio.demo.tsx',
   },
   'split-inline': {
     name: 'split-inline',
