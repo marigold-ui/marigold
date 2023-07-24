@@ -23,7 +23,10 @@ const config: Config = {
     '!../packages/{components,system}/**/*.{stories,test}.{tsx,ts}',
   ],
   presets: [preset],
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('tailwind-scrollbar')({ nocompatible: true }),
+  ],
 };
 
 export default config;

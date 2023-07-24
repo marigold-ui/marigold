@@ -4,6 +4,7 @@
 .env.local
 .eslintignore
 .gitignore
+.cache
 .prettierignore
 
 LICENSE
@@ -14,3 +15,6 @@ coverage
 docs/.cache
 docs/public/render-page.js.map
 *.png 
+
+.contentlayer
+storybook-static
