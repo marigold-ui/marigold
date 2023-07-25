@@ -1,0 +1,12 @@
+---
+title: Release
+caption: How we release Marigold.
+---
+
+Releases are automated through changeset’s release action. In order to cut a new release go to Marigold’s open pull requests. If there are any changes to be published, there is a pull request called `“release: version packages”`.
+
+Inside the pull request you will find a list of all the changes and version bumps that will happen. After you review the pull request, approve it and then merge it. This will trigger the `Release` action which will [publish packages to npm](https://www.npmjs.com/search?q=%40marigold), send a notification to our Slack channel and deploy the documentation.
+
+## Deploy Docs manually
+
+Marigold's docs are deployed automatically after a successful release. To update the docs independently you can run a dedicated GitHub action called “Deploy Docs”. This action can be [manually triggered](https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow) and will automatically start a deplyoment from the `main` branch.
