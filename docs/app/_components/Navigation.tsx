@@ -49,7 +49,7 @@ export const renderComponentPages = ({ onClick, current }: RenderProps) => {
   list.sort(([a], [b]) => groups.indexOf(a) - groups.indexOf(b));
 
   return list.map(([group, list]) => (
-    <div key={group} className="flex flex-col gap-2">
+    <div key={group} className="flex flex-col gap-2 pb-4">
       <div className="text-secondary-700 text-sm font-semibold">{group}</div>
       <div className="border-secondary-300 ml-0.5 flex flex-col gap-2 border-l">
         {list.map(({ title, slug }) => (
