@@ -25,7 +25,7 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
         <Card variant="not-inset">
           <div
             data-theme={current}
-            className="h-full min-h-[150px] w-full [&>*:first-child]:rounded-xl"
+            className="flex h-full min-h-[150px] w-full flex-col [&>*:first-child]:grid [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl"
           >
             <MarigoldProvider theme={(current && themes[current]) as Theme}>
               <div className="not-prose w-full overflow-x-auto p-4">
