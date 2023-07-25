@@ -27,7 +27,7 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
           className="flex min-h-[150px] flex-col [&>*:first-child]:grid [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl [&>*:first-child]:border"
         >
           <MarigoldProvider theme={(current && themes[current]) as Theme}>
-            <div className="not-prose w-full p-4">
+            <div className="not-prose w-full overflow-x-auto p-4">
               <Demo />
             </div>
           </MarigoldProvider>
