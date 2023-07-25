@@ -57,5 +57,6 @@ export const colors = {
   // ---------------
   border: {
     DEFAULT: tw.slate[300],
+    primary: tw.slate[950],
   },
 };

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { MarigoldProvider, Tabs } from './marigold';
+import { Card, MarigoldProvider, Tabs } from './marigold';
 import { type Theme } from '@marigold/system';
 
 import { registry } from '@/registry';
@@ -22,16 +22,15 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
   return (
     <Tabs defaultSelectedKey="preview">
       <Tabs.Item key="preview" title="Preview">
-        <div
-          data-theme={current}
-          className="flex min-h-[150px] flex-col [&>*:first-child]:grid [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl [&>*:first-child]:border"
-        >
-          <MarigoldProvider theme={(current && themes[current]) as Theme}>
-            <div className="not-prose w-full overflow-x-auto p-4">
-              <Demo />
-            </div>
-          </MarigoldProvider>
-        </div>
+        <Card variant="not-inset">
+          <div data-theme={current} className="h-full min-h-[150px] w-full">
+            <MarigoldProvider theme={(current && themes[current]) as Theme}>
+              <div className="not-prose w-full overflow-x-auto p-4">
+                <Demo />
+              </div>
+            </MarigoldProvider>
+          </div>
+        </Card>
       </Tabs.Item>
       <Tabs.Item key="code" title="Code">
         {children}
