@@ -5,6 +5,7 @@ import { SpectrumSearchFieldProps } from '@react-types/searchfield';
 import { TextFieldRef } from '@react-types/textfield';
 import { FieldBase } from '../FieldBase';
 import { Input } from '../Input';
+import { useStateProps } from '@marigold/system';
 
 const SearchIcon = (props: { className?: string }) => (
   <svg
@@ -20,29 +21,47 @@ const SearchIcon = (props: { className?: string }) => (
 );
 
 export interface SearchFieldInterface
-  extends Omit<SpectrumSearchFieldProps, 'isDisabled' | 'isRequired'> {
+  extends Omit<
+    SpectrumSearchFieldProps,
+    'isDisabled' | 'isRequired' | 'isReadOnly'
+  > {
   action?: ReactElement | null;
   error?: boolean;
   disabled?: boolean;
   required?: boolean;
+  readOnly?: boolean;
   variant?: string;
   size?: string;
   width?: string;
 }
 
 const SearchField = (
-  { disabled, required, width, error, action, ...rest }: SearchFieldInterface,
+  {
+    disabled,
+    required,
+    readOnly,
+    width,
+    error,
+    action,
+    ...rest
+  }: SearchFieldInterface,
   ref: RefObject<TextFieldRef>
 ) => {
   const props = {
     ...rest,
     isDiabled: disabled,
     isRequired: required,
+    isReadOnly: readOnly,
   };
   const state = useSearchFieldState(props);
   const inputRef = useRef(null);
   const { labelProps, descriptionProps, errorMessageProps, inputProps } =
     useSearchField(props, state, inputRef);
+
+  const stateProps = useStateProps({
+    required,
+  });
+
   return (
     <FieldBase
       label={props.label}
@@ -54,6 +73,7 @@ const SearchField = (
       errorMessageProps={{ ...errorMessageProps, 'aria-invalid': error }}
       disabled={disabled}
       width={width}
+      stateProps={stateProps}
     >
       <Input
         /**
