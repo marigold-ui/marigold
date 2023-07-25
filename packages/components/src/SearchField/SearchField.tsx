@@ -59,6 +59,7 @@ const SearchField = (
     useSearchField(props, state, inputRef);
 
   const stateProps = useStateProps({
+    error,
     required,
   });
 
