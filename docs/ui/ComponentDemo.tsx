@@ -23,7 +23,10 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
     <Tabs defaultSelectedKey="preview">
       <Tabs.Item key="preview" title="Preview">
         <Card variant="not-inset">
-          <div data-theme={current} className="h-full min-h-[150px] w-full">
+          <div
+            data-theme={current}
+            className="h-full min-h-[150px] w-full [&>*:first-child]:rounded-xl"
+          >
             <MarigoldProvider theme={(current && themes[current]) as Theme}>
               <div className="not-prose w-full overflow-x-auto p-4">
                 <Demo />
