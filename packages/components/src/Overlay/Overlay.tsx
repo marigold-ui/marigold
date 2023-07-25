@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import { Transition } from 'react-transition-group';
 
 import {
   Overlay as ReactAriaOverlay,
@@ -12,21 +11,6 @@ export interface OverlayProps {
   children: ReactAriaOverlayProps['children'];
   container?: ReactAriaOverlayProps['portalContainer'];
 }
-
-const duration = 300;
-
-const defaultStyle = {
-  transition: `opacity ${duration}ms ease-in-out`,
-  opacity: 0,
-};
-
-const transitionStyles = {
-  entering: { opacity: 1 },
-  entered: { opacity: 1 },
-  exiting: { opacity: 0 },
-  exited: { opacity: 0 },
-  unmounted: { opacity: 0 },
-};
 
 export const Overlay = ({ children, container, open }: OverlayProps) => {
   const nodeRef = useRef(null);
@@ -41,21 +25,14 @@ export const Overlay = ({ children, container, open }: OverlayProps) => {
 
   return (
     <ReactAriaOverlay portalContainer={container}>
-      <Transition nodeRef={nodeRef} timeout={duration} in={open} appear>
-        {state => (
-          <div
-            ref={nodeRef}
-            data-testid="overlay"
-            data-theme={theme.name}
-            style={{
-              ...defaultStyle,
-              ...transitionStyles[state],
-            }}
-          >
-            {children}
-          </div>
-        )}
-      </Transition>
+      <div
+        ref={nodeRef}
+        data-testid="overlay"
+        data-theme={theme.name}
+        className="opacity-100"
+      >
+        {children}
+      </div>
     </ReactAriaOverlay>
   );
 };

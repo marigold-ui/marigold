@@ -624,9 +624,6 @@ importers:
       react-is:
         specifier: 18.2.0
         version: 18.2.0
-      react-transition-group:
-        specifier: 4.4.5
-        version: 4.4.5(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
       '@marigold/tsconfig':
         specifier: workspace:*
@@ -634,9 +631,6 @@ importers:
       '@types/react':
         specifier: 18.2.14
         version: 18.2.14
-      '@types/react-transition-group':
-        specifier: 4.4.6
-        version: 4.4.6
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -645,7 +639,7 @@ importers:
         version: 18.2.0(react@18.2.0)
       tsup:
         specifier: 6.7.0
-        version: 6.7.0(postcss@8.4.26)(typescript@5.0.4)
+        version: 6.7.0
 
   packages/icons:
     dependencies:
@@ -8978,15 +8972,6 @@ packages:
     dependencies:
       '@types/react': 18.2.14
 
-  /@types/react-transition-group@4.4.6:
-    resolution:
-      {
-        integrity: sha512-VnCdSxfcm08KjsJVQcfBmhEQAPnLB8G08hAxn39azX1qYBQ/5RVQuoHuKIcfKOdncuaUvEpFKFzEvbtIMsfVew==,
-      }
-    dependencies:
-      '@types/react': 18.2.14
-    dev: true
-
   /@types/react@18.2.14:
     resolution:
       {
@@ -12527,16 +12512,6 @@ packages:
       {
         integrity: sha512-X7BJ2yElsnOJ30pZF4uIIDfBEVgF4XEBxL9Bxhy6dnrm5hkzqmsWHGTiHqRiITNhMyFLyAiWndIJP7Z1NTteDg==,
       }
-    dev: false
-
-  /dom-helpers@5.2.1:
-    resolution:
-      {
-        integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==,
-      }
-    dependencies:
-      '@babel/runtime': 7.22.6
-      csstype: 3.1.2
     dev: false
 
   /dom-serializer@2.0.0:
@@ -20279,6 +20254,25 @@ packages:
       camelcase-css: 2.0.1
       postcss: 8.4.26
 
+  /postcss-load-config@3.1.4:
+    resolution:
+      {
+        integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==,
+      }
+    engines: { node: '>= 10' }
+    peerDependencies:
+      postcss: '>=8.0.9'
+      ts-node: '>=9.0.0'
+    peerDependenciesMeta:
+      postcss:
+        optional: true
+      ts-node:
+        optional: true
+    dependencies:
+      lilconfig: 2.1.0
+      yaml: 1.10.2
+    dev: true
+
   /postcss-load-config@3.1.4(postcss@8.4.26):
     resolution:
       {
@@ -21493,23 +21487,6 @@ packages:
       react-is: 18.2.0
       react-shallow-renderer: 16.15.0(react@18.2.0)
       scheduler: 0.23.0
-    dev: false
-
-  /react-transition-group@4.4.5(react-dom@18.2.0)(react@18.2.0):
-    resolution:
-      {
-        integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==,
-      }
-    peerDependencies:
-      react: '>=16.6.0'
-      react-dom: '>=16.6.0'
-    dependencies:
-      '@babel/runtime': 7.22.6
-      dom-helpers: 5.2.1
-      loose-envify: 1.4.0
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react-universal-interface@0.6.2(react@18.2.0)(tslib@2.6.0):
@@ -23955,6 +23932,44 @@ packages:
       {
         integrity: sha512-7At1WUettjcSRHXCyYtTselblcHl9PJFFVKiCAy/bY97+BPZXSQ2wbq0P9s8tK2G7dFQfNnlJnPAiArVBVBsfA==,
       }
+
+  /tsup@6.7.0:
+    resolution:
+      {
+        integrity: sha512-L3o8hGkaHnu5TdJns+mCqFsDBo83bJ44rlK7e6VdanIvpea4ArPcU3swWGsLVbXak1PqQx/V+SSmFPujBK+zEQ==,
+      }
+    engines: { node: '>=14.18' }
+    hasBin: true
+    peerDependencies:
+      '@swc/core': ^1
+      postcss: ^8.4.12
+      typescript: '>=4.1.0'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      postcss:
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      bundle-require: 4.0.1(esbuild@0.17.19)
+      cac: 6.7.14
+      chokidar: 3.5.3
+      debug: 4.3.4
+      esbuild: 0.17.19
+      execa: 5.1.1
+      globby: 11.1.0
+      joycon: 3.1.1
+      postcss-load-config: 3.1.4
+      resolve-from: 5.0.0
+      rollup: 3.26.0
+      source-map: 0.8.0-beta.0
+      sucrase: 3.32.0
+      tree-kill: 1.2.2
+    transitivePeerDependencies:
+      - supports-color
+      - ts-node
+    dev: true
 
   /tsup@6.7.0(postcss@8.4.26)(typescript@5.0.4):
     resolution:
