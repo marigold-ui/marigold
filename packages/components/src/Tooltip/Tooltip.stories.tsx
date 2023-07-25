@@ -16,13 +16,13 @@ const meta = {
     },
     offset: {
       control: {
-        type: 'integer',
+        type: 'number',
       },
       description: 'The offset from the trigger element',
     },
     crossOffset: {
       control: {
-        type: 'integer',
+        type: 'number',
       },
       description:
         'The additional offset across the cross acis from the trigger element',
