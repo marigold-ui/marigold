@@ -116,6 +116,7 @@ export default makeSource({
       [
         rehypePrettyCode,
         {
+          theme: 'material-theme-palenight',
           onVisitLine(node: any) {
             if (node.children.length === 0) {
               node.children = [{ type: 'text', value: ' ' }];
