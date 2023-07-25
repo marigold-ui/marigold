@@ -14,7 +14,7 @@ import { Popover } from '../Overlay';
 import { ClearButton } from './ClearButton';
 
 // Search Icon
-// ---------------
+//----------------
 const SearchIcon = (props: { className?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -118,10 +118,9 @@ export const Autocomplete = ({
       },
       state
     );
-  // TODO: until `react-aria` gives us error and description props.
-  const errorMessageProps = { 'aria-invalid': error };
-  const { isDisabled, ...restClearButtonProps } = clearButtonProps;
 
+  // TODO: until `react-aria` gives us error and description props.
+  const { isDisabled, ...restClearButtonProps } = clearButtonProps;
   return (
     <>
       <FieldBase
@@ -130,15 +129,10 @@ export const Autocomplete = ({
         description={props.description}
         error={error}
         errorMessage={props.errorMessage}
-        errorMessageProps={errorMessageProps}
         disabled={disabled}
         width={width}
       >
         <Input
-          /**
-           * We use `size` for styles which is a string, not like
-           * the regular HTML attribute, which is a number
-           */
           {...(inputProps as any)}
           ref={inputRef}
           icon={<SearchIcon />}
@@ -153,6 +147,7 @@ export const Autocomplete = ({
           }
         />
       </FieldBase>
+
       <Popover
         state={state}
         ref={popoverRef}
