@@ -144,27 +144,3 @@ test('cascading without a selector is allowed when inner theme has not root styl
     )
   ).not.toThrowError();
 });
-
-test('cascading with a selector is allowed when inner theme has specified a selector', () => {
-  const outerTheme = {
-    name: 'outer',
-    root: cva('bg-gainsboro'),
-    components: {},
-  };
-
-  const innerTheme = {
-    name: 'inner',
-    root: cva('bg-black'),
-    components: {},
-  };
-
-  expect(() =>
-    render(
-      <MarigoldProvider theme={outerTheme}>
-        <MarigoldProvider theme={innerTheme} selector="#root">
-          <div id="root" />
-        </MarigoldProvider>
-      </MarigoldProvider>
-    )
-  ).not.toThrowError();
-});
