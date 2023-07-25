@@ -53,6 +53,7 @@ export default async function ContentPage({ params }: ContentPageProps) {
   return (
     <article className="prose py-6">
       <Headline level="1">{page.title}</Headline>
+      <div className="text-text-primary-muted -mt-8">{page.caption}</div>
       <Mdx code={page.body.code} />
     </article>
   );
