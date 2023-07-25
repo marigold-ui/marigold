@@ -13,9 +13,11 @@ It is not possible to wrap up a `<MarigoldProvider>` into another `<MarigoldProv
 If you want to get more information about the setup go to [Getting Started](/introduction/getting-started/#bootstrapping).
 
 ```tsx
+import { Button, MarigoldProvider } from '@marigold/components';
+
 <MarigoldProvider theme={theme} selector="theme">
   <Button variant="primary">Hello World!</Button>
-</MarigoldProvider>
+</MarigoldProvider>;
 ```
 
 ## Usage
