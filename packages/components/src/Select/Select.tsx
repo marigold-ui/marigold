@@ -12,9 +12,9 @@ import { useSelectState } from '@react-stately/select';
 import { Item, Section } from '@react-stately/collections';
 import type { AriaSelectProps } from '@react-types/select';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
-import { ChevronDown } from '@marigold/icons';
 import {
   cn,
+  SVG,
   useClassNames,
   useSmallScreen,
   useStateProps,
@@ -155,7 +155,9 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
               ? state.selectedItem.rendered
               : props.placeholder}
           </div>
-          <ChevronDown className={cn('h-5 w-5', classNames.icon)} />
+          <SVG viewBox="0 0 24 24" className="h-5 w-5">
+            <path d="M5.97563 7.125L12 13.1363L18.0244 7.125L19.875 8.97563L12 16.8506L4.125 8.97563L5.97563 7.125Z" />
+          </SVG>
         </button>
         {isSmallScreen ? (
           <Tray state={state}>

@@ -12,7 +12,7 @@ import { Input } from '../Input';
 import { Button } from '../Button';
 
 import { Item } from '@react-stately/collections';
-import { ChevronDown } from '@marigold/icons';
+import { SVG } from '@marigold/system';
 
 export interface ComboBoxProps
   extends Omit<
@@ -101,7 +101,9 @@ export const ComboBox = ({
               ref={buttonRef}
               {...buttonProps}
             >
-              <ChevronDown className="h-5 w-5" />
+              <SVG viewBox="0 0 24 24" className="h-5 w-5">
+                <path d="M5.97563 7.125L12 13.1363L18.0244 7.125L19.875 8.97563L12 16.8506L4.125 8.97563L5.97563 7.125Z" />
+              </SVG>
             </Button>
           }
         />
