@@ -89,7 +89,6 @@ export const DateField = ({
     focus: isFocused || isPressed,
   });
 
-  console.log(readOnly);
   return (
     <FieldBase
       error={error}
