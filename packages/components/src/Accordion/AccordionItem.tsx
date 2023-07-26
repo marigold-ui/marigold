@@ -4,10 +4,11 @@ import { mergeProps } from '@react-aria/utils';
 import { TreeState } from '@react-stately/tree';
 import { Node } from '@react-types/shared';
 
-import { SVG, useClassNames, useStateProps } from '@marigold/system';
+import { useClassNames, useStateProps } from '@marigold/system';
 
 import { useAccordionItem } from './useAccordionItem';
 import { Button } from '../Button';
+import { ChevronDown, ChevronUp } from '@marigold/icons';
 
 export interface AccordionItemProps {
   item: Node<object>;
@@ -68,15 +69,7 @@ export const AccordionItem = ({
           aria-label={item.textValue}
         >
           {title}
-          {!expanded ? (
-            <SVG viewBox="0 0 24 24" aria-hidden={true}>
-              <path d="M5.97563 7.125L12 13.1363L18.0244 7.125L19.875 8.97563L12 16.8506L4.125 8.97563L5.97563 7.125Z" />
-            </SVG>
-          ) : (
-            <SVG viewBox="0 0 24 24" aria-hidden={true}>
-              <path d="M5.97563 16.8506L12 10.8394L18.0244 16.8506L19.875 15L12 7.125L4.125 15L5.97563 16.8506Z" />
-            </SVG>
-          )}
+          {!expanded ? <ChevronUp /> : <ChevronDown />}
         </Button>
       </FocusRing>
       {expanded || defaultExpanded ? (
