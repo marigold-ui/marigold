@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import { getChildNodes } from '@react-stately/collections';
 import { useTable, AriaTableProps } from '@react-aria/table';
 import {
   Cell,
