@@ -1,0 +1,63 @@
+---
+title: Provider
+group: Application
+caption: Provider which applies the theme.
+---
+
+`<MarigoldProvider>` is the container for all Marigold applications. It defines the theme and other application level settings.
+Without the `<MarigoldProvider>` you can't get the theme on your components. So it is necessary to use.
+
+You just have to wrap your components around the `<MarigoldProvider>` to make it work.
+If you want to get more information about the setup go to [Getting Started](/introduction/getting-started/#bootstrapping).
+
+```tsx
+import { Button, MarigoldProvider } from '@marigold/components';
+
+<MarigoldProvider theme={theme}>
+  <Button variant="primary">Hello World!</Button>
+</MarigoldProvider>;
+```
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { MarigoldProvider } from '@marigold/components';
+```
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'children',
+      type: 'ReactNode',
+      default: 'none',
+      description: 'The children of the component.',
+    },
+    {
+      property: 'theme',
+      type: 'Theme',
+      default: 'none',
+      description: 'The use that should be used within the provider context.',
+    },
+
+]}
+/>
+
+## Examples
+
+### Provider with Button
+
+The example shows how the `<MarigoldProvider>` works. As simple as it is you just have to wrap the component around the provider and import a theme. You can click on the theme select on top of the page to see how the `<Button>` changes its theme.
+
+```tsx
+import { Button, MarigoldProvider } from '@marigold/components';
+
+<MarigoldProvider theme={theme}>
+  <Button variant="primary">Hello World!</Button>
+</MarigoldProvider>;
+```
