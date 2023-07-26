@@ -7,6 +7,8 @@ Releases are automated through changeset’s release action. In order to cut a n
 
 Inside the pull request you will find a list of all the changes and version bumps that will happen. After you review the pull request, approve it and then merge it. This will trigger the `Release` action which will [publish packages to npm](https://www.npmjs.com/search?q=%40marigold), send a notification to our Slack channel and deploy the documentation.
 
-## Deploy Docs manually
+## Deploying with Vercel
 
-Marigold's docs are deployed automatically after a successful release. To update the docs independently you can run a dedicated GitHub action called “Deploy Docs”. This action can be [manually triggered](https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow) and will automatically start a deplyoment from the `main` branch.
+In Vercel, the deploying process is straightforward and automated. Once you connect your Git repository to Vercel, it continuously monitors for changes. When you push new code or updates to the repository, Vercel automatically triggers a build process to compile and optimize your project.
+
+You can have a view on our Vercel Board right here: [Link to Vercel](https://vercel.com/marigold)
