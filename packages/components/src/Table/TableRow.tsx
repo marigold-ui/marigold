@@ -22,13 +22,10 @@ export const TableRow = ({ children, row }: TableRowProps) => {
   const ref = useRef(null);
   const { interactive, state, ...ctx } = useTableContext();
 
-  const { variant, size } = row.props;
-
-  // question: why we need this?
   const classNames = useClassNames({
     component: 'Table',
-    variant: variant || ctx.variant,
-    size: size || ctx.size,
+    variant: ctx.variant,
+    size: ctx.size,
   });
 
   const { rowProps, isPressed } = useTableRow(
