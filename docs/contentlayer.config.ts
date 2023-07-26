@@ -80,6 +80,30 @@ export const ComponentPage = defineDocumentType(() => ({
   },
 }));
 
+export const HookPage = defineDocumentType(() => ({
+  name: 'HookPage',
+  filePathPattern: 'hooks/**/*.mdx',
+  contentType: 'mdx',
+  fields: {
+    ...commonFields,
+  },
+  computedFields: {
+    slug: {
+      type: 'string',
+      resolve: doc =>
+        `/${doc._raw.flattenedPath.substring(
+          0,
+          doc._raw.flattenedPath.lastIndexOf('/')
+        )}`,
+    },
+    slugAsParams: {
+      type: 'string',
+      // Slugs are matched agains the name of the component or rather the file name
+      resolve: doc => doc._raw.sourceFileName.split('.')[0],
+    },
+  },
+}));
+
 // Config
 // ---------------
 const contentDirPath = './content';
@@ -166,5 +190,5 @@ export default makeSource({
       ],
     ],
   },
-  documentTypes: [ContentPage, ComponentPage],
+  documentTypes: [ContentPage, ComponentPage, HookPage],
 });

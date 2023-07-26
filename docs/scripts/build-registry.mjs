@@ -17,6 +17,7 @@ import dynamic from 'next/dynamic';
 export const registry = {`;
 
 for (const item of demoPath) {
+  console.log(item);
   const name = basename(item, '.demo.tsx');
   index += `
   '${name}': {

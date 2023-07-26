@@ -6,6 +6,7 @@ import {
   allContentPages,
   ComponentPage,
   allComponentPages,
+  allHookPages,
 } from 'contentlayer/generated';
 
 import { siteConfig } from '@/lib/config';
@@ -17,6 +18,24 @@ export interface RenderProps {
   onClick?: () => void;
   current: string;
 }
+export const renderHookPages = ({ onClick, current }: RenderProps) => {
+  const pages = [...allHookPages];
+
+  return pages.map(({ title, slug }) => (
+    <div key={slug} className="flex flex-col gap-2">
+      <div className="border-secondary-300 ml-0.5 flex flex-col gap-2 border-l">
+        <NavLink
+          key={slug}
+          current={current === slug}
+          href={slug}
+          onClick={onClick}
+        >
+          {title}
+        </NavLink>
+      </div>
+    </div>
+  ));
+};
 
 export const renderContentPages = ({ onClick, current }: RenderProps) => {
   const pages = [...allContentPages].sort(
@@ -87,6 +106,11 @@ export const Navigation = ({ onClick }: NavigationProps) => {
       <div className="flex flex-col gap-4">
         <div className="font-semibold">Components</div>
         {renderComponentPages({ onClick, current: pathname })}
+      </div>
+
+      <div className="flex flex-col gap-4">
+        <div className="font-semibold">Hooks</div>
+        {renderHookPages({ onClick, current: pathname })}
       </div>
     </nav>
   );
