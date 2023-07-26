@@ -52,37 +52,47 @@ export const AppearanceTable = ({ component }: AppearanceTableProps) => {
           </Text>
         </Inline>
       ) : (
-        <Table aria-labelledby="appearance table" variant="propsTable">
-          <Table.Header>
-            <Table.Column key={'property'}>Property</Table.Column>
-            <Table.Column key={'type'}>Type</Table.Column>
-            <Table.Column key={'description'}>Description</Table.Column>
-          </Table.Header>
-          <Table.Body>
-            <Table.Row>
-              <Table.Cell>
-                <code>variant</code>
-              </Table.Cell>
-              <Table.Cell>
-                <code>
-                  {appearances.variant ? appearances.variant.join(' | ') : '-'}
-                </code>
-              </Table.Cell>
-              <Table.Cell>The available variants of this component.</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>
-                <code>size</code>
-              </Table.Cell>
-              <Table.Cell>
-                <code>
-                  {appearances.size ? appearances.size.join(' | ') : '-'}
-                </code>
-              </Table.Cell>
-              <Table.Cell>The available sizes of this component.</Table.Cell>
-            </Table.Row>
-          </Table.Body>
-        </Table>
+        <div className="overflow-auto">
+          <Table aria-labelledby="appearance table" variant="propsTable">
+            <Table.Header>
+              <Table.Column key={'property'}>Property</Table.Column>
+              <Table.Column key={'type'}>Type</Table.Column>
+              <Table.Column key={'description'}>Description</Table.Column>
+            </Table.Header>
+            <Table.Body>
+              <Table.Row>
+                <Table.Cell>
+                  <code className="before:content-none after:content-none">
+                    variant
+                  </code>
+                </Table.Cell>
+                <Table.Cell>
+                  <code className="before:content-none after:content-none">
+                    {appearances.variant
+                      ? appearances.variant.join(' | ')
+                      : '-'}
+                  </code>
+                </Table.Cell>
+                <Table.Cell>
+                  The available variants of this component.
+                </Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>
+                  <code className="before:content-none after:content-none">
+                    size
+                  </code>
+                </Table.Cell>
+                <Table.Cell>
+                  <code className="before:content-none after:content-none">
+                    {appearances.size ? appearances.size.join(' | ') : '-'}
+                  </code>
+                </Table.Cell>
+                <Table.Cell>The available sizes of this component.</Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table>
+        </div>
       )}
     </Card>
   );
