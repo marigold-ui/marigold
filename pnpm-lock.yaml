@@ -385,6 +385,9 @@ importers:
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
+      react-hook-form:
+        specifier: 7.45.2
+        version: 7.45.2(react@18.2.0)
       react-use:
         specifier: 17.4.0
         version: 17.4.0(react-dom@18.2.0)(react@18.2.0)
@@ -412,6 +415,12 @@ importers:
       tailwindcss:
         specifier: 3.3.3
         version: 3.3.3(ts-node@10.9.1)
+      zod:
+        specifier: 3.21.4
+        version: 3.21.4
+      zod-form-data:
+        specifier: 2.0.1
+        version: 2.0.1(zod@3.21.4)
       zx:
         specifier: 7.2.3
         version: 7.2.3
@@ -21370,6 +21379,18 @@ packages:
       }
     dev: false
 
+  /react-hook-form@7.45.2(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-9s45OdTaKN+4NSTbXVqeDITd/nwIg++nxJGL8+OD5uf1DxvhsXQ641kaYHk5K28cpIOTYm71O/fYk7rFaygb3A==,
+      }
+    engines: { node: '>=12.22.0' }
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /react-inspector@6.0.2(react@18.2.0):
     resolution:
       {
@@ -25400,6 +25421,17 @@ packages:
         integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==,
       }
     engines: { node: '>=10' }
+
+  /zod-form-data@2.0.1(zod@3.21.4):
+    resolution:
+      {
+        integrity: sha512-4jcsj3vFyFGINLLHEmehfOPKdcw+HqV65RwsV2IdyLHp9wpvGJRVXWg1yY8sq0ASEbQfTVBRtI7LcDGv3Qpj8g==,
+      }
+    peerDependencies:
+      zod: ^3.11.x
+    dependencies:
+      zod: 3.21.4
+    dev: false
 
   /zod@3.21.4:
     resolution:
