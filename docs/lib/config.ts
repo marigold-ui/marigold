@@ -13,8 +13,8 @@ export const siteConfig = {
       slug: 'components',
       subsections: [
         {
-          name: 'Applicaiton',
-          slug: 'applicaiton',
+          name: 'Application',
+          slug: 'application',
         },
         {
           name: 'Layout',
