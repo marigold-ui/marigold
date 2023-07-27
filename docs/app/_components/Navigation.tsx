@@ -2,12 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 
-import {
-  allContentPages,
-  ComponentPage,
-  allComponentPages,
-  allHookPages,
-} from 'contentlayer/generated';
+import { allContentPages } from 'contentlayer/generated';
 
 import { siteConfig } from '@/lib/config';
 import { NavLink } from './NavLink';
@@ -18,40 +13,25 @@ export interface RenderProps {
   onClick?: () => void;
   current: string;
 }
-export const renderHookPages = ({ onClick, current }: RenderProps) => {
-  const pages = [...allHookPages];
-
-  return pages.map(({ title, slug }) => (
-    <div key={slug} className="flex flex-col gap-2">
-      <div className="border-secondary-300 ml-0.5 flex flex-col gap-2 border-l">
-        <NavLink
-          key={slug}
-          current={current === slug}
-          href={slug}
-          onClick={onClick}
-        >
-          {title}
-        </NavLink>
-      </div>
-    </div>
-  ));
-};
 
 export const renderContentPages = ({ onClick, current }: RenderProps) => {
   const pages = [...allContentPages].sort(
     (a, b) => (a.order || 1000) - (b.order || 1000)
   );
 
-  return pages.map(({ title, slug }) => (
-    <NavLink
-      key={slug}
-      variant="main"
-      current={current === slug}
-      href={slug}
-      onClick={onClick}
-    >
-      {title}
-    </NavLink>
+  return pages.map(({ title, slug, section }) => (
+    <>
+      <div>{section}</div>
+      <NavLink
+        key={slug}
+        variant="main"
+        current={current === slug}
+        href={slug}
+        onClick={onClick}
+      >
+        {title}
+      </NavLink>
+    </>
   ));
 };
 
@@ -100,17 +80,17 @@ export const Navigation = ({ onClick }: NavigationProps) => {
   return (
     <nav className="flex flex-col gap-8 pl-4 pr-11 pt-8">
       <div className="flex flex-col gap-4">
-        {renderContentPages({ onClick, current: pathname })}
+        {/* {renderContentPages({ onClick, current: pathname })} */}
       </div>
 
       <div className="flex flex-col gap-4">
         <div className="font-semibold">Components</div>
-        {renderComponentPages({ onClick, current: pathname })}
+        {/* {renderComponentPages({ onClick, current: pathname })} */}
       </div>
 
       <div className="flex flex-col gap-4">
         <div className="font-semibold">Hooks</div>
-        {renderHookPages({ onClick, current: pathname })}
+        {/* {renderHookPages({ onClick, current: pathname })} */}
       </div>
     </nav>
   );
