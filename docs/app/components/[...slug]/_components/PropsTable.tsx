@@ -6,7 +6,6 @@ import { BlankCanvas } from './icons';
 export interface PropsTableProps {
   props?: { [key: string]: string }[];
 }
-
 export const PropsTable = ({ props }: PropsTableProps) => {
   return (
     <Card px={3} py={4}>
@@ -18,7 +17,9 @@ export const PropsTable = ({ props }: PropsTableProps) => {
       ) : (
         <Table aria-label="Table with component props" variant="propsTable">
           <Table.Header>
-            <Table.Column key="property">Property</Table.Column>
+            <Table.Column key="property">
+              Property {<a href="http://www.google.com">huhu</a>}
+            </Table.Column>
             <Table.Column key="type">Type</Table.Column>
             <Table.Column key="default">Default</Table.Column>
             <Table.Column key="description">Description</Table.Column>

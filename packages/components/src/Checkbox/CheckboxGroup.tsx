@@ -5,7 +5,7 @@ import {
   useCheckboxGroupState,
 } from '@react-stately/checkbox';
 import { AriaCheckboxGroupProps } from '@react-types/checkbox';
-import { useStateProps } from '@marigold/system';
+import { useStateProps, WidthProp } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 import { FieldBase } from '../FieldBase';
 
@@ -40,6 +40,7 @@ export interface CheckboxGroupProps
   value?: string[];
   defaultValue?: string[];
   onChange?: (value: string[]) => void;
+  width?: WidthProp['width'];
 }
 
 // Components
@@ -50,6 +51,7 @@ export const CheckboxGroup = ({
   disabled,
   readOnly,
   error,
+  width,
   ...rest
 }: CheckboxGroupProps) => {
   const props = {
@@ -81,6 +83,7 @@ export const CheckboxGroup = ({
       errorMessageProps={errorMessageProps}
       disabled={disabled}
       stateProps={stateProps}
+      width={width}
       {...groupProps}
     >
       <div role="presentation" className={'flex flex-col items-start'}>
