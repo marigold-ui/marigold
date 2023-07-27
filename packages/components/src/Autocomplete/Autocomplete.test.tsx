@@ -47,6 +47,13 @@ const theme: Theme = {
       action: cva(),
     },
     Underlay: cva(),
+    Popover: cva(['mt-0.5'], {
+      variants: {
+        variant: {
+          top: ['mb-0.5'],
+        },
+      },
+    }),
     ListBox: {
       container: cva(),
       list: cva(),
