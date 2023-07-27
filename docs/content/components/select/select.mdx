@@ -78,9 +78,9 @@ import { Select } from '@marigold/components';
     },
     {
       property: 'width',
-      type: 'string',
-      description: 'Set the width of the select.',
-      default: '100%',
+      type: 'string | number',
+      description: `Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
+      default: 'full',
     },
     {
       property: 'onChange',
