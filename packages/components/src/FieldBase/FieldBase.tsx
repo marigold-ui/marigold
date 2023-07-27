@@ -1,15 +1,20 @@
 import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
-import { StateAttrProps, cn, createVar, useClassNames } from '@marigold/system';
+import {
+  StateAttrProps,
+  WidthProp,
+  cn,
+  useClassNames,
+  width as twWidth,
+} from '@marigold/system';
 
 import { Label, LabelProps } from '../Label';
 import { HelpText } from '../HelpText';
 import { useFieldGroupContext } from './FieldGroup';
 
-export interface FieldBaseProps {
+export interface FieldBaseProps extends WidthProp {
   children?: ReactNode;
   variant?: string;
   size?: string;
-  width?: string;
   disabled?: boolean;
   label?: ReactNode;
   labelProps?: LabelHTMLAttributes<HTMLLabelElement> & Pick<LabelProps, 'as'>;
@@ -27,7 +32,7 @@ export const FieldBase = ({
   children,
   variant,
   size,
-  width = '100%',
+  width = 'full',
   disabled,
   label,
   labelProps,
@@ -46,15 +51,13 @@ export const FieldBase = ({
     component: 'Field',
     variant,
     size,
-    className: 'w-[--fieldWidth]',
   });
 
   return (
     <div
       {...props}
       {...stateProps}
-      className={cn('group/field', classNames)}
-      style={createVar({ fieldWidth: width })}
+      className={cn('group/field', twWidth[width], classNames)}
     >
       {label && (
         <Label

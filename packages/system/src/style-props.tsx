@@ -335,7 +335,6 @@ export const cursorStyle = {
 };
 
 export type AspectProp = { ratio?: keyof typeof aspect };
-
 export type AlignmentProp = {
   orientation?: {
     vertical?: {
@@ -348,9 +347,6 @@ export type AlignmentProp = {
     };
   };
 };
-
-export interface AlignmentProps extends AlignmentProp {}
-
 export type CursorProp = { cursor?: keyof typeof cursorStyle };
 export type FontStyleProp = { fontStyle?: keyof typeof textStyle };
 export type FontWeightProp = { weight?: keyof typeof fontWeight };

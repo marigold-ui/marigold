@@ -3,7 +3,7 @@ import { useTagGroup, AriaTagGroupProps } from '@react-aria/tag';
 import { useListState } from '@react-stately/list';
 import { LabelableProps, HelpTextProps } from '@react-types/shared';
 
-import { useStateProps } from '@marigold/system';
+import { WidthProp, useStateProps } from '@marigold/system';
 import { FieldBase } from '../FieldBase';
 import { Tag } from './Tag';
 
@@ -13,7 +13,7 @@ export interface TagGroupProps
   extends Omit<AriaTagGroupProps<object>, 'isRequired' | 'validationState'>,
     LabelableProps,
     HelpTextProps {
-  width?: string;
+  width?: WidthProp['width'];
   required?: boolean;
   error?: boolean;
   allowsRemoving?: boolean;
