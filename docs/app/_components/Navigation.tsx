@@ -7,63 +7,53 @@ import { allContentPages } from 'contentlayer/generated';
 import { siteConfig } from '@/lib/config';
 import { NavLink } from './NavLink';
 
-// Render Sections
+// Types
 // ---------------
-export interface RenderProps {
-  onClick?: () => void;
-  current: string;
+
+interface NavigationLink {
+  href: string;
+  name: string;
 }
 
-export const renderContentPages = ({ onClick, current }: RenderProps) => {
-  const pages = [...allContentPages].sort(
-    (a, b) => (a.order || 1000) - (b.order || 1000)
-  );
+interface NavigationSubsection {
+  name: string;
+  links: NavigationLink[];
+}
+interface NavigationSection {
+  name: string;
+  links: NavigationLink[];
+  subsections: NavigationSubsection[];
+}
 
-  return pages.map(({ title, slug, section }) => (
-    <>
-      <div>{section}</div>
-      <NavLink
-        key={slug}
-        variant="main"
-        current={current === slug}
-        href={slug}
-        onClick={onClick}
-      >
-        {title}
-      </NavLink>
-    </>
-  ));
-};
+const useNavigation = (): NavigationSection[] => {
+  const navigation = siteConfig.navigation;
 
-export const renderComponentPages = ({ onClick, current }: RenderProps) => {
-  const groups = siteConfig.navigation.componentGroups;
-  const pages: { [group in ComponentPage['group']]?: ComponentPage[] } = {};
+  return navigation.map(({ name, slug, subsections = [] }) => {
+    // Section Page = has a section but NO subsection
+    const sectionPages = allContentPages.filter(
+      page => page.section === slug && !page.subsection
+    );
 
-  allComponentPages.forEach(page => {
-    const group = pages[page.group] || [];
-    return (pages[page.group] = [...group, page]);
+    return {
+      name,
+      links: sectionPages.map(page => ({
+        name: page.title,
+        href: `/${page.slug}`,
+      })),
+      subsections: subsections.map(subsection => ({
+        name: subsection.name,
+        links: allContentPages
+          .filter(
+            // Subsection Page = has a section AND a subsection
+            page => page.section === slug && page.subsection === subsection.slug
+          )
+          .map(page => ({
+            name: page.title,
+            href: `/${page.slug}`,
+          })),
+      })),
+    };
   });
-
-  const list = Object.entries(pages);
-  list.sort(([a], [b]) => groups.indexOf(a) - groups.indexOf(b));
-
-  return list.map(([group, list]) => (
-    <div key={group} className="flex flex-col gap-2 pb-4">
-      <div className="text-secondary-700 text-sm font-semibold">{group}</div>
-      <div className="border-secondary-300 ml-0.5 flex flex-col gap-2 border-l">
-        {list.map(({ title, slug }) => (
-          <NavLink
-            key={slug}
-            current={current === slug}
-            href={slug}
-            onClick={onClick}
-          >
-            {title}
-          </NavLink>
-        ))}
-      </div>
-    </div>
-  ));
 };
 
 // Props
@@ -76,22 +66,47 @@ export interface NavigationProps {
 // ---------------
 export const Navigation = ({ onClick }: NavigationProps) => {
   const pathname = usePathname();
+  const navigation = useNavigation();
 
   return (
     <nav className="flex flex-col gap-8 pl-4 pr-11 pt-8">
-      <div className="flex flex-col gap-4">
-        {/* {renderContentPages({ onClick, current: pathname })} */}
-      </div>
-
-      <div className="flex flex-col gap-4">
-        <div className="font-semibold">Components</div>
-        {/* {renderComponentPages({ onClick, current: pathname })} */}
-      </div>
-
-      <div className="flex flex-col gap-4">
-        <div className="font-semibold">Hooks</div>
-        {/* {renderHookPages({ onClick, current: pathname })} */}
-      </div>
+      {navigation.map(section => (
+        <div className="flex flex-col gap-4">
+          <div className="font-semibold">{section.name}</div>
+          <div className="border-secondary-300 ml-0.5 flex flex-col gap-2 border-l">
+            {section.links.map(({ name, href }) => (
+              <NavLink
+                key={href}
+                current={pathname === href}
+                href={href}
+                onClick={onClick}
+              >
+                {name}
+              </NavLink>
+            ))}
+          </div>
+          {section.subsections &&
+            section.subsections.map(({ name, links }) => (
+              <div key={name} className="flex flex-col gap-2 pb-4">
+                <div className="text-secondary-700 text-sm font-semibold">
+                  {name}
+                </div>
+                <div className="border-secondary-300 ml-0.5 flex flex-col gap-2 border-l">
+                  {links.map(({ name, href }) => (
+                    <NavLink
+                      key={href}
+                      current={pathname === href}
+                      href={href}
+                      onClick={onClick}
+                    >
+                      {name}
+                    </NavLink>
+                  ))}
+                </div>
+              </div>
+            ))}
+        </div>
+      ))}
     </nav>
   );
 };

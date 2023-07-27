@@ -1,55 +1,58 @@
 export const siteConfig = {
-  navigation: {
-    componentGroups: [
-      'Applicaiton',
-      'Layout',
-      'Navigation',
-      'Form',
-      'Collection',
-      'Overlay',
-      'Content',
-    ],
-  },
-};
-
-/**
- *
- * content page:
- *  pages/<section>/<page>.mdx
- *
- * component page:
- *  components/<name>/<name>.mdx
- *
- * ->
- *
- * pages/<section>/(<group>/)<page>.mdx
- * pages/<section>/(<group>/)<page>/<page>.mdx
- *
- * pages/introduction/about.mdx
- * pages/components/form/text-field/text-field.mdx
- *
- *
- */
-
-const foo = {
   navigation: [
     {
       name: 'Introduction',
+      slug: 'introduction',
     },
     {
       name: 'Concepts',
+      slug: 'concepts',
     },
     {
       name: 'Components',
-      groups: [
-        'Applicaiton',
-        'Layout',
-        'Navigation',
-        'Form',
-        'Collection',
-        'Overlay',
-        'Content',
+      slug: 'components',
+      subsections: [
+        {
+          name: 'Applicaiton',
+          slug: 'applicaiton',
+        },
+        {
+          name: 'Layout',
+          slug: 'layout',
+        },
+        {
+          name: 'Navigation',
+          slug: 'navigation',
+        },
+        {
+          name: 'Form',
+          slug: 'form',
+        },
+        {
+          name: 'Collection',
+          slug: 'collection',
+        },
+        {
+          name: 'Overlay',
+          slug: 'overlay',
+        },
+        {
+          name: 'Content',
+          slug: 'content',
+        },
       ],
+    },
+    {
+      name: 'Hooks',
+      slug: 'hooks',
+    },
+    {
+      name: 'Recipes',
+      slug: 'recipes',
+    },
+    {
+      name: 'Develop',
+      slug: 'develop',
     },
   ],
 };

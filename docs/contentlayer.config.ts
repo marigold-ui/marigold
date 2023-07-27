@@ -1,8 +1,4 @@
-import {
-  defineDocumentType,
-  makeSource,
-  type FieldDefs,
-} from 'contentlayer/source-files';
+import { defineDocumentType, makeSource } from 'contentlayer/source-files';
 
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
@@ -12,7 +8,24 @@ import { visit } from 'unist-util-visit';
 
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
 
-import { siteConfig } from './lib/config';
+/**
+ * Normalizaiton supports "grouped pages". E.g. when we want to put
+ * the page next to its demos.
+ *
+ * Outpu:
+ * - concepts/layouts -> concepts/layouts
+ * - components/form/button/button -> components/form/button
+ */
+const getNormalizedPath = (val: string) => {
+  let paths = val.split('/');
+
+  // Support pages that are grouped with their demos into a folder
+  if (paths.at(-1) === paths.at(-2)) {
+    paths.pop();
+  }
+
+  return paths;
+};
 
 // Page Types
 // ---------------
@@ -37,15 +50,22 @@ export const ContentPage = defineDocumentType(() => ({
     // Transforms the page's path to a slug to use with next.js API
     slug: {
       type: 'string',
+      resolve: doc => getNormalizedPath(doc._raw.flattenedPath).join('/'),
+    },
+    // Subsection is the 1st folder level of a page.
+    section: {
+      type: 'string',
       resolve: doc => {
-        let paths = doc._raw.flattenedPath.split('/');
-
-        // Support pages that are grouped with their demos into a folder
-        if (paths.at(-1) === paths.at(-2)) {
-          paths.pop();
-        }
-
-        return paths.join('/');
+        const path = getNormalizedPath(doc._raw.flattenedPath);
+        return path.length < 2 ? null : path.at(0);
+      },
+    },
+    // Subsection is the 2nd folder level of a page.
+    subsection: {
+      type: 'string',
+      resolve: doc => {
+        const path = getNormalizedPath(doc._raw.flattenedPath);
+        return path.length < 3 ? null : path.at(1);
       },
     },
 
