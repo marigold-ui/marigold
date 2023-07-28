@@ -1,8 +1,4 @@
-import {
-  defineDocumentType,
-  makeSource,
-  type FieldDefs,
-} from 'contentlayer/source-files';
+import { defineDocumentType, makeSource } from 'contentlayer/source-files';
 
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
@@ -12,95 +8,89 @@ import { visit } from 'unist-util-visit';
 
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
 
-import { siteConfig } from './lib/config';
+/**
+ * Normalizaiton supports "grouped pages". E.g. when we want to put
+ * the page next to its demos.
+ *
+ * Outpu:
+ * - concepts/layouts -> concepts/layouts
+ * - components/form/button/button -> components/form/button
+ */
+const getNormalizedPath = (val: string) => {
+  let paths = val.split('/');
 
-// Helpers
-// ---------------
-const commonFields: FieldDefs = {
-  title: {
-    type: 'string',
-    required: true,
-  },
-  caption: {
-    type: 'string',
-    required: true,
-  },
+  // Support pages that are grouped with their demos into a folder
+  if (paths.at(-1) === paths.at(-2)) {
+    paths.pop();
+  }
+
+  return paths;
 };
 
 // Page Types
 // ---------------
 export const ContentPage = defineDocumentType(() => ({
   name: 'ContentPage',
-  filePathPattern: 'pages/**/*.mdx',
+  filePathPattern: '{**,*}/*.mdx',
   contentType: 'mdx',
   fields: {
-    ...commonFields,
+    title: {
+      type: 'string',
+      required: true,
+    },
+    caption: {
+      type: 'string',
+      required: true,
+    },
     order: {
       type: 'number',
     },
   },
   computedFields: {
+    // Transforms the page's path to a slug to use with next.js API
     slug: {
       type: 'string',
-      resolve: doc => doc._raw.flattenedPath.replace('pages', ''),
+      resolve: doc => getNormalizedPath(doc._raw.flattenedPath).join('/'),
     },
-    slugAsParams: {
+    // Subsection is the 1st folder level of a page.
+    section: {
       type: 'string',
-      resolve: doc => doc._raw.flattenedPath.split('/').slice(1).join('/'),
+      resolve: doc => {
+        const path = getNormalizedPath(doc._raw.flattenedPath);
+        return path.length < 2 ? null : path.at(0);
+      },
     },
-  },
-}));
+    // Subsection is the 2nd folder level of a page.
+    subsection: {
+      type: 'string',
+      resolve: doc => {
+        const path = getNormalizedPath(doc._raw.flattenedPath);
+        return path.length < 3 ? null : path.at(1);
+      },
+    },
 
-export const ComponentPage = defineDocumentType(() => ({
-  name: 'ComponentPage',
-  filePathPattern: 'components/**/*.mdx',
-  contentType: 'mdx',
-  fields: {
-    ...commonFields,
-    group: {
-      type: 'enum',
-      options: siteConfig.navigation.componentGroups,
-      required: true,
-    },
-  },
-  computedFields: {
-    slug: {
-      type: 'string',
-      resolve: doc =>
-        `/${doc._raw.flattenedPath.substring(
-          0,
-          doc._raw.flattenedPath.lastIndexOf('/')
-        )}`,
-    },
-    slugAsParams: {
-      type: 'string',
-      // Slugs are matched agains the name of the component or rather the file name
-      resolve: doc => doc._raw.sourceFileName.split('.')[0],
-    },
-  },
-}));
+    /**
+     * flattened Path:
+     *
+     * - pages/concepts/layouts
+     * - components/button/button
+     * - hooks/useTheme/useTheme
+     *
+     * [ 'components', 'footer', 'footer' ] footer footer
+     */
 
-export const HookPage = defineDocumentType(() => ({
-  name: 'HookPage',
-  filePathPattern: 'hooks/**/*.mdx',
-  contentType: 'mdx',
-  fields: {
-    ...commonFields,
-  },
-  computedFields: {
-    slug: {
-      type: 'string',
-      resolve: doc =>
-        `/${doc._raw.flattenedPath.substring(
-          0,
-          doc._raw.flattenedPath.lastIndexOf('/')
-        )}`,
-    },
-    slugAsParams: {
-      type: 'string',
-      // Slugs are matched agains the name of the component or rather the file name
-      resolve: doc => doc._raw.sourceFileName.split('.')[0],
-    },
+    // section: {
+    //   type: 'string',
+    //   resolve: doc => doc._raw.sourceFileDir.split('/').at(-1),
+    // },
+    // slug: {
+    //   type: 'string',
+    //   resolve: doc => doc._raw.flattenedPath.replace('pages', ''),
+    // },
+    // slugAsParams: {
+    //   type: 'string',
+    //   resolve: doc => doc._raw.flattenedPath.split('/').slice(1).join('/'),
+    // },
   },
 }));
 
@@ -110,6 +100,7 @@ const contentDirPath = './content';
 
 export default makeSource({
   contentDirPath,
+  documentTypes: [ContentPage],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
@@ -190,5 +181,4 @@ export default makeSource({
       ],
     ],
   },
-  documentTypes: [ContentPage, ComponentPage, HookPage],
 });
