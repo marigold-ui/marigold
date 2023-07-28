@@ -33,6 +33,7 @@ const useNavigation = (): NavigationSection[] => {
     const sectionPages = allContentPages.filter(
       page => page.section === slug && !page.subsection
     );
+    sectionPages.sort((a, b) => (a.order || 1000) - (b.order || 1000));
 
     return {
       name,
