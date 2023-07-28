@@ -90,7 +90,6 @@ export const Table: Table = ({
           ))}
         </TableHeader>
         <TableBody>
-          {/* {...bodyElements.map(row as  => ( */}
           {...collection.rows.map(
             row =>
               row.type === 'item' && (
