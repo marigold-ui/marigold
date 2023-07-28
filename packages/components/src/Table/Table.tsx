@@ -79,7 +79,7 @@ export const Table: Table = ({
         <TableHeader>
           {collection.headerRows.map(headerRow => (
             <TableHeaderRow key={headerRow.key} item={headerRow}>
-              {[...headerRow.childNodes].map(column =>
+              {[...collection.getChildren!(headerRow.key)].map(column =>
                 column.props?.isSelectionCell ? (
                   <TableSelectAllCell key={column.key} column={column} />
                 ) : (
@@ -90,17 +90,20 @@ export const Table: Table = ({
           ))}
         </TableHeader>
         <TableBody>
-          {[...collection.body.childNodes].map(row => (
-            <TableRow key={row.key} row={row}>
-              {[...row.childNodes].map(cell =>
-                cell.props?.isSelectionCell ? (
-                  <TableCheckboxCell key={cell.key} cell={cell} />
-                ) : (
-                  <TableCell key={cell.key} cell={cell} />
-                )
-              )}
-            </TableRow>
-          ))}
+          {...collection.rows.map(
+            row =>
+              row.type === 'item' && (
+                <TableRow key={row.key} row={row}>
+                  {[...collection.getChildren!(row.key)].map(cell =>
+                    cell.props?.isSelectionCell ? (
+                      <TableCheckboxCell key={cell.key} cell={cell} />
+                    ) : (
+                      <TableCell key={cell.key} cell={cell} />
+                    )
+                  )}
+                </TableRow>
+              )
+          )}
         </TableBody>
       </table>
     </TableContext.Provider>

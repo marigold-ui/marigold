@@ -49,11 +49,11 @@ test('renders contens correctly', () => {
   render(
     <Table aria-label="Example table">
       <Table.Header columns={columns}>
-        {column => <Table.Column>{column.name}</Table.Column>}
+        {column => <Table.Column key={column.key}>{column.name}</Table.Column>}
       </Table.Header>
       <Table.Body items={rows}>
         {item => (
-          <Table.Row>
+          <Table.Row key={item.id}>
             {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
           </Table.Row>
         )}

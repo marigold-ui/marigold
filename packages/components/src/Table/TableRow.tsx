@@ -24,7 +24,6 @@ export const TableRow = ({ children, row }: TableRowProps) => {
 
   const { variant, size } = row.props;
 
-  // question: why we need this?
   const classNames = useClassNames({
     component: 'Table',
     variant: variant || ctx.variant,

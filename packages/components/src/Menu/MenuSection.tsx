@@ -27,27 +27,24 @@ const MenuSection = ({ onAction, item, state }: MenuSectionProps<object>) => {
           <Divider variant="section" />
         </li>
       )}
-      <li {...itemProps}>
+      <ul {...itemProps}>
         {item.rendered && (
           <span {...headingProps} className={className.section}>
             {item.rendered}
           </span>
         )}
-        <ul {...groupProps} className="pb-1">
-          {[...item.childNodes].map(node => {
-            let item = (
-              <MenuItem
-                key={node.key}
-                item={node}
-                state={state}
-                onAction={onAction}
-                className={className.item}
-              />
-            );
-            return item;
-          })}
-        </ul>
-      </li>
+        <li {...groupProps} className="pb-1">
+          {[...item.props.children].map(node => (
+            <MenuItem
+              key={node.key}
+              item={node}
+              state={state}
+              onAction={onAction}
+              className={className.item}
+            />
+          ))}
+        </li>
+      </ul>
     </>
   );
 };

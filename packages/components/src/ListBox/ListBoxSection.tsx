@@ -30,7 +30,7 @@ export const ListBoxSection = ({ section, state }: ListSectionProps) => {
         </div>
       )}
       <ul className={classNames.list} {...groupProps}>
-        {[...section.childNodes].map(node => (
+        {[...section.props.children].map(node => (
           <ListBoxOption key={node.key} item={node} state={state} />
         ))}
       </ul>
