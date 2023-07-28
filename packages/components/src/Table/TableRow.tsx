@@ -22,10 +22,12 @@ export const TableRow = ({ children, row }: TableRowProps) => {
   const ref = useRef(null);
   const { interactive, state, ...ctx } = useTableContext();
 
+  const { variant, size } = row.props;
+
   const classNames = useClassNames({
     component: 'Table',
-    variant: ctx.variant,
-    size: ctx.size,
+    variant: variant || ctx.variant,
+    size: size || ctx.size,
   });
 
   const { rowProps, isPressed } = useTableRow(
