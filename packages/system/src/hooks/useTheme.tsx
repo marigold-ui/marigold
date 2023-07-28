@@ -13,7 +13,6 @@ export const useTheme = () => {
 export interface ThemeProviderProps<T extends Theme> {
   theme: T;
   children: ReactNode;
-  selector?: string;
 }
 
 export function ThemeProvider<T extends Theme>({

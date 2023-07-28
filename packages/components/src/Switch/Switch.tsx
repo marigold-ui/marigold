@@ -25,7 +25,7 @@ export type CustomSwitchProps =
 export interface SwitchProps
   extends Omit<AriaSwitchProps, 'isSelected'>,
     Omit<HtmlProps<'input'>, CustomSwitchProps> {
-  checked?: boolean;
+  selected?: boolean;
   variant?: string;
   size?: string;
   width?: string;
@@ -39,7 +39,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
       variant,
       size,
       width = '100%',
-      checked,
+      selected,
       disabled,
       readOnly,
       defaultChecked,
@@ -50,7 +50,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
     const inputRef = useObjectRef(ref);
     // Adjust props to the react-aria API
     const props = {
-      isSelected: checked,
+      isSelected: selected,
       isDisabled: disabled,
       isReadOnly: readOnly,
       defaultSelected: defaultChecked,
