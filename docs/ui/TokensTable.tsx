@@ -29,7 +29,8 @@ export const ColorTokenTable = ({ colors }: TokensTableProps) => {
         {items.map(([key, values]) => {
           return (
             <>
-              <h1>{key}</h1>
+              <h2>{key}</h2>
+              {/* here some infos about the color type e.g. brand colors are used for blablablas */}
               <Table aria-labelledby="tokens table" variant="colorTable">
                 <Table.Header>
                   <Table.Column key={'name'}>Name</Table.Column>
