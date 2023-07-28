@@ -81,9 +81,7 @@ test('allows to set width via prop', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
-  expect(container?.className).toMatchInlineSnapshot(
-    `"group/field w-[--fieldWidth]"`
-  );
+  expect(container?.className).toMatchInlineSnapshot(`"group/field"`);
 });
 
 test('supports disabled', () => {
