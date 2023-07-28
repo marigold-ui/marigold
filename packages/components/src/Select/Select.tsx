@@ -14,7 +14,6 @@ import type { AriaSelectProps } from '@react-types/select';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import {
   cn,
-  SVG,
   useClassNames,
   useSmallScreen,
   useStateProps,
@@ -25,6 +24,7 @@ import { FieldBase } from '../FieldBase';
 import { ListBox } from '../ListBox';
 import { messages } from './intl';
 import { Popover, Tray } from '../Overlay';
+import { ChevronDown } from '../Chevron';
 
 // Props
 // ---------------
@@ -155,9 +155,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
               ? state.selectedItem.rendered
               : props.placeholder}
           </div>
-          <SVG viewBox="0 0 24 24" className="h-5 w-5">
-            <path d="M5.97563 7.125L12 13.1363L18.0244 7.125L19.875 8.97563L12 16.8506L4.125 8.97563L5.97563 7.125Z" />
-          </SVG>
+          <ChevronDown className="h-4 w-4" />
         </button>
         {isSmallScreen ? (
           <Tray state={state}>
