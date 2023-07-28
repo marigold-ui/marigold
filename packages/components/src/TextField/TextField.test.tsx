@@ -74,11 +74,11 @@ test('takes full width by default', () => {
 });
 
 test('allows to set custom width', () => {
-  render(<TextField label="Label" width="200px" />);
+  render(<TextField label="Label" width="1/2" />);
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle(`width: 200`);
+  expect(container?.className).toMatchInlineSnapshot(`"group/field w-1/2"`);
 });
 
 test('supports disabled', () => {
