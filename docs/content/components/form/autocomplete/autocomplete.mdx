@@ -1,0 +1,173 @@
+---
+title: Autocomplete
+group: Form
+caption: A searchfield that displays a dynamic list of suggestions.
+---
+
+The `<Autocomplete>` component is a form element with an associated popup that enables users to select a value from a collection of suggested values. Uusers may either select one of the suggestions from the popup or type a value.
+
+Suggestions are represented by the `<Autocomplete.Item>` component that must be used as children of the `<Autocomplete>` component.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Autocomplete } from '@marigold/components';
+```
+
+### Apperance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'label',
+      type: 'ReactNode',
+      description:
+        "The label text. If you don't want to visually display a label, provide an `aria-label` or `aria-labelledby` attribute for accessibility.",
+    },
+    {
+      property: 'defaultValue',
+      type: 'string',
+      description: 'The value of the input (uncontrolled).',
+    },
+    {
+      property: 'value',
+      type: 'string',
+      description: 'The value of the input (controlled).',
+    },
+    {
+      property: 'defaultItems',
+      type: 'Iterable<object>',
+      description: 'The list of suggestions (uncontrolled).',
+    },
+    {
+      property: 'items',
+      type: 'Iterable<object>',
+      description: 'The list of suggestions (controlled).',
+    },
+    {
+      property: 'description',
+      type: 'ReactNode',
+      description: 'A helpful text.',
+    },
+    {
+      property: 'errorMessage',
+      type: 'ReactNode',
+      description: 'An error message.',
+    },
+    {
+      property: 'error',
+      type: 'boolean',
+      description:
+        'If `true`, the field is considered invalid and if set the `errorMessage` is shown instead of the `description`.',
+      default: 'false',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'If `true`, the input is disabled.',
+      default: 'false',
+    },
+    {
+      property: 'disabledKeys',
+      type: 'Iterable<Key>',
+      description:
+        'Suggestions that are disabled. Items cannot be selected, focused, or otherwise interacted with.',
+    },
+    {
+      property: 'required',
+      type: 'boolean',
+      description: 'If `true`, the input is required',
+      default: 'false',
+    },
+    {
+      property: 'readOnly',
+      type: 'boolean',
+      description: 'If `true`, the input is readOnly.',
+      default: 'false',
+    },
+    {
+      property: 'width',
+      type: 'string | number',
+      description: `Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
+      default: 'full',
+    },
+    {
+      property: 'menuTrigger',
+      type: '"focus"| "input" | "manual"',
+      description: 'Set which interaction shows the menu.',
+      default: 'input',
+    },
+    {
+      property: 'autoFocus',
+      type: 'boolean',
+      description: 'Whether the element should receive focus on render.',
+    },
+    {
+      property: 'onOpenChange',
+      type: '(isOpen: boolean, menuTrigger?: "focus"| "input" | "manual") => void',
+      description:
+        'Called when the open state of the menu changes. Returns the new open state and the action that caused the opening of the menu.',
+    },
+    {
+      property: 'onChange',
+      type: '(value: string) => void',
+      description: 'Called when the input value changes.',
+    },
+    {
+      property: 'onSubmit',
+      type: '(key: Key | null, value: string | null) => void',
+      description: `Handler that is called when the SearchAutocomplete is submitted.
+        
+      A "key" will be passed if the submission is a selected item (e.g. a user clicks or presses enter on an option). If the input is a custom "value", "key" will be "null".
+        
+      A "value" will be passed if the submission is a custom value (e.g. a user types then presses enter). If the input is a selected item, "value" will be "null".`,
+    },
+    {
+      property: 'onClear',
+      type: '() => void',
+      description: 'Called when the clear button is pressed.',
+    },
+  ]}
+/>
+
+### Item props
+
+<PropsTable
+  props={[
+    {
+      property: 'key',
+      type: 'string',
+      description: 'The idenfitier of the item. Must be unique.',
+    },
+  ]}
+/>
+
+## Examples
+
+### Uncontrolled Usage
+
+The following example shows how to use the `Autocomplete` component in an uncontrolled manner. States, such as the user typing into the input or updating the suggestions, are automatically handled by the component. The `onSubmit` handler will be called when the user chooses a suggestion or submits their custom value.
+
+<ComponentDemo file="./autocomplete-uncontrolled.demo.tsx" />
+
+### Controlled Usage with custom Filter
+
+If you want to listen or act while the user is typing into the `Autocomplete` field, you can switch to controlled mode by adding an `onChange` handler and setting the `value` manually.
+
+This is especially helpful if you need to customize the filtering. For example, you may only want to show suggestions when the user has typed at least two characters. Furthermore, you can improve the matching, as shown in the example below. In the demo, the user would not receive a suggestion if they typed "ssp" without the custom filter.
+
+<ComponentDemo file="./autocomplete-controlled.demo.tsx" />
+
+### Working with asynchronous Data
+
+The Autocomplete component supports working with asynchronous data. In the example below, the [`useAsyncList`](/hooks/useAsyncList) hook is used to handle the loading and filtering of data from the server.
+
+<ComponentDemo file="./autocomplete-async.demo.tsx" />

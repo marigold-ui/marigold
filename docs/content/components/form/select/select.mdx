@@ -1,0 +1,128 @@
+---
+title: Select
+group: Form
+caption: Dropdown for selecting an Option among different options.
+---
+
+The `<Select>` is a form component to choose one option from a list. A `<Select>` must include the `<Select.Item>`. It can optionally include a `<Select.Section>`, which behaves as divider between two or more category options.
+
+It behaves similar to the [`<Menu>`](/components/menu/), but the use case is different. A `<Select>` is used in forms.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Select } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'label',
+      type: 'string',
+      description: 'Set a label for the select.',
+      default: 'none',
+    },
+    {
+      property: 'placeholder',
+      type: 'string',
+      description: 'Set the placeholder for the select.',
+      default: 'Based on OS language (en and de supported)',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'Disables the select.',
+      default: 'false',
+    },
+    {
+      property: 'disabledKeys',
+      type: 'Iterable<Key>',
+      description: 'Sets selected keys disabled.',
+      default: 'none',
+    },
+    {
+      property: 'selectedKey',
+      type: 'Key',
+      description: 'The selected key of the select.',
+      default: 'none',
+    },
+    {
+      property: 'defaultSelectedKey',
+      type: 'Iterable<Key>',
+      description: 'Set a default selected key.',
+      default: 'none',
+    },
+    {
+      property: 'required',
+      type: 'boolean',
+      description: 'Set the select required.',
+      default: 'false',
+    },
+    {
+      property: 'error',
+      type: 'boolean',
+      description: 'Allow to set an error to the select.',
+      default: 'false',
+    },
+    {
+      property: 'errorMessage',
+      type: 'string',
+      description: 'Set the error message for the select.',
+      default: '',
+    },
+    {
+      property: 'width',
+      type: 'string | number',
+      description: `Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
+      default: 'full',
+    },
+    {
+      property: 'onChange',
+      type: '(key: Key) => any',
+      description: 'Handler that is called when the selection changes.',
+      default: 'none',
+    },
+  ]}
+/>
+
+## Examples
+
+### Standard Select
+
+This example shows how the `<Select>` would behave without any specific properties.
+
+<ComponentDemo file="./select-basic.demo.tsx" />
+
+### Default selected Key (uncontrolled)
+
+If you want to have a default selected item in the `<Select>` you can set the property for it like it is in the example below.
+
+<ComponentDemo file="./select-default-selected.demo.tsx" />
+
+### Disabled Select
+
+If you want that the user can't interact with the `<Select>` anymore you can set the `disabled` propery.
+
+<ComponentDemo file="./select-disabled.demo.tsx" />
+
+### Disabled Keys
+
+You can also set some keys disabled, for that you have to use the `disabledKeys` property.
+
+<ComponentDemo file="./select-disabled-keys.demo.tsx" />
+
+### Select with Sections
+
+In this example you can see how to use the `<Select.Section>` in the `<Select>` itself. A clear line appears to separate different options.
+
+<ComponentDemo file="./select-section.demo.tsx" />

@@ -1,0 +1,151 @@
+---
+title: TextField
+group: Form
+caption: Component for input forms.
+---
+
+The `<TextField>` is a form component which allows user to enter text with a keyboard. It consists of a label, an input field and a help text. The latter also contains error messages.
+
+It has many properties that it brings with it. You can set label for labeling the `<TextField>` itself, a `description` which behaves as help text. It is also possible to add error messages by adding the `error` and `errorMessage` prop. Another often used property is the `required` prop. You can also write all other HTML input properties down.
+
+The `<FieldGroup>` is a component to layout the label and the fieldbase itself. On that you can use `labelWidth` which is a string type to set the width of the label. Because the label is set to the left side in the core theme, it has only an impact on that.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { TextField } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'label',
+      type: 'ReactNode',
+      description:
+        "The label text. If you don't want to visually display a label, provide an `aria-label` or `aria-labelledby` attribute for accessibility.",
+      default: 'none',
+    },
+    {
+      property: 'description',
+      type: 'ReactNode',
+      description: 'A helpful text.',
+      default: 'none',
+    },
+    {
+      property: 'errorMessage',
+      type: 'ReactNode',
+      description: 'An error message.',
+      default: 'none',
+    },
+    {
+      property: 'error',
+      type: 'boolean',
+      description:
+        'If `true`, the field is considered invalid and if set the `errorMessage` is shown instead of the `description`.',
+      default: 'false',
+    },
+    {
+      property: 'value',
+      type: 'string',
+      description: 'The value of the input field.',
+      default: 'none',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'If `true`, the input is disabled.',
+      default: 'false',
+    },
+    {
+      property: 'required',
+      type: 'boolean',
+      description: 'If `true`, the input is required',
+      default: 'false',
+    },
+    {
+      property: 'readOnly',
+      type: 'boolean',
+      description: 'If `true`, the input is readOnly.',
+      default: 'false',
+    },
+    {
+      property: 'type',
+      type: 'string',
+      description: 'The type of the input field.',
+      default: 'text',
+    },
+    {
+      property: 'onChange',
+      type: 'function',
+      description:
+        "A callback function that is called with the input's current value when the input `value` changes.",
+      default: 'none',
+    },
+    {
+      property: 'width',
+      type: 'string | number',
+      description: `Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
+      default: 'full',
+    },
+    {
+      property: '...',
+      type: '',
+      description: 'Yes you can use all regular attributes of `input!`',
+      default: '',
+    },
+  ]}
+/>
+
+## Examples
+
+### Simple Text Field
+
+This is how a basic `<TextField>` can look like.
+
+<ComponentDemo file="./textfield-basic.demo.tsx" />
+
+### Disabled Text Field
+
+If you want to implement a disabled `<TextField>` you have to add the `disabled` property.
+
+<ComponentDemo file="./textfield-disabled.demo.tsx" />
+
+### Required Text Field
+
+The `required` property adds an required icon to the label.
+
+<ComponentDemo file="./textfield-req.demo.tsx" />
+
+### Text Field with an Error
+
+The example shows how to set the `error` and `errorMessage` properties. If you fill in the field correctly, it will disappear automatically.
+
+<ComponentDemo file="./textfield-error.demo.tsx" />
+
+### Not every number is a `number`!
+
+[Just because the input contains numbers, it is not necessarily correctly to use `input[type=number]`!](https://www.coywolf.news/webmaster/accessible-number-input/) You can also see in the example how the `errorMessage` behaves if a false value is written in the input and how many possibilities you have using props.
+
+<ComponentDemo file="./textfield-number.demo.tsx" />
+
+### Use different input methods
+
+In this example you can see different types of inputs, like email, date or telephone number.
+
+<ComponentDemo file="./textfield-types.demo.tsx" />
+
+### Using with FieldGroup
+
+This example shows how to use the `<FieldGroup>` together with some form components like the `<TextField>` and `<Radio>`. It is build for the Core and has only impact of that.
+
+<ComponentDemo file="./textfield-group.demo.tsx" />

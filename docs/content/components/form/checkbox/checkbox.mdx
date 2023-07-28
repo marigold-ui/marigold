@@ -1,0 +1,180 @@
+---
+title: Checkbox
+caption: Component to select one or more options.
+group: Form
+---
+
+The `<Checkbox>` component allows users to select one or more options from a set of options. In order to group multiple checkboxes, use the `<CheckboxGroup>` component.
+
+There are several props for the `<Checkbox>` and the `<CheckboxGroup>`.
+
+You don't have to click on the `<Checkbox>` itself, you can also just click on the label next to the box.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx onlyCode
+import { Checkbox, CheckboxGroup } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'error',
+      type: 'boolean',
+      description:
+        'If `true`, the checkbox is considered invalid and if set the `errorMessage` is shown instead of the `description`.',
+      default: 'false',
+    },
+    {
+      property: 'width',
+      type: 'string | number',
+      description: `Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
+      default: 'full',
+    },
+    {
+      property: 'defaultChecked',
+      type: 'boolean',
+      description: 'Select the checkbox by default',
+      default: 'false',
+    },
+    {
+      property: 'checked',
+      type: 'boolean',
+      description: 'Select the checkbox.',
+      default: 'false',
+    },
+    {
+      property: 'indeterminate',
+      type: 'boolean',
+      description:
+        'Use when it represents both selected and not selected values.',
+      default: 'false',
+    },
+    {
+      property: 'readOnly',
+      type: 'boolean',
+      description: 'Sets the checkbox on read only.',
+      default: 'false',
+    },
+    {
+      property: 'required',
+      type: 'boolean',
+      description: 'Sets the checkbox as required.',
+      default: 'false',
+    },
+    {
+      property: '...',
+      type: '',
+      description: 'You can use all native attributes of `input`',
+      default: '',
+    },
+  ]}
+/>
+
+### Group Props
+
+<PropsTable
+  props={[
+     {
+      property: 'label',
+      type: 'string',
+      description: 'Set the label for the checkbox group.',
+      default: 'none',
+    },
+    {
+      property: 'error',
+      type: 'boolean',
+      description:
+        'If `true`, the checkbox is considered invalid and if set the `errorMessage` is shown instead of the `description`.',
+      default: 'false',
+    },
+
+    {
+      property: 'defaultChecked',
+      type: 'boolean',
+      description: 'Select the checkbox by default',
+      default: 'false',
+    },
+    {
+      property: 'checked',
+      type: 'boolean',
+      description: 'Select the checkbox.',
+      default: 'false',
+    },
+
+    {
+      property: 'readOnly',
+      type: 'boolean',
+      description: 'Sets the checkbox on read only.',
+      default: 'false',
+    },
+    {
+      property: 'required',
+      type: 'boolean',
+      description: 'Sets the checkbox as required.',
+      default: 'false',
+    },
+    {
+      property: 'value',
+      type: 'string[]',
+      description: 'Set the values of the group.',
+      default: 'none',
+    },
+    {
+
+      property: 'defaultValue',
+      type: 'string[]',
+      description: 'Set the default values of the group.',
+      default: 'none',
+    },
+     {
+      property: 'onChange',
+      type: '(value: string[]) => void',
+      description: 'Handler that is called when the checkbox value changes.',
+      default: 'none',
+    },
+    {
+      property: 'description',
+      type: 'string',
+      description: 'Sets a helptext for the group.',
+      default: 'none',
+    },
+    {
+      property: 'errorMessage',
+      type: 'string',
+      description: 'Sets a error message for the group if a error occured.',
+      default: 'none',
+    }
+
+]}
+/>
+
+## Examples
+
+### Checkbox disabled
+
+Here you can see how the `disabled` property is to use.
+
+<ComponentDemo file="./checkbox-disabled.demo.tsx" />
+
+### Indeterminate Checkbox
+
+Use indeterminate state when it represents both selected and not selected values.
+
+<ComponentDemo file="./checkbox-indeterminate.demo.tsx" />
+
+### Group checkboxes
+
+In this example the `<Checkbox>` are wrapped within the `<CheckboxGroup>`. You see that the `onChange` property is also set. It has also a helptext within which you can set with the `description` property for the `<CheckboxGroup>`.
+
+<ComponentDemo file="./checkbox-group.demo.tsx" />

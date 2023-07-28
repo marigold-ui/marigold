@@ -12,6 +12,7 @@ import { Input } from '../Input';
 import { Button } from '../Button';
 
 import { Item } from '@react-stately/collections';
+import { WidthProp } from '@marigold/system';
 
 export interface ComboBoxProps
   extends Omit<
@@ -26,7 +27,7 @@ export interface ComboBoxProps
   variant?: string;
   size?: string;
   error?: boolean;
-  width?: string;
+  width?: WidthProp['width'];
   disabled?: boolean;
   required?: boolean;
   readOnly?: boolean;

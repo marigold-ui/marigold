@@ -5,7 +5,7 @@ import { SpectrumSearchFieldProps } from '@react-types/searchfield';
 import { TextFieldRef } from '@react-types/textfield';
 import { FieldBase } from '../FieldBase';
 import { Input } from '../Input';
-import { useStateProps } from '@marigold/system';
+import { WidthProp, useStateProps } from '@marigold/system';
 
 const SearchIcon = (props: { className?: string }) => (
   <svg
@@ -32,7 +32,7 @@ export interface SearchFieldInterface
   readOnly?: boolean;
   variant?: string;
   size?: string;
-  width?: string;
+  width?: WidthProp['width'];
 }
 
 const SearchField = (
