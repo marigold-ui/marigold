@@ -8,7 +8,7 @@ import { useNumberFieldState } from '@react-stately/numberfield';
 import { AriaNumberFieldProps } from '@react-types/numberfield';
 
 import { HtmlProps } from '@marigold/types';
-import { cn, useClassNames, useStateProps } from '@marigold/system';
+import { WidthProp, cn, useClassNames, useStateProps } from '@marigold/system';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { StepButton } from './StepButton';
@@ -44,7 +44,7 @@ export interface NumberFieldProps
     Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
   variant?: string;
   size?: string;
-  width?: string;
+  width?: WidthProp['width'];
   hideStepper?: boolean;
 }
 

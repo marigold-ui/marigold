@@ -3,7 +3,7 @@ import { useRadioGroup } from '@react-aria/radio';
 import { useRadioGroupState } from '@react-stately/radio';
 import { AriaRadioGroupProps } from '@react-types/radio';
 
-import { cn, useStateProps } from '@marigold/system';
+import { WidthProp, cn, useStateProps } from '@marigold/system';
 
 import { RadioGroupContext } from './Context';
 import { FieldBase } from '../FieldBase';
@@ -16,7 +16,7 @@ export interface RadioGroupProps
     'isDisabled' | 'isRquired' | 'isReadOnly ' | 'validationState'
   > {
   children: ReactNode[];
-  width?: string;
+  width?: WidthProp['width'];
   required?: boolean;
   disabled?: boolean;
   readOnly?: boolean;

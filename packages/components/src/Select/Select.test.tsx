@@ -427,7 +427,7 @@ test('supports styling classnames with variants and sizes from theme', () => {
 test('set width via props', () => {
   render(
     <OverlayProvider>
-      <Select label="Label" data-testid="select" width="200">
+      <Select label="Label" data-testid="select" width="1/2">
         <Select.Option key="one">one</Select.Option>
         <Select.Option key="two">two</Select.Option>
       </Select>
@@ -437,7 +437,7 @@ test('set width via props', () => {
   // We need to query all, since there is also a label in the hidden select
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getAllByText('Label')[0].parentElement;
-  expect(container).toHaveStyle('width: 200');
+  expect(container?.className).toMatchInlineSnapshot(`"group/field w-1/2"`);
 });
 
 test('forwards ref', () => {
@@ -493,7 +493,7 @@ test('error is there', () => {
       <Select
         label="Label"
         data-testid="select"
-        width="200"
+        width="1/2"
         error
         errorMessage="Error"
       >

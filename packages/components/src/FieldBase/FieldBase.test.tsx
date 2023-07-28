@@ -174,21 +174,5 @@ test('takes full width by default', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement!;
-  expect(container.getAttribute('style')).toMatchInlineSnapshot(
-    `"--fieldWidth: 100%;"`
-  );
-});
-
-test('allows to set custom width', () => {
-  render(
-    <FieldBase label="Label" description="Description" width="60px">
-      <input type="text" />
-    </FieldBase>
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement!;
-  expect(container.getAttribute('style')).toMatchInlineSnapshot(
-    `"--fieldWidth: 60px;"`
-  );
+  expect(container.className).toMatchInlineSnapshot(`"group/field w-full"`);
 });

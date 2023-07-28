@@ -12,6 +12,7 @@ import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay';
 
 import { ClearButton } from './ClearButton';
+import { WidthProp } from '@marigold/system';
 
 // Search Icon
 //----------------
@@ -64,7 +65,7 @@ export interface AutocompleteProps
   onSubmit?: (key: Key | null, value: string | null) => void;
   variant?: string;
   size?: string;
-  width?: string;
+  width?: WidthProp['width'];
 }
 
 export const Autocomplete = ({

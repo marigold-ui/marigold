@@ -6,7 +6,6 @@ import { BlankCanvas } from './icons';
 export interface PropsTableProps {
   props?: { [key: string]: string }[];
 }
-
 export const PropsTable = ({ props }: PropsTableProps) => {
   return (
     <Card px={3} py={4}>
