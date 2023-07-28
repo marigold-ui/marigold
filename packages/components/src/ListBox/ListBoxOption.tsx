@@ -42,7 +42,7 @@ export const ListBoxOption = ({ item, state }: ListBoxOptionProps) => {
       className={classNames.option}
       {...mergeProps(props, { onPointerDown: onPointerUp }, { ...stateProps })}
     >
-      {item.rendered}
+      {item.props.children}
     </li>
   );
 };

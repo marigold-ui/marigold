@@ -52,7 +52,7 @@ export const MenuItem = ({
         focusProps
       )}
     >
-      {item.rendered}
+      {item.props.children}
     </li>
   );
 };

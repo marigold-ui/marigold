@@ -3,12 +3,13 @@
 import { HTMLAttributes } from 'react';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 
-import { IconList } from '@/app/components';
+import { IconList } from '@/ui/IconList';
 
 import { Headline, Message, Link, Text } from './';
+import { AppearanceTable } from './AppearanceTable';
+import { PropsTable } from './PropsTable';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
-import * as DocComponents from '@/app/components/[...slug]/_components';
 
 // Typography
 // ---------------
@@ -69,7 +70,6 @@ const typography = {
 // MDX Components
 // ---------------
 const components = {
-  ...DocComponents,
   ...typography,
   // TODO: wrap Marigold's Image/Link with next's image/link component
   ComponentDemo,
@@ -77,6 +77,8 @@ const components = {
   Message,
   Text,
   IconList,
+  AppearanceTable,
+  PropsTable,
 };
 
 // Props
@@ -90,6 +92,5 @@ interface MdxProps {
 // ---------------
 export const Mdx = ({ title, code }: MdxProps) => {
   const Component = useMDXComponent(code, { title: title });
-  // @ts-expect-error (Marigold exports includes some hooks)
   return <Component components={components} />;
 };
