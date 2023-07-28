@@ -3,13 +3,13 @@ import '@marigold/theme-b2b/index.css';
 import '@marigold/theme-core/index.css';
 
 import { MarigoldProvider } from '@/ui';
+import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
 import { theme, b2bTheme, coreTheme } from '@/theme';
 import { fontSans } from '@/theme/fonts';
 
 import { Analytics } from './_components/Analytics';
 import { Navigation } from './_components/Navigation';
 import { SiteHeader } from './_components/SiteHeader';
-import { MarigoldThemeSwitch } from './_components/ThemeSwitch';
 
 // Metadata
 // ---------------

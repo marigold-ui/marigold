@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Card, Columns, Stack, Text, Tiles } from '@marigold/components';
-import { Rectangle } from '@/app/components/Rectangle';
-import { Squircle } from '@/app/components/Squircle';
+import { Rectangle } from '@/ui/Rectangle';
+import { Squircle } from '@/ui/Squircle';
 
 const Annotation = ({ children }: { children: ReactNode }) => (
   <Text variant="caption" align="center">
