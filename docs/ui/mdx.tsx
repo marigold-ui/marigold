@@ -10,6 +10,7 @@ import { AppearanceTable } from './AppearanceTable';
 import { PropsTable } from './PropsTable';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
+import { SpaceSVG } from './SpaceSVG';
 import { ColorTokenTable } from './TokensTable';
 
 // Typography
@@ -78,6 +79,7 @@ const components = {
   AppearanceTable,
   PropsTable,
   ColorTokenTable,
+  SpaceSVG,
 };
 
 // Props
