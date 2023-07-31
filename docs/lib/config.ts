@@ -1,4 +1,5 @@
 export const siteConfig = {
+  version: process.env.version,
   navigation: [
     {
       name: 'Introduction',
