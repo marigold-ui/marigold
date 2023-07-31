@@ -38,7 +38,10 @@ const typography = {
     <blockquote className="mt-6 border-l-2 pl-6 italic" {...props} />
   ),
   code: (props: HTMLAttributes<HTMLElement>) => (
-    <code className="rounded  font-mono text-sm" {...props} />
+    <code
+      className="rounded font-mono text-sm before:content-none after:content-none"
+      {...props}
+    />
   ),
   hr: ({ ...props }: HTMLAttributes<HTMLHRElement>) => (
     <hr className="my-4 md:my-8" {...props} />
