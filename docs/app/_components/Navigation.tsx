@@ -69,7 +69,7 @@ export const Navigation = ({ onClick }: NavigationProps) => {
   const navigation = useNavigation();
 
   return (
-    <nav className="flex flex-col gap-10 pl-4 pr-11 pt-8">
+    <nav className="mb-12 flex flex-col gap-10 pl-4 pr-11 pt-8">
       {navigation.map(section => (
         <div key={section.name} className="flex flex-col gap-2">
           <div className="font-semibold">{section.name}</div>
