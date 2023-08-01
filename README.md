@@ -10,7 +10,7 @@
 
 # Marigold
 
-React implementation of the Marigold Design System based on [Tailwind](https://emotion.sh/) and [theme-ui](https://theme-ui.com/).
+React implementation of the Marigold Design System based on [react-aria](https://react-spectrum.adobe.com/react-aria/) and [Tailwind CSS](https://tailwindcss.com/).
 
 ## Installation 🔧
 
@@ -31,10 +31,10 @@ If you want to use a marigold theme you have to install them seperatly like:
 
 ```sh
 # with npm
-npm install @marigold/theme-unicorn --save
+npm install @marigold/theme-b2b --save
 
 # with yarn
-yarn add @marigold/theme-unicorn
+yarn add @marigold/theme-b2b
 ```
 
 ## Usage 💡
@@ -45,9 +45,9 @@ Use the styles for your component from a global `theme` object. To provide the t
 // basic usage
 import React from 'react'
 import { MarigoldProvider, Text } from '@marigold/components'
-import unicornTheme from '@marigold/theme-unicorn'
+import b2bTheme from '@marigold/theme-b2b'
 
-<MarigoldProvider theme={unicornTheme}>
+<MarigoldProvider theme={b2bTheme}>
   <Text>Lorem ipsum</Text>
 </MarigoldProvider>
 ```
