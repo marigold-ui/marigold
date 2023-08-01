@@ -10,7 +10,7 @@
 
 # Marigold
 
-React implementation of the Marigold Design System based on [Emotion](https://emotion.sh/) and [theme-ui](https://theme-ui.com/).
+React implementation of the Marigold Design System based on [Tailwind](https://emotion.sh/) and [theme-ui](https://theme-ui.com/).
 
 ## Installation 🔧
 
