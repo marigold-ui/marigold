@@ -70,9 +70,9 @@ export const Navigation = ({ onClick }: NavigationProps) => {
   const navigation = useNavigation();
 
   return (
-    <nav className="flex flex-col gap-8 pl-4 pr-11 pt-8">
+    <nav className="mb-12 flex flex-col gap-10 pl-4 pr-11 pt-8">
       {navigation.map(section => (
-        <div className="flex flex-col gap-4">
+        <div key={section.name} className="flex flex-col gap-2">
           <div className="font-semibold">{section.name}</div>
           <div className="border-secondary-300 ml-0.5 flex flex-col gap-2 border-l">
             {section.links.map(({ name, href }) => (
@@ -88,8 +88,8 @@ export const Navigation = ({ onClick }: NavigationProps) => {
           </div>
           {section.subsections &&
             section.subsections.map(({ name, links }) => (
-              <div key={name} className="flex flex-col gap-2 pb-4">
-                <div className="text-secondary-700 text-sm font-semibold">
+              <div key={name} className="flex flex-col gap-2.5 pb-4">
+                <div className="text-secondary-600 text-sm font-semibold">
                   {name}
                 </div>
                 <div className="border-secondary-300 ml-0.5 flex flex-col gap-2 border-l">

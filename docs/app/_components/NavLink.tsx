@@ -52,5 +52,9 @@ export const NavLink = ({
   className,
   ...props
 }: NavLinkProps) => (
-  <Link {...props} className={cn(styles({ variant, current, className }))} />
+  <Link
+    {...props}
+    className={cn(styles({ variant, current, className }))}
+    aria-current={current ? 'page' : undefined}
+  />
 );
