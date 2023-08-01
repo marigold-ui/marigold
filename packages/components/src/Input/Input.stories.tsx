@@ -26,6 +26,8 @@ const meta = {
         'time',
         'url',
         'week',
+        'file',
+        'color',
       ],
       defaultValue: 'text',
     },
@@ -60,14 +62,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => <Input placeholder="Placeholder..." {...args} />,
-};
-
-export const FileInput: Story = {
-  render: args => <Input placeholder="Placeholder..." {...args} type="file" />,
-};
-
-export const ColorPicker: Story = {
-  render: args => <Input placeholder="Placeholder..." {...args} type="color" />,
 };
 
 export const WithLeadingIcons: Story = {
