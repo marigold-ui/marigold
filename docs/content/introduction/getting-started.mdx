@@ -46,14 +46,27 @@ Execute the following command in your project's directory:
   </Tabs.Item>
 </Tabs>
 
-## 2. Apply a Theme
+## 2. Theming
 
 As mentioned earlier, Marigold components come without any styles by default. To customize their appearance, you can choose from the existing themes listed below:
 
 - **b2b:** Ideal for developing new standalone software applications.
 - **core:** Suitable for developing or refactoring components within the Reservix System.
 
-Selecting a theme will help you effortlessly apply a specific look and feel to the Marigold components so that they fit your context. To add a theme, install it `@marigold/components` package.
+Selecting a theme will enable you to seamlessly apply a consistent look and feel to all components, ensuring they harmonize with the rest of your app. Each theme comes as its own package:
+
+- `@marigold/theme-b2b` will give you the appearance for standalone software.
+- `@marigold/theme-core` will match the look and feel of the Reservix System.
+
+Once you have decided on a theme, proceed to install it using your preferred package manager, similar to the way you installed the `@marigold/components` package earlier.
+
+## 3. Tooling
+
+Marigold effortlessly integrates with popular bundlers such as [webpack](https://webpack.js.org/), [rollup](https://rollupjs.org/), [esbuild](https://esbuild.github.io/), and [vite](https://vitejs.dev/), as well as frameworks like [Next.js](https://nextjs.org/), without requiring any additional configurations.
+
+-> we suggest nextjs, not CRA
+
+If you are using TypeScript, ensure that you add `@types/react` and `@react/types-dom` to your project. Marigold's components are fully typed, enabling you to benefit from static type checking and IDE autocomplete features for enhanced development efficiency.
 
 ## Tooling
 
@@ -90,3 +103,5 @@ Now that you've bootstrapped your app, you can dive into the documentation for t
   [react-dom](https://www.npmjs.com/package/react-dom) >= 18.0.0 are peer
   dependencies for `@marigold/components`.
 </Message>
+
+After you added the theme to your project, wrap your app with the `MarigoldProvider` and import the . This allows Marigold's component to access styles
