@@ -1,38 +1,61 @@
 ---
 title: Getting Started
-caption: This page describes how to get started building an application with Marigold.
+caption: How to setup and get started with Marigold.
 order: 1
 ---
 
-## Installation
+To integrate Marigold into your React app, follow the steps outlined below. Marigold provides a wide range of pre-designed UI components. However, Marigold's components come with no styling by default. To ensure a perfect fit with your product's appearance, you must also install one of the predefined themes.
 
-To install Marigold you can use any common package managers like [yarn](https://yarnpkg.com/) [pnpm](https://pnpm.io/) or [npm](https://www.npmjs.com/).
+Please bear in mind that certain steps may vary depending on your specific setup. You can find examples for the most common setups down below.
 
-**With npm:**
-
-```bash
-npm install @marigold/components --save
-```
-
-**With yarn:**
-
-```bash
-yarn add @marigold/components
-```
-
-**With pnpm:**
-
-```bash
-pnpm add @marigold/components
-```
-
-In addition to the components, you usually want to install an existing [theme](/introduction/theming).
-
-<Message messageTitle="Note" variant="info">
-  Please note that [react](https://www.npmjs.com/package/react) >= 17.0.0 and
-  [react-dom](https://www.npmjs.com/package/react-dom) >= 17.0.0 are peer
-  dependencies for `@marigold/components`.
+<Message messageTitle="Good to know!" variant="info">
+  Experience Marigold right away by trying it out in our [interactive
+  playground](https://play.marigold-ui.io/)!
 </Message>
+
+## 1. Installation
+
+Begin by instaling the core Marigold package (`@marigold/components`) into your app using your preferred package manager. This package is always required, regardless of the theme you choose to apply later.
+
+Execute the following command in your project's directory:
+
+<Tabs>
+  <Tabs.Item key="npm" title="npm">
+
+    {/* prettier-ignore */}
+    ```bash
+    npm install @marigold/components --save
+    ```
+
+  </Tabs.Item>
+  <Tabs.Item key="pnpm" title="pnpm">
+
+    {/* prettier-ignore */}
+    ```bash
+    pnpm add @marigold/components
+    ```
+
+  </Tabs.Item>
+  <Tabs.Item key="yarn" title="yarn">
+
+    {/* prettier-ignore */}
+    ```bash
+    yarn add @marigold/components
+    ```
+
+  </Tabs.Item>
+</Tabs>
+
+## 2. Apply a Theme
+
+As mentioned earlier, Marigold components come without any styles by default. To customize their appearance, you can choose from the existing themes listed below:
+
+- **b2b:** Ideal for developing new standalone software applications.
+- **core:** Suitable for developing or refactoring components within the Reservix System.
+
+Selecting a theme will help you effortlessly apply a specific look and feel to the Marigold components in your project.
+
+To add an existing
 
 ## Tooling
 
@@ -63,3 +86,9 @@ See the [Provider](../components/provider) and [Button](../components/button) do
 ## Next Steps
 
 Now that you've bootstrapped your app, you can dive into the documentation for the available components to understand them in detail read about our principles to learn what drove our decision and which contrains come with our approach.
+
+<Message messageTitle="Note" variant="info">
+  Please note that [react](https://www.npmjs.com/package/react) >= 18.0.0 and
+  [react-dom](https://www.npmjs.com/package/react-dom) >= 18.0.0 are peer
+  dependencies for `@marigold/components`.
+</Message>
