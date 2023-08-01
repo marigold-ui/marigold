@@ -1,5 +1,5 @@
 <p align="center"> 
-  <img width="494" align="center" alt="type_logo" src="https://raw.githubusercontent.com/marigold-ui/marigold/45a5ac5c3ef740a5698958f2a3244743ef9b3338/Marigold-Logo.svg">
+  <img width="494" align="center" alt="type_logo" src="blob:https://reservix.atlassian.net/09adfe1d-e0ae-4333-b815-f565718276cd">
 </p>
 <br>
 <br>
