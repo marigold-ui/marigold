@@ -9,6 +9,7 @@ export const Input: ThemeComponent<'Input'> = {
     inputBox,
     inputHeight,
     inputSpacing,
+    '[&[type=file]]:leading-[16px]',
     'leading-[22px]',
     'focus:outline-outline-focus -outline-offset-1 focus:outline focus:outline-2',
     'disabled:bg-bg-disabled disabled:border-border-disabled disabled:text-text-disabled',
