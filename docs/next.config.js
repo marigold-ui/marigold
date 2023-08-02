@@ -23,6 +23,11 @@ const nextConfig = {
         destination: '/introduction/getting-started',
         permanent: true,
       },
+      {
+        source: '/components',
+        destination: '/components/provider',
+        permanent: true,
+      },
     ];
   },
 };

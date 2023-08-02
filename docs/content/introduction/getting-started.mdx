@@ -64,44 +64,131 @@ Once you have decided on a theme, proceed to install it using your preferred pac
 
 Marigold effortlessly integrates with popular bundlers such as [webpack](https://webpack.js.org/), [rollup](https://rollupjs.org/), [esbuild](https://esbuild.github.io/), and [vite](https://vitejs.dev/), as well as frameworks like [Next.js](https://nextjs.org/), without requiring any additional configurations.
 
--> we suggest nextjs, not CRA
+That being said, we strongly recommend adhering to the guidance provided by the React Team. If you are creating a new app or a site entirely with React, it is advisable to use a framework. You can find more details about this recommendation in the [React
+docs](https://react.dev/learn/start-a-new-react-project).
 
-If you are using TypeScript, ensure that you add `@types/react` and `@react/types-dom` to your project. Marigold's components are fully typed, enabling you to benefit from static type checking and IDE autocomplete features for enhanced development efficiency.
+Furthermore, if you are using TypeScript, ensure that you add `@types/react` and `@react/types-dom` to your project. Marigold's components are fully typed, enabling you to benefit from static type checking and IDE autocomplete features for enhanced development efficiency.
 
-## Tooling
+## 4. Bootstrapping
 
-_Marigold_ works with popular build tools, like [webpack](https://webpack.js.org/), [rollup](https://rollupjs.org/) and [esbuild](https://esbuild.github.io/).
+To set up Marigold in your project, you have two options based on the scale and needs of your app. Regardless of the chosen setup, it is essential to add the `MarigoldProvider` to your application's root. This ensures that components can access the theme and apply their corresponding styles.
 
-If you are using [TypeScript](https://www.typescriptlang.org/) to build your app, be sure to add [@types/react](https://www.npmjs.com/package/@types/react) and [@types/react-dom](https://www.npmjs.com/package/@types/react-dom) to your project. _Marigold_ is written in TypeScript and Marigold components are published with their type definitions so that you can take advantage of static type checking and IDE autocomplete.
+### Using the provided CSS file
 
-## Bootstrapping
-
-For _Marigold_ to work correctly, you need to wrap your app with the `MarigoldProvider`. This way _Marigold_ components will be able to access styles and SSR will work out of the box.
+The easiest way to start is by using the provided CSS file that comes with each theme. While this method allows for a quick start, it does not offer customization options beyond using the provided design tokens. This setup is sufficient for smaller and simpler applications.
 
 ```jsx
-import React from 'react';
-import { Button, MarigoldProvider } from '@marigold/components';
+/**
+ * 1. Import the CSS file and theme
+ */
+import '@marigold/theme-b2b/index.css';
 import theme from '@marigold/theme-b2b';
 
-const App = () => (
-  <MarigoldProvider theme={theme}>
-    <Button variant="primary" onClick={() => alert('Hey there!')}>
-      Hello World
-    </Button>
-  </MarigoldProvider>
+/**
+ * 2. Import the MarigoldProvider
+ */
+import { MarigoldProvider } from '@marigold/components';
+
+/**
+ * 3. Wrap your app into the MarigoldProvider
+ *    and pass it the selected theme
+ */
+export const App = () => (
+  <MarigoldProvider theme={theme}>{/* Your App */}}</MarigoldProvider>
 );
 ```
 
-See the [Provider](../components/provider) and [Button](../components/button) docs for more information about the components used in this example.
+### Using Tailwind CSS
+
+However, if you want to maximize the benefits of Marigold, you should install Tailwind CSS alongside Marigold. This combination not only enables customization and extension of the selected theme but also allows you to take full advantage of Tailwind's features while staying true to our design system.
+
+To set up Tailwind CSS, please refer to the official [installation guide](https://tailwindcss.com/docs/installation). Once you have completed the installation, add the chosen theme as a preset to the Tailwind CSS config, as shown below:
+
+```ts
+import { Config } from 'tailwindcss/types/config';
+// If you are using another theme, change the name accordingly
+import { preset } from '@marigold/theme-b2b/preset';
+
+const config: Config = {
+  content: [
+    // Dont forget to add the glob for your app here
+    ...preset.content,
+  ],
+  presets: [preset],
+};
+
+export default config;
+```
+
+After configuring Tailwind CSS and adding the preset, wrap your app with the MarigoldProvider. Unlike before, you no longer have to import the CSS file of the selected theme separately.
+
+Tailwind CSS will automatically generate the required CSS for you. However, remember to import the generated CSS file somewhere in your project. Depending on your setup, this is typically done in the root file where you bootstrap React or, in case of Next.js in our root [layout file](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#layouts).
+
+```jsx
+/**
+ * 1. Import the CSS file and theme
+ */
+import theme from '@marigold/theme-b2b';
+
+/**
+ * 2. Import the MarigoldProvider
+ */
+import { MarigoldProvider } from '@marigold/components';
+
+/**
+ * 3. Wrap your app into the MarigoldProvider
+ *    and pass it the selected theme
+ */
+export const App = () => (
+  <MarigoldProvider theme={theme}>{/* Your App */}}</MarigoldProvider>
+);
+```
+
+### Adding Fonts
+
+Certain themes, such as the B2B theme, are designed to utilize custom web fonts. To incorporate these fonts, you have two options:
+
+1. Use [Font Source](https://fontsource.org/) to add them.
+2. If you are using Next.js, take advantage of `next/font`, which not only takes care of loading the font but also optimizes the used fonts. You can find more information on loading custom web fonts in Next.js [here](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts).
+
+To load the Inter font with Font Source when using with the B2B theme, you can follow the steps below:
+
+First, add the font as a dependency to your project:
+
+<Tabs>
+  <Tabs.Item key="npm" title="npm">
+
+    {/* prettier-ignore */}
+    ```bash
+    npm install @fontsource-variable/inter --save
+    ```
+
+  </Tabs.Item>
+  <Tabs.Item key="pnpm" title="pnpm">
+
+    {/* prettier-ignore */}
+    ```bash
+    pnpm add @fontsource-variable/inter
+    ```
+
+  </Tabs.Item>
+  <Tabs.Item key="yarn" title="yarn">
+
+    {/* prettier-ignore */}
+    ```bash
+    yarn add @fontsource-variable/inter
+    ```
+
+  </Tabs.Item>
+</Tabs>
+
+Afterwards, import the package into your project.
+
+```js
+// Supports weights 100-900
+import '@fontsource-variable/inter';
+```
 
 ## Next Steps
 
-Now that you've bootstrapped your app, you can dive into the documentation for the available components to understand them in detail read about our principles to learn what drove our decision and which contrains come with our approach.
-
-<Message messageTitle="Note" variant="info">
-  Please note that [react](https://www.npmjs.com/package/react) >= 18.0.0 and
-  [react-dom](https://www.npmjs.com/package/react-dom) >= 18.0.0 are peer
-  dependencies for `@marigold/components`.
-</Message>
-
-After you added the theme to your project, wrap your app with the `MarigoldProvider` and import the . This allows Marigold's component to access styles
+Now that you've bootstrapped your app, you can dive into the documentation to [explore the available components](/components) in detail. Additionally, you can read about our principles to understand the driving factors behind our decisions and the constraints associated with our approach.
