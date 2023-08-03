@@ -12,7 +12,7 @@ import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
 import { SpaceSVG } from './SpaceSVG';
 import { ColorTokenTable } from './TokensTable';
-import { BorderRadius, Headlines } from './Token';
+import { BorderRadius, Headlines, FontSizes } from './Token';
 
 // Typography
 // ---------------
@@ -86,6 +86,7 @@ const components = {
   SpaceSVG,
   BorderRadius,
   Headlines,
+  FontSizes,
 };
 
 // Props

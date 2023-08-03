@@ -7,6 +7,7 @@ import {
   Text,
   Table,
   Theme,
+  textSize,
 } from '@/ui';
 import { useThemeSwitch } from './ThemeSwitch';
 
@@ -23,44 +24,68 @@ export const Headlines = () => {
     return null;
   }
 
-  Object.entries(headline?.size).map(([key, value]) => console.log(value));
-
   return (
-    <>
-      <Headline level="3">Headlines</Headline>
-      <Card>
-        <div className="overflow-auto">
-          <Table aria-labelledby="typography table" variant="colorTable">
-            <Table.Header>
-              <Table.Column key={'level'}>Level</Table.Column>
-              <Table.Column key={'example'}>Example</Table.Column>
-              <Table.Column key={'size'}>Styles</Table.Column>
-            </Table.Header>
-            <Table.Body>
-              {Object.entries(headline?.size).map(([level, value]) => (
-                <Table.Row>
-                  <Table.Cell>{level}</Table.Cell>
-                  <Table.Cell>
-                    <div data-theme={current}>
-                      <MarigoldProvider
-                        theme={(current && themes[current]) as Theme}
-                      >
-                        <div className="align-center flex bg-white">
-                          <Headline size={level}>
-                            Discover the Beauty of Marigold
-                          </Headline>
-                        </div>
-                      </MarigoldProvider>
-                    </div>
-                  </Table.Cell>
-                  <Table.Cell>{value?.toString()}</Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-        </div>
-      </Card>
-    </>
+    <Card>
+      <div className="overflow-auto">
+        <Table aria-labelledby="typography table" variant="colorTable">
+          <Table.Header>
+            <Table.Column key={'level'}>Level</Table.Column>
+            <Table.Column key={'example'}>Example</Table.Column>
+            <Table.Column key={'size'}>Styles</Table.Column>
+          </Table.Header>
+          <Table.Body>
+            {Object.entries(headline?.size).map(([level, value]) => (
+              <Table.Row key={level}>
+                <Table.Cell>{level}</Table.Cell>
+                <Table.Cell>
+                  <div data-theme={current}>
+                    <MarigoldProvider
+                      theme={(current && themes[current]) as Theme}
+                    >
+                      <div className="align-center flex bg-white">
+                        <Headline size={level}>
+                          Discover the Beauty of Marigold
+                        </Headline>
+                      </div>
+                    </MarigoldProvider>
+                  </div>
+                </Table.Cell>
+                <Table.Cell>{value?.toString()}</Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
+    </Card>
+  );
+};
+
+export const FontSizes = () => {
+  return (
+    <Card>
+      <div className="overflow-auto">
+        <Table aria-labelledby="typography table" variant="colorTable">
+          <Table.Header>
+            <Table.Column key={'name'}>Name</Table.Column>
+            <Table.Column key={'value'}>Value</Table.Column>
+            <Table.Column key={'example'}>Example</Table.Column>
+          </Table.Header>
+          <Table.Body>
+            {Object.entries(textSize).map(([key, value]) => (
+              <Table.Row key={key}>
+                <Table.Cell>{key}</Table.Cell>
+                <Table.Cell>{value}</Table.Cell>
+                <Table.Cell>
+                  <Text fontSize={key}>
+                    Marigolds bloom with vibrant colors.
+                  </Text>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
+    </Card>
   );
 };
 
