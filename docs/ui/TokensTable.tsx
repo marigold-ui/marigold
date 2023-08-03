@@ -69,7 +69,7 @@ export const ColorTokenTable = ({ sections = {} }: ColorTokenTableProps) => {
                       </code>
                     </Table.Cell>
                     <Table.Cell>
-                      <ColorCanvas color={color} />{' '}
+                      <ColorCanvas color={color} />
                     </Table.Cell>
                   </Table.Row>
                 ))}

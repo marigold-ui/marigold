@@ -1,4 +1,68 @@
-import { Card, Inline, Stack, Text } from '@/ui';
+import {
+  Card,
+  Headline,
+  Inline,
+  MarigoldProvider,
+  Stack,
+  Text,
+  Table,
+  Theme,
+} from '@/ui';
+import { useThemeSwitch } from './ThemeSwitch';
+
+export const Headlines = () => {
+  const { current, themes } = useThemeSwitch();
+
+  if (!current) {
+    return null;
+  }
+
+  const headline = themes[current].components.Headline?.variants || undefined;
+
+  if (!headline) {
+    return null;
+  }
+
+  Object.entries(headline?.size).map(([key, value]) => console.log(value));
+
+  return (
+    <>
+      <Headline level="3">Headlines</Headline>
+      <Card>
+        <div className="overflow-auto">
+          <Table aria-labelledby="typography table" variant="colorTable">
+            <Table.Header>
+              <Table.Column key={'level'}>Level</Table.Column>
+              <Table.Column key={'example'}>Example</Table.Column>
+              <Table.Column key={'size'}>Styles</Table.Column>
+            </Table.Header>
+            <Table.Body>
+              {Object.entries(headline?.size).map(([level, value]) => (
+                <Table.Row>
+                  <Table.Cell>{level}</Table.Cell>
+                  <Table.Cell>
+                    <div data-theme={current}>
+                      <MarigoldProvider
+                        theme={(current && themes[current]) as Theme}
+                      >
+                        <div className="align-center flex bg-white">
+                          <Headline size={level}>
+                            Discover the Beauty of Marigold
+                          </Headline>
+                        </div>
+                      </MarigoldProvider>
+                    </div>
+                  </Table.Cell>
+                  <Table.Cell>{value?.toString()}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </div>
+      </Card>
+    </>
+  );
+};
 
 export const BorderRadius = () => (
   <Card>
