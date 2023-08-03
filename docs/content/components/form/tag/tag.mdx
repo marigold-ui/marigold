@@ -1,6 +1,5 @@
 ---
 title: Tag
-group: Form
 caption: Component for categorize content
 ---
 
@@ -15,6 +14,10 @@ To import the component you just have to use this code below.
 ```tsx
 import { Tag } from '@marigold/components';
 ```
+
+### Appearance
+
+<AppearanceTable component={title} />
 
 ### Group props
 
@@ -46,9 +49,9 @@ import { Tag } from '@marigold/components';
     },
     {
       property: 'width',
-      type: 'string',
-      description: 'Set the width of the select.',
-      default: '100%',
+      type: 'string | number',
+      description: `Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
+      default: 'full',
     },
     {
       property: 'allowsRemoving',

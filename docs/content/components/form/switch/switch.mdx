@@ -1,6 +1,5 @@
 ---
 title: Switch
-group: Form
 caption: Component that switches between two states.
 ---
 
@@ -21,6 +20,10 @@ To import the component you just have to use this code below.
 import { Switch } from '@marigold/components';
 ```
 
+### Appearance
+
+<AppearanceTable component={title} />
+
 ### Props
 
 <PropsTable
@@ -39,9 +42,9 @@ import { Switch } from '@marigold/components';
     },
     {
       property: 'width',
-      type: 'string',
-      description: 'Control the width of the field.',
-      default: '100%',
+      type: 'string | number',
+      description: `Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
+      default: 'full',
     },
     {
       property: 'defaultSelected',

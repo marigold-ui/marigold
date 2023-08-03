@@ -1,7 +1,6 @@
 ---
 title: Checkbox
 caption: Component to select one or more options.
-group: Form
 ---
 
 The `<Checkbox>` component allows users to select one or more options from a set of options. In order to group multiple checkboxes, use the `<CheckboxGroup>` component.
@@ -37,9 +36,9 @@ import { Checkbox, CheckboxGroup } from '@marigold/components';
     },
     {
       property: 'width',
-      type: 'string',
-      description: 'Control the width of the field.',
-      default: '100%',
+      type: 'string | number',
+      description: `Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
+      default: 'full',
     },
     {
       property: 'defaultChecked',
