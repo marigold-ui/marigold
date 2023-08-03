@@ -98,3 +98,11 @@ export const WithIcons: Story = {
     />
   ),
 };
+
+export const FileInput: Story = {
+  render: args => <Input placeholder="Placeholder..." {...args} type="file" />,
+};
+
+export const ColorPicker: Story = {
+  render: args => <Input placeholder="Placeholder..." {...args} type="color" />,
+};
