@@ -12,6 +12,7 @@ import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
 import { SpaceSVG } from './SpaceSVG';
 import { ColorTokenTable } from './TokensTable';
+import { BorderRadius } from './Token';
 
 // Typography
 // ---------------
@@ -83,6 +84,7 @@ const components = {
   PropsTable,
   ColorTokenTable,
   SpaceSVG,
+  BorderRadius,
 };
 
 // Props
