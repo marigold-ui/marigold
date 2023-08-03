@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, Table, createVar } from '@/ui';
+import { Card, Headline, Table, createVar } from '@/ui';
 import { useThemeSwitch } from './ThemeSwitch';
 import type { ReactNode } from 'react';
 
@@ -43,48 +43,42 @@ export const ColorTokenTable = ({ sections = {} }: ColorTokenTableProps) => {
     sections[section].push([token, color]);
   });
 
-  // Object.keys(sections).map((a, b, c) =>
-  //   sections[a].map((d, f) => console.log(d))
-  // );
-
-  [sections].map((token, color) => console.log(token));
-
   return (
-    <Card>
-      <>
-        <div>
-          {Object.entries(sections).map(([group, tokenValues]) => (
-            <>
-              <h2>{group}</h2>
-              <Table aria-labelledby="tokens table" variant="colorTable">
-                <Table.Header>
-                  <Table.Column key={'name'}>Name</Table.Column>
-                  <Table.Column key={'value'}>Value</Table.Column>
-                  <Table.Column key={'example'}>Example</Table.Column>
-                </Table.Header>
-                <Table.Body>
-                  {tokenValues.map(([token, color]) => (
-                    <Table.Row>
-                      <Table.Cell>
-                        <code>{token.replace('-DEFAULT', '')}</code>
-                      </Table.Cell>
-                      <Table.Cell>
-                        <code>{color}</code>
-                      </Table.Cell>
-                      <Table.Cell>
-                        {' '}
-                        <ColorCanvas color={color} />{' '}
-                      </Table.Cell>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table>
-              <div></div>
-            </>
-          ))}
-        </div>
-      </>
-    </Card>
+    <>
+      {Object.entries(sections).map(([group, tokenValues]) => (
+        <>
+          <Headline level="3">{group}</Headline>
+          <Card>
+            <Table aria-labelledby="tokens table" variant="colorTable">
+              <Table.Header>
+                <Table.Column key={'name'}>Name</Table.Column>
+                <Table.Column key={'value'}>Value</Table.Column>
+                <Table.Column key={'example'}>Example</Table.Column>
+              </Table.Header>
+              <Table.Body>
+                {tokenValues.map(([token, color]) => (
+                  <Table.Row>
+                    <Table.Cell>
+                      <code className="before:content-none after:content-none">
+                        {token.replace('-DEFAULT', '')}
+                      </code>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <code className="before:content-none after:content-none">
+                        {color}
+                      </code>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <ColorCanvas color={color} />{' '}
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
+          </Card>
+        </>
+      ))}
+    </>
   );
 };
 
