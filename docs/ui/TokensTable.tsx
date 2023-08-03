@@ -1,36 +1,61 @@
 'use client';
 
-import { Card, Table, Theme, createVar } from '@/ui';
+import { Card, Table, createVar } from '@/ui';
 import { useThemeSwitch } from './ThemeSwitch';
 import type { ReactNode } from 'react';
 
-export interface TokensTableProps {
-  colors: keyof Theme['colors'];
+interface NestedStringObject {
+  [key: string]: NestedStringObject | string;
 }
 
-export const ColorTokenTable = ({ colors }: TokensTableProps) => {
+export const iterateTokens = (colors: NestedStringObject, prefix = '') => {
+  let list: [token: string, color: string][] = [];
+
+  for (const key in colors) {
+    let value = colors[key];
+    if (typeof value === 'object') {
+      list.push(...iterateTokens(value, `${prefix}${key}-`));
+    } else {
+      list.push([`${prefix}${key}`, value]);
+    }
+  }
+  return list;
+};
+
+interface ColorTokenTableProps {
+  sections: { [group: string]: [token: string, color: string][] };
+}
+export const ColorTokenTable = ({ sections = {} }: ColorTokenTableProps) => {
   const { current, themes } = useThemeSwitch();
 
   if (!current) {
     return null;
   }
 
-  const items = Object.entries(themes[current].colors || {});
+  const tokens = iterateTokens(themes[current].colors || {});
 
-  //Object.entries(values).map(([token, value]) => ())
+  tokens.forEach(([token, color]) => {
+    const section = token.substring(0, token.indexOf('-')) || token;
+    // When the section is not yet created
+    if (!sections[section]) {
+      sections[section] = [];
+    }
+    sections[section].push([token, color]);
+  });
 
-  //   items.map(([key, value]) => console.log(Object.keys(value)));
+  // Object.keys(sections).map((a, b, c) =>
+  //   sections[a].map((d, f) => console.log(d))
+  // );
 
-  // TO do: make it better and get the values correctly
+  [sections].map((token, color) => console.log(token));
 
   return (
-    <div>
-      <Card>
-        {items.map(([key, values]) => {
-          return (
+    <Card>
+      <>
+        <div>
+          {Object.entries(sections).map(([group, tokenValues]) => (
             <>
-              <h2>{key}</h2>
-              {/* here some infos about the color type e.g. brand colors are used for blablablas */}
+              <h2>{group}</h2>
               <Table aria-labelledby="tokens table" variant="colorTable">
                 <Table.Header>
                   <Table.Column key={'name'}>Name</Table.Column>
@@ -38,36 +63,31 @@ export const ColorTokenTable = ({ colors }: TokensTableProps) => {
                   <Table.Column key={'example'}>Example</Table.Column>
                 </Table.Header>
                 <Table.Body>
-                  {Object.entries(values).map(([token, value]) => (
-                    <Table.Row key={token}>
+                  {tokenValues.map(([token, color]) => (
+                    <Table.Row>
                       <Table.Cell>
-                        <code>
-                          {key}.{token}
-                        </code>
+                        <code>{token.replace('-DEFAULT', '')}</code>
                       </Table.Cell>
                       <Table.Cell>
-                        <code>
-                          <span>{JSON.stringify(value)}</span>
-                        </code>
+                        <code>{color}</code>
                       </Table.Cell>
                       <Table.Cell>
-                        <ColorCanvas color={value}>
-                          {key}.{token}
-                        </ColorCanvas>
+                        {' '}
+                        <ColorCanvas color={color} />{' '}
                       </Table.Cell>
                     </Table.Row>
                   ))}
                 </Table.Body>
               </Table>
+              <div></div>
             </>
-          );
-        })}
-      </Card>
-    </div>
+          ))}
+        </div>
+      </>
+    </Card>
   );
 };
 
-// to do change type
 export interface ColorCanvasProps {
   children?: ReactNode;
   color: any;
@@ -75,7 +95,7 @@ export interface ColorCanvasProps {
 
 export const ColorCanvas = ({ children, color }: ColorCanvasProps) => (
   <div
-    className="w-full rounded-sm bg-[var(--bg)] p-4"
+    className="w-20 rounded-sm bg-[var(--bg)] p-4"
     style={createVar({ bg: color })}
   >
     {children}

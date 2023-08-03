@@ -5,7 +5,7 @@ export const Table: ThemeComponent<'Table'> = {
   cell: cva(' mt-4 hyphens-auto px-1 py-2 text-sm', {
     variants: {
       variant: {
-        colorTable: 'p-4',
+        colorTable: 'p-4 align-middle',
       },
     },
   }),
