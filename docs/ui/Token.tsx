@@ -115,7 +115,11 @@ export const Breakpoints = () => {
           <Table.Body>
             {Object.entries(breaks).map(([key, value]) => (
               <Table.Row key={key}>
-                <Table.Cell>{key}</Table.Cell>
+                <Table.Cell>
+                  <code className="before:content-none after:content-none">
+                    {key}
+                  </code>
+                </Table.Cell>
                 <Table.Cell>{value}</Table.Cell>
               </Table.Row>
             ))}
@@ -140,7 +144,11 @@ export const Spacing = () => {
           <Table.Body>
             {Object.entries(spaces).map(([key]) => (
               <Table.Row key={key}>
-                <Table.Cell>{key}</Table.Cell>
+                <Table.Cell>
+                  <code className="before:content-none after:content-none">
+                    {key}
+                  </code>
+                </Table.Cell>
                 <Table.Cell>
                   <div
                     className={cn(
