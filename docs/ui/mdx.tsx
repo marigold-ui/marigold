@@ -5,14 +5,21 @@ import { useMDXComponent } from 'next-contentlayer/hooks';
 
 import { IconList } from '@/ui/IconList';
 
-import { Headline, Message, Link, Text } from './';
+import { Headline, Message, Link, Tabs, Text } from './';
 import { AppearanceTable } from './AppearanceTable';
 import { PropsTable } from './PropsTable';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
 import { SpaceSVG } from './SpaceSVG';
 import { ColorTokenTable } from './TokensTable';
-import { BorderRadius, Headlines, FontSizes } from './Token';
+import { BorderRadius } from './Token';
+import {
+  Headlines,
+  FontSizes,
+  FontWeights,
+  FontStyle,
+  TextAlign,
+} from './Typography';
 
 // Typography
 // ---------------
@@ -78,6 +85,7 @@ const components = {
   ComponentDemo,
   Headline,
   Message,
+  Tabs,
   Text,
   IconList,
   AppearanceTable,
@@ -87,6 +95,9 @@ const components = {
   BorderRadius,
   Headlines,
   FontSizes,
+  FontWeights,
+  FontStyle,
+  TextAlign,
 };
 
 // Props
