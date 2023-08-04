@@ -9,19 +9,14 @@ import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
 import { Item } from '@react-stately/collections';
 import { TabContext } from './Context';
+import { ItemProps } from '@react-types/shared';
 
-interface TabsProps
-  extends Omit<AriaTabListProps<object>, 'orientation' | 'isDisabled'>,
-    GapSpaceProp {
-  size?: 'small' | 'medium' | 'large';
-  disabled?: boolean;
-  variant?: string;
-}
-export const Tabs = ({
+export const Tabs: Tabs = ({
   space = 2,
   size = 'medium',
   disabled,
   variant,
+  className,
   ...rest
 }: TabsProps) => {
   const ref = useRef(null);
@@ -38,21 +33,42 @@ export const Tabs = ({
     size,
     variant,
   });
-
   return (
     <TabContext.Provider value={{ classNames }}>
-      <div
-        className={cn('flex', gapSpace[space], classNames.tabs)}
-        {...tabListProps}
-        ref={ref}
-      >
-        {[...state.collection].map(item => {
-          return <Tab key={item.key} item={item} state={state} />;
-        })}
+      {/* tabs container */}
+      <div className={className}>
+        <div
+          className={cn('flex', gapSpace[space], classNames.tabs)}
+          {...tabListProps}
+          ref={ref}
+        >
+          {[...state.collection].map(item => {
+            return <Tab key={item.key} item={item} state={state} />;
+          })}
+        </div>
+        <TabPanel
+          key={state.selectedItem?.key}
+          state={state}
+          className={state.selectedItem?.props?.className}
+        />
       </div>
-      <TabPanel key={state.selectedItem?.key} state={state} />
     </TabContext.Provider>
   );
 };
 
 Tabs.Item = Item;
+
+interface TabsProps
+  extends Omit<AriaTabListProps<object>, 'orientation' | 'isDisabled'>,
+    GapSpaceProp {
+  size?: 'small' | 'medium' | 'large';
+  disabled?: boolean;
+  variant?: string;
+  className?: string;
+}
+
+interface Tabs {
+  (props: TabsProps): JSX.Element;
+  // to add className to <Tabs.Item>
+  Item: (props: ItemProps<any> & { className?: string }) => JSX.Element;
+}
