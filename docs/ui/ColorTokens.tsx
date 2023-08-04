@@ -46,7 +46,7 @@ export const ColorTokenTable = ({ sections = {} }: ColorTokenTableProps) => {
   return (
     <>
       {Object.entries(sections).map(([group, tokenValues]) => (
-        <>
+        <div key={group}>
           <Headline level="3">{group}</Headline>
           <Card>
             <div className="overflow-auto">
@@ -58,7 +58,7 @@ export const ColorTokenTable = ({ sections = {} }: ColorTokenTableProps) => {
                 </Table.Header>
                 <Table.Body>
                   {tokenValues.map(([token, color]) => (
-                    <Table.Row>
+                    <Table.Row key={token}>
                       <Table.Cell>
                         <code className="before:content-none after:content-none">
                           {token.replace('-DEFAULT', '')}
@@ -78,7 +78,7 @@ export const ColorTokenTable = ({ sections = {} }: ColorTokenTableProps) => {
               </Table>
             </div>
           </Card>
-        </>
+        </div>
       ))}
     </>
   );
@@ -86,7 +86,7 @@ export const ColorTokenTable = ({ sections = {} }: ColorTokenTableProps) => {
 
 export interface ColorCanvasProps {
   children?: ReactNode;
-  color: any;
+  color: string;
 }
 
 export const ColorCanvas = ({ children, color }: ColorCanvasProps) => (

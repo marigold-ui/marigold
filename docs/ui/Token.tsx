@@ -6,7 +6,7 @@ export const AlignmentsX = () => {
     <Card>
       <Stack space={3}>
         {Object.entries(alignment.horizontal.alignmentX).map(([key]) => (
-          <div className="h-full bg-[hsl(29,_37%,_95%)] p-2">
+          <div className="h-full bg-[hsl(29,_37%,_95%)] p-2" key={key}>
             <Stack
               alignX={key as keyof typeof alignment.horizontal.alignmentX}
               space={2}
@@ -28,7 +28,7 @@ export const AlignmentsY = () => {
     <Card>
       <Stack space={3}>
         {Object.entries(alignment.vertical.alignmentY).map(([key]) => (
-          <div className="h-44 bg-[hsl(29,_37%,_95%)] p-2">
+          <div className="h-44 bg-[hsl(29,_37%,_95%)] p-2" key={key}>
             <Stack
               stretch
               alignY={key as keyof typeof alignment.vertical.alignmentY}
@@ -113,10 +113,10 @@ export const Breakpoints = () => {
             <Table.Column key={'value'}>Breaks at</Table.Column>
           </Table.Header>
           <Table.Body>
-            {Object.entries(breaks).map(([a, b]) => (
-              <Table.Row>
-                <Table.Cell>{a}</Table.Cell>
-                <Table.Cell>{b}</Table.Cell>
+            {Object.entries(breaks).map(([key, value]) => (
+              <Table.Row key={key}>
+                <Table.Cell>{key}</Table.Cell>
+                <Table.Cell>{value}</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
@@ -139,7 +139,7 @@ export const Spacing = () => {
           </Table.Header>
           <Table.Body>
             {Object.entries(spaces).map(([key]) => (
-              <Table.Row>
+              <Table.Row key={key}>
                 <Table.Cell>{key}</Table.Cell>
                 <Table.Cell>
                   <div

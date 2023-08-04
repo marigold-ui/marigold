@@ -10,7 +10,7 @@ import { AppearanceTable } from './AppearanceTable';
 import { PropsTable } from './PropsTable';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
-import { ColorTokenTable } from './TokensTable';
+import { ColorTokenTable } from './ColorTokens';
 import {
   BorderRadius,
   Breakpoints,
