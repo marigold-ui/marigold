@@ -106,7 +106,7 @@ export const Breakpoints = () => {
 
   return (
     <Card>
-      <Table>
+      <Table aria-label="breakpoints">
         <Table.Header>
           <Table.Column key={'name'}>Name</Table.Column>
           <Table.Column key={'value'}>Breaks at</Table.Column>
