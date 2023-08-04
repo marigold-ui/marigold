@@ -1,4 +1,5 @@
-import { Card, Inline, Stack, alignment } from '@/ui';
+import { Card, Inline, Stack, Table, alignment } from '@/ui';
+import { useThemeSwitch } from './ThemeSwitch';
 
 export const AlignmentsX = () => {
   return (
@@ -93,3 +94,32 @@ export const BorderRadius = () => (
     </Inline>
   </Card>
 );
+
+export const Breakpoints = () => {
+  const { current, themes } = useThemeSwitch();
+
+  if (!current) {
+    return null;
+  }
+
+  const breaks = themes[current].screens || {};
+
+  return (
+    <Card>
+      <Table>
+        <Table.Header>
+          <Table.Column key={'name'}>Name</Table.Column>
+          <Table.Column key={'value'}>Breaks at</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          {Object.entries(breaks).map(([a, b]) => (
+            <Table.Row>
+              <Table.Cell>{a}</Table.Cell>
+              <Table.Cell>{b}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    </Card>
+  );
+};
