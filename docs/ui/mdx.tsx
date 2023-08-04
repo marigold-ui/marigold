@@ -5,7 +5,7 @@ import { useMDXComponent } from 'next-contentlayer/hooks';
 
 import { IconList } from '@/ui/IconList';
 
-import { Headline, Message, Link, Text } from './';
+import { Headline, Message, Link, Text, Tabs } from './';
 import { AppearanceTable } from './AppearanceTable';
 import { PropsTable } from './PropsTable';
 import { ComponentDemo } from './ComponentDemo';
@@ -75,6 +75,7 @@ const components = {
   ComponentDemo,
   Headline,
   Message,
+  Tabs,
   Text,
   IconList,
   AppearanceTable,
