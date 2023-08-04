@@ -10,5 +10,11 @@ export const Table: ThemeComponent<'Table'> = {
     },
   }),
   header: cva('border-b px-4 py-2 text-start'),
-  row: cva('hover:bg-bg-hover/50 border-b'),
+  row: cva('border-b', {
+    variants: {
+      variant: {
+        hover: 'hover:bg-neutral-100/50 ',
+      },
+    },
+  }),
 };

@@ -49,32 +49,34 @@ export const ColorTokenTable = ({ sections = {} }: ColorTokenTableProps) => {
         <>
           <Headline level="3">{group}</Headline>
           <Card>
-            <Table aria-labelledby="tokens table" variant="colorTable">
-              <Table.Header>
-                <Table.Column key={'name'}>Name</Table.Column>
-                <Table.Column key={'value'}>Value</Table.Column>
-                <Table.Column key={'example'}>Example</Table.Column>
-              </Table.Header>
-              <Table.Body>
-                {tokenValues.map(([token, color]) => (
-                  <Table.Row>
-                    <Table.Cell>
-                      <code className="before:content-none after:content-none">
-                        {token.replace('-DEFAULT', '')}
-                      </code>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <code className="before:content-none after:content-none">
-                        {color}
-                      </code>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <ColorCanvas color={color} />
-                    </Table.Cell>
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
+            <div className="overflow-auto">
+              <Table aria-labelledby="tokens table" variant="colorTable">
+                <Table.Header>
+                  <Table.Column key={'name'}>Name</Table.Column>
+                  <Table.Column key={'value'}>Value</Table.Column>
+                  <Table.Column key={'example'}>Example</Table.Column>
+                </Table.Header>
+                <Table.Body>
+                  {tokenValues.map(([token, color]) => (
+                    <Table.Row>
+                      <Table.Cell>
+                        <code className="before:content-none after:content-none">
+                          {token.replace('-DEFAULT', '')}
+                        </code>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <code className="before:content-none after:content-none">
+                          {color}
+                        </code>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <ColorCanvas color={color} />
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+            </div>
           </Card>
         </>
       ))}
@@ -89,7 +91,7 @@ export interface ColorCanvasProps {
 
 export const ColorCanvas = ({ children, color }: ColorCanvasProps) => (
   <div
-    className="w-20 rounded-sm bg-[var(--bg)] p-4"
+    className=" w-20 rounded-sm bg-[var(--bg)] p-4"
     style={createVar({ bg: color })}
   >
     {children}

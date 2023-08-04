@@ -10,9 +10,14 @@ import { AppearanceTable } from './AppearanceTable';
 import { PropsTable } from './PropsTable';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
-import { SpaceSVG } from './SpaceSVG';
 import { ColorTokenTable } from './TokensTable';
-import { BorderRadius, Breakpoints, AlignmentsX, AlignmentsY } from './Token';
+import {
+  BorderRadius,
+  Breakpoints,
+  Spacing,
+  AlignmentsX,
+  AlignmentsY,
+} from './Token';
 import {
   Headlines,
   FontSizes,
@@ -91,7 +96,6 @@ const components = {
   AppearanceTable,
   PropsTable,
   ColorTokenTable,
-  SpaceSVG,
   BorderRadius,
   Headlines,
   FontSizes,
@@ -101,6 +105,7 @@ const components = {
   AlignmentsX,
   AlignmentsY,
   Breakpoints,
+  Spacing,
 };
 
 // Props

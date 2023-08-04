@@ -28,7 +28,7 @@ export const Headlines = () => {
   return (
     <Card>
       <div className="overflow-auto">
-        <Table aria-labelledby="typography table" variant="colorTable">
+        <Table aria-labelledby="typography table">
           <Table.Header>
             <Table.Column key={'level'}>Level</Table.Column>
             <Table.Column key={'example'}>Example</Table.Column>
@@ -43,7 +43,7 @@ export const Headlines = () => {
                     <MarigoldProvider
                       theme={(current && themes[current]) as Theme}
                     >
-                      <div className="align-center flex bg-white">
+                      <div className="align-center flex bg-white ">
                         <Headline size={level}>
                           Discover the Beauty of Marigold
                         </Headline>
@@ -65,7 +65,7 @@ export const FontSizes = () => {
   return (
     <Card>
       <div className="overflow-auto">
-        <Table aria-labelledby="typography table" variant="colorTable">
+        <Table aria-labelledby="typography table">
           <Table.Header>
             <Table.Column key={'name'}>Name</Table.Column>
             <Table.Column key={'value'}>Value</Table.Column>
@@ -98,7 +98,7 @@ export const FontWeights = () => {
   return (
     <Card>
       <div className="overflow-auto">
-        <Table aria-labelledby="typography table" variant="colorTable">
+        <Table aria-labelledby="typography table">
           <Table.Header>
             <Table.Column key={'name'}>Name</Table.Column>
             <Table.Column key={'value'}>Value</Table.Column>
@@ -131,7 +131,7 @@ export const FontStyle = () => {
   return (
     <Card>
       <div className="overflow-auto">
-        <Table aria-labelledby="typography table" variant="colorTable">
+        <Table aria-labelledby="typography table">
           <Table.Header>
             <Table.Column key={'name'}>Name</Table.Column>
             <Table.Column key={'value'}>Value</Table.Column>
@@ -164,7 +164,7 @@ export const TextAlign = () => {
   return (
     <Card>
       <div className="overflow-auto">
-        <Table aria-labelledby="typography table" variant="colorTable">
+        <Table aria-labelledby="typography table">
           <Table.Header>
             <Table.Column key={'name'}>Name</Table.Column>
             <Table.Column key={'value'}>Value</Table.Column>

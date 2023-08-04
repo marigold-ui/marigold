@@ -1,4 +1,4 @@
-import { Card, Inline, Stack, Table, alignment } from '@/ui';
+import { Card, Inline, Stack, Table, alignment, cn, paddingSpace } from '@/ui';
 import { useThemeSwitch } from './ThemeSwitch';
 
 export const AlignmentsX = () => {
@@ -106,20 +106,56 @@ export const Breakpoints = () => {
 
   return (
     <Card>
-      <Table aria-label="breakpoints">
-        <Table.Header>
-          <Table.Column key={'name'}>Name</Table.Column>
-          <Table.Column key={'value'}>Breaks at</Table.Column>
-        </Table.Header>
-        <Table.Body>
-          {Object.entries(breaks).map(([a, b]) => (
-            <Table.Row>
-              <Table.Cell>{a}</Table.Cell>
-              <Table.Cell>{b}</Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+      <div className="overflow-auto">
+        <Table aria-label="breakpoints">
+          <Table.Header>
+            <Table.Column key={'name'}>Name</Table.Column>
+            <Table.Column key={'value'}>Breaks at</Table.Column>
+          </Table.Header>
+          <Table.Body>
+            {Object.entries(breaks).map(([a, b]) => (
+              <Table.Row>
+                <Table.Cell>{a}</Table.Cell>
+                <Table.Cell>{b}</Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
+    </Card>
+  );
+};
+
+export const Spacing = () => {
+  const spaces = paddingSpace;
+
+  return (
+    <Card>
+      <div className="overflow-auto">
+        <Table aria-label="spaces" variant="noHover">
+          <Table.Header>
+            <Table.Column key={'name'}>Name</Table.Column>
+            <Table.Column key={'example'}>Example</Table.Column>
+          </Table.Header>
+          <Table.Body>
+            {Object.entries(spaces).map(([key]) => (
+              <Table.Row>
+                <Table.Cell>{key}</Table.Cell>
+                <Table.Cell>
+                  <div
+                    className={cn(
+                      `pl-${key}`,
+                      ' bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] '
+                    )}
+                  >
+                    <div className="h-3 bg-white"></div>
+                  </div>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
     </Card>
   );
 };
