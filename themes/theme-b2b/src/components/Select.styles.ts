@@ -12,8 +12,8 @@ export const Select: ThemeComponent<'Select'> = {
   icon: cva(),
   select: cva([
     inputBox,
-    inputDisabled,
-    inputFocus,
+    inputDisabled(),
+    inputFocus(),
     inputBackground,
     inputSpacing,
     inputError('data-[error]'),
