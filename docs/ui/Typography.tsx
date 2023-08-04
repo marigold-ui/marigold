@@ -74,10 +74,14 @@ export const FontSizes = () => {
           <Table.Body>
             {Object.entries(textSize).map(([key, value]) => (
               <Table.Row key={key}>
-                <Table.Cell>{key}</Table.Cell>
+                <Table.Cell>
+                  <code className="before:content-none after:content-none">
+                    {key}
+                  </code>
+                </Table.Cell>
                 <Table.Cell>{value}</Table.Cell>
                 <Table.Cell>
-                  <Text fontSize={key}>
+                  <Text fontSize={key as keyof typeof textSize}>
                     Marigolds bloom with vibrant colors.
                   </Text>
                 </Table.Cell>
@@ -103,10 +107,16 @@ export const FontWeights = () => {
           <Table.Body>
             {Object.entries(fontWeight).map(([key, value]) => (
               <Table.Row key={key}>
-                <Table.Cell>{key}</Table.Cell>
+                <Table.Cell>
+                  <code className="before:content-none after:content-none">
+                    {key}
+                  </code>
+                </Table.Cell>
                 <Table.Cell>{value}</Table.Cell>
                 <Table.Cell>
-                  <Text weight={key}>Marigolds bloom with vibrant colors.</Text>
+                  <Text weight={key as keyof typeof fontWeight}>
+                    Marigolds bloom with vibrant colors.
+                  </Text>
                 </Table.Cell>
               </Table.Row>
             ))}
@@ -130,10 +140,14 @@ export const FontStyle = () => {
           <Table.Body>
             {Object.entries(textStyle).map(([key, value]) => (
               <Table.Row key={key}>
-                <Table.Cell>{key}</Table.Cell>
+                <Table.Cell>
+                  <code className="before:content-none after:content-none">
+                    {key}
+                  </code>
+                </Table.Cell>
                 <Table.Cell>{value}</Table.Cell>
                 <Table.Cell>
-                  <Text fontStyle={key}>
+                  <Text fontStyle={key as keyof typeof textStyle}>
                     Marigolds bloom with vibrant colors.
                   </Text>
                 </Table.Cell>
@@ -159,10 +173,16 @@ export const TextAlign = () => {
           <Table.Body>
             {Object.entries(textAlign).map(([key, value]) => (
               <Table.Row key={key}>
-                <Table.Cell>{key}</Table.Cell>
+                <Table.Cell>
+                  <code className="before:content-none after:content-none">
+                    {key}
+                  </code>
+                </Table.Cell>
                 <Table.Cell>{value}</Table.Cell>
                 <Table.Cell>
-                  <Text align={key}>Marigolds bloom with vibrant colors.</Text>
+                  <Text align={key as keyof typeof textAlign}>
+                    Marigolds bloom with vibrant colors.
+                  </Text>
                 </Table.Cell>
               </Table.Row>
             ))}
