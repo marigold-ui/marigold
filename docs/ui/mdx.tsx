@@ -12,11 +12,11 @@ import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
 import { ColorTokenTable } from './ColorTokens';
 import {
+  AlignmentsX,
+  AlignmentsY,
   BorderRadius,
   Breakpoints,
   Spacing,
-  AlignmentsX,
-  AlignmentsY,
 } from './Token';
 import {
   Headlines,
@@ -93,19 +93,19 @@ const components = {
   Tabs,
   Text,
   IconList,
-  AppearanceTable,
-  PropsTable,
-  ColorTokenTable,
-  BorderRadius,
-  Headlines,
-  FontSizes,
-  FontWeights,
-  FontStyle,
-  TextAlign,
   AlignmentsX,
   AlignmentsY,
+  AppearanceTable,
+  BorderRadius,
   Breakpoints,
+  ColorTokenTable,
+  FontSizes,
+  FontStyle,
+  FontWeights,
+  Headlines,
+  PropsTable,
   Spacing,
+  TextAlign,
 };
 
 // Props
