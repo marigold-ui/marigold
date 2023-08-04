@@ -48,13 +48,3 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_HOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-
-      # Deploy Docs
-      - name: Build Docs
-        if: steps.changesets.outputs.published == 'true'
-        run: pnpm build:docs
-      - name: Deploy Docs to Github Pages
-        if: steps.changesets.outputs.published == 'true'
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: docs/out
