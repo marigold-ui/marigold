@@ -9,7 +9,9 @@ export interface PresetConfig {
   preflight?: boolean;
 }
 
-export const preset: Config = createPreset('b2b', {
+type Preset = ReturnType<typeof createPreset>;
+
+export const preset: Preset = createPreset('b2b', {
   // corePlugins: {
   //   preflight: false,
   // },
