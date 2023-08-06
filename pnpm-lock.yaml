@@ -786,10 +786,10 @@ importers:
       '@marigold/system':
         specifier: workspace:*
         version: link:../../packages/system
-    devDependencies:
       '@marigold/theme-preset':
         specifier: workspace:*
         version: link:../../packages/theme-preset
+    devDependencies:
       '@marigold/tsconfig':
         specifier: workspace:*
         version: link:../../config/tsconfig
