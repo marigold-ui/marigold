@@ -1,4 +1,3 @@
-import type { Config } from 'tailwindcss/types/config';
 import { createPreset } from '@marigold/theme-preset';
 
 import { screens } from './screens';
@@ -9,7 +8,7 @@ export interface PresetConfig {
   preflight?: boolean;
 }
 
-type Preset = ReturnType<typeof createPreset>;
+export type Preset = ReturnType<typeof createPreset>;
 
 export const preset: Preset = createPreset('b2b', {
   // corePlugins: {
