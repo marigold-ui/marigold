@@ -1,0 +1,109 @@
+---
+title: Button
+caption: Whenever you need that clicky thing.
+---
+
+The `<Button>` is a common form component, that renders a button element, which allows users to perform an action.
+They have multiple styles for various needs, and are ideal for calling attention to where a user needs to do something in order to move forward in a flow.
+
+The variant and size of the `<Button>` can be added with the `variant` prop. Variants are `primary`, `secondary`, `ghost` and `text`. You can also set the `size`, currently there is just one size available.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Button } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'as',
+      type: 'HTMLElement | MarigoldComponent',
+      description:
+        'Behaves like a HTMLElement or a Marigold component if used.',
+      default: 'none',
+    },
+    {
+      property: 'onPress',
+      type: '(e: PressEvent) => void',
+      description:
+        'Handler that is called when the press is released over the target.',
+      default: 'none',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'Disables the button.',
+      default: 'false',
+    },
+    {
+      property: 'fullWidth',
+      type: 'boolean',
+      description: 'Stretches the button width with full available space.',
+      default: 'false',
+    },
+    {
+      property: '...',
+      type: '',
+      description: 'Yes you can use all regular attributes of button!',
+      default: '',
+    },
+  ]}
+/>
+
+## Examples
+
+### Primary Button
+
+The function of the primary `<Button>` is to achieve the most common or most important goal of the user, it has more visual weight than the secondary `<Button>`. There should not be more than one primary `<Button>` in a screen at the time.
+
+<ComponentDemo file="./button-primary.demo.tsx" />
+
+### Secondary Button
+
+The Secondary `<Button>` is an alternative to the user to the primary `<Button>`. They are used for actions like canceling, skipping, resetting, declining an offer etc.
+
+<ComponentDemo file="./button-secondary.demo.tsx" />
+
+### Ghost Button
+
+Ghost `<Button>` are used for miscellaneous actions, they are important but is not the ones where it is desired that the user focus at the moment.
+
+<ComponentDemo file="./button-ghost.demo.tsx" />
+
+### Suplementary Text Button
+
+The only text `<Button>` can be used in a similar way of a secondary `<Button>`, but they are meant to be less relevant to the user. It is also a good way if you want a `<Button>` that don't really look like one.
+
+<ComponentDemo file="./button-text.demo.tsx" />
+
+### Button with Icon
+
+[Icons](/components/icon/) can be added in order to make clear, what a `<Button>` does. Buttons should not be made only with icons, because every user may understand them on a different way. If you want to have simple icon with a [`<Tooltip>`](/components/tooltip/) you can choose a `<Button>` with an icon.
+
+<ComponentDemo file="./button-icon.demo.tsx" />
+
+### Button Sizes
+
+If there are many actions in one page, is it possible to use small buttons instead of big ones. As well if the page is required to be open on mobile devices.
+Also there is the `fullWidth` property, with that one you can stretch the width of the `<Button>`.
+
+<ComponentDemo file="./button-size.demo.tsx" />
+
+### Button as a Link
+
+Sometimes you want to use an `<a>` tag, instead of a `<button>`, but you still want it to look and behave like a button. This might be the case when you want the user to enable to download a file that is already available via URL. Instead of loading the file on click, you can make use of the [`[download]` attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement/download).
+
+To make this possible, Marigold's `<Button>` component allows to change the rendered element by using the `as` prop, similiar to the [`<Box>`](/components/box/#polymorphic-component) component.
+
+<ComponentDemo file="./button-link.demo.tsx" />

@@ -1,0 +1,88 @@
+---
+title: Switch
+caption: Component that switches between two states.
+---
+
+The `<Switch>` component allows the users to select between two states, e.g. on and off.  
+It consists of a visual selection indicator and a label.
+
+Users may click or touch a Switch to toggle the state, or use the tab key to navigate to it and the space key to toggle it.
+
+The styles are separated into some parts (container, label, thumb, track) that you can style in a custom variant.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Switch } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'Disables the switch.',
+      default: 'false',
+    },
+    {
+      property: 'selected',
+      type: 'boolean',
+      description: 'With this prop you can set the switch selected.',
+      default: 'false',
+    },
+    {
+      property: 'width',
+      type: 'string | number',
+      description: `Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
+      default: 'full',
+    },
+    {
+      property: 'defaultSelected',
+      type: 'boolean',
+      description: 'Set the default selected status of the switch.',
+      default: 'false',
+    },
+    {
+      property: 'readOnly',
+      type: 'boolean',
+      description: 'Set the switch to read only.',
+      default: 'false',
+    },
+  ]}
+/>
+
+## Examples
+
+### Default
+
+In this example you can see a simple `<Switch>` component with no properties.
+
+<ComponentDemo file="./switch-basic.demo.tsx" />
+
+### Active
+
+Here you can see an already active `<Switch>`. It can be used when e.g. settings options are per default set to true.
+
+<ComponentDemo file="./switch-active.demo.tsx" />
+
+### Disabled
+
+In this mode the user can not change the status of the `<Switch>`. It can be used e.g. if you want to disable a certain setting for some users.
+
+<ComponentDemo file="./switch-disabled.demo.tsx" />
+
+### Disabled (active)
+
+This mode can be used when an option is or was already active and there is a variable that does not allow the user switch to be moved from its "on" mode.
+
+<ComponentDemo file="./switch-active-disabled.demo.tsx" />

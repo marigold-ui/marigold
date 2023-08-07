@@ -77,13 +77,11 @@ test('group and stepper can styled via "NumberField" styles', () => {
 });
 
 test('allows to set width via prop', () => {
-  render(<NumberField data-testid="number-field" label="Label" width="huge" />);
+  render(<NumberField data-testid="number-field" label="Label" width="1/2" />);
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
-  expect(container?.className).toMatchInlineSnapshot(
-    `"group/field w-[--fieldWidth]"`
-  );
+  expect(container?.className).toMatchInlineSnapshot(`"group/field w-1/2"`);
 });
 
 test('supports disabled', () => {

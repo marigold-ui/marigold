@@ -13,39 +13,32 @@ interface ContentPageProps {
 
 async function getPageFromParams(params: ContentPageProps['params']) {
   const slug = params?.slug?.join('/');
-  const page = allContentPages.find(page => page.slugAsParams === slug);
-
-  if (!page) {
-    return null;
-  }
-
-  return page;
+  const page = allContentPages.find(page => page.slug === slug);
+  return page || null;
 }
 
 export async function generateMetadata({
   params,
 }: ContentPageProps): Promise<Metadata> {
   const page = await getPageFromParams(params);
-
-  if (!page) {
-    return {};
-  }
-
-  return {
-    title: page.title,
-  };
+  return page
+    ? {
+        title: page.title,
+      }
+    : {};
 }
 
 export async function generateStaticParams(): Promise<
   ContentPageProps['params'][]
 > {
   return allContentPages.map(page => ({
-    slug: page.slugAsParams.split('/'),
+    slug: page.slug.split('/'),
   }));
 }
 
 export default async function ContentPage({ params }: ContentPageProps) {
   const page = await getPageFromParams(params);
+
   if (!page) {
     notFound();
   }

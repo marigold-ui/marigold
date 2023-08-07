@@ -1,0 +1,85 @@
+---
+title: Link
+caption: Component for links
+---
+
+The `<Link>` component creates a hyperlink to web pages, files, email addresses, locations in the same page, or anything else a URL can address.
+The `href` property is required. Additional you can set the `target` property.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Link } from '@marigold/components';
+```
+
+### Apperance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'as',
+      type: 'string, Component',
+      description: '',
+      default: 'a',
+    },
+    {
+      property: 'href (required)',
+      type: 'string',
+      description: 'Hypertext REFerence for your link.',
+      default: '',
+    },
+    {
+      property: 'target',
+      type: '_blank',
+      description: 'The response is displayed in a new window or tab.',
+      default: '',
+    },
+    {
+      property: 'download',
+      type: 'string',
+      description:
+        'The download attribute specifies that the target (the file specified in the href attribute) will be downloaded when a user clicks on the hyperlink.',
+      default: '',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: '',
+      default: 'false',
+    },
+  ]}
+/>
+
+## Examples
+
+### Standard Link
+
+The example shows a standard `<Link>`.
+
+<ComponentDemo file="./link-standard.demo.tsx" />
+
+### Link disabled
+
+This example shows a `<Link>` component with the prop `disabled`.
+
+<ComponentDemo file="./link-disabled.demo.tsx" />
+
+### Anchor Link
+
+This is an example of using an anchor link on the web page. If you want to use an anchor link, you must give the target the same ID (without #) as the href property in the link
+
+<ComponentDemo file="./link-anchor.demo.tsx" />
+
+### Link with target
+
+An example of using the `target` `_blank` property. When the target is blank, the web page opens in a new tab.
+
+<ComponentDemo file="./link-target.demo.tsx" />

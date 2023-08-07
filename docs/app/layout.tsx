@@ -3,13 +3,14 @@ import '@marigold/theme-b2b/index.css';
 import '@marigold/theme-core/index.css';
 
 import { MarigoldProvider } from '@/ui';
+import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
 import { theme, b2bTheme, coreTheme } from '@/theme';
 import { fontSans } from '@/theme/fonts';
 
 import { Analytics } from './_components/Analytics';
 import { Navigation } from './_components/Navigation';
 import { SiteHeader } from './_components/SiteHeader';
-import { MarigoldThemeSwitch } from './_components/ThemeSwitch';
+import { SiteFooter } from './_components/SiteFooter';
 
 // Metadata
 // ---------------
@@ -45,8 +46,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   <Navigation />
                 </aside>
                 <div className="md:pl-60 lg:pl-72">
-                  <main className="max-w-3xl">{children}</main>
-                  <footer>Marigold Footer</footer>
+                  <main>{children}</main>
+                  <SiteFooter />
                 </div>
               </div>
             </div>

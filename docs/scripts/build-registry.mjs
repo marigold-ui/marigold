@@ -17,7 +17,6 @@ import dynamic from 'next/dynamic';
 export const registry = {`;
 
 for (const item of demoPath) {
-  console.log(item);
   const name = basename(item, '.demo.tsx');
   index += `
   '${name}': {
@@ -32,4 +31,4 @@ index += `
 } as const;`;
 
 fs.outputFileSync(path.join(process.cwd(), '.registry/index.tsx'), index);
-console.log('✅ Registry build successfully!');
+console.log(`✅ Successfully built ${demoPath.length} registry items!`);

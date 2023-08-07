@@ -48,6 +48,15 @@ const meta = {
         defaultValue: { summary: 'Something went wrong' },
       },
     },
+    width: {
+      control: {
+        type: 'text',
+      },
+      description: 'Width of the field',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
     required: {
       control: {
         type: 'boolean',

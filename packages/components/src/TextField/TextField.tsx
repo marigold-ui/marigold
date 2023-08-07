@@ -5,7 +5,7 @@ import { useTextField } from '@react-aria/textfield';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import { AriaTextFieldProps } from '@react-types/textfield';
 
-import { useStateProps } from '@marigold/system';
+import { WidthProp, useStateProps } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase';
@@ -37,7 +37,7 @@ export interface TextFieldProps
     Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
   variant?: string;
   size?: string;
-  width?: string;
+  width?: WidthProp['width'];
   value?: string;
   defaultValue?: string;
 }

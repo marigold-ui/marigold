@@ -1,0 +1,70 @@
+---
+title: Inline
+caption: Component to inline elements with spaces.
+---
+
+The `<Inline>` is a responsive layout component. It's inlining element with space between each element. This component uses the spaces from the given theme or a responsive string.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Inline } from '@marigold/components';
+```
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'space',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'Space between the Inline elements.',
+      default: 'none',
+    },
+    {
+      property: 'alignY',
+      type: '`top, center, bottom` ',
+      description: 'Vertical alignment of the items inside the inline element.',
+      default: 'center',
+    },
+    {
+      property: 'alignX',
+      type: '`left, center, right` ',
+      description:
+        'Horizontal alignment of the items inside the inline element.',
+      default: 'left',
+    },
+  ]}
+/>
+
+## Examples
+
+### More than two elements
+
+If you have more than two elements you can use the `<Inline>` component. The elements are arranged according to the space required.
+
+<ComponentDemo file="./inline-elements.demo.tsx" />
+
+### Spacing
+
+The `<Inline>` component can be used to add spacing between elements.
+For this you need the props `space` and you can then place all components inside the `<Inline>` element.
+
+<ComponentDemo file="./inline-spacing.demo.tsx" />
+
+### Nested Inline
+
+`<Inline>` components can also have themselves as component. This can be used to add more spacing within the elements.
+
+<ComponentDemo file="./inline-nested.demo.tsx" />
+
+### Different alignment
+
+If elements need to be positioned differently on their x and y axis, this can be done with the `<Inline>` component.
+In this case one of the following props is given. Either `alignX` or `alignY`.
+
+<ComponentDemo file="./inline-alignments.demo.tsx" />

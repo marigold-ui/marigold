@@ -1,0 +1,90 @@
+---
+title: Tabs
+caption: Component for building tabs.
+---
+
+The `<Tabs>` component allows you to organize and navigate between groups of content that are related and at the same level of hierarchy .
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Tabs } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'isDisabled',
+      type: 'boolean',
+      description: 'Set All TabPanel disabled',
+      default: 'false',
+    },
+    {
+      property: 'defaultSelectedKey',
+      type: 'string',
+      description: 'Set the default selected tab',
+      default: '1',
+    },
+    {
+      property: 'selectedKey',
+      type: 'string',
+      description: 'Choose the selected tab',
+      default: 'defaultSelectedKey',
+    },
+    {
+      property: 'disabledKeys',
+      type: 'Array of keys',
+      description: 'Disable particular tabs',
+      default: 'none',
+    },
+    {
+      property: 'gap',
+      type: 'number',
+      description: 'Preset the space between the tabs',
+      default: '1',
+    },
+    {
+      property: 'keyboardActivation',
+      type: 'automatic | manual',
+      description:
+        'Whether tabs are activated automatically on focus or manually.',
+      default: 'automatic',
+    },
+    {
+      property: 'onSelectionChange',
+      type: '(key: Key) => any',
+      description: 'Callback executed when a new tab is selected.',
+      default: '-',
+    },
+  ]}
+/>
+
+## Examples
+
+### Disabled Tab
+
+A `Tab` can be disabled by setting the `isabledKeys` prop.
+
+<ComponentDemo file="./tabs-disabled.demo.tsx" />
+
+### Tabs with default selected key
+
+You can choose the selected key by setting the `defaultSelectedKEy` prop.
+
+<ComponentDemo file="./tabs-selectedKey.demo.tsx" />
+
+### Large Tabs Controllers
+
+You can change the size of tab controller by setting the `size` prop.
+
+<ComponentDemo file="./tabs-large.demo.tsx" />

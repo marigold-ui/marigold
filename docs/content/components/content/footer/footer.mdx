@@ -1,0 +1,44 @@
+---
+title: Footer
+caption: Structure for contents in a content context..
+---
+
+The `<Footer>` is a content component, like the `<Header>` and `<Body>` and is used to help structure the contents of components.
+
+It's used like the HTML `<footer>` tag.
+
+The `<Footer>` typically contains information about the author of the section, copyright data or links to related documents.
+
+For additional information please read the [MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/footer) or [HMTL Living Standard Doucmentation](https://html.spec.whatwg.org/multipage/sections.html#the-footer-element)
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Footer } from '@marigold/components';
+```
+
+### Apperance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable />
+
+## Examples
+
+### Simple Copyright Example
+
+Simple `<Footer>` example with a copyright notice.
+
+<ComponentDemo file="./copyright-footer.demo.tsx" />
+
+### Footer with Links
+
+The examples shows the `<Footer>` with a list of links inside.
+
+<ComponentDemo file="./list-footer.demo.tsx" />

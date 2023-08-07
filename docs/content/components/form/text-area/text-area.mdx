@@ -1,0 +1,131 @@
+---
+title: TextArea
+caption: Component for enter multiline text.
+---
+
+The `<TextArea>` is a form component which allows user to enter text with a keyboard. It consists of a label, a textarea and a help text. The latter also contains error messages.
+
+It is behaves similar to the [`<TextField>`](/components/text-field/). The properties have the identical behavior as the ones in [`<TextField>`](/components/text-field/).
+
+You can also add all usual properties from the HTML textarea element.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { TextArea } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'label',
+      type: 'ReactNode',
+      description: 'The label text.',
+      default: 'none',
+    },
+    {
+      property: 'description',
+      type: 'ReactNode',
+      description: 'A helpful text.',
+      default: 'none',
+    },
+    {
+      property: 'errorMessage',
+      type: 'ReactNode',
+      description: 'An error message.',
+      default: 'none',
+    },
+    {
+      property: 'error',
+      type: 'boolean',
+      description:
+        'If true, the is considered invalid and if set the errorMessage is shown instead of the description.',
+      default: 'false',
+    },
+    {
+      property: 'value',
+      type: 'string',
+      description: 'The value of the textarea.',
+      default: 'none',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'If true, the textarea is disabled.',
+      default: 'false',
+    },
+    {
+      property: 'required',
+      type: 'boolean',
+      description: 'If true, the textarea is required.',
+      default: 'false',
+    },
+    {
+      property: 'readOnly',
+      type: 'boolean',
+      description: 'If true, the textarea is readOnly.',
+      default: 'false',
+    },
+    {
+      property: 'onChange',
+      type: 'function',
+      description:
+        "A callback function that is called with the textarea's current value when the input value changes.",
+      default: 'none',
+    },
+    {
+      property: 'width',
+      type: 'string | number',
+      description: `Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
+      default: 'full',
+    },
+    {
+      property: 'rows',
+      type: 'number',
+      description: 'Sets the number of rows from the textarea.',
+      default: 'none',
+    },
+    {
+      property: '...',
+      type: '',
+      description: 'Yes you can use all regular attributes of textarea!',
+      default: '',
+    },
+  ]}
+/>
+
+## Examples
+
+### Simple TextArea
+
+In this example you can see how a basic `<TextArea>` can look like.
+
+<ComponentDemo file="./text-area-basic.demo.tsx" />
+
+### Disabled Textarea
+
+If you want to build a disabled `<TextArea>`, you have to add the `disabled` property.
+
+<ComponentDemo file="./text-area-disabled.demo.tsx" />
+
+### Required Textarea
+
+The `required` property adds an required icon to the label. You can also see that the `rows` prop is set to 6 lines.
+
+<ComponentDemo file="./text-area-req.demo.tsx" />
+
+### Error Textarea
+
+The example shows how to set the `error` and `errorMessage` properties. If you fill the texarea correctly, it will disappear automatically.
+
+<ComponentDemo file="./text-area-error.demo.tsx" />

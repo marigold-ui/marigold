@@ -1,0 +1,51 @@
+---
+title: SVG
+caption: SVG wrapper
+---
+
+With the `<SVG>` component you can pass SVG paths in it. It behaves like the usual `<svg>` element.
+
+You can use all known properties from the regular `<svg>` element.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx onlyCode
+import { SVG } from '@marigold/system';
+```
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'size',
+      type: 'number | string | number[] | string[]',
+      description: 'The size of the SVG element.',
+      default: '24',
+    },
+    {
+      property: 'className',
+      type: 'string',
+      description: 'Pass in class names',
+      default: 'none',
+    },
+    {
+      property: '...',
+      type: '',
+      description: 'Yes you can use all regular attributes of svg!',
+      default: '',
+    },
+  ]}
+/>
+
+## Examples
+
+### Simple SVG
+
+In this example you can see how to use the `<SVG>` element.
+
+<ComponentDemo file="./svg.demo.tsx" />

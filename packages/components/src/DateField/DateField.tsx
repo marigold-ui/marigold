@@ -3,7 +3,7 @@ import { useLocale } from '@react-aria/i18n';
 import { useDateFieldState } from '@react-stately/datepicker';
 import { AriaDateFieldProps, useDateField } from '@react-aria/datepicker';
 import { createCalendar, DateValue } from '@internationalized/date';
-import { cn, useClassNames, useStateProps } from '@marigold/system';
+import { WidthProp, cn, useClassNames, useStateProps } from '@marigold/system';
 import { DateSegment } from './DateSegment';
 import { FieldBase } from '../FieldBase';
 import { mergeProps } from '@react-aria/utils';
@@ -31,6 +31,7 @@ export interface DateFieldProps
   required?: boolean;
   variant?: string;
   size?: string;
+  width?: WidthProp['width'];
 }
 
 // Component
@@ -47,6 +48,7 @@ export const DateField = ({
   action,
   isPressed,
   triggerRef,
+  width,
   ...res
 }: DateFieldProps) => {
   const { locale } = useLocale();
@@ -89,7 +91,6 @@ export const DateField = ({
     focus: isFocused || isPressed,
   });
 
-  console.log(readOnly);
   return (
     <FieldBase
       error={error}
@@ -103,6 +104,7 @@ export const DateField = ({
       stateProps={stateProps}
       variant={variant}
       size={size}
+      width={width}
     >
       <div
         {...mergeProps(fieldProps, focusProps, stateProps, hoverProps)}

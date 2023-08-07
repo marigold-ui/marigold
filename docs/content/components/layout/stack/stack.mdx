@@ -1,0 +1,78 @@
+---
+title: Stack
+caption: Component to stack elements.
+---
+
+The `<Stack>` component is a layout component that is there to stack its children. It has a flexbox context similar like the [`<Inline>`](/components/inline/).
+
+The component should be used anywhere were elements are stacked one atop another. It is also possible to nest if needed.
+
+`<Stack>` uses the spaces from the given theme, but you can use [`<Split>`](/components/split/) to add bigger spacing. You can also align the elements horizontal and vertical.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Stack } from '@marigold/components';
+```
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'space',
+      type: 'ResponsiveStyleValue<string>',
+      description: 'Space between the elements.',
+      default: 'none',
+    },
+    {
+      property: 'alignX',
+      type: '`none, left, right, center`',
+      description: 'Horizontal alignment for the children',
+      default: 'none',
+    },
+    {
+      property: 'alignY',
+      type: '`none, top, bottom, center`',
+      description: 'Vertical alignement for the children.',
+      default: 'none',
+    },
+    {
+      property: 'stretch',
+      type: 'boolean',
+      description:
+        'Stretch to fill space (vertical AND horizontal, useful if you want to change y alignment).',
+      default: 'false',
+    },
+  ]}
+/>
+
+## Examples
+
+### Spacing
+
+This example shows how to use the `space` property. You can see the large space between the elements.
+
+<ComponentDemo file="./stack-spacing.demo.tsx" />
+
+### Nested
+
+The `<Stack>` component can also be nested in another `<Stack>`. So you can build complex structures and constructs but without breaking layout.
+
+<ComponentDemo file="./stack-nested.demo.tsx" />
+
+### Horizontal Alignment
+
+The example shows the `alignX` prop, which is used to align the children horizontal. Options are `right`, `center` and `left`. Default is set to `none`.
+
+<ComponentDemo file="./stack-horizontal.demo.tsx" />
+
+### Vertical Alignment
+
+You can use the vertical alignment just with the `stretch` prop when its set to true. The `stretch` property stretches to fill the space of the element. With the vertical align you can align the children on `top`, `center` or `bottom`. Default is set to `none`.
+
+<ComponentDemo file="./stack-vertical.demo.tsx" />

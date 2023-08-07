@@ -1,0 +1,67 @@
+---
+title: Breakout
+caption: Component that breaks out of a grid layout context.
+---
+
+`<Breakout>` is a layout component which lets you span the full row in a CSS grid context e.g. our [`<Container>`](container/) component.
+
+You need this component if you want to display something out of the context. It is also possible to put several components into the `<Breakout>`.
+
+You can use `alignX` or `alignY` to place the items inside the `<Breakout>` element.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Breakout } from '@marigold/components';
+```
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'alignX',
+      type: '"left" | "right" | "center"',
+      description:
+        'Horizontal alignment of the items inside the breakout element.',
+      default: 'left',
+    },
+    {
+      property: 'alignY',
+      type: '"top" | "bottom" | "center"',
+      description:
+        'Vertical alignment of the items inside the breakout element.',
+      default: 'top',
+    },
+    {
+      property: 'height',
+      type: 'string',
+      description: 'Set the height of the breakout element.',
+      default: 'none',
+    },
+  ]}
+/>
+
+## Examples
+
+### Vertical alignment
+
+In this case the `height` prop is necessary, if you haven't set it, the `alignY` has no impact.
+
+<ComponentDemo file="./vertical-breakout.demo.tsx" />
+
+### Horizontal alignment
+
+Example to show how the `alignX` prop is to set. Options are `"left" | "center" | "right"`. The default value is `left`.
+
+<ComponentDemo file="./horizontal-breakout.demo.tsx" />
+
+### Breakout iframe
+
+This example shows how to use an `<iframe>` within a `<Breakout>`.
+
+<ComponentDemo file="./iframe-breakout.demo.tsx" />

@@ -3,7 +3,7 @@ import { Card, MarigoldProvider, Tabs } from './marigold';
 import { type Theme } from '@marigold/system';
 
 import { registry } from '@/registry';
-import { useThemeSwitch } from '@/app/_components/ThemeSwitch';
+import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
 // Props
 // ---------------

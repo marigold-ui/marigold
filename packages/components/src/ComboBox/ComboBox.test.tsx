@@ -81,9 +81,7 @@ test('supports width classname', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
-  expect(container?.className).toMatchInlineSnapshot(
-    `"group/field w-[--fieldWidth]"`
-  );
+  expect(container?.className).toMatchInlineSnapshot(`"group/field w-full"`);
 });
 
 test('supports classnames', () => {
@@ -108,9 +106,7 @@ test('supports classnames', () => {
   expect(button.className).toMatchInlineSnapshot(
     `"inline-flex items-center justify-center gap-[0.5ch] absolute right-2 h-4 w-4 border-none bg-transparent p-0"`
   );
-  expect(container?.className).toMatchInlineSnapshot(
-    `"group/field w-[--fieldWidth]"`
-  );
+  expect(container?.className).toMatchInlineSnapshot(`"group/field w-full"`);
   expect(label.className).toMatchInlineSnapshot(
     `"text-teal-300 flex w-[var(--labelWidth)]"`
   );

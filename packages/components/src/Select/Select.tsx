@@ -17,6 +17,7 @@ import {
   useClassNames,
   useSmallScreen,
   useStateProps,
+  WidthProp,
 } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
@@ -52,7 +53,7 @@ export interface SelectProps
     > {
   variant?: string;
   size?: string;
-  width?: string;
+  width?: WidthProp['width'];
   open?: boolean;
   disabled?: boolean;
   required?: boolean;

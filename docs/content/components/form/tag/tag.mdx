@@ -1,0 +1,83 @@
+---
+title: Tag
+caption: Component for categorize content
+---
+
+A `<Tag>` is a content component. This component can be used to categorize content. They can represent keywords or people, and are grouped to describe an item or a search request.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Tag } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Group props
+
+<PropsTable
+  props={[
+    {
+      property: 'label',
+      type: 'string',
+      description: 'Set a label for the select.',
+      default: 'none',
+    },
+    {
+      property: 'required',
+      type: 'boolean',
+      description: 'Set the select required.',
+      default: 'false',
+    },
+    {
+      property: 'error',
+      type: 'boolean',
+      description: 'Allow to set an error to the select.',
+      default: 'false',
+    },
+    {
+      property: 'errorMessage',
+      type: 'string',
+      description: 'Set the error message for the select.',
+      default: '',
+    },
+    {
+      property: 'width',
+      type: 'string | number',
+      description: `Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
+      default: 'full',
+    },
+    {
+      property: 'allowsRemoving',
+      type: 'boolean',
+      description: 'Displays a remove button on each tag.',
+      default: 'false',
+    },
+    {
+      property: 'onRemove',
+      type: '(key: Key) => any',
+      description: 'Handler that is called when the remove button is pressed.',
+      default: 'none',
+    },
+  ]}
+/>
+
+## Examples
+
+### Tags with a label
+
+In this example we have the `<Tag>` component that has been given the `label`.
+
+<ComponentDemo file="./label-tag.demo.tsx" />
+
+### Removable tags
+
+In this example, the `<Tag>` component receives tags from a dynamic collection and can remove these tags.
+
+<ComponentDemo file="./remove-tag.demo.tsx" />

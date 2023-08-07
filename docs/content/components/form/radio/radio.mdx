@@ -1,0 +1,148 @@
+---
+title: Radio
+caption: Component which allows to select only one option from a list.
+---
+
+The `<Radio>` and `<Radio.Group>` components allow users to select one option from a set of options. They are useful for presenting a list of options to users and collecting their responses.
+
+The `<Radio>` should never be used alone, there should always be at least two `<Radio>` from which you can choose. For that the `<Radio.Group>` should be wrapped around the `<Radio>`. If you want one option you could use the [`<Checkbox>`](/components/checkbox/) instead.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx onlyCode
+import { Radio } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'value',
+      type: 'string',
+      description: 'Set the value of the radio.',
+      default: 'none%',
+    },
+    {
+      property: 'error',
+      type: 'boolean',
+      description:
+        'If `true`, the radio is considered invalid and if set the `errorMessage` is shown.',
+      default: 'false',
+    },
+    {
+      property: 'width',
+      type: 'string | number',
+      description: `Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
+      default: 'full',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'Set the radio disabled.',
+      default: 'false',
+    },
+  ]}
+/>
+
+### Group Props
+
+<PropsTable
+  props={[
+    {
+      property: 'label',
+      type: 'string',
+      description: 'Set the label of the radio group.',
+      default: 'none',
+    },
+    {
+      property: 'orientation',
+      type: 'horizontal | vertical',
+      description: 'Set the radio group direction.',
+      default: 'vertical',
+    },
+    {
+      property: 'defaultValue',
+      type: 'string',
+      description: 'Set the default value for the radio group.',
+      default: 'none',
+    },
+    {
+      property: 'error',
+      type: 'boolean',
+      description:
+        'If `true`, the radio is considered invalid and if set the `errorMessage` is shown.',
+      default: 'false',
+    },
+    {
+      property: 'width',
+      type: 'string',
+      description: 'Control the width of the field',
+      default: '100%',
+    },
+    {
+      property: 'readOnly',
+      type: 'boolean',
+      description: 'Set the radio group as read only.',
+      default: 'false',
+    },
+    {
+      property: 'required',
+      type: 'boolean',
+      description: 'Set the radio group required.',
+      default: 'false',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'Set the radio group disabled.',
+      default: 'false',
+    },
+    {
+      property: 'description',
+      type: 'string',
+      description: 'Set the radio group helptext.',
+      default: 'none',
+    },
+    {
+      property: 'errorMessage',
+      type: 'string',
+      description: 'Set the radio group error message if an error occures.',
+      default: 'none',
+    },
+  ]}
+/>
+
+## Examples
+
+In this example you can see a simple `<Radio.Group>` within `<Radio>`. There is also a single `<Radio>` disabled.
+
+### Simple Radio
+
+<ComponentDemo file="./radio.demo.tsx" />
+
+### Disabed Radio
+
+Here you can see a complete disabled `<Radio.Group>`. You can also just disable single `<Radio>`.
+
+<ComponentDemo file="./radio-disabled.demo.tsx" />
+
+### Required Radio with horizontal orientation
+
+In this example the `<Radio.Group>` is required and the `orientation` is set to `horizontal`. With these props you can determine the direction of the `<Radio>` options.
+
+<ComponentDemo file="./radio-required.demo.tsx" />
+
+### Error Radio
+
+In this example you can see how an `errorMessage` would look on a `<RadioGroup>`.
+
+<ComponentDemo file="./radio-error.demo.tsx" />

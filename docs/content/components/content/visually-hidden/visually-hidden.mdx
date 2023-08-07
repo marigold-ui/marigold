@@ -1,0 +1,35 @@
+---
+title: VisuallyHidden
+caption: Component to hide its children.
+---
+
+`<VisuallyHidden>` is a utility component that can be used to hide its children visually, while keeping them visible to screen readers and other assistive technology.
+
+This would typically be used when you want to take advantage of the behavior and semantics of a native element like a checkbox or radio button, but replace it with a custom styled element visually.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { VisuallyHidden } from '@marigold/components';
+```
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'isFocusable',
+      type: 'boolean',
+      description: 'Whether the element should become visible on focus.',
+      default: 'false',
+    },
+  ]}
+/>
+
+## Examples
+
+<ComponentDemo file="./visually-hidden.demo.tsx" />
