@@ -14,7 +14,7 @@ export const SiteNavigation = () => (
         className="no-underline"
         target="_blank"
       >
-        <Text fontSize="sm">Previous Docs Version</Text>
+        <Text fontSize="sm">Go to previous Docs (v5.6.0)</Text>
       </Link>
     </div>
     <ThemeMenu />
