@@ -13,7 +13,9 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
-    "./index.css": "./dist/index.css"
+    "./index.css": "./dist/index.css",
+    "./preset": "./dist/preset.mjs",
+    "./preset/cjs": "./dist/preset.js"
   },
   "sideEffects": false,
   "files": [
@@ -25,7 +27,6 @@
     "directory": "packages/theme-b2b"
   },
   "devDependencies": {
-    "@marigold/theme-preset": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
     "autoprefixer": "10.4.14",
     "cssnano": "6.0.1",
@@ -33,9 +34,10 @@
     "tailwindcss": "3.3.3",
     "tsup": "6.7.0"
   },
-  "peerDependencies": {
+  "dependencies": {
     "@marigold/components": "workspace:*",
-    "@marigold/system": "workspace:*"
+    "@marigold/system": "workspace:*",
+    "@marigold/theme-preset": "workspace:*"
   },
   "scripts": {
     "build": "NODE_ENV=production tsup",

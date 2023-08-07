@@ -10,6 +10,7 @@ import { fontSans } from '@/theme/fonts';
 import { Analytics } from './_components/Analytics';
 import { Navigation } from './_components/Navigation';
 import { SiteHeader } from './_components/SiteHeader';
+import { SiteFooter } from './_components/SiteFooter';
 
 // Metadata
 // ---------------
@@ -44,9 +45,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 >
                   <Navigation />
                 </aside>
-                <div className="md:pl-60 lg:pl-72">
-                  <main className="max-w-3xl">{children}</main>
-                  <footer>Marigold Footer</footer>
+                <div className="md:pl-60 lg:pl-80 xl:pl-96">
+                  <main>{children}</main>
+                  <SiteFooter />
                 </div>
               </div>
             </div>
