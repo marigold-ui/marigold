@@ -29,6 +29,11 @@ export const parameters: Preview['parameters'] = {
   a11y: {
     element: '#root',
   },
+  options: {
+    storySort: {
+      method: 'alphabetical',
+    },
+  },
   controls: { expanded: true },
 };
 
