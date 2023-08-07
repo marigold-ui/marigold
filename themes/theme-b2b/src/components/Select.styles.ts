@@ -5,6 +5,7 @@ import {
   inputDisabled,
   inputError,
   inputFocus,
+  inputHover,
   inputSpacing,
 } from './Input.styles';
 
@@ -14,9 +15,10 @@ export const Select: ThemeComponent<'Select'> = {
     inputBox,
     inputDisabled(),
     inputFocus(),
+    inputError('data-[error]'),
+    inputHover(),
     inputBackground,
     inputSpacing,
-    inputError('data-[error]'),
     'appearance-none leading-8',
     'cursor-pointer',
     'aria-expanded:bg-bg-neutral ',

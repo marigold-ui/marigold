@@ -5,12 +5,14 @@ import {
   inputDisabled,
   inputError,
   inputFocus,
+  inputHover,
   inputSpacing,
 } from './Input.styles';
 
 export const TextArea: ThemeComponent<'TextArea'> = cva([
   inputBox,
   inputBackground,
+  inputHover(),
   inputFocus(),
   inputDisabled(),
   inputError('group-error/field'),
