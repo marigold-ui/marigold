@@ -12,7 +12,6 @@ import { useSelectState } from '@react-stately/select';
 import { Item, Section } from '@react-stately/collections';
 import type { AriaSelectProps } from '@react-types/select';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
-
 import {
   cn,
   useClassNames,
@@ -26,26 +25,7 @@ import { FieldBase } from '../FieldBase';
 import { ListBox } from '../ListBox';
 import { messages } from './intl';
 import { Popover, Tray } from '../Overlay';
-
-// Select Icon
-// ---------------
-interface ChevronProps {
-  className: string;
-}
-
-const Chevron = ({ className }: ChevronProps) => (
-  <svg
-    className={className}
-    width={16}
-    height={16}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-  </svg>
-);
+import { ChevronDown } from '../Chevron';
 
 // Props
 // ---------------
@@ -176,7 +156,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
               ? state.selectedItem.rendered
               : props.placeholder}
           </div>
-          <Chevron className={classNames.icon} />
+          <ChevronDown className="h-4 w-4" />
         </button>
         {isSmallScreen ? (
           <Tray state={state}>
