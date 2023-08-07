@@ -58,3 +58,8 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: docs/out
+
+      # Deploy Docs on Vercel
+      - name: Deploy Docs
+        if: steps.changesets.outputs.published == 'true'
+        run: curl -X POST $VERCEL_DEPLOY_DOCS_HOOK
