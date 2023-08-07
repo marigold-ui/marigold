@@ -139,6 +139,7 @@ export const Spacing = () => {
         <Table aria-label="spaces" variant="noHover">
           <Table.Header>
             <Table.Column key={'name'}>Name</Table.Column>
+            <Table.Column key={'value'}>Value</Table.Column>
             <Table.Column key={'example'}>Example</Table.Column>
           </Table.Header>
           <Table.Body>
@@ -149,6 +150,7 @@ export const Spacing = () => {
                     {key}
                   </code>
                 </Table.Cell>
+                <Table.Cell>{Number(key) * 4}px</Table.Cell>
                 <Table.Cell>
                   <div
                     className={cn(
