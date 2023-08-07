@@ -45,7 +45,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 >
                   <Navigation />
                 </aside>
-                <div className="md:pl-60 lg:pl-72">
+                <div className="md:pl-60 lg:pl-80 xl:pl-96">
                   <main>{children}</main>
                   <SiteFooter />
                 </div>
