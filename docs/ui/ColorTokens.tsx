@@ -38,7 +38,6 @@ export const ColorTokenTable = ({ sections = {} }: ColorTokenTableProps) => {
     const section = token.substring(0, token.indexOf('-')) || token;
     // When the section is not yet created
     if (!sections[section]) {
-      console.log(section);
       sections[section] = [];
     }
     sections[section].push([token, color]);
