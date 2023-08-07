@@ -46,11 +46,7 @@ export const Tabs: Tabs = ({
             return <Tab key={item.key} item={item} state={state} />;
           })}
         </div>
-        <TabPanel
-          key={state.selectedItem?.key}
-          state={state}
-          className={state.selectedItem?.props?.className}
-        />
+        <TabPanel key={state.selectedItem?.key} state={state} />
       </div>
     </TabContext.Provider>
   );
