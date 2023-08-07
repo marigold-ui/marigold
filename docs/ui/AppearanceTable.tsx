@@ -53,7 +53,7 @@ export const AppearanceTable = ({ component }: AppearanceTableProps) => {
         </Inline>
       ) : (
         <div className="overflow-auto">
-          <Table aria-labelledby="appearance table" variant="propsTable">
+          <Table aria-labelledby="appearance table" variant="hover">
             <Table.Header>
               <Table.Column key={'property'}>Property</Table.Column>
               <Table.Column key={'type'}>Type</Table.Column>

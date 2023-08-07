@@ -66,7 +66,9 @@ export const Table: Table = ({
   const { collection } = state;
 
   return (
-    <TableContext.Provider value={{ state, interactive, classNames }}>
+    <TableContext.Provider
+      value={{ state, interactive, classNames, variant, size }}
+    >
       <table
         ref={tableRef}
         className={cn(

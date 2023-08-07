@@ -48,3 +48,8 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_HOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+      # Deploy Docs on Vercel
+      - name: Deploy Docs
+        if: steps.changesets.outputs.published == 'true'
+        run: curl -X POST $VERCEL_DEPLOY_DOCS_HOOK
