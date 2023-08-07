@@ -5,11 +5,26 @@ import { useMDXComponent } from 'next-contentlayer/hooks';
 
 import { IconList } from '@/ui/IconList';
 
-import { Headline, Message, Link, Text, Tabs } from './';
+import { Headline, Message, Link, Tabs, Text } from './';
 import { AppearanceTable } from './AppearanceTable';
 import { PropsTable } from './PropsTable';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
+import { ColorTokenTable } from './ColorTokens';
+import {
+  AlignmentsX,
+  AlignmentsY,
+  BorderRadius,
+  Breakpoints,
+  Spacing,
+} from './Token';
+import {
+  Headlines,
+  FontSizes,
+  FontWeights,
+  FontStyle,
+  TextAlign,
+} from './Typography';
 
 // Typography
 // ---------------
@@ -78,8 +93,19 @@ const components = {
   Tabs,
   Text,
   IconList,
+  AlignmentsX,
+  AlignmentsY,
   AppearanceTable,
+  BorderRadius,
+  Breakpoints,
+  ColorTokenTable,
+  FontSizes,
+  FontStyle,
+  FontWeights,
+  Headlines,
   PropsTable,
+  Spacing,
+  TextAlign,
 };
 
 // Props

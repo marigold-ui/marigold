@@ -1,0 +1,82 @@
+---
+title: Design Tokens
+caption: Here are all design tokens for each theme listet.
+order: 3
+---
+
+Design tokens are the foundational elements of our design system, defining key aspects of our product's visual language. They enable consistency and flexibility, allowing us to maintain a unified look and feel across all user interfaces.
+
+<Message messageTitle="Changing Theme" variant="info">
+  Since we have two themes, the values displayed show the available tokens in
+  the currently selected theme.
+</Message>
+
+## Colors
+
+A carefully curated set of primary, secondary, and accent colors ensures our product maintains a consistent and recognizable palette.
+
+Our colors are sorted according to their use case. For example, `bg` colors
+are only for background used, `text` for text colors, `border` only for
+borders and so on.
+
+<ColorTokenTable />
+
+## Typography
+
+With a defined font family and various font sizes and weights, our typography maintains readability and hierarchy. The consistent use of typography contributes to a polished and cohesive user experience. The `Value` corresponds to the class name from [Tailwind CSS](https://tailwindcss.com/docs/font-size).
+
+We have tokens for:
+
+<Tabs>
+  <Tabs.Item key="fontSize" title="Font size">
+    <FontSizes />
+  </Tabs.Item>
+  <Tabs.Item key="fontWeight" title="Font weight">
+    <FontWeights />
+  </Tabs.Item>
+  <Tabs.Item key="fontStyle" title="Font style">
+    <FontStyle />
+  </Tabs.Item>
+  <Tabs.Item key="textAlign" title="Text align">
+    <TextAlign />
+  </Tabs.Item>
+</Tabs>
+
+### Headlines
+
+The `<Headline>` component supports by default certain styles. They are listed as Tailwind class names.
+
+<Headlines />
+
+## Spacing
+
+Consistent spacing ensures harmonious layouts and enhances visual flow. The defined spacing scale helps create balanced and accessible interfaces across different screen sizes. It's used for `gap`, `padding`, `width` and `margin`.
+
+<Spacing />
+
+Besides this there are percentage values available for `width` property, which is found in form components. You can use them similar to the tokens above. Here is a list of the values: [Tailwind percentage tokens](https://tailwindcss.com/docs/width#percentage-widths)
+
+## Radius
+
+Standardized border radius contribute to a clean and modern design. These properties are applied to components, ensuring a cohesive appearance throughout our product.
+
+<BorderRadius />
+
+## Alignment
+
+Consistent alignment ensures that elements are arranged in a purposeful manner, enhancing clarity and user comprehension.
+
+<Tabs>
+  <Tabs.Item key="alignX" title="Horizontal">
+    <AlignmentsX />
+  </Tabs.Item>
+  <Tabs.Item key="alignY" title="Vertical">
+    <AlignmentsY />
+  </Tabs.Item>
+</Tabs>
+
+## Breakpoints
+
+By defining breakpoints for different screen sizes, we achieve responsive design that adapts seamlessly to various devices and orientations.
+
+<Breakpoints />

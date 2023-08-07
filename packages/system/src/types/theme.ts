@@ -1,5 +1,9 @@
 import { ClassValue, ConfigSchema } from '../utils';
 
+export interface NestedStringObject {
+  [key: string]: NestedStringObject | string;
+}
+
 export interface ComponentStyleFunction<
   Variants extends string = never,
   Sizes extends string = never,
@@ -18,7 +22,7 @@ export interface ComponentStyleFunction<
 export type Theme = {
   name: string;
   screens?: { [key: string]: string };
-  colors?: { [key: string]: any };
+  colors?: NestedStringObject;
   root?: ComponentStyleFunction;
   components: {
     Accordion?: Record<

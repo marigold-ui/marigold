@@ -16,7 +16,7 @@ export const PropsTable = ({ props }: PropsTableProps) => {
         </Inline>
       ) : (
         <div className="overflow-auto">
-          <Table aria-label="Table with component props" variant="propsTable">
+          <Table aria-label="Table with component props" variant="hover">
             <Table.Header>
               <Table.Column key="property">Property</Table.Column>
               <Table.Column key="type">Type</Table.Column>
