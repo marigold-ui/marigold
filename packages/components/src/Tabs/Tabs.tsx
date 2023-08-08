@@ -36,7 +36,7 @@ export const Tabs: Tabs = ({
   return (
     <TabContext.Provider value={{ classNames }}>
       {/* tabs container */}
-      <div className={className}>
+      <div className={cn(className, classNames.container)}>
         <div
           className={cn('flex', gapSpace[space], classNames.tabs)}
           {...tabListProps}
