@@ -18,10 +18,10 @@ export const Button: ThemeComponent<'Button'> = cva(
           'text-text-primary-light border-none bg-transparent',
           'hover:bg-transparent hover:underline',
         ],
-        text: [' border-none bg-transparent', 'hover:bg-bg-hover-light'],
+        text: ['border-none bg-transparent', 'hover:bg-bg-hover-light'],
       },
       size: {
-        small: 'p-1',
+        small: 'py-1',
       },
     },
   }
