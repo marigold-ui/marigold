@@ -41,7 +41,7 @@ export default () => {
   };
 
   return (
-    <FieldGroup labelWidth="medium">
+    <FieldGroup labelWidth="100px">
       <Headline level="2">Account Registration</Headline>
       <form onSubmit={handleSubmit}>
         <Stack space={4}>
