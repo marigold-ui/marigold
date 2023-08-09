@@ -55,7 +55,7 @@ export const Calendar = ({
     <div
       tabIndex={-1}
       className={cn(
-        'flex w-[360px] flex-col rounded-2xl p-4 shadow-[0_4px_4px_rgba(165,165,165,0.25)]',
+        'flex w-[360px] flex-col rounded-sm p-4 shadow-[0_4px_4px_rgba(165,165,165,0.25)]',
         classNames.calendar
       )}
       {...calendarProps}
@@ -63,7 +63,7 @@ export const Calendar = ({
       ref={ref}
     >
       <div className="mb-4 flex items-center gap-[60px]">
-        <div className="flex min-w-[170px] gap-[9px] [&_button]:h-10 [&_button]:rounded-[10px] [&_div]:flex">
+        <div className="flex min-w-[170px] gap-[9px] [&_div]:flex">
           <MonthDropdown state={state} />
           <YearDropdown state={state} />
         </div>
