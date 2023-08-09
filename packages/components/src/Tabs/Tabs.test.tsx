@@ -8,6 +8,8 @@ const theme: Theme = {
   name: 'tabs test',
   components: {
     Tabs: {
+      container: cva('flex'),
+      tabpanel: cva('border-3 border-solid border-red-400'),
       tabs: cva('mb-[10px]'),
       tab: cva(
         [
@@ -130,5 +132,30 @@ test('allows styling "focus" state via theme', () => {
   );
   expect(tabs[1].className).toMatchInlineSnapshot(
     `"flex cursor-pointer justify-center aria-disabled:cursor-not-allowed selected:border-red-500 selected:border-b-8 selected:border-solid px-2 pb-2 text-lg"`
+  );
+});
+
+test('allow styling TabPanel & container via theme', () => {
+  render(
+    <Tabs
+      aria-label="tabs container"
+      className="flex gap-2"
+      disabledKeys={['2']}
+    >
+      <Tabs.Item className="bg-green-300" key="1" title={'tab1'}>
+        tab-1 content
+      </Tabs.Item>
+      <Tabs.Item key="2" title={'tab2'}>
+        tab-2 content
+      </Tabs.Item>
+    </Tabs>
+  );
+  const tabPanel = screen.getByText('tab-1 content');
+  const container = screen.getByLabelText('tabs container');
+
+  expect(container.className).toMatchSnapshot('flex gap-2');
+
+  expect(tabPanel.className).toMatchInlineSnapshot(
+    `"bg-green-300 border-3 border-solid border-red-400"`
   );
 });
