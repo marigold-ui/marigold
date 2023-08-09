@@ -35,7 +35,7 @@ export type Props<T> = T extends ConfigSchema
 
 export const cva = <T>(base?: ClassValue, config?: Config<T>) => {
   function styles(props?: Props<T>) {
-    return _cva(base, config)(props);
+    return twMerge(_cva(base, config)(props));
   }
   styles.variants = config?.variants;
 
