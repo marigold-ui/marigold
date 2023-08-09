@@ -10,7 +10,7 @@ import {
 } from '@marigold/components';
 
 export default () => (
-  <FieldGroup labelWidth="medium">
+  <FieldGroup labelWidth="100px">
     <Headline level="2">Account Registration</Headline>
     <Stack space={4}>
       <Columns columns={[2, 2]} space={4}>
