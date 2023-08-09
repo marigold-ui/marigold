@@ -107,12 +107,12 @@ export const Sections: StoryObj<typeof Select> = {
   render: args => (
     <Select {...args}>
       <Select.Section title="Fantasy">
-        <Select.Option>Harry Potter</Select.Option>
-        <Select.Option>Lord of the Rings</Select.Option>
+        <Select.Option key="harry-potter">Harry Potter</Select.Option>
+        <Select.Option key="lord-of-the-rings">Lord of the Rings</Select.Option>
       </Select.Section>
       <Select.Section title="Sci-Fi">
-        <Select.Option>Star Wars</Select.Option>
-        <Select.Option>Star Trek</Select.Option>
+        <Select.Option key="star-wars">Star Wars</Select.Option>
+        <Select.Option key="star-trek">Star Trek</Select.Option>
       </Select.Section>
     </Select>
   ),
