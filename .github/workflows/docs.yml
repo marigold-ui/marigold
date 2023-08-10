@@ -18,4 +18,6 @@ jobs:
       - uses: hmarr/debug-action@v2
       # Deploy Docs on Vercel
       - name: Ping Vercel
-        run: curl -X ${{ secrets.VERCEL_DEPLOY_DOCS_HOOK }}
+        run: echo $VERCEL_URL
+        env:
+          VERCEL_URL: ${{ secrets.VERCEL_DEPLOY_DOCS_HOOK }}
