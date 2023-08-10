@@ -155,7 +155,7 @@ export const colors = {
        */
       lowered: brand.secondary[700],
 
-      underlay: 'rgba(206, 212, 218, 0.5)',
+      underlay: brand.secondary[200],
     },
 
     // State
