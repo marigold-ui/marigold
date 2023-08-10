@@ -127,11 +127,13 @@ export const colors = {
       DEFAULT: brand.primary[600],
       light: brand.primary[100],
       hover: brand.primary[400],
+      active: brand.primary[700],
     },
 
     secondary: {
       DEFAULT: brand.secondary[700],
       hover: brand.secondary[600],
+      active: brand.secondary[800],
     },
 
     surface: {
