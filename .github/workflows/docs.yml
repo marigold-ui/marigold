@@ -17,5 +17,4 @@ jobs:
     steps:
       # Deploy Docs on Vercel
       - name: Ping Vercel
-        if: steps.changesets.outputs.published == 'true'
         run: echo $VERCEL_DEPLOY_DOCS_HOOK
