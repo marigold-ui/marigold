@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "5.6.0",
+  "version": "6.0.0",
   "private": true,
   "scripts": {
     "dev": "pnpm registry && next dev",

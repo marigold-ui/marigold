@@ -1,5 +1,27 @@
 # @marigold/components
 
+## 6.0.0
+
+### Major Changes
+
+- [#3117](https://github.com/marigold-ui/marigold/pull/3117) [`79be927e6`](https://github.com/marigold-ui/marigold/commit/79be927e6b2f73c9f75487dfe14a3ce56444afaa) Thanks [@sebald](https://github.com/sebald)! - Switch @marigold/styles to Tailwind CSS, replaces Emotion CSS & Theme-UI
+
+### Patch Changes
+
+- [#3227](https://github.com/marigold-ui/marigold/pull/3227) [`54416dc6c`](https://github.com/marigold-ui/marigold/commit/54416dc6c87a8de39893a23678d716553a0d991c) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: unify switch api
+
+- [#3137](https://github.com/marigold-ui/marigold/pull/3137) [`1d0fd2ac5`](https://github.com/marigold-ui/marigold/commit/1d0fd2ac5e45a9a05ef311fc811b9e6049535641) Thanks [@sebald](https://github.com/sebald)! - fix: `<Text>` component doesn't enforce defaults
+
+- [#3229](https://github.com/marigold-ui/marigold/pull/3229) [`7b7348f30`](https://github.com/marigold-ui/marigold/commit/7b7348f30f62662ccb86930ac4bf65ef063d2065) Thanks [@sarahgm](https://github.com/sarahgm)! - chore[DST-60]: change depricated API
+
+- [#3092](https://github.com/marigold-ui/marigold/pull/3092) [`44dd7408a`](https://github.com/marigold-ui/marigold/commit/44dd7408a27dc5031598ebbd818e911981b8c9d3) Thanks [@renovate](https://github.com/apps/renovate)! - Update `react-aria`
+
+- [#3003](https://github.com/marigold-ui/marigold/pull/3003) [`9082cfe4f`](https://github.com/marigold-ui/marigold/commit/9082cfe4fd8d9cd848c185041dabcec46622822b) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update react-aria
+
+- Updated dependencies [[`79be927e6`](https://github.com/marigold-ui/marigold/commit/79be927e6b2f73c9f75487dfe14a3ce56444afaa)]:
+  - @marigold/system@6.0.0
+  - @marigold/icons@1.2.6
+
 ## 5.6.0
 
 ### Minor Changes
