@@ -12,7 +12,6 @@ jobs:
     name: Deploy Docs
     runs-on: ubuntu-latest
     steps:
-      - uses: hmarr/debug-action@v2
       # Deploy Docs on Vercel
       - name: Ping Vercel
         run: curl $VERCEL_URL
