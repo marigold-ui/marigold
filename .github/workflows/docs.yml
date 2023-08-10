@@ -20,4 +20,4 @@ jobs:
       - name: Ping Vercel
         run: echo $VERCEL_URL
         env:
-          VERCEL_URL: ${{ secrects.VERCEL_DEPLOY_DOCS_HOOK }}
+          VERCEL_URL: ${{ secrets.VERCEL_DEPLOY_DOCS_HOOK }}
