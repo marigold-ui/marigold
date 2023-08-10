@@ -1,1 +1,2 @@
-export { theme as default } from './theme';
+import { theme } from './theme';
+export default theme;
