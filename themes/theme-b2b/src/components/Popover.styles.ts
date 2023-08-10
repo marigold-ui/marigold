@@ -5,6 +5,8 @@ export const Popover: ThemeComponent<'Popover'> = cva(['mt-0.5'], {
     variant: {
       top: ['mb-0.5'],
       bottom: ['mt-0.5'],
+      right: [''],
+      left: [''],
     },
   },
 });
