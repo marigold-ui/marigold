@@ -4,7 +4,7 @@ import { Info } from '@marigold/icons';
 export default () => (
   <Tooltip.Trigger>
     <Button>
-      <Info className="fill-fill-info" />
+      <Info className="text-text-info" />
     </Button>
     <Tooltip>Tooltip</Tooltip>
   </Tooltip.Trigger>

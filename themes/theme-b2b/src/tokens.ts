@@ -110,8 +110,13 @@ export const colors = {
 
     // State
     disabled: brand.secondary[400],
-    error: red[500],
     hover: brand.secondary[800],
+
+    // Status
+    error: red[500],
+    info: blue[500],
+    warning: yellow[500],
+    required: red[500],
   },
 
   // Background
@@ -208,15 +213,5 @@ export const colors = {
 
     // Status
     error: red[500],
-  },
-
-  // Fill
-  // ---------------
-  fill: {
-    // Status
-    required: red[500],
-    error: red[500],
-    info: blue[500],
-    warning: yellow[500],
   },
 };
