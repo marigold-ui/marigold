@@ -12,10 +12,10 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
-    name: Release
+    name: Deploy Docs
     runs-on: ubuntu-latest
     steps:
       # Deploy Docs on Vercel
-      - name: Deploy Docs
+      - name: Ping Vercel
         if: steps.changesets.outputs.published == 'true'
         run: echo $VERCEL_DEPLOY_DOCS_HOOK
