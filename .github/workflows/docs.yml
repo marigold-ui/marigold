@@ -1,0 +1,18 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      # Deploy Docs on Vercel
+      - name: Deploy Docs
+        if: steps.changesets.outputs.published == 'true'
+        run: curl -X POST $VERCEL_DEPLOY_DOCS_HOOK
