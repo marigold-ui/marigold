@@ -106,23 +106,37 @@ export default makeSource({
     rehypePlugins: [
       [rehypeComponentDemo, { contentDirPath }],
       rehypeSlug,
+      // to inject the source code and other stuff inside `pre` element props
+      // needed to copy
+      () => tree => {
+        visit(tree, node => {
+          if (node?.type === 'element' && node?.tagName === 'pre') {
+            const [codeEl] = node.children;
+            node.__rawString__ = codeEl.children?.[0].value;
+          }
+        });
+      },
       [
         rehypePrettyCode,
         {
           theme: 'material-theme-palenight',
-          onVisitLine(node: any) {
-            if (node.children.length === 0) {
-              node.children = [{ type: 'text', value: ' ' }];
-            }
-          },
-          onVisitHighlightedLine(node: any) {
-            node.properties.className.push('line--highlighted');
-          },
-          onVisitHighlightedWord(node: any) {
-            node.properties.className = ['word--highlighted'];
-          },
         },
       ],
+      // needed to copy
+      () => tree => {
+        visit(tree, node => {
+          if (node?.type === 'element' && node?.tagName === 'div') {
+            if (!('data-rehype-pretty-code-fragment' in node.properties)) {
+              return;
+            }
+            const preElement = node.children.at(-1);
+            if (preElement.tagName !== 'pre') {
+              return;
+            }
+            preElement.properties['__rawString__'] = node.__rawString__;
+          }
+        });
+      },
       [
         rehypeAutolinkHeadings,
         {
