@@ -13,7 +13,7 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
-    "./index.css": "./dist/index.css",
+    "./styles.css": "./dist/styles.css",
     "./preset": "./dist/preset.mjs",
     "./preset/cjs": "./dist/preset.js"
   },
