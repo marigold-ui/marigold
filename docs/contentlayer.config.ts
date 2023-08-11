@@ -112,7 +112,8 @@ export default makeSource({
         visit(tree, node => {
           if (node?.type === 'element' && node?.tagName === 'pre') {
             const [codeEl] = node.children;
-            node.__rawString__ = codeEl.children?.[0].value;
+            if (codeEl.tagName !== 'code') return;
+            node.raw = codeEl.children?.[0].value;
           }
         });
       },
@@ -126,8 +127,14 @@ export default makeSource({
       () => tree => {
         visit(tree, node => {
           if (node?.type === 'element' && node?.tagName === 'div') {
-            const preElement = node.children.at(-1);
-            preElement.properties['__rawString__'] = node.__rawString__;
+            if (!('data-rehype-pretty-code-fragment' in node.properties)) {
+              return;
+            }
+            for (const child of node.children) {
+              if (child.tagName === 'pre') {
+                child.properties['raw'] = node.raw;
+              }
+            }
           }
         });
       },

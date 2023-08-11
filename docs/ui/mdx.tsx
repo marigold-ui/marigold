@@ -61,11 +61,11 @@ const typography = {
   hr: ({ ...props }: HTMLAttributes<HTMLHRElement>) => (
     <hr className="my-4 md:my-8" {...props} />
   ),
-  // `__rawString__` is source code to be copied
+  // `raw` is source code to be copied
   pre: ({
-    __rawString__,
+    raw,
     ...props
-  }: HTMLAttributes<HTMLPreElement> & { __rawString__: string }) => {
+  }: HTMLAttributes<HTMLPreElement> & { raw: string }) => {
     return (
       <div className="relative ">
         <pre
@@ -73,7 +73,7 @@ const typography = {
           {...props}
         >
           <div className="absolute right-4 top-4">
-            <CopyButton codeString={__rawString__} />
+            <CopyButton codeString={raw} />
           </div>
           {props.children}
         </pre>
