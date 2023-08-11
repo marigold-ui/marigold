@@ -40,7 +40,7 @@
     "@marigold/theme-preset": "workspace:*"
   },
   "scripts": {
-    "build": "NODE_ENV=production tsup",
+    "build": "NODE_ENV=production tsup && tailwindcss -o dist/styles.css",
     "dev": "tsup"
   }
 }
