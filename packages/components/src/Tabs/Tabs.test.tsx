@@ -137,12 +137,8 @@ test('allows styling "focus" state via theme', () => {
 
 test('allow styling TabPanel & container via theme', () => {
   render(
-    <Tabs
-      aria-label="tabs container"
-      className="flex gap-2"
-      disabledKeys={['2']}
-    >
-      <Tabs.Item className="bg-green-300" key="1" title={'tab1'}>
+    <Tabs aria-label="tabs container" disabledKeys={['2']}>
+      <Tabs.Item key="1" title={'tab1'}>
         tab-1 content
       </Tabs.Item>
       <Tabs.Item key="2" title={'tab2'}>
@@ -156,6 +152,6 @@ test('allow styling TabPanel & container via theme', () => {
   expect(container.className).toMatchSnapshot('flex gap-2');
 
   expect(tabPanel.className).toMatchInlineSnapshot(
-    `"bg-green-300 border-3 border-solid border-red-400"`
+    `"border-3 border-solid border-red-400"`
   );
 });
