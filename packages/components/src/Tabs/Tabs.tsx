@@ -9,14 +9,24 @@ import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
 import { Item } from '@react-stately/collections';
 import { TabContext } from './Context';
-import { ItemProps } from '@react-types/shared';
 
-export const Tabs: Tabs = ({
+//props
+// ----------------------
+interface TabsProps
+  extends Omit<AriaTabListProps<object>, 'orientation' | 'isDisabled'>,
+    GapSpaceProp {
+  size?: 'small' | 'medium' | 'large';
+  disabled?: boolean;
+  variant?: string;
+}
+
+// component
+// ----------------------
+export const Tabs = ({
   space = 2,
   size = 'medium',
   disabled,
   variant,
-  className,
   ...rest
 }: TabsProps) => {
   const ref = useRef(null);
@@ -36,7 +46,7 @@ export const Tabs: Tabs = ({
   return (
     <TabContext.Provider value={{ classNames }}>
       {/* tabs container */}
-      <div className={cn(className, classNames.container)}>
+      <div className={cn(classNames.container)}>
         <div
           className={cn('flex', gapSpace[space], classNames.tabs)}
           {...tabListProps}
@@ -53,18 +63,3 @@ export const Tabs: Tabs = ({
 };
 
 Tabs.Item = Item;
-
-interface TabsProps
-  extends Omit<AriaTabListProps<object>, 'orientation' | 'isDisabled'>,
-    GapSpaceProp {
-  size?: 'small' | 'medium' | 'large';
-  disabled?: boolean;
-  variant?: string;
-  className?: string;
-}
-
-interface Tabs {
-  (props: TabsProps): JSX.Element;
-  // to add className to <Tabs.Item>
-  Item: (props: ItemProps<any> & { className?: string }) => JSX.Element;
-}

@@ -16,11 +16,7 @@ export const TabPanel = ({ state, ...props }: TabPanelProps) => {
   const { classNames } = useTabContext();
 
   return (
-    <div
-      className={cn(selectedItemProps?.className, classNames.tabpanel)}
-      ref={ref}
-      {...tabPanelProps}
-    >
+    <div className={cn(classNames.tabpanel)} ref={ref} {...tabPanelProps}>
       {selectedItemProps?.children}
     </div>
   );
