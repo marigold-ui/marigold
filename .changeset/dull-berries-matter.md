@@ -3,4 +3,4 @@
 "@marigold/theme-core": patch
 ---
 
-fix: correctly export themes as default
+fix: adjust import for CJS
