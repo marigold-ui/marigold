@@ -1,6 +1,6 @@
 import './globals.css';
-import '@marigold/theme-b2b/index.css';
-import '@marigold/theme-core/index.css';
+import '@marigold/theme-b2b/styles.css';
+import '@marigold/theme-core/styles.css';
 
 import { MarigoldProvider } from '@/ui';
 import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';

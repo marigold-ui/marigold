@@ -5,10 +5,10 @@ import { FieldGroup, MarigoldProvider } from '@marigold/components';
 
 import 'tailwindcss/tailwind.css';
 
-import '@marigold/theme-core/index.css';
+import '@marigold/theme-core/styles.css';
 import core from '@marigold/theme-core';
 
-import '@marigold/theme-b2b/index.css';
+import '@marigold/theme-b2b/styles.css';
 import b2b from '@marigold/theme-b2b';
 
 import { withThemeByDataAttribute } from '@storybook/addon-styling';
