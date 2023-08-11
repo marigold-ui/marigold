@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-core",
-  "version": "24.0.0",
+  "version": "25.0.0",
   "description": "Marigold Core Theme",
   "license": "MIT",
   "keywords": [
@@ -13,7 +13,7 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
-    "./index.css": "./dist/index.css",
+    "./styles.css": "./dist/styles.css",
     "./preset": "./dist/preset.mjs",
     "./preset/cjs": "./dist/preset.js"
   },
@@ -40,7 +40,7 @@
     "@marigold/theme-preset": "workspace:*"
   },
   "scripts": {
-    "build": "NODE_ENV=production tsup",
+    "build": "NODE_ENV=production tsup && tailwindcss -o dist/styles.css",
     "dev": "tsup"
   }
 }
