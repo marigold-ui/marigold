@@ -11,7 +11,12 @@
       "stabilityDays": 3
     },
     {
-      "matchPackagePatterns": ["@react-aria", "@react-stately", "@react-types"],
+      "matchPackagePatterns": [
+        "@react-aria",
+        "@react-stately",
+        "@react-types",
+        "@internationalized"
+      ],
       "groupName": "react-aria"
     },
     {
