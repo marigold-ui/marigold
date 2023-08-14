@@ -24,6 +24,7 @@ const theme: Theme = {
   components: {
     Button: cva('disabled:bg-disabled-bg p-3'),
     Divider: cva(),
+
     Menu: {
       container: cva('bg-white focus:text-pink-600', {
         variants: {
@@ -54,6 +55,13 @@ const theme: Theme = {
       }),
     },
     Underlay: cva(),
+    Popover: cva(['mt-0.5'], {
+      variants: {
+        variant: {
+          top: ['mb-0.5'],
+        },
+      },
+    }),
   },
 };
 

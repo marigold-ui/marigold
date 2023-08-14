@@ -6,6 +6,8 @@ import { colors } from './tokens';
 
 import * as components from './components';
 
+export const webFontUrl = [] as const;
+
 export const theme: Theme = {
   name: 'core',
   screens,

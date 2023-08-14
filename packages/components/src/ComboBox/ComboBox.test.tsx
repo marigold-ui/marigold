@@ -48,6 +48,13 @@ const theme: Theme = {
       section: cva(),
       sectionTitle: cva(),
     },
+    Popover: cva(['mt-0.5'], {
+      variants: {
+        variant: {
+          top: ['mb-0.5'],
+        },
+      },
+    }),
   },
 };
 

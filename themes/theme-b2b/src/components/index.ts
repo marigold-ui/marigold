@@ -39,3 +39,4 @@ export * from './Tooltip.styles';
 export * from './Slider.styles';
 export * from './Calendar.styles';
 export * from './DatePicker.styles';
+export * from './Popover.styles';
