@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 6.0.1
+
+### Patch Changes
+
+- [#3232](https://github.com/marigold-ui/marigold/pull/3232) [`fd10c294a`](https://github.com/marigold-ui/marigold/commit/fd10c294a352642f1f98a8c2d70eb4fbd7d93a22) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - [DST-65]: Spacing of Popover can me customized based on themes
+
+- Updated dependencies [[`fd10c294a`](https://github.com/marigold-ui/marigold/commit/fd10c294a352642f1f98a8c2d70eb4fbd7d93a22)]:
+  - @marigold/system@6.0.1
+  - @marigold/icons@1.2.7
+
 ## 6.0.0
 
 ### Major Changes
