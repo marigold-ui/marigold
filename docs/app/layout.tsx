@@ -7,10 +7,10 @@ import '@marigold/theme-core/styles.css';
 
 import { Analytics } from './_components/Analytics';
 import { Navigation } from './_components/Navigation';
-// Metadata
-// ---------------
 import { SiteFooter } from './_components/SiteFooter';
 import { SiteHeader } from './_components/SiteHeader';
+// Metadata
+// ---------------
 import './globals.css';
 
 export const metadata = {
