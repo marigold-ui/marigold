@@ -49,4 +49,11 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_HOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
-      # Docs are deployed when there is a change in the `docs/CHANGELOG.md` file
+      # We use the "docs" branch for the production build on vercel
+      - name: Updating "docs" branch
+        if: steps.changesets.outputs.published == 'true'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: .
+          branch: docs
+          clean: true
