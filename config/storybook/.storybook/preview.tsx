@@ -68,12 +68,19 @@ export const decorators: any = [
           </>
         );
       }
-      default: {
+      case 'core': {
         return (
           <MarigoldProvider theme={THEME[theme as ThemeNames]}>
             <div className="h-screen p-6">
               <FieldGroup labelWidth="200px">{Story()}</FieldGroup>
             </div>
+          </MarigoldProvider>
+        );
+      }
+      default: {
+        return (
+          <MarigoldProvider theme={THEME[theme as ThemeNames]}>
+            <div className="h-screen p-6">{Story()}</div>
           </MarigoldProvider>
         );
       }

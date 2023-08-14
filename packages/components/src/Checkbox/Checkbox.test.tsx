@@ -4,6 +4,7 @@ import { fireEvent, screen } from '@testing-library/react';
 import { Theme, cva } from '@marigold/system';
 import { Checkbox } from './Checkbox';
 import { setup } from '../test.utils';
+import { FieldGroup } from '../FieldBase';
 
 const theme: Theme = {
   name: 'test',
@@ -28,6 +29,7 @@ const theme: Theme = {
         'data-[disabled]:border-checkbox-base-disabled data-[disabled]:bg-checkbox-base-disabledBackground',
       ]),
     },
+    Field: cva(),
   },
 };
 
@@ -170,4 +172,15 @@ test('forwards ref', () => {
   );
 
   expect(ref.current).toBeInstanceOf(HTMLInputElement);
+});
+
+test('works with a <FieldGroup>', () => {
+  render(
+    <FieldGroup labelWidth="100px">
+      <Checkbox data-testid="checkbox">Check it</Checkbox>
+    </FieldGroup>
+  );
+
+  const checkbox = screen.getByTestId('checkbox');
+  expect(checkbox).toBeInTheDocument();
 });

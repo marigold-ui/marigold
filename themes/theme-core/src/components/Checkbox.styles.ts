@@ -8,7 +8,7 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
       },
     },
   }),
-  label: cva('group-disabled/checkbox:text-text-disabled leading-[1.125]'),
+  label: cva('group-disabled/checkbox:text-text-disabled leading-none'),
   checkbox: cva([
     'border-border-light rounded-[2] bg-white p-0.5',
     'group-hover/checkbox:border-border-hover',
