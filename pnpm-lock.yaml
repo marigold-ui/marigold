@@ -236,9 +236,6 @@ importers:
 
   config/storybook:
     dependencies:
-      '@babel/core':
-        specifier: 7.21.8
-        version: 7.21.8
       '@marigold/components':
         specifier: workspace:*
         version: link:../../packages/components

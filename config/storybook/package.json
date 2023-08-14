@@ -18,7 +18,6 @@
     "directory": "config/prettier"
   },
   "dependencies": {
-    "@babel/core": "7.21.8",
     "@marigold/components": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
