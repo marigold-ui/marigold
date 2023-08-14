@@ -12,10 +12,10 @@ import {
   cn,
   StateAttrProps,
   useStateProps,
-  createVar,
 } from '@marigold/system';
 
 import { useFieldGroupContext } from '../FieldBase';
+import { CheckboxField } from './CheckboxField';
 import { useCheckboxGroupContext } from './CheckboxGroup';
 
 // SVG Icon
@@ -175,14 +175,12 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       indeterminate,
     });
 
-    return (
+    const component = (
       <label
         className={cn(
           'group/checkbox relative flex items-center gap-[1ch]',
-          classNames.container,
-          'ml-[--labelWidth]'
+          classNames.container
         )}
-        style={createVar({ labelWidth: groupState ? undefined : labelWidth })}
         {...hoverProps}
         {...stateProps}
       >
@@ -201,6 +199,12 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           <div className={classNames.label}>{props.children}</div>
         )}
       </label>
+    );
+
+    return !groupState && labelWidth ? (
+      <CheckboxField labelWidth={labelWidth}>{component}</CheckboxField>
+    ) : (
+      component
     );
   }
 );
