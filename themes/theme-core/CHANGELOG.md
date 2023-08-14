@@ -1,5 +1,20 @@
 # @marigold/theme-core
 
+## 25.0.1
+
+### Patch Changes
+
+- [#3267](https://github.com/marigold-ui/marigold/pull/3267) [`df21788c7`](https://github.com/marigold-ui/marigold/commit/df21788c7e65fe848b161fb2a6fb98f3937d0a8a) Thanks [@sebald](https://github.com/sebald)! - fix: adjust import for CJS
+
+- [#3269](https://github.com/marigold-ui/marigold/pull/3269) [`62d5599cb`](https://github.com/marigold-ui/marigold/commit/62d5599cb61d7c3af31cddfe0d22faea640236be) Thanks [@sarahgm](https://github.com/sarahgm)! - chore[DST-121]: add font to theme
+
+- [#3232](https://github.com/marigold-ui/marigold/pull/3232) [`fd10c294a`](https://github.com/marigold-ui/marigold/commit/fd10c294a352642f1f98a8c2d70eb4fbd7d93a22) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - [DST-65]: Spacing of Popover can me customized based on themes
+
+- Updated dependencies [[`fd10c294a`](https://github.com/marigold-ui/marigold/commit/fd10c294a352642f1f98a8c2d70eb4fbd7d93a22)]:
+  - @marigold/components@6.0.1
+  - @marigold/system@6.0.1
+  - @marigold/theme-preset@1.0.1
+
 ## 25.0.0
 
 ### Major Changes
