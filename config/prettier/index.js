@@ -4,6 +4,18 @@ module.exports = {
   trailingComma: 'es5',
   useTabs: false,
   tabWidth: 2,
-  plugins: [require.resolve('prettier-plugin-tailwindcss')],
+  plugins: [
+    require.resolve('prettier-plugin-tailwindcss'),
+    '@trivago/prettier-plugin-sort-imports',
+  ],
   pluginSearchDirs: ['.'],
+  importOrder: [
+    '^@components/(.*)$',
+    '^next/(.*)$',
+    '^@react-aria/(.*)$',
+    '^@react-stately/(.*)$',
+    '^[./]',
+  ],
+  importOrderSeparation: true,
+  importOrderSortSpecifiers: true,
 };

@@ -1,16 +1,15 @@
-import './globals.css';
+import { b2bTheme, coreTheme, theme } from '@/theme';
+import { fontSans } from '@/theme/fonts';
+import { MarigoldProvider } from '@/ui';
+import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
 import '@marigold/theme-b2b/styles.css';
 import '@marigold/theme-core/styles.css';
 
-import { MarigoldProvider } from '@/ui';
-import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
-import { theme, b2bTheme, coreTheme } from '@/theme';
-import { fontSans } from '@/theme/fonts';
-
 import { Analytics } from './_components/Analytics';
 import { Navigation } from './_components/Navigation';
-import { SiteHeader } from './_components/SiteHeader';
 import { SiteFooter } from './_components/SiteFooter';
+import { SiteHeader } from './_components/SiteHeader';
+import './globals.css';
 
 // Metadata
 // ---------------
