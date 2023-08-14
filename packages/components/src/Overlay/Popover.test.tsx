@@ -13,6 +13,13 @@ import { setup } from '../test.utils';
 const theme: Theme = {
   name: 'test',
   components: {
+    Popover: cva(['mt-0.5'], {
+      variants: {
+        variant: {
+          top: ['mb-0.5'],
+        },
+      },
+    }),
     Underlay: cva(),
   },
 };

@@ -28,6 +28,13 @@ const theme: Theme = {
       }),
       indicator: cva(),
     },
+    Popover: cva(['mt-0.5'], {
+      variants: {
+        variant: {
+          top: ['mb-0.5'],
+        },
+      },
+    }),
     HelpText: {
       container: cva('', {
         variants: {
