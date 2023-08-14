@@ -23,7 +23,7 @@
       "groupName": "testing"
     },
     {
-      "matchPackagePatterns": ["storybook", "vite"],
+      "matchPackagePatterns": ["@storybook", "storybook", "vite"],
       "groupName": "storybook"
     },
     {
@@ -44,6 +44,10 @@
     {
       "matchPackagePatterns": ["react-hook-form", "zod"],
       "groupName": "docs-demos"
+    },
+    {
+      "matchPackagePatterns": ["postcss", "tailwind"],
+      "groupName": "tailwind"
     }
   ],
   "timezone": "Europe/Berlin"
