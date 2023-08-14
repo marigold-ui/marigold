@@ -8,6 +8,7 @@ import { OverlayTriggerState } from '@react-stately/overlays';
 import { Overlay } from './Overlay';
 import { Underlay } from './Underlay';
 import { FocusScope } from '@react-aria/focus';
+import { useClassNames } from '@marigold/system';
 
 export interface PopoverProps
   extends Pick<AriaPopoverProps, 'triggerRef' | 'scrollRef' | 'isNonModal'> {
@@ -54,13 +55,17 @@ const PopoverWrapper = forwardRef(
       },
       state
     );
+    const classNames = useClassNames({
+      component: 'Popover',
+      variant: placement,
+    });
 
     return (
       <FocusScope restoreFocus>
         {!isNonModal && <Underlay {...underlayProps} />}
         <div
           {...popoverProps}
-          className={placement === 'top' ? 'mb-0.5' : 'mt-0.5'}
+          className={classNames}
           style={{
             ...popoverProps.style,
             minWidth: props.triggerRef.current
