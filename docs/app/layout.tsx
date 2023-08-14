@@ -7,12 +7,12 @@ import '@marigold/theme-core/styles.css';
 
 import { Analytics } from './_components/Analytics';
 import { Navigation } from './_components/Navigation';
+// Metadata
+// ---------------
 import { SiteFooter } from './_components/SiteFooter';
 import { SiteHeader } from './_components/SiteHeader';
 import './globals.css';
 
-// Metadata
-// ---------------
 export const metadata = {
   title: 'Marigold Documentation',
   description: "Documentation of Reservix' Design System",
