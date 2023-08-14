@@ -46,6 +46,7 @@ export type Theme = {
     Footer?: ComponentStyleFunction<string, string>;
     Header?: ComponentStyleFunction<string, string>;
     Headline?: ComponentStyleFunction<string, string>;
+    Popover?: ComponentStyleFunction<string, string>;
     HelpText?: Record<
       'container' | 'icon',
       ComponentStyleFunction<string, string>
