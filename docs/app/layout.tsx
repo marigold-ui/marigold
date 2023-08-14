@@ -2,6 +2,7 @@ import { b2bTheme, coreTheme, theme } from '@/theme';
 import { fontSans } from '@/theme/fonts';
 import { MarigoldProvider } from '@/ui';
 import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
+
 import '@marigold/theme-b2b/styles.css';
 import '@marigold/theme-core/styles.css';
 
