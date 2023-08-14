@@ -83,9 +83,17 @@ export const Table: Table = ({
             <TableHeaderRow key={headerRow.key} item={headerRow}>
               {[...collection.getChildren!(headerRow.key)].map(column =>
                 column.props?.isSelectionCell ? (
-                  <TableSelectAllCell key={column.key} column={column} />
+                  <TableSelectAllCell
+                    width={column.props?.width}
+                    key={column.key}
+                    column={column}
+                  />
                 ) : (
-                  <TableColumnHeader key={column.key} column={column} />
+                  <TableColumnHeader
+                    width={column.props?.width}
+                    key={column.key}
+                    column={column}
+                  />
                 )
               )}
             </TableHeaderRow>
