@@ -29,6 +29,7 @@ const theme: Theme = {
         'data-[disabled]:border-checkbox-base-disabled data-[disabled]:bg-checkbox-base-disabledBackground',
       ]),
     },
+    Field: cva(),
   },
 };
 
