@@ -14,6 +14,8 @@ module.exports = {
     '^next/(.*)$',
     '^@react-aria/(.*)$',
     '^@react-stately/(.*)$',
+    '^@marigold/(.*)$',
+    // @marigold
     '^[./]',
   ],
   importOrderSeparation: true,
