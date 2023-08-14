@@ -73,9 +73,14 @@ export const rehypeComponentDemo = ({
       if (node.name === 'ComponentDemo') {
         // 2. Find out which demo to use
         const demoPath = getJsxAttr(node, 'file')?.value;
-
         if (!demoPath) return;
         if (typeof demoPath !== 'string') return;
+
+        const lineHighlighting = getJsxAttr(node, 'lineHighlighting')?.value;
+
+        const wordHighlighting = getJsxAttr(node, 'wordHighlighting')?.value;
+
+        // console.log(lineHighlighting, wordHighlighting);
 
         try {
           // 3. Load the demo source from the file system
@@ -125,6 +130,8 @@ export const rehypeComponentDemo = ({
         } catch (err) {
           console.log(err);
         }
+
+        console.log('####', node.children);
       }
     });
   };

@@ -4,6 +4,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import { getHighlighter } from 'shiki';
 import { visit } from 'unist-util-visit';
 
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
@@ -121,6 +122,23 @@ export default makeSource({
         rehypePrettyCode,
         {
           theme: 'material-theme-palenight',
+          keepBackground: false,
+
+          onVisitLine(node: any) {
+            if (node.children.length === 0) {
+              node.children = [{ type: 'text', value: ' ' }];
+            }
+          },
+
+          onVisitHighlightedLine(node: any) {
+            node.properties.className = [
+              ...(node.properties.className || []),
+              'bg-white/10 px-2 py-0.5 rounded-sm',
+            ];
+          },
+          onVisitHighlightedChars(node: any) {
+            node.properties.className = ['bg-white/10 px-2 py-0.5 rounded-sm'];
+          },
         },
       ],
       // needed to copy code

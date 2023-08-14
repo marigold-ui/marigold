@@ -8,6 +8,12 @@ import { useThemeSwitch } from '@/ui/ThemeSwitch';
 // Props
 // ---------------
 export interface ComponentDemoProps {
+  /**
+   * Used in the rehype plugin
+   * @internal
+   */
+  file: string;
+
   name: keyof typeof registry;
   source: string;
   children?: ReactNode;

@@ -54,7 +54,7 @@ const typography = {
   ),
   code: (props: HTMLAttributes<HTMLElement>) => (
     <code
-      className="rounded font-mono text-sm before:content-none after:content-none"
+      className="bg-bg-muted rounded p-1 font-mono text-sm before:content-none after:content-none"
       {...props}
     />
   ),
@@ -69,7 +69,7 @@ const typography = {
     return (
       <div className="relative ">
         <pre
-          className="max-h-[650px] overflow-x-auto rounded-lg px-3 py-4"
+          className="max-h-[650px] overflow-x-auto rounded-lg px-3 py-4 [&>code]:bg-transparent"
           {...props}
         >
           <div className="absolute right-4 top-4">
