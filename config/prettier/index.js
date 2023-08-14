@@ -15,9 +15,12 @@ module.exports = {
     '^@react-aria/(.*)$',
     '^@react-stately/(.*)$',
     '^@marigold/(.*)$',
-    // @marigold
     '^[./]',
   ],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
+  importOrderBuiltinModulesToTop: true,
+  importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
+  importOrderMergeDuplicateImports: true,
+  importOrderCombineTypeAndValueImports: true,
 };
