@@ -1,6 +1,11 @@
 name: Builds
 
-on: ['pull_request']
+on:
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '.changeset/**'
+      - '.github/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
