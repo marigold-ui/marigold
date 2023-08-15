@@ -15,7 +15,7 @@ export type MdxJsxAttribute =
       value: {
         type: 'mdxJsxAttributeValueExpression';
         value: string;
-        data: object; // maybe it is always an { estree: Programm }
+        data: object;
       };
     };
 
