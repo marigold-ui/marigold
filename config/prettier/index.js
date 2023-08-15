@@ -16,6 +16,7 @@ module.exports = {
     '^@react-stately/(.*)$',
     '^@react-types/(.*)$',
     '^@marigold/(.*)$',
+    '^@/ui/(.*)$',
     '^@components/(.*)$',
     '^[./]',
   ],
