@@ -54,7 +54,7 @@ const typography = {
   ),
   code: (props: HTMLAttributes<HTMLElement>) => (
     <code
-      className="bg-bg-muted rounded p-1 font-mono text-sm before:content-none after:content-none"
+      className="bg-bg-surface-raised/90 inline-grid rounded px-1 py-0.5 font-mono text-sm before:content-none after:content-none"
       {...props}
     />
   ),

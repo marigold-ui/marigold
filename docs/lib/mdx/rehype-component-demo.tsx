@@ -26,6 +26,7 @@ export interface RehypeNode extends Node {
     // Fallback
     | { type: string; name: string; value: unknown }
   )[];
+  metastring?: string;
   children?: RehypeNode[];
 }
 
@@ -77,10 +78,7 @@ export const rehypeComponentDemo = ({
         if (typeof demoPath !== 'string') return;
 
         const lineHighlighting = getJsxAttr(node, 'lineHighlighting')?.value;
-
         const wordHighlighting = getJsxAttr(node, 'wordHighlighting')?.value;
-
-        // console.log(lineHighlighting, wordHighlighting);
 
         try {
           // 3. Load the demo source from the file system
@@ -116,6 +114,7 @@ export const rehypeComponentDemo = ({
                   tagName: 'code',
                   properties: {
                     className: ['language-tsx'],
+                    metastring: `${lineHighlighting}+${wordHighlighting}`,
                   },
                   children: [
                     {
@@ -130,8 +129,6 @@ export const rehypeComponentDemo = ({
         } catch (err) {
           console.log(err);
         }
-
-        console.log('####', node.children);
       }
     });
   };

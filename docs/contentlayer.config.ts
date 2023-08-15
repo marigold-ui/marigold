@@ -2,9 +2,8 @@ import { defineDocumentType, makeSource } from 'contentlayer/source-files';
 
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
-import rehypePrettyCode from 'rehype-pretty-code';
+import rehypePrettyCode, { LineElement } from 'rehype-pretty-code';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import { getHighlighter } from 'shiki';
 import { visit } from 'unist-util-visit';
 
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
@@ -13,7 +12,7 @@ import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
  * Normalizaiton supports "grouped pages". E.g. when we want to put
  * the page next to its demos.
  *
- * Outpu:
+ * Output:
  * - concepts/layouts -> concepts/layouts
  * - components/form/button/button -> components/form/button
  */
@@ -123,21 +122,19 @@ export default makeSource({
         {
           theme: 'material-theme-palenight',
           keepBackground: false,
-
-          onVisitLine(node: any) {
+          onVisitLine(node: LineElement) {
             if (node.children.length === 0) {
               node.children = [{ type: 'text', value: ' ' }];
             }
           },
-
-          onVisitHighlightedLine(node: any) {
+          onVisitHighlightedLine(node: LineElement) {
             node.properties.className = [
               ...(node.properties.className || []),
-              'bg-white/10 px-2 py-0.5 rounded-sm',
+              'bg-gray-700 px-2 py-0.5 rounded-sm',
             ];
           },
-          onVisitHighlightedChars(node: any) {
-            node.properties.className = ['bg-white/10 px-2 py-0.5 rounded-sm'];
+          onVisitHighlightedChars(node: LineElement) {
+            node.properties.className = ['bg-gray-700 px-2 py-0.5 rounded-sm'];
           },
         },
       ],

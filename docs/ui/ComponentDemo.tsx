@@ -13,7 +13,16 @@ export interface ComponentDemoProps {
    * @internal
    */
   file: string;
-
+  /**
+   * Used in the rehype plugin
+   * @internal
+   */
+  wordHighlighting: string;
+  /**
+   * Used in the rehype plugin
+   * @internal
+   */
+  lineHighlighting: string;
   name: keyof typeof registry;
   source: string;
   children?: ReactNode;
