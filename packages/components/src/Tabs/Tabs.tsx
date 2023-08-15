@@ -1,14 +1,16 @@
-import React from 'react';
-import { useTabList } from '@react-aria/tabs';
-import { GapSpaceProp, cn, useClassNames, gapSpace } from '@marigold/system';
-import { useTabListState } from '@react-stately/tabs';
-import { useRef } from 'react';
+import { GapSpaceProp, cn, gapSpace, useClassNames } from '@marigold/system';
 import { AriaTabListProps } from '@react-types/tabs';
+import React from 'react';
+import { useRef } from 'react';
 
+import { useTabList } from '@react-aria/tabs';
+
+import { Item } from '@react-stately/collections';
+import { useTabListState } from '@react-stately/tabs';
+
+import { TabContext } from './Context';
 import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
-import { Item } from '@react-stately/collections';
-import { TabContext } from './Context';
 
 interface TabsProps
   extends Omit<AriaTabListProps<object>, 'orientation' | 'isDisabled'>,
