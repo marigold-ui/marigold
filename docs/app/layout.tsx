@@ -1,18 +1,20 @@
 import { b2bTheme, coreTheme, theme } from '@/theme';
 import { fontSans } from '@/theme/fonts';
 import { MarigoldProvider } from '@/ui';
-import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
 
 import '@marigold/theme-b2b/styles.css';
 import '@marigold/theme-core/styles.css';
+
+import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
 
 import { Analytics } from './_components/Analytics';
 import { Navigation } from './_components/Navigation';
 import { SiteFooter } from './_components/SiteFooter';
 import { SiteHeader } from './_components/SiteHeader';
+import './globals.css';
+
 // Metadata
 // ---------------
-import './globals.css';
 
 export const metadata = {
   title: 'Marigold Documentation',
