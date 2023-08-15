@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-core",
-  "version": "25.0.0",
+  "version": "25.0.1",
   "description": "Marigold Core Theme",
   "license": "MIT",
   "keywords": [
@@ -13,6 +13,10 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    },
     "./styles.css": "./dist/styles.css",
     "./preset": "./dist/preset.mjs",
     "./preset/cjs": "./dist/preset.js"

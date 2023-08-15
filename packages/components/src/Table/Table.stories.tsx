@@ -60,7 +60,7 @@ export const Basic: Story = {
         <Table.Column>Name</Table.Column>
         <Table.Column>Firstname</Table.Column>
         <Table.Column>House</Table.Column>
-        <Table.Column>Year of birth</Table.Column>
+        <Table.Column width="full">Year of birth</Table.Column>
       </Table.Header>
       <Table.Body>
         <Table.Row key={1}>

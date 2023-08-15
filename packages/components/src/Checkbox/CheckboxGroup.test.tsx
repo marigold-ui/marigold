@@ -5,6 +5,7 @@ import { Theme, cva } from '@marigold/system';
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
 import { setup } from '../test.utils';
+import { FieldGroup } from '../FieldBase';
 
 const theme: Theme = {
   name: 'checkbox group testing',
@@ -193,4 +194,21 @@ test('accepts error message', () => {
   );
 
   expect(screen.getByText('My Error')).toBeInTheDocument();
+});
+
+test('works with a <FieldGroup>', () => {
+  render(
+    <FieldGroup labelWidth="100px">
+      <CheckboxGroup label="Group of Checkboxes">
+        <Checkbox value="one">one</Checkbox>
+        <Checkbox value="two">two</Checkbox>
+        <Checkbox value="three">three</Checkbox>
+      </CheckboxGroup>
+    </FieldGroup>
+  );
+
+  expect(screen.getByText('Group of Checkboxes')).toBeInTheDocument();
+  expect(screen.getByText('one')).toBeInTheDocument();
+  expect(screen.getByText('two')).toBeInTheDocument();
+  expect(screen.getByText('three')).toBeInTheDocument();
 });

@@ -10,6 +10,8 @@ import { cn, useStateProps } from '@marigold/system';
 
 import { useTableContext } from './Context';
 
+import { WidthProp, width as twWidth } from '@marigold/system';
+
 // Sort Icon
 // ---------------
 interface SortIndicatorProps {
@@ -37,13 +39,16 @@ const SortIndicator = ({
 
 // Props
 // ---------------
-interface TableColumnHeaderProps {
+interface TableColumnHeaderProps extends WidthProp {
   column: GridNode<object>;
 }
 
 // Component
 // ---------------
-export const TableColumnHeader = ({ column }: TableColumnHeaderProps) => {
+export const TableColumnHeader = ({
+  column,
+  width = 'auto',
+}: TableColumnHeaderProps) => {
   const ref = useRef(null);
   const { state, classNames } = useTableContext();
   const { columnHeaderProps } = useTableColumnHeader(
@@ -60,12 +65,11 @@ export const TableColumnHeader = ({ column }: TableColumnHeaderProps) => {
     hover: isHovered,
     focusVisible: isFocusVisible,
   });
-
   return (
     <th
       colSpan={column.colspan}
       ref={ref}
-      className={cn('cursor-default', classNames?.header)}
+      className={cn('cursor-default', twWidth[width], classNames?.header)}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
     >
