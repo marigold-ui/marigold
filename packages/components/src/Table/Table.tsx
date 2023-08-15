@@ -1,19 +1,3 @@
-import React, { useRef } from 'react';
-import { useTable, AriaTableProps } from '@react-aria/table';
-import {
-  Cell,
-  Column,
-  Row,
-  RowProps as ReactAiaRowProps,
-  TableBody as Body,
-  TableHeader as Header,
-  TableStateProps,
-  useTableState,
-  ColumnProps as ColumnBaseProps,
-} from '@react-stately/table';
-
-import { WidthProp, cn, useClassNames } from '@marigold/system';
-
 import { TableContext } from './Context';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
@@ -23,6 +7,20 @@ import { TableHeader } from './TableHeader';
 import { TableHeaderRow } from './TableHeaderRow';
 import { TableRow } from './TableRow';
 import { TableSelectAllCell } from './TableSelectAllCell';
+import { WidthProp, cn, useClassNames } from '@marigold/system';
+import { AriaTableProps, useTable } from '@react-aria/table';
+import {
+  TableBody as Body,
+  Cell,
+  Column,
+  ColumnProps as ColumnBaseProps,
+  TableHeader as Header,
+  RowProps as ReactAiaRowProps,
+  Row,
+  TableStateProps,
+  useTableState,
+} from '@react-stately/table';
+import React, { useRef } from 'react';
 
 // Props
 // ---------------
@@ -72,6 +70,7 @@ export const Table: Table = ({
       <table
         ref={tableRef}
         className={cn(
+          'group/table',
           'border-collapse overflow-auto whitespace-nowrap',
           stretch ? 'table w-full' : 'block',
           classNames.table
