@@ -16,7 +16,7 @@
     "@marigold/theme-core": "workspace:*",
     "@marigold/theme-preset": "workspace:*",
     "@tailwindcss/typography": "0.5.9",
-    "@vercel/analytics": "1.0.1",
+    "@vercel/analytics": "1.0.2",
     "autoprefixer": "10.4.14",
     "contentlayer": "0.3.4",
     "eslint": "8.44.0",
