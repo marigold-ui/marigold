@@ -7,13 +7,14 @@ import {
   useTableSelectAllCheckbox,
 } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
+
 import { GridNode } from '@react-types/grid';
 
 import {
   WidthProp,
   cn,
-  useStateProps,
   width as twWidth,
+  useStateProps,
 } from '@marigold/system';
 
 import { Checkbox } from '../Checkbox';

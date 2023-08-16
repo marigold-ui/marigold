@@ -1,15 +1,17 @@
 import React, { useRef } from 'react';
-import { useTable, AriaTableProps } from '@react-aria/table';
+
+import { AriaTableProps, useTable } from '@react-aria/table';
+
 import {
+  TableBody as Body,
   Cell,
   Column,
-  Row,
-  RowProps as ReactAiaRowProps,
-  TableBody as Body,
+  ColumnProps as ColumnBaseProps,
   TableHeader as Header,
+  RowProps as ReactAiaRowProps,
+  Row,
   TableStateProps,
   useTableState,
-  ColumnProps as ColumnBaseProps,
 } from '@react-stately/table';
 
 import { WidthProp, cn, useClassNames } from '@marigold/system';

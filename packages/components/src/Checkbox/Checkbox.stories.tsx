@@ -1,8 +1,8 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 
-import { Checkbox } from './Checkbox';
 import { FieldGroup } from '../FieldBase/FieldGroup';
+import { Checkbox } from './Checkbox';
 
 const meta = {
   title: 'Components/Checkbox',
