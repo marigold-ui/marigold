@@ -12,6 +12,8 @@ import { TabContext } from './Context';
 import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
 
+//props
+// ----------------------
 interface TabsProps
   extends Omit<AriaTabListProps<object>, 'orientation' | 'isDisabled'>,
     GapSpaceProp {
@@ -19,6 +21,9 @@ interface TabsProps
   disabled?: boolean;
   variant?: string;
 }
+
+// component
+// ----------------------
 export const Tabs = ({
   space = 2,
   size = 'medium',
@@ -40,19 +45,21 @@ export const Tabs = ({
     size,
     variant,
   });
-
   return (
     <TabContext.Provider value={{ classNames }}>
-      <div
-        className={cn('flex', gapSpace[space], classNames.tabs)}
-        {...tabListProps}
-        ref={ref}
-      >
-        {[...state.collection].map(item => {
-          return <Tab key={item.key} item={item} state={state} />;
-        })}
+      {/* tabs container */}
+      <div className={cn(classNames.container)}>
+        <div
+          className={cn('flex', gapSpace[space], classNames.tabs)}
+          {...tabListProps}
+          ref={ref}
+        >
+          {[...state.collection].map(item => {
+            return <Tab key={item.key} item={item} state={state} />;
+          })}
+        </div>
+        <TabPanel key={state.selectedItem?.key} state={state} />
       </div>
-      <TabPanel key={state.selectedItem?.key} state={state} />
     </TabContext.Provider>
   );
 };
