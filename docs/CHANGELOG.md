@@ -1,5 +1,20 @@
 # @marigold/docs
 
+## 6.1.0
+
+### Minor Changes
+
+- [#3268](https://github.com/marigold-ui/marigold/pull/3268) [`c61999892`](https://github.com/marigold-ui/marigold/commit/c619998923fec65d099c1a16b1d5d22601e97d22) Thanks [@sebald](https://github.com/sebald)! - feat: checkbox adheres labelwidth when inside `<FieldGroup>`
+
+### Patch Changes
+
+- Updated dependencies [[`c2629d7c8`](https://github.com/marigold-ui/marigold/commit/c2629d7c88ee5870ba78361bbfb4db11c8c1af48), [`989f094e7`](https://github.com/marigold-ui/marigold/commit/989f094e76510e9ff6f4f8d675a9dd6f768099da), [`c61999892`](https://github.com/marigold-ui/marigold/commit/c619998923fec65d099c1a16b1d5d22601e97d22), [`49674045d`](https://github.com/marigold-ui/marigold/commit/49674045db92bb9778de6d9d84dbc04b052b62c3), [`8a4ef1805`](https://github.com/marigold-ui/marigold/commit/8a4ef1805a57a878f2f050c5523af2f921111bfd)]:
+  - @marigold/components@6.1.0
+  - @marigold/theme-b2b@25.1.0
+  - @marigold/theme-core@25.1.0
+  - @marigold/icons@1.2.8
+  - @marigold/theme-preset@1.0.2
+
 ## 6.0.1
 
 ### Patch Changes
