@@ -381,8 +381,8 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
       react-hook-form:
-        specifier: 7.45.2
-        version: 7.45.2(react@18.2.0)
+        specifier: 7.45.4
+        version: 7.45.4(react@18.2.0)
       react-use:
         specifier: 17.4.0
         version: 17.4.0(react-dom@18.2.0)(react@18.2.0)
@@ -4343,9 +4343,9 @@ packages:
       '@jest/types': 29.6.1
       '@sinonjs/fake-timers': 10.3.0
       '@types/node': 18.16.19
-      jest-message-util: 29.6.0
-      jest-mock: 29.6.0
-      jest-util: 29.6.0
+      jest-message-util: 29.6.1
+      jest-mock: 29.6.1
+      jest-util: 29.6.1
     dev: false
 
   /@jest/fake-timers@29.6.2:
@@ -15930,7 +15930,19 @@ packages:
     dependencies:
       '@jest/types': 29.6.1
       '@types/node': 18.16.19
-      jest-util: 29.6.0
+      jest-util: 29.6.1
+    dev: false
+
+  /jest-mock@29.6.1:
+    resolution:
+      {
+        integrity: sha512-brovyV9HBkjXAEdRooaTQK42n8usKoSRR3gihzUpYeV/vwqgSoNfrksO7UfSACnPmxasO/8TmHM3w9Hp3G1dgw==,
+      }
+    engines: { node: ^14.15.0 || ^16.10.0 || >=18.0.0 }
+    dependencies:
+      '@jest/types': 29.6.1
+      '@types/node': 18.16.19
+      jest-util: 29.6.2
     dev: false
 
   /jest-mock@29.6.2:
@@ -20228,10 +20240,10 @@ packages:
       }
     dev: false
 
-  /react-hook-form@7.45.2(react@18.2.0):
+  /react-hook-form@7.45.4(react@18.2.0):
     resolution:
       {
-        integrity: sha512-9s45OdTaKN+4NSTbXVqeDITd/nwIg++nxJGL8+OD5uf1DxvhsXQ641kaYHk5K28cpIOTYm71O/fYk7rFaygb3A==,
+        integrity: sha512-HGDV1JOOBPZj10LB3+OZgfDBTn+IeEsNOKiq/cxbQAIbKaiJUe/KV8DBUzsx0Gx/7IG/orWqRRm736JwOfUSWQ==,
       }
     engines: { node: '>=12.22.0' }
     peerDependencies:
