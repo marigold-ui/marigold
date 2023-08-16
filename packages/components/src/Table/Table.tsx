@@ -129,7 +129,7 @@ Table.Column = Column as (props: ColumnProps) => JSX.Element;
 Table.Header = Header;
 Table.Row = Row;
 
-export interface RowProps extends ReactAiaRowProps {
+export interface RowProps extends ReactAiaRowProps<any> {
   variant?: string;
   size?: string;
 }
