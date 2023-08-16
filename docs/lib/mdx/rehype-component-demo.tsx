@@ -15,7 +15,7 @@ export type MdxJsxAttribute =
       value: {
         type: 'mdxJsxAttributeValueExpression';
         value: string;
-        data: object; // maybe it is always an { estree: Programm }
+        data: object;
       };
     };
 
@@ -26,6 +26,7 @@ export interface RehypeNode extends Node {
     // Fallback
     | { type: string; name: string; value: unknown }
   )[];
+  metastring?: string;
   children?: RehypeNode[];
 }
 
@@ -73,9 +74,11 @@ export const rehypeComponentDemo = ({
       if (node.name === 'ComponentDemo') {
         // 2. Find out which demo to use
         const demoPath = getJsxAttr(node, 'file')?.value;
-
         if (!demoPath) return;
         if (typeof demoPath !== 'string') return;
+
+        const lineHighlighting = getJsxAttr(node, 'lineHighlighting')?.value;
+        const wordHighlighting = getJsxAttr(node, 'wordHighlighting')?.value;
 
         try {
           // 3. Load the demo source from the file system
@@ -111,6 +114,7 @@ export const rehypeComponentDemo = ({
                   tagName: 'code',
                   properties: {
                     className: ['language-tsx'],
+                    metastring: `${lineHighlighting}+${wordHighlighting}`,
                   },
                   children: [
                     {

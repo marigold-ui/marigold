@@ -1,5 +1,22 @@
 # @marigold/theme-b2b
 
+## 25.1.0
+
+### Minor Changes
+
+- [#3250](https://github.com/marigold-ui/marigold/pull/3250) [`989f094e7`](https://github.com/marigold-ui/marigold/commit/989f094e76510e9ff6f4f8d675a9dd6f768099da) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - [DST-111]: enhance styling tabs
+
+- [#3289](https://github.com/marigold-ui/marigold/pull/3289) [`49674045d`](https://github.com/marigold-ui/marigold/commit/49674045db92bb9778de6d9d84dbc04b052b62c3) Thanks [@sebald](https://github.com/sebald)! - feat: support conditional imports for bundlers like vite
+
+### Patch Changes
+
+- [#3295](https://github.com/marigold-ui/marigold/pull/3295) [`8a4ef1805`](https://github.com/marigold-ui/marigold/commit/8a4ef1805a57a878f2f050c5523af2f921111bfd) Thanks [@sarahgm](https://github.com/sarahgm)! - chore[DST-145]:update fontsize
+
+- Updated dependencies [[`c2629d7c8`](https://github.com/marigold-ui/marigold/commit/c2629d7c88ee5870ba78361bbfb4db11c8c1af48), [`566ec30e4`](https://github.com/marigold-ui/marigold/commit/566ec30e43454719b05adc3d3ca3864887280546), [`989f094e7`](https://github.com/marigold-ui/marigold/commit/989f094e76510e9ff6f4f8d675a9dd6f768099da), [`c61999892`](https://github.com/marigold-ui/marigold/commit/c619998923fec65d099c1a16b1d5d22601e97d22), [`8a4ef1805`](https://github.com/marigold-ui/marigold/commit/8a4ef1805a57a878f2f050c5523af2f921111bfd)]:
+  - @marigold/components@6.1.0
+  - @marigold/system@6.1.0
+  - @marigold/theme-preset@1.0.2
+
 ## 25.0.1
 
 ### Patch Changes

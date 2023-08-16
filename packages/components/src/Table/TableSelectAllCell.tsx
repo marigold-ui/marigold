@@ -7,9 +7,15 @@ import {
   useTableSelectAllCheckbox,
 } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
+
 import { GridNode } from '@react-types/grid';
 
-import { cn, useStateProps } from '@marigold/system';
+import {
+  WidthProp,
+  cn,
+  width as twWidth,
+  useStateProps,
+} from '@marigold/system';
 
 import { Checkbox } from '../Checkbox';
 import { useTableContext } from './Context';
@@ -17,13 +23,16 @@ import { mapCheckboxProps } from './utils';
 
 // Props
 // ---------------
-export interface TableSelectAllCell {
+export interface TableSelectAllCell extends WidthProp {
   column: GridNode<object>;
 }
 
 // Component
 // ---------------
-export const TableSelectAllCell = ({ column }: TableSelectAllCell) => {
+export const TableSelectAllCell = ({
+  column,
+  width = 'auto',
+}: TableSelectAllCell) => {
   const ref = useRef(null);
   const { state, classNames } = useTableContext();
   const { columnHeaderProps } = useTableColumnHeader(
@@ -47,6 +56,7 @@ export const TableSelectAllCell = ({ column }: TableSelectAllCell) => {
     <th
       ref={ref}
       className={cn(
+        twWidth[width],
         ['text-center align-middle leading-none'],
         classNames?.header
       )}

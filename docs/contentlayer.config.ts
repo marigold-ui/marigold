@@ -2,7 +2,7 @@ import { defineDocumentType, makeSource } from 'contentlayer/source-files';
 
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
-import rehypePrettyCode from 'rehype-pretty-code';
+import rehypePrettyCode, { LineElement } from 'rehype-pretty-code';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { visit } from 'unist-util-visit';
 
@@ -12,7 +12,7 @@ import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
  * Normalizaiton supports "grouped pages". E.g. when we want to put
  * the page next to its demos.
  *
- * Outpu:
+ * Output:
  * - concepts/layouts -> concepts/layouts
  * - components/form/button/button -> components/form/button
  */
@@ -107,24 +107,13 @@ export default makeSource({
       [rehypeComponentDemo, { contentDirPath }],
       rehypeSlug,
       // to inject the source code and other stuff inside `pre` element props
+      // needed to copy code
       () => tree => {
         visit(tree, node => {
           if (node?.type === 'element' && node?.tagName === 'pre') {
             const [codeEl] = node.children;
-            if (codeEl.tagName !== 'code') {
-              return;
-            }
-
-            if (codeEl.data?.meta) {
-              // Extract event from meta and pass it down the tree.
-              const regex = /event="([^"]*)"/;
-              const match = codeEl.data?.meta.match(regex);
-              if (match) {
-                node.__event__ = match ? match[1] : null;
-                codeEl.data.meta = codeEl.data.meta.replace(regex, '');
-              }
-            }
-            node.__rawString__ = codeEl.children?.[0].value;
+            if (codeEl.tagName !== 'code') return;
+            node.raw = codeEl.children?.[0].value;
           }
         });
       },
@@ -132,30 +121,35 @@ export default makeSource({
         rehypePrettyCode,
         {
           theme: 'material-theme-palenight',
-          onVisitLine(node: any) {
+          keepBackground: false,
+          onVisitLine(node: LineElement) {
             if (node.children.length === 0) {
               node.children = [{ type: 'text', value: ' ' }];
             }
           },
-          onVisitHighlightedLine(node: any) {
-            node.properties.className.push('line--highlighted');
+          onVisitHighlightedLine(node: LineElement) {
+            node.properties.className = [
+              ...(node.properties.className || []),
+              'bg-gray-700 px-2 py-0.5 rounded-sm',
+            ];
           },
-          onVisitHighlightedWord(node: any) {
-            node.properties.className = ['word--highlighted'];
+          onVisitHighlightedChars(node: LineElement) {
+            node.properties.className = ['bg-gray-700 px-2 py-0.5 rounded-sm'];
           },
         },
       ],
+      // needed to copy code
       () => tree => {
         visit(tree, node => {
           if (node?.type === 'element' && node?.tagName === 'div') {
             if (!('data-rehype-pretty-code-fragment' in node.properties)) {
               return;
             }
-            const preElement = node.children.at(-1);
-            if (preElement.tagName !== 'pre') {
-              return;
+            for (const child of node.children) {
+              if (child.tagName === 'pre') {
+                child.properties['raw'] = node.raw;
+              }
             }
-            preElement.properties['__rawString__'] = node.__rawString__;
           }
         });
       },

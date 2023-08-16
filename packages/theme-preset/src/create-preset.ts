@@ -1,8 +1,8 @@
-import path from 'node:path';
 import deepmerge from 'deepmerge';
-import { sync as findUpSync } from 'find-up';
-import type { Config, OptionalConfig } from 'tailwindcss/types/config';
+import { findUpSync } from 'find-up';
+import path from 'node:path';
 import plugin from 'tailwindcss/plugin';
+import type { Config, OptionalConfig } from 'tailwindcss/types/config';
 
 import { defaultTheme } from '@marigold/system';
 

@@ -1,13 +1,29 @@
+import { registry } from '@/registry';
+import { Card, MarigoldProvider, Tabs } from '@/ui';
 import { ReactNode } from 'react';
-import { Card, MarigoldProvider, Tabs } from './marigold';
+
 import { type Theme } from '@marigold/system';
 
-import { registry } from '@/registry';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
 // Props
 // ---------------
 export interface ComponentDemoProps {
+  /**
+   * Used in the rehype plugin
+   * @internal
+   */
+  file: string;
+  /**
+   * Used in the rehype plugin
+   * @internal
+   */
+  wordHighlighting: string;
+  /**
+   * Used in the rehype plugin
+   * @internal
+   */
+  lineHighlighting: string;
   name: keyof typeof registry;
   source: string;
   children?: ReactNode;

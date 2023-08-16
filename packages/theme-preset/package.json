@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-preset",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Create a tailwind Preset for Marigold",
   "license": "MIT",
   "keywords": [
@@ -21,8 +21,8 @@
   },
   "dependencies": {
     "@marigold/system": "workspace:*",
-    "deepmerge": "^4.2.2",
-    "find-up": "5.0.0"
+    "deepmerge": "4.2.2",
+    "find-up": "6.3.0"
   },
   "peerDependencies": {
     "postcss": "8.4.26",

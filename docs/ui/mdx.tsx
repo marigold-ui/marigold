@@ -54,26 +54,26 @@ const typography = {
   ),
   code: (props: HTMLAttributes<HTMLElement>) => (
     <code
-      className="rounded font-mono text-sm before:content-none after:content-none"
+      className="bg-bg-surface-raised/90 inline-grid rounded px-1 py-0.5 font-mono text-sm before:content-none after:content-none"
       {...props}
     />
   ),
   hr: ({ ...props }: HTMLAttributes<HTMLHRElement>) => (
     <hr className="my-4 md:my-8" {...props} />
   ),
-  // `__rawString__` is source code to be copied
+  // `raw` is source code to be copied
   pre: ({
-    __rawString__,
+    raw,
     ...props
-  }: HTMLAttributes<HTMLPreElement> & { __rawString__: string }) => {
+  }: HTMLAttributes<HTMLPreElement> & { raw: string }) => {
     return (
       <div className="relative ">
         <pre
-          className="max-h-[650px] overflow-x-auto rounded-lg px-3 py-4"
+          className="max-h-[650px] overflow-x-auto rounded-lg px-3 py-4 [&>code]:bg-transparent"
           {...props}
         >
           <div className="absolute right-4 top-4">
-            <CopyButton codeString={__rawString__} />
+            <CopyButton codeString={raw} />
           </div>
           {props.children}
         </pre>

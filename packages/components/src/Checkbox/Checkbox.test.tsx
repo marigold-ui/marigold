@@ -1,9 +1,12 @@
 /* eslint-disable testing-library/no-node-access */
-import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
+import React from 'react';
+
 import { Theme, cva } from '@marigold/system';
-import { Checkbox } from './Checkbox';
+
+import { FieldGroup } from '../FieldBase';
 import { setup } from '../test.utils';
+import { Checkbox } from './Checkbox';
 
 const theme: Theme = {
   name: 'test',
@@ -28,6 +31,7 @@ const theme: Theme = {
         'data-[disabled]:border-checkbox-base-disabled data-[disabled]:bg-checkbox-base-disabledBackground',
       ]),
     },
+    Field: cva(),
   },
 };
 
@@ -170,4 +174,15 @@ test('forwards ref', () => {
   );
 
   expect(ref.current).toBeInstanceOf(HTMLInputElement);
+});
+
+test('works with a <FieldGroup>', () => {
+  render(
+    <FieldGroup labelWidth="100px">
+      <Checkbox data-testid="checkbox">Check it</Checkbox>
+    </FieldGroup>
+  );
+
+  const checkbox = screen.getByTestId('checkbox');
+  expect(checkbox).toBeInTheDocument();
 });

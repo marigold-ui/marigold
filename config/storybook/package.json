@@ -1,7 +1,7 @@
 {
   "name": "@marigold/storybook-config",
   "description": "Marigold's storybook configuration",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "license": "MIT",
   "exports": "./main.js",
   "keywords": [
@@ -18,7 +18,6 @@
     "directory": "config/prettier"
   },
   "dependencies": {
-    "@babel/core": "7.21.8",
     "@marigold/components": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
@@ -30,10 +29,7 @@
     "@storybook/source-loader": "7.1.0",
     "@storybook/testing-library": "0.2.0",
     "@types/react": "18.x",
-    "babel-loader": "9.1.3",
-    "find-up": "5.0.0",
-    "vite-tsconfig-paths": "4.2.0",
-    "webpack": "4"
+    "vite-tsconfig-paths": "4.2.0"
   },
   "devDependencies": {
     "@storybook/addon-postcss": "2.0.0",

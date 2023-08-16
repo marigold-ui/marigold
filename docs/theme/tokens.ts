@@ -46,6 +46,7 @@ export const colors = {
 
     surface: {
       DEFAULT: tw.white,
+      raised: tw.slate[200],
     },
 
     // Status

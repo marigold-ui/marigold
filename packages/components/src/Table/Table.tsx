@@ -1,17 +1,20 @@
 import React, { useRef } from 'react';
-import { useTable, AriaTableProps } from '@react-aria/table';
+
+import { AriaTableProps, useTable } from '@react-aria/table';
+
 import {
+  TableBody as Body,
   Cell,
   Column,
-  Row,
-  RowProps as ReactAiaRowProps,
-  TableBody as Body,
+  ColumnProps as ColumnBaseProps,
   TableHeader as Header,
+  RowProps as ReactAiaRowProps,
+  Row,
   TableStateProps,
   useTableState,
 } from '@react-stately/table';
 
-import { cn, useClassNames } from '@marigold/system';
+import { WidthProp, cn, useClassNames } from '@marigold/system';
 
 import { TableContext } from './Context';
 import { TableBody } from './TableBody';
@@ -56,7 +59,6 @@ export const Table: Table = ({
       props.selectionBehavior !== 'replace',
   });
   const { gridProps } = useTable(props, state, tableRef);
-
   const classNames = useClassNames({
     component: 'Table',
     variant,
@@ -83,9 +85,17 @@ export const Table: Table = ({
             <TableHeaderRow key={headerRow.key} item={headerRow}>
               {[...collection.getChildren!(headerRow.key)].map(column =>
                 column.props?.isSelectionCell ? (
-                  <TableSelectAllCell key={column.key} column={column} />
+                  <TableSelectAllCell
+                    width={column.props?.width}
+                    key={column.key}
+                    column={column}
+                  />
                 ) : (
-                  <TableColumnHeader key={column.key} column={column} />
+                  <TableColumnHeader
+                    width={column.props?.width}
+                    key={column.key}
+                    column={column}
+                  />
                 )
               )}
             </TableHeaderRow>
@@ -115,7 +125,7 @@ export const Table: Table = ({
 // Export collection components to conveniently have access to them.
 Table.Body = Body;
 Table.Cell = Cell;
-Table.Column = Column;
+Table.Column = Column as (props: ColumnProps) => JSX.Element;
 Table.Header = Header;
 Table.Row = Row;
 
@@ -124,15 +134,19 @@ export interface RowProps extends ReactAiaRowProps {
   size?: string;
 }
 
+// overriding the column width with WidthProps width
+interface ColumnProps extends Omit<ColumnBaseProps<any>, 'width'>, WidthProp {}
+
 /**
  * Necessary since TypeScript can not infer the
  * types of the @react-stately components.
  */
+
 interface Table {
   (props: TableProps): JSX.Element;
   Body: typeof Body;
   Cell: typeof Cell;
-  Column: typeof Column;
   Header: typeof Header;
+  Column: (props: ColumnProps) => JSX.Element;
   Row: (props: RowProps) => JSX.Element;
 }
