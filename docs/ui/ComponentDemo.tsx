@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Card, MarigoldProvider, Tabs } from './marigold';
+import { Card, MarigoldProvider, Tabs } from '@/ui';
 import { type Theme } from '@marigold/system';
 
 import { registry } from '@/registry';
