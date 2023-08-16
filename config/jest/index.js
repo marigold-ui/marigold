@@ -29,7 +29,7 @@ const base = {
       },
     ],
   },
-  transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
+  transformIgnorePatterns: [], // set empty so it doesn't break some ESM only modules
 
   // coverage
   coverageProvider: 'v8',

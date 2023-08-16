@@ -1,7 +1,9 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Tabs: ThemeComponent<'Tabs'> = {
+  container: cva(''),
   tabs: cva('mb-[10px]'),
+  tabpanel: cva(''),
   tab: cva(
     [
       'min-h-[40px]',

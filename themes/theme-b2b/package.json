@@ -13,6 +13,10 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    },
     "./styles.css": "./dist/styles.css",
     "./preset": "./dist/preset.mjs",
     "./preset/cjs": "./dist/preset.js"
