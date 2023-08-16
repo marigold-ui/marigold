@@ -1,8 +1,10 @@
-import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
+import React from 'react';
+
 import { Theme, cva } from '@marigold/system';
-import { Tabs } from './Tabs';
+
 import { setup } from '../test.utils';
+import { Tabs } from './Tabs';
 
 const theme: Theme = {
   name: 'tabs test',

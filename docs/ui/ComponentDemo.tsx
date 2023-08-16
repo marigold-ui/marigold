@@ -1,8 +1,9 @@
-import { ReactNode } from 'react';
+import { registry } from '@/registry';
 import { Card, MarigoldProvider, Tabs } from '@/ui';
+import { ReactNode } from 'react';
+
 import { type Theme } from '@marigold/system';
 
-import { registry } from '@/registry';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
 // Props

@@ -1,9 +1,13 @@
 import React from 'react';
 import { useRef } from 'react';
+
 import { AriaTabPanelProps, useTabPanel } from '@react-aria/tabs';
+
 import { TabListState } from '@react-stately/tabs';
-import { useTabContext } from './Context';
+
 import { cn } from '@marigold/system';
+
+import { useTabContext } from './Context';
 
 export interface TabPanelProps extends AriaTabPanelProps {
   state: TabListState<object>;

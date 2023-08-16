@@ -1,5 +1,3 @@
-import { GapSpaceProp, cn, gapSpace, useClassNames } from '@marigold/system';
-import { AriaTabListProps } from '@react-types/tabs';
 import React from 'react';
 import { useRef } from 'react';
 
@@ -7,6 +5,10 @@ import { useTabList } from '@react-aria/tabs';
 
 import { Item } from '@react-stately/collections';
 import { useTabListState } from '@react-stately/tabs';
+
+import { AriaTabListProps } from '@react-types/tabs';
+
+import { GapSpaceProp, cn, gapSpace, useClassNames } from '@marigold/system';
 
 import { TabContext } from './Context';
 import { Tab } from './Tab';
