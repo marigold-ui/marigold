@@ -1,17 +1,14 @@
-import React from 'react';
+import { withThemeByDataAttribute } from '@storybook/addon-styling';
 import { Preview } from '@storybook/react';
-
-import { FieldGroup, MarigoldProvider } from '@marigold/components';
-
+import React from 'react';
 import 'tailwindcss/tailwind.css';
 
-import '@marigold/theme-core/styles.css';
-import core from '@marigold/theme-core';
-
-import '@marigold/theme-b2b/styles.css';
+import { FieldGroup, MarigoldProvider } from '@marigold/components';
 import b2b from '@marigold/theme-b2b';
+import '@marigold/theme-b2b/styles.css';
+import core from '@marigold/theme-core';
+import '@marigold/theme-core/styles.css';
 
-import { withThemeByDataAttribute } from '@storybook/addon-styling';
 // Helpers
 // ---------------
 const THEME = {

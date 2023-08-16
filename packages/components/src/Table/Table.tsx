@@ -1,14 +1,7 @@
-import { TableContext } from './Context';
-import { TableBody } from './TableBody';
-import { TableCell } from './TableCell';
-import { TableCheckboxCell } from './TableCheckboxCell';
-import { TableColumnHeader } from './TableColumnHeader';
-import { TableHeader } from './TableHeader';
-import { TableHeaderRow } from './TableHeaderRow';
-import { TableRow } from './TableRow';
-import { TableSelectAllCell } from './TableSelectAllCell';
-import { WidthProp, cn, useClassNames } from '@marigold/system';
+import React, { useRef } from 'react';
+
 import { AriaTableProps, useTable } from '@react-aria/table';
+
 import {
   TableBody as Body,
   Cell,
@@ -20,7 +13,18 @@ import {
   TableStateProps,
   useTableState,
 } from '@react-stately/table';
-import React, { useRef } from 'react';
+
+import { WidthProp, cn, useClassNames } from '@marigold/system';
+
+import { TableContext } from './Context';
+import { TableBody } from './TableBody';
+import { TableCell } from './TableCell';
+import { TableCheckboxCell } from './TableCheckboxCell';
+import { TableColumnHeader } from './TableColumnHeader';
+import { TableHeader } from './TableHeader';
+import { TableHeaderRow } from './TableHeaderRow';
+import { TableRow } from './TableRow';
+import { TableSelectAllCell } from './TableSelectAllCell';
 
 // Props
 // ---------------
@@ -126,7 +130,7 @@ Table.Column = Column as (props: ColumnProps) => JSX.Element;
 Table.Header = Header;
 Table.Row = Row;
 
-export interface RowProps extends ReactAiaRowProps {
+export interface RowProps extends ReactAiaRowProps<any> {
   variant?: string;
   size?: string;
 }

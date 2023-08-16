@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React from 'react';
+import { useState } from '@storybook/addons';
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
+
 import { SortDescriptor } from '@react-types/shared';
 
-import { useState } from '@storybook/addons';
 import { Button } from '../Button';
 import { Checkbox } from '../Checkbox';
-import { Stack } from '../Stack';
-
-import { Table } from './Table';
 import { Select } from '../Select';
+import { Stack } from '../Stack';
+import { Table } from './Table';
 
 const meta = {
   title: 'Components/Table',

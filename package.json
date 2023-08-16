@@ -7,7 +7,7 @@
   "engines": {
     "node": "18.x"
   },
-  "packageManager": "pnpm@8.6.6",
+  "packageManager": "pnpm@8.6.12",
   "dependencies": {
     "@babel/core": "7.21.8",
     "@changesets/changelog-github": "0.4.8",
@@ -63,6 +63,7 @@
   },
   "devDependencies": {
     "@parcel/watcher": "2.1.0",
+    "@trivago/prettier-plugin-sort-imports": "4.2.0",
     "autoprefixer": "10.4.14",
     "concurrently": "8.0.1",
     "next": "13.4.8",

@@ -1,16 +1,16 @@
 'use client';
 
-import { HTMLAttributes } from 'react';
 import { useMDXComponent } from 'next-contentlayer/hooks';
+import { HTMLAttributes } from 'react';
 
 import { IconList } from '@/ui/IconList';
 
-import { Headline, Message, Link, Tabs, Text } from './';
+import { Headline, Link, Message, Tabs, Text } from './';
 import { AppearanceTable } from './AppearanceTable';
-import { PropsTable } from './PropsTable';
+import { ColorTokenTable } from './ColorTokens';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
-import { ColorTokenTable } from './ColorTokens';
+import { PropsTable } from './PropsTable';
 import {
   AlignmentsX,
   AlignmentsY,
@@ -19,10 +19,10 @@ import {
   Spacing,
 } from './Token';
 import {
-  Headlines,
   FontSizes,
-  FontWeights,
   FontStyle,
+  FontWeights,
+  Headlines,
   TextAlign,
 } from './Typography';
 
@@ -54,26 +54,26 @@ const typography = {
   ),
   code: (props: HTMLAttributes<HTMLElement>) => (
     <code
-      className="rounded font-mono text-sm before:content-none after:content-none"
+      className="bg-bg-surface-raised/90 inline-grid rounded px-1 py-0.5 font-mono text-sm before:content-none after:content-none"
       {...props}
     />
   ),
   hr: ({ ...props }: HTMLAttributes<HTMLHRElement>) => (
     <hr className="my-4 md:my-8" {...props} />
   ),
-  // `__rawString__` is source code to be copied
+  // `raw` is source code to be copied
   pre: ({
-    __rawString__,
+    raw,
     ...props
-  }: HTMLAttributes<HTMLPreElement> & { __rawString__: string }) => {
+  }: HTMLAttributes<HTMLPreElement> & { raw: string }) => {
     return (
       <div className="relative ">
         <pre
-          className="max-h-[650px] overflow-x-auto rounded-lg px-3 py-4"
+          className="max-h-[650px] overflow-x-auto rounded-lg px-3 py-4 [&>code]:bg-transparent"
           {...props}
         >
           <div className="absolute right-4 top-4">
-            <CopyButton codeString={__rawString__} />
+            <CopyButton codeString={raw} />
           </div>
           {props.children}
         </pre>

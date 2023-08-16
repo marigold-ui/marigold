@@ -1,6 +1,11 @@
 import { createContext, useContext } from 'react';
 
 export const TabContext = createContext<{
-  classNames: { tabs: string; tab: string };
+  classNames: {
+    container: string;
+    tabs: string;
+    tab: string;
+    tabpanel: string;
+  };
 }>({} as any);
 export const useTabContext = () => useContext(TabContext);
