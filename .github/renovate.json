@@ -11,7 +11,12 @@
       "stabilityDays": 3
     },
     {
-      "matchPackagePatterns": ["@react-aria", "@react-stately", "@react-types"],
+      "matchPackagePatterns": [
+        "@react-aria",
+        "@react-stately",
+        "@react-types",
+        "@internationalized"
+      ],
       "groupName": "react-aria"
     },
     {
@@ -23,7 +28,7 @@
       "groupName": "testing"
     },
     {
-      "matchPackagePatterns": ["storybook", "vite"],
+      "matchPackagePatterns": ["@storybook", "storybook", "vite"],
       "groupName": "storybook"
     },
     {
@@ -44,6 +49,10 @@
     {
       "matchPackagePatterns": ["react-hook-form", "zod"],
       "groupName": "docs-demos"
+    },
+    {
+      "matchPackagePatterns": ["postcss", "tailwind"],
+      "groupName": "tailwind"
     }
   ],
   "timezone": "Europe/Berlin"

@@ -1,6 +1,7 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 
+import { FieldGroup } from '../FieldBase/FieldGroup';
 import { Checkbox } from './Checkbox';
 
 const meta = {
@@ -67,4 +68,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => <Checkbox size="small" {...args} />,
+};
+
+export const WithFieldGroup: Story = {
+  render: args => (
+    <FieldGroup labelWidth="100px">
+      <Checkbox {...args} />
+    </FieldGroup>
+  ),
 };
