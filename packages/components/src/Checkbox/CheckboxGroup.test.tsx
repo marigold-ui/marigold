@@ -1,11 +1,12 @@
-import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
+import React from 'react';
+
 import { Theme, cva } from '@marigold/system';
 
+import { FieldGroup } from '../FieldBase';
+import { setup } from '../test.utils';
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
-import { setup } from '../test.utils';
-import { FieldGroup } from '../FieldBase';
 
 const theme: Theme = {
   name: 'checkbox group testing',

@@ -4,13 +4,13 @@ import { useFocusRing } from '@react-aria/focus';
 import { useHover } from '@react-aria/interactions';
 import { useTableColumnHeader } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
+
 import { GridNode } from '@react-types/grid';
 
 import { cn, useStateProps } from '@marigold/system';
+import { WidthProp, width as twWidth } from '@marigold/system';
 
 import { useTableContext } from './Context';
-
-import { WidthProp, width as twWidth } from '@marigold/system';
 
 // Sort Icon
 // ---------------
