@@ -3,17 +3,10 @@ import { createPreset } from '@marigold/theme-preset';
 import { screens } from './screens';
 import { colors } from './tokens';
 
-export interface PresetConfig {
-  name: string;
-  preflight?: boolean;
-}
-
 export type Preset = ReturnType<typeof createPreset>;
 
 export const preset: Preset = createPreset('b2b', {
-  // corePlugins: {
-  //   preflight: false,
-  // },
+  content: ['./node_modules/@marigold/theme-b2b/dist/**/*.js'],
   theme: {
     extend: {
       screens,
