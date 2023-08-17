@@ -1,11 +1,16 @@
 import React from 'react';
-import { TreeState } from '@react-stately/tree';
-import { useMenuSection } from '@react-aria/menu';
 import { Key } from 'react';
-import { MenuItem } from './MenuItem';
+
+import { useMenuSection } from '@react-aria/menu';
+
+import { TreeState } from '@react-stately/tree';
+
 import { Node } from '@react-types/shared';
+
 import { useClassNames } from '@marigold/system';
+
 import { Divider } from '../Divider';
+import { MenuItem } from './MenuItem';
 
 interface MenuSectionProps<T> {
   item: Node<T>;
@@ -27,13 +32,13 @@ const MenuSection = ({ onAction, item, state }: MenuSectionProps<object>) => {
           <Divider variant="section" />
         </li>
       )}
-      <ul {...itemProps}>
+      <li {...itemProps}>
         {item.rendered && (
           <span {...headingProps} className={className.section}>
             {item.rendered}
           </span>
         )}
-        <li {...groupProps} className="pb-1">
+        <ul {...groupProps} className="pb-1">
           {[...item.props.children].map(node => (
             <MenuItem
               key={node.key}
@@ -43,8 +48,8 @@ const MenuSection = ({ onAction, item, state }: MenuSectionProps<object>) => {
               className={className.item}
             />
           ))}
-        </li>
-      </ul>
+        </ul>
+      </li>
     </>
   );
 };
