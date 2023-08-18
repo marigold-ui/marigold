@@ -1,5 +1,5 @@
 ---
-'@marigold/components': major
+'@marigold/components': minor
 ---
 
-fix checkbox in multi-select tables
+fix with for checkbox in multi-select tables
