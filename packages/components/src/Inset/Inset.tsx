@@ -1,12 +1,13 @@
 import React, { ReactNode } from 'react';
+
 import {
+  PaddingSpaceProp,
   PaddingSpacePropX,
   PaddingSpacePropY,
-  PaddingSpaceProp,
+  cn,
   paddingSpace,
   paddingSpaceX,
   paddingSpaceY,
-  cn,
 } from '@marigold/system';
 
 export type InsetProps =

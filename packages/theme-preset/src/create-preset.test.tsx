@@ -1,4 +1,5 @@
 import path from 'node:path';
+
 import { defaultTheme } from '@marigold/system';
 
 import { createPreset } from './create-preset';

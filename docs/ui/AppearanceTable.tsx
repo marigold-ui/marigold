@@ -1,6 +1,7 @@
 'use client';
 
-import { Card, Inline, Table, Text, Theme, ConfigSchema } from '@/ui';
+import { Card, ConfigSchema, Inline, Table, Text, Theme } from '@/ui';
+
 import { useThemeSwitch } from './ThemeSwitch';
 import { BlankCanvas } from './icons';
 

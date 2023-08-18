@@ -1,14 +1,14 @@
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 import {
   Button,
+  Checkbox,
+  Columns,
   FieldGroup,
+  Headline,
   Select,
   Stack,
   TextField,
-  Headline,
-  Columns,
-  Checkbox,
 } from '@marigold/components';
 
 interface IFormInputs {

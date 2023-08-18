@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from '@storybook/addons';
+import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
+
 import { Button } from '../Button';
-import { Menu } from './Menu';
 import { ActionMenu } from './ActionMenu';
+import { Menu } from './Menu';
 
 const meta = {
   title: 'Components/Menu',

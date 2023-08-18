@@ -1,4 +1,4 @@
-import { Inline, Headline, Text } from '@marigold/components';
+import { Headline, Inline, Text } from '@marigold/components';
 
 export default () => (
   <Inline space={7}>

@@ -1,16 +1,15 @@
 import {
   Button,
+  FieldBase,
   FieldGroup,
   Inline,
   Radio,
+  Select,
+  Stack,
+  TextArea,
   TextField,
   ThemeProvider,
-  Stack,
-  FieldBase,
-  Select,
-  TextArea,
 } from '@marigold/components';
-
 import coreTheme from '@marigold/theme-core';
 
 // eslint-disable-next-line import/no-anonymous-default-export

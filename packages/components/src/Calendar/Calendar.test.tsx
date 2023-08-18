@@ -1,10 +1,12 @@
 /* eslint-disable testing-library/no-node-access */
-import React from 'react';
-import { Theme, cva } from '@marigold/system';
-import { Calendar } from '../';
 import { CalendarDate } from '@internationalized/date';
-import { screen, fireEvent, within } from '@testing-library/react';
+import { fireEvent, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
+
+import { Theme, cva } from '@marigold/system';
+
+import { Calendar } from '../';
 import { setup } from '../test.utils';
 
 const keyCodes = {

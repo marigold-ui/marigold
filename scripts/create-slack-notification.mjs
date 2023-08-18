@@ -1,6 +1,6 @@
 #!/usr/bin/env zx
-
 // Set available globals for eslint
+
 /* global fs, argv */
 import { getPackagesSync } from '@manypkg/get-packages';
 

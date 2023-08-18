@@ -1,5 +1,6 @@
-import { Button, Tooltip } from '@marigold/components';
 import { useState } from 'react';
+
+import { Button, Tooltip } from '@marigold/components';
 
 export default () => {
   const [open, setOpen] = useState(false);

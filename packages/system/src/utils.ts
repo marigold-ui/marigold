@@ -1,11 +1,10 @@
 import { cx } from 'class-variance-authority';
-import { twMerge } from 'tailwind-merge';
-
 import { cva as _cva } from 'class-variance-authority';
 import {
   ClassProp,
   StringToBoolean,
 } from 'class-variance-authority/dist/types';
+import { twMerge } from 'tailwind-merge';
 
 export type { VariantProps } from 'class-variance-authority';
 

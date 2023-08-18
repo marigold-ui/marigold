@@ -1,12 +1,13 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
+
 import { Ticket } from '@marigold/icons';
 
-import { Center } from './Center';
+import { Button } from '../Button';
 import { Headline } from '../Headline';
 import { Stack } from '../Stack';
 import { Text } from '../Text';
-import { Button } from '../Button';
+import { Center } from './Center';
 
 const meta = {
   title: 'Components/Center',

@@ -1,17 +1,19 @@
-import {
-  DOMAttributes,
-  Node,
-  LongPressEvent,
-  PressEvent,
-} from '@react-types/shared';
 import { ButtonHTMLAttributes, RefObject } from 'react';
-import { mergeProps, useId } from '@react-aria/utils';
-import { TreeState } from '@react-stately/tree';
+
 import { useButton } from '@react-aria/button';
 import { useSelectableItem } from '@react-aria/selection';
-
+import { mergeProps, useId } from '@react-aria/utils';
 import { isAppleDevice } from '@react-aria/utils';
 import { isMac } from '@react-aria/utils';
+
+import { TreeState } from '@react-stately/tree';
+
+import {
+  DOMAttributes,
+  LongPressEvent,
+  Node,
+  PressEvent,
+} from '@react-types/shared';
 
 interface Event {
   altKey: boolean;

@@ -1,11 +1,11 @@
 /* eslint-disable testing-library/no-node-access */
-import React from 'react';
 import { screen } from '@testing-library/react';
+import React from 'react';
+
 import { Theme, cva } from '@marigold/system';
 
-import { Input } from './Input';
-
 import { setup } from '../test.utils';
+import { Input } from './Input';
 
 const theme: Theme = {
   name: 'test',

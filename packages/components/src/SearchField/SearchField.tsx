@@ -1,11 +1,16 @@
 import { ReactElement, RefObject, forwardRef, useRef } from 'react';
+
 import { useSearchField } from '@react-aria/searchfield';
+
 import { useSearchFieldState } from '@react-stately/searchfield';
+
 import { SpectrumSearchFieldProps } from '@react-types/searchfield';
 import { TextFieldRef } from '@react-types/textfield';
+
+import { WidthProp, useStateProps } from '@marigold/system';
+
 import { FieldBase } from '../FieldBase';
 import { Input } from '../Input';
-import { WidthProp, useStateProps } from '@marigold/system';
 
 const SearchIcon = (props: { className?: string }) => (
   <svg

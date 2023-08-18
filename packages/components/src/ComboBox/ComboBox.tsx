@@ -1,19 +1,22 @@
 import React from 'react';
-import { useComboBoxState } from '@react-stately/combobox';
-import { useComboBox } from '@react-aria/combobox';
-import { ComboBoxProps as ComboBoxPropsI } from '@react-types/combobox';
-import { useFilter } from '@react-aria/i18n';
-import { useButton } from '@react-aria/button';
 
-import { ListBox } from '../ListBox';
-import { Popover } from '../Overlay';
-import { FieldBase } from '../FieldBase';
-import { Input } from '../Input';
-import { Button } from '../Button';
+import { useButton } from '@react-aria/button';
+import { useComboBox } from '@react-aria/combobox';
+import { useFilter } from '@react-aria/i18n';
 
 import { Item } from '@react-stately/collections';
-import { ChevronDown } from '../Chevron';
+import { useComboBoxState } from '@react-stately/combobox';
+
+import { ComboBoxProps as ComboBoxPropsI } from '@react-types/combobox';
+
 import { WidthProp } from '@marigold/system';
+
+import { Button } from '../Button';
+import { ChevronDown } from '../Chevron';
+import { FieldBase } from '../FieldBase';
+import { Input } from '../Input';
+import { ListBox } from '../ListBox';
+import { Popover } from '../Overlay';
 
 export interface ComboBoxProps
   extends Omit<

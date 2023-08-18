@@ -1,14 +1,17 @@
 import React, { ReactNode, useRef } from 'react';
+
 import { FocusRing, useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
+
 import { TreeState } from '@react-stately/tree';
+
 import { Node } from '@react-types/shared';
 
 import { useClassNames, useStateProps } from '@marigold/system';
 
-import { useAccordionItem } from './useAccordionItem';
 import { Button } from '../Button';
 import { ChevronDown, ChevronUp } from '../Chevron';
+import { useAccordionItem } from './useAccordionItem';
 
 // props
 // ----------------

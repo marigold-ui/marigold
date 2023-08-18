@@ -1,12 +1,13 @@
 /* eslint-disable testing-library/no-node-access */
-import React from 'react';
-import { screen } from '@testing-library/react';
-import { Theme, ThemeProvider, cva } from '@marigold/system';
-import userEvent from '@testing-library/user-event';
-import { DateField } from './DateField';
 import { parseAbsoluteToLocal } from '@internationalized/date';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
+
+import { Theme, ThemeProvider, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
+import { DateField } from './DateField';
 
 const theme: Theme = {
   name: 'test',

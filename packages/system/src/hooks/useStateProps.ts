@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import isEqual from 'react-fast-compare';
+
 import { KebabCase } from '@marigold/types';
 
 export type ComponentState =

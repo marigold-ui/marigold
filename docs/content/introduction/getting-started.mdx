@@ -81,13 +81,13 @@ The easiest way to start is by using the provided CSS file that comes with each 
 /**
  * 1. Import the CSS file and theme
  */
-import '@marigold/theme-b2b/styles.css';
-import theme from '@marigold/theme-b2b';
 
 /**
  * 2. Import the MarigoldProvider
  */
 import { MarigoldProvider } from '@marigold/components';
+import theme from '@marigold/theme-b2b';
+import '@marigold/theme-b2b/styles.css';
 
 /**
  * 3. Wrap your app into the MarigoldProvider
@@ -106,6 +106,7 @@ To set up Tailwind CSS, please refer to the official [installation guide](https:
 
 ```ts
 import { Config } from 'tailwindcss/types/config';
+
 // If you are using another theme, change the name accordingly
 import { preset } from '@marigold/theme-b2b/preset';
 
@@ -128,12 +129,12 @@ Tailwind CSS will automatically generate the required CSS for you. However, reme
 /**
  * 1. Import the CSS file and theme
  */
-import theme from '@marigold/theme-b2b';
 
 /**
  * 2. Import the MarigoldProvider
  */
 import { MarigoldProvider } from '@marigold/components';
+import theme from '@marigold/theme-b2b';
 
 /**
  * 3. Wrap your app into the MarigoldProvider

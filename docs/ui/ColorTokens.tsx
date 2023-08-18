@@ -1,8 +1,9 @@
 'use client';
 
 import { Card, Headline, Table, createVar } from '@/ui';
-import { useThemeSwitch } from './ThemeSwitch';
 import type { ReactNode } from 'react';
+
+import { useThemeSwitch } from './ThemeSwitch';
 
 interface NestedStringObject {
   [key: string]: NestedStringObject | string;

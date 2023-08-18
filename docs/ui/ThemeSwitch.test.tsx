@@ -1,5 +1,6 @@
-import React, { ReactNode } from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
+import React, { ReactNode } from 'react';
+
 import { b2bTheme, coreTheme } from '../theme';
 import { MarigoldThemeSwitch, useThemeSwitch } from './ThemeSwitch';
 

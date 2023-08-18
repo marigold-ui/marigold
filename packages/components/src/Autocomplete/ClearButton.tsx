@@ -1,12 +1,14 @@
 import React, { useRef } from 'react';
-import { useHover } from '@react-aria/interactions';
-import { useFocusRing } from '@react-aria/focus';
+
 import { useButton } from '@react-aria/button';
-import { PressEvents } from '@react-types/shared';
+import { useFocusRing } from '@react-aria/focus';
+import { useHover } from '@react-aria/interactions';
 import { mergeProps } from '@react-aria/utils';
 
-import { HtmlProps } from '@marigold/types';
+import { PressEvents } from '@react-types/shared';
+
 import { cn, useStateProps } from '@marigold/system';
+import { HtmlProps } from '@marigold/types';
 
 export interface ClearButtonProps extends PressEvents, HtmlProps<'button'> {
   excludeFromTabOrder?: boolean;

@@ -1,10 +1,10 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-
+import { siteConfig } from '@/lib/config';
 import { allContentPages } from 'contentlayer/generated';
 
-import { siteConfig } from '@/lib/config';
+import { usePathname } from 'next/navigation';
+
 import { NavLink } from './NavLink';
 
 // Types

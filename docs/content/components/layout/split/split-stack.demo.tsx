@@ -1,4 +1,4 @@
-import { Stack, Split, Text } from '@marigold/components';
+import { Split, Stack, Text } from '@marigold/components';
 
 export default () => (
   <div className="h-48">

@@ -1,10 +1,11 @@
-import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
+
 import { Theme, cva } from '@marigold/system';
 
-import { TextArea } from './TextArea';
 import { setup } from '../test.utils';
+import { TextArea } from './TextArea';
 
 const theme = {
   name: 'test',

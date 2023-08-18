@@ -1,13 +1,15 @@
 import React, { RefObject, useEffect } from 'react';
+
+import { useFocusRing } from '@react-aria/focus';
 import { useSliderThumb } from '@react-aria/slider';
 import { mergeProps } from '@react-aria/utils';
+
 import { SliderState } from '@react-stately/slider';
 
-import { HtmlProps } from '@marigold/types';
 import { cn, useStateProps } from '@marigold/system';
+import { HtmlProps } from '@marigold/types';
 
 import { VisuallyHidden } from '../VisuallyHidden';
-import { useFocusRing } from '@react-aria/focus';
 
 // Props
 // ---------------

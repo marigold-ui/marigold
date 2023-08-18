@@ -1,9 +1,9 @@
 import {
+  Body,
   Card,
+  Footer,
   Header,
   Headline,
-  Body,
-  Footer,
   Text,
 } from '@marigold/components';
 

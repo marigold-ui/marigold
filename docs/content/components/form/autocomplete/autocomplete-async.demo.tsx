@@ -1,10 +1,11 @@
-import { useState, Key } from 'react';
+import { Key, useState } from 'react';
+
 import {
-  useAsyncList,
   Autocomplete,
   Message,
   Stack,
   Table,
+  useAsyncList,
 } from '@marigold/components';
 
 export default () => {

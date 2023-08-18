@@ -2,15 +2,14 @@
  * Based on https://theme-ui.com/packages/match-media/
  */
 import { useEffect, useState } from 'react';
-import { useTheme } from './useTheme';
 
 /**
  * Hardcode fallback breakpoints, not make sure `useEffect`
  * doesn't trigger on every render. Since it is part of the
  * dependency array.
  */
-
 import { defaultTheme } from '../defaultTheme';
+import { useTheme } from './useTheme';
 
 /**
  * Hook that can be used to return values based on the current screen size,
