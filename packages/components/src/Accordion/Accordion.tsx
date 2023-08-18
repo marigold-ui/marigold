@@ -1,9 +1,13 @@
 import React, { Children, ReactElement, useRef } from 'react';
+
 import { AriaAccordionProps, useAccordion } from '@react-aria/accordion';
+
 import { Item } from '@react-stately/collections';
-import { ItemElement, ItemProps } from '@react-types/shared';
-import { AccordionItem } from './AccordionItem';
 import { useTreeState } from '@react-stately/tree';
+
+import { ItemElement, ItemProps } from '@react-types/shared';
+
+import { AccordionItem } from './AccordionItem';
 
 export interface AccordionProps
   extends Omit<
