@@ -6,7 +6,6 @@ import { preset } from './src/preset';
 
 export default {
   content: [
-    ...preset.content,
     'src/root.ts',
     'src/colors.ts',
     'src/**/*.*.ts',
