@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { Key, useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
+import React, { Key, useState } from 'react';
+
+import { useAsyncList } from '@react-stately/data';
 
 import { Container } from '../Container';
 import { Stack } from '../Stack';
 import { Autocomplete } from './Autocomplete';
-import { useAsyncList } from '@react-stately/data';
 
 const meta = {
   title: 'Components/Autocomplete',

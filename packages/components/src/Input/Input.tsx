@@ -1,6 +1,7 @@
-import React, { cloneElement, forwardRef, ReactElement } from 'react';
-import { HtmlProps } from '@marigold/types';
+import React, { ReactElement, cloneElement, forwardRef } from 'react';
+
 import { cn, useClassNames } from '@marigold/system';
+import { HtmlProps } from '@marigold/types';
 
 // Props
 // ---------------

@@ -1,12 +1,14 @@
 /* eslint-disable testing-library/no-node-access */
-import { DatePicker } from './DatePicker';
-import React from 'react';
-import { screen, waitFor } from '@testing-library/react';
 import { CalendarDate } from '@internationalized/date';
-import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
 import { fireEvent } from '@testing-library/react';
-import { setup } from '../test.utils';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
+
 import { Theme, cva } from '@marigold/system';
+
+import { setup } from '../test.utils';
+import { DatePicker } from './DatePicker';
 
 const getTextValue = (el: HTMLElement): any => {
   if (

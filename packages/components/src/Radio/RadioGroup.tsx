@@ -1,12 +1,15 @@
 import React, { ReactNode } from 'react';
+
 import { useRadioGroup } from '@react-aria/radio';
+
 import { useRadioGroupState } from '@react-stately/radio';
+
 import { AriaRadioGroupProps } from '@react-types/radio';
 
 import { WidthProp, cn, useStateProps } from '@marigold/system';
 
-import { RadioGroupContext } from './Context';
 import { FieldBase } from '../FieldBase';
+import { RadioGroupContext } from './Context';
 
 // Props
 // ---------------

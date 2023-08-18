@@ -1,5 +1,6 @@
 import React, { type ReactElement } from 'react';
-import { cn, createVar, gapSpace, GapSpaceProp } from '@marigold/system';
+
+import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
 import { NonZeroPercentage } from '@marigold/types';
 
 export interface AsideProps extends GapSpaceProp {

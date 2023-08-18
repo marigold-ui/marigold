@@ -1,6 +1,8 @@
 import React, { HTMLAttributes, ReactElement, ReactNode, useRef } from 'react';
+
 import { useButton } from '@react-aria/button';
 import { useDialog } from '@react-aria/dialog';
+
 import type { AriaDialogProps } from '@react-types/dialog';
 
 import { cn, useClassNames } from '@marigold/system';
@@ -8,8 +10,8 @@ import { cn, useClassNames } from '@marigold/system';
 import { Header } from '../Header';
 import { Headline } from '../Headline';
 import { DialogContextProps, useDialogContext } from './Context';
-import { DialogTrigger } from './DialogTrigger';
 import { DialogController } from './DialogController';
+import { DialogTrigger } from './DialogTrigger';
 
 // Close Button
 // ---------------

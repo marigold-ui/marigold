@@ -1,5 +1,17 @@
 # @marigold/system
 
+## 6.1.0
+
+### Minor Changes
+
+- [#3250](https://github.com/marigold-ui/marigold/pull/3250) [`989f094e7`](https://github.com/marigold-ui/marigold/commit/989f094e76510e9ff6f4f8d675a9dd6f768099da) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - [DST-111]: enhance styling tabs
+
+### Patch Changes
+
+- [#3297](https://github.com/marigold-ui/marigold/pull/3297) [`566ec30e4`](https://github.com/marigold-ui/marigold/commit/566ec30e43454719b05adc3d3ca3864887280546) Thanks [@sarahgm](https://github.com/sarahgm)! - chore[DST-143]: rename token name
+
+- [#3295](https://github.com/marigold-ui/marigold/pull/3295) [`8a4ef1805`](https://github.com/marigold-ui/marigold/commit/8a4ef1805a57a878f2f050c5523af2f921111bfd) Thanks [@sarahgm](https://github.com/sarahgm)! - chore[DST-145]:update fontsize
+
 ## 6.0.1
 
 ### Patch Changes

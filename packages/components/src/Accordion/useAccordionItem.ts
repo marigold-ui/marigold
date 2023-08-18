@@ -18,6 +18,15 @@ import {
 
 import { HtmlProps } from '@marigold/types';
 
+import { TreeState } from '@react-stately/tree';
+
+import {
+  DOMAttributes,
+  LongPressEvent,
+  Node,
+  PressEvent,
+} from '@react-types/shared';
+
 interface Event {
   altKey: boolean;
   ctrlKey: boolean;

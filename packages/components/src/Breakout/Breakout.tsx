@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
+
+import { AlignmentProp, alignment, cn, createVar } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
-import { cn, createVar, alignment, AlignmentProp } from '@marigold/system';
 
 export interface BreakoutProps extends HtmlProps<'div'>, AlignmentProp {
   children?: ReactNode;

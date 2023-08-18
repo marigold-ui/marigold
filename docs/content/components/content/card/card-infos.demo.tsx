@@ -1,4 +1,4 @@
-import { Card, Link, Headline, Stack, Text } from '@marigold/components';
+import { Card, Headline, Link, Stack, Text } from '@marigold/components';
 
 export default () => (
   <Card p={4}>

@@ -1,6 +1,7 @@
 import React from 'react';
-import { HtmlProps } from '@marigold/types';
+
 import { useClassNames } from '@marigold/system';
+import { HtmlProps } from '@marigold/types';
 
 // Props
 // ---------------

@@ -1,9 +1,10 @@
 import {
-  createContext,
   HTMLAttributes,
   MutableRefObject,
+  createContext,
   useContext,
 } from 'react';
+
 import { FocusStrategy } from '@react-types/shared';
 
 export interface MenuContextProps

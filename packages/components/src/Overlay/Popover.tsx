@@ -1,14 +1,18 @@
-import React, { forwardRef, ReactNode, RefObject, useRef } from 'react';
+import React, { ReactNode, RefObject, forwardRef, useRef } from 'react';
+
+import { FocusScope } from '@react-aria/focus';
 import {
   AriaPopoverProps,
   DismissButton,
   usePopover,
 } from '@react-aria/overlays';
+
 import { OverlayTriggerState } from '@react-stately/overlays';
+
+import { useClassNames } from '@marigold/system';
+
 import { Overlay } from './Overlay';
 import { Underlay } from './Underlay';
-import { FocusScope } from '@react-aria/focus';
-import { useClassNames } from '@marigold/system';
 
 export interface PopoverProps
   extends Pick<AriaPopoverProps, 'triggerRef' | 'scrollRef' | 'isNonModal'> {

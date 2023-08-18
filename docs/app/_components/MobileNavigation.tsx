@@ -1,6 +1,6 @@
 'use client';
 
-import { Dialog, Button, Header, Split } from '@/ui';
+import { Button, Dialog, Header, Split } from '@/ui';
 
 import { Logo } from './Logo';
 import { Navigation } from './Navigation';

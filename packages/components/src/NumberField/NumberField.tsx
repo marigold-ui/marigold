@@ -1,18 +1,21 @@
 import React, { forwardRef } from 'react';
+
 import { useFocusRing } from '@react-aria/focus';
-import { useHover } from '@react-aria/interactions';
 import { useLocale } from '@react-aria/i18n';
+import { useHover } from '@react-aria/interactions';
 import { useNumberField } from '@react-aria/numberfield';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
+
 import { useNumberFieldState } from '@react-stately/numberfield';
+
 import { AriaNumberFieldProps } from '@react-types/numberfield';
 
-import { HtmlProps } from '@marigold/types';
 import { WidthProp, cn, useClassNames, useStateProps } from '@marigold/system';
+import { HtmlProps } from '@marigold/types';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase';
-import { StepButton } from './StepButton';
 import { Input } from '../Input';
+import { StepButton } from './StepButton';
 
 // Theme Extension
 // ---------------

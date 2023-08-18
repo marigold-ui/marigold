@@ -1,11 +1,10 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 
 import { Aspect } from '../Aspect';
 import { Container } from '../Container';
 import { Image } from '../Image';
 import { Text } from '../Text';
-
 import { Breakout } from './Breakout';
 
 const meta = {

@@ -1,14 +1,13 @@
 import {
+  Button,
   Checkbox,
+  CheckboxGroup,
   FieldGroup,
-  Stack,
   Select,
+  Stack,
   TextField,
   ThemeProvider,
-  CheckboxGroup,
-  Button,
 } from '@marigold/components';
-
 import coreTheme from '@marigold/theme-core';
 
 // eslint-disable-next-line import/no-anonymous-default-export

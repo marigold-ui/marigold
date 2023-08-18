@@ -1,11 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React from 'react';
+import { useState } from '@storybook/addons';
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
-
-import { useState } from '@storybook/addons';
 
 const meta = {
   title: 'Components/CheckboxGroup',

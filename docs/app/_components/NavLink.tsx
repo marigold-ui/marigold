@@ -1,6 +1,8 @@
 import type { ComponentProps } from 'react';
+
 import Link from 'next/link';
-import { cn, cva, type VariantProps } from '@marigold/system';
+
+import { type VariantProps, cn, cva } from '@marigold/system';
 
 const styles = cva([], {
   variants: {

@@ -1,10 +1,10 @@
 import {
-  Dialog,
   Button,
+  Dialog,
   Headline,
+  Inline,
   Stack,
   TextField,
-  Inline,
 } from '@marigold/components';
 
 export default () => (

@@ -1,11 +1,14 @@
 /**
  * Thanks to react-aria: https://react-spectrum.adobe.com/react-aria/useSlider.html
  */
-import React, { forwardRef, ReactNode } from 'react';
-import { useSlider } from '@react-aria/slider';
-import { useSliderState } from '@react-stately/slider';
+import React, { ReactNode, forwardRef } from 'react';
+
 import { useNumberFormatter } from '@react-aria/i18n';
+import { useSlider } from '@react-aria/slider';
 import { useObjectRef } from '@react-aria/utils';
+
+import { useSliderState } from '@react-stately/slider';
+
 import { AriaSliderProps } from '@react-types/slider';
 
 import { cn, createVar, useClassNames, useStateProps } from '@marigold/system';

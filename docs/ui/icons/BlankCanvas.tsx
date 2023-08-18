@@ -1,5 +1,6 @@
-import { SVG, SVGProps } from '@marigold/system';
 import { forwardRef } from 'react';
+
+import { SVG, SVGProps } from '@marigold/system';
 
 export const BlankCanvas = forwardRef<SVGSVGElement, SVGProps>((props, ref) => (
   <SVG

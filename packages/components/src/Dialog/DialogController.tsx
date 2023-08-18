@@ -1,5 +1,7 @@
-import { useOverlayTriggerState } from '@react-stately/overlays';
 import React, { ReactNode } from 'react';
+
+import { useOverlayTriggerState } from '@react-stately/overlays';
+
 import { Modal, Overlay } from '../Overlay';
 import { DialogContext } from './Context';
 

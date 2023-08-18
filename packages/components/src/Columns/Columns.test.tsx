@@ -1,5 +1,6 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
+import React from 'react';
+
 import { Columns } from '@marigold/components';
 
 // eslint-disable-next-line testing-library/no-node-access
