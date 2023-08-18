@@ -11,6 +11,7 @@ export const Table: ThemeComponent<'Table'> = {
   }),
   header: cva(
     [
+      'group-aria-[multiselectable]/table:[&:first-child]:w-12',
       'border-border-white border-x px-2',
       'bg-bg-surface-lowered text-text-light',
       'odd:bg-bg-surface-raised',
@@ -29,7 +30,8 @@ export const Table: ThemeComponent<'Table'> = {
       },
     }
   ),
-  row: cva(
+  row: cva([
+    'group-aria-[multiselectable]/table:[&>*:first-child]:w-12',
     'hover:bg-bg-hover-neutral selected:bg-bg-selected focus:outline-outline-focus',
     {
       variants: {
@@ -38,8 +40,8 @@ export const Table: ThemeComponent<'Table'> = {
           borderedTable: ['border-border-neutral border'],
         },
       },
-    }
-  ),
+    },
+  ]),
   cell: cva(['text-text-primary p-2', 'focus:outline-outline-focus'], {
     variants: {
       variant: {
