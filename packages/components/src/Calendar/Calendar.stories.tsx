@@ -1,9 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Calendar } from './Calendar';
 import { CalendarDate } from '@internationalized/date';
+import type { Meta, StoryObj } from '@storybook/react';
+import React, { useState } from 'react';
+
 import { DateValue } from '@react-aria/calendar';
+
+import { Calendar } from './Calendar';
+
 const meta = {
   title: 'Components/Calendar',
   component: Calendar,

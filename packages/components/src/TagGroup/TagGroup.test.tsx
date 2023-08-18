@@ -1,10 +1,11 @@
-import React from 'react';
 import { act, screen } from '@testing-library/react';
-import { Tag } from '.';
-import { Button } from '../Button';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
+
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
+import { Tag } from '.';
+import { Button } from '../Button';
 import { setup } from '../test.utils';
 
 //TODO: use user.keyboard, use them for style tests, refactoring

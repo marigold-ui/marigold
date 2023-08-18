@@ -1,10 +1,14 @@
-import React, { forwardRef } from 'react';
-import { OverlayProvider } from '@react-aria/overlays';
 import { render, screen } from '@testing-library/react';
-import { Tray } from './Tray';
-import { useOverlayTriggerState } from '@react-stately/overlays';
+import React, { forwardRef } from 'react';
+
+import { OverlayProvider } from '@react-aria/overlays';
 import { useObjectRef } from '@react-aria/utils';
+
+import { useOverlayTriggerState } from '@react-stately/overlays';
+
 import { Theme, ThemeProvider, cva } from '@marigold/system';
+
+import { Tray } from './Tray';
 
 const theme: Theme = {
   name: 'test',

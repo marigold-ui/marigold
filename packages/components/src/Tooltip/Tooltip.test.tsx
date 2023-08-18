@@ -1,12 +1,12 @@
-import React from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
+
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
 import { Button } from '../Button';
-import { Tooltip } from './Tooltip';
-import userEvent from '@testing-library/user-event';
-
 import { setup } from '../test.utils';
+import { Tooltip } from './Tooltip';
 
 const user = userEvent.setup();
 const theme: Theme = {

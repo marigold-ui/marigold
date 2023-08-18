@@ -1,15 +1,16 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 
 import { Accessible, Parking, SettingDots } from '@marigold/icons';
-import { Accordion } from './Accordion';
-import { Headline } from '../Headline';
-import { TextField } from '../TextField';
-import { Text } from '../Text';
-import { Inline } from '../Inline';
-import { NumberField } from '../NumberField';
+
 import { Columns } from '../Columns';
 import { FieldGroup } from '../FieldBase';
+import { Headline } from '../Headline';
+import { Inline } from '../Inline';
+import { NumberField } from '../NumberField';
+import { Text } from '../Text';
+import { TextField } from '../TextField';
+import { Accordion } from './Accordion';
 
 const meta = {
   title: 'Components/Accordion',

@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react';
+
 import { SVG, SVGProps as SVGPropsType } from '@marigold/system';
 
 interface SVGProps extends SVGPropsType {

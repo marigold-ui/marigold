@@ -1,9 +1,11 @@
-import React from 'react';
 import { screen } from '@testing-library/react';
+import React from 'react';
+
 import { Theme, ThemeProvider, cva } from '@marigold/system';
-import { List } from './List';
 
 import { setup } from '../test.utils';
+import { List } from './List';
+
 const theme: Theme = {
   name: 'test',
   components: {

@@ -1,6 +1,7 @@
-import React, { createContext, ReactNode, useContext } from 'react';
-import { Theme } from '../types';
+import React, { ReactNode, createContext, useContext } from 'react';
+
 import { defaultTheme } from '../defaultTheme';
+import { Theme } from '../types';
 
 const InternalContext = createContext<Theme>(defaultTheme);
 

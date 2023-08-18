@@ -1,8 +1,10 @@
 import React, { forwardRef } from 'react';
-import { useHover } from '@react-aria/interactions';
+
 import { useFocusRing } from '@react-aria/focus';
+import { useHover } from '@react-aria/interactions';
 import { useTextField } from '@react-aria/textfield';
 import { useObjectRef } from '@react-aria/utils';
+
 import { AriaTextFieldProps } from '@react-types/textfield';
 
 import { WidthProp, useClassNames, useStateProps } from '@marigold/system';

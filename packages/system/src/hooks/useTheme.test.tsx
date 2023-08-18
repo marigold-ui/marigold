@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { cva } from '../utils';
+import React, { ReactNode } from 'react';
 
+import { cva } from '../utils';
 import { ThemeProvider, useTheme } from './useTheme';
 
 // Setup

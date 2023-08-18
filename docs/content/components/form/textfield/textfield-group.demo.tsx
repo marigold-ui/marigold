@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Stack, TextField, FieldGroup, Radio } from '@marigold/components';
+
+import { FieldGroup, Radio, Stack, TextField } from '@marigold/components';
 
 export default () => {
   const [value, setValue] = useState<string>('');

@@ -1,7 +1,8 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Link } from './Link';
+import React from 'react';
+
 import { Text } from '../Text';
+import { Link } from './Link';
 
 const meta = {
   title: 'Components/Link',

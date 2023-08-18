@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
-import { cn, createVar, gapSpace, GapSpaceProp } from '@marigold/system';
 
 export interface CenterProps extends HtmlProps<'div'>, GapSpaceProp {
   children?: ReactNode;

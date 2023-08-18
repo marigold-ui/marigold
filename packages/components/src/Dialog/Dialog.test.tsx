@@ -1,17 +1,18 @@
 /* eslint-disable testing-library/no-node-access */
+
 /* eslint-disable testing-library/no-container */
-import React, { useState } from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React, { useState } from 'react';
 
 import { OverlayProvider } from '@react-aria/overlays';
+
 import { Theme, cva } from '@marigold/system';
 
-import { setup } from '../test.utils';
-
-import { Dialog } from './Dialog';
 import { Button } from '../Button';
 import { Headline } from '../Headline';
+import { setup } from '../test.utils';
+import { Dialog } from './Dialog';
 
 const theme: Theme = {
   name: 'test',

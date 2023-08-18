@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
+
 import { TextArea } from './TextArea';
 
 const meta = {

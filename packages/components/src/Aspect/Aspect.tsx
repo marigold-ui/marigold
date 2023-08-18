@@ -3,8 +3,8 @@
  */
 import React, { ReactNode } from 'react';
 
+import { AspectProp, aspect, cn, createVar } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
-import { cn, createVar, aspect, AspectProp } from '@marigold/system';
 
 export interface AspectProps extends HtmlProps<'div'>, AspectProp {
   children?: ReactNode;

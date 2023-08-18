@@ -1,12 +1,15 @@
 import React, { forwardRef } from 'react';
+
 import { useFocusRing } from '@react-aria/focus';
 import { useSwitch } from '@react-aria/switch';
 import { useObjectRef } from '@react-aria/utils';
+
 import { useToggleState } from '@react-stately/toggle';
+
 import { AriaSwitchProps } from '@react-types/switch';
 
+import { cn, createVar, useClassNames, useStateProps } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
-import { cn, createVar, useStateProps, useClassNames } from '@marigold/system';
 
 // Theme Extension
 // ---------------

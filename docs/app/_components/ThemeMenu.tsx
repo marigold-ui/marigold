@@ -2,6 +2,7 @@
 
 import { Button, Menu } from '@marigold/components';
 import { ChevronDown } from '@marigold/icons';
+
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
 export const ThemeMenu = () => {

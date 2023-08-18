@@ -1,7 +1,10 @@
-import React, { Key } from 'react';
 import { CalendarDate } from '@internationalized/date';
+import React, { Key } from 'react';
+
 import { useDateFormatter } from '@react-aria/i18n';
+
 import { CalendarState } from '@react-stately/calendar';
+
 import { Select } from '../Select';
 
 interface YearDropdownProps {

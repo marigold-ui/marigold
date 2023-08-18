@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { SVG } from '@marigold/system';
+
 import { Button } from '../Button';
 import { Menu, MenuProps } from './Menu';
 

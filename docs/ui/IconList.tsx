@@ -1,11 +1,9 @@
 'use-client';
 
-import { useState, useRef } from 'react';
-import { useCopyToClipboard, useDebounce } from 'react-use';
-
-import { Card, Tiles, Text, cn } from '@/ui';
-
+import { Card, Text, Tiles, cn } from '@/ui';
 import { Icons } from '@/ui';
+import { useRef, useState } from 'react';
+import { useCopyToClipboard, useDebounce } from 'react-use';
 
 export interface IconListProps {
   icons: (keyof typeof Icons)[];

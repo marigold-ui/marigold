@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   act,
   cleanup,
@@ -8,12 +7,15 @@ import {
   screen,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
+
 import { OverlayProvider } from '@react-aria/overlays';
+
 import { Theme, ThemeProvider, cva, useSmallScreen } from '@marigold/system';
 
 import { Button } from '../Button';
-import { Menu } from './Menu';
 import { ActionMenu } from './ActionMenu';
+import { Menu } from './Menu';
 
 // Setup
 // ---------------

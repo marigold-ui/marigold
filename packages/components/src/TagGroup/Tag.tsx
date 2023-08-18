@@ -1,11 +1,14 @@
 import React from 'react';
-import { AriaTagProps, useTag } from '@react-aria/tag';
+
 import { useFocusRing } from '@react-aria/focus';
+import { AriaTagProps, useTag } from '@react-aria/tag';
+import { mergeProps } from '@react-aria/utils';
+
+import { ListState } from '@react-stately/list';
+
+import { cn, useClassNames } from '@marigold/system';
 
 import { Button } from '../Button';
-import { ListState } from '@react-stately/list';
-import { cn, useClassNames } from '@marigold/system';
-import { mergeProps } from '@react-aria/utils';
 
 // Props
 // ---------------

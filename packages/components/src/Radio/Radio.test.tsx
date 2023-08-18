@@ -1,9 +1,11 @@
-import React from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { Radio } from './Radio';
-import { Theme, ThemeProvider, cva } from '@marigold/system';
+import React from 'react';
 import { act } from 'react-dom/test-utils';
+
+import { Theme, ThemeProvider, cva } from '@marigold/system';
+
 import { setup } from '../test.utils';
+import { Radio } from './Radio';
 
 const theme: Theme = {
   name: 'test',

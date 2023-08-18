@@ -1,4 +1,4 @@
-import { Card, Image, Tiles, Text } from '@marigold/components';
+import { Card, Image, Text, Tiles } from '@marigold/components';
 
 export default () => (
   <Tiles space={1} tilesWidth="250px" equalHeight>

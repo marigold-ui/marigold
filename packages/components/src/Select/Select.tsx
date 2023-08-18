@@ -1,31 +1,35 @@
 import React, {
-  forwardRef,
   ForwardRefExoticComponent,
   RefAttributes,
+  forwardRef,
   useRef,
 } from 'react';
+
 import { useButton } from '@react-aria/button';
 import { useFocusRing } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { HiddenSelect, useSelect } from '@react-aria/select';
-import { useSelectState } from '@react-stately/select';
-import { Item, Section } from '@react-stately/collections';
-import type { AriaSelectProps } from '@react-types/select';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
+
+import { Item, Section } from '@react-stately/collections';
+import { useSelectState } from '@react-stately/select';
+
+import type { AriaSelectProps } from '@react-types/select';
+
 import {
+  WidthProp,
   cn,
   useClassNames,
   useSmallScreen,
   useStateProps,
-  WidthProp,
 } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
+import { ChevronDown } from '../Chevron';
 import { FieldBase } from '../FieldBase';
 import { ListBox } from '../ListBox';
-import { messages } from './intl';
 import { Popover, Tray } from '../Overlay';
-import { ChevronDown } from '../Chevron';
+import { messages } from './intl';
 
 // Props
 // ---------------

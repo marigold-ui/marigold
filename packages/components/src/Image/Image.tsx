@@ -1,13 +1,14 @@
 import React from 'react';
-import { HtmlProps } from '@marigold/types';
+
 import {
-  cn,
-  useClassNames,
   ObjectFitProp,
-  objectFit,
   ObjectPositionProp,
+  cn,
+  objectFit,
   objectPosition,
+  useClassNames,
 } from '@marigold/system';
+import { HtmlProps } from '@marigold/types';
 
 // Props
 // ---------------

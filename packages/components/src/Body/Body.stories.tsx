@@ -1,7 +1,8 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Body } from './Body';
+import React from 'react';
+
 import { Container } from '../Container';
+import { Body } from './Body';
 
 const meta = {
   title: 'Components/Body',

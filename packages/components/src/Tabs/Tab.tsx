@@ -1,11 +1,16 @@
 import React from 'react';
 import { useRef } from 'react';
-import { cn, useStateProps } from '@marigold/system';
-import { useTab } from '@react-aria/tabs';
+
 import { useFocus, useHover } from '@react-aria/interactions';
+import { useTab } from '@react-aria/tabs';
 import { mergeProps } from '@react-aria/utils';
-import { Node } from '@react-types/shared';
+
 import { TabListState } from '@react-stately/tabs';
+
+import { Node } from '@react-types/shared';
+
+import { cn, useStateProps } from '@marigold/system';
+
 import { useTabContext } from './Context';
 
 export interface TabProps {

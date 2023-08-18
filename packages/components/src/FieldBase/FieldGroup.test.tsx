@@ -1,11 +1,11 @@
-import React from 'react';
 import { screen } from '@testing-library/react';
-
-import { FieldBase } from './FieldBase';
-import { FieldGroup } from './FieldGroup';
+import React from 'react';
 
 import { Theme, cva } from '@marigold/system';
+
 import { setup } from '../test.utils';
+import { FieldBase } from './FieldBase';
+import { FieldGroup } from './FieldGroup';
 
 const theme: Theme = {
   name: 'test',
