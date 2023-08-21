@@ -1,4 +1,5 @@
-import { Text, Link } from '@/ui';
+import { Link, Text } from '@/ui';
+
 import { Logo } from './Logo';
 import { ThemeMenu } from './ThemeMenu';
 

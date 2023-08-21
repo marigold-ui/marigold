@@ -1,10 +1,10 @@
 import {
-  Image,
+  Card,
   Headline,
+  Image,
   Stack,
   Text,
   Tiles,
-  Card,
 } from '@marigold/components';
 
 export default () => (

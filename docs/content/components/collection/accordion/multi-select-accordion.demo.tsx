@@ -1,12 +1,12 @@
 import {
   Accordion,
   Inline,
-  Text,
-  TextField,
   NumberField,
   Stack,
+  Text,
+  TextField,
 } from '@marigold/components';
-import { Parking, SettingDots, Accessible } from '@marigold/icons';
+import { Accessible, Parking, SettingDots } from '@marigold/icons';
 
 export default () => {
   const items = [

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 
 import { Image } from '../Image';
 import { Aspect } from './Aspect';

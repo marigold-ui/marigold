@@ -1,5 +1,11 @@
 # @marigold/jest-config
 
+## 1.2.0
+
+### Minor Changes
+
+- [#3278](https://github.com/marigold-ui/marigold/pull/3278) [`74c49bfee`](https://github.com/marigold-ui/marigold/commit/74c49bfeed05cf2e20cf2c93ff59654002e4e747) Thanks [@sebald](https://github.com/sebald)! - fix: support ESM only modules better
+
 ## 1.1.2
 
 ### Patch Changes

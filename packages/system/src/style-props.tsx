@@ -67,7 +67,7 @@ export const fontWeight = {
   thin: 'font-thin',
   extralight: 'font-extralight',
   light: 'font-light',
-  normal: 'font-normal',
+  regular: 'font-normal',
   medium: 'font-medium',
   semibold: 'font-semibold',
   bold: 'font-bold',

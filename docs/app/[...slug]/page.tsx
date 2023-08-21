@@ -1,8 +1,9 @@
-import { notFound } from 'next/navigation';
-import { Metadata } from 'next';
-import { allContentPages } from 'contentlayer/generated';
-
 import { Headline } from '@/ui';
+import { allContentPages } from 'contentlayer/generated';
+import { Metadata } from 'next';
+
+import { notFound } from 'next/navigation';
+
 import { Mdx } from '@/ui/mdx';
 
 interface ContentPageProps {

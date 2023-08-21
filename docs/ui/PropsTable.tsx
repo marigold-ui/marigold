@@ -1,6 +1,7 @@
 'use client';
 
 import { Card, Inline, Table, Text } from '@/ui';
+
 import { BlankCanvas } from './icons';
 
 export interface PropsTableProps {

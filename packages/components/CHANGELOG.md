@@ -1,5 +1,21 @@
 # @marigold/components
 
+## 6.1.0
+
+### Minor Changes
+
+- [#3270](https://github.com/marigold-ui/marigold/pull/3270) [`c2629d7c8`](https://github.com/marigold-ui/marigold/commit/c2629d7c88ee5870ba78361bbfb4db11c8c1af48) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Adding option to specify table column width
+
+- [#3250](https://github.com/marigold-ui/marigold/pull/3250) [`989f094e7`](https://github.com/marigold-ui/marigold/commit/989f094e76510e9ff6f4f8d675a9dd6f768099da) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - [DST-111]: enhance styling tabs
+
+- [#3268](https://github.com/marigold-ui/marigold/pull/3268) [`c61999892`](https://github.com/marigold-ui/marigold/commit/c619998923fec65d099c1a16b1d5d22601e97d22) Thanks [@sebald](https://github.com/sebald)! - feat: checkbox adheres labelwidth when inside `<FieldGroup>`
+
+### Patch Changes
+
+- Updated dependencies [[`566ec30e4`](https://github.com/marigold-ui/marigold/commit/566ec30e43454719b05adc3d3ca3864887280546), [`989f094e7`](https://github.com/marigold-ui/marigold/commit/989f094e76510e9ff6f4f8d675a9dd6f768099da), [`8a4ef1805`](https://github.com/marigold-ui/marigold/commit/8a4ef1805a57a878f2f050c5523af2f921111bfd)]:
+  - @marigold/system@6.1.0
+  - @marigold/icons@1.2.8
+
 ## 6.0.1
 
 ### Patch Changes

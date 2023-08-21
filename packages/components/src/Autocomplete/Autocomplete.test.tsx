@@ -1,10 +1,10 @@
-import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 
 import { Theme, cva } from '@marigold/system';
-import { setup } from '../test.utils';
 
+import { setup } from '../test.utils';
 import { Autocomplete } from './Autocomplete';
 
 // Setup
