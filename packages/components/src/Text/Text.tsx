@@ -1,20 +1,19 @@
-import React from 'react';
 import {
   CursorProp,
   FontSizeProp,
+  FontStyleProp,
   FontWeightProp,
   TextAlignProp,
   cn,
   createVar,
   cursorStyle,
-  FontStyleProp,
   fontWeight,
   get,
   textAlign,
-  useClassNames,
-  useTheme,
   textSize,
   textStyle,
+  useClassNames,
+  useTheme,
 } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 

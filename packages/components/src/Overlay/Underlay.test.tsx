@@ -1,7 +1,9 @@
-import React from 'react';
-import { ThemeProvider, Theme, cva } from '@marigold/system';
-import { OverlayProvider } from '@react-aria/overlays';
 import { render, screen } from '@testing-library/react';
+
+import { OverlayProvider } from '@react-aria/overlays';
+
+import { Theme, ThemeProvider, cva } from '@marigold/system';
+
 import { Underlay } from './Underlay';
 
 const theme: Theme = {

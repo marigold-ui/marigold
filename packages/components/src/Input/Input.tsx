@@ -1,6 +1,12 @@
-import React, { cloneElement, forwardRef, ReactElement } from 'react';
-import { HtmlProps } from '@marigold/types';
+import {
+  ComponentPropsWithRef,
+  ReactElement,
+  cloneElement,
+  forwardRef,
+} from 'react';
+
 import { cn, useClassNames } from '@marigold/system';
+import { HtmlProps } from '@marigold/types';
 
 // Props
 // ---------------
@@ -18,7 +24,7 @@ export interface InputOwnProps
 }
 
 export interface InputProps
-  extends Omit<React.ComponentPropsWithRef<'input'>, 'size' | 'className'>,
+  extends Omit<ComponentPropsWithRef<'input'>, 'size' | 'className'>,
     InputOwnProps {}
 
 // Component

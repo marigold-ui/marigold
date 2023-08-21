@@ -1,11 +1,15 @@
-import React, { ReactNode, useRef } from 'react';
-import { useMenuTriggerState } from '@react-stately/menu';
+import { Children, ReactNode, useRef } from 'react';
+
 import { PressResponder } from '@react-aria/interactions';
 import { useMenuTrigger } from '@react-aria/menu';
 import { useObjectRef } from '@react-aria/utils';
+
+import { useMenuTriggerState } from '@react-stately/menu';
+
 import { useSmallScreen } from '@marigold/system';
-import { MenuContext, MenuContextProps } from './Context';
+
 import { Popover, Tray } from '../Overlay';
+import { MenuContext, MenuContextProps } from './Context';
 
 export interface MenuTriggerProps {
   children: [trigger: ReactNode, menu: ReactNode];
@@ -20,7 +24,7 @@ export const MenuTrigger = ({
   onOpenChange,
   children,
 }: MenuTriggerProps) => {
-  const [menuTrigger, menu] = React.Children.toArray(children);
+  const [menuTrigger, menu] = Children.toArray(children);
 
   const menuTriggerRef = useRef<HTMLElement>(null);
   const menuRef = useObjectRef<HTMLUListElement>();

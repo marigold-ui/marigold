@@ -1,13 +1,17 @@
-import React, { useRef } from 'react';
-import { useDatePickerState } from '@react-stately/datepicker';
+import { CalendarDate } from '@internationalized/date';
+import { useRef } from 'react';
+
 import { AriaDatePickerProps, useDatePicker } from '@react-aria/datepicker';
+import { mergeProps } from '@react-aria/utils';
+
+import { useDatePickerState } from '@react-stately/datepicker';
+
+import { cn, useClassNames, useStateProps } from '@marigold/system';
+
+import { Button } from '../Button';
 import { Calendar } from '../Calendar/Calendar';
 import { DateField } from '../DateField';
 import { Popover } from '../Overlay';
-import { cn, useClassNames, useStateProps } from '@marigold/system';
-import { CalendarDate } from '@internationalized/date';
-import { Button } from '../Button';
-import { mergeProps } from '@react-aria/utils';
 
 // Props
 // -----------------

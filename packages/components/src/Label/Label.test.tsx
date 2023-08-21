@@ -1,6 +1,7 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
+
 import { Theme, ThemeProvider, cva } from '@marigold/system';
+
 import { Label } from './Label';
 
 const theme: Theme = {

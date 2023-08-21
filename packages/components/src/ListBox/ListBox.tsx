@@ -1,12 +1,15 @@
-import React, { forwardRef, ReactNode } from 'react';
-import { useObjectRef } from '@react-aria/utils';
-import { cn, useClassNames } from '@marigold/system';
+import { ReactNode, forwardRef } from 'react';
+
 import { useListBox } from '@react-aria/listbox';
+import { useObjectRef } from '@react-aria/utils';
+
 import type { ListState } from '@react-stately/list';
 
+import { cn, useClassNames } from '@marigold/system';
+
 import { ListBoxContext } from './Context';
-import { ListBoxSection } from './ListBoxSection';
 import { ListBoxOption } from './ListBoxOption';
+import { ListBoxSection } from './ListBoxSection';
 
 // Props
 // ---------------

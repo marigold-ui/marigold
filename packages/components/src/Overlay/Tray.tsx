@@ -1,4 +1,5 @@
-import React from 'react';
+import { ReactNode, RefObject, forwardRef } from 'react';
+
 import { FocusScope } from '@react-aria/focus';
 import {
   AriaModalOverlayProps,
@@ -7,9 +8,11 @@ import {
   useModalOverlay,
 } from '@react-aria/overlays';
 import { useObjectRef } from '@react-aria/utils';
+
 import { OverlayTriggerState } from '@react-stately/overlays';
+
 import { StyleProps } from '@react-types/shared';
-import { forwardRef, ReactNode, RefObject } from 'react';
+
 import { Overlay } from './Overlay';
 import { Underlay } from './Underlay';
 

@@ -1,8 +1,7 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Aside } from './Aside';
 import { Stack } from '../Stack';
+import { Aside } from './Aside';
 
 const meta = {
   title: 'Components/Aside',

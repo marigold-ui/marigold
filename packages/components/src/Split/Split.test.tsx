@@ -1,8 +1,7 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { Stack } from '../Stack';
 import { Split } from '../Split';
+import { Stack } from '../Stack';
 
 test('we can not really test this ... but anyway', () => {
   render(

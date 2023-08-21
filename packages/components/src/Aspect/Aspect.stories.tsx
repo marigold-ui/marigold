@@ -1,8 +1,7 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Aspect } from './Aspect';
 import { Image } from '../Image';
+import { Aspect } from './Aspect';
 
 const meta = {
   title: 'Components/Aspect',

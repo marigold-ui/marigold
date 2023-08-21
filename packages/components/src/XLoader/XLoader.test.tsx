@@ -1,7 +1,8 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { XLoader } from './XLoader';
+
 import { Theme, ThemeProvider } from '@marigold/system';
+
+import { XLoader } from './XLoader';
 
 const theme: Theme = {
   name: 'test',

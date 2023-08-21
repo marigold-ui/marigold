@@ -1,5 +1,3 @@
-import React from 'react';
-import { OverlayProvider } from '@react-aria/overlays';
 import {
   act,
   fireEvent,
@@ -7,12 +5,15 @@ import {
   screen,
   within,
 } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { cleanup } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
+
+import { OverlayProvider } from '@react-aria/overlays';
 
 import { Theme, cva, useSmallScreen } from '@marigold/system';
-import { setup } from '../test.utils';
 
+import { setup } from '../test.utils';
 import { Select } from './Select';
 
 const theme: Theme = {

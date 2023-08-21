@@ -1,7 +1,11 @@
-import React, { Key } from 'react';
+import { Key } from 'react';
+
 import { useDateFormatter } from '@react-aria/i18n';
+
 import { CalendarState } from '@react-stately/calendar';
+
 import { Select } from '../Select';
+
 interface MonthDropdownProps {
   state: CalendarState;
 }

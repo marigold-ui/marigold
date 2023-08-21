@@ -1,8 +1,10 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
+
 import { useButton } from '@react-aria/button';
-import { AriaButtonProps } from '@react-types/button';
 import { useHover } from '@react-aria/interactions';
 import { mergeProps } from '@react-aria/utils';
+
+import { AriaButtonProps } from '@react-types/button';
 
 import { cn, useStateProps } from '@marigold/system';
 

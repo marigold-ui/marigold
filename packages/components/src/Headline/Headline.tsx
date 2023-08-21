@@ -1,12 +1,13 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
+
 import {
-  useClassNames,
+  TextAlignProp,
   cn,
   createVar,
-  TextAlignProp,
-  textAlign,
-  useTheme,
   get,
+  textAlign,
+  useClassNames,
+  useTheme,
 } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 

@@ -1,9 +1,11 @@
-import React, { ReactNode } from 'react';
-import { AriaTextFieldOptions, useTextField } from '@react-aria/textfield';
 import { screen, within } from '@testing-library/react';
-import { Theme, cva } from '@marigold/system';
-import { setup } from '../test.utils';
+import { ReactNode, useRef } from 'react';
 
+import { AriaTextFieldOptions, useTextField } from '@react-aria/textfield';
+
+import { Theme, cva } from '@marigold/system';
+
+import { setup } from '../test.utils';
 import { FieldBase } from './FieldBase';
 
 // Setup
@@ -59,7 +61,7 @@ interface MockedTestFieldProps extends AriaTextFieldOptions<'input'> {
 }
 
 const MockedTextField = (props: MockedTestFieldProps) => {
-  const ref = React.useRef(null);
+  const ref = useRef(null);
   const { labelProps, inputProps, descriptionProps, errorMessageProps } =
     useTextField(props, ref);
 

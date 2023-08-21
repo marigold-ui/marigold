@@ -1,16 +1,16 @@
-import React, { ReactNode } from 'react';
-import { HtmlProps } from '@marigold/types';
+import { ReactNode } from 'react';
 
 import {
+  GridColsAlignProp,
+  GridColumn,
   PlaceItemsProp,
   cn,
   createVar,
-  placeItems,
   gridColsAlign,
-  GridColsAlignProp,
-  GridColumn,
   gridColumn,
+  placeItems,
 } from '@marigold/system';
+import { HtmlProps } from '@marigold/types';
 
 export interface ContainerProps
   extends HtmlProps<'div'>,

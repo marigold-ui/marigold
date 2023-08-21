@@ -1,20 +1,20 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 
-import { Button } from '../Button';
-import { Headline } from '../Headline';
-import { Inline } from '../Inline';
-import { Text } from '../Text';
-import { Dialog } from './Dialog';
-import { TextField } from '../TextField';
-import { Stack } from '../Stack';
 import { Body } from '../Body';
+import { Button } from '../Button';
+import { Checkbox, CheckboxGroup } from '../Checkbox';
 import { Container } from '../Container';
 import { Footer } from '../Footer';
 import { Header } from '../Header';
-import { Checkbox, CheckboxGroup } from '../Checkbox';
+import { Headline } from '../Headline';
+import { Inline } from '../Inline';
 import { Menu } from '../Menu';
+import { Stack } from '../Stack';
+import { Text } from '../Text';
+import { TextField } from '../TextField';
+import { Dialog } from './Dialog';
 
 const meta = {
   title: 'Components/Dialog',

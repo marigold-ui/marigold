@@ -1,12 +1,17 @@
-import React, { createContext, ReactNode, useContext } from 'react';
+import { ReactNode, createContext, useContext } from 'react';
+
 import { useCheckboxGroup } from '@react-aria/checkbox';
+
 import {
   CheckboxGroupState,
   useCheckboxGroupState,
 } from '@react-stately/checkbox';
+
 import { AriaCheckboxGroupProps } from '@react-types/checkbox';
-import { useStateProps, WidthProp } from '@marigold/system';
+
+import { WidthProp, useStateProps } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
+
 import { FieldBase } from '../FieldBase';
 
 // Context

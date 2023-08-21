@@ -1,5 +1,6 @@
+import { forwardRef } from 'react';
+
 import { SVG, SVGProps } from '@marigold/system';
-import React, { forwardRef } from 'react';
 
 export const XLoader = forwardRef<SVGElement, SVGProps>((props, ref) => (
   <SVG

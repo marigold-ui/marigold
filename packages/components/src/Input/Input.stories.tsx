@@ -1,7 +1,7 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Search, Delete } from '@marigold/icons';
+import { Delete, Search } from '@marigold/icons';
+
 import { Button } from '../Button';
 import { Input } from './Input';
 

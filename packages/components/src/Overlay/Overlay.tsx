@@ -1,9 +1,10 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import {
   Overlay as ReactAriaOverlay,
   OverlayProps as ReactAriaOverlayProps,
 } from '@react-aria/overlays';
+
 import { useTheme } from '@marigold/system';
 
 export interface OverlayProps {

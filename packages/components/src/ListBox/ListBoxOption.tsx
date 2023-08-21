@@ -1,7 +1,10 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
+
 import { useOption } from '@react-aria/listbox';
-import type { ListState } from '@react-stately/list';
 import { mergeProps } from '@react-aria/utils';
+
+import type { ListState } from '@react-stately/list';
+
 import type { Node } from '@react-types/shared';
 
 import { useStateProps } from '@marigold/system';

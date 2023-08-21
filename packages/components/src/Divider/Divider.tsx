@@ -1,4 +1,3 @@
-import React from 'react';
 import { SeparatorProps, useSeparator } from '@react-aria/separator';
 
 import { useClassNames } from '@marigold/system';

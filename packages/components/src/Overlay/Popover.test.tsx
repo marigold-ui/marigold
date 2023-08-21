@@ -1,14 +1,16 @@
 /* eslint-disable testing-library/no-node-access */
-import React from 'react';
-import { OverlayProvider } from '@react-aria/overlays';
-import { useObjectRef } from '@react-aria/utils';
-import { useOverlayTriggerState } from '@react-stately/overlays';
 import { screen } from '@testing-library/react';
 import { forwardRef } from 'react';
-import { Popover } from './Popover';
+
+import { OverlayProvider } from '@react-aria/overlays';
+import { useObjectRef } from '@react-aria/utils';
+
+import { useOverlayTriggerState } from '@react-stately/overlays';
+
 import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
+import { Popover } from './Popover';
 
 const theme: Theme = {
   name: 'test',

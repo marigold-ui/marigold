@@ -1,12 +1,16 @@
-import React, { ReactElement, useRef } from 'react';
+import { Children, ReactElement, useRef } from 'react';
+
 import { FocusableProvider } from '@react-aria/focus';
 import { useOverlayPosition } from '@react-aria/overlays';
 import { useTooltipTrigger } from '@react-aria/tooltip';
+
 import { useTooltipTriggerState } from '@react-stately/tooltip';
+
 import { PositionProps } from '@react-types/overlays';
 import { TooltipTriggerProps as AriaTooltipTriggerProps } from '@react-types/tooltip';
-import { TooltipContext } from './Context';
+
 import { Overlay } from '../Overlay';
+import { TooltipContext } from './Context';
 
 // Props
 // ---------------
@@ -28,7 +32,7 @@ export const TooltipTrigger = ({
   children,
   ...rest
 }: TooltipTriggerProps) => {
-  const [tooltipTrigger, tooltip] = React.Children.toArray(children);
+  const [tooltipTrigger, tooltip] = Children.toArray(children);
   const props = {
     ...rest,
     isDisabled: disabled,
