@@ -1,0 +1,48 @@
+---
+title: FieldGroup
+caption: A component for organizing and structuring form data on the layout level.
+---
+
+The `<FieldGroup>` designed primarily for handling of complex forms and semantic representation of fields structure and the layout in `theme-core` .
+
+<Message messageTitle="For your information !" variant="info">
+  The `FieldGroup` component is created to handle complex layout in `theme-core`
+  specifically, by using the `labelWidth` property that sets the width of all
+  fields labels inside the `FieldGroup` .
+</Message>
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx onlyCode
+import { FieldGroup } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'labelWidth',
+      type: 'string | number',
+      description:
+        'Sets the width of all Fields labels used inside the `FieldGroup` ',
+      default: 'none',
+    },
+  ]}
+/>
+
+## Examples
+
+### Complex Form layout
+
+This is how you can control form layout and labels width using `FieldGroup` component.
+
+<ComponentDemo file="./field-group-basic.demo.tsx" />
