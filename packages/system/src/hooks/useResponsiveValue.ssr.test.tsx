@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import { renderHook } from '@testing-library/react-hooks/server';
+import { renderHook } from '@testing-library/react';
 
 import { useResponsiveValue } from './useResponsiveValue';
 

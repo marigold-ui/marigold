@@ -1,9 +1,9 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import React, { ReactNode } from 'react';
 
 import { Theme } from '../types';
 import { cn, cva } from '../utils';
-import { useClassNames } from './useClassNames';
+import { UseClassNamesProps, useClassNames } from './useClassNames';
 import { ThemeProvider } from './useTheme';
 
 const theme: Theme = {
@@ -49,6 +49,25 @@ const theme: Theme = {
 const wrapper = ({ children }: { children?: ReactNode }) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>
 );
+
+// handle errors because renderHook doesn't
+const useErrorWrapper = ({ component, className }: UseClassNamesProps<any>) => {
+  try {
+    return (
+      useClassNames({
+        component,
+        className,
+      }),
+      {
+        wrapper,
+      }
+    );
+  } catch (error) {
+    return {
+      error,
+    };
+  }
+};
 
 // Single Element
 // ---------------
@@ -189,20 +208,12 @@ test('allows to pass in custom classNames for each slot', () => {
 // Error Handling
 // ---------------
 test('gracefully handles missing styles', () => {
-  const { result } = renderHook(
-    () =>
-      useClassNames({
-        component: 'Button',
-        // @ts-expect-error
-        className: { slot: 'foo-bar' },
-      }),
-    {
-      wrapper,
-    }
+  const { result } = renderHook(() =>
+    useErrorWrapper({ component: 'Button', className: { slot: 'foo-bar' } })
   );
 
-  expect(result.error).toMatchInlineSnapshot(
-    `[Error: "className" must be a string, when using a component without slots]`
+  expect(result.current.error).toMatchInlineSnapshot(
+    `[Error: Component "Button" is missing styles in the current theme.]`
   );
 });
 
@@ -259,11 +270,10 @@ test('additional style props are supported for slots', () => {
 
 test('component not found throw error', () => {
   const { result } = renderHook(() =>
-    // @ts-expect-error
-    useClassNames({ component: 'Component' })
+    useErrorWrapper({ component: 'Component' })
   );
 
-  expect(result.error).toMatchInlineSnapshot(
+  expect(result.current.error).toMatchInlineSnapshot(
     `[Error: Component "Component" is missing styles in the current theme.]`
   );
 });
@@ -271,15 +281,14 @@ test('component not found throw error', () => {
 test('component error if classname no object when using slots', () => {
   const { result } = renderHook(
     () =>
-      useClassNames({
+      useErrorWrapper({
         component: 'HelpText',
-        // @ts-expect-error
         className: 'bg-blue-800',
       }),
     { wrapper }
   );
 
-  expect(result.error).toMatchInlineSnapshot(
+  expect(result.current.error).toMatchInlineSnapshot(
     `[Error: "className" must be a object, when using a component with slots]`
   );
 });
