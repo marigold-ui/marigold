@@ -7,6 +7,7 @@ import { mergeProps } from '@react-aria/utils';
 
 import { GridNode } from '@react-types/grid';
 
+import { SortDown, SortUp } from '@marigold/icons';
 import { cn, useStateProps } from '@marigold/system';
 import { WidthProp, width as twWidth } from '@marigold/system';
 
@@ -14,28 +15,6 @@ import { useTableContext } from './Context';
 
 // Sort Icon
 // ---------------
-interface SortIndicatorProps {
-  direction?: 'ascending' | 'descending';
-  visible: boolean;
-}
-
-const SortIndicator = ({
-  direction = 'ascending',
-  visible,
-}: SortIndicatorProps) => {
-  return (
-    <span
-      role="presentation"
-      aria-hidden="true"
-      className={cn(
-        'ps-[0.5ch] text-current',
-        visible ? 'visible' : 'invisible'
-      )}
-    >
-      {direction === 'ascending' ? '▲' : '▼'}
-    </span>
-  );
-};
 
 // Props
 // ---------------
@@ -74,12 +53,16 @@ export const TableColumnHeader = ({
       {...stateProps}
     >
       {column.rendered}
-      {column.props.allowsSorting && (
-        <SortIndicator
-          direction={state.sortDescriptor?.direction}
-          visible={state.sortDescriptor?.column === column.key}
-        />
-      )}
+      {column.props.allowsSorting &&
+        (state.sortDescriptor?.column === column.key ? (
+          state.sortDescriptor?.direction === 'ascending' ? (
+            <SortUp className="inline-block" />
+          ) : (
+            <SortDown className="inline-block" />
+          )
+        ) : (
+          <SortDown className="inline-block" />
+        ))}
     </th>
   );
 };
