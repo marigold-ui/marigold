@@ -2,7 +2,6 @@
 import { parseAbsoluteToLocal } from '@internationalized/date';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 

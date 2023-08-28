@@ -2,7 +2,6 @@
 import { CalendarDate } from '@internationalized/date';
 import { fireEvent, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 
 import { Theme, cva } from '@marigold/system';
 

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import { useDateSegment } from '@react-aria/datepicker';
 import { useFocusRing } from '@react-aria/focus';

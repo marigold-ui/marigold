@@ -1,4 +1,4 @@
-import React, {
+import {
   type ForwardRefExoticComponent,
   type RefAttributes,
   forwardRef,

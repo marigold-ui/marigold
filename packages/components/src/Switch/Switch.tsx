@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 
 import { useFocusRing } from '@react-aria/focus';
 import { useSwitch } from '@react-aria/switch';

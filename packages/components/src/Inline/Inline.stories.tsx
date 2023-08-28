@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { Inline } from './Inline';
 

@@ -1,4 +1,10 @@
-import React, { Children, ReactElement, useRef } from 'react';
+import {
+  Children,
+  ReactElement,
+  cloneElement,
+  isValidElement,
+  useRef,
+} from 'react';
 
 import { AriaAccordionProps, useAccordion } from '@react-aria/accordion';
 
@@ -23,10 +29,10 @@ export const Accordion = ({ children, ...props }: AccordionProps) => {
     ...props,
     // we have to do this because JSX childs are not supported
     children: Children.toArray(children).map(child => {
-      if (!React.isValidElement(child)) {
+      if (!isValidElement(child)) {
         return child;
       }
-      return React.cloneElement(child, {
+      return cloneElement(child, {
         hasChildItems: false,
         ...child.props,
       });

@@ -1,5 +1,5 @@
 import { CalendarDate } from '@internationalized/date';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import { AriaDatePickerProps, useDatePicker } from '@react-aria/datepicker';
 import { mergeProps } from '@react-aria/utils';

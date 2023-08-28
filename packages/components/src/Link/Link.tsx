@@ -1,4 +1,4 @@
-import React, { ReactNode, forwardRef } from 'react';
+import { ReactNode, forwardRef } from 'react';
 
 import { useLink } from '@react-aria/link';
 import { useObjectRef } from '@react-aria/utils';

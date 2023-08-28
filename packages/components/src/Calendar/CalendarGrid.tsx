@@ -1,5 +1,4 @@
 import { getWeeksInMonth, startOfWeek, today } from '@internationalized/date';
-import React from 'react';
 import { useMemo } from 'react';
 
 import { AriaCalendarGridProps, useCalendarGrid } from '@react-aria/calendar';

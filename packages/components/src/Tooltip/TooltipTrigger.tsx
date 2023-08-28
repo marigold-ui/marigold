@@ -1,4 +1,4 @@
-import React, { ReactElement, useRef } from 'react';
+import { Children, ReactElement, useRef } from 'react';
 
 import { FocusableProvider } from '@react-aria/focus';
 import { useOverlayPosition } from '@react-aria/overlays';
@@ -32,7 +32,7 @@ export const TooltipTrigger = ({
   children,
   ...rest
 }: TooltipTriggerProps) => {
-  const [tooltipTrigger, tooltip] = React.Children.toArray(children);
+  const [tooltipTrigger, tooltip] = Children.toArray(children);
   const props = {
     ...rest,
     isDisabled: disabled,

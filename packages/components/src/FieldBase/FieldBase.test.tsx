@@ -1,5 +1,5 @@
 import { screen, within } from '@testing-library/react';
-import React, { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 
 import { AriaTextFieldOptions, useTextField } from '@react-aria/textfield';
 
@@ -61,7 +61,7 @@ interface MockedTestFieldProps extends AriaTextFieldOptions<'input'> {
 }
 
 const MockedTextField = (props: MockedTestFieldProps) => {
-  const ref = React.useRef(null);
+  const ref = useRef(null);
   const { labelProps, inputProps, descriptionProps, errorMessageProps } =
     useTextField(props, ref);
 

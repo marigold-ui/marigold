@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
+import { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
 
 import {
   StateAttrProps,

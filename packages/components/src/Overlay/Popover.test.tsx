@@ -1,6 +1,5 @@
 /* eslint-disable testing-library/no-node-access */
 import { screen } from '@testing-library/react';
-import React from 'react';
 import { forwardRef } from 'react';
 
 import { OverlayProvider } from '@react-aria/overlays';

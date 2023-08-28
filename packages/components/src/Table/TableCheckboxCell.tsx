@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import { useFocusRing } from '@react-aria/focus';
 import { useTableCell, useTableSelectionCheckbox } from '@react-aria/table';

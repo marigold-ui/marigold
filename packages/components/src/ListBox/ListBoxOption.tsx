@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import { useOption } from '@react-aria/listbox';
 import { mergeProps } from '@react-aria/utils';

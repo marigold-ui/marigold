@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react';
+import { Children, ReactNode, useRef } from 'react';
 
 import { PressResponder } from '@react-aria/interactions';
 import { useMenuTrigger } from '@react-aria/menu';
@@ -24,7 +24,7 @@ export const MenuTrigger = ({
   onOpenChange,
   children,
 }: MenuTriggerProps) => {
-  const [menuTrigger, menu] = React.Children.toArray(children);
+  const [menuTrigger, menu] = Children.toArray(children);
 
   const menuTriggerRef = useRef<HTMLElement>(null);
   const menuRef = useObjectRef<HTMLUListElement>();
