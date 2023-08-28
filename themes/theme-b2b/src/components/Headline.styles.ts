@@ -8,7 +8,7 @@ export const Headline: ThemeComponent<'Headline'> = cva('', {
       'level-3': 'mb-2 mt-4 text-2xl font-black',
       'level-4': 'text-lg font-black',
       'level-5': 'text-base font-black',
-      'level-6': 'text-base font-normal uppercase',
+      'level-6': 'text-base font-normal',
     },
   },
 });
