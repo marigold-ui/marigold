@@ -34,7 +34,6 @@ export const Button = forwardRef(
       variant,
       size,
       disabled,
-      onClick,
       onPress,
       onPressStart,
       onPressEnd,
@@ -60,7 +59,6 @@ export const Button = forwardRef(
          * it to a `HTMLButtonElement` internally.
          */
         ...(props as any),
-        onClick,
         onPress,
         onPressStart,
         onPressEnd,
