@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 
 import { FocusRing, useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
@@ -41,7 +41,7 @@ export const AccordionItem = ({
 
   const expanded = state.selectionManager.isSelected(item.key);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // clear both default values and expanded also check if multiple or single mode
     if (defaultExpanded) {
       if (state.selectionManager.selectionMode === 'multiple') {

@@ -1,5 +1,5 @@
 import { DateValue, createCalendar } from '@internationalized/date';
-import React, { HTMLAttributes, ReactElement, useRef } from 'react';
+import { HTMLAttributes, ReactElement, RefObject, useRef } from 'react';
 
 import { AriaDateFieldProps, useDateField } from '@react-aria/datepicker';
 import { useFocusRing } from '@react-aria/focus';
@@ -24,8 +24,8 @@ export interface DateFieldProps
   onChange?: (value: DateValue) => void;
   value?: DateValue | null;
   defaultValue?: DateValue | null;
-  ref?: React.RefObject<unknown> | undefined;
-  triggerRef?: React.RefObject<HTMLDivElement> | undefined;
+  ref?: RefObject<unknown> | undefined;
+  triggerRef?: RefObject<HTMLDivElement> | undefined;
   action?: ReactElement;
   isPressed?: boolean;
   error?: boolean;

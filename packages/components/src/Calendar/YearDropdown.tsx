@@ -1,5 +1,5 @@
 import { CalendarDate } from '@internationalized/date';
-import React, { Key } from 'react';
+import { Key } from 'react';
 
 import { useDateFormatter } from '@react-aria/i18n';
 

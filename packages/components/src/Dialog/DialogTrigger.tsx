@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react';
+import { Children, ReactNode, useRef } from 'react';
 
 import { PressResponder } from '@react-aria/interactions';
 
@@ -18,7 +18,7 @@ export const DialogTrigger = ({
   dismissable = true,
   keyboardDismissable = true,
 }: DialogTriggerProps) => {
-  const [dialogTrigger, dialog] = React.Children.toArray(children);
+  const [dialogTrigger, dialog] = Children.toArray(children);
 
   const dialogTriggerRef = useRef(null);
   const state = useOverlayTriggerState({});

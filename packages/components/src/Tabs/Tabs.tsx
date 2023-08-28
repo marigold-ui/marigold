@@ -1,4 +1,3 @@
-import React from 'react';
 import { useRef } from 'react';
 
 import { useTabList } from '@react-aria/tabs';

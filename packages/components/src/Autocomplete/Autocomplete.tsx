@@ -1,4 +1,4 @@
-import React, { Key, useRef } from 'react';
+import { Key, useRef } from 'react';
 
 import { useSearchAutocomplete } from '@react-aria/autocomplete';
 import { useFilter } from '@react-aria/i18n';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Key } from 'react';
 
 import { useMenuSection } from '@react-aria/menu';

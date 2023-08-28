@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { AlignmentProp, alignment, cn, createVar } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';

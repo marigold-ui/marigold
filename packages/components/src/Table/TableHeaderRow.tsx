@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 
 import { useTableHeaderRow } from '@react-aria/table';
 

@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from '@storybook/addons';
 import { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 
 import { Container } from '../Container';
 import { Select } from './Select';

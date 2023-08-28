@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 
 import { useFocusRing } from '@react-aria/focus';
 import { useHover } from '@react-aria/interactions';

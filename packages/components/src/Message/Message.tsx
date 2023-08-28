@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
