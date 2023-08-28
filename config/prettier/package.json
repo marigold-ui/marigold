@@ -8,9 +8,9 @@
     "prettier",
     "config"
   ],
-  "main": "index.json",
+  "main": "index.js",
   "files": [
-    "index.json"
+    "index.js"
   ],
   "repository": {
     "type": "git",
@@ -18,9 +18,10 @@
     "directory": "config/prettier"
   },
   "peerDependencies": {
-    "prettier": "2.x"
+    "prettier": "3.x"
   },
   "devDependencies": {
-    "prettier-plugin-tailwindcss": "0.3.0"
+    "@trivago/prettier-plugin-sort-imports": "4.2.0",
+    "prettier-plugin-tailwindcss": "0.5.3"
   }
 }
