@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 
 import { OverlayProvider } from '@react-aria/overlays';
 import { useObjectRef } from '@react-aria/utils';

@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, ReactNode, forwardRef } from 'react';
+import { HTMLAttributes, ReactNode, forwardRef } from 'react';
 
 import { FocusScope } from '@react-aria/focus';
 import { useModal, useOverlay, usePreventScroll } from '@react-aria/overlays';

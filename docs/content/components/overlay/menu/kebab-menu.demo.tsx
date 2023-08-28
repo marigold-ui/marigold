@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { ActionMenu, Menu } from '@marigold/components';
 
 export default () => {

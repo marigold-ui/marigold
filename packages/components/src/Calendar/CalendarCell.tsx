@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import { AriaCalendarCellProps, useCalendarCell } from '@react-aria/calendar';
 import { useHover } from '@react-aria/interactions';

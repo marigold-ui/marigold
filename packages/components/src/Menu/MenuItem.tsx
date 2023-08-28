@@ -1,4 +1,4 @@
-import React, { Key, useRef } from 'react';
+import { Key, useRef } from 'react';
 
 import { useFocusRing } from '@react-aria/focus';
 import { useMenuItem } from '@react-aria/menu';

@@ -1,5 +1,4 @@
 import { fireEvent, screen } from '@testing-library/react';
-import React from 'react';
 
 import { Theme, cva } from '@marigold/system';
 

@@ -1,5 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { SortDescriptor } from '@react-types/shared';
 

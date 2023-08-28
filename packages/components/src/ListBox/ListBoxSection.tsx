@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useListBoxSection } from '@react-aria/listbox';
 
 import type { ListState } from '@react-stately/list';

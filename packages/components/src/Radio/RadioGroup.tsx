@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { useRadioGroup } from '@react-aria/radio';
 

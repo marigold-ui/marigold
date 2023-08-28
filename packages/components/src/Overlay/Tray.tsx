@@ -1,4 +1,3 @@
-import React from 'react';
 import { ReactNode, RefObject, forwardRef } from 'react';
 
 import { FocusScope } from '@react-aria/focus';

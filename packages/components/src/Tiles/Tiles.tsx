@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
 

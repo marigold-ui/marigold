@@ -1,5 +1,5 @@
 import { createCalendar } from '@internationalized/date';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import {
   AriaCalendarProps,

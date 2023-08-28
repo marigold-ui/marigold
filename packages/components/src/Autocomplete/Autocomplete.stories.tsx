@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Meta, StoryObj } from '@storybook/react';
-import React, { Key, useState } from 'react';
+import { Key, useState } from 'react';
 
 import { useAsyncList } from '@react-stately/data';
 

@@ -1,9 +1,4 @@
-import React, {
-  Children,
-  ReactNode,
-  cloneElement,
-  isValidElement,
-} from 'react';
+import { Children, ReactNode, cloneElement, isValidElement } from 'react';
 
 import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
 

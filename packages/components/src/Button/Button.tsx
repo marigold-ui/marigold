@@ -1,4 +1,4 @@
-import React, { ReactNode, forwardRef } from 'react';
+import { ReactNode, forwardRef } from 'react';
 
 import { useButton } from '@react-aria/button';
 import { useFocusRing } from '@react-aria/focus';

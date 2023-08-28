@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { CalendarDate, getLocalTimeZone, today } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { I18nProvider } from '@react-aria/i18n';
 

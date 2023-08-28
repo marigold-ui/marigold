@@ -1,4 +1,4 @@
-import React, { ReactNode, forwardRef } from 'react';
+import { ReactNode, forwardRef } from 'react';
 
 import { useListBox } from '@react-aria/listbox';
 import { useObjectRef } from '@react-aria/utils';

@@ -24,4 +24,9 @@ module.exports = createConfig({
     '^@marigold/(.+)$': '<rootDir>/packages/$1/src',
     '^@marigold/(.*)$': '<rootDir>/dist/myscope/$1',
   },
+  // Sadly, Jest is not compatible with prettier v3
+  // Let's format the files by hand after update for now
+  // by disabling prettier formatting completely
+  // https://github.com/jestjs/jest/issues/14305
+  prettierPath: null,
 });
