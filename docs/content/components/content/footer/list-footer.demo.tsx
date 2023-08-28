@@ -1,4 +1,4 @@
-import { Footer, List, Link } from '@marigold/components';
+import { Footer, Link, List } from '@marigold/components';
 
 export default () => (
   <Footer>

@@ -1,5 +1,7 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
+
 import { HtmlProps } from '@marigold/types';
+
 import { useListContext } from './Context';
 
 export interface ListItemProps extends HtmlProps<'li'> {

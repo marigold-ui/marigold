@@ -2,8 +2,8 @@ import {
   Button,
   Card,
   Headline,
-  Stack,
   Split,
+  Stack,
   TextField,
 } from '@marigold/components';
 

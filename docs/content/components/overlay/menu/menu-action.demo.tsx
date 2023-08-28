@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Button, Menu } from '@marigold/components';
 
 export default () => {

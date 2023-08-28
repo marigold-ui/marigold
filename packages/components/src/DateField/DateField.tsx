@@ -1,14 +1,18 @@
-import React, { HTMLAttributes, ReactElement, useRef } from 'react';
-import { useLocale } from '@react-aria/i18n';
-import { useDateFieldState } from '@react-stately/datepicker';
+import { DateValue, createCalendar } from '@internationalized/date';
+import { HTMLAttributes, ReactElement, RefObject, useRef } from 'react';
+
 import { AriaDateFieldProps, useDateField } from '@react-aria/datepicker';
-import { createCalendar, DateValue } from '@internationalized/date';
-import { WidthProp, cn, useClassNames, useStateProps } from '@marigold/system';
-import { DateSegment } from './DateSegment';
-import { FieldBase } from '../FieldBase';
-import { mergeProps } from '@react-aria/utils';
-import { useHover } from '@react-aria/interactions';
 import { useFocusRing } from '@react-aria/focus';
+import { useLocale } from '@react-aria/i18n';
+import { useHover } from '@react-aria/interactions';
+import { mergeProps } from '@react-aria/utils';
+
+import { useDateFieldState } from '@react-stately/datepicker';
+
+import { WidthProp, cn, useClassNames, useStateProps } from '@marigold/system';
+
+import { FieldBase } from '../FieldBase';
+import { DateSegment } from './DateSegment';
 
 // Props
 // ----------------
@@ -20,8 +24,8 @@ export interface DateFieldProps
   onChange?: (value: DateValue) => void;
   value?: DateValue | null;
   defaultValue?: DateValue | null;
-  ref?: React.RefObject<unknown> | undefined;
-  triggerRef?: React.RefObject<HTMLDivElement> | undefined;
+  ref?: RefObject<unknown> | undefined;
+  triggerRef?: RefObject<HTMLDivElement> | undefined;
   action?: ReactElement;
   isPressed?: boolean;
   error?: boolean;

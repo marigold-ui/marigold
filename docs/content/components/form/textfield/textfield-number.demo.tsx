@@ -1,5 +1,6 @@
-import { TextField } from '@marigold/components';
 import { useState } from 'react';
+
+import { TextField } from '@marigold/components';
 
 export default () => {
   const [value, setValue] = useState<string>('');

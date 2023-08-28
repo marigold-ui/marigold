@@ -1,7 +1,8 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { SVG } from './SVG';
+import React from 'react';
+
 import { ThemeProvider } from '../../hooks';
+import { SVG } from './SVG';
 
 const theme = {
   name: 'test',

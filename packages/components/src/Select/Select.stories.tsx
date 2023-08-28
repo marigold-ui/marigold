@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
-import { Select } from './Select';
-import { Container } from '../Container';
-
 import { useState } from '@storybook/addons';
+import { Meta, StoryObj } from '@storybook/react';
+
+import { Container } from '../Container';
+import { Select } from './Select';
 
 const meta = {
   title: 'Components/Select',

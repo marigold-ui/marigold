@@ -1,14 +1,15 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Link } from '../Link';
-import { Card } from './Card';
-import { Container } from '../Container';
-import { Center } from '../Center';
-import { Text } from '../Text';
+
 import { Close, ExternalLink } from '@marigold/icons';
+
+import { Center } from '../Center';
+import { Container } from '../Container';
 import { Inline } from '../Inline';
+import { Link } from '../Link';
 import { Split } from '../Split';
+import { Text } from '../Text';
 import { Tiles } from '../Tiles';
+import { Card } from './Card';
 
 const meta = {
   title: 'Components/Card',

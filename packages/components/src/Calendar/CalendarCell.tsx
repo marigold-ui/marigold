@@ -1,9 +1,12 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
+
 import { AriaCalendarCellProps, useCalendarCell } from '@react-aria/calendar';
-import { mergeProps } from '@react-aria/utils';
-import { CalendarState } from '@react-stately/calendar';
-import { cn, useClassNames, useStateProps } from '@marigold/system';
 import { useHover } from '@react-aria/interactions';
+import { mergeProps } from '@react-aria/utils';
+
+import { CalendarState } from '@react-stately/calendar';
+
+import { cn, useClassNames, useStateProps } from '@marigold/system';
 
 export interface CalendarCellProps extends AriaCalendarCellProps {
   state: CalendarState;

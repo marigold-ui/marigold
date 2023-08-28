@@ -1,5 +1,6 @@
-import React, { type ReactElement } from 'react';
-import { cn, createVar, gapSpace, GapSpaceProp } from '@marigold/system';
+import { Children, type ReactElement } from 'react';
+
+import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
 import { NonZeroPercentage } from '@marigold/types';
 
 export interface AsideProps extends GapSpaceProp {
@@ -26,7 +27,7 @@ export const Aside = ({
   stretch = true,
   wrap = '50%',
 }: AsideProps) => {
-  const [left, right] = React.Children.toArray(children);
+  const [left, right] = Children.toArray(children);
   const vars = {
     aside: createVar({ sideWidth }),
     content: createVar({ wrap }),

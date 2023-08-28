@@ -1,14 +1,17 @@
-import React, { forwardRef } from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { forwardRef } from 'react';
+
 import { OverlayProvider } from '@react-aria/overlays';
 import { useObjectRef } from '@react-aria/utils';
+
 import { useOverlayTriggerState } from '@react-stately/overlays';
-import { StoryObj, Meta } from '@storybook/react';
-import { Tray } from './Tray';
-import { Menu } from '../Menu';
+
 import { Dialog } from '../Dialog';
 import { Headline } from '../Headline';
-import { Modal } from './Modal';
+import { Menu } from '../Menu';
 import { Text } from '../Text';
+import { Modal } from './Modal';
+import { Tray } from './Tray';
 
 const meta = {
   title: 'Components/Overlay',

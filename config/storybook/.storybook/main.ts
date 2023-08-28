@@ -1,5 +1,5 @@
-import path from 'node:path';
 import type { StorybookConfig } from '@storybook/react-vite';
+import path from 'node:path';
 import { mergeConfig } from 'vite';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 

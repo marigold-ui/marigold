@@ -1,5 +1,6 @@
-import { Menu, Button, Stack } from '@marigold/components';
 import { useState } from 'react';
+
+import { Button, Menu, Stack } from '@marigold/components';
 
 export default () => {
   const [open, setOpen] = useState(false);

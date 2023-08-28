@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 
-import { ComboBox } from './ComboBox';
 import { useAsyncList } from '@react-stately/data';
+
 import { Stack } from '../Stack';
+import { ComboBox } from './ComboBox';
 
 const meta = {
   title: 'Components/ComboBox',

@@ -1,8 +1,10 @@
 /* eslint-disable testing-library/no-node-access */
+
 /* eslint-disable testing-library/no-container */
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Theme, useTheme, cva } from '@marigold/system';
+
+import { Theme, cva, useTheme } from '@marigold/system';
+
 import { MarigoldProvider } from './MarigoldProvider';
 
 // Setup

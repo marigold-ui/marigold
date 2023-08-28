@@ -1,9 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { DatePicker, DatePickerProps } from './DatePicker';
 import { CalendarDate, getLocalTimeZone, today } from '@internationalized/date';
+import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
+
 import { I18nProvider } from '@react-aria/i18n';
+
+import { DatePicker, DatePickerProps } from './DatePicker';
 
 const meta = {
   title: 'Components/DatePicker',

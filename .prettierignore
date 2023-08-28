@@ -1,12 +1,16 @@
 .all-contributorsrc
 .cache
+.cache
 .changeset
+.contentlayer
 .contentlayer
 .DS_Store
 .husky
 .env.local
 .eslintignore
 .gitignore
+.husky
+.next
 .prettierignore
 .next
 .node-version
@@ -14,6 +18,7 @@
 .nvmrc
 
 coverage
+dist
 dist
 docs/.cache
 docs/public/render-page.js.map

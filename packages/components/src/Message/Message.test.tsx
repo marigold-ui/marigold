@@ -1,8 +1,9 @@
-import React from 'react';
 import { screen } from '@testing-library/react';
+
 import { Theme, ThemeProvider, cva } from '@marigold/system';
-import { Message } from './Message';
+
 import { setup } from '../test.utils';
+import { Message } from './Message';
 
 const theme: Theme = {
   name: 'test',

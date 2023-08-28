@@ -1,11 +1,10 @@
+import { renderHook } from '@testing-library/react-hooks';
 import React, { ReactNode } from 'react';
 
-import { renderHook } from '@testing-library/react-hooks';
-
 import { Theme } from '../types';
-import { ThemeProvider } from './useTheme';
-import { useClassNames } from './useClassNames';
 import { cn, cva } from '../utils';
+import { useClassNames } from './useClassNames';
+import { ThemeProvider } from './useTheme';
 
 const theme: Theme = {
   name: 'test-theme',

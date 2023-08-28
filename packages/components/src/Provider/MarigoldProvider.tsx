@@ -1,5 +1,5 @@
-import React from 'react';
 import { OverlayProvider } from '@react-aria/overlays';
+
 import {
   Theme,
   ThemeProvider,

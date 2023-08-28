@@ -1,6 +1,6 @@
 #!/usr/bin/env zx
-
 // Set available globals for eslint
+
 /* global $, cd, chalk */
 import { getPackagesSync } from '@manypkg/get-packages';
 import watcher from '@parcel/watcher';

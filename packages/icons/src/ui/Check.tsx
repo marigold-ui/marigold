@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react';
+
 import { SVG, SVGProps } from '@marigold/system';
 
 export const Check = forwardRef<SVGSVGElement, SVGProps>((props, ref) => (

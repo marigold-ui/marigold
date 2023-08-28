@@ -1,7 +1,9 @@
-import React, { useRef } from 'react';
-import { useTableCell } from '@react-aria/table';
+import { useRef } from 'react';
+
 import { useFocusRing } from '@react-aria/focus';
+import { useTableCell } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
+
 import { GridNode } from '@react-types/grid';
 
 import { useStateProps } from '@marigold/system';

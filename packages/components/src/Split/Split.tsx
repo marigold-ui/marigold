@@ -1,4 +1,3 @@
-import React from 'react';
 import { HtmlProps } from '@marigold/types';
 
 export interface SplitProps extends HtmlProps<'div'> {}

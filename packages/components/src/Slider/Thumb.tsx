@@ -1,13 +1,15 @@
-import React, { RefObject, useEffect } from 'react';
+import { RefObject, useEffect, useRef } from 'react';
+
+import { useFocusRing } from '@react-aria/focus';
 import { useSliderThumb } from '@react-aria/slider';
 import { mergeProps } from '@react-aria/utils';
+
 import { SliderState } from '@react-stately/slider';
 
-import { HtmlProps } from '@marigold/types';
 import { cn, useStateProps } from '@marigold/system';
+import { HtmlProps } from '@marigold/types';
 
 import { VisuallyHidden } from '../VisuallyHidden';
-import { useFocusRing } from '@react-aria/focus';
 
 // Props
 // ---------------
@@ -21,7 +23,7 @@ export interface ThumbProps extends Pick<HtmlProps<'input'>, 'disabled'> {
 // ---------------
 export const Thumb = ({ state, trackRef, className, ...props }: ThumbProps) => {
   const { disabled } = props;
-  const inputRef = React.useRef(null);
+  const inputRef = useRef(null);
   const { isFocusVisible, focusProps, isFocused } = useFocusRing();
   const focused = isFocused || isFocusVisible || state.isThumbDragging(0);
   const stateProps = useStateProps({

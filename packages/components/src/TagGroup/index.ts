@@ -1,4 +1,5 @@
 import { Item } from '@react-stately/collections';
+
 import { TagGroup } from './TagGroup';
 
 export const Tag = Item as TagComponent;
