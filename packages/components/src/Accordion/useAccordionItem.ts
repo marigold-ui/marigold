@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, RefObject } from 'react';
+import { RefObject } from 'react';
 
 import { useButton } from '@react-aria/button';
 import { useSelectableItem } from '@react-aria/selection';
@@ -13,7 +13,10 @@ import {
   LongPressEvent,
   Node,
   PressEvent,
+  PressEvents,
 } from '@react-types/shared';
+
+import { HtmlProps } from '@marigold/types';
 
 interface Event {
   altKey: boolean;
@@ -35,13 +38,14 @@ export function isCtrlKeyPressed(e: Event) {
   return e.ctrlKey;
 }
 
-export interface AccordionItemAriaProps<T> {
+export interface AccordionItemAriaProps<T> extends PressEvents {
   item: Node<T>;
 }
 
-export interface AccordionItemAria {
+interface MyButtonProps extends PressEvents, HtmlProps<'button'> {}
+export interface AccordionItemAria extends PressEvents, MyButtonProps {
   /** Props for the accordion item button. */
-  buttonProps: ButtonHTMLAttributes<HTMLElement>;
+  buttonProps: MyButtonProps;
   /** Props for the accordion item content element. */
   regionProps: DOMAttributes;
 }
@@ -127,6 +131,7 @@ export function useAccordionItem<T>(
       id: buttonId,
       elementType: 'button',
       isDisabled,
+      // if remove than everything click
       onPress: onSelect,
     }),
     ref

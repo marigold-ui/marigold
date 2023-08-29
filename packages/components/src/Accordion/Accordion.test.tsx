@@ -87,6 +87,7 @@ test('item opens content by click', () => {
 
   const button = screen.getByText('Information');
   expect(button).toHaveAttribute('aria-expanded', 'false');
+
   fireEvent.click(button);
   expect(button).toHaveAttribute('aria-expanded', 'true');
 });

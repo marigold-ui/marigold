@@ -1,5 +1,19 @@
 # @marigold/components
 
+## 6.2.0
+
+### Minor Changes
+
+- [#3293](https://github.com/marigold-ui/marigold/pull/3293) [`3eba5fdd4`](https://github.com/marigold-ui/marigold/commit/3eba5fdd4dac255923b1063be8731c0e5924023f) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - fix with for checkbox in multi-select tables
+
+### Patch Changes
+
+- [#3311](https://github.com/marigold-ui/marigold/pull/3311) [`6329c32ac`](https://github.com/marigold-ui/marigold/commit/6329c32acb34ff963c0afbd85a76e7a788db45c8) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - [DST-96]: Improve sorting table
+
+- Updated dependencies []:
+  - @marigold/system@6.2.0
+  - @marigold/icons@1.2.9
+
 ## 6.1.0
 
 ### Minor Changes
