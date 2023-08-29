@@ -1,14 +1,17 @@
-import React, { ReactNode, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
+
 import { FocusRing, useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
+
 import { TreeState } from '@react-stately/tree';
+
 import { Node } from '@react-types/shared';
 
 import { useClassNames, useStateProps } from '@marigold/system';
 
-import { useAccordionItem } from './useAccordionItem';
 import { Button } from '../Button';
 import { ChevronDown, ChevronUp } from '../Chevron';
+import { useAccordionItem } from './useAccordionItem';
 
 // props
 // ----------------
@@ -38,7 +41,7 @@ export const AccordionItem = ({
 
   const expanded = state.selectionManager.isSelected(item.key);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // clear both default values and expanded also check if multiple or single mode
     if (defaultExpanded) {
       if (state.selectionManager.selectionMode === 'multiple') {
@@ -53,7 +56,14 @@ export const AccordionItem = ({
   }, [defaultExpanded, item.key, state.expandedKeys, state.selectionManager]);
 
   // we have to use or own hook because it's in react-aria still issues
-  const { buttonProps, regionProps } = useAccordionItem({ item }, state, ref);
+  const { buttonProps, regionProps } = useAccordionItem(
+    {
+      item,
+    },
+    state,
+    ref
+  );
+
   const { isFocusVisible, focusProps } = useFocusRing();
 
   const stateProps = useStateProps({

@@ -1,10 +1,11 @@
-import React from 'react';
 import { screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
+
 import { Theme, cva } from '@marigold/system';
 
-import { NumberField } from './NumberField';
-import userEvent from '@testing-library/user-event';
 import { setup } from '../test.utils';
+import { NumberField } from './NumberField';
 
 const theme: Theme = {
   name: 'NumberField testing',

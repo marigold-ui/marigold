@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   Button,
   Headline,
@@ -9,10 +11,8 @@ import {
   Text,
   ThemeProvider,
 } from '@marigold/components';
-import React from 'react';
-
+import { AutoRenew, ExternalLink, Lock, ResaleLogbook } from '@marigold/icons';
 import coreTheme from '@marigold/theme-core';
-import { ResaleLogbook, AutoRenew, ExternalLink, Lock } from '@marigold/icons';
 
 const columns = [
   { name: 'Veranstaltung', key: 'event' },

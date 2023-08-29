@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import { AriaTableProps, useTable } from '@react-aria/table';
 
@@ -74,6 +74,7 @@ export const Table: Table = ({
       <table
         ref={tableRef}
         className={cn(
+          'group/table',
           'border-collapse overflow-auto whitespace-nowrap',
           stretch ? 'table w-full' : 'block',
           classNames.table

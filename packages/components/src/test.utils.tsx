@@ -1,5 +1,6 @@
+import { RenderOptions, render } from '@testing-library/react';
 import React, { ReactElement } from 'react';
-import { render, RenderOptions } from '@testing-library/react';
+
 import { Theme, ThemeProvider, ThemeProviderProps } from '@marigold/system';
 
 export interface SetupProps<T extends Theme>

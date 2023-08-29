@@ -1,11 +1,6 @@
-import React, {
-  Children,
-  cloneElement,
-  isValidElement,
-  ReactNode,
-} from 'react';
+import { Children, ReactNode, cloneElement, isValidElement } from 'react';
 
-import { cn, createVar, gapSpace, GapSpaceProp } from '@marigold/system';
+import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
 
 export interface ColumnsProps extends GapSpaceProp {
   children?: ReactNode;

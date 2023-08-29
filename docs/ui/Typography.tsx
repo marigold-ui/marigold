@@ -2,14 +2,15 @@ import {
   Card,
   Headline,
   MarigoldProvider,
-  Text,
   Table,
+  Text,
   Theme,
-  textSize,
   fontWeight,
-  textStyle,
   textAlign,
+  textSize,
+  textStyle,
 } from '@/ui';
+
 import { useThemeSwitch } from './ThemeSwitch';
 
 export const Headlines = () => {

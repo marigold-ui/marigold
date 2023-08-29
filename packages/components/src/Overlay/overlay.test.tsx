@@ -1,7 +1,8 @@
 /* eslint-disable testing-library/no-node-access */
-import React from 'react';
 import { render, screen } from '@testing-library/react';
+
 import { OverlayProvider } from '@react-aria/overlays';
+
 import { Overlay } from './Overlay';
 
 test('renders open overlay', () => {

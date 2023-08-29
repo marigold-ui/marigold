@@ -1,4 +1,3 @@
-import React from 'react';
 import { SVG, cn, createVar, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 

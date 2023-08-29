@@ -1,11 +1,11 @@
 /* eslint-disable testing-library/no-node-access */
-import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
-import { Theme, ThemeProvider, cva } from '@marigold/system';
-import { Accordion } from './Accordion';
-import { Headline } from '../Headline';
 
+import { Theme, ThemeProvider, cva } from '@marigold/system';
+
+import { Headline } from '../Headline';
 import { setup } from '../test.utils';
+import { Accordion } from './Accordion';
 
 const theme: Theme = {
   name: 'test',
@@ -87,6 +87,7 @@ test('item opens content by click', () => {
 
   const button = screen.getByText('Information');
   expect(button).toHaveAttribute('aria-expanded', 'false');
+
   fireEvent.click(button);
   expect(button).toHaveAttribute('aria-expanded', 'true');
 });

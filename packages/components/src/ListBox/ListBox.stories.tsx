@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { ListProps, useListState } from '@react-stately/list';
+
 import { Item, Section } from '@react-stately/collections';
+import { ListProps, useListState } from '@react-stately/list';
 
 import { ListBox } from './ListBox';
 

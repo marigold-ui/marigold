@@ -1,16 +1,16 @@
 'use client';
 
-import { HTMLAttributes } from 'react';
 import { useMDXComponent } from 'next-contentlayer/hooks';
+import { HTMLAttributes } from 'react';
 
 import { IconList } from '@/ui/IconList';
 
-import { Headline, Message, Link, Tabs, Text } from './';
+import { Headline, Link, Message, Tabs, Text } from './';
 import { AppearanceTable } from './AppearanceTable';
-import { PropsTable } from './PropsTable';
+import { ColorTokenTable } from './ColorTokens';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
-import { ColorTokenTable } from './ColorTokens';
+import { PropsTable } from './PropsTable';
 import {
   AlignmentsX,
   AlignmentsY,
@@ -19,10 +19,10 @@ import {
   Spacing,
 } from './Token';
 import {
-  Headlines,
   FontSizes,
-  FontWeights,
   FontStyle,
+  FontWeights,
+  Headlines,
   TextAlign,
 } from './Typography';
 

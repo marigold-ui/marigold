@@ -1,9 +1,8 @@
 import { defineDocumentType, makeSource } from 'contentlayer/source-files';
-
-import remarkGfm from 'remark-gfm';
-import rehypeSlug from 'rehype-slug';
-import rehypePrettyCode, { LineElement } from 'rehype-pretty-code';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypePrettyCode, { LineElement } from 'rehype-pretty-code';
+import rehypeSlug from 'rehype-slug';
+import remarkGfm from 'remark-gfm';
 import { visit } from 'unist-util-visit';
 
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
@@ -44,6 +43,9 @@ export const ContentPage = defineDocumentType(() => ({
     },
     order: {
       type: 'number',
+    },
+    badge: {
+      type: 'string',
     },
   },
   computedFields: {

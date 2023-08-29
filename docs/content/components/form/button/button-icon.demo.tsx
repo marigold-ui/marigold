@@ -1,4 +1,4 @@
-import { Inline, Button } from '@marigold/components';
+import { Button, Inline } from '@marigold/components';
 import { Ticket } from '@marigold/icons';
 
 export default () => (

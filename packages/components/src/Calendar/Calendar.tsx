@@ -1,18 +1,23 @@
-import React, { useRef } from 'react';
-import { useCalendarState } from '@react-stately/calendar';
+import { createCalendar } from '@internationalized/date';
+import { useRef } from 'react';
+
 import {
-  useCalendar,
   AriaCalendarProps,
   DateValue,
+  useCalendar,
 } from '@react-aria/calendar';
 import { useLocale } from '@react-aria/i18n';
-import { createCalendar } from '@internationalized/date';
+
+import { useCalendarState } from '@react-stately/calendar';
+
+import { ChevronLeft, ChevronRight } from '@marigold/icons';
+import { cn, useClassNames, useStateProps } from '@marigold/system';
+
 import { Button } from '../Button';
 import { CalendarGrid } from './CalendarGrid';
-import { ChevronRight, ChevronLeft } from '@marigold/icons';
-import { cn, useClassNames, useStateProps } from '@marigold/system';
 import MonthDropdown from './MonthDropdown';
 import YearDropdown from './YearDropdown';
+
 export interface CalendarProps
   extends Omit<AriaCalendarProps<DateValue>, 'isDisabled' | 'isReadOnly'> {
   disabled?: boolean;
@@ -34,6 +39,7 @@ export const Calendar = ({
     isReadOnly: readOnly,
     ...rest,
   };
+
   const state = useCalendarState({
     ...props,
     locale,
@@ -45,12 +51,25 @@ export const Calendar = ({
     state
   );
   // destructure isDisabled to avoid passing it to the component and being used on dom element
-  const { isDisabled: prevIsDisabled, ...prevPropsRest } = prevButtonProps;
-  const { isDisabled: nextIsDisabled, ...nextPropsRest } = nextButtonProps;
+  const {
+    isDisabled: prevIsDisabled,
+    onFocusChange: prevFocusChange,
+    ...prevPropsRest
+  } = prevButtonProps;
+
+  const {
+    isDisabled: nextIsDisabled,
+    onFocusChange: nextFocusChange,
+    ...nextPropsRest
+  } = nextButtonProps;
+
   const calendarState = useStateProps({
     disabled: state.isDisabled,
+    focusVisible: state.isFocused,
   });
+
   const classNames = useClassNames({ component: 'Calendar' });
+
   return (
     <div
       tabIndex={-1}

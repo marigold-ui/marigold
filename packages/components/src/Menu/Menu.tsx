@@ -1,17 +1,20 @@
-import React, { Key, useRef } from 'react';
+import { Key, useRef } from 'react';
+
 import { useMenu } from '@react-aria/menu';
+import { useSyncRef } from '@react-aria/utils';
+
 import { Item, Section } from '@react-stately/collections';
 import { useTreeState } from '@react-stately/tree';
+
 import { CollectionElement } from '@react-types/shared';
-import { useSyncRef } from '@react-aria/utils';
 
 import { useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
 import { useMenuContext } from './Context';
-import { MenuTrigger } from './MenuTrigger';
 import { MenuItem } from './MenuItem';
 import MenuSection from './MenuSection';
+import { MenuTrigger } from './MenuTrigger';
 
 // Props
 // ---------------

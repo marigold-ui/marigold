@@ -1,6 +1,16 @@
-import React, { HTMLAttributes, ReactElement, ReactNode, useRef } from 'react';
+import {
+  Children,
+  HTMLAttributes,
+  ReactElement,
+  ReactNode,
+  cloneElement,
+  isValidElement,
+  useRef,
+} from 'react';
+
 import { useButton } from '@react-aria/button';
 import { useDialog } from '@react-aria/dialog';
+
 import type { AriaDialogProps } from '@react-types/dialog';
 
 import { cn, useClassNames } from '@marigold/system';
@@ -8,8 +18,8 @@ import { cn, useClassNames } from '@marigold/system';
 import { Header } from '../Header';
 import { Headline } from '../Headline';
 import { DialogContextProps, useDialogContext } from './Context';
-import { DialogTrigger } from './DialogTrigger';
 import { DialogController } from './DialogController';
+import { DialogTrigger } from './DialogTrigger';
 
 // Close Button
 // ---------------
@@ -57,11 +67,11 @@ const addTitleProps = (
   children: ReactNode,
   titleProps: HTMLAttributes<HTMLElement>
 ) => {
-  const childs = React.Children.toArray(children);
+  const childs = Children.toArray(children);
 
   const titleIndex = childs.findIndex(
     child =>
-      React.isValidElement(child) &&
+      isValidElement(child) &&
       (child.type === Header || child.type === Headline)
   );
 
@@ -74,7 +84,7 @@ const addTitleProps = (
   }
 
   // If we found a child, add the titleProps to it
-  const titleChild = React.cloneElement(
+  const titleChild = cloneElement(
     childs[titleIndex] as ReactElement<any>,
     titleProps
   );

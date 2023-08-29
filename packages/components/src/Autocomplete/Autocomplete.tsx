@@ -1,18 +1,20 @@
-import React, { Key, useRef } from 'react';
+import { Key, useRef } from 'react';
 
 import { useSearchAutocomplete } from '@react-aria/autocomplete';
 import { useFilter } from '@react-aria/i18n';
-import { useComboBoxState } from '@react-stately/combobox';
+
 import { Item } from '@react-stately/collections';
+import { useComboBoxState } from '@react-stately/combobox';
+
 import { SearchAutocompleteProps } from '@react-types/autocomplete';
+
+import { WidthProp } from '@marigold/system';
 
 import { FieldBase } from '../FieldBase';
 import { Input } from '../Input';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay';
-
 import { ClearButton } from './ClearButton';
-import { WidthProp } from '@marigold/system';
 
 // Search Icon
 //----------------

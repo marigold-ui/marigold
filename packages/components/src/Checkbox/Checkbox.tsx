@@ -1,4 +1,4 @@
-import React, { ReactNode, forwardRef } from 'react';
+import { ReactNode, forwardRef } from 'react';
 
 import { useCheckbox, useCheckboxGroupItem } from '@react-aria/checkbox';
 import { useFocusRing } from '@react-aria/focus';

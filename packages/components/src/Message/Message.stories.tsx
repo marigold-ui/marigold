@@ -1,7 +1,7 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Message } from './Message';
+
 import { Text } from '../Text';
+import { Message } from './Message';
 
 const meta = {
   title: 'Components/Message',
