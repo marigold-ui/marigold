@@ -5,6 +5,28 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
+    "web#build": {
+      // override settings for the "build" task for the "web" app
+      "dependsOn": [
+        "^build",
+        // env vars that will impact the hash of "build" task for only "web" app
+        "$STRIPE_SECRET_KEY",
+        "$NEXT_PUBLIC_STRIPE_PUBLIC_KEY",
+        "$NEXT_PUBLIC_ANALYTICS_ID"
+      ],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "docs#build": {
+      // override settings for the "build" task for the "docs" app
+      "dependsOn": [
+        "^build",
+        // env vars that will impact the hash of "build" task for only "web" app
+        "$STRIPE_SECRET_KEY",
+        "$NEXT_PUBLIC_STRIPE_PUBLIC_KEY",
+        "$NEXT_PUBLIC_ANALYTICS_ID"
+      ],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
     "lint": {},
     "dev": {
       "cache": false
@@ -13,6 +35,5 @@
   "remoteCache": {
     "signature": true
   },
-  "globalEnv": ["GITHUB_TOKEN"],
   "globalDependencies": ["tsconfig.json"]
 }
