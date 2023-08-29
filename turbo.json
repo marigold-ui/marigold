@@ -7,12 +7,12 @@
         "dist/**",
         ".next/**",
         "!.next/cache/**",
-        "../../../storybook-static"
+        "storybook-static/**"
       ]
     },
     "web#build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "../../../storybook-static"]
+      "outputs": [".next/**", "!.next/cache/**", "storybook-static/**"]
     }
   },
   "globalDependencies": ["tsconfig.json"]
