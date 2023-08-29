@@ -1,5 +1,20 @@
 # @marigold/theme-core
 
+## 25.2.0
+
+### Minor Changes
+
+- [#3301](https://github.com/marigold-ui/marigold/pull/3301) [`0a82332ba`](https://github.com/marigold-ui/marigold/commit/0a82332ba247f2eaddfd4abdf6fe284120565320) Thanks [@sebald](https://github.com/sebald)! - feat: improve content glob for themes
+
+### Patch Changes
+
+- [#3300](https://github.com/marigold-ui/marigold/pull/3300) [`3c1fc3097`](https://github.com/marigold-ui/marigold/commit/3c1fc3097b2de22363c5afe1ba1659594729652f) Thanks [@sebald](https://github.com/sebald)! - fix: let typescript resolve types for preset imports
+
+- Updated dependencies [[`0a82332ba`](https://github.com/marigold-ui/marigold/commit/0a82332ba247f2eaddfd4abdf6fe284120565320), [`6329c32ac`](https://github.com/marigold-ui/marigold/commit/6329c32acb34ff963c0afbd85a76e7a788db45c8), [`3eba5fdd4`](https://github.com/marigold-ui/marigold/commit/3eba5fdd4dac255923b1063be8731c0e5924023f)]:
+  - @marigold/theme-preset@1.1.0
+  - @marigold/components@6.2.0
+  - @marigold/system@6.2.0
+
 ## 25.1.0
 
 ### Minor Changes
