@@ -10,10 +10,9 @@
       "cache": false
     }
   },
-  "globalEnv": [
-    "GITHUB_TOKEN" // env var that will impact the hashes of all tasks,
-  ],
-  "globalDependencies": [
-    "tsconfig.json" // file contents will impact the hashes of all tasks,
-  ]
+  "remoteCache": {
+    "signature": true
+  },
+  "globalEnv": ["GITHUB_TOKEN"],
+  "globalDependencies": ["tsconfig.json"]
 }
