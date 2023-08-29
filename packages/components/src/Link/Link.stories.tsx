@@ -47,7 +47,7 @@ export const Basic: Story = {
     <Text>
       Zu den{' '}
       <Link target="_blank" {...args}>
-        Marigold Docseeeee
+        Marigold Docs
       </Link>
     </Text>
   ),
