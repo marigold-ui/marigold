@@ -1,5 +1,16 @@
 # @marigold/theme-preset
 
+## 1.1.0
+
+### Minor Changes
+
+- [#3301](https://github.com/marigold-ui/marigold/pull/3301) [`0a82332ba`](https://github.com/marigold-ui/marigold/commit/0a82332ba247f2eaddfd4abdf6fe284120565320) Thanks [@sebald](https://github.com/sebald)! - feat: improve content glob for themes
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.2.0
+
 ## 1.0.2
 
 ### Patch Changes
