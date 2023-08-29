@@ -6,16 +6,9 @@
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "web#build": {
-      // override settings for the "build" task for the "web" app
       "dependsOn": ["^build"],
-      "env": ["SOME_OTHER_ENV_VAR"],
       "outputs": [".next/**", "!.next/cache/**"]
     }
   },
-  "globalEnv": [
-    "GITHUB_TOKEN" // env var that will impact the hashes of all tasks,
-  ],
-  "globalDependencies": [
-    "tsconfig.json" // file contents will impact the hashes of all tasks,
-  ]
+  "globalDependencies": ["tsconfig.json"]
 }
