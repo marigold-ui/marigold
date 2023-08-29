@@ -5,6 +5,8 @@ import { allContentPages } from 'contentlayer/generated';
 
 import { usePathname } from 'next/navigation';
 
+import { Badge } from '@marigold/components/src';
+
 import { NavLink } from './NavLink';
 
 // Types
@@ -13,6 +15,7 @@ import { NavLink } from './NavLink';
 interface NavigationLink {
   href: string;
   name: string;
+  badge?: string;
 }
 
 interface NavigationSubsection {
@@ -34,7 +37,6 @@ const useNavigation = (): NavigationSection[] => {
       page => page.section === slug && !page.subsection
     );
     sectionPages.sort((a, b) => (a.order || 1000) - (b.order || 1000));
-
     return {
       name,
       links: sectionPages.map(page => ({
@@ -51,6 +53,7 @@ const useNavigation = (): NavigationSection[] => {
           .map(page => ({
             name: page.title,
             href: `/${page.slug}`,
+            badge: page.badge,
           })),
       })),
     };
@@ -93,15 +96,18 @@ export const Navigation = ({ onClick }: NavigationProps) => {
                   {name}
                 </div>
                 <div className="border-secondary-300 ml-0.5 flex flex-col gap-2 border-l">
-                  {links.map(({ name, href }) => (
-                    <NavLink
-                      key={href}
-                      current={pathname === href}
-                      href={href}
-                      onClick={onClick}
-                    >
-                      {name}
-                    </NavLink>
+                  {links.map(({ name, href, badge }) => (
+                    <div key={href}>
+                      <NavLink
+                        className="flex items-center gap-4"
+                        current={pathname === href}
+                        href={href}
+                        onClick={onClick}
+                      >
+                        {name}
+                        {badge && <Badge variant="dark">{badge}</Badge>}
+                      </NavLink>
+                    </div>
                   ))}
                 </div>
               </div>
