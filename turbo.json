@@ -3,11 +3,16 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "storybook-static"]
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "!.next/cache/**",
+        "../../../storybook-static"
+      ]
     },
     "web#build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "storybook-static"]
+      "outputs": [".next/**", "!.next/cache/**", "../../../storybook-static"]
     }
   },
   "globalDependencies": ["tsconfig.json"]
