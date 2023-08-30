@@ -56,7 +56,14 @@ export const AccordionItem = ({
   }, [defaultExpanded, item.key, state.expandedKeys, state.selectionManager]);
 
   // we have to use or own hook because it's in react-aria still issues
-  const { buttonProps, regionProps } = useAccordionItem({ item }, state, ref);
+  const { buttonProps, regionProps } = useAccordionItem(
+    {
+      item,
+    },
+    state,
+    ref
+  );
+
   const { isFocusVisible, focusProps } = useFocusRing();
 
   const stateProps = useStateProps({

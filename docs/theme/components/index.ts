@@ -11,3 +11,4 @@ export * from './Tabs.styles';
 export * from './Table.styles';
 export * from './Text.styles';
 export * from './Underlay.styles';
+export * from './Badge.styles';

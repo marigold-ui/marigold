@@ -39,6 +39,7 @@ export const Calendar = ({
     isReadOnly: readOnly,
     ...rest,
   };
+
   const state = useCalendarState({
     ...props,
     locale,
@@ -50,12 +51,25 @@ export const Calendar = ({
     state
   );
   // destructure isDisabled to avoid passing it to the component and being used on dom element
-  const { isDisabled: prevIsDisabled, ...prevPropsRest } = prevButtonProps;
-  const { isDisabled: nextIsDisabled, ...nextPropsRest } = nextButtonProps;
+  const {
+    isDisabled: prevIsDisabled,
+    onFocusChange: prevFocusChange,
+    ...prevPropsRest
+  } = prevButtonProps;
+
+  const {
+    isDisabled: nextIsDisabled,
+    onFocusChange: nextFocusChange,
+    ...nextPropsRest
+  } = nextButtonProps;
+
   const calendarState = useStateProps({
     disabled: state.isDisabled,
+    focusVisible: state.isFocused,
   });
+
   const classNames = useClassNames({ component: 'Calendar' });
+
   return (
     <div
       tabIndex={-1}

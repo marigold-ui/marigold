@@ -1,5 +1,19 @@
 # @marigold/docs
 
+## 6.2.0
+
+### Patch Changes
+
+- [#3286](https://github.com/marigold-ui/marigold/pull/3286) [`f710122b3`](https://github.com/marigold-ui/marigold/commit/f710122b3825fbaa35f1a3198ae0e83b370f06af) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update eslint
+
+- Updated dependencies [[`0a82332ba`](https://github.com/marigold-ui/marigold/commit/0a82332ba247f2eaddfd4abdf6fe284120565320), [`6329c32ac`](https://github.com/marigold-ui/marigold/commit/6329c32acb34ff963c0afbd85a76e7a788db45c8), [`3c1fc3097`](https://github.com/marigold-ui/marigold/commit/3c1fc3097b2de22363c5afe1ba1659594729652f), [`f710122b3`](https://github.com/marigold-ui/marigold/commit/f710122b3825fbaa35f1a3198ae0e83b370f06af), [`3eba5fdd4`](https://github.com/marigold-ui/marigold/commit/3eba5fdd4dac255923b1063be8731c0e5924023f)]:
+  - @marigold/theme-preset@1.1.0
+  - @marigold/theme-b2b@25.2.0
+  - @marigold/theme-core@25.2.0
+  - @marigold/components@6.2.0
+  - @marigold/eslint-config@0.4.11
+  - @marigold/icons@1.2.9
+
 ## 6.1.0
 
 ### Minor Changes
