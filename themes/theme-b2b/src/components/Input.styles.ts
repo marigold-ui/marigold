@@ -26,7 +26,7 @@ export const Input: ThemeComponent<'Input'> = {
     inputFocus(),
     inputDisabled(),
     inputHover(),
-    inputError('data-[error]'),
+    inputError('group-error/field'),
     inputSpacing,
     'leading-[2]',
     'read-only:focus:border-border-light read-only:focus:outline-none',
