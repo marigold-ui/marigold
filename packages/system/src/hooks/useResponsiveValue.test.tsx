@@ -1,5 +1,5 @@
 import { cleanup } from '@testing-library/react';
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react';
 import React, { ReactNode } from 'react';
 
 import { useResponsiveValue } from './useResponsiveValue';
@@ -116,11 +116,15 @@ test('throws if default index is below 0', () => {
     'screen and (min-width: 52em)',
   ]);
 
-  const { result } = renderHook(() =>
-    useResponsiveValue(['one', 'two', 'three'], -1)
-  );
+  const { result } = renderHook(() => {
+    try {
+      return useResponsiveValue(['one', 'two', 'three'], -1);
+    } catch (error) {
+      return { error };
+    }
+  });
 
-  expect(result.error).toMatchInlineSnapshot(
+  expect((result.current as { error: unknown }).error).toMatchInlineSnapshot(
     `[RangeError: Default breakpoint index is out of bounds. Theme has 6 breakpoints, default is -1.]`
   );
 });
@@ -131,11 +135,15 @@ test('throws if default index is out of bounds', () => {
     'screen and (min-width: 52em)',
   ]);
 
-  const { result } = renderHook(() =>
-    useResponsiveValue(['one', 'two', 'three'], 100)
-  );
+  const { result } = renderHook(() => {
+    try {
+      return useResponsiveValue(['one', 'two', 'three'], 100);
+    } catch (error) {
+      return { error };
+    }
+  });
 
-  expect(result.error).toMatchInlineSnapshot(
+  expect((result.current as { error: unknown }).error).toMatchInlineSnapshot(
     `[RangeError: Default breakpoint index is out of bounds. Theme has 6 breakpoints, default is 100.]`
   );
 });
