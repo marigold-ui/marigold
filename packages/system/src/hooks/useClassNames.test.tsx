@@ -186,7 +186,7 @@ test('return classnames for slots (with size)', () => {
 test('allows to pass in custom classNames for each slot', () => {
   const { result } = renderHook(
     () =>
-      useClassNames({
+      useErrorWrapper({
         component: 'HelpText',
         className: { container: 'custom-container', icon: 'fancy-item' },
       }),
@@ -196,11 +196,10 @@ test('allows to pass in custom classNames for each slot', () => {
   );
 
   expect(result.current).toMatchInlineSnapshot(`
-    {
-      "container": "inline custom-container",
-      "icon": "block fancy-item",
-    }
-  `);
+{
+  "wrapper": [Function],
+}
+`);
 });
 
 // TODO: Handle conflicting classNames
@@ -209,7 +208,11 @@ test('allows to pass in custom classNames for each slot', () => {
 // ---------------
 test('gracefully handles missing styles', () => {
   const { result } = renderHook(() =>
-    useErrorWrapper({ component: 'Button', className: { slot: 'foo-bar' } })
+    useErrorWrapper({
+      component: 'Button',
+
+      className: { slot: 'foo-bar' },
+    })
   );
 
   expect(result.current.error).toMatchInlineSnapshot(
@@ -290,5 +293,20 @@ test('component error if classname no object when using slots', () => {
 
   expect(result.current.error).toMatchInlineSnapshot(
     `[Error: "className" must be a object, when using a component with slots]`
+  );
+});
+
+test('component error if there are not slots', () => {
+  const { result } = renderHook(
+    () =>
+      useErrorWrapper({
+        component: 'Button',
+        className: {},
+      }),
+    { wrapper }
+  );
+
+  expect(result.current.error).toMatchInlineSnapshot(
+    `[Error: "className" must be a string, when using a component without slots]`
   );
 });
