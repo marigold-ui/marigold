@@ -1,5 +1,16 @@
 # @marigold/theme-b2b
 
+## 25.2.1
+
+### Patch Changes
+
+- [#3319](https://github.com/marigold-ui/marigold/pull/3319) [`979ab73c4`](https://github.com/marigold-ui/marigold/commit/979ab73c4aca9811fec13c2bf6a716dcaea9f62b) Thanks [@sarahgm](https://github.com/sarahgm)! - chore[DST-179]: update switch style
+
+- Updated dependencies [[`a5515f34b`](https://github.com/marigold-ui/marigold/commit/a5515f34b35e3c4677daf05d36a2ac1f2a45cfb4)]:
+  - @marigold/components@6.2.1
+  - @marigold/system@6.2.1
+  - @marigold/theme-preset@1.1.1
+
 ## 25.2.0
 
 ### Minor Changes
