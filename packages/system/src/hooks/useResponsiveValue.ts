@@ -33,6 +33,7 @@ export const useResponsiveValue = <T>(
 
   const [index, setIndex] = useState(defaultIndex);
   useEffect(() => {
+    if (typeof window == 'undefined') return;
     const getIndex = () =>
       Object.values(screens).filter(
         breakpoint =>

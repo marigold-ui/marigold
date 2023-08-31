@@ -25,9 +25,10 @@ test('check of the value is truthy', () => {
 
 it('should verify if window exist', () => {
   // mocking if there's no window
-  Object.defineProperty(global, 'window', {
-    value: undefined,
-  });
+  // Object.defineProperty(global, 'window', {
+  //   value: undefined,
+  // });
+  window.matchMedia = mockMatchMedia(['max-width:0px']);
   const { result } = renderHook(() => useSmallScreen());
   expect(result.current).toBeFalsy();
 });
