@@ -16,7 +16,7 @@ export const Select: ThemeComponent<'Select'> = {
     inputBox,
     inputDisabled(),
     inputFocus(),
-    inputError('data-[error]'),
+    inputError('group-error/field'),
     inputHover(),
     inputBackground,
     inputSpacing,
