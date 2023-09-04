@@ -36,8 +36,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "github:marigold-ui/marigold",
-    "directory": "packages/theme-b2b"
+    "url": "https://github.com/marigold-ui/marigold",
+    "directory": "themes/theme-b2b"
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
