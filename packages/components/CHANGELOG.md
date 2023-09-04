@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 6.2.2
+
+### Patch Changes
+
+- [`46e86e2b3`](https://github.com/marigold-ui/marigold/commit/46e86e2b3969a4c95c9e49c202e922bfc22d28a2) Thanks [@sebald](https://github.com/sebald)! - fix: Resolve conflicting type dependencies in `react-aria`
+
+- Updated dependencies []:
+  - @marigold/system@6.2.2
+  - @marigold/icons@1.2.11
+
 ## 6.2.1
 
 ### Patch Changes
