@@ -1,5 +1,16 @@
 # @marigold/theme-b2b
 
+## 25.2.2
+
+### Patch Changes
+
+- [#3318](https://github.com/marigold-ui/marigold/pull/3318) [`bf527799a`](https://github.com/marigold-ui/marigold/commit/bf527799a6f606e7e19df14246ed3621a2359fcd) Thanks [@sarahgm](https://github.com/sarahgm)! - fix[DST-178]: correct error state in form fields
+
+- Updated dependencies [[`46e86e2b3`](https://github.com/marigold-ui/marigold/commit/46e86e2b3969a4c95c9e49c202e922bfc22d28a2)]:
+  - @marigold/components@6.2.2
+  - @marigold/system@6.2.2
+  - @marigold/theme-preset@1.1.2
+
 ## 25.2.1
 
 ### Patch Changes
