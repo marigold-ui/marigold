@@ -28,7 +28,10 @@ build
 ## env
 .env*.local
 .vercel
+.turbo
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
