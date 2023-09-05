@@ -45,7 +45,7 @@
     "cssnano": "6.0.1",
     "postcss": "8.4.28",
     "tailwindcss": "3.3.3",
-    "tsup": "6.7.0"
+    "tsup": "7.2.0"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
