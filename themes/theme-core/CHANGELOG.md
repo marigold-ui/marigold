@@ -1,5 +1,16 @@
 # @marigold/theme-core
 
+## 25.2.4
+
+### Patch Changes
+
+- [#3329](https://github.com/marigold-ui/marigold/pull/3329) [`9c18ea52b`](https://github.com/marigold-ui/marigold/commit/9c18ea52b3fa0f58b64349cb25f4872763a2f5fd) Thanks [@sebald](https://github.com/sebald)! - feat: add theme types to `package.exports" field
+
+- Updated dependencies []:
+  - @marigold/system@6.2.4
+  - @marigold/components@6.2.4
+  - @marigold/theme-preset@1.1.4
+
 ## 25.2.3
 
 ### Patch Changes
