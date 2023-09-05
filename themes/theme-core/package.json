@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-core",
-  "version": "25.2.0",
+  "version": "25.2.3",
   "description": "Marigold Core Theme",
   "license": "MIT",
   "keywords": [
@@ -15,11 +15,13 @@
   "exports": {
     ".": {
       "require": "./dist/index.js",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
     },
     "./preset": {
       "require": "./dist/preset.js",
-      "import": "./dist/preset.mjs"
+      "import": "./dist/preset.mjs",
+      "types": "./dist/preset.d.ts"
     },
     "./styles.css": "./dist/styles.css"
   },
@@ -36,8 +38,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "github:marigold-ui/marigold",
-    "directory": "packages/theme-core"
+    "url": "https://github.com/marigold-ui/marigold",
+    "directory": "themes/theme-core"
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
@@ -45,7 +47,7 @@
     "cssnano": "6.0.1",
     "postcss": "8.4.28",
     "tailwindcss": "3.3.3",
-    "tsup": "6.7.0"
+    "tsup": "7.2.0"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",

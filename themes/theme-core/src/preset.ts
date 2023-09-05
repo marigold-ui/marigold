@@ -9,7 +9,11 @@ export const preset: Preset = createPreset('core', {
   corePlugins: {
     preflight: false,
   },
-  content: ['./node_modules/@marigold/theme-core/dist/**/*.js'],
+  content: [
+    './node_modules/@marigold/theme-core/dist/**/*.js',
+    './node_modules/@marigold/system/dist/*.js',
+    './node_modules/@marigold/components/dist/*.js',
+  ],
   theme: {
     extend: {
       screens,

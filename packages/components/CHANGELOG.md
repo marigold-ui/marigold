@@ -1,5 +1,35 @@
 # @marigold/components
 
+## 6.2.3
+
+### Patch Changes
+
+- [#3273](https://github.com/marigold-ui/marigold/pull/3273) [`f7c475053`](https://github.com/marigold-ui/marigold/commit/f7c4750533aadc9119e2dfb4bb5745cb56684a86) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update react-aria
+
+- Updated dependencies []:
+  - @marigold/system@6.2.3
+  - @marigold/icons@1.2.12
+
+## 6.2.2
+
+### Patch Changes
+
+- [`46e86e2b3`](https://github.com/marigold-ui/marigold/commit/46e86e2b3969a4c95c9e49c202e922bfc22d28a2) Thanks [@sebald](https://github.com/sebald)! - fix: Resolve conflicting type dependencies in `react-aria`
+
+- Updated dependencies []:
+  - @marigold/system@6.2.2
+  - @marigold/icons@1.2.11
+
+## 6.2.1
+
+### Patch Changes
+
+- [#3314](https://github.com/marigold-ui/marigold/pull/3314) [`a5515f34b`](https://github.com/marigold-ui/marigold/commit/a5515f34b35e3c4677daf05d36a2ac1f2a45cfb4) Thanks [@sarahgm](https://github.com/sarahgm)! - change jsx compiler option to react-jsx
+
+- Updated dependencies []:
+  - @marigold/system@6.2.1
+  - @marigold/icons@1.2.10
+
 ## 6.2.0
 
 ### Minor Changes
