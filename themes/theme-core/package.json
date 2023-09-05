@@ -15,11 +15,13 @@
   "exports": {
     ".": {
       "require": "./dist/index.js",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
     },
     "./preset": {
       "require": "./dist/preset.js",
-      "import": "./dist/preset.mjs"
+      "import": "./dist/preset.mjs",
+      "types": "./dist/preset.d.ts"
     },
     "./styles.css": "./dist/styles.css"
   },
