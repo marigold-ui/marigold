@@ -38,6 +38,7 @@
     "@react-aria/focus": "3.13.0",
     "@react-aria/i18n": "3.8.0",
     "@react-aria/interactions": "3.16.0",
+    "@react-aria/label": "3.6.1",
     "@react-aria/link": "3.5.2",
     "@react-aria/listbox": "3.10.0",
     "@react-aria/live-announcer": "3.3.1",

@@ -30,6 +30,8 @@ import { FieldBase } from '../FieldBase';
 import { ListBox } from '../ListBox';
 import { Popover, Tray } from '../Overlay';
 import { messages } from './intl';
+import { useMultiSelectListState } from './useMultiSelectListState';
+import { useMultiSelectState } from './useMultiSelectState';
 
 // Props
 // ---------------
@@ -99,6 +101,10 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     const listboxRef = useRef(null);
 
     const state = useSelectState(props);
+    const newState = useMultiSelectState<T>(props);
+
+    console.log('oldState', state);
+    console.log('newState', newState);
     const {
       labelProps,
       triggerProps,
@@ -106,7 +112,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       menuProps,
       descriptionProps,
       errorMessageProps,
-    } = useSelect(props, state, buttonRef);
+    } = useSelect(props, newState, buttonRef);
 
     const { buttonProps } = useButton(
       { isDisabled: disabled, ...triggerProps },
@@ -140,7 +146,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         disabled={disabled}
       >
         <HiddenSelect
-          state={state}
+          state={newState}
           triggerRef={buttonRef}
           label={props.label}
           name={props.name}
@@ -156,7 +162,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           {...stateProps}
         >
           <div className="overflow-hidden whitespace-nowrap" {...valueProps}>
-            {state.selectedItem
+            {newState.selectedItems
               ? state.selectedItem.rendered
               : props.placeholder}
           </div>
@@ -176,7 +182,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           <Popover state={state} triggerRef={buttonRef} scrollRef={listboxRef}>
             <ListBox
               ref={listboxRef}
-              state={state}
+              state={newState}
               variant={variant}
               size={size}
               {...menuProps}
