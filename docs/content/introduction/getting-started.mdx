@@ -121,6 +121,12 @@ const config: Config = {
 export default config;
 ```
 
+<Message messageTitle="TypeScript Configuration" variant="info">
+  If you are using TypeScript, make sure to set the [module
+  resolution](https://www.typescriptlang.org/tsconfig#moduleResolution) to
+  `'nodenext'` since the theme packages are using ESM.
+</Message>
+
 After configuring Tailwind CSS and adding the preset, wrap your app with the MarigoldProvider. Unlike before, you no longer have to import the CSS file of the selected theme separately.
 
 Tailwind CSS will automatically generate the required CSS for you. However, remember to import the generated CSS file somewhere in your project. Depending on your setup, this is typically done in the root file where you bootstrap React or, in case of Next.js in our root [layout file](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#layouts).
