@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useAsyncList } from '@react-stately/data';
 
 import { Stack } from '../Stack';
-import { ComboBox } from './ComboBox';
+import { ComboBox, MulitSelect } from './ComboBox';
 
 const meta = {
   title: 'Components/ComboBox',
@@ -108,6 +108,30 @@ export const Controlled: StoryObj<typeof ComboBox> = {
   },
 };
 
+export const MultiSelectComp: StoryObj<typeof ComboBox> = {
+  render: args => {
+    const list = useAsyncList<{ name: string }>({
+      async load({ signal, filterText }) {
+        const res = await fetch(
+          `https://swapi.py4e.com/api/people/?search=${filterText}`,
+          { signal }
+        );
+        const json = await res.json();
+
+        return {
+          items: json.results,
+        };
+      },
+    });
+    console.log('list', list);
+    return (
+      <MulitSelect
+        options={[{ name: 'Osama' }, { name: 'Ali' }, { name: 'Ahmed' }]}
+      />
+    );
+  },
+};
+
 export const AsyncLoading: StoryObj<typeof ComboBox> = {
   render: args => {
     const list = useAsyncList<{ name: string }>({
@@ -123,11 +147,16 @@ export const AsyncLoading: StoryObj<typeof ComboBox> = {
         };
       },
     });
+    console.log('list', list);
     return (
       <ComboBox
         value={list.filterText}
         onChange={list.setFilterText}
-        items={list.items}
+        items={[
+          { id: 1, name: 'Osama' },
+          { id: 2, name: 'Ali' },
+          { id: 3, name: 'Ahmed' },
+        ]}
         label="Star Wars Character Lookup"
         {...args}
       >
