@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useButton } from '@react-aria/button';
 import { useComboBox } from '@react-aria/combobox';
@@ -17,6 +17,7 @@ import { FieldBase } from '../FieldBase';
 import { Input } from '../Input';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay';
+import { Tag } from '../TagGroup';
 
 export interface ComboBoxProps
   extends Omit<
@@ -119,6 +120,66 @@ export const ComboBox = ({
       >
         <ListBox ref={listBoxRef} state={state} {...listBoxProps} />
       </Popover>
+    </>
+  );
+};
+
+interface MultiSelectProps
+  extends Omit<
+    ComboBoxProps,
+    'children' | 'selectedKey' | 'defaultSelectedKey' | 'items'
+  > {
+  defaultSelectedValues?: unknown[];
+  selectedValues?: object[];
+  options: object[];
+}
+
+export const MulitSelect = ({
+  defaultSelectedValues,
+  selectedValues,
+  options,
+  ...props
+}: MultiSelectProps) => {
+  const [optionsValue, setOptionsValue] = useState(options);
+  const [selectedOptions, setSelectedOptions] = useState(selectedValues ?? []);
+
+  const selectOption = (value: unknown) => {
+    if (!value) return;
+    setSelectedOptions((prev: any) => [value, ...prev]);
+    setOptionsValue(prev =>
+      prev.filter((option: { name: string }) => option.name !== value)
+    );
+  };
+
+  const onRemove = (value: unknown) => {
+    setSelectedOptions(prevItems => prevItems.filter(item => item !== value));
+  };
+
+  console.log('selectedOptions', selectedOptions);
+
+  return (
+    <>
+      {selectOption.length && (
+        <Tag.Group
+          items={selectedOptions.map(element => ({ name: element }))}
+          onRemove={keys => {
+            console.log('keys', keys);
+          }}
+        >
+          {item => <Tag key={Math.random()}>{item.name}</Tag>}
+        </Tag.Group>
+      )}
+      <ComboBox
+        onChange={value => {
+          selectOption(value);
+        }}
+        items={optionsValue}
+        {...props}
+      >
+        {(item: { name: string }) => (
+          <ComboBox.Item key={item.name}>{item.name}</ComboBox.Item>
+        )}
+      </ComboBox>
     </>
   );
 };
