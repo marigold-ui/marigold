@@ -1,0 +1,36 @@
+---
+title: utils
+caption: Helpers to make work with Marigold easier.
+---
+
+We have a few helper features that you can use to make your work with Marigold more convenient. They are essential in programming because they simplify complex tasks, promote code reusability, and enhance code readability by breaking down intricate operations into manageable, reusable components.
+
+## cn function
+
+To combine Tailwind CSS classes with other classes, utilize the `cn` function within the className attribute to merge them seamlessly. The inputs of the `className` accept nearly every type. You can pass in arrays, boolean conditions, strings or numbers.
+
+### Import
+
+To import the function you just have to use this code below.
+
+```tsx
+import { cn } from '@marigold/system';
+```
+
+### Examples
+
+In this example you can see how to use the `cn` function on a `<div>` element. Here are written down some Tailwind CSS class names which will be merged with the ones before. So in the end the class names will be rendered (if `myValue` will be true) as `className='flex flex-col cursor-pointer p-4'`
+
+```tsx
+const myOtherValue = 'p-4'
+...
+<div
+  className={cn(
+    'flex flex-col p-3',
+    myValue ? 'cursor-pointer' : 'cursor-not-allowed',
+    myOtherValue
+  )}
+/>
+```
+
+In this code you can see that `p-3` will be overwritten by `p-4`, so keep in mind the order of your class names.
