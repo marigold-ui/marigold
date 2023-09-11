@@ -1,5 +1,17 @@
 # @marigold/components
 
+## 6.2.5
+
+### Patch Changes
+
+- [#3331](https://github.com/marigold-ui/marigold/pull/3331) [`b9e1d147a`](https://github.com/marigold-ui/marigold/commit/b9e1d147a0ab61393ba4704dc4bef6fce70fe854) Thanks [@sebald](https://github.com/sebald)! - fix: correctly apply spacing in `<Inset>`
+
+- [#3339](https://github.com/marigold-ui/marigold/pull/3339) [`581702881`](https://github.com/marigold-ui/marigold/commit/5817028810f503d941be93b66e63ea545c4f17c3) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add <Card> size to b2b theme
+
+- Updated dependencies []:
+  - @marigold/system@6.2.5
+  - @marigold/icons@1.2.14
+
 ## 6.2.4
 
 ### Patch Changes

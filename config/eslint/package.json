@@ -1,7 +1,7 @@
 {
   "name": "@marigold/eslint-config",
   "description": "marigold's eslint configuration",
-  "version": "0.4.11",
+  "version": "0.4.12",
   "license": "MIT",
   "keywords": [
     "marigiold",
