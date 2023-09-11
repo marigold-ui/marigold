@@ -24,16 +24,12 @@ export type InsetProps =
       spaceY?: never;
     };
 
-export const Inset = ({
-  space = 0,
-  spaceX = 0,
-  spaceY = 0,
-  children,
-}: InsetProps) => (
+export const Inset = ({ space, spaceX, spaceY, children }: InsetProps) => (
   <div
     className={cn(
-      space ? paddingSpace[space] : paddingSpaceX[spaceX],
-      paddingSpaceY[spaceY]
+      space && paddingSpace[space],
+      !space && spaceX && paddingSpaceX[spaceX],
+      !space && spaceY && paddingSpaceY[spaceY]
     )}
   >
     {children}

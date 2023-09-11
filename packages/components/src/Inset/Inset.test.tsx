@@ -12,18 +12,7 @@ test('does not have a default spacing', () => {
     </Inset>
   );
   const inset = screen.getByText('first').parentElement;
-  expect(inset).toMatchInlineSnapshot(`
-    <div
-      class="px-0 py-0"
-    >
-      <p>
-        first
-      </p>
-      <p>
-        second
-      </p>
-    </div>
-  `);
+  expect(inset?.className).toMatchInlineSnapshot(`""`);
 });
 
 test('allows to add spacing equally on all sides', () => {
@@ -34,7 +23,7 @@ test('allows to add spacing equally on all sides', () => {
     </Inset>
   );
   const inset = screen.getByText('first').parentElement;
-  expect(inset).toHaveClass(`p-3`);
+  expect(inset?.className).toMatchInlineSnapshot(`"p-3"`);
 });
 
 test('allows to add horizontal spacing', () => {
@@ -45,7 +34,7 @@ test('allows to add horizontal spacing', () => {
     </Inset>
   );
   const inset = screen.getByText('first').parentElement;
-  expect(inset).toHaveClass(`px-5 py-0`);
+  expect(inset?.className).toMatchInlineSnapshot(`"px-5"`);
 });
 
 test('allows to add vertical spacing', () => {
@@ -67,16 +56,5 @@ test('allows to add different vertical/horizontal spacing', () => {
     </Inset>
   );
   const inset = screen.getByText('first').parentElement;
-  expect(inset).toMatchInlineSnapshot(`
-    <div
-      class="px-2 py-4"
-    >
-      <p>
-        first
-      </p>
-      <p>
-        second
-      </p>
-    </div>
-  `);
+  expect(inset?.className).toMatchInlineSnapshot(`"px-2 py-4"`);
 });

@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "6.2.4",
+  "version": "6.2.5",
   "private": true,
   "scripts": {
     "dev": "pnpm registry && next dev",
@@ -19,7 +19,7 @@
     "@vercel/analytics": "1.0.2",
     "autoprefixer": "10.4.14",
     "contentlayer": "0.3.4",
-    "eslint": "8.47.0",
+    "eslint": "8.48.0",
     "eslint-config-next": "13.4.18",
     "next": "13.4.8",
     "next-contentlayer": "0.3.4",
@@ -45,7 +45,7 @@
     "@types/node": "18.16.19",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
-    "typescript": "5.0.4",
+    "typescript": "5.2.2",
     "unist-builder": "4.0.0",
     "unist-util-visit": "5.0.0"
   }
