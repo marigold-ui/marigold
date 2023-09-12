@@ -5,14 +5,10 @@
       "dependsOn": ["^build"],
       "outputs": [
         "dist/**",
-        ".next/**",
-        "!.next/cache/**",
-        "storybook-static/**"
+        "../.next/**",
+        "!../.next/cache/**",
+        "./storybook-static/**"
       ]
-    },
-    "web#build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "storybook-static/**"]
     }
   },
   "globalDependencies": ["tsconfig.json"]

@@ -48,7 +48,7 @@
     "test": "jest --config jest.config.js",
     "test:coverage": "jest --config jest.config.js --coverage --coverageReporters html",
     "test:ci": "jest --config jest.config.js --coverage --ci --no-cache",
-    "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist'`",
+    "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist' -o -name '.next' -o -name '.turbo' -o -name 'storybook-static'`",
     "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
     "lint": "eslint . --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern packages/types/src/index.ts --ignore-pattern \".cache\" --ignore-pattern public",
     "format": "prettier --write \"**/*\"",
