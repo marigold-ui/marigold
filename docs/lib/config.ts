@@ -44,8 +44,8 @@ export const siteConfig = {
       ],
     },
     {
-      name: 'Hooks',
-      slug: 'hooks',
+      name: 'Hooks and Utils',
+      slug: 'hooks-and-utils',
     },
     {
       name: 'Recipes',
