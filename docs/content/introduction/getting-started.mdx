@@ -121,6 +121,19 @@ const config: Config = {
 export default config;
 ```
 
+Please make sure that you have a `postcss.config.js` file with following content in your project:
+
+```js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+```
+
+This is installing Tailwind CSS as a PostCSS plugin, for a easy setup.
+
 After configuring Tailwind CSS and adding the preset, wrap your app with the MarigoldProvider. Unlike before, you no longer have to import the CSS file of the selected theme separately.
 
 Tailwind CSS will automatically generate the required CSS for you. However, remember to import the generated CSS file somewhere in your project. Depending on your setup, this is typically done in the root file where you bootstrap React or, in case of Next.js in our root [layout file](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#layouts).
