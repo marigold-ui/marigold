@@ -116,16 +116,16 @@ export const ScrollableContent: Story = {
               <Text>This is some not so very long text.</Text>
               <div className="max-h-[200px] overflow-y-auto pb-2 pl-2">
                 <CheckboxGroup>
-                  <Checkbox>One</Checkbox>
-                  <Checkbox>Two</Checkbox>
-                  <Checkbox>Three</Checkbox>
-                  <Checkbox>Four</Checkbox>
-                  <Checkbox>Five</Checkbox>
-                  <Checkbox>Six</Checkbox>
-                  <Checkbox>Seven</Checkbox>
-                  <Checkbox>Eight</Checkbox>
-                  <Checkbox>Nine</Checkbox>
-                  <Checkbox>Ten</Checkbox>
+                  <Checkbox value="one">One</Checkbox>
+                  <Checkbox value="two">Two</Checkbox>
+                  <Checkbox value="three">Three</Checkbox>
+                  <Checkbox value="four">Four</Checkbox>
+                  <Checkbox value="five">Five</Checkbox>
+                  <Checkbox value="six">Six</Checkbox>
+                  <Checkbox value="seven">Seven</Checkbox>
+                  <Checkbox value="eight">Eight</Checkbox>
+                  <Checkbox value="nine">Nine</Checkbox>
+                  <Checkbox value="ten">Ten</Checkbox>
                 </CheckboxGroup>
               </div>
             </Stack>
