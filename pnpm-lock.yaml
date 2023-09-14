@@ -425,11 +425,11 @@ importers:
         specifier: 18.16.19
         version: 18.16.19
       '@types/react':
-        specifier: 18.2.14
-        version: 18.2.14
+        specifier: 18.2.21
+        version: 18.2.21
       '@types/react-dom':
-        specifier: 18.2.6
-        version: 18.2.6
+        specifier: 18.2.7
+        version: 18.2.7
       typescript:
         specifier: 5.2.2
         version: 5.2.2
@@ -636,8 +636,8 @@ importers:
         specifier: workspace:*
         version: link:../../config/tsconfig
       '@types/react':
-        specifier: 18.2.14
-        version: 18.2.14
+        specifier: 18.2.21
+        version: 18.2.21
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -733,8 +733,8 @@ importers:
         version: 4.2.0
     devDependencies:
       '@types/react':
-        specifier: 18.2.14
-        version: 18.2.14
+        specifier: 18.2.21
+        version: 18.2.21
 
   themes/theme-b2b:
     dependencies:
@@ -7029,7 +7029,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.22.6
       '@testing-library/dom': 9.3.1
-      '@types/react-dom': 18.2.6
+      '@types/react-dom': 18.2.7
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -7379,10 +7379,10 @@ packages:
   /@types/range-parser@1.2.4:
     resolution: {integrity: sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==}
 
-  /@types/react-dom@18.2.6:
-    resolution: {integrity: sha512-2et4PDvg6PVCyS7fuTc4gPoksV58bW0RwSxWKcPRcHZf0PRUGq03TKcD/rUHe3azfV6/5/biUBJw+HhCQjaP0A==}
+  /@types/react-dom@18.2.7:
+    resolution: {integrity: sha512-GRaAEriuT4zp9N4p1i8BDBYmEyfo+xQ3yHjJU4eiK5NDa1RmUZG+unZABUTK4/Ox/M+GaHwb6Ow8rUITrtjszA==}
     dependencies:
-      '@types/react': 18.2.14
+      '@types/react': 18.2.21
 
   /@types/react@16.14.46:
     resolution: {integrity: sha512-Am4pyXMrr6cWWw/TN3oqHtEZl0j+G6Up/O8m65+xF/3ZaUgkv1GAtTPWw4yNRmH0HJXmur6xKCKoMo3rBGynuw==}
@@ -7394,6 +7394,14 @@ packages:
 
   /@types/react@18.2.14:
     resolution: {integrity: sha512-A0zjq+QN/O0Kpe30hA1GidzyFjatVvrpIvWLxD+xv67Vt91TWWgco9IvrJBkeyHm1trGaFS/FSGqPlhyeZRm0g==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      '@types/scheduler': 0.16.3
+      csstype: 3.1.2
+    dev: false
+
+  /@types/react@18.2.21:
+    resolution: {integrity: sha512-neFKG/sBAwGxHgXiIxnbm3/AAVQ/cMRS93hvBpg8xYRbeQSPVABp9U2bRnPf0iI4+Ucdv3plSxKK+3CW2ENJxA==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.3
