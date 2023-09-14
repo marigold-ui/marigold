@@ -104,22 +104,58 @@ However, if you want to maximize the benefits of Marigold, you should install Ta
 
 To set up Tailwind CSS, please refer to the official [installation guide](https://tailwindcss.com/docs/installation). Once you have completed the installation, add the chosen theme as a preset to the Tailwind CSS config, as shown below:
 
-```ts
-import { Config } from 'tailwindcss/types/config';
+<Tabs>
+  <Tabs.Item key="ts" title="TypeScript">
 
-// If you are using another theme, change the name accordingly
-import { preset } from '@marigold/theme-b2b/preset';
+    ```ts
+    import { Config } from 'tailwindcss/types/config';
 
-const config: Config = {
-  content: [
-    // Dont forget to add the glob for your app here
-    ...preset.content,
-  ],
-  presets: [preset],
+    // If you are using another theme, change the name accordingly
+    import { preset } from '@marigold/theme-b2b/preset';
+
+    const config: Config = {
+      content: [
+        // Dont forget to add the glob for your app here
+        ...preset.content,
+      ],
+      presets: [preset],
+    };
+
+    export default config;
+    ```
+
+  </Tabs.Item>
+  <Tabs.Item key="cjs" title="JavaScript (CJS)">
+
+    ```js
+    // If you are using another theme, change the name accordingly
+    const { preset } = require('@marigold/theme-b2b/preset');
+
+    /** @type {import('tailwindcss').Config} \*/
+    module.exports = {
+      content: [
+        // Dont forget to add the glob for your app here
+        ...preset.content,
+      ],
+      presets: [preset],
+    };
+    ```
+
+  </Tabs.Item>
+</Tabs>
+
+Please make sure that you have a `postcss.config.js` file with the following content in your project:
+
+```js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
 };
-
-export default config;
 ```
+
+This will set up TailwindCSS as a PostCSS plugin and works with common tools, like `vite` or `next.js`.
 
 <Message messageTitle="TypeScript Configuration" variant="info">
   If you are using TypeScript, make sure to set the [module
