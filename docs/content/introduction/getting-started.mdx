@@ -121,6 +121,19 @@ const config: Config = {
 export default config;
 ```
 
+Please make sure that you have a `postcss.config.js` file with the following content in your project:
+
+```js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+```
+
+This will set up TailwindCSS as a PostCSS plugin and works with common tools, like `vite` or `next.js`.
+
 <Message messageTitle="TypeScript Configuration" variant="info">
   If you are using TypeScript, make sure to set the [module
   resolution](https://www.typescriptlang.org/tsconfig#moduleResolution) to
