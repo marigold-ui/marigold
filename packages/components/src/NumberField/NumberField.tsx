@@ -43,7 +43,15 @@ type CustomProps =
 
 export interface NumberFieldProps
   extends Omit<HtmlProps<'input'>, CustomProps>,
-    Omit<AriaNumberFieldProps, 'isDisabled' | 'isRequired' | 'isReadOnly'>,
+    Omit<
+      AriaNumberFieldProps,
+      | 'isDisabled'
+      | 'label'
+      | 'description'
+      | 'errorMessage'
+      | 'isRequired'
+      | 'isReadOnly'
+    >,
     Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
   variant?: string;
   size?: string;
