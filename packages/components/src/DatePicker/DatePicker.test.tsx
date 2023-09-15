@@ -1,4 +1,6 @@
 /* eslint-disable testing-library/no-node-access */
+
+/* eslint-disable testing-library/no-node-access */
 import { CalendarDate } from '@internationalized/date';
 import { screen, waitFor } from '@testing-library/react';
 import { fireEvent } from '@testing-library/react';
@@ -418,4 +420,13 @@ describe('DatePicker', () => {
       expect(onFocusSpy).toHaveBeenCalledTimes(1);
     });
   });
+});
+
+test('DatePicker supports width prop', () => {
+  render(
+    <DatePicker data-testid="picker" aria-label="date picker" width={10} />
+  );
+  const picker = screen.getByTestId('picker');
+  const child = picker.firstChild as HTMLInputElement;
+  expect(child.className).toMatchInlineSnapshot(`"group/field w-10"`);
 });

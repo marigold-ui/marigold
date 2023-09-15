@@ -6,7 +6,13 @@ import { mergeProps } from '@react-aria/utils';
 
 import { useDatePickerState } from '@react-stately/datepicker';
 
-import { cn, useClassNames, useStateProps } from '@marigold/system';
+import {
+  WidthProp,
+  cn,
+  useClassNames,
+  useStateProps,
+  width,
+} from '@marigold/system';
 
 import { Button } from '../Button';
 import { Calendar } from '../Calendar/Calendar';
@@ -28,6 +34,7 @@ export interface DatePickerProps
   shouldCloseOnSelect?: boolean;
   variant?: string;
   size?: string;
+  width?: WidthProp['width'];
 }
 
 // Component
@@ -41,6 +48,7 @@ export const DatePicker = ({
   shouldCloseOnSelect,
   variant,
   size,
+  width,
   ...rest
 }: DatePickerProps) => {
   const props: AriaDatePickerProps<CalendarDate> = {
@@ -84,6 +92,7 @@ export const DatePicker = ({
           error={error}
           description={!state.isOpen && description}
           triggerRef={ref}
+          width={width}
           action={
             <div className={classNames.container}>
               <Button

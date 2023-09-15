@@ -18,6 +18,12 @@ const meta = {
       description: 'Disable the date picker',
       defaultValue: false,
     },
+    width: {
+      control: {
+        type: 'text',
+      },
+      description: 'width of the date picker input field',
+    },
     required: {
       control: {
         type: 'boolean',
