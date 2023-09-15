@@ -6,13 +6,7 @@ import { mergeProps } from '@react-aria/utils';
 
 import { useDatePickerState } from '@react-stately/datepicker';
 
-import {
-  WidthProp,
-  cn,
-  useClassNames,
-  useStateProps,
-  width,
-} from '@marigold/system';
+import { WidthProp, cn, useClassNames, useStateProps } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Calendar } from '../Calendar/Calendar';
