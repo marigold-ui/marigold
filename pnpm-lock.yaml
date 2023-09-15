@@ -18,8 +18,8 @@ importers:
         specifier: 2.26.2
         version: 2.26.2
       '@manypkg/get-packages':
-        specifier: 2.1.0
-        version: 2.1.0
+        specifier: 2.2.0
+        version: 2.2.0
       '@marigold/eslint-config':
         specifier: workspace:*
         version: link:config/eslint
@@ -3889,8 +3889,8 @@ packages:
       read-yaml-file: 1.1.0
     dev: false
 
-  /@manypkg/get-packages@2.1.0:
-    resolution: {integrity: sha512-IgWPEGgeKeR3ISlgHAMbY+m042yjNe3NPt8UmJT0xMwofe/UifUVtOq5aUBkNSygfOrcUh/j5JExLPuOx72quA==}
+  /@manypkg/get-packages@2.2.0:
+    resolution: {integrity: sha512-B5p5BXMwhGZKi/syEEAP1eVg5DZ/9LP+MZr0HqfrHLgu9fq0w4ZwH8yVen4JmjrxI2dWS31dcoswYzuphLaRxg==}
     engines: {node: '>=14.18.0'}
     dependencies:
       '@manypkg/find-root': 2.2.1
