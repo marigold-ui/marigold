@@ -24,7 +24,7 @@
     "@testing-library/react": "14.0.0",
     "@testing-library/user-event": "14.4.3",
     "@types/node": "18.16.19",
-    "all-contributors-cli": "6.24.0",
+    "all-contributors-cli": "6.26.1",
     "eslint": "8.49.0",
     "husky": "8.0.3",
     "jest": "29.6.4",

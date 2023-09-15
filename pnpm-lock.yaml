@@ -54,8 +54,8 @@ importers:
         specifier: 18.16.19
         version: 18.16.19
       all-contributors-cli:
-        specifier: 6.24.0
-        version: 6.24.0
+        specifier: 6.26.1
+        version: 6.26.1
       eslint:
         specifier: 8.49.0
         version: 8.49.0
@@ -8205,12 +8205,12 @@ packages:
       json-schema-traverse: 0.4.1
       uri-js: 4.4.1
 
-  /all-contributors-cli@6.24.0:
-    resolution: {integrity: sha512-7oSKr2PnqxsOotuSwciltcFTS1eVRdjR0cn99hbElfff7gRQBShVhsf/XBprY41sLcgqTk0l0MKgKv6QNgZdMg==}
+  /all-contributors-cli@6.26.1:
+    resolution: {integrity: sha512-Ymgo3FJACRBEd1eE653FD1J/+uD0kqpUNYfr9zNC1Qby0LgbhDBzB3EF6uvkAbYpycStkk41J+0oo37Lc02yEw==}
     engines: {node: '>=4'}
     hasBin: true
     dependencies:
-      '@babel/runtime': 7.22.6
+      '@babel/runtime': 7.22.10
       async: 3.2.4
       chalk: 4.1.2
       didyoumean: 1.2.2
@@ -8220,6 +8220,8 @@ packages:
       node-fetch: 2.6.12
       pify: 5.0.0
       yargs: 15.4.1
+    optionalDependencies:
+      prettier: 2.8.8
     transitivePeerDependencies:
       - encoding
     dev: false
