@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@marigold/types": "workspace:*",
-    "class-variance-authority": "0.6.1",
+    "class-variance-authority": "0.7.0",
     "deepmerge": "^4.2.2",
     "react-fast-compare": "^3.2.0",
     "tailwind-merge": "1.14.0"
