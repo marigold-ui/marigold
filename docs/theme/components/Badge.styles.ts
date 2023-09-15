@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Badge: ThemeComponent<'Badge'> = cva(
-  'inline-flex items-center whitespace-nowrap rounded-[20px] px-2 py-[2px]',
+  'inline-flex items-center truncate rounded-[20px] px-2 py-[2px]',
   {
     variants: {
       variant: {
