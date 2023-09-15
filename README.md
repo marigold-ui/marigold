@@ -15,11 +15,15 @@ React implementation of the Marigold Design System based on [react-aria](https:/
 ## Installation 🔧
 
 ```sh
+# with pnpm
+pnpm add @marigold/components
+
 # with npm
 npm install @marigold/components --save
 
 # with yarn
 yarn add @marigold/components
+
 
 # for development:
 git clone https://github.com/marigold-ui/marigold.git
@@ -30,6 +34,9 @@ yarn install
 If you want to use a marigold theme you have to install them seperatly like:
 
 ```sh
+# with pnpm
+pnpm add @marigold/theme-b2b
+
 # with npm
 npm install @marigold/theme-b2b --save
 
