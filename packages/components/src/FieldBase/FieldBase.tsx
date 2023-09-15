@@ -1,5 +1,4 @@
 import { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
-import { ReactElement } from 'react';
 
 import {
   StateAttrProps,
