@@ -1,5 +1,14 @@
 # @marigold/theme-b2b
 
+## 25.2.6
+
+### Patch Changes
+
+- Updated dependencies [[`1d305f963`](https://github.com/marigold-ui/marigold/commit/1d305f963af96b5ad7b087dbd3365550e2eaae6b)]:
+  - @marigold/components@6.2.6
+  - @marigold/system@6.2.6
+  - @marigold/theme-preset@1.1.6
+
 ## 25.2.5
 
 ### Patch Changes

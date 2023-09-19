@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 6.2.6
+
+### Patch Changes
+
+- [#3366](https://github.com/marigold-ui/marigold/pull/3366) [`1d305f963`](https://github.com/marigold-ui/marigold/commit/1d305f963af96b5ad7b087dbd3365550e2eaae6b) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: allow width on datepicker
+
+- Updated dependencies []:
+  - @marigold/system@6.2.6
+  - @marigold/icons@1.2.15
+
 ## 6.2.5
 
 ### Patch Changes
