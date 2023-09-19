@@ -135,26 +135,19 @@ interface MultiSelectProps
     ComboBoxProps,
     'children' | 'selectedKey' | 'defaultSelectedKey' | 'items'
   > {
-  defaultSelectedValues?: unknown[];
-  selectedValues?: SelectOption[];
   options: SelectOption[];
 }
 
-export const MulitSelect = ({
-  defaultSelectedValues,
-  selectedValues,
-  options,
-  ...props
-}: MultiSelectProps) => {
+export const MulitSelect = ({ options, ...props }: MultiSelectProps) => {
   const [value, setValue] = useState(options);
-  const [selectedOptions, setSelectedOptions] = useState(selectedValues ?? []);
+  const [selectedOptions, setSelectedOptions] = useState<SelectOption[]>([]);
   const onSelect = (key: unknown) => {
     if (!key) return;
-    // // push value to seleted option and set a random key for it
+    // // push value to seleted option
     setSelectedOptions((prev: any) => [
-      value.filter(option => {
+      value.find(option => {
         return option.key === key;
-      })[0],
+      }),
       ...prev,
     ]);
     // // delete the value from the select options
@@ -169,14 +162,14 @@ export const MulitSelect = ({
     const key = keySet.values().next().value;
     // should push the element back to the value
     setValue(prev => [
-      selectedOptions.filter(option => {
-        return option.key == key;
-      })[0],
+      selectedOptions.find(option => {
+        return option.key === key;
+      }) as SelectOption,
       ...prev,
     ]);
     // delete element from the selected options
     setSelectedOptions(prevItems =>
-      prevItems.filter((item: any) => item.key != key)
+      prevItems.filter((item: any) => item.key !== key)
     );
   };
 
