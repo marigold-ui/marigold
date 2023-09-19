@@ -11,11 +11,11 @@ export const SiteNavigation = () => (
     </div>
     <div className="bg-bg-muted rounded p-2">
       <Link
-        href="https://marigold-ui.io/"
+        href="https://marigold-ui.github.io/marigold/"
         className="no-underline"
         target="_blank"
       >
-        <Text fontSize="sm">Go to previous Docs (v5.6.0)</Text>
+        <Text fontSize="sm">Visist old Docs (v5.6.0)</Text>
       </Link>
     </div>
     <ThemeMenu />

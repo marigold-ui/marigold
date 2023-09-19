@@ -36,12 +36,14 @@ const useNavigation = (): NavigationSection[] => {
     const sectionPages = allContentPages.filter(
       page => page.section === slug && !page.subsection
     );
+
     sectionPages.sort((a, b) => (a.order || 1000) - (b.order || 1000));
     return {
       name,
       links: sectionPages.map(page => ({
         name: page.title,
         href: `/${page.slug}`,
+        badge: page.badge,
       })),
       subsections: subsections.map(subsection => ({
         name: subsection.name,
@@ -78,14 +80,16 @@ export const Navigation = ({ onClick }: NavigationProps) => {
         <div key={section.name} className="flex flex-col gap-2">
           <div className="font-semibold">{section.name}</div>
           <div className="border-secondary-300 ml-0.5 flex flex-col gap-2 border-l">
-            {section.links.map(({ name, href }) => (
+            {section.links.map(({ name, href, badge }) => (
               <NavLink
+                className="flex items-center gap-4"
                 key={href}
                 current={pathname === href}
                 href={href}
                 onClick={onClick}
               >
                 {name}
+                {badge && <Badge variant="dark">{badge}</Badge>}
               </NavLink>
             ))}
           </div>

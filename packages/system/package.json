@@ -1,6 +1,6 @@
 {
   "name": "@marigold/system",
-  "version": "6.2.5",
+  "version": "6.2.6",
   "description": "Marigold System Library",
   "license": "MIT",
   "keywords": [
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@marigold/types": "workspace:*",
-    "class-variance-authority": "0.6.1",
+    "class-variance-authority": "0.7.0",
     "deepmerge": "^4.2.2",
     "react-fast-compare": "^3.2.0",
     "tailwind-merge": "1.14.0"
