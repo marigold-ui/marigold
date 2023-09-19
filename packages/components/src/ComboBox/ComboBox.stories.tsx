@@ -126,7 +126,11 @@ export const MultiSelectComp: StoryObj<typeof ComboBox> = {
     console.log('list', list);
     return (
       <MulitSelect
-        options={[{ name: 'Osama' }, { name: 'Ali' }, { name: 'Ahmed' }]}
+        options={[
+          { key: '1', value: 'Osama' },
+          { key: '2', value: 'Ali' },
+          { key: '3', value: 'Ahmed' },
+        ]}
       />
     );
   },

@@ -17,6 +17,7 @@ import { FieldBase } from '../FieldBase';
 import { Input } from '../Input';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay';
+import { Stack } from '../Stack';
 import { Tag } from '../TagGroup';
 
 export interface ComboBoxProps
@@ -124,14 +125,19 @@ export const ComboBox = ({
   );
 };
 
+interface SelectOption {
+  key: unknown;
+  value: unknown;
+}
+
 interface MultiSelectProps
   extends Omit<
     ComboBoxProps,
     'children' | 'selectedKey' | 'defaultSelectedKey' | 'items'
   > {
   defaultSelectedValues?: unknown[];
-  selectedValues?: object[];
-  options: object[];
+  selectedValues?: SelectOption[];
+  options: SelectOption[];
 }
 
 export const MulitSelect = ({
@@ -142,45 +148,53 @@ export const MulitSelect = ({
 }: MultiSelectProps) => {
   const [optionsValue, setOptionsValue] = useState(options);
   const [selectedOptions, setSelectedOptions] = useState(selectedValues ?? []);
-
-  const selectOption = (value: unknown) => {
-    if (!value) return;
-    setSelectedOptions((prev: any) => [value, ...prev]);
+  const onSelect = (key: unknown) => {
+    if (!key) return;
+    // // push value to seleted option and set a random key for it
+    setSelectedOptions((prev: any) => [
+      optionsValue.filter(option => {
+        return option.key === key;
+      })[0],
+      ...prev,
+    ]);
+    // // delete the value from the select options
     setOptionsValue(prev =>
-      prev.filter((option: { name: string }) => option.name !== value)
+      prev.filter(option => {
+        return option.key !== key;
+      })
     );
   };
 
-  const onRemove = (value: unknown) => {
-    setSelectedOptions(prevItems => prevItems.filter(item => item !== value));
+  const onRemove = (keySet: Set<React.Key>) => {
+    const key = keySet.values().next().value;
+    // should push the element back to the optionsValue
+    setOptionsValue(prev => [
+      selectedOptions.filter(option => {
+        return option.key == key;
+      })[0],
+      ...prev,
+    ]);
+    // delete element from the selected options
+    setSelectedOptions(prevItems =>
+      prevItems.filter((item: any) => +item.key !== +key)
+    );
   };
 
-  console.log('selectedOptions', selectedOptions);
-
   return (
-    <>
-      {selectOption.length && (
-        <Tag.Group
-          items={selectedOptions.map(element => ({ name: element }))}
-          onRemove={keys => {
-            console.log('keys', keys);
-          }}
-        >
-          {item => <Tag key={Math.random()}>{item.name}</Tag>}
+    <Stack space={1}>
+      {selectedOptions.length ? (
+        <Tag.Group items={selectedOptions} onRemove={onRemove}>
+          {(item: { key: any; value: any }) => (
+            <Tag key={item.key}>{item.value}</Tag>
+          )}
         </Tag.Group>
-      )}
-      <ComboBox
-        onChange={value => {
-          selectOption(value);
-        }}
-        items={optionsValue}
-        {...props}
-      >
-        {(item: { name: string }) => (
-          <ComboBox.Item key={item.name}>{item.name}</ComboBox.Item>
+      ) : null}
+      <ComboBox onSelectionChange={onSelect} items={optionsValue} {...props}>
+        {(item: { key: any; value: any }) => (
+          <ComboBox.Item key={item.key}>{item.value}</ComboBox.Item>
         )}
       </ComboBox>
-    </>
+    </Stack>
   );
 };
 
