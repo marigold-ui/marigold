@@ -1,5 +1,23 @@
 # @marigold/docs
 
+## 6.2.6
+
+### Patch Changes
+
+- [#3353](https://github.com/marigold-ui/marigold/pull/3353) [`ca2cddb10`](https://github.com/marigold-ui/marigold/commit/ca2cddb104c00bcfda369df58b6f443c5ae7be5e) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update eslint
+
+- [#3366](https://github.com/marigold-ui/marigold/pull/3366) [`1d305f963`](https://github.com/marigold-ui/marigold/commit/1d305f963af96b5ad7b087dbd3365550e2eaae6b) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: allow width on datepicker
+
+- [#3340](https://github.com/marigold-ui/marigold/pull/3340) [`f50c5a4ae`](https://github.com/marigold-ui/marigold/commit/f50c5a4ae5a5d947b126e43228ab37cd35c8403b) Thanks [@sarahgm](https://github.com/sarahgm)! - chore[DST-189]: write utils documentation
+
+- Updated dependencies [[`ca2cddb10`](https://github.com/marigold-ui/marigold/commit/ca2cddb104c00bcfda369df58b6f443c5ae7be5e), [`1d305f963`](https://github.com/marigold-ui/marigold/commit/1d305f963af96b5ad7b087dbd3365550e2eaae6b)]:
+  - @marigold/eslint-config@0.4.13
+  - @marigold/components@6.2.6
+  - @marigold/theme-b2b@25.2.6
+  - @marigold/theme-core@25.2.6
+  - @marigold/icons@1.2.15
+  - @marigold/theme-preset@1.1.6
+
 ## 6.2.5
 
 ### Patch Changes
