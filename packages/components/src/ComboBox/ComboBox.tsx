@@ -146,19 +146,19 @@ export const MulitSelect = ({
   options,
   ...props
 }: MultiSelectProps) => {
-  const [optionsValue, setOptionsValue] = useState(options);
+  const [value, setValue] = useState(options);
   const [selectedOptions, setSelectedOptions] = useState(selectedValues ?? []);
   const onSelect = (key: unknown) => {
     if (!key) return;
     // // push value to seleted option and set a random key for it
     setSelectedOptions((prev: any) => [
-      optionsValue.filter(option => {
+      value.filter(option => {
         return option.key === key;
       })[0],
       ...prev,
     ]);
     // // delete the value from the select options
-    setOptionsValue(prev =>
+    setValue(prev =>
       prev.filter(option => {
         return option.key !== key;
       })
@@ -167,8 +167,8 @@ export const MulitSelect = ({
 
   const onRemove = (keySet: Set<React.Key>) => {
     const key = keySet.values().next().value;
-    // should push the element back to the optionsValue
-    setOptionsValue(prev => [
+    // should push the element back to the value
+    setValue(prev => [
       selectedOptions.filter(option => {
         return option.key == key;
       })[0],
@@ -176,7 +176,7 @@ export const MulitSelect = ({
     ]);
     // delete element from the selected options
     setSelectedOptions(prevItems =>
-      prevItems.filter((item: any) => +item.key !== +key)
+      prevItems.filter((item: any) => item.key != key)
     );
   };
 
@@ -189,7 +189,7 @@ export const MulitSelect = ({
           )}
         </Tag.Group>
       ) : null}
-      <ComboBox onSelectionChange={onSelect} items={optionsValue} {...props}>
+      <ComboBox onSelectionChange={onSelect} items={value} {...props}>
         {(item: { key: any; value: any }) => (
           <ComboBox.Item key={item.key}>{item.value}</ComboBox.Item>
         )}
