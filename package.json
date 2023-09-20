@@ -17,8 +17,6 @@
     "@marigold/jest-config": "workspace:*",
     "@marigold/prettier-config": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
-    "@react-aria/searchfield": "3.5.4",
-    "@react-stately/searchfield": "3.4.4",
     "@testing-library/dom": "9.3.1",
     "@testing-library/jest-dom": "5.17.0",
     "@testing-library/react": "14.0.0",
