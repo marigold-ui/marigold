@@ -3,6 +3,7 @@ import React from 'react';
 
 import { FieldGroup } from '../FieldBase/FieldGroup';
 import { Checkbox } from './Checkbox';
+import { MyCheckbox as CheckBoxComp } from './MyCheckbox';
 
 const meta = {
   title: 'Components/Checkbox',
@@ -76,4 +77,8 @@ export const WithFieldGroup: Story = {
       <Checkbox {...args} />
     </FieldGroup>
   ),
+};
+
+export const MyCheckbox: Story = {
+  render: args => <CheckBoxComp>Unsubscribe</CheckBoxComp>,
 };
