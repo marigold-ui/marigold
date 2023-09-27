@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import {
   Checkbox,
   type CheckboxProps as CheckboxPropsI,
@@ -72,48 +73,58 @@ interface CheckboxProps
 
 // Component
 // --------------
-export const MyCheckbox = ({
-  className,
-  indeterminate,
-  error,
-  children,
-  disabled,
-  checked,
-  readOnly,
-  required,
-  variant,
-  size,
-  ...rest
-}: CheckboxProps) => {
-  const props: CheckboxPropsI = {
-    isIndeterminate: indeterminate,
-    isDisabled: disabled,
-    isReadOnly: readOnly,
-    isRequired: required,
-    isInvalid: error,
-    ...rest,
-  } as const;
 
-  const classNames = useClassNames({ component: 'Checkbox', variant, size });
-  return (
-    <Checkbox
-      className={cn(
-        'group/checkbox flex items-center gap-[0.5rem]',
-        'cursor-pointer data-[disabled]:cursor-not-allowed',
-        classNames.container
-      )}
-      {...props}
-    >
-      {({ isSelected, isIndeterminate }) => (
-        <>
-          <Icon
-            checked={isSelected}
-            indeterminate={isIndeterminate}
-            className={classNames.checkbox}
-          />
-          <div className={classNames.label}>{children}</div>
-        </>
-      )}
-    </Checkbox>
-  );
-};
+export const MyCheckbox = forwardRef<HTMLInputElement, CheckboxProps>(
+  (
+    {
+      className,
+      indeterminate,
+      error,
+      disabled,
+      defaultChecked,
+      children,
+      checked,
+      readOnly,
+      required,
+      variant,
+      size,
+      ...rest
+    },
+    ref
+  ) => {
+    const props: CheckboxPropsI = {
+      isIndeterminate: indeterminate,
+      isDisabled: disabled,
+      isReadOnly: readOnly,
+      isRequired: required,
+      isInvalid: error,
+      defaultSelected: defaultChecked,
+      ...rest,
+    } as const;
+
+    const classNames = useClassNames({ component: 'Checkbox', variant, size });
+
+    return (
+      <Checkbox
+        ref={ref}
+        className={cn(
+          'group/checkbox flex items-center gap-[0.5rem]',
+          'cursor-pointer data-[disabled]:cursor-not-allowed',
+          classNames.container
+        )}
+        {...props}
+      >
+        {({ isSelected, isIndeterminate }) => (
+          <>
+            <Icon
+              checked={isSelected}
+              indeterminate={isIndeterminate}
+              className={classNames.checkbox}
+            />
+            <div className={classNames.label}>{children}</div>
+          </>
+        )}
+      </Checkbox>
+    );
+  }
+);

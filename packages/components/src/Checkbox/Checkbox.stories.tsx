@@ -68,7 +68,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <Checkbox size="small" {...args} />,
+  render: args => <Checkbox size="small" {...args} defaultChecked />,
 };
 
 export const WithFieldGroup: Story = {
@@ -80,5 +80,9 @@ export const WithFieldGroup: Story = {
 };
 
 export const MyCheckbox: Story = {
-  render: args => <CheckBoxComp {...args}>Unsubscribe</CheckBoxComp>,
+  render: args => (
+    <CheckBoxComp {...args} defaultChecked>
+      Unsubscribe
+    </CheckBoxComp>
+  ),
 };
