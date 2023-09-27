@@ -1,6 +1,6 @@
-import type { ComponentProps } from 'react';
+import type { ReactNode } from 'react';
 
-import Link from 'next/link';
+import Link, { LinkProps } from 'next/link';
 
 import { type VariantProps, cn, cva } from '@marigold/system';
 
@@ -44,19 +44,24 @@ const styles = cva([], {
   },
 });
 
-export interface NavLinkProps
-  extends VariantProps<typeof styles>,
-    ComponentProps<typeof Link> {}
+export interface NavLinkProps extends VariantProps<typeof styles>, LinkProps {
+  className: string;
+  children: ReactNode;
+}
 
 export const NavLink = ({
   variant,
   current,
   className,
+
+  children,
   ...props
 }: NavLinkProps) => (
   <Link
     {...props}
     className={cn(styles({ variant, current, className }))}
     aria-current={current ? 'page' : undefined}
-  />
+  >
+    {children}
+  </Link>
 );
