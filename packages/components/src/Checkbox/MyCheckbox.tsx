@@ -1,4 +1,7 @@
-import { Checkbox, type CheckboxProps } from 'react-aria-components';
+import {
+  Checkbox,
+  type CheckboxProps as CheckboxPropsI,
+} from 'react-aria-components';
 
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
@@ -37,7 +40,7 @@ const Icon = ({ className, checked, indeterminate, ...props }: IconProps) => {
         'flex shrink-0 grow-0 basis-4 items-center justify-center',
         'h-4 w-4 p-px',
         'bg-white',
-        'rounded-[3px] border border-solid border-black text-white',
+        'rounded-[3px] border border-solid border-black ',
         className
       )}
       {...props}
@@ -55,19 +58,21 @@ export type CustomCheckboxProps =
   | 'onKeyDown'
   | 'onKeyUp';
 
-interface CheckboxPropsI
+interface CheckboxProps
   extends Omit<
       HtmlProps<'input'>,
       'size' | 'type' | 'defaultValue' | CustomCheckboxProps
     >,
-    Pick<CheckboxProps, CustomCheckboxProps> {
+    Pick<CheckboxPropsI, CustomCheckboxProps> {
   indeterminate?: boolean;
   error?: boolean;
   variant?: string;
   size?: string;
 }
 
-export function MyCheckbox({
+// Component
+// --------------
+export const MyCheckbox = ({
   className,
   indeterminate,
   error,
@@ -79,8 +84,8 @@ export function MyCheckbox({
   variant,
   size,
   ...rest
-}: CheckboxPropsI) {
-  const props: CheckboxProps = {
+}: CheckboxProps) => {
+  const props: CheckboxPropsI = {
     isIndeterminate: indeterminate,
     isDisabled: disabled,
     isReadOnly: readOnly,
@@ -90,24 +95,25 @@ export function MyCheckbox({
   } as const;
 
   const classNames = useClassNames({ component: 'Checkbox', variant, size });
-
   return (
     <Checkbox
       className={cn(
-        'group/checkbox flex items-center justify-center gap-[0.5rem]',
+        'group/checkbox flex items-center gap-[0.5rem]',
+        'cursor-pointer data-[disabled]:cursor-not-allowed',
         classNames.container
       )}
       {...props}
     >
-      <>
-        <Icon
-          checked={checked}
-          indeterminate={indeterminate}
-          className={classNames.checkbox}
-        />
-
-        {children}
-      </>
+      {({ isSelected, isIndeterminate }) => (
+        <>
+          <Icon
+            checked={isSelected}
+            indeterminate={isIndeterminate}
+            className={classNames.checkbox}
+          />
+          <div className={classNames.label}>{children}</div>
+        </>
+      )}
     </Checkbox>
   );
-}
+};
