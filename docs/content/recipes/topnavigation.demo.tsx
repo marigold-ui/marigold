@@ -25,7 +25,7 @@ export default () => {
   };
 
   return (
-    <div className="h-16 w-full p-4 shadow ">
+    <div className="h-16 w-full p-4 shadow">
       <Inline alignY="center" space={4}>
         <Logo />
         {items.map(({ key, children }) => (
@@ -33,11 +33,11 @@ export default () => {
         ))}
         <Split />
         <div className="pb-2">Organisation</div>
-        <Button variant="text" size="small">
-          <div className="pb-2">
+        <div className="h-full">
+          <Button variant="text" size="small">
             <Logout />
-          </div>
-        </Button>
+          </Button>
+        </div>
       </Inline>
     </div>
   );
