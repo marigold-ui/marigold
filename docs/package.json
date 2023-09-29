@@ -43,7 +43,7 @@
   "devDependencies": {
     "@internationalized/date": "3.5.0",
     "@types/node": "18.17.15",
-    "@types/react": "18.2.21",
+    "@types/react": "18.2.14",
     "@types/react-dom": "18.2.7",
     "typescript": "5.2.2",
     "unist-builder": "4.0.0",
