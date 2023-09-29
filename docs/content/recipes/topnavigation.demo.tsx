@@ -14,20 +14,15 @@ interface NavProps {
 interface NavItemsProps extends NavProps {
   children?: ReactNode;
   href?: string;
+  active?: boolean;
 }
 
-const NavItem = ({ children, href }: NavItemsProps) => {
-  const [active, setActive] = useState(false);
-  const handleOnClick = () => {
-    setActive(!active);
-  };
-
+const NavItem = ({ children, href, active }: NavItemsProps) => {
   return (
     <div className="pb-2">
       <a
         href={href}
         target="_blank"
-        onClick={handleOnClick}
         className={cn(
           'pb-4 hover:border-b-8 hover:border-[#9ca3af] ',
           active && 'border-b-8 border-[#fa8005]'
@@ -42,17 +37,32 @@ const NavItem = ({ children, href }: NavItemsProps) => {
 
 export default ({ onClick }: NavProps) => {
   const items = [
-    { key: '1', children: 'Start', href: '/' },
-    { key: '2', children: 'Components', href: '/components/layout/aside' },
-    { key: '3', children: 'Recipe', href: '/recipes/navigation-recipes' },
+    {
+      key: '1',
+      children: 'Recipe',
+      href: '/recipes/navigation-recipes',
+      active: true,
+    },
+    {
+      key: '2',
+      children: 'Components',
+      href: '/components/layout/aside',
+      active: false,
+    },
+    {
+      key: '3',
+      children: 'Start',
+      href: '/',
+      active: false,
+    },
   ];
 
   return (
     <div className="h-16 w-full p-4 shadow">
       <Inline alignY="center" space={4}>
         <Logo />
-        {items.map(({ key, children, href }) => (
-          <NavItem key={key} onClick={onClick} href={href}>
+        {items.map(({ key, children, href, active }) => (
+          <NavItem key={key} onClick={onClick} href={href} active={active}>
             {children}
           </NavItem>
         ))}
