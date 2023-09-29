@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { ReactNode } from 'react';
 
 import { Button, Inline, Split } from '@marigold/components';
