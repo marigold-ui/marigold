@@ -3,8 +3,15 @@ title: Navigation
 caption: This recipe show how to build a top navigation.
 ---
 
-This pattern recipe might help you with building your top navigation for Reservix Applications. It's a pattern that is used by all new Reservix Applications build with Marigold.
+This pattern recipe might help you building your top navigation for Reservix Applications. It's a pattern that is used by all new Reservix Applications build with Marigold.
 
-how, when and where to use this pattern
+## Example
+
+Here you can see how a top navigation can be build with our components. Keep in mind this is only the desktop version and will not work on mobile view.
+
+We used for the layouts the [`<Inline>`](/components/layout/inline/) and [`<Split>`](/components/layout/split/) component.
+And because we currently don't have a navigation component we build it with `<div>` and `<a>` elements.
+
+To get the logout button, you have to use the `@marigold/icon` package to get the icon and wrap a [`<Button>`](/components/form/button/) with text variant around it.
 
 <ComponentDemo file="./topnavigation.demo.tsx" />

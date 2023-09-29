@@ -6,11 +6,7 @@ import { cn } from '@marigold/system';
 
 import { Logo } from './ReservixLogo';
 
-interface NavProps {
-  onClick?: () => void;
-}
-
-interface NavItemsProps extends NavProps {
+interface NavItemsProps {
   children?: ReactNode;
   href?: string;
   active?: boolean;
@@ -34,7 +30,7 @@ const NavItem = ({ children, href, active }: NavItemsProps) => {
   );
 };
 
-export default ({ onClick }: NavProps) => {
+export default () => {
   const items = [
     {
       key: '1',
@@ -61,12 +57,12 @@ export default ({ onClick }: NavProps) => {
       <Inline alignY="center" space={4}>
         <Logo />
         {items.map(({ key, children, href, active }) => (
-          <NavItem key={key} onClick={onClick} href={href} active={active}>
+          <NavItem key={key} href={href} active={active}>
             {children}
           </NavItem>
         ))}
         <Split />
-        <div className="pb-2">Organisation</div>
+        <div className="pb-2">Org. Name</div>
         <div className="h-full">
           <Button variant="text" size="small">
             <Logout />
