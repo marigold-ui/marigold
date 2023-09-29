@@ -53,7 +53,6 @@ export const NavLink = ({
   variant,
   current,
   className,
-
   children,
   ...props
 }: NavLinkProps) => (
