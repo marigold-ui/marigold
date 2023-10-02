@@ -15,7 +15,7 @@ import { HtmlProps, PolymorphicComponent, PropsOf } from '@marigold/types';
 export interface ButtonOwnProps
   extends PressEvents,
     FocusableDOMProps,
-    Omit<HtmlProps<'button'>, 'className'> {
+    HtmlProps<'button'> {
   children?: ReactNode;
   variant?: string;
   size?: string;
@@ -40,6 +40,7 @@ export const Button = forwardRef(
       onPressChange,
       onPressUp,
       fullWidth,
+      className,
       excludeFromTabOrder,
       ...props
     },
@@ -74,6 +75,7 @@ export const Button = forwardRef(
       component: 'Button',
       variant,
       size,
+      className,
     });
 
     const stateProps = useStateProps({
