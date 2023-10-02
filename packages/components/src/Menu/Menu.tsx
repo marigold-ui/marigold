@@ -18,7 +18,8 @@ import { MenuTrigger } from './MenuTrigger';
 
 // Props
 // ---------------
-export interface MenuProps extends Omit<HtmlProps<'ul'>, 'onSelect' | 'size'> {
+export interface MenuProps
+  extends Omit<HtmlProps<'ul'>, 'onSelect' | 'size' | 'className'> {
   children: CollectionElement<object> | CollectionElement<object>[];
   variant?: string;
   size?: string;
