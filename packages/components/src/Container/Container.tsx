@@ -13,7 +13,7 @@ import {
 import { HtmlProps } from '@marigold/types';
 
 export interface ContainerProps
-  extends HtmlProps<'div'>,
+  extends Omit<HtmlProps<'div'>, 'className'>,
     PlaceItemsProp,
     GridColumn,
     GridColsAlignProp {
@@ -47,6 +47,7 @@ export const Container = ({
   const maxWidth = contentType === 'content' ? content[size] : header[size];
   return (
     <div
+      {...props}
       className={cn(
         'grid',
         placeItems[alignItems],
@@ -54,7 +55,6 @@ export const Container = ({
         gridColumn[align]
       )}
       style={createVar({ maxWidth })}
-      {...props}
     >
       {children}
     </div>

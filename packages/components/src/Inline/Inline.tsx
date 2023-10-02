@@ -27,13 +27,13 @@ export const Inline = ({
   ...props
 }: InlineProps) => (
   <div
+    {...props}
     className={cn(
       'flex flex-wrap',
       gapSpace[space],
       alignX && alignment?.horizontal?.alignmentX[alignX],
       alignY && alignment?.horizontal?.alignmentY[alignY]
     )}
-    {...props}
   >
     {children}
   </div>
