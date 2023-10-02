@@ -118,6 +118,6 @@ interface MdxProps {
 // Component
 // ---------------
 export const Mdx = ({ title, code }: MdxProps) => {
-  const Component = useMDXComponent(code, { title: title });
+  const Component = useMDXComponent(code, { title });
   return <Component components={components} />;
 };
