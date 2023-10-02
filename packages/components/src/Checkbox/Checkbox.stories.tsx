@@ -80,9 +80,5 @@ export const WithFieldGroup: Story = {
 };
 
 export const MyCheckbox: Story = {
-  render: args => (
-    <CheckBoxComp {...args} defaultChecked>
-      Unsubscribe
-    </CheckBoxComp>
-  ),
+  render: args => <CheckBoxComp {...args}>Unsubscribe</CheckBoxComp>,
 };

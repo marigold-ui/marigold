@@ -31,6 +31,7 @@
     "react": "18.2.0",
     "react-aria-components": "1.0.0-beta.0",
     "react-dom": "18.2.0",
+    "tailwindcss-react-aria-components": "1.0.0-beta.0",
     "typescript": "5.2.2",
     "zx": "7.2.3"
   },

@@ -70,6 +70,9 @@ importers:
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
+      tailwindcss-react-aria-components:
+        specifier: 1.0.0-beta.0
+        version: 1.0.0-beta.0(tailwindcss@3.3.3)
       typescript:
         specifier: 5.2.2
         version: 5.2.2
@@ -13647,16 +13650,6 @@ packages:
       pretty-format: 28.1.3
     dev: false
 
-  /jest-diff@29.6.4:
-    resolution: {integrity: sha512-9F48UxR9e4XOEZvoUXEHSWY4qC4zERJaOfrbBg9JpbJOO43R1vN76REt/aMGZoY6GD5g84nnJiBIVlscegefpw==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    dependencies:
-      chalk: 4.1.2
-      diff-sequences: 29.6.3
-      jest-get-type: 29.6.3
-      pretty-format: 29.6.3
-    dev: false
-
   /jest-diff@29.7.0:
     resolution: {integrity: sha512-LMIgiIrhigmPrs03JHpxUh2yISK3vLFPkAodPeo0+BuF7wA2FoQbkEg1u8gBYBThncu7e1oEDUfIXVuTqLRUjw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -13807,9 +13800,9 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       chalk: 4.1.2
-      jest-diff: 29.6.4
+      jest-diff: 29.7.0
       jest-get-type: 29.6.3
-      pretty-format: 29.6.3
+      pretty-format: 29.7.0
     dev: false
 
   /jest-matcher-utils@29.7.0:
@@ -13831,7 +13824,7 @@ packages:
       chalk: 4.1.2
       graceful-fs: 4.2.11
       micromatch: 4.0.5
-      pretty-format: 29.6.3
+      pretty-format: 29.7.0
       slash: 3.0.0
       stack-utils: 2.0.6
     dev: false
@@ -13846,7 +13839,7 @@ packages:
       chalk: 4.1.2
       graceful-fs: 4.2.11
       micromatch: 4.0.5
-      pretty-format: 29.6.3
+      pretty-format: 29.7.0
       slash: 3.0.0
       stack-utils: 2.0.6
     dev: false
@@ -18283,6 +18276,14 @@ packages:
     engines: {node: '>=12.13.0'}
     peerDependencies:
       tailwindcss: 3.x
+    dependencies:
+      tailwindcss: 3.3.3
+    dev: false
+
+  /tailwindcss-react-aria-components@1.0.0-beta.0(tailwindcss@3.3.3):
+    resolution: {integrity: sha512-cHkj1p9eX7OVYGW0k9Z5LhxVFnrmNz55MBdT91kqEsUE4OMZ/IC29NX6FA053vEw1ykIdmWOkSpwUPtXCQHBig==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || insiders'
     dependencies:
       tailwindcss: 3.3.3
     dev: false
