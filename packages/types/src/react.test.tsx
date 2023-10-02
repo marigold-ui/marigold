@@ -10,14 +10,12 @@ import { IntrinsicElement, OwnProps, PolymorphicComponent, PropsOf } from '.';
 /**********************************************/
 
 type BoxOwnProps = {
-  className?: string;
   children?: React.ReactNode;
 };
 
 export type BoxProps = PropsOf<typeof Box>;
 
 export const props: BoxProps = {
-  className: 'box',
   title: 'inherited from <div>',
   // @ts-expect-error
   foo: 'bar',
@@ -33,6 +31,8 @@ export const NotAPropBox = () => <Box foo="bar">Hello</Box>;
 export const HrefBox = () => <Box as="a" href="http://example.com"></Box>;
 // @ts-expect-error
 export const BrokenBox = () => <Box as="span" href="http://example.com"></Box>;
+// @ts-expect-error
+export const BoxHasNoClass = () => <Box className="foo">Hello</Box>;
 
 // Used within forward ref
 export const BoxUsedInForwardRef = React.forwardRef<
