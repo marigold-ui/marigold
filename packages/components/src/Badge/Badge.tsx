@@ -3,7 +3,7 @@ import { HtmlProps } from '@marigold/types';
 
 // Props
 // ---------------
-export interface BadgeProps extends HtmlProps<'div'> {
+export interface BadgeProps extends Omit<HtmlProps<'div'>, 'className'> {
   children?: React.ReactNode;
   variant?: string;
   size?: string;
