@@ -9,7 +9,6 @@ import { useDatePickerState } from '@react-stately/datepicker';
 
 import { WidthProp, cn, useClassNames, useStateProps } from '@marigold/system';
 
-import { Button } from '../Button';
 import { Calendar } from '../Calendar/Calendar';
 import { DateField } from '../DateField';
 import { Popover } from '../Overlay';
