@@ -177,7 +177,7 @@ export default () => {
           <Select
             label="Sammelaktion"
             placeholder="Bitte wählen"
-            width="unset"
+            width={0}
             onChange={handleSelect}
           >
             <Select.Option key="choose">Bitte wählen</Select.Option>

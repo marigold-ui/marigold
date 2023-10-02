@@ -27,7 +27,7 @@ export type CustomSwitchProps =
 
 export interface SwitchProps
   extends Omit<AriaSwitchProps, 'isSelected'>,
-    Omit<HtmlProps<'input'>, CustomSwitchProps | 'children'> {
+    Omit<HtmlProps<'input'>, CustomSwitchProps | 'children' | 'className'> {
   selected?: boolean;
   variant?: string;
   size?: string;
