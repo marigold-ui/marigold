@@ -3,7 +3,7 @@ import React from 'react';
 
 import { FieldGroup } from '../FieldBase/FieldGroup';
 import { Checkbox } from './Checkbox';
-import { MyCheckbox as CheckBoxComp } from './MyCheckbox';
+import { MyCheckbox } from './MyCheckbox';
 
 const meta = {
   title: 'Components/Checkbox',
@@ -68,17 +68,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <Checkbox size="small" {...args} defaultChecked />,
+  render: args => <MyCheckbox size="small" {...args} defaultChecked />,
 };
 
 export const WithFieldGroup: Story = {
   render: args => (
     <FieldGroup labelWidth="100px">
-      <Checkbox {...args} />
+      <MyCheckbox {...args} />
     </FieldGroup>
   ),
 };
 
-export const MyCheckbox: Story = {
-  render: args => <CheckBoxComp {...args}>Unsubscribe</CheckBoxComp>,
+export const RACCheckbox: Story = {
+  render: args => <MyCheckbox {...args}>Unsubscribe</MyCheckbox>,
 };
