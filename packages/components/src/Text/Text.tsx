@@ -20,7 +20,7 @@ import { HtmlProps } from '@marigold/types';
 // Props
 // ---------------
 export interface TextProps
-  extends HtmlProps<'p'>,
+  extends Omit<HtmlProps<'p'>, 'className'>,
     TextAlignProp,
     FontSizeProp,
     FontWeightProp,

@@ -84,7 +84,7 @@ export type CustomCheckboxProps =
 export interface CheckboxProps
   extends Omit<
       HtmlProps<'input'>,
-      'size' | 'type' | 'defaultValue' | CustomCheckboxProps
+      'size' | 'type' | 'defaultValue' | CustomCheckboxProps | 'className'
     >,
     Pick<AriaCheckboxProps, CustomCheckboxProps> {
   children?: ReactNode;

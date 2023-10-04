@@ -40,8 +40,8 @@ export const Button = forwardRef(
       onPressChange,
       onPressUp,
       fullWidth,
-      excludeFromTabOrder,
       className,
+      excludeFromTabOrder,
       ...props
     },
     ref

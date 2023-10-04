@@ -62,7 +62,7 @@ export type CustomRadioProps =
   | 'onKeyDown';
 
 export interface RadioProps
-  extends Omit<HtmlProps<'input'>, CustomRadioProps | 'children'>,
+  extends Omit<HtmlProps<'input'>, CustomRadioProps | 'children' | 'className'>,
     AriaRadioProps {
   width?: string;
   variant?: string;

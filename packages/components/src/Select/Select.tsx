@@ -54,6 +54,7 @@ export interface SelectProps
       | 'children'
       | 'size'
       | 'onChange'
+      | 'className'
     > {
   variant?: string;
   size?: string;

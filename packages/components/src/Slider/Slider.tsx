@@ -29,6 +29,7 @@ export interface SliderProps
       | 'onBlur'
       | 'size'
       | 'width'
+      | 'className'
     >,
     /**
      * `react-aria` has a slightly different API for some events e.g `onChange`, `onFocus`

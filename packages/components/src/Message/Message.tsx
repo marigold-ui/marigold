@@ -49,7 +49,7 @@ const icons = {
 
 // Props
 // ---------------
-export interface MessageProps extends HtmlProps<'div'> {
+export interface MessageProps extends Omit<HtmlProps<'div'>, 'className'> {
   messageTitle: ReactNode;
   variant?: keyof typeof icons;
   size?: string;

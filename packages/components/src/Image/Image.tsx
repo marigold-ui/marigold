@@ -11,7 +11,7 @@ import { HtmlProps } from '@marigold/types';
 // Props
 // ---------------
 export interface ImageProps
-  extends HtmlProps<'img'>,
+  extends Omit<HtmlProps<'img'>, 'className'>,
     ObjectFitProp,
     ObjectPositionProp {
   variant?: string;

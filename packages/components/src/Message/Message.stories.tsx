@@ -9,8 +9,9 @@ const meta = {
   argTypes: {
     variant: {
       control: {
-        type: 'text',
+        type: 'radio',
       },
+      options: ['info', 'warning', 'error'],
       description: 'The variants of the message',
     },
     messageTitle: {
