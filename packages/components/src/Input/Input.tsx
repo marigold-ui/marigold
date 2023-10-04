@@ -16,11 +16,6 @@ export interface InputOwnProps
   action?: ReactElement;
   variant?: string;
   size?: string;
-  className?: {
-    container?: string;
-    input?: string;
-    icon?: string;
-  };
 }
 
 export interface InputProps
@@ -31,22 +26,13 @@ export interface InputProps
 // ---------------
 export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
   (
-    {
-      type = 'text',
-      icon,
-      action,
-      variant,
-      size,
-      className,
-      ...props
-    }: InputOwnProps,
+    { type = 'text', icon, action, variant, size, ...props }: InputOwnProps,
     ref
   ) => {
     const classNames = useClassNames({
       component: 'Input',
       variant,
       size,
-      className,
     });
 
     const inputIcon = icon
@@ -86,8 +72,7 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
             'disabled:cursor-not-allowed',
             '[&[type=file]]:border-none [&[type=file]]:p-0',
             '[&[type=color]]:ml-0 [&[type=color]]:border-none [&[type=color]]:bg-transparent [&[type=color]]:p-0',
-            classNames.input,
-            className
+            classNames.input
           )}
           ref={ref}
           type={type}

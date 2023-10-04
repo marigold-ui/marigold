@@ -37,7 +37,7 @@ export type CustomTextAreaEvents =
 export interface TextAreaProps
   extends Omit<
       HtmlProps<'textarea'>,
-      'value' | 'defaultValue' | 'size' | CustomTextAreaEvents
+      'value' | 'defaultValue' | 'size' | CustomTextAreaEvents | 'className'
     >,
     Pick<AriaTextFieldProps, CustomTextAreaEvents>,
     Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {

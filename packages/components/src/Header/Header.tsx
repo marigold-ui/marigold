@@ -5,7 +5,7 @@ import { HtmlProps } from '@marigold/types';
 
 // Props
 // ---------------
-export interface HeaderProps extends HtmlProps<'header'> {
+export interface HeaderProps extends Omit<HtmlProps<'header'>, 'className'> {
   children?: ReactNode;
   variant?: string;
   size?: string;
@@ -13,18 +13,11 @@ export interface HeaderProps extends HtmlProps<'header'> {
 
 // Component
 // ---------------
-export const Header = ({
-  children,
-  variant,
-  size,
-  className,
-  ...props
-}: HeaderProps) => {
+export const Header = ({ children, variant, size, ...props }: HeaderProps) => {
   const classNames = useClassNames({
     component: 'Header',
     variant,
     size,
-    className,
   });
   return (
     <header {...props} className={cn(classNames)}>

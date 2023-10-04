@@ -3,7 +3,9 @@ import { ReactNode } from 'react';
 import { AlignmentProp, alignment, cn, createVar } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
-export interface BreakoutProps extends HtmlProps<'div'>, AlignmentProp {
+export interface BreakoutProps
+  extends Omit<HtmlProps<'div'>, 'className'>,
+    AlignmentProp {
   children?: ReactNode;
   height?: string;
   alignX?: keyof typeof alignment.horizontal.alignmentX;

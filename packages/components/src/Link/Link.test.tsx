@@ -60,19 +60,6 @@ test('renders a <a> element by default', () => {
   expect(link instanceof HTMLAnchorElement).toBeTruthy();
 });
 
-test('accepts custom className', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Link href="#!" className="custom-class-name">
-        Link
-      </Link>
-    </ThemeProvider>
-  );
-  const link = screen.getByText(/Link/);
-
-  expect(link.className).toMatch('custom-class-name');
-});
-
 test('accepts other routing components', () => {
   const RouterLink = React.forwardRef<
     HTMLSpanElement,

@@ -10,7 +10,7 @@ import { TooltipTrigger } from './TooltipTrigger';
 
 // Props
 // ---------------
-export interface TooltipProps extends HtmlProps<'div'> {
+export interface TooltipProps extends Omit<HtmlProps<'div'>, 'className'> {
   children?: ReactNode;
   variant?: string;
   size?: string;
