@@ -193,7 +193,7 @@ In the case of slot components like `<TextField>`, various slots such as the con
 - The styles of a component, consisting of only one part, can be accessed in a theme at the following path: `components.<name of the Component>` (component names are PascalCased)
 - If a component consist of mulitple parts, its styles can be accessed in a theme at the following path: `components.<name of the Component>.{ [slot in SlotName]: Styles }` (component names are PascalCased)
 
-This codeblock show how to apply `classNames` on the `<Input>` component which has diffrent slots. It can be styled through theme are: icon, action and input.
+This codeblock show how to apply `classNames` on the `<Input>` component which has diffrent slots. It can be styled through theme with certain slots: icon, action and input.
 
 ```tsx
 <div
