@@ -1,3 +1,5 @@
+import { fontFamily } from 'tailwindcss/defaultTheme';
+
 import { createPreset } from '@marigold/theme-preset';
 
 import { screens } from './screens';
@@ -15,8 +17,7 @@ export const preset: Preset = createPreset('b2b', {
     extend: {
       screens,
       fontFamily: {
-        body: ['Inter, sans-serif'],
-        heading: ['"Inter Black, sans-serif"'],
+        body: ['Inter', ...fontFamily.sans],
       },
       colors,
       transitionTimingFunction: {
