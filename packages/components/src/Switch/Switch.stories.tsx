@@ -54,5 +54,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <Switch {...args} />,
+  render: args => <Switch {...args}>Switch me</Switch>,
 };

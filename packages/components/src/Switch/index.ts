@@ -1,1 +1,1 @@
-export * from './Switch';
+export * from './_Switch';
