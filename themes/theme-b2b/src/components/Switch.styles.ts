@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Switch: ThemeComponent<'Switch'> = {
-  container: cva(),
+  container: cva('flex items-center'),
   track: cva(
     [
       'bg-bg-surface-underlay shadow-shadow-light shadow-[0_0_0_1px]',
