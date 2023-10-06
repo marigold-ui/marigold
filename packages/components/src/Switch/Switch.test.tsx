@@ -5,7 +5,7 @@ import React from 'react';
 import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { Switch } from './_Switch';
+import { Switch } from './Switch';
 
 const theme: Theme = {
   name: 'switch test',

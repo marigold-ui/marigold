@@ -46,6 +46,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
 
     return (
       <RACSwitch
+        {...props}
         ref={ref}
         className={cn(
           twWidth[width],
@@ -53,9 +54,15 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           'group/switch',
           classNames.container
         )}
-        {...props}
+        isDisabled={disabled}
+        isReadOnly={readOnly}
       >
-        <div className={cn('h-6 basis-12 rounded-3xl', classNames.track)}>
+        <div
+          className={cn(
+            'h-6 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed ',
+            classNames.track
+          )}
+        >
           <div
             className={cn(
               'h-[22px] w-[22px]',
