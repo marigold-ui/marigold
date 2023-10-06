@@ -743,6 +743,9 @@ importers:
       '@marigold/theme-preset':
         specifier: workspace:*
         version: link:../../packages/theme-preset
+      tailwindcss-react-aria-components:
+        specifier: 1.0.0-beta.1
+        version: 1.0.0-beta.1(tailwindcss@3.3.3)
     devDependencies:
       '@marigold/tsconfig':
         specifier: workspace:*
@@ -774,6 +777,9 @@ importers:
       '@marigold/theme-preset':
         specifier: workspace:*
         version: link:../../packages/theme-preset
+      tailwindcss-react-aria-components:
+        specifier: 1.0.0-beta.1
+        version: 1.0.0-beta.1(tailwindcss@3.3.3)
     devDependencies:
       '@marigold/tsconfig':
         specifier: workspace:*
