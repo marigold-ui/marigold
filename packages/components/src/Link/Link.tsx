@@ -1,51 +1,21 @@
-import { ReactNode, forwardRef } from 'react';
-
-import { useLink } from '@react-aria/link';
-import { useObjectRef } from '@react-aria/utils';
-
-import { PressEvents } from '@react-types/shared';
+import { forwardRef } from 'react';
+import {
+  Link as RACLink,
+  type LinkProps as RACLinkProps,
+} from 'react-aria-components';
 
 import { useClassNames } from '@marigold/system';
-import { PolymorphicComponent, PropsOf } from '@marigold/types';
 
-// Props
-// ---------------
-export interface LinkOwnProps extends PressEvents {
-  disabled?: boolean;
+type RemovedProps = 'className' | 'isDisabled';
+
+export interface LinksProps extends Omit<RACLinkProps, RemovedProps> {
   variant?: string;
   size?: string;
-  children?: ReactNode;
+  disabled?: RACLinkProps['isDisabled'];
 }
 
-export interface LinkProps extends PropsOf<typeof Link> {}
-
-// Component
-// ---------------
-export const Link = forwardRef(
-  (
-    {
-      as = 'a',
-      variant,
-      size,
-      children,
-      disabled,
-      onPress,
-      onPressStart,
-      ...props
-    },
-    ref
-  ) => {
-    const linkRef = useObjectRef<HTMLAnchorElement>(ref as any);
-    const { linkProps } = useLink(
-      {
-        ...props,
-        elementType: typeof as === 'string' ? as : 'span',
-        isDisabled: disabled,
-      },
-      linkRef
-    );
-
-    const Component = as;
+export const Link = forwardRef<HTMLAnchorElement, LinksProps>(
+  ({ variant, size, disabled, children, ...props }, ref) => {
     const classNames = useClassNames({
       component: 'Link',
       variant,
@@ -53,15 +23,14 @@ export const Link = forwardRef(
     });
 
     return (
-      <Component
+      <RACLink
         {...props}
-        role="link"
+        ref={ref}
         className={classNames}
-        ref={linkRef}
-        {...linkProps}
+        isDisabled={disabled}
       >
         {children}
-      </Component>
+      </RACLink>
     );
   }
-) as PolymorphicComponent<'a', LinkOwnProps>;
+);
