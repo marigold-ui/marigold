@@ -114,14 +114,18 @@ test('takes full width by default', () => {
   render(<Slider>Percent</Slider>);
 
   const container = screen.getByRole('group');
-  expect(container).toHaveAttribute('style', '--slideWidth: 100%;');
+  expect(container.className).toMatchInlineSnapshot(
+    `"flex touch-none flex-col w-full"`
+  );
 });
 
 test('allows to set width via prop', () => {
-  render(<Slider width="200px">Percent</Slider>);
+  render(<Slider width={44}>Percent</Slider>);
 
   const container = screen.getByRole('group');
-  expect(container).toHaveAttribute('style', '--slideWidth: 200px;');
+  expect(container.className).toMatchInlineSnapshot(
+    `"flex touch-none flex-col w-44"`
+  );
 });
 
 test('forwards ref', () => {
