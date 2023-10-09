@@ -13,7 +13,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    path: './',
+    path: '/',
   },
   transpilePackages: [
     '@marigold/components',
