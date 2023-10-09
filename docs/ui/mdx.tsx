@@ -3,11 +3,9 @@
 import { useMDXComponent } from 'next-contentlayer/hooks';
 import { HTMLAttributes } from 'react';
 
-import { Image as NextImage } from 'next/image';
-
 import { IconList } from '@/ui/IconList';
 
-import { Headline, Image, Link, Message, Tabs, Text } from './';
+import { Headline, Link, Message, Tabs, Text } from './';
 import { AppearanceTable } from './AppearanceTable';
 import { ColorTokenTable } from './ColorTokens';
 import { ComponentDemo } from './ComponentDemo';
@@ -82,9 +80,6 @@ const typography = {
       </div>
     );
   },
-  img: (props: HTMLAttributes<HTMLImageElement>) => (
-    <Image alt="lll" {...props} />
-  ),
 };
 
 // MDX Components
@@ -111,7 +106,6 @@ const components = {
   PropsTable,
   Spacing,
   TextAlign,
-  Image,
 };
 
 // Props
