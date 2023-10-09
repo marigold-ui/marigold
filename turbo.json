@@ -5,8 +5,8 @@
       "dependsOn": ["^build"],
       "outputs": [
         "dist/**",
-        ".next/**",
-        "!.next/cache/**",
+        "../.next/**",
+        "!../.next/cache/**",
         "../../storybook-static/**"
       ]
     }
