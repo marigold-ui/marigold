@@ -13,6 +13,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    loader: 'akamai',
     path: '/',
   },
   transpilePackages: [
