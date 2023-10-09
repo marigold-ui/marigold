@@ -3,6 +3,8 @@
 import { useMDXComponent } from 'next-contentlayer/hooks';
 import { HTMLAttributes } from 'react';
 
+import Image from 'next/image';
+
 import { IconList } from '@/ui/IconList';
 
 import { Headline, Link, Message, Tabs, Text } from './';
@@ -80,6 +82,10 @@ const typography = {
       </div>
     );
   },
+  img: (props: any) => (
+    // height and width are part of the props, so they get automatically passed here with {...props}
+    <Image {...props} layout="responsive" loading="lazy" />
+  ),
 };
 
 // MDX Components

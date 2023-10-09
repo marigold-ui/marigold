@@ -12,9 +12,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  images: {
-    path: '/',
-  },
   transpilePackages: [
     '@marigold/components',
     '@marigold/system',
