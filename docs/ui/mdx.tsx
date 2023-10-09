@@ -3,8 +3,6 @@
 import { useMDXComponent } from 'next-contentlayer/hooks';
 import { HTMLAttributes } from 'react';
 
-import Image from 'next/image';
-
 import { IconList } from '@/ui/IconList';
 
 import { Headline, Link, Message, Tabs, Text } from './';
