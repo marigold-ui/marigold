@@ -2,6 +2,7 @@ import { Headline } from '@/ui';
 import { allContentPages } from 'contentlayer/generated';
 import { Metadata } from 'next';
 
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
 import { Mdx } from '@/ui/mdx';
@@ -47,6 +48,7 @@ export default async function ContentPage({ params }: ContentPageProps) {
   return (
     <article className="prose py-6">
       <Headline level="1">{page.title}</Headline>
+      <Image width="64" height="64" src="/themable-component.png" alt={''} />
       <div className="text-text-primary-muted -mt-8">{page.caption}</div>
       <Mdx title={page.title} code={page.body.code} />
     </article>
