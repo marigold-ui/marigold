@@ -12,10 +12,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  images: {
-    loader: 'akamai',
-    path: '/',
-  },
   transpilePackages: [
     '@marigold/components',
     '@marigold/system',
