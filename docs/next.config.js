@@ -10,7 +10,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    path: '../.next',
+    path: '../public',
   },
   eslint: {
     ignoreDuringBuilds: true,
