@@ -24,9 +24,10 @@ const meta = {
     },
     size: {
       control: {
-        type: 'text',
+        type: 'radio',
       },
-      description: 'Switch size style',
+      options: ['large', 'none'],
+      description: 'The sizes for switch. In b2b there is large.',
     },
     width: {
       control: {
@@ -54,5 +55,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <Switch {...args}>Switch me</Switch>,
+  render: args => <Switch {...args} />,
 };
