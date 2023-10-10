@@ -55,7 +55,8 @@
     "changeset": "changeset",
     "release:notification": "zx scripts/create-slack-notification.mjs",
     "slack": "zx scripts/slack-release-notification.mjs --quiet",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "pnpm build"
   },
   "devDependencies": {
     "@parcel/watcher": "2.3.0",
