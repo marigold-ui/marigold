@@ -5,7 +5,7 @@ import React from 'react';
 import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { Slider } from './_Slider';
+import { Slider } from './Slider';
 
 const theme: Theme = {
   name: 'slider testing',
@@ -130,7 +130,7 @@ test('allows to set width via prop', () => {
 
 test('forwards ref', () => {
   const ref = React.createRef<HTMLDivElement>();
-  render(<Slider ref={ref}>Percent</Slider>);
+  render(<Slider ref={ref as any}>Percent</Slider>);
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
 });

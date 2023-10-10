@@ -1,7 +1,8 @@
+import React, { Ref, forwardRef } from 'react';
 import {
   Label,
   Slider as RACSlider,
-  type SliderProps as RACSliderProps,
+  SliderProps as RACSliderProps,
   SliderOutput,
   SliderThumb,
   SliderTrack,
@@ -23,56 +24,64 @@ export interface SliderProps<T>
   disabled?: boolean;
 }
 
-export const Slider = <T extends number | number[]>({
-  thumbLabels,
-  variant,
-  size,
-  width = 'full',
-  disabled,
-  ...rest
-}: SliderProps<T>) => {
-  const classNames = useClassNames({
-    component: 'Slider',
-    variant,
-    size,
-  });
-  const props: RACSliderProps = {
-    isDisabled: disabled,
-    ...rest,
-  };
-  return (
-    <RACSlider
-      className={cn('flex touch-none flex-col', twWidth[width])}
-      {...props}
-    >
-      <div className="flex self-stretch">
-        <Label>{props.children as React.ReactNode}</Label>
-        <SliderOutput>
-          {({ state }) =>
-            state.values.map((_, i) => state.getThumbValueLabel(i)).join(' – ')
-          }
-        </SliderOutput>
-      </div>
+export const Slider = forwardRef(
+  <T extends number | number[]>(
+    {
+      thumbLabels,
+      variant,
+      size,
+      width = 'full',
+      disabled,
+      ...rest
+    }: SliderProps<T>,
+    ref: Ref<HTMLDivElement>
+  ) => {
+    const classNames = useClassNames({
+      component: 'Slider',
+      variant,
+      size,
+    });
+    const props: RACSliderProps = {
+      isDisabled: disabled,
+      ...rest,
+    };
+    return (
+      <RACSlider
+        className={cn('flex touch-none flex-col', twWidth[width])}
+        ref={ref}
+        {...props}
+      >
+        <div className="flex self-stretch">
+          <Label>{props.children as React.ReactNode}</Label>
+          <SliderOutput>
+            {({ state }) =>
+              state.values
+                .map((_, i) => state.getThumbValueLabel(i))
+                .join(' – ')
+            }
+          </SliderOutput>
+        </div>
 
-      <div className="h-8 w-full cursor-pointer data-[disabled]:cursor-not-allowed">
-        <SliderTrack
-          className={cn(
-            'absolute top-1/2 h-2 w-full -translate-y-1/2',
-            classNames.track
-          )}
-        >
-          {({ state }) =>
-            state.values.map((_, i) => (
-              <SliderThumb
-                className={cn('top-1/2', classNames.thumb)}
-                key={i}
-                index={i}
-                aria-label={thumbLabels?.[i]}
-              />
-            ))
-          }
-        </SliderTrack>
-      </div>
-    </RACSlider>
-  );
-};
+        <div className="h-8 w-full cursor-pointer data-[disabled]:cursor-not-allowed">
+          <SliderTrack
+            className={cn(
+              'absolute top-1/2 h-2 w-full -translate-y-1/2',
+              classNames.track
+            )}
+          >
+            {({ state }) =>
+              state.values.map((_, i) => (
+                <SliderThumb
+                  className={cn('top-1/2', classNames.thumb)}
+                  key={i}
+                  index={i}
+                  aria-label={thumbLabels?.[i]}
+                />
+              ))
+            }
+          </SliderTrack>
+        </div>
+      </RACSlider>
+    );
+  }
+);
