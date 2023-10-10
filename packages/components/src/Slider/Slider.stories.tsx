@@ -72,8 +72,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = { render: args => <Slider {...args} /> };
 
-export const RACSlider: Story = { render: args => <Slider {...args} /> };
-
 export const Currency: Story = {
   render: args => (
     <Slider formatOptions={{ style: 'currency', currency: 'EUR' }} {...args} />
