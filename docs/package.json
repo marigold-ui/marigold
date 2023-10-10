@@ -6,7 +6,8 @@
     "dev": "pnpm registry && next dev",
     "build": "pnpm registry && next build",
     "start": "next start",
-    "registry": "zx ./scripts/build-registry.mjs"
+    "registry": "zx ./scripts/build-registry.mjs",
+    "postinstall": "pnpm build"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
