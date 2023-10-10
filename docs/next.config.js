@@ -5,7 +5,7 @@ const pkg = require('./package.json');
 const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
-  distDir: '../.next',
+  distDir: '.next',
   typescript: {
     ignoreBuildErrors: true,
   },
