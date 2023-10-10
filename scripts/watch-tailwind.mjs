@@ -45,7 +45,6 @@ const subscription = await watcher.subscribe(
         await Promise.all(
           getAllThemes().map(pkg => {
             cd(pkg.dir);
-            console.log(pkg.dir);
             return $`pnpm build`;
           })
         );
