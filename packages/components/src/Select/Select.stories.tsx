@@ -75,7 +75,8 @@ const meta = {
     },
   },
   args: {
-    label: 'Select for favorite:',
+    label:
+      'Se:lect for favorite Se:lect for favorite Se:lect for favorite Se:lect for favorite',
   },
 } satisfies Meta;
 
@@ -85,19 +86,21 @@ export const Basic: StoryObj<typeof Select> = {
   render: args => {
     const [selected, setSelected] = useState<string | number>('');
     return (
-      <Container size="small">
-        <Select {...args} onChange={setSelected} disabledKeys={['Firefly']}>
-          <Select.Option key="Harry Potter">Harry Potter</Select.Option>
-          <Select.Option key="Lord of the Rings">
-            Lord of the Rings
-          </Select.Option>
-          <Select.Option key="Star Wars">Star Wars</Select.Option>
-          <Select.Option key="Star Trek">Star Trek</Select.Option>
-          <Select.Option key="Firefly">Firefly</Select.Option>
-        </Select>
-        <hr />
-        <pre>selected: {selected}</pre>
-      </Container>
+      <Select
+        label="Favorite character"
+        placeholder="Select your character"
+        width={'1/4'}
+      >
+        <Select.Option>
+          Mario der Dritte von Emschenhagen bei Bautzen zukünftiger Retter von
+          Peach und Widersacher von Bowser
+        </Select.Option>
+        <Select.Option>Luigi</Select.Option>
+        <Select.Option>Toad</Select.Option>
+        <Select.Option>Yoshi</Select.Option>
+        <Select.Option>Bowser</Select.Option>
+        <Select.Option>Peach</Select.Option>
+      </Select>
     );
   },
 };

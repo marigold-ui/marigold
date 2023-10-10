@@ -140,50 +140,56 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         stateProps={stateProps}
         disabled={disabled}
       >
-        <HiddenSelect
-          state={state}
-          triggerRef={buttonRef}
-          label={props.label}
-          name={props.name}
-          isDisabled={disabled}
-        />
-        <button
-          className={cn(
-            'flex w-full items-center justify-between gap-1',
-            classNames.select
+        <div className="overflow-hidden whitespace-nowrap">
+          <HiddenSelect
+            state={state}
+            triggerRef={buttonRef}
+            label={props.label}
+            name={props.name}
+            isDisabled={disabled}
+          />
+          <button
+            className={cn(
+              'flex w-full items-center justify-between gap-1 ',
+              classNames.select
+            )}
+            ref={buttonRef}
+            {...mergeProps(buttonProps, focusProps)}
+            {...stateProps}
+          >
+            <div {...valueProps}>
+              {state.selectedItem
+                ? state.selectedItem.rendered
+                : props.placeholder}
+            </div>
+            <ChevronDown className="h-4 w-4" />
+          </button>
+          {isSmallScreen ? (
+            <Tray state={state}>
+              <ListBox
+                ref={listboxRef}
+                state={state}
+                variant={variant}
+                size={size}
+                {...menuProps}
+              />
+            </Tray>
+          ) : (
+            <Popover
+              state={state}
+              triggerRef={buttonRef}
+              scrollRef={listboxRef}
+            >
+              <ListBox
+                ref={listboxRef}
+                state={state}
+                variant={variant}
+                size={size}
+                {...menuProps}
+              />
+            </Popover>
           )}
-          ref={buttonRef}
-          {...mergeProps(buttonProps, focusProps)}
-          {...stateProps}
-        >
-          <div className="overflow-hidden whitespace-nowrap" {...valueProps}>
-            {state.selectedItem
-              ? state.selectedItem.rendered
-              : props.placeholder}
-          </div>
-          <ChevronDown className="h-4 w-4" />
-        </button>
-        {isSmallScreen ? (
-          <Tray state={state}>
-            <ListBox
-              ref={listboxRef}
-              state={state}
-              variant={variant}
-              size={size}
-              {...menuProps}
-            />
-          </Tray>
-        ) : (
-          <Popover state={state} triggerRef={buttonRef} scrollRef={listboxRef}>
-            <ListBox
-              ref={listboxRef}
-              state={state}
-              variant={variant}
-              size={size}
-              {...menuProps}
-            />
-          </Popover>
-        )}
+        </div>
       </FieldBase>
     );
   }
