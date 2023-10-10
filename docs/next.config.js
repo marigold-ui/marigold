@@ -9,9 +9,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  images: {
-    path: '../public',
-  },
   eslint: {
     ignoreDuringBuilds: true,
   },
