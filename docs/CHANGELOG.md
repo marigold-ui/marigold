@@ -1,5 +1,26 @@
 # @marigold/docs
 
+## 6.3.0
+
+### Minor Changes
+
+- [#3383](https://github.com/marigold-ui/marigold/pull/3383) [`958477f43`](https://github.com/marigold-ui/marigold/commit/958477f43da2b599430d4bb91470673b8cf04608) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: remove className prop from all components
+
+### Patch Changes
+
+- [#3376](https://github.com/marigold-ui/marigold/pull/3376) [`fa1fa37d7`](https://github.com/marigold-ui/marigold/commit/fa1fa37d70564d64902ceef3bcf6a118f4b96cdc) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: new navigation pattern
+
+- [#3344](https://github.com/marigold-ui/marigold/pull/3344) [`6f4953b1c`](https://github.com/marigold-ui/marigold/commit/6f4953b1cccc11fd9a20853c030535e083123c3a) Thanks [@sarahgm](https://github.com/sarahgm)! - docs[197]: useResponsiveValue documentation
+
+- [#3388](https://github.com/marigold-ui/marigold/pull/3388) [`3c506ae7a`](https://github.com/marigold-ui/marigold/commit/3c506ae7a85cf57a39d4850381bed73a8b8595de) Thanks [@sarahgm](https://github.com/sarahgm)! - docs[DST-215]: add Component Guidelines
+
+- Updated dependencies [[`cdebe707a`](https://github.com/marigold-ui/marigold/commit/cdebe707a2a851304b1185ac9aa8d2994502869a), [`ea9db88fd`](https://github.com/marigold-ui/marigold/commit/ea9db88fdee91e3e9d912f58ae7a99e90633fa42), [`d8d4af573`](https://github.com/marigold-ui/marigold/commit/d8d4af573268d663df2c9c23e84590683cb92dc1), [`958477f43`](https://github.com/marigold-ui/marigold/commit/958477f43da2b599430d4bb91470673b8cf04608)]:
+  - @marigold/theme-b2b@25.2.7
+  - @marigold/components@6.3.0
+  - @marigold/theme-core@25.2.7
+  - @marigold/icons@1.2.16
+  - @marigold/theme-preset@1.1.7
+
 ## 6.2.6
 
 ### Patch Changes

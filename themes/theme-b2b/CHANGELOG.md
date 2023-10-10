@@ -1,5 +1,18 @@
 # @marigold/theme-b2b
 
+## 25.2.7
+
+### Patch Changes
+
+- [#3373](https://github.com/marigold-ui/marigold/pull/3373) [`cdebe707a`](https://github.com/marigold-ui/marigold/commit/cdebe707a2a851304b1185ac9aa8d2994502869a) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - delete hover state over date field icon button
+
+- [#3393](https://github.com/marigold-ui/marigold/pull/3393) [`d8d4af573`](https://github.com/marigold-ui/marigold/commit/d8d4af573268d663df2c9c23e84590683cb92dc1) Thanks [@sebald](https://github.com/sebald)! - feat: remove headline font from b2b theme
+
+- Updated dependencies [[`ea9db88fd`](https://github.com/marigold-ui/marigold/commit/ea9db88fdee91e3e9d912f58ae7a99e90633fa42), [`958477f43`](https://github.com/marigold-ui/marigold/commit/958477f43da2b599430d4bb91470673b8cf04608)]:
+  - @marigold/components@6.3.0
+  - @marigold/system@6.3.0
+  - @marigold/theme-preset@1.1.7
+
 ## 25.2.6
 
 ### Patch Changes

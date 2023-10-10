@@ -1,5 +1,14 @@
 # @marigold/theme-core
 
+## 25.2.7
+
+### Patch Changes
+
+- Updated dependencies [[`ea9db88fd`](https://github.com/marigold-ui/marigold/commit/ea9db88fdee91e3e9d912f58ae7a99e90633fa42), [`958477f43`](https://github.com/marigold-ui/marigold/commit/958477f43da2b599430d4bb91470673b8cf04608)]:
+  - @marigold/components@6.3.0
+  - @marigold/system@6.3.0
+  - @marigold/theme-preset@1.1.7
+
 ## 25.2.6
 
 ### Patch Changes

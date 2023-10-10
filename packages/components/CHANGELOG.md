@@ -1,5 +1,19 @@
 # @marigold/components
 
+## 6.3.0
+
+### Minor Changes
+
+- [#3383](https://github.com/marigold-ui/marigold/pull/3383) [`958477f43`](https://github.com/marigold-ui/marigold/commit/958477f43da2b599430d4bb91470673b8cf04608) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: remove className prop from all components
+
+### Patch Changes
+
+- [#3394](https://github.com/marigold-ui/marigold/pull/3394) [`ea9db88fd`](https://github.com/marigold-ui/marigold/commit/ea9db88fdee91e3e9d912f58ae7a99e90633fa42) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: width props for switch and slider
+
+- Updated dependencies []:
+  - @marigold/system@6.3.0
+  - @marigold/icons@1.2.16
+
 ## 6.2.6
 
 ### Patch Changes
