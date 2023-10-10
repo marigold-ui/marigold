@@ -75,8 +75,7 @@ const meta = {
     },
   },
   args: {
-    label:
-      'Se:lect for favorite Se:lect for favorite Se:lect for favorite Se:lect for favorite',
+    label: 'Select for favorite:',
   },
 } satisfies Meta;
 
@@ -86,7 +85,28 @@ export const Basic: StoryObj<typeof Select> = {
   render: args => {
     const [selected, setSelected] = useState<string | number>('');
     return (
+      <Container size="small">
+        <Select {...args} onChange={setSelected} disabledKeys={['Firefly']}>
+          <Select.Option key="Harry Potter">Harry Potter</Select.Option>
+          <Select.Option key="Lord of the Rings">
+            Lord of the Rings
+          </Select.Option>
+          <Select.Option key="Star Wars">Star Wars</Select.Option>
+          <Select.Option key="Star Trek">Star Trek</Select.Option>
+          <Select.Option key="Firefly">Firefly</Select.Option>
+        </Select>
+        <hr />
+        <pre>selected: {selected}</pre>
+      </Container>
+    );
+  },
+};
+
+export const LongItems: StoryObj<typeof Select> = {
+  render: args => {
+    return (
       <Select
+        {...args}
         label="Favorite character"
         placeholder="Select your character"
         width={'1/4'}
