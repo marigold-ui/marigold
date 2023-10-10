@@ -14,8 +14,8 @@ import {
   useClassNames,
 } from '@marigold/system';
 
-export interface SliderProps<T> extends Omit<RACSliderProps<T>, 'isDisabled'> {
-  label?: string;
+export interface SliderProps<T>
+  extends Omit<RACSliderProps<T>, 'isDisabled' | 'label'> {
   thumbLabels?: string[];
   width?: WidthProp['width'];
   variant?: string;
@@ -24,7 +24,6 @@ export interface SliderProps<T> extends Omit<RACSliderProps<T>, 'isDisabled'> {
 }
 
 export const Slider = <T extends number | number[]>({
-  label,
   thumbLabels,
   variant,
   size,
@@ -47,13 +46,14 @@ export const Slider = <T extends number | number[]>({
       {...props}
     >
       <div className="flex self-stretch">
-        <Label>{label}</Label>
+        <Label>{props.children as React.ReactNode}</Label>
         <SliderOutput>
           {({ state }) =>
             state.values.map((_, i) => state.getThumbValueLabel(i)).join(' – ')
           }
         </SliderOutput>
       </div>
+
       <div className="h-8 w-full cursor-pointer data-[disabled]:cursor-not-allowed">
         <SliderTrack
           className={cn(
