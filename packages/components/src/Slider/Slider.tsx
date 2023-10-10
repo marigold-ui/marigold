@@ -11,7 +11,13 @@ import { useSliderState } from '@react-stately/slider';
 
 import { AriaSliderProps } from '@react-types/slider';
 
-import { cn, createVar, useClassNames, useStateProps } from '@marigold/system';
+import {
+  WidthProp,
+  cn,
+  width as twWidth,
+  useClassNames,
+  useStateProps,
+} from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
 import { Thumb } from './Thumb';
@@ -29,6 +35,7 @@ export interface SliderProps
       | 'onBlur'
       | 'size'
       | 'width'
+      | 'className'
     >,
     /**
      * `react-aria` has a slightly different API for some events e.g `onChange`, `onFocus`
@@ -40,7 +47,7 @@ export interface SliderProps
     > {
   variant?: string;
   size?: string;
-  width?: string;
+  width?: WidthProp['width'];
   formatOptions?: Intl.NumberFormatOptions;
   children?: ReactNode;
 }
@@ -53,7 +60,7 @@ export interface SliderProps
  * The slider itself consists of a track line and a thumb.
  */
 export const Slider = forwardRef<HTMLDivElement, SliderProps>(
-  ({ variant, size, width = '100%', ...props }, ref) => {
+  ({ variant, size, width = 'full', ...props }, ref) => {
     const { formatOptions } = props;
     const trackRef = useObjectRef(ref);
     const numberFormatter = useNumberFormatter(formatOptions);
@@ -76,8 +83,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
     });
     return (
       <div
-        className="flex w-[var(--slideWidth)] touch-none flex-col"
-        style={createVar({ slideWidth: width })}
+        className={cn('flex touch-none flex-col', twWidth[width])}
         {...groupProps}
       >
         {/* Flex container for the label and output element. */}

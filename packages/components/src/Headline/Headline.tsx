@@ -13,7 +13,9 @@ import { HtmlProps } from '@marigold/types';
 
 // Props
 // ---------------
-export interface HeadlineProps extends HtmlProps<'h1'>, TextAlignProp {
+export interface HeadlineProps
+  extends Omit<HtmlProps<'h1'>, 'className'>,
+    TextAlignProp {
   children?: ReactNode;
   level?: '1' | '2' | '3' | '4' | '5' | '6';
   color?: string;

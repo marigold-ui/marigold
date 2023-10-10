@@ -5,7 +5,7 @@ import { HtmlProps } from '@marigold/types';
 
 // Props
 // ---------------
-export interface FooterProps extends HtmlProps<'footer'> {
+export interface FooterProps extends Omit<HtmlProps<'footer'>, 'className'> {
   children?: ReactNode;
   variant?: string;
   size?: string;

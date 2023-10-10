@@ -107,6 +107,7 @@ export const Controlled: Story = {
     const [value, setValue] = React.useState('');
     return (
       <>
+        c
         <TextArea {...args} value={value} onChange={setValue} />
         <pre>
           <strong>Input Value:</strong>

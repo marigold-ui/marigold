@@ -8,10 +8,6 @@ import { HtmlProps } from '@marigold/types';
 export interface HelpTextProps extends Omit<HtmlProps<'div'>, 'className'> {
   variant?: string;
   size?: string;
-  className?: {
-    container?: string;
-    icon?: string;
-  };
   disabled?: boolean;
   description?: ReactNode;
   descriptionProps?: HTMLAttributes<HTMLElement>;
@@ -25,7 +21,6 @@ export interface HelpTextProps extends Omit<HtmlProps<'div'>, 'className'> {
 export const HelpText = ({
   variant,
   size,
-  className,
   disabled,
   description,
   descriptionProps,
@@ -39,7 +34,6 @@ export const HelpText = ({
     component: 'HelpText',
     variant,
     size,
-    className,
   });
 
   return (

@@ -3,7 +3,7 @@ import { HtmlProps } from '@marigold/types';
 
 // Props
 // ---------------
-export interface LabelProps extends HtmlProps<'label'> {
+export interface LabelProps extends Omit<HtmlProps<'label'>, 'className'> {
   as?: 'label' | 'span';
   variant?: string;
   size?: string;

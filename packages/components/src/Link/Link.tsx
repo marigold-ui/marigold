@@ -31,7 +31,6 @@ export const Link = forwardRef(
       disabled,
       onPress,
       onPressStart,
-      className,
       ...props
     },
     ref
@@ -51,7 +50,6 @@ export const Link = forwardRef(
       component: 'Link',
       variant,
       size,
-      className,
     });
 
     return (

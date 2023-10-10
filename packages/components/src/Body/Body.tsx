@@ -5,7 +5,7 @@ import { HtmlProps } from '@marigold/types';
 
 // Props
 // ---------------
-export interface BodyProps extends HtmlProps<'section'> {
+export interface BodyProps extends Omit<HtmlProps<'section'>, 'className'> {
   children?: ReactNode;
   variant?: string;
   size?: string;

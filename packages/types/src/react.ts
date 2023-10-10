@@ -58,7 +58,12 @@ type Merge<P1 = {}, P2 = {}> = Omit<P1, keyof P2> & P2;
  * @internal
  */
 type MergeProps<T, P = {}> = P &
-  Merge<T extends React.ElementType ? React.ComponentPropsWithRef<T> : {}, P>;
+  Merge<
+    T extends React.ElementType
+      ? Omit<React.ComponentPropsWithRef<T>, 'className'>
+      : {},
+    P
+  >;
 
 /**
  * Narrow down instrinsic elements to the keys (HTML tags).
@@ -82,7 +87,7 @@ export type IntrinsicElement<C> = C extends PolymorphicComponent<infer I, any>
 
 export interface PolymorphicComponent<
   T,
-  P = {}
+  P = {},
   /**
    * Extends original type to ensure built in React types play nice
    * with polymorphic components still e.g. `React.ElementRef` etc.

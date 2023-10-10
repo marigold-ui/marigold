@@ -25,7 +25,7 @@ import { HtmlProps } from '@marigold/types';
 // Props
 // ---------------
 export interface CardProps
-  extends HtmlProps<'div'>,
+  extends Omit<HtmlProps<'div'>, 'className'>,
     GapSpaceProp,
     PaddingSpaceProp,
     PaddingSpacePropX,

@@ -29,7 +29,12 @@ export type CustomTextFieldEvents =
 export interface TextFieldProps
   extends Omit<
       HtmlProps<'input'>,
-      'value' | 'defaultValue' | 'size' | 'width' | CustomTextFieldEvents
+      | 'value'
+      | 'defaultValue'
+      | 'size'
+      | 'width'
+      | CustomTextFieldEvents
+      | 'className'
     >,
     /**
      * `react-aria` has a slightly different API for `onChange`, `onFocus`

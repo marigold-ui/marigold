@@ -42,7 +42,7 @@ type CustomProps =
   | 'max';
 
 export interface NumberFieldProps
-  extends Omit<HtmlProps<'input'>, CustomProps>,
+  extends Omit<HtmlProps<'input'>, CustomProps | 'className'>,
     Omit<
       AriaNumberFieldProps,
       | 'isDisabled'
