@@ -5,7 +5,7 @@ import React from 'react';
 import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { Slider } from './Slider';
+import { Slider } from './_Slider';
 
 const theme: Theme = {
   name: 'slider testing',

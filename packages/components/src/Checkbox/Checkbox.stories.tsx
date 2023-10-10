@@ -67,7 +67,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <Checkbox size="small" {...args} />,
+  render: args => <Checkbox size="small" {...args} required />,
 };
 
 export const WithFieldGroup: Story = {
