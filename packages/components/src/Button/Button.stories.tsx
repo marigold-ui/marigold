@@ -84,33 +84,3 @@ export const AsProp: Story = {
 export const FullWidth: Story = {
   render: args => <Button {...args} fullWidth />,
 };
-
-export const PassThroughProps: Story = {
-  render: args => {
-    const [isHovered, setHovered] = useState(false);
-    return (
-      <>
-        <Button
-          {...args}
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-        />
-        <br />
-        state: {isHovered ? 'hovered' : 'not hovered'}
-      </>
-    );
-  },
-};
-
-export const AsLink: Story = {
-  render: () => (
-    <Button
-      as="a"
-      variant="primary"
-      href="https://cdn.reservix.com/webshop/config/398/portal-logo-dark.62488549.png"
-      download
-    >
-      Download Logo
-    </Button>
-  ),
-};
