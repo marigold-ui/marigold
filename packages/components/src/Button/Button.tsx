@@ -7,7 +7,7 @@ import {
 import { cn, useClassNames } from '@marigold/system';
 
 // Button is currently only component accepting className because of internal use.
-type RemovedProps = 'isDisabled';
+type RemovedProps = 'isDisabled' | 'formAction' | 'value';
 
 export interface ButtonProps extends Omit<RACButtonProps, RemovedProps> {
   variant?: string;
