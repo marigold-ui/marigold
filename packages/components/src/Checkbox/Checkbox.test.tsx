@@ -7,7 +7,6 @@ import { Theme, cva } from '@marigold/system';
 import { FieldGroup } from '../FieldBase';
 import { setup } from '../test.utils';
 import { Checkbox } from './Checkbox';
-import { MyCheckbox } from './MyCheckbox';
 
 const theme: Theme = {
   name: 'test',
@@ -48,7 +47,7 @@ const { render } = setup({ theme });
 // Tests
 // ---------------
 test('renders label and (hidden) checkbox', () => {
-  render(<MyCheckbox data-testid="checkboxId">With Label</MyCheckbox>);
+  render(<Checkbox data-testid="checkboxId">With Label</Checkbox>);
 
   const label = screen.getByText('With Label');
   expect(label).toBeInTheDocument();
@@ -60,7 +59,7 @@ test('renders label and (hidden) checkbox', () => {
 });
 
 test('allows to render without label', () => {
-  render(<MyCheckbox data-testid="checkbox" aria-label="No Label" />);
+  render(<Checkbox data-testid="checkbox" aria-label="No Label" />);
 
   const checkbox = screen.getAllByTestId('checkbox')[1];
   expect(checkbox).toBeInTheDocument();
@@ -72,9 +71,9 @@ test('allows to render without label', () => {
 
 test('supports read only state', () => {
   render(
-    <MyCheckbox data-testid="checkbox" readOnly defaultChecked>
+    <Checkbox data-testid="checkbox" readOnly defaultChecked>
       Read Only
-    </MyCheckbox>
+    </Checkbox>
   );
 
   const checkbox = screen.getAllByTestId<HTMLInputElement>('checkbox')[1];
@@ -85,7 +84,7 @@ test('supports read only state', () => {
 });
 
 test('check if all slot class names are applied correctly', () => {
-  render(<MyCheckbox data-testid="checkbox">With Label</MyCheckbox>);
+  render(<Checkbox data-testid="checkbox">With Label</Checkbox>);
 
   const label = screen.getByText('With Label');
 
@@ -102,9 +101,9 @@ test('check if all slot class names are applied correctly', () => {
 });
 test('allows styling "error" state via theme', () => {
   render(
-    <MyCheckbox data-testid="checkbox" error>
+    <Checkbox data-testid="checkbox" error>
       With Label
-    </MyCheckbox>
+    </Checkbox>
   );
   //TODO: fix test after Helptext component is migrated to tailwind
   //const checkbox = getVisibleCheckbox();
@@ -113,9 +112,9 @@ test('allows styling "error" state via theme', () => {
 
 test('correct class name is set on size small', () => {
   render(
-    <MyCheckbox data-testid="checkbox" size="small">
+    <Checkbox data-testid="checkbox" size="small">
       With Label
-    </MyCheckbox>
+    </Checkbox>
   );
 
   const label = screen.getByText('With Label');
@@ -127,9 +126,9 @@ test('correct class name is set on size small', () => {
 
 test('support default checked', () => {
   render(
-    <MyCheckbox data-testid="checkbox" defaultChecked>
+    <Checkbox data-testid="checkbox" defaultChecked>
       With Label
-    </MyCheckbox>
+    </Checkbox>
   );
 
   const input: HTMLInputElement = screen.getAllByTestId(
@@ -140,9 +139,9 @@ test('support default checked', () => {
 
 test('supports indeterminate state', () => {
   render(
-    <MyCheckbox data-testid="checkbox" indeterminate>
+    <Checkbox data-testid="checkbox" indeterminate>
       With Label
-    </MyCheckbox>
+    </Checkbox>
   );
   const input: HTMLInputElement = screen.getAllByTestId(
     'checkbox'
@@ -153,9 +152,9 @@ test('supports indeterminate state', () => {
 test('controlled', () => {
   const onChange = jest.fn();
   render(
-    <MyCheckbox data-testid="checkbox" onChange={onChange}>
+    <Checkbox data-testid="checkbox" onChange={onChange}>
       With Label
-    </MyCheckbox>
+    </Checkbox>
   );
   const input: HTMLInputElement = screen.getAllByTestId(
     'checkbox'
@@ -171,9 +170,9 @@ test('controlled', () => {
 test('forwards ref', () => {
   const ref = React.createRef<HTMLInputElement>();
   render(
-    <MyCheckbox data-testid="checkbox" ref={ref}>
+    <Checkbox data-testid="checkbox" ref={ref}>
       Check it
-    </MyCheckbox>
+    </Checkbox>
   );
 
   expect(ref.current).toBeInstanceOf(HTMLInputElement);

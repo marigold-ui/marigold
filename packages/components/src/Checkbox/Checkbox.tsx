@@ -1,28 +1,13 @@
-import { ReactNode, forwardRef } from 'react';
-
-import { useCheckbox, useCheckboxGroupItem } from '@react-aria/checkbox';
-import { useFocusRing } from '@react-aria/focus';
-import { useHover } from '@react-aria/interactions';
-import { useObjectRef } from '@react-aria/utils';
-
-import { useToggleState } from '@react-stately/toggle';
-
-import { AriaCheckboxProps } from '@react-types/checkbox';
-
+import { forwardRef } from 'react';
 import {
-  StateAttrProps,
-  cn,
-  useClassNames,
-  useStateProps,
-} from '@marigold/system';
+  Checkbox as RACCheckbox,
+  type CheckboxProps as RACCheckboxProps,
+} from 'react-aria-components';
+
+import { StateAttrProps, cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
-import { useFieldGroupContext } from '../FieldBase';
-import { CheckboxField } from './CheckboxField';
-import { useCheckboxGroupContext } from './CheckboxGroup';
-
 // SVG Icon
-// ---------------
 const CheckMark = () => (
   <svg viewBox="0 0 12 10">
     <path
@@ -32,7 +17,6 @@ const CheckMark = () => (
     />
   </svg>
 );
-
 const IndeterminateMark = () => (
   <svg width="12" height="3" viewBox="0 0 12 3">
     <path
@@ -57,7 +41,7 @@ const Icon = ({ className, checked, indeterminate, ...props }: IconProps) => {
         'flex shrink-0 grow-0 basis-4 items-center justify-center',
         'h-4 w-4 p-px',
         'bg-white',
-        'rounded-[3px] border border-solid border-black',
+        'rounded-[3px] border border-solid border-black ',
         className
       )}
       {...props}
@@ -67,12 +51,6 @@ const Icon = ({ className, checked, indeterminate, ...props }: IconProps) => {
   );
 };
 
-// Props
-// ---------------
-/**
- * `react-aria` has a slightly different API for the above events.
- * Thus, we adjust our regular props to match them.
- */
 export type CustomCheckboxProps =
   | 'value'
   | 'onChange'
@@ -84,10 +62,9 @@ export type CustomCheckboxProps =
 export interface CheckboxProps
   extends Omit<
       HtmlProps<'input'>,
-      'size' | 'type' | 'defaultValue' | CustomCheckboxProps | 'className'
+      'size' | 'type' | 'defaultValue' | CustomCheckboxProps
     >,
-    Pick<AriaCheckboxProps, CustomCheckboxProps> {
-  children?: ReactNode;
+    Pick<RACCheckboxProps, CustomCheckboxProps> {
   indeterminate?: boolean;
   error?: boolean;
   variant?: string;
@@ -95,119 +72,59 @@ export interface CheckboxProps
 }
 
 // Component
-// ---------------
+// --------------
+
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   (
     {
-      size,
-      variant,
-      disabled,
-      checked,
-      defaultChecked,
+      className,
       indeterminate,
+      error,
+      disabled,
+      defaultChecked,
+      children,
+      checked,
       readOnly,
       required,
-      error,
-      ...props
+      variant,
+      size,
+      ...rest
     },
     ref
   ) => {
-    const inputRef = useObjectRef(ref);
-    // Adjust props to the react-aria API
-    const checkboxProps = {
+    const props: RACCheckboxProps = {
       isIndeterminate: indeterminate,
       isDisabled: disabled,
       isReadOnly: readOnly,
       isRequired: required,
-      validationState: error ? 'invalid' : 'valid',
+      isInvalid: error,
+      defaultSelected: defaultChecked,
+      ...rest,
     } as const;
 
-    /**
-     * Use hook depending if the checkbox is used inside a group or standalone.
-     * This is unusual, but since the checkboxs is not moving out of the group,
-     * it should be safe.
-     */
-    const groupState = useCheckboxGroupContext();
-
-    /* eslint-disable react-hooks/rules-of-hooks */
-    const { inputProps } = groupState
-      ? useCheckboxGroupItem(
-          {
-            ...props,
-            ...checkboxProps,
-            /**
-             * value is optional for standalone checkboxes, but required when
-             * used inside a group.
-             */
-            value: props.value as string,
-          },
-          groupState,
-          inputRef
-        )
-      : useCheckbox(
-          {
-            isSelected: checked,
-            defaultSelected: defaultChecked,
-            ...checkboxProps,
-            ...props,
-          },
-          useToggleState({
-            isSelected: checked,
-            defaultSelected: defaultChecked,
-            isReadOnly: readOnly,
-            ...props,
-          }),
-          inputRef
-        );
-    /* eslint-enable react-hooks/rules-of-hooks */
-
     const classNames = useClassNames({ component: 'Checkbox', variant, size });
-    const { hoverProps, isHovered } = useHover({
-      isDisabled: inputProps.disabled,
-    });
-    const { labelWidth } = useFieldGroupContext();
 
-    const { isFocusVisible, focusProps } = useFocusRing();
-    const stateProps = useStateProps({
-      hover: isHovered,
-      focus: isFocusVisible,
-      checked: inputProps.checked,
-      disabled: inputProps.disabled,
-      error: groupState?.error || error,
-      readOnly,
-      indeterminate,
-    });
-
-    const component = (
-      <label
+    return (
+      <RACCheckbox
+        ref={ref}
         className={cn(
-          'group/checkbox relative flex items-center gap-[1ch]',
+          'group/checkbox flex items-center gap-[0.5rem]',
+          'cursor-pointer data-[disabled]:cursor-not-allowed',
           classNames.container
         )}
-        {...hoverProps}
-        {...stateProps}
+        {...props}
       >
-        <input
-          ref={inputRef}
-          className="z-1 absolute left-0 top-0 h-full w-full cursor-pointer opacity-[0.0001] group-disabled/checkbox:cursor-not-allowed"
-          {...inputProps}
-          {...focusProps}
-        />
-        <Icon
-          checked={inputProps.checked}
-          indeterminate={indeterminate}
-          className={classNames.checkbox}
-        />
-        {props.children && (
-          <div className={classNames.label}>{props.children}</div>
+        {({ isSelected, isIndeterminate }) => (
+          <>
+            <Icon
+              checked={isSelected}
+              indeterminate={isIndeterminate}
+              className={classNames.checkbox}
+            />
+            <div className={classNames.label}>{children}</div>
+          </>
         )}
-      </label>
-    );
-
-    return !groupState && labelWidth ? (
-      <CheckboxField labelWidth={labelWidth}>{component}</CheckboxField>
-    ) : (
-      component
+      </RACCheckbox>
     );
   }
 );
