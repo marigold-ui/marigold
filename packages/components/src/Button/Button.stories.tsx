@@ -74,12 +74,6 @@ export const OnPress: Story = {
   render: args => <Button {...args} onPress={(e: any) => console.log(e)} />,
 };
 
-export const AsProp: Story = {
-  render: (args: any) => (
-    <Button as="a" href="https://reservix.net" {...args} />
-  ),
-};
-
 export const FullWidth: Story = {
   render: args => <Button {...args} fullWidth />,
 };

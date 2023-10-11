@@ -82,7 +82,6 @@ export const ComboBox = ({
 
   // TODO: until `react-aria` gives us error and description props.
   const errorMessageProps = { 'aria-invalid': error };
-  const { buttonProps } = useButton(triggerProps, buttonRef);
   const { label, description, errorMessage } = props;
 
   return (
@@ -103,7 +102,7 @@ export const ComboBox = ({
             <Button
               className="absolute right-2 h-4 w-4 border-none bg-transparent p-0"
               ref={buttonRef}
-              {...buttonProps}
+              {...triggerProps}
             >
               <ChevronDown className="h-4 w-4" />
             </Button>
