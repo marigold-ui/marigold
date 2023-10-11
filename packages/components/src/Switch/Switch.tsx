@@ -8,7 +8,13 @@ import { useToggleState } from '@react-stately/toggle';
 
 import { AriaSwitchProps } from '@react-types/switch';
 
-import { cn, createVar, useClassNames, useStateProps } from '@marigold/system';
+import {
+  WidthProp,
+  cn,
+  width as twWidth,
+  useClassNames,
+  useStateProps,
+} from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
 // Theme Extension
@@ -31,7 +37,7 @@ export interface SwitchProps
   selected?: boolean;
   variant?: string;
   size?: string;
-  width?: string;
+  width?: WidthProp['width'];
 }
 
 // Component
@@ -41,7 +47,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
     {
       variant,
       size,
-      width = '100%',
+      width = 'full',
       selected,
       disabled,
       readOnly,
@@ -74,10 +80,9 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
       <label
         className={cn(
           'group/switch',
-          'w-[var(--switchWidth)]',
+          twWidth[width],
           'relative flex items-center justify-between gap-[1ch]'
         )}
-        style={createVar({ switchWidth: width })}
         {...stateProps}
       >
         <input

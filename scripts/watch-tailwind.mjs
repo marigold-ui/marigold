@@ -32,7 +32,7 @@ const subscription = await watcher.subscribe(
         const { name, dir } = getPackageDir(ev.path);
         log(`👀 Change detected in "${name}". Building...`);
         cd(dir);
-        await $`pnpm dev`;
+        await $`pnpm build`;
         log(`✅ Build done!`);
       }
 
@@ -45,7 +45,7 @@ const subscription = await watcher.subscribe(
         await Promise.all(
           getAllThemes().map(pkg => {
             cd(pkg.dir);
-            return $`pnpm dev`;
+            return $`pnpm build`;
           })
         );
         log(`✅ Done building all themes!`);
