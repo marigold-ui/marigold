@@ -78,7 +78,7 @@ export const AccordionItem = ({
       <FocusRing within>
         <Button
           className={classNames.button}
-          {...mergeProps(buttonProps, stateProps, props)}
+          {...mergeProps(stateProps, props)}
           ref={ref}
           aria-label={item.textValue}
         >
