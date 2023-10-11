@@ -17922,6 +17922,36 @@ packages:
       react-is: 18.2.0
     dev: false
 
+  /react-stately@3.27.0(react@18.2.0):
+    resolution: {integrity: sha512-C5ubKP33M3SmilXYv2vHYgfSLsOM0jlZ8y1KyEKWeJzN4yxy0sGku2SRUpUWTDdncB5lOeLE21EZBJVz71wePA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    dependencies:
+      '@react-stately/calendar': 3.4.1(react@18.2.0)
+      '@react-stately/checkbox': 3.5.1(react@18.2.0)
+      '@react-stately/collections': 3.10.2(react@18.2.0)
+      '@react-stately/combobox': 3.7.1(react@18.2.0)
+      '@react-stately/data': 3.10.3(react@18.2.0)
+      '@react-stately/datepicker': 3.8.0(react@18.2.0)
+      '@react-stately/dnd': 3.2.5(react@18.2.0)
+      '@react-stately/list': 3.10.0(react@18.2.0)
+      '@react-stately/menu': 3.5.6(react@18.2.0)
+      '@react-stately/numberfield': 3.6.2(react@18.2.0)
+      '@react-stately/overlays': 3.6.3(react@18.2.0)
+      '@react-stately/radio': 3.9.1(react@18.2.0)
+      '@react-stately/searchfield': 3.4.6(react@18.2.0)
+      '@react-stately/select': 3.5.5(react@18.2.0)
+      '@react-stately/selection': 3.14.0(react@18.2.0)
+      '@react-stately/slider': 3.4.3(react@18.2.0)
+      '@react-stately/table': 3.11.2(react@18.2.0)
+      '@react-stately/tabs': 3.6.1(react@18.2.0)
+      '@react-stately/toggle': 3.6.3(react@18.2.0)
+      '@react-stately/tooltip': 3.4.5(react@18.2.0)
+      '@react-stately/tree': 3.7.3(react@18.2.0)
+      '@react-types/shared': 3.21.0(react@18.2.0)
+      react: 18.2.0
+    dev: false
+
   /react-style-singleton@2.2.1(@types/react@18.2.14)(react@18.2.0):
     resolution: {integrity: sha512-ZWj0fHEMyWkHzKYUr2Bs/4zU6XLmq9HsgBURm7g5pAVfyn49DgUiNgY2d4lXRlYSiCif9YBGpQleewkcqddc7g==}
     engines: {node: '>=10'}
@@ -19963,6 +19993,14 @@ packages:
       detect-node-es: 1.1.0
       react: 18.2.0
       tslib: 2.6.1
+    dev: false
+
+  /use-sync-external-store@1.2.0(react@18.2.0):
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /util-deprecate@1.0.2:
