@@ -349,7 +349,7 @@ test('dialog has base classnames', () => {
   expect(dialog).toHaveClass(`p-5`);
 });
 
-test.only('dialog has variant classnames', () => {
+test('dialog has variant classnames', () => {
   render(
     <OverlayProvider>
       <Dialog.Trigger>
