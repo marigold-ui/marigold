@@ -1,4 +1,5 @@
 import { ReactNode, forwardRef } from 'react';
+import { Button as RACButton } from 'react-aria-components';
 
 import { useButton } from '@react-aria/button';
 import { useFocusRing } from '@react-aria/focus';
