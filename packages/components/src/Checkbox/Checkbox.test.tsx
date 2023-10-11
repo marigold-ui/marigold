@@ -185,6 +185,6 @@ test('works with a <FieldGroup>', () => {
     </FieldGroup>
   );
 
-  const checkbox = screen.getByTestId('checkbox');
+  const checkbox = screen.getAllByTestId<HTMLInputElement>('checkbox')[1];
   expect(checkbox).toBeInTheDocument();
 });
