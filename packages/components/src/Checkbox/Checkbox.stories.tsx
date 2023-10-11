@@ -77,7 +77,3 @@ export const WithFieldGroup: Story = {
     </FieldGroup>
   ),
 };
-
-export const RACCheckbox: Story = {
-  render: args => <Checkbox {...args}>Unsubscribe</Checkbox>,
-};
