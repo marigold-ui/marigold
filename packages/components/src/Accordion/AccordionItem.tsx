@@ -9,7 +9,6 @@ import { Node } from '@react-types/shared';
 
 import { cn, useClassNames, useStateProps } from '@marigold/system';
 
-import { Button } from '../Button';
 import { ChevronDown, ChevronUp } from '../Chevron';
 import { useAccordionItem } from './useAccordionItem';
 
