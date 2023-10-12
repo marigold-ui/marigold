@@ -1,20 +1,18 @@
 import { forwardRef } from 'react';
-import {
-  Link as RACLink,
-  type LinkProps as RACLinkProps,
-} from 'react-aria-components';
+import { Link } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import { useClassNames } from '@marigold/system';
 
 type RemovedProps = 'className' | 'isDisabled';
 
-export interface LinksProps extends Omit<RACLinkProps, RemovedProps> {
+export interface LinksProps extends Omit<RAC.LinkProps, RemovedProps> {
   variant?: string;
   size?: string;
-  disabled?: RACLinkProps['isDisabled'];
+  disabled?: RAC.LinkProps['isDisabled'];
 }
 
-export const Link = forwardRef<HTMLAnchorElement, LinksProps>(
+const _Link = forwardRef<HTMLAnchorElement, LinksProps>(
   ({ variant, size, disabled, children, ...props }, ref) => {
     const classNames = useClassNames({
       component: 'Link',
@@ -23,14 +21,11 @@ export const Link = forwardRef<HTMLAnchorElement, LinksProps>(
     });
 
     return (
-      <RACLink
-        {...props}
-        ref={ref}
-        className={classNames}
-        isDisabled={disabled}
-      >
+      <Link {...props} ref={ref} className={classNames} isDisabled={disabled}>
         {children}
-      </RACLink>
+      </Link>
     );
   }
 );
+
+export { _Link as Link };
