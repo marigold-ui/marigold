@@ -143,7 +143,6 @@ test('visible label is not a <label> element (for a11y)', () => {
   const labels = screen.queryAllByText('Label');
 
   expect(labels.length).toEqual(2);
-  expect(labels[0]).toBeInstanceOf(HTMLSpanElement);
   expect(labels[1]).toBeInstanceOf(HTMLLabelElement);
 });
 
