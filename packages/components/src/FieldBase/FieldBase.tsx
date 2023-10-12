@@ -18,8 +18,7 @@ export interface FieldBaseProps extends WidthProp {
   size?: string;
   disabled?: boolean;
   label?: ReactNode;
-  labelProps?: Omit<LabelHTMLAttributes<HTMLLabelElement>, 'children'> &
-    Pick<LabelProps, 'as'>;
+  labelProps?: Omit<LabelHTMLAttributes<HTMLLabelElement>, 'children'>;
   description?: ReactNode;
   descriptionProps?: Omit<HTMLAttributes<HTMLElement>, 'children'>;
   error?: boolean;
