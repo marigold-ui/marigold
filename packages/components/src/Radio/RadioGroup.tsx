@@ -61,7 +61,7 @@ export const RadioGroup = ({
     <FieldBase
       width={width}
       label={props.label}
-      labelProps={{ as: 'span', ...labelProps }}
+      labelProps={{ elementType: 'span', ...labelProps }}
       description={props.description}
       descriptionProps={descriptionProps}
       error={error}

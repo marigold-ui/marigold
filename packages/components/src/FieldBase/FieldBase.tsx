@@ -9,7 +9,7 @@ import {
 } from '@marigold/system';
 
 import { HelpText } from '../HelpText';
-import { Label } from '../Label';
+import { Label, LabelProps } from '../Label';
 import { useFieldGroupContext } from './FieldGroup';
 
 export interface FieldBaseProps extends WidthProp {
@@ -18,7 +18,7 @@ export interface FieldBaseProps extends WidthProp {
   size?: string;
   disabled?: boolean;
   label?: ReactNode;
-  labelProps?: Omit<LabelHTMLAttributes<HTMLLabelElement>, 'children'>;
+  labelProps?: LabelProps;
   description?: ReactNode;
   descriptionProps?: Omit<HTMLAttributes<HTMLElement>, 'children'>;
   error?: boolean;
