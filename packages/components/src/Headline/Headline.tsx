@@ -1,4 +1,5 @@
-import { ReactNode } from 'react';
+import { Heading } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import {
   TextAlignProp,
@@ -9,31 +10,23 @@ import {
   useClassNames,
   useTheme,
 } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
 
-// Props
-// ---------------
+type RemovedProps = 'className';
 export interface HeadlineProps
-  extends Omit<HtmlProps<'h1'>, 'className'>,
+  extends Omit<RAC.HeadingProps, RemovedProps>,
     TextAlignProp {
-  children?: ReactNode;
-  level?: '1' | '2' | '3' | '4' | '5' | '6';
   color?: string;
   variant?: string;
   size?: string;
-  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }
 
-// Component
-// ---------------
-export const Headline = ({
-  children,
+const _Headline = ({
   variant,
   size,
+  children,
   align = 'left',
   color,
-  level = '1',
-  as = `h${level}`,
+  level = 1,
   ...props
 }: HeadlineProps) => {
   const theme = useTheme();
@@ -43,10 +36,8 @@ export const Headline = ({
     size: size ?? `level-${level}`,
   });
 
-  const Component = as;
-
   return (
-    <Component
+    <Heading
       {...props}
       className={cn(classNames, 'text-[--color]', textAlign[align])}
       style={createVar({
@@ -57,6 +48,8 @@ export const Headline = ({
       })}
     >
       {children}
-    </Component>
+    </Heading>
   );
 };
+
+export { _Headline as Headline };

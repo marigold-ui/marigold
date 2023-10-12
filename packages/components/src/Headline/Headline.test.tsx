@@ -64,11 +64,11 @@ test('uses "level-1" by default', () => {
   const headline = screen.getByTestId('headline');
 
   expect(headline).toMatchInlineSnapshot(`
-    <h1
-      class="m-0 font-black text-[2rem] text-[--color] text-left"
-      data-testid="headline"
-    />
-  `);
+<h3
+  class="m-0 font-black text-[2rem] text-[--color] text-left"
+  data-testid="headline"
+/>
+`);
 });
 
 test('headline accepts a variant', () => {
@@ -79,11 +79,11 @@ test('headline accepts a variant', () => {
   );
   const headline = screen.getByTestId('headline');
   expect(headline).toMatchInlineSnapshot(`
-    <h1
-      class="m-0 font-black text-[2rem] font-small text-[--color] text-left"
-      data-testid="headline"
-    />
-  `);
+<h3
+  class="m-0 font-black text-[2rem] font-small text-[--color] text-left"
+  data-testid="headline"
+/>
+`);
 });
 
 test('headline accepts align property', () => {
@@ -105,10 +105,10 @@ test('get theme color', () => {
 
   const headline = screen.getByTestId('headline');
   expect(headline).toMatchInlineSnapshot(`
-    <h1
-      class="m-0 font-black text-[2rem] text-[--color] text-left"
-      data-testid="headline"
-      style="--color: rgb(5 150 105);;"
-    />
-  `);
+<h3
+  class="m-0 font-black text-[2rem] text-[--color] text-left"
+  data-testid="headline"
+  style="--color: rgb(5 150 105);;"
+/>
+`);
 });
