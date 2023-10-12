@@ -1,8 +1,6 @@
 import { ReactNode, forwardRef } from 'react';
-import {
-  Switch as RACSwitch,
-  SwitchProps as RACSwitchProps,
-} from 'react-aria-components';
+import { Switch } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import {
   WidthProp,
@@ -18,17 +16,17 @@ type RemovedProps =
   | 'isSelected'
   | 'children';
 
-export interface SwitchProps extends Omit<RACSwitchProps, RemovedProps> {
+export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
   variant?: string;
   size?: string;
   children?: ReactNode;
   width?: WidthProp['width'];
-  disabled?: RACSwitchProps['isDisabled'];
-  readOnly?: RACSwitchProps['isReadOnly'];
-  selected?: RACSwitchProps['isSelected'];
+  disabled?: RAC.SwitchProps['isDisabled'];
+  readOnly?: RAC.SwitchProps['isReadOnly'];
+  selected?: RAC.SwitchProps['isSelected'];
 }
 
-export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
+const _Switch = forwardRef<HTMLInputElement, SwitchProps>(
   (
     {
       variant,
@@ -45,7 +43,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
     const classNames = useClassNames({ component: 'Switch', size, variant });
 
     return (
-      <RACSwitch
+      <Switch
         {...props}
         ref={ref}
         className={cn(
@@ -77,7 +75,9 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
             />
           </div>
         </div>
-      </RACSwitch>
+      </Switch>
     );
   }
 );
+
+export { _Switch as Switch };
