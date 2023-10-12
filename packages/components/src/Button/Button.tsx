@@ -1,23 +1,21 @@
 import { ReactNode, forwardRef } from 'react';
-import {
-  Button as RACButton,
-  ButtonProps as RACButtonProps,
-} from 'react-aria-components';
+import { Button } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
 
 // Button is currently only component accepting className because of internal use.
 type RemovedProps = 'isDisabled';
 
-export interface ButtonProps extends Omit<RACButtonProps, RemovedProps> {
+export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
   variant?: string;
   size?: string;
   fullWidth?: boolean;
   children?: ReactNode;
-  disabled?: RACButtonProps['isDisabled'];
+  disabled?: RAC.ButtonProps['isDisabled'];
 }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ children, variant, size, disabled, fullWidth, ...props }, ref) => {
     const classNames = useClassNames({
       component: 'Button',
@@ -26,7 +24,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     });
 
     return (
-      <RACButton
+      <Button
         {...props}
         ref={ref}
         className={cn(
@@ -37,7 +35,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         isDisabled={disabled}
       >
         {children}
-      </RACButton>
+      </Button>
     );
   }
 );
+
+export { _Button as Button };
