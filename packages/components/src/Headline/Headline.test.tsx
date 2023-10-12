@@ -64,7 +64,7 @@ test('uses "level-1" by default', () => {
   const headline = screen.getByTestId('headline');
 
   expect(headline).toMatchInlineSnapshot(`
-<h3
+<h1
   class="m-0 font-black text-[2rem] text-[--color] text-left"
   data-testid="headline"
 />
@@ -79,7 +79,7 @@ test('headline accepts a variant', () => {
   );
   const headline = screen.getByTestId('headline');
   expect(headline).toMatchInlineSnapshot(`
-<h3
+<h1
   class="m-0 font-black text-[2rem] font-small text-[--color] text-left"
   data-testid="headline"
 />
@@ -96,6 +96,21 @@ test('headline accepts align property', () => {
   expect(headline).toHaveClass(`text-center`);
 });
 
+test('headline accepts other level', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Headline data-testid="headline" level={5} />
+    </ThemeProvider>
+  );
+  const headline = screen.getByTestId('headline');
+  expect(headline).toMatchInlineSnapshot(`
+<h5
+  class="m-0 font-black text-base text-[--color] text-left"
+  data-testid="headline"
+/>
+`);
+});
+
 test('get theme color', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -105,7 +120,7 @@ test('get theme color', () => {
 
   const headline = screen.getByTestId('headline');
   expect(headline).toMatchInlineSnapshot(`
-<h3
+<h1
   class="m-0 font-black text-[2rem] text-[--color] text-left"
   data-testid="headline"
   style="--color: rgb(5 150 105);;"
