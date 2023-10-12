@@ -9,7 +9,7 @@ import {
 } from '@marigold/system';
 
 import { HelpText } from '../HelpText';
-import { Label, LabelProps } from '../Label';
+import { Label } from '../Label';
 import { useFieldGroupContext } from './FieldGroup';
 
 export interface FieldBaseProps extends WidthProp {
