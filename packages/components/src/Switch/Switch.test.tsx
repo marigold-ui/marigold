@@ -61,11 +61,11 @@ test('supports base styling', () => {
   const { label, container, track, thumb } = getSwitchParts();
 
   expect(label.className).toMatchInlineSnapshot(
-    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
+    `"group/switch w-full relative flex items-center justify-between gap-[1ch]"`
   );
   expect(container.className).toMatchInlineSnapshot(`""`);
   expect(track.className).toMatchInlineSnapshot(
-    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
+    `"group/switch w-full relative flex items-center justify-between gap-[1ch]"`
   );
   expect(thumb.className).toMatchInlineSnapshot(
     `"relative h-6 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
@@ -77,7 +77,7 @@ test('supports a custom variant', () => {
   const { track, thumb } = getSwitchParts();
 
   expect(track.className).toMatchInlineSnapshot(
-    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
+    `"group/switch w-full relative flex items-center justify-between gap-[1ch]"`
   );
   expect(thumb.className).toMatchInlineSnapshot(
     `"relative h-6 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
@@ -89,7 +89,7 @@ test('supports a size', () => {
   const { track } = getSwitchParts();
 
   expect(track.className).toMatchInlineSnapshot(
-    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
+    `"group/switch w-full relative flex items-center justify-between gap-[1ch]"`
   );
 });
 
@@ -100,9 +100,11 @@ test('takes full width by default', () => {
 });
 
 test('allows to set width via prop', () => {
-  render(<Switch width="500px">Label</Switch>);
+  render(<Switch width={10}>Label</Switch>);
   const { label } = getSwitchParts();
-  expect(label).toHaveAttribute('style', '--switchWidth: 500px;');
+  expect(label.className).toMatchInlineSnapshot(
+    `"group/switch w-10 relative flex items-center justify-between gap-[1ch]"`
+  );
 });
 
 test('supports disabled prop', () => {
@@ -111,7 +113,7 @@ test('supports disabled prop', () => {
 
   expect(input).toBeDisabled();
   expect(track.className).toMatchInlineSnapshot(
-    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
+    `"group/switch w-full relative flex items-center justify-between gap-[1ch]"`
   );
   expect(thumb.className).toMatchInlineSnapshot(
     `"relative h-6 flex-shrink-0 flex-grow-0 basis-12 rounded-3xl bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
@@ -131,13 +133,13 @@ test('toggle switch per click', () => {
 
   fireEvent.click(input);
   expect(track.className).toMatchInlineSnapshot(
-    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
+    `"group/switch w-full relative flex items-center justify-between gap-[1ch]"`
   );
   expect(input.checked).toBeTruthy();
 
   fireEvent.click(input);
   expect(track.className).toMatchInlineSnapshot(
-    `"group/switch w-[var(--switchWidth)] relative flex items-center justify-between gap-[1ch]"`
+    `"group/switch w-full relative flex items-center justify-between gap-[1ch]"`
   );
   expect(input.checked).toBeFalsy();
 });
