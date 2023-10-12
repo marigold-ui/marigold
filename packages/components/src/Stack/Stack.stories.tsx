@@ -51,7 +51,7 @@ const Block = ({ children }: { children: ReactNode }) => (
 export const Basic: Story = {
   render: args => (
     <Stack {...args} space={4}>
-      <Headline level="2">Heading</Headline>
+      <Headline level={2}>Heading</Headline>
       <Text>
         Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
@@ -74,7 +74,7 @@ export const Nested: Story = {
       <Stack {...args}>
         <Stack space={2}>
           <Block>
-            <Headline level="2">With xsmall spacing</Headline>
+            <Headline level={2}>With xsmall spacing</Headline>
           </Block>
           <Block>
             <Text>
@@ -95,7 +95,7 @@ export const Nested: Story = {
         </Stack>
         <Stack space={4}>
           <Block>
-            <Headline level="2">With Medium Spacing</Headline>
+            <Headline level={2}>With Medium Spacing</Headline>
           </Block>
           <Block>
             <Text>
