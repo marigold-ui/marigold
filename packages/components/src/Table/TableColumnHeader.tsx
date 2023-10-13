@@ -1,68 +1,26 @@
-import { useRef } from 'react';
-
-import { useFocusRing } from '@react-aria/focus';
-import { useHover } from '@react-aria/interactions';
-import { useTableColumnHeader } from '@react-aria/table';
-import { mergeProps } from '@react-aria/utils';
+import { Column } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import { GridNode } from '@react-types/grid';
 
 import { SortDown, SortUp } from '@marigold/icons';
-import { cn, useStateProps } from '@marigold/system';
-import { WidthProp, width as twWidth } from '@marigold/system';
+import { WidthProp } from '@marigold/system';
 
-import { useTableContext } from './Context';
+type RemovedProps = 'className' | 'width';
 
-// Sort Icon
-// ---------------
-
-// Props
-// ---------------
-interface TableColumnHeaderProps extends WidthProp {
+export interface TableColumnHeaderProps
+  extends Omit<RAC.ColumnProps, RemovedProps>,
+    WidthProp {
   column: GridNode<object>;
 }
 
-// Component
-// ---------------
-export const TableColumnHeader = ({
+const _TableColumnHeader = ({
   column,
+  childColumns,
   width = 'auto',
+  ...props
 }: TableColumnHeaderProps) => {
-  const ref = useRef(null);
-  const { state, classNames } = useTableContext();
-  const { columnHeaderProps } = useTableColumnHeader(
-    {
-      node: column,
-    },
-    state,
-    ref
-  );
-
-  const { hoverProps, isHovered } = useHover({});
-  const { focusProps, isFocusVisible } = useFocusRing();
-  const stateProps = useStateProps({
-    hover: isHovered,
-    focusVisible: isFocusVisible,
-  });
-  return (
-    <th
-      colSpan={column.colspan}
-      ref={ref}
-      className={cn('cursor-default', twWidth[width], classNames?.header)}
-      {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
-      {...stateProps}
-    >
-      {column.rendered}
-      {column.props.allowsSorting &&
-        (state.sortDescriptor?.column === column.key ? (
-          state.sortDescriptor?.direction === 'ascending' ? (
-            <SortUp className="inline-block" />
-          ) : (
-            <SortDown className="inline-block" />
-          )
-        ) : (
-          <SortDown className="inline-block" />
-        ))}
-    </th>
-  );
+  return <Column>{column.rendered}</Column>;
 };
+
+export { _TableColumnHeader as TableColumnHeader };

@@ -1,12 +1,13 @@
-import { ReactNode } from 'react';
+import { TableHeader } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
-import { useTableRowGroup } from '@react-aria/table';
+type RemovedProps = 'className';
 
-export interface TableHeaderProps {
-  children: ReactNode;
-}
+export interface TableHeaderProps
+  extends Omit<RAC.TableHeaderProps<object>, RemovedProps> {}
 
-export const TableHeader = ({ children }: TableHeaderProps) => {
-  const { rowGroupProps } = useTableRowGroup();
-  return <thead {...rowGroupProps}>{children}</thead>;
+const _TableHeader = ({ children, ...props }: TableHeaderProps) => {
+  return <TableHeader {...props}>{children}</TableHeader>;
 };
+
+export { _TableHeader as TableHeader };
