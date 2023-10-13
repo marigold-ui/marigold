@@ -102,6 +102,29 @@ export const Basic: StoryObj<typeof Select> = {
   },
 };
 
+export const LongItems: StoryObj<typeof Select> = {
+  render: args => {
+    return (
+      <Select
+        {...args}
+        label="Favorite character"
+        placeholder="Select your character"
+        width={'1/4'}
+      >
+        <Select.Option>
+          Mario der Dritte von Emschenhagen bei Bautzen zukünftiger Retter von
+          Peach und Widersacher von Bowser
+        </Select.Option>
+        <Select.Option>Luigi</Select.Option>
+        <Select.Option>Toad</Select.Option>
+        <Select.Option>Yoshi</Select.Option>
+        <Select.Option>Bowser</Select.Option>
+        <Select.Option>Peach</Select.Option>
+      </Select>
+    );
+  },
+};
+
 export const Sections: StoryObj<typeof Select> = {
   render: args => (
     <Select {...args}>
