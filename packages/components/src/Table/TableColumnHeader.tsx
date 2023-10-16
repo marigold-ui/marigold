@@ -1,26 +1,45 @@
 import { Column } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
-import { GridNode } from '@react-types/grid';
-
 import { SortDown, SortUp } from '@marigold/icons';
-import { WidthProp } from '@marigold/system';
+import { WidthProp, cn, width as twWidth } from '@marigold/system';
+
+import { useTableContext } from './Context';
 
 type RemovedProps = 'className' | 'width';
 
 export interface TableColumnHeaderProps
   extends Omit<RAC.ColumnProps, RemovedProps>,
-    WidthProp {
-  column: GridNode<object>;
-}
+    WidthProp {}
 
 const _TableColumnHeader = ({
-  column,
   childColumns,
   width = 'auto',
   ...props
 }: TableColumnHeaderProps) => {
-  return <Column>{column.rendered}</Column>;
+  const { classNames } = useTableContext();
+
+  return (
+    <Column
+      {...props}
+      className={cn('cursor-default', twWidth[width], classNames?.header)}
+    >
+      {({ allowsSorting, sortDirection }) => (
+        <>
+          {props.children}
+          {allowsSorting && (
+            <>
+              {sortDirection === 'ascending' ? (
+                <SortUp className="inline-block" />
+              ) : (
+                <SortDown className="inline-block" />
+              )}
+            </>
+          )}
+        </>
+      )}
+    </Column>
+  );
 };
 
 export { _TableColumnHeader as TableColumnHeader };

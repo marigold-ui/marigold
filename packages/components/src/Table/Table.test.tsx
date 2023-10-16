@@ -6,7 +6,7 @@ import { SortDescriptor } from '@react-types/shared';
 import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { Table } from './Table';
+import { Table } from './_Table';
 
 // Setup
 // ---------------
