@@ -1,5 +1,5 @@
 ---
-"@marigold/components": patch
+"@marigold/components": minor
 ---
 
 RAC: Divider as React Aria Component
