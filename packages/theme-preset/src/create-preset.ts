@@ -1,4 +1,6 @@
 import deepmerge from 'deepmerge';
+// @ts-expect-error
+import racSelectorPlugin from 'tailwindcss-react-aria-components';
 import plugin from 'tailwindcss/plugin';
 import type { Config, OptionalConfig } from 'tailwindcss/types/config';
 
@@ -15,7 +17,7 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) =>
         },
       },
       plugins: [
-        require('tailwindcss-react-aria-components'),
+        racSelectorPlugin,
         // Grouping
         plugin(({ matchVariant, e }) => {
           matchVariant(
