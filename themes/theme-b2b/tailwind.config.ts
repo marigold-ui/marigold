@@ -3,7 +3,6 @@ import type { Config } from 'tailwindcss';
 import { preset } from './src/preset';
 
 export default {
-  plugins: [require('tailwindcss-react-aria-components')],
   content: [
     'src/root.ts',
     'src/colors.ts',
