@@ -4,7 +4,11 @@ import type RAC from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 
 import { TableContext } from './Context';
+import { TableBody } from './TableBody';
+import { TableCell } from './TableCell';
+import { TableColumnHeader } from './TableColumnHeader';
 import { TableHeader } from './TableHeader';
+import { TableRow } from './TableRow';
 
 type RemovedProps = 'className';
 export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
@@ -36,5 +40,12 @@ const _Table = ({ children, variant, size, stretch, ...props }: TableProps) => {
     </TableContext.Provider>
   );
 };
+
+_Table.Header = TableHeader;
+_Table.Column = TableColumnHeader;
+
+_Table.Body = TableBody;
+_Table.Row = TableRow;
+_Table.Cell = TableCell;
 
 export { _Table as Table };

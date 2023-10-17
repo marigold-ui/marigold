@@ -6,7 +6,12 @@ import { WidthProp, cn, width as twWidth } from '@marigold/system';
 
 import { useTableContext } from './Context';
 
-type RemovedProps = 'className' | 'width';
+type RemovedProps =
+  | 'className'
+  | 'width'
+  | 'maxWidth'
+  | 'minWidth'
+  | 'defaultWidth';
 
 export interface TableColumnHeaderProps
   extends Omit<RAC.ColumnProps, RemovedProps>,

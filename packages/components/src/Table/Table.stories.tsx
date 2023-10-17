@@ -44,45 +44,45 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <Table aria-label="Table with selection" {...args}>
-      <TableHeader>
-        <TableColumnHeader isRowHeader>Name</TableColumnHeader>
-        <TableColumnHeader>Firstname</TableColumnHeader>
-        <TableColumnHeader>House</TableColumnHeader>
-        <TableColumnHeader>Year of birth</TableColumnHeader>
-      </TableHeader>
-      <TableBody>
-        <TableRow key={1}>
-          <TableCell>Potter</TableCell>
-          <TableCell>Harry</TableCell>
-          <TableCell>Gryffindor</TableCell>
-          <TableCell>1980</TableCell>
-        </TableRow>
-        <TableRow key={2}>
-          <TableCell>Malfoy</TableCell>
-          <TableCell>Draco</TableCell>
-          <TableCell>Slytherin</TableCell>
-          <TableCell>1980</TableCell>
-        </TableRow>
-        <TableRow key={3}>
-          <TableCell>Diggory</TableCell>
-          <TableCell>Cedric</TableCell>
-          <TableCell>Hufflepuff</TableCell>
-          <TableCell>1977</TableCell>
-        </TableRow>
-        <TableRow key={4}>
-          <TableCell>Lovegood</TableCell>
-          <TableCell>Luna</TableCell>
-          <TableCell>Ravenclaw</TableCell>
-          <TableCell>1981</TableCell>
-        </TableRow>
-      </TableBody>
+    <Table aria-label="Table with selection" disabledKeys={[1]} {...args}>
+      <Table.Header>
+        <Table.Column isRowHeader>Name</Table.Column>
+        <Table.Column>Firstname</Table.Column>
+        <Table.Column>House</Table.Column>
+        <Table.Column>Year of birth</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row key={1}>
+          <Table.Cell>Potter</Table.Cell>
+          <Table.Cell>Harry</Table.Cell>
+          <Table.Cell>Gryffindor</Table.Cell>
+          <Table.Cell>1980</Table.Cell>
+        </Table.Row>
+        <Table.Row key={2}>
+          <Table.Cell>Malfoy</Table.Cell>
+          <Table.Cell>Draco</Table.Cell>
+          <Table.Cell>Slytherin</Table.Cell>
+          <Table.Cell>1980</Table.Cell>
+        </Table.Row>
+        <Table.Row key={3}>
+          <Table.Cell>Diggory</Table.Cell>
+          <Table.Cell>Cedric</Table.Cell>
+          <Table.Cell>Hufflepuff</Table.Cell>
+          <Table.Cell>1977</Table.Cell>
+        </Table.Row>
+        <Table.Row key={4}>
+          <Table.Cell>Lovegood</Table.Cell>
+          <Table.Cell>Luna</Table.Cell>
+          <Table.Cell>Ravenclaw</Table.Cell>
+          <Table.Cell>1981</Table.Cell>
+        </Table.Row>
+      </Table.Body>
     </Table>
   ),
 };
 
 export const Sorting: Story = {
-  render: () => {
+  render: args => {
     const data = [
       {
         name: 'Luke Skywalker',
@@ -165,6 +165,7 @@ export const Sorting: Story = {
     return (
       <>
         <Table
+          {...args}
           aria-label="Example table with client side sorting"
           sortDescriptor={descriptor}
           onSortChange={sort}
@@ -205,14 +206,14 @@ export const Sorting: Story = {
 };
 
 export const EmptyState: Story = {
-  render: () => (
-    <Table aria-label="Search results">
-      <TableHeader>
-        <TableColumnHeader isRowHeader>Name</TableColumnHeader>
-        <TableColumnHeader>Type</TableColumnHeader>
-        <TableColumnHeader>Date Modified</TableColumnHeader>
-      </TableHeader>
-      <TableBody renderEmptyState={() => 'No results found.'}>{[]}</TableBody>
+  render: args => (
+    <Table {...args} aria-label="Search results">
+      <Table.Header>
+        <Table.Column isRowHeader>Name</Table.Column>
+        <Table.Column>Type</Table.Column>
+        <Table.Column>Date Modified</Table.Column>
+      </Table.Header>
+      <Table.Body renderEmptyState={() => 'No results found.'}>{[]}</Table.Body>
     </Table>
   ),
 };
