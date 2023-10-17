@@ -1,5 +1,16 @@
 # @marigold/theme-b2b
 
+## 25.2.8
+
+### Patch Changes
+
+- [#3399](https://github.com/marigold-ui/marigold/pull/3399) [`310aeb450`](https://github.com/marigold-ui/marigold/commit/310aeb450fdf9d9778ee107ad817531e533ee846) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: button active disabled state
+
+- Updated dependencies [[`d8b3cca2d`](https://github.com/marigold-ui/marigold/commit/d8b3cca2dfe5ff199c5045c1e77cec7d6384c725)]:
+  - @marigold/components@6.3.1
+  - @marigold/system@6.3.1
+  - @marigold/theme-preset@1.1.8
+
 ## 25.2.7
 
 ### Patch Changes
