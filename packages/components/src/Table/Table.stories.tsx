@@ -151,6 +151,8 @@ export const Sorting: Story = {
       const result = list.sort((a: any, b: any) => {
         const first = a[column!];
         const second = b[column!];
+
+        console.log(a, b);
         let cmp =
           (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
         if (direction === 'descending') {
@@ -171,30 +173,30 @@ export const Sorting: Story = {
           onSortChange={sort}
           selectionMode="multiple"
         >
-          <TableHeader>
-            <TableColumnHeader isRowHeader key="name" allowsSorting>
+          <Table.Header>
+            <Table.Column isRowHeader id="name" allowsSorting>
               Name
-            </TableColumnHeader>
-            <TableColumnHeader key="height" allowsSorting>
+            </Table.Column>
+            <Table.Column id="height" allowsSorting>
               Height
-            </TableColumnHeader>
-            <TableColumnHeader key="mass" allowsSorting>
+            </Table.Column>
+            <Table.Column id="mass" allowsSorting>
               Mass
-            </TableColumnHeader>
-            <TableColumnHeader key="birth_year" allowsSorting>
+            </Table.Column>
+            <Table.Column id="birth_year" allowsSorting>
               Birth Year
-            </TableColumnHeader>
-          </TableHeader>
-          <TableBody items={list}>
+            </Table.Column>
+          </Table.Header>
+          <Table.Body items={list}>
             {item => (
-              <TableRow id={item.name}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.height}</TableCell>
-                <TableCell>{item.mass}</TableCell>
-                <TableCell>{item.birth_year}</TableCell>
-              </TableRow>
+              <Table.Row id={(item as any).name}>
+                <Table.Cell>{(item as any).name!}</Table.Cell>
+                <Table.Cell>{(item as any).height}</Table.Cell>
+                <Table.Cell>{(item as any).mass}</Table.Cell>
+                <Table.Cell>{(item as any).birth_year}</Table.Cell>
+              </Table.Row>
             )}
-          </TableBody>
+          </Table.Body>
         </Table>
         <br />
         <pre>
