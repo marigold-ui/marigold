@@ -5,12 +5,11 @@ import React from 'react';
 
 import { SortDescriptor } from '@react-types/shared';
 
+import { Button } from '../Button';
+import { Checkbox } from '../Checkbox';
+import { Select } from '../Select';
+import { Stack } from '../Stack';
 import { Table } from './Table';
-import { TableBody } from './TableBody';
-import { TableCell } from './TableCell';
-import { TableColumnHeader } from './TableColumnHeader';
-import { TableHeader } from './TableHeader';
-import { TableRow } from './TableRow';
 
 const meta = {
   title: 'Components/Table new',
@@ -216,6 +215,348 @@ export const EmptyState: Story = {
         <Table.Column>Date Modified</Table.Column>
       </Table.Header>
       <Table.Body renderEmptyState={() => 'No results found.'}>{[]}</Table.Body>
+    </Table>
+  ),
+};
+
+export const ControlledTable: Story = {
+  render: args => {
+    const columns = [
+      { name: 'Name', key: 'name' },
+      { name: 'Firstname', key: 'firstname' },
+      { name: 'House', key: 'house' },
+      { name: 'Year of birth', key: 'year' },
+    ];
+
+    const rows: { [key: string]: string }[] = [
+      {
+        id: '1',
+        name: 'Potter',
+        firstname: 'Harry',
+        house: 'Gryffindor',
+        year: '1980',
+      },
+      {
+        id: '2',
+        name: 'Malfoy',
+        firstname: 'Draco',
+        house: 'Slytherin',
+        year: '1980',
+      },
+      {
+        id: '3',
+        name: 'Diggory',
+        firstname: 'Cedric',
+        house: 'Hufflepuff',
+        year: '1977',
+      },
+      {
+        id: '4',
+        name: 'Lovegood',
+        firstname: 'Luna',
+        house: 'Ravenclaw',
+        year: '1981',
+      },
+    ];
+    const [selectedKeys, setSelectedKeys] = useState(new Set());
+    const selected = Array.from(selectedKeys);
+    return (
+      <Stack space={3}>
+        <Table
+          aria-label="Example dynamic collection table"
+          selectionMode="multiple"
+          {...args}
+          onSelectionChange={key => setSelectedKeys(new Set(key))}
+        >
+          <Table.Header columns={columns}>
+            {column => <Table.Column>{(column as any).name}</Table.Column>}
+          </Table.Header>
+          <Table.Body items={rows}>
+            {item => (
+              <Table.Row id={(item as any).name}>
+                <Table.Cell>{(item as any).name}</Table.Cell>
+                <Table.Cell>{(item as any).firstname}</Table.Cell>
+                <Table.Cell>{(item as any).house}</Table.Cell>
+                <Table.Cell>{(item as any).year}</Table.Cell>
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
+        <div>Selected rows: {selected.join(', ')}</div>
+      </Stack>
+    );
+  },
+};
+
+// https://react-spectrum.adobe.com/react-aria/Table.html#nested-columns
+export const NestedColumns: Story = {
+  render: args => (
+    <Table {...args} aria-label="Example table for nested columns">
+      <Table.Header>
+        <Table.Column isRowHeader title="Name" key={1}>
+          <Table.Column isRowHeader key={2}>
+            First Name
+          </Table.Column>
+          <Table.Column isRowHeader key={3}>
+            Last Name
+          </Table.Column>
+        </Table.Column>
+        <Table.Column key={4} title="Information">
+          <Table.Column key={5}>Age</Table.Column>
+          <Table.Column key={6}>Birthday</Table.Column>
+        </Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row key="one">
+          <Table.Cell>Sam</Table.Cell>
+          <Table.Cell>Smith</Table.Cell>
+          <Table.Cell>36</Table.Cell>
+          <Table.Cell>May 3</Table.Cell>
+        </Table.Row>
+        <Table.Row key="two">
+          <Table.Cell>Julia</Table.Cell>
+          <Table.Cell>Jones</Table.Cell>
+          <Table.Cell>24</Table.Cell>
+          <Table.Cell>February 10</Table.Cell>
+        </Table.Row>
+        <Table.Row key="tree">
+          <Table.Cell>Peter</Table.Cell>
+          <Table.Cell>Parker</Table.Cell>
+          <Table.Cell>28</Table.Cell>
+          <Table.Cell>September 7</Table.Cell>
+        </Table.Row>
+        <Table.Row key="four">
+          <Table.Cell>Bruce</Table.Cell>
+          <Table.Cell>Wayne</Table.Cell>
+          <Table.Cell>32</Table.Cell>
+          <Table.Cell>December 18</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+};
+
+export const Compact: Story = {
+  render: args => (
+    <Table
+      aria-label="Table with multiple selection"
+      selectionMode="multiple"
+      variant="compact"
+      {...args}
+    >
+      <Table.Header>
+        <Table.Column>Name</Table.Column>
+        <Table.Column>Firstname</Table.Column>
+        <Table.Column>House</Table.Column>
+        <Table.Column>Year of birth</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row key={1}>
+          <Table.Cell>Potter</Table.Cell>
+          <Table.Cell>Harry</Table.Cell>
+          <Table.Cell>Gryffindor</Table.Cell>
+          <Table.Cell>1980</Table.Cell>
+        </Table.Row>
+        <Table.Row key={2}>
+          <Table.Cell>Malfoy</Table.Cell>
+          <Table.Cell>Draco</Table.Cell>
+          <Table.Cell>Slytherin</Table.Cell>
+          <Table.Cell>1980</Table.Cell>
+        </Table.Row>
+        <Table.Row key={3}>
+          <Table.Cell>Diggory</Table.Cell>
+          <Table.Cell>Cedric</Table.Cell>
+          <Table.Cell>Hufflepuff</Table.Cell>
+          <Table.Cell>1977</Table.Cell>
+        </Table.Row>
+        <Table.Row key={4}>
+          <Table.Cell>Lovegood</Table.Cell>
+          <Table.Cell>Luna</Table.Cell>
+          <Table.Cell>Ravenclaw</Table.Cell>
+          <Table.Cell>1981</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+};
+
+export const Expanded: Story = {
+  render: args => (
+    <Table
+      aria-label="Table with multiple selection"
+      selectionMode="multiple"
+      variant="expanded"
+      {...args}
+    >
+      <Table.Header>
+        <Table.Column>Name</Table.Column>
+        <Table.Column>Firstname</Table.Column>
+        <Table.Column>House</Table.Column>
+        <Table.Column>Year of birth</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row key={1}>
+          <Table.Cell>Potter</Table.Cell>
+          <Table.Cell>Harry</Table.Cell>
+          <Table.Cell>Gryffindor</Table.Cell>
+          <Table.Cell>1980</Table.Cell>
+        </Table.Row>
+        <Table.Row key={2}>
+          <Table.Cell>Malfoy</Table.Cell>
+          <Table.Cell>Draco</Table.Cell>
+          <Table.Cell>Slytherin</Table.Cell>
+          <Table.Cell>1980</Table.Cell>
+        </Table.Row>
+        <Table.Row key={3}>
+          <Table.Cell>Diggory</Table.Cell>
+          <Table.Cell>Cedric</Table.Cell>
+          <Table.Cell>Hufflepuff</Table.Cell>
+          <Table.Cell>1977</Table.Cell>
+        </Table.Row>
+        <Table.Row key={4}>
+          <Table.Cell>Lovegood</Table.Cell>
+          <Table.Cell>Luna</Table.Cell>
+          <Table.Cell>Ravenclaw</Table.Cell>
+          <Table.Cell>1981</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+};
+
+export const Static: Story = {
+  render: args => (
+    <Table
+      aria-label="Table without interaction"
+      selectionMode="none"
+      {...args}
+    >
+      <Table.Header>
+        <Table.Column>Name</Table.Column>
+        <Table.Column>Firstname</Table.Column>
+        <Table.Column>House</Table.Column>
+        <Table.Column>Year of birth</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row key={1}>
+          <Table.Cell>Potter</Table.Cell>
+          <Table.Cell>Harry</Table.Cell>
+          <Table.Cell>Gryffindor</Table.Cell>
+          <Table.Cell>1980</Table.Cell>
+        </Table.Row>
+        <Table.Row key={2}>
+          <Table.Cell>Malfoy</Table.Cell>
+          <Table.Cell>Draco</Table.Cell>
+          <Table.Cell>Slytherin</Table.Cell>
+          <Table.Cell>1980</Table.Cell>
+        </Table.Row>
+        <Table.Row key={3}>
+          <Table.Cell>Diggory</Table.Cell>
+          <Table.Cell>Cedric</Table.Cell>
+          <Table.Cell>Hufflepuff</Table.Cell>
+          <Table.Cell>1977</Table.Cell>
+        </Table.Row>
+        <Table.Row key={4}>
+          <Table.Cell>Lovegood</Table.Cell>
+          <Table.Cell>Luna</Table.Cell>
+          <Table.Cell>Ravenclaw</Table.Cell>
+          <Table.Cell>1981</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+};
+
+const columns = [
+  { name: 'Name', key: 'name' },
+  { name: 'Firstname', key: 'firstname' },
+  { name: 'House', key: 'house' },
+  { name: 'Year of birth', key: 'year' },
+  { name: 'Bearbeiten', key: 'edit' },
+];
+
+const rows = [
+  {
+    id: '1',
+    name: 'Potter',
+    firstname: 'Harry',
+    house: 'Gryffindor',
+    year: '1980',
+  },
+  {
+    id: '2',
+    name: 'Malfoy',
+    firstname: 'Draco',
+    house: 'Slytherin',
+    year: '1980',
+  },
+] as const;
+
+const DataTable = ({ editable }: { editable: boolean }) => (
+  <Table aria-label="Data Table">
+    <Table.Header columns={columns}>
+      {col => <Table.Column>{(col as any).name}</Table.Column>}
+    </Table.Header>
+    <Table.Body items={rows}>
+      {rows.map(item => (
+        <Table.Row key={item.id}>
+          <Table.Cell>{item.name}</Table.Cell>
+          <Table.Cell>{item.firstname}</Table.Cell>
+          <Table.Cell>{item.house}</Table.Cell>
+          <Table.Cell>{item.year}</Table.Cell>
+          <Table.Cell>
+            <Button variant="ghost" disabled={!editable}>
+              Bearbeiten
+            </Button>
+          </Table.Cell>
+        </Table.Row>
+      ))}
+    </Table.Body>
+  </Table>
+);
+
+export const WithParentProp: Story = {
+  render: args => {
+    const [editable, setEditable] = React.useState(true);
+
+    return (
+      <Stack>
+        <Checkbox checked={editable} onChange={setEditable}>
+          Allow editing
+        </Checkbox>
+        <DataTable editable={editable} {...args} />
+      </Stack>
+    );
+  },
+};
+
+export const SelectedTable: Story = {
+  render: args => (
+    <Table aria-label="Data Table" {...args}>
+      <Table.Header columns={columns}>
+        {col => <Table.Column>{(col as any).name}</Table.Column>}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {rows.map(item => (
+          <Table.Row key={item.id}>
+            <Table.Cell>{item.name}</Table.Cell>
+            <Table.Cell>{item.firstname}</Table.Cell>
+            <Table.Cell>{item.house}</Table.Cell>
+            <Table.Cell>{item.year}</Table.Cell>
+            <Table.Cell>
+              <Select disabledKeys={['Firefly']}>
+                <Select.Option key="Harry Potter">Harry Potter</Select.Option>
+                <Select.Option key="Lord of the Rings">
+                  Lord of the Rings
+                </Select.Option>
+                <Select.Option key="Star Wars">Star Wars</Select.Option>
+                <Select.Option key="Star Trek">Star Trek</Select.Option>
+                <Select.Option key="Firefly">Firefly</Select.Option>
+              </Select>
+            </Table.Cell>
+          </Table.Row>
+        ))}
+      </Table.Body>
     </Table>
   ),
 };
