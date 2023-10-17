@@ -24,9 +24,10 @@ const meta = {
     },
     size: {
       control: {
-        type: 'text',
+        type: 'radio',
       },
-      description: 'Switch size style',
+      options: ['large', 'none'],
+      description: 'The sizes for switch. In b2b there is large.',
     },
     width: {
       control: {
