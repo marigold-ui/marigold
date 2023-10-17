@@ -4,8 +4,8 @@ import { Theme, cva } from '@marigold/system';
 
 import { FieldGroup } from '../FieldBase';
 import { setup } from '../test.utils';
-import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
+import { Checkbox } from './_Checkbox';
 
 const theme: Theme = {
   name: 'checkbox group testing',
