@@ -273,7 +273,6 @@ export const Sorting: Story = {
         const first = a[column!];
         const second = b[column!];
 
-        console.log(first, second);
         let cmp =
           (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
         if (direction === 'descending') {

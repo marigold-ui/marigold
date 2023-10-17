@@ -43,7 +43,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <Table aria-label="Table with selection" disabledKeys={[1]} {...args}>
+    <Table aria-label="Table with selection" {...args}>
       <Table.Header>
         <Table.Column isRowHeader>Name</Table.Column>
         <Table.Column>Firstname</Table.Column>
@@ -51,25 +51,64 @@ export const Basic: Story = {
         <Table.Column>Year of birth</Table.Column>
       </Table.Header>
       <Table.Body>
-        <Table.Row key={1}>
+        <Table.Row id={1}>
           <Table.Cell>Potter</Table.Cell>
           <Table.Cell>Harry</Table.Cell>
           <Table.Cell>Gryffindor</Table.Cell>
           <Table.Cell>1980</Table.Cell>
         </Table.Row>
-        <Table.Row key={2}>
+        <Table.Row id={2}>
           <Table.Cell>Malfoy</Table.Cell>
           <Table.Cell>Draco</Table.Cell>
           <Table.Cell>Slytherin</Table.Cell>
           <Table.Cell>1980</Table.Cell>
         </Table.Row>
-        <Table.Row key={3}>
+        <Table.Row id={3}>
           <Table.Cell>Diggory</Table.Cell>
           <Table.Cell>Cedric</Table.Cell>
           <Table.Cell>Hufflepuff</Table.Cell>
           <Table.Cell>1977</Table.Cell>
         </Table.Row>
-        <Table.Row key={4}>
+        <Table.Row id={4}>
+          <Table.Cell>Lovegood</Table.Cell>
+          <Table.Cell>Luna</Table.Cell>
+          <Table.Cell>Ravenclaw</Table.Cell>
+          <Table.Cell>1981</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+};
+
+export const DisabledKeys: Story = {
+  render: args => (
+    <Table aria-label="Table with selection" disabledKeys={['3']} {...args}>
+      <Table.Header>
+        <Table.Column isRowHeader>Name</Table.Column>
+        <Table.Column>Firstname</Table.Column>
+        <Table.Column>House</Table.Column>
+        <Table.Column>Year of birth</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row id={1}>
+          <Table.Cell>Potter</Table.Cell>
+          <Table.Cell>Harry</Table.Cell>
+          <Table.Cell>Gryffindor</Table.Cell>
+          <Table.Cell>1980</Table.Cell>
+        </Table.Row>
+        <Table.Row id={2}>
+          <Table.Cell>Malfoy</Table.Cell>
+          <Table.Cell>Draco</Table.Cell>
+          <Table.Cell>Slytherin</Table.Cell>
+          <Table.Cell>1980</Table.Cell>
+        </Table.Row>
+        <Table.Row id="3">
+          <Table.Cell>Diggory</Table.Cell>
+          <Table.Cell>Cedric</Table.Cell>
+          <Table.Cell>Hufflepuff</Table.Cell>
+          <Table.Cell>1977</Table.Cell>
+        </Table.Row>
+        <Table.Row id={4}>
           <Table.Cell>Lovegood</Table.Cell>
           <Table.Cell>Luna</Table.Cell>
           <Table.Cell>Ravenclaw</Table.Cell>
@@ -151,7 +190,6 @@ export const Sorting: Story = {
         const first = a[column!];
         const second = b[column!];
 
-        console.log(a, b);
         let cmp =
           (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
         if (direction === 'descending') {
@@ -293,39 +331,39 @@ export const NestedColumns: Story = {
   render: args => (
     <Table {...args} aria-label="Example table for nested columns">
       <Table.Header>
-        <Table.Column isRowHeader title="Name" key={1}>
-          <Table.Column isRowHeader key={2}>
+        <Table.Column isRowHeader title="Name" id={1}>
+          <Table.Column isRowHeader id={2}>
             First Name
           </Table.Column>
-          <Table.Column isRowHeader key={3}>
+          <Table.Column isRowHeader id={3}>
             Last Name
           </Table.Column>
         </Table.Column>
-        <Table.Column key={4} title="Information">
-          <Table.Column key={5}>Age</Table.Column>
-          <Table.Column key={6}>Birthday</Table.Column>
+        <Table.Column id={4} title="Information">
+          <Table.Column id={5}>Age</Table.Column>
+          <Table.Column id={6}>Birthday</Table.Column>
         </Table.Column>
       </Table.Header>
       <Table.Body>
-        <Table.Row key="one">
+        <Table.Row id="one">
           <Table.Cell>Sam</Table.Cell>
           <Table.Cell>Smith</Table.Cell>
           <Table.Cell>36</Table.Cell>
           <Table.Cell>May 3</Table.Cell>
         </Table.Row>
-        <Table.Row key="two">
+        <Table.Row id="two">
           <Table.Cell>Julia</Table.Cell>
           <Table.Cell>Jones</Table.Cell>
           <Table.Cell>24</Table.Cell>
           <Table.Cell>February 10</Table.Cell>
         </Table.Row>
-        <Table.Row key="tree">
+        <Table.Row id="tree">
           <Table.Cell>Peter</Table.Cell>
           <Table.Cell>Parker</Table.Cell>
           <Table.Cell>28</Table.Cell>
           <Table.Cell>September 7</Table.Cell>
         </Table.Row>
-        <Table.Row key="four">
+        <Table.Row id="four">
           <Table.Cell>Bruce</Table.Cell>
           <Table.Cell>Wayne</Table.Cell>
           <Table.Cell>32</Table.Cell>
@@ -345,7 +383,7 @@ export const Compact: Story = {
       {...args}
     >
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column isRowHeader>Name</Table.Column>
         <Table.Column>Firstname</Table.Column>
         <Table.Column>House</Table.Column>
         <Table.Column>Year of birth</Table.Column>
@@ -389,7 +427,7 @@ export const Expanded: Story = {
       {...args}
     >
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column isRowHeader>Name</Table.Column>
         <Table.Column>Firstname</Table.Column>
         <Table.Column>House</Table.Column>
         <Table.Column>Year of birth</Table.Column>
@@ -432,7 +470,7 @@ export const Static: Story = {
       {...args}
     >
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column isRowHeader>Name</Table.Column>
         <Table.Column>Firstname</Table.Column>
         <Table.Column>House</Table.Column>
         <Table.Column>Year of birth</Table.Column>
@@ -495,11 +533,11 @@ const rows = [
 const DataTable = ({ editable }: { editable: boolean }) => (
   <Table aria-label="Data Table">
     <Table.Header columns={columns}>
-      {col => <Table.Column>{(col as any).name}</Table.Column>}
+      {col => <Table.Column isRowHeader>{(col as any).name}</Table.Column>}
     </Table.Header>
     <Table.Body items={rows}>
       {rows.map(item => (
-        <Table.Row key={item.id}>
+        <Table.Row id={item.id}>
           <Table.Cell>{item.name}</Table.Cell>
           <Table.Cell>{item.firstname}</Table.Cell>
           <Table.Cell>{item.house}</Table.Cell>
@@ -534,11 +572,11 @@ export const SelectedTable: Story = {
   render: args => (
     <Table aria-label="Data Table" {...args}>
       <Table.Header columns={columns}>
-        {col => <Table.Column>{(col as any).name}</Table.Column>}
+        {col => <Table.Column isRowHeader>{(col as any).name}</Table.Column>}
       </Table.Header>
       <Table.Body items={rows}>
         {rows.map(item => (
-          <Table.Row key={item.id}>
+          <Table.Row id={item.id}>
             <Table.Cell>{item.name}</Table.Cell>
             <Table.Cell>{item.firstname}</Table.Cell>
             <Table.Cell>{item.house}</Table.Cell>
