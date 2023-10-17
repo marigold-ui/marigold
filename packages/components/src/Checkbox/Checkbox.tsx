@@ -1,8 +1,6 @@
 import { forwardRef } from 'react';
-import {
-  Checkbox as RACCheckbox,
-  type CheckboxProps as RACCheckboxProps,
-} from 'react-aria-components';
+import { Checkbox } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
@@ -64,7 +62,7 @@ export interface CheckboxProps
       HtmlProps<'input'>,
       'size' | 'type' | 'defaultValue' | CustomCheckboxProps
     >,
-    Pick<RACCheckboxProps, CustomCheckboxProps> {
+    Pick<RAC.CheckboxProps, CustomCheckboxProps> {
   indeterminate?: boolean;
   error?: boolean;
   variant?: string;
@@ -74,7 +72,7 @@ export interface CheckboxProps
 // Component
 // --------------
 
-export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
+const _Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   (
     {
       className,
@@ -92,7 +90,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     },
     ref
   ) => {
-    const props: RACCheckboxProps = {
+    const props: RAC.CheckboxProps = {
       isIndeterminate: indeterminate,
       isDisabled: disabled,
       isReadOnly: readOnly,
@@ -105,7 +103,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     const classNames = useClassNames({ component: 'Checkbox', variant, size });
 
     return (
-      <RACCheckbox
+      <Checkbox
         ref={ref}
         className={cn(
           'group/checkbox flex items-center gap-[0.5rem]',
@@ -124,7 +122,9 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             <div className={classNames.label}>{children}</div>
           </>
         )}
-      </RACCheckbox>
+      </Checkbox>
     );
   }
 );
+
+export { _Checkbox as Checkbox };
