@@ -22,9 +22,10 @@ const _TableRow = ({
   size,
   ...props
 }: TableRowProps) => {
-  const { selectionBehavior } = useTableOptions();
+  const { selectionBehavior, selectionMode } = useTableOptions();
 
-  const { interactive, state, ...ctx } = useTableContext();
+  const interactive = selectionMode !== 'none';
+  const { ...ctx } = useTableContext();
 
   const classNames = useClassNames({
     component: 'Table',
@@ -37,13 +38,7 @@ const _TableRow = ({
       {...props}
       id={id}
       className={cn(
-        [
-          !interactive
-            ? 'cursor-text'
-            : '[data-disabled]'
-            ? 'cursor-default'
-            : 'cursor-pointer',
-        ],
+        [!interactive ? 'cursor-text' : 'cursor-pointer'],
         classNames?.row
       )}
     >

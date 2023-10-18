@@ -227,7 +227,7 @@ export const Sorting: Story = {
           <Table.Body items={list}>
             {item => (
               <Table.Row id={(item as any).name}>
-                <Table.Cell>{(item as any).name!}</Table.Cell>
+                <Table.Cell>{(item as any).name}</Table.Cell>
                 <Table.Cell>{(item as any).height}</Table.Cell>
                 <Table.Cell>{(item as any).mass}</Table.Cell>
                 <Table.Cell>{(item as any).birth_year}</Table.Cell>

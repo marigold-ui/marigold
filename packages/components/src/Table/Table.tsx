@@ -28,6 +28,7 @@ const _Table = ({ children, variant, size, stretch, ...props }: TableProps) => {
     <TableContext.Provider value={{ classNames, variant, size }}>
       <Table
         {...props}
+        disabledBehavior="all"
         className={cn(
           'group/table',
           'border-collapse overflow-auto whitespace-nowrap',
