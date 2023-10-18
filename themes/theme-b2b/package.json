@@ -52,8 +52,7 @@
   "dependencies": {
     "@marigold/components": "workspace:*",
     "@marigold/system": "workspace:*",
-    "@marigold/theme-preset": "workspace:*",
-    "tailwindcss-react-aria-components": "1.0.0-beta.1"
+    "@marigold/theme-preset": "workspace:*"
   },
   "scripts": {
     "build": "NODE_ENV=production tsup && tailwindcss -o dist/styles.css",
