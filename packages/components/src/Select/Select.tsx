@@ -131,7 +131,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         size={size}
         width={width}
         label={props.label}
-        labelProps={{ as: 'span', ...labelProps }}
+        labelProps={{ elementType: 'span', ...labelProps }}
         description={props.description}
         descriptionProps={descriptionProps}
         error={error}
@@ -149,7 +149,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         />
         <button
           className={cn(
-            'flex w-full items-center justify-between gap-1',
+            'flex w-full items-center justify-between gap-1 overflow-hidden',
             classNames.select
           )}
           ref={buttonRef}

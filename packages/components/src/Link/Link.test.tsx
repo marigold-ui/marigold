@@ -60,22 +60,6 @@ test('renders a <a> element by default', () => {
   expect(link instanceof HTMLAnchorElement).toBeTruthy();
 });
 
-test('accepts other routing components', () => {
-  const RouterLink = React.forwardRef<
-    HTMLSpanElement,
-    { to: string; children?: React.ReactNode }
-  >(() => <span>I am a Router Link!</span>);
-
-  render(
-    <Link as={RouterLink} to="/Home">
-      Link
-    </Link>
-  );
-
-  const link = screen.getByText('I am a Router Link!');
-  expect(link).toBeTruthy();
-});
-
 test('a link can be disabled via aria attributes', () => {
   render(
     <Link href="#!" disabled={true}>
@@ -97,38 +81,22 @@ test('link supports disabled variant', () => {
   expect(link).toHaveClass(`disabled:text-gray-500`);
 });
 
-test('forwards ref', () => {
+test('renders anchor element', () => {
   const ref = React.createRef<HTMLAnchorElement>();
-  render(<Link ref={ref}>Link</Link>);
-
-  expect(ref.current).toBeInstanceOf(HTMLAnchorElement);
-});
-
-test('forwards ref (with "as")', () => {
-  const ref = React.createRef<HTMLSpanElement>();
   render(
-    <Link as="span" ref={ref}>
+    <Link href="/" ref={ref}>
       Link
     </Link>
   );
 
-  expect(ref.current).toBeInstanceOf(HTMLSpanElement);
+  expect(ref.current).toBeInstanceOf(HTMLAnchorElement);
 });
 
-test('deprecate "onClick"', () => {
-  render(<Link onClick={() => {}}>Link</Link>);
+test('renders span element when no href', () => {
+  const ref = React.createRef<HTMLAnchorElement>();
+  render(<Link ref={ref}>Link</Link>);
 
-  const link = screen.getByText('Link');
-  fireEvent.click(link);
-
-  expect(warnMock).toHaveBeenCalledTimes(1);
-  expect(warnMock.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        "onClick is deprecated, please use onPress",
-      ],
-    ]
-  `);
+  expect(ref.current).toBeInstanceOf(HTMLSpanElement);
 });
 
 test('supports "onPress"', () => {

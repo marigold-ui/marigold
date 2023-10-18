@@ -1,5 +1,16 @@
 # @marigold/docs
 
+## 6.3.1
+
+### Patch Changes
+
+- Updated dependencies [[`310aeb450`](https://github.com/marigold-ui/marigold/commit/310aeb450fdf9d9778ee107ad817531e533ee846), [`d8b3cca2d`](https://github.com/marigold-ui/marigold/commit/d8b3cca2dfe5ff199c5045c1e77cec7d6384c725)]:
+  - @marigold/theme-b2b@25.2.8
+  - @marigold/components@6.3.1
+  - @marigold/theme-core@25.2.8
+  - @marigold/icons@1.2.17
+  - @marigold/theme-preset@1.1.8
+
 ## 6.3.0
 
 ### Minor Changes

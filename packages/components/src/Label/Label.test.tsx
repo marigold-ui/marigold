@@ -55,22 +55,10 @@ test('renders <label> element by default', () => {
   expect(label instanceof HTMLLabelElement).toBeTruthy();
 });
 
-test('can render as <span>', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Label as="span">label</Label>
-    </ThemeProvider>
-  );
-  const label = screen.getByText(/label/);
-  expect(label instanceof HTMLSpanElement).toBeTruthy();
-});
-
 test('accepts labelwidth as css variable and set the style', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Label as="span" labelWidth="100px">
-        label
-      </Label>
+      <Label labelWidth="100px">label</Label>
     </ThemeProvider>
   );
   const label = screen.getByText(/label/);
