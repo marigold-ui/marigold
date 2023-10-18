@@ -10,14 +10,18 @@ import { useLocale } from '@react-aria/i18n';
 
 import { useCalendarState } from '@react-stately/calendar';
 
-import { ChevronLeft, ChevronRight } from '@marigold/icons';
+// import { ChevronLeft, ChevronRight } from '@marigold/icons';
 import { cn, useClassNames, useStateProps } from '@marigold/system';
 
 import { Button } from '../Button';
+import { ChevronDown, ChevronLeft, ChevronRight } from '../Chevron';
+// import { Button } from '../Button';
 import { CalendarGrid } from './CalendarGrid';
 import MonthDropdown from './MonthDropdown';
 import YearDropdown from './YearDropdown';
 
+// Props
+// ---------------
 export interface CalendarProps
   extends Omit<AriaCalendarProps<DateValue>, 'isDisabled' | 'isReadOnly'> {
   disabled?: boolean;
@@ -26,6 +30,10 @@ export interface CalendarProps
   size?: string;
 }
 
+const buttonStyles = 'flex items-center justify-between gap-1 overflow-hidden';
+
+// Component
+// ---------------
 export const Calendar = ({
   disabled,
   readOnly,
@@ -69,23 +77,43 @@ export const Calendar = ({
   });
 
   const classNames = useClassNames({ component: 'Calendar' });
+  const { select: selectClassNames } = useClassNames({ component: 'Select' });
+
+  /**
+   * create a state to open or close specific dropdown
+   * create two buttons
+   * first button to open the month dropdown `grid`
+   * second button to open the year dropdown `grid`
+   */
 
   return (
     <div
       tabIndex={-1}
       className={cn(
-        'flex w-[360px] flex-col rounded-sm p-4 shadow-[0_4px_4px_rgba(165,165,165,0.25)]',
+        'flex w-[360px] flex-col rounded-sm p-4  shadow-[0_4px_4px_rgba(165,165,165,0.25)]',
         classNames.calendar
       )}
       {...calendarProps}
       {...calendarState}
       ref={ref}
     >
-      <div className="mb-4 flex items-center gap-[60px]">
-        <div className="flex min-w-[170px] gap-[9px] [&_div]:flex">
-          <MonthDropdown state={state} />
-          <YearDropdown state={state} />
+      <div className="mb-4 flex items-center justify-between">
+        {/* select buttons */}
+        <div className="flex  gap-[9px] [&_div]:flex">
+          <div className="flex w-full gap-4">
+            {/* <MonthDropdown state={state} />
+            <YearDropdown state={state} /> */}
+            <button className={cn(buttonStyles, selectClassNames)}>
+              {state.focusedDate.month}
+              <ChevronDown />
+            </button>
+            <button className={cn(buttonStyles, selectClassNames)}>
+              {state.focusedDate.year}
+              <ChevronDown />
+            </button>
+          </div>
         </div>
+        {/* days */}
         <div className="flex w-full flex-nowrap justify-end gap-[10px] [&_button:disabled]:cursor-not-allowed [&_button]:px-2 [&_button]:py-1">
           <Button
             className={classNames.calendarControllers}

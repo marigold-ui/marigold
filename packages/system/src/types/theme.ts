@@ -7,7 +7,7 @@ export interface NestedStringObject {
 export interface ComponentStyleFunction<
   Variants extends string = never,
   Sizes extends string = never,
-  Additional extends { [name: string]: any } = {}
+  Additional extends { [name: string]: any } = {},
 > {
   (
     props?: {
@@ -115,7 +115,7 @@ export type Theme = {
     >;
     Underlay?: ComponentStyleFunction<string, string>;
     Calendar?: Record<
-      'calendar' | 'calendarCell' | 'calendarControllers',
+      'calendar' | 'calendarCell' | 'calendarControllers' | 'calendarSelect',
       ComponentStyleFunction<string, string>
     >;
     DatePicker?: Record<
