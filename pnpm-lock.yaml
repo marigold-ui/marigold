@@ -743,9 +743,6 @@ importers:
       '@marigold/theme-preset':
         specifier: workspace:*
         version: link:../../packages/theme-preset
-      tailwindcss-react-aria-components:
-        specifier: 1.0.0-beta.1
-        version: 1.0.0-beta.1(tailwindcss@3.3.3)
     devDependencies:
       '@marigold/tsconfig':
         specifier: workspace:*
@@ -764,7 +761,7 @@ importers:
         version: 3.3.3
       tsup:
         specifier: 7.2.0
-        version: 7.2.0(postcss@8.4.31)(typescript@5.2.2)
+        version: 7.2.0(postcss@8.4.31)
 
   themes/theme-core:
     dependencies:
@@ -777,9 +774,6 @@ importers:
       '@marigold/theme-preset':
         specifier: workspace:*
         version: link:../../packages/theme-preset
-      tailwindcss-react-aria-components:
-        specifier: 1.0.0-beta.1
-        version: 1.0.0-beta.1(tailwindcss@3.3.3)
     devDependencies:
       '@marigold/tsconfig':
         specifier: workspace:*
@@ -798,7 +792,7 @@ importers:
         version: 3.3.3
       tsup:
         specifier: 7.2.0
-        version: 7.2.0(postcss@8.4.31)(typescript@5.2.2)
+        version: 7.2.0(postcss@8.4.31)
 
 packages:
 
@@ -19172,14 +19166,6 @@ packages:
       tailwindcss: 3.3.3
     dev: false
 
-  /tailwindcss-react-aria-components@1.0.0-beta.1(tailwindcss@3.3.3):
-    resolution: {integrity: sha512-TRh3beZJaVkWYewJWZ6JSoOdJy322gEEaOxNwh2obYkjzjj6XRfVkixZ0W8MaFSOUGcRRMjFEIQwLP2rypXueQ==}
-    peerDependencies:
-      tailwindcss: '>=3.0.0 || insiders'
-    dependencies:
-      tailwindcss: 3.3.3
-    dev: false
-
   /tailwindcss@3.3.3:
     resolution: {integrity: sha512-A0KgSkef7eE4Mf+nKJ83i75TMyq8HqY3qmFIJSWy8bNt0v1lG7jUcpGpoTFxAwYcWOphcTBLPPJg+bDfhDf52w==}
     engines: {node: '>=14.0.0'}
@@ -19509,6 +19495,42 @@ packages:
 
   /tslib@2.6.1:
     resolution: {integrity: sha512-t0hLfiEKfMUoqhG+U1oid7Pva4bbDPHYfJNiB7BiIjRkj1pyC++4N3huJfqY6aRH6VTB0rvtzQwjM4K6qpfOig==}
+
+  /tsup@7.2.0(postcss@8.4.31):
+    resolution: {integrity: sha512-vDHlczXbgUvY3rWvqFEbSqmC1L7woozbzngMqTtL2PGBODTtWlRwGDDawhvWzr5c1QjKe4OAKqJGfE1xeXUvtQ==}
+    engines: {node: '>=16.14'}
+    hasBin: true
+    peerDependencies:
+      '@swc/core': ^1
+      postcss: ^8.4.12
+      typescript: '>=4.1.0'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      postcss:
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      bundle-require: 4.0.1(esbuild@0.18.11)
+      cac: 6.7.14
+      chokidar: 3.5.3
+      debug: 4.3.4
+      esbuild: 0.18.11
+      execa: 5.1.1
+      globby: 11.1.0
+      joycon: 3.1.1
+      postcss: 8.4.31
+      postcss-load-config: 4.0.1(postcss@8.4.31)
+      resolve-from: 5.0.0
+      rollup: 3.26.0
+      source-map: 0.8.0-beta.0
+      sucrase: 3.32.0
+      tree-kill: 1.2.2
+    transitivePeerDependencies:
+      - supports-color
+      - ts-node
+    dev: true
 
   /tsup@7.2.0(postcss@8.4.31)(typescript@5.2.2):
     resolution: {integrity: sha512-vDHlczXbgUvY3rWvqFEbSqmC1L7woozbzngMqTtL2PGBODTtWlRwGDDawhvWzr5c1QjKe4OAKqJGfE1xeXUvtQ==}
