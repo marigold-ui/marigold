@@ -12,7 +12,7 @@ import { Stack } from '../Stack';
 import { Table } from './Table';
 
 const meta = {
-  title: 'Components/Table new',
+  title: 'Components/Table',
   argTypes: {
     selectionMode: {
       control: {
