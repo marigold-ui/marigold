@@ -332,12 +332,8 @@ export const NestedColumns: Story = {
     <Table {...args} aria-label="Example table for nested columns">
       <Table.Header>
         <Table.Column isRowHeader title="Name" id={1}>
-          <Table.Column isRowHeader id={2}>
-            First Name
-          </Table.Column>
-          <Table.Column isRowHeader id={3}>
-            Last Name
-          </Table.Column>
+          <Table.Column id={2}>First Name</Table.Column>
+          <Table.Column id={3}>Last Name</Table.Column>
         </Table.Column>
         <Table.Column id={4} title="Information">
           <Table.Column id={5}>Age</Table.Column>
