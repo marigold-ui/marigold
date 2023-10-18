@@ -5,6 +5,7 @@ import { TableState } from '@react-stately/table';
 export interface TableContextProps {
   state?: TableState<object>;
   interactive?: boolean;
+  disabledKeys?: Iterable<object>;
   classNames?: {
     table?: string;
     header?: string;

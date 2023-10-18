@@ -82,7 +82,7 @@ export const Basic: Story = {
 
 export const DisabledKeys: Story = {
   render: args => (
-    <Table aria-label="Table with selection" disabledKeys={['3']} {...args}>
+    <Table aria-label="Table with selection" disabledKeys={[2, 3]} {...args}>
       <Table.Header>
         <Table.Column isRowHeader>Name</Table.Column>
         <Table.Column>Firstname</Table.Column>
@@ -102,7 +102,7 @@ export const DisabledKeys: Story = {
           <Table.Cell>Slytherin</Table.Cell>
           <Table.Cell>1980</Table.Cell>
         </Table.Row>
-        <Table.Row id="3">
+        <Table.Row id={3}>
           <Table.Cell>Diggory</Table.Cell>
           <Table.Cell>Cedric</Table.Cell>
           <Table.Cell>Hufflepuff</Table.Cell>

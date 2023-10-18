@@ -32,20 +32,19 @@ const _TableRow = ({
     variant: variant || ctx.variant,
     size: size || ctx.size,
   });
-  // const disabled = state.disabledKeys.has();
 
   return (
     <Row
       {...props}
       id={id}
       className={cn(
-        // [
-        //   !interactive
-        //     ? 'cursor-text'
-        //     : disabled
-        //     ? 'cursor-default'
-        //     : 'cursor-pointer',
-        // ],
+        [
+          !interactive
+            ? 'cursor-text'
+            : '[data-disabled]'
+            ? 'cursor-default'
+            : 'cursor-pointer',
+        ],
         classNames?.row
       )}
     >
