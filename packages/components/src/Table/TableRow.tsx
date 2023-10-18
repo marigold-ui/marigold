@@ -25,7 +25,6 @@ const _TableRow = ({
   const { selectionBehavior } = useTableOptions();
 
   const { interactive, state, ...ctx } = useTableContext();
-  // const { variant, size } = row.props;
 
   const classNames = useClassNames({
     component: 'Table',
