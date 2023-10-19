@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
+import { FieldGroup } from '../FieldBase';
 import { Label } from './Label';
 
 const theme: Theme = {
@@ -58,7 +59,9 @@ test('renders <label> element by default', () => {
 test('accepts labelwidth as css variable and set the style', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Label labelWidth="100px">label</Label>
+      <FieldGroup labelWidth="100px">
+        <Label>label</Label>
+      </FieldGroup>
     </ThemeProvider>
   );
   const label = screen.getByText(/label/);
