@@ -1,12 +1,11 @@
 import React, { Ref, forwardRef } from 'react';
 import {
-  Label,
-  Slider as RACSlider,
-  SliderProps as RACSliderProps,
+  Slider,
   SliderOutput,
   SliderThumb,
   SliderTrack,
 } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import {
   WidthProp,
@@ -15,8 +14,10 @@ import {
   useClassNames,
 } from '@marigold/system';
 
+import { Label } from '../Label';
+
 export interface SliderProps<T>
-  extends Omit<RACSliderProps<T>, 'isDisabled' | 'label'> {
+  extends Omit<RAC.SliderProps<T>, 'isDisabled' | 'label'> {
   thumbLabels?: string[];
   width?: WidthProp['width'];
   variant?: string;
@@ -24,7 +25,7 @@ export interface SliderProps<T>
   disabled?: boolean;
 }
 
-export const Slider = forwardRef(
+export const _Slider = forwardRef(
   <T extends number | number[]>(
     {
       thumbLabels,
@@ -41,12 +42,12 @@ export const Slider = forwardRef(
       variant,
       size,
     });
-    const props: RACSliderProps = {
+    const props: RAC.SliderProps = {
       isDisabled: disabled,
       ...rest,
     };
     return (
-      <RACSlider
+      <Slider
         className={cn('flex touch-none flex-col', twWidth[width])}
         ref={ref}
         {...props}
@@ -81,7 +82,9 @@ export const Slider = forwardRef(
             }
           </SliderTrack>
         </div>
-      </RACSlider>
+      </Slider>
     );
   }
 );
+
+export { _Slider as Slider };
