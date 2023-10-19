@@ -3,7 +3,7 @@ import { Container, Headline, Text } from '@marigold/components';
 export default () => (
   <>
     <Container contentType="header" size="small" align="center">
-      <Headline level="2">Star Wars - The Empire Strikes Back</Headline>
+      <Headline level={2}>Star Wars - The Empire Strikes Back</Headline>
     </Container>
     <Container size="small" align="center">
       <Text>
