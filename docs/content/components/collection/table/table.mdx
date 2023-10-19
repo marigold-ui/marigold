@@ -41,10 +41,24 @@ import { Table } from '@marigold/components';
       default: 'none',
     },
     {
+      property: 'onCellAction',
+      type: '(key: Key) => void',
+      description:
+        'Handler that is called when a user performs an action on the cell.',
+      default: 'none',
+    },
+    {
       property: 'stretch',
       type: 'boolean',
       description: 'Stretch table to fill the container.',
       default: 'false',
+    },
+    {
+      property: 'disabledBehavior',
+      type: 'string',
+      description:
+        'Whether disabledKeys applies to all interactions, or only selection.',
+      default: 'all',
     },
     {
       property: 'disabledKeys',
@@ -62,6 +76,104 @@ import { Table } from '@marigold/components';
       property: 'onSortChange',
       type: 'function',
       description: 'Handler that is called when the sort direction changes.',
+      default: 'none',
+    },
+    {
+      property: 'disallowEmptySelection',
+      type: 'boolean',
+      description: 'Whether the collection allows empty selection.',
+      default: 'false',
+    },
+    {
+      property: 'onRowAction',
+      type: '((key: Key) => void)',
+      description:
+        'Handler that is called when a user performs an action on the row.',
+      default: 'none',
+    },
+  ]}
+/>
+
+### Props Header
+
+<PropsTable
+  props={[
+    {
+      property: 'columns',
+      type: 'object[]',
+      description: 'A list of table columns.',
+      default: 'none',
+    },
+  ]}
+/>
+
+### Props Column
+
+<PropsTable
+  props={[
+    {
+      property: 'isRowHeader',
+      type: 'boolean',
+      description:
+        'Whether a column is a row header and should be announced by assistive technology during row navigation. Has to be set for min. one column.',
+      default: 'false',
+    },
+    {
+      property: 'title',
+      type: 'string',
+      description:
+        'Rendered contents of the column if children contains child columns.',
+      default: 'none',
+    },
+    {
+      property: 'allowSorting',
+      type: 'boolean',
+      description: 'Whether the column allows sorting.',
+      default: 'false',
+    },
+    {
+      property: 'width',
+      type: 'string | number',
+      description: `Sets the width of the column. You can see allowed tokens here: https://tailwindcss.com/docs/width`,
+      default: 'auto',
+    },
+    {
+      property: 'childColumns',
+      type: 'Iterable<object>',
+      description:
+        'A list of child columns used when dynamically rendering nested child columns.',
+      default: 'none',
+    },
+    {
+      property: 'id',
+      type: 'string | number',
+      description: 'The id of the column',
+      default: 'none',
+    },
+    {
+      property: 'key',
+      type: 'string | number',
+      description: 'The key of the column',
+      default: 'none',
+    },
+  ]}
+/>
+
+### Props Body
+
+<PropsTable
+  props={[
+    {
+      property: 'items',
+      type: 'Iterable<object>',
+      description: 'Item objects in the collection.',
+      default: 'none',
+    },
+    {
+      property: 'renderEmptyState',
+      type: '(() => ReactNode)',
+      description:
+        'Provides content to display when there are no rows in the table.',
       default: 'none',
     },
   ]}

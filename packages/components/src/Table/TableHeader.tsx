@@ -8,7 +8,7 @@ import type RAC from 'react-aria-components';
 import { Checkbox } from '../Checkbox';
 import { TableColumnHeader } from './TableColumnHeader';
 
-type RemovedProps = 'className';
+type RemovedProps = 'className' | 'style';
 
 export interface TableHeaderProps
   extends Omit<RAC.TableHeaderProps<object>, RemovedProps> {}

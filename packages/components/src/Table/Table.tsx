@@ -10,7 +10,7 @@ import { TableColumnHeader } from './TableColumnHeader';
 import { TableHeader } from './TableHeader';
 import { TableRow } from './TableRow';
 
-type RemovedProps = 'className';
+type RemovedProps = 'className' | 'style';
 export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
   variant?: string;
   size?: string;
@@ -28,6 +28,7 @@ const _Table = ({ children, variant, size, stretch, ...props }: TableProps) => {
     <TableContext.Provider value={{ classNames, variant, size }}>
       <Table
         {...props}
+        // set to all because without data-[disabled] would not be set.
         disabledBehavior="all"
         className={cn(
           'group/table',

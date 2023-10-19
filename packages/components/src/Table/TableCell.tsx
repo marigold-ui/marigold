@@ -5,11 +5,11 @@ import { cn } from '@marigold/system';
 
 import { useTableContext } from './Context';
 
-type RemovedProps = 'className';
+type RemovedProps = 'className' | 'style';
 
 export interface TableCellProps extends Omit<RAC.CellProps, RemovedProps> {}
 
-const _TableCell = ({ children, ...props }: RAC.CellProps) => {
+const _TableCell = ({ children, ...props }: TableCellProps) => {
   const { classNames } = useTableContext();
   return (
     <Cell {...props} className={cn(classNames?.cell)}>

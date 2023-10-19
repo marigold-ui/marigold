@@ -8,6 +8,7 @@ import { useTableContext } from './Context';
 
 type RemovedProps =
   | 'className'
+  | 'style'
   | 'width'
   | 'maxWidth'
   | 'minWidth'
