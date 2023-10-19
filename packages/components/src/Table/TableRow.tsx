@@ -7,7 +7,7 @@ import { Checkbox } from '../Checkbox';
 import { useTableContext } from './Context';
 import { TableCell } from './TableCell';
 
-type RemovedProps = 'className';
+type RemovedProps = 'className' | 'style';
 export interface TableRowProps
   extends Omit<RAC.RowProps<object>, RemovedProps> {
   variant?: string;
