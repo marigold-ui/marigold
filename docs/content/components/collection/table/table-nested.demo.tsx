@@ -3,7 +3,7 @@ import { Table } from '@marigold/components';
 export default () => (
   <Table aria-label="Example table for nested columns">
     <Table.Header>
-      <Table.Column title="Name">
+      <Table.Column title="Name" isRowHeader>
         <Table.Column isRowHeader>First Name</Table.Column>
         <Table.Column isRowHeader>Last Name</Table.Column>
       </Table.Column>
