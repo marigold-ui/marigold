@@ -25,10 +25,11 @@ const MonthDropdown = ({ state, setSelectedDropdown }: MonthDropdownProps) => {
   }
 
   let onChange = (index: Key) => {
-    let value = Number(index);
+    let value = Number(index) + 1;
     let date = state.focusedDate.set({ month: value });
     state.setFocusedDate(date);
   };
+
   return (
     <ul
       style={{
@@ -53,7 +54,7 @@ const MonthDropdown = ({ state, setSelectedDropdown }: MonthDropdownProps) => {
                 onChange(index);
                 setSelectedDropdown(undefined);
               }}
-              key={index}
+              key={index + 1}
             >
               {month.substring(0, 3)}
             </Button>

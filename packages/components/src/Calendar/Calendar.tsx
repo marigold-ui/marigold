@@ -6,7 +6,7 @@ import {
   DateValue,
   useCalendar,
 } from '@react-aria/calendar';
-import { useLocale } from '@react-aria/i18n';
+import { useDateFormatter, useLocale } from '@react-aria/i18n';
 
 import { useCalendarState } from '@react-stately/calendar';
 
@@ -81,6 +81,18 @@ export const Calendar = ({
     string | undefined
   >();
 
+  let months = [];
+  let formatter = useDateFormatter({
+    month: 'long',
+    timeZone: state.timeZone,
+  });
+
+  let numMonths = state.focusedDate.calendar.getMonthsInYear(state.focusedDate);
+  for (let i = 1; i <= numMonths; i++) {
+    let date = state.focusedDate.set({ month: i });
+    months.push(formatter.format(date.toDate(state.timeZone)));
+  }
+
   return (
     <div
       tabIndex={-1}
@@ -115,7 +127,7 @@ export const Calendar = ({
                   onClick={() => setSelectedDropdown('month')}
                   className={cn(buttonStyles, selectClassNames)}
                 >
-                  {state.focusedDate.month}
+                  {months[state.focusedDate.month - 1].substring(0, 3)}
                   <ChevronDown />
                 </button>
                 <button
