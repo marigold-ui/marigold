@@ -11,13 +11,14 @@ import {
   useTheme,
 } from '@marigold/system';
 
-type RemovedProps = 'className';
+type RemovedProps = 'className' | 'level';
 export interface HeadlineProps
   extends Omit<RAC.HeadingProps, RemovedProps>,
     TextAlignProp {
   color?: string;
   variant?: string;
   size?: string;
+  level?: string | RAC.HeadingProps['level'];
 }
 
 const _Headline = ({
@@ -38,7 +39,7 @@ const _Headline = ({
 
   return (
     <Heading
-      level={level}
+      level={Number(level)}
       {...props}
       className={cn(classNames, 'text-[--color]', textAlign[align])}
       style={createVar({

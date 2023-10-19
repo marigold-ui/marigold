@@ -127,3 +127,19 @@ test('get theme color', () => {
 />
 `);
 });
+
+test('support also string as level', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Headline data-testid="headline" level="2" />
+    </ThemeProvider>
+  );
+
+  const headline = screen.getByTestId('headline');
+  expect(headline).toMatchInlineSnapshot(`
+<h2
+  class="m-0 font-black mb-6 text-2xl text-[--color] text-left"
+  data-testid="headline"
+/>
+`);
+});
