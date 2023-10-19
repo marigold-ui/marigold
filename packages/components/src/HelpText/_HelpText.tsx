@@ -17,6 +17,7 @@ export const HelpText = ({
   description,
   error,
   errorMessage,
+  ...props
 }: HelpTextProps) => {
   const hasErrorMessage = errorMessage && error;
   const classNames = useClassNames({
@@ -31,6 +32,7 @@ export const HelpText = ({
 
   return (
     <Text
+      {...props}
       slot={hasErrorMessage ? 'errorMessage' : 'description'}
       className={cn('flex items-center gap-1', classNames.container)}
     >

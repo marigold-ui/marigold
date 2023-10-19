@@ -3,7 +3,7 @@ import { screen, within } from '@testing-library/react';
 import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { HelpText } from './HelpText';
+import { HelpText } from './_HelpText';
 
 const theme: Theme = {
   name: 'test',
@@ -105,7 +105,5 @@ test('icon styles via theme', () => {
   const element = screen.getByTestId('help-text');
   const icon = within(element).getByRole('presentation');
 
-  expect(icon.getAttribute('class')).toMatchInlineSnapshot(
-    `"flex-none fill-current h-3 w-3"`
-  );
+  expect(icon.getAttribute('class')).toMatchInlineSnapshot(`"h-3 w-3"`);
 });
