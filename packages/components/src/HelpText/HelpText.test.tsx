@@ -26,6 +26,13 @@ const theme: Theme = {
 
 const { render } = setup({ theme });
 
+test('render nothing', async () => {
+  render(<HelpText data-testid="help-text" />);
+
+  const element = screen.queryByTestId('help-text');
+  expect(element).not.toBeInTheDocument();
+});
+
 test('render description', () => {
   render(<HelpText description="This is a help text description" />);
 
