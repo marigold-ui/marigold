@@ -33,20 +33,11 @@ const YearDropdown = ({ state, setSelectedDropdown }: YearDropdownProps) => {
   };
 
   return (
-    <ul
-      style={{
-        gridTemplateColumns: '1fr 1fr 1fr',
-        overflowY: 'scroll',
-        rowGap: '2.5rem',
-      }}
-      className="grid  h-full max-h-[300px] min-w-[300px] p-2"
-    >
+    <ul className="grid h-full max-h-[300px] min-w-[300px] grid-cols-3 gap-y-10 overflow-y-scroll p-2">
       {years.map((year, index) => {
         return (
           <li className="flex justify-center" key={index}>
             <Button
-              data-selected={true}
-              data-active={true}
               disabled={state.isDisabled}
               variant={
                 +year.formatted === state.focusedDate.year
@@ -66,17 +57,6 @@ const YearDropdown = ({ state, setSelectedDropdown }: YearDropdownProps) => {
         );
       })}
     </ul>
-    // <Select
-    //   aria-label="Year"
-    //   selectedKey={'20'}
-    //   onChange={onChange}
-    //   data-testid="year"
-    //   disabled={state.isDisabled}
-    // >
-    //   {years.map((year, i) => (
-    //     <Select.Option key={i}>{year.formatted}</Select.Option>
-    //   ))}
-    // </Select>
   );
 };
 

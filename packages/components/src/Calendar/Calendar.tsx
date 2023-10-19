@@ -108,6 +108,7 @@ export const Calendar = ({
         selectedDropdown === 'month' ? (
           <MonthDropdown
             setSelectedDropdown={setSelectedDropdown}
+            months={months}
             state={state}
           />
         ) : (
@@ -118,28 +119,25 @@ export const Calendar = ({
         )
       ) : (
         <>
-          {/* upper part */}
           <div className="mb-4 flex items-center justify-between">
-            {/* select buttons */}
-            <div className="flex  gap-[9px] [&_div]:flex">
-              <div className="flex w-full gap-4">
-                <button
-                  onClick={() => setSelectedDropdown('month')}
-                  className={cn(buttonStyles, selectClassNames)}
-                >
-                  {months[state.focusedDate.month - 1].substring(0, 3)}
-                  <ChevronDown />
-                </button>
-                <button
-                  onClick={() => setSelectedDropdown('year')}
-                  className={cn(buttonStyles, selectClassNames)}
-                >
-                  {state.focusedDate.year}
-                  <ChevronDown />
-                </button>
-              </div>
+            <div className="flex w-full gap-4">
+              <button
+                disabled={state.isDisabled}
+                onClick={() => setSelectedDropdown('month')}
+                className={cn(buttonStyles, selectClassNames)}
+              >
+                {months[state.focusedDate.month - 1].substring(0, 3)}
+                <ChevronDown />
+              </button>
+              <button
+                disabled={state.isDisabled}
+                onClick={() => setSelectedDropdown('year')}
+                className={cn(buttonStyles, selectClassNames)}
+              >
+                {state.focusedDate.year}
+                <ChevronDown />
+              </button>
             </div>
-            {/* days */}
             <div className="flex w-full flex-nowrap justify-end gap-[10px] [&_button:disabled]:cursor-not-allowed [&_button]:px-2 [&_button]:py-1">
               <Button
                 className={classNames.calendarControllers}
@@ -157,7 +155,6 @@ export const Calendar = ({
               </Button>
             </div>
           </div>
-          {/* lower part */}
           <CalendarGrid state={state} />
         </>
       )}
