@@ -18,7 +18,7 @@ export interface HeadlineProps
   color?: string;
   variant?: string;
   size?: string;
-  level?: string | RAC.HeadingProps['level'];
+  level?: '1' | '2' | '3' | '4' | '5' | '6' | RAC.HeadingProps['level'];
 }
 
 const _Headline = ({
