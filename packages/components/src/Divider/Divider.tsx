@@ -1,17 +1,15 @@
-import { SeparatorProps, useSeparator } from '@react-aria/separator';
+import { Separator } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import { useClassNames } from '@marigold/system';
 
-// Props
-// ---------------
-export interface DividerProps extends SeparatorProps {
+export interface DividerProps extends RAC.SeparatorProps {
   variant?: string;
 }
 
-// Component
-// ---------------
-export const Divider = ({ variant, ...props }: DividerProps) => {
-  const { separatorProps } = useSeparator(props);
+const _Divider = ({ variant, ...props }: DividerProps) => {
   const classNames = useClassNames({ component: 'Divider', variant });
-  return <div className={classNames} {...props} {...separatorProps} />;
+  return <Separator className={classNames} {...props} />;
 };
+
+export { _Divider as Divider };

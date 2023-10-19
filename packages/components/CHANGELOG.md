@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 6.3.1
+
+### Patch Changes
+
+- [#3402](https://github.com/marigold-ui/marigold/pull/3402) [`d8b3cca2d`](https://github.com/marigold-ui/marigold/commit/d8b3cca2dfe5ff199c5045c1e77cec7d6384c725) Thanks [@sarahgm](https://github.com/sarahgm)! - fix[DST-222]: Select width by item
+
+- Updated dependencies []:
+  - @marigold/system@6.3.1
+  - @marigold/icons@1.2.17
+
 ## 6.3.0
 
 ### Minor Changes

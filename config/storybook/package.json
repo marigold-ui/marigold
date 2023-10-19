@@ -1,7 +1,7 @@
 {
   "name": "@marigold/storybook-config",
   "description": "Marigold's storybook configuration",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "license": "MIT",
   "exports": "./main.js",
   "keywords": [
@@ -33,7 +33,8 @@
   },
   "devDependencies": {
     "@storybook/addon-postcss": "2.0.0",
-    "@storybook/addon-styling": "0.3.2",
+    "@storybook/addon-styling": "1.3.7",
+    "@storybook/addons": "7.4.6",
     "@storybook/builder-vite": "7.4.5",
     "@storybook/cli": "7.4.5",
     "@storybook/core-events": "7.4.5",

@@ -1,4 +1,4 @@
-import { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
 
 import {
   StateAttrProps,
@@ -18,8 +18,7 @@ export interface FieldBaseProps extends WidthProp {
   size?: string;
   disabled?: boolean;
   label?: ReactNode;
-  labelProps?: Omit<LabelHTMLAttributes<HTMLLabelElement>, 'children'> &
-    Pick<LabelProps, 'as'>;
+  labelProps?: LabelProps;
   description?: ReactNode;
   descriptionProps?: Omit<HTMLAttributes<HTMLElement>, 'children'>;
   error?: boolean;
