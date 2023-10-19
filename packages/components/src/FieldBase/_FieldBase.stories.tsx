@@ -158,20 +158,6 @@ const HelpText = ({
   );
 };
 
-// function MyTextField(
-//   { label, description, errorMessage, variant, size, width, ...props }: MyTextFieldProps & UseFieldLayoutProps
-// ) {
-//   const classNames = useFieldLayout({ variant, size, width });
-
-//   return (
-//     <TextField className={classNames} {...props}>
-//       <Label>{label}</Label>
-//       <Input className="border" />
-//       <HelpText description={description} errorMessage={errorMessage} error={props.isInvalid}/>
-//     </TextField>
-//   );
-// }
-
 function MyTextField(props: MyTextFieldProps & UseFieldLayoutProps) {
   return (
     <FieldBase as={TextField} {...props} isInvalid={true}>
@@ -179,29 +165,3 @@ function MyTextField(props: MyTextFieldProps & UseFieldLayoutProps) {
     </FieldBase>
   );
 }
-
-// const FieldBase = ({
-//   component: Component,
-//   children,
-//   variant,
-//   size,
-//   width,
-//   label,
-//   description,
-//   errorMessage,
-//   ...props
-// }: any) => {
-//   const classNames = useFieldLayout({ variant, size, width });
-
-//   return (
-//     <Component className={classNames} {...props}>
-//       <Label>{label}</Label>
-//       {children}
-//       <HelpText
-//         description={description}
-//         errorMessage={errorMessage}
-//         error={props.isInvalid}
-//       />
-//     </Component>
-//   );
-// };

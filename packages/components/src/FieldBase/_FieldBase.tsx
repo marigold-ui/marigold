@@ -1,45 +1,37 @@
-import {
-  type ComponentPropsWithRef,
+import { forwardRef } from 'react';
+import type {
+  ComponentPropsWithRef,
   ElementType,
-  type ForwardedRef,
-  type ReactNode,
-  forwardRef,
+  ForwardedRef,
+  ReactNode,
 } from 'react';
 
 import { cn, width as twWidth, useClassNames } from '@marigold/system';
 import type { WidthProp } from '@marigold/system';
+import type { DistributiveOmit, FixedForwardRef } from '@marigold/types';
 
 import { Label } from '../Label';
 
-// Helpers
-// ---------------
-// TODO: Move these to @marigold/types
-type FixedForwardRef = <T, P = {}>(
-  render: (props: P, ref: React.Ref<T>) => React.ReactNode
-) => (props: P & React.RefAttributes<T>) => React.ReactNode;
-
 const fixedForwardRef = forwardRef as FixedForwardRef;
-
-type DistributiveOmit<T, TOmitted extends PropertyKey> = T extends any
-  ? Omit<T, TOmitted>
-  : never;
 
 // Props
 // ---------------
-export interface FieldBaseProps<C extends ElementType> extends WidthProp {
-  as?: C;
+export interface FieldBaseProps<T extends ElementType> extends WidthProp {
+  as?: T;
   label?: ReactNode;
   variant?: string;
   size?: string;
   children?: ReactNode;
 }
 
-const _FieldBase = <C extends ElementType>(
-  props: FieldBaseProps<C> & DistributiveOmit<ComponentPropsWithRef<C>, 'as'>,
+// Component
+// ---------------
+const _FieldBase = <T extends ElementType>(
+  props: FieldBaseProps<T> & DistributiveOmit<ComponentPropsWithRef<T>, 'as'>,
   ref: ForwardedRef<any>
 ) => {
   const {
-    as = 'div',
+    as: Component = 'div',
     children,
     label,
     size,
@@ -47,7 +39,6 @@ const _FieldBase = <C extends ElementType>(
     width = 'full',
     ...rest
   } = props;
-  const Component = as;
   const classNames = useClassNames({
     component: 'Field',
     variant,
