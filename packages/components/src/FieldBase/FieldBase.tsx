@@ -10,7 +10,6 @@ import {
 
 import { HelpText } from '../HelpText';
 import { Label, LabelProps } from '../Label';
-import { useFieldGroupContext } from './FieldGroup';
 
 export interface FieldBaseProps extends WidthProp {
   children?: ReactNode;
@@ -46,8 +45,6 @@ export const FieldBase = ({
   ...props
 }: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
-
-  const { labelWidth } = useFieldGroupContext();
   const classNames = useClassNames({
     component: 'Field',
     variant,
@@ -61,12 +58,7 @@ export const FieldBase = ({
       className={cn('group/field', twWidth[width], classNames)}
     >
       {label && (
-        <Label
-          variant={variant}
-          size={size}
-          labelWidth={labelWidth}
-          {...labelProps}
-        >
+        <Label variant={variant} size={size} {...labelProps}>
           {label}
         </Label>
       )}
