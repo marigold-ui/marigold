@@ -85,7 +85,7 @@ export const Basic: StoryObj<typeof Select> = {
   render: args => {
     const [selected, setSelected] = useState<string | number>('');
     return (
-      <Container size="small">
+      <Container size="medium">
         <Select {...args} onChange={setSelected} disabledKeys={['Firefly']}>
           <Select.Option key="Harry Potter">Harry Potter</Select.Option>
           <Select.Option key="Lord of the Rings">
