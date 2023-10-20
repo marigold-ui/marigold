@@ -3,21 +3,18 @@ import type RAC from 'react-aria-components';
 
 import { SVG, cn, createVar, useClassNames } from '@marigold/system';
 
+import { useFieldGroupContext } from '../FieldBase/FieldGroup';
+
 type RemovedProps = 'className';
 export interface LabelProps extends Omit<RAC.LabelProps, RemovedProps> {
   size?: string;
   variant?: string;
-  labelWidth?: string;
 }
 
-const _Label = ({
-  labelWidth,
-  size,
-  variant,
-  children,
-  ...props
-}: LabelProps) => {
+const _Label = ({ size, variant, children, ...props }: LabelProps) => {
   const classNames = useClassNames({ component: 'Label', size, variant });
+  const { labelWidth } = useFieldGroupContext();
+
   return (
     <Label
       {...props}
