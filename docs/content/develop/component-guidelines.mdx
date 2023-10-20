@@ -157,6 +157,10 @@ export const Basic: Story = {
 </Tabs>
 ```
 
+If we use `react-aria-components` for a certain component, we name the component we build `_Component` and import the RAC component as it is `import { Component } from 'react-aria-components'`
+
+We export the component without the `_` e.g. `export { _Component as Component}`
+
 ### Props Naming Convention
 
 Component props should always use the regular HTML attribute name (`disabled` and not `isDisabled`).
