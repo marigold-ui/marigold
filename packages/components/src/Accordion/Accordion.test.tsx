@@ -1,5 +1,5 @@
 /* eslint-disable testing-library/no-node-access */
-import { fireEvent, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { Theme, ThemeProvider, cva } from '@marigold/system';
@@ -35,6 +35,7 @@ const theme: Theme = {
   },
 };
 
+const user = userEvent.setup();
 const { render } = setup({ theme });
 
 let items = [
@@ -74,7 +75,7 @@ test('render Accordion and just one Item', () => {
   expect(item).toBeInTheDocument();
 });
 
-test('item opens content by click', () => {
+test('item opens content by click', async () => {
   render(
     <Accordion data-testid="accordion">
       <Accordion.Item title="Information">
@@ -89,11 +90,11 @@ test('item opens content by click', () => {
   const button = screen.getByText('Information');
   expect(button).toHaveAttribute('aria-expanded', 'false');
 
-  fireEvent.click(button);
+  await user.click(button);
   expect(button).toHaveAttribute('aria-expanded', 'true');
 });
 
-test('render dynamically accordion items', () => {
+test('render dynamically accordion items', async () => {
   render(
     <ThemeProvider theme={theme}>
       <Accordion data-testid="accordion">
@@ -110,7 +111,7 @@ test('render dynamically accordion items', () => {
 
   expect(button).toHaveAttribute('aria-expanded', 'false');
 
-  fireEvent.click(button);
+  await user.click(button);
   expect(button).toHaveAttribute('aria-expanded', 'true');
 
   const content = screen.getByText('one children');
