@@ -86,12 +86,17 @@ export const Calendar = ({
     month: 'long',
     timeZone: state.timeZone,
   });
-
   let numMonths = state.focusedDate.calendar.getMonthsInYear(state.focusedDate);
+
   for (let i = 1; i <= numMonths; i++) {
     let date = state.focusedDate.set({ month: i });
     months.push(formatter.format(date.toDate(state.timeZone)));
   }
+
+  const selectedValue = {
+    month: months[state.focusedDate.month - 1].substring(0, 3),
+    year: state.focusedDate.year,
+  };
 
   return (
     <div
@@ -125,16 +130,18 @@ export const Calendar = ({
                 disabled={state.isDisabled}
                 onClick={() => setSelectedDropdown('month')}
                 className={cn(buttonStyles, selectClassNames)}
+                data-testid="month"
               >
-                {months[state.focusedDate.month - 1].substring(0, 3)}
+                {selectedValue.month}
                 <ChevronDown />
               </button>
               <button
                 disabled={state.isDisabled}
                 onClick={() => setSelectedDropdown('year')}
                 className={cn(buttonStyles, selectClassNames)}
+                data-testid="year"
               >
-                {state.focusedDate.year}
+                {selectedValue.year}
                 <ChevronDown />
               </button>
             </div>

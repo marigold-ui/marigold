@@ -22,13 +22,16 @@ const MonthDropdown = ({
   };
 
   return (
-    <ul className="grid h-full max-h-[300px] min-w-[300px] grid-cols-3 gap-y-10 overflow-y-scroll p-2">
+    <ul
+      data-testid="monthOptions"
+      className="grid h-full max-h-[300px] min-w-[300px] grid-cols-3 gap-y-10 overflow-y-scroll p-2"
+    >
       {months.map((month, index) => {
         return (
           <li className="flex justify-center" key={index}>
             <Button
               variant={
-                +month === state.focusedDate.month ? 'secondary' : 'text'
+                index === state.focusedDate.month - 1 ? 'secondary' : 'text'
               }
               size="small"
               onPress={() => {

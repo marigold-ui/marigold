@@ -33,7 +33,10 @@ const YearDropdown = ({ state, setSelectedDropdown }: YearDropdownProps) => {
   };
 
   return (
-    <ul className="grid h-full max-h-[300px] min-w-[300px] grid-cols-3 gap-y-10 overflow-y-scroll p-2">
+    <ul
+      data-testid="yearOptions"
+      className="grid h-full max-h-[300px] min-w-[300px] grid-cols-3 gap-y-10 overflow-y-scroll p-2"
+    >
       {years.map((year, index) => {
         return (
           <li className="flex justify-center" key={index}>
