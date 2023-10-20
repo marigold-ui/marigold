@@ -11,6 +11,10 @@ const theme: Theme = {
   name: 'slider testing',
   components: {
     Field: cva(),
+    Label: {
+      container: cva(),
+      indicator: cva(),
+    },
     Slider: {
       track: cva([
         'absolute top-4 h-2 w-full',
