@@ -48,7 +48,7 @@ export const ColorTokenTable = ({ sections = {} }: ColorTokenTableProps) => {
     <>
       {Object.entries(sections).map(([group, tokenValues]) => (
         <div key={group}>
-          <Headline level="3">
+          <Headline level={3}>
             {group.charAt(0).toUpperCase() + group.slice(1)}
           </Headline>
           <Card>

@@ -34,14 +34,14 @@ export const Basic: Story = {
   render: args => (
     <Accordion defaultExpandedKeys={['1']} {...args}>
       <Accordion.Item key={1} title="Informations">
-        <Headline level="3">Some Imformations</Headline>
+        <Headline level={3}>Some Imformations</Headline>
         <TextField label="Name" />
       </Accordion.Item>
       <Accordion.Item key={2} title="Personal Settings">
         two
       </Accordion.Item>
       <Accordion.Item key={3} title="Billing Adress">
-        <Headline level="3">Some Imformations</Headline>
+        <Headline level={3}>Some Imformations</Headline>
       </Accordion.Item>
     </Accordion>
   ),
@@ -139,7 +139,7 @@ export const AccordionInsideAccordion: Story = {
   render: args => (
     <Accordion {...args}>
       <Accordion.Item key={1} title="Settings">
-        <Headline level="3">Some setting options</Headline>
+        <Headline level={3}>Some setting options</Headline>
         <Accordion>
           <Accordion.Item key={2} title="Personal Settings">
             <TextField label="Name" />
@@ -147,7 +147,7 @@ export const AccordionInsideAccordion: Story = {
         </Accordion>
       </Accordion.Item>
       <Accordion.Item key={3} title="TO DO">
-        <Headline level="3">More things to do</Headline>
+        <Headline level={3}>More things to do</Headline>
         <Accordion>
           <Accordion.Item key={4} title="Edit something">
             <TextField label="E-Mail" type="email" />

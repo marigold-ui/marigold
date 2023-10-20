@@ -15,7 +15,7 @@ export default () => {
   const [value, setValue] = useState('');
   return (
     <FieldGroup labelWidth="100px">
-      <Headline level="2">Account Registration</Headline>
+      <Headline level={2}>Account Registration</Headline>
       <Stack space={4}>
         <Columns columns={[2, 2]} space={4}>
           <TextField
