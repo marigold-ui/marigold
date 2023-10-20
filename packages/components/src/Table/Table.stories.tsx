@@ -307,7 +307,9 @@ export const ControlledTable: Story = {
           onSelectionChange={key => setSelectedKeys(new Set(key))}
         >
           <Table.Header columns={columns}>
-            {column => <Table.Column>{(column as any).name}</Table.Column>}
+            {column => (
+              <Table.Column isRowHeader>{(column as any).name}</Table.Column>
+            )}
           </Table.Header>
           <Table.Body items={rows}>
             {item => (
