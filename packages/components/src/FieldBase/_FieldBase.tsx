@@ -10,13 +10,17 @@ import { cn, width as twWidth, useClassNames } from '@marigold/system';
 import type { WidthProp } from '@marigold/system';
 import type { DistributiveOmit, FixedForwardRef } from '@marigold/types';
 
+import { HelpText } from '../HelpText/_HelpText';
+import type { HelpTextProps } from '../HelpText/_HelpText';
 import { Label } from '../Label';
 
 const fixedForwardRef = forwardRef as FixedForwardRef;
 
 // Props
 // ---------------
-export interface FieldBaseProps<T extends ElementType> extends WidthProp {
+export interface FieldBaseProps<T extends ElementType>
+  extends WidthProp,
+    Pick<HelpTextProps, 'description' | 'errorMessage'> {
   as?: T;
   label?: ReactNode;
   variant?: string;
@@ -37,6 +41,8 @@ const _FieldBase = <T extends ElementType>(
     size,
     variant,
     width = 'full',
+    description,
+    errorMessage,
     ...rest
   } = props;
   const classNames = useClassNames({
@@ -53,11 +59,11 @@ const _FieldBase = <T extends ElementType>(
     >
       <Label>{label}</Label>
       {children}
-      {/* <HelpText
+      <HelpText
         description={description}
         errorMessage={errorMessage}
         error={props.isInvalid}
-      /> */}
+      />
     </Component>
   );
 };
