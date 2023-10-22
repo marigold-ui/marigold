@@ -120,7 +120,7 @@ export const Stacks: StoryObj<typeof Tiles> = {
             width={200}
             height={200}
           />
-          <Headline level="4">Glumanda</Headline>
+          <Headline level={4}>Glumanda</Headline>
           <Text>
             Glumanda ist ein Pokémon mit dem Typ Feuer und existiert seit der
             ersten Spielgeneration. Es ist neben Bisasam und Schiggy eines der
@@ -136,7 +136,7 @@ export const Stacks: StoryObj<typeof Tiles> = {
             width={200}
             height={200}
           />
-          <Headline level="4">Glutexo</Headline>
+          <Headline level={4}>Glutexo</Headline>
           <Text>
             Glutexo ist ein Pokémon mit dem Typ Feuer und existiert seit der
             ersten Spielgeneration. Als erste Weiterentwicklung von Glumanda
@@ -153,7 +153,7 @@ export const Stacks: StoryObj<typeof Tiles> = {
             width={250}
             height={200}
           />
-          <Headline level="4">Glurak</Headline>
+          <Headline level={4}>Glurak</Headline>
           <Text>
             Glurak ist ein Pokémon mit den Typen Feuer und Flug und existiert
             seit der ersten Spielgeneration. Es stellt die zweite

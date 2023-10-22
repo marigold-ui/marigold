@@ -21,9 +21,16 @@ const meta = {
     },
     size: {
       control: {
-        type: 'text',
+        type: 'select',
       },
-      description: 'The size of the headline',
+      options: [
+        'level-1',
+        'level-2',
+        'level-3',
+        'level-4',
+        'level-5',
+        'level-6',
+      ],
     },
     align: {
       control: {

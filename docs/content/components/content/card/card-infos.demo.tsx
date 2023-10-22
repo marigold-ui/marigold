@@ -3,7 +3,7 @@ import { Card, Headline, Link, Stack, Text } from '@marigold/components';
 export default () => (
   <Card p={4}>
     <Stack space={5}>
-      <Headline level="3">Professor Severus Snape</Headline>
+      <Headline level={3}>Professor Severus Snape</Headline>
       <Text>
         <strong>Professor Severus Snape</strong> (9 January, 1960[1] - 2 May,
         1998)[2] was an English half-blood[3] wizard serving as Potions Master
