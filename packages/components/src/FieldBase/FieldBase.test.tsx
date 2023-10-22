@@ -6,7 +6,7 @@ import { AriaTextFieldOptions, useTextField } from '@react-aria/textfield';
 import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { FieldBase } from './FieldBase';
+import { FieldBase } from './_FieldBase';
 
 // Setup
 // ---------------
@@ -51,41 +51,48 @@ const theme: Theme = {
 
 const { render } = setup({ theme });
 
-interface MockedTestFieldProps extends AriaTextFieldOptions<'input'> {
-  disabled?: boolean;
-  required?: boolean;
-  label?: ReactNode;
-  description?: ReactNode;
-  error?: boolean;
-  errorMessage?: ReactNode;
+interface MockedFieldProps {
+  children?: ReactNode;
+  isInvalid?: boolean;
 }
 
-const MockedTextField = (props: MockedTestFieldProps) => {
-  const ref = useRef(null);
-  const { labelProps, inputProps, descriptionProps, errorMessageProps } =
-    useTextField(props, ref);
-
-  return (
-    <FieldBase
-      {...props}
-      labelProps={labelProps}
-      descriptionProps={descriptionProps}
-      errorMessageProps={errorMessageProps}
-    >
-      <input {...inputProps} ref={ref} />
-    </FieldBase>
-  );
-};
+const MockedField = ({ children }: MockedFieldProps) => (
+  <div data-testid="mocked-field">{children}</div>
+);
 
 // Tests
 // ---------------
+test('render passed in field', () => {
+  render(
+    <FieldBase as={MockedField}>
+      <input />
+    </FieldBase>
+  );
+
+  const field = screen.getByTestId('mocked-field');
+  expect(field).toBeInTheDocument();
+});
+
+test('render passed in input', () => {
+  render(
+    <FieldBase as={MockedField}>
+      <input data-testid="test-input" />
+    </FieldBase>
+  );
+
+  const input = screen.getByTestId('test-input');
+  expect(input).toBeInTheDocument();
+});
+
 test('render Field with label and helptext', () => {
   render(
-    <MockedTextField
+    <FieldBase
       label="Label"
       description="This is a helpful text"
       errorMessage="Something went wrong"
-    />
+    >
+      <input />
+    </FieldBase>
   );
 
   const label = screen.getByText('Label');
@@ -98,11 +105,14 @@ test('render Field with label and helptext', () => {
 
 test('render Field with label and errorMessage', () => {
   render(
-    <MockedTextField
+    <FieldBase
+      as={MockedField}
       label="Label"
       errorMessage="Something went wrong"
-      error={true}
-    />
+      isInvalid
+    >
+      <input />
+    </FieldBase>
   );
 
   const label = screen.getByText('Label');
@@ -113,12 +123,15 @@ test('render Field with label and errorMessage', () => {
 
 test('render Field with label and errorMessage although description is set', () => {
   render(
-    <MockedTextField
+    <FieldBase
+      as={MockedField}
       label="Label"
       description="This is a helpful text"
       errorMessage="Something went wrong"
-      error={true}
-    />
+      isInvalid
+    >
+      <input />
+    </FieldBase>
   );
 
   const label = screen.getByText('Label');
@@ -127,21 +140,6 @@ test('render Field with label and errorMessage although description is set', () 
   expect(description).not.toBeInTheDocument();
   const error = screen.getByText('Something went wrong');
   expect(error).toBeInTheDocument();
-});
-
-test('field label shows requried indicator', () => {
-  render(
-    <MockedTextField
-      label="Label"
-      required
-      description="This is a helpful text"
-      errorMessage="Something went wrong"
-    />
-  );
-
-  const label = screen.getByText('Label');
-  const requiredIcon = within(label).getByRole('presentation');
-  expect(requiredIcon).toBeInTheDocument();
 });
 
 test('passes down variant and size', () => {
