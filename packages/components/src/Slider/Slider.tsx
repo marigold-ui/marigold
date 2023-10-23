@@ -48,40 +48,35 @@ export const _Slider = forwardRef(
     };
     return (
       <Slider
-        className={cn('flex touch-none flex-col', twWidth[width])}
+        className={cn(
+          'grid grid-cols-[auto_1fr] gap-y-1',
+          classNames.container,
+          twWidth[width]
+        )}
         ref={ref}
         {...props}
       >
-        <div className="flex self-stretch">
-          <Label>{props.children as React.ReactNode}</Label>
-          <SliderOutput>
-            {({ state }) =>
-              state.values
-                .map((_, i) => state.getThumbValueLabel(i))
-                .join(' – ')
-            }
-          </SliderOutput>
-        </div>
+        <Label>{props.children as React.ReactNode}</Label>
+        <SliderOutput className={cn('flex justify-end', classNames.output)}>
+          {({ state }) =>
+            state.values.map((_, i) => state.getThumbValueLabel(i)).join(' – ')
+          }
+        </SliderOutput>
 
-        <div className="h-8 w-full cursor-pointer data-[disabled]:cursor-not-allowed">
-          <SliderTrack
-            className={cn(
-              'absolute top-1/2 h-2 w-full -translate-y-1/2',
-              classNames.track
-            )}
-          >
-            {({ state }) =>
-              state.values.map((_, i) => (
-                <SliderThumb
-                  className={cn('top-1/2', classNames.thumb)}
-                  key={i}
-                  index={i}
-                  aria-label={thumbLabels?.[i]}
-                />
-              ))
-            }
-          </SliderTrack>
-        </div>
+        <SliderTrack
+          className={cn('relative col-span-2 h-2 w-full', classNames.track)}
+        >
+          {({ state }) =>
+            state.values.map((_, i) => (
+              <SliderThumb
+                className={cn('top-1/2 cursor-pointer', classNames.thumb)}
+                key={i}
+                index={i}
+                aria-label={thumbLabels?.[i]}
+              />
+            ))
+          }
+        </SliderTrack>
       </Slider>
     );
   }
