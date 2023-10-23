@@ -16,4 +16,5 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
     'group-[disabled]/checkbox:group-[selected]/checkbox:border-border-disabled group-[disabled]/checkbox:group-[selected]/checkbox:bg-bg-disabled-dark',
     'group-indeterminate/checkbox:border-border-selected group-indeterminate/checkbox:bg-bg-selected group-indeterminate/checkbox:text-text-light',
   ]),
+  group: cva('pt-1'),
 };

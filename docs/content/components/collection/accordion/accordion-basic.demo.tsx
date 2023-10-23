@@ -4,7 +4,7 @@ export default () => (
   <Accordion defaultExpandedKeys={['1']}>
     <Accordion.Item key={1} title="Informations">
       {/* just to test scroll */}
-      <Headline level="3">
+      <Headline level={3}>
         Some Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem
         voluptatem minima hic ex ullam, asperiores quaerat quas eveniet, magnam
         quisquam dolores. Beatae eaque eveniet error ipsa veniam vero culpa
@@ -16,7 +16,7 @@ export default () => (
       two
     </Accordion.Item>
     <Accordion.Item key={3} title="Billing Adress">
-      <Headline level="3">Some Imformations</Headline>
+      <Headline level={3}>Some Imformations</Headline>
     </Accordion.Item>
   </Accordion>
 );

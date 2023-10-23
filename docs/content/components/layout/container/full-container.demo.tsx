@@ -2,7 +2,7 @@ import { Container, Headline, List, Text } from '@marigold/components';
 
 export default () => (
   <Container size="large" alignItems="left" align="center">
-    <Headline level="2">Star Wars - The Empire Strikes Back</Headline>
+    <Headline level={2}>Star Wars - The Empire Strikes Back</Headline>
     <Text>
       It is a dark time for the Rebellion. Although the Death Star has been
       destroyed, Imperial troops have driven the Rebel forces from their hidden
