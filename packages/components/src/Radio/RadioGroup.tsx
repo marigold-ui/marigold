@@ -43,6 +43,7 @@ const _RadioGroup = ({
     >
       <div
         role="presentation"
+        data-testid="group"
         data-orientation={orientation}
         className={cn(
           classNames.group,
