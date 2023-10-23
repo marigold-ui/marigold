@@ -9,4 +9,5 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
   ]),
   container: cva(''),
   label: cva('group-[disabled]/checkbox:text-text-disabled text-sm'),
+  group: cva(''),
 };

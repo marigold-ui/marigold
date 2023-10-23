@@ -11,6 +11,10 @@ const theme: Theme = {
   name: 'slider testing',
   components: {
     Field: cva(),
+    Label: {
+      container: cva(),
+      indicator: cva(),
+    },
     Slider: {
       track: cva([
         'absolute top-4 h-2 w-full',
@@ -130,7 +134,7 @@ test('allows to set width via prop', () => {
 
 test('forwards ref', () => {
   const ref = React.createRef<HTMLDivElement>();
-  render(<Slider ref={ref}>Percent</Slider>);
+  render(<Slider ref={ref as any}>Percent</Slider>);
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
 });
