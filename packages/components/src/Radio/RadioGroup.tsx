@@ -2,7 +2,12 @@ import { ReactNode } from 'react';
 import { RadioGroup } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
-import { WidthProp, cn, useClassNames } from '@marigold/system';
+import {
+  WidthProp,
+  cn,
+  width as twWidth,
+  useClassNames,
+} from '@marigold/system';
 
 import { FieldBase } from '../FieldBase/_FieldBase';
 import { RadioGroupContext } from './Context';
@@ -52,7 +57,7 @@ const _RadioGroup = ({
             : 'flex-row gap-[1.5ch]'
         )}
       >
-        <RadioGroupContext.Provider value={{ width }}>
+        <RadioGroupContext.Provider value={{ width, variant, size }}>
           {children}
         </RadioGroupContext.Provider>
       </div>

@@ -10,6 +10,7 @@ import type RAC from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 
 import { useRadioGroupContext } from './Context';
+import { RadioGroup } from './RadioGroup';
 
 type RemovedProps = 'className' | 'children';
 
@@ -69,7 +70,13 @@ const _Radio = forwardRef<HTMLInputElement, RadioProps>(
       >
         {({ isSelected }) => (
           <>
-            <Icon checked={isSelected} className={classNames.radio} />
+            <Icon
+              checked={isSelected}
+              className={cn(
+                disabled ? 'cursor-not-allowed' : 'cursor-pointer',
+                classNames.radio
+              )}
+            />
             <div className={classNames.label}>{props.children}</div>
           </>
         )}
@@ -80,6 +87,8 @@ const _Radio = forwardRef<HTMLInputElement, RadioProps>(
 
 export { _Radio as Radio };
 
+_Radio.Group = RadioGroup;
+
 /**
  * We need this so that TypeScripts allows us to add
  * additional properties to the component (function).
@@ -88,5 +97,5 @@ export interface RadioComponent
   extends ForwardRefExoticComponent<
     RadioProps & RefAttributes<HTMLInputElement>
   > {
-  //   Group: typeof RadioGroup;
+  Group: typeof RadioGroup;
 }

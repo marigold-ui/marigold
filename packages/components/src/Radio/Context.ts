@@ -8,7 +8,6 @@ export interface RadioGroupContextProps {
   variant?: string;
   size?: string;
   width?: WidthProp['width'];
-  state: RadioGroupState;
 }
 
 export const RadioGroupContext = createContext<RadioGroupContextProps>(
