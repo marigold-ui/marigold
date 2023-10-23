@@ -6,7 +6,7 @@ import { mergeProps } from '@react-aria/utils';
 
 import { useDatePickerState } from '@react-stately/datepicker';
 
-import { WidthProp, cn, useClassNames, useStateProps } from '@marigold/system';
+import { WidthProp, useClassNames, useStateProps } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Calendar } from '../Calendar/Calendar';
@@ -91,7 +91,6 @@ export const DatePicker = ({
             <div className={classNames.container}>
               <Button
                 {...mergeProps(buttonProps, stateProps)}
-                className={cn('absolute right-0 top-0', classNames.button)}
                 disabled={isDisabled}
               >
                 <svg
