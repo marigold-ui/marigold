@@ -57,9 +57,13 @@ const _FieldBase = <T extends ElementType>(
       className={cn('group/field', twWidth[width], classNames)}
       {...rest}
     >
-      <Label>{label}</Label>
+      <Label variant={variant} size={size}>
+        {label}
+      </Label>
       {children}
       <HelpText
+        variant={variant}
+        size={size}
         description={description}
         errorMessage={errorMessage}
         error={props.isInvalid}
