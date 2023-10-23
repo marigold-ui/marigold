@@ -77,7 +77,7 @@ export const CheckboxGroup = ({
     component: 'Checkbox',
     variant,
     size,
-    className: { group: 'flex flex-col items-start' },
+    className: { group: 'flex flex-col items-start gap-[0.5ch]' },
   });
   const stateProps = useStateProps({
     disabled,
