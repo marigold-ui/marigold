@@ -7,7 +7,7 @@ export interface NestedStringObject {
 export interface ComponentStyleFunction<
   Variants extends string = never,
   Sizes extends string = never,
-  Additional extends { [name: string]: any } = {}
+  Additional extends { [name: string]: any } = {},
 > {
   (
     props?: {
@@ -53,7 +53,7 @@ export type Theme = {
     >;
     Image?: ComponentStyleFunction<string, string>;
     Checkbox?: Record<
-      'container' | 'label' | 'checkbox',
+      'container' | 'label' | 'checkbox' | 'group',
       ComponentStyleFunction<string, string>
     >;
     Switch?: Record<
