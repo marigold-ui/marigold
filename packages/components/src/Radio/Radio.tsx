@@ -58,6 +58,7 @@ const _Radio = forwardRef<HTMLInputElement, RadioProps>(
 
     return (
       <Radio
+        ref={ref}
         className={cn(
           'group/radio',
           'relative flex items-center gap-[1ch]',
