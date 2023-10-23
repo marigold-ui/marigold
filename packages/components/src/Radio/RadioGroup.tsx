@@ -2,12 +2,7 @@ import { ReactNode } from 'react';
 import { RadioGroup } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
-import {
-  WidthProp,
-  cn,
-  width as twWidth,
-  useClassNames,
-} from '@marigold/system';
+import { WidthProp, cn, useClassNames } from '@marigold/system';
 
 import { FieldBase } from '../FieldBase/_FieldBase';
 import { RadioGroupContext } from './Context';
