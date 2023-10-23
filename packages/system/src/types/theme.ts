@@ -79,7 +79,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Radio?: Record<
-      'container' | 'label' | 'radio',
+      'container' | 'label' | 'radio' | 'group',
       ComponentStyleFunction<string, string>
     >;
     Slider?: Record<

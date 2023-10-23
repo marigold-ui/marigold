@@ -10,4 +10,5 @@ export const Radio: ThemeComponent<'Radio'> = {
     'group-checked/radio:border-border-selected-input group-checked/radio:bg-bg-selected-input group-checked/radio:text-white',
     'group-disabled/radio:bg-bg-disabled group-disabled/radio:border-border-disabled',
   ]),
+  group: cva(),
 };
