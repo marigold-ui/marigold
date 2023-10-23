@@ -74,6 +74,8 @@ export const Basic: Story = { render: args => <Slider {...args} /> };
 
 export const Currency: Story = {
   render: args => (
-    <Slider formatOptions={{ style: 'currency', currency: 'EUR' }} {...args} />
+    <Slider formatOptions={{ style: 'currency', currency: 'EUR' }} {...args}>
+      this is label
+    </Slider>
   ),
 };
