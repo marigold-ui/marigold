@@ -30,6 +30,7 @@ const theme: Theme = {
         'data-[indeterminate]:border-checkbox-base-indeterminate data-[indeterminate]:bg-checkbox-base-indeterminateBackground data-[indeterminate]:text-white',
         'data-[disabled]:border-checkbox-base-disabled data-[disabled]:bg-checkbox-base-disabledBackground',
       ]),
+      group: cva(),
     },
     Field: cva(),
   },
