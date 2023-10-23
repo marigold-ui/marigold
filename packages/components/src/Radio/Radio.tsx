@@ -1,36 +1,33 @@
 import {
-  type ForwardRefExoticComponent,
-  type RefAttributes,
+  ForwardRefExoticComponent,
+  ReactNode,
+  RefAttributes,
   forwardRef,
 } from 'react';
+import { Radio } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
-import { useFocusRing } from '@react-aria/focus';
-import { useHover } from '@react-aria/interactions';
-import { useRadio } from '@react-aria/radio';
-import { mergeProps, useObjectRef } from '@react-aria/utils';
-
-import type { AriaRadioProps } from '@react-types/radio';
-
-import {
-  StateAttrProps,
-  cn,
-  useClassNames,
-  useStateProps,
-} from '@marigold/system';
-import type { HtmlProps } from '@marigold/types';
+import { cn, useClassNames } from '@marigold/system';
 
 import { useRadioGroupContext } from './Context';
-import { RadioGroup } from './RadioGroup';
 
-// SVG Icon
-// ---------------
+type RemovedProps = 'className' | 'children';
+
+export interface RadioProps extends Omit<RAC.RadioProps, RemovedProps> {
+  variant?: string;
+  size?: string;
+  width?: string;
+  children?: ReactNode;
+  disabled?: RAC.RadioProps['isDisabled'];
+}
+
 const Dot = () => (
   <svg viewBox="0 0 6 6">
     <circle fill="currentColor" cx="3" cy="3" r="3" />
   </svg>
 );
 
-interface IconProps extends StateAttrProps {
+interface IconProps {
   className?: string;
   checked?: boolean;
 }
@@ -48,46 +45,9 @@ const Icon = ({ checked, className, ...props }: IconProps) => (
   </div>
 );
 
-// Props
-// ---------------
-export type CustomRadioProps =
-  | 'size'
-  | 'width'
-  | 'type'
-  | 'defaultChecked'
-  | 'value'
-  | 'onFocus'
-  | 'onBlur'
-  | 'onKeyUp'
-  | 'onKeyDown';
-
-export interface RadioProps
-  extends Omit<HtmlProps<'input'>, CustomRadioProps | 'children' | 'className'>,
-    AriaRadioProps {
-  width?: string;
-  variant?: string;
-  size?: string;
-  disabled?: boolean;
-}
-
-// Component
-// ---------------
-export const Radio = forwardRef<HTMLInputElement, RadioProps>(
-  ({ width, disabled, ...props }, ref) => {
-    const {
-      variant,
-      size,
-      error,
-      width: groupWidth,
-      state,
-    } = useRadioGroupContext();
-
-    const inputRef = useObjectRef(ref);
-    const { inputProps } = useRadio(
-      { isDisabled: disabled, ...props },
-      state,
-      inputRef
-    );
+const _Radio = forwardRef<HTMLInputElement, RadioProps>(
+  ({ value, disabled, width, ...props }, ref) => {
+    const { variant, size, width: groupWidth } = useRadioGroupContext();
 
     const classNames = useClassNames({
       component: 'Radio',
@@ -95,43 +55,30 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
       size: size || props.size,
     });
 
-    const { hoverProps, isHovered } = useHover({ isDisabled: disabled });
-    const { isFocusVisible, focusProps } = useFocusRing();
-    const stateProps = useStateProps({
-      hover: isHovered,
-      focus: isFocusVisible,
-      checked: inputProps.checked,
-      disabled: inputProps.disabled,
-      readOnly: props.readOnly,
-      error,
-    });
-
     return (
-      <label
+      <Radio
         className={cn(
           'group/radio',
           'relative flex items-center gap-[1ch]',
           width || groupWidth || 'w-full',
           classNames.container
         )}
-        {...mergeProps(hoverProps, stateProps)}
+        value={value}
+        isDisabled={disabled}
+        {...props}
       >
-        <input
-          ref={inputRef}
-          className={cn(
-            'absolute left-0 top-0 z-[1] h-full w-full opacity-[0.0001]',
-            inputProps.disabled ? 'cursor-not-allowed' : 'cursor-pointer'
-          )}
-          {...mergeProps(inputProps, focusProps)}
-        />
-        <Icon checked={inputProps.checked} className={classNames.radio} />
-        <div className={classNames.label}>{props.children}</div>
-      </label>
+        {({ isSelected }) => (
+          <>
+            <Icon checked={isSelected} className={classNames.radio} />
+            <div className={classNames.label}>{props.children}</div>
+          </>
+        )}
+      </Radio>
     );
   }
 ) as RadioComponent;
 
-Radio.Group = RadioGroup;
+export { _Radio as Radio };
 
 /**
  * We need this so that TypeScripts allows us to add
@@ -141,5 +88,5 @@ export interface RadioComponent
   extends ForwardRefExoticComponent<
     RadioProps & RefAttributes<HTMLInputElement>
   > {
-  Group: typeof RadioGroup;
+  //   Group: typeof RadioGroup;
 }

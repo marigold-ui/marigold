@@ -5,7 +5,7 @@ import { act } from 'react-dom/test-utils';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { Radio } from './Radio';
+import { Radio } from './_Radio';
 
 const theme: Theme = {
   name: 'test',

@@ -1,80 +1,45 @@
 import { ReactNode } from 'react';
+import { RadioGroup } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
-import { useRadioGroup } from '@react-aria/radio';
+import { WidthProp, cn, useClassNames } from '@marigold/system';
 
-import { useRadioGroupState } from '@react-stately/radio';
-
-import { AriaRadioGroupProps } from '@react-types/radio';
-
-import { WidthProp, cn, useClassNames, useStateProps } from '@marigold/system';
-
-import { FieldBase } from '../FieldBase';
+import { FieldBase } from '../FieldBase/_FieldBase';
 import { RadioGroupContext } from './Context';
 
-// Props
-// ---------------
-export interface RadioGroupProps
-  extends Omit<
-    AriaRadioGroupProps,
-    'isDisabled' | 'isRquired' | 'isReadOnly ' | 'validationState'
-  > {
+export interface RadioGroupProps extends RAC.RadioGroupProps {
   variant?: string;
   size?: string;
+  label?: string;
+  description?: string;
+  errorMessage?: string;
   children: ReactNode[];
   width?: WidthProp['width'];
-  required?: boolean;
-  disabled?: boolean;
-  readOnly?: boolean;
-  error?: boolean;
 }
 
-// Component
-// ---------------
-export const RadioGroup = ({
+const _RadioGroup = ({
   variant,
   size,
-  children,
+  label,
+  description,
+  errorMessage,
   orientation = 'vertical',
+  children,
   width,
-  required,
-  disabled,
-  readOnly,
-  error,
-  ...rest
+  ...props
 }: RadioGroupProps) => {
-  const props: AriaRadioGroupProps = {
-    isRequired: required,
-    isDisabled: disabled,
-    isReadOnly: readOnly,
-    validationState: error ? 'invalid' : 'valid',
-    ...rest,
-  };
-
-  const state = useRadioGroupState(props);
-  const { radioGroupProps, labelProps, errorMessageProps, descriptionProps } =
-    useRadioGroup(props, state);
-
   const classNames = useClassNames({ component: 'Radio', variant, size });
-  const stateProps = useStateProps({
-    disabled,
-    readOnly,
-    error,
-    required,
-  });
 
   return (
     <FieldBase
+      as={RadioGroup}
       width={width}
-      label={props.label}
-      labelProps={{ elementType: 'span', ...labelProps }}
-      description={props.description}
-      descriptionProps={descriptionProps}
-      error={error}
-      errorMessage={props.errorMessage}
-      errorMessageProps={errorMessageProps}
-      disabled={disabled}
-      stateProps={stateProps}
-      {...radioGroupProps}
+      label={label}
+      description={description}
+      errorMessage={errorMessage}
+      variant={variant}
+      size={size}
+      {...props}
     >
       <div
         role="presentation"
@@ -87,10 +52,12 @@ export const RadioGroup = ({
             : 'flex-row gap-[1.5ch]'
         )}
       >
-        <RadioGroupContext.Provider value={{ width, error, state }}>
+        <RadioGroupContext.Provider value={{ width }}>
           {children}
         </RadioGroupContext.Provider>
       </div>
     </FieldBase>
   );
 };
+
+export { _RadioGroup as RadioGroup };

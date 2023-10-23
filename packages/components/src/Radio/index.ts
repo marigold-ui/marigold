@@ -1,3 +1,3 @@
 export * from './Radio';
-export * from './RadioGroup';
-export type { RadioGroupProps } from './RadioGroup';
+export * from './_RadioGroup';
+export type { RadioGroupProps } from './_RadioGroup';
