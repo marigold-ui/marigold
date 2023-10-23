@@ -59,12 +59,12 @@ const meta = {
     //     defaultValue: { summary: false },
     //   },
     // },
-    // width: {
-    //   control: {
-    //     type: 'text',
-    //   },
-    //   description: 'The width of the field',
-    // },
+    width: {
+      control: {
+        type: 'text',
+      },
+      description: 'The width of the field',
+    },
   },
   args: {
     label: 'Label',

@@ -47,7 +47,7 @@ const Icon = ({ checked, className, ...props }: IconProps) => (
 );
 
 const _Radio = forwardRef<HTMLInputElement, RadioProps>(
-  ({ value, disabled, width, ...props }, ref) => {
+  ({ value, disabled, width, children, ...props }, ref) => {
     const { variant, size, width: groupWidth } = useRadioGroupContext();
 
     const classNames = useClassNames({
@@ -78,7 +78,7 @@ const _Radio = forwardRef<HTMLInputElement, RadioProps>(
                 classNames.radio
               )}
             />
-            <div className={classNames.label}>{props.children}</div>
+            <div className={classNames.label}>{children}</div>
           </>
         )}
       </Radio>
