@@ -83,7 +83,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Slider?: Record<
-      'track' | 'thumb' | 'label' | 'output',
+      'container' | 'track' | 'thumb' | 'output',
       ComponentStyleFunction<string, string>
     >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
