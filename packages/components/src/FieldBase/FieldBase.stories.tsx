@@ -1,28 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 
 import { Checkbox, CheckboxGroup } from '../Checkbox';
-import { Input } from '../Input';
 import { Radio } from '../Radio';
 import { RadioGroup } from '../Radio/RadioGroup';
 import { Select } from '../Select';
 import { TextField } from '../TextField';
-import { FieldBase } from './FieldBase';
 import { FieldGroup } from './FieldGroup';
+import { FieldBase } from './_FieldBase';
 
 const meta = {
   title: 'Components/FieldBase',
   component: FieldBase,
   argTypes: {
-    disabled: {
+    label: {
       control: {
-        type: 'boolean',
+        type: 'text',
       },
-      description: 'Whether the field is disabled',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
+      description: 'The Label',
+      defaultValue: 'This is the label',
     },
     description: {
       control: {
@@ -50,6 +45,12 @@ const meta = {
       },
       description: 'The width of the field',
     },
+    isInvalid: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Wheter if the field is invalid',
+    },
   },
   args: {
     errorMessage: 'Something went wrong',
@@ -62,23 +63,20 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <FieldGroup labelWidth="200px">
-      <FieldBase {...args} label="This is my Label">
-        <Input />
-      </FieldBase>
-    </FieldGroup>
+    <FieldBase {...args}>
+      <input className="border" />
+    </FieldBase>
   ),
 };
 
-//TODO: change other components: TextField, Select, RadioGroup
-export const Complex: Story = {
+export const WithFieldGroup: Story = {
   render: args => (
-    <FieldGroup labelWidth="30%">
+    <FieldGroup labelWidth="200px">
       <FieldBase {...args} label="This is my Label">
-        <Input />
+        <input type="text" className="border" />
       </FieldBase>
       <FieldBase {...args} label="This is my Label">
-        <input type="text" />
+        <input type="text" className="border" />
       </FieldBase>
       <TextField label="Hello TextField" />
       <TextField label="Hello" description="my description" />
