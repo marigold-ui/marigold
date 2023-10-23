@@ -151,9 +151,6 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
               ref={inputRef}
               variant={variant}
               size={size}
-              className={{
-                input: 'min-w-0 items-stretch  border-none',
-              }}
               /**
                * We use `size` for styles which is a string, not like
                * the regular HTML attribute, which is a number
