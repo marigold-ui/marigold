@@ -26,6 +26,7 @@ const theme: Theme = {
       }),
       radio: cva('rounded border-solid checked:text-blue-700'),
       label: cva('text-base'),
+      group: cva('pt-4'),
     },
   },
 };
@@ -65,6 +66,22 @@ test('renders label(s) and (hidden) radio', () => {
   expect(screen.getByText('Option 1')).toBeInTheDocument();
   expect(screen.getByText('Option 2')).toBeInTheDocument();
   expect(screen.getByText('Option 3')).toBeInTheDocument();
+});
+
+test('applies group styles from theme', () => {
+  render(
+    <Radio.Group aria-label="With Label">
+      <Radio value="1" data-testid="radio-1">
+        Option 1
+      </Radio>
+      <Radio value="2" data-testid="radio-2">
+        Option 2
+      </Radio>
+    </Radio.Group>
+  );
+
+  const group = screen.getByRole('presentation');
+  expect(group.className).toContain('pt-4');
 });
 
 test('label is optional (can use aria-label instead)', () => {

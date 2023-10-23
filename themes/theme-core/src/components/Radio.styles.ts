@@ -10,4 +10,5 @@ export const Radio: ThemeComponent<'Radio'> = {
     'group-disabled/radio:bg-bg-disabled group-disabled/radio:border-border-disabled',
   ]),
   label: cva(),
+  group: cva('pt-0.5'),
 };

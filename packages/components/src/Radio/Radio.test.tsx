@@ -41,6 +41,7 @@ const theme: Theme = {
       }),
       radio: cva('rounded border-solid checked:text-blue-700'),
       label: cva('text-base'),
+      group: cva(),
     },
   },
 };
