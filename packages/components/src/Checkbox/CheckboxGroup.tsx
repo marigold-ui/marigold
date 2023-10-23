@@ -91,7 +91,10 @@ export const CheckboxGroup = ({
       width={width}
       {...groupProps}
     >
-      <div role="presentation" className={'flex flex-col items-start'}>
+      <div
+        role="presentation"
+        className={'flex flex-col items-start gap-[0.5ch]'}
+      >
         <CheckboxGroupContext.Provider value={{ error, ...state }}>
           {children}
         </CheckboxGroupContext.Provider>
