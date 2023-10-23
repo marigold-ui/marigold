@@ -1,7 +1,5 @@
-import { screen, within } from '@testing-library/react';
-import { ReactNode, useRef } from 'react';
-
-import { AriaTextFieldOptions, useTextField } from '@react-aria/textfield';
+import { screen } from '@testing-library/react';
+import type { ReactNode } from 'react';
 
 import { Theme, cva } from '@marigold/system';
 
