@@ -16,5 +16,8 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     'aria-disabled:text-text-disabled aria-disabled:cursor-not-allowed',
   ]),
   section: cva('[&:nth-child(n+2)]:pt-2'),
-  sectionTitle: cva([font, 'px-1.5 font-bold']),
+  sectionTitle: cva([
+    '[&_header]:font-body [&_header]:text-root-body [&_header]:text-[13px]',
+    '[&_header]:px-1.5 [&_header]:font-bold',
+  ]),
 };
