@@ -3,6 +3,8 @@ import React from 'react';
 
 import { Radio } from '@marigold/components';
 
+import { RadioGroup } from './RadioGroup';
+
 const meta = {
   title: 'Components/Radio',
   argTypes: {
@@ -67,7 +69,7 @@ const meta = {
   args: {
     label: 'Label',
   },
-} satisfies Meta<typeof Radio.Group>;
+} satisfies Meta<typeof RadioGroup>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

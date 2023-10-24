@@ -1,5 +1,19 @@
 # @marigold/components
 
+## 6.5.0
+
+### Minor Changes
+
+- [#3430](https://github.com/marigold-ui/marigold/pull/3430) [`1ce0cabbf`](https://github.com/marigold-ui/marigold/commit/1ce0cabbf8e04cab4345265dbe131d48be773d68) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: refa <Radio> as react-aria-components
+
+### Patch Changes
+
+- [#3434](https://github.com/marigold-ui/marigold/pull/3434) [`5e1219c84`](https://github.com/marigold-ui/marigold/commit/5e1219c84810991be0253186a7f7ec19bd916689) Thanks [@sebald](https://github.com/sebald)! - fix([DST-228]): Hotfix `react-aria` so space works inside forms in an accordion
+
+- Updated dependencies []:
+  - @marigold/system@6.5.0
+  - @marigold/icons@1.2.19
+
 ## 6.4.0
 
 ### Minor Changes

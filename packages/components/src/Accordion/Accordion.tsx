@@ -51,6 +51,11 @@ export const Accordion = ({ children, ...props }: AccordionProps) => {
     ref
   );
 
+  // Remove onKeyDownCapture from listProps to prevent it from removing spacebar support for
+  // inner elements as the Input, this event provides typeahead support for the list, but we
+  // don't need it for the accordion.
+  delete accordionProps.onKeyDownCapture;
+
   return (
     <div {...accordionProps} ref={ref}>
       {[...state.collection].map(item => (
