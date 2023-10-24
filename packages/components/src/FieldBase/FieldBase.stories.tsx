@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Checkbox, CheckboxGroup } from '../Checkbox';
 import { Radio } from '../Radio';
-import { RadioGroup } from '../Radio/_RadioGroup';
+import { RadioGroup } from '../Radio/RadioGroup';
 import { Select } from '../Select';
 import { TextField } from '../TextField';
 import { FieldGroup } from './FieldGroup';
