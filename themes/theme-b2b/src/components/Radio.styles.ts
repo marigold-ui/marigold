@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Radio: ThemeComponent<'Radio'> = {
   container: cva(),
-  label: cva('disabled:text-text-disabled text-sm'),
+  label: cva('disabled:text-text-disabled'),
   radio: cva([
     'border-border-light',
     'group-hover/radio:border-border-hover',
