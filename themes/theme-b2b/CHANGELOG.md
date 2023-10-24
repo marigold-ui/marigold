@@ -1,5 +1,18 @@
 # @marigold/theme-b2b
 
+## 25.4.0
+
+### Minor Changes
+
+- [#3430](https://github.com/marigold-ui/marigold/pull/3430) [`1ce0cabbf`](https://github.com/marigold-ui/marigold/commit/1ce0cabbf8e04cab4345265dbe131d48be773d68) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: refa <Radio> as react-aria-components
+
+### Patch Changes
+
+- Updated dependencies [[`5e1219c84`](https://github.com/marigold-ui/marigold/commit/5e1219c84810991be0253186a7f7ec19bd916689), [`1ce0cabbf`](https://github.com/marigold-ui/marigold/commit/1ce0cabbf8e04cab4345265dbe131d48be773d68)]:
+  - @marigold/components@6.5.0
+  - @marigold/system@6.5.0
+  - @marigold/theme-preset@1.1.10
+
 ## 25.3.0
 
 ### Minor Changes
