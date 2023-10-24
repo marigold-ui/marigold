@@ -5,7 +5,7 @@ import { act } from 'react-dom/test-utils';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { Radio } from './_Radio';
+import { Radio } from './Radio';
 
 const theme: Theme = {
   name: 'test',
@@ -79,7 +79,7 @@ test('allows styling via theme', () => {
 
   const radio = getVisibleRadios()?.[0];
   expect(radio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 rounded border-solid checked:text-blue-700"`
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded border-solid checked:text-blue-700"`
   );
 });
 
@@ -107,7 +107,7 @@ test('supports styling via variant and size', () => {
 
   const radio = getVisibleRadios()?.[0];
   expect(radio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 rounded border-solid checked:text-blue-700"`
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded border-solid checked:text-blue-700"`
   );
 });
 
@@ -136,7 +136,7 @@ test('variant and size styling on radio option', () => {
 
   const radioOne = getVisibleRadios()?.[0];
   expect(radioOne?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 rounded border-solid checked:text-blue-700"`
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded border-solid checked:text-blue-700"`
   );
 
   // 2nd option has variant / size
@@ -147,7 +147,7 @@ test('variant and size styling on radio option', () => {
 
   const radio = getVisibleRadios()?.[1];
   expect(radio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 rounded border-solid checked:text-blue-700"`
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded border-solid checked:text-blue-700"`
   );
 });
 
@@ -166,7 +166,7 @@ test('takes full width by default', () => {
   );
 
   // eslint-disable-next-line testing-library/no-node-access
-  const containerOne = screen.getByTestId('radio-1').parentElement;
+  const containerOne = screen.getByTestId('radio-1');
   expect(containerOne).toHaveClass(`w-full`);
 });
 
@@ -185,7 +185,7 @@ test('set width via prop', () => {
   );
 
   // eslint-disable-next-line testing-library/no-node-access
-  const containerOne = screen.getByTestId('radio-1').parentElement;
+  const containerOne = screen.getByTestId('radio-1');
   expect(containerOne).toHaveClass(`200px`);
 });
 
@@ -210,7 +210,7 @@ test('allows styling "checked" state via theme', () => {
 
   const radio = getVisibleRadios()?.[0];
   expect(radio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 rounded border-solid checked:text-blue-700"`
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded border-solid checked:text-blue-700"`
   );
 });
 
@@ -237,7 +237,7 @@ test('allows styling "focus" state via theme', async () => {
     input.focus();
   });
   expect(radio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 rounded border-solid checked:text-blue-700"`
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded border-solid checked:text-blue-700"`
   );
 });
 
@@ -312,8 +312,8 @@ test('disabled prop and styles', () => {
 
   const radio1 = screen.getByTestId('radio-1');
 
-  expect(radio1).toHaveAttribute('disabled');
+  expect(radio1).toHaveAttribute('data-disabled');
   expect(radio1.className).toMatchInlineSnapshot(
-    `"absolute left-0 top-0 z-[1] h-full w-full opacity-[0.0001] cursor-not-allowed"`
+    `"group/radio relative flex items-center gap-[1ch] w-full"`
   );
 });

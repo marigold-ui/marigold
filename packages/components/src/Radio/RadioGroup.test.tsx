@@ -1,4 +1,4 @@
-import { fireEvent, getByTestId, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
