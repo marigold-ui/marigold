@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 6.5.1
+
+### Patch Changes
+
+- [`80ac67eac`](https://github.com/marigold-ui/marigold/commit/80ac67eac8ad065c8c0f458e5f888c3f0e42a02b) Thanks [@sebald](https://github.com/sebald)! - fix: `FieldBase` renders empty element when no label is given
+
+- Updated dependencies []:
+  - @marigold/system@6.5.1
+  - @marigold/icons@1.2.20
+
 ## 6.5.0
 
 ### Minor Changes
