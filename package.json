@@ -29,7 +29,6 @@
     "jest-environment-jsdom": "29.7.0",
     "prettier": "3.0.3",
     "react": "18.2.0",
-    "react-aria-components": "1.0.0-beta.0",
     "react-dom": "18.2.0",
     "typescript": "5.2.2",
     "zx": "7.2.3"
