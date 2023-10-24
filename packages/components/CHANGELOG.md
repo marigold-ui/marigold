@@ -1,5 +1,44 @@
 # @marigold/components
 
+## 6.4.0
+
+### Minor Changes
+
+- [#3405](https://github.com/marigold-ui/marigold/pull/3405) [`1eb93352a`](https://github.com/marigold-ui/marigold/commit/1eb93352a8c08cac7903ac08fb91d8f9be8c0bfd) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: updated `Button` to react aria components
+
+- [#3429](https://github.com/marigold-ui/marigold/pull/3429) [`3e328198c`](https://github.com/marigold-ui/marigold/commit/3e328198ca5ab18ef4218c8252463ea5d76091bd) Thanks [@sebald](https://github.com/sebald)! - feat: adjust `<SliderOutput>` position
+
+- [#3422](https://github.com/marigold-ui/marigold/pull/3422) [`e5869b2f3`](https://github.com/marigold-ui/marigold/commit/e5869b2f3bf0f3b69a2e37f377d51786d23ccc56) Thanks [@sebald](https://github.com/sebald)! - refa: Make `<FieldBase>` work with RAC components
+
+- [#3406](https://github.com/marigold-ui/marigold/pull/3406) [`e968e5eb5`](https://github.com/marigold-ui/marigold/commit/e968e5eb5ce58b37c364b01b7617b1bc108c5f74) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: Label as React aria Component
+
+- [#3408](https://github.com/marigold-ui/marigold/pull/3408) [`78840aa04`](https://github.com/marigold-ui/marigold/commit/78840aa04e83dce5f8fbfa7357f7099eddf71126) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: Headline as React Aria Component
+
+- [#3396](https://github.com/marigold-ui/marigold/pull/3396) [`60c7f1dc5`](https://github.com/marigold-ui/marigold/commit/60c7f1dc549e6b489a1852a18da849fcbb052f5c) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: Switch component
+
+- [#3407](https://github.com/marigold-ui/marigold/pull/3407) [`0fbb7f963`](https://github.com/marigold-ui/marigold/commit/0fbb7f96327d0af6acb9c9d2f4e6bfa76cb5384d) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: Divider as React Aria Component
+
+- [#3400](https://github.com/marigold-ui/marigold/pull/3400) [`700cdf296`](https://github.com/marigold-ui/marigold/commit/700cdf2963f7b0b46ed715599646fa7ed71e7c0b) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Replace old `Slider` with the new RAC `slider`
+
+- [#3424](https://github.com/marigold-ui/marigold/pull/3424) [`5a2a03ae0`](https://github.com/marigold-ui/marigold/commit/5a2a03ae0766a417c208c8624d8b6a0f370edcd9) Thanks [@sebald](https://github.com/sebald)! - feat: add styles to checkbox and radio groups
+
+- [#3392](https://github.com/marigold-ui/marigold/pull/3392) [`5ed86abd0`](https://github.com/marigold-ui/marigold/commit/5ed86abd0643b0fcf4254a7a2fec74266085346d) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: Link as react aria component
+
+### Patch Changes
+
+- [#3432](https://github.com/marigold-ui/marigold/pull/3432) [`9b0ed3862`](https://github.com/marigold-ui/marigold/commit/9b0ed38624cbed0edde8a3cb502ba34259ed5bfc) Thanks [@sebald](https://github.com/sebald)! - fix: adjust chevrons in accordion
+
+- [#3418](https://github.com/marigold-ui/marigold/pull/3418) [`dc2b1484c`](https://github.com/marigold-ui/marigold/commit/dc2b1484cd77141e5bc8c94d50ecfaf29a8a3571) Thanks [@sebald](https://github.com/sebald)! - refa: `<HelpText>` to RAC
+
+- [#3423](https://github.com/marigold-ui/marigold/pull/3423) [`470d00c6d`](https://github.com/marigold-ui/marigold/commit/470d00c6d6be571d6fc9cb82cde7f4756b360b83) Thanks [@sebald](https://github.com/sebald)! - fix: add gap in checkbox group
+
+- [#3425](https://github.com/marigold-ui/marigold/pull/3425) [`4be30b28a`](https://github.com/marigold-ui/marigold/commit/4be30b28a7bd64807c28bc8371d9162f922905f6) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: numberfield width
+
+- Updated dependencies [[`3e328198c`](https://github.com/marigold-ui/marigold/commit/3e328198ca5ab18ef4218c8252463ea5d76091bd), [`e5869b2f3`](https://github.com/marigold-ui/marigold/commit/e5869b2f3bf0f3b69a2e37f377d51786d23ccc56), [`5a2a03ae0`](https://github.com/marigold-ui/marigold/commit/5a2a03ae0766a417c208c8624d8b6a0f370edcd9)]:
+  - @marigold/system@6.4.0
+  - @marigold/types@1.1.0
+  - @marigold/icons@1.2.18
+
 ## 6.3.1
 
 ### Patch Changes
