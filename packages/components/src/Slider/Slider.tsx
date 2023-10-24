@@ -1,129 +1,85 @@
-/**
- * Thanks to react-aria: https://react-spectrum.adobe.com/react-aria/useSlider.html
- */
-import { ReactNode, forwardRef } from 'react';
-
-import { useNumberFormatter } from '@react-aria/i18n';
-import { useSlider } from '@react-aria/slider';
-import { useObjectRef } from '@react-aria/utils';
-
-import { useSliderState } from '@react-stately/slider';
-
-import { AriaSliderProps } from '@react-types/slider';
+import React, { Ref, forwardRef } from 'react';
+import {
+  Slider,
+  SliderOutput,
+  SliderThumb,
+  SliderTrack,
+} from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import {
   WidthProp,
   cn,
   width as twWidth,
   useClassNames,
-  useStateProps,
 } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
 
-import { Thumb } from './Thumb';
+import { Label } from '../Label';
 
-// Props
-// ---------------
-export interface SliderProps
-  extends Omit<
-      HtmlProps<'input'>,
-      | 'step'
-      | 'value'
-      | 'defaultValue'
-      | 'onChange'
-      | 'onFocus'
-      | 'onBlur'
-      | 'size'
-      | 'width'
-      | 'className'
-    >,
-    /**
-     * `react-aria` has a slightly different API for some events e.g `onChange`, `onFocus`
-     * `onBlur`. Thus, we adjust our regular props to match them.
-     */
-    Pick<
-      AriaSliderProps,
-      'maxValue' | 'step' | 'value' | 'defaultValue' | 'onChange'
-    > {
+export interface SliderProps<T>
+  extends Omit<RAC.SliderProps<T>, 'isDisabled' | 'label'> {
+  thumbLabels?: string[];
+  width?: WidthProp['width'];
   variant?: string;
   size?: string;
-  width?: WidthProp['width'];
-  formatOptions?: Intl.NumberFormatOptions;
-  children?: ReactNode;
+  disabled?: boolean;
 }
 
-// Component
-// ---------------
-/**
- * The slider consists of two parts.
- * A label + the output value and the slider functionality itself.
- * The slider itself consists of a track line and a thumb.
- */
-export const Slider = forwardRef<HTMLDivElement, SliderProps>(
-  ({ variant, size, width = 'full', ...props }, ref) => {
-    const { formatOptions } = props;
-    const trackRef = useObjectRef(ref);
-    const numberFormatter = useNumberFormatter(formatOptions);
-    const state = useSliderState({ ...props, numberFormatter });
-    const { groupProps, trackProps, labelProps, outputProps } = useSlider(
-      {
-        label: props.children,
-        ...props,
-      },
-      state,
-      trackRef
-    );
+export const _Slider = forwardRef(
+  <T extends number | number[]>(
+    {
+      thumbLabels,
+      variant,
+      size,
+      width = 'full',
+      disabled,
+      ...rest
+    }: SliderProps<T>,
+    ref: Ref<HTMLDivElement>
+  ) => {
     const classNames = useClassNames({
       component: 'Slider',
       variant,
       size,
     });
-    const sliderState = useStateProps({
-      disabled: props.disabled,
-    });
+    const props: RAC.SliderProps = {
+      isDisabled: disabled,
+      ...rest,
+    };
     return (
-      <div
-        className={cn('flex touch-none flex-col', twWidth[width])}
-        {...groupProps}
+      <Slider
+        className={cn(
+          'grid grid-cols-[auto_1fr] gap-y-1',
+          classNames.container,
+          twWidth[width]
+        )}
+        ref={ref}
+        {...props}
       >
-        {/* Flex container for the label and output element. */}
-        <div className="flex self-stretch">
-          {props.children && (
-            <label className={classNames.label} {...labelProps}>
-              {props.children}
-            </label>
-          )}
-          <output
-            className={cn(
-              'flex flex-shrink-0 flex-grow basis-auto',
-              classNames.output
-            )}
-            {...outputProps}
-          >
-            {state.getThumbValueLabel(0)}
-          </output>
-        </div>
-        {/* The track element holds the visible track line and the thumb. */}
-        <div
-          className="h-8 w-full cursor-pointer data-[disabled]:cursor-not-allowed"
-          {...trackProps}
-          {...sliderState}
-          ref={trackRef}
+        <Label>{props.children as React.ReactNode}</Label>
+        <SliderOutput className={cn('flex justify-end', classNames.output)}>
+          {({ state }) =>
+            state.values.map((_, i) => state.getThumbValueLabel(i)).join(' – ')
+          }
+        </SliderOutput>
+
+        <SliderTrack
+          className={cn('relative col-span-2 h-2 w-full', classNames.track)}
         >
-          <div
-            className={cn(
-              'absolute top-2/4 h-2 w-full -translate-y-1/2',
-              classNames.track
-            )}
-          />
-          <Thumb
-            state={state}
-            trackRef={trackRef}
-            disabled={props.disabled}
-            className={classNames.thumb}
-          />
-        </div>
-      </div>
+          {({ state }) =>
+            state.values.map((_, i) => (
+              <SliderThumb
+                className={cn('top-1/2 cursor-pointer', classNames.thumb)}
+                key={i}
+                index={i}
+                aria-label={thumbLabels?.[i]}
+              />
+            ))
+          }
+        </SliderTrack>
+      </Slider>
     );
   }
 );
+
+export { _Slider as Slider };

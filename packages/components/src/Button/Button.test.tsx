@@ -44,13 +44,14 @@ test('supports base styling classes', () => {
   const button = screen.getByText(/button/);
 
   expect(button).toMatchInlineSnapshot(`
-    <button
-      class="items-center justify-center gap-[0.5ch] align-center flex disabled:bg-gray-600"
-      type="button"
-    >
-      button
-    </button>
-  `);
+<button
+  class="items-center justify-center gap-[0.5ch] align-center flex disabled:bg-gray-600"
+  data-rac=""
+  type="button"
+>
+  button
+</button>
+`);
 });
 
 test('supports default size', () => {
@@ -74,13 +75,14 @@ test('accepts other variants', () => {
 
   expect(button).toHaveClass('text-secondary-800');
   expect(button).toMatchInlineSnapshot(`
-    <button
-      class="items-center justify-center gap-[0.5ch] align-center flex disabled:bg-gray-600 text-secondary-800"
-      type="button"
-    >
-      button
-    </button>
-  `);
+<button
+  class="items-center justify-center gap-[0.5ch] align-center flex disabled:bg-gray-600 text-secondary-800"
+  data-rac=""
+  type="button"
+>
+  button
+</button>
+`);
 });
 
 test('renders <button> element', () => {
@@ -92,22 +94,6 @@ test('renders <button> element', () => {
   const button = screen.getByText(/button/);
 
   expect(button instanceof HTMLButtonElement).toBeTruthy();
-});
-
-test('accepts other button components', () => {
-  const CustomButton = React.forwardRef<
-    HTMLSpanElement,
-    { children?: React.ReactNode }
-  >(() => <span>I am a Button!</span>);
-
-  render(
-    <ThemeProvider theme={theme}>
-      <Button as={CustomButton}>Button</Button>
-    </ThemeProvider>
-  );
-
-  const button = screen.getByText('I am a Button!');
-  expect(button).toBeTruthy();
 });
 
 test('add icon in button works as expected', () => {
@@ -125,35 +111,6 @@ test('add icon in button works as expected', () => {
   expect(button instanceof HTMLButtonElement).toBeTruthy();
   expect(button).toHaveClass('flex align-center');
   expect(icon).toHaveAttribute('width', '30px');
-});
-
-test('can be used as a "link button"', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Button as="a" href="https://karriere.reservix.net" data-testid="button">
-        I am a Link!
-      </Button>
-    </ThemeProvider>
-  );
-  const button = screen.getByTestId('button');
-  expect(button).toBeInstanceOf(HTMLAnchorElement);
-});
-
-test('can be used as a "link button" and has button styling', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Button
-        as="a"
-        href="https://karriere.reservix.net"
-        variant="primary"
-        data-testid="button"
-      >
-        I am a Link!
-      </Button>
-    </ThemeProvider>
-  );
-  const button = screen.getByTestId('button');
-  expect(button).toBeTruthy();
 });
 
 test('supports onPress', () => {
@@ -192,19 +149,6 @@ test('supports disabled prop', () => {
   const button = screen.getByText(/button/);
   expect(button).toHaveAttribute('disabled');
   expect(button).toHaveClass('disabled:bg-gray-600');
-});
-
-test('pass through native props', () => {
-  const spy = jest.fn();
-  render(
-    <ThemeProvider theme={theme}>
-      <Button onMouseEnter={spy}>button</Button>
-    </ThemeProvider>
-  );
-
-  const button = screen.getByText(/button/);
-  fireEvent.mouseEnter(button);
-  expect(spy).toHaveBeenCalledTimes(1);
 });
 
 test('allows to take full width', () => {

@@ -47,5 +47,5 @@ test('renders correct HTML element', () => {
   );
   const divider = screen.getByTestId(/divider/);
 
-  expect(divider instanceof HTMLDivElement).toBeTruthy();
+  expect(divider instanceof HTMLHRElement).toBeTruthy();
 });

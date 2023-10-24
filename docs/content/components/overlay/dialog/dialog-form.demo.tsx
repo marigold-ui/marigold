@@ -13,7 +13,7 @@ export default () => (
     <Dialog>
       {({ close }) => (
         <>
-          <Headline level="2">Please log into account</Headline>
+          <Headline level={2}>Please log into account</Headline>
           <Stack space={2}>
             <TextField label="Username" />
             <TextField label="Password" type="password" />

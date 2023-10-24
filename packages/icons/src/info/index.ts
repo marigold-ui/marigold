@@ -23,6 +23,7 @@ export * from './MobilePhone';
 export * from './MobileSignal';
 export * from './Notification';
 export * from './Parking';
+export * from './PDF';
 export * from './Phone';
 export * from './Print';
 export * from './Required';

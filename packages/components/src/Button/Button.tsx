@@ -1,102 +1,43 @@
 import { ReactNode, forwardRef } from 'react';
+import { Button } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
-import { useButton } from '@react-aria/button';
-import { useFocusRing } from '@react-aria/focus';
-import { useHover } from '@react-aria/interactions';
-import { mergeProps, useObjectRef } from '@react-aria/utils';
+import { cn, useClassNames } from '@marigold/system';
 
-import { FocusableDOMProps, PressEvents } from '@react-types/shared';
+// Button is currently only component accepting className because of internal use.
+type RemovedProps = 'isDisabled';
 
-import { cn, useClassNames, useStateProps } from '@marigold/system';
-import { HtmlProps, PolymorphicComponent, PropsOf } from '@marigold/types';
-
-// Props
-// ---------------
-export interface ButtonOwnProps
-  extends PressEvents,
-    FocusableDOMProps,
-    HtmlProps<'button'> {
-  children?: ReactNode;
+export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
   variant?: string;
   size?: string;
   fullWidth?: boolean;
+  children?: ReactNode;
+  disabled?: RAC.ButtonProps['isDisabled'];
 }
 
-export interface ButtonProps extends PropsOf<typeof Button> {}
-
-// Component
-// ---------------
-export const Button = forwardRef(
-  (
-    {
-      as = 'button',
-      children,
-      variant,
-      size,
-      disabled,
-      onPress,
-      onPressStart,
-      onPressEnd,
-      onPressChange,
-      onPressUp,
-      fullWidth,
-      className,
-      excludeFromTabOrder,
-      ...props
-    },
-    ref
-  ) => {
-    const Component = as;
-    const buttonRef = useObjectRef<HTMLButtonElement>(ref as any);
-    const { hoverProps, isHovered } = useHover({ isDisabled: disabled });
-    const { isFocusVisible, focusProps } = useFocusRing({
-      autoFocus: props.autoFocus,
-    });
-    const { buttonProps, isPressed } = useButton(
-      {
-        /**
-         * `react-aria` only expected `Element` but we casted
-         * it to a `HTMLButtonElement` internally.
-         */
-        ...(props as any),
-        onPress,
-        onPressStart,
-        onPressEnd,
-        onPressChange,
-        onPressUp,
-        elementType: typeof as === 'string' ? as : 'span',
-        isDisabled: disabled,
-        excludeFromTabOrder,
-      },
-      buttonRef
-    );
-
+const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ children, variant, size, disabled, fullWidth, ...props }, ref) => {
     const classNames = useClassNames({
       component: 'Button',
       variant,
       size,
-      className,
-    });
-
-    const stateProps = useStateProps({
-      active: isPressed,
-      focusVisible: isFocusVisible,
-      hover: isHovered,
     });
 
     return (
-      <Component
-        {...mergeProps(buttonProps, focusProps, hoverProps, props)}
-        {...stateProps}
-        ref={buttonRef}
+      <Button
+        {...props}
+        ref={ref}
         className={cn(
           'inline-flex items-center justify-center gap-[0.5ch]',
           classNames,
           fullWidth ? 'w-full' : undefined
         )}
+        isDisabled={disabled}
       >
         {children}
-      </Component>
+      </Button>
     );
   }
-) as PolymorphicComponent<'button', ButtonOwnProps>;
+);
+
+export { _Button as Button };

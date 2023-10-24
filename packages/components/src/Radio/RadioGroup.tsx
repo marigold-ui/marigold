@@ -6,7 +6,7 @@ import { useRadioGroupState } from '@react-stately/radio';
 
 import { AriaRadioGroupProps } from '@react-types/radio';
 
-import { WidthProp, cn, useStateProps } from '@marigold/system';
+import { WidthProp, cn, useClassNames, useStateProps } from '@marigold/system';
 
 import { FieldBase } from '../FieldBase';
 import { RadioGroupContext } from './Context';
@@ -18,6 +18,8 @@ export interface RadioGroupProps
     AriaRadioGroupProps,
     'isDisabled' | 'isRquired' | 'isReadOnly ' | 'validationState'
   > {
+  variant?: string;
+  size?: string;
   children: ReactNode[];
   width?: WidthProp['width'];
   required?: boolean;
@@ -29,6 +31,8 @@ export interface RadioGroupProps
 // Component
 // ---------------
 export const RadioGroup = ({
+  variant,
+  size,
   children,
   orientation = 'vertical',
   width,
@@ -50,6 +54,7 @@ export const RadioGroup = ({
   const { radioGroupProps, labelProps, errorMessageProps, descriptionProps } =
     useRadioGroup(props, state);
 
+  const classNames = useClassNames({ component: 'Radio', variant, size });
   const stateProps = useStateProps({
     disabled,
     readOnly,
@@ -61,7 +66,7 @@ export const RadioGroup = ({
     <FieldBase
       width={width}
       label={props.label}
-      labelProps={{ as: 'span', ...labelProps }}
+      labelProps={{ elementType: 'span', ...labelProps }}
       description={props.description}
       descriptionProps={descriptionProps}
       error={error}
@@ -75,6 +80,7 @@ export const RadioGroup = ({
         role="presentation"
         data-orientation={orientation}
         className={cn(
+          classNames.group,
           'flex items-start',
           orientation === 'vertical'
             ? 'flex-col gap-[0.5ch]'

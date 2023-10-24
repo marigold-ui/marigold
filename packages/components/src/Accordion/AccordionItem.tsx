@@ -7,9 +7,8 @@ import { TreeState } from '@react-stately/tree';
 
 import { Node } from '@react-types/shared';
 
-import { useClassNames, useStateProps } from '@marigold/system';
+import { cn, useClassNames, useStateProps } from '@marigold/system';
 
-import { Button } from '../Button';
 import { ChevronDown, ChevronUp } from '../Chevron';
 import { useAccordionItem } from './useAccordionItem';
 
@@ -76,19 +75,22 @@ export const AccordionItem = ({
   return (
     <div className="flex flex-col" {...props}>
       <FocusRing within>
-        <Button
-          className={classNames.button}
+        <button
+          className={cn(
+            'inline-flex items-center justify-center gap-[0.5ch]',
+            classNames.button
+          )}
           {...mergeProps(buttonProps, stateProps, props)}
           ref={ref}
           aria-label={item.textValue}
         >
           {title}
-          {!expanded ? (
+          {expanded ? (
             <ChevronUp className="h3 w-6" />
           ) : (
             <ChevronDown className="h3 w-6" />
           )}
-        </Button>
+        </button>
       </FocusRing>
       {expanded || defaultExpanded ? (
         <div

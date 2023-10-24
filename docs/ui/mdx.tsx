@@ -31,22 +31,22 @@ import {
 const typography = {
   p: (props: HTMLAttributes<HTMLParagraphElement>) => <Text {...props} />,
   h1: (props: HTMLAttributes<HTMLHeadingElement>) => (
-    <Headline level="1" {...props} />
+    <Headline level={1} {...props} />
   ),
   h2: (props: HTMLAttributes<HTMLHeadingElement>) => (
-    <Headline level="2" {...props} />
+    <Headline level={2} {...props} />
   ),
   h3: (props: HTMLAttributes<HTMLHeadingElement>) => (
-    <Headline level="3" {...props} />
+    <Headline level={3} {...props} />
   ),
   h4: (props: HTMLAttributes<HTMLHeadingElement>) => (
-    <Headline level="4" {...props} />
+    <Headline level={4} {...props} />
   ),
   h5: (props: HTMLAttributes<HTMLHeadingElement>) => (
-    <Headline level="5" {...props} />
+    <Headline level={5} {...props} />
   ),
   h6: (props: HTMLAttributes<HTMLHeadingElement>) => (
-    <Headline level="6" {...props} />
+    <Headline level={6} {...props} />
   ),
   a: (props: HTMLAttributes<HTMLAnchorElement>) => <Link {...props} />,
   blockquote: (props: HTMLAttributes<HTMLQuoteElement>) => (

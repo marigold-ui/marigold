@@ -1,4 +1,4 @@
-import { HTMLAttributes, LabelHTMLAttributes, ReactNode } from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
 
 import {
   StateAttrProps,
@@ -10,7 +10,6 @@ import {
 
 import { HelpText } from '../HelpText';
 import { Label, LabelProps } from '../Label';
-import { useFieldGroupContext } from './FieldGroup';
 
 export interface FieldBaseProps extends WidthProp {
   children?: ReactNode;
@@ -18,8 +17,7 @@ export interface FieldBaseProps extends WidthProp {
   size?: string;
   disabled?: boolean;
   label?: ReactNode;
-  labelProps?: Omit<LabelHTMLAttributes<HTMLLabelElement>, 'children'> &
-    Pick<LabelProps, 'as'>;
+  labelProps?: LabelProps;
   description?: ReactNode;
   descriptionProps?: Omit<HTMLAttributes<HTMLElement>, 'children'>;
   error?: boolean;
@@ -47,8 +45,6 @@ export const FieldBase = ({
   ...props
 }: FieldBaseProps) => {
   const hasHelpText = !!description || (errorMessage && error);
-
-  const { labelWidth } = useFieldGroupContext();
   const classNames = useClassNames({
     component: 'Field',
     variant,
@@ -62,12 +58,7 @@ export const FieldBase = ({
       className={cn('group/field', twWidth[width], classNames)}
     >
       {label && (
-        <Label
-          variant={variant}
-          size={size}
-          labelWidth={labelWidth}
-          {...labelProps}
-        >
+        <Label variant={variant} size={size} {...labelProps}>
           {label}
         </Label>
       )}

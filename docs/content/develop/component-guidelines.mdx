@@ -157,11 +157,23 @@ export const Basic: Story = {
 </Tabs>
 ```
 
+If we use `react-aria-components` for a certain component, we name the component we build `_Component` and import the RAC component as it is `import { Component } from 'react-aria-components'`
+
+We export the component without the `_` e.g. `export { _Component as Component}`
+
 ### Props Naming Convention
 
 Component props should always use the regular HTML attribute name (`disabled` and not `isDisabled`).
 
 Props that are event handlers props should start with `on` (e.g., `onSelectionChange`, `onChange`, ...).
+
+Props that we need to import because of react-aria-components should be imported as followed:
+
+```tsx
+import type RAC from 'react-aria-components';
+
+export interface ComponentProps extends RAC.ColumnProps {}
+```
 
 ## Styling
 
@@ -171,6 +183,14 @@ We don’t expose the `className` prop on any of our components. The reasons for
 
 - prevent entropy in designs
 - prevent developers and designer from accidentally using styles not part of the design system
+
+We write a type for the props that we don’t want to expose like this:
+
+```tsx
+type RemovedProps = 'className';
+
+export interface ComponentProps extends Omit<RAC.ComponentProp, RemovedProps> {}
+```
 
 <Message messageTitle="Escape hatch">
 Use a regular `<div>` (or any other HTML element) and add available classes from our theme.
