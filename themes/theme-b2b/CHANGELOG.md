@@ -1,5 +1,26 @@
 # @marigold/theme-b2b
 
+## 25.3.0
+
+### Minor Changes
+
+- [#3429](https://github.com/marigold-ui/marigold/pull/3429) [`3e328198c`](https://github.com/marigold-ui/marigold/commit/3e328198ca5ab18ef4218c8252463ea5d76091bd) Thanks [@sebald](https://github.com/sebald)! - feat: adjust `<SliderOutput>` position
+
+- [#3424](https://github.com/marigold-ui/marigold/pull/3424) [`5a2a03ae0`](https://github.com/marigold-ui/marigold/commit/5a2a03ae0766a417c208c8624d8b6a0f370edcd9) Thanks [@sebald](https://github.com/sebald)! - feat: add styles to checkbox and radio groups
+
+### Patch Changes
+
+- [#3433](https://github.com/marigold-ui/marigold/pull/3433) [`0b1ac52e5`](https://github.com/marigold-ui/marigold/commit/0b1ac52e54ba5a8693a2894f389497f36a9041ac) Thanks [@sebald](https://github.com/sebald)! - fix: underlay in b2b theme is transparent again
+
+- [#3431](https://github.com/marigold-ui/marigold/pull/3431) [`67ab41a40`](https://github.com/marigold-ui/marigold/commit/67ab41a40384c5ef1f17c013913ea2ee01edc5de) Thanks [@sebald](https://github.com/sebald)! - fix: adjust label size of checkbox and radios in b2b theme
+
+- [#3396](https://github.com/marigold-ui/marigold/pull/3396) [`60c7f1dc5`](https://github.com/marigold-ui/marigold/commit/60c7f1dc549e6b489a1852a18da849fcbb052f5c) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: Switch component
+
+- Updated dependencies [[`1eb93352a`](https://github.com/marigold-ui/marigold/commit/1eb93352a8c08cac7903ac08fb91d8f9be8c0bfd), [`9b0ed3862`](https://github.com/marigold-ui/marigold/commit/9b0ed38624cbed0edde8a3cb502ba34259ed5bfc), [`3e328198c`](https://github.com/marigold-ui/marigold/commit/3e328198ca5ab18ef4218c8252463ea5d76091bd), [`dc2b1484c`](https://github.com/marigold-ui/marigold/commit/dc2b1484cd77141e5bc8c94d50ecfaf29a8a3571), [`e5869b2f3`](https://github.com/marigold-ui/marigold/commit/e5869b2f3bf0f3b69a2e37f377d51786d23ccc56), [`e968e5eb5`](https://github.com/marigold-ui/marigold/commit/e968e5eb5ce58b37c364b01b7617b1bc108c5f74), [`470d00c6d`](https://github.com/marigold-ui/marigold/commit/470d00c6d6be571d6fc9cb82cde7f4756b360b83), [`78840aa04`](https://github.com/marigold-ui/marigold/commit/78840aa04e83dce5f8fbfa7357f7099eddf71126), [`60c7f1dc5`](https://github.com/marigold-ui/marigold/commit/60c7f1dc549e6b489a1852a18da849fcbb052f5c), [`0fbb7f963`](https://github.com/marigold-ui/marigold/commit/0fbb7f96327d0af6acb9c9d2f4e6bfa76cb5384d), [`4be30b28a`](https://github.com/marigold-ui/marigold/commit/4be30b28a7bd64807c28bc8371d9162f922905f6), [`700cdf296`](https://github.com/marigold-ui/marigold/commit/700cdf2963f7b0b46ed715599646fa7ed71e7c0b), [`5a2a03ae0`](https://github.com/marigold-ui/marigold/commit/5a2a03ae0766a417c208c8624d8b6a0f370edcd9), [`5ed86abd0`](https://github.com/marigold-ui/marigold/commit/5ed86abd0643b0fcf4254a7a2fec74266085346d)]:
+  - @marigold/components@6.4.0
+  - @marigold/system@6.4.0
+  - @marigold/theme-preset@1.1.9
+
 ## 25.2.8
 
 ### Patch Changes
