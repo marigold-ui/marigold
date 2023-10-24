@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2.4.0 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
           cache: 'pnpm'
