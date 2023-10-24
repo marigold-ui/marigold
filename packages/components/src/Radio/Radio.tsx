@@ -12,7 +12,7 @@ import { cn, useClassNames } from '@marigold/system';
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
 
-type RemovedProps = 'className' | 'children';
+type RemovedProps = 'className' | 'style' | 'children' | 'isDisabled';
 
 export interface RadioProps extends Omit<RAC.RadioProps, RemovedProps> {
   variant?: string;

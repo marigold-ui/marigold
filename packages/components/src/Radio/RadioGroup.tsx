@@ -7,7 +7,15 @@ import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/_FieldBase';
 import { RadioGroupContext } from './Context';
 
-export interface RadioGroupProps extends RAC.RadioGroupProps {
+type RemovedProps =
+  | 'className'
+  | 'style'
+  | 'isDisabled'
+  | 'isInvalid'
+  | 'isRequired'
+  | 'isSelected';
+export interface RadioGroupProps
+  extends Omit<RAC.RadioGroupProps, RemovedProps> {
   variant?: string;
   size?: string;
   label?: string;
@@ -15,20 +23,37 @@ export interface RadioGroupProps extends RAC.RadioGroupProps {
   errorMessage?: string;
   children: ReactNode[];
   width?: WidthProp['width'];
+  error?: RAC.RadioGroupProps['isInvalid'];
+  required?: RAC.RadioGroupProps['isRequired'];
+  disabled?: RAC.RadioGroupProps['isDisabled'];
+  readOnly?: boolean;
+  value?: string;
 }
 
 const _RadioGroup = ({
   variant,
   size,
   label,
+  error,
+  disabled,
+  required,
+  readOnly,
   description,
   errorMessage,
   orientation = 'vertical',
   children,
   width,
-  ...props
+  ...rest
 }: RadioGroupProps) => {
   const classNames = useClassNames({ component: 'Radio', variant, size });
+
+  const props: RAC.RadioGroupProps = {
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    isRequired: required,
+    isInvalid: error,
+    ...rest,
+  } as const;
 
   return (
     <FieldBase
