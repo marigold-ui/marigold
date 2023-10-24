@@ -57,9 +57,13 @@ const _FieldBase = <T extends ElementType>(
       className={cn('group/field', twWidth[width], classNames)}
       {...rest}
     >
-      <Label variant={variant} size={size}>
-        {label}
-      </Label>
+      {label ? (
+        <Label variant={variant} size={size}>
+          {label}
+        </Label>
+      ) : (
+        <span aria-hidden="true" />
+      )}
       {children}
       <HelpText
         variant={variant}

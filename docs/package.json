@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "6.5.0",
+  "version": "6.5.1",
   "private": true,
   "scripts": {
     "dev": "pnpm registry && next dev",
@@ -16,12 +16,12 @@
     "@marigold/theme-core": "workspace:*",
     "@marigold/theme-preset": "workspace:*",
     "@tailwindcss/typography": "0.5.10",
-    "@vercel/analytics": "1.1.0",
+    "@vercel/analytics": "1.1.1",
     "autoprefixer": "10.4.16",
     "contentlayer": "0.3.4",
     "eslint": "8.51.0",
-    "eslint-config-next": "13.4.19",
-    "next": "13.4.19",
+    "eslint-config-next": "13.5.6",
+    "next": "13.5.6",
     "next-contentlayer": "0.3.4",
     "postcss": "8.4.31",
     "react": "18.2.0",
