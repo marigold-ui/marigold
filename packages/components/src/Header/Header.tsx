@@ -1,27 +1,27 @@
 import { ReactNode } from 'react';
+import { Header } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
-import { cn, useClassNames } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
+import { useClassNames } from '@marigold/system';
 
-// Props
-// ---------------
-export interface HeaderProps extends Omit<HtmlProps<'header'>, 'className'> {
+export interface HeaderProps
+  extends Omit<RAC.HeadingProps, 'children' | 'className'> {
   children?: ReactNode;
   variant?: string;
   size?: string;
 }
 
-// Component
-// ---------------
-export const Header = ({ children, variant, size, ...props }: HeaderProps) => {
+const _Header = ({ variant, size, ...props }: HeaderProps) => {
   const classNames = useClassNames({
     component: 'Header',
     variant,
     size,
   });
   return (
-    <header {...props} className={cn(classNames)}>
-      {children}
-    </header>
+    <Header className={classNames} {...props}>
+      {props.children}
+    </Header>
   );
 };
+
+export { _Header as Header };
