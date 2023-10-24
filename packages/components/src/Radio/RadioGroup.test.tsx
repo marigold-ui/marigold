@@ -2,8 +2,8 @@ import { fireEvent, screen } from '@testing-library/react';
 
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
-import { Radio } from '.';
 import { setup } from '../test.utils';
+import { Radio } from './Radio';
 
 const theme: Theme = {
   name: 'test',
@@ -27,6 +27,10 @@ const theme: Theme = {
       radio: cva('rounded border-solid checked:text-blue-700'),
       label: cva('text-base'),
       group: cva('pt-4'),
+    },
+    HelpText: {
+      container: cva(),
+      icon: cva(),
     },
   },
 };
@@ -80,7 +84,7 @@ test('applies group styles from theme', () => {
     </Radio.Group>
   );
 
-  const group = screen.getByRole('presentation');
+  const group = screen.getByTestId('group');
   expect(group.className).toContain('pt-4');
 });
 
@@ -161,7 +165,7 @@ test('supports error styling via theme & passes down error', () => {
   // Note that there is no error styling for the container and group yet!
   const radio = getVisibleRadios()?.[0];
   expect(radio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 rounded border-solid checked:text-blue-700"`
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded border-solid checked:text-blue-700"`
   );
 });
 
@@ -184,7 +188,7 @@ test('supports default value (uncontrolled)', () => {
 
   const checkedRadio = getVisibleRadios()?.[2];
   expect(checkedRadio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 rounded border-solid checked:text-blue-700"`
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded border-solid checked:text-blue-700"`
   );
 });
 
@@ -211,7 +215,7 @@ test('controlled', () => {
 
   const checkedRadio = getVisibleRadios()?.[0];
   expect(checkedRadio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 rounded border-solid checked:text-blue-700"`
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded border-solid checked:text-blue-700"`
   );
 
   expect(onChange).toHaveBeenCalledTimes(1);
