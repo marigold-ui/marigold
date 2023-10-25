@@ -29,7 +29,6 @@ const YearDropdown = ({ state, setSelectedDropdown }: YearDropdownProps) => {
   const activeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (!window) return;
     if (activeButtonRef.current) {
       const activeButton = activeButtonRef.current;
       activeButton?.scrollIntoView({
