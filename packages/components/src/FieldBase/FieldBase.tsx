@@ -57,10 +57,12 @@ export const FieldBase = ({
       {...stateProps}
       className={cn('group/field', twWidth[width], classNames)}
     >
-      {label && (
+      {label ? (
         <Label variant={variant} size={size} {...labelProps}>
           {label}
         </Label>
+      ) : (
+        <span aria-hidden="true" />
       )}
 
       {children}

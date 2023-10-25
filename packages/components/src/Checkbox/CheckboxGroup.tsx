@@ -9,7 +9,7 @@ import {
 
 import { AriaCheckboxGroupProps } from '@react-types/checkbox';
 
-import { WidthProp, useStateProps } from '@marigold/system';
+import { WidthProp, useClassNames, useStateProps } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
 import { FieldBase } from '../FieldBase';
@@ -51,6 +51,8 @@ export interface CheckboxGroupProps
 // Components
 // ---------------
 export const CheckboxGroup = ({
+  variant,
+  size,
   children,
   required,
   disabled,
@@ -71,6 +73,12 @@ export const CheckboxGroup = ({
   const { groupProps, labelProps, descriptionProps, errorMessageProps } =
     useCheckboxGroup(props, state);
 
+  const classNames = useClassNames({
+    component: 'Checkbox',
+    variant,
+    size,
+    className: { group: 'flex flex-col items-start gap-[0.5ch]' },
+  });
   const stateProps = useStateProps({
     disabled,
     readOnly,
@@ -91,7 +99,7 @@ export const CheckboxGroup = ({
       width={width}
       {...groupProps}
     >
-      <div role="presentation" className={'flex flex-col items-start'}>
+      <div role="presentation" className={classNames.group}>
         <CheckboxGroupContext.Provider value={{ error, ...state }}>
           {children}
         </CheckboxGroupContext.Provider>

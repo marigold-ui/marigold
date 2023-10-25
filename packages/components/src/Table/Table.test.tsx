@@ -17,6 +17,7 @@ const theme: Theme = {
       checkbox: cva(),
       container: cva(),
       label: cva(),
+      group: cva(),
     },
     Table: {
       table: cva('border-collapse'),
