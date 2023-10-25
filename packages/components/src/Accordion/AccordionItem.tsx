@@ -85,7 +85,7 @@ export const AccordionItem = ({
           aria-label={item.textValue}
         >
           {title}
-          {!expanded ? (
+          {expanded ? (
             <ChevronUp className="h3 w-6" />
           ) : (
             <ChevronDown className="h3 w-6" />

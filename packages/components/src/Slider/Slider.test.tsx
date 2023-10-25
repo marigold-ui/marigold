@@ -11,7 +11,12 @@ const theme: Theme = {
   name: 'slider testing',
   components: {
     Field: cva(),
+    Label: {
+      container: cva(),
+      indicator: cva(),
+    },
     Slider: {
+      container: cva(''),
       track: cva([
         'absolute top-4 h-2 w-full',
         'rounded-lg border-none border-transparent',
@@ -25,7 +30,6 @@ const theme: Theme = {
         ' focus:border-slider-thumb-focus',
         ' disabled:bg-slider-thumb-disabled-background  disabled:border-slider-thumb-disabled-border',
       ]),
-      label: cva('text-slider-label-text text-base font-normal'),
       output: cva('text-slider-ouput-text text-base font-normal'),
     },
   },
@@ -115,7 +119,7 @@ test('takes full width by default', () => {
 
   const container = screen.getByRole('group');
   expect(container.className).toMatchInlineSnapshot(
-    `"flex touch-none flex-col w-full"`
+    `"grid grid-cols-[auto_1fr] gap-y-1 w-full"`
   );
 });
 
@@ -124,13 +128,13 @@ test('allows to set width via prop', () => {
 
   const container = screen.getByRole('group');
   expect(container.className).toMatchInlineSnapshot(
-    `"flex touch-none flex-col w-44"`
+    `"grid grid-cols-[auto_1fr] gap-y-1 w-44"`
   );
 });
 
 test('forwards ref', () => {
   const ref = React.createRef<HTMLDivElement>();
-  render(<Slider ref={ref}>Percent</Slider>);
+  render(<Slider ref={ref as any}>Percent</Slider>);
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
 });

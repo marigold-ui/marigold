@@ -1,90 +1,89 @@
 import { ReactNode } from 'react';
+import { RadioGroup } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
-import { useRadioGroup } from '@react-aria/radio';
+import { WidthProp, cn, useClassNames } from '@marigold/system';
 
-import { useRadioGroupState } from '@react-stately/radio';
-
-import { AriaRadioGroupProps } from '@react-types/radio';
-
-import { WidthProp, cn, useStateProps } from '@marigold/system';
-
-import { FieldBase } from '../FieldBase';
+import { FieldBase } from '../FieldBase/_FieldBase';
 import { RadioGroupContext } from './Context';
 
-// Props
-// ---------------
+type RemovedProps =
+  | 'className'
+  | 'style'
+  | 'isDisabled'
+  | 'isInvalid'
+  | 'isRequired'
+  | 'isSelected';
 export interface RadioGroupProps
-  extends Omit<
-    AriaRadioGroupProps,
-    'isDisabled' | 'isRquired' | 'isReadOnly ' | 'validationState'
-  > {
+  extends Omit<RAC.RadioGroupProps, RemovedProps> {
+  variant?: string;
+  size?: string;
+  label?: string;
+  description?: string;
+  errorMessage?: string;
   children: ReactNode[];
   width?: WidthProp['width'];
-  required?: boolean;
-  disabled?: boolean;
+  error?: RAC.RadioGroupProps['isInvalid'];
+  required?: RAC.RadioGroupProps['isRequired'];
+  disabled?: RAC.RadioGroupProps['isDisabled'];
   readOnly?: boolean;
-  error?: boolean;
+  value?: string;
 }
 
-// Component
-// ---------------
-export const RadioGroup = ({
-  children,
-  orientation = 'vertical',
-  width,
-  required,
-  disabled,
-  readOnly,
+const _RadioGroup = ({
+  variant,
+  size,
+  label,
   error,
+  disabled,
+  required,
+  readOnly,
+  description,
+  errorMessage,
+  orientation = 'vertical',
+  children,
+  width,
   ...rest
 }: RadioGroupProps) => {
-  const props: AriaRadioGroupProps = {
-    isRequired: required,
+  const classNames = useClassNames({ component: 'Radio', variant, size });
+
+  const props: RAC.RadioGroupProps = {
     isDisabled: disabled,
     isReadOnly: readOnly,
-    validationState: error ? 'invalid' : 'valid',
+    isRequired: required,
+    isInvalid: error,
     ...rest,
-  };
-
-  const state = useRadioGroupState(props);
-  const { radioGroupProps, labelProps, errorMessageProps, descriptionProps } =
-    useRadioGroup(props, state);
-
-  const stateProps = useStateProps({
-    disabled,
-    readOnly,
-    error,
-    required,
-  });
+  } as const;
 
   return (
     <FieldBase
+      as={RadioGroup}
       width={width}
-      label={props.label}
-      labelProps={{ elementType: 'span', ...labelProps }}
-      description={props.description}
-      descriptionProps={descriptionProps}
-      error={error}
-      errorMessage={props.errorMessage}
-      errorMessageProps={errorMessageProps}
-      disabled={disabled}
-      stateProps={stateProps}
-      {...radioGroupProps}
+      label={label}
+      description={description}
+      errorMessage={errorMessage}
+      variant={variant}
+      size={size}
+      {...props}
     >
       <div
         role="presentation"
+        data-testid="group"
         data-orientation={orientation}
         className={cn(
+          classNames.group,
           'flex items-start',
           orientation === 'vertical'
             ? 'flex-col gap-[0.5ch]'
             : 'flex-row gap-[1.5ch]'
         )}
       >
-        <RadioGroupContext.Provider value={{ width, error, state }}>
+        <RadioGroupContext.Provider value={{ width, variant, size }}>
           {children}
         </RadioGroupContext.Provider>
       </div>
     </FieldBase>
   );
 };
+
+export { _RadioGroup as RadioGroup };

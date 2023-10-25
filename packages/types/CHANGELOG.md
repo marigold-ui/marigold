@@ -1,5 +1,11 @@
 # @marigold/types
 
+## 1.1.0
+
+### Minor Changes
+
+- [#3422](https://github.com/marigold-ui/marigold/pull/3422) [`e5869b2f3`](https://github.com/marigold-ui/marigold/commit/e5869b2f3bf0f3b69a2e37f377d51786d23ccc56) Thanks [@sebald](https://github.com/sebald)! - refa: Make `<FieldBase>` work with RAC components
+
 ## 1.0.1
 
 ### Patch Changes
