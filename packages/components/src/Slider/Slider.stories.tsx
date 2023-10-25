@@ -74,6 +74,16 @@ export const Basic: Story = { render: args => <Slider {...args} /> };
 
 export const Currency: Story = {
   render: args => (
-    <Slider formatOptions={{ style: 'currency', currency: 'EUR' }} {...args} />
+    <Slider formatOptions={{ style: 'currency', currency: 'EUR' }} {...args}>
+      this is label
+    </Slider>
+  ),
+};
+
+export const MultipleThumbs: Story = {
+  render: args => (
+    <Slider defaultValue={[30, 60]} thumbLabels={['start', 'end']}>
+      Range
+    </Slider>
   ),
 };

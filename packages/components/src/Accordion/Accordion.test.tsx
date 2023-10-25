@@ -1,6 +1,5 @@
 /* eslint-disable testing-library/no-node-access */
 import { fireEvent, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
@@ -117,7 +116,7 @@ test('render dynamically accordion items', () => {
   expect(content).toBeInTheDocument();
 });
 
-test('accepts variant and size classnames', async () => {
+test('accepts variant and size classnames', () => {
   render(
     <ThemeProvider theme={theme}>
       <Accordion data-testid="accordion">
@@ -132,9 +131,9 @@ test('accepts variant and size classnames', async () => {
 
   expect(button).toHaveAttribute('aria-expanded', 'false');
   expect(button.className).toMatchInlineSnapshot(
-    `"inline-flex items-center justify-center gap-[0.5ch] w-full bg-blue-600 p-8"`
+    `"inline-flex items-center justify-center gap-[0.5ch] bg-blue-600 p-8"`
   );
-  await userEvent.click(button);
+  fireEvent.click(button);
   expect(button).toHaveAttribute('aria-expanded', 'true');
 
   const item = screen.getByText('infos');
@@ -155,7 +154,7 @@ test('default full width', () => {
   const button = screen.getByText('Information');
 
   expect(button.className).toMatchInlineSnapshot(
-    `"inline-flex items-center justify-center gap-[0.5ch] w-full"`
+    `"inline-flex items-center justify-center gap-[0.5ch]"`
   );
 });
 

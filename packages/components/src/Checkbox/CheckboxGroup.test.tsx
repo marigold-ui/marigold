@@ -4,8 +4,8 @@ import { Theme, cva } from '@marigold/system';
 
 import { FieldGroup } from '../FieldBase';
 import { setup } from '../test.utils';
-import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
+import { Checkbox } from './_Checkbox';
 
 const theme: Theme = {
   name: 'checkbox group testing',
@@ -29,6 +29,7 @@ const theme: Theme = {
         'data-[indeterminate]:border-checkbox-base-indeterminate data-[indeterminate]:bg-checkbox-base-indeterminateBackground data-[indeterminate]:text-white',
         'data-[disabled]:border-checkbox-base-disabled data-[disabled]:bg-checkbox-base-disabledBackground',
       ]),
+      group: cva('pt-2'),
     },
     Field: cva(),
     Label: { container: cva(), indicator: cva() },
@@ -69,6 +70,19 @@ test('label is optional (can use aria-label instead)', () => {
   expect(screen.getByText('one')).toBeInTheDocument();
   expect(screen.getByText('two')).toBeInTheDocument();
   expect(screen.getByText('three')).toBeInTheDocument();
+});
+
+test('applies group styles from theme', () => {
+  render(
+    <CheckboxGroup aria-label="With Label">
+      <Checkbox value="one">one</Checkbox>
+      <Checkbox value="two">two</Checkbox>
+      <Checkbox value="three">three</Checkbox>
+    </CheckboxGroup>
+  );
+
+  const group = screen.getByRole('presentation');
+  expect(group.className).toContain('pt-2');
 });
 
 test('passes down "disabled" to checkboxes', () => {

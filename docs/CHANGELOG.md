@@ -1,5 +1,76 @@
 # @marigold/docs
 
+## 6.5.1
+
+### Patch Changes
+
+- Updated dependencies [[`80ac67eac`](https://github.com/marigold-ui/marigold/commit/80ac67eac8ad065c8c0f458e5f888c3f0e42a02b)]:
+  - @marigold/components@6.5.1
+  - @marigold/theme-b2b@25.4.1
+  - @marigold/theme-core@25.4.1
+  - @marigold/icons@1.2.20
+  - @marigold/theme-preset@1.1.11
+
+## 6.5.0
+
+### Patch Changes
+
+- Updated dependencies [[`5e1219c84`](https://github.com/marigold-ui/marigold/commit/5e1219c84810991be0253186a7f7ec19bd916689), [`1ce0cabbf`](https://github.com/marigold-ui/marigold/commit/1ce0cabbf8e04cab4345265dbe131d48be773d68)]:
+  - @marigold/components@6.5.0
+  - @marigold/theme-b2b@25.4.0
+  - @marigold/theme-core@25.4.0
+  - @marigold/icons@1.2.19
+  - @marigold/theme-preset@1.1.10
+
+## 6.4.0
+
+### Minor Changes
+
+- [#3408](https://github.com/marigold-ui/marigold/pull/3408) [`78840aa04`](https://github.com/marigold-ui/marigold/commit/78840aa04e83dce5f8fbfa7357f7099eddf71126) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: Headline as React Aria Component
+
+- [#3392](https://github.com/marigold-ui/marigold/pull/3392) [`5ed86abd0`](https://github.com/marigold-ui/marigold/commit/5ed86abd0643b0fcf4254a7a2fec74266085346d) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: Link as react aria component
+
+### Patch Changes
+
+- Updated dependencies [[`1eb93352a`](https://github.com/marigold-ui/marigold/commit/1eb93352a8c08cac7903ac08fb91d8f9be8c0bfd), [`0b1ac52e5`](https://github.com/marigold-ui/marigold/commit/0b1ac52e54ba5a8693a2894f389497f36a9041ac), [`9b0ed3862`](https://github.com/marigold-ui/marigold/commit/9b0ed38624cbed0edde8a3cb502ba34259ed5bfc), [`3e328198c`](https://github.com/marigold-ui/marigold/commit/3e328198ca5ab18ef4218c8252463ea5d76091bd), [`dc2b1484c`](https://github.com/marigold-ui/marigold/commit/dc2b1484cd77141e5bc8c94d50ecfaf29a8a3571), [`e5869b2f3`](https://github.com/marigold-ui/marigold/commit/e5869b2f3bf0f3b69a2e37f377d51786d23ccc56), [`e968e5eb5`](https://github.com/marigold-ui/marigold/commit/e968e5eb5ce58b37c364b01b7617b1bc108c5f74), [`67ab41a40`](https://github.com/marigold-ui/marigold/commit/67ab41a40384c5ef1f17c013913ea2ee01edc5de), [`470d00c6d`](https://github.com/marigold-ui/marigold/commit/470d00c6d6be571d6fc9cb82cde7f4756b360b83), [`78840aa04`](https://github.com/marigold-ui/marigold/commit/78840aa04e83dce5f8fbfa7357f7099eddf71126), [`60c7f1dc5`](https://github.com/marigold-ui/marigold/commit/60c7f1dc549e6b489a1852a18da849fcbb052f5c), [`0fbb7f963`](https://github.com/marigold-ui/marigold/commit/0fbb7f96327d0af6acb9c9d2f4e6bfa76cb5384d), [`4be30b28a`](https://github.com/marigold-ui/marigold/commit/4be30b28a7bd64807c28bc8371d9162f922905f6), [`700cdf296`](https://github.com/marigold-ui/marigold/commit/700cdf2963f7b0b46ed715599646fa7ed71e7c0b), [`5a2a03ae0`](https://github.com/marigold-ui/marigold/commit/5a2a03ae0766a417c208c8624d8b6a0f370edcd9), [`5ed86abd0`](https://github.com/marigold-ui/marigold/commit/5ed86abd0643b0fcf4254a7a2fec74266085346d)]:
+  - @marigold/components@6.4.0
+  - @marigold/theme-b2b@25.3.0
+  - @marigold/theme-core@25.3.0
+  - @marigold/icons@1.2.18
+  - @marigold/theme-preset@1.1.9
+
+## 6.3.1
+
+### Patch Changes
+
+- Updated dependencies [[`310aeb450`](https://github.com/marigold-ui/marigold/commit/310aeb450fdf9d9778ee107ad817531e533ee846), [`d8b3cca2d`](https://github.com/marigold-ui/marigold/commit/d8b3cca2dfe5ff199c5045c1e77cec7d6384c725)]:
+  - @marigold/theme-b2b@25.2.8
+  - @marigold/components@6.3.1
+  - @marigold/theme-core@25.2.8
+  - @marigold/icons@1.2.17
+  - @marigold/theme-preset@1.1.8
+
+## 6.3.0
+
+### Minor Changes
+
+- [#3383](https://github.com/marigold-ui/marigold/pull/3383) [`958477f43`](https://github.com/marigold-ui/marigold/commit/958477f43da2b599430d4bb91470673b8cf04608) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: remove className prop from all components
+
+### Patch Changes
+
+- [#3376](https://github.com/marigold-ui/marigold/pull/3376) [`fa1fa37d7`](https://github.com/marigold-ui/marigold/commit/fa1fa37d70564d64902ceef3bcf6a118f4b96cdc) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: new navigation pattern
+
+- [#3344](https://github.com/marigold-ui/marigold/pull/3344) [`6f4953b1c`](https://github.com/marigold-ui/marigold/commit/6f4953b1cccc11fd9a20853c030535e083123c3a) Thanks [@sarahgm](https://github.com/sarahgm)! - docs[197]: useResponsiveValue documentation
+
+- [#3388](https://github.com/marigold-ui/marigold/pull/3388) [`3c506ae7a`](https://github.com/marigold-ui/marigold/commit/3c506ae7a85cf57a39d4850381bed73a8b8595de) Thanks [@sarahgm](https://github.com/sarahgm)! - docs[DST-215]: add Component Guidelines
+
+- Updated dependencies [[`cdebe707a`](https://github.com/marigold-ui/marigold/commit/cdebe707a2a851304b1185ac9aa8d2994502869a), [`ea9db88fd`](https://github.com/marigold-ui/marigold/commit/ea9db88fdee91e3e9d912f58ae7a99e90633fa42), [`d8d4af573`](https://github.com/marigold-ui/marigold/commit/d8d4af573268d663df2c9c23e84590683cb92dc1), [`958477f43`](https://github.com/marigold-ui/marigold/commit/958477f43da2b599430d4bb91470673b8cf04608)]:
+  - @marigold/theme-b2b@25.2.7
+  - @marigold/components@6.3.0
+  - @marigold/theme-core@25.2.7
+  - @marigold/icons@1.2.16
+  - @marigold/theme-preset@1.1.7
+
 ## 6.2.6
 
 ### Patch Changes

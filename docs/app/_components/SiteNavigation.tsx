@@ -5,7 +5,7 @@ import { ThemeMenu } from './ThemeMenu';
 
 export const SiteNavigation = () => (
   <div className="hidden w-full justify-between gap-3 md:flex">
-    <div className="text-lg  uppercase tracking-tight text-[#46505a] [&>*]:flex [&>*]:items-center [&>*]:gap-2 [&>*]:font-bold  [&>*]:no-underline">
+    <div className="flex  items-center text-lg uppercase tracking-tight text-[#46505a] [&>*]:flex [&>*]:items-center [&>*]:gap-2 [&>*]:font-bold [&>*]:no-underline">
       <Link href="/">
         <Logo className="h-6 w-6" />
         Marigold

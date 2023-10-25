@@ -68,7 +68,7 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
         <input
           {...props}
           className={cn(
-            'flex-1',
+            'w-full flex-1',
             'disabled:cursor-not-allowed',
             '[&[type=file]]:border-none [&[type=file]]:p-0',
             '[&[type=color]]:ml-0 [&[type=color]]:border-none [&[type=color]]:bg-transparent [&[type=color]]:p-0',

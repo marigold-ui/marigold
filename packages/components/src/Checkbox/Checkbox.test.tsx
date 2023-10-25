@@ -30,6 +30,7 @@ const theme: Theme = {
         'data-[indeterminate]:border-checkbox-base-indeterminate data-[indeterminate]:bg-checkbox-base-indeterminateBackground data-[indeterminate]:text-white',
         'data-[disabled]:border-checkbox-base-disabled data-[disabled]:bg-checkbox-base-disabledBackground',
       ]),
+      group: cva(),
     },
     Field: cva(),
   },
@@ -47,12 +48,12 @@ const { render } = setup({ theme });
 // Tests
 // ---------------
 test('renders label and (hidden) checkbox', () => {
-  render(<Checkbox data-testid="checkbox">With Label</Checkbox>);
+  render(<Checkbox data-testid="checkboxId">With Label</Checkbox>);
 
   const label = screen.getByText('With Label');
   expect(label).toBeInTheDocument();
 
-  const checkbox = screen.getByTestId('checkbox');
+  const checkbox = screen.getAllByTestId('checkboxId')[1];
   expect(checkbox).toBeInTheDocument();
   expect(checkbox).toBeInstanceOf(HTMLInputElement);
   expect(checkbox).toHaveAttribute('type', 'checkbox');
@@ -61,7 +62,7 @@ test('renders label and (hidden) checkbox', () => {
 test('allows to render without label', () => {
   render(<Checkbox data-testid="checkbox" aria-label="No Label" />);
 
-  const checkbox = screen.getByTestId('checkbox');
+  const checkbox = screen.getAllByTestId('checkbox')[1];
   expect(checkbox).toBeInTheDocument();
   expect(checkbox).toBeInstanceOf(HTMLInputElement);
   expect(checkbox).toHaveAttribute('type', 'checkbox');
@@ -76,7 +77,7 @@ test('supports read only state', () => {
     </Checkbox>
   );
 
-  const checkbox = screen.getByTestId<HTMLInputElement>('checkbox');
+  const checkbox = screen.getAllByTestId<HTMLInputElement>('checkbox')[1];
   const component = screen.getByText('Read Only');
 
   fireEvent.click(component);
@@ -89,13 +90,9 @@ test('check if all slot class names are applied correctly', () => {
   const label = screen.getByText('With Label');
 
   expect(label.parentElement?.className).toMatchInlineSnapshot(
-    `"group/checkbox relative flex items-center gap-[1ch]"`
+    `"group/checkbox flex items-center gap-[0.5rem] cursor-pointer data-[disabled]:cursor-not-allowed"`
   );
-  expect(
-    (label.parentElement?.childNodes[0] as HTMLElement).className
-  ).toMatchInlineSnapshot(
-    `"z-1 absolute left-0 top-0 h-full w-full cursor-pointer opacity-[0.0001] group-disabled/checkbox:cursor-not-allowed"`
-  );
+
   expect(getVisibleCheckbox()?.className).toMatchInlineSnapshot(
     `"flex shrink-0 grow-0 basis-4 items-center justify-center h-4 w-4 border border-solid border-checkbox-base-border bg-checkbox-base-background rounded-[2] p-0.5 data-[hover]:border-checkbox-base-hover data-[focus]:outline-offset[3] data-[focus]:outline data-[focus]:outline-2 data-[checked]:border-checkbox-base-checked data-[checked]:bg-checkbox-base-checkedBackground data-[checked]:text-white data-[indeterminate]:border-checkbox-base-indeterminate data-[indeterminate]:bg-checkbox-base-indeterminateBackground data-[indeterminate]:text-white data-[disabled]:border-checkbox-base-disabled data-[disabled]:bg-checkbox-base-disabledBackground"`
   );
@@ -124,7 +121,7 @@ test('correct class name is set on size small', () => {
   const label = screen.getByText('With Label');
 
   expect(label.parentElement?.className).toMatchInlineSnapshot(
-    `"group/checkbox relative flex items-center gap-[1ch] py-1"`
+    `"group/checkbox flex items-center gap-[0.5rem] cursor-pointer data-[disabled]:cursor-not-allowed py-1"`
   );
 });
 
@@ -135,7 +132,9 @@ test('support default checked', () => {
     </Checkbox>
   );
 
-  const input: HTMLInputElement = screen.getByTestId('checkbox');
+  const input: HTMLInputElement = screen.getAllByTestId(
+    'checkbox'
+  )[1] as HTMLInputElement;
   expect(input.checked).toBeTruthy();
 });
 
@@ -145,7 +144,9 @@ test('supports indeterminate state', () => {
       With Label
     </Checkbox>
   );
-  const input: HTMLInputElement = screen.getByTestId('checkbox');
+  const input: HTMLInputElement = screen.getAllByTestId(
+    'checkbox'
+  )[1] as HTMLInputElement;
   expect(input.indeterminate).toBeTruthy();
 });
 
@@ -156,7 +157,9 @@ test('controlled', () => {
       With Label
     </Checkbox>
   );
-  const input: HTMLInputElement = screen.getByTestId('checkbox');
+  const input: HTMLInputElement = screen.getAllByTestId(
+    'checkbox'
+  )[1] as HTMLInputElement;
 
   fireEvent.click(input);
   expect(onChange).toHaveBeenCalledWith(true);
@@ -183,6 +186,6 @@ test('works with a <FieldGroup>', () => {
     </FieldGroup>
   );
 
-  const checkbox = screen.getByTestId('checkbox');
+  const checkbox = screen.getAllByTestId<HTMLInputElement>('checkbox')[1];
   expect(checkbox).toBeInTheDocument();
 });

@@ -1,5 +1,40 @@
 # @marigold/theme-preset
 
+## 1.1.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.5.1
+
+## 1.1.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.5.0
+
+## 1.1.9
+
+### Patch Changes
+
+- Updated dependencies [[`3e328198c`](https://github.com/marigold-ui/marigold/commit/3e328198ca5ab18ef4218c8252463ea5d76091bd), [`5a2a03ae0`](https://github.com/marigold-ui/marigold/commit/5a2a03ae0766a417c208c8624d8b6a0f370edcd9)]:
+  - @marigold/system@6.4.0
+
+## 1.1.8
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.3.1
+
+## 1.1.7
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.3.0
+
 ## 1.1.6
 
 ### Patch Changes

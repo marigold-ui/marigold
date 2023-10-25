@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-b2b",
-  "version": "25.2.6",
+  "version": "25.4.1",
   "description": "Marigold B2B Theme",
   "license": "MIT",
   "keywords": [
@@ -55,7 +55,6 @@
     "@marigold/theme-preset": "workspace:*"
   },
   "scripts": {
-    "build": "NODE_ENV=production tsup && tailwindcss -o dist/styles.css",
-    "dev": "tsup"
+    "build": "NODE_ENV=production tsup && tailwindcss -o dist/styles.css"
   }
 }
