@@ -17,7 +17,7 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) =>
         },
       },
       plugins: [
-        racSelectorPlugin()({ prefix: 'rac' }),
+        racSelectorPlugin({ prefix: 'rac' }),
         // Grouping
         plugin(({ matchVariant, e }) => {
           matchVariant(
