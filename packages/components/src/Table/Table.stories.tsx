@@ -160,46 +160,72 @@ export const ControlledTable: Story = {
 
 // https://react-spectrum.adobe.com/react-aria/useTable.html#nested-columns
 export const NestedColumns: Story = {
-  render: () => (
-    <Table aria-label="Example table for nested columns">
-      <Table.Header>
-        <Table.Column title="Name">
-          <Table.Column isRowHeader>First Name</Table.Column>
-          <Table.Column isRowHeader>Last Name</Table.Column>
-        </Table.Column>
-        <Table.Column title="Information">
-          <Table.Column>Age</Table.Column>
-          <Table.Column>Birthday</Table.Column>
-        </Table.Column>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>Sam</Table.Cell>
-          <Table.Cell>Smith</Table.Cell>
-          <Table.Cell>36</Table.Cell>
-          <Table.Cell>May 3</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Julia</Table.Cell>
-          <Table.Cell>Jones</Table.Cell>
-          <Table.Cell>24</Table.Cell>
-          <Table.Cell>February 10</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Peter</Table.Cell>
-          <Table.Cell>Parker</Table.Cell>
-          <Table.Cell>28</Table.Cell>
-          <Table.Cell>September 7</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Bruce</Table.Cell>
-          <Table.Cell>Wayne</Table.Cell>
-          <Table.Cell>32</Table.Cell>
-          <Table.Cell>December 18</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  ),
+  render: () => {
+    const columns = [
+      {
+        name: 'Name',
+        key: 'name',
+        children: [
+          { name: 'First Name', key: 'first', isRowHeader: true },
+          { name: 'Last Name', key: 'last', isRowHeader: true },
+        ],
+      },
+      {
+        name: 'Information',
+        key: 'info',
+        children: [
+          { name: 'Age', key: 'age' },
+          { name: 'Birthday', key: 'birthday' },
+        ],
+      },
+    ];
+
+    const rows = [
+      { id: 1, first: 'Sam', last: 'Smith', age: 36, birthday: 'May 3' },
+      {
+        id: 2,
+        first: 'Julia',
+        last: 'Jones',
+        age: 24,
+        birthday: 'February 10',
+      },
+      {
+        id: 3,
+        first: 'Peter',
+        last: 'Parker',
+        age: 28,
+        birthday: 'September 7',
+      },
+      {
+        id: 4,
+        first: 'Bruce',
+        last: 'Wayne',
+        age: 32,
+        birthday: 'December 18',
+      },
+    ];
+    return (
+      <Table aria-label="Example table with dynamic nested columns">
+        <Table.Header columns={columns}>
+          {column => (
+            <Table.Column
+              isRowHeader={column.isRowHeader}
+              childColumns={column.children}
+            >
+              {column.name}
+            </Table.Column>
+          )}
+        </Table.Header>
+        <Table.Body items={rows}>
+          {item => (
+            <Table.Row>
+              {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+    );
+  },
 };
 
 export const Sorting: Story = {
