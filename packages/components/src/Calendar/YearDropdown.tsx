@@ -1,5 +1,5 @@
 import { CalendarDate } from '@internationalized/date';
-import { Dispatch, Key, SetStateAction } from 'react';
+import { Dispatch, Key, SetStateAction, useEffect, useRef } from 'react';
 
 import { useDateFormatter } from '@react-aria/i18n';
 
@@ -26,6 +26,19 @@ const YearDropdown = ({ state, setSelectedDropdown }: YearDropdownProps) => {
     });
   }
 
+  const activeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!window) return;
+    if (activeButtonRef.current) {
+      const activeButton = activeButtonRef.current;
+      activeButton?.scrollIntoView({
+        behavior: 'instant',
+        block: 'center',
+      });
+    }
+  }, [state.focusedDate]);
+
   let onChange = (key: Key) => {
     let index = Number(key);
     let date = years[index].value;
@@ -38,24 +51,28 @@ const YearDropdown = ({ state, setSelectedDropdown }: YearDropdownProps) => {
       className="grid h-full max-h-[300px] min-w-[300px] grid-cols-3 gap-y-10 overflow-y-scroll p-2"
     >
       {years.map((year, index) => {
+        const isActive = +year.formatted === state.focusedDate.year;
+
         return (
           <li className="flex justify-center" key={index}>
-            <Button
-              disabled={state.isDisabled}
-              variant={
-                +year.formatted === state.focusedDate.year
-                  ? 'secondary'
-                  : 'text'
-              }
-              size="small"
-              onPress={() => {
-                onChange(index);
-                setSelectedDropdown(undefined);
-              }}
-              key={index}
+            <div
+              ref={isActive ? activeButtonRef : (null as any)}
+              style={{ height: '100%', width: '100%' }}
             >
-              {year.formatted}
-            </Button>
+              <Button
+                disabled={state.isDisabled}
+                variant={isActive ? 'secondary' : 'text'}
+                size="small"
+                onPress={() => {
+                  onChange(index);
+                  setSelectedDropdown(undefined);
+                }}
+                key={index}
+                data-value={year.formatted}
+              >
+                {year.formatted}
+              </Button>
+            </div>
           </li>
         );
       })}

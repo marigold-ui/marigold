@@ -297,6 +297,8 @@ describe('Calendar', () => {
   });
 
   test('renders select components', async () => {
+    // mocking scrollIntoView to handle error `scrollIntoView` isn't a function
+    window.HTMLElement.prototype.scrollIntoView = function () {};
     render(<Calendar />);
     const monthButton = screen.getByTestId('month');
     expect(monthButton).toBeInTheDocument();
