@@ -17,7 +17,7 @@ import {
   useStateProps,
 } from '@marigold/system';
 
-import { Checkbox } from '../Checkbox';
+import { Checkbox } from '../Checkbox/_Checkbox';
 import { useTableContext } from './Context';
 import { mapCheckboxProps } from './utils';
 
