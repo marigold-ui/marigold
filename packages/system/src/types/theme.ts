@@ -53,7 +53,7 @@ export type Theme = {
     >;
     Image?: ComponentStyleFunction<string, string>;
     Checkbox?: Record<
-      'container' | 'label' | 'checkbox',
+      'container' | 'label' | 'checkbox' | 'group',
       ComponentStyleFunction<string, string>
     >;
     Switch?: Record<
@@ -79,11 +79,11 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Radio?: Record<
-      'container' | 'label' | 'radio',
+      'container' | 'label' | 'radio' | 'group',
       ComponentStyleFunction<string, string>
     >;
     Slider?: Record<
-      'track' | 'thumb' | 'label' | 'output',
+      'container' | 'track' | 'thumb' | 'output',
       ComponentStyleFunction<string, string>
     >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;

@@ -8,5 +8,6 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
     'group-[disabled]/checkbox:group-[selected]/checkbox:border-border-disabled group-[disabled]/checkbox:group-[selected]/checkbox:bg-bg-disabled ',
   ]),
   container: cva(''),
-  label: cva('group-[disabled]/checkbox:text-text-disabled text-sm'),
+  label: cva('group-[disabled]/checkbox:text-text-disabled'),
+  group: cva(''),
 };

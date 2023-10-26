@@ -31,6 +31,23 @@ export type PropsOf<C> = C extends React.FC<infer P>
   ? Props
   : never;
 
+/**
+ * Like a regular `Omit` but handles when the passed type is `never`.
+ */
+export type DistributiveOmit<T, TOmitted extends PropertyKey> = T extends any
+  ? Omit<T, TOmitted>
+  : never;
+
+/**
+ * Fix the weird behaviro or the forwardRef types.
+ * Source: https://www.totaltypescript.com/pass-component-as-prop-react
+ *
+ * @example const fixedForwardRef = forwardRef as FixedForwardRef;
+ */
+export type FixedForwardRef = <T, P = {}>(
+  render: (props: P, ref: React.Ref<T>) => React.ReactNode
+) => (props: P & React.RefAttributes<T>) => React.ReactNode;
+
 /**********************************************/
 /*                                            */
 /*            POLYMORPIC COMPONENT            */

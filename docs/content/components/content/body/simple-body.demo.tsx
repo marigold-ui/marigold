@@ -10,7 +10,7 @@ import {
 export default () => (
   <Card>
     <Header>
-      <Headline level="2">A really good header!</Headline>
+      <Headline level={2}>A really good header!</Headline>
     </Header>
     <Body>
       <Text>In this body fits really great content.</Text>

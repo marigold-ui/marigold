@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { HelpText } from '../HelpText';
+import { HelpText } from './_HelpText';
 
 const meta = {
   title: 'Components/HelpText',
@@ -36,21 +36,10 @@ const meta = {
         defaultValue: { summary: false },
       },
     },
-    disabled: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'Whether the help text is disabled',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
-    },
   },
   args: {
     errorMessage: 'Something went wrong',
     description: 'This is a help text description',
-    disabled: false,
     error: false,
   },
 } satisfies Meta<typeof HelpText>;

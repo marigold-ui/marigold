@@ -1,5 +1,22 @@
 # @marigold/system
 
+## 6.5.1
+
+## 6.5.0
+
+## 6.4.0
+
+### Minor Changes
+
+- [#3429](https://github.com/marigold-ui/marigold/pull/3429) [`3e328198c`](https://github.com/marigold-ui/marigold/commit/3e328198ca5ab18ef4218c8252463ea5d76091bd) Thanks [@sebald](https://github.com/sebald)! - feat: adjust `<SliderOutput>` position
+
+- [#3424](https://github.com/marigold-ui/marigold/pull/3424) [`5a2a03ae0`](https://github.com/marigold-ui/marigold/commit/5a2a03ae0766a417c208c8624d8b6a0f370edcd9) Thanks [@sebald](https://github.com/sebald)! - feat: add styles to checkbox and radio groups
+
+### Patch Changes
+
+- Updated dependencies [[`e5869b2f3`](https://github.com/marigold-ui/marigold/commit/e5869b2f3bf0f3b69a2e37f377d51786d23ccc56)]:
+  - @marigold/types@1.1.0
+
 ## 6.3.1
 
 ## 6.3.0

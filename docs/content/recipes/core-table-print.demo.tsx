@@ -93,7 +93,7 @@ export default () => {
     <ThemeProvider theme={coreTheme}>
       <Stack space={1}>
         <Inline space={2}>
-          <Headline level="4">Veranstaltungen</Headline>
+          <Headline level={4}>Veranstaltungen</Headline>
           <Split />
           <Stack alignX="center">
             <ResaleLogbook />

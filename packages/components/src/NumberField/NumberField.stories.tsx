@@ -2,6 +2,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
+import { Inline } from '../Inline';
 import { NumberField } from './NumberField';
 
 const meta = {
@@ -117,6 +118,34 @@ export const WithFormatting: Story = {
       }}
       {...args}
     />
+  ),
+};
+
+// https://tc39.es/ecma402/#table-sanctioned-single-unit-identifiers
+export const WithUnit: Story = {
+  render: args => (
+    <Inline space={4}>
+      <NumberField
+        {...args}
+        label="Hours"
+        width={52}
+        defaultValue={2}
+        formatOptions={{
+          style: 'unit',
+          unit: 'hour',
+        }}
+      />
+      <NumberField
+        {...args}
+        label="Minutes"
+        width={52}
+        defaultValue={43}
+        formatOptions={{
+          style: 'unit',
+          unit: 'minute',
+        }}
+      />
+    </Inline>
   ),
 };
 
