@@ -14,7 +14,7 @@ import { OverlayProvider } from '@react-aria/overlays';
 import { Theme, cva, useSmallScreen } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { Select } from './Select';
+import { Select } from './_Select';
 
 const theme: Theme = {
   name: 'test',
