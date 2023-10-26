@@ -11,16 +11,21 @@ export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
   variant?: string;
   size?: string;
   fullWidth?: boolean;
+  className?: string;
   children?: ReactNode;
   disabled?: RAC.ButtonProps['isDisabled'];
 }
 
 const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ children, variant, size, disabled, fullWidth, ...props }, ref) => {
+  (
+    { children, variant, size, className, disabled, fullWidth, ...props },
+    ref
+  ) => {
     const classNames = useClassNames({
       component: 'Button',
       variant,
       size,
+      className,
     });
 
     return (
