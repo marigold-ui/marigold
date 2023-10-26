@@ -96,6 +96,7 @@ const _Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       isReadOnly: readOnly,
       isRequired: required,
       isInvalid: error,
+      isSelected: checked,
       defaultSelected: defaultChecked,
       ...rest,
     } as const;
