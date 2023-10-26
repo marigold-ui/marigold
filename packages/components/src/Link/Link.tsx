@@ -6,13 +6,13 @@ import { useClassNames } from '@marigold/system';
 
 type RemovedProps = 'className' | 'isDisabled';
 
-export interface LinksProps extends Omit<RAC.LinkProps, RemovedProps> {
+export interface LinkProps extends Omit<RAC.LinkProps, RemovedProps> {
   variant?: string;
   size?: string;
   disabled?: RAC.LinkProps['isDisabled'];
 }
 
-const _Link = forwardRef<HTMLAnchorElement, LinksProps>(
+const _Link = forwardRef<HTMLAnchorElement, LinkProps>(
   ({ variant, size, disabled, children, ...props }, ref) => {
     const classNames = useClassNames({
       component: 'Link',

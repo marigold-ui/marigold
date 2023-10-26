@@ -8,6 +8,6 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     'group-aria-selected/cell:bg-bg-selected-input outline-none group-aria-selected/cell:font-semibold group-aria-selected/cell:text-white',
   ]),
   calendarControllers: cva([
-    ' data-[hover]:bg-bg-hover data-[hover]:text-text-hover',
+    ' [&_button[data-hovered]]:bg-bg-hover [&_button[data-hovered]]:text-text-hover',
   ]),
 };
