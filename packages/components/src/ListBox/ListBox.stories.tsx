@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 
-import { Item, Section } from '@react-stately/collections';
-import { ListProps, useListState } from '@react-stately/list';
-
-import { ListBox } from './ListBox';
+import { Header } from '../Header/_Header';
+// import { OldListBox } from './ListBox';
+import { ListBox } from './_ListBox';
+import { Item } from './_ListBoxOption';
+import { Section } from './_ListBoxSection';
 
 const meta = {
   title: 'Components/ListBox',
@@ -13,14 +15,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const List = (props: ListProps<any>) => {
-  const state = useListState(props);
-  return <ListBox state={state} />;
-};
-
 export const Basic: Story = {
   render: args => (
-    <List
+    <ListBox
       selectionMode="single"
       defaultSelectedKeys={['one']}
       disabledKeys={['four']}
@@ -30,28 +27,31 @@ export const Basic: Story = {
       <Item key="two">Two</Item>
       <Item key="three">Three</Item>
       <Item key="four">Four</Item>
-    </List>
+    </ListBox>
   ),
 };
 
 export const WithSections: Story = {
   render: args => (
-    <List {...args}>
-      <Section title="Veggies">
+    <ListBox {...args}>
+      <Section>
+        <Header>Veggies</Header>
         <Item key="lettuce">Lettuce</Item>
         <Item key="tomato">Tomato</Item>
         <Item key="onion">Onion</Item>
       </Section>
-      <Section title="Protein">
+      <Section>
+        <Header>Protein</Header>
         <Item key="ham">Ham</Item>
         <Item key="tuna">Tuna</Item>
         <Item key="tofu">Tofu</Item>
       </Section>
-      <Section title="Condiments">
+      <Section>
+        <Header>Condiments</Header>
         <Item key="mayo">Mayonaise</Item>
         <Item key="mustard">Mustard</Item>
         <Item key="ranch">Ranch</Item>
       </Section>
-    </List>
+    </ListBox>
   ),
 };
