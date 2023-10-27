@@ -1,5 +1,16 @@
 # @marigold/theme-core
 
+## 25.5.1
+
+### Patch Changes
+
+- [`ea9d457a4`](https://github.com/marigold-ui/marigold/commit/ea9d457a4c762d740d6c249ca4907b76cbe80f25) Thanks [@sebald](https://github.com/sebald)! - fix: remove background from icon button
+
+- Updated dependencies []:
+  - @marigold/system@6.6.1
+  - @marigold/components@6.6.1
+  - @marigold/theme-preset@1.1.13
+
 ## 25.5.0
 
 ### Minor Changes
