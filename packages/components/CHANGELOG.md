@@ -1,5 +1,25 @@
 # @marigold/components
 
+## 6.6.0
+
+### Minor Changes
+
+- [#3452](https://github.com/marigold-ui/marigold/pull/3452) [`43e792d6a`](https://github.com/marigold-ui/marigold/commit/43e792d6a55b60429a208e206f00cdab5bd23a9f) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: expose `RouterProvider`
+
+- [#3416](https://github.com/marigold-ui/marigold/pull/3416) [`7704debbe`](https://github.com/marigold-ui/marigold/commit/7704debbea339917eedf8182e2e5986798b34aff) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - [DST-38]: Implement mobile optimization for `DatePicker`
+
+### Patch Changes
+
+- [#3448](https://github.com/marigold-ui/marigold/pull/3448) [`547fca472`](https://github.com/marigold-ui/marigold/commit/547fca47212de69da8366988d2e7e1d29c3411ca) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: nested lists
+
+- [#3455](https://github.com/marigold-ui/marigold/pull/3455) [`4cb379e5a`](https://github.com/marigold-ui/marigold/commit/4cb379e5ac0a5ba36cc8de55a73b901c701f80c6) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: link props type
+
+- [#3451](https://github.com/marigold-ui/marigold/pull/3451) [`f2b764380`](https://github.com/marigold-ui/marigold/commit/f2b764380c3775c640b56e2a2fdd838762699318) Thanks [@sebald](https://github.com/sebald)! - fix: `<Checkbox>` "checked" state
+
+- Updated dependencies [[`7704debbe`](https://github.com/marigold-ui/marigold/commit/7704debbea339917eedf8182e2e5986798b34aff)]:
+  - @marigold/system@6.6.0
+  - @marigold/icons@1.2.21
+
 ## 6.5.1
 
 ### Patch Changes

@@ -1,5 +1,20 @@
 # @marigold/theme-core
 
+## 25.5.0
+
+### Minor Changes
+
+- [#3456](https://github.com/marigold-ui/marigold/pull/3456) [`f3bbad3e7`](https://github.com/marigold-ui/marigold/commit/f3bbad3e794f0c2474c5fbe0eea2263f399a227a) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: adjust styles for tooltip and add an icon button
+
+- [#3416](https://github.com/marigold-ui/marigold/pull/3416) [`7704debbe`](https://github.com/marigold-ui/marigold/commit/7704debbea339917eedf8182e2e5986798b34aff) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - [DST-38]: Implement mobile optimization for `DatePicker`
+
+### Patch Changes
+
+- Updated dependencies [[`547fca472`](https://github.com/marigold-ui/marigold/commit/547fca47212de69da8366988d2e7e1d29c3411ca), [`4cb379e5a`](https://github.com/marigold-ui/marigold/commit/4cb379e5ac0a5ba36cc8de55a73b901c701f80c6), [`43e792d6a`](https://github.com/marigold-ui/marigold/commit/43e792d6a55b60429a208e206f00cdab5bd23a9f), [`7704debbe`](https://github.com/marigold-ui/marigold/commit/7704debbea339917eedf8182e2e5986798b34aff), [`f2b764380`](https://github.com/marigold-ui/marigold/commit/f2b764380c3775c640b56e2a2fdd838762699318)]:
+  - @marigold/components@6.6.0
+  - @marigold/system@6.6.0
+  - @marigold/theme-preset@1.1.12
+
 ## 25.4.1
 
 ### Patch Changes
