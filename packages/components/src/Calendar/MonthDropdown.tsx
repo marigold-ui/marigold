@@ -1,45 +1,51 @@
-import { Key } from 'react';
-
-import { useDateFormatter } from '@react-aria/i18n';
+import { Dispatch, Key, SetStateAction } from 'react';
 
 import { CalendarState } from '@react-stately/calendar';
 
-import { Select } from '../Select';
+import { Button } from '../Button';
 
 interface MonthDropdownProps {
   state: CalendarState;
+  setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
+  months: string[];
 }
 
-const MonthDropdown = ({ state }: MonthDropdownProps) => {
-  let months = [];
-  let formatter = useDateFormatter({
-    month: 'long',
-    timeZone: state.timeZone,
-  });
-
-  let numMonths = state.focusedDate.calendar.getMonthsInYear(state.focusedDate);
-  for (let i = 1; i <= numMonths; i++) {
-    let date = state.focusedDate.set({ month: i });
-    months.push(formatter.format(date.toDate(state.timeZone)));
-  }
-
+const MonthDropdown = ({
+  state,
+  setSelectedDropdown,
+  months,
+}: MonthDropdownProps) => {
   let onChange = (index: Key) => {
-    let value = Number(index);
+    let value = Number(index) + 1;
     let date = state.focusedDate.set({ month: value });
     state.setFocusedDate(date);
   };
+
   return (
-    <Select
-      aria-label="Month"
-      onChange={onChange}
-      selectedKey={String(state.focusedDate.month)}
-      data-testid="month"
-      disabled={state.isDisabled}
+    <ul
+      data-testid="monthOptions"
+      className="grid h-full max-h-[300px] min-w-[300px] grid-cols-3 gap-y-10 overflow-y-scroll p-2"
     >
-      {months.map((month, i) => (
-        <Select.Option key={i + 1}>{month.substring(0, 3)}</Select.Option>
-      ))}
-    </Select>
+      {months.map((month, index) => {
+        return (
+          <li className="flex justify-center" key={index}>
+            <Button
+              variant={
+                index === state.focusedDate.month - 1 ? 'secondary' : 'text'
+              }
+              size="small"
+              onPress={() => {
+                onChange(index);
+                setSelectedDropdown(undefined);
+              }}
+              key={index + 1}
+            >
+              {month.substring(0, 3)}
+            </Button>
+          </li>
+        );
+      })}
+    </ul>
   );
 };
 

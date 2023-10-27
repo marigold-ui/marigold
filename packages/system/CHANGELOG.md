@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 6.6.0
+
+### Minor Changes
+
+- [#3416](https://github.com/marigold-ui/marigold/pull/3416) [`7704debbe`](https://github.com/marigold-ui/marigold/commit/7704debbea339917eedf8182e2e5986798b34aff) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - [DST-38]: Implement mobile optimization for `DatePicker`
+
 ## 6.5.1
 
 ## 6.5.0
