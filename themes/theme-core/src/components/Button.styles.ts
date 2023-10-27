@@ -19,7 +19,9 @@ export const Button: ThemeComponent<'Button'> = cva(
           'hover:bg-transparent hover:underline',
         ],
         text: ['border-none bg-transparent', 'hover:bg-bg-hover-light'],
-        icon: ['h-auto px-0'],
+        icon: [
+          'h-auto border-none bg-transparent px-0 leading-none text-inherit',
+        ],
       },
       size: {
         small: 'py-1',
