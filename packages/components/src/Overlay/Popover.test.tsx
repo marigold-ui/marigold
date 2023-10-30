@@ -10,7 +10,7 @@ import { useOverlayTriggerState } from '@react-stately/overlays';
 import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { Popover } from './Popover';
+import { Popover } from './_Popover';
 
 const theme: Theme = {
   name: 'test',
