@@ -15,10 +15,10 @@ export const Button: ThemeComponent<'Button'> = cva(
           'hover:bg-bg-primary-hover hover:border-border-primary-hover ',
         ],
         link: [
-          'text-text-primary-light border-none bg-transparent',
+          'text-text-primary-light h-auto border-none bg-transparent leading-none',
           'hover:bg-transparent hover:underline',
         ],
-        text: ['border-none bg-transparent', 'hover:bg-bg-hover-light'],
+        text: ['h-auto border-none bg-transparent', 'hover:bg-bg-hover-light'],
         icon: [
           'h-auto border-none bg-transparent px-0 leading-none text-inherit',
         ],
