@@ -1,5 +1,16 @@
 # @marigold/theme-core
 
+## 25.5.2
+
+### Patch Changes
+
+- [#3459](https://github.com/marigold-ui/marigold/pull/3459) [`611956377`](https://github.com/marigold-ui/marigold/commit/61195637796327c148597fa4b495c43e24e3fe77) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: core style improvements for button
+
+- Updated dependencies []:
+  - @marigold/system@6.6.2
+  - @marigold/components@6.6.2
+  - @marigold/theme-preset@1.1.14
+
 ## 25.5.1
 
 ### Patch Changes
