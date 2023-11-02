@@ -9,6 +9,8 @@ import {
   useClassNames,
 } from '@marigold/system';
 
+import { Label } from '../Label';
+
 type RemovedProps =
   | 'className'
   | 'isDisabled'
@@ -55,8 +57,8 @@ const _Switch = forwardRef<HTMLInputElement, SwitchProps>(
         isDisabled={disabled}
         isReadOnly={readOnly}
       >
-        {children}
-        <div className=" relative">
+        <Label elementType="span">{children}</Label>
+        <div className="relative">
           <div
             className={cn(
               'h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed ',
