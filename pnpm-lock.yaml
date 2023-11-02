@@ -715,6 +715,9 @@ importers:
       deepmerge:
         specifier: 4.3.1
         version: 4.3.1
+      tailwindcss-react-aria-components:
+        specifier: 1.0.0-beta.1
+        version: 1.0.0-beta.1(tailwindcss@3.3.3)
     devDependencies:
       '@marigold/tsconfig':
         specifier: workspace:*
@@ -6101,7 +6104,7 @@ packages:
       '@react-types/grid': 3.2.2(react@18.2.0)
       '@react-types/shared': 3.21.0(react@18.2.0)
       '@react-types/table': 3.9.0(react@18.2.0)
-      '@swc/helpers': 0.5.2
+      '@swc/helpers': 0.5.1
       react: 18.2.0
     dev: false
 
@@ -18284,6 +18287,14 @@ packages:
     engines: {node: '>=12.13.0'}
     peerDependencies:
       tailwindcss: 3.x
+    dependencies:
+      tailwindcss: 3.3.3
+    dev: false
+
+  /tailwindcss-react-aria-components@1.0.0-beta.1(tailwindcss@3.3.3):
+    resolution: {integrity: sha512-TRh3beZJaVkWYewJWZ6JSoOdJy322gEEaOxNwh2obYkjzjj6XRfVkixZ0W8MaFSOUGcRRMjFEIQwLP2rypXueQ==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || insiders'
     dependencies:
       tailwindcss: 3.3.3
     dev: false
