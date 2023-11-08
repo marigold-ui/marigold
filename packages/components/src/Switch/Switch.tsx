@@ -38,12 +38,17 @@ const _Switch = forwardRef<HTMLInputElement, SwitchProps>(
       selected,
       disabled,
       readOnly,
-      ...props
+      ...rest
     },
     ref
   ) => {
     const classNames = useClassNames({ component: 'Switch', size, variant });
-
+    const props: RAC.SwitchProps = {
+      isDisabled: disabled,
+      isReadOnly: readOnly,
+      isSelected: selected,
+      ...rest,
+    };
     return (
       <Switch
         {...props}
@@ -54,8 +59,6 @@ const _Switch = forwardRef<HTMLInputElement, SwitchProps>(
           'flex items-center justify-between gap-[1ch]',
           classNames.container
         )}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
       >
         <Label elementType="span">{children}</Label>
         <div className="relative">
