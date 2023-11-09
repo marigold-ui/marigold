@@ -28,6 +28,14 @@ yarn add @marigold/components
 # for development:
 git clone https://github.com/marigold-ui/marigold.git
 cd marigold
+
+# with pnpm
+pnpm install
+
+# with npm
+npm install
+
+# with yarn
 yarn install
 ```
 
@@ -63,8 +71,8 @@ import b2bTheme from '@marigold/theme-b2b'
 
 ### Setup & Usage
 
-Open a terminal and navigate to a folder of your choice. Clone the project `git clone https://github.com/marigold-ui/marigold.git` and navigate to the new folder `cd marigold`. Install the packages using `pnpm install` command in the root and use `pnpm dev` to start storybook. Open [localhost:1337](http://localhost:1337) to see the components in storybook.
-Navigate to the documentation `cd docs` and start the development server `pnpm start`, which opens the documentation site on [localhost:3000](http://localhost:3000).
+Open a terminal and navigate to a folder of your choice. Clone the project `git clone https://github.com/marigold-ui/marigold.git` and navigate to the new folder `cd marigold`. Install the packages using `pnpm install` command in the root and use `pnpm watch` to start storybook. Open [localhost:1337](http://localhost:1337) to see the components in storybook.
+Navigate to the documentation `cd docs` and start the development server `pnpm dev`, which opens the documentation site on [localhost:3000](http://localhost:3000).
 When working on the components, use the following commands for development.
 
 - Coverage: `pnpm test:coverage`

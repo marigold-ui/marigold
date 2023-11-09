@@ -9,6 +9,8 @@ import {
   useClassNames,
 } from '@marigold/system';
 
+import { Label } from '../Label';
+
 type RemovedProps =
   | 'className'
   | 'isDisabled'
@@ -36,12 +38,17 @@ const _Switch = forwardRef<HTMLInputElement, SwitchProps>(
       selected,
       disabled,
       readOnly,
-      ...props
+      ...rest
     },
     ref
   ) => {
     const classNames = useClassNames({ component: 'Switch', size, variant });
-
+    const props: RAC.SwitchProps = {
+      isDisabled: disabled,
+      isReadOnly: readOnly,
+      isSelected: selected,
+      ...rest,
+    };
     return (
       <Switch
         {...props}
@@ -52,11 +59,9 @@ const _Switch = forwardRef<HTMLInputElement, SwitchProps>(
           'flex items-center justify-between gap-[1ch]',
           classNames.container
         )}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
       >
-        {children}
-        <div className=" relative">
+        <Label elementType="span">{children}</Label>
+        <div className="relative">
           <div
             className={cn(
               'h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed ',

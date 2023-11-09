@@ -10,6 +10,10 @@ import { Switch } from './Switch';
 const theme: Theme = {
   name: 'switch test',
   components: {
+    Label: {
+      container: cva(),
+      indicator: cva(),
+    },
     Switch: {
       container: cva(),
       track: cva(
@@ -60,47 +64,45 @@ test('supports base styling', () => {
   render(<Switch>Label</Switch>);
   const { label, container, track, thumb } = getSwitchParts();
 
-  expect(label.className).toMatchInlineSnapshot(
+  expect(label.className).toMatchInlineSnapshot(`"flex w-[var(--labelWidth)]"`);
+  expect(container.className).toMatchInlineSnapshot(
     `"w-full group/switch flex items-center justify-between gap-[1ch]"`
   );
-  expect(container.className).toMatchInlineSnapshot(`""`);
-  expect(track.className).toMatchInlineSnapshot(
-    `"w-full group/switch flex items-center justify-between gap-[1ch]"`
+  expect(track.className).toMatchInlineSnapshot(`"relative"`);
+  expect(thumb.className).toMatchInlineSnapshot(
+    `"h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
   );
-  expect(thumb.className).toMatchInlineSnapshot(`" relative"`);
 });
 
 test('supports a custom variant', () => {
   render(<Switch variant="custom">Label</Switch>);
   const { track, thumb } = getSwitchParts();
 
-  expect(track.className).toMatchInlineSnapshot(
-    `"w-full group/switch flex items-center justify-between gap-[1ch]"`
+  expect(track.className).toMatchInlineSnapshot(`"relative"`);
+  expect(thumb.className).toMatchInlineSnapshot(
+    `"h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
   );
-  expect(thumb.className).toMatchInlineSnapshot(`" relative"`);
 });
 
 test('supports a size', () => {
   render(<Switch size="medium">Label</Switch>);
   const { track } = getSwitchParts();
 
-  expect(track.className).toMatchInlineSnapshot(
-    `"w-full group/switch flex items-center justify-between gap-[1ch]"`
-  );
+  expect(track.className).toMatchInlineSnapshot(`"relative"`);
 });
 
 test('takes full width by default', () => {
   render(<Switch>Label</Switch>);
   const { container } = getSwitchParts();
-  expect(container.className).toMatchInlineSnapshot(`""`);
+  expect(container.className).toMatchInlineSnapshot(
+    `"w-full group/switch flex items-center justify-between gap-[1ch]"`
+  );
 });
 
 test('allows to set width via prop', () => {
   render(<Switch width={10}>Label</Switch>);
   const { label } = getSwitchParts();
-  expect(label.className).toMatchInlineSnapshot(
-    `"w-10 group/switch flex items-center justify-between gap-[1ch]"`
-  );
+  expect(label.className).toMatchInlineSnapshot(`"flex w-[var(--labelWidth)]"`);
 });
 
 test('supports disabled prop', () => {
@@ -108,10 +110,10 @@ test('supports disabled prop', () => {
   const { input, thumb, track } = getSwitchParts();
 
   expect(input).toBeDisabled();
-  expect(track.className).toMatchInlineSnapshot(
-    `"w-full group/switch flex items-center justify-between gap-[1ch]"`
+  expect(track.className).toMatchInlineSnapshot(`"relative"`);
+  expect(thumb.className).toMatchInlineSnapshot(
+    `"h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-[0.5] focus:outline-none focus:outline-switch-track-outline-focus"`
   );
-  expect(thumb.className).toMatchInlineSnapshot(`" relative"`);
 });
 
 test('renders hidden <input> element', () => {
@@ -126,15 +128,11 @@ test('toggle switch per click', () => {
   const { input, track } = getSwitchParts();
 
   fireEvent.click(input);
-  expect(track.className).toMatchInlineSnapshot(
-    `"w-full group/switch flex items-center justify-between gap-[1ch]"`
-  );
+  expect(track.className).toMatchInlineSnapshot(`"relative"`);
   expect(input.checked).toBeTruthy();
 
   fireEvent.click(input);
-  expect(track.className).toMatchInlineSnapshot(
-    `"w-full group/switch flex items-center justify-between gap-[1ch]"`
-  );
+  expect(track.className).toMatchInlineSnapshot(`"relative"`);
   expect(input.checked).toBeFalsy();
 });
 
