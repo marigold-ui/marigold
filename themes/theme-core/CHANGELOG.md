@@ -1,5 +1,20 @@
 # @marigold/theme-core
 
+## 25.6.0
+
+### Minor Changes
+
+- [#3395](https://github.com/marigold-ui/marigold/pull/3395) [`4f6d1c78d`](https://github.com/marigold-ui/marigold/commit/4f6d1c78d5b5155e09f7f92cf78b83a614af13d9) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - adding tailwindcss-react-aria-components
+
+### Patch Changes
+
+- [#3466](https://github.com/marigold-ui/marigold/pull/3466) [`174f534b5`](https://github.com/marigold-ui/marigold/commit/174f534b5bcb5c3d34284d7cdeb5bf6fd372a350) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: adjust core switch
+
+- Updated dependencies [[`174f534b5`](https://github.com/marigold-ui/marigold/commit/174f534b5bcb5c3d34284d7cdeb5bf6fd372a350), [`cac5ef60d`](https://github.com/marigold-ui/marigold/commit/cac5ef60d36c2c7c0eea5cc9096a849315eefeed)]:
+  - @marigold/components@6.6.4
+  - @marigold/system@6.6.4
+  - @marigold/theme-preset@1.1.16
+
 ## 25.5.3
 
 ### Patch Changes

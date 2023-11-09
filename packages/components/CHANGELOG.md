@@ -1,5 +1,17 @@
 # @marigold/components
 
+## 6.6.4
+
+### Patch Changes
+
+- [#3466](https://github.com/marigold-ui/marigold/pull/3466) [`174f534b5`](https://github.com/marigold-ui/marigold/commit/174f534b5bcb5c3d34284d7cdeb5bf6fd372a350) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: adjust core switch
+
+- [#3468](https://github.com/marigold-ui/marigold/pull/3468) [`cac5ef60d`](https://github.com/marigold-ui/marigold/commit/cac5ef60d36c2c7c0eea5cc9096a849315eefeed) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Adding selected prop over Switch component
+
+- Updated dependencies []:
+  - @marigold/system@6.6.4
+  - @marigold/icons@1.2.25
+
 ## 6.6.3
 
 ### Patch Changes
