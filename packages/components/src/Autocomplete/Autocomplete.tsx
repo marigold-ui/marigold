@@ -44,6 +44,7 @@ export interface AutocompleteProps
     | 'onInputChange'
     | 'inputValue'
     | 'defaultInputValue'
+    | 'validate'
   > {
   disabled?: boolean;
   required?: boolean;
