@@ -30,7 +30,7 @@ export const HelpText = ({
   if (!description && !errorMessage) {
     return null;
   }
-  console.log(hasErrorMessage);
+
   return (
     <Text
       {...props}
