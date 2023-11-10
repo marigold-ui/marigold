@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import { Checkbox } from './Checkbox';
-import { CheckboxGroup } from './CheckboxGroup';
+import { CheckboxGroup } from './_CheckboxGroup';
 
 const meta = {
   title: 'Components/CheckboxGroup',
@@ -62,6 +62,7 @@ const meta = {
     },
   },
   args: {
+    label: 'This is a label',
     readOnly: false,
     disabled: false,
     children: 'This is a Checkbox',

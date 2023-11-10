@@ -37,6 +37,7 @@ export interface CheckboxGroupProps
   children: ReactNode;
   variant?: string;
   size?: string;
+  width?: WidthProp['width'];
   label?: ReactNode;
   required?: boolean;
   disabled?: boolean;
@@ -45,7 +46,6 @@ export interface CheckboxGroupProps
   value?: string[];
   defaultValue?: string[];
   onChange?: (value: string[]) => void;
-  width?: WidthProp['width'];
 }
 
 // Components

@@ -4,8 +4,8 @@ import { Theme, cva } from '@marigold/system';
 
 import { FieldGroup } from '../FieldBase';
 import { setup } from '../test.utils';
-import { CheckboxGroup } from './CheckboxGroup';
-import { Checkbox } from './_Checkbox';
+import { Checkbox } from './Checkbox';
+import { CheckboxGroup } from './_CheckboxGroup';
 
 const theme: Theme = {
   name: 'checkbox group testing',
@@ -81,7 +81,7 @@ test('applies group styles from theme', () => {
     </CheckboxGroup>
   );
 
-  const group = screen.getByRole('presentation');
+  const group = screen.getByRole('group');
   expect(group.className).toContain('pt-2');
 });
 
@@ -100,9 +100,10 @@ test('passes down "disabled" to checkboxes', () => {
     </CheckboxGroup>
   );
 
-  expect(screen.getByTestId('one')).toBeDisabled();
-  expect(screen.getByTestId('two')).toBeDisabled();
-  expect(screen.getByTestId('three')).toBeDisabled();
+  // Bug in `react-aria-components` props are spread on input AND label...
+  expect(screen.getAllByTestId('one')[1]).toBeDisabled();
+  expect(screen.getAllByTestId('two')[1]).toBeDisabled();
+  expect(screen.getAllByTestId('three')[1]).toBeDisabled();
 });
 
 test('passes down "read-only" to checkboxes', () => {
@@ -120,9 +121,19 @@ test('passes down "read-only" to checkboxes', () => {
     </CheckboxGroup>
   );
 
-  expect(screen.getByTestId('one')).toHaveAttribute('aria-readonly', 'true');
-  expect(screen.getByTestId('two')).toHaveAttribute('aria-readonly', 'true');
-  expect(screen.getByTestId('three')).toHaveAttribute('aria-readonly', 'true');
+  // Bug in `react-aria-components` props are spread on input AND label...
+  expect(screen.getAllByTestId('one')[1]).toHaveAttribute(
+    'aria-readonly',
+    'true'
+  );
+  expect(screen.getAllByTestId('two')[1]).toHaveAttribute(
+    'aria-readonly',
+    'true'
+  );
+  expect(screen.getAllByTestId('three')[1]).toHaveAttribute(
+    'aria-readonly',
+    'true'
+  );
 });
 
 test('passes down "error" to checkboxes', () => {
@@ -140,9 +151,19 @@ test('passes down "error" to checkboxes', () => {
     </CheckboxGroup>
   );
 
-  // expect(screen.getByText('one')).toHaveClass(`data-[error]:bg-red-500`);
-  // expect(screen.getByText('two')).toHaveClass(`data-[error]:bg-red-500`);
-  // expect(screen.getByText('three')).toHaveClass(`data-[error]:bg-red-500`);
+  // Bug in `react-aria-components` props are spread on input AND label...
+  expect(screen.getAllByTestId('one')[1]).toHaveAttribute(
+    'aria-invalid',
+    'true'
+  );
+  expect(screen.getAllByTestId('two')[1]).toHaveAttribute(
+    'aria-invalid',
+    'true'
+  );
+  expect(screen.getAllByTestId('three')[1]).toHaveAttribute(
+    'aria-invalid',
+    'true'
+  );
 });
 
 test('controlled', () => {
@@ -161,16 +182,16 @@ test('controlled', () => {
     </CheckboxGroup>
   );
 
-  fireEvent.click(screen.getByTestId('one'));
+  fireEvent.click(screen.getAllByTestId('one')[1]);
   expect(onChange).toHaveBeenCalledWith(['one']);
 
-  fireEvent.click(screen.getByTestId('three'));
+  fireEvent.click(screen.getAllByTestId('three')[1]);
   expect(onChange).toHaveBeenCalledWith(['one', 'three']);
 
-  fireEvent.click(screen.getByTestId('two'));
+  fireEvent.click(screen.getAllByTestId('two')[1]);
   expect(onChange).toHaveBeenCalledWith(['one', 'three', 'two']);
 
-  fireEvent.click(screen.getByTestId('three'));
+  fireEvent.click(screen.getAllByTestId('three')[1]);
   expect(onChange).toHaveBeenCalledWith(['one', 'two']);
 });
 
