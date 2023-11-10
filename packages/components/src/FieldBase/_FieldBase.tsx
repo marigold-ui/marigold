@@ -43,6 +43,7 @@ const _FieldBase = <T extends ElementType>(
     width = 'full',
     description,
     errorMessage,
+    className,
     ...rest
   } = props;
   const classNames = useClassNames({
@@ -54,7 +55,7 @@ const _FieldBase = <T extends ElementType>(
   return (
     <Component
       ref={ref}
-      className={cn('group/field', twWidth[width], classNames)}
+      className={cn('group/field', twWidth[width], classNames, className)}
       {...rest}
     >
       {label ? (
