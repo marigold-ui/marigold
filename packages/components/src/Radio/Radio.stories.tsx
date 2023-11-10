@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Radio } from '@marigold/components';
+import { Radio, Stack } from '@marigold/components';
 
 import { RadioGroup } from './RadioGroup';
 
@@ -76,7 +76,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <Radio.Group {...args} description="Hier steht ein HelpText">
+    <Radio.Group
+      {...args}
+      description="Hier steht ein HelpText"
+      defaultValue="1"
+    >
       <Radio value="1">Option 1</Radio>
       <Radio value="2">Option 2</Radio>
       <Radio value="3" disabled>
@@ -111,4 +115,31 @@ export const DefaultSelected: Story = {
       <Radio value="4">Option 4</Radio>
     </Radio.Group>
   ),
+};
+
+export const Controlled: Story = {
+  render: args => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [value, setValue] = useState('2');
+    return (
+      <Stack space={4}>
+        <Radio.Group
+          {...args}
+          description="Hier steht ein HelpText"
+          value={value}
+          onChange={setValue}
+        >
+          <Radio value="1">Option 1</Radio>
+          <Radio value="2">Option 2</Radio>
+          <Radio value="3" disabled>
+            Option 3
+          </Radio>
+          <Radio value="4">Option 4</Radio>
+        </Radio.Group>
+        <pre>
+          <code>Current value: {value}</code>
+        </pre>
+      </Stack>
+    );
+  },
 };
