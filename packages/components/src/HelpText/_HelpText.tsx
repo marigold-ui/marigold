@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Text } from 'react-aria-components';
+import type { ValidationResult } from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
 
@@ -8,7 +9,7 @@ export interface HelpTextProps {
   size?: string;
   description?: ReactNode;
   error?: boolean;
-  errorMessage?: ReactNode;
+  errorMessage?: ReactNode | ((v: ValidationResult) => ReactNode);
 }
 
 export const HelpText = ({

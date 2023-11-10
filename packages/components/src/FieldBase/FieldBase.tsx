@@ -1,4 +1,5 @@
 import { HTMLAttributes, ReactNode } from 'react';
+import type { ValidationResult } from 'react-aria-components';
 
 import {
   StateAttrProps,
@@ -21,7 +22,7 @@ export interface FieldBaseProps extends WidthProp {
   description?: ReactNode;
   descriptionProps?: Omit<HTMLAttributes<HTMLElement>, 'children'>;
   error?: boolean;
-  errorMessage?: ReactNode;
+  errorMessage?: ReactNode | ((v: ValidationResult) => ReactNode);
   errorMessageProps?: Omit<HTMLAttributes<HTMLElement>, 'children'>;
   stateProps?: StateAttrProps;
 }
