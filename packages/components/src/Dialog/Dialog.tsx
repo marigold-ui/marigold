@@ -1,43 +1,19 @@
-import {
-  Children,
-  HTMLAttributes,
-  ReactElement,
-  ReactNode,
-  cloneElement,
-  isValidElement,
-  useRef,
-} from 'react';
-
-import { useButton } from '@react-aria/button';
-import { useDialog } from '@react-aria/dialog';
-
-import type { AriaDialogProps } from '@react-types/dialog';
+import { ReactNode } from 'react';
+import { Dialog, DialogTrigger, ModalOverlay } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
 
-import { Header } from '../Header';
-import { Headline } from '../Headline';
-import { DialogContextProps, useDialogContext } from './Context';
-import { DialogController } from './DialogController';
-import { DialogTrigger } from './DialogTrigger';
+import { Modal } from '../Overlay/Modal';
 
 // Close Button
 // ---------------
 interface CloseButtonProps {
   className?: string;
+  close: () => void;
 }
 
-const CloseButton = ({ className }: CloseButtonProps) => {
-  const ref = useRef<HTMLButtonElement>(null);
-  const { close } = useDialogContext();
-
-  const { buttonProps } = useButton(
-    {
-      onPress: () => close?.(),
-    },
-    ref
-  );
-
+const CloseButton = ({ className, close }: CloseButtonProps) => {
   return (
     <div className="flex justify-end">
       <button
@@ -45,8 +21,7 @@ const CloseButton = ({ className }: CloseButtonProps) => {
           'h-4 w-4 cursor-pointer border-none p-0 leading-normal outline-0',
           className
         )}
-        ref={ref}
-        {...buttonProps}
+        onClick={close}
       >
         <svg viewBox="0 0 20 20" fill="currentColor">
           <path
@@ -60,48 +35,9 @@ const CloseButton = ({ className }: CloseButtonProps) => {
   );
 };
 
-/**
- * Search for a direct child that can act as title to improve accessibility.
- */
-const addTitleProps = (
-  children: ReactNode,
-  titleProps: HTMLAttributes<HTMLElement>
-) => {
-  const childs = Children.toArray(children);
-
-  const titleIndex = childs.findIndex(
-    child =>
-      isValidElement(child) &&
-      (child.type === Header || child.type === Headline)
-  );
-
-  // No child found that can act as title
-  if (titleIndex < 0) {
-    console.warn(
-      'No child in <Dialog> found that can act as title for accessibility. Please add a <Header> or <Headline> as direct child.'
-    );
-    return children;
-  }
-
-  // If we found a child, add the titleProps to it
-  const titleChild = cloneElement(
-    childs[titleIndex] as ReactElement<any>,
-    titleProps
-  );
-  childs.splice(titleIndex, 1, titleChild);
-
-  return childs;
-};
-
 // Props
 // ---------------
-export interface DialogChildProps {
-  close: DialogContextProps['close'];
-  titleProps: HTMLAttributes<HTMLElement>;
-}
-
-export interface DialogProps extends AriaDialogProps {
-  children?: ReactNode | ((props: DialogChildProps) => ReactNode);
+export interface DialogProps extends RAC.DialogProps {
   variant?: string;
   size?: string;
   closeButton?: boolean;
@@ -109,30 +45,42 @@ export interface DialogProps extends AriaDialogProps {
 
 // Component
 // ---------------
-export const Dialog = ({
-  children,
-  variant,
-  size,
-  closeButton,
-  ...props
-}: DialogProps) => {
-  const ref = useRef(null);
-  const { close } = useDialogContext();
-  const { dialogProps, titleProps } = useDialog(props, ref);
-
+const _Dialog = ({ variant, size, closeButton, ...props }: DialogProps) => {
   const classNames = useClassNames({ component: 'Dialog', variant, size });
-
   return (
-    <div className={classNames.container} {...dialogProps}>
-      {closeButton && <CloseButton className={classNames.closeButton} />}
-      {typeof children === 'function'
-        ? children({ close, titleProps })
-        : props['aria-labelledby']
-        ? children
-        : addTitleProps(children, titleProps)}
-    </div>
+    <ModalOverlay
+      className={({ isEntering, isExiting }) => `
+          fixed inset-0 z-10 flex min-h-full items-center justify-center overflow-y-auto bg-black/25 p-4 text-center backdrop-blur
+          ${isEntering ? 'animate-in fade-in duration-300 ease-out' : ''}
+          ${isExiting ? 'animate-out fade-out duration-200 ease-in' : ''}
+        `}
+    >
+      <Modal
+        dismissable={false}
+        className={({ isEntering, isExiting }) => `
+            w-full max-w-md overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl
+            ${isEntering ? 'animate-in zoom-in-95 duration-300 ease-out' : ''}
+            ${isExiting ? 'animate-out zoom-out-95 duration-200 ease-in' : ''}
+          `}
+      >
+        <Dialog
+          {...props}
+          className={cn(classNames.container, 'relative outline-none')}
+        >
+          {({ close }) => (
+            <>
+              {closeButton && (
+                <CloseButton close={close} className={classNames.closeButton} />
+              )}
+              {props.children as ReactNode}
+            </>
+          )}
+        </Dialog>
+      </Modal>
+    </ModalOverlay>
   );
 };
 
-Dialog.Trigger = DialogTrigger;
-Dialog.Controller = DialogController;
+_Dialog.Trigger = DialogTrigger;
+
+export { _Dialog as Dialog };

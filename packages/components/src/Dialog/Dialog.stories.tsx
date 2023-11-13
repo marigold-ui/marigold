@@ -232,3 +232,18 @@ export const WithDialogController: Story = {
     );
   },
 };
+
+export const RACDialog: Story = {
+  render: (args: any) => {
+    return (
+      <div>
+        <Dialog.Trigger>
+          <Button variant="primary">Delete…</Button>
+          <Dialog closeButton {...args}>
+            an example
+          </Dialog>
+        </Dialog.Trigger>
+      </div>
+    );
+  },
+};
