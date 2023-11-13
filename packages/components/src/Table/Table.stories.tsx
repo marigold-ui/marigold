@@ -560,7 +560,11 @@ export const ScrollableTable: Story = {
         {tableHeaders.length ? (
           <Stack space={4}>
             <div className="h-[400px] overflow-y-scroll">
-              <Table aria-label="Todos Table" {...args}>
+              <Table
+                aria-label="Todos Table"
+                selectionMode="multiple"
+                {...args}
+              >
                 <Table.Header>
                   {tableHeaders.map((header, index) => (
                     <Table.Column
@@ -575,7 +579,7 @@ export const ScrollableTable: Story = {
                 </Table.Header>
                 <Table.Body>
                   {todos.map(todo => (
-                    <Table.Row key={todo.id}>
+                    <Table.Row key={todo.title}>
                       <Table.Cell>{todo.id}</Table.Cell>
                       <Table.Cell>{todo.userId}</Table.Cell>
                       <Table.Cell>{todo.title}</Table.Cell>
