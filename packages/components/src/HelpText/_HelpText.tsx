@@ -18,12 +18,8 @@ export const HelpText = ({
   description,
   error,
   errorMessage,
-  ...rest
+  ...props
 }: HelpTextProps) => {
-  const props = {
-    isInvalid: error,
-    ...rest,
-  };
   const hasErrorMessage = errorMessage && error;
   const classNames = useClassNames({
     component: 'HelpText',
@@ -36,7 +32,7 @@ export const HelpText = ({
   }
 
   return (
-    <div {...props} className={cn(classNames.container)}>
+    <div className={cn(classNames.container)}>
       {hasErrorMessage ? (
         <FieldError
           {...props}
