@@ -9,6 +9,7 @@ import { Container } from '../Container';
 import { Footer } from '../Footer';
 import { Header } from '../Header';
 import { Headline } from '../Headline';
+import { Modal } from '../Overlay';
 // import { Inline } from '../Inline';
 // import { Menu } from '../Menu';
 import { Stack } from '../Stack';
@@ -238,9 +239,11 @@ export const RACDialog: Story = {
     return (
       <Dialog.Trigger>
         <Button variant="primary">Delete…</Button>
-        <Dialog closeButton {...args}>
-          an example
-        </Dialog>
+        <Modal>
+          <Dialog closeButton {...args}>
+            an example
+          </Dialog>
+        </Modal>
       </Dialog.Trigger>
     );
   },

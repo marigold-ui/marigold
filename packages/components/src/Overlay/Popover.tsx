@@ -14,21 +14,15 @@ export interface PopoverProps
 
 // Component
 // ---------------
-const _Popover = ({
-  keyboardDismissDisabled,
-  isNonModal = false,
-  open,
-  ...rest
-}: PopoverProps) => {
+const _Popover = ({ keyboardDismissDisabled, open, ...rest }: PopoverProps) => {
   const props: RAC.PopoverProps = {
     isKeyboardDismissDisabled: keyboardDismissDisabled,
     isOpen: open,
-    isNonModal,
     ...rest,
   };
   return (
     <Popover {...props}>
-      <Dialog isNonModal>{props.children as ReactNode}</Dialog>
+      <Dialog>{props.children as ReactNode}</Dialog>
     </Popover>
   );
 };

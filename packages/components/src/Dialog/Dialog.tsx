@@ -1,10 +1,7 @@
-import { ReactNode } from 'react';
 import { Dialog, DialogTrigger } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
-
-import { Modal } from '../Overlay/Modal';
 
 // Close Button
 // ---------------
@@ -54,36 +51,21 @@ const _Dialog = ({
   ...props
 }: DialogProps) => {
   const classNames = useClassNames({ component: 'Dialog', variant, size });
-  const DialogWrapper = ({ children }: { children: ReactNode }) => {
-    if (isNonModal) return <>{children}</>;
-    return (
-      <Modal
-        className={({ isEntering, isExiting }) => `
-            w-full max-w-md overflow-hidden   rounded-sm text-left align-middle shadow-xl
-            ${isEntering ? 'animate-in zoom-in-95 duration-300 ease-out' : ''}
-            ${isExiting ? 'animate-out zoom-out-95 duration-200 ease-in' : ''}
-          `}
-      >
-        {children}
-      </Modal>
-    );
-  };
+
   return (
-    <DialogWrapper>
-      <Dialog
-        {...props}
-        className={cn(classNames.container, 'relative outline-none')}
-      >
-        {({ close }) => (
-          <>
-            {closeButton && (
-              <CloseButton close={close} className={classNames.closeButton} />
-            )}
-            {props.children}
-          </>
-        )}
-      </Dialog>
-    </DialogWrapper>
+    <Dialog
+      {...props}
+      className={cn(classNames.container, 'relative outline-none')}
+    >
+      {({ close }) => (
+        <>
+          {closeButton && (
+            <CloseButton close={close} className={classNames.closeButton} />
+          )}
+          {props.children}
+        </>
+      )}
+    </Dialog>
   );
 };
 
