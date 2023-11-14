@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Dialog, DialogTrigger, ModalOverlay } from 'react-aria-components';
+import { Dialog, DialogTrigger } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
@@ -41,43 +41,49 @@ export interface DialogProps extends RAC.DialogProps {
   variant?: string;
   size?: string;
   closeButton?: boolean;
+  isNonModal?: boolean;
 }
 
 // Component
 // ---------------
-const _Dialog = ({ variant, size, closeButton, ...props }: DialogProps) => {
+const _Dialog = ({
+  variant,
+  size,
+  closeButton,
+  isNonModal,
+  ...props
+}: DialogProps) => {
   const classNames = useClassNames({ component: 'Dialog', variant, size });
-  return (
-    <ModalOverlay
-      className={({ isEntering, isExiting }) => `
-          fixed inset-0 z-10 flex min-h-full items-center justify-center overflow-y-auto bg-black/25 p-4 text-center backdrop-blur
-          ${isEntering ? 'animate-in fade-in duration-300 ease-out' : ''}
-          ${isExiting ? 'animate-out fade-out duration-200 ease-in' : ''}
-        `}
-    >
+  const DialogWrapper = ({ children }: { children: ReactNode }) => {
+    if (isNonModal) return <>{children}</>;
+    return (
       <Modal
-        dismissable={false}
         className={({ isEntering, isExiting }) => `
-            w-full max-w-md overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl
+            w-full max-w-md overflow-hidden   rounded-sm text-left align-middle shadow-xl
             ${isEntering ? 'animate-in zoom-in-95 duration-300 ease-out' : ''}
             ${isExiting ? 'animate-out zoom-out-95 duration-200 ease-in' : ''}
           `}
       >
-        <Dialog
-          {...props}
-          className={cn(classNames.container, 'relative outline-none')}
-        >
-          {({ close }) => (
-            <>
-              {closeButton && (
-                <CloseButton close={close} className={classNames.closeButton} />
-              )}
-              {props.children as ReactNode}
-            </>
-          )}
-        </Dialog>
+        {children}
       </Modal>
-    </ModalOverlay>
+    );
+  };
+  return (
+    <DialogWrapper>
+      <Dialog
+        {...props}
+        className={cn(classNames.container, 'relative outline-none')}
+      >
+        {({ close }) => (
+          <>
+            {closeButton && (
+              <CloseButton close={close} className={classNames.closeButton} />
+            )}
+            {props.children}
+          </>
+        )}
+      </Dialog>
+    </DialogWrapper>
   );
 };
 

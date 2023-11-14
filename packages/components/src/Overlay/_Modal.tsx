@@ -4,7 +4,7 @@ import { FocusScope } from '@react-aria/focus';
 import { useModal, useOverlay, usePreventScroll } from '@react-aria/overlays';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 
-import { Underlay } from './Underlay';
+import { Underlay } from './_Underlay';
 
 // Props
 // ---------------

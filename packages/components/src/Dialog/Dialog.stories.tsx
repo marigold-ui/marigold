@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
 
+// import { useState } from 'react';
 import { Body } from '../Body';
 import { Button } from '../Button';
 import { Checkbox, CheckboxGroup } from '../Checkbox';
@@ -9,11 +9,11 @@ import { Container } from '../Container';
 import { Footer } from '../Footer';
 import { Header } from '../Header';
 import { Headline } from '../Headline';
-import { Inline } from '../Inline';
-import { Menu } from '../Menu';
+// import { Inline } from '../Inline';
+// import { Menu } from '../Menu';
 import { Stack } from '../Stack';
 import { Text } from '../Text';
-import { TextField } from '../TextField';
+// import { TextField } from '../TextField';
 import { Dialog } from './Dialog';
 
 const meta = {
@@ -40,7 +40,7 @@ const meta = {
     dismissable: true,
     keyboardDismissable: true,
   },
-} satisfies Meta<typeof Dialog.Trigger>;
+} satisfies Meta<any>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -61,34 +61,34 @@ export const Basic: Story = {
   },
 };
 
-export const Form: Story = {
-  render: args => {
-    return (
-      <>
-        <Dialog.Trigger {...args}>
-          <Button variant="primary">Open</Button>
-          <Dialog>
-            {({ close, titleProps }) => (
-              <>
-                <Headline {...titleProps}>Please log into account</Headline>
-                <Stack space={4}>
-                  <TextField label="Username" />
-                  <TextField label="Password" type="password" />
-                  <Inline space={4}>
-                    <Button variant="ghost" onPress={close}>
-                      Cancel
-                    </Button>
-                    <Button variant="primary">Login</Button>
-                  </Inline>
-                </Stack>
-              </>
-            )}
-          </Dialog>
-        </Dialog.Trigger>
-      </>
-    );
-  },
-};
+// export const Form: Story = {
+//   render: args => {
+//     return (
+//       <>
+//         <Dialog.Trigger {...args}>
+//           <Button variant="primary">Open</Button>
+//           <Dialog>
+//             {({ close, titleProps }) => (
+//               <>
+//                 <Headline {...titleProps}>Please log into account</Headline>
+//                 <Stack space={4}>
+//                   <TextField label="Username" />
+//                   <TextField label="Password" type="password" />
+//                   <Inline space={4}>
+//                     <Button variant="ghost" onPress={close}>
+//                       Cancel
+//                     </Button>
+//                     <Button variant="primary">Login</Button>
+//                   </Inline>
+//                 </Stack>
+//               </>
+//             )}
+//           </Dialog>
+//         </Dialog.Trigger>
+//       </>
+//     );
+//   },
+// };
 
 export const CustomTitleProps: Story = {
   render: args => (
@@ -177,73 +177,71 @@ export const StickyFooter: Story = {
   ),
 };
 
-export const WithDialogController: Story = {
-  render: () => {
-    const [open, setDialogOpen] = useState(false);
-    const handleAction = (action: 'save' | 'delete') => {
-      switch (action) {
-        case 'save':
-          alert('saved!');
-          break;
-        case 'delete':
-          setDialogOpen(true);
-          break;
-        default:
-          throw new Error(`Unhandled action "${action}"!`);
-      }
-    };
+// export const WithDialogController: Story = {
+//   render: () => {
+//     const [open, setDialogOpen] = useState(false);
+//     const handleAction = (action: 'save' | 'delete') => {
+//       switch (action) {
+//         case 'save':
+//           alert('saved!');
+//           break;
+//         case 'delete':
+//           setDialogOpen(true);
+//           break;
+//         default:
+//           throw new Error(`Unhandled action "${action}"!`);
+//       }
+//     };
 
-    return (
-      <>
-        <Menu.Trigger>
-          <Button variant="menu" size="small">
-            Settings
-          </Button>
-          <Menu onAction={handleAction}>
-            <Menu.Item key="save">Save</Menu.Item>
-            <Menu.Item key="delete">Delete</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
-        <Dialog.Controller open={open} onOpenChange={setDialogOpen}>
-          <Dialog closeButton>
-            {({ close, titleProps }) => (
-              <Stack space={5}>
-                <Header>
-                  <Headline {...titleProps}>Confirm delete</Headline>
-                </Header>
-                <Body>
-                  <Text>Do you really wanna delete this?</Text>
-                </Body>
-                <Footer>
-                  <Inline space={5}>
-                    <Button size="small" variant="ghost" onPress={close}>
-                      Cancel
-                    </Button>
-                    <Button size="small" variant="primary" onPress={close}>
-                      Delete
-                    </Button>
-                  </Inline>
-                </Footer>
-              </Stack>
-            )}
-          </Dialog>
-        </Dialog.Controller>
-      </>
-    );
-  },
-};
+//     return (
+//       <>
+//         <Menu.Trigger>
+//           <Button variant="menu" size="small">
+//             Settings
+//           </Button>
+//           <Menu onAction={handleAction}>
+//             <Menu.Item key="save">Save</Menu.Item>
+//             <Menu.Item key="delete">Delete</Menu.Item>
+//           </Menu>
+//         </Menu.Trigger>
+//         <Dialog.Controller open={open} onOpenChange={setDialogOpen}>
+//           <Dialog closeButton>
+//             {({ close, titleProps }) => (
+//               <Stack space={5}>
+//                 <Header>
+//                   <Headline {...titleProps}>Confirm delete</Headline>
+//                 </Header>
+//                 <Body>
+//                   <Text>Do you really wanna delete this?</Text>
+//                 </Body>
+//                 <Footer>
+//                   <Inline space={5}>
+//                     <Button size="small" variant="ghost" onPress={close}>
+//                       Cancel
+//                     </Button>
+//                     <Button size="small" variant="primary" onPress={close}>
+//                       Delete
+//                     </Button>
+//                   </Inline>
+//                 </Footer>
+//               </Stack>
+//             )}
+//           </Dialog>
+//         </Dialog.Controller>
+//       </>
+//     );
+//   },
+// };
 
 export const RACDialog: Story = {
   render: (args: any) => {
     return (
-      <div>
-        <Dialog.Trigger>
-          <Button variant="primary">Delete…</Button>
-          <Dialog closeButton {...args}>
-            an example
-          </Dialog>
-        </Dialog.Trigger>
-      </div>
+      <Dialog.Trigger>
+        <Button variant="primary">Delete…</Button>
+        <Dialog closeButton {...args}>
+          an example
+        </Dialog>
+      </Dialog.Trigger>
     );
   },
 };

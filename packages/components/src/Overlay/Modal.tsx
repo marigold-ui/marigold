@@ -2,6 +2,8 @@ import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Modal } from 'react-aria-components';
 
+import { Underlay } from './Underlay';
+
 // Props
 // ---------------
 export interface ModalProps extends RAC.ModalOverlayProps {
@@ -21,9 +23,11 @@ const _Modal = forwardRef<HTMLDivElement, ModalProps>(
       ...rest,
     };
     return (
-      <Modal ref={ref} {...props}>
-        {props.children}
-      </Modal>
+      <Underlay variant="modal">
+        <Modal ref={ref} {...props}>
+          {props.children}
+        </Modal>
+      </Underlay>
     );
   }
 );
