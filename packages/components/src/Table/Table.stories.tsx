@@ -579,7 +579,7 @@ export const ScrollableTable: Story = {
                 </Table.Header>
                 <Table.Body>
                   {todos.map(todo => (
-                    <Table.Row key={todo.title}>
+                    <Table.Row key={`${todo.title}-${todo.id}`}>
                       <Table.Cell>{todo.id}</Table.Cell>
                       <Table.Cell>{todo.userId}</Table.Cell>
                       <Table.Cell>{todo.title}</Table.Cell>
