@@ -36,7 +36,7 @@ export const HelpText = ({
       {hasErrorMessage ? (
         <FieldError
           {...props}
-          className="grid grid-flow-col items-center gap-1"
+          className="grid grid-flow-col items-center justify-start gap-1"
         >
           <svg
             className={cn('h-4 w-4', classNames.icon)}
