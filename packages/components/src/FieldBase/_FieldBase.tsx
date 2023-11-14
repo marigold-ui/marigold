@@ -20,7 +20,7 @@ const fixedForwardRef = forwardRef as FixedForwardRef;
 // ---------------
 export interface FieldBaseProps<T extends ElementType>
   extends WidthProp,
-    Pick<HelpTextProps, 'description' | 'errorMessage' | 'error'> {
+    Pick<HelpTextProps, 'description' | 'errorMessage'> {
   as?: T;
   label?: ReactNode;
   variant?: string;
@@ -44,7 +44,6 @@ const _FieldBase = <T extends ElementType>(
     description,
     errorMessage,
     className,
-    error,
     ...rest
   } = props;
   const classNames = useClassNames({
@@ -72,7 +71,7 @@ const _FieldBase = <T extends ElementType>(
         size={size}
         description={description}
         errorMessage={errorMessage}
-        error={props.isInvalid || error}
+        error={props.isInvalid}
       />
     </Component>
   );

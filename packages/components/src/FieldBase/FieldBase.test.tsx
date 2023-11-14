@@ -1,5 +1,7 @@
-import { screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
+import React from 'react';
+import { TextField } from 'react-aria-components';
 
 import { Theme, cva } from '@marigold/system';
 
@@ -27,7 +29,7 @@ const theme: Theme = {
       indicator: cva(''),
     },
     HelpText: {
-      container: cva('', {
+      container: cva('p-1', {
         variants: {
           variant: {
             lime: 'text-blue-600',
@@ -43,6 +45,12 @@ const theme: Theme = {
       input: cva('border-blue-700'),
       icon: cva(),
       action: cva(),
+    },
+    Checkbox: {
+      checkbox: cva(),
+      container: cva(),
+      group: cva(),
+      label: cva(),
     },
   },
 };
@@ -101,20 +109,19 @@ test('render Field with label and helptext', () => {
   expect(error).not.toBeInTheDocument();
 });
 
-test('render Field with label and errorMessage', () => {
+test('render Field with label and errorMessage', async () => {
   render(
     <FieldBase
-      as={MockedField}
+      as={TextField}
       label="Label"
-      errorMessage="Something went wrong"
       isInvalid
-    >
-      <input />
-    </FieldBase>
+      errorMessage="Something went wrong"
+    ></FieldBase>
   );
 
   const label = screen.getByText('Label');
   expect(label).toBeInTheDocument();
+
   const error = screen.getByText('Something went wrong');
   expect(error).toBeInTheDocument();
 });
@@ -122,7 +129,7 @@ test('render Field with label and errorMessage', () => {
 test('render Field with label and errorMessage although description is set', () => {
   render(
     <FieldBase
-      as={MockedField}
+      as={TextField}
       label="Label"
       description="This is a helpful text"
       errorMessage="Something went wrong"
@@ -158,9 +165,7 @@ test('passes down variant and size', () => {
   );
 
   const helptext = screen.getByText('Description');
-  expect(helptext.className).toMatchInlineSnapshot(
-    `"flex items-center gap-1 text-base"`
-  );
+  expect(helptext.className).toMatchInlineSnapshot(`"react-aria-Text"`);
 });
 
 test('takes full width by default', () => {
