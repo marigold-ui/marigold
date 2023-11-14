@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { forwardRef } from 'react';
-import { Popover } from 'react-aria-components';
 
 import { OverlayProvider } from '@react-aria/overlays';
 import { useObjectRef } from '@react-aria/utils';
@@ -14,6 +13,7 @@ import { Menu } from '../Menu';
 import { Switch } from '../Switch';
 import { Text } from '../Text';
 import { Modal } from './Modal';
+import { Popover } from './Popover';
 import { Tray } from './Tray';
 
 const meta = {
@@ -83,19 +83,17 @@ export const PopoverExample: StoryObj<typeof Modal> = {
       <Dialog.Trigger>
         <Button>Settings</Button>
         <Popover>
-          <Dialog isNonModal>
-            <div className="flex-col">
-              <Switch defaultSelected>
-                <div className="indicator" /> Wi-Fi
-              </Switch>
-              <Switch defaultSelected>
-                <div className="indicator" /> Bluetooth
-              </Switch>
-              <Switch>
-                <div className="indicator" /> Mute
-              </Switch>
-            </div>
-          </Dialog>
+          <div className="flex-col">
+            <Switch defaultSelected>
+              <div className="indicator" /> Wi-Fi
+            </Switch>
+            <Switch defaultSelected>
+              <div className="indicator" /> Bluetooth
+            </Switch>
+            <Switch>
+              <div className="indicator" /> Mute
+            </Switch>
+          </div>
         </Popover>
       </Dialog.Trigger>
     );
