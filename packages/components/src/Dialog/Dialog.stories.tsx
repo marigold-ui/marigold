@@ -11,6 +11,7 @@ import { Header } from '../Header';
 import { Headline } from '../Headline';
 import { Inline } from '../Inline';
 import { Menu } from '../Menu';
+import { Modal } from '../Overlay/Modal';
 import { Stack } from '../Stack';
 import { Text } from '../Text';
 import { TextField } from '../TextField';
@@ -51,10 +52,12 @@ export const Basic: Story = {
       <>
         <Dialog.Trigger {...args}>
           <Button variant="primary">Open</Button>
-          <Dialog closeButton>
-            <Headline>This is a headline!</Headline>
-            <Text>This is some not so very long text.</Text>
-          </Dialog>
+          <Modal>
+            <Dialog closeButton>
+              <Headline>This is a headline!</Headline>
+              <Text>This is some not so very long text.</Text>
+            </Dialog>
+          </Modal>
         </Dialog.Trigger>
       </>
     );
@@ -67,23 +70,19 @@ export const Form: Story = {
       <>
         <Dialog.Trigger {...args}>
           <Button variant="primary">Open</Button>
-          <Dialog>
-            {({ close, titleProps }) => (
-              <>
-                <Headline {...titleProps}>Please log into account</Headline>
-                <Stack space={4}>
-                  <TextField label="Username" />
-                  <TextField label="Password" type="password" />
-                  <Inline space={4}>
-                    <Button variant="ghost" onPress={close}>
-                      Cancel
-                    </Button>
-                    <Button variant="primary">Login</Button>
-                  </Inline>
-                </Stack>
-              </>
-            )}
-          </Dialog>
+          <Modal>
+            <Dialog closeButton={true}>
+              <Headline>Please log into account</Headline>
+              <Stack space={4}>
+                <TextField label="Username" />
+                <TextField label="Password" type="password" />
+                <Inline space={4}>
+                  <Button variant="ghost">Cancel</Button>
+                  <Button variant="primary">Login</Button>
+                </Inline>
+              </Stack>
+            </Dialog>
+          </Modal>
         </Dialog.Trigger>
       </>
     );
@@ -229,6 +228,28 @@ export const WithDialogController: Story = {
           </Dialog>
         </Dialog.Controller>
       </>
+    );
+  },
+};
+
+export const RACDialog: Story = {
+  render: (args: any) => {
+    return (
+      <Dialog.Trigger>
+        <Button variant="primary">Delete…</Button>
+        <Modal>
+          <Dialog closeButton {...args}>
+            {({ close }) => {
+              <>
+                <Headline size="level-2" slot="title">
+                  Delete file
+                </Headline>
+                <h2>just more content written there</h2>
+              </>;
+            }}
+          </Dialog>
+        </Modal>
+      </Dialog.Trigger>
     );
   },
 };
