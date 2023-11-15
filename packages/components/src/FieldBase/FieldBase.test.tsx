@@ -46,12 +46,6 @@ const theme: Theme = {
       icon: cva(),
       action: cva(),
     },
-    Checkbox: {
-      checkbox: cva(),
-      container: cva(),
-      group: cva(),
-      label: cva(),
-    },
   },
 };
 
