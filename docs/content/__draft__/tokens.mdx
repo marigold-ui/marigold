@@ -1,0 +1,93 @@
+---
+title: Design Tokens
+caption: TBD
+---
+
+## Structure
+
+- **base:** default values for a certain category of tokens
+- **inverted:** alternative default values when the base value does not have a good constrast ratio
+- **brand:** company's primary brand color
+- **accent:** company's accent brand color (Schmuckfarbe)
+- **error:** feedback color when there is an error or a destructive action
+- **success:** feedback color when something was successful
+- **warning:** feedback color when the users attention is required
+- **info:** feedback color when there is some auxiliary information
+
+### only for background
+
+- **surface:** colors for elevation levels
+
+## Text Tokens
+
+### Base
+
+Tokens used as the default for text.
+
+#### modifier
+
+- **DEFAULT:** default text color
+- **disabled:** default disabled color
+
+(do we need "weak"/"strong" texts?)
+
+### Inverted
+
+Tokens used on dark background for text.
+
+#### modifier
+
+- **DEFAULT:** default text color
+- **disabled:** default disabled color
+
+### Brand
+
+#### modifier
+
+- **DEFAULT:** default text color
+- **hover:** default hover colors
+- **active:** default active color (e.g. button pressed)
+
+#### Accent
+
+##### modifier
+
+- **DEFAULT:** default text color
+- **hover:** default hover colors
+- **active:** default active color (e.g. button pressed)
+
+(Plus all the feedback colors)
+
+## Background Tokens
+
+### Base
+
+- **selected:** used when something is selected
+- **hover:** used when something is hovered
+- **active:** default active color (e.g. button pressed)
+- **disabled:** used when something is disabled
+
+### Surface (https://atlassian.design/foundations/elevation)
+
+- **DEFAULT:** used for things like the `<body>` element
+- **raised:** raised surfaces, like cards
+- **overlay:** surfaces that are very high! like popover
+- **sunken:** used for ??? (see atlaskit)
+
+(Plus all the feedback colors + accent + brand)
+
+## Shadow
+
+### Surface
+
+- **DEFAULT:** used for things like the `<body>` element
+- **raised:** raised surfaces, like cards
+- **overlay:** surfaces that are very high! like popover
+- **sunken:** used for ??? (see atlaskit)
+
+---
+
+Notes:
+
+- brand refers to the color, primary/secondary/tertiary to component variants, like the button
+- color only used for text, background, border, icon, outline
