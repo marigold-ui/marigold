@@ -1,115 +1,72 @@
 import { forwardRef } from 'react';
-
-import { useFocusRing } from '@react-aria/focus';
-import { useHover } from '@react-aria/interactions';
-import { useTextField } from '@react-aria/textfield';
-import { mergeProps, useObjectRef } from '@react-aria/utils';
-
-import { AriaTextFieldProps } from '@react-types/textfield';
+import type RAC from 'react-aria-components';
+import { TextField } from 'react-aria-components';
 
 import { WidthProp, useStateProps } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
 
-import { FieldBase, FieldBaseProps } from '../FieldBase';
-import { Input } from '../Input';
+import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
+import { Input } from '../Input/_Input';
 
 // Props
 // ---------------
-/**
- * `react-aria` has a slightly different API for the above events.
- * Thus, we adjust our regular props to match them.
- */
-export type CustomTextFieldEvents =
-  | 'onChange'
-  | 'onFocus'
-  | 'onBlur'
-  | 'onKeyDown'
-  | 'onKeyUp';
+type RemovedProps =
+  | 'className'
+  | 'style'
+  | 'children'
+  | 'isDisabled'
+  | 'isRequired'
+  | 'isInvalid'
+  | 'isReadOnly'
+  | 'value'
+  | 'defaultValue';
 
 export interface TextFieldProps
-  extends Omit<
-      HtmlProps<'input'>,
-      | 'value'
-      | 'defaultValue'
-      | 'size'
-      | 'width'
-      | CustomTextFieldEvents
-      | 'className'
-    >,
-    /**
-     * `react-aria` has a slightly different API for `onChange`, `onFocus`
-     * and `onBlur` events. Thus, we adjust our regular props to match them.
-     */
-    Pick<AriaTextFieldProps, CustomTextFieldEvents>,
-    Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
+  extends Omit<RAC.TextFieldProps, RemovedProps>,
+    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
   size?: string;
   width?: WidthProp['width'];
+  disabled?: RAC.TextFieldProps['isDisabled'];
+  required?: RAC.TextFieldProps['isRequired'];
+  error?: RAC.TextFieldProps['isInvalid'];
+  readOnly?: RAC.TextFieldProps['isReadOnly'];
   value?: string;
   defaultValue?: string;
 }
 
 // Component
 // ---------------
-export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
+const _TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   (
-    { variant, size, width, disabled, required, readOnly, error, ...props },
+    {
+      variant,
+      size,
+      required,
+      disabled,
+      readOnly,
+      error,
+      ...rest
+    }: TextFieldProps,
     ref
   ) => {
-    const { label, description, errorMessage, autoFocus } = props;
-
-    const inputRef = useObjectRef(ref);
-    const { labelProps, inputProps, descriptionProps, errorMessageProps } =
-      useTextField(
-        {
-          isDisabled: disabled,
-          isRequired: required,
-          isReadOnly: readOnly,
-          validationState: error ? 'invalid' : 'valid',
-          ...props,
-        },
-        inputRef
-      );
-
-    const { hoverProps, isHovered } = useHover({});
-    const { focusProps, isFocused } = useFocusRing({
-      isTextInput: true,
-      autoFocus,
-    });
     const stateProps = useStateProps({
-      hover: isHovered,
-      focus: isFocused,
-      disabled,
-      error,
-      readOnly,
       required,
     });
 
+    const props: RAC.TextFieldProps = {
+      isDisabled: disabled,
+      isReadOnly: readOnly,
+      isInvalid: error,
+      isRequired: required,
+      ...rest,
+    };
+
     return (
-      <FieldBase
-        label={label}
-        labelProps={labelProps}
-        description={description}
-        descriptionProps={descriptionProps}
-        error={error}
-        errorMessage={errorMessage}
-        errorMessageProps={errorMessageProps}
-        stateProps={stateProps}
-        variant={variant}
-        size={size}
-        width={width}
-      >
-        <Input
-          ref={inputRef}
-          variant={variant}
-          size={size}
-          /**
-           * We use `size` for styles which is a string, not like
-           * the regular HTML attribute, which is a number
-           */
-          {...mergeProps(focusProps, inputProps as any, hoverProps)}
-        />
+      <FieldBase as={TextField} {...props} stateProps={stateProps}>
+        <Input ref={ref} />
       </FieldBase>
     );
   }
 );
+
+export { _TextField as TextField };
