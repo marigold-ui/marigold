@@ -103,7 +103,7 @@ test('render Field with label and helptext', () => {
   expect(error).not.toBeInTheDocument();
 });
 
-test('render Field with label and errorMessage', async () => {
+test('render Field with label and errorMessage', () => {
   render(
     <FieldBase
       as={TextField}
