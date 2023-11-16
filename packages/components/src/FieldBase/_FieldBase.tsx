@@ -7,12 +7,7 @@ import type {
 import { forwardRef } from 'react';
 
 import type { WidthProp } from '@marigold/system';
-import {
-  StateAttrProps,
-  cn,
-  width as twWidth,
-  useClassNames,
-} from '@marigold/system';
+import { cn, width as twWidth, useClassNames } from '@marigold/system';
 import type { DistributiveOmit, FixedForwardRef } from '@marigold/types';
 
 import type { HelpTextProps } from '../HelpText/_HelpText';
@@ -63,7 +58,7 @@ const _FieldBase = <T extends ElementType>(
     <Component
       ref={ref}
       className={cn('group/field', twWidth[width], classNames, className)}
-      {...stateProps}
+      data-required={props.isRequired ? true : undefined}
       {...rest}
     >
       {label ? (
