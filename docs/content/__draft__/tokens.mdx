@@ -3,6 +3,8 @@ title: Design Tokens
 caption: TBD
 ---
 
+=== COLOR TOKENS ===
+
 ## Structure
 
 - **base:** default values for a certain category of tokens
@@ -14,7 +16,7 @@ caption: TBD
 - **warning:** feedback color when the users attention is required
 - **info:** feedback color when there is some auxiliary information
 
-### only for background
+### additionally, only for background
 
 - **surface:** colors for elevation levels
 
@@ -27,6 +29,7 @@ Tokens used as the default for text.
 #### modifier
 
 - **DEFAULT:** default text color
+  (- **hover:** default hover colors)
 - **disabled:** default disabled color
 
 (do we need "weak"/"strong" texts?)
@@ -38,6 +41,7 @@ Tokens used on dark background for text.
 #### modifier
 
 - **DEFAULT:** default text color
+  (- **hover:** default hover colors)
 - **disabled:** default disabled color
 
 ### Brand
@@ -62,10 +66,14 @@ Tokens used on dark background for text.
 
 ### Base
 
-- **selected:** used when something is selected
 - **hover:** used when something is hovered
 - **active:** default active color (e.g. button pressed)
 - **disabled:** used when something is disabled
+
+### Selected
+
+- **DEFAULT:** used as default selected
+- **input:** used for input that need a more apparent visual appearance (raio, checkbox, switch)
 
 ### Surface (https://atlassian.design/foundations/elevation)
 
@@ -76,7 +84,35 @@ Tokens used on dark background for text.
 
 (Plus all the feedback colors + accent + brand)
 
-## Shadow
+## Border Tokens
+
+(follows the same structure as text and background)
+
+### Base
+
+- **DEFAULT:\*** default border color
+- **hover:** border when hovered
+- **active:** default active color (e.g. button pressed)
+- **disabled:** used when something is disabled
+
+(Plus all the feedback colors + accent + brand)
+
+### Selected
+
+- **DEFAULT:** used as default selected
+- **input:** used for input that need a more apparent visual appearance (raio, checkbox, switch)
+
+## Outline Tokens
+
+### Base
+
+- **focus:** use when something is focused (with the keyboard)!
+
+=== EFFECTS ===
+
+-> already shared between themes
+
+## Shadow (aka box-shadow)
 
 ### Surface
 
@@ -85,9 +121,44 @@ Tokens used on dark background for text.
 - **overlay:** surfaces that are very high! like popover
 - **sunken:** used for ??? (see atlaskit)
 
+## Text Styles
+
+-> tokens from tailwind (all themes share)
+-> include levels from `<Headline>` component in Figma
+
+## Number Tokens
+
+### Component
+
+## Height
+
+(There to make sure that form components share the same vertical space)
+
+- **DEFAULT:** used as base height for form components?
+- **lg:** use for large components
+- **sm:** use for small components
+
+## Width
+
+(From Tailwind)
+
+## Radius
+
+(From Tailwind)
+
+## Spacing
+
+(From Tailwind)
+
+## Breakpoints
+
+(From Tailwind)
+
 ---
 
-Notes:
+## Notes:
 
 - brand refers to the color, primary/secondary/tertiary to component variants, like the button
+- link color?
 - color only used for text, background, border, icon, outline
+- icons use the text color (`currentColor`)
