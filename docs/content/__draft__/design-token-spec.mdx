@@ -1,11 +1,29 @@
 ---
 title: Design Tokens Spec
-caption: Learn how we structure our design tokens
+caption: Learn about the structure and application of our design tokens
+order: 4
 ---
+
+On this page, you'll discover detailed specifications for design tokens — the foundational elements that unify the visual language of your brand or products. Explore how design tokens are constructed and find information on where each token is applied within the design ecosystem.
+
+Tokens are categorized based on Figma's naming conventions, like color and number variables or effects, facilitating seamless integration and efficient design workflows.
+
+## Naming Convention
+
+Knowing how to read token names helps you find the right token quickly in both designs and code.
+
+// TODO make a image with an example
+`[property]-[context]-[modifier]`
+
+The name of a design token describes how it should be used, with each part indicating a specific aspect of its usage. Our tokens consist of the following parts:
+
+1. **Property:** The UI element the token should be applied to, like a background, text or border.
+2. **Context:** Identifies different use cases for a token. For example, to indicate user feedback or visual hierachy.
+3. **Modifier:** Additional details about the token's purpose. In most cases, this is an interaction state, but it can also indicate where, contextually, the token should be applied (e.g. "raised" in the surface tokens).
 
 ## Color Tokens
 
-explain what are color tokens?
+Color tokens leverage the color palettes from our design system. They provide a systematic approach to managing and applying colors consistently across various elements, while ensuring a cohesive and harmonious visual identity.
 
 **Structure**
 
@@ -181,3 +199,7 @@ NOTE: Just explain that these tokens are coming from Tailwind.
 - link color?
 - color only used for text, background, border, icon, outline
 - icons use the text color (`currentColor`)
+
+- use this to visualize our structure: https://jsoncrack.com/editor
+
+- variant or context? primary or brand?
