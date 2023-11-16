@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { TextField } from 'react-aria-components';
 
-import { WidthProp, useStateProps } from '@marigold/system';
+import { WidthProp } from '@marigold/system';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
 import { Input } from '../Input/_Input';
@@ -49,10 +49,6 @@ const _TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     }: TextFieldProps,
     ref
   ) => {
-    const stateProps = useStateProps({
-      required,
-    });
-
     const props: RAC.TextFieldProps = {
       isDisabled: disabled,
       isReadOnly: readOnly,
@@ -62,7 +58,7 @@ const _TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     };
 
     return (
-      <FieldBase as={TextField} {...props} stateProps={stateProps}>
+      <FieldBase as={TextField} {...props}>
         <Input ref={ref} />
       </FieldBase>
     );

@@ -26,7 +26,6 @@ export interface FieldBaseProps<T extends ElementType>
   variant?: string;
   size?: string;
   children?: ReactNode;
-  stateProps?: StateAttrProps;
 }
 
 // Component
