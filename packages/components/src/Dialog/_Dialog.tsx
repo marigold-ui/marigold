@@ -19,7 +19,7 @@ import { Header } from '../Header';
 import { Headline } from '../Headline';
 import { DialogContextProps, useDialogContext } from './Context';
 import { DialogController } from './DialogController';
-import { DialogTrigger } from './DialogTrigger';
+import { DialogTrigger } from './_DialogTrigger';
 
 // Close Button
 // ---------------

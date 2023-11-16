@@ -5,13 +5,14 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 
+import { OverlayProvider } from '@react-aria/overlays';
+
 import { Theme, cva } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Headline } from '../Headline';
-import { Modal } from '../Overlay/Modal';
 import { setup } from '../test.utils';
-import { Dialog } from './Dialog';
+import { Dialog } from './_Dialog';
 
 const theme: Theme = {
   name: 'test',
@@ -56,15 +57,15 @@ afterEach(() => {
 
 test('renders children correctly', () => {
   render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-      <Modal>
+    <OverlayProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
         <Dialog>
           <Headline>Headline</Headline>
           Content
         </Dialog>
-      </Modal>
-    </Dialog.Trigger>
+      </Dialog.Trigger>
+    </OverlayProvider>
   );
   const button = screen.getByText('Open');
   expect(button).toBeInTheDocument();
@@ -81,12 +82,12 @@ test('renders children correctly', () => {
 test('supports children as function', () => {
   const spy = jest.fn().mockReturnValue(<div>I am a spy!</div>);
   render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-      <Modal>
+    <OverlayProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
         <Dialog>{spy}</Dialog>
-      </Modal>
-    </Dialog.Trigger>
+      </Dialog.Trigger>
+    </OverlayProvider>
   );
   const button = screen.getByText('Open');
   fireEvent.click(button);
@@ -96,15 +97,15 @@ test('supports children as function', () => {
 
 test('dialog can be opened by button', () => {
   render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-      <Modal>
+    <OverlayProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
         <Dialog>
           <Headline>Headline</Headline>
           Content
         </Dialog>
-      </Modal>
-    </Dialog.Trigger>
+      </Dialog.Trigger>
+    </OverlayProvider>
   );
   const button = screen.getByText('Open');
   fireEvent.click(button);
@@ -115,15 +116,15 @@ test('dialog can be opened by button', () => {
 
 test('optionally renders a close button', () => {
   render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-      <Modal>
+    <OverlayProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
         <Dialog closeButton>
           <Headline>Headline</Headline>
           Content
         </Dialog>
-      </Modal>
-    </Dialog.Trigger>
+      </Dialog.Trigger>
+    </OverlayProvider>
   );
   const button = screen.getByText('Open');
   fireEvent.click(button);
@@ -139,15 +140,15 @@ test('optionally renders a close button', () => {
 
 test('supoorts closing the dialog with escape key', async () => {
   render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-      <Modal>
+    <OverlayProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
         <Dialog closeButton>
           <Headline>Headline</Headline>
           Content
         </Dialog>
-      </Modal>
-    </Dialog.Trigger>
+      </Dialog.Trigger>
+    </OverlayProvider>
   );
   const button = screen.getByText('Open');
   fireEvent.click(button);
@@ -159,39 +160,39 @@ test('supoorts closing the dialog with escape key', async () => {
   });
 });
 
-// test('close Dialog by clicking on the Underlay', () => {
-//   render(
-//     <OverlayProvider>
-//       <Dialog.Trigger>
-//         <Button>Open</Button>
-//         <Dialog closeButton>
-//           <Headline>Headline</Headline>
-//           Content
-//         </Dialog>
-//       </Dialog.Trigger>
-//     </OverlayProvider>
-//   );
-//   const button = screen.getByText('Open');
-//   fireEvent.click(button);
+test('close Dialog by clicking on the Underlay', () => {
+  render(
+    <OverlayProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog closeButton>
+          <Headline>Headline</Headline>
+          Content
+        </Dialog>
+      </Dialog.Trigger>
+    </OverlayProvider>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
 
-//   const dialog = screen.getByRole('dialog');
+  const dialog = screen.getByRole('dialog');
 
-//   fireEvent.mouseDown(document.body);
-//   fireEvent.mouseUp(document.body);
+  fireEvent.mouseDown(document.body);
+  fireEvent.mouseUp(document.body);
 
-//   expect(dialog).not.toBeVisible();
-// });
+  expect(dialog).not.toBeVisible();
+});
 
 test('child function is passed a close function', () => {
   render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-      <Modal>
+    <OverlayProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
         <Dialog>
           {({ close }) => <button onClick={close}>Custom Close</button>}
         </Dialog>
-      </Modal>
-    </Dialog.Trigger>
+      </Dialog.Trigger>
+    </OverlayProvider>
   );
   const button = screen.getByText('Open');
   fireEvent.click(button);
@@ -205,15 +206,15 @@ test('child function is passed a close function', () => {
 
 test('supports title for accessability reasons', () => {
   render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-      <Modal>
+    <OverlayProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
         <Dialog closeButton>
-          <Headline slot="title">Headline</Headline>
+          <Headline>Headline</Headline>
           Content
         </Dialog>
-      </Modal>
-    </Dialog.Trigger>
+      </Dialog.Trigger>
+    </OverlayProvider>
   );
   const button = screen.getByText('Open');
   fireEvent.click(button);
@@ -229,15 +230,15 @@ test('supports title for accessability reasons', () => {
 
 test('supports custom title for accessability reasons', () => {
   render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-      <Modal>
+    <OverlayProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
         <Dialog closeButton aria-labelledby="myTitle">
           <Headline id="myTitle">Headline</Headline>
           Content
         </Dialog>
-      </Modal>
-    </Dialog.Trigger>
+      </Dialog.Trigger>
+    </OverlayProvider>
   );
   const button = screen.getByText('Open');
   fireEvent.click(button);
@@ -251,66 +252,65 @@ test('supports custom title for accessability reasons', () => {
   expect(headline.id).toBe(dialog.getAttribute('aria-labelledby'));
 });
 
-// test('child function is passed an id for the dialog title (a11y)', () => {
-//   render(
-//     <Dialog.Trigger>
-//       <Button>Open</Button>
-//       <Modal>
+test('child function is passed an id for the dialog title (a11y)', () => {
+  render(
+    <OverlayProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog>
+          {({ titleProps }) => <div {...titleProps}>Custom Headline</div>}
+        </Dialog>
+      </Dialog.Trigger>
+    </OverlayProvider>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
 
-//         <Dialog>
-//           <div>Custom Headline</div>
-//         </Dialog>
-//       </Modal>
-//     </Dialog.Trigger>
-//   );
-//   const button = screen.getByText('Open');
-//   fireEvent.click(button);
+  const dialog = screen.getByRole('dialog');
+  const headline = screen.getByText('Custom Headline');
 
-//   const dialog = screen.getByRole('dialog');
-//   const headline = screen.getByText('Custom Headline');
+  expect(dialog).toHaveAttribute(
+    'aria-labelledby',
+    headline.getAttribute('id')
+  );
+});
 
-//   expect(dialog).toHaveAttribute(
-//     'aria-labelledby',
-//     headline.getAttribute('id')
-//   );
-// });
+test('warns if no element to attach the title can be found', () => {
+  const warn = jest.spyOn(console, 'warn').mockImplementation();
 
-// test('warns if no element to attach the title can be found', () => {
-//   const warn = jest.spyOn(console, 'warn').mockImplementation();
+  render(
+    <OverlayProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
+        <Dialog closeButton>Content</Dialog>
+      </Dialog.Trigger>
+    </OverlayProvider>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
 
-//   render(
-//     <Dialog.Trigger>
-//       <Button>Open</Button>
-//       <Modal>
-//         <Dialog closeButton>Content</Dialog>
-//       </Modal>
-//     </Dialog.Trigger>
-//   );
-//   const button = screen.getByText('Open');
-//   fireEvent.click(button);
+  const dialog = screen.getByRole('dialog');
+  expect(dialog).not.toHaveAttribute('aria-labelledby');
+  expect(dialog.firstChild).not.toHaveAttribute('id');
 
-//   const dialog = screen.getByRole('dialog');
-//   expect(dialog).not.toHaveAttribute('aria-labelledby');
-//   expect(dialog.firstChild).not.toHaveAttribute('id');
-
-//   expect(warn).toHaveBeenCalled();
-//   expect(warn.mock.calls[0][0]).toMatchInlineSnapshot(
-//     `"No child in <Dialog> found that can act as title for accessibility. Please add a <Header> or <Headline> as direct child."`
-//   );
-//   warn.mockRestore();
-// });
+  expect(warn).toHaveBeenCalled();
+  expect(warn.mock.calls[0][0]).toMatchInlineSnapshot(
+    `"No child in <Dialog> found that can act as title for accessibility. Please add a <Header> or <Headline> as direct child."`
+  );
+  warn.mockRestore();
+});
 
 test('supports focus and open dialog with keyboard', async () => {
   render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-      <Modal>
+    <OverlayProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
         <Dialog closeButton>
           <Headline>Headline</Headline>
           Content
         </Dialog>
-      </Modal>
-    </Dialog.Trigger>
+      </Dialog.Trigger>
+    </OverlayProvider>
   );
 
   user.tab();
@@ -324,15 +324,15 @@ test('supports focus and open dialog with keyboard', async () => {
 
 test('dialog has base classnames', () => {
   render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-      <Modal>
+    <OverlayProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
         <Dialog closeButton>
           <Headline>Headline</Headline>
           Content
         </Dialog>
-      </Modal>
-    </Dialog.Trigger>
+      </Dialog.Trigger>
+    </OverlayProvider>
   );
   const button = screen.getByText('Open');
   fireEvent.click(button);
@@ -351,15 +351,15 @@ test('dialog has base classnames', () => {
 
 test('dialog has variant classnames', () => {
   render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-      <Modal>
+    <OverlayProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
         <Dialog variant="custom" closeButton>
           <Headline>Headline</Headline>
           Content
         </Dialog>
-      </Modal>
-    </Dialog.Trigger>
+      </Dialog.Trigger>
+    </OverlayProvider>
   );
   const button = screen.getByText('Open');
   fireEvent.click(button);
@@ -372,22 +372,20 @@ test('dialog has variant classnames', () => {
   expect(closeButton).toHaveClass(
     'h-4 w-4 cursor-pointer border-none leading-normal outline-0 p-1 bg-black'
   );
-  expect(dialog.className).toMatchInlineSnapshot(
-    `"p-5 bg-green-400 relative outline-none"`
-  );
+  expect(dialog.className).toMatchInlineSnapshot(`"p-5 bg-green-400"`);
 });
 
 test('dialog supports size', () => {
   render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-      <Modal>
+    <OverlayProvider>
+      <Dialog.Trigger>
+        <Button>Open</Button>
         <Dialog size="large" closeButton>
           <Headline>Headline</Headline>
           Content
         </Dialog>
-      </Modal>
-    </Dialog.Trigger>
+      </Dialog.Trigger>
+    </OverlayProvider>
   );
   const button = screen.getByText('Open');
   fireEvent.click(button);
@@ -397,32 +395,30 @@ test('dialog supports size', () => {
   expect(dialog).toHaveClass('w-[400px]');
 });
 
-// TODO do we still need the dialog controller
-// test('renders with dialog controller', () => {
-//   render(
-//     <Dialog.Controller open>
-//       <Modal>
-//         <Dialog>
-//           <Headline>Headline</Headline>Content
-//         </Dialog>
-//       </Modal>
-
-//     </Dialog.Controller>
-//   );
-
-//   const dialog = screen.getByRole('dialog');
-//   expect(dialog).toBeInTheDocument();
-// });
-
-test('renders nothing by default', () => {
+test('renders with dialog controller', () => {
   render(
-    <Dialog.Trigger>
-      <Modal>
+    <OverlayProvider>
+      <Dialog.Controller open>
         <Dialog>
           <Headline>Headline</Headline>Content
         </Dialog>
-      </Modal>
-    </Dialog.Trigger>
+      </Dialog.Controller>
+    </OverlayProvider>
+  );
+
+  const dialog = screen.getByRole('dialog');
+  expect(dialog).toBeInTheDocument();
+});
+
+test('renders nothing by default', () => {
+  render(
+    <OverlayProvider>
+      <Dialog.Controller>
+        <Dialog>
+          <Headline>Headline</Headline>Content
+        </Dialog>
+      </Dialog.Controller>
+    </OverlayProvider>
   );
 
   const dialog = screen.queryByRole('dialog');
@@ -434,19 +430,19 @@ test('dialog can be controlled', async () => {
     const [open, setOpen] = useState(false);
 
     return (
-      <Dialog.Trigger open={open} onOpenChange={setOpen}>
+      <OverlayProvider>
         <Button data-testid="button" onPress={() => setOpen(true)}>
           Open Dialog
         </Button>
-        <Modal>
+        <Dialog.Controller open={open}>
           <Dialog>
             <Headline>Headline</Headline>
             <Button data-testid="close" onPress={() => setOpen(false)}>
               Close
             </Button>
           </Dialog>
-        </Modal>
-      </Dialog.Trigger>
+        </Dialog.Controller>
+      </OverlayProvider>
     );
   };
 
@@ -475,11 +471,11 @@ test('close state has a listener', async () => {
     const [open, setOpen] = useState(false);
 
     return (
-      <Dialog.Trigger open={open} onOpenChange={setOpen}>
+      <OverlayProvider>
         <Button data-testid="button" onPress={() => setOpen(true)}>
           Open Dialog
         </Button>
-        <Modal open={open} onOpenChange={spy}>
+        <Dialog.Controller open={open} onOpenChange={spy}>
           <Dialog>
             {({ close }) => (
               <>
@@ -490,8 +486,8 @@ test('close state has a listener', async () => {
               </>
             )}
           </Dialog>
-        </Modal>
-      </Dialog.Trigger>
+        </Dialog.Controller>
+      </OverlayProvider>
     );
   };
 
@@ -507,5 +503,11 @@ test('close state has a listener', async () => {
   const close = screen.getByTestId('close');
   await user.click(close);
 
-  expect(spy.mock.calls).toMatchInlineSnapshot(`[]`);
+  expect(spy.mock.calls).toMatchInlineSnapshot(`
+    [
+      [
+        false,
+      ],
+    ]
+  `);
 });

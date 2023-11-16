@@ -1,7 +1,11 @@
-import { Dialog, DialogTrigger } from 'react-aria-components';
+import { useContext } from 'react';
+import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
+
+import { DialogController } from './DialogController';
+import { DialogTrigger } from './DialogTrigger';
 
 // Close Button
 // ---------------
@@ -51,23 +55,31 @@ const _Dialog = ({
   ...props
 }: DialogProps) => {
   const classNames = useClassNames({ component: 'Dialog', variant, size });
+  let state = useContext(OverlayTriggerStateContext);
+
+  let children = props.children;
+
+  if (typeof children === 'function') {
+    children = children({
+      close: state?.close || (() => {}),
+    });
+  }
   return (
     <Dialog
       {...props}
       className={cn(classNames.container, 'relative outline-none')}
     >
-      {({ close }) => (
-        <>
-          {closeButton && (
-            <CloseButton close={close} className={classNames.closeButton} />
-          )}
-          {props.children}
-        </>
-      )}
+      <>
+        {closeButton && (
+          <CloseButton close={state.close} className={classNames.closeButton} />
+        )}
+        {children}
+      </>
     </Dialog>
   );
 };
 
 _Dialog.Trigger = DialogTrigger;
+_Dialog.Controller = DialogController;
 
 export { _Dialog as Dialog };
