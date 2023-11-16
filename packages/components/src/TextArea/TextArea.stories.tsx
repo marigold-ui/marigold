@@ -2,7 +2,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { TextArea } from './TextArea';
+import { TextArea } from './_TextArea';
 
 const meta = {
   title: 'Components/TextArea',
@@ -107,7 +107,6 @@ export const Controlled: Story = {
     const [value, setValue] = React.useState('');
     return (
       <>
-        c
         <TextArea {...args} value={value} onChange={setValue} />
         <pre>
           <strong>Input Value:</strong>
