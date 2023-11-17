@@ -25,7 +25,13 @@ The name of a design token describes how it should be used, with each part indic
 
 Color tokens leverage the color palettes from our design system. They provide a systematic approach to managing and applying colors consistently across various elements, while ensuring a cohesive and harmonious visual identity.
 
-Most color tokens adhere to the following structure:
+### Text Tokens
+
+Text tokens are used to apply specific colors to text, equivalent to the `color` CSS rule or the [`text-{color}` utilities](https://tailwindcss.com/docs/text-color) in TailwindCSS.
+
+#### Intents
+
+Below, you'll find all the available intents for the text tokens:
 
 - **base:** Default values for a specific category of tokens, serving as the foundational colors.
 - **inverted:** Alternative default values used when the base color lacks sufficient contrast ratio, ensuring accessibility.
@@ -36,66 +42,33 @@ Most color tokens adhere to the following structure:
 - **warning:** Functions as a feedback color, drawing attention to situations where user intervention is required.
 - **error:** Functions as a feedback color in situations of errors or destructive actions, signaling potential issues.
 
-explain general strcuture of the color tokens
+#### Modifier
 
-=== COLOR TOKENS ===
+Furthermore, the following modifier can be applied to all the aforementioned intents:
 
-## Structure
+- **DEFAULT:** Default color for text
+- **hover:** Color when text is hovered with a mouse
 
-- **base:** default values for a certain category of tokens
-- **inverted:** alternative default values when the base value does not have a good constrast ratio
-- **brand:** company's primary brand color
-- **accent:** company's accent brand color (Schmuckfarbe)
-- **error:** feedback color when there is an error or a destructive action
-- **success:** feedback color when something was successful
-- **warning:** feedback color when the users attention is required
-- **info:** feedback color when there is some auxiliary information
+When selecting "base" or "inverted" as the intent, an additional modifier is available:
+
+- **disabled:** Color when text is used in a disabled control or field.
+
+### Background Tokens
+
+Background tokens are used to apply specific colors to the background of an element. They are equivalent to the `background-color` CSS rule or the [`bg-{color}` utilities](https://tailwindcss.com/docs/background-color) in TailwindCSS.
+
+#### Intents
+
+Background tokens incorporate the same intents as text tokens (base, inverted, brand, accent, info, success, warning, error). Furthermore, there are the following intents:
+
+- **selected:** Indicates that a specific item from a list or option is chosen.
+- **surface:** Functions as the background for a particular surface level.
+
+====
 
 ### additionally, only for background
 
 - **surface:** colors for elevation levels
-
-## Text Tokens
-
-### Base
-
-Tokens used as the default for text.
-
-#### modifier
-
-- **DEFAULT:** default text color
-  (- **hover:** default hover colors)
-- **disabled:** default disabled color
-
-(do we need "weak"/"strong" texts?)
-
-### Inverted
-
-Tokens used on dark background for text.
-
-#### modifier
-
-- **DEFAULT:** default text color
-  (- **hover:** default hover colors)
-- **disabled:** default disabled color
-
-### Brand
-
-#### modifier
-
-- **DEFAULT:** default text color
-- **hover:** default hover colors
-- **active:** default active color (e.g. button pressed)
-
-#### Accent
-
-##### modifier
-
-- **DEFAULT:** default text color
-- **hover:** default hover colors
-- **active:** default active color (e.g. button pressed)
-
-!!!!!!!!!!(Plus all the feedback colors)
 
 ## Background Tokens
 
