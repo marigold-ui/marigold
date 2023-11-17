@@ -13,30 +13,30 @@ Tokens are categorized based on Figma's naming conventions, like color and numbe
 Knowing how to read token names helps you find the right token quickly in both designs and code.
 
 // TODO make a image with an example
-`[property]-[intent]-[modifier]`
+`[property].[intent].[modifier]` (text.base.disabled, bg.surface.overlay)
 
 The name of a design token describes how it should be used, with each part indicating a specific aspect of its usage. Our tokens consist of the following parts:
 
 1. **Property:** The UI element the token should be applied to, like a background, text or border.
 2. **Intent:** Identifies different use cases for a token. For example, to indicate user feedback or visual hierachy.
-3. **Modifier:** Additional details about the token's purpose. In most cases, this is an interaction state, but it can also indicate where, contextually, the token should be applied (e.g. "raised" in the surface tokens).
+3. **Modifier:** Additional details about the token's purpose. In most cases, this is an interaction state, but it can also indicate where, contextually, the token should be applied (e.g. "raised" in the surface tokens). The `DEFAULT` modifier can be omitted.
 
 ## Color Tokens
 
 Color tokens leverage the color palettes from our design system. They provide a systematic approach to managing and applying colors consistently across various elements, while ensuring a cohesive and harmonious visual identity.
 
-**Structure**
+Most color tokens adhere to the following structure:
+
+- **base:** Default values for a specific category of tokens, serving as the foundational colors.
+- **inverted:** Alternative default values used when the base color lacks sufficient contrast ratio, ensuring accessibility.
+- **brand:** Represents the primary brand color of the company, establishing a consistent visual identity.
+- **accent:** Signifies the accent brand color, adding emphasis and vibrancy to the overall design.
+- **info:** Represents a feedback color conveying auxiliary information, providing additional context.
+- **success:** Serves as a feedback color to indicate successful actions or positive outcomes.
+- **warning:** Functions as a feedback color, drawing attention to situations where user intervention is required.
+- **error:** Functions as a feedback color in situations of errors or destructive actions, signaling potential issues.
 
 explain general strcuture of the color tokens
-
-### Text Tokens
-
-What are text tokens
-
-- **base:** desadasd
-- **inverted:** asdasd
-
-Tokens used as the default for text.
 
 === COLOR TOKENS ===
 
