@@ -17,7 +17,7 @@ Knowing how to read token names helps you find the right token quickly in both d
 
 The name of a design token describes how it should be used, with each part indicating a specific aspect of its usage. Our tokens consist of the following parts:
 
-1. **Property:** The UI element the token should be applied to, like a background, text or border.
+1. **Property:** The property of an UI element the token should be applied to, like a background, text or border.
 2. **Intent:** Identifies different use cases for a token. For example, to indicate user feedback or visual hierachy.
 3. **Modifier:** Additional details about the token's purpose. In most cases, this is an interaction state, but it can also indicate where, contextually, the token should be applied (e.g. "raised" in the surface tokens). The `DEFAULT` modifier can be omitted.
 
@@ -27,66 +27,62 @@ Color tokens leverage the color palettes from our design system. They provide a 
 
 ### Text Tokens
 
+**Property Name:** `text`
+
 Text tokens are used to apply specific colors to text, equivalent to the `color` CSS rule or the [`text-{color}` utilities](https://tailwindcss.com/docs/text-color) in TailwindCSS.
 
 #### Intents
 
 Below, you'll find all the available intents for the text tokens:
 
-- **base:** Default values for a specific category of tokens, serving as the foundational colors.
-- **inverted:** Alternative default values used when the base color lacks sufficient contrast ratio, ensuring accessibility.
-- **brand:** Represents the primary brand color of the company, establishing a consistent visual identity.
-- **accent:** Signifies the accent brand color, adding emphasis and vibrancy to the overall design.
-- **info:** Represents a feedback color conveying auxiliary information, providing additional context.
-- **success:** Serves as a feedback color to indicate successful actions or positive outcomes.
-- **warning:** Functions as a feedback color, drawing attention to situations where user intervention is required.
-- **error:** Functions as a feedback color in situations of errors or destructive actions, signaling potential issues.
+- **base:** Default values for a specific category of tokens, serving as the foundational colors
+- **inverted:** Alternative default values used when the base color lacks sufficient contrast ratio, ensuring accessibility
+- **brand:** Represents the primary brand color of the company, establishing a consistent visual identity
+- **accent:** Signifies the accent brand color, adding emphasis and vibrancy to the overall design
+- **info:** Represents a feedback color conveying auxiliary information, providing additional context
+- **success:** Serves as a feedback color to indicate successful actions or positive outcomes
+- **warning:** Functions as a feedback color, drawing attention to situations where user intervention is required
+- **error:** Functions as a feedback color in situations of errors or destructive actions, signaling potential issues
 
-#### Modifier
+#### Modifiers
 
-Furthermore, the following modifier can be applied to all the aforementioned intents:
+The following modifier can be applied to all the aforementioned intents:
 
 - **DEFAULT:** Default color for text
 - **hover:** Color when text is hovered with a mouse
-
-When selecting "base" or "inverted" as the intent, an additional modifier is available:
-
-- **disabled:** Color when text is used in a disabled control or field.
+- **disabled:** Color when text is used in a disabled control or field (only available when using the "base" or "inverted" intent)
 
 ### Background Tokens
+
+**Property Name:** `bg`
 
 Background tokens are used to apply specific colors to the background of an element. They are equivalent to the `background-color` CSS rule or the [`bg-{color}` utilities](https://tailwindcss.com/docs/background-color) in TailwindCSS.
 
 #### Intents
 
-Background tokens incorporate the same intents as text tokens (base, inverted, brand, accent, info, success, warning, error). Furthermore, there are the following intents:
+Background tokens incorporate the same intents as text tokens (base, inverted, brand, accent, info, success, warning, error) and have the following additional intents:
 
 - **selected:** Indicates that a specific item from a list or option is chosen.
 - **surface:** Functions as the background for a particular surface level.
 
+#### Modifiers
+
+The following modifier can be applied to all a background token:
+
+- **DEFAULT:** Default background color
+- **hover:** Applied when an element is hovered with a mouse
+- **active:** Applied when an element is active, such as when a button is pressed
+- **disabled:** Utilized for indicating that an element is disabled (only available when using the "base" or "inverted" intent)
+- **input:** Used for inputs that require a more prominent visual appearance, such as radio buttons, checkboxes, and switches (only available when using the "selected" intent)
+
+The "surface" intent is a special case with distinct modifiers compared to the other background intents. Only the following modifiers can be used with it:
+
+- **DEFAULT:** Applied to elements that represent the basline for all other surface layers, like the `<body>` element
+- **raised:** Used for elevated surfaces, such as cards
+- **overlay:** Applied to surfaces with significant height, like popovers
+- **sunken:** Applied to surface that creates a backdrop
+
 ====
-
-## Background Tokens
-
-### Base
-
-- **hover:** used when something is hovered
-- **active:** default active color (e.g. button pressed)
-- **disabled:** used when something is disabled
-
-### Selected
-
-- **DEFAULT:** used as default selected
-- **input:** used for input that need a more apparent visual appearance (raio, checkbox, switch)
-
-### Surface (https://atlassian.design/foundations/elevation)
-
-- **DEFAULT:** used for things like the `<body>` element
-- **raised:** raised surfaces, like cards
-- **overlay:** surfaces that are very high! like popover
-- **sunken:** used for ??? (see atlaskit)
-
-!!!!!!!(Plus all the feedback colors + accent + brand)
 
 ## Border Tokens
 
