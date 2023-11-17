@@ -7,13 +7,6 @@ import { Tooltip } from './Tooltip';
 const meta = {
   title: 'Components/Tooltip',
   argTypes: {
-    disabled: {
-      control: {
-        type: 'boolean',
-      },
-      defaultValue: false,
-      description: 'Disabled state',
-    },
     offset: {
       control: {
         type: 'number',
@@ -27,20 +20,6 @@ const meta = {
       description:
         'The additional offset across the cross acis from the trigger element',
     },
-    delay: {
-      control: {
-        type: 'number',
-      },
-      description: 'The delay before the tooltip is shown',
-    },
-    trigger: {
-      control: {
-        type: 'select',
-      },
-      options: [undefined, 'focus'],
-      defaultValue: undefined,
-      description: 'The trigger type (default = focus AND hover)',
-    },
     placement: {
       control: {
         type: 'select',
@@ -48,35 +27,55 @@ const meta = {
       options: ['top', 'bottom', 'left', 'right'],
       description: 'The placement of the tooltip',
     },
-    containerPadding: {
-      control: {
-        type: 'number',
-      },
-      description: 'The padding around the tooltip',
-    },
     shouldFlip: {
       control: {
         type: 'boolean',
       },
       description: 'Should the tooltip be automatically be flipped',
     },
+    containerPadding: {
+      control: {
+        type: 'number',
+      },
+      description:
+        'The placement padding that should be applied between the element and its surrounding container.',
+    },
+    open: {
+      control: {
+        type: 'boolean',
+        default: 'false',
+      },
+      description: 'If the tooltip is open',
+    },
+    variant: {
+      control: {
+        type: 'string',
+      },
+      description: 'The variant of the tooltip',
+    },
+    size: {
+      control: {
+        type: 'string',
+      },
+      description: 'The size of the tooltip',
+    },
   },
-} satisfies Meta<typeof Tooltip.Trigger>;
+} satisfies Meta<typeof Tooltip>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = {
+export const BasicTooltip: Story = {
   render: args => {
     return (
       <div className="me-auto ms-auto flex w-[min(100%_-_3rem,60ch)] gap-2 pt-32">
-        <Tooltip.Trigger {...args}>
+        <Tooltip.Trigger>
           <Button variant="primary">Hover me!</Button>
-          <Tooltip>Look at this tooltip!</Tooltip>
+          <Tooltip {...args}>Look at this tooltip!</Tooltip>
         </Tooltip.Trigger>
-        <Tooltip.Trigger {...args}>
+        <Tooltip.Trigger>
           <Button variant="primary">Hover no! Me!</Button>
-          <Tooltip>
+          <Tooltip {...args}>
             <div>I am a much more longer tooltip you know!</div>
             <div>I even have two lines!</div>
           </Tooltip>
