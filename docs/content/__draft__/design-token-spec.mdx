@@ -6,8 +6,6 @@ order: 4
 
 On this page, you'll discover detailed specifications for design tokens — the foundational elements that unify the visual language of your brand or products. Explore how design tokens are constructed and find information on where each token is applied within the design ecosystem.
 
-Tokens are categorized based on Figma's naming conventions, like color and number variables or effects, facilitating seamless integration and efficient design workflows.
-
 ## Naming Convention
 
 Knowing how to read token names helps you find the right token quickly in both designs and code.
@@ -67,8 +65,8 @@ Background tokens are used to apply specific colors to the background of an elem
 
 Background tokens incorporate the same intents as text tokens (base, inverted, brand, accent, info, success, warning, error) and have the following additional intents:
 
-- **selected:** Indicates that a specific item from a list or option is chosen.
-- **surface:** Functions as the background for a particular surface level.
+- **selected:** Indicates that a specific item from a list or option is chosen
+- **surface:** Functions as the background for a particular surface level
 
 #### Modifiers
 
@@ -87,31 +85,43 @@ The "surface" intent is a special case with distinct modifiers compared to the o
 - **overlay:** Applied to surfaces with significant height, like popovers
 - **sunken:** Applied to surface that creates a backdrop
 
+### Border Tokens
+
+**Property Name:** `border`
+
+Border tokens are used to apply specific colors to the border of an element. They are equivalent to the border-color CSS rule or the [`border-{color}` utilities](https://tailwindcss.com/docs/border-color) in TailwindCSS.
+
+#### Intents
+
+Border tokens incorporate the same intents as text tokens (base, inverted, brand, accent, info, success, warning, error) and have the following additional intents:
+
+- **selected:** Indicates that a specific item from a list or option is chosen
+
+#### Modifiers
+
+The following modifier can be applied to all a border token:
+
+- **DEFAULT:** Default border color
+- **hover:** Applied when an element is hovered with a mouse
+- **active:** Applied when an element is active, such as when a button is pressed
+- **disabled:** Utilized for indicating that an element is disabled (only available when using the "base" or "inverted" intent)
+- **input:** Used for inputs that require a more prominent visual appearance, such as radio buttons, checkboxes, and switches (only available when using the "selected" intent)
+
+### Outline Tokens
+
+**Property Name:** `outline`
+
+Border tokens are used to apply specific colors to the border of an element. They are equivalent to the outline-color CSS rule or the [`outline-{color}` utilities](https://tailwindcss.com/docs/outline-color) in TailwindCSS.
+
+#### Intents
+
+Outline tokens are a special use case and should be used sparingly. Their usage is reserved for indicating keyboard navigation:
+
+- **focus:** Apply when an element is focused, particularly with keyboard navigation
+
+There are no modifiers for outline tokens.
+
 ====
-
-## Border Tokens
-
-(follows the same structure as text and background)
-
-### Base
-
-- **DEFAULT:\*** default border color
-- **hover:** border when hovered
-- **active:** default active color (e.g. button pressed)
-- **disabled:** used when something is disabled
-
-!!!!!(Plus all the feedback colors + accent + brand)
-
-### Selected
-
-- **DEFAULT:** used as default selected
-- **input:** used for input that need a more apparent visual appearance (raio, checkbox, switch)
-
-## Outline Tokens
-
-### Base
-
-- **focus:** use when something is focused (with the keyboard)!
 
 === EFFECTS ===
 
