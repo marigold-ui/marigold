@@ -60,9 +60,9 @@ export const _TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       isRequired: required,
       ...rest,
     };
-
+    console.log({ ...props });
     return (
-      <FieldBase as={TextField} {...props}>
+      <FieldBase as={TextField} {...props} variant={variant} size={size}>
         <TextArea className={classNames} ref={ref} rows={rows} />
       </FieldBase>
     );
