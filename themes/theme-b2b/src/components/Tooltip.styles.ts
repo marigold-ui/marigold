@@ -12,23 +12,15 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
   ]),
 
   arrow: cva([
-    // right
+    'fill-bg-neutral stroke-border-info',
 
-    'placement-r:rotate-90',
-    //  'border-t-border-info border-[7px] border-x-transparent border-b-transparent',
-    // // after
-    // 'after:border-t-bg-neutral after:border-[7px] after:border-x-transparent after:border-b-transparent',
-    // 'after:absolute after:h-0 after:w-0',
-    // 'after:left-[-7px] after:right-[-8.5px] after:border-solid after:border-x-transparent after:border-b-transparent after:content-[""]',
-    // // right
-    // 'group-placementR/tooltip:top-1/2 group-placementR/tooltip:mt-[-7px] group-placementR/tooltip:after:mt-[-8.5px]',
-    // 'group-placementR/tooltip:right-full group-placementR/tooltip:rotate-90',
-    // // left
-    // 'group-placementL/tooltip:top-1/2 group-placementL/tooltip:mt-[-7px] group-placementL/tooltip:after:mt-[-8.5px]',
-    // 'group-placementL/tooltip:left-full group-placementL/tooltip:rotate-[270deg]',
-    // // top
-    // 'group-placementT/tooltip:ml-[-8px] group-placementT/tooltip:top-full  group-placementT/tooltip:after:mt-[-8.5px]',
-    // // bottom
-    // 'group-placementB/tooltip:ml-[-8px] group-placementB/tooltip:bottom-full  group-placementB/tooltip:after:mt-[-8.5px] group-placementB/tooltip:rotate-180',
+    // right
+    '[&>svg]:placement-r:rotate-90',
+
+    // left
+    '[&>svg]:placement-l:-rotate-90',
+
+    // bottom
+    '[&>svg]:placement-b:rotate-180',
   ]),
 };
