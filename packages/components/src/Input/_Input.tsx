@@ -16,10 +16,7 @@ export interface InputProps extends Omit<RAC.InputProps, RemovedProps> {
 }
 
 export const _Input = forwardRef<HTMLInputElement, InputProps>(
-  (
-    { type = 'text', icon, action, variant, size, ...props }: InputProps,
-    ref
-  ) => {
+  ({ type, icon, action, variant, size, ...props }: InputProps, ref) => {
     const classNames = useClassNames({
       component: 'Input',
       variant,
