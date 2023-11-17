@@ -2,7 +2,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { TextArea } from './_TextArea';
+import { TextArea } from './TextArea';
 
 const meta = {
   title: 'Components/TextArea',

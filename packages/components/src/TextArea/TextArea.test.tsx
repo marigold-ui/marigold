@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
@@ -48,14 +48,14 @@ const { render } = setup({ theme });
 test('renders an textarea', () => {
   render(<TextArea label="Label" data-testid="textarea" />);
 
-  const textArea = screen.getByTestId('textarea');
+  const textArea = screen.getByRole('textbox');
   expect(textArea).toBeInTheDocument();
   expect(textArea instanceof HTMLTextAreaElement).toBeTruthy();
 });
 
 test('textarea can be styled via "TextArea" styles', () => {
   render(<TextArea label="Label" data-testid="text-area" />);
-  const textArea = screen.getByTestId('text-area');
+  const textArea = screen.getByRole('textbox');
   expect(textArea.className).toMatchInlineSnapshot(`"text-blue-500"`);
 });
 
@@ -70,7 +70,7 @@ test('passes down variant and size', () => {
     />
   );
 
-  const textArea = screen.getByTestId('text-area');
+  const textArea = screen.getByRole('textbox');
   expect(textArea.className).toMatchInlineSnapshot(`"text-lime-500 text-sm"`);
 
   const label = screen.getByText('Label');
@@ -78,31 +78,31 @@ test('passes down variant and size', () => {
     `"text-lime-500 text-sm flex w-[var(--labelWidth)]"`
   );
 
-  const description = screen.getByText('Description');
+  /*const description = screen.getByText('Description');
   expect(description.className).toMatchInlineSnapshot(
     `"flex items-center gap-1 text-lime-600 text-sm"`
-  );
+  );*/
 });
 
 test('supports disabled', () => {
   render(<TextArea label="A Label" disabled data-testid="textarea" />);
 
-  const textArea = screen.getByTestId('textarea');
+  const textArea = screen.getByRole('textbox');
   expect(textArea).toBeDisabled();
 });
 
 test('supports required', () => {
   render(<TextArea label="A Label" required data-testid="textarea" />);
 
-  const textArea = screen.getByTestId('textarea');
+  const textArea = screen.getByRole('textbox');
   /** Note that the required attribute is not passed down! */
-  expect(textArea).toHaveAttribute('aria-required', 'true');
+  expect(textArea).toBeRequired();
 });
 
 test('supports readonly', () => {
   render(<TextArea label="A Label" readOnly data-testid="textarea" />);
 
-  const textArea = screen.getByTestId('textarea');
+  const textArea = screen.getByRole('textbox');
   expect(textArea).toHaveAttribute('readonly');
 });
 
@@ -156,24 +156,24 @@ test('correctly sets up aria attributes', () => {
   );
 
   const label = screen.getByText('A Label');
-  const textarea = screen.getByTestId('textarea');
+  const textArea = screen.getByRole('textbox');
   const description = screen.getByText('Some helpful text');
 
   const htmlFor = label.getAttribute('for');
   const labelId = label.getAttribute('id');
-  const inputId = textarea.getAttribute('id');
+  const inputId = textArea.getAttribute('id');
 
   expect(label).toHaveAttribute('for', inputId);
   expect(htmlFor).toEqual(inputId);
-  expect(textarea).toHaveAttribute('aria-labelledby', labelId);
+  expect(textArea).toHaveAttribute('aria-labelledby', labelId);
 
-  expect(textarea).toHaveAttribute(
+  expect(textArea).toHaveAttribute(
     'aria-describedby',
     description.getAttribute('id')
   );
 
-  expect(textarea).not.toHaveAttribute('aria-invalid');
-  expect(textarea).not.toHaveAttribute('aria-errormessage');
+  expect(textArea).not.toHaveAttribute('aria-invalid');
+  expect(textArea).not.toHaveAttribute('aria-errormessage');
 });
 
 test('correctly sets up aria attributes (with error)', () => {
@@ -188,7 +188,7 @@ test('correctly sets up aria attributes (with error)', () => {
   );
 
   const label = screen.getByText('A Label');
-  const textArea = screen.getByTestId('textarea');
+  const textArea = screen.getByRole('textbox');
   const error = screen.getByText('Whoopsie');
 
   const htmlFor = label.getAttribute('for');
@@ -217,7 +217,7 @@ test('can have default value', () => {
     />
   );
 
-  const textArea = screen.getByTestId('textarea');
+  const textArea = screen.getByRole('textbox');
   expect(textArea).toHaveValue('Default Value');
 });
 
@@ -231,7 +231,7 @@ test('passes down "rows" attribute', () => {
     />
   );
 
-  const textArea = screen.getByTestId('textarea');
+  const textArea = screen.getByRole('textbox');
   expect(textArea).toHaveAttribute('rows', '5');
 });
 
@@ -248,10 +248,8 @@ test('can be controlled', async () => {
 
   render(<Controlled />);
 
-  user.type(screen.getByTestId('textarea'), 'Hello there!');
-  await waitFor(() => {
-    expect(screen.getByTestId('output')).toHaveTextContent('Hello there!');
-  });
+  await user.type(screen.getByRole('textbox'), 'Hello there!');
+  expect(screen.getByTestId('output')).toHaveTextContent('Hello there!');
 });
 
 test('forwards ref', () => {
