@@ -78,10 +78,12 @@ test('passes down variant and size', () => {
     `"text-lime-500 text-sm flex w-[var(--labelWidth)]"`
   );
 
-  /*const description = screen.getByText('Description');
-  expect(description.className).toMatchInlineSnapshot(
-    `"flex items-center gap-1 text-lime-600 text-sm"`
-  );*/
+  const description = screen.getByText('Description');
+  // eslint-disable-next-line testing-library/no-node-access
+  const parentElement = description.parentElement;
+  expect(parentElement?.className).toMatchInlineSnapshot(
+    `"text-lime-600 text-sm"`
+  );
 });
 
 test('supports disabled', () => {
