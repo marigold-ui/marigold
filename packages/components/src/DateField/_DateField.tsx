@@ -2,7 +2,7 @@ import { ReactElement, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { DateField, DateInput, DateValue, Group } from 'react-aria-components';
 
-import { cn, useClassNames } from '@marigold/system';
+import { WidthProp, cn, useClassNames } from '@marigold/system';
 
 import { FieldBaseProps } from '../FieldBase';
 import { FieldBase } from '../FieldBase/_FieldBase';
@@ -18,7 +18,8 @@ type RemovedProps =
   | 'style';
 
 export interface DateFieldProps
-  extends Omit<RAC.DateFieldProps<DateValue>, RemovedProps> {
+  extends Omit<RAC.DateFieldProps<DateValue>, RemovedProps>,
+    Pick<FieldBaseProps, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
   size?: string;
   action?: ReactElement;
@@ -26,7 +27,8 @@ export interface DateFieldProps
   required?: RAC.DateFieldProps<DateValue>['isRequired'];
   disabled?: RAC.DateFieldProps<DateValue>['isDisabled'];
   error?: RAC.DateFieldProps<DateValue>['isInvalid'];
-  readonly?: RAC.DateFieldProps<DateValue>['isReadOnly'];
+  readOnly?: RAC.DateFieldProps<DateValue>['isReadOnly'];
+  width?: WidthProp['width'];
 }
 
 const _DateField = forwardRef<HTMLInputElement, DateFieldProps>(
@@ -38,14 +40,14 @@ const _DateField = forwardRef<HTMLInputElement, DateFieldProps>(
       disabled,
       required,
       error,
-      readonly,
+      readOnly,
       ...rest
     }: DateFieldProps,
     ref
   ) => {
     const props: RAC.DateFieldProps<DateValue> = {
       isDisabled: disabled,
-      isReadOnly: readonly,
+      isReadOnly: readOnly,
       isInvalid: error,
       isRequired: required,
       ...rest,

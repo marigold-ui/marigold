@@ -20,16 +20,16 @@ const meta = {
         defaultValue: { summary: 'Label' },
       },
     },
-    // description: {
-    //   control: {
-    //     type: 'text',
-    //   },
-    //   description: 'Help Text',
-    //   table: {
-    //     type: { summary: 'string' },
-    //     defaultValue: { summary: 'This is a help text description' },
-    //   },
-    // },
+    description: {
+      control: {
+        type: 'text',
+      },
+      description: 'Help Text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'This is a help text description' },
+      },
+    },
     error: {
       control: {
         type: 'boolean',
@@ -40,35 +40,26 @@ const meta = {
         defaultValue: { summary: false },
       },
     },
-    readonly: {
+
+    errorMessage: {
       control: {
-        type: 'boolean',
+        type: 'text',
       },
-      description: 'Is the DateField readonly?',
+      description: 'Error Message',
       table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Something went wrong' },
       },
     },
-    // errorMessage: {
-    //   control: {
-    //     type: 'text',
-    //   },
-    //   description: 'Error Message',
-    //   table: {
-    //     type: { summary: 'string' },
-    //     defaultValue: { summary: 'Something went wrong' },
-    //   },
-    // },
-    // width: {
-    //   control: {
-    //     type: 'text',
-    //   },
-    //   description: 'Width of the field',
-    //   table: {
-    //     type: { summary: 'string' },
-    //   },
-    // },
+    width: {
+      control: {
+        type: 'text',
+      },
+      description: 'Width of the field',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
     required: {
       control: {
         type: 'boolean',
@@ -87,21 +78,21 @@ const meta = {
         defaultValue: { summary: false },
       },
     },
-    // readOnly: {
-    //   control: {
-    //     type: 'boolean',
-    //   },
-    //   table: {
-    //     type: { summary: 'boolean' },
-    //     defaultValue: { summary: false },
-    //   },
-    // },
+    readOnly: {
+      control: {
+        type: 'boolean',
+      },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
   },
   args: {
     label: 'My Label',
-    // description: 'This is a help text description',
+    description: 'This is a help text description',
     error: false,
-    // errorMessage: 'Something went wrong',
+    errorMessage: 'Something went wrong',
   },
 } satisfies Meta<DateFieldProps>;
 
