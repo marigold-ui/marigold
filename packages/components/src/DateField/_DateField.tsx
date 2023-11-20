@@ -1,10 +1,11 @@
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import {
   DateField,
   DateInput,
   DateSegment,
   DateValue,
+  Group,
 } from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
@@ -17,7 +18,8 @@ type RemovedProps =
   | 'isRequired'
   | 'isDisabled'
   | 'isInvalid'
-  | 'label';
+  | 'label'
+  | 'children';
 
 export interface DateFieldProps
   extends Omit<RAC.DateFieldProps<DateValue>, RemovedProps> {
@@ -34,26 +36,29 @@ const _DateField = ({ variant, size, action, ...props }: DateFieldProps) => {
   const classNames = useClassNames({ component: 'DateField', variant, size });
   return (
     <FieldBase as={DateField} variant={variant} size={size} {...props}>
-      <DateInput className={cn('flex items-center', classNames.field)}>
-        {segment => (
-          <DateSegment
-            className={cn(
-              'group/segment',
-              'text-center leading-none outline-0',
-              '[data-type="literal]"' && 'p-[0.75px]',
-              classNames.segment
-            )}
-            segment={segment}
-            style={{
-              minWidth:
-                segment.maxValue != null
-                  ? String(segment.maxValue).length + 'ch'
-                  : undefined,
-            }}
-          ></DateSegment>
-        )}
-      </DateInput>
-      <>
+      <Group className={cn('flex flex-1 items-center', classNames.field)}>
+        <DateInput className={cn('flex flex-1 items-center')}>
+          {segment => (
+            <DateSegment
+              className={cn(
+                'group/segment',
+                'text-center leading-none outline-0',
+                '[data-type="literal]"' && 'p-[0.75px]',
+                classNames.segment
+              )}
+              segment={segment}
+              style={{
+                minWidth:
+                  segment.maxValue != null
+                    ? String(segment.maxValue).length + 'ch'
+                    : undefined,
+              }}
+            >
+              {segment.text.toUpperCase()}
+            </DateSegment>
+          )}
+        </DateInput>
+
         {action ? (
           action
         ) : (
@@ -69,7 +74,7 @@ const _DateField = ({ variant, size, action, ...props }: DateFieldProps) => {
             </svg>
           </div>
         )}
-      </>
+      </Group>
     </FieldBase>
   );
 };
