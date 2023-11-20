@@ -1,20 +1,51 @@
-import { Key } from 'react';
-import { Item } from 'react-aria-components';
-import type RAC from 'react-aria-components';
+import { useRef } from 'react';
+
+import { useOption } from '@react-aria/listbox';
+import { mergeProps } from '@react-aria/utils';
+
+import type { ListState } from '@react-stately/list';
+
+import type { Node } from '@react-types/shared';
+
+import { useStateProps } from '@marigold/system';
 
 import { useListBoxContext } from './Context';
 
-export interface ItemProps extends Omit<RAC.ItemProps, 'id'> {
-  key?: Key;
+// Props
+// ---------------
+export interface ListBoxOptionProps {
+  item: Node<unknown>;
+  state: ListState<unknown>;
 }
 
-export const _Item = ({ key, ...rest }: ItemProps) => {
-  const props: RAC.ItemProps = {
-    id: key,
-    ...rest,
-  };
-  const { classNames } = useListBoxContext();
-  return <Item {...props} className={classNames.option} />;
-};
+// Component
+// ---------------
+export const ListBoxOption = ({ item, state }: ListBoxOptionProps) => {
+  const ref = useRef<HTMLLIElement>(null);
 
-export { _Item as Item };
+  const { optionProps, isSelected, isDisabled, isFocused } = useOption(
+    {
+      key: item.key,
+    },
+    state,
+    ref
+  );
+
+  const { onPointerUp, ...props } = optionProps;
+  const { classNames } = useListBoxContext();
+  const stateProps = useStateProps({
+    selected: isSelected,
+    disabled: isDisabled,
+    focusVisible: isFocused,
+  });
+
+  return (
+    <li
+      ref={ref}
+      className={classNames.option}
+      {...mergeProps(props, { onPointerDown: onPointerUp }, { ...stateProps })}
+    >
+      {item.props.children}
+    </li>
+  );
+};

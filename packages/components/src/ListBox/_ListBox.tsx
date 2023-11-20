@@ -1,36 +1,55 @@
-import { forwardRef } from 'react';
-import { ListBox } from 'react-aria-components';
-import type RAC from 'react-aria-components';
+import { ReactNode, forwardRef } from 'react';
+
+import { useListBox } from '@react-aria/listbox';
+import { useObjectRef } from '@react-aria/utils';
+
+import type { ListState } from '@react-stately/list';
 
 import { cn, useClassNames } from '@marigold/system';
 
 import { ListBoxContext } from './Context';
+import { ListBoxOption } from './_ListBoxOption';
+import { ListBoxSection } from './_ListBoxSection';
 
-export interface ListBoxProps
-  extends Omit<RAC.ListBoxProps<object>, 'className'> {
+// Props
+// ---------------
+export interface ListBoxProps {
   variant?: string;
   size?: string;
+  label?: ReactNode;
+  state: ListState<unknown>;
 }
 
-const _ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
-  ({ variant, size, ...props }, ref) => {
+// Components
+// ---------------
+export const ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
+  ({ state, variant, size, ...props }, ref) => {
+    const innerRef = useObjectRef<HTMLUListElement>(ref);
+    const { listBoxProps } = useListBox(props, state, innerRef);
+
     const classNames = useClassNames({ component: 'ListBox', variant, size });
+
     return (
       <ListBoxContext.Provider value={{ classNames }}>
         <div className={classNames.container}>
-          <ListBox
-            {...props}
+          <ul
             className={cn(
               'overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh]',
               classNames.list
             )}
+            ref={innerRef}
+            {...listBoxProps}
           >
-            {props.children}
-          </ListBox>
+            {[...state.collection].map(item =>
+              item.type === 'section' ? (
+                <ListBoxSection key={item.key} section={item} state={state} />
+              ) : (
+                <ListBoxOption key={item.key} item={item} state={state} />
+              )
+            )}
+          </ul>
         </div>
       </ListBoxContext.Provider>
     );
   }
 );
-
-export { _ListBox as ListBox };
