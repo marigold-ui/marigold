@@ -16,7 +16,10 @@ export interface ModalProps extends RAC.ModalOverlayProps {
 // ---------------
 const _Modal = forwardRef<
   HTMLDivElement,
-  Omit<ModalProps, 'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled'>
+  Omit<
+    ModalProps,
+    'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled' | 'className'
+  >
 >(({ open, dismissable, keyboardDismissable, ...rest }, ref) => {
   const props: RAC.ModalOverlayProps = {
     isOpen: open,
@@ -25,7 +28,11 @@ const _Modal = forwardRef<
     ...rest,
   };
   return (
-    <Underlay variant="modal">
+    <Underlay
+      isDismissable={dismissable}
+      isKeyboardDismissDisabled={keyboardDismissable}
+      variant="modal"
+    >
       <Modal ref={ref} {...props}>
         {props.children}
       </Modal>

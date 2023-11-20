@@ -9,7 +9,6 @@ import { Theme, cva } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Headline } from '../Headline';
-import { Modal } from '../Overlay/Modal';
 import { setup } from '../test.utils';
 import { Dialog } from './Dialog';
 
@@ -58,12 +57,11 @@ test('renders children correctly', () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
-      <Modal>
-        <Dialog>
-          <Headline>Headline</Headline>
-          Content
-        </Dialog>
-      </Modal>
+
+      <Dialog>
+        <Headline>Headline</Headline>
+        Content
+      </Dialog>
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
@@ -83,9 +81,8 @@ test('supports children as function', () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
-      <Modal>
-        <Dialog>{spy}</Dialog>
-      </Modal>
+
+      <Dialog>{spy}</Dialog>
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
@@ -98,12 +95,11 @@ test('dialog can be opened by button', () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
-      <Modal>
-        <Dialog>
-          <Headline>Headline</Headline>
-          Content
-        </Dialog>
-      </Modal>
+
+      <Dialog>
+        <Headline>Headline</Headline>
+        Content
+      </Dialog>
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
@@ -117,12 +113,11 @@ test('optionally renders a close button', () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
-      <Modal>
-        <Dialog closeButton>
-          <Headline>Headline</Headline>
-          Content
-        </Dialog>
-      </Modal>
+
+      <Dialog closeButton>
+        <Headline>Headline</Headline>
+        Content
+      </Dialog>
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
@@ -141,12 +136,11 @@ test('supoorts closing the dialog with escape key', async () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
-      <Modal>
-        <Dialog closeButton>
-          <Headline>Headline</Headline>
-          Content
-        </Dialog>
-      </Modal>
+
+      <Dialog closeButton>
+        <Headline>Headline</Headline>
+        Content
+      </Dialog>
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
@@ -186,11 +180,10 @@ test('child function is passed a close function', () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
-      <Modal>
-        <Dialog>
-          {({ close }) => <button onClick={close}>Custom Close</button>}
-        </Dialog>
-      </Modal>
+
+      <Dialog>
+        {({ close }) => <button onClick={close}>Custom Close</button>}
+      </Dialog>
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
@@ -207,12 +200,11 @@ test('supports title for accessability reasons', () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
-      <Modal>
-        <Dialog closeButton>
-          <Headline slot="title">Headline</Headline>
-          Content
-        </Dialog>
-      </Modal>
+
+      <Dialog closeButton>
+        <Headline slot="title">Headline</Headline>
+        Content
+      </Dialog>
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
@@ -231,12 +223,11 @@ test('supports custom title for accessability reasons', () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
-      <Modal>
-        <Dialog closeButton aria-labelledby="myTitle">
-          <Headline id="myTitle">Headline</Headline>
-          Content
-        </Dialog>
-      </Modal>
+
+      <Dialog closeButton aria-labelledby="myTitle">
+        <Headline id="myTitle">Headline</Headline>
+        Content
+      </Dialog>
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
@@ -255,12 +246,12 @@ test('supports custom title for accessability reasons', () => {
 //   render(
 //     <Dialog.Trigger>
 //       <Button>Open</Button>
-//       <Modal>
+//
 
 //         <Dialog>
 //           <div>Custom Headline</div>
 //         </Dialog>
-//       </Modal>
+//
 //     </Dialog.Trigger>
 //   );
 //   const button = screen.getByText('Open');
@@ -281,9 +272,9 @@ test('supports custom title for accessability reasons', () => {
 //   render(
 //     <Dialog.Trigger>
 //       <Button>Open</Button>
-//       <Modal>
+//
 //         <Dialog closeButton>Content</Dialog>
-//       </Modal>
+//
 //     </Dialog.Trigger>
 //   );
 //   const button = screen.getByText('Open');
@@ -304,12 +295,11 @@ test('supports focus and open dialog with keyboard', async () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
-      <Modal>
-        <Dialog closeButton>
-          <Headline>Headline</Headline>
-          Content
-        </Dialog>
-      </Modal>
+
+      <Dialog closeButton>
+        <Headline>Headline</Headline>
+        Content
+      </Dialog>
     </Dialog.Trigger>
   );
 
@@ -326,12 +316,11 @@ test('dialog has base classnames', () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
-      <Modal>
-        <Dialog closeButton>
-          <Headline>Headline</Headline>
-          Content
-        </Dialog>
-      </Modal>
+
+      <Dialog closeButton>
+        <Headline>Headline</Headline>
+        Content
+      </Dialog>
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
@@ -353,12 +342,11 @@ test('dialog has variant classnames', () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
-      <Modal>
-        <Dialog variant="custom" closeButton>
-          <Headline>Headline</Headline>
-          Content
-        </Dialog>
-      </Modal>
+
+      <Dialog variant="custom" closeButton>
+        <Headline>Headline</Headline>
+        Content
+      </Dialog>
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
@@ -381,12 +369,11 @@ test('dialog supports size', () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
-      <Modal>
-        <Dialog size="large" closeButton>
-          <Headline>Headline</Headline>
-          Content
-        </Dialog>
-      </Modal>
+
+      <Dialog size="large" closeButton>
+        <Headline>Headline</Headline>
+        Content
+      </Dialog>
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
@@ -401,11 +388,11 @@ test('dialog supports size', () => {
 // test('renders with dialog controller', () => {
 //   render(
 //     <Dialog.Controller open>
-//       <Modal>
+//
 //         <Dialog>
 //           <Headline>Headline</Headline>Content
 //         </Dialog>
-//       </Modal>
+//
 
 //     </Dialog.Controller>
 //   );
@@ -417,11 +404,9 @@ test('dialog supports size', () => {
 test('renders nothing by default', () => {
   render(
     <Dialog.Trigger>
-      <Modal>
-        <Dialog>
-          <Headline>Headline</Headline>Content
-        </Dialog>
-      </Modal>
+      <Dialog>
+        <Headline>Headline</Headline>Content
+      </Dialog>
     </Dialog.Trigger>
   );
 
@@ -438,14 +423,12 @@ test('dialog can be controlled', async () => {
         <Button data-testid="button" onPress={() => setOpen(true)}>
           Open Dialog
         </Button>
-        <Modal>
-          <Dialog>
-            <Headline>Headline</Headline>
-            <Button data-testid="close" onPress={() => setOpen(false)}>
-              Close
-            </Button>
-          </Dialog>
-        </Modal>
+        <Dialog>
+          <Headline>Headline</Headline>
+          <Button data-testid="close" onPress={() => setOpen(false)}>
+            Close
+          </Button>
+        </Dialog>
       </Dialog.Trigger>
     );
   };
@@ -479,18 +462,16 @@ test('close state has a listener', async () => {
         <Button data-testid="button" onPress={() => setOpen(true)}>
           Open Dialog
         </Button>
-        <Modal open={open} onOpenChange={spy}>
-          <Dialog>
-            {({ close }) => (
-              <>
-                <Headline>Headline</Headline>
-                <Button data-testid="close" onPress={close}>
-                  Close
-                </Button>
-              </>
-            )}
-          </Dialog>
-        </Modal>
+        <Dialog>
+          {({ close }) => (
+            <>
+              <Headline>Headline</Headline>
+              <Button data-testid="close" onPress={close}>
+                Close
+              </Button>
+            </>
+          )}
+        </Dialog>
       </Dialog.Trigger>
     );
   };

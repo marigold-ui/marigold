@@ -1,5 +1,9 @@
+import { Children } from 'react';
 import { DialogTrigger } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+
+import { Modal } from '../Overlay/Modal';
+import { Dialog } from './Dialog';
 
 // Props
 // ---------------
@@ -7,16 +11,36 @@ import type RAC from 'react-aria-components';
 export interface DialogTriggerProps
   extends Omit<RAC.DialogTriggerProps, 'isOpen'> {
   open?: boolean;
+  dismissable?: boolean;
+  keyboardDismissable?: boolean;
 }
 // Component
 // ---------------
-const _DialogTrigger = ({ open, ...rest }: DialogTriggerProps) => {
+
+const _DialogTrigger = ({
+  open,
+  dismissable,
+  keyboardDismissable,
+  ...rest
+}: DialogTriggerProps) => {
   const props: RAC.DialogTriggerProps = {
     isOpen: open,
     ...rest,
   };
-
-  return <DialogTrigger {...props}>{props.children}</DialogTrigger>;
+  const children = Children.toArray(props.children);
+  const [dialogTrigger, dialog] = children;
+  const hasDialog = (dialogTrigger as any).type !== Dialog;
+  return (
+    <DialogTrigger {...props}>
+      {hasDialog && dialogTrigger}
+      <Modal
+        dismissable={dismissable}
+        keyboardDismissable={keyboardDismissable}
+      >
+        {dialog}
+      </Modal>
+    </DialogTrigger>
+  );
 };
 
 export { _DialogTrigger as DialogTrigger };

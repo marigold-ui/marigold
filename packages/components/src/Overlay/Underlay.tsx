@@ -14,7 +14,6 @@ export interface UnderlayProps extends RAC.ModalOverlayProps {
 // ---------------
 export const Underlay = ({ size, variant, ...props }: UnderlayProps) => {
   const classNames = useClassNames({ component: 'Underlay', size, variant });
-  console.log('classNames', classNames);
   return (
     <ModalOverlay
       className={({ isEntering, isExiting }) =>
@@ -25,6 +24,7 @@ export const Underlay = ({ size, variant, ...props }: UnderlayProps) => {
           classNames
         )
       }
+      {...props}
     >
       {props.children}
     </ModalOverlay>
