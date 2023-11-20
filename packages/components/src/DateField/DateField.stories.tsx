@@ -40,6 +40,16 @@ const meta = {
         defaultValue: { summary: false },
       },
     },
+    readonly: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Is the DateField readonly?',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
     // errorMessage: {
     //   control: {
     //     type: 'text',
@@ -89,9 +99,9 @@ const meta = {
   },
   args: {
     label: 'My Label',
-    description: 'This is a help text description',
+    // description: 'This is a help text description',
     error: false,
-    errorMessage: 'Something went wrong',
+    // errorMessage: 'Something went wrong',
   },
 } satisfies Meta<DateFieldProps>;
 

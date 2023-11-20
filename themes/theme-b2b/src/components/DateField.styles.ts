@@ -12,11 +12,11 @@ export const DateField: ThemeComponent<'DateField'> = {
   field: cva([
     inputBox,
     inputBackground,
-    inputDisabled('group-disabled/field'),
+    inputDisabled('data-[disabled]'),
     inputFocus('group-focus/field'),
     inputSpacing,
     'h-[34px]',
-    'group-hover/field:border-border-hover',
+    'data-[hovered]:border-border-hover',
     'group-readonly/field:group-focus/field:border-border-light group-readonly/field:group-focus/field:outline-none',
     ' group-readonly/field:bg-bg-transparent group-readonly/field:text-text-disabled',
   ]),
