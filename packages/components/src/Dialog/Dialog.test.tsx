@@ -57,9 +57,8 @@ test('renders children correctly', () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
-
       <Dialog>
-        <Headline>Headline</Headline>
+        <Dialog.Headline>Headline</Dialog.Headline>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -81,7 +80,6 @@ test('supports children as function', () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
-
       <Dialog>{spy}</Dialog>
     </Dialog.Trigger>
   );
@@ -95,9 +93,8 @@ test('dialog can be opened by button', () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
-
       <Dialog>
-        <Headline>Headline</Headline>
+        <Dialog.Headline>Headline</Dialog.Headline>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -115,7 +112,7 @@ test('optionally renders a close button', () => {
       <Button>Open</Button>
 
       <Dialog closeButton>
-        <Headline>Headline</Headline>
+        <Dialog.Headline>Headline</Dialog.Headline>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -138,7 +135,7 @@ test('supoorts closing the dialog with escape key', async () => {
       <Button>Open</Button>
 
       <Dialog closeButton>
-        <Headline>Headline</Headline>
+        <Dialog.Headline>Headline</Dialog.Headline>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -158,7 +155,7 @@ test('close Dialog by clicking on the Underlay', () => {
     <Dialog.Trigger dismissable>
       <Button>Open</Button>
       <Dialog closeButton>
-        <Headline>Headline</Headline>
+        <Dialog.Headline>Headline</Dialog.Headline>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -199,7 +196,7 @@ test('supports title for accessability reasons', () => {
       <Button>Open</Button>
 
       <Dialog closeButton>
-        <Headline slot="title">Headline</Headline>
+        <Dialog.Headline>Headline</Dialog.Headline>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -244,7 +241,7 @@ test('child function is passed an id for the dialog title (a11y)', () => {
     <Dialog.Trigger>
       <Button>Open</Button>
       <Dialog>
-        <Headline slot="title">Custom Headline</Headline>
+        <Dialog.Headline>Custom Headline</Dialog.Headline>
       </Dialog>
     </Dialog.Trigger>
   );
@@ -277,7 +274,7 @@ test('child function is passed an id for the dialog title (a11y)', () => {
 
 //   expect(warn).toHaveBeenCalled();
 //   expect(warn.mock.calls[0][0]).toMatchInlineSnapshot(
-//     `"No child in <Dialog> found that can act as title for accessibility. Please add a <Header> or <Headline> as direct child."`
+//     `"No child in <Dialog> found that can act as title for accessibility. Please add a <Header> or <Dialog.Headline> as direct child."`
 //   );
 //   warn.mockRestore();
 // });
@@ -288,7 +285,7 @@ test('supports focus and open dialog with keyboard', async () => {
       <Button>Open</Button>
 
       <Dialog closeButton>
-        <Headline>Headline</Headline>
+        <Dialog.Headline>Headline</Dialog.Headline>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -309,7 +306,7 @@ test('dialog has base classnames', () => {
       <Button>Open</Button>
 
       <Dialog closeButton>
-        <Headline>Headline</Headline>
+        <Dialog.Headline>Headline</Dialog.Headline>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -335,7 +332,7 @@ test('dialog has variant classnames', () => {
       <Button>Open</Button>
 
       <Dialog variant="custom" closeButton>
-        <Headline>Headline</Headline>
+        <Dialog.Headline>Headline</Dialog.Headline>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -362,7 +359,7 @@ test('dialog supports size', () => {
       <Button>Open</Button>
 
       <Dialog size="large" closeButton>
-        <Headline>Headline</Headline>
+        <Dialog.Headline>Headline</Dialog.Headline>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -381,7 +378,7 @@ test('dialog supports size', () => {
 //     <Dialog.Controller open>
 //
 //         <Dialog>
-//           <Headline>Headline</Headline>Content
+//           <Dialog.Headline>Headline</Dialog.Headline>Content
 //         </Dialog>
 //
 
@@ -396,7 +393,7 @@ test('renders nothing by default', () => {
   render(
     <Dialog.Trigger>
       <Dialog>
-        <Headline>Headline</Headline>Content
+        <Dialog.Headline>Headline</Dialog.Headline>Content
       </Dialog>
     </Dialog.Trigger>
   );
@@ -415,7 +412,7 @@ test('dialog can be controlled', async () => {
           Open Dialog
         </Button>
         <Dialog>
-          <Headline>Headline</Headline>
+          <Dialog.Headline>Headline</Dialog.Headline>
           <Button data-testid="close" onPress={() => setOpen(false)}>
             Close
           </Button>
@@ -456,7 +453,7 @@ test('close state has a listener', async () => {
         <Dialog>
           {({ close }) => (
             <>
-              <Headline>Headline</Headline>
+              <Dialog.Headline>Headline</Dialog.Headline>
               <Button data-testid="close" onPress={close}>
                 Close
               </Button>

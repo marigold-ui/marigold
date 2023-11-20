@@ -8,7 +8,6 @@ import { Checkbox, CheckboxGroup } from '../Checkbox';
 import { Container } from '../Container';
 import { Footer } from '../Footer';
 import { Header } from '../Header';
-import { Headline } from '../Headline';
 import { Inline } from '../Inline';
 import { Menu } from '../Menu';
 import { ModalProps } from '../Overlay/Modal';
@@ -52,7 +51,7 @@ export const Basic: Story = {
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
         <Dialog closeButton>
-          <Headline slot="title">This is a headline!</Headline>
+          <Dialog.Headline>This is a headline!</Dialog.Headline>
           <Text>This is some not so very long text.</Text>
         </Dialog>
       </Dialog.Trigger>
@@ -68,7 +67,7 @@ export const Form: Story = {
         <Dialog>
           {({ close }) => (
             <>
-              <Headline>Please log into account</Headline>
+              <Dialog.Headline>Please log into account</Dialog.Headline>
               <Stack space={4}>
                 <TextField label="Username" />
                 <TextField label="Password" type="password" />
@@ -92,7 +91,7 @@ export const CustomTitleProps: Story = {
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
       <Dialog closeButton aria-labelledby="my-cool-headline">
-        <Headline id="my-cool-headline">This is a headline!</Headline>
+        <Dialog.Headline>This is a headline!</Dialog.Headline>
         <Text>This is some not so very long text.</Text>
       </Dialog>
     </Dialog.Trigger>
@@ -106,7 +105,9 @@ export const ScrollableContent: Story = {
       <Dialog closeButton aria-labelledby="my-cool-headline">
         <Container>
           <Header>
-            <Headline id="my-cool-headline">This is a headline!</Headline>
+            <Dialog.Headline id="my-cool-headline">
+              This is a headline!
+            </Dialog.Headline>
           </Header>
           <Body>
             <Stack space={2}>
@@ -143,7 +144,9 @@ export const StickyFooter: Story = {
       <Dialog closeButton aria-labelledby="my-cool-headline">
         <div className="flex max-h-[400px] flex-col">
           <Header>
-            <Headline id="my-cool-headline">This is a headline!</Headline>
+            <Dialog.Headline id="my-cool-headline">
+              This is a headline!
+            </Dialog.Headline>
             <Text>This is some additional text that is always visible!</Text>
           </Header>
           <div className="max-w-[400px] flex-1 overflow-y-auto">
@@ -206,7 +209,7 @@ export const WithDialogController: Story = {
             {({ close }) => (
               <Stack space={5}>
                 <Header>
-                  <Headline>Confirm delete</Headline>
+                  <Dialog.Headline>Confirm delete</Dialog.Headline>
                 </Header>
                 <Body>
                   <Text>Do you really wanna delete this?</Text>

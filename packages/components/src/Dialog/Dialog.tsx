@@ -4,6 +4,7 @@ import type RAC from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
 
+import { Headline, HeadlineProps } from '../Headline';
 import { DialogController } from './DialogController';
 import { DialogTrigger } from './DialogTrigger';
 
@@ -11,10 +12,10 @@ import { DialogTrigger } from './DialogTrigger';
 // ---------------
 interface CloseButtonProps {
   className?: string;
-  close: () => void;
 }
 
-const CloseButton = ({ className, close }: CloseButtonProps) => {
+const CloseButton = ({ className }: CloseButtonProps) => {
+  const { close } = useContext(OverlayTriggerStateContext);
   return (
     <div className="flex justify-end">
       <button
@@ -35,6 +36,14 @@ const CloseButton = ({ className, close }: CloseButtonProps) => {
     </div>
   );
 };
+
+// Dialog Headline
+// ---------------
+interface DialogHeadlineProps extends Omit<HeadlineProps, 'slot'> {}
+
+const DialogHeadline = ({ children }: DialogHeadlineProps) => (
+  <Headline slot="title">{children}</Headline>
+);
 
 // Props
 // ---------------
@@ -70,9 +79,7 @@ const _Dialog = ({
       className={cn(classNames.container, 'relative outline-none')}
     >
       <>
-        {closeButton && (
-          <CloseButton close={state.close} className={classNames.closeButton} />
-        )}
+        {closeButton && <CloseButton className={classNames.closeButton} />}
         {children}
       </>
     </Dialog>
@@ -80,6 +87,7 @@ const _Dialog = ({
 };
 
 _Dialog.Trigger = DialogTrigger;
+_Dialog.Headline = DialogHeadline;
 _Dialog.Controller = DialogController;
 
 export { _Dialog as Dialog };
