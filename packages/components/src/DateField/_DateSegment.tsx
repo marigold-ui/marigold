@@ -7,7 +7,6 @@ import { cn } from '@marigold/system';
 export interface DateSegmentProps extends RAC.DateSegmentProps {}
 
 const _DateSegment = ({ segment, ...props }: DateSegmentProps) => {
-  console.log(segment);
   return (
     <DateSegment
       {...props}

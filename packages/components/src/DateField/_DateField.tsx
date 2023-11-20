@@ -1,4 +1,3 @@
-import { CalendarDate, now } from '@internationalized/date';
 import { ReactElement, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { DateField, DateInput, DateValue, Group } from 'react-aria-components';
