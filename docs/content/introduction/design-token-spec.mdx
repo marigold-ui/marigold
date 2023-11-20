@@ -7,6 +7,13 @@ badge: new
 
 On this page, you'll discover detailed specifications for design tokens — the foundational elements that unify the visual language of your brand or products. Explore how design tokens are constructed and find information on where each token is applied within the design ecosystem.
 
+<Message messageTitle="View the tokens" variant="info">
+  For those interested in understanding our token structure, the most effective way is to explore the JSON structure directly. Note that tokens directly derived from Tailwind CSS are omitted for brevity.
+
+[View tokens as JSON](https://jsonhero.io/j/DZZeE10Xr6a7)
+
+</Message>
+
 ## Naming Convention
 
 Knowing how to read token names helps you find the right token quickly in both designs and code.
@@ -222,6 +229,8 @@ There are no semantic values assigned to these tokens, as their usage does not n
 
 Radius tokens adhere to T-shirt size conventions, with designations such as lg (large), md (medium), and so on.
 
+## JSON
+
 ---
 
 ## Notes:
@@ -232,3 +241,170 @@ Radius tokens adhere to T-shirt size conventions, with designations such as lg (
 - icons use the text color (`currentColor`)
 
 - use this to visualize our structure: https://jsoncrack.com/editor
+
+```json
+{
+  "text": {
+    "base": {
+      "DEFAULT": "",
+      "hover": "",
+      "disaled": ""
+    },
+    "inverted": {
+      "DEFAULT": "",
+      "hover": "",
+      "disaled": ""
+    },
+    "brand": {
+      "DEFAULT": "",
+      "hover": ""
+    },
+    "accent": {
+      "DEFAULT": "",
+      "hover": ""
+    },
+    "info": {
+      "DEFAULT": "",
+      "hover": ""
+    },
+    "success": {
+      "DEFAULT": "",
+      "hover": ""
+    },
+    "warning": {
+      "DEFAULT": "",
+      "hover": ""
+    },
+    "error": {
+      "DEFAULT": "",
+      "hover": ""
+    }
+  },
+  "bg": {
+    "base": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": "",
+      "disaled": ""
+    },
+    "inverted": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": "",
+      "disaled": ""
+    },
+    "brand": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": ""
+    },
+    "accent": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": ""
+    },
+    "info": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": ""
+    },
+    "success": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": ""
+    },
+    "warning": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": ""
+    },
+    "error": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": ""
+    },
+    "selected": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": "",
+      "input": ""
+    },
+    "surface": {
+      "DEFAULT": "",
+      "raise": "",
+      "overlay": "",
+      "sunken": ""
+    }
+  },
+  "border": {
+    "base": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": "",
+      "disaled": ""
+    },
+    "inverted": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": "",
+      "disaled": ""
+    },
+    "brand": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": ""
+    },
+    "accent": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": ""
+    },
+    "info": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": ""
+    },
+    "success": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": ""
+    },
+    "warning": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": ""
+    },
+    "error": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": ""
+    },
+    "selected": {
+      "DEFAULT": "",
+      "hover": "",
+      "active": "",
+      "input": ""
+    }
+  },
+  "outline": {
+    "focus": {
+      "DEFAULT": ""
+    }
+  },
+  "shadow": {
+    "surface": {
+      "DEFAULT": "",
+      "raise": "",
+      "overlay": "",
+      "sunken": ""
+    }
+  },
+  "component": {
+    "height": {
+      "DEFAULT": "",
+      "sm": "",
+      "lg": ""
+    }
+  }
+}
+```
