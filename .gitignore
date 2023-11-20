@@ -32,5 +32,5 @@ out
 *.tsbuildinfo
 next-env.d.ts
 
-# webstorm IDE
+# Jetbrains IDE
 .idea
