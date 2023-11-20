@@ -29,10 +29,10 @@ const _DialogTrigger = ({
   };
   const children = Children.toArray(props.children);
   const [dialogTrigger, dialog] = children;
-  const hasDialog = (dialogTrigger as any).type !== Dialog;
+  const hasDialogTrigger = (dialogTrigger as any).type !== Dialog;
   return (
     <DialogTrigger {...props}>
-      {hasDialog && dialogTrigger}
+      {hasDialogTrigger && dialogTrigger}
       <Modal
         dismissable={dismissable}
         keyboardDismissable={keyboardDismissable}
