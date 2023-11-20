@@ -39,24 +39,6 @@ const meta = {
       },
       description: 'The width of the field',
     },
-    disabled: {
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
-    },
-    readOnly: {
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
-    },
   },
   args: {
     label: 'Select Favorite:',
@@ -69,7 +51,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <SearchField {...args} required label="search field" />,
+  render: args => <SearchField required label="search field" {...args} />,
 };
 
 export const Controlled: Story = {
@@ -78,11 +60,11 @@ export const Controlled: Story = {
     return (
       <>
         <SearchField
-          {...args}
           value={value}
           onChange={setValue}
           required
           label="search field"
+          {...args}
         />
         <pre>
           <strong>Input Value:</strong>
