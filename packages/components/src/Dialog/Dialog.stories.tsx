@@ -52,7 +52,7 @@ export const Basic: Story = {
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
         <Dialog closeButton>
-          <Headline>This is a headline!</Headline>
+          <Headline slot="title">This is a headline!</Headline>
           <Text>This is some not so very long text.</Text>
         </Dialog>
       </Dialog.Trigger>

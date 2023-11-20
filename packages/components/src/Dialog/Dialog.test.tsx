@@ -153,34 +153,31 @@ test('supoorts closing the dialog with escape key', async () => {
   });
 });
 
-// test('close Dialog by clicking on the Underlay', () => {
-//   render(
-//     <OverlayProvider>
-//       <Dialog.Trigger>
-//         <Button>Open</Button>
-//         <Dialog closeButton>
-//           <Headline>Headline</Headline>
-//           Content
-//         </Dialog>
-//       </Dialog.Trigger>
-//     </OverlayProvider>
-//   );
-//   const button = screen.getByText('Open');
-//   fireEvent.click(button);
+test('close Dialog by clicking on the Underlay', () => {
+  render(
+    <Dialog.Trigger dismissable>
+      <Button>Open</Button>
+      <Dialog closeButton>
+        <Headline>Headline</Headline>
+        Content
+      </Dialog>
+    </Dialog.Trigger>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
 
-//   const dialog = screen.getByRole('dialog');
+  const dialog = screen.getByRole('dialog');
 
-//   fireEvent.mouseDown(document.body);
-//   fireEvent.mouseUp(document.body);
+  fireEvent.mouseDown(document.body);
+  fireEvent.mouseUp(document.body);
 
-//   expect(dialog).not.toBeVisible();
-// });
+  expect(dialog).not.toBeVisible();
+});
 
 test('child function is passed a close function', () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
-
       <Dialog>
         {({ close }) => <button onClick={close}>Custom Close</button>}
       </Dialog>
@@ -242,39 +239,33 @@ test('supports custom title for accessability reasons', () => {
   expect(headline.id).toBe(dialog.getAttribute('aria-labelledby'));
 });
 
-// test('child function is passed an id for the dialog title (a11y)', () => {
-//   render(
-//     <Dialog.Trigger>
-//       <Button>Open</Button>
-//
+test('child function is passed an id for the dialog title (a11y)', () => {
+  render(
+    <Dialog.Trigger>
+      <Button>Open</Button>
+      <Dialog>
+        <Headline slot="title">Custom Headline</Headline>
+      </Dialog>
+    </Dialog.Trigger>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
 
-//         <Dialog>
-//           <div>Custom Headline</div>
-//         </Dialog>
-//
-//     </Dialog.Trigger>
-//   );
-//   const button = screen.getByText('Open');
-//   fireEvent.click(button);
-
-//   const dialog = screen.getByRole('dialog');
-//   const headline = screen.getByText('Custom Headline');
-
-//   expect(dialog).toHaveAttribute(
-//     'aria-labelledby',
-//     headline.getAttribute('id')
-//   );
-// });
+  const dialog = screen.getByRole('dialog');
+  const headline = screen.getByText('Custom Headline');
+  expect(headline).toBeInTheDocument();
+  expect(dialog).toHaveAttribute(
+    'aria-labelledby',
+    headline.getAttribute('id')
+  );
+});
 
 // test('warns if no element to attach the title can be found', () => {
 //   const warn = jest.spyOn(console, 'warn').mockImplementation();
-
 //   render(
 //     <Dialog.Trigger>
 //       <Button>Open</Button>
-//
-//         <Dialog closeButton>Content</Dialog>
-//
+//       <Dialog closeButton>Content</Dialog>
 //     </Dialog.Trigger>
 //   );
 //   const button = screen.getByText('Open');
