@@ -68,11 +68,11 @@ describe('Search', () => {
 
   test('should be required', () => {
     render(<SearchField required data-testid="test-id" label="search field" />);
-    const input = screen.getByRole('searchbox');
+    const input = screen.queryByTestId('test-id');
 
     expect(input).toBeInTheDocument();
     expect(input).toHaveAttribute('type', 'search');
-    expect(input).toBeRequired();
+    expect(input).toHaveAttribute('aria-required', 'true');
   });
 
   test('the icon is null', () => {
@@ -96,7 +96,7 @@ describe('Search', () => {
         data-testid="test-id"
       />
     );
-    const input = screen.getByRole('searchbox');
+    const input = screen.queryByTestId('test-id');
     expect(input).toHaveAttribute('aria-label', 'search field');
   });
 
@@ -108,8 +108,7 @@ describe('Search', () => {
         data-testid="test-id"
       />
     );
-    const input = screen.getByRole('searchbox');
-
+    const input = screen.queryByTestId('test-id');
     expect(input).toHaveAttribute('tabIndex', '-1');
   });
 
