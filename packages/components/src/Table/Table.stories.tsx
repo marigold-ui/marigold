@@ -651,6 +651,7 @@ export const ScrollableTable: Story = {
                 <Table.Header>
                   {tableHeaders.map((header, index) => (
                     <Table.Column
+                      isRowHeader
                       width={
                         index === tableHeaders.length - 1 ? 'full' : 'auto'
                       }
