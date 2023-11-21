@@ -58,6 +58,7 @@ const _FieldBase = <T extends ElementType>(
       ref={ref}
       className={cn('group/field', twWidth[width], classNames, className)}
       data-required={props.isRequired ? true : undefined}
+      data-error={props.isInvalid ? true : undefined}
       {...rest}
     >
       {label ? (
