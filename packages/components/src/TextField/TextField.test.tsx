@@ -94,7 +94,6 @@ test('supports required', () => {
   render(<TextField label="A Label" required data-testid="text-field" />);
 
   const textField = screen.getByRole('textbox');
-  console.log(prettyDOM(document));
   /** Note that the required attribute is not passed down! */
   expect(textField).toBeRequired();
 });

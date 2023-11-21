@@ -170,5 +170,10 @@ test('renders label', () => {
 test('renders action as react elemnt', () => {
   render(<DateField label="date field" action={<div>huhu</div>} />);
   const action = screen.getByText('huhu');
+  expect(action).toMatchInlineSnapshot(`
+<div>
+  huhu
+</div>
+`);
   expect(action).toBeInTheDocument();
 });
