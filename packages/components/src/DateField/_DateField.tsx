@@ -53,6 +53,7 @@ const _DateField = forwardRef<HTMLInputElement, DateFieldProps>(
       ...rest,
     };
 
+    console.log(disabled);
     const classNames = useClassNames({ component: 'DateField', variant, size });
     return (
       <FieldBase
