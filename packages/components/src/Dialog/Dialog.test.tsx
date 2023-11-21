@@ -372,23 +372,6 @@ test('dialog supports size', () => {
   expect(dialog).toHaveClass('w-[400px]');
 });
 
-// TODO do we still need the dialog controller
-// test('renders with dialog controller', () => {
-//   render(
-//     <Dialog.Controller open>
-//
-//         <Dialog>
-//           <Dialog.Headline>Headline</Dialog.Headline>Content
-//         </Dialog>
-//
-
-//     </Dialog.Controller>
-//   );
-
-//   const dialog = screen.getByRole('dialog');
-//   expect(dialog).toBeInTheDocument();
-// });
-
 test('renders nothing by default', () => {
   render(
     <Dialog.Trigger>

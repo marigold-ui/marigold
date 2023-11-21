@@ -5,7 +5,6 @@ import type RAC from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 
 import { Headline, HeadlineProps } from '../Headline';
-import { DialogController } from './DialogController';
 import { DialogTrigger } from './DialogTrigger';
 
 // Close Button
@@ -88,6 +87,5 @@ const _Dialog = ({
 
 _Dialog.Trigger = DialogTrigger;
 _Dialog.Headline = DialogHeadline;
-_Dialog.Controller = DialogController;
 
 export { _Dialog as Dialog };
