@@ -160,3 +160,9 @@ test('renders without icons', () => {
   expect(icon).not.toBeInTheDocument();
   expect(action).not.toBeInTheDocument();
 });
+
+test('renders label', () => {
+  render(<DateField label="date field" />);
+  const label = screen.getByText('date field');
+  expect(label).toBeInTheDocument();
+});
