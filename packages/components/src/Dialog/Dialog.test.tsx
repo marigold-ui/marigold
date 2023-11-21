@@ -439,6 +439,45 @@ test('dialog can be controlled', async () => {
   expect(dialog).not.toBeInTheDocument();
 });
 
+test('dialog can be controlled without a trigger', async () => {
+  const Component = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <>
+        <Button data-testid="open-button" onPress={() => setOpen(true)}>
+          open dialog
+        </Button>
+        <Dialog.Trigger open={open} onOpenChange={setOpen}>
+          <Dialog>
+            <Dialog.Headline>Headline</Dialog.Headline>
+            <Button data-testid="close" onPress={() => setOpen(false)}>
+              Close
+            </Button>
+          </Dialog>
+        </Dialog.Trigger>
+      </>
+    );
+  };
+
+  render(<Component />);
+
+  let dialog = screen.queryByRole('dialog');
+  expect(dialog).not.toBeInTheDocument();
+
+  const button = screen.getByTestId('open-button');
+  await user.click(button);
+
+  dialog = screen.queryByRole('dialog');
+  expect(dialog).toBeInTheDocument();
+
+  const close = screen.getByTestId('close');
+  await user.click(close);
+
+  dialog = screen.queryByRole('dialog');
+  expect(dialog).not.toBeInTheDocument();
+});
+
 test('close state has a listener', async () => {
   const spy = jest.fn();
 

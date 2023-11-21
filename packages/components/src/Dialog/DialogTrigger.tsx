@@ -36,10 +36,6 @@ const _DialogTrigger = ({
         ? undefined
         : dialogTrigger
       : dialog;
-  /**
-   * if there is only one child , this could be a trigger only or a dialog
-   * in case it is a trigger only , we will render the trigger
-   */
   return (
     <DialogTrigger {...props}>
       {hasDialogTrigger && dialogTrigger}
