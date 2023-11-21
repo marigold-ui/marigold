@@ -31,11 +31,7 @@ const _DialogTrigger = ({
   const [dialogTrigger, dialog] = children;
   const hasDialogTrigger = (dialogTrigger as any).type !== Dialog;
   const currentDialog =
-    children.length < 2
-      ? hasDialogTrigger
-        ? undefined
-        : dialogTrigger
-      : dialog;
+    children.length < 2 ? !hasDialogTrigger && dialogTrigger : dialog;
   return (
     <DialogTrigger {...props}>
       {hasDialogTrigger && dialogTrigger}
