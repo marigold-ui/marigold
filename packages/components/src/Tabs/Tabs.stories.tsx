@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Tabs } from './Tabs';
+import { Tabs, TabsProps } from './Tabs';
 
 const meta = {
   title: 'Components/Tabs',
   argTypes: {
-    disabled: {
+    disalbed: {
       control: { type: 'boolean' },
       description: 'Disable all the tabs',
     },
@@ -26,23 +26,30 @@ const meta = {
         'Select whether tabs are activated automatically on focus or manually.',
     },
   },
-} satisfies Meta<typeof Tabs>;
+} satisfies Meta<TabsProps>;
 
 export default meta;
 
 export const Basic: StoryObj<typeof Tabs> = {
   render: args => {
     return (
-      <Tabs {...args} disabledKeys={['3']}>
-        <Tabs.Item key={1} title="start">
-          Lorem ipsum dolor sit amet - 1
-        </Tabs.Item>
-        <Tabs.Item key={2} title="hover">
-          Lorem ipsum dolor sit amet. -2
-        </Tabs.Item>
-        <Tabs.Item key={3} title="disabled">
-          Lorem ipsum dolor sit amet. - 3
-        </Tabs.Item>
+      <Tabs disabledKeys={['gamepad']} {...args}>
+        <Tabs.List aria-label="Input settings">
+          <Tabs.Item id="mouse">Mouse Settings</Tabs.Item>
+          <Tabs.Item id="keyboard">Keyboard Settings</Tabs.Item>
+          <Tabs.Item id="gamepad">Gamepad Settings</Tabs.Item>
+        </Tabs.List>
+        <Tabs.TabPanel id="mouse">
+          Adjust the sensitivity, acceleration, and button assignments for your
+          mouse.
+        </Tabs.TabPanel>
+        <Tabs.TabPanel id="keyboard">
+          Customize the key bindings and input behavior for your keyboard.
+        </Tabs.TabPanel>
+        <Tabs.TabPanel id="gamepad">
+          Configure the controls, dead zones, and vibration settings for your
+          gamepad.
+        </Tabs.TabPanel>
       </Tabs>
     );
   },

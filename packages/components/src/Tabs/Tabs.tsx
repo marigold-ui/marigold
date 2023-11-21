@@ -1,46 +1,32 @@
-import { useRef } from 'react';
+import { Tabs } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
-import { useTabList } from '@react-aria/tabs';
-
-import { Item } from '@react-stately/collections';
-import { useTabListState } from '@react-stately/tabs';
-
-import { AriaTabListProps } from '@react-types/tabs';
-
-import { GapSpaceProp, cn, gapSpace, useClassNames } from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 
 import { TabContext } from './Context';
 import { Tab } from './Tab';
+import { TabList } from './TabList';
 import { TabPanel } from './TabPanel';
 
-//props
+// props
 // ----------------------
-interface TabsProps
-  extends Omit<AriaTabListProps<object>, 'orientation' | 'isDisabled'>,
-    GapSpaceProp {
+export interface TabsProps
+  extends Omit<
+    RAC.TabsProps,
+    'className' | 'style' | 'isDisabled' | 'orientation'
+  > {
+  disalbed?: boolean;
   size?: 'small' | 'medium' | 'large';
-  disabled?: boolean;
   variant?: string;
 }
 
 // component
 // ----------------------
-export const Tabs = ({
-  space = 2,
-  size = 'medium',
-  disabled,
-  variant,
-  ...rest
-}: TabsProps) => {
-  const ref = useRef(null);
-  const props: AriaTabListProps<object> = {
-    isDisabled: disabled,
+const _Tabs = ({ disalbed, variant, size = 'medium', ...rest }: TabsProps) => {
+  const props: RAC.TabsProps = {
+    isDisabled: disalbed,
     ...rest,
   };
-  const state = useTabListState(props);
-  const { tabListProps } = useTabList(props, state, ref);
-
-  // We don't have variant for now , it is only for future use
   const classNames = useClassNames({
     component: 'Tabs',
     size,
@@ -48,21 +34,15 @@ export const Tabs = ({
   });
   return (
     <TabContext.Provider value={{ classNames }}>
-      {/* tabs container */}
-      <div className={cn(classNames.container)}>
-        <div
-          className={cn('flex', gapSpace[space], classNames.tabs)}
-          {...tabListProps}
-          ref={ref}
-        >
-          {[...state.collection].map(item => {
-            return <Tab key={item.key} item={item} state={state} />;
-          })}
-        </div>
-        <TabPanel key={state.selectedItem?.key} state={state} />
-      </div>
+      <Tabs {...props} className={classNames.container}>
+        {props.children}
+      </Tabs>
     </TabContext.Provider>
   );
 };
 
-Tabs.Item = Item;
+_Tabs.List = TabList;
+_Tabs.TabPanel = TabPanel;
+_Tabs.Item = Tab;
+
+export { _Tabs as Tabs };
