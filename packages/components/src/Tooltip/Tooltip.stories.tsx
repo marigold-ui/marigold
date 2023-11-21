@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Button } from '../Button';
 import { Tooltip } from './Tooltip';
@@ -45,7 +45,7 @@ const meta = {
         type: 'boolean',
         default: 'false',
       },
-      description: 'If the tooltip is open',
+      description: 'If the tooltip is open (controlled)',
     },
     variant: {
       control: {
@@ -76,6 +76,22 @@ export const BasicTooltip: Story = {
         <Tooltip.Trigger>
           <Button variant="primary">Hover no! Me!</Button>
           <Tooltip {...args}>
+            <div>I am a much more longer tooltip you know!</div>
+            <div>I even have two lines!</div>
+          </Tooltip>
+        </Tooltip.Trigger>
+      </div>
+    );
+  },
+};
+
+export const OpenRemainingTooltip: Story = {
+  render: args => {
+    return (
+      <div className="me-auto ms-auto flex w-[min(100%_-_3rem,60ch)] flex-col gap-2 pt-32">
+        <Tooltip.Trigger>
+          <Button variant="primary">Hover Me!</Button>
+          <Tooltip open={true} {...args}>
             <div>I am a much more longer tooltip you know!</div>
             <div>I even have two lines!</div>
           </Tooltip>

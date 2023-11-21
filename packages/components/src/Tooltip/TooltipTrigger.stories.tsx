@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Button } from '../Button';
 import { Tooltip } from './Tooltip';
@@ -87,6 +87,25 @@ export const Trigger: Story = {
             <div>I even have two lines!</div>
           </Tooltip>
         </Tooltip.Trigger>
+      </div>
+    );
+  },
+};
+
+export const ControlledTooltipTrigger: Story = {
+  render: args => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="me-auto ms-auto flex w-[min(100%_-_3rem,60ch)] flex-col gap-2 pt-32">
+        <Tooltip.Trigger open={open} onOpenChange={setOpen} {...args}>
+          <Button variant="primary">Hover Me!</Button>
+          <Tooltip>
+            <div>I am a much more longer tooltip you know!</div>
+            <div>I even have two lines!</div>
+          </Tooltip>
+        </Tooltip.Trigger>
+        <span>Tooltip is {open ? 'showing' : 'not showing'}</span>
       </div>
     );
   },
