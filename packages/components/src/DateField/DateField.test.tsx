@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { DateField } from './DateField';
+import { DateField } from './_DateField';
 
 const theme: Theme = {
   name: 'test',
@@ -147,14 +147,10 @@ test('passes down variant and size', () => {
   );
 
   const description = screen.getByText('Description');
-  expect(description.className).toMatchInlineSnapshot(
-    `"flex items-center gap-1"`
-  );
+  expect(description.className).toMatchInlineSnapshot(`"react-aria-Text"`);
 
   const datefield = screen.getByTestId('date-field');
-  expect(datefield.className).toMatchInlineSnapshot(
-    `"relative flex flex-row flex-nowrap cursor-text aria-disabled:cursor-not-allowed p-2 text-lime-300"`
-  );
+  expect(datefield.className).toMatchInlineSnapshot(`"group/field w-full"`);
 });
 
 test('renders without icons', () => {
