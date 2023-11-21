@@ -76,7 +76,12 @@ const _NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
             />
           )}
           <div className="flex-1">
-            <Input ref={ref} variant={variant} size={size} />
+            <Input
+              ref={ref}
+              variant={variant}
+              size={size}
+              className={'border-none outline-offset-[0px]'}
+            />
           </div>
           {showStepper && (
             <StepButton
