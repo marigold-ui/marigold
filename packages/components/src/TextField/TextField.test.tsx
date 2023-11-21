@@ -1,5 +1,5 @@
 /* eslint-disable testing-library/no-node-access */
-import { screen, waitFor } from '@testing-library/react';
+import { prettyDOM, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
@@ -52,7 +52,8 @@ const { render } = setup({ theme });
 test('renders an text input', () => {
   render(<TextField label="Label" data-testid="text-field" />);
 
-  const textField = screen.getByTestId('text-field');
+  const textField = screen.getByRole('textbox');
+
   expect(textField).toBeInTheDocument();
   expect(textField).toHaveAttribute('type', 'text');
   expect(textField instanceof HTMLInputElement).toBeTruthy();
@@ -61,7 +62,8 @@ test('renders an text input', () => {
 test('allows to change the input type', () => {
   render(<TextField label="Label" type="email" data-testid="text-field" />);
 
-  const textField = screen.getByTestId('text-field');
+  const textField = screen.getByRole('textbox');
+
   expect(textField).toHaveAttribute('type', 'email');
 });
 
@@ -84,22 +86,23 @@ test('allows to set custom width', () => {
 test('supports disabled', () => {
   render(<TextField label="A Label" disabled data-testid="text-field" />);
 
-  const textField = screen.getByTestId('text-field');
+  const textField = screen.getByRole('textbox');
   expect(textField).toBeDisabled();
 });
 
 test('supports required', () => {
   render(<TextField label="A Label" required data-testid="text-field" />);
 
-  const textField = screen.getByTestId('text-field');
+  const textField = screen.getByRole('textbox');
+  console.log(prettyDOM(document));
   /** Note that the required attribute is not passed down! */
-  expect(textField).toHaveAttribute('aria-required', 'true');
+  expect(textField).toBeRequired();
 });
 
 test('supports readonly', () => {
   render(<TextField label="A Label" readOnly data-testid="text-field" />);
 
-  const textField = screen.getByTestId('text-field');
+  const textField = screen.getByRole('textbox');
   expect(textField).toHaveAttribute('readonly');
 });
 
@@ -153,7 +156,7 @@ test('correctly sets up aria attributes', () => {
   );
 
   const label = screen.getByText('A Label');
-  const input = screen.getByTestId('text-field');
+  const input = screen.getByRole('textbox');
   const description = screen.getByText('Some helpful text');
 
   const htmlFor = label.getAttribute('for');
@@ -185,7 +188,7 @@ test('correctly sets up aria attributes (with error)', () => {
   );
 
   const label = screen.getByText('A Label');
-  const input = screen.getByTestId('text-field');
+  const input = screen.getByRole('textbox');
   const error = screen.getByText('Whoopsie');
 
   const htmlFor = label.getAttribute('for');
@@ -211,18 +214,20 @@ test('can have default value', () => {
     />
   );
 
-  const input = screen.getByTestId('text-field');
+  const input = screen.getByRole('textbox');
   expect(input).toHaveValue('Default Value');
 });
 
 test('can be controlled', async () => {
   const Controlled = () => {
     const [value, setValue] = React.useState('');
+
     return (
       <>
         <TextField
           data-testid="text-field"
           label="A Label"
+          value={value}
           onChange={setValue}
         />
         <span data-testid="output">{value}</span>
@@ -232,10 +237,9 @@ test('can be controlled', async () => {
 
   render(<Controlled />);
 
-  user.type(screen.getByTestId('text-field'), 'Hello there!');
-  await waitFor(() => {
-    expect(screen.getByTestId('output')).toHaveTextContent('Hello there!');
-  });
+  await user.type(screen.getByRole('textbox'), 'Hello there!');
+
+  expect(screen.getByTestId('output')).toHaveTextContent('Hello there!');
 });
 
 test('forwards ref', () => {

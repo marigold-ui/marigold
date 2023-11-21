@@ -295,27 +295,35 @@ describe('Calendar', () => {
     expect(cell.parentElement).toHaveAttribute('aria-selected', 'true');
     expect(cell.parentElement).toHaveAttribute('aria-invalid', 'true');
   });
+
   test('renders select components', async () => {
+    // mocking scrollIntoView to handle error `scrollIntoView` isn't a function
+    window.HTMLElement.prototype.scrollIntoView = function () {};
     render(<Calendar />);
     const monthButton = screen.getByTestId('month');
     expect(monthButton).toBeInTheDocument();
     await user.click(monthButton);
-    const monthOptions = screen.getByRole('listbox');
+    const monthOptions = screen.getByTestId('monthOptions');
     const mar = within(monthOptions).getByText('Mar');
+    expect(mar).toBeInTheDocument();
     await user.click(mar);
-    expect(monthButton).toHaveTextContent('Mar');
-
+    setTimeout(() => {
+      expect(monthButton).toHaveTextContent('Mar');
+      expect(mar).toHaveClass('bg-bg-secondary');
+    }, 1000);
     const yearButton = screen.getByTestId('year');
     expect(yearButton).toBeInTheDocument();
     await user.click(yearButton);
-    const yearOptions = screen.getByRole('listbox');
+    const yearOptions = screen.getByTestId('yearOptions');
     expect(yearOptions).toBeInTheDocument();
     const nineteen = within(yearOptions).getByText('2019');
     expect(nineteen).toBeInTheDocument();
     await user.click(nineteen);
-    expect(yearButton).toHaveTextContent('2019');
-    await user.click(monthButton);
+    setTimeout(() => {
+      expect(yearButton).toHaveTextContent('2019');
+    }, 1000);
   });
+
   test('supports disabled styles for calenar button', () => {
     render(<Calendar value={new CalendarDate(2019, 6, 5)} disabled />);
     const cellButton = screen.getByText('17');

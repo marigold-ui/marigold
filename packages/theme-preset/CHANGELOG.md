@@ -1,5 +1,58 @@
 # @marigold/theme-preset
 
+## 1.2.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.8.0
+
+## 1.2.0
+
+### Minor Changes
+
+- [#3473](https://github.com/marigold-ui/marigold/pull/3473) [`22446fa66`](https://github.com/marigold-ui/marigold/commit/22446fa66d38b34d975ed88b4dcd0b1ca7190a57) Thanks [@sebald](https://github.com/sebald)! - refa: Update `react-aria-components` to `rc.0`, `CheckboxGroup` and `HelpText`
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.7.0
+
+## 1.1.16
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.6.4
+
+## 1.1.15
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.6.3
+
+## 1.1.14
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.6.2
+
+## 1.1.13
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.6.1
+
+## 1.1.12
+
+### Patch Changes
+
+- Updated dependencies [[`7704debbe`](https://github.com/marigold-ui/marigold/commit/7704debbea339917eedf8182e2e5986798b34aff)]:
+  - @marigold/system@6.6.0
+
 ## 1.1.11
 
 ### Patch Changes

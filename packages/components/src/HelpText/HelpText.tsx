@@ -1,4 +1,5 @@
 import { HTMLAttributes, ReactNode } from 'react';
+import type { ValidationResult } from 'react-aria-components';
 
 import { SVG, cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
@@ -12,7 +13,7 @@ export interface HelpTextProps extends Omit<HtmlProps<'div'>, 'className'> {
   description?: ReactNode;
   descriptionProps?: HTMLAttributes<HTMLElement>;
   error?: boolean;
-  errorMessage?: ReactNode;
+  errorMessage?: ReactNode | ((v: ValidationResult) => ReactNode);
   errorMessageProps?: HTMLAttributes<HTMLElement>;
 }
 
