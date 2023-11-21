@@ -166,3 +166,9 @@ test('renders label', () => {
   const label = screen.getByText('date field');
   expect(label).toBeInTheDocument();
 });
+
+test('renders action', () => {
+  render(<DateField label="date field" action={<div>huhu</div>} />);
+  const action = screen.getByText('huhu');
+  expect(action).toBeInTheDocument();
+});
