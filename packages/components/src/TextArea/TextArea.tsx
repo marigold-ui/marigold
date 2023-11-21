@@ -1,121 +1,71 @@
 import { forwardRef } from 'react';
+import type RAC from 'react-aria-components';
+import { TextArea, TextField } from 'react-aria-components';
 
-import { useFocusRing } from '@react-aria/focus';
-import { useHover } from '@react-aria/interactions';
-import { useTextField } from '@react-aria/textfield';
-import { useObjectRef } from '@react-aria/utils';
+import { WidthProp, useClassNames } from '@marigold/system';
 
-import { AriaTextFieldProps } from '@react-types/textfield';
-
-import { WidthProp, useClassNames, useStateProps } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
-
-import { FieldBase, FieldBaseProps } from '../FieldBase';
+import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
 
 // Props
 // ---------------
-/**
- * `react-aria` has a slightly different API for the above events.
- * Thus, we adjust our regular props to match them.
- */
-export type CustomTextAreaEvents =
-  | 'onChange'
-  | 'onFocus'
-  | 'onBlur'
-  | 'onCopy'
-  | 'onSelect'
-  | 'onPaste'
-  | 'onCut'
-  | 'onCompositionStart'
-  | 'onCompositionUpdate'
-  | 'onCompositionEnd'
-  | 'onBeforeInput'
-  | 'onInput'
-  | 'onKeyDown'
-  | 'onKeyUp';
+type RemovedProps =
+  | 'className'
+  | 'style'
+  | 'children'
+  | 'isDisabled'
+  | 'isRequired'
+  | 'isInvalid'
+  | 'isReadOnly'
+  | 'value'
+  | 'defaultValue';
 
 export interface TextAreaProps
-  extends Omit<
-      HtmlProps<'textarea'>,
-      'value' | 'defaultValue' | 'size' | CustomTextAreaEvents | 'className'
-    >,
-    Pick<AriaTextFieldProps, CustomTextAreaEvents>,
-    Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
+  extends Omit<RAC.TextFieldProps, RemovedProps>,
+    Pick<RAC.TextAreaProps, 'rows'>,
+    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
   size?: string;
   width?: WidthProp['width'];
+  disabled?: RAC.TextFieldProps['isDisabled'];
+  required?: RAC.TextFieldProps['isRequired'];
+  error?: RAC.TextFieldProps['isInvalid'];
+  readOnly?: RAC.TextFieldProps['isReadOnly'];
   value?: string;
   defaultValue?: string;
 }
 
 // Component
 // ---------------
-export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
+export const _TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   (
     {
       variant,
       size,
-      width,
-      disabled,
       required,
+      disabled,
       readOnly,
       error,
       rows,
-      ...props
-    },
+      ...rest
+    }: TextAreaProps,
     ref
   ) => {
-    const { label, description, errorMessage } = props;
-    const textAreaRef = useObjectRef(ref);
-
-    const { labelProps, inputProps, descriptionProps, errorMessageProps } =
-      useTextField(
-        {
-          inputElementType: 'textarea',
-          isDisabled: disabled,
-          isRequired: required,
-          isReadOnly: readOnly,
-          validationState: error ? 'invalid' : 'valid',
-          ...props,
-        },
-        textAreaRef
-      );
-
-    const { hoverProps, isHovered } = useHover({});
-    const { focusProps, isFocusVisible } = useFocusRing();
-    const stateProps = useStateProps({
-      hover: isHovered,
-      focus: isFocusVisible,
-      disabled,
-      readOnly,
-      required,
-      error,
-    });
-
     const classNames = useClassNames({ component: 'TextArea', variant, size });
+
+    const props: RAC.TextFieldProps = {
+      isDisabled: disabled,
+      isReadOnly: readOnly,
+      isInvalid: error,
+      isRequired: required,
+      ...rest,
+    };
+
     return (
-      <FieldBase
-        label={label}
-        labelProps={labelProps}
-        description={description}
-        descriptionProps={descriptionProps}
-        error={error}
-        errorMessage={errorMessage}
-        errorMessageProps={errorMessageProps}
-        stateProps={stateProps}
-        variant={variant}
-        size={size}
-        width={width}
-      >
-        <textarea
-          className={classNames}
-          ref={textAreaRef}
-          rows={rows}
-          {...inputProps}
-          {...focusProps}
-          {...hoverProps}
-        />
+      <FieldBase as={TextField} {...props} variant={variant} size={size}>
+        <TextArea className={classNames} ref={ref} rows={rows} />
       </FieldBase>
     );
   }
 );
+
+export { _TextArea as TextArea };
