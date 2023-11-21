@@ -129,7 +129,7 @@ export const ScrollableContent: Story = {
             </Stack>
           </Body>
           <Footer>
-            <Button variant="primary">Ok</Button>
+            <Button variant="primary">ok</Button>
           </Footer>
         </Container>
       </Dialog>
