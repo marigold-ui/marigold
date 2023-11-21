@@ -30,6 +30,16 @@ const _DialogTrigger = ({
   const children = Children.toArray(props.children);
   const [dialogTrigger, dialog] = children;
   const hasDialogTrigger = (dialogTrigger as any).type !== Dialog;
+  const currentDialog =
+    children.length < 2
+      ? hasDialogTrigger
+        ? undefined
+        : dialogTrigger
+      : dialog;
+  /**
+   * if there is only one child , this could be a trigger only or a dialog
+   * in case it is a trigger only , we will render the trigger
+   */
   return (
     <DialogTrigger {...props}>
       {hasDialogTrigger && dialogTrigger}
@@ -37,7 +47,7 @@ const _DialogTrigger = ({
         dismissable={dismissable}
         keyboardDismissable={keyboardDismissable}
       >
-        {dialog}
+        {currentDialog}
       </Modal>
     </DialogTrigger>
   );
