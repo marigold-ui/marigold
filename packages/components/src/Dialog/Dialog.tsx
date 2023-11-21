@@ -46,7 +46,8 @@ const DialogHeadline = ({ children }: DialogHeadlineProps) => (
 
 // Props
 // ---------------
-export interface DialogProps extends RAC.DialogProps {
+export interface DialogProps
+  extends Omit<RAC.DialogProps, 'className' | 'style'> {
   variant?: string;
   size?: string;
   closeButton?: boolean;
