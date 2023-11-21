@@ -5,15 +5,35 @@ import { cn, useClassNames } from '@marigold/system';
 
 // Props
 // ---------------
-export interface UnderlayProps extends RAC.ModalOverlayProps {
+export interface UnderlayProps
+  extends Omit<
+    RAC.ModalOverlayProps,
+    'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled' | 'className'
+  > {
   variant?: string;
   size?: string;
+  open?: boolean;
+  dismissable?: boolean;
+  keyboardDismissable?: boolean;
 }
 
 // Component
 // ---------------
-export const Underlay = ({ size, variant, ...props }: UnderlayProps) => {
+export const Underlay = ({
+  size,
+  variant,
+  open,
+  dismissable,
+  keyboardDismissable,
+  ...rest
+}: UnderlayProps) => {
   const classNames = useClassNames({ component: 'Underlay', size, variant });
+  const props: RAC.ModalOverlayProps = {
+    isOpen: open,
+    isDismissable: dismissable,
+    isKeyboardDismissDisabled: keyboardDismissable,
+    ...rest,
+  };
   return (
     <ModalOverlay
       className={({ isEntering, isExiting }) =>

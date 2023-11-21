@@ -6,7 +6,7 @@ import { useObjectRef } from '@react-aria/utils';
 
 import { useOverlayTriggerState } from '@react-stately/overlays';
 
-import { Dialog } from '../Dialog';
+import { Dialog } from '../Dialog/Dialog';
 import { Headline } from '../Headline';
 import { Menu } from '../Menu';
 import { Text } from '../Text';

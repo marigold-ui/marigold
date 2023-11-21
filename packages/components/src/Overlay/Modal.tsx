@@ -29,8 +29,9 @@ const _Modal = forwardRef<
   };
   return (
     <Underlay
-      isDismissable={dismissable}
-      isKeyboardDismissDisabled={keyboardDismissable}
+      dismissable={dismissable}
+      keyboardDismissable={keyboardDismissable}
+      open={open}
       variant="modal"
     >
       <Modal ref={ref} {...props}>
