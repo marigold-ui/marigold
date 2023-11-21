@@ -12,6 +12,5 @@ export const DateField: ThemeComponent<'DateField'> = {
   ]),
 
   segment: cva(['rounded-sm', 'focus:bg-bg-focus focus:text-text-focus']),
-
   action: cva('pr-2'),
 };

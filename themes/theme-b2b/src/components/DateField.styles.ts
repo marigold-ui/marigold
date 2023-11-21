@@ -13,7 +13,7 @@ export const DateField: ThemeComponent<'DateField'> = {
     inputBox,
     inputBackground,
     inputDisabled('data-[disabled]'),
-    inputFocus('group-focus/field'),
+    inputFocus('data-[focus-visible]'),
     inputSpacing,
     'h-[34px]',
     'data-[hovered]:border-border-hover',
