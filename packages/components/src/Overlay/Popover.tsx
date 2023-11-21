@@ -12,7 +12,7 @@ import { OverlayTriggerState } from '@react-stately/overlays';
 import { useClassNames } from '@marigold/system';
 
 import { Overlay } from './Overlay';
-import { Underlay } from './_Underlay';
+import { Underlay } from './Underlay';
 
 export interface PopoverProps
   extends Pick<AriaPopoverProps, 'triggerRef' | 'scrollRef' | 'isNonModal'> {
