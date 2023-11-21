@@ -45,7 +45,7 @@ const { render } = setup({ theme });
 test('renders an input', () => {
   render(<NumberField label="Label" data-testid="number-field" />);
 
-  const numberField = screen.getByTestId('number-field');
+  const numberField = screen.getByRole('textbox');
   expect(numberField).toBeInTheDocument();
   expect(numberField).toHaveAttribute('type', 'text');
   expect(numberField).toBeInstanceOf(HTMLInputElement);
@@ -53,7 +53,7 @@ test('renders an input', () => {
 
 test('input can be styled via "Input" styles', () => {
   render(<NumberField label="A Label" data-testid="number-field" />);
-  const numberFieldContainer = screen.getByTestId('number-field-container');
+  const numberFieldContainer = screen.getByRole('group');
   expect(numberFieldContainer).toBeInTheDocument();
   expect(numberFieldContainer.className).toMatchInlineSnapshot(
     `"flex items-stretch rounded-sm border border-solid border-black"`
@@ -88,26 +88,26 @@ test('allows to set width via prop', () => {
 test('supports disabled', () => {
   render(<NumberField label="A Label" disabled data-testid="number-field" />);
 
-  const numberField = screen.getByTestId('number-field');
+  const numberField = screen.getByRole('textbox');
   expect(numberField).toBeDisabled();
 
   const group = screen.getByRole('group');
   const steppers = within(group).getAllByRole('button');
-  expect(steppers[0]).toHaveAttribute('aria-disabled', 'true');
-  expect(steppers[1]).toHaveAttribute('aria-disabled', 'true');
+  expect(steppers[0]).toBeDisabled();
+  expect(steppers[1]).toBeDisabled();
 });
 
 test('supports required', () => {
   render(<NumberField label="A Label" required data-testid="number-field" />);
 
-  const numberField = screen.getByTestId('number-field');
-  expect(numberField).toHaveAttribute('aria-required', 'true');
+  const numberField = screen.getByRole('textbox');
+  expect(numberField).toBeRequired();
 });
 
 test('supports readonly', () => {
   render(<NumberField label="A Label" readOnly data-testid="number-field" />);
 
-  const numberField = screen.getByTestId('number-field');
+  const numberField = screen.getByRole('textbox');
   expect(numberField).toHaveAttribute('readonly');
 });
 
@@ -155,7 +155,7 @@ test('can have default value', () => {
     <NumberField data-testid="number-field" label="A Label" defaultValue={50} />
   );
 
-  const input = screen.getByTestId('number-field');
+  const input = screen.getByRole('textbox');
   expect(input).toHaveValue('50');
 });
 
@@ -180,7 +180,7 @@ test('can be controlled', async () => {
 
   render(<Controlled />);
 
-  const input = screen.getByTestId('number-field');
+  const input = screen.getByRole('textbox');
   await user.click(input);
   await user.type(input, '42');
   await user.tab();
@@ -201,7 +201,7 @@ test('allows to specify min and max value', async () => {
     />
   );
 
-  const input: HTMLInputElement = screen.getByTestId('number-field');
+  const input: HTMLInputElement = screen.getByRole('textbox');
 
   await user.click(input);
   await user.type(input, '100');
@@ -218,7 +218,7 @@ test('increment and decrement value via stepper', async () => {
     <NumberField label="A Label" data-testid="number-field" defaultValue={50} />
   );
 
-  const input: HTMLInputElement = screen.getByTestId('number-field');
+  const input: HTMLInputElement = screen.getByRole('textbox');
   const [decrement, increment] = screen.getAllByRole('button');
 
   user.click(increment);
@@ -246,7 +246,7 @@ test('increment and decrement value via stepper (with min and max)', async () =>
     />
   );
 
-  const input: HTMLInputElement = screen.getByTestId('number-field');
+  const input: HTMLInputElement = screen.getByRole('textbox');
   const group = screen.getByRole('group');
   const [decrement, increment] = within(group).getAllByRole('button');
 
@@ -280,7 +280,7 @@ test('increment and decrement with custom steps', async () => {
     />
   );
 
-  const input: HTMLInputElement = screen.getByTestId('number-field');
+  const input: HTMLInputElement = screen.getByRole('textbox');
   const group = screen.getByRole('group');
   const [decrement, increment] = within(group).queryAllByRole('button');
 
@@ -327,6 +327,7 @@ test('allows formatting of displayed value', () => {
           currency: 'EUR',
         }}
       />
+
       <NumberField
         label="A Label"
         data-testid="number-field-percentage"
@@ -348,17 +349,15 @@ test('allows formatting of displayed value', () => {
     </>
   );
 
-  const decimal: HTMLInputElement = screen.getByTestId('number-field-decimal');
+  const decimal: HTMLInputElement = screen.getByDisplayValue('+3.41');
   expect(decimal.value).toEqual('+3.41');
 
-  const money: HTMLInputElement = screen.getByTestId('number-field-money');
+  const money: HTMLInputElement = screen.getByDisplayValue('€9.99');
   expect(money.value).toEqual('€9.99');
 
-  const percentage: HTMLInputElement = screen.getByTestId(
-    'number-field-percentage'
-  );
+  const percentage: HTMLInputElement = screen.getByDisplayValue('34%');
   expect(percentage.value).toEqual('34%');
 
-  const unit: HTMLInputElement = screen.getByTestId('number-field-unit');
+  const unit: HTMLInputElement = screen.getByDisplayValue('150 cm');
   expect(unit.value).toEqual('150 cm');
 });

@@ -1,173 +1,94 @@
 import { forwardRef } from 'react';
+import type RAC from 'react-aria-components';
+import { Group, NumberField } from 'react-aria-components';
 
-import { useFocusRing } from '@react-aria/focus';
-import { useLocale } from '@react-aria/i18n';
-import { useHover } from '@react-aria/interactions';
-import { useNumberField } from '@react-aria/numberfield';
-import { mergeProps, useObjectRef } from '@react-aria/utils';
+import { WidthProp, cn, useClassNames } from '@marigold/system';
 
-import { useNumberFieldState } from '@react-stately/numberfield';
-
-import { AriaNumberFieldProps } from '@react-types/numberfield';
-
-import { WidthProp, cn, useClassNames, useStateProps } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
-
-import { FieldBase, FieldBaseProps } from '../FieldBase';
-import { Input } from '../Input';
+import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
+import { Input } from '../Input/_Input';
 import { StepButton } from './StepButton';
-
-// Theme Extension
-// ---------------
 
 // Props
 // ---------------
-/**
- * `react-aria` has a slightly different API for some DOM props.
- * Thus, we adjust our regular props to match them.
- */
-type CustomProps =
-  | 'size'
-  | 'width'
-  | 'type'
-  | 'value'
-  | 'defaultValue'
-  | 'step'
-  | 'onChange'
-  | 'onFocus'
-  | 'onBlur'
-  | 'onKeyDown'
-  | 'onKeyUp'
-  | 'min'
-  | 'max';
+type RemovedProps =
+  | 'className'
+  | 'style'
+  | 'children'
+  | 'isDisabled'
+  | 'isRequired'
+  | 'isInvalid'
+  | 'isReadOnly'
+  | 'size';
 
 export interface NumberFieldProps
-  extends Omit<HtmlProps<'input'>, CustomProps | 'className'>,
-    Omit<
-      AriaNumberFieldProps,
-      | 'isDisabled'
-      | 'label'
-      | 'description'
-      | 'errorMessage'
-      | 'isRequired'
-      | 'isReadOnly'
-    >,
-    Pick<FieldBaseProps, 'label' | 'description' | 'error' | 'errorMessage'> {
+  extends Omit<RAC.NumberFieldProps, RemovedProps>,
+    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
   size?: string;
   width?: WidthProp['width'];
+  disabled?: RAC.NumberFieldProps['isDisabled'];
+  required?: RAC.NumberFieldProps['isRequired'];
+  error?: RAC.NumberFieldProps['isInvalid'];
+  readOnly?: RAC.NumberFieldProps['isReadOnly'];
   hideStepper?: boolean;
 }
 
 // Component
 // ---------------
-export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
+const _NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
   (
     {
       variant,
       size,
-      width,
       disabled,
       required,
       readOnly,
       error,
       hideStepper,
       ...rest
-    },
+    }: NumberFieldProps,
     ref
   ) => {
-    const props = {
-      isDisabled: disabled,
-      isRequired: required,
-      isReadOnly: readOnly,
-      validationState: error ? 'invalid' : 'valid',
-      ...rest,
-    } as const;
-    const showStepper = !hideStepper;
-
-    const { locale } = useLocale();
-    const inputRef = useObjectRef(ref);
-
-    const state = useNumberFieldState({ ...props, locale });
-    const {
-      labelProps,
-      groupProps,
-      inputProps,
-      descriptionProps,
-      errorMessageProps,
-      incrementButtonProps,
-      decrementButtonProps,
-    } = useNumberField(props, state, inputRef);
-
-    const { hoverProps, isHovered } = useHover({ isDisabled: disabled });
-    const { focusProps, isFocused } = useFocusRing({
-      within: true,
-      isTextInput: true,
-      autoFocus: props.autoFocus,
-    });
-    const stateProps = useStateProps({
-      hover: isHovered,
-      focus: isFocused,
-      disabled,
-      error,
-      readOnly,
-      required,
-    });
     const classNames = useClassNames({
       component: 'NumberField',
       size,
       variant,
     });
+
+    const props: RAC.NumberFieldProps = {
+      isDisabled: disabled,
+      isReadOnly: readOnly,
+      isInvalid: error,
+      isRequired: required,
+      ...rest,
+    };
+
+    const showStepper = !hideStepper;
+
     return (
-      <FieldBase
-        label={props.label}
-        labelProps={labelProps}
-        description={props.description}
-        descriptionProps={descriptionProps}
-        error={error}
-        errorMessage={props.errorMessage}
-        errorMessageProps={errorMessageProps}
-        stateProps={stateProps}
-        variant={variant}
-        size={size}
-        width={width}
-      >
-        <div
-          data-group
-          className={cn('flex items-stretch', classNames.group)}
-          data-testid="number-field-container"
-          {...mergeProps(groupProps, focusProps, hoverProps)}
-          {...stateProps}
-        >
+      <FieldBase as={NumberField} {...props}>
+        <Group className={cn('flex items-stretch', classNames.group)}>
           {showStepper && (
             <StepButton
               className={classNames.stepper}
               direction="down"
-              {...decrementButtonProps}
+              slot="decrement"
             />
           )}
           <div className="flex-1">
-            <Input
-              ref={inputRef}
-              variant={variant}
-              size={size}
-              /**
-               * We use `size` for styles which is a string, not like
-               * the regular HTML attribute, which is a number
-               */
-              {...(inputProps as any)}
-              {...stateProps}
-            />
+            <Input ref={ref} variant={variant} size={size} />
           </div>
           {showStepper && (
             <StepButton
               className={classNames.stepper}
               direction="up"
-              {...incrementButtonProps}
+              slot="increment"
             />
           )}
-        </div>
+        </Group>
       </FieldBase>
     );
   }
 );
+
+export { _NumberField as NumberField };
