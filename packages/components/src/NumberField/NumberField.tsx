@@ -80,7 +80,7 @@ const _NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
               ref={ref}
               variant={variant}
               size={size}
-              className={'border-none outline-offset-[0px]'}
+              className={classNames.input}
             />
           </div>
           {showStepper && (

@@ -13,6 +13,7 @@ const theme: Theme = {
     NumberField: {
       group: cva('rounded-sm border border-solid border-black'),
       stepper: cva('w-3.5 text-green-600'),
+      input: cva(),
     },
 
     Field: cva(''),
