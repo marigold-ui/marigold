@@ -1,12 +1,8 @@
-import { useRef } from 'react';
-
-import { useButton } from '@react-aria/button';
-import { useHover } from '@react-aria/interactions';
-import { mergeProps } from '@react-aria/utils';
+import { Button } from 'react-aria-components';
 
 import { AriaButtonProps } from '@react-types/button';
 
-import { cn, useStateProps } from '@marigold/system';
+import { cn } from '@marigold/system';
 
 // Icons
 // ---------------
@@ -36,36 +32,16 @@ export interface StepButtonProps extends AriaButtonProps {
   // We allow `isDisabled` to be passed down here.
   direction: 'up' | 'down';
   className?: string;
+  slot: 'decrement' | 'increment';
 }
 
 // Components
 // ---------------
-export const StepButton = ({
-  direction,
-  className,
-  ...props
-}: StepButtonProps) => {
-  const ref = useRef(null);
-  /**
-   * We use a `div` because there is a bug in safari with disabled
-   * form elements. See: https://bugs.webkit.org/show_bug.cgi?id=219188
-   */
-  const { buttonProps, isPressed } = useButton(
-    { ...props, elementType: 'div' },
-    ref
-  );
-  const { hoverProps, isHovered } = useHover(props);
-
-  const stateProps = useStateProps({
-    active: isPressed,
-    hover: isHovered,
-    disabled: props.isDisabled,
-  });
-
+const _StepButton = ({ direction, className, ...props }: StepButtonProps) => {
   const Icon = direction === 'up' ? Plus : Minus;
 
   return (
-    <div
+    <Button
       className={cn(
         [
           'flex items-center justify-center',
@@ -73,10 +49,11 @@ export const StepButton = ({
         ],
         className
       )}
-      {...mergeProps(buttonProps, hoverProps)}
-      {...stateProps}
+      {...props}
     >
       <Icon />
-    </div>
+    </Button>
   );
 };
+
+export { _StepButton as StepButton };
