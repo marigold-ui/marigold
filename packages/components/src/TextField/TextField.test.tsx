@@ -1,5 +1,5 @@
 /* eslint-disable testing-library/no-node-access */
-import { prettyDOM, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
