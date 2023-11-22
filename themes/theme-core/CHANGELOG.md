@@ -1,5 +1,14 @@
 # @marigold/theme-core
 
+## 25.7.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.9.1
+  - @marigold/components@6.9.1
+  - @marigold/theme-preset@1.2.3
+
 ## 25.7.0
 
 ### Minor Changes

@@ -1,5 +1,18 @@
 # @marigold/docs
 
+## 6.9.1
+
+### Patch Changes
+
+- [#3508](https://github.com/marigold-ui/marigold/pull/3508) [`5c8f995e5`](https://github.com/marigold-ui/marigold/commit/5c8f995e561ac12c21d9121af4211c44ca201231) Thanks [@aromko](https://github.com/aromko)! - chore: fix core print demo example
+
+- Updated dependencies []:
+  - @marigold/components@6.9.1
+  - @marigold/icons@1.2.29
+  - @marigold/theme-preset@1.2.3
+  - @marigold/theme-b2b@25.7.1
+  - @marigold/theme-core@25.7.1
+
 ## 6.9.0
 
 ### Patch Changes
