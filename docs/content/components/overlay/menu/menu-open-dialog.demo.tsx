@@ -6,7 +6,6 @@ import {
   Dialog,
   Footer,
   Header,
-  Headline,
   Inline,
   Menu,
   Stack,
@@ -39,12 +38,12 @@ export default () => {
           <Menu.Item key="delete">Delete</Menu.Item>
         </Menu>
       </Menu.Trigger>
-      <Dialog.Controller open={open} onOpenChange={setDialogOpen}>
+      <Dialog.Trigger open={open} onOpenChange={setDialogOpen}>
         <Dialog closeButton>
-          {({ close, titleProps }) => (
+          {({ close }) => (
             <Stack space={2}>
               <Header>
-                <Headline {...titleProps}>Confirm delete</Headline>
+                <Dialog.Headline>Confirm delete</Dialog.Headline>
               </Header>
               <Body>
                 <Text>Do you really wanna delete this?</Text>
@@ -62,7 +61,7 @@ export default () => {
             </Stack>
           )}
         </Dialog>
-      </Dialog.Controller>
+      </Dialog.Trigger>
     </>
   );
 };
