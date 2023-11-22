@@ -8,9 +8,9 @@ import { Checkbox, CheckboxGroup } from '../Checkbox';
 import { Container } from '../Container';
 import { Footer } from '../Footer';
 import { Header } from '../Header';
-import { Headline } from '../Headline';
 import { Inline } from '../Inline';
 import { Menu } from '../Menu';
+import { ModalProps } from '../Overlay/Modal';
 import { Stack } from '../Stack';
 import { Text } from '../Text';
 import { TextField } from '../TextField';
@@ -40,7 +40,7 @@ const meta = {
     dismissable: true,
     keyboardDismissable: true,
   },
-} satisfies Meta<typeof Dialog.Trigger>;
+} satisfies Meta<ModalProps>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -48,15 +48,13 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => {
     return (
-      <>
-        <Dialog.Trigger {...args}>
-          <Button variant="primary">Open</Button>
-          <Dialog closeButton>
-            <Headline>This is a headline!</Headline>
-            <Text>This is some not so very long text.</Text>
-          </Dialog>
-        </Dialog.Trigger>
-      </>
+      <Dialog.Trigger {...args}>
+        <Button variant="primary">Open</Button>
+        <Dialog closeButton>
+          <Dialog.Headline>This is a headline!</Dialog.Headline>
+          <Text>This is some not so very long text.</Text>
+        </Dialog>
+      </Dialog.Trigger>
     );
   },
 };
@@ -64,28 +62,26 @@ export const Basic: Story = {
 export const Form: Story = {
   render: args => {
     return (
-      <>
-        <Dialog.Trigger {...args}>
-          <Button variant="primary">Open</Button>
-          <Dialog>
-            {({ close, titleProps }) => (
-              <>
-                <Headline {...titleProps}>Please log into account</Headline>
-                <Stack space={4}>
-                  <TextField label="Username" />
-                  <TextField label="Password" type="password" />
-                  <Inline space={4}>
-                    <Button variant="ghost" onPress={close}>
-                      Cancel
-                    </Button>
-                    <Button variant="primary">Login</Button>
-                  </Inline>
-                </Stack>
-              </>
-            )}
-          </Dialog>
-        </Dialog.Trigger>
-      </>
+      <Dialog.Trigger {...args}>
+        <Button variant="primary">Open</Button>
+        <Dialog>
+          {({ close }) => (
+            <>
+              <Dialog.Headline>Please log into account</Dialog.Headline>
+              <Stack space={4}>
+                <TextField label="Username" />
+                <TextField label="Password" type="password" />
+                <Inline space={4}>
+                  <Button variant="ghost" onPress={close}>
+                    Cancel
+                  </Button>
+                  <Button variant="primary">Login</Button>
+                </Inline>
+              </Stack>
+            </>
+          )}
+        </Dialog>
+      </Dialog.Trigger>
     );
   },
 };
@@ -95,7 +91,7 @@ export const CustomTitleProps: Story = {
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
       <Dialog closeButton aria-labelledby="my-cool-headline">
-        <Headline id="my-cool-headline">This is a headline!</Headline>
+        <Dialog.Headline>This is a headline!</Dialog.Headline>
         <Text>This is some not so very long text.</Text>
       </Dialog>
     </Dialog.Trigger>
@@ -109,7 +105,9 @@ export const ScrollableContent: Story = {
       <Dialog closeButton aria-labelledby="my-cool-headline">
         <Container>
           <Header>
-            <Headline id="my-cool-headline">This is a headline!</Headline>
+            <Dialog.Headline id="my-cool-headline">
+              This is a headline!
+            </Dialog.Headline>
           </Header>
           <Body>
             <Stack space={2}>
@@ -131,7 +129,7 @@ export const ScrollableContent: Story = {
             </Stack>
           </Body>
           <Footer>
-            <Button variant="primary">Ok</Button>
+            <Button variant="primary">ok</Button>
           </Footer>
         </Container>
       </Dialog>
@@ -146,7 +144,9 @@ export const StickyFooter: Story = {
       <Dialog closeButton aria-labelledby="my-cool-headline">
         <div className="flex max-h-[400px] flex-col">
           <Header>
-            <Headline id="my-cool-headline">This is a headline!</Headline>
+            <Dialog.Headline id="my-cool-headline">
+              This is a headline!
+            </Dialog.Headline>
             <Text>This is some additional text that is always visible!</Text>
           </Header>
           <div className="max-w-[400px] flex-1 overflow-y-auto">
@@ -178,7 +178,7 @@ export const StickyFooter: Story = {
 };
 
 export const WithDialogController: Story = {
-  render: () => {
+  render: args => {
     const [open, setDialogOpen] = useState(false);
     const handleAction = (action: 'save' | 'delete') => {
       switch (action) {
@@ -204,12 +204,12 @@ export const WithDialogController: Story = {
             <Menu.Item key="delete">Delete</Menu.Item>
           </Menu>
         </Menu.Trigger>
-        <Dialog.Controller open={open} onOpenChange={setDialogOpen}>
+        <Dialog.Trigger open={open} onOpenChange={setDialogOpen} {...args}>
           <Dialog closeButton>
-            {({ close, titleProps }) => (
+            {({ close }) => (
               <Stack space={5}>
                 <Header>
-                  <Headline {...titleProps}>Confirm delete</Headline>
+                  <Dialog.Headline>Confirm delete</Dialog.Headline>
                 </Header>
                 <Body>
                   <Text>Do you really wanna delete this?</Text>
@@ -227,7 +227,7 @@ export const WithDialogController: Story = {
               </Stack>
             )}
           </Dialog>
-        </Dialog.Controller>
+        </Dialog.Trigger>
       </>
     );
   },

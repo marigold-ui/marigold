@@ -20,8 +20,6 @@ slack-notification.json
 # next.js
 .next
 out
-.cache
-build
 .contentlayer
 .registry
 
@@ -34,4 +32,5 @@ build
 *.tsbuildinfo
 next-env.d.ts
 
-
+# Jetbrains IDE
+.idea

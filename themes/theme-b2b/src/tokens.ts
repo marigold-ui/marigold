@@ -113,6 +113,7 @@ export const colors = {
     hover: brand.secondary[800],
 
     // Status
+    success: green[700],
     error: red[500],
     info: blue[500],
     warning: yellow[500],
@@ -200,6 +201,7 @@ export const colors = {
     selected: brand.primary[800],
 
     // Status
+    success: green[700],
     error: red[500],
     info: blue[500],
     warning: yellow[500],

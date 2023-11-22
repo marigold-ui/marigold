@@ -1,5 +1,31 @@
 # @marigold/components
 
+## 6.9.0
+
+### Minor Changes
+
+- [#3505](https://github.com/marigold-ui/marigold/pull/3505) [`c068869a9`](https://github.com/marigold-ui/marigold/commit/c068869a98f3c7ceb91bd04b59342668d546f589) Thanks [@sebald](https://github.com/sebald)! - feat: add a success `<Message>` variant
+
+- [#3482](https://github.com/marigold-ui/marigold/pull/3482) [`a16541314`](https://github.com/marigold-ui/marigold/commit/a165413142b6d64f9995678498c6d68091ce526e) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Dialog & Modal migration
+
+### Patch Changes
+
+- [#3500](https://github.com/marigold-ui/marigold/pull/3500) [`79eaec78c`](https://github.com/marigold-ui/marigold/commit/79eaec78c8c1a5d99d4ad09f93f8b2ca39aaade2) Thanks [@aromko](https://github.com/aromko)! - RAC: migrate `<NumberField />`
+
+- [#3498](https://github.com/marigold-ui/marigold/pull/3498) [`7507ac7f5`](https://github.com/marigold-ui/marigold/commit/7507ac7f52d9a6d0826534b4035bb0dce7f074aa) Thanks [@aromko](https://github.com/aromko)! - RAC: migrate searchfield
+
+- [#3481](https://github.com/marigold-ui/marigold/pull/3481) [`729158c87`](https://github.com/marigold-ui/marigold/commit/729158c8799205cdc6a733cd01f6a2239850ac2a) Thanks [@aromko](https://github.com/aromko)! - RAC: migrate TextField component
+
+- [#3486](https://github.com/marigold-ui/marigold/pull/3486) [`17ee74d46`](https://github.com/marigold-ui/marigold/commit/17ee74d4686e003b133dab2598eb2bbb6d87e948) Thanks [@aromko](https://github.com/aromko)! - RAC: migrate textarea
+
+- [#3499](https://github.com/marigold-ui/marigold/pull/3499) [`f19a502d4`](https://github.com/marigold-ui/marigold/commit/f19a502d4badd559a27e86e6e74747dfccb0a6c2) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: `DateField` to react-aria-components
+
+- [#3487](https://github.com/marigold-ui/marigold/pull/3487) [`75bad8b84`](https://github.com/marigold-ui/marigold/commit/75bad8b84c127cd38a30f70af26795aa8e8d4ae0) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: `<Tooltip>` to react aria components
+
+- Updated dependencies []:
+  - @marigold/system@6.9.0
+  - @marigold/icons@1.2.28
+
 ## 6.8.0
 
 ### Minor Changes

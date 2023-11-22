@@ -13,11 +13,12 @@ export interface InputProps extends Omit<RAC.InputProps, RemovedProps> {
   action?: ReactElement;
   variant?: string;
   size?: string;
+  className?: string;
 }
 
 export const _Input = forwardRef<HTMLInputElement, InputProps>(
   (
-    { type = 'text', icon, action, variant, size, ...props }: InputProps,
+    { type, icon, action, variant, size, className, ...props }: InputProps,
     ref
   ) => {
     const classNames = useClassNames({
@@ -63,7 +64,8 @@ export const _Input = forwardRef<HTMLInputElement, InputProps>(
             'disabled:cursor-not-allowed',
             '[&[type=file]]:border-none [&[type=file]]:p-0',
             '[&[type=color]]:ml-0 [&[type=color]]:border-none [&[type=color]]:bg-transparent [&[type=color]]:p-0',
-            classNames.input
+            classNames.input,
+            className
           )}
           ref={ref}
           type={type}

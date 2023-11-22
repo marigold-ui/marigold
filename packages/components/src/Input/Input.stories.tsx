@@ -76,7 +76,11 @@ export const WithAction: Story = {
     <Input
       placeholder="Placeholder..."
       action={
-        <Button size="small" variant="text">
+        <Button
+          size="small"
+          variant="text"
+          onPress={() => alert('Action executed')}
+        >
           <Delete />
         </Button>
       }
