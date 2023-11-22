@@ -1,5 +1,12 @@
 # @marigold/theme-preset
 
+## 1.2.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.9.1
+
 ## 1.2.2
 
 ### Patch Changes
