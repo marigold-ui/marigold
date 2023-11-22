@@ -4,7 +4,7 @@ import React from 'react';
 import { Delete, Search } from '@marigold/icons';
 
 import { Button } from '../Button';
-import { Input } from './Input';
+import { Input } from './_Input';
 
 const meta = {
   title: 'Components/Input',
@@ -76,7 +76,11 @@ export const WithAction: Story = {
     <Input
       placeholder="Placeholder..."
       action={
-        <Button size="small" variant="text">
+        <Button
+          size="small"
+          variant="text"
+          onPress={() => alert('Action executed')}
+        >
           <Delete />
         </Button>
       }

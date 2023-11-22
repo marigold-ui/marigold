@@ -88,7 +88,7 @@ export type Theme = {
     >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
     NumberField?: Record<
-      'group' | 'stepper',
+      'group' | 'stepper' | 'input',
       ComponentStyleFunction<string, string>
     >;
     Message?: Record<

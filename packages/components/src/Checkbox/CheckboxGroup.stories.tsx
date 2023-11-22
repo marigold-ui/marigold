@@ -106,7 +106,7 @@ export const Error: Story = {
       <>
         <CheckboxGroup
           onChange={setSelected}
-          error
+          description="my desc"
           errorMessage="This is an error"
           {...args}
         >
