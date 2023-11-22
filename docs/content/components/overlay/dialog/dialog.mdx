@@ -9,7 +9,7 @@ This component can be styled in different parts. It has as parts `closeButton` a
 
 A special thing is also that you can have props on the `<Dialog.Trigger>` and on the `<Dialog>` itself. The `closeButton` is an optionally property with which you can close the `<Dialog>`.
 
-The `<Dialog.Controller>` should be used if you want to use the `<Dialog>` without a trigger. For example if you want to open it within a `<Menu>`.
+The `<Dialog>` can also be used if you want to controll it for example within a `<Menu>`.
 
 ## Usage
 
@@ -125,6 +125,6 @@ If you choose to add `dismissable={false}` to your `<Dialog.Trigger>`, you can't
 ### Dialog opend from Menu
 
 This Example shows how to open a [`<Dialog>`](/components/dialog/) from a `<Menu.Item>`.
-For that you have not to use a `<Dialog.Trigger>`, instead use our `<Dialog.Controller>`. With that you don't have to use a `<Button>` to trigger the dialog.
+For that you have to use a `<Dialog.Trigger>`, but without that you don't have to use a `<Button>` to trigger the dialog, you can write it directly.
 
 <ComponentDemo file="./menu-open-dialog.demo.tsx" />
