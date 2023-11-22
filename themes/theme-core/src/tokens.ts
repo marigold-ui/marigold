@@ -210,35 +210,23 @@ export const colors = {
       hover: brand.primary[500],
       active: '',
     },
-    accent: {
-      DEFAULT: '',
-      hover: '',
-      active: '',
-    },
-    info: {
-      DEFAULT: blue[950],
-      hover: '',
-      active: '',
-    },
-    success: {
-      DEFAULT: green[600],
-      hover: '',
-      active: '',
-    },
-    warning: {
-      DEFAULT: yellow[600],
-      hover: '',
-      active: '',
-    },
-    error: {
-      DEFAULT: red[500],
-      hover: '',
-      active: '',
-    },
-    selected: {
-      DEFAULT: blue[400],
-      input: '',
-    },
+
+    dark: '#4b4b4b',
+    neutral: '#aaa',
+    light: '#cfcfcf',
+    white: '#fff',
+
+    // State
+    // ---------------
+    disabled: '#cccccc',
+    selected: '#3ab3d5',
+    focus: '#3875d7',
+    hover: '#8d8d8d',
+
+    // Status
+    error: '#f33',
+    info: '#008',
+    warning: '#d80',
   },
 
   // Outline
