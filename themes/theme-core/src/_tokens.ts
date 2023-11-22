@@ -47,7 +47,7 @@ export const colors = {
     disabled: '#cccccc',
 
     // Status
-    success: '#008000',
+    success: '#008800',
     error: '#f33',
     info: '#008',
     warning: '#d80',
