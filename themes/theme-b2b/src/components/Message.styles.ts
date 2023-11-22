@@ -9,6 +9,7 @@ export const Message: ThemeComponent<'Message'> = {
     {
       variants: {
         variant: {
+          success: 'border-border-success',
           warning: 'border-border-warning',
           info: 'border-border-info',
           error: 'border-border-error',
@@ -21,6 +22,7 @@ export const Message: ThemeComponent<'Message'> = {
   icon: cva('h-4 w-4', {
     variants: {
       variant: {
+        success: 'text-text-success',
         warning: 'text-text-warning',
         info: 'text-text-info',
         error: 'text-text-error',
