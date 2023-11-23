@@ -5,7 +5,7 @@ import { useObjectRef } from '@react-aria/utils';
 
 import type { ListState } from '@react-stately/list';
 
-import { cn, useClassNames } from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 
 import { ListBoxContext } from './Context';
 import { ListBoxOption } from './ListBoxOption';
