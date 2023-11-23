@@ -37,7 +37,11 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
 
   return (
     <Tabs defaultSelectedKey="preview">
-      <Tabs.Item key="preview" title="Preview">
+      <Tabs.List>
+        <Tabs.Item id="preview">Preview</Tabs.Item>
+        <Tabs.Item id="code">Code</Tabs.Item>
+      </Tabs.List>
+      <Tabs.TabPanel id="preview">
         <Card variant="not-inset">
           <div
             data-theme={current}
@@ -50,10 +54,8 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
             </MarigoldProvider>
           </div>
         </Card>
-      </Tabs.Item>
-      <Tabs.Item key="code" title="Code">
-        {children}
-      </Tabs.Item>
+      </Tabs.TabPanel>
+      <Tabs.TabPanel id="code">{children}</Tabs.TabPanel>
     </Tabs>
   );
 };

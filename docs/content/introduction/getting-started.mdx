@@ -104,8 +104,14 @@ However, if you want to maximize the benefits of Marigold, you should install Ta
 
 To set up Tailwind CSS, please refer to the official [installation guide](https://tailwindcss.com/docs/installation). Once you have completed the installation, add the chosen theme as a preset to the Tailwind CSS config, as shown below:
 
+    {/* prettier-ignore */}
+
 <Tabs>
-  <Tabs.Item key="ts" title="TypeScript">
+  <Tabs.List>
+    <Tabs.Item id="ts">TypeScript</Tabs.Item>
+    <Tabs.Item id="cjs">JavaScript (CJS)</Tabs.Item>
+  </Tabs.List>
+  <Tabs.TabPanel id="ts" >
 
     ```ts
     import { Config } from 'tailwindcss/types/config';
@@ -124,9 +130,8 @@ To set up Tailwind CSS, please refer to the official [installation guide](https:
     export default config;
     ```
 
-  </Tabs.Item>
-  <Tabs.Item key="cjs" title="JavaScript (CJS)">
-
+  </Tabs.TabPanel>
+  <Tabs.TabPanel id="cjs">
     ```js
     // If you are using another theme, change the name accordingly
     const { preset } = require('@marigold/theme-b2b/preset');
@@ -141,7 +146,7 @@ To set up Tailwind CSS, please refer to the official [installation guide](https:
     };
     ```
 
-  </Tabs.Item>
+  </Tabs.TabPanel>
 </Tabs>
 
 Please make sure that you have a `postcss.config.js` file with the following content in your project:
@@ -199,30 +204,40 @@ To load the Inter font with Font Source when using with the B2B theme, you can f
 First, add the font as a dependency to your project:
 
 <Tabs>
-  <Tabs.Item key="npm" title="npm">
-
+  <Tabs.List>
+    <Tabs.Item id="npm">
+      npm
+    </Tabs.Item>
+    <Tabs.Item id="pnpm">
+      pnpm
+    </Tabs.Item>
+    <Tabs.Item id="yarn">
+      yarn
+    </Tabs.Item>
+  </Tabs.List>
+  <Tabs.TabPanel id="npm">
     {/* prettier-ignore */}
     ```bash
     npm install @fontsource-variable/inter --save
     ```
 
-  </Tabs.Item>
-  <Tabs.Item key="pnpm" title="pnpm">
+  </Tabs.TabPanel>
+  <Tabs.TabPanel id="pnpm">
 
     {/* prettier-ignore */}
     ```bash
     pnpm add @fontsource-variable/inter
     ```
 
-  </Tabs.Item>
-  <Tabs.Item key="yarn" title="yarn">
+  </Tabs.TabPanel>
+  <Tabs.TabPanel id="yarn">
 
     {/* prettier-ignore */}
     ```bash
     yarn add @fontsource-variable/inter
     ```
 
-  </Tabs.Item>
+  </Tabs.TabPanel>
 </Tabs>
 
 Afterwards, import the package into your project.

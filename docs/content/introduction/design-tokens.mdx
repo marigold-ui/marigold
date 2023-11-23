@@ -28,16 +28,22 @@ With a defined font family and various font sizes and weights, our typography ma
 We have tokens for:
 
 <Tabs>
-  <Tabs.Item key="fontSize" title="Font size">
+  <Tabs.List>
+    <Tabs.Item id="fontSize">Font Size</Tabs.Item>
+    <Tabs.Item id="fontWeight">Font Weight</Tabs.Item>
+    <Tabs.Item id="fontStyle">Font Style</Tabs.Item>
+    <Tabs.Item id="textAlign">Text Align</Tabs.Item>
+  </Tabs.List>
+  <Tabs.TabPanel id="fontSize">
     <FontSizes />
-  </Tabs.Item>
-  <Tabs.Item key="fontWeight" title="Font weight">
+  </Tabs.TabPanel>
+  <Tabs.Item id="fontWeight">
     <FontWeights />
   </Tabs.Item>
-  <Tabs.Item key="fontStyle" title="Font style">
+  <Tabs.Item id="fontStyle">
     <FontStyle />
   </Tabs.Item>
-  <Tabs.Item key="textAlign" title="Text align">
+  <Tabs.Item id="textAlign">
     <TextAlign />
   </Tabs.Item>
 </Tabs>
@@ -67,10 +73,14 @@ Standardized border radius contribute to a clean and modern design. These proper
 Consistent alignment ensures that elements are arranged in a purposeful manner, enhancing clarity and user comprehension.
 
 <Tabs>
-  <Tabs.Item key="alignX" title="Horizontal">
+  <Tabs.List>
+    <Tabs.Item id="alignX">Horizontal</Tabs.Item>
+    <Tabs.Item id="alignY">Vertical</Tabs.Item>
+  </Tabs.List>
+  <Tabs.Item id="alignX">
     <AlignmentsX />
   </Tabs.Item>
-  <Tabs.Item key="alignY" title="Vertical">
+  <Tabs.Item id="alignY">
     <AlignmentsY />
   </Tabs.Item>
 </Tabs>
