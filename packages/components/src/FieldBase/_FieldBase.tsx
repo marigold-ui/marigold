@@ -1,17 +1,17 @@
-import { forwardRef } from 'react';
 import type {
   ComponentPropsWithRef,
   ElementType,
   ForwardedRef,
   ReactNode,
 } from 'react';
+import { forwardRef } from 'react';
 
-import { cn, width as twWidth, useClassNames } from '@marigold/system';
 import type { WidthProp } from '@marigold/system';
+import { cn, width as twWidth, useClassNames } from '@marigold/system';
 import type { DistributiveOmit, FixedForwardRef } from '@marigold/types';
 
-import { HelpText } from '../HelpText/_HelpText';
 import type { HelpTextProps } from '../HelpText/_HelpText';
+import { HelpText } from '../HelpText/_HelpText';
 import { Label } from '../Label';
 
 const fixedForwardRef = forwardRef as FixedForwardRef;
@@ -44,6 +44,7 @@ const _FieldBase = <T extends ElementType>(
     description,
     errorMessage,
     className,
+    stateProps,
     ...rest
   } = props;
   const classNames = useClassNames({
@@ -56,6 +57,8 @@ const _FieldBase = <T extends ElementType>(
     <Component
       ref={ref}
       className={cn('group/field', twWidth[width], classNames, className)}
+      data-required={props.isRequired ? true : undefined}
+      data-error={props.isInvalid ? true : undefined}
       {...rest}
     >
       {label ? (

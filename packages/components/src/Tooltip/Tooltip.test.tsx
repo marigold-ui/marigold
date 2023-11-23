@@ -125,9 +125,9 @@ test('can be opened programatically', () => {
 test('allows to change tooltip placement', () => {
   // Note: There is no real way to test this without actually rendering the tooltip
   render(
-    <Tooltip.Trigger placement="bottom">
+    <Tooltip.Trigger>
       <Button>Button!</Button>
-      <Tooltip>Look at this tooltip!</Tooltip>
+      <Tooltip placement="bottom">Look at this tooltip!</Tooltip>
     </Tooltip.Trigger>
   );
 
@@ -176,9 +176,9 @@ test('accepts variant and size', () => {
 test('sets placement as data attribute for styling', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Tooltip.Trigger open placement="left">
+      <Tooltip.Trigger open>
         <Button>Button!</Button>
-        <Tooltip>Look at this tooltip!</Tooltip>
+        <Tooltip placement="left">Look at this tooltip!</Tooltip>
       </Tooltip.Trigger>
     </ThemeProvider>
   );

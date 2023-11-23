@@ -4,7 +4,7 @@ import { OverlayProvider } from '@react-aria/overlays';
 
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
-import { Underlay } from './Underlay';
+import { Underlay } from './_Underlay';
 
 const theme: Theme = {
   name: 'test',

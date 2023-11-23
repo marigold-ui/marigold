@@ -1,5 +1,40 @@
 # @marigold/docs
 
+## 6.9.1
+
+### Patch Changes
+
+- [#3508](https://github.com/marigold-ui/marigold/pull/3508) [`5c8f995e5`](https://github.com/marigold-ui/marigold/commit/5c8f995e561ac12c21d9121af4211c44ca201231) Thanks [@aromko](https://github.com/aromko)! - chore: fix core print demo example
+
+- Updated dependencies []:
+  - @marigold/components@6.9.1
+  - @marigold/icons@1.2.29
+  - @marigold/theme-preset@1.2.3
+  - @marigold/theme-b2b@25.7.1
+  - @marigold/theme-core@25.7.1
+
+## 6.9.0
+
+### Patch Changes
+
+- Updated dependencies [[`79eaec78c`](https://github.com/marigold-ui/marigold/commit/79eaec78c8c1a5d99d4ad09f93f8b2ca39aaade2), [`c068869a9`](https://github.com/marigold-ui/marigold/commit/c068869a98f3c7ceb91bd04b59342668d546f589), [`a16541314`](https://github.com/marigold-ui/marigold/commit/a165413142b6d64f9995678498c6d68091ce526e), [`7507ac7f5`](https://github.com/marigold-ui/marigold/commit/7507ac7f52d9a6d0826534b4035bb0dce7f074aa), [`729158c87`](https://github.com/marigold-ui/marigold/commit/729158c8799205cdc6a733cd01f6a2239850ac2a), [`17ee74d46`](https://github.com/marigold-ui/marigold/commit/17ee74d4686e003b133dab2598eb2bbb6d87e948), [`f19a502d4`](https://github.com/marigold-ui/marigold/commit/f19a502d4badd559a27e86e6e74747dfccb0a6c2), [`75bad8b84`](https://github.com/marigold-ui/marigold/commit/75bad8b84c127cd38a30f70af26795aa8e8d4ae0)]:
+  - @marigold/components@6.9.0
+  - @marigold/theme-b2b@25.7.0
+  - @marigold/theme-core@25.7.0
+  - @marigold/icons@1.2.28
+  - @marigold/theme-preset@1.2.2
+
+## 6.8.0
+
+### Patch Changes
+
+- Updated dependencies [[`30b94e542`](https://github.com/marigold-ui/marigold/commit/30b94e542fe3d60676b2e00868e48b28e8c12ff6), [`c76bd48a2`](https://github.com/marigold-ui/marigold/commit/c76bd48a2f12b488f58de09e38c4d78da62c2e3b), [`3a21b538a`](https://github.com/marigold-ui/marigold/commit/3a21b538a5f72fb021bf7cb023f565d6e84e2ea7), [`4c76cf114`](https://github.com/marigold-ui/marigold/commit/4c76cf114adf3c2485518f386ebd14c0415df3ac), [`84c427dec`](https://github.com/marigold-ui/marigold/commit/84c427dec67be6ef488ece0afb179dc95c403447)]:
+  - @marigold/components@6.8.0
+  - @marigold/theme-b2b@25.6.2
+  - @marigold/theme-core@25.6.2
+  - @marigold/icons@1.2.27
+  - @marigold/theme-preset@1.2.1
+
 ## 6.7.0
 
 ### Patch Changes
