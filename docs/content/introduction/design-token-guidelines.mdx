@@ -10,7 +10,7 @@ On this page, you'll discover detailed specifications for design tokens — the 
 <Message messageTitle="View the tokens" variant="info">
   For those interested in understanding our token structure, the most effective way is to explore the JSON structure directly. Note that tokens directly derived from Tailwind CSS are omitted for brevity.
 
-[View tokens as JSON](https://jsonhero.io/j/DZZeE10Xr6a7)
+[View tokens as JSON](https://jsonhero.io/j/1IFlkqLbLbSM)
 
 </Message>
 
@@ -86,8 +86,8 @@ Background tokens incorporate the same intents as text tokens (base, inverted, b
 The following modifier can be applied to all a background token:
 
 - **DEFAULT:** Default background color
-- **hover:** Applied when an element is hovered with a mouse
-- **active:** Applied when an element is active, such as when a button is pressed
+- **hover:** Applied when an element is hovered with a mouse (not available when using the "selected" intent)
+- **active:** Applied when an element is active, such as when a button is pressed (not available when using the "selected" intent)
 - **disabled:** Utilized for indicating that an element is disabled (only available when using the "base" or "inverted" intent)
 - **input:** Used for inputs that require a more prominent visual appearance, such as radio buttons, checkboxes, and switches (only available when using the "selected" intent)
 
@@ -142,7 +142,7 @@ Effects serve various purposes, both aesthetic and functional. They can indicate
 
 **Property Name:** `shadow`
 
-Shadow tokens are used to apply specific shadow to an element. They are equivalent to the `box-shadow` CSS rule or the [shadow utilities](https://tailwindcss.com/docs/outline-color) in TailwindCSS.
+Shadow tokens are used to apply specific shadow to an element. They are equivalent to the `box-shadow` CSS rule or the [shadow utilities](https://tailwindcss.com/docs/box-shadow) in TailwindCSS.
 
 #### Intents
 
