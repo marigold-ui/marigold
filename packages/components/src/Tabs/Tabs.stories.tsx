@@ -88,7 +88,7 @@ export const WithDisabledKeys: StoryObj<typeof Tabs> = {
   },
 };
 
-export const WithSelectedTabExample: StoryObj<typeof Tabs> = {
+export const WithSelectedTab: StoryObj<typeof Tabs> = {
   render: args => {
     return (
       <Tabs aria-label="tabs" selectedKey={'settings'} {...args}>
