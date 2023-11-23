@@ -100,7 +100,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<
-      'tag' | 'gridCell' | 'closeButton',
+      'tag' | 'listItems' | 'closeButton',
       ComponentStyleFunction<string, string>
     >;
     Text?: ComponentStyleFunction<string, string>;

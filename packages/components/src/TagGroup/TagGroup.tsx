@@ -1,21 +1,25 @@
-import { useRef } from 'react';
+import type RAC from 'react-aria-components';
+import { TagGroup, TagList, TagListProps } from 'react-aria-components';
 
-import { AriaTagGroupProps, useTagGroup } from '@react-aria/tag';
+import { WidthProp, useClassNames } from '@marigold/system';
 
-import { useListState } from '@react-stately/list';
-
-import { LabelableProps } from '@react-types/shared';
-
-import { WidthProp, useStateProps } from '@marigold/system';
-
-import { FieldBase } from '../FieldBase';
-import { Tag } from './Tag';
+import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
 
 // Props
 // ---------------
+type RemovedProps =
+  | 'className'
+  | 'style'
+  | 'children'
+  | 'isRequired'
+  | 'isInvalid';
+
 export interface TagGroupProps
-  extends Omit<AriaTagGroupProps<object>, 'isRequired' | 'validationState'>,
-    LabelableProps {
+  extends Omit<RAC.TagGroupProps, RemovedProps>,
+    Pick<TagListProps<object>, 'items' | 'children' | 'renderEmptyState'>,
+    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+  variant?: string;
+  size?: string;
   width?: WidthProp['width'];
   required?: boolean;
   error?: boolean;
@@ -24,62 +28,35 @@ export interface TagGroupProps
 
 // Component
 // ---------------
-export const TagGroup = ({
+const _TagGroup = ({
   width,
   required,
   error,
-  allowsRemoving,
+  items,
+  renderEmptyState,
+  children,
+  variant,
+  size,
   ...rest
 }: TagGroupProps) => {
   const props = {
     isRequired: required,
-    validationState: error ? 'invalid' : 'valid',
+    isInvalid: error,
     ...rest,
-  } as const;
-
-  const inputRef = useRef(null);
-
-  const state = useListState(props);
-
-  const { gridProps, labelProps, descriptionProps, errorMessageProps } =
-    useTagGroup(props, state, inputRef);
-
-  const stateProps = useStateProps({
-    error,
-    required,
-  });
+  };
+  const classNames = useClassNames({ component: 'Tag', variant, size });
 
   return (
-    <FieldBase
-      width={width}
-      label={props.label}
-      labelProps={labelProps}
-      description={props.description}
-      descriptionProps={descriptionProps}
-      error={error}
-      errorMessage={props.errorMessage}
-      errorMessageProps={errorMessageProps}
-      stateProps={stateProps}
-      {...gridProps}
-    >
-      <div
-        role="presentation"
-        ref={inputRef}
-        className="flex flex-wrap items-start gap-1"
+    <FieldBase as={TagGroup} {...props}>
+      <TagList
+        items={items}
+        renderEmptyState={renderEmptyState}
+        className={classNames.listItems}
       >
-        {[...state.collection].map(item => (
-          <Tag
-            {...item.props}
-            key={item.key}
-            item={item}
-            state={state}
-            allowsRemoving={allowsRemoving}
-            onRemove={props.onRemove}
-          >
-            {item.rendered}
-          </Tag>
-        ))}
-      </div>
+        {children}
+      </TagList>
     </FieldBase>
   );
 };
+
+export { _TagGroup as TagGroup };
