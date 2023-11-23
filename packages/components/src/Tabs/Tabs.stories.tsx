@@ -33,7 +33,7 @@ export default meta;
 export const Basic: StoryObj<typeof Tabs> = {
   render: args => {
     return (
-      <Tabs disabledKeys={['gamepad']} {...args}>
+      <Tabs aria-label="tabs" disabledKeys={['gamepad']} {...args}>
         <Tabs.List aria-label="Input settings">
           <Tabs.Item id="mouse">Mouse Settings</Tabs.Item>
           <Tabs.Item id="keyboard">Keyboard Settings</Tabs.Item>
