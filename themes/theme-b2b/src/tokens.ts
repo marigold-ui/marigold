@@ -1,3 +1,5 @@
+import { boxShadow } from 'tailwindcss/defaultTheme';
+
 const brand = {
   primary: {
     '50': '#fffaec',
@@ -85,6 +87,7 @@ const blue = {
 };
 const white = '#ffff';
 const black = '#000000';
+
 export const colors = {
   // Brand
   // ---------------
@@ -99,123 +102,174 @@ export const colors = {
   // Text
   // ---------------
   text: {
-    body: {
+    base: {
       DEFAULT: brand.secondary[700],
-      accent: brand.secondary[500],
+      hover: brand.secondary[800],
+      disabled: brand.secondary[400],
     },
-
-    link: blue[400],
-
-    light: brand.secondary[100],
-
-    // State
-    disabled: brand.secondary[400],
-    hover: brand.secondary[800],
-
-    // Status
-    success: green[700],
-    error: red[500],
-    info: blue[500],
-    warning: yellow[500],
-    required: red[500],
+    inverted: {
+      DEFAULT: brand.secondary[100],
+      hover: '',
+      disabled: '',
+    },
+    brand: {
+      DEFAULT: '',
+      hover: '',
+    },
+    accent: {
+      DEFAULT: brand.primary[600],
+      hover: brand.primary[700],
+    },
+    info: {
+      DEFAULT: blue[500],
+      hover: blue[600],
+    },
+    success: {
+      DEFAULT: green[700],
+      hover: green[800],
+    },
+    warning: {
+      DEFAULT: yellow[500],
+      hover: yellow[600],
+    },
+    error: {
+      DEFAULT: red[500],
+      hover: red[600],
+    },
   },
 
   // Background
   // ---------------
   bg: {
-    /**
-     * Should be set to either html or body element.
-     */
-    body: white,
-    neutral: brand.secondary[200],
-
-    primary: {
-      DEFAULT: brand.primary[600],
-      light: brand.primary[100],
-      hover: brand.primary[400],
-      active: brand.primary[700],
+    base: {
+      DEFAULT: white,
+      hover: '',
+      active: '',
+      disabled: '',
     },
-
-    secondary: {
+    inverted: {
+      DEFAULT: '',
+      hover: '',
+      active: '',
+      disabled: '',
+    },
+    brand: {
       DEFAULT: brand.secondary[700],
       hover: brand.secondary[600],
       active: brand.secondary[800],
     },
-
-    surface: {
-      /**
-       * Use this for e.g. card backgrounds.
-       */
-      DEFAULT: white,
-      /**
-       * Use this when you need to separate a specific layer from
-       * the surface color, e.g. table headers.
-       */
-      raised: brand.secondary[400],
-      /**
-       * Use this when you need to make a specific layer
-       * to appear lower than the surface color, e.g. progress bar.
-       */
-      lowered: brand.secondary[700],
-
-      underlay: brand.secondary[200],
+    accent: {
+      DEFAULT: brand.primary[700],
+      hover: brand.primary[600],
+      active: brand.primary[800],
     },
-
-    // State
-    disabled: brand.secondary[200],
-    hover: { DEFAULT: brand.secondary[400], light: brand.secondary[200] },
-    focus: brand.secondary[200],
+    info: {
+      DEFAULT: blue[500],
+      hover: blue[600],
+      active: blue[700],
+    },
+    success: {
+      DEFAULT: green[600],
+      hover: green[500],
+      active: green[700],
+    },
+    warning: {
+      DEFAULT: yellow[600],
+      hover: yellow[500],
+      active: yellow[700],
+    },
+    error: {
+      DEFAULT: red[600],
+      hover: red[500],
+      active: red[700],
+    },
     selected: {
       DEFAULT: brand.primary[100],
       input: brand.primary[600],
     },
-
-    // Status
-    info: blue[500],
-  },
-
-  // Shadow
-  // ---------------
-  shadow: {
-    light: brand.secondary[400],
-
-    // state
-    focus: brand.primary[600],
-
-    // status
-    error: red[500],
-    selected: red[700],
-    disabled: brand.secondary[400],
+    surface: {
+      DEFAULT: white,
+      raised: brand.secondary[400],
+      overlay: brand.secondary[700],
+      sunken: brand.secondary[200],
+    },
   },
 
   // Border
   // ---------------
   border: {
-    light: brand.secondary[400],
-    dark: brand.secondary[700],
-
-    // State
-    disabled: brand.secondary[400],
-    hover: brand.secondary[500],
-    focus: brand.primary[600],
-    selected: brand.primary[800],
-
-    // Status
-    success: green[700],
-    error: red[500],
-    info: blue[500],
-    warning: yellow[500],
+    base: {
+      DEFAULT: brand.secondary[400],
+      hover: brand.secondary[500],
+      active: '',
+      disaled: brand.secondary[400],
+    },
+    inverted: {
+      DEFAULT: brand.secondary[700],
+      hover: '',
+      active: '',
+      disaled: '',
+    },
+    brand: {
+      DEFAULT: '',
+      hover: '',
+      active: '',
+    },
+    accent: {
+      DEFAULT: '',
+      hover: '',
+      active: '',
+    },
+    info: {
+      DEFAULT: blue[500],
+      hover: blue[600],
+      active: blue[700],
+    },
+    success: {
+      DEFAULT: green[700],
+      hover: green[600],
+      active: green[800],
+    },
+    warning: {
+      DEFAULT: yellow[500],
+      hover: yellow[600],
+      active: yellow[700],
+    },
+    error: {
+      DEFAULT: red[500],
+      hover: red[600],
+      active: red[700],
+    },
+    selected: {
+      DEFAULT: brand.primary[800],
+      input: brand.primary[800],
+    },
   },
 
   // Outline
   // ---------------
   outline: {
-    dark: brand.secondary[700],
-
-    // State
-    focus: blue[400],
-
-    // Status
-    error: red[500],
+    focus: {
+      DEFAULT: blue[400],
+    },
   },
+};
+
+// Shadow
+// ---------------
+export const shadow = {
+  surface: {
+    DEFAULT: boxShadow.none,
+    raised: boxShadow.sm,
+    overlay: boxShadow.lg,
+    sunken: boxShadow.none,
+  },
+};
+
+// Component Height
+// ---------------
+export const component = {
+  DEFAULT: 'h-8', // used in inputs
+  sm: 'h-6', // not used at all
+  lg: 'h-12', // used in button
 };
