@@ -32,14 +32,7 @@ export const ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
     return (
       <ListBoxContext.Provider value={{ classNames }}>
         <div className={classNames.container}>
-          <ul
-            className={cn(
-              'overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh]',
-              classNames.list
-            )}
-            ref={innerRef}
-            {...listBoxProps}
-          >
+          <ul className={classNames.list} ref={innerRef} {...listBoxProps}>
             {[...state.collection].map(item =>
               item.type === 'section' ? (
                 <ListBoxSection key={item.key} section={item} state={state} />

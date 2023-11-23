@@ -3,6 +3,7 @@ import { useState } from '@storybook/addons';
 import { Meta, StoryObj } from '@storybook/react';
 
 import { Container } from '../Container';
+import { Inset } from '../Inset';
 import { Select } from './Select';
 
 const meta = {
@@ -121,6 +122,57 @@ export const LongItems: StoryObj<typeof Select> = {
         <Select.Option>Bowser</Select.Option>
         <Select.Option>Peach</Select.Option>
       </Select>
+    );
+  },
+};
+
+export const LotsOfOptions: StoryObj<typeof Select> = {
+  render: args => {
+    return (
+      <Inset space={24}>
+        <Select
+          {...args}
+          label="Favorite character"
+          placeholder="Select your character"
+          width={'1/4'}
+        >
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+        </Select>
+      </Inset>
     );
   },
 };
