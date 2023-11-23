@@ -1,85 +1,28 @@
-import { Children, ReactElement, useRef } from 'react';
+import { TooltipTrigger } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
-import { FocusableProvider } from '@react-aria/focus';
-import { useOverlayPosition } from '@react-aria/overlays';
-import { useTooltipTrigger } from '@react-aria/tooltip';
-
-import { useTooltipTriggerState } from '@react-stately/tooltip';
-
-import { PositionProps } from '@react-types/overlays';
-import { TooltipTriggerProps as AriaTooltipTriggerProps } from '@react-types/tooltip';
-
-import { Overlay } from '../Overlay';
-import { TooltipContext } from './Context';
-
-// Props
-// ---------------
+type RemovedProps = 'isDisabled' | 'isOpen';
 export interface TooltipTriggerProps
-  extends Omit<AriaTooltipTriggerProps, 'isDisabled' | 'isOpen'>,
-    Omit<PositionProps, 'isOpen'> {
-  children: [trigger: ReactElement, menu: ReactElement];
-  disabled?: boolean;
+  extends Omit<RAC.TooltipTriggerComponentProps, RemovedProps> {
+  disabled?: RAC.TooltipTriggerComponentProps['isDisabled'];
   open?: boolean;
 }
 
-// Component
-// ---------------
-export const TooltipTrigger = ({
+const _TooltipTrigger = ({
+  delay = 1000,
+  children,
   disabled,
   open,
-  delay = 1000,
-  placement = 'top',
-  children,
   ...rest
 }: TooltipTriggerProps) => {
-  const [tooltipTrigger, tooltip] = Children.toArray(children);
   const props = {
     ...rest,
     isDisabled: disabled,
     isOpen: open,
     delay,
-    placement,
   };
 
-  const tooltipTriggerRef = useRef(null);
-  const overlayRef = useRef(null);
-
-  const state = useTooltipTriggerState(props);
-
-  const { triggerProps, tooltipProps } = useTooltipTrigger(
-    props,
-    state,
-    tooltipTriggerRef
-  );
-
-  const {
-    overlayProps: positionProps,
-    placement: overlayPlacement,
-    arrowProps,
-  } = useOverlayPosition({
-    placement: props.placement,
-    targetRef: tooltipTriggerRef,
-    offset: props.offset,
-    crossOffset: props.crossOffset,
-    isOpen: state.isOpen,
-    overlayRef,
-  });
-
-  return (
-    <FocusableProvider ref={tooltipTriggerRef} {...triggerProps}>
-      {tooltipTrigger}
-      <TooltipContext.Provider
-        value={{
-          state,
-          overlayRef,
-          arrowProps,
-          placement: overlayPlacement,
-          ...tooltipProps,
-          ...positionProps,
-        }}
-      >
-        <Overlay open={state.isOpen}>{tooltip}</Overlay>
-      </TooltipContext.Provider>
-    </FocusableProvider>
-  );
+  return <TooltipTrigger {...props}>{children}</TooltipTrigger>;
 };
+
+export { _TooltipTrigger as TooltipTrigger };

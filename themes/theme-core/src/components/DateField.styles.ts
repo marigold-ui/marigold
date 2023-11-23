@@ -7,11 +7,13 @@ export const DateField: ThemeComponent<'DateField'> = {
     inputBox,
     inputHeight,
     inputSpacing,
-    ' group-disabled/field:bg-bg-disabled group-disabled/field:border-border-disabled group-disabled/field:text-text-disabled',
-    ' group-readonly/field:bg-bg-transparent group-readonly/field:text-text-disabled',
+    'data-[disabled]:bg-bg-disabled data-[disabled]:border-border-disabled data-[disabled]:text-text-disabled',
   ]),
 
-  segment: cva(['rounded-sm', 'focus:bg-bg-focus focus:text-text-focus']),
-
+  segment: cva([
+    'rounded-sm',
+    'focus:bg-bg-focus focus:text-text-focus',
+    'aria-[readonly]:bg-bg-transparent aria-[readonly]:text-text-disabled',
+  ]),
   action: cva('pr-2'),
 };

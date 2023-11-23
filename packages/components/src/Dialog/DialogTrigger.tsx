@@ -1,49 +1,48 @@
-import { Children, ReactNode, useRef } from 'react';
+import { Children } from 'react';
+import { DialogTrigger } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
-import { PressResponder } from '@react-aria/interactions';
+import { Modal } from '../Overlay/Modal';
+import { Dialog } from './Dialog';
 
-import { useOverlayTriggerState } from '@react-stately/overlays';
+// Props
+// ---------------
 
-import { Modal, Overlay } from '../Overlay';
-import { DialogContext } from './Context';
-
-export interface DialogTriggerProps {
-  children: [trigger: ReactNode, menu: ReactNode];
+export interface DialogTriggerProps
+  extends Omit<RAC.DialogTriggerProps, 'isOpen'> {
+  open?: boolean;
   dismissable?: boolean;
   keyboardDismissable?: boolean;
 }
+// Component
+// ---------------
 
-export const DialogTrigger = ({
-  children,
-  dismissable = true,
-  keyboardDismissable = true,
+const _DialogTrigger = ({
+  open,
+  dismissable,
+  keyboardDismissable,
+  ...rest
 }: DialogTriggerProps) => {
-  const [dialogTrigger, dialog] = Children.toArray(children);
-
-  const dialogTriggerRef = useRef(null);
-  const state = useOverlayTriggerState({});
-
-  const ctx = { open: state.isOpen, close: state.close };
-
+  const props: RAC.DialogTriggerProps = {
+    isOpen: open,
+    ...rest,
+  };
+  const children = Children.toArray(props.children);
+  const [dialogTrigger, dialog] = children;
+  const hasDialogTrigger = (dialogTrigger as any).type !== Dialog;
+  const currentDialog =
+    children.length < 2 ? !hasDialogTrigger && dialogTrigger : dialog;
   return (
-    <DialogContext.Provider value={ctx}>
-      <PressResponder
-        ref={dialogTriggerRef}
-        isPressed={state.isOpen}
-        onPress={state.toggle}
+    <DialogTrigger {...props}>
+      {hasDialogTrigger && dialogTrigger}
+      <Modal
+        dismissable={dismissable}
+        keyboardDismissable={keyboardDismissable}
       >
-        {dialogTrigger}
-      </PressResponder>
-      <Overlay open={state.isOpen}>
-        <Modal
-          open={state.isOpen}
-          onClose={state.close}
-          dismissable={dismissable}
-          keyboardDismissable={keyboardDismissable}
-        >
-          {dialog}
-        </Modal>
-      </Overlay>
-    </DialogContext.Provider>
+        {currentDialog}
+      </Modal>
+    </DialogTrigger>
   );
 };
+
+export { _DialogTrigger as DialogTrigger };

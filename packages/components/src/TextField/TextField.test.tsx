@@ -1,5 +1,5 @@
 /* eslint-disable testing-library/no-node-access */
-import { prettyDOM, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
@@ -94,7 +94,6 @@ test('supports required', () => {
   render(<TextField label="A Label" required data-testid="text-field" />);
 
   const textField = screen.getByRole('textbox');
-  console.log(prettyDOM(document));
   /** Note that the required attribute is not passed down! */
   expect(textField).toBeRequired();
 });
