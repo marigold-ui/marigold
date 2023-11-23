@@ -1,33 +1,46 @@
 import { boxShadow } from 'tailwindcss/defaultTheme';
 
+// reservix colors from confluence page
 const brand = {
-  primary: {
-    '50': '#fffaec',
-    '100': '#fff4d4',
-    '200': '#ffe5a7',
-    '300': '#ffd170',
-    '400': '#ffb136',
-    '500': '#ff980f',
-    '600': '#fa8005',
-    '700': '#c85e06',
-    '800': '#9e490e',
-    '900': '#7f3d0f',
-    '950': '#451d05',
-  },
+  '50': '#f7f7f7',
+  '100': '#edecec',
+  '200': '#dfdede',
+  '300': '#c8c8c8',
+  '400': '#adadad',
+  '500': '#9d9c9c',
+  '600': '#898787',
+  '700': '#7b7a7a',
+  '800': '#676666',
+  '900': '#545454',
+  '950': '#363535',
+} as const;
 
-  secondary: {
-    '50': '#f9fafb',
-    '100': '#f3f4f6',
-    '200': '#e5e7eb',
-    '300': '#d1d5db',
-    '400': '#9ca3af',
-    '500': '#6b7280',
-    '600': '#4b5563',
-    '700': '#374151',
-    '800': '#1f2937',
-    '900': '#111827',
-    '950': '#030712',
-  },
+const accent = {
+  '50': '#fffaec',
+  '100': '#fff4d4',
+  '200': '#ffe5a7',
+  '300': '#ffd170',
+  '400': '#ffb136',
+  '500': '#ff980f',
+  '600': '#fa8005',
+  '700': '#c85e06',
+  '800': '#9e490e',
+  '900': '#7f3d0f',
+  '950': '#451d05',
+} as const;
+
+const gray = {
+  50: '#fafaf9',
+  100: '#f5f5f4',
+  200: '#e7e5e4',
+  300: '#d6d3d1',
+  400: '#a8a29e',
+  500: '#78716c',
+  600: '#57534e',
+  700: '#44403c',
+  800: '#292524',
+  900: '#1c1917',
+  950: '#0c0a09',
 } as const;
 
 const green = {
@@ -86,12 +99,14 @@ const blue = {
   '950': '#0f2c3d',
 };
 const white = '#ffff';
-const black = '#000000';
+const black = gray[950];
 
 export const colors = {
   // Brand
   // ---------------
   brand,
+  accent,
+  gray,
   blue,
   yellow,
   green,
@@ -103,12 +118,12 @@ export const colors = {
   // ---------------
   text: {
     base: {
-      DEFAULT: brand.secondary[700],
-      hover: brand.secondary[800],
-      disabled: brand.secondary[400],
+      DEFAULT: gray[700],
+      hover: gray[800],
+      disabled: gray[400],
     },
     inverted: {
-      DEFAULT: brand.secondary[100],
+      DEFAULT: gray[100],
       hover: '',
       disabled: '',
     },
@@ -117,8 +132,8 @@ export const colors = {
       hover: '',
     },
     accent: {
-      DEFAULT: brand.primary[600],
-      hover: brand.primary[700],
+      DEFAULT: accent[600],
+      hover: accent[700],
     },
     info: {
       DEFAULT: blue[500],
@@ -135,6 +150,10 @@ export const colors = {
     error: {
       DEFAULT: red[500],
       hover: red[600],
+    },
+    link: {
+      DEFAULT: blue[400],
+      hover: blue[500],
     },
   },
 
@@ -154,14 +173,14 @@ export const colors = {
       disabled: '',
     },
     brand: {
-      DEFAULT: brand.secondary[700],
-      hover: brand.secondary[600],
-      active: brand.secondary[800],
+      DEFAULT: brand[700],
+      hover: brand[600],
+      active: brand[800],
     },
     accent: {
-      DEFAULT: brand.primary[700],
-      hover: brand.primary[600],
-      active: brand.primary[800],
+      DEFAULT: accent[700],
+      hover: accent[600],
+      active: accent[800],
     },
     info: {
       DEFAULT: blue[500],
@@ -184,14 +203,14 @@ export const colors = {
       active: red[700],
     },
     selected: {
-      DEFAULT: brand.primary[100],
-      input: brand.primary[600],
+      DEFAULT: accent[100],
+      input: accent[600],
     },
     surface: {
       DEFAULT: white,
-      raised: brand.secondary[400],
-      overlay: brand.secondary[700],
-      sunken: brand.secondary[200],
+      raised: gray[400],
+      overlay: gray[700],
+      sunken: gray[200],
     },
   },
 
@@ -199,13 +218,13 @@ export const colors = {
   // ---------------
   border: {
     base: {
-      DEFAULT: brand.secondary[400],
-      hover: brand.secondary[500],
+      DEFAULT: gray[400],
+      hover: gray[500],
       active: '',
-      disaled: brand.secondary[400],
+      disaled: gray[400],
     },
     inverted: {
-      DEFAULT: brand.secondary[700],
+      DEFAULT: gray[700],
       hover: '',
       active: '',
       disaled: '',
@@ -241,8 +260,8 @@ export const colors = {
       active: red[700],
     },
     selected: {
-      DEFAULT: brand.primary[800],
-      input: brand.primary[800],
+      DEFAULT: accent[800],
+      input: accent[800],
     },
   },
 
@@ -269,7 +288,7 @@ export const shadow = {
 // Component Height
 // ---------------
 export const component = {
-  DEFAULT: 'h-8', // used in inputs
-  sm: 'h-6', // not used at all
-  lg: 'h-12', // used in button
+  DEFAULT: '32px', // used in inputs
+  sm: '24px', // not used at all
+  lg: '48px', // used in button
 };
