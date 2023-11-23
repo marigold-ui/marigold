@@ -171,7 +171,10 @@ export const colors = {
     },
 
     // Status
+    success: green[500],
     info: blue[500],
+    warning: yellow[500],
+    error: red[500],
   },
 
   // Shadow

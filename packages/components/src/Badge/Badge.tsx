@@ -13,7 +13,7 @@ export interface BadgeProps extends Omit<HtmlProps<'div'>, 'className'> {
 // ---------------
 export const Badge = ({ variant, size, children, ...props }: BadgeProps) => {
   const classNames = useClassNames({ component: 'Badge', variant, size });
-
+  console.log(variant, classNames);
   return (
     <div {...props} className={classNames}>
       {children}

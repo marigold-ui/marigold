@@ -8,14 +8,11 @@ const meta = {
   component: Badge,
   argTypes: {
     variant: {
-      description: 'badge variant',
       control: {
-        type: 'text',
+        type: 'radio',
       },
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'info' },
-      },
+      options: ['default', 'inverted', 'success', 'info', 'warning', 'error'],
+      description: 'The variants of the badge',
     },
     children: {
       control: {
