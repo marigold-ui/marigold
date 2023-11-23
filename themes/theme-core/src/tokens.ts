@@ -238,8 +238,8 @@ export const colors = {
     },
     info: {
       DEFAULT: blue[950],
-      hover: '',
-      active: '',
+      hover: blue[900],
+      active: blue[950],
     },
     success: {
       DEFAULT: green[600],
@@ -248,13 +248,13 @@ export const colors = {
     },
     warning: {
       DEFAULT: yellow[600],
-      hover: '',
-      active: '',
+      hover: yellow[700],
+      active: yellow[800],
     },
     error: {
       DEFAULT: red[500],
-      hover: '',
-      active: '',
+      hover: red[600],
+      active: red[700],
     },
     selected: {
       DEFAULT: blue[400],
