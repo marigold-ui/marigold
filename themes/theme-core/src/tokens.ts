@@ -1,31 +1,46 @@
 import { boxShadow } from 'tailwindcss/defaultTheme';
 
 const brand = {
-  primary: {
-    500: '#f8ac67',
-    600: '#fa8005',
-    700: '#a50000',
-    800: '#990000',
-    900: '#511e04',
-  },
-  secondary: {
-    50: '#ffffff',
-    100: '#f7f5f2',
-    200: '#e3e3e3',
-    300: '#e7e4e0',
-    350: '#cfcfcf',
-    400: '#cecac3',
-    500: '#a9a9a9',
-    600: '#8a8782',
-    650: '#808080',
-    700: '#6f6b64',
-    800: '#4b4b4b',
-    900: '#3d3d3d',
-  },
+  500: '#f8ac67',
+  600: '#fa8005',
+  700: '#a50000',
+  800: '#990000',
+  900: '#511e04',
 } as const;
 
-const white = '#ffff';
-const black = '#111';
+const accent = {
+  50: '#ffffff',
+  100: '#f7f5f2',
+  200: '#e3e3e3',
+  300: '#e7e4e0',
+  350: '#cfcfcf',
+  400: '#cecac3',
+  500: '#a9a9a9',
+  600: '#8a8782',
+  650: '#808080',
+  700: '#6f6b64',
+  800: '#4b4b4b',
+  900: '#3d3d3d',
+} as const;
+
+const gray = {
+  50: '#ffffff',
+  100: '#f7f5f2',
+  200: '#e3e3e3',
+  300: '#e7e4e0',
+  350: '#cfcfcf',
+  400: '#cecac3',
+  500: '#a9a9a9',
+  600: '#8a8782',
+  650: '#808080',
+  700: '#6f6b64',
+  800: '#4b4b4b',
+  900: '#3d3d3d',
+  950: '#111',
+} as const;
+
+const white = gray[50];
+const black = gray[950];
 
 const green = {
   '50': '#e9ffe4',
@@ -84,9 +99,11 @@ const blue = {
 } as const;
 
 export const colors = {
-  // Brand
+  // Color Pallets
   // ---------------
   brand,
+  accent,
+  gray,
   white,
   black,
   green,
@@ -98,13 +115,13 @@ export const colors = {
   // ---------------
   text: {
     base: {
-      DEFAULT: brand.primary[900],
-      hover: brand.secondary[800],
-      disabled: brand.secondary[300],
+      DEFAULT: brand[900],
+      hover: gray[800],
+      disabled: gray[300],
     },
     inverted: {
-      DEFAULT: brand.secondary[50],
-      hover: brand.secondary[50],
+      DEFAULT: gray[50],
+      hover: gray[100],
       disabled: '',
     },
     brand: {
@@ -131,6 +148,10 @@ export const colors = {
       DEFAULT: red[500],
       hover: red[600],
     },
+    link: {
+      DEFAULT: brand[900],
+      hover: brand[800],
+    },
   },
 
   // Background
@@ -138,19 +159,19 @@ export const colors = {
   bg: {
     base: {
       DEFAULT: white,
-      hover: brand.secondary[900],
+      hover: gray[900],
       active: '',
-      disaled: brand.secondary[300],
+      disabled: gray[300],
     },
     inverted: {
-      DEFAULT: brand.secondary[200],
-      hover: brand.secondary[100],
+      DEFAULT: gray[200],
+      hover: gray[100],
       active: '',
-      disaled: brand.secondary[50],
+      disabled: gray[50],
     },
     brand: {
-      DEFAULT: brand.primary[600],
-      hover: brand.primary[500],
+      DEFAULT: brand[600],
+      hover: brand[500],
       active: '',
     },
     accent: {
@@ -180,13 +201,13 @@ export const colors = {
     },
     selected: {
       DEFAULT: blue[400],
-      input: '',
+      input: blue[400],
     },
     surface: {
-      DEFAULT: brand.secondary[100],
-      raised: brand.secondary[500],
-      overlay: brand.secondary[650],
-      sunken: brand.secondary[900],
+      DEFAULT: gray[100],
+      raised: gray[500],
+      overlay: gray[650],
+      sunken: gray[900],
     },
   },
 
@@ -194,20 +215,20 @@ export const colors = {
   // ---------------
   border: {
     base: {
-      DEFAULT: brand.secondary[800],
-      hover: brand.secondary[650],
+      DEFAULT: gray[800],
+      hover: gray[650],
       active: '',
-      disaled: brand.secondary[300],
+      disabled: gray[300],
     },
     inverted: {
-      DEFAULT: brand.secondary[350],
+      DEFAULT: gray[350],
       hover: '',
       active: '',
-      disaled: '',
+      disabled: '',
     },
     brand: {
-      DEFAULT: brand.primary[600],
-      hover: brand.primary[500],
+      DEFAULT: brand[600],
+      hover: brand[500],
       active: '',
     },
     accent: {
@@ -222,8 +243,8 @@ export const colors = {
     },
     success: {
       DEFAULT: green[600],
-      hover: '',
-      active: '',
+      hover: green[700],
+      active: green[800],
     },
     warning: {
       DEFAULT: yellow[600],
@@ -261,8 +282,8 @@ export const shadow = {
 
 export const component = {
   height: {
-    DEFAULT: 'h-[22px]',
-    sm: 'h-4', // 16 px
-    lg: 'h-6', // 24 px
+    DEFAULT: '22px',
+    sm: '16px',
+    lg: '32px',
   },
 };
