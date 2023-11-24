@@ -5,7 +5,7 @@ import { useObjectRef } from '@react-aria/utils';
 
 import type { ListState } from '@react-stately/list';
 
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 
 import { ListBoxContext } from './Context';
 import { ListBoxOption } from './ListBoxOption';
@@ -31,7 +31,12 @@ export const ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
 
     return (
       <ListBoxContext.Provider value={{ classNames }}>
-        <div className={classNames.container}>
+        <div
+          className={cn(
+            'overflow-y-auto overflow-x-hidden',
+            classNames.container
+          )}
+        >
           <ul className={classNames.list} ref={innerRef} {...listBoxProps}>
             {[...state.collection].map(item =>
               item.type === 'section' ? (

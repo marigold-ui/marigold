@@ -86,7 +86,7 @@ export const Basic: StoryObj<typeof Select> = {
   render: args => {
     const [selected, setSelected] = useState<string | number>('');
     return (
-      <Container size="medium">
+      <>
         <Select {...args} onChange={setSelected} disabledKeys={['Firefly']}>
           <Select.Option key="Harry Potter">Harry Potter</Select.Option>
           <Select.Option key="Lord of the Rings">
@@ -98,7 +98,7 @@ export const Basic: StoryObj<typeof Select> = {
         </Select>
         <hr />
         <pre>selected: {selected}</pre>
-      </Container>
+      </>
     );
   },
 };
@@ -106,22 +106,23 @@ export const Basic: StoryObj<typeof Select> = {
 export const LongItems: StoryObj<typeof Select> = {
   render: args => {
     return (
-      <Select
-        {...args}
-        label="Favorite character"
-        placeholder="Select your character"
-        width={'1/4'}
-      >
-        <Select.Option>
-          Mario der Dritte von Emschenhagen bei Bautzen zukünftiger Retter von
-          Peach und Widersacher von Bowser
-        </Select.Option>
-        <Select.Option>Luigi</Select.Option>
-        <Select.Option>Toad</Select.Option>
-        <Select.Option>Yoshi</Select.Option>
-        <Select.Option>Bowser</Select.Option>
-        <Select.Option>Peach</Select.Option>
-      </Select>
+      <Inset space={24}>
+        <Select
+          {...args}
+          label="Favorite character"
+          placeholder="Select your character"
+        >
+          <Select.Option>
+            Mario der Dritte von Emschenhagen bei Bautzen zukünftiger Retter von
+            Peach und Widersacher von Bowser
+          </Select.Option>
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+        </Select>
+      </Inset>
     );
   },
 };
@@ -134,7 +135,6 @@ export const LotsOfOptions: StoryObj<typeof Select> = {
           {...args}
           label="Favorite character"
           placeholder="Select your character"
-          width={'1/4'}
         >
           <Select.Option>Luigi</Select.Option>
           <Select.Option>Toad</Select.Option>
