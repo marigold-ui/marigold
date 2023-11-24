@@ -36,7 +36,7 @@ export interface TextAreaProps
 
 // Component
 // ---------------
-export const _TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
+const _TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   (
     {
       variant,

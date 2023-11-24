@@ -145,15 +145,14 @@ export const Basic: Story = {
 
 ```tsx
 <Tabs>
-  <Tabs.Item key={1} title="start">
-    Start
-  </Tabs.Item>
-  <Tabs.Item key={2} title="settings">
-    Settings
-  </Tabs.Item>
-  <Tabs.Item key={3} title="more">
-    More
-  </Tabs.Item>
+  <Tabs.List>
+    <Tabs.Item id="1">Start</Tabs.Item>
+    <Tabs.Item id="2">Settings</Tabs.Item>
+    <Tabs.Item id="3">More</Tabs.Item>
+  </Tabs.List>
+  <Tabs.TabPanel id="1">Start</Tabs.TabPanel>
+  <Tabs.TabPanel id="2">Settings</Tabs.TabPanel>
+  <Tabs.TabPanel id="3">More</Tabs.TabPanel>
 </Tabs>
 ```
 
@@ -202,7 +201,7 @@ UI Components can be either components that consist of only one element (e.g., `
 
 In the case of slot components like `<TextField>`, various slots such as the container, label, and input field can be individually styled within the theme. This allows you to apply distinct styles to each part by using the corresponding slot.
 
-![Image](/themable-component.png)
+![Themable Component](/themable-component.png)
 
 - Every visible part of a component hast to accept a `className`, which can be used to set the styling of the element.
 - Every component can have default `className` values. They can be overriden by a theme.

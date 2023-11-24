@@ -1,26 +1,22 @@
-import { useRef } from 'react';
-
-import { AriaTabPanelProps, useTabPanel } from '@react-aria/tabs';
-
-import { TabListState } from '@react-stately/tabs';
-
-import { cn } from '@marigold/system';
+import { TabPanel } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import { useTabContext } from './Context';
 
-export interface TabPanelProps extends AriaTabPanelProps {
-  state: TabListState<object>;
-}
+// props
+// ----------------------
+export interface TabPanelProps
+  extends Omit<RAC.TabPanelProps, 'className' | 'style'> {}
 
-export const TabPanel = ({ state, ...props }: TabPanelProps) => {
-  const ref = useRef(null);
-  const { tabPanelProps } = useTabPanel(props, state, ref);
-  const selectedItemProps = state.selectedItem?.props;
+// component
+// ----------------------
+const _TabPanel = (props: TabPanelProps) => {
   const { classNames } = useTabContext();
-
   return (
-    <div className={cn(classNames.tabpanel)} ref={ref} {...tabPanelProps}>
-      {selectedItemProps?.children}
-    </div>
+    <TabPanel {...props} className={classNames.tabpanel}>
+      {props.children}
+    </TabPanel>
   );
 };
+
+export { _TabPanel as TabPanel };

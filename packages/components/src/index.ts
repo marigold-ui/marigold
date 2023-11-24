@@ -36,6 +36,7 @@ export * from './NumberField';
 export * from './Overlay';
 export * from './Provider';
 export * from './Radio';
+export * from './SearchField';
 export * from './Select';
 export * from './Slider';
 export * from './Split';

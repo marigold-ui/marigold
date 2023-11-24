@@ -1,11 +1,11 @@
 import React, { Ref, forwardRef } from 'react';
+import type RAC from 'react-aria-components';
 import {
   Slider,
   SliderOutput,
   SliderThumb,
   SliderTrack,
 } from 'react-aria-components';
-import type RAC from 'react-aria-components';
 
 import {
   WidthProp,
@@ -25,7 +25,7 @@ export interface SliderProps<T>
   disabled?: boolean;
 }
 
-export const _Slider = forwardRef(
+const _Slider = forwardRef(
   <T extends number | number[]>(
     {
       thumbLabels,
