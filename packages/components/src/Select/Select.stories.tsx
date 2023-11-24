@@ -2,7 +2,6 @@
 import { useState } from '@storybook/addons';
 import { Meta, StoryObj } from '@storybook/react';
 
-import { Container } from '../Container';
 import { Inset } from '../Inset';
 import { Select } from './Select';
 
