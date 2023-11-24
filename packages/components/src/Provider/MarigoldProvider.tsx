@@ -13,7 +13,7 @@ import {
 // ---------------
 export interface MarigoldProviderProps<T extends Theme>
   extends ThemeProviderProps<T> {
-  className: string;
+  className?: string;
 }
 
 // Provider

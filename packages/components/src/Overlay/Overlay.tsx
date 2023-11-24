@@ -5,8 +5,6 @@ import {
   OverlayProps as ReactAriaOverlayProps,
 } from '@react-aria/overlays';
 
-import { useTheme } from '@marigold/system';
-
 export interface OverlayProps {
   open: boolean;
   children: ReactAriaOverlayProps['children'];
@@ -15,7 +13,6 @@ export interface OverlayProps {
 
 export const Overlay = ({ children, container, open }: OverlayProps) => {
   const nodeRef = useRef(null);
-  const theme = useTheme();
 
   // Don't un-render the overlay while it's transitioning out.
   let mountOverlay = open;
