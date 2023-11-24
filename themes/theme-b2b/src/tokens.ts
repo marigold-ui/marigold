@@ -171,9 +171,9 @@ export const colors = {
     },
 
     // Status
-    success: green[500],
+    success: green[400],
     info: blue[500],
-    warning: yellow[500],
+    warning: yellow[400],
     error: red[500],
   },
 
