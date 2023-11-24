@@ -15,16 +15,16 @@ export interface TabsProps
     RAC.TabsProps,
     'className' | 'style' | 'isDisabled' | 'orientation'
   > {
-  disalbed?: boolean;
+  disabled?: boolean;
   size?: 'small' | 'medium' | 'large';
   variant?: string;
 }
 
 // component
 // ----------------------
-const _Tabs = ({ disalbed, variant, size = 'medium', ...rest }: TabsProps) => {
+const _Tabs = ({ disabled, variant, size = 'medium', ...rest }: TabsProps) => {
   const props: RAC.TabsProps = {
-    isDisabled: disalbed,
+    isDisabled: disabled,
     ...rest,
   };
   const classNames = useClassNames({
