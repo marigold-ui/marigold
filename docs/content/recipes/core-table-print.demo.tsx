@@ -173,16 +173,17 @@ export default () => {
             ))}
           </Table.Body>
         </Table>
-        <Inline space={1}>
+        <Inline space={2}>
           <Select
             label="Sammelaktion"
             placeholder="Bitte wählen"
-            width={0}
+            width={'auto'}
             onChange={handleSelect}
           >
             <Select.Option key="choose">Bitte wählen</Select.Option>
             <Select.Option key="ticketprint">Ticket drucken</Select.Option>
           </Select>
+          <Split />
           <Button variant="secondary" disabled={state}>
             Ausführen
           </Button>

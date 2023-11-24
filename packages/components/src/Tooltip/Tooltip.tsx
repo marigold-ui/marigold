@@ -1,45 +1,39 @@
-import { ReactNode } from 'react';
-
-import { useTooltip } from '@react-aria/tooltip';
+import type { ReactNode } from 'react';
+import { OverlayArrow, Tooltip } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
 
-import { useTooltipContext } from './Context';
 import { TooltipTrigger } from './TooltipTrigger';
 
-// Props
-// ---------------
-export interface TooltipProps extends Omit<HtmlProps<'div'>, 'className'> {
+type RemovedProps = 'className' | 'isOpen' | 'style';
+
+export interface TooltipProps extends Omit<RAC.TooltipProps, RemovedProps> {
   children?: ReactNode;
   variant?: string;
   size?: string;
+  open?: RAC.TooltipProps['isOpen'];
 }
 
-// Component
-// ---------------
-export const Tooltip = ({ children, variant, size }: TooltipProps) => {
-  const { arrowProps, state, overlayRef, placement, ...rest } =
-    useTooltipContext();
-  const { tooltipProps } = useTooltip({}, state);
-
+const _Tooltip = ({ children, variant, size, open, ...rest }: TooltipProps) => {
+  const props = {
+    ...rest,
+    isOpen: open,
+  };
   const classNames = useClassNames({ component: 'Tooltip', variant, size });
 
   return (
-    <div
-      {...tooltipProps}
-      {...rest}
-      ref={overlayRef}
-      className={cn('group/tooltip', classNames.container)}
-      data-placement={placement}
-    >
-      <div>{children}</div>
-      <div
-        {...arrowProps}
-        className={cn('absolute h-0 w-0', classNames.arrow)}
-      />
-    </div>
+    <Tooltip {...props} className={cn('group/tooltip', classNames.container)}>
+      <OverlayArrow className={classNames.arrow}>
+        <svg width={8} height={8} viewBox="0 0 8 8">
+          <path d="M0 0 L4 4 L8 0" />
+        </svg>
+      </OverlayArrow>
+      {children}
+    </Tooltip>
   );
 };
 
-Tooltip.Trigger = TooltipTrigger;
+export { _Tooltip as Tooltip };
+
+_Tooltip.Trigger = TooltipTrigger;

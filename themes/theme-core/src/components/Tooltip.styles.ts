@@ -8,5 +8,16 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
     'placement-r:ml-1',
     'placement-l:mr-1',
   ]),
-  arrow: cva(''),
+  arrow: cva([
+    'fill-bg-surface stroke-border-light',
+
+    // right
+    '[&>svg]:placement-r:rotate-90',
+
+    // left
+    '[&>svg]:placement-l:-rotate-90',
+
+    // bottom
+    '[&>svg]:placement-b:rotate-180',
+  ]),
 };

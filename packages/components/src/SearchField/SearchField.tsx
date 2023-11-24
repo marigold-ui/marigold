@@ -51,15 +51,7 @@ const SearchIcon = (props: { className?: string }) => (
 
 export const _SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
   (
-    {
-      disabled,
-      required,
-      readOnly,
-      width,
-      error,
-      action,
-      ...rest
-    }: SearchFieldProps,
+    { disabled, required, readOnly, error, action, ...rest }: SearchFieldProps,
     ref
   ) => {
     const props: RAC.SearchFieldProps = {
