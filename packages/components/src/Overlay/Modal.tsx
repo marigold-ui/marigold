@@ -37,7 +37,7 @@ const _Modal = forwardRef<
       open={open}
       variant="modal"
     >
-      <Modal ref={ref} data-theme={theme.name} {...props}>
+      <Modal ref={ref} {...props}>
         {props.children}
       </Modal>
     </Underlay>

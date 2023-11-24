@@ -26,12 +26,7 @@ export const Overlay = ({ children, container, open }: OverlayProps) => {
 
   return (
     <ReactAriaOverlay portalContainer={container}>
-      <div
-        ref={nodeRef}
-        data-testid="overlay"
-        data-theme={theme.name}
-        className="opacity-100"
-      >
+      <div ref={nodeRef} data-testid="overlay" className="opacity-100">
         {children}
       </div>
     </ReactAriaOverlay>
