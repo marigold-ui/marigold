@@ -9,7 +9,7 @@ import {
 
 import { OverlayTriggerState } from '@react-stately/overlays';
 
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 
 import { Overlay } from './Overlay';
 import { Underlay } from './Underlay';
@@ -69,7 +69,10 @@ const PopoverWrapper = forwardRef(
         {!isNonModal && <Underlay {...underlayProps} />}
         <div
           {...popoverProps}
-          className={classNames}
+          className={cn(
+            'flex flex-col sm:max-h-[75vh] lg:max-h-[45vh]',
+            classNames
+          )}
           style={{
             ...popoverProps.style,
             minWidth: props.triggerRef.current
