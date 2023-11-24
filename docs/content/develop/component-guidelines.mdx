@@ -145,15 +145,14 @@ export const Basic: Story = {
 
 ```tsx
 <Tabs>
-  <Tabs.Item key={1} title="start">
-    Start
-  </Tabs.Item>
-  <Tabs.Item key={2} title="settings">
-    Settings
-  </Tabs.Item>
-  <Tabs.Item key={3} title="more">
-    More
-  </Tabs.Item>
+  <Tabs.List>
+    <Tabs.Item id="1">Start</Tabs.Item>
+    <Tabs.Item id="2">Settings</Tabs.Item>
+    <Tabs.Item id="3">More</Tabs.Item>
+  </Tabs.List>
+  <Tabs.TabPanel id="1">Start</Tabs.TabPanel>
+  <Tabs.TabPanel id="2">Settings</Tabs.TabPanel>
+  <Tabs.TabPanel id="3">More</Tabs.TabPanel>
 </Tabs>
 ```
 
