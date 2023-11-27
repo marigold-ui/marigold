@@ -1,5 +1,22 @@
 # @marigold/theme-b2b
 
+## 25.8.0
+
+### Minor Changes
+
+- [#3501](https://github.com/marigold-ui/marigold/pull/3501) [`14f5d5d30`](https://github.com/marigold-ui/marigold/commit/14f5d5d301f6e2dd49667439ecda54c2ce7d08a7) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Migrate Tabs to RAC Tabs
+
+- [#3514](https://github.com/marigold-ui/marigold/pull/3514) [`5a3d71cae`](https://github.com/marigold-ui/marigold/commit/5a3d71cae1b4243db94ff997313ceada2fa3bfeb) Thanks [@sebald](https://github.com/sebald)! - feat([DST-249]): Add feedback variants to `<Badge>`
+
+### Patch Changes
+
+- [#3510](https://github.com/marigold-ui/marigold/pull/3510) [`09ed4b46e`](https://github.com/marigold-ui/marigold/commit/09ed4b46e254cb314ff6b6bd6e7b2d42112aaee9) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: new token structure for b2b theme tokens
+
+- Updated dependencies [[`14f5d5d30`](https://github.com/marigold-ui/marigold/commit/14f5d5d301f6e2dd49667439ecda54c2ce7d08a7), [`213d32f5b`](https://github.com/marigold-ui/marigold/commit/213d32f5b79ee9063e30fbe52c064560f771df21), [`5a3d71cae`](https://github.com/marigold-ui/marigold/commit/5a3d71cae1b4243db94ff997313ceada2fa3bfeb), [`aac41db30`](https://github.com/marigold-ui/marigold/commit/aac41db30bfb7613bf9ba537d1030cd5c8d1baa0), [`71eb13b30`](https://github.com/marigold-ui/marigold/commit/71eb13b30b3d94a8bacb1f69f457c13d7e33fad2)]:
+  - @marigold/components@6.10.0
+  - @marigold/system@6.10.0
+  - @marigold/theme-preset@1.2.4
+
 ## 25.7.1
 
 ### Patch Changes

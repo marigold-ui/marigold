@@ -16,7 +16,7 @@ export interface InputProps extends Omit<RAC.InputProps, RemovedProps> {
   className?: string;
 }
 
-export const _Input = forwardRef<HTMLInputElement, InputProps>(
+const _Input = forwardRef<HTMLInputElement, InputProps>(
   (
     { type, icon, action, variant, size, className, ...props }: InputProps,
     ref

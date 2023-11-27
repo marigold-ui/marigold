@@ -3,6 +3,8 @@
 import { useMDXComponent } from 'next-contentlayer/hooks';
 import { HTMLAttributes } from 'react';
 
+import Image from 'next/image';
+
 import { cn } from '@marigold/system';
 
 import { IconList } from '@/ui/IconList';
@@ -112,6 +114,7 @@ const components = {
   PropsTable,
   Spacing,
   TextAlign,
+  Image,
 };
 
 // Props
@@ -125,5 +128,5 @@ interface MdxProps {
 // ---------------
 export const Mdx = ({ title, code }: MdxProps) => {
   const Component = useMDXComponent(code, { title });
-  return <Component components={components} />;
+  return <Component components={components as any} />;
 };
