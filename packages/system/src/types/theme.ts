@@ -110,7 +110,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Tabs?: Record<
-      'tabs' | 'container' | 'tabpanel' | 'tab',
+      'container' | 'tabsList' | 'tabpanel' | 'tab',
       ComponentStyleFunction<string, string>
     >;
     Underlay?: ComponentStyleFunction<string, string>;
