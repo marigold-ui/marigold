@@ -14,14 +14,20 @@ const meta = {
         type: 'boolean',
       },
       description: 'Disable the button',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     fullWidth: {
       control: {
         type: 'boolean',
       },
       description: 'Take availble width',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     size: {
       control: {
@@ -31,8 +37,17 @@ const meta = {
     },
     variant: {
       control: {
-        type: 'text',
+        type: 'radio',
       },
+      options: [
+        'primary',
+        'secondary',
+        'ghost',
+        'link',
+        'text',
+        'icon',
+        'menu',
+      ],
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'primary' },
