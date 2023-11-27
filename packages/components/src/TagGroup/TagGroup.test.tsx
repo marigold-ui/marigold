@@ -163,25 +163,6 @@ test('should remember last focused element', async () => {
   expect(tags[0]).toHaveFocus();
 });
 
-//test currently not work because there is no FieldErrorContext in TagGroup component
-/*test('renders error message', () => {
-  render(
-    <Tag.Group
-      aria-label="static tag group items"
-      error
-      errorMessage="Hier ist ein Fehler aufgetreten!"
-    >
-      <Tag key="news">News</Tag>
-      <Tag key="travel">Travel</Tag>
-      <Tag key="gaming">Gaming</Tag>
-      <Tag key="shopping">Shopping</Tag>
-    </Tag.Group>
-  );
-
-  const errorMessage = screen.queryByText('Hier ist ein Fehler aufgetreten!');
-  expect(errorMessage).toBeInTheDocument();
-});*/
-
 test('renders label', () => {
   render(
     <Tag.Group aria-label="tag group" label="Categories">

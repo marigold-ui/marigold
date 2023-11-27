@@ -27,16 +27,6 @@ const meta = {
         defaultValue: { summary: false },
       },
     },
-    error: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'Error',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
-    },
     width: {
       control: {
         type: 'text',
@@ -52,22 +42,6 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <Tag.Group {...args} aria-label="Static TagGroup items example">
-      <Tag key="news">News</Tag>
-      <Tag key="travel">Travel</Tag>
-      <Tag key="gaming">Gaming</Tag>
-      <Tag key="shopping">Shopping</Tag>
-    </Tag.Group>
-  ),
-};
-
-export const Error: Story = {
-  render: args => (
-    <Tag.Group
-      errorMessage="Das ist ein Error"
-      error
-      {...args}
-      aria-label="Error message example"
-    >
       <Tag key="news">News</Tag>
       <Tag key="travel">Travel</Tag>
       <Tag key="gaming">Gaming</Tag>

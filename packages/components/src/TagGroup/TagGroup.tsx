@@ -7,17 +7,12 @@ import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
 
 // Props
 // ---------------
-type RemovedProps =
-  | 'className'
-  | 'style'
-  | 'children'
-  | 'isRequired'
-  | 'isInvalid';
+type RemovedProps = 'className' | 'style' | 'children' | 'isRequired';
 
 export interface TagGroupProps
   extends Omit<RAC.TagGroupProps, RemovedProps>,
-    Pick<TagListProps<object>, 'items' | 'children' | 'renderEmptyState'>,
-    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+    Pick<TagListProps<object>, 'items' | 'children'>,
+    Pick<FieldBaseProps<'label'>, 'label' | 'description'> {
   variant?: string;
   size?: string;
   width?: WidthProp['width'];
@@ -31,9 +26,7 @@ export interface TagGroupProps
 const _TagGroup = ({
   width,
   required,
-  error,
   items,
-  renderEmptyState,
   children,
   variant,
   size,
@@ -41,18 +34,13 @@ const _TagGroup = ({
 }: TagGroupProps) => {
   const props = {
     isRequired: required,
-    isInvalid: error,
     ...rest,
   };
   const classNames = useClassNames({ component: 'Tag', variant, size });
 
   return (
     <FieldBase as={TagGroup} {...props}>
-      <TagList
-        items={items}
-        renderEmptyState={renderEmptyState}
-        className={classNames.listItems}
-      >
+      <TagList items={items} className={classNames.listItems}>
         {children}
       </TagList>
     </FieldBase>
