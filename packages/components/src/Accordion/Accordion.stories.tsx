@@ -15,15 +15,33 @@ import { Accordion } from './Accordion';
 const meta = {
   title: 'Components/Accordion',
   argTypes: {
-    variant: {
-      description: 'Accordion variant',
+    defaultExpandedKeys: {
+      description: 'Expanded Keys per default',
       control: {
-        type: 'text',
+        type: 'object',
+      },
+      table: {
+        type: { summary: 'string' },
+        defaultValue: {
+          summary: '["1"]',
+        },
+      },
+    },
+    selectionMode: {
+      description: 'if the Accordion can open more than one item',
+      control: {
+        type: 'select',
+      },
+      options: ['single', 'multiple'],
+      table: {
+        defaultValue: 'single',
       },
     },
   },
   args: {
     variant: '',
+    defaultExpandedKeys: ['1'],
+    selectionMode: 'single',
   },
 } satisfies Meta;
 
@@ -32,7 +50,7 @@ type Story = StoryObj<typeof Accordion>;
 
 export const Basic: Story = {
   render: args => (
-    <Accordion defaultExpandedKeys={['1']} {...args}>
+    <Accordion {...args}>
       <Accordion.Item key={1} title="Informations">
         <Headline level={3}>Some Imformations</Headline>
         <TextField label="Name" />
