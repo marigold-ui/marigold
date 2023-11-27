@@ -1,23 +1,23 @@
 import { CalendarDate } from '@internationalized/date';
-import { Key } from 'react';
+import { Dispatch, Key, SetStateAction, useEffect, useRef } from 'react';
 
 import { useDateFormatter } from '@react-aria/i18n';
 
 import { CalendarState } from '@react-stately/calendar';
 
-import { Select } from '../Select';
+import { Button } from '../Button';
 
 interface YearDropdownProps {
   state: CalendarState;
+  setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
 }
 
-const YearDropdown = ({ state }: YearDropdownProps) => {
+const YearDropdown = ({ state, setSelectedDropdown }: YearDropdownProps) => {
   const years: { value: CalendarDate; formatted: string }[] = [];
   let formatter = useDateFormatter({
     year: 'numeric',
     timeZone: state.timeZone,
   });
-
   for (let i = -20; i <= 20; i++) {
     let date = state.focusedDate.add({ years: i });
     years.push({
@@ -26,6 +26,18 @@ const YearDropdown = ({ state }: YearDropdownProps) => {
     });
   }
 
+  const activeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (activeButtonRef.current) {
+      const activeButton = activeButtonRef.current;
+      activeButton?.scrollIntoView({
+        behavior: 'instant',
+        block: 'center',
+      });
+    }
+  }, [state.focusedDate]);
+
   let onChange = (key: Key) => {
     let index = Number(key);
     let date = years[index].value;
@@ -33,17 +45,37 @@ const YearDropdown = ({ state }: YearDropdownProps) => {
   };
 
   return (
-    <Select
-      aria-label="Year"
-      selectedKey={'20'}
-      onChange={onChange}
-      data-testid="year"
-      disabled={state.isDisabled}
+    <ul
+      data-testid="yearOptions"
+      className="grid h-full max-h-[300px] min-w-[300px] grid-cols-3 gap-y-10 overflow-y-scroll p-2"
     >
-      {years.map((year, i) => (
-        <Select.Option key={i}>{year.formatted}</Select.Option>
-      ))}
-    </Select>
+      {years.map((year, index) => {
+        const isActive = +year.formatted === state.focusedDate.year;
+
+        return (
+          <li className="flex justify-center" key={index}>
+            <div
+              ref={isActive ? activeButtonRef : (null as any)}
+              style={{ height: '100%', width: '100%' }}
+            >
+              <Button
+                disabled={state.isDisabled}
+                variant={isActive ? 'secondary' : 'text'}
+                size="small"
+                onPress={() => {
+                  onChange(index);
+                  setSelectedDropdown(undefined);
+                }}
+                key={index}
+                data-value={year.formatted}
+              >
+                {year.formatted}
+              </Button>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
   );
 };
 

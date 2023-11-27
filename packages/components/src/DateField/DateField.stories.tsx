@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { I18nProvider } from '@react-aria/i18n';
 
-import { DateField, DateFieldProps } from './DateField';
+import { DateField, DateFieldProps } from './_DateField';
 
 const meta = {
   title: 'Components/DateField',
@@ -40,6 +40,7 @@ const meta = {
         defaultValue: { summary: false },
       },
     },
+
     errorMessage: {
       control: {
         type: 'text',
@@ -88,7 +89,7 @@ const meta = {
     },
   },
   args: {
-    label: 'Label',
+    label: 'My Label',
     description: 'This is a help text description',
     error: false,
     errorMessage: 'Something went wrong',
@@ -101,7 +102,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <I18nProvider locale="de-DE">
-      <DateField {...args} label="date field" />
+      <DateField {...args} />
     </I18nProvider>
   ),
 };

@@ -1,5 +1,127 @@
 # @marigold/components
 
+## 6.9.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.9.1
+  - @marigold/icons@1.2.29
+
+## 6.9.0
+
+### Minor Changes
+
+- [#3505](https://github.com/marigold-ui/marigold/pull/3505) [`c068869a9`](https://github.com/marigold-ui/marigold/commit/c068869a98f3c7ceb91bd04b59342668d546f589) Thanks [@sebald](https://github.com/sebald)! - feat: add a success `<Message>` variant
+
+- [#3482](https://github.com/marigold-ui/marigold/pull/3482) [`a16541314`](https://github.com/marigold-ui/marigold/commit/a165413142b6d64f9995678498c6d68091ce526e) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Dialog & Modal migration
+
+### Patch Changes
+
+- [#3500](https://github.com/marigold-ui/marigold/pull/3500) [`79eaec78c`](https://github.com/marigold-ui/marigold/commit/79eaec78c8c1a5d99d4ad09f93f8b2ca39aaade2) Thanks [@aromko](https://github.com/aromko)! - RAC: migrate `<NumberField />`
+
+- [#3498](https://github.com/marigold-ui/marigold/pull/3498) [`7507ac7f5`](https://github.com/marigold-ui/marigold/commit/7507ac7f52d9a6d0826534b4035bb0dce7f074aa) Thanks [@aromko](https://github.com/aromko)! - RAC: migrate searchfield
+
+- [#3481](https://github.com/marigold-ui/marigold/pull/3481) [`729158c87`](https://github.com/marigold-ui/marigold/commit/729158c8799205cdc6a733cd01f6a2239850ac2a) Thanks [@aromko](https://github.com/aromko)! - RAC: migrate TextField component
+
+- [#3486](https://github.com/marigold-ui/marigold/pull/3486) [`17ee74d46`](https://github.com/marigold-ui/marigold/commit/17ee74d4686e003b133dab2598eb2bbb6d87e948) Thanks [@aromko](https://github.com/aromko)! - RAC: migrate textarea
+
+- [#3499](https://github.com/marigold-ui/marigold/pull/3499) [`f19a502d4`](https://github.com/marigold-ui/marigold/commit/f19a502d4badd559a27e86e6e74747dfccb0a6c2) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: `DateField` to react-aria-components
+
+- [#3487](https://github.com/marigold-ui/marigold/pull/3487) [`75bad8b84`](https://github.com/marigold-ui/marigold/commit/75bad8b84c127cd38a30f70af26795aa8e8d4ae0) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: `<Tooltip>` to react aria components
+
+- Updated dependencies []:
+  - @marigold/system@6.9.0
+  - @marigold/icons@1.2.28
+
+## 6.8.0
+
+### Minor Changes
+
+- [#3471](https://github.com/marigold-ui/marigold/pull/3471) [`c76bd48a2`](https://github.com/marigold-ui/marigold/commit/c76bd48a2f12b488f58de09e38c4d78da62c2e3b) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Adding a fixed-height scrollable table example
+
+### Patch Changes
+
+- [#3476](https://github.com/marigold-ui/marigold/pull/3476) [`30b94e542`](https://github.com/marigold-ui/marigold/commit/30b94e542fe3d60676b2e00868e48b28e8c12ff6) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Fixing Scrollable table story
+
+- [#3483](https://github.com/marigold-ui/marigold/pull/3483) [`3a21b538a`](https://github.com/marigold-ui/marigold/commit/3a21b538a5f72fb021bf7cb023f565d6e84e2ea7) Thanks [@aromko](https://github.com/aromko)! - chore: add data-required attribute for label
+
+- [#3480](https://github.com/marigold-ui/marigold/pull/3480) [`4c76cf114`](https://github.com/marigold-ui/marigold/commit/4c76cf114adf3c2485518f386ebd14c0415df3ac) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: add `FieldError` in `HelpText`
+
+- [#3477](https://github.com/marigold-ui/marigold/pull/3477) [`84c427dec`](https://github.com/marigold-ui/marigold/commit/84c427dec67be6ef488ece0afb179dc95c403447) Thanks [@aromko](https://github.com/aromko)! - RAC: migrate input
+
+- Updated dependencies []:
+  - @marigold/system@6.8.0
+  - @marigold/icons@1.2.27
+
+## 6.7.0
+
+### Minor Changes
+
+- [#3473](https://github.com/marigold-ui/marigold/pull/3473) [`22446fa66`](https://github.com/marigold-ui/marigold/commit/22446fa66d38b34d975ed88b4dcd0b1ca7190a57) Thanks [@sebald](https://github.com/sebald)! - refa: Update `react-aria-components` to `rc.0`, `CheckboxGroup` and `HelpText`
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.7.0
+  - @marigold/icons@1.2.26
+
+## 6.6.4
+
+### Patch Changes
+
+- [#3466](https://github.com/marigold-ui/marigold/pull/3466) [`174f534b5`](https://github.com/marigold-ui/marigold/commit/174f534b5bcb5c3d34284d7cdeb5bf6fd372a350) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: adjust core switch
+
+- [#3468](https://github.com/marigold-ui/marigold/pull/3468) [`cac5ef60d`](https://github.com/marigold-ui/marigold/commit/cac5ef60d36c2c7c0eea5cc9096a849315eefeed) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Adding selected prop over Switch component
+
+- Updated dependencies []:
+  - @marigold/system@6.6.4
+  - @marigold/icons@1.2.25
+
+## 6.6.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.6.3
+  - @marigold/icons@1.2.24
+
+## 6.6.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.6.2
+  - @marigold/icons@1.2.23
+
+## 6.6.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@6.6.1
+  - @marigold/icons@1.2.22
+
+## 6.6.0
+
+### Minor Changes
+
+- [#3452](https://github.com/marigold-ui/marigold/pull/3452) [`43e792d6a`](https://github.com/marigold-ui/marigold/commit/43e792d6a55b60429a208e206f00cdab5bd23a9f) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: expose `RouterProvider`
+
+- [#3416](https://github.com/marigold-ui/marigold/pull/3416) [`7704debbe`](https://github.com/marigold-ui/marigold/commit/7704debbea339917eedf8182e2e5986798b34aff) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - [DST-38]: Implement mobile optimization for `DatePicker`
+
+### Patch Changes
+
+- [#3448](https://github.com/marigold-ui/marigold/pull/3448) [`547fca472`](https://github.com/marigold-ui/marigold/commit/547fca47212de69da8366988d2e7e1d29c3411ca) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: nested lists
+
+- [#3455](https://github.com/marigold-ui/marigold/pull/3455) [`4cb379e5a`](https://github.com/marigold-ui/marigold/commit/4cb379e5ac0a5ba36cc8de55a73b901c701f80c6) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: link props type
+
+- [#3451](https://github.com/marigold-ui/marigold/pull/3451) [`f2b764380`](https://github.com/marigold-ui/marigold/commit/f2b764380c3775c640b56e2a2fdd838762699318) Thanks [@sebald](https://github.com/sebald)! - fix: `<Checkbox>` "checked" state
+
+- Updated dependencies [[`7704debbe`](https://github.com/marigold-ui/marigold/commit/7704debbea339917eedf8182e2e5986798b34aff)]:
+  - @marigold/system@6.6.0
+  - @marigold/icons@1.2.21
+
 ## 6.5.1
 
 ### Patch Changes

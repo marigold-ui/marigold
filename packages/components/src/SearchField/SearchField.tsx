@@ -1,16 +1,40 @@
-import { ReactElement, RefObject, forwardRef, useRef } from 'react';
+import { ReactElement, forwardRef } from 'react';
+import type RAC from 'react-aria-components';
+import { SearchField } from 'react-aria-components';
 
-import { useSearchField } from '@react-aria/searchfield';
+import { WidthProp } from '@marigold/system';
 
-import { useSearchFieldState } from '@react-stately/searchfield';
+import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
+import { Input } from '../Input/_Input';
 
-import { SpectrumSearchFieldProps } from '@react-types/searchfield';
-import { TextFieldRef } from '@react-types/textfield';
+// Props
+// ---------------
+type RemovedProps =
+  | 'className'
+  | 'style'
+  | 'children'
+  | 'isDisabled'
+  | 'isRequired'
+  | 'isInvalid'
+  | 'isReadOnly'
+  | 'value'
+  | 'defaultValue';
 
-import { WidthProp, useStateProps } from '@marigold/system';
-
-import { FieldBase } from '../FieldBase';
-import { Input } from '../Input';
+export interface SearchFieldProps
+  extends Omit<RAC.SearchFieldProps, RemovedProps>,
+    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+  icon?: ReactElement;
+  action?: ReactElement;
+  variant?: string;
+  size?: string;
+  width?: WidthProp['width'];
+  error?: RAC.SearchFieldProps['isInvalid'];
+  disabled?: RAC.SearchFieldProps['isDisabled'];
+  required?: RAC.SearchFieldProps['isRequired'];
+  readOnly?: RAC.SearchFieldProps['isReadOnly'];
+  value?: string;
+  defaultValue?: string;
+}
 
 const SearchIcon = (props: { className?: string }) => (
   <svg
@@ -25,76 +49,25 @@ const SearchIcon = (props: { className?: string }) => (
   </svg>
 );
 
-export interface SearchFieldInterface
-  extends Omit<
-    SpectrumSearchFieldProps,
-    'isDisabled' | 'isRequired' | 'isReadOnly'
-  > {
-  action?: ReactElement | null;
-  error?: boolean;
-  disabled?: boolean;
-  required?: boolean;
-  readOnly?: boolean;
-  variant?: string;
-  size?: string;
-  width?: WidthProp['width'];
-}
+const _SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
+  (
+    { disabled, required, readOnly, error, action, ...rest }: SearchFieldProps,
+    ref
+  ) => {
+    const props: RAC.SearchFieldProps = {
+      ...rest,
+      isDisabled: disabled,
+      isRequired: required,
+      isReadOnly: readOnly,
+      isInvalid: error,
+    };
 
-const SearchField = (
-  {
-    disabled,
-    required,
-    readOnly,
-    width,
-    error,
-    action,
-    ...rest
-  }: SearchFieldInterface,
-  ref: RefObject<TextFieldRef>
-) => {
-  const props = {
-    ...rest,
-    isDiabled: disabled,
-    isRequired: required,
-    isReadOnly: readOnly,
-  };
-  const state = useSearchFieldState(props);
-  const inputRef = useRef(null);
-  const { labelProps, descriptionProps, errorMessageProps, inputProps } =
-    useSearchField(props, state, inputRef);
+    return (
+      <FieldBase as={SearchField} {...props}>
+        <Input ref={ref} icon={<SearchIcon />} />
+      </FieldBase>
+    );
+  }
+);
 
-  const stateProps = useStateProps({
-    error,
-    required,
-  });
-
-  return (
-    <FieldBase
-      label={props.label}
-      labelProps={labelProps}
-      description={props.description}
-      descriptionProps={descriptionProps}
-      error={error}
-      errorMessage={props.errorMessage}
-      errorMessageProps={{ ...errorMessageProps, 'aria-invalid': error }}
-      disabled={disabled}
-      width={width}
-      stateProps={stateProps}
-    >
-      <Input
-        /**
-         * We use `size` for styles which is a string, not like
-         * the regular HTML attribute, which is a number
-         */
-        {...(inputProps as any)}
-        ref={ref ? ref : inputRef}
-        icon={<SearchIcon />}
-        action={action}
-        disabled={disabled}
-      />
-    </FieldBase>
-  );
-};
-
-let _SearchField = forwardRef(SearchField);
 export { _SearchField as SearchField };

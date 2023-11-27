@@ -1,24 +1,10 @@
-import {
-  Children,
-  HTMLAttributes,
-  ReactElement,
-  ReactNode,
-  cloneElement,
-  isValidElement,
-  useRef,
-} from 'react';
-
-import { useButton } from '@react-aria/button';
-import { useDialog } from '@react-aria/dialog';
-
-import type { AriaDialogProps } from '@react-types/dialog';
+import { useContext } from 'react';
+import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
 
-import { Header } from '../Header';
-import { Headline } from '../Headline';
-import { DialogContextProps, useDialogContext } from './Context';
-import { DialogController } from './DialogController';
+import { Headline, HeadlineProps } from '../Headline';
 import { DialogTrigger } from './DialogTrigger';
 
 // Close Button
@@ -28,16 +14,7 @@ interface CloseButtonProps {
 }
 
 const CloseButton = ({ className }: CloseButtonProps) => {
-  const ref = useRef<HTMLButtonElement>(null);
-  const { close } = useDialogContext();
-
-  const { buttonProps } = useButton(
-    {
-      onPress: () => close?.(),
-    },
-    ref
-  );
-
+  const { close } = useContext(OverlayTriggerStateContext);
   return (
     <div className="flex justify-end">
       <button
@@ -45,8 +22,7 @@ const CloseButton = ({ className }: CloseButtonProps) => {
           'h-4 w-4 cursor-pointer border-none p-0 leading-normal outline-0',
           className
         )}
-        ref={ref}
-        {...buttonProps}
+        onClick={close}
       >
         <svg viewBox="0 0 20 20" fill="currentColor">
           <path
@@ -60,79 +36,57 @@ const CloseButton = ({ className }: CloseButtonProps) => {
   );
 };
 
-/**
- * Search for a direct child that can act as title to improve accessibility.
- */
-const addTitleProps = (
-  children: ReactNode,
-  titleProps: HTMLAttributes<HTMLElement>
-) => {
-  const childs = Children.toArray(children);
+// Dialog Headline
+// ---------------
+interface DialogHeadlineProps extends Omit<HeadlineProps, 'slot'> {}
 
-  const titleIndex = childs.findIndex(
-    child =>
-      isValidElement(child) &&
-      (child.type === Header || child.type === Headline)
-  );
-
-  // No child found that can act as title
-  if (titleIndex < 0) {
-    console.warn(
-      'No child in <Dialog> found that can act as title for accessibility. Please add a <Header> or <Headline> as direct child.'
-    );
-    return children;
-  }
-
-  // If we found a child, add the titleProps to it
-  const titleChild = cloneElement(
-    childs[titleIndex] as ReactElement<any>,
-    titleProps
-  );
-  childs.splice(titleIndex, 1, titleChild);
-
-  return childs;
-};
+const DialogHeadline = ({ children }: DialogHeadlineProps) => (
+  <Headline slot="title">{children}</Headline>
+);
 
 // Props
 // ---------------
-export interface DialogChildProps {
-  close: DialogContextProps['close'];
-  titleProps: HTMLAttributes<HTMLElement>;
-}
-
-export interface DialogProps extends AriaDialogProps {
-  children?: ReactNode | ((props: DialogChildProps) => ReactNode);
+export interface DialogProps
+  extends Omit<RAC.DialogProps, 'className' | 'style'> {
   variant?: string;
   size?: string;
   closeButton?: boolean;
+  isNonModal?: boolean;
 }
 
 // Component
 // ---------------
-export const Dialog = ({
-  children,
+const _Dialog = ({
   variant,
   size,
   closeButton,
+  isNonModal,
   ...props
 }: DialogProps) => {
-  const ref = useRef(null);
-  const { close } = useDialogContext();
-  const { dialogProps, titleProps } = useDialog(props, ref);
-
   const classNames = useClassNames({ component: 'Dialog', variant, size });
+  let state = useContext(OverlayTriggerStateContext);
 
+  let children = props.children;
+
+  if (typeof children === 'function') {
+    children = children({
+      close: state?.close || (() => {}),
+    });
+  }
   return (
-    <div className={classNames.container} {...dialogProps}>
-      {closeButton && <CloseButton className={classNames.closeButton} />}
-      {typeof children === 'function'
-        ? children({ close, titleProps })
-        : props['aria-labelledby']
-        ? children
-        : addTitleProps(children, titleProps)}
-    </div>
+    <Dialog
+      {...props}
+      className={cn('relative outline-none', classNames.container)}
+    >
+      <>
+        {closeButton && <CloseButton className={classNames.closeButton} />}
+        {children}
+      </>
+    </Dialog>
   );
 };
 
-Dialog.Trigger = DialogTrigger;
-Dialog.Controller = DialogController;
+_Dialog.Trigger = DialogTrigger;
+_Dialog.Headline = DialogHeadline;
+
+export { _Dialog as Dialog };

@@ -3,7 +3,7 @@ import { createContext, useContext } from 'react';
 export const TabContext = createContext<{
   classNames: {
     container: string;
-    tabs: string;
+    tabsList: string;
     tab: string;
     tabpanel: string;
   };

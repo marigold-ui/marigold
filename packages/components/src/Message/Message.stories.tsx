@@ -11,7 +11,7 @@ const meta = {
       control: {
         type: 'radio',
       },
-      options: ['info', 'warning', 'error'],
+      options: ['success', 'info', 'warning', 'error'],
       description: 'The variants of the message',
     },
     messageTitle: {
@@ -42,11 +42,11 @@ export const Basic: Story = {
 };
 
 export const MultiLineTitle: Story = {
-  render: () => (
+  render: args => (
     <div className="w-60">
       <Message
         messageTitle="Hey! You! I am an info box! Please notice me, it might help you!"
-        variant="info"
+        variant={args.variant}
       >
         <Text>I am really not that good at righting copy texts, sorry.</Text>
       </Message>

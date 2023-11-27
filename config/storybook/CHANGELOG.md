@@ -1,5 +1,86 @@
 # @marigold/storybook-config
 
+## 1.1.21
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/components@6.9.1
+  - @marigold/theme-b2b@25.7.1
+  - @marigold/theme-core@25.7.1
+
+## 1.1.20
+
+### Patch Changes
+
+- Updated dependencies [[`79eaec78c`](https://github.com/marigold-ui/marigold/commit/79eaec78c8c1a5d99d4ad09f93f8b2ca39aaade2), [`c068869a9`](https://github.com/marigold-ui/marigold/commit/c068869a98f3c7ceb91bd04b59342668d546f589), [`a16541314`](https://github.com/marigold-ui/marigold/commit/a165413142b6d64f9995678498c6d68091ce526e), [`7507ac7f5`](https://github.com/marigold-ui/marigold/commit/7507ac7f52d9a6d0826534b4035bb0dce7f074aa), [`729158c87`](https://github.com/marigold-ui/marigold/commit/729158c8799205cdc6a733cd01f6a2239850ac2a), [`17ee74d46`](https://github.com/marigold-ui/marigold/commit/17ee74d4686e003b133dab2598eb2bbb6d87e948), [`f19a502d4`](https://github.com/marigold-ui/marigold/commit/f19a502d4badd559a27e86e6e74747dfccb0a6c2), [`75bad8b84`](https://github.com/marigold-ui/marigold/commit/75bad8b84c127cd38a30f70af26795aa8e8d4ae0)]:
+  - @marigold/components@6.9.0
+  - @marigold/theme-b2b@25.7.0
+  - @marigold/theme-core@25.7.0
+
+## 1.1.19
+
+### Patch Changes
+
+- Updated dependencies [[`30b94e542`](https://github.com/marigold-ui/marigold/commit/30b94e542fe3d60676b2e00868e48b28e8c12ff6), [`c76bd48a2`](https://github.com/marigold-ui/marigold/commit/c76bd48a2f12b488f58de09e38c4d78da62c2e3b), [`3a21b538a`](https://github.com/marigold-ui/marigold/commit/3a21b538a5f72fb021bf7cb023f565d6e84e2ea7), [`4c76cf114`](https://github.com/marigold-ui/marigold/commit/4c76cf114adf3c2485518f386ebd14c0415df3ac), [`84c427dec`](https://github.com/marigold-ui/marigold/commit/84c427dec67be6ef488ece0afb179dc95c403447)]:
+  - @marigold/components@6.8.0
+  - @marigold/theme-b2b@25.6.2
+  - @marigold/theme-core@25.6.2
+
+## 1.1.18
+
+### Patch Changes
+
+- Updated dependencies [[`22446fa66`](https://github.com/marigold-ui/marigold/commit/22446fa66d38b34d975ed88b4dcd0b1ca7190a57)]:
+  - @marigold/components@6.7.0
+  - @marigold/theme-b2b@25.6.1
+  - @marigold/theme-core@25.6.1
+
+## 1.1.17
+
+### Patch Changes
+
+- Updated dependencies [[`174f534b5`](https://github.com/marigold-ui/marigold/commit/174f534b5bcb5c3d34284d7cdeb5bf6fd372a350), [`4f6d1c78d`](https://github.com/marigold-ui/marigold/commit/4f6d1c78d5b5155e09f7f92cf78b83a614af13d9), [`cac5ef60d`](https://github.com/marigold-ui/marigold/commit/cac5ef60d36c2c7c0eea5cc9096a849315eefeed)]:
+  - @marigold/components@6.6.4
+  - @marigold/theme-core@25.6.0
+  - @marigold/theme-b2b@25.6.0
+
+## 1.1.16
+
+### Patch Changes
+
+- Updated dependencies [[`fd0e1d6d0`](https://github.com/marigold-ui/marigold/commit/fd0e1d6d06f6860932e0b9a9b156b8adc9087b72)]:
+  - @marigold/theme-core@25.5.3
+  - @marigold/components@6.6.3
+  - @marigold/theme-b2b@25.5.3
+
+## 1.1.15
+
+### Patch Changes
+
+- Updated dependencies [[`611956377`](https://github.com/marigold-ui/marigold/commit/61195637796327c148597fa4b495c43e24e3fe77)]:
+  - @marigold/theme-core@25.5.2
+  - @marigold/components@6.6.2
+  - @marigold/theme-b2b@25.5.2
+
+## 1.1.14
+
+### Patch Changes
+
+- Updated dependencies [[`ea9d457a4`](https://github.com/marigold-ui/marigold/commit/ea9d457a4c762d740d6c249ca4907b76cbe80f25)]:
+  - @marigold/theme-core@25.5.1
+  - @marigold/components@6.6.1
+  - @marigold/theme-b2b@25.5.1
+
+## 1.1.13
+
+### Patch Changes
+
+- Updated dependencies [[`547fca472`](https://github.com/marigold-ui/marigold/commit/547fca47212de69da8366988d2e7e1d29c3411ca), [`4cb379e5a`](https://github.com/marigold-ui/marigold/commit/4cb379e5ac0a5ba36cc8de55a73b901c701f80c6), [`f3bbad3e7`](https://github.com/marigold-ui/marigold/commit/f3bbad3e794f0c2474c5fbe0eea2263f399a227a), [`43e792d6a`](https://github.com/marigold-ui/marigold/commit/43e792d6a55b60429a208e206f00cdab5bd23a9f), [`7704debbe`](https://github.com/marigold-ui/marigold/commit/7704debbea339917eedf8182e2e5986798b34aff), [`f2b764380`](https://github.com/marigold-ui/marigold/commit/f2b764380c3775c640b56e2a2fdd838762699318)]:
+  - @marigold/components@6.6.0
+  - @marigold/theme-b2b@25.5.0
+  - @marigold/theme-core@25.5.0
+
 ## 1.1.12
 
 ### Patch Changes

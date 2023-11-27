@@ -2,8 +2,8 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 
 import { createPreset } from '@marigold/theme-preset';
 
+import { colors } from './_tokens';
 import { screens } from './screens';
-import { colors } from './tokens';
 
 export type Preset = ReturnType<typeof createPreset>;
 

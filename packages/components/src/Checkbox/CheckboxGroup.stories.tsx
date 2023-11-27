@@ -62,6 +62,7 @@ const meta = {
     },
   },
   args: {
+    label: 'This is a label',
     readOnly: false,
     disabled: false,
     children: 'This is a Checkbox',
@@ -105,7 +106,7 @@ export const Error: Story = {
       <>
         <CheckboxGroup
           onChange={setSelected}
-          error
+          description="my desc"
           errorMessage="This is an error"
           {...args}
         >

@@ -14,7 +14,7 @@ import { OverlayTriggerState } from '@react-stately/overlays';
 import { StyleProps } from '@react-types/shared';
 
 import { Overlay } from './Overlay';
-import { Underlay } from './Underlay';
+import { Underlay } from './_Underlay';
 
 // Props
 // ---------------
