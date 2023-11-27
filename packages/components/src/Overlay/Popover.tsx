@@ -1,89 +1,47 @@
-import { ReactNode, RefObject, forwardRef, useRef } from 'react';
-
-import { FocusScope } from '@react-aria/focus';
-import {
-  AriaPopoverProps,
-  DismissButton,
-  usePopover,
-} from '@react-aria/overlays';
-
-import { OverlayTriggerState } from '@react-stately/overlays';
+import { Children, ReactNode, forwardRef } from 'react';
+import type RAC from 'react-aria-components';
+import { Popover } from 'react-aria-components';
 
 import { useClassNames } from '@marigold/system';
 
-import { Overlay } from './Overlay';
-import { Underlay } from './Underlay';
+import { Dialog } from '../Dialog/Dialog';
 
+// Props
+// ---------------
 export interface PopoverProps
-  extends Pick<AriaPopoverProps, 'triggerRef' | 'scrollRef' | 'isNonModal'> {
-  keyboardDismissDisabled?: AriaPopoverProps['isKeyboardDismissDisabled'];
-  state: OverlayTriggerState;
-  children: ReactNode;
+  extends Omit<
+    RAC.PopoverProps,
+    'isOpen' | 'isKeyboardDismissDisabled' | 'styles' | 'className'
+  > {
+  keyboardDismissDisabled?: boolean;
+  open?: boolean;
 }
 
-interface PopoverWrapperProps extends PopoverProps {}
-
-export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
-  (props, ref) => {
-    const fallbackRef = useRef(null);
-    const popoverRef = ref || fallbackRef;
-    let { children, state, ...otherProps } = props;
-    return (
-      <Overlay open={state.isOpen} {...otherProps}>
-        <PopoverWrapper ref={popoverRef} {...props}>
-          {children}
-        </PopoverWrapper>
-      </Overlay>
-    );
-  }
-);
-
-const PopoverWrapper = forwardRef(
-  (
-    {
-      children,
-      isNonModal,
-      state,
-      keyboardDismissDisabled,
-      ...props
-    }: PopoverWrapperProps,
-    ref: RefObject<HTMLDivElement>
-  ) => {
-    const { popoverProps, underlayProps, placement } = usePopover(
-      {
-        ...props,
-        isNonModal,
-        isKeyboardDismissDisabled: keyboardDismissDisabled,
-        popoverRef: ref,
-        placement: 'bottom left',
-      },
-      state
-    );
+// Component
+// ---------------
+const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
+  ({ keyboardDismissDisabled, placement, open, ...rest }, ref) => {
+    const props: RAC.PopoverProps = {
+      isKeyboardDismissDisabled: keyboardDismissDisabled,
+      isOpen: open,
+      placement,
+      ...rest,
+    };
     const classNames = useClassNames({
       component: 'Popover',
       variant: placement,
     });
-
+    const childrenArr = Children.toArray(props.children as ReactNode);
+    const [dialogTrigger, children] = childrenArr;
     return (
-      <FocusScope restoreFocus>
-        {!isNonModal && <Underlay {...underlayProps} />}
-        <div
-          {...popoverProps}
-          className={classNames}
-          style={{
-            ...popoverProps.style,
-            minWidth: props.triggerRef.current
-              ? (props.triggerRef.current as HTMLElement).offsetWidth
-              : undefined,
-          }}
-          ref={ref}
-          role="presentation"
-        >
-          {!isNonModal && <DismissButton onDismiss={state.close} />}
-          {children}
-          <DismissButton onDismiss={state.close} />
-        </div>
-      </FocusScope>
+      <Dialog.Trigger isNonModal>
+        {dialogTrigger}
+        <Popover ref={ref} {...props} className={classNames}>
+          <Dialog isNonModal>{children}</Dialog>
+        </Popover>
+      </Dialog.Trigger>
     );
   }
 );
+
+export { _Popover as Popover };
