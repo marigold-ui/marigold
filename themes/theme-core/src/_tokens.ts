@@ -102,6 +102,9 @@ export const colors = {
 
     // Status
     info: '#008',
+    success: '#00b800',
+    warning: '#efa703',
+    error: '#ff3333',
   },
 
   // Border
