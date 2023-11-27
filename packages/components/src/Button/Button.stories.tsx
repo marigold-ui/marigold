@@ -86,7 +86,7 @@ export const WithIcon: Story = {
 };
 
 export const OnPress: Story = {
-  render: args => <Button {...args} onPress={(e: any) => console.log(e)} />,
+  render: args => <Button {...args} onPress={() => alert('Button clicked.')} />,
 };
 
 export const FullWidth: Story = {
