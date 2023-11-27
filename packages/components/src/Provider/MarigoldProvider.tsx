@@ -30,7 +30,9 @@ export function MarigoldProvider<T extends Theme>({
   return (
     <ThemeProvider theme={theme}>
       {isTopLevel ? (
-        <OverlayProvider>{children}</OverlayProvider>
+        <div className={cn(root ? root : '', className)}>
+          <OverlayProvider>{children}</OverlayProvider>
+        </div>
       ) : (
         <div className={cn(root ? root : '', className)}>{children}</div>
       )}
