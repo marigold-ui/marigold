@@ -39,7 +39,6 @@ const meta = {
     },
   },
   args: {
-    variant: '',
     defaultExpandedKeys: ['1'],
     selectionMode: 'single',
   },
