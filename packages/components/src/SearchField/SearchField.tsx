@@ -49,7 +49,7 @@ const SearchIcon = (props: { className?: string }) => (
   </svg>
 );
 
-export const _SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
+const _SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
   (
     { disabled, required, readOnly, error, action, ...rest }: SearchFieldProps,
     ref

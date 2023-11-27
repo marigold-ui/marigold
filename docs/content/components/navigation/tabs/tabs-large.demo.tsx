@@ -1,15 +1,22 @@
 import { Tabs } from '@marigold/components';
 
 export default () => (
-  <Tabs size="large">
-    <Tabs.Item key={'1'} title="tab1">
-      tab-1 content
-    </Tabs.Item>
-    <Tabs.Item key={'2'} title="tab2">
-      tab-2 content
-    </Tabs.Item>
-    <Tabs.Item key={'3'} title="tab3">
-      tab-3 content
-    </Tabs.Item>
+  <Tabs aria-label="tabs" size="large">
+    <Tabs.List aria-label="Input settings">
+      <Tabs.Item id="mouse">Mouse Settings</Tabs.Item>
+      <Tabs.Item id="keyboard">Keyboard Settings</Tabs.Item>
+      <Tabs.Item id="gamepad">Gamepad Settings</Tabs.Item>
+    </Tabs.List>
+    <Tabs.TabPanel id="mouse">
+      Adjust the sensitivity, acceleration, and button assignments for your
+      mouse.
+    </Tabs.TabPanel>
+    <Tabs.TabPanel id="keyboard">
+      Customize the key bindings and input behavior for your keyboard.
+    </Tabs.TabPanel>
+    <Tabs.TabPanel id="gamepad">
+      Configure the controls, dead zones, and vibration settings for your
+      gamepad.
+    </Tabs.TabPanel>
   </Tabs>
 );
