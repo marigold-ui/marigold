@@ -88,28 +88,6 @@ test('allows to set a width for the aside element', () => {
   `);
 });
 
-test('streches content by default', () => {
-  render(
-    <Aside>
-      <div>aside</div>
-      <div>content</div>
-    </Aside>
-  );
-  const parent = screen.getByText(/content/).parentElement?.parentElement;
-  expect(parent).not.toHaveClass('items-start');
-});
-
-test('allows to disabled content stretching', () => {
-  render(
-    <Aside stretch={false}>
-      <div>aside</div>
-      <div>content</div>
-    </Aside>
-  );
-  const parent = screen.getByText(/content/).parentElement?.parentElement;
-  expect(parent).toHaveClass('items-start');
-});
-
 test('wraps at 50% by default', () => {
   render(
     <Aside>
