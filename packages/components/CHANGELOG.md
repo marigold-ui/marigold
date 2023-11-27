@@ -1,5 +1,25 @@
 # @marigold/components
 
+## 6.10.0
+
+### Minor Changes
+
+- [#3501](https://github.com/marigold-ui/marigold/pull/3501) [`14f5d5d30`](https://github.com/marigold-ui/marigold/commit/14f5d5d301f6e2dd49667439ecda54c2ce7d08a7) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Migrate Tabs to RAC Tabs
+
+- [#3514](https://github.com/marigold-ui/marigold/pull/3514) [`5a3d71cae`](https://github.com/marigold-ui/marigold/commit/5a3d71cae1b4243db94ff997313ceada2fa3bfeb) Thanks [@sebald](https://github.com/sebald)! - feat([DST-249]): Add feedback variants to `<Badge>`
+
+### Patch Changes
+
+- [#3512](https://github.com/marigold-ui/marigold/pull/3512) [`213d32f5b`](https://github.com/marigold-ui/marigold/commit/213d32f5b79ee9063e30fbe52c064560f771df21) Thanks [@sebald](https://github.com/sebald)! - fix([DST-243]): Fix `<Listbox>` overflowing the `<Popover>`
+
+- [#3515](https://github.com/marigold-ui/marigold/pull/3515) [`aac41db30`](https://github.com/marigold-ui/marigold/commit/aac41db30bfb7613bf9ba537d1030cd5c8d1baa0) Thanks [@sebald](https://github.com/sebald)! - fix: SearchField is missing from export index
+
+- [#3516](https://github.com/marigold-ui/marigold/pull/3516) [`71eb13b30`](https://github.com/marigold-ui/marigold/commit/71eb13b30b3d94a8bacb1f69f457c13d7e33fad2) Thanks [@aromko](https://github.com/aromko)! - chore: remove some unnecessary exports
+
+- Updated dependencies [[`14f5d5d30`](https://github.com/marigold-ui/marigold/commit/14f5d5d301f6e2dd49667439ecda54c2ce7d08a7)]:
+  - @marigold/system@6.10.0
+  - @marigold/icons@1.2.30
+
 ## 6.9.1
 
 ### Patch Changes
