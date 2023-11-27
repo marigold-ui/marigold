@@ -7,7 +7,6 @@ export interface AsideProps extends GapSpaceProp {
   children: [ReactElement, ReactElement];
   side?: 'left' | 'right';
   sideWidth?: string;
-  stretch?: boolean;
   wrap?: NonZeroPercentage;
 }
 
@@ -24,7 +23,6 @@ export const Aside = ({
   sideWidth,
   space = 0,
   side = 'left',
-  stretch = true,
   wrap = '50%',
 }: AsideProps) => {
   const [left, right] = Children.toArray(children);
@@ -34,13 +32,7 @@ export const Aside = ({
   };
 
   return (
-    <div
-      className={cn(
-        'flex flex-wrap',
-        gapSpace[space],
-        !stretch && 'items-start'
-      )}
-    >
+    <div className={cn('flex flex-wrap', gapSpace[space])}>
       <div
         className={classNames[side === 'left' ? 'aside' : 'content']}
         style={vars[side === 'left' ? 'aside' : 'content']}
