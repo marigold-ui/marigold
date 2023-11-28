@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 6.10.0
+
+### Minor Changes
+
+- [#3501](https://github.com/marigold-ui/marigold/pull/3501) [`14f5d5d30`](https://github.com/marigold-ui/marigold/commit/14f5d5d301f6e2dd49667439ecda54c2ce7d08a7) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Migrate Tabs to RAC Tabs
+
 ## 6.9.1
 
 ## 6.9.0
