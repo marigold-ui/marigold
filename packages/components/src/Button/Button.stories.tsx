@@ -31,9 +31,14 @@ const meta = {
     },
     size: {
       control: {
-        type: 'text',
+        type: 'radio',
       },
       description: 'Size of the button',
+      options: ['default', 'small'],
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'default' },
+      },
     },
     variant: {
       control: {
@@ -66,6 +71,7 @@ const meta = {
   args: {
     variant: 'primary',
     children: 'Click me!',
+    size: 'default',
   },
 } satisfies Meta<typeof Button>;
 
