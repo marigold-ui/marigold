@@ -17,16 +17,6 @@ const meta = {
         defaultValue: { summary: 'Label' },
       },
     },
-    required: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'Required',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
-    },
     width: {
       control: {
         type: 'text',

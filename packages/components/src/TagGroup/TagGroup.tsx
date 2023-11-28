@@ -16,8 +16,6 @@ export interface TagGroupProps
   variant?: string;
   size?: string;
   width?: WidthProp['width'];
-  required?: boolean;
-  error?: boolean;
   allowsRemoving?: boolean;
 }
 
@@ -25,21 +23,16 @@ export interface TagGroupProps
 // ---------------
 const _TagGroup = ({
   width,
-  required,
   items,
   children,
   variant,
   size,
   ...rest
 }: TagGroupProps) => {
-  const props = {
-    isRequired: required,
-    ...rest,
-  };
   const classNames = useClassNames({ component: 'Tag', variant, size });
 
   return (
-    <FieldBase as={TagGroup} {...props}>
+    <FieldBase as={TagGroup} {...rest}>
       <TagList items={items} className={classNames.listItems}>
         {children}
       </TagList>
