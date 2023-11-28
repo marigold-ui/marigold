@@ -2,8 +2,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { Header } from '../Header/_Header';
-// import { OldListBox } from './ListBox';
+import { Header } from '../Header';
 import { ListBox } from './ListBox';
 import { Item } from './ListBoxOption';
 import { Section } from './ListBoxSection';
