@@ -1,14 +1,10 @@
 /* eslint-disable testing-library/no-node-access */
 import { screen } from '@testing-library/react';
-import { forwardRef } from 'react';
-
-import { OverlayProvider } from '@react-aria/overlays';
-import { useObjectRef } from '@react-aria/utils';
-
-import { useOverlayTriggerState } from '@react-stately/overlays';
 
 import { Theme, cva } from '@marigold/system';
 
+import { Button } from '../Button';
+import { Text } from '../Text';
 import { setup } from '../test.utils';
 import { Popover } from './Popover';
 
@@ -23,46 +19,49 @@ const theme: Theme = {
       },
     }),
     Underlay: cva(),
+    Dialog: {
+      closeButton: cva('p-3'),
+      container: cva('p-2'),
+    },
+    Button: cva('bg-red-300'),
+    Text: cva('text-black-300'),
   },
 };
-interface TestPopoverProps {
-  open: boolean;
-}
-const TestPopover = forwardRef<HTMLDivElement, TestPopoverProps>(
-  ({ open }, ref) => {
-    const popoverRef = useObjectRef(ref);
-    const state = useOverlayTriggerState({ isOpen: open });
-
-    return (
-      <OverlayProvider>
-        <Popover triggerRef={popoverRef} state={state}>
-          <div>something</div>
-        </Popover>
-      </OverlayProvider>
-    );
-  }
-);
 
 const { render } = setup({ theme });
 
 test('renders open popover', () => {
-  render(<TestPopover open={true} />);
+  render(
+    <Popover data-testid="popover" open>
+      <Button>open dialog</Button>
+      <Text>this is popover content </Text>
+    </Popover>
+  );
 
-  const popover = screen.getByRole('presentation');
+  const popover = screen.getByTestId('popover');
   expect(popover).toBeInTheDocument();
 });
 
 test('popover is per default closed', () => {
-  render(<TestPopover open={false} />);
-
-  const popover = screen.queryByRole('presentation');
+  render(
+    <Popover data-testid="popover">
+      <Button>open dialog</Button>
+      <Text>this is popover content </Text>
+    </Popover>
+  );
+  const popover = screen.queryByTestId('popover');
   expect(popover).not.toBeInTheDocument();
 });
 
 test('popover has children', () => {
-  render(<TestPopover open={true} />);
+  render(
+    <Popover data-testid="popover" open>
+      <Button>open dialog</Button>
+      <Text>this is popover content </Text>
+    </Popover>
+  );
 
-  const popover = screen.getByRole('presentation');
+  const popover = screen.getByTestId('popover');
   expect(popover).toBeInTheDocument();
   expect(popover.firstChild).toBeInTheDocument();
 });

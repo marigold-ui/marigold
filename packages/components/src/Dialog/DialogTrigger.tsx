@@ -13,6 +13,7 @@ export interface DialogTriggerProps
   open?: boolean;
   dismissable?: boolean;
   keyboardDismissable?: boolean;
+  isNonModal?: boolean;
 }
 // Component
 // ---------------
@@ -21,6 +22,7 @@ const _DialogTrigger = ({
   open,
   dismissable,
   keyboardDismissable,
+  isNonModal,
   ...rest
 }: DialogTriggerProps) => {
   const props: RAC.DialogTriggerProps = {
@@ -32,6 +34,8 @@ const _DialogTrigger = ({
   const hasDialogTrigger = (dialogTrigger as any).type !== Dialog;
   const currentDialog =
     children.length < 2 ? !hasDialogTrigger && dialogTrigger : dialog;
+  if (isNonModal)
+    return <DialogTrigger {...props}>{props.children}</DialogTrigger>;
   return (
     <DialogTrigger {...props}>
       {hasDialogTrigger && dialogTrigger}
