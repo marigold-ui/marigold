@@ -15,7 +15,8 @@ const meta = {
       table: {
         defaultValue: { summary: '0' },
       },
-      description: 'Value representing the space between the two elements',
+      description:
+        'Value representing the space between the two elements, for that we use tailwind tokens.',
     },
     side: {
       control: {
@@ -28,25 +29,15 @@ const meta = {
       },
       description: 'Which element to treat as the sidebar',
     },
-    stretch: {
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: true },
-      },
-      description: 'Make the adjacent elements adopt their natural height',
-    },
     sideWidth: {
       control: {
         type: 'text',
       },
       table: {
         type: { summary: 'string' },
-        defaultValue: { summary: 'xxlarge' },
+        defaultValue: { summary: '150px' },
       },
-      description: `Represents the width of the sidebar when adjacent. If not set (undefined) it defaults to the sidebar's content width`,
+      description: `Represents the width of the sidebar when adjacent. If not set (undefined) it defaults to the sidebar's content width, we use pixel values for that.`,
     },
     wrap: {
       control: {
@@ -64,8 +55,7 @@ const meta = {
     side: 'left',
     space: '0',
     wrap: '50%',
-    stretch: true,
-    sideWidth: 'xxlarges',
+    sideWidth: '150px',
   },
 } satisfies Meta;
 
