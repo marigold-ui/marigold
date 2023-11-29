@@ -1,10 +1,13 @@
 import { Key } from 'react';
-import { Menu } from 'react-aria-components';
+import { Menu, MenuTrigger } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
 import { useClassNames } from '@marigold/system';
 
+import { Button } from '../Button';
+import { Popover } from '../Overlay/Popover';
 import { MenuItem } from './MenuItem';
+import { MenuSection } from './MenuSection';
 
 // Props
 // ---------------
@@ -14,6 +17,7 @@ export interface MenuProps extends Omit<RAC.MenuProps<object>, RemovedProps> {
   variant?: string;
   size?: string;
   onAction?: (key: Key) => void;
+  label?: string;
 }
 
 // Component
@@ -24,18 +28,24 @@ const _Menu = ({
   children,
   items,
   onAction,
+  label,
   ...props
 }: MenuProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
+
   return (
-    <Menu {...props} className={classNames.container} items={items}>
-      {item => (
-        <MenuItem className={classNames.item} onAction={onAction} item={item} />
-      )}
-    </Menu>
+    <MenuTrigger {...props}>
+      <Button variant="menu">{label}</Button>
+      <Popover>
+        <Menu {...props} className={classNames.container}>
+          {children}
+        </Menu>
+      </Popover>
+    </MenuTrigger>
   );
 };
 
 export { _Menu as Menu };
 
 _Menu.Item = MenuItem;
+_Menu.Section = MenuSection;

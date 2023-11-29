@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from '@storybook/addons';
 import type { Meta, StoryObj } from '@storybook/react';
+import { Popover } from 'react-aria-components';
 
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
-import { Menu } from './_Menu';
+import { Menu } from './Menu';
 
 const meta = {
   title: 'Components/Menu',
@@ -41,17 +42,12 @@ export const Basic: Story = {
     const [selected, setSelected] = useState<string | number>('');
     return (
       <>
-        <Menu.Trigger {...args}>
-          <Button variant="menu" size="small">
-            Choose Menu
-          </Button>
-          <Menu onAction={setSelected}>
-            <Menu.Item key="burger">🍔 Burger</Menu.Item>
-            <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-            <Menu.Item key="salad">🥗 Salad</Menu.Item>
-            <Menu.Item key="fries">🍟 Fries</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu onAction={setSelected}>
+          <Menu.Item key="burger">🍔 Burger</Menu.Item>
+          <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+          <Menu.Item key="salad">🥗 Salad</Menu.Item>
+          <Menu.Item key="fries">🍟 Fries</Menu.Item>
+        </Menu>
         <hr />
         <pre>selected: {selected}</pre>
       </>
@@ -61,7 +57,7 @@ export const Basic: Story = {
 
 export const MenuOnly: Story = {
   render: () => (
-    <Menu aria-label="Only a Menu">
+    <Menu label="Only a Menu">
       <Menu.Item key="burger">🍔 Burger</Menu.Item>
       <Menu.Section title="Fruits">
         <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
