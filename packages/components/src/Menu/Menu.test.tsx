@@ -14,7 +14,7 @@ import { Theme, ThemeProvider, cva, useSmallScreen } from '@marigold/system';
 
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
-import { Menu } from './Menu';
+import { Menu } from './_Menu';
 
 // Setup
 // ---------------

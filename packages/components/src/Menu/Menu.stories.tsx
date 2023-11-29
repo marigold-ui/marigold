@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
-import { Menu } from './Menu';
+import { Menu } from './_Menu';
 
 const meta = {
   title: 'Components/Menu',

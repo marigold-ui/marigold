@@ -9,7 +9,7 @@ import { Node } from '@react-types/shared';
 import { useClassNames } from '@marigold/system';
 
 import { Divider } from '../Divider';
-import { MenuItem } from './MenuItem';
+import { MenuItem } from './_MenuItem';
 
 interface MenuSectionProps<T> {
   item: Node<T>;

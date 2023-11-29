@@ -1,7 +1,7 @@
 import { SVG } from '@marigold/system';
 
 import { Button } from '../Button';
-import { Menu, MenuProps } from './Menu';
+import { Menu, MenuProps } from './_Menu';
 
 interface ActionMenuProps extends MenuProps {}
 
