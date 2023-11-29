@@ -5,14 +5,15 @@ import { cn } from '@marigold/system';
 
 import { useListBoxContext } from './Context';
 
-export interface SectionProps extends RAC.SectionProps<object> {}
+export interface SectionProps
+  extends Omit<RAC.SectionProps<object>, 'className' | 'style'> {}
 
 const _Section = (props: SectionProps) => {
   const { classNames } = useListBoxContext();
   return (
     <Section
-      className={cn(classNames.section, classNames.sectionTitle)}
       {...props}
+      className={cn(classNames.section, classNames.sectionTitle)}
     />
   );
 };

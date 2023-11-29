@@ -4,8 +4,6 @@ import React from 'react';
 
 import { Header } from '../Header';
 import { ListBox } from './ListBox';
-import { Item } from './ListBoxOption';
-import { Section } from './ListBoxSection';
 
 const meta = {
   title: 'Components/ListBox',
@@ -19,13 +17,13 @@ export const Basic: Story = {
     <ListBox
       selectionMode="single"
       defaultSelectedKeys={['one']}
-      disabledKeys={['four']}
       {...args}
+      disabledKeys={['four']}
     >
-      <Item key="one">One</Item>
-      <Item key="two">Two</Item>
-      <Item key="three">Three</Item>
-      <Item key="four">Four</Item>
+      <ListBox.Item id="one">one</ListBox.Item>
+      <ListBox.Item id="two">Two</ListBox.Item>
+      <ListBox.Item id="three">Three</ListBox.Item>
+      <ListBox.Item id="four">Four</ListBox.Item>
     </ListBox>
   ),
 };
@@ -33,24 +31,24 @@ export const Basic: Story = {
 export const WithSections: Story = {
   render: args => (
     <ListBox {...args}>
-      <Section>
+      <ListBox.Section>
         <Header>Veggies</Header>
-        <Item key="lettuce">Lettuce</Item>
-        <Item key="tomato">Tomato</Item>
-        <Item key="onion">Onion</Item>
-      </Section>
-      <Section>
+        <ListBox.Item key="lettuce">Lettuce</ListBox.Item>
+        <ListBox.Item key="tomato">Tomato</ListBox.Item>
+        <ListBox.Item key="onion">Onion</ListBox.Item>
+      </ListBox.Section>
+      <ListBox.Section>
         <Header>Protein</Header>
-        <Item key="ham">Ham</Item>
-        <Item key="tuna">Tuna</Item>
-        <Item key="tofu">Tofu</Item>
-      </Section>
-      <Section>
+        <ListBox.Item key="ham">Ham</ListBox.Item>
+        <ListBox.Item key="tuna">Tuna</ListBox.Item>
+        <ListBox.Item key="tofu">Tofu</ListBox.Item>
+      </ListBox.Section>
+      <ListBox.Section>
         <Header>Condiments</Header>
-        <Item key="mayo">Mayonaise</Item>
-        <Item key="mustard">Mustard</Item>
-        <Item key="ranch">Ranch</Item>
-      </Section>
+        <ListBox.Item key="mayo">Mayonaise</ListBox.Item>
+        <ListBox.Item key="mustard">Mustard</ListBox.Item>
+        <ListBox.Item key="ranch">Ranch</ListBox.Item>
+      </ListBox.Section>
     </ListBox>
   ),
 };

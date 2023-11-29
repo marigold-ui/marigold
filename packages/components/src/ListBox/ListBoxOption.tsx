@@ -1,18 +1,12 @@
-import { Key } from 'react';
 import { ListBoxItem } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
 import { useListBoxContext } from './Context';
 
-export interface ItemProps extends Omit<RAC.ListBoxItemProps, 'id'> {
-  key?: Key;
-}
+export interface ItemProps
+  extends Omit<RAC.ListBoxItemProps, 'style' | 'className'> {}
 
-export const _Item = ({ key, ...rest }: ItemProps) => {
-  const props: RAC.ListBoxItemProps = {
-    id: key,
-    ...rest,
-  };
+export const _Item = (props: ItemProps) => {
   const { classNames } = useListBoxContext();
   return <ListBoxItem {...props} className={classNames.option} />;
 };
