@@ -24,7 +24,6 @@ const meta = {
       },
       table: {
         type: { summary: 'string' },
-        defaultValue: { summary: 'none' },
       },
       description:
         'To change the color or something additional, should be used rarely.',
@@ -38,4 +37,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = { render: args => <XLoader {...args} /> };
+export const Basic: Story = {
+  render: args => <XLoader {...args} />,
+};
