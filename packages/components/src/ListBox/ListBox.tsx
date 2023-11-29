@@ -36,7 +36,7 @@ const _ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
           <ListBox
             {...props}
             className={cn(
-              'overflow-y-auto bg-red-300 sm:max-h-[75vh] lg:max-h-[45vh]',
+              'overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh]',
               classNames.list
             )}
             ref={ref as Ref<HTMLDivElement>}
