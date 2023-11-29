@@ -15,6 +15,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <ListBox
+      aria-labelledby="listbox"
       selectionMode="single"
       defaultSelectedKeys={['one']}
       {...args}
@@ -30,7 +31,7 @@ export const Basic: Story = {
 
 export const WithSections: Story = {
   render: args => (
-    <ListBox {...args}>
+    <ListBox aria-labelledby="listbox" {...args}>
       <ListBox.Section>
         <Header>Veggies</Header>
         <ListBox.Item key="lettuce">Lettuce</ListBox.Item>

@@ -9,6 +9,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   list: cva(''),
   option: cva([
     font(),
+    'data-[hovered]:text-text-light data-[hovered]:bg-highlight',
     'cursor-pointer px-1.5 py-0.5 outline-none',
     'data-[focused]:text-text-light data-[focused]:bg-highlight',
     'data-[selected]:text-text-light aria-selected:bg-highlight',
