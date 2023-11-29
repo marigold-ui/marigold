@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 
-import { Item, Section } from '@react-stately/collections';
-import { ListProps, useListState } from '@react-stately/list';
-
+import { Header } from '../Header';
 import { ListBox } from './ListBox';
 
 const meta = {
@@ -13,45 +12,44 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const List = (props: ListProps<any>) => {
-  const state = useListState(props);
-  return <ListBox state={state} />;
-};
-
 export const Basic: Story = {
   render: args => (
-    <List
+    <ListBox
+      aria-labelledby="listbox"
       selectionMode="single"
       defaultSelectedKeys={['one']}
-      disabledKeys={['four']}
       {...args}
+      disabledKeys={['four']}
     >
-      <Item key="one">One</Item>
-      <Item key="two">Two</Item>
-      <Item key="three">Three</Item>
-      <Item key="four">Four</Item>
-    </List>
+      <ListBox.Item id="one">one</ListBox.Item>
+      <ListBox.Item id="two">Two</ListBox.Item>
+      <ListBox.Item id="three">Three</ListBox.Item>
+      <ListBox.Item id="four">Four</ListBox.Item>
+    </ListBox>
   ),
 };
 
 export const WithSections: Story = {
   render: args => (
-    <List {...args}>
-      <Section title="Veggies">
-        <Item key="lettuce">Lettuce</Item>
-        <Item key="tomato">Tomato</Item>
-        <Item key="onion">Onion</Item>
-      </Section>
-      <Section title="Protein">
-        <Item key="ham">Ham</Item>
-        <Item key="tuna">Tuna</Item>
-        <Item key="tofu">Tofu</Item>
-      </Section>
-      <Section title="Condiments">
-        <Item key="mayo">Mayonaise</Item>
-        <Item key="mustard">Mustard</Item>
-        <Item key="ranch">Ranch</Item>
-      </Section>
-    </List>
+    <ListBox aria-labelledby="listbox" {...args}>
+      <ListBox.Section>
+        <Header>Veggies</Header>
+        <ListBox.Item key="lettuce">Lettuce</ListBox.Item>
+        <ListBox.Item key="tomato">Tomato</ListBox.Item>
+        <ListBox.Item key="onion">Onion</ListBox.Item>
+      </ListBox.Section>
+      <ListBox.Section>
+        <Header>Protein</Header>
+        <ListBox.Item key="ham">Ham</ListBox.Item>
+        <ListBox.Item key="tuna">Tuna</ListBox.Item>
+        <ListBox.Item key="tofu">Tofu</ListBox.Item>
+      </ListBox.Section>
+      <ListBox.Section>
+        <Header>Condiments</Header>
+        <ListBox.Item key="mayo">Mayonaise</ListBox.Item>
+        <ListBox.Item key="mustard">Mustard</ListBox.Item>
+        <ListBox.Item key="ranch">Ranch</ListBox.Item>
+      </ListBox.Section>
+    </ListBox>
   ),
 };
