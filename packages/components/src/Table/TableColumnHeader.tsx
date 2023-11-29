@@ -16,7 +16,9 @@ type RemovedProps =
 
 export interface TableColumnHeaderProps
   extends Omit<RAC.ColumnProps, RemovedProps>,
-    WidthProp {}
+    WidthProp {
+  align?: 'left' | 'right';
+}
 
 const _TableColumnHeader = ({
   childColumns,

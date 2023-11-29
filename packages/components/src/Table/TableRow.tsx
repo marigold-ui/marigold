@@ -25,7 +25,7 @@ const _TableRow = ({
   const { selectionBehavior, selectionMode } = useTableOptions();
 
   const interactive = selectionMode !== 'none';
-  const { ...ctx } = useTableContext();
+  const ctx = useTableContext();
 
   const classNames = useClassNames({
     component: 'Table',
