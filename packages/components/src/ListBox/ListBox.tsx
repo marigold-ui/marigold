@@ -1,53 +1,55 @@
-import { ReactNode, forwardRef } from 'react';
-
-import { useListBox } from '@react-aria/listbox';
-import { useObjectRef } from '@react-aria/utils';
-
-import type { ListState } from '@react-stately/list';
+import {
+  ForwardRefExoticComponent,
+  Ref,
+  RefAttributes,
+  forwardRef,
+} from 'react';
+import { ListBox } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
 
 import { ListBoxContext } from './Context';
-import { ListBoxOption } from './ListBoxOption';
-import { ListBoxSection } from './ListBoxSection';
+import { Item } from './ListBoxOption';
+import { Section } from './ListBoxSection';
 
-// Props
-// ---------------
-export interface ListBoxProps {
+export interface ListBoxProps
+  extends Omit<RAC.ListBoxProps<object>, 'className' | 'style'> {
   variant?: string;
   size?: string;
-  label?: ReactNode;
-  state: ListState<unknown>;
 }
 
-// Components
-// ---------------
-export const ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
-  ({ state, variant, size, ...props }, ref) => {
-    const innerRef = useObjectRef<HTMLUListElement>(ref);
-    const { listBoxProps } = useListBox(props, state, innerRef);
+interface ListBoxComponent
+  extends ForwardRefExoticComponent<
+    ListBoxProps & RefAttributes<HTMLUListElement>
+  > {
+  Item: typeof Item;
+  Section: typeof Section;
+}
 
+const _ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
+  ({ variant, size, ...props }, ref) => {
     const classNames = useClassNames({ component: 'ListBox', variant, size });
-
     return (
       <ListBoxContext.Provider value={{ classNames }}>
-        <div
-          className={cn(
-            'overflow-y-auto overflow-x-hidden',
-            classNames.container
-          )}
-        >
-          <ul className={classNames.list} ref={innerRef} {...listBoxProps}>
-            {[...state.collection].map(item =>
-              item.type === 'section' ? (
-                <ListBoxSection key={item.key} section={item} state={state} />
-              ) : (
-                <ListBoxOption key={item.key} item={item} state={state} />
-              )
+        <div className={classNames.container}>
+          <ListBox
+            {...props}
+            className={cn(
+              'overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh]',
+              classNames.list
             )}
-          </ul>
+            ref={ref as Ref<HTMLDivElement>}
+          >
+            {props.children}
+          </ListBox>
         </div>
       </ListBoxContext.Provider>
     );
   }
-);
+) as ListBoxComponent;
+
+_ListBox.Item = Item;
+_ListBox.Section = Section;
+
+export { _ListBox as ListBox };
