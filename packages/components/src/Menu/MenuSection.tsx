@@ -19,7 +19,7 @@ export interface MenuSectionProps
 const _MenuSection = ({ children, title, ...props }: MenuSectionProps) => {
   const className = useClassNames({ component: 'Menu' });
   return (
-    <Section className={className.section} {...props}>
+    <Section {...props}>
       <Header>{title}</Header>
       {children}
     </Section>

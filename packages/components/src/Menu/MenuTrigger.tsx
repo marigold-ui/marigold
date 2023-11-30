@@ -20,7 +20,6 @@ const _MenuTrigger = ({ children, ...props }: MenuTriggerProps) => {
   const isSmallScreen = useSmallScreen();
   return (
     <MenuTrigger {...props}>
-      <Button variant="menu" />
       {isSmallScreen ? <Tray>{children}</Tray> : <Popover>{children}</Popover>};
     </MenuTrigger>
   );
