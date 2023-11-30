@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from '@storybook/addons';
 import type { Meta, StoryObj } from '@storybook/react';
+import { Key } from 'react';
 
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
@@ -38,7 +39,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => {
-    const [selected, setSelected] = useState<string | number>('');
+    const [selected, setSelected] = useState<Key>('');
     return (
       <>
         <Menu.Trigger {...args}>
@@ -53,7 +54,7 @@ export const Basic: Story = {
           </Menu>
         </Menu.Trigger>
         <hr />
-        <pre>selected: {selected}</pre>
+        <pre>selected: {selected != null ? selected.toString() : null}</pre>
       </>
     );
   },
