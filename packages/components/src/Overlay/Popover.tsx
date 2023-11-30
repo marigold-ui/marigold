@@ -33,12 +33,11 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
     });
     const childrenArr = Children.toArray(props.children as ReactNode);
     const [trigger, children] = childrenArr;
-    console.log(trigger);
     return (
       <>
         {trigger}
         <Popover ref={ref} {...props} className={classNames}>
-          {children}
+          <Dialog isNonModal>{children}</Dialog>
         </Popover>
       </>
     );
