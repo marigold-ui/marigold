@@ -54,12 +54,36 @@ const meta = {
       },
       description: 'The width of the field',
     },
+    size: {
+      control: {
+        type: 'radio',
+      },
+      options: ['default', 'small'],
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'none' },
+      },
+      description: 'Padding y (top and bottom)',
+      if: { global: 'theme', neq: 'b2b' },
+    },
+    checked: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Checks/unchecks the Checkbox',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
   },
   args: {
     readOnly: false,
     indeterminate: false,
     disabled: false,
     children: 'This is a Checkbox',
+    checked: false,
+    size: 'default',
   },
 } satisfies Meta<typeof Checkbox>;
 
