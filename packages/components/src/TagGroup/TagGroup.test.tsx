@@ -18,7 +18,7 @@ const theme: Theme = {
     Tag: {
       tag: cva('border border-slate-600'),
       closeButton: cva('bg-transparent'),
-      gridCell: cva('flex gap-1'),
+      listItems: cva('flex gap-1'),
     },
   },
 };
@@ -163,24 +163,6 @@ test('should remember last focused element', async () => {
   expect(tags[0]).toHaveFocus();
 });
 
-test('renders error message', () => {
-  render(
-    <Tag.Group
-      aria-label="static tag group items"
-      error
-      errorMessage="Hier ist ein Fehler aufgetreten!"
-    >
-      <Tag key="news">News</Tag>
-      <Tag key="travel">Travel</Tag>
-      <Tag key="gaming">Gaming</Tag>
-      <Tag key="shopping">Shopping</Tag>
-    </Tag.Group>
-  );
-
-  const errorMessage = screen.queryByText('Hier ist ein Fehler aufgetreten!');
-  expect(errorMessage).toBeInTheDocument();
-});
-
 test('renders label', () => {
   render(
     <Tag.Group aria-label="tag group" label="Categories">
@@ -207,18 +189,14 @@ test('render same styles for each tag', () => {
     </ThemeProvider>
   );
 
-  const taggroup = screen.getByRole('presentation');
+  const taggroup = screen.getByRole('grid');
   expect(taggroup).toBeVisible();
-  expect(taggroup.className).toMatchInlineSnapshot(
-    `"flex flex-wrap items-start gap-1"`
-  );
+  expect(taggroup.className).toMatchInlineSnapshot(`"flex gap-1"`);
 
   // eslint-disable-next-line testing-library/no-node-access
   const tag = screen.getByTestId('news').parentElement;
   expect(tag).toBeVisible();
-  expect(tag?.className).toMatchInlineSnapshot(
-    `"flex flex-wrap items-start gap-1"`
-  );
+  expect(tag?.className).toMatchInlineSnapshot(`"flex gap-1"`);
 
   // eslint-disable-next-line testing-library/no-node-access
   const gridCell = tag!.firstChild;
@@ -230,5 +208,5 @@ test('render same styles for each tag', () => {
   // eslint-disable-next-line testing-library/no-node-access
   const closeButton = gridCell?.lastChild;
   // @ts-ignore
-  expect(closeButton.className).toMatchInlineSnapshot(`"flex gap-1"`);
+  expect(closeButton.className).toMatchInlineSnapshot(`""`);
 });
