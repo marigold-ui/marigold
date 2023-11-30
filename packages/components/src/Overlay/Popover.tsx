@@ -1,10 +1,8 @@
 import { Children, ReactNode, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
-import { Popover } from 'react-aria-components';
+import { Dialog, Popover } from 'react-aria-components';
 
 import { useClassNames } from '@marigold/system';
-
-import { Dialog } from '../Dialog/Dialog';
 
 // Props
 // ---------------
@@ -37,7 +35,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
       <>
         {trigger}
         <Popover ref={ref} {...props} className={classNames}>
-          {children}
+          <Dialog>{children}</Dialog>
         </Popover>
       </>
     );
