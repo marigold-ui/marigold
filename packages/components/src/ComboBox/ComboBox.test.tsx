@@ -56,6 +56,10 @@ const theme: Theme = {
         },
       },
     }),
+    Dialog: {
+      container: cva(),
+      closeButton: cva(),
+    },
   },
 };
 

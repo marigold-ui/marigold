@@ -10,7 +10,7 @@ import type RAC from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 
 import { ListBoxContext } from './Context';
-import { Item } from './ListBoxOption';
+import { ListboxItem } from './ListBoxOption';
 import { Section } from './ListBoxSection';
 
 export interface ListBoxProps
@@ -23,7 +23,7 @@ interface ListBoxComponent
   extends ForwardRefExoticComponent<
     ListBoxProps & RefAttributes<HTMLUListElement>
   > {
-  Item: typeof Item;
+  Item: typeof ListboxItem;
   Section: typeof Section;
 }
 
@@ -49,7 +49,7 @@ const _ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
   }
 ) as ListBoxComponent;
 
-_ListBox.Item = Item;
+_ListBox.Item = ListboxItem;
 _ListBox.Section = Section;
 
 export { _ListBox as ListBox };

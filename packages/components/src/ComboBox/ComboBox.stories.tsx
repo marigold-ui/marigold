@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useAsyncList } from '@react-stately/data';
 
 import { Stack } from '../Stack';
-import { ComboBox } from './ComboBox';
+import { ComboBox } from './_ComboBox';
 
 const meta = {
   title: 'Components/ComboBox',

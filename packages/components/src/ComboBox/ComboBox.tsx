@@ -1,124 +1,95 @@
-import React from 'react';
+import { forwardRef } from 'react';
+import type {
+  ForwardRefExoticComponent,
+  ReactNode,
+  RefAttributes,
+} from 'react';
+import { ComboBox } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
-import { useComboBox } from '@react-aria/combobox';
-import { useFilter } from '@react-aria/i18n';
+import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
+import { ListBox } from '../ListBox/ListBox';
+import { Popover } from '../Overlay/Popover';
 
-import { Item } from '@react-stately/collections';
-import { useComboBoxState } from '@react-stately/combobox';
-
-import { ComboBoxProps as ComboBoxPropsI } from '@react-types/combobox';
-
-import { WidthProp } from '@marigold/system';
-
-import { Button } from '../Button';
-import { ChevronDown } from '../Chevron';
-import { FieldBase } from '../FieldBase';
-import { Input } from '../Input';
-import { ListBox } from '../ListBox';
-import { Popover } from '../Overlay';
+// Props
+// ---------------
+type RemovedProps =
+  | 'className'
+  | 'style'
+  | 'children'
+  | 'isDisabled'
+  | 'isRequired'
+  | 'isInvalid'
+  | 'isReadOnly'
+  | 'defaultInputValue'
+  | 'inputValue'
+  | 'onInputChange';
 
 export interface ComboBoxProps
-  extends Omit<
-    ComboBoxPropsI<object>,
-    | 'isDisabled'
-    | 'isRequired'
-    | 'isReadOnly'
-    | 'defaultInputValue'
-    | 'inputValue'
-    | 'onInputChange'
-  > {
+  extends Omit<RAC.ComboBoxProps<any>, RemovedProps>,
+    Pick<
+      FieldBaseProps<'label'>,
+      'width' | 'label' | 'description' | 'errorMessage'
+    > {
   variant?: string;
   size?: string;
-  error?: boolean;
-  width?: WidthProp['width'];
-  disabled?: boolean;
-  required?: boolean;
-  readOnly?: boolean;
-  defaultValue?: ComboBoxPropsI<object>['defaultInputValue'];
-  value?: ComboBoxPropsI<object>['inputValue'];
-  onChange?: ComboBoxPropsI<object>['onInputChange'];
+  disabled?: RAC.ComboBoxProps<any>['isDisabled'];
+  required?: RAC.ComboBoxProps<any>['isRequired'];
+  readOnly?: RAC.ComboBoxProps<any>['isReadOnly'];
+  error?: RAC.ComboBoxProps<any>['isInvalid'];
+  defaultValue?: RAC.ComboBoxProps<any>['defaultInputValue'];
+  value?: RAC.ComboBoxProps<any>['inputValue'];
+  onChange?: RAC.ComboBoxProps<any>['onInputChange'];
+  children: ReactNode | ((item: any) => ReactNode);
 }
 
-export const ComboBox = ({
-  error,
-  width,
-  disabled,
-  required,
-  readOnly,
-  defaultValue,
-  value,
-  onChange,
-  variant,
-  size,
-  ...rest
-}: ComboBoxProps) => {
-  const props: ComboBoxPropsI<object> = {
-    isDisabled: disabled,
-    isRequired: required,
-    isReadOnly: readOnly,
-    defaultInputValue: defaultValue,
-    inputValue: value,
-    onInputChange: onChange,
-    ...rest,
-  };
+interface ComboBoxComponent
+  extends ForwardRefExoticComponent<
+    ComboBoxProps & RefAttributes<HTMLInputElement>
+  > {
+  Item: typeof ListBox.Item;
+}
 
-  const { contains } = useFilter({ sensitivity: 'base' });
-  const state = useComboBoxState({ ...props, defaultFilter: contains });
-  const buttonRef = React.useRef(null);
-  const inputRef = React.useRef(null);
-  const listBoxRef = React.useRef(null);
-  const popoverRef = React.useRef(null);
+// Component
+// ---------------
+const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
+  (
+    {
+      variant,
+      size,
+      required,
+      disabled,
+      readOnly,
+      error,
+      defaultValue,
+      value,
+      onChange,
+      children,
+      ...rest
+    },
+    ref
+  ) => {
+    const props: RAC.ComboBoxProps<any> = {
+      isDisabled: disabled,
+      isReadOnly: readOnly,
+      isRequired: required,
+      isInvalid: error,
+      defaultInputValue: defaultValue,
+      inputValue: value,
+      onInputChange: onChange,
+      ...rest,
+    };
 
-  const {
-    buttonProps: triggerProps,
-    inputProps,
-    listBoxProps,
-    labelProps,
-  } = useComboBox(
-    { ...props, inputRef, buttonRef, listBoxRef, popoverRef },
-    state
-  );
-
-  // TODO: until `react-aria` gives us error and description props.
-  const errorMessageProps = { 'aria-invalid': error };
-  const { label, description, errorMessage } = props;
-
-  return (
-    <>
-      <FieldBase
-        label={label}
-        labelProps={labelProps}
-        description={description}
-        error={error}
-        errorMessage={errorMessage}
-        errorMessageProps={errorMessageProps}
-        width={width}
-      >
-        <Input
-          {...(inputProps as any)}
-          ref={inputRef}
-          action={
-            <Button
-              className="absolute right-2 h-4 w-4 border-none bg-transparent p-0"
-              ref={buttonRef}
-              {...triggerProps}
-            >
-              <ChevronDown className="h-4 w-4" />
-            </Button>
-          }
-        />
+    return (
+      <FieldBase as={ComboBox} ref={ref} {...props}>
+        <Popover open>
+          <ListBox>{children}</ListBox>
+        </Popover>
       </FieldBase>
-      <Popover
-        state={state}
-        ref={popoverRef}
-        triggerRef={inputRef}
-        scrollRef={listBoxRef}
-        isNonModal
-      >
-        <ListBox ref={listBoxRef} state={state} {...listBoxProps} />
-      </Popover>
-    </>
-  );
-};
+    );
+  }
+) as ComboBoxComponent;
 
-ComboBox.Item = Item;
+_ComboBox.Item = ListBox.Item;
+
+export { _ComboBox as ComboBox };
