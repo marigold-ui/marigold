@@ -1,5 +1,5 @@
 import { Key } from 'react';
-import { Menu, MenuTrigger } from 'react-aria-components';
+import { Menu } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
 import { useClassNames } from '@marigold/system';
@@ -8,6 +8,7 @@ import { Button } from '../Button';
 import { Popover } from '../Overlay/Popover';
 import { MenuItem } from './MenuItem';
 import { MenuSection } from './MenuSection';
+import { MenuTrigger } from './MenuTrigger';
 
 // Props
 // ---------------
@@ -33,15 +34,13 @@ const _Menu = ({
 }: MenuProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
 
+  console.log(props);
   return (
-    <MenuTrigger {...props}>
-      <Button variant="menu">{label}</Button>
-      <Popover>
-        <Menu {...props} className={classNames.container}>
-          {children}
-        </Menu>
-      </Popover>
-    </MenuTrigger>
+    <Popover>
+      <Menu {...props} className={classNames.container}>
+        {children}
+      </Menu>
+    </Popover>
   );
 };
 
@@ -49,3 +48,4 @@ export { _Menu as Menu };
 
 _Menu.Item = MenuItem;
 _Menu.Section = MenuSection;
+_Menu.Trigger = MenuTrigger;

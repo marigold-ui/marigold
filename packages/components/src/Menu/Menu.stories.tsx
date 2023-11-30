@@ -42,12 +42,15 @@ export const Basic: Story = {
     const [selected, setSelected] = useState<string | number>('');
     return (
       <>
-        <Menu onAction={setSelected}>
-          <Menu.Item key="burger">🍔 Burger</Menu.Item>
-          <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-          <Menu.Item key="salad">🥗 Salad</Menu.Item>
-          <Menu.Item key="fries">🍟 Fries</Menu.Item>
-        </Menu>
+        <Menu.Trigger>
+          <Button>HUHU</Button>
+          <Menu onAction={setSelected} label="Choose">
+            <Menu.Item key="burger">🍔 Burger</Menu.Item>
+            <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+            <Menu.Item key="salad">🥗 Salad</Menu.Item>
+            <Menu.Item key="fries">🍟 Fries</Menu.Item>
+          </Menu>
+        </Menu.Trigger>
         <hr />
         <pre>selected: {selected}</pre>
       </>
