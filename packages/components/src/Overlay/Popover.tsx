@@ -37,7 +37,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
       <>
         {trigger}
         <Popover ref={ref} {...props} className={classNames}>
-          <Dialog isNonModal>{children}</Dialog>
+          {children}
         </Popover>
       </>
     );
