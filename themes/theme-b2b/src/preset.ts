@@ -7,7 +7,7 @@ import { screens } from './screens';
 
 export type Preset = ReturnType<typeof createPreset>;
 
-export const preset: Preset = createPreset('b2b', {
+export const preset: Preset = createPreset({
   content: [
     './node_modules/@marigold/theme-b2b/dist/*.js',
     './node_modules/@marigold/system/dist/*.js',

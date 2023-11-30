@@ -5,7 +5,7 @@ import { screens } from './screens';
 
 export type Preset = ReturnType<typeof createPreset>;
 
-export const preset: Preset = createPreset('core', {
+export const preset: Preset = createPreset({
   corePlugins: {
     preflight: false,
   },

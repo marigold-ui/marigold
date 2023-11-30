@@ -43,19 +43,35 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
       </Tabs.List>
       <Tabs.TabPanel id="preview">
         <Card variant="not-inset">
-          <MarigoldProvider
-            theme={(current && themes[current]) as Theme}
-            className="flex flex-1 place-items-center rounded-xl"
+          <div
+            data-theme={current}
+            className="flex h-full min-h-[150px] w-full flex-col [&>*:first-child]:flex [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl"
           >
-            <div className="flex h-full min-h-[150px] w-full flex-col">
+            <MarigoldProvider theme={(current && themes[current]) as Theme}>
               <div className="not-prose w-full overflow-x-auto p-4">
                 <Demo />
               </div>
-            </div>
-          </MarigoldProvider>
+            </MarigoldProvider>
+          </div>
         </Card>
       </Tabs.TabPanel>
       <Tabs.TabPanel id="code">{children}</Tabs.TabPanel>
     </Tabs>
   );
 };
+
+{
+  /* <MarigoldProvider
+theme={(current && themes[current]) as Theme}
+className="flex flex-1 place-items-center rounded-xl"
+>
+<div className="flex h-full min-h-[150px] w-full flex-col">
+  <div
+    data-theme={current}
+    className="not-prose w-full overflow-x-auto p-4"
+  >
+    <Demo />
+  </div>
+</div>
+</MarigoldProvider> */
+}
