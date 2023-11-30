@@ -37,7 +37,9 @@ const _Menu = ({
   console.log(props);
   return (
     <Popover>
-      <Menu {...props}>{children}</Menu>
+      <Menu {...props} className={classNames.container}>
+        {children}
+      </Menu>
     </Popover>
   );
 };

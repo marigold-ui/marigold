@@ -20,7 +20,7 @@ const _MenuSection = ({ children, title, ...props }: MenuSectionProps) => {
   const className = useClassNames({ component: 'Menu' });
   return (
     <Section {...props}>
-      <Header>{title}</Header>
+      <Header className={className.section}>{title}</Header>
       {children}
     </Section>
   );
