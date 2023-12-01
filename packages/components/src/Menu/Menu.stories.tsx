@@ -6,7 +6,7 @@ import { Key } from '@react-types/shared';
 
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
-import { Menu } from './Menu';
+import { Menu } from './MenuTrigger';
 
 const meta = {
   title: 'Components/Menu',
@@ -33,7 +33,7 @@ const meta = {
   args: {
     disabled: false,
   },
-} satisfies Meta<typeof Menu.Trigger>;
+} satisfies Meta<typeof Menu>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -43,15 +43,12 @@ export const Basic: Story = {
     const [selected, setSelected] = useState<string | number>('');
     return (
       <>
-        <Menu.Trigger>
-          <Button variant="menu">Choose</Button>
-          <Menu onAction={setSelected} label="Choose">
-            <Menu.Item id="burger">🍔 Burger</Menu.Item>
-            <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
-            <Menu.Item id="salad">🥗 Salad</Menu.Item>
-            <Menu.Item id="fries">🍟 Fries</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu label="Choose">
+          <Menu.Item id="burger">🍔 Burger</Menu.Item>
+          <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
+          <Menu.Item id="salad">🥗 Salad</Menu.Item>
+          <Menu.Item id="fries">🍟 Fries</Menu.Item>
+        </Menu>
         <hr />
         <pre>selected: {selected}</pre>
       </>
@@ -66,18 +63,16 @@ export const SingleSelection: Story = {
 
     return (
       <>
-        <Menu.Trigger>
-          <Button variant="menu">Align</Button>
-          <Menu
-            selectionMode="single"
-            selectedKeys={selectedKeys as Iterable<Key>}
-            onSelectionChange={key => setSelected(new Set(key))}
-          >
-            <Menu.Item id="left">Left</Menu.Item>
-            <Menu.Item id="center">Center</Menu.Item>
-            <Menu.Item id="right">Right</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu
+          label="Align"
+          selectionMode="single"
+          selectedKeys={selectedKeys as Iterable<Key>}
+          onSelectionChange={key => setSelected(new Set(key))}
+        >
+          <Menu.Item id="left">Left</Menu.Item>
+          <Menu.Item id="center">Center</Menu.Item>
+          <Menu.Item id="right">Right</Menu.Item>
+        </Menu>
         <p>Current selection (controlled): {[selected]}</p>
       </>
     );
@@ -91,58 +86,57 @@ export const MultiSelection: Story = {
 
     return (
       <>
-        <Menu.Trigger>
-          <Button variant="menu">Align</Button>
-          <Menu
-            selectionMode="multiple"
-            selectedKeys={selectedKeys as Iterable<Key>}
-            onSelectionChange={key => setSelected(new Set(key))}
-          >
-            <Menu.Item id="burger">🍔 Burger</Menu.Item>
-            <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
-            <Menu.Item id="salad">🥗 Salad</Menu.Item>
-            <Menu.Item id="fries">🍟 Fries</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu
+          label="Choose"
+          selectionMode="multiple"
+          selectedKeys={selectedKeys as Iterable<Key>}
+          onSelectionChange={key => setSelected(new Set(key))}
+        >
+          <Menu.Item id="burger">🍔 Burger</Menu.Item>
+          <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
+          <Menu.Item id="salad">🥗 Salad</Menu.Item>
+          <Menu.Item id="fries">🍟 Fries</Menu.Item>
+        </Menu>
         <p>Current selection (controlled): {[selected].join(',')}</p>
       </>
     );
   },
 };
 
-export const MenuOnly: Story = {
+export const MenuSection: Story = {
   render: () => (
-    <Menu label="Only a Menu">
-      <Menu.Item key="burger">🍔 Burger</Menu.Item>
-      <Menu.Section title="Fruits">
+    <Menu label="Menu with sections">
+      <Menu.Section title="Food">
         <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
         <Menu.Item key="salad">🥗 Salad</Menu.Item>
         <Menu.Item key="fries">🍟 Fries</Menu.Item>
+      </Menu.Section>
+      <Menu.Section title="Fruits">
+        <Menu.Item key="apple">🍎 Apple</Menu.Item>
+        <Menu.Item key="banana">🍌 Banana</Menu.Item>
+        <Menu.Item key="mango">🥭 Mango</Menu.Item>
+        <Menu.Item key="strawberry">🍓 Strawberry</Menu.Item>
       </Menu.Section>
     </Menu>
   ),
 };
 
-export const MenuSection: Story = {
+export const LinksMenu: Story = {
   render: () => (
-    <Menu.Trigger>
-      <Button variant="menu" size="small">
-        open menu
-      </Button>
-      <Menu aria-label="Menu with sections">
-        <Menu.Section title="Food">
-          <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-          <Menu.Item key="salad">🥗 Salad</Menu.Item>
-          <Menu.Item key="fries">🍟 Fries</Menu.Item>
-        </Menu.Section>
-        <Menu.Section title="Fruits">
-          <Menu.Item key="apple">🍎 Apple</Menu.Item>
-          <Menu.Item key="banana">🍌 Banana</Menu.Item>
-          <Menu.Item key="mango">🥭 Mango</Menu.Item>
-          <Menu.Item key="strawberry">🍓 Strawberry</Menu.Item>
-        </Menu.Section>
-      </Menu>
-    </Menu.Trigger>
+    <Menu label="Links">
+      <Menu.Item href="https://adobe.com/" target="_blank">
+        Adobe
+      </Menu.Item>
+      <Menu.Item href="https://apple.com/" target="_blank">
+        Apple
+      </Menu.Item>
+      <Menu.Item href="https://google.com/" target="_blank">
+        Google
+      </Menu.Item>
+      <Menu.Item href="https://microsoft.com/" target="_blank">
+        Microsoft
+      </Menu.Item>
+    </Menu>
   ),
 };
 

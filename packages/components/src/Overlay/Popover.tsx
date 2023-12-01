@@ -29,6 +29,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
       component: 'Popover',
       variant: placement,
     });
+    console.log(ref);
 
     return (
       <Popover ref={ref} {...props} className={classNames}>
