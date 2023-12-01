@@ -31,6 +31,7 @@ export interface NumberFieldProps
   error?: RAC.NumberFieldProps['isInvalid'];
   readOnly?: RAC.NumberFieldProps['isReadOnly'];
   hideStepper?: boolean;
+  placeholder?: string;
 }
 
 // Component

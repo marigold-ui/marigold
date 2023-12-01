@@ -32,6 +32,7 @@ export interface TextFieldProps
   readOnly?: RAC.TextFieldProps['isReadOnly'];
   value?: string;
   defaultValue?: string;
+  placeholder?: string;
 }
 
 // Component
