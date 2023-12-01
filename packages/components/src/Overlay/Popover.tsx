@@ -9,7 +9,7 @@ import { useClassNames } from '@marigold/system';
 export interface PopoverProps
   extends Omit<
     RAC.PopoverProps,
-    'isOpen' | 'isKeyboardDismissDisabled' | 'styles' | 'className'
+    'isOpen' | 'isKeyboardDismissDisabled' | 'style' | 'className'
   > {
   keyboardDismissDisabled?: boolean;
   open?: boolean;
