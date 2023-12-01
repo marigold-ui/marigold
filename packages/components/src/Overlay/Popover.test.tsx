@@ -1,5 +1,6 @@
 /* eslint-disable testing-library/no-node-access */
 import { screen } from '@testing-library/react';
+import React from 'react';
 
 import { Theme, cva } from '@marigold/system';
 
@@ -31,11 +32,15 @@ const theme: Theme = {
 const { render } = setup({ theme });
 
 test('renders open popover', () => {
+  const ref = React.createRef<HTMLDivElement>();
   render(
-    <Popover data-testid="popover" open>
-      <Button>open dialog</Button>
-      <Text>this is popover content </Text>
-    </Popover>
+    <>
+      <div ref={ref}>Trigger</div>
+      <Popover data-testid="popover" open triggerRef={ref}>
+        <Button>open dialog</Button>
+        <Text>this is popover content </Text>
+      </Popover>
+    </>
   );
 
   const popover = screen.getByTestId('popover');
@@ -43,22 +48,31 @@ test('renders open popover', () => {
 });
 
 test('popover is per default closed', () => {
+  const ref = React.createRef<HTMLDivElement>();
   render(
-    <Popover data-testid="popover">
-      <Button>open dialog</Button>
-      <Text>this is popover content </Text>
-    </Popover>
+    <>
+      <div ref={ref}>Trigger</div>
+      <Popover data-testid="popover" triggerRef={ref}>
+        <Button>open dialog</Button>
+        <Text>this is popover content </Text>
+      </Popover>
+    </>
   );
   const popover = screen.queryByTestId('popover');
   expect(popover).not.toBeInTheDocument();
 });
 
 test('popover has children', () => {
+  const ref = React.createRef<HTMLDivElement>();
+
   render(
-    <Popover data-testid="popover" open>
-      <Button>open dialog</Button>
-      <Text>this is popover content </Text>
-    </Popover>
+    <>
+      <div ref={ref}>Trigger</div>
+      <Popover data-testid="popover" open triggerRef={ref}>
+        <Button>open dialog</Button>
+        <Text>this is popover content </Text>
+      </Popover>
+    </>
   );
 
   const popover = screen.getByTestId('popover');
