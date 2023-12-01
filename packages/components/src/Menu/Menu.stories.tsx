@@ -2,6 +2,8 @@
 import { useState } from '@storybook/addons';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Key } from '@react-types/shared';
+
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
@@ -42,7 +44,7 @@ export const Basic: Story = {
     return (
       <>
         <Menu.Trigger>
-          <Button variant="menu">HUHU</Button>
+          <Button variant="menu">Choose</Button>
           <Menu onAction={setSelected} label="Choose">
             <Menu.Item key="burger">🍔 Burger</Menu.Item>
             <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
@@ -52,6 +54,60 @@ export const Basic: Story = {
         </Menu.Trigger>
         <hr />
         <pre>selected: {selected}</pre>
+      </>
+    );
+  },
+};
+
+export const SingleSelection: Story = {
+  render: () => {
+    const [selectedKeys, setSelected] = useState(new Set());
+
+    const selected = Array.from(selectedKeys);
+
+    console.log(selected);
+    return (
+      <>
+        <Menu.Trigger>
+          <Button variant="menu">Align</Button>
+          <Menu
+            selectionMode="single"
+            selectedKeys={selectedKeys as Iterable<Key>}
+            onSelectionChange={key => setSelected(new Set(key))}
+          >
+            <Menu.Item id="left">Left</Menu.Item>
+            <Menu.Item id="center">Center</Menu.Item>
+            <Menu.Item id="right">Right</Menu.Item>
+          </Menu>
+        </Menu.Trigger>
+        <p>Current selection (controlled): {[selected]}</p>
+      </>
+    );
+  },
+};
+
+export const MultiSelection: Story = {
+  render: () => {
+    const [selectedKeys, setSelected] = useState(new Set());
+
+    const selected = Array.from(selectedKeys);
+
+    console.log(selected);
+    return (
+      <>
+        <Menu.Trigger>
+          <Button variant="menu">Align</Button>
+          <Menu
+            selectionMode="multiple"
+            selectedKeys={selectedKeys as Iterable<Key>}
+            onSelectionChange={key => setSelected(new Set(key))}
+          >
+            <Menu.Item id="left">Left</Menu.Item>
+            <Menu.Item id="center">Center</Menu.Item>
+            <Menu.Item id="right">Right</Menu.Item>
+          </Menu>
+        </Menu.Trigger>
+        <p>Current selection (controlled): {[selected].join(',')}</p>
       </>
     );
   },

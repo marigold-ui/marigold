@@ -10,6 +10,7 @@ export const Menu: ThemeComponent<'Menu'> = {
     'cursor-pointer p-1 focus:outline-0',
     'hover:text-text-light hover:bg-highlight ',
     'text-xs',
+    'data-[selected]:bg-bg-selected',
   ]),
   section: cva('text-text-dark  border-t p-1 text-xs font-normal'),
 };

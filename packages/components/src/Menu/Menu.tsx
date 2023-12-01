@@ -4,7 +4,6 @@ import type RAC from 'react-aria-components';
 
 import { useClassNames } from '@marigold/system';
 
-import { Popover } from '../Overlay/Popover';
 import { MenuItem } from './MenuItem';
 import { MenuSection } from './MenuSection';
 import { MenuTrigger } from './MenuTrigger';
