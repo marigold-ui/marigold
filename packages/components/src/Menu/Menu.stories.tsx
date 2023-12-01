@@ -46,10 +46,10 @@ export const Basic: Story = {
         <Menu.Trigger>
           <Button variant="menu">Choose</Button>
           <Menu onAction={setSelected} label="Choose">
-            <Menu.Item key="burger">🍔 Burger</Menu.Item>
-            <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-            <Menu.Item key="salad">🥗 Salad</Menu.Item>
-            <Menu.Item key="fries">🍟 Fries</Menu.Item>
+            <Menu.Item id="burger">🍔 Burger</Menu.Item>
+            <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
+            <Menu.Item id="salad">🥗 Salad</Menu.Item>
+            <Menu.Item id="fries">🍟 Fries</Menu.Item>
           </Menu>
         </Menu.Trigger>
         <hr />
@@ -62,10 +62,8 @@ export const Basic: Story = {
 export const SingleSelection: Story = {
   render: () => {
     const [selectedKeys, setSelected] = useState(new Set());
-
     const selected = Array.from(selectedKeys);
 
-    console.log(selected);
     return (
       <>
         <Menu.Trigger>
@@ -89,10 +87,8 @@ export const SingleSelection: Story = {
 export const MultiSelection: Story = {
   render: () => {
     const [selectedKeys, setSelected] = useState(new Set());
-
     const selected = Array.from(selectedKeys);
 
-    console.log(selected);
     return (
       <>
         <Menu.Trigger>
@@ -102,9 +98,10 @@ export const MultiSelection: Story = {
             selectedKeys={selectedKeys as Iterable<Key>}
             onSelectionChange={key => setSelected(new Set(key))}
           >
-            <Menu.Item id="left">Left</Menu.Item>
-            <Menu.Item id="center">Center</Menu.Item>
-            <Menu.Item id="right">Right</Menu.Item>
+            <Menu.Item id="burger">🍔 Burger</Menu.Item>
+            <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
+            <Menu.Item id="salad">🥗 Salad</Menu.Item>
+            <Menu.Item id="fries">🍟 Fries</Menu.Item>
           </Menu>
         </Menu.Trigger>
         <p>Current selection (controlled): {[selected].join(',')}</p>
