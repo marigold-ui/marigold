@@ -38,20 +38,28 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = {
+export const StandardMenu: Story = {
   render: args => {
-    const [selected, setSelected] = useState<string | number>('');
     return (
-      <>
-        <Menu label="Choose">
-          <Menu.Item id="burger">🍔 Burger</Menu.Item>
-          <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
-          <Menu.Item id="salad">🥗 Salad</Menu.Item>
-          <Menu.Item id="fries">🍟 Fries</Menu.Item>
-        </Menu>
-        <hr />
-        <pre>selected: {selected}</pre>
-      </>
+      <Menu label="Hogwarts Houses" {...args}>
+        <Menu.Item id="gryffindor">🦁 Gryffindor</Menu.Item>
+        <Menu.Item id="hufflepuff">🦡 Hufflepuff</Menu.Item>
+        <Menu.Item id="ravenclaw">🐦‍⬛ Ravenclaw</Menu.Item>
+        <Menu.Item id="slytherin">🐍 Slytherin</Menu.Item>
+      </Menu>
+    );
+  },
+};
+
+export const OnActionMenu: Story = {
+  render: args => {
+    return (
+      <Menu label="Choose" onAction={alert} {...args}>
+        <Menu.Item id="burger">🍔 Burger</Menu.Item>
+        <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
+        <Menu.Item id="salad">🥗 Salad</Menu.Item>
+        <Menu.Item id="fries">🍟 Fries</Menu.Item>
+      </Menu>
     );
   },
 };
@@ -165,15 +173,10 @@ export const OpenMenuRemotely: Story = {
           Open the menu remotly!
         </Button>
         <hr />
-        <Menu.Trigger open={true}>
-          <Button variant="menu" size="small">
-            Choose Menu
-          </Button>
-          <Menu onAction={handleAction}>
-            <Menu.Item key="one">One</Menu.Item>
-            <Menu.Item key="two">Two</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu onOpenChange={handleAction} open={open} label="Menu">
+          <Menu.Item key="one">One</Menu.Item>
+          <Menu.Item key="two">Two</Menu.Item>
+        </Menu>
       </>
     );
   },

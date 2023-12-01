@@ -12,7 +12,7 @@ import { MenuSection } from './MenuSection';
 
 type RemovedProps = 'isOpen' | 'className' | 'style' | 'children';
 
-export interface MenuTriggerProps
+export interface MenuProps
   extends Omit<RAC.MenuTriggerProps, RemovedProps>,
     Omit<RAC.MenuProps<object>, RemovedProps> {
   open?: RAC.MenuTriggerProps['isOpen'];
@@ -23,13 +23,7 @@ export interface MenuTriggerProps
   children?: ReactNode;
 }
 
-const _Menu = ({
-  children,
-  label,
-  variant,
-  size,
-  ...props
-}: MenuTriggerProps) => {
+const _Menu = ({ children, label, variant, size, ...props }: MenuProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
   const isSmallScreen = useSmallScreen();
   return (
@@ -38,7 +32,7 @@ const _Menu = ({
       {isSmallScreen ? (
         <Tray>{children}</Tray>
       ) : (
-        <Popover>
+        <Popover {...props}>
           <Menu {...props} className={classNames.container}>
             {children}
           </Menu>
