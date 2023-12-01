@@ -1,2 +1,2 @@
-export * from './_Menu';
+export * from './Menu';
 export * from './ActionMenu';

@@ -6,7 +6,7 @@ import { Key } from '@react-types/shared';
 
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
-import { Menu } from './MenuTrigger';
+import { Menu } from './Menu';
 
 const meta = {
   title: 'Components/Menu',
