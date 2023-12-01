@@ -1,11 +1,8 @@
 import { MenuTrigger } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
-import { PressResponder } from '@react-aria/interactions';
-
 import { useSmallScreen } from '@marigold/system';
 
-import { Button } from '../Button';
 import { Tray } from '../Overlay';
 import { Popover } from '../Overlay/Popover';
 
@@ -20,7 +17,7 @@ const _MenuTrigger = ({ children, ...props }: MenuTriggerProps) => {
   const isSmallScreen = useSmallScreen();
   return (
     <MenuTrigger {...props}>
-      {isSmallScreen ? <Tray>{children}</Tray> : <Popover>{children}</Popover>};
+      {isSmallScreen ? <Tray>{children}</Tray> : <Popover>{children}</Popover>}
     </MenuTrigger>
   );
 };

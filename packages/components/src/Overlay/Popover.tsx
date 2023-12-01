@@ -33,6 +33,8 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
     });
     const childrenArr = Children.toArray(props.children as ReactNode);
     const [dialogTrigger, children] = childrenArr;
+
+    console.log(props);
     return (
       <>
         {dialogTrigger}

@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from '@storybook/addons';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Popover } from 'react-aria-components';
 
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
@@ -43,7 +42,7 @@ export const Basic: Story = {
     return (
       <>
         <Menu.Trigger>
-          <Button>HUHU</Button>
+          <Button variant="menu">HUHU</Button>
           <Menu onAction={setSelected} label="Choose">
             <Menu.Item key="burger">🍔 Burger</Menu.Item>
             <Menu.Item key="pizza">🍕 Pizza</Menu.Item>

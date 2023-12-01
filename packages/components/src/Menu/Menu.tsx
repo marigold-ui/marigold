@@ -4,7 +4,6 @@ import type RAC from 'react-aria-components';
 
 import { useClassNames } from '@marigold/system';
 
-import { Button } from '../Button';
 import { Popover } from '../Overlay/Popover';
 import { MenuItem } from './MenuItem';
 import { MenuSection } from './MenuSection';
@@ -34,13 +33,10 @@ const _Menu = ({
 }: MenuProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
 
-  console.log(props);
   return (
-    <Popover>
-      <Menu {...props} className={classNames.container}>
-        {children}
-      </Menu>
-    </Popover>
+    <Menu {...props} className={classNames.container}>
+      {children}
+    </Menu>
   );
 };
 

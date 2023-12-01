@@ -7,5 +7,5 @@ export const Menu: ThemeComponent<'Menu'> = {
     ' overflow-y-auto overflow-x-hidden',
   ]),
   item: cva('focus:bg-bg-focus cursor-pointer px-4 py-1 outline-none'),
-  section: cva('text-text-body-accent p-4 text-sm'),
+  section: cva('text-text-body-accent border-t px-4 py-1  text-sm'),
 };

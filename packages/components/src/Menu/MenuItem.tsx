@@ -6,14 +6,14 @@ import { useClassNames } from '@marigold/system';
 
 // Props
 // ---------------
-type RemovedProps = 'style';
+type RemovedProps = 'style' | 'className';
 export interface MenuItemProps extends Omit<RAC.MenuItemProps, RemovedProps> {
   onAction?: (key: Key) => void;
 }
 
 // Component
 // ---------------
-const _MenuItem = ({ children, className, ...props }: MenuItemProps) => {
+const _MenuItem = ({ children, ...props }: MenuItemProps) => {
   const classNames = useClassNames({ component: 'Menu' });
   return (
     <MenuItem {...props} className={classNames.item}>
