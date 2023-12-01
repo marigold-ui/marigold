@@ -18,7 +18,7 @@ export interface PopoverProps
 // Component
 // ---------------
 const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
-  ({ keyboardDismissDisabled, placement, open, ...rest }, ref) => {
+  ({ keyboardDismissDisabled, placement, open, children, ...rest }, ref) => {
     const props: RAC.PopoverProps = {
       isKeyboardDismissDisabled: keyboardDismissDisabled,
       isOpen: open,
@@ -29,15 +29,11 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
       component: 'Popover',
       variant: placement,
     });
-    const childrenArr = Children.toArray(props.children as ReactNode);
-    const [trigger, children] = childrenArr;
+
     return (
-      <>
-        {trigger}
-        <Popover ref={ref} {...props} className={classNames}>
-          {children}
-        </Popover>
-      </>
+      <Popover ref={ref} {...props} className={classNames}>
+        {children}
+      </Popover>
     );
   }
 );
