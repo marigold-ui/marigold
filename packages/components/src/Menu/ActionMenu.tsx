@@ -4,7 +4,7 @@ import { SVG } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Popover } from '../Overlay/Popover';
-import { Menu, MenuProps } from './MenuTrigger';
+import { Menu, MenuProps } from './Menu';
 
 interface ActionMenuProps extends MenuProps {}
 
