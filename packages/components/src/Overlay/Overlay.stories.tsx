@@ -24,15 +24,13 @@ const TestTray = forwardRef<HTMLDivElement, { open: boolean }>(
       <>
         <MenuTrigger>
           <Button>Button</Button>
-          <Underlay variant="modal" open={open}>
-            <Popover ref={ref}>
-              <Menu>
-                <MenuItem key="edit">Edit</MenuItem>
-                <MenuItem key="duplicate">Duplicate</MenuItem>
-                <MenuItem key="delete">Delete</MenuItem>
-              </Menu>
-            </Popover>
-          </Underlay>
+          <Popover ref={ref}>
+            <Menu>
+              <MenuItem key="edit">Edit</MenuItem>
+              <MenuItem key="duplicate">Duplicate</MenuItem>
+              <MenuItem key="delete">Delete</MenuItem>
+            </Menu>
+          </Popover>
         </MenuTrigger>
       </>
     );
