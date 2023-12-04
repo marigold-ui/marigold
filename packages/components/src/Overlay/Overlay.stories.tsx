@@ -1,17 +1,20 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { forwardRef } from 'react';
+import { Menu, MenuItem, MenuTrigger } from 'react-aria-components';
 
 import { OverlayProvider } from '@react-aria/overlays';
 import { useObjectRef } from '@react-aria/utils';
 
 import { useOverlayTriggerState } from '@react-stately/overlays';
 
+import { Button } from '../Button';
 import { Dialog } from '../Dialog';
 import { Headline } from '../Headline';
-import { Menu } from '../Menu';
 import { Text } from '../Text';
 import { Modal } from './Modal';
+import { Popover } from './Popover';
 import { Tray } from './Tray';
+import { Underlay } from './Underlay';
 
 const meta = {
   title: 'Components/Overlay',
@@ -19,21 +22,24 @@ const meta = {
 
 export default meta;
 
+// imported from RAC
 const TestTray = forwardRef<HTMLDivElement, { open: boolean }>(
   ({ open }, ref) => {
-    const trayRef = useObjectRef(ref);
-    const state = useOverlayTriggerState({ isOpen: open });
-
     return (
-      <OverlayProvider>
-        <Tray state={state} ref={trayRef}>
-          <Menu>
-            <Menu.Item key="edit">Edit</Menu.Item>
-            <Menu.Item key="duplicate">Duplicate</Menu.Item>
-            <Menu.Item key="delete">Delete</Menu.Item>
-          </Menu>
-        </Tray>
-      </OverlayProvider>
+      <>
+        <MenuTrigger>
+          <Button>Button</Button>
+          <Underlay variant="modal" open={open}>
+            <Popover ref={ref}>
+              <Menu>
+                <MenuItem key="edit">Edit</MenuItem>
+                <MenuItem key="duplicate">Duplicate</MenuItem>
+                <MenuItem key="delete">Delete</MenuItem>
+              </Menu>
+            </Popover>
+          </Underlay>
+        </MenuTrigger>
+      </>
     );
   }
 );
