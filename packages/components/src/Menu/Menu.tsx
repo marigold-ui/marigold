@@ -2,10 +2,9 @@ import { Key, ReactNode } from 'react';
 import { Menu, MenuTrigger } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
-import { useClassNames, useSmallScreen } from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 
 import { Button } from '../Button';
-import { Tray } from '../Overlay';
 import { Popover } from '../Overlay/Popover';
 import { MenuItem } from './MenuItem';
 import { MenuSection } from './MenuSection';
@@ -25,19 +24,15 @@ export interface MenuProps
 
 const _Menu = ({ children, label, variant, size, ...props }: MenuProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
-  const isSmallScreen = useSmallScreen();
+
   return (
     <MenuTrigger {...props}>
       <Button variant="menu">{label}</Button>
-      {isSmallScreen ? (
-        <Tray>{children}</Tray>
-      ) : (
-        <Popover {...props}>
-          <Menu {...props} className={classNames.container}>
-            {children}
-          </Menu>
-        </Popover>
-      )}
+      <Popover {...props}>
+        <Menu {...props} className={classNames.container}>
+          {children}
+        </Menu>
+      </Popover>
     </MenuTrigger>
   );
 };
