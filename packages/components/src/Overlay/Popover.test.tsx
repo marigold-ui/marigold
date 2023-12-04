@@ -1,13 +1,14 @@
 /* eslint-disable testing-library/no-node-access */
-import { cleanup, screen } from '@testing-library/react';
+import { cleanup, fireEvent, renderHook, screen } from '@testing-library/react';
 import React from 'react';
 
-import { Theme, cva } from '@marigold/system';
+import { Theme, cva, useSmallScreen } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Text } from '../Text';
 import { setup } from '../test.utils';
 import { Popover } from './Popover';
+import { Underlay } from './Underlay';
 
 const theme: Theme = {
   name: 'test',
@@ -96,4 +97,27 @@ test('popover has children', () => {
   const popover = screen.getByTestId('popover');
   expect(popover).toBeInTheDocument();
   expect(popover.firstChild).toBeInTheDocument();
+});
+
+test('popover is small screen', () => {
+  const ref = React.createRef<HTMLDivElement>();
+
+  window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+
+  render(
+    <>
+      <div ref={ref}>Trigger</div>
+      <Button>open dialog</Button>
+      <Popover data-testid="popover" triggerRef={ref} open>
+        <Text>this is popover content </Text>
+      </Popover>
+    </>
+  );
+
+  const popover = screen.getByTestId('popover');
+
+  expect(popover.className).toMatchInlineSnapshot(
+    `"!left-0 bottom-0 !mt-auto flex !max-h-fit w-full flex-col"`
+  );
+  expect(popover).toBeInTheDocument();
 });

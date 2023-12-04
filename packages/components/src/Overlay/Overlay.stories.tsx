@@ -9,7 +9,6 @@ import { Text } from '../Text';
 import { Modal } from './Modal';
 import { Popover } from './Popover';
 import { Tray } from './Tray';
-import { Underlay } from './Underlay';
 
 const meta = {
   title: 'Components/Overlay',
