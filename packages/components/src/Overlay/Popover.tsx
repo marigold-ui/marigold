@@ -37,8 +37,6 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
     });
 
     const isSmallScreen = useSmallScreen();
-
-    console.log(props.isNonModal);
     return (
       <>
         {isSmallScreen ? (
