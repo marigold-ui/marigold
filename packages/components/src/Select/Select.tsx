@@ -77,7 +77,6 @@ const _Select = forwardRef<any, SelectProps<object>>(
     const classNames = useClassNames({ component: 'Select', variant, size });
     return (
       <FieldBase as={Select} ref={ref} {...props}>
-        {/* <Input ref={ref} /> */}
         <Button
           className={cn(
             'flex w-full items-center justify-between gap-1 overflow-hidden',
