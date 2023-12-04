@@ -9,6 +9,7 @@ import type RAC from 'react-aria-components';
 
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 
+import { ChevronDown } from '../Chevron';
 import { FieldBase } from '../FieldBase/_FieldBase';
 import { Item } from '../ListBox';
 import { Section } from '../ListBox';
@@ -79,12 +80,12 @@ const _Select = forwardRef<any, SelectProps<object>>(
       <FieldBase as={Select} ref={ref} {...props}>
         <Button
           className={cn(
-            'flex w-full items-center justify-between gap-1 overflow-hidden',
+            'flex w-full items-center justify-between gap-1 overflow-hidden ',
             classNames.select
           )}
         >
           <SelectValue />
-          <span aria-hidden="true">▼</span>
+          <ChevronDown className="h-4 w-4" />
         </Button>
         <Popover>
           <ListBox items={items}>{props.children}</ListBox>
