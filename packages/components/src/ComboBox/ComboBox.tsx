@@ -7,7 +7,10 @@ import type {
 import { ComboBox } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
+import { Button } from '../Button';
+import { ChevronDown } from '../Chevron';
 import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
+import { Input } from '../Input/_Input';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 
@@ -82,7 +85,14 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
 
     return (
       <FieldBase as={ComboBox} ref={ref} {...props}>
-        <Popover open>
+        <Input
+          action={
+            <Button className="absolute right-2 h-4 w-4 border-none bg-transparent p-0">
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+          }
+        />
+        <Popover className="w-[--trigger-width]">
           <ListBox>{children}</ListBox>
         </Popover>
       </FieldBase>
