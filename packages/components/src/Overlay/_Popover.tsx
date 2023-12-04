@@ -64,7 +64,6 @@ const PopoverWrapper = forwardRef(
       variant: placement,
     });
 
-    console.log(isNonModal);
     return (
       <FocusScope restoreFocus>
         {!isNonModal && <Underlay {...underlayProps} />}
