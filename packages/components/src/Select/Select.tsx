@@ -11,8 +11,6 @@ import { WidthProp, cn, useClassNames } from '@marigold/system';
 
 import { ChevronDown } from '../Chevron';
 import { FieldBase } from '../FieldBase/_FieldBase';
-import { Item } from '../ListBox';
-import { Section } from '../ListBox';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 
@@ -46,8 +44,8 @@ interface SelectComponent
   extends ForwardRefExoticComponent<
     SelectProps<object> & RefAttributes<HTMLDivElement>
   > {
-  Option: typeof Item;
-  Section: typeof Section;
+  Option: typeof ListBox.Item;
+  Section: typeof ListBox.Section;
 }
 
 // Component
@@ -95,7 +93,7 @@ const _Select = forwardRef<any, SelectProps<object>>(
   }
 ) as SelectComponent;
 
-_Select.Option = Item;
-_Select.Section = Section;
+_Select.Option = ListBox.Item;
+_Select.Section = ListBox.Section;
 
 export { _Select as Select };
