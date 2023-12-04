@@ -2,11 +2,6 @@ import { Meta, StoryObj } from '@storybook/react';
 import { forwardRef } from 'react';
 import { Menu, MenuItem, MenuTrigger } from 'react-aria-components';
 
-import { OverlayProvider } from '@react-aria/overlays';
-import { useObjectRef } from '@react-aria/utils';
-
-import { useOverlayTriggerState } from '@react-stately/overlays';
-
 import { Button } from '../Button';
 import { Dialog } from '../Dialog';
 import { Headline } from '../Headline';
