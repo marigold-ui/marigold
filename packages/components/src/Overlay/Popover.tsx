@@ -11,7 +11,7 @@ import { Underlay } from './Underlay';
 export interface PopoverProps
   extends Omit<
     RAC.PopoverProps,
-    'isOpen' | 'isKeyboardDismissDisabled' | 'className'
+    'isOpen' | 'isKeyboardDismissDisabled' | 'style' | 'className'
   > {
   keyboardDismissDisabled?: boolean;
   open?: boolean;
