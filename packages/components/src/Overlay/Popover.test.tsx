@@ -1,14 +1,13 @@
 /* eslint-disable testing-library/no-node-access */
-import { cleanup, fireEvent, renderHook, screen } from '@testing-library/react';
+import { cleanup, screen } from '@testing-library/react';
 import React from 'react';
 
-import { Theme, cva, useSmallScreen } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Text } from '../Text';
 import { setup } from '../test.utils';
 import { Popover } from './Popover';
-import { Underlay } from './Underlay';
 
 const theme: Theme = {
   name: 'test',
