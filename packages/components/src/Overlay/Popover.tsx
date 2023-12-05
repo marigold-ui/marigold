@@ -9,7 +9,7 @@ import { cn, useClassNames } from '@marigold/system';
 export interface PopoverProps
   extends Omit<
     RAC.PopoverProps,
-    'isOpen' | 'isKeyboardDismissDisabled' | 'style' | 'className'
+    'isOpen' | 'isKeyboardDismissDisabled' | 'style'
   > {
   keyboardDismissDisabled?: boolean;
   open?: boolean;
@@ -18,7 +18,10 @@ export interface PopoverProps
 // Component
 // ---------------
 const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
-  ({ keyboardDismissDisabled, placement, open, children, ...rest }, ref) => {
+  (
+    { keyboardDismissDisabled, placement, open, className, children, ...rest },
+    ref
+  ) => {
     const props: RAC.PopoverProps = {
       isKeyboardDismissDisabled: keyboardDismissDisabled,
       isOpen: open,
@@ -31,11 +34,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
     });
 
     return (
-      <Popover
-        ref={ref}
-        {...props}
-        className={cn('w-[--trigger-width]', classNames)}
-      >
+      <Popover ref={ref} {...props} className={cn(classNames, className)}>
         {children}
       </Popover>
     );

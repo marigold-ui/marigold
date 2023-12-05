@@ -23,7 +23,8 @@ type RemoveProps =
   | 'isOpen'
   | 'isRequired'
   | 'style'
-  | 'className';
+  | 'className'
+  | 'onSelectionChange';
 
 export interface SelectProps<T extends object>
   extends Omit<RAC.SelectProps<T>, RemoveProps> {
@@ -38,9 +39,10 @@ export interface SelectProps<T extends object>
   required?: RAC.TextFieldProps['isRequired'];
   disabled?: boolean;
   error?: boolean;
+  onChange?: RAC.SelectProps<object>['onSelectionChange'];
 }
 
-interface SelectComponent
+export interface SelectComponent
   extends ForwardRefExoticComponent<
     SelectProps<object> & RefAttributes<HTMLDivElement>
   > {
@@ -53,16 +55,14 @@ interface SelectComponent
 const _Select = forwardRef<any, SelectProps<object>>(
   (
     {
-      label,
       width,
       disabled,
-      description,
-      error,
-      errorMessage,
       required,
       items,
       variant,
       size,
+      error,
+      onChange,
       ...rest
     },
     ref
@@ -71,21 +71,23 @@ const _Select = forwardRef<any, SelectProps<object>>(
       isDisabled: disabled,
       isInvalid: error,
       isRequired: required,
+      onSelectionChange: onChange,
       ...rest,
     };
     const classNames = useClassNames({ component: 'Select', variant, size });
+    console.log(rest);
     return (
       <FieldBase as={Select} ref={ref} {...props}>
         <Button
           className={cn(
-            'flex w-full items-center justify-between gap-1 overflow-hidden ',
+            'flex w-full items-center justify-between gap-1 overflow-hidden',
             classNames.select
           )}
         >
           <SelectValue />
           <ChevronDown className="h-4 w-4" />
         </Button>
-        <Popover>
+        <Popover className="w-[--trigger-width]">
           <ListBox items={items}>{props.children}</ListBox>
         </Popover>
       </FieldBase>
