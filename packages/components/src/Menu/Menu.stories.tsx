@@ -151,7 +151,7 @@ export const LinksMenu: Story = {
 export const BasicActionMenu: Story = {
   render: args => {
     return (
-      <ActionMenu onAction={action => alert(`Action: ${action}`)}>
+      <ActionMenu onAction={action => alert(`Action: ${action}`)} {...args}>
         <Menu.Item key="edit">Open in editor</Menu.Item>
         <Menu.Item key="settings">Settings</Menu.Item>
         <Menu.Item key="delete">Delete</Menu.Item>
