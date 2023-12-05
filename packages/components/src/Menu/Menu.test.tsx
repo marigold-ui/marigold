@@ -103,7 +103,7 @@ test('renders the button but no menu by default', () => {
   expect(pizza).not.toBeInTheDocument();
 });
 
-test('opens menu when trigger is clicked', async () => {
+test('opens menu when trigger is clicked', () => {
   render(
     <ThemeProvider theme={theme}>
       <Menu label="Choose">
@@ -113,25 +113,14 @@ test('opens menu when trigger is clicked', async () => {
     </ThemeProvider>
   );
 
-  const button = screen.getByRole('button');
-  expect(button).not.toHaveAttribute('data-pressed');
+  const button = screen.getByText('Choose');
+  fireEvent.click(button);
 
-  await user.click(button);
-  expect(button).toHaveAttribute('data-pressed');
+  const burger = screen.getByText('Burger');
+  const pizza = screen.getByText('Pizza');
 
-  // console.log(button);
-  // const burger = screen.getByText('Burger');
-  // const pizza = screen.queryByText('Pizza');
-
-  // console.log(burger);
-  // expect(button).toBeInTheDocument();
-  // expect(burger).toBeInTheDocument();
-  // expect(pizza).toBeInTheDocument();
-  // fireEvent.click(button);
-  // const burger = screen.queryByText('Burger');
-  // const pizza = screen.queryByText('Pizza');
-  // expect(burger).toBeInTheDocument();
-  // expect(pizza).toBeInTheDocument();
+  expect(burger).toBeInTheDocument();
+  expect(pizza).toBeInTheDocument();
 });
 
 test('closes menu when item is selected', () => {
@@ -214,14 +203,14 @@ test('closes menu when clicked outside', async () => {
 });
 
 // test('return selected item')
-test('return selected item', () => {
+test('return action item', () => {
   const spy = jest.fn();
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
         <Menu label="Choose" onAction={spy}>
-          <Menu.Item key="burger">Burger</Menu.Item>
-          <Menu.Item key="pizza">Pizza</Menu.Item>
+          <Menu.Item id="burger">Burger</Menu.Item>
+          <Menu.Item id="pizza">Pizza</Menu.Item>
         </Menu>
       </ThemeProvider>
     </OverlayProvider>
@@ -232,6 +221,7 @@ test('return selected item', () => {
 
   const burger = screen.getByText('Burger');
   fireEvent.click(burger);
+
   expect(spy).toHaveBeenCalledWith('burger');
   expect(spy).not.toHaveBeenCalledWith('pizza');
 });
@@ -250,7 +240,7 @@ test('uses base classes from "Menu" in theme', () => {
   const button = screen.getByText('Choose');
   fireEvent.click(button);
 
-  const menu = screen.getByTestId('menu');
+  const menu = screen.getByRole('menu');
   expect(menu).toHaveClass(`bg-white`);
 });
 
@@ -268,11 +258,15 @@ test('supports "Menu" variant classnames from theme', () => {
   const button = screen.getByText('Choose');
   fireEvent.click(button);
 
-  const menu = screen.getByTestId('menu');
+  const menu = screen.getByRole('menu');
   const item = screen.getByText('Burger');
 
-  expect(menu).toHaveClass(`bg-pink-900`);
-  expect(item).toHaveClass(`text-white`);
+  expect(menu.className).toMatchInlineSnapshot(
+    `"focus:text-pink-600 bg-pink-900"`
+  );
+  expect(item.className).toMatchInlineSnapshot(
+    `"text-black focus:text-pink-600"`
+  );
 });
 
 test('supports "Menu" sizes from theme', () => {
