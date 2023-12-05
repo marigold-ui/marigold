@@ -30,6 +30,7 @@ const MonthDropdown = ({
         return (
           <li className="flex justify-center" key={index}>
             <Button
+              slot="previous"
               variant={
                 index === state.focusedDate.month - 1 ? 'secondary' : 'text'
               }
