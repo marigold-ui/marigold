@@ -66,23 +66,12 @@ const meta = {
       description: 'Padding y (top and bottom)',
       if: { global: 'theme', neq: 'b2b' },
     },
-    checked: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'Checks/unchecks the Checkbox',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
   },
   args: {
     readOnly: false,
     indeterminate: false,
     disabled: false,
     children: 'This is a Checkbox',
-    checked: false,
     size: 'default',
   },
 } satisfies Meta<typeof Checkbox>;
