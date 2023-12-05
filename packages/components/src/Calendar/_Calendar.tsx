@@ -10,9 +10,10 @@ import {
 
 import { DateValue } from '@react-aria/calendar';
 
-import { ChevronDown, ChevronLeft, ChevronRight } from '@marigold/icons';
+import { ChevronLeft, ChevronRight } from '@marigold/icons';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 
+import { CalendarButtonListBox } from './CalendarButtonListBox';
 import MonthDropdown from './MonthDropdown';
 import YearDropdown from './YearDropdown';
 import { CalendarGridHeader } from './_CalendarGridHeader';
@@ -20,7 +21,6 @@ import { CalendarGridHeader } from './_CalendarGridHeader';
 // Props
 // ---------------
 type RemovedProps = 'isDisabled' | 'isReadOnly' | 'isInvalid';
-
 export interface CalendarProps
   extends Omit<RAC.CalendarProps<DateValue>, RemovedProps> {
   disabled?: boolean;
@@ -32,6 +32,7 @@ export interface CalendarProps
   errorMessage?: string;
 }
 
+type ViewMapKeys = 'month' | 'year';
 // Component
 // ---------------
 export const _Calendar = ({
@@ -42,10 +43,6 @@ export const _Calendar = ({
   variant,
   ...rest
 }: CalendarProps) => {
-  const [selectedValue, setSelectedValue] = useState({
-    month: undefined,
-    year: undefined,
-  });
   const props: RAC.CalendarProps<DateValue> = {
     isDisabled: disabled,
     isReadOnly: readOnly,
@@ -55,32 +52,14 @@ export const _Calendar = ({
 
   const classNames = useClassNames({ component: 'Calendar' });
   const buttonClassNames = useClassNames({ component: 'Button' });
+
   const [selectedDropdown, setSelectedDropdown] = useState<
-    string | undefined
+    ViewMapKeys | undefined
   >();
-  const buttonStyles =
-    'flex items-center justify-between gap-1 overflow-hidden';
-  const { select: selectClassNames } = useClassNames({ component: 'Select' });
-
-  console.log(selectedValue);
-
-  type ViewMapKeys = 'month' | 'year';
 
   const ViewMap = {
-    month: (
-      <MonthDropdown
-        setSelectedDropdown={setSelectedDropdown}
-        selectedValue={selectedValue}
-        setSelectedValue={setSelectedValue}
-      />
-    ),
-    year: (
-      <YearDropdown
-        setSelectedDropdown={setSelectedDropdown}
-        selectedValue={selectedValue}
-        setSelectedValue={setSelectedValue}
-      />
-    ),
+    month: <MonthDropdown setSelectedDropdown={setSelectedDropdown} />,
+    year: <YearDropdown setSelectedDropdown={setSelectedDropdown} />,
   } satisfies { [key in ViewMapKeys]: React.JSX.Element };
 
   return (
@@ -97,24 +76,16 @@ export const _Calendar = ({
         <>
           <header className="mb-4 flex items-center justify-between">
             <div className="flex w-full gap-4">
-              <button
-                disabled={props.isDisabled}
-                onClick={() => setSelectedDropdown('month')}
-                className={cn(buttonStyles, selectClassNames)}
-                data-testid="month"
-              >
-                {selectedValue.month}
-                <ChevronDown />
-              </button>
-              <button
-                disabled={props.isDisabled}
-                onClick={() => setSelectedDropdown('year')}
-                className={cn(buttonStyles, selectClassNames)}
-                data-testid="year"
-              >
-                {selectedValue.year}
-                <ChevronDown />
-              </button>
+              <CalendarButtonListBox
+                type="month"
+                isDisabled={props.isDisabled}
+                setSelectedDropdown={setSelectedDropdown}
+              />
+              <CalendarButtonListBox
+                type="year"
+                isDisabled={props.isDisabled}
+                setSelectedDropdown={setSelectedDropdown}
+              />
             </div>
             <div
               className={cn(
