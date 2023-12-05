@@ -1,20 +1,14 @@
 import React, { useState } from 'react';
 import type RAC from 'react-aria-components';
-import {
-  Button,
-  Calendar,
-  CalendarCell,
-  CalendarGrid,
-  CalendarGridBody,
-} from 'react-aria-components';
+import { Calendar } from 'react-aria-components';
 
 import { DateValue } from '@react-aria/calendar';
 
-import { ChevronLeft, ChevronRight } from '@marigold/icons';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 
 import { CalendarButtonListBox } from './CalendarButtonListBox';
-import { CalendarGridHeader } from './CalendarGridHeader';
+import { CalendarGrid } from './CalendarGrid';
+import { MonthControls } from './MonthControls';
 import MonthListBox from './MonthListBox';
 import YearListBox from './YearListBox';
 
@@ -47,7 +41,6 @@ export const _Calendar = ({
   };
 
   const classNames = useClassNames({ component: 'Calendar' });
-  const buttonClassNames = useClassNames({ component: 'Button' });
 
   const [selectedDropdown, setSelectedDropdown] = useState<
     ViewMapKeys | undefined
@@ -83,46 +76,9 @@ export const _Calendar = ({
                 setSelectedDropdown={setSelectedDropdown}
               />
             </div>
-            <div
-              className={cn(
-                'flex w-full flex-nowrap justify-end gap-[10px] [&_button:disabled]:cursor-not-allowed [&_button]:px-2 [&_button]:py-1',
-                classNames.calendarControllers
-              )}
-            >
-              <Button
-                className={cn(
-                  'inline-flex items-center justify-center gap-[0.5ch]',
-                  buttonClassNames
-                )}
-                slot="previous"
-              >
-                <ChevronLeft />
-              </Button>
-              <Button
-                className={cn(
-                  'inline-flex items-center justify-center gap-[0.5ch]',
-                  buttonClassNames
-                )}
-                slot="next"
-              >
-                <ChevronRight />
-              </Button>
-            </div>
+            <MonthControls />
           </div>
-          <CalendarGrid className={classNames.calendarGrid}>
-            <CalendarGridHeader />
-            <CalendarGridBody>
-              {date => (
-                <CalendarCell
-                  date={date}
-                  className={cn(
-                    'flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full p-[5.3px] text-sm font-normal aria-disabled:cursor-default',
-                    classNames.calendarCell
-                  )}
-                />
-              )}
-            </CalendarGridBody>
-          </CalendarGrid>
+          <CalendarGrid />
         </>
       )}
     </Calendar>

@@ -32,6 +32,8 @@ const theme: Theme = {
         'group-aria-selected/cell:bg-calendar-calendarCell-selected outline-none group-aria-selected/cell:font-semibold group-aria-selected/cell:text-white',
       ]),
       calendarControllers: cva(),
+      calendarHeader: cva(['fontWeight:bolder p-2']),
+      calendarGrid: cva('[&_td]:p-2'),
     },
     Select: cva() as any,
     ListBox: cva() as any,
@@ -279,22 +281,6 @@ describe('Calendar', () => {
     expect(selectedDate.textContent).toBe('5');
     expect(onChange).not.toHaveBeenCalled();
   });
-
-  /*test('support validationState', () => {
-    render(
-      <Calendar
-        defaultValue={new CalendarDate(2022, 3, 11)}
-        validationState="invalid"
-      />
-    );
-
-    const cell = screen.getByRole('button', {
-      name: 'Friday, March 11, 2022 selected',
-    });
-    expect(cell).toHaveAttribute('aria-invalid', 'true');
-    expect(cell.parentElement).toHaveAttribute('aria-selected', 'true');
-    expect(cell.parentElement).toHaveAttribute('aria-invalid', 'true');
-  });*/
 
   test('renders select components', async () => {
     // mocking scrollIntoView to handle error `scrollIntoView` isn't a function
