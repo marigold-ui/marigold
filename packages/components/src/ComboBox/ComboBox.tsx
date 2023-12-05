@@ -92,7 +92,7 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
             </Button>
           }
         />
-        <Popover className="w-[--trigger-width]">
+        <Popover>
           <ListBox>{children}</ListBox>
         </Popover>
       </FieldBase>
