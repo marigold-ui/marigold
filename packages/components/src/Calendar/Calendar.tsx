@@ -15,8 +15,8 @@ import { WidthProp, cn, useClassNames } from '@marigold/system';
 
 import { CalendarButtonListBox } from './CalendarButtonListBox';
 import { CalendarGridHeader } from './CalendarGridHeader';
-import MonthDropdown from './MonthDropdown';
-import YearDropdown from './YearDropdown';
+import MonthListBox from './MonthListBox';
+import YearListBox from './YearListBox';
 
 // Props
 // ---------------
@@ -58,8 +58,8 @@ export const _Calendar = ({
   >();
 
   const ViewMap = {
-    month: <MonthDropdown setSelectedDropdown={setSelectedDropdown} />,
-    year: <YearDropdown setSelectedDropdown={setSelectedDropdown} />,
+    month: <MonthListBox setSelectedDropdown={setSelectedDropdown} />,
+    year: <YearListBox setSelectedDropdown={setSelectedDropdown} />,
   } satisfies { [key in ViewMapKeys]: React.JSX.Element };
 
   return (

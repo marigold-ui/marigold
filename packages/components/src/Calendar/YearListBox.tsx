@@ -17,7 +17,7 @@ interface YearDropdownProps {
   setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
 }
 
-const YearDropdown = ({ setSelectedDropdown }: YearDropdownProps) => {
+const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
   const state = useContext(CalendarStateContext)!;
   const years: { value: CalendarDate; formatted: string }[] = [];
   let formatter = useDateFormatter({
@@ -86,4 +86,4 @@ const YearDropdown = ({ setSelectedDropdown }: YearDropdownProps) => {
   );
 };
 
-export default YearDropdown;
+export default YearListBox;

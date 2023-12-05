@@ -8,7 +8,7 @@ interface MonthDropdownProps {
   setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
 }
 
-const MonthDropdown = ({ setSelectedDropdown }: MonthDropdownProps) => {
+const MonthListBox = ({ setSelectedDropdown }: MonthDropdownProps) => {
   const state = useContext(CalendarStateContext)!;
   const months = useFormattedMonths(state.timeZone, state.focusedDate);
 
@@ -47,4 +47,4 @@ const MonthDropdown = ({ setSelectedDropdown }: MonthDropdownProps) => {
   );
 };
 
-export default MonthDropdown;
+export default MonthListBox;
