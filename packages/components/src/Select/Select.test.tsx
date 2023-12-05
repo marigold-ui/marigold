@@ -13,6 +13,7 @@ import { OverlayProvider } from '@react-aria/overlays';
 
 import { Theme, cva, useSmallScreen } from '@marigold/system';
 
+import { Header } from '../Header';
 import { setup } from '../test.utils';
 import { Select } from './Select';
 
@@ -36,6 +37,7 @@ const theme: Theme = {
         },
       },
     }),
+    Header: cva('text-xl'),
     HelpText: {
       container: cva('', {
         variants: {
@@ -155,7 +157,7 @@ test('default placeholder is rendered', () => {
     </OverlayProvider>
   );
 
-  const button = screen.getByTestId('select');
+  const button = screen.getByRole('button');
   expect(button).toHaveTextContent(/placeholder/);
 });
 
@@ -170,288 +172,292 @@ test('custom placeholder is rendered', () => {
     </OverlayProvider>
   );
 
-  const button = screen.getByTestId('select');
+  const button = screen.getByRole('button');
   expect(button).toHaveTextContent(/Select me/);
 });
 
-// test('option list opens when button is clicked', () => {
-//   render(
-//     <OverlayProvider>
-//       <Select label="Label" >
-//         <Select.Option key="one">one</Select.Option>
-//         <Select.Option key="two">two</Select.Option>
-//         <Select.Option key="three">three</Select.Option>
-//       </Select>
-//     </OverlayProvider>
-//   );
-//   const button = screen.getByTestId('select');
-
-//   expect(button).toBeInTheDocument();
-//   expect(button).toHaveAttribute('aria-expanded', 'false');
-
-//   fireEvent.click(button);
-//   const options = screen.getByRole('listbox');
-//   expect(options).toBeVisible();
-//   expect(button).toHaveAttribute('aria-expanded', 'true');
-// });
-
-test('option list closes when button is clicked', () => {
+test('option list opens when button is clicked', () => {
   render(
     <OverlayProvider>
-      <Select label="Label" data-testid="select-id">
+      <Select label="Label">
         <Select.Option key="one">one</Select.Option>
         <Select.Option key="two">two</Select.Option>
         <Select.Option key="three">three</Select.Option>
       </Select>
     </OverlayProvider>
   );
-  const button = screen.getByTestId('select-id');
+  const button = screen.getByRole('button');
+
+  expect(button).toBeInTheDocument();
+  expect(button).toHaveAttribute('aria-expanded', 'false');
+
   fireEvent.click(button);
-  console.log('buttonElement', button);
-  // expect(button).toHaveAttribute('aria-expanded', 'true');
-
-  // const options = screen.getByRole('listbox');
-  // expect(options).toBeVisible();
-
-  // fireEvent.click(button);
-  // expect(button).toHaveAttribute('aria-expanded', 'false');
-  // expect(options).not.toBeVisible();
+  const options = screen.getByRole('listbox');
+  expect(options).toBeVisible();
+  expect(button).toHaveAttribute('aria-expanded', 'true');
 });
 
-// test('supports to select an option and closes listbox afterwards', () => {
-//   window.matchMedia = mockMatchMedia(['screen and (min-width: 600px)']);
-//   render(
-//     <OverlayProvider>
-//       <Select label="Label" data-testid="select">
-//         <Select.Option key="one">one</Select.Option>
-//         <Select.Option key="two">two</Select.Option>
-//         <Select.Option key="three">three</Select.Option>
-//       </Select>
-//     </OverlayProvider>
-//   );
-//   const button = screen.getByTestId('select');
-//   fireEvent.click(button);
-//   expect(button).toHaveAttribute('aria-expanded', 'true');
+test('option list closes when button is clicked', () => {
+  render(
+    <OverlayProvider>
+      <Select data-testid="select-id">
+        <Select.Option key="Harry Potter">Harry Potter</Select.Option>
+        <Select.Option key="Lord of the Rings">Lord of the Rings</Select.Option>
+        <Select.Option key="Star Wars">Star Wars</Select.Option>
+        <Select.Option key="Star Trek">Star Trek</Select.Option>
+        <Select.Option key="Firefly">Firefly</Select.Option>
+      </Select>
+    </OverlayProvider>
+  );
+  const button = screen.getByRole('button');
+  fireEvent.click(button);
+  expect(button).toHaveAttribute('aria-expanded');
 
-//   const options = screen.getByRole('listbox');
-//   expect(options).toBeVisible();
+  const options = screen.getByRole('listbox');
+  expect(options).toBeVisible();
 
-//   const two = within(options).getByText('two');
-//   fireEvent.click(two);
+  fireEvent.click(button);
+  expect(button).toHaveAttribute('aria-expanded', 'false');
+  expect(options).not.toBeVisible();
+});
 
-//   expect(options).not.toBeVisible();
-//   expect(button).toHaveAttribute('aria-expanded', 'false');
-// });
+test('supports to select an option and closes listbox afterwards', () => {
+  window.matchMedia = mockMatchMedia(['screen and (min-width: 600px)']);
+  render(
+    <OverlayProvider>
+      <Select label="Label" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
+    </OverlayProvider>
+  );
+  const button = screen.getByRole('button');
+  fireEvent.click(button);
+  expect(button).toHaveAttribute('aria-expanded', 'true');
 
-// test('selected option is displayed in button', () => {
-//   render(
-//     <OverlayProvider>
-//       <Select label="Label" data-testid="select">
-//         <Select.Option key="one">one</Select.Option>
-//         <Select.Option key="two">two</Select.Option>
-//         <Select.Option key="three">three</Select.Option>
-//       </Select>
-//     </OverlayProvider>
-//   );
-//   const button = screen.getByTestId('select');
-//   fireEvent.click(button);
-//   expect(button).toHaveAttribute('aria-expanded', 'true');
+  const options = screen.getByRole('listbox');
+  expect(options).toBeVisible();
 
-//   const options = screen.getByRole('listbox');
-//   expect(options).toBeVisible();
+  const two = within(options).getByText('two');
+  fireEvent.click(two);
 
-//   const one = within(options).getByText('one');
-//   fireEvent.click(one);
+  expect(options).not.toBeVisible();
+  expect(button).toHaveAttribute('aria-expanded', 'false');
+});
 
-//   expect(button).toHaveAttribute('aria-expanded', 'false');
-//   expect(button).toHaveTextContent(/one/);
-// });
+test('selected option is displayed in button', () => {
+  render(
+    <OverlayProvider>
+      <Select label="Label" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
+    </OverlayProvider>
+  );
+  const button = screen.getByRole('button');
+  fireEvent.click(button);
+  expect(button).toHaveAttribute('aria-expanded', 'true');
 
-// test('dismiss when clicking escape', () => {
-//   render(
-//     <OverlayProvider>
-//       <Select label="Label" data-testid="select">
-//         <Select.Option key="one">one</Select.Option>
-//         <Select.Option key="two">two</Select.Option>
-//         <Select.Option key="three">three</Select.Option>
-//       </Select>
-//     </OverlayProvider>
-//   );
-//   const button = screen.getByTestId('select');
-//   fireEvent.click(button);
-//   expect(button).toHaveAttribute('aria-expanded', 'true');
+  const options = screen.getByRole('listbox');
+  expect(options).toBeVisible();
 
-//   const options = screen.getByRole('listbox');
-//   expect(options).toBeVisible();
-//   userEvent.type(button, '{esc}');
-// });
+  const one = within(options).getByText('one');
+  fireEvent.click(one);
 
-// test('allows to disable select', () => {
-//   render(
-//     <OverlayProvider>
-//       <Select label="Label" data-testid="select" disabled>
-//         <Select.Option key="one">one</Select.Option>
-//         <Select.Option key="two">two</Select.Option>
-//         <Select.Option key="three">three</Select.Option>
-//       </Select>
-//     </OverlayProvider>
-//   );
-//   const button = screen.getByTestId('select');
-//   expect(button).toBeDisabled();
+  expect(button).toHaveAttribute('aria-expanded', 'false');
+  expect(button).toHaveTextContent(/one/);
+});
 
-//   fireEvent.click(button);
-//   expect(button).toHaveAttribute('aria-expanded', 'false');
-// });
+test('dismiss when clicking escape', () => {
+  render(
+    <OverlayProvider>
+      <Select label="Label" data-testid="select">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
+    </OverlayProvider>
+  );
+  const button = screen.getByRole('button');
+  fireEvent.click(button);
+  expect(button).toHaveAttribute('aria-expanded', 'true');
 
-// test('allows to disable options', () => {
-//   render(
-//     <OverlayProvider>
-//       <Select label="Label" data-testid="select" disabledKeys={['two']}>
-//         <Select.Option key="one">one</Select.Option>
-//         <Select.Option key="two">two</Select.Option>
-//         <Select.Option key="three">three</Select.Option>
-//       </Select>
-//     </OverlayProvider>
-//   );
+  const options = screen.getByRole('listbox');
+  expect(options).toBeVisible();
+  userEvent.type(button, '{esc}');
+});
 
-//   const button = screen.getByTestId('select');
-//   fireEvent.click(button);
+test('allows to disable select', () => {
+  render(
+    <OverlayProvider>
+      <Select label="Label" data-testid="select" disabled>
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
+    </OverlayProvider>
+  );
+  const button = screen.getByRole('button');
+  expect(button).toBeDisabled();
 
-//   const options = screen.getByRole('listbox');
-//   const two = within(options).getByText('two');
+  fireEvent.click(button);
+  expect(button).toHaveAttribute('aria-expanded', 'false');
+});
 
-//   expect(two).toHaveAttribute('aria-disabled', 'true');
-// });
+test('allows to disable options', () => {
+  render(
+    <OverlayProvider>
+      <Select label="Label" data-testid="select" disabledKeys={['two']}>
+        <Select.Option id="one">one</Select.Option>
+        <Select.Option id="two">two</Select.Option>
+        <Select.Option id="three">three</Select.Option>
+      </Select>
+    </OverlayProvider>
+  );
 
-// test('allows select to be required', () => {
-//   render(
-//     <OverlayProvider>
-//       <Select label="Label" data-testid="select" required>
-//         <Select.Option key="one">one</Select.Option>
-//         <Select.Option key="two">two</Select.Option>
-//         <Select.Option key="three">three</Select.Option>
-//       </Select>
-//     </OverlayProvider>
-//   );
+  const button = screen.getByRole('button');
+  fireEvent.click(button);
 
-//   // eslint-disable-next-line testing-library/no-node-access
-//   const label = screen.getAllByText('Label')[0].parentElement!;
-//   const requiredIcon = within(label).getByRole('presentation');
-//   expect(requiredIcon).toBeInTheDocument();
-// });
+  const options = screen.getByRole('listbox');
+  const two = within(options).getByText('two');
 
-// test('controlled', () => {
-//   const spy = jest.fn();
-//   render(
-//     <OverlayProvider>
-//       <Select label="Label" data-testid="select" onChange={spy}>
-//         <Select.Option key="one">one</Select.Option>
-//         <Select.Option key="two">two</Select.Option>
-//         <Select.Option key="three">three</Select.Option>
-//       </Select>
-//     </OverlayProvider>
-//   );
+  expect(two).toHaveAttribute('aria-disabled', 'true');
+});
 
-//   const button = screen.getByTestId('select');
-//   fireEvent.click(button);
+test('allows select to be required', () => {
+  render(
+    <OverlayProvider>
+      <Select label="Label" data-testid="select" required>
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+        <Select.Option key="three">three</Select.Option>
+      </Select>
+    </OverlayProvider>
+  );
 
-//   const options = screen.getByRole('listbox');
-//   const three = within(options).getByText('three');
-//   fireEvent.click(three);
+  // eslint-disable-next-line testing-library/no-node-access
+  const label = screen.getAllByText('Label')[0].parentElement!;
+  const requiredIcon = within(label).getByRole('presentation');
+  expect(requiredIcon).toBeInTheDocument();
+});
 
-//   expect(spy).toHaveBeenCalledTimes(1);
-//   expect(spy).toHaveBeenCalledWith('three');
-// });
+test('controlled', () => {
+  const spy = jest.fn();
+  render(
+    <OverlayProvider>
+      <Select label="Label" data-testid="select" onChange={spy}>
+        <Select.Option id="one">one</Select.Option>
+        <Select.Option id="two">two</Select.Option>
+        <Select.Option id="three">three</Select.Option>
+      </Select>
+    </OverlayProvider>
+  );
 
-// test('supports default value via "defaultSelectedKey"', () => {
-//   render(
-//     <OverlayProvider>
-//       <Select label="Label" data-testid="select" defaultSelectedKey="three">
-//         <Select.Option key="one">one</Select.Option>
-//         <Select.Option key="two">two</Select.Option>
-//         <Select.Option key="three">three</Select.Option>
-//       </Select>
-//     </OverlayProvider>
-//   );
+  const button = screen.getByRole('button');
+  fireEvent.click(button);
 
-//   const button = screen.getByTestId('select');
-//   expect(button).toHaveTextContent(/three/);
+  const options = screen.getByRole('listbox');
+  const three = within(options).getByText('three');
+  fireEvent.click(three);
 
-//   fireEvent.click(button);
+  expect(spy).toHaveBeenCalledTimes(1);
+  expect(spy).toHaveBeenCalledWith('three');
+});
 
-//   const options = screen.getByRole('listbox');
-//   const three = within(options).getByText('three');
+test('supports default value via "defaultSelectedKey"', () => {
+  render(
+    <OverlayProvider>
+      <Select label="Label" data-testid="select" defaultSelectedKey="three">
+        <Select.Option id="one">one</Select.Option>
+        <Select.Option id="two">two</Select.Option>
+        <Select.Option id="three">three</Select.Option>
+      </Select>
+    </OverlayProvider>
+  );
 
-//   expect(three).toHaveAttribute('aria-selected', 'true');
-// });
+  const button = screen.getByRole('button');
+  expect(button).toHaveTextContent(/three/);
 
-// test('supports sections', () => {
-//   render(
-//     <OverlayProvider>
-//       <Select label="Label" data-testid="select">
-//         <Select.Section title="Section 1">
-//           <Select.Option key="one">one</Select.Option>
-//           <Select.Option key="two">two</Select.Option>
-//         </Select.Section>
-//         <Select.Section title="Section 2">
-//           <Select.Option key="three">three</Select.Option>
-//           <Select.Option key="four">four</Select.Option>
-//         </Select.Section>
-//       </Select>
-//     </OverlayProvider>
-//   );
+  fireEvent.click(button);
 
-//   const button = screen.getByTestId('select');
-//   fireEvent.click(button);
+  const options = screen.getByRole('listbox');
+  const three = within(options).getByText('three');
 
-//   const options = screen.getByRole('listbox');
-//   const sectionOne = within(options).getByText('Section 1');
-//   const sectionTwo = within(options).getByText('Section 2');
+  expect(three).toHaveAttribute('aria-selected', 'true');
+});
 
-//   expect(sectionOne).toBeVisible();
-//   expect(sectionTwo).toBeVisible();
-// });
+test('supports sections', () => {
+  render(
+    <OverlayProvider>
+      <Select label="Label" data-testid="select">
+        <Select.Section>
+          <Header>Section 1</Header>
+          <Select.Option id="one">one</Select.Option>
+          <Select.Option id="two">two</Select.Option>
+        </Select.Section>
+        <Select.Section>
+          <Header>Section 2</Header>
+          <Select.Option id="three">three</Select.Option>
+          <Select.Option id="four">four</Select.Option>
+        </Select.Section>
+      </Select>
+    </OverlayProvider>
+  );
 
-// test('supports styling classnames with variants and sizes from theme', () => {
-//   render(
-//     <OverlayProvider>
-//       <Select label="Label" data-testid="select" variant="violet" size="small">
-//         <Select.Section title="Section 1">
-//           <Select.Option key="one">one</Select.Option>
-//           <Select.Option key="two">two</Select.Option>
-//         </Select.Section>
-//       </Select>
-//     </OverlayProvider>
-//   );
+  const button = screen.getByRole('button');
+  fireEvent.click(button);
 
-//   const button = screen.getByTestId('select');
+  const options = screen.getByRole('listbox');
+  const sectionOne = within(options).getByText('Section 1');
+  const sectionTwo = within(options).getByText('Section 2');
 
-//   expect(button.className).toContain('text-violet-500');
-//   expect(button.className).toContain('text-sm');
-// });
+  expect(sectionOne).toBeVisible();
+  expect(sectionTwo).toBeVisible();
+});
 
-// test('set width via props', () => {
-//   render(
-//     <OverlayProvider>
-//       <Select label="Label" data-testid="select" width="1/2">
-//         <Select.Option key="one">one</Select.Option>
-//         <Select.Option key="two">two</Select.Option>
-//       </Select>
-//     </OverlayProvider>
-//   );
+test('supports styling classnames with variants and sizes from theme', () => {
+  render(
+    <OverlayProvider>
+      <Select label="Label" data-testid="select" variant="violet" size="small">
+        <Select.Section title="Section 1">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+        </Select.Section>
+      </Select>
+    </OverlayProvider>
+  );
 
-//   // We need to query all, since there is also a label in the hidden select
-//   // eslint-disable-next-line testing-library/no-node-access
-//   const container = screen.getAllByText('Label')[0].parentElement;
-//   expect(container?.className).toMatchInlineSnapshot(`"group/field w-1/2"`);
-// });
+  const button = screen.getByRole('button');
+
+  expect(button.className).toContain('text-violet-500');
+  expect(button.className).toContain('text-sm');
+});
+
+test('set width via props', () => {
+  render(
+    <OverlayProvider>
+      <Select label="Label" data-testid="select" width="1/2">
+        <Select.Option key="one">one</Select.Option>
+        <Select.Option key="two">two</Select.Option>
+      </Select>
+    </OverlayProvider>
+  );
+
+  // We need to query all, since there is also a label in the hidden select
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getAllByText('Label')[0].parentElement;
+  expect(container?.className).toMatchInlineSnapshot(`"group/field w-full"`);
+});
 
 // test('forwards ref', () => {
 //   const ref = React.createRef<HTMLButtonElement>();
 //   render(
 //     <OverlayProvider>
-//       <Select label="Label" data-testid="select" ref={ref}>
-//         <Select.Section title="Section 1">
+//       <Select label="Label" data-testid="select" ref={ref as any}>
+//         <Select.Section>
+//           <Header>Section 1</Header>
 //           <Select.Option key="one">one</Select.Option>
 //           <Select.Option key="two">two</Select.Option>
 //         </Select.Section>
@@ -462,36 +468,36 @@ test('option list closes when button is clicked', () => {
 //   expect(ref.current).toBeInstanceOf(HTMLButtonElement);
 // });
 
-// test('renders as tray', () => {
-//   const ref = React.createRef<HTMLButtonElement>();
+test('renders as tray', () => {
+  const ref = React.createRef<HTMLButtonElement>();
 
-//   let resize: Function;
-//   window.addEventListener = jest.fn().mockImplementation((event, cb) => {
-//     if (event === 'resize') resize = cb;
-//   });
+  let resize: Function;
+  window.addEventListener = jest.fn().mockImplementation((event, cb) => {
+    if (event === 'resize') resize = cb;
+  });
 
-//   const { result } = renderHook(() => useSmallScreen());
-//   window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
-//   act(() => resize());
+  const { result } = renderHook(() => useSmallScreen());
+  window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+  act(() => resize());
 
-//   expect(result.current).toBeTruthy();
+  expect(result.current).toBeTruthy();
 
-//   render(
-//     <OverlayProvider>
-//       <Select label="Label" data-testid="select" ref={ref}>
-//         <Select.Section title="Section 1">
-//           <Select.Option key="one">one</Select.Option>
-//           <Select.Option key="two">two</Select.Option>
-//         </Select.Section>
-//       </Select>
-//     </OverlayProvider>
-//   );
+  render(
+    <OverlayProvider>
+      <Select label="Label" data-testid="select" ref={ref as any}>
+        <Select.Section title="Section 1">
+          <Select.Option key="one">one</Select.Option>
+          <Select.Option key="two">two</Select.Option>
+        </Select.Section>
+      </Select>
+    </OverlayProvider>
+  );
 
-//   const button = screen.getByTestId('select');
-//   fireEvent.click(button);
-//   const tray = screen.getByTestId('tray');
-//   expect(tray).toBeInTheDocument();
-// });
+  const button = screen.getByRole('button');
+  fireEvent.click(button);
+  const tray = screen.getByTestId('tray');
+  expect(tray).toBeInTheDocument();
+});
 
 // test('error is there', () => {
 //   render(
