@@ -50,7 +50,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
             </Popover>
           </Underlay>
         ) : (
-          <Popover ref={ref} {...props} className={classNames}>
+          <Popover ref={ref} {...props} className={classNames} offset={0}>
             {children}
           </Popover>
         )}
