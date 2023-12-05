@@ -1,5 +1,37 @@
 # @marigold/components
 
+## 6.11.0
+
+### Minor Changes
+
+- [#3520](https://github.com/marigold-ui/marigold/pull/3520) [`bc96dda88`](https://github.com/marigold-ui/marigold/commit/bc96dda88894271bc7fdc4a01270932855337af8) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Introduce RAC popover component
+
+- [#3445](https://github.com/marigold-ui/marigold/pull/3445) [`91badb0e1`](https://github.com/marigold-ui/marigold/commit/91badb0e1da21d8cefa36c48c57d53c5abe54123) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - migrate ListBox component to RAC
+
+### Patch Changes
+
+- [#3522](https://github.com/marigold-ui/marigold/pull/3522) [`a748252c5`](https://github.com/marigold-ui/marigold/commit/a748252c5e233d37548dd0b9d9dd18cbbbd6fdb5) Thanks [@aromko](https://github.com/aromko)! - chore[DST-255]: `<Button>` storybook improvements
+
+- [#3537](https://github.com/marigold-ui/marigold/pull/3537) [`148034202`](https://github.com/marigold-ui/marigold/commit/148034202a502f9c669c5c500c6dcae13924b409) Thanks [@sebald](https://github.com/sebald)! - feat: Make `Popover` at least as wide as trigger element
+
+- [#3531](https://github.com/marigold-ui/marigold/pull/3531) [`071bd792a`](https://github.com/marigold-ui/marigold/commit/071bd792ac0ed9fc0adbb7aa9ae781ed7fa280fd) Thanks [@aromko](https://github.com/aromko)! - chore: add placeholder to TextFieldProps
+
+- [#3530](https://github.com/marigold-ui/marigold/pull/3530) [`51611dbe0`](https://github.com/marigold-ui/marigold/commit/51611dbe075fa43aef219bf30a196b34b3ec7d73) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: remove Dialog trigger out of Popover
+
+- [#3521](https://github.com/marigold-ui/marigold/pull/3521) [`f972b3a25`](https://github.com/marigold-ui/marigold/commit/f972b3a2579483c5e8632cc13ce6d4dbacc18a73) Thanks [@sarahgm](https://github.com/sarahgm)! - chore[DST-256]: `<XLoader>` storybook improvements
+
+- [#3525](https://github.com/marigold-ui/marigold/pull/3525) [`cf59ce1e4`](https://github.com/marigold-ui/marigold/commit/cf59ce1e4154e670b51ee43387e372e3f7ec8e60) Thanks [@aromko](https://github.com/aromko)! - chore[DST-257]: `<Card>`storybook improvements
+
+- [#3536](https://github.com/marigold-ui/marigold/pull/3536) [`bc09a9ce1`](https://github.com/marigold-ui/marigold/commit/bc09a9ce1c917b0fc3cfbd3459a0c83cf804308e) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: add "Tray" behavior inside Popover
+
+- [#3519](https://github.com/marigold-ui/marigold/pull/3519) [`849f4c534`](https://github.com/marigold-ui/marigold/commit/849f4c534f71ce64bb7181b2bdc60ff4864b3ce1) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: remove unused `stretch` prop and improve storybook story
+
+- [#3513](https://github.com/marigold-ui/marigold/pull/3513) [`cdc17ee83`](https://github.com/marigold-ui/marigold/commit/cdc17ee83771dc367d29126903feca831c43a421) Thanks [@aromko](https://github.com/aromko)! - RAC: migrate `<TagGroup>` component
+
+- Updated dependencies [[`cdc17ee83`](https://github.com/marigold-ui/marigold/commit/cdc17ee83771dc367d29126903feca831c43a421)]:
+  - @marigold/system@6.11.0
+  - @marigold/icons@1.2.31
+
 ## 6.10.0
 
 ### Minor Changes
