@@ -22,13 +22,20 @@ export interface MenuProps
   children?: ReactNode;
 }
 
-const _Menu = ({ children, label, variant, size, ...props }: MenuProps) => {
+const _Menu = ({
+  children,
+  label,
+  variant,
+  size,
+  open,
+  ...props
+}: MenuProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
 
   return (
     <MenuTrigger {...props}>
       <Button variant="menu">{label}</Button>
-      <Popover {...props}>
+      <Popover open={open} {...props}>
         <Menu {...props} className={classNames.container}>
           {children}
         </Menu>

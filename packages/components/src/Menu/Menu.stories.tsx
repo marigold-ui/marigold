@@ -11,15 +11,6 @@ import { Menu } from './Menu';
 const meta = {
   title: 'Components/Menu',
   argTypes: {
-    disabled: {
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
-    },
     open: {
       control: {
         type: 'boolean',
@@ -29,10 +20,57 @@ const meta = {
         defaultValue: { summary: false },
       },
     },
+    label: {
+      control: {
+        type: 'text',
+      },
+      description: 'The text for the button.',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'none' },
+      },
+    },
+    variant: {
+      control: {
+        type: 'text',
+      },
+      description: 'The variant of the menu (currently no variant).',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'none' },
+      },
+    },
+    size: {
+      control: {
+        type: 'text',
+      },
+      description: 'The size of the menu (currently no size).',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'none' },
+      },
+    },
+    selectionMode: {
+      description: 'if the Menu can select one MenuItem',
+      control: {
+        type: 'select',
+      },
+      options: ['none', 'single', 'multiple'],
+      table: {
+        defaultValue: 'none',
+      },
+    },
+    disabledKeys: {
+      description: 'Disabled Items, you have to set the id name',
+      control: {
+        type: 'object',
+      },
+      table: {
+        type: { summary: 'string' },
+      },
+    },
   },
-  args: {
-    disabled: false,
-  },
+  args: {},
 } satisfies Meta<typeof Menu>;
 
 export default meta;
@@ -65,7 +103,7 @@ export const OnActionMenu: Story = {
 };
 
 export const SingleSelection: Story = {
-  render: () => {
+  render: args => {
     const [selectedKeys, setSelected] = useState(new Set());
     const selected = Array.from(selectedKeys);
 
@@ -76,6 +114,7 @@ export const SingleSelection: Story = {
           selectionMode="single"
           selectedKeys={selectedKeys as Iterable<Key>}
           onSelectionChange={key => setSelected(new Set(key))}
+          {...args}
         >
           <Menu.Item id="left">Left</Menu.Item>
           <Menu.Item id="center">Center</Menu.Item>
@@ -88,7 +127,7 @@ export const SingleSelection: Story = {
 };
 
 export const MultiSelection: Story = {
-  render: () => {
+  render: args => {
     const [selectedKeys, setSelected] = useState(new Set());
     const selected = Array.from(selectedKeys);
 
@@ -99,6 +138,7 @@ export const MultiSelection: Story = {
           selectionMode="multiple"
           selectedKeys={selectedKeys as Iterable<Key>}
           onSelectionChange={key => setSelected(new Set(key))}
+          {...args}
         >
           <Menu.Item id="burger">🍔 Burger</Menu.Item>
           <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
@@ -112,26 +152,48 @@ export const MultiSelection: Story = {
 };
 
 export const MenuSection: Story = {
-  render: () => (
-    <Menu label="Menu with sections">
+  render: args => (
+    <Menu label="Menu with sections" {...args}>
       <Menu.Section title="Food">
-        <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-        <Menu.Item key="salad">🥗 Salad</Menu.Item>
-        <Menu.Item key="fries">🍟 Fries</Menu.Item>
+        <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
+        <Menu.Item id="salad">🥗 Salad</Menu.Item>
+        <Menu.Item id="fries">🍟 Fries</Menu.Item>
       </Menu.Section>
       <Menu.Section title="Fruits">
-        <Menu.Item key="apple">🍎 Apple</Menu.Item>
-        <Menu.Item key="banana">🍌 Banana</Menu.Item>
-        <Menu.Item key="mango">🥭 Mango</Menu.Item>
-        <Menu.Item key="strawberry">🍓 Strawberry</Menu.Item>
+        <Menu.Item id="apple">🍎 Apple</Menu.Item>
+        <Menu.Item id="banana">🍌 Banana</Menu.Item>
+        <Menu.Item id="mango">🥭 Mango</Menu.Item>
+        <Menu.Item id="strawberry">🍓 Strawberry</Menu.Item>
+      </Menu.Section>
+    </Menu>
+  ),
+};
+
+export const DisabledKeys: Story = {
+  render: args => (
+    <Menu
+      label="Menu with sections"
+      disabledKeys={['mango', 'salad']}
+      {...args}
+    >
+      <Menu.Section title="Food">
+        <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
+        <Menu.Item id="salad">🥗 Salad</Menu.Item>
+        <Menu.Item id="fries">🍟 Fries</Menu.Item>
+      </Menu.Section>
+      <Menu.Section title="Fruits">
+        <Menu.Item id="apple">🍎 Apple</Menu.Item>
+        <Menu.Item id="banana">🍌 Banana</Menu.Item>
+        <Menu.Item id="mango">🥭 Mango</Menu.Item>
+        <Menu.Item id="strawberry">🍓 Strawberry</Menu.Item>
       </Menu.Section>
     </Menu>
   ),
 };
 
 export const LinksMenu: Story = {
-  render: () => (
-    <Menu label="Links">
+  render: args => (
+    <Menu label="Links" {...args}>
       <Menu.Item href="https://adobe.com/" target="_blank">
         Adobe
       </Menu.Item>
@@ -152,9 +214,9 @@ export const BasicActionMenu: Story = {
   render: args => {
     return (
       <ActionMenu onAction={action => alert(`Action: ${action}`)} {...args}>
-        <Menu.Item key="edit">Open in editor</Menu.Item>
-        <Menu.Item key="settings">Settings</Menu.Item>
-        <Menu.Item key="delete">Delete</Menu.Item>
+        <Menu.Item id="edit">Open in editor</Menu.Item>
+        <Menu.Item id="settings">Settings</Menu.Item>
+        <Menu.Item id="delete">Delete</Menu.Item>
       </ActionMenu>
     );
   },
@@ -174,8 +236,8 @@ export const OpenMenuRemotely: Story = {
         </Button>
         <hr />
         <Menu onOpenChange={handleAction} open={open} label="Menu">
-          <Menu.Item key="one">One</Menu.Item>
-          <Menu.Item key="two">Two</Menu.Item>
+          <Menu.Item id="one">One</Menu.Item>
+          <Menu.Item id="two">Two</Menu.Item>
         </Menu>
       </>
     );

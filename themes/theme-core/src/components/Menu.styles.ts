@@ -8,7 +8,8 @@ export const Menu: ThemeComponent<'Menu'> = {
   ]),
   item: cva([
     'cursor-pointer p-1 focus:outline-0',
-    'hover:text-text-light hover:bg-highlight ',
+    'data-[disabled]:text-text-disabled',
+    'data-[hovered]:text-text-light data-[hovered]:bg-highlight ',
     'text-xs',
     'data-[selected]:bg-bg-selected',
   ]),
