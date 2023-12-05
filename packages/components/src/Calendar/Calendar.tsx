@@ -20,7 +20,7 @@ import YearListBox from './YearListBox';
 
 // Props
 // ---------------
-type RemovedProps = 'isDisabled' | 'isReadOnly' | 'isInvalid';
+type RemovedProps = 'isDisabled' | 'isReadOnly' | 'isInvalid' | 'errorMessage';
 export interface CalendarProps
   extends Omit<RAC.CalendarProps<DateValue>, RemovedProps> {
   disabled?: boolean;
@@ -28,8 +28,6 @@ export interface CalendarProps
   variant?: string;
   size?: string;
   width?: WidthProp['width'];
-  error?: boolean;
-  errorMessage?: string;
 }
 
 type ViewMapKeys = 'month' | 'year';
@@ -38,7 +36,6 @@ type ViewMapKeys = 'month' | 'year';
 export const _Calendar = ({
   disabled,
   readOnly,
-  error,
   size,
   variant,
   ...rest
@@ -46,7 +43,6 @@ export const _Calendar = ({
   const props: RAC.CalendarProps<DateValue> = {
     isDisabled: disabled,
     isReadOnly: readOnly,
-    isInvalid: error,
     ...rest,
   };
 
