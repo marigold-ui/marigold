@@ -2,7 +2,9 @@ import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components';
 
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames, useSmallScreen } from '@marigold/system';
+
+import { Underlay } from './Underlay';
 
 // Props
 // ---------------
@@ -31,10 +33,27 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
     });
     console.log(ref);
 
+    const isSmallScreen = useSmallScreen();
     return (
-      <Popover ref={ref} {...props} className={classNames}>
-        {children}
-      </Popover>
+      <>
+        {isSmallScreen ? (
+          <Underlay variant="modal" open={open}>
+            <Popover
+              ref={ref}
+              className={cn(
+                '!left-0 bottom-0 !mt-auto flex !max-h-fit w-full flex-col'
+              )}
+              {...props}
+            >
+              {children}
+            </Popover>
+          </Underlay>
+        ) : (
+          <Popover ref={ref} {...props} className={classNames}>
+            {children}
+          </Popover>
+        )}
+      </>
     );
   }
 );
