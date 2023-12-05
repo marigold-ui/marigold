@@ -1,17 +1,18 @@
+import { ReactNode } from 'react';
 import { Section } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
 import { useClassNames } from '@marigold/system';
 
 import { Header } from '../Header';
-import { MenuItem } from './MenuItem';
 
 // Props
 // ---------------
-type RemovedProps = 'className' | 'style';
+type RemovedProps = 'className' | 'style' | 'children';
 export interface MenuSectionProps
   extends Omit<RAC.SectionProps<object>, RemovedProps> {
   title?: string;
+  children: ReactNode;
 }
 
 // Component
