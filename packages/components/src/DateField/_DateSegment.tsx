@@ -33,10 +33,10 @@ const _DateSegment = ({ segment, ...props }: DateSegmentProps) => {
             {isPlaceholder
               ? ''
               : segment.type === 'month' || segment.type === 'day'
-              ? Number(segment.text) < 10
-                ? '0' + segment.text
-                : segment.text
-              : text}
+                ? Number(segment.text) < 10
+                  ? '0' + segment.text
+                  : segment.text
+                : text}
           </span>
         </>
       )}

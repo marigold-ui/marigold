@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
-import { FieldError, Text } from 'react-aria-components';
 import type { ValidationResult } from 'react-aria-components';
+import { FieldError, Text } from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
 
@@ -9,7 +9,6 @@ export interface HelpTextProps {
   size?: string;
   description?: ReactNode;
   error?: boolean;
-  isInvalid?: ValidationResult['isInvalid'];
   errorMessage?: ReactNode | ((v: ValidationResult) => ReactNode);
 }
 
@@ -19,7 +18,6 @@ export const HelpText = ({
   description,
   error,
   errorMessage,
-  isInvalid,
   ...props
 }: HelpTextProps) => {
   const hasErrorMessage = errorMessage && error;

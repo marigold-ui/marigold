@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "6.10.0",
+  "version": "6.11.0",
   "private": true,
   "scripts": {
     "dev": "pnpm registry && next dev",
@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@internationalized/date": "3.5.0",
-    "@types/node": "18.18.9",
+    "@types/node": "18.18.13",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.7",
     "typescript": "5.2.2",
