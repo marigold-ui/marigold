@@ -5,6 +5,8 @@ import { CalendarGridProps, CalendarStateContext } from 'react-aria-components';
 import { useCalendarGrid } from '@react-aria/calendar';
 import { useDateFormatter, useLocale } from '@react-aria/i18n';
 
+import { useClassNames } from '@marigold/system';
+
 export function CalendarGridHeader(props: CalendarGridProps) {
   const state = useContext(CalendarStateContext)!;
   const { headerProps } = useCalendarGrid(props, state);
@@ -24,11 +26,13 @@ export function CalendarGridHeader(props: CalendarGridProps) {
     });
   }, [locale, state.timeZone, dayFormatter]);
 
+  const classNames = useClassNames({ component: 'Calendar' });
+
   return (
     <thead {...headerProps}>
       <tr>
         {weekDays.map((day, index) => (
-          <th style={{ fontWeight: 'bolder' }} key={index}>
+          <th className={classNames.calendarHeader} key={index}>
             {day.substring(0, 2)}
           </th>
         ))}

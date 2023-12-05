@@ -70,7 +70,7 @@ export const _Calendar = ({
         ViewMap[selectedDropdown]
       ) : (
         <>
-          <header className="mb-4 flex items-center justify-between">
+          <div className="mb-4 flex items-center justify-between">
             <div className="flex w-full gap-4">
               <CalendarButtonListBox
                 type="month"
@@ -108,8 +108,8 @@ export const _Calendar = ({
                 <ChevronRight />
               </Button>
             </div>
-          </header>
-          <CalendarGrid>
+          </div>
+          <CalendarGrid className={classNames.calendarGrid}>
             <CalendarGridHeader />
             <CalendarGridBody>
               {date => (

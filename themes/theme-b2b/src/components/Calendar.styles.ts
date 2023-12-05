@@ -10,4 +10,6 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   calendarControllers: cva([
     '[&_button[data-hovered]]:bg-bg-hover [&_button[data-hovered]]:text-text-hover',
   ]),
+  calendarHeader: cva(['fontWeight:bolder p-2']),
+  calendarGrid: cva('[&_td]:p-2'),
 };
