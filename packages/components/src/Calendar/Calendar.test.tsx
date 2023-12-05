@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { Calendar } from './_Calendar';
+import { Calendar } from './Calendar';
 
 const keyCodes = {
   Enter: 13,

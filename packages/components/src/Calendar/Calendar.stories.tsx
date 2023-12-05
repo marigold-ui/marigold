@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { DateValue } from '@react-aria/calendar';
 
-import { Calendar } from './_Calendar';
+import { Calendar } from './Calendar';
 
 const meta = {
   title: 'Components/Calendar',
