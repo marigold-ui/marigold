@@ -15,9 +15,20 @@ import { Button } from '../Button';
 
 interface YearDropdownProps {
   setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
+  setSelectedValue: Dispatch<
+    SetStateAction<{
+      month?: string;
+      year?: number;
+    }>
+  >;
+  selectedValue: { month?: string; year?: number };
 }
 
-const YearDropdown = ({ setSelectedDropdown }: YearDropdownProps) => {
+const YearDropdown = ({
+  setSelectedDropdown,
+  setSelectedValue,
+  selectedValue,
+}: YearDropdownProps) => {
   const state = useContext(CalendarStateContext)!;
   const years: { value: CalendarDate; formatted: string }[] = [];
   let formatter = useDateFormatter({
@@ -48,6 +59,7 @@ const YearDropdown = ({ setSelectedDropdown }: YearDropdownProps) => {
     let index = Number(key);
     let date = years[index].value;
     state.setFocusedDate(date);
+    setSelectedValue({ ...selectedValue, year: date.year });
   };
 
   return (

@@ -1,4 +1,3 @@
-import { createCalendar } from '@internationalized/date';
 import React, { useState } from 'react';
 import type RAC from 'react-aria-components';
 import {
@@ -10,9 +9,6 @@ import {
 } from 'react-aria-components';
 
 import { DateValue } from '@react-aria/calendar';
-import { useDateFormatter, useLocale } from '@react-aria/i18n';
-
-import { useCalendarState } from '@react-stately/calendar';
 
 import { ChevronDown, ChevronLeft, ChevronRight } from '@marigold/icons';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
@@ -46,6 +42,10 @@ export const _Calendar = ({
   variant,
   ...rest
 }: CalendarProps) => {
+  const [selectedValue, setSelectedValue] = useState({
+    month: undefined,
+    year: undefined,
+  });
   const props: RAC.CalendarProps<DateValue> = {
     isDisabled: disabled,
     isReadOnly: readOnly,
@@ -61,30 +61,28 @@ export const _Calendar = ({
   const buttonStyles =
     'flex items-center justify-between gap-1 overflow-hidden';
   const { select: selectClassNames } = useClassNames({ component: 'Select' });
-  const { locale } = useLocale();
-  const state = useCalendarState({
-    ...props,
-    locale,
-    createCalendar,
-  });
 
-  let months = [];
-  let formatter = useDateFormatter({
-    month: 'long',
-    timeZone: state.timeZone,
-  });
-  let numMonths = state.focusedDate.calendar.getMonthsInYear(state.focusedDate);
+  console.log(selectedValue);
 
-  for (let i = 1; i <= numMonths; i++) {
-    let date = state.focusedDate.set({ month: i });
-    months.push(formatter.format(date.toDate(state.timeZone)));
-  }
+  type ViewMapKeys = 'month' | 'year';
 
-  const selectedValue = {
-    month: months[state.focusedDate.month - 1].substring(0, 3),
-    year: state.focusedDate.year,
-  };
-  console.log(state.focusedDate);
+  const ViewMap = {
+    month: (
+      <MonthDropdown
+        setSelectedDropdown={setSelectedDropdown}
+        selectedValue={selectedValue}
+        setSelectedValue={setSelectedValue}
+      />
+    ),
+    year: (
+      <YearDropdown
+        setSelectedDropdown={setSelectedDropdown}
+        selectedValue={selectedValue}
+        setSelectedValue={setSelectedValue}
+      />
+    ),
+  } satisfies { [key in ViewMapKeys]: React.JSX.Element };
+
   return (
     <Calendar
       className={cn(
@@ -94,15 +92,7 @@ export const _Calendar = ({
       {...props}
     >
       {selectedDropdown ? (
-        selectedDropdown === 'month' ? (
-          <MonthDropdown
-            setSelectedDropdown={setSelectedDropdown}
-            months={months}
-            state={state}
-          />
-        ) : (
-          <YearDropdown setSelectedDropdown={setSelectedDropdown} />
-        )
+        ViewMap[selectedDropdown]
       ) : (
         <>
           <header className="mb-4 flex items-center justify-between">

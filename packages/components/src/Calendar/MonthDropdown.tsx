@@ -1,24 +1,50 @@
-import { Dispatch, Key, SetStateAction } from 'react';
+import { Dispatch, Key, SetStateAction, useContext } from 'react';
+import { CalendarStateContext } from 'react-aria-components';
 
-import { CalendarState } from '@react-stately/calendar';
+import { useDateFormatter } from '@react-aria/i18n';
 
 import { Button } from '../Button';
 
 interface MonthDropdownProps {
-  state: CalendarState;
   setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
-  months: string[];
+  setSelectedValue: Dispatch<
+    SetStateAction<{
+      month?: string;
+      year?: number;
+    }>
+  >;
+  selectedValue: { month?: string; year?: number };
 }
 
 const MonthDropdown = ({
-  state,
   setSelectedDropdown,
-  months,
+  setSelectedValue,
+  selectedValue,
 }: MonthDropdownProps) => {
+  const state = useContext(CalendarStateContext)!;
+
+  let months: string[] = [];
+  let formatter = useDateFormatter({
+    month: 'long',
+    timeZone: state.timeZone,
+  });
+  console.log(state.timeZone);
+  let numMonths = state.focusedDate.calendar.getMonthsInYear(state.focusedDate);
+  console.log(numMonths);
+  for (let i = 1; i <= numMonths; i++) {
+    let date = state.focusedDate.set({ month: i });
+    months.push(formatter.format(date.toDate(state.timeZone)));
+  }
+
   let onChange = (index: Key) => {
     let value = Number(index) + 1;
     let date = state.focusedDate.set({ month: value });
     state.setFocusedDate(date);
+    state.setValue(date);
+    setSelectedValue({
+      ...selectedValue,
+      month: months[date.month - 1].substring(0, 3),
+    });
   };
 
   return (
