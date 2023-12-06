@@ -15,7 +15,7 @@ export interface MenuProps
   extends Omit<RAC.MenuTriggerProps, RemovedProps>,
     Omit<RAC.MenuProps<object>, RemovedProps> {
   open?: RAC.MenuTriggerProps['isOpen'];
-  label?: string;
+  label?: ReactNode;
   variant?: string;
   size?: string;
   onAction?: (key: Key) => void;
