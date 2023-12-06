@@ -5,9 +5,9 @@ caption: Component for building a menu.
 
 The `<Menu>` component allows you to define a menu element. It's useful when you want a list with options or actions.
 
-It is structured in three parts: `<Menu.Trigger>`, `<Menu>` and `<Menu.Item>`. And there is a simple `<Button>` necessary for handling the menu trigger.
+It is structured in two parts `<Menu>` and `<Menu.Item>`. The `<Menu>` now contains the trigger and the button per default. You also can use the `<Menu.Section>` which you can use to separate the menu items from each other.
 
-If you want create a variant, you can style different parts of the `<Menu>` separate, there is the `container` part and the `item`.
+If you want create a variant, you can style different parts of the `<Menu>` separate, there is the `container`, `section` and `item` part.
 
 There is also a companion component called `<ActionMenu>` which you can use if you want to take some actions. You can have a look on how it works in the examples. It works quiet similar to the normal `<Menu>` component. All you have to add are the `<Menu.Item>`s.
 
@@ -78,9 +78,9 @@ To group related MenuItems, you can use `<Menu.Section>` and pass `title` for th
 
 <ComponentDemo file="./menu-section.demo.tsx" />
 
-### Disabled Menu
+### Disabled Menu Items
 
-In this example the `<Menu.Trigger>` has set its prop `disabled`. So you can't interact with the `<Menu>` anymore.
+In this example the `<Menu>` has set its prop `disabeldKeys`. So you can't interact with the `<Menu.Item>` anymore. Keep in mind, that you have to set an id to the `<Menu.Item>`.
 
 <ComponentDemo file="./menu-disabled.demo.tsx" />
 
@@ -102,6 +102,11 @@ A common use Case is also to open the `<Menu>` with the keyboard.
 ### Menu item opens Dialog
 
 This Example shows how to open a [`<Dialog>`](/components/dialog/) from a `<Menu.Item>`.
-For that you have not to use a `<Dialog.Trigger>`, instead use our `<Dialog.Controller>`. With that you don't have to use a `<Button>` to trigger the dialog.
 
 <ComponentDemo file="./menu-open-dialog.demo.tsx" />
+
+### Menu selection mode
+
+Here you can see how the `selectionMode` from `<Menu>` works. In this example the `selectionMode` is set to `single`. If you open the items you can see a selected item.
+
+<ComponentDemo file="./menu-selection.demo.tsx" />
