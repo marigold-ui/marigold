@@ -8,7 +8,7 @@ export const DateField: ThemeComponent<'DateField'> = {
     inputBox,
     inputHeight,
     inputSpacing,
-    'data-[disabled]:bg-bg-disabled data-[disabled]:border-border-disabled data-[disabled]:text-text-disabled',
+    'data-[disabled]:bg-bg-inverted-disabled data-[disabled]:border-border-base-disabled data-[disabled]:text-text-base-disabled',
   ]),
 
   segment: cva([
@@ -16,8 +16,8 @@ export const DateField: ThemeComponent<'DateField'> = {
     'text-center leading-none outline-0',
     '[data-type="literal]"' && 'p-[0.75px]',
     'rounded-sm',
-    'focus:bg-bg-focus focus:text-text-focus',
-    'aria-[readonly]:bg-bg-transparent aria-[readonly]:text-text-disabled',
+    'focus:bg-bg-focus focus:text-text-inverted',
+    'aria-[readonly]:bg-bg-transparent aria-[readonly]:text-text-base-disabled',
   ]),
   action: cva('pr-2'),
 };

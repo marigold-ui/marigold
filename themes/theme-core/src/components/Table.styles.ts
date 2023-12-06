@@ -13,7 +13,7 @@ export const Table: ThemeComponent<'Table'> = {
     [
       'group-aria-[multiselectable]/table:[&:first-child]:w-12',
       'border-border-white border-x px-2',
-      'bg-bg-surface-lowered text-text-light',
+      'bg-bg-surface-overlay text-text-inverted',
       'odd:bg-bg-surface-raised',
       'focus:outline-outline-focus',
     ],
@@ -21,10 +21,10 @@ export const Table: ThemeComponent<'Table'> = {
       variants: {
         variant: {
           linedTable:
-            'text-text-primary border-border-neutral border-x-0 border-b bg-transparent px-2 odd:bg-transparent',
+            'text-text-base border-border-neutral border-x-0 border-b bg-transparent px-2 odd:bg-transparent',
           grid: [
             'border-border-neutral border',
-            'text-text-primary bg-transparent px-2 odd:bg-transparent',
+            'text-text-base bg-transparent px-2 odd:bg-transparent',
           ],
         },
       },
@@ -42,7 +42,7 @@ export const Table: ThemeComponent<'Table'> = {
       },
     },
   ]),
-  cell: cva(['text-text-primary p-2', 'focus:outline-outline-focus'], {
+  cell: cva(['text-text-base p-2', 'focus:outline-outline-focus'], {
     variants: {
       variant: {
         grid: ['border-border-neutral border'],

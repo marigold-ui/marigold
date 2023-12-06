@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Tag: ThemeComponent<'Tag'> = {
   tag: cva([
-    'border-border-primary bg-bg-surface flex items-center gap-2 rounded border',
+    'border-border-brand bg-bg-surface flex items-center gap-2 rounded border',
     'px-1.5 py-[2px]',
   ]),
   listItems: cva('flex items-center gap-1'),
