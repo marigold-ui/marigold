@@ -12,7 +12,7 @@ interface CalendarButtonListBoxProps {
   setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
 }
 
-export function CalendarButtonListBox({
+export function DataListBox({
   type,
   isDisabled,
   setSelectedDropdown,

@@ -6,8 +6,8 @@ import { DateValue } from '@react-aria/calendar';
 
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 
-import { CalendarButtonListBox } from './CalendarButtonListBox';
 import { CalendarGrid } from './CalendarGrid';
+import { DataListBox } from './DataListBox';
 import MonthControls from './MonthControls';
 import MonthListBox from './MonthListBox';
 import YearListBox from './YearListBox';
@@ -65,12 +65,12 @@ export const _Calendar = ({
         <>
           <div className="mb-4 flex items-center justify-between">
             <div className="flex w-full gap-4">
-              <CalendarButtonListBox
+              <DataListBox
                 type="month"
                 isDisabled={props.isDisabled}
                 setSelectedDropdown={setSelectedDropdown}
               />
-              <CalendarButtonListBox
+              <DataListBox
                 type="year"
                 isDisabled={props.isDisabled}
                 setSelectedDropdown={setSelectedDropdown}
