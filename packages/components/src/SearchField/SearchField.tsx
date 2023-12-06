@@ -34,6 +34,7 @@ export interface SearchFieldProps
   readOnly?: RAC.SearchFieldProps['isReadOnly'];
   value?: string;
   defaultValue?: string;
+  placeholder?: string;
 }
 
 const SearchIcon = (props: { className?: string }) => (
