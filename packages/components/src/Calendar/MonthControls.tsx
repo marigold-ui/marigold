@@ -4,7 +4,7 @@ import { Button } from 'react-aria-components';
 import { ChevronLeft, ChevronRight } from '@marigold/icons';
 import { cn, useClassNames } from '@marigold/system';
 
-export const MonthControls = () => {
+function MonthControls() {
   const classNames = useClassNames({ component: 'Calendar' });
   const buttonClassNames = useClassNames({ component: 'Button' });
 
@@ -35,4 +35,6 @@ export const MonthControls = () => {
       </Button>
     </div>
   );
-};
+}
+
+export default React.memo(MonthControls);

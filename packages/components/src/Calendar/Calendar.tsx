@@ -8,7 +8,7 @@ import { WidthProp, cn, useClassNames } from '@marigold/system';
 
 import { CalendarButtonListBox } from './CalendarButtonListBox';
 import { CalendarGrid } from './CalendarGrid';
-import { MonthControls } from './MonthControls';
+import MonthControls from './MonthControls';
 import MonthListBox from './MonthListBox';
 import YearListBox from './YearListBox';
 
