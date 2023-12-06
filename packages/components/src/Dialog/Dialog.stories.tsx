@@ -195,15 +195,10 @@ export const WithDialogController: Story = {
 
     return (
       <>
-        <Menu.Trigger>
-          <Button variant="menu" size="small">
-            Settings
-          </Button>
-          <Menu onAction={handleAction}>
-            <Menu.Item key="save">Save</Menu.Item>
-            <Menu.Item key="delete">Delete</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu onAction={handleAction} label="Settings">
+          <Menu.Item key="save">Save</Menu.Item>
+          <Menu.Item key="delete">Delete</Menu.Item>
+        </Menu>
         <Dialog.Trigger open={open} onOpenChange={setDialogOpen} {...args}>
           <Dialog closeButton>
             {({ close }) => (
