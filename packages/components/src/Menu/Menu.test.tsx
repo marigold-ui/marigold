@@ -353,10 +353,15 @@ test('renders action menu', () => {
 });
 
 test('supports open property', () => {
+  window.matchMedia = mockMatchMedia([
+    'screen and (min-width: 40em)',
+    'screen and (min-width: 52em)',
+    'screen and (min-width: 64em)',
+  ]);
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Menu data-testid="menu" label="Choose" open>
+        <Menu data-testid="menu" label="Choose" open={true}>
           <Menu.Item key="burger">Burger</Menu.Item>
           <Menu.Item key="pizza">Pizza</Menu.Item>
         </Menu>

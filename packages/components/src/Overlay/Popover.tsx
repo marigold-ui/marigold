@@ -39,7 +39,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
     return (
       <>
         {isSmallScreen ? (
-          <Underlay variant="modal">
+          <Underlay variant="modal" open={open}>
             <Popover
               ref={ref}
               {...props}
