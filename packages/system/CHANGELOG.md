@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 6.11.0
+
+### Patch Changes
+
+- [#3513](https://github.com/marigold-ui/marigold/pull/3513) [`cdc17ee83`](https://github.com/marigold-ui/marigold/commit/cdc17ee83771dc367d29126903feca831c43a421) Thanks [@aromko](https://github.com/aromko)! - RAC: migrate `<TagGroup>` component
+
 ## 6.10.0
 
 ### Minor Changes
