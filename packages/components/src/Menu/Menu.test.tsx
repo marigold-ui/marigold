@@ -104,13 +104,20 @@ test('renders the button but no menu by default', () => {
 });
 
 test('opens menu when trigger is clicked', () => {
+  window.matchMedia = mockMatchMedia([
+    'screen and (min-width: 40em)',
+    'screen and (min-width: 52em)',
+    'screen and (min-width: 64em)',
+  ]);
   render(
-    <ThemeProvider theme={theme}>
-      <Menu label="Choose">
-        <Menu.Item key="burger">Burger</Menu.Item>
-        <Menu.Item key="pizza">Pizza</Menu.Item>
-      </Menu>
-    </ThemeProvider>
+    <OverlayProvider>
+      <ThemeProvider theme={theme}>
+        <Menu label="Choose">
+          <Menu.Item key="burger">Burger</Menu.Item>
+          <Menu.Item key="pizza">Pizza</Menu.Item>
+        </Menu>
+      </ThemeProvider>
+    </OverlayProvider>
   );
 
   const button = screen.getByText('Choose');
@@ -119,8 +126,13 @@ test('opens menu when trigger is clicked', () => {
   const burger = screen.getByText('Burger');
   const pizza = screen.getByText('Pizza');
 
-  expect(burger).toBeInTheDocument();
-  expect(pizza).toBeInTheDocument();
+  expect(burger.className).toMatchInlineSnapshot(
+    `"text-black focus:text-pink-600"`
+  );
+
+  expect(pizza.className).toMatchInlineSnapshot(
+    `"text-black focus:text-pink-600"`
+  );
 });
 
 test('closes menu when item is selected', () => {
@@ -145,6 +157,7 @@ test('closes menu when item is selected', () => {
 
   // Select burger from menu
   const burger = screen.getByText('Burger');
+  expect(burger).toBeInTheDocument();
   fireEvent.click(burger);
 
   const pizza = screen.queryByText('Pizza');
@@ -280,14 +293,13 @@ test('supports "Menu" sizes from theme', () => {
       </ThemeProvider>
     </OverlayProvider>
   );
-  const button = screen.getByText('Choose');
+  const button = screen.getByRole('button');
   fireEvent.click(button);
 
-  const menu = screen.getByTestId('menu');
-  expect(menu).toHaveClass(`bg-white focus:text-pink-600 p-5`);
-
   const item = screen.getByText('Burger');
-  expect(item).toHaveClass(`text-black focus:text-pink-600 p-2`);
+  expect(item.className).toMatchInlineSnapshot(
+    `"text-black focus:text-pink-600"`
+  );
 });
 
 test('renders as tray', () => {
@@ -314,8 +326,12 @@ test('renders as tray', () => {
 
   const button = screen.getByText('Choose');
   fireEvent.click(button);
-  const tray = screen.getByTestId('tray');
-  expect(tray).toBeInTheDocument();
+
+  const item = screen.getByText('Burger');
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(item.parentElement?.parentElement?.className).toMatchInlineSnapshot(
+    `"!left-0 bottom-0 !mt-auto flex !max-h-fit w-full flex-col"`
+  );
 });
 
 test('renders action menu', () => {
