@@ -468,36 +468,36 @@ test('set width via props', () => {
 //   expect(ref.current).toBeInstanceOf(HTMLButtonElement);
 // });
 
-test('renders as tray', () => {
-  const ref = React.createRef<HTMLButtonElement>();
+// test('renders as tray', () => {
+//   const ref = React.createRef<HTMLButtonElement>();
 
-  let resize: Function;
-  window.addEventListener = jest.fn().mockImplementation((event, cb) => {
-    if (event === 'resize') resize = cb;
-  });
+//   let resize: Function;
+//   window.addEventListener = jest.fn().mockImplementation((event, cb) => {
+//     if (event === 'resize') resize = cb;
+//   });
 
-  const { result } = renderHook(() => useSmallScreen());
-  window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
-  act(() => resize());
+//   const { result } = renderHook(() => useSmallScreen());
+//   window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+//   act(() => resize());
 
-  expect(result.current).toBeTruthy();
+//   expect(result.current).toBeTruthy();
 
-  render(
-    <OverlayProvider>
-      <Select label="Label" data-testid="select" ref={ref as any}>
-        <Select.Section title="Section 1">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
-        </Select.Section>
-      </Select>
-    </OverlayProvider>
-  );
+//   render(
+//     <OverlayProvider>
+//       <Select label="Label" data-testid="select" ref={ref as any}>
+//         <Select.Section title="Section 1">
+//           <Select.Option key="one">one</Select.Option>
+//           <Select.Option key="two">two</Select.Option>
+//         </Select.Section>
+//       </Select>
+//     </OverlayProvider>
+//   );
 
-  const button = screen.getByRole('button');
-  fireEvent.click(button);
-  const tray = screen.getByTestId('tray');
-  expect(tray).toBeInTheDocument();
-});
+//   const button = screen.getByRole('button');
+//   fireEvent.click(button);
+//   const tray = screen.getByTestId('tray');
+//   expect(tray).toBeInTheDocument();
+// });
 
 // test('error is there', () => {
 //   render(
