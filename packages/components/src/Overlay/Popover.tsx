@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components';
 
-import { cn, useClassNames, useSmallScreen } from '@marigold/system';
+import { cn, useClassNames, useSmallScreen, useTheme } from '@marigold/system';
 
 import { Underlay } from './Underlay';
 
@@ -35,22 +35,30 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
     });
 
     const isSmallScreen = useSmallScreen();
+    const theme = useTheme();
     return (
       <>
         {isSmallScreen ? (
-          <Underlay variant="modal" open={open}>
+          <Underlay variant="modal">
             <Popover
               ref={ref}
+              {...props}
               className={cn(
                 '!left-0 bottom-0 !mt-auto flex !max-h-fit w-full flex-col'
               )}
-              {...props}
+              data-theme={theme.name}
             >
               {children}
             </Popover>
           </Underlay>
         ) : (
-          <Popover ref={ref} {...props} className={classNames} offset={0}>
+          <Popover
+            ref={ref}
+            {...props}
+            className={classNames}
+            offset={0}
+            data-theme={theme.name}
+          >
             {children}
           </Popover>
         )}
