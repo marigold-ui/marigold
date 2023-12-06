@@ -82,6 +82,9 @@ export const Controlled: Story = {
       '',
     ]);
     const [current, setCurrent] = useState<string>('');
+
+    const keyToRender = submitted[0] !== null ? submitted[0].toString() : null;
+
     return (
       <Container size="large">
         <Stack space={4}>
@@ -104,7 +107,7 @@ export const Controlled: Story = {
           </Autocomplete>
           <pre>current: {current}</pre>
           <pre>
-            submitted: (key: {submitted[0]}, value: {submitted[1]})
+            submitted: (key: {keyToRender}, value: {submitted[1]})
           </pre>
         </Stack>
       </Container>
