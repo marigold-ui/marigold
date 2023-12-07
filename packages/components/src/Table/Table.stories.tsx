@@ -2,17 +2,8 @@
 import { useState } from '@storybook/addons';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useEffect } from 'react';
-import {
-  Cell,
-  Column,
-  Row,
-  TableBody,
-  TableHeader,
-} from 'react-aria-components';
 
 import { SortDescriptor } from '@react-types/shared';
-
-import { SortDown, SortUp } from '@marigold/icons';
 
 import { Button } from '../Button';
 import { Center } from '../Center';
