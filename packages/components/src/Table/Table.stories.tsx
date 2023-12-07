@@ -329,50 +329,6 @@ export const ControlledTable: Story = {
   },
 };
 
-// https://react-spectrum.adobe.com/react-aria/Table.html#nested-columns
-// export const NestedColumns: Story = {
-//   render: args => (
-//     <Table {...args} aria-label="Example table for nested columns">
-//       <Table.Header>
-//         <Table.Column isRowHeader title="Name" id={1}>
-//           <Table.Column id={2}>First Name</Table.Column>
-//           <Table.Column id={3}>Last Name</Table.Column>
-//         </Table.Column>
-//         <Table.Column id={4} title="Information">
-//           <Table.Column id={5}>Age</Table.Column>
-//           <Table.Column id={6}>Birthday</Table.Column>
-//         </Table.Column>
-//       </Table.Header>
-//       <Table.Body>
-//         <Table.Row id="one">
-//           <Table.Cell>Sam</Table.Cell>
-//           <Table.Cell>Smith</Table.Cell>
-//           <Table.Cell>36</Table.Cell>
-//           <Table.Cell>May 3</Table.Cell>
-//         </Table.Row>
-//         <Table.Row id="two">
-//           <Table.Cell>Julia</Table.Cell>
-//           <Table.Cell>Jones</Table.Cell>
-//           <Table.Cell>24</Table.Cell>
-//           <Table.Cell>February 10</Table.Cell>
-//         </Table.Row>
-//         <Table.Row id="tree">
-//           <Table.Cell>Peter</Table.Cell>
-//           <Table.Cell>Parker</Table.Cell>
-//           <Table.Cell>28</Table.Cell>
-//           <Table.Cell>September 7</Table.Cell>
-//         </Table.Row>
-//         <Table.Row id="four">
-//           <Table.Cell>Bruce</Table.Cell>
-//           <Table.Cell>Wayne</Table.Cell>
-//           <Table.Cell>32</Table.Cell>
-//           <Table.Cell>December 18</Table.Cell>
-//         </Table.Row>
-//       </Table.Body>
-//     </Table>
-//   ),
-// };
-
 export const Compact: Story = {
   render: args => (
     <Table
