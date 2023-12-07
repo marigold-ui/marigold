@@ -1,9 +1,15 @@
-import { forwardRef } from 'react';
+import { forwardRef, useContext } from 'react';
 import type RAC from 'react-aria-components';
-import { Popover } from 'react-aria-components';
+import {
+  OverlayTriggerStateContext,
+  Popover,
+  PopoverContext,
+} from 'react-aria-components';
 
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 
+import { Dialog } from '../Dialog';
+import { Modal } from './Modal';
 import { Underlay } from './Underlay';
 
 // Props
@@ -34,11 +40,16 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
       className: 'min-w-[--trigger-width]',
     });
 
+    const ctx = useContext(OverlayTriggerStateContext);
+    console.log(ctx && ctx.isOpen);
+
     const isSmallScreen = useSmallScreen();
     return (
       <>
         {isSmallScreen ? (
-          <Underlay variant="modal" open={open}>
+          <>
+            {/* <Underlay variant="modal" /> */}
+            {/* {ctx?.isOpen && <div className="fixed inset-0">test</div>} */}
             <Popover
               ref={ref}
               className={cn(
@@ -48,7 +59,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
             >
               {children}
             </Popover>
-          </Underlay>
+          </>
         ) : (
           <Popover ref={ref} {...props} className={classNames}>
             {children}
