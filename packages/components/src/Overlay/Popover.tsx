@@ -36,10 +36,12 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
 
     const isSmallScreen = useSmallScreen();
     const theme = useTheme();
+
     return (
       <>
         {isSmallScreen ? (
-          <Underlay variant="modal">
+          <>
+            <Underlay variant="modal" />
             <Popover
               ref={ref}
               {...props}
@@ -50,7 +52,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
             >
               {children}
             </Popover>
-          </Underlay>
+          </>
         ) : (
           <Popover
             ref={ref}
