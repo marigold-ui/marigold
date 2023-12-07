@@ -35,7 +35,7 @@ const _Menu = ({
   return (
     <MenuTrigger {...props}>
       <Button variant="menu">{label}</Button>
-      <Popover>
+      <Popover open={open}>
         <Menu {...props} className={classNames.container}>
           {children}
         </Menu>
