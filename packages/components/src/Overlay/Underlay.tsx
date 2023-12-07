@@ -45,6 +45,7 @@ export const Underlay = ({
         )
       }
       {...props}
+      data-testid="underlay-id"
     >
       {props.children}
     </ModalOverlay>

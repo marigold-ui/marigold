@@ -38,11 +38,11 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
     });
 
     const isSmallScreen = useSmallScreen();
-    console.log('props.isOpen', props);
     return (
       <>
         {isSmallScreen ? (
-          <Underlay open={open}>
+          <>
+            <Underlay open={open} variant="modal" />
             <Popover
               ref={ref}
               className={cn(
@@ -52,7 +52,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
             >
               {children}
             </Popover>
-          </Underlay>
+          </>
         ) : (
           <Popover ref={ref} {...props} className={classNames}>
             {children}

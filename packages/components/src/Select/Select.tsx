@@ -87,7 +87,6 @@ const _Select = forwardRef<any, SelectProps<object>>(
           <SelectValue />
           <ChevronDown className="h-4 w-4" />
         </Button>
-
         <Popover>
           <ListBox items={items}>{props.children}</ListBox>
         </Popover>

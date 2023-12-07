@@ -110,9 +110,9 @@ test('renders a field (label, helptext, select)', () => {
         errorMessage="ERRR!"
         data-testid="select"
       >
-        <Select.Option key="one">one</Select.Option>
-        <Select.Option key="two">two</Select.Option>
-        <Select.Option key="three">three</Select.Option>
+        <Select.Option id="one">one</Select.Option>
+        <Select.Option id="two">two</Select.Option>
+        <Select.Option id="three">three</Select.Option>
       </Select>
     </OverlayProvider>
   );
@@ -135,9 +135,9 @@ test('visible label is not a <label> element (for a11y)', () => {
   render(
     <OverlayProvider>
       <Select label="Label">
-        <Select.Option key="one">one</Select.Option>
-        <Select.Option key="two">two</Select.Option>
-        <Select.Option key="three">three</Select.Option>
+        <Select.Option id="one">one</Select.Option>
+        <Select.Option id="two">two</Select.Option>
+        <Select.Option id="three">three</Select.Option>
       </Select>
     </OverlayProvider>
   );
@@ -150,9 +150,9 @@ test('default placeholder is rendered', () => {
   render(
     <OverlayProvider>
       <Select label="Label" placeholder="placeholder" data-testid="select">
-        <Select.Option key="one">one</Select.Option>
-        <Select.Option key="two">two</Select.Option>
-        <Select.Option key="three">three</Select.Option>
+        <Select.Option id="one">one</Select.Option>
+        <Select.Option id="two">two</Select.Option>
+        <Select.Option id="three">three</Select.Option>
       </Select>
     </OverlayProvider>
   );
@@ -165,9 +165,9 @@ test('custom placeholder is rendered', () => {
   render(
     <OverlayProvider>
       <Select label="Label" placeholder="Select me" data-testid="select">
-        <Select.Option key="one">one</Select.Option>
-        <Select.Option key="two">two</Select.Option>
-        <Select.Option key="three">three</Select.Option>
+        <Select.Option id="one">one</Select.Option>
+        <Select.Option id="two">two</Select.Option>
+        <Select.Option id="three">three</Select.Option>
       </Select>
     </OverlayProvider>
   );
@@ -180,9 +180,9 @@ test('option list opens when button is clicked', () => {
   render(
     <OverlayProvider>
       <Select label="Label">
-        <Select.Option key="one">one</Select.Option>
-        <Select.Option key="two">two</Select.Option>
-        <Select.Option key="three">three</Select.Option>
+        <Select.Option id="one">one</Select.Option>
+        <Select.Option id="two">two</Select.Option>
+        <Select.Option id="three">three</Select.Option>
       </Select>
     </OverlayProvider>
   );
@@ -201,11 +201,11 @@ test('option list closes when button is clicked', () => {
   render(
     <OverlayProvider>
       <Select data-testid="select-id">
-        <Select.Option key="Harry Potter">Harry Potter</Select.Option>
-        <Select.Option key="Lord of the Rings">Lord of the Rings</Select.Option>
-        <Select.Option key="Star Wars">Star Wars</Select.Option>
-        <Select.Option key="Star Trek">Star Trek</Select.Option>
-        <Select.Option key="Firefly">Firefly</Select.Option>
+        <Select.Option id="Harry Potter">Harry Potter</Select.Option>
+        <Select.Option id="Lord of the Rings">Lord of the Rings</Select.Option>
+        <Select.Option id="Star Wars">Star Wars</Select.Option>
+        <Select.Option id="Star Trek">Star Trek</Select.Option>
+        <Select.Option id="Firefly">Firefly</Select.Option>
       </Select>
     </OverlayProvider>
   );
@@ -226,9 +226,9 @@ test('supports to select an option and closes listbox afterwards', () => {
   render(
     <OverlayProvider>
       <Select label="Label" data-testid="select">
-        <Select.Option key="one">one</Select.Option>
-        <Select.Option key="two">two</Select.Option>
-        <Select.Option key="three">three</Select.Option>
+        <Select.Option id="one">one</Select.Option>
+        <Select.Option id="two">two</Select.Option>
+        <Select.Option id="three">three</Select.Option>
       </Select>
     </OverlayProvider>
   );
@@ -250,9 +250,9 @@ test('selected option is displayed in button', () => {
   render(
     <OverlayProvider>
       <Select label="Label" data-testid="select">
-        <Select.Option key="one">one</Select.Option>
-        <Select.Option key="two">two</Select.Option>
-        <Select.Option key="three">three</Select.Option>
+        <Select.Option id="one">one</Select.Option>
+        <Select.Option id="two">two</Select.Option>
+        <Select.Option id="three">three</Select.Option>
       </Select>
     </OverlayProvider>
   );
@@ -274,9 +274,9 @@ test('dismiss when clicking escape', () => {
   render(
     <OverlayProvider>
       <Select label="Label" data-testid="select">
-        <Select.Option key="one">one</Select.Option>
-        <Select.Option key="two">two</Select.Option>
-        <Select.Option key="three">three</Select.Option>
+        <Select.Option id="one">one</Select.Option>
+        <Select.Option id="two">two</Select.Option>
+        <Select.Option id="three">three</Select.Option>
       </Select>
     </OverlayProvider>
   );
@@ -293,9 +293,9 @@ test('allows to disable select', () => {
   render(
     <OverlayProvider>
       <Select label="Label" data-testid="select" disabled>
-        <Select.Option key="one">one</Select.Option>
-        <Select.Option key="two">two</Select.Option>
-        <Select.Option key="three">three</Select.Option>
+        <Select.Option id="one">one</Select.Option>
+        <Select.Option id="two">two</Select.Option>
+        <Select.Option id="three">three</Select.Option>
       </Select>
     </OverlayProvider>
   );
@@ -330,9 +330,9 @@ test('allows select to be required', () => {
   render(
     <OverlayProvider>
       <Select label="Label" data-testid="select" required>
-        <Select.Option key="one">one</Select.Option>
-        <Select.Option key="two">two</Select.Option>
-        <Select.Option key="three">three</Select.Option>
+        <Select.Option id="one">one</Select.Option>
+        <Select.Option id="two">two</Select.Option>
+        <Select.Option id="three">three</Select.Option>
       </Select>
     </OverlayProvider>
   );
@@ -421,9 +421,10 @@ test('supports styling classnames with variants and sizes from theme', () => {
   render(
     <OverlayProvider>
       <Select label="Label" data-testid="select" variant="violet" size="small">
-        <Select.Section title="Section 1">
-          <Select.Option key="one">one</Select.Option>
-          <Select.Option key="two">two</Select.Option>
+        <Select.Section>
+          <Header>Section 1</Header>
+          <Select.Option id="one">one</Select.Option>
+          <Select.Option id="two">two</Select.Option>
         </Select.Section>
       </Select>
     </OverlayProvider>
@@ -439,8 +440,8 @@ test('set width via props', () => {
   render(
     <OverlayProvider>
       <Select label="Label" data-testid="select" width="1/2">
-        <Select.Option key="one">one</Select.Option>
-        <Select.Option key="two">two</Select.Option>
+        <Select.Option id="one">one</Select.Option>
+        <Select.Option id="two">two</Select.Option>
       </Select>
     </OverlayProvider>
   );
@@ -451,72 +452,73 @@ test('set width via props', () => {
   expect(container?.className).toMatchInlineSnapshot(`"group/field w-full"`);
 });
 
-// test('forwards ref', () => {
-//   const ref = React.createRef<HTMLButtonElement>();
-//   render(
-//     <OverlayProvider>
-//       <Select label="Label" data-testid="select" ref={ref as any}>
-//         <Select.Section>
-//           <Header>Section 1</Header>
-//           <Select.Option key="one">one</Select.Option>
-//           <Select.Option key="two">two</Select.Option>
-//         </Select.Section>
-//       </Select>
-//     </OverlayProvider>
-//   );
+test('forwards ref', () => {
+  const ref = React.createRef<HTMLButtonElement>();
+  render(
+    <OverlayProvider>
+      <Select label="Label" data-testid="select" ref={ref as any}>
+        <Select.Section>
+          <Header>Section 1</Header>
+          <Select.Option id="one">one</Select.Option>
+          <Select.Option id="two">two</Select.Option>
+        </Select.Section>
+      </Select>
+    </OverlayProvider>
+  );
 
-//   expect(ref.current).toBeInstanceOf(HTMLButtonElement);
-// });
+  expect(ref.current).toBeInstanceOf(HTMLDivElement);
+});
 
-// test('renders as tray', () => {
-//   const ref = React.createRef<HTMLButtonElement>();
+test('renders as tray', () => {
+  const ref = React.createRef<HTMLButtonElement>();
 
-//   let resize: Function;
-//   window.addEventListener = jest.fn().mockImplementation((event, cb) => {
-//     if (event === 'resize') resize = cb;
-//   });
+  let resize: Function;
+  window.addEventListener = jest.fn().mockImplementation((event, cb) => {
+    if (event === 'resize') resize = cb;
+  });
 
-//   const { result } = renderHook(() => useSmallScreen());
-//   window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
-//   act(() => resize());
+  const { result } = renderHook(() => useSmallScreen());
+  window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+  act(() => resize());
 
-//   expect(result.current).toBeTruthy();
+  expect(result.current).toBeTruthy();
 
-//   render(
-//     <OverlayProvider>
-//       <Select label="Label" data-testid="select" ref={ref as any}>
-//         <Select.Section title="Section 1">
-//           <Select.Option key="one">one</Select.Option>
-//           <Select.Option key="two">two</Select.Option>
-//         </Select.Section>
-//       </Select>
-//     </OverlayProvider>
-//   );
+  render(
+    <OverlayProvider>
+      <Select label="Label" data-testid="select" ref={ref as any}>
+        <Select.Section>
+          <Header>Section 1</Header>
+          <Select.Option id="one">one</Select.Option>
+          <Select.Option id="two">two</Select.Option>
+        </Select.Section>
+      </Select>
+    </OverlayProvider>
+  );
 
-//   const button = screen.getByRole('button');
-//   fireEvent.click(button);
-//   const tray = screen.getByTestId('tray');
-//   expect(tray).toBeInTheDocument();
-// });
+  const button = screen.getByRole('button');
+  fireEvent.click(button);
+  const tray = screen.getByTestId('underlay-id');
+  expect(tray).toBeInTheDocument();
+});
 
-// test('error is there', () => {
-//   render(
-//     <OverlayProvider>
-//       <Select
-//         label="Label"
-//         data-testid="select"
-//         width="1/2"
-//         error
-//         errorMessage="Error"
-//       >
-//         <Select.Option key="one">one</Select.Option>
-//         <Select.Option key="two">two</Select.Option>
-//       </Select>
-//     </OverlayProvider>
-//   );
+test('error is there', () => {
+  render(
+    <OverlayProvider>
+      <Select
+        label="Label"
+        data-testid="select"
+        width="1/2"
+        error
+        errorMessage="Error"
+      >
+        <Select.Option id="one">one</Select.Option>
+        <Select.Option id="two">two</Select.Option>
+      </Select>
+    </OverlayProvider>
+  );
 
-//   // We need to query all, since there is also a label in the hidden select
-//   // eslint-disable-next-line testing-library/no-node-access
-//   const container = screen.getAllByText('Label')[0].parentElement;
-//   expect(container).toHaveAttribute('data-error');
-// });
+  // We need to query all, since there is also a label in the hidden select
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getAllByText('Label')[0].parentElement;
+  expect(container).toHaveAttribute('data-error');
+});
