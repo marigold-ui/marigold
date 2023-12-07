@@ -19,7 +19,6 @@ export interface TableColumnHeaderProps
     WidthProp {}
 
 const _TableColumnHeader = ({
-  childColumns,
   width = 'auto',
   ...props
 }: TableColumnHeaderProps) => {

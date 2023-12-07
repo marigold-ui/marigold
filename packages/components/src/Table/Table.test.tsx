@@ -31,8 +31,8 @@ const theme: Theme = {
 const { render } = setup({ theme });
 
 const columns = [
-  { name: 'Name', key: 'name' },
-  { name: 'Firstname', key: 'firstname' },
+  { name: 'Name', id: 'name' },
+  { name: 'Firstname', id: 'firstname' },
 ];
 
 const rows: { [key: string]: string }[] = [
@@ -169,29 +169,51 @@ test('supports selectionMode multiple', () => {
 });
 
 test('supports colspans', () => {
+  const nestedColumns = [
+    {
+      name: 'Name',
+      key: 'name',
+      children: [
+        { name: 'First Name', key: 'first', isRowHeader: true },
+        { name: 'Last Name', key: 'last', isRowHeader: true },
+      ],
+    },
+    {
+      name: 'Information',
+      key: 'info',
+      children: [
+        { name: 'Age', key: 'age' },
+        { name: 'Birthday', key: 'birthday' },
+      ],
+    },
+  ] as const;
+
+  const nestedRows = [
+    { id: 1, first: 'Sam', last: 'Smith', age: 36, birthday: 'May 3' },
+    { id: 2, first: 'Julia', last: 'Jones', age: 24, birthday: 'February 10' },
+    { id: 3, first: 'Peter', last: 'Parker', age: 28, birthday: 'September 7' },
+    { id: 4, first: 'Bruce', last: 'Wayne', age: 32, birthday: 'December 18' },
+  ] as const;
   render(
-    <Table aria-label="Example table for nested columns">
-      <Table.Header>
-        <Table.Column id="name" title="Name" isRowHeader>
-          <Table.Column id="first" isRowHeader>
-            First Name
+    <Table aria-label="Example table with client side sorting">
+      <Table.Header columns={nestedColumns as any}>
+        {column => (
+          <Table.Column
+            isRowHeader={(column as any).isRowHeader}
+            // eslint-disable-next-line testing-library/no-node-access
+            childColumns={(column as any).children}
+          >
+            {(column as any).name}
           </Table.Column>
-          <Table.Column id="last" isRowHeader>
-            Last Name
-          </Table.Column>
-        </Table.Column>
-        <Table.Column id="info" title="Information">
-          <Table.Column id="age">Age</Table.Column>
-          <Table.Column id="day">Birthday</Table.Column>
-        </Table.Column>
+        )}
       </Table.Header>
-      <Table.Body>
-        <Table.Row id="sam">
-          <Table.Cell id={1}>Sam</Table.Cell>
-          <Table.Cell id={2}>Smith</Table.Cell>
-          <Table.Cell id={3}>36</Table.Cell>
-          <Table.Cell id={4}>May 3</Table.Cell>
-        </Table.Row>
+      <Table.Body items={nestedRows}>
+        {item => (
+          <Table.Row id={(item as any).name}>
+            <Table.Cell>{(item as any).name}</Table.Cell>
+            <Table.Cell>{(item as any).amount}</Table.Cell>
+          </Table.Row>
+        )}
       </Table.Body>
     </Table>
   );
