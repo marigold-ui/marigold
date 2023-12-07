@@ -116,7 +116,7 @@ test('popover is small screen', () => {
   const popover = screen.getByTestId('popover');
 
   expect(popover.className).toMatchInlineSnapshot(
-    `"!left-0 bottom-0 !mt-auto flex !max-h-fit flex-col mt-0.5 w-[--trigger-width]"`
+    `"!left-0 bottom-0 !mt-auto flex !max-h-fit w-full flex-col"`
   );
   expect(popover).toBeInTheDocument();
 });
