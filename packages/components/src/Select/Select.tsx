@@ -36,8 +36,9 @@ export interface SelectProps<T extends object>
   variant?: string;
   size?: string;
   width?: WidthProp['width'];
-  required?: RAC.TextFieldProps['isRequired'];
+  required?: boolean;
   disabled?: boolean;
+  open?: boolean;
   error?: boolean;
   onChange?: RAC.SelectProps<object>['onSelectionChange'];
 }
@@ -62,6 +63,7 @@ const _Select = forwardRef<any, SelectProps<object>>(
       variant,
       size,
       error,
+      open,
       onChange,
       ...rest
     },
@@ -70,6 +72,7 @@ const _Select = forwardRef<any, SelectProps<object>>(
     const props: RAC.SelectProps<object> = {
       isDisabled: disabled,
       isInvalid: error,
+      isOpen: open,
       isRequired: required,
       onSelectionChange: onChange,
       ...rest,
@@ -77,7 +80,7 @@ const _Select = forwardRef<any, SelectProps<object>>(
     const classNames = useClassNames({ component: 'Select', variant, size });
 
     return (
-      <FieldBase as={Select} ref={ref} {...props}>
+      <FieldBase isOpen as={Select} ref={ref} {...props}>
         <Button
           className={cn(
             'flex w-full items-center justify-between gap-1 overflow-hidden',
