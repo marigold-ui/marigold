@@ -1,32 +1,24 @@
-import {
-  ComponentPropsWithRef,
-  ReactElement,
-  cloneElement,
-  forwardRef,
-} from 'react';
+import { ReactElement, cloneElement, forwardRef } from 'react';
+import type RAC from 'react-aria-components';
+import { Input } from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
 
 // Props
 // ---------------
-export interface InputOwnProps
-  extends Omit<HtmlProps<'input'>, 'size' | 'className'> {
+type RemovedProps = 'className' | 'style' | 'size';
+
+export interface InputProps extends Omit<RAC.InputProps, RemovedProps> {
   icon?: ReactElement;
   action?: ReactElement;
   variant?: string;
   size?: string;
+  className?: string;
 }
 
-export interface InputProps
-  extends Omit<ComponentPropsWithRef<'input'>, 'size' | 'className'>,
-    InputOwnProps {}
-
-// Component
-// ---------------
-export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
+const _Input = forwardRef<HTMLInputElement, InputProps>(
   (
-    { type = 'text', icon, action, variant, size, ...props }: InputOwnProps,
+    { type, icon, action, variant, size, className, ...props }: InputProps,
     ref
   ) => {
     const classNames = useClassNames({
@@ -65,14 +57,15 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
         data-action={action && ''}
       >
         {inputIcon}
-        <input
+        <Input
           {...props}
           className={cn(
             'w-full flex-1',
             'disabled:cursor-not-allowed',
             '[&[type=file]]:border-none [&[type=file]]:p-0',
             '[&[type=color]]:ml-0 [&[type=color]]:border-none [&[type=color]]:bg-transparent [&[type=color]]:p-0',
-            classNames.input
+            classNames.input,
+            className
           )}
           ref={ref}
           type={type}
@@ -82,3 +75,5 @@ export const Input = forwardRef<HTMLInputElement, InputOwnProps>(
     );
   }
 );
+
+export { _Input as Input };
