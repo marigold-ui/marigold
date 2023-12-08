@@ -7,14 +7,21 @@ import { DateValue } from '@react-aria/calendar';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 
 import { CalendarGrid } from './CalendarGrid';
-import { DataListBox } from './DataListBox';
+import { CalendarListBox } from './CalendarListBox';
 import MonthControls from './MonthControls';
 import MonthListBox from './MonthListBox';
 import YearListBox from './YearListBox';
 
 // Props
 // ---------------
-type RemovedProps = 'isDisabled' | 'isReadOnly' | 'isInvalid' | 'errorMessage';
+type RemovedProps =
+  | 'isDisabled'
+  | 'isReadOnly'
+  | 'isInvalid'
+  | 'errorMessage'
+  | 'className'
+  | 'style';
+
 export interface CalendarProps
   extends Omit<RAC.CalendarProps<DateValue>, RemovedProps> {
   disabled?: boolean;
@@ -65,12 +72,12 @@ export const _Calendar = ({
         <>
           <div className="mb-4 flex items-center justify-between">
             <div className="flex w-full gap-4">
-              <DataListBox
+              <CalendarListBox
                 type="month"
                 isDisabled={props.isDisabled}
                 setSelectedDropdown={setSelectedDropdown}
               />
-              <DataListBox
+              <CalendarListBox
                 type="year"
                 isDisabled={props.isDisabled}
                 setSelectedDropdown={setSelectedDropdown}
