@@ -1,8 +1,8 @@
 ---
-"@marigold/docs": patch
-"@marigold/components": minor
-"@marigold/theme-b2b": patch
-"@marigold/theme-core": patch
+"@marigold/docs": major
+"@marigold/components": major
+"@marigold/theme-b2b": major
+"@marigold/theme-core": major
 ---
 
 RAC: Menu react aria components
