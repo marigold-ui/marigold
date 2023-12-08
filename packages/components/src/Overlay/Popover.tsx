@@ -11,7 +11,7 @@ import { Underlay } from './Underlay';
 export interface PopoverProps
   extends Omit<
     RAC.PopoverProps,
-    'isOpen' | 'isKeyboardDismissDisabled' | 'style'
+    'isOpen' | 'isKeyboardDismissDisabled' | 'style' | 'className'
   > {
   keyboardDismissDisabled?: boolean;
   open?: boolean;
@@ -20,10 +20,7 @@ export interface PopoverProps
 // Component
 // ---------------
 const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
-  (
-    { keyboardDismissDisabled, placement, open, className, children, ...rest },
-    ref
-  ) => {
+  ({ keyboardDismissDisabled, placement, open, children, ...rest }, ref) => {
     const props: RAC.PopoverProps = {
       isKeyboardDismissDisabled: keyboardDismissDisabled,
       isOpen: open,
