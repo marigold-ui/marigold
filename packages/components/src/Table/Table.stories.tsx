@@ -161,8 +161,8 @@ export const ControlledTable: Story = {
 
 // https://react-spectrum.adobe.com/react-aria/useTable.html#nested-columns
 export const NestedColumns: Story = {
-  render: () => (
-    <Table aria-label="Example table for nested columns">
+  render: args => (
+    <Table aria-label="Example table for nested columns" {...args}>
       <Table.Header>
         <Table.Column title="Name">
           <Table.Column isRowHeader>First Name</Table.Column>
