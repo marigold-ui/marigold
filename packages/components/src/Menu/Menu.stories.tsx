@@ -29,26 +29,6 @@ const meta = {
         defaultValue: { summary: 'none' },
       },
     },
-    variant: {
-      control: {
-        type: 'text',
-      },
-      description: 'The variant of the menu (currently no variant).',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'none' },
-      },
-    },
-    size: {
-      control: {
-        type: 'text',
-      },
-      description: 'The size of the menu (currently no size).',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'none' },
-      },
-    },
     selectionMode: {
       description: 'if the Menu can select one MenuItem',
       control: {
