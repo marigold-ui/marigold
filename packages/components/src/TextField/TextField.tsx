@@ -5,7 +5,7 @@ import { TextField } from 'react-aria-components';
 import { WidthProp } from '@marigold/system';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
-import { Input } from '../Input/_Input';
+import { Input } from '../Input/Input';
 
 // Props
 // ---------------
