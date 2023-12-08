@@ -9,7 +9,7 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
     },
   }),
   label: cva(
-    'group-data-[disabled]/checkbox:text-text-base-disabled leading-none'
+    'group-rac-disabled/checkbox:text-text-base-disabled leading-none'
   ),
   checkbox: cva([
     'border-border-inverted rounded-[2] bg-white p-0.5',

@@ -8,7 +8,7 @@ export const DateField: ThemeComponent<'DateField'> = {
     inputBox,
     inputHeight,
     inputSpacing,
-    'data-[disabled]:bg-bg-inverted-disabled data-[disabled]:border-border-base-disabled data-[disabled]:text-text-base-disabled',
+    'rac-disabled:bg-bg-inverted-disabled rac-disabled:border-border-base-disabled rac-disabled:text-text-base-disabled',
   ]),
 
   segment: cva([

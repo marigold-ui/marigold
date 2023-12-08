@@ -13,7 +13,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     'cursor-pointer px-1.5 py-0.5 outline-none',
     'rac-focus:text-text-inverted rac-focus:bg-highlight',
     'rac-selected:text-text-inverted aria-selected:bg-highlight',
-    'data-[disabled]:text-text-base-disabled aria-disabled:cursor-not-allowed',
+    'rac-disabled:text-text-base-disabled aria-disabled:cursor-not-allowed',
   ]),
   section: cva('[&:nth-child(n+2)]:pt-2 [&_div]:px-5'),
   sectionTitle: cva([
