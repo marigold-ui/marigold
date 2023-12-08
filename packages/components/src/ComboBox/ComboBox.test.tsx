@@ -272,7 +272,7 @@ test('shows suggestions based on user input', async () => {
   expect(screen.queryByText('Garlic')).not.toBeInTheDocument();
 });
 
-test.only('supports disabling suggestions', async () => {
+test('supports disabling suggestions', async () => {
   render(
     <ComboBox label="Label" disabledKeys={['spinach']}>
       <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
@@ -286,7 +286,7 @@ test.only('supports disabling suggestions', async () => {
   await user.type(input, 'a');
 
   const spinach = await screen.findByText('Spinach');
-  expect(spinach).toBeDisabled();
+  expect(spinach).toHaveAttribute('aria-disabled', 'true');
 });
 
 test('supporst showing a help text', () => {
@@ -322,7 +322,7 @@ test('supporst showing an error', () => {
 
 test('supports default value', () => {
   render(
-    <ComboBox label="Label" data-testid="input-field" defaultValue="garlic">
+    <ComboBox label="Label" defaultValue="garlic">
       <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
       <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
       <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
@@ -330,7 +330,8 @@ test('supports default value', () => {
     </ComboBox>
   );
 
-  expect(screen.getByTestId('input-field')).toHaveValue('garlic');
+  const textField = screen.getAllByLabelText('Label')[0];
+  expect(textField).toHaveValue('garlic');
 });
 
 test('can be controlled', async () => {
@@ -338,12 +339,7 @@ test('can be controlled', async () => {
     const [value, setValue] = React.useState('');
     return (
       <>
-        <ComboBox
-          label="Label"
-          data-testid="input-field"
-          value={value}
-          onChange={setValue}
-        >
+        <ComboBox label="Label" value={value} onChange={setValue}>
           <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
           <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
           <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
@@ -356,7 +352,7 @@ test('can be controlled', async () => {
 
   render(<Controlled />);
 
-  const input = screen.getByTestId('input-field');
+  const input = screen.getAllByLabelText('Label')[0];
   await user.type(input, 'car');
 
   expect(screen.getByTestId('output')).toHaveTextContent('car');
@@ -364,7 +360,7 @@ test('can be controlled', async () => {
 
 test('supports autocompletion', async () => {
   render(
-    <ComboBox label="Label" data-testid="input-field">
+    <ComboBox label="Label">
       <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
       <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
       <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
@@ -372,7 +368,7 @@ test('supports autocompletion', async () => {
     </ComboBox>
   );
 
-  const input = screen.getByTestId('input-field');
+  const input = screen.getAllByLabelText('Label')[0];
   await user.type(input, 'sp');
 
   const spinach = screen.getByText('Spinach');
