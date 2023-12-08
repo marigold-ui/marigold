@@ -21,7 +21,7 @@ export const Table: ThemeComponent<'Table'> = {
   row: cva([
     'group-aria-[multiselectable]/table:[&>*:first-child]:w-12',
     'hover:bg-bg-hover-light',
-    'data-[disabled]:cursor-not-allowed',
+    'data-[disabled]:cursor-not-allowed data-[disabled]:hover:bg-transparent',
 
     'aria-selected:bg-bg-selected',
     'focus-visible:outline-outline-focus',
