@@ -39,15 +39,6 @@ const meta = {
         defaultValue: 'none',
       },
     },
-    disabledKeys: {
-      description: 'Disabled Items, you have to set the id name',
-      control: {
-        type: 'object',
-      },
-      table: {
-        type: { summary: 'string' },
-      },
-    },
   },
   args: {},
 } satisfies Meta<typeof Menu>;
