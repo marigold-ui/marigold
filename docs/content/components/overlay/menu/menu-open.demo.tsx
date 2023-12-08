@@ -10,11 +10,11 @@ export default () => {
 
   return (
     <Stack space={4}>
-      <Button variant="primary" onPress={() => setOpen(!open)}>
+      <Button variant="primary" onPress={handleOpen}>
         Open Menu with me
       </Button>
       <hr />
-      <Menu label="Menu" onOpenChange={handleOpen} open={open}>
+      <Menu label="Menu" onClose={handleOpen} open={open}>
         <Menu.Item id="one">Settings</Menu.Item>
         <Menu.Item id="two">Preferences</Menu.Item>
         <Menu.Item id="three">Save</Menu.Item>
