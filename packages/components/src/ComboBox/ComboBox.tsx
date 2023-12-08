@@ -10,7 +10,7 @@ import type RAC from 'react-aria-components';
 import { Button } from '../Button';
 import { ChevronDown } from '../Chevron';
 import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
-import { Input } from '../Input/_Input';
+import { Input } from '../Input';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 
