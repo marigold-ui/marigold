@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
@@ -87,10 +87,10 @@ const { render } = setup({ theme });
 test('renders an input', () => {
   render(
     <ComboBox label="Label">
-      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
+      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
     </ComboBox>
   );
 
@@ -103,10 +103,10 @@ test('renders an input', () => {
 test('supports width classname', () => {
   render(
     <ComboBox label="Label" data-testid="input-field">
-      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
+      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
     </ComboBox>
   );
 
@@ -123,10 +123,10 @@ test('supports classnames', () => {
       variant="one"
       size="small"
     >
-      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
+      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
     </ComboBox>
   );
 
@@ -146,8 +146,8 @@ test('supports classnames', () => {
 test('supports disabled', () => {
   render(
     <ComboBox label="Label" disabled>
-      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
     </ComboBox>
   );
 
@@ -158,8 +158,8 @@ test('supports disabled', () => {
 test('supports required', () => {
   render(
     <ComboBox label="Label" required>
-      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
     </ComboBox>
   );
 
@@ -170,8 +170,8 @@ test('supports required', () => {
 test('supports readonly', () => {
   render(
     <ComboBox label="Label" readOnly>
-      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
     </ComboBox>
   );
 
@@ -186,8 +186,8 @@ test('uses field structure', () => {
       description="Some helpful text"
       errorMessage="Whoopsie"
     >
-      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
     </ComboBox>
   );
 
@@ -201,65 +201,64 @@ test('uses field structure', () => {
   expect(error).not.toBeInTheDocument();
 });
 
-test.only('opens the suggestions on user input', async () => {
+test('opens the suggestions on user input', async () => {
   render(
     <ComboBox label="Label">
-      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
+      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
     </ComboBox>
   );
 
   const input = screen.getAllByLabelText('Label')[0];
   await user.type(input, 'br');
 
-  await screen.findByRole('listbox');
-  const suggestions = screen.getByRole('listbox');
-  expect(suggestions).toBeVisible();
+  const item = await screen.findByText('Broccoli');
+  expect(item).toBeInTheDocument();
 });
 
 test('opens the suggestions on focus', async () => {
   render(
     <ComboBox label="Label" menuTrigger="focus">
-      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
+      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
     </ComboBox>
   );
 
   const input = screen.getAllByLabelText('Label')[0];
   await user.click(input);
 
-  const suggestions = screen.getByRole('listbox');
-  expect(suggestions).toBeVisible();
+  const item = await screen.findByText('Broccoli');
+  expect(item).toBeInTheDocument();
 });
 
 test('opens the suggestions on arrow down (manual)', async () => {
   render(
     <ComboBox label="Label" menuTrigger="manual">
-      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
+      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
     </ComboBox>
   );
 
   const input = screen.getAllByLabelText('Label')[0];
   await user.type(input, '{arrowdown}');
 
-  const suggestions = screen.getByRole('listbox');
-  expect(suggestions).toBeVisible();
+  const item = await screen.findByText('Broccoli');
+  expect(item).toBeInTheDocument();
 });
 
 test('shows suggestions based on user input', async () => {
   render(
     <ComboBox label="Label">
-      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
+      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
     </ComboBox>
   );
 
@@ -273,30 +272,30 @@ test('shows suggestions based on user input', async () => {
   expect(screen.queryByText('Garlic')).not.toBeInTheDocument();
 });
 
-test('supports disabling suggestions', async () => {
+test.only('supports disabling suggestions', async () => {
   render(
     <ComboBox label="Label" disabledKeys={['spinach']}>
-      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
+      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
     </ComboBox>
   );
 
   const input = screen.getAllByLabelText('Label')[0];
   await user.type(input, 'a');
 
-  const spinach = screen.getByText('Spinach');
-  expect(spinach).toHaveAttribute('aria-disabled', 'true');
+  const spinach = await screen.findByText('Spinach');
+  expect(spinach).toBeDisabled();
 });
 
 test('supporst showing a help text', () => {
   render(
     <ComboBox label="Label" description="This is a description">
-      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
+      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
     </ComboBox>
   );
 
@@ -311,10 +310,10 @@ test('supporst showing an error', () => {
       error
       errorMessage="Error!"
     >
-      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
+      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
     </ComboBox>
   );
 
@@ -324,10 +323,10 @@ test('supporst showing an error', () => {
 test('supports default value', () => {
   render(
     <ComboBox label="Label" data-testid="input-field" defaultValue="garlic">
-      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
+      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
     </ComboBox>
   );
 
@@ -345,10 +344,10 @@ test('can be controlled', async () => {
           value={value}
           onChange={setValue}
         >
-          <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-          <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
-          <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
-          <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
+          <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+          <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+          <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
+          <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
         </ComboBox>
         <span data-testid="output">{value}</span>
       </>
@@ -366,10 +365,10 @@ test('can be controlled', async () => {
 test('supports autocompletion', async () => {
   render(
     <ComboBox label="Label" data-testid="input-field">
-      <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item key="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
+      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
+      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
     </ComboBox>
   );
 
