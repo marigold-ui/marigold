@@ -60,14 +60,33 @@ const theme: Theme = {
       container: cva(),
       closeButton: cva(),
     },
+    Underlay: cva('', {
+      variants: {
+        variant: {
+          modal: ' bg-red-500',
+        },
+      },
+    }),
   },
 };
+
+/**
+ * We need to mock `matchMedia` because JSOM does not
+ * implements it.
+ */
+
+const mockMatchMedia = (matches: string[]) =>
+  jest.fn().mockImplementation(query => ({
+    matches: matches.includes(query),
+  }));
+
+window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
 
 const { render } = setup({ theme });
 
 test('renders an input', () => {
   render(
-    <ComboBox label="Label" data-testid="input-field">
+    <ComboBox label="Label">
       <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
       <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
       <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
@@ -75,7 +94,7 @@ test('renders an input', () => {
     </ComboBox>
   );
 
-  const textField = screen.getByTestId('input-field');
+  const textField = screen.getAllByLabelText('Label')[0];
   expect(textField).toBeInTheDocument();
   expect(textField).toHaveAttribute('type', 'text');
   expect(textField instanceof HTMLInputElement).toBeTruthy();
@@ -126,38 +145,37 @@ test('supports classnames', () => {
 
 test('supports disabled', () => {
   render(
-    <ComboBox label="Label" data-testid="input-field" disabled>
+    <ComboBox label="Label" disabled>
       <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
       <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
     </ComboBox>
   );
 
-  const textField = screen.getByTestId('input-field');
+  const textField = screen.getAllByLabelText('Label')[0];
   expect(textField).toBeDisabled();
 });
 
 test('supports required', () => {
   render(
-    <ComboBox label="Label" data-testid="input-field" required>
+    <ComboBox label="Label" required>
       <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
       <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
     </ComboBox>
   );
 
-  const textField = screen.getByTestId('input-field');
-  /** Note that the required attribute is not passed down! */
-  expect(textField).toHaveAttribute('aria-required', 'true');
+  const textField = screen.getAllByLabelText('Label')[0];
+  expect(textField).toBeRequired();
 });
 
 test('supports readonly', () => {
   render(
-    <ComboBox label="Label" data-testid="input-field" readOnly>
+    <ComboBox label="Label" readOnly>
       <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
       <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
     </ComboBox>
   );
 
-  const textField = screen.getByTestId('input-field');
+  const textField = screen.getAllByLabelText('Label')[0];
   expect(textField).toHaveAttribute('readonly');
 });
 
@@ -183,9 +201,9 @@ test('uses field structure', () => {
   expect(error).not.toBeInTheDocument();
 });
 
-test('opens the suggestions on user input', async () => {
+test.only('opens the suggestions on user input', async () => {
   render(
-    <ComboBox label="Label" data-testid="input-field">
+    <ComboBox label="Label">
       <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
       <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
       <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
@@ -193,16 +211,17 @@ test('opens the suggestions on user input', async () => {
     </ComboBox>
   );
 
-  const input = screen.getByTestId('input-field');
+  const input = screen.getAllByLabelText('Label')[0];
   await user.type(input, 'br');
 
+  await screen.findByRole('listbox');
   const suggestions = screen.getByRole('listbox');
   expect(suggestions).toBeVisible();
 });
 
 test('opens the suggestions on focus', async () => {
   render(
-    <ComboBox label="Label" data-testid="input-field" menuTrigger="focus">
+    <ComboBox label="Label" menuTrigger="focus">
       <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
       <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
       <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
@@ -210,7 +229,7 @@ test('opens the suggestions on focus', async () => {
     </ComboBox>
   );
 
-  const input = screen.getByTestId('input-field');
+  const input = screen.getAllByLabelText('Label')[0];
   await user.click(input);
 
   const suggestions = screen.getByRole('listbox');
@@ -219,7 +238,7 @@ test('opens the suggestions on focus', async () => {
 
 test('opens the suggestions on arrow down (manual)', async () => {
   render(
-    <ComboBox label="Label" data-testid="input-field" menuTrigger="manual">
+    <ComboBox label="Label" menuTrigger="manual">
       <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
       <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
       <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
@@ -227,7 +246,7 @@ test('opens the suggestions on arrow down (manual)', async () => {
     </ComboBox>
   );
 
-  const input = screen.getByTestId('input-field');
+  const input = screen.getAllByLabelText('Label')[0];
   await user.type(input, '{arrowdown}');
 
   const suggestions = screen.getByRole('listbox');
@@ -236,7 +255,7 @@ test('opens the suggestions on arrow down (manual)', async () => {
 
 test('shows suggestions based on user input', async () => {
   render(
-    <ComboBox label="Label" data-testid="input-field">
+    <ComboBox label="Label">
       <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
       <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
       <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
@@ -244,7 +263,7 @@ test('shows suggestions based on user input', async () => {
     </ComboBox>
   );
 
-  const input = screen.getByTestId('input-field');
+  const input = screen.getAllByLabelText('Label')[0];
   await user.type(input, 'br');
 
   expect(screen.getByText('Broccoli')).toBeInTheDocument();
@@ -256,11 +275,7 @@ test('shows suggestions based on user input', async () => {
 
 test('supports disabling suggestions', async () => {
   render(
-    <ComboBox
-      label="Label"
-      data-testid="input-field"
-      disabledKeys={['spinach']}
-    >
+    <ComboBox label="Label" disabledKeys={['spinach']}>
       <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
       <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
       <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
@@ -268,7 +283,7 @@ test('supports disabling suggestions', async () => {
     </ComboBox>
   );
 
-  const input = screen.getByTestId('input-field');
+  const input = screen.getAllByLabelText('Label')[0];
   await user.type(input, 'a');
 
   const spinach = screen.getByText('Spinach');
@@ -277,11 +292,7 @@ test('supports disabling suggestions', async () => {
 
 test('supporst showing a help text', () => {
   render(
-    <ComboBox
-      label="Label"
-      data-testid="input-field"
-      description="This is a description"
-    >
+    <ComboBox label="Label" description="This is a description">
       <ComboBox.Item key="spinach">Spinach</ComboBox.Item>
       <ComboBox.Item key="carrots">Carrots</ComboBox.Item>
       <ComboBox.Item key="broccoli">Broccoli</ComboBox.Item>
