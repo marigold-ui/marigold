@@ -17,7 +17,6 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
       },
     },
     label: {
@@ -235,7 +234,12 @@ export const OpenMenuRemotely: Story = {
           Open the menu remotly!
         </Button>
         <hr />
-        <Menu onOpenChange={handleAction} open={open} label="Menu">
+        <Menu
+          onOpenChange={handleAction}
+          open={open}
+          onClose={() => setOpen(!open)}
+          label="Menu"
+        >
           <Menu.Item id="one">One</Menu.Item>
           <Menu.Item id="two">Two</Menu.Item>
         </Menu>
