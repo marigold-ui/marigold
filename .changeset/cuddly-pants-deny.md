@@ -1,8 +1,8 @@
 ---
-"@marigold/docs": minor
-"@marigold/components": minor
-"@marigold/theme-b2b": minor
-"@marigold/theme-core": minor
+"@marigold/docs": major
+"@marigold/components": major
+"@marigold/theme-b2b": major
+"@marigold/theme-core": major
 ---
 
 RAC: `<Table>` as react aria component
