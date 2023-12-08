@@ -14,7 +14,7 @@ import { FieldBase } from '../FieldBase';
 import { Input } from '../Input';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay';
-import { ClearButton } from './ClearButton';
+import { ClearButton } from './_ClearButton';
 
 // Search Icon
 //----------------
@@ -125,6 +125,7 @@ export const Autocomplete = ({
 
   // TODO: until `react-aria` gives us error and description props.
   const { isDisabled, ...restClearButtonProps } = clearButtonProps;
+
   return (
     <>
       <FieldBase
@@ -159,10 +160,12 @@ export const Autocomplete = ({
         scrollRef={listBoxRef}
         isNonModal
       >
-        <ListBox ref={listBoxRef} state={state} {...listBoxProps} />
+        {/* {Object.entries(props.children).map(([key, child]) => ( */}
+        <ListBox children={props.children} />
+        {/* ))} */}
       </Popover>
     </>
   );
 };
 
-Autocomplete.Item = Item;
+Autocomplete.Item = ListBox.Item;

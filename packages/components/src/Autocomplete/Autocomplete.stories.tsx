@@ -6,7 +6,7 @@ import { useAsyncList } from '@react-stately/data';
 
 import { Container } from '../Container';
 import { Stack } from '../Stack';
-import { Autocomplete } from './Autocomplete';
+import { Autocomplete } from './_Autocomplete';
 
 const meta = {
   title: 'Components/Autocomplete',
@@ -64,27 +64,27 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <Autocomplete {...args}>
-      <Autocomplete.Item key="Harry Potter">Harry Potter</Autocomplete.Item>
-      <Autocomplete.Item key="Lord of the Rings">
+      <Autocomplete.Item id="Harry Potter">Harry Potter</Autocomplete.Item>
+      <Autocomplete.Item id="Lord of the Rings">
         Lord of the Rings
       </Autocomplete.Item>
-      <Autocomplete.Item key="Star Wars">Star Wars</Autocomplete.Item>
-      <Autocomplete.Item key="Star Trek">Star Trek</Autocomplete.Item>
-      <Autocomplete.Item key="Firefly">Firefly</Autocomplete.Item>
+      <Autocomplete.Item id="Star Wars">Star Wars</Autocomplete.Item>
+      <Autocomplete.Item id="Star Trek">Star Trek</Autocomplete.Item>
+      <Autocomplete.Item id="Firefly">Firefly</Autocomplete.Item>
     </Autocomplete>
   ),
 };
 
 export const Controlled: Story = {
   render: args => {
-    const [submitted, setSubmitted] = useState<[Key | null, string | null]>([
-      '',
-      '',
-    ]);
+    const [submitted, setSubmitted] = useState<
+      [Key | null, string | number | null]
+    >(['', '']);
     const [current, setCurrent] = useState<string>('');
 
     const keyToRender = submitted[0] !== null ? submitted[0].toString() : null;
 
+    console.log(submitted);
     return (
       <Container size="large">
         <Stack space={4}>

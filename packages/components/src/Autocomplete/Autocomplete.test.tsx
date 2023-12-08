@@ -5,7 +5,7 @@ import React from 'react';
 import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { Autocomplete } from './Autocomplete';
+import { Autocomplete } from './_Autocomplete';
 
 // Setup
 // ---------------
@@ -70,7 +70,7 @@ const { render } = setup({ theme });
 // ---------------
 test('renders an input', () => {
   render(
-    <Autocomplete label="Label" data-testid="input-field">
+    <Autocomplete data-testid="input-field">
       <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
       <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
