@@ -12,9 +12,11 @@ export const Table: ThemeComponent<'Table'> = {
     {
       variants: {
         variant: {
+          borderedTable: 'border-x-[1px] border-t-[1px]',
+        },
+        size: {
           compact: 'py-2',
           expanded: 'py-6',
-          borderedTable: 'border-x-[1px] border-t-[1px]',
         },
       },
     }
@@ -33,9 +35,11 @@ export const Table: ThemeComponent<'Table'> = {
     {
       variants: {
         variant: {
+          borderedTable: 'border-x-[1px]',
+        },
+        size: {
           compact: 'py-2',
           expanded: 'py-6',
-          borderedTable: 'border-x-[1px]',
         },
       },
     }
