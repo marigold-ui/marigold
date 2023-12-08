@@ -4,7 +4,7 @@ import React from 'react';
 import { Delete, Search } from '@marigold/icons';
 
 import { Button } from '../Button';
-import { Input } from './_Input';
+import { Input } from './Input';
 
 const meta = {
   title: 'Components/Input',
