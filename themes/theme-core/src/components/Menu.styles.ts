@@ -13,5 +13,5 @@ export const Menu: ThemeComponent<'Menu'> = {
     'text-xs',
     'data-[selected]:bg-bg-selected',
   ]),
-  section: cva('text-text-dark  border-t p-1 text-xs font-normal'),
+  section: cva('text-text-base  border-t p-1 text-xs font-normal'),
 };
