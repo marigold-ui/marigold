@@ -23,6 +23,8 @@ export type Theme = {
   name: string;
   screens?: { [key: string]: string };
   colors?: NestedStringObject;
+  shadow?: NestedStringObject;
+  component?: NestedStringObject;
   root?: ComponentStyleFunction;
   components: {
     Accordion?: Record<

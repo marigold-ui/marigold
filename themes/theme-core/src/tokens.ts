@@ -274,7 +274,7 @@ export const colors = {
 export const shadow = {
   surface: {
     DEFAULT: boxShadow.none,
-    raise: boxShadow.sm,
+    raised: boxShadow.sm,
     overlay: boxShadow.md,
     sunken: boxShadow.none,
   },
