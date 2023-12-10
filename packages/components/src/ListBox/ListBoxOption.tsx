@@ -3,12 +3,12 @@ import type RAC from 'react-aria-components';
 
 import { useListBoxContext } from './Context';
 
-export interface ListboxItemProps
+export interface ListBoxItemProps
   extends Omit<RAC.ListBoxItemProps, 'style' | 'className'> {}
 
-export const _ListboxItem = (props: ListboxItemProps) => {
+export const _ListBoxItem = (props: ListBoxItemProps) => {
   const { classNames } = useListBoxContext();
   return <ListBoxItem {...props} className={classNames.option} />;
 };
 
-export { _ListboxItem as ListboxItem };
+export { _ListBoxItem as ListBoxItem };
