@@ -1,68 +1,50 @@
-import { useRef } from 'react';
-
-import { useFocusRing } from '@react-aria/focus';
-import { useHover } from '@react-aria/interactions';
-import { useTableColumnHeader } from '@react-aria/table';
-import { mergeProps } from '@react-aria/utils';
-
-import { GridNode } from '@react-types/grid';
+import { Column } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import { SortDown, SortUp } from '@marigold/icons';
-import { cn, useStateProps } from '@marigold/system';
-import { WidthProp, width as twWidth } from '@marigold/system';
+import { WidthProp, cn, width as twWidth } from '@marigold/system';
 
 import { useTableContext } from './Context';
 
-// Sort Icon
-// ---------------
+type RemovedProps =
+  | 'className'
+  | 'style'
+  | 'width'
+  | 'maxWidth'
+  | 'minWidth'
+  | 'defaultWidth';
 
-// Props
-// ---------------
-interface TableColumnHeaderProps extends WidthProp {
-  column: GridNode<object>;
-}
+export interface TableColumnHeaderProps
+  extends Omit<RAC.ColumnProps, RemovedProps>,
+    WidthProp {}
 
-// Component
-// ---------------
-export const TableColumnHeader = ({
-  column,
+const _TableColumnHeader = ({
   width = 'auto',
+  ...props
 }: TableColumnHeaderProps) => {
-  const ref = useRef(null);
-  const { state, classNames } = useTableContext();
-  const { columnHeaderProps } = useTableColumnHeader(
-    {
-      node: column,
-    },
-    state,
-    ref
-  );
+  const { classNames } = useTableContext();
 
-  const { hoverProps, isHovered } = useHover({});
-  const { focusProps, isFocusVisible } = useFocusRing();
-  const stateProps = useStateProps({
-    hover: isHovered,
-    focusVisible: isFocusVisible,
-  });
   return (
-    <th
-      colSpan={column.colspan}
-      ref={ref}
+    <Column
+      {...props}
       className={cn('cursor-default', twWidth[width], classNames?.header)}
-      {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
-      {...stateProps}
     >
-      {column.rendered}
-      {column.props.allowsSorting &&
-        (state.sortDescriptor?.column === column.key ? (
-          state.sortDescriptor?.direction === 'ascending' ? (
-            <SortUp className="inline-block" />
-          ) : (
-            <SortDown className="inline-block" />
-          )
-        ) : (
-          <SortDown className="inline-block" />
-        ))}
-    </th>
+      {({ allowsSorting, sortDirection }) => (
+        <>
+          {props.children}
+          {allowsSorting && (
+            <>
+              {sortDirection === 'ascending' ? (
+                <SortUp className="inline-block" />
+              ) : (
+                <SortDown className="inline-block" />
+              )}
+            </>
+          )}
+        </>
+      )}
+    </Column>
   );
 };
+
+export { _TableColumnHeader as TableColumnHeader };
