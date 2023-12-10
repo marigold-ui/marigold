@@ -49,7 +49,7 @@ const _ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
   }
 ) as ListBoxComponent;
 
-_ListBox.Item = ListboxItem;
+_ListBox.Item = ListBoxItem;
 _ListBox.Section = Section;
 
 export { _ListBox as ListBox };
