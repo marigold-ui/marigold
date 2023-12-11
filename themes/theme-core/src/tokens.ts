@@ -280,8 +280,8 @@ export const shadow = {
   },
 };
 
-export const component = {
-  height: {
+export const height = {
+  component: {
     DEFAULT: '22px',
     sm: '16px',
     lg: '32px',
