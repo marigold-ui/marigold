@@ -33,7 +33,14 @@ const meta = {
       control: {
         type: 'text',
       },
-      description: 'variant for the table: for example: compact',
+      description: 'variant for the table',
+    },
+    size: {
+      control: {
+        type: 'select',
+      },
+      options: ['compact', 'expanded'],
+      description: 'size for the table: for example: compact',
     },
   },
   args: {},
@@ -334,7 +341,7 @@ export const Compact: Story = {
     <Table
       aria-label="Table with multiple selection"
       selectionMode="multiple"
-      variant="compact"
+      size="compact"
       {...args}
     >
       <Table.Header>
@@ -378,7 +385,7 @@ export const Expanded: Story = {
     <Table
       aria-label="Table with multiple selection"
       selectionMode="multiple"
-      variant="expanded"
+      size="expanded"
       {...args}
     >
       <Table.Header>

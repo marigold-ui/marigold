@@ -12,6 +12,9 @@ export const Table: ThemeComponent<'Table'> = {
     {
       variants: {
         variant: {
+          grid: 'border-x-[1px] border-t-[1px]',
+        },
+        size: {
           compact: 'py-2',
           expanded: 'py-6',
         },
@@ -34,6 +37,9 @@ export const Table: ThemeComponent<'Table'> = {
     {
       variants: {
         variant: {
+          grid: 'border-x-[1px]',
+        },
+        size: {
           compact: 'py-2',
           expanded: 'py-6',
         },
