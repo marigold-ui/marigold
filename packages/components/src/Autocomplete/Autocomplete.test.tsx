@@ -5,7 +5,7 @@ import React from 'react';
 import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { Autocomplete } from './_Autocomplete';
+import { Autocomplete } from './_Autocomplete.1';
 
 // Setup
 // ---------------

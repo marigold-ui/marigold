@@ -3,7 +3,6 @@ import { Key, useRef } from 'react';
 import { useSearchAutocomplete } from '@react-aria/autocomplete';
 import { useFilter } from '@react-aria/i18n';
 
-import { Item } from '@react-stately/collections';
 import { useComboBoxState } from '@react-stately/combobox';
 
 import { SearchAutocompleteProps } from '@react-types/autocomplete';
@@ -113,7 +112,6 @@ export const Autocomplete = ({
     useSearchAutocomplete(
       {
         ...props,
-
         onSubmit: (value: string | null, key: Key | null) =>
           props.onSubmit?.(key, value),
         popoverRef,

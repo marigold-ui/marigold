@@ -1,4 +1,9 @@
-import { ForwardRefExoticComponent, RefAttributes, forwardRef } from 'react';
+import {
+  ForwardRefExoticComponent,
+  RefAttributes,
+  forwardRef,
+  useRef,
+} from 'react';
 import React from 'react';
 import {
   ComboBox,
@@ -14,13 +19,38 @@ import { useSearchAutocomplete } from '@react-aria/autocomplete';
 
 import { SearchAutocompleteProps } from '@react-types/autocomplete';
 
-import { WidthProp } from '@marigold/system';
-
 import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
 import { Input } from '../Input';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay/Popover';
 import { AutocompleteClearButton } from './ClearButton';
+
+interface InpotProps {
+  onSubmit?: (key: Key | null, value: string | null) => void;
+}
+const Inpot = ({ onSubmit }: InpotProps) => {
+  const state = React.useContext(ComboBoxStateContext);
+
+  return (
+    <Input
+      icon={<SearchIcon />}
+      action={
+        state?.inputValue !== '' ? <AutocompleteClearButton /> : undefined
+      }
+      onKeyDown={e => {
+        if (e.key === 'Enter' || e.key === 'Escape') {
+          e.preventDefault();
+        }
+        if (e.key === 'Enter') {
+          if (state.selectionManager.focusedKey === null) {
+            onSubmit?.(state.selectedKey, state.inputValue);
+            console.log(state.selectedKey, state.inputValue);
+          }
+        }
+      }}
+    />
+  );
+};
 
 // Search Icon
 //----------------
@@ -46,7 +76,9 @@ type RemovedProps =
   | 'isReadOnly'
   | 'inputValue'
   | 'onInputChange'
-  | 'defaultValue';
+  | 'defaultValue'
+  | 'validate'
+  | 'validationState';
 
 export interface AutocompleteProps
   extends Omit<RAC.ComboBoxProps<object>, RemovedProps>,
@@ -59,7 +91,16 @@ export interface AutocompleteProps
   onChange?: RAC.ComboBoxProps<any>['onInputChange'];
   variant?: string;
   size?: string;
-  onSubmit?: (value: string | number | null, key: Key | null) => void;
+  /**
+   * Handler that is called when the SearchAutocomplete is submitted.
+   *
+   * A `key` will be passed if the submission is a selected item (e.g. a user
+   * clicks or presses enter on an option). If the input is a custom `value`, `key` will be `null`.
+   *
+   * A `value` will be passed if the submission is a custom value (e.g. a user
+   * types then presses enter). If the input is a selected item, `value` will be `null`.
+   */
+  onSubmit?: (key: Key | null, value: string | number | null) => void;
 }
 
 interface AutocompleteComponent
@@ -80,26 +121,19 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     }: AutocompleteProps,
     ref
   ) => {
-    let state = React.useContext(ComboBoxStateContext);
-    // [props, ref] = useContextProps(props, ref, InputContext);
-
     const props: RAC.ComboBoxProps<object> = {
       onSelectionChange: key => key !== null && onSubmit?.(key, null),
       defaultInputValue: defaultValue,
       inputValue: value,
       onInputChange: onChange,
+      allowsCustomValue: true,
       ...rest,
     };
-    console.log(state, props);
 
-    console.log();
     return (
       <>
         <FieldBase as={ComboBox} {...props}>
-          <Input
-            icon={<SearchIcon />}
-            action={value !== '' ? <AutocompleteClearButton /> : undefined}
-          />
+          <Inpot />
           <Popover>
             <ListBox>{children}</ListBox>
           </Popover>
