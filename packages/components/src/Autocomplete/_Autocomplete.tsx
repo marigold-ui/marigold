@@ -90,6 +90,7 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
       onInputChange: onChange,
       ...rest,
     };
+    console.log(state, props);
 
     console.log();
     return (
