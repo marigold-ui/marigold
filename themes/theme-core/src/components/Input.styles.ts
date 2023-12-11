@@ -1,6 +1,6 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-export const inputHeight = 'h-[22px]';
+export const inputHeight = 'h-component';
 export const inputBox = 'border rounded-sm border-input-border bg-white';
 export const inputSpacing = 'px-1';
 

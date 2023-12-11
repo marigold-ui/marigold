@@ -282,7 +282,7 @@ export const shadow = {
 
 export const height = {
   component: {
-    DEFAULT: '22px',
+    DEFAULT: '24px',
     sm: '16px',
     lg: '32px',
   },
