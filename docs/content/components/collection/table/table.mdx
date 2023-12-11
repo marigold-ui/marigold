@@ -41,10 +41,24 @@ import { Table } from '@marigold/components';
       default: 'none',
     },
     {
+      property: 'onCellAction',
+      type: '(key: Key) => void',
+      description:
+        'Handler that is called when a user performs an action on the cell.',
+      default: 'none',
+    },
+    {
       property: 'stretch',
       type: 'boolean',
       description: 'Stretch table to fill the container.',
       default: 'false',
+    },
+    {
+      property: 'disabledBehavior',
+      type: 'string',
+      description:
+        'Whether disabledKeys applies to all interactions, or only selection.',
+      default: 'all',
     },
     {
       property: 'disabledKeys',
@@ -62,6 +76,155 @@ import { Table } from '@marigold/components';
       property: 'onSortChange',
       type: 'function',
       description: 'Handler that is called when the sort direction changes.',
+      default: 'none',
+    },
+    {
+      property: 'disallowEmptySelection',
+      type: 'boolean',
+      description: 'Whether the collection allows empty selection.',
+      default: 'false',
+    },
+    {
+      property: 'onRowAction',
+      type: '((key: Key) => void)',
+      description:
+        'Handler that is called when a user performs an action on the row.',
+      default: 'none',
+    },
+  ]}
+/>
+
+### Props Header
+
+<PropsTable
+  props={[
+    {
+      property: 'columns',
+      type: 'object[]',
+      description: 'A list of table columns.',
+      default: 'none',
+    },
+  ]}
+/>
+
+### Props Column
+
+<PropsTable
+  props={[
+    {
+      property: 'isRowHeader',
+      type: 'boolean',
+      description:
+        'Whether a column is a row header and should be announced by assistive technology during row navigation. Has to be set for min. one column.',
+      default: 'false',
+    },
+    {
+      property: 'title',
+      type: 'string',
+      description:
+        'Rendered contents of the column if children contains child columns.',
+      default: 'none',
+    },
+    {
+      property: 'allowSorting',
+      type: 'boolean',
+      description: 'Whether the column allows sorting.',
+      default: 'false',
+    },
+    {
+      property: 'width',
+      type: 'string | number',
+      description: `Sets the width of the column. You can see allowed tokens here: https://tailwindcss.com/docs/width`,
+      default: 'auto',
+    },
+    {
+      property: 'childColumns',
+      type: 'Iterable<object>',
+      description:
+        'A list of child columns used when dynamically rendering nested child columns.',
+      default: 'none',
+    },
+    {
+      property: 'id',
+      type: 'string | number',
+      description: 'The id of the column',
+      default: 'none',
+    },
+    {
+      property: 'key',
+      type: 'string | number',
+      description: 'The key of the column',
+      default: 'none',
+    },
+  ]}
+/>
+
+### Props Body
+
+<PropsTable
+  props={[
+    {
+      property: 'items',
+      type: 'Iterable<object>',
+      description: 'Item objects in the collection.',
+      default: 'none',
+    },
+    {
+      property: 'renderEmptyState',
+      type: '(() => ReactNode)',
+      description:
+        'Provides content to display when there are no rows in the table.',
+      default: 'none',
+    },
+  ]}
+/>
+
+### Props Row
+
+<PropsTable
+  props={[
+    {
+      property: 'href',
+      type: 'string',
+      description: 'A URL to link to.',
+      default: 'none',
+    },
+    {
+      property: 'target',
+      type: 'string',
+      description: 'The target window for the link.',
+      default: 'none',
+    },
+    {
+      property: 'download',
+      type: 'string | boolean',
+      description:
+        'Causes the browser to download the linked URL. A string may be provided to suggest a file name.',
+      default: 'none',
+    },
+    {
+      property: 'ping',
+      type: 'string',
+      description:
+        'A space-separated list of URLs to ping when the link is followed.',
+      default: 'none',
+    },
+    {
+      property: 'columns',
+      type: 'Iterable<object>',
+      description: 'A list of columns used when dynamically rendering cells.',
+      default: 'none',
+    },
+    {
+      property: 'id',
+      type: 'string | number',
+      description: 'The id of the row',
+      default: 'none',
+    },
+    {
+      property: 'key',
+      type: 'string | number',
+      description: 'The key of the row',
       default: 'none',
     },
   ]}
@@ -96,7 +259,7 @@ You don't have to hard code the table items, you could also create a dynamic col
 
 ### Disabled Rows
 
-You can also disable certain rows. For that all you have to do is add the property `disabledKeys` with the certain key to the table.
+You can also disable certain rows. For that all you have to do is add the property `disabledKeys` with the certain id to the table.
 
 <ComponentDemo file="./table-disabled.demo.tsx" />
 
@@ -123,3 +286,15 @@ Columns can be nested, which will result in more than one header row to be creat
 In a Table you can specify the width of a column using `width` property in the `Table.Column` component, this allows you to set a fixed width for a specific columnm ensuring consistent column widths throughout the table .
 
 <ComponentDemo file="./table-column-width.demo.tsx" />
+
+### Rows are links
+
+You can also now make a `<Table.Row>` behave as a link. For that you need to set the `href` to the `<Table.Row>`. If you click on it, it will open. If you click explicit on the checkbox it can be selected.
+
+<ComponentDemo file="./table-links.demo.tsx" />
+
+### Empty renderEmptyState
+
+The `<Table.Body>` allows to render an empty state if tehre is no content to show. All you have to do is to pass it on it.
+
+<ComponentDemo file="./table-empty-state.demo.tsx" />

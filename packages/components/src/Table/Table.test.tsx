@@ -22,7 +22,7 @@ const theme: Theme = {
     Table: {
       table: cva('border-collapse'),
       header: cva('p-4'),
-      row: cva('bg-blue-700'),
+      row: cva('bg-blue-700 data-[disabled]:cursor-not-allowed'),
       cell: cva('p-10'),
     },
   },
@@ -31,8 +31,8 @@ const theme: Theme = {
 const { render } = setup({ theme });
 
 const columns = [
-  { name: 'Name', key: 'name' },
-  { name: 'Firstname', key: 'firstname' },
+  { name: 'Name', id: 'name' },
+  { name: 'Firstname', id: 'firstname' },
 ];
 
 const rows: { [key: string]: string }[] = [
@@ -52,12 +52,17 @@ test('renders contens correctly', () => {
   render(
     <Table aria-label="Example table">
       <Table.Header columns={columns}>
-        {column => <Table.Column key={column.key}>{column.name}</Table.Column>}
+        {column => (
+          <Table.Column isRowHeader id={(column as any).name}>
+            {(column as any).name}
+          </Table.Column>
+        )}
       </Table.Header>
       <Table.Body items={rows}>
         {item => (
-          <Table.Row key={item.id}>
-            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          <Table.Row id={(item as any).id}>
+            <Table.Cell>{(item as any).name}</Table.Cell>
+            <Table.Cell>{(item as any).firstname}</Table.Cell>
           </Table.Row>
         )}
       </Table.Body>
@@ -80,12 +85,15 @@ test('supports theme with parts', () => {
   render(
     <Table aria-label="Example table" selectionMode="single">
       <Table.Header columns={columns}>
-        {column => <Table.Column>{column.name}</Table.Column>}
+        {column => (
+          <Table.Column isRowHeader>{(column as any).name}</Table.Column>
+        )}
       </Table.Header>
       <Table.Body items={rows}>
         {item => (
-          <Table.Row>
-            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          <Table.Row id={(item as any).id}>
+            <Table.Cell>{(item as any).name}</Table.Cell>
+            <Table.Cell>{(item as any).firstname}</Table.Cell>
           </Table.Row>
         )}
       </Table.Body>
@@ -109,12 +117,15 @@ test('supports selectionMode single', () => {
   render(
     <Table aria-label="Example table" selectionMode="single">
       <Table.Header columns={columns}>
-        {column => <Table.Column>{column.name}</Table.Column>}
+        {column => (
+          <Table.Column isRowHeader>{(column as any).name}</Table.Column>
+        )}
       </Table.Header>
       <Table.Body items={rows}>
         {item => (
-          <Table.Row>
-            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          <Table.Row id={(item as any).id}>
+            <Table.Cell>{(item as any).name}</Table.Cell>
+            <Table.Cell>{(item as any).firstname}</Table.Cell>
           </Table.Row>
         )}
       </Table.Body>
@@ -130,12 +141,15 @@ test('supports selectionMode multiple', () => {
   render(
     <Table aria-label="Example table" selectionMode="multiple">
       <Table.Header columns={columns}>
-        {column => <Table.Column>{column.name}</Table.Column>}
+        {column => (
+          <Table.Column isRowHeader>{(column as any).name}</Table.Column>
+        )}
       </Table.Header>
       <Table.Body items={rows}>
         {item => (
-          <Table.Row>
-            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          <Table.Row id={(item as any).id}>
+            <Table.Cell>{(item as any).name}</Table.Cell>
+            <Table.Cell>{(item as any).firstname}</Table.Cell>
           </Table.Row>
         )}
       </Table.Body>
@@ -155,25 +169,51 @@ test('supports selectionMode multiple', () => {
 });
 
 test('supports colspans', () => {
+  const nestedColumns = [
+    {
+      name: 'Name',
+      key: 'name',
+      children: [
+        { name: 'First Name', key: 'first', isRowHeader: true },
+        { name: 'Last Name', key: 'last', isRowHeader: true },
+      ],
+    },
+    {
+      name: 'Information',
+      key: 'info',
+      children: [
+        { name: 'Age', key: 'age' },
+        { name: 'Birthday', key: 'birthday' },
+      ],
+    },
+  ] as const;
+
+  const nestedRows = [
+    { id: 1, first: 'Sam', last: 'Smith', age: 36, birthday: 'May 3' },
+    { id: 2, first: 'Julia', last: 'Jones', age: 24, birthday: 'February 10' },
+    { id: 3, first: 'Peter', last: 'Parker', age: 28, birthday: 'September 7' },
+    { id: 4, first: 'Bruce', last: 'Wayne', age: 32, birthday: 'December 18' },
+  ] as const;
   render(
-    <Table aria-label="Example table for nested columns">
-      <Table.Header>
-        <Table.Column title="Name">
-          <Table.Column isRowHeader>First Name</Table.Column>
-          <Table.Column isRowHeader>Last Name</Table.Column>
-        </Table.Column>
-        <Table.Column title="Information">
-          <Table.Column>Age</Table.Column>
-          <Table.Column>Birthday</Table.Column>
-        </Table.Column>
+    <Table aria-label="Example table with client side sorting">
+      <Table.Header columns={nestedColumns as any}>
+        {column => (
+          <Table.Column
+            isRowHeader={(column as any).isRowHeader}
+            // eslint-disable-next-line testing-library/no-node-access
+            childColumns={(column as any).children}
+          >
+            {(column as any).name}
+          </Table.Column>
+        )}
       </Table.Header>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>Sam</Table.Cell>
-          <Table.Cell>Smith</Table.Cell>
-          <Table.Cell>36</Table.Cell>
-          <Table.Cell>May 3</Table.Cell>
-        </Table.Row>
+      <Table.Body items={nestedRows}>
+        {item => (
+          <Table.Row id={(item as any).name}>
+            <Table.Cell>{(item as any).name}</Table.Cell>
+            <Table.Cell>{(item as any).amount}</Table.Cell>
+          </Table.Row>
+        )}
       </Table.Body>
     </Table>
   );
@@ -219,17 +259,18 @@ test('sorting', () => {
         onSortChange={sort}
       >
         <Table.Header>
-          <Table.Column key="name" allowsSorting>
+          <Table.Column id="name" isRowHeader allowsSorting>
             Name
           </Table.Column>
-          <Table.Column key="amount" allowsSorting>
+          <Table.Column id="amount" allowsSorting>
             Amount
           </Table.Column>
         </Table.Header>
         <Table.Body items={list}>
           {item => (
-            <Table.Row key={item.name}>
-              {columnKey => <Table.Cell>{(item as any)[columnKey]}</Table.Cell>}
+            <Table.Row id={(item as any).name}>
+              <Table.Cell>{(item as any).name}</Table.Cell>
+              <Table.Cell>{(item as any).amount}</Table.Cell>
             </Table.Row>
           )}
         </Table.Body>
@@ -256,17 +297,17 @@ test('sorting', () => {
   expect(header).toBeInTheDocument();
   expect(header?.textContent).toContain('Name');
 
-  const sortedRows = screen.getAllByRole('row');
-  expect(sortedRows[1].textContent).toContain('Orange');
-  expect(sortedRows[2].textContent).toContain('Banana');
-  expect(sortedRows[3].textContent).toContain('Apple');
+  const cells = screen.getAllByRole('rowheader');
+  expect(cells[0].textContent).toContain('Orange');
+  expect(cells[1].textContent).toContain('Banana');
+  expect(cells[2].textContent).toContain('Apple');
 });
 
 test('allows to stretch to fit container', () => {
   render(
     <Table aria-label="Streched table" stretch>
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column isRowHeader>Name</Table.Column>
       </Table.Header>
       <Table.Body>
         <Table.Row>
@@ -288,7 +329,7 @@ test('supports non-interactive table', async () => {
       disabledKeys={['Jane']}
     >
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column isRowHeader>Name</Table.Column>
       </Table.Header>
       <Table.Body>
         <Table.Row key="Alice">
@@ -315,7 +356,7 @@ test('cursor indicates interactivity', async () => {
       disabledKeys={['Jane']}
     >
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column isRowHeader>Name</Table.Column>
       </Table.Header>
       <Table.Body>
         <Table.Row key="Alice">
@@ -329,15 +370,16 @@ test('cursor indicates interactivity', async () => {
   );
 
   const rows = screen.getAllByRole('row');
+
   expect(rows[1]).toHaveClass('cursor-pointer');
-  expect(rows[2]).toHaveClass('cursor-default');
+  expect(rows[2]).toHaveClass('data-[disabled]:cursor-not-allowed');
 });
 
 test('Table cell mouse down will not be selectable', () => {
   render(
     <Table aria-label="table" selectionMode="none">
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column isRowHeader>Name</Table.Column>
       </Table.Header>
       <Table.Body>
         <Table.Row key="Alice">
@@ -361,7 +403,7 @@ test('Table cell pointer down will not be selectable', () => {
   render(
     <Table aria-label="table" selectionMode="none">
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column isRowHeader>Name</Table.Column>
       </Table.Header>
       <Table.Body>
         <Table.Row key="Alice">
