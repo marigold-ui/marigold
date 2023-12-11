@@ -41,23 +41,26 @@ export default () => {
       onSortChange={list.sort}
     >
       <Table.Header>
-        <Table.Column key="name" allowsSorting>
+        <Table.Column id="name" allowsSorting isRowHeader>
           Name
         </Table.Column>
-        <Table.Column key="height" allowsSorting>
+        <Table.Column id="height" allowsSorting>
           Height
         </Table.Column>
-        <Table.Column key="mass" allowsSorting>
+        <Table.Column id="mass" allowsSorting>
           Mass
         </Table.Column>
-        <Table.Column key="birth_year" allowsSorting>
+        <Table.Column id="birth_year" allowsSorting>
           Birth Year
         </Table.Column>
       </Table.Header>
       <Table.Body items={list.items}>
         {item => (
-          <Table.Row key={(item as any).name}>
-            {columnKey => <Table.Cell>{(item as any)[columnKey]}</Table.Cell>}
+          <Table.Row id={(item as any).name}>
+            <Table.Cell>{(item as any).name}</Table.Cell>
+            <Table.Cell>{(item as any).height}</Table.Cell>
+            <Table.Cell>{(item as any).mass}</Table.Cell>
+            <Table.Cell>{(item as any).birth_year}</Table.Cell>
           </Table.Row>
         )}
       </Table.Body>

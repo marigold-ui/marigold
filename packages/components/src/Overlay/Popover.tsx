@@ -31,7 +31,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
       component: 'Popover',
       variant: placement,
       // Make Popover as wide as trigger element
-      className: 'min-w-[--trigger-width]',
+      className: 'w-[--trigger-width]',
     });
 
     const isSmallScreen = useSmallScreen();
@@ -41,7 +41,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
       <>
         {isSmallScreen ? (
           <>
-            <Underlay variant="modal" />
+            <Underlay open={open} variant="modal" />
             <Popover
               ref={ref}
               {...props}

@@ -19,30 +19,32 @@ export const PropsTable = ({ props }: PropsTableProps) => {
         <div className="overflow-auto">
           <Table aria-label="Table with component props" variant="hover">
             <Table.Header>
-              <Table.Column key="property">Property</Table.Column>
+              <Table.Column key="property" isRowHeader>
+                Property
+              </Table.Column>
               <Table.Column key="type">Type</Table.Column>
               <Table.Column key="default">Default</Table.Column>
               <Table.Column key="description">Description</Table.Column>
             </Table.Header>
             <Table.Body items={props}>
               {item => (
-                <Table.Row key={item.property}>
+                <Table.Row key={(item as any).property}>
                   <Table.Cell>
                     <code className="before:content-none after:content-none">
-                      {item.property}
+                      {(item as any).property}
                     </code>
                   </Table.Cell>
                   <Table.Cell>
                     <code className="before:content-none after:content-none">
-                      {item.type}
+                      {(item as any).type}
                     </code>
                   </Table.Cell>
                   <Table.Cell>
                     <code className="before:content-none after:content-none">
-                      {item.default ? item.default : '-'}
+                      {(item as any).default ? (item as any).default : '-'}
                     </code>
                   </Table.Cell>
-                  <Table.Cell>{item.description}</Table.Cell>
+                  <Table.Cell>{(item as any).description}</Table.Cell>
                 </Table.Row>
               )}
             </Table.Body>

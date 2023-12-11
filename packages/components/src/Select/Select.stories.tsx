@@ -2,6 +2,7 @@
 import { useState } from '@storybook/addons';
 import { Meta, StoryObj } from '@storybook/react';
 
+import { Header } from '../Header';
 import { Inset } from '../Inset';
 import { Select } from './Select';
 
@@ -77,7 +78,7 @@ const meta = {
   args: {
     label: 'Select for favorite:',
   },
-} satisfies Meta;
+} satisfies Meta<typeof Select>;
 
 export default meta;
 
@@ -87,13 +88,13 @@ export const Basic: StoryObj<typeof Select> = {
     return (
       <>
         <Select {...args} onChange={setSelected} disabledKeys={['Firefly']}>
-          <Select.Option key="Harry Potter">Harry Potter</Select.Option>
-          <Select.Option key="Lord of the Rings">
+          <Select.Option id="Harry Potter">Harry Potter</Select.Option>
+          <Select.Option id="Lord of the Rings">
             Lord of the Rings
           </Select.Option>
-          <Select.Option key="Star Wars">Star Wars</Select.Option>
-          <Select.Option key="Star Trek">Star Trek</Select.Option>
-          <Select.Option key="Firefly">Firefly</Select.Option>
+          <Select.Option id="Star Wars">Star Wars</Select.Option>
+          <Select.Option id="Star Trek">Star Trek</Select.Option>
+          <Select.Option id="Firefly">Firefly</Select.Option>
         </Select>
         <hr />
         <pre>selected: {selected}</pre>
@@ -179,13 +180,15 @@ export const LotsOfOptions: StoryObj<typeof Select> = {
 export const Sections: StoryObj<typeof Select> = {
   render: args => (
     <Select {...args}>
-      <Select.Section title="Fantasy">
-        <Select.Option key="harry-potter">Harry Potter</Select.Option>
-        <Select.Option key="lord-of-the-rings">Lord of the Rings</Select.Option>
+      <Select.Section>
+        <Header>Fantasy</Header>
+        <Select.Option id="harry-potter">Harry Potter</Select.Option>
+        <Select.Option id="lord-of-the-rings">Lord of the Rings</Select.Option>
       </Select.Section>
-      <Select.Section title="Sci-Fi">
-        <Select.Option key="star-wars">Star Wars</Select.Option>
-        <Select.Option key="star-trek">Star Trek</Select.Option>
+      <Select.Section>
+        <Header>Sci-Fi</Header>
+        <Select.Option id="star-wars">Star Wars</Select.Option>
+        <Select.Option id="star-trek">Star Trek</Select.Option>
       </Select.Section>
     </Select>
   ),
@@ -195,50 +198,50 @@ export const SelectedScroll: StoryObj<typeof Select> = {
   render: args => {
     return (
       <Select disabledKeys={['Firefly']} {...args}>
-        <Select.Option key="Harry Potter">Harry Potter</Select.Option>
-        <Select.Option key="Lord of the Rings">Lord of the Rings</Select.Option>
-        <Select.Option key="Star Wars">Star Wars</Select.Option>
-        <Select.Option key="Star Trek">Star Trek</Select.Option>
-        <Select.Option key="Avatar - Aufbruch nach Pandora">
+        <Select.Option id="Harry Potter">Harry Potter</Select.Option>
+        <Select.Option id="Lord of the Rings">Lord of the Rings</Select.Option>
+        <Select.Option id="Star Wars">Star Wars</Select.Option>
+        <Select.Option id="Star Trek">Star Trek</Select.Option>
+        <Select.Option id="Avatar - Aufbruch nach Pandora">
           Avatar - Aufbruch nach Pandora
         </Select.Option>
-        <Select.Option key="Avatar: The Way of Water">
+        <Select.Option id="Avatar: The Way of Water">
           Avatar: The Way of Water
         </Select.Option>
-        <Select.Option key="Black Adam">Black Adam</Select.Option>
-        <Select.Option key="Black Panther: Wakanda Forever">
+        <Select.Option id="Black Adam">Black Adam</Select.Option>
+        <Select.Option id="Black Panther: Wakanda Forever">
           Black Panther: Wakanda Forever
         </Select.Option>
-        <Select.Option key="Strange World">Strange World</Select.Option>
-        <Select.Option key="Project Gemini">Project Gemini</Select.Option>
-        <Select.Option key="M3GAN">M3GAN</Select.Option>
-        <Select.Option key="Spider-Man: No Way Home">
+        <Select.Option id="Strange World">Strange World</Select.Option>
+        <Select.Option id="Project Gemini">Project Gemini</Select.Option>
+        <Select.Option id="M3GAN">M3GAN</Select.Option>
+        <Select.Option id="Spider-Man: No Way Home">
           Spider-Man: No Way Home
         </Select.Option>
-        <Select.Option key="Jurassic World - Ein neues Zeitalter">
+        <Select.Option id="Jurassic World - Ein neues Zeitalter">
           Jurassic World - Ein neues Zeitalter
         </Select.Option>
-        <Select.Option key="Prey">Prey</Select.Option>
-        <Select.Option key="Avengers: Infinity War">
+        <Select.Option id="Prey">Prey</Select.Option>
+        <Select.Option id="Avengers: Infinity War">
           Avengers: Infinity War
         </Select.Option>
-        <Select.Option key="Venom: Let There Be Carnage">
+        <Select.Option id="Venom: Let There Be Carnage">
           Venom: Let There Be Carnage
         </Select.Option>
-        <Select.Option key="Lightyear">Lightyear</Select.Option>
-        <Select.Option key="Warriors of Future">
+        <Select.Option id="Lightyear">Lightyear</Select.Option>
+        <Select.Option id="Warriors of Future">
           Warriors of Future
         </Select.Option>
-        <Select.Option key="Moonfall">Moonfall</Select.Option>
-        <Select.Option key="Nope">Nope</Select.Option>
-        <Select.Option key="Project Wolf Hunting">
+        <Select.Option id="Moonfall">Moonfall</Select.Option>
+        <Select.Option id="Nope">Nope</Select.Option>
+        <Select.Option id="Project Wolf Hunting">
           Project Wolf Hunting
         </Select.Option>
-        <Select.Option key="Black Panther">Black Panther</Select.Option>
-        <Select.Option key="Eternals">Eternals</Select.Option>
-        <Select.Option key="Interstellar">Interstellar</Select.Option>
-        <Select.Option key="Avengers: Endgame">Avengers: Endgame</Select.Option>
-        <Select.Option key="Dune">Dune</Select.Option>
+        <Select.Option id="Black Panther">Black Panther</Select.Option>
+        <Select.Option id="Eternals">Eternals</Select.Option>
+        <Select.Option id="Interstellar">Interstellar</Select.Option>
+        <Select.Option id="Avengers: Endgame">Avengers: Endgame</Select.Option>
+        <Select.Option id="Dune">Dune</Select.Option>
       </Select>
     );
   },
