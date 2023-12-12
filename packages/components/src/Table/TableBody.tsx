@@ -1,12 +1,12 @@
-import { TableBody } from 'react-aria-components';
-import type RAC from 'react-aria-components';
+import { ReactNode } from 'react';
 
-type RemovedProps = 'className' | 'style';
-export interface TableBodyProps
-  extends Omit<RAC.TableBodyProps<object>, RemovedProps> {}
+import { useTableRowGroup } from '@react-aria/table';
 
-const _TableBody = ({ children, ...props }: TableBodyProps) => (
-  <TableBody {...props}>{children}</TableBody>
-);
+export interface TableBodyProps {
+  children: ReactNode;
+}
 
-export { _TableBody as TableBody };
+export const TableBody = ({ children }: TableBodyProps) => {
+  const { rowGroupProps } = useTableRowGroup();
+  return <tbody {...rowGroupProps}>{children}</tbody>;
+};

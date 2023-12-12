@@ -3,7 +3,7 @@ import { Table } from '@marigold/components';
 export default () => (
   <Table aria-label="Table with multiple selection" selectionMode="multiple">
     <Table.Header>
-      <Table.Column isRowHeader>Name</Table.Column>
+      <Table.Column>Name</Table.Column>
       <Table.Column>Firstname</Table.Column>
       <Table.Column>House</Table.Column>
       <Table.Column>Year of birth</Table.Column>
