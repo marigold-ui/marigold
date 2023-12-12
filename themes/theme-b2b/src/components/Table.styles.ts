@@ -12,6 +12,9 @@ export const Table: ThemeComponent<'Table'> = {
     {
       variants: {
         variant: {
+          grid: 'border-x-[1px] border-t-[1px]',
+        },
+        size: {
           compact: 'py-2',
           expanded: 'py-6',
         },
@@ -20,7 +23,9 @@ export const Table: ThemeComponent<'Table'> = {
   ),
   row: cva([
     'group-aria-[multiselectable]/table:[&>*:first-child]:w-12',
-    'data-[hover]:bg-bg-hover-light',
+    'hover:bg-bg-hover-light',
+    'data-[disabled]:cursor-not-allowed data-[disabled]:hover:bg-transparent',
+
     'aria-selected:bg-bg-selected',
     'focus-visible:outline-outline-focus',
   ]),
@@ -32,6 +37,9 @@ export const Table: ThemeComponent<'Table'> = {
     {
       variants: {
         variant: {
+          grid: 'border-x-[1px]',
+        },
+        size: {
           compact: 'py-2',
           expanded: 'py-6',
         },
