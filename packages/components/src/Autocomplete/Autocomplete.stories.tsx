@@ -82,19 +82,9 @@ export const Controlled: Story = {
       '',
     ]);
     const [current, setCurrent] = useState<string>('');
+    const keyToRender = submitted[0] !== null ? submitted[0] : null;
 
-    const keyToRender = submitted[0] !== null ? submitted[0].toString() : null;
-
-    const handleSubmit = (props: { key: Key | null; val: string | null }) => {
-      console.log(props);
-      if (props.key != null) {
-        setSubmitted([props.key, null]);
-        console.log('PROPSSS', props.key, props.val);
-      } else if (props.val) {
-        setSubmitted([null, props.val]);
-      }
-    };
-
+    console.log(current);
     return (
       <Container size="large">
         <Stack space={4}>
@@ -102,7 +92,7 @@ export const Controlled: Story = {
             {...args}
             value={current}
             onChange={setCurrent}
-            onSubmit={(key, val) => handleSubmit(key, val)}
+            onSubmit={(key, val) => setSubmitted([key, val])}
             disabledKeys={['star-trek']}
           >
             <Autocomplete.Item id="harry-potter">
