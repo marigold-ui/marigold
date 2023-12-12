@@ -11,11 +11,13 @@ export interface ClearButtonProps {
 
 export const AutocompleteClearButton = ({ className }: ClearButtonProps) => {
   let state = React.useContext(ComboBoxStateContext);
+
+  console.log(state?.selectedKey);
   return (
     <Button
       // Don't inherit default Button behavior from ComboBox.
       aria-label="Clear"
-      onPress={() => state?.setSelectedKey(null)}
+      onPress={() => state?.setInputValue('')}
       className={cn(
         'cursor-pointer appearance-none border-none p-0 pr-1',
         className
