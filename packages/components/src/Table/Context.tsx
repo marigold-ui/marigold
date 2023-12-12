@@ -1,7 +1,10 @@
 import { createContext, useContext } from 'react';
 
+import { TableState } from '@react-stately/table';
+
 export interface TableContextProps {
-  interactive?: boolean;
+  state: TableState<object>;
+  interactive: boolean;
   classNames?: {
     table?: string;
     header?: string;

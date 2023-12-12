@@ -2,32 +2,37 @@ import { useRef } from 'react';
 
 import { useFocusRing } from '@react-aria/focus';
 import { useHover } from '@react-aria/interactions';
-import { useTableColumnHeader } from '@react-aria/table';
+import {
+  useTableColumnHeader,
+  useTableSelectAllCheckbox,
+} from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
 
 import { GridNode } from '@react-types/grid';
 
-import { SortDown, SortUp } from '@marigold/icons';
-import { cn, useStateProps } from '@marigold/system';
-import { WidthProp, width as twWidth } from '@marigold/system';
+import {
+  WidthProp,
+  cn,
+  width as twWidth,
+  useStateProps,
+} from '@marigold/system';
 
+import { Checkbox } from '../Checkbox';
 import { useTableContext } from './Context';
-
-// Sort Icon
-// ---------------
+import { mapCheckboxProps } from './utils';
 
 // Props
 // ---------------
-interface TableColumnHeaderProps extends WidthProp {
+export interface TableSelectAllCell extends WidthProp {
   column: GridNode<object>;
 }
 
 // Component
 // ---------------
-export const TableColumnHeader = ({
+export const TableSelectAllCell = ({
   column,
   width = 'auto',
-}: TableColumnHeaderProps) => {
+}: TableSelectAllCell) => {
   const ref = useRef(null);
   const { state, classNames } = useTableContext();
   const { columnHeaderProps } = useTableColumnHeader(
@@ -38,31 +43,27 @@ export const TableColumnHeader = ({
     ref
   );
 
+  const { checkboxProps } = mapCheckboxProps(useTableSelectAllCheckbox(state));
+
   const { hoverProps, isHovered } = useHover({});
   const { focusProps, isFocusVisible } = useFocusRing();
   const stateProps = useStateProps({
     hover: isHovered,
     focusVisible: isFocusVisible,
   });
+
   return (
     <th
-      colSpan={column.colspan}
       ref={ref}
-      className={cn('cursor-default', twWidth[width], classNames?.header)}
+      className={cn(
+        twWidth[width],
+        ['text-center align-middle leading-none'],
+        classNames?.header
+      )}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
     >
-      {column.rendered}
-      {column.props.allowsSorting &&
-        (state.sortDescriptor?.column === column.key ? (
-          state.sortDescriptor?.direction === 'ascending' ? (
-            <SortUp className="inline-block" />
-          ) : (
-            <SortDown className="inline-block" />
-          )
-        ) : (
-          <SortDown className="inline-block" />
-        ))}
+      <Checkbox {...checkboxProps} />
     </th>
   );
 };
