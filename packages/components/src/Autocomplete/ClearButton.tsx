@@ -12,7 +12,6 @@ export interface ClearButtonProps {
 export const AutocompleteClearButton = ({ className }: ClearButtonProps) => {
   let state = React.useContext(ComboBoxStateContext);
 
-  console.log(state?.selectedKey);
   return (
     <Button
       // Don't inherit default Button behavior from ComboBox.

@@ -6,7 +6,7 @@ import { useAsyncList } from '@react-stately/data';
 
 import { Container } from '../Container';
 import { Stack } from '../Stack';
-import { Autocomplete } from './_Autocomplete';
+import { Autocomplete } from './Autocomplete';
 
 const meta = {
   title: 'Components/Autocomplete',

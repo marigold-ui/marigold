@@ -5,7 +5,7 @@ import React from 'react';
 import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { Autocomplete } from './_Autocomplete.1';
+import { Autocomplete } from './Autocomplete';
 
 // Setup
 // ---------------
@@ -61,6 +61,7 @@ const theme: Theme = {
       section: cva(),
       sectionTitle: cva(),
     },
+    Button: cva(),
   },
 };
 
