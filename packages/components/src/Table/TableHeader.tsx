@@ -1,31 +1,12 @@
-import {
-  Collection,
-  TableHeader,
-  useTableOptions,
-} from 'react-aria-components';
-import type RAC from 'react-aria-components';
+import { ReactNode } from 'react';
 
-import { Checkbox } from '../Checkbox';
-import { TableColumnHeader } from './TableColumnHeader';
+import { useTableRowGroup } from '@react-aria/table';
 
-type RemovedProps = 'className' | 'style';
+export interface TableHeaderProps {
+  children: ReactNode;
+}
 
-export interface TableHeaderProps
-  extends Omit<RAC.TableHeaderProps<object>, RemovedProps> {}
-
-const _TableHeader = ({ columns, children, ...props }: TableHeaderProps) => {
-  const { selectionBehavior, selectionMode } = useTableOptions();
-
-  return (
-    <TableHeader {...props}>
-      {selectionBehavior === 'toggle' && (
-        <TableColumnHeader>
-          {selectionMode === 'multiple' && <Checkbox slot="selection" />}
-        </TableColumnHeader>
-      )}
-      <Collection items={columns}>{children}</Collection>
-    </TableHeader>
-  );
+export const TableHeader = ({ children }: TableHeaderProps) => {
+  const { rowGroupProps } = useTableRowGroup();
+  return <thead {...rowGroupProps}>{children}</thead>;
 };
-
-export { _TableHeader as TableHeader };
