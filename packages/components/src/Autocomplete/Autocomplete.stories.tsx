@@ -93,7 +93,7 @@ export const Controlled: Story = {
       [Key | null, string | number | null]
     >(['', '']);
     const [current, setCurrent] = useState<string>('');
-    const keyToRender = submitted[0] !== null ? submitted[0] : null;
+    const keyToRender = submitted[0] !== null ? submitted[0].toString() : null;
 
     return (
       <Container size="large">
