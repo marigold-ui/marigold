@@ -1,21 +1,54 @@
-import { Cell } from 'react-aria-components';
-import type RAC from 'react-aria-components';
+import { useRef } from 'react';
 
-import { cn } from '@marigold/system';
+import { useFocusRing } from '@react-aria/focus';
+import { useTableCell } from '@react-aria/table';
+import { mergeProps } from '@react-aria/utils';
+
+import { GridNode } from '@react-types/grid';
+
+import { useStateProps } from '@marigold/system';
 
 import { useTableContext } from './Context';
 
-type RemovedProps = 'className' | 'style';
+export interface TableCellProps {
+  cell: GridNode<object>;
+}
 
-export interface TableCellProps extends Omit<RAC.CellProps, RemovedProps> {}
+export const TableCell = ({ cell }: TableCellProps) => {
+  const ref = useRef(null);
+  const { interactive, state, classNames } = useTableContext();
+  const disabled = state.disabledKeys.has(cell.parentKey!);
+  const { gridCellProps } = useTableCell(
+    {
+      node: cell,
+    },
+    state,
+    ref
+  );
 
-const _TableCell = ({ children, ...props }: TableCellProps) => {
-  const { classNames } = useTableContext();
+  const cellProps = interactive
+    ? gridCellProps
+    : {
+        /**
+         * Override `react-aria` handler so users can select text.
+         * Solution from https://github.com/adobe/react-spectrum/issues/2585
+         */
+        ...gridCellProps,
+        onMouseDown: (e: MouseEvent) => e.stopPropagation(),
+        onPointerDown: (e: MouseEvent) => e.stopPropagation(),
+      };
+
+  const { focusProps, isFocusVisible } = useFocusRing();
+  const stateProps = useStateProps({ disabled, focusVisible: isFocusVisible });
+
   return (
-    <Cell {...props} className={cn(classNames?.cell)}>
-      {children}
-    </Cell>
+    <td
+      ref={ref}
+      className={classNames?.cell}
+      {...mergeProps(cellProps, focusProps)}
+      {...stateProps}
+    >
+      {cell.rendered}
+    </td>
   );
 };
-
-export { _TableCell as TableCell };
