@@ -77,14 +77,12 @@ export const Basic: Story = {
 
 export const Controlled: Story = {
   render: args => {
-    const [submitted, setSubmitted] = useState<[Key | null, string | null]>([
-      '',
-      '',
-    ]);
+    const [submitted, setSubmitted] = useState<
+      [Key | null, string | number | null]
+    >(['', '']);
     const [current, setCurrent] = useState<string>('');
     const keyToRender = submitted[0] !== null ? submitted[0] : null;
 
-    console.log(current);
     return (
       <Container size="large">
         <Stack space={4}>
@@ -116,7 +114,7 @@ export const Controlled: Story = {
 };
 
 export const Async: Story = {
-  render: () => {
+  render: args => {
     const list = useAsyncList<{ name: string }>({
       async load({ signal, filterText }) {
         const res = await fetch(
@@ -137,9 +135,10 @@ export const Async: Story = {
         items={list.items}
         value={list.filterText}
         onChange={list.setFilterText}
+        {...args}
       >
         {(item: any) => (
-          <Autocomplete.Item key={item.name}>{item.name}</Autocomplete.Item>
+          <Autocomplete.Item id={item.name}>{item.name}</Autocomplete.Item>
         )}
       </Autocomplete>
     );

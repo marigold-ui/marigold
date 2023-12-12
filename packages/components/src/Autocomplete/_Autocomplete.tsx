@@ -75,13 +75,13 @@ export interface AutocompleteProps
       FieldBaseProps<'label'>,
       'width' | 'label' | 'description' | 'errorMessage'
     > {
-  defaultValue?: RAC.ComboBoxProps<any>['defaultInputValue'];
-  value?: RAC.ComboBoxProps<any>['inputValue'];
-  onChange?: RAC.ComboBoxProps<any>['onInputChange'];
-  disabled?: RAC.ComboBoxProps<any>['isDisabled'];
-  required?: RAC.ComboBoxProps<any>['isRequired'];
-  error?: RAC.ComboBoxProps<any>['isInvalid'];
-  readOnly?: RAC.ComboBoxProps<any>['isReadOnly'];
+  defaultValue?: RAC.ComboBoxProps<object>['defaultInputValue'];
+  value?: RAC.ComboBoxProps<object>['inputValue'];
+  onChange?: RAC.ComboBoxProps<object>['onInputChange'];
+  disabled?: RAC.ComboBoxProps<object>['isDisabled'];
+  required?: RAC.ComboBoxProps<object>['isRequired'];
+  error?: RAC.ComboBoxProps<object>['isInvalid'];
+  readOnly?: RAC.ComboBoxProps<object>['isReadOnly'];
   variant?: string;
   size?: string;
   /**
