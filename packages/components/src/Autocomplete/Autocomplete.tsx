@@ -31,9 +31,12 @@ const SearchInput = ({ onSubmit, ref }: SearchInputProps) => {
         state?.inputValue !== '' ? <AutocompleteClearButton /> : undefined
       }
       onKeyDown={e => {
+        if (e.key === 'Enter' || e.key === 'Escape') {
+          e.preventDefault();
+        }
         if (e.key === 'Enter') {
           if (state.selectionManager.focusedKey === null) {
-            onSubmit?.(state.selectedKey, state.inputValue);
+            onSubmit?.(null, state.inputValue);
           }
         }
       }}
@@ -93,7 +96,7 @@ export interface AutocompleteProps
    * A `value` will be passed if the submission is a custom value (e.g. a user
    * types then presses enter). If the input is a selected item, `value` will be `null`.
    */
-  onSubmit?: (key: Key | null, value: string | number | null) => void;
+  onSubmit?: (value: string | number | null, key: Key | null) => void;
 }
 
 interface AutocompleteComponent
