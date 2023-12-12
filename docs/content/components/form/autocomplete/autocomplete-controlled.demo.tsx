@@ -16,10 +16,9 @@ export default () => {
   ];
 
   const [input, setInput] = useState('');
-  const [submitted, setSubmitted] = useState<[Key | null, string | null]>([
-    '',
-    '',
-  ]);
+  const [submitted, setSubmitted] = useState<
+    [Key | null, string | number | null]
+  >(['', '']);
   const filteredVeggies = useMemo(
     () =>
       vegetables.filter(item =>
@@ -40,9 +39,7 @@ export default () => {
         onChange={setInput}
         onSubmit={(key, val) => setSubmitted([key, val])}
       >
-        {(item: (typeof vegetables)[number]) => (
-          <Autocomplete.Item>{item.name}</Autocomplete.Item>
-        )}
+        {item => <Autocomplete.Item>{(item as any).name}</Autocomplete.Item>}
       </Autocomplete>
       <Stack>
         <Text weight="black">User input: "{input}"</Text>

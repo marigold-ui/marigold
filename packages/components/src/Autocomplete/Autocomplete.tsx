@@ -1,20 +1,48 @@
-import { Key, useRef } from 'react';
+import {
+  ForwardRefExoticComponent,
+  Ref,
+  RefAttributes,
+  forwardRef,
+} from 'react';
+import React from 'react';
+import { ComboBox, ComboBoxStateContext, Key } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
-import { useSearchAutocomplete } from '@react-aria/autocomplete';
-import { useFilter } from '@react-aria/i18n';
-
-import { Item } from '@react-stately/collections';
-import { useComboBoxState } from '@react-stately/combobox';
-
-import { SearchAutocompleteProps } from '@react-types/autocomplete';
-
-import { WidthProp } from '@marigold/system';
-
-import { FieldBase } from '../FieldBase';
+import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
 import { Input } from '../Input';
 import { ListBox } from '../ListBox';
-import { Popover } from '../Overlay';
-import { ClearButton } from './ClearButton';
+import { Popover } from '../Overlay/Popover';
+import { AutocompleteClearButton } from './ClearButton';
+
+// Search Input (we can't use our SearchField because of FieldBase)
+//----------------
+interface SearchInputProps {
+  onSubmit?: (key: Key | null, value: string | null) => void;
+  ref?: Ref<HTMLInputElement> | undefined;
+}
+const SearchInput = ({ onSubmit, ref }: SearchInputProps) => {
+  const state = React.useContext(ComboBoxStateContext);
+
+  return (
+    <Input
+      ref={ref}
+      icon={<SearchIcon />}
+      action={
+        state?.inputValue !== '' ? <AutocompleteClearButton /> : undefined
+      }
+      onKeyDown={e => {
+        if (e.key === 'Enter' || e.key === 'Escape') {
+          e.preventDefault();
+        }
+        if (e.key === 'Enter') {
+          if (state.selectionManager.focusedKey === null) {
+            onSubmit?.(null, state.inputValue);
+          }
+        }
+      }}
+    />
+  );
+};
 
 // Search Icon
 //----------------
@@ -31,31 +59,34 @@ const SearchIcon = (props: { className?: string }) => (
   </svg>
 );
 
-// Props
-// ---------------
+type RemovedProps =
+  | 'className'
+  | 'style'
+  | 'isDisabled'
+  | 'isRequired'
+  | 'isInvalid'
+  | 'isReadOnly'
+  | 'inputValue'
+  | 'onInputChange'
+  | 'defaultValue'
+  | 'validate'
+  | 'validationState';
+
 export interface AutocompleteProps
-  extends Omit<
-    SearchAutocompleteProps<object>,
-    | 'isDisabled'
-    | 'isRequired'
-    | 'isReadonly'
-    | 'validationState'
-    | 'icon'
-    | 'onInputChange'
-    | 'inputValue'
-    | 'defaultInputValue'
-    | 'validate'
-  > {
-  disabled?: boolean;
-  required?: boolean;
-  readOnly?: boolean;
-  error?: boolean;
-  defaultValue?: SearchAutocompleteProps<object>['defaultInputValue'];
-  value?: SearchAutocompleteProps<object>['inputValue'];
-  /**
-   * Handler that is called when the input value changes.
-   */
-  onChange?: SearchAutocompleteProps<object>['onInputChange'];
+  extends Omit<RAC.ComboBoxProps<object>, RemovedProps>,
+    Pick<
+      FieldBaseProps<'label'>,
+      'width' | 'label' | 'description' | 'errorMessage'
+    > {
+  defaultValue?: RAC.ComboBoxProps<object>['defaultInputValue'];
+  value?: RAC.ComboBoxProps<object>['inputValue'];
+  onChange?: RAC.ComboBoxProps<object>['onInputChange'];
+  disabled?: RAC.ComboBoxProps<object>['isDisabled'];
+  required?: RAC.ComboBoxProps<object>['isRequired'];
+  error?: RAC.ComboBoxProps<object>['isInvalid'];
+  readOnly?: RAC.ComboBoxProps<object>['isReadOnly'];
+  variant?: string;
+  size?: string;
   /**
    * Handler that is called when the SearchAutocomplete is submitted.
    *
@@ -65,104 +96,57 @@ export interface AutocompleteProps
    * A `value` will be passed if the submission is a custom value (e.g. a user
    * types then presses enter). If the input is a selected item, `value` will be `null`.
    */
-  onSubmit?: (key: Key | null, value: string | null) => void;
-  variant?: string;
-  size?: string;
-  width?: WidthProp['width'];
+  onSubmit?: (value: string | number | null, key: Key | null) => void;
 }
 
-export const Autocomplete = ({
-  disabled,
-  required,
-  readOnly,
-  error,
-  onChange,
-  value,
-  defaultValue,
-  variant,
-  size,
-  width,
-  ...rest
-}: AutocompleteProps) => {
-  const { contains } = useFilter({ sensitivity: 'base' });
-  const props = {
-    ...rest,
-    onInputChange: onChange,
-    inputValue: value,
-    defaultInputValue: defaultValue,
-    isDisabled: disabled,
-    isRequired: required,
-    isReadOnly: readOnly,
-    validationState: error ? 'invalid' : 'valid',
-  } as const;
+interface AutocompleteComponent
+  extends ForwardRefExoticComponent<
+    AutocompleteProps & RefAttributes<HTMLInputElement>
+  > {
+  Item: typeof ListBox.Item;
+}
+const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
+  (
+    {
+      children,
+      defaultValue,
+      value,
+      onChange,
+      onSubmit,
+      disabled,
+      error,
+      readOnly,
+      required,
+      ...rest
+    }: AutocompleteProps,
+    ref
+  ) => {
+    const props: RAC.ComboBoxProps<object> = {
+      onSelectionChange: key => key !== null && onSubmit?.(key, null),
+      defaultInputValue: defaultValue,
+      inputValue: value,
+      onInputChange: onChange,
+      allowsCustomValue: true,
+      isDisabled: disabled,
+      isInvalid: error,
+      isReadOnly: readOnly,
+      isRequired: required,
+      ...rest,
+    };
 
-  const state = useComboBoxState({
-    ...props,
-    defaultFilter: contains,
-    allowsCustomValue: true,
-    onSelectionChange: key => key !== null && props.onSubmit?.(key, null),
-    selectedKey: undefined,
-    defaultSelectedKey: undefined,
-  });
-
-  const inputRef = useRef(null);
-  const listBoxRef = useRef(null);
-  const popoverRef = useRef(null);
-
-  const { inputProps, listBoxProps, labelProps, clearButtonProps } =
-    useSearchAutocomplete(
-      {
-        ...props,
-
-        onSubmit: (value: string | null, key: Key | null) =>
-          props.onSubmit?.(key, value),
-        popoverRef,
-        listBoxRef,
-        inputRef,
-      },
-      state
+    return (
+      <>
+        <FieldBase as={ComboBox} {...props}>
+          <SearchInput onSubmit={onSubmit} ref={ref} />
+          <Popover>
+            <ListBox>{children}</ListBox>
+          </Popover>
+        </FieldBase>
+      </>
     );
+  }
+) as AutocompleteComponent;
 
-  // TODO: until `react-aria` gives us error and description props.
-  const { isDisabled, ...restClearButtonProps } = clearButtonProps;
-  return (
-    <>
-      <FieldBase
-        label={props.label}
-        labelProps={labelProps}
-        description={props.description}
-        error={error}
-        errorMessage={props.errorMessage}
-        disabled={disabled}
-        width={width}
-      >
-        <Input
-          {...(inputProps as any)}
-          ref={inputRef}
-          icon={<SearchIcon />}
-          action={
-            state.inputValue !== '' ? (
-              <ClearButton
-                preventFocus
-                disabled={isDisabled}
-                {...restClearButtonProps}
-              />
-            ) : null
-          }
-        />
-      </FieldBase>
+_Autocomplete.Item = ListBox.Item;
 
-      <Popover
-        state={state}
-        ref={popoverRef}
-        triggerRef={inputRef}
-        scrollRef={listBoxRef}
-        isNonModal
-      >
-        <ListBox ref={listBoxRef} state={state} {...listBoxProps} />
-      </Popover>
-    </>
-  );
-};
-
-Autocomplete.Item = Item;
+export { _Autocomplete as Autocomplete };

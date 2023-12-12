@@ -30,6 +30,7 @@ interface ListBoxComponent
 const _ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
   ({ variant, size, ...props }, ref) => {
     const classNames = useClassNames({ component: 'ListBox', variant, size });
+
     return (
       <ListBoxContext.Provider value={{ classNames }}>
         <div className={classNames.container}>
