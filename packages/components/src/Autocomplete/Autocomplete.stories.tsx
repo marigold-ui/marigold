@@ -24,6 +24,18 @@ const meta = {
       description: 'Help Text',
       defaultValue: 'This is a help text description',
     },
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Is the input disabled?',
+    },
+    required: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Is the input required?',
+    },
     error: {
       control: {
         type: 'boolean',
