@@ -6,23 +6,12 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "eslint.alwaysShowStatus": true,
   "eslint.run": "onSave",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
-
   "npm.packageManager": "pnpm",
-  "eslint.packageManager": "pnpm",
-
   "tailwindCSS.experimental.classRegex": [
-    [
-      // "cn\\(([^)]*)\\)",
-      // "[\"'`]([^\"'`]*).*?[\"'`]",
-      "cva\\(([^)]*)\\)",
-      "[\"'`]([^\"'`]*).*?[\"'`]",
-      "tv\\(([^)]*)\\)",
-      "[\"'`]([^\"'`]*).*?[\"'`]"
-    ]
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
   ]
 }

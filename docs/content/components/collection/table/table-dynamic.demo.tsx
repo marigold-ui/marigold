@@ -50,12 +50,17 @@ export default () => {
         onSelectionChange={key => setSelectedKeys(new Set(key))}
       >
         <Table.Header columns={columns}>
-          {column => <Table.Column>{column.name}</Table.Column>}
+          {column => (
+            <Table.Column isRowHeader>{(column as any).name}</Table.Column>
+          )}
         </Table.Header>
         <Table.Body items={rows}>
           {item => (
             <Table.Row>
-              {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+              <Table.Cell>{(item as any).name}</Table.Cell>
+              <Table.Cell>{(item as any).firstname}</Table.Cell>
+              <Table.Cell>{(item as any).house}</Table.Cell>
+              <Table.Cell>{(item as any).year}</Table.Cell>
             </Table.Row>
           )}
         </Table.Body>
