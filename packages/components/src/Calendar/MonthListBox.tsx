@@ -1,20 +1,17 @@
-import { Dispatch, Key, SetStateAction } from 'react';
-
-import { CalendarState } from '@react-stately/calendar';
+import { Dispatch, Key, SetStateAction, useContext } from 'react';
+import { CalendarStateContext } from 'react-aria-components';
 
 import { Button } from '../Button';
+import { useFormattedMonths } from './useFormattedMonths';
 
 interface MonthDropdownProps {
-  state: CalendarState;
   setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
-  months: string[];
 }
 
-const MonthDropdown = ({
-  state,
-  setSelectedDropdown,
-  months,
-}: MonthDropdownProps) => {
+const MonthListBox = ({ setSelectedDropdown }: MonthDropdownProps) => {
+  const state = useContext(CalendarStateContext)!;
+  const months = useFormattedMonths(state.timeZone, state.focusedDate);
+
   let onChange = (index: Key) => {
     let value = Number(index) + 1;
     let date = state.focusedDate.set({ month: value });
@@ -30,6 +27,7 @@ const MonthDropdown = ({
         return (
           <li className="flex justify-center" key={index}>
             <Button
+              slot="previous"
               variant={
                 index === state.focusedDate.month - 1 ? 'secondary' : 'text'
               }
@@ -49,4 +47,4 @@ const MonthDropdown = ({
   );
 };
 
-export default MonthDropdown;
+export default MonthListBox;

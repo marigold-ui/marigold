@@ -115,7 +115,11 @@ export type Theme = {
     >;
     Underlay?: ComponentStyleFunction<string, string>;
     Calendar?: Record<
-      'calendar' | 'calendarCell' | 'calendarControllers',
+      | 'calendar'
+      | 'calendarCell'
+      | 'calendarControllers'
+      | 'calendarHeader'
+      | 'calendarGrid',
       ComponentStyleFunction<string, string>
     >;
     DatePicker?: Record<
