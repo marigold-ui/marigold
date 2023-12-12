@@ -8,7 +8,6 @@ import { Headline } from '../Headline';
 import { Text } from '../Text';
 import { Modal } from './Modal';
 import { Popover } from './Popover';
-import { Tray } from './Tray';
 
 const meta = {
   title: 'Components/Overlay',
