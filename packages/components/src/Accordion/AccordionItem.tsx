@@ -44,9 +44,10 @@ export const AccordionItem = ({
     // clear both default values and expanded also check if multiple or single mode
     if (defaultExpanded) {
       if (state.selectionManager.selectionMode === 'multiple') {
-        state.expandedKeys.forEach(key => {
-          state.selectionManager.select(key);
-        });
+        state.selectionManager.setSelectedKeys([
+          ...state.selectionManager.selectedKeys,
+          item.key,
+        ]);
       } else {
         state.expandedKeys.clear();
         state.selectionManager.toggleSelection(item.key);
