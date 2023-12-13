@@ -111,7 +111,11 @@ export const Table: Table = ({
                   {[...collection.getChildren!(row.key)].map((cell, index) => {
                     const currentColumn = collection.columns[index];
                     return cell.props?.isSelectionCell ? (
-                      <TableCheckboxCell key={cell.key} cell={cell} />
+                      <TableCheckboxCell
+                        align={currentColumn.props?.align}
+                        key={cell.key}
+                        cell={cell}
+                      />
                     ) : (
                       <TableCell
                         align={currentColumn.props?.align}
