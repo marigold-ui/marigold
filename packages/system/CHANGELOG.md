@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 7.0.0
+
+### Patch Changes
+
+- [#3540](https://github.com/marigold-ui/marigold/pull/3540) [`72125e114`](https://github.com/marigold-ui/marigold/commit/72125e11492d60f08665054e4427de24cde337be) Thanks [@aromko](https://github.com/aromko)! - RAC: migrate `<Calendar>`, `<DatePicker>`, `<DateField>` component
+
 ## 6.11.0
 
 ### Patch Changes
