@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { I18nProvider } from '@react-aria/i18n';
 
-import { DatePicker } from './_DatePicker';
+import { DatePicker } from './DatePicker';
 
 const meta = {
   title: 'Components/DatePicker',
