@@ -34,9 +34,9 @@ export const AccordionItem = ({
 }: AccordionItemProps) => {
   const ref = useRef<HTMLButtonElement>(null);
 
-  const defaultExpanded = state.expandedKeys.has(
-    item.key.toString().replace('.$', '')
-  );
+  const defaultExpanded = Array.from(state.expandedKeys).some(key => {
+    return key.toString() === item.key.toString().replace('.$', '');
+  });
 
   const expanded = state.selectionManager.isSelected(item.key);
 
