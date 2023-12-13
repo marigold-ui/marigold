@@ -307,6 +307,33 @@ test('supports non-interactive table', async () => {
   expect(rows[2]).toHaveClass('cursor-text'); // Disabled, but still selectable text
 });
 
+test('supports table columns alignment', () => {
+  render(
+    <Table aria-label="Table columns alignment">
+      <Table.Header>
+        <Table.Column>Name</Table.Column>
+        <Table.Column align="right">Age</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row key="Alice">
+          <Table.Cell>Alice</Table.Cell>
+          <Table.Cell>30</Table.Cell>
+        </Table.Row>
+        <Table.Row key="Jane">
+          <Table.Cell>Jane</Table.Cell>
+          <Table.Cell>22</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  );
+
+  const ageNumber = screen.getByText('22');
+  const ageHeader = screen.getByText('Age');
+
+  expect(ageNumber).toHaveAttribute('align', 'right');
+  expect(ageHeader).toHaveAttribute('align', 'right');
+});
+
 test('cursor indicates interactivity', async () => {
   render(
     <Table

@@ -96,6 +96,7 @@ export const Table: Table = ({
                     width={column.props?.width}
                     key={column.key}
                     column={column}
+                    align={column.props?.align}
                   />
                 )
               )}
@@ -107,13 +108,18 @@ export const Table: Table = ({
             row =>
               row.type === 'item' && (
                 <TableRow key={row.key} row={row}>
-                  {[...collection.getChildren!(row.key)].map(cell =>
-                    cell.props?.isSelectionCell ? (
+                  {[...collection.getChildren!(row.key)].map((cell, index) => {
+                    const currentColumn = collection.columns[index];
+                    return cell.props?.isSelectionCell ? (
                       <TableCheckboxCell key={cell.key} cell={cell} />
                     ) : (
-                      <TableCell key={cell.key} cell={cell} />
-                    )
-                  )}
+                      <TableCell
+                        align={currentColumn.props?.align}
+                        key={cell.key}
+                        cell={cell}
+                      />
+                    );
+                  })}
                 </TableRow>
               )
           )}
@@ -136,7 +142,10 @@ export interface RowProps extends ReactAiaRowProps<any> {
 }
 
 // overriding the column width with WidthProps width
-interface ColumnProps extends Omit<ColumnBaseProps<any>, 'width'>, WidthProp {}
+interface ColumnProps
+  extends Omit<ColumnBaseProps<any>, 'width'>,
+    WidthProp,
+    Pick<JSX.IntrinsicElements['td'], 'align'> {}
 
 /**
  * Necessary since TypeScript can not infer the

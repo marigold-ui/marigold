@@ -18,7 +18,9 @@ import { useTableContext } from './Context';
 
 // Props
 // ---------------
-interface TableColumnHeaderProps extends WidthProp {
+interface TableColumnHeaderProps
+  extends WidthProp,
+    Pick<JSX.IntrinsicElements['td'], 'align'> {
   column: GridNode<object>;
 }
 
@@ -27,6 +29,7 @@ interface TableColumnHeaderProps extends WidthProp {
 export const TableColumnHeader = ({
   column,
   width = 'auto',
+  align,
 }: TableColumnHeaderProps) => {
   const ref = useRef(null);
   const { state, classNames } = useTableContext();
@@ -51,6 +54,7 @@ export const TableColumnHeader = ({
       className={cn('cursor-default', twWidth[width], classNames?.header)}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
+      align={align}
     >
       {column.rendered}
       {column.props.allowsSorting &&
