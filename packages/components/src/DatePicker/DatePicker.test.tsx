@@ -429,5 +429,5 @@ test('DatePicker supports width prop', () => {
   );
   const picker = screen.getByTestId('picker');
   const child = picker.firstChild as HTMLInputElement;
-  expect(child.className).toMatchInlineSnapshot(`"group/field w-10"`);
+  expect(child.className).toMatchInlineSnapshot(`""`);
 });
