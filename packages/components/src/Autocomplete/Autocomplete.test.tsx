@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { cleanup, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
@@ -61,16 +61,31 @@ const theme: Theme = {
       section: cva(),
       sectionTitle: cva(),
     },
+    Button: cva(),
   },
 };
 
 const { render } = setup({ theme });
 
+/**
+ * We need to mock `matchMedia` because JSOM does not
+ * implements it.
+ */
+
+const mockMatchMedia = (matches: string[]) =>
+  jest.fn().mockImplementation(query => ({
+    matches: matches.includes(query),
+  }));
+
+window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+
+afterEach(cleanup);
+
 // Tests
 // ---------------
 test('renders an input', () => {
   render(
-    <Autocomplete label="Label" data-testid="input-field">
+    <Autocomplete label="vegetables" data-testid="input-field">
       <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
       <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
@@ -78,7 +93,7 @@ test('renders an input', () => {
     </Autocomplete>
   );
 
-  const textField = screen.getByTestId('input-field');
+  const textField = screen.getByLabelText('vegetables');
   expect(textField).toBeInTheDocument();
   expect(textField).toHaveAttribute('type', 'text');
   expect(textField instanceof HTMLInputElement).toBeTruthy();
@@ -107,7 +122,7 @@ test('supports disabled', () => {
     </Autocomplete>
   );
 
-  const textField = screen.getByTestId('input-field');
+  const textField = screen.getByRole('combobox');
   expect(textField).toBeDisabled();
 });
 
@@ -119,9 +134,8 @@ test('supports required', () => {
     </Autocomplete>
   );
 
-  const textField = screen.getByTestId('input-field');
-  /** Note that the required attribute is not passed down! */
-  expect(textField).toHaveAttribute('aria-required', 'true');
+  const textField = screen.getByRole('combobox');
+  expect(textField).toBeRequired();
 });
 
 test('supports readonly', () => {
@@ -132,7 +146,7 @@ test('supports readonly', () => {
     </Autocomplete>
   );
 
-  const textField = screen.getByTestId('input-field');
+  const textField = screen.getByRole('combobox');
   expect(textField).toHaveAttribute('readonly');
 });
 
@@ -168,10 +182,10 @@ test('opens the suggestions on user input', async () => {
     </Autocomplete>
   );
 
-  const input = screen.getByTestId('input-field');
+  const input = screen.getByRole('combobox');
   await user.type(input, 'br');
 
-  const suggestions = screen.getByRole('listbox');
+  const suggestions = await screen.findByText('Broccoli');
   expect(suggestions).toBeVisible();
 });
 
@@ -185,10 +199,10 @@ test('opens the suggestions on focus', async () => {
     </Autocomplete>
   );
 
-  const input = screen.getByTestId('input-field');
+  const input = screen.getByRole('combobox');
   await user.click(input);
 
-  const suggestions = screen.getByRole('listbox');
+  const suggestions = await screen.findByText('Broccoli');
   expect(suggestions).toBeVisible();
 });
 
@@ -202,10 +216,10 @@ test('opens the suggestions on arrow down (manual)', async () => {
     </Autocomplete>
   );
 
-  const input = screen.getByTestId('input-field');
+  const input = screen.getByRole('combobox');
   await user.type(input, '{arrowdown}');
 
-  const suggestions = screen.getByRole('listbox');
+  const suggestions = await screen.findByText('Broccoli');
   expect(suggestions).toBeVisible();
 });
 
@@ -219,7 +233,7 @@ test('shows suggestions based on user input', async () => {
     </Autocomplete>
   );
 
-  const input = screen.getByTestId('input-field');
+  const input = screen.getByRole('combobox');
   await user.type(input, 'br');
 
   expect(screen.getByText('Broccoli')).toBeInTheDocument();
@@ -236,17 +250,17 @@ test('supports disabling suggestions', async () => {
       data-testid="input-field"
       disabledKeys={['spinach']}
     >
-      <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
-      <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
-      <Autocomplete.Item key="garlic">Garlic</Autocomplete.Item>
+      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
+      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
+      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
+      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
     </Autocomplete>
   );
 
-  const input = screen.getByTestId('input-field');
+  const input = screen.getAllByLabelText('Label')[0];
   await user.type(input, 'a');
 
-  const spinach = screen.getByText('Spinach');
+  const spinach = await screen.findByText('Spinach');
   expect(spinach).toHaveAttribute('aria-disabled', 'true');
 });
 
@@ -295,7 +309,7 @@ test('supports default value', () => {
     </Autocomplete>
   );
 
-  expect(screen.getByTestId('input-field')).toHaveValue('garlic');
+  expect(screen.getByRole('combobox')).toHaveValue('garlic');
 });
 
 test('can be controlled', async () => {
@@ -309,10 +323,10 @@ test('can be controlled', async () => {
           value={value}
           onChange={setValue}
         >
-          <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
-          <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
-          <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
-          <Autocomplete.Item key="garlic">Garlic</Autocomplete.Item>
+          <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
+          <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
+          <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
+          <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
         </Autocomplete>
         <span data-testid="output">{value}</span>
       </>
@@ -321,7 +335,7 @@ test('can be controlled', async () => {
 
   render(<Controlled />);
 
-  const input = screen.getByTestId('input-field');
+  const input = screen.getByRole('combobox');
   await user.type(input, 'car');
 
   expect(screen.getByTestId('output')).toHaveTextContent('car');
@@ -330,14 +344,14 @@ test('can be controlled', async () => {
 test('supports autocompletion', async () => {
   render(
     <Autocomplete label="Label" data-testid="input-field">
-      <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
-      <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
-      <Autocomplete.Item key="garlic">Garlic</Autocomplete.Item>
+      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
+      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
+      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
+      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
     </Autocomplete>
   );
 
-  const input = screen.getByTestId('input-field');
+  const input = screen.getByRole('combobox');
   await user.type(input, 'sp');
 
   const spinach = screen.getByText('Spinach');
@@ -351,24 +365,24 @@ test('supports submit handler', async () => {
 
   render(
     <Autocomplete label="Label" data-testid="input-field" onSubmit={spy}>
-      <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
-      <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
-      <Autocomplete.Item key="garlic">Garlic</Autocomplete.Item>
+      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
+      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
+      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
+      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
     </Autocomplete>
   );
 
-  const input = screen.getByTestId('input-field');
+  const input = screen.getByRole('combobox');
   await user.type(input, 'ga{enter}');
 
   expect(spy.mock.calls).toMatchInlineSnapshot(`
-      [
-        [
-          null,
-          "ga",
-        ],
-      ]
-    `);
+[
+  [
+    null,
+    "ga",
+  ],
+]
+`);
 
   await user.type(input, 'r');
   const item = screen.getByText('Garlic');

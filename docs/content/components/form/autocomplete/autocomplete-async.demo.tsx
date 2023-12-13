@@ -54,17 +54,17 @@ export default () => {
         onSubmit={handleSubmit}
       >
         {(item: any) => (
-          <Autocomplete.Item key={item.name}>{item.name}</Autocomplete.Item>
+          <Autocomplete.Item id={item.name}>{item.name}</Autocomplete.Item>
         )}
       </Autocomplete>
       {result === null ? null : result.length > 0 ? (
         <Table aria-label="Character results" selectionMode="none" stretch>
           <Table.Header columns={columns}>
-            {column => <Table.Column>{column.name}</Table.Column>}
+            {column => <Table.Column>{(column as any).name}</Table.Column>}
           </Table.Header>
           <Table.Body items={result}>
             {item => (
-              <Table.Row key={item.name}>
+              <Table.Row key={(item as any).name}>
                 {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
               </Table.Row>
             )}

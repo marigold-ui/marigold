@@ -2,6 +2,8 @@
 import { useState } from '@storybook/addons';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Key } from '@react-types/shared';
+
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
@@ -9,99 +11,182 @@ import { Menu } from './Menu';
 const meta = {
   title: 'Components/Menu',
   argTypes: {
-    disabled: {
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
-    },
     open: {
       control: {
         type: 'boolean',
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+      },
+    },
+    label: {
+      control: {
+        type: 'text',
+      },
+      description: 'The text for the button.',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'none' },
+      },
+    },
+    selectionMode: {
+      description: 'if the Menu can select one MenuItem',
+      control: {
+        type: 'select',
+      },
+      options: ['none', 'single', 'multiple'],
+      table: {
+        defaultValue: 'none',
       },
     },
   },
-  args: {
-    disabled: false,
-  },
-} satisfies Meta<typeof Menu.Trigger>;
+  args: {},
+} satisfies Meta<typeof Menu>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = {
+export const StandardMenu: Story = {
   render: args => {
-    const [selected, setSelected] = useState<string | number>('');
+    return (
+      <Menu label="Hogwarts Houses" {...args}>
+        <Menu.Item id="gryffindor">🦁 Gryffindor</Menu.Item>
+        <Menu.Item id="hufflepuff">🦡 Hufflepuff</Menu.Item>
+        <Menu.Item id="ravenclaw">🐦‍⬛ Ravenclaw</Menu.Item>
+        <Menu.Item id="slytherin">🐍 Slytherin</Menu.Item>
+      </Menu>
+    );
+  },
+};
+
+export const OnActionMenu: Story = {
+  render: args => {
+    return (
+      <Menu label="Choose" onAction={alert} {...args}>
+        <Menu.Item id="burger">🍔 Burger</Menu.Item>
+        <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
+        <Menu.Item id="salad">🥗 Salad</Menu.Item>
+        <Menu.Item id="fries">🍟 Fries</Menu.Item>
+      </Menu>
+    );
+  },
+};
+
+export const SingleSelection: Story = {
+  render: args => {
+    const [selectedKeys, setSelected] = useState(new Set());
+    const selected = Array.from(selectedKeys);
+
     return (
       <>
-        <Menu.Trigger {...args}>
-          <Button variant="menu" size="small">
-            Choose Menu
-          </Button>
-          <Menu onAction={setSelected}>
-            <Menu.Item key="burger">🍔 Burger</Menu.Item>
-            <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-            <Menu.Item key="salad">🥗 Salad</Menu.Item>
-            <Menu.Item key="fries">🍟 Fries</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
-        <hr />
-        <pre>selected: {selected}</pre>
+        <Menu
+          label="Align"
+          selectionMode="single"
+          selectedKeys={selectedKeys as Iterable<Key>}
+          onSelectionChange={key => setSelected(new Set(key))}
+          {...args}
+        >
+          <Menu.Item id="left">Left</Menu.Item>
+          <Menu.Item id="center">Center</Menu.Item>
+          <Menu.Item id="right">Right</Menu.Item>
+        </Menu>
+        <p>Current selection (controlled): {[selected]}</p>
       </>
     );
   },
 };
 
-export const MenuOnly: Story = {
-  render: () => (
-    <Menu aria-label="Only a Menu">
-      <Menu.Item key="burger">🍔 Burger</Menu.Item>
+export const MultiSelection: Story = {
+  render: args => {
+    const [selectedKeys, setSelected] = useState(new Set());
+    const selected = Array.from(selectedKeys);
+
+    return (
+      <>
+        <Menu
+          label="Choose"
+          selectionMode="multiple"
+          selectedKeys={selectedKeys as Iterable<Key>}
+          onSelectionChange={key => setSelected(new Set(key))}
+          {...args}
+        >
+          <Menu.Item id="burger">🍔 Burger</Menu.Item>
+          <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
+          <Menu.Item id="salad">🥗 Salad</Menu.Item>
+          <Menu.Item id="fries">🍟 Fries</Menu.Item>
+        </Menu>
+        <p>Current selection (controlled): {[selected].join(',')}</p>
+      </>
+    );
+  },
+};
+
+export const MenuSection: Story = {
+  render: args => (
+    <Menu label="Menu with sections" {...args}>
+      <Menu.Section title="Food">
+        <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
+        <Menu.Item id="salad">🥗 Salad</Menu.Item>
+        <Menu.Item id="fries">🍟 Fries</Menu.Item>
+      </Menu.Section>
       <Menu.Section title="Fruits">
-        <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-        <Menu.Item key="salad">🥗 Salad</Menu.Item>
-        <Menu.Item key="fries">🍟 Fries</Menu.Item>
+        <Menu.Item id="apple">🍎 Apple</Menu.Item>
+        <Menu.Item id="banana">🍌 Banana</Menu.Item>
+        <Menu.Item id="mango">🥭 Mango</Menu.Item>
+        <Menu.Item id="strawberry">🍓 Strawberry</Menu.Item>
       </Menu.Section>
     </Menu>
   ),
 };
 
-export const MenuSection: Story = {
-  render: () => (
-    <Menu.Trigger>
-      <Button variant="menu" size="small">
-        open menu
-      </Button>
-      <Menu aria-label="Menu with sections">
-        <Menu.Section title="Food">
-          <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-          <Menu.Item key="salad">🥗 Salad</Menu.Item>
-          <Menu.Item key="fries">🍟 Fries</Menu.Item>
-        </Menu.Section>
-        <Menu.Section title="Fruits">
-          <Menu.Item key="apple">🍎 Apple</Menu.Item>
-          <Menu.Item key="banana">🍌 Banana</Menu.Item>
-          <Menu.Item key="mango">🥭 Mango</Menu.Item>
-          <Menu.Item key="strawberry">🍓 Strawberry</Menu.Item>
-        </Menu.Section>
-      </Menu>
-    </Menu.Trigger>
+export const DisabledKeys: Story = {
+  render: args => (
+    <Menu
+      label="Menu with sections"
+      disabledKeys={['mango', 'salad']}
+      {...args}
+    >
+      <Menu.Section title="Food">
+        <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
+        <Menu.Item id="salad">🥗 Salad</Menu.Item>
+        <Menu.Item id="fries">🍟 Fries</Menu.Item>
+      </Menu.Section>
+      <Menu.Section title="Fruits">
+        <Menu.Item id="apple">🍎 Apple</Menu.Item>
+        <Menu.Item id="banana">🍌 Banana</Menu.Item>
+        <Menu.Item id="mango">🥭 Mango</Menu.Item>
+        <Menu.Item id="strawberry">🍓 Strawberry</Menu.Item>
+      </Menu.Section>
+    </Menu>
+  ),
+};
+
+export const LinksMenu: Story = {
+  render: args => (
+    <Menu label="Links" {...args}>
+      <Menu.Item href="https://adobe.com/" target="_blank">
+        Adobe
+      </Menu.Item>
+      <Menu.Item href="https://apple.com/" target="_blank">
+        Apple
+      </Menu.Item>
+      <Menu.Item href="https://google.com/" target="_blank">
+        Google
+      </Menu.Item>
+      <Menu.Item href="https://microsoft.com/" target="_blank">
+        Microsoft
+      </Menu.Item>
+    </Menu>
   ),
 };
 
 export const BasicActionMenu: Story = {
   render: args => {
     return (
-      <ActionMenu onAction={action => alert(`Action: ${action}`)}>
-        <Menu.Item key="edit">Open in editor</Menu.Item>
-        <Menu.Item key="settings">Settings</Menu.Item>
-        <Menu.Item key="delete">Delete</Menu.Item>
+      <ActionMenu onAction={action => alert(`Action: ${action}`)} {...args}>
+        <Menu.Item id="edit">Open in editor</Menu.Item>
+        <Menu.Item id="settings">Settings</Menu.Item>
+        <Menu.Item id="delete">Delete</Menu.Item>
       </ActionMenu>
     );
   },
@@ -120,15 +205,15 @@ export const OpenMenuRemotely: Story = {
           Open the menu remotly!
         </Button>
         <hr />
-        <Menu.Trigger open={true}>
-          <Button variant="menu" size="small">
-            Choose Menu
-          </Button>
-          <Menu onAction={handleAction}>
-            <Menu.Item key="one">One</Menu.Item>
-            <Menu.Item key="two">Two</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu
+          onOpenChange={handleAction}
+          open={open}
+          onClose={() => setOpen(!open)}
+          label="Menu"
+        >
+          <Menu.Item id="one">One</Menu.Item>
+          <Menu.Item id="two">Two</Menu.Item>
+        </Menu>
       </>
     );
   },

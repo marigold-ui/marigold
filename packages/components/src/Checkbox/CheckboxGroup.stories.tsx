@@ -60,6 +60,26 @@ const meta = {
         defaultValue: { summary: false },
       },
     },
+    errorMessage: {
+      control: {
+        type: 'text',
+      },
+      description: 'Error Message',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Something went wrong' },
+      },
+    },
+    description: {
+      control: {
+        type: 'text',
+      },
+      description: 'The description',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'This is a help text description' },
+      },
+    },
   },
   args: {
     label: 'This is a label',
@@ -78,10 +98,10 @@ export const Basic: Story = {
     return (
       <>
         <CheckboxGroup
-          {...args}
           onChange={setSelected}
           description="Choose your Options"
           errorMessage="Oh no"
+          {...args}
         >
           <Checkbox value="ham">Ham</Checkbox>
           <Checkbox value="salami" disabled>

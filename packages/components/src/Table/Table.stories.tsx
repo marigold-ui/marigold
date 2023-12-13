@@ -43,7 +43,14 @@ const meta = {
       control: {
         type: 'text',
       },
-      description: 'variant for the table: for example: compact',
+      description: 'variant for the table',
+    },
+    size: {
+      control: {
+        type: 'select',
+      },
+      options: ['compact', 'expanded'],
+      description: 'size for the table: for example: compact',
     },
   },
   args: {
@@ -326,11 +333,12 @@ export const Sorting: Story = {
 };
 
 export const Compact: Story = {
-  render: () => (
+  render: args => (
     <Table
       aria-label="Table with multiple selection"
       selectionMode="multiple"
-      variant="compact"
+      size="compact"
+      {...args}
     >
       <Table.Header>
         <Table.Column>Name</Table.Column>
@@ -369,11 +377,12 @@ export const Compact: Story = {
 };
 
 export const Expanded: Story = {
-  render: () => (
+  render: args => (
     <Table
       aria-label="Table with multiple selection"
       selectionMode="multiple"
-      variant="expanded"
+      size="expanded"
+      {...args}
     >
       <Table.Header>
         <Table.Column>Name</Table.Column>

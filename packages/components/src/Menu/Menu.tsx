@@ -1,72 +1,50 @@
-import { Key, useRef } from 'react';
-
-import { useMenu } from '@react-aria/menu';
-import { useSyncRef } from '@react-aria/utils';
-
-import { Item, Section } from '@react-stately/collections';
-import { useTreeState } from '@react-stately/tree';
-
-import { CollectionElement } from '@react-types/shared';
+import { Key, ReactNode } from 'react';
+import { Menu, MenuTrigger } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import { useClassNames } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
 
-import { useMenuContext } from './Context';
+import { Button } from '../Button';
+import { Popover } from '../Overlay/Popover';
 import { MenuItem } from './MenuItem';
-import MenuSection from './MenuSection';
-import { MenuTrigger } from './MenuTrigger';
+import { MenuSection } from './MenuSection';
 
-// Props
-// ---------------
+type RemovedProps = 'isOpen' | 'className' | 'style' | 'children';
+
 export interface MenuProps
-  extends Omit<HtmlProps<'ul'>, 'onSelect' | 'size' | 'className'> {
-  children: CollectionElement<object> | CollectionElement<object>[];
+  extends Omit<RAC.MenuTriggerProps, RemovedProps>,
+    Omit<RAC.MenuProps<object>, RemovedProps> {
+  open?: RAC.MenuTriggerProps['isOpen'];
+  label?: ReactNode;
   variant?: string;
   size?: string;
   onAction?: (key: Key) => void;
+  children?: ReactNode;
 }
 
-// Component
-// ---------------
-export const Menu = ({ variant, size, ...props }: MenuProps) => {
-  const { ref: scrollRef, ...menuContext } = useMenuContext();
-  const ownProps = { ...props, ...menuContext };
-
-  const ref = useRef(null);
-  const state = useTreeState({ ...ownProps, selectionMode: 'none' });
-  const { menuProps } = useMenu(ownProps, state, ref);
-
-  useSyncRef({ ref: scrollRef }, ref);
-
+const _Menu = ({
+  children,
+  label,
+  variant,
+  size,
+  open,
+  ...props
+}: MenuProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
 
   return (
-    <ul ref={ref} className={classNames.container} {...menuProps}>
-      {[...state.collection].map(item => {
-        if (item.type === 'section') {
-          return (
-            <MenuSection
-              key={item.key}
-              item={item}
-              state={state}
-              onAction={props.onAction}
-            />
-          );
-        }
-        return (
-          <MenuItem
-            key={item.key}
-            item={item}
-            state={state}
-            onAction={props.onAction}
-            className={classNames.item}
-          />
-        );
-      })}
-    </ul>
+    <MenuTrigger {...props}>
+      <Button variant="menu">{label}</Button>
+      <Popover open={open}>
+        <Menu {...props} className={classNames.container}>
+          {children}
+        </Menu>
+      </Popover>
+    </MenuTrigger>
   );
 };
 
-Menu.Trigger = MenuTrigger;
-Menu.Item = Item;
-Menu.Section = Section;
+export { _Menu as Menu };
+
+_Menu.Item = MenuItem;
+_Menu.Section = MenuSection;

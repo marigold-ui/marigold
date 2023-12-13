@@ -7,6 +7,7 @@ export const Button: ThemeComponent<'Button'> = cva(
       variant: {
         ghost:
           'text-secondary-700 hover:text-secondary-900 border-transparent p-0',
+        menu: 'text-secondary-700 data-[hovered]:text-secondary-900 data-[hovered]:bg-secondary-100',
       },
       size: {
         small: 'text-sm',

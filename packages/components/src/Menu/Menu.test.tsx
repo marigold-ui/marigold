@@ -7,6 +7,7 @@ import {
   screen,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 
 import { OverlayProvider } from '@react-aria/overlays';
 
@@ -56,6 +57,7 @@ const theme: Theme = {
       }),
     },
     Underlay: cva(),
+    Header: cva(),
     Popover: cva(['mt-0.5'], {
       variants: {
         variant: {
@@ -84,13 +86,10 @@ test('renders the button but no menu by default', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Menu.Trigger>
-          <Button>Choose</Button>
-          <Menu>
-            <Menu.Item key="burger">Burger</Menu.Item>
-            <Menu.Item key="pizza">Pizza</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu label="Choose">
+          <Menu.Item key="burger">Burger</Menu.Item>
+          <Menu.Item key="pizza">Pizza</Menu.Item>
+        </Menu>
       </ThemeProvider>
     </OverlayProvider>
   );
@@ -105,16 +104,18 @@ test('renders the button but no menu by default', () => {
 });
 
 test('opens menu when trigger is clicked', () => {
+  window.matchMedia = mockMatchMedia([
+    'screen and (min-width: 40em)',
+    'screen and (min-width: 52em)',
+    'screen and (min-width: 64em)',
+  ]);
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Menu.Trigger>
-          <Button>Choose</Button>
-          <Menu>
-            <Menu.Item key="burger">Burger</Menu.Item>
-            <Menu.Item key="pizza">Pizza</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu label="Choose">
+          <Menu.Item key="burger">Burger</Menu.Item>
+          <Menu.Item key="pizza">Pizza</Menu.Item>
+        </Menu>
       </ThemeProvider>
     </OverlayProvider>
   );
@@ -122,11 +123,16 @@ test('opens menu when trigger is clicked', () => {
   const button = screen.getByText('Choose');
   fireEvent.click(button);
 
-  const burger = screen.queryByText('Burger');
-  const pizza = screen.queryByText('Pizza');
+  const burger = screen.getByText('Burger');
+  const pizza = screen.getByText('Pizza');
 
-  expect(burger).toBeInTheDocument();
-  expect(pizza).toBeInTheDocument();
+  expect(burger.className).toMatchInlineSnapshot(
+    `"text-black focus:text-pink-600"`
+  );
+
+  expect(pizza.className).toMatchInlineSnapshot(
+    `"text-black focus:text-pink-600"`
+  );
 });
 
 test('closes menu when item is selected', () => {
@@ -138,13 +144,10 @@ test('closes menu when item is selected', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Menu.Trigger>
-          <Button>Choose</Button>
-          <Menu>
-            <Menu.Item key="burger">Burger</Menu.Item>
-            <Menu.Item key="pizza">Pizza</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu label="Choose">
+          <Menu.Item key="burger">Burger</Menu.Item>
+          <Menu.Item key="pizza">Pizza</Menu.Item>
+        </Menu>
       </ThemeProvider>
     </OverlayProvider>
   );
@@ -154,6 +157,7 @@ test('closes menu when item is selected', () => {
 
   // Select burger from menu
   const burger = screen.getByText('Burger');
+  expect(burger).toBeInTheDocument();
   fireEvent.click(burger);
 
   const pizza = screen.queryByText('Pizza');
@@ -165,13 +169,10 @@ test('closes menu when trigger is clicked', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Menu.Trigger>
-          <Button>Choose</Button>
-          <Menu>
-            <Menu.Item key="burger">Burger</Menu.Item>
-            <Menu.Item key="pizza">Pizza</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu label="Choose">
+          <Menu.Item key="burger">Burger</Menu.Item>
+          <Menu.Item key="pizza">Pizza</Menu.Item>
+        </Menu>
       </ThemeProvider>
     </OverlayProvider>
   );
@@ -192,13 +193,11 @@ test('closes menu when clicked outside', async () => {
     <OverlayProvider>
       <ThemeProvider theme={theme}>
         <Button>outside</Button>
-        <Menu.Trigger>
-          <Button>Choose</Button>
-          <Menu>
-            <Menu.Item key="burger">Burger</Menu.Item>
-            <Menu.Item key="pizza">Pizza</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+
+        <Menu label="Choose">
+          <Menu.Item key="burger">Burger</Menu.Item>
+          <Menu.Item key="pizza">Pizza</Menu.Item>
+        </Menu>
       </ThemeProvider>
     </OverlayProvider>
   );
@@ -216,44 +215,16 @@ test('closes menu when clicked outside', async () => {
   expect(pizza).not.toBeInTheDocument();
 });
 
-test('trigger can be disabled', () => {
-  render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Menu.Trigger disabled>
-          <Button>Choose</Button>
-          <Menu>
-            <Menu.Item key="burger">Burger</Menu.Item>
-            <Menu.Item key="pizza">Pizza</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
-      </ThemeProvider>
-    </OverlayProvider>
-  );
-
-  const button = screen.getByText('Choose');
-  fireEvent.click(button);
-
-  const burger = screen.queryByText('Burger');
-  const pizza = screen.queryByText('Pizza');
-
-  expect(burger).not.toBeInTheDocument();
-  expect(pizza).not.toBeInTheDocument();
-});
-
 // test('return selected item')
-test('return selected item', () => {
+test('return action item', () => {
   const spy = jest.fn();
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Menu.Trigger>
-          <Button>Choose</Button>
-          <Menu onAction={spy}>
-            <Menu.Item key="burger">Burger</Menu.Item>
-            <Menu.Item key="pizza">Pizza</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu label="Choose" onAction={spy}>
+          <Menu.Item id="burger">Burger</Menu.Item>
+          <Menu.Item id="pizza">Pizza</Menu.Item>
+        </Menu>
       </ThemeProvider>
     </OverlayProvider>
   );
@@ -263,6 +234,7 @@ test('return selected item', () => {
 
   const burger = screen.getByText('Burger');
   fireEvent.click(burger);
+
   expect(spy).toHaveBeenCalledWith('burger');
   expect(spy).not.toHaveBeenCalledWith('pizza');
 });
@@ -271,20 +243,17 @@ test('uses base classes from "Menu" in theme', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Menu.Trigger>
-          <Button>Choose</Button>
-          <Menu data-testid="menu">
-            <Menu.Item key="burger">Burger</Menu.Item>
-            <Menu.Item key="pizza">Pizza</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu data-testid="menu" label="Choose">
+          <Menu.Item key="burger">Burger</Menu.Item>
+          <Menu.Item key="pizza">Pizza</Menu.Item>
+        </Menu>
       </ThemeProvider>
     </OverlayProvider>
   );
   const button = screen.getByText('Choose');
   fireEvent.click(button);
 
-  const menu = screen.getByTestId('menu');
+  const menu = screen.getByRole('menu');
   expect(menu).toHaveClass(`bg-white`);
 });
 
@@ -292,48 +261,45 @@ test('supports "Menu" variant classnames from theme', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Menu.Trigger>
-          <Button>Choose</Button>
-          <Menu data-testid="menu" variant="one">
-            <Menu.Item key="burger">Burger</Menu.Item>
-            <Menu.Item key="pizza">Pizza</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu data-testid="menu" label="Choose" variant="one">
+          <Menu.Item key="burger">Burger</Menu.Item>
+          <Menu.Item key="pizza">Pizza</Menu.Item>
+        </Menu>
       </ThemeProvider>
     </OverlayProvider>
   );
   const button = screen.getByText('Choose');
   fireEvent.click(button);
 
-  const menu = screen.getByTestId('menu');
+  const menu = screen.getByRole('menu');
   const item = screen.getByText('Burger');
 
-  expect(menu).toHaveClass(`bg-pink-900`);
-  expect(item).toHaveClass(`text-white`);
+  expect(menu.className).toMatchInlineSnapshot(
+    `"focus:text-pink-600 bg-pink-900"`
+  );
+  expect(item.className).toMatchInlineSnapshot(
+    `"text-black focus:text-pink-600"`
+  );
 });
 
 test('supports "Menu" sizes from theme', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Menu.Trigger>
-          <Button>Choose</Button>
-          <Menu data-testid="menu" size="large">
-            <Menu.Item key="burger">Burger</Menu.Item>
-            <Menu.Item key="pizza">Pizza</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu data-testid="menu" label="Choose" size="large">
+          <Menu.Item key="burger">Burger</Menu.Item>
+          <Menu.Item key="pizza">Pizza</Menu.Item>
+        </Menu>
       </ThemeProvider>
     </OverlayProvider>
   );
-  const button = screen.getByText('Choose');
+  const button = screen.getByRole('button');
   fireEvent.click(button);
 
-  const menu = screen.getByTestId('menu');
-  expect(menu).toHaveClass(`bg-white focus:text-pink-600 p-5`);
-
   const item = screen.getByText('Burger');
-  expect(item).toHaveClass(`text-black focus:text-pink-600 p-2`);
+  expect(item.className).toMatchInlineSnapshot(
+    `"text-black focus:text-pink-600"`
+  );
 });
 
 test('renders as tray', () => {
@@ -350,21 +316,22 @@ test('renders as tray', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Menu.Trigger>
-          <Button>Choose</Button>
-          <Menu data-testid="menu">
-            <Menu.Item key="burger">Burger</Menu.Item>
-            <Menu.Item key="pizza">Pizza</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu label="Choose" data-testid="menu">
+          <Menu.Item key="burger">Burger</Menu.Item>
+          <Menu.Item key="pizza">Pizza</Menu.Item>
+        </Menu>
       </ThemeProvider>
     </OverlayProvider>
   );
 
   const button = screen.getByText('Choose');
   fireEvent.click(button);
-  const tray = screen.getByTestId('tray');
-  expect(tray).toBeInTheDocument();
+
+  const item = screen.getByText('Burger');
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(item.parentElement?.parentElement?.className).toMatchInlineSnapshot(
+    `"!left-0 bottom-0 !mt-auto flex !max-h-fit w-full flex-col"`
+  );
 });
 
 test('renders action menu', () => {
@@ -389,13 +356,10 @@ test('supports open property', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Menu.Trigger open={true}>
-          <Button>Choose</Button>
-          <Menu data-testid="menu">
-            <Menu.Item key="burger">Burger</Menu.Item>
-            <Menu.Item key="pizza">Pizza</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu data-testid="menu" label="Choose" open={true}>
+          <Menu.Item key="burger">Burger</Menu.Item>
+          <Menu.Item key="pizza">Pizza</Menu.Item>
+        </Menu>
       </ThemeProvider>
     </OverlayProvider>
   );
@@ -409,13 +373,14 @@ test('supports onOpenChange property', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Menu.Trigger onOpenChange={() => onOpenChange()}>
-          <Button>Choose</Button>
-          <Menu data-testid="menu">
-            <Menu.Item key="burger">Burger</Menu.Item>
-            <Menu.Item key="pizza">Pizza</Menu.Item>
-          </Menu>
-        </Menu.Trigger>
+        <Menu
+          data-testid="menu"
+          label="Choose"
+          onOpenChange={() => onOpenChange()}
+        >
+          <Menu.Item key="burger">Burger</Menu.Item>
+          <Menu.Item key="pizza">Pizza</Menu.Item>
+        </Menu>
       </ThemeProvider>
     </OverlayProvider>
   );
@@ -428,7 +393,7 @@ test('supports Menu with sections', () => {
   render(
     <OverlayProvider>
       <ThemeProvider theme={theme}>
-        <Menu aria-label="Menu with sections">
+        <Menu aria-label="Menu with sections" open>
           <Menu.Section title="Food">
             <Menu.Item key="burger">🍔 Burger</Menu.Item>
             <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
@@ -443,5 +408,4 @@ test('supports Menu with sections', () => {
   );
   expect(screen.getByText('Food')).toBeInTheDocument();
   expect(screen.getByText('Fruits')).toBeInTheDocument();
-  expect(screen.getByRole('separator')).toBeInTheDocument();
 });

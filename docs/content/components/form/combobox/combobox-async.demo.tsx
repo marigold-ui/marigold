@@ -22,7 +22,7 @@ export default () => {
       items={list.items}
     >
       {(item: { name: string }) => (
-        <ComboBox.Item key={item.name}>{item.name}</ComboBox.Item>
+        <ComboBox.Item id={item.name}>{item.name}</ComboBox.Item>
       )}
     </ComboBox>
   );

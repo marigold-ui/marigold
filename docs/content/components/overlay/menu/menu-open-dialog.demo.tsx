@@ -29,15 +29,10 @@ export default () => {
 
   return (
     <>
-      <Menu.Trigger>
-        <Button variant="menu" size="small">
-          Settings
-        </Button>
-        <Menu onAction={handleAction}>
-          <Menu.Item key="save">Save</Menu.Item>
-          <Menu.Item key="delete">Delete</Menu.Item>
-        </Menu>
-      </Menu.Trigger>
+      <Menu onAction={handleAction} label="Settings">
+        <Menu.Item id="save">Save</Menu.Item>
+        <Menu.Item id="delete">Delete</Menu.Item>
+      </Menu>
       <Dialog.Trigger open={open} onOpenChange={setDialogOpen}>
         <Dialog closeButton>
           {({ close }) => (
