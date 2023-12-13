@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { DatePicker, type DateValue } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
@@ -7,7 +6,6 @@ import { WidthProp, useClassNames } from '@marigold/system';
 import { Button } from '../Button';
 import { Calendar } from '../Calendar';
 import { DateInput } from '../DateField/DateInput';
-import { DateField } from '../DateField/_DateField';
 import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
 import { Popover } from '../Overlay/Popover';
 
@@ -40,6 +38,7 @@ const _DatePicker = ({
   error,
   variant,
   size,
+  value,
   open,
   ...rest
 }: DatePickerProps) => {
@@ -59,7 +58,7 @@ const _DatePicker = ({
   });
 
   return (
-    <FieldBase as={DatePicker} {...props}>
+    <FieldBase as={DatePicker} variant={variant} size={size} {...props}>
       <DateInput
         action={
           <div className={classNames.container}>
@@ -81,7 +80,6 @@ const _DatePicker = ({
           </div>
         }
       />
-
       <Popover>
         <Calendar disabled={disabled} />
       </Popover>
