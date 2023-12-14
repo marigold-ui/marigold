@@ -177,3 +177,9 @@ test('renders action as react element', () => {
 `);
   expect(action).toBeInTheDocument();
 });
+
+test('renders error', () => {
+  render(<DateField label="date field" error errorMessage="Error Message" />);
+  const error = screen.getByText('Error Message');
+  expect(error).toBeInTheDocument();
+});
