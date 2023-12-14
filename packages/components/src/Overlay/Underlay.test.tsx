@@ -4,7 +4,6 @@ import { OverlayProvider } from '@react-aria/overlays';
 
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
-import { Modal } from './Modal';
 import { Underlay } from './Underlay';
 
 const theme: Theme = {
