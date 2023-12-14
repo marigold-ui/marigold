@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { DateField } from './_DateField';
+import { DateField } from './DateField';
 
 const theme: Theme = {
   name: 'test',
