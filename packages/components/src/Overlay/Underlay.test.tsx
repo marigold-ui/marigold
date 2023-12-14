@@ -42,11 +42,9 @@ test('underlay supports variant', () => {
   render(
     <ThemeProvider theme={theme}>
       <OverlayProvider>
-        <Modal open>
-          <Underlay data-testid="underlay" variant="one">
-            <div>something</div>
-          </Underlay>
-        </Modal>
+        <Underlay open variant="one">
+          <div>something</div>
+        </Underlay>
       </OverlayProvider>
     </ThemeProvider>
   );
@@ -59,13 +57,13 @@ test('underlay supports size', () => {
   render(
     <ThemeProvider theme={theme}>
       <OverlayProvider>
-        <Underlay data-testid="underlay" size="small">
+        <Underlay open size="small">
           <div>something</div>
         </Underlay>
       </OverlayProvider>
     </ThemeProvider>
   );
 
-  const underlay = screen.getByTestId('underlay');
+  const underlay = screen.getByTestId('underlay-id');
   expect(underlay).toHaveClass(`p-4`);
 });
