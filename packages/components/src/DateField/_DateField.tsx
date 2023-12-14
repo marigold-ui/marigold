@@ -62,7 +62,7 @@ const _DateField = forwardRef<HTMLInputElement, DateFieldProps>(
         ref={ref}
         {...props}
       >
-        <DateInput />
+        <DateInput action={action} />
       </FieldBase>
     );
   }

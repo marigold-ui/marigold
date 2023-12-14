@@ -167,7 +167,7 @@ test('renders label', () => {
   expect(label).toBeInTheDocument();
 });
 
-test('renders action as react elemnt', () => {
+test('renders action as react element', () => {
   render(<DateField label="date field" action={<div>huhu</div>} />);
   const action = screen.getByText('huhu');
   expect(action).toMatchInlineSnapshot(`
