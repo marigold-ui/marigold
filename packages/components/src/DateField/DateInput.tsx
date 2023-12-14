@@ -4,7 +4,7 @@ import type RAC from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
 
-import { DateSegment } from './_DateSegment';
+import { DateSegment } from './DateSegment';
 
 type RemovedProps = 'style' | 'className' | 'children';
 
