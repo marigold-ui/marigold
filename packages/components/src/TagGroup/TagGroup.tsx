@@ -3,7 +3,7 @@ import { TagGroup, TagList, TagListProps } from 'react-aria-components';
 
 import { WidthProp, useClassNames } from '@marigold/system';
 
-import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
+import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 
 // Props
 // ---------------

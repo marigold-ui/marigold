@@ -4,7 +4,8 @@ import { OverlayProvider } from '@react-aria/overlays';
 
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
-import { Underlay } from './_Underlay';
+import { Modal } from './Modal';
+import { Underlay } from './Underlay';
 
 const theme: Theme = {
   name: 'test',
@@ -26,14 +27,14 @@ test('renders underlay', () => {
   render(
     <ThemeProvider theme={theme}>
       <OverlayProvider>
-        <Underlay data-testid="underlay">
+        <Underlay open>
           <div>something</div>
         </Underlay>
       </OverlayProvider>
     </ThemeProvider>
   );
 
-  const underlay = screen.getByTestId('underlay');
+  const underlay = screen.getByText('something');
   expect(underlay).toBeInTheDocument();
 });
 
@@ -41,14 +42,16 @@ test('underlay supports variant', () => {
   render(
     <ThemeProvider theme={theme}>
       <OverlayProvider>
-        <Underlay data-testid="underlay" variant="one">
-          <div>something</div>
-        </Underlay>
+        <Modal open>
+          <Underlay data-testid="underlay" variant="one">
+            <div>something</div>
+          </Underlay>
+        </Modal>
       </OverlayProvider>
     </ThemeProvider>
   );
 
-  const underlay = screen.getByTestId('underlay');
+  const underlay = screen.getByTestId('underlay-id');
   expect(underlay).toHaveClass(`bg-pink-600`);
 });
 

@@ -35,7 +35,7 @@ const TestTray = forwardRef<HTMLDivElement, { open: boolean }>(
   }
 );
 
-export const OverlayTray: StoryObj<typeof Tray> = {
+export const OverlayTray: StoryObj<typeof Popover> = {
   render: () => {
     return <TestTray open />;
   },

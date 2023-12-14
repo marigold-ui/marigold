@@ -5,7 +5,7 @@ import { DateField, DateInput, DateValue, Group } from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 
 import { FieldBaseProps } from '../FieldBase';
-import { FieldBase } from '../FieldBase/_FieldBase';
+import { FieldBase } from '../FieldBase';
 import { DateSegment } from './_DateSegment';
 
 type RemovedProps =
