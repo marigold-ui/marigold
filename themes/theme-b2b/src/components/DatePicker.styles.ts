@@ -1,12 +1,11 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const DatePicker: ThemeComponent<'DatePicker'> = {
-  container: cva([
-    '[&_button]:absolute [&_button]:right-0 [&_button]:top-0 [&_button]:h-full [&_button]:w-9 [&_button]:p-0',
-    '[&_button]:flex [&_button]:items-center [&_button]:justify-center ',
-    '[&_button]:text-text-body/80',
-    '[&_button[aria-expanded=true]]:bg-bg-secondary [&_button[aria-expanded=true]]:text-white [&_button]:focus-visible:border-none [&_button]:focus-visible:outline-0',
-    '[&_button]:disabled:hidden',
+  container: cva(['-mr-2 h-full w-9']),
+  button: cva([
+    'text-text-body/80 relative  px-0 data-[disabled]:hidden',
+    'flex h-full w-9 items-center justify-center',
+    'data-[pressed]:bg-bg-secondary data-[pressed]:text-white',
+    'data-[focused]:border-none data-[focused]:outline-none ',
   ]),
-  button: cva(),
 };

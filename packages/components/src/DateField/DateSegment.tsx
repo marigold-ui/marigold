@@ -1,74 +1,47 @@
-import { useRef } from 'react';
+import React from 'react';
+import { DateSegment } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
-import { useDateSegment } from '@react-aria/datepicker';
-import { useFocusRing } from '@react-aria/focus';
-import { mergeProps } from '@react-aria/utils';
+import { cn } from '@marigold/system';
 
-import { DateSegment as DateSegmentInterface } from '@react-stately/datepicker';
-import { DateFieldState } from '@react-stately/datepicker';
+export interface DateSegmentProps extends RAC.DateSegmentProps {}
 
-import { cn, useStateProps } from '@marigold/system';
-
-interface DateSegmentProps {
-  segment: DateSegmentInterface;
-  state: DateFieldState;
-  isPrevPlaceholder?: boolean;
-  className?: string;
-}
-
-export const DateSegment = ({
-  className,
-  segment,
-  state,
-  isPrevPlaceholder,
-}: DateSegmentProps) => {
-  const ref = useRef(null);
-  const { segmentProps } = useDateSegment(segment, state, ref);
-
-  const { focusProps, isFocused } = useFocusRing({
-    within: true,
-    isTextInput: true,
-  });
-  const stateProps = useStateProps({
-    disabled: state.isDisabled,
-    focusVisible: isFocused,
-  });
-
-  const { isPlaceholder, placeholder, text, type, maxValue } = segment;
-
+const _DateSegment = ({ segment, ...props }: DateSegmentProps) => {
   return (
-    <div
-      {...mergeProps(segmentProps, stateProps, focusProps)}
-      ref={ref}
-      className={cn(
-        'group/segment',
-        'text-center leading-none outline-0',
-        type !== 'literal' && 'p-0.5',
-        className
-      )}
+    <DateSegment
+      {...props}
+      segment={segment}
       style={{
-        ...segmentProps.style,
-        minWidth: maxValue != null ? String(maxValue).length + 'ch' : undefined,
+        minWidth:
+          segment.maxValue != null
+            ? String(segment.maxValue).length + 'ch'
+            : undefined,
       }}
     >
-      <span
-        aria-hidden="true"
-        className={cn(
-          isPlaceholder ? 'visible block' : 'invisible hidden',
-          'pointer-events-none w-full text-center'
-        )}
-      >
-        {isPlaceholder && placeholder?.toUpperCase()}
-      </span>
-      <span>
-        {isPlaceholder
-          ? ''
-          : type === 'month' || type === 'day'
-          ? Number(text) < 10
-            ? '0' + text
-            : text
-          : text}
-      </span>
-    </div>
+      {({ text, placeholder, isPlaceholder }) => (
+        <>
+          <span
+            aria-hidden="true"
+            className={cn(
+              isPlaceholder ? 'visible block' : 'invisible hidden',
+              'pointer-events-none w-full text-center'
+            )}
+          >
+            {isPlaceholder && placeholder?.toUpperCase()}
+          </span>
+          <span>
+            {isPlaceholder
+              ? ''
+              : segment.type === 'month' || segment.type === 'day'
+                ? Number(segment.text) < 10
+                  ? '0' + segment.text
+                  : segment.text
+                : text}
+          </span>
+        </>
+      )}
+    </DateSegment>
   );
 };
+
+export { _DateSegment as DateSegment };
