@@ -53,8 +53,6 @@ const _FieldBase = <T extends ElementType>(
     size,
   });
 
-  console.log(props);
-
   return (
     <Component
       ref={ref}

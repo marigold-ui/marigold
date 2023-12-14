@@ -2,8 +2,10 @@
 
 /* eslint-disable testing-library/no-node-access */
 import { CalendarDate } from '@internationalized/date';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+import { OverlayProvider } from '@react-aria/overlays';
 
 import { Theme, cva } from '@marigold/system';
 
@@ -83,14 +85,25 @@ describe('DatePicker', () => {
     });
   });
 
+  const mockMatchMedia = (matches: string[]) =>
+    jest.fn().mockImplementation(query => ({
+      matches: matches.includes(query),
+    }));
+
+  window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+
+  afterEach(cleanup);
+
   describe('basics', () => {
     test('renders date picker with specified date', () => {
-      render(<DatePicker label="Date" value={new CalendarDate(2019, 2, 3)} />);
+      render(
+        <DatePicker label="Date" defaultValue={new CalendarDate(2019, 2, 3)} />
+      );
 
-      const combobox = screen.getAllByRole('group')[0];
-      expect(combobox).toBeVisible();
-      expect(combobox).not.toHaveAttribute('aria-disabled');
-      expect(combobox).not.toHaveAttribute('aria-invalid');
+      const dateinput = screen.getAllByRole('group')[0];
+      expect(dateinput).toBeVisible();
+      expect(dateinput).not.toHaveAttribute('aria-disabled');
+      expect(dateinput).not.toHaveAttribute('aria-invalid');
 
       const segments = screen.getAllByRole('spinbutton');
       expect(segments.length).toBe(3);
@@ -117,9 +130,22 @@ describe('DatePicker', () => {
     });
 
     test('renders the calendar when date picker is open', () => {
-      render(<DatePicker label="date picker" open />);
-      const tableGrid = screen.getByRole('grid');
-      expect(tableGrid).toBeInTheDocument();
+      window.matchMedia = mockMatchMedia([
+        'screen and (min-width: 40em)',
+        'screen and (min-width: 52em)',
+        'screen and (min-width: 64em)',
+      ]);
+      render(
+        <OverlayProvider>
+          <DatePicker label="date picker" data-testid="date picker" open />
+        </OverlayProvider>
+      );
+
+      const picker = screen.getByTestId('date picker');
+
+      expect(picker).toBeVisible();
+      const tableGrid = screen.getByRole('application');
+      expect(tableGrid).toBeVisible();
     });
 
     test('does not render calendar when date picker is not open', () => {
@@ -132,8 +158,18 @@ describe('DatePicker', () => {
       expect(document.activeElement).toBe(screen.getAllByRole('spinbutton')[0]);
     });
     test('passes through data attributes', () => {
-      render(<DatePicker label="Date" data-testid="foo" />);
-      expect(screen.getByTestId('foo')).toHaveAttribute('role', 'group');
+      window.matchMedia = mockMatchMedia([
+        'screen and (min-width: 40em)',
+        'screen and (min-width: 52em)',
+        'screen and (min-width: 64em)',
+      ]);
+      render(
+        <OverlayProvider>
+          <DatePicker label="Date" data-testid="foo" />
+        </OverlayProvider>
+      );
+
+      expect(screen.getByTestId('foo')).toHaveAttribute('data-rac');
     });
   });
 
@@ -145,10 +181,6 @@ describe('DatePicker', () => {
       expect(group).toHaveAttribute('id');
       expect(group).toHaveAttribute('aria-label', 'Birth date');
       const comboboxId = group.getAttribute('id');
-
-      const field = screen.getByTestId('date-field');
-      expect(field).toHaveAttribute('role', 'presentation');
-      expect(field).not.toHaveAttribute('aria-label');
 
       const button = screen.getByRole('button');
       expect(button).toHaveAttribute('aria-label', 'Calendar');
@@ -313,7 +345,7 @@ describe('DatePicker', () => {
       await user.click(button);
       // act(() => jest.runAllTimers());
 
-      const popover = screen.getByRole('presentation');
+      const popover = screen.getByRole('application');
       expect(popover).toBeVisible();
       expect(onBlurSpy).not.toHaveBeenCalled();
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
@@ -338,7 +370,7 @@ describe('DatePicker', () => {
 
       await user.click(button);
 
-      const popover = screen.getByRole('presentation');
+      const popover = screen.getByRole('application');
       expect(popover).toBeVisible();
       expect(onBlurSpy).not.toHaveBeenCalled();
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
@@ -404,7 +436,8 @@ describe('DatePicker', () => {
       expect(onFocusSpy).not.toHaveBeenCalled();
 
       await user.click(button);
-      let popover = screen.getByRole('presentation');
+
+      const popover = screen.getByRole('application');
       expect(popover).toBeVisible();
       expect(onBlurSpy).not.toHaveBeenCalled();
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
