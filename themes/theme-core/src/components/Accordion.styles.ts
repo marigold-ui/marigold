@@ -6,4 +6,5 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     'font-bold leading-[1.125]',
   ]),
   item: cva('p-2'),
+  hideItem: cva('hidden'),
 };
