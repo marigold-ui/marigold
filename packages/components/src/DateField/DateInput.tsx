@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import { DateInput, Group } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
-import { cn, useClassNames } from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 
 import { DateSegment } from './DateSegment';
 
@@ -30,7 +30,7 @@ const _DateInput = ({ variant, size, action, ...props }: DateInputProps) => {
         <div className="flex items-center justify-center">
           <svg
             data-testid="action"
-            className={cn(classNames.action)}
+            className={classNames.action}
             viewBox="0 0 24 24"
             width={24}
             height={24}

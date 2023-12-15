@@ -14,7 +14,7 @@ const _DateSegment = ({ segment, ...props }: DateSegmentProps) => {
       style={{
         minWidth:
           segment.maxValue != null
-            ? String(segment.maxValue).length + 'ch'
+            ? `${String(segment.maxValue).length}ch`
             : undefined,
       }}
     >
