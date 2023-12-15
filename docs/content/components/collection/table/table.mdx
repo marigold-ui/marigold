@@ -67,6 +67,50 @@ import { Table } from '@marigold/components';
   ]}
 />
 
+### Table Column Props
+
+<PropsTable
+  props={[
+    {
+      property: 'key',
+      type: 'Key',
+      description: 'The key for the Column.',
+      default: 'none',
+    },
+    {
+      property: 'align',
+      type: 'center' | 'left' | 'right' | 'justify' | 'char',
+      description: 'Control the alignment of Column',
+      default: 'none',
+    },
+    {
+      property: 'allowResizing',
+      type: 'boolean' | 'undefined',
+      description: 'Whether the column allows resizing.',
+      default: 'none',
+    },
+    {
+      property: 'allowSorting',
+      type: 'boolean' | 'undefined',
+      description: 'Whether the column allows sorting.',
+      default: 'none',
+    },
+    {
+      property: 'isRowHeader',
+      type: 'boolean' | 'undefined',
+      description: 'Whether a column is a row header and should be announced by assistive technology during row navigation.',
+      default: 'none',
+    },    
+    {
+      property: 'width',
+      type: 'string' | 'number',
+      description: 'Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width',
+      default: 'none',
+    },
+
+]}
+/>
+
 ## Examples
 
 ### Compact variant
