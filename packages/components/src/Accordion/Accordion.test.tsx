@@ -28,6 +28,7 @@ const theme: Theme = {
           },
         },
       }),
+      hideItem: cva(''),
     },
     Button: cva('w-full'),
     Headline: cva(),
