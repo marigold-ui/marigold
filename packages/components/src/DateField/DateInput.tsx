@@ -21,15 +21,7 @@ const _DateInput = ({ variant, size, action, ...props }: DateInputProps) => {
     <Group className={classNames.field}>
       <DateInput className="flex flex-1 items-center" {...props}>
         {segment => (
-          <DateSegment
-            className={cn(
-              'group/segment',
-              'text-center leading-none outline-0',
-              '[data-type="literal]"' && 'p-[0.75px]',
-              classNames.segment
-            )}
-            segment={segment}
-          />
+          <DateSegment className={classNames.segment} segment={segment} />
         )}
       </DateInput>
       {action ? (

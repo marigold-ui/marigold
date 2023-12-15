@@ -12,6 +12,9 @@ export const DateField: ThemeComponent<'DateField'> = {
   ]),
 
   segment: cva([
+    'group/segment',
+    'text-center leading-none outline-0',
+    '[data-type="literal]"' && 'p-[0.75px]',
     'rounded-sm',
     'focus:bg-bg-focus focus:text-text-focus',
     'aria-[readonly]:bg-bg-transparent aria-[readonly]:text-text-disabled',
