@@ -4,6 +4,7 @@ import { inputBackground, inputBox, inputSpacing } from './Input.styles';
 
 export const DateField: ThemeComponent<'DateField'> = {
   field: cva([
+    'flex flex-1 items-center',
     inputBox,
     inputBackground,
     inputSpacing,

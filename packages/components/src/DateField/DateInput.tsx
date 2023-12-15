@@ -18,8 +18,8 @@ const _DateInput = ({ variant, size, action, ...props }: DateInputProps) => {
   const classNames = useClassNames({ component: 'DateField', variant, size });
 
   return (
-    <Group className={cn('flex flex-1 items-center', classNames.field)}>
-      <DateInput className={cn('flex flex-1 items-center')} {...props}>
+    <Group className={classNames.field}>
+      <DateInput className="flex flex-1 items-center" {...props}>
         {segment => (
           <DateSegment
             className={cn(
