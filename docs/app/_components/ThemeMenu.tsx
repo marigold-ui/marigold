@@ -22,7 +22,9 @@ export const ThemeMenu = () => {
       }
     >
       {Object.keys(themes).map(name => (
-        <Menu.Item id={name}>{name.toUpperCase()}</Menu.Item>
+        <Menu.Item key={name} id={name}>
+          {name.toUpperCase()}
+        </Menu.Item>
       ))}
     </Menu>
   );
