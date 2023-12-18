@@ -83,7 +83,8 @@ export const Controlled: Story = {
           <DatePicker
             label="Date Picker"
             value={value}
-            onChange={setValue}
+            defaultValue={value}
+            onChange={() => setValue}
             description="Controlled date field"
             errorMessage="This is an error"
             {...args}

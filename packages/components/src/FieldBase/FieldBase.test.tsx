@@ -6,7 +6,7 @@ import { TextField } from 'react-aria-components';
 import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { FieldBase } from './_FieldBase';
+import { FieldBase } from './FieldBase';
 
 // Setup
 // ---------------

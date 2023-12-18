@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react';
 import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { HelpText } from './_HelpText';
+import { HelpText } from './HelpText';
 
 const theme: Theme = {
   name: 'test',
