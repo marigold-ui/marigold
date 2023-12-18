@@ -21,8 +21,10 @@ export const ThemeMenu = () => {
         </>
       }
     >
-      {Object.keys(themes).map(name => (
-        <Menu.Item id={name}>{name.toUpperCase()}</Menu.Item>
+      {Object.keys(themes).map((name, index) => (
+        <Menu.Item id={name} key={index}>
+          {name.toUpperCase()}
+        </Menu.Item>
       ))}
     </Menu>
   );

@@ -9,7 +9,7 @@ import { fontSans } from '@/theme/fonts';
 import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
 
 import { Analytics } from './_components/Analytics';
-import { Navigation } from './_components/Navigation';
+import { SectionNavigation } from './_components/SectionNavigation';
 import { SiteFooter } from './_components/SiteFooter';
 import { SiteHeader } from './_components/SiteHeader';
 import './globals.css';
@@ -46,7 +46,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     'scrollbar-thin scrollbar-thumb-slate-300 scrollbar-thumb-rounded-full',
                   ].join(' ')}
                 >
-                  <Navigation />
+                  {/* current section navigation sidebar */}
+                  <SectionNavigation />
                 </aside>
                 <div className="md:pl-60 lg:pl-80 xl:pl-96">
                   <main>{children}</main>

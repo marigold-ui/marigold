@@ -28,7 +28,7 @@ interface NavigationSection {
   subsections: NavigationSubsection[];
 }
 
-const useNavigation = (): NavigationSection[] => {
+export const useNavigation = (): NavigationSection[] => {
   const navigation = siteConfig.navigation;
 
   return navigation.map(({ name, slug, subsections = [] }) => {
