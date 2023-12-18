@@ -38,7 +38,6 @@ const _DatePicker = ({
   error,
   variant,
   size,
-  value,
   open,
   ...rest
 }: DatePickerProps) => {
