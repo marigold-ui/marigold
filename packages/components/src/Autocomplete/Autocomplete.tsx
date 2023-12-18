@@ -19,8 +19,9 @@ import { AutocompleteClearButton } from './ClearButton';
 interface SearchInputProps {
   onSubmit?: (key: Key | null, value: string | null) => void;
   ref?: Ref<HTMLInputElement> | undefined;
+  placeholder?: string;
 }
-const SearchInput = ({ onSubmit, ref }: SearchInputProps) => {
+const SearchInput = ({ onSubmit, placeholder, ref }: SearchInputProps) => {
   const state = React.useContext(ComboBoxStateContext);
 
   return (
