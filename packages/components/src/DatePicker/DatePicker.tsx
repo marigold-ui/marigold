@@ -6,7 +6,7 @@ import { WidthProp, useClassNames } from '@marigold/system';
 import { Button } from '../Button';
 import { Calendar } from '../Calendar';
 import { DateInput } from '../DateField/DateInput';
-import { FieldBase, FieldBaseProps } from '../FieldBase';
+import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
 import { Popover } from '../Overlay/Popover';
 
 type RemovedProps =
@@ -38,7 +38,6 @@ const _DatePicker = ({
   error,
   variant,
   size,
-  value,
   open,
   ...rest
 }: DatePickerProps) => {

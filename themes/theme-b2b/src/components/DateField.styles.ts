@@ -4,6 +4,7 @@ import { inputBackground, inputBox, inputSpacing } from './Input.styles';
 
 export const DateField: ThemeComponent<'DateField'> = {
   field: cva([
+    'flex flex-1 items-center',
     inputBox,
     inputBackground,
     inputSpacing,
@@ -16,6 +17,9 @@ export const DateField: ThemeComponent<'DateField'> = {
     'group-data-[invalid]/field:border-border-error',
   ]),
   segment: cva([
+    'group/segment',
+    'text-center leading-none outline-0',
+    '[data-type="literal]"' && 'p-[0.75px]',
     'rounded-sm',
     'focus:bg-bg-focus focus:text-white',
     'aria-[readonly]:focus:border-border-light aria-[readonly]:focus:outline-none',

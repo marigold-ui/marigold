@@ -2,6 +2,7 @@
 import { CalendarDate, getLocalTimeZone, today } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import { DateValue } from 'react-aria-components';
 
 import { I18nProvider } from '@react-aria/i18n';
 
@@ -74,7 +75,7 @@ export const Basic: Story = {
 
 export const Controlled: Story = {
   render: args => {
-    const [value, setValue] = useState(today(getLocalTimeZone()));
+    const [value, setValue] = useState(today(getLocalTimeZone()) as DateValue);
 
     return (
       <I18nProvider locale="de-DE">

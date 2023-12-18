@@ -87,6 +87,7 @@ export interface AutocompleteProps
   readOnly?: RAC.ComboBoxProps<object>['isReadOnly'];
   variant?: string;
   size?: string;
+  placeholder?: string;
   /**
    * Handler that is called when the SearchAutocomplete is submitted.
    *

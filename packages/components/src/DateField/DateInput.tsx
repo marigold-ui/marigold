@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import { DateInput, Group } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
-import { cn, useClassNames } from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 
 import { DateSegment } from './DateSegment';
 
@@ -18,18 +18,10 @@ const _DateInput = ({ variant, size, action, ...props }: DateInputProps) => {
   const classNames = useClassNames({ component: 'DateField', variant, size });
 
   return (
-    <Group className={cn('flex flex-1 items-center', classNames.field)}>
-      <DateInput className={cn('flex flex-1 items-center')} {...props}>
+    <Group className={classNames.field}>
+      <DateInput className="flex flex-1 items-center" {...props}>
         {segment => (
-          <DateSegment
-            className={cn(
-              'group/segment',
-              'text-center leading-none outline-0',
-              '[data-type="literal]"' && 'p-[0.75px]',
-              classNames.segment
-            )}
-            segment={segment}
-          />
+          <DateSegment className={classNames.segment} segment={segment} />
         )}
       </DateInput>
       {action ? (
@@ -38,7 +30,7 @@ const _DateInput = ({ variant, size, action, ...props }: DateInputProps) => {
         <div className="flex items-center justify-center">
           <svg
             data-testid="action"
-            className={cn(classNames.action)}
+            className={classNames.action}
             viewBox="0 0 24 24"
             width={24}
             height={24}

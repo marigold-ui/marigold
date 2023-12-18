@@ -4,8 +4,8 @@ import { DateField, DateValue } from 'react-aria-components';
 
 import { WidthProp } from '@marigold/system';
 
-import { FieldBaseProps } from '../FieldBase';
-import { FieldBase } from '../FieldBase';
+import { FieldBaseProps } from '../FieldBase/_FieldBase';
+import { FieldBase } from '../FieldBase/_FieldBase';
 import { DateInput } from './DateInput';
 
 type RemovedProps =
@@ -20,11 +20,10 @@ type RemovedProps =
 
 export interface DateFieldProps
   extends Omit<RAC.DateFieldProps<DateValue>, RemovedProps>,
-    Pick<FieldBaseProps, 'label' | 'description' | 'errorMessage'> {
+    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
   size?: string;
   action?: ReactElement;
-  label?: FieldBaseProps['label'];
   required?: RAC.DateFieldProps<DateValue>['isRequired'];
   disabled?: RAC.DateFieldProps<DateValue>['isDisabled'];
   error?: RAC.DateFieldProps<DateValue>['isInvalid'];

@@ -23,7 +23,9 @@ import { mapCheckboxProps } from './utils';
 
 // Props
 // ---------------
-export interface TableSelectAllCell extends WidthProp {
+export interface TableSelectAllCell
+  extends WidthProp,
+    Pick<JSX.IntrinsicElements['td'], 'align'> {
   column: GridNode<object>;
 }
 
@@ -32,6 +34,7 @@ export interface TableSelectAllCell extends WidthProp {
 export const TableSelectAllCell = ({
   column,
   width = 'auto',
+  align,
 }: TableSelectAllCell) => {
   const ref = useRef(null);
   const { state, classNames } = useTableContext();
@@ -60,6 +63,7 @@ export const TableSelectAllCell = ({
         ['text-center align-middle leading-none'],
         classNames?.header
       )}
+      align={align}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
     >
