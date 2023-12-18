@@ -19,6 +19,14 @@ const meta = {
         type: { summary: 'boolean' },
       },
     },
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+      table: {
+        type: { summary: 'boolean' },
+      },
+    },
     label: {
       control: {
         type: 'text',
