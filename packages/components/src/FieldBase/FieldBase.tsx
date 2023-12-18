@@ -10,8 +10,8 @@ import type { WidthProp } from '@marigold/system';
 import { cn, width as twWidth, useClassNames } from '@marigold/system';
 import type { DistributiveOmit, FixedForwardRef } from '@marigold/types';
 
-import type { HelpTextProps } from '../HelpText/_HelpText';
-import { HelpText } from '../HelpText/_HelpText';
+import type { HelpTextProps } from '../HelpText/HelpText';
+import { HelpText } from '../HelpText/HelpText';
 import { Label } from '../Label';
 
 const fixedForwardRef = forwardRef as FixedForwardRef;
