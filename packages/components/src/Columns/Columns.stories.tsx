@@ -18,8 +18,8 @@ const meta = {
         [3, 6, 3],
         [8, 2, 2],
       ],
-      description: 'array of numbers to set width of every column',
-
+      description:
+        'array of numbers to set width of every column. can be any value.',
       table: {
         type: { summary: 'select' },
         defaultValue: { summary: [2, 8, 2] },
@@ -30,7 +30,8 @@ const meta = {
         type: 'text',
       },
 
-      description: 'Responsive Style Value',
+      description:
+        'Space between the single columns. For that we use tailwind tokens. ',
     },
     collapseAt: {
       control: {
@@ -40,7 +41,7 @@ const meta = {
         type: { summary: 'string' },
         defaultValue: { summary: '40em' },
       },
-      description: 'Responsive Style Value',
+      description: 'The value at which the columns should be wrap down',
     },
     stretch: {
       control: {
@@ -55,7 +56,6 @@ const meta = {
   },
   args: {
     collapseAt: '40em',
-    stretch: false,
     columns: [2, 8, 2],
   },
 } satisfies Meta<typeof Columns>;

@@ -16,10 +16,11 @@ const meta = {
       control: {
         type: 'text',
       },
-      description: 'Center maximum width',
+      description:
+        'the maximum width of the center element. Should be a string value (e.g. 500px)',
       table: {
         defaultValue: {
-          summary: 'none',
+          summary: 'not set',
         },
       },
     },
@@ -27,7 +28,8 @@ const meta = {
       control: {
         type: 'text',
       },
-      description: 'Responsive Style Value',
+      description:
+        'The gap between more elements in a center element, we use tailwind tokens for that',
       table: {
         defaultValue: {
           summary: 'none',
@@ -64,6 +66,16 @@ export const Icon: Story = {
       <div className="h-[40px] w-[40px] bg-blue-700">
         <Ticket className="fill-white" />
       </div>
+    </Center>
+  ),
+};
+
+export const SpaceCenter: Story = {
+  render: args => (
+    <Center maxWidth="500px" space={4} {...args}>
+      <div className="h-28 w-1/2 border border-slate-300 bg-slate-200" />
+      <div className="h-28 w-1/2 border border-slate-300 bg-slate-200" />
+      <div className="h-28 w-1/2 border border-slate-300 bg-slate-200" />
     </Center>
   ),
 };
