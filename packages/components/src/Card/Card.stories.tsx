@@ -16,9 +16,10 @@ const meta = {
   argTypes: {
     variant: {
       control: {
-        type: 'text',
+        type: 'radio',
       },
       description: 'The variant of the card',
+      options: ['default', 'hovering'],
     },
     size: {
       control: {

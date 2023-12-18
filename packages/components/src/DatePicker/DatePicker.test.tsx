@@ -2,8 +2,7 @@
 
 /* eslint-disable testing-library/no-node-access */
 import { CalendarDate } from '@internationalized/date';
-import { screen, waitFor } from '@testing-library/react';
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { Theme, cva } from '@marigold/system';
@@ -48,6 +47,8 @@ const theme: Theme = {
       calendar: cva(''),
       calendarCell: cva(''),
       calendarControllers: cva(''),
+      calendarHeader: cva(''),
+      calendarGrid: cva(''),
     },
     Select: {
       icon: cva(''),

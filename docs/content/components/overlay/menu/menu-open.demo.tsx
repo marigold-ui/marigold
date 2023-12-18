@@ -4,26 +4,21 @@ import { Button, Menu, Stack } from '@marigold/components';
 
 export default () => {
   const [open, setOpen] = useState(false);
-  const handleAction = () => {
+  const handleOpen = () => {
     setOpen(!open);
   };
 
   return (
     <Stack space={4}>
-      <Button variant="primary" onPress={() => setOpen(!open)}>
+      <Button variant="primary" onPress={handleOpen}>
         Open Menu with me
       </Button>
       <hr />
-      <Menu.Trigger open={open}>
-        <Button variant="menu" size="small">
-          Menu
-        </Button>
-        <Menu onAction={handleAction}>
-          <Menu.Item key="one">Settings</Menu.Item>
-          <Menu.Item key="two">Preferences</Menu.Item>
-          <Menu.Item key="three">Save</Menu.Item>
-        </Menu>
-      </Menu.Trigger>
+      <Menu label="Menu" onClose={handleOpen} open={open}>
+        <Menu.Item id="one">Settings</Menu.Item>
+        <Menu.Item id="two">Preferences</Menu.Item>
+        <Menu.Item id="three">Save</Menu.Item>
+      </Menu>
     </Stack>
   );
 };

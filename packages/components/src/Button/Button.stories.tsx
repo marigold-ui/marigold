@@ -14,25 +14,45 @@ const meta = {
         type: 'boolean',
       },
       description: 'Disable the button',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     fullWidth: {
       control: {
         type: 'boolean',
       },
       description: 'Take availble width',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     size: {
       control: {
-        type: 'text',
+        type: 'radio',
       },
       description: 'Size of the button',
+      options: ['default', 'small'],
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'default' },
+      },
     },
     variant: {
       control: {
-        type: 'text',
+        type: 'radio',
       },
+      options: [
+        'primary',
+        'secondary',
+        'ghost',
+        'link',
+        'text',
+        'icon',
+        'menu',
+      ],
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'primary' },
@@ -51,6 +71,7 @@ const meta = {
   args: {
     variant: 'primary',
     children: 'Click me!',
+    size: 'default',
   },
 } satisfies Meta<typeof Button>;
 
@@ -71,7 +92,7 @@ export const WithIcon: Story = {
 };
 
 export const OnPress: Story = {
-  render: args => <Button {...args} onPress={(e: any) => console.log(e)} />,
+  render: args => <Button {...args} onPress={() => alert('Button clicked.')} />,
 };
 
 export const FullWidth: Story = {

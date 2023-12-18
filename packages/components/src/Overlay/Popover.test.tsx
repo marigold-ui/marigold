@@ -1,14 +1,11 @@
 /* eslint-disable testing-library/no-node-access */
-import { screen } from '@testing-library/react';
-import { forwardRef } from 'react';
-
-import { OverlayProvider } from '@react-aria/overlays';
-import { useObjectRef } from '@react-aria/utils';
-
-import { useOverlayTriggerState } from '@react-stately/overlays';
+import { cleanup, screen } from '@testing-library/react';
+import React from 'react';
 
 import { Theme, cva } from '@marigold/system';
 
+import { Button } from '../Button';
+import { Text } from '../Text';
 import { setup } from '../test.utils';
 import { Popover } from './Popover';
 
@@ -23,46 +20,103 @@ const theme: Theme = {
       },
     }),
     Underlay: cva(),
+    Dialog: {
+      closeButton: cva('p-3'),
+      container: cva('p-2'),
+    },
+    Button: cva('bg-red-300'),
+    Text: cva('text-black-300'),
   },
 };
-interface TestPopoverProps {
-  open: boolean;
-}
-const TestPopover = forwardRef<HTMLDivElement, TestPopoverProps>(
-  ({ open }, ref) => {
-    const popoverRef = useObjectRef(ref);
-    const state = useOverlayTriggerState({ isOpen: open });
-
-    return (
-      <OverlayProvider>
-        <Popover triggerRef={popoverRef} state={state}>
-          <div>something</div>
-        </Popover>
-      </OverlayProvider>
-    );
-  }
-);
 
 const { render } = setup({ theme });
 
-test('renders open popover', () => {
-  render(<TestPopover open={true} />);
+/**
+ * We need to mock `matchMedia` because JSOM does not
+ * implements it.
+ */
 
-  const popover = screen.getByRole('presentation');
+const mockMatchMedia = (matches: string[]) =>
+  jest.fn().mockImplementation(query => ({
+    matches: matches.includes(query),
+  }));
+
+window.matchMedia = mockMatchMedia([
+  'screen and (min-width: 40em)',
+  'screen and (min-width: 52em)',
+  'screen and (min-width: 64em)',
+]);
+
+afterEach(cleanup);
+
+test('renders open popover', () => {
+  const ref = React.createRef<HTMLDivElement>();
+  render(
+    <>
+      <div ref={ref}>Trigger</div>
+      <Popover data-testid="popover" open triggerRef={ref}>
+        <Button>open dialog</Button>
+        <Text>this is popover content </Text>
+      </Popover>
+    </>
+  );
+
+  const popover = screen.getByTestId('popover');
   expect(popover).toBeInTheDocument();
 });
 
 test('popover is per default closed', () => {
-  render(<TestPopover open={false} />);
-
-  const popover = screen.queryByRole('presentation');
+  const ref = React.createRef<HTMLDivElement>();
+  render(
+    <>
+      <div ref={ref}>Trigger</div>
+      <Popover data-testid="popover" triggerRef={ref}>
+        <Button>open dialog</Button>
+        <Text>this is popover content </Text>
+      </Popover>
+    </>
+  );
+  const popover = screen.queryByTestId('popover');
   expect(popover).not.toBeInTheDocument();
 });
 
 test('popover has children', () => {
-  render(<TestPopover open={true} />);
+  const ref = React.createRef<HTMLDivElement>();
 
-  const popover = screen.getByRole('presentation');
+  render(
+    <>
+      <div ref={ref}>Trigger</div>
+      <Popover data-testid="popover" open triggerRef={ref}>
+        <Button>open dialog</Button>
+        <Text>this is popover content </Text>
+      </Popover>
+    </>
+  );
+
+  const popover = screen.getByTestId('popover');
   expect(popover).toBeInTheDocument();
   expect(popover.firstChild).toBeInTheDocument();
+});
+
+test('popover is small screen', () => {
+  const ref = React.createRef<HTMLDivElement>();
+
+  window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+
+  render(
+    <>
+      <div ref={ref}>Trigger</div>
+      <Button>open dialog</Button>
+      <Popover data-testid="popover" triggerRef={ref} open>
+        <Text>this is popover content </Text>
+      </Popover>
+    </>
+  );
+
+  const popover = screen.getByTestId('popover');
+
+  expect(popover.className).toMatchInlineSnapshot(
+    `"!left-0 bottom-0 !mt-auto flex !max-h-fit w-full flex-col"`
+  );
+  expect(popover).toBeInTheDocument();
 });

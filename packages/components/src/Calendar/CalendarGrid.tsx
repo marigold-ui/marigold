@@ -1,74 +1,33 @@
-import { getWeeksInMonth, startOfWeek, today } from '@internationalized/date';
-import { useMemo } from 'react';
+import React from 'react';
+import {
+  CalendarCell,
+  CalendarGrid,
+  CalendarGridBody,
+} from 'react-aria-components';
 
-import { AriaCalendarGridProps, useCalendarGrid } from '@react-aria/calendar';
-import { useLocale } from '@react-aria/i18n';
-import { useDateFormatter } from '@react-aria/i18n';
+import { cn, useClassNames } from '@marigold/system';
 
-import { CalendarState } from '@react-stately/calendar';
+import { CalendarGridHeader } from './CalendarGridHeader';
 
-import { CalendarCell } from './CalendarCell';
-
-export interface CalendarGridProps extends AriaCalendarGridProps {
-  state: CalendarState;
-}
-
-export const CalendarGrid = ({ state, ...props }: CalendarGridProps) => {
-  const { locale } = useLocale();
-  const { gridProps, headerProps } = useCalendarGrid(props, state);
-  const numberOfWeeksInMonth = getWeeksInMonth(
-    state.visibleRange.start,
-    locale
-  );
-
-  const dayFormatter = useDateFormatter({
-    weekday: 'short',
-    timeZone: state.timeZone,
-  });
-
-  const weekDays = useMemo(() => {
-    const weekStart = startOfWeek(today(state.timeZone), locale);
-    return [...new Array(7).keys()].map(index => {
-      const date = weekStart.add({ days: index });
-      const dateDay = date.toDate(state.timeZone);
-      return dayFormatter.format(dateDay);
-    });
-  }, [locale, state.timeZone, dayFormatter]);
+const _CalendarGrid = () => {
+  const classNames = useClassNames({ component: 'Calendar' });
 
   return (
-    <table
-      className="w-full border-spacing-[6px]"
-      {...gridProps}
-      cellPadding="8"
-    >
-      <thead {...headerProps}>
-        <tr>
-          {weekDays.map((day, index) => (
-            <th style={{ fontWeight: 'bolder' }} key={index}>
-              {day.substring(0, 2)}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {[...new Array(numberOfWeeksInMonth).keys()].map(weekIndex => (
-          <tr key={weekIndex}>
-            {state
-              .getDatesInWeek(weekIndex)
-              .map((date, i) =>
-                date ? (
-                  <CalendarCell
-                    key={i}
-                    date={date}
-                    state={state as CalendarState}
-                  />
-                ) : (
-                  <td key={i} />
-                )
-              )}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <CalendarGrid className={classNames.calendarGrid}>
+      <CalendarGridHeader />
+      <CalendarGridBody>
+        {date => (
+          <CalendarCell
+            date={date}
+            className={cn(
+              'flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full p-[5.3px] text-sm font-normal aria-disabled:cursor-default',
+              classNames.calendarCell
+            )}
+          />
+        )}
+      </CalendarGridBody>
+    </CalendarGrid>
   );
 };
+
+export { _CalendarGrid as CalendarGrid };

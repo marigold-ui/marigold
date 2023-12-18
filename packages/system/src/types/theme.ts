@@ -100,7 +100,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<
-      'tag' | 'gridCell' | 'closeButton',
+      'tag' | 'listItems' | 'closeButton',
       ComponentStyleFunction<string, string>
     >;
     Text?: ComponentStyleFunction<string, string>;
@@ -115,7 +115,11 @@ export type Theme = {
     >;
     Underlay?: ComponentStyleFunction<string, string>;
     Calendar?: Record<
-      'calendar' | 'calendarCell' | 'calendarControllers',
+      | 'calendar'
+      | 'calendarCell'
+      | 'calendarControllers'
+      | 'calendarHeader'
+      | 'calendarGrid',
       ComponentStyleFunction<string, string>
     >;
     DatePicker?: Record<

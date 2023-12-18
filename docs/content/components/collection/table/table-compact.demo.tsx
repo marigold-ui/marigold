@@ -4,7 +4,7 @@ export default () => (
   <Table
     aria-label="Table with multiple selection"
     selectionMode="multiple"
-    variant="compact"
+    size="compact"
   >
     <Table.Header>
       <Table.Column>Name</Table.Column>

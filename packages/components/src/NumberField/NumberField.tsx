@@ -5,7 +5,7 @@ import { Group, NumberField } from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 
 import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
-import { Input } from '../Input/_Input';
+import { Input } from '../Input/Input';
 import { StepButton } from './StepButton';
 
 // Props
@@ -31,6 +31,7 @@ export interface NumberFieldProps
   error?: RAC.NumberFieldProps['isInvalid'];
   readOnly?: RAC.NumberFieldProps['isReadOnly'];
   hideStepper?: boolean;
+  placeholder?: string;
 }
 
 // Component

@@ -1,92 +1,72 @@
-import { ReactNode, RefObject, forwardRef, useRef } from 'react';
+import { forwardRef } from 'react';
+import type RAC from 'react-aria-components';
+import { Popover } from 'react-aria-components';
 
-import { FocusScope } from '@react-aria/focus';
-import {
-  AriaPopoverProps,
-  DismissButton,
-  usePopover,
-} from '@react-aria/overlays';
+import { cn, useClassNames, useSmallScreen, useTheme } from '@marigold/system';
 
-import { OverlayTriggerState } from '@react-stately/overlays';
-
-import { cn, useClassNames } from '@marigold/system';
-
-import { Overlay } from './Overlay';
 import { Underlay } from './Underlay';
 
+// Props
+// ---------------
 export interface PopoverProps
-  extends Pick<AriaPopoverProps, 'triggerRef' | 'scrollRef' | 'isNonModal'> {
-  keyboardDismissDisabled?: AriaPopoverProps['isKeyboardDismissDisabled'];
-  state: OverlayTriggerState;
-  children: ReactNode;
+  extends Omit<
+    RAC.PopoverProps,
+    'isOpen' | 'isKeyboardDismissDisabled' | 'style' | 'className'
+  > {
+  keyboardDismissDisabled?: boolean;
+  open?: boolean;
 }
 
-interface PopoverWrapperProps extends PopoverProps {}
-
-export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
-  (props, ref) => {
-    const fallbackRef = useRef(null);
-    const popoverRef = ref || fallbackRef;
-    let { children, state, ...otherProps } = props;
-    return (
-      <Overlay open={state.isOpen} {...otherProps}>
-        <PopoverWrapper ref={popoverRef} {...props}>
-          {children}
-        </PopoverWrapper>
-      </Overlay>
-    );
-  }
-);
-
-const PopoverWrapper = forwardRef(
-  (
-    {
-      children,
-      isNonModal,
-      state,
-      keyboardDismissDisabled,
-      ...props
-    }: PopoverWrapperProps,
-    ref: RefObject<HTMLDivElement>
-  ) => {
-    const { popoverProps, underlayProps, placement } = usePopover(
-      {
-        ...props,
-        isNonModal,
-        isKeyboardDismissDisabled: keyboardDismissDisabled,
-        popoverRef: ref,
-        placement: 'bottom left',
-      },
-      state
-    );
+// Component
+// ---------------
+const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
+  ({ keyboardDismissDisabled, placement, open, children, ...rest }, ref) => {
+    const props: RAC.PopoverProps = {
+      isKeyboardDismissDisabled: keyboardDismissDisabled,
+      isOpen: open,
+      placement,
+      ...rest,
+    };
     const classNames = useClassNames({
       component: 'Popover',
       variant: placement,
+      // Make Popover as wide as trigger element
+      className: 'w-[--trigger-width]',
     });
 
+    const isSmallScreen = useSmallScreen();
+    const theme = useTheme();
+
     return (
-      <FocusScope restoreFocus>
-        {!isNonModal && <Underlay {...underlayProps} />}
-        <div
-          {...popoverProps}
-          className={cn(
-            'flex flex-col sm:max-h-[75vh] lg:max-h-[45vh]',
-            classNames
-          )}
-          style={{
-            ...popoverProps.style,
-            minWidth: props.triggerRef.current
-              ? (props.triggerRef.current as HTMLElement).offsetWidth
-              : undefined,
-          }}
-          ref={ref}
-          role="presentation"
-        >
-          {!isNonModal && <DismissButton onDismiss={state.close} />}
-          {children}
-          <DismissButton onDismiss={state.close} />
-        </div>
-      </FocusScope>
+      <>
+        {isSmallScreen ? (
+          <>
+            <Underlay open={open} variant="modal" />
+            <Popover
+              ref={ref}
+              {...props}
+              className={cn(
+                '!left-0 bottom-0 !mt-auto flex !max-h-fit w-full flex-col'
+              )}
+              data-theme={theme.name}
+            >
+              {children}
+            </Popover>
+          </>
+        ) : (
+          <Popover
+            ref={ref}
+            {...props}
+            className={classNames}
+            offset={0}
+            data-theme={theme.name}
+          >
+            {children}
+          </Popover>
+        )}
+      </>
     );
   }
 );
+
+export { _Popover as Popover };

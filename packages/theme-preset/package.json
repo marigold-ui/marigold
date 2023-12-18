@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-preset",
-  "version": "1.2.3",
+  "version": "1.2.6",
   "description": "Create a tailwind Preset for Marigold",
   "license": "MIT",
   "keywords": [
@@ -25,13 +25,13 @@
     "tailwindcss-react-aria-components": "1.0.0-rc.0"
   },
   "peerDependencies": {
-    "postcss": "8.4.31",
-    "tailwindcss": "3.3.5"
+    "postcss": "8.4.32",
+    "tailwindcss": "3.3.6"
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "postcss": "8.4.31",
-    "tailwindcss": "3.3.5",
+    "postcss": "8.4.32",
+    "tailwindcss": "3.3.6",
     "tsup": "7.2.0"
   },
   "scripts": {

@@ -1,51 +1,14 @@
-import { useRef } from 'react';
-
-import { useOption } from '@react-aria/listbox';
-import { mergeProps } from '@react-aria/utils';
-
-import type { ListState } from '@react-stately/list';
-
-import type { Node } from '@react-types/shared';
-
-import { useStateProps } from '@marigold/system';
+import { ListBoxItem } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import { useListBoxContext } from './Context';
 
-// Props
-// ---------------
-export interface ListBoxOptionProps {
-  item: Node<unknown>;
-  state: ListState<unknown>;
-}
+export interface ListBoxItemProps
+  extends Omit<RAC.ListBoxItemProps, 'style' | 'className'> {}
 
-// Component
-// ---------------
-export const ListBoxOption = ({ item, state }: ListBoxOptionProps) => {
-  const ref = useRef<HTMLLIElement>(null);
-
-  const { optionProps, isSelected, isDisabled, isFocused } = useOption(
-    {
-      key: item.key,
-    },
-    state,
-    ref
-  );
-
-  const { onPointerUp, ...props } = optionProps;
+export const _ListBoxItem = (props: ListBoxItemProps) => {
   const { classNames } = useListBoxContext();
-  const stateProps = useStateProps({
-    selected: isSelected,
-    disabled: isDisabled,
-    focusVisible: isFocused,
-  });
-
-  return (
-    <li
-      ref={ref}
-      className={classNames.option}
-      {...mergeProps(props, { onPointerDown: onPointerUp }, { ...stateProps })}
-    >
-      {item.props.children}
-    </li>
-  );
+  return <ListBoxItem {...props} className={classNames.option} />;
 };
+
+export { _ListBoxItem as ListBoxItem };

@@ -1,18 +1,24 @@
 import { CalendarDate } from '@internationalized/date';
-import { Dispatch, Key, SetStateAction, useEffect, useRef } from 'react';
+import {
+  Dispatch,
+  Key,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useRef,
+} from 'react';
+import { CalendarStateContext } from 'react-aria-components';
 
 import { useDateFormatter } from '@react-aria/i18n';
-
-import { CalendarState } from '@react-stately/calendar';
 
 import { Button } from '../Button';
 
 interface YearDropdownProps {
-  state: CalendarState;
   setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
 }
 
-const YearDropdown = ({ state, setSelectedDropdown }: YearDropdownProps) => {
+const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
+  const state = useContext(CalendarStateContext)!;
   const years: { value: CalendarDate; formatted: string }[] = [];
   let formatter = useDateFormatter({
     year: 'numeric',
@@ -59,6 +65,7 @@ const YearDropdown = ({ state, setSelectedDropdown }: YearDropdownProps) => {
               style={{ height: '100%', width: '100%' }}
             >
               <Button
+                slot="previous"
                 disabled={state.isDisabled}
                 variant={isActive ? 'secondary' : 'text'}
                 size="small"
@@ -79,4 +86,4 @@ const YearDropdown = ({ state, setSelectedDropdown }: YearDropdownProps) => {
   );
 };
 
-export default YearDropdown;
+export default YearListBox;

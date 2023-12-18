@@ -1,5 +1,91 @@
 # @marigold/components
 
+## 7.0.0
+
+### Major Changes
+
+- [#3542](https://github.com/marigold-ui/marigold/pull/3542) [`3952ee0e8`](https://github.com/marigold-ui/marigold/commit/3952ee0e893704e791bc6a51ed57b3dc80b78ece) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: Menu react aria components
+
+  > [!WARNING] > **BREAKCING CHANGE** `<Menu.Item>` no longer us the `key` prop as unique identifier, use the `id` prop instead. To migrate, rename all `<Menu.item key="something"/>` to `<Menu.item id="something"/>`.
+
+- [#3535](https://github.com/marigold-ui/marigold/pull/3535) [`e4cfbc7d1`](https://github.com/marigold-ui/marigold/commit/e4cfbc7d1f07015532f359217d2b8d0d74f932bf) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Migrate Select component to RAC
+
+  > [!WARNING] > **BREAKCING CHANGE** `<Select.Option>` no longer us the `key` prop as unique identifier, use the `id` prop instead. To migrate, rename all `<Select.Option key="something"/>` to `<Select.Option id="something"/>`.
+
+- [#3546](https://github.com/marigold-ui/marigold/pull/3546) [`9c61ffe09`](https://github.com/marigold-ui/marigold/commit/9c61ffe09271c4f4b2ab9907472763d222d24f04) Thanks [@sebald](https://github.com/sebald)! - refa: Migrate `ComBox` to RAC
+
+  > [!WARNING] > **BREAKCING CHANGE** `<ComboBox.Item>` no longer us the `key` prop as unique identifier, use the `id` prop instead. To migrate, rename all `<ComboBox.item key="something"/>` to `<ComboBox.item id="something"/>`.
+
+- [#3550](https://github.com/marigold-ui/marigold/pull/3550) [`30167bb78`](https://github.com/marigold-ui/marigold/commit/30167bb78f11c557c45c19dc25a7d66db805879b) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: Autocomplete
+
+  > [!WARNING] > **BREAKCING CHANGE** `<Autocomplete.Item>` no longer us the `key` prop as unique identifier, use the `id` prop instead. To migrate, rename all `<Autocomplete.item key="something"/>` to `<Autocomplete.item id="something"/>`.
+
+### Patch Changes
+
+- [#3544](https://github.com/marigold-ui/marigold/pull/3544) [`dc5c193e0`](https://github.com/marigold-ui/marigold/commit/dc5c193e02a71eb16a064b50dad5a51d4f9b0c2b) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: new table variant borderedTable for b2b theme
+
+- [#3527](https://github.com/marigold-ui/marigold/pull/3527) [`4ae97c004`](https://github.com/marigold-ui/marigold/commit/4ae97c004a68c4331cd8fa0fdbc276fc3f7f452d) Thanks [@aromko](https://github.com/aromko)! - chore[DST-258] `<Checkbox>` storybook improvements
+
+- [#3540](https://github.com/marigold-ui/marigold/pull/3540) [`72125e114`](https://github.com/marigold-ui/marigold/commit/72125e11492d60f08665054e4427de24cde337be) Thanks [@aromko](https://github.com/aromko)! - RAC: migrate `<Calendar>`, `<DatePicker>`, `<DateField>` component
+
+- [#3529](https://github.com/marigold-ui/marigold/pull/3529) [`f3a45c302`](https://github.com/marigold-ui/marigold/commit/f3a45c302852c460395411cdafa1558120227efb) Thanks [@aromko](https://github.com/aromko)! - RAC: use new `<Input>` component in all affected components
+
+- Updated dependencies [[`72125e114`](https://github.com/marigold-ui/marigold/commit/72125e11492d60f08665054e4427de24cde337be)]:
+  - @marigold/system@7.0.0
+  - @marigold/icons@1.2.32
+
+## 6.11.0
+
+### Minor Changes
+
+- [#3520](https://github.com/marigold-ui/marigold/pull/3520) [`bc96dda88`](https://github.com/marigold-ui/marigold/commit/bc96dda88894271bc7fdc4a01270932855337af8) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Introduce RAC popover component
+
+- [#3445](https://github.com/marigold-ui/marigold/pull/3445) [`91badb0e1`](https://github.com/marigold-ui/marigold/commit/91badb0e1da21d8cefa36c48c57d53c5abe54123) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - migrate ListBox component to RAC
+
+### Patch Changes
+
+- [#3522](https://github.com/marigold-ui/marigold/pull/3522) [`a748252c5`](https://github.com/marigold-ui/marigold/commit/a748252c5e233d37548dd0b9d9dd18cbbbd6fdb5) Thanks [@aromko](https://github.com/aromko)! - chore[DST-255]: `<Button>` storybook improvements
+
+- [#3537](https://github.com/marigold-ui/marigold/pull/3537) [`148034202`](https://github.com/marigold-ui/marigold/commit/148034202a502f9c669c5c500c6dcae13924b409) Thanks [@sebald](https://github.com/sebald)! - feat: Make `Popover` at least as wide as trigger element
+
+- [#3531](https://github.com/marigold-ui/marigold/pull/3531) [`071bd792a`](https://github.com/marigold-ui/marigold/commit/071bd792ac0ed9fc0adbb7aa9ae781ed7fa280fd) Thanks [@aromko](https://github.com/aromko)! - chore: add placeholder to TextFieldProps
+
+- [#3530](https://github.com/marigold-ui/marigold/pull/3530) [`51611dbe0`](https://github.com/marigold-ui/marigold/commit/51611dbe075fa43aef219bf30a196b34b3ec7d73) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: remove Dialog trigger out of Popover
+
+- [#3521](https://github.com/marigold-ui/marigold/pull/3521) [`f972b3a25`](https://github.com/marigold-ui/marigold/commit/f972b3a2579483c5e8632cc13ce6d4dbacc18a73) Thanks [@sarahgm](https://github.com/sarahgm)! - chore[DST-256]: `<XLoader>` storybook improvements
+
+- [#3525](https://github.com/marigold-ui/marigold/pull/3525) [`cf59ce1e4`](https://github.com/marigold-ui/marigold/commit/cf59ce1e4154e670b51ee43387e372e3f7ec8e60) Thanks [@aromko](https://github.com/aromko)! - chore[DST-257]: `<Card>`storybook improvements
+
+- [#3536](https://github.com/marigold-ui/marigold/pull/3536) [`bc09a9ce1`](https://github.com/marigold-ui/marigold/commit/bc09a9ce1c917b0fc3cfbd3459a0c83cf804308e) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: add "Tray" behavior inside Popover
+
+- [#3519](https://github.com/marigold-ui/marigold/pull/3519) [`849f4c534`](https://github.com/marigold-ui/marigold/commit/849f4c534f71ce64bb7181b2bdc60ff4864b3ce1) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: remove unused `stretch` prop and improve storybook story
+
+- [#3513](https://github.com/marigold-ui/marigold/pull/3513) [`cdc17ee83`](https://github.com/marigold-ui/marigold/commit/cdc17ee83771dc367d29126903feca831c43a421) Thanks [@aromko](https://github.com/aromko)! - RAC: migrate `<TagGroup>` component
+
+- Updated dependencies [[`cdc17ee83`](https://github.com/marigold-ui/marigold/commit/cdc17ee83771dc367d29126903feca831c43a421)]:
+  - @marigold/system@6.11.0
+  - @marigold/icons@1.2.31
+
+## 6.10.0
+
+### Minor Changes
+
+- [#3501](https://github.com/marigold-ui/marigold/pull/3501) [`14f5d5d30`](https://github.com/marigold-ui/marigold/commit/14f5d5d301f6e2dd49667439ecda54c2ce7d08a7) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Migrate Tabs to RAC Tabs
+
+- [#3514](https://github.com/marigold-ui/marigold/pull/3514) [`5a3d71cae`](https://github.com/marigold-ui/marigold/commit/5a3d71cae1b4243db94ff997313ceada2fa3bfeb) Thanks [@sebald](https://github.com/sebald)! - feat([DST-249]): Add feedback variants to `<Badge>`
+
+### Patch Changes
+
+- [#3512](https://github.com/marigold-ui/marigold/pull/3512) [`213d32f5b`](https://github.com/marigold-ui/marigold/commit/213d32f5b79ee9063e30fbe52c064560f771df21) Thanks [@sebald](https://github.com/sebald)! - fix([DST-243]): Fix `<Listbox>` overflowing the `<Popover>`
+
+- [#3515](https://github.com/marigold-ui/marigold/pull/3515) [`aac41db30`](https://github.com/marigold-ui/marigold/commit/aac41db30bfb7613bf9ba537d1030cd5c8d1baa0) Thanks [@sebald](https://github.com/sebald)! - fix: SearchField is missing from export index
+
+- [#3516](https://github.com/marigold-ui/marigold/pull/3516) [`71eb13b30`](https://github.com/marigold-ui/marigold/commit/71eb13b30b3d94a8bacb1f69f457c13d7e33fad2) Thanks [@aromko](https://github.com/aromko)! - chore: remove some unnecessary exports
+
+- Updated dependencies [[`14f5d5d30`](https://github.com/marigold-ui/marigold/commit/14f5d5d301f6e2dd49667439ecda54c2ce7d08a7)]:
+  - @marigold/system@6.10.0
+  - @marigold/icons@1.2.30
+
 ## 6.9.1
 
 ### Patch Changes

@@ -65,8 +65,8 @@ export const TableRow = ({ children, row }: TableRowProps) => {
           !interactive
             ? 'cursor-text'
             : disabled
-            ? 'cursor-default'
-            : 'cursor-pointer',
+              ? 'cursor-default'
+              : 'cursor-pointer',
         ],
         classNames?.row
       )}

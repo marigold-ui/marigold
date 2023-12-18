@@ -5,8 +5,16 @@ export const Badge: ThemeComponent<'Badge'> = cva(
   {
     variants: {
       variant: {
+        default: 'bg-bg-neutral',
+        inverted: 'text-text-light bg-bg-surface-lowered',
+        success: 'text-text-light bg-bg-success',
         info: 'text-text-light bg-bg-info',
+        warning: 'bg-bg-warning',
+        error: 'text-text-light bg-bg-error',
       },
+    },
+    defaultVariants: {
+      variant: 'default',
     },
   }
 );
