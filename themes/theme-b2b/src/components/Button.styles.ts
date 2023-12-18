@@ -28,7 +28,7 @@ export const Button: ThemeComponent<'Button'> = cva(
           'text-text-body hover:bg-bg-hover active:bg-bg-secondary-active active:text-text-light',
         ],
         menu: [
-          'text-text-body bg-bg-body hover:text-text-light hover:bg-bg-secondary-hover',
+          'text-text-body bg-bg-surface hover:text-text-light hover:bg-bg-secondary-hover',
         ],
       },
       size: {

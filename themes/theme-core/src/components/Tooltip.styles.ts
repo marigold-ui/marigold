@@ -9,7 +9,7 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
     'placement-l:mr-1',
   ]),
   arrow: cva([
-    'fill-bg-surface stroke-border-light',
+    'fill-bg-surface stroke-border-inverted',
 
     // right
     '[&>svg]:placement-r:rotate-90',
