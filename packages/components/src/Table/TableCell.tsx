@@ -10,11 +10,12 @@ import { useStateProps } from '@marigold/system';
 
 import { useTableContext } from './Context';
 
-export interface TableCellProps {
+export interface TableCellProps
+  extends Pick<JSX.IntrinsicElements['td'], 'align'> {
   cell: GridNode<object>;
 }
 
-export const TableCell = ({ cell }: TableCellProps) => {
+export const TableCell = ({ cell, align }: TableCellProps) => {
   const ref = useRef(null);
   const { interactive, state, classNames } = useTableContext();
   const disabled = state.disabledKeys.has(cell.parentKey!);
@@ -25,7 +26,6 @@ export const TableCell = ({ cell }: TableCellProps) => {
     state,
     ref
   );
-
   const cellProps = interactive
     ? gridCellProps
     : {
@@ -47,6 +47,7 @@ export const TableCell = ({ cell }: TableCellProps) => {
       className={classNames?.cell}
       {...mergeProps(cellProps, focusProps)}
       {...stateProps}
+      align={align}
     >
       {cell.rendered}
     </td>
