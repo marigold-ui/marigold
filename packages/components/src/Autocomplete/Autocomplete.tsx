@@ -19,9 +19,8 @@ import { AutocompleteClearButton } from './ClearButton';
 interface SearchInputProps {
   onSubmit?: (key: Key | null, value: string | null) => void;
   ref?: Ref<HTMLInputElement> | undefined;
-  placeholder?: string;
 }
-const SearchInput = ({ onSubmit, placeholder, ref }: SearchInputProps) => {
+const SearchInput = ({ onSubmit, ref }: SearchInputProps) => {
   const state = React.useContext(ComboBoxStateContext);
 
   return (
@@ -88,6 +87,7 @@ export interface AutocompleteProps
   readOnly?: RAC.ComboBoxProps<object>['isReadOnly'];
   variant?: string;
   size?: string;
+  placeholder?: string;
   /**
    * Handler that is called when the SearchAutocomplete is submitted.
    *
