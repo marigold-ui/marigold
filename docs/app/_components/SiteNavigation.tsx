@@ -32,7 +32,7 @@ export const SiteNavigation = () => {
           {sections.map(({ name, link }, index) => (
             <NavLink
               variant="main"
-              className="flex items-center gap-4"
+              className="flex items-center gap-6 text-sm font-medium"
               key={index}
               current={pathname === link?.href}
               href={link?.href ?? '/'}
