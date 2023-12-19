@@ -10,7 +10,31 @@ import { Scrollable } from './Scrollable';
 
 const meta = {
   title: 'Components/Scrollable',
-  argTypes: {},
+  argTypes: {
+    width: {
+      control: {
+        type: 'text',
+      },
+      description:
+        'Set the width of the container. For that we use the width tailwind values.',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'full' },
+      },
+    },
+    height: {
+      control: {
+        type: 'text',
+      },
+      description:
+        'Set the height of the container. We use strings as pixel values.',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'none' },
+      },
+    },
+  },
+  args: {},
 } satisfies Meta<typeof Scrollable>;
 
 export default meta;
@@ -39,7 +63,7 @@ export const Vertical: Story = {
 
 export const Horizontal: Story = {
   render: args => (
-    <Scrollable width="1/2" {...args}>
+    <Scrollable {...args} width="1/2">
       <div className="flex gap-2">
         <Card>
           <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
@@ -74,7 +98,7 @@ export const WithTable: Story = {
         <Headline level={3}>My Headline</Headline>
         {tableHeaders.length ? (
           <Stack space={4}>
-            <Scrollable height="200px">
+            <Scrollable height="200px" {...args}>
               <Table
                 aria-label="Todos Table"
                 selectionMode="multiple"
