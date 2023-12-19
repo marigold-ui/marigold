@@ -4,12 +4,8 @@ import { useEffect, useState } from 'react';
 
 import { Card } from '../Card';
 import { Headline } from '../Headline';
-import { Image } from '../Image';
-import { Inline } from '../Inline';
 import { Stack } from '../Stack';
 import { Table } from '../Table';
-import { Text } from '../Text';
-import { Tiles } from '../Tiles';
 import { Scrollable } from './Scrollable';
 
 const meta = {
