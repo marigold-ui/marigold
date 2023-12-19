@@ -98,7 +98,7 @@ export const AccordionItem = ({
         className={
           expanded || defaultExpanded
             ? classNames.item
-            : cn(classNames.item, classNames.hideItem)
+            : cn(classNames.item, 'hidden')
         }
       >
         {item.props.children}
