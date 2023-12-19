@@ -9,9 +9,9 @@ export const Menu: ThemeComponent<'Menu'> = {
   item: cva([
     'cursor-pointer p-1 focus:outline-0',
     'data-[disabled]:text-text-disabled',
-    'data-[hovered]:text-text-light data-[hovered]:bg-highlight ',
+    'data-[hovered]:text-text-inverted data-[hovered]:bg-highlight',
     'text-xs',
     'data-[selected]:bg-bg-selected',
   ]),
-  section: cva('text-text-dark  border-t p-1 text-xs font-normal'),
+  section: cva('text-text-base  border-t p-1 text-xs font-normal'),
 };

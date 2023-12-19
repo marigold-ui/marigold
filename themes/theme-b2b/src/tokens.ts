@@ -287,8 +287,10 @@ export const shadow = {
 
 // Component Height
 // ---------------
-export const component = {
-  DEFAULT: '32px', // used in inputs
-  sm: '24px', // not used at all
-  lg: '48px', // used in button
+export const height = {
+  component: {
+    DEFAULT: '32px', // used in inputs
+    sm: '24px', // not used at all
+    lg: '48px', // used in button
+  },
 };
