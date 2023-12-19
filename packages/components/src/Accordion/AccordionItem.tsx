@@ -93,14 +93,16 @@ export const AccordionItem = ({
           )}
         </button>
       </FocusRing>
-      {expanded || defaultExpanded ? (
-        <div
-          {...mergeProps(regionProps, focusProps, stateProps)}
-          className={classNames.item}
-        >
-          {item.props.children}
-        </div>
-      ) : null}
+      <div
+        {...mergeProps(regionProps, focusProps, stateProps)}
+        className={
+          expanded || defaultExpanded
+            ? classNames.item
+            : cn(classNames.item, 'hidden')
+        }
+      >
+        {item.props.children}
+      </div>
     </div>
   );
 };
