@@ -2,9 +2,7 @@ import { RefObject } from 'react';
 
 import { useButton } from '@react-aria/button';
 import { useSelectableItem } from '@react-aria/selection';
-import { mergeProps, useId } from '@react-aria/utils';
-import { isAppleDevice } from '@react-aria/utils';
-import { isMac } from '@react-aria/utils';
+import { isAppleDevice, isMac, mergeProps, useId } from '@react-aria/utils';
 
 import { TreeState } from '@react-stately/tree';
 
@@ -71,9 +69,7 @@ export function useAccordionItem<T>(
   // maybe there is another simpler solution
   // before it was `manager.isSelected(key)`
   // but this doesn't support defaultExpandedKeys
-  const isDefaultExpanded = state.expandedKeys.has(
-    item.key.toString().replace('.$', '')
-  );
+  const isDefaultExpanded = state.expandedKeys.has(item.key);
 
   let onSelect = (e: PressEvent | LongPressEvent | PointerEvent) => {
     if (e.pointerType === 'keyboard' && isNonContiguousSelectionModifier(e)) {
