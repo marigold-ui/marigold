@@ -1,14 +1,17 @@
 'type:feature':
-  - packages/*
-  - packages/**/*
-  - themes/**
+  - changed-files:
+      - any-glob-to-any-file: packages/*
+      - any-glob-to-any-file: packages/**/*
+      - any-glob-to-any-file: themes/**
 
 'type:infrastructure':
-  - config/*
-  - config/**/*
-  - .github/*
-  - .github/**/*
+  - changed-files:
+      - any-glob-to-any-file: config/*
+      - any-glob-to-any-file: config/**/*
+      - any-glob-to-any-file: .github/*
+      - any-glob-to-any-file: .github/**/*
 
 'type:docs':
-  - docs/*
-  - docs/**/*
+  - changed-files:
+      - any-glob-to-any-file: docs/*
+      - any-glob-to-any-file: docs/**/*

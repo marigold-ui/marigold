@@ -10,8 +10,8 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   }),
   closeButton: cva([
     'relative right-[-24px] top-[-8px] h-6 w-6',
-    'bg-bg-primary text-text-light',
-    'border-border-primary rounded-sm border',
-    'hover:bg-bg-primary-hover',
+    'bg-bg-brand text-text-inverted',
+    'border-border-brand rounded-sm border',
+    'hover:bg-bg-brand-hover',
   ]),
 };

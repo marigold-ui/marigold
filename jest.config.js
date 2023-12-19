@@ -19,7 +19,10 @@ module.exports = createConfig({
   // that provide a module for that particular name and platform. The platform is generic (no extension).
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
   moduleNameMapper: {
-    '^@marigold/theme-(.+)$': '<rootDir>/themes/theme-$1/src',
+    '^@marigold/theme-(.+)$': [
+      '<rootDir>/themes/theme-$1/src',
+      '<rootDir>/packages/theme-$1',
+    ],
     '^@marigold/(.+)-config$': '<rootDir>/config/$1',
     '^@marigold/(.+)$': '<rootDir>/packages/$1/src',
     '^@marigold/(.*)$': '<rootDir>/dist/myscope/$1',
