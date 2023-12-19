@@ -4,15 +4,15 @@ export const Slider: ThemeComponent<'Slider'> = {
   container: cva(),
   track: cva([
     'rounded-lg border-none border-transparent',
-    'bg-bg-neutral text-transparent',
+    'bg-bg-inverted text-transparent',
   ]),
   thumb: cva([
     'align-middle',
-    'border-border-dark rounded-lg border-4 border-solid',
+    'border-border-base rounded-lg border-4 border-solid',
     'h-4 w-4',
     'bg-bg-surface',
-    'data-[focused]:border-border-focus',
-    'disabled:bg-bg-disabled-dark disabled:border-border-disabled',
+    'rac-focus:border-border-selected',
+    'disabled:bg-bg-inverted-disabled-dark disabled:border-border-base-disabled',
   ]),
-  output: cva('text-text-primary text-sm'),
+  output: cva('text-text-base text-sm'),
 };
