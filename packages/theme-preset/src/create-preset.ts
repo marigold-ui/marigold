@@ -16,6 +16,7 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) =>
         },
       },
       plugins: [
+        require('tailwind-scrollbar')({ nocompatible: true }),
         // @ts-expect-error (are the typings wrong?)
         racSelectorPlugin({ prefix: 'rac' }),
         // Grouping
