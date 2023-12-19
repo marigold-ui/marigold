@@ -5,12 +5,12 @@ export const Badge: ThemeComponent<'Badge'> = cva(
   {
     variants: {
       variant: {
-        default: 'bg-bg-neutral',
-        inverted: 'text-text-light bg-bg-surface-lowered',
-        success: 'text-text-light bg-bg-success',
-        info: 'text-text-light bg-bg-info',
+        default: 'bg-bg-inverted',
+        inverted: 'text-text-inverted bg-bg-surface-overlay',
+        success: 'text-text-inverted bg-bg-success',
+        info: 'text-text-inverted bg-bg-info',
         warning: 'bg-bg-warning',
-        error: 'text-text-light bg-bg-error',
+        error: 'text-text-inverted bg-bg-error',
       },
     },
     defaultVariants: {

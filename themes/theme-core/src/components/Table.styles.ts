@@ -12,8 +12,8 @@ export const Table: ThemeComponent<'Table'> = {
   header: cva(
     [
       'group-aria-[multiselectable]/table:[&:first-child]:w-12',
-      'border-border-white border-x px-2',
-      'bg-bg-surface-lowered text-text-light',
+      'border-x px-2',
+      'bg-bg-surface-overlay text-text-inverted',
       'odd:bg-bg-surface-raised',
       'focus:outline-outline-focus',
     ],
@@ -21,10 +21,10 @@ export const Table: ThemeComponent<'Table'> = {
       variants: {
         variant: {
           linedTable:
-            'text-text-primary border-border-neutral border-x-0 border-b bg-transparent px-2 odd:bg-transparent',
+            'text-text-base border-border-inverted border-x-0 border-b bg-transparent px-2 odd:bg-transparent',
           grid: [
-            'border-border-neutral border',
-            'text-text-primary bg-transparent px-2 odd:bg-transparent',
+            'border-border-inverted border',
+            'text-text-base bg-transparent px-2 odd:bg-transparent',
           ],
         },
       },
@@ -32,20 +32,20 @@ export const Table: ThemeComponent<'Table'> = {
   ),
   row: cva([
     'group-aria-[multiselectable]/table:[&>*:first-child]:w-12',
-    'hover:bg-bg-hover-neutral selected:bg-bg-selected focus:outline-outline-focus',
+    'selected:bg-bg-selected focus:outline-outline-focus',
     {
       variants: {
         variant: {
-          linedTable: ['border-border-neutral border-b'],
-          grid: ['border-border-neutral border'],
+          linedTable: ['border-border-inverted border-b'],
+          grid: ['border-border-inverted border'],
         },
       },
     },
   ]),
-  cell: cva(['text-text-primary p-2', 'focus:outline-outline-focus'], {
+  cell: cva(['text-text-base p-2', 'focus:outline-outline-focus'], {
     variants: {
       variant: {
-        grid: ['border-border-neutral border'],
+        grid: ['border-border-inverted border'],
       },
     },
   }),
