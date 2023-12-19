@@ -99,11 +99,7 @@ export const WithTable: Story = {
         {tableHeaders.length ? (
           <Stack space={4}>
             <Scrollable height="200px" {...args}>
-              <Table
-                aria-label="Todos Table"
-                selectionMode="multiple"
-                {...args}
-              >
+              <Table aria-label="Todos Table" selectionMode="multiple">
                 <Table.Header>
                   {tableHeaders.map((header, index) => (
                     <Table.Column
