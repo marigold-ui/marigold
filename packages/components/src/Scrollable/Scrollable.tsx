@@ -14,7 +14,7 @@ export const Scrollable = ({
 }: ScrollableProps) => (
   <div
     {...props}
-    className={cn('flex h-[--height] overflow-auto', twWidth[width])}
+    className={cn('flex h-[--height] overflow-x-auto', twWidth[width])}
     style={createVar({ height })}
   >
     {children}

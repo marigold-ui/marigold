@@ -2,9 +2,14 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useEffect, useState } from 'react';
 
+import { Card } from '../Card';
 import { Headline } from '../Headline';
+import { Image } from '../Image';
+import { Inline } from '../Inline';
 import { Stack } from '../Stack';
 import { Table } from '../Table';
+import { Text } from '../Text';
+import { Tiles } from '../Tiles';
 import { Scrollable } from './Scrollable';
 
 const meta = {
@@ -15,7 +20,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = {
+export const Vertical: Story = {
   render: args => (
     <Scrollable height="200px" width="1/5" {...args}>
       <div>
@@ -31,6 +36,27 @@ export const Basic: Story = {
         Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue,
         eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi,
         tincidunt quis, accumsan porttitor, facilisis luctus, metus
+      </div>
+    </Scrollable>
+  ),
+};
+
+export const Horizontal: Story = {
+  render: args => (
+    <Scrollable width="1/2" {...args}>
+      <div className="flex gap-2">
+        <Card>
+          <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+        </Card>
+        <Card>
+          <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+        </Card>
+        <Card>
+          <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+        </Card>
+        <Card>
+          <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+        </Card>
       </div>
     </Scrollable>
   ),
