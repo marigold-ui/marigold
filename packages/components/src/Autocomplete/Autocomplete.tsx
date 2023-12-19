@@ -8,7 +8,7 @@ import React from 'react';
 import { ComboBox, ComboBoxStateContext, Key } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
-import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
+import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { Input } from '../Input';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay/Popover';
@@ -87,6 +87,7 @@ export interface AutocompleteProps
   readOnly?: RAC.ComboBoxProps<object>['isReadOnly'];
   variant?: string;
   size?: string;
+  placeholder?: string;
   /**
    * Handler that is called when the SearchAutocomplete is submitted.
    *

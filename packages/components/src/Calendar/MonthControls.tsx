@@ -37,4 +37,4 @@ function MonthControls() {
   );
 }
 
-export default React.memo(MonthControls);
+export default MonthControls;

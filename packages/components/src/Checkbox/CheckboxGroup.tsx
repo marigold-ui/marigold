@@ -5,8 +5,8 @@ import type RAC from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import type { WidthProp } from '@marigold/system';
 
-import { FieldBase } from '../FieldBase/_FieldBase';
-import type { FieldBaseProps } from '../FieldBase/_FieldBase';
+import { FieldBase } from '../FieldBase/FieldBase';
+import type { FieldBaseProps } from '../FieldBase/FieldBase';
 
 // Props
 // ---------------
