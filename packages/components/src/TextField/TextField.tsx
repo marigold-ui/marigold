@@ -30,6 +30,8 @@ export interface TextFieldProps
   required?: RAC.TextFieldProps['isRequired'];
   error?: RAC.TextFieldProps['isInvalid'];
   readOnly?: RAC.TextFieldProps['isReadOnly'];
+  min?: HTMLInputElement['min'];
+  max?: HTMLInputElement['max'];
   value?: string;
   defaultValue?: string;
   placeholder?: string;
