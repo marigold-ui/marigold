@@ -18,6 +18,7 @@ export * from './Dialog';
 export * from './Divider';
 export * from './FieldBase';
 export * from './Footer';
+export * from './Form';
 export * from './Header';
 export * from './Headline';
 export * from './Image';

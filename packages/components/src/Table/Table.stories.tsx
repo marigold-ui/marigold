@@ -612,7 +612,7 @@ export const ScrollableTable: Story = {
       <>
         {tableHeaders.length ? (
           <Stack space={4}>
-            <div className="h-[400px] overflow-y-scroll">
+            <div className="sticky h-[400px] overflow-y-scroll">
               <Table
                 aria-label="Todos Table"
                 selectionMode="multiple"
