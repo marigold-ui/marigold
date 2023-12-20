@@ -1,9 +1,6 @@
 import {
   Button,
-  Columns,
   Form,
-  Headline,
-  Inline,
   Inset,
   Stack,
   Text,
