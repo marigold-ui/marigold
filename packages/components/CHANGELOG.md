@@ -1,5 +1,35 @@
 # @marigold/components
 
+## 7.1.0
+
+### Minor Changes
+
+- [#3551](https://github.com/marigold-ui/marigold/pull/3551) [`49a702446`](https://github.com/marigold-ui/marigold/commit/49a702446394e82c72df1691f53709a70a4be41a) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Adding Table Column alignment feature
+
+- [#3576](https://github.com/marigold-ui/marigold/pull/3576) [`08e89a407`](https://github.com/marigold-ui/marigold/commit/08e89a40738e78459be976b8c6f6a5d23ffd8720) Thanks [@sebald](https://github.com/sebald)! - feat: expose form from `react-aria-components`
+
+### Patch Changes
+
+- [#3571](https://github.com/marigold-ui/marigold/pull/3571) [`6a4d1e8d0`](https://github.com/marigold-ui/marigold/commit/6a4d1e8d0fbf2270d0b393f4c89a0d6187964037) Thanks [@sarahgm](https://github.com/sarahgm)! - fix[DSTSUP-10]: add min/max props to textfield
+
+- [#3554](https://github.com/marigold-ui/marigold/pull/3554) [`b6cb6edce`](https://github.com/marigold-ui/marigold/commit/b6cb6edce3872cde0b49161b838147914b1976a3) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: DatePicker as react aria component
+
+- [#3563](https://github.com/marigold-ui/marigold/pull/3563) [`4fa5dee85`](https://github.com/marigold-ui/marigold/commit/4fa5dee853c31cf81121ce1f9ff22fff0db0b415) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: add placeholder property to autocomplete
+
+- [#3564](https://github.com/marigold-ui/marigold/pull/3564) [`a984d90e2`](https://github.com/marigold-ui/marigold/commit/a984d90e2e8d937b600af72a895db934f9d6d674) Thanks [@sebald](https://github.com/sebald)! - refa: remov cloning children in `<Columns>`
+
+- [#3562](https://github.com/marigold-ui/marigold/pull/3562) [`b3fd3e5e0`](https://github.com/marigold-ui/marigold/commit/b3fd3e5e09c044e52fcdeac19ebdd6d6361b7f6a) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: `<Menu>` can contain disabled button
+
+- [#3557](https://github.com/marigold-ui/marigold/pull/3557) [`47f300029`](https://github.com/marigold-ui/marigold/commit/47f3000292bb387cba4f904e729b55792864832b) Thanks [@aromko](https://github.com/aromko)! - [DSTSUP-5]: Bugfix: Loss of input values after collapsing accordion elements is now prevented by hiding the corresponding section.
+
+- [#3577](https://github.com/marigold-ui/marigold/pull/3577) [`63b093ad8`](https://github.com/marigold-ui/marigold/commit/63b093ad8ca6d7bf1767db2b42c467016871ce49) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Fixing Scrollable table story
+
+- [#3552](https://github.com/marigold-ui/marigold/pull/3552) [`e2fa304a6`](https://github.com/marigold-ui/marigold/commit/e2fa304a6528c51a1f1ded1d954ae36d2113a70f) Thanks [@aromko](https://github.com/aromko)! - [DSTSUP-4] bugfix accordion item do not collapse and hide after first click
+
+- Updated dependencies [[`47f300029`](https://github.com/marigold-ui/marigold/commit/47f3000292bb387cba4f904e729b55792864832b), [`535d1088b`](https://github.com/marigold-ui/marigold/commit/535d1088b5d0de60ec07e72d2b5faac7b918ad01)]:
+  - @marigold/system@7.1.0
+  - @marigold/icons@1.2.33
+
 ## 7.0.0
 
 ### Major Changes

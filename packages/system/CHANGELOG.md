@@ -1,5 +1,13 @@
 # @marigold/system
 
+## 7.1.0
+
+### Patch Changes
+
+- [#3557](https://github.com/marigold-ui/marigold/pull/3557) [`47f300029`](https://github.com/marigold-ui/marigold/commit/47f3000292bb387cba4f904e729b55792864832b) Thanks [@aromko](https://github.com/aromko)! - [DSTSUP-5]: Bugfix: Loss of input values after collapsing accordion elements is now prevented by hiding the corresponding section.
+
+- [#3548](https://github.com/marigold-ui/marigold/pull/3548) [`535d1088b`](https://github.com/marigold-ui/marigold/commit/535d1088b5d0de60ec07e72d2b5faac7b918ad01) Thanks [@aromko](https://github.com/aromko)! - [DST-254]: use new tokens in core theme
+
 ## 7.0.0
 
 ### Patch Changes
