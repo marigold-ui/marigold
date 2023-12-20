@@ -25,10 +25,10 @@ export default () => {
             type="email"
             placeholder="Enter your email address"
             required
-            errorMessage={({ validationDetails }) =>
-              validationDetails.valueMissing
-                ? 'Please enter your email address!'
-                : ''
+            validate={val =>
+              val.length && /^\S+@\S+\.\S+$/.test(val)
+                ? ''
+                : 'Please enter a valid email address!'
             }
           />
           <Button variant="primary" type="submit">
