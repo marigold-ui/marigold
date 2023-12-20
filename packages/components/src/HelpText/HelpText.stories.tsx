@@ -1,5 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Form, TextField } from 'react-aria-components';
 
+import { Button } from '../Button';
+import { Input } from '../Input';
+import { Label } from '../Label';
+import { Stack } from '../Stack';
 import { HelpText } from './HelpText';
 
 const meta = {
@@ -49,4 +54,25 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => <HelpText {...args} />,
+};
+
+export const WithinAField: Story = {
+  render: () => (
+    <>
+      <Form onSubmit={e => e.preventDefault()}>
+        <Stack space={8} alignX="left">
+          <TextField name="email" type="email" isRequired>
+            <Label>Email</Label>
+            <Input />
+            <HelpText description="Please enter your email!" />
+          </TextField>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+          <hr />
+          <p>Note that the HelpText is not styled in this example!</p>
+        </Stack>
+      </Form>
+    </>
+  ),
 };

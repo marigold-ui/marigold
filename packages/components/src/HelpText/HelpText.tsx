@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { type ReactNode, useContext } from 'react';
 import type { ValidationResult } from 'react-aria-components';
 import { FieldError, Text } from 'react-aria-components';
 
@@ -31,7 +31,7 @@ export const HelpText = ({
     <div className={cn(classNames.container)}>
       <FieldError
         {...props}
-        className="grid grid-flow-col items-center justify-start gap-1"
+        className="peer/error grid grid-flow-col items-center justify-start gap-1"
       >
         {validation => {
           /**
@@ -61,7 +61,11 @@ export const HelpText = ({
           );
         }}
       </FieldError>
-      {!hasErrorMessage && <Text slot="description">{description}</Text>}
+      {!hasErrorMessage && (
+        <Text slot="description" className="peer-first/error:hidden">
+          {description}
+        </Text>
+      )}
     </div>
   );
 };
