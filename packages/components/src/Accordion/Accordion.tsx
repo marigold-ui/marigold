@@ -11,7 +11,7 @@ import { AriaAccordionProps, useAccordion } from '@react-aria/accordion';
 import { Item } from '@react-stately/collections';
 import { useTreeState } from '@react-stately/tree';
 
-import { ItemElement, ItemProps } from '@react-types/shared';
+import { ItemElement, ItemProps, SelectionMode } from '@react-types/shared';
 
 import { AccordionItem } from './AccordionItem';
 
@@ -21,35 +21,37 @@ export interface AccordionProps
     'children' | 'expandedKeys' | 'disabledKeys' | 'onExpandedChange'
   > {
   children: ItemElement<object>[] | ItemElement<object>;
-  selectionMode?: string;
+  selectionMode?: SelectionMode;
 }
 
 export const Accordion = ({ children, ...props }: AccordionProps) => {
   const ownProps = {
     ...props,
     // we have to do this because JSX childs are not supported
-    children: Children.toArray(children).map(child => {
-      if (!isValidElement(child)) {
-        return child;
-      }
-      return cloneElement(child, {
-        hasChildItems: false,
-        ...child.props,
-      });
-    }),
+    children: [] as any[],
   };
-  const ref = useRef(null);
 
-  const state = useTreeState({
-    selectionMode: 'single',
-    ...(ownProps as any),
+  //childs are pushed to children to avoid generated ids from React.Element
+  Children.forEach(children, child => {
+    if (isValidElement(child) && typeof child.props?.children !== 'string') {
+      const clone = cloneElement(child, {
+        hasChildItems: false,
+      });
+
+      ownProps.children.push(clone);
+      return;
+    }
+
+    ownProps.children.push(child);
   });
 
-  const { accordionProps } = useAccordion(
-    { ...ownProps, children },
-    state,
-    ref
-  );
+  const ref = useRef(null);
+  const state = useTreeState({
+    selectionMode: 'single',
+    ...ownProps,
+  });
+
+  const { accordionProps } = useAccordion({ ...ownProps }, state, ref);
 
   // Remove onKeyDownCapture from listProps to prevent it from removing spacebar support for
   // inner elements as the Input, this event provides typeahead support for the list, but we

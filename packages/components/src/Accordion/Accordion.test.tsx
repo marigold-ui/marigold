@@ -165,7 +165,7 @@ test('support default expanded keys', () => {
         <Accordion.Item key={'one'} title="Information">
           <Headline>infos</Headline>
         </Accordion.Item>
-        <Accordion.Item key={'two'} title="settings">
+        <Accordion.Item key={'two'} title="Settings">
           <Headline>settings</Headline>
         </Accordion.Item>
       </Accordion>
@@ -178,7 +178,7 @@ test('support default expanded keys', () => {
   const item = screen.getByText('infos');
   expect(item).toBeInTheDocument();
 
-  const buttontwo = screen.getByText('settings');
+  const buttontwo = screen.getByText('Settings');
   expect(buttontwo).toHaveAttribute('aria-expanded', 'false');
 });
 

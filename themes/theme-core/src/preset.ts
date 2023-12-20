@@ -1,7 +1,8 @@
 import { createPreset } from '@marigold/theme-preset';
+import { flattenObject } from '@marigold/theme-preset/src/utils';
 
-import { colors } from './_tokens';
 import { screens } from './screens';
+import { colors, height, shadow } from './tokens';
 
 export type Preset = ReturnType<typeof createPreset>;
 
@@ -31,6 +32,8 @@ export const preset: Preset = createPreset({
       backgroundImage: {
         highlight: 'linear-gradient(#3875d7 20%, #2a62bc 90%)',
       },
+      boxShadow: flattenObject(shadow),
+      height: flattenObject(height),
     },
   },
 });

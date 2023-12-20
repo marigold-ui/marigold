@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { I18nProvider } from '@react-aria/i18n';
 
-import { DateField, DateFieldProps } from './_DateField';
+import { DateField, DateFieldProps } from './DateField';
 
 const meta = {
   title: 'Components/DateField',

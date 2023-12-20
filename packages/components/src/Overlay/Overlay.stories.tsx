@@ -8,7 +8,6 @@ import { Headline } from '../Headline';
 import { Text } from '../Text';
 import { Modal } from './Modal';
 import { Popover } from './Popover';
-import { Tray } from './Tray';
 
 const meta = {
   title: 'Components/Overlay',
@@ -36,7 +35,7 @@ const TestTray = forwardRef<HTMLDivElement, { open: boolean }>(
   }
 );
 
-export const OverlayTray: StoryObj<typeof Tray> = {
+export const OverlayTray: StoryObj<typeof Popover> = {
   render: () => {
     return <TestTray open />;
   },

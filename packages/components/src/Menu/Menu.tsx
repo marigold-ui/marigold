@@ -20,6 +20,7 @@ export interface MenuProps
   size?: string;
   onAction?: (key: Key) => void;
   children?: ReactNode;
+  disabled?: boolean;
 }
 
 const _Menu = ({
@@ -27,6 +28,7 @@ const _Menu = ({
   label,
   variant,
   size,
+  disabled,
   open,
   ...props
 }: MenuProps) => {
@@ -34,7 +36,9 @@ const _Menu = ({
 
   return (
     <MenuTrigger {...props}>
-      <Button variant="menu">{label}</Button>
+      <Button variant="menu" disabled={disabled}>
+        {label}
+      </Button>
       <Popover open={open}>
         <Menu {...props} className={classNames.container}>
           {children}

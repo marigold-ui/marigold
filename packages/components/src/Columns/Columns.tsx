@@ -1,4 +1,4 @@
-import { Children, ReactNode, cloneElement, isValidElement } from 'react';
+import { Children, ReactNode } from 'react';
 
 import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
 
@@ -41,7 +41,7 @@ export const Columns = ({
           )}
           style={createVar({ collapseAt, columnSize: columns[idx] })}
         >
-          {isValidElement(child) ? cloneElement(child) : child}
+          {child}
         </div>
       ))}
     </div>

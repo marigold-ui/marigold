@@ -1,51 +1,52 @@
-import { HTMLAttributes, ReactNode } from 'react';
-import type { ValidationResult } from 'react-aria-components';
+import type {
+  ComponentPropsWithRef,
+  ElementType,
+  ForwardedRef,
+  ReactNode,
+} from 'react';
+import { forwardRef } from 'react';
 
-import {
-  StateAttrProps,
-  WidthProp,
-  cn,
-  width as twWidth,
-  useClassNames,
-} from '@marigold/system';
+import type { WidthProp } from '@marigold/system';
+import { cn, width as twWidth, useClassNames } from '@marigold/system';
+import type { DistributiveOmit, FixedForwardRef } from '@marigold/types';
 
+import type { HelpTextProps } from '../HelpText';
 import { HelpText } from '../HelpText';
-import { Label, LabelProps } from '../Label';
+import { Label } from '../Label';
 
-export interface FieldBaseProps extends WidthProp {
-  children?: ReactNode;
+const fixedForwardRef = forwardRef as FixedForwardRef;
+
+// Props
+// ---------------
+export interface FieldBaseProps<T extends ElementType>
+  extends WidthProp,
+    Pick<HelpTextProps, 'description' | 'errorMessage'> {
+  as?: T;
+  label?: ReactNode;
   variant?: string;
   size?: string;
-  disabled?: boolean;
-  label?: ReactNode;
-  labelProps?: LabelProps;
-  description?: ReactNode;
-  descriptionProps?: Omit<HTMLAttributes<HTMLElement>, 'children'>;
-  error?: boolean;
-  errorMessage?: ReactNode | ((v: ValidationResult) => ReactNode);
-  errorMessageProps?: Omit<HTMLAttributes<HTMLElement>, 'children'>;
-  stateProps?: StateAttrProps;
+  children?: ReactNode;
 }
 
 // Component
 // ---------------
-export const FieldBase = ({
-  children,
-  variant,
-  size,
-  width = 'full',
-  disabled,
-  label,
-  labelProps,
-  description,
-  descriptionProps,
-  error,
-  errorMessage,
-  errorMessageProps,
-  stateProps,
-  ...props
-}: FieldBaseProps) => {
-  const hasHelpText = !!description || (errorMessage && error);
+const _FieldBase = <T extends ElementType>(
+  props: FieldBaseProps<T> & DistributiveOmit<ComponentPropsWithRef<T>, 'as'>,
+  ref: ForwardedRef<any>
+) => {
+  const {
+    as: Component = 'div',
+    children,
+    label,
+    size,
+    variant,
+    width = 'full',
+    description,
+    errorMessage,
+    className,
+    stateProps,
+    ...rest
+  } = props;
   const classNames = useClassNames({
     component: 'Field',
     variant,
@@ -53,32 +54,30 @@ export const FieldBase = ({
   });
 
   return (
-    <div
-      {...props}
-      {...stateProps}
-      className={cn('group/field', twWidth[width], classNames)}
+    <Component
+      ref={ref}
+      className={cn('group/field', twWidth[width], classNames, className)}
+      data-required={props.isRequired ? true : undefined}
+      data-error={props.isInvalid ? true : undefined}
+      {...rest}
     >
       {label ? (
-        <Label variant={variant} size={size} {...labelProps}>
+        <Label variant={variant} size={size}>
           {label}
         </Label>
       ) : (
         <span aria-hidden="true" />
       )}
-
       {children}
-      {hasHelpText && (
-        <HelpText
-          variant={variant}
-          size={size}
-          disabled={disabled}
-          description={description}
-          descriptionProps={descriptionProps}
-          error={error}
-          errorMessage={errorMessage}
-          errorMessageProps={errorMessageProps}
-        />
-      )}
-    </div>
+      <HelpText
+        variant={variant}
+        size={size}
+        description={description}
+        errorMessage={errorMessage}
+        error={props.isInvalid}
+      />
+    </Component>
   );
 };
+
+export const FieldBase = fixedForwardRef(_FieldBase);

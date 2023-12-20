@@ -10,7 +10,7 @@ import type RAC from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 
 import { ChevronDown } from '../Chevron';
-import { FieldBase } from '../FieldBase/_FieldBase';
+import { FieldBase } from '../FieldBase/FieldBase';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 

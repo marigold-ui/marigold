@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { DateField } from './_DateField';
+import { DateField } from './DateField';
 
 const theme: Theme = {
   name: 'test',
@@ -167,7 +167,7 @@ test('renders label', () => {
   expect(label).toBeInTheDocument();
 });
 
-test('renders action as react elemnt', () => {
+test('renders action as react element', () => {
   render(<DateField label="date field" action={<div>huhu</div>} />);
   const action = screen.getByText('huhu');
   expect(action).toMatchInlineSnapshot(`
@@ -176,4 +176,10 @@ test('renders action as react elemnt', () => {
 </div>
 `);
   expect(action).toBeInTheDocument();
+});
+
+test('renders error', () => {
+  render(<DateField label="date field" error errorMessage="Error Message" />);
+  const error = screen.getByText('Error Message');
+  expect(error).toBeInTheDocument();
 });

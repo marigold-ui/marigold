@@ -67,6 +67,140 @@ import { Table } from '@marigold/components';
   ]}
 />
 
+### Table Body Props
+
+<PropsTable
+  props={[
+    {
+      property: 'key',
+      type: 'Key',
+      description: 'The key for the table body.',
+      default: 'none',
+    },
+    {
+      property: 'items',
+      type: 'Iterable<object>',
+      description: 'Item objects in the table body',
+      default: 'none',
+    },
+    {
+      property: 'loadingState',
+      type: 'error | idle | loading | loadingMore | filtering | sorting',
+      description: 'The current loading state of the table.',
+      default: 'none',
+    },
+    {
+      property: 'onLoadMore',
+      type: '(property) onLoadMore?: (() => any) | undefined',
+      description:
+        'Handler that is called when more items should be loaded, e.g. while scrolling near the bottom.',
+      default: 'none',
+    },
+  ]}
+/>
+
+### Table Row Props
+
+<PropsTable
+  props={[
+    {
+      property: 'key',
+      type: 'Key',
+      description: 'The key for table row.',
+      default: 'none',
+    },
+    {
+      property: 'download',
+      type: 'string | boolean | undefined',
+      description:
+        'Causes the browser to download the linked URL. A string may be provided to suggest a file name .',
+      default: 'none',
+    },
+    {
+      property: 'href',
+      type: 'string | undefined',
+      description: 'A URL to link .',
+      default: 'none',
+    },
+    {
+      property: 'ping',
+      type: 'string | undefined',
+      description:
+        'A space-separated list of URLs to ping when the link is followed .',
+      default: 'none',
+    },
+    {
+      property: 'referrerPolicy',
+      type: 'React.HTMLAttributeReferrerPolicy | undefined',
+      description: 'How much of the referrer to send when following the link.',
+      default: 'none',
+    },
+    {
+      property: 'rel',
+      type: 'string | undefined',
+      description:
+        'The relationship between the linked resource and the current page',
+      default: 'none',
+    },
+    {
+      property: 'target',
+      type: 'React.HTMLAttributeAnchorTarget | undefined',
+      description: 'The target window for the link.',
+      default: 'none',
+    },
+    {
+      property: 'textValue',
+      type: 'string | undefined',
+      description: `A string representation of the row's contents, used for features like typeahead.`,
+      default: 'none',
+    },
+  ]}
+/>
+
+### Table Column Props
+
+<PropsTable
+  props={[
+    {
+      property: 'key',
+      type: 'Key',
+      description: 'The key for the Column.',
+      default: 'none',
+    },
+    {
+      property: 'align',
+      type: 'center | left | right | justify | char',
+      description: 'Control the alignment of Column',
+      default: 'none',
+    },
+    {
+      property: 'allowResizing',
+      type: 'boolean | undefined',
+      description: 'Whether the column allows resizing.',
+      default: 'none',
+    },
+    {
+      property: 'allowSorting',
+      type: 'boolean | undefined',
+      description: 'Whether the column allows sorting.',
+      default: 'none',
+    },
+    {
+      property: 'isRowHeader',
+      type: 'boolean | undefined',
+      description: 'Whether a column is a row header and should be announced by assistive technology during row navigation.',
+      default: 'none',
+    },    
+    {
+      property: 'width',
+      type: 'string | number',
+      description: 'Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width',
+      default: 'none',
+    },
+
+]}
+/>
+
 ## Examples
 
 ### Compact variant
@@ -75,6 +209,12 @@ In this example you can see the size `compact` from the theme b2b. It reduces th
 The `core-Theme` has also two variants called `tableLines` and `tableBorder`.
 
 <ComponentDemo file="./table-compact.demo.tsx" />
+
+### Aligned Columns
+
+In this example you can align any Table Column by using `align` property over `<Table.Column align='right'>` .
+
+<ComponentDemo file="./table-aligned.demo.tsx" />
 
 ### Selection mode single
 

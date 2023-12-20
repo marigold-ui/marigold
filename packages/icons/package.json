@@ -1,7 +1,7 @@
 {
   "name": "@marigold/icons",
   "description": "Marigold Icons",
-  "version": "1.2.32",
+  "version": "1.2.33",
   "license": "MIT",
   "keywords": [
     "marigold",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "tsup": "7.2.0"
+    "tsup": "8.0.1"
   },
   "scripts": {
     "build": "tsup src/index.ts",
