@@ -1,4 +1,4 @@
-import { type ReactNode, useContext } from 'react';
+import { type ReactNode } from 'react';
 import type { ValidationResult } from 'react-aria-components';
 import { FieldError, Text } from 'react-aria-components';
 
@@ -8,7 +8,6 @@ export interface HelpTextProps {
   variant?: string;
   size?: string;
   description?: ReactNode;
-  error?: boolean;
   errorMessage?: ReactNode | ((v: ValidationResult) => ReactNode);
 }
 
@@ -16,11 +15,9 @@ export const HelpText = ({
   variant,
   size,
   description,
-  error,
   errorMessage,
   ...props
 }: HelpTextProps) => {
-  const hasErrorMessage = errorMessage && error;
   const classNames = useClassNames({
     component: 'HelpText',
     variant,
@@ -61,11 +58,9 @@ export const HelpText = ({
           );
         }}
       </FieldError>
-      {!hasErrorMessage && (
-        <Text slot="description" className="peer-first/error:hidden">
-          {description}
-        </Text>
-      )}
+      <Text slot="description" className="peer-first/error:hidden">
+        {description}
+      </Text>
     </div>
   );
 };

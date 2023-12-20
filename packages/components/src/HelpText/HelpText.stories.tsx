@@ -31,21 +31,10 @@ const meta = {
         defaultValue: { summary: 'Something went wrong' },
       },
     },
-    error: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'Whether the help text is an error',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
-    },
   },
   args: {
     errorMessage: 'Something went wrong',
     description: 'This is a help text description',
-    error: false,
   },
 } satisfies Meta<typeof HelpText>;
 
