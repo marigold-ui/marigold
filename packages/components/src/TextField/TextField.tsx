@@ -4,7 +4,7 @@ import { TextField } from 'react-aria-components';
 
 import { WidthProp } from '@marigold/system';
 
-import { FieldBase, FieldBaseProps } from '../FieldBase/_FieldBase';
+import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { Input } from '../Input/Input';
 
 // Props
@@ -30,6 +30,8 @@ export interface TextFieldProps
   required?: RAC.TextFieldProps['isRequired'];
   error?: RAC.TextFieldProps['isInvalid'];
   readOnly?: RAC.TextFieldProps['isReadOnly'];
+  min?: HTMLInputElement['min'];
+  max?: HTMLInputElement['max'];
   value?: string;
   defaultValue?: string;
   placeholder?: string;

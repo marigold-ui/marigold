@@ -34,9 +34,9 @@ export const AccordionItem = ({
 }: AccordionItemProps) => {
   const ref = useRef<HTMLButtonElement>(null);
 
-  const defaultExpanded = state.expandedKeys.has(
-    item.key.toString().replace('.$', '')
-  );
+  const defaultExpanded = Array.from(state.expandedKeys).some(key => {
+    return key.toString() === item.key.toString().replace('.$', '');
+  });
 
   const expanded = state.selectionManager.isSelected(item.key);
 
@@ -44,9 +44,10 @@ export const AccordionItem = ({
     // clear both default values and expanded also check if multiple or single mode
     if (defaultExpanded) {
       if (state.selectionManager.selectionMode === 'multiple') {
-        state.expandedKeys.forEach(key => {
-          state.selectionManager.select(key);
-        });
+        state.selectionManager.setSelectedKeys([
+          ...state.selectionManager.selectedKeys,
+          item.key,
+        ]);
       } else {
         state.expandedKeys.clear();
         state.selectionManager.toggleSelection(item.key);
@@ -92,14 +93,16 @@ export const AccordionItem = ({
           )}
         </button>
       </FocusRing>
-      {expanded || defaultExpanded ? (
-        <div
-          {...mergeProps(regionProps, focusProps, stateProps)}
-          className={classNames.item}
-        >
-          {item.props.children}
-        </div>
-      ) : null}
+      <div
+        {...mergeProps(regionProps, focusProps, stateProps)}
+        className={
+          expanded || defaultExpanded
+            ? classNames.item
+            : cn(classNames.item, 'hidden')
+        }
+      >
+        {item.props.children}
+      </div>
     </div>
   );
 };

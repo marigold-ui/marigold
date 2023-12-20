@@ -2,10 +2,11 @@
 import { CalendarDate, getLocalTimeZone, today } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import { DateValue } from 'react-aria-components';
 
 import { I18nProvider } from '@react-aria/i18n';
 
-import { DatePicker, DatePickerProps } from './DatePicker';
+import { DatePicker } from './DatePicker';
 
 const meta = {
   title: 'Components/DatePicker',
@@ -52,7 +53,7 @@ const meta = {
       defaultValue: false,
     },
   },
-} satisfies Meta<DatePickerProps>;
+} satisfies Meta<typeof DatePicker>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -64,6 +65,7 @@ export const Basic: Story = {
         <DatePicker
           label="Date Picker"
           description="This is description"
+          errorMessage="This is an error"
           {...args}
         />
       </I18nProvider>
@@ -73,7 +75,7 @@ export const Basic: Story = {
 
 export const Controlled: Story = {
   render: args => {
-    const [value, setValue] = useState(today(getLocalTimeZone()));
+    const [value, setValue] = useState(today(getLocalTimeZone()) as DateValue);
 
     return (
       <I18nProvider locale="de-DE">
@@ -81,8 +83,10 @@ export const Controlled: Story = {
           <DatePicker
             label="Date Picker"
             value={value}
-            onChange={setValue}
+            defaultValue={value}
+            onChange={() => setValue}
             description="Controlled date field"
+            errorMessage="This is an error"
             {...args}
           />
           <pre style={{ marginTop: '1rem' }}>
@@ -106,6 +110,7 @@ export const MinMax: Story = {
       <DatePicker
         label="Date Picker"
         description="Determine min and max value for date picker"
+        errorMessage="This is an error"
         minValue={new CalendarDate(2019, 6, 5)}
         maxValue={new CalendarDate(2019, 6, 20)}
         {...args}

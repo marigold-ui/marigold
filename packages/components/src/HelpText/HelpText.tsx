@@ -1,33 +1,23 @@
-import { HTMLAttributes, ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import type { ValidationResult } from 'react-aria-components';
+import { FieldError, Text } from 'react-aria-components';
 
-import { SVG, cn, useClassNames } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
+import { cn, useClassNames } from '@marigold/system';
 
-// Props
-// ---------------
-export interface HelpTextProps extends Omit<HtmlProps<'div'>, 'className'> {
+export interface HelpTextProps {
   variant?: string;
   size?: string;
-  disabled?: boolean;
   description?: ReactNode;
-  descriptionProps?: HTMLAttributes<HTMLElement>;
   error?: boolean;
   errorMessage?: ReactNode | ((v: ValidationResult) => ReactNode);
-  errorMessageProps?: HTMLAttributes<HTMLElement>;
 }
 
-// Component
-// ---------------
 export const HelpText = ({
   variant,
   size,
-  disabled,
   description,
-  descriptionProps,
   error,
   errorMessage,
-  errorMessageProps,
   ...props
 }: HelpTextProps) => {
   const hasErrorMessage = errorMessage && error;
@@ -37,27 +27,27 @@ export const HelpText = ({
     size,
   });
 
-  return (
-    <div
-      {...props}
-      {...(hasErrorMessage ? errorMessageProps : descriptionProps)}
-      className={cn('flex items-center gap-1', classNames.container)}
-    >
-      {hasErrorMessage ? (
-        <>
-          <SVG
-            className={cn('h-4 w-4', classNames.icon)}
-            viewBox="0 0 24 24"
-            role="presentation"
-          >
-            <path d="M2.25 20.3097H21.75L12 3.46875L2.25 20.3097ZM12.8864 17.2606H11.1136V15.4879H12.8864V17.2606ZM12.8864 13.7151H11.1136V10.1697H12.8864V13.7151Z" />
-          </SVG>
+  if (!description && !errorMessage) {
+    return null;
+  }
 
-          {errorMessage}
-        </>
-      ) : (
-        <>{description}</>
-      )}
+  return (
+    <div className={cn(classNames.container)}>
+      <FieldError
+        {...props}
+        className="grid grid-flow-col items-center justify-start gap-1"
+      >
+        <svg
+          className={cn('h-4 w-4', classNames.icon)}
+          viewBox="0 0 24 24"
+          role="presentation"
+          fill="currentColor"
+        >
+          <path d="M2.25 20.3097H21.75L12 3.46875L2.25 20.3097ZM12.8864 17.2606H11.1136V15.4879H12.8864V17.2606ZM12.8864 13.7151H11.1136V10.1697H12.8864V13.7151Z" />
+        </svg>
+        {errorMessage as ReactNode}
+      </FieldError>
+      {!hasErrorMessage && <Text slot="description">{description}</Text>}
     </div>
   );
 };
