@@ -14,54 +14,88 @@ const meta = {
       control: {
         type: 'text',
       },
-      description: 'Set the label',
-      defaultValue: 'Select for favorite:',
+      description: 'Set the label of the Combobox',
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: 'not set' },
+      },
     },
     description: {
       control: {
         type: 'text',
       },
-      description: 'Help Text',
-      defaultValue: 'This is a help text description',
+      description: 'Set the help text description.',
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: 'This is a help text description' },
+      },
     },
     disabled: {
       control: {
         type: 'boolean',
       },
       description: 'Disable ComboBox',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     error: {
       control: {
         type: 'boolean',
       },
       description: 'Is the input invalid?',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     errorMessage: {
       control: {
         type: 'text',
       },
-      description: 'Error Message',
-      defaultValue: 'Something went wrong',
+      description: 'Set the Error Message',
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: 'Something went wrong' },
+      },
     },
     placeholder: {
       control: {
         type: 'text',
       },
       description: 'Set the placeholder text',
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: 'not set' },
+      },
     },
     menuTrigger: {
       control: {
         type: 'select',
       },
       options: ['focus', 'input', 'manual'],
+      table: {
+        type: { summary: 'select' },
+        defaultValue: { summary: 'input' },
+      },
       description: 'Set which interaction shows the menu',
     },
     width: {
       control: {
         type: 'text',
       },
-      description: 'The width of the field',
+      description:
+        'The width of the field. For that we use the Tailwind tokens.',
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: 'full' },
+      },
     },
+  },
+  args: {
+    description: 'This is a help text description',
+    errorMessage: 'Something went wrong',
   },
 } satisfies Meta;
 
