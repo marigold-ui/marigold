@@ -183,8 +183,8 @@ test('supports controlled component usage', () => {
 });
 
 test('forwards ref', () => {
-  const ref = React.createRef<HTMLInputElement>();
+  const ref = React.createRef<HTMLLabelElement>();
   render(<Switch ref={ref}>Label</Switch>);
 
-  expect(ref.current).toBeInstanceOf(HTMLInputElement);
+  expect(ref.current).toBeInstanceOf(HTMLLabelElement);
 });

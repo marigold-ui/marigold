@@ -46,7 +46,7 @@ const Icon = ({ checked, className, ...props }: IconProps) => (
   </div>
 );
 
-const _Radio = forwardRef<HTMLInputElement, RadioProps>(
+const _Radio = forwardRef<HTMLLabelElement, RadioProps>(
   ({ value, disabled, width, children, ...props }, ref) => {
     const { variant, size, width: groupWidth } = useRadioGroupContext();
 
@@ -96,7 +96,7 @@ _Radio.Group = RadioGroup;
  */
 export interface RadioComponent
   extends ForwardRefExoticComponent<
-    RadioProps & RefAttributes<HTMLInputElement>
+    RadioProps & RefAttributes<HTMLLabelElement>
   > {
   Group: typeof RadioGroup;
 }

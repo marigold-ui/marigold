@@ -242,7 +242,7 @@ test('allows styling "focus" state via theme', async () => {
 });
 
 test('forwards ref', () => {
-  const ref = React.createRef<HTMLInputElement>();
+  const ref = React.createRef<HTMLLabelElement>();
   render(
     <ThemeProvider theme={theme}>
       <Radio.Group label="With Label">
@@ -256,7 +256,7 @@ test('forwards ref', () => {
     </ThemeProvider>
   );
 
-  expect(ref.current).toBeInstanceOf(HTMLInputElement);
+  expect(ref.current).toBeInstanceOf(HTMLLabelElement);
 });
 
 test('radio accepts helptext', () => {
@@ -296,7 +296,7 @@ test('radio accepts error message', () => {
 });
 
 test('disabled prop and styles', () => {
-  const ref = React.createRef<HTMLInputElement>();
+  const ref = React.createRef<HTMLLabelElement>();
   render(
     <ThemeProvider theme={theme}>
       <Radio.Group label="With Label">
