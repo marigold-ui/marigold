@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import type RAC from 'react-aria-components';
-import { Calendar } from 'react-aria-components';
-
-import { DateValue } from '@react-aria/calendar';
+import { Calendar, DateValue } from 'react-aria-components';
 
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 
