@@ -35,6 +35,14 @@ const meta = {
         defaultValue: { summary: true },
       },
     },
+    open: {
+      control: { type: 'boolean' },
+      description: 'Set open state',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
   },
   args: {
     dismissable: true,
