@@ -5,8 +5,8 @@ import { Radio } from '../Radio';
 import { RadioGroup } from '../Radio/RadioGroup';
 import { Select } from '../Select';
 import { TextField } from '../TextField';
+import { FieldBase } from './FieldBase';
 import { FieldGroup } from './FieldGroup';
-import { FieldBase } from './_FieldBase';
 
 const meta = {
   title: 'Components/FieldBase',
@@ -16,8 +16,11 @@ const meta = {
       control: {
         type: 'text',
       },
-      description: 'The Label',
-      defaultValue: 'This is the label',
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: 'This is the label' },
+      },
+      description: 'The Label of the field',
     },
     description: {
       control: {
@@ -25,7 +28,7 @@ const meta = {
       },
       description: 'The description',
       table: {
-        type: { summary: 'boolean' },
+        type: { summary: 'text' },
         defaultValue: { summary: 'This is a help text description' },
       },
     },
@@ -35,7 +38,7 @@ const meta = {
       },
       description: 'The error message',
       table: {
-        type: { summary: 'boolean' },
+        type: { summary: 'text' },
         defaultValue: { summary: 'Something went wrong' },
       },
     },
@@ -43,18 +46,27 @@ const meta = {
       control: {
         type: 'text',
       },
-      description: 'The width of the field',
+      description: 'The width of the field, used Tailwind tokens for this.',
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: 'full' },
+      },
     },
     isInvalid: {
       control: {
         type: 'boolean',
       },
       description: 'Wheter if the field is invalid',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
   },
   args: {
     errorMessage: 'Something went wrong',
     description: 'This is a help text description',
+    label: 'This is the label',
   },
 } satisfies Meta<typeof FieldBase>;
 

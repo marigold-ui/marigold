@@ -9,11 +9,11 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   list: cva(''),
   option: cva([
     font(),
-    'data-[hovered]:text-text-light data-[hovered]:bg-highlight',
+    'rac-hovered:text-text-inverted rac-hovered:bg-highlight',
     'cursor-pointer px-1.5 py-0.5 outline-none',
-    'data-[focused]:text-text-light data-[focused]:bg-highlight',
-    'data-[selected]:text-text-light aria-selected:bg-highlight',
-    'data-[disabled]:text-text-disabled aria-disabled:cursor-not-allowed',
+    'rac-focus:text-text-inverted rac-focus:bg-highlight',
+    'rac-selected:text-text-inverted aria-selected:bg-highlight',
+    'rac-disabled:text-text-base-disabled aria-disabled:cursor-not-allowed',
   ]),
   section: cva('[&:nth-child(n+2)]:pt-2 [&_div]:px-5'),
   sectionTitle: cva([

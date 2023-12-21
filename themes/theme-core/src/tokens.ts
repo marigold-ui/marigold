@@ -274,15 +274,15 @@ export const colors = {
 export const shadow = {
   surface: {
     DEFAULT: boxShadow.none,
-    raise: boxShadow.sm,
+    raised: boxShadow.sm,
     overlay: boxShadow.md,
     sunken: boxShadow.none,
   },
 };
 
-export const component = {
-  height: {
-    DEFAULT: '22px',
+export const height = {
+  component: {
+    DEFAULT: '24px',
     sm: '16px',
     lg: '32px',
   },

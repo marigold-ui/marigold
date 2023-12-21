@@ -1,0 +1,65 @@
+---
+title: Scrollable
+caption: Lets the content scroll.
+badge: new
+---
+
+This component is commonly used in applications to manage large amounts of information or data, providing a convenient way for users to explore content without overwhelming the available screen space. The `children` of the `<Scrollable>` will scroll inside the container.
+
+By default, the `width` is set to 100%, you can change the `width` to get a horizontal scrollbar. Same you can archieve with the `height` property. By default this takes the available height.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Scrollable } from '@marigold/components';
+```
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'width',
+      type: 'string | number',
+      description: `Sets the width of the container. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
+      default: 'full',
+    },
+    {
+      property: 'height',
+      type: 'string',
+      description:
+        'Set the height of the container. You can use any pixel value.',
+      default: 'not set',
+    },
+  ]}
+/>
+
+## Examples
+
+### Vertical Scrolling
+
+This example shows the `<Scrollable>` container layout with some text inside of it. The `height` is set to `200px` to enable vertical scrolling.
+
+<ComponentDemo file="./scroll-vertical.demo.tsx" />
+
+### Horizontal Scrolling
+
+Otherwise you also have the possibility to scroll horizontal, for that set the `width` prop to another value.
+
+<ComponentDemo file="./scroll-horizontal.demo.tsx" />
+
+### Scrollable Card
+
+If you want to scroll inside some element for example the `<Card>`, you can use also the `<Scrollable>` inside of it.
+
+<ComponentDemo file="./scroll-card.demo.tsx" />
+
+### Scrollable Table Context
+
+The example shows a `<Scrollable>` which contains a `<Table>`. This is a good example of how this layout component should be used.
+
+<ComponentDemo file="./scroll-table.demo.tsx" />

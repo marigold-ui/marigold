@@ -1,3 +1,3 @@
 import { Badge } from '@marigold/components';
 
-export default () => <Badge variant="dark">vor kurzem aktualisiert</Badge>;
+export default () => <Badge variant="inverted">vor kurzem aktualisiert</Badge>;
