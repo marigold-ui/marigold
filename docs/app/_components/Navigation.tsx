@@ -24,6 +24,7 @@ interface NavigationSubsection {
 }
 interface NavigationSection {
   name: string;
+  slug: string;
   links: NavigationLink[];
   subsections: NavigationSubsection[];
 }
@@ -40,6 +41,7 @@ export const useNavigation = (): NavigationSection[] => {
     sectionPages.sort((a, b) => (a.order || 1000) - (b.order || 1000));
     return {
       name,
+      slug,
       links: sectionPages.map(page => ({
         name: page.title,
         href: `/${page.slug}`,
