@@ -87,7 +87,7 @@
     "@react-types/shared": "3.22.0",
     "@react-types/table": "3.9.1",
     "@react-types/tooltip": "3.4.6",
-    "react-aria-components": "1.0.0-rc.0"
+    "react-aria-components": "1.0.0"
   },
   "peerDependencies": {
     "react": "17.x || 18.x",
