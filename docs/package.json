@@ -41,7 +41,7 @@
     "zx": "7.2.3"
   },
   "devDependencies": {
-    "@internationalized/date": "3.5.0",
+    "@internationalized/date": "3.5.1",
     "@types/node": "18.18.9",
     "@types/react": "18.2.38",
     "@types/react-dom": "18.2.17",
