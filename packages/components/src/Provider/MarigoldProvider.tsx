@@ -4,7 +4,6 @@ import {
   Theme,
   ThemeProvider,
   ThemeProviderProps,
-  cn,
   defaultTheme,
   useTheme,
 } from '@marigold/system';
@@ -25,17 +24,10 @@ export function MarigoldProvider<T extends Theme>({
 }: MarigoldProviderProps<T>) {
   const outerTheme = useTheme();
   const isTopLevel = outerTheme === defaultTheme;
-  const root = theme.root?.();
 
   return (
     <ThemeProvider theme={theme}>
-      {isTopLevel ? (
-        <div className={cn(root ? root : '', className)}>
-          <OverlayProvider>{children}</OverlayProvider>
-        </div>
-      ) : (
-        <div className={cn(root ? root : '', className)}>{children}</div>
-      )}
+      {isTopLevel ? <OverlayProvider>{children}</OverlayProvider> : children}
     </ThemeProvider>
   );
 }
