@@ -21,11 +21,9 @@ export const SiteNavigation = () => {
         : section.links[0],
   }));
 
-  console.log(navigation);
-
   return (
     <div className="hidden w-full justify-between gap-3 md:flex ">
-      <div className="flex gap-10">
+      <div className="flex gap-16">
         <div className="flex items-center text-lg uppercase text-[#46505a] [&>*]:flex [&>*]:items-center [&>*]:gap-2 [&>*]:font-bold [&>*]:no-underline">
           <Link href="/">
             <Logo className="h-6 w-6" />

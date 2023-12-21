@@ -39,7 +39,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <MarigoldProvider theme={theme}>
             <div className="flex min-h-screen flex-col">
               <SiteHeader />
-              <div className="flex-1 px-4 lg:px-20">
+              <div className="flex-1 px-4 lg:px-10">
                 <aside
                   className={[
                     'fixed top-14 z-10 -ml-2 hidden h-[calc(100vh-56px)] w-64 overflow-hidden hover:overflow-y-auto md:block',
