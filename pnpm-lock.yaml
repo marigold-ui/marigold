@@ -454,27 +454,12 @@ importers:
       '@react-aria/accordion':
         specifier: 3.0.0-alpha.24
         version: 3.0.0-alpha.24(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/autocomplete':
-        specifier: 3.0.0-alpha.23
-        version: 3.0.0-alpha.23(react-dom@18.2.0)(react@18.2.0)
       '@react-aria/button':
         specifier: 3.9.0
         version: 3.9.0(react@18.2.0)
       '@react-aria/calendar':
         specifier: 3.5.3
         version: 3.5.3(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/checkbox':
-        specifier: 3.12.0
-        version: 3.12.0(react@18.2.0)
-      '@react-aria/combobox':
-        specifier: 3.8.0
-        version: 3.8.0(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/datepicker':
-        specifier: 3.9.0
-        version: 3.9.0(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/dialog':
-        specifier: 3.5.8
-        version: 3.5.8(react-dom@18.2.0)(react@18.2.0)
       '@react-aria/focus':
         specifier: 3.15.0
         version: 3.15.0(react@18.2.0)
@@ -484,153 +469,39 @@ importers:
       '@react-aria/interactions':
         specifier: 3.20.0
         version: 3.20.0(react@18.2.0)
-      '@react-aria/link':
-        specifier: 3.6.2
-        version: 3.6.2(react@18.2.0)
-      '@react-aria/listbox':
-        specifier: 3.11.2
-        version: 3.11.2(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/live-announcer':
-        specifier: 3.3.1
-        version: 3.3.1
-      '@react-aria/menu':
-        specifier: 3.11.2
-        version: 3.11.2(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/numberfield':
-        specifier: 3.10.0
-        version: 3.10.0(react-dom@18.2.0)(react@18.2.0)
       '@react-aria/overlays':
         specifier: 3.19.0
         version: 3.19.0(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/radio':
-        specifier: 3.9.0
-        version: 3.9.0(react@18.2.0)
-      '@react-aria/searchfield':
-        specifier: 3.6.0
-        version: 3.6.0(react@18.2.0)
-      '@react-aria/select':
-        specifier: 3.14.0
-        version: 3.14.0(react-dom@18.2.0)(react@18.2.0)
       '@react-aria/selection':
         specifier: 3.17.2
         version: 3.17.2(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/separator':
-        specifier: 3.3.8
-        version: 3.3.8(react@18.2.0)
-      '@react-aria/slider':
-        specifier: 3.7.3
-        version: 3.7.3(react@18.2.0)
-      '@react-aria/switch':
-        specifier: 3.5.7
-        version: 3.5.7(react@18.2.0)
       '@react-aria/table':
         specifier: 3.13.2
         version: 3.13.2(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/tabs':
-        specifier: 3.8.2
-        version: 3.8.2(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/tag':
-        specifier: 3.3.0
-        version: 3.3.0(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/textfield':
-        specifier: 3.13.0
-        version: 3.13.0(react@18.2.0)
-      '@react-aria/tooltip':
-        specifier: 3.6.5
-        version: 3.6.5(react@18.2.0)
       '@react-aria/utils':
         specifier: 3.22.0
         version: 3.22.0(react@18.2.0)
       '@react-aria/visually-hidden':
         specifier: 3.8.7
         version: 3.8.7(react@18.2.0)
-      '@react-stately/calendar':
-        specifier: 3.4.2
-        version: 3.4.2(react@18.2.0)
-      '@react-stately/checkbox':
-        specifier: 3.6.0
-        version: 3.6.0(react@18.2.0)
       '@react-stately/collections':
         specifier: 3.10.3
         version: 3.10.3(react@18.2.0)
-      '@react-stately/combobox':
-        specifier: 3.8.0
-        version: 3.8.0(react@18.2.0)
       '@react-stately/data':
-        specifier: ^3.11.0
+        specifier: 3.11.0
         version: 3.11.0(react@18.2.0)
-      '@react-stately/datepicker':
-        specifier: 3.9.0
-        version: 3.9.0(react@18.2.0)
-      '@react-stately/list':
-        specifier: 3.10.1
-        version: 3.10.1(react@18.2.0)
-      '@react-stately/menu':
-        specifier: 3.5.7
-        version: 3.5.7(react@18.2.0)
-      '@react-stately/numberfield':
-        specifier: 3.7.0
-        version: 3.7.0(react@18.2.0)
-      '@react-stately/overlays':
-        specifier: 3.6.4
-        version: 3.6.4(react@18.2.0)
-      '@react-stately/radio':
-        specifier: 3.10.0
-        version: 3.10.0(react@18.2.0)
-      '@react-stately/searchfield':
-        specifier: 3.5.0
-        version: 3.5.0(react@18.2.0)
-      '@react-stately/select':
-        specifier: 3.6.0
-        version: 3.6.0(react@18.2.0)
-      '@react-stately/selection':
-        specifier: 3.14.1
-        version: 3.14.1(react@18.2.0)
-      '@react-stately/slider':
-        specifier: 3.4.5
-        version: 3.4.5(react@18.2.0)
       '@react-stately/table':
         specifier: 3.11.3
         version: 3.11.3(react@18.2.0)
-      '@react-stately/tabs':
-        specifier: 3.6.2
-        version: 3.6.2(react@18.2.0)
-      '@react-stately/toggle':
-        specifier: 3.7.0
-        version: 3.7.0(react@18.2.0)
-      '@react-stately/tooltip':
-        specifier: 3.4.6
-        version: 3.4.6(react@18.2.0)
       '@react-stately/tree':
         specifier: 3.7.4
         version: 3.7.4(react@18.2.0)
-      '@react-stately/utils':
-        specifier: 3.9.0
-        version: 3.9.0(react@18.2.0)
-      '@react-types/autocomplete':
-        specifier: 3.0.0-alpha.18
-        version: 3.0.0-alpha.18(react@18.2.0)
-      '@react-types/checkbox':
-        specifier: 3.6.0
-        version: 3.6.0(react@18.2.0)
-      '@react-types/dialog':
-        specifier: 3.5.7
-        version: 3.5.7(react@18.2.0)
-      '@react-types/numberfield':
-        specifier: 3.7.0
-        version: 3.7.0(react@18.2.0)
-      '@react-types/radio':
-        specifier: 3.6.0
-        version: 3.6.0(react@18.2.0)
       '@react-types/shared':
         specifier: 3.22.0
         version: 3.22.0(react@18.2.0)
       '@react-types/table':
         specifier: 3.9.1
         version: 3.9.1(react@18.2.0)
-      '@react-types/tooltip':
-        specifier: 3.4.6
-        version: 3.4.6(react@18.2.0)
       react-aria-components:
         specifier: 1.0.0-rc.0
         version: 1.0.0-rc.0(react-dom@18.2.0)(react@18.2.0)
@@ -4609,25 +4480,6 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@react-aria/autocomplete@3.0.0-alpha.23(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-SyKLvBs4+H2tJnFDqVczxEMZ3xuLoVhQi6ngugW+NLsTSmiuNK1TPeBpy863T9QHUK9YoYkaB/1GJytYMpKseg==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
-      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
-    dependencies:
-      '@react-aria/combobox': 3.8.0(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/listbox': 3.11.2(react-dom@18.2.0)(react@18.2.0)
-      '@react-aria/searchfield': 3.6.0(react@18.2.0)
-      '@react-aria/utils': 3.22.0(react@18.2.0)
-      '@react-stately/combobox': 3.8.0(react@18.2.0)
-      '@react-types/autocomplete': 3.0.0-alpha.18(react@18.2.0)
-      '@react-types/button': 3.9.1(react@18.2.0)
-      '@react-types/shared': 3.22.0(react@18.2.0)
-      '@swc/helpers': 0.5.3
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
   /@react-aria/breadcrumbs@3.5.8(react@18.2.0):
     resolution: {integrity: sha512-jeek23igeqXct7S3ShW2jtFUc5g3fS9ZEBZkF64FWBrwfCiaZwb8TcKkK/xFw36/q5mxEt+seNiqnNzvsICJuQ==}
     peerDependencies:
@@ -5630,17 +5482,6 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@react-types/shared': 3.22.0(react@18.2.0)
-      react: 18.2.0
-    dev: false
-
-  /@react-types/autocomplete@3.0.0-alpha.18(react@18.2.0):
-    resolution: {integrity: sha512-p1kJXmunLczgzAyaoZdSWwttZqTUuOoHylHTICxCGwKeAQS1R0PNVQ36DDOqHdOxqGYkbTG7gr0YUuQfXU4XZA==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
-    dependencies:
-      '@react-types/combobox': 3.9.0(react@18.2.0)
-      '@react-types/searchfield': 3.5.2(react@18.2.0)
       '@react-types/shared': 3.22.0(react@18.2.0)
       react: 18.2.0
     dev: false
