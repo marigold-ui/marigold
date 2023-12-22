@@ -1,8 +1,9 @@
 /* eslint-disable testing-library/no-node-access */
-import { screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
+import { Button, Form } from '@marigold/components';
 import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
@@ -43,6 +44,18 @@ const theme: Theme = {
       icon: cva(),
       action: cva(),
     },
+    Button: cva('align-center flex disabled:bg-gray-600', {
+      variants: {
+        variant: {
+          primary: 'text-primary-500',
+          secondary: 'text-secondary-800',
+        },
+        size: {
+          small: 'h-10 w-10',
+          large: 'w-50 h-50',
+        },
+      },
+    }),
   },
 };
 
@@ -250,4 +263,78 @@ test('forwards ref', () => {
   render(<TextField data-testid="text-field" label="A Label" ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLInputElement);
+});
+
+test('render multiple error messages', () => {
+  render(
+    <TextField
+      data-testid="text-field"
+      label="A Label"
+      errorMessage={['One error ', 'two errors ', 'third error']}
+      error={true}
+    />
+  );
+
+  expect(screen.getByTestId('text-field')).toHaveTextContent(
+    'One error two errors third error'
+  );
+});
+
+test('render error message from custom validation', async () => {
+  render(
+    <TextField
+      data-testid="text-field"
+      label="Email Address"
+      name="email"
+      type="email"
+      placeholder="Enter your email address"
+      required
+      validate={val =>
+        val.length && /^\S+@\S+\.\S+$/.test(val)
+          ? ''
+          : 'Please enter a valid email address!'
+      }
+    />
+  );
+
+  const input = screen.getByRole('textbox');
+  await user.click(input);
+  await user.type(input, 'invalid_email');
+  await user.tab();
+
+  const textFieldElement = screen.getByTestId('text-field');
+
+  expect(textFieldElement).toHaveTextContent(
+    'Please enter a valid email address!'
+  );
+});
+
+test('render custom validation error message', async () => {
+  render(
+    <Form>
+      <TextField
+        data-testid="text-field"
+        label="Email Address"
+        name="email"
+        type="email"
+        placeholder="Enter your email address"
+        required
+        errorMessage={({ validationDetails }) =>
+          validationDetails.valueMissing
+            ? 'Please enter your email address!'
+            : ''
+        }
+      />
+      <Button variant="primary" type="submit" data-testid="button">
+        Subscribe
+      </Button>
+    </Form>
+  );
+
+  const button = screen.getByTestId('button');
+  fireEvent.click(button);
+
+  expect(screen.getByTestId('text-field')).toHaveTextContent(
+    'Please enter your email address!'
+  );
 });
