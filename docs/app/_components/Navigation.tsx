@@ -24,11 +24,12 @@ interface NavigationSubsection {
 }
 interface NavigationSection {
   name: string;
+  slug: string;
   links: NavigationLink[];
   subsections: NavigationSubsection[];
 }
 
-const useNavigation = (): NavigationSection[] => {
+export const useNavigation = (): NavigationSection[] => {
   const navigation = siteConfig.navigation;
 
   return navigation.map(({ name, slug, subsections = [] }) => {
@@ -40,6 +41,7 @@ const useNavigation = (): NavigationSection[] => {
     sectionPages.sort((a, b) => (a.order || 1000) - (b.order || 1000));
     return {
       name,
+      slug,
       links: sectionPages.map(page => ({
         name: page.title,
         href: `/${page.slug}`,

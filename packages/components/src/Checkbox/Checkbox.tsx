@@ -72,7 +72,7 @@ export interface CheckboxProps
 // Component
 // --------------
 
-const _Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
+const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
   (
     {
       className,

@@ -11,22 +11,33 @@ const meta = {
       control: {
         type: 'text',
       },
-
-      description: 'Responsive Style Value',
+      table: {
+        type: 'text',
+        defaultValue: { summary: 'not set' },
+      },
+      description: 'Set a space value. For this we use Tailwind token.',
     },
     alignX: {
       control: {
         type: 'select',
       },
+      table: {
+        type: 'text',
+        defaultValue: { summary: 'left' },
+      },
       options: ['left', 'center', 'right'],
-      description: 'Horizontal Alignment',
+      description: 'Set the Horizontal Alignment',
     },
     alignY: {
       control: {
         type: 'select',
       },
+      table: {
+        type: 'text',
+        defaultValue: { summary: 'not set' },
+      },
       options: ['top', 'center', 'bottom'],
-      description: 'Vertical Alignment',
+      description: 'Set the Vertical Alignment',
     },
   },
 } satisfies Meta<typeof Inline>;
