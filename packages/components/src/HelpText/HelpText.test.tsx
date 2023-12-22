@@ -64,7 +64,7 @@ test('uses description base styles', () => {
   );
 
   const element = screen.getByText('This is a help text description');
-  expect(element.className).toMatchInlineSnapshot(`"react-aria-Text"`);
+  expect(element.className).toMatchInlineSnapshot(`"peer-first/error:hidden"`);
 });
 
 // don't tested error messages because it can't be shown (react-aria-components)

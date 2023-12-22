@@ -138,10 +138,12 @@ test('supports field structure (with error)', () => {
   expect(label).toBeInTheDocument();
 
   const description = screen.queryByText('Some helpful text');
-  expect(description).not.toBeInTheDocument();
+  expect(description).toBeInTheDocument();
+  expect(description).toHaveClass('peer-first/error:hidden');
 
   const error = screen.queryByText('Whoopsie');
   expect(error).toBeInTheDocument();
+  expect(error).toHaveClass('peer/error');
 });
 
 test('correctly sets up aria attributes', () => {
@@ -188,7 +190,6 @@ test('correctly sets up aria attributes (with error)', () => {
 
   const label = screen.getByText('A Label');
   const input = screen.getByRole('textbox');
-  const error = screen.getByText('Whoopsie');
 
   const htmlFor = label.getAttribute('for');
   const labelId = label.getAttribute('id');
@@ -197,8 +198,10 @@ test('correctly sets up aria attributes (with error)', () => {
   expect(label).toHaveAttribute('for', inputId);
   expect(htmlFor).toEqual(inputId);
   expect(input).toHaveAttribute('aria-labelledby', labelId);
-
-  expect(input).toHaveAttribute('aria-describedby', error.getAttribute('id'));
+  expect(input).toHaveAttribute(
+    'aria-describedby',
+    'react-aria-:r3: react-aria-:r4:'
+  );
 
   expect(input).toHaveAttribute('aria-invalid', 'true');
   expect(input).not.toHaveAttribute('aria-errormessage');

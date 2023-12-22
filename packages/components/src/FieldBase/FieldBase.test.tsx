@@ -135,10 +135,14 @@ test('render Field with label and errorMessage although description is set', () 
 
   const label = screen.getByText('Label');
   expect(label).toBeInTheDocument();
+
   const description = screen.queryByText('This is a helpful text');
-  expect(description).not.toBeInTheDocument();
+  expect(description).toBeInTheDocument();
+  expect(description).toHaveClass('peer-first/error:hidden');
+
   const error = screen.getByText('Something went wrong');
   expect(error).toBeInTheDocument();
+  expect(error).toHaveClass('peer/error');
 });
 
 test('passes down variant and size', () => {
@@ -159,7 +163,7 @@ test('passes down variant and size', () => {
   );
 
   const helptext = screen.getByText('Description');
-  expect(helptext.className).toMatchInlineSnapshot(`"react-aria-Text"`);
+  expect(helptext.className).toMatchInlineSnapshot(`"peer-first/error:hidden"`);
 });
 
 test('takes full width by default', () => {
