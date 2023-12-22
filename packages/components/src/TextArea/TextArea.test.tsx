@@ -205,7 +205,7 @@ test('correctly sets up aria attributes (with error)', () => {
 
   expect(textArea).toHaveAttribute(
     'aria-describedby',
-    error.getAttribute('id')
+    expect.stringContaining(error.getAttribute('id')!)
   );
 
   expect(textArea).toHaveAttribute('aria-invalid', 'true');

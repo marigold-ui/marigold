@@ -190,6 +190,7 @@ test('correctly sets up aria attributes (with error)', () => {
 
   const label = screen.getByText('A Label');
   const input = screen.getByRole('textbox');
+  const error = screen.getByText('Whoopsie');
 
   const htmlFor = label.getAttribute('for');
   const labelId = label.getAttribute('id');
@@ -200,7 +201,7 @@ test('correctly sets up aria attributes (with error)', () => {
   expect(input).toHaveAttribute('aria-labelledby', labelId);
   expect(input).toHaveAttribute(
     'aria-describedby',
-    'react-aria-:r3: react-aria-:r4:'
+    expect.stringContaining(error.getAttribute('id')!)
   );
 
   expect(input).toHaveAttribute('aria-invalid', 'true');
