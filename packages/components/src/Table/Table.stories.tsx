@@ -522,7 +522,7 @@ export const WithParentProp: Story = {
   },
 };
 
-export const WidthAlignedColumns: Story = {
+export const WithAlignedColumns: Story = {
   render: args => (
     <Table aria-label="Table with selection" {...args}>
       <Table.Header>
