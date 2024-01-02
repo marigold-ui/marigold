@@ -97,6 +97,7 @@ export const Table: Table = ({
                     key={column.key}
                     column={column}
                     align={column.props?.align}
+                    equalDigitWidth={column.props?.equalDigitWidth}
                   />
                 )
               )}
@@ -121,6 +122,7 @@ export const Table: Table = ({
                         align={currentColumn.props?.align}
                         key={cell.key}
                         cell={cell}
+                        equalDigitWidth={currentColumn.props?.equalDigitWidth}
                       />
                     );
                   })}
@@ -149,7 +151,9 @@ export interface RowProps extends ReactAiaRowProps<any> {
 interface ColumnProps
   extends Omit<ColumnBaseProps<any>, 'width'>,
     WidthProp,
-    Pick<JSX.IntrinsicElements['td'], 'align'> {}
+    Pick<JSX.IntrinsicElements['td'], 'align'> {
+  equalDigitWidth?: boolean;
+}
 
 /**
  * Necessary since TypeScript can not infer the

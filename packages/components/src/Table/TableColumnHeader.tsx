@@ -22,6 +22,7 @@ interface TableColumnHeaderProps
   extends WidthProp,
     Pick<JSX.IntrinsicElements['td'], 'align'> {
   column: GridNode<object>;
+  equalDigitWidth?: boolean;
 }
 
 // Component
@@ -30,6 +31,7 @@ export const TableColumnHeader = ({
   column,
   width = 'auto',
   align,
+  equalDigitWidth,
 }: TableColumnHeaderProps) => {
   const ref = useRef(null);
   const { state, classNames } = useTableContext();
@@ -51,7 +53,11 @@ export const TableColumnHeader = ({
     <th
       colSpan={column.colspan}
       ref={ref}
-      className={cn('cursor-default', twWidth[width], classNames?.header)}
+      className={cn(
+        `cursor-default ${equalDigitWidth && 'tabular-nums'}`,
+        twWidth[width],
+        classNames?.header
+      )}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
       align={align}
