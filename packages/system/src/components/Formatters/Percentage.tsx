@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useNumberFormatter } from '@react-aria/i18n';
 
 interface PercentageProps {
