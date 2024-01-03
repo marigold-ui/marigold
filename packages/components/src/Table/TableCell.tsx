@@ -13,10 +13,9 @@ import { useTableContext } from './Context';
 export interface TableCellProps {
   align?: Exclude<JSX.IntrinsicElements['td']['align'], 'char'>;
   cell: GridNode<object>;
-  equalDigitWidth?: boolean;
 }
 
-export const TableCell = ({ cell, align, equalDigitWidth }: TableCellProps) => {
+export const TableCell = ({ cell, align }: TableCellProps) => {
   const ref = useRef(null);
   const { interactive, state, classNames } = useTableContext();
   const disabled = state.disabledKeys.has(cell.parentKey!);
@@ -44,11 +43,7 @@ export const TableCell = ({ cell, align, equalDigitWidth }: TableCellProps) => {
   return (
     <td
       ref={ref}
-      className={cn(
-        { 'tabular-nums': equalDigitWidth },
-        align ? `text-${align}` : '',
-        classNames?.cell
-      )}
+      className={cn(align ? `text-${align}` : '', classNames?.cell)}
       {...mergeProps(cellProps, focusProps)}
       {...stateProps}
     >

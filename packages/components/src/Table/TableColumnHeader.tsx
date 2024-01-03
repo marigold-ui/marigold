@@ -21,7 +21,6 @@ import { useTableContext } from './Context';
 interface TableColumnHeaderProps extends WidthProp {
   align?: Exclude<JSX.IntrinsicElements['td']['align'], 'char'>;
   column: GridNode<object>;
-  equalDigitWidth?: boolean;
 }
 
 // Component
@@ -30,7 +29,6 @@ export const TableColumnHeader = ({
   column,
   width = 'auto',
   align,
-  equalDigitWidth,
 }: TableColumnHeaderProps) => {
   const ref = useRef(null);
   const { state, classNames } = useTableContext();
@@ -54,7 +52,6 @@ export const TableColumnHeader = ({
       ref={ref}
       className={cn(
         'cursor-default',
-        { 'tabular-nums': equalDigitWidth },
         twWidth[width],
         classNames?.header,
         align ? `text-${align}` : ''

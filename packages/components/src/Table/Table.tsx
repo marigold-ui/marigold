@@ -97,7 +97,6 @@ export const Table: Table = ({
                     key={column.key}
                     column={column}
                     align={column.props?.align}
-                    equalDigitWidth={column.props?.equalDigitWidth}
                   />
                 )
               )}
@@ -122,7 +121,6 @@ export const Table: Table = ({
                         align={currentColumn.props?.align}
                         key={cell.key}
                         cell={cell}
-                        equalDigitWidth={currentColumn.props?.equalDigitWidth}
                       />
                     );
                   })}
@@ -150,7 +148,6 @@ export interface RowProps extends ReactAiaRowProps<any> {
 // overriding the column width with WidthProps width
 interface ColumnProps extends Omit<ColumnBaseProps<any>, 'width'>, WidthProp {
   align?: Exclude<JSX.IntrinsicElements['td']['align'], 'char'>;
-  equalDigitWidth?: boolean;
 }
 
 /**
