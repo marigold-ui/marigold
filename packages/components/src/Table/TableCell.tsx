@@ -10,8 +10,8 @@ import { cn, useStateProps } from '@marigold/system';
 
 import { useTableContext } from './Context';
 
-export interface TableCellProps
-  extends Pick<JSX.IntrinsicElements['td'], 'align'> {
+export interface TableCellProps {
+  align?: Exclude<JSX.IntrinsicElements['td']['align'], 'char'>;
   cell: GridNode<object>;
   equalDigitWidth?: boolean;
 }
@@ -41,14 +41,16 @@ export const TableCell = ({ cell, align, equalDigitWidth }: TableCellProps) => {
 
   const { focusProps, isFocusVisible } = useFocusRing();
   const stateProps = useStateProps({ disabled, focusVisible: isFocusVisible });
-  console.log('tableCell:', equalDigitWidth);
   return (
     <td
       ref={ref}
-      className={cn(`${equalDigitWidth && 'tabular-nums'}`, classNames?.cell)}
+      className={cn(
+        { 'tabular-nums': equalDigitWidth },
+        align ? `text-${align}` : '',
+        classNames?.cell
+      )}
       {...mergeProps(cellProps, focusProps)}
       {...stateProps}
-      align={align}
     >
       {cell.rendered}
     </td>

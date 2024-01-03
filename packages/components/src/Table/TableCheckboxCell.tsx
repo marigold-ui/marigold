@@ -39,8 +39,11 @@ export const TableCheckboxCell = ({ cell, align }: TableCheckboxCellProps) => {
   return (
     <td
       ref={ref}
-      className={cn('text-center align-middle leading-none', classNames?.cell)}
-      align={align}
+      className={cn(
+        'text-center align-middle leading-none',
+        align ? `text-${align}` : '',
+        classNames?.cell
+      )}
       {...mergeProps(gridCellProps, focusProps)}
       {...stateProps}
     >

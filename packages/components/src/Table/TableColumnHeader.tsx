@@ -18,9 +18,8 @@ import { useTableContext } from './Context';
 
 // Props
 // ---------------
-interface TableColumnHeaderProps
-  extends WidthProp,
-    Pick<JSX.IntrinsicElements['td'], 'align'> {
+interface TableColumnHeaderProps extends WidthProp {
+  align?: Exclude<JSX.IntrinsicElements['td']['align'], 'char'>;
   column: GridNode<object>;
   equalDigitWidth?: boolean;
 }
@@ -49,16 +48,16 @@ export const TableColumnHeader = ({
     hover: isHovered,
     focusVisible: isFocusVisible,
   });
-
   return (
     <th
       colSpan={column.colspan}
       ref={ref}
       className={cn(
-        `cursor-default ${equalDigitWidth && 'tabular-nums'}`,
+        'cursor-default',
+        { 'tabular-nums': equalDigitWidth },
         twWidth[width],
         classNames?.header,
-        align && `text-${align}`
+        align ? `text-${align}` : ''
       )}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
