@@ -49,6 +49,7 @@ export const TableColumnHeader = ({
     hover: isHovered,
     focusVisible: isFocusVisible,
   });
+
   return (
     <th
       colSpan={column.colspan}
@@ -56,11 +57,11 @@ export const TableColumnHeader = ({
       className={cn(
         `cursor-default ${equalDigitWidth && 'tabular-nums'}`,
         twWidth[width],
-        classNames?.header
+        classNames?.header,
+        align && `text-${align}`
       )}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
-      align={align}
     >
       {column.rendered}
       {column.props.allowsSorting &&
