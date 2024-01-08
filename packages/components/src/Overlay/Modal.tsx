@@ -1,10 +1,6 @@
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Modal } from 'react-aria-components';
-
-import { OverlayContainer } from '@react-aria/overlays';
-
-import { usePortalContainer } from '@marigold/system';
 
 import { Underlay } from './Underlay';
 
