@@ -56,7 +56,9 @@ export const decorators: any = [
               <MarigoldProvider theme={THEME[key as ThemeNames]}>
                 <Frame key={key} id={key} title={`Theme "${key}"`}>
                   <MarigoldProvider theme={THEME[key as ThemeNames]}>
-                    <div className="p-4">{Story()}</div>
+                    <div className="p-4" data-theme={key}>
+                      {Story()}
+                    </div>
                   </MarigoldProvider>
                 </Frame>
               </MarigoldProvider>
