@@ -77,29 +77,28 @@ export const MultipleMessages: Story = {
       errors.push('Password must be 8 characters or more.');
     }
     if ((password.match(/[A-Z]/g) ?? []).length < 2) {
-      errors.push('Password must include at least 2 upper case letters');
+      errors.push('Password must include at least 2 upper case letters.');
     }
     if ((password.match(/[^a-z]/gi) ?? []).length < 2) {
       errors.push('Password must include at least 2 symbols.');
     }
 
     return (
-      <Stack space={8} alignX="left">
-        <TextField
-          isInvalid={errors.length > 0}
-          value={password}
-          onChange={setPassword}
-        >
-          <Label>Name</Label>
-          <Input />
-          <HelpText />
-        </TextField>
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-        <hr />
-        <p>Note that the HelpText is not styled in this example!</p>
-      </Stack>
+      <div className="w-96">
+        <Stack space={8} alignX="left">
+          <TextField
+            isInvalid={errors.length > 0}
+            value={password}
+            onChange={setPassword}
+          >
+            <Label>Name</Label>
+            <Input />
+            <HelpText errorMessage={errors} />
+          </TextField>
+          <hr />
+          <p>Note that the HelpText is not styled in this example!</p>
+        </Stack>
+      </div>
     );
   },
 };
