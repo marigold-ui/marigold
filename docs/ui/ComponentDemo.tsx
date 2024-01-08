@@ -59,19 +59,3 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
     </Tabs>
   );
 };
-
-{
-  /* <MarigoldProvider
-theme={(current && themes[current]) as Theme}
-className="flex flex-1 place-items-center rounded-xl"
->
-<div className="flex h-full min-h-[150px] w-full flex-col">
-  <div
-    data-theme={current}
-    className="not-prose w-full overflow-x-auto p-4"
-  >
-    <Demo />
-  </div>
-</div>
-</MarigoldProvider> */
-}

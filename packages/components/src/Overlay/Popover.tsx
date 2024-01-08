@@ -54,13 +54,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
             </Popover>
           </>
         ) : (
-          <Popover
-            ref={ref}
-            {...props}
-            className={classNames}
-            offset={0}
-            data-theme={theme.name}
-          >
+          <Popover ref={ref} {...props} className={classNames} offset={0}>
             {children}
           </Popover>
         )}
