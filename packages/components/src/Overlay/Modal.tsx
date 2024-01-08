@@ -1,6 +1,8 @@
-import { forwardRef } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { Modal } from 'react-aria-components';
+
+import { OverlayContainer } from '@react-aria/overlays';
 
 import { Underlay } from './Underlay';
 
@@ -27,12 +29,23 @@ const _Modal = forwardRef<
     isKeyboardDismissDisabled: keyboardDismissable,
     ...rest,
   };
+
+  const [portal, setPortal] = useState<Element | null>(null);
+
+  // used useEffect because otherwise the document is not defined
+  useEffect(() => {
+    let container = document.getElementById('portalContainer') ?? document.body;
+    setPortal(container);
+  }, []);
+
+  console.log(portal);
   return (
     <Underlay
       dismissable={dismissable}
       keyboardDismissable={keyboardDismissable}
       open={open}
       variant="modal"
+      UNSTABLE_portalContainer={portal as Element}
     >
       <Modal ref={ref} {...props}>
         {props.children}
