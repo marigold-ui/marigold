@@ -1,7 +1,7 @@
 import { ModalOverlay } from 'react-aria-components';
 import RAC from 'react-aria-components';
 
-import { cn, useClassNames } from '@marigold/system';
+import { cn, useClassNames, usePortalContainer } from '@marigold/system';
 
 // Props
 // ---------------
@@ -34,6 +34,7 @@ export const Underlay = ({
     isKeyboardDismissDisabled: keyboardDismissable,
     ...rest,
   };
+  const portal = usePortalContainer();
   return (
     <ModalOverlay
       className={({ isEntering, isExiting }) =>
@@ -46,6 +47,7 @@ export const Underlay = ({
       }
       {...props}
       data-testid="underlay-id"
+      UNSTABLE_portalContainer={portal as Element}
     >
       {props.children}
     </ModalOverlay>
