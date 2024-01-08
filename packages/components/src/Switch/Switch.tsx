@@ -28,7 +28,7 @@ export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
   selected?: RAC.SwitchProps['isSelected'];
 }
 
-const _Switch = forwardRef<HTMLInputElement, SwitchProps>(
+const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
   (
     {
       variant,

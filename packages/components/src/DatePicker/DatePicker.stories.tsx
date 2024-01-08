@@ -17,41 +17,64 @@ const meta = {
         type: 'boolean',
       },
       description: 'Disable the date picker',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     width: {
       control: {
         type: 'text',
       },
-      description: 'width of the date picker input field',
+      description:
+        'Width of the date picker input field, for that we use Tailwind tokens',
     },
     required: {
       control: {
         type: 'boolean',
       },
-      description: 'Disable the date picker',
-      defaultValue: false,
+      description: 'Set the date picker required.',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     open: {
       control: {
         type: 'boolean',
       },
-      description: 'Disable the date picker',
+      description: 'Open the date Picker.',
       defaultValue: false,
     },
     errorMessage: {
       control: {
         type: 'text',
       },
-      description: 'Disable the date picker',
+      description: 'Sets error message for the date picker.',
+    },
+    description: {
+      control: {
+        type: 'text',
+      },
+      description: 'Sets help text for the date picker.',
     },
     error: {
       control: {
         type: 'boolean',
       },
-      description: 'Disable the date picker',
-      defaultValue: false,
+      description: 'Sets error for the date picker.',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
+  },
+  args: {
+    errorMessage: 'Something went wrong!',
+    description: 'This is a description help text.',
+    disabled: false,
+    required: false,
+    error: false,
   },
 } satisfies Meta<typeof DatePicker>;
 
