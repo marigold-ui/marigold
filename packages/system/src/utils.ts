@@ -80,11 +80,13 @@ export const get = (obj: object, path: string, fallback?: any): any => {
 };
 
 export const usePortalContainer = () => {
-  const [portal, setPortal] = useState<Element | null>(null);
+  const [portal, setPortal] = useState<Element | null>(document.body);
   // used useEffect because otherwise the document is not defined
   useEffect(() => {
-    let container = document.getElementById('portalContainer') ?? document.body;
+    const container =
+      document.getElementById('portalContainer') ?? document.body;
     setPortal(container);
   }, []);
+
   return portal;
 };
