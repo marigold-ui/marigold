@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import { Form, TextField } from 'react-aria-components';
 
 import { Button } from '../Button';
@@ -64,4 +65,41 @@ export const WithinAField: Story = {
       </Form>
     </>
   ),
+};
+
+export const MultipleMessages: Story = {
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [password, setPassword] = useState('');
+    const errors = [];
+
+    if (password.length < 8) {
+      errors.push('Password must be 8 characters or more.');
+    }
+    if ((password.match(/[A-Z]/g) ?? []).length < 2) {
+      errors.push('Password must include at least 2 upper case letters');
+    }
+    if ((password.match(/[^a-z]/gi) ?? []).length < 2) {
+      errors.push('Password must include at least 2 symbols.');
+    }
+
+    return (
+      <Stack space={8} alignX="left">
+        <TextField
+          isInvalid={errors.length > 0}
+          value={password}
+          onChange={setPassword}
+        >
+          <Label>Name</Label>
+          <Input />
+          <HelpText />
+        </TextField>
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+        <hr />
+        <p>Note that the HelpText is not styled in this example!</p>
+      </Stack>
+    );
+  },
 };
