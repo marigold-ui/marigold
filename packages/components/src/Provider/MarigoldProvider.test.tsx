@@ -9,8 +9,6 @@ import {
   screen,
 } from '@testing-library/react';
 
-import { OverlayProvider } from '@react-aria/overlays';
-
 import { Theme, cva, useTheme } from '@marigold/system';
 
 import { Popover } from '../Overlay';
