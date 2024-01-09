@@ -4,7 +4,6 @@
 import { cleanup, fireEvent, renderHook, screen } from '@testing-library/react';
 
 import { OverlayProvider } from '@react-aria/overlays';
-import { useIsSSR } from '@react-aria/ssr';
 
 import { Theme, cva } from '@marigold/system';
 

@@ -2,7 +2,6 @@
 
 /* eslint-disable testing-library/no-container */
 import { cleanup, render, renderHook, screen } from '@testing-library/react';
-import { useEffect } from 'react';
 
 import { Theme, cva, useTheme } from '@marigold/system';
 
@@ -180,7 +179,7 @@ test('render portalcontainer in body element if no ssr', () => {
 test('render null for portalcontainer', () => {
   const wrapper = () => (
     <>
-      <MarigoldProvider theme={theme}>
+      <MarigoldProvider theme={theme} portalContainer="testid">
         <Popover>Test</Popover>
       </MarigoldProvider>
     </>
