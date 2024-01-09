@@ -1,11 +1,21 @@
 /* eslint-disable testing-library/no-node-access */
 
 /* eslint-disable testing-library/no-container */
-import { render, screen } from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  render,
+  renderHook,
+  screen,
+} from '@testing-library/react';
+
+import { OverlayProvider } from '@react-aria/overlays';
 
 import { Theme, cva, useTheme } from '@marigold/system';
 
+import { Popover } from '../Overlay';
 import { MarigoldProvider } from './MarigoldProvider';
+import { usePortalContainer } from './OverlayContainerProvider';
 
 // Setup
 // ---------------
@@ -17,6 +27,7 @@ const theme: Theme = {
   components: {
     Text: cva('text-body'),
     Button: cva(),
+    Popover: cva(),
   },
 };
 
@@ -29,6 +40,19 @@ beforeEach(() => {
 afterEach(() => {
   errorMock.mockRestore();
 });
+
+const mockMatchMedia = (matches: string[]) =>
+  jest.fn().mockImplementation(query => ({
+    matches: matches.includes(query),
+  }));
+
+window.matchMedia = mockMatchMedia([
+  'screen and (min-width: 40em)',
+  'screen and (min-width: 52em)',
+  'screen and (min-width: 64em)',
+]);
+
+afterEach(cleanup);
 
 test('support cascading themes', () => {
   const outerTheme = {
@@ -145,4 +169,19 @@ test('cascading without a selector is allowed when inner theme has not root styl
       </MarigoldProvider>
     )
   ).not.toThrowError();
+});
+
+test('render null for portalcontainer', () => {
+  const wrapper = () => (
+    <>
+      <MarigoldProvider theme={theme}>
+        <Popover>Test</Popover>
+      </MarigoldProvider>
+    </>
+  );
+  const { result } = renderHook(() => usePortalContainer(), {
+    wrapper,
+  });
+
+  expect(result.current).toBeNull();
 });
