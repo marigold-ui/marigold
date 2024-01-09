@@ -213,7 +213,8 @@ test('correctly sets up aria attributes (with error)', () => {
   expect(input).toHaveAttribute('aria-labelledby', labelId);
   expect(input).toHaveAttribute(
     'aria-describedby',
-    expect.stringContaining(error.getAttribute('id')!)
+    // eslint-disable-next-line testing-library/no-node-access
+    expect.stringContaining(error?.parentElement?.getAttribute('id')!)
   );
 
   expect(input).toHaveAttribute('aria-invalid', 'true');
