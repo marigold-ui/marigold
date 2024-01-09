@@ -15,7 +15,7 @@ export interface TableCellProps {
   cell: GridNode<object>;
 }
 
-export const TableCell = ({ cell, align }: TableCellProps) => {
+export const TableCell = ({ cell, align = 'left' }: TableCellProps) => {
   const ref = useRef(null);
   const { interactive, state, classNames } = useTableContext();
   const disabled = state.disabledKeys.has(cell.parentKey!);
@@ -43,9 +43,10 @@ export const TableCell = ({ cell, align }: TableCellProps) => {
   return (
     <td
       ref={ref}
-      className={cn(align ? `text-${align}` : '', classNames?.cell)}
+      className={cn(classNames?.cell)}
       {...mergeProps(cellProps, focusProps)}
       {...stateProps}
+      align={align}
     >
       {cell.rendered}
     </td>

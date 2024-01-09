@@ -28,7 +28,7 @@ interface TableColumnHeaderProps extends WidthProp {
 export const TableColumnHeader = ({
   column,
   width = 'auto',
-  align,
+  align = 'left',
 }: TableColumnHeaderProps) => {
   const ref = useRef(null);
   const { state, classNames } = useTableContext();
@@ -50,14 +50,10 @@ export const TableColumnHeader = ({
     <th
       colSpan={column.colspan}
       ref={ref}
-      className={cn(
-        'cursor-default',
-        twWidth[width],
-        classNames?.header,
-        align ? `text-${align}` : ''
-      )}
+      className={cn('cursor-default', twWidth[width], classNames?.header)}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
+      align={align}
     >
       {column.rendered}
       {column.props.allowsSorting &&
