@@ -4,15 +4,15 @@ import { useNumberFormatter } from '@react-aria/i18n';
 
 interface PercentageProps {
   value: number | bigint;
-  fullDigitWidth?: boolean;
+  wideDigits?: boolean;
 }
 
-export const Percentage = ({ value, fullDigitWidth }: PercentageProps) => {
+export const Percentage = ({ value, wideDigits }: PercentageProps) => {
   const formatter = useNumberFormatter({
     style: 'percent',
   });
   return (
-    <span className={fullDigitWidth ? 'tabular-nums' : ''}>
+    <span className={wideDigits ? 'tabular-nums' : ''}>
       {formatter.format(value)}
     </span>
   );

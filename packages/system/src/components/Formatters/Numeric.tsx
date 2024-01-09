@@ -6,14 +6,14 @@ type RemoveProps = 'currency' | 'currencyDisplay' | 'currencySign' | 'style';
 
 interface NumericProps extends Omit<Intl.NumberFormatOptions, RemoveProps> {
   value: number;
-  fullDigitWidth?: boolean;
+  wideDigits?: boolean;
   numberingSystem?: string;
   styleFormat?: 'unit' | 'compact' | 'decimal';
 }
 
 export const Numeric = ({
   value,
-  fullDigitWidth,
+  wideDigits,
   styleFormat,
   ...props
 }: NumericProps) => {
@@ -22,7 +22,7 @@ export const Numeric = ({
     ...props,
   });
   return (
-    <span className={fullDigitWidth ? 'tabular-nums' : ''}>
+    <span className={wideDigits ? 'tabular-nums' : ''}>
       {formatter.format(value)}
     </span>
   );

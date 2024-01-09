@@ -4,12 +4,12 @@ import { DateFormatterOptions, useDateFormatter } from '@react-aria/i18n';
 
 interface DateFormatterProps extends DateFormatterOptions {
   value: Date;
-  fullDigitWidth?: boolean;
+  wideDigits?: boolean;
 }
 
 export const DateFormatter = ({
   value,
-  fullDigitWidth,
+  wideDigits,
   ...props
 }: DateFormatterProps) => {
   const formatter = useDateFormatter({
@@ -17,7 +17,7 @@ export const DateFormatter = ({
   });
 
   return (
-    <span className={fullDigitWidth ? 'tabular-nums' : ''}>
+    <span className={wideDigits ? 'tabular-nums' : ''}>
       {formatter.format(value)}
     </span>
   );
