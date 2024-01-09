@@ -2,6 +2,7 @@
 
 /* eslint-disable testing-library/no-container */
 import { cleanup, render, renderHook, screen } from '@testing-library/react';
+import { useEffect } from 'react';
 
 import { Theme, cva, useTheme } from '@marigold/system';
 
@@ -163,17 +164,15 @@ test('cascading without a selector is allowed when inner theme has not root styl
   ).not.toThrowError();
 });
 
-test('render null for portalcontainer', () => {
-  const wrapper = () => (
+test('render portalcontainer in body element if no ssr', () => {
+  render(
     <>
       <MarigoldProvider theme={theme}>
         <Popover>Test</Popover>
       </MarigoldProvider>
     </>
   );
-  const { result } = renderHook(() => usePortalContainer(), {
-    wrapper,
-  });
 
-  expect(result.current).toBeNull();
+  const { result } = renderHook(() => usePortalContainer());
+  expect(result.current).toBeInstanceOf(HTMLBodyElement);
 });
