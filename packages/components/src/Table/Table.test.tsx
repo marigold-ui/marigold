@@ -330,10 +330,8 @@ test('supports table columns alignment', () => {
   const ageNumber = screen.getByText('22');
   const ageHeader = screen.getByText('Age');
 
-  expect(ageNumber.className).toMatchInlineSnapshot(`"text-right p-10"`);
-  expect(ageHeader.className).toMatchInlineSnapshot(
-    `"cursor-default w-auto p-4 text-right"`
-  );
+  expect(ageNumber).toHaveAttribute('align', 'right');
+  expect(ageHeader).toHaveAttribute('align', 'right');
 });
 
 test('cursor indicates interactivity', async () => {
