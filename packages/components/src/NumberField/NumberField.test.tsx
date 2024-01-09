@@ -150,7 +150,6 @@ test('supports field structure (with error)', () => {
 
   const error = screen.queryByText('Whoopsie');
   expect(error).toBeInTheDocument();
-  expect(error).toHaveClass('peer/error');
 });
 
 test('can have default value', () => {

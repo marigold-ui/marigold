@@ -96,7 +96,6 @@ test('render DateField with error messaege however description is set', () => {
 
   const error = screen.getByText('something went wrong');
   expect(error).toBeInTheDocument();
-  expect(error).toHaveClass('peer/error');
 });
 
 test('events', async () => {

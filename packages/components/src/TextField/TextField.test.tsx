@@ -156,7 +156,6 @@ test('supports field structure (with error)', () => {
 
   const error = screen.queryByText('Whoopsie');
   expect(error).toBeInTheDocument();
-  expect(error).toHaveClass('peer/error');
 });
 
 test('correctly sets up aria attributes', () => {

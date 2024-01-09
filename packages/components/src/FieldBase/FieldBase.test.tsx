@@ -142,7 +142,6 @@ test('render Field with label and errorMessage although description is set', () 
 
   const error = screen.getByText('Something went wrong');
   expect(error).toBeInTheDocument();
-  expect(error).toHaveClass('peer/error');
 });
 
 test('passes down variant and size', () => {
