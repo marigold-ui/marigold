@@ -176,3 +176,18 @@ test('render portalcontainer in body element if no ssr', () => {
   const { result } = renderHook(() => usePortalContainer());
   expect(result.current).toBeInstanceOf(HTMLBodyElement);
 });
+
+test('render null for portalcontainer', () => {
+  const wrapper = () => (
+    <>
+      <MarigoldProvider theme={theme}>
+        <Popover>Test</Popover>
+      </MarigoldProvider>
+    </>
+  );
+  const { result } = renderHook(() => usePortalContainer(), {
+    wrapper,
+  });
+
+  expect(result.current).toBeNull();
+});

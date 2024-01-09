@@ -1,19 +1,13 @@
 /**
  * @jest-environment jsdom
  */
-import {
-  cleanup,
-  fireEvent,
-  render,
-  renderHook,
-  screen,
-} from '@testing-library/react';
+import { cleanup, fireEvent, renderHook, screen } from '@testing-library/react';
 
 import { OverlayProvider } from '@react-aria/overlays';
+import { useIsSSR } from '@react-aria/ssr';
 
 import { Theme, cva } from '@marigold/system';
 
-import { Popover } from '../Overlay';
 import { Select } from '../Select';
 import { MarigoldProvider } from './MarigoldProvider';
 import { usePortalContainer } from './OverlayContainerProvider';
@@ -82,30 +76,11 @@ test('renders portal container', async () => {
   );
 
   const { result } = renderHook(() => usePortalContainer(), { wrapper });
-  // eslint-disable-next-line testing-library/no-node-access
   const button = screen.getByRole('button');
-
-  // eslint-disable-next-line testing-library/no-unnecessary-act
   fireEvent.click(button);
-
   const item = screen.getByText('two');
 
   expect(item).toBeInTheDocument();
 
   expect(result.current).toBeNull();
 });
-
-// test.only('render portalcontainer', () => {
-//   render(
-//     <>
-//       <MarigoldProvider theme={theme} portalContainer="testid">
-//         <Popover>Test</Popover>
-//       </MarigoldProvider>
-//       <div id="testid" />
-//     </>
-//   );
-
-//   const { result } = renderHook(() => usePortalContainer());
-
-//   console.log(result.current);
-// });
