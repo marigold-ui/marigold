@@ -43,7 +43,7 @@ export const HelpText = ({
 
   return (
     <div className={cn(classNames.container)}>
-      <FieldError {...props} className="peer/error flex flex-col gap-1">
+      <FieldError {...props} className="peer/error flex flex-col">
         {validation => {
           /**
            * Prefer custom error messages, fallback to native errors ones.
