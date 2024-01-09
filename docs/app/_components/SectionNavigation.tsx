@@ -19,7 +19,7 @@ export const SectionNavigation = () => {
   );
 
   return (
-    <nav className="mb-12 flex flex-col gap-10 pl-4 pt-8">
+    <nav className="mb-12 flex flex-col gap-10 pl-4 pt-8 xl:pt-12">
       <div key={currentSection?.name} className="flex flex-col gap-2">
         <p className="font-semibold">{currentSection?.name}</p>
         <div className="border-secondary-300 ml-0.5 flex flex-col gap-2 border-l">

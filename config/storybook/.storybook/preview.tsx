@@ -1,4 +1,4 @@
-import { withThemeByDataAttribute } from '@storybook/addon-styling';
+import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import { Preview } from '@storybook/react';
 import 'tailwindcss/tailwind.css';
 
