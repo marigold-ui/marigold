@@ -1,13 +1,7 @@
 /* eslint-disable testing-library/no-node-access */
 
 /* eslint-disable testing-library/no-container */
-import {
-  act,
-  cleanup,
-  render,
-  renderHook,
-  screen,
-} from '@testing-library/react';
+import { cleanup, render, renderHook, screen } from '@testing-library/react';
 
 import { Theme, cva, useTheme } from '@marigold/system';
 
