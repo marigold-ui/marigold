@@ -8,10 +8,17 @@ interface NumericProps extends Omit<Intl.NumberFormatOptions, RemoveProps> {
   value: number;
   fullDigitWidth?: boolean;
   numberingSystem?: string;
+  styleFormat?: 'unit' | 'compact' | 'decimal';
 }
 
-export const Numeric = ({ value, fullDigitWidth, ...props }: NumericProps) => {
+export const Numeric = ({
+  value,
+  fullDigitWidth,
+  styleFormat,
+  ...props
+}: NumericProps) => {
   const formatter = useNumberFormatter({
+    style: styleFormat,
     ...props,
   });
   return (
