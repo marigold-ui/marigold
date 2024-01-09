@@ -1,7 +1,9 @@
 import { ModalOverlay } from 'react-aria-components';
 import RAC from 'react-aria-components';
 
-import { cn, useClassNames, usePortalContainer } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
+
+import { usePortalContainer } from '../Provider';
 
 // Props
 // ---------------

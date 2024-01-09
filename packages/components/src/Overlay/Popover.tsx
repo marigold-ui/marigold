@@ -2,13 +2,9 @@ import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components';
 
-import {
-  cn,
-  useClassNames,
-  usePortalContainer,
-  useSmallScreen,
-} from '@marigold/system';
+import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 
+import { usePortalContainer } from '../Provider/OverlayContainerProvider';
 import { Underlay } from './Underlay';
 
 // Props

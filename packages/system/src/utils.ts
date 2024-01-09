@@ -4,7 +4,6 @@ import {
   ClassProp,
   StringToBoolean,
 } from 'class-variance-authority/dist/types';
-import { useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 export type { VariantProps } from 'class-variance-authority';
@@ -77,16 +76,4 @@ export const get = (obj: object, path: string, fallback?: any): any => {
   }
 
   return result === undefined ? fallback : result;
-};
-
-export const usePortalContainer = () => {
-  const [portal, setPortal] = useState<Element | null>(document.body);
-  // used useEffect because otherwise the document is not defined
-  useEffect(() => {
-    const container =
-      document.getElementById('portalContainer') ?? document.body;
-    setPortal(container);
-  }, []);
-
-  return portal;
 };
