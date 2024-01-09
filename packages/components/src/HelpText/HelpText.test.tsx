@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/react';
+import { Input, Label, TextField } from 'react-aria-components';
 
 import { Theme, cva } from '@marigold/system';
 
@@ -67,4 +68,30 @@ test('uses description base styles', () => {
   expect(element.className).toMatchInlineSnapshot(`"peer-first/error:hidden"`);
 });
 
-// don't tested error messages because it can't be shown (react-aria-components)
+test('show error message when control is invalid', () => {
+  render(
+    <TextField isInvalid>
+      <Label>Name</Label>
+      <Input />
+      <HelpText errorMessage="This can't be right" />
+    </TextField>
+  );
+
+  const element = screen.getByText("This can't be right");
+  expect(element).toBeInTheDocument();
+});
+
+test('show multiple error message when control is invalid', () => {
+  render(
+    <TextField isInvalid>
+      <Label>Name</Label>
+      <Input />
+      <HelpText
+        errorMessage={["This can't be right", 'Oh god, no! What did you do!?']}
+      />
+    </TextField>
+  );
+
+  expect(screen.getByText("This can't be right")).toBeInTheDocument();
+  expect(screen.getByText('Oh god, no! What did you do!?')).toBeInTheDocument();
+});
