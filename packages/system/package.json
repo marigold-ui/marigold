@@ -29,18 +29,18 @@
     "class-variance-authority": "0.7.0",
     "deepmerge": "^4.2.2",
     "react-fast-compare": "^3.2.0",
-    "tailwind-merge": "2.1.0"
+    "tailwind-merge": "2.2.0"
   },
   "peerDependencies": {
     "react": "16.x || 17.x || 18.x",
     "react-dom": "16.x || 17.x || 18.x"
   },
   "devDependencies": {
-    "@babel/core": "7.23.3",
+    "@babel/core": "7.23.7",
     "@marigold/tsconfig": "workspace:*",
-    "postcss": "8.4.32",
+    "postcss": "8.4.33",
     "react": "18.2.0",
-    "tailwindcss": "3.3.6",
+    "tailwindcss": "3.4.1",
     "tsup": "8.0.1"
   },
   "scripts": {
