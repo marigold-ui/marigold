@@ -2,8 +2,9 @@ import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components';
 
-import { cn, useClassNames, useSmallScreen, useTheme } from '@marigold/system';
+import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 
+import { usePortalContainer } from '../Provider/OverlayContainerProvider';
 import { Underlay } from './Underlay';
 
 // Props
@@ -15,12 +16,16 @@ export interface PopoverProps
   > {
   keyboardDismissDisabled?: boolean;
   open?: boolean;
+  container?: Element;
 }
 
 // Component
 // ---------------
 const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
-  ({ keyboardDismissDisabled, placement, open, children, ...rest }, ref) => {
+  (
+    { keyboardDismissDisabled, placement, open, children, container, ...rest },
+    ref
+  ) => {
     const props: RAC.PopoverProps = {
       isKeyboardDismissDisabled: keyboardDismissDisabled,
       isOpen: open,
@@ -35,7 +40,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
     });
 
     const isSmallScreen = useSmallScreen();
-    const theme = useTheme();
+    const portal = usePortalContainer();
 
     return (
       <>
@@ -48,7 +53,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
               className={cn(
                 '!left-0 bottom-0 !mt-auto flex !max-h-fit w-full flex-col'
               )}
-              data-theme={theme.name}
+              UNSTABLE_portalContainer={portal as Element}
             >
               {children}
             </Popover>
@@ -59,7 +64,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
             {...props}
             className={classNames}
             offset={0}
-            data-theme={theme.name}
+            UNSTABLE_portalContainer={portal as Element}
           >
             {children}
           </Popover>

@@ -40,7 +40,7 @@ export const Headlines = () => {
               <Table.Row key={level}>
                 <Table.Cell>{level}</Table.Cell>
                 <Table.Cell>
-                  <div data-theme={current}>
+                  <div>
                     <MarigoldProvider
                       theme={(current && themes[current]) as Theme}
                     >

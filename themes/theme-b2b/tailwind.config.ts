@@ -3,6 +3,7 @@ import type { Config } from 'tailwindcss';
 import { preset } from './src/preset';
 
 export default {
+  important: '[data-theme="b2b"]',
   content: [
     'src/root.ts',
     'src/colors.ts',
