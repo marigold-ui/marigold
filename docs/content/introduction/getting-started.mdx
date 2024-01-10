@@ -79,17 +79,18 @@ To set up Marigold in your project, you have two options based on the scale and 
 
 The easiest way to start is by using the provided CSS file that comes with each theme. While this method allows for a quick start, it does not offer customization options beyond using the provided design tokens. This setup is sufficient for smaller and simpler applications.
 
+{/* prettier-ignore-start */}
 ```jsx
 /**
  * 1. Import the CSS file and theme
  */
+import theme from '@marigold/theme-b2b';
+import '@marigold/theme-b2b/styles.css';
 
 /**
  * 2. Import the MarigoldProvider
  */
 import { MarigoldProvider } from '@marigold/components';
-import theme from '@marigold/theme-b2b';
-import '@marigold/theme-b2b/styles.css';
 
 /**
  * 3. Wrap your app into the MarigoldProvider
@@ -99,6 +100,7 @@ export const App = () => (
   <MarigoldProvider theme={theme}>{/* Your App */}}</MarigoldProvider>
 );
 ```
+{/* prettier-ignore-end */}
 
 ### Using Tailwind CSS
 
