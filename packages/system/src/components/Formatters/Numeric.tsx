@@ -8,7 +8,7 @@ interface NumericProps extends Omit<Intl.NumberFormatOptions, RemoveProps> {
   value: number;
   wideDigits?: boolean;
   numberingSystem?: string;
-  styleFormat?: 'unit' | 'compact' | 'decimal';
+  styleFormat?: 'unit' | 'decimal';
 }
 
 export const Numeric = ({
