@@ -1,0 +1,58 @@
+---
+title: Numeric
+caption: Helper used to format numeric values.
+---
+
+`<Numeric>` helper component is used to format numbers based on the current language, this component is built based on [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat).
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Numeric } from '@marigold/system';
+```
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'minimumFractionDigits',
+      type: 'number',
+      description:
+        'Specifies the minimum number of fraction digits to display.',
+      default: 'none',
+    },
+    {
+      property: 'maximumFractionDigits',
+      type: 'number',
+      description:
+        'Specifies the maximum number of fraction digits to display.',
+      default: 'none',
+    },
+    {
+      property: 'useGrouping',
+      type: 'boolean',
+      description:
+        'Specifies whether to use grouping separators (e.g., thousands separator).',
+      default: 'true',
+    },
+    {
+      property: 'compactDisplay',
+      type: 'long | short',
+      description:
+        ' Specifies how to display the number in a compact form. Possible values are "short", "long", and "narrow"',
+      default: 'none',
+    },
+  ]}
+/>
+## Examples
+
+### Basic
+
+In this example the value passed is formatted in a compact form .
+
+<ComponentDemo file="./numeric.demo.tsx" />

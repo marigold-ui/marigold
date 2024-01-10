@@ -2,8 +2,11 @@ import React from 'react';
 
 import { useNumberFormatter } from '@react-aria/i18n';
 
-interface CurrencyProps {
-  currency: string;
+interface CurrencyProps
+  extends Pick<
+    Intl.NumberFormatOptions,
+    'currency' | 'currencyDisplay' | 'currencySign'
+  > {
   value: number | bigint;
   wideDigits?: boolean;
 }

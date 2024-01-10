@@ -10,6 +10,7 @@ interface PercentageProps {
 export const Percentage = ({ value, wideDigits }: PercentageProps) => {
   const formatter = useNumberFormatter({
     style: 'percent',
+    minimumFractionDigits: 4,
   });
   return (
     <span className={wideDigits ? 'tabular-nums' : ''}>
