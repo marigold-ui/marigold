@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Menu: ThemeComponent<'Menu'> = {
   container: cva([
-    'border-border-base rounded-sm border border-solid bg-bg-surface-overlay',
+    'border-border-base bg-bg-surface-overlay rounded-sm border border-solid',
     'sm:max-h-[45vh] md:max-h-[75vh] lg:max-h-[75vh]',
     ' flex flex-col overflow-y-auto overflow-x-hidden ',
   ]),

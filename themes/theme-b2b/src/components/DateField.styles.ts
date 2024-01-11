@@ -23,7 +23,7 @@ export const DateField: ThemeComponent<'DateField'> = {
     'rounded-sm',
     'focus:bg-bg-accent focus:text-text-inverted',
     'aria-[readonly]:focus:border-border-base aria-[readonly]:focus:outline-none',
-    'aria-[readonly]:bg-transparent aria-[readonly]:text-text-base-disabled',
+    'aria-[readonly]:text-text-base-disabled aria-[readonly]:bg-transparent',
   ]),
   action: cva(''),
 };
