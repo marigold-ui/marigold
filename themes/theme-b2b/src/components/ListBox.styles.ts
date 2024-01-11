@@ -17,8 +17,9 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     font(),
     'cursor-pointer p-2 outline-none',
     // Need to use data attributes here because `focus-visible` only works with <Select>
-    'data-[selected]:text-text-inverted data-[selected]:bg-bg-selected-input ',
-    'data-[disabled]:text-text-base-disabled data-[disabled]:cursor-not-allowed',
+    'rac-focus:bg-bg-selected rac-focus:text-text-base',
+    'aria-selected:text-text-inverted aria-selected:bg-bg-selected-input ',
+    'rac-disabled:text-text-base-disabled rac-disabled:cursor-not-allowed',
   ]),
   section: cva(
     '[&:nth-child(n+1)]:border-border-base outline-none [&:nth-child(n+1)]:border-t-[1px_solid]'
