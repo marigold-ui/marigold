@@ -34,6 +34,7 @@
     "@react-aria/interactions": "3.20.1",
     "@react-aria/overlays": "3.20.0",
     "@react-aria/selection": "3.17.3",
+    "@react-aria/ssr": "3.9.1",
     "@react-aria/table": "3.13.3",
     "@react-aria/utils": "3.23.0",
     "@react-aria/visually-hidden": "3.8.8",
@@ -43,7 +44,7 @@
     "@react-stately/tree": "3.7.5",
     "@react-types/shared": "3.22.0",
     "@react-types/table": "3.9.2",
-    "react-aria-components": "1.0.0"
+    "react-aria-components": "1.0.1"
   },
   "peerDependencies": {
     "react": "17.x || 18.x",

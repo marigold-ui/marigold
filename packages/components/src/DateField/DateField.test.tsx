@@ -91,7 +91,9 @@ test('render DateField with error messaege however description is set', () => {
     />
   );
   const description = screen.queryByText('this is description');
-  expect(description).not.toBeInTheDocument();
+  expect(description).toBeInTheDocument();
+  expect(description).toHaveClass('peer-first/error:hidden');
+
   const error = screen.getByText('something went wrong');
   expect(error).toBeInTheDocument();
 });
@@ -147,7 +149,9 @@ test('passes down variant and size', () => {
   );
 
   const description = screen.getByText('Description');
-  expect(description.className).toMatchInlineSnapshot(`"react-aria-Text"`);
+  expect(description.className).toMatchInlineSnapshot(
+    `"peer-first/error:hidden"`
+  );
 
   const datefield = screen.getByTestId('date-field');
   expect(datefield.className).toMatchInlineSnapshot(`"group/field w-full"`);

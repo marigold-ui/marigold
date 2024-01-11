@@ -6,7 +6,7 @@ import { colors, height, shadow } from './tokens';
 
 export type Preset = ReturnType<typeof createPreset>;
 
-export const preset: Preset = createPreset('core', {
+export const preset: Preset = createPreset({
   corePlugins: {
     preflight: false,
   },

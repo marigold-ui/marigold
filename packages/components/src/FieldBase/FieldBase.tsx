@@ -74,7 +74,6 @@ const _FieldBase = <T extends ElementType>(
         size={size}
         description={description}
         errorMessage={errorMessage}
-        error={props.isInvalid}
       />
     </Component>
   );

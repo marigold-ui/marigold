@@ -13,7 +13,7 @@ export const ThemeMenu = () => {
       onAction={current => setTheme(current)}
       label={
         <div className="flex flex-nowrap items-center gap-2 text-sm">
-          <strong>Current Theme:</strong>
+          <strong>Theme:</strong>
           <span className="uppercase">
             {current ? current : themes.b2b.name}
           </span>

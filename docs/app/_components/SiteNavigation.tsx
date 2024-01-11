@@ -23,8 +23,8 @@ export const SiteNavigation = () => {
 
   return (
     <div className="hidden w-full justify-between gap-3 md:flex ">
-      <div className="flex gap-16">
-        <div className="flex items-center text-lg uppercase text-[#46505a] [&>*]:flex [&>*]:items-center [&>*]:gap-2 [&>*]:font-bold [&>*]:no-underline">
+      <div className="flex">
+        <div className="flex w-64 shrink-0 items-center text-lg uppercase text-[#46505a] xl:w-[287px] [&>*]:flex [&>*]:items-center [&>*]:gap-2 [&>*]:font-bold [&>*]:no-underline">
           <Link href="/">
             <Logo className="h-6 w-6" />
             Marigold
