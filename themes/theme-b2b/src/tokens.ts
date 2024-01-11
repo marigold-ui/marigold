@@ -221,13 +221,13 @@ export const colors = {
       DEFAULT: gray[400],
       hover: gray[500],
       active: '',
-      disaled: gray[400],
+      disabled: gray[400],
     },
     inverted: {
       DEFAULT: gray[700],
       hover: '',
       active: '',
-      disaled: '',
+      disabled: '',
     },
     brand: {
       DEFAULT: '',
