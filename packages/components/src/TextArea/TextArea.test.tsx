@@ -193,7 +193,7 @@ test('correctly sets up aria attributes (with error)', () => {
   const label = screen.getByText('A Label');
   const textArea = screen.getByRole('textbox');
   const error = screen.getByText('Whoopsie');
-  console.log(error);
+
   const htmlFor = label.getAttribute('for');
   const labelId = label.getAttribute('id');
   const inputId = textArea.getAttribute('id');
