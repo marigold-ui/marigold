@@ -1,7 +1,6 @@
-import { flattenObject } from 'packages/theme-preset/src/utils';
 import { fontFamily } from 'tailwindcss/defaultTheme';
 
-import { createPreset } from '@marigold/theme-preset';
+import { createPreset, flattenObject } from '@marigold/theme-preset';
 
 import { screens } from './screens';
 import { colors, height, shadow } from './tokens';
