@@ -139,9 +139,7 @@ test('support horizontal orientation', () => {
     </ThemeProvider>
   );
 
-  // eslint-disable-next-line testing-library/no-node-access
-  const group = screen.getByLabelText('With Label').lastChild;
-
+  const group = screen.getByTestId('group');
   expect(group).toHaveAttribute('data-orientation', 'horizontal');
 });
 
