@@ -16,11 +16,7 @@ export default () => {
     <>
       {tableHeaders.length ? (
         <Scrollable height="400px">
-          <Table
-            aria-label="Todos Table"
-            selectionMode="multiple"
-            withStickyHeader
-          >
+          <Table aria-label="Todos Table" selectionMode="multiple" stickyHeader>
             <Table.Header>
               {tableHeaders.map((header, index) => (
                 <Table.Column
