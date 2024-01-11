@@ -167,7 +167,7 @@ export const colors = {
       disabled: '',
     },
     inverted: {
-      DEFAULT: '',
+      DEFAULT: gray[900],
       hover: '',
       active: '',
       disabled: '',
