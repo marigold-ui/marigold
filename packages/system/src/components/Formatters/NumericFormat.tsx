@@ -1,19 +1,18 @@
 import { useNumberFormatter } from '@react-aria/i18n';
 
-interface NumericFormatterProps
-  extends Omit<Intl.NumberFormatOptions, 'style'> {
+interface NumericFormatProps extends Omit<Intl.NumberFormatOptions, 'style'> {
   value: number | bigint;
   numberingSystem?: string;
   wideDigits?: boolean;
   styleFormat?: string;
 }
 
-export const NumericFormatter = ({
+export const NumericFormat = ({
   value,
   styleFormat,
   wideDigits = true,
   ...props
-}: NumericFormatterProps) => {
+}: NumericFormatProps) => {
   const numberFormatter = useNumberFormatter({
     style: styleFormat,
     ...props,

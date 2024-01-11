@@ -1,0 +1,115 @@
+---
+title: Formatters
+caption: Helper components for formatting numeric and date values based on the current language and locale-specific conventions .
+---
+
+`<NumericFormat>` and `<DateFormat>` components are built on top of the [Intl.NumerFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) and [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) APIs which provide a comprhensive support for formatting numbers and date based on locale-specific conventions. With `<NumericFormat>` helper, you can easily ensure that numeric values are displayed consistently and accurtely, taking into account factors such as decimal separators, curreny symbols, and grouping separators specific to each language. This component is an essential addition to any application that requires precise and localized currency formatting.
+
+## 1. NumericFormat
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Currency } from '@marigold/system';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'value',
+      type: 'number | bigint',
+      description: 'Value to be formatted.',
+      default: 'none',
+    },
+    {
+      property: 'wideDigits',
+      type: 'boolean',
+      description: 'Specifies that the digits should take the full width.',
+      default: 'true',
+    },
+    {
+      property: 'minimumFractionDigits',
+      type: 'number',
+      description: 'Minimum number of fraction digits to display.',
+      default: 'none',
+    },
+    {
+      property: 'maximumFractionDigits',
+      type: 'number',
+      description: 'Maximum number of fraction digits to display.',
+      default: 'none',
+    },
+    {
+      property: 'useGrouping',
+      type: 'boolean',
+      description:
+        'Specifies whether to use grouping separators (e.g., thousands separator).',
+      default: 'true',
+    },
+    {
+      property: 'compactDisplay',
+      type: 'long | short',
+      description:
+        ' How to display the number in a compact form. Possible values are "short", "long", and "narrow"',
+      default: 'none',
+    },
+    {
+      property: 'currency',
+      type: 'string',
+      description:
+        'Specifies the currency code to use when the style is set to currency',
+      default: 'none',
+    },
+    {
+      property: 'currencyDisplay',
+      type: 'string',
+      description:
+        'Specifies whether to display the currency symbol or sign. Possible values are "standard" (default), "accounting", and "code"',
+      default: 'standard',
+    },
+    {
+      property: 'currencySign',
+      type: 'string',
+      description:
+        'Specifies whether to display the currency symbol or sign. Possible values are "standard" (default), "accounting", and "code"',
+      default: 'none',
+    },
+    {
+      property: 'style',
+      type: 'string',
+      description:
+        'Specifies the formatting style for the number. Possible values are "decimal", "currency", "percent", "unit", and "compact"',
+      default: 'none',
+    },
+  ]}
+/>
+
+## Examples
+
+### Formatted Currency Value
+
+In this example the value passed is formatted based on the currency chosen 'USD' .
+
+<ComponentDemo file="./currency-format.demo.tsx" />
+
+### Formatted Percentage Value
+
+In this example the decimal value is formatted into two fraction digits percentage value .
+
+<ComponentDemo file="./percent-format.demo.tsx" />
+
+### Formatted Numeric Value
+
+Formats the number with a max of 2 significant digits, only the most significant digits are displayed.
+
+<ComponentDemo file="./numeric-format.demo.tsx" />
