@@ -3,7 +3,7 @@ import React from 'react';
 
 import { I18nProvider } from '@react-aria/i18n';
 
-import { DateFormat } from './Date';
+import { DateFormat } from './DateFormat';
 
 test('supports formatting date based on specific locale', () => {
   render(
