@@ -5,7 +5,7 @@ export const Badge: ThemeComponent<'Badge'> = cva(
   {
     variants: {
       variant: {
-        default: 'bg-bg-inverted',
+        default: 'bg-bg-base',
         inverted: 'text-text-inverted bg-bg-inverted',
         success: 'bg-bg-success',
         info: 'text-text-light bg-bg-info',
