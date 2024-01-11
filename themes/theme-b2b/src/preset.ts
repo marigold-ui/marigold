@@ -1,9 +1,10 @@
+import { flattenObject } from 'packages/theme-preset/src/utils';
 import { fontFamily } from 'tailwindcss/defaultTheme';
 
 import { createPreset } from '@marigold/theme-preset';
 
-import { colors } from './_tokens';
 import { screens } from './screens';
+import { colors, height, shadow } from './tokens';
 
 export type Preset = ReturnType<typeof createPreset>;
 
@@ -23,6 +24,8 @@ export const preset: Preset = createPreset({
       transitionTimingFunction: {
         'ease-out': 'ease-out',
       },
+      boxShadow: flattenObject(shadow),
+      height: flattenObject(height),
     },
   },
 });

@@ -1,5 +1,5 @@
 import { createPreset } from '@marigold/theme-preset';
-import { flattenObject } from '@marigold/theme-preset/src/utils';
+import { flattenObject } from '@marigold/theme-preset';
 
 import { screens } from './screens';
 import { colors, height, shadow } from './tokens';
