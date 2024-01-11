@@ -10,7 +10,25 @@ Marigold's components seamlessly integrate with HTML forms, providing a develope
 
 ## Accessible forms
 
-TODO: Example and description how to use `description` and `errorMessages`.
+An accessible form input includes a clear label associated with its corresponding form control (`<input>`, `<select>`, ...). Additional guidance is provided by a help text, which can give additional context or instructions or display a descriptive messages.
+
+<Image
+  src="/field.png"
+  alt="Anatomy of a field"
+  width={300}
+  height={150}
+  className="mx-auto block"
+/>
+
+Marigold's form components allow to set these properties like shown below. All form components allow to set a `label`, `description` and `errorMessages` besides some additional control-specific props.
+
+```tsx
+<TextField
+  label="Promo Code"
+  description="You can find the code on the back of your ticket."
+  errorMessage="The promo code was already used."
+/>
+```
 
 ## Built-in Form Validation
 
