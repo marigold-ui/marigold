@@ -260,7 +260,7 @@ export const colors = {
       active: red[700],
     },
     selected: {
-      DEFAULT: accent[800],
+      DEFAULT: accent[600],
       input: accent[800],
     },
   },
