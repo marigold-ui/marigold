@@ -3,4 +3,4 @@
 '@marigold/system': minor
 ---
 
-Added new Helpers components `Currency` `DateFormatter` & `Percentage` for formatting data
+Added new Helpers components `NumericFormat` & `DateFormat` 
