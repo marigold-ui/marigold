@@ -208,8 +208,8 @@ export const colors = {
     },
     surface: {
       DEFAULT: white,
-      raised: gray[400],
-      overlay: gray[700],
+      raised: white, // used e.g. card
+      overlay: white, // used e.g. calendar
       sunken: gray[200],
     },
   },

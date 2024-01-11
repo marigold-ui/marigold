@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Calendar: ThemeComponent<'Calendar'> = {
-  calendar: cva('disabled:text-text-base-disabled bg-bg-surface'),
+  calendar: cva('disabled:text-text-base-disabled'),
   calendarCell: cva([
     'data-[disabled]:text-text-base-disabled',
     'data-[hovered]:bg-bg-accent-hover data-[hovered]:text-text-inverted',
