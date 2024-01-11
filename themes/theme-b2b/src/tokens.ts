@@ -162,7 +162,7 @@ export const colors = {
   bg: {
     base: {
       DEFAULT: white,
-      hover: '',
+      hover: gray[300],
       active: '',
       disabled: brand[200],
     },
