@@ -210,7 +210,7 @@ export const colors = {
       DEFAULT: white,
       raised: white, // used e.g. card
       overlay: white, // used e.g. calendar
-      sunken: gray[200],
+      sunken: gray[600],
     },
   },
 
