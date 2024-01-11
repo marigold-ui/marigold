@@ -164,7 +164,7 @@ export const colors = {
       DEFAULT: white,
       hover: '',
       active: '',
-      disabled: '',
+      disabled: brand[200],
     },
     inverted: {
       DEFAULT: gray[700],
@@ -178,8 +178,8 @@ export const colors = {
       active: brand[800],
     },
     accent: {
-      DEFAULT: accent[700],
-      hover: accent[600],
+      DEFAULT: accent[600],
+      hover: accent[700],
       active: accent[800],
     },
     info: {
