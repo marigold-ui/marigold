@@ -2,23 +2,23 @@ import React from 'react';
 
 import { DateFormatterOptions, useDateFormatter } from '@react-aria/i18n';
 
-interface DateFormatterProps extends DateFormatterOptions {
+interface DateFormatProps extends DateFormatterOptions {
   value: Date;
   wideDigits?: boolean;
 }
 
-export const DateFormatter = ({
+export const DateFormat = ({
   value,
   wideDigits,
   ...props
-}: DateFormatterProps) => {
-  const formatter = useDateFormatter({
+}: DateFormatProps) => {
+  const dateFormatter = useDateFormatter({
     ...props,
   });
 
   return (
     <span className={wideDigits ? 'tabular-nums' : ''}>
-      {formatter.format(value)}
+      {dateFormatter.format(value)}
     </span>
   );
 };

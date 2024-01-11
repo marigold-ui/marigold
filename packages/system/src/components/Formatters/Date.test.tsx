@@ -3,12 +3,12 @@ import React from 'react';
 
 import { I18nProvider } from '@react-aria/i18n';
 
-import { DateFormatter } from './Date';
+import { DateFormat } from './Date';
 
 test('supports formatting date based on specific locale', () => {
   render(
     <I18nProvider locale="ru-RU">
-      <DateFormatter value={new Date('2021-11-07T07:45:00Z')} />
+      <DateFormat value={new Date('2021-11-07T07:45:00Z')} />
     </I18nProvider>
   );
   const date = screen.getByText('07.11.2021');
