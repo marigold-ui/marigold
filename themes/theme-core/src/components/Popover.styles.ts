@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Popover: ThemeComponent<'Popover'> = cva(
-  ['mt-0.5 bg-bg-surface-overlay'],
+  ['bg-bg-surface-overlay mt-0.5'],
   {
     variants: {
       variant: {
