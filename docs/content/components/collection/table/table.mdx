@@ -170,7 +170,13 @@ import { Table } from '@marigold/components';
     {
       property: 'align',
       type: 'center | left | right | justify | char',
-      description: 'Control the alignment of Column',
+      description: 'Control the alignment of Column.',
+      default: 'none',
+    },
+    {
+      property: 'stickyHeader',
+      type: 'boolean',
+      description: 'Make the column sticky to the top of the table.',
       default: 'none',
     },
     {
