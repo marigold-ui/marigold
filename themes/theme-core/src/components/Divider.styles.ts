@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Divider: ThemeComponent<'Divider'> = cva(
-  'bg-bg-surface-overlay h-px w-full',
+  'bg-bg-accent h-px w-full',
   {
     variants: {
       variant: {
