@@ -5,14 +5,14 @@ import { useNumberFormatter } from '@react-aria/i18n';
 interface NumericFormatProps extends Omit<Intl.NumberFormatOptions, 'style'> {
   value: number | bigint;
   numberingSystem?: string;
-  wideDigits?: boolean;
+  tabular?: boolean;
   styleFormat?: string;
 }
 
 export const NumericFormat = ({
   value,
   styleFormat,
-  wideDigits = true,
+  tabular = true,
   ...props
 }: NumericFormatProps) => {
   const numberFormatter = useNumberFormatter({
@@ -20,7 +20,7 @@ export const NumericFormat = ({
     ...props,
   });
   return (
-    <span className={wideDigits ? 'tabular-nums' : ''}>
+    <span className={tabular ? 'tabular-nums' : ''}>
       {numberFormatter.format(value)}
     </span>
   );
