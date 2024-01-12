@@ -37,6 +37,7 @@ export interface TableProps
   variant?: string;
   size?: string;
   stretch?: boolean;
+  stickyHeader?: boolean;
 }
 
 // Table Component
@@ -46,6 +47,7 @@ export const Table: Table = ({
   size,
   stretch,
   selectionMode = 'none',
+  stickyHeader,
   ...props
 }: TableProps) => {
   const interactive = selectionMode !== 'none';
@@ -75,13 +77,13 @@ export const Table: Table = ({
         ref={tableRef}
         className={cn(
           'group/table',
-          'border-collapse overflow-auto whitespace-nowrap',
+          'border-collapse whitespace-nowrap',
           stretch ? 'table w-full' : 'block',
           classNames.table
         )}
         {...gridProps}
       >
-        <TableHeader>
+        <TableHeader stickyHeader={stickyHeader}>
           {collection.headerRows.map(headerRow => (
             <TableHeaderRow key={headerRow.key} item={headerRow}>
               {[...collection.getChildren!(headerRow.key)].map(column =>

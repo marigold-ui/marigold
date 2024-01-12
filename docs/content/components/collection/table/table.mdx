@@ -170,7 +170,13 @@ import { Table } from '@marigold/components';
     {
       property: 'align',
       type: 'center | left | right | justify | char',
-      description: 'Control the alignment of Column',
+      description: 'Control the alignment of Column.',
+      default: 'none',
+    },
+    {
+      property: 'stickyHeader',
+      type: 'boolean',
+      description: 'Make the column sticky to the top of the table.',
       default: 'none',
     },
     {
@@ -215,6 +221,12 @@ The `core-Theme` has also two variants called `tableLines` and `tableBorder`.
 In this example you can align any Table Column by using `align` property over `<Table.Column align='right'>` .
 
 <ComponentDemo file="./table-aligned.demo.tsx" />
+
+### Fixed Header
+
+We can set the header of the table to be fixed while scrolling by using `stickyHeader` over `<Table stickyHeader>` .
+
+<ComponentDemo file="./table-fixed-header.demo.tsx" />
 
 ### Selection mode single
 

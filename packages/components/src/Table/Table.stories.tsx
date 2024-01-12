@@ -8,6 +8,7 @@ import { SortDescriptor } from '@react-types/shared';
 import { Button } from '../Button';
 import { Center } from '../Center';
 import { Checkbox } from '../Checkbox';
+import { Scrollable } from '../Scrollable';
 import { Select } from '../Select';
 import { Stack } from '../Stack';
 import { Table } from './Table';
@@ -38,6 +39,12 @@ const meta = {
         type: 'boolean',
       },
       description: 'Stretch to fill the container',
+    },
+    stickyHeader: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'stick the header to the top of the table',
     },
     variant: {
       control: {
@@ -522,7 +529,7 @@ export const WithParentProp: Story = {
   },
 };
 
-export const WidthAlignedColumns: Story = {
+export const WithAlignedColumns: Story = {
   render: args => (
     <Table aria-label="Table with selection" {...args}>
       <Table.Header>
@@ -612,10 +619,11 @@ export const ScrollableTable: Story = {
       <>
         {tableHeaders.length ? (
           <Stack space={4}>
-            <div className="sticky h-[400px] overflow-y-scroll">
+            <Scrollable height="400px">
               <Table
                 aria-label="Todos Table"
                 selectionMode="multiple"
+                stickyHeader
                 {...args}
               >
                 <Table.Header>
@@ -641,7 +649,7 @@ export const ScrollableTable: Story = {
                   ))}
                 </Table.Body>
               </Table>
-            </div>
+            </Scrollable>
             <Center>Some content below the table</Center>
           </Stack>
         ) : (
