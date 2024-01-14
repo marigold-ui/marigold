@@ -42,15 +42,17 @@ The simplest way to get data from a form is using the browser's [FormData](https
   a key-value pair for data submission.
 </Message>
 
-Here is a simple example of retrieving data from an [uncontrolled](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components) form:
+Below is a basic example of extracting data from an [uncontrolled](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components) form. Submitting a promo code won't trigger a regular form submission; instead, it will display the provided data.
 
 <ComponentDemo file="./validation-submit.demo.tsx" />
 
 ## Built-in Form Validation
 
-The most straightforward way to check user input is to use the built-in validation called [constraint validation](https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation).
+The most straightforward way to validate user input is to use the built-in [constraint validation](https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation). Marigold's form components work seamlessly with this API, allowing you to set constraints for each field. The browser will echeck these constraints on blur (user leaves the field) or when the form is submitted.
 
-Marigold's form components work seamlessly with this API, allowing you to set constraints for each field like making it required, allowing a certain minimum and maximum values, and specific text formats (e.g., email addresses). These constraints get checked by the browser on blur or when the user submits the form.
+Marigold's form components utilize the same API as native HTML forms. Yet, the browser won't display error messages; instead, they will be styled to seamlessly blend with the overall design.
+
+Here is an email subscription form. If you submit it without entering an email address or if the entered email address is invalid, an error will be displayed:
 
 <ComponentDemo file="./validation-base.demo.tsx" />
 
