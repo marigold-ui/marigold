@@ -58,15 +58,23 @@ Here is an email subscription form. If you submit it without entering an email a
 
 ### Custom Message
 
-custom message falls back to native!
+While browser-provided error messages are helpful, they might not be very descriptive. In such instances, you have the flexibility to override them by using a function with the `errorMessages` prop of the field. This allows you to display custom error messages tailored to better describe the occured error.
+
+The example below customizes the default error messages for an unfilled required field. It's important to note that you only need to override the messages you want to; any unmodified aspects will fallback to the browser-provided messages.
 
 <ComponentDemo file="./validation-custom-message.demo.tsx" />
 
 ### Custom Validation
 
+When the native validation options are insufficient or not ideal, it's also possible to entirely override them and implement a custom validation method by using the `validate` prop of a field. Ensure that the prop is assigned a function that returns one or more error messages. If there are multiple error messages, they should be provided as a string array.
+
+The below example demonstrates a more sophisticated method for validating email addresses. The validation will always display the custom error messages. There is no separate message if the field is left empty.
+
 <ComponentDemo file="./validation-custom-validation.demo.tsx" />
 
 ### Realtime Validation
+
+By default, validation errors are shown to the user after the value is confirmed, for example, when they click away (on blur) or upon submitting the form. This prevents the user from being confused by irrelevant errors while they are still in the process of entering a value.
 
 <ComponentDemo file="./validation-realtime.demo.tsx" />
 
