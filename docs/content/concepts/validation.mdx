@@ -77,10 +77,8 @@ The below example demonstrates a more sophisticated method for validating email 
 
 By default, validation errors are shown to the user after the value is confirmed, for example, when they click away (on blur) or upon submitting the form. This prevents the user from being confused by irrelevant errors while they are still in the process of entering a value.
 
-In specific situations, choosing real-time validation proves beneficial, especially when enforcing specific password requirements. To enable it, control the field and configure the `error` and `errorMessages` props accordingly.
+In specific situations though, choosing real-time validation proves beneficial, for example when enforcing certain password requirements. To enable real-time validation, [control the field](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components) and configure the `error` and `errorMessages` props accordingly.
+
+Here's an example where real-time validation is employed to check password requirements, immediately informing the user when a criteria is met.
 
 <ComponentDemo file="./validation-realtime.demo.tsx" />
-
-### Very large example
-
-<ComponentDemo file="./validation-built-in.demo.tsx" />
