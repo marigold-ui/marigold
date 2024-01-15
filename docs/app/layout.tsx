@@ -1,3 +1,5 @@
+'use-client';
+
 import { b2bTheme, coreTheme, theme } from '@/theme';
 import { MarigoldProvider } from '@/ui';
 
@@ -9,6 +11,7 @@ import { fontSans } from '@/theme/fonts';
 import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
 
 import { Analytics } from './_components/Analytics';
+import { PortalContainer } from './_components/PortalContainer';
 import { SectionNavigation } from './_components/SectionNavigation';
 import { SiteFooter } from './_components/SiteFooter';
 import { SiteHeader } from './_components/SiteHeader';
@@ -36,7 +39,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <html lang="en">
       <body className={`${fontSans.className} min-h-screen`}>
         <MarigoldThemeSwitch themes={themes} initial="b2b">
-          <MarigoldProvider theme={theme}>
+          <MarigoldProvider theme={theme} portalContainer={'portalContainer'}>
             <div className="flex min-h-screen flex-col">
               <SiteHeader />
               <div className="flex-1 px-4 lg:px-10 xl:px-20">
@@ -56,6 +59,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 </div>
               </div>
             </div>
+            <PortalContainer />
           </MarigoldProvider>
         </MarigoldThemeSwitch>
         <Analytics />

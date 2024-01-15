@@ -2,6 +2,7 @@ import React, { ReactNode, createContext, useContext } from 'react';
 
 import { defaultTheme } from '../defaultTheme';
 import { Theme } from '../types';
+import { cn } from '../utils';
 
 const InternalContext = createContext<Theme>(defaultTheme);
 
@@ -14,17 +15,18 @@ export const useTheme = () => {
 export interface ThemeProviderProps<T extends Theme> {
   theme: T;
   children: ReactNode;
+  className?: string;
 }
 
 export function ThemeProvider<T extends Theme>({
   theme,
   children,
+  className,
 }: ThemeProviderProps<T>) {
+  const root = theme.root?.();
   return (
-    <div data-theme={theme.name} className={theme.root?.() ?? ''}>
-      <InternalContext.Provider value={theme}>
-        {children}
-      </InternalContext.Provider>
-    </div>
+    <InternalContext.Provider value={theme}>
+      <div className={cn(root ? root : '', className)}>{children}</div>
+    </InternalContext.Provider>
   );
 }

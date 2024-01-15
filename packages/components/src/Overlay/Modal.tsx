@@ -2,8 +2,6 @@ import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Modal } from 'react-aria-components';
 
-import { useTheme } from '@marigold/system';
-
 import { Underlay } from './Underlay';
 
 // Props
@@ -23,13 +21,13 @@ const _Modal = forwardRef<
     'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled' | 'className'
   >
 >(({ open, dismissable, keyboardDismissable, ...rest }, ref) => {
-  const theme = useTheme();
   const props: RAC.ModalOverlayProps = {
     isOpen: open,
     isDismissable: dismissable,
     isKeyboardDismissDisabled: keyboardDismissable,
     ...rest,
   };
+
   return (
     <Underlay
       dismissable={dismissable}
@@ -37,7 +35,7 @@ const _Modal = forwardRef<
       open={open}
       variant="modal"
     >
-      <Modal ref={ref} data-theme={theme.name} {...props}>
+      <Modal ref={ref} {...props}>
         {props.children}
       </Modal>
     </Underlay>

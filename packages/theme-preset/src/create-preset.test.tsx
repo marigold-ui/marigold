@@ -5,7 +5,7 @@ import { defaultTheme } from '@marigold/system';
 import { createPreset } from './create-preset';
 
 test('create preset and merge it with defaultTheme', () => {
-  const preset = createPreset('test', {
+  const preset = createPreset({
     content: ['my-path.ts'],
     theme: {
       extends: {
@@ -17,7 +17,6 @@ test('create preset and merge it with defaultTheme', () => {
     },
   });
 
-  expect(preset.important).toBe('[data-theme="test"]');
   expect(preset.theme?.extends.defaultTheme).toEqual(defaultTheme);
   expect(preset.theme).toMatchInlineSnapshot(`
     {
@@ -44,7 +43,7 @@ test('create preset and merge it with defaultTheme', () => {
 
 test('content path is found in preset', () => {
   const root = path.resolve(__dirname, '..');
-  const preset = createPreset('test', {
+  const preset = createPreset({
     content: [],
   });
   const contentPath = preset.content[0].replace(root, '');

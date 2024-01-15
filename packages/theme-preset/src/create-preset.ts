@@ -4,10 +4,9 @@ import type { Config, OptionalConfig } from 'tailwindcss/types/config';
 
 import { defaultTheme } from '@marigold/system';
 
-export const createPreset = (name: string, config: Partial<OptionalConfig>) =>
+export const createPreset = (config: Partial<OptionalConfig>) =>
   deepmerge<Partial<OptionalConfig> & { content: string[] }>(
     {
-      important: `[data-theme="${name}"]`,
       content: ['./node_modules/@marigold/components/dist/**/*.js'],
       theme: {
         extends: {

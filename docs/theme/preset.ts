@@ -9,9 +9,7 @@ export interface PresetConfig {
   preflight?: boolean;
 }
 
-export const preset = createPreset('docs', {
-  // FIXME: should we allow the global namespace?
-  important: undefined,
+export const preset = createPreset({
   theme: {
     container: {
       center: true,
