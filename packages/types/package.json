@@ -18,7 +18,7 @@
     "directory": "packages/types"
   },
   "dependencies": {
-    "type-fest": "4.2.0"
+    "type-fest": "4.9.0"
   },
   "peerDependencies": {
     "@types/react": "18.x"
