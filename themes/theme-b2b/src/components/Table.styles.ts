@@ -5,7 +5,7 @@ export const Table: ThemeComponent<'Table'> = {
   header: cva(
     [
       'group-aria-[multiselectable]/table:[&:first-child]:w-12',
-      'cursor-default border-b-[1px] p-4 text-left',
+      'cursor-default border-b-[1px] p-4 ',
       'text-text-body border-border-light',
       'focus:outline-outline-focus',
     ],

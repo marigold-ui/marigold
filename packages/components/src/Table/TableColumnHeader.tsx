@@ -29,7 +29,7 @@ interface TableColumnHeaderProps
 export const TableColumnHeader = ({
   column,
   width = 'auto',
-  align,
+  align = 'left',
 }: TableColumnHeaderProps) => {
   const ref = useRef(null);
   const { state, classNames } = useTableContext();
