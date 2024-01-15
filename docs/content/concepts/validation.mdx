@@ -73,9 +73,11 @@ The below example demonstrates a more sophisticated method for validating email 
 
 <ComponentDemo file="./validation-custom-validation.demo.tsx" />
 
-### Realtime Validation
+### Real-time Validation
 
 By default, validation errors are shown to the user after the value is confirmed, for example, when they click away (on blur) or upon submitting the form. This prevents the user from being confused by irrelevant errors while they are still in the process of entering a value.
+
+In specific situations, choosing real-time validation proves beneficial, especially when enforcing specific password requirements. To enable it, control the field and configure the `error` and `errorMessages` props accordingly.
 
 <ComponentDemo file="./validation-realtime.demo.tsx" />
 
