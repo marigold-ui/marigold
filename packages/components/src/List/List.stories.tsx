@@ -7,17 +7,16 @@ const meta = {
   title: 'Components/List',
   component: List,
   argTypes: {
-    variant: {
+    as: {
       control: {
-        type: 'text',
+        type: 'select',
       },
-      description: 'The variant of the list',
-    },
-    size: {
-      control: {
-        type: 'text',
+      options: ['ol', 'ul'],
+      description: ' List should be ordered or unordered list',
+      table: {
+        type: 'select',
+        defaultValue: { summary: 'ul' },
       },
-      description: 'The size of the list',
     },
   },
 } satisfies Meta<typeof List>;
