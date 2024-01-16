@@ -92,6 +92,7 @@ export const Table: Table = ({
                     width={column.props?.width}
                     key={column.key}
                     column={column}
+                    align={column.props?.align}
                   />
                 ) : (
                   <TableColumnHeader
