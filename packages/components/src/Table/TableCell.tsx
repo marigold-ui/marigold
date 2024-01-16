@@ -6,16 +6,16 @@ import { mergeProps } from '@react-aria/utils';
 
 import { GridNode } from '@react-types/grid';
 
-import { useStateProps } from '@marigold/system';
+import { cn, useStateProps } from '@marigold/system';
 
 import { useTableContext } from './Context';
 
-export interface TableCellProps
-  extends Pick<JSX.IntrinsicElements['td'], 'align'> {
+export interface TableCellProps {
+  align?: Exclude<JSX.IntrinsicElements['td']['align'], 'char'>;
   cell: GridNode<object>;
 }
 
-export const TableCell = ({ cell, align }: TableCellProps) => {
+export const TableCell = ({ cell, align = 'left' }: TableCellProps) => {
   const ref = useRef(null);
   const { interactive, state, classNames } = useTableContext();
   const disabled = state.disabledKeys.has(cell.parentKey!);
@@ -40,11 +40,10 @@ export const TableCell = ({ cell, align }: TableCellProps) => {
 
   const { focusProps, isFocusVisible } = useFocusRing();
   const stateProps = useStateProps({ disabled, focusVisible: isFocusVisible });
-
   return (
     <td
       ref={ref}
-      className={classNames?.cell}
+      className={cn(classNames?.cell)}
       {...mergeProps(cellProps, focusProps)}
       {...stateProps}
       align={align}

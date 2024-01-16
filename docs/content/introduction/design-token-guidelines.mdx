@@ -163,32 +163,6 @@ The "surface" intent is used to create visual hierachy. The following modifiers 
 
 Number tokens encompass properties represented by numerical values, contributing to the management of elements such as white space and typography sizes. They play a crucial role in creating hierarchy and vertical rhythm.
 
-### Component Height
-
-**Property Name:** `component`
-
-Component tokens assist in sizing elements and ensuring consistency across the design system, promoting a unified and harmonious visual presentation. This is particularly relevant for creating effective and aesthetically pleasing forms.
-
-<Message messageTitle="Not mandatory" variant="info">
-  The relevance of height is limited to specific components. In numerous cases,
-  a component's size must align with its contents. Therefore, the use of tokens
-  is not obligatory in every instance.
-</Message>
-
-#### Intents
-
-Intents for component tokens encompass attributes that foster consistency across various elements. There are the following intents:
-
-- **height**: Specifies the height of an element
-
-#### Modifiers
-
-The following modifiers can be used:
-
-- **DEFAULT:** Serves as the base height for form components.
-- **sm:** Applied to display a small components.
-- **lg:** Applied to display a large components.
-
 ### Height
 
 **Property Name:** `h`
@@ -198,6 +172,26 @@ Height tokens are used to apply specific height to an element. They are equivale
 There are no semantic values assigned to these tokens, as their usage does not necessitate them. This is because the primary focus of these tokens is on visual styling rather than conveying specific semantic meaning. Additionally, the tokens often serve as a direct representation of their intended visual outcome, eliminating the need for additional semantic values.
 
 Height tokens follow a 4-pixel grid convention, implying that their values are adjusted in increments of 4 pixels. Each token represents a multiplier of that grid. For example, a value of 2 would equate to 8 pixels.
+
+<Message messageTitle="Not mandatory" variant="info">
+  The relevance of height is limited to specific components. In numerous cases,
+  a component's size must align with its contents. Therefore, the use of tokens
+  is not obligatory in every instance.
+</Message>
+
+#### Intents
+
+Intents for height tokens encompass attributes that foster consistency across various elements. There are the following intents:
+
+- **component**: Assists in sizing elements and ensuring consistency across the design system, promoting a unified and harmonious visual presentation. This is particularly relevant for creating effective and aesthetically pleasing forms.
+
+#### Modifiers
+
+The following modifiers can be used:
+
+- **DEFAULT:** Serves as the base height for form components.
+- **sm:** Applied to display a small components.
+- **lg:** Applied to display a large components.
 
 ### Width
 

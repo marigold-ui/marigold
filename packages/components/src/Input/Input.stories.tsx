@@ -30,27 +30,47 @@ const meta = {
         'file',
         'color',
       ],
-      defaultValue: 'text',
+      table: {
+        type: 'select',
+        defaultValue: { summary: 'text' },
+      },
+      description: 'Set the type of the input.',
     },
     disabled: {
       control: {
         type: 'boolean',
       },
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       description: 'Disable the input',
-      defaultValue: false,
     },
     readOnly: {
       control: {
         type: 'boolean',
       },
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       description: 'Make input read only',
-      defaultValue: false,
     },
     pattern: {
       control: {
         type: 'text',
       },
+      table: {
+        defaultValue: { summary: 'none' },
+      },
       description: 'Pattern for the input',
+    },
+    placeholder: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        defaultValue: { summary: 'none' },
+      },
+      description: 'Placeholder for the input',
     },
   },
   args: {

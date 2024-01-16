@@ -1,4 +1,4 @@
-import { withThemeByDataAttribute } from '@storybook/addon-styling';
+import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import { Preview } from '@storybook/react';
 import 'tailwindcss/tailwind.css';
 
@@ -53,10 +53,15 @@ export const decorators: any = [
         return (
           <>
             {Object.keys(THEME).map(key => (
-              <MarigoldProvider theme={THEME[key as ThemeNames]}>
+              <MarigoldProvider
+                theme={THEME[key as ThemeNames]}
+                portalContainer={`portalContainer-${key}`}
+              >
                 <Frame key={key} id={key} title={`Theme "${key}"`}>
                   <MarigoldProvider theme={THEME[key as ThemeNames]}>
-                    <div className="p-4">{Story()}</div>
+                    <div className="p-4" data-theme={key}>
+                      {Story()}
+                    </div>
                   </MarigoldProvider>
                 </Frame>
               </MarigoldProvider>

@@ -48,21 +48,21 @@ const { render } = setup({ theme });
 // Tests
 // ---------------
 test('renders label and (hidden) checkbox', () => {
-  render(<Checkbox data-testid="checkboxId">With Label</Checkbox>);
+  render(<Checkbox>With Label</Checkbox>);
 
   const label = screen.getByText('With Label');
   expect(label).toBeInTheDocument();
 
-  const checkbox = screen.getAllByTestId('checkboxId')[1];
+  const checkbox = screen.getByLabelText('With Label');
   expect(checkbox).toBeInTheDocument();
   expect(checkbox).toBeInstanceOf(HTMLInputElement);
   expect(checkbox).toHaveAttribute('type', 'checkbox');
 });
 
 test('allows to render without label', () => {
-  render(<Checkbox data-testid="checkbox" aria-label="No Label" />);
+  render(<Checkbox aria-label="No Label" />);
 
-  const checkbox = screen.getAllByTestId('checkbox')[1];
+  const checkbox = screen.getByLabelText('No Label');
   expect(checkbox).toBeInTheDocument();
   expect(checkbox).toBeInstanceOf(HTMLInputElement);
   expect(checkbox).toHaveAttribute('type', 'checkbox');
@@ -72,12 +72,12 @@ test('allows to render without label', () => {
 
 test('supports read only state', () => {
   render(
-    <Checkbox data-testid="checkbox" readOnly defaultChecked>
+    <Checkbox readOnly defaultChecked>
       Read Only
     </Checkbox>
   );
 
-  const checkbox = screen.getAllByTestId<HTMLInputElement>('checkbox')[1];
+  const checkbox = screen.getByLabelText<HTMLInputElement>('Read Only');
   const component = screen.getByText('Read Only');
 
   fireEvent.click(component);
@@ -85,7 +85,7 @@ test('supports read only state', () => {
 });
 
 test('check if all slot class names are applied correctly', () => {
-  render(<Checkbox data-testid="checkbox">With Label</Checkbox>);
+  render(<Checkbox>With Label</Checkbox>);
 
   const label = screen.getByText('With Label');
 
@@ -100,23 +100,9 @@ test('check if all slot class names are applied correctly', () => {
     `"data-[disabled]:text-checkbox-label-disabled leading-[1.125]"`
   );
 });
-test('allows styling "error" state via theme', () => {
-  render(
-    <Checkbox data-testid="checkbox" error>
-      With Label
-    </Checkbox>
-  );
-  //TODO: fix test after Helptext component is migrated to tailwind
-  //const checkbox = getVisibleCheckbox();
-  //expect(checkbox).toHaveClass();
-});
 
 test('correct class name is set on size small', () => {
-  render(
-    <Checkbox data-testid="checkbox" size="small">
-      With Label
-    </Checkbox>
-  );
+  render(<Checkbox size="small">With Label</Checkbox>);
 
   const label = screen.getByText('With Label');
 
@@ -126,40 +112,23 @@ test('correct class name is set on size small', () => {
 });
 
 test('support default checked', () => {
-  render(
-    <Checkbox data-testid="checkbox" defaultChecked>
-      With Label
-    </Checkbox>
-  );
+  render(<Checkbox defaultChecked>With Label</Checkbox>);
 
-  const input: HTMLInputElement = screen.getAllByTestId(
-    'checkbox'
-  )[1] as HTMLInputElement;
+  const input = screen.getByLabelText<HTMLInputElement>('With Label');
   expect(input.checked).toBeTruthy();
 });
 
 test('supports indeterminate state', () => {
-  render(
-    <Checkbox data-testid="checkbox" indeterminate>
-      With Label
-    </Checkbox>
-  );
-  const input: HTMLInputElement = screen.getAllByTestId(
-    'checkbox'
-  )[1] as HTMLInputElement;
+  render(<Checkbox indeterminate>With Label</Checkbox>);
+
+  const input = screen.getByLabelText<HTMLInputElement>('With Label');
   expect(input.indeterminate).toBeTruthy();
 });
 
 test('controlled', () => {
   const onChange = jest.fn();
-  render(
-    <Checkbox data-testid="checkbox" onChange={onChange}>
-      With Label
-    </Checkbox>
-  );
-  const input: HTMLInputElement = screen.getAllByTestId(
-    'checkbox'
-  )[1] as HTMLInputElement;
+  render(<Checkbox onChange={onChange}>With Label</Checkbox>);
+  const input = screen.getByLabelText<HTMLInputElement>('With Label');
 
   fireEvent.click(input);
   expect(onChange).toHaveBeenCalledWith(true);
@@ -169,23 +138,19 @@ test('controlled', () => {
 });
 
 test('forwards ref', () => {
-  const ref = React.createRef<HTMLInputElement>();
-  render(
-    <Checkbox data-testid="checkbox" ref={ref}>
-      Check it
-    </Checkbox>
-  );
+  const ref = React.createRef<HTMLLabelElement>();
+  render(<Checkbox ref={ref}>Check it</Checkbox>);
 
-  expect(ref.current).toBeInstanceOf(HTMLInputElement);
+  expect(ref.current).toBeInstanceOf(HTMLLabelElement);
 });
 
 test('works with a <FieldGroup>', () => {
   render(
     <FieldGroup labelWidth="100px">
-      <Checkbox data-testid="checkbox">Check it</Checkbox>
+      <Checkbox>Check it</Checkbox>
     </FieldGroup>
   );
 
-  const checkbox = screen.getAllByTestId<HTMLInputElement>('checkbox')[1];
+  const checkbox = screen.getByLabelText('Check it');
   expect(checkbox).toBeInTheDocument();
 });

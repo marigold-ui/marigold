@@ -12,12 +12,11 @@ import { Checkbox } from '../Checkbox';
 import { useTableContext } from './Context';
 import { mapCheckboxProps } from './utils';
 
-export interface TableCheckboxCellProps
-  extends Pick<JSX.IntrinsicElements['td'], 'align'> {
+export interface TableCheckboxCellProps {
   cell: GridNode<object>;
 }
 
-export const TableCheckboxCell = ({ cell, align }: TableCheckboxCellProps) => {
+export const TableCheckboxCell = ({ cell }: TableCheckboxCellProps) => {
   const ref = useRef(null);
   const { state, classNames } = useTableContext();
   const disabled = state.disabledKeys.has(cell.parentKey!);
@@ -40,7 +39,6 @@ export const TableCheckboxCell = ({ cell, align }: TableCheckboxCellProps) => {
     <td
       ref={ref}
       className={cn('text-center align-middle leading-none', classNames?.cell)}
-      align={align}
       {...mergeProps(gridCellProps, focusProps)}
       {...stateProps}
     >

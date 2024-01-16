@@ -1,14 +1,12 @@
 import deepmerge from 'deepmerge';
-import racSelectorPlugin from 'tailwindcss-react-aria-components';
 import plugin from 'tailwindcss/plugin';
 import type { Config, OptionalConfig } from 'tailwindcss/types/config';
 
 import { defaultTheme } from '@marigold/system';
 
-export const createPreset = (name: string, config: Partial<OptionalConfig>) =>
+export const createPreset = (config: Partial<OptionalConfig>) =>
   deepmerge<Partial<OptionalConfig> & { content: string[] }>(
     {
-      important: `[data-theme="${name}"]`,
       content: ['./node_modules/@marigold/components/dist/**/*.js'],
       theme: {
         extends: {
@@ -16,8 +14,7 @@ export const createPreset = (name: string, config: Partial<OptionalConfig>) =>
         },
       },
       plugins: [
-        // @ts-expect-error (are the typings wrong?)
-        racSelectorPlugin({ prefix: 'rac' }),
+        require('tailwindcss-react-aria-components')({ prefix: 'rac' }),
         // Grouping
         plugin(({ matchVariant, e }) => {
           matchVariant(
