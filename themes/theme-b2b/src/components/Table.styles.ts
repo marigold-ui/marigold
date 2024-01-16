@@ -6,7 +6,7 @@ export const Table: ThemeComponent<'Table'> = {
     [
       'relative',
       'group-aria-[multiselectable]/table:[&:first-child]:w-12',
-      'cursor-default  p-4 text-left',
+      'cursor-default  p-4',
       'text-text-body',
       'after:bg-bg-surface-raised after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:content-[""]',
       'focus:outline-outline-focus',
