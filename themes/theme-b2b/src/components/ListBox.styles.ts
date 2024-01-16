@@ -22,7 +22,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     'rac-disabled:text-text-base-disabled rac-disabled:cursor-not-allowed',
   ]),
   section: cva(
-    '[&:nth-child(n+1)]:border-border-base outline-none [&:nth-child(n+1)]:border-t-[1px_solid]'
+    '[&:nth-child(n+1)]:border-border-base border outline-none [&:nth-child(n+1)]:border-t [&:nth-child(n+1)]:border-solid'
   ),
   sectionTitle: cva(
     '[&_header]:text-text-accent [&_header]:px-2 [&_header]:pt-2 [&_header]:text-sm'
