@@ -1,5 +1,15 @@
 # @marigold/system
 
+## 7.2.0
+
+### Minor Changes
+
+- [#3596](https://github.com/marigold-ui/marigold/pull/3596) [`9f1ae32`](https://github.com/marigold-ui/marigold/commit/9f1ae32297f6e5d3c08ce861b4e497a15bf06b37) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Added new Helpers components `NumericFormat` & `DateFormat`
+
+### Patch Changes
+
+- [#3517](https://github.com/marigold-ui/marigold/pull/3517) [`7a8d40a`](https://github.com/marigold-ui/marigold/commit/7a8d40abdeb34d28cab0771269e1cfc6b7f4b1f0) Thanks [@sarahgm](https://github.com/sarahgm)! - chore[DST-220]: seperate data-theme attribute and classnames on provider (so you don't need any data-theme attribute anymore)
+
 ## 7.1.0
 
 ### Patch Changes

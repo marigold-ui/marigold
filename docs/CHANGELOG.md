@@ -1,5 +1,28 @@
 # @marigold/docs
 
+## 7.2.0
+
+### Minor Changes
+
+- [#3575](https://github.com/marigold-ui/marigold/pull/3575) [`cba7099`](https://github.com/marigold-ui/marigold/commit/cba7099f1f89b30f23be0074134c224c7ba173b1) Thanks [@sarahgm](https://github.com/sarahgm)! - feat[DST-263]: new component `<Scrollable>`!!!
+
+- [#3593](https://github.com/marigold-ui/marigold/pull/3593) [`46e1a41`](https://github.com/marigold-ui/marigold/commit/46e1a41551b9524668836dc4ed085a6780e10d10) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Adding sticky header feature to tables
+
+### Patch Changes
+
+- [#3573](https://github.com/marigold-ui/marigold/pull/3573) [`6125442`](https://github.com/marigold-ui/marigold/commit/612544295dbd2d5966fc44ed6d5f3876f054d344) Thanks [@aromko](https://github.com/aromko)! - [DST-264]: update token guidelines component height
+
+- [#3566](https://github.com/marigold-ui/marigold/pull/3566) [`2fd272d`](https://github.com/marigold-ui/marigold/commit/2fd272d99eaa0b057120e09da251044cf5bbece4) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Improve navigation in doku
+
+- [#3517](https://github.com/marigold-ui/marigold/pull/3517) [`7a8d40a`](https://github.com/marigold-ui/marigold/commit/7a8d40abdeb34d28cab0771269e1cfc6b7f4b1f0) Thanks [@sarahgm](https://github.com/sarahgm)! - chore[DST-220]: seperate data-theme attribute and classnames on provider (so you don't need any data-theme attribute anymore)
+
+- Updated dependencies [[`0b23a25`](https://github.com/marigold-ui/marigold/commit/0b23a25efa8be6bf0dcc6cbb315b6fb4a0ad9dfd), [`f7d3f7e`](https://github.com/marigold-ui/marigold/commit/f7d3f7e1347adf85e3d1e9c9203cd885d961fd08), [`7a8d40a`](https://github.com/marigold-ui/marigold/commit/7a8d40abdeb34d28cab0771269e1cfc6b7f4b1f0), [`6697a67`](https://github.com/marigold-ui/marigold/commit/6697a67c11f251b8361f8be522b8c4be608455dc), [`9f1ae32`](https://github.com/marigold-ui/marigold/commit/9f1ae32297f6e5d3c08ce861b4e497a15bf06b37), [`4ff1f57`](https://github.com/marigold-ui/marigold/commit/4ff1f57562da920a03dff46505a78d150239fe51), [`add4d9e`](https://github.com/marigold-ui/marigold/commit/add4d9e3e0b3d61ac08fb5a4588decf5c2e796f6), [`b228e09`](https://github.com/marigold-ui/marigold/commit/b228e099be8940b6ea50bdc6ad8ef6e52ddc4c3d), [`cba7099`](https://github.com/marigold-ui/marigold/commit/cba7099f1f89b30f23be0074134c224c7ba173b1), [`d76a835`](https://github.com/marigold-ui/marigold/commit/d76a83587c3d839c50deceb7303ddb59fc38f4b1), [`46e1a41`](https://github.com/marigold-ui/marigold/commit/46e1a41551b9524668836dc4ed085a6780e10d10)]:
+  - @marigold/components@7.2.0
+  - @marigold/theme-core@26.0.2
+  - @marigold/theme-b2b@26.1.0
+  - @marigold/theme-preset@1.2.8
+  - @marigold/icons@1.2.34
+
 ## 7.1.0
 
 ### Minor Changes

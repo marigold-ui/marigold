@@ -1,5 +1,14 @@
 # @marigold/theme-preset
 
+## 1.2.8
+
+### Patch Changes
+
+- [#3590](https://github.com/marigold-ui/marigold/pull/3590) [`add4d9e`](https://github.com/marigold-ui/marigold/commit/add4d9e3e0b3d61ac08fb5a4588decf5c2e796f6) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: Update `tailwindcss-react-aria-components` to v.1.0.0
+
+- Updated dependencies [[`7a8d40a`](https://github.com/marigold-ui/marigold/commit/7a8d40abdeb34d28cab0771269e1cfc6b7f4b1f0), [`9f1ae32`](https://github.com/marigold-ui/marigold/commit/9f1ae32297f6e5d3c08ce861b4e497a15bf06b37)]:
+  - @marigold/system@7.2.0
+
 ## 1.2.7
 
 ### Patch Changes
