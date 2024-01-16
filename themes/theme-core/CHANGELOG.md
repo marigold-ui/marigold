@@ -1,5 +1,16 @@
 # @marigold/theme-core
 
+## 26.0.2
+
+### Patch Changes
+
+- [#3622](https://github.com/marigold-ui/marigold/pull/3622) [`f7d3f7e`](https://github.com/marigold-ui/marigold/commit/f7d3f7e1347adf85e3d1e9c9203cd885d961fd08) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add surface-overlay also in core theme to popver styles
+
+- Updated dependencies [[`0b23a25`](https://github.com/marigold-ui/marigold/commit/0b23a25efa8be6bf0dcc6cbb315b6fb4a0ad9dfd), [`7a8d40a`](https://github.com/marigold-ui/marigold/commit/7a8d40abdeb34d28cab0771269e1cfc6b7f4b1f0), [`6697a67`](https://github.com/marigold-ui/marigold/commit/6697a67c11f251b8361f8be522b8c4be608455dc), [`9f1ae32`](https://github.com/marigold-ui/marigold/commit/9f1ae32297f6e5d3c08ce861b4e497a15bf06b37), [`add4d9e`](https://github.com/marigold-ui/marigold/commit/add4d9e3e0b3d61ac08fb5a4588decf5c2e796f6), [`b228e09`](https://github.com/marigold-ui/marigold/commit/b228e099be8940b6ea50bdc6ad8ef6e52ddc4c3d), [`cba7099`](https://github.com/marigold-ui/marigold/commit/cba7099f1f89b30f23be0074134c224c7ba173b1), [`d76a835`](https://github.com/marigold-ui/marigold/commit/d76a83587c3d839c50deceb7303ddb59fc38f4b1), [`46e1a41`](https://github.com/marigold-ui/marigold/commit/46e1a41551b9524668836dc4ed085a6780e10d10)]:
+  - @marigold/components@7.2.0
+  - @marigold/system@7.2.0
+  - @marigold/theme-preset@1.2.8
+
 ## 26.0.1
 
 ### Patch Changes

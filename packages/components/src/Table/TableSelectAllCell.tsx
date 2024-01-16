@@ -34,7 +34,7 @@ export interface TableSelectAllCell
 export const TableSelectAllCell = ({
   column,
   width = 'auto',
-  align,
+  align = 'left',
 }: TableSelectAllCell) => {
   const ref = useRef(null);
   const { state, classNames } = useTableContext();
@@ -58,14 +58,10 @@ export const TableSelectAllCell = ({
   return (
     <th
       ref={ref}
-      className={cn(
-        twWidth[width],
-        ['text-center align-middle leading-none'],
-        classNames?.header
-      )}
-      align={align}
+      className={cn(twWidth[width], ['  leading-none'], classNames?.header)}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
+      align={align}
     >
       <Checkbox {...checkboxProps} />
     </th>

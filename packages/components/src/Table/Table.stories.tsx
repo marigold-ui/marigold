@@ -48,8 +48,9 @@ const meta = {
     },
     variant: {
       control: {
-        type: 'text',
+        type: 'select',
       },
+      options: ['none', 'grid'],
       description: 'variant for the table',
     },
     size: {

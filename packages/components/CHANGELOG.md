@@ -1,5 +1,31 @@
 # @marigold/components
 
+## 7.2.0
+
+### Minor Changes
+
+- [#3592](https://github.com/marigold-ui/marigold/pull/3592) [`0b23a25`](https://github.com/marigold-ui/marigold/commit/0b23a25efa8be6bf0dcc6cbb315b6fb4a0ad9dfd) Thanks [@sebald](https://github.com/sebald)! - feat: Enable built-in browser validation
+
+- [#3596](https://github.com/marigold-ui/marigold/pull/3596) [`9f1ae32`](https://github.com/marigold-ui/marigold/commit/9f1ae32297f6e5d3c08ce861b4e497a15bf06b37) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Added new Helpers components `NumericFormat` & `DateFormat`
+
+- [#3589](https://github.com/marigold-ui/marigold/pull/3589) [`b228e09`](https://github.com/marigold-ui/marigold/commit/b228e099be8940b6ea50bdc6ad8ef6e52ddc4c3d) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: Update `react-aria-components` to v1.0.0
+
+- [#3575](https://github.com/marigold-ui/marigold/pull/3575) [`cba7099`](https://github.com/marigold-ui/marigold/commit/cba7099f1f89b30f23be0074134c224c7ba173b1) Thanks [@sarahgm](https://github.com/sarahgm)! - feat[DST-263]: new component `<Scrollable>`!!!
+
+- [#3593](https://github.com/marigold-ui/marigold/pull/3593) [`46e1a41`](https://github.com/marigold-ui/marigold/commit/46e1a41551b9524668836dc4ed085a6780e10d10) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Adding sticky header feature to tables
+
+### Patch Changes
+
+- [#3517](https://github.com/marigold-ui/marigold/pull/3517) [`7a8d40a`](https://github.com/marigold-ui/marigold/commit/7a8d40abdeb34d28cab0771269e1cfc6b7f4b1f0) Thanks [@sarahgm](https://github.com/sarahgm)! - chore[DST-220]: seperate data-theme attribute and classnames on provider (so you don't need any data-theme attribute anymore)
+
+- [#3623](https://github.com/marigold-ui/marigold/pull/3623) [`6697a67`](https://github.com/marigold-ui/marigold/commit/6697a67c11f251b8361f8be522b8c4be608455dc) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: [DSTSUP-13]: add disabled also on the `<ActionMenu>`
+
+- [#3639](https://github.com/marigold-ui/marigold/pull/3639) [`d76a835`](https://github.com/marigold-ui/marigold/commit/d76a83587c3d839c50deceb7303ddb59fc38f4b1) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Fixing Table Selectable header alignment
+
+- Updated dependencies [[`7a8d40a`](https://github.com/marigold-ui/marigold/commit/7a8d40abdeb34d28cab0771269e1cfc6b7f4b1f0), [`9f1ae32`](https://github.com/marigold-ui/marigold/commit/9f1ae32297f6e5d3c08ce861b4e497a15bf06b37)]:
+  - @marigold/system@7.2.0
+  - @marigold/icons@1.2.34
+
 ## 7.1.0
 
 ### Minor Changes
