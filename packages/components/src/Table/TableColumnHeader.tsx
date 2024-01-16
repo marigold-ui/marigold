@@ -18,9 +18,8 @@ import { useTableContext } from './Context';
 
 // Props
 // ---------------
-interface TableColumnHeaderProps
-  extends WidthProp,
-    Pick<JSX.IntrinsicElements['td'], 'align'> {
+interface TableColumnHeaderProps extends WidthProp {
+  align?: Exclude<JSX.IntrinsicElements['td']['align'], 'char'>;
   column: GridNode<object>;
 }
 
@@ -29,7 +28,7 @@ interface TableColumnHeaderProps
 export const TableColumnHeader = ({
   column,
   width = 'auto',
-  align,
+  align = 'left',
 }: TableColumnHeaderProps) => {
   const ref = useRef(null);
   const { state, classNames } = useTableContext();

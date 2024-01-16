@@ -175,7 +175,7 @@ export const colors = {
       active: '',
     },
     accent: {
-      DEFAULT: '',
+      DEFAULT: accent[600],
       hover: '',
       active: '',
     },
@@ -206,7 +206,7 @@ export const colors = {
     surface: {
       DEFAULT: gray[100],
       raised: gray[500],
-      overlay: gray[650],
+      overlay: gray[50],
       sunken: gray[900],
     },
   },
