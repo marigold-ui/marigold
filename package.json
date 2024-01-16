@@ -5,7 +5,7 @@
   "private": true,
   "license": "MIT",
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   },
   "packageManager": "pnpm@8.14.1",
   "dependencies": {
@@ -21,7 +21,7 @@
     "@testing-library/jest-dom": "6.2.0",
     "@testing-library/react": "14.1.2",
     "@testing-library/user-event": "14.5.2",
-    "@types/node": "18.19.6",
+    "@types/node": "20.11.0",
     "all-contributors-cli": "6.26.1",
     "eslint": "8.56.0",
     "husky": "8.0.3",
