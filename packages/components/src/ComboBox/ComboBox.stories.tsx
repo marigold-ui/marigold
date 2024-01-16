@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
+import { Key, useState } from 'react';
 
 import { useAsyncList } from '@react-stately/data';
 
@@ -121,12 +121,14 @@ export const Basic: StoryObj<typeof ComboBox> = {
 export const Controlled: StoryObj<typeof ComboBox> = {
   render: args => {
     const [current, setCurrent] = useState<string | undefined>();
+    const [id, setId] = useState<Key | null>();
     return (
       <Stack>
         <ComboBox
           value={current}
-          onChange={setCurrent}
           defaultSelectedKey={3}
+          onChange={setCurrent}
+          onSelectionChange={id => setId(id)}
           label="Animals"
           {...args}
         >
@@ -136,7 +138,9 @@ export const Controlled: StoryObj<typeof ComboBox> = {
           <ComboBox.Item id="aardvark">Aardvark</ComboBox.Item>
           <ComboBox.Item id="kangaroo">Kangaroo</ComboBox.Item>
         </ComboBox>
-        <pre>current: {current}</pre>
+        <pre>
+          current: {current}, selected: {id?.toString()}
+        </pre>
       </Stack>
     );
   },
