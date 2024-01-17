@@ -6,7 +6,7 @@ export const Switch: ThemeComponent<'Switch'> = {
     [
       'bg-bg-inverted/20 border-border-base border',
       'group-selected/switch:bg-bg-selected-input',
-      'group-disabled/switch:bg-bg-base-disabled group-disabled/switch:opacity-[0.5] group-disabled/switch:shadow-[0_0_0_1px]',
+      'group-disabled/switch:bg-bg-base-disabled group-disabled/switch:opacity-[0.5]',
     ],
     {
       variants: {
