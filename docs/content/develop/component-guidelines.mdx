@@ -334,3 +334,11 @@ const width = {
 ```tsx
 <TextField label="My Label" width={40} />
 ```
+
+### The `onChange` method
+
+We have a slight different naming of some `onChange` functions. This can cause confusion when using it. We have react arias `onInputChange` method which we use for our `Combobox` and `AutoComplete` as `onChange`.
+
+Than we have react arias `onSelectionChange` which is used to handle the selection of an input. We use this in `ComboBox`, the same in `Autocomplete` but there we map it internally on `onSubmit`.
+
+`Select` is a special case because we just have one on change handler, thats why we currently have `onSelectionChange` as `onChange` there.
