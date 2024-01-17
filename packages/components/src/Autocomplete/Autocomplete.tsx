@@ -18,9 +18,10 @@ import { AutocompleteClearButton } from './ClearButton';
 //----------------
 interface SearchInputProps {
   onSubmit?: (key: Key | null, value: string | null) => void;
+  onClear?: () => void;
   ref?: Ref<HTMLInputElement> | undefined;
 }
-const SearchInput = ({ onSubmit, ref }: SearchInputProps) => {
+const SearchInput = ({ onSubmit, onClear, ref }: SearchInputProps) => {
   const state = React.useContext(ComboBoxStateContext);
 
   return (
@@ -28,7 +29,9 @@ const SearchInput = ({ onSubmit, ref }: SearchInputProps) => {
       ref={ref}
       icon={<SearchIcon />}
       action={
-        state?.inputValue !== '' ? <AutocompleteClearButton /> : undefined
+        state?.inputValue !== '' ? (
+          <AutocompleteClearButton onClear={onClear} />
+        ) : undefined
       }
       onKeyDown={e => {
         if (e.key === 'Enter' || e.key === 'Escape') {
@@ -81,6 +84,7 @@ export interface AutocompleteProps
   defaultValue?: RAC.ComboBoxProps<object>['defaultInputValue'];
   value?: RAC.ComboBoxProps<object>['inputValue'];
   onChange?: RAC.ComboBoxProps<object>['onInputChange'];
+  onClear?: () => void;
   disabled?: RAC.ComboBoxProps<object>['isDisabled'];
   required?: RAC.ComboBoxProps<object>['isRequired'];
   error?: RAC.ComboBoxProps<object>['isInvalid'];
@@ -113,6 +117,7 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
       defaultValue,
       value,
       onChange,
+      onClear,
       onSubmit,
       disabled,
       error,
@@ -138,7 +143,7 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     return (
       <>
         <FieldBase as={ComboBox} {...props}>
-          <SearchInput onSubmit={onSubmit} ref={ref} />
+          <SearchInput onSubmit={onSubmit} onClear={onClear} ref={ref} />
           <Popover>
             <ListBox>{children}</ListBox>
           </Popover>

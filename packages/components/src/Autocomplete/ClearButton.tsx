@@ -7,16 +7,23 @@ import { Button } from '../Button';
 
 export interface ClearButtonProps {
   className?: string;
+  onClear?: () => void;
 }
 
-export const AutocompleteClearButton = ({ className }: ClearButtonProps) => {
+export const AutocompleteClearButton = ({
+  className,
+  onClear,
+}: ClearButtonProps) => {
   let state = React.useContext(ComboBoxStateContext);
 
   return (
     <Button
       // Don't inherit default Button behavior from ComboBox.
       aria-label="Clear"
-      onPress={() => state?.setInputValue('')}
+      onPress={() => {
+        state?.setInputValue('');
+        onClear?.();
+      }}
       variant="icon"
       className={cn(
         'cursor-pointer appearance-none border-none p-0 pr-1',
