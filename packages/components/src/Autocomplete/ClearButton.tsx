@@ -20,6 +20,7 @@ export const AutocompleteClearButton = ({
     <Button
       // Don't inherit default Button behavior from ComboBox.
       aria-label="Clear"
+      data-testid="clear-button"
       onPress={() => {
         state?.setInputValue('');
         onClear?.();
