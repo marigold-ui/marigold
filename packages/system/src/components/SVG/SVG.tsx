@@ -1,7 +1,9 @@
 import React, { forwardRef } from 'react';
 
-import { cn, createVar, getColor, useTheme } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
+
+import { useTheme } from '../../hooks';
+import { cn, createVar, getColor } from '../../utils';
 
 export interface SVGProps extends Omit<HtmlProps<'svg'>, 'fill' | 'style'> {
   size?: number | string | number[] | string[];
