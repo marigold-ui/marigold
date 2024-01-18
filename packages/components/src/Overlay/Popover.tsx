@@ -36,7 +36,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
       component: 'Popover',
       variant: placement,
       // Make Popover as wide as trigger element
-      className: 'w-[--trigger-width]',
+      className: 'min-w-[--trigger-width]',
     });
 
     const isSmallScreen = useSmallScreen();
