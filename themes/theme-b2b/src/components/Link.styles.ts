@@ -5,7 +5,7 @@ export const Link: ThemeComponent<'Link'> = cva(
   {
     variants: {
       variant: {
-        menuItemLink: 'text-text-hover-light hover:no-underline',
+        menuItemLink: 'text-text-base hover:no-underline',
       },
     },
   }

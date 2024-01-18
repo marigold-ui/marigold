@@ -22,6 +22,6 @@ export const Select: ThemeComponent<'Select'> = {
     inputSpacing,
     'appearance-none leading-8',
     'cursor-pointer',
-    'aria-expanded:bg-bg-neutral ',
+    'aria-expanded:bg-bg-base-active ',
   ]),
 };
