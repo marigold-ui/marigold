@@ -17,7 +17,8 @@ const config: StorybookConfig = {
   ],
   framework: {
     name: '@storybook/react-vite',
-    options: {},
+    // @ts-expect-error
+    options: { builder: { useSWC: true } },
   },
   typescript: {
     check: false,
