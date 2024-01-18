@@ -84,6 +84,8 @@ export const get = (obj: object, path: string, fallback?: any): any => {
 /**
  * Safely get a color value from a Tailwind theme object. This also supports
  * Tailwind's "DEFAULT" fallback.
+ *
+ * Note: Use the CSS "var name" (e.g. primary-500) not the dot notation.
  */
 export const getColor = (
   theme: { colors?: object },
