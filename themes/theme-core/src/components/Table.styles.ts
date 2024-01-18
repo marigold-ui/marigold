@@ -14,7 +14,7 @@ export const Table: ThemeComponent<'Table'> = {
       'group-aria-[multiselectable]/table:[&:first-child]:w-12',
       'border-x px-2',
       'text-text-inverted bg-gray-400',
-      'odd:bg-accent',
+      'odd:bg-bg-accent',
       'focus:outline-outline-focus',
     ],
     {
