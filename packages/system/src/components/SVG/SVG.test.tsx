@@ -32,17 +32,17 @@ test('supports classNames', () => {
   const svg = screen.getByTestId(/svg/);
 
   expect(svg).toMatchInlineSnapshot(`
-    <svg
-      class="flex-none fill-info"
-      data-testid="svg"
-      height="24px"
-      width="24px"
-    >
-      <path
-        d="M9.9 20.113V13.8415H14"
-      />
-    </svg>
-  `);
+<svg
+  class="flex-none text-[--color] fill-info"
+  data-testid="svg"
+  height="24px"
+  width="24px"
+>
+  <path
+    d="M9.9 20.113V13.8415H14"
+  />
+</svg>
+`);
 });
 
 test('supports default size', () => {
@@ -90,17 +90,17 @@ test('supports responsive sizing', () => {
   const svg = screen.getByTestId(/svg/);
 
   expect(svg).toMatchInlineSnapshot(`
-    <svg
-      class="flex-none fill-current w-[24px] sm:w-[32px] md:w-[64px]"
-      data-testid="svg"
-      height="24px"
-      width="24px"
-    >
-      <path
-        d="M9.9 20.113V13.8415H14"
-      />
-    </svg>
-  `);
+<svg
+  class="flex-none fill-current text-[--color] w-[24px] sm:w-[32px] md:w-[64px]"
+  data-testid="svg"
+  height="24px"
+  width="24px"
+>
+  <path
+    d="M9.9 20.113V13.8415H14"
+  />
+</svg>
+`);
 });
 
 test('supports custom width instead of default size', () => {
@@ -147,4 +147,17 @@ test('forwards ref', () => {
   render(<SVG ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(SVGElement);
+});
+
+test('supports color prop', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <SVG data-testid="svg" height={16} color="red">
+        <path d="M9.9 20.113V13.8415H14" />
+      </SVG>
+    </ThemeProvider>
+  );
+  const svg = screen.getByTestId(/svg/);
+
+  expect(svg.style.cssText).toMatchInlineSnapshot(`"--color: #ffa8a8;"`);
 });

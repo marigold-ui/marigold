@@ -5,7 +5,7 @@ import {
   TextAlignProp,
   cn,
   createVar,
-  get,
+  getColor,
   textAlign,
   useClassNames,
   useTheme,
@@ -43,10 +43,7 @@ const _Headline = ({
       {...props}
       className={cn(classNames, 'text-[--color]', textAlign[align])}
       style={createVar({
-        color:
-          color &&
-          theme.colors &&
-          get(theme.colors, color.replace('-', '.'), color /* fallback */),
+        color: color && getColor(theme, color, color /* fallback */),
       })}
     >
       {children}

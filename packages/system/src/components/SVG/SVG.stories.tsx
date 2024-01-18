@@ -29,6 +29,16 @@ const meta = {
         },
       },
     },
+    color: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        defaultValue: {
+          summary: undefined,
+        },
+      },
+    },
   },
 } satisfies Meta;
 
