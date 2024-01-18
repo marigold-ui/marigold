@@ -59,6 +59,9 @@ export const createVar = (o: { [key: string]: string | number | undefined }) =>
     Object.entries(o).map(([name, val]) => [`--${name}`, val])
   ) as React.CSSProperties;
 
+export const isObject = (val: any): val is { [key: string]: any } =>
+  val && val.constructor === Object;
+
 /**
  * Safely get a dot-notated path within a nested object, with ability
  * to return a default if the full key path does not exist or
@@ -76,4 +79,19 @@ export const get = (obj: object, path: string, fallback?: any): any => {
   }
 
   return result === undefined ? fallback : result;
+};
+
+/**
+ * Safely get a color value from a Tailwind theme object. This also supports
+ * Tailwind's "DEFAULT" fallback.
+ *
+ * Note: Use the CSS "var name" (e.g. primary-500) not the dot notation.
+ */
+export const getColor = (
+  theme: { colors?: object },
+  path: string,
+  fallback?: any
+): any => {
+  const result = get(theme.colors || {}, path.replace('-', '.'), fallback);
+  return isObject(result) ? result['DEFAULT'] : result;
 };
