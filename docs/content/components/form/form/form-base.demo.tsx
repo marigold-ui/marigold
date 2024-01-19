@@ -11,7 +11,7 @@ export default () => {
   return (
     <Form>
       <Inset space={8}>
-        <Stack space={1} alignX="left">
+        <Stack space={2} alignX="left">
           <TextField label="User Name" name="user" type="name" width="1/2" />
           <TextField
             label="Password"
