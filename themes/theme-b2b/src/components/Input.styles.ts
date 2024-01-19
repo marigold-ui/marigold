@@ -17,6 +17,10 @@ export const inputError = (selector: string = 'error') =>
 export const inputHover = (selector: string = 'hover') =>
   `${selector}:border-border-base-hover`;
 
+export const inputPlaceholder = (
+  selector: string = 'data-[placeholder=true]'
+) => `${selector}:text-text-base-disabled`;
+
 export const Input: ThemeComponent<'Input'> = {
   icon: cva('left-2'),
   action: cva('right-0'),
@@ -28,6 +32,7 @@ export const Input: ThemeComponent<'Input'> = {
     inputHover(),
     inputError('group-error/field'),
     inputSpacing,
+    inputPlaceholder(),
     'leading-[2]',
     'read-only:focus:border-border-base read-only:focus:outline-none',
     // Extra padding for when an icon/action is present

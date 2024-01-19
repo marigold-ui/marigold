@@ -125,7 +125,12 @@ export const Controlled: Story = {
     const [value, setValue] = React.useState('');
     return (
       <>
-        <TextField {...args} value={value} onChange={setValue} />
+        <TextField
+          {...args}
+          value={value}
+          onChange={setValue}
+          placeholder="Placeholder"
+        />
         <pre>
           <strong>Input Value:</strong>
           {value}
