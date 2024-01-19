@@ -51,7 +51,15 @@ export const Accordion = ({ children, ...props }: AccordionProps) => {
     ...ownProps,
   });
 
-  const { accordionProps } = useAccordion({ ...ownProps }, state, ref);
+  const { accordionProps } = useAccordion(
+    /**
+     * Disable "cmd+a" (open all) hotkey for now, since it will not work
+     * with forms inside the accordion. (see DSTSUP-22)
+     */
+    { ...ownProps, disallowSelectAll: true } as any,
+    state,
+    ref
+  );
 
   // Remove onKeyDownCapture from listProps to prevent it from removing spacebar support for
   // inner elements as the Input, this event provides typeahead support for the list, but we
