@@ -1,5 +1,31 @@
 # @marigold/components
 
+## 7.3.0
+
+### Minor Changes
+
+- [#3644](https://github.com/marigold-ui/marigold/pull/3644) [`b4999d8`](https://github.com/marigold-ui/marigold/commit/b4999d8ecc9118df94b57f03dd67a80df4af7576) Thanks [@sebald](https://github.com/sebald)! - feat: `getColor` util
+
+- [#3651](https://github.com/marigold-ui/marigold/pull/3651) [`8b6f34a`](https://github.com/marigold-ui/marigold/commit/8b6f34abf562158ea4bfbd6ad7a8a33c143a929f) Thanks [@sebald](https://github.com/sebald)! - feat: Expose `I18nProvider`
+
+- [#3621](https://github.com/marigold-ui/marigold/pull/3621) [`3c72997`](https://github.com/marigold-ui/marigold/commit/3c729971879d41543ef074bab6b9874a283039d4) Thanks [@sarahgm](https://github.com/sarahgm)! - DST-[266]:feat: use new b2b tokens in code
+
+### Patch Changes
+
+- [#3653](https://github.com/marigold-ui/marigold/pull/3653) [`34a7482`](https://github.com/marigold-ui/marigold/commit/34a748234747b91cb3b4fb9cb4c6708508ac05aa) Thanks [@sebald](https://github.com/sebald)! - fix([DSTSUP-23]): Correctly prefix days/months with zeroes
+
+- [#3654](https://github.com/marigold-ui/marigold/pull/3654) [`fd16ef5`](https://github.com/marigold-ui/marigold/commit/fd16ef5f593d0bebaff24563edf663ad5a542feb) Thanks [@sebald](https://github.com/sebald)! - fix([DSTSUP-19]): Allow Popovers to outgrow their trigger element
+
+- [#3645](https://github.com/marigold-ui/marigold/pull/3645) [`7e3aa28`](https://github.com/marigold-ui/marigold/commit/7e3aa287a2d3987ff82d2f7cda37194db3533cfa) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Adding onClear prop over Autocomplete component
+
+- [#3656](https://github.com/marigold-ui/marigold/pull/3656) [`c1fb6aa`](https://github.com/marigold-ui/marigold/commit/c1fb6aa690caa0bd316ad93a9ffa3ac045afeb2e) Thanks [@sarahgm](https://github.com/sarahgm)! - feat[DSTSUP-17]: add placeholder text styles for b2b theme
+
+- [#3649](https://github.com/marigold-ui/marigold/pull/3649) [`299941b`](https://github.com/marigold-ui/marigold/commit/299941b52c027f8c203ba5b13335ab22b9441e13) Thanks [@sebald](https://github.com/sebald)! - feat([DSTSUP-22]): Disable `cmd+a` (open all items) in `<Accordion>`
+
+- Updated dependencies [[`b4999d8`](https://github.com/marigold-ui/marigold/commit/b4999d8ecc9118df94b57f03dd67a80df4af7576)]:
+  - @marigold/system@7.3.0
+  - @marigold/icons@1.2.35
+
 ## 7.2.0
 
 ### Minor Changes

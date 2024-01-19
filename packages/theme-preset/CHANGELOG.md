@@ -1,5 +1,16 @@
 # @marigold/theme-preset
 
+## 1.3.0
+
+### Minor Changes
+
+- [#3621](https://github.com/marigold-ui/marigold/pull/3621) [`3c72997`](https://github.com/marigold-ui/marigold/commit/3c729971879d41543ef074bab6b9874a283039d4) Thanks [@sarahgm](https://github.com/sarahgm)! - DST-[266]:feat: use new b2b tokens in code
+
+### Patch Changes
+
+- Updated dependencies [[`b4999d8`](https://github.com/marigold-ui/marigold/commit/b4999d8ecc9118df94b57f03dd67a80df4af7576)]:
+  - @marigold/system@7.3.0
+
 ## 1.2.8
 
 ### Patch Changes
