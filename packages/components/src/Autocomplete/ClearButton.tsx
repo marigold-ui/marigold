@@ -27,7 +27,7 @@ export const AutocompleteClearButton = ({
       }}
       variant="icon"
       className={cn(
-        'cursor-pointer appearance-none border-none p-0 pr-1',
+        'cursor-pointer appearance-none border-none p-0 pr-1 hover:bg-transparent',
         className
       )}
     >
