@@ -308,3 +308,26 @@ export const MenuWithinTable: Story = {
     </Table>
   ),
 };
+
+export const Overflow: Story = {
+  render: args => (
+    <table>
+      <tr>
+        <td className="h-96 whitespace-nowrap bg-pink-600">
+          jkasf asf jaslöjasl gjsaldjkas löjygjas kljasklögj asklögjaslög
+          jasdlögjadsl öaskdjlöfkgas lökglöaskglösa kölk dlöasklödfk löaskdlö
+          askdlök aslödklö kaslödk aslödklöask dlöaksdlö kdalöskd löaskdlö
+          kasöldk öals
+        </td>
+        <td>
+          <Menu label="Hogwarts Houses" {...args}>
+            <Menu.Item id="gryffindor">🦁 Gryffindor</Menu.Item>
+            <Menu.Item id="hufflepuff">🦡 Hufflepuff</Menu.Item>
+            <Menu.Item id="ravenclaw">🐦‍⬛ Ravenclaw</Menu.Item>
+            <Menu.Item id="slytherin">🐍 Slytherin</Menu.Item>
+          </Menu>
+        </td>
+      </tr>
+    </table>
+  ),
+};
