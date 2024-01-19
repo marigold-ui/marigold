@@ -23,7 +23,7 @@ export const Button: ThemeComponent<'Button'> = cva(
           'hover:bg-bg-inverted-hover',
         ],
         icon: [
-          'h-auto border-none bg-transparent px-0 leading-none text-inherit',
+          'h-auto border-none bg-transparent px-0 leading-none text-inherit hover:bg-transparent',
         ],
       },
       size: {
