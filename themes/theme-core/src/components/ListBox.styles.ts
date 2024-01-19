@@ -5,7 +5,7 @@ const font = (selector = '&') =>
   `${selector}:font-body text-[13px] ${selector}:text-root-body`;
 
 export const ListBox: ThemeComponent<'ListBox'> = {
-  container: cva('border-input-border rounded-sm border bg-white'),
+  container: cva('border-border-inverted rounded-sm border bg-white'),
   list: cva(''),
   option: cva([
     font(),

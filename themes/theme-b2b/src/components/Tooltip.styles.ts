@@ -4,7 +4,7 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
   container: cva([
     'text-sm leading-[1.125rem]',
     'border-border-info rounded-lg border border-solid',
-    'bg-bg-neutral p-2',
+    'bg-bg-surface-overlay p-2',
     'placement-t:mb-2',
     'placement-b:mt-2',
     'placement-r:ml-2',
@@ -12,7 +12,7 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
   ]),
 
   arrow: cva([
-    'fill-bg-neutral stroke-border-info',
+    'fill-bg-surface-overlay stroke-border-info',
 
     // right
     '[&>svg]:placement-r:rotate-90',

@@ -13,8 +13,8 @@ export const Table: ThemeComponent<'Table'> = {
     [
       'group-aria-[multiselectable]/table:[&:first-child]:w-12',
       'border-x px-2',
-      'bg-bg-surface-overlay text-text-inverted',
-      'odd:bg-bg-surface-raised',
+      'text-text-inverted bg-gray-400',
+      'odd:bg-bg-accent',
       'focus:outline-outline-focus',
     ],
     {

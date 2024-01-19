@@ -18,6 +18,6 @@ export const TextArea: ThemeComponent<'TextArea'> = cva([
   inputDisabled(),
   inputError('group-error/field'),
   inputSpacing,
-  'text-text-body font-body leading-8',
-  'read-only:focus:border-border-light read-only:focus:shadow-none',
+  'text-text-base font-body leading-8',
+  'read-only:focus:border-border-base read-only:focus:outline-none',
 ]);

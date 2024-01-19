@@ -8,7 +8,7 @@ import {
   createVar,
   cursorStyle,
   fontWeight,
-  get,
+  getColor,
   textAlign,
   textSize,
   textStyle,
@@ -66,10 +66,7 @@ export const Text = ({
         fontSize && textSize[fontSize]
       )}
       style={createVar({
-        color:
-          color &&
-          theme.colors &&
-          get(theme.colors, color.replace('-', '.'), color /* fallback */),
+        color: color && getColor(theme, color, color /* fallback */),
       })}
     >
       {children}

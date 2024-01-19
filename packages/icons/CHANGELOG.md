@@ -1,5 +1,12 @@
 # @marigold/icons
 
+## 1.2.35
+
+### Patch Changes
+
+- Updated dependencies [[`b4999d8`](https://github.com/marigold-ui/marigold/commit/b4999d8ecc9118df94b57f03dd67a80df4af7576)]:
+  - @marigold/system@7.3.0
+
 ## 1.2.34
 
 ### Patch Changes

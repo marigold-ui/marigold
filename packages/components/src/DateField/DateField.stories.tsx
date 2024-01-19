@@ -132,3 +132,11 @@ export const ControlledDateField: Story = {
     );
   },
 };
+
+export const BritishLocal: Story = {
+  render: args => (
+    <I18nProvider locale="en-GB">
+      <DateField {...args} />
+    </I18nProvider>
+  ),
+};

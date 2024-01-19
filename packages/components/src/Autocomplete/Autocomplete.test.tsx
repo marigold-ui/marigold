@@ -360,6 +360,25 @@ test('supports autocompletion', async () => {
   expect(input).toHaveValue('Spinach');
 });
 
+test('supports clear input value', async () => {
+  render(
+    <Autocomplete label="Label" data-testid="input-field">
+      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
+      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
+      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
+      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
+    </Autocomplete>
+  );
+
+  const input = screen.getByRole('combobox');
+  await user.type(input, 'sp');
+
+  const clearButton = screen.getByTestId('clear-button');
+  expect(clearButton).toBeInTheDocument();
+  await user.click(clearButton);
+  expect(input).toHaveValue('');
+});
+
 test('supports submit handler', async () => {
   const spy = jest.fn();
 

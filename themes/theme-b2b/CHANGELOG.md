@@ -1,5 +1,22 @@
 # @marigold/theme-b2b
 
+## 27.0.0
+
+### Major Changes
+
+- [#3621](https://github.com/marigold-ui/marigold/pull/3621) [`3c72997`](https://github.com/marigold-ui/marigold/commit/3c729971879d41543ef074bab6b9874a283039d4) Thanks [@sarahgm](https://github.com/sarahgm)! - DST-[266]:feat: use new b2b tokens in code
+
+### Patch Changes
+
+- [#3657](https://github.com/marigold-ui/marigold/pull/3657) [`6f3d81d`](https://github.com/marigold-ui/marigold/commit/6f3d81df18041f55a2e2a40077a7b97cc9befa42) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: table grid variant b2b theme
+
+- [#3656](https://github.com/marigold-ui/marigold/pull/3656) [`c1fb6aa`](https://github.com/marigold-ui/marigold/commit/c1fb6aa690caa0bd316ad93a9ffa3ac045afeb2e) Thanks [@sarahgm](https://github.com/sarahgm)! - feat[DSTSUP-17]: add placeholder text styles for b2b theme
+
+- Updated dependencies [[`34a7482`](https://github.com/marigold-ui/marigold/commit/34a748234747b91cb3b4fb9cb4c6708508ac05aa), [`fd16ef5`](https://github.com/marigold-ui/marigold/commit/fd16ef5f593d0bebaff24563edf663ad5a542feb), [`b4999d8`](https://github.com/marigold-ui/marigold/commit/b4999d8ecc9118df94b57f03dd67a80df4af7576), [`8b6f34a`](https://github.com/marigold-ui/marigold/commit/8b6f34abf562158ea4bfbd6ad7a8a33c143a929f), [`7e3aa28`](https://github.com/marigold-ui/marigold/commit/7e3aa287a2d3987ff82d2f7cda37194db3533cfa), [`3c72997`](https://github.com/marigold-ui/marigold/commit/3c729971879d41543ef074bab6b9874a283039d4), [`c1fb6aa`](https://github.com/marigold-ui/marigold/commit/c1fb6aa690caa0bd316ad93a9ffa3ac045afeb2e), [`299941b`](https://github.com/marigold-ui/marigold/commit/299941b52c027f8c203ba5b13335ab22b9441e13)]:
+  - @marigold/components@7.3.0
+  - @marigold/system@7.3.0
+  - @marigold/theme-preset@1.3.0
+
 ## 26.1.0
 
 ### Minor Changes

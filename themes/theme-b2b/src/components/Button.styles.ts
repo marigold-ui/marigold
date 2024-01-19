@@ -4,31 +4,31 @@ export const Button: ThemeComponent<'Button'> = cva(
   [
     'rounded-sm border-none px-8 leading-[48px] outline-none',
     'focus-visible:outline-outline-focus focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-1',
-    'disabled:text-text-disabled disabled:bg-bg-disabled disabled:cursor-not-allowed',
+    'disabled:text-text-base-disabled disabled:bg-bg-base-disabled disabled:cursor-not-allowed',
   ],
   {
     variants: {
       variant: {
         primary: [
-          'text-text-light bg-bg-primary',
-          'hover:bg-bg-primary-hover hover:text-text-light',
-          'active:bg-bg-primary-active',
+          'text-text-inverted bg-bg-accent',
+          'hover:bg-bg-accent-hover',
+          'active:bg-bg-accent-active',
         ],
         secondary: [
-          'text-text-light bg-bg-secondary hover:text-text-light hover:bg-bg-secondary-hover',
-          'active:bg-bg-secondary-active',
+          'text-text-inverted bg-bg-brand hover:bg-bg-brand-hover',
+          'active:bg-bg-brand-active',
         ],
         ghost: [
-          'border-border-dark border border-solid',
-          'text-text-body',
-          'hover:bg-bg-hover',
-          'active:bg-bg-secondary-active active:text-text-light',
+          'border-border-base border border-solid',
+          'text-text-base',
+          'hover:bg-bg-brand-hover hover:text-text-inverted',
+          'active:bg-bg-brand-active active:text-text-inverted',
         ],
         text: [
-          'text-text-body hover:bg-bg-hover active:bg-bg-secondary-active active:text-text-light',
+          'text-text-base hover:bg-bg-brand-hover hover:text-text-inverted active:bg-bg-brand-active active:text-text-inverted',
         ],
         menu: [
-          'text-text-body bg-bg-surface hover:text-text-light hover:bg-bg-secondary-hover',
+          'text-text-base bg-bg-surface hover:text-text-inverted hover:bg-bg-brand-hover',
         ],
         icon: ['h-auto border-none bg-transparent px-0 leading-none'],
       },

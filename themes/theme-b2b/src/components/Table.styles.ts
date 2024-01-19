@@ -6,16 +6,16 @@ export const Table: ThemeComponent<'Table'> = {
     [
       'relative',
       'group-aria-[multiselectable]/table:[&:first-child]:w-12',
-      'cursor-default  p-4',
-      'text-text-body',
+      'cursor-default  p-4 text-left',
+      'text-text-base',
       'after:bg-bg-surface-raised after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:content-[""]',
       'focus:outline-outline-focus',
-      'bg-white',
+      'border-border-base border-b-[1px] bg-white',
     ],
     {
       variants: {
         variant: {
-          grid: 'border-x-[1px] border-t-[1px]',
+          grid: 'border-x-[1px]  border-t-[1px]',
         },
         size: {
           compact: 'py-2',
@@ -26,13 +26,13 @@ export const Table: ThemeComponent<'Table'> = {
   ),
   row: cva([
     'group-aria-[multiselectable]/table:[&>*:first-child]:w-12',
-    'data-[hover]:bg-bg-hover-light',
+    'data-[hover]:bg-bg-base-hover',
     'aria-selected:bg-bg-selected',
     'focus-visible:outline-outline-focus',
   ]),
   cell: cva(
     [
-      'text-text-body border-border-light border-b-[1px] p-4',
+      'text-text-base border-border-base border-b-[1px] p-4',
       'focus:outline-outline-focus',
     ],
     {

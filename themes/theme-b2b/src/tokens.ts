@@ -162,12 +162,12 @@ export const colors = {
   bg: {
     base: {
       DEFAULT: white,
-      hover: '',
-      active: '',
-      disabled: '',
+      hover: gray[300],
+      active: gray[200],
+      disabled: brand[200],
     },
     inverted: {
-      DEFAULT: '',
+      DEFAULT: gray[700],
       hover: '',
       active: '',
       disabled: '',
@@ -178,8 +178,8 @@ export const colors = {
       active: brand[800],
     },
     accent: {
-      DEFAULT: accent[700],
-      hover: accent[600],
+      DEFAULT: accent[600],
+      hover: accent[700],
       active: accent[800],
     },
     info: {
@@ -208,9 +208,9 @@ export const colors = {
     },
     surface: {
       DEFAULT: white,
-      raised: gray[400],
-      overlay: gray[700],
-      sunken: gray[200],
+      raised: white, // used e.g. card
+      overlay: white, // used e.g. calendar
+      sunken: gray[600],
     },
   },
 
@@ -221,13 +221,13 @@ export const colors = {
       DEFAULT: gray[400],
       hover: gray[500],
       active: '',
-      disaled: gray[400],
+      disabled: gray[400],
     },
     inverted: {
       DEFAULT: gray[700],
       hover: '',
       active: '',
-      disaled: '',
+      disabled: '',
     },
     brand: {
       DEFAULT: '',
@@ -260,7 +260,7 @@ export const colors = {
       active: red[700],
     },
     selected: {
-      DEFAULT: accent[800],
+      DEFAULT: accent[600],
       input: accent[800],
     },
   },

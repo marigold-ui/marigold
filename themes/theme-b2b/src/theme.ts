@@ -1,9 +1,10 @@
 import { Theme } from '@marigold/system';
+import { flattenObject } from '@marigold/theme-preset';
 
-import { colors } from './_tokens';
 import * as components from './components';
 import { root } from './root';
 import { screens } from './screens';
+import { colors, height, shadow } from './tokens';
 
 export const webFontUrl = [
   'https://fonts.bunny.net/css?family=inter:400,600,700',
@@ -14,5 +15,7 @@ export const theme: Theme = {
   screens,
   root,
   colors,
+  shadow: flattenObject(shadow),
+  height: flattenObject(height),
   components,
 };
