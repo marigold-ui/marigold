@@ -7,6 +7,7 @@ import {
   inputError,
   inputFocus,
   inputHover,
+  inputPlaceholder,
   inputSpacing,
 } from './Input.styles';
 
@@ -20,6 +21,7 @@ export const Select: ThemeComponent<'Select'> = {
     inputHover(),
     inputBackground,
     inputSpacing,
+    inputPlaceholder('[&>[data-placeholder=true]]'),
     'appearance-none leading-8',
     'cursor-pointer',
     'aria-expanded:bg-bg-base-active ',
