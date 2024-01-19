@@ -10,12 +10,12 @@ export const Table: ThemeComponent<'Table'> = {
       'text-text-base',
       'after:bg-bg-surface-raised after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:content-[""]',
       'focus:outline-outline-focus',
-      'bg-white',
+      'border-border-base border-b-[1px] bg-white',
     ],
     {
       variants: {
         variant: {
-          grid: 'border-x-[1px] border-t-[1px]',
+          grid: 'border-x-[1px]  border-t-[1px]',
         },
         size: {
           compact: 'py-2',
