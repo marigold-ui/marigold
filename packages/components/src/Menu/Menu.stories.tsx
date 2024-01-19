@@ -5,7 +5,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Key } from '@react-types/shared';
 
 import { Button } from '../Button';
+import { Dialog } from '../Dialog';
 import { Table } from '../Table';
+import { Text } from '../Text';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
 
@@ -326,6 +328,15 @@ export const Overflow: Story = {
             <Menu.Item id="ravenclaw">🐦‍⬛ Ravenclaw</Menu.Item>
             <Menu.Item id="slytherin">🐍 Slytherin</Menu.Item>
           </Menu>
+        </td>
+        <td>
+          <Dialog.Trigger {...args}>
+            <Button variant="primary">Open</Button>
+            <Dialog closeButton>
+              <Dialog.Headline>This is a headline!</Dialog.Headline>
+              <Text>This is some not so very long text.</Text>
+            </Dialog>
+          </Dialog.Trigger>
         </td>
       </tr>
     </table>
