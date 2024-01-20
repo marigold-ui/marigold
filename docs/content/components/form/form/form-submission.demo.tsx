@@ -15,7 +15,10 @@ export default () => {
   return (
     <Form
       onSubmit={e => {
+        // This will prevent the native form submission
         e.preventDefault();
+
+        // Read the form values and convert it to a regular object
         const data = Object.fromEntries(new FormData(e.currentTarget));
         setAction(`data: ${JSON.stringify(data, null, 2)}`);
       }}

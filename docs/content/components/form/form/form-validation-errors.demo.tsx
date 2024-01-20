@@ -2,7 +2,7 @@ import { Button, Form, Inset, Stack, TextField } from '@marigold/components';
 
 export default () => {
   return (
-    <Form>
+    <Form validationErrors={{ password: 'Incorrect password.' }}>
       <Inset space={8}>
         <Stack space={2} alignX="left">
           <TextField label="User Name" name="user" type="name" width="1/2" />

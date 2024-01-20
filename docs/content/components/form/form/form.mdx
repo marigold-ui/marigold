@@ -84,6 +84,14 @@ This is a simple setup how to use a `<Form>`.
 
 ### Handling submission
 
-The `onSubmit` event is triggered when a user submits the form using the Enter key or clicks a submit button. The `onReset` event is triggered when a user presses a reset button (`[type=reset]`).
+The `onSubmit` event is useful for custom form actions, such as calling a REST API, instead of relying on the native form submission. It triggeres when a user submits the form using the Enter key or clicks the submit button. The `onReset` event is triggered when a user presses a reset button (`[type=reset]`).
 
 <ComponentDemo file="./form-submission.demo.tsx" />
+
+### Server Errors
+
+The `<Form>` component handles passed errors, typically received from a server after form submission. To display validation errors, set the `validationErrors` prop as an object mapping each field's name prop to a string or array of strings representing errors. These errors appear to the user as soon as the `validationErrors` prop is set and are cleared when the user modifies the corresponding field's value.
+
+<ComponentDemo file="./form-validation-errors.demo.tsx" />
+
+For more information about form validation, see the [Validation](/concepts/validation) guide.
