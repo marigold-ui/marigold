@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/react';
+import { createRef } from 'react';
 
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
@@ -116,4 +117,17 @@ test('renders correct HTML element', () => {
   const message = screen.getByTestId(/messages/);
 
   expect(message instanceof HTMLDivElement).toBeTruthy();
+});
+
+test('forwards ref', () => {
+  const ref = createRef<HTMLDivElement>();
+  render(
+    <ThemeProvider theme={theme}>
+      <Message data-testid="messages" messageTitle="messages" ref={ref}>
+        Default
+      </Message>
+    </ThemeProvider>
+  );
+
+  expect(ref.current instanceof HTMLDivElement).toBeTruthy();
 });
