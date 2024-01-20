@@ -28,6 +28,7 @@ export default () => {
         <Stack space={4}>
           {invalid ? (
             <Message
+              variant="error"
               messageTitle="Whoopsies!"
               role="alert"
               tabIndex={-1}
