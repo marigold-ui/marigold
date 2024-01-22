@@ -1,11 +1,6 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-import {
-  inputBackground,
-  inputBox,
-  inputPlaceholder,
-  inputSpacing,
-} from './Input.styles';
+import { inputBackground, inputBox, inputSpacing } from './Input.styles';
 
 export const DateField: ThemeComponent<'DateField'> = {
   field: cva([
@@ -29,7 +24,7 @@ export const DateField: ThemeComponent<'DateField'> = {
     'focus:bg-bg-accent focus:text-text-inverted',
     'aria-[readonly]:focus:border-border-base aria-[readonly]:focus:outline-none',
     'aria-[readonly]:text-text-base-disabled aria-[readonly]:bg-transparent',
-    inputPlaceholder(),
+    'data-[placeholder=true]:text-text-base-disabled',
   ]),
   action: cva(''),
 };

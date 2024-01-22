@@ -17,6 +17,7 @@ export const Input: ThemeComponent<'Input'> = {
     // Extra padding for when an icon/action is present
     'group-data-[icon]/input:pl-5',
     'group-data-[action]/input:pr-4',
+    'placeholder:text-text-inverted-disabled',
   ]),
   icon: cva('left-0.5 h-4 w-4'),
   action: cva([inputHeight, 'right-0 w-4']),
