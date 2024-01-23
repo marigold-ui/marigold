@@ -6,8 +6,6 @@ import { MarigoldProvider } from '@/ui';
 import '@marigold/theme-b2b/styles.css';
 import '@marigold/theme-core/styles.css';
 
-import { fontSans } from '@/theme/fonts';
-
 import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
 
 import { Analytics } from './_components/Analytics';
@@ -37,7 +35,7 @@ const themes = {
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
-      <body className={`${fontSans.className} min-h-screen`}>
+      <body className={`min-h-screen`}>
         <MarigoldThemeSwitch themes={themes} initial="b2b">
           <MarigoldProvider theme={theme} portalContainer={'portalContainer'}>
             <div className="flex min-h-screen flex-col">
