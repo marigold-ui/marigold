@@ -4,14 +4,14 @@ export default () => {
   return (
     <Menu label="Open Menu">
       <Menu.Section title="Food">
-        <Menu.Item key="burger">🍔 Burger</Menu.Item>
-        <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-        <Menu.Item key="fries">🍟 Fries</Menu.Item>
+        <Menu.Item id="burger">🍔 Burger</Menu.Item>
+        <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
+        <Menu.Item id="fries">🍟 Fries</Menu.Item>
       </Menu.Section>
       <Menu.Section title="Fruits">
-        <Menu.Item key="apple">🍎 Apple</Menu.Item>
-        <Menu.Item key="banana">🍌 Banana</Menu.Item>
-        <Menu.Item key="strawberry">🍓 Strawberry</Menu.Item>
+        <Menu.Item id="apple">🍎 Apple</Menu.Item>
+        <Menu.Item id="banana">🍌 Banana</Menu.Item>
+        <Menu.Item id="strawberry">🍓 Strawberry</Menu.Item>
       </Menu.Section>
     </Menu>
   );
