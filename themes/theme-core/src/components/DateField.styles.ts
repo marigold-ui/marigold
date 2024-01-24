@@ -17,6 +17,7 @@ export const DateField: ThemeComponent<'DateField'> = {
     '[data-type="literal]"' && 'p-[0.75px]',
     'rounded-sm',
     'focus:bg-bg-selected focus:text-text-inverted',
+    'data-[placeholder=true]:text-text-inverted-disabled',
     'aria-[readonly]:bg-bg-transparent aria-[readonly]:text-text-base-disabled',
   ]),
   action: cva('pr-2'),
