@@ -32,5 +32,6 @@ export const Input: ThemeComponent<'Input'> = {
     'read-only:focus:border-border-base read-only:focus:outline-none',
     // Extra padding for when an icon/action is present
     'group-data-[icon]/input:pl-8',
+    'placeholder:text-text-base-disabled',
   ]),
 };

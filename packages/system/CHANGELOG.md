@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 7.3.0
+
+### Minor Changes
+
+- [#3644](https://github.com/marigold-ui/marigold/pull/3644) [`b4999d8`](https://github.com/marigold-ui/marigold/commit/b4999d8ecc9118df94b57f03dd67a80df4af7576) Thanks [@sebald](https://github.com/sebald)! - feat: `getColor` util
+
 ## 7.2.0
 
 ### Minor Changes

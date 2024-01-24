@@ -87,7 +87,12 @@ export const Basic: StoryObj<typeof Select> = {
     const [selected, setSelected] = useState<string | number>('');
     return (
       <>
-        <Select {...args} onChange={setSelected} disabledKeys={['Firefly']}>
+        <Select
+          {...args}
+          onChange={setSelected}
+          disabledKeys={['Firefly']}
+          placeholder="Select Item"
+        >
           <Select.Option id="Harry Potter">Harry Potter</Select.Option>
           <Select.Option id="Lord of the Rings">
             Lord of the Rings

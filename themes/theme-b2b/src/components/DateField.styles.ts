@@ -24,6 +24,7 @@ export const DateField: ThemeComponent<'DateField'> = {
     'focus:bg-bg-accent focus:text-text-inverted',
     'aria-[readonly]:focus:border-border-base aria-[readonly]:focus:outline-none',
     'aria-[readonly]:text-text-base-disabled aria-[readonly]:bg-transparent',
+    'data-[placeholder=true]:text-text-base-disabled',
   ]),
   action: cva(''),
 };
