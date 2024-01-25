@@ -1,7 +1,9 @@
 'use client';
 
-import { type Theme } from '@/ui';
+import { MarigoldProvider, type Theme } from '@/ui';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
+
+import { theme as docsTheme } from '../theme';
 
 // Context
 // ---------------
@@ -37,8 +39,10 @@ export const MarigoldThemeSwitch = ({
   useEffect(() => setTheme(theme), [theme]);
 
   return (
-    <Context.Provider value={{ current: theme, themes, setTheme }}>
-      {children}
-    </Context.Provider>
+    <MarigoldProvider theme={docsTheme}>
+      <Context.Provider value={{ current: theme, themes, setTheme }}>
+        {children}
+      </Context.Provider>
+    </MarigoldProvider>
   );
 };
