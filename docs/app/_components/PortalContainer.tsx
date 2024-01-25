@@ -2,12 +2,15 @@
 
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
+import { theme as docsTheme } from '../../theme';
+
 export const PortalContainer = () => {
   const { current, themes } = useThemeSwitch();
+
   return (
     <div
       id="portalContainer"
-      data-theme={current ? current : themes.b2b.name}
+      data-theme={docsTheme ? docsTheme : current ? current : themes.b2b.name}
     />
   );
 };

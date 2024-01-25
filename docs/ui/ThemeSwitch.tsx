@@ -3,10 +3,6 @@
 import { type Theme } from '@/ui';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
 
-import { MarigoldProvider } from '@marigold/components';
-
-import { theme as docsTheme } from '../theme';
-
 // Context
 // ---------------
 export interface ThemeSwitchContextType {
@@ -41,10 +37,8 @@ export const MarigoldThemeSwitch = ({
   useEffect(() => setTheme(theme), [theme]);
 
   return (
-    <MarigoldProvider theme={docsTheme}>
-      <Context.Provider value={{ current: theme, themes, setTheme }}>
-        {children}
-      </Context.Provider>
-    </MarigoldProvider>
+    <Context.Provider value={{ current: theme, themes, setTheme }}>
+      {children}
+    </Context.Provider>
   );
 };

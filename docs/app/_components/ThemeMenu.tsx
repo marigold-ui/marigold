@@ -1,9 +1,11 @@
 'use client';
 
-import { Menu } from '@marigold/components';
+import { MarigoldProvider, Menu } from '@marigold/components';
 import { ChevronDown } from '@marigold/icons';
 
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
+
+import { theme as docsTheme } from '../../theme';
 
 export const ThemeMenu = () => {
   const { current, themes, setTheme } = useThemeSwitch();
