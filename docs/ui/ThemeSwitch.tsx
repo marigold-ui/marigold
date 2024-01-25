@@ -1,7 +1,9 @@
 'use client';
 
-import { MarigoldProvider, type Theme } from '@/ui';
+import { type Theme } from '@/ui';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
+
+import { MarigoldProvider } from '@marigold/components';
 
 import { theme as docsTheme } from '../theme';
 
