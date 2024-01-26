@@ -17,6 +17,7 @@
     "@marigold/theme-preset": "workspace:*",
     "@react-aria/i18n": "3.10.0",
     "@tailwindcss/typography": "0.5.10",
+    "@tanstack/react-query": "5.17.19",
     "@vercel/analytics": "1.1.1",
     "autoprefixer": "10.4.16",
     "contentlayer": "0.3.4",
