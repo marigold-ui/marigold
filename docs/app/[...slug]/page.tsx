@@ -52,7 +52,6 @@ export default async function ContentPage({ params }: ContentPageProps) {
       <div className="text-text-primary-muted -mt-8">{page.caption}</div>
 
       <Mdx title={page.title} code={page.body.code} />
-      <PortalContainer />
     </article>
   );
 }
