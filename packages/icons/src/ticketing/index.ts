@@ -6,7 +6,7 @@ export * from './Pickup';
 export * from './Price';
 export * from './Resale';
 export * from './Scanner';
-export * from './Stadion';
+export * from './Stadium';
 export * from './Seat';
 export * from './Selling';
 export * from './Ticket';
