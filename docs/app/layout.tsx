@@ -39,7 +39,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <html lang="en">
       <body className={`${fontSans.className} min-h-screen`}>
         <MarigoldThemeSwitch themes={themes} initial="b2b">
-          <MarigoldProvider theme={theme}>
+          <MarigoldProvider theme={theme} portalContainer="portalContainer">
             <div className="flex min-h-screen flex-col">
               <SiteHeader />
               <div className="flex-1 px-4 lg:px-10 xl:px-20">

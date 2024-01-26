@@ -12,6 +12,7 @@ export const usePortalContainer = () => {
   const portalContainer = useContext(OverlayContainerContext);
   const isSSR = useIsSSR();
 
+  console.log(portalContainer);
   const portal = isSSR
     ? null
     : portalContainer

@@ -6,6 +6,8 @@ import { notFound } from 'next/navigation';
 
 import { Mdx } from '@/ui/mdx';
 
+import { PortalContainer } from '../_components/PortalContainer';
+
 interface ContentPageProps {
   params: {
     slug: string[];
@@ -48,7 +50,9 @@ export default async function ContentPage({ params }: ContentPageProps) {
     <article className="prose">
       <Headline level={1}>{page.title}</Headline>
       <div className="text-text-primary-muted -mt-8">{page.caption}</div>
+
       <Mdx title={page.title} code={page.body.code} />
+      <PortalContainer />
     </article>
   );
 }

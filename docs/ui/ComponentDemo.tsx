@@ -56,7 +56,6 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
                 <div className="not-prose w-full overflow-x-auto p-4">
                   <Demo />
                 </div>
-                <PortalContainer />
               </MarigoldProvider>
             </div>
           </Card>
