@@ -56,7 +56,6 @@ export interface SelectComponent
 const _Select = forwardRef<any, SelectProps<object>>(
   (
     {
-      width,
       disabled,
       required,
       items,
