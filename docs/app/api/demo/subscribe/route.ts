@@ -4,13 +4,18 @@ import { NextResponse } from 'next/server';
 
 // Helpers
 // ---------------
+const ALREADY_REGISTERED_EMAILS = [
+  'support@reservix.de',
+  'marigold@reservix.de',
+];
+
 const schema = z.object({
   email: z
     .string()
     .email()
     .refine(
       val => {
-        return !['support@reservix.de', 'marigold@reservix.de'].includes(val);
+        return !ALREADY_REGISTERED_EMAILS.includes(val);
       },
       {
         message: 'This email is already subscribed.',
