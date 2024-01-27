@@ -19,14 +19,17 @@ import { Check } from '@marigold/icons';
 
 const SuccessMessage = () => (
   <Inline alignY="center" space={1}>
-    <Check color="green" size="12" /> Successfully subscribed!
+    <Check color="text-success" size="12" /> Successfully subscribed!
   </Inline>
 );
 
 const App = () => {
+  // Server communication
   const mutation = useMutation<any, ValidationError, string>({
     mutationFn: (email: string) => post('/api/demo/subscribe', { email }),
   });
+
+  // Form handling
   const subscribe = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -34,6 +37,7 @@ const App = () => {
     mutation.mutate(email);
   };
 
+  // Show form errors from server
   const validationErrors = mutation.error ? mutation.error.cause : undefined;
 
   return (
