@@ -20,7 +20,7 @@ const theme: Theme = {
           },
         },
       }),
-      icon: cva('h-3 w-3'),
+      icon: cva('size-3'),
     },
   },
 };

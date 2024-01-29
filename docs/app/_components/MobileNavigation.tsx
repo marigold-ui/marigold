@@ -37,7 +37,7 @@ export const MobileNavigation = () => (
         {({ close }) => (
           <>
             <Header className="flex items-center gap-2 pl-4 text-3xl font-bold uppercase tracking-tight text-[#46505a]">
-              <Logo className="h-10 w-10" />
+              <Logo className="size-10" />
               Marigold
             </Header>
             <div className="scrollbar-thin scrollbar-thumb-slate-300 scrollbar-thumb-rounded-full bottom-0 right-0 -mr-4 h-[calc(100vh-90px)] overflow-y-auto">

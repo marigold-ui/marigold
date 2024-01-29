@@ -18,7 +18,7 @@ export const CopyButton = ({ codeString }: CopyProps) => {
     >
       {isCopied ? (
         <svg
-          className="h-5 w-5 fill-white"
+          className="size-5 fill-white"
           width="48"
           height="48"
           viewBox="0 0 24 24"
@@ -27,7 +27,7 @@ export const CopyButton = ({ codeString }: CopyProps) => {
         </svg>
       ) : (
         <svg
-          className="h-5 w-5 fill-white"
+          className="size-5 fill-white"
           viewBox="0 0 16 16"
           fill="text.regular"
         >
