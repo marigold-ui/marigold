@@ -66,7 +66,7 @@ test('supports base styling', () => {
 
   expect(label.className).toMatchInlineSnapshot(`"flex w-[var(--labelWidth)]"`);
   expect(container.className).toMatchInlineSnapshot(
-    `"w-full group/switch flex items-center justify-between gap-[1ch]"`
+    `"w-full group/switch flex items-center gap-[1ch]"`
   );
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
   expect(thumb.className).toMatchInlineSnapshot(
@@ -95,7 +95,7 @@ test('takes full width by default', () => {
   render(<Switch>Label</Switch>);
   const { container } = getSwitchParts();
   expect(container.className).toMatchInlineSnapshot(
-    `"w-full group/switch flex items-center justify-between gap-[1ch]"`
+    `"w-full group/switch flex items-center gap-[1ch]"`
   );
 });
 

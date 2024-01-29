@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Switch: ThemeComponent<'Switch'> = {
-  container: cva(),
+  container: cva('justify-start'),
   track: cva([
     'h-[22px]',
     'bg-bg-surface-raised shadow-[0_0_0_1px]',
