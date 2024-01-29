@@ -28,9 +28,9 @@ import { SVG } from '@marigold/system';
       default: '24',
     },
     {
-      property: 'className',
+      property: 'color',
       type: 'string',
-      description: 'Pass in class names',
+      description: 'Color for the SVG element. Accepts color tokens.',
       default: 'none',
     },
     {
@@ -49,3 +49,9 @@ import { SVG } from '@marigold/system';
 In this example you can see how to use the `<SVG>` element.
 
 <ComponentDemo file="./svg.demo.tsx" />
+
+### Colorize
+
+To modify the color, adjust the `color` prop using a [design token](/introduction/design-tokens).
+
+<ComponentDemo file="./svg-color.demo.tsx" />
