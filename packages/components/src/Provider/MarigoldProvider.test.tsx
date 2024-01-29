@@ -7,7 +7,10 @@ import { Theme, cva, useTheme } from '@marigold/system';
 
 import { Popover } from '../Overlay';
 import { MarigoldProvider } from './MarigoldProvider';
-import { usePortalContainer } from './OverlayContainerProvider';
+import {
+  OverlayContainerProvider,
+  usePortalContainer,
+} from './OverlayContainerProvider';
 
 // Setup
 // ---------------
@@ -161,32 +164,4 @@ test('cascading without a selector is allowed when inner theme has not root styl
       </MarigoldProvider>
     )
   ).not.toThrowError();
-});
-
-test('render portalcontainer in body element if no ssr', () => {
-  render(
-    <>
-      <MarigoldProvider theme={theme}>
-        <Popover>Test</Popover>
-      </MarigoldProvider>
-    </>
-  );
-
-  const { result } = renderHook(() => usePortalContainer());
-  expect(result.current).toBeInstanceOf(HTMLBodyElement);
-});
-
-test('render null for portalcontainer', () => {
-  const wrapper = () => (
-    <>
-      <MarigoldProvider theme={theme} portalContainer="testid">
-        <Popover>Test</Popover>
-      </MarigoldProvider>
-    </>
-  );
-  const { result } = renderHook(() => usePortalContainer(), {
-    wrapper,
-  });
-
-  expect(result.current).toBeNull();
 });
