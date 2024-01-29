@@ -54,7 +54,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   <SectionNavigation />
                 </aside>
                 <div className="px-4 md:pl-80 xl:pl-[360px]">
-                  <main className="py-6 xl:py-10">{children}</main>
+                  <MarigoldProvider
+                    theme={theme}
+                    portalContainer="portalContainer"
+                  >
+                    <main className="py-6 xl:py-10">{children}</main>
+                    <PortalContainer />
+                  </MarigoldProvider>
                   <SiteFooter />
                 </div>
               </div>

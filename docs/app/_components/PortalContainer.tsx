@@ -5,6 +5,7 @@ import { useThemeSwitch } from '@/ui/ThemeSwitch';
 export const PortalContainer = () => {
   const { current, themes } = useThemeSwitch();
 
+  console.log('Current', current);
   return (
     <div
       id="portalContainer"

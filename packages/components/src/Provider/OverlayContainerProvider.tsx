@@ -11,8 +11,10 @@ export const OverlayContainerProvider = OverlayContainerContext.Provider;
 export const usePortalContainer = () => {
   const portalContainer = useContext(OverlayContainerContext);
   const isSSR = useIsSSR();
+  console.log(isSSR);
 
-  console.log(portalContainer);
+  console.log('PortalContainer', portalContainer);
+
   const portal = isSSR
     ? null
     : portalContainer
