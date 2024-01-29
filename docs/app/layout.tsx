@@ -11,7 +11,6 @@ import { fontSans } from '@/theme/fonts';
 import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
 
 import { Analytics } from './_components/Analytics';
-import { PortalContainer } from './_components/PortalContainer';
 import { SectionNavigation } from './_components/SectionNavigation';
 import { SiteFooter } from './_components/SiteFooter';
 import { SiteHeader } from './_components/SiteHeader';
@@ -54,12 +53,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   <SectionNavigation />
                 </aside>
                 <div className="px-4 md:pl-80 xl:pl-[360px]">
-                  <MarigoldProvider
-                    theme={theme}
-                    portalContainer="portalContainer"
-                  >
+                  <MarigoldProvider theme={theme}>
                     <main className="py-6 xl:py-10">{children}</main>
-                    <PortalContainer />
                   </MarigoldProvider>
                   <SiteFooter />
                 </div>

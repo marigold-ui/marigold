@@ -9,7 +9,10 @@ import { Theme, cva } from '@marigold/system';
 
 import { Select } from '../Select';
 import { MarigoldProvider } from './MarigoldProvider';
-import { usePortalContainer } from './OverlayContainerProvider';
+import {
+  OverlayContainerProvider,
+  usePortalContainer,
+} from './OverlayContainerProvider';
 
 // Setup
 // ---------------
@@ -60,16 +63,18 @@ afterEach(cleanup);
 test('renders portal container', async () => {
   const wrapper = () => (
     <>
-      <MarigoldProvider theme={theme} portalContainer="testid">
-        <OverlayProvider>
-          <Select label="Label" data-testid="select" defaultOpen>
-            <Select.Section>
-              <Select.Option id="one">one</Select.Option>
-              <Select.Option id="two">two</Select.Option>
-            </Select.Section>
-          </Select>
-        </OverlayProvider>
-      </MarigoldProvider>
+      <OverlayContainerProvider value="testid">
+        <MarigoldProvider theme={theme}>
+          <OverlayProvider>
+            <Select label="Label" data-testid="select" defaultOpen>
+              <Select.Section>
+                <Select.Option id="one">one</Select.Option>
+                <Select.Option id="two">two</Select.Option>
+              </Select.Section>
+            </Select>
+          </OverlayProvider>
+        </MarigoldProvider>
+      </OverlayContainerProvider>
       <div id="testid"></div>
     </>
   );

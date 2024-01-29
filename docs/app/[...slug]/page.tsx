@@ -6,8 +6,6 @@ import { notFound } from 'next/navigation';
 
 import { Mdx } from '@/ui/mdx';
 
-import { PortalContainer } from '../_components/PortalContainer';
-
 interface ContentPageProps {
   params: {
     slug: string[];
