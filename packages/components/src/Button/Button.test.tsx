@@ -62,7 +62,7 @@ test('supports default size', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button).toHaveClass(`w-10 h-10`);
+  expect(button).toHaveClass(`size-10`);
 });
 
 test('accepts other variants', () => {

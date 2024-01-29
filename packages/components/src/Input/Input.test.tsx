@@ -78,7 +78,7 @@ test('icon and action get classnames from theme', () => {
   render(<Input data-testid="input" icon={<Icon />} action={<Action />} />);
 
   const icon = screen.getByTestId('icon');
-  expect(icon.className).toContain('pointer-events-none absolute h-4 w-4');
+  expect(icon.className).toContain('pointer-events-none absolute size-4');
 
   const action = screen.getByTestId('action');
   expect(action.className).toContain('bg-slate-400');
