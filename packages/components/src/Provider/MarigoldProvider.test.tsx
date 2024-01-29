@@ -1,16 +1,11 @@
 /* eslint-disable testing-library/no-node-access */
 
 /* eslint-disable testing-library/no-container */
-import { cleanup, render, renderHook, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 
 import { Theme, cva, useTheme } from '@marigold/system';
 
-import { Popover } from '../Overlay';
 import { MarigoldProvider } from './MarigoldProvider';
-import {
-  OverlayContainerProvider,
-  usePortalContainer,
-} from './OverlayContainerProvider';
 
 // Setup
 // ---------------
