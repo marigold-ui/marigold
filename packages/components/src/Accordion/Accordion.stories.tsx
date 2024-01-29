@@ -68,7 +68,7 @@ let items = [
   {
     key: 'one',
     title: (
-      <Inline space={3}>
+      <Inline space={3} alignY="center">
         <Parking />
         <Text weight="bold">Parking passes</Text>
       </Inline>
@@ -96,7 +96,7 @@ let items = [
   {
     key: 'two',
     title: (
-      <Inline space={3}>
+      <Inline space={3} alignY="center">
         <SettingDots />
         <Text weight="bold">Settings</Text>
       </Inline>
@@ -113,7 +113,7 @@ let items = [
   {
     key: 'three',
     title: (
-      <Inline space={3}>
+      <Inline space={3} alignY="center">
         <Accessible />
         <Text weight="bold">Handicapped parking spaces</Text>
       </Inline>
