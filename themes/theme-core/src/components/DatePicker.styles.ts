@@ -7,6 +7,6 @@ export const DatePicker: ThemeComponent<'DatePicker'> = {
     'flex h-full w-9 items-center justify-center',
     'data-[pressed]:text-text-base/80 data-[pressed]:bg-transparent',
     'data-[focused]:border-none data-[focused]:outline-none ',
-    'first:h-5 first:w-5',
+    'first:size-5',
   ]),
 };

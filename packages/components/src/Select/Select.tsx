@@ -56,7 +56,6 @@ export interface SelectComponent
 const _Select = forwardRef<any, SelectProps<object>>(
   (
     {
-      width,
       disabled,
       required,
       items,
@@ -88,7 +87,7 @@ const _Select = forwardRef<any, SelectProps<object>>(
           )}
         >
           <SelectValue />
-          <ChevronDown className="h-4 w-4" />
+          <ChevronDown className="size-4" />
         </Button>
         <Popover>
           <ListBox items={items}>{props.children}</ListBox>

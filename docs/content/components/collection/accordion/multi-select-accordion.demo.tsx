@@ -14,7 +14,7 @@ export default () => {
       key: 'one',
       textValue: 'Parking passes',
       title: (
-        <Inline space={2}>
+        <Inline space={2} alignY="center">
           <Parking />
           <Text fontStyle="normal">Parking passes</Text>
         </Inline>
@@ -41,7 +41,7 @@ export default () => {
       key: 'two',
       textValue: 'Handicapped parking spaces',
       title: (
-        <Inline space={2}>
+        <Inline space={2} alignY="center">
           <Accessible />
           <Text fontStyle="normal">Handicapped parking spaces</Text>
         </Inline>
@@ -68,7 +68,7 @@ export default () => {
       key: 'tree',
       textValue: 'Settings',
       title: (
-        <Inline space={2}>
+        <Inline space={2} alignY="center">
           <SettingDots />
           <Text fontStyle="normal">Settings</Text>
         </Inline>

@@ -1,8 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 // Make sure ListBox looks correct if is in an overlay
-const font = (selector = '&') =>
-  `${selector}:font-body ${selector}:text-text-base`;
+const font = 'font-body text-text-base';
 
 export const ListBox: ThemeComponent<'ListBox'> = {
   container: cva([
@@ -14,7 +13,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     'sm:max-h-[45vh] md:max-h-[75vh] lg:max-h-[75vh]',
   ]),
   option: cva([
-    font(),
+    font,
     'cursor-pointer p-2 outline-none',
     // Need to use data attributes here because `focus-visible` only works with <Select>
     'rac-focus:bg-bg-selected rac-focus:text-text-base',

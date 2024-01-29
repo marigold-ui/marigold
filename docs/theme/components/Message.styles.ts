@@ -9,7 +9,7 @@ export const Message: ThemeComponent<'Message'> = {
       },
     },
   }),
-  icon: cva('absolute left-3 top-3 block h-6 w-6'),
+  icon: cva('absolute left-3 top-3 block size-6'),
   title: cva('mb-1 font-bold leading-none tracking-tight'),
   content: cva('text-sm [&_p]:leading-relaxed'),
 };

@@ -122,7 +122,7 @@ export const colors = {
     inverted: {
       DEFAULT: gray[50],
       hover: gray[100],
-      disabled: '',
+      disabled: gray[500],
     },
     brand: {
       DEFAULT: '',

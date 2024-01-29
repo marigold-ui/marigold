@@ -47,6 +47,12 @@ import { Table } from '@marigold/components';
       default: 'false',
     },
     {
+      property: 'stickyHeader',
+      type: 'boolean',
+      description: 'Make the column sticky to the top of the table.',
+      default: 'none',
+    },
+    {
       property: 'disabledKeys',
       type: 'Object',
       description: 'Disabled the selected row.',
@@ -174,12 +180,6 @@ import { Table } from '@marigold/components';
       default: 'none',
     },
     {
-      property: 'stickyHeader',
-      type: 'boolean',
-      description: 'Make the column sticky to the top of the table.',
-      default: 'none',
-    },
-    {
       property: 'allowResizing',
       type: 'boolean | undefined',
       description: 'Whether the column allows resizing.',
@@ -196,7 +196,7 @@ import { Table } from '@marigold/components';
       type: 'boolean | undefined',
       description: 'Whether a column is a row header and should be announced by assistive technology during row navigation.',
       default: 'none',
-    },    
+    },
     {
       property: 'width',
       type: 'string | number',

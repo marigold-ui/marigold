@@ -10,10 +10,6 @@ export const siteConfig = {
       slug: 'concepts',
     },
     {
-      name: 'Recipes',
-      slug: 'recipes',
-    },
-    {
       name: 'Components',
       slug: 'components',
       subsections: [
@@ -50,6 +46,10 @@ export const siteConfig = {
     {
       name: 'Hooks and Utils',
       slug: 'hooks-and-utils',
+    },
+    {
+      name: 'Recipes',
+      slug: 'recipes',
     },
     {
       name: 'Develop',

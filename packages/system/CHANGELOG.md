@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 7.3.1
+
+### Patch Changes
+
+- [#3676](https://github.com/marigold-ui/marigold/pull/3676) [`63d407e`](https://github.com/marigold-ui/marigold/commit/63d407e11c8ec31ce5375868f174b306d5cda8f1) Thanks [@sebald](https://github.com/sebald)! - feat: use `size-` util (also fixes linting)
+
 ## 7.3.0
 
 ### Minor Changes
