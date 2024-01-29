@@ -35,7 +35,7 @@ const theme: Theme = {
       thumb: cva(['bg-switch-track-background', 'shadow-[1px_1px_4px]'], {
         variants: {
           size: {
-            large: 'top-2 h-[44] w-[44] ',
+            large: 'top-2 size-[44]',
           },
         },
       }),

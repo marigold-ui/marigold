@@ -19,7 +19,7 @@ export const Message: ThemeComponent<'Message'> = {
   ),
   title: cva('font-bold'),
   content: cva('col-span-2 col-start-1'),
-  icon: cva('h-4 w-4', {
+  icon: cva('size-4', {
     variants: {
       variant: {
         success: 'text-text-success',

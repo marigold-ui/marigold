@@ -7,6 +7,6 @@ export const Tag: ThemeComponent<'Tag'> = {
   ]),
   listItems: cva('flex items-center gap-1'),
   closeButton: cva(
-    'h-4 w-4 cursor-pointer border-none bg-transparent p-0 leading-normal outline-0'
+    'size-4 cursor-pointer border-none bg-transparent p-0 leading-normal outline-0'
   ),
 };

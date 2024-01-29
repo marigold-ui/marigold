@@ -16,7 +16,7 @@ const theme: Theme = {
           secondary: 'text-secondary-800',
         },
         size: {
-          small: 'h-10 w-10',
+          small: 'size-10',
           large: 'w-50 h-50',
         },
       },
