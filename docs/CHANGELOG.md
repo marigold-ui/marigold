@@ -1,5 +1,22 @@
 # @marigold/docs
 
+## 7.3.1
+
+### Patch Changes
+
+- [#3672](https://github.com/marigold-ui/marigold/pull/3672) [`f8ed8d1`](https://github.com/marigold-ui/marigold/commit/f8ed8d13ef4bfcbe150cf1ffcfefff0aee233e8a) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-32]feat: add new icons to marigold
+
+- [#3669](https://github.com/marigold-ui/marigold/pull/3669) [`88eb6b7`](https://github.com/marigold-ui/marigold/commit/88eb6b720581b408462b9f42d01926d999693c31) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: fix demos in select docs page
+
+- [#3676](https://github.com/marigold-ui/marigold/pull/3676) [`63d407e`](https://github.com/marigold-ui/marigold/commit/63d407e11c8ec31ce5375868f174b306d5cda8f1) Thanks [@sebald](https://github.com/sebald)! - feat: use `size-` util (also fixes linting)
+
+- Updated dependencies [[`e41f61d`](https://github.com/marigold-ui/marigold/commit/e41f61dc7d8fc2368ac54741f6134e39048eb3a5), [`c2af52b`](https://github.com/marigold-ui/marigold/commit/c2af52b3390edc83eee6816398dadebbb7bd9353), [`35ff260`](https://github.com/marigold-ui/marigold/commit/35ff26022c0815f37037ea1054471ac3a5302910), [`f8ed8d1`](https://github.com/marigold-ui/marigold/commit/f8ed8d13ef4bfcbe150cf1ffcfefff0aee233e8a), [`3d2d172`](https://github.com/marigold-ui/marigold/commit/3d2d17236849efff952968a394121ed4c5b11658), [`01148ac`](https://github.com/marigold-ui/marigold/commit/01148aca8c0dc0c236bc698b2fcc8980a5aa6470), [`63d407e`](https://github.com/marigold-ui/marigold/commit/63d407e11c8ec31ce5375868f174b306d5cda8f1)]:
+  - @marigold/theme-b2b@27.0.1
+  - @marigold/theme-core@26.0.4
+  - @marigold/components@7.3.1
+  - @marigold/icons@1.2.36
+  - @marigold/theme-preset@1.3.1
+
 ## 7.3.0
 
 ### Patch Changes
