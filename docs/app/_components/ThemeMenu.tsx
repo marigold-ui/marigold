@@ -19,7 +19,7 @@ export const ThemeMenu = () => {
           <span className="uppercase">
             {current ? current : themes.b2b.name}
           </span>
-          <ChevronDown className="h-4 w-4" />
+          <ChevronDown className="size-4" />
         </div>
       }
     >

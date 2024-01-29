@@ -46,7 +46,7 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
           <Card variant="not-inset">
             <div
               data-theme={current}
-              className="flex h-full min-h-[150px] w-full flex-col [&>*:nth-child(2)]:flex [&>*:nth-child(2)]:flex-1 [&>*:nth-child(2)]:place-items-center [&>*:nth-child(2)]:rounded-xl"
+              className="flex size-full min-h-[150px] flex-col [&>*:nth-child(2)]:flex [&>*:nth-child(2)]:flex-1 [&>*:nth-child(2)]:place-items-center [&>*:nth-child(2)]:rounded-xl"
             >
               <div id="portalContainer" />
               <OverlayContainerProvider value="portalContainer">

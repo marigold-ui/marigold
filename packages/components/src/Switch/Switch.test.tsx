@@ -35,7 +35,7 @@ const theme: Theme = {
       thumb: cva(['bg-switch-track-background', 'shadow-[1px_1px_4px]'], {
         variants: {
           size: {
-            large: 'top-2 h-[44] w-[44] ',
+            large: 'top-2 size-[44]',
           },
         },
       }),
@@ -66,7 +66,7 @@ test('supports base styling', () => {
 
   expect(label.className).toMatchInlineSnapshot(`"flex w-[var(--labelWidth)]"`);
   expect(container.className).toMatchInlineSnapshot(
-    `"w-full group/switch flex items-center justify-between gap-[1ch]"`
+    `"w-full group/switch flex items-center gap-[1ch]"`
   );
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
   expect(thumb.className).toMatchInlineSnapshot(
@@ -95,7 +95,7 @@ test('takes full width by default', () => {
   render(<Switch>Label</Switch>);
   const { container } = getSwitchParts();
   expect(container.className).toMatchInlineSnapshot(
-    `"w-full group/switch flex items-center justify-between gap-[1ch]"`
+    `"w-full group/switch flex items-center gap-[1ch]"`
   );
 });
 
