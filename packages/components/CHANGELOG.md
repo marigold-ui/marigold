@@ -1,5 +1,19 @@
 # @marigold/components
 
+## 7.3.1
+
+### Patch Changes
+
+- [#3660](https://github.com/marigold-ui/marigold/pull/3660) [`35ff260`](https://github.com/marigold-ui/marigold/commit/35ff26022c0815f37037ea1054471ac3a5302910) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: fix `Switch` positioning in themes
+
+- [#3668](https://github.com/marigold-ui/marigold/pull/3668) [`01148ac`](https://github.com/marigold-ui/marigold/commit/01148aca8c0dc0c236bc698b2fcc8980a5aa6470) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - [DSTSUP-30]: Fix-select-width
+
+- [#3676](https://github.com/marigold-ui/marigold/pull/3676) [`63d407e`](https://github.com/marigold-ui/marigold/commit/63d407e11c8ec31ce5375868f174b306d5cda8f1) Thanks [@sebald](https://github.com/sebald)! - feat: use `size-` util (also fixes linting)
+
+- Updated dependencies [[`f8ed8d1`](https://github.com/marigold-ui/marigold/commit/f8ed8d13ef4bfcbe150cf1ffcfefff0aee233e8a), [`63d407e`](https://github.com/marigold-ui/marigold/commit/63d407e11c8ec31ce5375868f174b306d5cda8f1)]:
+  - @marigold/icons@1.2.36
+  - @marigold/system@7.3.1
+
 ## 7.3.0
 
 ### Minor Changes

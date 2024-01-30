@@ -1,9 +1,11 @@
 'use client';
 
-import { Menu } from '@marigold/components';
+import { MarigoldProvider, Menu } from '@marigold/components';
 import { ChevronDown } from '@marigold/icons';
 
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
+
+import { theme as docsTheme } from '../../theme';
 
 export const ThemeMenu = () => {
   const { current, themes, setTheme } = useThemeSwitch();
@@ -17,7 +19,7 @@ export const ThemeMenu = () => {
           <span className="uppercase">
             {current ? current : themes.b2b.name}
           </span>
-          <ChevronDown className="h-4 w-4" />
+          <ChevronDown className="size-4" />
         </div>
       }
     >

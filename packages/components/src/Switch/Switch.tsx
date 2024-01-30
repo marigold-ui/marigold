@@ -56,7 +56,7 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
         className={cn(
           twWidth[width],
           'group/switch',
-          'flex items-center justify-between gap-[1ch]',
+          'flex items-center gap-[1ch]',
           classNames.container
         )}
       >

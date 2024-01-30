@@ -1,6 +1,7 @@
 export * from './Cancel';
 export * from './Crop';
 export * from './Edit';
+export * from './ExportFile';
 export * from './FormatBold';
 export * from './FormatItalic';
 export * from './FormatSize';

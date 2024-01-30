@@ -63,7 +63,7 @@ export const Children: Story = {
 export const Icon: Story = {
   render: args => (
     <Center {...args}>
-      <div className="h-[40px] w-[40px] bg-blue-700">
+      <div className="size-[40px] bg-blue-700">
         <Ticket className="fill-white" />
       </div>
     </Center>

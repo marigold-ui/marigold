@@ -1,5 +1,22 @@
 # @marigold/theme-core
 
+## 26.0.4
+
+### Patch Changes
+
+- [#3659](https://github.com/marigold-ui/marigold/pull/3659) [`e41f61d`](https://github.com/marigold-ui/marigold/commit/e41f61dc7d8fc2368ac54741f6134e39048eb3a5) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: fixed font styles for listbox
+
+- [#3660](https://github.com/marigold-ui/marigold/pull/3660) [`35ff260`](https://github.com/marigold-ui/marigold/commit/35ff26022c0815f37037ea1054471ac3a5302910) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: fix `Switch` positioning in themes
+
+- [#3664](https://github.com/marigold-ui/marigold/pull/3664) [`3d2d172`](https://github.com/marigold-ui/marigold/commit/3d2d17236849efff952968a394121ed4c5b11658) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-28]:fix all the placeholders in both themes
+
+- [#3676](https://github.com/marigold-ui/marigold/pull/3676) [`63d407e`](https://github.com/marigold-ui/marigold/commit/63d407e11c8ec31ce5375868f174b306d5cda8f1) Thanks [@sebald](https://github.com/sebald)! - feat: use `size-` util (also fixes linting)
+
+- Updated dependencies [[`35ff260`](https://github.com/marigold-ui/marigold/commit/35ff26022c0815f37037ea1054471ac3a5302910), [`01148ac`](https://github.com/marigold-ui/marigold/commit/01148aca8c0dc0c236bc698b2fcc8980a5aa6470), [`63d407e`](https://github.com/marigold-ui/marigold/commit/63d407e11c8ec31ce5375868f174b306d5cda8f1)]:
+  - @marigold/components@7.3.1
+  - @marigold/system@7.3.1
+  - @marigold/theme-preset@1.3.1
+
 ## 26.0.3
 
 ### Patch Changes
