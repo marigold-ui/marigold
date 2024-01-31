@@ -1,6 +1,12 @@
 import { registry } from '@/registry';
-import { Card, MarigoldProvider, OverlayContainerProvider, Tabs } from '@/ui';
-import { ReactNode } from 'react';
+import {
+  Card,
+  FieldGroup,
+  MarigoldProvider,
+  OverlayContainerProvider,
+  Tabs,
+} from '@/ui';
+import type { ReactNode } from 'react';
 
 import { type Theme } from '@marigold/system';
 
@@ -34,6 +40,13 @@ export interface ComponentDemoProps {
 export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
   const Demo = registry[name].demo;
   const { current, themes } = useThemeSwitch();
+
+  const Wrapper = ({ children }: { children: ReactNode }) =>
+    current === 'core' ? (
+      <FieldGroup labelWidth="100px">{children}</FieldGroup>
+    ) : (
+      children
+    );
 
   return (
     <>
