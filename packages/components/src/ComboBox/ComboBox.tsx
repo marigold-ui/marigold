@@ -87,8 +87,8 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
       <FieldBase as={ComboBox} ref={ref} {...props}>
         <Input
           action={
-            <Button className="absolute right-2 h-4 w-4 border-none bg-transparent p-0">
-              <ChevronDown className="h-4 w-4" />
+            <Button className="absolute right-2 size-4 border-none bg-transparent p-0">
+              <ChevronDown className="size-4" />
             </Button>
           }
         />

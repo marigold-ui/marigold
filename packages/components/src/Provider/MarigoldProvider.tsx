@@ -8,34 +8,23 @@ import {
   useTheme,
 } from '@marigold/system';
 
-import { OverlayContainerProvider } from './OverlayContainerProvider';
-
 // Props
 // ---------------
 export interface MarigoldProviderProps<T extends Theme>
-  extends ThemeProviderProps<T> {
-  portalContainer?: string;
-}
+  extends ThemeProviderProps<T> {}
 
 // Provider
 // ---------------
 export function MarigoldProvider<T extends Theme>({
   children,
   theme,
-  portalContainer,
 }: MarigoldProviderProps<T>) {
   const outerTheme = useTheme();
   const isTopLevel = outerTheme === defaultTheme;
 
   return (
     <ThemeProvider theme={theme}>
-      {isTopLevel ? (
-        <OverlayContainerProvider value={portalContainer}>
-          <OverlayProvider>{children}</OverlayProvider>
-        </OverlayContainerProvider>
-      ) : (
-        children
-      )}
+      {isTopLevel ? <OverlayProvider>{children}</OverlayProvider> : children}
     </ThemeProvider>
   );
 }

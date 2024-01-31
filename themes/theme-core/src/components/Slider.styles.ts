@@ -9,7 +9,7 @@ export const Slider: ThemeComponent<'Slider'> = {
   thumb: cva([
     'align-middle',
     'border-border-base rounded-lg border-4 border-solid',
-    'h-4 w-4',
+    'size-4',
     'bg-bg-surface',
     'rac-focus:border-border-selected',
     'disabled:bg-bg-inverted-disabled-dark disabled:border-border-base-disabled',

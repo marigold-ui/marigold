@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Switch: ThemeComponent<'Switch'> = {
-  container: cva(''),
+  container: cva('justify-between'),
   track: cva(
     [
       'bg-bg-inverted/20 border-border-base border',
@@ -26,7 +26,7 @@ export const Switch: ThemeComponent<'Switch'> = {
       variants: {
         size: {
           large:
-            'group-selected/switch:translate-x-[calc(95px_-_44px)] top-0.5 h-11 w-11',
+            'group-selected/switch:translate-x-[calc(95px_-_44px)] top-0.5 size-11',
         },
       },
     }

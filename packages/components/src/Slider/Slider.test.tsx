@@ -25,7 +25,7 @@ const theme: Theme = {
       thumb: cva([
         'align-middle',
         'border-slider-thumb-border rounded-lg border-4 border-solid',
-        'h-4 w-4',
+        'size-4',
         'bg-slider-thumb-background',
         ' focus:border-slider-thumb-focus',
         ' disabled:bg-slider-thumb-disabled-background  disabled:border-slider-thumb-disabled-border',

@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "7.3.0",
+  "version": "7.3.1",
   "private": true,
   "scripts": {
     "dev": "pnpm registry && next dev",
@@ -17,7 +17,7 @@
     "@marigold/theme-preset": "workspace:*",
     "@react-aria/i18n": "3.10.0",
     "@tailwindcss/typography": "0.5.10",
-    "@vercel/analytics": "1.1.1",
+    "@vercel/analytics": "1.1.2",
     "autoprefixer": "10.4.16",
     "contentlayer": "0.3.4",
     "eslint": "8.56.0",

@@ -16,7 +16,7 @@ const theme: Theme = {
           secondary: 'text-secondary-800',
         },
         size: {
-          small: 'h-10 w-10',
+          small: 'size-10',
           large: 'w-50 h-50',
         },
       },
@@ -28,7 +28,7 @@ const theme: Theme = {
             primary: 'text-primary-500',
           },
           size: {
-            small: 'h-10 w-10',
+            small: 'size-10',
           },
         },
       }),
@@ -103,7 +103,7 @@ test('return classnames (with size)', () => {
     () => useClassNames({ component: 'Button', size: 'small' }),
     { wrapper }
   );
-  expect(result.current).toMatchInlineSnapshot(`"align-center flex h-10 w-10"`);
+  expect(result.current).toMatchInlineSnapshot(`"align-center flex size-10"`);
 });
 
 test('allows to pass in custom classNames', () => {
@@ -130,7 +130,9 @@ test('handles conflicting classnames', () => {
       }),
     { wrapper }
   );
-  expect(result.current).toMatchInlineSnapshot(`"align-center flex h-10 w-22"`);
+  expect(result.current).toMatchInlineSnapshot(
+    `"align-center flex size-10 w-22"`
+  );
 });
 
 // Multiple Elements (slots)
@@ -176,11 +178,11 @@ test('return classnames for slots (with size)', () => {
   );
 
   expect(result.current).toMatchInlineSnapshot(`
-    {
-      "container": "inline h-10 w-10",
-      "icon": "block w-50 h-50",
-    }
-  `);
+{
+  "container": "inline size-10",
+  "icon": "block w-50 h-50",
+}
+`);
 });
 
 test('allows to pass in custom classNames for each slot', () => {
