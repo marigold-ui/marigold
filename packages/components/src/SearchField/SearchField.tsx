@@ -1,6 +1,6 @@
 import { ReactElement, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
-import { Button, SearchField } from 'react-aria-components';
+import { SearchField } from 'react-aria-components';
 
 import { WidthProp } from '@marigold/system';
 
@@ -59,8 +59,3 @@ const _SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
 );
 
 export { _SearchField as SearchField };
-
-/**
- * - Use same button or at least icon in both components
- * - Improve placement of the button (or should both use the "action"?)
- */

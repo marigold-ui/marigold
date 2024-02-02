@@ -43,7 +43,7 @@ const _Input = forwardRef<HTMLInputElement, InputProps>(
         ? cloneElement(action, {
             ...action.props,
             className: cn(
-              'absolute',
+              'absolute right-0',
               classNames.action,
               action.props.className
             ),
