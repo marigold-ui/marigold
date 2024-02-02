@@ -85,7 +85,7 @@ afterEach(cleanup);
 // ---------------
 test('renders an input', () => {
   render(
-    <Autocomplete label="vegetables" data-testid="input-field">
+    <Autocomplete label="vegetables">
       <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
       <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
@@ -101,7 +101,7 @@ test('renders an input', () => {
 
 test('renders a label', () => {
   render(
-    <Autocomplete label="Label" data-testid="input-field">
+    <Autocomplete label="Label">
       <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
       <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
@@ -116,7 +116,7 @@ test('renders a label', () => {
 
 test('supports disabled', () => {
   render(
-    <Autocomplete label="Label" data-testid="input-field" disabled>
+    <Autocomplete label="Label" disabled>
       <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
     </Autocomplete>
@@ -128,7 +128,7 @@ test('supports disabled', () => {
 
 test('supports required', () => {
   render(
-    <Autocomplete label="Label" data-testid="input-field" required>
+    <Autocomplete label="Label" required>
       <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
     </Autocomplete>
@@ -140,7 +140,7 @@ test('supports required', () => {
 
 test('supports readonly', () => {
   render(
-    <Autocomplete label="Label" data-testid="input-field" readOnly>
+    <Autocomplete label="Label" readOnly>
       <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
     </Autocomplete>
@@ -174,7 +174,7 @@ test('uses field structure', () => {
 
 test('opens the suggestions on user input', async () => {
   render(
-    <Autocomplete label="Label" data-testid="input-field">
+    <Autocomplete label="Label">
       <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
       <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
@@ -191,7 +191,7 @@ test('opens the suggestions on user input', async () => {
 
 test('opens the suggestions on focus', async () => {
   render(
-    <Autocomplete label="Label" data-testid="input-field" menuTrigger="focus">
+    <Autocomplete label="Label" menuTrigger="focus">
       <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
       <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
@@ -208,7 +208,7 @@ test('opens the suggestions on focus', async () => {
 
 test('opens the suggestions on arrow down (manual)', async () => {
   render(
-    <Autocomplete label="Label" data-testid="input-field" menuTrigger="manual">
+    <Autocomplete label="Label" menuTrigger="manual">
       <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
       <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
@@ -225,7 +225,7 @@ test('opens the suggestions on arrow down (manual)', async () => {
 
 test('shows suggestions based on user input', async () => {
   render(
-    <Autocomplete label="Label" data-testid="input-field">
+    <Autocomplete label="Label">
       <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
       <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
@@ -245,11 +245,7 @@ test('shows suggestions based on user input', async () => {
 
 test('supports disabling suggestions', async () => {
   render(
-    <Autocomplete
-      label="Label"
-      data-testid="input-field"
-      disabledKeys={['spinach']}
-    >
+    <Autocomplete label="Label" disabledKeys={['spinach']}>
       <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
       <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
@@ -266,11 +262,7 @@ test('supports disabling suggestions', async () => {
 
 test('supporst showing a help text', () => {
   render(
-    <Autocomplete
-      label="Label"
-      data-testid="input-field"
-      description="This is a description"
-    >
+    <Autocomplete label="Label" description="This is a description">
       <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
       <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
@@ -283,12 +275,7 @@ test('supporst showing a help text', () => {
 
 test('supporst showing an error', () => {
   render(
-    <Autocomplete
-      label="Label"
-      data-testid="input-field"
-      error
-      errorMessage="Error!"
-    >
+    <Autocomplete label="Label" error errorMessage="Error!">
       <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
       <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
@@ -301,7 +288,7 @@ test('supporst showing an error', () => {
 
 test('supports default value', () => {
   render(
-    <Autocomplete label="Label" data-testid="input-field" defaultValue="garlic">
+    <Autocomplete label="Label" defaultValue="garlic">
       <Autocomplete.Item key="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item key="carrots">Carrots</Autocomplete.Item>
       <Autocomplete.Item key="broccoli">Broccoli</Autocomplete.Item>
@@ -317,12 +304,7 @@ test('can be controlled', async () => {
     const [value, setValue] = React.useState('');
     return (
       <>
-        <Autocomplete
-          label="Label"
-          data-testid="input-field"
-          value={value}
-          onChange={setValue}
-        >
+        <Autocomplete label="Label" value={value} onChange={setValue}>
           <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
           <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
           <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
@@ -343,7 +325,7 @@ test('can be controlled', async () => {
 
 test('supports autocompletion', async () => {
   render(
-    <Autocomplete label="Label" data-testid="input-field">
+    <Autocomplete label="Label">
       <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
       <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
@@ -362,7 +344,7 @@ test('supports autocompletion', async () => {
 
 test('supports clear input value', async () => {
   render(
-    <Autocomplete label="Label" data-testid="input-field">
+    <Autocomplete label="Label">
       <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
       <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
@@ -383,7 +365,7 @@ test('supports submit handler', async () => {
   const spy = jest.fn();
 
   render(
-    <Autocomplete label="Label" data-testid="input-field" onSubmit={spy}>
+    <Autocomplete label="Label" onSubmit={spy}>
       <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
       <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
       <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
