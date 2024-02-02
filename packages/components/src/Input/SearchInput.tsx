@@ -1,10 +1,24 @@
 import { forwardRef } from 'react';
 import { Button } from 'react-aria-components';
 
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
+
 import { cn } from '@marigold/system';
 
 import { Input } from './Input';
 import type { InputProps } from './Input';
+
+const intlMessages = {
+  'de-DE': {
+    'Clear search': 'Suche zurücksetzen',
+  },
+  'en-US': {
+    'Clear search': 'Clear search',
+  },
+  'fr-FR': {
+    'Clear search': 'Effacer la recherche',
+  },
+};
 
 // Icon
 // ---------------
@@ -36,6 +50,8 @@ export interface SearchInputProps
 // ---------------
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
   ({ className, onClear, ...props }, ref) => {
+    const stringFormatter = useLocalizedStringFormatter(intlMessages);
+
     return (
       <Input
         type="search"
@@ -51,6 +67,10 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
             onPress={() => onClear?.()}
             // Don't inherit default Button behavior from ComboBox + broken types
             slot={null as any}
+            aria-label={stringFormatter.format('Clear search')}
+            excludeFromTabOrder={true}
+            // @ts-ignore
+            preventFocusOnPress={true}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
