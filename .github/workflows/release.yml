@@ -11,6 +11,8 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       # Setup
       - uses: actions/checkout@v4
@@ -31,7 +33,7 @@ jobs:
         uses: changesets/action@v1
         with:
           title: 'release: version packages'
-          publish: pnpm changeset publish
+          publish: pnpm changeset publish --provenance
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
