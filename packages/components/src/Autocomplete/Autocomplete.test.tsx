@@ -95,7 +95,7 @@ test('renders an input', () => {
 
   const textField = screen.getByLabelText('vegetables');
   expect(textField).toBeInTheDocument();
-  expect(textField).toHaveAttribute('type', 'text');
+  expect(textField).toHaveAttribute('type', 'search');
   expect(textField instanceof HTMLInputElement).toBeTruthy();
 });
 
@@ -373,7 +373,7 @@ test('supports clear input value', async () => {
   const input = screen.getByRole('combobox');
   await user.type(input, 'sp');
 
-  const clearButton = screen.getByTestId('clear-button');
+  const clearButton = screen.getByLabelText('Clear search');
   expect(clearButton).toBeInTheDocument();
   await user.click(clearButton);
   expect(input).toHaveValue('');
