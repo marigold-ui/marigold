@@ -65,7 +65,9 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
               <OverlayContainerProvider value="portalContainer">
                 <MarigoldProvider theme={(current && themes[current]) as Theme}>
                   <div className="not-prose w-full overflow-x-auto p-4">
-                    <Demo />
+                    <Wrapper>
+                      <Demo />
+                    </Wrapper>
                   </div>
                 </MarigoldProvider>
               </OverlayContainerProvider>
