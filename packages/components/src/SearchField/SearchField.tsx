@@ -52,7 +52,10 @@ const _SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
 
     return (
       <FieldBase as={SearchField} {...props}>
-        <SearchInput ref={ref} />
+        <SearchInput
+          ref={ref}
+          className={{ action: 'group-data-[empty=true]/field:hidden' }}
+        />
       </FieldBase>
     );
   }

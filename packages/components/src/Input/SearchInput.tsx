@@ -23,20 +23,35 @@ const SearchIcon = (props: { className?: string }) => (
 
 // Props
 // ---------------
-export interface SearchInputProps extends Omit<InputProps, 'icon'> {}
+export interface SearchInputProps
+  extends Omit<InputProps, 'icon' | 'className'> {
+  className?: {
+    input?: string;
+    action?: string;
+  };
+  onClear?: () => void;
+}
 
 // Component
 // ---------------
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
-  ({ className, ...props }, ref) => {
+  ({ className, onClear, ...props }, ref) => {
     return (
       <Input
         type="search"
-        className={cn('[&::-webkit-search-cancel-button]:hidden', className)}
+        className={cn(
+          '[&::-webkit-search-cancel-button]:hidden',
+          className?.input
+        )}
         ref={ref}
         icon={<SearchIcon />}
         action={
-          <Button className="group-data-[empty=true]/field:hidden">
+          <Button
+            className={className?.action}
+            onPress={() => onClear?.()}
+            // Don't inherit default Button behavior from ComboBox + broken types
+            slot={null as any}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
