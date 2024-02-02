@@ -1,6 +1,6 @@
 import { ReactElement, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
-import { SearchField } from 'react-aria-components';
+import { Button, SearchField } from 'react-aria-components';
 
 import { WidthProp } from '@marigold/system';
 
@@ -65,10 +65,20 @@ const _SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
 
     return (
       <FieldBase as={SearchField} {...props}>
-        <Input ref={ref} icon={<SearchIcon />} />
+        <Input
+          ref={ref}
+          icon={<SearchIcon />}
+          className="[&::-webkit-search-cancel-button]:hidden"
+        />
+        <Button>X</Button>
       </FieldBase>
     );
   }
 );
 
 export { _SearchField as SearchField };
+
+/**
+ * - Use same button or at least icon in both components
+ * - Improve placement of the button (or should both use the "action"?)
+ */
