@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "eslint": "8.56.0",
-    "eslint-plugin-tailwindcss": "3.14.0",
+    "eslint-plugin-tailwindcss": "3.14.1",
     "typescript": "5.3.3"
   }
 }
