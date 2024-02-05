@@ -1,5 +1,18 @@
 # @marigold/docs
 
+## 7.3.2
+
+### Patch Changes
+
+- [#3670](https://github.com/marigold-ui/marigold/pull/3670) [`4472bb7`](https://github.com/marigold-ui/marigold/commit/4472bb7115877802bc7aa92bda303dbf5e68b6da) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: fix ThemeSwitcher in docs
+
+- Updated dependencies [[`c2c7e71`](https://github.com/marigold-ui/marigold/commit/c2c7e71a405adabec937a5ff0b087b7a8b6c1c8d)]:
+  - @marigold/components@7.3.2
+  - @marigold/theme-b2b@27.0.2
+  - @marigold/theme-core@26.0.5
+  - @marigold/icons@1.2.37
+  - @marigold/theme-preset@1.3.2
+
 ## 7.3.1
 
 ### Patch Changes
