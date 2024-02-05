@@ -3,7 +3,7 @@
 /* eslint-disable testing-library/no-container */
 import { cleanup, render, screen } from '@testing-library/react';
 
-import { Theme, cva, useTheme } from '@marigold/system';
+import { cva, useTheme } from '@marigold/system';
 
 import { MarigoldProvider } from './MarigoldProvider';
 
