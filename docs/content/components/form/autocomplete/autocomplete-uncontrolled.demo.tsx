@@ -1,17 +1,17 @@
-import { Key, useState } from 'react';
+import { useState } from 'react';
 
 import { Autocomplete, Stack, Text } from '@marigold/components';
 
 export default () => {
   const [submitted, setSubmitted] = useState<
-    [Key | null, string | number | null]
+    [string | number | null, string | number | null]
   >(['', '']);
 
   return (
     <Stack space={5}>
       <Autocomplete
         label="Favorite vegetable:"
-        onSubmit={(key, val) => setSubmitted([key, val])}
+        onSubmit={(id, val) => setSubmitted([id, val])}
       >
         <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
         <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
