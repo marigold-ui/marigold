@@ -104,35 +104,6 @@ test('support cascading themes', () => {
   `);
 });
 
-test('add OverlayProvider from `react-aria`', () => {
-  const { container } = render(
-    <MarigoldProvider theme={theme}>Test</MarigoldProvider>
-  );
-
-  expect(
-    container.querySelector(`div[data-overlay-container="true"]`)
-  ).toBeDefined();
-});
-
-test('OverlayProvider is added only once', () => {
-  const innerTheme = {
-    name: 'inner',
-    colors: { primary: 'red' },
-    components: {
-      Button: cva('bg-slate-300'),
-    },
-  };
-  const { container } = render(
-    <MarigoldProvider theme={theme}>
-      <MarigoldProvider theme={innerTheme}>Test</MarigoldProvider>
-    </MarigoldProvider>
-  );
-
-  expect(
-    container.querySelectorAll(`div[data-overlay-container="true"]`).length
-  ).toEqual(1);
-});
-
 test('cascading without a selector is allowed when inner theme has not root styles', () => {
   const outerTheme = {
     name: 'outer',

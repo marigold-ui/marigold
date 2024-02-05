@@ -5,8 +5,6 @@ import { CalendarDate } from '@internationalized/date';
 import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { OverlayProvider } from '@react-aria/overlays';
-
 import { Theme, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
@@ -135,11 +133,7 @@ describe('DatePicker', () => {
         'screen and (min-width: 52em)',
         'screen and (min-width: 64em)',
       ]);
-      render(
-        <OverlayProvider>
-          <DatePicker label="date picker" data-testid="date picker" open />
-        </OverlayProvider>
-      );
+      render(<DatePicker label="date picker" data-testid="date picker" open />);
 
       const picker = screen.getByTestId('date picker');
 
@@ -163,11 +157,7 @@ describe('DatePicker', () => {
         'screen and (min-width: 52em)',
         'screen and (min-width: 64em)',
       ]);
-      render(
-        <OverlayProvider>
-          <DatePicker label="Date" data-testid="foo" />
-        </OverlayProvider>
-      );
+      render(<DatePicker label="Date" data-testid="foo" />);
 
       expect(screen.getByTestId('foo')).toHaveAttribute('data-rac');
     });
