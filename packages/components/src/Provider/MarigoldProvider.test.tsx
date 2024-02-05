@@ -9,18 +9,6 @@ import { MarigoldProvider } from './MarigoldProvider';
 
 // Setup
 // ---------------
-const theme: Theme = {
-  name: 'test',
-  colors: {
-    black: '#000',
-  },
-  components: {
-    Text: cva('text-body'),
-    Button: cva(),
-    Popover: cva(),
-  },
-};
-
 let errorMock: jest.SpyInstance;
 
 beforeEach(() => {
