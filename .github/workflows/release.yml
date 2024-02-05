@@ -11,6 +11,9 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
     steps:
       # Setup
       - uses: actions/checkout@v4
@@ -42,7 +45,7 @@ jobs:
         run: pnpm release:notification --packages '${{ steps.changesets.outputs.publishedPackages }}'
       - name: Slack Notification
         if: steps.changesets.outputs.published == 'true'
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v1.25.0
         with:
           payload-file-path: './slack-notification.json'
         env:

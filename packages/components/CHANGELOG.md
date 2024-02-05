@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 7.3.2
+
+### Patch Changes
+
+- [#3683](https://github.com/marigold-ui/marigold/pull/3683) [`c2c7e71`](https://github.com/marigold-ui/marigold/commit/c2c7e71a405adabec937a5ff0b087b7a8b6c1c8d) Thanks [@sebald](https://github.com/sebald)! - fix: `placeholder` prop was missing on `TextArea`
+
+- Updated dependencies []:
+  - @marigold/system@7.3.2
+  - @marigold/icons@1.2.37
+
 ## 7.3.1
 
 ### Patch Changes
