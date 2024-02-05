@@ -10,15 +10,17 @@ import {
 
 export default () => {
   const columns = [
-    { name: 'Name', id: 'name' },
-    { name: 'Gender', id: 'gender' },
-    { name: 'Skin Color', id: 'skin_color' },
-    { name: 'height', id: 'height' },
-    { name: 'Weight', id: 'mass' },
+    { name: 'Name', key: 'name' },
+    { name: 'Gender', key: 'gender' },
+    { name: 'Skin Color', key: 'skin_color' },
+    { name: 'height', key: 'height' },
+    { name: 'Weight', key: 'mass' },
   ];
 
-  const [result, setResult] = useState<{ [id: string]: string }[] | null>(null);
-  const list = useAsyncList<{ [id: string]: string }>({
+  const [result, setResult] = useState<{ [key: string]: string }[] | null>(
+    null
+  );
+  const list = useAsyncList<{ [key: string]: string }>({
     async load({ signal, filterText }) {
       const res = await fetch(
         `https://swapi.py4e.com/api/people/?search=${filterText}`,
@@ -31,9 +33,9 @@ export default () => {
       };
     },
   });
-  const handleSubmit = (id: Key | null, value: string | null) => {
-    if (id) {
-      const result = list.items.find(c => c.name === id);
+  const handleSubmit = (key: Key | null, value: string | null) => {
+    if (key) {
+      const result = list.items.find(c => c.name === key);
       setResult(result ? [result] : null);
     }
     if (value) {
@@ -62,7 +64,7 @@ export default () => {
           </Table.Header>
           <Table.Body items={result}>
             {item => (
-              <Table.Row key={(item as any).id}>
+              <Table.Row key={(item as any).name}>
                 {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
               </Table.Row>
             )}
