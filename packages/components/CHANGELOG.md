@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 7.3.3
+
+### Patch Changes
+
+- [#3690](https://github.com/marigold-ui/marigold/pull/3690) [`b37c3ee`](https://github.com/marigold-ui/marigold/commit/b37c3eebc8b859d7c6b6e35290203d0eb393a1eb) Thanks [@sebald](https://github.com/sebald)! - fix: unify clear buttons in search fields
+
+- Updated dependencies []:
+  - @marigold/system@7.3.3
+  - @marigold/icons@1.2.38
+
 ## 7.3.2
 
 ### Patch Changes
