@@ -1,9 +1,6 @@
 {
   "name": "@marigold/components",
   "version": "7.3.2",
-  "publishConfig": {
-    "provenance": true
-  },
   "description": "Components for the Marigold Design System",
   "license": "MIT",
   "keywords": [
