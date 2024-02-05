@@ -2,7 +2,11 @@ import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import { Preview } from '@storybook/react';
 import 'tailwindcss/tailwind.css';
 
-import { FieldGroup, MarigoldProvider } from '@marigold/components';
+import {
+  FieldGroup,
+  MarigoldProvider,
+  OverlayContainerProvider,
+} from '@marigold/components';
 import b2b from '@marigold/theme-b2b';
 import '@marigold/theme-b2b/styles.css';
 import core from '@marigold/theme-core';
@@ -53,10 +57,7 @@ export const decorators: any = [
         return (
           <>
             {Object.keys(THEME).map(key => (
-              <MarigoldProvider
-                theme={THEME[key as ThemeNames]}
-                portalContainer={`portalContainer-${key}`}
-              >
+              <OverlayContainerProvider value={`portalContainer-${key}`}>
                 <Frame key={key} id={key} title={`Theme "${key}"`}>
                   <MarigoldProvider theme={THEME[key as ThemeNames]}>
                     <div className="p-4" data-theme={key}>
@@ -64,7 +65,7 @@ export const decorators: any = [
                     </div>
                   </MarigoldProvider>
                 </Frame>
-              </MarigoldProvider>
+              </OverlayContainerProvider>
             ))}
           </>
         );

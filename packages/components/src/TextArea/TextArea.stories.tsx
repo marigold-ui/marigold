@@ -18,6 +18,15 @@ const meta = {
         defaultValue: { summary: 'Label' },
       },
     },
+    placeholder: {
+      control: {
+        type: 'text',
+      },
+      description: 'Placeholder Text',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
     description: {
       control: {
         type: 'text',
