@@ -8,6 +8,7 @@ export default () => {
   return (
     <ThemeProvider theme={coreTheme}>
       <ListBox
+        aria-labelledby="listbox"
         selectionMode="multiple"
         defaultSelectedKeys={['sepa', 'paypal']}
       >
