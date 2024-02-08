@@ -31,6 +31,7 @@ export * from './Inset';
 export * from './Label';
 export * from './Link';
 export * from './List';
+export * from './ListBox';
 export * from './Menu';
 export * from './Message';
 export * from './NumberField';
