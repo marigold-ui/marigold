@@ -9,6 +9,7 @@ export * from './Dialog.styles';
 export * from './Divider.styles';
 export * from './Field.styles';
 export * from './Footer.styles';
+export * from './GridList.styles';
 export * from './Header.styles';
 export * from './Headline.styles';
 export * from './HelpText.styles';

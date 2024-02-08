@@ -7,7 +7,11 @@ export interface GridListProps
   extends Omit<RAC.GridListProps<object>, 'className' | 'style'> {}
 
 const _GridList = ({ children, ...props }: GridListProps) => {
-  return <GridList {...props}>{children}</GridList>;
+  return (
+    <GridList className="flex" {...props}>
+      {children}
+    </GridList>
+  );
 };
 
 _GridList.Item = GridListItem;

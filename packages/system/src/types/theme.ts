@@ -76,6 +76,7 @@ export type Theme = {
       'container' | 'list' | 'option' | 'section' | 'sectionTitle',
       ComponentStyleFunction<string, string>
     >;
+    GridList?: Record<'container', ComponentStyleFunction<string, string>>;
     Menu?: Record<
       'container' | 'section' | 'item',
       ComponentStyleFunction<string, string>

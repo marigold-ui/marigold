@@ -9,7 +9,11 @@ export interface GridListItemProps
 const _GridListItem = ({ children, ...props }: GridListItemProps) => {
   let textValue = typeof children === 'string' ? children : undefined;
   return (
-    <GridListItem textValue={textValue} {...props}>
+    <GridListItem
+      className={'m flex items-center justify-between gap-3'}
+      textValue={textValue}
+      {...props}
+    >
       {({ selectionMode, selectionBehavior, allowsDragging }) => (
         <>
           {/* Add elements for drag and drop and selection. */}
