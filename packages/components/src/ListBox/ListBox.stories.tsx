@@ -7,6 +7,14 @@ import { ListBox } from './ListBox';
 
 const meta = {
   title: 'Components/ListBox',
+  argTypes: {
+    selectionMode: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Set selection mode for select input',
+    },
+  },
 } satisfies Meta<typeof ListBox>;
 
 export default meta;
@@ -31,7 +39,7 @@ export const Basic: Story = {
 
 export const WithSections: Story = {
   render: args => (
-    <ListBox aria-labelledby="listbox" {...args}>
+    <ListBox aria-labelledby="listbox" selectionMode="multiple" {...args}>
       <ListBox.Section>
         <Header>Veggies</Header>
         <ListBox.Item id="lettuce">Lettuce</ListBox.Item>
