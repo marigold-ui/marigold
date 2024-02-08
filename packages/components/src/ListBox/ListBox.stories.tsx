@@ -10,9 +10,15 @@ const meta = {
   argTypes: {
     selectionMode: {
       control: {
-        type: 'boolean',
+        type: 'select',
       },
-      description: 'Set selection mode for select input',
+      options: ['single', 'multiple'],
+      table: {
+        type: { summary: 'select' },
+        defaultValue: { summary: 'single' },
+      },
+      description: 'Set selection mode of the grid list',
+      defaultValue: false,
     },
   },
 } satisfies Meta<typeof ListBox>;
