@@ -1,7 +1,5 @@
 import { render, screen } from '@testing-library/react';
 
-import { OverlayProvider } from '@react-aria/overlays';
-
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
 import { Underlay } from './Underlay';
@@ -25,11 +23,9 @@ const theme: Theme = {
 test('renders underlay', () => {
   render(
     <ThemeProvider theme={theme}>
-      <OverlayProvider>
-        <Underlay open>
-          <div>something</div>
-        </Underlay>
-      </OverlayProvider>
+      <Underlay open>
+        <div>something</div>
+      </Underlay>
     </ThemeProvider>
   );
 
@@ -40,11 +36,9 @@ test('renders underlay', () => {
 test('underlay supports variant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <OverlayProvider>
-        <Underlay open variant="one">
-          <div>something</div>
-        </Underlay>
-      </OverlayProvider>
+      <Underlay open variant="one">
+        <div>something</div>
+      </Underlay>
     </ThemeProvider>
   );
 
@@ -55,11 +49,9 @@ test('underlay supports variant', () => {
 test('underlay supports size', () => {
   render(
     <ThemeProvider theme={theme}>
-      <OverlayProvider>
-        <Underlay open size="small">
-          <div>something</div>
-        </Underlay>
-      </OverlayProvider>
+      <Underlay open size="small">
+        <div>something</div>
+      </Underlay>
     </ThemeProvider>
   );
 

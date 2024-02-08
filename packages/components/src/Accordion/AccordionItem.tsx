@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useRef } from 'react';
 
-import { FocusRing, useFocusRing } from '@react-aria/focus';
+import { useFocusRing } from '@react-aria/focus';
 import { mergeProps } from '@react-aria/utils';
 
 import { TreeState } from '@react-stately/tree';
@@ -75,24 +75,22 @@ export const AccordionItem = ({
 
   return (
     <div className="flex flex-col" {...props}>
-      <FocusRing within>
-        <button
-          className={cn(
-            'inline-flex items-center justify-center gap-[0.5ch]',
-            classNames.button
-          )}
-          {...mergeProps(buttonProps, stateProps, props)}
-          ref={ref}
-          aria-label={item.textValue}
-        >
-          {title}
-          {expanded ? (
-            <ChevronUp className="h3 w-6" />
-          ) : (
-            <ChevronDown className="h3 w-6" />
-          )}
-        </button>
-      </FocusRing>
+      <button
+        className={cn(
+          'inline-flex items-center justify-center gap-[0.5ch]',
+          classNames.button
+        )}
+        {...mergeProps(buttonProps, stateProps, props)}
+        ref={ref}
+        aria-label={item.textValue}
+      >
+        {title}
+        {expanded ? (
+          <ChevronUp className="h3 w-6" />
+        ) : (
+          <ChevronDown className="h3 w-6" />
+        )}
+      </button>
       <div
         {...mergeProps(regionProps, focusProps, stateProps)}
         className={

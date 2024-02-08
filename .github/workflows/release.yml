@@ -42,7 +42,7 @@ jobs:
         run: pnpm release:notification --packages '${{ steps.changesets.outputs.publishedPackages }}'
       - name: Slack Notification
         if: steps.changesets.outputs.published == 'true'
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v1.25.0
         with:
           payload-file-path: './slack-notification.json'
         env:

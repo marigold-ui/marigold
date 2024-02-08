@@ -3,8 +3,6 @@
  */
 import { cleanup, fireEvent, renderHook, screen } from '@testing-library/react';
 
-import { OverlayProvider } from '@react-aria/overlays';
-
 import { Theme, cva } from '@marigold/system';
 
 import { Select } from '../Select';
@@ -65,14 +63,12 @@ test('renders portal container', async () => {
     <>
       <OverlayContainerProvider value="testid">
         <MarigoldProvider theme={theme}>
-          <OverlayProvider>
-            <Select label="Label" data-testid="select" defaultOpen>
-              <Select.Section>
-                <Select.Option id="one">one</Select.Option>
-                <Select.Option id="two">two</Select.Option>
-              </Select.Section>
-            </Select>
-          </OverlayProvider>
+          <Select label="Label" data-testid="select" defaultOpen>
+            <Select.Section>
+              <Select.Option id="one">one</Select.Option>
+              <Select.Option id="two">two</Select.Option>
+            </Select.Section>
+          </Select>
         </MarigoldProvider>
       </OverlayContainerProvider>
       <div id="testid"></div>
