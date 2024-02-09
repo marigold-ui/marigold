@@ -20,14 +20,13 @@ export interface MultiSelectItem {
 
 export const Multiselect = ({ label, children }: any) => {
   // does this work? If I wrote it like this the items will open.....
-  const items = Children.map(children, child => child);
+  const items = Children.map(children, ({ props }) => props);
 
   const list = useListData<MultiSelectItem>({
-    initialItems: [], // Can we use `children` here? If not just make an API that doesn't use children e.g. <Multiselect options={...} />
+    initialItems: items, // Can we use `children` here? If not just make an API that doesn't use children e.g. <Multiselect options={...} />
     initialSelectedKeys: [], // add API defaultSelected or something?
     getKey: item => item.id,
   });
-
   const selected = list.items.filter(item =>
     list.selectedKeys === 'all' ? true : list.selectedKeys.has(item.id)
   );
@@ -36,13 +35,17 @@ export const Multiselect = ({ label, children }: any) => {
   // Combobox Stuff
   const [value, setValue] = useState('');
   const selectItem = (key: Key) => {
+    console.log('selected', key);
     // add to selected items
-    list.setSelectedKeys('???');
+    if (list.selectedKeys !== 'all') {
+      const next = list.selectedKeys.add(key);
+      list.setSelectedKeys(next);
+    }
     // Clear combobox
     setValue('');
   };
 
-  console.log(items);
+  console.log(unselected);
 
   return (
     <div className="style me!">
@@ -54,14 +57,13 @@ export const Multiselect = ({ label, children }: any) => {
         )}
       </Tag.Group>
       <ComboBox
-        items={unselected}
-        onSelectionChange={selectItem}
         value={value}
         onChange={setValue}
+        onSelectionChange={selectItem}
       >
-        {items.map((item: any) => (
+        {unselected.map((item: MultiSelectItem) => (
           <ComboBox.Item key={item.id} id={item.id}>
-            {item.props.children}
+            {item.children}
           </ComboBox.Item>
         ))}
       </ComboBox>

@@ -105,7 +105,7 @@ export const Multiselect: StoryObj<typeof MultiSelect> = {
           <MultiSelectItem id="kangaroo">Kangaroo</MultiSelectItem>
           <MultiSelectItem id="snake">Snake</MultiSelectItem>
           <MultiSelectItem id="vegan">Vegan</MultiSelectItem>
-          <MultiSelectItem id="mar">Margrita</MultiSelectItem>
+          <MultiSelectItem id="margrita">Margrita</MultiSelectItem>
         </MS>
       </>
     );
