@@ -82,3 +82,13 @@ In specific situations though, choosing real-time validation proves beneficial, 
 Here's an example where real-time validation is employed to check password requirements, immediately informing the user when a criteria is met.
 
 <ComponentDemo file="./validation-realtime.demo.tsx" />
+
+### Hanlding Server Errors
+
+Server-side validation is essential alongside client-side validation to ensure robust and secure applications. While client-side validation offers immediate feedback and a smoother user experience, server-side validation is crucial for maintaining data integrity and security.
+
+Marigold supports displaying server validation errors via the `validationErrors` prop on the `<Form>` component. The errors should be an object, where each field's `name`is mapped to a string or array of strings representing error messages. The errors are immediately shown to the user upon setting the `validationErrors` and are cleared when the user modifies the field's value.
+
+The subscription example now involves sending and receiving the provided email to and from the server. While most email subscriptions will be successful, attempting to use `support@reservix.de` serves as a negative example, triggering an error response from the server.
+
+<ComponentDemo file="./validation-server-error.demo.tsx" />
