@@ -5,7 +5,7 @@
  * - selecting an item from the combobox -> adds it to the tags, clears combobox input
  * - combobox only shows unselected items
  */
-import { ReactNode, useState } from 'react';
+import { Children, ReactNode, useState } from 'react';
 import { Key } from 'react-aria-components';
 
 import { useListData } from '@react-stately/data';
@@ -19,6 +19,11 @@ export interface MultiSelectItem {
 }
 
 export const Multiselect = ({ label, children }: any) => {
+  // does this work?
+  const items = Children.map(children, child => {
+    child.key, child.children;
+  });
+
   const list = useListData<MultiSelectItem>({
     initialItems: [], // Can we use `children` here? If not just make an API that doesn't use children e.g. <Multiselect options={...} />
     initialSelectedKeys: [], // add API defaultSelected or something?
