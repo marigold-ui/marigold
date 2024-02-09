@@ -30,7 +30,7 @@ export const Multiselect = ({ label, children }: any) => {
   const selected = list.items.filter(item =>
     list.selectedKeys === 'all' ? true : list.selectedKeys.has(item.id)
   );
-  const unselected = list.items; // basically selected but the other way araound
+  const unselected = list.items.filter(item => !selected.includes(item));
 
   // Combobox Stuff
   const [value, setValue] = useState('');
@@ -45,7 +45,7 @@ export const Multiselect = ({ label, children }: any) => {
     setValue('');
   };
 
-  console.log(unselected);
+  // TODO: Add `renderEmptyState` when everything is selected?
 
   return (
     <div className="style me!">
