@@ -89,13 +89,21 @@ You can have interactive forms which contains logical aspects. In this example y
 
 <ComponentDemo file="./logical-interaction.demo.tsx" />
 
-## Submitting a form
+## Forms and submitting Data
 
-In this example you can see how a form with all its fields can be submitted. The submitted data will be displayed in an alert message.
+In HTML, forms are build using the `<form>` element, which wraps a set of input fields to gather and submit user data. By default, HTML forms trigger a full-page refresh upon submission. To gain control over the process, you can use preventDefault during the onSubmit event, enabling you to make a custom API call to submit the data according to your preferences.
 
-For validating the form we are using [`zod`](https://zod.dev/). It is a library for building schemas, which can be used to validate inputs. It is especially useful when you have more complex validation rules.
+The simplest way to get data from a form is using the browser's [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API during the `onSubmit` event. This can be passed directly to `fetch`, or converted into a regular JavaScript object using `Object.fromEntries`.
 
-<ComponentDemo file="./building-forms-zod.demo.tsx" />
+<Message messageTitle="Names are important!" variant="info">
+  Make sure to include the name attribute in each field, as it uniquely
+  identifies each form element, facilitating server-side processing and ensuring
+  a key-value pair for data submission.
+</Message>
+
+Below is a basic example of extracting data from an [uncontrolled](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components) form. Submitting a promo code won't trigger a regular form submission; instead, it will display the provided data.
+
+<ComponentDemo file="./building-forms-submit.demo.tsx" />
 
 ## Handling complex forms and form state
 
