@@ -9,28 +9,6 @@ HTML forms enable the collection and submission of user input on web pages. Form
 
 Marigold's components seamlessly integrate with HTML forms, providing a developer-friendly solution for effective input data validation. It supports native attributes such as "required" and validation based on input types. Furthermore, Marigold's form elements enable the incorporation of custom validation functions, enhancing the browser's validation capabilities.
 
-## Field Anatomy
-
-An accessible form input includes a clear label associated with its corresponding form control (`<input>`, `<select>`, ...). Additional guidance is provided by a help text, which can give additional context or instructions or display a descriptive messages.
-
-<Image
-  src="/field.png"
-  alt="Anatomy of a field"
-  width={300}
-  height={150}
-  className="mx-auto block"
-/>
-
-Marigold's form components allow to set these properties like shown below. All form components allow to set a `label`, `description` and `errorMessages` besides some additional control-specific props.
-
-```tsx
-<TextField
-  label="Promo Code"
-  description="You can find the code on the back of your ticket."
-  errorMessage="The promo code was already used."
-/>
-```
-
 ## Forms and submitting Data
 
 In HTML, forms are build using the `<form>` element, which wraps a set of input fields to gather and submit user data. By default, HTML forms trigger a full-page refresh upon submission. To gain control over the process, you can use preventDefault during the onSubmit event, enabling you to make a custom API call to submit the data according to your preferences.
