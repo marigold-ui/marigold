@@ -19,10 +19,8 @@ export interface MultiSelectItem {
 }
 
 export const Multiselect = ({ label, children }: any) => {
-  // does this work?
-  const items = Children.map(children, child => {
-    child.key, child.children;
-  });
+  // does this work? If I wrote it like this the items will open.....
+  const items = Children.map(children, child => child);
 
   const list = useListData<MultiSelectItem>({
     initialItems: [], // Can we use `children` here? If not just make an API that doesn't use children e.g. <Multiselect options={...} />
@@ -44,6 +42,8 @@ export const Multiselect = ({ label, children }: any) => {
     setValue('');
   };
 
+  console.log(items);
+
   return (
     <div className="style me!">
       <Tag.Group label={label} items={selected}>
@@ -59,11 +59,11 @@ export const Multiselect = ({ label, children }: any) => {
         value={value}
         onChange={setValue}
       >
-        {(item: MultiSelectItem) => (
+        {items.map((item: any) => (
           <ComboBox.Item key={item.id} id={item.id}>
-            {item.children}
+            {item.props.children}
           </ComboBox.Item>
-        )}
+        ))}
       </ComboBox>
     </div>
   );

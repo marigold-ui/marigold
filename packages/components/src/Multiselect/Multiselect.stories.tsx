@@ -9,6 +9,8 @@ import {
   TagList,
 } from 'react-aria-components';
 
+import { Multiselect as MS } from './Multiselect';
+
 const Foo = () => {
   const state = useContext(ListStateContext);
   const selected = state.selectionManager.selectedKeys;
@@ -86,6 +88,25 @@ export const Basic: StoryObj<typeof MultiSelect> = {
           <MultiSelectItem id="vegan">Vegan</MultiSelectItem>
           <MultiSelectItem id="mar">Margrita</MultiSelectItem>
         </MultiSelect>
+      </>
+    );
+  },
+};
+
+export const Multiselect: StoryObj<typeof MultiSelect> = {
+  render: () => {
+    return (
+      <>
+        <MS label="Animals" disabledKeys={['snake']}>
+          <MultiSelectItem id="red-panda">Red Panda</MultiSelectItem>
+          <MultiSelectItem id="cat">Cat</MultiSelectItem>
+          <MultiSelectItem id="dog">Dog</MultiSelectItem>
+          <MultiSelectItem id="aardvark">Aardvark</MultiSelectItem>
+          <MultiSelectItem id="kangaroo">Kangaroo</MultiSelectItem>
+          <MultiSelectItem id="snake">Snake</MultiSelectItem>
+          <MultiSelectItem id="vegan">Vegan</MultiSelectItem>
+          <MultiSelectItem id="mar">Margrita</MultiSelectItem>
+        </MS>
       </>
     );
   },
