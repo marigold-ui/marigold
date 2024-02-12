@@ -39,12 +39,18 @@ export const Multiselect = ({
     getKey: item => item.id,
   });
 
-  const selected = list.items.filter(item =>
+  let selected = list.items.filter(item =>
     list.selectedKeys === 'all' ? true : list.selectedKeys.has(item.id)
   );
+
+  // trying to remove tag
+  const setUnselected = (key: Set<Key>) => {
+    selected = selected.filter(item => !key.has(item.id));
+    console.log(selected);
+  };
+
   const unselected = list.items.filter(item => !selected.includes(item));
 
-  console.log(list);
   // Combobox Stuff
   const [value, setValue] = useState('');
   const selectItem = (key: Key) => {
@@ -62,7 +68,12 @@ export const Multiselect = ({
 
   return (
     <div className="style me!">
-      <Tag.Group label={label} items={selected}>
+      <Tag.Group
+        label={label}
+        items={selected}
+        allowsRemoving
+        onRemove={setUnselected}
+      >
         {(item: MultiSelectItem) => (
           <Tag key={item.id} id={item.id}>
             {item.children}
