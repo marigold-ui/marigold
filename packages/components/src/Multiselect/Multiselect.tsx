@@ -21,7 +21,7 @@ export interface MultiSelectItem {
 
 export interface MultiSelectProps extends RAC.ComboBoxProps<object> {
   label?: string;
-  children?: any;
+  children?: ReactNode;
 }
 
 export const Multiselect = ({
@@ -29,7 +29,8 @@ export const Multiselect = ({
   children,
   ...props
 }: MultiSelectProps) => {
-  const items = Children.map(children, ({ props }) => props);
+  // don't know what to write instead of any
+  const items = Children.map(children, ({ props }: any) => props);
   console.log(items);
 
   // TODO: Handle disabledKeys
