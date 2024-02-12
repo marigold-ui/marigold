@@ -33,10 +33,9 @@ export const Multiselect = ({
   // don't know what to write instead of any
   const items = Children.map(children, ({ props }: any) => props);
 
-  // TODO: Handle disabledKeys
   const list = useListData<MultiSelectItem>({
     initialItems: items, // Can we use `children` here? If not just make an API that doesn't use children e.g. <Multiselect options={...} />
-    initialSelectedKeys: props.defaultSelectedKeys, // add API defaultSelected or something?
+    initialSelectedKeys: props.defaultSelectedKeys,
     getKey: item => item.id,
   });
 
