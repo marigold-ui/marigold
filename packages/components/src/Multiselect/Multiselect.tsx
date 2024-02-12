@@ -7,6 +7,7 @@
  */
 import { Children, ReactNode, useState } from 'react';
 import { Key } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 
 import { useListData } from '@react-stately/data';
 
@@ -18,8 +19,18 @@ export interface MultiSelectItem {
   children: ReactNode;
 }
 
-export const Multiselect = ({ label, children }: any) => {
+export interface MultiSelectProps extends RAC.ComboBoxProps<object> {
+  label?: string;
+  children?: any;
+}
+
+export const Multiselect = ({
+  label,
+  children,
+  ...props
+}: MultiSelectProps) => {
   const items = Children.map(children, ({ props }) => props);
+  console.log(items);
 
   // TODO: Handle disabledKeys
   const list = useListData<MultiSelectItem>({
@@ -32,6 +43,7 @@ export const Multiselect = ({ label, children }: any) => {
   );
   const unselected = list.items.filter(item => !selected.includes(item));
 
+  console.log(list);
   // Combobox Stuff
   const [value, setValue] = useState('');
   const selectItem = (key: Key) => {
@@ -60,6 +72,7 @@ export const Multiselect = ({ label, children }: any) => {
         value={value}
         onChange={setValue}
         onSelectionChange={selectItem}
+        {...props}
       >
         {unselected.map((item: MultiSelectItem) => (
           <ComboBox.Item key={item.id} id={item.id}>
