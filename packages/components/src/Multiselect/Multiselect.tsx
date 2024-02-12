@@ -22,6 +22,7 @@ export interface MultiSelectItem {
 export interface MultiSelectProps extends RAC.ComboBoxProps<object> {
   label?: string;
   children?: ReactNode;
+  defaultSelectedKeys?: 'all' | Iterable<Key>;
 }
 
 export const Multiselect = ({
@@ -31,14 +32,14 @@ export const Multiselect = ({
 }: MultiSelectProps) => {
   // don't know what to write instead of any
   const items = Children.map(children, ({ props }: any) => props);
-  console.log(items);
 
   // TODO: Handle disabledKeys
   const list = useListData<MultiSelectItem>({
     initialItems: items, // Can we use `children` here? If not just make an API that doesn't use children e.g. <Multiselect options={...} />
-    initialSelectedKeys: [], // add API defaultSelected or something?
+    initialSelectedKeys: props.defaultSelectedKeys, // add API defaultSelected or something?
     getKey: item => item.id,
   });
+
   const selected = list.items.filter(item =>
     list.selectedKeys === 'all' ? true : list.selectedKeys.has(item.id)
   );

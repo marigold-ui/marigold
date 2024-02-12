@@ -97,7 +97,11 @@ export const Multiselect: StoryObj<typeof MultiSelect> = {
   render: () => {
     return (
       <>
-        <MS label="Animals" disabledKeys={['snake']}>
+        <MS
+          label="Animals"
+          disabledKeys={['snake']}
+          defaultSelectedKeys={['cat', 'dog']}
+        >
           <MultiSelectItem id="red-panda">Red Panda</MultiSelectItem>
           <MultiSelectItem id="cat">Cat</MultiSelectItem>
           <MultiSelectItem id="dog">Dog</MultiSelectItem>
