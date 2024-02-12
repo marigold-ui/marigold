@@ -19,9 +19,9 @@ export interface MultiSelectItem {
 }
 
 export const Multiselect = ({ label, children }: any) => {
-  // does this work? If I wrote it like this the items will open.....
   const items = Children.map(children, ({ props }) => props);
 
+  // TODO: Handle disabledKeys
   const list = useListData<MultiSelectItem>({
     initialItems: items, // Can we use `children` here? If not just make an API that doesn't use children e.g. <Multiselect options={...} />
     initialSelectedKeys: [], // add API defaultSelected or something?
