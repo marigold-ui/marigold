@@ -46,7 +46,10 @@ export const Multiselect = ({
   // trying to remove tag
   const setUnselected = (key: Set<Key>) => {
     selected = selected.filter(item => !key.has(item.id));
-    console.log(selected);
+    // if (list.selectedKeys !== 'all') {
+    //   list.selectedKeys.delete(key);
+    // }
+    console.log('Updated List', selected);
   };
 
   const unselected = list.items.filter(item => !selected.includes(item));
@@ -58,6 +61,7 @@ export const Multiselect = ({
     // add to selected items
     if (list.selectedKeys !== 'all') {
       const next = list.selectedKeys.add(key);
+      console.log(next);
       list.setSelectedKeys(next);
     }
     // Clear combobox
