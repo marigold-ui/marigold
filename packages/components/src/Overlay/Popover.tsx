@@ -1,6 +1,6 @@
-import { forwardRef } from 'react';
+import { forwardRef, useContext } from 'react';
 import type RAC from 'react-aria-components';
-import { Popover } from 'react-aria-components';
+import { OverlayTriggerStateContext, Popover } from 'react-aria-components';
 
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 
@@ -41,12 +41,14 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
 
     const isSmallScreen = useSmallScreen();
     const portal = usePortalContainer();
-
+    const state = useContext(OverlayTriggerStateContext);
+    console.log('state', state);
     return (
       <>
         {isSmallScreen ? (
           <>
-            <Underlay open={open} variant="modal" />
+            <Tray open={open}>{children}</Tray>
+            {/* <Underlay open={open} variant="modal" />
             <Popover
               ref={ref}
               {...props}
@@ -56,7 +58,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
               UNSTABLE_portalContainer={portal as Element}
             >
               {children}
-            </Popover>
+            </Popover> */}
           </>
         ) : (
           <Popover
@@ -66,6 +68,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
             offset={0}
             UNSTABLE_portalContainer={portal as Element}
           >
+            <Underlay open={open} />
             {children}
           </Popover>
         )}
@@ -75,3 +78,12 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
 );
 
 export { _Popover as Popover };
+
+const Tray = ({ open, ...props }: any) => {
+  return (
+    <div>
+      <Underlay open={open} variant="modal" />
+      <div>{props.children}</div>
+    </div>
+  );
+};

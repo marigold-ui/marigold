@@ -87,6 +87,10 @@ export const Basic: StoryObj<typeof Select> = {
     const [selected, setSelected] = useState<string | number>('');
     return (
       <>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae,
+        voluptatum eaque fugit dolores labore laboriosam laudantium, voluptate
+        molestiae explicabo sint officiis nulla voluptas totam ab voluptatibus
+        tempora, reprehenderit ipsum vel?
         <Select
           {...args}
           onChange={setSelected}
@@ -103,6 +107,13 @@ export const Basic: StoryObj<typeof Select> = {
         </Select>
         <hr />
         <pre>selected: {selected}</pre>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae,
+        voluptatum eaque fugit dolores labore laboriosam laudantium, voluptate
+        molestiae explicabo sint officiis nulla voluptas totam ab voluptatibus
+        tempora, reprehenderit ipsum vel? Lorem ipsum dolor sit amet consectetur
+        adipisicing elit. Repudiandae, voluptatum eaque fugit dolores labore
+        laboriosam laudantium, voluptate molestiae explicabo sint officiis nulla
+        voluptas totam ab voluptatibus tempora, reprehenderit ipsum vel?
       </>
     );
   },
@@ -182,22 +193,22 @@ export const LotsOfOptions: StoryObj<typeof Select> = {
   },
 };
 
-export const Sections: StoryObj<typeof Select> = {
-  render: args => (
-    <Select {...args}>
-      <Select.Section>
-        <Header>Fantasy</Header>
-        <Select.Option id="harry-potter">Harry Potter</Select.Option>
-        <Select.Option id="lord-of-the-rings">Lord of the Rings</Select.Option>
-      </Select.Section>
-      <Select.Section>
-        <Header>Sci-Fi</Header>
-        <Select.Option id="star-wars">Star Wars</Select.Option>
-        <Select.Option id="star-trek">Star Trek</Select.Option>
-      </Select.Section>
-    </Select>
-  ),
-};
+// export const Sections: StoryObj<typeof Select> = {
+//   render: args => (
+//     <Select {...args}>
+//       <Select.Section>
+//         <Header>Fantasy</Header>
+//         <Select.Option id="harry-potter">Harry Potter</Select.Option>
+//         <Select.Option id="lord-of-the-rings">Lord of the Rings</Select.Option>
+//       </Select.Section>
+//       <Select.Section>
+//         <Header>Sci-Fi</Header>
+//         <Select.Option id="star-wars">Star Wars</Select.Option>
+//         <Select.Option id="star-trek">Star Trek</Select.Option>
+//       </Select.Section>
+//     </Select>
+//   ),
+// };
 
 export const SelectedScroll: StoryObj<typeof Select> = {
   render: args => {

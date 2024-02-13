@@ -2,6 +2,8 @@
 
 import { Button, Dialog, Header, Split } from '@/ui';
 
+import { ListBox } from '@marigold/components/src/ListBox';
+
 import { Logo } from './Logo';
 import { Navigation } from './Navigation';
 import { ThemeMenu } from './ThemeMenu';
@@ -36,13 +38,17 @@ export const MobileNavigation = () => (
       <Dialog variant="fullscreen" closeButton>
         {({ close }) => (
           <>
-            <Header className="flex items-center gap-2 pl-4 text-3xl font-bold uppercase tracking-tight text-[#46505a]">
-              <Logo className="size-10" />
-              Marigold
-            </Header>
-            <div className="scrollbar-thin scrollbar-thumb-slate-300 scrollbar-thumb-rounded-full bottom-0 right-0 -mr-4 h-[calc(100vh-90px)] overflow-y-auto">
-              <Navigation onClick={close} />
-            </div>
+            <ListBox
+              aria-labelledby="listbox"
+              selectionMode="single"
+              defaultSelectedKeys={['one']}
+              disabledKeys={['four']}
+            >
+              <ListBox.Item id="one">one</ListBox.Item>
+              <ListBox.Item id="two">Two</ListBox.Item>
+              <ListBox.Item id="three">Three</ListBox.Item>
+              <ListBox.Item id="four">Four</ListBox.Item>
+            </ListBox>
           </>
         )}
       </Dialog>
