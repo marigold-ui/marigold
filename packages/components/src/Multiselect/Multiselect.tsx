@@ -62,51 +62,48 @@ export const Multiselect = ({
   // Combobox Stuff
   const [value, setValue] = useState('');
   const selectItem = (key: Key) => {
-    console.log('selected', key);
     // add to selected items
     if (list.selectedKeys !== 'all') {
       const next = list.selectedKeys.add(key);
       // console.log(next);
       list.setSelectedKeys(next);
     }
+
     // Clear combobox
-    setValue('');
+    const input = document.activeElement as HTMLInputElement;
+    setTimeout(() => {
+      setValue('');
+    }, 0);
+    input.focus();
   };
 
-  // TODO: Add `renderEmptyState` when everything is selected?
-  // console.log('vauelue', value);
-
   return (
-    <>
-      <div className="style me!">
-        <Tag.Group
-          label={label}
-          items={selected}
-          allowsRemoving
-          onRemove={setUnselected}
-        >
-          {(item: MultiSelectItem) => (
-            <Tag key={item.id} id={item.id}>
-              {item.children}
-            </Tag>
-          )}
-        </Tag.Group>
-        <ComboBox
-          value={value}
-          onChange={setValue}
-          onSelectionChange={selectItem}
-          menuTrigger="focus"
-          {...props}
-        >
-          {unselected.map((item: MultiSelectItem) => (
-            <ComboBox.Item key={item.id} id={item.id}>
-              {item.children}
-            </ComboBox.Item>
-          ))}
-        </ComboBox>
-      </div>
-      <hr />
-      <code>{value}</code>
-    </>
+    <div>
+      <Tag.Group
+        items={selected}
+        allowsRemoving
+        onRemove={setUnselected}
+        renderEmptyState={() => null}
+      >
+        {(item: MultiSelectItem) => (
+          <Tag key={item.id} id={item.id}>
+            {item.children}
+          </Tag>
+        )}
+      </Tag.Group>
+      <ComboBox
+        value={value}
+        onChange={setValue}
+        onSelectionChange={selectItem}
+        menuTrigger="focus"
+        {...props}
+      >
+        {unselected.map((item: MultiSelectItem) => (
+          <ComboBox.Item key={item.id} id={item.id}>
+            {item.children}
+          </ComboBox.Item>
+        ))}
+      </ComboBox>
+    </div>
   );
 };
