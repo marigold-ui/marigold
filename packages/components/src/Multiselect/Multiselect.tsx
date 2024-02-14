@@ -14,36 +14,45 @@ import { useListData } from '@react-stately/data';
 import { ComboBox } from '../ComboBox';
 import { Tag } from '../TagGroup';
 
-export interface MultiSelectItem {
+// Item
+// ---------------
+export interface MultiSelectItemProps {
   id: Key;
   children: ReactNode;
 }
 
+const Item = (_: MultiSelectItemProps) => null;
+
+// Props
+// ---------------
 export interface MultiSelectProps extends RAC.ComboBoxProps<object> {
   label?: string;
   children?: ReactNode;
   defaultSelectedKeys?: 'all' | Iterable<Key>;
 }
 
+// Component
+// ---------------
 export const Multiselect = ({
   label,
   children,
   ...props
 }: MultiSelectProps) => {
-  // don't know what to write instead of any
+  // Fake react-aria collection items
   const items = Children.map(children, ({ props }: any) => props);
 
-  const list = useListData<MultiSelectItem>({
-    initialItems: items, // Can we use `children` here? If not just make an API that doesn't use children e.g. <Multiselect options={...} />
+  const list = useListData<MultiSelectItemProps>({
+    initialItems: items,
     initialSelectedKeys: props.defaultSelectedKeys,
     getKey: item => item.id,
   });
 
-  let selected = list.items.filter(item =>
+  const selected = list.items.filter(item =>
     list.selectedKeys === 'all' ? true : list.selectedKeys.has(item.id)
   );
+  const unselected = list.items.filter(item => !selected.includes(item));
 
-  // trying to remove tag
+  // Remove tag
   const setUnselected = (keys: Set<Key>) => {
     const next: Set<Key> =
       list.selectedKeys === 'all' ? new Set(items) : new Set(list.selectedKeys);
@@ -57,15 +66,12 @@ export const Multiselect = ({
     list.setSelectedKeys(next);
   };
 
-  const unselected = list.items.filter(item => !selected.includes(item));
-
   // Combobox Stuff
   const [value, setValue] = useState('');
   const selectItem = (key: Key) => {
     // add to selected items
     if (list.selectedKeys !== 'all') {
       const next = list.selectedKeys.add(key);
-      // console.log(next);
       list.setSelectedKeys(next);
     }
 
@@ -85,7 +91,7 @@ export const Multiselect = ({
         onRemove={setUnselected}
         renderEmptyState={() => null}
       >
-        {(item: MultiSelectItem) => (
+        {(item: MultiSelectItemProps) => (
           <Tag key={item.id} id={item.id}>
             {item.children}
           </Tag>
@@ -98,7 +104,7 @@ export const Multiselect = ({
         menuTrigger="focus"
         {...props}
       >
-        {unselected.map((item: MultiSelectItem) => (
+        {unselected.map((item: MultiSelectItemProps) => (
           <ComboBox.Item key={item.id} id={item.id}>
             {item.children}
           </ComboBox.Item>
@@ -107,3 +113,5 @@ export const Multiselect = ({
     </div>
   );
 };
+
+Multiselect.Item = Item;
