@@ -99,7 +99,7 @@ export const Multiselect: StoryObj<typeof MultiSelect> = {
       <>
         <MS
           label="Animals"
-          disabledKeys={['snake']}
+          // disabledKeys={['snake']}
           defaultSelectedKeys={['cat', 'dog']}
         >
           <MultiSelectItem id="red-panda">Red Panda</MultiSelectItem>

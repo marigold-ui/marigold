@@ -44,12 +44,17 @@ export const Multiselect = ({
   );
 
   // trying to remove tag
-  const setUnselected = (key: Set<Key>) => {
-    selected = selected.filter(item => !key.has(item.id));
-    // if (list.selectedKeys !== 'all') {
-    //   list.selectedKeys.delete(key);
-    // }
-    console.log('Updated List', selected);
+  const setUnselected = (keys: Set<Key>) => {
+    const next: Set<Key> =
+      list.selectedKeys === 'all' ? new Set(items) : new Set(list.selectedKeys);
+
+    if (list.selectedKeys !== 'all') {
+      keys.forEach(key => {
+        next.delete(key);
+      });
+    }
+
+    list.setSelectedKeys(next);
   };
 
   const unselected = list.items.filter(item => !selected.includes(item));
@@ -61,7 +66,7 @@ export const Multiselect = ({
     // add to selected items
     if (list.selectedKeys !== 'all') {
       const next = list.selectedKeys.add(key);
-      console.log(next);
+      // console.log(next);
       list.setSelectedKeys(next);
     }
     // Clear combobox
@@ -69,33 +74,39 @@ export const Multiselect = ({
   };
 
   // TODO: Add `renderEmptyState` when everything is selected?
+  // console.log('vauelue', value);
 
   return (
-    <div className="style me!">
-      <Tag.Group
-        label={label}
-        items={selected}
-        allowsRemoving
-        onRemove={setUnselected}
-      >
-        {(item: MultiSelectItem) => (
-          <Tag key={item.id} id={item.id}>
-            {item.children}
-          </Tag>
-        )}
-      </Tag.Group>
-      <ComboBox
-        value={value}
-        onChange={setValue}
-        onSelectionChange={selectItem}
-        {...props}
-      >
-        {unselected.map((item: MultiSelectItem) => (
-          <ComboBox.Item key={item.id} id={item.id}>
-            {item.children}
-          </ComboBox.Item>
-        ))}
-      </ComboBox>
-    </div>
+    <>
+      <div className="style me!">
+        <Tag.Group
+          label={label}
+          items={selected}
+          allowsRemoving
+          onRemove={setUnselected}
+        >
+          {(item: MultiSelectItem) => (
+            <Tag key={item.id} id={item.id}>
+              {item.children}
+            </Tag>
+          )}
+        </Tag.Group>
+        <ComboBox
+          value={value}
+          onChange={setValue}
+          onSelectionChange={selectItem}
+          menuTrigger="focus"
+          {...props}
+        >
+          {unselected.map((item: MultiSelectItem) => (
+            <ComboBox.Item key={item.id} id={item.id}>
+              {item.children}
+            </ComboBox.Item>
+          ))}
+        </ComboBox>
+      </div>
+      <hr />
+      <code>{value}</code>
+    </>
   );
 };
