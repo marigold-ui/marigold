@@ -102,6 +102,8 @@ export const Multiselect = ({
         onChange={setValue}
         onSelectionChange={selectItem}
         menuTrigger="focus"
+        disabled={unselected.length === 0}
+        placeholder={unselected.length === 0 ? 'All items selected' : ''}
         {...props}
       >
         {unselected.map((item: MultiSelectItemProps) => (
