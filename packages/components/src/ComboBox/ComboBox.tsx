@@ -44,6 +44,7 @@ export interface ComboBoxProps
   value?: RAC.ComboBoxProps<any>['inputValue'];
   onChange?: RAC.ComboBoxProps<any>['onInputChange'];
   children: ReactNode | ((item: any) => ReactNode);
+  placeholder?: string;
 }
 
 interface ComboBoxComponent
