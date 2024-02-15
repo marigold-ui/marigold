@@ -7,6 +7,8 @@ import type {
 import { ComboBox } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
+import { useClassNames } from '@marigold/system';
+
 import { Button } from '../Button';
 import { ChevronDown } from '../Chevron';
 import { FieldBase, FieldBaseProps } from '../FieldBase';
@@ -84,11 +86,14 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
       ...rest,
     };
 
+    const classNames = useClassNames({ component: 'ComboBox', variant, size });
+
+    console.log(classNames);
     return (
       <FieldBase as={ComboBox} ref={ref} {...props}>
         <Input
           action={
-            <Button className="absolute right-2 size-4 border-none bg-transparent p-0">
+            <Button className={classNames}>
               <ChevronDown className="size-4" />
             </Button>
           }
