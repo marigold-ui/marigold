@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Card: ThemeComponent<'Card'> = cva(
-  'bg-bg-surface-raised shadow-surface-raised relative max-w-[270px] rounded p-1 ',
+  'bg-bg-surface-raised shadow-surface-raised relative rounded p-1 ',
   {
     variants: {
       variant: {
