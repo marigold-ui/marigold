@@ -39,7 +39,7 @@
     "@storybook/core-events": "7.6.12",
     "@storybook/react-vite": "7.6.12",
     "autoprefixer": "10.4.16",
-    "postcss": "8.4.33",
+    "postcss": "8.4.35",
     "postcss-loader": "8.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
