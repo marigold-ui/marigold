@@ -382,8 +382,8 @@ importers:
         specifier: 7.49.3
         version: 7.49.3(react@18.2.0)
       react-use:
-        specifier: 17.4.2
-        version: 17.4.2(react-dom@18.2.0)(react@18.2.0)
+        specifier: 17.5.0
+        version: 17.5.0(react-dom@18.2.0)(react@18.2.0)
       react-use-clipboard:
         specifier: 1.0.9
         version: 1.0.9(react-dom@18.2.0)(react@18.2.0)
@@ -15598,8 +15598,8 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /react-use@17.4.2(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-1jPtmWLD8OJJNYCdYLJEH/HM+bPDfJuyGwCYeJFgPmWY8ttwpgZnW5QnzgM55CYUByUiTjHxsGOnEpLl6yQaoQ==}
+  /react-use@17.5.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-PbfwSPMwp/hoL847rLnm/qkjg3sTRCvn6YhUZiHaUa3FA6/aNoFX79ul5Xt70O1rK+9GxSVqkY0eTwMdsR/bWg==}
     peerDependencies:
       react: '*'
       react-dom: '*'
