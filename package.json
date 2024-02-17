@@ -59,7 +59,7 @@
     "postinstall": "pnpm build"
   },
   "devDependencies": {
-    "@parcel/watcher": "2.3.0",
+    "@parcel/watcher": "2.4.0",
     "autoprefixer": "10.4.16",
     "concurrently": "8.2.2",
     "next": "13.5.6",
