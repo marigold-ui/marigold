@@ -54,6 +54,13 @@ import { Tag } from '@marigold/components';
       description: 'Handler that is called when the remove button is pressed.',
       default: 'none',
     },
+    {
+      property: 'renderEmptyState',
+      type: '(props: TagListRenderProps) => ReactNode',
+      description:
+        'Provides content to display when there are no items in the tag list.',
+      default: 'none',
+    },
   ]}
 />
 
