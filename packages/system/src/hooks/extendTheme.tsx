@@ -1,4 +1,5 @@
-import { type Theme, cva } from '@marigold/system';
+import { Theme } from '../types';
+import { cva } from '../utils';
 
 export type StylesProps = {
   [K in keyof Theme['components']]: Partial<Theme['components'][K]>;
@@ -9,6 +10,8 @@ export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
   Object.keys(newStyles).forEach(component => {
     // @ts-expect-error (TS can not infer when to return string or an object)
     const componentStyles = newStyles[component];
+    // @ts-expect-error (TS can not infer when to return string or an object)
+
     const mergedComponentStyles = mergedStyles[component];
 
     if (!mergedComponentStyles) return mergedStyles;
