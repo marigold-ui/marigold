@@ -18,8 +18,8 @@ export const inputHover = (selector: string = 'hover') =>
   `${selector}:border-border-base-hover`;
 
 export const Input: ThemeComponent<'Input'> = {
-  icon: cva('left-2'),
-  action: cva('right-0'),
+  icon: cva('left-1'),
+  action: cva(''),
   input: cva([
     inputBox,
     inputBackground,

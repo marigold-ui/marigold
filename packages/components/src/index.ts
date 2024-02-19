@@ -40,6 +40,7 @@ export * from './Provider';
 export * from './Radio';
 export * from './SearchField';
 export * from './Select';
+export * from './ListBox';
 export * from './Scrollable';
 export * from './Slider';
 export * from './Split';

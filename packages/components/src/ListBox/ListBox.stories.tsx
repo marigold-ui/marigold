@@ -7,6 +7,20 @@ import { ListBox } from './ListBox';
 
 const meta = {
   title: 'Components/ListBox',
+  argTypes: {
+    selectionMode: {
+      control: {
+        type: 'select',
+      },
+      options: ['single', 'multiple'],
+      table: {
+        type: { summary: 'select' },
+        defaultValue: { summary: 'single' },
+      },
+      description: 'Set selection mode of the grid list',
+      defaultValue: false,
+    },
+  },
 } satisfies Meta<typeof ListBox>;
 
 export default meta;
@@ -31,7 +45,7 @@ export const Basic: Story = {
 
 export const WithSections: Story = {
   render: args => (
-    <ListBox aria-labelledby="listbox" {...args}>
+    <ListBox aria-labelledby="listbox" selectionMode="multiple" {...args}>
       <ListBox.Section>
         <Header>Veggies</Header>
         <ListBox.Item id="lettuce">Lettuce</ListBox.Item>
