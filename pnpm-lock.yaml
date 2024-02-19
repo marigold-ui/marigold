@@ -82,8 +82,8 @@ importers:
         specifier: 2.4.0
         version: 2.4.0
       autoprefixer:
-        specifier: 10.4.16
-        version: 10.4.16(postcss@8.4.35)
+        specifier: 10.4.17
+        version: 10.4.17(postcss@8.4.35)
       concurrently:
         specifier: 8.2.2
         version: 8.2.2
@@ -290,8 +290,8 @@ importers:
         specifier: 7.6.15
         version: 7.6.15(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@5.1.1)
       autoprefixer:
-        specifier: 10.4.16
-        version: 10.4.16(postcss@8.4.35)
+        specifier: 10.4.17
+        version: 10.4.17(postcss@8.4.35)
       postcss:
         specifier: 8.4.35
         version: 8.4.35
@@ -352,8 +352,8 @@ importers:
         specifier: 1.1.1
         version: 1.1.1
       autoprefixer:
-        specifier: 10.4.16
-        version: 10.4.16(postcss@8.4.35)
+        specifier: 10.4.17
+        version: 10.4.17(postcss@8.4.35)
       contentlayer:
         specifier: 0.3.4
         version: 0.3.4(esbuild@0.19.10)
@@ -638,8 +638,8 @@ importers:
         specifier: workspace:*
         version: link:../../config/tsconfig
       autoprefixer:
-        specifier: 10.4.16
-        version: 10.4.16(postcss@8.4.35)
+        specifier: 10.4.17
+        version: 10.4.17(postcss@8.4.35)
       cssnano:
         specifier: 6.0.3
         version: 6.0.3(postcss@8.4.35)
@@ -669,8 +669,8 @@ importers:
         specifier: workspace:*
         version: link:../../config/tsconfig
       autoprefixer:
-        specifier: 10.4.16
-        version: 10.4.16(postcss@8.4.35)
+        specifier: 10.4.17
+        version: 10.4.17(postcss@8.4.35)
       cssnano:
         specifier: 6.0.3
         version: 6.0.3(postcss@8.4.35)
@@ -2457,10 +2457,6 @@ packages:
     peerDependencies:
       '@effect-ts/otel-node': '*'
     peerDependenciesMeta:
-      '@effect-ts/core':
-        optional: true
-      '@effect-ts/otel':
-        optional: true
       '@effect-ts/otel-node':
         optional: true
     dependencies:
@@ -8286,15 +8282,15 @@ packages:
   /asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
-  /autoprefixer@10.4.16(postcss@8.4.35):
-    resolution: {integrity: sha512-7vd3UC6xKp0HLfua5IjZlcXvGAGy7cBAXTg2lyQ/8WpNhd6SiZ8Be+xm3FyBSYJx5GKcpRCzBh7RH4/0dnY+uQ==}
+  /autoprefixer@10.4.17(postcss@8.4.35):
+    resolution: {integrity: sha512-/cpVNRLSfhOtcGflT13P2794gVSgmPgTR+erw5ifnMLZb0UnSlkK4tquLmkd3BhA+nLo5tX8Cu0upUsGKvKbmg==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
     peerDependencies:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.22.2
-      caniuse-lite: 1.0.30001566
+      caniuse-lite: 1.0.30001588
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -8575,7 +8571,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001566
+      caniuse-lite: 1.0.30001588
       electron-to-chromium: 1.4.605
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.22.2)
@@ -8687,6 +8683,9 @@ packages:
 
   /caniuse-lite@1.0.30001566:
     resolution: {integrity: sha512-ggIhCsTxmITBAMmK8yZjEhCO5/47jKXPu6Dha/wuCS4JePVL+3uiDEBuhu2aIoT+bqTOR8L76Ip1ARL9xYsEJA==}
+
+  /caniuse-lite@1.0.30001588:
+    resolution: {integrity: sha512-+hVY9jE44uKLkH0SrUTqxjxqNTOWHsbnQDIKjwkZ3lNTzUUVdBLBGXtj/q5Mp5u98r3droaZAewQuEDzjQdZlQ==}
 
   /ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
