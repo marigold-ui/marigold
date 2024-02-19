@@ -84,7 +84,7 @@ export const Multiselect = ({
   };
 
   return (
-    <div>
+    <div className="flex flex-wrap gap-1">
       <Tag.Group
         items={selected}
         allowsRemoving
