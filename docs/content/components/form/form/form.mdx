@@ -1,0 +1,109 @@
+---
+title: Form
+caption: Wrap your fields to submit user data and enable input validation.
+badge: new
+---
+
+The `<Form>` component acts as a container for a set of fields, enabling data transmission to a server. It operates like a standard HTML form, initiating either a request based on the specified `method` attribute.
+
+Additionally, the `<Form>` allows to validate user input and offers feedback for incorrect data entries, enhancing the overall resilience and user-friendliness of the form submission process. See the [Validation](/concepts/validation) guide to learn more about form validation.
+
+## Usage
+
+### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { Form } from '@marigold/components';
+```
+
+### Appearance
+
+<AppearanceTable component={title} />
+
+### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'validationErrors',
+      type: 'Record<string, string | string[]>',
+      description:
+        'Validation errors for the form, typically returned by a server. This should be set to an object mapping from input names to errors.',
+      default: '-',
+    },
+    {
+      property: 'action',
+      type: `string | FormHTMLAttributes<HTMLFormElement>['action']`,
+      description:
+        'Endpoint where to send the form-data when the form is submitted.',
+      default: '-',
+    },
+    {
+      property: 'method',
+      type: `'get' | 'post' | 'dialog'`,
+      description: 'The HTTP method to submit the form with.',
+      default: '-',
+    },
+    {
+      property: 'onSubmit',
+      type: `(event: FormEvent<HTMLFormElement>) => void`,
+      description: 'Triggered when a user submits the form.',
+      default: '-',
+    },
+    {
+      property: 'onReset',
+      type: `(event: FormEvent<HTMLFormElement>) => void`,
+      description: 'Triggered when a user resets the form.',
+      default: '-',
+    },
+    {
+      property: 'onInvalid',
+      type: `(event: FormEvent<HTMLFormElement>) => void`,
+      description:
+        'Triggered for each invalid field when a user submits the form.',
+      default: '-',
+    },
+    {
+      property: '...',
+      type: '',
+      description: 'Yes you can use all regular attributes of `form`!',
+      default: '',
+    },
+  ]}
+/>
+
+## Examples
+
+### Setup
+
+This is a simple setup how to use a `<Form>`.
+
+<ComponentDemo file="./form-base.demo.tsx" />
+
+### Handling submission
+
+The `onSubmit` event is useful for custom form actions, such as calling a REST API, instead of relying on the native form submission. It triggeres when a user submits the form using the Enter key or clicks the submit button. The `onReset` event is triggered when a user presses a reset button (`[type=reset]`).
+
+<ComponentDemo file="./form-submission.demo.tsx" />
+
+### Server Errors
+
+The `<Form>` component handles passed errors, typically received from a server after form submission. To display validation errors, set the `validationErrors` prop as an object mapping each field's name prop to a string or array of strings representing errors. These errors appear to the user as soon as the `validationErrors` prop is set and are cleared when the user modifies the corresponding field's value.
+
+<ComponentDemo file="./form-validation-errors.demo.tsx" />
+
+For more information about form validation, see the [Validation](/concepts/validation) guide.
+
+### Focus Management
+
+As you can see in the previous server errors example, when a user submits a form with validation errors, the first invalid field is automatically focused. This behavior can be customized using `e.preventDefault` during the `onInvalid` event and manage the focus manually.
+
+<ComponentDemo file="./form-focus-management.demo.tsx" />
+
+<p />
+
+<Message messageTitle="Want more?!">
+  You can find more examples and usages of the `<Form>` component on the [Validation](/concepts/validation) page and in the [Forms](/recipes/form-recipes) recipes.
+</Message>

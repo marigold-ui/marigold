@@ -9,8 +9,6 @@ import {
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { OverlayProvider } from '@react-aria/overlays';
-
 import { Theme, ThemeProvider, cva, useSmallScreen } from '@marigold/system';
 
 import { Button } from '../Button';
@@ -84,14 +82,12 @@ afterEach(cleanup);
 
 test('renders the button but no menu by default', () => {
   render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Menu label="Choose">
-          <Menu.Item key="burger">Burger</Menu.Item>
-          <Menu.Item key="pizza">Pizza</Menu.Item>
-        </Menu>
-      </ThemeProvider>
-    </OverlayProvider>
+    <ThemeProvider theme={theme}>
+      <Menu label="Choose">
+        <Menu.Item key="burger">Burger</Menu.Item>
+        <Menu.Item key="pizza">Pizza</Menu.Item>
+      </Menu>
+    </ThemeProvider>
   );
 
   const button = screen.queryByText('Choose');
@@ -110,14 +106,12 @@ test('opens menu when trigger is clicked', () => {
     'screen and (min-width: 64em)',
   ]);
   render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Menu label="Choose">
-          <Menu.Item key="burger">Burger</Menu.Item>
-          <Menu.Item key="pizza">Pizza</Menu.Item>
-        </Menu>
-      </ThemeProvider>
-    </OverlayProvider>
+    <ThemeProvider theme={theme}>
+      <Menu label="Choose">
+        <Menu.Item key="burger">Burger</Menu.Item>
+        <Menu.Item key="pizza">Pizza</Menu.Item>
+      </Menu>
+    </ThemeProvider>
   );
 
   const button = screen.getByText('Choose');
@@ -142,14 +136,12 @@ test('closes menu when item is selected', () => {
     'screen and (min-width: 64em)',
   ]);
   render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Menu label="Choose">
-          <Menu.Item key="burger">Burger</Menu.Item>
-          <Menu.Item key="pizza">Pizza</Menu.Item>
-        </Menu>
-      </ThemeProvider>
-    </OverlayProvider>
+    <ThemeProvider theme={theme}>
+      <Menu label="Choose">
+        <Menu.Item key="burger">Burger</Menu.Item>
+        <Menu.Item key="pizza">Pizza</Menu.Item>
+      </Menu>
+    </ThemeProvider>
   );
 
   const button = screen.getByText('Choose');
@@ -167,14 +159,12 @@ test('closes menu when item is selected', () => {
 
 test('closes menu when trigger is clicked', () => {
   render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Menu label="Choose">
-          <Menu.Item key="burger">Burger</Menu.Item>
-          <Menu.Item key="pizza">Pizza</Menu.Item>
-        </Menu>
-      </ThemeProvider>
-    </OverlayProvider>
+    <ThemeProvider theme={theme}>
+      <Menu label="Choose">
+        <Menu.Item key="burger">Burger</Menu.Item>
+        <Menu.Item key="pizza">Pizza</Menu.Item>
+      </Menu>
+    </ThemeProvider>
   );
 
   const button = screen.getByText('Choose');
@@ -190,16 +180,14 @@ test('closes menu when trigger is clicked', () => {
 
 test('closes menu when clicked outside', async () => {
   render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Button>outside</Button>
+    <ThemeProvider theme={theme}>
+      <Button>outside</Button>
 
-        <Menu label="Choose">
-          <Menu.Item key="burger">Burger</Menu.Item>
-          <Menu.Item key="pizza">Pizza</Menu.Item>
-        </Menu>
-      </ThemeProvider>
-    </OverlayProvider>
+      <Menu label="Choose">
+        <Menu.Item key="burger">Burger</Menu.Item>
+        <Menu.Item key="pizza">Pizza</Menu.Item>
+      </Menu>
+    </ThemeProvider>
   );
 
   const button = screen.getByText('Choose');
@@ -219,14 +207,12 @@ test('closes menu when clicked outside', async () => {
 test('return action item', () => {
   const spy = jest.fn();
   render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Menu label="Choose" onAction={spy}>
-          <Menu.Item id="burger">Burger</Menu.Item>
-          <Menu.Item id="pizza">Pizza</Menu.Item>
-        </Menu>
-      </ThemeProvider>
-    </OverlayProvider>
+    <ThemeProvider theme={theme}>
+      <Menu label="Choose" onAction={spy}>
+        <Menu.Item id="burger">Burger</Menu.Item>
+        <Menu.Item id="pizza">Pizza</Menu.Item>
+      </Menu>
+    </ThemeProvider>
   );
 
   const button = screen.getByText('Choose');
@@ -241,14 +227,12 @@ test('return action item', () => {
 
 test('uses base classes from "Menu" in theme', () => {
   render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Menu data-testid="menu" label="Choose">
-          <Menu.Item key="burger">Burger</Menu.Item>
-          <Menu.Item key="pizza">Pizza</Menu.Item>
-        </Menu>
-      </ThemeProvider>
-    </OverlayProvider>
+    <ThemeProvider theme={theme}>
+      <Menu data-testid="menu" label="Choose">
+        <Menu.Item key="burger">Burger</Menu.Item>
+        <Menu.Item key="pizza">Pizza</Menu.Item>
+      </Menu>
+    </ThemeProvider>
   );
   const button = screen.getByText('Choose');
   fireEvent.click(button);
@@ -259,14 +243,12 @@ test('uses base classes from "Menu" in theme', () => {
 
 test('supports "Menu" variant classnames from theme', () => {
   render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Menu data-testid="menu" label="Choose" variant="one">
-          <Menu.Item key="burger">Burger</Menu.Item>
-          <Menu.Item key="pizza">Pizza</Menu.Item>
-        </Menu>
-      </ThemeProvider>
-    </OverlayProvider>
+    <ThemeProvider theme={theme}>
+      <Menu data-testid="menu" label="Choose" variant="one">
+        <Menu.Item key="burger">Burger</Menu.Item>
+        <Menu.Item key="pizza">Pizza</Menu.Item>
+      </Menu>
+    </ThemeProvider>
   );
   const button = screen.getByText('Choose');
   fireEvent.click(button);
@@ -284,14 +266,12 @@ test('supports "Menu" variant classnames from theme', () => {
 
 test('supports "Menu" sizes from theme', () => {
   render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Menu data-testid="menu" label="Choose" size="large">
-          <Menu.Item key="burger">Burger</Menu.Item>
-          <Menu.Item key="pizza">Pizza</Menu.Item>
-        </Menu>
-      </ThemeProvider>
-    </OverlayProvider>
+    <ThemeProvider theme={theme}>
+      <Menu data-testid="menu" label="Choose" size="large">
+        <Menu.Item key="burger">Burger</Menu.Item>
+        <Menu.Item key="pizza">Pizza</Menu.Item>
+      </Menu>
+    </ThemeProvider>
   );
   const button = screen.getByRole('button');
   fireEvent.click(button);
@@ -314,14 +294,12 @@ test('renders as tray', () => {
   expect(result.current).toBeTruthy();
 
   render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Menu label="Choose" data-testid="menu">
-          <Menu.Item key="burger">Burger</Menu.Item>
-          <Menu.Item key="pizza">Pizza</Menu.Item>
-        </Menu>
-      </ThemeProvider>
-    </OverlayProvider>
+    <ThemeProvider theme={theme}>
+      <Menu label="Choose" data-testid="menu">
+        <Menu.Item key="burger">Burger</Menu.Item>
+        <Menu.Item key="pizza">Pizza</Menu.Item>
+      </Menu>
+    </ThemeProvider>
   );
 
   const button = screen.getByText('Choose');
@@ -336,14 +314,12 @@ test('renders as tray', () => {
 
 test('renders action menu', () => {
   render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <ActionMenu>
-          <Menu.Item key="one">Settings</Menu.Item>
-          <Menu.Item key="two">Delete</Menu.Item>
-        </ActionMenu>
-      </ThemeProvider>
-    </OverlayProvider>
+    <ThemeProvider theme={theme}>
+      <ActionMenu>
+        <Menu.Item key="one">Settings</Menu.Item>
+        <Menu.Item key="two">Delete</Menu.Item>
+      </ActionMenu>
+    </ThemeProvider>
   );
   const button = screen.getByRole('button');
   expect(button).toBeInTheDocument();
@@ -354,14 +330,12 @@ test('renders action menu', () => {
 
 test('supports open property', () => {
   render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Menu data-testid="menu" label="Choose" open={true}>
-          <Menu.Item key="burger">Burger</Menu.Item>
-          <Menu.Item key="pizza">Pizza</Menu.Item>
-        </Menu>
-      </ThemeProvider>
-    </OverlayProvider>
+    <ThemeProvider theme={theme}>
+      <Menu data-testid="menu" label="Choose" open={true}>
+        <Menu.Item key="burger">Burger</Menu.Item>
+        <Menu.Item key="pizza">Pizza</Menu.Item>
+      </Menu>
+    </ThemeProvider>
   );
 
   const item = screen.getByText('Burger');
@@ -371,18 +345,16 @@ test('supports open property', () => {
 test('supports onOpenChange property', () => {
   const onOpenChange = jest.fn();
   render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Menu
-          data-testid="menu"
-          label="Choose"
-          onOpenChange={() => onOpenChange()}
-        >
-          <Menu.Item key="burger">Burger</Menu.Item>
-          <Menu.Item key="pizza">Pizza</Menu.Item>
-        </Menu>
-      </ThemeProvider>
-    </OverlayProvider>
+    <ThemeProvider theme={theme}>
+      <Menu
+        data-testid="menu"
+        label="Choose"
+        onOpenChange={() => onOpenChange()}
+      >
+        <Menu.Item key="burger">Burger</Menu.Item>
+        <Menu.Item key="pizza">Pizza</Menu.Item>
+      </Menu>
+    </ThemeProvider>
   );
   expect(onOpenChange).toBeCalledTimes(0);
   fireEvent.click(screen.getByRole('button'));
@@ -391,20 +363,18 @@ test('supports onOpenChange property', () => {
 
 test('supports Menu with sections', () => {
   render(
-    <OverlayProvider>
-      <ThemeProvider theme={theme}>
-        <Menu aria-label="Menu with sections" open>
-          <Menu.Section title="Food">
-            <Menu.Item key="burger">🍔 Burger</Menu.Item>
-            <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-          </Menu.Section>
-          <Menu.Section title="Fruits">
-            <Menu.Item key="apple">🍎 Apple</Menu.Item>
-            <Menu.Item key="banana">🍌 Banana</Menu.Item>
-          </Menu.Section>
-        </Menu>
-      </ThemeProvider>
-    </OverlayProvider>
+    <ThemeProvider theme={theme}>
+      <Menu aria-label="Menu with sections" open>
+        <Menu.Section title="Food">
+          <Menu.Item key="burger">🍔 Burger</Menu.Item>
+          <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+        </Menu.Section>
+        <Menu.Section title="Fruits">
+          <Menu.Item key="apple">🍎 Apple</Menu.Item>
+          <Menu.Item key="banana">🍌 Banana</Menu.Item>
+        </Menu.Section>
+      </Menu>
+    </ThemeProvider>
   );
   expect(screen.getByText('Food')).toBeInTheDocument();
   expect(screen.getByText('Fruits')).toBeInTheDocument();

@@ -19,6 +19,6 @@ export const Input: ThemeComponent<'Input'> = {
     'group-data-[action]/input:pr-4',
     'placeholder:text-text-inverted-disabled',
   ]),
-  icon: cva('left-0.5 size-4'),
-  action: cva([inputHeight, 'right-0 w-4']),
+  icon: cva('left-1 size-4'),
+  action: cva([inputHeight, '']),
 };

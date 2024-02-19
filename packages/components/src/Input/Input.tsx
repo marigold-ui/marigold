@@ -29,24 +29,24 @@ const _Input = forwardRef<HTMLInputElement, InputProps>(
 
     const inputIcon = icon
       ? cloneElement(icon, {
+          ...icon.props,
           className: cn(
             'pointer-events-none absolute',
             classNames.icon,
             icon.props.className
           ),
-          ...icon.props,
         })
       : null;
 
     const inputAction =
       action && !props.readOnly
         ? cloneElement(action, {
+            ...action.props,
             className: cn(
-              'absolute',
+              'absolute right-0',
               classNames.action,
               action.props.className
             ),
-            ...action.props,
           })
         : null;
 

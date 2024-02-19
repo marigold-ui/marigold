@@ -1,6 +1,12 @@
 import { registry } from '@/registry';
-import { Card, MarigoldProvider, OverlayContainerProvider, Tabs } from '@/ui';
-import { ReactNode } from 'react';
+import {
+  Card,
+  FieldGroup,
+  MarigoldProvider,
+  OverlayContainerProvider,
+  Tabs,
+} from '@/ui';
+import type { ReactNode } from 'react';
 
 import { type Theme } from '@marigold/system';
 
@@ -35,6 +41,13 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
   const Demo = registry[name].demo;
   const { current, themes } = useThemeSwitch();
 
+  const Wrapper = ({ children }: { children: ReactNode }) =>
+    current === 'core' ? (
+      <FieldGroup labelWidth="100px">{children}</FieldGroup>
+    ) : (
+      children
+    );
+
   return (
     <>
       <Tabs defaultSelectedKey="preview">
@@ -52,7 +65,9 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
               <OverlayContainerProvider value="portalContainer">
                 <MarigoldProvider theme={(current && themes[current]) as Theme}>
                   <div className="not-prose w-full overflow-x-auto p-4">
-                    <Demo />
+                    <Wrapper>
+                      <Demo />
+                    </Wrapper>
                   </div>
                 </MarigoldProvider>
               </OverlayContainerProvider>

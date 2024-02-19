@@ -3,24 +3,12 @@
 /* eslint-disable testing-library/no-container */
 import { cleanup, render, screen } from '@testing-library/react';
 
-import { Theme, cva, useTheme } from '@marigold/system';
+import { cva, useTheme } from '@marigold/system';
 
 import { MarigoldProvider } from './MarigoldProvider';
 
 // Setup
 // ---------------
-const theme: Theme = {
-  name: 'test',
-  colors: {
-    black: '#000',
-  },
-  components: {
-    Text: cva('text-body'),
-    Button: cva(),
-    Popover: cva(),
-  },
-};
-
 let errorMock: jest.SpyInstance;
 
 beforeEach(() => {
@@ -102,35 +90,6 @@ test('support cascading themes', () => {
       "components": {}
     }"
   `);
-});
-
-test('add OverlayProvider from `react-aria`', () => {
-  const { container } = render(
-    <MarigoldProvider theme={theme}>Test</MarigoldProvider>
-  );
-
-  expect(
-    container.querySelector(`div[data-overlay-container="true"]`)
-  ).toBeDefined();
-});
-
-test('OverlayProvider is added only once', () => {
-  const innerTheme = {
-    name: 'inner',
-    colors: { primary: 'red' },
-    components: {
-      Button: cva('bg-slate-300'),
-    },
-  };
-  const { container } = render(
-    <MarigoldProvider theme={theme}>
-      <MarigoldProvider theme={innerTheme}>Test</MarigoldProvider>
-    </MarigoldProvider>
-  );
-
-  expect(
-    container.querySelectorAll(`div[data-overlay-container="true"]`).length
-  ).toEqual(1);
 });
 
 test('cascading without a selector is allowed when inner theme has not root styles', () => {

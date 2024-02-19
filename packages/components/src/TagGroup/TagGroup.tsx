@@ -11,7 +11,7 @@ type RemovedProps = 'className' | 'style' | 'children' | 'isRequired';
 
 export interface TagGroupProps
   extends Omit<RAC.TagGroupProps, RemovedProps>,
-    Pick<TagListProps<object>, 'items' | 'children'>,
+    Pick<TagListProps<object>, 'items' | 'children' | 'renderEmptyState'>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description'> {
   variant?: string;
   size?: string;
@@ -25,6 +25,7 @@ const _TagGroup = ({
   width,
   items,
   children,
+  renderEmptyState,
   variant,
   size,
   ...rest
@@ -33,7 +34,11 @@ const _TagGroup = ({
 
   return (
     <FieldBase as={TagGroup} {...rest}>
-      <TagList items={items} className={classNames.listItems}>
+      <TagList
+        items={items}
+        className={classNames.listItems}
+        renderEmptyState={renderEmptyState}
+      >
         {children}
       </TagList>
     </FieldBase>
