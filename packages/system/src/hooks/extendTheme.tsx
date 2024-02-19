@@ -40,7 +40,9 @@ export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
         // @ts-expect-error (TS can not infer when to return string or an object)
 
         acc[variantItem] = {
+          // @ts-expect-error (TS can not infer when to return string or an object)
           ...newStyles[component].variants[variantItem],
+          // @ts-expect-error (TS can not infer when to return string or an object)
           ...mergedStyles[component].variants[variantItem],
         };
         return acc;
