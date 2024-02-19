@@ -8,9 +8,9 @@ export const Badge: ThemeComponent<'Badge'> = cva(
         default: 'bg-bg-base',
         inverted: 'text-text-inverted bg-bg-inverted',
         success: 'bg-bg-success',
-        info: 'text-text-light bg-bg-info',
+        info: 'text-text-inverted bg-bg-info',
         warning: 'bg-bg-warning',
-        error: 'text-text-light bg-bg-error',
+        error: 'text-text-inverted bg-bg-error',
       },
     },
     defaultVariants: {
