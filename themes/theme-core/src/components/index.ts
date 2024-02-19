@@ -5,6 +5,7 @@ export * from './Button.styles';
 export * from './Calendar.styles';
 export * from './Card.styles';
 export * from './Checkbox.styles';
+export * from './ComboBox.styles';
 export * from './DateField.styles';
 export * from './DatePicker.styles';
 export * from './Dialog.styles';
