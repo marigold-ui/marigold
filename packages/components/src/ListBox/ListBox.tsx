@@ -31,6 +31,9 @@ const _ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
   ({ variant, size, ...props }, ref) => {
     const classNames = useClassNames({ component: 'ListBox', variant, size });
 
+    // RAC types are incorrect, this will be passed to the `useListBox` hook
+    const listBoxProps: any = { shouldSelectOnPressUp: false };
+
     return (
       <ListBoxContext.Provider value={{ classNames }}>
         <div className={classNames.container}>
@@ -41,6 +44,7 @@ const _ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
               classNames.list
             )}
             ref={ref as Ref<HTMLDivElement>}
+            {...listBoxProps}
           >
             {props.children}
           </ListBox>

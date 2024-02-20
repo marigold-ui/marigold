@@ -50,7 +50,7 @@ const meta = {
       control: {
         type: 'select',
       },
-      options: ['none', 'grid'],
+      options: ['none', 'grid', 'linedTable'],
       description: 'variant for the table',
     },
     size: {
