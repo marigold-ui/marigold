@@ -1,4 +1,5 @@
-import { type Theme, cva } from '@marigold/system';
+import { Theme } from '../types';
+import { cva } from '../utils';
 
 export type StylesProps = {
   [K in keyof Theme['components']]: Partial<Theme['components'][K]>;

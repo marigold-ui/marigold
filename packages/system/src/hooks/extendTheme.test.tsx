@@ -8,8 +8,6 @@ import { cva } from '../utils';
 import { StylesProps, extendTheme } from './extendTheme';
 import { ThemeProvider } from './useTheme';
 
-// import { b2bTheme } from 'docs/theme';
-
 const styles: StylesProps = {
   Button: cva('align-center flex', {
     variants: {
