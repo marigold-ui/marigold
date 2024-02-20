@@ -1,4 +1,4 @@
-import { Key, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { Autocomplete, Stack, Text } from '@marigold/components';
 
@@ -17,7 +17,7 @@ export default () => {
 
   const [input, setInput] = useState('');
   const [submitted, setSubmitted] = useState<
-    [Key | null, string | number | null]
+    [string | number | null, string | number | null]
   >(['', '']);
   const filteredVeggies = useMemo(
     () =>
@@ -37,7 +37,7 @@ export default () => {
         items={filteredVeggies}
         value={input}
         onChange={setInput}
-        onSubmit={(key, val) => setSubmitted([key, val])}
+        onSubmit={(id, val) => setSubmitted([id, val])}
       >
         {item => <Autocomplete.Item>{(item as any).name}</Autocomplete.Item>}
       </Autocomplete>
