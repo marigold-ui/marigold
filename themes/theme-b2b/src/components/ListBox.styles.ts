@@ -15,6 +15,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   option: cva([
     font,
     'cursor-pointer p-2 outline-none',
+    'rac-hover:bg-bg-selected rac-hover:text-text-base',
     // Need to use data attributes here because `focus-visible` only works with <Select>
     'rac-focus:bg-bg-selected rac-focus:text-text-base',
     'aria-selected:text-text-inverted aria-selected:bg-bg-selected-input ',
