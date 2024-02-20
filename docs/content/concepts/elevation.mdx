@@ -1,0 +1,53 @@
+---
+title: Elevation
+caption: Learn how to use elevation with Marigold.
+badge: new
+---
+
+Elevations serve as the foundational layers of the UI, providing a clean slate upon which various UI elements can be placed. It is important for creating visual hierarchy, depth, and clarity within a user interface. It guides user attention, improves usability, and enhances the overall user experience by providing feedback, organizing elements, and maintaining consistency in branding.
+
+We create different surface levels, for each layer that a component can be placed.
+The elevation consists of background colors and shadows. Meaning a background surface should be used together with a shadow surface token.
+
+## Types of Elevation
+
+We support four levels of elevation.
+
+- sunken
+- default
+- raised
+- overlay
+
+(picture about the elevevation levels)
+
+### Sunken
+
+The deepest surface level we support is sunken. Sunken surfaces should only be used to the default surface level. Avoid applying sunken elevations to raised or overlay elevations.
+
+The token you need is `bg-surface-sunken` and this should only be used together with `shadow-surface-sunken` which has a value of `none` because on sunken surfaces shoulnd't be a shadow.
+
+(example use of sunken)
+
+### DEFAULT
+
+The default surface is the ground-surface level. It should be set as root surface background on the `<body>` element. It has no visual lift and should be the starting point of each page.
+
+The used token is `bg-surface` together with `shadow-surface` which will also be `none`.
+
+(example)
+
+### Raised
+
+Raised is one level higher than the default surface. It will be used for example on `<Card>`s. The intent of raised surface elevation is to make certain elements stand out more in the design, showing that they're more important or prominent.
+
+The token used is `bg-surface-raised` and should be used together with `shadow-surface-raised`. The shadow creates a higher hierarchy from the ground level.
+
+(example)
+
+### Overlay
+
+Overlay is the highest elevation used for elements that appear above others, like modals, dialogs, menus or popovers in general. Overlays can stack on top of other overlays.
+
+The used token is `bg-surface-overlay` and should be used together with `shadow-surface-overlay` wihch creates a shadow to disaplay a higher hierarchy.
+
+(example)
