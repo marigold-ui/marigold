@@ -50,6 +50,6 @@ test('return classnames (base only)', () => {
   const button = screen.getByText('button');
   console.log(button.className);
   expect(button.className).toMatchInlineSnapshot(
-    `"items-center justify-center gap-[0.5ch] align-center align-center flex disabled:bg-gray-600 text-green-300"`
+    `"items-center justify-center gap-[0.5ch] align-center disabled:bg-gray-600 align-center flex text-green-300"`
   );
 });
