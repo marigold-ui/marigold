@@ -4,7 +4,7 @@ export default () => {
   return (
     <div className="m-auto w-96">
       <div className="bg-bg-surface-sunken shadow-surface-sunken rounded-xl p-2">
-        I'm sunken
+        I'm sunken 👋
         <Card>
           <Headline level={3}>Sunken</Headline>
           <section>
