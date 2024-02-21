@@ -88,7 +88,6 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
 
     const classNames = useClassNames({ component: 'ComboBox', variant, size });
 
-    console.log(classNames);
     return (
       <FieldBase as={ComboBox} ref={ref} {...props}>
         <Input
