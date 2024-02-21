@@ -15,7 +15,8 @@
         "@react-aria",
         "@react-stately",
         "@react-types",
-        "@internationalized"
+        "@internationalized",
+        "react-aria-components"
       ],
       "groupName": "react-aria"
     },
