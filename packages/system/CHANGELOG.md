@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 7.4.0
+
+### Patch Changes
+
+- [#3720](https://github.com/marigold-ui/marigold/pull/3720) [`4d2f94f`](https://github.com/marigold-ui/marigold/commit/4d2f94fcfe17d510298ef0e545736f6dfd6b5992) Thanks [@sarahgm](https://github.com/sarahgm)! - fix[DSTSUP-41]: Combobox styles for icon
+
 ## 7.3.3
 
 ## 7.3.2

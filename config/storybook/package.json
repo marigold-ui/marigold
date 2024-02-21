@@ -1,7 +1,7 @@
 {
   "name": "@marigold/storybook-config",
   "description": "Marigold's storybook configuration",
-  "version": "1.1.30",
+  "version": "1.1.31",
   "license": "MIT",
   "exports": "./main.js",
   "keywords": [
@@ -28,7 +28,7 @@
     "@storybook/jest": "0.2.3",
     "@storybook/source-loader": "7.6.15",
     "@storybook/testing-library": "0.2.2",
-    "@types/react": "18.2.47",
+    "@types/react": "18.2.56",
     "vite-tsconfig-paths": "4.3.1"
   },
   "devDependencies": {
