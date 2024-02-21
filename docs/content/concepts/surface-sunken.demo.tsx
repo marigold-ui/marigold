@@ -1,23 +1,24 @@
-import { Card } from '@marigold/components';
+import { Card, Headline, Link } from '@marigold/components';
 
 export default () => {
   return (
-    <div>
-      <div className="bg-bg-surface-sunken/40 shadow-surface-sunken">
+    <div className="m-auto w-96">
+      <div className="bg-bg-surface-sunken shadow-surface-sunken p-2 ">
         I'm sunken
         <Card>
-          <h2>Professor Severus Snape</h2>
+          <Headline level={3}>Sunken</Headline>
           <section>
             <p>
-              <strong>Professor Severus Snape</strong> (9 January, 1960[1] - 2
-              May, 1998)[2] was an English half-blood[3] wizard serving as
-              Potions Master (1981-1996), Head of Slytherin House (1981-1997),
-              Defence Against the Dark Arts professor (1996-1997), and
-              Headmaster (1997-1998) of the Hogwarts School of Witchcraft and
-              Wizardry as well as a member of the Order of the Phoenix and a
-              Death Eater. His double life played an extremely important role in
-              both of the Wizarding Wars against Voldemort.
+              Sunken is the lowest elevation available. The sunken surface
+              creates a backdrop (or well) where other content sits. Columns on
+              a Kanban board are a good example of the sunken elevation.
             </p>
+            <Link
+              href="https://atlassian.design/foundations/elevation/#sunken"
+              target="blank"
+            >
+              source
+            </Link>
           </section>
         </Card>
       </div>
