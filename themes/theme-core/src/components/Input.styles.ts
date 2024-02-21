@@ -16,7 +16,7 @@ export const Input: ThemeComponent<'Input'> = {
     'read-only:border-transparent read-only:bg-transparent',
     // Extra padding for when an icon/action is present
     'group-data-[icon]/input:pl-5',
-    'group-data-[action]/input:pr-4',
+    'group-data-[action]/input:pr-8',
     'placeholder:text-text-inverted-disabled',
   ]),
   icon: cva('left-1 size-4'),
