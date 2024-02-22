@@ -2,7 +2,7 @@ import { Dialog, Headline, Link } from '@marigold/components';
 
 export default () => {
   return (
-    <div className="m-auto w-96">
+    <div className="bg-bg-surface shadow-surface m-auto w-96">
       <Dialog aria-labelledby="example">
         <Headline level={3}>Overlay</Headline>
         <p>

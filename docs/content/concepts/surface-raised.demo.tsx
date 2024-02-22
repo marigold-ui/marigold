@@ -2,7 +2,7 @@ import { Headline, Link } from '@marigold/components';
 
 export default () => {
   return (
-    <div className="m-auto w-96">
+    <div className="bg-bg-surface shadow-surface m-auto w-96">
       <div className="bg-bg-surface-sunken shadow-surface-sunken rounded-xl  p-4">
         <div className="bg-bg-surface-raised shadow-surface-raised rounded-lg p-4">
           <Headline level={3}>Raised</Headline>
