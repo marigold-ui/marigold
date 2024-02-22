@@ -177,34 +177,35 @@ import { Table } from '@marigold/components';
       property: 'align',
       type: 'center | left | right | justify | char',
       description: 'Control the alignment of Column.',
-      default: 'none',
+      default: 'left',
     },
     {
-      property: 'allowResizing',
-      type: 'boolean | undefined',
+      property: 'allowsResizing',
+      type: 'boolean',
       description: 'Whether the column allows resizing.',
-      default: 'none',
+      default: 'true',
     },
     {
-      property: 'allowSorting',
-      type: 'boolean | undefined',
+      property: 'allowsSorting',
+      type: 'boolean',
       description: 'Whether the column allows sorting.',
-      default: 'none',
+      default: 'true',
     },
     {
       property: 'isRowHeader',
-      type: 'boolean | undefined',
-      description: 'Whether a column is a row header and should be announced by assistive technology during row navigation.',
-      default: 'none',
+      type: 'boolean',
+      description:
+        'Whether a column is a row header and should be announced by assistive technology during row navigation.',
+      default: 'true',
     },
     {
       property: 'width',
       type: 'string | number',
-      description: 'Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width',
-      default: 'none',
+      description:
+        'Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width',
+      default: 'auto',
     },
-
-]}
+  ]}
 />
 
 ## Examples
