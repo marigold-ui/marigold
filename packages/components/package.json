@@ -1,6 +1,6 @@
 {
   "name": "@marigold/components",
-  "version": "7.3.3",
+  "version": "7.4.0",
   "description": "Components for the Marigold Design System",
   "license": "MIT",
   "keywords": [
@@ -22,29 +22,29 @@
     "url": "https://github.com/marigold-ui/marigold"
   },
   "dependencies": {
-    "@internationalized/date": "3.5.1",
+    "@internationalized/date": "3.5.2",
     "@marigold/icons": "workspace:*",
     "@marigold/system": "workspace:*",
     "@marigold/types": "workspace:*",
-    "@react-aria/accordion": "3.0.0-alpha.25",
-    "@react-aria/button": "3.9.1",
-    "@react-aria/calendar": "3.5.4",
-    "@react-aria/focus": "3.16.0",
-    "@react-aria/i18n": "3.10.0",
-    "@react-aria/interactions": "3.20.1",
-    "@react-aria/overlays": "3.20.0",
-    "@react-aria/selection": "3.17.3",
-    "@react-aria/ssr": "3.9.1",
-    "@react-aria/table": "3.13.3",
-    "@react-aria/utils": "3.23.0",
-    "@react-aria/visually-hidden": "3.8.8",
-    "@react-stately/collections": "3.10.4",
-    "@react-stately/data": "3.11.0",
-    "@react-stately/table": "3.11.4",
-    "@react-stately/tree": "3.7.5",
-    "@react-types/shared": "3.22.0",
-    "@react-types/table": "3.9.2",
-    "react-aria-components": "1.0.1"
+    "@react-aria/accordion": "3.0.0-alpha.27",
+    "@react-aria/button": "3.9.3",
+    "@react-aria/calendar": "3.5.6",
+    "@react-aria/focus": "3.16.2",
+    "@react-aria/i18n": "3.10.2",
+    "@react-aria/interactions": "3.21.1",
+    "@react-aria/overlays": "3.21.1",
+    "@react-aria/selection": "3.17.5",
+    "@react-aria/ssr": "3.9.2",
+    "@react-aria/table": "3.13.5",
+    "@react-aria/utils": "3.23.2",
+    "@react-aria/visually-hidden": "3.8.10",
+    "@react-stately/collections": "3.10.5",
+    "@react-stately/data": "3.11.2",
+    "@react-stately/table": "3.11.6",
+    "@react-stately/tree": "3.7.6",
+    "@react-types/shared": "3.22.1",
+    "@react-types/table": "3.9.3",
+    "react-aria-components": "1.1.1"
   },
   "peerDependencies": {
     "react": "17.x || 18.x",
@@ -52,10 +52,10 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "@types/react": "18.2.47",
+    "@types/react": "18.2.56",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "tsup": "8.0.1"
+    "tsup": "8.0.2"
   },
   "scripts": {
     "build": "tsup src/index.ts",

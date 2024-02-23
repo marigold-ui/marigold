@@ -24,7 +24,7 @@
     "@types/react": "18.x"
   },
   "devDependencies": {
-    "@types/react": "18.2.47"
+    "@types/react": "18.2.56"
   },
   "scripts": {
     "build": "echo types only",
