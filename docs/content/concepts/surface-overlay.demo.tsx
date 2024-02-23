@@ -1,10 +1,10 @@
-import { Dialog, Headline, Link } from '@marigold/components';
+import { Headline, Link } from '@marigold/components';
 
 export default () => {
   return (
     <div className="bg-bg-surface shadow-surface m-auto w-96">
-      <Dialog aria-labelledby="example">
-        <Headline level={3}>Overlay</Headline>
+      <div className="bg-bg-surface-overlay shadow-surface-overlay rounded-lg p-4">
+        <Headline level={3}>I should be a Popover!</Headline>
         <p>
           Overlay is the highest elevation available. It is reserved for a UI
           that sits over another UI, such as modals, dialogs, dropdown menus,
@@ -16,7 +16,7 @@ export default () => {
         >
           source
         </Link>
-      </Dialog>
+      </div>
     </div>
   );
 };
