@@ -3,7 +3,7 @@ import { Card, Headline, Link } from '@marigold/components';
 export default () => {
   return (
     <div className="bg-bg-surface shadow-surface m-auto w-96">
-      <div className="bg-bg-surface-sunken shadow-surface-sunken rounded-xl p-2">
+      <div className="bg-bg-surface-sunken shadow-surface-sunken rounded-xl p-4">
         I'm sunken 👋
         <Card>
           <Headline level={3}>Sunken</Headline>
