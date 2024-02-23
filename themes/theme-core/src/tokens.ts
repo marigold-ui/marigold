@@ -207,7 +207,7 @@ export const colors = {
       DEFAULT: gray[100],
       raised: gray[50],
       overlay: gray[50],
-      sunken: gray[900],
+      sunken: gray[200],
     },
   },
 

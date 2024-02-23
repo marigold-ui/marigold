@@ -177,42 +177,36 @@ import { Table } from '@marigold/components';
       property: 'align',
       type: 'center | left | right | justify | char',
       description: 'Control the alignment of Column.',
-      default: 'none',
+      default: 'left',
     },
     {
-      property: 'allowResizing',
-      type: 'boolean | undefined',
-      description: 'Whether the column allows resizing.',
-      default: 'none',
-    },
-    {
-      property: 'allowSorting',
-      type: 'boolean | undefined',
+      property: 'allowsSorting',
+      type: 'boolean',
       description: 'Whether the column allows sorting.',
-      default: 'none',
+      default: 'true',
     },
     {
       property: 'isRowHeader',
-      type: 'boolean | undefined',
-      description: 'Whether a column is a row header and should be announced by assistive technology during row navigation.',
-      default: 'none',
+      type: 'boolean',
+      description:
+        'Whether a column is a row header and should be announced by assistive technology during row navigation.',
+      default: 'true',
     },
     {
       property: 'width',
       type: 'string | number',
-      description: 'Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width',
-      default: 'none',
+      description:
+        'Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width',
+      default: 'auto',
     },
-
-]}
+  ]}
 />
 
 ## Examples
 
 ### Compact variant
 
-In this example you can see the size `compact` from the theme b2b. It reduces the cell spacing. There is also another size, which is called `expaned`, which enlarges the cells.
-The `core-Theme` has also two variants called `tableLines` and `tableBorder`.
+In this example you can see the size `compact` from the theme b2b. It reduces the cell spacing. There is also another size, which is called `expanded`, which enlarges the cells.
 
 <ComponentDemo file="./table-compact.demo.tsx" />
 
