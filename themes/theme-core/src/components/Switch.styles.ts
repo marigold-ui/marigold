@@ -4,14 +4,15 @@ export const Switch: ThemeComponent<'Switch'> = {
   container: cva('justify-start'),
   track: cva([
     'h-[22px]',
-    'bg-bg-surface-raised shadow-[0_0_0_1px]',
-    'group-selected/switch:bg-bg-brand group-selected/switch:shadow-[#ae440a]',
-    'group-disabled/switch:bg-bg-inverted-disabled group-disabled/switch:opacity-[0.5] group-disabled/switch:shadow-[0_0_0_1px] ',
+    'bg-bg-inverted border-border-base border border-solid',
+    'group-selected/switch:bg-bg-selected-input group-selected/switch:border-border-selected',
+    'group-disabled/switch:bg-bg-base-disabled group-disabled/switch:border-border-base',
   ]),
   thumb: cva([
     'size-[20px]',
-    'bg-white',
-    'group-disabled/switch:bg-bg-inverted-disabled',
-    'shadow-[1px_1px_4px]',
+    'bg-bg-base',
+    'group-selected/switch:border-border-selected',
+    'group-disabled/switch:bg-bg-base-disabled group-disabled/switch:border-border-base',
+    'border-border-base border border-solid',
   ]),
 };
