@@ -10,6 +10,10 @@ import { Search } from '@marigold/icons';
 
 export const CommandMenu = () => {
   // Toggle the menu when ⌘K is pressed
+  const router = useRouter();
+  const [open, setOpen] = React.useState(false);
+  const [search, setSearch] = React.useState('');
+
   React.useEffect(() => {
     const handleKeyDown = (e: {
       key: string;
@@ -25,26 +29,22 @@ export const CommandMenu = () => {
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
-  const router = useRouter();
-  const [open, setOpen] = React.useState(false);
-  const [search, setSearch] = React.useState('');
 
   const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
     const items = allContentPages
       .filter(page => page.slug.includes(slug))
       .map(({ title, slug, order }) => ({ title, slug, order }));
     //sort by order or alphabetticly
-    for (let i = 0; i < items.length; i++) {
-      for (let j = 0; j < items.length - 1; j++) {
-        //sort by order if there is an order
-        if (typeof items[j].order == 'number') {
-          items.sort((a, b) => (a.order as number) - (b.order as number));
-          //if there is no order sort alphabetticly
-        } else {
-          items.sort((a, b) => a.title.localeCompare(b.title));
-        }
+    //sort by order if there is an order
+    //if there is no order sort alphabetticly
+    items.sort((a, b) => {
+      if (typeof a.order == 'number' && typeof b.order == 'number') {
+        return a.order - b.order;
+      } else {
+        return a.title.localeCompare(b.title);
       }
-    }
+    });
+
     return { name, slug, items };
   });
 
