@@ -56,4 +56,4 @@ export const siteConfig = {
       slug: 'develop',
     },
   ],
-};
+} as const;

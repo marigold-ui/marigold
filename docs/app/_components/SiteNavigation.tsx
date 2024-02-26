@@ -1,8 +1,10 @@
 'use client';
 
-import { Link } from '@/ui';
+import { Inline, Link } from '@/ui';
 
 import { usePathname } from 'next/navigation';
+
+import { CommandMenu } from '@/ui/Commandk';
 
 import { Logo } from './Logo';
 import { NavLink } from './NavLink';
@@ -44,7 +46,10 @@ export const SiteNavigation = () => {
           ))}
         </div>
       </div>
-      <ThemeMenu />
+      <Inline space={4}>
+        <CommandMenu />
+        <ThemeMenu />
+      </Inline>
     </div>
   );
 };
