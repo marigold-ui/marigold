@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "7.3.3",
+  "version": "7.4.0",
   "private": true,
   "scripts": {
     "dev": "pnpm registry && next dev",
@@ -15,15 +15,15 @@
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
     "@marigold/theme-preset": "workspace:*",
-    "@react-aria/i18n": "3.10.0",
+    "@react-aria/i18n": "3.10.2",
     "@tailwindcss/typography": "0.5.10",
     "@tanstack/react-query": "5.20.5",
-    "@vercel/analytics": "1.1.1",
+    "@vercel/analytics": "1.2.0",
     "autoprefixer": "10.4.17",
     "contentlayer": "0.3.4",
     "eslint": "8.56.0",
-    "eslint-config-next": "13.5.6",
-    "next": "13.5.6",
+    "eslint-config-next": "14.1.0",
+    "next": "14.1.0",
     "next-contentlayer": "0.3.4",
     "postcss": "8.4.35",
     "react": "18.2.0",
@@ -43,10 +43,10 @@
     "zx": "7.2.3"
   },
   "devDependencies": {
-    "@internationalized/date": "3.5.1",
-    "@types/node": "18.19.6",
-    "@types/react": "18.2.47",
-    "@types/react-dom": "18.2.18",
+    "@internationalized/date": "3.5.2",
+    "@types/node": "18.19.17",
+    "@types/react": "18.2.56",
+    "@types/react-dom": "18.2.19",
     "typescript": "5.3.3",
     "unist-builder": "4.0.0",
     "unist-util-visit": "5.0.0"

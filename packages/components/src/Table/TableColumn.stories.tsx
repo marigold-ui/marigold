@@ -22,12 +22,6 @@ const meta = {
       },
       description: 'Whether the column allows sorting',
     },
-    allowsResizing: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'Whether the column allows resizing.',
-    },
     title: {
       control: {
         type: 'text',
