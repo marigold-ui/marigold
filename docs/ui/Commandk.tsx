@@ -34,11 +34,9 @@ export const CommandMenu = () => {
     const items = allContentPages
       .filter(page => page.slug.includes(slug))
       .map(({ title, slug, order }) => ({ title, slug, order }));
-    //sort by order or alphabetticly
-    //sort by order if there is an order
-    //if there is no order sort alphabetticly
+    //sort by order if it's defiened, otherwise sort alphabettically
     items.sort((a, b) => {
-      if (typeof a.order == 'number' && typeof b.order == 'number') {
+      if (typeof a.order === 'number' && typeof b.order === 'number') {
         return a.order - b.order;
       } else {
         return a.title.localeCompare(b.title);
