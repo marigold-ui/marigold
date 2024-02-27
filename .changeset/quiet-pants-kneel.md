@@ -1,6 +1,6 @@
 ---
-"@marigold/theme-b2b": patch
-"@marigold/theme-core": patch
+"@marigold/theme-b2b": minor
+"@marigold/theme-core": minor
 ---
 
 fix: remove and update `Switch` styles for themes
