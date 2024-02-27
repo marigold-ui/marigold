@@ -1,5 +1,6 @@
 ---
-"@marigold/components": patch
+"@marigold/components": minor
+"@marigold/theme-b2b": minor
 "@marigold/theme-b2b": patch
 ---
 
