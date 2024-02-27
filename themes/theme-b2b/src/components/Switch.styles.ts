@@ -6,7 +6,7 @@ export const Switch: ThemeComponent<'Switch'> = {
     [
       'bg-bg-inverted/20 border-border-base border',
       'group-selected/switch:bg-bg-selected-input',
-      'group-disabled/switch:bg-bg-base-disabled group-disabled/switch:opacity-[0.5]',
+      'group-disabled/switch:bg-bg-base-disabled',
     ],
     {
       variants: {
@@ -18,9 +18,9 @@ export const Switch: ThemeComponent<'Switch'> = {
   ),
   thumb: cva(
     [
-      'bg-white',
+      'bg-bg-base',
       'group-disabled/switch:bg-bg-base-disabled',
-      'shadow-[1px_1px_4px]',
+      'border-border-base border border-solid',
     ],
     {
       variants: {
