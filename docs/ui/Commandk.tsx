@@ -55,9 +55,9 @@ export const CommandMenu = () => {
     <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
         <span className="hidden xl:inline-flex ">Search documentation...</span>
-        <span className="hidden lg:inline-flex xl:hidden">Search...</span>
-        <div className="inline-flex h-5  w-10 items-center justify-center rounded-md text-sm lg:border lg:border-gray-300 lg:bg-gray-200">
-          <span className="text-xs">⌘</span>K
+        <span className="inline-flex xl:hidden ">Search...</span>
+        <div className="hidden h-5 w-10  items-center justify-center rounded-md text-sm lg:inline-flex lg:border lg:border-gray-300 lg:bg-gray-200">
+          <span className="text-xs ">⌘</span>K
         </div>
       </Button>
       <Dialog size="medium" aria-label="Global Command Menu">
