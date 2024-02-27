@@ -12,6 +12,5 @@ export const Switch: ThemeComponent<'Switch'> = {
     'size-[20px]',
     'bg-bg-base',
     'group-selected/switch:border-border-selected',
-    'group-disabled/switch:bg-bg-base-disabled group-disabled/switch:border-border-base',
   ]),
 };
