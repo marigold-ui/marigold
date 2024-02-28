@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 
 import { Search } from '@marigold/icons';
 
-import { useHasMounted } from './useHasMounted';
+import { useHasMounted } from '@/ui/useHasMounted';
 
 export const CommandMenu = () => {
   // Toggle the menu when ⌘K is pressed
