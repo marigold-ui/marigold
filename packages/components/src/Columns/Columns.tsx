@@ -64,3 +64,5 @@ export const Columns = ({
 // flex-grow 1 auf alle elemente außer das fixed
 // prop zb fixedChild => dann <Columns columns=['2,4,5'] fixedColumn=['3']>
 // Wie spielen die column und die prop dann zusammen? was macht basis
+
+// drecks core theme
