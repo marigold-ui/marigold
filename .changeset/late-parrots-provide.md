@@ -3,4 +3,4 @@
 "@marigold/theme-core": patch
 ---
 
-fix: core `linedTable` variant works again
+[DSTSUP-54]: feat: update link token in core theme

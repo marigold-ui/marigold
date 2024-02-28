@@ -1,5 +1,26 @@
 # @marigold/docs
 
+## 7.4.0
+
+### Minor Changes
+
+- [#3713](https://github.com/marigold-ui/marigold/pull/3713) [`2b9e03e`](https://github.com/marigold-ui/marigold/commit/2b9e03effbbcc63e50781448b89f4e9062c4d0e5) Thanks [@sebald](https://github.com/sebald)! - feat: Render empty state of `<Tag>`
+
+- [#3674](https://github.com/marigold-ui/marigold/pull/3674) [`3d66a58`](https://github.com/marigold-ui/marigold/commit/3d66a58ca0843a9586e37a87cdfb41b6a6318fd6) Thanks [@sebald](https://github.com/sebald)! - docs: Add docs for `<Form>`
+
+### Patch Changes
+
+- [#3715](https://github.com/marigold-ui/marigold/pull/3715) [`7969fd9`](https://github.com/marigold-ui/marigold/commit/7969fd9d38275c6dbad0d80d2b84c8e8e365dfa4) Thanks [@sebald](https://github.com/sebald)! - fix: add placeholder prop to `Combobox` types
+
+- [#3711](https://github.com/marigold-ui/marigold/pull/3711) [`8bffe0d`](https://github.com/marigold-ui/marigold/commit/8bffe0d1ca6cc6e63344f7e95f845aa3971e5092) Thanks [@aromko](https://github.com/aromko)! - [DST-285]: restructure forms and validation section
+
+- Updated dependencies [[`dbaadeb`](https://github.com/marigold-ui/marigold/commit/dbaadeb54251f39f54c49ab9144f837711c764d5), [`ebea32e`](https://github.com/marigold-ui/marigold/commit/ebea32e2e2d875de430eea07d7f31e2ed23fd21a), [`21fc7cf`](https://github.com/marigold-ui/marigold/commit/21fc7cf6ce095b987f64b000826653bd78c7c88d), [`c61895d`](https://github.com/marigold-ui/marigold/commit/c61895db7fbc3cee7fd0d622518f64d881da7f9b), [`2b9e03e`](https://github.com/marigold-ui/marigold/commit/2b9e03effbbcc63e50781448b89f4e9062c4d0e5), [`3d66a58`](https://github.com/marigold-ui/marigold/commit/3d66a58ca0843a9586e37a87cdfb41b6a6318fd6), [`f9a4a4c`](https://github.com/marigold-ui/marigold/commit/f9a4a4c2dedc31ded547a55f17d35da382b58aec), [`4d2f94f`](https://github.com/marigold-ui/marigold/commit/4d2f94fcfe17d510298ef0e545736f6dfd6b5992), [`36c6301`](https://github.com/marigold-ui/marigold/commit/36c63014fba2211c64b0a93ce387e9ebbe3ef6e0), [`7969fd9`](https://github.com/marigold-ui/marigold/commit/7969fd9d38275c6dbad0d80d2b84c8e8e365dfa4), [`59a9285`](https://github.com/marigold-ui/marigold/commit/59a9285fe8eb46be26ebc7f272081343023fceae), [`45489d9`](https://github.com/marigold-ui/marigold/commit/45489d93ff9ff99206ea233d744a553e943f7bb0)]:
+  - @marigold/components@7.4.0
+  - @marigold/theme-core@26.0.7
+  - @marigold/theme-b2b@27.0.4
+  - @marigold/icons@1.2.39
+  - @marigold/theme-preset@1.3.4
+
 ## 7.3.3
 
 ### Patch Changes

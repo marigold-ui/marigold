@@ -3,4 +3,4 @@
 "@marigold/theme-core": patch
 ---
 
-feat: improve `<Tag>` responsive behavior and core theme styles
+[DSTSUP-48]: FIX: arrow isn't underlayed by the input text anymore
