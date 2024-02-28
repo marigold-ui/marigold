@@ -24,8 +24,6 @@ export const Columns = ({
       )}`
     );
   }
-
-  console.log();
   return (
     <div
       className={cn(
