@@ -1,7 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReactNode } from 'react';
 
-import { Columns, Stack } from '@marigold/components';
+import {
+  Button,
+  Columns,
+  DatePicker,
+  Select,
+  Stack,
+  Switch,
+  TextField,
+} from '@marigold/components';
 
 const meta = {
   title: 'Components/Columns',
@@ -130,6 +138,34 @@ export const FullHeight: Story = {
           I will grow, if you set <code>stretch</code> prop on the{' '}
           <code>Columns</code>!
         </div>
+      </Columns>
+    </div>
+  ),
+};
+
+export const WithComponents: Story = {
+  render: args => (
+    <div className="bg-bg-surface-sunken">
+      <Columns columns={[5, 4, 4, 4]} space={2}>
+        <Select label="Zeitraum">
+          <Select.Option>letzte Woche</Select.Option>
+          <Select.Option>dieses Jahr</Select.Option>
+          <Select.Option>freier Zeitraum</Select.Option>
+        </Select>
+        <DatePicker label="Von" />
+        <DatePicker label="Bis" />
+        <Button variant="secondary">Aktualisieren</Button>
+      </Columns>
+    </div>
+  ),
+};
+
+export const WithTwoComponents: Story = {
+  render: args => (
+    <div className="bg-bg-surface-sunken">
+      <Columns columns={[4, 4]} space={2} stretch>
+        <TextField label="Von" />
+        <Switch />
       </Columns>
     </div>
   ),
