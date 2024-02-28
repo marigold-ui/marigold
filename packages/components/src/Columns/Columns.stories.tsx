@@ -5,6 +5,7 @@ import {
   Button,
   Columns,
   DatePicker,
+  FieldGroup,
   Select,
   Stack,
   Switch,
@@ -165,12 +166,14 @@ export const WithTwoComponentsAndFixedItem: Story = {
   render: () => (
     <div className="bg-bg-surface-sunken p-1">
       fit is on the first element
-      <Columns columns={['fit', 12]} space={2} stretch>
-        <TextField label="Von" />
-        <div className="align-center">
-          <Switch />
-        </div>
-      </Columns>
+      <FieldGroup labelWidth="100px">
+        <Columns columns={['fit', 12]} space={2} stretch>
+          <TextField label="Von" />
+          <div className="align-center">
+            <Switch />
+          </div>
+        </Columns>
+      </FieldGroup>
     </div>
   ),
 };
