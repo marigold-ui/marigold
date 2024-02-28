@@ -25,11 +25,11 @@ export const Columns = ({
     );
   }
 
-  console.log(columns);
+  console.log();
   return (
     <div
       className={cn(
-        'container flex  flex-wrap items-stretch',
+        'flex flex-wrap items-stretch',
         stretch && 'h-full',
         gapSpace[space]
       )}
@@ -38,10 +38,14 @@ export const Columns = ({
       {Children.map(children, (child, idx) => (
         <div
           className={cn(
-            'grow-[--columnSize] ',
-            'basis-[calc((var(--collapseAt)_-_100%)_*_999)]'
+            columns[idx] !== 'fit'
+              ? 'flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]'
+              : 'flex w-fit'
           )}
-          style={createVar({ collapseAt, columnSize: columns[idx] })}
+          style={createVar({
+            collapseAt,
+            columnSize: columns[idx],
+          })}
         >
           {child}
         </div>

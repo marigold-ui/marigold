@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 
 import {
   Button,
+  Center,
   Columns,
   DatePicker,
   Select,
@@ -144,8 +145,9 @@ export const FullHeight: Story = {
 };
 
 export const WithComponents: Story = {
-  render: args => (
-    <div className="bg-bg-surface-sunken">
+  render: () => (
+    <div className="bg-bg-surface-sunken p-1">
+      fit is on the last element
       <Columns columns={[5, 4, 4, 'fit']} space={2}>
         <Select label="Zeitraum">
           <Select.Option>letzte Woche</Select.Option>
@@ -161,11 +163,14 @@ export const WithComponents: Story = {
 };
 
 export const WithTwoComponents: Story = {
-  render: args => (
-    <div className="bg-bg-surface-sunken">
-      <Columns columns={[4, 'fit']} space={2} stretch>
+  render: () => (
+    <div className="bg-bg-surface-sunken p-1">
+      fit is on the first element
+      <Columns columns={['fit', 12]} space={2} stretch>
         <TextField label="Von" />
-        <Switch />
+        <div className="align-center">
+          <Switch />
+        </div>
       </Columns>
     </div>
   ),
