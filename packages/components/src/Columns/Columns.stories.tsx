@@ -146,7 +146,7 @@ export const FullHeight: Story = {
 export const WithComponents: Story = {
   render: args => (
     <div className="bg-bg-surface-sunken">
-      <Columns columns={[5, 4, 4, 4]} space={2}>
+      <Columns columns={[5, 4, 4, 'fit']} space={2}>
         <Select label="Zeitraum">
           <Select.Option>letzte Woche</Select.Option>
           <Select.Option>dieses Jahr</Select.Option>
@@ -163,7 +163,7 @@ export const WithComponents: Story = {
 export const WithTwoComponents: Story = {
   render: args => (
     <div className="bg-bg-surface-sunken">
-      <Columns columns={[4, 4]} space={2} stretch>
+      <Columns columns={[4, 'fit']} space={2} stretch>
         <TextField label="Von" />
         <Switch />
       </Columns>

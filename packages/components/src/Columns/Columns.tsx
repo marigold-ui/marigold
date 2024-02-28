@@ -4,10 +4,9 @@ import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
 
 export interface ColumnsProps extends GapSpaceProp {
   children?: ReactNode;
-  columns?: Array<number>;
+  columns: Array<number | 'fit'>;
   collapseAt?: string | 0;
   stretch?: boolean;
-  fixedColumn?: Array<number>;
 }
 
 export const Columns = ({
@@ -16,7 +15,6 @@ export const Columns = ({
   collapseAt = '0em',
   stretch,
   children,
-  fixedColumn,
   ...props
 }: ColumnsProps) => {
   if (Children.count(children) !== columns.length) {
@@ -27,6 +25,7 @@ export const Columns = ({
     );
   }
 
+  console.log(columns);
   return (
     <div
       className={cn(
@@ -38,12 +37,10 @@ export const Columns = ({
     >
       {Children.map(children, (child, idx) => (
         <div
-          className={
-            cn()
-            // 'grow-[--columnSize] '
-            // 'basis-[calc((var(--collapseAt)_-_100%)_*_999)]'
-            // 'grid-cols-[repeat(auto-fit,var(--columnSize))]'
-          }
+          className={cn(
+            'grow-[--columnSize] ',
+            'basis-[calc((var(--collapseAt)_-_100%)_*_999)]'
+          )}
           style={createVar({ collapseAt, columnSize: columns[idx] })}
         >
           {child}
