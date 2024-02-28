@@ -4,6 +4,9 @@ import { preset } from './src/preset';
 
 export default {
   important: '[data-theme="b2b"]',
+  corePlugins: {
+    preflight: false,
+  },
   content: [
     'src/root.ts',
     'src/colors.ts',
