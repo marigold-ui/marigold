@@ -30,7 +30,7 @@ export const CommandMenu = () => {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+  const isMacOS = window.navigator.userAgent.includes('Mac OS');
 
   const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
     const items = allContentPages
@@ -58,7 +58,7 @@ export const CommandMenu = () => {
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
         <span className="hidden xl:inline-flex ">Search documentation...</span>
         <span className="inline-flex xl:hidden ">Search...</span>
-        {isMac ? (
+        {isMacOS ? (
           <kbd className="hidden h-5 w-10  items-center justify-center rounded-md text-sm lg:inline-flex lg:border lg:border-gray-300 lg:bg-gray-200">
             <span className="text-xs">⌘</span>K
           </kbd>
