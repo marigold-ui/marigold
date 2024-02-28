@@ -8,7 +8,7 @@ export const Table: ThemeComponent<'Table'> = {
       'group-aria-[multiselectable]/table:[&:first-child]:w-12',
       'cursor-default  p-4 text-left',
       'text-text-base',
-      'after:border-border-base after:absolute after:bottom-0 after:left-0 after:size-full after:border-b after:border-solid after:content-[""]',
+      'after:border-border-base after:absolute after:bottom-0 after:left-0 after:z-[-1] after:size-full after:border-b after:border-solid after:content-[""]',
       'focus:outline-outline-focus',
       'bg-white',
     ],
