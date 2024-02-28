@@ -144,7 +144,7 @@ export const FullHeight: Story = {
   ),
 };
 
-export const WithComponents: Story = {
+export const WithMoreComponentsAndFixedItem: Story = {
   render: () => (
     <div className="bg-bg-surface-sunken p-1">
       fit is on the last element
@@ -162,7 +162,7 @@ export const WithComponents: Story = {
   ),
 };
 
-export const WithTwoComponents: Story = {
+export const WithTwoComponentsAndFixedItem: Story = {
   render: () => (
     <div className="bg-bg-surface-sunken p-1">
       fit is on the first element
