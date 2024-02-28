@@ -8,6 +8,8 @@ import { useRouter } from 'next/navigation';
 
 import { Search } from '@marigold/icons';
 
+import { useHasMounted } from './useHasMounted';
+
 export const CommandMenu = () => {
   // Toggle the menu when ⌘K is pressed
   const router = useRouter();
@@ -29,8 +31,11 @@ export const CommandMenu = () => {
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
-
-  const isMacOS = window.navigator.userAgent.includes('Mac OS');
+  const mounted = useHasMounted();
+  let isMacOS;
+  if (mounted) {
+    isMacOS = window.navigator.userAgent.includes('Mac OS');
+  }
 
   const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
     const items = allContentPages
