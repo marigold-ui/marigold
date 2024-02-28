@@ -30,6 +30,8 @@ export const CommandMenu = () => {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+
   const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
     const items = allContentPages
       .filter(page => page.slug.includes(slug))
@@ -56,9 +58,15 @@ export const CommandMenu = () => {
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
         <span className="hidden xl:inline-flex ">Search documentation...</span>
         <span className="inline-flex xl:hidden ">Search...</span>
-        <div className="hidden h-5 w-10  items-center justify-center rounded-md text-sm lg:inline-flex lg:border lg:border-gray-300 lg:bg-gray-200">
-          <span className="text-xs ">⌘</span>K
-        </div>
+        {isMac ? (
+          <kbd className="hidden h-5 w-10  items-center justify-center rounded-md text-sm lg:inline-flex lg:border lg:border-gray-300 lg:bg-gray-200">
+            <span className="text-xs">⌘</span>K
+          </kbd>
+        ) : (
+          <kbd className="hidden h-5 w-12  items-center justify-center rounded-md text-sm lg:inline-flex lg:border lg:border-gray-300 lg:bg-gray-200">
+            <span className="text-xs">Ctrl+</span>K
+          </kbd>
+        )}
       </Button>
       <Dialog size="medium" aria-label="Global Command Menu">
         <Command className="bg-bg-surface text-popover-foreground [&_[cmdk-group-heading]]:text-text-primary-muted flex size-full w-[500px] flex-col overflow-hidden rounded-md [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:size-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:size-5">
