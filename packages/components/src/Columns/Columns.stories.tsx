@@ -148,7 +148,7 @@ export const WithMoreComponentsAndFixedItem: Story = {
   render: () => (
     <div className="bg-bg-surface-sunken p-1">
       fit is on the last element
-      <Columns columns={[5, 4, 4, 'fit']} space={2}>
+      <Columns columns={[4, 10, 4, 'fit']} space={2} collapseAt={'600px'}>
         <Select label="Zeitraum">
           <Select.Option>letzte Woche</Select.Option>
           <Select.Option>dieses Jahr</Select.Option>

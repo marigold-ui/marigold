@@ -15,6 +15,7 @@ export const createPreset = (config: Partial<OptionalConfig>) =>
       },
       plugins: [
         require('tailwindcss-react-aria-components')({ prefix: 'rac' }),
+        require('@tailwindcss/container-queries'),
         // Grouping
         plugin(({ matchVariant, e }) => {
           matchVariant(

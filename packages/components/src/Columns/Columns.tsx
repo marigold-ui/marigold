@@ -24,10 +24,12 @@ export const Columns = ({
       )}`
     );
   }
+
+  console.log(collapseAt);
   return (
     <div
       className={cn(
-        'flex flex-wrap items-stretch',
+        '@container @[--collapseAt]:flex-col flex flex-row items-stretch',
         stretch && 'h-full',
         gapSpace[space]
       )}
@@ -36,9 +38,7 @@ export const Columns = ({
       {Children.map(children, (child, idx) => (
         <div
           className={cn(
-            columns[idx] !== 'fit'
-              ? 'flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]'
-              : 'flex w-fit'
+            columns[idx] !== 'fit' ? 'flex-[--columnSize]' : 'flex w-fit'
           )}
           style={createVar({
             collapseAt,
@@ -65,4 +65,8 @@ export const Columns = ({
 // prop zb fixedChild => dann <Columns columns=['2,4,5'] fixedColumn=['3']>
 // Wie spielen die column und die prop dann zusammen? was macht basis
 
-// drecks core theme
+// drecks core theme -> labelwidth ??? why not working???
+
+// container query für nicht in einer zeile wenn umbrechen -> flex basis ersetzen, change flex direction
+
+//basis-[calc((var(--collapseAt)_-_100%)_*_999)]
