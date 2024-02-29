@@ -25,11 +25,12 @@ export const Columns = ({
     );
   }
 
+  console.log(`@[${collapseAt}]:underline flex flex-row items-stretch`);
   return (
     <div className="@container">
       <div
         className={cn(
-          '@[600px]:underline flex flex-row items-stretch',
+          `@[${collapseAt}]:underline flex flex-row items-stretch`,
           stretch && 'h-full',
           gapSpace[space]
         )}
