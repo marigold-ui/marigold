@@ -155,7 +155,7 @@ export const WithMoreComponentsAndFixedItem: Story = {
           <Select.Option>freier Zeitraum</Select.Option>
         </Select>
         <DatePicker label="Von" />
-        <DatePicker label="Bis" />
+        huhuhuhuh
         <Button variant="secondary">Aktualisieren</Button>
       </Columns>
     </div>

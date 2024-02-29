@@ -25,29 +25,30 @@ export const Columns = ({
     );
   }
 
-  console.log(collapseAt);
   return (
-    <div
-      className={cn(
-        '@container @[--collapseAt]:flex-col flex flex-row items-stretch',
-        stretch && 'h-full',
-        gapSpace[space]
-      )}
-      {...props}
-    >
-      {Children.map(children, (child, idx) => (
-        <div
-          className={cn(
-            columns[idx] !== 'fit' ? 'flex-[--columnSize]' : 'flex w-fit'
-          )}
-          style={createVar({
-            collapseAt,
-            columnSize: columns[idx],
-          })}
-        >
-          {child}
-        </div>
-      ))}
+    <div className="@container">
+      <div
+        className={cn(
+          '@[600px]:underline flex flex-row items-stretch',
+          stretch && 'h-full',
+          gapSpace[space]
+        )}
+        {...props}
+      >
+        {Children.map(children, (child, idx) => (
+          <div
+            className={cn(
+              columns[idx] !== 'fit' ? 'flex-[--columnSize]' : 'flex w-fit'
+            )}
+            style={createVar({
+              collapseAt,
+              columnSize: columns[idx],
+            })}
+          >
+            {child}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
