@@ -91,8 +91,8 @@ importers:
         specifier: 14.1.0
         version: 14.1.0(@babel/core@7.23.9)(@opentelemetry/api@1.7.0)(react-dom@18.2.0)(react@18.2.0)
       postcss-import:
-        specifier: 16.0.0
-        version: 16.0.0(postcss@8.4.35)
+        specifier: 16.0.1
+        version: 16.0.1(postcss@8.4.35)
       postcss-loader:
         specifier: 8.1.0
         version: 8.1.0(postcss@8.4.35)(typescript@5.3.3)
@@ -167,8 +167,8 @@ importers:
         specifier: 8.56.0
         version: 8.56.0
       eslint-plugin-tailwindcss:
-        specifier: 3.14.2
-        version: 3.14.2(tailwindcss@3.4.1)
+        specifier: 3.14.3
+        version: 3.14.3(tailwindcss@3.4.1)
       typescript:
         specifier: 5.3.3
         version: 5.3.3
@@ -10421,8 +10421,8 @@ packages:
       string.prototype.matchall: 4.0.10
     dev: false
 
-  /eslint-plugin-tailwindcss@3.14.2(tailwindcss@3.4.1):
-    resolution: {integrity: sha512-fNzdf4poZP2yQC0xC2prQxMuArMSb5mnellLQvwb9HC3NcLzxs+0IVKWIg1BqUqyui0c+bbjMmhWcKUWK67SLQ==}
+  /eslint-plugin-tailwindcss@3.14.3(tailwindcss@3.4.1):
+    resolution: {integrity: sha512-1MKT8CrVuqVJleHxb7ICHsF2QwO0G+VJ28athTtlcOkccp0qmwK7nCUa1C9paCZ+VVgQU4fonsjLz/wUxoMHJQ==}
     engines: {node: '>=12.13.0'}
     peerDependencies:
       tailwindcss: ^3.4.0
@@ -14560,8 +14560,8 @@ packages:
       read-cache: 1.0.0
       resolve: 1.22.8
 
-  /postcss-import@16.0.0(postcss@8.4.35):
-    resolution: {integrity: sha512-e77lhVvrD1I2y7dYmBv0k9ULTdArgEYZt97T4w6sFIU5uxIHvDFQlKgUUyY7v7Barj0Yf/zm5A4OquZN7jKm5Q==}
+  /postcss-import@16.0.1(postcss@8.4.35):
+    resolution: {integrity: sha512-i2Pci0310NaLHr/5JUFSw1j/8hf1CzwMY13g6ZDxgOavmRHQi2ba3PmUHoihO+sjaum+KmCNzskNsw7JDrg03g==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       postcss: ^8.0.0
