@@ -176,42 +176,36 @@ import { Table } from '@marigold/components';
       property: 'align',
       type: 'center | left | right | justify | char',
       description: 'Control the alignment of Column.',
-      default: 'none',
+      default: 'left',
     },
     {
-      property: 'allowResizing',
-      type: 'boolean | undefined',
-      description: 'Whether the column allows resizing.',
-      default: 'none',
-    },
-    {
-      property: 'allowSorting',
-      type: 'boolean | undefined',
+      property: 'allowsSorting',
+      type: 'boolean',
       description: 'Whether the column allows sorting.',
-      default: 'none',
+      default: 'true',
     },
     {
       property: 'isRowHeader',
-      type: 'boolean | undefined',
-      description: 'Whether a column is a row header and should be announced by assistive technology during row navigation.',
-      default: 'none',
+      type: 'boolean',
+      description:
+        'Whether a column is a row header and should be announced by assistive technology during row navigation.',
+      default: 'true',
     },
     {
       property: 'width',
       type: 'string | number',
-      description: 'Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width',
-      default: 'none',
+      description:
+        'Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width',
+      default: 'auto',
     },
-
-]}
+  ]}
 />
 
 ## Examples
 
 ### Compact variant
 
-In this example you can see the size `compact` from the theme b2b. It reduces the cell spacing. There is also another size, which is called `expaned`, which enlarges the cells.
-The `core-Theme` has also two variants called `tableLines` and `tableBorder`.
+In this example you can see the size `compact` from the theme b2b. It reduces the cell spacing. There is also another size, which is called `expanded`, which enlarges the cells.
 
 <ComponentDemo file="./table-compact.demo.tsx" />
 
@@ -274,3 +268,9 @@ Columns can be nested, which will result in more than one header row to be creat
 In a Table you can specify the width of a column using `width` property in the `Table.Column` component, this allows you to set a fixed width for a specific columnm ensuring consistent column widths throughout the table .
 
 <ComponentDemo file="./table-column-width.demo.tsx" />
+
+### Formatters
+
+We have formatting helper for dates and values you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
+
+<ComponentDemo file="./table-formatters.demo.tsx" />

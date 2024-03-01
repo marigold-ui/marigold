@@ -11,7 +11,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   container: cva('bg-bg-surface relative rounded-sm px-4 pb-8 pt-4 shadow-sm', {
     variants: {
       variant: {
-        fullscreen: 'size-screen pt-10',
+        fullscreen: 'h-screen w-screen pt-10',
       },
     },
   }),
