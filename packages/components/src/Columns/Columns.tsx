@@ -5,14 +5,14 @@ import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
 export interface ColumnsProps extends GapSpaceProp {
   children?: ReactNode;
   columns: Array<number | 'fit'>;
-  collapseAt?: string | 0;
+  collapseAt?: string;
   stretch?: boolean;
 }
 
 export const Columns = ({
   space = 0,
   columns,
-  collapseAt = '0em',
+  collapseAt,
   stretch,
   children,
   ...props
@@ -25,31 +25,30 @@ export const Columns = ({
     );
   }
 
-  console.log(`@[${collapseAt}]:underline flex flex-row items-stretch`);
+  console.log(collapseAt);
   return (
-    <div className="@container">
-      <div
-        className={cn(
-          `@[${collapseAt}]:underline flex flex-row items-stretch`,
-          stretch && 'h-full',
-          gapSpace[space]
-        )}
-        {...props}
-      >
-        {Children.map(children, (child, idx) => (
-          <div
-            className={cn(
-              columns[idx] !== 'fit' ? 'flex-[--columnSize]' : 'flex w-fit'
-            )}
-            style={createVar({
-              collapseAt,
-              columnSize: columns[idx],
-            })}
-          >
-            {child}
-          </div>
-        ))}
-      </div>
+    <div
+      className={cn(
+        'flex flex-auto flex-wrap items-stretch',
+        stretch && 'h-full',
+        gapSpace[space]
+      )}
+      {...props}
+    >
+      {Children.map(children, (child, idx) => (
+        <div
+          className={cn(
+            columns[idx] !== 'fit' ? 'flex-[--columnSize]' : 'flex w-fit',
+            'basis-[calc((var(--collapseAt)_-_100%)_*_999)]'
+          )}
+          style={createVar({
+            collapseAt,
+            columnSize: columns[idx],
+          })}
+        >
+          {child}
+        </div>
+      ))}
     </div>
   );
 };
