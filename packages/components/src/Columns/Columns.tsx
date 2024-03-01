@@ -28,7 +28,7 @@ export const Columns = ({
   return (
     <div
       className={cn(
-        'flex flex-auto flex-wrap items-stretch',
+        'flex flex-wrap items-stretch',
         stretch && 'h-full',
         gapSpace[space]
       )}
