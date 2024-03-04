@@ -8,14 +8,14 @@ export const Table: ThemeComponent<'Table'> = {
       'group-aria-[multiselectable]/table:[&:first-child]:w-12',
       'cursor-default  p-4 text-left',
       'text-text-base',
-      'after:border-border-base after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:border-b after:border-solid after:content-[""]',
+      'after:border-border-base after:absolute after:bottom-0 after:left-0 after:z-[-1] after:size-full after:border-b after:border-solid after:content-[""]',
       'focus:outline-outline-focus',
-      ' bg-white',
+      'bg-white',
     ],
     {
       variants: {
         variant: {
-          grid: 'border-x-[1px]  border-t-[1px]',
+          grid: 'after:border-border-base border-border-base border-x after:border-y',
         },
         size: {
           compact: 'py-2',
