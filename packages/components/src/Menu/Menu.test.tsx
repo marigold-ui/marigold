@@ -308,7 +308,7 @@ test('renders as tray', () => {
   const item = screen.getByText('Burger');
   // eslint-disable-next-line testing-library/no-node-access
   expect(item.parentElement?.parentElement?.className).toMatchInlineSnapshot(
-    `"!left-0 bottom-0 !mt-auto flex !max-h-fit w-full flex-col"`
+    `"!fixed !bottom-0 !left-0 !top-auto !max-h-fit w-full"`
   );
 });
 
