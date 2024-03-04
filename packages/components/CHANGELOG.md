@@ -1,5 +1,21 @@
 # @marigold/components
 
+## 7.5.0
+
+### Minor Changes
+
+- [#3767](https://github.com/marigold-ui/marigold/pull/3767) [`6de438b`](https://github.com/marigold-ui/marigold/commit/6de438b81cd21da9d57e1312692938817b359b16) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-53]:feat: text variant muted for b2b theme
+
+### Patch Changes
+
+- [#3764](https://github.com/marigold-ui/marigold/pull/3764) [`ade96cf`](https://github.com/marigold-ui/marigold/commit/ade96cf23f071140d8d935dc16c9096659b70bce) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-54]: feat: update link token in core theme
+
+- [#3772](https://github.com/marigold-ui/marigold/pull/3772) [`d6c44fa`](https://github.com/marigold-ui/marigold/commit/d6c44fa342d1221f42a8d4f82889c70865b97b39) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Fix Select component in small screens
+
+- Updated dependencies [[`5643257`](https://github.com/marigold-ui/marigold/commit/5643257afd66f093b45ca303876085b4c2b80e32), [`07d9277`](https://github.com/marigold-ui/marigold/commit/07d927746893c846200c2ca6ee6977d50a4ed5a4)]:
+  - @marigold/system@7.5.0
+  - @marigold/icons@1.2.40
+
 ## 7.4.0
 
 ### Minor Changes

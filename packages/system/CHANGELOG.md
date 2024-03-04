@@ -1,5 +1,15 @@
 # @marigold/system
 
+## 7.5.0
+
+### Minor Changes
+
+- [#3748](https://github.com/marigold-ui/marigold/pull/3748) [`5643257`](https://github.com/marigold-ui/marigold/commit/5643257afd66f093b45ca303876085b4c2b80e32) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Adding the option to customize marigold components using `extendTheme function"`
+
+### Patch Changes
+
+- [#3785](https://github.com/marigold-ui/marigold/pull/3785) [`07d9277`](https://github.com/marigold-ui/marigold/commit/07d927746893c846200c2ca6ee6977d50a4ed5a4) Thanks [@aromko](https://github.com/aromko)! - chore: added missing half space tokens. See [tailwind](https://tailwindcss.com/docs/padding).
+
 ## 7.4.0
 
 ### Patch Changes
