@@ -31,11 +31,6 @@ export const CommandMenu = () => {
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
-  const mounted = useHasMounted();
-  let isMacOS;
-  if (mounted) {
-    isMacOS = window.navigator.userAgent.includes('Mac OS');
-  }
 
   const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
     const items = allContentPages
@@ -63,17 +58,9 @@ export const CommandMenu = () => {
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
         <span className="hidden xl:inline-flex ">Search documentation...</span>
         <span className="inline-flex xl:hidden ">Search...</span>
-        {isMacOS ? (
-          <kbd className="hidden h-5 w-10  items-center justify-center rounded-md text-sm lg:inline-flex lg:border lg:border-gray-300 lg:bg-gray-200">
-            <span className="text-xs">⌘</span>K
-          </kbd>
-        ) : (
-          <kbd className="hidden h-5 w-12  items-center justify-center rounded-md text-sm lg:inline-flex lg:border lg:border-gray-300 lg:bg-gray-200">
-            <span className="text-xs">Ctrl+</span>K
-          </kbd>
-        )}
+        <CmdkField></CmdkField>
       </Button>
-      <Dialog size="medium" aria-label="Global Command Menu">
+      <Dialog aria-label="Global Command Menu">
         <Command className="bg-bg-surface text-popover-foreground [&_[cmdk-group-heading]]:text-text-primary-muted flex size-full w-[500px] flex-col overflow-hidden rounded-md [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:size-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:size-5">
           <div className="flex items-center border-b px-3">
             <Search className="mr-2 size-4 shrink-0 opacity-50"></Search>
@@ -116,4 +103,25 @@ export const CommandMenu = () => {
       </Dialog>
     </Dialog.Trigger>
   );
+};
+
+const CmdkField = () => {
+  const mounted = useHasMounted();
+  if (!mounted) {
+    return <></>;
+  }
+  const isMacOS = window.navigator.userAgent.includes('Mac OS');
+  if (isMacOS) {
+    return (
+      <kbd className="hidden h-5 w-10  items-center justify-center rounded-md text-xs lg:inline-flex lg:border lg:border-gray-300 lg:bg-gray-200">
+        <span className="text-xs">⌘ </span>K
+      </kbd>
+    );
+  } else {
+    return (
+      <kbd className="hidden h-5 w-12  items-center justify-center rounded-md text-sm lg:inline-flex lg:border lg:border-gray-300 lg:bg-gray-200">
+        <span className="text-xs">Ctrl+</span>K
+      </kbd>
+    );
+  }
 };

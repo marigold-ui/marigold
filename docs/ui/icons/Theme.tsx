@@ -1,11 +1,16 @@
-export const Theme = () => (
+import { cn } from '@marigold/system';
+
+interface ThemeProps {
+  className?: string;
+}
+export const Theme = ({ className }: ThemeProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className="size-6"
+    className={cn('size-6', className)}
   >
     <path
       strokeLinecap="round"

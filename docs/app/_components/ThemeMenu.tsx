@@ -1,7 +1,6 @@
 'use client';
 
 import { Menu } from '@marigold/components';
-import { ChevronDown } from '@marigold/icons';
 
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 import { Theme } from '@/ui/icons/Theme';
@@ -13,7 +12,7 @@ export const ThemeMenu = () => {
     <Menu
       onAction={current => setTheme(current)}
       label={
-        <div className="flex flex-nowrap items-center gap-2 text-sm">
+        <div className="mx-1 flex flex-nowrap items-center gap-2 text-sm">
           <Theme />
         </div>
       }
