@@ -1,5 +1,14 @@
 # @marigold/storybook-config
 
+## 1.1.32
+
+### Patch Changes
+
+- Updated dependencies [[`e99387f`](https://github.com/marigold-ui/marigold/commit/e99387f7d4510108272e7a12882d4fcb74993252), [`7ddf5d0`](https://github.com/marigold-ui/marigold/commit/7ddf5d051f74f4311cab2b31b224d7fe257e19b7), [`fc7adee`](https://github.com/marigold-ui/marigold/commit/fc7adee62047fa24584666ee17f15f255aa0ba91), [`81783b6`](https://github.com/marigold-ui/marigold/commit/81783b6807dfd05900f6ef862e16c14c58f3d6da), [`ade96cf`](https://github.com/marigold-ui/marigold/commit/ade96cf23f071140d8d935dc16c9096659b70bce), [`5920c98`](https://github.com/marigold-ui/marigold/commit/5920c98e7df4b4fdeafc9fdc49d08469bea02f94), [`6de0cb6`](https://github.com/marigold-ui/marigold/commit/6de0cb6ab5b7acc2638c3ce2ee54ea9f961097c6), [`477e375`](https://github.com/marigold-ui/marigold/commit/477e3757045a048bf76a138f82047c02a348b32a), [`ee50a2a`](https://github.com/marigold-ui/marigold/commit/ee50a2a96679cb5935e2881763b65276194710ce), [`33ceefc`](https://github.com/marigold-ui/marigold/commit/33ceefcebbc7271bef563b722caeada5ce698144), [`7a5bc5f`](https://github.com/marigold-ui/marigold/commit/7a5bc5fcc9103c714fa8ca8c9e12a9364dd7a03a), [`e1bcf1c`](https://github.com/marigold-ui/marigold/commit/e1bcf1c855a7df613ae7254a4bb7ef823515b148), [`6de438b`](https://github.com/marigold-ui/marigold/commit/6de438b81cd21da9d57e1312692938817b359b16), [`d6c44fa`](https://github.com/marigold-ui/marigold/commit/d6c44fa342d1221f42a8d4f82889c70865b97b39), [`e77fbb0`](https://github.com/marigold-ui/marigold/commit/e77fbb070396e78961548a0ee3656562f6f1fdc1), [`fc7f0bf`](https://github.com/marigold-ui/marigold/commit/fc7f0bfa56e03de542e9faf6e0951b6901c10381), [`f04eeb5`](https://github.com/marigold-ui/marigold/commit/f04eeb52645eb595396feca92dc66b94dbc62e8e), [`f306d06`](https://github.com/marigold-ui/marigold/commit/f306d065937b3b2c5ae10a73e5b6e0776016634b)]:
+  - @marigold/theme-core@26.1.0
+  - @marigold/theme-b2b@27.1.0
+  - @marigold/components@7.5.0
+
 ## 1.1.31
 
 ### Patch Changes
