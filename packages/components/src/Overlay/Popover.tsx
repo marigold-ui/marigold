@@ -51,7 +51,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
               ref={ref}
               {...props}
               className={cn(
-                '!left-0 bottom-0 !mt-auto flex !max-h-fit w-full flex-col'
+                '!fixed !bottom-0 !left-0 !top-auto !max-h-fit w-full'
               )}
               UNSTABLE_portalContainer={portal as Element}
             >

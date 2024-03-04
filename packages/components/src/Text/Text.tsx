@@ -57,8 +57,8 @@ export const Text = ({
     <p
       {...props}
       className={cn(
-        classNames,
         'text-[--color] outline-[--outline]',
+        classNames,
         fontStyle && textStyle[fontStyle],
         align && textAlign[align],
         cursor && cursorStyle[cursor],

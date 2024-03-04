@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Link: ThemeComponent<'Link'> = cva(
   [
-    'text-text-base',
+    'text-text-link',
     'hover:underline  hover:visited:cursor-pointer aria-disabled:cursor-not-allowed',
   ],
   {

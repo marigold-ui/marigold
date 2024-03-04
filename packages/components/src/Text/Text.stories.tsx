@@ -8,8 +8,9 @@ const meta = {
   argTypes: {
     variant: {
       control: {
-        type: 'text',
+        type: 'select',
       },
+      options: ['none', 'bold', 'muted'],
       description: 'The variant of the text',
     },
     align: {
