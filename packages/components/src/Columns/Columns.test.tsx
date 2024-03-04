@@ -269,6 +269,6 @@ test('support column fit', () => {
   // eslint-disable-next-line testing-library/no-node-access
   const fitChild = container.lastChild as HTMLElement;
   expect(fitChild.className).toMatchInlineSnapshot(
-    `"flex w-fit basis-[calc((var(--collapseAt)_-_100%)_*_999)]"`
+    `"flex h-fit w-fit basis-[calc((var(--collapseAt)_-_100%)_*_999)]"`
   );
 });
