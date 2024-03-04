@@ -61,6 +61,33 @@ The used token is `bg-surface-overlay` and should be used together with `shadow-
 
 In a common layout the surface default is always the ground base for other elements. You should take use of it and avoid excessive use of raised and overlay elevations. Make sure to use the shadow tokens correctly with the background tokens.
 
+In this example all elevation levels are shown in a full page example layout. The default surface is the base, with the sunken and raised surfaces for creating a visual hierarchy. Overlay surface will be on elements like `Popover`.
+
+<Tabs>
+  <Tabs.List>
+    <Tabs.Item id="b2b">B2B</Tabs.Item>
+    <Tabs.Item id="core">CORE</Tabs.Item>
+  </Tabs.List>
+  <Tabs.TabPanel id="b2b">
+    <Image
+      src="/Elevation_Mockup_B2B.png"
+      alt="B2b elevation"
+      width={700}
+      height={450}
+      className="mx-auto block"
+    />
+  </Tabs.TabPanel>
+  <Tabs.TabPanel id="core">
+    <Image
+      src="/Elevation_Mockup_CORE.png"
+      alt="Core elevation"
+      width={700}
+      height={450}
+      className="mx-auto block"
+    />
+  </Tabs.TabPanel>
+</Tabs>
+
 ## Related
 
 - [List of all Design Tokens](/introduction/design-tokens)
