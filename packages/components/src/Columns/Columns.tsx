@@ -37,7 +37,7 @@ export const Columns = ({
       {Children.map(children, (child, idx) => (
         <div
           className={cn(
-            columns[idx] !== 'fit' ? 'flex-[--columnSize]' : 'flex w-fit',
+            columns[idx] !== 'fit' ? 'flex-[--columnSize]' : 'flex h-fit w-fit',
             'basis-[calc((var(--collapseAt)_-_100%)_*_999)]'
           )}
           style={createVar({
