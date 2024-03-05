@@ -14,28 +14,28 @@ test('supports default space prop', () => {
   );
   const column = screen.getByTestId(/columns/);
   expect(column).toMatchInlineSnapshot(`
-    <div
-      class="flex flex-wrap items-stretch gap-0"
-      data-testid="columns"
-    >
-      <div
-        class="grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-        style="--collapseAt: 0em; --columnSize: 6;"
-      >
-        <div>
-          column
-        </div>
-      </div>
-      <div
-        class="grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-        style="--collapseAt: 0em; --columnSize: 6;"
-      >
-        <div>
-          column
-        </div>
-      </div>
+<div
+  class="flex flex-wrap items-stretch gap-0"
+  data-testid="columns"
+>
+  <div
+    class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+    style="--columnSize: 6;"
+  >
+    <div>
+      column
     </div>
-  `);
+  </div>
+  <div
+    class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+    style="--columnSize: 6;"
+  >
+    <div>
+      column
+    </div>
+  </div>
+</div>
+`);
 });
 
 test('supports custom space prop', () => {
@@ -80,25 +80,25 @@ test('supports columns with two values', () => {
     screen.getByTestId(/columns/)
   );
   expect(columnOne).toMatchInlineSnapshot(`
-    <div
-      class="grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-      style="--collapseAt: 0em; --columnSize: 2;"
-    >
-      <div>
-        columnOne
-      </div>
-    </div>
-  `);
+<div
+  class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+  style="--columnSize: 2;"
+>
+  <div>
+    columnOne
+  </div>
+</div>
+`);
   expect(columnTwo).toMatchInlineSnapshot(`
-    <div
-      class="grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-      style="--collapseAt: 0em; --columnSize: 10;"
-    >
-      <div>
-        columnTwo
-      </div>
-    </div>
-  `);
+<div
+  class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+  style="--columnSize: 10;"
+>
+  <div>
+    columnTwo
+  </div>
+</div>
+`);
 });
 
 test('supports columns with three values', () => {
@@ -113,35 +113,35 @@ test('supports columns with three values', () => {
     screen.getByTestId(/columns/)
   );
   expect(columnOne).toMatchInlineSnapshot(`
-    <div
-      class="grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-      style="--collapseAt: 0em; --columnSize: 2;"
-    >
-      <div>
-        columnOne
-      </div>
-    </div>
-  `);
+<div
+  class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+  style="--columnSize: 2;"
+>
+  <div>
+    columnOne
+  </div>
+</div>
+`);
   expect(columnTwo).toMatchInlineSnapshot(`
-    <div
-      class="grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-      style="--collapseAt: 0em; --columnSize: 4;"
-    >
-      <div>
-        columnTwo
-      </div>
-    </div>
-  `);
+<div
+  class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+  style="--columnSize: 4;"
+>
+  <div>
+    columnTwo
+  </div>
+</div>
+`);
   expect(columnThree).toMatchInlineSnapshot(`
-    <div
-      class="grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-      style="--collapseAt: 0em; --columnSize: 6;"
-    >
-      <div>
-        columnThree
-      </div>
-    </div>
-  `);
+<div
+  class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+  style="--columnSize: 6;"
+>
+  <div>
+    columnThree
+  </div>
+</div>
+`);
 });
 
 test('supports different types of children', () => {
@@ -156,35 +156,35 @@ test('supports different types of children', () => {
     screen.getByTestId(/columns/)
   );
   expect(columnOne).toMatchInlineSnapshot(`
-    <div
-      class="grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-      style="--collapseAt: 0em; --columnSize: 1;"
-    >
-      <main>
-        columnOne
-      </main>
-    </div>
-  `);
+<div
+  class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+  style="--columnSize: 1;"
+>
+  <main>
+    columnOne
+  </main>
+</div>
+`);
   expect(columnTwo).toMatchInlineSnapshot(`
-    <div
-      class="grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-      style="--collapseAt: 0em; --columnSize: 1;"
-    >
-      <div>
-        columnTwo
-      </div>
-    </div>
-  `);
+<div
+  class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+  style="--columnSize: 1;"
+>
+  <div>
+    columnTwo
+  </div>
+</div>
+`);
   expect(columnThree).toMatchInlineSnapshot(`
-    <div
-      class="grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-      style="--collapseAt: 0em; --columnSize: 2;"
-    >
-      <aside>
-        columnThree
-      </aside>
-    </div>
-  `);
+<div
+  class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+  style="--columnSize: 2;"
+>
+  <aside>
+    columnThree
+  </aside>
+</div>
+`);
 });
 
 test('throws error if columns length and children length are different', () => {
@@ -214,36 +214,36 @@ test('supports stretching to full height', () => {
   );
   const container = screen.getByTestId(/columns/);
   expect(container).toMatchInlineSnapshot(`
-    <div
-      class="flex flex-wrap items-stretch h-full gap-0"
-      data-testid="columns"
-    >
-      <div
-        class="grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-        style="--collapseAt: 0em; --columnSize: 1;"
-      >
-        <main>
-          columnOne
-        </main>
-      </div>
-      <div
-        class="grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-        style="--collapseAt: 0em; --columnSize: 1;"
-      >
-        <div>
-          columnTwo
-        </div>
-      </div>
-      <div
-        class="grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-        style="--collapseAt: 0em; --columnSize: 2;"
-      >
-        <aside>
-          columnThree
-        </aside>
-      </div>
+<div
+  class="flex flex-wrap items-stretch h-full gap-0"
+  data-testid="columns"
+>
+  <div
+    class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+    style="--columnSize: 1;"
+  >
+    <main>
+      columnOne
+    </main>
+  </div>
+  <div
+    class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+    style="--columnSize: 1;"
+  >
+    <div>
+      columnTwo
     </div>
-  `);
+  </div>
+  <div
+    class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+    style="--columnSize: 2;"
+  >
+    <aside>
+      columnThree
+    </aside>
+  </div>
+</div>
+`);
 });
 
 test('does work with non react elements', () => {
@@ -254,4 +254,21 @@ test('does work with non react elements', () => {
   );
   const container = screen.getByTestId(/columns/);
   expect(container).toHaveTextContent('hello');
+});
+
+test('support column fit', () => {
+  render(
+    <Columns columns={[12, 'fit']} data-testid="columns">
+      <div>hello</div>
+      <div data-testid="world">world</div>
+    </Columns>
+  );
+  const container = screen.getByTestId(/columns/);
+  expect(container).toHaveTextContent('hello');
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const fitChild = container.lastChild as HTMLElement;
+  expect(fitChild.className).toMatchInlineSnapshot(
+    `"flex h-fit w-fit basis-[calc((var(--collapseAt)_-_100%)_*_999)]"`
+  );
 });
