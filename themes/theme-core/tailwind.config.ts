@@ -16,4 +16,5 @@ export default {
     '!../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}',
   ],
   presets: [preset],
+  safelist: [{ pattern: /(bg|text|border|shadow)-./ }],
 } satisfies Config;

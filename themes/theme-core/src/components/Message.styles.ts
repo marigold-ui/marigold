@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Message: ThemeComponent<'Message'> = {
-  container: cva('bg-bg-surface border border-solid px-4 py-2 text-[13px]', {
+  container: cva('bg-bg-base border border-solid px-4 py-2 text-[13px]', {
     variants: {
       variant: {
         warning: 'border-border-warning',

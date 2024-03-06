@@ -1,5 +1,45 @@
 # @marigold/components
 
+## 7.5.0
+
+### Minor Changes
+
+- [#3767](https://github.com/marigold-ui/marigold/pull/3767) [`6de438b`](https://github.com/marigold-ui/marigold/commit/6de438b81cd21da9d57e1312692938817b359b16) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-53]:feat: text variant muted for b2b theme
+
+### Patch Changes
+
+- [#3764](https://github.com/marigold-ui/marigold/pull/3764) [`ade96cf`](https://github.com/marigold-ui/marigold/commit/ade96cf23f071140d8d935dc16c9096659b70bce) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-54]: feat: update link token in core theme
+
+- [#3772](https://github.com/marigold-ui/marigold/pull/3772) [`d6c44fa`](https://github.com/marigold-ui/marigold/commit/d6c44fa342d1221f42a8d4f82889c70865b97b39) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Fix Select component in small screens
+
+- Updated dependencies [[`5643257`](https://github.com/marigold-ui/marigold/commit/5643257afd66f093b45ca303876085b4c2b80e32), [`07d9277`](https://github.com/marigold-ui/marigold/commit/07d927746893c846200c2ca6ee6977d50a4ed5a4)]:
+  - @marigold/system@7.5.0
+  - @marigold/icons@1.2.40
+
+## 7.4.0
+
+### Minor Changes
+
+- [#3702](https://github.com/marigold-ui/marigold/pull/3702) [`dbaadeb`](https://github.com/marigold-ui/marigold/commit/dbaadeb54251f39f54c49ab9144f837711c764d5) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-279]: remove overlay provider
+
+- [#3713](https://github.com/marigold-ui/marigold/pull/3713) [`2b9e03e`](https://github.com/marigold-ui/marigold/commit/2b9e03effbbcc63e50781448b89f4e9062c4d0e5) Thanks [@sebald](https://github.com/sebald)! - feat: Render empty state of `<Tag>`
+
+### Patch Changes
+
+- [#3750](https://github.com/marigold-ui/marigold/pull/3750) [`ebea32e`](https://github.com/marigold-ui/marigold/commit/ebea32e2e2d875de430eea07d7f31e2ed23fd21a) Thanks [@sebald](https://github.com/sebald)! - fix([DSTSUP-31]): prevent immediately selection is Select/Combobox/Autocomplete
+
+- [#3722](https://github.com/marigold-ui/marigold/pull/3722) [`c61895d`](https://github.com/marigold-ui/marigold/commit/c61895db7fbc3cee7fd0d622518f64d881da7f9b) Thanks [@sebald](https://github.com/sebald)! - fix: core `linedTable` variant works again
+
+- [#3674](https://github.com/marigold-ui/marigold/pull/3674) [`3d66a58`](https://github.com/marigold-ui/marigold/commit/3d66a58ca0843a9586e37a87cdfb41b6a6318fd6) Thanks [@sebald](https://github.com/sebald)! - docs: Add docs for `<Form>`
+
+- [#3720](https://github.com/marigold-ui/marigold/pull/3720) [`4d2f94f`](https://github.com/marigold-ui/marigold/commit/4d2f94fcfe17d510298ef0e545736f6dfd6b5992) Thanks [@sarahgm](https://github.com/sarahgm)! - fix[DSTSUP-41]: Combobox styles for icon
+
+- [#3715](https://github.com/marigold-ui/marigold/pull/3715) [`7969fd9`](https://github.com/marigold-ui/marigold/commit/7969fd9d38275c6dbad0d80d2b84c8e8e365dfa4) Thanks [@sebald](https://github.com/sebald)! - fix: add placeholder prop to `Combobox` types
+
+- Updated dependencies [[`4d2f94f`](https://github.com/marigold-ui/marigold/commit/4d2f94fcfe17d510298ef0e545736f6dfd6b5992)]:
+  - @marigold/system@7.4.0
+  - @marigold/icons@1.2.39
+
 ## 7.3.3
 
 ### Patch Changes

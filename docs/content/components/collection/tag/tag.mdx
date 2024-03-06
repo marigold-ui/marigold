@@ -1,7 +1,6 @@
 ---
 title: Tag
 caption: Component for categorize content
-badge: updated
 ---
 
 A `<Tag>` is a content component. This component can be used to categorize content. They can represent keywords or people, and are grouped to describe an item or a search request.
@@ -52,6 +51,13 @@ import { Tag } from '@marigold/components';
       property: 'onRemove',
       type: '(key: Key) => any',
       description: 'Handler that is called when the remove button is pressed.',
+      default: 'none',
+    },
+    {
+      property: 'renderEmptyState',
+      type: '(props: TagListRenderProps) => ReactNode',
+      description:
+        'Provides content to display when there are no items in the tag list.',
       default: 'none',
     },
   ]}

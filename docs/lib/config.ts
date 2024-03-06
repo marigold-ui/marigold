@@ -18,6 +18,10 @@ export const siteConfig = {
           slug: 'application',
         },
         {
+          name: 'Formatters',
+          slug: 'formatters',
+        },
+        {
           name: 'Layout',
           slug: 'layout',
         },

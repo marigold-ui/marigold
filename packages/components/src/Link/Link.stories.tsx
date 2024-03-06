@@ -9,9 +9,10 @@ const meta = {
   argTypes: {
     variant: {
       control: {
-        type: 'text',
+        type: 'select',
       },
-      description: 'Variants of the link.',
+      options: ['none', 'menuItemLink', 'content'],
+      description: 'Variants of the link, content only for core.',
     },
     href: {
       control: {

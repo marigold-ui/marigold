@@ -128,6 +128,7 @@ export type Theme = {
       'container' | 'button',
       ComponentStyleFunction<string, string>
     >;
+    ComboBox?: ComponentStyleFunction<string, string>;
   };
 };
 

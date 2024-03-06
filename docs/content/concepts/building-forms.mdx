@@ -1,7 +1,8 @@
 ---
 title: Building Forms
 caption: This page should introduce you on how to build forms with Marigold.
-order: 4
+order: 5
+badge: updated
 ---
 
 ## Marigold Form Components
@@ -10,16 +11,44 @@ Form components are individual elements that make up a form, such as text fields
 
 Marigold has a set of form components that you can use to build your form.
 
-- [Autocomplete](/components/autocomplete)
-- [Button](/components/button)
-- [Checkbox](/components/checkbox)
-- [NumberField](/components/number-field)
-- [Radio](/components/radio)
-- [Select](/components/select)
-- [Slider](/components/slider)
-- [Switch](/components/switch)
-- [TextArea](/components/text-area)
-- [TextField](/components/text-field)
+- [Autocomplete](/components/form/autocomplete)
+- [Button](/components/form/button)
+- [Calendar](/components/form/calendar)
+- [Checkbox](/components/form/checkbox)
+- [ComboBox](/components/form/combobox)
+- [DateField](/components/form/datefield)
+- [DatePicker](/components/form/datepicker)
+- [FieldGroup](/components/form/fieldgroup)
+- [NumberField](/components/form/number-field)
+- [Radio](/components/form/radio)
+- [SearchField](/components/form/search-field)
+- [Select](/components/form/select)
+- [Slider](/components/form/slider)
+- [Switch](/components/form/switch)
+- [TextArea](/components/form/text-area)
+- [TextField](/components/form/text-field)
+
+## Field Anatomy
+
+An accessible form input includes a clear label associated with its corresponding form control (`<input>`, `<select>`, ...). Additional guidance is provided by a help text, which can give additional context or instructions or display a descriptive messages.
+
+<Image
+  src="/field.png"
+  alt="Anatomy of a field"
+  width={300}
+  height={150}
+  className="mx-auto block"
+/>
+
+Marigold's form components allow to set these properties like shown below. All form components allow to set a `label`, `description` and `errorMessages` besides some additional control-specific props.
+
+```tsx
+<TextField
+  label="Promo Code"
+  description="You can find the code on the back of your ticket."
+  errorMessage="The promo code was already used."
+/>
+```
 
 ## How to layout a form?
 
@@ -43,7 +72,7 @@ When the state or props change, React will automatically re-render the component
 
 ## Interactive Forms
 
-Interactve forms can have several features like error validation, real-time feedback (password-stregth indicator), logic (hide fields if a several field is checked etc.) or autocomplete.
+Interactive forms can have several features like error handling, [validation](/concepts/validation), real-time feedback (password-strength indicator), logic (hide fields if a several field is checked etc.) or autocomplete.
 All these features help to make interactive fields more user friendly and more efficient.
 
 ### Error Handling
@@ -61,13 +90,21 @@ You can have interactive forms which contains logical aspects. In this example y
 
 <ComponentDemo file="./logical-interaction.demo.tsx" />
 
-## Submitting a form
+## Forms and submitting Data
 
-In this example you can see how a form with all its fields can be submitted. The submitted data will be displayed in an alert message.
+In HTML, forms are build using the `<form>` element, which wraps a set of input fields to gather and submit user data. By default, HTML forms trigger a full-page refresh upon submission. To gain control over the process, you can use preventDefault during the onSubmit event, enabling you to make a custom API call to submit the data according to your preferences.
 
-For validating the form we are using [`zod`](https://zod.dev/). It is a library for building schemas, which can be used to validate inputs. It is especially useful when you have more complex validation rules.
+The simplest way to get data from a form is using the browser's [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API during the `onSubmit` event. This can be passed directly to `fetch`, or converted into a regular JavaScript object using `Object.fromEntries`.
 
-<ComponentDemo file="./building-forms-zod.demo.tsx" />
+<Message messageTitle="Names are important!" variant="info">
+  Make sure to include the name attribute in each field, as it uniquely
+  identifies each form element, facilitating server-side processing and ensuring
+  a key-value pair for data submission.
+</Message>
+
+Below is a basic example of extracting data from an [uncontrolled](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components) form. Submitting a promo code won't trigger a regular form submission; instead, it will display the provided data.
+
+<ComponentDemo file="./building-forms-submit.demo.tsx" />
 
 ## Handling complex forms and form state
 

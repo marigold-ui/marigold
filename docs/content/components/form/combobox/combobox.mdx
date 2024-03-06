@@ -1,7 +1,6 @@
 ---
 title: ComboBox
 caption: A text-field that allows the user to select values from a provided items array.
-badge: updated
 ---
 
 The `<ComboBox>` component combines a text input with a listbox, allowing users to filter a list of options to items matching a query or adding a new value.
@@ -31,6 +30,12 @@ import { ComboBox } from '@marigold/components';
       type: 'ReactNode',
       description:
         "The label text. If you don't want to visually display a label, provide an `aria-label` or `aria-labelledby` attribute for accessibility.",
+    },
+    {
+      property: 'placeholder',
+      type: 'string',
+      description: 'Set the placeholder for the select.',
+      default: 'none',
     },
     {
       property: 'defaultValue',
@@ -156,3 +161,15 @@ This is especially helpful if you need to customize the filtering. For example, 
 The ComboBox component supports working with asynchronous data. In the example below, the [`useAsyncList`](/hooks/useAsyncList) hook is used to handle the loading and filtering of data from the server.
 
 <ComponentDemo file="./combobox-async.demo.tsx" />
+
+### Displaying Suggestions
+
+Opening the suggestion popover can be triggered through various interactions. This behavior can be adjusted by the `menuTrigger` prop:
+
+- `input` (default): Open when the user edits the input text.
+- `focus`: Open when the user focuses the `<ComboBox>` input.
+- `manual`: Open when the user presses the trigger button or uses the arrow keys.
+
+The below examples will display the suggestions when the input field is focused.
+
+<ComponentDemo file="./combobox-menu-trigger.demo.tsx" />
