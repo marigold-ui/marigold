@@ -13,7 +13,7 @@ import { useHasMounted } from '@/ui/useHasMounted';
 export const CommandMenu = () => {
   // Toggle the menu when ⌘K is pressed
   const router = useRouter();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
 
   React.useEffect(() => {
