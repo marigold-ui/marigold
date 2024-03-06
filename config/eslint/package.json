@@ -23,8 +23,8 @@
     "@babel/eslint-parser": "^7.22.10",
     "@babel/plugin-syntax-flow": "^7.16.7",
     "@babel/plugin-transform-react-jsx": "^7.17.3",
-    "@typescript-eslint/eslint-plugin": "7.0.1",
-    "@typescript-eslint/parser": "7.0.1",
+    "@typescript-eslint/eslint-plugin": "7.1.0",
+    "@typescript-eslint/parser": "7.1.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-react-app": "7.0.1",
     "eslint-plugin-flowtype": "^8.0.3",
@@ -42,7 +42,7 @@
     "typescript": "4.8.x || 4.9.x || 5.0.x || 5.2.x || 5.3.x"
   },
   "devDependencies": {
-    "eslint": "8.56.0",
+    "eslint": "8.57.0",
     "eslint-plugin-tailwindcss": "3.14.2",
     "typescript": "5.3.3"
   }
