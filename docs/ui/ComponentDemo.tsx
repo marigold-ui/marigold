@@ -61,7 +61,7 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
               data-theme={current}
               className="flex size-full min-h-[150px] flex-col [&>*:nth-child(2)]:flex [&>*:nth-child(2)]:flex-1 [&>*:nth-child(2)]:place-items-center [&>*:nth-child(2)]:rounded-xl"
             >
-              <div id="portalContainer" />
+              <div id="portalContainer" className="not-prose" />
               <OverlayContainerProvider value="portalContainer">
                 <MarigoldProvider theme={(current && themes[current]) as Theme}>
                   <div className="not-prose w-full overflow-x-auto p-4">

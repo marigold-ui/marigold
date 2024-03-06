@@ -149,7 +149,7 @@ export const colors = {
       hover: red[600],
     },
     link: {
-      DEFAULT: brand[900],
+      DEFAULT: brand[700],
       hover: brand[800],
     },
   },
