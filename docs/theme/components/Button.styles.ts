@@ -8,7 +8,7 @@ export const Button: ThemeComponent<'Button'> = cva(
         ghost: 'text-secondary-700 hover:text-secondary-900  p-0',
         menu: 'text-secondary-700 data-[hovered]:bg-secondary-200 p-0',
         sunken:
-          'text-secondary-700 hover:bg-secondary-950 bg-secondary-950 h-8 rounded-lg',
+          'text-text-primary-muted hover:bg-secondary-400/20 bg-secondary-400/10 h-8 rounded-lg',
       },
       size: {
         small: 'text-sm',

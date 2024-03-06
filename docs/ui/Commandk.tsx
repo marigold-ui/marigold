@@ -13,7 +13,7 @@ import { useHasMounted } from '@/ui/useHasMounted';
 export const CommandMenu = () => {
   // Toggle the menu when ⌘K is pressed
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const [search, setSearch] = React.useState('');
 
   React.useEffect(() => {
@@ -58,10 +58,10 @@ export const CommandMenu = () => {
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
         <span className="hidden xl:inline-flex ">Search documentation...</span>
         <span className="inline-flex xl:hidden ">Search...</span>
-        <CmdkField></CmdkField>
+        <CmdkField />
       </Button>
       <Dialog aria-label="Global Command Menu">
-        <Command className="bg-bg-surface text-popover-foreground [&_[cmdk-group-heading]]:text-text-primary-muted flex size-full w-[500px] flex-col overflow-hidden rounded-md [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:size-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:size-5">
+        <Command className="bg-bg-surface text-popover-foreground [&_[cmdk-group-heading]]:text-secondary-400 [&_[cmdk-list-sizer]]:divide-secondary-100 flex size-full w-[500px] flex-col overflow-hidden rounded-md [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:size-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2.5 [&_[cmdk-item]]:py-2 [&_[cmdk-item]_svg]:size-5 [&_[cmdk-list-sizer]]:divide-y">
           <div className="flex items-center border-b px-3">
             <Search className="mr-2 size-4 shrink-0 opacity-50"></Search>
             <Command.Input
@@ -72,7 +72,7 @@ export const CommandMenu = () => {
               className="placeholder:text-text-primary-muted flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50"
             />
           </div>
-          <Command.List className="max-h-[300px] overflow-y-auto overflow-x-hidden">
+          <Command.List className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full max-h-[300px] overflow-y-auto overflow-x-hidden">
             <Command.Empty className="py-6 text-center text-sm">
               No results found.
             </Command.Empty>
@@ -80,15 +80,11 @@ export const CommandMenu = () => {
               <CommandGroup
                 heading={name}
                 key={name}
-                className="text-secondary-700 [&_[cmdk-group-heading]]:text-text-primary-muted overflow-hidden p-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium"
+                className="text-secondary-600 [&_[cmdk-group-heading]]:text-text-primary-muted overflow-hidden p-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium"
               >
-                <Command.Separator
-                  alwaysRender
-                  className="bg-secondary-500 border-secondary-500 -mx-1 h-px"
-                ></Command.Separator>
                 {items.map(page => (
                   <Command.Item
-                    className="aria-selected:bg-bg-hover aria-selected:text-text-primary relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                    className="aria-selected:bg-bg-hover aria-selected:text-text-primary relative flex cursor-default select-none items-center rounded px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
                     key={page.slug}
                     value={page.slug}
                     onSelect={() => redirect(page.slug)}
