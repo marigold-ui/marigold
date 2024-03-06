@@ -21,7 +21,7 @@
     "@vercel/analytics": "1.2.2",
     "autoprefixer": "10.4.18",
     "contentlayer": "0.3.4",
-    "eslint": "8.56.0",
+    "eslint": "8.57.0",
     "eslint-config-next": "14.1.2",
     "next": "14.1.2",
     "next-contentlayer": "0.3.4",
