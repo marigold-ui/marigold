@@ -38,7 +38,7 @@ export const colors = {
   // Background
   // ---------------
   bg: {
-    body: tw.white,
+    body: tw.slate[50],
     hover: tw.neutral[100],
     muted: tw.slate[100],
 
