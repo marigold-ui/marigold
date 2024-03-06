@@ -5,6 +5,9 @@ import type RAC from 'react-aria-components';
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
+import { useFieldGroupContext } from '../FieldBase';
+import { CheckboxField } from './CheckBoxField';
+
 // SVG Icon
 const CheckMark = () => (
   <svg viewBox="0 0 12 10">
@@ -101,9 +104,17 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
       ...rest,
     } as const;
 
+    const { labelWidth } = useFieldGroupContext();
+    /**
+     * Use hook depending if the checkbox is used inside a group or standalone.
+     * This is unusual, but since the checkboxs is not moving out of the group,
+     * it should be safe.
+     */
+    //  const groupState = useCheckboxGroupContext();
+
     const classNames = useClassNames({ component: 'Checkbox', variant, size });
 
-    return (
+    const component = (
       <Checkbox
         ref={ref}
         className={cn(
@@ -124,6 +135,12 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
           </>
         )}
       </Checkbox>
+    );
+
+    return labelWidth ? (
+      <CheckboxField labelWidth={labelWidth}>{component}</CheckboxField>
+    ) : (
+      component
     );
   }
 );
