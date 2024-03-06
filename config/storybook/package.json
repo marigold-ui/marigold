@@ -28,7 +28,7 @@
     "@storybook/jest": "0.2.3",
     "@storybook/source-loader": "7.6.17",
     "@storybook/testing-library": "0.2.2",
-    "@types/react": "18.2.56",
+    "@types/react": "18.2.61",
     "vite-tsconfig-paths": "4.3.1"
   },
   "devDependencies": {
