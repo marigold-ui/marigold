@@ -13,6 +13,5 @@
   "npm.packageManager": "pnpm",
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
-  ],
-  "NODE_OPTIONS": "-no-deprecation"
+  ]
 }
