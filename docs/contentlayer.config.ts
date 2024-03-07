@@ -109,7 +109,7 @@ export default makeSource({
   documentTypes: [ContentPage],
   mdx: {
     remarkPlugins: [remarkGfm],
-    // @ts-expect-error
+    /// @ts-ignore
     rehypePlugin: [
       [rehypeComponentDemo, { contentDirPath }],
       rehypeSlug,
