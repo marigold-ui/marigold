@@ -1,7 +1,4 @@
-import { createRequire } from 'module';
-import { withContentlayer } from 'next-contentlayer';
-
-const require = createRequire(import.meta.url);
+const { withContentlayer } = require('next-contentlayer');
 const pkg = require('./package.json');
 
 /** @type {import('next').NextConfig} */
@@ -40,4 +37,4 @@ const nextConfig = {
   },
 };
 
-export default withContentlayer(nextConfig);
+module.exports = withContentlayer(nextConfig);
