@@ -11,9 +11,6 @@ import { ThemeProvider } from './useTheme';
 const styles: StylesProps = {
   Button: cva('align-center flex', {
     variants: {
-      variant: {
-        secondary: 'text-secondary-800',
-      },
       size: {
         medium: 'size-15',
       },
@@ -32,7 +29,6 @@ const theme: Theme = {
           tertiary: 'text-green-300',
         },
         size: {
-          small: 'size-10',
           large: 'w-50 h-50',
         },
       },
@@ -40,7 +36,7 @@ const theme: Theme = {
   },
 };
 
-test('return classnames (base only)', () => {
+test('Accepting a new variant', () => {
   const newTheme = extendTheme(styles, theme);
   render(
     <ThemeProvider theme={newTheme}>
