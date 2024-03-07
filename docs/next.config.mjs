@@ -1,6 +1,8 @@
+import { createRequire } from 'module';
 import { withContentlayer } from 'next-contentlayer';
 
-import { version as _version } from './package.json';
+const require = createRequire(import.meta.url);
+const pkg = require('./package.json');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -20,7 +22,7 @@ const nextConfig = {
     '@marigold/theme-preset',
   ],
   env: {
-    version: _version,
+    version: pkg.version,
   },
   async redirects() {
     return [
