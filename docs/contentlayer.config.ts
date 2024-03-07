@@ -6,7 +6,7 @@ import rehypePrettyCode, {
 } from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
-import { Pluggable } from 'unified';
+import { Pluggable, PluggableList } from 'unified';
 import { visit } from 'unist-util-visit';
 
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
@@ -109,7 +109,8 @@ export default makeSource({
   documentTypes: [ContentPage],
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [
+    // @ts-expect-error
+    rehypePlugin: [
       [rehypeComponentDemo, { contentDirPath }],
       rehypeSlug,
       // to inject the source code and other stuff inside `pre` element props
@@ -179,6 +180,6 @@ export default makeSource({
           },
         },
       ],
-    ] as Pluggable[],
+    ] as PluggableList,
   },
 });
