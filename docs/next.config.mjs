@@ -1,5 +1,6 @@
-const { withContentlayer } = require('next-contentlayer');
-const pkg = require('./package.json');
+import { withContentlayer } from 'next-contentlayer';
+
+import { version as _version } from './package.json';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -19,7 +20,7 @@ const nextConfig = {
     '@marigold/theme-preset',
   ],
   env: {
-    version: pkg.version,
+    version: _version,
   },
   async redirects() {
     return [
@@ -37,4 +38,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withContentlayer(nextConfig);
+export default withContentlayer(nextConfig);
