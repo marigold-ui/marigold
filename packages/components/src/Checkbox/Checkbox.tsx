@@ -1,9 +1,13 @@
-import { forwardRef } from 'react';
+import { forwardRef, useContext } from 'react';
 import { Checkbox } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { CheckboxGroupStateContext } from 'react-aria-components';
 
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
+
+import { useFieldGroupContext } from '../FieldBase';
+import { CheckboxField } from './CheckBoxField';
 
 // SVG Icon
 const CheckMark = () => (
@@ -101,9 +105,12 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
       ...rest,
     } as const;
 
+    const { labelWidth } = useFieldGroupContext();
     const classNames = useClassNames({ component: 'Checkbox', variant, size });
 
-    return (
+    const state = useContext(CheckboxGroupStateContext);
+
+    const component = (
       <Checkbox
         ref={ref}
         className={cn(
@@ -124,6 +131,12 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
           </>
         )}
       </Checkbox>
+    );
+
+    return !state && labelWidth ? (
+      <CheckboxField labelWidth={labelWidth}>{component}</CheckboxField>
+    ) : (
+      component
     );
   }
 );
