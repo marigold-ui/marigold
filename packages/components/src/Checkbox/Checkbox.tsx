@@ -1,6 +1,7 @@
-import { forwardRef } from 'react';
+import { forwardRef, useContext } from 'react';
 import { Checkbox } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { CheckboxGroupStateContext } from 'react-aria-components';
 
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
@@ -105,14 +106,9 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
     } as const;
 
     const { labelWidth } = useFieldGroupContext();
-    /**
-     * Use hook depending if the checkbox is used inside a group or standalone.
-     * This is unusual, but since the checkboxs is not moving out of the group,
-     * it should be safe.
-     */
-    //  const groupState = useCheckboxGroupContext();
-
     const classNames = useClassNames({ component: 'Checkbox', variant, size });
+
+    const state = useContext(CheckboxGroupStateContext);
 
     const component = (
       <Checkbox
@@ -137,7 +133,7 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
       </Checkbox>
     );
 
-    return labelWidth ? (
+    return !state && labelWidth ? (
       <CheckboxField labelWidth={labelWidth}>{component}</CheckboxField>
     ) : (
       component
