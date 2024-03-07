@@ -1,6 +1,5 @@
 // @ts-nocheck
-import { Theme } from '../types';
-import { cva } from '../utils';
+import { type Theme, cva } from '@marigold/system';
 
 export type StylesProps = {
   [K in keyof Theme['components']]: Partial<Theme['components'][K]>;
@@ -37,9 +36,21 @@ export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
       mergedStyles[component] = mergeSlotStyles;
     } else {
       const variants = ['size', 'variant'].reduce((acc, variantItem) => {
+        const newStylesVariants = newStyles[component].variants?.[variantItem];
+        const mergedStylesVariants =
+          mergedStyles[component].variants?.[variantItem];
+
+        if (newStylesVariants && mergedStylesVariants) {
+          const dupVariants = Object.keys(newStylesVariants).filter(variant =>
+            Object.keys(mergedStylesVariants).includes(variant)
+          );
+          if (dupVariants.length) {
+            throw new Error(dupVariants.join() + ' variants are duplicated');
+          }
+        }
+
         acc[variantItem] = {
           ...newStyles[component].variants?.[variantItem],
-
           ...mergedStyles[component].variants?.[variantItem],
         };
         return acc;
