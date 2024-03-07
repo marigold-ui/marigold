@@ -1,7 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReactNode } from 'react';
 
-import { Columns, Stack } from '@marigold/components';
+import {
+  Button,
+  Columns,
+  DatePicker,
+  FieldGroup,
+  Select,
+  Stack,
+  Switch,
+  TextField,
+} from '@marigold/components';
 
 const meta = {
   title: 'Components/Columns',
@@ -131,6 +140,40 @@ export const FullHeight: Story = {
           <code>Columns</code>!
         </div>
       </Columns>
+    </div>
+  ),
+};
+
+export const WithMoreComponentsAndFixedItem: Story = {
+  render: () => (
+    <div className="bg-bg-surface-sunken p-1">
+      fit is on the last element
+      <Columns columns={[4, 10, 4, 'fit']} space={2} collapseAt="500px">
+        <Select label="Zeitraum">
+          <Select.Option>letzte Woche</Select.Option>
+          <Select.Option>dieses Jahr</Select.Option>
+          <Select.Option>freier Zeitraum</Select.Option>
+        </Select>
+        <DatePicker label="Von" />
+        I'm a text
+        <Button variant="secondary">Aktualisieren</Button>
+      </Columns>
+    </div>
+  ),
+};
+
+export const WithTwoComponentsAndFixedItem: Story = {
+  render: () => (
+    <div className="bg-bg-surface-sunken p-1">
+      fit is on the first element
+      <FieldGroup labelWidth="100px">
+        <Columns columns={['fit', 12]} space={2} stretch>
+          <TextField label="Von" />
+          <div className="align-center">
+            <Switch />
+          </div>
+        </Columns>
+      </FieldGroup>
     </div>
   ),
 };

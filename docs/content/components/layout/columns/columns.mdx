@@ -1,6 +1,7 @@
 ---
 title: Columns
 caption: Component with sized columns in one row.
+badge: updated
 ---
 
 The `<Columns>` is a responsive layout component, with sized columns in one row.
@@ -23,9 +24,9 @@ import { Columns } from '@marigold/components';
     {
       property: 'columns (required)',
       description:
-        'An array of numbers to set the size of the children. The columns array length and the count of children must be the same.',
-      type: 'number[]',
-      default: '',
+        'An array of numbers to set the size of the children. The columns array length and the count of children must be the same. Write "fit" for the column you want to have it fitting the contents width and height.',
+      type: '(number| "fit")[]',
+      default: 'none',
     },
     {
       property: 'space',
@@ -36,7 +37,7 @@ import { Columns } from '@marigold/components';
     {
       property: 'collapseAt',
       description:
-        'Collapse children into a vertical layout at given width. Note that `collapseAt` is based on the total element width, and not the window width. With a default value of "0em" columns will not collapse by default.',
+        'Collapse children into a vertical layout at given width. Note that `collapseAt` is based on the total element width, and not the window width. With a default value of "0" columns will not collapse by default. ',
       type: 'string | number',
       default: '0em',
     },
@@ -78,3 +79,9 @@ By using the `stretch` prop you can make the container to take full width. Note 
 Here is another interactive example on how to use the `stretch` prop. Note that there has to be a parent of the columns that sets a `height`. Otherwhise setting the height in a column to `100%` will not have any effect.
 
 <ComponentDemo file="./stretch-columns-switch.demo.tsx" />
+
+### Column with fitting width
+
+In this example the `fit` option is set to the `columns` property. The column width will be always fitting the content.
+
+<ComponentDemo file="./fit-width-columns.demo.tsx" />
