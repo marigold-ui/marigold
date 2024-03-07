@@ -1,8 +1,12 @@
 import { defineDocumentType, makeSource } from 'contentlayer/source-files';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import rehypePrettyCode, { LineElement } from 'rehype-pretty-code';
+import rehypePrettyCode, {
+  LineElement,
+  type Options as PrettyCodeOptions,
+} from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
+import { Pluggable } from 'unified';
 import { visit } from 'unist-util-visit';
 
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
@@ -138,7 +142,7 @@ export default makeSource({
           onVisitHighlightedChars(node: LineElement) {
             node.properties.className = ['bg-gray-700 px-2 py-0.5 rounded-sm'];
           },
-        },
+        } satisfies Partial<PrettyCodeOptions>,
       ],
       // needed to copy code
       () => tree => {
@@ -175,6 +179,6 @@ export default makeSource({
           },
         },
       ],
-    ],
+    ] as Pluggable[],
   },
 });
