@@ -8,11 +8,15 @@ export const Dialog: ThemeComponent<'Dialog'> = {
       },
     },
   }),
-  container: cva('bg-bg-surface relative rounded-sm px-4 pb-8 pt-4 shadow-sm', {
+  container: cva('bg-bg-surface relative', {
     variants: {
       variant: {
-        fullscreen: 'h-screen w-screen pt-10',
+        default: 'rounded-lg shadow-lg',
+        fullscreen: 'h-screen w-screen px-4 pb-8 pt-10',
       },
+    },
+    defaultVariants: {
+      variant: 'default',
     },
   }),
 };

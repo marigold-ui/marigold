@@ -98,9 +98,13 @@ export const textStyle = {
 
 export const gapSpace = {
   0: 'gap-0',
+  '0.5': 'gap-0.5',
   1: 'gap-1',
+  '1.5': 'gap-1.5',
   2: 'gap-2',
+  '2.5': 'gap-2.5',
   3: 'gap-3',
+  '3.5': 'gap-3.5',
   4: 'gap-4',
   5: 'gap-5',
   6: 'gap-6',
@@ -131,9 +135,13 @@ export const gapSpace = {
 
 export const paddingSpace = {
   0: 'p-0',
+  '0.5': 'p-0.5',
   1: 'p-1',
+  '1.5': 'p-1.5',
   2: 'p-2',
+  '2.5': 'p-2.5',
   3: 'p-3',
+  '3.5': 'p-3.5',
   4: 'p-4',
   5: 'p-5',
   6: 'p-6',
@@ -163,9 +171,13 @@ export const paddingSpace = {
 };
 export const paddingSpaceX = {
   0: 'px-0',
+  '0.5': 'px-0.5',
   1: 'px-1',
+  '1.5': 'px-1.5',
   2: 'px-2',
+  '2.5': 'px-2.5',
   3: 'px-3',
+  '3.5': 'px-3.5',
   4: 'px-4',
   5: 'px-5',
   6: 'px-6',
@@ -195,9 +207,13 @@ export const paddingSpaceX = {
 };
 export const paddingSpaceY = {
   0: 'py-0',
+  '0.5': 'py-0.5',
   1: 'py-1',
+  '1.5': 'py-1.5',
   2: 'py-2',
+  '2.5': 'py-2.5',
   3: 'py-3',
+  '3.5': 'py-3.5',
   4: 'py-4',
   5: 'py-5',
   6: 'py-6',
@@ -228,9 +244,13 @@ export const paddingSpaceY = {
 
 export const paddingRight = {
   0: 'pr-0',
+  '0.5': 'pr-0.5',
   1: 'pr-1',
+  '1.5': 'pr-1.5',
   2: 'pr-2',
+  '2.5': 'pr-2.5',
   3: 'pr-3',
+  '3.5': 'pr-3.5',
   4: 'pr-4',
   5: 'pr-5',
   6: 'pr-6',
@@ -261,9 +281,13 @@ export const paddingRight = {
 
 export const paddingLeft = {
   0: 'pl-0',
+  '0.5': 'pl-0.5',
   1: 'pl-1',
+  '1.5': 'pl-1.5',
   2: 'pl-2',
+  '2.5': 'pl-2.5',
   3: 'pl-3',
+  '3.5': 'pl-3.5',
   4: 'pl-4',
   5: 'pl-5',
   6: 'pl-6',
@@ -294,9 +318,13 @@ export const paddingLeft = {
 
 export const paddingTop = {
   0: 'pt-0',
+  '0.5': 'pt-0.5',
   1: 'pt-1',
+  '1.5': 'pt-1.5',
   2: 'pt-2',
+  '2.5': 'pt-2.5',
   3: 'pt-3',
+  '3.5': 'pt-3.5',
   4: 'pt-4',
   5: 'pt-5',
   6: 'pt-6',
@@ -327,9 +355,13 @@ export const paddingTop = {
 
 export const paddingBottom = {
   0: 'pb-0',
+  '0.5': 'pb-0.5',
   1: 'pb-1',
+  '1.5': 'pb-1.5',
   2: 'pb-2',
+  '2.5': 'pb-2.5',
   3: 'pb-3',
+  '3.5': 'pb-3.5',
   4: 'pb-4',
   5: 'pb-5',
   6: 'pb-6',

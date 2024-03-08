@@ -132,8 +132,6 @@ export const Breakpoints = () => {
 };
 
 export const Spacing = () => {
-  const spaces = paddingSpace;
-
   return (
     <Card>
       <div className="overflow-auto">
@@ -144,26 +142,28 @@ export const Spacing = () => {
             <Table.Column key={'example'}>Example</Table.Column>
           </Table.Header>
           <Table.Body>
-            {Object.entries(spaces).map(([key]) => (
-              <Table.Row key={key}>
-                <Table.Cell>
-                  <code className="before:content-none after:content-none">
-                    {key}
-                  </code>
-                </Table.Cell>
-                <Table.Cell>{Number(key) * 4}px</Table.Cell>
-                <Table.Cell>
-                  <div
-                    className={cn(
-                      `pl-${key}`,
-                      ' bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] '
-                    )}
-                  >
-                    <div className="h-3 bg-white"></div>
-                  </div>
-                </Table.Cell>
-              </Table.Row>
-            ))}
+            {Object.keys(paddingSpace)
+              .sort((a, b) => parseFloat(a) - parseFloat(b))
+              .map(key => (
+                <Table.Row key={key}>
+                  <Table.Cell>
+                    <code className="before:content-none after:content-none">
+                      {key}
+                    </code>
+                  </Table.Cell>
+                  <Table.Cell>{Number(key) * 4}px</Table.Cell>
+                  <Table.Cell>
+                    <div
+                      className={cn(
+                        `pl-${key}`,
+                        ' bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] '
+                      )}
+                    >
+                      <div className="h-3 bg-white"></div>
+                    </div>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
           </Table.Body>
         </Table>
       </div>

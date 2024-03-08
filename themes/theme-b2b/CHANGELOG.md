@@ -1,5 +1,34 @@
 # @marigold/theme-b2b
 
+## 27.1.0
+
+### Minor Changes
+
+- [#3766](https://github.com/marigold-ui/marigold/pull/3766) [`e1bcf1c`](https://github.com/marigold-ui/marigold/commit/e1bcf1c855a7df613ae7254a4bb7ef823515b148) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: remove and update `Switch` styles for themes
+
+- [#3767](https://github.com/marigold-ui/marigold/pull/3767) [`6de438b`](https://github.com/marigold-ui/marigold/commit/6de438b81cd21da9d57e1312692938817b359b16) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-53]:feat: text variant muted for b2b theme
+
+### Patch Changes
+
+- [#3776](https://github.com/marigold-ui/marigold/pull/3776) [`fc7adee`](https://github.com/marigold-ui/marigold/commit/fc7adee62047fa24584666ee17f15f255aa0ba91) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Fixing table header with variant grid
+
+- [#3749](https://github.com/marigold-ui/marigold/pull/3749) [`81783b6`](https://github.com/marigold-ui/marigold/commit/81783b6807dfd05900f6ef862e16c14c58f3d6da) Thanks [@aromko](https://github.com/aromko)! - [DST-280]: Fix: fixed styles fot state hover
+
+- [#3755](https://github.com/marigold-ui/marigold/pull/3755) [`5920c98`](https://github.com/marigold-ui/marigold/commit/5920c98e7df4b4fdeafc9fdc49d08469bea02f94) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-282]: docs: add Elevation documentation
+
+- [#3778](https://github.com/marigold-ui/marigold/pull/3778) [`6de0cb6`](https://github.com/marigold-ui/marigold/commit/6de0cb6ab5b7acc2638c3ce2ee54ea9f961097c6) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Fix table header and make checkbox clickable
+
+- [#3765](https://github.com/marigold-ui/marigold/pull/3765) [`33ceefc`](https://github.com/marigold-ui/marigold/commit/33ceefcebbc7271bef563b722caeada5ce698144) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: remove unused styles and clean up
+
+- [#3774](https://github.com/marigold-ui/marigold/pull/3774) [`7a5bc5f`](https://github.com/marigold-ui/marigold/commit/7a5bc5fcc9103c714fa8ca8c9e12a9364dd7a03a) Thanks [@sebald](https://github.com/sebald)! - feat: remove normalization from themes when using CSS files
+
+- [#3753](https://github.com/marigold-ui/marigold/pull/3753) [`e77fbb0`](https://github.com/marigold-ui/marigold/commit/e77fbb070396e78961548a0ee3656562f6f1fdc1) Thanks [@aromko](https://github.com/aromko)! - [DSTSUP-48]: FIX: arrow isn't underlayed by the input text anymore
+
+- Updated dependencies [[`5643257`](https://github.com/marigold-ui/marigold/commit/5643257afd66f093b45ca303876085b4c2b80e32), [`07d9277`](https://github.com/marigold-ui/marigold/commit/07d927746893c846200c2ca6ee6977d50a4ed5a4), [`ade96cf`](https://github.com/marigold-ui/marigold/commit/ade96cf23f071140d8d935dc16c9096659b70bce), [`6de438b`](https://github.com/marigold-ui/marigold/commit/6de438b81cd21da9d57e1312692938817b359b16), [`d6c44fa`](https://github.com/marigold-ui/marigold/commit/d6c44fa342d1221f42a8d4f82889c70865b97b39)]:
+  - @marigold/system@7.5.0
+  - @marigold/components@7.5.0
+  - @marigold/theme-preset@1.3.5
+
 ## 27.0.4
 
 ### Patch Changes

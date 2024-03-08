@@ -2,11 +2,14 @@ import type { ReactNode } from 'react';
 import { CheckboxGroup } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
-import { useClassNames } from '@marigold/system';
+import { Orientation } from '@react-types/shared';
+
+import { cn, useClassNames } from '@marigold/system';
 import type { WidthProp } from '@marigold/system';
 
 import { FieldBase } from '../FieldBase/FieldBase';
 import type { FieldBaseProps } from '../FieldBase/FieldBase';
+import { CheckboxGroupContext } from './Context';
 
 // Props
 // ---------------
@@ -30,6 +33,7 @@ export interface CheckboxGroupProps
   required?: RAC.CheckboxGroupProps['isRequired'];
   error?: RAC.CheckboxGroupProps['isInvalid'];
   readOnly?: RAC.CheckboxGroupProps['isReadOnly'];
+  orientation?: Orientation;
 }
 
 // Component
@@ -42,13 +46,15 @@ const _CheckboxGroup = ({
   disabled,
   readOnly,
   error,
+  width,
+  orientation = 'vertical',
   ...rest
 }: CheckboxGroupProps) => {
   const classNames = useClassNames({
     component: 'Checkbox',
     variant,
     size,
-    className: { group: 'flex flex-col items-start gap-[0.5ch]' },
+    className: { group: 'gap-x-2' },
   });
   const props: RAC.CheckboxGroupProps = {
     className: classNames.group,
@@ -60,8 +66,22 @@ const _CheckboxGroup = ({
   };
 
   return (
-    <FieldBase as={CheckboxGroup} {...props}>
-      {children}
+    <FieldBase as={CheckboxGroup} width={width} {...props}>
+      <div
+        role="presentation"
+        data-orientation={orientation}
+        className={cn(
+          classNames.group,
+          'flex items-start',
+          orientation === 'vertical'
+            ? 'flex-col gap-[0.5ch]'
+            : 'flex-row gap-[1.5ch]'
+        )}
+      >
+        <CheckboxGroupContext.Provider value={{ width, variant, size }}>
+          {children}
+        </CheckboxGroupContext.Provider>
+      </div>
     </FieldBase>
   );
 };

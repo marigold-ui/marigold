@@ -3,4 +3,4 @@
 "@marigold/theme-core": patch
 ---
 
-[DSTSUP-48]: FIX: arrow isn't underlayed by the input text anymore
+[DSTSUP-43]: improve button icon variant for both themes
