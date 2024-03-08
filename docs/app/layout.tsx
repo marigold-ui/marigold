@@ -18,10 +18,19 @@ import './globals.css';
 
 // Metadata
 // ---------------
+const FAV_ICONS = {
+  development: '/logo-dev.svg',
+  preview: '/logo-preview.svg',
+};
 
 export const metadata = {
   title: 'Marigold Documentation',
   description: "Documentation of Reservix' Design System",
+  icons: {
+    icon:
+      // @ts-expect-error
+      FAV_ICONS[process.env.NEXT_PUBLIC_VERCEL_ENV] || '/logo.svg',
+  },
 };
 
 // Themes
