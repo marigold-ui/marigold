@@ -180,6 +180,6 @@ export default makeSource({
           },
         },
       ],
-    ] as PluggableList,
+    ] as Pluggable[],
   },
 });
