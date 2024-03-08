@@ -46,7 +46,7 @@ export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
             Object.keys(mergedStylesVariants).includes(variant)
           );
           if (dupVariants.length) {
-            throw new Error(dupVariants.join() + ' variants are duplicated');
+            throw new Error(dupVariants.join() + ' already exists!');
           }
         }
 
