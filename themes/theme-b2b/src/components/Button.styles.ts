@@ -30,7 +30,10 @@ export const Button: ThemeComponent<'Button'> = cva(
         menu: [
           'text-text-base bg-bg-surface hover:text-text-inverted hover:bg-bg-brand-hover',
         ],
-        icon: ['h-auto border-none bg-transparent px-0 leading-none'],
+        icon: [
+          'h-auto border-none bg-transparent px-0 leading-none',
+          'disabled:bg-transparent',
+        ],
       },
       size: {
         small: 'px-4 leading-8',
