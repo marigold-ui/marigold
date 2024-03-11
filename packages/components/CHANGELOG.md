@@ -1,5 +1,24 @@
 # @marigold/components
 
+## 7.5.1
+
+### Patch Changes
+
+- [#3802](https://github.com/marigold-ui/marigold/pull/3802) [`d4479c7`](https://github.com/marigold-ui/marigold/commit/d4479c770b3833f0dbdaa488fabed5aee5d009ce) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: changing the token back to z-40 from underlay
+
+- [#3777](https://github.com/marigold-ui/marigold/pull/3777) [`02f1934`](https://github.com/marigold-ui/marigold/commit/02f1934f85d58ffd694e234a0b7e45dadc7e55cf) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-271]:feat: Column allow fit width of item
+
+- [#3810](https://github.com/marigold-ui/marigold/pull/3810) [`dea175a`](https://github.com/marigold-ui/marigold/commit/dea175a3c3d848db98a8ab5664c35e2bbce41d74) Thanks [@aromko](https://github.com/aromko)! - [DSTSUP-60]: add examples using state in table with input fields
+  [DSTSUP-60]: add `useListData` hook to docs
+
+- [#3812](https://github.com/marigold-ui/marigold/pull/3812) [`3d1e813`](https://github.com/marigold-ui/marigold/commit/3d1e8135d6af203400b4610b128037bed05ab0b1) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-59]:fix if no label no gap style
+
+- [#3803](https://github.com/marigold-ui/marigold/pull/3803) [`886ff54`](https://github.com/marigold-ui/marigold/commit/886ff5424e44e20f8e65551bde6e3d8373d849a7) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: add possibility to align Checkbox to FieldGroups
+
+- Updated dependencies [[`fba5e92`](https://github.com/marigold-ui/marigold/commit/fba5e92e8e70de0c3a65696cd2c462b6dfa7819e)]:
+  - @marigold/system@7.5.1
+  - @marigold/icons@1.2.41
+
 ## 7.5.0
 
 ### Minor Changes
