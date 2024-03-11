@@ -1,5 +1,22 @@
 # @marigold/theme-core
 
+## 26.1.1
+
+### Patch Changes
+
+- [#3797](https://github.com/marigold-ui/marigold/pull/3797) [`4b952f2`](https://github.com/marigold-ui/marigold/commit/4b952f2d58ce8f183cb3e29f631897a95c1b99ab) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Fixing Checkbox disable state styles
+
+- [#3777](https://github.com/marigold-ui/marigold/pull/3777) [`02f1934`](https://github.com/marigold-ui/marigold/commit/02f1934f85d58ffd694e234a0b7e45dadc7e55cf) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-271]:feat: Column allow fit width of item
+
+- [#3790](https://github.com/marigold-ui/marigold/pull/3790) [`bac4337`](https://github.com/marigold-ui/marigold/commit/bac4337efffa8751c39ed5fa999243a7eaef09a1) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-34]: change bg color in textarea if read-only core theme
+
+- [#3789](https://github.com/marigold-ui/marigold/pull/3789) [`f21ad28`](https://github.com/marigold-ui/marigold/commit/f21ad28740c04161543b277d4fb5447156ed4aad) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-43]: improve button icon variant for both themes
+
+- Updated dependencies [[`d4479c7`](https://github.com/marigold-ui/marigold/commit/d4479c770b3833f0dbdaa488fabed5aee5d009ce), [`02f1934`](https://github.com/marigold-ui/marigold/commit/02f1934f85d58ffd694e234a0b7e45dadc7e55cf), [`dea175a`](https://github.com/marigold-ui/marigold/commit/dea175a3c3d848db98a8ab5664c35e2bbce41d74), [`3d1e813`](https://github.com/marigold-ui/marigold/commit/3d1e8135d6af203400b4610b128037bed05ab0b1), [`886ff54`](https://github.com/marigold-ui/marigold/commit/886ff5424e44e20f8e65551bde6e3d8373d849a7), [`fba5e92`](https://github.com/marigold-ui/marigold/commit/fba5e92e8e70de0c3a65696cd2c462b6dfa7819e)]:
+  - @marigold/components@7.5.1
+  - @marigold/system@7.5.1
+  - @marigold/theme-preset@1.3.6
+
 ## 26.1.0
 
 ### Minor Changes

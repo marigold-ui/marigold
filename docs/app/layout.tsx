@@ -18,10 +18,19 @@ import './globals.css';
 
 // Metadata
 // ---------------
+const FAV_ICONS = {
+  development: '/logo-dev.svg',
+  preview: '/logo-preview.svg',
+};
 
 export const metadata = {
   title: 'Marigold Documentation',
   description: "Documentation of Reservix' Design System",
+  icons: {
+    icon:
+      // @ts-expect-error
+      FAV_ICONS[process.env.NEXT_PUBLIC_VERCEL_ENV] || '/logo.svg',
+  },
 };
 
 // Themes
@@ -45,7 +54,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <aside
                   className={[
                     'fixed top-14 z-10 -ml-2 hidden h-[calc(100vh-56px)] w-64 overflow-hidden hover:overflow-y-auto md:block xl:w-72',
-                    'scrollbar-thin scrollbar-thumb-slate-300 scrollbar-thumb-rounded-full',
+                    'scrollbar-thin scrollbar-thumb-secondary-400 scrollbar-thumb-rounded-full scrollbar-track-transparent',
                     'border-secondary-200 border-r',
                   ].join(' ')}
                 >

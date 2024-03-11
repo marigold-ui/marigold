@@ -24,6 +24,7 @@ export const Button: ThemeComponent<'Button'> = cva(
         ],
         icon: [
           'h-auto border-none bg-transparent px-0 leading-none text-inherit',
+          'disabled:border-none disabled:bg-transparent',
         ],
       },
       size: {
