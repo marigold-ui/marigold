@@ -33,7 +33,7 @@
     "react-use": "17.5.0",
     "react-use-clipboard": "1.0.9",
     "rehype-autolink-headings": "6.1.1",
-    "rehype-pretty-code": "0.10.2",
+    "rehype-pretty-code": "0.13.0",
     "rehype-slug": "5.1.0",
     "remark-gfm": "3.0.1",
     "shiki": "0.14.7",
