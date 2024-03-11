@@ -683,6 +683,9 @@ importers:
       tailwindcss:
         specifier: 3.4.1
         version: 3.4.1
+      tailwindcss-scoped-preflight:
+        specifier: 2.1.0
+        version: 2.1.0(postcss@8.4.35)(tailwindcss@3.4.1)
       tsup:
         specifier: 8.0.2
         version: 8.0.2(postcss@8.4.35)(typescript@5.3.3)
@@ -2461,6 +2464,10 @@ packages:
     peerDependencies:
       '@effect-ts/otel-node': '*'
     peerDependenciesMeta:
+      '@effect-ts/core':
+        optional: true
+      '@effect-ts/otel':
+        optional: true
       '@effect-ts/otel-node':
         optional: true
     dependencies:
@@ -16597,6 +16604,16 @@ packages:
     dependencies:
       tailwindcss: 3.4.1
     dev: false
+
+  /tailwindcss-scoped-preflight@2.1.0(postcss@8.4.35)(tailwindcss@3.4.1):
+    resolution: {integrity: sha512-f+3RZ3nnBh/FhFSoZ8mOC25/N+7bp7AW3odFPq/I2h8lOyBHRuj2z81ZjCZn7uiDsyXcjPX1dXOPOShI9qmSbQ==}
+    peerDependencies:
+      postcss: ^8
+      tailwindcss: ^3
+    dependencies:
+      postcss: 8.4.35
+      tailwindcss: 3.4.1
+    dev: true
 
   /tailwindcss@3.4.1:
     resolution: {integrity: sha512-qAYmXRfk3ENzuPBakNK0SRrUDipP8NQnEY6772uDhflcQz5EhRdD7JNZxyrFHVQNCwULPBn6FNPp9brpO7ctcA==}
