@@ -1,8 +1,10 @@
 'use client';
 
-import { Link } from '@/ui';
+import { Inline, Link } from '@/ui';
 
 import { usePathname } from 'next/navigation';
+
+import { CommandMenu } from '@/ui/Commandk';
 
 import { Logo } from './Logo';
 import { NavLink } from './NavLink';
@@ -24,7 +26,7 @@ export const SiteNavigation = () => {
   return (
     <div className="hidden w-full justify-between gap-3 md:flex ">
       <div className="flex">
-        <div className="flex w-64 shrink-0 items-center text-lg uppercase text-[#46505a] xl:w-[287px] [&>*]:flex [&>*]:items-center [&>*]:gap-2 [&>*]:font-bold [&>*]:no-underline">
+        <div className="flex w-[258px] shrink-0 items-center text-lg uppercase text-[#46505a] lg:w-[282px] xl:w-[336px] [&>*]:flex [&>*]:items-center [&>*]:gap-2 [&>*]:font-bold [&>*]:no-underline">
           <Link href="/">
             <Logo className="size-6" />
             Marigold
@@ -34,7 +36,7 @@ export const SiteNavigation = () => {
           {sections.map(({ name, slug, link }, index) => (
             <NavLink
               variant="main"
-              className="flex items-center gap-6 px-1 text-sm font-medium"
+              className="flex items-center gap-6 text-sm font-medium lg:px-1"
               key={index}
               current={pathname.includes(slug)}
               href={link?.href ?? '/'}
@@ -44,7 +46,10 @@ export const SiteNavigation = () => {
           ))}
         </div>
       </div>
-      <ThemeMenu />
+      <Inline space={4}>
+        <CommandMenu />
+        <ThemeMenu />
+      </Inline>
     </div>
   );
 };

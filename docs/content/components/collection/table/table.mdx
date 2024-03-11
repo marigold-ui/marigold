@@ -1,6 +1,7 @@
 ---
 title: Table
 caption: Component for building tables.
+badge: updated
 ---
 
 The `<Table>` component allows to present data in a table format. It enhances the functionality of regular `<table>` elements with the possibility to interact and select the data, as well as, helps with accessibility by providing keyboard navigation.
@@ -274,3 +275,15 @@ In a Table you can specify the width of a column using `width` property in the `
 We have formatting helper for dates and values you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
 
 <ComponentDemo file="./table-formatters.demo.tsx" />
+
+### Using input fields
+
+Example for using controlled state with input fields inside a table.
+
+<Message messageTitle="Avoid mutation" variant="warning">
+  It's best practice in React to avoid mutation cause of unpredicatable side
+  effects. For more detailed explanations see
+  [here](https://react.dev/learn/updating-objects-in-state#whats-a-mutation).
+</Message>
+
+<ComponentDemo file="./table-input.demo.tsx" />
