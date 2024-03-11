@@ -37,9 +37,21 @@ export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
       mergedStyles[component] = mergeSlotStyles;
     } else {
       const variants = ['size', 'variant'].reduce((acc, variantItem) => {
+        const newStylesVariants = newStyles[component].variants?.[variantItem];
+        const mergedStylesVariants =
+          mergedStyles[component].variants?.[variantItem];
+
+        if (newStylesVariants && mergedStylesVariants) {
+          const dupVariants = Object.keys(newStylesVariants).filter(variant =>
+            Object.keys(mergedStylesVariants).includes(variant)
+          );
+          if (dupVariants.length) {
+            throw new Error(dupVariants.join() + ' already exists!');
+          }
+        }
+
         acc[variantItem] = {
           ...newStyles[component].variants?.[variantItem],
-
           ...mergedStyles[component].variants?.[variantItem],
         };
         return acc;
