@@ -84,7 +84,7 @@ export const CommandMenu = () => {
               >
                 {items.map(page => (
                   <Command.Item
-                    className="aria-selected:bg-bg-hover aria-selected:text-text-primary relative flex cursor-default select-none flex-col  rounded px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                    className="aria-selected:bg-bg-hover aria-selected:text-text-primary relative flex cursor-default select-none flex-col rounded px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50"
                     key={page.slug}
                     value={page.slug}
                     onSelect={() => redirect(page.slug)}
