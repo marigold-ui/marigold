@@ -93,7 +93,7 @@ test('renders an input', () => {
     </Autocomplete>
   );
 
-  const textField = screen.getByLabelText('vegetables');
+  const textField = screen.getByRole('combobox');
   expect(textField).toBeInTheDocument();
   expect(textField).toHaveAttribute('type', 'search');
   expect(textField instanceof HTMLInputElement).toBeTruthy();
