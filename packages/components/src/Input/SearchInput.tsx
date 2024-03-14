@@ -52,9 +52,6 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
   ({ className, onClear, ...props }, ref) => {
     const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-    const ctx = useContext(ButtonContext);
-    console.log(ctx);
-
     return (
       <Input
         type="search"
