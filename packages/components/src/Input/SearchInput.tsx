@@ -1,5 +1,5 @@
-import { forwardRef, useContext } from 'react';
-import { Button, ButtonContext } from 'react-aria-components';
+import { forwardRef } from 'react';
+import { Button } from 'react-aria-components';
 
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 
