@@ -1,5 +1,17 @@
 # @marigold/components
 
+## 7.5.2
+
+### Patch Changes
+
+- [#3828](https://github.com/marigold-ui/marigold/pull/3828) [`f996764`](https://github.com/marigold-ui/marigold/commit/f99676498dd62ffa671314b18be140967162b69b) Thanks [@aromko](https://github.com/aromko)! - BUGFIX: fix onClear on SearchInput.tsx
+
+- [#3827](https://github.com/marigold-ui/marigold/pull/3827) [`95ce246`](https://github.com/marigold-ui/marigold/commit/95ce246e7367031ec2241c9dd40e89a56bbb3547) Thanks [@sebald](https://github.com/sebald)! - fix: restore default `collapseAt` for `<Columns>`
+
+- Updated dependencies []:
+  - @marigold/system@7.5.2
+  - @marigold/icons@1.2.42
+
 ## 7.5.1
 
 ### Patch Changes

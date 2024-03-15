@@ -269,22 +269,24 @@ const Input: ThemeComponent<'Input'> = {
 Example of structures for surface colors:
 
 ```tsx
- surface: {
+  surface: {
     /**
-     * Use this for e.g. card backgrounds.
-     */
+    * Use this for base layer.
+    */
     DEFAULT: white,
     /**
-     * Use this when you need to separate a specific layer from
-     * the surface color, e.g. table headers.
-     */
-    raised: brand.secondary[400],
+    * Use this for e.g. card backgrounds.
+    */
+    raised: white,
     /**
-     * Use this when you need to make a specific layer
-     * to appear lower than the surface color, e.g. progress bar.
-     */
-    lowered: brand.secondary[700],
- }
+    * Use this for e.g. popovers.
+    */
+    overlay: white,
+    /**
+    * Use this for lowered elements.
+    */
+    sunken: gray[100],
+  }
 ```
 
 ### Usage and Structure of Style Props
