@@ -107,3 +107,26 @@ test('Not supporting adding styles for a new component', () => {
   );
   expect(newTheme).toEqual(theme);
 });
+
+test('Throw an error when the variant is dupplicated', () => {
+  try {
+    extendTheme(
+      {
+        Button: cva('p-3', {
+          variants: {
+            variant: {
+              tertiary: 'bg-bg-success text-white',
+            },
+            size: {
+              medium: 'px-6 leading-10',
+            },
+          },
+        }),
+      },
+      theme
+    );
+  } catch (err) {
+    /* eslint-disable jest/no-conditional-expect */
+    expect((err as Error).message).toEqual('tertiary already exists!');
+  }
+});
