@@ -97,3 +97,13 @@ test('Accepting styles for component with multiple slots', () => {
     `"border-3 border-solid border-red-400 bg-bg-accent rounded-md p-3 text-white"`
   );
 });
+
+test('Not supporting adding styles for a new component', () => {
+  const newTheme = extendTheme(
+    {
+      MultiSelect: 'bg-red-300',
+    } as any,
+    theme
+  );
+  expect(newTheme).toEqual(theme);
+});
