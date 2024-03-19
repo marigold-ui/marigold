@@ -1,2 +1,1 @@
-// Private for now (use recipe)
-export {};
+export * from './Multiselect';
