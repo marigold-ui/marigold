@@ -46,6 +46,10 @@ export type Theme = {
     Divider?: ComponentStyleFunction<string, string>;
     Field?: ComponentStyleFunction<string, string>;
     Footer?: ComponentStyleFunction<string, string>;
+    GridList?: Record<
+      'container' | 'list' | 'option' | 'section' | 'sectionTitle',
+      ComponentStyleFunction<string, string>
+    >;
     Header?: ComponentStyleFunction<string, string>;
     Headline?: ComponentStyleFunction<string, string>;
     Popover?: ComponentStyleFunction<string, string>;
@@ -76,7 +80,6 @@ export type Theme = {
       'container' | 'list' | 'option' | 'section' | 'sectionTitle',
       ComponentStyleFunction<string, string>
     >;
-    GridList?: Record<'container', ComponentStyleFunction<string, string>>;
     Menu?: Record<
       'container' | 'section' | 'item',
       ComponentStyleFunction<string, string>

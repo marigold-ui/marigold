@@ -1,18 +1,23 @@
 import type RAC from 'react-aria-components';
 import { Button, GridListItem } from 'react-aria-components';
 
+import { useClassNames } from '@marigold/system';
+
 import { Checkbox } from '../Checkbox';
 
 export interface GridListItemProps
   extends Omit<RAC.GridListItemProps<object>, 'className' | 'style'> {}
 
 const _GridListItem = ({ children, ...props }: GridListItemProps) => {
+  const classNames = useClassNames({
+    component: 'ListBox',
+  });
   let textValue = typeof children === 'string' ? children : undefined;
   return (
     <GridListItem
-      className={'m flex items-center justify-between gap-3'}
       textValue={textValue}
       {...props}
+      className={classNames.option}
     >
       {({ selectionMode, selectionBehavior, allowsDragging }) => (
         <>
