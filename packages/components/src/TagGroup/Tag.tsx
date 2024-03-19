@@ -5,9 +5,6 @@ import { cn, useClassNames } from '@marigold/system';
 
 import { TagGroup } from './TagGroup';
 
-{
-}
-
 interface CloseButtonProps {
   className: string;
 }
