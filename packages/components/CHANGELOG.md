@@ -1,5 +1,19 @@
 # @marigold/components
 
+## 7.5.3
+
+### Patch Changes
+
+- [#3834](https://github.com/marigold-ui/marigold/pull/3834) [`7fd7ad7`](https://github.com/marigold-ui/marigold/commit/7fd7ad7393ed524e5c72b4eecea896ffc67e7c86) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Adding cursor hover for tag component in multiselect
+
+- [#3824](https://github.com/marigold-ui/marigold/pull/3824) [`879a0e1`](https://github.com/marigold-ui/marigold/commit/879a0e12368318f4535792ed09917481fbd46f3b) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Adding Multiselect guideline
+
+- [#3829](https://github.com/marigold-ui/marigold/pull/3829) [`81a84e5`](https://github.com/marigold-ui/marigold/commit/81a84e520dc9021d2b813ee345e8af14368b237e) Thanks [@sarahgm](https://github.com/sarahgm)! - chore[DSTSUP-65]: fix demo and add overlayprovider to tooltip
+
+- Updated dependencies []:
+  - @marigold/system@7.5.3
+  - @marigold/icons@1.2.43
+
 ## 7.5.2
 
 ### Patch Changes
