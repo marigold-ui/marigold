@@ -32,7 +32,11 @@ const _Tag = ({ variant, size, children, ...props }: TagProps) => {
   const classNames = useClassNames({ component: 'Tag', variant, size });
 
   return (
-    <Tag textValue={textValue} {...props} className={classNames.tag}>
+    <Tag
+      textValue={textValue}
+      {...props}
+      className={cn('data-[selection-mode]:cursor-pointer', classNames.tag)}
+    >
       {({ allowsRemoving }) => (
         <>
           {children}
