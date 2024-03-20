@@ -62,6 +62,7 @@ export const Action: Story = {
           <Button
             aria-label="Info"
             onPress={() => alert(`Info for ${item.name}...`)}
+            className="ml-auto"
           >
             ⓘ
           </Button>

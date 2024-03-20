@@ -9,6 +9,7 @@ import { GridList } from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
 
+import { GridListContext } from './Context';
 import { GridListItem } from './GridListItem';
 
 export interface GridListProps
@@ -19,28 +20,29 @@ interface GridListComponent
     GridListProps & RefAttributes<HTMLUListElement>
   > {
   Item: typeof GridListItem;
-  // Section: typeof Section;
 }
 
 const _GridList = forwardRef<HTMLUListElement, GridListProps>((props, ref) => {
   const classNames = useClassNames({ component: 'ListBox' });
+  console.log('classNames', classNames);
   return (
-    <div className={classNames.container}>
-      <GridList
-        {...props}
-        ref={ref as Ref<HTMLDivElement>}
-        className={cn(
-          'overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh]',
-          classNames.list
-        )}
-      >
-        {props.children}
-      </GridList>
-    </div>
+    <GridListContext.Provider value={{ classNames }}>
+      <div className={classNames.container}>
+        <GridList
+          {...props}
+          ref={ref as Ref<HTMLDivElement>}
+          className={cn(
+            'overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh]',
+            classNames.list
+          )}
+        >
+          {props.children}
+        </GridList>
+      </div>
+    </GridListContext.Provider>
   );
 }) as GridListComponent;
 
 _GridList.Item = GridListItem;
-// _ListBox.Section = Section;
 
 export { _GridList as GridList };
