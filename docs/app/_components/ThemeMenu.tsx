@@ -9,7 +9,11 @@ export const ThemeMenu = () => {
   const { themes, setTheme } = useThemeSwitch();
 
   return (
-    <Menu onAction={current => setTheme(current)} label={<Theme />}>
+    <Menu
+      label={<Theme />}
+      onAction={current => setTheme(current)}
+      placement="bottom end"
+    >
       {Object.keys(themes).map(name => (
         <Menu.Item key={name} id={name}>
           {name.toUpperCase()}
