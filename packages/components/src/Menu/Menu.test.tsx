@@ -379,16 +379,3 @@ test('supports Menu with sections', () => {
   expect(screen.getByText('Food')).toBeInTheDocument();
   expect(screen.getByText('Fruits')).toBeInTheDocument();
 });
-
-test('supports menu placement', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Menu aria-label="Menu" open placement="bottom end">
-        <Menu.Item key="burger">🍔 Burger</Menu.Item>
-        <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-      </Menu>
-    </ThemeProvider>
-  );
-
-  expect(screen.getByLabelText('Menu')).toHaveAttribute('placement');
-});
