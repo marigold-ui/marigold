@@ -1,3 +1,7 @@
+/**
+ * INFO: This is an alpha release for the component.
+ *       The API might change in future.
+ */
 import { Multiselect } from '@marigold/components';
 
 export default () => {
