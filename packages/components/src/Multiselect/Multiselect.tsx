@@ -5,9 +5,15 @@
  * - selecting an item from the combobox -> adds it to the tags, clears combobox input
  * - combobox only shows unselected items
  */
+
+/**
+ * !!!!!!!!
+ * this file is excluded from coverage test (see config/jest/index.js) because this component will be changed in future
+ * !!!!!!!!
+ * */
 import { Children, ReactNode, useState } from 'react';
-import { Key } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { Key } from 'react-aria-components';
 
 import { useListData } from '@react-stately/data';
 
