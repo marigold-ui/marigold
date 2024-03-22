@@ -1,4 +1,4 @@
-import { LegacyRef, forwardRef } from 'react';
+import { Ref, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Button, GridListItem } from 'react-aria-components';
 
@@ -10,7 +10,7 @@ import { useGridListContext } from './Context';
 export interface GridListItemProps
   extends Omit<RAC.GridListItemProps<object>, 'className' | 'style'> {}
 
-const _GridListItem = forwardRef<LegacyRef<HTMLDivElement>, GridListItemProps>(
+const _GridListItem = forwardRef<HTMLDivElement | undefined, GridListItemProps>(
   ({ children, ...props }, ref) => {
     let textValue = typeof children === 'string' ? children : undefined;
     const { classNames } = useGridListContext();
@@ -19,7 +19,7 @@ const _GridListItem = forwardRef<LegacyRef<HTMLDivElement>, GridListItemProps>(
         textValue={textValue}
         {...props}
         className={cn('flex items-center', classNames?.option)}
-        ref={ref as LegacyRef<HTMLDivElement>}
+        ref={ref as Ref<HTMLDivElement>}
       >
         {({ selectionMode, selectionBehavior, allowsDragging }) => (
           <>
