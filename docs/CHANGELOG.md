@@ -1,5 +1,18 @@
 # @marigold/docs
 
+## 7.5.4
+
+### Patch Changes
+
+- [#3840](https://github.com/marigold-ui/marigold/pull/3840) [`c8320d3`](https://github.com/marigold-ui/marigold/commit/c8320d30e6a2b311d2ff3ec74d713b5362806942) Thanks [@aromko](https://github.com/aromko)! - docs: change multiselect recipe
+
+- Updated dependencies [[`4c3cad5`](https://github.com/marigold-ui/marigold/commit/4c3cad52f3d6d85fdea89603682876fe35935b15), [`ea9c6b5`](https://github.com/marigold-ui/marigold/commit/ea9c6b5d74f514b25207792f8a0e4520836c2917)]:
+  - @marigold/theme-core@26.1.4
+  - @marigold/components@7.5.4
+  - @marigold/icons@1.2.44
+  - @marigold/theme-preset@1.3.9
+  - @marigold/theme-b2b@27.1.4
+
 ## 7.5.3
 
 ### Patch Changes

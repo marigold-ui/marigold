@@ -1,5 +1,16 @@
 # @marigold/storybook-config
 
+## 1.1.36
+
+### Patch Changes
+
+- [#3838](https://github.com/marigold-ui/marigold/pull/3838) [`17a5870`](https://github.com/marigold-ui/marigold/commit/17a5870ab7676c0aa412ca9378525bd803374591) Thanks [@sebald](https://github.com/sebald)! - feat: add story code plugin
+
+- Updated dependencies [[`4c3cad5`](https://github.com/marigold-ui/marigold/commit/4c3cad52f3d6d85fdea89603682876fe35935b15), [`ea9c6b5`](https://github.com/marigold-ui/marigold/commit/ea9c6b5d74f514b25207792f8a0e4520836c2917)]:
+  - @marigold/theme-core@26.1.4
+  - @marigold/components@7.5.4
+  - @marigold/theme-b2b@27.1.4
+
 ## 1.1.35
 
 ### Patch Changes

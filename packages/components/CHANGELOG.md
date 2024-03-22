@@ -1,5 +1,13 @@
 # @marigold/components
 
+## 7.5.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@7.5.4
+  - @marigold/icons@1.2.44
+
 ## 7.5.3
 
 ### Patch Changes

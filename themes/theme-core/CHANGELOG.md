@@ -1,5 +1,18 @@
 # @marigold/theme-core
 
+## 26.1.4
+
+### Patch Changes
+
+- [#3800](https://github.com/marigold-ui/marigold/pull/3800) [`4c3cad5`](https://github.com/marigold-ui/marigold/commit/4c3cad52f3d6d85fdea89603682876fe35935b15) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Fixing divider styles
+
+- [#3836](https://github.com/marigold-ui/marigold/pull/3836) [`ea9c6b5`](https://github.com/marigold-ui/marigold/commit/ea9c6b5d74f514b25207792f8a0e4520836c2917) Thanks [@sebald](https://github.com/sebald)! - fix: use surface tokens for `<Dialog>` in core theme
+
+- Updated dependencies []:
+  - @marigold/system@7.5.4
+  - @marigold/components@7.5.4
+  - @marigold/theme-preset@1.3.9
+
 ## 26.1.3
 
 ### Patch Changes
