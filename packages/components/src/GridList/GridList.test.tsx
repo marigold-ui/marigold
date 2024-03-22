@@ -1,7 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent, { UserEvent } from '@testing-library/user-event';
 import { createRef } from 'react';
 import { useDragAndDrop } from 'react-aria-components';
+import { DropIndicator } from 'react-aria-components';
 import { act } from 'react-dom/test-utils';
 
 import { Theme, ThemeProvider, cva } from '@marigold/system';
@@ -188,60 +189,77 @@ describe('GridList', () => {
   });
 
   test('support rendering drop indicators', () => {
-    let onReorder = jest.fn();
+    const DraggableGridList = (props: any) => {
+      const { dragAndDropHooks } = useDragAndDrop({
+        getItems: keys => [...keys].map(key => ({ 'text/plain': key }) as any),
+        ...props,
+      });
+
+      return (
+        <ThemeProvider theme={theme}>
+          <GridList aria-label="Test" dragAndDropHooks={dragAndDropHooks}>
+            <GridList.Item id="cat" textValue="Cat">
+              <Button data-testid="dragButton" slot="drag">
+                ≡
+              </Button>
+              <Checkbox slot="selection" /> Cat
+            </GridList.Item>
+            <GridList.Item id="dog" textValue="Dog">
+              <Button slot="drag">≡</Button>
+              <Checkbox slot="selection" /> Dog
+            </GridList.Item>
+            <GridList.Item id="kangaroo" textValue="Kangaroo">
+              <Button slot="drag">≡</Button>
+              <Checkbox slot="selection" /> Kangaroo
+            </GridList.Item>
+          </GridList>
+        </ThemeProvider>
+      );
+    };
+
+    const onReorder = jest.fn();
+
     render(
-      <ThemeProvider theme={theme}>
-        <GridList aria-label="Test">
-          <GridList.Item id="cat" textValue="Cat">
-            <Button data-testid="dragButton" slot="drag">
-              ≡
-            </Button>
-            <Checkbox slot="selection" /> Cat
-          </GridList.Item>
-          <GridList.Item id="dog" textValue="Dog">
-            <Button slot="drag">≡</Button>
-            <Checkbox slot="selection" /> Dog
-          </GridList.Item>
-          <GridList.Item id="kangaroo" textValue="Kangaroo">
-            <Button slot="drag">≡</Button>
-            <Checkbox slot="selection" /> Kangaroo
-          </GridList.Item>
-        </GridList>
-      </ThemeProvider>
+      <DraggableGridList
+        onReorder={onReorder}
+        renderDropIndicator={(target: any) => (
+          <DropIndicator target={target}>test</DropIndicator>
+        )}
+      />
     );
-    const button = screen.getByTestId('dragButton');
-    // let button = screen.getAllByRole('button')[0];
-    // fireEvent.keyDown(button, { key: 'Enter' });
-    // fireEvent.keyUp(button, { key: 'Enter' });
-    // act(() => jest.runAllTimers());
+    // const button = screen.getByTestId('dragButton');
+    const button = screen.getAllByRole('button')[0];
+    fireEvent.keyDown(button, { key: 'Enter' });
+    fireEvent.keyUp(button, { key: 'Enter' });
+    act(() => jest.runAllTimers());
 
-    // let rows = getAllByRole('row');
-    // expect(rows).toHaveLength(5);
-    // expect(rows[0]).toHaveAttribute('class', 'react-aria-DropIndicator');
-    // expect(rows[0]).toHaveAttribute('data-drop-target', 'true');
-    // expect(rows[0]).toHaveTextContent('Test');
-    // expect(within(rows[0]).getByRole('button')).toHaveAttribute('aria-label', 'Insert before Cat');
-    // expect(rows[2]).toHaveAttribute('class', 'react-aria-DropIndicator');
-    // expect(rows[2]).not.toHaveAttribute('data-drop-target');
-    // expect(within(rows[2]).getByRole('button')).toHaveAttribute('aria-label', 'Insert between Cat and Dog');
-    // expect(rows[3]).toHaveAttribute('class', 'react-aria-DropIndicator');
-    // expect(rows[3]).not.toHaveAttribute('data-drop-target');
-    // expect(within(rows[3]).getByRole('button')).toHaveAttribute('aria-label', 'Insert between Dog and Kangaroo');
-    // expect(rows[4]).toHaveAttribute('class', 'react-aria-DropIndicator');
-    // expect(rows[4]).not.toHaveAttribute('data-drop-target');
-    // expect(within(rows[4]).getByRole('button')).toHaveAttribute('aria-label', 'Insert after Kangaroo');
+    const rows = screen.getAllByRole('row');
 
-    // fireEvent.keyDown(document.activeElement, { key: 'ArrowDown' });
-    // fireEvent.keyUp(document.activeElement, { key: 'ArrowDown' });
-
-    // expect(document.activeElement).toHaveAttribute('aria-label', 'Insert between Cat and Dog');
-    // expect(rows[0]).not.toHaveAttribute('data-drop-target', 'true');
-    // expect(rows[2]).toHaveAttribute('data-drop-target', 'true');
-
-    // fireEvent.keyDown(document.activeElement, { key: 'Enter' });
-    // fireEvent.keyUp(document.activeElement, { key: 'Enter' });
-    // act(() => jest.runAllTimers());
-
-    // expect(onReorder).toHaveBeenCalledTimes(1);
+    expect(rows).toHaveLength(5);
+    expect(rows[0]).toHaveAttribute('class', 'react-aria-DropIndicator');
+    expect(rows[0]).toHaveAttribute('data-drop-target', 'true');
+    expect(rows[0]).toHaveTextContent('test');
+    expect(within(rows[0]).getByRole('button')).toHaveAttribute(
+      'aria-label',
+      'Insert before Cat'
+    );
+    expect(rows[2]).toHaveAttribute('class', 'react-aria-DropIndicator');
+    expect(rows[2]).not.toHaveAttribute('data-drop-target');
+    expect(within(rows[2]).getByRole('button')).toHaveAttribute(
+      'aria-label',
+      'Insert between Cat and Dog'
+    );
+    expect(rows[3]).toHaveAttribute('class', 'react-aria-DropIndicator');
+    expect(rows[3]).not.toHaveAttribute('data-drop-target');
+    expect(within(rows[3]).getByRole('button')).toHaveAttribute(
+      'aria-label',
+      'Insert between Dog and Kangaroo'
+    );
+    expect(rows[4]).toHaveAttribute('class', 'react-aria-DropIndicator');
+    expect(rows[4]).not.toHaveAttribute('data-drop-target');
+    expect(within(rows[4]).getByRole('button')).toHaveAttribute(
+      'aria-label',
+      'Insert after Kangaroo'
+    );
   });
 });
