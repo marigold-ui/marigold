@@ -202,7 +202,7 @@ test('render same styles for each tag', () => {
   const gridCell = tag!.firstChild;
   // @ts-ignore
   expect(gridCell?.className).toMatchInlineSnapshot(
-    `"border border-slate-600"`
+    `"data-[selection-mode]:cursor-pointer border border-slate-600"`
   );
 
   // eslint-disable-next-line testing-library/no-node-access
