@@ -1,8 +1,8 @@
 import { Button, Tooltip } from '@marigold/components';
 
 export default () => (
-  <Tooltip.Trigger placement="right">
+  <Tooltip.Trigger>
     <Button>Hover me!</Button>
-    <Tooltip>Tooltip</Tooltip>
+    <Tooltip placement="right">Tooltip</Tooltip>
   </Tooltip.Trigger>
 );

@@ -12,7 +12,7 @@ export const Table: ThemeComponent<'Table'> = {
   header: cva(
     [
       'group-aria-[multiselectable]/table:[&:first-child]:w-12',
-      'border-x px-2',
+      'border-x px-2 font-bold',
       'text-text-inverted bg-gray-400',
       'odd:bg-bg-accent',
       'focus:outline-outline-focus',

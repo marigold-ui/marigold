@@ -45,11 +45,11 @@ export const siteConfig = {
           name: 'Content',
           slug: 'content',
         },
+        {
+          name: 'Hooks and Utils',
+          slug: 'hooks-and-utils',
+        },
       ],
-    },
-    {
-      name: 'Hooks and Utils',
-      slug: 'hooks-and-utils',
     },
     {
       name: 'Recipes',
@@ -60,4 +60,4 @@ export const siteConfig = {
       slug: 'develop',
     },
   ],
-};
+} as const;

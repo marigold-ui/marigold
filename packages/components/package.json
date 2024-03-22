@@ -1,6 +1,6 @@
 {
   "name": "@marigold/components",
-  "version": "7.5.0",
+  "version": "7.5.3",
   "description": "Components for the Marigold Design System",
   "license": "MIT",
   "keywords": [
@@ -19,7 +19,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/marigold-ui/marigold"
+    "url": "https://github.com/marigold-ui/marigold",
+    "directory": "packages/components"
   },
   "dependencies": {
     "@internationalized/date": "3.5.2",
@@ -52,7 +53,7 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "@types/react": "18.2.56",
+    "@types/react": "18.2.64",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tsup": "8.0.2"

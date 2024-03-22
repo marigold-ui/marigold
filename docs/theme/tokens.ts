@@ -48,6 +48,7 @@ export const colors = {
       DEFAULT: tw.white,
       raised: tw.slate[200],
       lowered: tw.slate[700],
+      overlay: tw.white,
     },
 
     // Status
