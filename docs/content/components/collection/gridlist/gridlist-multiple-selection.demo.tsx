@@ -18,7 +18,7 @@ export default () => {
         selectionMode="multiple"
         items={pokemons}
         selectedKeys={selectedPokemons}
-        onChange={setSelectedPokemons as any}
+        onChange={setSelectedPokemons}
       >
         {(item: { id: any; name: string }) => (
           <GridList.Item id={item.id}>

@@ -1,7 +1,9 @@
 import {
+  Dispatch,
   ForwardRefExoticComponent,
   Ref,
   RefAttributes,
+  SetStateAction,
   forwardRef,
 } from 'react';
 import type RAC from 'react-aria-components';
@@ -16,7 +18,9 @@ type RemoveProps = 'style' | 'className' | 'onSelectionChange';
 
 export interface GridListProps
   extends Omit<RAC.GridListProps<object>, RemoveProps> {
-  onChange?: RAC.GridListProps<object>['onSelectionChange'];
+  onChange?:
+    | RAC.GridListProps<object>['onSelectionChange']
+    | Dispatch<SetStateAction<any[]>>;
 }
 
 interface GridListComponent
@@ -31,7 +35,7 @@ const _GridList = forwardRef<HTMLUListElement, GridListProps>(
     const classNames = useClassNames({ component: 'ListBox' });
 
     const props: RAC.GridListProps<object> = {
-      onSelectionChange: onChange,
+      onSelectionChange: onChange as any,
       ...rest,
     };
 
