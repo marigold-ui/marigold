@@ -1,6 +1,6 @@
 ---
-"@marigold/docs": patch
-"@marigold/components": patch
+"@marigold/docs": minor
+"@marigold/components": minor
 ---
 
 feat: Allow configure position of menu popover
