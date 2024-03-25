@@ -9,7 +9,7 @@ export default () => {
       <GridList
         selectionMode="single"
         aria-labelledby="PaymentMethodGridList"
-        onChange={setPaymentMethod as any}
+        onChange={setPaymentMethod}
         selectedKeys={paymentMethod}
       >
         <GridList.Item id="creditCard">Credit Card</GridList.Item>

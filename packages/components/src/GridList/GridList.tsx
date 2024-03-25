@@ -20,7 +20,7 @@ export interface GridListProps
   extends Omit<RAC.GridListProps<object>, RemoveProps> {
   onChange?:
     | RAC.GridListProps<object>['onSelectionChange']
-    | Dispatch<SetStateAction<any[]>>;
+    | Dispatch<SetStateAction<any>>;
 }
 
 interface GridListComponent
