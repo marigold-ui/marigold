@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import { scopedPreflightStyles } from 'tailwindcss-scoped-preflight';
 
 import { preset } from './src/preset';
 
@@ -13,4 +14,12 @@ export default {
     '!../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}',
   ],
   presets: [preset],
+  plugins: [
+    scopedPreflightStyles({
+      // data-app is defined in core
+      cssSelector: '[data-app]',
+      mode: 'matched only',
+    }),
+  ],
+  safelist: [{ pattern: /(bg|text|border|shadow)-./ }],
 } satisfies Config;

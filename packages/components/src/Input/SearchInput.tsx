@@ -5,8 +5,8 @@ import { useLocalizedStringFormatter } from '@react-aria/i18n';
 
 import { cn } from '@marigold/system';
 
-import { Input } from './Input';
 import type { InputProps } from './Input';
+import { Input } from './Input';
 
 const intlMessages = {
   'de-DE': {
@@ -65,8 +65,6 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           <Button
             className={className?.action}
             onPress={() => onClear?.()}
-            // Don't inherit default Button behavior from ComboBox + broken types
-            slot={null as any}
             aria-label={stringFormatter.format('Clear search')}
             excludeFromTabOrder={true}
             // @ts-ignore

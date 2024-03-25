@@ -1,0 +1,128 @@
+---
+title: DateFormat
+caption: Helper component for formatting date values based on the current language and locale-specific conventions.
+badge: new
+---
+
+With `<DateFormat>` helper, you can easily ensure consistent and accurate display of date and time values taking into account factors such as date formats, time formats, time zones, and locale-specific conventions. It provides a way to format and localize dates and times based on the user's preferred language and region.
+
+`<DateFormat>` component are built on top of the [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) APIs which provide a comprehensive support for formatting dates based on locale-specific conventions.
+
+However, there are a few components that should not be used together with this component.
+
+- [NumberField](/components/form/number-field)
+- [DateField](/components/form/datefield)
+- [SearchField](/components/form/search-field)
+
+### Usage
+
+#### Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { DateFormat } from '@marigold/system';
+```
+
+#### Appearance
+
+<AppearanceTable component={title} />
+
+#### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'value',
+      type: 'Date',
+      description: 'Value to be formatted.',
+      default: 'none',
+    },
+    {
+      property: 'tabular',
+      type: 'boolean',
+      description: 'Specifies that the digits should take the full width.',
+      default: 'true',
+    },
+    {
+      property: 'locale',
+      type: 'string',
+      description: 'Specifies the locale or language tag to use.',
+      default: "Host environment's current locale",
+    },
+    {
+      property: 'dateStyle',
+      type: 'string',
+      description: 'Specifies the date formatting style.',
+      default: 'none',
+    },
+    {
+      property: 'timeStyle',
+      type: 'string',
+      description: 'Specifies the time formatting style.',
+      default: 'none',
+    },
+    {
+      property: 'weekday',
+      type: 'string',
+      description: 'Specifies how to display the day of the week.',
+      default: 'none',
+    },
+    {
+      property: 'year',
+      type: 'string',
+      description: 'Specifies how to display the year.',
+      default: 'none',
+    },
+    {
+      property: 'month',
+      type: 'string',
+      description: 'Specifies how to display the month.',
+      default: 'none',
+    },
+    {
+      property: 'day',
+      type: 'string',
+      description: 'Specifies how to display the day of the month.',
+      default: 'none',
+    },
+    {
+      property: 'hour',
+      type: 'string',
+      description: 'Specifies how to display the hour.',
+      default: 'none',
+    },
+    {
+      property: 'minute',
+      type: 'string',
+      description: 'Specifies how to display the minute.',
+      default: 'none',
+    },
+    {
+      property: 'second',
+      type: 'string',
+      description: 'Specifies how to display the second.',
+      default: 'none',
+    },
+    {
+      property: 'timeZone',
+      type: 'string',
+      description: 'Specifies the time zone to use for formatting.',
+      default: 'none',
+    },
+  ]}
+/>
+
+#### Examples
+
+#### Short Date Format
+
+In this example the date is formatted using the "short" date style.
+
+<ComponentDemo file="./short-date-format.demo.tsx" />
+
+#### Long Date Format
+
+In this example the date is formatted using the "full" date style.
+
+<ComponentDemo file="./long-date-format.demo.tsx" />

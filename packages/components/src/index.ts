@@ -57,3 +57,4 @@ export * from './VisuallyHidden';
 export * from './XLoader';
 export * from './Tabs';
 export * from './Calendar';
+export * from './RouterProvider';

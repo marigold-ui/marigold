@@ -1,5 +1,74 @@
 # @marigold/theme-core
 
+## 26.1.2
+
+### Patch Changes
+
+- [#3819](https://github.com/marigold-ui/marigold/pull/3819) [`f6a7035`](https://github.com/marigold-ui/marigold/commit/f6a7035d1f54dc6ebe7bb256f8071846be1c9216) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: add some core styles for table and disabled button
+
+- [#3818](https://github.com/marigold-ui/marigold/pull/3818) [`8cc639d`](https://github.com/marigold-ui/marigold/commit/8cc639da7d9b97ec915067ea67883652f774e6c2) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-58]chore: Add scoped preflight plugin to normalize the core
+
+- Updated dependencies [[`f996764`](https://github.com/marigold-ui/marigold/commit/f99676498dd62ffa671314b18be140967162b69b), [`95ce246`](https://github.com/marigold-ui/marigold/commit/95ce246e7367031ec2241c9dd40e89a56bbb3547)]:
+  - @marigold/components@7.5.2
+  - @marigold/system@7.5.2
+  - @marigold/theme-preset@1.3.7
+
+## 26.1.1
+
+### Patch Changes
+
+- [#3797](https://github.com/marigold-ui/marigold/pull/3797) [`4b952f2`](https://github.com/marigold-ui/marigold/commit/4b952f2d58ce8f183cb3e29f631897a95c1b99ab) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Fixing Checkbox disable state styles
+
+- [#3777](https://github.com/marigold-ui/marigold/pull/3777) [`02f1934`](https://github.com/marigold-ui/marigold/commit/02f1934f85d58ffd694e234a0b7e45dadc7e55cf) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-271]:feat: Column allow fit width of item
+
+- [#3790](https://github.com/marigold-ui/marigold/pull/3790) [`bac4337`](https://github.com/marigold-ui/marigold/commit/bac4337efffa8751c39ed5fa999243a7eaef09a1) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-34]: change bg color in textarea if read-only core theme
+
+- [#3789](https://github.com/marigold-ui/marigold/pull/3789) [`f21ad28`](https://github.com/marigold-ui/marigold/commit/f21ad28740c04161543b277d4fb5447156ed4aad) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-43]: improve button icon variant for both themes
+
+- Updated dependencies [[`d4479c7`](https://github.com/marigold-ui/marigold/commit/d4479c770b3833f0dbdaa488fabed5aee5d009ce), [`02f1934`](https://github.com/marigold-ui/marigold/commit/02f1934f85d58ffd694e234a0b7e45dadc7e55cf), [`dea175a`](https://github.com/marigold-ui/marigold/commit/dea175a3c3d848db98a8ab5664c35e2bbce41d74), [`3d1e813`](https://github.com/marigold-ui/marigold/commit/3d1e8135d6af203400b4610b128037bed05ab0b1), [`886ff54`](https://github.com/marigold-ui/marigold/commit/886ff5424e44e20f8e65551bde6e3d8373d849a7), [`fba5e92`](https://github.com/marigold-ui/marigold/commit/fba5e92e8e70de0c3a65696cd2c462b6dfa7819e)]:
+  - @marigold/components@7.5.1
+  - @marigold/system@7.5.1
+  - @marigold/theme-preset@1.3.6
+
+## 26.1.0
+
+### Minor Changes
+
+- [#3766](https://github.com/marigold-ui/marigold/pull/3766) [`e1bcf1c`](https://github.com/marigold-ui/marigold/commit/e1bcf1c855a7df613ae7254a4bb7ef823515b148) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: remove and update `Switch` styles for themes
+
+### Patch Changes
+
+- [#3783](https://github.com/marigold-ui/marigold/pull/3783) [`e99387f`](https://github.com/marigold-ui/marigold/commit/e99387f7d4510108272e7a12882d4fcb74993252) Thanks [@sebald](https://github.com/sebald)! - feat: add `line-height` (browser default) to the core theme
+
+- [#3768](https://github.com/marigold-ui/marigold/pull/3768) [`7ddf5d0`](https://github.com/marigold-ui/marigold/commit/7ddf5d051f74f4311cab2b31b224d7fe257e19b7) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-51]:fix: core message background
+
+- [#3749](https://github.com/marigold-ui/marigold/pull/3749) [`81783b6`](https://github.com/marigold-ui/marigold/commit/81783b6807dfd05900f6ef862e16c14c58f3d6da) Thanks [@aromko](https://github.com/aromko)! - [DST-280]: Fix: fixed styles fot state hover
+
+- [#3764](https://github.com/marigold-ui/marigold/pull/3764) [`ade96cf`](https://github.com/marigold-ui/marigold/commit/ade96cf23f071140d8d935dc16c9096659b70bce) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-54]: feat: update link token in core theme
+
+- [#3755](https://github.com/marigold-ui/marigold/pull/3755) [`5920c98`](https://github.com/marigold-ui/marigold/commit/5920c98e7df4b4fdeafc9fdc49d08469bea02f94) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-282]: docs: add Elevation documentation
+
+- [#3787](https://github.com/marigold-ui/marigold/pull/3787) [`477e375`](https://github.com/marigold-ui/marigold/commit/477e3757045a048bf76a138f82047c02a348b32a) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: Switch remove Selected border core theme
+
+- [#3773](https://github.com/marigold-ui/marigold/pull/3773) [`ee50a2a`](https://github.com/marigold-ui/marigold/commit/ee50a2a96679cb5935e2881763b65276194710ce) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Fix hover & disabled state of checkbox for core theme
+
+- [#3765](https://github.com/marigold-ui/marigold/pull/3765) [`33ceefc`](https://github.com/marigold-ui/marigold/commit/33ceefcebbc7271bef563b722caeada5ce698144) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: remove unused styles and clean up
+
+- [#3774](https://github.com/marigold-ui/marigold/pull/3774) [`7a5bc5f`](https://github.com/marigold-ui/marigold/commit/7a5bc5fcc9103c714fa8ca8c9e12a9364dd7a03a) Thanks [@sebald](https://github.com/sebald)! - feat: remove normalization from themes when using CSS files
+
+- [#3753](https://github.com/marigold-ui/marigold/pull/3753) [`e77fbb0`](https://github.com/marigold-ui/marigold/commit/e77fbb070396e78961548a0ee3656562f6f1fdc1) Thanks [@aromko](https://github.com/aromko)! - [DSTSUP-48]: FIX: arrow isn't underlayed by the input text anymore
+
+- [#3779](https://github.com/marigold-ui/marigold/pull/3779) [`fc7f0bf`](https://github.com/marigold-ui/marigold/commit/fc7f0bfa56e03de542e9faf6e0951b6901c10381) Thanks [@sebald](https://github.com/sebald)! - fix([DSTSUP-52]): only allow vertical resizing of textareas in core theme
+
+- [#3786](https://github.com/marigold-ui/marigold/pull/3786) [`f04eeb5`](https://github.com/marigold-ui/marigold/commit/f04eeb52645eb595396feca92dc66b94dbc62e8e) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: MenuItem disabled state core theme
+
+- [#3770](https://github.com/marigold-ui/marigold/pull/3770) [`f306d06`](https://github.com/marigold-ui/marigold/commit/f306d065937b3b2c5ae10a73e5b6e0776016634b) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-44]:fix: disabled Textarea in core theme
+
+- Updated dependencies [[`5643257`](https://github.com/marigold-ui/marigold/commit/5643257afd66f093b45ca303876085b4c2b80e32), [`07d9277`](https://github.com/marigold-ui/marigold/commit/07d927746893c846200c2ca6ee6977d50a4ed5a4), [`ade96cf`](https://github.com/marigold-ui/marigold/commit/ade96cf23f071140d8d935dc16c9096659b70bce), [`6de438b`](https://github.com/marigold-ui/marigold/commit/6de438b81cd21da9d57e1312692938817b359b16), [`d6c44fa`](https://github.com/marigold-ui/marigold/commit/d6c44fa342d1221f42a8d4f82889c70865b97b39)]:
+  - @marigold/system@7.5.0
+  - @marigold/components@7.5.0
+  - @marigold/theme-preset@1.3.5
+
 ## 26.0.7
 
 ### Patch Changes

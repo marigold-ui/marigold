@@ -4,8 +4,8 @@ import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
 
 export interface ColumnsProps extends GapSpaceProp {
   children?: ReactNode;
-  columns: Array<number>;
-  collapseAt?: string | 0;
+  columns: Array<number | 'fit'>;
+  collapseAt?: string;
   stretch?: boolean;
 }
 
@@ -37,9 +37,13 @@ export const Columns = ({
       {Children.map(children, (child, idx) => (
         <div
           className={cn(
-            'grow-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]'
+            columns[idx] === 'fit' ? 'flex h-fit w-fit' : 'flex-[--columnSize]',
+            'basis-[calc((var(--collapseAt)_-_100%)_*_999)]'
           )}
-          style={createVar({ collapseAt, columnSize: columns[idx] })}
+          style={createVar({
+            collapseAt,
+            columnSize: columns[idx],
+          })}
         >
           {child}
         </div>

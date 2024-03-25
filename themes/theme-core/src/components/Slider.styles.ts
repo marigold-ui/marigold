@@ -2,17 +2,14 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Slider: ThemeComponent<'Slider'> = {
   container: cva(),
-  track: cva([
-    'rounded-lg border-none border-transparent',
-    'bg-bg-inverted text-transparent',
-  ]),
+  track: cva(['bg-bg-inverted rounded-lg']),
   thumb: cva([
     'align-middle',
     'border-border-base rounded-lg border-4 border-solid',
     'size-4',
-    'bg-bg-surface',
+    'bg-bg-base',
     'rac-focus:border-border-selected',
-    'disabled:bg-bg-inverted-disabled-dark disabled:border-border-base-disabled',
+    'rac-disabled:bg-bg-inverted-disabled rac-disabled:border-border-base-disabled',
   ]),
   output: cva('text-text-base text-sm'),
 };
