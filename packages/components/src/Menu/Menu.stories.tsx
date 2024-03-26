@@ -37,6 +37,40 @@ const meta = {
         defaultValue: { summary: 'none' },
       },
     },
+    placement: {
+      description:
+        'The placement of the element with respect to its anchor element.',
+      control: {
+        type: 'select',
+      },
+      options: [
+        'bottom',
+        'bottom left',
+        'bottom right',
+        'bottom start',
+        'bottom end',
+        'top',
+        'top left',
+        'top right',
+        'top start',
+        'top end',
+        'left',
+        'left top',
+        'left bottom',
+        'start',
+        'start top',
+        'start bottom',
+        'right',
+        'right top',
+        'right bottom',
+        'end',
+        'end top',
+        'end bottom',
+      ],
+      table: {
+        defaultValue: 'bottom',
+      },
+    },
     selectionMode: {
       description: 'if the Menu can select one MenuItem',
       control: {
