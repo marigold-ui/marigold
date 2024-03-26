@@ -4,7 +4,7 @@ caption: A component for displaying a list of interactive items, with support fo
 badge: new
 ---
 
-A `GridList` consists of a container element, with rows of data inside. The rows within a list may contain focusable elements or plain text content. If the list supports row selection, each row can optionally include a selection checkbox.
+A `GridList` consists of a container element, with rows of data inside. The rows within a list may contain focusable elements or plain text content. If the list supports row selection, each row includes a selection checkbox.
 
 ## Usage
 
@@ -17,6 +17,55 @@ import { GridList } from '@marigold/components';
 ```
 
 ### Props
+
+<PropsTable
+  props={[
+    {
+      property: 'download',
+      type: 'string | boolean | undefined',
+      description:
+        'Causes the browser to download the linked URL. A string may be provided to suggest a file name.',
+      default: 'none',
+    },
+    {
+      property: 'href',
+      type: 'string | undefined',
+      description: 'A URL to link to.',
+      default: 'none',
+    },
+    {
+      property: 'ping',
+      type: 'string | undefined',
+      description:
+        'A space-separated list of URLs to ping when the link is followed.',
+      default: 'none',
+    },
+
+    {
+      property: 'textValue',
+      type: 'string | undefined',
+      description:
+        "A string representation of the item's contents, used for features like typeahead.",
+      default: 'none',
+    },
+    {
+      property: 'onScroll',
+      type: '(e: React.UIEvent<HTMLDivElement, UIEvent>) => void',
+      description: 'Handler that is called when a user scrolls.',
+      default: 'none',
+    },
+    {
+      property: 'renderEmptyState',
+      type: '(props: GridListRenderProps) => React.ReactNode',
+      description:
+        'Provides content to display when there are no items in the list.',
+      default: 'none',
+    },
+
+]}
+/>
+
+### Item props
 
 <PropsTable
   props={[
