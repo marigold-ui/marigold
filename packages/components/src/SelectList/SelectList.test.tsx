@@ -9,7 +9,7 @@ import { Theme, ThemeProvider, cva } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Checkbox } from '../Checkbox';
-import { GridList } from './GridList';
+import { SelectList } from './SelectList';
 
 const theme: Theme = {
   name: 'test',
@@ -31,7 +31,7 @@ const theme: Theme = {
   },
 };
 
-describe('GridList', () => {
+describe('SelectList', () => {
   beforeAll(() => {
     jest.useRealTimers();
     Object.defineProperty(window, 'matchMedia', {
@@ -59,17 +59,17 @@ describe('GridList', () => {
   test('render with defautl classes', () => {
     render(
       <ThemeProvider theme={theme}>
-        <GridList aria-label="Test">
-          <GridList.Item id="cat" textValue="Cat">
+        <SelectList aria-label="Test">
+          <SelectList.Item id="cat" textValue="Cat">
             Cat
-          </GridList.Item>
-          <GridList.Item id="dog" textValue="Dog">
+          </SelectList.Item>
+          <SelectList.Item id="dog" textValue="Dog">
             Dog
-          </GridList.Item>
-          <GridList.Item id="kangaroo" textValue="Kangaroo">
+          </SelectList.Item>
+          <SelectList.Item id="kangaroo" textValue="Kangaroo">
             Kangaroo
-          </GridList.Item>
-        </GridList>
+          </SelectList.Item>
+        </SelectList>
       </ThemeProvider>
     );
   });
@@ -77,17 +77,17 @@ describe('GridList', () => {
   test('support DOM props', () => {
     render(
       <ThemeProvider theme={theme}>
-        <GridList aria-label="Test" data-foo="bar">
-          <GridList.Item data-bar="foo" id="cat" textValue="Cat">
+        <SelectList aria-label="Test" data-foo="bar">
+          <SelectList.Item data-bar="foo" id="cat" textValue="Cat">
             Cat
-          </GridList.Item>
-          <GridList.Item data-bar="foo" id="dog" textValue="Dog">
+          </SelectList.Item>
+          <SelectList.Item data-bar="foo" id="dog" textValue="Dog">
             Dog
-          </GridList.Item>
-          <GridList.Item data-bar="foo" id="kangaroo" textValue="Kangaroo">
+          </SelectList.Item>
+          <SelectList.Item data-bar="foo" id="kangaroo" textValue="Kangaroo">
             Kangaroo
-          </GridList.Item>
-        </GridList>
+          </SelectList.Item>
+        </SelectList>
       </ThemeProvider>
     );
     let grid = screen.getByRole('grid');
@@ -101,16 +101,16 @@ describe('GridList', () => {
   test('support slot', () => {
     render(
       <ThemeProvider theme={theme}>
-        <GridList aria-label="Test" slot="test">
-          <GridList.Item id="dog" textValue="Dog">
+        <SelectList aria-label="Test" slot="test">
+          <SelectList.Item id="dog" textValue="Dog">
             {' '}
             Dog
-          </GridList.Item>
-          <GridList.Item id="kangaroo" textValue="Kangaroo">
+          </SelectList.Item>
+          <SelectList.Item id="kangaroo" textValue="Kangaroo">
             {' '}
             Kangaroo
-          </GridList.Item>
-        </GridList>
+          </SelectList.Item>
+        </SelectList>
       </ThemeProvider>
     );
     let grid = screen.getByRole('grid');
@@ -118,31 +118,31 @@ describe('GridList', () => {
   });
 
   test('support refs', () => {
-    const gridListRef = createRef();
+    const SelectListRef = createRef();
     let itemRef = createRef();
     render(
       <ThemeProvider theme={theme}>
-        <GridList aria-label="Test" ref={gridListRef as any}>
-          <GridList.Item ref={itemRef as any} id="dog" textValue="Dog">
+        <SelectList aria-label="Test" ref={SelectListRef as any}>
+          <SelectList.Item ref={itemRef as any} id="dog" textValue="Dog">
             {' '}
             Dog
-          </GridList.Item>
-        </GridList>
+          </SelectList.Item>
+        </SelectList>
       </ThemeProvider>
     );
-    expect(gridListRef.current).toBeInstanceOf(HTMLElement);
+    expect(SelectListRef.current).toBeInstanceOf(HTMLElement);
     expect(itemRef.current).toBeInstanceOf(HTMLElement);
   });
 
   test('should support hover', async () => {
     render(
       <ThemeProvider theme={theme}>
-        <GridList aria-label="Test">
-          <GridList.Item id="dog" textValue="Dog">
+        <SelectList aria-label="Test">
+          <SelectList.Item id="dog" textValue="Dog">
             {' '}
             Dog
-          </GridList.Item>
-        </GridList>
+          </SelectList.Item>
+        </SelectList>
       </ThemeProvider>
     );
 
@@ -166,12 +166,12 @@ describe('GridList', () => {
   test('should support focus ring', async () => {
     render(
       <ThemeProvider theme={theme}>
-        <GridList aria-label="Test">
-          <GridList.Item id="dog" textValue="Dog">
+        <SelectList aria-label="Test">
+          <SelectList.Item id="dog" textValue="Dog">
             {' '}
             Dog
-          </GridList.Item>
-        </GridList>
+          </SelectList.Item>
+        </SelectList>
       </ThemeProvider>
     );
     let row = screen.getAllByRole('row')[0];
@@ -189,7 +189,7 @@ describe('GridList', () => {
   });
 
   test('support rendering drop indicators', () => {
-    const DraggableGridList = (props: any) => {
+    const DraggableSelectList = (props: any) => {
       const { dragAndDropHooks } = useDragAndDrop({
         getItems: keys => [...keys].map(key => ({ 'text/plain': key }) as any),
         ...props,
@@ -197,22 +197,22 @@ describe('GridList', () => {
 
       return (
         <ThemeProvider theme={theme}>
-          <GridList aria-label="Test" dragAndDropHooks={dragAndDropHooks}>
-            <GridList.Item id="cat" textValue="Cat">
+          <SelectList aria-label="Test" dragAndDropHooks={dragAndDropHooks}>
+            <SelectList.Item id="cat" textValue="Cat">
               <Button data-testid="dragButton" slot="drag">
                 ≡
               </Button>
               <Checkbox slot="selection" /> Cat
-            </GridList.Item>
-            <GridList.Item id="dog" textValue="Dog">
+            </SelectList.Item>
+            <SelectList.Item id="dog" textValue="Dog">
               <Button slot="drag">≡</Button>
               <Checkbox slot="selection" /> Dog
-            </GridList.Item>
-            <GridList.Item id="kangaroo" textValue="Kangaroo">
+            </SelectList.Item>
+            <SelectList.Item id="kangaroo" textValue="Kangaroo">
               <Button slot="drag">≡</Button>
               <Checkbox slot="selection" /> Kangaroo
-            </GridList.Item>
-          </GridList>
+            </SelectList.Item>
+          </SelectList>
         </ThemeProvider>
       );
     };
@@ -220,7 +220,7 @@ describe('GridList', () => {
     const onReorder = jest.fn();
 
     render(
-      <DraggableGridList
+      <DraggableSelectList
         onReorder={onReorder}
         renderDropIndicator={(target: any) => (
           <DropIndicator target={target}>test</DropIndicator>

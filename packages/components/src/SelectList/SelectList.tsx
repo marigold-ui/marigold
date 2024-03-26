@@ -7,12 +7,12 @@ import {
   forwardRef,
 } from 'react';
 import type RAC from 'react-aria-components';
-import { GridList } from 'react-aria-components';
+import { GridList as SelectList } from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
 
-import { GridListContext } from './Context';
-import { GridListItem } from './GridListItem';
+import { SelectListContext } from './Context';
+import { SelectListItem } from './SelectListItem';
 
 type RemoveProps = 'style' | 'className' | 'onSelectionChange';
 
@@ -23,14 +23,14 @@ export interface GridListProps
     | Dispatch<SetStateAction<any>>;
 }
 
-interface GridListComponent
+interface SelectListComponent
   extends ForwardRefExoticComponent<
     GridListProps & RefAttributes<HTMLUListElement>
   > {
-  Item: typeof GridListItem;
+  Item: typeof SelectListItem;
 }
 
-const _GridList = forwardRef<HTMLUListElement, GridListProps>(
+const _SelectList = forwardRef<HTMLUListElement, GridListProps>(
   ({ onChange, ...rest }, ref) => {
     const classNames = useClassNames({ component: 'ListBox' });
 
@@ -40,9 +40,9 @@ const _GridList = forwardRef<HTMLUListElement, GridListProps>(
     };
 
     return (
-      <GridListContext.Provider value={{ classNames }}>
+      <SelectListContext.Provider value={{ classNames }}>
         <div className={classNames.container}>
-          <GridList
+          <SelectList
             {...props}
             ref={ref as Ref<HTMLDivElement>}
             className={cn(
@@ -51,13 +51,13 @@ const _GridList = forwardRef<HTMLUListElement, GridListProps>(
             )}
           >
             {props.children}
-          </GridList>
+          </SelectList>
         </div>
-      </GridListContext.Provider>
+      </SelectListContext.Provider>
     );
   }
-) as GridListComponent;
+) as SelectListComponent;
 
-_GridList.Item = GridListItem;
+_SelectList.Item = SelectListItem;
 
-export { _GridList as GridList };
+export { _SelectList as SelectList };

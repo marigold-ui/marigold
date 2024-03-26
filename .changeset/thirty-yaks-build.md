@@ -3,4 +3,4 @@
 "@marigold/docs": minor
 ---
 
-Creating new component `GridList`
+Creating new component `SelectList`

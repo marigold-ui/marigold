@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import { Button } from '../Button';
-import { GridList } from './GridList';
+import { SelectList } from './SelectList';
 
 const meta = {
-  title: 'Components/GridList',
+  title: 'Components/SelectList',
   argTypes: {
     selectionMode: {
       control: {
@@ -16,50 +16,50 @@ const meta = {
         type: { summary: 'select' },
         defaultValue: { summary: 'single' },
       },
-      description: 'Set selection mode of the grid list',
+      description: 'Set selection mode of the select list',
       defaultValue: false,
     },
   },
-} satisfies Meta<typeof GridList>;
+} satisfies Meta<typeof SelectList>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <GridList
-      aria-labelledby="GridList"
+    <SelectList
+      aria-labelledby="SelectList"
       defaultSelectedKeys={['one']}
       disabledKeys={['four']}
       {...args}
     >
-      <GridList.Item id="one">one</GridList.Item>
-      <GridList.Item id="two">Two</GridList.Item>
-      <GridList.Item id="three">Three</GridList.Item>
-      <GridList.Item id="four">Four</GridList.Item>
-    </GridList>
+      <SelectList.Item id="one">one</SelectList.Item>
+      <SelectList.Item id="two">Two</SelectList.Item>
+      <SelectList.Item id="three">Three</SelectList.Item>
+      <SelectList.Item id="four">Four</SelectList.Item>
+    </SelectList>
   ),
 };
 
 export const WithSingleSelection: Story = {
   render: args => (
-    <GridList aria-labelledby="GridList" selectionMode="single" {...args}>
-      <GridList.Item id="one">one</GridList.Item>
-      <GridList.Item id="two">Two</GridList.Item>
-      <GridList.Item id="three">Three</GridList.Item>
-      <GridList.Item id="four">Four</GridList.Item>
-    </GridList>
+    <SelectList aria-labelledby="SelectList" selectionMode="single" {...args}>
+      <SelectList.Item id="one">one</SelectList.Item>
+      <SelectList.Item id="two">Two</SelectList.Item>
+      <SelectList.Item id="three">Three</SelectList.Item>
+      <SelectList.Item id="four">Four</SelectList.Item>
+    </SelectList>
   ),
 };
 
 export const WithMultiSelection: Story = {
   render: args => (
-    <GridList aria-labelledby="GridList" selectionMode="multiple" {...args}>
-      <GridList.Item id="charizard">Charizard</GridList.Item>
-      <GridList.Item id="blastoise">Blastoise</GridList.Item>
-      <GridList.Item id="venusaur">Venusaur</GridList.Item>
-      <GridList.Item id="pikachu">Pikachu</GridList.Item>
-    </GridList>
+    <SelectList aria-labelledby="SelectList" selectionMode="multiple" {...args}>
+      <SelectList.Item id="charizard">Charizard</SelectList.Item>
+      <SelectList.Item id="blastoise">Blastoise</SelectList.Item>
+      <SelectList.Item id="venusaur">Venusaur</SelectList.Item>
+      <SelectList.Item id="pikachu">Pikachu</SelectList.Item>
+    </SelectList>
   ),
 };
 
@@ -71,14 +71,14 @@ let rows = [
 ];
 export const Action: Story = {
   render: args => (
-    <GridList
-      aria-labelledby="GridList"
+    <SelectList
+      aria-labelledby="SelectList"
       selectionMode="multiple"
       {...args}
       items={rows}
     >
       {(item: { id: number; name: string }) => (
-        <GridList.Item textValue={item.name}>
+        <SelectList.Item textValue={item.name}>
           {item.name}
           <Button
             aria-label="Info"
@@ -87,8 +87,8 @@ export const Action: Story = {
           >
             ⓘ
           </Button>
-        </GridList.Item>
+        </SelectList.Item>
       )}
-    </GridList>
+    </SelectList>
   ),
 };

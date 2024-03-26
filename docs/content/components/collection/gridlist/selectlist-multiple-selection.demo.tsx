@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Button, GridList } from '@marigold/components';
+import { Button, SelectList } from '@marigold/components';
 
 let pokemons = [
   { id: 'charizard', name: 'Charizard' },
@@ -13,7 +13,7 @@ export default () => {
   const [selectedPokemons, setSelectedPokemons] = useState(['charizard']);
   return (
     <>
-      <GridList
+      <SelectList
         aria-label="Favorite pokemon"
         selectionMode="multiple"
         items={pokemons}
@@ -21,7 +21,7 @@ export default () => {
         onChange={setSelectedPokemons}
       >
         {(item: { id: any; name: string }) => (
-          <GridList.Item id={item.id}>
+          <SelectList.Item id={item.id}>
             {item.name}
             <Button
               aria-label="Info"
@@ -30,9 +30,9 @@ export default () => {
             >
               ⓘ
             </Button>
-          </GridList.Item>
+          </SelectList.Item>
         )}
-      </GridList>
+      </SelectList>
       {selectedPokemons}
     </>
   );
