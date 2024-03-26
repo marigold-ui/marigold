@@ -1,6 +1,6 @@
-import { Ref, forwardRef } from 'react';
+import { Ref, forwardRef, useContext } from 'react';
 import type RAC from 'react-aria-components';
-import { Button, GridListItem } from 'react-aria-components';
+import { Button, CheckboxContext, GridListItem } from 'react-aria-components';
 
 import { cn } from '@marigold/system';
 
@@ -25,9 +25,10 @@ const _GridListItem = forwardRef<HTMLDivElement | undefined, GridListItemProps>(
           <>
             {/* Add elements for drag and drop and selection. */}
             {allowsDragging && <Button slot="drag">≡</Button>}
-            {selectionMode !== 'none' && selectionBehavior === 'toggle' && (
+            {selectionMode === 'multiple' && selectionBehavior === 'toggle' && (
               <Checkbox slot="selection" />
             )}
+            {selectionMode === 'single' && <RadioComp slot="selection" />}
             {children}
           </>
         )}
@@ -35,5 +36,11 @@ const _GridListItem = forwardRef<HTMLDivElement | undefined, GridListItemProps>(
     );
   }
 );
+
+const RadioComp = (props: any) => {
+  const context = useContext(CheckboxContext);
+  const isChecked = (context as any).slots.selection.isSelected;
+  return <input type="radio" name="" id="" checked={isChecked} />;
+};
 
 export { _GridListItem as GridListItem };
