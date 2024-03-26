@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
@@ -38,6 +37,28 @@ export const Basic: Story = {
       <GridList.Item id="two">Two</GridList.Item>
       <GridList.Item id="three">Three</GridList.Item>
       <GridList.Item id="four">Four</GridList.Item>
+    </GridList>
+  ),
+};
+
+export const WithSingleSelection: Story = {
+  render: args => (
+    <GridList aria-labelledby="GridList" selectionMode="single" {...args}>
+      <GridList.Item id="one">one</GridList.Item>
+      <GridList.Item id="two">Two</GridList.Item>
+      <GridList.Item id="three">Three</GridList.Item>
+      <GridList.Item id="four">Four</GridList.Item>
+    </GridList>
+  ),
+};
+
+export const WithMultiSelection: Story = {
+  render: args => (
+    <GridList aria-labelledby="GridList" selectionMode="multiple" {...args}>
+      <GridList.Item id="charizard">Charizard</GridList.Item>
+      <GridList.Item id="blastoise">Blastoise</GridList.Item>
+      <GridList.Item id="venusaur">Venusaur</GridList.Item>
+      <GridList.Item id="pikachu">Pikachu</GridList.Item>
     </GridList>
   ),
 };
