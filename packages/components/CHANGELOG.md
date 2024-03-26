@@ -1,5 +1,17 @@
 # @marigold/components
 
+## 7.6.0
+
+### Minor Changes
+
+- [#3841](https://github.com/marigold-ui/marigold/pull/3841) [`05d2ca0`](https://github.com/marigold-ui/marigold/commit/05d2ca03fbac80de9a1b6887932301b0d91691f2) Thanks [@sebald](https://github.com/sebald)! - feat: Allow configure position of menu popover
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@7.6.0
+  - @marigold/icons@1.2.45
+
 ## 7.5.4
 
 ### Patch Changes
