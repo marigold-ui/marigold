@@ -1,6 +1,6 @@
 import { Ref, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
-import { Button, GridListItem as SelectListItem } from 'react-aria-components';
+import { GridListItem as SelectListItem } from 'react-aria-components';
 
 import { cn } from '@marigold/system';
 
@@ -23,10 +23,8 @@ const _SelectListItem = forwardRef<
       className={cn('flex items-center', classNames?.option)}
       ref={ref as Ref<HTMLDivElement>}
     >
-      {({ selectionMode, selectionBehavior, allowsDragging }) => (
+      {({ selectionMode }) => (
         <>
-          {/* Add elements for drag and drop and selection. */}
-          {allowsDragging && <Button slot="drag">≡</Button>}
           {selectionMode === 'multiple' && <Checkbox slot="selection" />}
           {children}
         </>
