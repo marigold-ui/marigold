@@ -1,7 +1,7 @@
 {
   "name": "@marigold/storybook-config",
   "description": "Marigold's storybook configuration",
-  "version": "1.1.32",
+  "version": "1.1.36",
   "license": "MIT",
   "exports": "./main.js",
   "keywords": [
@@ -21,7 +21,7 @@
     "@marigold/components": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
-    "@mdx-js/react": "2.3.0",
+    "@mdx-js/react": "3.0.1",
     "@storybook/addon-a11y": "7.6.17",
     "@storybook/addon-essentials": "7.6.17",
     "@storybook/addon-interactions": "7.6.17",
@@ -32,6 +32,7 @@
     "vite-tsconfig-paths": "4.3.1"
   },
   "devDependencies": {
+    "@storybook/addon-storysource": "8.0.2",
     "@storybook/addon-themes": "7.6.17",
     "@storybook/addons": "7.6.17",
     "@storybook/builder-vite": "7.6.17",

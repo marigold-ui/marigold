@@ -1,5 +1,61 @@
 # @marigold/docs
 
+## 7.5.4
+
+### Patch Changes
+
+- [#3840](https://github.com/marigold-ui/marigold/pull/3840) [`c8320d3`](https://github.com/marigold-ui/marigold/commit/c8320d30e6a2b311d2ff3ec74d713b5362806942) Thanks [@aromko](https://github.com/aromko)! - docs: change multiselect recipe
+
+- Updated dependencies [[`4c3cad5`](https://github.com/marigold-ui/marigold/commit/4c3cad52f3d6d85fdea89603682876fe35935b15), [`ea9c6b5`](https://github.com/marigold-ui/marigold/commit/ea9c6b5d74f514b25207792f8a0e4520836c2917)]:
+  - @marigold/theme-core@26.1.4
+  - @marigold/components@7.5.4
+  - @marigold/icons@1.2.44
+  - @marigold/theme-preset@1.3.9
+  - @marigold/theme-b2b@27.1.4
+
+## 7.5.3
+
+### Patch Changes
+
+- [#3824](https://github.com/marigold-ui/marigold/pull/3824) [`879a0e1`](https://github.com/marigold-ui/marigold/commit/879a0e12368318f4535792ed09917481fbd46f3b) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Adding Multiselect guideline
+
+- [#3829](https://github.com/marigold-ui/marigold/pull/3829) [`81a84e5`](https://github.com/marigold-ui/marigold/commit/81a84e520dc9021d2b813ee345e8af14368b237e) Thanks [@sarahgm](https://github.com/sarahgm)! - chore[DSTSUP-65]: fix demo and add overlayprovider to tooltip
+
+- Updated dependencies [[`7fd7ad7`](https://github.com/marigold-ui/marigold/commit/7fd7ad7393ed524e5c72b4eecea896ffc67e7c86), [`879a0e1`](https://github.com/marigold-ui/marigold/commit/879a0e12368318f4535792ed09917481fbd46f3b), [`81a84e5`](https://github.com/marigold-ui/marigold/commit/81a84e520dc9021d2b813ee345e8af14368b237e)]:
+  - @marigold/components@7.5.3
+  - @marigold/theme-b2b@27.1.3
+  - @marigold/theme-core@26.1.3
+  - @marigold/icons@1.2.43
+  - @marigold/theme-preset@1.3.8
+
+## 7.5.2
+
+### Patch Changes
+
+- Updated dependencies [[`f996764`](https://github.com/marigold-ui/marigold/commit/f99676498dd62ffa671314b18be140967162b69b), [`f6a7035`](https://github.com/marigold-ui/marigold/commit/f6a7035d1f54dc6ebe7bb256f8071846be1c9216), [`8cc639d`](https://github.com/marigold-ui/marigold/commit/8cc639da7d9b97ec915067ea67883652f774e6c2), [`95ce246`](https://github.com/marigold-ui/marigold/commit/95ce246e7367031ec2241c9dd40e89a56bbb3547)]:
+  - @marigold/components@7.5.2
+  - @marigold/theme-core@26.1.2
+  - @marigold/theme-b2b@27.1.2
+  - @marigold/icons@1.2.42
+  - @marigold/theme-preset@1.3.7
+
+## 7.5.1
+
+### Patch Changes
+
+- [#3811](https://github.com/marigold-ui/marigold/pull/3811) [`c9d687e`](https://github.com/marigold-ui/marigold/commit/c9d687e14f04cbbada64acc0ecb87ec6c16bc38e) Thanks [@sebald](https://github.com/sebald)! - docs: move hooks and utils under components
+
+- [#3777](https://github.com/marigold-ui/marigold/pull/3777) [`02f1934`](https://github.com/marigold-ui/marigold/commit/02f1934f85d58ffd694e234a0b7e45dadc7e55cf) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-271]:feat: Column allow fit width of item
+
+- [#3810](https://github.com/marigold-ui/marigold/pull/3810) [`dea175a`](https://github.com/marigold-ui/marigold/commit/dea175a3c3d848db98a8ab5664c35e2bbce41d74) Thanks [@aromko](https://github.com/aromko)! - [DSTSUP-60]: add examples using state in table with input fields
+  [DSTSUP-60]: add `useListData` hook to docs
+- Updated dependencies [[`4b952f2`](https://github.com/marigold-ui/marigold/commit/4b952f2d58ce8f183cb3e29f631897a95c1b99ab), [`d4479c7`](https://github.com/marigold-ui/marigold/commit/d4479c770b3833f0dbdaa488fabed5aee5d009ce), [`02f1934`](https://github.com/marigold-ui/marigold/commit/02f1934f85d58ffd694e234a0b7e45dadc7e55cf), [`bac4337`](https://github.com/marigold-ui/marigold/commit/bac4337efffa8751c39ed5fa999243a7eaef09a1), [`dea175a`](https://github.com/marigold-ui/marigold/commit/dea175a3c3d848db98a8ab5664c35e2bbce41d74), [`3d1e813`](https://github.com/marigold-ui/marigold/commit/3d1e8135d6af203400b4610b128037bed05ab0b1), [`886ff54`](https://github.com/marigold-ui/marigold/commit/886ff5424e44e20f8e65551bde6e3d8373d849a7), [`f21ad28`](https://github.com/marigold-ui/marigold/commit/f21ad28740c04161543b277d4fb5447156ed4aad)]:
+  - @marigold/theme-core@26.1.1
+  - @marigold/components@7.5.1
+  - @marigold/theme-b2b@27.1.1
+  - @marigold/icons@1.2.41
+  - @marigold/theme-preset@1.3.6
+
 ## 7.5.0
 
 ### Patch Changes

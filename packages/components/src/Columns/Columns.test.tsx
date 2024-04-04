@@ -20,7 +20,7 @@ test('supports default space prop', () => {
 >
   <div
     class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-    style="--columnSize: 6;"
+    style="--collapseAt: 0em; --columnSize: 6;"
   >
     <div>
       column
@@ -28,7 +28,7 @@ test('supports default space prop', () => {
   </div>
   <div
     class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-    style="--columnSize: 6;"
+    style="--collapseAt: 0em; --columnSize: 6;"
   >
     <div>
       column
@@ -82,7 +82,7 @@ test('supports columns with two values', () => {
   expect(columnOne).toMatchInlineSnapshot(`
 <div
   class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-  style="--columnSize: 2;"
+  style="--collapseAt: 0em; --columnSize: 2;"
 >
   <div>
     columnOne
@@ -92,7 +92,7 @@ test('supports columns with two values', () => {
   expect(columnTwo).toMatchInlineSnapshot(`
 <div
   class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-  style="--columnSize: 10;"
+  style="--collapseAt: 0em; --columnSize: 10;"
 >
   <div>
     columnTwo
@@ -115,7 +115,7 @@ test('supports columns with three values', () => {
   expect(columnOne).toMatchInlineSnapshot(`
 <div
   class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-  style="--columnSize: 2;"
+  style="--collapseAt: 0em; --columnSize: 2;"
 >
   <div>
     columnOne
@@ -125,7 +125,7 @@ test('supports columns with three values', () => {
   expect(columnTwo).toMatchInlineSnapshot(`
 <div
   class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-  style="--columnSize: 4;"
+  style="--collapseAt: 0em; --columnSize: 4;"
 >
   <div>
     columnTwo
@@ -135,7 +135,7 @@ test('supports columns with three values', () => {
   expect(columnThree).toMatchInlineSnapshot(`
 <div
   class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-  style="--columnSize: 6;"
+  style="--collapseAt: 0em; --columnSize: 6;"
 >
   <div>
     columnThree
@@ -158,7 +158,7 @@ test('supports different types of children', () => {
   expect(columnOne).toMatchInlineSnapshot(`
 <div
   class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-  style="--columnSize: 1;"
+  style="--collapseAt: 0em; --columnSize: 1;"
 >
   <main>
     columnOne
@@ -168,7 +168,7 @@ test('supports different types of children', () => {
   expect(columnTwo).toMatchInlineSnapshot(`
 <div
   class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-  style="--columnSize: 1;"
+  style="--collapseAt: 0em; --columnSize: 1;"
 >
   <div>
     columnTwo
@@ -178,7 +178,7 @@ test('supports different types of children', () => {
   expect(columnThree).toMatchInlineSnapshot(`
 <div
   class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-  style="--columnSize: 2;"
+  style="--collapseAt: 0em; --columnSize: 2;"
 >
   <aside>
     columnThree
@@ -220,7 +220,7 @@ test('supports stretching to full height', () => {
 >
   <div
     class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-    style="--columnSize: 1;"
+    style="--collapseAt: 0em; --columnSize: 1;"
   >
     <main>
       columnOne
@@ -228,7 +228,7 @@ test('supports stretching to full height', () => {
   </div>
   <div
     class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-    style="--columnSize: 1;"
+    style="--collapseAt: 0em; --columnSize: 1;"
   >
     <div>
       columnTwo
@@ -236,7 +236,7 @@ test('supports stretching to full height', () => {
   </div>
   <div
     class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
-    style="--columnSize: 2;"
+    style="--collapseAt: 0em; --columnSize: 2;"
   >
     <aside>
       columnThree

@@ -12,7 +12,7 @@ export interface ColumnsProps extends GapSpaceProp {
 export const Columns = ({
   space = 0,
   columns,
-  collapseAt,
+  collapseAt = '0em',
   stretch,
   children,
   ...props
@@ -37,7 +37,7 @@ export const Columns = ({
       {Children.map(children, (child, idx) => (
         <div
           className={cn(
-            columns[idx] !== 'fit' ? 'flex-[--columnSize]' : 'flex h-fit w-fit',
+            columns[idx] === 'fit' ? 'flex h-fit w-fit' : 'flex-[--columnSize]',
             'basis-[calc((var(--collapseAt)_-_100%)_*_999)]'
           )}
           style={createVar({

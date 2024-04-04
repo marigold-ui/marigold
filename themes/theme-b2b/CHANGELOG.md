@@ -1,5 +1,43 @@
 # @marigold/theme-b2b
 
+## 27.1.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@7.5.4
+  - @marigold/components@7.5.4
+  - @marigold/theme-preset@1.3.9
+
+## 27.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`7fd7ad7`](https://github.com/marigold-ui/marigold/commit/7fd7ad7393ed524e5c72b4eecea896ffc67e7c86), [`879a0e1`](https://github.com/marigold-ui/marigold/commit/879a0e12368318f4535792ed09917481fbd46f3b), [`81a84e5`](https://github.com/marigold-ui/marigold/commit/81a84e520dc9021d2b813ee345e8af14368b237e)]:
+  - @marigold/components@7.5.3
+  - @marigold/system@7.5.3
+  - @marigold/theme-preset@1.3.8
+
+## 27.1.2
+
+### Patch Changes
+
+- Updated dependencies [[`f996764`](https://github.com/marigold-ui/marigold/commit/f99676498dd62ffa671314b18be140967162b69b), [`95ce246`](https://github.com/marigold-ui/marigold/commit/95ce246e7367031ec2241c9dd40e89a56bbb3547)]:
+  - @marigold/components@7.5.2
+  - @marigold/system@7.5.2
+  - @marigold/theme-preset@1.3.7
+
+## 27.1.1
+
+### Patch Changes
+
+- [#3789](https://github.com/marigold-ui/marigold/pull/3789) [`f21ad28`](https://github.com/marigold-ui/marigold/commit/f21ad28740c04161543b277d4fb5447156ed4aad) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-43]: improve button icon variant for both themes
+
+- Updated dependencies [[`d4479c7`](https://github.com/marigold-ui/marigold/commit/d4479c770b3833f0dbdaa488fabed5aee5d009ce), [`02f1934`](https://github.com/marigold-ui/marigold/commit/02f1934f85d58ffd694e234a0b7e45dadc7e55cf), [`dea175a`](https://github.com/marigold-ui/marigold/commit/dea175a3c3d848db98a8ab5664c35e2bbce41d74), [`3d1e813`](https://github.com/marigold-ui/marigold/commit/3d1e8135d6af203400b4610b128037bed05ab0b1), [`886ff54`](https://github.com/marigold-ui/marigold/commit/886ff5424e44e20f8e65551bde6e3d8373d849a7), [`fba5e92`](https://github.com/marigold-ui/marigold/commit/fba5e92e8e70de0c3a65696cd2c462b6dfa7819e)]:
+  - @marigold/components@7.5.1
+  - @marigold/system@7.5.1
+  - @marigold/theme-preset@1.3.6
+
 ## 27.1.0
 
 ### Minor Changes
