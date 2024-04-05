@@ -42,6 +42,7 @@ const base = {
     '!**/build/**',
     '!**/dist/**',
     '!**/node_modules/**',
+    '!**/Multiselect.tsx',
   ],
 
   clearMocks: true,

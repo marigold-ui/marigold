@@ -1,7 +1,7 @@
 {
   "name": "@marigold/storybook-config",
   "description": "Marigold's storybook configuration",
-  "version": "1.1.34",
+  "version": "1.1.36",
   "license": "MIT",
   "exports": "./main.js",
   "keywords": [
@@ -21,24 +21,25 @@
     "@marigold/components": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
-    "@mdx-js/react": "2.3.0",
+    "@mdx-js/react": "3.0.1",
     "@storybook/addon-a11y": "7.6.17",
     "@storybook/addon-essentials": "7.6.17",
     "@storybook/addon-interactions": "7.6.17",
     "@storybook/jest": "0.2.3",
     "@storybook/source-loader": "7.6.17",
     "@storybook/testing-library": "0.2.2",
-    "@types/react": "18.2.64",
-    "vite-tsconfig-paths": "4.3.1"
+    "@types/react": "18.2.73",
+    "vite-tsconfig-paths": "4.3.2"
   },
   "devDependencies": {
+    "@storybook/addon-storysource": "8.0.5",
     "@storybook/addon-themes": "7.6.17",
     "@storybook/addons": "7.6.17",
     "@storybook/builder-vite": "7.6.17",
     "@storybook/cli": "7.6.17",
     "@storybook/core-events": "7.6.17",
     "@storybook/react-vite": "7.6.17",
-    "autoprefixer": "10.4.18",
+    "autoprefixer": "10.4.19",
     "postcss": "8.4.35",
     "postcss-loader": "8.1.0",
     "react": "18.2.0",
@@ -46,7 +47,7 @@
     "storybook": "7.6.17",
     "tailwindcss": "3.4.1",
     "typescript": "5.3.3",
-    "vite": "5.1.5"
+    "vite": "5.2.7"
   },
   "peerDependencies": {
     "@storybook/react": "7.6.17",
