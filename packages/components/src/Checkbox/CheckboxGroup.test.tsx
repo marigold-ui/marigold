@@ -247,3 +247,22 @@ test('works with a <FieldGroup>', () => {
   expect(screen.getByText('two')).toBeInTheDocument();
   expect(screen.getByText('three')).toBeInTheDocument();
 });
+
+test('horiziontal orientation style', () => {
+  render(
+    <CheckboxGroup label="Group of Checkboxes" orientation="horizontal">
+      <Checkbox value="one" data-testid="checkbox">
+        one
+      </Checkbox>
+      <Checkbox value="two">two</Checkbox>
+      <Checkbox value="three">three</Checkbox>
+    </CheckboxGroup>
+  );
+  const presentation = screen
+    .getAllByRole('presentation')
+    .filter(
+      element => element.getAttribute('data-orientation') === 'horizontal'
+    );
+
+  expect(presentation[0].className).toContain('flex-row gap-[1.5ch]');
+});

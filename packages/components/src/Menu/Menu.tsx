@@ -6,6 +6,7 @@ import { useClassNames } from '@marigold/system';
 
 import { Button } from '../Button';
 import { Popover } from '../Overlay/Popover';
+import type { PopoverProps } from '../Overlay/Popover';
 import { MenuItem } from './MenuItem';
 import { MenuSection } from './MenuSection';
 
@@ -15,6 +16,7 @@ export interface MenuProps
   extends Omit<RAC.MenuTriggerProps, RemovedProps>,
     Omit<RAC.MenuProps<object>, RemovedProps> {
   open?: RAC.MenuTriggerProps['isOpen'];
+  placement?: PopoverProps['placement'];
   label?: ReactNode;
   variant?: string;
   size?: string;
@@ -30,6 +32,7 @@ const _Menu = ({
   size,
   disabled,
   open,
+  placement,
   ...props
 }: MenuProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
@@ -39,7 +42,7 @@ const _Menu = ({
       <Button variant="menu" disabled={disabled}>
         {label}
       </Button>
-      <Popover open={open}>
+      <Popover open={open} placement={placement}>
         <Menu {...props} className={classNames.container}>
           {children}
         </Menu>
