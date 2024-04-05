@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@babel/core": "7.24.3",
-    "@swc/core": "1.4.1",
+    "@swc/core": "1.4.11",
     "@swc/jest": "0.2.36",
     "@types/jest": "29.5.12",
     "babel-jest": "29.7.0",
