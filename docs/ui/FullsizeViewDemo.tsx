@@ -17,8 +17,8 @@ export const FullsizeView = ({ code }: FullsizeViewProps) => {
           ></path>
         </svg>
       </Button>
-      <Dialog>
-        <div className="not-prose max-h-[90vh] w-full overflow-y-auto rounded-lg bg-[#1f2937] p-6">
+      <Dialog closeButton variant="fullscreen">
+        <div className="not-prose overflow-y-auto rounded-lg bg-[#1f2937] p-6">
           <pre className="[&>code]:bg-transparent">{code}</pre>
         </div>
       </Dialog>
