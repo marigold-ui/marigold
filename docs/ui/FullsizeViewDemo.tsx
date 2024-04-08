@@ -21,6 +21,7 @@ export const FullsizeView = ({ code, codeString }: FullsizeViewProps) => {
         </svg>
       </Button>
       <Dialog>
+        {/* need to add the background color here otherwise it will not be displayed */}
         <div className="not-prose h-[90vh] w-full overflow-y-auto rounded-lg bg-[#1f2937] p-10">
           <div className="flex justify-end gap-2">
             <CopyButton codeString={codeString} />
