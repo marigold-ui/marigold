@@ -2,11 +2,14 @@ import { ReactNode } from 'react';
 
 import { Button, Dialog } from '@marigold/components';
 
+import { CopyButton } from './CopyButton';
+
 export interface FullsizeViewProps {
-  code?: ReactNode;
+  code: ReactNode;
+  codeString: string;
 }
 
-export const FullsizeView = ({ code }: FullsizeViewProps) => {
+export const FullsizeView = ({ code, codeString }: FullsizeViewProps) => {
   return (
     <Dialog.Trigger dismissable>
       <Button className="border-none p-0 outline-0">
@@ -19,6 +22,9 @@ export const FullsizeView = ({ code }: FullsizeViewProps) => {
       </Button>
       <Dialog closeButton variant="fullscreen">
         <div className="not-prose overflow-y-auto rounded-lg bg-[#1f2937] p-6">
+          <div className="flex justify-end gap-2">
+            <CopyButton codeString={codeString} />
+          </div>
           <pre className="[&>code]:bg-transparent">{code}</pre>
         </div>
       </Dialog>

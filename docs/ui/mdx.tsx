@@ -83,7 +83,7 @@ const typography = {
         >
           <div className="flex justify-end gap-2">
             <CopyButton codeString={raw} />
-            <FullsizeView code={props.children} />
+            <FullsizeView code={props.children} codeString={raw} />
           </div>
           {props.children}
         </pre>
