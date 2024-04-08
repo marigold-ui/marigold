@@ -1,7 +1,10 @@
 'use client';
 
 import { type Theme } from '@/ui';
-import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import React, { ReactNode, useContext, useEffect } from 'react';
+import { useSessionStorage } from 'react-use';
+
+import { useSearchParams } from 'next/navigation';
 
 // Context
 // ---------------
@@ -33,8 +36,13 @@ export const MarigoldThemeSwitch = ({
   initial,
   children,
 }: MarigoldThemeSwitchProps) => {
-  const [theme, setTheme] = useState(initial);
-  useEffect(() => setTheme(theme), [theme]);
+  const queryTheme = useSearchParams().get('theme');
+
+  const [theme, setTheme] = useSessionStorage('theme', queryTheme ?? initial);
+
+  useEffect(() => {
+    setTheme(theme);
+  }, [theme]);
 
   return (
     <Context.Provider value={{ current: theme, themes, setTheme }}>
