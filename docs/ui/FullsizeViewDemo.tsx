@@ -20,8 +20,8 @@ export const FullsizeView = ({ code, codeString }: FullsizeViewProps) => {
           ></path>
         </svg>
       </Button>
-      <Dialog variant="fullscreen">
-        <div className="not-prose overflow-y-auto rounded-lg bg-[#1f2937] p-10">
+      <Dialog>
+        <div className="not-prose h-[90vh] w-full overflow-y-auto rounded-lg bg-[#1f2937] p-10">
           <div className="flex justify-end gap-2">
             <CopyButton codeString={codeString} />
           </div>
