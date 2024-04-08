@@ -1,5 +1,6 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import path from 'node:path';
+import { dirname, join } from 'path';
 import { mergeConfig } from 'vite';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 
@@ -11,21 +12,17 @@ const config: StorybookConfig = {
     path.resolve(projectRoot, 'packages/system/src/**/*.stories.tsx'),
   ],
   addons: [
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-    '@storybook/addon-themes',
-    '@storybook/addon-storysource',
+    getAbsolutePath('@storybook/addon-essentials'),
+    getAbsolutePath('@storybook/addon-interactions'),
+    getAbsolutePath('@storybook/addon-themes'),
+    getAbsolutePath('@storybook/addon-storysource'),
   ],
   framework: {
-    name: '@storybook/react-vite',
-    // @ts-expect-error
-    options: { builder: { useSWC: true } },
+    name: getAbsolutePath('@storybook/react-vite'),
+    options: {},
   },
   typescript: {
     check: false,
-  },
-  features: {
-    storyStoreV7: false,
   },
   // needed because without package have incorrect exports...
   async viteFinal(config) {
@@ -47,3 +44,7 @@ const config: StorybookConfig = {
   staticDirs: ['./assets'],
 };
 export default config;
+
+function getAbsolutePath(value: string): any {
+  return dirname(require.resolve(join(value, 'package.json')));
+}
