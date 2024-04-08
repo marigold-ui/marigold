@@ -14,6 +14,7 @@ import { AppearanceTable } from './AppearanceTable';
 import { ColorTokenTable } from './ColorTokens';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
+import { FullsizeView } from './FullsizeViewDemo';
 import { PropsTable } from './PropsTable';
 import {
   AlignmentsX,
@@ -80,8 +81,9 @@ const typography = {
           )}
           {...props}
         >
-          <div className="absolute right-4 top-4">
+          <div className="flex justify-end gap-2">
             <CopyButton codeString={raw} />
+            <FullsizeView code={props.children} />
           </div>
           {props.children}
         </pre>
