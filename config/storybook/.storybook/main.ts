@@ -18,14 +18,10 @@ const config: StorybookConfig = {
   ],
   framework: {
     name: '@storybook/react-vite',
-    // @ts-expect-error
-    options: { builder: { useSWC: true } },
+    options: {},
   },
   typescript: {
     check: false,
-  },
-  features: {
-    storyStoreV7: false,
   },
   // needed because without package have incorrect exports...
   async viteFinal(config) {
