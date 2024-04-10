@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm';
 import { visit } from 'unist-util-visit';
 
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
+import { rehypeTableOfContents } from './lib/mdx/rehype-toc';
 
 /**
  * Normalizaiton supports "grouped pages". E.g. when we want to put
@@ -107,6 +108,7 @@ export default makeSource({
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
       [rehypeComponentDemo, { contentDirPath }],
+      rehypeTableOfContents,
       rehypeSlug,
       // to inject the source code and other stuff inside `pre` element props
       // needed to copy code
