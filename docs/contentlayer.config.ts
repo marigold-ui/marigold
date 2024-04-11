@@ -108,7 +108,6 @@ export default makeSource({
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
       [rehypeComponentDemo, { contentDirPath }],
-      rehypeTableOfContents,
       rehypeSlug,
       // to inject the source code and other stuff inside `pre` element props
       // needed to copy code
@@ -177,6 +176,7 @@ export default makeSource({
           },
         },
       ],
+      rehypeTableOfContents,
     ],
   },
 });

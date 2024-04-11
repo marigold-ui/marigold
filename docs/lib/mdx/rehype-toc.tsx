@@ -17,17 +17,16 @@ export const rehypeTableOfContents = () => {
       // if a headline than go through the headline children and get the `a` tag
       const headline = node;
 
-      // the children are only text
-      console.log(headline);
-
       // pushes the headline list  in an array
       return items.push(headline);
     });
 
+    //console.log('items', items);
     // const tableItems = items.map(item => {
     //   return {
-    //     anchor: item,
+    //     name: item.value,
     //   };
     // });
+    // console.log(tableItems);
   };
 };
