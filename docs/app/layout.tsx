@@ -9,6 +9,7 @@ import '@marigold/theme-core/styles.css';
 import { fontSans } from '@/theme/fonts';
 
 import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
+import { TocContainer } from '@/ui/Toc';
 
 import { Analytics } from './_components/Analytics';
 import { SectionNavigation } from './_components/SectionNavigation';
@@ -61,6 +62,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   {/* current section navigation sidebar */}
                   <SectionNavigation />
                 </aside>
+                <TocContainer />
                 <div className="px-4 md:pl-80 xl:pl-[360px]">
                   <MarigoldProvider theme={theme}>
                     <main className="py-6 xl:py-10">{children}</main>
