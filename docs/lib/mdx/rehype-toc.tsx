@@ -5,7 +5,7 @@ import { visit } from 'unist-util-visit';
 // if not return
 // if found than put in a list
 
-export const rehypeTableOfContents = () => {
+export const rehypeTableOfContents = options => {
   return (tree: any) => {
     const items: any[] = [];
     // going through all the node tree
@@ -14,6 +14,7 @@ export const rehypeTableOfContents = () => {
       if (node.tagName !== 'h2' && node.tagName !== 'h3') {
         return;
       }
+
       // if a headline than go through the headline children and get the `a` tag
       const headline = node;
 
@@ -21,12 +22,30 @@ export const rehypeTableOfContents = () => {
       return items.push(headline);
     });
 
-    //console.log('items', items);
-    // const tableItems = items.map(item => {
-    //   return {
-    //     name: item.value,
-    //   };
-    // });
-    // console.log(tableItems);
+    const data = items.map(link => {
+      return {
+        anchor: link.children[0].properties.href,
+        title: link?.children[0]?.children[0].value,
+      };
+    });
+
+    //  zum mdx hinzufügen
+    tree.children.unshift({
+      type: 'mdxJsxFlowElement',
+      name: 'Toc',
+      attributes: [
+        {
+          type: 'mdxJsxAttribute',
+          name: 'selector',
+          value: options.tocSelector,
+        },
+        {
+          type: 'mdxJsxAttribute',
+          name: 'items',
+          value: JSON.stringify(data),
+        },
+      ],
+      children: [],
+    });
   };
 };

@@ -176,7 +176,7 @@ export default makeSource({
           },
         },
       ],
-      rehypeTableOfContents,
+      [rehypeTableOfContents, { selector: '#toc' }],
     ],
   },
 });

@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 
 import { notFound } from 'next/navigation';
 
+import { TocContainer } from '@/ui/Toc';
 import { Mdx } from '@/ui/mdx';
 
 interface ContentPageProps {
@@ -48,6 +49,7 @@ export default async function ContentPage({ params }: ContentPageProps) {
     <article className="prose">
       <Headline level={1}>{page.title}</Headline>
       <div className="text-text-primary-muted -mt-8">{page.caption}</div>
+      <TocContainer />
       <Mdx title={page.title} code={page.body.code} />
     </article>
   );

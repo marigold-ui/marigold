@@ -15,6 +15,7 @@ import { ColorTokenTable } from './ColorTokens';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
 import { PropsTable } from './PropsTable';
+import { Toc } from './Toc';
 import {
   AlignmentsX,
   AlignmentsY,
@@ -115,6 +116,7 @@ const components = {
   Spacing,
   TextAlign,
   Image,
+  Toc,
 };
 
 // Props
