@@ -22,12 +22,15 @@ export const rehypeTableOfContents = options => {
       return items.push(headline);
     });
 
-    const data = items.map(link => {
+    const set = Array.from(new Set(items));
+    const data = set.map(link => {
       return {
         anchor: link.children[0].properties.href,
         title: link?.children[0]?.children[0].value,
       };
     });
+
+    console.log('UNI', data);
 
     //  zum mdx hinzufügen
     tree.children.unshift({
