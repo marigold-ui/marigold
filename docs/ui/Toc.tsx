@@ -23,7 +23,7 @@ export const Toc = ({ items, selector }: TocProps) => {
   const toc = document.querySelector('#toc');
 
   const TocPortal = () => (
-    <div>
+    <div className="absolute right-0 px-10">
       <Headline level={2}>Table of Contents</Headline>
       {elements.map((i: { title: string; anchor: string }) => (
         <div key={i.title}>
