@@ -18,22 +18,24 @@ export const rehypeTableOfContents = ({ options }: any) => {
 
     const set = Array.from(new Set(items));
     const data = set.map(link => {
+      console.log(link.properties.id);
       return {
         anchor: link.children[0].properties.href,
         title: link?.children[0]?.children[0].value,
+        id: link.properties.id,
       };
     });
 
-    //  zum mdx hinzufügen
+    //  append it again to mdx
     tree.children.unshift({
       type: 'mdxJsxFlowElement',
       name: 'Toc',
       attributes: [
-        {
-          type: 'mdxJsxAttribute',
-          name: 'selector',
-          value: options.tocSelector,
-        },
+        // {
+        //   type: 'mdxJsxAttribute',
+        //   name: 'selector',
+        //   value: options.tocSelector,
+        // },
         {
           type: 'mdxJsxAttribute',
           name: 'items',
