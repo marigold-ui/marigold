@@ -42,13 +42,13 @@ export const MarigoldThemeSwitch = ({
   initial,
   children,
 }: MarigoldThemeSwitchProps) => {
+  let localTheme: string;
+
   const searchParams = useSearchParams();
   const themeParam = searchParams?.get('theme');
 
-  const router = useRouter();
-
   const [theme, setTheme] = useState<string>(initial);
-  let localTheme: string;
+  const router = useRouter();
 
   if (typeof sessionStorage !== 'undefined') {
     localTheme = sessionStorage.getItem('theme') as string;
@@ -66,8 +66,6 @@ export const MarigoldThemeSwitch = ({
 
   const isInitialMount = useRef(true); // Ref to track initial mount
 
-  // ...
-
   useEffect(() => {
     if (isInitialMount.current) {
       // Skip the effect on initial mount
@@ -75,7 +73,6 @@ export const MarigoldThemeSwitch = ({
       return;
     }
     setTheme(theme);
-    // router.push(`?theme=${theme}`);
     sessionStorage.setItem('theme', theme);
   }, [theme]);
 
