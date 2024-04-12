@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { Headline, Link, List } from '@marigold/components';
+import { Link, List } from '@marigold/components';
 
 export interface TocProps {
   selector: string;
@@ -29,15 +29,17 @@ export const Toc = ({ items, selector }: TocProps) => {
   }
 
   const TocPortal = () => (
-    <div className="absolute right-0 px-10">
-      <p className="font-semibold">On this page</p>
-      {elements.map((i: { title: string; anchor: string }) => (
-        <div key={i.title}>
-          <div>
-            <Link href={i.anchor}>{i.title}</Link>
-          </div>
-        </div>
-      ))}
+    <div className="fixed">
+      <List as="ul">
+        On This Page
+        {elements.map((i: { title: string; anchor: string }) => (
+          <List.Item key={i.title}>
+            <Link variant="toc" href={i.anchor}>
+              {i.title}
+            </Link>
+          </List.Item>
+        ))}
+      </List>
     </div>
   );
 
